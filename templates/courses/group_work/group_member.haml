@@ -1,3 +1,4 @@
+- load i18n
 .group-member
   %img.avatar{src: "#{group_member.image_url_medium}", title: "={group_member.username}"}
   .person-info
@@ -7,4 +8,4 @@
       .person-title= group_member.title
     .email
       %a.email-member{href: "#", 'data-reveal-id': '#{data_reveal_id}', 'data-member-email': '#{group_member.email}'}
-        = _("Email")
+        {% trans "Email" %}

@@ -1,8 +1,9 @@
 - extends "layout.haml"
+- load i18n
 - comment "This template is used for both /accounts/activate (normal registration) and /accounts/finalize/ (SSO registration)"
 
 - block page_title
-  %title= _("Register | McKinsey Academy")
+  %title {% trans "Register | McKinsey Academy" %}
 
 - block header
   - include 'accounts/login_header.haml'
@@ -12,15 +13,15 @@
     .login-form.large-10.medium-10.large-centered.medium-centered.columns
       .row
         .large-7.medium-7.columns
-          %h1 Welcome to McKinsey Academy
+          %h1 {% trans "Welcome to McKinsey Academy" %}
           - if request.is_IE8
-            .outdated_browser We're sorry, McKinsey Academy is not compatible with your browser. You can continue the registration process, but will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.
-          %h4 Create your McKinsey Academy account
-          .description Complete the fields below.
+            .outdated_browser {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You can continue the registration process, but will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
+          %h4 {% trans "Create your McKinsey Academy account" %}
+          .description {% trans "Complete the fields below." %}
           .description
-            %span Required fields are noted by an asterisk (
+            %span {% blocktrans %} Required fields are noted by an asterisk (
             %span.required-field><
-            %span )
+            %span ) {% endblocktrans %}
           %form{action: "", method: "POST"}
             .error
               - if error
@@ -31,18 +32,20 @@
               - include "terms_of_service.haml"
             %input.button.radius.small{type: "submit", value: "#{activate_label}"}
         .large-3.medium-4.columns.help
-          %h4 Already Registered?
+          %h4 {% trans "Already Registered?" %}
           .sidebar
-            %a{href: "/accounts/login"} Click here to log in.
+            %a{href: "/accounts/login"}
+              {% trans "Click here to log in." %}
           %hr
-          %h4 Welcome
+          %h4 {% trans "Welcome" %}
           .sidebar
-            Registering gives you access to course content and ensures that you receive updates and notifications from McKinsey Academy.
+            {% trans "Registering gives you access to course content and ensures that you receive updates and notifications from McKinsey Academy." %}
           %hr
-          %h4 Need Help?
+          %h4 {% trans "Need Help?" %}
           .sidebar
-            %a{href: "/faq"}>< View our FAQ for answers to commonly asked questions
-            , or raise a question in course-specific discussion forums.
+            %a{href: "/faq"}><
+              {% blocktrans %} View our FAQ for answers to commonly asked questions
+            , or raise a question in course-specific discussion forums.{% endblocktrans %}
 
 - block js_snippets
   :javascript

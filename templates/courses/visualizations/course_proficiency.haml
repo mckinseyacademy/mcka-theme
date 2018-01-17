@@ -1,21 +1,22 @@
+- load i18n
 %section.course-proficiency
   - if proficiency == 0
     .zero
       %div
-        %span= _("Your course proficiency will be displayed here.")
+        %span {% trans "Your course proficiency will be displayed here." %}
   .sub-2
-    Proficiency:
+    {% trans "Proficiency:" %}
     %a{href: "/courses/#{course.id}/cohort"}
       %i.fa.fa-arrow-circle-right
   .visualization{'class': "progress-#{proficiency_graph} cohort-progress-#{cohort_proficiency_graph}"}
-    .total= proficiency
+    .total {% trans "proficiency" %}
     .inner-circle.gradient
     .progress-radial.gradient
     .triangle
-  .label-4 cohort average = ={cohort_proficiency_average}
+  .label-4 {% trans "cohort average" %} = ={cohort_proficiency_average}
   %a.info{'data-reveal-id': 'mckinsey_proficiency_help'}
     %i.fa.fa-info-circle
   #mckinsey_proficiency_help.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    %p This visualization displays your proficiency against a total possible score of 100. The average proficiency of your cohort is displayed as well. Note that your proficiency is based on graded assessments and group work performance.
+    %p {% trans "This visualization displays your proficiency against a total possible score of 100. The average proficiency of your cohort is displayed as well. Note that your proficiency is based on graded assessments and group work performance." %}

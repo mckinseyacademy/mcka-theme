@@ -1,3 +1,4 @@
+- load i18n
 #background-full-calendar
   #over-full-calendar
     #row-full-calendar
@@ -32,22 +33,22 @@
             %ul.legend-list
               %li.light-gray-legend
                 %i.fa.fa-circle
-                not available
+                {% trans "not available" %}
               %li.gray-legend
                 %i.fa.fa-circle
-                not started
+                {% trans "not started" %}
               %li.light-green-legend
                 %i.fa.fa-circle
-                in progress
+                {% trans "in progress" %}
               %li.green-legend
                 %i.fa.fa-circle
-                complete
+                {% trans "complete" %}
               %li.red-legend
                 %i.fa.fa-circle
-                incomplete
+                {% trans "incomplete" %}
               %li.teal-legend
                 %i.fa.fa-circle
-                not tracked
+                {% trans "not tracked" %}
 
           #highcharts-container
 
@@ -58,18 +59,18 @@
   var now = new Date();
   var dateList = [];
   var monthList = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    gettext("January"),
+    gettext("February"),
+    gettext("March"),
+    gettext("April"),
+    gettext("May"),
+    gettext("June"),
+    gettext("July"),
+    gettext("August"),
+    gettext("September"),
+    gettext("October"),
+    gettext("November"),
+    gettext("December"),
   ];
 
   for (var i=0; i < 5; i++) {

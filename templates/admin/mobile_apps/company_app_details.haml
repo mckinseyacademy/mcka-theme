@@ -1,5 +1,5 @@
 - extends "admin/admin_layout.haml"
-
+- load i18n
 - load staticfiles
 
 - block content
@@ -21,45 +21,45 @@
             .errorMessage
 
       .panel.appDetails
-        %h4 Details
+        %h4 {% trans "Details" %}
         .row
           .columns.medium-6
-            %label Deployment Mechanism
+            %label {% trans "Deployment Mechanism" %}
             %p= appDetails.deployment_mechanism
           .columns.medium-6
-            %label Urban Airship URL
+            %label {% trans "Urban Airship URL" %}
             %p= appDetails.provider_dashboard_url
         .row
           .columns.medium-6
-            %label iOS Download URL
+            %label {% trans "iOS Download URL" %}
             %p= appDetails.ios_download_url
           .columns.medium-6
-            %label Analytics URL
+            %label {% trans "Analytics URL" %}
             %p= appDetails.analytics_url
         .row
           .columns.medium-6
-            %label Android Download URL
+            %label {% trans "Android Download URL" %}
             %p= appDetails.android_download_url
           .columns.medium-6
-            %label Active
+            %label {% trans "Active" %}
             -if appDetails.is_active
-              %p <i class="fa fa-check" aria-hidden="true"></i> Yes
+              %p <i class="fa fa-check" aria-hidden="true"></i> {% trans "Yes" %}
             - else
-              %p <i class="fa fa-close" aria-hidden="true"></i> No
+              %p <i class="fa fa-close" aria-hidden="true"></i> {% trans "No" %}
       .rowdelinkAppButton
 
 
 
 
         .columns.medium-12
-          %button.button.radius.small.pull-right.bordered{"data-reveal-id" => "linkAppConfirm", :href => "#"} Delink App
-          %button.button.radius.small.pull-right.bordered.blank{"aria-haspopup" => "true", "data-disable-hover" => "false", "data-tooltip" => "", :tabindex => "1", :title => "Please contact the mobile dev team to edit this page", :type => "button"}
-            Help ?
+          %button.button.radius.small.pull-right.bordered{"data-reveal-id" => "linkAppConfirm", :href => "#"} {% trans "Delink App" %}
+          %button.button.radius.small.pull-right.bordered.blank{"aria-haspopup" => "true", "data-disable-hover" => "false", "data-tooltip" => "", :tabindex => "1", :title => "{% trans 'Please contact the mobile dev team to edit this page' %}", :type => "button"}
+            {% trans "Help ?" %}
 
     #linkAppConfirm.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
-      %h4 Delinking
-      %p Delinking an active app from a company can lead to unstability.
-      %p.focused ARE YOU SURE YOU WANT TO CONFIRM?
-      %button#delinkAppButton.button.small.radius{:value => "Continue", :type => "Submit", :data-id => "#{appDetails.id}"} Continue
-      %button.button.small.blank.close-reveal-modal{:value => "Cancel", :type => "button"} Cancel
+      %h4 {% trans "Delinking" %}
+      %p {% trans "Delinking an active app from a company can lead to unstability." %}
+      %p.focused {% trans "ARE YOU SURE YOU WANT TO CONFIRM?" %}
+      %button#delinkAppButton.button.small.radius{:value => "Continue", :type => "Submit", :data-id => "#{appDetails.id}"} {% trans "Continue" %}
+      %button.button.small.blank.close-reveal-modal{:value => "Cancel", :type => "button"} {% trans "Cancel" %}
       %a.close-reveal-modal{"aria-label" => "Close"} ×

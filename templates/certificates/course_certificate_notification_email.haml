@@ -1,11 +1,13 @@
-%p Dear #{username},
+- load i18n
+
+%p {% blocktrans %}Dear #{username}, {% endblocktrans %}
 %p
-  Your certificate for course have been generated to view your certificate please click the following link
+  {% trans "Your certificate for course have been generated to view your certificate please click the following link" %}
   %br
   #{certificate_link}
-%p Please contact our team at support@mckinseyacademy.com if you experience any technical issues.
+%p {% trans "Please contact our team at support@mckinseyacademy.com if you experience any technical issues." %}
 
 %p
-  Best,
+  {% trans "Best," %}
   %br
-  McKinsey Academy
+  {% trans "McKinsey Academy" %}

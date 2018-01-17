@@ -1,38 +1,39 @@
 - extends "courses/course_navigation.haml"
+- load i18n
 
 - block page_title
   %title
     = program.display_name
-    = _(" | Group Work | Courses | McKinsey Academy")
+    {% trans " | Group Work | Courses | McKinsey Academy" %}
 
 - block help_context
   #mckinsey_help.reveal-modal.medium{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    .sub-1 Group Work
+    .sub-1 {% trans "Group Work" %}
     - if group_project.is_v2
-      %p Below are helpful tips to contribute to group work. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you.
-      .help-line Access group work using the <i class="mk-icon-groupworknav blue"></i> icon in the main navigation bar
-      .help-line Upload deliverables by clicking the <i class="fa fa-upload blue"></i> icon at the bottom of the Project Navigator.
-      .help-line Access project resources by clicking the <i class="fa fa-files-o blue"></i> icon at the bottom of the Project Navigator.
-      .help-line Group work has a private discussion you can use to collaborate with your group members. You can chat with your team by clicking the <i class="fa fa-comments-o blue"></i> icon at the bottom of the Project Navigator. Your private discussions, even when viewed on the main discussion page, are only visible to your group members, never to the larger cohort.
-      .help-line Send a message to a McKinsey TA by clicking the <span class="nav-1" style="font-size:16px;">TA</span> icon at the bottom of the Project Navigator.
+      %p {% blocktrans %} Below are helpful tips to contribute to group work. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+      .help-line {% blocktrans %} Access group work using the <i class="mk-icon-groupworknav blue"></i> icon in the main navigation bar {% endblocktrans %}
+      .help-line {% blocktrans %} Upload deliverables by clicking the <i class="fa fa-upload blue"></i> icon at the bottom of the Project Navigator. {% endblocktrans %}
+      .help-line {% blocktrans %} Access project resources by clicking the <i class="fa fa-files-o blue"></i> icon at the bottom of the Project Navigator. {% endblocktrans %}
+      .help-line {% blocktrans %} Group work has a private discussion you can use to collaborate with your group members. You can chat with your team by clicking the <i class="fa fa-comments-o blue"></i> icon at the bottom of the Project Navigator. Your private discussions, even when viewed on the main discussion page, are only visible to your group members, never to the larger cohort. {% endblocktrans %}
+      .help-line {% blocktrans %} Send a message to a McKinsey TA by clicking the <span class="nav-1" style="font-size:16px;">TA</span> icon at the bottom of the Project Navigator. {% endblocktrans %}
     - else
-      %p Below are helpful tips to contribute to group work. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you.
-      .help-line Access group work using the <i class="mk-icon-groupworknav"></i> icon in the main navigation bar
-      .help-line Group work is made up of one or more activities, and each activity is made up of up to 4 stages:
-      .help-line OVERVIEW - provides a high-level overview of the task(s)
-      .help-line UPLOAD - allows your team to upload deliverables for TA or peer grading
-      .help-line REVIEWS - allows you to anonymously grade peer projects and/or provide team feedback
-      .help-line GRADE - displays your team feedback and peer (or TA) grade
+      %p {% blocktrans %} Below are helpful tips to contribute to group work. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+      .help-line {% blocktrans %} Access group work using the <i class="mk-icon-groupworknav"></i> icon in the main navigation bar {% endblocktrans %}
+      .help-line {% trans "Group work is made up of one or more activities, and each activity is made up of up to 4 stages:" %}
+      .help-line {% trans "OVERVIEW - provides a high-level overview of the task(s)" %}
+      .help-line {% trans "UPLOAD - allows your team to upload deliverables for TA or peer grading" %}
+      .help-line {% trans "REVIEWS - allows you to anonymously grade peer projects and/or provide team feedback" %}
+      .help-line {% trans "GRADE - displays your team feedback and peer (or TA) grade" %}
       .help-line
         .page-left
           %i.fa.fa-chevron-left
-        Move from stage to stage within an activity using the left and right arrows; deadlines for each stage are posted, and if a particular stage has not yet opened, it is noted
-      .help-line Group work has a private inline discussion you can use to collaborate with only your group members. View these conversations in group work pages, or by accessing the larger discussion page using the <i class="fa fa-comments-o"></i> icon in the main navigation bar. Your private discussions, even when viewed on the main discussion page, are only visible to your group members, never to the larger cohort.
-      .help-line Email your group members (individually or combined) from the right column of each stage
-      .help-line Email your McKinsey TA from the right column of each stage.
-      .help-line This video walks you through the group work experience:
+        {% trans "Move from stage to stage within an activity using the left and right arrows; deadlines for each stage are posted, and if a particular stage has not yet opened, it is noted" %}
+      .help-line {% blocktrans %} Group work has a private inline discussion you can use to collaborate with only your group members. View these conversations in group work pages, or by accessing the larger discussion page using the <i class="fa fa-comments-o"></i> icon in the main navigation bar. Your private discussions, even when viewed on the main discussion page, are only visible to your group members, never to the larger cohort. {% endblocktrans %}
+      .help-line {% trans "Email your group members (individually or combined) from the right column of each stage" %}
+      .help-line {% trans "Email your McKinsey TA from the right column of each stage." %}
+      .help-line {% trans "This video walks you through the group work experience:" %}
       #mk-help-video{'data-video-id': "F0cmwxcjoRJg4g6GAcZGCl4dAGJKQ1Cj"}
 
 
@@ -42,7 +43,7 @@
       %i.fa.fa-question-circle
     - if not group_project or not project_group
       .row
-        .error= _("Group work has not yet begun for this course. You will receive a message with information once it begins")
+        .error {% trans "Group work has not yet begun for this course. You will receive a message with information once it begins" %}
     - else
       - if not group_project.is_v2
         .row
@@ -51,27 +52,27 @@
         - if group_project.is_v2
           .large-12.medium-12.columns.splitpiece.left
             .lesson-title
-              %span= _("Group Project:")
+              %span {% trans "Group Project:" %}
               %span= group_project.name
             .lesson-content
         - else
           .large-8.medium-8.columns.splitpiece.left
             .lesson-title
-              %span= _("Group Project:")
+              %span {% trans "Group Project:" %}
               %span= group_project.name
             .lesson-content
           #group-project-users.large-4.medium-4.columns.splitpiece.right
             .group-members
-              %h4= _("Group Members")
+              %h4 {% trans "Group Members" %}
               - for member in project_group.members
                 - include "courses/group_work/group_member.haml" with group_member=member data_reveal_id="email-member"
               - if project_group.id
                 %a.email-team{href: "#", data-reveal-id: 'email-team'}
-                  = _("Email your group")
+                  {% trans "Email your group" %}
             %hr
             - if ta_user.id and not course.ended
               .ask-ta
-                %h4= _("Ask a TA")
+                %h4 {% trans "Ask a TA" %}
                 -# Temporarily use mailto: for ta link as well (add data_reveal_id back in for when dialog should be introduced
                 - include "courses/group_work/group_member.haml" with group_member=ta_user data_reveal_id="contact-ta"
                 -# include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant

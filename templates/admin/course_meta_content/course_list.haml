@@ -1,8 +1,9 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 
 - block content
   .row
-    %p This is the Discover Content management section. Please choose a course from the list below:
+    %p {% trans "This is the Discover Content management section. Please choose a course from the list below:" %}
 
     - if user.is_mcka_admin or user.is_mcka_subadmin 
         #course_meta_content_main_container{'data-enable-cache': 'true'}

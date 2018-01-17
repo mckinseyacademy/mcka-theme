@@ -50,7 +50,7 @@
               %br
               %span {% trans "Complete the fields below. Required fields are noted by an asterisk" %} (
               %span.required-field><
-              %span ).
+              %span ). {% endblocktrans %}
               %form{action: "/registration/#{course_run_name}/", method: "POST"}
                 .error
                   - if error

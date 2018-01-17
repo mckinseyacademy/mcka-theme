@@ -1,21 +1,22 @@
 - extends "courses/course_navigation.haml"
+- load i18n
 
 - block page_title
   %title
     = program.display_name
-    = _(" | Overview | Courses | McKinsey Academy")
+    {% trans " | Overview | Courses | McKinsey Academy" %}
 
 - block help_context
   #mckinsey_help.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    .sub-1 Announcements, Course Overview, and Resources
-    %p Below are helpful tips to view course materials (which include announcements, course overview, and resources). You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you.
-    .help-line Access Announcements, Course Overview, and Resources from the <i class="fa fa-file-text-o"></i> icon in the main navigation bar.
-    .help-line ANNOUNCEMENTS provides course news and events in a blog format
-    .help-line COURSE OVERVIEW details what you will learn and provides faculty information; it also includes a course calendar to guide your pace through the course and alert you to key deadlines
-    .help-line RESOURCES provides key takeaways and frameworks from each lesson, as well as supplemental readings and videos
-    .help-line This video walks you through the learner experience:
+    .sub-1 {% trans "Announcements, Course Overview, and Resources" %}
+    %p {% blocktrans %} Below are helpful tips to view course materials (which include announcements, course overview, and resources). You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+    .help-line {% blocktrans %} "Access Announcements, Course Overview, and Resources from the <i class="fa fa-file-text-o"></i> icon in the main navigation bar. {% endblocktrans %}
+    .help-line {% trans "ANNOUNCEMENTS provides course news and events in a blog format" %}
+    .help-line {% trans "COURSE OVERVIEW details what you will learn and provides faculty information; it also includes a course calendar to guide your pace through the course and alert you to key deadlines" %}
+    .help-line {% trans "RESOURCES provides key takeaways and frameworks from each lesson, as well as supplemental readings and videos" %}
+    .help-line {% trans "This video walks you through the learner experience:" %}
     #mk-help-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
 
 - block current_content
@@ -23,16 +24,16 @@
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     %ul.meta-info.hidden
-      %li.label-4 Details:
-      %li.label-3 10 lessons
-      %li.label-3 32 videos
-      %li.label-3 9 assessments
-      %li.label-3 72 exercises
-      %li.label-3 1 group project
-      %li.label-3 15 readings
+      %li.label-4 {% trans "Details:" %}
+      %li.label-3 {% trans "10 lessons" %}
+      %li.label-3 {% trans "32 videos" %}
+      %li.label-3 {% trans "9 assessments" %}
+      %li.label-3 {% trans "72 exercises" %}
+      %li.label-3 {% trans "1 group project" %}
+      %li.label-3 {% trans "15 readings" %}
     %h1= course.name
     .overview
-      .sub-1 Overview
+      .sub-1 {% trans "Overview" %}
       - autoescape off
         %p= overview.about
     %hr
@@ -46,16 +47,16 @@
               %img{src: '#{overview.course_image_url}'}
           .video-overview.hidden
             %i.fa.fa-play-circle
-            %span Course Overview
+            %span {% trans "Course Overview" %}
             %time.label-2 2:08
       .medium-5.columns.col-right
-        .sub-1 WHAT YOU WILL LEARN
+        .sub-1 {% trans "WHAT YOU WILL LEARN" %}
         - autoescape off
           %p= overview.what_you_will_learn
       .medium-7
         %hr
         .faculty
-          .sub-1 Faculty
+          .sub-1 {% trans "Faculty" %}
           - for teacher in overview.faculty
             - if teacher.idx == 0
               %input{id: "faculty_#{teacher.idx}", type: 'radio', name: 'faculty_tabs', checked: None}

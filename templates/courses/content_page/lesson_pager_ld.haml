@@ -6,7 +6,7 @@
         .mcka-tooltip
           %p.style-4
             ={course.current_lesson.name}:
-            Module ={course.current_lesson.previous_module.index} of ={course.current_lesson.previous_module.lesson_count}
+            {% trans "Module" %} ={course.current_lesson.previous_module.index} of ={course.current_lesson.previous_module.lesson_count}
           .vertical-index= course.current_lesson.previous_module.name
     - else
       %a.page-to.previous
@@ -18,7 +18,7 @@
         .mcka-tooltip
           %p.style-4
             ={course.current_lesson.name}:
-            Module ={course.current_lesson.next_module.index} of ={course.current_lesson.next_module.lesson_count}
+            {% trans "Module" %} ={course.current_lesson.next_module.index} of ={course.current_lesson.next_module.lesson_count}
           .vertical-index= course.current_lesson.next_module.name
     - else
       %a.page-to.next

@@ -10,9 +10,10 @@
         .courseDetailsNavigationButton
           - if companyCourseDeatilsPage
             %a{:href => '/admin/companies/#{companyId}', :target => '_self'}>
-              < Back to ={companyName}
+              < {% trans "Back to" %} ={companyName}
           - else
-            %a{:href => '/admin/courses/', :target => '_self'}> < Back to All Courses
+            %a{:href => '/admin/courses/', :target => '_self'}> <
+              {% trans "Back to All Courses" %}
         #courseDetailsDataWrapper{:data-id => '#{id}', :data-name => '#{name}', :admin-flag => '#{companyAdminFlag}', :company-page => '#{companyCourseDeatilsPage}', :company-id => '#{companyId}', :internal-flag => '#{internalAdminFlag}'}
             #courseDetailsTopContainer
                 .row.courseDetailsHeader
@@ -29,71 +30,79 @@
                 .row.courseDetailsBlocks
                     .large-4.columns.courseDetailsLeftBlock
                       - if start == '-' or end == '-'
-                        %p Evergreen
+                        %p {% trans "Evergreen" %}
                       - else
                         %p ={start} - ={end}
-                      %p Participants: ={users_enrolled}
+                      %p {% trans "Participants:" %} ={users_enrolled}
                     .large-4.columns.courseDetailsCenterBlock
-                      %p Avg Progress: ={average_progress}%
-                      %p Avg Proficiency: ={proficiency}
+                      %p {% trans "Avg Progress:" %} ={average_progress}%
+                      %p {% trans "Avg Proficiency:" %} ={proficiency}
                     .large-4.columns.courseDetailsRightBlock
-                      %p Completed: ={completed}%
-                      %p Passed: ={passed}%
+                      %p {% trans "Completed:" %} ={completed}%
+                      %p {% trans "Passed:" %} ={passed}%
             #courseMainDetailsContainerView
               .courseDetailsMenuButtons.row
                 .courseParticipantsButton.large-2.columns
-                  %a{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  PARTICIPANTS
+                  %a{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                    {% trans "PARTICIPANTS" %}
                 .courseStatsButton.large-2.columns
-                  %a{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>  STATS
+                  %a{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                    {% trans "STATS" %}
                 - if request.resolver_match.url_name == 'course_details'
                   .courseStatsButton.large-4.columns
-                    %a{:href => 'learner_dashboard'}>  LEARNER DASHBOARD
+                    %a{:href => 'learner_dashboard'}>  {% trans "LEARNER DASHBOARD" %}
 
                   .courseStatsButton.large-4.columns
                     - if certificates_status == certificates_statuses.available
                       %form#generate-certificate-form{action: "{% url 'generate_course_certificates' id %}", method: 'POST'}
                         - csrf_token
                         %input{type: 'hidden', name: 'course_end', value: '{{end}}'}
-                        %button.generateCourseCertButton{type: 'submit'}>  Generate Certificates
+                        %button.generateCourseCertButton{type: 'submit'}>  {% trans "Generate Certificates" %}
                     - elif certificates_status == certificates_statuses.generating
-                       %button.generateCourseCertButton.disabled  Generating Certificates
+                       %button.generateCourseCertButton.disabled  {% trans "Generating Certificates" %}
                     - elif certificates_status == certificates_statuses.generated
-                       %button.generateCourseCertButton.disabled  Certificates Generated
+                       %button.generateCourseCertButton.disabled  {% trans "Certificates Generated" %}
                 %hr
             #courseDetailsMainContainer
               .row.courseParticipants.contentNavigationContainer
                 - if user.is_company_admin
                   #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                     .bulkButtonWrapper
-                      %a.button.bulkExportStats.bulkButton.disabled{:href => "#"} Export stats
+                      %a.button.bulkExportStats.bulkButton.disabled{:href => "#"} {% trans "Export stats" %}
                 - else
                   #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                     .bulkButtonWrapper
                       .hiddenButtonSplitModifier.bulkButton.disabled
                       - if user.is_internal_admin
                         %a.bulkEmailSelectedParticipantsInternal.button.disabled{:href => "#"}
-                          Email Selected Participants
+                          {% trans "Email Selected Participants" %}
                       - else
                         %a.bulkEmailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
-                          Email Selected Participants
+                          {% trans "Email Selected Participants" %}
                       %a.button.bulkDropdownIcon.bulkButton.disabled
                         .fa.fa-chevron-down
                     #dropBulkCourse.f-dropdown{:style => 'display: none',:aria-hidden => "true"}
-                      %a.button.submenuButtons.bulkChangeStatus.bulkButton.disabled{:href => "#"} Change status
-                      %a.button.submenuButtons.bulkUnenrollFromCourse.bulkButton.disabled{:href => "#"} Unenroll from course
-                      %a.button.submenuButtons.bulkEnrollInNewCourse.bulkButton.disabled{:href => "#"} Enroll in new course
-                      %a.button.submenuButtons.bulkExportStats.bulkButton.disabled{:href => "#"} Export stats
-                      %a.button.submenuButtons.bulkExportNotifData.bulkButton.disabled{:href => "#"} Download CSV For Notifications
+                      %a.button.submenuButtons.bulkChangeStatus.bulkButton.disabled{:href => "#"}
+                        {% trans "Change status" %}
+                      %a.button.submenuButtons.bulkUnenrollFromCourse.bulkButton.disabled{:href => "#"}
+                        {% trans "Unenroll from course" %}
+                      %a.button.submenuButtons.bulkEnrollInNewCourse.bulkButton.disabled{:href => "#"}
+                        {% trans "Enroll in new course" %}
+                      %a.button.submenuButtons.bulkExportStats.bulkButton.disabled{:href => "#"}
+                        {% trans "Export stats" %}
+                      %a.button.submenuButtons.bulkExportNotifData.bulkButton.disabled{:href => "#"}
+                        {% trans "Download CSV For Notifications" %}
                 #courseDetailsParticipantsGridWrapper
                   #courseDetailsParticipantsGrid.large-12.columns.spinnerContainer
               .row.courseStats.contentNavigationContainer
                 #courseDetailsEngagementTopic.courseDetailsTopic
-                  Engagement Summary
+                  {% trans "Engagement Summary" %}
                 #coursesDownloadStatsButton
                   - if companyCourseDeatilsPage
-                    %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}> Export Stats
+                    %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}> {% trans "Export Stats" %}
                   - else
-                    %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}> Export Stats
+                    %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}>
+                      {% trans "Export Stats" %}
                 #courseDetailsEngagementViewGrid.courseDetailsViewGrid.large-12.columns
 
                 %input#discussionFeature{type: 'hidden', name: 'discussion_feature', value: '{{discussion_feature}}'}
@@ -102,8 +111,11 @@
                     {% trans "Social Engagement" %}
                   #courseDetailsStatsViewGrid.courseDetailsViewGrid.large-12.columns
 
+                #courseDetailsPerformanceTopic.courseDetailsTopic
+                  {% trans "Participant Performance" %}
+                #courseDetailsPerformanceViewGrid.courseDetailsViewGrid.large-12.columns
                 #courseDetailsTimelineTopic.courseDetailsTopic
-                  Cohort Timeline
+                  {% trans "Cohort Timeline" %}
                 #course-details-timeline-wrapper
                   %svg#course-details-timeline
   #courseDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
@@ -115,8 +127,8 @@
     .courseModalContent
     .courseModalControl
       .button.saveChanges
-        Save Changes
-      %a.cancelChanges{:href => "#"} Cancel
+        {% trans "Save Changes" %}
+      %a.cancelChanges{:href => "#"} {% trans "Cancel" %}
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
   #courseDetailsBulkEmail.reveal-modal.medium{"aria-hidden" => "true", "data-reveal" => "", :role => "dialog"}
@@ -126,53 +138,53 @@
     %hr
     .row
       .large-12.columns.courseModalDescription
-        Email selected participants
+        {% trans "Email selected participants" %}
     .emailModalContent
       .row
         .large-6.columns.participantFirstName
           .fromEmailLabel.labelUniversal
-            From
+            {% trans "From" %}
           .fromEmailValue
             %input{:type => "text", :value => '', :name => "from_email", :maxlength => "128"}
         .large-6.columns.participantLastName
           .templateNameLabel.labelUniversal
-            Template
+            {% trans "Template" %}
           .templateControlButtons
-            %i.fa.fa-floppy-o.saveAsNewTemplate{:data-title => "Save as new template"}
-            %i.fa.fa-pencil-square-o.updateTemplate{:data-title => "Update selected template"}
-            %i.fa.fa-trash-o.removeTemplate{:data-title => "Remove selected template"}
+            %i.fa.fa-floppy-o.saveAsNewTemplate{:data-title => "{% trans 'Save as new template' %}"}
+            %i.fa.fa-pencil-square-o.updateTemplate{:data-title => "{% trans 'Update selected template' %}"}
+            %i.fa.fa-trash-o.removeTemplate{:data-title => "{% trans 'Remove selected template' %}"}
           .templateNameValue
             %select{:name => 'template_id'}
-              %option{:value => "none"} None
+              %option{:value => "none"} {% trans "None" %}
               - for template in template_list
                 %option{:value => "#{template.pk}"}
                   =template.title
       .row
         .large-12.columns.emailSubject
           .emailSubjectLabel.labelUniversal
-            Subject
+            {% trans "Subject" %}
           .emailSubjectValue
             %input{:type => "text", :value => '', :name => "subject", :maxlength => "256"}
       .row
         .large-12.columns.emailBody
           .emailBodyLabel.labelUniversal
-            Body
+            {% trans "Body" %}
           .emailBodyTextarea
             %textarea#email_editor
     .row
       .large-12.columns.emailModalControl
         .button.sendEmail
-          Send Email
+          {% trans "Send Email" %}
         .buttonBlock
-          %a.previewEmail{:href => "#"} Preview email
-          %a.scheduleForLater{:href => "#"} Schedule for Later
+          %a.previewEmail{:href => "#"} {% trans "Preview email" %}
+          %a.scheduleForLater{:href => "#"} {% trans "Schedule for Later" %}
 
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
 
 
   #courseTagsModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
-    %h2 Add Tags to this Course
+    %h2 {% trans "Add Tags to this Course" %}
     %hr
     .row
       .large-6.columns
@@ -180,11 +192,12 @@
           %input.courseTagsInput{:type => "text", :value => '', :name => "tag_name" }
           .errorMessage
           .newTagCreationPopup
-            Since this tag does not yet exist, a new Tag will be created. If this is an error, try selecting your tag from the type-ahead results.
+            {% trans "Since this tag does not yet exist, a new Tag will be created. If this is an error, try selecting your tag from the type-ahead results." %}
     .row.courseTagsModalControl
       .button.addTagButton.small.radius
         Save
-      %a.closeModal{:href => "#"} Cancel
+      %a.closeModal{:href => "#"}
+        {% trans "Cancel" %}
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
 

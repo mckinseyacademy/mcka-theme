@@ -1,9 +1,10 @@
 - extends "courses/course_navigation.haml"
+- load i18n
 
 - block page_title
   %title
     = program.display_name
-    = _(" | Progress | Courses | McKinsey Academy")
+    {% trans " | Progress | Courses | McKinsey Academy" %}
 
 - block header
   - if progress_user.id == user.id
@@ -16,52 +17,52 @@
     .close-reveal-modal
       %i.fa.fa-times-circle
     .sub-1 Progress
-    %p Below are helpful tips to review your progress. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you.
-    .help-line PROGRESS marks your progress (based on completion of modules and readings) through course content; the average progress of your cohort is also displayed
-    .help-line GRADE displays your proficiency against a total possible score of 100; your proficiency is based on graded assessments and group work performance.
+    %p {% blocktrans %} Below are helpful tips to review your progress. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+    .help-line {% trans "PROGRESS marks your progress (based on completion of modules and readings) through course content; the average progress of your cohort is also displayed" %}
+    .help-line {% trans "GRADE displays your proficiency against a total possible score of 100; your proficiency is based on graded assessments and group work performance." %}
 
 - block current_content
   #course-progress
     - if progress_user.id == user.id
       %h1
-        Course Progress for '={progress_user.username}'
+        {% trans "Course Progress for" %} '={progress_user.username}'
     - else
       %h1.admin-view
         Viewing Course Progress for '={progress_user.username} (={progress_user.full_name})'
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     .sub-1 PROGRESS
-    %p.style-6 You are ={course.user_progress}% of the way through the course based on completion of modules within lessons:
+    %p.style-6 {% blocktrans %} You are ={course.user_progress}% of the way through the course based on completion of modules within lessons: {% endblocktrans %}
     - include "courses/visualizations/course_progress.haml"
     %hr
-    .sub-1 GRADES
+    .sub-1 {% trans "GRADES" %}
     - ifnotequal group_activities None
-      %p.style-6 You need to complete all group work and feedback activities and earn a combined course grade of at least ={pass_grade}% to work towards a program certificate of completion. Your course grade is calculated as follows:
+      %p.style-6 {% blocktrans %} You need to complete all group work and feedback activities and earn a combined course grade of at least ={pass_grade}% to work towards a program certificate of completion. Your course grade is calculated as follows: {% endblocktrans %}
     - else
-      %p.style-6 You need a combined course grade of at least ={pass_grade}% to earn a certificate of completion. Your final grade is calculated as follows:
+      %p.style-6 {% blocktrans %} You need a combined course grade of at least ={pass_grade}% to earn a certificate of completion. Your final grade is calculated as follows: {% endblocktrans %}
     .grades
       %ul
         - for grader in graders
-          %li ={grader.type_name}: ={grader.weight} percent of your grade
+          %li ={grader.type_name}: ={grader.weight} {% trans "percent of your grade" %}
       #chart-grades
         %svg
     %ul.legend
       - if has_values_for.normal
-        %li.completed.label-3 Completed
+        %li.completed.label-3 {% trans "Completed" %}
       - if has_values_for.dropped
-        %li.dropped.label-3 Dropped
+        %li.dropped.label-3 {% trans "Dropped" %}
       - if has_values_for.group_work
-        %li.group-work.label-3 Group Work
-      %li.current-grade.label-3 Current grade
-    %p.style-6 Pro forma grade is an estimate of your final grade assuming you continue to demonstrate the same level of proficiency on your uncompleted assessments as you did on your completed assessments to date. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+        %li.group-work.label-3 {% trans "Group Work" %}
+      %li.current-grade.label-3 {% trans "Current grade" %}
+    %p.style-6 {% blocktrans %} Pro forma grade is an estimate of your final grade assuming you continue to demonstrate the same level of proficiency on your uncompleted assessments as you did on your completed assessments to date. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information. {% endblocktrans %}
     %hr
     %table.lesson-table
       %thead
         %tr
-          %th.label-4 Lesson:
-          %th.label-4 Suggested Deadline:
-          %th.label-4 Assessment Score:
-          %th.label-4 Progress:
+          %th.label-4 {% trans "Lesson:" %}
+          %th.label-4 {% trans "Suggested Deadline:" %}
+          %th.label-4 {% trans "Assessment Score:" %}
+          %th.label-4 {% trans "Progress:" %}
       %tbody
         - for lesson in course.chapters
           %tr
@@ -80,10 +81,10 @@
       %table.lesson-table
         %thead
           %tr
-            %th.label-4 Group Work:
-            %th.label-4 Upload Deadline:
-            %th.label-4 Score:
-            %th.label-4 Grades:
+            %th.label-4 {% trans "Group Work:" %}
+            %th.label-4 {% trans "Upload Deadline:" %}
+            %th.label-4 {% trans "Score:" %}
+            %th.label-4 {% trans "Grades:" %}
         %tbody
           - for activity in group_activities
             %tr
@@ -106,8 +107,9 @@
     .close-reveal-modal
       %i.fa.fa-times-circle
     %p
-      If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
-      %a{href: '/privacy'} privacy policy.
+      {% trans "If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our" %}
+      %a{href: '/privacy'}
+        {% trans "privacy policy." %}
 
   %script
     var historicalBarChart = {{bar_chart|safe}};

@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content  
   .admin-detail.row
@@ -7,67 +8,67 @@
       .row
         .large-4.columns
           %a{:href => "/admin/course_runs/"}
-            %p < Back to list
-          %h1 Course Run: ={course_run.name}
+            %p < {% trans "Back to list" %}
+          %h1 {% trans "Course Run:" %} ={course_run.name}
           %a{:href => "/registration/#{course_run.name}"}
-            View live
+            {% trans "View live" %}
         .large-4.columns
           %a.right{:class => "button radius small", :href => "/admin/course_run/create/#{course_run.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
-            Edit
+            {% trans "Edit" %}
             %i{'class': "fa fa-pencil"}
     %hr
     %section
       .row
         .large-4.columns
-          %strong Course ID:
+          %strong {% trans "Course ID:" %}
             %a{:href => "/admin/courses/#{course_run.course_id}"}
               %p ={course_run.course_id}
-          %strong Max users in course:
+          %strong {% trans "Max users in course:" %}
           %p ={course_run.max_participants}
-          %strong Total enrolled users in course:
+          %strong {% trans "Total enrolled users in course:" %}
           %p ={course_run.total_participants}
-          %strong No. of users signed up:
+          %strong {% trans "No. of users signed up:" %}
           %p ={total_registered_users}
-          %strong Total activation emails sent:
+          %strong {% trans "Total activation emails sent:" %}
           %p ={course_run.total_activations_sent}
           - if total_registered_users < 1
             %button{:class => "button radius small disabled"}
-              Download CSV
+              {% trans "Download CSV" %}
               %i{'class': "fa fa-download"}
           - else
             %a{:class => "button radius small", :href => "/admin/course_run/csv_download/#{course_run.id}"}
-              Download CSV
+              {% trans "Download CSV" %}
               %i{'class': "fa fa-download"}
         .large-8.columns
-          %strong Email template for existing McKA users:
+          %strong {% trans "Email template for existing McKA users:" %}
           %p ={course_run.email_template_existing}
           %br
-          %strong Email template for new McKA users:
+          %strong {% trans "Email template for new McKA users:" %}
           %p ={course_run.email_template_new}
           %br
-          %strong Email template for McKA employees (SSO):
+          %strong {% trans "Email template for McKA employees (SSO):" %}
           %p ={course_run.email_template_mcka}
           %br
-          %strong Copy for closed status message:
+          %strong {% trans "Copy for closed status message:" %}
           %p ={course_run.email_template_closed}
           %br
     %hr
     .large-10.large.columns
     -if users
       %p
-        List of users registered for this course:
+        {% trans "List of users registered for this course:" %}
       %table{style:"table-layout: fixed; width: 100%"}
         %thead
           %tr
-            %th= _("First Name")
-            %th= _("Last name")
-            %th= _("Company name")
-            %th= _("Company email")
-            %th= _("Current role")
-            %th= _("New user")
-            %th= _("McK Employee")
-            %th= _("Enrolled")
-            %th= _("Active")
+            %th {% trans "First Name" %}
+            %th {% trans "Last name" %}
+            %th {% trans "Company name" %}
+            %th {% trans "Company email" %}
+            %th {% trans "Current role" %}
+            %th {% trans "New user" %}
+            %th {% trans "McK Employee" %}
+            %th {% trans "Enrolled" %}
+            %th {% trans "Active" %}
         %tbody
           - for user in user_list
             %tr{id: "#{user.id}"}
@@ -98,7 +99,7 @@
                   %i.fa.fa-times{'style': "color:red"}
 
     -else
-      No users registered for this course run!
+      {% trans "No users registered for this course run!" %}
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}

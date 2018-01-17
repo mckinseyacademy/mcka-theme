@@ -1,16 +1,19 @@
+- load i18n
 -load staticfiles
 - block upload_profile_image
 .upload-profile-image
   %form#upload-profile-image-form{action: "/accounts/user/#{user.id}/upload_profile_image", method: "POST", enctype: "multipart/form-data"}
     %label.label-10
       %span.label-5
-        STEP 1:
-      SELECT NEW PROFILE IMAGE
+        {% trans "STEP 1:" %}
+      {% trans "SELECT NEW PROFILE IMAGE" %}
     %hr
     - csrf_token
     .browse-wrapper
-      %button#browse-image.button.tiny.radius{'type': 'button'} Browse
-      %label{'for': 'id_profile_image'} No file selected.
+      %button#browse-image.button.tiny.radius{'type': 'button'}
+        {% trans "Browse" %}
+      %label{'for': 'id_profile_image'}
+        {% trans "No file selected." %}
     .spinner-image
       %svg.spinner.upload-image.svg-ie-image{'style': "text-align:center;"}
         %image{'xlink:href': "{% static 'image/loading-spin.gif' %}", 'src': "{% static 'image/loading-spin.gif' %}",  'width': "40", 'height': "40"}

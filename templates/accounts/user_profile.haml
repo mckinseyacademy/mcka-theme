@@ -1,9 +1,10 @@
+- load i18n
 -load staticfiles
 .user-profile
   .user-image
     %img{src: "#{user_image_url}"}
     %a#edit-user-image{"data-reveal-id": "edit-user-image-modal", "data-reveal-ajax": "true", 'href': "/accounts/user/#{user.id}/change_profile_image"}
-      change photo
+       {% trans "change photo" %}
   .user-detail
     .username
       = user.username
@@ -11,25 +12,25 @@
       %i.fa.fa-user
       .field-group
         .fieldtitle
-          = _("Full name")
+          {% trans "Full name" %}
           %a.editfield{data-reveal-id: "edit_field_modal", data-reveal-ajax: "true", href: "/accounts/edit_fullname/"}
-            = _("edit")
+            {% trans "edit" %}
         .fieldcontent
           = user.formatted_name
     .title
       %i.fa.fa-info
       .field-group
         .fieldtitle
-          = _("Title")
+          {% trans "Title" %}
           %a.editfield{data-reveal-id: "edit_field_modal", data-reveal-ajax: "true", href: "/accounts/edit_title/"}
-            = _("edit")
+            {% trans "edit" %}
         .fieldcontent
           = user.title
     .email
       %i.fa.fa-envelope
       .field-group
         .fieldtitle
-          = _("Email")
+          {% trans "Email" %}
         .fieldcontent
           = user.email
     .notification-digest
@@ -39,7 +40,7 @@
         .xns-preference-pane-container
     .logout
       %a.button.small.radius{href: "/accounts/logout"}
-        = _("Log out")
+        {% trans "Log out" %}
 
 -# Jquery Cropper
 - block cropper_jquery

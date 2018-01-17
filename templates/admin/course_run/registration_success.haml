@@ -1,13 +1,14 @@
 - extends "layout.haml"
+- load i18n
 
 - block content
   #error_503.error-page
     .row
       .large-10.large-centered.columns
-        %h1 Success!
+        %h1 {% trans "Success!" %}
         %hr
-        .sub-1 Hi!
-        %p This message will be defined by McKA Team
+        .sub-1 {% trans "Hi!" %}
+        %p {% trans "This message will be defined by McKA Team" %}
         %img{src: "/static/image/errors/McKA_errors_1maintenanceillus.png", srcset: "/static/image/errors/McKA_errors_1maintenanceillus@2x.png 2x"}
 
 - block js_snippets

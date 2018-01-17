@@ -1,4 +1,5 @@
 - extends "courses/course_navigation.haml"
+- load i18n
 - block current_content
   #course-lessons{'data-current-progress': '#{user_progress}'}
     - if apros_features.notes
@@ -9,7 +10,7 @@
       %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
       %span.label-3.lesson-name= course.current_lesson.name
     %h1
-      %a{'data-reveal-id': 'module_list', "data-tooltip": "Lesson Modules"}
+      %a{'data-reveal-id': 'module_list', "data-tooltip": "{% trans 'Lesson Modules' %}"}
         %i.fa.fa-list-ul
       = course.current_module.name
     - block lesson_content
@@ -17,14 +18,14 @@
       .lesson-discussion
     - include "courses/content_page/lesson_pager.haml"
   #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
-    %p.style-2 You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}:
+    %p.style-2 {% blocktrans %}You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}: {% endblocktrans %}
     %ul
       - for module in course.current_lesson.modules
         %li.lesson-row-item
           %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
           .lesson-item-name
             %a{href: "#{module.navigation_url}", class: "{% if module.is_current %}current{% endif %}"}
-              Module ={module.index}:
+              {% trans "Module" %} ={module.index}:
             %span= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle

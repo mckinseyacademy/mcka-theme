@@ -1,4 +1,5 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 
 - block content
   .row
@@ -6,9 +7,11 @@
     #mainCompanyDetailsContainer
       #companyDetailsNavigation
         - if companyAdminFlag
-          %a{:href => '/admin/company_dashboard', :target => '_self'}> < Back to All Companies
+          %a{:href => '/admin/company_dashboard', :target => '_self'}> <
+            {% trans "Back to All Companies" %}
         - else
-          %a{:href => '/admin/companies', :target => '_self'}> < Back to All Companies
+          %a{:href => '/admin/companies', :target => '_self'}> <
+            {% trans "Back to All Companies" %}
       #mainCompanyDetailsDataContainer{:data-id => '#{company.id}', :admin-flag => '#{companyAdminFlag}'}
         #companyDetailsTopDataWrapper
           .row.companyDetailsCompanyName
@@ -21,31 +24,36 @@
               .errorMessage
 
           .row.companyDetailsNumberParticipants
-            %p Total Participants: ={company.numberParticipants}
+            %p {% trans "Total Participants:" %} ={company.numberParticipants}
           - if not user.is_company_admin
             .row.companyDetailsCompanyID
-              %p Company ID: ={company.id}
+              %p {% trans "Company ID:" %} ={company.id}
           .row.companyDetailsNumberActiveCourses
-            %p Active Courses: ={company.activeCourses}
+            %p {% trans "Active Courses:" %} ={company.activeCourses}
 
         - if not user.is_company_admin
           #additionalCompanyButtons
             %a.button.small.radius.navigationLink{:href => "/admin/clients/#{company.id}/navigation"}
-              Navigation
+              {% trans "Navigation" %}
             %a.button.small.radius.accessLink{:href => "/admin/clients/#{company.id}/access_keys"}
-              Access
+              {% trans "Access" %}
             - if user.is_mcka_admin
               %a#addAppPopupLink.companyLinkedApps.button.small.radius{"data-reveal-id" => "linkApp", :href => "#"}
-                Link Apps
+                {% trans "Link Apps" %}
 
         #companyDetailsNavigationButtonsContainer
           .row
             .companyDetailsCoursesButton.large-3.columns
-              %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}> COURSES
+              %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}>
+                {% trans "COURSES" %}
+            .companyDetailsCompanyInfoButton.large-3.columns
+              %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCompanyInfo', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                {% trans "COMPANY INFO" %}
 
             - if user.is_mcka_admin
               .companyDetailsLinkedAppsButton.large-3.columns
-                %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLinkedApps', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> LINKED APPS
+                %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLinkedApps', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                  {% trans "LINKED APPS" %}
 
             .large-6.columns
           %hr
@@ -53,6 +61,165 @@
         .companyCourses.contentNavigationContainer
           #companyDetailsCoursesContainer
             #companyDetailsCoursesViewGridBlock
+        .companyCompanyInfo.contentNavigationContainer
+          #companyInfoDataWrapper
+            #companyInfoInvoicingDetails.companyInfoTopic
+              .row
+                %p.companyInvoicingDetailsHead {% trans "Invoicing Details" %}
+                {% trans "Edit" as edit_button_text %}
+                %input.button.small.radius.companyInvoicingDetailsEditButton{:type => "button", :value => "#{edit_button_text}"}
+              #companyInfoInvoicingDetailsData
+                .row
+                  .large-6.columns
+                    %label.fullNameLabel {% trans "Full Name" %}
+                    %p.fullNameText ={invoicing.full_name}
+                  .large-6.columns
+                    %label.titleLabel {% trans "Title" %}
+                    %p.titleText ={invoicing.title}
+                .row
+                  .large-6.columns
+                    %label.addressLabel {% trans "Invoicing Address" %}
+                    %p.addressText ={invoicing.address1}, ={invoicing.address2}
+                    %p.cityStatePostalText ={invoicing.city}, ={invoicing.state} ={invoicing.postal_code}
+                    %p.countryText ={invoicing.country}
+                  .large-6.columns
+                    %label.poLabel {% trans "PO#" %}
+                    %p.poText ={invoicing.po}
+                  .large-6.columns
+                    %label.ipLabel {% trans "Identity Provider" %}
+                    %p.ipText ={invoicing.identity_provider}
+              #companyInfoInvoicingDetailsEdit
+                %form.companyInfoInvoicingDetailsEditForm
+                  .row
+                    .large-6.columns
+                      %label.fullNameLabel {% trans "Full Name" %}
+                      -if invoicing.full_name == '-'
+                        %input.fullNameInput{:type => "text", :name => "full_name" }
+                      -else
+                        %input.fullNameInput{:type => "text", :value => '#{invoicing.full_name}', :name => "full_name" }
+                    .large-6.columns
+                      %label.titleLabel {% trans "Title" %}
+                      -if invoicing.title == '-'
+                        %input.titleInput{:type => "text", :name => "title" }
+                      -else
+                        %input.titleInput{:type => "text", :value => '#{invoicing.title}', :name => "title" }
+                  .row
+                    .large-6.columns
+                      %label.address1Label {% trans "Address 1" %}
+                      -if invoicing.address1 == '-'
+                        %input.address1Input{:type => "text", :name => "address1" }
+                      -else
+                        %input.address1Input{:type => "text", :value => '#{invoicing.address1}', :name => "address1" }
+                    .large-6.columns
+                      %label.address2Label {% trans "Address 2" %}
+                      -if invoicing.address2 == '-'
+                        %input.address2Input{:type => "text", :name => "address2" }
+                      -else
+                        %input.address2Input{:type => "text", :value => '#{invoicing.address2}', :name => "address2" }
+                  .row
+                    .large-6.columns
+                      %label.cityLabel {% trans "City" %}
+                      -if invoicing.city == '-'
+                        %input.cityInput{:type => "text", :name => "city" }
+                      -else
+                        %input.cityInput{:type => "text", :value => '#{invoicing.city}', :name => "city" }
+                    .large-6.columns
+                      %label.stateLabel {% trans "State/Province/Region" %}
+                      -if invoicing.state == '-'
+                        %input.stateInput{:type => "text",  :name => "state" }
+                      -else
+                        %input.stateInput{:type => "text", :value => '#{invoicing.state}', :name => "state" }
+                  .row
+                    .large-6.columns
+                      %label.postalCodeLabel {% trans "Zip/Postal Code" %}
+                      -if invoicing.postal_code == '-'
+                        %input.postalCodeInput{:type => "text", :name => "postal_code" }
+                      -else
+                        %input.postalCodeInput{:type => "text", :value => '#{invoicing.postal_code}', :name => "postal_code" }
+                    .large-6.columns
+                      %label.countryLabel {% trans "Country" %}
+                      %input.countryInput{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2", :data-country-long => '#{invoicing.country}' }
+                      %input{:type => "hidden", :id =>'country_edit_code', :name => "country", :maxlength => "2"}
+                  .row
+                    .large-6.columns
+                      %label.poLabel {% trans "PO#(if applicable)" %}
+                      -if invoicing.po == '-'
+                        %input.poInput{:type => "text", :name => "po" }
+                      -else
+                        %input.poInput{:type => "text", :value => '#{invoicing.po}', :name => "po" }
+                    .large-6.columns
+                      %label.poLabel {% trans "Identity Provider" %}
+                      -if invoicing.identity_provider == '-'
+                        %input.ipInput{:type => "text", :name => "identity_provider" }
+                      -else
+                        %input.ipInput{:type => "text", :value => '#{invoicing.identity_provider}', :name => "identity_provider" }
+                  .row
+                    .large-12.columns
+                      .button.small.radius.disabled.invoicingDetailsSaveButton {% trans "Save Changes" %}
+                      %a.invoicingDetailsCancelEdit{:href => '#', :target => '_self'}
+                        {% trans "Cancel" %}
+
+            #companyInfoContacts.companyInfoTopic
+              .row
+                %p.companyContactsHead {% trans "Contacts" %}
+                {% trans "Edit" as edit_button_text %}
+                %input.button.small.radius.companyContactsEditButton{:type => "button", :value => "#{edit_button_text}"}
+              %form.companyInfoContactsEditForm
+                -for contact in contacts
+                  .companyContactsRow
+                    .row.contactTypeRow{:data-id => '#{contact.type_id}'}
+                      %p.contactTypeText ={contact.type}
+                      .fa.fa-info-circle{:data-title => '#{contact.type_info}'}
+                    .companyInfoContactsData
+                      .row
+                        .large-6.columns
+                          %label.fullNameLabel {% trans "Full Name" %}
+                          %p.fullNameText ={contact.full_name}
+                        .large-6.columns
+                          %label.titleLabel {% trans "Title" %}
+                          %p.titleText ={contact.title}
+                      .row
+                        .large-6.columns
+                          %label.emailLabel {% trans "Email" %}
+                          %p.emailText ={contact.email}
+                        .large-6.columns
+                          %label.phoneLabel {% trans "Phone" %}
+                          %p.phoneText ={contact.phone}
+                    .companyInfoContactsEdit
+                      .row
+                        .large-6.columns
+                          %label.fullNameLabel {% trans "Full Name" %}
+                          -if contact.full_name == '-'
+                            %input.fullNameInput{:type => "text", :name => "full_name" }
+                          -else
+                            %input.fullNameInput{:type => "text", :value => '#{contact.full_name}', :name => "full_name" }
+                        .large-6.columns
+                          %label.titleLabel {% trans "Title" %}
+                          -if contact.title == '-'
+                            %input.titleInput{:type => "text", :name => "title" }
+                          -else
+                            %input.titleInput{:type => "text", :value => '#{contact.title}', :name => "title" }
+                      .row
+                        .large-6.columns
+                          %label.emailLabel {% trans "Email" %}
+                          -if contact.email == '-'
+                            %input.emailInput{:type => "text", :name => "email" }
+                          -else
+                            %input.emailInput{:type => "text", :value => '#{contact.email}', :name => "email" }
+                        .large-6.columns
+                          %label.phoneLabel {% trans "Phone" %}
+                          -if contact.phone == '-'
+                            %input.phoneInput{:type => "text", :name => "phone" }
+                          -else
+                            %input.phoneInput{:type => "text", :value => '#{contact.phone}', :name => "phone" }
+                .row.companyInfoContactsEdit
+                  .large-12.columns
+                    .button.small.radius.disabled.contactsSaveButton {% trans "Save Changes" %}
+                    %a.contactsCancelEdit{:href => '#', :target => '_self'}
+                      {% trans "Cancel" %}
+            #exportCompanyInfoButton.companyInfoTopic
+              %a.button.radius.small{:href => '/admin/api/companies/#{company.id}/export_info', :target => '_self'}>
+                {% trans "Export Company Info" %}
 
         - if user.is_mcka_admin
           .companyLinkedApps.contentNavigationContainer
@@ -61,11 +228,12 @@
 
     - if user.is_mcka_admin
       #linkApp.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
-        %h4 Link mobile app
-        %p Type in the name of the mobile app that you want to link with "Company Name"
-        %b App Name
-        %input#appSearchInput{:placeholder => 'App Name', :type => 'text', :name => 'app_name', :class => 'appSearchInput'}
+        %h4 {% trans "Link mobile app" %}
+        %p {% blocktrans %} Type in the name of the mobile app that you want to link with "Company Name" {% endblocktrans %}
+        %b {% trans "App Name" %}
+        %input#appSearchInput{:placeholder => '{% trans "App Name" %}', :type => 'text', :name => 'app_name', :class => 'appSearchInput'}
         .errorMessage
-        %button.button.small.radius.linkAppButton{:value => "Link App", :type => "Submit"} Link App
-        %input.button.small.radius.close-reveal-modal{:value => "Cancel", :type => "button"}/
+        %button.button.small.radius.linkAppButton{:value => "Link App", :type => "Submit"}
+          {% trans "Link App" %}
+        %input.button.small.radius.close-reveal-modal{:value => "{% trans 'Cancel' %}", :type => "button"}/
         %a.close-reveal-modal{"aria-label" => "Close"} ×

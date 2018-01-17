@@ -1,13 +1,14 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content
   .admin-detail.row
     #contentModal.reveal-modal.small{'data-reveal': None}
     %section
-      %h1 Self-sign up courses
+      %h1 {% trans "Self-sign up courses" %}
     %section
       %p
-        You can manage the self-sign up courses here
+        {% trans "You can manage the self-sign up courses here" %}
     %br
     %div.submit-area
       %a{:class => "button radius small", :href => "/admin/course_run/create", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
@@ -20,11 +21,11 @@
       %table{style:"table-layout: fixed; width: 100%"}
         %thead
           %tr
-            %th= _("Name")
-            %th= _("Course ID")
-            %th= _("Open")
-            %th= _("Total")
-            %th= _("Edit")
+            %th {% trans "Name" %}
+            %th {% trans "Course ID" %}
+            %th {% trans "Open" %}
+            %th {% trans "Total" %}
+            %th {% trans "Edit" %}
         %tbody
           - for run in course_runs
             %tr{id: "#{run.id}"}
@@ -43,7 +44,7 @@
                 %a{:href => "/admin/course_run/create/#{run.id}", :data-reveal-id => 'contentModal', :data-reveal-ajax =>'true'}
                   %i{'style': "color:green", 'class': "fa fa-pencil-square-o"}
     -else
-      No course runs defined!
+      {% trans "No course runs defined!" %}
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}

@@ -1,3 +1,4 @@
+- load i18n
 %header#learner-dashboard-header.background-blue{role: 'banner', style: "position: fixed; {% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %} {% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
   .row.collapse.main-nav{style: "{% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
     .large-6.small-6.columns.header-row
@@ -19,46 +20,47 @@
                     #profile-container{data-dropdown-content: "true"}
                 - else
                   .login-action
-                    %a.small.radius.button{href: "/accounts/login"}= _("Log in")
+                    %a.small.radius.button{href: "/accounts/login"}
+                      {% trans"Log in" %}
       .row
         .large-12.columns.header-padding
           %div.right.header-path
             - if feature_flags.resources
               - if request.resolver_match.url_name == 'course_resources_learner_dashboard'
-                %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "Resources"}
+                %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "{% trans 'Resources' %}"}
                   .fa.fa-file-text-o.header-link
               - else
-                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "Resources", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "{% trans'Resources' %}", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
                   .fa.fa-file-text-o.header-link
 
             - if feature_flags.group_work
               - if request.resolver_match.url_name == 'user_course_group_work_learner_dashboard'
-                %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work", :data-tooltip => "Miniboard"}
+                %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work", :data-tooltip => "{% trans 'Miniboard' %}"}
                   .mk-icon-groupworknav.header-link
               - else
-                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work", :data-tooltip => "Miniboard", :style =>  "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
+                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work", :data-tooltip => "{% trans 'Miniboard' %}", :style =>  "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
                   .mk-icon-groupworknav.header-link
 
             - if feature_flags.discussions
               - if request.resolver_match.url_name == 'course_discussion_learner_dashboard'
-                %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/discussion", :data-tooltip => "Discussion"}
+                %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/discussion", :data-tooltip => "{% trans 'Discussion' %}"}
                   .fa.fa-comments-o.header-link
               - else
-                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/discussion", :data-tooltip => "Discussion", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/discussion", :data-tooltip => "{% trans 'Discussion' %}", :style =>  "{% if branding %} color: #{branding.icon_color};{% endif %}"}
                   .fa.fa-comments-o.header-link
 
             - if request.resolver_match.url_name == 'course_learner_dashboard'
-              %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "Portal Home"}
+              %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "{% trans 'Portal Home' %}"}
                 .fa.fa-map-marker.header-link
             - else
-              %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "Portal Home", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
+              %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "{% trans 'Portal Home' %}", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
                 .fa.fa-map-marker.header-link
 
             - if calendar_enabled
-              %a.right{:href => "#", :data-tooltip => "Calendar", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
+              %a.right{:href => "#", :data-tooltip => "{% trans 'Calendar' %}", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
                 %i#open-calendar.fa.fa-calendar.header-link
 
-            %a.right{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program', style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
+            %a.right{"data-dropdown": "program-menu-content", 'data-tooltip': '{% trans "Program" %}', style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
               .fa.fa-th-large.header-link
             #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
               - include "courses/content_page/program_menu.haml"

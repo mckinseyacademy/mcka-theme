@@ -4,7 +4,7 @@
 - block content 
   #mainCompanyDashboardContainer
     #companyDashboardTitle
-      %p Companies
+      %p {% trans "Companies" %}
     #companyDashboardText
       %p {% trans "Click on any of the below courses to view individual participant progress and performance data as well as overall course stats. If the course you are looking for is not visible, click on the View All Courses button." %}
     %hr
@@ -18,8 +18,8 @@
                 .companyDashboardCompanyName
                   %p ={company.name}
                 .companyDashboardCompanyOtherData
-                  %p Total Participants: ={company.numberParticipants}
-                  %p Active Courses: ={company.activeCourses}
+                  %p {% trans "Total Participants:" %} ={company.numberParticipants}
+                  %p {% trans "Active Courses:" %} ={company.activeCourses}
               %td.companyDashboardCompanyCoursesContainer
                 %table.companyDashboardCompanyCoursesTable
                   - for course in company.courses
@@ -30,7 +30,7 @@
                       %td ={course.id}
                       %td 
                         - if course.end == '-'
-                          Evergreen
+                          {% trans "Evergreen" %}
                         - else
                           ={course.start} - ={course.end}
           .companyDashboardCompanyDown
@@ -38,4 +38,5 @@
               .companyDashboardCompanyInfo
                 %a{:href => '/admin/companies/#{company.id}', :target => '_self'} Edit Company Info
             .companyDashboardCompanyAllCourses
-              %a.button.small.radius{:href => "/admin/companies/#{company.id}", :target => '_self'} View All Courses
+              %a.button.small.radius{:href => "/admin/companies/#{company.id}", :target => '_self'}
+                {% trans "View All Courses" %}

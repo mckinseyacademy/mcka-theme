@@ -1,28 +1,30 @@
 - extends "courses/course_main.haml"
+- load i18n
 
 - block page_title
   %title
-    Lesson {{course.current_lesson.index}}:
+    {% trans "Lesson" %} {{course.current_lesson.index}}:
     = course.current_lesson.name
-    = _(" | Lessons | McKinsey Academy")
+    {% trans " | Lessons | McKinsey Academy" %}
 
 - block help_context
   #mckinsey_help.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    .sub-1 Course Content
-    %p Below are helpful tips to navigate course content. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you.
+    .sub-1 {% trans "Course Content" %}
+    %p
+      {% blocktrans %} trans Below are helpful tips to navigate course content. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
     .help-line
       .module-list
         %i.fa.fa-list-ul
-      See which modules you have completed and navigate directly to specific modules using the module navigation at the top of the page
+          {% trans "See which modules you have completed and navigate directly to specific modules using the module navigation at the top of the page" %}
     .help-line
       .page-left
         %i.fa.fa-chevron-left
-      Move from module to module using the left and right arrows. Hover over the arrows to see details of upcoming (or previous) modules
-    .help-line Modules with inline discussions post to the larger discussion page. View the discussion page using the <i class="fa fa-comments-o"></i> icon in the main navigation bar
-    .help-line Access individual lessons from the <i class="mk-icon-lessonsnav"></i> icon in the main navigation bar
-    .help-line This video walks you through the learner experience:
+      {% trans "Move from module to module using the left and right arrows. Hover over the arrows to see details of upcoming (or previous) modules" %}
+    .help-line {% blocktrans %} Modules with inline discussions post to the larger discussion page. View the discussion page using the <i class="fa fa-comments-o"></i> icon in the main navigation bar {% endblocktrans %}
+    .help-line {% blocktrans %} Access individual lessons from the <i class="mk-icon-lessonsnav"></i> icon in the main navigation bar {% endblocktrans %}
+    .help-line {% trans "This video walks you through the learner experience:" %}
     #mk-help-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
 
 - block content

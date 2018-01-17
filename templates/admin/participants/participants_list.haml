@@ -1,34 +1,36 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 
 - block content
   #mainParticipantsWrapper
     #participantsListTopContainer{:internal-flag => '#{internalAdminFlag}'}
       #participantsAddWrapper
-        %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "Add New Participant"}
-        %input.button.small.radius.menuButton{:type => "button", :value => "Enroll Existing Participants", 'data-reveal-id': 'enroll_to_course_from_csv'}
-        %input.button.small.radius.menuButton{:type => "button", :value => "Import from CSV", 'data-reveal-id': 'import_from_csv'}
-        %input.button.small.radius.secondary.menuButton{:type => "button", :value => "CSV Template", 'data-reveal-id': 'download_csv_template'}
+        %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "{% trans 'Add New Participant' %}"}
+        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Enroll Existing Participants' %}", 'data-reveal-id': 'enroll_to_course_from_csv'}
+        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Import from CSV' %}", 'data-reveal-id': 'import_from_csv'}
+        %input.button.small.radius.secondary.menuButton{:type => "button", :value => "{% trans 'CSV Template' %}", 'data-reveal-id': 'download_csv_template'}
       %hr
       #participantsSearchWrapper
         .row
           .large-3.columns
-            %input{:placeholder => 'Company', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
+            %input{:placeholder => '{% trans "Company" %}', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
           .large-3.columns
-            %input{:placeholder => 'Course', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
+            %input{:placeholder => '{% trans "Course" %}', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
           .large-3.columns
-            %input{:placeholder => 'Name', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
+            %input{:placeholder => '{% trans "Name" %}', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
           .large-3.columns
-            %input{:placeholder => 'Email', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
+            %input{:placeholder => '{% trans "Email" %}', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
 
     #participantsListViewGridBlock
 
     #add_a_participant.reveal-modal.small{'data-reveal': None}
       .close-reveal-modal
         %i.fa.fa-times-circle
-      %h2 Add a Participant
+      %h2 {% trans "Add a Participant" %}
       %p
-        Want to add more than one participant at a time?
-        %a{:href => "#", 'data-reveal-id': 'import_from_csv'} Import a list      
+        {% trans "Want to add more than one participant at a time?" %}
+        %a{:href => "#", 'data-reveal-id': 'import_from_csv'}
+          {% trans "Import a list" %}
 
       %hr
       .errorContainer
@@ -37,106 +39,113 @@
         .row
           .large-6.columns.participantFirstName
             .participantFirstNameLabel.labelUniversal
-              First Name<sup>*</sup>
+              {% blocktrans %} First Name<sup>*</sup> {% endblocktrans %}
             .participantFirstNameValue
               %input.cleanable{:type => "text",  :name => "first_name", :maxlength => "30"}
           .large-6.columns.participantLastName
             .participantLastNameLabel.labelUniversal
-              Last Name<sup>*</sup>
+              {% blocktrans %}Last Name<sup>*</sup> {% endblocktrans %}
             .participantLastNameValue
               %input.cleanable{:type => "text",  :name => "last_name", :maxlength => "30"}
         .row
           .large-6.columns.participantEmail
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
-                Email<sup>*</sup>
+                {% blocktrans %} Email<sup>*</sup> {% endblocktrans %}
             .participantEmailValue
               %input.cleanable{:type => "email", :name => "email", :maxlength => "60", :onkeyup => 'validateParticipantEmail()', :class => 'participantEmailInput', :required => 'true'}
               %i.fa.fa-check-circle-o.correctInput.checkMark
           .large-6.columns.participantCompany
             .participantCompanyLabel.labelUniversal
-              Company<sup>*</sup>
+              {% blocktrans %} Company<sup>*</sup> {% endblocktrans %}
             .participantCompanyValue
               %input.cleanable{:type => "text", :name => "company", :maxlength => "60"}
               %i.fa.fa-check-circle-o.correctInput
               .newCompanyCreationPopup
-                Since this company does not yet exist, a new company will be created. If this is an error, try selecting your company from the type-ahead results.
+                {% trans "Since this company does not yet exist, a new company will be created. If this is an error, try selecting your company from the type-ahead results." %}
               .errorMessage
         .row
           .large-6.columns.participantCountry
             .participantCountryLabel.labelUniversal
-              Country Abbreviation
+              {% trans "Country Abbreviation" %}
             .participantCountryValue
               %input{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2"}
               %input{:type => "hidden", :id =>'country_edit_code', :name => "country", :maxlength => "2"}
           .large-6.columns.participantCity
             .participantCityLabel.labelUniversal
-              City
+              {% trans "City" %}
             .participantCityValue
               %input.cleanable{:type => "text", :name => "city", :maxlength => "60"}
         .row        
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
-              Gender
+              {% trans "Gender" %}
             .participantGenderValue
               %select{:name => "gender"}
-                  %option{:value => ""} N/A
-                  %option{:value => "M"} Male
-                  %option{:value => "F"} Female
+                  %option{:value => ""}
+                    {% trans "N/A" %}
+                  %option{:value => "M"}
+                    {% trans "Male" %}
+                  %option{:value => "F"}
+                    {% trans "Female" %}
           .large-6.columns.participantPermissions
             .participantPermissionsLabel.labelUniversal
-              Permissions
+              {% trans "Permissions" %}
             .participantPermissionsValue
               %select{:name => "company_permissions"}
-                %option{:value => "none"} None
+                %option{:value => "none"}
+                  {% trans "None" %}
                 - if user.is_mcka_admin
-                  %option{:value => "uber_admin"} Uber admin
+                  %option{:value => "uber_admin"}
+                    {% trans "Uber admin" %}
                 - if user.is_mcka_admin or user.is_mcka_subadmin
-                  %option{:value => "course_ops"} Course ops admin
-                %option{:value => "internal_admin"} Internal Admin
+                  %option{:value => "course_ops"}
+                    {% trans "Course ops admin" %}
+                %option{:value => "internal_admin"}
+                  {% trans "Internal Admin" %}
         %hr
         .adminAnotherCompanyAllWrapper
         - if user.is_mcka_admin or user.is_mcka_subadmin
           .addAnotherCompanyWrapper.row
             %a.large-12.columns
-              + Add company admin privileges
+              + {% trans "Add company admin privileges" %}
           %hr
         .adminCourseAllWrapper
         - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
           .addAnotherCourseWrapper.row
             %a.large-12.columns
-              + Add course
+              + {% trans "Add course" %}
           %hr
         .emailActivationWrapper.row
           .large-12.columns
             .emailActivationLinkCheckboxWrapper
               %input.emailActivationCheckbox{:type => 'checkbox'}
               .emailActivation
-                Email activation link now
+                {% trans "Email activation link now" %}
       .button-wrapper
         %a.button.small.radius.menuButton.addSingleParticipantButton{:type => "button", :value => "Add Participant"}
-          Add Participant 
+          {% trans "Add Participant" %}
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
-          Cancel
+          {% trans "Cancel" %}
     
     #download_csv_template.reveal-modal.small{'data-reveal': None}
       .close-reveal-modal
         %i.fa.fa-times-circle
-      %h2 CSV Template and Formatting
+      %h2 {% trans "CSV Template and Formatting" %}
       %p 
-        Download the CSV template below to import users. 
-        %strong All fields in the template are required. 
-        Note that you must add users to preexisting companies and courses.
+        {% trans "Download the CSV template below to import users." %}
+        %strong {% trans "All fields in the template are required." %}
+        {% trans "Note that you must add users to preexisting companies and courses." %}
       .button-wrapper
         %a.button.small.radius.menuButton{:type => "button", :value => "Download Template", :href => '/static/docs/participant-onboarding-template.csv', :target => '_blank'}
-          Download Template
+          {% trans "Download Template" %}
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
-          Cancel
+          {% trans "Cancel" %}
 
     #import_from_csv.reveal-modal.medium{'data-reveal': None}
       .close-reveal-modal
         %i.fa.fa-times-circle
-      %h2 Import Participants from CSV
+      %h2 {% trans "Import Participants from CSV" %}
       %hr
       .bottomPadding
         %a{:href => "#", 'data-reveal-id': 'download_csv_template'} CSV Template
@@ -147,9 +156,9 @@
           = form
           
           .button-wrapper.topPadding
-            %input.button.radius.small{type: "submit", value: "Add Participants", disabled: "disabled", id: ''}
+            %input.button.radius.small{type: "submit", value: "{% trans 'Add Participants' %}", disabled: "disabled", id: ''}
             %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
-              Cancel
+              {% trans "Cancel" %}
 
         %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsCsvUpload'}
 
@@ -159,15 +168,17 @@
         .emailActivationWrapper
             .emailActivationLinkCheckboxWrapper
               %input.emailActivationCheckbox{:type => 'checkbox', :disabled => 'disabled', :id => 'emailActivationCheckboxId'} 
-              %label.emailActivation{:for => 'emailActivationCheckboxId' } Email activation links now
+              %label.emailActivation{:for => 'emailActivationCheckboxId' }
+                {% trans "Email activation links now" %}
 
     #enroll_to_course_from_csv.reveal-modal.medium{'data-reveal': None}
       .close-reveal-modal
         %i.fa.fa-times-circle
-      %h2 Enroll Participants to courses from CSV
+      %h2 {% trans "Enroll Participants to courses from CSV" %}
       %hr
       .bottomPadding
-        %a#enrollParticipantTemplate{:href => "#", 'download': 'template.csv'} CSV Template
+        %a#enrollParticipantTemplate{:href => "#", 'download': 'template.csv'}
+          {% trans "CSV Template" %}
       .admin-form{style: "padding-bottom:0px;"}
 
         %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "fileInputEnroll"}
@@ -178,9 +189,9 @@
 
         .upload_stats
         .button-wrapper.topPadding{style: "padding-top:10px;padding-bottom:10px;position:relative;"}
-            %input.button.radius.small{type: "submit", value: "Add Participants", disabled: "disabled", id: 'submitCSVEnroll'}
+            %input.button.radius.small{type: "submit", value: "{% trans 'Add Participants' %}", disabled: "disabled", id: 'submitCSVEnroll'}
             %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
-              Cancel
+              {% trans "Cancel" %}
             %i.fa.fa-spin.fa-spinner{style: "display:none;"}
         #enroll-participants-error-list
 
@@ -191,31 +202,34 @@
       %hr
 
       .downloadActivationLinksConfirmationScreen
-        %p You can download the activation links now, or from the participant profiles at any time.
+        %p {% trans "You can download the activation links now, or from the participant profiles at any time." %}
         %br
-        %a.download_activation{:href => '/admin/api/participants/import_participants/download_activation_links/?task_key=', :target => '_self'}> Download Activation Links
+        %a.download_activation{:href => '/admin/api/participants/import_participants/download_activation_links/?task_key=', :target => '_self'}>
+          {% trans "Download Activation Links" %}
 
       .sendActivationLinksConfirmationScreen
-        %p An activation link has been emailed to each student.
+        %p {% trans "An activation link has been emailed to each student." %}
 
       .button-wrapper.topPadding
-        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"} 
-          I'm Done
+        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"}
+          {% trans "I'm Done" %}
 
     #confirmation_screen_single_participant.reveal-modal.big{'data-reveal': None}   
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2.upload_message
-        Successfully added new user!
+        {% trans "Successfully added new user!" %}
       %hr
 
-      %p You can download the activation link now, or from the participant profiles at any time.
+      %p {% trans "You can download the activation link now, or from the participant profiles at any time." %}
       %br
       %br
-      %a.download_user_activation{:data-url => '/admin/api/participants/import_participants/download_activation_links/?user_id=', :target => '_self'}> Download Activation Link
+      %a.download_user_activation{:data-url => '/admin/api/participants/import_participants/download_activation_links/?user_id=', :target => '_self'}>
+        {% trans "Download Activation Link" %}
       %br
-      %a.go_to_user_profile{:data-url => '/admin/participants/', :target => '_self'}> Go To User Profile
+      %a.go_to_user_profile{:data-url => '/admin/participants/', :target => '_self'}>
+        {% trans "Go To User Profile" %}
 
       .button-wrapper.topPadding
-        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"} 
-          I'm Done
+        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"}
+          {% trans "I'm Done" %}

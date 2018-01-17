@@ -1,10 +1,11 @@
+- load i18n
 %section.course-progress
   - if course.user_progress == 0
     .zero
       %div
-        %span= _("Your course progress will be displayed here.")
+        %span {% trans "Your course progress will be displayed here." %}
   .sub-2.progress-link
-    Progress:
+    {% trans "Progress:" %}
     %a{href: "/courses/#{course.id}/cohort"}
       %i.fa.fa-arrow-circle-right
   .visualization
@@ -12,10 +13,10 @@
       ={course.user_progress}%
     .bar.gradient{class: "{% if course.user_progress < average_progress %}trailing{% endif %}", style: "width:#{course.user_progress}%;"}
     .triangle{style: "left:#{average_progress}%"}
-  .label-4 cohort average = ={average_progress}%
+  .label-4 {% trans "cohort average" %} = ={average_progress}%
   %a.info{'data-reveal-id': 'mckinsey_progress_help'}
     %i.fa.fa-info-circle
   #mckinsey_progress_help.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    %p This visualization displays your progress through course content. The average progress of your cohort is displayed as well. Note that your progress is based on consumption of all individual modules and readings within the course.
+    %p {% trans "This visualization displays your progress through course content. The average progress of your cohort is displayed as well. Note that your progress is based on consumption of all individual modules and readings within the course." %}

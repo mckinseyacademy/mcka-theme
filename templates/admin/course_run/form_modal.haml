@@ -1,10 +1,11 @@
-{% load i18n %}
+- load i18n
+
 - if course_run
   %section
-    %h1 Edit Course Run
+    %h1 {% trans "Edit Course Run" %}
 - else
   %section
-    %h1 Create Course Run
+    %h1 {% trans "Create Course Run" %}
 %hr
 .close-reveal-modal
   %i.fa.fa-times-circle
@@ -35,56 +36,57 @@
     .small-3.columns
     .small-9.columns= form.course_id.errors
   .row
-    .small-3.columns Course ID:
+    .small-3.columns {% trans "Course ID:" %}
     .small-9.columns= form.course_id
 
   .row
     .small-3.columns
     .small-9.columns= form.access_key_link.errors
   .row
-    .small-3.columns Access link (SSO):
+    .small-3.columns {% trans "Access link (SSO):" %}
     .small-9.columns= form.access_key_link
 
   %hr
   .row
     .small-12.columns
-      Email template for existing users:
+      {% trans "Email template for existing users:" %}
       = form.email_template_existing.errors
       = form.email_template_existing
 
   .row
     .small-12.columns 
-      Email template for new users:
+      {% trans "Email template for new users:" %}
       = form.email_template_new.errors
       = form.email_template_new
 
   .row
     .small-12.columns 
-      Email template for McKA employees (SSO):
+      {% trans "Email template for McKA employees (SSO):" %}
       = form.email_template_mcka.errors
       = form.email_template_mcka
 
   .row
     .small-12.columns 
-      Copy for closed status message:
+      {% trans "Copy for closed status message:" %}
       = form.email_template_closed.errors
       = form.email_template_closed
 
   .row
   .small-12.columns
-    Self Registration Page Heading:
+    {% trans "Self Registration Page Heading:" %}
     = form.self_registration_page_heading.errors
     = form.self_registration_page_heading
 
   .row
   .small-12.columns
-    Self Registration Description Text:
+    {% trans "Self Registration Description Text:" %}
     = form.self_registration_description_text.errors
     = form.self_registration_description_text
 
   .row
   .small-12.columns
-    %p Add Custom Roles:
+    %p 
+      {% trans "Add Custom Roles:" %}
 
   .row
   .small-12.columns.edit-del-role

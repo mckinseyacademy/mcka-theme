@@ -1,4 +1,5 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 
 - load staticfiles
 - block custom_js
@@ -7,24 +8,25 @@
 - block content
   #mainCertificatesTemplateListContainer
     #certificatesTemplateListTitle
-      %p Template Assets
+      %p {% trans "Template Assets" %}
     #certificatesTemplateListText
     %hr
     #mainCertificatesTemplateListGridContainer
       #mainCertificatesTemplateListGridWrapper
         #certificatesTemplateListViewGridBlock
-          %h4 New Template Asset
+          %h4 {% trans "New Template Asset" %}
           %form{:enctype => "multipart/form-data", :method => "post"}
             - csrf_token
             = form.as_p
-            %button{:type => "submit"} Upload
+            %button{:type => "submit"}
+              {% trans "Upload" %}
           %br
           %br
           %table
             %thead
               %tr
-                %th Path
-                %th Description
+                %th {% trans "Path" %}
+                %th {% trans "Description" %}
             %tbody
               - for certificate_template_asset in certificate_template_assets
                   %tr

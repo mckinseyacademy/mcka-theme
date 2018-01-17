@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-03 13:16+0000\n"
+"POT-Creation-Date: 2018-01-17 07:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,7 @@ msgstr ""
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
 #: accounts/controller.py:118
+#, python-brace-format
 msgid ""
 "Access Key {key} is associated with company {company}, but you're not "
 "registered with it"
@@ -67,10 +68,20 @@ msgid "Other"
 msgstr ""
 
 #: accounts/forms.py:37
+#: templates/admin/participants/participant_details.haml:138
+#: templates/admin/participants/participant_details.haml:261
+#: templates/admin/participants/participant_details.haml:266
+#: templates/admin/participants/participant_details.haml:271
+#: templates/admin/participants/participants_list.haml:90
 msgid "Female"
 msgstr ""
 
 #: accounts/forms.py:38
+#: templates/admin/participants/participant_details.haml:136
+#: templates/admin/participants/participant_details.haml:260
+#: templates/admin/participants/participant_details.haml:265
+#: templates/admin/participants/participant_details.haml:270
+#: templates/admin/participants/participants_list.haml:88
 msgid "Male"
 msgstr ""
 
@@ -1071,10 +1082,12 @@ msgid "Zimbabwe"
 msgstr ""
 
 #: accounts/forms.py:338
+#, python-brace-format
 msgid "Username {html_span}"
 msgstr ""
 
 #: accounts/forms.py:339
+#, python-brace-format
 msgid "Password {html_span}"
 msgstr ""
 
@@ -1083,7 +1096,14 @@ msgid "You must accept terms of service in order to continue"
 msgstr ""
 
 #: accounts/forms.py:402 marketing/forms.py:46 marketing/forms.py:87
-#: marketing/forms.py:112
+#: marketing/forms.py:112 templates/accounts/user_profile.haml:33
+#: templates/admin/companies/company_details.haml:181
+#: templates/admin/companies/company_details.haml:202
+#: templates/admin/participants/activation_link_modal.haml:13
+#: templates/admin/participants/participant_details.haml:111
+#: templates/admin/participants/participants_list.haml:22
+#: templates/courses/course_discussion_ld.haml:78
+#: templates/courses/group_work/group_member.haml:11
 msgid "Email"
 msgstr ""
 
@@ -1151,6 +1171,7 @@ msgid ""
 msgstr ""
 
 #: accounts/views.py:628
+#, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr ""
 
@@ -1168,6 +1189,10 @@ msgstr ""
 
 #: accounts/views.py:929 accounts/views.py:952 admin/views.py:1769
 #: admin/views.py:1803 admin/views.py:4089
+#: templates/admin/course_meta_content/item_detail.haml:16
+#: templates/admin/course_run/form_modal.haml:78
+#: templates/admin/participants/participant_edit_status.haml:25
+#: templates/certificates/new_certificate_template.haml:21
 msgid "Save"
 msgstr ""
 
@@ -1238,6 +1263,7 @@ msgid "Enter new email address"
 msgstr ""
 
 #: admin/forms.py:118 admin/views.py:4123
+#: templates/admin/participants/participant_edit_status.haml:22
 msgid "TA"
 msgstr ""
 
@@ -1274,6 +1300,9 @@ msgid "Message (optional)"
 msgstr ""
 
 #: admin/forms.py:209 admin/forms.py:224 marketing/forms.py:45
+#: templates/admin/course_run/list.haml:24
+#: templates/admin/participants/participants_list.haml:20
+#: templates/certificates/certificate_templates.haml:27
 msgid "Name"
 msgstr ""
 
@@ -1282,6 +1311,7 @@ msgid "Course Instance"
 msgstr ""
 
 #: admin/forms.py:225 admin/views.py:1906
+#: templates/courses/course_learner_dashboard_header.haml:63
 msgid "Program"
 msgstr ""
 
@@ -1361,11 +1391,11 @@ msgstr ""
 msgid "Successfully Added {} Participants"
 msgstr ""
 
-#: admin/views.py:2388
+#: admin/views.py:2388 templates/courses/content_page/courses_menu_list.haml:17
 msgid "Coming Soon"
 msgstr ""
 
-#: admin/views.py:2390
+#: admin/views.py:2390 templates/courses/content_page/courses_menu_list.haml:8
 msgid "Archived"
 msgstr ""
 
@@ -1405,7 +1435,10 @@ msgid ""
 msgstr ""
 
 #: admin/views.py:3159 admin/views.py:3160 admin/views.py:3387
-#: admin/views.py:3388
+#: admin/views.py:3388 templates/admin/course_meta_content/item_list.haml:53
+#: templates/courses/content_page/course_tabs.haml:18
+#: templates/courses/course_group_work.haml:13
+#: templates/courses/course_progress.haml:55
 msgid "Group Work"
 msgstr ""
 
@@ -1442,6 +1475,7 @@ msgid "n/a"
 msgstr ""
 
 #: admin/workgroup_reports.py:38
+#: templates/certificates/certificate_template_assets.haml:22
 msgid "Upload"
 msgstr ""
 
@@ -1482,6 +1516,10 @@ msgid "Available"
 msgstr ""
 
 #: api_client/course_models.py:143
+#: templates/courses/content_page/course_menu.haml:28
+#: templates/courses/course_learner_dashboard_calendar.haml:45
+#: templates/courses/course_progress_v2.haml:87
+#: templates/courses/course_progress_v2.haml:148
 msgid "complete"
 msgstr ""
 
@@ -1519,39 +1557,40 @@ msgstr ""
 msgid "Username or email already registered"
 msgstr ""
 
-#: courses/views.py:756
+#: courses/views.py:769
 msgid "This lesson does not start until {}"
 msgstr ""
 
-#: courses/views.py:927 courses/views.py:955 courses/views.py:987
+#: courses/views.py:940 courses/views.py:968 courses/views.py:1000
 msgid "Message not sent."
 msgstr ""
 
-#: courses/views.py:931 courses/views.py:959 courses/views.py:991
-#: courses/views.py:1033
+#: courses/views.py:944 courses/views.py:972 courses/views.py:1004
+#: courses/views.py:1046
 msgid "Message successfully sent."
 msgstr ""
 
-#: courses/views.py:996
+#: courses/views.py:1009
 msgid "Message not sent. Email is not valid"
 msgstr ""
 
-#: courses/views.py:1010
+#: courses/views.py:1023
 msgid "Submission not found."
 msgstr ""
 
-#: courses/views.py:1016
+#: courses/views.py:1029
 msgid "We've received your submission!"
 msgstr ""
 
-#: courses/views.py:1017
+#: courses/views.py:1030
+#, python-brace-format
 msgid ""
 "Thank you for your group work submission. We received {file_name} uploaded "
 "by {user_full_name} on {submission_dt}. You may replace this file at any "
 "time before the group work deadline."
 msgstr ""
 
-#: courses/views.py:1029
+#: courses/views.py:1042
 msgid "There was a problem; message not sent."
 msgstr ""
 
@@ -1568,6 +1607,7 @@ msgid "Language code not provided"
 msgstr ""
 
 #: main/views.py:98
+#, python-brace-format
 msgid "Language set to language code: {preview_language_code}"
 msgstr ""
 
@@ -1595,15 +1635,22 @@ msgstr ""
 msgid "Please provide details"
 msgstr ""
 
-#: marketing/forms.py:111
+#: marketing/forms.py:111 templates/accounts/user_profile.haml:15
 msgid "Full name"
 msgstr ""
 
 #: marketing/forms.py:113
+#: templates/admin/participants/participant_details.haml:122
+#: templates/admin/participants/participants_list.haml:16
+#: templates/admin/permissions/list.haml:36
 msgid "Company"
 msgstr ""
 
-#: marketing/forms.py:114
+#: marketing/forms.py:114 templates/accounts/user_profile.haml:24
+#: templates/admin/companies/company_details.haml:75
+#: templates/admin/companies/company_details.haml:99
+#: templates/admin/companies/company_details.haml:177
+#: templates/admin/companies/company_details.haml:195
 msgid "Title"
 msgstr ""
 
@@ -1632,11 +1679,111 @@ msgstr ""
 msgid "User not found"
 msgstr ""
 
+#: templates/accounts/access.haml:4
+msgid "Access | McKinsey Academy"
+msgstr ""
+
+#: templates/accounts/access.haml:14
+msgid "You will be redirected to your login provider."
+msgstr ""
+
+#: templates/accounts/access.haml:20 templates/accounts/sso_error.haml:12
+msgid "Sorry!"
+msgstr ""
+
+#: templates/accounts/access.haml:21
+msgid "There was a problem with your access code."
+msgstr ""
+
+#: templates/accounts/activate.haml:6
+msgid "Register | McKinsey Academy"
+msgstr ""
+
+#: templates/accounts/activate.haml:16
+#: templates/accounts/public_registration.haml:42
+msgid "Welcome to McKinsey Academy"
+msgstr ""
+
+#: templates/accounts/activate.haml:18
+msgid ""
+"We're sorry, McKinsey Academy is not compatible with your browser. You can "
+"continue the registration process, but will not be able to access course "
+"content without updating your browser. We recommend the latest versions of "
+"Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience."
+msgstr ""
+
+#: templates/accounts/activate.haml:19
+msgid "Create your McKinsey Academy account"
+msgstr ""
+
+#: templates/accounts/activate.haml:20
+msgid "Complete the fields below."
+msgstr ""
+
+#: templates/accounts/activate.haml:22
+#, python-format
+msgid ""
+" Required fields are noted by an asterisk (\n"
+"            %%span.required-field><\n"
+"            %%span ) "
+msgstr ""
+
+#: templates/accounts/activate.haml:35
+msgid "Already Registered?"
+msgstr ""
+
+#: templates/accounts/activate.haml:38
+msgid "Click here to log in."
+msgstr ""
+
+#: templates/accounts/activate.haml:40
+msgid "Welcome"
+msgstr ""
+
+#: templates/accounts/activate.haml:42
+#: templates/accounts/public_registration.haml:71
+msgid ""
+"Registering gives you access to course content and ensures that you receive "
+"updates and notifications from McKinsey Academy."
+msgstr ""
+
+#: templates/accounts/activate.haml:44 templates/accounts/login.haml:54
+#: templates/accounts/public_registration.haml:75
+msgid "Need Help?"
+msgstr ""
+
+#: templates/accounts/activate.haml:47
+msgid ""
+" View our FAQ for answers to commonly asked questions\n"
+"            , or raise a question in course-specific discussion forums."
+msgstr ""
+
+#: templates/accounts/change_profile_image.haml:4
+msgid "Profile photo"
+msgstr ""
+
+#: templates/accounts/edit_profile_image.haml:7
+msgid "STEP 2:"
+msgstr ""
+
+#: templates/accounts/edit_profile_image.haml:8
+msgid "CROP & SAVE"
+msgstr ""
+
+#: templates/accounts/edit_profile_image.haml:12
+msgid "Drag and adjust cropping tool to edit you profile image."
+msgstr ""
+
+#: templates/accounts/edit_profile_image.haml:23
+msgid "Crop & Save"
+msgstr ""
+
 #: templates/accounts/login.haml:5
 msgid "Login | McKinsey Academy"
 msgstr ""
 
 #: templates/accounts/login.haml:16
+#: templates/accounts/public_registration.haml:38
 msgid ""
 "We're sorry, McKinsey Academy is not compatible with your browser. You will "
 "not be able to access course content without updating your browser. We "
@@ -1649,7 +1796,11 @@ msgid "Please log in"
 msgstr ""
 
 #: templates/accounts/login.haml:22
-msgid "Required fields are noted by an asterisk"
+#, python-format
+msgid ""
+" Required fields are noted by an asterisk (\n"
+"              %%span.required-field><\n"
+"              %%span )."
 msgstr ""
 
 #: templates/accounts/login.haml:26
@@ -1664,12 +1815,1190 @@ msgstr ""
 msgid "Forgot password?"
 msgstr ""
 
-#: templates/accounts/login.haml:54
-msgid "Need Help?"
+#: templates/accounts/login.haml:57
+#: templates/accounts/public_registration.haml:78
+msgid "View our FAQ for answers to commonly asked questions."
 msgstr ""
 
-#: templates/accounts/login.haml:57
-msgid "View our FAQ for answers to commonly asked questions."
+#: templates/accounts/public_registration.haml:4
+msgid "Demo registration | McKinsey Academy"
+msgstr ""
+
+#: templates/accounts/public_registration.haml:5
+#: templates/certificates/course_certificate_notification_email.haml:13
+msgid "McKinsey Academy"
+msgstr ""
+
+#: templates/accounts/public_registration.haml:15
+#: templates/accounts/public_registration.haml:29
+msgid "Thank you for your request"
+msgstr ""
+
+#: templates/accounts/public_registration.haml:17
+#: templates/accounts/public_registration.haml:31
+msgid "We will send you an email shortly."
+msgstr ""
+
+#: templates/accounts/public_registration.haml:22
+msgid "Registration Error!"
+msgstr ""
+
+#: templates/accounts/public_registration.haml:24
+msgid ""
+"Sorry, there seems to be a problem with registering your account, please "
+"contact info@mckinseyacademy.com"
+msgstr ""
+
+#: templates/accounts/public_registration.haml:44
+msgid "REGISTER FOR ACCESS TO THE DEMO BUSINESS STRATEGY COURSE"
+msgstr ""
+
+#: templates/accounts/public_registration.haml:45
+msgid ""
+"Take your strategic thinking to the next level &mdash; assess the robustness "
+"of a strategy and apply McKinsey's Strategy Method to develop strategies "
+"that can help your businesses gain a sustainable advantage in the market."
+msgstr ""
+
+#: templates/accounts/public_registration.haml:48
+#, python-format
+msgid ""
+" Complete the fields below. Required fields are noted by an asterisk (\n"
+"              %%span.required-field><\n"
+"              %%span ). "
+msgstr ""
+
+#: templates/accounts/public_registration.haml:66
+msgid "Register"
+msgstr ""
+
+#: templates/accounts/public_registration.haml:69
+msgid "WELCOME"
+msgstr ""
+
+#: templates/accounts/public_registration.haml:73
+msgid ""
+"Following successful registration, you will receive an email granting access "
+"to the course."
+msgstr ""
+
+#: templates/accounts/sso_error.haml:4
+msgid "Login Process Failed | McKinsey Academy"
+msgstr ""
+
+#: templates/accounts/sso_error.haml:10
+msgid "Sign in error"
+msgstr ""
+
+#: templates/accounts/sso_error.haml:17
+msgid ""
+"Something has gone wrong, and we were not able to process the login with "
+"your company's login provider."
+msgstr ""
+
+#: templates/accounts/sso_error.haml:18
+msgid ""
+" Please contact us at <a href:'mailto:support@mckinseyacademy."
+"com'>support@mckinseyacademy.com</a>. "
+msgstr ""
+
+#: templates/accounts/upload_profile_image.haml:8
+msgid "STEP 1:"
+msgstr ""
+
+#: templates/accounts/upload_profile_image.haml:9
+msgid "SELECT NEW PROFILE IMAGE"
+msgstr ""
+
+#: templates/accounts/upload_profile_image.haml:14
+msgid "Browse"
+msgstr ""
+
+#: templates/accounts/upload_profile_image.haml:16
+msgid "No file selected."
+msgstr ""
+
+#: templates/accounts/user_profile.haml:7
+msgid "change photo"
+msgstr ""
+
+#: templates/accounts/user_profile.haml:17
+#: templates/accounts/user_profile.haml:26
+msgid "edit"
+msgstr ""
+
+#: templates/accounts/user_profile.haml:43
+msgid "Log out"
+msgstr ""
+
+#: templates/admin/companies/companies_list.haml:7
+#: templates/admin/companies/company_dashboard.haml:7
+msgid "Companies"
+msgstr ""
+
+#: templates/admin/companies/companies_list.haml:10
+#: templates/admin/companies/companies_list.haml:29
+msgid "Create New Company"
+msgstr ""
+
+#: templates/admin/companies/companies_list.haml:19
+msgid "Enter Display Name for New Company"
+msgstr ""
+
+#: templates/admin/companies/companies_list.haml:31
+#: templates/admin/companies/company_details.haml:158
+#: templates/admin/companies/company_details.haml:217
+#: templates/admin/companies/company_details.haml:236
+#: templates/admin/course_meta_content/item_detail.haml:18
+#: templates/admin/courses/course_details.haml:132
+#: templates/admin/courses/course_details.haml:201
+#: templates/admin/mobile_apps/company_app_details.haml:64
+#: templates/admin/participants/participant_details.haml:289
+#: templates/admin/participants/participant_details.haml:319
+#: templates/admin/participants/participant_details.haml:336
+#: templates/admin/participants/participants_list.haml:129
+#: templates/admin/participants/participants_list.haml:143
+#: templates/admin/participants/participants_list.haml:161
+#: templates/admin/participants/participants_list.haml:194
+msgid "Cancel"
+msgstr ""
+
+#: templates/admin/companies/company_dashboard.haml:19
+#: templates/admin/companies/company_details.haml:26
+msgid "Total Participants:"
+msgstr ""
+
+#: templates/admin/companies/company_dashboard.haml:20
+#: templates/admin/companies/company_details.haml:30
+msgid "Active Courses:"
+msgstr ""
+
+#: templates/admin/companies/company_dashboard.haml:31
+#: templates/admin/courses/course_details.haml:38
+msgid "Evergreen"
+msgstr ""
+
+#: templates/admin/companies/company_dashboard.haml:37
+msgid "Edit Company Info"
+msgstr ""
+
+#: templates/admin/companies/company_dashboard.haml:40
+msgid "View All Courses"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:11
+#: templates/admin/companies/company_details.haml:14
+msgid "Back to All Companies"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:28
+msgid "Company ID:"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:35
+msgid "Navigation"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:37
+msgid "Access"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:40
+msgid "Link Apps"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:46
+msgid "COURSES"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:49
+msgid "COMPANY INFO"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:54
+msgid "LINKED APPS"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:66
+msgid "Invoicing Details"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:67
+#: templates/admin/companies/company_details.haml:163
+#: templates/admin/course_meta_content/item_list.haml:29
+#: templates/admin/course_run/list.haml:28
+#: templates/admin/course_run/view.haml:17
+#: templates/admin/participants/participant_details.haml:74
+#: templates/certificates/certificate_templates.haml:41
+msgid "Edit"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:72
+#: templates/admin/companies/company_details.haml:93
+#: templates/admin/companies/company_details.haml:174
+#: templates/admin/companies/company_details.haml:189
+msgid "Full Name"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:79
+msgid "Invoicing Address"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:84
+msgid "PO#"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:87
+#: templates/admin/companies/company_details.haml:149
+msgid "Identity Provider"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:106
+msgid "Address 1"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:112
+msgid "Address 2"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:119
+#: templates/admin/participants/participant_details.haml:250
+#: templates/admin/participants/participants_list.haml:76
+msgid "City"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:125
+msgid "State/Province/Region"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:132
+msgid "Zip/Postal Code"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:138
+msgid "Country"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:143
+msgid "PO#(if applicable)"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:156
+#: templates/admin/companies/company_details.haml:215
+#: templates/admin/courses/course_details.haml:131
+#: templates/admin/participants/participant_details.haml:287
+#: templates/admin/participants/participant_details.haml:335
+msgid "Save Changes"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:162
+msgid "Contacts"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:184
+#: templates/admin/companies/company_details.haml:208
+msgid "Phone"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:220
+msgid "Export Company Info"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:229
+msgid "Link mobile app"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:230
+msgid ""
+" Type in the name of the mobile app that you want to link with \"Company Name"
+"\" "
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:231
+#: templates/admin/companies/company_details.haml:232
+msgid "App Name"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:235
+msgid "Link App"
+msgstr ""
+
+#: templates/admin/course_meta_content/course_list.haml:6
+msgid ""
+"This is the Discover Content management section. Please choose a course from "
+"the list below:"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_detail.haml:6
+msgid "This is the course meta content detail page."
+msgstr ""
+
+#: templates/admin/course_meta_content/item_detail.haml:11
+msgid "ERRORS:"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:6
+msgid "This is the course meta content list page."
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:10
+msgid "ID"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:11
+msgid "SEQUENCE"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:12
+msgid "TITLE"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:13
+msgid "TYPE"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:32
+msgid "Delete"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:35
+msgid "Create New Item"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:37
+msgid "This is the course feature list."
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:46
+#: templates/courses/course_cohort.haml:234
+msgid "Discussions"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:47
+msgid ""
+"Note: If you disable the discussion page, notifications coming from existing "
+"lesson inline discussion modules in the course will redirect the user to the "
+"course home page. It is suggested that lesson inline discussion modules are "
+"not present in courses without discussions enabled. It will also disable "
+"Engagement section from Leaderboard even if 'Engagement' flag is enabled."
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:59
+msgid "Cohort Map"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:65
+msgid "Proficiency"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:66
+msgid ""
+"Note: If you disable 'Proficiency', it will hide proficiency section from "
+"course landing, progress page and from leaderboard on cohort page."
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:72
+msgid "Progress Page"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:73
+msgid ""
+"Note: If you disable 'Progress Page', it will hide progress page icon from "
+"secondary navigation."
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:79
+#: templates/courses/content_page/course_tabs.haml:40
+msgid "Notifications"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:85
+msgid "Branding"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:91
+#: templates/courses/content_page/course_tabs.haml:5
+msgid "Learner Dashboard"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:97
+#: templates/courses/content_page/course_tabs.haml:37
+#: templates/courses/course_learner_dashboard_header.haml:30
+#: templates/courses/course_resources.haml:24
+msgid "Resources"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:103
+msgid "Cohort Average"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:109
+msgid "Certificates"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:117
+msgid "Mobile Available"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:123
+msgid "Engagement"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:124
+msgid ""
+"Note: If you disable 'Engagement', it will hide Engagement section from "
+"leaderboard."
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:130
+msgid "Discover"
+msgstr ""
+
+#: templates/admin/course_meta_content/item_list.haml:131
+msgid ""
+"Note: If you disable the 'Discover', it will hide Discover section from "
+"course main page."
+msgstr ""
+
+#: templates/admin/course_run/form_modal.haml:5
+msgid "Edit Course Run"
+msgstr ""
+
+#: templates/admin/course_run/form_modal.haml:8
+msgid "Create Course Run"
+msgstr ""
+
+#: templates/admin/course_run/form_modal.haml:39
+#: templates/admin/course_run/view.haml:23
+msgid "Course ID:"
+msgstr ""
+
+#: templates/admin/course_run/form_modal.haml:46
+msgid "Access link (SSO):"
+msgstr ""
+
+#: templates/admin/course_run/form_modal.haml:52
+msgid "Email template for existing users:"
+msgstr ""
+
+#: templates/admin/course_run/form_modal.haml:58
+msgid "Email template for new users:"
+msgstr ""
+
+#: templates/admin/course_run/form_modal.haml:64
+#: templates/admin/course_run/view.haml:49
+msgid "Email template for McKA employees (SSO):"
+msgstr ""
+
+#: templates/admin/course_run/form_modal.haml:70
+#: templates/admin/course_run/view.haml:52
+msgid "Copy for closed status message:"
+msgstr ""
+
+#: templates/admin/course_run/list.haml:8
+msgid "Self-sign up courses"
+msgstr ""
+
+#: templates/admin/course_run/list.haml:11
+msgid "You can manage the self-sign up courses here"
+msgstr ""
+
+#: templates/admin/course_run/list.haml:25
+msgid "Course ID"
+msgstr ""
+
+#: templates/admin/course_run/list.haml:26
+msgid "Open"
+msgstr ""
+
+#: templates/admin/course_run/list.haml:27
+msgid "Total"
+msgstr ""
+
+#: templates/admin/course_run/list.haml:47
+msgid "No course runs defined!"
+msgstr ""
+
+#: templates/admin/course_run/registration_success.haml:8
+msgid "Success!"
+msgstr ""
+
+#: templates/admin/course_run/registration_success.haml:10
+msgid "Hi!"
+msgstr ""
+
+#: templates/admin/course_run/registration_success.haml:11
+msgid "This message will be defined by McKA Team"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:11
+msgid "Back to list"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:12
+#: templates/courses/course_progress_v2.haml:35
+msgid "Course Run:"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:14
+msgid "View live"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:26
+msgid "Max users in course:"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:28
+msgid "Total enrolled users in course:"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:30
+msgid "No. of users signed up:"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:32
+msgid "Total activation emails sent:"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:36
+#: templates/admin/course_run/view.haml:40
+msgid "Download CSV"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:43
+msgid "Email template for existing McKA users:"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:46
+msgid "Email template for new McKA users:"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:59
+msgid "List of users registered for this course:"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:63
+#: templates/admin/participants/participant_details.haml:90
+msgid "First Name"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:64
+#: templates/admin/participants/activation_link_modal.haml:17
+msgid "Last name"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:65
+msgid "Company name"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:66
+msgid "Company email"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:67
+msgid "Current role"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:68
+msgid "New user"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:69
+msgid "McK Employee"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:70
+msgid "Enrolled"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:71
+#: templates/admin/mobile_apps/company_app_details.haml:44
+#: templates/admin/participants/participant_edit_status.haml:12
+msgid "Active"
+msgstr ""
+
+#: templates/admin/course_run/view.haml:102
+msgid "No users registered for this course run!"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:13
+msgid "Back to"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:16
+msgid "Back to All Courses"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:41
+msgid "Participants:"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:43
+msgid "Avg Progress:"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:44
+msgid "Avg Proficiency:"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:46
+msgid "Completed:"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:47
+msgid "Passed:"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:52
+msgid "PARTICIPANTS"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:55
+msgid "STATS"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:58
+msgid "LEARNER DASHBOARD"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:65
+msgid "Generate Certificates"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:67
+msgid "Generating Certificates"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:69
+msgid "Certificates Generated"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:76
+#: templates/admin/courses/course_details.haml:97
+msgid "Export stats"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:83
+#: templates/admin/courses/course_details.haml:86
+msgid "Email Selected Participants"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:91
+msgid "Change status"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:93
+msgid "Unenroll from course"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:95
+msgid "Enroll in new course"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:99
+msgid "Download CSV For Notifications"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:104
+msgid "Engagement Summary"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:107
+#: templates/admin/courses/course_details.haml:110
+#: templates/admin/participants/participant_details.haml:295
+#: templates/admin/participants/participant_details.haml:301
+msgid "Export Stats"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:113
+msgid "Participant Performance"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:116
+msgid "Social Engagement"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:119
+msgid "Cohort Timeline"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:142
+msgid "Email selected participants"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:147
+msgid "From"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:152
+#: templates/certificates/certificate_templates.haml:30
+msgid "Template"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:154
+msgid "Save as new template"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:155
+msgid "Update selected template"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:156
+msgid "Remove selected template"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:159
+#: templates/admin/participants/participant_details.haml:218
+#: templates/admin/participants/participant_details.haml:221
+#: templates/admin/participants/participants_list.haml:97
+msgid "None"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:166
+msgid "Subject"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:172
+msgid "Body"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:178
+msgid "Send Email"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:180
+msgid "Preview email"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:181
+msgid "Schedule for Later"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:188
+msgid "Add Tags to this Course"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:196
+msgid ""
+"Since this tag does not yet exist, a new Tag will be created. If this is an "
+"error, try selecting your tag from the type-ahead results."
+msgstr ""
+
+#: templates/admin/courses/courses_list.haml:8
+msgid "Courses"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:24
+msgid "Details"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:27
+msgid "Deployment Mechanism"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:30
+msgid "Urban Airship URL"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:34
+msgid "iOS Download URL"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:37
+msgid "Analytics URL"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:41
+msgid "Android Download URL"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:46
+msgid "Yes"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:48
+msgid "No"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:55
+msgid "Delink App"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:56
+msgid "Please contact the mobile dev team to edit this page"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:57
+msgid "Help ?"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:60
+msgid "Delinking"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:61
+msgid "Delinking an active app from a company can lead to unstability."
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:62
+msgid "ARE YOU SURE YOU WANT TO CONFIRM?"
+msgstr ""
+
+#: templates/admin/mobile_apps/company_app_details.haml:63
+msgid "Continue"
+msgstr ""
+
+#: templates/admin/participants/activation_link_modal.haml:4
+#: templates/admin/participants/activation_link_modal.haml:21
+msgid "Activation Link"
+msgstr ""
+
+#: templates/admin/participants/activation_link_modal.haml:15
+msgid "First name"
+msgstr ""
+
+#: templates/admin/participants/activation_link_modal.haml:19
+msgid "Company Code"
+msgstr ""
+
+#: templates/admin/participants/activation_link_modal.haml:23
+#: templates/admin/participants/activation_link_modal.haml:40
+msgid "Copy"
+msgstr ""
+
+#: templates/admin/participants/activation_link_modal.haml:39
+msgid "Copy to clipboard."
+msgstr ""
+
+#: templates/admin/participants/activation_link_modal.haml:41
+msgid "Copied to clipboard."
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:27
+msgid "Back"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:31
+msgid "Back to Participants"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:42
+msgid "Last logged in:"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:47
+msgid "Enroll in a Course"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:52
+msgid "PROFILE"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:55
+msgid "ACTIVE COURSES"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:58
+msgid "COURSE HISTORY"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:61
+msgid "CERTIFICATES"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:69
+msgid "Participant Details"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:82
+msgid "&ast; This user has not yet activated their account. "
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:84
+msgid "Get Activation Link"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:86
+msgid "Resend Activation Link"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:95
+msgid "Last Name"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:102
+#: templates/admin/participants/participant_details.haml:183
+msgid "Username"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:115
+#: templates/admin/participants/participant_details.haml:196
+msgid "Send reset password email"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:132
+#: templates/admin/participants/participant_details.haml:256
+#: templates/admin/participants/participants_list.haml:82
+msgid "Gender"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:145
+msgid "Location"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:153
+msgid "Admin Permissions"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:164
+msgid "Archive Participant"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:172
+#: templates/admin/participants/participants_list.haml:42
+msgid " First Name<sup>*</sup> "
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:177
+msgid " Last Name<sup>*</sup> "
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:188
+msgid "That username is already taken"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:192
+msgid "Email<sup>*</sup> "
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:200
+msgid "That email is already taken"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:204
+#: templates/admin/participants/participants_list.haml:60
+msgid " Company<sup>*</sup> "
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:209
+#: templates/admin/participants/participants_list.haml:65
+msgid ""
+"Since this company does not yet exist, a new company will be created. If "
+"this is an error, try selecting your company from the type-ahead results."
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:213
+#: templates/admin/participants/participants_list.haml:93
+msgid "Permissions"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:225
+#: templates/admin/participants/participant_details.haml:228
+#: templates/admin/participants/participants_list.haml:100
+msgid "Uber admin"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:231
+#: templates/admin/participants/participant_details.haml:234
+#: templates/admin/participants/participants_list.haml:103
+msgid "Course ops admin"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:237
+#: templates/admin/participants/participant_details.haml:240
+#: templates/admin/participants/participants_list.haml:105
+msgid "Internal Admin"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:244
+#: templates/admin/participants/participants_list.haml:70
+msgid "Country Abbreviation"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:262
+#: templates/admin/participants/participant_details.haml:267
+#: templates/admin/participants/participant_details.haml:272
+#: templates/admin/participants/participants_list.haml:86
+msgid "N/A"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:279
+msgid "Add another company"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:282
+msgid "Refresh"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:314
+msgid "Are you sure you want to unenroll this user?"
+msgstr ""
+
+#: templates/admin/participants/participant_details.haml:318
+msgid "Ok"
+msgstr ""
+
+#: templates/admin/participants/participant_edit_status.haml:3
+msgid "Select new user role on a course:"
+msgstr ""
+
+#: templates/admin/participants/participant_edit_status.haml:17
+msgid "Observer"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:8
+msgid "Add New Participant"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:9
+msgid "Enroll Existing Participants"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:10
+msgid "Import from CSV"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:11
+#: templates/admin/participants/participants_list.haml:181
+msgid "CSV Template"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:18
+msgid "Course"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:29
+msgid "Add a Participant"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:31
+msgid "Want to add more than one participant at a time?"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:33
+msgid "Import a list"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:47
+msgid "Last Name<sup>*</sup> "
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:54
+msgid " Email<sup>*</sup> "
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:111
+msgid "Add company admin privileges"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:117
+msgid "Add course"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:124
+msgid "Email activation link now"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:127
+msgid "Add Participant"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:134
+msgid "CSV Template and Formatting"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:136
+msgid "Download the CSV template below to import users."
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:137
+msgid "All fields in the template are required."
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:138
+msgid "Note that you must add users to preexisting companies and courses."
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:141
+msgid "Download Template"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:148
+msgid "Import Participants from CSV"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:159
+#: templates/admin/participants/participants_list.haml:192
+msgid "Add Participants"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:172
+msgid "Email activation links now"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:177
+msgid "Enroll Participants to courses from CSV"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:205
+msgid ""
+"You can download the activation links now, or from the participant profiles "
+"at any time."
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:208
+msgid "Download Activation Links"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:211
+msgid "An activation link has been emailed to each student."
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:215
+#: templates/admin/participants/participants_list.haml:235
+msgid "I'm Done"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:221
+msgid "Successfully added new user!"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:224
+msgid ""
+"You can download the activation link now, or from the participant profiles "
+"at any time."
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:228
+msgid "Download Activation Link"
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:231
+msgid "Go To User Profile"
+msgstr ""
+
+#: templates/admin/permissions/edit.haml:4
+msgid "Roles for "
+msgstr ""
+
+#: templates/admin/permissions/edit.haml:26
+msgid "Course specific roles"
+msgstr ""
+
+#: templates/admin/permissions/edit.haml:27
+msgid "Below are the courses this user is enrolled in."
+msgstr ""
+
+#: templates/admin/permissions/list.haml:9
+msgid "Manage Roles and Permissions"
+msgstr ""
+
+#: templates/admin/permissions/list.haml:25
+msgid "User"
+msgstr ""
+
+#: templates/admin/permissions/list.haml:30
+msgid "Roles(s)"
 msgstr ""
 
 #: templates/admin/workgroup/workgroup_detail.haml:7
@@ -1684,6 +3013,1200 @@ msgstr ""
 msgid "Users"
 msgstr ""
 
+#: templates/certificates/certificate_template_assets.haml:11
+msgid "Template Assets"
+msgstr ""
+
+#: templates/certificates/certificate_template_assets.haml:17
+msgid "New Template Asset"
+msgstr ""
+
+#: templates/certificates/certificate_template_assets.haml:28
+msgid "Path"
+msgstr ""
+
+#: templates/certificates/certificate_template_assets.haml:29
+#: templates/certificates/certificate_templates.haml:28
+msgid "Description"
+msgstr ""
+
+#: templates/certificates/certificate_templates.haml:11
+msgid "Certificate Template"
+msgstr ""
+
+#: templates/certificates/certificate_templates.haml:14
+msgid "Create Template"
+msgstr ""
+
+#: templates/certificates/certificate_templates.haml:17
+msgid "Create Template Asset"
+msgstr ""
+
+#: templates/certificates/certificate_templates.haml:29
+msgid "Course Id"
+msgstr ""
+
+#: templates/certificates/course_certificate_notification_email.haml:3
+#, python-brace-format
+msgid "Dear #{username}, "
+msgstr ""
+
+#: templates/certificates/course_certificate_notification_email.haml:5
+msgid ""
+"Your certificate for course have been generated to view your certificate "
+"please click the following link"
+msgstr ""
+
+#: templates/certificates/course_certificate_notification_email.haml:8
+msgid ""
+"Please contact our team at support@mckinseyacademy.com if you experience any "
+"technical issues."
+msgstr ""
+
+#: templates/certificates/course_certificate_notification_email.haml:11
+msgid "Best,"
+msgstr ""
+
+#: templates/certificates/default_cetificate_template.haml:11
+msgid "You have successfully completed course"
+msgstr ""
+
+#: templates/certificates/new_certificate_template.haml:11
+msgid "New Certificate"
+msgstr ""
+
+#: templates/courses/contact_ta.haml:5
+msgid "Message your TA"
+msgstr ""
+
+#: templates/courses/contact_ta.haml:7
+msgid ""
+"Send any questions or messages to your TA , and they'll get back to you "
+"promptly."
+msgstr ""
+
+#: templates/courses/contact_ta.haml:13
+msgid "Enter your message for the TA here"
+msgstr ""
+
+#: templates/courses/contact_ta.haml:15 templates/courses/contact_ta.haml:28
+#: templates/courses/contact_ta.haml:42 templates/preview_language.haml:20
+msgid "Submit"
+msgstr ""
+
+#: templates/courses/contact_ta.haml:19
+msgid "Message your group"
+msgstr ""
+
+#: templates/courses/contact_ta.haml:21
+msgid "Send any questions or messages to your group."
+msgstr ""
+
+#: templates/courses/contact_ta.haml:27
+msgid "Enter your message for the group here"
+msgstr ""
+
+#: templates/courses/contact_ta.haml:32
+msgid "Message your group member"
+msgstr ""
+
+#: templates/courses/contact_ta.haml:34
+msgid "Send any questions or messages to your group member."
+msgstr ""
+
+#: templates/courses/contact_ta.haml:40
+msgid "Enter your message here"
+msgstr ""
+
+#: templates/courses/content_page/course_discover.haml:3
+msgid "DISCOVER:"
+msgstr ""
+
+#: templates/courses/content_page/course_discover.haml:6
+msgid "ARTICLES"
+msgstr ""
+
+#: templates/courses/content_page/course_discover.haml:21
+msgid "INFOGRAPHIC"
+msgstr ""
+
+#: templates/courses/content_page/course_discover.haml:26
+msgid "ON TWITTER"
+msgstr ""
+
+#: templates/courses/content_page/course_discover.haml:38
+msgid "VIDEOS"
+msgstr ""
+
+#: templates/courses/content_page/course_final_grade.haml:3
+msgid "Your final grade is"
+msgstr ""
+
+#: templates/courses/content_page/course_final_grade.haml:4
+msgid "ended on"
+msgstr ""
+
+#: templates/courses/content_page/course_final_grade.haml:5
+msgid ""
+"This course is closed, but you can still access all course content and "
+"download materials."
+msgstr ""
+
+#: templates/courses/content_page/course_final_grade.haml:6
+msgid ""
+"Your proficiency, progress, and engagement will not change in closed courses."
+msgstr ""
+
+#: templates/courses/content_page/course_menu.haml:3
+msgid "LESSONS:"
+msgstr ""
+
+#: templates/courses/content_page/course_menu.haml:20
+msgid "LESSON"
+msgstr ""
+
+#: templates/courses/content_page/course_menu.haml:26
+#: templates/courses/course_progress.haml:51
+msgid "Completed"
+msgstr ""
+
+#: templates/courses/content_page/course_tabs.haml:8
+msgid "Lessons"
+msgstr ""
+
+#: templates/courses/content_page/course_tabs.haml:14
+#: templates/courses/course_discussion.haml:14
+#: templates/courses/course_learner_dashboard_header.haml:46
+#: templates/courses/course_learner_dashboard_header.haml:49
+msgid "Discussion"
+msgstr ""
+
+#: templates/courses/content_page/course_tabs.haml:22
+#: templates/courses/course_cohort.haml:14
+#: templates/courses/course_cohort.haml:25
+msgid "Cohort"
+msgstr ""
+
+#: templates/courses/content_page/course_tabs.haml:26
+msgid "Progress"
+msgstr ""
+
+#: templates/courses/content_page/course_tabs.haml:29
+msgid "Course Materials"
+msgstr ""
+
+#: templates/courses/content_page/course_tabs.haml:33
+#: templates/courses/course_news.haml:24
+msgid "Announcements"
+msgstr ""
+
+#: templates/courses/content_page/course_tabs.haml:35
+#: templates/courses/course_overview.haml:50
+msgid "Course Overview"
+msgstr ""
+
+#: templates/courses/content_page/courses_menu_list.haml:12
+msgid "In Progress"
+msgstr ""
+
+#: templates/courses/content_page/lesson_menu.haml:8
+#: templates/courses/content_page/lesson_menu.haml:12
+#: templates/courses/content_page/lesson_pager.haml:8
+#: templates/courses/content_page/lesson_pager.haml:19
+#: templates/courses/course_lessons_ld_external.haml:13
+#: templates/courses/course_navigation.haml:6
+#: templates/courses/course_progress_v2.haml:55
+msgid "Lesson"
+msgstr ""
+
+#: templates/courses/content_page/lesson_pager.haml:9
+#: templates/courses/content_page/lesson_pager.haml:20
+#: templates/courses/content_page/lesson_pager_ld.haml:9
+#: templates/courses/content_page/lesson_pager_ld.haml:21
+#: templates/courses/course_lessons.haml:28
+#: templates/courses/course_lessons_ld.haml:38
+msgid "Module"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:8
+msgid " | Cohort | Courses | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:15
+msgid ""
+" Below are helpful tips to interact with the cohort map and leaderboards. "
+"You may also find answers to your questions in the <a href=\"/faq\">FAQ</a>. "
+"Can’t find the answer there? Please contact us directly at <a href=\"mailto:"
+"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll sort "
+"it out for you. "
+msgstr ""
+
+#: templates/courses/course_cohort.haml:16
+msgid ""
+" Access the cohort using the <i class=\"fa fa-globe\"></i> icon in the main "
+"navigation bar. "
+msgstr ""
+
+#: templates/courses/course_cohort.haml:17
+msgid ""
+"COHORT MAP displays your group members, your McKinsey TA, and the number of "
+"cohort participants from various cities. The details on the number of "
+"participants in your company and the total number of cohort participants are "
+"displayed under the map."
+msgstr ""
+
+#: templates/courses/course_cohort.haml:18
+msgid "You can email your McKinsey TA who is displayed on the map"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:19
+msgid ""
+"LEADERBOARDS display the top participants across proficiency, progress, and "
+"engagement, as well as your own ranking compared to the cohort average"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:20
+#: templates/courses/course_discussion.haml:21
+#: templates/courses/course_navigation.haml:27
+#: templates/courses/course_news.haml:19
+#: templates/courses/course_overview.haml:19
+#: templates/courses/course_resources.haml:19
+msgid "This video walks you through the learner experience:"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:31
+msgid "of participants:"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:32
+msgid "in your cohort"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:33
+msgid "group work team members"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:35
+msgid "Hide team profiles"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:37
+msgid "Show team profiles"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:40
+msgid "Leaderboards"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:46
+#: templates/courses/visualizations/course_proficiency.haml:8
+msgid "Proficiency:"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:47
+#: templates/courses/course_cohort.haml:109
+#: templates/courses/course_cohort.haml:172
+#: templates/courses/visualizations/course_engagement.haml:15
+#: templates/courses/visualizations/course_proficiency.haml:16
+#: templates/courses/visualizations/course_progress.haml:16
+msgid "cohort average"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:49
+msgid "As an Observer you will not appear on the proficiency leaderboard"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:51
+#, python-brace-format
+msgid ""
+" your proficiency position: <br><span>#={proficiency.user_position}</span> "
+"with <span>={proficiency.user_grade_display}</span> "
+msgstr ""
+
+#: templates/courses/course_cohort.haml:53
+msgid " your proficiency position <br> will be displayed here "
+msgstr ""
+
+#: templates/courses/course_cohort.haml:108
+#: templates/courses/course_progress.haml:65
+#: templates/courses/visualizations/course_progress.haml:8
+msgid "Progress:"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:111
+msgid "As an Observer you will not appear on the progress leaderboard"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:113
+#, python-format, python-brace-format
+msgid ""
+" your progress position: <br><span>#={completions.position}</span> with "
+"<span>={completions.user_progress_display}%%</span> "
+msgstr ""
+
+#: templates/courses/course_cohort.haml:115
+msgid "your progress position <br> will be displayed here"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:129
+#: templates/courses/course_cohort.haml:146
+#: templates/courses/course_cohort.haml:163
+#: templates/courses/course_cohort.haml:192
+#: templates/courses/course_cohort.haml:209
+#: templates/courses/course_cohort.haml:226
+msgid "username"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:130
+#: templates/courses/course_cohort.haml:147
+#: templates/courses/course_cohort.haml:164
+#: templates/courses/course_cohort.haml:193
+#: templates/courses/course_cohort.haml:210
+#: templates/courses/course_cohort.haml:227
+msgid "title"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:166
+#, python-format
+msgid "100%%"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:171
+#: templates/courses/visualizations/course_engagement.haml:8
+msgid "Engagement:"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:172
+#: templates/courses/visualizations/course_engagement.haml:15
+msgid "points"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:174
+msgid "As an Observer you will not appear on the engagement leaderboard"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:176
+#, python-brace-format
+msgid ""
+" your engagement position: <br><span>#={social.position}</span> with "
+"<span>={social.points} pts.</span> "
+msgstr ""
+
+#: templates/courses/course_cohort.haml:178
+msgid " your engagement position <br> will be displayed here "
+msgstr ""
+
+#: templates/courses/course_cohort.haml:195
+#: templates/courses/course_cohort.haml:212
+#: templates/courses/course_cohort.haml:229
+msgid "100 pts."
+msgstr ""
+
+#: templates/courses/course_cohort.haml:235
+msgid ""
+"Even if we cannot directly shape an outcome, a model’s prediction may be "
+"communicated in a way that alters behavior and indirectly shapes it."
+msgstr ""
+
+#: templates/courses/course_cohort.haml:239
+msgid "gwensisco"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:240
+msgid "Media Buyer"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:243
+msgid "Recommendations"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:246
+msgid "Scientists Without Borders"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:247
+msgid ""
+"A worldwide community of changemakers collaborating to accelerate solutions "
+"to urgent development challenges."
+msgstr ""
+
+#: templates/courses/course_cohort.haml:248
+msgid " janejohnson <span class='person-title'>COO</span> "
+msgstr ""
+
+#: templates/courses/course_cohort.haml:249
+msgid "Suggest a Link"
+msgstr ""
+
+#: templates/courses/course_discussion.haml:8
+#: templates/courses/course_discussion_ld.haml:8
+msgid " | Discussion | Courses | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_discussion.haml:15
+msgid ""
+" Below are helpful tips to engage in discussions with your cohort or group "
+"members (via private discussions). You may also find answers to your "
+"questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer there? "
+"Please contact us directly at <a href=\"mailto:support@mckinseyacademy.com"
+"\">support@mckinseyacademy.com</a> and we’ll sort it out for you. "
+msgstr ""
+
+#: templates/courses/course_discussion.haml:16
+msgid ""
+" Access discussions using the <i class=\"fa fa-comments-o\"></i> icon in the "
+"main navigation bar "
+msgstr ""
+
+#: templates/courses/course_discussion.haml:17
+msgid ""
+" FIND DISCUSSIONS tools help you focus on specific topics <i class=\"fa fa-"
+"bars\"></i> search for specific posts, and sort by date, vote, or comments "
+"<i class=\"fa fa-search\"></i> "
+msgstr ""
+
+#: templates/courses/course_discussion.haml:18
+msgid ""
+" ENGAGE WITH POSTS features allow you to upvote posts and good responses <i "
+"class=\"fa fa-plus\"></i>, report forum misuse <i class=\"fa fa-flag\"></i> "
+"and follow posts for updates <i class=\"fa fa-star\"></i>. "
+msgstr ""
+
+#: templates/courses/course_discussion.haml:19
+msgid ""
+" RECEIVE UPDATES by checking the box near the <i class=\"fa fa-envelope\"></"
+"i> icon to receive a daily email digest notifying you about new, unread "
+"activity from posts you are following "
+msgstr ""
+
+#: templates/courses/course_discussion.haml:20
+msgid ""
+"You can email your McKinsey TA who is displayed in the upper left corner of "
+"the page"
+msgstr ""
+
+#: templates/courses/course_discussion.haml:36
+#: templates/courses/course_discussion_ld.haml:26
+msgid "No Discussion has been configured for this course"
+msgstr ""
+
+#: templates/courses/course_discussion_userprofile.haml:9
+msgid "User profiles are not yet available"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:7
+#: templates/courses/course_group_work_ld.haml:8
+msgid " | Group Work | Courses | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:15
+#: templates/courses/course_group_work.haml:22
+msgid ""
+" Below are helpful tips to contribute to group work. You may also find "
+"answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
+"answer there? Please contact us directly at <a href=\"mailto:"
+"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll sort "
+"it out for you. "
+msgstr ""
+
+#: templates/courses/course_group_work.haml:16
+msgid ""
+" Access group work using the <i class=\"mk-icon-groupworknav blue\"></i> "
+"icon in the main navigation bar "
+msgstr ""
+
+#: templates/courses/course_group_work.haml:17
+msgid ""
+" Upload deliverables by clicking the <i class=\"fa fa-upload blue\"></i> "
+"icon at the bottom of the Project Navigator. "
+msgstr ""
+
+#: templates/courses/course_group_work.haml:18
+msgid ""
+" Access project resources by clicking the <i class=\"fa fa-files-o blue\"></"
+"i> icon at the bottom of the Project Navigator. "
+msgstr ""
+
+#: templates/courses/course_group_work.haml:19
+msgid ""
+" Group work has a private discussion you can use to collaborate with your "
+"group members. You can chat with your team by clicking the <i class=\"fa fa-"
+"comments-o blue\"></i> icon at the bottom of the Project Navigator. Your "
+"private discussions, even when viewed on the main discussion page, are only "
+"visible to your group members, never to the larger cohort. "
+msgstr ""
+
+#: templates/courses/course_group_work.haml:20
+msgid ""
+" Send a message to a McKinsey TA by clicking the <span class=\"nav-1\" style="
+"\"font-size:16px;\">TA</span> icon at the bottom of the Project Navigator. "
+msgstr ""
+
+#: templates/courses/course_group_work.haml:23
+msgid ""
+" Access group work using the <i class=\"mk-icon-groupworknav\"></i> icon in "
+"the main navigation bar "
+msgstr ""
+
+#: templates/courses/course_group_work.haml:24
+msgid ""
+"Group work is made up of one or more activities, and each activity is made "
+"up of up to 4 stages:"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:25
+msgid "OVERVIEW - provides a high-level overview of the task(s)"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:26
+msgid "UPLOAD - allows your team to upload deliverables for TA or peer grading"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:27
+msgid ""
+"REVIEWS - allows you to anonymously grade peer projects and/or provide team "
+"feedback"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:28
+msgid "GRADE - displays your team feedback and peer (or TA) grade"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:32
+msgid ""
+"Move from stage to stage within an activity using the left and right arrows; "
+"deadlines for each stage are posted, and if a particular stage has not yet "
+"opened, it is noted"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:33
+msgid ""
+" Group work has a private inline discussion you can use to collaborate with "
+"only your group members. View these conversations in group work pages, or by "
+"accessing the larger discussion page using the <i class=\"fa fa-comments-o"
+"\"></i> icon in the main navigation bar. Your private discussions, even when "
+"viewed on the main discussion page, are only visible to your group members, "
+"never to the larger cohort. "
+msgstr ""
+
+#: templates/courses/course_group_work.haml:34
+msgid ""
+"Email your group members (individually or combined) from the right column of "
+"each stage"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:35
+msgid "Email your McKinsey TA from the right column of each stage."
+msgstr ""
+
+#: templates/courses/course_group_work.haml:36
+msgid "This video walks you through the group work experience:"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:46
+#: templates/courses/course_group_work_ld.haml:20
+msgid ""
+"Group work has not yet begun for this course. You will receive a message "
+"with information once it begins"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:55
+#: templates/courses/course_group_work.haml:61
+#: templates/courses/course_group_work_ld.haml:29
+#: templates/courses/course_group_work_ld.haml:35
+msgid "Group Project:"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:66
+#: templates/courses/course_group_work_ld.haml:40
+msgid "Group Members"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:71
+#: templates/courses/course_group_work_ld.haml:45
+msgid "Email your group"
+msgstr ""
+
+#: templates/courses/course_group_work.haml:75
+#: templates/courses/course_group_work_ld.haml:49
+msgid "Ask a TA"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard.haml:10
+msgid " | McKinsey Academy | Learner Dashboard"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard.haml:52
+msgid "FOR DISCOVERY"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:36
+msgid "not available"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:39
+#: templates/courses/course_progress_v2.haml:85
+msgid "not started"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:42
+msgid "in progress"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:48
+msgid "incomplete"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:51
+msgid "not tracked"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_header.haml:38
+#: templates/courses/course_learner_dashboard_header.haml:41
+msgid "Miniboard"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_header.haml:53
+#: templates/courses/course_learner_dashboard_header.haml:56
+msgid "Portal Home"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_header.haml:60
+msgid "Calendar"
+msgstr ""
+
+#: templates/courses/course_lessons.haml:13
+#: templates/courses/course_lessons_ld.haml:22
+#: templates/courses/course_lessons_ld_external.haml:16
+#: templates/courses/course_progress_v2.haml:57
+msgid "Lesson Modules"
+msgstr ""
+
+#: templates/courses/course_lessons.haml:21
+#: templates/courses/course_lessons_ld_external.haml:24
+#, python-format
+msgid ""
+"You have completed ={course.current_lesson.progress}%% of Lesson ={course."
+"current_lesson.index}: "
+msgstr ""
+
+#: templates/courses/course_lessons_ld.haml:31
+#, python-format
+msgid ""
+" You have completed ={course.current_lesson.progress}%% of ={course."
+"current_lesson.name} "
+msgstr ""
+
+#: templates/courses/course_main.haml:8
+msgid " | Courses | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_main.haml:34
+msgid ""
+"This is the McKinsey Academy Beta and we are happy to have you participate "
+"ahead of the official public launch!"
+msgstr ""
+
+#: templates/courses/course_main.haml:35
+msgid ""
+"As a beta user, you will occasionally see pages and features like this one "
+"in early stages of development. Please feel free to explore, and we’ll "
+"continue to add features and functionality in the coming weeks."
+msgstr ""
+
+#: templates/courses/course_navigation.haml:8
+msgid " | Lessons | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_navigation.haml:14
+msgid "Course Content"
+msgstr ""
+
+#: templates/courses/course_navigation.haml:16
+msgid ""
+" trans Below are helpful tips to navigate course content. You may also find "
+"answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
+"answer there? Please contact us directly at <a href=\"mailto:"
+"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll sort "
+"it out for you. "
+msgstr ""
+
+#: templates/courses/course_navigation.haml:20
+msgid ""
+"See which modules you have completed and navigate directly to specific "
+"modules using the module navigation at the top of the page"
+msgstr ""
+
+#: templates/courses/course_navigation.haml:24
+msgid ""
+"Move from module to module using the left and right arrows. Hover over the "
+"arrows to see details of upcoming (or previous) modules"
+msgstr ""
+
+#: templates/courses/course_navigation.haml:25
+msgid ""
+" Modules with inline discussions post to the larger discussion page. View "
+"the discussion page using the <i class=\"fa fa-comments-o\"></i> icon in the "
+"main navigation bar "
+msgstr ""
+
+#: templates/courses/course_navigation.haml:26
+msgid ""
+" Access individual lessons from the <i class=\"mk-icon-lessonsnav\"></i> "
+"icon in the main navigation bar "
+msgstr ""
+
+#: templates/courses/course_navigation_ld.haml:9
+msgid " | McKinsey Academy | "
+msgstr ""
+
+#: templates/courses/course_news.haml:7
+msgid " | Announcements | Courses | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_news.haml:13
+#: templates/courses/course_overview.haml:13
+#: templates/courses/course_resources.haml:13
+msgid "Announcements, Course Overview, and Resources"
+msgstr ""
+
+#: templates/courses/course_news.haml:14
+#: templates/courses/course_overview.haml:14
+#: templates/courses/course_resources.haml:14
+msgid ""
+" Below are helpful tips to view course materials (which include "
+"announcements, course overview, and resources). You may also find answers to "
+"your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer there? "
+"Please contact us directly at <a href=\"mailto:support@mckinseyacademy.com"
+"\">support@mckinseyacademy.com</a> and we’ll sort it out for you. "
+msgstr ""
+
+#: templates/courses/course_news.haml:15
+#: templates/courses/course_resources.haml:15
+msgid ""
+" Access Announcements, Course Overview, and Resources from the <i class=\"fa "
+"fa-file-text-o\"></i> icon in the main navigation bar. "
+msgstr ""
+
+#: templates/courses/course_news.haml:16
+#: templates/courses/course_overview.haml:16
+#: templates/courses/course_resources.haml:16
+msgid "ANNOUNCEMENTS provides course news and events in a blog format"
+msgstr ""
+
+#: templates/courses/course_news.haml:17
+#: templates/courses/course_overview.haml:17
+#: templates/courses/course_resources.haml:17
+msgid ""
+"COURSE OVERVIEW details what you will learn and provides faculty "
+"information; it also includes a course calendar to guide your pace through "
+"the course and alert you to key deadlines"
+msgstr ""
+
+#: templates/courses/course_news.haml:18
+#: templates/courses/course_overview.haml:18
+#: templates/courses/course_resources.haml:18
+msgid ""
+"RESOURCES provides key takeaways and frameworks from each lesson, as well as "
+"supplemental readings and videos"
+msgstr ""
+
+#: templates/courses/course_news.haml:37
+msgid "No announcements have been posted yet."
+msgstr ""
+
+#: templates/courses/course_notready.haml:7
+msgid "has not yet started"
+msgstr ""
+
+#: templates/courses/course_notready.haml:13
+msgid "This content is not yet available."
+msgstr ""
+
+#: templates/courses/course_overview.haml:7
+msgid " | Overview | Courses | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_overview.haml:15
+msgid ""
+" \"Access Announcements, Course Overview, and Resources from the <i class="
+"\"fa fa-file-text-o\"></i> icon in the main navigation bar. "
+msgstr ""
+
+#: templates/courses/course_overview.haml:27
+msgid "Details:"
+msgstr ""
+
+#: templates/courses/course_overview.haml:28
+msgid "10 lessons"
+msgstr ""
+
+#: templates/courses/course_overview.haml:29
+msgid "32 videos"
+msgstr ""
+
+#: templates/courses/course_overview.haml:30
+msgid "9 assessments"
+msgstr ""
+
+#: templates/courses/course_overview.haml:31
+msgid "72 exercises"
+msgstr ""
+
+#: templates/courses/course_overview.haml:32
+msgid "1 group project"
+msgstr ""
+
+#: templates/courses/course_overview.haml:33
+msgid "15 readings"
+msgstr ""
+
+#: templates/courses/course_overview.haml:36
+msgid "Overview"
+msgstr ""
+
+#: templates/courses/course_overview.haml:53
+msgid "WHAT YOU WILL LEARN"
+msgstr ""
+
+#: templates/courses/course_overview.haml:59
+msgid "Faculty"
+msgstr ""
+
+#: templates/courses/course_progress.haml:7
+#: templates/courses/course_progress_v2.haml:7
+msgid " | Progress | Courses | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_progress.haml:20
+msgid ""
+" Below are helpful tips to review your progress. You may also find answers "
+"to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
+"there? Please contact us directly at <a href=\"mailto:"
+"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll sort "
+"it out for you. "
+msgstr ""
+
+#: templates/courses/course_progress.haml:21
+msgid ""
+"PROGRESS marks your progress (based on completion of modules and readings) "
+"through course content; the average progress of your cohort is also displayed"
+msgstr ""
+
+#: templates/courses/course_progress.haml:22
+msgid ""
+"GRADE displays your proficiency against a total possible score of 100; your "
+"proficiency is based on graded assessments and group work performance."
+msgstr ""
+
+#: templates/courses/course_progress.haml:28
+msgid "Course Progress for"
+msgstr ""
+
+#: templates/courses/course_progress.haml:35
+#, python-format, python-brace-format
+msgid ""
+" You are ={course.user_progress}%% of the way through the course based on "
+"completion of modules within lessons: "
+msgstr ""
+
+#: templates/courses/course_progress.haml:38
+msgid "GRADES"
+msgstr ""
+
+#: templates/courses/course_progress.haml:40
+#, python-format, python-brace-format
+msgid ""
+" You need to complete all group work and feedback activities and earn a "
+"combined course grade of at least ={pass_grade}%% to work towards a program "
+"certificate of completion. Your course grade is calculated as follows: "
+msgstr ""
+
+#: templates/courses/course_progress.haml:42
+#, python-format, python-brace-format
+msgid ""
+" You need a combined course grade of at least ={pass_grade}%% to earn a "
+"certificate of completion. Your final grade is calculated as follows: "
+msgstr ""
+
+#: templates/courses/course_progress.haml:46
+msgid "percent of your grade"
+msgstr ""
+
+#: templates/courses/course_progress.haml:53
+msgid "Dropped"
+msgstr ""
+
+#: templates/courses/course_progress.haml:56
+msgid "Current grade"
+msgstr ""
+
+#: templates/courses/course_progress.haml:57
+msgid ""
+" Pro forma grade is an estimate of your final grade assuming you continue to "
+"demonstrate the same level of proficiency on your uncompleted assessments as "
+"you did on your completed assessments to date. <a data-reveal-"
+"id='progress_modal'>Click here</a> to read more about how we may share your "
+"course information. "
+msgstr ""
+
+#: templates/courses/course_progress.haml:62
+msgid "Lesson:"
+msgstr ""
+
+#: templates/courses/course_progress.haml:63
+msgid "Suggested Deadline:"
+msgstr ""
+
+#: templates/courses/course_progress.haml:64
+msgid "Assessment Score:"
+msgstr ""
+
+#: templates/courses/course_progress.haml:84
+#: templates/courses/course_progress_v2.haml:127
+#: templates/courses/course_progress_v2.haml:140
+msgid "Group Work:"
+msgstr ""
+
+#: templates/courses/course_progress.haml:85
+msgid "Upload Deadline:"
+msgstr ""
+
+#: templates/courses/course_progress.haml:86
+msgid "Score:"
+msgstr ""
+
+#: templates/courses/course_progress.haml:87
+msgid "Grades:"
+msgstr ""
+
+#: templates/courses/course_progress.haml:110
+msgid ""
+"If you are participating in McKinsey Academy as part of an employer-"
+"sponsored program, we may provide access to certain of your personally-"
+"identifiable information, including the courses you are taking, your "
+"progress through those courses and your level of achievement (including your "
+"grades) and participation in those courses, to your employer, in order to "
+"help them and you evaluate McKinsey Academy and its value to you and to your "
+"company. You could read more about our privacy and information "
+"sharing practices in our"
+msgstr ""
+
+#: templates/courses/course_progress.haml:112
+#: templates/courses/course_progress_v2.haml:185
+msgid "privacy policy."
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:19
+msgid "PROGRESS"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:20
+#, python-format, python-brace-format
+msgid ""
+" You are ={course.user_progress}%% of the way through the course based on "
+"completion of modules within lessons. The cohort average is  "
+"={average_progress}%%. "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:24
+msgid "Modules:"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:25
+#: templates/courses/course_progress_v2.haml:102
+#: templates/courses/course_progress_v2.haml:157
+msgid "Overall:"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:28
+msgid "in this course"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:36
+msgid "Individual Learning:"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:38
+msgid "Group Work (Due Date):"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:49
+msgid "N/A (focus on Group Work)"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:60
+#, python-format, python-brace-format
+msgid "You have completed ={lesson.progress}%% of Lesson ={lesson.index}: "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:86
+msgid "partially complete"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:89
+msgid "Note: Group Work Deliverables need to be submitted by 11pm GMT."
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:92
+msgid ""
+"Note: \"weeks\" begin Tuesday and end the following Monday; Group Work "
+"Deliverables need to be submitted by 11pm GMT."
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:94
+msgid "Note: \"weeks\" begin Tuesday and end the following Monday"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:97
+msgid "PROFICIENCY"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:98
+#, python-format, python-brace-format
+msgid ""
+" Your current proficiency score is ={proficiency}%% following completion of "
+"={completed_items_count} of ={graded_items_count} graded items in this "
+"course. The cohort average is ={cohort_proficiency_average}%%. "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:103
+msgid "Graded Items:"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:104
+msgid "Grade:"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:143
+msgid "Grading in progress"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:147
+msgid "not started / incomplete"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:149
+#, python-format, python-brace-format
+msgid ""
+" You need a combined course grade of at least 70%% to earn a certificate of "
+"completion. Your final grade is calculated as follows: ={graders}. <a data-"
+"reveal-id='progress_modal'>Click here</a> to read more about how we may "
+"share your course information. "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:152
+msgid "ENGAGEMENT"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:153
+#, python-brace-format
+msgid ""
+"Your current engagement score is ={social.points} based on your social "
+"interactions with other participants in your cohort in the <a href="
+"\"#{course.nav_url}/discussion\">discussion</a> forums. The cohort average "
+"is ={social.course_avg}. "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:158
+msgid "Measured Engagement:"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:159
+msgid "Stats:"
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:164
+msgid "Number of <span>New Posts</span> you created "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:167
+msgid "Number of <span>Replies</span> you made to other posts "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:170
+msgid " Number of <span>Comments Generated </span> by your posts "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:173
+msgid " Number of <span>Upvotes</span> your posts have received "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:176
+msgid " Number of your posts being <span>Followed</span> "
+msgstr ""
+
+#: templates/courses/course_progress_v2.haml:183
+msgid ""
+"If you are participating in McKinsey Academy as part of an employer-"
+"sponsored program, we may provide access to certain of your personally-"
+"identifiable information, including the courses you are taking, your "
+"progress through those courses and your level of achievement (including your "
+"grades) and participation in those courses, to your employer, in order to "
+"help them and you evaluate McKinsey Academy and its value to you and to your "
+"company. You could read more about our privacy and information sharing "
+"practices in our"
+msgstr ""
+
+#: templates/courses/course_resources.haml:7
+msgid " | Resources | Courses | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_resources_learner_dashboard.haml:8
+msgid " | Resources | McKinsey Academy"
+msgstr ""
+
+#: templates/courses/course_syllabus.haml:6
+msgid "Syllabus"
+msgstr ""
+
+#: templates/courses/lesson_notes.haml:19
+msgid "Search your notes"
+msgstr ""
+
+#: templates/courses/lesson_notes.haml:27
+msgid "Enter course notes&hellip;"
+msgstr ""
+
+#: templates/courses/visualizations/course_engagement.haml:6
+msgid "Your social engagement will be displayed here."
+msgstr ""
+
+#: templates/courses/visualizations/course_engagement.haml:21
+msgid ""
+"This visualization displays your social engagement within the course. The "
+"average engagement of your cohort is displayed as well. You accrue "
+"engagement points for interactions on discussion forums."
+msgstr ""
+
+#: templates/courses/visualizations/course_proficiency.haml:6
+msgid "Your course proficiency will be displayed here."
+msgstr ""
+
+#: templates/courses/visualizations/course_proficiency.haml:12
+msgid "proficiency"
+msgstr ""
+
+#: templates/courses/visualizations/course_proficiency.haml:22
+msgid ""
+"This visualization displays your proficiency against a total possible score "
+"of 100. The average proficiency of your cohort is displayed as well. Note "
+"that your proficiency is based on graded assessments and group work "
+"performance."
+msgstr ""
+
+#: templates/courses/visualizations/course_progress.haml:6
+msgid "Your course progress will be displayed here."
+msgstr ""
+
+#: templates/courses/visualizations/course_progress.haml:22
+msgid ""
+"This visualization displays your progress through course content. The "
+"average progress of your cohort is displayed as well. Note that your "
+"progress is based on consumption of all individual modules and readings "
+"within the course."
+msgstr ""
+
 #: templates/preview_language.haml:8
 msgid "Preview Language Setting"
 msgstr ""
@@ -1696,16 +4219,94 @@ msgstr ""
 msgid "For example use en for English"
 msgstr ""
 
-#: templates/preview_language.haml:20
-msgid "Submit"
-msgstr ""
-
 #: templates/preview_language.haml:22
 msgid "Reset"
 msgstr ""
 
 #: templates/preview_language.haml:30
 msgid "Please refresh the page to see the changes applied."
+msgstr ""
+
+#: templates/registration/password_reset_complete.haml:3
+msgid "Password Reset Complete"
+msgstr ""
+
+#: templates/registration/password_reset_complete.haml:6
+msgid "Your password has been set.  You may go ahead and log in now."
+msgstr ""
+
+#: templates/registration/password_reset_confirm.haml:13
+msgid "Reset Your Password"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.haml:14
+#, python-format
+msgid ""
+" Please enter your new password twice so we can verify you typed it in "
+"correctly. Your password must be at least 8 characters and include upper and "
+"lowercase letters - plus numbers OR special characters. Required fields are "
+"noted by an asterisk (\n"
+"                %%span.required-field><\n"
+"                %%span ). "
+msgstr ""
+
+#: templates/registration/password_reset_confirm.haml:20
+msgid "Your New Password"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.haml:26
+msgid "Your New Password Again"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.haml:31
+msgid "Change My Password"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.haml:34
+#: templates/registration/password_reset_failed.haml:3
+msgid "Password Reset Unsuccessful"
+msgstr ""
+
+#: templates/registration/password_reset_confirm.haml:35
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a new password reset."
+msgstr ""
+
+#: templates/registration/password_reset_done.haml:3
+msgid "Password Reset Successful"
+msgstr ""
+
+#: templates/registration/password_reset_done.haml:6
+msgid ""
+"We've emailed you instructions for setting your password to the email "
+"address you submitted. You should be receiving it shortly."
+msgstr ""
+
+#: templates/registration/password_reset_email.haml:3
+msgid ""
+"You're receiving this email because you requested a password reset for your "
+"user account at McKinsey Academy."
+msgstr ""
+
+#: templates/registration/password_reset_email.haml:5
+msgid "Please go to the following page and choose a new password:"
+msgstr ""
+
+#: templates/registration/password_reset_email.haml:9
+msgid "Your username, in case you've forgotten:"
+msgstr ""
+
+#: templates/registration/password_reset_email.haml:12
+msgid "Thanks for using our site!"
+msgstr ""
+
+#: templates/registration/password_reset_email.haml:14
+msgid "The McKinsey Academy team."
+msgstr ""
+
+#: templates/registration/password_reset_failed.haml:6
+msgid "We couldn't reset your password. Please check email and try again."
 msgstr ""
 
 #: templates/registration/password_reset_form.haml:3

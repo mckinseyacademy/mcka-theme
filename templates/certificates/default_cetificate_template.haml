@@ -1,3 +1,4 @@
+- load i18n
 !!!
 %html
   %head
@@ -7,7 +8,7 @@
     %h2
       = user.formatted_name
     %br
-    You have successfully completed course
+    {% trans "You have successfully completed course" %}
     %br
     %h2
-      = course.name
+      =course.name

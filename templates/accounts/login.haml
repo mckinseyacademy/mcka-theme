@@ -19,9 +19,9 @@
           .large-8.medium-8.columns
             %h1 {% trans "Please log in" %}
             .description
-              %span {% trans "Required fields are noted by an asterisk" %} (
+              %span {% blocktrans %} Required fields are noted by an asterisk (
               %span.required-field><
-              %span ).
+              %span ).{% endblocktrans %}
               %span.login-mode-selector
                 %span {% trans "McKinsey & Co. users" %}
                   %a{href: "#"}

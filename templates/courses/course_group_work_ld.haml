@@ -1,10 +1,11 @@
 - extends "courses/course_navigation_ld.haml"
 - load staticfiles
+- load i18n
 
 - block page_title
   %title
     = program.display_name
-    = _(" | Group Work | Courses | McKinsey Academy")
+    {% trans " | Group Work | Courses | McKinsey Academy" %}
 
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
@@ -16,7 +17,7 @@
   #course-group-work
     - if not group_project or not project_group
       .row
-        .error= _("Group work has not yet begun for this course. You will receive a message with information once it begins")
+        .error {% trans "Group work has not yet begun for this course. You will receive a message with information once it begins" %}
     - else
       - if not group_project.is_v2
         .row
@@ -25,27 +26,27 @@
         - if group_project.is_v2
           .large-12.medium-12.columns.splitpiece.left
             .lesson-title
-              %span= _("Group Project:")
+              %span {% trans "Group Project:" %}
               %span= group_project.name
             .lesson-content
         - else
           .large-8.medium-8.columns.splitpiece.left
             .lesson-title
-              %span= _("Group Project:")
+              %span {% trans "Group Project:" %}
               %span= group_project.name
             .lesson-content
           #group-project-users.large-4.medium-4.columns.splitpiece.right
             .group-members
-              %h4= _("Group Members")
+              %h4 {% trans "Group Members" %}
               - for member in project_group.members
                 - include "courses/group_work/group_member.haml" with group_member=member data_reveal_id="email-member"
               - if project_group.id
                 %a.email-team{href: "#", data-reveal-id: 'email-team'}
-                  = _("Email your group")
+                  {% trans "Email your group" %}
             %hr
             - if ta_user.id and not course.ended
               .ask-ta
-                %h4= _("Ask a TA")
+                %h4 {% trans "Ask a TA" %}
                 -# Temporarily use mailto: for ta link as well (add data_reveal_id back in for when dialog should be introduced
                 - include "courses/group_work/group_member.haml" with group_member=ta_user data_reveal_id="contact-ta"
                 -# include "courses/group_work/group_member.haml" with group_member=project_group.teaching_assistant

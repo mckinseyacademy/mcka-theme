@@ -1,12 +1,13 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 
 - block content 
   #mainCompaniesListDetailsContainer
     #companiesListTitle
-      %p Companies
+      %p {% trans "Companies" %}
     - if not user.is_internal_admin
       #companiesCreateNewCompanyButton
-        %input.button.small.radius.createNewCompanyOpenModal{:type => "button", :value => "Create New Company"}
+        %input.button.small.radius.createNewCompanyOpenModal{:type => "button", :value => '{% trans "Create New Company" %}'}
     #companiesListText
     %hr
   #mainCompaniesListGridContainer
@@ -15,7 +16,7 @@
 
 
   #createNewCompanyModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
-    %h2 Enter Display Name for New Company
+    %h2 {% trans "Enter Display Name for New Company" %}
     %hr
     .row.companyDisplayNameValue
       .large-6.columns
@@ -25,7 +26,8 @@
         .errorMessage
     .row.createNewCompanyControl
       .button.createNewCompany.small.radius
-        Create New Company
-      %a.closeModal{:href => "#"} Cancel
+        {% trans "Create New Company" %}
+      %a.closeModal{:href => "#"}
+        {% trans "Cancel" %}
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;

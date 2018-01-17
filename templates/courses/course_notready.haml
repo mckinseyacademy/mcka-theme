@@ -1,12 +1,13 @@
 - extends "courses/course_main.haml"
+- load i18n
 
 - block page_title
   %title
     = course.name
-    = _("has not yet started")
+    {% trans "has not yet started" %}
 
 - block content
   %article.row
     .medium-10.medium-centered.columns.course-page
       .error
-        = _('This content is not yet available.')
+        {% trans "This content is not yet available." %}

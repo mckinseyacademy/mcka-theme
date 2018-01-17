@@ -1,7 +1,7 @@
 - extends "layout.haml"
-
+- load i18n
 - block page_title
-  %title= _("Access | McKinsey Academy")
+  %title {% trans "Access | McKinsey Academy" %}
 
 - block content
   - if redirect_to
@@ -11,14 +11,14 @@
           .large-7.medium-7.columns
             %p
               %i.fa.fa-spinner.fa-spin
-              = _("You will be redirected to your login provider.")
+              {% trans "You will be redirected to your login provider." %}
   - else
     .row
       .login-form.large-10.medium-10.large-centered.medium-centered.columns
         .row
           .large-7.medium-7.columns
-            .sub-1= _("Sorry!")
-            %p= _("There was a problem with your access code.")
+            .sub-1 {% trans "Sorry!" %}
+            %p {% trans "There was a problem with your access code." %}
 
 - block js_snippets
   - if redirect_to

@@ -11,7 +11,7 @@
   #mckinsey_help.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    .sub-1 {% trans Cohort %}
+    .sub-1 {% trans "Cohort" %}
     %p {% blocktrans %} Below are helpful tips to interact with the cohort map and leaderboards. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
     .help-line {% blocktrans %} Access the cohort using the <i class="fa fa-globe"></i> icon in the main navigation bar. {% endblocktrans %}
     .help-line {% trans "COHORT MAP displays your group members, your McKinsey TA, and the number of cohort participants from various cities. The details on the number of participants in your company and the total number of cohort participants are displayed under the map." %}
@@ -51,7 +51,6 @@
                 .rank {% blocktrans with position=proficiency.user_position position_value=proficiency.user_grade_display %} your proficiency position: <br><span>{{position}}</span> with <span>{{position_value}}</span> {% endblocktrans %}
               - else
                 .rank {% trans "your proficiency position <br> will be displayed here" %}
-
             - if proficiency.has_leaders and  proficiency.leaders.0
               .user
                 %img.avatar{src: '={proficiency.leaders.0.profile_image.image_url_small}', title: '={proficiency.leaders.0.username}'}
@@ -126,8 +125,8 @@
             .user.dummy
               %img.avatar{src: '/static/image/empty_avatar.png'}
               .info
-                .person-name username
-                .person-title title
+                .person-name {% trans "username" %}
+                .person-title {% trans "title" %}
                 .person-rank #={leaderboard_ranks.0}
                   %span 100%
 
@@ -143,8 +142,8 @@
             .user.dummy
               %img.avatar{src: '/static/image/empty_avatar.png'}
               .info
-                .person-name username
-                .person-title title
+                .person-name {% trans "username" %}
+                .person-title {% trans "title" %}
                 .person-rank #={leaderboard_ranks.1}
                   %span 100%
 
@@ -160,10 +159,10 @@
             .user.dummy
               %img.avatar{src: '/static/image/empty_avatar.png'}
               .info
-                .person-name username
-                .person-title title
+                .person-name {% trans "username" %}
+                .person-title {% trans "title" %}
                 .person-rank #={leaderboard_ranks.2}
-                  %span 100%
+                  %span {% trans "100%" %}
 
         - if social
           %li
@@ -189,10 +188,10 @@
               .user.dummy
                 %img.avatar{src: '/static/image/empty_avatar.png'}
                 .info
-                  .person-name username
-                  .person-title title
+                  .person-name {% trans "username" %}
+                  .person-title {% trans "title" %}
                   .person-rank #={leaderboard_ranks.0}
-                    %span 100 pts.
+                    %span {% trans "100 pts." %}
 
             - if social.leaders and social.leaders.1
               .user
@@ -206,10 +205,10 @@
               .user.dummy
                 %img.avatar{src: '/static/image/empty_avatar.png'}
                 .info
-                  .person-name username
-                  .person-title title
+                  .person-name {% trans "username" %}
+                  .person-title {% trans "title" %}
                   .person-rank #={leaderboard_ranks.1}
-                    %span 100 pts.
+                    %span {% trans "100 pts." %}
 
             - if social.leaders and social.leaders.2
               .user
@@ -223,10 +222,10 @@
               .user.dummy
                 %img.avatar{src: '/static/image/empty_avatar.png'}
                 .info
-                  .person-name username
-                  .person-title title
+                  .person-name {% trans "username" %}
+                  .person-title {% trans "title" %}
                   .person-rank #={leaderboard_ranks.2}
-                    %span 100 pts.
+                    %span {% trans "100 pts." %}
 
     %hr.hidden
     .user-content.hidden
@@ -236,8 +235,8 @@
         .attribution
           %img{src: 'http://dummyimage.com/50/000/fff&text=User'}
           .person
-            .person-name gwensisco
-            .person-title Media Buyer
+            .person-name {% trans "gwensisco" %}
+            .person-title {% trans "Media Buyer" %}
             %time.label-2{datetime: '2014-07-07T04:00:00.000Z'} JUL 07, 2014 | 3:52PM
       %section.recommendations
         %h1 {% trans "Recommendations" %}

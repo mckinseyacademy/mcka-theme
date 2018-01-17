@@ -1,6 +1,7 @@
+- load i18n
 %header
   %h1
-    = _("Roles for ")
+    {% trans "Roles for " %}
     ={user.username}
   %p.description
     
@@ -22,8 +23,8 @@
 
     %hr
 
-    .sub-1= _("Course specific roles")
-    %p.description= _("Below are the courses this user is enrolled in.")
+    .sub-1 {% trans "Course specific roles" %}
+    %p.description {% trans "Below are the courses this user is enrolled in." %}
 
     %table
       %thead

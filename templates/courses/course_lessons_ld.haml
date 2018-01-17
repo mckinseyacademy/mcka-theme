@@ -1,4 +1,5 @@
 - extends "courses/course_navigation_ld.haml"
+- load i18n
 - load staticfiles
 
 - block header
@@ -18,7 +19,7 @@
       .lesson-title
         %span.label-3.lesson-name= course.current_lesson.name
       %h1
-        %a{'data-reveal-id': 'module_list', "data-tooltip": "Lesson Modules"}
+        %a{'data-reveal-id': 'module_list', "data-tooltip": "{% trans 'Lesson Modules' %}"}
           %i.fa.fa-list-ul
         = course.current_module.name
     - block lesson_content
@@ -27,14 +28,14 @@
     -if tile_type != 'module'
       - include "courses/content_page/lesson_pager_ld.haml"
   #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
-    %p.style-2 You have completed ={course.current_lesson.progress}% of ={course.current_lesson.name}
+    %p.style-2 {% blocktrans %} You have completed ={course.current_lesson.progress}% of ={course.current_lesson.name} {% endblocktrans %}
     %ul
       - for module in course.current_lesson.modules
         %li.lesson-row-item
           %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
           .lesson-item-name
             %a{href: "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}", class: "{% if module.is_current %}current{% endif %}"}
-              Module ={module.index}:
+              {% trans "Module" %} ={module.index}:
             %span= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle

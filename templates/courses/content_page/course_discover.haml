@@ -1,8 +1,9 @@
+- load i18n
 %article#home-discover
-  .sub-2 DISCOVER:
+  .sub-2 {% trans "DISCOVER:" %}
   .wrapper
     %section.articles
-      .label-6 ARTICLES
+      .label-6 {% trans "ARTICLES" %}
       %ul
         - for article in articles
           %li
@@ -17,12 +18,12 @@
             %a{href: "#{article.url}", target: '_blank'}
               %i.fa.fa-arrow-circle-right
     %section.infographic
-      .label-6 INFOGRAPHIC
+      .label-6 {% trans "INFOGRAPHIC" %}
       .infographic-holder
         %a{href: "#{infographic.url}", target: '_blank'}
           %img{src: "#{infographic.thumbnail_url}", alt: "#{infographic.title}"}
       %hr
-      .label-6 ON TWITTER
+      .label-6 {% trans "ON TWITTER" %}
       .tweet
         %a{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}
           %img{src: "#{tweet.thumbnail_url}"}
@@ -34,7 +35,7 @@
               %time.label-3= tweet.display_date
           .tweet-body.label-2= tweet.body|safe
     %section.videos
-      .label-6 VIDEOS
+      .label-6 {% trans "VIDEOS" %}
       %ul
         - for video in videos
           %li

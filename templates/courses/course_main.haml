@@ -1,10 +1,11 @@
 - extends "layout.haml"
 - load staticfiles
+- load i18n
 
 - block page_title
   %title
     = program.display_name
-    = _(" | Courses | McKinsey Academy")
+    {% trans " | Courses | McKinsey Academy" %}
 
 - block content
   #home-courses
@@ -30,8 +31,8 @@
   #beta_visualizations.reveal-modal.large{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    %p This is the McKinsey Academy Beta and we are happy to have you participate ahead of the official public launch!
-    %p As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks.
+    %p {% trans "This is the McKinsey Academy Beta and we are happy to have you participate ahead of the official public launch!" %}
+    %p {% trans "As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks." %}
     .screencap
       %img{src: '/static/image/McKA_home_progress_v12.png'}
 

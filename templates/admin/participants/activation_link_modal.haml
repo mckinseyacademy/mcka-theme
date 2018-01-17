@@ -1,6 +1,7 @@
+- load i18n
 - load staticfiles
 
-	%h2.title= _("Activation Link")
+	%h2.title {% trans "Activation Link" %}
 
 	.close-reveal-modal
 		%i.fa.fa-times-circle
@@ -9,17 +10,17 @@
 		%thead
 			%tr
 				%th
-					Email
+					{% trans "Email" %}
 				%th
-					First name
+					{% trans "First name" %}
 				%th
-					Last name
+					{% trans "Last name" %}
 				%th
-					Company Code
+					{% trans "Company Code" %}
 				%th
-					Activation Link
+					{% trans "Activation Link" %}
 				%th
-					Copy
+					{% trans "Copy" %}
 
 		%tbody
 		- for record in records
@@ -35,7 +36,7 @@
 				%td.activation_link
 						#{record.4}
 				%td.clipboard_button{'style': 'position:relative'}
-					%button.copy-access-key.button.prefix.postfix.radius{type: "button", title: "Copy to clipboard.", "data-clipboard-text": "#{record.4}", "style": 'min-width:100px'}
-            = _("Copy")
-					%span.tooltip{"style": "position:absolute;top:50px;"}= _("Copied to clipboard.")
+					%button.copy-access-key.button.prefix.postfix.radius{type: "button", title: "{% trans 'Copy to clipboard.' %}", "data-clipboard-text": "#{record.4}", "style": 'min-width:100px'}
+            {% trans "Copy" %}
+					%span.tooltip{"style": "position:absolute;top:50px;"} {% trans "Copied to clipboard." %}
 						%span.nub

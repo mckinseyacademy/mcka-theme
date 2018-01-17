@@ -1,11 +1,12 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content
   .admin-list
     .row
       .large-10.large-centered.columns
         %header
-          %h1= _("Manage Roles and Permissions")
+          %h1 {% trans "Manage Roles and Permissions" %}
           .sub-1 
           .add-message
         %hr
@@ -21,18 +22,18 @@
         %section
           %table.data-table
             %thead
-              %th.label-1 User
+              %th.label-1 {% trans "User" %}
                 %span.label-1.asc
                   %i.fa.fa-caret-up
                 %span.label-1.desc
                   %i.fa.fa-caret-down
-              %th.label-1 Roles(s)
+              %th.label-1 {% trans "Roles(s)" %}
                 %span.label-1.asc
                   %i.fa.fa-caret-up
                 %span.label-1.desc
                   %i.fa.fa-caret-down
               %th
-              %th.label-1 Company
+              %th.label-1 {% trans "Company" %}
                 %span.label-1.asc
                   %i.fa.fa-caret-up
                 %span.label-1.desc

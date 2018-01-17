@@ -1,4 +1,5 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 
 - load staticfiles
 - block custom_js
@@ -7,13 +8,13 @@
 - block content
   #mainCertificatesTemplateListContainer
     #certificatesTemplateListTitle
-      %p Certificate Template
+      %p {% trans "Certificate Template" %}
     #certificateTemplateCreateButton
       %a.button.small.radius{href: "{% url 'new_certificate_template' %}"}
-        Create Template
+        {% trans "Create Template" %}
 
       %a.button.small.radius{href: "{% url 'certificate_template_assets' %}"}
-        Create Template Asset
+        {% trans "Create Template Asset" %}
 
     #certificatesTemplateListText
     %hr
@@ -23,10 +24,10 @@
           %table
             %thead
               %tr
-                %th Name
-                %th Description
-                %th Course Id
-                %th Template
+                %th {% trans "Name" %}
+                %th {% trans "Description" %}
+                %th {% trans "Course Id" %}
+                %th {% trans "Template" %}
                 %th
             %tbody
               - for certificate_template in certificate_templates
@@ -37,4 +38,5 @@
                     %td= certificate_template.template
                     %td
                       %a{href: "{% url 'edit_certificate_template' certificate_template.id %}"}
-                        Edit
+                        {% trans "Edit" %}
+

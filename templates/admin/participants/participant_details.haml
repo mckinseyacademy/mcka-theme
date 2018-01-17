@@ -1,4 +1,5 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 - load staticfiles
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
@@ -22,10 +23,12 @@
   #mainParticipantsDetailsWrapper
     - if user.is_company_admin
       .participantDetailsNavigationButton
-        %a.participantDetailsNavigationButtonCompanyAdmin{:href => '#', :target => '_self'}> < Back
+        %a.participantDetailsNavigationButtonCompanyAdmin{:href => '#', :target => '_self'}> <
+          {% trans "Back" %}
     - else
       .participantDetailsNavigationButton
-        %a{:href => '/admin/participants', :target => '_self'}> < Back to Participants
+        %a{:href => '/admin/participants', :target => '_self'}> <
+          {% trans "Back to Participants" %}
     #participantsDetailsDataWrapper{:data-id => '#{id}', :admin-flag => '#{companyAdminFlag}', :internal-flag => '#{internalAdminFlag}', :company-id => '#{companyId}'}
       #participantsTopDetailsContainer
         .row
@@ -36,22 +39,26 @@
               .participantFullName
                 ={full_name}
               .participantLastLogin
-                Last logged in: ={custom_last_login}
+                {% trans "Last logged in:" %} ={custom_last_login}
           .large-2.columns
           .large-3.columns
             - if user.is_company_admin
             - else
-              %input.button.small.radius.participantEnrollInCourse{:type => "button", :value => "Enroll in a Course"}
+              %input.button.small.radius.participantEnrollInCourse{:type => "button", :value => "{% trans 'Enroll in a Course' %}"}
       #participantsMainDetailsContainerView
         .participantDetailsMenuButtons.row
           .participantProfileButton.large-2.columns
-            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsContent', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}>  PROFILE
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsContent', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}>
+              {% trans "PROFILE" %}
           .participantActiveCoursesButton.large-3.columns
-            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsActiveCourses', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> ACTIVE COURSES
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsActiveCourses', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+              {% trans "ACTIVE COURSES" %}
           .participantCourseHistoryButton.large-3.columns
-            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsCourseHistory', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}> COURSE HISTORY
+            %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'participantDetailsCourseHistory', :data-container => '#participantDetailsWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+              {% trans "COURSE HISTORY" %}
           .participantCertificatesButton.large-2.columns
-            %a.hashPageButton{:href => '/admin/participants/#{id}', :target => '_self'}> CERTIFICATES
+            %a.hashPageButton{:href => '/admin/participants/#{id}', :target => '_self'}>
+              {% trans "CERTIFICATES" %}
           .large-2.columns
         %hr
   #participantDetailsWrapper
@@ -59,12 +66,12 @@
       .participantDetailsWrapper
         .row
             .participantDetailsEditText.large-5.columns
-              Participant Details
+              {% trans "Participant Details" %}
             .large-5.columns
             .participantDetailsEditButton.large-2.columns
               - if user.is_company_admin
               - else
-                %input.button.small.radius.participantEditDetails{:type => "button", :value => "Edit"}
+                %input.button.small.radius.participantEditDetails{:type => "button", :value => "{% trans 'Edit' %}"}
         - if user.is_company_admin
           - else
             - if has_activation_record
@@ -72,25 +79,27 @@
                 .row
                   .large-12.columns.participantBottomArchiveEdit
                     %p.error
-                      &ast; This user has not yet activated their account.
-                    %a.button.small.radius.participantActivation{"data-reveal-id": "activation-link-modal", "data-reveal-ajax": '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}&res_type=html', 'href': ""}> Get Activation Link
-                    %a.button.small.radius.participantActivation.cancelbutton{:href => '/admin/participants/#{id}/resend_activation_link', :target => '_self'}> Resend Activation Link
+                      {% blocktrans %}&ast; This user has not yet activated their account. {% endblocktrans %}
+                    %a.button.small.radius.participantActivation{"data-reveal-id": "activation-link-modal", "data-reveal-ajax": '/admin/api/participants/import_participants/download_activation_links/?user_id=#{id}&res_type=html', 'href': ""}>
+                      {% trans "Get Activation Link" %}
+                    %a.button.small.radius.participantActivation.cancelbutton{:href => '/admin/participants/#{id}/resend_activation_link', :target => '_self'}>
+                      {% trans "Resend Activation Link" %}
         .row
           .large-6.columns.participantFirstName
             .participantFirstNameLabel.labelUniversal
-              First Name
+              {% trans "First Name" %}
             .participantFirstNameValue
               ={first_name}
           .large-6.columns.participantLastName
             .participantLastNameLabel.labelUniversal
-              Last Name
+              {% trans "Last Name" %}
             .participantLastNameValue
               ={last_name}
         %hr
         .row
           .large-6.columns.participantUsername
             .participantUsernameLabel.labelUniversal
-              Username
+              {% trans "Username" %}
             .participantUsernameValue
               - if is_active
                 ={username}
@@ -99,18 +108,18 @@
           .large-6.columns.participantEmail
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
-                Email
+                {% trans "Email" %}
               - if user.is_company_admin
               - else
                 .participantEmailReset.inlineBlock
-                  %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
+                  %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> {% trans "Send reset password email" %}
             .participantEmailValue
               ={email}
         %hr
         .row
           .large-6.columns.participantCompany
             .participantCompanyLabel.labelUniversal
-              Company
+              {% trans "Company" %}
             .participantCompanyValue
               - if user.is_internal_admin
                 %a.disabledATag{:href => '/admin/companies/#{company_id}', :data-id => '#{company_id}'}>
@@ -120,20 +129,20 @@
                   ={company_name}
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
-              Gender
+              {% trans "Gender" %}
             .participantGenderValue
               - if is_active
                 - if gender == 'M'
-                  Male
+                  {% trans "Male" %}
                 - if gender == 'F'
-                  Female
+                  {% trans "Female" %}
               - else
                 &#8212;
         %hr
         .row
           .large-6.columns.participantLocation
             .participantLocationLabel.labelUniversal
-              Location
+              {% trans "Location" %}
             .participantLocationValue{:title => '#{location}'}
               - if is_active
                 ={location}
@@ -141,7 +150,7 @@
                 &#8212;
           .large-6.columns.participantPermissions
             .participantPermissionsLabel.labelUniversal
-              Admin Permissions
+              {% trans "Admin Permissions" %}
             .participantPermissionsValue
               - for mcka_permission in mcka_permissions
                 - if mcka_permission == '-'
@@ -152,7 +161,7 @@
         - else
           .row
             .large-12.columns.participantBottomArchiveEdit
-              %input.button.small.radius.participantArchive{:type => "button", :value => "Archive Participant"}
+              %input.button.small.radius.participantArchive{:type => "button", :value => "{% trans 'Archive Participant' %}"}
               %input.button.small.round.participantArchiveHelp{:type => "button", :value => "?"}
 
       %form.participantDetailsEditForm{:style => "display: none"}
@@ -160,123 +169,136 @@
         .row
           .large-6.columns.participantFirstName
             .participantFirstNameLabel.labelUniversal
-              First Name<sup>*</sup>
+              {% blocktrans %} First Name<sup>*</sup> {% endblocktrans %}
             .participantFirstNameValue
               %input{:type => "text", :value => '#{first_name}', :name => "first_name", :maxlength => "30"}
           .large-6.columns.participantLastName
             .participantLastNameLabel.labelUniversal
-              Last Name<sup>*</sup>
+              {% blocktrans %} Last Name<sup>*</sup> {% endblocktrans %}
             .participantLastNameValue
               %input{:type => "text", :value => '#{last_name}', :name => "last_name", :maxlength => "30"}
         .row
           .large-6.columns.participantUsername
             .participantUsernameLabel.labelUniversal
-              Username
+              {% trans "Username" %}
               .fa.fa-check-circle-o.checkMark
             .participantUsernameValue
               %input{:type => "text", :value => '#{username}', :name => "username", :maxlength => "30", :onkeyup => 'validateParticipantUsername()', :class => 'participantUsernameInput'}
               .warningText
-                %p That username is already taken
+                %p {% trans "That username is already taken" %}
           .large-6.columns.participantEmail
             .participantEmailLabelContainer.labelUniversal
               .participantEmailLabel.inlineBlock
-                Email<sup>*</sup>
+                {% blocktrans %}Email<sup>*</sup> {% endblocktrans %}
               .fa.fa-check-circle-o.checkMark
               .participantEmailReset.inlineBlock
-                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> Send reset password email
+                %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}>
+                  {% trans "Send reset password email" %}
             .participantEmailValue
               %input{:type => "text", :value => '#{email}', :name => "email", :maxlength => "60", :onkeyup => 'validateParticipantEmail()', :class => 'participantEmailInput'}
               .warningText
-                %p That email is already taken
+                %p {% trans "That email is already taken" %}
         .row
           .large-6.columns.participantCompany
             .participantCompanyLabel.labelUniversal
-              Company<sup>*</sup>
+              {% blocktrans %} Company<sup>*</sup> {% endblocktrans %}
             .participantCompanyValue
               %input{:type => "text", :value => '#{company_name}', :data-id => '#{company_id}', :name => "company", :maxlength => "60", :data-old-id => '#{company_id}'}
               %i.fa.fa-check-circle-o.correctInput
               .newCompanyCreationPopup
-                Since this company does not yet exist, a new company will be created. If this is an error, try selecting your company from the type-ahead results.
+                {% trans "Since this company does not yet exist, a new company will be created. If this is an error, try selecting your company from the type-ahead results." %}
               .errorMessage
           .large-6.columns.participantPermissions
             .participantPermissionsLabel.labelUniversal
-              Permissions
+              {% trans "Permissions" %}
             .participantPermissionsValue
               %select{:name => "company_permissions", :data-old-permission => '#{company_permission}'}
                 - if company_permission == "none"
-                  %option{:value => "none", :selected => "selected"} None
+                  %option{:value => "none", :selected => "selected"}
+                    {% trans "None" %}
                 - else
-                  %option{:value => "none"} None
+                  %option{:value => "none"}
+                    {% trans "None" %}
                 - if user.is_mcka_admin
                   - if company_permission == "uber_admin"
-                    %option{:value => "uber_admin", :selected => "selected"} Uber admin
+                    %option{:value => "uber_admin", :selected => "selected"}
+                      {% trans "Uber admin" %}
                   - else
-                    %option{:value => "uber_admin"} Uber admin
+                    %option{:value => "uber_admin"}
+                      {% trans "Uber admin" %}
                 - if user.is_mcka_admin or user.is_mcka_subadmin
                   - if company_permission == "course_ops"
-                    %option{:value => "course_ops", :selected => "selected"} Course ops admin
+                    %option{:value => "course_ops", :selected => "selected"} {% trans "Course ops admin" %}
                   - else
-                    %option{:value => "course_ops"} Course ops admin
+                    %option{:value => "course_ops"}
+                      {% trans "Course ops admin" %}
                 - if company_permission == "internal_admin"
-                  %option{:value => "internal_admin", :selected => "selected"} Internal Admin
+                  %option{:value => "internal_admin", :selected => "selected"}
+                    {% trans "Internal Admin" %}
                 - else
-                  %option{:value => "internal_admin"} Internal Admin
+                  %option{:value => "internal_admin"}
+                    {% trans "Internal Admin" %}
         .row
           .large-6.columns.participantCountry
             .participantCountryLabel.labelUniversal
-              Country Abbreviation
+              {% trans "Country Abbreviation" %}
             .participantCountryValue
               %input{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2"}
               %input{:type => "hidden", :id =>'country_edit_code', :name => "country", :maxlength => "2"}
           .large-6.columns.participantCity
             .participantCityLabel.labelUniversal
-              City
+              {% trans "City" %}
             .participantCityValue
               %input{:type => "text", :value => '#{city}', :name => "city", :maxlength => "60"}
         .row
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
-              Gender
+              {% trans "Gender" %}
             .participantGenderValue
               %select{:name => "gender"}
                 - if gender == 'M'
-                  %option{:value => "M", :selected => 'True'} Male
-                  %option{:value => "F"} Female
-                  %option{:value => ""} N/A
+                  %option{:value => "M", :selected => 'True'} {% trans "Male" %}
+                  %option{:value => "F"} {% trans "Female" %}
+                  %option{:value => ""} {% trans "N/A" %}
 
                 - elif gender == 'F'
-                  %option{:value => "M"} Male
-                  %option{:value => "F", :selected => 'True'} Female
-                  %option{:value => ""} N/A
+                  %option{:value => "M"} {% trans "Male" %}
+                  %option{:value => "F", :selected => 'True'} {% trans "Female" %}
+                  %option{:value => ""} {% trans "N/A" %}
 
                 - else
-                  %option{:value => "M"} Male
-                  %option{:value => "F"} Female
-                  %option{:value => "", :selected => 'True'} N/A
+                  %option{:value => "M"} {% trans "Male" %}
+                  %option{:value => "F"} {% trans "Female" %}
+                  %option{:value => "", :selected => 'True'} {% trans "N/A" %}
 
         %hr
         - if user.is_mcka_admin or user.is_mcka_subadmin
           .companyAdminRolesContainer
           .addAnotherCompanyToAdminister.companyAdminControles
-            %a{:href => '#', :target => '_self'}> + Add another company
+            %a{:href => '#', :target => '_self'}> +
+              {% trans "Add another company" %}
           .refreshCompanyToAdminister.companyAdminControles
-            %a{:href => '#', :target => '_self'}> Refresh
+            %a{:href => '#', :target => '_self'}>
+              {% trans "Refresh" %}
           %hr
         .row
           .large-12.columns.participantBottomSaveEdit
             .button.small.radius.disabled.participantDetailsSave
-              Save Changes
-            %a.cancelParticipantEdit{:href => '#', :target => '_self'}> Cancel
+              {% trans "Save Changes" %}
+            %a.cancelParticipantEdit{:href => '#', :target => '_self'}>
+              {% trans "Cancel" %}
 
     .participantDetailsActiveCourses.contentNavigationContainer{:style => "display: none"}
       #participantDetailsActiveCoursesViewGrid.large-12.columns
       #activeCoursesExportStatsButton
-        %a.button.radius.small{:href => '/admin/api/participants/#{id}/active_courses/export_stats', :download => 'active_courses_stats'}> Export Stats
+        %a.button.radius.small{:href => '/admin/api/participants/#{id}/active_courses/export_stats', :download => 'active_courses_stats'}>
+          {% trans "Export Stats" %}
 
     .participantDetailsCourseHistory.contentNavigationContainer{:style => "display: none"}
       #participantDetailsCourseHistoryViewGrid.large-12.columns
       #courseHistoryExportStatsButton
-        %a.button.radius.small{:href => '/admin/api/participants/#{id}/course_history/export_stats', :target => '_self'}> Export Stats
+        %a.button.radius.small{:href => '/admin/api/participants/#{id}/course_history/export_stats', :target => '_self'}>
+          {% trans "Export Stats" %}
 
   #participantDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
     %h2.modalTitle
@@ -289,12 +311,12 @@
 
   #unenroll-user-modal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
     %h2.modalTitle
-    Are you sure you want to unenroll this user?
+    {% trans "Are you sure you want to unenroll this user?" %}
     %p.lead
     %p.mainText
       %br
-      %button.okbutton.button.radius.small{:value => 'ok'}> Ok
-      %button.cancelbutton.button.radius.small.close-reveal-modal.close-modal-inline{:value => 'cancel'}> Cancel
+      %button.okbutton.button.radius.small{:value => 'ok'}> {% trans "Ok" %}
+      %button.cancelbutton.button.radius.small.close-reveal-modal.close-modal-inline{:value => 'cancel'}> {% trans "Cancel" %}
     %p
       .error
     %a.close-reveal-modal{"aria-label" => "Close"}
@@ -310,7 +332,7 @@
     .participantModalContent
     .participantModalControl
       .button.saveChanges
-        Save Changes
-      %a.cancelChanges{:href => "#"} Cancel
+        {% trans "Save Changes" %}
+      %a.cancelChanges{:href => "#"} {% trans "Cancel" %}
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-03 13:17+0000\n"
+"POT-Creation-Date: 2018-01-17 07:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,22 +19,227 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: static/gen/packed.js:38934 static/gen/packed_ie8.js:1543
+#: static/gen/packed.js:32180 static/gen/packed_ie8.js:722
+#: static/js/vendor/jquery-ui.min.js:10 static_cache/gen/packed.js:32180
+#: static_cache/gen/packed_ie8.js:722
+#: static_cache/js/vendor/jquery-ui.min.js:10 static_cache/packed.js:32180
+#: static_cache/packed_ie8.js:722
+msgid "'"
+msgstr ""
+
+#: static/gen/packed.js:40566 static/gen/packed_ie8.js:1753
 #: static/js/views/admin/courses_list.js:13
 msgid "Course Name"
 msgstr ""
 
-#: static/gen/packed.js:38944 static/gen/packed_ie8.js:1544
+#: static/gen/packed.js:40576 static/gen/packed_ie8.js:1754
 #: static/js/views/admin/courses_list.js:23
 msgid "Course ID"
 msgstr ""
 
-#: static/gen/packed.js:38945 static/gen/packed_ie8.js:1544
+#: static/gen/packed.js:40577 static/gen/packed_ie8.js:1754
 #: static/js/views/admin/courses_list.js:24
 msgid "Start"
 msgstr ""
 
-#: static/gen/packed.js:38954 static/gen/packed_ie8.js:1545
+#: static/gen/packed.js:40586 static/gen/packed_ie8.js:1755
 #: static/js/views/admin/courses_list.js:33
 msgid "End"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:45
+#, javascript-format
+msgid "Available %s"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:46
+#, javascript-format
+msgid ""
+"This is the list of available %s. You may choose some by selecting them in "
+"the box below and then clicking the \"Choose\" arrow between the two boxes."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:53
+#, javascript-format
+msgid "Type into this box to filter down the list of available %s."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:57
+msgid "Filter"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:61
+msgid "Choose all"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:61
+#, javascript-format
+msgid "Click to choose all %s at once."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:67
+msgid "Choose"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:69
+msgid "Remove"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:75
+#, javascript-format
+msgid "Chosen %s"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:76
+#, javascript-format
+msgid ""
+"This is the list of chosen %s. You may remove some by selecting them in the "
+"box below and then clicking the \"Remove\" arrow between the two boxes."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:80
+msgid "Remove all"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:80
+#, javascript-format
+msgid "Click to remove all chosen %s at once."
+msgstr ""
+
+#: static_cache/admin/js/actions.js:22 static_cache/admin/js/actions.min.js:1
+msgid "%(sel)s of %(cnt)s selected"
+msgid_plural "%(sel)s of %(cnt)s selected"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: static_cache/admin/js/actions.js:114 static_cache/admin/js/actions.min.js:4
+msgid ""
+"You have unsaved changes on individual editable fields. If you run an "
+"action, your unsaved changes will be lost."
+msgstr ""
+
+#: static_cache/admin/js/actions.js:126 static_cache/admin/js/actions.min.js:5
+msgid ""
+"You have selected an action, but you haven't saved your changes to "
+"individual fields yet. Please click OK to save. You'll need to re-run the "
+"action."
+msgstr ""
+
+#: static_cache/admin/js/actions.js:128 static_cache/admin/js/actions.min.js:5
+msgid ""
+"You have selected an action, and you haven't made any changes on individual "
+"fields. You're probably looking for the Go button rather than the Save "
+"button."
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:79
+#, javascript-format
+msgid "Note: You are %s hour ahead of server time."
+msgid_plural "Note: You are %s hours ahead of server time."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:87
+#, javascript-format
+msgid "Note: You are %s hour behind server time."
+msgid_plural "Note: You are %s hours behind server time."
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+msgstr[4] ""
+msgstr[5] ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:114
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:149
+msgid "Now"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:118
+msgid "Clock"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:146
+msgid "Choose a time"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:150
+msgid "Midnight"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:151
+msgid "6 a.m."
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:152
+msgid "Noon"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:156
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:276
+msgid "Cancel"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:216
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:269
+msgid "Today"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:220
+msgid "Calendar"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:267
+msgid "Yesterday"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:271
+msgid "Tomorrow"
+msgstr ""
+
+#: static_cache/admin/js/calendar.js:8
+msgid ""
+"January February March April May June July August September October November "
+"December"
+msgstr ""
+
+#: static_cache/admin/js/calendar.js:9
+msgid "S M T W T F S"
+msgstr ""
+
+#: static_cache/admin/js/collapse.js:8 static_cache/admin/js/collapse.js:19
+#: static_cache/admin/js/collapse.min.js:1
+msgid "Show"
+msgstr ""
+
+#: static_cache/admin/js/collapse.js:16 static_cache/admin/js/collapse.min.js:1
+msgid "Hide"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "radio"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "checkbox"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "file"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "password"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "image"
 msgstr ""

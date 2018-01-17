@@ -1,7 +1,9 @@
 - extends "courses/course_navigation.haml"
+- load i18n
+
 - block current_content
   #course-syllabus
-    %h1 Syllabus
+    %h1 {% trans "Syllabus" %}
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     %section

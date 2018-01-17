@@ -1,9 +1,11 @@
 - extends "layout.haml"
 - load staticfiles
+- load i18n
+
 - block page_title
   %title
     = program.display_name
-    = _(" | Resources | McKinsey Academy")
+    {% trans " | Resources | McKinsey Academy" %}
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block content

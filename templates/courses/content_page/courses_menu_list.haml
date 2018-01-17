@@ -1,16 +1,17 @@
+- load i18n
 %ul.courses
   - for program_course in courses
     %li
       - if program_course.ended
         %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
           = program_course.name
-        .status= _("Archived")
+        .status {% trans "Archived" %}
       - elif program_course.started
         %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
           = program_course.name
-        .status= _("In Progress")
+        .status {% trans "In Progress" %}
       - else
         .course-name.unavailable{'data-numdays': '#{program_course.days_till_start}'}
           = program_course.name
         .status.unavailable{'data-numdays': '#{program_course.days_till_start}'}
-          = _("Coming Soon")
+          {% trans "Coming Soon" %}

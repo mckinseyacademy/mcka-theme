@@ -1,14 +1,15 @@
+- load i18n
 - block edit_profile_image
   .change_profile_form
     %form#cropping-form{'action': '/accounts/user_profile/image/edit', 'method': 'POST'}
       %label.label-10
         %span.label-5
-          STEP 2:
-        CROP & SAVE
+          {% trans "STEP 2:" %}
+        {% trans "CROP & SAVE" %}
       %hr
       - csrf_token
       %p
-        Drag and adjust cropping tool to edit you profile image.
+        {% trans "Drag and adjust cropping tool to edit you profile image." %}
       .img-container
           %img.user-uploaded-image{'src': "#{profile_image}", 'onload': "this.parentNode.style.visibility = \"visible\""}
       .img-preview
@@ -19,4 +20,4 @@
       %input.x1-position{'type': 'hidden', 'name': 'x1-position'}
       %input.y1-position{'type': 'hidden', 'name': 'y1-position'}
       %br
-      %input.crop-save-image.button.small.radius.right{'type': 'submit', 'value': 'Crop & Save', 'disabled': 'disabled'}
+      %input.crop-save-image.button.small.radius.right{'type': 'submit', 'value': '{% trans "Crop & Save" %}', 'disabled': 'disabled'}

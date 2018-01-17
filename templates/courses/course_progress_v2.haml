@@ -1,9 +1,10 @@
 - extends "courses/course_navigation.haml"
+- load i18n
 
 - block page_title
   %title
     = program.display_name
-    = _(" | Progress | Courses | McKinsey Academy")
+    {% trans " | Progress | Courses | McKinsey Academy" %}
 
 - block header
   - if progress_user.id == user.id
@@ -15,26 +16,26 @@
   %article#course-progress-v2.row
     .medium-11.large-10.medium-centered.columns.course-page
       %h1 Dashboard for '={progress_user.username}'
-      .label-5 PROGRESS
-      %p.style-6 You are ={course.user_progress}% of the way through the course based on completion of modules within lessons. The cohort average is ={average_progress}%.
+      .label-5 {% trans "PROGRESS" %}
+      %p.style-6 {% blocktrans %} You are ={course.user_progress}% of the way through the course based on completion of modules within lessons. The cohort average is  ={average_progress}%. {% endblocktrans %}
       %table.user-progress
         %thead
           %tr
-            %th # Modules:
-            %th Overall:
+            %th # {% trans "Modules:" %}
+            %th {% trans "Overall:" %}
         %tbody
           %tr
-            %td <span>={course.module_count}</span> in this course
+            %td <span>={course.module_count}</span> {% trans "in this course" %}
             %td.visual
               - include "courses/visualizations/course_progress.haml"
       %table
         %thead{class: "{% if course.is_evergreen %}col-2{% endif %} {% if not feature_flags.group_work %}no-group-work{% endif %}"}
           %tr
             - if not course.is_evergreen
-              %th Course Run:
-            %th Individual Learning:
+              %th {% trans "Course Run:" %}
+            %th {% trans "Individual Learning:" %}
             - if feature_flags.group_work and course.has_group_work
-              %th Group Work (Due Date):
+              %th {% trans "Group Work (Due Date):" %}
         %tbody
           - for week in course.lessons_by_week
             %tr
@@ -45,18 +46,18 @@
                     ={week.start}-={week.end}
               %td
                 - if feature_flags.group_work and week.group_only
-                  %div N/A (focus on Group Work)
+                  %div {% trans "N/A (focus on Group Work)" %}
                 - for lesson in week.lessons
                   %div{class: "lesson-with-list lesson-row-item {% if lesson.is_started %}active{% else %}future{% endif %}"}
                     %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
                     .lesson-item-name
                       %a{href: "#{lesson.navigation_url}"}
-                        Lesson ={lesson.index}:
+                        {% trans "Lesson" %} ={lesson.index}:
                       ={lesson.name}
-                    %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "Lesson Modules"}
+                    %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "{% trans 'Lesson Modules' %}"}
                       %i.fa.fa-list-ul
                     %div.reveal-modal.tiny.lesson-modules-modal{'id': "module_list-#{lesson.index}", 'data-reveal': True}
-                      %p.style-2 You have completed ={lesson.progress}% of Lesson ={lesson.index}:
+                      %p.style-2 {% blocktrans %}You have completed ={lesson.progress}% of Lesson ={lesson.index}: {% endblocktrans %}
                       %ul
                         - for module in lesson.modules
                           %li.lesson-row-item
@@ -81,26 +82,26 @@
                   - if course.has_group_work
                     %td.empty
       .legend-status
-        .label-3 <i class="status fa fa-circle"></i> not started
-        .label-3 <i class="status fa fa-circle partial"></i> partially complete
-        .label-3 <i class="status fa fa-check-circle complete"></i> complete
+        .label-3 <i class="status fa fa-circle"></i> {% trans "not started" %}
+        .label-3 <i class="status fa fa-circle partial"></i> {% trans "partially complete" %}
+        .label-3 <i class="status fa fa-check-circle complete"></i> {% trans "complete" %}
       - if course_run and feature_flags.group_work
-        %p.style-6 Note: Group Work Deliverables need to be submitted by 11pm GMT.
+        %p.style-6 {% trans "Note: Group Work Deliverables need to be submitted by 11pm GMT." %}
       - if not course_run
         - if feature_flags.group_work
-          %p.style-6 Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.
+          %p.style-6 {% trans 'Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.' %}
         - else
-          %p.style-6 Note: "weeks" begin Tuesday and end the following Monday
+          %p.style-6 {% trans 'Note: "weeks" begin Tuesday and end the following Monday' %}
     - if feature_flags.proficiency and graded_items_count > 0
       .medium-11.large-10.medium-centered.columns.course-page
-        .label-5 PROFICIENCY
-        %p.style-6 Your current proficiency score is ={proficiency}% following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}%.
+        .label-5 {% trans "PROFICIENCY" %}
+        %p.style-6 {% blocktrans %} Your current proficiency score is ={proficiency}% following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}%. {% endblocktrans %}
         %table
           %thead
             %tr
-              %th Overall:
-              %th Graded Items:
-              %th Grade:
+              %th {% trans "Overall:" %}
+              %th {% trans "Graded Items:" %}
+              %th {% trans "Grade:" %}
           %tbody
             %tr
               %td.visual{rowspan: "#{graded_items_rows}"}
@@ -122,7 +123,8 @@
                       .lesson-row-item
                         %i.status.fa.fa-check-circle.complete
                         .lesson-item-name
-                          %a{href: "#{activity.link}"} Group Work:
+                          %a{href: "#{activity.link}"}
+                            {% trans "Group Work:" %}
                           ={activity.name}
                     - ifequal activity.score None
                       %td.number.zero 0
@@ -134,48 +136,50 @@
                       .lesson-row-item
                         %i.status.fa.fa-circle
                         .lesson-item-name
-                          %a{href: "#{activity.link}"} Group Work:
+                          %a{href: "#{activity.link}"}
+                            {% trans "Group Work:" %}
                           ={activity.name}
                     - if activity.is_pending
-                      %td Grading in progress
+                      %td {% trans "Grading in progress" %}
                     - else
                       %td.number.zero 0
         .legend-status
-          .label-3 <i class="status fa fa-circle"></i> not started / incomplete
-          .label-3 <i class="status fa fa-check-circle complete"></i> complete
-        %p.style-6 You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: ={graders}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+          .label-3 <i class="status fa fa-circle"></i> {% trans "not started / incomplete" %}
+          .label-3 <i class="status fa fa-check-circle complete"></i> {% trans "complete" %}
+        %p.style-6 {% blocktrans %} You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: ={graders}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information. {% endblocktrans %}
     - if feature_flags.discussions
       .medium-10.medium-centered.columns.course-page
-        .label-5 ENGAGEMENT
-        %p.style-6 Your current engagement score is ={social.points} based on your social interactions with other participants in your cohort in the <a href="#{course.nav_url}/discussion">discussion</a> forums. The cohort average is ={social.course_avg}.
+        .label-5 {% trans "ENGAGEMENT" %}
+        %p.style-6 {% blocktrans %}Your current engagement score is ={social.points} based on your social interactions with other participants in your cohort in the <a href="#{course.nav_url}/discussion">discussion</a> forums. The cohort average is ={social.course_avg}. {% endblocktrans %}
         %table
           %thead
             %tr
-              %th Overall:
-              %th Measured Engagement:
-              %th Stats:
+              %th {% trans "Overall:" %}
+              %th {% trans "Measured Engagement:" %}
+              %th {% trans "Stats:" %}
           %tbody
             %tr
               %td.visual{rowspan: 5}
                 - include "courses/visualizations/course_engagement.haml"
-              %td Number of <span>New Posts</span> you created
+              %td {% blocktrans %}Number of <span>New Posts</span> you created {% endblocktrans %}
               %td.number{class: "{% if social.metrics.num_threads == 0 %}zero{% endif %}"}= social.metrics.num_threads
             %tr
-              %td Number of <span>Replies</span> you made to other posts
+              %td {% blocktrans %}Number of <span>Replies</span> you made to other posts {% endblocktrans%}
               %td.number{class: "{% if total_replies == 0 %}zero{% endif %}"}= total_replies
             %tr
-              %td Number of <span>Comments Generated </span> by your posts
+              %td {% blocktrans %} Number of <span>Comments Generated </span> by your posts {% endblocktrans %}
               %td.number{class: "{% if social.metrics.num_comments_generated == 0 %}zero{% endif %}"}= social.metrics.num_comments_generated
             %tr
-              %td Number of <span>Upvotes</span> your posts have received
+              %td {% blocktrans %} Number of <span>Upvotes</span> your posts have received {% endblocktrans %}
               %td.number{class: "{% if social.metrics.num_upvotes == 0 %}zero{% endif %}"}= social.metrics.num_upvotes
             %tr
-              %td Number of your posts being <span>Followed</span>
+              %td {% blocktrans %} Number of your posts being <span>Followed</span> {% endblocktrans %}
               %td.number{class: "{% if social.metrics.num_thread_followers == 0 %}zero{% endif %}"}= social.metrics.num_thread_followers
 
   #progress_modal.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
     %p
-      If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our
-      %a{href: '/privacy'} privacy policy.
+      {% trans "If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our" %}
+      %a{href: '/privacy'}
+        {% trans "privacy policy." %}

@@ -1,3 +1,4 @@
+- load i18n
 %input#notes-expand{type: 'checkbox'}
 #lesson-notes
   %nav
@@ -15,7 +16,7 @@
         %a.notes-sort.on{'data-field': 'lesson'}
           %i.fa.fa-list-ol
     %form.notes-search
-      %input{type: 'search', placeholder: 'Search your notes'}
+      %input{type: 'search', placeholder: '{% trans "Search your notes" %}'}
       %input{type: 'submit', value: '&#xf002;'}
   .notes-area
     .notes-inner
@@ -23,7 +24,7 @@
       %form.notes-entry{action: "/courses/#{course_id}/lessons/#{course.current_lesson.id}/notes/", method: 'POST'}
         - csrf_token
         %input{type: 'hidden', name: 'module_id', value: "#{course.current_module.id}"}
-        %textarea.notes-input{name: 'body', placeholder: 'Enter course notes&hellip;'}
+        %textarea.notes-input{name: 'body', placeholder: '{% trans "Enter course notes&hellip;" %}'}
         %input{type: 'submit'}
   .notes-resize
     %i.fa.fa-sort

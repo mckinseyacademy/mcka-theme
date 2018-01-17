@@ -1,26 +1,27 @@
 - extends "courses/course_navigation.haml"
+- load i18n
 
 - block page_title
   %title
     = program.display_name
-    = _(" | Announcements | Courses | McKinsey Academy")
+    {% trans " | Announcements | Courses | McKinsey Academy" %}
 
 - block help_context
   #mckinsey_help.reveal-modal.small{'data-reveal': None}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    .sub-1 Announcements, Course Overview, and Resources
-    %p Below are helpful tips to view course materials (which include announcements, course overview, and resources). You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you.
-    .help-line Access Announcements, Course Overview, and Resources from the <i class="fa fa-file-text-o"></i> icon in the main navigation bar.
-    .help-line ANNOUNCEMENTS provides course news and events in a blog format
-    .help-line COURSE OVERVIEW details what you will learn and provides faculty information; it also includes a course calendar to guide your pace through the course and alert you to key deadlines
-    .help-line RESOURCES provides key takeaways and frameworks from each lesson, as well as supplemental readings and videos
-    .help-line This video walks you through the learner experience:
+    .sub-1 {% trans "Announcements, Course Overview, and Resources" %}
+    %p {% blocktrans %} Below are helpful tips to view course materials (which include announcements, course overview, and resources). You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+    .help-line {% blocktrans %} Access Announcements, Course Overview, and Resources from the <i class="fa fa-file-text-o"></i> icon in the main navigation bar. {% endblocktrans %}
+    .help-line {% trans "ANNOUNCEMENTS provides course news and events in a blog format" %}
+    .help-line {% trans "COURSE OVERVIEW details what you will learn and provides faculty information; it also includes a course calendar to guide your pace through the course and alert you to key deadlines" %}
+    .help-line {% trans "RESOURCES provides key takeaways and frameworks from each lesson, as well as supplemental readings and videos" %}
+    .help-line {% trans "This video walks you through the learner experience:" %}
     #mk-help-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
 
 - block current_content
   #course-news
-    %h1 Announcements
+    %h1 {% trans "Announcements" %}
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     - if news
@@ -33,4 +34,4 @@
         %hr
     - else
       .no-news
-        = _("No announcements have been posted yet.")
+        {% trans "No announcements have been posted yet." %}
