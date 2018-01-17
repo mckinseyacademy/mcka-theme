@@ -57,12 +57,11 @@
   .course_nav {
     @include clearfix;
     .course-tabs {
-      float: none;
       margin: 0;
       list-style-type: none;
-      text-align: center;
-      @media only screen and (min-width: 768px){
-        float: right;
+      @include mobile{
+        text-align: center;
+        float: none !important;
       }
 
       li {
@@ -170,8 +169,6 @@
   }
 
   .program-menu {
-    float: left;
-
     .fa {
       font-size: rem-calc($program-menu-size);
       margin: $program-bar-topbottom-margin 10px;

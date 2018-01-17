@@ -1,1 +1,42 @@
-// CSS related to internationlization work goes here
+// Bi-App-Sass for APROS
+// Define SASS in LTR abd Bi-App-Sass will automatically write respective RTL
+
+@import "mixins";
+
+body{
+  &.with-program{
+    header {
+      .logo {
+        @include float(left);
+      }
+      nav {
+        @include float(left);
+      }
+      .user-info {
+        @include float(right);
+      }
+    }
+    .program-bar{
+      [class*="column"]{
+        @include float(left);
+        + [class*="column"]{
+          &:last-child{
+            @include float(right);
+          }
+        }
+      }
+      .program-menu{
+        @include float(left);
+      }
+      .course_nav{
+        .course-tabs{
+          @include float(right);
+          @include text-align(right);
+          @include mobile{
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}

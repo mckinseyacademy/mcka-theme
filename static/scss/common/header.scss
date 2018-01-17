@@ -19,7 +19,6 @@ header[role=banner].background-blue {
   }
 
   nav {
-    float: left;
     height: 100%;
 
     ul {
@@ -116,14 +115,10 @@ header[role=banner].background-blue {
 
   .user-info {
     cursor: pointer;
-    float: right;
     color: $user-text;
     @include font-spec(10, bold, 12);
     text-align: right;
     $drop_down_offset: 3px;
-    position: fixed;
-    top: 0;
-    right: 0;
     @media #{$large-up}{
       position: inherit;
       top: inherit;
