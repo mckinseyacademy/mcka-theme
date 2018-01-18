@@ -27,7 +27,7 @@ Apros.models.City = Backbone.Model.extend({
     var geoJson = {
       type: 'Feature',
       properties: {
-        popup: '<div class="city-name">' + this.name() + '<div><div class="city-participants">Participants: ' + this.size() + '</div>',
+        popup: '<div class="city-name">' + this.name() + '<div><div class="city-participants">' + gettext('Participants:')  + this.size() + '</div>',
         circle: {
           color: '#3384CA',
           fillColor: '#3384CA',
@@ -68,7 +68,7 @@ Apros.models.City = Backbone.Model.extend({
     }
 
     if (isTA) {
-      geoJson.properties.popup += '<br><a href="#" data-reveal-id="contact-ta">Email</a>';
+      geoJson.properties.popup += '<br><a href="#" data-reveal-id="contact-ta">'+gettext("Email")+'</a>';
     }
 
     return geoJson;

@@ -105,28 +105,30 @@ $(function() {
                         tooltipHTML += '</br> </div>';
                         return tooltipHTML;
                         break;
-                    case '2' :
-                    case '3' :
-                    case '4' :
+                    case '2':
+                    case '3':
+                    case '4':
                         if (this.point.track_progress){
-                            tooltipHTML += "Your progress: " + this.point.user_progress + "%" + '</br> </div>';
+                            var progressValue = {'value': this.point.user_progress;}
+                            var progressText = gettext('Your Progress: %(value)s%');
+                            tooltipHTML += interpolate(progressText,progressValue,true) + '</br> </div>';
                         } else {
                             tooltipHTML += '</div>';
                         }
                         return tooltipHTML;
                         break;
-                    case '5' :
+                    case '5':
                         if (this.point.track_progress){
                             tooltipHTML += '</br>'
-                                + (this.point.user_progress == 100 ? "Complete" :"Incomplete")
+                                + (this.point.user_progress == 100 ? gettext("Complete") :gettext("Incomplete"))
                                 + '</div>';
                         } else {
                             tooltipHTML += '</div>';
                         }
                         return tooltipHTML;
                         break;
-                    case '6' :
-                    case '7' :
+                    case '6':
+                    case '7':
                         tooltipHTML += '</div>';
                         return tooltipHTML;
                         break;
@@ -171,7 +173,7 @@ $(function() {
         },
 
         series: [{
-            name: 'In Person Session',
+            name: gettext('In Person Session'),
             borderRadius: 24,
             data: dataIPS,
             minPointLength: 48,
@@ -190,7 +192,7 @@ $(function() {
             }
         },
         {
-            name: 'Digital Course',
+            name: gettext('Digital Course'),
             borderRadius: 18,
             pointWidth: 48,
             data: dataCourse,
@@ -215,7 +217,7 @@ $(function() {
             }
         },
         {
-            name: 'Group work',
+            name: gettext('Group work'),
             data: dataGroup,
             borderRadius: 24,
             minPointLength: 48,
@@ -234,7 +236,7 @@ $(function() {
             }
         },
         {
-            name: 'Webinar',
+            name: gettext('Webinar'),
             data: dataWeb,
             borderRadius: 24,
             minPointLength: 48,
@@ -253,7 +255,7 @@ $(function() {
             }
         }, 
         {
-            name: "Digital Content",
+            name: gettext("Digital Content"),
             data: dataDig,
             borderRadius: 24,
             minPointLength: 48,

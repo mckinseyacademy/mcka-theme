@@ -13,7 +13,9 @@ function checkTaskStatus(taskId, progressElement, loadingImage, callback){
         .done(function(data, textStatus, xhr) {
           if (xhr.status === 200)
           {
-            $(progressElement).text('Progress: ' + data['values'].progress + '%');
+            var progressValue = {'value': data['values'].progress};
+            var progressText = gettext('Progress: %(value)s%');
+            $(progressElement).text(interpolate(progressText, progressValue, true));
             if (data['values'].state == 'SUCCESS')
             {
               $(loadingImage).addClass('hidden');

@@ -61,7 +61,7 @@ function adjust_for_tile_entry(tile_checkbox){
 }
 
 function adjust_by_tile_type(selected_tile_type) {
-  if (selected_tile_type.trim() == 'Course') {
+  if (selected_tile_type.trim() == gettext('Course')) {
     fa_icon.hide();
     fa_icon_input.val('');
   }
@@ -69,7 +69,7 @@ function adjust_by_tile_type(selected_tile_type) {
     fa_icon.show();
   }
 
-  if (selected_tile_type.trim() == 'In Person Session') {
+  if (selected_tile_type.trim() == gettext('In Person Session')) {
     in_person_session.show();
   } else {
     in_person_session.hide();

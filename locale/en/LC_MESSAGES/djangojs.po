@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-18 11:12+0000\n"
+"POT-Creation-Date: 2018-01-18 13:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,26 +17,180 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: static/js/admin_upload_students.js:8
-msgid "Show Errors"
+#: static/gen/packed.js:32180 static/gen/packed_ie8.js:722
+#: static/js/vendor/jquery-ui.min.js:10 static_cache/gen/packed.js:32180
+#: static_cache/gen/packed_ie8.js:722
+#: static_cache/js/vendor/jquery-ui.min.js:10 static_cache/packed.js:32180
+#: static_cache/packed_ie8.js:722
+msgid "'"
 msgstr ""
 
-#: static/js/admin_upload_students.js:73 static/js/image_editor.js:77
-msgid "Please select file first."
-msgstr ""
-
+#: static/gen/packed.js:34241 static/gen/packed_ie8.js:879
 #: static/js/application.js:192
 msgid "Your course hasn't begun yet. "
 msgstr ""
 
+#: static/gen/packed.js:34244 static/gen/packed_ie8.js:880
 #: static/js/application.js:195
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)d days."
 msgstr[0] ""
 msgstr[1] ""
 
+#: static/gen/packed.js:34247 static/gen/packed_ie8.js:881
 #: static/js/application.js:198
 msgid "Welcome to McKinsey Academy"
+msgstr ""
+
+#: static/gen/packed.js:34754 static/gen/packed_ie8.js:925
+#: static/js/router.js:354
+msgid "Please select at least one course"
+msgstr ""
+
+#: static/gen/packed.js:35075 static/gen/packed.js:36866
+#: static/gen/packed_ie8.js:941 static/gen/packed_ie8.js:1242
+#: static/js/admin_upload_students.js:73
+#: static/js/common/mass_participants_enroll.js:147
+#: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
+msgid "Please select file first."
+msgstr ""
+
+#: static/gen/packed.js:35096 static/gen/packed.js:36887
+#: static/gen/packed_ie8.js:945 static/gen/packed_ie8.js:1246
+#: static/js/admin_upload_students.js:8
+#: static/js/common/mass_participants_enroll.js:168
+#: static/js/common/mass_participants_upload.js:115
+msgid "Show Errors"
+msgstr ""
+
+#: static/gen/packed.js:35108 static/gen/packed.js:36899
+#: static/gen/packed_ie8.js:954 static/gen/packed_ie8.js:1255
+#: static/js/common/mass_participants_enroll.js:180
+#: static/js/common/mass_participants_upload.js:127
+msgid "Errors:"
+msgstr ""
+
+#: static/gen/packed.js:35117 static/gen/packed.js:36908
+#: static/gen/packed_ie8.js:960 static/gen/packed_ie8.js:1261
+#: static/js/common/mass_participants_enroll.js:189
+#: static/js/common/mass_participants_upload.js:136
+msgid "Total:"
+msgstr ""
+
+#: static/gen/packed.js:35118 static/gen/packed.js:35120
+#: static/gen/packed.js:35122 static/gen/packed_ie8.js:961
+#: static/gen/packed_ie8.js:963 static/gen/packed_ie8.js:965
+#: static/js/common/mass_participants_upload.js:137
+#: static/js/common/mass_participants_upload.js:139
+#: static/js/common/mass_participants_upload.js:141
+msgid "0"
+msgstr ""
+
+#: static/gen/packed.js:35119 static/gen/packed.js:36910
+#: static/gen/packed_ie8.js:962 static/gen/packed_ie8.js:1263
+#: static/js/common/mass_participants_enroll.js:191
+#: static/js/common/mass_participants_upload.js:138
+msgid "Succeded:"
+msgstr ""
+
+#: static/gen/packed.js:35121 static/gen/packed.js:36912
+#: static/gen/packed_ie8.js:964 static/gen/packed_ie8.js:1265
+#: static/js/common/mass_participants_enroll.js:193
+#: static/js/common/mass_participants_upload.js:140
+msgid "Failed:"
+msgstr ""
+
+#: static/gen/packed.js:35464 static/gen/packed_ie8.js:1024
+#: static/js/common/bbGridExtend.js:70
+msgid "Keyword Search"
+msgstr ""
+
+#: static/gen/packed.js:35844 static/gen/packed_ie8.js:1086
+#: static/js/common/admin_bulk_actions.js:17
+msgid "Progress: %(value)s%"
+msgstr ""
+
+#: static/gen/packed.js:36034 static/gen/packed_ie8.js:1108
+#: static/js/common/common_js.js:171
+msgid "NoName"
+msgstr ""
+
+#: static/gen/packed.js:36377 static/gen/packed_ie8.js:1164
+#: static/js/common/common_js.js:514
+msgid "Send"
+msgstr ""
+
+#: static/gen/packed.js:36607 static/gen/packed_ie8.js:1210
+#: static/js/common/common_js.js:744
+msgid "Fetching data for file: %(filename)s"
+msgstr ""
+
+#: static/gen/packed.js:36776 static/gen/packed.js:36847
+#: static/gen/packed_ie8.js:1236 static/gen/packed_ie8.js:1241
+#: static/js/common/mass_participants_enroll.js:57
+#: static/js/common/mass_participants_enroll.js:128
+msgid ""
+"The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
+"more files!"
+msgstr ""
+
+#: static/gen/packed.js:36964 static/gen/packed_ie8.js:1273
+#: static/js/common/mass_participants_enroll.js:245
+msgid "email"
+msgstr ""
+
+#: static/gen/packed.js:36964 static/gen/packed_ie8.js:1273
+#: static/js/common/mass_participants_enroll.js:245
+msgid "course id"
+msgstr ""
+
+#: static/gen/packed.js:36964 static/gen/packed_ie8.js:1273
+#: static/js/common/mass_participants_enroll.js:245
+msgid "status"
+msgstr ""
+
+#: static/gen/packed.js:37042 static/gen/packed_ie8.js:1274
+#: static/js/models/city.js:30
+msgid "Participants:"
+msgstr ""
+
+#: static/gen/packed.js:37083 static/gen/packed_ie8.js:1276
+#: static/js/models/city.js:71
+msgid "Email"
+msgstr ""
+
+#: static/gen/packed.js:37930 static/gen/packed_ie8.js:1333
+#: static/js/views/admin/courses_list.js:13
+msgid "Course Name"
+msgstr ""
+
+#: static/gen/packed.js:37940 static/gen/packed_ie8.js:1334
+#: static/js/views/admin/courses_list.js:23
+msgid "Course ID"
+msgstr ""
+
+#: static/gen/packed.js:37941 static/gen/packed_ie8.js:1334
+#: static/js/views/admin/courses_list.js:24
+msgid "Start"
+msgstr ""
+
+#: static/gen/packed.js:37950 static/gen/packed_ie8.js:1335
+#: static/js/views/admin/courses_list.js:33
+msgid "End"
+msgstr ""
+
+#: static/js/admin_learner_dashboard/element_modal.js:64
+msgid "Course"
+msgstr ""
+
+#: static/js/admin_learner_dashboard/element_modal.js:72
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
+msgid "In Person Session"
+msgstr ""
+
+#: static/js/admin_learner_dashboard/sort.js:72
+#: static/js/learner_dashboard_sort.js:54
+msgid "Are you sure?"
 msgstr ""
 
 #: static/js/course_contact_modal.js:15
@@ -69,6 +223,34 @@ msgid ""
 "and feedback associated with the group."
 msgstr ""
 
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
+msgid "Your Progress: %(value)s%"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+msgid "Complete"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+msgid "Incomplete"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
+msgid "Digital Course"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
+msgid "Group work"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
+msgid "Webinar"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
+msgid "Digital Content"
+msgstr ""
+
 #: static/js/image_editor.js:3
 msgid "No file Selected"
 msgstr ""
@@ -83,26 +265,187 @@ msgstr ""
 msgid "Please select file for upload."
 msgstr ""
 
-#: static/js/learner_dashboard_sort.js:54
-msgid "Are you sure?"
+#: static_cache/admin/js/SelectFilter2.js:45
+#, javascript-format
+msgid "Available %s"
 msgstr ""
 
-#: static/js/router.js:354
-msgid "Please select at least one course"
+#: static_cache/admin/js/SelectFilter2.js:46
+#, javascript-format
+msgid ""
+"This is the list of available %s. You may choose some by selecting them in "
+"the box below and then clicking the \"Choose\" arrow between the two boxes."
 msgstr ""
 
-#: static/js/views/admin/courses_list.js:13
-msgid "Course Name"
+#: static_cache/admin/js/SelectFilter2.js:53
+#, javascript-format
+msgid "Type into this box to filter down the list of available %s."
 msgstr ""
 
-#: static/js/views/admin/courses_list.js:23
-msgid "Course ID"
+#: static_cache/admin/js/SelectFilter2.js:57
+msgid "Filter"
 msgstr ""
 
-#: static/js/views/admin/courses_list.js:24
-msgid "Start"
+#: static_cache/admin/js/SelectFilter2.js:61
+msgid "Choose all"
 msgstr ""
 
-#: static/js/views/admin/courses_list.js:33
-msgid "End"
+#: static_cache/admin/js/SelectFilter2.js:61
+#, javascript-format
+msgid "Click to choose all %s at once."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:67
+msgid "Choose"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:69
+msgid "Remove"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:75
+#, javascript-format
+msgid "Chosen %s"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:76
+#, javascript-format
+msgid ""
+"This is the list of chosen %s. You may remove some by selecting them in the "
+"box below and then clicking the \"Remove\" arrow between the two boxes."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:80
+msgid "Remove all"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:80
+#, javascript-format
+msgid "Click to remove all chosen %s at once."
+msgstr ""
+
+#: static_cache/admin/js/actions.js:22 static_cache/admin/js/actions.min.js:1
+msgid "%(sel)s of %(cnt)s selected"
+msgid_plural "%(sel)s of %(cnt)s selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/admin/js/actions.js:114 static_cache/admin/js/actions.min.js:4
+msgid ""
+"You have unsaved changes on individual editable fields. If you run an "
+"action, your unsaved changes will be lost."
+msgstr ""
+
+#: static_cache/admin/js/actions.js:126 static_cache/admin/js/actions.min.js:5
+msgid ""
+"You have selected an action, but you haven't saved your changes to "
+"individual fields yet. Please click OK to save. You'll need to re-run the "
+"action."
+msgstr ""
+
+#: static_cache/admin/js/actions.js:128 static_cache/admin/js/actions.min.js:5
+msgid ""
+"You have selected an action, and you haven't made any changes on individual "
+"fields. You're probably looking for the Go button rather than the Save "
+"button."
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:79
+#, javascript-format
+msgid "Note: You are %s hour ahead of server time."
+msgid_plural "Note: You are %s hours ahead of server time."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:87
+#, javascript-format
+msgid "Note: You are %s hour behind server time."
+msgid_plural "Note: You are %s hours behind server time."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:114
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:149
+msgid "Now"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:118
+msgid "Clock"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:146
+msgid "Choose a time"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:150
+msgid "Midnight"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:151
+msgid "6 a.m."
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:152
+msgid "Noon"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:156
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:276
+msgid "Cancel"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:216
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:269
+msgid "Today"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:220
+msgid "Calendar"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:267
+msgid "Yesterday"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:271
+msgid "Tomorrow"
+msgstr ""
+
+#: static_cache/admin/js/calendar.js:8
+msgid ""
+"January February March April May June July August September October November "
+"December"
+msgstr ""
+
+#: static_cache/admin/js/calendar.js:9
+msgid "S M T W T F S"
+msgstr ""
+
+#: static_cache/admin/js/collapse.js:8 static_cache/admin/js/collapse.js:19
+#: static_cache/admin/js/collapse.min.js:1
+msgid "Show"
+msgstr ""
+
+#: static_cache/admin/js/collapse.js:16 static_cache/admin/js/collapse.min.js:1
+msgid "Hide"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "radio"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "checkbox"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "file"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "password"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "image"
 msgstr ""

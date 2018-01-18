@@ -168,7 +168,7 @@ GetAutocompleteSource = function(url, thisToAppend, sourceName){
     for (var itemIndex=0;itemIndex < selectableList.length; itemIndex++)
     {
       if (selectableList[itemIndex].display_name == null)
-        selectableList[itemIndex].display_name = "NoName";
+        selectableList[itemIndex].display_name = gettext("NoName");
       selectFillList.push({value:selectableList[itemIndex].id, label:selectableList[itemIndex].display_name});
     }
     thisToAppend[sourceName] = selectFillList;
@@ -511,7 +511,7 @@ function CreateNicePopup(title, content, customClass)
 function CreatNicePrompt(title, input_label)
 {
   content = '<div class="fixedDynamicPopupPrompContentContainer"><div class="fixedDynamicPopupPrompContent">'+input_label+'</div>';
-  content += '<br><input type="text"/><div class="button savePromptChanges disabled">Send</div>';
+  content += '<br><input type="text"/><div class="button savePromptChanges disabled">'+gettext('Send')+'</div>';
   content += '</div>';
   var _this = this;
   CreateNicePopup(title, content);
@@ -740,7 +740,9 @@ function GenerateCSVDownloader(click_element, data_to_send)
       var customClass = $(click_element).attr("data-custom-class");
       if (!customClass)
         customClass = "";
-      var title = "Fetching data for file: " + data["file_name"];
+      var fileName = {'file_name': data['file_name']};
+      var fileNameStr = gettext("Fetching data for file: %(filename)s");
+      var title = interpolate(fileNameStr, fileName, true);
       var content = "<progress style='width:100%', value='0' max='"+data["chunk_count"]+"'></progress>";
       CreateNicePopup(title, content, customClass);
       var data_send = {"task_id":data["task_id"], "chunk_request":0};

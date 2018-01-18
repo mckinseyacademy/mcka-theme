@@ -53,7 +53,9 @@ massParticipantsEnrollInit = function(){
                   lines--;
 
                 if (lines>limit){
-                  alert("The .csv file has more then "+limit+ " rows: "+lines+", please split it to more files!");
+                  var values = {'limit': limit, 'lines': lines};
+                  var linesLimitString = gettext("The .csv file has more then %(limit)s  rows: %(lines)s , please split it to more files!");
+                  alert(interpolate(linesLimitString, values, true));
                   $('#enroll_to_course_from_csv .admin-form').find('.button-wrapper i').hide();
                   $('#enroll_to_course_from_csv #submitCSVEnroll').removeAttr('disabled');
                   permission = permission & false;
@@ -122,7 +124,9 @@ massParticipantsEnrollInit = function(){
           lines--;
         var val_result = true;
         if (lines>limit){
-          alert("The .csv file has more then "+limit+ " rows: "+lines+", please split it to more files!");
+          var values = {'limit': limit, 'lines': lines};
+          var linesLimitString = gettext("The .csv file has more then %(limit)s  rows: %(lines)s , please split it to more files!");
+          alert(interpolate(linesLimitString, values, true));
           modal.find('.button-wrapper i').hide();
           $(_this).removeAttr('disabled');
           return;
@@ -140,7 +144,7 @@ massParticipantsEnrollInit = function(){
         },
         error: function( data ){
               data = $.parseJSON(data);
-              modal.find('.error').append('<p class="warning">Please select file first.</p>');
+              modal.find('.error').append('<p class="warning">'+gettext('Please select file first.')+'</p>');
               $('#enroll_to_course_from_csv input[type=submit]').removeAttr('disabled');
             }
         }
@@ -161,7 +165,7 @@ checkForEnrollStatus = function(data, form) {
     "<div id='user-enroll-reg-errors' class='errors'></div></div>";
 
   var errorsTemplate =
-    "<a href='#' data-reveal-id='upload_enroll_error_list'>Show Errors</a>" +
+    "<a href='#' data-reveal-id='upload_enroll_error_list'>"+gettext('Show Errors')+"</a>" +
     "<ul id='upload_enroll_error_list' class='reveal-modal' data-reveal='true'>" +
       "<div class='close-reveal-modal'>" +
         "<i class='fa fa-times-circle'></i>" +
@@ -173,7 +177,7 @@ checkForEnrollStatus = function(data, form) {
 
   var errorsTemplateNotModal =
     "<br/>" +
-    "<p>Errors:</p>" +
+    "<p>"+gettext('Errors:')+"</p>" +
     "<ul id='upload_enroll_error_list'>" +
       "<% _.each(data.error, function(errorObj, key){ %>" +
         "<li><%= errorObj.fields.error %></li>" +
@@ -182,11 +186,11 @@ checkForEnrollStatus = function(data, form) {
 
   var uploadStatsTemplate =
     "<br/>" +
-    "<span>Total:</span>" +
+    "<span>"+gettext('Total:')+"</span>" +
     "<span id='attempted-enroll'><%= data.attempted %></span><br/>" +
-    "<span>Succeded:</span>" +
+    "<span>"+gettext('Succeded:')+"</span>" +
     "<span id='succeded-enroll'><%= data.succeded %></span><br/>" +
-    "<span>Failed:</span>" +
+    "<span>"+gettext('Failed:')+"</span>" +
     "<span id='failed-enroll'><%= data.failed %></span><br/>" +
     "<br/>";
 
@@ -238,7 +242,7 @@ checkForEnrollStatus = function(data, form) {
 
 PopulateTemplateData = function()
 {
-  var data = [["email", "course id", "status"], 
+  var data = [[gettext("email"), gettext("course id"), gettext("status")],
   ["sinatest@yopmail.com", "edX/TwoX/Two_Course", "active"], 
   ["sinatest1@yopmail.com", "edX/TwoX/Two_Course", "ta"], 
   ["sinatest2@yopmail.com", "edX/TwoX/Two_Course", "observer"]];

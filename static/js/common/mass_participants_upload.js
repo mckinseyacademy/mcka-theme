@@ -91,7 +91,7 @@ massParticipantsInit = function(){
       },
       error: function( data ){
             data = $.parseJSON(data);
-            modal.find('.error').append('<p class="warning">Please select file first.</p>');
+            modal.find('.error').append('<p class="warning">'+gettext("Please select file first.")+'</p>');
             $('#import_from_csv input[type=checkbox]').removeAttr('disabled');
             $('input[type=submit]').removeAttr('disabled');
           }
@@ -112,7 +112,7 @@ checkForStatus = function(data, form) {
     "<div id='user-reg-errors' class='errors'></div></div>";
 
   var errorsTemplate =
-    "<a href='#' data-reveal-id='upload_error_list'>Show Errors</a>" +
+    "<a href='#' data-reveal-id='upload_error_list'>"+gettext('Show Errors')+"</a>" +
     "<ul id='upload_error_list' class='reveal-modal' data-reveal='true'>" +
       "<div class='close-reveal-modal'>" +
         "<i class='fa fa-times-circle'></i>" +
@@ -124,7 +124,7 @@ checkForStatus = function(data, form) {
 
   var errorsTemplateNotModal =
     "<br/>" +
-    "<p>Errors:</p>" +
+    "<p>"+gettext('Errors:')+"</p>" +
     "<ul id='upload_error_list'>" +
       "<% _.each(data.error, function(errorObj, key){ %>" +
         "<li><%= errorObj.fields.error %></li>" +
@@ -133,12 +133,12 @@ checkForStatus = function(data, form) {
 
   var uploadStatsTemplate =
     "<br/>" +
-    "<span>Total:</span>" +
-    "<span id='attempted'>0</span><br/>" +
-    "<span>Succeded:</span>" +
-    "<span id='succeded'>0</span><br/>" +
-    "<span>Failed:</span>" +
-    "<span id='failed'>0</span><br/>" +
+    "<span>"+gettext('Total:')+"</span>" +
+    "<span id='attempted'>"+gettext('0')+"</span><br/>" +
+    "<span>"+gettext('Succeded:')+"</span>" +
+    "<span id='succeded'>"+gettext('0')+"</span><br/>" +
+    "<span>"+gettext('Failed:')+"</span>" +
+    "<span id='failed'>"+gettext('0')+"</span><br/>" +
     "<br/>";
 
   data = $.parseJSON(data);

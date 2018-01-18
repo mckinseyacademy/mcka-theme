@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-17 07:21+0000\n"
+"POT-Creation-Date: 2018-01-18 13:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1433,7 +1433,7 @@ msgid ""
 msgstr ""
 
 #: admin/views.py:3159 admin/views.py:3160 admin/views.py:3387
-#: admin/views.py:3388 templates/admin/course_meta_content/item_list.haml:53
+#: admin/views.py:3388 templates/admin/course_meta_content/item_list.haml:54
 #: templates/courses/content_page/course_tabs.haml:18
 #: templates/courses/course_group_work.haml:13
 #: templates/courses/course_progress.haml:55
@@ -1675,6 +1675,56 @@ msgstr ""
 
 #: public_api/api_protect.py:76 public_api/api_protect.py:79
 msgid "User not found"
+msgstr ""
+
+#: src/edx-notifications/edx_notifications/digests.py:200
+msgid "Receive daily email"
+msgstr ""
+
+#: src/edx-notifications/edx_notifications/digests.py:201
+msgid ""
+"This setting will cause a daily digest of all notifications to be sent to "
+"your registered email address"
+msgstr ""
+
+#: src/edx-notifications/edx_notifications/digests.py:210
+msgid "Receive weekly email"
+msgstr ""
+
+#: src/edx-notifications/edx_notifications/digests.py:211
+msgid ""
+"This setting will cause a weekly digest of all notifications to be sent to "
+"your registered email address"
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:8
+#: templates/admin/participants/participant_details.haml:102
+#: templates/admin/participants/participant_details.haml:183
+msgid "Username"
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:8
+msgid "This value must contain only letters, numbers and underscores."
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:9
+msgid "Email address"
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:10
+msgid "Password"
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:11
+msgid "Password (again)"
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:18
+msgid "The username already exists. Please try another one."
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:23
+msgid "The two password fields did not match."
 msgstr ""
 
 #: templates/accounts/access.haml:4
@@ -1948,8 +1998,8 @@ msgstr ""
 #: templates/admin/companies/company_details.haml:217
 #: templates/admin/companies/company_details.haml:236
 #: templates/admin/course_meta_content/item_detail.haml:18
-#: templates/admin/courses/course_details.haml:132
-#: templates/admin/courses/course_details.haml:201
+#: templates/admin/courses/course_details.haml:139
+#: templates/admin/courses/course_details.haml:211
 #: templates/admin/mobile_apps/company_app_details.haml:64
 #: templates/admin/participants/participant_details.haml:289
 #: templates/admin/participants/participant_details.haml:319
@@ -2083,7 +2133,7 @@ msgstr ""
 
 #: templates/admin/companies/company_details.haml:156
 #: templates/admin/companies/company_details.haml:215
-#: templates/admin/courses/course_details.haml:131
+#: templates/admin/courses/course_details.haml:137
 #: templates/admin/participants/participant_details.haml:287
 #: templates/admin/participants/participant_details.haml:335
 msgid "Save Changes"
@@ -2167,12 +2217,12 @@ msgstr ""
 msgid "This is the course feature list."
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:46
+#: templates/admin/course_meta_content/item_list.haml:47
 #: templates/courses/course_cohort.haml:234
 msgid "Discussions"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:47
+#: templates/admin/course_meta_content/item_list.haml:48
 msgid ""
 "Note: If you disable the discussion page, notifications coming from existing "
 "lesson inline discussion modules in the course will redirect the user to the "
@@ -2181,78 +2231,78 @@ msgid ""
 "Engagement section from Leaderboard even if 'Engagement' flag is enabled."
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:59
+#: templates/admin/course_meta_content/item_list.haml:60
 msgid "Cohort Map"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:65
+#: templates/admin/course_meta_content/item_list.haml:66
 msgid "Proficiency"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:66
+#: templates/admin/course_meta_content/item_list.haml:67
 msgid ""
 "Note: If you disable 'Proficiency', it will hide proficiency section from "
 "course landing, progress page and from leaderboard on cohort page."
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:72
+#: templates/admin/course_meta_content/item_list.haml:73
 msgid "Progress Page"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:73
+#: templates/admin/course_meta_content/item_list.haml:74
 msgid ""
 "Note: If you disable 'Progress Page', it will hide progress page icon from "
 "secondary navigation."
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:79
+#: templates/admin/course_meta_content/item_list.haml:80
 #: templates/courses/content_page/course_tabs.haml:40
 msgid "Notifications"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:85
+#: templates/admin/course_meta_content/item_list.haml:86
 msgid "Branding"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:91
+#: templates/admin/course_meta_content/item_list.haml:92
 #: templates/courses/content_page/course_tabs.haml:5
 msgid "Learner Dashboard"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:97
+#: templates/admin/course_meta_content/item_list.haml:98
 #: templates/courses/content_page/course_tabs.haml:37
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_resources.haml:24
 msgid "Resources"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:103
+#: templates/admin/course_meta_content/item_list.haml:104
 msgid "Cohort Average"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:109
+#: templates/admin/course_meta_content/item_list.haml:110
 msgid "Certificates"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:117
+#: templates/admin/course_meta_content/item_list.haml:118
 msgid "Mobile Available"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:123
+#: templates/admin/course_meta_content/item_list.haml:124
 msgid "Engagement"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:124
+#: templates/admin/course_meta_content/item_list.haml:125
 msgid ""
 "Note: If you disable 'Engagement', it will hide Engagement section from "
 "leaderboard."
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:130
+#: templates/admin/course_meta_content/item_list.haml:131
 msgid "Discover"
 msgstr ""
 
-#: templates/admin/course_meta_content/item_list.haml:131
+#: templates/admin/course_meta_content/item_list.haml:132
 msgid ""
 "Note: If you disable the 'Discover', it will hide Discover section from "
 "course main page."
@@ -2455,128 +2505,128 @@ msgstr ""
 msgid "STATS"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:58
+#: templates/admin/courses/course_details.haml:59
 msgid "LEARNER DASHBOARD"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:65
+#: templates/admin/courses/course_details.haml:67
 msgid "Generate Certificates"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:67
+#: templates/admin/courses/course_details.haml:70
 msgid "Generating Certificates"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:69
+#: templates/admin/courses/course_details.haml:73
 msgid "Certificates Generated"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:76
-#: templates/admin/courses/course_details.haml:97
+#: templates/admin/courses/course_details.haml:81
+#: templates/admin/courses/course_details.haml:102
 msgid "Export stats"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:83
-#: templates/admin/courses/course_details.haml:86
+#: templates/admin/courses/course_details.haml:88
+#: templates/admin/courses/course_details.haml:91
 msgid "Email Selected Participants"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:91
+#: templates/admin/courses/course_details.haml:96
 msgid "Change status"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:93
+#: templates/admin/courses/course_details.haml:98
 msgid "Unenroll from course"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:95
+#: templates/admin/courses/course_details.haml:100
 msgid "Enroll in new course"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:99
+#: templates/admin/courses/course_details.haml:104
 msgid "Download CSV For Notifications"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:104
+#: templates/admin/courses/course_details.haml:109
 msgid "Engagement Summary"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:107
-#: templates/admin/courses/course_details.haml:110
+#: templates/admin/courses/course_details.haml:113
+#: templates/admin/courses/course_details.haml:116
 #: templates/admin/participants/participant_details.haml:295
 #: templates/admin/participants/participant_details.haml:301
 msgid "Export Stats"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:113
+#: templates/admin/courses/course_details.haml:119
 msgid "Participant Performance"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:116
+#: templates/admin/courses/course_details.haml:122
 msgid "Social Engagement"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:119
+#: templates/admin/courses/course_details.haml:125
 msgid "Cohort Timeline"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:142
+#: templates/admin/courses/course_details.haml:149
 msgid "Email selected participants"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:147
+#: templates/admin/courses/course_details.haml:154
 msgid "From"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:152
+#: templates/admin/courses/course_details.haml:159
 #: templates/certificates/certificate_templates.haml:30
 msgid "Template"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:154
+#: templates/admin/courses/course_details.haml:161
 msgid "Save as new template"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:155
+#: templates/admin/courses/course_details.haml:162
 msgid "Update selected template"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:156
+#: templates/admin/courses/course_details.haml:163
 msgid "Remove selected template"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:159
+#: templates/admin/courses/course_details.haml:167
 #: templates/admin/participants/participant_details.haml:218
 #: templates/admin/participants/participant_details.haml:221
 #: templates/admin/participants/participants_list.haml:97
 msgid "None"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:166
+#: templates/admin/courses/course_details.haml:174
 msgid "Subject"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:172
+#: templates/admin/courses/course_details.haml:180
 msgid "Body"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:178
+#: templates/admin/courses/course_details.haml:186
 msgid "Send Email"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:180
+#: templates/admin/courses/course_details.haml:189
 msgid "Preview email"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:181
+#: templates/admin/courses/course_details.haml:191
 msgid "Schedule for Later"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:188
+#: templates/admin/courses/course_details.haml:198
 msgid "Add Tags to this Course"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:196
+#: templates/admin/courses/course_details.haml:206
 msgid ""
 "Since this tag does not yet exist, a new Tag will be created. If this is an "
 "error, try selecting your tag from the type-ahead results."
@@ -2722,11 +2772,6 @@ msgstr ""
 
 #: templates/admin/participants/participant_details.haml:95
 msgid "Last Name"
-msgstr ""
-
-#: templates/admin/participants/participant_details.haml:102
-#: templates/admin/participants/participant_details.haml:183
-msgid "Username"
 msgstr ""
 
 #: templates/admin/participants/participant_details.haml:115
@@ -3684,15 +3729,12 @@ msgstr ""
 #: templates/courses/course_lessons_ld_external.haml:24
 #, python-format
 msgid ""
-"You have completed ={course.current_lesson.progress}%% of Lesson ={course."
-"current_lesson.index}: "
+"You have completed %(course_current_progress)s%% of Lesson %(lesson_index)s: "
 msgstr ""
 
 #: templates/courses/course_lessons_ld.haml:31
 #, python-format
-msgid ""
-" You have completed ={course.current_lesson.progress}%% of ={course."
-"current_lesson.name} "
+msgid " You have completed %(course_current_progress)s%% of %(lesson_name)s "
 msgstr ""
 
 #: templates/courses/course_main.haml:8
@@ -4034,8 +4076,8 @@ msgid "N/A (focus on Group Work)"
 msgstr ""
 
 #: templates/courses/course_progress_v2.haml:60
-#, python-format, python-brace-format
-msgid "You have completed ={lesson.progress}%% of Lesson ={lesson.index}: "
+#, python-format
+msgid "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
 msgstr ""
 
 #: templates/courses/course_progress_v2.haml:86
@@ -4181,10 +4223,6 @@ msgstr ""
 msgid "Your course proficiency will be displayed here."
 msgstr ""
 
-#: templates/courses/visualizations/course_proficiency.haml:12
-msgid "proficiency"
-msgstr ""
-
 #: templates/courses/visualizations/course_proficiency.haml:22
 msgid ""
 "This visualization displays your proficiency against a total possible score "
@@ -4248,24 +4286,24 @@ msgid ""
 "                %%span ). "
 msgstr ""
 
-#: templates/registration/password_reset_confirm.haml:20
+#: templates/registration/password_reset_confirm.haml:21
 msgid "Your New Password"
 msgstr ""
 
-#: templates/registration/password_reset_confirm.haml:26
+#: templates/registration/password_reset_confirm.haml:28
 msgid "Your New Password Again"
 msgstr ""
 
-#: templates/registration/password_reset_confirm.haml:31
+#: templates/registration/password_reset_confirm.haml:33
 msgid "Change My Password"
 msgstr ""
 
-#: templates/registration/password_reset_confirm.haml:34
+#: templates/registration/password_reset_confirm.haml:36
 #: templates/registration/password_reset_failed.haml:3
 msgid "Password Reset Unsuccessful"
 msgstr ""
 
-#: templates/registration/password_reset_confirm.haml:35
+#: templates/registration/password_reset_confirm.haml:37
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
