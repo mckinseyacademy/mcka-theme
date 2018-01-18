@@ -49,7 +49,7 @@ function group_work_dashboard(dashboard_configuration) {
         if (value) {
             run_report_btn.attr('href', '/admin/workgroup/course/' + value + '/download_group_projects_report');
         } else {
-            outline.html("None");
+            outline.html(gettext("None"));
         }
     }
 
@@ -192,7 +192,7 @@ function group_work_dashboard(dashboard_configuration) {
 
     function delete_quick_filter(evt) {
         var link_id = get_link_id_from_event(evt);
-        var confirm_mgs = "Do you really want to delete: \n";
+        var confirm_mgs = gettext("Do you really want to delete: \n");
         confirm_mgs += render_quick_filter_label(quick_links[link_id]);
         if (!confirm(confirm_mgs)){
             return;

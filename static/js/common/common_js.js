@@ -852,4 +852,8 @@ function RecalculateCourseListSize(){
   }
 }
 
-
+function InternationalizePercentage(value){
+    var textTemplate = gettext('%(value)s%');
+    var templateContext = {"value": value.toString()};
+    return interpolate(textTemplate, templateContext, true);
+}

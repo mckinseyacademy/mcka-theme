@@ -1,7 +1,7 @@
   Apros.views.CompanyDetailsCoursesView = Backbone.View.extend({
     gridColumns:
       [
-        { title: 'Course Name', index: true, name: 'name',
+        { title: gettext('Course Name'), index: true, name: 'name',
           actions: function(id, attributes){ 
             var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
             var thisId = attributes['id']
@@ -17,9 +17,9 @@
             }
           } 
         },
-        { title: 'Course ID', index: true, name: 'id' },
-        { title: 'Participants', index: true, name: 'participants', sorttype: 'number'},
-        { title: 'Start', index: true, name: 'start',
+        { title: gettext('Course ID'), index: true, name: 'id' },
+        { title: gettext('Participants'), index: true, name: 'participants', sorttype: 'number'},
+        { title: gettext('Start'), index: true, name: 'start',
           actions: function(id, attributes){ 
             if(attributes['start'])
             {
@@ -35,7 +35,7 @@
             }
           } 
         },
-        { title: 'End', index: true, name: 'end',
+        { title: gettext('End'), index: true, name: 'end',
           actions: function(id, attributes){ 
             if(attributes['end'])
             {
@@ -65,7 +65,7 @@
       var companyAdminFlag = $('#mainCompanyDetailsDataContainer').attr('admin-flag');
       if (companyAdminFlag == 'False')
       {
-        var cohortColumn = { title: 'Cohort Comp.', index: true, name: 'cohort' };
+        var cohortColumn = { title: gettext('Cohort Comp.'), index: true, name: 'cohort' };
         _this.gridColumns.push(cohortColumn);
       }
       companyDetailsCoursesViewGrid = new bbGrid.View({
@@ -181,17 +181,17 @@
           }
           else
           {
-            $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('This company name cannot have more than 30 characters!');
+            $('#mainCompanyDetailsDataContainer').find('.errorMessage').text(gettext('This company name cannot have more than 30 characters!'));
           }
         }
         else
         {
-          $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('This company name cannot contain non-alphanumeric characters!');
+          $('#mainCompanyDetailsDataContainer').find('.errorMessage').text(gettext('This company name cannot contain non-alphanumeric characters!'));
         }
       }
       else
       {
-        $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('No Company Display Name!');
+        $('#mainCompanyDetailsDataContainer').find('.errorMessage').text(gettext('No Company Display Name!'));
       }
     },
     updateCompanyName: function(newName)

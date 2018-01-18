@@ -110,22 +110,22 @@
             data[input.attr("name")] = input.val().trim();
             if (input.attr("name") == "username" && data[input.attr("name")].length == 0)
             {
-              validation_message += "Username can't be empty! ";
+              validation_message += gettext("Username can't be empty! ");
               validation_fail = true;
             }
             else if (input.attr("name") == "first_name" && data[input.attr("name")].length == 0)
             {
-              validation_message += "First name can't be empty! ";
+              validation_message += gettext("First name can't be empty! ");
               validation_fail = true;
             }
             else if (input.attr("name") == "last_name" && data[input.attr("name")].length == 0)
             {
-              validation_message += "Last name can't be empty! ";
+              validation_message += gettext("Last name can't be empty! ");
               validation_fail = true;
             }
             else if (input.attr("name") == "email" && data[input.attr("name")].length == 0)
             {
-              validation_message += "Email can't be empty! ";
+              validation_message += gettext("Email can't be empty! ");
               validation_fail = true;
             }
 
@@ -149,7 +149,7 @@
                 }
                 else
                 {
-                  validation_message += "Company doesn't exist! ";
+                  validation_message += gettext("Company doesn't exist! ");
                   validation_fail = true;
                 }
               }
@@ -199,7 +199,7 @@
                   company.attr('data-old-id',data['company']);
                   var company_permissions = $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantPermissionsValue select');
                   company_permissions.attr('data-old-permission',data['company_permissions']);
-                  $('#participantDetailsMainModal').find('.mainText').text('Updated user data!');
+                  $('#participantDetailsMainModal').find('.mainText').text(gettext('Updated user data!'));
                   $('#participantDetailsMainModal').foundation('reveal', 'open');
                   $('#participantDetailsWrapper').find('.cancelParticipantEdit').click();
                 }
@@ -250,9 +250,9 @@
       details.find('.participantCompanyValue a').attr('href',company_href + company_data_id);
       var genderAbbreviation = edit.find('.participantGenderValue select').val();
       if (genderAbbreviation == 'M')
-        details.find('.participantGenderValue').text('Male');
+        details.find('.participantGenderValue').text(gettext('Male'));
       else if (genderAbbreviation == 'F')
-        details.find('.participantGenderValue').text('Female');
+        details.find('.participantGenderValue').text(gettext('Female'));
       else
         details.find('.participantGenderValue').text('');
 
@@ -281,9 +281,9 @@
       edit.find('.participantCompanyValue input').val(details.find('.participantCompanyValue a').text().trim());
       edit.find('.participantCompanyValue input').attr('data-id',details.find('.participantCompanyValue a').attr('data-id'));
       var fullGender = details.find('.participantGenderValue').text().trim();
-      if (fullGender == 'Female')
+      if (fullGender == gettext('Female'))
         edit.find('.participantGenderValue select').val('F');
-      else if (fullGender == 'Male')
+      else if (fullGender == gettext('Male'))
         edit.find('.participantGenderValue select').val('M');
       else
         edit.find('.participantGenderValue select').val('');
@@ -351,20 +351,20 @@
           return;
         var user_id = $("#participantsDetailsDataWrapper").attr('data-id');
         var enroll_modal_id = '#participantEnrollMainModal';
-        $(enroll_modal_id).find('.participantModalTitle').text('Select Course');
-        $(enroll_modal_id).find('.participantModalDescription').text('User will be enrolled in course selected below.');
+        $(enroll_modal_id).find('.participantModalTitle').text(gettext('Select Course'));
+        $(enroll_modal_id).find('.participantModalDescription').text(gettext('User will be enrolled in course selected below.'));
         $(enroll_modal_id).find('.participantModalContent').html(
           '<div class="row enrollParticipants">' +
           '<div class="large-6 columns enrollParticipantsCourse">' +
-          '<p class="labelUnirvesal">Course</p>' +
+          '<p class="labelUnirvesal"> '+ gettext('Course') + ' </p>' +
           '<input type="text" value="" name="course" maxlength="60">' +
           '</div>' +
           '<div class="large-6 columns enrollParticipantsStatus">' +
-          '<p class="labelUnirvesal">Status</p>' +
+          '<p class="labelUnirvesal">' + gettext('Status') +'</p>' +
           '<select name="status">' +
-          '<option value="Active">Participant</option>' +
-          '<option value="Observer">Observer</option>' +
-          '<option value="TA">TA</option></select>' +
+          '<option value="Active">'+gettext('Participant')+'</option>' +
+          '<option value="Observer">' + gettext('Observer') + '</option>' +
+          '<option value="TA">' + gettext('TA') + '</option></select>' +
           '</div></div>'
         );
         var url = ApiUrls.participant_courses_get_api();
@@ -374,7 +374,7 @@
           $(enroll_modal_id).find('a.close-reveal-modal').trigger('click');
         });
         var saveButton = $(enroll_modal_id).find('.participantModalControl').find('.saveChanges');
-        saveButton.text('Enroll Participant');
+        saveButton.text(gettext('Enroll Participant'));
         saveButton.attr('disabled', 'disabled');
         saveButton.addClass('disabled');
         $(document).on('autocomplete_found', function(event, input){
@@ -397,22 +397,22 @@
           if (selected.length > 0) {
               selectedVal = selected.val();
               if(!selectedVal){
-                alert('You need to select status!');
+                alert(gettext('You need to select status!'));
                 return;
               }
           }
           else
           {
-            alert('You need to select status!');
+            alert(gettext('You need to select status!'));
             return;
           }
           var course_id = $('.enrollParticipantsCourse input').attr('data-id');
           if (!course_id){
-            alert('You need to select course!');
+            alert(gettext('You need to select course!'));
             return;
           }
           if (course_id.length == 0) {
-            alert('You need to select course!');
+            alert(gettext('You need to select course!'));
             return;
           }
           var dictionaryToSend = {"status": selectedVal};
@@ -432,7 +432,7 @@
           .done(function(data) {
             if (data["status"] == "success")
             {
-              alert("User successfully enrolled in course");
+              alert(gettext("User successfully enrolled in course"));
               $(enroll_modal_id).find('a.close-reveal-modal').trigger('click');
             }
             else if (data["status"] == "error")
@@ -465,13 +465,13 @@
           else
           {
             $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
-            $('.participantCompanyValue').find('.errorMessage').text('This company name cannot have more than 30 characters!');
+            $('.participantCompanyValue').find('.errorMessage').text(gettext('This company name cannot have more than 30 characters!'));
           }
         }
         else
         {
           $('#participantDetailsWrapper').find('.participantDetailsEditForm').find('.participantDetailsSave').addClass('disabled');
-          $('.participantCompanyValue').find('.errorMessage').text('This company name cannot contain non-alphanumeric characters!');
+          $('.participantCompanyValue').find('.errorMessage').text(gettext('This company name cannot contain non-alphanumeric characters!'));
         }
       }
       else
@@ -518,20 +518,20 @@
     adminAnotherCompanyTemplate: '<div class="row adminAnotherCompany">'+
           '<div class="large-6 columns participantAdminCompany">'+
             '<div class="participantAdminCompanyLabel labelUniversal">'+
-              'Admin Company'+
+              gettext('Admin Company') +
             '</div>'+
             '<div class="participantAdminCompanyValue">'+
               '<input type="text" data-id/>'+
-              '<div class="newCompanyCreationPopup">Try selecting your company from the type-ahead results.</div>'+
+              '<div class="newCompanyCreationPopup">' + gettext('Try selecting your company from the type-ahead results.') + '</div>'+
               '<i class="fa fa-check-circle-o correctInput" aria-hidden="true"></i>'+
             '</div>'+
           '</div>'+
           '<div class="large-6 columns participantPermissions">'+
             '<div class="participantPermissionsLabel labelUniversal">'+
-              'Admin Permissions'+
+              gettext('Admin Permissions') +
             '</div>'+
             '<div class="participantPermissionsValue permissionSelect large-10">'+
-              '<input type="text" value="Company Admin" disabled data-id="company_admin"/>'+
+              '<input type="text" value='+gettext("Company Admin")+' disabled data-id="company_admin"/>'+
             '</div>'+
             '<i class="fa fa-times removeItem large-2" aria-hidden="true"></i>'+
           '</div>'+

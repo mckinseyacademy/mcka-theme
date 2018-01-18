@@ -3,7 +3,7 @@
     coursesListDetailsViewGrid: {},
     generatedGridColumns:
     [
-      { title: 'Name', index: true, name: 'username', titleAttribute: 'full_name',
+      { title: gettext('Name'), index: true, name: 'username', titleAttribute: 'full_name',
       actions: function(id, attributes)
       {
         var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
@@ -25,51 +25,52 @@
           }
         }
       }},
-      { title: 'Email', index: true, name: 'email' },
-      { title: 'Company', index: true, name: 'organizations_display_name'},
-      { title: 'Status', index: true, name: 'custom_user_status'},
-      { title: 'Activated', index: true, name: 'custom_activated'},
-      { title: 'Last Log In', index: true, name: 'custom_last_login',
+      { title: gettext('Email'), index: true, name: 'email' },
+      { title: gettext('Company'), index: true, name: 'organizations_display_name'},
+      { title: gettext('Status'), index: true, name: 'custom_user_status'},
+      { title: gettext('Activated'), index: true, name: 'custom_activated'},
+      { title: gettext('Last Log In'), index: true, name: 'custom_last_login',
       actions: function(id, attributes)
       {
         if (attributes['custom_last_login'] != '-' && attributes['custom_last_login'] != '' && typeof attributes['custom_last_login'] != 'undefined')
         {
+         // Todo: need to define dateformat from server side for internationalization
          var last_login = attributes['custom_last_login'].split(',')[0].split('/');
             return '' + last_login[1] + '/' + last_login[2] + '/' + last_login[0];
         }
         return attributes['custom_last_login'];
       }},
-      { title: 'Progress', index: true, name: 'progress', actions: function(id, attributes)
+      { title: gettext('Progress'), index: true, name: 'progress', actions: function(id, attributes)
       {
         value = attributes['progress'];
         if (value == '-')
           return value;
-        return '' + parseInt(value) + '%';
+        return InternationalizePercentage(parseInt(value));
       }},
-      { title: 'Proficiency', index: true, name: 'proficiency', actions: function(id, attributes)
+      { title: gettext('Proficiency'), index: true, name: 'proficiency', actions: function(id, attributes)
       {
         value = attributes['proficiency'];
         if (value == '-')
           return value;
-        return '' + parseInt(value) + '%'; 
+        return InternationalizePercentage(parseInt(value));
       }},
-      { title: 'Engagement', index: true, name: 'engagement', actions: function(id, attributes)
+      { title: gettext('Engagement'), index: true, name: 'engagement', actions: function(id, attributes)
       {
         value = attributes['engagement'];
         if (value == '-')
           return value;
         return '' + parseInt(value);
       }},
-      { title: 'Activation Link', index: true, name: 'activation_link', actions: function (id, attributes) {
+      { title: gettext('Activation Link'), index: true, name: 'activation_link', actions: function (id, attributes) {
         var value = attributes['activation_link'];
-        
+
         if(value != '')
-            value = '<a href="' + value + '">' + 'Activation Link' + '</a>';
+            value = '<a href="' + value + '">' + gettext('Activation Link') + '</a>';
 
         return value;
       }},
-      { title: 'Username', index: true, name: 'username' },
-      { title: 'Country', index: true, name: 'country'}
+      { title: gettext('Username'), index: true, name: 'username' },
+      { title: gettext('Country'), index: true, name: 'country'}
     ],
     initialize: function(){
       InitializeTooltipOnPage();
@@ -94,7 +95,7 @@
         var index = 0;
         for (var i=0; i < _this.generatedGridColumns.length; i++)
         {
-          if (_this.generatedGridColumns[i]['title'] == 'Company')
+          if (_this.generatedGridColumns[i]['title'] == gettext('Company'))
           {
             index = i;
           }
@@ -207,6 +208,7 @@
             if (internalAdminFlag == 'False')
             {
               var tag_name = courseTagsInput.val().trim();
+              // Todo: Internationalization: decide how we can handle internal in other language
               if (tag_name.toLowerCase() == 'internal')
               {
                 tag_name = tag_name.toUpperCase();
@@ -229,7 +231,7 @@
                 }
                 else if (data['status'] == 'error')
                 {
-                  alert("Couldn't create new tag!")
+                  alert(gettext("Couldn't create new tag!"))
                   return;
                 }
                 else if(data['status'] == 'errorAlreadyExist')
@@ -243,7 +245,7 @@
             }
             else
             {
-              $('#courseTagsModal').find('.errorMessage').text("You don't have permission to create a new tag, please select one from the list!");
+              $('#courseTagsModal').find('.errorMessage').text(gettext("You don't have permission to create a new tag, please select one from the list!"));
             }
           }
         });
@@ -273,7 +275,7 @@
             }
             else if (data['status'] == 'error')
             {
-              alert("Couldn't delete tag!")
+              alert(gettext("Couldn't delete tag!"))
               return;
             }
           })
@@ -300,7 +302,7 @@
             container: tagCoursesListBlock,
             collection: tagCourses,
             colModel:[
-            { title: 'Course Name', index: true, name: 'display_name',
+            { title: gettext('Course Name'), index: true, name: 'display_name',
               actions: function(id, attributes){
                 var thisId = attributes['course_id']
                 var name = attributes['display_name']
@@ -310,11 +312,17 @@
                 return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>';
               }
             },
-            { title: 'Course ID', index: true, name: 'course_id' }
+            { title: gettext('Course ID'), index: true, name: 'course_id' }
           ]});
           tagCoursesListView.render();
-          var text = '' + tagCourses.length + ' Courses Tagged with "' + tagCourses.tagDetails + '"';
-          tag_courses_modal.find('.tagCoursesListTitle').text(text);
+          var text = ngettext('%(count)s Course Tagged with %(tagDetails)s',
+              '%(count)s Courses Tagged with %(tagDetails)s', tagCourses.length);
+          var tagDetails = {
+            'count': tagCourses.length,
+            'tagDetails': tagCourses.tagDetails
+          };
+
+          tag_courses_modal.find('.tagCoursesListTitle').text(interpolate(text, tagDetails, true));
           tag_courses_modal.foundation('reveal', 'open');
         }});
       });
@@ -362,8 +370,10 @@
           if (xhr.status === 200)
           {
             if (data['values'].state != 'RETRY')
-              $(status_element).text('Progress: '+ data['values'].progress + '%');
-            
+                var status_message = gettext('Progress: %(progress)s %')
+                var progress_status = {'progress': data['values'].progress}
+              $(status_element).text(interpolate(status_message, progress_status, true));
+
             if (data['values'].state == 'SUCCESS' || data['values'].state == 'FAILURE')
             {
               $(status_element).parent().find('.loadingIcon').addClass('hidden');
@@ -396,7 +406,13 @@
         .done(function(data) {
           if (data['status'] == 'ok')
           {
-            $(status_element).text('Selected: '+data['values'].selected+', Successful: '+data['values'].successful+', Failed: '+data['values'].failed);
+            var status_message = gettext('Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s');
+            var message_context = {
+              'selected': data['values'].selected,
+              'successful': data['values'].successful,
+              'failed': data['values'].failed
+            };
+            $(status_element).text(interpolate(status_message, message_context, true));
             if (data['values'].successful + data['values'].failed >= data['values'].selected)
             {
               $(status_element).parent().find('.loadingIcon').addClass('hidden');
@@ -441,14 +457,14 @@
           else
           {
             $('#courseTagsModal').find('.addTagButton').addClass('disabled');
-            $('#courseTagsModal').find('.errorMessage').text('This tag name cannot have more than 30 characters!');
+            $('#courseTagsModal').find('.errorMessage').text(gettext('This tag name cannot have more than 30 characters!'));
             $(input).parent().find('.newTagCreationPopup').hide();
           }
         }
         else
         {
           $('#courseTagsModal').find('.addTagButton').addClass('disabled');
-          $('#courseTagsModal').find('.errorMessage').text('This tag name cannot contain non-alphanumeric characters!');
+          $('#courseTagsModal').find('.errorMessage').text(gettext('This tag name cannot contain non-alphanumeric characters!'));
           $(input).parent().find('.newTagCreationPopup').hide();
         }
       }
@@ -488,7 +504,7 @@
         }
         else if (data['status'] == 'error')
         {
-          alert("Couldn't add tag to course!")
+          alert(gettext("Couldn't add tag to course!"))
           return;
         }
       })

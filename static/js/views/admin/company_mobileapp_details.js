@@ -28,7 +28,7 @@
         }
         else if (data['status'] == 'error')
         {
-          alert("Couldn't delink App!");
+          alert(gettext("Couldn't delink App!"));
           $('#delinkAppButton').removeClass('disabled');
           return;
         }
@@ -105,17 +105,17 @@
           }
           else
           {
-            $('#mainAppDetailsDataContainer').find('.errorMessage').text('This app name cannot have more than 30 characters!');
+            $('#mainAppDetailsDataContainer').find('.errorMessage').text(gettext('This app name cannot have more than 30 characters!'));
           }
         }
         else
         {
-          $('#mainAppDetailsDataContainer').find('.errorMessage').text('This app name cannot contain non-alphanumeric characters!');
+          $('#mainAppDetailsDataContainer').find('.errorMessage').text(gettext('This app name cannot contain non-alphanumeric characters!'));
         }
       }
       else
       {
-        $('#mainAppDetailsDataContainer').find('.errorMessage').text('No App Display Name!');
+        $('#mainAppDetailsDataContainer').find('.errorMessage').text(gettext('No App Display Name!'));
       }
     },
     updateAppName: function(newName)

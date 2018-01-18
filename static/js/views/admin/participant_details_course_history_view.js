@@ -7,7 +7,7 @@
         container: this.$el,
         collection: this.collection,
         colModel:[
-        { title: 'Course Name', index: true, name: 'name', sorttype: 'string',
+        { title: gettext('Course Name'), index: true, name: 'name', sorttype: 'string',
           actions: function(id, attributes){ 
             var thisId = attributes['id']
             var name = attributes['name']
@@ -25,13 +25,14 @@
             }
           } 
         },
-        { title: 'Course ID', index: true, name: 'id' },
-        { title: 'Program', index: true, name: 'program' },
-        { title: 'Completed', index: true, name: 'completed' },
-        { title: 'Grade', index: true, name: 'grade' },
-        { title: 'Status', index: true, name: 'status' },
-        { title: 'End Date', index: true, name: 'end',
+        { title: gettext('Course ID'), index: true, name: 'id' },
+        { title: gettext('Program'), index: true, name: 'program' },
+        { title: gettext('Completed'), index: true, name: 'completed' },
+        { title: gettext('Grade'), index: true, name: 'grade' },
+        { title: gettext('Status'), index: true, name: 'status' },
+        { title: gettext('End Date'), index: true, name: 'end',
           actions: function(id, attributes){ 
+            // Internationalization Todo: Need to define date format for every language before processing it
             var end = attributes['end'].split('/');
             return '' + end[1] + '/' + end[2] + '/' + end[0];
           } 

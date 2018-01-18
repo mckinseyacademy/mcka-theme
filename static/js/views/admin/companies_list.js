@@ -12,17 +12,17 @@
         collection: this.collection,
         enableSearch: true,
         colModel:[
-        { title: 'Company', index: true, name: 'name',
+        { title: gettext('Company'), index: true, name: 'name',
           actions: function(id, attributes){ 
-            var thisId = attributes['id']
-            var name = attributes['name']
+            var thisId = attributes['id'];
+            var name = attributes['name'];
             if (name)
               return '<a href="/admin/companies/' + thisId + '" target="_self">' + name + '</a>'; 
           } 
         },
-        { title: 'Company ID', index: true, name: 'id', sorttype: 'number' },
-        { title: 'No. of Participants', index: true, name: 'numberParticipants', sorttype: 'number' },
-        { title: 'No. of Courses', index: true, name: 'numberCourses', sorttype: 'number' }
+        { title: gettext('Company ID'), index: true, name: 'id', sorttype: 'number' },
+        { title: gettext('No. of Participants'), index: true, name: 'numberParticipants', sorttype: 'number' },
+        { title: gettext('No. of Courses'), index: true, name: 'numberCourses', sorttype: 'number' }
         ]
       });
       var _this = this;
@@ -63,7 +63,8 @@
               if (value.length <= 30)
               {
                 var testValue = value.replace(/ /g,'');
-                if (/^[a-z0-9]+$/i.test(testValue)) 
+                // Todo Internationalization: Company name can only be in english
+                if (/^[a-z0-9]+$/i.test(testValue))
                 {
                   var url = ApiUrls.company + 'new_company?company_display_name=' + value;
                   var options = {
@@ -94,14 +95,14 @@
                 }
                 else
                 {
-                  $(errorContainer).text('This company name cannot contain non-alphanumeric characters!');
+                  $(errorContainer).text(gettext('This company name cannot contain non-alphanumeric characters!'));
                   $(create_button).attr('disabled', 'disabled');
                   $(create_button).addClass('disabled');
                 }
               }
               else
               {
-                $(errorContainer).text('This company name cannot have more than 30 characters!');
+                $(errorContainer).text(gettext('This company name cannot have more than 30 characters!'));
                 $(create_button).attr('disabled', 'disabled');
                 $(create_button).addClass('disabled');
               }
@@ -138,7 +139,7 @@
             }
             else if (data['status'] == 'error')
             {
-              alert("Couldn't create new company!")
+              alert(gettext("Couldn't create new company!"))
               return;
             }
           })

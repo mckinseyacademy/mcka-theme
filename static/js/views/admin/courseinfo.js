@@ -18,7 +18,7 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
         width = 860 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
-    var formatPercent = d3.format(".0%");
+    var formatPercent = d3.format(gettext(".0%"));
 
     var x = d3.scale.linear()
         .domain([1,2,3,4,5,6])
@@ -45,8 +45,8 @@ Apros.views.ClientAdminCourseInfo = Backbone.View.extend({
         .scale(x)
         .tickValues(tickValues)
         .tickFormat(function(d){
-            if (lessThanAWeekOld) return d + ' day';
-            return Math.floor(d / 7) + ' week';
+            if (lessThanAWeekOld) return d + gettext(' day');
+            return Math.floor(d / 7) + gettext(' week');
         })
         .orient("bottom");
 

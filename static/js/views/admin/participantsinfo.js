@@ -9,8 +9,8 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
             container: this.$el,
             collection: this.collection.fullCollection,
             colModel:[
-                { title: 'Name', index: true, name: 'full_name', 
-                actions: function(id, attributes) 
+                { title: gettext('Name'), index: true, name: 'full_name',
+                actions: function(id, attributes)
                 {
                     var custom_name = attributes['full_name'];
                     if (custom_name === "")
@@ -19,11 +19,11 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
                       custom_name=attributes['username'];
                     return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + custom_name + '</a>';
                 }},
-                { title: 'Company', index: true, name: 'organizations_custom_name' },
-                { title: 'Email', index: true, name: 'email' },
-                { title: 'Date Added', index: true, name: 'created_custom_date',
-                actions: function(id, attributes) 
-                { 
+                { title: gettext('Company'), index: true, name: 'organizations_custom_name' },
+                { title: gettext('Email'), index: true, name: 'email' },
+                { title: gettext('Date Added'), index: true, name: 'created_custom_date',
+                actions: function(id, attributes)
+                {
                     if (attributes['created_custom_date'] != '-' && attributes['created_custom_date'] != '' && typeof attributes['created_custom_date'] != 'undefined')
         {
          var last_login = attributes['created_custom_date'].split(',')[0].split('/');
@@ -31,13 +31,13 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         }
         return attributes['created_custom_date'];
                 }},
-        { title: 'Enrolled In', index: true, name: 'courses_enrolled',
-          actions: function(id, attributes) 
-          { 
+        { title: gettext('Enrolled In'), index: true, name: 'courses_enrolled',
+          actions: function(id, attributes)
+          {
             return parseInt(attributes['courses_enrolled']);
           }
         },
-                { title: 'Activated', index: true, name: 'active_custom_text' }
+                { title: gettext('Activated'), index: true, name: 'active_custom_text' }
         ]
         });
         participantsListViewGrid['partial_collection']=this.collection;
@@ -97,7 +97,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         var adminAnotherCompanyTemplate = '<div class="row adminAnotherCompany">'+
           '<div class="large-6 columns participantAdminCompany">'+
             '<div class="participantAdminCompanyLabel labelUniversal">'+
-              'Admin Company'+
+              gettext('Admin Company')+
             '</div>'+
             '<div class="participantAdminCompanyValue">'+
               '<input type="text" data-id/>'+
@@ -106,10 +106,10 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           '</div>'+
           '<div class="large-6 columns participantPermissions">'+
             '<div class="participantPermissionsLabel labelUniversal">'+
-              'Admin Permissions'+
+              gettext('Admin Permissions')+
             '</div>'+
             '<div class="participantPermissionsValue permissionSelect large-10">'+
-              '<input type="text" value="Company Admin" disabled data-id="company_admin"/>'+
+              '<input type="text" value='+gettext("Company Admin")+' disabled data-id="company_admin"/>'+
             '</div>'+
             '<i class="fa fa-times removeItem large-2" aria-hidden="true"></i>'+
           '</div>'+
@@ -117,7 +117,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         var enrollInCourseTemplate = '<div class="row enrollInCourse">'+
           '<div class="large-6 columns participantCourse">'+
             '<div class="participantCourseLabel labelUniversal">'+
-              'Course'+
+              gettext('Course')+
             '</div>'+
             '<div class="participantCourseValue">'+
               '<input type="text" data-id/>'+
@@ -126,17 +126,17 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           '</div>'+
           '<div class="large-6 columns participantCoursePermissions">'+
             '<div class="participantCoursePermissionsLabel labelUniversal">'+
-              'Status'+
+              gettext('Status')+
             '</div>'+
             '<div class="participantCoursePermissionsValue permissionSelect large-10">'+
               '<select disabled>'+
-                '<option value="active">Participant</option>'+
-                '<option value="assistant">TA</option>'+
-                '<option value="observer">Observer</option>'+
+                '<option value="active">'+gettext('Participant')+'</option>'+
+                '<option value="assistant">'+gettext('TA')+'</option>'+
+                '<option value="observer">'+gettext('Observer')+'</option>'+
               '</select>'+
             '</div>'+
             '<i class="fa fa-times removeItem large-2" aria-hidden="true"></i>'+
-          '</div>'+         
+          '</div>'+
         '</div>';
         $('#country_edit').countrySelect({
             defaultCountry: "null",  // set country empty by default on form initialization
@@ -156,7 +156,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
                 GenerateAutocompleteInput(_this.organization_source, '#add_a_participant .participantCompanyValue input');
             else
                 InitializeAutocompleteInput(ApiUrls.participant_organization_get_api(), '#add_a_participant .participantCompanyValue input');
-            var mainContainer = $('#add_a_participant');        
+            var mainContainer = $('#add_a_participant');
             mainContainer.find('.adminAnotherCompanyAllWrapper').empty();
             mainContainer.find('.adminCourseAllWrapper').empty();
             mainContainer.find('.errorContainer').empty();
@@ -274,17 +274,17 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
                 data: JSON.stringify(data),
                 dataType: 'text',
                 cache: false,
-                success: function (data, status) 
+                success: function (data, status)
                 {
                     data = JSON.parse(data)
-                    if (data['status'] == "ok") 
+                    if (data['status'] == "ok")
                     {
                         var confirmationScreen = $('#confirmation_screen_single_participant');
                         confirmationScreen.find('.download_user_activation').attr('href', confirmationScreen.find('.download_user_activation').attr('data-url') + data['user_id']);
                         confirmationScreen.find('.go_to_user_profile').attr('href', confirmationScreen.find('.go_to_user_profile').attr('data-url') + data['user_id']);
                         confirmationScreen.foundation('reveal', 'open');
                     }
-                    else 
+                    else
                     {
                         if (data['type'] == 'validation_failed')
                         {
@@ -307,8 +307,8 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
                 }
                 });
             }
-        }); 
-        
+        });
+
     },
     getAllCourses: function()
     {
@@ -345,12 +345,12 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
       return companyArray;
     },
     manageNewCompanyPopup: function(input, showPopup)
-    { 
+    {
       var value = $(input).val().trim();
         if (showPopup && (value.length > 0))
-        {  
+        {
         var testValue = value.replace(/ /g,'');
-        if (/^[a-z0-9]+$/i.test(testValue)) 
+        if (/^[a-z0-9]+$/i.test(testValue))
         {
           if (value.length <= 30)
           {
@@ -361,13 +361,13 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           else
           {
             $('#add_a_participant').find('.addSingleParticipantButton').addClass('disabled');
-            $('.participantCompanyValue').find('.errorMessage').text('This company name cannot have more than 30 characters!');
+            $('.participantCompanyValue').find('.errorMessage').text(gettext('This company name cannot have more than 30 characters!'));
           }
         }
         else
         {
           $('#add_a_participant').find('.addSingleParticipantButton').addClass('disabled');
-          $('.participantCompanyValue').find('.errorMessage').text('This company name cannot contain non-alphanumeric characters!');
+          $('.participantCompanyValue').find('.errorMessage').text(gettext('This company name cannot contain non-alphanumeric characters!'));
         }
         }
         else

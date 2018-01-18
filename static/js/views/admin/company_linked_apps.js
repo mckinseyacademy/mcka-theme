@@ -1,7 +1,7 @@
   Apros.views.CompanyLinkedAppsView = Backbone.View.extend({
     gridColumns:
     [
-        { title: 'App Name', index: true, name: 'name',
+        { title: gettext('App Name'), index: true, name: 'name',
           actions: function(id, attributes){
             var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
             var thisId = attributes['id']
@@ -17,28 +17,28 @@
             }
           }
         },
-        { title: 'Deployment Mech', index: false, name: 'deployment_mechanism' },
-        { title: 'iOS DL URL', index: false, name: 'ios_download_url',
+        { title: gettext('Deployment Mech'), index: false, name: 'deployment_mechanism' },
+        { title: gettext('iOS DL URL'), index: false, name: 'ios_download_url',
           actions: function(id, attributes){
             return getLinkTemplate(attributes['ios_download_url']);
           }
         },
-        { title: 'Android DL URL', index: false, name: 'android_download_url',
+        { title: gettext('Android DL URL'), index: false, name: 'android_download_url',
           actions: function(id, attributes){
             return getLinkTemplate(attributes['android_download_url']);
           }
         },
-        { title: 'Urban Airship URL', index: false, name: 'provider_dashboard_url',
+        { title: gettext('Urban Airship URL'), index: false, name: 'provider_dashboard_url',
           actions: function(id, attributes){
             return getLinkTemplate(attributes['provider_dashboard_url']);
           }
         },
-        { title: 'Analytics URL', index: false, name: 'analytics_url',
+        { title: gettext('Analytics URL'), index: false, name: 'analytics_url',
           actions: function(id, attributes){
             return getLinkTemplate(attributes['analytics_url']);
           }
         },
-        { title: 'Active', index: false, name: 'is_active',
+        { title: gettext('Active'), index: false, name: 'is_active',
           actions: function(id, attributes){
             if (attributes['is_active']){
               return '<i class="fa fa-check" aria-hidden="true"></i>';
@@ -144,7 +144,7 @@
         }
         else if (data['status'] == 'error')
         {
-          alert("Couldn't link this App!");
+          alert(gettext("Couldn't link this App!"));
           return;
         }
       })

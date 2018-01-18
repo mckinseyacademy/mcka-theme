@@ -1,7 +1,7 @@
 Apros.views.CompanyLearnerDashboardsView = Backbone.View.extend({
   gridColumns:
     [
-      { title: 'Dashboard Name', index: true, name: 'title',
+      { title: gettext('Dashboard Name'), index: true, name: 'title',
         actions: function(id, attributes){ 
           var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
           var course_id = attributes['course_id']
@@ -11,7 +11,7 @@ Apros.views.CompanyLearnerDashboardsView = Backbone.View.extend({
           }
         } 
       },
-      { title: 'Course', index: true, name: 'course_id' }
+      { title: gettext('Course'), index: true, name: 'course_id' }
     ],
 
   initialize: function() {
@@ -132,15 +132,15 @@ Apros.views.CompanyLearnerDashboardsView = Backbone.View.extend({
           })
         }
         else {
-          $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('This company name cannot have more than 30 characters!');
+          $('#mainCompanyDetailsDataContainer').find('.errorMessage').text(gettext('This company name cannot have more than 30 characters!'));
         }
       }
       else {
-        $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('This company name cannot contain non-alphanumeric characters!');
+        $('#mainCompanyDetailsDataContainer').find('.errorMessage').text(gettext('This company name cannot contain non-alphanumeric characters!'));
       }
     }
     else {
-      $('#mainCompanyDetailsDataContainer').find('.errorMessage').text('No Company Display Name!');
+      $('#mainCompanyDetailsDataContainer').find('.errorMessage').text(gettext('No Company Display Name!'));
     }
   },
 

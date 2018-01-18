@@ -55,7 +55,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
                 if(type=='image') {
                   $('#hidden_file_upload_form input').attr('accept',"image/*");
                   $(document).one("s3_files_uploaded",function(event, data){
-                    alert("File successfully uploaded!");
+                    alert(gettext("File successfully uploaded!"));
                     $('#hidden_file_upload_form input').val("");
                     if (data["urls"].length)
                       $('#'+field_name).val(data["urls"][0]);
@@ -113,9 +113,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         if ($(this).hasClass('disabled'))
           return;
         var selectedRowsIdsLen = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows.length;
-        $('#courseDetailsMainModal').find('.courseModalTitle').text('Unenroll Participants');
-        $('#courseDetailsMainModal').find('.courseModalStatus').text('Selected: '+selectedRowsIdsLen+', Successful: 0, Failed: 0');
-        $('#courseDetailsMainModal').find('.courseModalDescription').text('Unenroll all selected participants from this course?');
+        $('#courseDetailsMainModal').find('.courseModalTitle').text(gettext('Unenroll Participants'));
+        var messageTemplate = gettext('Selected: %(selectedRows)s, Successful: 0, Failed: 0');
+        var context = {'selectedRows': selectedRowsIdsLen};
+        $('#courseDetailsMainModal').find('.courseModalStatus').text(interpolate(messageTemplate, context, true));
+        $('#courseDetailsMainModal').find('.courseModalDescription').text(gettext('Unenroll all selected participants from this course?'));
         $('#courseDetailsMainModal').find('.courseModalContent').empty();
         $('#courseDetailsMainModal').find('.courseModalControl').find('.cancelChanges').off().on('click', function()
         {
@@ -128,11 +130,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           $('#courseDetailsMainModal').find('a.close-reveal-modal').trigger('click');
         });
         if(_this.courses_details_view.coursesListDetailsViewGrid.selectedRows.length === 0) {
-          alert("You need to select at least one participant to be able to apply bulk actions.")
+          alert(gettext("You need to select at least one participant to be able to apply bulk actions."))
         }
         else {
           var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
-          saveButton.text('Unenroll');
+          saveButton.text(gettext('Unenroll'));
           saveButton.off().on('click', function()
           {
             var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
@@ -172,13 +174,15 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         if ($(this).hasClass('disabled'))
           return;
         var selectedRowsIdsLen = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows.length;
-        $('#courseDetailsMainModal').find('.courseModalTitle').text('Change Status');
-        $('#courseDetailsMainModal').find('.courseModalStatus').text('Selected: '+selectedRowsIdsLen+', Successful: 0, Failed: 0');
-        $('#courseDetailsMainModal').find('.courseModalDescription').text('Change status of all selected participants to:');
+        $('#courseDetailsMainModal').find('.courseModalTitle').text(gettext('Change Status'));
+        var messageTemplate = gettext('Selected: %(selectedRows)s, Successful: 0, Failed: 0');
+        var context = {'selectedRows': selectedRowsIdsLen};
+        $('#courseDetailsMainModal').find('.courseModalStatus').text(interpolate(messageTemplate, context, true));
+        $('#courseDetailsMainModal').find('.courseModalDescription').text(gettext('Change status of all selected participants to:'));
         $('#courseDetailsMainModal').find('.courseModalContent').html(
           '<input type="radio" name="status" value="Active" id="participantCheckbox"><label for="participantCheckbox">'+gettext('Participant')+'</label>'+
-          '<input type="radio" name="status" value="Observer" id="observerCheckbox"><label for="observerCheckbox">Observer</label>'+
-          '<input type="radio" name="status" value="TA" id="taCheckbox"><label for="taCheckbox">TA</label>'
+          '<input type="radio" name="status" value="Observer" id="observerCheckbox"><label for="observerCheckbox">'+gettext('Observer')+'</label>'+
+          '<input type="radio" name="status" value="TA" id="taCheckbox"><label for="taCheckbox">'+gettext('TA')+'</label>'
         );
         $('#courseDetailsMainModal').find('.courseModalControl').find('.cancelChanges').off().on('click', function()
         {
@@ -191,11 +195,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           $('#courseDetailsMainModal').find('a.close-reveal-modal').trigger('click');
         });
         if(_this.courses_details_view.coursesListDetailsViewGrid.selectedRows.length === 0) {
-          alert("You need to select at least one participant to be able to apply bulk actions.")
+          alert(gettext("You need to select at least one participant to be able to apply bulk actions."))
         }
         else {
           var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
-          saveButton.text('Save Changes');
+          saveButton.text(gettext('Save Changes'));
           saveButton.addClass('disabled');
           saveButton.attr('disabled','disabled');
           $("#courseDetailsMainModal input[type='radio']").on('change', function(){
@@ -216,7 +220,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             }
             else
             {
-              alert('You need to select status!');
+              alert(gettext('You need to select status!'));
               return;
             }
             var dictionaryToSend = {type:'status_change', new_status: selectedVal, list_of_items:[]};
@@ -257,21 +261,26 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         if ($(this).hasClass('disabled'))
           return;
         var selectedRowsIdsLen = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows.length;
-        $('#courseDetailsMainModal').find('.courseModalTitle').text('Select Course');
-        $('#courseDetailsMainModal').find('.courseModalStatus').text('Selected: '+selectedRowsIdsLen+', Successful: 0, Failed: 0');
-        $('#courseDetailsMainModal').find('.courseModalDescription').text(''+selectedRowsIdsLen+' Participants will be enroll in course selected below.');
+        $('#courseDetailsMainModal').find('.courseModalTitle').text(gettext('Select Course'));
+        var messageTemplate = gettext('Selected: %(selectedRows)s, Successful: 0, Failed: 0');
+        var context = {'selectedRows': selectedRowsIdsLen};
+        $('#courseDetailsMainModal').find('.courseModalStatus').text(interpolate(messageTemplate, context, text));
+        messageTemplate = ngettext('%(selectedRows)s Participants will be enroll in course selected below.',
+            '%(selectedRows)s Participant will be enroll in course selected below.',selectedRowsIdsLen);
+
+        $('#courseDetailsMainModal').find('.courseModalDescription').text(interpolate(messageTemplate, context, true));
         $('#courseDetailsMainModal').find('.courseModalContent').html(
           '<div class="row enrollParticipants">' +
           '<div class="large-6 columns enrollParticipantsCourse">' +
-          '<p class="labelUnirvesal">Course</p>' +
+          '<p class="labelUnirvesal">' + gettext('Course') + '</p>' +
           '<input type="text" value="" name="course" maxlength="60">' +
           '</div>' +
           '<div class="large-6 columns enrollParticipantsStatus">' +
-          '<p class="labelUnirvesal">Status</p>' +
+          '<p class="labelUnirvesal">'+gettext('Status')+'</p>' +
           '<select name="status">' +
-          '<option value="Active">Active</option>' +
-          '<option value="Observer">Observer</option>' +
-          '<option value="TA">TA</option></select>' +
+          '<option value="Active">'+gettext('Active') + '</option>' +
+          '<option value="Observer">'+gettext('Observer')+'</option>' +
+          '<option value="TA">'+gettext('TA')+'</option></select>' +
           '</div></div>'
         );
         var url = ApiUrls.participant_courses_get_api();
@@ -287,11 +296,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           $('#courseDetailsMainModal').find('a.close-reveal-modal').trigger('click');
         });
         if(_this.courses_details_view.coursesListDetailsViewGrid.selectedRows.length === 0) {
-          alert("You need to select at least one participant to be able to apply bulk actions.")
+          alert(gettext("You need to select at least one participant to be able to apply bulk actions."))
         }
         else {
           var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
-          saveButton.text('Enroll Participants');
+          saveButton.text(gettext('Enroll Participants'));
           saveButton.attr('disabled', 'disabled');
           saveButton.addClass('disabled');
           $(document).on('autocomplete_found', function(event, input){
@@ -315,22 +324,22 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             if (selected.length > 0) {
                 selectedVal = selected.val();
                 if(!selectedVal){
-                  alert('You need to select status!');
+                  alert(gettext('You need to select status!'));
                   return;
                 }
             }
             else
             {
-              alert('You need to select status!');
+              alert(gettext('You need to select status!'));
               return;
             }
             var course_id = $('.enrollParticipantsCourse input').attr('data-id');
             if (!course_id){
-              alert('You need to select course!');
+              alert(gettext('You need to select course!'));
               return;
             }
             if (course_id.length == 0) {
-              alert('You need to select course!');
+              alert(gettext('You need to select course!'));
               return;
             }
             var dictionaryToSend = {type:'enroll_participants', new_status: selectedVal, list_of_items:[], course_id: course_id};
@@ -400,8 +409,8 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             dictionaryToSend['company_id'] = companyId;
           }
         
-          updateModalAttrs(params.modalTitle || 'Download', 'Progress : 0%');
-          updateSaveButtonAttrs('Download CSV File', true, null);
+          updateModalAttrs(params.modalTitle || gettext('Download'), gettext('Progress : 0%'));
+          updateSaveButtonAttrs(gettext('Download CSV File'), true, null);
 
           var options = {
             url: url,
@@ -440,7 +449,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         if($(this).hasClass('allselected')){
             // transfer control to backend downloader in case of select-all
             backendCSVDownloader({
-              type: 'push_notifications_data', modalTitle: 'Download Notifications CSV',
+              type: 'push_notifications_data', modalTitle: gettext('Download Notifications CSV'),
               downloadLink: '/admin/download_task_generated_csv/',
               linkParams: 'task_name=push_notifications_data&file_name=' + filename
             });
@@ -474,7 +483,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         if($(this).hasClass('allselected')){
             // transfer control to backend downloader in case of select-all
             backendCSVDownloader({
-              type: 'participants_csv_data', modalTitle: 'Download Participants',
+              type: 'participants_csv_data', modalTitle: gettext('Download Participants'),
               downloadLink: '/admin/download_task_generated_csv/',
               linkParams: 'task_name=participants_stats&file_name=' + filename
             });
@@ -529,14 +538,16 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
               for(var j=0; j < items.length; j++)
               {
                 var selected = _this.courseDetails.fullCollection.get(items[j]['id']);
-                var label = 'Group Work: ' + groupworkData.label;
+                var labelTemplate = gettext('Group Work: %(label)s');
+                var labelValue = {'label': groupworkData.label};
+                var label = interpolate(labelTemplate, labelValue, true);
                 if (selected.attributes.groupworks.length)
                 {
-                  items[j][label] = '' + parseInt(selected.attributes.groupworks[groupworkIndex].percent) + '%';
+                  items[j][label] = InternationalizePercentage(parseInt(selected.attributes.groupworks[groupworkIndex].percent));
                 }
                 else
                 {
-                  items[j][label] = '' + parseInt('000') + '%';
+                  items[j][label] = InternationalizePercentage(parseInt('000'));
                 }
               }
             }
@@ -554,14 +565,18 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
               for(var j=0; j < items.length; j++)
               {
                 var selected = _this.courseDetails.fullCollection.get(items[j]['id']);
-                var label = 'Assessment: ' + assessmentData.label;
+
+                var labelTemplate = gettext('Assessment: %(label)s');
+                var labelValue = {'label': assessmentData.label};
+                var label = interpolate(labelTemplate, labelValue, true);
+
                 if (selected.attributes.assessments.length)
                 {
-                  items[j][label] = '' + parseInt(selected.attributes.assessments[assessmentIndex].percent) + '%';
+                  items[j][label] = InternationalizePercentage(parseInt(selected.attributes.assessments[assessmentIndex].percent));
                 }
                 else
                 {
-                  items[j][label] = '' + parseInt('000') + '%';
+                  items[j][label] = InternationalizePercentage(parseInt('000'));
                 }
               }
             }
@@ -577,7 +592,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
     csvDownloadCallback: function functionName(_this, data) {
       if(data['values'].state == 'FAILURE'){
         $('#courseDetailsMainModal').find('.courseModalContent')
-            .text('Task failed to execute. Please retry later.');
+            .text(gettext('Task failed to execute. Please retry later.'));
         return;
       }
       var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
@@ -594,25 +609,26 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         return;
       var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
       var selectedRowsIdsLen = selectedRowsIds.length;
-      $('#courseDetailsMainModal').find('.courseModalTitle').text('Successfully Enrolled in 1 Course');
+      $('#courseDetailsMainModal').find('.courseModalTitle').text(gettext('Successfully Enrolled in 1 Course'));
       $('#courseDetailsMainModal').find('.courseModalStatus').empty();
-      $('#courseDetailsMainModal').find('.courseModalDescription').text('What would you like to do now?');
+      $('#courseDetailsMainModal').find('.courseModalDescription').text(gettext('What would you like to do now?'));
+      var courseLinkText = interpolate(gettext('Go to %(course_id)s Course'), [course_id]);
       $('#courseDetailsMainModal').find('.courseModalContent').html(
-        '<a href="#" target="_blank">Send Course Intro Email</a><br><br>' +
-        '<a href="/admin/courses/'+course_id+'" target="_blank">Go to '+course_id+' Course</a><br><br>' +
-        '<a href="#" class="enrollThisUsersInNewCourse">Enroll this list in another course</a><br><br>'
+        '<a href="#" target="_blank">'+gettext('Send Course Intro Email')+'</a><br><br>' +
+        '<a href="/admin/courses/'+course_id+'" target="_blank">'+  courseLinkText+'</a><br><br>' +
+        '<a href="#" class="enrollThisUsersInNewCourse">'+gettext('Enroll this list in another course')+'</a><br><br>'
       );
       $('#courseDetailsMainModal').on('click', '.enrollThisUsersInNewCourse', function(){
         $('#courseBulkActionsMainContainer').find('.bulkEnrollInNewCourse').trigger('click');
       });
       if(selectedRowsIdsLen == 0) {
-        alert("You need to select at least one participant to be able to apply bulk actions.")
+        alert(gettext("You need to select at least one participant to be able to apply bulk actions."))
       }
       else {
         var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
         saveButton.removeAttr('disabled');
         saveButton.removeClass('disabled');
-        saveButton.text("I'm Done");
+        saveButton.text(gettext("I'm Done"));
         saveButton.off().on('click', function()
         {
           $('#courseDetailsMainModal').find('a.close-reveal-modal').trigger('click');
@@ -632,14 +648,14 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       {
         modal.find('.templateNameValue select').find('option[value="'+data.pk+'"]').remove();
         modal.find('.templateNameValue select').trigger('change');
-        alert('Successfully deleted template!');
+        alert(gettext('Successfully deleted template!'));
       });
       $(document).on('email_template_added', function(event, data)
       {
         modal.find('.templateNameValue select').append('<option value="'+data.data.pk+'">'+data.data.title+'</option>')
         _this.emailTemplates.push(data.data);
         modal.find('.templateNameValue select').trigger('change');
-        alert('Successfully added new template!');
+        alert(gettext('Successfully added new template!'));
       });
       $(document).on('email_template_updated', function(event, data)
       {
@@ -652,15 +668,15 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             break;
           }
         }
-        alert('Successfully updated template!');
+        alert(gettext('Successfully updated template!'));
       });
       $(document).on('email_sent', function(e, data)
       {
         if (data['type'] == 'preview')
-          CreateNicePopup("Email Preview Success!", 'Successfully sent preview email!');
+          CreateNicePopup(gettext("Email Preview Success!"), gettext('Successfully sent preview email!'));
         else
         {
-          CreateNicePopup("Email Success!", 'Successfully sent email!');
+          CreateNicePopup(gettext("Email Success!"), gettext('Successfully sent email!'));
           modal.foundation('reveal', 'close');
         }
 
@@ -702,7 +718,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       controlButtonContainer.on('click', '.previewEmail', function(e)
       {
 
-        var email = CreatNicePrompt("Preview Email!","Please enter preview email!");
+        var email = CreatNicePrompt(gettext("Preview Email!"),gettext("Please enter preview email!"));
         $(document).one("dynamic_prompt_confirmed", function(e, email)
         {
           if (email != null)
@@ -722,7 +738,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       templateButtonContainer.on('click', '.saveAsNewTemplate', function(e)
       {
         var subject = modal.find('.emailSubjectValue input').val();
-        var title = prompt("Please enter new template name!", subject);
+        var title = prompt(gettext("Please enter new template name!"), subject);
         var body = tinymce.get('email_editor').getContent();
         if (title != null)
         {
@@ -737,7 +753,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         {
           var subject = modal.find('.emailSubjectValue input').val();
           var title = select.find('option[value="'+selected_pk+'"]').text().trim();
-          title = prompt("Please enter updated template name or leave the old one!", title);
+          title = prompt(gettext("Please enter updated template name or leave the old one!"), title);
           var body = tinymce.get('email_editor').getContent();
           if (title != null)
           {
@@ -750,7 +766,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         var selected_pk = modal.find('.templateNameValue select').val();
         if (selected_pk != 'none')
         {
-          var r = confirm("You are about to delete email template. Are you sure?");
+          var r = confirm(gettext("You are about to delete email template. Are you sure?"));
           if (r == true)
             EmailTemplatesManager('DELETE', selected_pk);
         }

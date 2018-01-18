@@ -56,7 +56,7 @@ Apros.views.AdminCourseDetailsTimeline = Backbone.View.extend({
       d3.select(_this.el)
           .selectAll('.nv-x .nvd3.nv-wrap.nv-axis')
           .append("text")
-          .text(function(){return lessThanAWeekOld ? 'days': 'weeks';})
+          .text(function(){return lessThanAWeekOld ? gettext('days'): gettext('weeks');})
           .attr('y', 15)
           .attr('x', 683);
 

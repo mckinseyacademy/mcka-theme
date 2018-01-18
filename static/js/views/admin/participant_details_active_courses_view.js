@@ -51,7 +51,7 @@
       var _this = this;
       var gridColumns = 
       [
-        { title: 'Course Name', index: true, name: 'name', sorttype: 'string',
+        { title: gettext('Course Name'), index: true, name: 'name', sorttype: 'string',
           actions: function(id, attributes){ 
             var thisId = attributes['id'];
             var name = attributes['name'];
@@ -69,39 +69,46 @@
             }
           } 
         },
-        { title: 'Course ID', index: true, name: 'id' },
-        { title: 'Program', index: true, name: 'program' },
-        { title: 'Progress', index: true, name: 'progress', sorttype: 'string',
+        { title: gettext('Course ID'), index: true, name: 'id' },
+        { title: gettext('Program'), index: true, name: 'program' },
+        { title: gettext('Progress'), index: true, name: 'progress', sorttype: 'string',
           actions: function(id, attributes){ 
-            var progress = attributes['progress']
+            var progress = attributes['progress'];
             if (typeof progress != 'undefined') {
               if (progress == '.') {
                 return '<i class="fa fa-spinner fa-spin"></i>';
               }
+              var progressValue = 0;
               if (progress[0] != '0')
-                return '' + progress + '%'; 
-              if (progress[1] != '0')
-                return '' + progress[1] + progress[2] + '%'; 
-              return '' + progress[2] + '%'; 
+                progressValue = progress;
+              else if (progress[1] != '0')
+                progressValue = progress[1] + progress[2];
+              else
+                  progressValue = progress[2];
+
+              return InternationalizePercentage(progressValue);
             }
           } 
         },
-        { title: 'Proficiency', index: true, name: 'proficiency', sorttype: 'string',
+        { title: gettext('Proficiency'), index: true, name: 'proficiency', sorttype: 'string',
           actions: function(id, attributes){ 
-            var proficiency = attributes['proficiency']
+            var proficiency = attributes['proficiency'];
             if (typeof proficiency != 'undefined') {
               if (proficiency == '.') {
                 return '<i class="fa fa-spinner fa-spin"></i>';
               }
+              var proficiencyValue = 0;
               if (proficiency[0] != '0')
-                return '' + proficiency + '%'; 
-              if (proficiency[1] != '0')
-                return '' + proficiency[1] + proficiency[2] + '%'; 
-              return '' + proficiency[2] + '%'; 
+                proficiencyValue = proficiency;
+              else if (proficiency[1] != '0')
+                proficiencyValue = proficiency[1] + proficiency[2];
+              else
+                  proficiencyValue = proficiency[2];
+              return InternationalizePercentage(proficiencyValue);
             }
           } 
         },
-        { title: 'Status', index: true, name: 'status', 
+        { title: gettext('Status'), index: true, name: 'status',
         actions: function(id, attributes) {
             var status = attributes['status'];
             var companyAdminFlag = $('#participantsDetailsDataWrapper').attr('admin-flag');
@@ -121,9 +128,9 @@
       var companyAdminFlag = $('#participantsDetailsDataWrapper').attr('admin-flag');
       if (companyAdminFlag == 'False')
       {
-        var unerollColumn =  { title: 'Unenroll', index: false, name: 'unenroll',
+        var unerollColumn =  { title: gettext('Unenroll'), index: false, name: 'unenroll',
           actions: function(id, attributes){ 
-            return '<a href="#" data-courseid="' + id + '" class="unenroll-user">Unenroll</a>'; 
+            return '<a href="#" data-courseid="' + id + '" class="unenroll-user">' + gettext('Unenroll') + '</a>';
           } };
         gridColumns.push(unerollColumn);
       }
