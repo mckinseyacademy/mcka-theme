@@ -57,7 +57,7 @@
                     %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "{% trans 'Lesson Modules' %}"}
                       %i.fa.fa-list-ul
                     %div.reveal-modal.tiny.lesson-modules-modal{'id': "module_list-#{lesson.index}", 'data-reveal': True}
-                      %p.style-2 {% blocktrans %}You have completed ={lesson.progress}% of Lesson ={lesson.index}: {% endblocktrans %}
+                      %p.style-2 {% blocktrans with lesson_progress=lesson.progress lesson_index=lesson.index %}You have completed {{ lesson_progress }}% of Lesson {{ lesson_index }}: {% endblocktrans %}
                       %ul
                         - for module in lesson.modules
                           %li.lesson-row-item

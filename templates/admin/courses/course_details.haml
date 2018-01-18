@@ -50,25 +50,30 @@
                     {% trans "STATS" %}
                 - if request.resolver_match.url_name == 'course_details'
                   .courseStatsButton.large-4.columns
-                    %a{:href => 'learner_dashboard'}>  {% trans "LEARNER DASHBOARD" %}
+                    %a{:href => 'learner_dashboard'}>
+                      {% trans "LEARNER DASHBOARD" %}
 
                   .courseStatsButton.large-4.columns
                     - if certificates_status == certificates_statuses.available
                       %form#generate-certificate-form{action: "{% url 'generate_course_certificates' id %}", method: 'POST'}
                         - csrf_token
                         %input{type: 'hidden', name: 'course_end', value: '{{end}}'}
-                        %button.generateCourseCertButton{type: 'submit'}>  {% trans "Generate Certificates" %}
+                        %button.generateCourseCertButton{type: 'submit'}>
+                          {% trans "Generate Certificates" %}
                     - elif certificates_status == certificates_statuses.generating
-                       %button.generateCourseCertButton.disabled  {% trans "Generating Certificates" %}
+                       %button.generateCourseCertButton.disabled
+                         {% trans "Generating Certificates" %}
                     - elif certificates_status == certificates_statuses.generated
-                       %button.generateCourseCertButton.disabled  {% trans "Certificates Generated" %}
+                       %button.generateCourseCertButton.disabled
+                         {% trans "Certificates Generated" %}
                 %hr
             #courseDetailsMainContainer
               .row.courseParticipants.contentNavigationContainer
                 - if user.is_company_admin
                   #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                     .bulkButtonWrapper
-                      %a.button.bulkExportStats.bulkButton.disabled{:href => "#"} {% trans "Export stats" %}
+                      %a.button.bulkExportStats.bulkButton.disabled{:href => "#"}
+                        {% trans "Export stats" %}
                 - else
                   #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                     .bulkButtonWrapper
@@ -99,7 +104,8 @@
                   {% trans "Engagement Summary" %}
                 #coursesDownloadStatsButton
                   - if companyCourseDeatilsPage
-                    %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}> {% trans "Export Stats" %}
+                    %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}>
+                      {% trans "Export Stats" %}
                   - else
                     %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}>
                       {% trans "Export Stats" %}
@@ -128,7 +134,8 @@
     .courseModalControl
       .button.saveChanges
         {% trans "Save Changes" %}
-      %a.cancelChanges{:href => "#"} {% trans "Cancel" %}
+      %a.cancelChanges{:href => "#"}
+        {% trans "Cancel" %}
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;
   #courseDetailsBulkEmail.reveal-modal.medium{"aria-hidden" => "true", "data-reveal" => "", :role => "dialog"}
@@ -155,7 +162,8 @@
             %i.fa.fa-trash-o.removeTemplate{:data-title => "{% trans 'Remove selected template' %}"}
           .templateNameValue
             %select{:name => 'template_id'}
-              %option{:value => "none"} {% trans "None" %}
+              %option{:value => "none"}
+                {% trans "None" %}
               - for template in template_list
                 %option{:value => "#{template.pk}"}
                   =template.title
@@ -176,8 +184,10 @@
         .button.sendEmail
           {% trans "Send Email" %}
         .buttonBlock
-          %a.previewEmail{:href => "#"} {% trans "Preview email" %}
-          %a.scheduleForLater{:href => "#"} {% trans "Schedule for Later" %}
+          %a.previewEmail{:href => "#"}
+            {% trans "Preview email" %}
+          %a.scheduleForLater{:href => "#"}
+            {% trans "Schedule for Later" %}
 
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;

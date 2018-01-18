@@ -43,7 +43,8 @@
             %input#discussions{type: 'checkbox', name: 'discussions', checked: None}
           - else
             %input#discussions{type: 'checkbox', name: 'discussions'}
-          %label{for: 'discussions'} {% trans "Discussions" %}
+          %label{for: 'discussions'}
+            {% trans "Discussions" %}
           %p.style-6 {% trans "Note: If you disable the discussion page, notifications coming from existing lesson inline discussion modules in the course will redirect the user to the course home page. It is suggested that lesson inline discussion modules are not present in courses without discussions enabled. It will also disable Engagement section from Leaderboard even if 'Engagement' flag is enabled." %}
         %li
           - if feature_flags.group_work

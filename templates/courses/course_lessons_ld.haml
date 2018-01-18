@@ -28,7 +28,7 @@
     -if tile_type != 'module'
       - include "courses/content_page/lesson_pager_ld.haml"
   #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
-    %p.style-2 {% blocktrans %} You have completed ={course.current_lesson.progress}% of ={course.current_lesson.name} {% endblocktrans %}
+    %p.style-2 {% blocktrans with course_current_progress=course.current_lesson.progress lesson_name=course.current_lesson.name %} You have completed {{ course_current_progress }}% of {{ lesson_name }} {% endblocktrans %}
     %ul
       - for module in course.current_lesson.modules
         %li.lesson-row-item

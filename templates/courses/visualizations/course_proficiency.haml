@@ -9,7 +9,7 @@
     %a{href: "/courses/#{course.id}/cohort"}
       %i.fa.fa-arrow-circle-right
   .visualization{'class': "progress-#{proficiency_graph} cohort-progress-#{cohort_proficiency_graph}"}
-    .total {% trans "proficiency" %}
+    .total= proficiency
     .inner-circle.gradient
     .progress-radial.gradient
     .triangle

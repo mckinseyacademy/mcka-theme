@@ -21,7 +21,7 @@
       .lesson-discussion
     - include "courses/content_page/lesson_pager.haml"
   #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
-    %p.style-2 {% blocktrans %}You have completed ={course.current_lesson.progress}% of Lesson ={course.current_lesson.index}: {% endblocktrans %}
+    %p.style-2 {% blocktrans with course_current_progress=course.current_lesson.progress lesson_index=course.current_lesson.index %}You have completed {{ course_current_progress }}% of Lesson {{ lesson_index }}: {% endblocktrans %}
     %ul
       - for module in course.current_lesson.modules
         %li.lesson-row-item
