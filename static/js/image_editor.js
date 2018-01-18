@@ -1,6 +1,6 @@
 $.imageEditor = function(){
 
-  var ImageFileName = "No file Selected";
+  var ImageFileName = gettext("No file Selected");
   var aspectRatio = 1;
 
   function reInitCropper(imageClass, modal){
@@ -42,14 +42,14 @@ $.imageEditor = function(){
 
         //check file is of valid type or not
         if (ValidFileType.toLowerCase().indexOf(extension.toLowerCase()) < 0) {
-            errorBlock.html("Error uploading file. Please try again and be sure to use an accepted file format.");
+            errorBlock.html(gettext("Error uploading file. Please try again and be sure to use an accepted file format."));
         }
         else{
           return true;
         }
     }
     else {
-        errorBlock.html("Please select file for upload.");
+        errorBlock.html(gettext("Please select file for upload."));
     }
     return false;
   }
@@ -74,7 +74,7 @@ $.imageEditor = function(){
         },
         error: function( data ){
           $('.spinner.upload-image').hide();
-          modal.find('.error').append('<p class="warning">Please select file first.</p>');
+          modal.find('.error').append('<p class="warning">'+gettext('Please select file first.')+'</p>');
         }
       }
 

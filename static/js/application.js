@@ -189,16 +189,17 @@ $(function(){
     var generalModal = $('#generalModal');
     var days = $(this).data('numdays');
     if(typeof days == "undefined"){
-      courseStr = "Your course hasn't begun yet. ";
+      courseStr = gettext("Your course hasn't begun yet. ");
     }
     else{
-      days = (days > 1) ? days + " days" : days + " day";
-      courseStr = "Your course begins in " + days + ". "
+      var daysText = ngettext("Your course begins in %(days)s day.", "Your course begins in %(days)d days.", days);
+      courseStr = interpolate(daysText, {"days": days}, true);
     }
-      generalModal.find('.title').html("Welcome to McKinsey Academy");
-      generalModal.find('.description').html(courseStr +
-      "Before the course begins, you can explore this site to learn more about what to expect.");
-      $('#generalModal').foundation('reveal', 'open');
+    generalModal.find('.title').html(gettext("Welcome to McKinsey Academy"));
+    var descriptionText = "%(courseStr)s Before the course begins, you can explore" +
+        " this site to learn more about what to expect.";
+    generalModal.find('.description').html(interpolate(descriptionText, {"courseStr": courseStr}, true));
+    $('#generalModal').foundation('reveal', 'open');
   });
 
   if ($('#unsupported_modal').length) {

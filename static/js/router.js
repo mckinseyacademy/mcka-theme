@@ -348,7 +348,7 @@ var Router = Backbone.Router.extend({
         selector: '.course-list .course',
         submit_name: 'courses',
         minimum_count: 0,
-        minimum_count_message: "Please select at least one course"
+        minimum_count_message: gettext("Please select at least one course")
         };
 
         var activator = {

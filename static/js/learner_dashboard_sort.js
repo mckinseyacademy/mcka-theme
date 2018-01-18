@@ -51,6 +51,6 @@ $(function() {
   });
 
   $('.confirm').click(function() {
-    return window.confirm("Are you sure?");
+    return window.confirm(gettext("Are you sure?"));
   });
 });

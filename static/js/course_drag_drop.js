@@ -67,7 +67,7 @@
           method: 'POST'
         }).done(function(data){
           if(data.status == 'success'){
-            alert('Group successfully updated');
+            alert(gettext('Group successfully updated'));
             window.location.hash = group_id;
             window.location.reload(true);
           }
@@ -150,14 +150,14 @@
       {
         selector: ".student-list .student",
         submit_name: "students",
-        minimum_count_message: "Please select at least one student"
+        minimum_count_message: gettext("Please select at least one student")
       },
       {
         selector: ".group-project-select",
         submit_name: "project_id",
         use_value: true,
         not_empty: true,
-        not_empty_message: "Please select project"
+        not_empty_message: gettext("Please select project")
       }
     ];
 
@@ -171,7 +171,7 @@
           }
           window.location = '/admin/workgroup/course/' + course_id + '?project_id=' + $('.group-project-select').val();
         } else {
-          alert(data.message || "Group was not created");
+          alert(data.message || gettext("Group was not created"));
         }
       }
     };
@@ -231,7 +231,7 @@
           courseDrag.updateGroup(group, allStudents, url);
         }
         else{
-          alert('All students added to private group have to be members of same company.');
+          alert(gettext('All students added to private group have to be members of same company.'));
         }
       }
     });
@@ -239,7 +239,7 @@
     $('.delete-group').on('click', function(){
       var $this = $(this);
       if(!$this.hasClass('disabled')){
-        if(confirm("Are you sure you want to remove this group? Doing so will remove submissions and feedback associated with the group.")){
+        if(confirm(gettext("Are you sure you want to remove this group? Doing so will remove submissions and feedback associated with the group."))){
           var group = $this.data('group-id');
           var url = $this.data('url');
           courseDrag.deleteGroup(group, url);

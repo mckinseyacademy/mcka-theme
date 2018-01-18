@@ -12,7 +12,7 @@ $(function(){
           }).done(function(data){
             $('#' + that.attr('id').split('-form')[0]).foundation('reveal', 'close');
             var modal = $('#generalModal');
-            modal.find('.title').html('Notification');
+            modal.find('.title').html(gettext('Notification'));
             modal.find('.description').html(data.message);
             setTimeout(function(){modal.foundation('reveal', 'open');}, 350);
           })

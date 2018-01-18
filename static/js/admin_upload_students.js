@@ -5,7 +5,7 @@ $(function(){
       "<div id='user-reg-errors' class='errors'></div></div>";
 
   var errorsTemplate =
-    "<a href='#' data-reveal-id='upload_error_list'>Show Errors</a>" +
+    "<a href='#' data-reveal-id='upload_error_list'>"+gettext("Show Errors")+"</a>" +
     "<ul id='upload_error_list' class='reveal-modal' data-reveal='true'>" +
       "<div class='close-reveal-modal'>" +
         "<i class='fa fa-times-circle'></i>" +
@@ -70,7 +70,7 @@ $(function(){
                     },
                 error: function( data ){
                       data = $.parseJSON(data);
-                      modal.find('.error').append('<p class="warning">Please select file first.</p>');
+                      modal.find('.error').append('<p class="warning">'+gettext("Please select file first.")+'</p>');
                     }
                 }
 
