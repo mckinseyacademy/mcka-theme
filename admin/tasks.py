@@ -128,6 +128,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         ("Last login", ("custom_last_login", '')),
         ("Progress", ("progress", '')),
         ("Proficiency", ("proficiency", '')),
+        ("Engagement", ("engagement", '')),
         ("Activation Link", ("activation_link", '')),
         ("Country", ("country", '')),
     ])
