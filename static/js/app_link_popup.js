@@ -34,8 +34,10 @@
 // Diable scrollbar on popup show
 
 $(document).on('open', '#mobileAppLinkModal', function () {
-    $('body').css("overflow", "hidden");
+    $('body').css({"overflow": "hidden", "height": "100vh"});
+    $('html').css({"overflow": "hidden", "height": "100vh"});
 });
 $(document).on('close', '#mobileAppLinkModal', function () {
-    $('body').css("overflow", "auto");
+    $('body').css({"overflow": "auto", "height": "auto"});
+    $('html').css({"overflow": "auto", "height": "auto"});
 });
