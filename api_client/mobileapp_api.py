@@ -87,7 +87,7 @@ def remove_organization(app_id, params):
 
 
 @api_error_protect
-def create_mobile_app_theme(organization_id, data, mobile_logo_image):
+def create_mobile_app_theme(organization_id, data, mobile_logo_image=None):
     """
     Create new theme for mobile app for specific organization
     """

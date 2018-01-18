@@ -4,7 +4,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.forms.extras.widgets import SelectDateWidget
-from django.core.validators import validate_email
+from django.core.validators import validate_email, RegexValidator
 from django.core.exceptions import ValidationError
 
 from .models import (
@@ -26,7 +26,8 @@ from django.forms import CharField
 
 THIS_YEAR = date.today().year
 PROGRAM_YEAR_CHOICES = [yr for yr in range(THIS_YEAR, THIS_YEAR + 10)]
-
+HEX_COLOR_VALIDATION_REGEX = '^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{8})$'
+HEX_COLOR_INVALID_MESSAGE = _("Hex code should starts with # and followed by 6 or 8 hex digits.")
 
 class ClientForm(forms.Form):
 
@@ -433,3 +434,40 @@ class CourseRunForm(forms.ModelForm):
             raise forms.ValidationError("Number of participants is limited to 5000")
 
         return max_participants
+
+
+class MobileBrandingForm(forms.Form):
+
+    completed_course_tint = forms.CharField(
+        min_length=7,
+        max_length=9,
+        required=False,
+        validators=[RegexValidator(HEX_COLOR_VALIDATION_REGEX, message=HEX_COLOR_INVALID_MESSAGE)]
+    )
+
+    header_background_color = forms.CharField(
+        min_length=7,
+        max_length=9,
+        required=False,
+        validators=[RegexValidator(HEX_COLOR_VALIDATION_REGEX, message=HEX_COLOR_INVALID_MESSAGE)]
+    )
+
+    lesson_navigation_color = forms.CharField(
+        min_length=7,
+        max_length=9,
+        required=False,
+        validators=[RegexValidator(HEX_COLOR_VALIDATION_REGEX, message=HEX_COLOR_INVALID_MESSAGE)]
+    )
+
+    navigation_text_color = forms.CharField(
+        min_length=7,
+        max_length=9,
+        required=False,
+        validators=[RegexValidator(HEX_COLOR_VALIDATION_REGEX, message=HEX_COLOR_INVALID_MESSAGE)])
+
+    navigation_icon_color = forms.CharField(
+        min_length=7,
+        max_length=9,
+        required=False,
+        validators=[RegexValidator(HEX_COLOR_VALIDATION_REGEX, message=HEX_COLOR_INVALID_MESSAGE)])
+

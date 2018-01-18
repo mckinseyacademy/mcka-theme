@@ -3,13 +3,14 @@ import datetime
 from django.forms import ValidationError
 from django.test import TestCase
 
-from admin.forms import ClientForm, ProgramForm, CreateAccessKeyForm, ShareAccessKeyForm, MultiEmailField
+from admin.forms import (ClientForm, ProgramForm, CreateAccessKeyForm, ShareAccessKeyForm, MultiEmailField,
+                         MobileBrandingForm)
 
 
 class AdminFormsTests(TestCase):
     ''' Test Admin Forms '''
 
-    def test_ClientForm(self):
+    def test_client_form(self):
         # valid if data is good
         client_data = {
             "display_name": "company",
@@ -21,7 +22,7 @@ class AdminFormsTests(TestCase):
 
         self.assertTrue(client_form.is_valid())
 
-    def test_ProgramForm(self):
+    def test_program_form(self):
         # valid if data is good
         program_data = {
             "display_name": "public_name",
@@ -33,7 +34,7 @@ class AdminFormsTests(TestCase):
 
         self.assertTrue(program_form.is_valid())
 
-    def test_CreateAccessKeyForm(self):
+    def test_create_access_key_form(self):
         # valid if data is good
         form_data = {
             "client_id": 1,
@@ -44,7 +45,7 @@ class AdminFormsTests(TestCase):
         form = CreateAccessKeyForm(form_data)
         self.assertTrue(form.is_valid())
 
-    def test_ShareAccessKeyForm(self):
+    def test_share_access_key_form(self):
         # valid if data is good
         form_data = {
             "recipients": "student1@testorg.org, student2@testorg.org",
@@ -52,6 +53,32 @@ class AdminFormsTests(TestCase):
         }
         form = ShareAccessKeyForm(form_data)
         self.assertTrue(form.is_valid())
+
+    def test_mobile_branding_form_valid(self):
+        ''' Test MobileBrandingForm with valid data '''
+
+        form_data_valid = {
+            'completed_course_tint' : '#111AAA',
+            'header_background_color': '#2aABCCDF',
+            'lesson_navigation_color': '#aaaAAA',
+            'navigation_text_color': '#1234BC12',
+            'navigation_icon_color': '#FFFFFF',
+        }
+        form = MobileBrandingForm(form_data_valid)
+        self.assertTrue(form.is_valid())
+
+    def test_mobile_branding_form_invalid(self):
+        ''' Test MobileBrandingForm with invalid data '''
+
+        form_data_invalid = {
+            'completed_course_tint': '111AAA',
+            'header_background_color': '#2aABCCDFa',
+            'lesson_navigation_color': '#aaa',
+            'navigation_text_color': '#1ETYUU',
+            'navigation_icon_color': '#zzzzzzzz',
+        }
+        form = MobileBrandingForm(form_data_invalid)
+        self.assertFalse(form.is_valid())
 
 
 class MultiEmailFieldTest(TestCase):

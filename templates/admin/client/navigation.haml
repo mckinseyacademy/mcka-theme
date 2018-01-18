@@ -52,7 +52,7 @@
         %input.button.radius.tiny{type: 'submit', value: "#{save_links_text}"}
   %hr
   #custom-branding
-    %form{action: "/admin/clients/#{client.id}/customization", method: 'POST', enctype: "multipart/form-data" }
+    %form{action: "/admin/clients/#{client.id}/customization", method: 'POST', enctype: "multipart/form-data"}
       - csrf_token
       %fieldset
         .sub-1 {% trans "Global Branding" %}
@@ -102,10 +102,15 @@
             %label.nav2.selected {% trans "Page Background CSS:" %}
             %input{type: 'text', name: 'client_background_css', placeholder: "#{css_text}", maxlength: "200", value: "#{customization.client_background_css}"}
 
+
         %br
         .sub-1 {% trans "Native Mobile & Tablet Apps" %}
-
         %ul
+          - if errors
+            %font{color: 'red'}
+              = errors
+            %br
+
           %li
             %label.nav2.selected {% trans "Upload Mobile Logo:" %}
             %a.button.radius.tiny.upload_logo{"data-reveal-id": "edit-client-mobile-logo-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/logo/edit_client_mobile_image"}
@@ -113,13 +118,13 @@
 
           %li
             %label.nav2.selected {% trans "Completed Course Tint:" %}
-            %input{type: 'text', name: 'client_mobile_course_tint', placeholder: "#{hex_text}", maxlength: "6", value: "#{completed_course_tint}"}
+            %input{type: 'text', name: 'completed_course_tint', placeholder: "#{hex_text}", maxlength: "9", value: "#{completed_course_tint}", pattern:'^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{8})$', title: '#000000 - #FFFFFF'}
           %li
             %label.nav2.selected {% trans "Header Background Color:" %}
-            %input{type: 'text', name: 'client_mobile_header_background', placeholder: "#{hex_text}", maxlength: "6", value: "#{header_background_color}"}
+            %input{type: 'text', name: 'header_background_color', placeholder: "#{hex_text}", maxlength: "9", value: "#{header_background_color}", pattern:'^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{8})$', title: '#000000 - #FFFFFF'}
           %li
             %label.nav2.selected {% trans "Lesson Navigation Color:" %}
-            %input{type: 'text', name: 'client_mobile_lesson_nav', placeholder: "#{hex_text}", maxlength: "6" ,value: "#{lesson_navigation_color}"}
+            %input{type: 'text', name: 'lesson_navigation_color', placeholder: "#{hex_text}", maxlength: "9" ,value: "#{lesson_navigation_color}", pattern:'^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{8})$', title: '#000000 - #FFFFFF'}
 
           %li
             %label.nav2.selected {% trans "Header Background Image:" %}
@@ -129,11 +134,11 @@
 
           %li
             %label.nav2.selected {% trans "Navigation Text Color:" %}
-            %input{type: 'text', name: 'client_mobile_nav_text', placeholder: "#{hex_text}", maxlength: "6" , value: "#{navigation_text_color}"}
+            %input{type: 'text', name: 'navigation_text_color', placeholder: "#{hex_text}", maxlength: "9" , value: "#{navigation_text_color}", pattern:'^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{8})$', title: '#000000 - #FFFFFF'}
 
           %li
             %label.nav2.selected {% trans "Navigation Icon Color:" %}
-            %input{type: 'text', name: 'client_mobile_nav_icon', placeholder: "#{hex_text}", maxlength: "6" , value: "#{navigation_icon_color}"}
+            %input{type: 'text', name: 'navigation_icon_color', placeholder: "#{hex_text}", maxlength: "9" , value: "#{navigation_icon_color}", pattern:'^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{8})$', title: '#000000 - #FFFFFF'}
 
       %div
         {% trans "Cancel" as cancel_text %}

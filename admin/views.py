@@ -1520,7 +1520,7 @@ def client_detail_contact(request, client_id):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
-def client_detail_navigation(request, client_id):
+def client_detail_navigation(request, client_id, errors=None):
     client = Client.fetch(client_id)
 
     (customization, created) = ClientCustomization.objects.get_or_create(
@@ -1534,6 +1534,7 @@ def client_detail_navigation(request, client_id):
         'nav_links': nav_links,
         'customization': customization,
         'selected_client_tab': 'navigation',
+        'errors': errors
     }
 
     mobile_app_themes = get_mobile_app_themes(client_id)
@@ -1618,9 +1619,11 @@ def client_detail_customization(request, client_id):
         customization.hex_background_main_navigation = request.POST['hex_background_main_navigation']
         customization.save()
 
-        update_mobile_client_detail_customization(request, client_id)
-
-        return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
+        errors = update_mobile_client_detail_customization(request, client_id)
+        if errors is None:
+            return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
+        else:
+            return client_detail_navigation(request, client_id, errors)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)

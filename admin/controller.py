@@ -10,7 +10,7 @@ import threading
 import urllib
 import uuid
 from datetime import datetime
-
+from bs4 import BeautifulSoup
 from PIL import Image
 from dateutil.parser import parse as parsedate
 
@@ -25,6 +25,7 @@ from pytz import UTC
 from accounts.helpers import get_user_activation_links, get_complete_country_name
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from accounts.models import UserActivation
+from admin.forms import MobileBrandingForm
 from admin.models import Program
 from api_client import (
     course_api,
@@ -2436,19 +2437,20 @@ def update_mobile_client_detail_customization(request, client_id):
     """
     Update mobile clients theme attributes
     """
-    mobile_branding_data = {
-        'organization': client_id,
-        'active': True
-    }
+    mobile_branding_form = MobileBrandingForm(request.POST)
 
-    mobile_branding_data['completed_course_tint'] = request.POST['client_mobile_course_tint']
-    mobile_branding_data['header_background_color'] = request.POST['client_mobile_header_background']
-    mobile_branding_data['lesson_navigation_color'] = request.POST['client_mobile_lesson_nav']
-    mobile_branding_data['navigation_text_color'] = request.POST['client_mobile_nav_text']
-    mobile_branding_data['navigation_icon_color'] = request.POST['client_mobile_nav_icon']
+    if mobile_branding_form.is_valid():
 
-    mobile_app_themes = get_mobile_app_themes(client_id)
-    if mobile_app_themes:
-        update_mobile_app_theme(mobile_app_themes[0]['id'], mobile_branding_data)
+        mobile_branding_data = mobile_branding_form.cleaned_data
+        mobile_branding_data['organization'] = client_id
+        mobile_branding_data['active'] = True
+        mobile_app_themes = get_mobile_app_themes(client_id)
+        if mobile_app_themes:
+            update_mobile_app_theme(mobile_app_themes[0]['id'], mobile_branding_data)
+        else:
+            create_mobile_app_theme(client_id, mobile_branding_data)
+        return None
     else:
-        create_mobile_app_theme(client_id, mobile_branding_data)
+        errors = str(mobile_branding_form.errors)
+        cleantext = BeautifulSoup(errors, "html").text
+        return cleantext
