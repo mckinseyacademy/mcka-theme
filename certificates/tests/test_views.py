@@ -242,7 +242,7 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
     #     self.assertEqual(
     #         len(response.context['certificate_template_assets']),
     #         len(self.template_assets)
-    #     )
+    #    )
 
     # TODO: mock API to fix test and uncomment
     # def test_template_assets_post_valid(self):
