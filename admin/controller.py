@@ -27,6 +27,7 @@ from django.utils.translation import ugettext as _
 from pytz import UTC
 from rest_framework.response import Response
 from rest_framework import status
+
 from accounts.helpers import get_user_activation_links, get_complete_country_name
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from accounts.models import UserActivation
@@ -194,7 +195,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
                     page.id, is_v2=True
                 )
                 for block, seq, page in blocks
-            ]
+                ]
 
             course.group_projects.extend(projects)
 
@@ -1030,7 +1031,7 @@ def get_ta_accessible_course_ids(ta_user):
         role.course_id
         for role in user_roles
         if USER_ROLES.TA == role.role
-    ]
+        ]
 
 
 def get_accessible_courses(user):
@@ -1147,7 +1148,7 @@ def _get_quick_link_related_objects(quick_link):
             gp
             for gp in course.group_projects
             if gp.is_v2 and gp.id == quick_link.group_work_project_id
-        ]
+            ]
 
         # If group project can't be found we'll return quick link without
         # the group project

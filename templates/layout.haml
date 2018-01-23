@@ -250,13 +250,14 @@
   - block foundation_js
     %script{src: "{% static 'js/foundation.min.js' %}"}
 
-  -# Ooyala Player JS
-  - block ooyala_player
-    - if not do_not_load_ooyala
-      -# locally hosted ooyala core file customized to include pcode & brandingid
-      %script{src: "{% static 'js/vendor/ooyala/ooyala_core_4.14.9.js' %}"}
-      %script{src: "//player.ooyala.com/static/v4/stable/4.14.9/skin-plugin/html5-skin.min.js"}
-      %script{src: "//player.ooyala.com/static/v4/stable/4.14.9/video-plugin/main_html5.min.js"}
+    -# Ooyala Player JS
+    - block ooyala_player
+      - if not do_not_load_ooyala
+        -# locally hosted ooyala core file customized to include pcode & brandingid
+        %script{src: "{% static 'js/vendor/ooyala/ooyala_core_4.14.9.js' %}"}
+        %script{src: "//player.ooyala.com/static/v4/stable/4.14.9/skin-plugin/html5-skin.min.js"}
+        %script{src: "//player.ooyala.com/static/v4/stable/4.14.9/video-plugin/main_html5.min.js"}
+        %script{src: "//player.ooyala.com/static/v4/stable/4.20.7/video-plugin/bit_wrapper.min.js"}
 
   - block jquery_ui
     %script{src: "{% static 'js/vendor/jquery-ui.min.js' %}"}

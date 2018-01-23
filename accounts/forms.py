@@ -321,6 +321,14 @@ BANNED_EMAILS = [
     "accenture.com", "pwc.com", "deloitte.com", "bcg.com", "bain.com"
 ]
 
+CURRENT_ROLE = (
+    (u'Senior Executive', _('Senior Executive (e.g., CXO, SVP)')),
+    (u'Seasoned Leader/Senior Manager', _('Seasoned Leader/Senior Manager (e.g., VP, Director)')),
+    (u'Mid-Level Manager', _('Mid-Level Manager (e.g., Manager)')),
+    (u'Early Career Professional', _('Early Career Professional (e.g., Associate, Analyst)')),
+    (u'Other', _('Other (please describe below)')),
+)
+
 
 class UserNameInput(forms.TextInput):
     input_type = 'text'

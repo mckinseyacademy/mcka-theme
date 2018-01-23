@@ -44,7 +44,7 @@
           %li
             .header
               .label-5 {% trans "Proficiency:" %}
-              .label-4 cohort average = ={proficiency.course_average_display}
+              .label-4 {% trans "cohort average" %} = ={proficiency.course_average_display}
               - if user_role
                 .rank {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the proficiency leaderboard {% endblocktrans %}
               - elif proficiency.user_position and proficiency.user_grade_value
@@ -105,7 +105,7 @@
         %li
           .header
             .label-5 {% trans "Progress:" %}
-            .label-4 cohort average = ={completions.course_average_display}%
+            .label-4 {% trans "cohort average" %} = ={completions.course_average_display}%
             - if user_role
               .rank {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the progress leaderboard {% endblocktrans %}
             - elif completions.position and completions.user_progress_value

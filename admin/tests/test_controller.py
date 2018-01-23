@@ -17,6 +17,7 @@ from admin.tests.utils import BASE_DIR
 from api_client.json_object import JsonParser as JP
 from rest_framework import status
 
+
 class AdminControllerTests(TestCase):
     def test__process_line(self):
         # format is email,username,password,firstname,lastname
