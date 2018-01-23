@@ -11,6 +11,7 @@ import logging
 from bs4 import BeautifulSoup
 
 from django.conf import settings
+from django.utils.translation import ugettext as _
 
 from accounts.middleware.thread_local import (
     set_static_tab_context,
@@ -32,6 +33,7 @@ log = logging.getLogger(__name__)
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
+
 
 # logic functions - recieve api implementor for test
 class AcademyGradeAssessmentType(JsonObject):
@@ -64,6 +66,7 @@ class UserGrade(JsonObject):
     @property
     def user_grade_display(self):
         return round_to_int(self.user_grade_value)
+
 
 class Proficiency(JsonObject):
 
@@ -249,6 +252,7 @@ def get_course_position_tree(user_id, course_id, user_api_impl=user_api):
 
     return course_detail.position_tree
 
+
 def get_chapter_and_target_by_location(request, course_id, location_id, course_api_impl=course_api):
     '''
     Returns chapter, vertical, and final target id for a given course and location.
@@ -260,6 +264,7 @@ def get_chapter_and_target_by_location(request, course_id, location_id, course_a
         return None, None, None
 
     return nav.chapter, nav.vertical, nav.final_target_id
+
 
 def locate_chapter_page(
     request,
@@ -311,6 +316,7 @@ def locate_chapter_page(
 
     return course_id, chapter_id, page_id
 
+
 # pylint: disable=too-many-arguments
 def update_bookmark(user_id, course_id, chapter_id, sequential_id, page_id, user_api_impl=user_api):
     '''
@@ -324,6 +330,7 @@ def update_bookmark(user_id, course_id, chapter_id, sequential_id, page_id, user
         sequential_id,
         page_id
     )
+
 
 def get_group_project_for_user_course(user_id, course, workgroup_id=None):
     '''
@@ -354,6 +361,7 @@ def get_group_project_for_user_course(user_id, course, workgroup_id=None):
         group_project = gp_candidates[0]
     return project_group, group_project
 
+
 def get_group_project_for_workgroup_course(workgroup_id, course):
     '''
     Returns group and project information for the supplied workgroup
@@ -366,6 +374,7 @@ def get_group_project_for_workgroup_course(workgroup_id, course):
     group_project = [proj for proj in course.group_projects if proj.id == project.content_id][0]
 
     return workgroup, group_project
+
 
 def group_project_location(group_project, sequential_id=None):
     '''
@@ -394,6 +403,7 @@ def group_project_location(group_project, sequential_id=None):
 
     return activity, usage_id
 
+
 def load_static_tabs(course_id, name=None):
     if name:
         static_tabs = get_static_tab_context(course_id)
@@ -413,19 +423,23 @@ def load_static_tabs(course_id, name=None):
             static_tabs = load_static_tabs_api(course_id, True)
         return static_tabs
 
+
 def load_static_tabs_api(course_id, details):
     static_tabs = course_api.get_course_tabs(course_id, details=details)
     set_static_tab_context(course_id, static_tabs)
     return static_tabs
 
+
 def round_to_int(value):
     return int(round(value))
+
 
 def round_to_int_bump_zero(value):
     rounded_value = round_to_int(value)
     if rounded_value < 1 and value > 0:
         rounded_value = 1
     return rounded_value
+
 
 def _individual_course_progress_metrics(course_id, user_id):
     return course_api.get_course_metrics_completions(
@@ -435,6 +449,7 @@ def _individual_course_progress_metrics(course_id, user_id):
         skipleaders=True
     )
 
+
 def organization_course_progress_user_list(course_id, organization_id, count=3):
     return course_api.get_course_metrics_completions(
         course_id,
@@ -443,17 +458,21 @@ def organization_course_progress_user_list(course_id, organization_id, count=3):
         completions_object_type=Progress
     ).leaders
 
+
 def return_course_progress(course, user_id):
     return _individual_course_progress_metrics(course.id, user_id).user_progress_display
 
+
 def average_progress(course, user_id):
     return _individual_course_progress_metrics(course.id, user_id).course_average_display
+
 
 def progress_percent(completion_count, module_count):
     if module_count > 0:
         return round_to_int(100*completion_count/module_count)
     else:
         return 0
+
 
 def group_project_reviews(user_id, course_id, project_workgroup, group_project):
     '''
@@ -497,6 +516,7 @@ def group_project_reviews(user_id, course_id, project_workgroup, group_project):
     group_work_avg = mean([a.score for a in group_project.activities if not a.score is None])
     return group_project.activities, group_work_avg
 
+
 def is_number(s):
     try:
         float(s)
@@ -504,16 +524,19 @@ def is_number(s):
         return False
     return True
 
+
 def get_proficiency_leaders(course_id, user_id, count=3):
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency, count=count)
     if hasattr(proficiency, "leaders"):
         tailor_leader_list(proficiency.leaders)
     return proficiency
 
+
 def get_progress_leaders(course_id, user_id):
     completions = course_api.get_course_metrics_completions(course_id, user_id=user_id, completions_object_type=Progress)
     tailor_leader_list(completions.leaders)
     return completions
+
 
 def tailor_leader_list(leaders):
     for rank, leader in enumerate(leaders, 1):
@@ -621,6 +644,7 @@ def load_lesson_estimated_time(course):
                 lesson.estimated_time = estimates[idx]
 
     return course
+
 
 def inject_gradebook_info(user_id, course):
     # Inject lesson assessment scores
@@ -739,6 +763,7 @@ def calculate_user_group_activity_progress(user_id, course, link, completions):
                 return round_to_int(100 * len(matches)/len(stage_ids))
     else:
         return 0
+
 
 def calculate_user_course_progress(user_id, course, completions):
 
@@ -890,6 +915,7 @@ def createProgressObjects(progressData, tile_ids, user_id):
             percentage=0,
         )
 
+
 def _remove_duplicate_grader(graders):
     """
     Removes duplicate graders, used for private group work configuration.
@@ -899,6 +925,7 @@ def _remove_duplicate_grader(graders):
             if compare_graders(graders[i], graders[j]):
                 graders.pop(i)
                 break
+
 
 def compare_graders(a, b):
     if (a.weight == b.weight) and ("GROUP_PROJECT_" in str(a.type)) and ("GROUP_PROJECT_" in str(b.type)):

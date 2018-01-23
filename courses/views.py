@@ -71,6 +71,7 @@ if settings.PROGRESS_BAR_COLORS:
     _progress_bar_dictionary.update(settings.PROGRESS_BAR_COLORS)
 PROGRESS_BAR_COLORS = DottableDict(_progress_bar_dictionary)
 
+
 @login_required
 @check_user_course_access
 def course_landing_page(request, course_id):
@@ -119,6 +120,7 @@ def course_landing_page(request, course_id):
 
     return render(request, 'courses/course_main.haml', data)
 
+
 def get_learner_dashboard(request, course_id):
 
     learner_dashboard = None
@@ -141,6 +143,7 @@ def get_learner_dashboard(request, course_id):
                     pass
     return learner_dashboard
 
+
 @login_required
 @check_user_course_access
 def course_overview(request, course_id):
@@ -150,6 +153,7 @@ def course_overview(request, course_id):
     }
     return render(request, 'courses/course_overview.haml', data)
 
+
 @login_required
 @check_user_course_access
 def course_syllabus(request, course_id):
@@ -157,6 +161,7 @@ def course_syllabus(request, course_id):
         "syllabus": load_static_tabs(course_id, name="syllabus")
     }
     return render(request, 'courses/course_syllabus.haml', data)
+
 
 @login_required
 @check_user_course_access
@@ -336,6 +341,7 @@ def _render_group_work(request, course, project_group, group_project, learner_da
     else:
         return render(request, 'courses/course_group_work.haml', data)
 
+
 @login_required
 @check_user_course_access
 def user_course_group_work(request, course_id):
@@ -352,6 +358,7 @@ def user_course_group_work(request, course_id):
 
     return _render_group_work(request, course, project_group, group_project)
 
+
 @login_required
 def user_course_group_work_learner_dashboard(request, learner_dashboard_id, course_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
@@ -366,6 +373,7 @@ def user_course_group_work_learner_dashboard(request, learner_dashboard_id, cour
     set_current_course_for_user(request, course_id)
 
     return _render_group_work(request, course, project_group, group_project, learner_dashboard_id, feature_flags.branding)
+
 
 @login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_TA)
@@ -414,6 +422,7 @@ def _course_discussion_data(request, course_id, discussion_id=None,thread_id=Non
         "flag_branding": feature_flags.branding
     }
 
+
 @login_required
 def course_discussion_learner_dashboard(request, learner_dashboard_id, course_id):
 
@@ -441,11 +450,13 @@ def course_discussion_learner_dashboard(request, learner_dashboard_id, course_id
 
     return render(request, 'courses/course_discussion_ld.haml', data)
 
+
 @login_required
 @check_user_course_access
 def course_discussion(request, course_id, discussion_id=None, thread_id=None):
     data = _course_discussion_data(request, course_id, discussion_id, thread_id)
     return render(request, 'courses/course_discussion.haml', data)
+
 
 @login_required
 def course_discussion_userprofile(request, course_id, user_id):
@@ -454,6 +465,7 @@ def course_discussion_userprofile(request, course_id, user_id):
         "course_id": course_id,
     }
     return render(request, 'courses/course_discussion_userprofile.haml', data)
+
 
 def _course_progress_for_user(request, course_id, user_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
@@ -543,7 +555,7 @@ def _course_progress_for_user(request, course_id, user_id):
 
     total = round_to_int(gradebook.grade_summary.percent*100)
     bar_chart[0]['values'].append({
-        'label': 'TOTAL',
+        'label': _('TOTAL'),
         'value': total,
         'color': PROGRESS_BAR_COLORS.total
     })
@@ -574,6 +586,7 @@ def _course_progress_for_user(request, course_id, user_id):
         data["course"] = course
 
     return render(request, 'courses/course_progress.haml', data)
+
 
 def _course_progress_for_user_v2(request, course_id, user_id):
     feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
@@ -669,22 +682,26 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
     return render(request, 'courses/course_progress_v2.haml', data)
 
+
 @login_required
 @check_company_admin_user_access
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_user_progress(request, user_id, course_id):
     return _course_progress_for_user(request, course_id, user_id)
 
+
 @login_required
 @check_user_course_access
 def course_progress(request, course_id):
     return _course_progress_for_user(request, course_id, request.user.id)
+
 
 @login_required
 @check_company_admin_user_access
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_user_progress_v2(request, user_id, course_id):
     return _course_progress_for_user_v2(request, course_id, user_id)
+
 
 @login_required
 @check_user_course_access
@@ -764,7 +781,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
     }
 
     if not current_sequential.is_started:
-        data["not_started_message"] = _("This lesson does not start until {}").format(current_sequential.start_upon)
+        data["not_started_message"] = _("This lesson does not start until {start_upon}").format(
+            start_upon=current_sequential.start_upon)
         return render(request, 'courses/course_future_lesson.haml', data)
 
     # Take note that the user has gone here
@@ -833,6 +851,7 @@ def course_notready(request, course_id):
     course = load_course(course_id, request=request)
     return render(request, 'courses/course_notready.haml', {"course": course})
 
+
 @login_required
 @check_user_course_access
 def infer_chapter_navigation(request, course_id, chapter_id):
@@ -855,6 +874,7 @@ def infer_chapter_navigation(request, course_id, chapter_id):
         return HttpResponseRedirect('/courses/{}/lessons/{}/module/{}'.format(course_id, chapter_id, page_id))
     else:
         return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
+
 
 @login_required
 @check_user_course_access
@@ -896,13 +916,16 @@ def infer_page_navigation(request, course_id, page_id):
 
     return HttpResponseRedirect(redirect_url)
 
+
 def infer_course_navigation(request, course_id):
     ''' handler to call infer chapter nav with no chapter '''
     return infer_chapter_navigation(request, course_id, None)
 
+
 def infer_default_navigation(request):
     ''' handler to call infer chapter nav with no course '''
     return infer_chapter_navigation(request, None, None)
+
 
 @login_required
 @check_user_course_access
@@ -943,6 +966,7 @@ def contact_ta(request, course_id):
         content_type='application/json'
     )
 
+
 @login_required
 @check_user_course_access
 def contact_group(request, course_id, group_id):
@@ -957,7 +981,8 @@ def contact_group(request, course_id, group_id):
     course = load_course(course_id)
     email_to = [student.email for student in students]
     email_content = request.POST["group_message"]
-    email_subject = "Group Project Message - {}".format(course.name)
+    email_subject = _("Group Project Message - {course_name}").format(
+        course_name=course.name)
     try:
         email = EmailMessage(email_subject, email_content, email_from, email_to, headers = {'Reply-To': email_header_from})
         email.send(fail_silently=False)
@@ -971,6 +996,7 @@ def contact_group(request, course_id, group_id):
         content_type='application/json'
     )
 
+
 @login_required
 @check_user_course_access
 def contact_member(request, course_id, group_id):
@@ -983,7 +1009,8 @@ def contact_member(request, course_id, group_id):
     email_to = request.POST["member-email"]
     email_content = request.POST["member_message"]
     course = load_course(course_id)
-    email_subject = "Group Project Message - {}".format(course.name) #just for testing
+    email_subject = _("Group Project Message - {course_name}").format(
+        course_name=course.name) #just for testing
 
     group = WorkGroup.fetch_with_members(group_id)
     students = group.members
@@ -1054,12 +1081,13 @@ def course_export_notes(request, course_id):
     response = HttpResponse()
     response['Content-Disposition'] = 'attachment; filename="mcka_course_notes.csv"'
     writer = csv.writer(response)
-    writer.writerow(['Created At', 'Course Name', 'Lesson Name', 'Module Name', 'Note'])
+    writer.writerow([_('Created At'), _('Course Name'), _('Lesson Name'), _('Module Name'), _('Note')])
 
     for note in notes:
         writer.writerow(note.as_csv(course))
 
     return response
+
 
 @login_required
 @check_user_course_access
@@ -1068,6 +1096,7 @@ def course_notes(request, course_id):
     notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
     notes = [note.as_json(course) for note in notes]
     return HttpResponse(json.dumps(notes))
+
 
 @require_POST
 @login_required
@@ -1086,6 +1115,7 @@ def add_lesson_note(request, course_id, chapter_id):
 
     return HttpResponse(json.dumps(note.as_json(course)))
 
+
 @login_required
 @check_user_course_access
 def course_article(request, course_id):
@@ -1093,6 +1123,7 @@ def course_article(request, course_id):
         "article": load_static_tabs(course_id, name="article")
     }
     return render(request, 'courses/course_article.haml', data)
+
 
 @login_required
 def course_learner_dashboard(request, learner_dashboard_id):
@@ -1146,6 +1177,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
 
     return render(request, 'courses/course_learner_dashboard.haml', data)
 
+
 @require_POST
 @login_required
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -1178,6 +1210,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
         content_type="application/json"
     )
 
+
 def course_learner_dashboard_bookmark_tile(request, learner_dashboard_id):
 
     if 'tile_id' in request.POST:
@@ -1202,6 +1235,7 @@ def course_learner_dashboard_bookmark_tile(request, learner_dashboard_id):
 
         return HttpResponse(status=200)
 
+
 def course_learner_dashboard_bookmark_lesson(request, learner_dashboard_id):
 
     if 'lesson_link' in request.POST and 'tile_id' in request.POST:
@@ -1218,6 +1252,7 @@ def course_learner_dashboard_bookmark_lesson(request, learner_dashboard_id):
             return HttpResponse(status=200)
         else:
             return HttpResponse(status=204)
+
 
 @login_required
 def course_learner_dashboard_calendar(request, learner_dashboard_id):
@@ -1314,12 +1349,14 @@ def course_learner_dashboard_calendar(request, learner_dashboard_id):
     else:
         return HttpResponse(status=404)
 
+
 def check_tile_type(element):
 
     if element.milestone.tile_type == "2" or element.milestone.tile_type == "3" or element.milestone.tile_type == "5":
         return True
     else:
         return False
+
 
 @login_required
 def get_user_progress_json(request, course_id):
@@ -1333,6 +1370,7 @@ def get_user_progress_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
+
 
 @login_required
 def get_user_gradebook_json(request, course_id):
@@ -1349,6 +1387,7 @@ def get_user_gradebook_json(request, course_id):
         content_type='application/json'
     )
 
+
 @login_required
 def get_user_completion_json(request, course_id):
     grades = {grade.course_id: grade for grade in user_api.get_user_grades(request.user.id)}
@@ -1363,6 +1402,7 @@ def get_user_completion_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
+
 
 @login_required
 def get_user_complete_gradebook_json(request, course_id):

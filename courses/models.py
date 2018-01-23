@@ -1,5 +1,6 @@
 from django.db import models as db_models
 
+
 class LessonNotesItem(db_models.Model):
     body = db_models.TextField()
     user_id = db_models.IntegerField(unique=False, db_index=True, null=True)

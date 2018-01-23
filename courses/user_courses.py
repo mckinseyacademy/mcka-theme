@@ -4,7 +4,9 @@ import functools
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
+from django.utils.translation import ugettext as _
 
+from accounts.middleware.thread_local import get_static_tab_context
 from admin.controller import load_course
 from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings
 from api_client import user_api, course_api, mobileapp_api, organization_api
@@ -40,6 +42,7 @@ def _load_intersecting_program_courses(program, courses):
         program.courses = [course for course in courses if course.id in program_course_ids]
         program.outside_courses = [course for course in courses if course.id not in program_course_ids]
 
+
 def get_current_course_by_user_id(user_id):
     # Return first active course in the user's list
     courses = user_api.get_user_courses(user_id)
@@ -48,6 +51,7 @@ def get_current_course_by_user_id(user_id):
         course_id = courses[0].id
         return course_id
     return None
+
 
 def get_current_course_for_user(request):
     course_id = request.session.get(CURRENT_COURSE_ID, None)
@@ -74,6 +78,7 @@ def set_current_program_for_user(request, program, update_api=True):
                     CURRENT_PROGRAM_ID: str(program.id),
                 }
             )
+
 
 def set_current_course_for_user(request, course_id):
     prev_course_id = request.session.get(CURRENT_COURSE_ID, None)
@@ -103,9 +108,11 @@ def set_current_course_for_user(request, course_id):
         _load_intersecting_program_courses(current_program, courses)
         set_current_program_for_user(request, current_program, update_api=False)
 
+
 def clear_current_course_for_user(request):
     request.session[CURRENT_COURSE_ID] = None
     user_api.delete_user_preference(request.user.id, CURRENT_COURSE_ID)
+
 
 def get_current_program_for_user(request):
 
@@ -145,6 +152,7 @@ def get_current_program_for_user(request):
     # Return the program to the caller
     return program
 
+
 class CourseAccessDeniedError(PermissionDenied):
     '''
     Exception to be thrown when course access is denied
@@ -155,10 +163,17 @@ class CourseAccessDeniedError(PermissionDenied):
         super(CourseAccessDeniedError, self).__init__()
 
     def __str__(self):
-        return "Access denied to course '{}' for user {}".format(self.course_id, self.user_id)
+        return _("Access denied to course '{course_id}' for user {user_id}").format(
+            course_id=self.course_id,
+            user_id=self.user_id
+        )
 
     def __unicode__(self):
-        return u"Access denied to course '{}' for user {}".format(self.course_id, self.user_id)
+        return _(u"Access denied to course '{course_id}' for user {user_id}").format(
+            course_id=self.course_id,
+            user_id=self.user_id
+        )
+
 
 def check_user_course_access(func):
     '''
@@ -204,10 +219,17 @@ class CompanyAdminAccessDeniedError(PermissionDenied):
         super(CompanyAdminAccessDeniedError, self).__init__()
 
     def __str__(self):
-        return "Access denied to user {} for data belonging to {}".format(self.admin_user_id, self.user_id)
+        return _("Access denied to user {admin_user_id} for data belonging to {user_id}").format(
+            admin_user_id=self.admin_user_id,
+            user_id=self.user_id
+        )
 
     def __unicode__(self):
-        return u"Access denied to user {} for data belonging to {}".format(self.admin_user_id, self.user_id)
+        return _(u"Access denied to user {admin_user_id} for data belonging to {user_id}").format(
+            admin_user_id=self.admin_user_id,
+            user_id=self.user_id
+        )
+
 
 def check_company_admin_user_access(func):
     '''
@@ -227,6 +249,7 @@ def check_company_admin_user_access(func):
 
     return admin_user_user_access_checker
 
+
 def _inject_formatted_data(program, course, page_id, static_tab_info=None):
     if program:
         for program_course in program.courses:
@@ -239,6 +262,7 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
             lesson_description = load_static_tabs(course.id, "lesson{}".format(idx))
             if lesson_description:
                 lesson.description = lesson_description.content
+
 
 def _get_course_progress_data(course, user_id):
     completions = course_api.get_course_completions(course.id, user_id)
@@ -253,6 +277,7 @@ def _get_course_progress_data(course, user_id):
             lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
     actual_completions = set(component_ids).intersection(completed_ids)
     return len(actual_completions), len(component_ids)
+
 
 def load_course_progress(course, user_id):
     actual_completions_len, component_ids_len = _get_course_progress_data(course, user_id)
@@ -433,11 +458,13 @@ def get_program_menu_list(request, current_course):
             programs.insert(0, programs.pop(i))
     return programs
 
+
 def move_course_to_first_place(program, current_course):
     for i, course in enumerate(program[1]):
             if course.id == current_course.id:
                 program[1].insert(0, program[1].pop(i))
                 program[1][0].course_class = "current"
+
 
 def check_course_shell_access(request, course_id):
 
