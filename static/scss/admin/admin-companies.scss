@@ -556,7 +556,7 @@
 	}
 	td{
 		white-space: normal;
-		word-break: break-word;
+		word-wrap: break-word;
 		&:last-child{
 			text-align: center;
 		}
