@@ -46,9 +46,9 @@
               .label-5 {% trans "Proficiency:" %}
               .label-4 cohort average = ={proficiency.course_average_display}
               - if user_role
-                .rank {% blocktrans %} As #{user_role} user you will not appear on the proficiency leaderboard {% endblocktrans %}
+                .rank {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the proficiency leaderboard {% endblocktrans %}
               - elif proficiency.user_position and proficiency.user_grade_value
-                .rank {% blocktrans %} your proficiency position: <br><span>#={proficiency.user_position}</span> with <span>={proficiency.user_grade_display}</span> {% endblocktrans %}
+                .rank {% blocktrans with position=proficiency.user_position position_value=proficiency.user_grade_display %} your proficiency position: <br><span>{{position}}</span> with <span>{{position_value}}</span> {% endblocktrans %}
               - else
                 .rank {% trans "your proficiency position <br> will be displayed here" %}
 
@@ -108,9 +108,9 @@
             .label-5 {% trans "Progress:" %}
             .label-4 cohort average = ={completions.course_average_display}%
             - if user_role
-              .rank {% blocktrans %} As #{user_role} user you will not appear on the progress leaderboard {% endblocktrans %}
+              .rank {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the progress leaderboard {% endblocktrans %}
             - elif completions.position and completions.user_progress_value
-              .rank {% blocktrans %} your progress position: <br><span>#={completions.position}</span> with <span>={completions.user_progress_display}%</span> {% endblocktrans %}
+              .rank {% blocktrans with position=completions.position progress_value=completions.user_progress_display %} your progress position: <br><span>{{position}}</span> with <span>{{progress_value}}%</span> {% endblocktrans %}
             - else
               .rank {% trans "your progress position <br> will be displayed here" %}
 
@@ -169,11 +169,11 @@
           %li
             .header
               .label-5 {% trans "Engagement:" %}
-              .label-4 {% blocktrans %} cohort average = ={social.course_avg} points {% endblocktrans %}
+              .label-4 {% blocktrans with course_avg=social.course_avg %} cohort average = {{course_avg}} points {% endblocktrans %}
               - if user_role
-               .rank {% blocktrans %} As #{user_role} user you will not appear on the engagement leaderboard {% endblocktrans %}
+               .rank {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the engagement leaderboard {% endblocktrans %}
               - elif social.position
-                .rank {% trans "your engagement position: <br><span>#={social.position}</span> with <span>={social.points} pts.</span>" %}
+                .rank {% blocktrans with position=social.position points=social.points %}  your engagement position: <br><span>{{position}}</span> with <span>{{points}} pts.</span>" {% endblocktrans %}
               - else
                 .rank {% trans "your engagement position <br> will be displayed here" %}
 
