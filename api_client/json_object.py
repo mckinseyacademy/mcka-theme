@@ -243,7 +243,9 @@ class CategorisedJsonObject(JsonObject):
         return object_type
 
     def _make_data_object(self, value, object_type):
-        if isinstance(value, collections.Iterable):
+        if isinstance(value, basestring):
+            return value
+        elif isinstance(value, collections.Iterable):
 
             if self._categorised_parser and self._categorised_parser._category_property_name in value:
                 return self._categorised_parser.from_dictionary(value)

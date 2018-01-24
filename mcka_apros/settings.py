@@ -138,7 +138,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
+LANGUAGES = (
+    ('en', u'English'),
+    ('ar', u'Arabic'),  # Arabic
+)
 TIME_ZONE = 'UTC'
 
 USE_I18N = True

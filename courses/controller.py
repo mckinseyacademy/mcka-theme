@@ -11,11 +11,12 @@ import logging
 from bs4 import BeautifulSoup
 
 from django.conf import settings
-from django.core.cache import cache
 
-from accounts.middleware.thread_local import set_static_tab_context, get_static_tab_context
-
-from api_client import course_api, user_api, user_models, workgroup_api, project_api
+from accounts.middleware.thread_local import (
+    set_static_tab_context,
+    get_static_tab_context,
+)
+from api_client import course_api, user_api, workgroup_api, project_api
 from api_client.project_models import Project
 from api_client.group_api import get_users_in_group
 from api_client.gradebook_models import CourseSummary, GradeSummary
@@ -25,6 +26,7 @@ from api_client.api_error import ApiError
 from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress
 from lib.utils import PriorIdConvert
 from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
+from util.i18n_helpers import set_language
 
 log = logging.getLogger(__name__)
 
@@ -232,10 +234,13 @@ def build_page_info_for_course(
 
     return course
 
+
 def get_course_position_tree(user_id, course_id, user_api_impl=user_api):
     course_detail = False
     try:
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
+        language = course_detail.languages[0] if course_detail.languages else settings.LANGUAGE_CODE
+        set_language(language)
     except:
         course_detail = False
 

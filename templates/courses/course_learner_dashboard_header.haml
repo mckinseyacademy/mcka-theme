@@ -21,7 +21,7 @@
                 - else
                   .login-action
                     %a.small.radius.button{href: "/accounts/login"}
-                      {% trans"Log in" %}
+                      {% trans "Log in" %}
       .row
         .large-12.columns.header-padding
           %div.right.header-path
@@ -30,7 +30,7 @@
                 %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "{% trans 'Resources' %}"}
                   .fa.fa-file-text-o.header-link
               - else
-                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "{% trans'Resources' %}", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "{% trans 'Resources' %}", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
                   .fa.fa-file-text-o.header-link
 
             - if feature_flags.group_work
