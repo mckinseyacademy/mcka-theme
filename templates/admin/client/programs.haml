@@ -38,12 +38,12 @@
         {
           selector: ".student-list .student",
           submit_name: "students",
-          minimum_count_message: "Please select at least one student"
+          minimum_count_message: gettext("Please select at least one student")
         },
         {
           selector: ".program-selection .select-program-box",
           submit_name: "program",
-          minimum_count_message: "Please select one program",
+          minimum_count_message: gettext("Please select one program"),
           single_select: true
         }
       ];
@@ -76,16 +76,16 @@
           data: data
         }). done(function(data){
           if(data.status == 'success'){
-            alert('Invitation has been resent');
+            alert(gettext('Invitation has been resent'));
           }
           else if(data.status == 'fail'){
-            alert('Invitation not sent');
+            alert(gettext('Invitation not sent'));
           }
           else{
             alert(data.status);
           }
         }).fail(function(){
-            alert('Invitation not sent');
+            alert(gettext('Invitation not sent'));
         });
       });
     });

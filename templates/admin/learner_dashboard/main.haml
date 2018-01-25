@@ -86,7 +86,7 @@
     });
 
     function deleteTile(tileId, learnerDashboardId){
-      if (window.confirm("Are you sure?")) {
+      if (window.confirm(gettext("Are you sure?"))) {
         var url = window.location.pathname + '/' + learnerDashboardId + "/tile/" + tileId;
         $.ajax({
           headers: {
@@ -100,7 +100,7 @@
     }
 
     function deleteDiscover(discoverId, learnerDashboardId){
-      if (window.confirm("Are you sure?")) {
+      if (window.confirm(gettext("Are you sure?"))) {
         var url = window.location.pathname + "/discover/delete/" + discoverId;
         $.ajax({
           headers: {

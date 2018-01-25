@@ -70,7 +70,7 @@
           return;
 
         if ($("#participants_csv_file")[0].files.length == 0){
-          $('.courseModalDescription').text("Please select a file first.");
+          $('.courseModalDescription').text(gettext("Please select a file first."));
           return;
         }
 
@@ -79,7 +79,7 @@
         $(this).addClass('disabled');
 
         $('i.loadingIcon').removeClass('hidden');
-        $('.progress').text('Progress: 0%');
+        $('.progress').text(gettext('Progress: 0%'));
 
         var options = {
           url     : form.attr('action'),

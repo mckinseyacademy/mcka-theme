@@ -16,7 +16,9 @@
 
 %script
   function confirmAndCopy(source, learner_dashboard_id, destination, id){
-      if (window.confirm("You are about to copy dashboard " + source + " to " + destination)) {
+      var values = {'source': source, 'destination': destination};
+      var copyDashboardString = gettext("You are about to copy dashboard %(source)s to %(destination)s");
+      if (window.confirm(interpolate(copyDashboardString, values, true)) {
         var url = "/admin/courses/" + source + "/learner_dashboard/" + learner_dashboard_id + "/duplicate/" + destination;
         var element = $("#" + id);
         var hrefElement = element.find('a');
@@ -39,7 +41,7 @@
             element.find('.fa').removeClass('fa-spin fa-spinner').addClass('fa-times');
             hrefElement.prop("onclick", null);
             hrefElement.attr("href", "#");
-            alert("Something went wrong:" + xhr.responseText);
+            alert(interpolate(gettext('Something went wrong: %s'), [xhr.responseText]));
           }
         });
       }
