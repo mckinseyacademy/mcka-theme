@@ -31,7 +31,7 @@ PERMISSION_GROUPS = DottableDict(
     CLIENT_TA='mcka_role_client_ta',
     CLIENT_OBSERVER='mcka_role_client_observer',
     INTERNAL_ADMIN='mcka_role_internal_admin',
-    COMPANY_ADMIN ='mcka_role_company_admin',
+    COMPANY_ADMIN='mcka_role_company_admin',
 )
 
 TAG_GROUPS = DottableDict(
@@ -115,6 +115,7 @@ def delete_group(group_id):
 
     return (response.code == 204)
 
+
 @api_error_protect
 def update_group(group_id, group_name, group_type, group_data=None, group_object=JsonObject):
     ''' update existing group '''
@@ -136,6 +137,7 @@ def update_group(group_id, group_name, group_type, group_data=None, group_object
     )
 
     return JP.from_json(response.read(), group_object)
+
 
 @api_error_protect
 def add_user_to_group(user_id, group_id, group_object=JsonObject):
@@ -216,6 +218,7 @@ def get_users_in_group(group_id):
 
     return user_list.users
 
+
 @api_error_protect
 def remove_user_from_group(user_id, group_id):
     ''' remove user association with a specific group '''
@@ -237,6 +240,7 @@ def remove_user_from_group(user_id, group_id):
 
     return (response.code == 204)
 
+
 @api_error_protect
 def remove_course_from_group(course_id, group_id, group_object=JsonObject):
     ''' removes course from group '''
@@ -257,6 +261,7 @@ def remove_course_from_group(course_id, group_id, group_object=JsonObject):
     )
 
     return (response.code == 204)
+
 
 @api_error_protect
 @group_api_cache_wrapper(
@@ -305,6 +310,7 @@ def get_organizations_in_group(group_id, group_object=JsonObject):
     )
 
     return JP.from_json(response.read(), group_object)
+
 
 @api_error_protect
 def get_workgroups_in_group(group_id, group_object=JsonObject):

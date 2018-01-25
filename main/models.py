@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.utils.translation import ugettext_lazy as _
 
 class CuratedContentItem(models.Model):
     class Meta:
@@ -27,12 +27,12 @@ class CuratedContentItem(models.Model):
     IMAGE = 'img'
 
     CONTENT_TYPES = (
-        (TEXT, 'text'),
-        (VIDEO, 'video'),
-        (QUOTE, 'quote'),
-        (TWEET, 'tweet'),
-        (ARTICLE, 'article'),
-        (IMAGE, 'img'),
+        (TEXT, _('text')),
+        (VIDEO, _('video')),
+        (QUOTE, _('quote')),
+        (TWEET, _('tweet')),
+        (ARTICLE, _('article')),
+        (IMAGE, _('img')),
     )
     content_type = models.CharField(max_length=3,
                                     choices=CONTENT_TYPES,

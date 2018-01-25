@@ -4,10 +4,8 @@ import collections
 import datetime
 import os
 import StringIO
-import string
-import urlparse
 
-from django.conf import settings
+from django.utils.translation import ugettext as _
 from django.core.files.storage import default_storage
 
 
@@ -77,7 +75,7 @@ class MissingRequiredFieldError(Exception):
         super(MissingRequiredFieldError, self).__init__()
 
     def __str__(self):
-        return "Missing required field '{}'".format(self.value)
+        return _("Missing required field '{value}'").format(value=self.value)
 
 
 def _build_date_field(json_date_string_value):
@@ -148,6 +146,7 @@ class JsonObject(Objectifier):
                     remove_fields.append(element)
             for remove_field in remove_fields:
                 del dictionary[remove_field]
+
 
 class JsonObjectWithImage(JsonObject):
 

@@ -23,7 +23,6 @@ class CertificateTemplateAssetForm(forms.ModelForm):
             AlphanumericWithAccentedChars()
         )
 
-
     class Meta(object):
         """
         Form meta class to set model meta options

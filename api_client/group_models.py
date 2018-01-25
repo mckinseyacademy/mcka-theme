@@ -1,6 +1,9 @@
 ''' Objects for users / authentication built from json responses from API '''
 import json
 from datetime import datetime, date
+
+from django.utils.translation import ugettext as _
+
 from .json_object import JsonObject
 import group_api
 
@@ -8,7 +11,7 @@ import group_api
 class GroupInfo(JsonObject):
 
     ''' object representing a group from api json response '''
-    #required_fields = ["name", "id"]
+    # required_fields = ["name", "id"]
     data_fields = []
     group_type = None
 
@@ -53,7 +56,9 @@ class GroupInfo(JsonObject):
             if date_field in clean_data and type(clean_data[date_field]) in (date, datetime):
                 clean_data[date_field] = clean_data[date_field].strftime(date_format)
             else:
-                date_components = ["{}_{}".format(date_field, component_value)
+                date_components = [_("{date_field}_{component_value}").format(
+                    date_field=date_field,
+                    component_value=component_value)
                                    for component_value in ['year', 'month', 'day']]
                 component_values = [int(group_data[component])
                                     for component in date_components if component in group_data]

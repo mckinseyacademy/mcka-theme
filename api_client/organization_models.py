@@ -9,7 +9,7 @@ from django.core.files.storage import default_storage
 
 
 class Organization(JsonObjectWithImage):
-    #required_fields = ["display_name", "contact_name", "contact_phone", "contact_email", ]
+    # required_fields = ["display_name", "contact_name", "contact_phone", "contact_email", ]
 
     def __init__(self, *args, **kwargs):
         self._user_ids = []
@@ -104,7 +104,8 @@ class Organization(JsonObjectWithImage):
                 usable_sizes = [s[0] for s in self.get_image_sizes() if s[0] >= size]
                 best_image_size = min(usable_sizes) if len(usable_sizes) > 0 else None
 
-                # if we are asking for one of the specific sizes but it does not exist, then clean any old ones and regenerate
+                # if we are asking for one of the specific sizes but it does not exist,
+                #  then clean any old ones and regenerate
                 if best_image_size and size == best_image_size and not self.have_size(size):
                     self._clean_and_resize_images()
 

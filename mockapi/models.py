@@ -6,6 +6,7 @@ import json
 # Create your models here.
 RESPONSE_DICTIONARY = {}
 
+
 def _set_dictionary_from_dictionary(dict1, dict2):
     for key in dict1:
         if isinstance(dict1[key], dict):
@@ -13,6 +14,7 @@ def _set_dictionary_from_dictionary(dict1, dict2):
         else:
             # make sure that it can be set to given value
             dict1[key] = dict2[key]
+
 
 class MockHttpResponse(object):
 

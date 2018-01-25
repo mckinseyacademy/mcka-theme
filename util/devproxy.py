@@ -14,6 +14,8 @@ from mcka_apros import settings
 
 PORT = getattr(settings, "DEV_PROXY_PORT", 8888)  # Note: 80 requires this to be run as root with sudo
 DOMAIN = getattr(settings, "LMS_BASE_DOMAIN", "mcka.local")
+
+
 def make_domain(sub, base):
     suffix = ":{}".format(PORT) if PORT != 80 else ""
     return (sub + "." + base + suffix) if sub else base+suffix

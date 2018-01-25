@@ -59,6 +59,7 @@ def permission_group_required_api(*group_names):
         return wraps(view_fn, assigned=available_attrs(view_fn))(_wrapped_view)
     return decorator
 
+
 def permission_group_required_not_in_group(request):
     template = loader.get_template('not_authorized.haml')
     context = RequestContext(request, {'request_path': request.path})
@@ -75,10 +76,10 @@ def get_user_permissions(user):
     ''' Loads and caches group names and ids via the edX platform '''
     permissions_data = {"global_permissions":[],"organization_permissions":[]}
     permission_dict = permission_groups_map()
-    current_permissions = [pg.name for pg in user_api.get_user_groups(user.id, PERMISSION_TYPE)]
+    current_permissions = [pg.name for pg in user_api.get_user_groups(user.id, group_api.PERMISSION_TYPE)]
     for perm in current_permissions:
-        if perm not in (PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_OBSERVER):
+        if perm not in (group_api.PERMISSION_GROUPS.MCKA_TA, group_api.PERMISSION_GROUPS.MCKA_OBSERVER):
             permissions_data["global_permissions"].append({perm: permission_dict[perm]})
     
-    global_permissions = [{perm: permission_dict[perm]} for perm in current_permissions if perm not in (PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_OBSERVER)]
+    global_permissions = [{perm: permission_dict[perm]} for perm in current_permissions if perm not in (group_api.PERMISSION_GROUPS.MCKA_TA, group_api.PERMISSION_GROUPS.MCKA_OBSERVER)]
     return permissions_data

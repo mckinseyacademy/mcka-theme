@@ -4,6 +4,7 @@ Django models for course certificates and related code
 import uuid  # pylint: disable=unused-import
 
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 from upload_validator import FileTypeValidator
 
 
@@ -24,10 +25,10 @@ class CertificateStatus(object):
     """
     Enum for certificate statuses
     """
-    notavailable = 'notavailable'
-    available = 'available'
-    generating = 'generating'
-    generated = 'generated'
+    notavailable = _('notavailable')
+    available = _('available')
+    generating = _('generating')
+    generated = _('generated')
 
 
 class CourseCertificateStatus(models.Model):

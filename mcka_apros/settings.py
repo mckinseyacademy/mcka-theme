@@ -141,6 +141,7 @@ LANGUAGE_CODE = 'en-us'
 LANGUAGES = (
     ('en', u'English'),
     ('ar', u'Arabic'),  # Arabic
+    ('eo', 'dummy')
 )
 TIME_ZONE = 'UTC'
 

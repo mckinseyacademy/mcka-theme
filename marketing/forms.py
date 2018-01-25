@@ -16,7 +16,7 @@ import json
 TIMEOUT = 20
 
 TECH_SUPPORT_CHOICES = (
-    ("", "Please Select…"),
+    ("", _("Please Select")),
     ("problem", _("Technical Issue")),
     ("incident", _("Course Issue")),
     ("question", _("Question")),
@@ -24,7 +24,7 @@ TECH_SUPPORT_CHOICES = (
 )
 
 EDUCATION_CHOICES = (
-    ("", "Please Select…"),
+    ("", _("Please Select")),
     ("Bachelor's degree", _("Bachelor's degree")),
     ("mba", _("Master's of Business Administration (MBA)")),
     ("Master's degree", _("Master's degree (non MBA)")),
@@ -39,12 +39,17 @@ USER_TOKEN = '{}/token:{}'.format(
 
 USER_AUTH = base64.encodestring(USER_TOKEN).replace('\n', '')
 
+
 class TechSupportForm(forms.Form):
     auto_id = False
     type = forms.ChoiceField(label=False, choices=TECH_SUPPORT_CHOICES)
-    name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Name')}))
-    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Email')}))
-    comment = forms.CharField(label=False, widget=forms.widgets.Textarea(attrs={'placeholder': _('Please provide details')}))
+    name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(
+        attrs={'placeholder': _('Name')}))
+    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(
+        attrs={'placeholder': _('Email')}))
+    comment = forms.CharField(label=False, widget=forms.widgets.Textarea(
+        attrs={'placeholder': _('Please provide details')})
+                              )
     device = forms.CharField(widget=forms.HiddenInput(), required=False)
     device_language = forms.CharField(widget=forms.HiddenInput(), required=False)
     browser_type = forms.CharField(widget=forms.HiddenInput(), required=False)
@@ -84,7 +89,9 @@ class TechSupportForm(forms.Form):
 
 class SubscribeForm(forms.Form):
     auto_id = False
-    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Email')}))
+    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(
+        attrs={'placeholder': _('Email')}
+    ))
 
     def save(self):
         data = {
@@ -108,9 +115,46 @@ class SubscribeForm(forms.Form):
 
 class EdxOfferForm(forms.Form):
     auto_id = False
-    full_name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Full name'), 'required': None, 'data-entry': 'entry.867370117'}))
-    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(attrs={'type': 'email', 'placeholder': _('Email'), 'required': '', 'pattern': '^[\w\d_.%+-]+@[\w\d.-]+\.[a-z]{2,6}$', 'data-entry': 'entry.161345890'}))
-    company = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Company'), 'required': None, 'data-entry': 'entry.925379726'}))
-    title = forms.CharField(label=False, max_length=254, widget=forms.TextInput(attrs={'placeholder': _('Title'), 'required': None, 'data-entry': 'entry.143346488'}))
-    education = forms.ChoiceField(label=_('Highest level of education completed:'), choices=EDUCATION_CHOICES, widget=forms.Select(attrs={'data-entry': 'entry.24647299'}))
-    comment = forms.CharField(label=False, widget=forms.widgets.Textarea(attrs={'placeholder': _('In a few lines tell us why you would like to take the course.'), 'required': None, 'data-entry': 'entry.1495472333'}))
+    full_name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(
+        attrs={'placeholder': _('Full name'),
+               'required': None,
+               'data-entry': 'entry.867370117'
+               }
+    ))
+
+    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(
+        attrs={'type': 'email',
+               'placeholder': _('Email'),
+               'required': '',
+               'pattern': '^[\w\d_.%+-]+@[\w\d.-]+\.[a-z]{2,6}$',
+               'data-entry': 'entry.161345890'
+               }
+    ))
+
+    company = forms.CharField(label=False, max_length=254, widget=forms.TextInput(
+        attrs={'placeholder': _('Company'),
+               'required': None,
+               'data-entry': 'entry.925379726'
+               }
+    ))
+
+    title = forms.CharField(label=False, max_length=254, widget=forms.TextInput(
+        attrs={'placeholder': _('Title'),
+               'required': None, 'data-entry': 'entry.143346488'
+               }
+    ))
+    education = forms.ChoiceField(
+        label=_('Highest level of education completed:'),
+        choices=EDUCATION_CHOICES,
+        widget=forms.Select(attrs={'data-entry': 'entry.24647299'})
+    )
+
+    comment = forms.CharField(
+        label=False,
+        widget=forms.widgets.Textarea(
+            attrs={'placeholder': _('In a few lines tell us why you would like to take the course.'),
+                   'required': None,
+                   'data-entry': 'entry.1495472333'
+                   }
+        )
+    )

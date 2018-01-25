@@ -1,6 +1,6 @@
 from functools import wraps
 from django.utils.decorators import available_attrs
-
+from django.utils.translation import ugettext as _
 
 from .user_data import UserDataManager, USER_PROPERTIES
 from .group_data import GroupDataManager
@@ -19,7 +19,7 @@ def user_api_cache_wrapper(parse_method, property_name, parse_object=None, post_
                 user_id = kwargs.get('user_id')
 
             if not user_id:
-                raise ValueError('User Id is not passed')
+                raise ValueError(_('User Id is not passed'))
 
             cache_identifiers = []
             skip_caching = False
@@ -73,7 +73,7 @@ def group_api_cache_wrapper(parse_method, parse_object, property_name, post_proc
                 group_id = kwargs.get('group_id')
 
             if not group_id:
-                raise ValueError('Group Id is not passed')
+                raise ValueError(_('Group Id is not passed'))
 
             group_data_manager = GroupDataManager(group_id)
 
@@ -108,7 +108,7 @@ def course_api_cache_wrapper(parse_method, parse_object, property_name, post_pro
                 course_id = kwargs.get('course_id')
 
             if not course_id:
-                raise ValueError('Course Id is not passed')
+                raise ValueError(_('Course Id is not passed'))
 
             if data_property == COURSE_PROPERTIES.TAB_CONTENT:
                 try:

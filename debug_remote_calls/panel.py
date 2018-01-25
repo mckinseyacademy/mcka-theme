@@ -14,6 +14,7 @@ threadlocal.api_calls = []
 def _now_in_ms():
     return int(round(time.time() * 1000))
 
+
 class DebugHandler(urllib2.HTTPHandler):
 
     def http_request(self, request):

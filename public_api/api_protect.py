@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFoun
 from .models import ApiToken
 from admin.models import Client
 
+
 def api_json_response(func):
     '''
     A decorator thats takes a view response and turns it
@@ -29,6 +30,7 @@ def api_json_response(func):
         return HttpResponse(data, "application/json")
     return decorator
 
+
 def api_authenticate_protect(func):
     '''
     Decorator to protect API calls with an auth token
@@ -44,14 +46,15 @@ def api_authenticate_protect(func):
                     request.organization = organization
                     return func(request, *args, **kwargs)
                 else:
-                    data = {"error": "Client not found"}
+                    data = {"error": _("Client not found")}
                     return HttpResponse(json.dumps(data), 'application/json', 401)
             except:
-                data = {"error": "Token or Client not found"}
+                data = {"error": _("Token or Client not found")}
                 return HttpResponse(json.dumps(data), 'application/json', 401)
-        data = {"error": "Token missing"}
+        data = {"error": _("Token missing")}
         return HttpResponse(json.dumps(data), 'application/json', 401)
     return _wrapped
+
 
 def api_user_protect(func):
     '''

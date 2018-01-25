@@ -27,7 +27,6 @@ class MockResponseView(View):
 
         print "Matched path with {}".format(mock_response_object._address)
 
-
         fixed_content = mock_response_object._response_body.replace('http://openedxapi.apiary-mock.com/', request.build_absolute_uri('/mockapi/'))
 
         content_type = "application/json"

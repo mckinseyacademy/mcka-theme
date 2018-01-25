@@ -81,12 +81,14 @@ def revoke_license(granted_id, grantor_id, grantee_id):
 
     license.save()
 
+
 def fetch_granted_license(granted_id, grantee_id):
     licenses = LicenseGrant.objects.filter(granted_id=granted_id, grantee_id=grantee_id)
     if len(licenses) < 1:
         return None
     else:
         return licenses[0]
+
 
 def fetch_granted_licenses(grantee_id, grantor_id):
     licenses = LicenseGrant.objects.filter(grantee_id=grantee_id, grantor_id=grantor_id)

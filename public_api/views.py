@@ -6,6 +6,7 @@ import functools
 
 from django.http import HttpResponse
 from django.views.decorators.http import require_POST
+from django.utils.translation import ugettext as _
 from api_client import course_api, user_api, workgroup_api
 from rest_framework import status
 from rest_framework.response import Response
@@ -34,6 +35,7 @@ def api_create_token(request):
     api_token.save()
     return api_token.as_json()
 
+
 @api_authenticate_protect
 @api_json_response
 def course(request, course_id):
@@ -50,6 +52,7 @@ def course(request, course_id):
         "status": course.status,
     }
     return data
+
 
 @api_authenticate_protect
 @api_user_protect
@@ -104,12 +107,13 @@ def user_course(request):
 
     return data
 
+
 @api_authenticate_protect
 @api_json_response
 def users(request):
     client = Client.fetch(request.organization.client_id)
     students = client.fetch_students_by_enrolled()
-    return {"error": "Student information not found"}
+    return {"error": _("Student information not found")}
 
     data = {
         "name": client.display_name,
@@ -138,7 +142,7 @@ def reset_password(request):
     if serializer.is_valid():
         users = user_api.get_users(email=serializer.validated_data['email'])
         if len(users) < 1:
-            return Response({'errors': 'No such email exist'}, status=422)
+            return Response({'errors': _('No such email exist')}, status=422)
         send_password_reset_email(
             request.META.get('HTTP_HOST'),
             users[0],
@@ -148,6 +152,6 @@ def reset_password(request):
             from_email=settings.APROS_EMAIL_SENDER
         )
 
-        return Response({'detail': 'Password reset email sent'}, status=status.HTTP_200_OK)
+        return Response({'detail': _('Password reset email sent')}, status=status.HTTP_200_OK)
     else:
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

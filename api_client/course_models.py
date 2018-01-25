@@ -62,6 +62,7 @@ class _HasCourseDates(CategorisedJsonObject):
     def is_started(self):
         return self.start_date <= datetime.datetime.today()
 
+
 class Page(_HasCourseDates):
 
     ''' object representing a page / module within a subsection '''
@@ -76,15 +77,18 @@ class Page(_HasCourseDates):
 
         return [child.category for child in self.children]
 
+
 class Sequential(_HasCourseDates):
 
     ''' object representing a subsection within a chapter / lesson '''
     required_fields = ["id", "name", ]
 
+
 class Chapter(_HasCourseDates):
 
     ''' object representing a chapter / lesson within a course '''
     required_fields = ["id", "name", ]
+
 
 class Course(CategorisedJsonObject):
 
@@ -215,7 +219,8 @@ class Course(CategorisedJsonObject):
             for sequential in lesson.sequentials:
                 for page in sequential.pages:
                     if hasattr(page, 'children'):
-                        components.extend([child.id for child in page.children if child.category not in filter_out_categories])
+                        components.extend([child.id for child in page.children
+                                           if child.category not in filter_out_categories])
         return components
 
     def lesson_component_ids(self, lesson_id, completions=None, filter_out_categories=[]):
@@ -427,38 +432,49 @@ class CourseListCourse(JsonObject):
     def display_id(self):
         return self.course_id
 
+
 class CourseList(JsonObject):
     object_map = {
         "courses": CourseListCourse
     }
 
+
 class CourseEnrollment(JsonObject):
     ''' object representing students/users enrolled to course '''
-    required_fields = ["id", "email", "username",]
+    required_fields = ["id", "email", "username"]
+
 
 class CourseEnrollmentList(JsonObject):
     object_map = {
         "enrollments": CourseEnrollment
     }
 
+
 class CourseTab(JsonObject):
     required_fields = ["name"]
+
 
 class CourseTabs(JsonObject):
     object_map = {
         "tabs": CourseTab
     }
 
+
 class CourseContentGroup(JsonObject):
     required_fields = ["group_id", "course_id", "content_id"]
 
     def __unicode__(self):
-        return "group {} in course {}".format(self.group_id, self.course_id)
+        return _("group {group_id} in course {course_id}").format(
+            group_id=self.group_id,
+            course_id=self.course_id
+        )
+
 
 class CourseMetrics(JsonObject):
     object_map = {
         "grade_cutoffs": DataOnly
     }
+
 
 class CourseTimeSeriesMetrics(JsonObject):
     object_map = {

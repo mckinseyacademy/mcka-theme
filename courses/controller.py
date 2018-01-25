@@ -578,7 +578,7 @@ def get_social_leaders(course_id, user_id, count=3):
     """
     data = {'points': 0, 'course_avg': 0, 'position': 0, 'leaders': []}
     try:
-        metrics = course_api.get_social_enagement_leaderboard(course_id, count, user_id=user_id)
+        metrics = course_api.get_social_engagement_leaderboard(course_id, count, user_id=user_id)
         tailor_leader_list(metrics.leaders)
         data = {
             'points': metrics.score,

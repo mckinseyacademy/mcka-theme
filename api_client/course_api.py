@@ -621,7 +621,7 @@ def get_course_social_metrics(course_id, organization_id=None):
 
 
 @api_error_protect
-def get_social_enagement_leaderboard(course_id, count, **kwargs):
+def get_social_engagement_leaderboard(course_id, count, **kwargs):
     """
     Get social engagement leaderboard for given course and user's position in leaderboard
     """

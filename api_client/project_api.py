@@ -8,7 +8,7 @@ from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 
 from .json_object import JsonParser as JP
 from .json_object import JsonObject
-from .json_requests import GET, POST, DELETE
+from .json_requests import GET, POST, DELETE, PUT
 from . import user_models
 from . import course_models
 from . import workgroup_models
@@ -23,6 +23,7 @@ def get_project_url_by_id(project_id):
         project_id,
     )
 
+
 @api_error_protect
 def get_project(project_id, project_object=JsonObject):
     ''' fetch project by id '''
@@ -31,12 +32,14 @@ def get_project(project_id, project_object=JsonObject):
     project = JP.from_json(response.read(), project_object)
     return project
 
+
 @api_error_protect
 def fetch_project_from_url(url, project_object=JsonObject):
     ''' fetch organization by id '''
     response = GET(url)
     project = JP.from_json(response.read(), project_object)
     return project
+
 
 @api_error_protect
 def delete_project(project_id):
@@ -49,7 +52,8 @@ def delete_project(project_id):
         )
     )
 
-    return (response.code == 204)
+    return response.code == 204
+
 
 @api_error_protect
 def create_project(course_id, content_id, organization_id=None, project_object=JsonObject):
