@@ -274,7 +274,7 @@ class PublicRegistrationFormTests(TestCase):
         'first_name': 'test',
         'last_name': 'test',
         'company_name': 'test',
-        'company_email': 'company_email@gmail.com',
+        'company_email': 'company_email@mckinsey.com',
         'current_role': 'Senior Executive'
     }
     char_field_test_set = [
@@ -321,7 +321,8 @@ class PublicRegistrationFormTests(TestCase):
         (123445, False),
         (None, False),
         ('gmewrefwjs', False),
-        ('valid_mail@gmail.com', True),
+        ('valid_email@mckinsey.com', True),
+        ('banned_email@gmail.com', False),
         ('seventy_characters'*12 + 'a@gmail.com', False),
         ('more_than_seventy_characters'*9, False),
     )
