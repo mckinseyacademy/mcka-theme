@@ -281,11 +281,13 @@ ADMINISTRATIVE_COMPANY = 'mckinsey_and_company'
 
 API_SERVER_PREFIX = '/'.join(['api', 'server'])
 
+# CELERY SETTINGS
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 BROKER_TRANSPORT_OPTIONS = {'confirm_publish': True}
+CELERYD_PREFETCH_MULTIPLIER = 1  # Each worker should only fetch one message at a time
 
 # Api locations
 COURSEWARE_API = '/'.join([API_SERVER_PREFIX, 'courses'])
