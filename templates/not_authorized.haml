@@ -1,6 +1,7 @@
 - extends "layout.haml"
+- load i18n
 
 - block content
   .row{style: "margin:50px auto;text-align:center;"}
     %h1
-      You are not authorized to view this.
+      {% trans "You are not authorized to view this." %}

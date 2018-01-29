@@ -38,5 +38,6 @@
 				%td.clipboard_button{'style': 'position:relative'}
 					%button.copy-access-key.button.prefix.postfix.radius{type: "button", title: "{% trans 'Copy to clipboard.' %}", "data-clipboard-text": "#{record.4}", "style": 'min-width:100px'}
             {% trans "Copy" %}
-					%span.tooltip{"style": "position:absolute;top:50px;"} {% trans "Copied to clipboard." %}
+					%span.tooltip{"style": "position:absolute;top:50px;"}
+						{% trans "Copied to clipboard." %}
 						%span.nub

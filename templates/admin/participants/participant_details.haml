@@ -112,7 +112,8 @@
               - if user.is_company_admin
               - else
                 .participantEmailReset.inlineBlock
-                  %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}> {% trans "Send reset password email" %}
+                  %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}>
+                    {% trans "Send reset password email" %}
             .participantEmailValue
               ={email}
         %hr
@@ -228,7 +229,8 @@
                       {% trans "Uber admin" %}
                 - if user.is_mcka_admin or user.is_mcka_subadmin
                   - if company_permission == "course_ops"
-                    %option{:value => "course_ops", :selected => "selected"} {% trans "Course ops admin" %}
+                    %option{:value => "course_ops", :selected => "selected"}
+                      {% trans "Course ops admin" %}
                   - else
                     %option{:value => "course_ops"}
                       {% trans "Course ops admin" %}
@@ -257,19 +259,28 @@
             .participantGenderValue
               %select{:name => "gender"}
                 - if gender == 'M'
-                  %option{:value => "M", :selected => 'True'} {% trans "Male" %}
-                  %option{:value => "F"} {% trans "Female" %}
-                  %option{:value => ""} {% trans "N/A" %}
+                  %option{:value => "M", :selected => 'True'}
+                    {% trans "Male" %}
+                  %option{:value => "F"}
+                    {% trans "Female" %}
+                  %option{:value => ""}
+                    {% trans "N/A" %}
 
                 - elif gender == 'F'
-                  %option{:value => "M"} {% trans "Male" %}
-                  %option{:value => "F", :selected => 'True'} {% trans "Female" %}
-                  %option{:value => ""} {% trans "N/A" %}
+                  %option{:value => "M"}
+                    {% trans "Male" %}
+                  %option{:value => "F", :selected => 'True'}
+                    {% trans "Female" %}
+                  %option{:value => ""}
+                    {% trans "N/A" %}
 
                 - else
-                  %option{:value => "M"} {% trans "Male" %}
-                  %option{:value => "F"} {% trans "Female" %}
-                  %option{:value => "", :selected => 'True'} {% trans "N/A" %}
+                  %option{:value => "M"}
+                    {% trans "Male" %}
+                  %option{:value => "F"}
+                    {% trans "Female" %}
+                  %option{:value => "", :selected => 'True'}
+                    {% trans "N/A" %}
 
         %hr
         - if user.is_mcka_admin or user.is_mcka_subadmin
@@ -315,8 +326,10 @@
     %p.lead
     %p.mainText
       %br
-      %button.okbutton.button.radius.small{:value => 'ok'}> {% trans "Ok" %}
-      %button.cancelbutton.button.radius.small.close-reveal-modal.close-modal-inline{:value => 'cancel'}> {% trans "Cancel" %}
+      %button.okbutton.button.radius.small{:value => 'ok'}>
+        {% trans "Ok" %}
+      %button.cancelbutton.button.radius.small.close-reveal-modal.close-modal-inline{:value => 'cancel'}>
+        {% trans "Cancel" %}
     %p
       .error
     %a.close-reveal-modal{"aria-label" => "Close"}
@@ -333,6 +346,7 @@
     .participantModalControl
       .button.saveChanges
         {% trans "Save Changes" %}
-      %a.cancelChanges{:href => "#"} {% trans "Cancel" %}
+      %a.cancelChanges{:href => "#"}
+        {% trans "Cancel" %}
     %a.close-reveal-modal{"aria-label" => "Close"}
       &#215;

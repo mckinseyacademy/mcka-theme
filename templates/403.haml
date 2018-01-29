@@ -1,12 +1,13 @@
 - extends "layout.haml"
+- load i18n
 
 - block content
   #error_403.error-page
     .row
       .large-10.large-centered.columns
-        %h1 403: Permission Denied
+        %h1 {% trans "403: Permission Denied" %}
         %hr
-        .sub-1 Sorry!
-        %p You don't have permission to access the resource you requested.
-        %p Please go back to <a href='https://www.mckinseyacademy.com'>www.mckinseyacademy.com</a>, or contact us at <a href:'mailto:support@mckinseyacademy.com'>support@mckinseyacademy.com</a>.
+        .sub-1 {% trans "Sorry!" %}
+        %p {% trans "You don't have permission to access the resource you requested." %}
+        %p {% blocktrans %}Please go back to <a href='https://www.mckinseyacademy.com'>www.mckinseyacademy.com</a>, or contact us at <a href:'mailto:support@mckinseyacademy.com'>support@mckinseyacademy.com</a>.{% endblocktrans%}
         %img{src: "/static/image/errors/McKA_errors_1500illus.png", srcset: "/static/image/errors/McKA_errors_1500illus@2x.png 2x"}

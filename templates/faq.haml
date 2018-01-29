@@ -1,98 +1,99 @@
 - extends "layout.haml"
+- load i18n
 
 - block content
   %article#faq-page.row.collapse
     .large-10.large-centered.columns
       %section
-        %h1 Participant FAQ
-        %p.sub-1 ACCESS:
-        %p.style-2 Which browsers are recommended for use with McKinsey Academy?
-        %p We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience. McKinsey Academy is not accessible with some older versions of browsers (such as Internet Explorer 8).
-        %p.style-2 What if I have technical trouble with registration, login, or course access?
-        %p Many problems with registration, login, or access to courses are caused by browser issues. Here are some things to try:
+        %h1 {% trans "Participant FAQ" %}
+        %p.sub-1 {% trans "ACCESS:" %}
+        %p.style-2 {% trans "Which browsers are recommended for use with McKinsey Academy?" %}
+        %p {% trans "We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience. McKinsey Academy is not accessible with some older versions of browsers (such as Internet Explorer 8)." %}
+        %p.style-2 {% trans "What if I have technical trouble with registration, login, or course access?" %}
+        %p {% trans "Many problems with registration, login, or access to courses are caused by browser issues. Here are some things to try:" %}
         %ul
-          %li Switch to a current version of Chrome or Firefox
-          %li Check your browser settings to ensure both JavaScript and cookies are enabled
-          %li Clear your browser's cache
-        %p.style-2 Which devices are recommended for use with McKinsey Academy?
-        %p The platform is accessible on all computer and tablet devices. The site is currently not optimized for mobile device use, and you will not currently be able to access course content on mobile phones.
-        %p.style-2 How can I sign-up for a McKinsey Academy course or program?
-        %p At this time, McKinsey Academy courses are only available to companies. If you are interested in inquiring further, please contact us.
-        %p.style-2 How can I change the name or email address on my account?
-        %p To change your name, log in, and find your profile in the upper right-hand corner of your screen. Click the down arrow and select "Edit" next to your name.
-        %p To change your email address, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a>.
-        %p.style-2 My account login isn't working.
-        %p If you've forgotten your password, please try resetting it by clicking "Forgot my password" on the log in screen. If that does not work, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a>.
-        %p.style-2 I can't access a course I'm enrolled in.
-        %p The drop down for moving between multiple courses is on the far left of the second (lighter blue) navigation bar. If the course you are supposed to be enrolled in does not appear in that drop down menu, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a>.
-        %p.style-2 How can I stop or start receiving emails from my courses?
-        %p We try to keep our email communication at an optimal level to ensure all participants know what is happening in the course without cluttering your inbox. Our emails contain important information about what's expected each week and additional curated content suggestions. If you no longer wish to receive emails, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> (or click unsubscribe at the bottom of any email you receive from us). Be sure to check the "Announcements" page frequently to stay up to date!
-        %p.sub-1 COURSES:
-        %p.style-2 When does my course start and/or finish?
-        %p You can find the start date and course duration for each course on its course overview page.  You will receive a welcome email when the course is open.
-        %p.style-2 What are passing requirements for courses?
-        %p You need to complete all group work and feedback activities and earn a combined course grade of at least 70% to work towards a program certificate of completion. Your course grade is calculated as follows:
+          %li {% trans "Switch to a current version of Chrome or Firefox" %}
+          %li {% trans "Check your browser settings to ensure both JavaScript and cookies are enabled" %}
+          %li {% trans "Clear your browser's cache" %}
+        %p.style-2 {% trans "Which devices are recommended for use with McKinsey Academy?" %}
+        %p {% trans "The platform is accessible on all computer and tablet devices. The site is currently not optimized for mobile device use, and you will not currently be able to access course content on mobile phones." %}
+        %p.style-2 {% trans "How can I sign-up for a McKinsey Academy course or program?" %}
+        %p {% trans "At this time, McKinsey Academy courses are only available to companies. If you are interested in inquiring further, please contact us." %}
+        %p.style-2 {% trans "How can I change the name or email address on my account?" %}
+        %p {% trans 'To change your name, log in, and find your profile in the upper right-hand corner of your screen. Click the down arrow and select "Edit" next to your name.' %}
+        %p {% blocktrans %}To change your email address, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a>.{% endblocktrans %}
+        %p.style-2 {% trans "My account login isn't working." %}
+        %p {% blocktrans %}If you've forgotten your password, please try resetting it by clicking "Forgot my password" on the log in screen. If that does not work, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a>.{% endblocktrans %}
+        %p.style-2 {% trans "I can't access a course I'm enrolled in." %}
+        %p {% blocktrans %}The drop down for moving between multiple courses is on the far left of the second (lighter blue) navigation bar. If the course you are supposed to be enrolled in does not appear in that drop down menu, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a>.{% endblocktrans %}
+        %p.style-2 {% trans "How can I stop or start receiving emails from my courses?" %}
+        %p {% blocktrans %}We try to keep our email communication at an optimal level to ensure all participants know what is happening in the course without cluttering your inbox. Our emails contain important information about what's expected each week and additional curated content suggestions. If you no longer wish to receive emails, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> (or click unsubscribe at the bottom of any email you receive from us). Be sure to check the "Announcements" page frequently to stay up to date!{% endblocktrans %}
+        %p.sub-1 {% trans "COURSES:" %}
+        %p.style-2 {% trans "When does my course start and/or finish?" %}
+        %p {% trans "You can find the start date and course duration for each course on its course overview page.  You will receive a welcome email when the course is open." %}
+        %p.style-2 {% trans "What are passing requirements for courses?" %}
+        %p {% trans "You need to complete all group work and feedback activities and earn a combined course grade of at least 70% to work towards a program certificate of completion. Your course grade is calculated as follows:" %}
           %ol
-            %li End of lesson (EOL) assessments
-              %em Note that EOL assessments vary based on number of lessons and may not be included in some lessons
-            %li Group Work
-              %em Note that Group Work may be made up of one or more activities which are graded throughout the duration of a course
-            %li Final Assessment
-        %p There is no minimum amount of course content that must be completed, but participants must complete the Final Assessment.
-        %p.style-2 How do I log in to take a McKinsey Academy course?
-        %p Once you activate your account, click on the "Log in" button on the McKinsey Academy home page and type in your username and password. This will take you to your current course page.
-        %p.style-2 How much time should I expect to devote to each course?
-        %p The projected time commitment required for each course is included on the course overview page. We typically find that dedicating 60-120 minutes per week is sufficient to complete all course requirements, including group work.
-        %p.style-2 Can I take more than one course at a time?
-        %p McKinsey Academy programs are a collection of courses taken one at a time.
-        %p.style-2 What time is the class?
-        %p McKinsey Academy courses take place at your convenience. Videos and assignments are available 24 hours a day, which means you can watch videos and complete work whenever you have time. Simply log in to your course and work through the course material. While group work activities have deadlines, these are designed to offer enough lead time that you can easily schedule your work.
-        %p.style-2 If I miss a week, how does this affect my performance?
-        %p It is certainly possible to finish a McKinsey Academy course if you miss a week; however you should certainly review content you may have missed. If you know you will be unavailable for some time during the duration of the course, be sure to connect with the other members of your group. Check your group work and course overview for important dates and times, so you don't miss a submission deadline while you are away.
-        %p.style-2 I missed a deadline; can I get an extension?
-        %p We are not able to offer individual extensions as course schedules are fixed and there is no way to change the dates of assignments or exams for one participant.
-        %p.style-2 My course deadlines are in UTC, what’s that?
-        %p UTC refers to Universal Coordinated Time. To find the current time in UTC and convert it to your local time, check World Time Server or other Internet time services.
-        %p.style-2 What if I have a question or concern regarding course grading?
-        %p If you have any questions about a grade you received, please email <a href="mailto:tas@mckinseyacademy.com">TAs@mckinseyacademy.com</a>.
-        %p.style-2 How can I meet/find other participants?
-        %p All McKinsey Academy courses have discussion forums where you can chat with and help other participants.
-        %p.style-2 How can I talk to McKinsey practitioners teaching my courses and teaching assistants?
-        %p The discussion forum is the best place to reach out to the McKinsey Academy course team for your cohort; just post your questions or email the TA. We do our best to respond as promptly as possible.
-        %p.style-2 How do I get help and support regarding my course?
-        %p You are part of a cohort of participants you can engage with questions as well as support from the TAs who monitor the course. Take a look at the course's discussion forum where you can review questions, answers and comments from fellow participants, as well as post a question. You can also reach out to the McKinsey teaching assistants by <a href="mailto:tas@mckinseyacademy.com">emailing them</a> and they will get back to you as soon as possible.
-        %p.style-2 Can I re-take a course?
-        %p McKinsey Academy courses cannot be re-taken, but exercises and materials remain available for 12 months after the course ends.
-        %p.style-2 Can I access the course content after my course ends?
-        %p McKinsey Academy past courses are available as archives for 12 months after the course ends. These courses can only be audited and some features, such as the discussion forums, may not be available.
-        %p.style-2 What information is displayed in visualizations on the course home page?
+            %li {% trans "End of lesson (EOL) assessments" %}
+              %em {% trans "Note that EOL assessments vary based on number of lessons and may not be included in some lessons" %}
+            %li {% trans "Group Work" %}
+              %em {% trans "Note that Group Work may be made up of one or more activities which are graded throughout the duration of a course" %}
+            %li {% trans "Final Assessment" %}
+        %p {% trans "There is no minimum amount of course content that must be completed, but participants must complete the Final Assessment." %}
+        %p.style-2 {% trans "How do I log in to take a McKinsey Academy course?" %}
+        %p {% trans 'Once you activate your account, click on the "Log in" button on the McKinsey Academy home page and type in your username and password. This will take you to your current course page.' %}
+        %p.style-2 {% trans "How much time should I expect to devote to each course?" %}
+        %p {% trans "The projected time commitment required for each course is included on the course overview page. We typically find that dedicating 60-120 minutes per week is sufficient to complete all course requirements, including group work." %}
+        %p.style-2 {% trans "Can I take more than one course at a time?" %}
+        %p {% trans "McKinsey Academy programs are a collection of courses taken one at a time." %}
+        %p.style-2 {% trans "What time is the class?" %}
+        %p {% trans "McKinsey Academy courses take place at your convenience. Videos and assignments are available 24 hours a day, which means you can watch videos and complete work whenever you have time. Simply log in to your course and work through the course material. While group work activities have deadlines, these are designed to offer enough lead time that you can easily schedule your work." %}
+        %p.style-2 {% trans "If I miss a week, how does this affect my performance?" %}
+        %p {% trans "It is certainly possible to finish a McKinsey Academy course if you miss a week; however you should certainly review content you may have missed. If you know you will be unavailable for some time during the duration of the course, be sure to connect with the other members of your group. Check your group work and course overview for important dates and times, so you don't miss a submission deadline while you are away." %}
+        %p.style-2 {% trans "I missed a deadline; can I get an extension?" %}
+        %p {% trans "We are not able to offer individual extensions as course schedules are fixed and there is no way to change the dates of assignments or exams for one participant." %}
+        %p.style-2 {% trans "My course deadlines are in UTC, what’s that?" %}
+        %p {% trans "UTC refers to Universal Coordinated Time. To find the current time in UTC and convert it to your local time, check World Time Server or other Internet time services." %}
+        %p.style-2 {% trans "What if I have a question or concern regarding course grading?" %}
+        %p {% blocktrans %}If you have any questions about a grade you received, please email <a href="mailto:tas@mckinseyacademy.com">TAs@mckinseyacademy.com</a>.{% endblocktrans %}
+        %p.style-2 {% trans "How can I meet/find other participants?" %}
+        %p {% trans "All McKinsey Academy courses have discussion forums where you can chat with and help other participants." %}
+        %p.style-2 {% trans "How can I talk to McKinsey practitioners teaching my courses and teaching assistants?" %}
+        %p {% trans "The discussion forum is the best place to reach out to the McKinsey Academy course team for your cohort; just post your questions or email the TA. We do our best to respond as promptly as possible." %}
+        %p.style-2 {% trans "How do I get help and support regarding my course?" %}
+        %p {% blocktrans %}You are part of a cohort of participants you can engage with questions as well as support from the TAs who monitor the course. Take a look at the course's discussion forum where you can review questions, answers and comments from fellow participants, as well as post a question. You can also reach out to the McKinsey teaching assistants by <a href="mailto:tas@mckinseyacademy.com">emailing them</a> and they will get back to you as soon as possible.{% endblocktrans %}
+        %p.style-2 {% trans "Can I re-take a course?" %}
+        %p {% trans "McKinsey Academy courses cannot be re-taken, but exercises and materials remain available for 12 months after the course ends." %}
+        %p.style-2 {% trans "Can I access the course content after my course ends?" %}
+        %p {% trans "McKinsey Academy past courses are available as archives for 12 months after the course ends. These courses can only be audited and some features, such as the discussion forums, may not be available." %}
+        %p.style-2 {% trans "What information is displayed in visualizations on the course home page?" %}
           %ul
-            %li <span>Proficiency:</span> Your proficiency is based on performance on all graded items in the course (including end of lesson assessments, group work, and final assessment)
-            %li <span>Progress:</span> Your progress through course content is displayed as you move through all items in the course (including videos, exercises, assessments, and readings)
-            %li <span>Engagement:</span> Your engagement increases through your social interactions with other participants in your cohort (through engagement on the discussion forums)
-        %p.sub-1 CERTIFICATES:
-        %p.style-2 Will my certificate include an overall program grade?
-        %p Your certificate will not include final grades.
-        %p.style-2 Can I get a paper copy of my certificate?
-        %p McKinsey Academy certificates are digital files which you can print on standard size paper.
-        %p.style-2 How are certificates determined?
-        %p To be eligible for the MMP certificate of completion, participants need to achieve a score of 70% or above across the program’s 5 core courses.
-        %p.style-2 How are McKinsey Academy certificates delivered?
-        %p McKinsey Academy certificates are delivered via email following successful completion of a program.
-        %p.sub-1 TECHNICAL ISSUES:
-        %p.style-2 How can I get technical support?
-        %p If you are having technical issues, please contact us here so we can resolve your problem. and we will get back to you by the next business day (likely earlier).
-        %p.style-2 What if I did not receive my password reset email?
-        %p If you did not receive an automated email it may be because:
+            %li {% blocktrans %}<span>Proficiency:</span> Your proficiency is based on performance on all graded items in the course (including end of lesson assessments, group work, and final assessment){% endblocktrans %}
+            %li {% blocktrans %}<span>Progress:</span> Your progress through course content is displayed as you move through all items in the course (including videos, exercises, assessments, and readings){% endblocktrans %}
+            %li {% blocktrans %}<span>Engagement:</span> Your engagement increases through your social interactions with other participants in your cohort (through engagement on the discussion forums){% endblocktrans %}
+        %p.sub-1 {% trans "CERTIFICATES:" %}
+        %p.style-2 {% trans "Will my certificate include an overall program grade?" %}
+        %p {% trans "Your certificate will not include final grades." %}
+        %p.style-2 {% trans "Can I get a paper copy of my certificate?" %}
+        %p {% trans "McKinsey Academy certificates are digital files which you can print on standard size paper." %}
+        %p.style-2 {% trans "How are certificates determined?" %}
+        %p {% blocktrans %}To be eligible for the MMP certificate of completion, participants need to achieve a score of 70% or above across the program’s 5 core courses.{% endblocktrans%}
+        %p.style-2 {% trans "How are McKinsey Academy certificates delivered?" %}
+        %p {% trans "McKinsey Academy certificates are delivered via email following successful completion of a program." %}
+        %p.sub-1 {% trans "TECHNICAL ISSUES:" %}
+        %p.style-2 {% trans "How can I get technical support?" %}
+        %p {% trans "If you are having technical issues, please contact us here so we can resolve your problem. and we will get back to you by the next business day (likely earlier)." %}
+        %p.style-2 {% trans "What if I did not receive my password reset email?" %}
+        %p {% trans "If you did not receive an automated email it may be because:" %}
           %ul
-            %li There was a typo in your email address
-            %li Your spam filter may have caught the email; please check your spam folder
-            %li You may be using an older browser; we recommend downloading the current version of Chrome or Firefox
-            %li JavaScript is disabled in your browser; please check your browser settings and confirm that JavaScript is enabled
-            %li You have not successfully registered an account with McKinsey Academy' please try registering again with the same email address (if an account already exists, you'll see an error regarding a duplicate email address)
-        %p.style-2 What if I have problems with the display (e.g., there are tools missing from the course display, or I am unable to view video)?
-        %p Please check your browser and settings - JavaScript must be enabled. We recommend downloading and using the current version of either Chrome or Firefox.
-        %p.style-2 How can I sign up for a McKinsey Academy course or program?
-        %p Please <a href="mailto:info@mckinseyacademy.com">contact us!</a> 
-        %p.style-2 What if my question isn’t answered here?
-        %p Please <a href="mailto:info@mckinseyacademy.com">contact us!</a> We’ll do our best to help.
+            %li {% trans "There was a typo in your email address" %}
+            %li {% trans "Your spam filter may have caught the email; please check your spam folder" %}
+            %li {% trans "You may be using an older browser; we recommend downloading the current version of Chrome or Firefox" %}
+            %li {% trans "JavaScript is disabled in your browser; please check your browser settings and confirm that JavaScript is enabled" %}
+            %li {% trans "You have not successfully registered an account with McKinsey Academy' please try registering again with the same email address (if an account already exists, you'll see an error regarding a duplicate email address)" %}
+        %p.style-2 {% trans "What if I have problems with the display (e.g., there are tools missing from the course display, or I am unable to view video)?" %}
+        %p {% trans "Please check your browser and settings - JavaScript must be enabled. We recommend downloading and using the current version of either Chrome or Firefox." %}
+        %p.style-2 {% trans "How can I sign up for a McKinsey Academy course or program?" %}
+        %p {% blocktrans %}Please <a href="mailto:info@mckinseyacademy.com">contact us!</a>{% endblocktrans %}
+        %p.style-2 {% trans "What if my question isn’t answered here?" %}
+        %p {% blocktrans %}Please <a href="mailto:info@mckinseyacademy.com">contact us!</a> We’ll do our best to help.{% endblocktrans %}

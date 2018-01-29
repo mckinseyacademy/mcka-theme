@@ -1,3 +1,4 @@
+- load i18n
 %header.background-blue{style: "{% if client_customization and client_customization.hex_background_main_navigation %}background-color:#{client_customization.hex_background_main_navigation};{% endif %}" , role: 'banner'}
   .row.collapse.main-nav
     .large-12.columns
@@ -37,16 +38,20 @@
             - else
             - if user.is_mcka_admin or user.is_mcka_ta or user.is_mcka_subadmin
               %li
-                %a{href: '/admin'}= _("McKA Admin")
+                %a{href: '/admin'}
+                  {% trans "McKA Admin" %}
             - if user.is_internal_admin
               %li
-                %a{href: '/admin'}= _("Internal Admin")
+                %a{href: '/admin'}
+                  {% trans "Internal Admin" %}
             - if user.is_client_admin
               %li
-                %a{href: '/admin/client-admin'}= _("Client Admin")
+                %a{href: '/admin/client-admin'}
+                  {% trans "Client Admin" %}
             - if user.is_company_admin
               %li
-                %a{href: '/admin/company_dashboard'}= _("Company Admin")
+                %a{href: '/admin/company_dashboard'}
+                  {% trans "Company Admin" %}
       - block user_region
         - if request.user.is_authenticated
           %a.user-info{data-dropdown: "profile-container"}
@@ -64,7 +69,7 @@
         .row.collapse
           .medium-5.columns.course_info
             .program-menu
-              %a{"data-dropdown": "program-menu-content", 'data-tooltip': 'Program'}
+              %a{"data-dropdown": "program-menu-content", 'data-tooltip': '{% trans "Program" %}'}
                 %i.fa.fa-th-large{style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
               #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
                 - include "courses/content_page/program_menu.haml"
@@ -72,7 +77,8 @@
               = programs.0.0.display_name
             %h4.course-name
               - if course.ended
-                %span= _("COURSE CLOSED")
+                %span
+                    {% trans "COURSE CLOSED" %}
               %a{href: "#{course.nav_url}", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= course.name
           .medium-2.columns
           .medium-5.columns.course_nav
@@ -85,7 +91,7 @@
               = program.display_name
             %h4.course-name{style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}
               = upcoming_course.name
-              %span.start-time - course begins in ={upcoming_course.days_till_start} days
+              %span.start-time - {% blocktrans with remaining_days=upcoming_course.days_till_start %}course begins in {{ remaining_days }} days{% endblocktrans %}
           .medium-2.columns
             -if branding and branding.logo_image
               %img.header-logo-img{src: "/company_images/#{branding.logo_image}"}

@@ -1,11 +1,12 @@
 - extends "layout.haml"
+- load i18n
 
 - block content
   #error_503.error-page
     .row
       .large-10.large-centered.columns
-        %h1 503: Down for Maintenance
+        %h1 {% trans "503: Down for Maintenance" %}
         %hr
-        .sub-1 Sorry!
-        %p McKinsey Academy is currently undergoing scheduled maintenance. Sorry for any inconvenience.
+        .sub-1 {% trans "Sorry!" %}
+        %p {% trans "McKinsey Academy is currently undergoing scheduled maintenance. Sorry for any inconvenience." %}
         %img{src: "/static/image/errors/McKA_errors_1maintenanceillus.png", srcset: "/static/image/errors/McKA_errors_1maintenanceillus@2x.png 2x"}

@@ -1,13 +1,17 @@
+- load i18n
 %footer.row.collapse{role: "contentinfo"}
   .large-12.columns
     .copyright
       &copy; {% now "Y" %}
-      = _("McKinsey & Company")
+      {% trans "McKinsey & Company" %}
     %nav{role: 'navigation'}
       %ul
         %li
-          %a{href: '/terms'}= _("Terms of Service")
+          %a{href: '/terms'}
+            {% trans "Terms of Service" %}
         %li
-          %a{href: '/privacy'}= _("Privacy Policy")
+          %a{href: '/privacy'}
+            {% trans "Privacy Policy" %}
         %li
-          %a{href: '/faq'}= _("FAQ")
+          %a{href: '/faq'}
+            {% trans "FAQ" %}
