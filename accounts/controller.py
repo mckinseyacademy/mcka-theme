@@ -293,12 +293,13 @@ def process_registration_request(request, user, course_run, existing_user_object
         _process_new_non_mcka_user(request, user, course_run)
 
     if user.mcka_user:
-        _process_mcka_user(request, user, course_run)
+        _process_mcka_user(request, user, course_run, protocol, domain)
+
 
 def _process_existing_non_mcka_user(domain, protocol, user, course_run, existing_user_object):
 
     email_template_html = "registration/public_registration_existing_non_mcka.haml"
-    subject = "Welcome to McKinsey Academy"
+    subject = "Welcome to Digital Academy"
     link = protocol + "://" + domain + "/courses/" + course_run.course_id
     template_text = course_run.email_template_existing
 
@@ -307,10 +308,11 @@ def _process_existing_non_mcka_user(domain, protocol, user, course_run, existing
         raise ValueError('Problem with course enrollment')
     send_email(email_template_html, subject, link, template_text, user.first_name, existing_user_object.email)
 
+
 def _process_new_non_mcka_user(request, registration_request, course_run):
 
     email_template_html = "registration/public_registration_activation_link.haml"
-    subject = "Welcome to McKinsey Academy"
+    subject = "Welcome to Digital Academy"
     template_text = course_run.email_template_new
 
     user = _register_user_on_platform(registration_request)
@@ -326,19 +328,21 @@ def _process_new_non_mcka_user(request, registration_request, course_run):
         else:
             raise ValueError('Activation link generation problem')
 
-def _process_mcka_user(request, registration_request, course_run):
+
+def _process_mcka_user(request, registration_request, course_run, protocol, domain):
 
     email_template_html = "registration/public_registration_mcka_user.haml"
-    subject = "Welcome to McKinsey Academy"
+    subject = "Welcome to Digital Academy"
     template_text = course_run.email_template_mcka
-    link = course_run.access_key_link
+    link = protocol + "://" + domain + "/courses/" + course_run.course_id
 
     send_email(email_template_html, subject, link, template_text, registration_request.first_name, registration_request.company_email)
+
 
 def _process_course_run_closed(registration_request, course_run):
 
     email_template_html = 'registration/public_registration_course_closed.haml'
-    subject = "Your request to access McKinsey Academy"
+    subject = "Your request to access Digital Academy"
     template_text = course_run.email_template_closed
     link = None
 
@@ -383,6 +387,7 @@ def _register_user_on_platform(user):
     except:
         raise ValueError('Api error')
 
+
 def send_email(email_template_html, subject, link, template_text, user_name, user_email):
 
     c = {
@@ -403,15 +408,8 @@ def send_email(email_template_html, subject, link, template_text, user_name, use
     email.attach_alternative(email_html, "text/html")
     email.mixed_subtype = 'related'
 
-    BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-    f = 'static/image/email_header.png'
-    fp = open(os.path.join(BASE_DIR, f), 'rb')
-    msg_img = MIMEImage(fp.read())
-    fp.close()
-    msg_img.add_header('Content-ID', '<{}>'.format(f))
-    email.attach(msg_img)
-
     email.send(fail_silently=False)
+
 
 def _set_number_of_enrolled_users(course_run):
 
