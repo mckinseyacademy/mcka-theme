@@ -3,11 +3,14 @@ from django.conf.urls import patterns, include, url
 from django.conf.urls import handler404
 from django.conf.urls import handler500
 from django.conf import settings
+from django.views.i18n import javascript_catalog
+
 from main import views
 from sitemap import *
 from admin import views as adminviews
 from courses import views as courseviews
 from accounts import views as accountsviews
+
 
 urlpatterns = patterns(
     '',
@@ -31,6 +34,7 @@ urlpatterns = patterns(
     url(r'^access/(?P<code>[^/]*)$', 'accounts.views.access_key', name="access_key"),
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^registration/(?P<course_run_name>.+)/$', accountsviews.demo_registration, name='demo_registration'),
+    url(r'^jsi18n/$', javascript_catalog, name='javascript-catalog'),
 )
 
 urlpatterns += patterns(

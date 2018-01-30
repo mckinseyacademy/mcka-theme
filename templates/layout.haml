@@ -1,7 +1,12 @@
+- load i18n
+- load assets
+- load staticfiles
+
+- get_current_language as LANGUAGE_CODE
+- get_current_language_bidi as LANGUAGE_BIDI
+
 !!! 5
-%html.no-js{lang:"en"}
-  - load assets
-  - load staticfiles
+%html.no-js{lang:"#{LANGUAGE_CODE}", dir: '{{ LANGUAGE_BIDI|yesno:"rtl,ltr,ltr" }}'}
   %head
     %meta{charset: "utf-8"}
     %meta{'http-equiv': "X-UA-Compatible", content: "IE=edge"}
@@ -232,6 +237,10 @@
     -# jQuery-cookie
     - block jquery_cookie
       %script{src: "{% static 'js/vendor/jquery.cookie.js' %}"}
+
+    -# i18n JS Catalog
+    - block i18n
+      %script{type: "text/javascript", src: "{% url 'javascript-catalog' %}"}
 
     -# jQuery-xblock
     - block jquery_xblock

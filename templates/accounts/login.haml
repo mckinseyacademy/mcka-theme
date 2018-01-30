@@ -1,7 +1,8 @@
 - extends "layout.haml"
+- load i18n
 
 - block page_title
-  %title= _("Login | McKinsey Academy")
+  %title {% trans "Login | McKinsey Academy" %}
 
 - block header
   - include 'accounts/login_header.haml'
@@ -12,17 +13,19 @@
       - if request.is_IE8
         %br
         .outdated_browser
-          = _("We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience.")
+          {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
       - else
         .row
           .large-8.medium-8.columns
-            %h1 Please log in
+            %h1 {% trans "Please log in" %}
             .description
-              %span Required fields are noted by an asterisk (
+              %span {% trans "Required fields are noted by an asterisk" %} (
               %span.required-field><
               %span ).
               %span.login-mode-selector
-                %span McKinsey & Co. users <a href="#">click here</a>.
+                %span {% trans "McKinsey & Co. users" %}
+                  %a{href: "#"}
+                    {% trans "click here" %}.
             %form.normal-login{action: "/accounts/login/", method: "POST"}
               .error
                 - if activation_message
@@ -32,7 +35,7 @@
               - csrf_token
               = form
               %a{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "/accounts/password/reset/"}
-                Forgot password?
+                {% trans "Forgot password?" %}
               %br
               %br
               %br
@@ -48,9 +51,10 @@
               %br
               %input.button.radius.small{type: "submit", value: "#{login_label}"}
           .large-3.medium-3.columns.help
-            %h4 Need Help?
+            %h4 {% trans "Need Help?" %}
             .sidebar
-              %a{href: "/faq"} View our FAQ for answers to commonly asked questions.
+              %a{href: "/faq"}
+                {% trans "View our FAQ for answers to commonly asked questions." %}
 
   #reset-password.reveal-modal.small{"data-reveal": "true"}
 

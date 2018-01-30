@@ -360,8 +360,8 @@ class SSOLoginForm(NoSuffixLabelForm):
 
 class LoginForm(NoSuffixLabelForm):
     ''' login form for system '''
-    username = forms.CharField(max_length=255, label=mark_safe('Username <span class="required-field"></span>'))
-    password = forms.CharField(widget=forms.PasswordInput(), label=mark_safe('Password <span class="required-field"></span>'))
+    username = forms.CharField(max_length=255, label=mark_safe(_('Username {html_span}').format(html_span='<span class="required-field"></span>')))
+    password = forms.CharField(widget=forms.PasswordInput(), label=mark_safe(_('Password {html_span}').format(html_span='<span class="required-field"></span>')))
 
 class BaseRegistrationForm(NoSuffixLabelForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
@@ -456,9 +456,9 @@ class FpasswordForm(forms.Form):
         else:
             user = users[0]
             send_password_reset_email(
-                request.META.get('HTTP_HOST'), 
-                user, 
-                use_https, 
+                request.META.get('HTTP_HOST'),
+                user,
+                use_https,
                 subject_template_name=subject_template_name,
                 email_template_name=email_template_name,
                 from_email=from_email
@@ -554,7 +554,7 @@ class PublicRegistrationForm(forms.ModelForm):
             'company_email',
             'current_role',
             'current_role_other',
-        ] 
+        ]
 
     def __init__(self, *args, **kwargs):
         self.course_run_name = kwargs.pop('course_run_name', None)
