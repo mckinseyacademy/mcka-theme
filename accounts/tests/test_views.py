@@ -1,4 +1,5 @@
 import uuid
+import sys
 from urllib2 import HTTPError
 
 import ddt
@@ -9,7 +10,6 @@ from mock import Mock, patch
 from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
-
 
 from accounts.controller import ProcessAccessKeyResult
 from accounts.models import RemoteUser
@@ -306,3 +306,28 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         self.assertIn('error', response.context)
         self.assertIn(error_reason, response.context['error'])
         self.assertIn('Failed to register user', response.context['error'])
+
+
+@ddt.ddt
+class HomePageTest(TestCase):
+    """
+    Tests the Home Page.
+    """
+
+    @ddt.data(
+        ('8.8.8.8', True),  # US Google Servers
+        ('202.46.33.58', False),  # Chinese DNS Server
+    )
+    @ddt.unpack
+    def test_google_analytics_on_homepage_with_different_origination(
+        self,
+        ip_address,
+        google_analytics_should_be_present
+    ):
+        response = self.client.get('/', REMOTE_ADDR=ip_address, HTTP_X_FORWARDED_FOR=ip_address)
+        rendered = response.content
+
+        if google_analytics_should_be_present:
+            self.assertIn('google-analytics.com', rendered)
+        else:
+            self.assertNotIn('google-analytics.com', rendered)

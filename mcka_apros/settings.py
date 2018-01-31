@@ -411,6 +411,7 @@ TEMPLATE_CONTEXT_PROCESSORS = TCP + (
     'lib.context_processors.settings_data',
     'lib.context_processors.mobile_login_data',
     'lib.context_processors.set_mobile_app_id',
+    'lib.context_processors.geolocate_ip_address',
 )
 
 try:
