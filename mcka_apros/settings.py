@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 from logsettings import get_logger_config
+
+from django.utils.translation import ugettext_lazy as _
+
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # Quick-start development settings - unsuitable for production
@@ -136,24 +140,24 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 LANGUAGES = (
-    ('en', u'English'),
-    ('ar', u'Arabic'),  # Arabic
-    ('eo', 'dummy')
+    ('en', _('English')),
+    ('ar', _('Arabic')),  # Arabic
+
+    ('eo', _('Esperanto')),  # Dummy languaged used for testing
+    ('rtl', _('RTL Test Language')),
+    ('fake2', _('Fake translations')), # Another dummy language for testing
 )
-TIME_ZONE = 'UTC'
 
 USE_I18N = True
-
 USE_L10N = True
-
-USE_TZ = True
-
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
+
+USE_TZ = True
+TIME_ZONE = 'UTC'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/

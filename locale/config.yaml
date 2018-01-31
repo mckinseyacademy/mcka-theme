@@ -7,6 +7,8 @@ locales:
 # The locales used for fake-accented English, for testing.
 dummy_locales:
     - eo
+    - rtl
+    - fake2
 
 # Directories we don't search for strings.
 ignore_dirs:
@@ -22,3 +24,9 @@ ignore_dirs:
     - '*/css'
     # Directories that only contain tests.
     - '*/tests'
+
+generate_merge:
+    django.po:
+        - django-partial.po
+    djangojs.po:
+        - djangojs-partial.po
