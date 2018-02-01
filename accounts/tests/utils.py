@@ -7,6 +7,7 @@ from admin.models import Program
 from api_client.course_models import CourseListCourse
 from api_client.organization_models import Organization
 
+
 # TODO: refactor into a test utilities class
 
 class ApplyPatchMixin(object):
@@ -44,7 +45,9 @@ def _make_course(course_id='course_id', display_name='Course Name'):
 class TestUserObject(object):
     id = None
     email = None
+    task_key = None
 
-    def __init__(self, user_id, email):
+    def __init__(self, user_id, email, task_key='test_key'):
         self.id = user_id
         self.email = email
+        self.task_key = task_key
