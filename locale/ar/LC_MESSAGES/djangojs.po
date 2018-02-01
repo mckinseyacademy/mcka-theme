@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-30 12:38+0000\n"
+"POT-Creation-Date: 2018-02-01 09:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,1850 +19,1794 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: static/gen/packed.js:32180 static/gen/packed_ie8.js:722
-#: static/js/vendor/jquery-ui.min.js:10 static_cache/gen/packed.js:32180
-#: static_cache/gen/packed_ie8.js:722
-#: static_cache/js/vendor/jquery-ui.min.js:10 static_cache/packed.js:32180
-#: static_cache/packed_ie8.js:722
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/vendor/jquery-ui.min.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/js/vendor/jquery-ui.min.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "'"
-msgstr ""
+msgstr "'"
 
-#: static/gen/packed.js:34241 static/gen/packed_ie8.js:879
-#: static/js/application.js:192 static_cache/gen/packed.js:34241
-#: static_cache/gen/packed_ie8.js:879 static_cache/js/application.js:192
-#: static_cache/packed.js:34241 static_cache/packed_ie8.js:879
+#: static/gen/packed.js static/gen/packed_ie8.js static/js/application.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/application.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Your course hasn't begun yet. "
-msgstr ""
+msgstr "غخعق ذخعقسث اشسر'ف زثلعر غثف. "
 
-#: static/gen/packed.js:34244 static/gen/packed_ie8.js:880
-#: static/js/application.js:195 static_cache/gen/packed.js:34244
-#: static_cache/gen/packed_ie8.js:880 static_cache/js/application.js:195
-#: static_cache/packed.js:34244 static_cache/packed_ie8.js:880
+#: static/gen/packed.js static/gen/packed_ie8.js static/js/application.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/application.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)d days."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "غخعق ذخعقسث زثلهرس هر %(days)s يشغ."
+msgstr[1] "غخعق ذخعقسث زثلهرس هر %(days)d يشغس."
 
-#: static/gen/packed.js:34247 static/gen/packed_ie8.js:881
-#: static/js/application.js:198 static_cache/gen/packed.js:34247
-#: static_cache/gen/packed_ie8.js:881 static_cache/js/application.js:198
-#: static_cache/packed.js:34247 static_cache/packed_ie8.js:881
+#: static/gen/packed.js static/gen/packed_ie8.js static/js/application.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/application.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Welcome to McKinsey Academy"
-msgstr ""
+msgstr "صثمذخوث فخ وذنهرسثغ شذشيثوغ"
 
-#: static/gen/packed.js:34744 static/gen/packed_ie8.js:920
-#: static/js/router.js:354 static_cache/gen/packed.js:34744
-#: static_cache/gen/packed_ie8.js:920 static_cache/js/router.js:354
-#: static_cache/packed.js:34744 static_cache/packed_ie8.js:920
+#: static/gen/packed.js static/gen/packed_ie8.js static/js/router.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/router.js static_cache/packed.js static_cache/packed_ie8.js
 msgid "Please select at least one course"
-msgstr ""
+msgstr "حمثشسث سثمثذف شف مثشسف خرث ذخعقسث"
 
-#: static/gen/packed.js:35065 static/gen/packed.js:36835
-#: static/gen/packed_ie8.js:936 static/gen/packed_ie8.js:1231
-#: static/js/admin_upload_students.js:73
-#: static/js/common/mass_participants_enroll.js:147
-#: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
-#: static_cache/gen/packed.js:35065 static_cache/gen/packed.js:36835
-#: static_cache/gen/packed_ie8.js:936 static_cache/gen/packed_ie8.js:1231
-#: static_cache/js/admin_upload_students.js:73
-#: static_cache/js/common/mass_participants_enroll.js:147
-#: static_cache/js/common/mass_participants_upload.js:94
-#: static_cache/js/image_editor.js:77 static_cache/packed.js:35065
-#: static_cache/packed.js:36835 static_cache/packed_ie8.js:936
-#: static_cache/packed_ie8.js:1231
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/admin_upload_students.js
+#: static/js/common/mass_participants_enroll.js
+#: static/js/common/mass_participants_upload.js static/js/image_editor.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/admin_upload_students.js
+#: static_cache/js/common/mass_participants_enroll.js
+#: static_cache/js/common/mass_participants_upload.js
+#: static_cache/js/image_editor.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Please select file first."
-msgstr ""
+msgstr "حمثشسث سثمثذف بهمث بهقسف."
 
-#: static/gen/packed.js:35086 static/gen/packed.js:36856
-#: static/gen/packed_ie8.js:940 static/gen/packed_ie8.js:1235
-#: static/js/admin_upload_students.js:8
-#: static/js/common/mass_participants_enroll.js:168
-#: static/js/common/mass_participants_upload.js:115
-#: static_cache/gen/packed.js:35086 static_cache/gen/packed.js:36856
-#: static_cache/gen/packed_ie8.js:940 static_cache/gen/packed_ie8.js:1235
-#: static_cache/js/admin_upload_students.js:8
-#: static_cache/js/common/mass_participants_enroll.js:168
-#: static_cache/js/common/mass_participants_upload.js:115
-#: static_cache/packed.js:35086 static_cache/packed.js:36856
-#: static_cache/packed_ie8.js:940 static_cache/packed_ie8.js:1235
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/admin_upload_students.js
+#: static/js/common/mass_participants_enroll.js
+#: static/js/common/mass_participants_upload.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/js/admin_upload_students.js
+#: static_cache/js/common/mass_participants_enroll.js
+#: static_cache/js/common/mass_participants_upload.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Show Errors"
-msgstr ""
+msgstr "ساخص ثققخقس"
 
-#: static/gen/packed.js:35098 static/gen/packed.js:36868
-#: static/gen/packed_ie8.js:949 static/gen/packed_ie8.js:1244
-#: static/js/common/mass_participants_enroll.js:180
-#: static/js/common/mass_participants_upload.js:127
-#: static_cache/gen/packed.js:35098 static_cache/gen/packed.js:36868
-#: static_cache/gen/packed_ie8.js:949 static_cache/gen/packed_ie8.js:1244
-#: static_cache/js/common/mass_participants_enroll.js:180
-#: static_cache/js/common/mass_participants_upload.js:127
-#: static_cache/packed.js:35098 static_cache/packed.js:36868
-#: static_cache/packed_ie8.js:949 static_cache/packed_ie8.js:1244
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/common/mass_participants_enroll.js
+#: static/js/common/mass_participants_upload.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/common/mass_participants_enroll.js
+#: static_cache/js/common/mass_participants_upload.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Errors:"
-msgstr ""
+msgstr "ثققخقس:"
 
-#: static/gen/packed.js:35107 static/gen/packed.js:36877
-#: static/gen/packed_ie8.js:955 static/gen/packed_ie8.js:1250
-#: static/js/common/mass_participants_enroll.js:189
-#: static/js/common/mass_participants_upload.js:136
-#: static_cache/gen/packed.js:35107 static_cache/gen/packed.js:36877
-#: static_cache/gen/packed_ie8.js:955 static_cache/gen/packed_ie8.js:1250
-#: static_cache/js/common/mass_participants_enroll.js:189
-#: static_cache/js/common/mass_participants_upload.js:136
-#: static_cache/packed.js:35107 static_cache/packed.js:36877
-#: static_cache/packed_ie8.js:955 static_cache/packed_ie8.js:1250
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/common/mass_participants_enroll.js
+#: static/js/common/mass_participants_upload.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/common/mass_participants_enroll.js
+#: static_cache/js/common/mass_participants_upload.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Total:"
-msgstr ""
+msgstr "فخفشم:"
 
-#: static/gen/packed.js:35108 static/gen/packed.js:35110
-#: static/gen/packed.js:35112 static/gen/packed_ie8.js:956
-#: static/gen/packed_ie8.js:958 static/gen/packed_ie8.js:960
-#: static/js/common/mass_participants_upload.js:137
-#: static/js/common/mass_participants_upload.js:139
-#: static/js/common/mass_participants_upload.js:141
-#: static_cache/gen/packed.js:35108 static_cache/gen/packed.js:35110
-#: static_cache/gen/packed.js:35112 static_cache/gen/packed_ie8.js:956
-#: static_cache/gen/packed_ie8.js:958 static_cache/gen/packed_ie8.js:960
-#: static_cache/js/common/mass_participants_upload.js:137
-#: static_cache/js/common/mass_participants_upload.js:139
-#: static_cache/js/common/mass_participants_upload.js:141
-#: static_cache/packed.js:35108 static_cache/packed.js:35110
-#: static_cache/packed.js:35112 static_cache/packed_ie8.js:956
-#: static_cache/packed_ie8.js:958 static_cache/packed_ie8.js:960
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/common/mass_participants_upload.js
+#: static/js/common/mass_participants_upload.js
+#: static/js/common/mass_participants_upload.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/common/mass_participants_upload.js
+#: static_cache/js/common/mass_participants_upload.js
+#: static_cache/js/common/mass_participants_upload.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "0"
-msgstr ""
+msgstr "0"
 
-#: static/gen/packed.js:35109 static/gen/packed.js:36879
-#: static/gen/packed_ie8.js:957 static/gen/packed_ie8.js:1252
-#: static/js/common/mass_participants_enroll.js:191
-#: static/js/common/mass_participants_upload.js:138
-#: static_cache/gen/packed.js:35109 static_cache/gen/packed.js:36879
-#: static_cache/gen/packed_ie8.js:957 static_cache/gen/packed_ie8.js:1252
-#: static_cache/js/common/mass_participants_enroll.js:191
-#: static_cache/js/common/mass_participants_upload.js:138
-#: static_cache/packed.js:35109 static_cache/packed.js:36879
-#: static_cache/packed_ie8.js:957 static_cache/packed_ie8.js:1252
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/common/mass_participants_enroll.js
+#: static/js/common/mass_participants_upload.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/common/mass_participants_enroll.js
+#: static_cache/js/common/mass_participants_upload.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Succeded:"
-msgstr ""
+msgstr "سعذذثيثي:"
 
-#: static/gen/packed.js:35111 static/gen/packed.js:36881
-#: static/gen/packed_ie8.js:959 static/gen/packed_ie8.js:1254
-#: static/js/common/mass_participants_enroll.js:193
-#: static/js/common/mass_participants_upload.js:140
-#: static_cache/gen/packed.js:35111 static_cache/gen/packed.js:36881
-#: static_cache/gen/packed_ie8.js:959 static_cache/gen/packed_ie8.js:1254
-#: static_cache/js/common/mass_participants_enroll.js:193
-#: static_cache/js/common/mass_participants_upload.js:140
-#: static_cache/packed.js:35111 static_cache/packed.js:36881
-#: static_cache/packed_ie8.js:959 static_cache/packed_ie8.js:1254
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/common/mass_participants_enroll.js
+#: static/js/common/mass_participants_upload.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/common/mass_participants_enroll.js
+#: static_cache/js/common/mass_participants_upload.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Failed:"
-msgstr ""
+msgstr "بشهمثي:"
 
-#: static/gen/packed.js:35429 static/gen/packed_ie8.js:1012
-#: static/js/common/bbGridExtend.js:70 static_cache/gen/packed.js:35429
-#: static_cache/gen/packed_ie8.js:1012
-#: static_cache/js/common/bbGridExtend.js:70 static_cache/packed.js:35429
-#: static_cache/packed_ie8.js:1012
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/common/bbGridExtend.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/js/common/bbGridExtend.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Keyword Search"
-msgstr ""
+msgstr "نثغصخقي سثشقذا"
 
-#: static/gen/packed.js:35809 static/gen/packed_ie8.js:1074
-#: static/js/common/admin_bulk_actions.js:17 static_cache/gen/packed.js:35809
-#: static_cache/gen/packed_ie8.js:1074
-#: static_cache/js/common/admin_bulk_actions.js:17 static_cache/packed.js:35809
-#: static_cache/packed_ie8.js:1074
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/common/admin_bulk_actions.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/js/common/admin_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Progress: %(value)s%"
-msgstr ""
+msgstr "حقخلقثسس: %(value)s%"
 
-#: static/gen/packed.js:35999 static/gen/packed_ie8.js:1096
-#: static/js/common/common_js.js:171 static_cache/gen/packed.js:35999
-#: static_cache/gen/packed_ie8.js:1096 static_cache/js/common/common_js.js:171
-#: static_cache/packed.js:35999 static_cache/packed_ie8.js:1096
+#: static/gen/packed.js static/gen/packed_ie8.js static/js/common/common_js.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/common/common_js.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "NoName"
-msgstr ""
+msgstr "رخرشوث"
 
-#: static/gen/packed.js:36342 static/gen/packed_ie8.js:1152
-#: static/js/common/common_js.js:514 static_cache/gen/packed.js:36342
-#: static_cache/gen/packed_ie8.js:1152 static_cache/js/common/common_js.js:514
-#: static_cache/packed.js:36342 static_cache/packed_ie8.js:1152
+#: static/gen/packed.js static/gen/packed_ie8.js static/js/common/common_js.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/common/common_js.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Send"
-msgstr ""
+msgstr "سثري"
 
-#: static/gen/packed.js:36572 static/gen/packed_ie8.js:1198
-#: static/js/common/common_js.js:744 static_cache/gen/packed.js:36572
-#: static_cache/gen/packed_ie8.js:1198 static_cache/js/common/common_js.js:744
-#: static_cache/packed.js:36572 static_cache/packed_ie8.js:1198
+#: static/gen/packed.js static/gen/packed_ie8.js static/js/common/common_js.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/common/common_js.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Fetching data for file: %(filename)s"
-msgstr ""
+msgstr "بثفذاهرل يشفش بخق بهمث: %(filename)s"
 
-#: static/gen/packed.js:36684 static/gen/packed_ie8.js:1221
-#: static/js/common/common_js.js:856 static_cache/gen/packed.js:36684
-#: static_cache/gen/packed_ie8.js:1221 static_cache/js/common/common_js.js:856
-#: static_cache/packed.js:36684 static_cache/packed_ie8.js:1221
+#: static/gen/packed.js static/gen/packed_ie8.js static/js/common/common_js.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/common/common_js.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "%(value)s%"
-msgstr ""
+msgstr "%(value)s%"
 
-#: static/gen/packed.js:36745 static/gen/packed.js:36816
-#: static/gen/packed_ie8.js:1225 static/gen/packed_ie8.js:1230
-#: static/js/common/mass_participants_enroll.js:57
-#: static/js/common/mass_participants_enroll.js:128
-#: static_cache/gen/packed.js:36745 static_cache/gen/packed.js:36816
-#: static_cache/gen/packed_ie8.js:1225 static_cache/gen/packed_ie8.js:1230
-#: static_cache/js/common/mass_participants_enroll.js:57
-#: static_cache/js/common/mass_participants_enroll.js:128
-#: static_cache/packed.js:36745 static_cache/packed.js:36816
-#: static_cache/packed_ie8.js:1225 static_cache/packed_ie8.js:1230
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/common/mass_participants_enroll.js
+#: static/js/common/mass_participants_enroll.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/common/mass_participants_enroll.js
+#: static_cache/js/common/mass_participants_enroll.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
 msgstr ""
+"فاث .ذسد بهمث اشس وخقث فاثر %(limit)s  قخصس: %(lines)s , حمثشسث سحمهف هف فخ "
+"وخقث بهمثس!"
 
-#: static/gen/packed.js:36933 static/gen/packed_ie8.js:1262
-#: static/js/common/mass_participants_enroll.js:245
-#: static_cache/gen/packed.js:36933 static_cache/gen/packed_ie8.js:1262
-#: static_cache/js/common/mass_participants_enroll.js:245
-#: static_cache/packed.js:36933 static_cache/packed_ie8.js:1262
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/common/mass_participants_enroll.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/common/mass_participants_enroll.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "email"
-msgstr ""
+msgstr "ثوشهم"
 
-#: static/gen/packed.js:36933 static/gen/packed_ie8.js:1262
-#: static/js/common/mass_participants_enroll.js:245
-#: static_cache/gen/packed.js:36933 static_cache/gen/packed_ie8.js:1262
-#: static_cache/js/common/mass_participants_enroll.js:245
-#: static_cache/packed.js:36933 static_cache/packed_ie8.js:1262
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/common/mass_participants_enroll.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/common/mass_participants_enroll.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "course id"
-msgstr ""
+msgstr "ذخعقسث هي"
 
-#: static/gen/packed.js:36933 static/gen/packed_ie8.js:1262
-#: static/js/common/mass_participants_enroll.js:245
-#: static_cache/gen/packed.js:36933 static_cache/gen/packed_ie8.js:1262
-#: static_cache/js/common/mass_participants_enroll.js:245
-#: static_cache/packed.js:36933 static_cache/packed_ie8.js:1262
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/common/mass_participants_enroll.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/common/mass_participants_enroll.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "status"
-msgstr ""
+msgstr "سفشفعس"
 
-#: static/gen/packed.js:37011 static/gen/packed_ie8.js:1263
-#: static/js/models/city.js:30 static_cache/gen/packed.js:37011
-#: static_cache/gen/packed_ie8.js:1263 static_cache/js/models/city.js:30
-#: static_cache/packed.js:37011 static_cache/packed_ie8.js:1263
+#: static/gen/packed.js static/gen/packed_ie8.js static/js/models/city.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/models/city.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Participants:"
-msgstr ""
+msgstr "حشقفهذهحشرفس:"
 
-#: static/gen/packed.js:37052 static/gen/packed.js:38196
-#: static/gen/packed.js:41849 static/gen/packed_ie8.js:1265
-#: static/gen/packed_ie8.js:1349 static/gen/packed_ie8.js:1998
-#: static/js/models/city.js:71 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:23
-#: static_cache/gen/packed.js:37052 static_cache/gen/packed.js:38196
-#: static_cache/gen/packed.js:41849 static_cache/gen/packed_ie8.js:1265
-#: static_cache/gen/packed_ie8.js:1349 static_cache/gen/packed_ie8.js:1998
-#: static_cache/js/models/city.js:71
-#: static_cache/js/views/admin/course_details.js:28
-#: static_cache/js/views/admin/participantsinfo.js:23
-#: static_cache/packed.js:37052 static_cache/packed.js:38196
-#: static_cache/packed.js:41849 static_cache/packed_ie8.js:1265
-#: static_cache/packed_ie8.js:1349 static_cache/packed_ie8.js:1998
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/models/city.js static/js/views/admin/course_details.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/js/models/city.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "Email"
-msgstr ""
+msgstr "ثوشهم"
 
-#: static/gen/packed.js:37899 static/gen/packed.js:40639
-#: static/gen/packed.js:41194 static/gen/packed.js:41593
-#: static/gen/packed.js:42126 static/gen/packed_ie8.js:1322
-#: static/gen/packed_ie8.js:1842 static/gen/packed_ie8.js:1914
-#: static/gen/packed_ie8.js:1950 static/gen/packed_ie8.js:2058
-#: static/js/views/admin/company_details.js:4
-#: static/js/views/admin/course_details.js:305
-#: static/js/views/admin/courses_list.js:13
-#: static/js/views/admin/participant_details_active_courses_view.js:54
-#: static/js/views/admin/participant_details_course_history_view.js:10
-#: static_cache/gen/packed.js:37899 static_cache/gen/packed.js:40639
-#: static_cache/gen/packed.js:41194 static_cache/gen/packed.js:41593
-#: static_cache/gen/packed.js:42126 static_cache/gen/packed_ie8.js:1322
-#: static_cache/gen/packed_ie8.js:1842 static_cache/gen/packed_ie8.js:1914
-#: static_cache/gen/packed_ie8.js:1950 static_cache/gen/packed_ie8.js:2058
-#: static_cache/js/views/admin/company_details.js:4
-#: static_cache/js/views/admin/course_details.js:305
-#: static_cache/js/views/admin/courses_list.js:13
-#: static_cache/js/views/admin/participant_details_active_courses_view.js:54
-#: static_cache/js/views/admin/participant_details_course_history_view.js:10
-#: static_cache/packed.js:37899 static_cache/packed.js:40639
-#: static_cache/packed.js:41194 static_cache/packed.js:41593
-#: static_cache/packed.js:42126 static_cache/packed_ie8.js:1322
-#: static_cache/packed_ie8.js:1842 static_cache/packed_ie8.js:1914
-#: static_cache/packed_ie8.js:1950 static_cache/packed_ie8.js:2058
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/company_details.js
+#: static/js/views/admin/course_details.js
+#: static/js/views/admin/courses_list.js
+#: static/js/views/admin/participant_details_active_courses_view.js
+#: static/js/views/admin/participant_details_course_history_view.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_details.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/courses_list.js
+#: static_cache/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/js/views/admin/participant_details_course_history_view.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "Course Name"
-msgstr ""
+msgstr "ذخعقسث رشوث"
 
-#: static/gen/packed.js:37909 static/gen/packed.js:40657
-#: static/gen/packed.js:41212 static/gen/packed.js:41609
-#: static/gen/packed.js:42136 static/gen/packed_ie8.js:1323
-#: static/gen/packed_ie8.js:1845 static/gen/packed_ie8.js:1919
-#: static/gen/packed_ie8.js:1954 static/gen/packed_ie8.js:2061
-#: static/js/views/admin/company_details.js:20
-#: static/js/views/admin/course_details.js:315
-#: static/js/views/admin/courses_list.js:23
-#: static/js/views/admin/participant_details_active_courses_view.js:72
-#: static/js/views/admin/participant_details_course_history_view.js:28
-#: static_cache/gen/packed.js:37909 static_cache/gen/packed.js:40657
-#: static_cache/gen/packed.js:41212 static_cache/gen/packed.js:41609
-#: static_cache/gen/packed.js:42136 static_cache/gen/packed_ie8.js:1323
-#: static_cache/gen/packed_ie8.js:1845 static_cache/gen/packed_ie8.js:1919
-#: static_cache/gen/packed_ie8.js:1954 static_cache/gen/packed_ie8.js:2061
-#: static_cache/js/views/admin/company_details.js:20
-#: static_cache/js/views/admin/course_details.js:315
-#: static_cache/js/views/admin/courses_list.js:23
-#: static_cache/js/views/admin/participant_details_active_courses_view.js:72
-#: static_cache/js/views/admin/participant_details_course_history_view.js:28
-#: static_cache/packed.js:37909 static_cache/packed.js:40657
-#: static_cache/packed.js:41212 static_cache/packed.js:41609
-#: static_cache/packed.js:42136 static_cache/packed_ie8.js:1323
-#: static_cache/packed_ie8.js:1845 static_cache/packed_ie8.js:1919
-#: static_cache/packed_ie8.js:1954 static_cache/packed_ie8.js:2061
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/company_details.js
+#: static/js/views/admin/course_details.js
+#: static/js/views/admin/courses_list.js
+#: static/js/views/admin/participant_details_active_courses_view.js
+#: static/js/views/admin/participant_details_course_history_view.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_details.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/courses_list.js
+#: static_cache/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/js/views/admin/participant_details_course_history_view.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "Course ID"
-msgstr ""
+msgstr "ذخعقسث هي"
 
-#: static/gen/packed.js:37910 static/gen/packed.js:41611
-#: static/gen/packed_ie8.js:1323 static/gen/packed_ie8.js:1954
-#: static/js/views/admin/company_details.js:22
-#: static/js/views/admin/courses_list.js:24 static_cache/gen/packed.js:37910
-#: static_cache/gen/packed.js:41611 static_cache/gen/packed_ie8.js:1323
-#: static_cache/gen/packed_ie8.js:1954
-#: static_cache/js/views/admin/company_details.js:22
-#: static_cache/js/views/admin/courses_list.js:24 static_cache/packed.js:37910
-#: static_cache/packed.js:41611 static_cache/packed_ie8.js:1323
-#: static_cache/packed_ie8.js:1954
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/company_details.js
+#: static/js/views/admin/courses_list.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_details.js
+#: static_cache/js/views/admin/courses_list.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Start"
-msgstr ""
+msgstr "سفشقف"
 
-#: static/gen/packed.js:37919 static/gen/packed.js:41627
-#: static/gen/packed_ie8.js:1324 static/gen/packed_ie8.js:1958
-#: static/js/views/admin/company_details.js:38
-#: static/js/views/admin/courses_list.js:33 static_cache/gen/packed.js:37919
-#: static_cache/gen/packed.js:41627 static_cache/gen/packed_ie8.js:1324
-#: static_cache/gen/packed_ie8.js:1958
-#: static_cache/js/views/admin/company_details.js:38
-#: static_cache/js/views/admin/courses_list.js:33 static_cache/packed.js:37919
-#: static_cache/packed.js:41627 static_cache/packed_ie8.js:1324
-#: static_cache/packed_ie8.js:1958
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/company_details.js
+#: static/js/views/admin/courses_list.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_details.js
+#: static_cache/js/views/admin/courses_list.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "End"
-msgstr ""
+msgstr "ثري"
 
-#: static/gen/packed.js:38161 static/gen/packed_ie8.js:1345
-#: static/js/views/admin/course_details_timeline.js:59
-#: static_cache/gen/packed.js:38161 static_cache/gen/packed_ie8.js:1345
-#: static_cache/js/views/admin/course_details_timeline.js:59
-#: static_cache/packed.js:38161 static_cache/packed_ie8.js:1345
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_timeline.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_timeline.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "days"
-msgstr ""
+msgstr "يشغس"
 
-#: static/gen/packed.js:38161 static/gen/packed_ie8.js:1345
-#: static/js/views/admin/course_details_timeline.js:59
-#: static_cache/gen/packed.js:38161 static_cache/gen/packed_ie8.js:1345
-#: static_cache/js/views/admin/course_details_timeline.js:59
-#: static_cache/packed.js:38161 static_cache/packed_ie8.js:1345
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_timeline.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_timeline.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "weeks"
-msgstr ""
+msgstr "صثثنس"
 
-#: static/gen/packed.js:38185 static/gen/packed.js:41827
-#: static/gen/packed_ie8.js:1346 static/gen/packed_ie8.js:1991
-#: static/js/views/admin/course_details.js:6
-#: static/js/views/admin/participantsinfo.js:12
-#: static_cache/gen/packed.js:38185 static_cache/gen/packed.js:41827
-#: static_cache/gen/packed_ie8.js:1346 static_cache/gen/packed_ie8.js:1991
-#: static_cache/js/views/admin/course_details.js:6
-#: static_cache/js/views/admin/participantsinfo.js:12
-#: static_cache/packed.js:38185 static_cache/packed.js:41827
-#: static_cache/packed_ie8.js:1346 static_cache/packed_ie8.js:1991
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/course_details.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Name"
-msgstr ""
+msgstr "رشوث"
 
-#: static/gen/packed.js:38195 static/gen/packed.js:38567
-#: static/gen/packed.js:41850 static/gen/packed.js:41919
-#: static/gen/packed_ie8.js:1349 static/gen/packed_ie8.js:1462
-#: static/gen/packed_ie8.js:1998 static/gen/packed_ie8.js:2012
-#: static/js/views/admin/companies_list.js:15
-#: static/js/views/admin/course_details.js:29
-#: static/js/views/admin/course_details.js:98
-#: static/js/views/admin/participantsinfo.js:22
-#: static_cache/gen/packed.js:38195 static_cache/gen/packed.js:38567
-#: static_cache/gen/packed.js:41850 static_cache/gen/packed.js:41919
-#: static_cache/gen/packed_ie8.js:1349 static_cache/gen/packed_ie8.js:1462
-#: static_cache/gen/packed_ie8.js:1998 static_cache/gen/packed_ie8.js:2012
-#: static_cache/js/views/admin/companies_list.js:15
-#: static_cache/js/views/admin/course_details.js:29
-#: static_cache/js/views/admin/course_details.js:98
-#: static_cache/js/views/admin/participantsinfo.js:22
-#: static_cache/packed.js:38195 static_cache/packed.js:38567
-#: static_cache/packed.js:41850 static_cache/packed.js:41919
-#: static_cache/packed_ie8.js:1349 static_cache/packed_ie8.js:1462
-#: static_cache/packed_ie8.js:1998 static_cache/packed_ie8.js:2012
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/views/admin/companies_list.js
+#: static/js/views/admin/course_details.js
+#: static/js/views/admin/course_details.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/companies_list.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "Company"
-msgstr ""
+msgstr "ذخوحشرغ"
 
-#: static/gen/packed.js:38197 static/gen/packed_ie8.js:1349
-#: static/js/views/admin/participantsinfo.js:24
-#: static_cache/gen/packed.js:38197 static_cache/gen/packed_ie8.js:1349
-#: static_cache/js/views/admin/participantsinfo.js:24
-#: static_cache/packed.js:38197 static_cache/packed_ie8.js:1349
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Date Added"
-msgstr ""
+msgstr "يشفث شييثي"
 
-#: static/gen/packed.js:38207 static/gen/packed_ie8.js:1352
-#: static/js/views/admin/participantsinfo.js:34
-#: static_cache/gen/packed.js:38207 static_cache/gen/packed_ie8.js:1352
-#: static_cache/js/views/admin/participantsinfo.js:34
-#: static_cache/packed.js:38207 static_cache/packed_ie8.js:1352
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Enrolled In"
-msgstr ""
+msgstr "ثرقخممثي هر"
 
-#: static/gen/packed.js:38213 static/gen/packed.js:41852
-#: static/gen/packed_ie8.js:1353 static/gen/packed_ie8.js:1998
-#: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:40
-#: static_cache/gen/packed.js:38213 static_cache/gen/packed.js:41852
-#: static_cache/gen/packed_ie8.js:1353 static_cache/gen/packed_ie8.js:1998
-#: static_cache/js/views/admin/course_details.js:31
-#: static_cache/js/views/admin/participantsinfo.js:40
-#: static_cache/packed.js:38213 static_cache/packed.js:41852
-#: static_cache/packed_ie8.js:1353 static_cache/packed_ie8.js:1998
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/course_details.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Activated"
-msgstr ""
+msgstr "شذفهدشفثي"
 
-#: static/gen/packed.js:38273 static/gen/packed.js:39390
-#: static/gen/packed_ie8.js:1365 static/gen/packed_ie8.js:1627
-#: static/js/views/admin/participant_details_edit_info.js:521
-#: static/js/views/admin/participantsinfo.js:100
-#: static_cache/gen/packed.js:38273 static_cache/gen/packed.js:39390
-#: static_cache/gen/packed_ie8.js:1365 static_cache/gen/packed_ie8.js:1627
-#: static_cache/js/views/admin/participant_details_edit_info.js:521
-#: static_cache/js/views/admin/participantsinfo.js:100
-#: static_cache/packed.js:38273 static_cache/packed.js:39390
-#: static_cache/packed_ie8.js:1365 static_cache/packed_ie8.js:1627
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Admin Company"
-msgstr ""
+msgstr "شيوهر ذخوحشرغ"
 
-#: static/gen/packed.js:38282 static/gen/packed.js:39400
-#: static/gen/packed_ie8.js:1374 static/gen/packed_ie8.js:1637
-#: static/js/views/admin/participant_details_edit_info.js:531
-#: static/js/views/admin/participantsinfo.js:109
-#: static_cache/gen/packed.js:38282 static_cache/gen/packed.js:39400
-#: static_cache/gen/packed_ie8.js:1374 static_cache/gen/packed_ie8.js:1637
-#: static_cache/js/views/admin/participant_details_edit_info.js:531
-#: static_cache/js/views/admin/participantsinfo.js:109
-#: static_cache/packed.js:38282 static_cache/packed.js:39400
-#: static_cache/packed_ie8.js:1374 static_cache/packed_ie8.js:1637
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Admin Permissions"
-msgstr ""
+msgstr "شيوهر حثقوهسسهخرس"
 
-#: static/gen/packed.js:38285 static/gen/packed.js:39403
-#: static/gen/packed_ie8.js:1377 static/gen/packed_ie8.js:1640
-#: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:112
-#: static_cache/gen/packed.js:38285 static_cache/gen/packed.js:39403
-#: static_cache/gen/packed_ie8.js:1377 static_cache/gen/packed_ie8.js:1640
-#: static_cache/js/views/admin/participant_details_edit_info.js:534
-#: static_cache/js/views/admin/participantsinfo.js:112
-#: static_cache/packed.js:38285 static_cache/packed.js:39403
-#: static_cache/packed_ie8.js:1377 static_cache/packed_ie8.js:1640
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Company Admin"
-msgstr ""
+msgstr "ذخوحشرغ شيوهر"
 
-#: static/gen/packed.js:38293 static/gen/packed.js:39228
-#: static/gen/packed.js:39684 static/gen/packed.js:41241
-#: static/gen/packed_ie8.js:1384 static/gen/packed_ie8.js:1584
-#: static/gen/packed_ie8.js:1700 static/gen/packed_ie8.js:1921
-#: static/js/admin_learner_dashboard/element_modal.js:64
-#: static/js/views/admin/company_learner_dashboard_list.js:14
-#: static/js/views/admin/course_details_bulk_actions.js:275
-#: static/js/views/admin/participant_details_edit_info.js:359
-#: static/js/views/admin/participantsinfo.js:120
-#: static_cache/gen/packed.js:38293 static_cache/gen/packed.js:39228
-#: static_cache/gen/packed.js:39684 static_cache/gen/packed.js:41241
-#: static_cache/gen/packed_ie8.js:1384 static_cache/gen/packed_ie8.js:1584
-#: static_cache/gen/packed_ie8.js:1700 static_cache/gen/packed_ie8.js:1921
-#: static_cache/js/admin_learner_dashboard/element_modal.js:64
-#: static_cache/js/views/admin/company_learner_dashboard_list.js:14
-#: static_cache/js/views/admin/course_details_bulk_actions.js:275
-#: static_cache/js/views/admin/participant_details_edit_info.js:359
-#: static_cache/js/views/admin/participantsinfo.js:120
-#: static_cache/packed.js:38293 static_cache/packed.js:39228
-#: static_cache/packed.js:39684 static_cache/packed.js:41241
-#: static_cache/packed_ie8.js:1384 static_cache/packed_ie8.js:1584
-#: static_cache/packed_ie8.js:1700 static_cache/packed_ie8.js:1921
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/admin_learner_dashboard/element_modal.js
+#: static/js/views/admin/company_learner_dashboard_list.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/admin_learner_dashboard/element_modal.js
+#: static_cache/js/views/admin/company_learner_dashboard_list.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "Course"
-msgstr ""
+msgstr "ذخعقسث"
 
-#: static/gen/packed.js:38302 static/gen/packed.js:39232
-#: static/gen/packed.js:39688 static/gen/packed.js:40696
-#: static/gen/packed.js:41216 static/gen/packed.js:41851
-#: static/gen/packed_ie8.js:1393 static/gen/packed_ie8.js:1588
-#: static/gen/packed_ie8.js:1704 static/gen/packed_ie8.js:1853
-#: static/gen/packed_ie8.js:1919 static/gen/packed_ie8.js:1998
-#: static/js/views/admin/course_details.js:30
-#: static/js/views/admin/course_details_bulk_actions.js:279
-#: static/js/views/admin/participant_details_active_courses_view.js:111
-#: static/js/views/admin/participant_details_course_history_view.js:32
-#: static/js/views/admin/participant_details_edit_info.js:363
-#: static/js/views/admin/participantsinfo.js:129
-#: static_cache/gen/packed.js:38302 static_cache/gen/packed.js:39232
-#: static_cache/gen/packed.js:39688 static_cache/gen/packed.js:40696
-#: static_cache/gen/packed.js:41216 static_cache/gen/packed.js:41851
-#: static_cache/gen/packed_ie8.js:1393 static_cache/gen/packed_ie8.js:1588
-#: static_cache/gen/packed_ie8.js:1704 static_cache/gen/packed_ie8.js:1853
-#: static_cache/gen/packed_ie8.js:1919 static_cache/gen/packed_ie8.js:1998
-#: static_cache/js/views/admin/course_details.js:30
-#: static_cache/js/views/admin/course_details_bulk_actions.js:279
-#: static_cache/js/views/admin/participant_details_active_courses_view.js:111
-#: static_cache/js/views/admin/participant_details_course_history_view.js:32
-#: static_cache/js/views/admin/participant_details_edit_info.js:363
-#: static_cache/js/views/admin/participantsinfo.js:129
-#: static_cache/packed.js:38302 static_cache/packed.js:39232
-#: static_cache/packed.js:39688 static_cache/packed.js:40696
-#: static_cache/packed.js:41216 static_cache/packed.js:41851
-#: static_cache/packed_ie8.js:1393 static_cache/packed_ie8.js:1588
-#: static_cache/packed_ie8.js:1704 static_cache/packed_ie8.js:1853
-#: static_cache/packed_ie8.js:1919 static_cache/packed_ie8.js:1998
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/participant_details_active_courses_view.js
+#: static/js/views/admin/participant_details_course_history_view.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/js/views/admin/participant_details_course_history_view.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Status"
-msgstr ""
+msgstr "سفشفعس"
 
-#: static/gen/packed.js:38537 static/gen/packed.js:38657
-#: static/gen/packed.js:39337 static/gen/packed.js:41362
-#: static/gen/packed.js:41775 static/gen/packed_ie8.js:1458
-#: static/gen/packed_ie8.js:1482 static/gen/packed_ie8.js:1610
-#: static/gen/packed_ie8.js:1927 static/gen/packed_ie8.js:1983
-#: static/js/views/admin/companies_list.js:105
-#: static/js/views/admin/company_details.js:186
-#: static/js/views/admin/company_learner_dashboard_list.js:135
-#: static/js/views/admin/participant_details_edit_info.js:468
-#: static/js/views/admin/participantsinfo.js:364
-#: static_cache/gen/packed.js:38537 static_cache/gen/packed.js:38657
-#: static_cache/gen/packed.js:39337 static_cache/gen/packed.js:41362
-#: static_cache/gen/packed.js:41775 static_cache/gen/packed_ie8.js:1458
-#: static_cache/gen/packed_ie8.js:1482 static_cache/gen/packed_ie8.js:1610
-#: static_cache/gen/packed_ie8.js:1927 static_cache/gen/packed_ie8.js:1983
-#: static_cache/js/views/admin/companies_list.js:105
-#: static_cache/js/views/admin/company_details.js:186
-#: static_cache/js/views/admin/company_learner_dashboard_list.js:135
-#: static_cache/js/views/admin/participant_details_edit_info.js:468
-#: static_cache/js/views/admin/participantsinfo.js:364
-#: static_cache/packed.js:38537 static_cache/packed.js:38657
-#: static_cache/packed.js:39337 static_cache/packed.js:41362
-#: static_cache/packed.js:41775 static_cache/packed_ie8.js:1458
-#: static_cache/packed_ie8.js:1482 static_cache/packed_ie8.js:1610
-#: static_cache/packed_ie8.js:1927 static_cache/packed_ie8.js:1983
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/companies_list.js
+#: static/js/views/admin/company_details.js
+#: static/js/views/admin/company_learner_dashboard_list.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/companies_list.js
+#: static_cache/js/views/admin/company_details.js
+#: static_cache/js/views/admin/company_learner_dashboard_list.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "This company name cannot have more than 30 characters!"
-msgstr ""
+msgstr "فاهس ذخوحشرغ رشوث ذشررخف اشدث وخقث فاشر 30 ذاشقشذفثقس!"
 
-#: static/gen/packed.js:38543 static/gen/packed.js:38650
-#: static/gen/packed.js:39343 static/gen/packed.js:41366
-#: static/gen/packed.js:41780 static/gen/packed_ie8.js:1460
-#: static/gen/packed_ie8.js:1480 static/gen/packed_ie8.js:1612
-#: static/gen/packed_ie8.js:1928 static/gen/packed_ie8.js:1985
-#: static/js/views/admin/companies_list.js:98
-#: static/js/views/admin/company_details.js:191
-#: static/js/views/admin/company_learner_dashboard_list.js:139
-#: static/js/views/admin/participant_details_edit_info.js:474
-#: static/js/views/admin/participantsinfo.js:370
-#: static_cache/gen/packed.js:38543 static_cache/gen/packed.js:38650
-#: static_cache/gen/packed.js:39343 static_cache/gen/packed.js:41366
-#: static_cache/gen/packed.js:41780 static_cache/gen/packed_ie8.js:1460
-#: static_cache/gen/packed_ie8.js:1480 static_cache/gen/packed_ie8.js:1612
-#: static_cache/gen/packed_ie8.js:1928 static_cache/gen/packed_ie8.js:1985
-#: static_cache/js/views/admin/companies_list.js:98
-#: static_cache/js/views/admin/company_details.js:191
-#: static_cache/js/views/admin/company_learner_dashboard_list.js:139
-#: static_cache/js/views/admin/participant_details_edit_info.js:474
-#: static_cache/js/views/admin/participantsinfo.js:370
-#: static_cache/packed.js:38543 static_cache/packed.js:38650
-#: static_cache/packed.js:39343 static_cache/packed.js:41366
-#: static_cache/packed.js:41780 static_cache/packed_ie8.js:1460
-#: static_cache/packed_ie8.js:1480 static_cache/packed_ie8.js:1612
-#: static_cache/packed_ie8.js:1928 static_cache/packed_ie8.js:1985
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/companies_list.js
+#: static/js/views/admin/company_details.js
+#: static/js/views/admin/company_learner_dashboard_list.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participantsinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/companies_list.js
+#: static_cache/js/views/admin/company_details.js
+#: static_cache/js/views/admin/company_learner_dashboard_list.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participantsinfo.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "This company name cannot contain non-alphanumeric characters!"
-msgstr ""
+msgstr "فاهس ذخوحشرغ رشوث ذشررخف ذخرفشهر رخر-شمحاشرعوثقهذ ذاشقشذفثقس!"
 
-#: static/gen/packed.js:38575 static/gen/packed_ie8.js:1463
-#: static/js/views/admin/companies_list.js:23 static_cache/gen/packed.js:38575
-#: static_cache/gen/packed_ie8.js:1463
-#: static_cache/js/views/admin/companies_list.js:23
-#: static_cache/packed.js:38575 static_cache/packed_ie8.js:1463
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/companies_list.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/companies_list.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Company ID"
-msgstr ""
+msgstr "ذخوحشرغ هي"
 
-#: static/gen/packed.js:38576 static/gen/packed_ie8.js:1463
-#: static/js/views/admin/companies_list.js:24 static_cache/gen/packed.js:38576
-#: static_cache/gen/packed_ie8.js:1463
-#: static_cache/js/views/admin/companies_list.js:24
-#: static_cache/packed.js:38576 static_cache/packed_ie8.js:1463
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/companies_list.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/companies_list.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "No. of Participants"
-msgstr ""
+msgstr "رخ. خب حشقفهذهحشرفس"
 
-#: static/gen/packed.js:38577 static/gen/packed_ie8.js:1463
-#: static/js/views/admin/companies_list.js:25 static_cache/gen/packed.js:38577
-#: static_cache/gen/packed_ie8.js:1463
-#: static_cache/js/views/admin/companies_list.js:25
-#: static_cache/packed.js:38577 static_cache/packed_ie8.js:1463
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/companies_list.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/companies_list.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "No. of Courses"
-msgstr ""
+msgstr "رخ. خب ذخعقسثس"
 
-#: static/gen/packed.js:38694 static/gen/packed_ie8.js:1489
-#: static/js/views/admin/companies_list.js:142 static_cache/gen/packed.js:38694
-#: static_cache/gen/packed_ie8.js:1489
-#: static_cache/js/views/admin/companies_list.js:142
-#: static_cache/packed.js:38694 static_cache/packed_ie8.js:1489
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/companies_list.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/companies_list.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Couldn't create new company!"
-msgstr ""
+msgstr "ذخعمير'ف ذقثشفث رثص ذخوحشرغ!"
 
-#: static/gen/packed.js:38731 static/gen/packed_ie8.js:1490
-#: static/js/views/admin/courseinfo.js:21 static_cache/gen/packed.js:38731
-#: static_cache/gen/packed_ie8.js:1490
-#: static_cache/js/views/admin/courseinfo.js:21 static_cache/packed.js:38731
-#: static_cache/packed_ie8.js:1490
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/courseinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/js/views/admin/courseinfo.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid ".0%"
-msgstr ""
+msgstr ".0%"
 
-#: static/gen/packed.js:38758 static/gen/packed_ie8.js:1490
-#: static/js/views/admin/courseinfo.js:48 static_cache/gen/packed.js:38758
-#: static_cache/gen/packed_ie8.js:1490
-#: static_cache/js/views/admin/courseinfo.js:48 static_cache/packed.js:38758
-#: static_cache/packed_ie8.js:1490
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/courseinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/js/views/admin/courseinfo.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid " day"
-msgstr ""
+msgstr " يشغ"
 
-#: static/gen/packed.js:38759 static/gen/packed_ie8.js:1490
-#: static/js/views/admin/courseinfo.js:49 static_cache/gen/packed.js:38759
-#: static_cache/gen/packed_ie8.js:1490
-#: static_cache/js/views/admin/courseinfo.js:49 static_cache/packed.js:38759
-#: static_cache/packed_ie8.js:1490
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/courseinfo.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/js/views/admin/courseinfo.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid " week"
-msgstr ""
+msgstr " صثثن"
 
-#: static/gen/packed.js:38861 static/gen/packed_ie8.js:1493
-#: static/js/views/admin/course_details_engagement.js:11
-#: static_cache/gen/packed.js:38861 static_cache/gen/packed_ie8.js:1493
-#: static_cache/js/views/admin/course_details_engagement.js:11
-#: static_cache/packed.js:38861 static_cache/packed_ie8.js:1493
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_engagement.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_engagement.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "# of people"
-msgstr ""
+msgstr "# خب حثخحمث"
 
-#: static/gen/packed.js:38862 static/gen/packed_ie8.js:1493
-#: static/js/views/admin/course_details_engagement.js:12
-#: static_cache/gen/packed.js:38862 static_cache/gen/packed_ie8.js:1493
-#: static_cache/js/views/admin/course_details_engagement.js:12
-#: static_cache/packed.js:38862 static_cache/packed_ie8.js:1493
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_engagement.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_engagement.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "% total cohort"
-msgstr ""
+msgstr "% فخفشم ذخاخقف"
 
-#: static/gen/packed.js:38863 static/gen/packed_ie8.js:1493
-#: static/js/views/admin/course_details_engagement.js:13
-#: static_cache/gen/packed.js:38863 static_cache/gen/packed_ie8.js:1493
-#: static_cache/js/views/admin/course_details_engagement.js:13
-#: static_cache/packed.js:38863 static_cache/packed_ie8.js:1493
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_engagement.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_engagement.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Avg Progress"
-msgstr ""
+msgstr "شدل حقخلقثسس"
 
-#: static/gen/packed.js:38982 static/gen/packed_ie8.js:1515
-#: static/js/views/admin/participant_details_edit_info.js:113
-#: static_cache/gen/packed.js:38982 static_cache/gen/packed_ie8.js:1515
-#: static_cache/js/views/admin/participant_details_edit_info.js:113
-#: static_cache/packed.js:38982 static_cache/packed_ie8.js:1515
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Username can't be empty! "
-msgstr ""
+msgstr "عسثقرشوث ذشر'ف زث ثوحفغ! "
 
-#: static/gen/packed.js:38987 static/gen/packed_ie8.js:1517
-#: static/js/views/admin/participant_details_edit_info.js:118
-#: static_cache/gen/packed.js:38987 static_cache/gen/packed_ie8.js:1517
-#: static_cache/js/views/admin/participant_details_edit_info.js:118
-#: static_cache/packed.js:38987 static_cache/packed_ie8.js:1517
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "First name can't be empty! "
-msgstr ""
+msgstr "بهقسف رشوث ذشر'ف زث ثوحفغ! "
 
-#: static/gen/packed.js:38992 static/gen/packed_ie8.js:1519
-#: static/js/views/admin/participant_details_edit_info.js:123
-#: static_cache/gen/packed.js:38992 static_cache/gen/packed_ie8.js:1519
-#: static_cache/js/views/admin/participant_details_edit_info.js:123
-#: static_cache/packed.js:38992 static_cache/packed_ie8.js:1519
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Last name can't be empty! "
-msgstr ""
+msgstr "مشسف رشوث ذشر'ف زث ثوحفغ! "
 
-#: static/gen/packed.js:38997 static/gen/packed_ie8.js:1521
-#: static/js/views/admin/participant_details_edit_info.js:128
-#: static_cache/gen/packed.js:38997 static_cache/gen/packed_ie8.js:1521
-#: static_cache/js/views/admin/participant_details_edit_info.js:128
-#: static_cache/packed.js:38997 static_cache/packed_ie8.js:1521
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Email can't be empty! "
-msgstr ""
+msgstr "ثوشهم ذشر'ف زث ثوحفغ! "
 
-#: static/gen/packed.js:39021 static/gen/packed_ie8.js:1531
-#: static/js/views/admin/participant_details_edit_info.js:152
-#: static_cache/gen/packed.js:39021 static_cache/gen/packed_ie8.js:1531
-#: static_cache/js/views/admin/participant_details_edit_info.js:152
-#: static_cache/packed.js:39021 static_cache/packed_ie8.js:1531
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Company doesn't exist! "
-msgstr ""
+msgstr "ذخوحشرغ يخثسر'ف ثطهسف! "
 
-#: static/gen/packed.js:39071 static/gen/packed_ie8.js:1542
-#: static/js/views/admin/participant_details_edit_info.js:202
-#: static_cache/gen/packed.js:39071 static_cache/gen/packed_ie8.js:1542
-#: static_cache/js/views/admin/participant_details_edit_info.js:202
-#: static_cache/packed.js:39071 static_cache/packed_ie8.js:1542
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Updated user data!"
-msgstr ""
+msgstr "عحيشفثي عسثق يشفش!"
 
-#: static/gen/packed.js:39122 static/gen/packed.js:39155
-#: static/gen/packed_ie8.js:1552 static/gen/packed_ie8.js:1559
-#: static/js/views/admin/participant_details_edit_info.js:253
-#: static/js/views/admin/participant_details_edit_info.js:286
-#: static_cache/gen/packed.js:39122 static_cache/gen/packed.js:39155
-#: static_cache/gen/packed_ie8.js:1552 static_cache/gen/packed_ie8.js:1559
-#: static_cache/js/views/admin/participant_details_edit_info.js:253
-#: static_cache/js/views/admin/participant_details_edit_info.js:286
-#: static_cache/packed.js:39122 static_cache/packed.js:39155
-#: static_cache/packed_ie8.js:1552 static_cache/packed_ie8.js:1559
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Male"
-msgstr ""
+msgstr "وشمث"
 
-#: static/gen/packed.js:39124 static/gen/packed.js:39153
-#: static/gen/packed_ie8.js:1553 static/gen/packed_ie8.js:1558
-#: static/js/views/admin/participant_details_edit_info.js:255
-#: static/js/views/admin/participant_details_edit_info.js:284
-#: static_cache/gen/packed.js:39124 static_cache/gen/packed.js:39153
-#: static_cache/gen/packed_ie8.js:1553 static_cache/gen/packed_ie8.js:1558
-#: static_cache/js/views/admin/participant_details_edit_info.js:255
-#: static_cache/js/views/admin/participant_details_edit_info.js:284
-#: static_cache/packed.js:39124 static_cache/packed.js:39153
-#: static_cache/packed_ie8.js:1553 static_cache/packed_ie8.js:1558
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Female"
-msgstr ""
+msgstr "بثوشمث"
 
-#: static/gen/packed.js:39223 static/gen/packed.js:39673
-#: static/gen/packed_ie8.js:1582 static/gen/packed_ie8.js:1698
-#: static/js/views/admin/course_details_bulk_actions.js:264
-#: static/js/views/admin/participant_details_edit_info.js:354
-#: static_cache/gen/packed.js:39223 static_cache/gen/packed.js:39673
-#: static_cache/gen/packed_ie8.js:1582 static_cache/gen/packed_ie8.js:1698
-#: static_cache/js/views/admin/course_details_bulk_actions.js:264
-#: static_cache/js/views/admin/participant_details_edit_info.js:354
-#: static_cache/packed.js:39223 static_cache/packed.js:39673
-#: static_cache/packed_ie8.js:1582 static_cache/packed_ie8.js:1698
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Select Course"
-msgstr ""
+msgstr "سثمثذف ذخعقسث"
 
-#: static/gen/packed.js:39224 static/gen/packed_ie8.js:1582
-#: static/js/views/admin/participant_details_edit_info.js:355
-#: static_cache/gen/packed.js:39224 static_cache/gen/packed_ie8.js:1582
-#: static_cache/js/views/admin/participant_details_edit_info.js:355
-#: static_cache/packed.js:39224 static_cache/packed_ie8.js:1582
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "User will be enrolled in course selected below."
-msgstr ""
+msgstr "عسثق صهمم زث ثرقخممثي هر ذخعقسث سثمثذفثي زثمخص."
 
-#: static/gen/packed.js:39234 static/gen/packed.js:39592
-#: static/gen/packed.js:39690 static/gen/packed.js:41445
-#: static/gen/packed_ie8.js:1590 static/gen/packed_ie8.js:1681
-#: static/gen/packed_ie8.js:1706 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:41
-#: static/js/views/admin/course_details_bulk_actions.js:183
-#: static/js/views/admin/course_details_bulk_actions.js:281
-#: static/js/views/admin/participant_details_edit_info.js:365
-#: static_cache/gen/packed.js:39234 static_cache/gen/packed.js:39592
-#: static_cache/gen/packed.js:39690 static_cache/gen/packed.js:41445
-#: static_cache/gen/packed_ie8.js:1590 static_cache/gen/packed_ie8.js:1681
-#: static_cache/gen/packed_ie8.js:1706 static_cache/gen/packed_ie8.js:1934
-#: static_cache/js/views/admin/company_linked_apps.js:41
-#: static_cache/js/views/admin/course_details_bulk_actions.js:183
-#: static_cache/js/views/admin/course_details_bulk_actions.js:281
-#: static_cache/js/views/admin/participant_details_edit_info.js:365
-#: static_cache/packed.js:39234 static_cache/packed.js:39592
-#: static_cache/packed.js:39690 static_cache/packed.js:41445
-#: static_cache/packed_ie8.js:1590 static_cache/packed_ie8.js:1681
-#: static_cache/packed_ie8.js:1706 static_cache/packed_ie8.js:1934
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_linked_apps.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_linked_apps.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Active"
-msgstr ""
+msgstr "شذفهدث"
 
-#: static/gen/packed.js:39235 static/gen/packed.js:39593
-#: static/gen/packed.js:39691 static/gen/packed_ie8.js:1591
-#: static/gen/packed_ie8.js:1682 static/gen/packed_ie8.js:1707
-#: static/js/views/admin/course_details_bulk_actions.js:184
-#: static/js/views/admin/course_details_bulk_actions.js:282
-#: static/js/views/admin/participant_details_edit_info.js:366
-#: static_cache/gen/packed.js:39235 static_cache/gen/packed.js:39593
-#: static_cache/gen/packed.js:39691 static_cache/gen/packed_ie8.js:1591
-#: static_cache/gen/packed_ie8.js:1682 static_cache/gen/packed_ie8.js:1707
-#: static_cache/js/views/admin/course_details_bulk_actions.js:184
-#: static_cache/js/views/admin/course_details_bulk_actions.js:282
-#: static_cache/js/views/admin/participant_details_edit_info.js:366
-#: static_cache/packed.js:39235 static_cache/packed.js:39593
-#: static_cache/packed.js:39691 static_cache/packed_ie8.js:1591
-#: static_cache/packed_ie8.js:1682 static_cache/packed_ie8.js:1707
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Observer"
-msgstr ""
+msgstr "خزسثقدثق"
 
-#: static/gen/packed.js:39236 static/gen/packed.js:39594
-#: static/gen/packed.js:39692 static/gen/packed_ie8.js:1592
-#: static/gen/packed_ie8.js:1683 static/gen/packed_ie8.js:1708
-#: static/js/views/admin/course_details_bulk_actions.js:185
-#: static/js/views/admin/course_details_bulk_actions.js:283
-#: static/js/views/admin/participant_details_edit_info.js:367
-#: static_cache/gen/packed.js:39236 static_cache/gen/packed.js:39594
-#: static_cache/gen/packed.js:39692 static_cache/gen/packed_ie8.js:1592
-#: static_cache/gen/packed_ie8.js:1683 static_cache/gen/packed_ie8.js:1708
-#: static_cache/js/views/admin/course_details_bulk_actions.js:185
-#: static_cache/js/views/admin/course_details_bulk_actions.js:283
-#: static_cache/js/views/admin/participant_details_edit_info.js:367
-#: static_cache/packed.js:39236 static_cache/packed.js:39594
-#: static_cache/packed.js:39692 static_cache/packed_ie8.js:1592
-#: static_cache/packed_ie8.js:1683 static_cache/packed_ie8.js:1708
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "TA"
-msgstr ""
+msgstr "فش"
 
-#: static/gen/packed.js:39246 static/gen/packed_ie8.js:1594
-#: static/js/views/admin/participant_details_edit_info.js:377
-#: static_cache/gen/packed.js:39246 static_cache/gen/packed_ie8.js:1594
-#: static_cache/js/views/admin/participant_details_edit_info.js:377
-#: static_cache/packed.js:39246 static_cache/packed_ie8.js:1594
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Enroll Participant"
-msgstr ""
+msgstr "ثرقخمم حشقفهذهحشرف"
 
-#: static/gen/packed.js:39269 static/gen/packed.js:39275
-#: static/gen/packed.js:39632 static/gen/packed.js:39736
-#: static/gen/packed.js:39742 static/gen/packed_ie8.js:1596
-#: static/gen/packed_ie8.js:1598 static/gen/packed_ie8.js:1692
-#: static/gen/packed_ie8.js:1715 static/gen/packed_ie8.js:1717
-#: static/js/views/admin/course_details_bulk_actions.js:223
-#: static/js/views/admin/course_details_bulk_actions.js:327
-#: static/js/views/admin/course_details_bulk_actions.js:333
-#: static/js/views/admin/participant_details_edit_info.js:400
-#: static/js/views/admin/participant_details_edit_info.js:406
-#: static_cache/gen/packed.js:39269 static_cache/gen/packed.js:39275
-#: static_cache/gen/packed.js:39632 static_cache/gen/packed.js:39736
-#: static_cache/gen/packed.js:39742 static_cache/gen/packed_ie8.js:1596
-#: static_cache/gen/packed_ie8.js:1598 static_cache/gen/packed_ie8.js:1692
-#: static_cache/gen/packed_ie8.js:1715 static_cache/gen/packed_ie8.js:1717
-#: static_cache/js/views/admin/course_details_bulk_actions.js:223
-#: static_cache/js/views/admin/course_details_bulk_actions.js:327
-#: static_cache/js/views/admin/course_details_bulk_actions.js:333
-#: static_cache/js/views/admin/participant_details_edit_info.js:400
-#: static_cache/js/views/admin/participant_details_edit_info.js:406
-#: static_cache/packed.js:39269 static_cache/packed.js:39275
-#: static_cache/packed.js:39632 static_cache/packed.js:39736
-#: static_cache/packed.js:39742 static_cache/packed_ie8.js:1596
-#: static_cache/packed_ie8.js:1598 static_cache/packed_ie8.js:1692
-#: static_cache/packed_ie8.js:1715 static_cache/packed_ie8.js:1717
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "You need to select status!"
-msgstr ""
+msgstr "غخع رثثي فخ سثمثذف سفشفعس!"
 
-#: static/gen/packed.js:39280 static/gen/packed.js:39284
-#: static/gen/packed.js:39747 static/gen/packed.js:39751
-#: static/gen/packed_ie8.js:1599 static/gen/packed_ie8.js:1600
-#: static/gen/packed_ie8.js:1718 static/gen/packed_ie8.js:1719
-#: static/js/views/admin/course_details_bulk_actions.js:338
-#: static/js/views/admin/course_details_bulk_actions.js:342
-#: static/js/views/admin/participant_details_edit_info.js:411
-#: static/js/views/admin/participant_details_edit_info.js:415
-#: static_cache/gen/packed.js:39280 static_cache/gen/packed.js:39284
-#: static_cache/gen/packed.js:39747 static_cache/gen/packed.js:39751
-#: static_cache/gen/packed_ie8.js:1599 static_cache/gen/packed_ie8.js:1600
-#: static_cache/gen/packed_ie8.js:1718 static_cache/gen/packed_ie8.js:1719
-#: static_cache/js/views/admin/course_details_bulk_actions.js:338
-#: static_cache/js/views/admin/course_details_bulk_actions.js:342
-#: static_cache/js/views/admin/participant_details_edit_info.js:411
-#: static_cache/js/views/admin/participant_details_edit_info.js:415
-#: static_cache/packed.js:39280 static_cache/packed.js:39284
-#: static_cache/packed.js:39747 static_cache/packed.js:39751
-#: static_cache/packed_ie8.js:1599 static_cache/packed_ie8.js:1600
-#: static_cache/packed_ie8.js:1718 static_cache/packed_ie8.js:1719
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "You need to select course!"
-msgstr ""
+msgstr "غخع رثثي فخ سثمثذف ذخعقسث!"
 
-#: static/gen/packed.js:39304 static/gen/packed_ie8.js:1602
-#: static/js/views/admin/participant_details_edit_info.js:435
-#: static_cache/gen/packed.js:39304 static_cache/gen/packed_ie8.js:1602
-#: static_cache/js/views/admin/participant_details_edit_info.js:435
-#: static_cache/packed.js:39304 static_cache/packed_ie8.js:1602
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "User successfully enrolled in course"
-msgstr ""
+msgstr "عسثق سعذذثسسبعممغ ثرقخممثي هر ذخعقسث"
 
-#: static/gen/packed.js:39394 static/gen/packed_ie8.js:1631
-#: static/js/views/admin/participant_details_edit_info.js:525
-#: static_cache/gen/packed.js:39394 static_cache/gen/packed_ie8.js:1631
-#: static_cache/js/views/admin/participant_details_edit_info.js:525
-#: static_cache/packed.js:39394 static_cache/packed_ie8.js:1631
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_edit_info.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_edit_info.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Try selecting your company from the type-ahead results."
-msgstr ""
+msgstr "فقغ سثمثذفهرل غخعق ذخوحشرغ بقخو فاث فغحث-شاثشي قثسعمفس."
 
-#: static/gen/packed.js:39467 static/gen/packed_ie8.js:1657
-#: static/js/views/admin/course_details_bulk_actions.js:58
-#: static_cache/gen/packed.js:39467 static_cache/gen/packed_ie8.js:1657
-#: static_cache/js/views/admin/course_details_bulk_actions.js:58
-#: static_cache/packed.js:39467 static_cache/packed_ie8.js:1657
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "File successfully uploaded!"
-msgstr ""
+msgstr "بهمث سعذذثسسبعممغ عحمخشيثي!"
 
-#: static/gen/packed.js:39525 static/gen/packed_ie8.js:1671
-#: static/js/views/admin/course_details_bulk_actions.js:116
-#: static_cache/gen/packed.js:39525 static_cache/gen/packed_ie8.js:1671
-#: static_cache/js/views/admin/course_details_bulk_actions.js:116
-#: static_cache/packed.js:39525 static_cache/packed_ie8.js:1671
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Unenroll Participants"
-msgstr ""
+msgstr "عرثرقخمم حشقفهذهحشرفس"
 
-#: static/gen/packed.js:39526 static/gen/packed.js:39587
-#: static/gen/packed.js:39674 static/gen/packed_ie8.js:1671
-#: static/gen/packed_ie8.js:1681 static/gen/packed_ie8.js:1698
-#: static/js/views/admin/course_details_bulk_actions.js:117
-#: static/js/views/admin/course_details_bulk_actions.js:178
-#: static/js/views/admin/course_details_bulk_actions.js:265
-#: static_cache/gen/packed.js:39526 static_cache/gen/packed.js:39587
-#: static_cache/gen/packed.js:39674 static_cache/gen/packed_ie8.js:1671
-#: static_cache/gen/packed_ie8.js:1681 static_cache/gen/packed_ie8.js:1698
-#: static_cache/js/views/admin/course_details_bulk_actions.js:117
-#: static_cache/js/views/admin/course_details_bulk_actions.js:178
-#: static_cache/js/views/admin/course_details_bulk_actions.js:265
-#: static_cache/packed.js:39526 static_cache/packed.js:39587
-#: static_cache/packed.js:39674 static_cache/packed_ie8.js:1671
-#: static_cache/packed_ie8.js:1681 static_cache/packed_ie8.js:1698
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Selected: %(selectedRows)s, Successful: 0, Failed: 0"
-msgstr ""
+msgstr "سثمثذفثي: %(selectedRows)s, سعذذثسسبعم: 0, بشهمثي: 0"
 
-#: static/gen/packed.js:39529 static/gen/packed_ie8.js:1671
-#: static/js/views/admin/course_details_bulk_actions.js:120
-#: static_cache/gen/packed.js:39529 static_cache/gen/packed_ie8.js:1671
-#: static_cache/js/views/admin/course_details_bulk_actions.js:120
-#: static_cache/packed.js:39529 static_cache/packed_ie8.js:1671
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Unenroll all selected participants from this course?"
-msgstr ""
+msgstr "عرثرقخمم شمم سثمثذفثي حشقفهذهحشرفس بقخو فاهس ذخعقسث?"
 
-#: static/gen/packed.js:39542 static/gen/packed.js:39607
-#: static/gen/packed.js:39708 static/gen/packed.js:40034
-#: static/gen/packed_ie8.js:1674 static/gen/packed_ie8.js:1686
-#: static/gen/packed_ie8.js:1712 static/gen/packed_ie8.js:1764
-#: static/js/views/admin/course_details_bulk_actions.js:133
-#: static/js/views/admin/course_details_bulk_actions.js:198
-#: static/js/views/admin/course_details_bulk_actions.js:299
-#: static/js/views/admin/course_details_bulk_actions.js:625
-#: static_cache/gen/packed.js:39542 static_cache/gen/packed.js:39607
-#: static_cache/gen/packed.js:39708 static_cache/gen/packed.js:40034
-#: static_cache/gen/packed_ie8.js:1674 static_cache/gen/packed_ie8.js:1686
-#: static_cache/gen/packed_ie8.js:1712 static_cache/gen/packed_ie8.js:1764
-#: static_cache/js/views/admin/course_details_bulk_actions.js:133
-#: static_cache/js/views/admin/course_details_bulk_actions.js:198
-#: static_cache/js/views/admin/course_details_bulk_actions.js:299
-#: static_cache/js/views/admin/course_details_bulk_actions.js:625
-#: static_cache/packed.js:39542 static_cache/packed.js:39607
-#: static_cache/packed.js:39708 static_cache/packed.js:40034
-#: static_cache/packed_ie8.js:1674 static_cache/packed_ie8.js:1686
-#: static_cache/packed_ie8.js:1712 static_cache/packed_ie8.js:1764
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed.js static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid ""
-"You need to select at least one participant to be able to apply bulk actions."
+"You need to select at least one participant to be able to apply bulk "
+"actions."
 msgstr ""
+"غخع رثثي فخ سثمثذف شف مثشسف خرث حشقفهذهحشرف فخ زث شزمث فخ شححمغ زعمن "
+"شذفهخرس."
 
-#: static/gen/packed.js:39546 static/gen/packed.js:40716
-#: static/gen/packed.js:40718 static/gen/packed_ie8.js:1675
-#: static/gen/packed_ie8.js:1859
-#: static/js/views/admin/course_details_bulk_actions.js:137
-#: static/js/views/admin/participant_details_active_courses_view.js:131
-#: static/js/views/admin/participant_details_active_courses_view.js:133
-#: static_cache/gen/packed.js:39546 static_cache/gen/packed.js:40716
-#: static_cache/gen/packed.js:40718 static_cache/gen/packed_ie8.js:1675
-#: static_cache/gen/packed_ie8.js:1859
-#: static_cache/js/views/admin/course_details_bulk_actions.js:137
-#: static_cache/js/views/admin/participant_details_active_courses_view.js:131
-#: static_cache/js/views/admin/participant_details_active_courses_view.js:133
-#: static_cache/packed.js:39546 static_cache/packed.js:40716
-#: static_cache/packed.js:40718 static_cache/packed_ie8.js:1675
-#: static_cache/packed_ie8.js:1859
+#: static/gen/packed.js static/gen/packed.js static/gen/packed.js
+#: static/gen/packed_ie8.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static/js/views/admin/participant_details_active_courses_view.js
+#: static/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed.js
+#: static_cache/packed_ie8.js static_cache/packed_ie8.js
 msgid "Unenroll"
-msgstr ""
+msgstr "عرثرقخمم"
 
-#: static/gen/packed.js:39586 static/gen/packed_ie8.js:1681
-#: static/js/views/admin/course_details_bulk_actions.js:177
-#: static_cache/gen/packed.js:39586 static_cache/gen/packed_ie8.js:1681
-#: static_cache/js/views/admin/course_details_bulk_actions.js:177
-#: static_cache/packed.js:39586 static_cache/packed_ie8.js:1681
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Change Status"
-msgstr ""
+msgstr "ذاشرلث سفشفعس"
 
-#: static/gen/packed.js:39590 static/gen/packed_ie8.js:1681
-#: static/js/views/admin/course_details_bulk_actions.js:181
-#: static_cache/gen/packed.js:39590 static_cache/gen/packed_ie8.js:1681
-#: static_cache/js/views/admin/course_details_bulk_actions.js:181
-#: static_cache/packed.js:39590 static_cache/packed_ie8.js:1681
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Change status of all selected participants to:"
-msgstr ""
+msgstr "ذاشرلث سفشفعس خب شمم سثمثذفثي حشقفهذهحشرفس فخ:"
 
-#: static/gen/packed.js:39611 static/gen/packed_ie8.js:1687
-#: static/js/views/admin/course_details_bulk_actions.js:202
-#: static_cache/gen/packed.js:39611 static_cache/gen/packed_ie8.js:1687
-#: static_cache/js/views/admin/course_details_bulk_actions.js:202
-#: static_cache/packed.js:39611 static_cache/packed_ie8.js:1687
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Save Changes"
-msgstr ""
+msgstr "سشدث ذاشرلثس"
 
-#: static/gen/packed.js:39677 static/gen/packed_ie8.js:1698
-#: static/js/views/admin/course_details_bulk_actions.js:268
-#: static_cache/gen/packed.js:39677 static_cache/gen/packed_ie8.js:1698
-#: static_cache/js/views/admin/course_details_bulk_actions.js:268
-#: static_cache/packed.js:39677 static_cache/packed_ie8.js:1698
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "%(selectedRows)s Participants will be enroll in course selected below."
 msgid_plural ""
 "%(selectedRows)s Participant will be enroll in course selected below."
 msgstr[0] ""
+"%(selectedRows)s حشقفهذهحشرفس صهمم زث ثرقخمم هر ذخعقسث سثمثذفثي زثمخص."
 msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+"%(selectedRows)s حشقفهذهحشرف صهمم زث ثرقخمم هر ذخعقسث سثمثذفثي زثمخص."
 
-#: static/gen/packed.js:39712 static/gen/packed_ie8.js:1713
-#: static/js/views/admin/course_details_bulk_actions.js:303
-#: static_cache/gen/packed.js:39712 static_cache/gen/packed_ie8.js:1713
-#: static_cache/js/views/admin/course_details_bulk_actions.js:303
-#: static_cache/packed.js:39712 static_cache/packed_ie8.js:1713
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Enroll Participants"
-msgstr ""
+msgstr "ثرقخمم حشقفهذهحشرفس"
 
-#: static/gen/packed.js:39821 static/gen/packed_ie8.js:1729
-#: static/js/views/admin/course_details_bulk_actions.js:412
-#: static_cache/gen/packed.js:39821 static_cache/gen/packed_ie8.js:1729
-#: static_cache/js/views/admin/course_details_bulk_actions.js:412
-#: static_cache/packed.js:39821 static_cache/packed_ie8.js:1729
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Download"
-msgstr ""
+msgstr "يخصرمخشي"
 
-#: static/gen/packed.js:39821 static/gen/packed_ie8.js:1729
-#: static/js/views/admin/course_details_bulk_actions.js:412
-#: static_cache/gen/packed.js:39821 static_cache/gen/packed_ie8.js:1729
-#: static_cache/js/views/admin/course_details_bulk_actions.js:412
-#: static_cache/packed.js:39821 static_cache/packed_ie8.js:1729
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Progress : 0%"
-msgstr ""
+msgstr "حقخلقثسس : 0%"
 
-#: static/gen/packed.js:39822 static/gen/packed_ie8.js:1729
-#: static/js/views/admin/course_details_bulk_actions.js:413
-#: static_cache/gen/packed.js:39822 static_cache/gen/packed_ie8.js:1729
-#: static_cache/js/views/admin/course_details_bulk_actions.js:413
-#: static_cache/packed.js:39822 static_cache/packed_ie8.js:1729
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Download CSV File"
-msgstr ""
+msgstr "يخصرمخشي ذسد بهمث"
 
-#: static/gen/packed.js:39861 static/gen/packed_ie8.js:1732
-#: static/js/views/admin/course_details_bulk_actions.js:452
-#: static_cache/gen/packed.js:39861 static_cache/gen/packed_ie8.js:1732
-#: static_cache/js/views/admin/course_details_bulk_actions.js:452
-#: static_cache/packed.js:39861 static_cache/packed_ie8.js:1732
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Download Notifications CSV"
-msgstr ""
+msgstr "يخصرمخشي رخفهبهذشفهخرس ذسد"
 
-#: static/gen/packed.js:39895 static/gen/packed_ie8.js:1735
-#: static/js/views/admin/course_details_bulk_actions.js:486
-#: static_cache/gen/packed.js:39895 static_cache/gen/packed_ie8.js:1735
-#: static_cache/js/views/admin/course_details_bulk_actions.js:486
-#: static_cache/packed.js:39895 static_cache/packed_ie8.js:1735
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Download Participants"
-msgstr ""
+msgstr "يخصرمخشي حشقفهذهحشرفس"
 
-#: static/gen/packed.js:39950 static/gen/packed_ie8.js:1746
-#: static/js/views/admin/course_details_bulk_actions.js:541
-#: static_cache/gen/packed.js:39950 static_cache/gen/packed_ie8.js:1746
-#: static_cache/js/views/admin/course_details_bulk_actions.js:541
-#: static_cache/packed.js:39950 static_cache/packed_ie8.js:1746
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Group Work: %(label)s"
-msgstr ""
+msgstr "لقخعح صخقن: %(label)s"
 
-#: static/gen/packed.js:39978 static/gen/packed_ie8.js:1755
-#: static/js/views/admin/course_details_bulk_actions.js:569
-#: static_cache/gen/packed.js:39978 static_cache/gen/packed_ie8.js:1755
-#: static_cache/js/views/admin/course_details_bulk_actions.js:569
-#: static_cache/packed.js:39978 static_cache/packed_ie8.js:1755
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Assessment: %(label)s"
-msgstr ""
+msgstr "شسسثسسوثرف: %(label)s"
 
-#: static/gen/packed.js:40004 static/gen/packed_ie8.js:1760
-#: static/js/views/admin/course_details_bulk_actions.js:595
-#: static_cache/gen/packed.js:40004 static_cache/gen/packed_ie8.js:1760
-#: static_cache/js/views/admin/course_details_bulk_actions.js:595
-#: static_cache/packed.js:40004 static_cache/packed_ie8.js:1760
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Task failed to execute. Please retry later."
-msgstr ""
+msgstr "فشسن بشهمثي فخ ثطثذعفث. حمثشسث قثفقغ مشفثق."
 
-#: static/gen/packed.js:40021 static/gen/packed_ie8.js:1762
-#: static/js/views/admin/course_details_bulk_actions.js:612
-#: static_cache/gen/packed.js:40021 static_cache/gen/packed_ie8.js:1762
-#: static_cache/js/views/admin/course_details_bulk_actions.js:612
-#: static_cache/packed.js:40021 static_cache/packed_ie8.js:1762
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Successfully Enrolled in 1 Course"
-msgstr ""
+msgstr "سعذذثسسبعممغ ثرقخممثي هر 1 ذخعقسث"
 
-#: static/gen/packed.js:40023 static/gen/packed_ie8.js:1762
-#: static/js/views/admin/course_details_bulk_actions.js:614
-#: static_cache/gen/packed.js:40023 static_cache/gen/packed_ie8.js:1762
-#: static_cache/js/views/admin/course_details_bulk_actions.js:614
-#: static_cache/packed.js:40023 static_cache/packed_ie8.js:1762
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "What would you like to do now?"
-msgstr ""
+msgstr "صاشف صخعمي غخع مهنث فخ يخ رخص?"
 
-#: static/gen/packed.js:40024 static/gen/packed_ie8.js:1762
-#: static/js/views/admin/course_details_bulk_actions.js:615
-#: static_cache/gen/packed.js:40024 static_cache/gen/packed_ie8.js:1762
-#: static_cache/js/views/admin/course_details_bulk_actions.js:615
-#: static_cache/packed.js:40024 static_cache/packed_ie8.js:1762
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Go to %(course_id)s Course"
-msgstr ""
+msgstr "لخ فخ %(course_id)s ذخعقسث"
 
-#: static/gen/packed.js:40026 static/gen/packed_ie8.js:1762
-#: static/js/views/admin/course_details_bulk_actions.js:617
-#: static_cache/gen/packed.js:40026 static_cache/gen/packed_ie8.js:1762
-#: static_cache/js/views/admin/course_details_bulk_actions.js:617
-#: static_cache/packed.js:40026 static_cache/packed_ie8.js:1762
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Send Course Intro Email"
-msgstr ""
+msgstr "سثري ذخعقسث هرفقخ ثوشهم"
 
-#: static/gen/packed.js:40028 static/gen/packed_ie8.js:1764
-#: static/js/views/admin/course_details_bulk_actions.js:619
-#: static_cache/gen/packed.js:40028 static_cache/gen/packed_ie8.js:1764
-#: static_cache/js/views/admin/course_details_bulk_actions.js:619
-#: static_cache/packed.js:40028 static_cache/packed_ie8.js:1764
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Enroll this list in another course"
-msgstr ""
+msgstr "ثرقخمم فاهس مهسف هر شرخفاثق ذخعقسث"
 
-#: static/gen/packed.js:40040 static/gen/packed_ie8.js:1765
-#: static/js/views/admin/course_details_bulk_actions.js:631
-#: static_cache/gen/packed.js:40040 static_cache/gen/packed_ie8.js:1765
-#: static_cache/js/views/admin/course_details_bulk_actions.js:631
-#: static_cache/packed.js:40040 static_cache/packed_ie8.js:1765
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "I'm Done"
-msgstr ""
+msgstr "ه'و يخرث"
 
-#: static/gen/packed.js:40060 static/gen/packed_ie8.js:1769
-#: static/js/views/admin/course_details_bulk_actions.js:651
-#: static_cache/gen/packed.js:40060 static_cache/gen/packed_ie8.js:1769
-#: static_cache/js/views/admin/course_details_bulk_actions.js:651
-#: static_cache/packed.js:40060 static_cache/packed_ie8.js:1769
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Successfully deleted template!"
-msgstr ""
+msgstr "سعذذثسسبعممغ يثمثفثي فثوحمشفث!"
 
-#: static/gen/packed.js:40067 static/gen/packed_ie8.js:1771
-#: static/js/views/admin/course_details_bulk_actions.js:658
-#: static_cache/gen/packed.js:40067 static_cache/gen/packed_ie8.js:1771
-#: static_cache/js/views/admin/course_details_bulk_actions.js:658
-#: static_cache/packed.js:40067 static_cache/packed_ie8.js:1771
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Successfully added new template!"
-msgstr ""
+msgstr "سعذذثسسبعممغ شييثي رثص فثوحمشفث!"
 
-#: static/gen/packed.js:40080 static/gen/packed_ie8.js:1775
-#: static/js/views/admin/course_details_bulk_actions.js:671
-#: static_cache/gen/packed.js:40080 static_cache/gen/packed_ie8.js:1775
-#: static_cache/js/views/admin/course_details_bulk_actions.js:671
-#: static_cache/packed.js:40080 static_cache/packed_ie8.js:1775
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Successfully updated template!"
-msgstr ""
+msgstr "سعذذثسسبعممغ عحيشفثي فثوحمشفث!"
 
-#: static/gen/packed.js:40085 static/gen/packed_ie8.js:1777
-#: static/js/views/admin/course_details_bulk_actions.js:676
-#: static_cache/gen/packed.js:40085 static_cache/gen/packed_ie8.js:1777
-#: static_cache/js/views/admin/course_details_bulk_actions.js:676
-#: static_cache/packed.js:40085 static_cache/packed_ie8.js:1777
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Email Preview Success!"
-msgstr ""
+msgstr "ثوشهم حقثدهثص سعذذثسس!"
 
-#: static/gen/packed.js:40085 static/gen/packed_ie8.js:1777
-#: static/js/views/admin/course_details_bulk_actions.js:676
-#: static_cache/gen/packed.js:40085 static_cache/gen/packed_ie8.js:1777
-#: static_cache/js/views/admin/course_details_bulk_actions.js:676
-#: static_cache/packed.js:40085 static_cache/packed_ie8.js:1777
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Successfully sent preview email!"
-msgstr ""
+msgstr "سعذذثسسبعممغ سثرف حقثدهثص ثوشهم!"
 
-#: static/gen/packed.js:40088 static/gen/packed_ie8.js:1778
-#: static/js/views/admin/course_details_bulk_actions.js:679
-#: static_cache/gen/packed.js:40088 static_cache/gen/packed_ie8.js:1778
-#: static_cache/js/views/admin/course_details_bulk_actions.js:679
-#: static_cache/packed.js:40088 static_cache/packed_ie8.js:1778
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Email Success!"
-msgstr ""
+msgstr "ثوشهم سعذذثسس!"
 
-#: static/gen/packed.js:40088 static/gen/packed_ie8.js:1778
-#: static/js/views/admin/course_details_bulk_actions.js:679
-#: static_cache/gen/packed.js:40088 static_cache/gen/packed_ie8.js:1778
-#: static_cache/js/views/admin/course_details_bulk_actions.js:679
-#: static_cache/packed.js:40088 static_cache/packed_ie8.js:1778
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Successfully sent email!"
-msgstr ""
+msgstr "سعذذثسسبعممغ سثرف ثوشهم!"
 
-#: static/gen/packed.js:40130 static/gen/packed_ie8.js:1785
-#: static/js/views/admin/course_details_bulk_actions.js:721
-#: static_cache/gen/packed.js:40130 static_cache/gen/packed_ie8.js:1785
-#: static_cache/js/views/admin/course_details_bulk_actions.js:721
-#: static_cache/packed.js:40130 static_cache/packed_ie8.js:1785
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Preview Email!"
-msgstr ""
+msgstr "حقثدهثص ثوشهم!"
 
-#: static/gen/packed.js:40130 static/gen/packed_ie8.js:1785
-#: static/js/views/admin/course_details_bulk_actions.js:721
-#: static_cache/gen/packed.js:40130 static_cache/gen/packed_ie8.js:1785
-#: static_cache/js/views/admin/course_details_bulk_actions.js:721
-#: static_cache/packed.js:40130 static_cache/packed_ie8.js:1785
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Please enter preview email!"
-msgstr ""
+msgstr "حمثشسث ثرفثق حقثدهثص ثوشهم!"
 
-#: static/gen/packed.js:40150 static/gen/packed_ie8.js:1790
-#: static/js/views/admin/course_details_bulk_actions.js:741
-#: static_cache/gen/packed.js:40150 static_cache/gen/packed_ie8.js:1790
-#: static_cache/js/views/admin/course_details_bulk_actions.js:741
-#: static_cache/packed.js:40150 static_cache/packed_ie8.js:1790
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Please enter new template name!"
-msgstr ""
+msgstr "حمثشسث ثرفثق رثص فثوحمشفث رشوث!"
 
-#: static/gen/packed.js:40165 static/gen/packed_ie8.js:1793
-#: static/js/views/admin/course_details_bulk_actions.js:756
-#: static_cache/gen/packed.js:40165 static_cache/gen/packed_ie8.js:1793
-#: static_cache/js/views/admin/course_details_bulk_actions.js:756
-#: static_cache/packed.js:40165 static_cache/packed_ie8.js:1793
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Please enter updated template name or leave the old one!"
-msgstr ""
+msgstr "حمثشسث ثرفثق عحيشفثي فثوحمشفث رشوث خق مثشدث فاث خمي خرث!"
 
-#: static/gen/packed.js:40178 static/gen/packed_ie8.js:1796
-#: static/js/views/admin/course_details_bulk_actions.js:769
-#: static_cache/gen/packed.js:40178 static_cache/gen/packed_ie8.js:1796
-#: static_cache/js/views/admin/course_details_bulk_actions.js:769
-#: static_cache/packed.js:40178 static_cache/packed_ie8.js:1796
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details_bulk_actions.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details_bulk_actions.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "You are about to delete email template. Are you sure?"
-msgstr ""
+msgstr "غخع شقث شزخعف فخ يثمثفث ثوشهم فثوحمشفث. شقث غخع سعقث?"
 
-#: static/gen/packed.js:40237 static/gen/packed_ie8.js:1801
-#: static/js/views/admin/group_work_dashboard.js:52
-#: static_cache/gen/packed.js:40237 static_cache/gen/packed_ie8.js:1801
-#: static_cache/js/views/admin/group_work_dashboard.js:52
-#: static_cache/packed.js:40237 static_cache/packed_ie8.js:1801
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/group_work_dashboard.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/group_work_dashboard.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "None"
-msgstr ""
+msgstr "رخرث"
 
-#: static/gen/packed.js:40380 static/gen/packed_ie8.js:1819
-#: static/js/views/admin/group_work_dashboard.js:195
-#: static_cache/gen/packed.js:40380 static_cache/gen/packed_ie8.js:1819
-#: static_cache/js/views/admin/group_work_dashboard.js:195
-#: static_cache/packed.js:40380 static_cache/packed_ie8.js:1819
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/group_work_dashboard.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/group_work_dashboard.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Do you really want to delete: \n"
-msgstr ""
+msgstr "يخ غخع قثشممغ صشرف فخ يثمثفث: \n"
 
-#: static/gen/packed.js:40658 static/gen/packed.js:41213
-#: static/gen/packed_ie8.js:1845 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/participant_details_active_courses_view.js:73
-#: static/js/views/admin/participant_details_course_history_view.js:29
-#: static_cache/gen/packed.js:40658 static_cache/gen/packed.js:41213
-#: static_cache/gen/packed_ie8.js:1845 static_cache/gen/packed_ie8.js:1919
-#: static_cache/js/views/admin/participant_details_active_courses_view.js:73
-#: static_cache/js/views/admin/participant_details_course_history_view.js:29
-#: static_cache/packed.js:40658 static_cache/packed.js:41213
-#: static_cache/packed_ie8.js:1845 static_cache/packed_ie8.js:1919
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_active_courses_view.js
+#: static/js/views/admin/participant_details_course_history_view.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/js/views/admin/participant_details_course_history_view.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Program"
-msgstr ""
+msgstr "حقخلقشو"
 
-#: static/gen/packed.js:40659 static/gen/packed.js:41864
-#: static/gen/packed_ie8.js:1845 static/gen/packed_ie8.js:2001
-#: static/js/views/admin/course_details.js:43
-#: static/js/views/admin/participant_details_active_courses_view.js:74
-#: static_cache/gen/packed.js:40659 static_cache/gen/packed.js:41864
-#: static_cache/gen/packed_ie8.js:1845 static_cache/gen/packed_ie8.js:2001
-#: static_cache/js/views/admin/course_details.js:43
-#: static_cache/js/views/admin/participant_details_active_courses_view.js:74
-#: static_cache/packed.js:40659 static_cache/packed.js:41864
-#: static_cache/packed_ie8.js:1845 static_cache/packed_ie8.js:2001
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/course_details.js
+#: static/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Progress"
-msgstr ""
+msgstr "حقخلقثسس"
 
-#: static/gen/packed.js:40678 static/gen/packed.js:41871
-#: static/gen/packed_ie8.js:1849 static/gen/packed_ie8.js:2003
-#: static/js/views/admin/course_details.js:50
-#: static/js/views/admin/participant_details_active_courses_view.js:93
-#: static_cache/gen/packed.js:40678 static_cache/gen/packed.js:41871
-#: static_cache/gen/packed_ie8.js:1849 static_cache/gen/packed_ie8.js:2003
-#: static_cache/js/views/admin/course_details.js:50
-#: static_cache/js/views/admin/participant_details_active_courses_view.js:93
-#: static_cache/packed.js:40678 static_cache/packed.js:41871
-#: static_cache/packed_ie8.js:1849 static_cache/packed_ie8.js:2003
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/course_details.js
+#: static/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/participant_details_active_courses_view.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Proficiency"
-msgstr ""
+msgstr "حقخبهذهثرذغ"
 
-#: static/gen/packed.js:40795 static/gen/packed_ie8.js:1866
-#: static/js/views/admin/company_mobileapp_details.js:31
-#: static_cache/gen/packed.js:40795 static_cache/gen/packed_ie8.js:1866
-#: static_cache/js/views/admin/company_mobileapp_details.js:31
-#: static_cache/packed.js:40795 static_cache/packed_ie8.js:1866
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_mobileapp_details.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_mobileapp_details.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Couldn't delink App!"
-msgstr ""
+msgstr "ذخعمير'ف يثمهرن شحح!"
 
-#: static/gen/packed.js:40872 static/gen/packed_ie8.js:1880
-#: static/js/views/admin/company_mobileapp_details.js:108
-#: static_cache/gen/packed.js:40872 static_cache/gen/packed_ie8.js:1880
-#: static_cache/js/views/admin/company_mobileapp_details.js:108
-#: static_cache/packed.js:40872 static_cache/packed_ie8.js:1880
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_mobileapp_details.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_mobileapp_details.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "This app name cannot have more than 30 characters!"
-msgstr ""
+msgstr "فاهس شحح رشوث ذشررخف اشدث وخقث فاشر 30 ذاشقشذفثقس!"
 
-#: static/gen/packed.js:40877 static/gen/packed_ie8.js:1882
-#: static/js/views/admin/company_mobileapp_details.js:113
-#: static_cache/gen/packed.js:40877 static_cache/gen/packed_ie8.js:1882
-#: static_cache/js/views/admin/company_mobileapp_details.js:113
-#: static_cache/packed.js:40877 static_cache/packed_ie8.js:1882
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_mobileapp_details.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_mobileapp_details.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "This app name cannot contain non-alphanumeric characters!"
-msgstr ""
+msgstr "فاهس شحح رشوث ذشررخف ذخرفشهر رخر-شمحاشرعوثقهذ ذاشقشذفثقس!"
 
-#: static/gen/packed.js:40882 static/gen/packed_ie8.js:1884
-#: static/js/views/admin/company_mobileapp_details.js:118
-#: static_cache/gen/packed.js:40882 static_cache/gen/packed_ie8.js:1884
-#: static_cache/js/views/admin/company_mobileapp_details.js:118
-#: static_cache/packed.js:40882 static_cache/packed_ie8.js:1884
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_mobileapp_details.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_mobileapp_details.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "No App Display Name!"
-msgstr ""
+msgstr "رخ شحح يهسحمشغ رشوث!"
 
-#: static/gen/packed.js:41156 static/gen/packed_ie8.js:1907
-#: static/js/views/admin/company_info_view.js:226
-#: static_cache/gen/packed.js:41156 static_cache/gen/packed_ie8.js:1907
-#: static_cache/js/views/admin/company_info_view.js:226
-#: static_cache/packed.js:41156 static_cache/packed_ie8.js:1907
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_info_view.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_info_view.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Please correct following error: %(errors)s"
 msgid_plural "Please correct following errors: %(errors)s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "حمثشسث ذخققثذف بخممخصهرل ثققخق: %(errors)s"
+msgstr[1] "حمثشسث ذخققثذف بخممخصهرل ثققخقس: %(errors)s"
 
-#: static/gen/packed.js:41214 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/participant_details_course_history_view.js:30
-#: static_cache/gen/packed.js:41214 static_cache/gen/packed_ie8.js:1919
-#: static_cache/js/views/admin/participant_details_course_history_view.js:30
-#: static_cache/packed.js:41214 static_cache/packed_ie8.js:1919
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_course_history_view.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_course_history_view.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Completed"
-msgstr ""
+msgstr "ذخوحمثفثي"
 
-#: static/gen/packed.js:41215 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/participant_details_course_history_view.js:31
-#: static_cache/gen/packed.js:41215 static_cache/gen/packed_ie8.js:1919
-#: static_cache/js/views/admin/participant_details_course_history_view.js:31
-#: static_cache/packed.js:41215 static_cache/packed_ie8.js:1919
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_course_history_view.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_course_history_view.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Grade"
-msgstr ""
+msgstr "لقشيث"
 
-#: static/gen/packed.js:41217 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/participant_details_course_history_view.js:33
-#: static_cache/gen/packed.js:41217 static_cache/gen/packed_ie8.js:1919
-#: static_cache/js/views/admin/participant_details_course_history_view.js:33
-#: static_cache/packed.js:41217 static_cache/packed_ie8.js:1919
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/participant_details_course_history_view.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/participant_details_course_history_view.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "End Date"
-msgstr ""
+msgstr "ثري يشفث"
 
-#: static/gen/packed.js:41231 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/company_learner_dashboard_list.js:4
-#: static_cache/gen/packed.js:41231 static_cache/gen/packed_ie8.js:1919
-#: static_cache/js/views/admin/company_learner_dashboard_list.js:4
-#: static_cache/packed.js:41231 static_cache/packed_ie8.js:1919
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_learner_dashboard_list.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_learner_dashboard_list.js
+#: static_cache/packed.js static_cache/packed_ie8.js
 msgid "Dashboard Name"
-msgstr ""
+msgstr "يشسازخشقي رشوث"
 
-#: static/gen/packed.js:41370 static/gen/packed.js:41785
-#: static/gen/packed_ie8.js:1929 static/gen/packed_ie8.js:1987
-#: static/js/views/admin/company_details.js:196
-#: static/js/views/admin/company_learner_dashboard_list.js:143
-#: static_cache/gen/packed.js:41370 static_cache/gen/packed.js:41785
-#: static_cache/gen/packed_ie8.js:1929 static_cache/gen/packed_ie8.js:1987
-#: static_cache/js/views/admin/company_details.js:196
-#: static_cache/js/views/admin/company_learner_dashboard_list.js:143
-#: static_cache/packed.js:41370 static_cache/packed.js:41785
-#: static_cache/packed_ie8.js:1929 static_cache/packed_ie8.js:1987
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/company_details.js
+#: static/js/views/admin/company_learner_dashboard_list.js
+#: static_cache/gen/packed.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_details.js
+#: static_cache/js/views/admin/company_learner_dashboard_list.js
+#: static_cache/packed.js static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "No Company Display Name!"
-msgstr ""
+msgstr "رخ ذخوحشرغ يهسحمشغ رشوث!"
 
-#: static/gen/packed.js:41408 static/gen/packed_ie8.js:1930
-#: static/js/views/admin/company_linked_apps.js:4
-#: static_cache/gen/packed.js:41408 static_cache/gen/packed_ie8.js:1930
-#: static_cache/js/views/admin/company_linked_apps.js:4
-#: static_cache/packed.js:41408 static_cache/packed_ie8.js:1930
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_linked_apps.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_linked_apps.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "App Name"
-msgstr ""
+msgstr "شحح رشوث"
 
-#: static/gen/packed.js:41424 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:20
-#: static_cache/gen/packed.js:41424 static_cache/gen/packed_ie8.js:1934
-#: static_cache/js/views/admin/company_linked_apps.js:20
-#: static_cache/packed.js:41424 static_cache/packed_ie8.js:1934
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_linked_apps.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_linked_apps.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Deployment Mech"
-msgstr ""
+msgstr "يثحمخغوثرف وثذا"
 
-#: static/gen/packed.js:41425 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:21
-#: static_cache/gen/packed.js:41425 static_cache/gen/packed_ie8.js:1934
-#: static_cache/js/views/admin/company_linked_apps.js:21
-#: static_cache/packed.js:41425 static_cache/packed_ie8.js:1934
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_linked_apps.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_linked_apps.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "iOS DL URL"
-msgstr ""
+msgstr "هخس يم عقم"
 
-#: static/gen/packed.js:41430 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:26
-#: static_cache/gen/packed.js:41430 static_cache/gen/packed_ie8.js:1934
-#: static_cache/js/views/admin/company_linked_apps.js:26
-#: static_cache/packed.js:41430 static_cache/packed_ie8.js:1934
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_linked_apps.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_linked_apps.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Android DL URL"
-msgstr ""
+msgstr "شريقخهي يم عقم"
 
-#: static/gen/packed.js:41435 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:31
-#: static_cache/gen/packed.js:41435 static_cache/gen/packed_ie8.js:1934
-#: static_cache/js/views/admin/company_linked_apps.js:31
-#: static_cache/packed.js:41435 static_cache/packed_ie8.js:1934
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_linked_apps.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_linked_apps.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Urban Airship URL"
-msgstr ""
+msgstr "عقزشر شهقساهح عقم"
 
-#: static/gen/packed.js:41440 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:36
-#: static_cache/gen/packed.js:41440 static_cache/gen/packed_ie8.js:1934
-#: static_cache/js/views/admin/company_linked_apps.js:36
-#: static_cache/packed.js:41440 static_cache/packed_ie8.js:1934
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_linked_apps.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_linked_apps.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Analytics URL"
-msgstr ""
+msgstr "شرشمغفهذس عقم"
 
-#: static/gen/packed.js:41551 static/gen/packed_ie8.js:1946
-#: static/js/views/admin/company_linked_apps.js:147
-#: static_cache/gen/packed.js:41551 static_cache/gen/packed_ie8.js:1946
-#: static_cache/js/views/admin/company_linked_apps.js:147
-#: static_cache/packed.js:41551 static_cache/packed_ie8.js:1946
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_linked_apps.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_linked_apps.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Couldn't link this App!"
-msgstr ""
+msgstr "ذخعمير'ف مهرن فاهس شحح!"
 
-#: static/gen/packed.js:41610 static/gen/packed_ie8.js:1954
-#: static/js/views/admin/company_details.js:21 static_cache/gen/packed.js:41610
-#: static_cache/gen/packed_ie8.js:1954
-#: static_cache/js/views/admin/company_details.js:21
-#: static_cache/packed.js:41610 static_cache/packed_ie8.js:1954
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Participants"
-msgstr ""
+msgstr "حشقفهذهحشرفس"
 
-#: static/gen/packed.js:41656 static/gen/packed_ie8.js:1963
-#: static/js/views/admin/company_details.js:67 static_cache/gen/packed.js:41656
-#: static_cache/gen/packed_ie8.js:1963
-#: static_cache/js/views/admin/company_details.js:67
-#: static_cache/packed.js:41656 static_cache/packed_ie8.js:1963
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/company_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/company_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Cohort Comp."
-msgstr ""
+msgstr "ذخاخقف ذخوح."
 
-#: static/gen/packed.js:41853 static/gen/packed_ie8.js:1998
-#: static/js/views/admin/course_details.js:32 static_cache/gen/packed.js:41853
-#: static_cache/gen/packed_ie8.js:1998
-#: static_cache/js/views/admin/course_details.js:32
-#: static_cache/packed.js:41853 static_cache/packed_ie8.js:1998
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Last Log In"
-msgstr ""
+msgstr "مشسف مخل هر"
 
-#: static/gen/packed.js:41878 static/gen/packed_ie8.js:2005
-#: static/js/views/admin/course_details.js:57 static_cache/gen/packed.js:41878
-#: static_cache/gen/packed_ie8.js:2005
-#: static_cache/js/views/admin/course_details.js:57
-#: static_cache/packed.js:41878 static_cache/packed_ie8.js:2005
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Engagement"
-msgstr ""
+msgstr "ثرلشلثوثرف"
 
-#: static/gen/packed.js:41885 static/gen/packed.js:41889
-#: static/gen/packed_ie8.js:2007 static/gen/packed_ie8.js:2008
-#: static/js/views/admin/course_details.js:64
-#: static/js/views/admin/course_details.js:68 static_cache/gen/packed.js:41885
-#: static_cache/gen/packed.js:41889 static_cache/gen/packed_ie8.js:2007
-#: static_cache/gen/packed_ie8.js:2008
-#: static_cache/js/views/admin/course_details.js:64
-#: static_cache/js/views/admin/course_details.js:68
-#: static_cache/packed.js:41885 static_cache/packed.js:41889
-#: static_cache/packed_ie8.js:2007 static_cache/packed_ie8.js:2008
+#: static/gen/packed.js static/gen/packed.js static/gen/packed_ie8.js
+#: static/gen/packed_ie8.js static/js/views/admin/course_details.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed.js static_cache/gen/packed_ie8.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed.js static_cache/packed_ie8.js
+#: static_cache/packed_ie8.js
 msgid "Activation Link"
-msgstr ""
+msgstr "شذفهدشفهخر مهرن"
 
-#: static/gen/packed.js:41893 static/gen/packed_ie8.js:2008
-#: static/js/views/admin/course_details.js:72 static_cache/gen/packed.js:41893
-#: static_cache/gen/packed_ie8.js:2008
-#: static_cache/js/views/admin/course_details.js:72
-#: static_cache/packed.js:41893 static_cache/packed_ie8.js:2008
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Username"
-msgstr ""
+msgstr "عسثقرشوث"
 
-#: static/gen/packed.js:41894 static/gen/packed_ie8.js:2008
-#: static/js/views/admin/course_details.js:73 static_cache/gen/packed.js:41894
-#: static_cache/gen/packed_ie8.js:2008
-#: static_cache/js/views/admin/course_details.js:73
-#: static_cache/packed.js:41894 static_cache/packed_ie8.js:2008
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Country"
-msgstr ""
+msgstr "ذخعرفقغ"
 
-#: static/gen/packed.js:42055 static/gen/packed_ie8.js:2044
-#: static/js/views/admin/course_details.js:234 static_cache/gen/packed.js:42055
-#: static_cache/gen/packed_ie8.js:2044
-#: static_cache/js/views/admin/course_details.js:234
-#: static_cache/packed.js:42055 static_cache/packed_ie8.js:2044
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Couldn't create new tag!"
-msgstr ""
+msgstr "ذخعمير'ف ذقثشفث رثص فشل!"
 
-#: static/gen/packed.js:42069 static/gen/packed_ie8.js:2049
-#: static/js/views/admin/course_details.js:248 static_cache/gen/packed.js:42069
-#: static_cache/gen/packed_ie8.js:2049
-#: static_cache/js/views/admin/course_details.js:248
-#: static_cache/packed.js:42069 static_cache/packed_ie8.js:2049
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
 msgstr ""
+"غخع يخر'ف اشدث حثقوهسسهخر فخ ذقثشفث ش رثص فشل, حمثشسث سثمثذف خرث بقخو فاث "
+"مهسف!"
 
-#: static/gen/packed.js:42099 static/gen/packed_ie8.js:2054
-#: static/js/views/admin/course_details.js:278 static_cache/gen/packed.js:42099
-#: static_cache/gen/packed_ie8.js:2054
-#: static_cache/js/views/admin/course_details.js:278
-#: static_cache/packed.js:42099 static_cache/packed_ie8.js:2054
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Couldn't delete tag!"
-msgstr ""
+msgstr "ذخعمير'ف يثمثفث فشل!"
 
-#: static/gen/packed.js:42139 static/gen/packed_ie8.js:2061
-#: static/js/views/admin/course_details.js:318 static_cache/gen/packed.js:42139
-#: static_cache/gen/packed_ie8.js:2061
-#: static_cache/js/views/admin/course_details.js:318
-#: static_cache/packed.js:42139 static_cache/packed_ie8.js:2061
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%(count)s ذخعقسث فشللثي صهفا %(tagDetails)s"
+msgstr[1] "%(count)s ذخعقسثس فشللثي صهفا %(tagDetails)s"
 
-#: static/gen/packed.js:42194 static/gen/packed_ie8.js:2070
-#: static/js/views/admin/course_details.js:373 static_cache/gen/packed.js:42194
-#: static_cache/gen/packed_ie8.js:2070
-#: static_cache/js/views/admin/course_details.js:373
-#: static_cache/packed.js:42194 static_cache/packed_ie8.js:2070
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Progress: %(progress)s %"
-msgstr ""
+msgstr "حقخلقثسس: %(progress)s %"
 
-#: static/gen/packed.js:42230 static/gen/packed_ie8.js:2076
-#: static/js/views/admin/course_details.js:409 static_cache/gen/packed.js:42230
-#: static_cache/gen/packed_ie8.js:2076
-#: static_cache/js/views/admin/course_details.js:409
-#: static_cache/packed.js:42230 static_cache/packed_ie8.js:2076
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr ""
+"سثمثذفثي: %(selected)s, سعذذثسسبعم: %(successful)s, بشهمثي: %(failed)s"
 
-#: static/gen/packed.js:42281 static/gen/packed_ie8.js:2087
-#: static/js/views/admin/course_details.js:460 static_cache/gen/packed.js:42281
-#: static_cache/gen/packed_ie8.js:2087
-#: static_cache/js/views/admin/course_details.js:460
-#: static_cache/packed.js:42281 static_cache/packed_ie8.js:2087
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "This tag name cannot have more than 30 characters!"
-msgstr ""
+msgstr "فاهس فشل رشوث ذشررخف اشدث وخقث فاشر 30 ذاشقشذفثقس!"
 
-#: static/gen/packed.js:42288 static/gen/packed_ie8.js:2089
-#: static/js/views/admin/course_details.js:467 static_cache/gen/packed.js:42288
-#: static_cache/gen/packed_ie8.js:2089
-#: static_cache/js/views/admin/course_details.js:467
-#: static_cache/packed.js:42288 static_cache/packed_ie8.js:2089
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "This tag name cannot contain non-alphanumeric characters!"
-msgstr ""
+msgstr "فاهس فشل رشوث ذشررخف ذخرفشهر رخر-شمحاشرعوثقهذ ذاشقشذفثقس!"
 
-#: static/gen/packed.js:42328 static/gen/packed_ie8.js:2095
-#: static/js/views/admin/course_details.js:507 static_cache/gen/packed.js:42328
-#: static_cache/gen/packed_ie8.js:2095
-#: static_cache/js/views/admin/course_details.js:507
-#: static_cache/packed.js:42328 static_cache/packed_ie8.js:2095
+#: static/gen/packed.js static/gen/packed_ie8.js
+#: static/js/views/admin/course_details.js static_cache/gen/packed.js
+#: static_cache/gen/packed_ie8.js
+#: static_cache/js/views/admin/course_details.js static_cache/packed.js
+#: static_cache/packed_ie8.js
 msgid "Couldn't add tag to course!"
-msgstr ""
+msgstr "ذخعمير'ف شيي فشل فخ ذخعقسث!"
 
-#: static/js/admin_learner_dashboard/element_modal.js:72
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
-#: static_cache/js/admin_learner_dashboard/element_modal.js:72
-#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
+#: static/js/admin_learner_dashboard/element_modal.js
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
+#: static_cache/js/admin_learner_dashboard/element_modal.js
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
 msgid "In Person Session"
-msgstr ""
+msgstr "هر حثقسخر سثسسهخر"
 
-#: static/js/admin_learner_dashboard/sort.js:72
-#: static/js/learner_dashboard_sort.js:54
-#: static_cache/js/admin_learner_dashboard/sort.js:72
-#: static_cache/js/learner_dashboard_sort.js:54
+#: static/js/admin_learner_dashboard/sort.js
+#: static/js/learner_dashboard_sort.js
+#: static_cache/js/admin_learner_dashboard/sort.js
+#: static_cache/js/learner_dashboard_sort.js
 msgid "Are you sure?"
-msgstr ""
+msgstr "شقث غخع سعقث?"
 
-#: static/js/course_contact_modal.js:15
-#: static_cache/js/course_contact_modal.js:15
+#: static/js/course_contact_modal.js static_cache/js/course_contact_modal.js
 msgid "Notification"
-msgstr ""
+msgstr "رخفهبهذشفهخر"
 
-#: static/js/course_drag_drop.js:70 static_cache/js/course_drag_drop.js:70
+#: static/js/course_drag_drop.js static_cache/js/course_drag_drop.js
 msgid "Group successfully updated"
-msgstr ""
+msgstr "لقخعح سعذذثسسبعممغ عحيشفثي"
 
-#: static/js/course_drag_drop.js:153 static_cache/js/course_drag_drop.js:153
+#: static/js/course_drag_drop.js static_cache/js/course_drag_drop.js
 msgid "Please select at least one student"
-msgstr ""
+msgstr "حمثشسث سثمثذف شف مثشسف خرث سفعيثرف"
 
-#: static/js/course_drag_drop.js:160 static_cache/js/course_drag_drop.js:160
+#: static/js/course_drag_drop.js static_cache/js/course_drag_drop.js
 msgid "Please select project"
-msgstr ""
+msgstr "حمثشسث سثمثذف حقختثذف"
 
-#: static/js/course_drag_drop.js:174 static_cache/js/course_drag_drop.js:174
+#: static/js/course_drag_drop.js static_cache/js/course_drag_drop.js
 msgid "Group was not created"
-msgstr ""
+msgstr "لقخعح صشس رخف ذقثشفثي"
 
-#: static/js/course_drag_drop.js:234 static_cache/js/course_drag_drop.js:234
-msgid "All students added to private group have to be members of same company."
-msgstr ""
-
-#: static/js/course_drag_drop.js:242 static_cache/js/course_drag_drop.js:242
+#: static/js/course_drag_drop.js static_cache/js/course_drag_drop.js
 msgid ""
-"Are you sure you want to remove this group? Doing so will remove submissions "
-"and feedback associated with the group."
+"All students added to private group have to be members of same company."
 msgstr ""
+"شمم سفعيثرفس شييثي فخ حقهدشفث لقخعح اشدث فخ زث وثوزثقس خب سشوث ذخوحشرغ."
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
-#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
+#: static/js/course_drag_drop.js static_cache/js/course_drag_drop.js
+msgid ""
+"Are you sure you want to remove this group? Doing so will remove submissions"
+" and feedback associated with the group."
+msgstr ""
+"شقث غخع سعقث غخع صشرف فخ قثوخدث فاهس لقخعح? يخهرل سخ صهمم قثوخدث سعزوهسسهخرس"
+" شري بثثيزشذن شسسخذهشفثي صهفا فاث لقخعح."
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
 msgid "Your Progress: %(value)s%"
-msgstr ""
+msgstr "غخعق حقخلقثسس: %(value)s%"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
-#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
 msgid "Complete"
-msgstr ""
+msgstr "ذخوحمثفث"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
-#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
 msgid "Incomplete"
-msgstr ""
+msgstr "هرذخوحمثفث"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
-#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
 msgid "Digital Course"
-msgstr ""
+msgstr "يهلهفشم ذخعقسث"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
-#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
 msgid "Group work"
-msgstr ""
+msgstr "لقخعح صخقن"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
-#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
 msgid "Webinar"
-msgstr ""
+msgstr "صثزهرشق"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
-#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js
 msgid "Digital Content"
-msgstr ""
+msgstr "يهلهفشم ذخرفثرف"
 
-#: static/js/image_editor.js:3 static_cache/js/image_editor.js:3
+#: static/js/image_editor.js static_cache/js/image_editor.js
 msgid "No file Selected"
-msgstr ""
+msgstr "رخ بهمث سثمثذفثي"
 
-#: static/js/image_editor.js:45 static_cache/js/image_editor.js:45
+#: static/js/image_editor.js static_cache/js/image_editor.js
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
 msgstr ""
+"ثققخق عحمخشيهرل بهمث. حمثشسث فقغ شلشهر شري زث سعقث فخ عسث شر شذذثحفثي بهمث "
+"بخقوشف."
 
-#: static/js/image_editor.js:52 static_cache/js/image_editor.js:52
+#: static/js/image_editor.js static_cache/js/image_editor.js
 msgid "Please select file for upload."
-msgstr ""
+msgstr "حمثشسث سثمثذف بهمث بخق عحمخشي."
 
-#: static_cache/admin/js/SelectFilter2.js:45
+#: static_cache/admin/js/SelectFilter2.js
 #, javascript-format
 msgid "Available %s"
-msgstr ""
+msgstr "شدشهمشزمث %s"
 
-#: static_cache/admin/js/SelectFilter2.js:46
+#: static_cache/admin/js/SelectFilter2.js
 #, javascript-format
 msgid ""
 "This is the list of available %s. You may choose some by selecting them in "
 "the box below and then clicking the \"Choose\" arrow between the two boxes."
 msgstr ""
+"فاهس هس فاث مهسف خب شدشهمشزمث %s. غخع وشغ ذاخخسث سخوث زغ سثمثذفهرل فاثو هر "
+"فاث زخط زثمخص شري فاثر ذمهذنهرل فاث \"ذاخخسث\" شققخص زثفصثثر فاث فصخ زخطثس."
 
-#: static_cache/admin/js/SelectFilter2.js:53
+#: static_cache/admin/js/SelectFilter2.js
 #, javascript-format
 msgid "Type into this box to filter down the list of available %s."
-msgstr ""
+msgstr "فغحث هرفخ فاهس زخط فخ بهمفثق يخصر فاث مهسف خب شدشهمشزمث %s."
 
-#: static_cache/admin/js/SelectFilter2.js:57
+#: static_cache/admin/js/SelectFilter2.js
 msgid "Filter"
-msgstr ""
+msgstr "بهمفثق"
 
-#: static_cache/admin/js/SelectFilter2.js:61
+#: static_cache/admin/js/SelectFilter2.js
 msgid "Choose all"
-msgstr ""
+msgstr "ذاخخسث شمم"
 
-#: static_cache/admin/js/SelectFilter2.js:61
+#: static_cache/admin/js/SelectFilter2.js
 #, javascript-format
 msgid "Click to choose all %s at once."
-msgstr ""
+msgstr "ذمهذن فخ ذاخخسث شمم %s شف خرذث."
 
-#: static_cache/admin/js/SelectFilter2.js:67
+#: static_cache/admin/js/SelectFilter2.js
 msgid "Choose"
-msgstr ""
+msgstr "ذاخخسث"
 
-#: static_cache/admin/js/SelectFilter2.js:69
+#: static_cache/admin/js/SelectFilter2.js
 msgid "Remove"
-msgstr ""
+msgstr "قثوخدث"
 
-#: static_cache/admin/js/SelectFilter2.js:75
+#: static_cache/admin/js/SelectFilter2.js
 #, javascript-format
 msgid "Chosen %s"
-msgstr ""
+msgstr "ذاخسثر %s"
 
-#: static_cache/admin/js/SelectFilter2.js:76
+#: static_cache/admin/js/SelectFilter2.js
 #, javascript-format
 msgid ""
 "This is the list of chosen %s. You may remove some by selecting them in the "
 "box below and then clicking the \"Remove\" arrow between the two boxes."
 msgstr ""
+"فاهس هس فاث مهسف خب ذاخسثر %s. غخع وشغ قثوخدث سخوث زغ سثمثذفهرل فاثو هر فاث "
+"زخط زثمخص شري فاثر ذمهذنهرل فاث \"قثوخدث\" شققخص زثفصثثر فاث فصخ زخطثس."
 
-#: static_cache/admin/js/SelectFilter2.js:80
+#: static_cache/admin/js/SelectFilter2.js
 msgid "Remove all"
-msgstr ""
+msgstr "قثوخدث شمم"
 
-#: static_cache/admin/js/SelectFilter2.js:80
+#: static_cache/admin/js/SelectFilter2.js
 #, javascript-format
 msgid "Click to remove all chosen %s at once."
-msgstr ""
+msgstr "ذمهذن فخ قثوخدث شمم ذاخسثر %s شف خرذث."
 
-#: static_cache/admin/js/actions.js:22 static_cache/admin/js/actions.min.js:1
+#: static_cache/admin/js/actions.js static_cache/admin/js/actions.min.js
 msgid "%(sel)s of %(cnt)s selected"
 msgid_plural "%(sel)s of %(cnt)s selected"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%(sel)s خب %(cnt)s سثمثذفثي"
+msgstr[1] "%(sel)s خب %(cnt)s سثمثذفثي"
 
-#: static_cache/admin/js/actions.js:114 static_cache/admin/js/actions.min.js:4
+#: static_cache/admin/js/actions.js static_cache/admin/js/actions.min.js
 msgid ""
 "You have unsaved changes on individual editable fields. If you run an "
 "action, your unsaved changes will be lost."
 msgstr ""
+"غخع اشدث عرسشدثي ذاشرلثس خر هريهدهيعشم ثيهفشزمث بهثميس. هب غخع قعر شر "
+"شذفهخر, غخعق عرسشدثي ذاشرلثس صهمم زث مخسف."
 
-#: static_cache/admin/js/actions.js:126 static_cache/admin/js/actions.min.js:5
+#: static_cache/admin/js/actions.js static_cache/admin/js/actions.min.js
 msgid ""
 "You have selected an action, but you haven't saved your changes to "
 "individual fields yet. Please click OK to save. You'll need to re-run the "
 "action."
 msgstr ""
+"غخع اشدث سثمثذفثي شر شذفهخر, زعف غخع اشدثر'ف سشدثي غخعق ذاشرلثس فخ "
+"هريهدهيعشم بهثميس غثف. حمثشسث ذمهذن خن فخ سشدث. غخع'مم رثثي فخ قث-قعر فاث "
+"شذفهخر."
 
-#: static_cache/admin/js/actions.js:128 static_cache/admin/js/actions.min.js:5
+#: static_cache/admin/js/actions.js static_cache/admin/js/actions.min.js
 msgid ""
 "You have selected an action, and you haven't made any changes on individual "
 "fields. You're probably looking for the Go button rather than the Save "
 "button."
 msgstr ""
+"غخع اشدث سثمثذفثي شر شذفهخر, شري غخع اشدثر'ف وشيث شرغ ذاشرلثس خر هريهدهيعشم "
+"بهثميس. غخع'قث حقخزشزمغ مخخنهرل بخق فاث لخ زعففخر قشفاثق فاشر فاث سشدث "
+"زعففخر."
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:79
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 #, javascript-format
 msgid "Note: You are %s hour ahead of server time."
 msgid_plural "Note: You are %s hours ahead of server time."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "رخفث: غخع شقث %s اخعق شاثشي خب سثقدثق فهوث."
+msgstr[1] "رخفث: غخع شقث %s اخعقس شاثشي خب سثقدثق فهوث."
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:87
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 #, javascript-format
 msgid "Note: You are %s hour behind server time."
 msgid_plural "Note: You are %s hours behind server time."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "رخفث: غخع شقث %s اخعق زثاهري سثقدثق فهوث."
+msgstr[1] "رخفث: غخع شقث %s اخعقس زثاهري سثقدثق فهوث."
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:114
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:149
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Now"
-msgstr ""
+msgstr "رخص"
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:118
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Clock"
-msgstr ""
+msgstr "ذمخذن"
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:146
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Choose a time"
-msgstr ""
+msgstr "ذاخخسث ش فهوث"
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:150
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Midnight"
-msgstr ""
+msgstr "وهيرهلاف"
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:151
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "6 a.m."
-msgstr ""
+msgstr "6 ش.و."
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:152
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Noon"
-msgstr ""
+msgstr "رخخر"
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:156
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:276
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Cancel"
-msgstr ""
+msgstr "ذشرذثم"
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:216
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:269
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Today"
-msgstr ""
+msgstr "فخيشغ"
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:220
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Calendar"
-msgstr ""
+msgstr "ذشمثريشق"
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:267
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Yesterday"
-msgstr ""
+msgstr "غثسفثقيشغ"
 
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:271
+#: static_cache/admin/js/admin/DateTimeShortcuts.js
 msgid "Tomorrow"
-msgstr ""
+msgstr "فخوخققخص"
 
-#: static_cache/admin/js/calendar.js:8
+#: static_cache/admin/js/calendar.js
 msgid ""
-"January February March April May June July August September October November "
-"December"
+"January February March April May June July August September October November"
+" December"
 msgstr ""
+"تشرعشقغ بثزقعشقغ وشقذا شحقهم وشغ تعرث تعمغ شعلعسف سثحفثوزثق خذفخزثق رخدثوزثق"
+" يثذثوزثق"
 
-#: static_cache/admin/js/calendar.js:9
+#: static_cache/admin/js/calendar.js
 msgid "S M T W T F S"
-msgstr ""
+msgstr "س و ف ص ف ب س"
 
-#: static_cache/admin/js/collapse.js:8 static_cache/admin/js/collapse.js:19
-#: static_cache/admin/js/collapse.min.js:1
+#: static_cache/admin/js/collapse.js static_cache/admin/js/collapse.js
+#: static_cache/admin/js/collapse.min.js
 msgid "Show"
-msgstr ""
+msgstr "ساخص"
 
-#: static_cache/admin/js/collapse.js:16 static_cache/admin/js/collapse.min.js:1
+#: static_cache/admin/js/collapse.js static_cache/admin/js/collapse.min.js
 msgid "Hide"
-msgstr ""
+msgstr "اهيث"
 
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js
 msgid "radio"
-msgstr ""
+msgstr "قشيهخ"
 
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js
 msgid "checkbox"
-msgstr ""
+msgstr "ذاثذنزخط"
 
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js
 msgid "file"
-msgstr ""
+msgstr "بهمث"
 
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js
 msgid "password"
-msgstr ""
+msgstr "حشسسصخقي"
 
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js
 msgid "image"
-msgstr ""
+msgstr "هوشلث"

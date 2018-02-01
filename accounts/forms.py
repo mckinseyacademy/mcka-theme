@@ -3,6 +3,7 @@
 
 ''' forms for login and activation '''
 import datetime, re
+
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
@@ -13,8 +14,8 @@ from api_client import user_api
 from django.utils.html import format_html
 from django.forms.utils import flatatt
 from django.utils.encoding import force_text
-from django.core.urlresolvers import reverse
 from api_client.api_error import ApiError
+from util.i18n_helpers import format_lazy, mark_safe_lazy
 
 from .controller import send_password_reset_email
 from .models import PublicRegistrationRequest
@@ -322,12 +323,12 @@ BANNED_EMAILS = [
 ]
 
 CURRENT_ROLE = (
-    (u'Senior Executive', _('Senior Executive (e.g., CXO, SVP)')),
-    (u'Seasoned Leader/Senior Manager', _('Seasoned Leader/Senior Manager (e.g., VP, Director)')),
-    (u'Mid-Level Manager', _('Mid-Level Manager (e.g., Manager)')),
-    (u'Early Career Professional', _('Early Career Professional (e.g., Associate, Analyst)')),
-    (u'Other', _('Other (please describe below)')),
-)
+        (u'Senior Executive', _(u'Senior Executive (e.g. SVP+)')),
+        (u'Seasoned Leader/Senior Manager', _(u'Seasoned Leader/Senior Manager (e.g. Director, VP)')),
+        (u'Mid-Level Manager', _(u'Mid-Level Manager (e.g. Manager, Senior Manager)')),
+        (u'Early Career Professional', _(u'Early Career Professional (e.g. Analyst/Associate)')),
+        (u'Other', _(u'Other (please describe below)')),
+    )
 
 
 class UserNameInput(forms.TextInput):
@@ -354,35 +355,89 @@ class NoSuffixLabelForm(forms.Form):
 class SSOLoginForm(NoSuffixLabelForm):
     """ SSO dispatch form - asks user for email to look it up in a list of SSO-enabled accounts """
     # this is just used to differentiate this form from login form used on the same page
-    sso_login_form_marker = forms.CharField(widget=forms.HiddenInput, required=False)
-    email = forms.EmailField(max_length=255, label=mark_safe('Email address <span class="required-field"></span>'))
+    sso_login_form_marker = forms.CharField(
+        widget=forms.HiddenInput,
+        required=False
+    )
+    email = forms.EmailField(
+        max_length=255,
+        label=mark_safe_lazy(format_lazy(
+            _('Email address {html_span}'),
+            html_span='<span class="required-field"></span>')
+        ))
 
 
 class LoginForm(NoSuffixLabelForm):
     ''' login form for system '''
-    username = forms.CharField(max_length=255, label=mark_safe(_('Username {html_span}').format(html_span='<span class="required-field"></span>')))
-    password = forms.CharField(widget=forms.PasswordInput(), label=mark_safe(_('Password {html_span}').format(html_span='<span class="required-field"></span>')))
+
+    username = forms.CharField(
+        max_length=255,
+        label=mark_safe_lazy(format_lazy(
+            _('Username {html_span}'),
+            html_span='<span class="required-field"></span>')
+        )
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=mark_safe_lazy(format_lazy(
+            _('Password {html_span}'),
+            html_span='<span class="required-field"></span>')
+    ))
+
 
 class BaseRegistrationForm(NoSuffixLabelForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
-    email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('Email'))
+
+    email = forms.CharField(
+        max_length=255,
+        widget=forms.TextInput(attrs={'readonly': 'readonly'}),
+        label=mark_safe(_('Email'))
+    )
+
     username = forms.CharField(
         max_length=255,
-        label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'),
+        label=mark_safe_lazy(format_lazy(
+            _('Public username {html_span_start} This cannot be changed later.{html_span_end}'),
+            html_span_start='<span class="tip">',
+            html_span_end='</span> <span class="required-field"></span>'
+        )),
         validators=[UsernameValidator()]
     )
-    password = forms.CharField(widget=forms.PasswordInput(),
-        label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=mark_safe_lazy(format_lazy(
+            _('Password {html_span_start} Must be at least 8 characters and include '
+              'upper and lowercase letters - plus numbers OR special characters.{html_span_end}'),
+            html_span_start='<span class="required-field"></span> <span class="tip">',
+            html_span_end='</span> <span class="required-field"></span>'
+            )
+        )
+    )
+
     company = forms.CharField(max_length=255, required=False)
     full_name = forms.CharField(max_length=512, required=False)
     title = forms.CharField(max_length=255, required=False, validators=[RoleTitleValidator()])
     city = forms.CharField(
         max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}),
-        label=mark_safe('City <span class="required-field"></span>'),
+        label=mark_safe_lazy(format_lazy(
+            _('City {html_span}'),
+            html_span='<span class="required-field"></span>')),
         validators=[AlphanumericWithAccentedChars()]
     )
     country = forms.ChoiceField(choices=COUNTRY_CHOICES, required=False)
-    accept_terms = forms.BooleanField(required=False, label=mark_safe('I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> <span class="required-field"></span>'))
+    accept_terms = forms.BooleanField(
+        required=False,
+        label=mark_safe_lazy(format_lazy(
+            _('I agree to the {html_anchor_start} Terms of Service '
+              '{html_anchor_end} and {html_anchor_second} Privacy Policy '
+              '{html_anchor_end} {html_span}'),
+            html_anchor_start='<a href="/terms" target="_blank">',
+            html_anchor_end='</a>',
+            html_anchor_second='<a href="/privacy" target="_blank">',
+            html_span='<span class="required-field"></span>'
+        ))
+    )
 
     def clean_accept_terms(self):
         value = self.cleaned_data['accept_terms']
@@ -390,8 +445,10 @@ class BaseRegistrationForm(NoSuffixLabelForm):
             raise forms.ValidationError(_("You must accept terms of service in order to continue"))
         return value
 
+
 class ActivationForm(BaseRegistrationForm):
     ''' activation form for system '''
+
     def __init__(self, *args, **kwargs):
         super(ActivationForm, self).__init__(*args, **kwargs)
         self.fields['username'].widget = UserNameInput(attrs={'required': True})  # Custom widget with no default value
@@ -405,9 +462,10 @@ class ActivationForm(BaseRegistrationForm):
                 if disabled in initial_data and len(initial_data[disabled]) > 0:
                     self.fields[disabled].widget.attrs['disabled'] = 'disabled'
 
+
 class FinalizeRegistrationForm(BaseRegistrationForm):
     ''' activation form used to finalize a user's registration with SSO '''
-    email = forms.EmailField(max_length=225, required=True, label=mark_safe('Email'))
+    email = forms.EmailField(max_length=225, required=True, label=mark_safe(_('Email')))
 
     def __init__(self, user_data, fixed_values, **kwargs):
         initial = kwargs.pop('initial', {})
@@ -422,6 +480,7 @@ class FinalizeRegistrationForm(BaseRegistrationForm):
         for field_name in fixed_values:
             self.fields[field_name].widget.attrs['readonly'] = 'readonly'
         self.fields.pop('password')  # No password required for SSO users
+
 
 class FpasswordForm(forms.Form):
     email = forms.EmailField(label=_("Email"), max_length=254)
@@ -502,35 +561,65 @@ class SetNewPasswordForm(forms.Form):
             return self.user
         return self.user
 
+
 class UploadProfileImageForm(forms.Form):
     ''' form to upload file for profile image '''
-    profile_image = forms.FileField(label='', help_text="Formats accepted: JPG, PNG and GIF", required=False)
+    profile_image = forms.FileField(label='', help_text=_("Formats accepted: JPG, PNG and GIF"), required=False)
+
 
 class EditFullNameForm(forms.Form):
     ''' edit user full name '''
-    first_name = forms.CharField(max_length=30, label='First Name', validators=[AlphanumericWithAccentedChars()])
-    last_name = forms.CharField(max_length=30, label='Last Name', validators=[AlphanumericWithAccentedChars()])
+    first_name = forms.CharField(max_length=30, label=_('First Name'), validators=[AlphanumericWithAccentedChars()])
+    last_name = forms.CharField(max_length=30, label=_('Last Name'), validators=[AlphanumericWithAccentedChars()])
+
 
 class EditTitleForm(forms.Form):
     ''' edit user title '''
     title = forms.CharField(max_length=255, label='', required=False, validators=[AlphanumericWithAccentedChars()])
 
+
 class BaseRegistrationFormV2(NoSuffixLabelForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
-    email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe('Email'))
-    username = forms.CharField(max_length=255, label=mark_safe('Public username <span class="tip">This cannot be changed later.</span> <span class="required-field"></span>'))
-    password = forms.CharField(widget=forms.PasswordInput(),
-        label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
+    email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe(_('Email')))
+    username = forms.CharField(
+        max_length=255,
+        label=mark_safe_lazy(format_lazy(
+            _('Public username {html_span_start} This cannot be changed later. {html_span_end}'),
+            html_span_start='<span class="tip">',
+            html_span_end='</span><span class="required-field"></span>'
+        ))
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        label=mark_safe_lazy(format_lazy(
+            _('Password {html_span_start} Must be at least 8 characters and '
+              'include upper and lowercase letters - plus numbers OR special '
+              'characters.{html_span_end}'),
+            html_span_start='<span class="required-field"></span> <span class="tip">',
+            html_span_end='</span> <span class="required-field"></span>'
+        ))
+    )
     title = forms.CharField(max_length=255, required=False)
     level_of_education = forms.ChoiceField(choices=EDUCATION_LEVEL_CHOICES, required=False)
     year_of_birth = forms.ChoiceField(choices=YEAR_CHOICES, required=False, initial=("", "---"))
-    accept_terms = forms.BooleanField(required=False, label=mark_safe('I agree to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a> <span class="required-field"></span>'))
+    accept_terms = forms.BooleanField(
+        required=False,
+        label=mark_safe_lazy(format_lazy(
+            _('I agree to the {html_anchor_start} Terms of Service {html_anchor_end} '
+              'and {html_anchor_second} Privacy Policy {html_anchor_end} {html_span}'),
+            html_anchor_start='<a href="/terms" target="_blank">',
+            html_anchor_end='</a>',
+            html_anchor_second='<a href="/privacy" target="_blank">',
+            html_span='<span class="required-field"></span>'
+        ))
+    )
 
     def clean_accept_terms(self):
         value = self.cleaned_data['accept_terms']
         if not value:
             raise forms.ValidationError(_("You must accept terms of service in order to continue"))
         return value
+
 
 class ActivationFormV2(BaseRegistrationFormV2):
     ''' activation form for system '''
@@ -560,13 +649,47 @@ class PublicRegistrationForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.course_run_name = kwargs.pop('course_run_name', None)
         super(PublicRegistrationForm, self).__init__(*args, **kwargs)
-        self.fields['first_name'].label=mark_safe('First Name <span class="required-field"></span>')
-        self.fields['last_name'].label=mark_safe('Last Name <span class="required-field"></span>')
-        self.fields['company_name'].label=mark_safe('Company Name <span class="required-field"></span>')
-        self.fields['company_email'].label=mark_safe('Company Email <span class="required-field"></span>')
-        self.fields['current_role'].label=mark_safe('Current Role <span class="required-field"></span>')
-        self.fields['company_email'].help_text=mark_safe('<div class="company_email_helptext">Note: personal email addresses will not be processed</div>')
-        self.fields['current_role'].help_text=mark_safe('<div class="current_role_helptext">(please choose one of the following options)</div>')
+
+        self.fields['first_name'].label = mark_safe_lazy(format_lazy(
+            _('First Name {html_span}'),
+            html_span='<span class="required-field"></span>'
+        ))
+        self.fields['last_name'].label = mark_safe_lazy(format_lazy(
+            _('Last Name {html_span}'),
+            html_span='<span class="required-field"></span>'
+        ))
+        self.fields['company_name'].label = mark_safe_lazy(format_lazy(
+            _('Company Name {html_span}'),
+            html_span='<span class="required-field"></span>'
+        ))
+        self.fields['company_email'].label = mark_safe_lazy(format_lazy(
+            _('Company Email {html_span}'),
+            html_span='<span class="required-field"></span>'
+        ))
+        self.fields['current_role'].label = mark_safe_lazy(format_lazy(
+            _('Current Role {html_span}'),
+            html_span='<span class="required-field"></span>'
+        ))
+        self.fields['company_email'].help_text = mark_safe_lazy(format_lazy(
+            _('{html_div_start}Note: personal email addresses will not be processed{html_div_end}'),
+            html_div_start='<div class="company_email_helptext">',
+            html_div_end='</div>'
+        ))
+
+        self.fields['current_role'].help_text = mark_safe_lazy(format_lazy(
+            _('{html_div_start}(please choose one of the following options) '
+              '{html_div_end}'),
+            html_div_start='<div class="current_role_helptext">',
+            html_div_end='</div>'
+        ))
+        self.fields['current_role'].help_text = mark_safe_lazy(format_lazy(
+            _('{html_div_start}(please choose one of the following options) '
+              '{html_div_end}'),
+            html_div_start='<div class="current_role_helptext">',
+            html_div_end='</div>'
+            )
+        )
+
         self.fields['current_role_other'].widget.attrs.update({'maxlength': 60})
         choices = SelfRegistrationRoles.objects.filter(course_run__name=self.course_run_name)
         other_choice = choices.filter(option_text=OTHER_ROLE)
@@ -580,7 +703,7 @@ class PublicRegistrationForm(forms.ModelForm):
         first_name = self.cleaned_data.get("first_name")
         first_name = ' '.join(first_name.split())
         if not re.match(r'^[A-Za-z ]+$', first_name):
-            raise forms.ValidationError("Special characters or numbers are not valid.")
+            raise forms.ValidationError(_("Special characters or numbers are not valid."))
         else:
             return first_name
 
@@ -588,7 +711,7 @@ class PublicRegistrationForm(forms.ModelForm):
         last_name = self.cleaned_data.get("last_name")
         last_name = ' '.join(last_name.split())
         if not re.match(r'^[A-Za-z ]+$', last_name):
-            raise forms.ValidationError("Special characters or numbers are not valid.")
+            raise forms.ValidationError(_("Special characters or numbers are not valid."))
         else:
             return last_name
 
@@ -597,23 +720,29 @@ class PublicRegistrationForm(forms.ModelForm):
         company_email = self.cleaned_data.get("company_email")
 
         if not isinstance(company_email, basestring):
-            raise forms.ValidationError(u"Email must be a string.")
+            raise forms.ValidationError(_(u"Email must be a string."))
 
         if len(company_email) < 3:
             raise forms.ValidationError(
-                u"Email '{email}' must be at least {min} characters long".format(
+                format_lazy(
+                    _(u"Email '{email}' must be at least {min} characters long"),
                     email=company_email,
-                    min=3
-                )
+                    min=3)
             )
 
         if len(company_email) > 70:
-            raise forms.ValidationError(
-                u"Email '{email}' must be at most {max} characters long".format(
+            raise forms.ValidationError(format_lazy(
+                _(u"Email '{email}' must be at most {max} characters long"),
                     email=company_email,
                     max=70
                 )
             )
+
+        course_run = CourseRun.objects.filter(name=self.course_run_name)
+        users = PublicRegistrationRequest.objects.filter(course_run=course_run)
+        for user in users:
+            if user.company_email == company_email:
+                raise forms.ValidationError(_("This email address has already been registered."))
 
         try:
             validate_email(company_email)
@@ -621,7 +750,7 @@ class PublicRegistrationForm(forms.ModelForm):
             if company_domain in BANNED_EMAILS:
                 raise forms.ValidationError(_("Email you provided is not allowed."))
         except:
-            raise forms.ValidationError("Please enter a valid company email address.")
+            raise forms.ValidationError(_("Please enter a valid company email address."))
 
         course_run = CourseRun.objects.filter(name=self.course_run_name)
 
@@ -639,7 +768,7 @@ class PublicRegistrationForm(forms.ModelForm):
         company_name = ' '.join(company_name.split())
 
         if not re.match(r'^[A-Za-z0-9 ]+$', company_name):
-            raise forms.ValidationError("Special characters are not valid.")
+            raise forms.ValidationError(_("Special characters are not valid."))
 
         return company_name
 
@@ -658,6 +787,6 @@ class PublicRegistrationForm(forms.ModelForm):
 
         if OTHER_ROLE == current_role:
             if not re.match(r'^[A-Za-z0-9 ]+$', current_role_other):
-                raise forms.ValidationError("Please enter a valid Role.")
+                raise forms.ValidationError(_("Please enter a valid Role."))
 
         return current_role_other

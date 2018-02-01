@@ -242,7 +242,7 @@ def get_course_position_tree(user_id, course_id, user_api_impl=user_api):
     course_detail = False
     try:
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
-        language = course_detail.languages[0] if course_detail.languages else settings.LANGUAGE_CODE
+        language = course_detail.language if course_detail.language else settings.LANGUAGE_CODE
         set_language(language)
     except:
         course_detail = False

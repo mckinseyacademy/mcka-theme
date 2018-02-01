@@ -19,6 +19,7 @@ from api_client import user_api, third_party_auth_api, organization_api, course_
 from api_client.api_error import ApiError
 from mobile_apps.constants import MOBILE_APP_DEPLOYMENT_MECHANISMS
 from license import controller as license_controller
+from util.i18n_helpers import format_lazy
 
 from .models import UserPasswordReset, UserActivation
 
@@ -69,8 +70,6 @@ def is_future_start(date):
 
 def save_new_client_image(old_image_url, new_image_url, client):
 
-    import StringIO
-    from PIL import Image
     from django.core.files.storage import default_storage
 
     new_image_url_name = os.path.splitext(new_image_url)[0]
@@ -129,8 +128,10 @@ def process_access_key(user, access_key, client):
     """
     company_ids = [company.id for company in user_api.get_user_organizations(user.id)]
     if company_ids and client.id not in company_ids:
-        error_message = _("Access Key {key} is associated with company {company}, "
-                          "but you're not registered with it").format(key=access_key.code, company=client.display_name)
+        error_message = format_lazy(_("Access Key {key} is associated with company {company}, "
+                                      "but you're not registered with it"),
+                                    key=access_key.code,
+                                    company=client.display_name)
         return ProcessAccessKeyResult(
             enrolled_in_course_ids=None, new_enrollements_course_ids=None, messages=[(messages.ERROR, error_message)]
         )
@@ -194,7 +195,9 @@ def assign_student_to_program(user, client, program_id):
     if remaining <= 0:
         message = (
             messages.ERROR,
-            _("Unable to enroll you in the requested program, {}. No remaining places.").format(program.display_name)
+            format_lazy(_("Unable to enroll you in the requested program, {}. No remaining "
+                          "places."),
+                        program.display_name)
         )
         return AssignStudentToProgramResult(None, message)
 
@@ -216,25 +219,27 @@ def enroll_student_in_course(user, program, course_id):
         try:
             user_api.enroll_user_in_course(user.id, course_id)
             message = (
-                messages.INFO, _("Successfully enrolled you in a course {}.").format(course_id)
+                messages.INFO, format_lazy(_("Successfully enrolled you in a course {}."), course_id)
             )
             enrolled, new_enrollment = True, True
         except ApiError as e:
             if e.code == 409:
                 message = (
                     messages.INFO,
-                    _('You are already enrolled in course "{}"').format(course_id)
+                    format_lazy(_('You are already enrolled in course "{}"'), course_id)
                 )
                 enrolled = True
             else:
                 message = (
                     messages.ERROR,
-                    _('Unable to enroll you in course "{}".').format(course_id)
+                    format_lazy(_('Unable to enroll you in course "{}".'), course_id)
                 )
     else:
         message = (
             messages.ERROR,
-            _('Unable to enroll you in course "{}" - it is no longer part of your program.').format(course_id)
+            format_lazy(_('Unable to enroll you in course "{}" - it is '
+                          'no longer part of your program.'),
+                        course_id)
         )
     return EnrollStudentInCourseResult(course_id, enrolled, new_enrollment, message)
 
@@ -422,6 +427,7 @@ def _process_course_run_closed(registration_request, course_run):
     send_email(email_template_html, subject, link, template_text, registration_request.first_name, registration_request.company_email)
 
 
+
 def send_email(email_template_html, subject, link, template_text, user_name, user_email):
 
     c = {
@@ -438,7 +444,7 @@ def send_email(email_template_html, subject, link, template_text, user_name, use
         email_plain,
         settings.APROS_EMAIL_SENDER,
         [user_email],
-        headers = {'Reply-To': settings.APROS_EMAIL_SENDER})
+        headers={'Reply-To': settings.APROS_EMAIL_SENDER})
     email.attach_alternative(email_html, "text/html")
     email.mixed_subtype = 'related'
 
@@ -457,10 +463,11 @@ def _set_number_of_enrolled_users(course_run):
     return users_without_roles
 
 
+
 def send_warning_email_to_admin(course_run):
 
     email_template_html = 'registration/public_registration_warning.haml'
-    subject = 'Demo Registration - Warning'
+    subject = _('Demo Registration - Warning')
 
     c = {
         'max_participants': course_run.max_participants,
@@ -475,7 +482,7 @@ def send_warning_email_to_admin(course_run):
         email_plain,
         settings.APROS_EMAIL_SENDER,
         [settings.DEDICATED_COURSE_RUN_PERSON],
-        headers = {'Reply-To': settings.APROS_EMAIL_SENDER})
+        headers={'Reply-To': settings.APROS_EMAIL_SENDER})
     email.attach_alternative(email_html, 'text/html')
     email.send(fail_silently=False)
 

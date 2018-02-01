@@ -501,9 +501,9 @@ def finalize_sso_registration(request):
         expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
     except Exception:
         log.exception("Error parsing/validating provider data (query parameter).")
-        return HttpResponseBadRequest("No provider data found.")
+        return HttpResponseBadRequest(_("No provider data found."))
     if hmac_digest != expected_digest:  # If we upgrade to Python 2.7.7+ use hmac.compare_digest instead
-        return HttpResponseForbidden("Provider data does not seem valid.")
+        return HttpResponseForbidden(_("Provider data does not seem valid."))
 
     # Store the provider data in the session and proceed to the registration form:
     request.session['provider_data'] = provider_data
@@ -557,7 +557,7 @@ def sso_registration_form(request):
 
     # The user must have come from /access/ with a valid AccessKey:
     if SSO_ACCESS_KEY_SESSION_ENTRY not in request.session:
-        return HttpResponseForbidden('Access Key missing.')
+        return HttpResponseForbidden(_('Access Key missing.'))
     try:
         access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
@@ -625,7 +625,7 @@ def sso_registration_form(request):
                 )
                 return HttpResponseRedirect(complete_url)
             except ApiError as exc:
-                error = _("Failed to register user: {exception_message}".format(exception_message=exc.message))
+                error = _("Failed to register user: {exception_message}").format(exception_message=exc.message)
         else:
             error = _("Some required information was missing. Please check the fields below.")
 
@@ -784,12 +784,15 @@ def home(request):
                     if days > 1:
                         days = days + 's'
                     popup = {'title': '', 'description': ''}
-                    popup['title'] = "Welcome to McKinsey Academy"
-                    popup['description'] = "Your program will start in {}. Please explore the site to learn more about the experience in the meantime.".format(
-                        days)
+                    popup['title'] = _("Welcome to McKinsey Academy")
+                    popup['description'] = _("Your program will start in {days} days. "
+                                             "Please explore the site to learn more about the "
+                                             "experience in the meantime.").format(days=days)
                     if course:
-                        popup['description'] = "Your course begins in {}. Before the course begins, you can explore this site to learn more about what to expect.".format(
-                            days)
+                        popup['description'] = _("Your course begins in {days} days. "
+                                                 "Before the course begins, "
+                                                 "you can explore this site to learn more about "
+                                                 "what to expect.").format(days=days)
                         data.update({'course': course})
                     data.update({'program': program, 'popup': popup})
                     request.session['program_popup'] = True
@@ -1004,7 +1007,7 @@ def demo_registration(request, course_run_name):
     except ObjectDoesNotExist:
         course_run = None
 
-    registration_status = "Initial"
+    registration_status = _("Initial")
 
     if course_run:
         if request.method == 'POST':
@@ -1031,18 +1034,18 @@ def demo_registration(request, course_run_name):
 
                 if (course_run.total_participants >= course_run.max_participants) or not course_run.is_open:
                     _process_course_run_closed(registration_request, course_run)
-                    registration_status = "Course Closed"
+                    registration_status = _("Course Closed")
 
                 #if existing user, send user object
-                if registration_status == "Initial":
+                if registration_status == _("Initial"):
                     try:
                         if not registration_request.new_user:
                             process_registration_request(request, registration_request, course_run, users[0])
                         else:
                             process_registration_request(request, registration_request, course_run)
-                        registration_status = "Registered"
+                        registration_status = _("Registered")
                     except ValueError:
-                        registration_status = "Error"
+                        registration_status = _("Error")
         else:
             form = PublicRegistrationForm(course_run_name=course_run_name)
 

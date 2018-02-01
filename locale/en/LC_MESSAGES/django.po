@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-01-30 12:37+0000\n"
+"POT-Creation-Date: 2018-02-01 09:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,48 +24,63 @@ msgid ""
 "registered with it"
 msgstr ""
 
-#: accounts/controller.py:183
+#: accounts/controller.py:185
 msgid "Unable to enroll you in the requested program, {}. No remaining places."
 msgstr ""
 
-#: accounts/controller.py:205 accounts/controller.py:237
+#: accounts/controller.py:209 accounts/controller.py:243
 msgid "Successfully enrolled you in a course {}."
 msgstr ""
 
-#: accounts/controller.py:212 accounts/controller.py:244
+#: accounts/controller.py:216 accounts/controller.py:250
 msgid "You are already enrolled in course \"{}\""
 msgstr ""
 
-#: accounts/controller.py:218 accounts/controller.py:250
+#: accounts/controller.py:222 accounts/controller.py:256
 msgid "Unable to enroll you in course \"{}\"."
 msgstr ""
 
-#: accounts/controller.py:223
+#: accounts/controller.py:227
 msgid ""
 "Unable to enroll you in course \"{}\" - it is no longer part of your program."
 msgstr ""
 
-#: accounts/forms.py:29 marketing/forms.py:28
+#: accounts/controller.py:308 accounts/controller.py:321
+#: accounts/controller.py:340 accounts/views.py:785
+#: templates/accounts/activate.haml:16
+#: templates/accounts/public_registration.haml:42 templates/layout.haml:240
+msgid "Welcome to McKinsey Academy"
+msgstr ""
+
+#: accounts/controller.py:349
+msgid "Your request to access McKinsey Academy"
+msgstr ""
+
+#: accounts/controller.py:451
+msgid "Demo Registration - Warning"
+msgstr ""
+
+#: accounts/forms.py:30 marketing/forms.py:28
 msgid "Bachelor's degree"
 msgstr ""
 
-#: accounts/forms.py:30 marketing/forms.py:29
+#: accounts/forms.py:31 marketing/forms.py:29
 msgid "Master's of Business Administration (MBA)"
 msgstr ""
 
-#: accounts/forms.py:31 marketing/forms.py:30
+#: accounts/forms.py:32 marketing/forms.py:30
 msgid "Master's degree (non MBA)"
 msgstr ""
 
-#: accounts/forms.py:32 marketing/forms.py:31
+#: accounts/forms.py:33 marketing/forms.py:31
 msgid "Doctorate (PhD)"
 msgstr ""
 
-#: accounts/forms.py:33 marketing/forms.py:32
+#: accounts/forms.py:34 marketing/forms.py:32
 msgid "Other"
 msgstr ""
 
-#: accounts/forms.py:37
+#: accounts/forms.py:38
 #: templates/admin/participants/participant_details.haml:139
 #: templates/admin/participants/participant_details.haml:265
 #: templates/admin/participants/participant_details.haml:273
@@ -74,7 +89,7 @@ msgstr ""
 msgid "Female"
 msgstr ""
 
-#: accounts/forms.py:38
+#: accounts/forms.py:39
 #: templates/admin/participants/participant_details.haml:137
 #: templates/admin/participants/participant_details.haml:263
 #: templates/admin/participants/participant_details.haml:271
@@ -83,1037 +98,1039 @@ msgstr ""
 msgid "Male"
 msgstr ""
 
-#: accounts/forms.py:46
+#: accounts/forms.py:47
 msgid "Afghanistan"
 msgstr ""
 
-#: accounts/forms.py:47
+#: accounts/forms.py:48
 msgid "Åland Islands"
 msgstr ""
 
-#: accounts/forms.py:48
+#: accounts/forms.py:49
 msgid "Albania"
 msgstr ""
 
-#: accounts/forms.py:49
+#: accounts/forms.py:50
 msgid "Algeria"
 msgstr ""
 
-#: accounts/forms.py:50
+#: accounts/forms.py:51
 msgid "American Samoa"
 msgstr ""
 
-#: accounts/forms.py:51
+#: accounts/forms.py:52
 msgid "Andorra"
 msgstr ""
 
-#: accounts/forms.py:52
+#: accounts/forms.py:53
 msgid "Angola"
 msgstr ""
 
-#: accounts/forms.py:53
+#: accounts/forms.py:54
 msgid "Anguilla"
 msgstr ""
 
-#: accounts/forms.py:54
+#: accounts/forms.py:55
 msgid "Antarctica"
 msgstr ""
 
-#: accounts/forms.py:55
+#: accounts/forms.py:56
 msgid "Antigua and Barbuda"
 msgstr ""
 
-#: accounts/forms.py:56
+#: accounts/forms.py:57
 msgid "Argentina"
 msgstr ""
 
-#: accounts/forms.py:57
+#: accounts/forms.py:58
 msgid "Armenia"
 msgstr ""
 
-#: accounts/forms.py:58
+#: accounts/forms.py:59
 msgid "Aruba"
 msgstr ""
 
-#: accounts/forms.py:59
+#: accounts/forms.py:60
 msgid "Australia"
 msgstr ""
 
-#: accounts/forms.py:60
+#: accounts/forms.py:61
 msgid "Austria"
 msgstr ""
 
-#: accounts/forms.py:61
+#: accounts/forms.py:62
 msgid "Azerbaijan"
 msgstr ""
 
-#: accounts/forms.py:62
+#: accounts/forms.py:63
 msgid "Bahamas"
 msgstr ""
 
-#: accounts/forms.py:63
+#: accounts/forms.py:64
 msgid "Bahrain"
 msgstr ""
 
-#: accounts/forms.py:64
+#: accounts/forms.py:65
 msgid "Bangladesh"
 msgstr ""
 
-#: accounts/forms.py:65
+#: accounts/forms.py:66
 msgid "Barbados"
 msgstr ""
 
-#: accounts/forms.py:66
+#: accounts/forms.py:67
 msgid "Belarus"
 msgstr ""
 
-#: accounts/forms.py:67
+#: accounts/forms.py:68
 msgid "Belgium"
 msgstr ""
 
-#: accounts/forms.py:68
+#: accounts/forms.py:69
 msgid "Belize"
 msgstr ""
 
-#: accounts/forms.py:69
+#: accounts/forms.py:70
 msgid "Benin"
 msgstr ""
 
-#: accounts/forms.py:70
+#: accounts/forms.py:71
 msgid "Bermuda"
 msgstr ""
 
-#: accounts/forms.py:71
+#: accounts/forms.py:72
 msgid "Bhutan"
 msgstr ""
 
-#: accounts/forms.py:72
+#: accounts/forms.py:73
 msgid "Bolivia, Plurinational State of"
 msgstr ""
 
-#: accounts/forms.py:73
+#: accounts/forms.py:74
 msgid "Bonaire, Sint Eustatius and Saba"
 msgstr ""
 
-#: accounts/forms.py:74
+#: accounts/forms.py:75
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
-#: accounts/forms.py:75
+#: accounts/forms.py:76
 msgid "Botswana"
 msgstr ""
 
-#: accounts/forms.py:76
+#: accounts/forms.py:77
 msgid "Bouvet Island"
 msgstr ""
 
-#: accounts/forms.py:77
+#: accounts/forms.py:78
 msgid "Brazil"
 msgstr ""
 
-#: accounts/forms.py:78
+#: accounts/forms.py:79
 msgid "British Indian Ocean Territory"
 msgstr ""
 
-#: accounts/forms.py:79
+#: accounts/forms.py:80
 msgid "Brunei Darussalam"
 msgstr ""
 
-#: accounts/forms.py:80
+#: accounts/forms.py:81
 msgid "Bulgaria"
 msgstr ""
 
-#: accounts/forms.py:81
+#: accounts/forms.py:82
 msgid "Burkina Faso"
 msgstr ""
 
-#: accounts/forms.py:82
+#: accounts/forms.py:83
 msgid "Burundi"
 msgstr ""
 
-#: accounts/forms.py:83
+#: accounts/forms.py:84
 msgid "Cambodia"
 msgstr ""
 
-#: accounts/forms.py:84
+#: accounts/forms.py:85
 msgid "Cameroon"
 msgstr ""
 
-#: accounts/forms.py:85
+#: accounts/forms.py:86
 msgid "Canada"
 msgstr ""
 
-#: accounts/forms.py:86
+#: accounts/forms.py:87
 msgid "Cape Verde"
 msgstr ""
 
-#: accounts/forms.py:87
+#: accounts/forms.py:88
 msgid "Cayman Islands"
 msgstr ""
 
-#: accounts/forms.py:88
+#: accounts/forms.py:89
 msgid "Central African Republic"
 msgstr ""
 
-#: accounts/forms.py:89
+#: accounts/forms.py:90
 msgid "Chad"
 msgstr ""
 
-#: accounts/forms.py:90
+#: accounts/forms.py:91
 msgid "Chile"
 msgstr ""
 
-#: accounts/forms.py:91
+#: accounts/forms.py:92
 msgid "China"
 msgstr ""
 
-#: accounts/forms.py:92
+#: accounts/forms.py:93
 msgid "Christmas Island"
 msgstr ""
 
-#: accounts/forms.py:93
+#: accounts/forms.py:94
 msgid "Cocos (Keeling) Islands"
 msgstr ""
 
-#: accounts/forms.py:94
+#: accounts/forms.py:95
 msgid "Colombia"
 msgstr ""
 
-#: accounts/forms.py:95
+#: accounts/forms.py:96
 msgid "Comoros"
 msgstr ""
 
-#: accounts/forms.py:96
+#: accounts/forms.py:97
 msgid "Congo"
 msgstr ""
 
-#: accounts/forms.py:97
+#: accounts/forms.py:98
 msgid "Congo, The Democratic Republic of the"
 msgstr ""
 
-#: accounts/forms.py:98
+#: accounts/forms.py:99
 msgid "Cook Islands"
 msgstr ""
 
-#: accounts/forms.py:99
+#: accounts/forms.py:100
 msgid "Costa Rica"
 msgstr ""
 
-#: accounts/forms.py:100
+#: accounts/forms.py:101
 msgid "Côte D'ivoire"
 msgstr ""
 
-#: accounts/forms.py:101
+#: accounts/forms.py:102
 msgid "Croatia"
 msgstr ""
 
-#: accounts/forms.py:102
+#: accounts/forms.py:103
 msgid "Cuba"
 msgstr ""
 
-#: accounts/forms.py:103
+#: accounts/forms.py:104
 msgid "Curaçao"
 msgstr ""
 
-#: accounts/forms.py:104
+#: accounts/forms.py:105
 msgid "Cyprus"
 msgstr ""
 
-#: accounts/forms.py:105
+#: accounts/forms.py:106
 msgid "Czech Republic"
 msgstr ""
 
-#: accounts/forms.py:106
+#: accounts/forms.py:107
 msgid "Denmark"
 msgstr ""
 
-#: accounts/forms.py:107
+#: accounts/forms.py:108
 msgid "Djibouti"
 msgstr ""
 
-#: accounts/forms.py:108
+#: accounts/forms.py:109
 msgid "Dominica"
 msgstr ""
 
-#: accounts/forms.py:109
+#: accounts/forms.py:110
 msgid "Dominican Republic"
 msgstr ""
 
-#: accounts/forms.py:110
+#: accounts/forms.py:111
 msgid "Ecuador"
 msgstr ""
 
-#: accounts/forms.py:111
+#: accounts/forms.py:112
 msgid "Egypt"
 msgstr ""
 
-#: accounts/forms.py:112
+#: accounts/forms.py:113
 msgid "El Salvador"
 msgstr ""
 
-#: accounts/forms.py:113
+#: accounts/forms.py:114
 msgid "Equatorial Guinea"
 msgstr ""
 
-#: accounts/forms.py:114
+#: accounts/forms.py:115
 msgid "Eritrea"
 msgstr ""
 
-#: accounts/forms.py:115
+#: accounts/forms.py:116
 msgid "Estonia"
 msgstr ""
 
-#: accounts/forms.py:116
+#: accounts/forms.py:117
 msgid "Ethiopia"
 msgstr ""
 
-#: accounts/forms.py:117
+#: accounts/forms.py:118
 msgid "Falkland Islands (Malvinas)"
 msgstr ""
 
-#: accounts/forms.py:118
+#: accounts/forms.py:119
 msgid "Faroe Islands"
 msgstr ""
 
-#: accounts/forms.py:119
+#: accounts/forms.py:120
 msgid "Fiji"
 msgstr ""
 
-#: accounts/forms.py:120
+#: accounts/forms.py:121
 msgid "Finland"
 msgstr ""
 
-#: accounts/forms.py:121
+#: accounts/forms.py:122
 msgid "France"
 msgstr ""
 
-#: accounts/forms.py:122
+#: accounts/forms.py:123
 msgid "French Guiana"
 msgstr ""
 
-#: accounts/forms.py:123
+#: accounts/forms.py:124
 msgid "French Polynesia"
 msgstr ""
 
-#: accounts/forms.py:124
+#: accounts/forms.py:125
 msgid "French Southern Territories"
 msgstr ""
 
-#: accounts/forms.py:125
+#: accounts/forms.py:126
 msgid "Gabon"
 msgstr ""
 
-#: accounts/forms.py:126
+#: accounts/forms.py:127
 msgid "Gambia"
 msgstr ""
 
-#: accounts/forms.py:127
+#: accounts/forms.py:128
 msgid "Georgia"
 msgstr ""
 
-#: accounts/forms.py:128
+#: accounts/forms.py:129
 msgid "Germany"
 msgstr ""
 
-#: accounts/forms.py:129
+#: accounts/forms.py:130
 msgid "Ghana"
 msgstr ""
 
-#: accounts/forms.py:130
+#: accounts/forms.py:131
 msgid "Gibraltar"
 msgstr ""
 
-#: accounts/forms.py:131
+#: accounts/forms.py:132
 msgid "Greece"
 msgstr ""
 
-#: accounts/forms.py:132
+#: accounts/forms.py:133
 msgid "Greenland"
 msgstr ""
 
-#: accounts/forms.py:133
+#: accounts/forms.py:134
 msgid "Grenada"
 msgstr ""
 
-#: accounts/forms.py:134
+#: accounts/forms.py:135
 msgid "Guadeloupe"
 msgstr ""
 
-#: accounts/forms.py:135
+#: accounts/forms.py:136
 msgid "Guam"
 msgstr ""
 
-#: accounts/forms.py:136
+#: accounts/forms.py:137
 msgid "Guatemala"
 msgstr ""
 
-#: accounts/forms.py:137
+#: accounts/forms.py:138
 msgid "Guernsey"
 msgstr ""
 
-#: accounts/forms.py:138
+#: accounts/forms.py:139
 msgid "Guinea"
 msgstr ""
 
-#: accounts/forms.py:139
+#: accounts/forms.py:140
 msgid "Guinea-bissau"
 msgstr ""
 
-#: accounts/forms.py:140
+#: accounts/forms.py:141
 msgid "Guyana"
 msgstr ""
 
-#: accounts/forms.py:141
+#: accounts/forms.py:142
 msgid "Haiti"
 msgstr ""
 
-#: accounts/forms.py:142
+#: accounts/forms.py:143
 msgid "Heard Island and McDonald Islands"
 msgstr ""
 
-#: accounts/forms.py:143
+#: accounts/forms.py:144
 msgid "Holy See (Vatican City State)"
 msgstr ""
 
-#: accounts/forms.py:144
+#: accounts/forms.py:145
 msgid "Honduras"
 msgstr ""
 
-#: accounts/forms.py:145
+#: accounts/forms.py:146
 msgid "Hong Kong"
 msgstr ""
 
-#: accounts/forms.py:146
+#: accounts/forms.py:147
 msgid "Hungary"
 msgstr ""
 
-#: accounts/forms.py:147
+#: accounts/forms.py:148
 msgid "Iceland"
 msgstr ""
 
-#: accounts/forms.py:148
+#: accounts/forms.py:149
 msgid "India"
 msgstr ""
 
-#: accounts/forms.py:149
+#: accounts/forms.py:150
 msgid "Indonesia"
 msgstr ""
 
-#: accounts/forms.py:150
+#: accounts/forms.py:151
 msgid "Iran, Islamic Republic of"
 msgstr ""
 
-#: accounts/forms.py:151
+#: accounts/forms.py:152
 msgid "Iraq"
 msgstr ""
 
-#: accounts/forms.py:152
+#: accounts/forms.py:153
 msgid "Ireland"
 msgstr ""
 
-#: accounts/forms.py:153
+#: accounts/forms.py:154
 msgid "Isle of Man"
 msgstr ""
 
-#: accounts/forms.py:154
+#: accounts/forms.py:155
 msgid "Israel"
 msgstr ""
 
-#: accounts/forms.py:155
+#: accounts/forms.py:156
 msgid "Italy"
 msgstr ""
 
-#: accounts/forms.py:156
+#: accounts/forms.py:157
 msgid "Jamaica"
 msgstr ""
 
-#: accounts/forms.py:157
+#: accounts/forms.py:158
 msgid "Japan"
 msgstr ""
 
-#: accounts/forms.py:158
+#: accounts/forms.py:159
 msgid "Jersey"
 msgstr ""
 
-#: accounts/forms.py:159
+#: accounts/forms.py:160
 msgid "Jordan"
 msgstr ""
 
-#: accounts/forms.py:160
+#: accounts/forms.py:161
 msgid "Kazakhstan"
 msgstr ""
 
-#: accounts/forms.py:161
+#: accounts/forms.py:162
 msgid "Kenya"
 msgstr ""
 
-#: accounts/forms.py:162
+#: accounts/forms.py:163
 msgid "Kiribati"
 msgstr ""
 
-#: accounts/forms.py:163
+#: accounts/forms.py:164
 msgid "Korea, Democratic People's Republic of"
 msgstr ""
 
-#: accounts/forms.py:164
+#: accounts/forms.py:165
 msgid "Korea, Republic of"
 msgstr ""
 
-#: accounts/forms.py:165
+#: accounts/forms.py:166
 msgid "Kuwait"
 msgstr ""
 
-#: accounts/forms.py:166
+#: accounts/forms.py:167
 msgid "Kyrgyzstan"
 msgstr ""
 
-#: accounts/forms.py:167
+#: accounts/forms.py:168
 msgid "Lao People's Democratic Republic"
 msgstr ""
 
-#: accounts/forms.py:168
+#: accounts/forms.py:169
 msgid "Latvia"
 msgstr ""
 
-#: accounts/forms.py:169
+#: accounts/forms.py:170
 msgid "Lebanon"
 msgstr ""
 
-#: accounts/forms.py:170
+#: accounts/forms.py:171
 msgid "Lesotho"
 msgstr ""
 
-#: accounts/forms.py:171
+#: accounts/forms.py:172
 msgid "Liberia"
 msgstr ""
 
-#: accounts/forms.py:172
+#: accounts/forms.py:173
 msgid "Libya"
 msgstr ""
 
-#: accounts/forms.py:173
+#: accounts/forms.py:174
 msgid "Liechtenstein"
 msgstr ""
 
-#: accounts/forms.py:174
+#: accounts/forms.py:175
 msgid "Lithuania"
 msgstr ""
 
-#: accounts/forms.py:175
+#: accounts/forms.py:176
 msgid "Luxembourg"
 msgstr ""
 
-#: accounts/forms.py:176
+#: accounts/forms.py:177
 msgid "Macao"
 msgstr ""
 
-#: accounts/forms.py:177
+#: accounts/forms.py:178
 msgid "Macedonia, The Former Yugoslav Republic of"
 msgstr ""
 
-#: accounts/forms.py:178
+#: accounts/forms.py:179
 msgid "Madagascar"
 msgstr ""
 
-#: accounts/forms.py:179
+#: accounts/forms.py:180
 msgid "Malawi"
 msgstr ""
 
-#: accounts/forms.py:180
+#: accounts/forms.py:181
 msgid "Malaysia"
 msgstr ""
 
-#: accounts/forms.py:181
+#: accounts/forms.py:182
 msgid "Maldives"
 msgstr ""
 
-#: accounts/forms.py:182
+#: accounts/forms.py:183
 msgid "Mali"
 msgstr ""
 
-#: accounts/forms.py:183
+#: accounts/forms.py:184
 msgid "Malta"
 msgstr ""
 
-#: accounts/forms.py:184
+#: accounts/forms.py:185
 msgid "Marshall Islands"
 msgstr ""
 
-#: accounts/forms.py:185
+#: accounts/forms.py:186
 msgid "Martinique"
 msgstr ""
 
-#: accounts/forms.py:186
+#: accounts/forms.py:187
 msgid "Mauritania"
 msgstr ""
 
-#: accounts/forms.py:187
+#: accounts/forms.py:188
 msgid "Mauritius"
 msgstr ""
 
-#: accounts/forms.py:188
+#: accounts/forms.py:189
 msgid "Mayotte"
 msgstr ""
 
-#: accounts/forms.py:189
+#: accounts/forms.py:190
 msgid "Mexico"
 msgstr ""
 
-#: accounts/forms.py:190
+#: accounts/forms.py:191
 msgid "Micronesia, Federated States of"
 msgstr ""
 
-#: accounts/forms.py:191
+#: accounts/forms.py:192
 msgid "Moldova, Republic of"
 msgstr ""
 
-#: accounts/forms.py:192
+#: accounts/forms.py:193
 msgid "Monaco"
 msgstr ""
 
-#: accounts/forms.py:193
+#: accounts/forms.py:194
 msgid "Mongolia"
 msgstr ""
 
-#: accounts/forms.py:194
+#: accounts/forms.py:195
 msgid "Montenegro"
 msgstr ""
 
-#: accounts/forms.py:195
+#: accounts/forms.py:196
 msgid "Montserrat"
 msgstr ""
 
-#: accounts/forms.py:196
+#: accounts/forms.py:197
 msgid "Morocco"
 msgstr ""
 
-#: accounts/forms.py:197
+#: accounts/forms.py:198
 msgid "Mozambique"
 msgstr ""
 
-#: accounts/forms.py:198
+#: accounts/forms.py:199
 msgid "Myanmar"
 msgstr ""
 
-#: accounts/forms.py:199
+#: accounts/forms.py:200
 msgid "Namibia"
 msgstr ""
 
-#: accounts/forms.py:200
+#: accounts/forms.py:201
 msgid "Nauru"
 msgstr ""
 
-#: accounts/forms.py:201
+#: accounts/forms.py:202
 msgid "Nepal"
 msgstr ""
 
-#: accounts/forms.py:202
+#: accounts/forms.py:203
 msgid "Netherlands"
 msgstr ""
 
-#: accounts/forms.py:203
+#: accounts/forms.py:204
 msgid "New Caledonia"
 msgstr ""
 
-#: accounts/forms.py:204
+#: accounts/forms.py:205
 msgid "New Zealand"
 msgstr ""
 
-#: accounts/forms.py:205
+#: accounts/forms.py:206
 msgid "Nicaragua"
 msgstr ""
 
-#: accounts/forms.py:206
+#: accounts/forms.py:207
 msgid "Niger"
 msgstr ""
 
-#: accounts/forms.py:207
+#: accounts/forms.py:208
 msgid "Nigeria"
 msgstr ""
 
-#: accounts/forms.py:208
+#: accounts/forms.py:209
 msgid "Niue"
 msgstr ""
 
-#: accounts/forms.py:209
+#: accounts/forms.py:210
 msgid "Norfolk Island"
 msgstr ""
 
-#: accounts/forms.py:210
+#: accounts/forms.py:211
 msgid "Northern Mariana Islands"
 msgstr ""
 
-#: accounts/forms.py:211
+#: accounts/forms.py:212
 msgid "Norway"
 msgstr ""
 
-#: accounts/forms.py:212
+#: accounts/forms.py:213
 msgid "Oman"
 msgstr ""
 
-#: accounts/forms.py:213
+#: accounts/forms.py:214
 msgid "Pakistan"
 msgstr ""
 
-#: accounts/forms.py:214
+#: accounts/forms.py:215
 msgid "Palau"
 msgstr ""
 
-#: accounts/forms.py:215
+#: accounts/forms.py:216
 msgid "Palestinian Territory, Occupied"
 msgstr ""
 
-#: accounts/forms.py:216
+#: accounts/forms.py:217
 msgid "Panama"
 msgstr ""
 
-#: accounts/forms.py:217
+#: accounts/forms.py:218
 msgid "Papua New Guinea"
 msgstr ""
 
-#: accounts/forms.py:218
+#: accounts/forms.py:219
 msgid "Paraguay"
 msgstr ""
 
-#: accounts/forms.py:219
+#: accounts/forms.py:220
 msgid "Peru"
 msgstr ""
 
-#: accounts/forms.py:220
+#: accounts/forms.py:221
 msgid "Philippines"
 msgstr ""
 
-#: accounts/forms.py:221
+#: accounts/forms.py:222
 msgid "Pitcairn"
 msgstr ""
 
-#: accounts/forms.py:222
+#: accounts/forms.py:223
 msgid "Poland"
 msgstr ""
 
-#: accounts/forms.py:223
+#: accounts/forms.py:224
 msgid "Portugal"
 msgstr ""
 
-#: accounts/forms.py:224
+#: accounts/forms.py:225
 msgid "Puerto Rico"
 msgstr ""
 
-#: accounts/forms.py:225
+#: accounts/forms.py:226
 msgid "Qatar"
 msgstr ""
 
-#: accounts/forms.py:226
+#: accounts/forms.py:227
 msgid "Réunion"
 msgstr ""
 
-#: accounts/forms.py:227
+#: accounts/forms.py:228
 msgid "Romania"
 msgstr ""
 
-#: accounts/forms.py:228
+#: accounts/forms.py:229
 msgid "Russian Federation"
 msgstr ""
 
-#: accounts/forms.py:229
+#: accounts/forms.py:230
 msgid "Rwanda"
 msgstr ""
 
-#: accounts/forms.py:230
+#: accounts/forms.py:231
 msgid "Saint Barthélemy"
 msgstr ""
 
-#: accounts/forms.py:231
+#: accounts/forms.py:232
 msgid "Saint Helena, Ascension and Tristan Da Cunha"
 msgstr ""
 
-#: accounts/forms.py:232
+#: accounts/forms.py:233
 msgid "Saint Kitts and Nevis"
 msgstr ""
 
-#: accounts/forms.py:233
+#: accounts/forms.py:234
 msgid "Saint Lucia"
 msgstr ""
 
-#: accounts/forms.py:234
+#: accounts/forms.py:235
 msgid "Saint Martin (French Part)"
 msgstr ""
 
-#: accounts/forms.py:235
+#: accounts/forms.py:236
 msgid "Saint Pierre and Miquelon"
 msgstr ""
 
-#: accounts/forms.py:236
+#: accounts/forms.py:237
 msgid "Saint Vincent and the Grenadines"
 msgstr ""
 
-#: accounts/forms.py:237
+#: accounts/forms.py:238
 msgid "Samoa"
 msgstr ""
 
-#: accounts/forms.py:238
+#: accounts/forms.py:239
 msgid "San Marino"
 msgstr ""
 
-#: accounts/forms.py:239
+#: accounts/forms.py:240
 msgid "Sao Tome and Principe"
 msgstr ""
 
-#: accounts/forms.py:240
+#: accounts/forms.py:241
 msgid "Saudi Arabia"
 msgstr ""
 
-#: accounts/forms.py:241
+#: accounts/forms.py:242
 msgid "Senegal"
 msgstr ""
 
-#: accounts/forms.py:242
+#: accounts/forms.py:243
 msgid "Serbia"
 msgstr ""
 
-#: accounts/forms.py:243
+#: accounts/forms.py:244
 msgid "Seychelles"
 msgstr ""
 
-#: accounts/forms.py:244
+#: accounts/forms.py:245
 msgid "Sierra Leone"
 msgstr ""
 
-#: accounts/forms.py:245
+#: accounts/forms.py:246
 msgid "Singapore"
 msgstr ""
 
-#: accounts/forms.py:246
+#: accounts/forms.py:247
 msgid "Sint Maarten (Dutch Part)"
 msgstr ""
 
-#: accounts/forms.py:247
+#: accounts/forms.py:248
 msgid "Slovakia"
 msgstr ""
 
-#: accounts/forms.py:248
+#: accounts/forms.py:249
 msgid "Slovenia"
 msgstr ""
 
-#: accounts/forms.py:249
+#: accounts/forms.py:250
 msgid "Solomon Islands"
 msgstr ""
 
-#: accounts/forms.py:250
+#: accounts/forms.py:251
 msgid "Somalia"
 msgstr ""
 
-#: accounts/forms.py:251
+#: accounts/forms.py:252
 msgid "South Africa"
 msgstr ""
 
-#: accounts/forms.py:252
+#: accounts/forms.py:253
 msgid "South Georgia and the South Sandwich Islands"
 msgstr ""
 
-#: accounts/forms.py:253
+#: accounts/forms.py:254
 msgid "South Sudan"
 msgstr ""
 
-#: accounts/forms.py:254
+#: accounts/forms.py:255
 msgid "Spain"
 msgstr ""
 
-#: accounts/forms.py:255
+#: accounts/forms.py:256
 msgid "Sri Lanka"
 msgstr ""
 
-#: accounts/forms.py:256
+#: accounts/forms.py:257
 msgid "Sudan"
 msgstr ""
 
-#: accounts/forms.py:257
+#: accounts/forms.py:258
 msgid "Suriname"
 msgstr ""
 
-#: accounts/forms.py:258
+#: accounts/forms.py:259
 msgid "Svalbard and Jan Mayen"
 msgstr ""
 
-#: accounts/forms.py:259
+#: accounts/forms.py:260
 msgid "Swaziland"
 msgstr ""
 
-#: accounts/forms.py:260
+#: accounts/forms.py:261
 msgid "Sweden"
 msgstr ""
 
-#: accounts/forms.py:261
+#: accounts/forms.py:262
 msgid "Switzerland"
 msgstr ""
 
-#: accounts/forms.py:262
+#: accounts/forms.py:263
 msgid "Syrian Arab Republic"
 msgstr ""
 
-#: accounts/forms.py:263
+#: accounts/forms.py:264
 msgid "Taiwan"
 msgstr ""
 
-#: accounts/forms.py:264
+#: accounts/forms.py:265
 msgid "Tajikistan"
 msgstr ""
 
-#: accounts/forms.py:265
+#: accounts/forms.py:266
 msgid "Tanzania, United Republic of"
 msgstr ""
 
-#: accounts/forms.py:266
+#: accounts/forms.py:267
 msgid "Thailand"
 msgstr ""
 
-#: accounts/forms.py:267
+#: accounts/forms.py:268
 msgid "Timor-leste"
 msgstr ""
 
-#: accounts/forms.py:268
+#: accounts/forms.py:269
 msgid "Togo"
 msgstr ""
 
-#: accounts/forms.py:269
+#: accounts/forms.py:270
 msgid "Tokelau"
 msgstr ""
 
-#: accounts/forms.py:270
+#: accounts/forms.py:271
 msgid "Tonga"
 msgstr ""
 
-#: accounts/forms.py:271
+#: accounts/forms.py:272
 msgid "Trinidad and Tobago"
 msgstr ""
 
-#: accounts/forms.py:272
+#: accounts/forms.py:273
 msgid "Tunisia"
 msgstr ""
 
-#: accounts/forms.py:273
+#: accounts/forms.py:274
 msgid "Turkey"
 msgstr ""
 
-#: accounts/forms.py:274
+#: accounts/forms.py:275
 msgid "Turkmenistan"
 msgstr ""
 
-#: accounts/forms.py:275
+#: accounts/forms.py:276
 msgid "Turks and Caicos Islands"
 msgstr ""
 
-#: accounts/forms.py:276
+#: accounts/forms.py:277
 msgid "Tuvalu"
 msgstr ""
 
-#: accounts/forms.py:277
+#: accounts/forms.py:278
 msgid "Uganda"
 msgstr ""
 
-#: accounts/forms.py:278
+#: accounts/forms.py:279
 msgid "Ukraine"
 msgstr ""
 
-#: accounts/forms.py:279
+#: accounts/forms.py:280
 msgid "United Arab Emirates"
 msgstr ""
 
-#: accounts/forms.py:280
+#: accounts/forms.py:281
 msgid "United Kingdom"
 msgstr ""
 
-#: accounts/forms.py:281
+#: accounts/forms.py:282
 msgid "United States"
 msgstr ""
 
-#: accounts/forms.py:282
+#: accounts/forms.py:283
 msgid "United States Minor Outlying Islands"
 msgstr ""
 
-#: accounts/forms.py:283
+#: accounts/forms.py:284
 msgid "Uruguay"
 msgstr ""
 
-#: accounts/forms.py:284
+#: accounts/forms.py:285
 msgid "Uzbekistan"
 msgstr ""
 
-#: accounts/forms.py:285
+#: accounts/forms.py:286
 msgid "Vanuatu"
 msgstr ""
 
-#: accounts/forms.py:286
+#: accounts/forms.py:287
 msgid "Venezuela, Bolivarian Republic of"
 msgstr ""
 
-#: accounts/forms.py:287
+#: accounts/forms.py:288
 msgid "Viet Nam"
 msgstr ""
 
-#: accounts/forms.py:288
+#: accounts/forms.py:289
 msgid "Virgin Islands, British"
 msgstr ""
 
-#: accounts/forms.py:289
+#: accounts/forms.py:290
 msgid "Virgin Islands, U.S."
 msgstr ""
 
-#: accounts/forms.py:290
+#: accounts/forms.py:291
 msgid "Wallis and Futuna"
 msgstr ""
 
-#: accounts/forms.py:291
+#: accounts/forms.py:292
 msgid "Western Sahara"
 msgstr ""
 
-#: accounts/forms.py:292
+#: accounts/forms.py:293
 msgid "Yemen"
 msgstr ""
 
-#: accounts/forms.py:293
+#: accounts/forms.py:294
 msgid "Zambia"
 msgstr ""
 
-#: accounts/forms.py:294
+#: accounts/forms.py:295
 msgid "Zimbabwe"
 msgstr ""
 
-#: accounts/forms.py:301
-msgid "Senior Executive (e.g., CXO, SVP)"
-msgstr ""
-
 #: accounts/forms.py:302
-msgid "Seasoned Leader/Senior Manager (e.g., VP, Director)"
+msgid "Senior Executive (e.g. SVP+)"
 msgstr ""
 
 #: accounts/forms.py:303
-msgid "Mid-Level Manager (e.g., Manager)"
+msgid "Seasoned Leader/Senior Manager (e.g. Director, VP)"
 msgstr ""
 
 #: accounts/forms.py:304
-msgid "Early Career Professional (e.g., Associate, Analyst)"
+msgid "Mid-Level Manager (e.g. Manager, Senior Manager)"
 msgstr ""
 
 #: accounts/forms.py:305
+msgid "Early Career Professional (e.g. Analyst/Associate)"
+msgstr ""
+
+#: accounts/forms.py:306
 msgid "Other (please describe below)"
 msgstr ""
 
-#: accounts/forms.py:338
+#: accounts/forms.py:341
+#, python-brace-format
+msgid "Email address {html_span}"
+msgstr ""
+
+#: accounts/forms.py:352
 #, python-brace-format
 msgid "Username {html_span}"
 msgstr ""
 
-#: accounts/forms.py:339
+#: accounts/forms.py:359
 #, python-brace-format
 msgid "Password {html_span}"
 msgstr ""
 
-#: accounts/forms.py:365 accounts/forms.py:507
-msgid "You must accept terms of service in order to continue"
-msgstr ""
-
-#: accounts/forms.py:402 marketing/forms.py:49 marketing/forms.py:93
+#: accounts/forms.py:370 accounts/forms.py:444 accounts/forms.py:462
+#: accounts/forms.py:559 marketing/forms.py:49 marketing/forms.py:93
 #: marketing/forms.py:127 templates/accounts/user_profile.haml:33
 #: templates/admin/companies/company_details.haml:181
 #: templates/admin/companies/company_details.haml:202
@@ -1125,24 +1142,151 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: accounts/forms.py:411
+#: accounts/forms.py:376
+#, python-brace-format
+msgid ""
+"Public username {html_span_start} This cannot be changed later."
+"{html_span_end}"
+msgstr ""
+
+#: accounts/forms.py:386 accounts/forms.py:571
+#, python-brace-format
+msgid ""
+"Password {html_span_start} Must be at least 8 characters and include upper "
+"and lowercase letters - plus numbers OR special characters.{html_span_end}"
+msgstr ""
+
+#: accounts/forms.py:400
+#, python-brace-format
+msgid "City {html_span}"
+msgstr ""
+
+#: accounts/forms.py:408 accounts/forms.py:584
+#, python-brace-format
+msgid ""
+"I agree to the {html_anchor_start} Terms of Service {html_anchor_end} and "
+"{html_anchor_second} Privacy Policy {html_anchor_end} {html_span}"
+msgstr ""
+
+#: accounts/forms.py:421 accounts/forms.py:596
+msgid "You must accept terms of service in order to continue"
+msgstr ""
+
+#: accounts/forms.py:471
 msgid "The account associated with this email is not activated yet"
 msgstr ""
 
-#: accounts/forms.py:448
+#: accounts/forms.py:508
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: accounts/forms.py:449
+#: accounts/forms.py:509
 msgid "Password doesn't match creation criteria."
 msgstr ""
 
-#: accounts/forms.py:451
+#: accounts/forms.py:511
 msgid "New password"
 msgstr ""
 
-#: accounts/forms.py:453
+#: accounts/forms.py:513
 msgid "New password confirmation"
+msgstr ""
+
+#: accounts/forms.py:543
+msgid "Formats accepted: JPG, PNG and GIF"
+msgstr ""
+
+#: accounts/forms.py:548 templates/admin/course_run/view.haml:63
+#: templates/admin/participants/participant_details.haml:90
+msgid "First Name"
+msgstr ""
+
+#: accounts/forms.py:549
+#: templates/admin/participants/participant_details.haml:95
+msgid "Last Name"
+msgstr ""
+
+#: accounts/forms.py:563
+#, python-brace-format
+msgid ""
+"Public username {html_span_start} This cannot be changed later. "
+"{html_span_end}"
+msgstr ""
+
+#: accounts/forms.py:630
+#, python-brace-format
+msgid "First Name {html_span}"
+msgstr ""
+
+#: accounts/forms.py:634
+#, python-brace-format
+msgid "Last Name {html_span}"
+msgstr ""
+
+#: accounts/forms.py:638
+#, python-brace-format
+msgid "Company Name {html_span}"
+msgstr ""
+
+#: accounts/forms.py:642
+#, python-brace-format
+msgid "Company Email {html_span}"
+msgstr ""
+
+#: accounts/forms.py:646
+#, python-brace-format
+msgid "Current Role {html_span}"
+msgstr ""
+
+#: accounts/forms.py:650
+#, python-brace-format
+msgid ""
+"{html_div_start}Note: personal email addresses will not be "
+"processed{html_div_end}"
+msgstr ""
+
+#: accounts/forms.py:656 accounts/forms.py:662
+#, python-brace-format
+msgid ""
+"{html_div_start}(please choose one of the following options) {html_div_end}"
+msgstr ""
+
+#: accounts/forms.py:675 accounts/forms.py:683
+msgid "Special characters or numbers are not valid."
+msgstr ""
+
+#: accounts/forms.py:692
+msgid "Email must be a string."
+msgstr ""
+
+#: accounts/forms.py:697
+#, python-brace-format
+msgid "Email '{email}' must be at least {min} characters long"
+msgstr ""
+
+#: accounts/forms.py:704
+#, python-brace-format
+msgid "Email '{email}' must be at most {max} characters long"
+msgstr ""
+
+#: accounts/forms.py:714
+msgid "This email address has already been registered."
+msgstr ""
+
+#: accounts/forms.py:719
+msgid "Please enter a valid company email address."
+msgstr ""
+
+#: accounts/forms.py:729
+msgid "Special characters are not valid."
+msgstr ""
+
+#: accounts/forms.py:741
+msgid "Please specify your Role."
+msgstr ""
+
+#: accounts/forms.py:745
+msgid "Please enter a valid Role."
 msgstr ""
 
 #: accounts/views.py:77
@@ -1182,6 +1326,18 @@ msgstr ""
 msgid "Invalid Activation Code"
 msgstr ""
 
+#: accounts/views.py:504
+msgid "No provider data found."
+msgstr ""
+
+#: accounts/views.py:506
+msgid "Provider data does not seem valid."
+msgstr ""
+
+#: accounts/views.py:560
+msgid "Access Key missing."
+msgstr ""
+
 #: accounts/views.py:575
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
@@ -1201,11 +1357,25 @@ msgstr ""
 msgid "Password reset unsuccessful"
 msgstr ""
 
-#: accounts/views.py:927
+#: accounts/views.py:786
+#, python-brace-format
+msgid ""
+"Your program will start in {days} days. Please explore the site to learn "
+"more about the experience in the meantime."
+msgstr ""
+
+#: accounts/views.py:790
+#, python-brace-format
+msgid ""
+"Your course begins in {days} days. Before the course begins, you can explore "
+"this site to learn more about what to expect."
+msgstr ""
+
+#: accounts/views.py:930
 msgid "Enter your full name"
 msgstr ""
 
-#: accounts/views.py:929 accounts/views.py:952 admin/views.py:1801
+#: accounts/views.py:932 accounts/views.py:955 admin/views.py:1801
 #: admin/views.py:1835 admin/views.py:4121
 #: templates/admin/client/navigation.haml:147
 #: templates/admin/course_meta_content/item_detail.haml:16
@@ -1215,8 +1385,24 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: accounts/views.py:950
+#: accounts/views.py:953
 msgid "Enter your title"
+msgstr ""
+
+#: accounts/views.py:1005 accounts/views.py:1035
+msgid "Initial"
+msgstr ""
+
+#: accounts/views.py:1032
+msgid "Course Closed"
+msgstr ""
+
+#: accounts/views.py:1041
+msgid "Registered"
+msgstr ""
+
+#: accounts/views.py:1043
+msgid "Error"
 msgstr ""
 
 #: admin/controller.py:275
@@ -1870,6 +2056,26 @@ msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr ""
 
+#: mcka_apros/settings.py:145
+msgid "English"
+msgstr ""
+
+#: mcka_apros/settings.py:146
+msgid "Arabic"
+msgstr ""
+
+#: mcka_apros/settings.py:148
+msgid "Esperanto"
+msgstr ""
+
+#: mcka_apros/settings.py:149
+msgid "RTL Test Language"
+msgstr ""
+
+#: mcka_apros/settings.py:150
+msgid "Fake translations"
+msgstr ""
+
 #: public_api/api_protect.py:49
 msgid "Client not found"
 msgstr ""
@@ -2017,11 +2223,6 @@ msgstr ""
 
 #: templates/accounts/activate.haml:6
 msgid "Register | McKinsey Academy"
-msgstr ""
-
-#: templates/accounts/activate.haml:16
-#: templates/accounts/public_registration.haml:42 templates/layout.haml:240
-msgid "Welcome to McKinsey Academy"
 msgstr ""
 
 #: templates/accounts/activate.haml:18
@@ -2863,11 +3064,6 @@ msgstr ""
 msgid "List of users registered for this course:"
 msgstr ""
 
-#: templates/admin/course_run/view.haml:63
-#: templates/admin/participants/participant_details.haml:90
-msgid "First Name"
-msgstr ""
-
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 msgid "Last name"
@@ -3206,10 +3402,6 @@ msgstr ""
 
 #: templates/admin/participants/participant_details.haml:86
 msgid "Resend Activation Link"
-msgstr ""
-
-#: templates/admin/participants/participant_details.haml:95
-msgid "Last Name"
 msgstr ""
 
 #: templates/admin/participants/participant_details.haml:116
