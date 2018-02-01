@@ -14,7 +14,8 @@ import os
 from datetime import timedelta
 from django.utils import timezone
 from django.db import models as db_models
-from django.dispatch import Signal
+from django.dispatch import Signal, receiver
+from django.db.models.signals import post_save
 
 from api_client.group_api import TAG_GROUPS
 
@@ -22,6 +23,7 @@ GROUP_PROJECT_CATEGORY = 'group-project'
 GROUP_PROJECT_V2_CATEGORY = 'gp-v2-project'
 GROUP_PROJECT_V2_ACTIVITY_CATEGORY = 'gp-v2-activity'
 GROUP_PROJECT_V2_GRADING_STAGES = ['gp-v2-stage-peer-review']
+OTHER_ROLE = "Other (please describe below)"
 
 class BaseGroupModel(group_models.GroupInfo):
 
@@ -680,3 +682,23 @@ class CourseRun(db_models.Model):
     email_template_existing = db_models.CharField(blank=False, null=False, max_length=2000)
     email_template_mcka = db_models.CharField(blank=False, null=False, max_length=2000)
     email_template_closed = db_models.CharField(blank=False, null=False, max_length=2000)
+    self_registration_page_heading = db_models.CharField(blank=False, null=False, max_length=2000, default="Self Registration Page Heading")
+    self_registration_description_text = db_models.CharField(blank=False, null=False, max_length=2000, default="Self Registration Description Text")
+
+
+class SelfRegistrationRoles(db_models.Model):
+    course_run = db_models.ForeignKey(
+        'CourseRun',
+        on_delete=db_models.CASCADE,
+    )
+    option_text = db_models.CharField(blank=False, null=False, max_length=500)
+
+    def __unicode__(self):
+        return self.option_text
+
+
+@receiver(post_save, sender=CourseRun)
+def create_self_reg_other_role(sender, instance, created, **kwargs):
+
+    if created:
+        SelfRegistrationRoles.objects.create(course_run=instance, option_text=OTHER_ROLE)

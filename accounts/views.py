@@ -36,9 +36,9 @@ from api_client import platform_api
 from api_client import http_request_methods
 from mobile_apps.controller import get_mobile_app_download_popup_data
 
-from admin.models import Client, Program, LearnerDashboard, CourseRun
+from admin.models import Client, Program, LearnerDashboard, CourseRun, SelfRegistrationRoles
 from admin.controller import load_course
-from admin.models import AccessKey, ClientCustomization
+from admin.models import AccessKey, ClientCustomization, OTHER_ROLE
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
     CURRENT_PROGRAM, set_current_course_for_user
 from lib.context_processors import add_edx_notification_context
@@ -1008,7 +1008,7 @@ def demo_registration(request, course_run_name):
                 registration_request = form.save(commit=False)
                 registration_request.course_run = course_run
 
-                if "Other" == registration_request.current_role:
+                if OTHER_ROLE == registration_request.current_role:
                     registration_request.current_role = registration_request.current_role_other
                     registration_request.current_role_other == None
 
@@ -1039,11 +1039,12 @@ def demo_registration(request, course_run_name):
                     except ValueError:
                         registration_status = "Error"
         else:
-            form = PublicRegistrationForm()
+            form = PublicRegistrationForm(course_run_name=course_run_name)
 
         data = {
             'form': form,
             'course_run_name': course_run_name,
+            'course_run': course_run,
             'registration_status': registration_status,
             'home_url': reverse('home'),
             'program': True # header css issue

@@ -1,3 +1,4 @@
+{% load i18n %}
 - if course_run
   %section
     %h1 Edit Course Run
@@ -69,9 +70,61 @@
       = form.email_template_closed.errors
       = form.email_template_closed
 
-  .error
-    - if error
-      = error
-  %input#formSubmit.button.radius.small{type: "submit", value: "Save", disabled: "True"}
+  .row
+  .small-12.columns
+    Self Registration Page Heading:
+    = form.self_registration_page_heading.errors
+    = form.self_registration_page_heading
+
+  .row
+  .small-12.columns
+    Self Registration Description Text:
+    = form.self_registration_description_text.errors
+    = form.self_registration_description_text
+
+  .row
+  .small-12.columns
+    %p Add Custom Roles:
+
+  .row
+  .small-12.columns.edit-del-role
+
+  - for roles in self_register_created_roles
+    .row.edit_role_option
+      .small-10.columns
+        %input{id:'created_roles','value': "#{roles.option_text}",type:'text'}
+      .small-1.columns.hidden
+        %a{'title': '{% trans "Edit Role" %}', 'class': "edit_role fa fa-check", 'id': "#{roles.id}"}
+      .small-1.columns
+        %a{'title': '{% trans "Delete Role" %}', 'class': "remove_role fa fa-times", 'id': "#{roles.id}"}
+
+  .row.role_option
+
+  .row
+    .small-12.columns
+      %input#count_roles{'name': 'count', 'value': 1, 'type': 'hidden'}
+
+  .row
+    .small-12.columns
+      %br
+      %input.button.radius.small.add_field_button{'title': '{% trans "Add New Role" %}', type: "button", value: "+"}
+
+  .row
+    .small-12.columns.error
+      - if error
+        = error
+  %input#formSubmit.button.radius.small{type: "submit", value: "{% trans 'Save' %}", disabled: "True"}
 
   %script{src: "/static/js/admin_learner_dashboard/form_changed_check.js"}
+  %script{src: "/static/js/admin_learner_dashboard/self_registration_roles.js"}
+  :javascript
+    $(function(){
+      var wrapper = $(".role_option");
+      var self_registration_roles = JSON.parse('{{self_registration_roles | escapejs}}')
+      $.each( self_registration_roles, function( index, value ){
+        var total_roles = parseInt($('#count_roles').val()) +1
+        $('#count_roles').val(total_roles);
+        $(wrapper).append('<div class="small-12 new_role"><div class="small-11 columns"><input placeholder="'+gettext("Add new role e.g CEO,CTO")+'" type="text" name="role'+total_roles+'" value= '+value+' /></div>' +
+        '<div class="small-1 columns"><a title="'+gettext("Delete Role")+'" href="#" class="remove_field"><i class="fa fa-times"></a></div></div>');
+        });
+     });

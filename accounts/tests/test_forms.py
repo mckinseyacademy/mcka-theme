@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.core import mail
 import ddt
 
+from admin.models import SelfRegistrationRoles, CourseRun, OTHER_ROLE
 from lib.utils import DottableDict
 from accounts.forms import ActivationForm, FinalizeRegistrationForm, BaseRegistrationForm,\
     FpasswordForm, SetNewPasswordForm, BaseRegistrationFormV2, PublicRegistrationForm, SSOLoginForm,\
@@ -265,17 +266,24 @@ class ActivationFormV2Tests(TestCase):
         registration_form = ActivationFormV2(registration_data)
         self.assertEqual(registration_form.is_valid(), expected_result)
 
-
 @ddt.ddt
 class PublicRegistrationFormTests(TestCase):
     """ Tests for PublicRegistrationForm """
+
+    def setUp(self):
+        self.course_run = CourseRun.objects.create(
+            name="abc", course_id="abc", email_template_new="email", email_template_existing="email",
+            email_template_mcka="email", email_template_closed="email", self_registration_page_heading="abc",
+            self_registration_description_text="abc")
+        self.self_reg_role = SelfRegistrationRoles.objects.create(option_text="any", course_run=self.course_run)
 
     base_test_case = {
         'first_name': 'test',
         'last_name': 'test',
         'company_name': 'test',
-        'company_email': 'company_email@mckinsey.com',
-        'current_role': 'Senior Executive'
+        'company_email': 'company_email@mcka.com',
+        'current_role': '1',
+        'current_role_other': "Other Role"
     }
     char_field_test_set = [
         ('', False),
@@ -300,7 +308,8 @@ class PublicRegistrationFormTests(TestCase):
 
         test_case = self.base_test_case.copy()
         test_case['first_name'] = first_name
-        public_form = PublicRegistrationForm(test_case)
+        test_case['current_role'] = str(self.self_reg_role.id)
+        public_form = PublicRegistrationForm(test_case, course_run_name=self.course_run.name)
         self.assertEqual(public_form.is_valid(), expected_result)
 
     @ddt.data(
@@ -312,7 +321,8 @@ class PublicRegistrationFormTests(TestCase):
 
         test_case = self.base_test_case.copy()
         test_case['last_name'] = last_name
-        public_form = PublicRegistrationForm(test_case)
+        test_case['current_role'] = str(self.self_reg_role.id)
+        public_form = PublicRegistrationForm(test_case, course_run_name=self.course_run.name)
         self.assertEqual(public_form.is_valid(), expected_result)
 
     @ddt.data(
@@ -321,9 +331,9 @@ class PublicRegistrationFormTests(TestCase):
         (123445, False),
         (None, False),
         ('gmewrefwjs', False),
-        ('valid_email@mckinsey.com', True),
-        ('banned_email@gmail.com', False),
-        ('seventy_characters'*12 + 'a@gmail.com', False),
+        ('valid_mail@mcka.com', True),
+        ('not_valid@gmail.com', False),
+        ('seventy_characters'*12 + 'a@mcka.com', False),
         ('more_than_seventy_characters'*9, False),
     )
     @ddt.unpack
@@ -332,7 +342,8 @@ class PublicRegistrationFormTests(TestCase):
 
         test_case = self.base_test_case.copy()
         test_case['company_email'] = company_email
-        public_form = PublicRegistrationForm(test_case)
+        test_case['current_role'] = str(self.self_reg_role.id)
+        public_form = PublicRegistrationForm(test_case, course_run_name=self.course_run.name)
         self.assertEqual(public_form.is_valid(), expected_result)
 
     @ddt.data(
@@ -356,35 +367,28 @@ class PublicRegistrationFormTests(TestCase):
 
         test_case = self.base_test_case.copy()
         test_case['company_name'] = company_name
-        public_form = PublicRegistrationForm(test_case)
+        test_case['current_role'] = str(self.self_reg_role.id)
+        public_form = PublicRegistrationForm(test_case, course_run_name=self.course_run.name)
         self.assertEqual(public_form.is_valid(), expected_result)
 
     @ddt.data(
-        ('', '', False),
-        (None, '', False),
-
-        ('Senior Executive', '', True),
-        ('Seasoned Leader/Senior Manager', '', True),
-        ('Mid-Level Manager', '', True),
-        ('Early Career Professional', '', True),
-
-        ('Other', 'test', True),
-        ('Other', 'test123 876', True),
-        ('Other', '123876', True),
-
-        ('Other', '', False),
-        ('Other', None, False),
-        ('Other', 'invalid test 67 *)', False),
+        ('', False),
+        ('test', True),
+        ('test123 876', True),
+        ('123876', True),
+        ('123876 $%%^', False),
 
     )
     @ddt.unpack
-    def test_clean_current_role_other(self, current_role, current_other_role, expected_result):
+    def test_clean_current_role_other(self, current_other_role, expected_result):
         """ Test for clean_current_role_other """
 
+        self_reg_role = SelfRegistrationRoles.objects.get(option_text=OTHER_ROLE, course_run=self.course_run)
+
         test_case = self.base_test_case.copy()
-        test_case['current_role'] = current_role
+        test_case['current_role'] = str(self_reg_role.id)
         test_case['current_role_other'] = current_other_role
-        public_form = PublicRegistrationForm(test_case)
+        public_form = PublicRegistrationForm(test_case, course_run_name=self.course_run.name)
         self.assertEqual(public_form.is_valid(), expected_result)
 
 

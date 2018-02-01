@@ -18,7 +18,7 @@ from api_client.api_error import ApiError
 
 from .controller import send_password_reset_email
 from .models import PublicRegistrationRequest
-from admin.models import CourseRun
+from admin.models import CourseRun, SelfRegistrationRoles, OTHER_ROLE
 from util.validators import AlphanumericValidator, UsernameValidator, AlphanumericWithAccentedChars
 
 # djano forms are "old-style" forms => causing lint errors
@@ -297,14 +297,6 @@ COUNTRY_CHOICES = (
 READ_ONLY_IF_DATA_FIELDS = ["company", "full_name"]
 DISABLED_IF_DATA_FIELDS = []
 
-CURRENT_ROLE = (
-    (u'Senior Executive', _('Senior Executive (e.g., CXO, SVP)')),
-    (u'Seasoned Leader/Senior Manager', _('Seasoned Leader/Senior Manager (e.g., VP, Director)')),
-    (u'Mid-Level Manager', _('Mid-Level Manager (e.g., Manager)')),
-    (u'Early Career Professional', _('Early Career Professional (e.g., Associate, Analyst)')),
-    (u'Other', _('Other (please describe below)')),
-)
-
 BANNED_EMAILS = [
     "aol.com", "att.net", "comcast.net", "facebook.com", "gmail.com", "gmx.com", "googlemail.com",
     "hotmail.com", "hotmail.co.uk", "mac.com", "me.com", "mail.com", "msn.com",
@@ -540,7 +532,8 @@ class ActivationFormV2(BaseRegistrationFormV2):
 
 
 class PublicRegistrationForm(forms.ModelForm):
-    current_role = forms.ChoiceField(widget=forms.RadioSelect, choices=CURRENT_ROLE)
+    current_role = forms.ModelChoiceField(widget=forms.RadioSelect,
+        queryset=SelfRegistrationRoles.objects.all(), empty_label=None)
     current_role_other = forms.CharField(widget=forms.TextInput, label='', required=False)
     company_email = forms.CharField(max_length=70)
 
@@ -567,6 +560,13 @@ class PublicRegistrationForm(forms.ModelForm):
         self.fields['company_email'].help_text=mark_safe('<div class="company_email_helptext">Note: personal email addresses will not be processed</div>')
         self.fields['current_role'].help_text=mark_safe('<div class="current_role_helptext">(please choose one of the following options)</div>')
         self.fields['current_role_other'].widget.attrs.update({'maxlength': 60})
+        choices = SelfRegistrationRoles.objects.filter(course_run__name=self.course_run_name)
+        other_choice = choices.filter(option_text=OTHER_ROLE)
+        roles_choice_list = [(choice.id, choice.option_text) for choice in choices if choice.option_text != OTHER_ROLE]
+
+        if other_choice:
+            roles_choice_list = roles_choice_list + [(other_choice[0].id, other_choice[0].option_text)]
+        self.fields['current_role'].choices = roles_choice_list
 
     def clean_first_name(self):
         first_name = self.cleaned_data.get("first_name")
@@ -638,14 +638,17 @@ class PublicRegistrationForm(forms.ModelForm):
     def clean_current_role_other(self):
 
         current_role = self.cleaned_data.get("current_role")
+        if current_role:
+            current_role = current_role.option_text
+
         current_role_other = self.cleaned_data.get("current_role_other")
 
         current_role_other = ' '.join(current_role_other.split())
 
-        if "Other" == current_role and not current_role_other:
+        if OTHER_ROLE == current_role and not current_role_other:
             raise forms.ValidationError("Please specify your Role.")
 
-        if "Other" == current_role:
+        if OTHER_ROLE == current_role:
             if not re.match(r'^[A-Za-z0-9 ]+$', current_role_other):
                 raise forms.ValidationError("Please enter a valid Role.")
 

@@ -16,17 +16,19 @@ from dateutil.parser import parse as parsedate
 
 from django.conf import settings
 from django.core.cache import cache
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email, ValidationError
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from pytz import UTC
-
+from rest_framework.response import Response
+from rest_framework import status
 from accounts.helpers import get_user_activation_links, get_complete_country_name
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from accounts.models import UserActivation
 from admin.forms import MobileBrandingForm
-from admin.models import Program
+from admin.models import Program, SelfRegistrationRoles
 from api_client import (
     course_api,
     course_models,
@@ -49,7 +51,7 @@ from lib.mail import (
 from lib.utils import DottableDict
 from license import controller as license_controller
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.validators import validate_first_name, validate_last_name
+from util.validators import validate_first_name, validate_last_name, AlphanumericValidator
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
@@ -2454,3 +2456,38 @@ def update_mobile_client_detail_customization(request, client_id):
         errors = str(mobile_branding_form.errors)
         cleantext = BeautifulSoup(errors, "html").text
         return cleantext
+
+
+def create_roles_list(request):
+
+    return [values for key, values in request.POST.items()[::-1] if key.startswith('role')]
+
+
+def edit_self_register_role(role_id, role_text):
+
+    try:
+        self_reg_role = SelfRegistrationRoles.objects.get(id=int(role_id))
+    except ObjectDoesNotExist:
+        return Response({'status': status.HTTP_404_NOT_FOUND, 'message': _('Sorry, We can not process your request')})
+
+    if role_text:
+
+        self_reg_role.option_text = role_text
+        self_reg_role.save()
+
+        return Response({'status': status.HTTP_200_OK, 'message': _('Operation Successful')})
+    else:
+
+        return Response({'status': status.HTTP_404_NOT_FOUND, 'message': _('Please enter role text')})
+
+
+def delete_self_reg_role(role_id):
+
+    try:
+        self_reg_role = SelfRegistrationRoles.objects.get(id=int(role_id))
+        self_reg_role.delete()
+
+        return Response({'status': status.HTTP_200_OK, 'message': _('Operation Successful')})
+    except ObjectDoesNotExist:
+
+        return Response({'status': status.HTTP_404_NOT_FOUND, 'message': _('Sorry, We can not process your request')})

@@ -1,4 +1,5 @@
 import os
+import ddt
 
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
@@ -6,9 +7,10 @@ from django.test.client import RequestFactory
 import admin.controller as controller
 from accounts.tests.utils import ApplyPatchMixin
 from admin.controller import CourseParticipantStats
+from admin.models import SelfRegistrationRoles, CourseRun
 from admin.tests.utils import BASE_DIR
 from api_client.json_object import JsonParser as JP
-
+from rest_framework import status
 
 class AdminControllerTests(TestCase):
     def test__process_line(self):
@@ -109,3 +111,70 @@ class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
         engagement_scores = test_object._get_engagement_scores()
         self.assertEqual(engagement_scores[u_ids[0]], 85)
         self.assertEqual(engagement_scores[u_ids[1]], 35)
+
+
+@ddt.ddt
+class EditSelfRoleRegistrationTests(TestCase):
+
+    def setUp(self):
+
+        course_run = CourseRun.objects.create(
+            name="abc", course_id="abc", email_template_new="email", email_template_existing="email",
+            email_template_mcka="email", email_template_closed="email", self_registration_page_heading="abc",
+            self_registration_description_text="abc")
+        self.self_reg_role = SelfRegistrationRoles.objects.create(option_text="abc", course_run_id=course_run)
+
+    @ddt.data(
+        ("role", status.HTTP_200_OK, "Operation Successful"),
+        ("", status.HTTP_404_NOT_FOUND, "Please enter role text"),
+    )
+    @ddt.unpack
+    def edit_self_role_registration_validation(self, role_text, status, msg):
+
+        status_code, message = controller.edit_self_register_role(self.self_reg_role.id, role_text)
+        self.assertEqual(status_code, status)
+        self.assertEqual(message, msg)
+
+    @ddt.data(
+        (100, "role", status.HTTP_404_NOT_FOUND, "Sorry, We can not process your request"),
+    )
+    @ddt.unpack
+    def edit_self_role_registration_fail(self, role_id, role_text, status, msg):
+
+        status_code, message = controller.edit_self_register_role(role_id, role_text)
+        self.assertEqual(status, status)
+        self.assertEqual(message, msg)
+
+    def delete_self_role_registration_success(self):
+
+        status_code, message = controller.delete_self_reg_role(self.self_reg_role.id)
+        self.assertEqual(status_code, status.HTTP_200_OK)
+        self.assertEqual(message, "Operation Successful")
+
+    def delete_self_role_registration_fail(self):
+
+        status_code, message = controller.delete_self_reg_role(100)
+        self.assertEqual(status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(message, "Sorry, We can not process your request")
+
+
+class RemoveRoleRegistrationTests(TestCase):
+
+    def setUp(self):
+        course_run = CourseRun.objects.create(
+            name="abc", course_id="abc", email_template_new="email", email_template_existing="email",
+            email_template_mcka="email", email_template_closed="email", self_registration_page_heading="abc",
+            self_registration_description_text="abc")
+        self.self_reg_role = SelfRegistrationRoles.objects.create(option_text="abc", course_run_id=course_run)
+
+    def delete_self_role_registration_success(self):
+
+        status_code, message = controller.delete_self_reg_role(self.self_reg_role.id)
+        self.assertEqual(status_code, status.HTTP_200_OK)
+        self.assertEqual(message, "Operation Successful")
+
+    def delete_self_role_registration_fail(self):
+
+        status_code, message = controller.delete_self_reg_role(100)
+        self.assertEqual(status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(message, "Sorry, We can not process your request")

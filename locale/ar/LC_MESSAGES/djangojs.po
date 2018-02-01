@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-12-28 13:08+0000\n"
+"POT-Creation-Date: 2018-01-31 11:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,19 +19,59 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: static/js/views/admin/courses_list.js:13
+#: static/gen/packed.js:32180 static/gen/packed_ie8.js:722
+#: static/js/vendor/jquery-ui.min.js:10 static_cache/gen/packed.js:32180
+#: static_cache/gen/packed_ie8.js:722
+#: static_cache/js/vendor/jquery-ui.min.js:10 static_cache/packed.js:32180
+#: static_cache/packed_ie8.js:722
+msgid "'"
+msgstr ""
+
+#: static/gen/packed.js:40555 static/gen/packed_ie8.js:1744
+#: static/js/views/admin/courses_list.js:13 static_cache/gen/packed.js:40555
+#: static_cache/gen/packed_ie8.js:1744
+#: static_cache/js/views/admin/courses_list.js:13 static_cache/packed.js:40555
+#: static_cache/packed_ie8.js:1744
 msgid "Course Name"
 msgstr "اسم الدورة التدريبية"
 
-#: static/js/views/admin/courses_list.js:23
+#: static/gen/packed.js:40565 static/gen/packed_ie8.js:1745
+#: static/js/views/admin/courses_list.js:23 static_cache/gen/packed.js:40565
+#: static_cache/gen/packed_ie8.js:1745
+#: static_cache/js/views/admin/courses_list.js:23 static_cache/packed.js:40565
+#: static_cache/packed_ie8.js:1745
 msgid "Course ID"
 msgstr "اختصار المساق"
 
-#: static/js/views/admin/courses_list.js:24
+#: static/gen/packed.js:40566 static/gen/packed_ie8.js:1745
+#: static/js/views/admin/courses_list.js:24 static_cache/gen/packed.js:40566
+#: static_cache/gen/packed_ie8.js:1745
+#: static_cache/js/views/admin/courses_list.js:24 static_cache/packed.js:40566
+#: static_cache/packed_ie8.js:1745
 msgid "Start"
 msgstr "ابدأ"
 
-#: static/js/views/admin/courses_list.js:33
+#: static/gen/packed.js:40575 static/gen/packed_ie8.js:1746
+#: static/js/views/admin/courses_list.js:33 static_cache/gen/packed.js:40575
+#: static_cache/gen/packed_ie8.js:1746
+#: static_cache/js/views/admin/courses_list.js:33 static_cache/packed.js:40575
+#: static_cache/packed_ie8.js:1746
 msgid "End"
 msgstr "النهاية "
 
+#: static/js/admin_learner_dashboard/self_registration_roles.js:9
+#: static_cache/js/admin_learner_dashboard/self_registration_roles.js:9
+#, fuzzy
+#| msgid "Add new role"
+msgid "Add new role e.g CEO,CTO"
+msgstr "إضافة دور جديد مثل سيو، كتو"
+
+#: static/js/admin_learner_dashboard/self_registration_roles.js:10
+#: static_cache/js/admin_learner_dashboard/self_registration_roles.js:10
+msgid "Delete Role"
+msgstr "حذف الدور"
+
+#: static_cache/admin/js/SelectFilter2.js:45
+#, javascript-format
+msgid "Available %s"
+msgstr ""

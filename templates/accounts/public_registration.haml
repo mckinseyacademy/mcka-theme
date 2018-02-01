@@ -44,8 +44,8 @@
           .large-8.medium-8.columns{style:"height: 100%;border-right: 1px solid #ccc;"}
             %h1 {% trans "Welcome to McKinsey Academy" %}
             .description{style:"height:auto;"}
-              %h4 {% trans "REGISTER FOR ACCESS TO DIGITAL ACADEMY'S WHAT IS DIGITAL? COURSE" %}
-              %span {% trans "Boost your Digital IQ - understand why companies are going Digital and its disruptive power; define what Digital is and articulate how it creates value; and get started in navigating your organization through digital transformation and change." %}
+              %h4 #{course_run.self_registration_page_heading}
+              %span #{course_run.self_registration_description_text}
               %br
               %br
               %span {% trans "Complete the fields below. Required fields are noted by an asterisk" %} (
@@ -95,7 +95,7 @@
       toggle_field();
     });
     function toggle_field(){
-      if($('input[name=current_role]:checked').val() == 'Other') {
+      if($.trim($('input[name=current_role]:checked').closest('label').text()) == 'Other (please describe below)') {
           $current_role_other.prop('disabled', false);
         } else {
           $current_role_other.val("");

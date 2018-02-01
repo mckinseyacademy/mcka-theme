@@ -33,7 +33,8 @@ from django.views.generic.base import View
 from django.core.validators import validate_email
 
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
-    load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image
+    load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
+    create_roles_list, edit_self_register_role, delete_self_reg_role
 
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.json_object import JsonObjectWithImage
@@ -65,8 +66,7 @@ from .models import (
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
     AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings,
     LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails,
-    CompanyContact, Tag, LearnerDashboardBranding, CourseRun
-)
+    CompanyContact, Tag, LearnerDashboardBranding, CourseRun, SelfRegistrationRoles, OTHER_ROLE)
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
@@ -5838,16 +5838,27 @@ def course_run_view(request, course_run_id):
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_create_edit(request, course_run_id=None):
+    self_registration_roles = []
+    error = None
 
     try:
         course_run = CourseRun.objects.get(pk=course_run_id)
+        self_register_created_roles = SelfRegistrationRoles.objects.filter(course_run=course_run).exclude(option_text=OTHER_ROLE)
     except ObjectDoesNotExist:
         course_run = None
+        self_register_created_roles = None
 
     if request.method == 'POST':
+
         form = CourseRunForm(request.POST, instance=course_run)
+        self_registration_roles = create_roles_list(request)
+
         if form.is_valid():
+
             form.save()
+            for role_text in self_registration_roles:
+                SelfRegistrationRoles.objects.create(course_run_id=form.instance.id, option_text=role_text)
+
             url = reverse(
                 'course_run_view',
                 kwargs={'course_run_id': form.instance.id}
@@ -5856,10 +5867,12 @@ def course_run_create_edit(request, course_run_id=None):
             return HttpResponseRedirect(url)
     else:
         form = CourseRunForm(instance=course_run)
-
     data = {
         'form': form,
+        'self_register_created_roles': self_register_created_roles,
         'course_run': course_run,
+        'error': error,
+        'self_registration_roles':json.dumps(self_registration_roles)
     }
 
     return render(request, 'admin/course_run/form_modal.haml', data)
@@ -5909,3 +5922,25 @@ def course_run_csv_download(request, course_run_id):
         return response
     else:
         return render(request, '404.haml')
+
+
+class EditAndDeleteSelfRegRole(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request):
+        """
+        Post request handler for Editing Self Register Roles
+        """
+        role_id = request.DATA.get('role_id', None)
+        role_text = request.DATA.get('role_text', None)
+
+        return edit_self_register_role(role_id, role_text)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def delete(self, request):
+        """
+        Removes Self Register Roles
+        """
+        role_id = request.DATA.get('role_id', None)
+
+        return delete_self_reg_role(role_id)

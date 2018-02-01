@@ -1,4 +1,5 @@
 ''' forms for administration objects '''
+import re
 from datetime import date
 from django import forms
 from django.utils.safestring import mark_safe
@@ -401,6 +402,8 @@ class CourseRunForm(forms.ModelForm):
     email_template_existing = forms.CharField(widget=forms.Textarea)
     email_template_mcka = forms.CharField(widget=forms.Textarea)
     email_template_closed = forms.CharField(widget=forms.Textarea)
+    self_registration_page_heading = forms.CharField(widget=forms.Textarea)
+    self_registration_description_text = forms.CharField(widget=forms.Textarea)
 
     class Meta:
         model = CourseRun
@@ -414,6 +417,8 @@ class CourseRunForm(forms.ModelForm):
             'email_template_existing',
             'email_template_mcka',
             'email_template_closed',
+            'self_registration_page_heading',
+            'self_registration_description_text',
         ]
 
     def clean_course_id(self):
