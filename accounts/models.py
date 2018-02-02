@@ -174,6 +174,7 @@ class UserPasswordReset(db_models.Model):
                 return reset_record
         return None
 
+
 class PublicRegistrationRequest(db_models.Model):
 
     first_name = db_models.CharField(blank=False, null=False, max_length=50)
