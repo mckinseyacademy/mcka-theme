@@ -64,7 +64,11 @@
     .popup, .popup.popup-incorrect {
         background-color: $mckinsey-academy-turquoise;
     }
-    
+
+    .popup .close-feedback-popup-desktop-button:focus {
+        outline: none;
+    }
+
     // Apros mobile web overrides:
     @include dnd-mobile-only {
         // Fix positioning of feedback popups in Apros mobile web (https://github.com/mckinseyacademy/mcka_apros/pull/1715):
