@@ -1,6 +1,6 @@
 var template_string = '<header>' +
-                      '<span class="label-4">Lesson <%= lesson_index %>: <%= lesson_name %> | </span>' +
-                      '<a href="<%= module_navigation_url %>" class="label-4 module"> Module <%= module_index %>: <%= module_name %> | </a>' +
+                      '<span class="label-4">' + gettext('Lesson') +' <%= lesson_index %>: <%= lesson_name %> | </span>' +
+                      '<a href="<%= module_navigation_url %>" class="label-4 module">' + gettext('Module') + ' <%= module_index %>: <%= module_name %> | </a>' +
                       '<time class="label-4" datetime="<%= created_at %>"><%= moment(created_at).format("M/D/YY h:mma") %></time>' +
                       '</header>' +
                       '<div class="body" contenteditable><%= body %></div>';
