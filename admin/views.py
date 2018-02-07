@@ -1,86 +1,91 @@
 import copy
+import csv
 import functools
 import json
+import operator
 import string
 import urlparse
-
-from dateutil.parser import parse as parsedate
+from collections import OrderedDict
 from datetime import datetime
-from urllib import quote as urlquote, urlencode
 from operator import attrgetter
 from smtplib import SMTPException
-from collections import OrderedDict
+from urllib import quote as urlquote, urlencode
 
-
-import operator
-import re
 import os.path
+import re
+from dateutil.parser import parse as parsedate
 from django.conf import settings
-from django.core.mail import EmailMessage, send_mass_mail
-from django.core import serializers
-from django.core.urlresolvers import reverse
-from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, ValidationError
 from django.contrib import messages
+from django.core import serializers
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, ValidationError
+from django.core.mail import EmailMessage, send_mass_mail
+from django.core.urlresolvers import reverse
+from django.core.validators import validate_email
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404, HttpResponseServerError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader, RequestContext
+from django.utils import timezone
 from django.utils.dateformat import format
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 from django.views.generic.base import View
-from django.core.validators import validate_email
+from rest_framework import status, viewsets
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
+from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, \
+    _set_number_of_enrolled_users
+from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role
-
+from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api
+from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.json_object import JsonObjectWithImage
 from api_client.mobileapp_api import get_mobile_app_themes
-from api_client.user_api import USER_ROLES
-from lib.authorization import permission_group_required, permission_group_required_api
-from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
-from accounts.models import UserActivation, PublicRegistrationRequest
-from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, _set_number_of_enrolled_users
-from api_client import course_api, user_api, group_api, workgroup_api, organization_api, project_api
-from api_client.api_error import ApiError
 from api_client.organization_models import Organization
-from api_client.project_models import Project
-from api_client.workgroup_models import Submission
 from api_client.platform_api import get_course_advanced_settings
-from api_client import mobileapp_api
-
+from api_client.project_models import Project
+from api_client.user_api import USER_ROLES
+from api_client.workgroup_models import Submission
+from certificates.controller import get_course_certificates_status
+from certificates.models import CertificateStatus
 from courses.controller import (
     Progress, Proficiency,
     return_course_progress, organization_course_progress_user_list,
     social_total, round_to_int_bump_zero, round_to_int, create_tile_progress_data
 )
 from courses.models import FeatureFlags
-from certificates.models import CertificateStatus
+from courses.user_courses import load_course_progress
+from lib.authorization import permission_group_required, permission_group_required_api
+from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from license import controller as license_controller
 from main.models import CuratedContentItem
-from .models import (
-    Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
-    UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
-    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings,
-    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails,
-    CompanyContact, Tag, LearnerDashboardBranding, CourseRun, SelfRegistrationRoles, OTHER_ROLE)
+from util.csv_helpers import csv_file_response
+from util.data_sanitizing import sanitize_data, clean_formula_characters, clean_xss_characters
+from util.validators import (
+    AlphanumericValidator, alphanum_accented_validator,
+    PhoneNumberValidator)
+from .bulk_task_runner import BulkTaskRunner
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
     upload_student_list_threaded, mass_student_enroll_threaded, enroll_participants_threaded, generate_course_report,
     get_organizations_users_completion, get_course_analytics_progress_data, get_contacts_for_client, get_admin_users,
-    get_program_data_for_report, MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link, get_course_details_progress_data,
-    get_course_engagement_summary, get_course_social_engagement, course_bulk_actions, get_course_users_roles,
-    get_user_courses_helper, get_course_progress, import_participants_threaded, change_user_status, unenroll_participant,
-    _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key, get_company_active_courses,
-    _enroll_participant_with_status, get_accessible_courses, get_ta_accessible_course_ids, validate_company_display_name, get_internal_courses_ids,
+    get_program_data_for_report, MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link,
+    get_course_details_progress_data,
+    get_course_engagement_summary, get_course_social_engagement,
+    get_user_courses_helper, import_participants_threaded, change_user_status, unenroll_participant,
+    _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key,
+    get_company_active_courses,
+    _enroll_participant_with_status, get_accessible_courses, get_ta_accessible_course_ids,
+    validate_company_display_name, get_internal_courses_ids,
     student_list_chunks_tracker, get_internal_courses_list, construct_users_list,
     CourseParticipantStats
 )
-from certificates.controller import get_course_certificates_status
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
     AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
@@ -89,10 +94,6 @@ from .forms import (
     EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm,
     LearnerDashboardTileForm,
     CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm)
-from .bulk_task_runner import BulkTaskRunner
-from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
-from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
-from .permissions import Permissions, PermissionSaveError
 from .helpers.permissions_helpers import (
     AccessChecker, InternalAdminCoursePermission, InternalAdminUserPermission,
     CompanyAdminCompanyPermission, CompanyAdminUserPermission, CompanyAdminCoursePermission,
@@ -100,22 +101,16 @@ from .helpers.permissions_helpers import (
     company_admin_user_access, company_admin_company_access, client_admin_access, checked_program_access,
     ta_course_access
 )
-from util.data_sanitizing import sanitize_data, clean_formula_characters, clean_xss_characters
-from util.validators import (
-    AlphanumericValidator, alphanum_accented_validator,
-    PhoneNumberValidator
-)
-from util.csv_helpers import csv_file_response
+from .models import (
+    Client, Program, WorkGroup, WorkGroupActivityXBlock, ReviewAssignmentGroup, ContactGroup,
+    UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
+    AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings,
+    LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails,
+    CompanyContact, Tag, LearnerDashboardBranding, CourseRun, SelfRegistrationRoles, OTHER_ROLE)
+from .permissions import Permissions, PermissionSaveError
+from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
+from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status, viewsets
-from courses.user_courses import load_course_progress
-import csv
-from django.utils import timezone
-from django.forms.models import model_to_dict
-
-from s3 import get_files_urls, push_file_to_s3
 
 # TO-DO: DECORATOR TO CHECK LEARNER DASHBOARD FEATURE IS ON.
 # ADD TO LD VIEWS ONCE TESTING IS COMPLETE.
@@ -5851,9 +5846,12 @@ def course_run_create_edit(request, course_run_id=None):
     if request.method == 'POST':
 
         form = CourseRunForm(request.POST, instance=course_run)
-        self_registration_roles = create_roles_list(request)
+        try:
+            self_registration_roles = create_roles_list(request)
+        except ValidationError as err:
+            error = err.message
 
-        if form.is_valid():
+        if form.is_valid() and error is None:
 
             form.save()
             for role_text in self_registration_roles:

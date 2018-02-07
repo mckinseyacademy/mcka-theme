@@ -51,7 +51,7 @@ from lib.mail import (
 from lib.utils import DottableDict
 from license import controller as license_controller
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.validators import validate_first_name, validate_last_name, AlphanumericValidator
+from util.validators import validate_first_name, validate_last_name, AlphanumericValidator, RoleTitleValidator
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
@@ -2459,8 +2459,15 @@ def update_mobile_client_detail_customization(request, client_id):
 
 
 def create_roles_list(request):
-
-    return [values for key, values in request.POST.items()[::-1] if key.startswith('role')]
+    """It raises validation exception for values that starts with 'role' and doesn't
+    validate the regex given in the RoleTitleValidator """
+    role_validator = RoleTitleValidator()
+    roles = []
+    for key, value in request.POST.items()[::-1]:
+        if key.startswith('role'):
+            role_validator(value)
+            roles.append(value)
+    return roles
 
 
 def edit_self_register_role(role_id, role_text):

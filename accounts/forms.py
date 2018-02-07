@@ -19,7 +19,7 @@ from api_client.api_error import ApiError
 from .controller import send_password_reset_email
 from .models import PublicRegistrationRequest
 from admin.models import CourseRun, SelfRegistrationRoles, OTHER_ROLE
-from util.validators import AlphanumericValidator, UsernameValidator, AlphanumericWithAccentedChars
+from util.validators import AlphanumericValidator, UsernameValidator, AlphanumericWithAccentedChars, RoleTitleValidator
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -367,7 +367,7 @@ class BaseRegistrationForm(NoSuffixLabelForm):
         label=mark_safe('Password <span class="required-field"></span> <span class="tip">Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters.</span> <span class="required-field"></span>'))
     company = forms.CharField(max_length=255, required=False)
     full_name = forms.CharField(max_length=512, required=False)
-    title = forms.CharField(max_length=255, required=False, validators=[AlphanumericWithAccentedChars()])
+    title = forms.CharField(max_length=255, required=False, validators=[RoleTitleValidator()])
     city = forms.CharField(
         max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}),
         label=mark_safe('City <span class="required-field"></span>'),

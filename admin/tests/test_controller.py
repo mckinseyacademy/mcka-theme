@@ -1,12 +1,13 @@
 import os
 import ddt
+from django.core.exceptions import ValidationError
 
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
 
 import admin.controller as controller
 from accounts.tests.utils import ApplyPatchMixin
-from admin.controller import CourseParticipantStats
+from admin.controller import CourseParticipantStats, create_roles_list
 from admin.models import SelfRegistrationRoles, CourseRun
 from admin.tests.utils import BASE_DIR
 from api_client.json_object import JsonParser as JP
@@ -178,3 +179,32 @@ class RemoveRoleRegistrationTests(TestCase):
         status_code, message = controller.delete_self_reg_role(100)
         self.assertEqual(status_code, status.HTTP_404_NOT_FOUND)
         self.assertEqual(message, "Sorry, We can not process your request")
+
+
+class TestCreateRolesList(TestCase):
+    """Test the method create_roles_list from admin/controller.py"""
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_with_valid_input(self):
+        """test with valid input passes the RoleTileValidator"""
+        data = {
+            'role': 'Seasoned Leader/Senior Manager (e.g., VP, Director)',
+            'role2': 'Early Career Professional (e.g., Associate, Analyst)',
+            'extra': 'extra'
+        }
+        request = self.factory.post('/', data)
+        roles = create_roles_list(request)
+        self.assertEquals(roles, ['Seasoned Leader/Senior Manager (e.g., VP, Director)',
+                                  'Early Career Professional (e.g., Associate, Analyst)'])
+
+    def test_with_invalid_input(self):
+        """test with invalid input which raises validation error"""
+        data = {
+            'role': '{Seasoned Leader/Senior Manager} (e.g., VP, Director)',
+            'role2': '%$Early Career Professional (e.g., Associate, Analyst)',
+            'extra': 'extra'
+        }
+        request = self.factory.post('/', data)
+        with self.assertRaises(ValidationError):
+            roles = create_roles_list(request)
