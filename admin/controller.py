@@ -327,7 +327,7 @@ def _process_line(user_line):
 
     except Exception as e:
         user_info = {
-            "error": _("Could not parse user info from {}").format(user_line)
+            "error": _("Could not parse user info from {user_line}").format(user_line=user_line)
         }
 
     return user_info
@@ -375,7 +375,7 @@ def _process_line_proposed(user_line):
 
     except Exception as e:
         user_info = {
-            "error": _("Could not parse user info from {}").format(user_line)
+            "error": _("Could not parse user info from {user_line}").format(user_line=user_line)
         }
 
     return user_info
@@ -434,9 +434,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
         except Exception as e:
             user = None
             reason = e.message if e.message else _("Data processing error")
-            user_error = _("Error processing data: {}").format(
-                reason,
-            )
+            user_error = _("Error processing data: {reason}").format(reason=reason)
 
         if user_error:
             error = UserRegistrationError.create(error=user_error, task_key=reg_status.task_key)
@@ -503,10 +501,10 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     }
 
             if failure:
-                user_error.append(_("{}: {} - {}").format(
-                    failure["activity"],
-                    failure["reason"],
-                    user_dict["email"],
+                user_error.append(_("{activity}: {reason} - {email)").format(
+                    activity=failure["activity"],
+                    failure=failure["reason"],
+                    email=user_dict["email"],
                 ))
             try:
                 # Enroll into program
@@ -517,32 +515,32 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     try:
                         program.add_user(client_id, user.id)
                     except Exception as e:
-                        user_error.append(_("{}: {} - {}").format(
-                            "User program enrollment",
-                            e.message,
-                            user_dict["email"],
+                        user_error.append(_("{error}: {message} - {email}").format(
+                            error=_("User program enrollment"),
+                            message=e.message,
+                            email=user_dict["email"],
                         ))
                     try:
                         enroll_user_in_course(user.id, course_id)
                     except Exception as e:
-                        user_error.append(_("{}: {} - {}").format(
-                            "User course enrollment",
-                            e.message,
-                            user_dict["email"],
+                        user_error.append(_("{error}: {message} - {email}").format(
+                            error=_("User course enrollment"),
+                            message=e.message,
+                            email=user_dict["email"],
                         ))
             except Exception as e:
                 reason = e.message if e.message else _("Enrolling student error")
-                user_error.append(_("Error enrolling student: {} - {}").format(
-                    reason,
-                    user_dict["email"]
+                user_error.append(_("Error enrolling student: {reason} - {email}").format(
+                    reason=reason,
+                    email=user_dict["email"]
                 ))
 
         except Exception as e:
             user = None
             reason = e.message if e.message else _("Data processing error")
-            user_error.append(_("Error processing data: {} - {}").format(
-                reason,
-                user_dict["email"]
+            user_error.append(_("Error processing data: {reason} - {email}").format(
+                reason=reason,
+                email=user_dict["email"]
             ))
 
         if user_error:
@@ -654,9 +652,9 @@ def get_user_with_activation(user, activation_link):
         if activation_record:
             user.activation_link = "{}/{}".format(activation_link, activation_record.activation_key)
         else:
-            user.activation_link = 'Activated'
+            user.activation_link = _('Activated')
     except:
-        user.activation_link = 'Could not fetch activation record'
+        user.activation_link = _('Could not fetch activation record')
 
     return user
 
@@ -800,7 +798,7 @@ def generate_course_report(client_id, course_id, url_prefix, students):
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
 
-    activity_names_row = ["Client Name", "", "Course ID", ""]
+    activity_names_row = [_("Client Name"),"",_("Course ID"),""]
     output_line(activity_names_row)
 
     group_header_row = [client.name, "", course_id]
@@ -808,8 +806,7 @@ def generate_course_report(client_id, course_id, url_prefix, students):
 
     output_line("--------")
 
-    activity_names_row = ["Full Name", "Username", "Title", "Email", "Progress %", "Engagement", "Proficiency",
-                          "Course Completed"]
+    activity_names_row = [_("Full Name"),_("Username"),_("Title"),_("Email"), _("Progress %"), _("Engagement"), _("Proficiency"), _("Course Completed")]
     output_line(activity_names_row)
 
     for student in students:
@@ -830,9 +827,9 @@ def generate_course_report(client_id, course_id, url_prefix, students):
 
 def get_organizations_users_completion(client_id, course_id, users_enrolled):
     users_completed = organization_api.get_grade_complete_count(client_id, courses=course_id).users_grade_complete_count
-    percent_completed = '0%'
+    percent_completed = _('0%')
     if users_enrolled > 0:
-        percent_completed = "{}%".format(int((float(users_completed) / float(users_enrolled)) * 100))
+        percent_completed = _("{}%").format(int((float(users_completed) / float(users_enrolled)) * 100))
     return users_completed, percent_completed
 
 
@@ -1254,9 +1251,9 @@ def get_course_social_engagement(course_id, company_id):
         avg_posts = 0
 
     course_stats = [
-        {'name': '# of posts', 'value': number_of_posts},
-        {'name': '% participants posting', 'value': participants_posting},
-        {'name': 'Avg posts per participant', 'value': avg_posts}
+        { 'name': _('# of posts'), 'value': number_of_posts},
+        { 'name': _('% participants posting'), 'value': participants_posting},
+        { 'name': _('Avg posts per participant'), 'value': avg_posts}
     ]
 
     return course_stats
@@ -1321,13 +1318,10 @@ def get_course_engagement_summary(course_id, company_id):
     login_progress = round_to_int_bump_zero((float(login_users_progress) / login_users)) if login_users > 0 else 0
 
     course_stats = [
-        {'name': 'Total Cohort', 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
-        {'name': 'Activated', 'people': active_users, 'invited': str(activated) + '%',
-         'progress': str(active_progress) + '%'},
-        {'name': 'Engaged', 'people': engaged_users, 'invited': str(engaged) + '%',
-         'progress': str(engaged_progress) + '%'},
-        {'name': 'Logged in over last 7 days', 'people': login_users, 'invited': str(logined_users) + '%',
-         'progress': str(login_progress) + '%'}
+         { 'name': _('Total Cohort'), 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
+         { 'name': _('Activated'), 'people': active_users, 'invited': str(activated) + '%', 'progress': str(active_progress) + '%'},
+         { 'name': _('Engaged'), 'people': engaged_users, 'invited': str(engaged) + '%', 'progress': str(engaged_progress) + '%'},
+         { 'name': _('Logged in over last 7 days'), 'people': login_users, 'invited': str(logined_users) + '%', 'progress': str(login_progress) + '%'}
     ]
 
     return course_stats
@@ -1485,7 +1479,7 @@ def get_user_courses_helper(user_id, request):
         if course['end'] is not None:
             user_course['end'] = course['end']
         else:
-            user_course['end'] = '-'
+            user_course['end'] = _('-')
         user_courses.append(user_course)
     user_roles = user_api.get_user_roles(user_id)
     for role in user_roles:
@@ -1700,56 +1694,50 @@ def _enroll_participants(participants, request, reg_status):
             for key, value in user_dict.items():
                 if str(value).strip() == '':
                     if key == 'email':
-                        email = "No email"
+                        email = _("No email")
                     if key != 'username':
-                        check_errors.append(
-                            {'reason': 'Empty field: {}'.format(key), 'activity': 'Processing Participant'})
-            # Check if email is valid
+                        check_errors.append({'reason': _('Empty field: {}').format(key), 'activity': _('Processing Participant')})
+            #Check if email is valid
             try:
                 validate_email(user_email)
             except ValidationError:
-                check_errors.append({'reason': 'Valid e-mail is required', 'activity': 'Registering Participant'})
+                check_errors.append({'reason': _('Valid e-mail is required'), 'activity': _('Registering Participant')})
             else:
                 # run through API only if valid email is given as API breaks on wrong email
 
                 # Check if email already exist
                 check_user_email = user_api.get_user_by_email(user_email)
                 if check_user_email['count'] == 1:
-                    check_errors.append({'reason': 'Email already exist', 'activity': 'Registering Participant'})
+                    check_errors.append({'reason': _('Email already exist'), 'activity': _('Registering Participant')})
                 else:
                     # Check if username already exist
                     check_user_username = user_api.get_user_by_username(username)
                     if check_user_username['count'] == 1:
-                        check_errors.append({'reason': 'Username already exist', 'activity': 'Registering Participant'})
-            # Check if client exist
+                        check_errors.append({'reason': _('Username already exist'), 'activity': _('Registering Participant')})
+            #Check if client exist
             try:
                 client = Client.fetch(client_id)
             except ApiError as e:
                 if e.message == 'NOT FOUND':
-                    check_errors.append(
-                        {'reason': "Company doesn't exist", 'activity': 'Enrolling Participant in Company'})
+                    check_errors.append({'reason': _("Company doesn't exist"), 'activity': _('Enrolling Participant in Company')})
                 else:
-                    check_errors.append(
-                        {'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Company'})
-            # Check if course exist
+                    check_errors.append({'reason': '{}'.format(e.message), 'activity': _('Enrolling Participant in Company')})
+            #Check if course exist
             try:
                 course = course_api.get_course_details(course_id)
             except ApiError as e:
                 if e.message == 'NOT FOUND':
-                    check_errors.append(
-                        {'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
+                    check_errors.append({'reason': _("Course doesn't exist"), 'activity': _('Enrolling Participant in Course')})
                 else:
-                    check_errors.append(
-                        {'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
-            # For Internal Admin Check if Course Is Internal
+                    check_errors.append({'reason': '{}'.format(e.message), 'activity': _('Enrolling Participant in Course')})
+            #For Internal Admin Check if Course Is Internal
             if internalAdminFlag:
                 if not check_if_course_is_internal(course_id):
-                    check_errors.append(
-                        {'reason': "Course is not Internal", 'activity': 'Enrolling Participant in Course'})
-            # Check if status exist
+                    check_errors.append({'reason': _("Course is not Internal"), 'activity': _('Enrolling Participant in Course')})
+            #Check if status exist
             if status not in status_check:
-                check_errors.append({'reason': "Status doesn't exist", 'activity': 'Enrolling Participant in Course'})
-            # If errors exist add them, else continue
+                check_errors.append({'reason': _("Status doesn't exist"), 'activity': _('Enrolling Participant in Course')})
+            #If errors exist add them, else continue
             if check_errors:
                 for error in check_errors:
                     user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
@@ -1763,30 +1751,30 @@ def _enroll_participants(participants, request, reg_status):
                     try:
                         user = user_api.register_user(user_dict)
                     except ApiError as e:
-                        raise ValueError('{}'.format(e.message), 'Registering Participant')
-                    # Enroll Participant in Client
+                        raise ValueError('{}'.format(e.message), _('Registering Participant'))
+                    #Enroll Participant in Client
                     try:
                         client.add_user(user.id)
                     except ApiError as e:
-                        raise ValueError('{}'.format(e.message), 'Enrolling Participant in Company')
-                    # Create Activation Record for Participant
+                        raise ValueError('{}'.format(e.message), _('Enrolling Participant in Company'))
+                    #Create Activation Record for Participant
                     if not user.is_active:
                         activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key,
                                                                                        client_id)
                     if not activation_record:
-                        raise ValueError('Activation record error', 'Registering Participant')
-                    # Enroll Participant in Course
+                        raise ValueError(_('Activation record error'), _('Registering Participant'))
+                    #Enroll Participant in Course
                     try:
                         user_api.enroll_user_in_course(user.id, course_id)
                     except ApiError as e:
-                        raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
-                    # Set Participant Status on Course
+                        raise ValueError('{}'.format(e.message), _('Enrolling Participant in Course'))
+                    #Set Participant Status on Course
                     try:
                         permissions = SlimAddingPermissions(user.id)
                         if status != 'active':
                             permissions.add_course_role(course_id, permissonsMap[status])
                     except ApiError as e:
-                        raise ValueError('{}'.format(e.message), "Setting Participant's Status")
+                        raise ValueError('{}'.format(e.message), _("Setting Participant's Status"))
                 except ValueError as e:
                     user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
                         e.args[0],
@@ -1834,37 +1822,33 @@ def _just_enroll_participants(participants, request, reg_status):
             for key, value in user_dict.items():
                 if str(value).strip() == '':
                     if key == 'email':
-                        email = "No email"
-                    check_errors.append({'reason': 'Empty field: {}'.format(key), 'activity': 'Processing Participant'})
-            # Check if email is valid
+                        email = _("No email")
+                    check_errors.append({'reason': _('Empty field: {}').format(key), 'activity': _('Processing Participant')})
+            #Check if email is valid
             try:
                 validate_email(user_email)
             except ValidationError:
-                check_errors.append(
-                    {'reason': 'Valid e-mail is required: ' + user_email, 'activity': 'Processing Participant'})
-            # Check if user already exist
+                check_errors.append({'reason': _('Valid e-mail is required: {email}').format(user_email), 'activity': _('Processing Participant')})
+            #Check if user already exist
             user_data = user_api.get_user_by_email(user_email)
             if user_data['count'] == 0:
-                check_errors.append({'reason': "User doesn't exist", 'activity': 'Processing Participant'})
-            # Check if course exist
+                check_errors.append({'reason': _("User doesn't exist"), 'activity': _('Processing Participant')})
+            #Check if course exist
             try:
                 course = course_api.get_course_details(course_id)
             except ApiError as e:
                 if e.message == 'NOT FOUND':
-                    check_errors.append(
-                        {'reason': "Course doesn't exist", 'activity': 'Enrolling Participant in Course'})
+                    check_errors.append({'reason': _("Course doesn't exist"), 'activity': _('Enrolling Participant in Course')})
                 else:
-                    check_errors.append(
-                        {'reason': '{}'.format(e.message), 'activity': 'Enrolling Participant in Course'})
-            # For Internal Admin Check if Course Is Internal
+                    check_errors.append({'reason': '{}'.format(e.message), 'activity': _('Enrolling Participant in Course')})
+            #For Internal Admin Check if Course Is Internal
             if internalAdminFlag:
                 if not check_if_course_is_internal(course_id):
-                    check_errors.append(
-                        {'reason': "Course is not Internal", 'activity': 'Enrolling Participant in Course'})
-            # Check if status exist
+                    check_errors.append({'reason': _("Course is not Internal"), 'activity': _('Enrolling Participant in Course')})
+            #Check if status exist
             if status not in status_check:
-                check_errors.append({'reason': "Status doesn't exist", 'activity': 'Enrolling Participant in Course'})
-            # If errors exist add them, else continue
+                check_errors.append({'reason': _("Status doesn't exist"), 'activity': _('Enrolling Participant in Course')})
+            #If errors exist add them, else continue
             if check_errors:
                 for error in check_errors:
                     user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
@@ -1878,14 +1862,14 @@ def _just_enroll_participants(participants, request, reg_status):
                     try:
                         user_api.enroll_user_in_course(user_data["results"][0]["id"], course_id)
                     except ApiError as e:
-                        raise ValueError('{}'.format(e.message), 'Enrolling Participant in Course')
-                    # Set Participant Status on Course
+                        raise ValueError('{}'.format(e.message), _('Enrolling Participant in Course'))
+                    #Set Participant Status on Course
                     try:
                         permissions = Permissions(user_data["results"][0]["id"])
                         if status != 'active':
                             permissions.add_course_role(course_id, permissonsMap[status])
                     except ApiError as e:
-                        raise ValueError('{}'.format(e.message), "Setting Participant's Status")
+                        raise ValueError('{}'.format(e.message), _("Setting Participant's Status"))
                 except ValueError as e:
                     user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
                         e.args[0],
@@ -1977,8 +1961,7 @@ def _parse_email_text_template(text_body, optional_data=None):
                             social_engagement_data = user_api.get_course_social_metrics(user["id"],
                                                                                         optional_data["course_id"])
                             if social_engagement_data:
-                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(
-                                    social_engagement_data.num_threads,
+                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(social_engagement_data.num_threads,
                                     social_engagement_data.num_comments, social_engagement_data.num_replies)
                         elif keyword == "COMPANY":
                             constructed_vars[keyword.lower()] = user["organization_name"]
@@ -2010,9 +1993,9 @@ def get_company_active_courses(company_courses):
 def validate_company_display_name(company_display_name):
     company = organization_api.get_organization_by_display_name(urllib.quote_plus(company_display_name))
     if company['count'] != 0:
-        return {'status': 'error', 'message': 'This company already exists!'}
+        return {'status': 'error', 'message': _('This company already exists!')}
 
-    return {'status': 'ok', 'message': 'Company Validation Success!'}
+    return {'status': 'ok', 'message': _('Company Validation Success!')}
 
 
 def get_internal_courses_ids():
@@ -2088,9 +2071,9 @@ def student_list_chunks_tracker(data, client_id, activation_link):
                         "element_count": cached_student_progress.get("element_count", 0), "data": user_strings,
                         "status": "csv_chunk_sent"}
             else:
-                return {"status": "error", "message": "You have sent incorrect chunk number!"}
+                return {"status": "error", "message": _("You have sent incorrect chunk number!")}
         else:
-            return {"status": "error", "message": "You have sent incorrect task key!"}
+            return {"status": "error", "message": _("You have sent incorrect task key!")}
     else:
         unique_id = str(uuid.uuid4());
         cached_data = {}
@@ -2111,7 +2094,7 @@ def student_list_chunks_tracker(data, client_id, activation_link):
             cached_data["file_name"] = file_name
             cache.set('student-list-' + unique_id, cached_data)
         else:
-            return {"status": "error", "message": "There are no users in organization!"}
+            return {"status": "error", "message": _("There are no users in organization!")}
 
         return {"task_id": unique_id, "chunk_count": cached_data["chunk_count"], "chunk_size": chunk_size,
                 "element_count": len(user_list), "status": "csv_task_created",
@@ -2272,8 +2255,8 @@ class CourseParticipantStats(object):
                 course_participant['country'] = get_complete_country_name(course_participant.get('country'))
 
             if not course_participant['organizations']:
-                course_participant['organizations'] = [{'display_name': 'No company'}]
-                course_participant['organizations_display_name'] = 'No company'
+                course_participant['organizations'] = [{'display_name': _('No company')}]
+                course_participant['organizations_display_name'] = _('No company')
             else:
                 course_participant['organizations_display_name'] = course_participant['organizations'][0][
                     'display_name']
@@ -2290,9 +2273,9 @@ class CourseParticipantStats(object):
                 course_participant['custom_user_status'] = 'Participant'
 
             if course_participant['is_active']:
-                course_participant['custom_activated'] = 'Yes'
+                course_participant['custom_activated'] = _('Yes')
             else:
-                course_participant['custom_activated'] = 'No'
+                course_participant['custom_activated'] = _('No')
 
             if 'last_login' in course_participant:
                 if (course_participant['last_login'] is not None) and (course_participant['last_login'] is not ''):
@@ -2309,7 +2292,7 @@ class CourseParticipantStats(object):
                 progress = round_to_int(course_participant['progress'])
                 course_participant['progress'] = '{:03d}'.format(progress)
             else:
-                course_participant['progress'] = "000"
+                course_participant['progress'] = _("000")
 
             course_participant['engagement'] = participants_engagement_lookup.get(str(course_participant['id']), 0)
 
@@ -2317,7 +2300,7 @@ class CourseParticipantStats(object):
                 proficiency = round_to_int(course_participant['grades']['grade'] * 100)
                 course_participant['proficiency'] = '{:03d}'.format(proficiency)
             else:
-                course_participant['proficiency'] = "000"
+                course_participant['proficiency'] = _("000")
 
             course_participant['number_of_assessments'] = 0
             course_participant['number_of_groupworks'] = 0

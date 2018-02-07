@@ -6,6 +6,7 @@ from tempfile import TemporaryFile
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from django.utils.translation import ugettext as _
 
 from celery.decorators import task
 from celery.utils.log import get_task_logger
@@ -100,20 +101,20 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
             label = groupwork.get('label')
             key = 'GW_{}'.format(label)
             if key not in groupworks:
-                groupworks[key] = 'Group Work: ' + label
+                groupworks[key] = _('Group Work: {label}').format(label=label)
             participant[key] = '{}%'.format(groupwork.get('percent'))
 
         for assessment in participant.get('assessments'):
             label = assessment.get('label')
             key = 'AS_{}'.format(label)
             if key not in assessments:
-                assessments[key] = 'Assessment: ' + label
+                assessments[key] = _('Assessment: {label}').format(label=label)
             participant[key] = '{}%'.format(assessment.get('percent'))
 
         for lesson_number, completion in sorted(participant.get('lesson_completions', {}).iteritems()):
             key = 'PRG_{}'.format(lesson_number)
             if key not in lesson_completions:
-                lesson_completions[key] = 'Lesson {} Progress'.format(lesson_number)
+                lesson_completions[key] = _('Lesson {lesson_number} Progress').format(lesson_number=lesson_number)
             participant[key] = '{}%'.format(completion)
 
     fields = OrderedDict([

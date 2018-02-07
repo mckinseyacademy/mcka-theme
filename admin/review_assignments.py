@@ -1,7 +1,10 @@
 import random
 import datetime
 
+from django.utils.translation import ugettext as _
+
 from .models import ReviewAssignmentGroup
+
 
 class ReviewAssignmentUnattainableError(Exception):
     pass
@@ -128,7 +131,7 @@ class ReviewAssignmentProcessor(object):
             else:
                 now = datetime.datetime.today()
                 rag = ReviewAssignmentGroup.create(
-                    "Assignment group for {}".format(wg.id),
+                    _("Assignment group for {wg_id}").format(wg_id=wg.id),
                     {
                         "assignment_date": now.strftime('%Y-%m-%dT%H:%M:%S.%fZ'),
                         "xblock_id": self.xblock_id,

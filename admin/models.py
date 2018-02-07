@@ -1,7 +1,6 @@
 from api_client import group_api, workgroup_api, organization_api, user_api, course_api
 from api_client import(
-    group_models, user_models, workgroup_models, organization_models, project_models,
-    course_models
+    group_models, user_models, workgroup_models, organization_models
 )
 from api_client.json_object import JsonObject
 from lib.utils import DottableDict
@@ -10,12 +9,12 @@ from django.conf import settings
 
 import hashlib
 import random
-import os
 from datetime import timedelta
 from django.utils import timezone
 from django.db import models as db_models
 from django.dispatch import Signal, receiver
 from django.db.models.signals import post_save
+from django.utils.translation import ugettext_lazy as _
 
 from api_client.group_api import TAG_GROUPS
 
@@ -24,6 +23,7 @@ GROUP_PROJECT_V2_CATEGORY = 'gp-v2-project'
 GROUP_PROJECT_V2_ACTIVITY_CATEGORY = 'gp-v2-activity'
 GROUP_PROJECT_V2_GRADING_STAGES = ['gp-v2-stage-peer-review']
 OTHER_ROLE = "Other (please describe below)"
+
 
 class BaseGroupModel(group_models.GroupInfo):
 
@@ -107,6 +107,7 @@ class Program(BaseGroupModel):
     def __repr__(self):
         return unicode(self)
 
+
 class Tag(BaseGroupModel):
 
     '''
@@ -179,9 +180,11 @@ class ReviewAssignmentGroup(BaseGroupModel):
             review_assignment_groups = [rag for rag in review_assignment_groups if rag.xblock_id == xblock_id]
         return review_assignment_groups
 
+
 class ContactGroup(BaseGroupModel):
 
     group_type = "contact_group"
+
 
 class Client(organization_models.Organization):
 
@@ -223,6 +226,7 @@ class Client(organization_models.Organization):
     def fetch_students_by_enrolled(self):
         return organization_api.get_users_by_enrolled(self.id, include_course_counts=True)
 
+
 class WorkGroup(workgroup_models.Workgroup):
 
     @property
@@ -249,8 +253,10 @@ class WorkGroup(workgroup_models.Workgroup):
 
         return workgroup
 
+
 class WorkgroupMilestoneDates(JsonObject):
     date_fields = ['upload', 'evaluation', 'grade']
+
 
 class WorkGroupV2StageXBlock(JsonObject):
     required_fields = ['close_date']
@@ -259,6 +265,7 @@ class WorkGroupV2StageXBlock(JsonObject):
     @classmethod
     def fetch_from_uri(cls, uri):
         return course_api.get_module_details(uri, cls.required_fields, cls)
+
 
 class WorkGroupActivityXBlock(JsonObject):
     required_fields = ['group_reviews_required_count', 'user_review_count', 'milestone_dates', 'weight', 'due_date']
@@ -287,6 +294,7 @@ class WorkGroupActivityXBlock(JsonObject):
     def ta_graded(self):
         return self.group_reviews_required_count < 1
 
+
 class UserRegistrationError(db_models.Model):
     task_key = db_models.CharField(max_length=40, unique=False, db_index=True)
     error = db_models.TextField(default='')
@@ -297,6 +305,7 @@ class UserRegistrationError(db_models.Model):
         reg_record.save()
 
         return reg_record
+
 
 class UserRegistrationBatch(db_models.Model):
     task_key = db_models.CharField(max_length=40, unique=True, db_index=True)
@@ -327,6 +336,7 @@ class UserRegistrationBatch(db_models.Model):
             old_record.delete()
         return True
 
+
 class BatchOperationErrors(db_models.Model):
     task_key = db_models.CharField(max_length=40, unique=False, db_index=True)
     error = db_models.TextField(default='')
@@ -338,6 +348,7 @@ class BatchOperationErrors(db_models.Model):
         reg_record.save()
 
         return reg_record
+
 
 class BatchOperationStatus(db_models.Model):
     task_key = db_models.CharField(max_length=40, unique=True, db_index=True)
@@ -368,6 +379,7 @@ class BatchOperationStatus(db_models.Model):
             old_record.delete()
         return True
 
+
 class ClientNavLinks(db_models.Model):
     class Meta:
         unique_together = ['client_id', 'link_name']
@@ -378,6 +390,7 @@ class ClientNavLinks(db_models.Model):
     link_url= db_models.CharField(max_length=200)
     created_at = db_models.DateTimeField(auto_now_add=True)
     updated_at = db_models.DateTimeField(auto_now=True)
+
 
 class ClientCustomization(db_models.Model):
     client_id = db_models.IntegerField(unique=True, db_index=True)
@@ -394,6 +407,7 @@ class ClientCustomization(db_models.Model):
     client_background_css = db_models.CharField(max_length=200)
     global_client_logo = db_models.CharField(max_length=200, blank=True)
     hex_background_main_navigation = db_models.CharField(max_length=7, blank=True)
+
 
 class CompanyInvoicingDetails(db_models.Model):
     company_id = db_models.IntegerField(unique=True, db_index=True)
@@ -414,10 +428,10 @@ class CompanyContact(db_models.Model):
         unique_together = ['company_id', 'contact_type']
 
     COMPANY_CONTACT_TYPE_CHOICES = (
-        (u'0', u'Executive Sponsor'),
-        (u'1', u'IT Security Contact'),
-        (u'2', u'Senior HR/PD Professional'),
-        (u'3', u'Day-to-Day Coordinator'),
+        (u'0', _('Executive Sponsor')),
+        (u'1', _('IT Security Contact')),
+        (u'2', _('Senior HR/PD Professional')),
+        (u'3', _('Day-to-Day Coordinator')),
     )
 
     company_id = db_models.IntegerField(db_index=True)
@@ -428,10 +442,10 @@ class CompanyContact(db_models.Model):
     phone = db_models.CharField(max_length=200, blank=True)
 
     TYPE_DESCRIPTION = {
-        u'0': 'Senior executive sponsoring McKinsey Academy program within company',
-        u'1': 'IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)',
-        u'2': 'Overseeing/coordinating Academy program with broader people strategy',
-        u'3': 'Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)'
+        u'0': _('Senior executive sponsoring McKinsey Academy program within company'),
+        u'1': _('IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)'),
+        u'2': _('Overseeing/coordinating Academy program with broader people strategy'),
+        u'3': _('Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)')
     }
 
     @classmethod
@@ -458,6 +472,7 @@ course_program_event = Signal(providing_args=['course_id', 'program_id', 'action
 program_client_event = Signal(providing_args=['client_id', 'program_id', 'action'])
 internal_course_event = Signal(providing_args=['course_id', 'action'])
 new_internal_admin_event = Signal(providing_args=['user_id', 'action'])
+
 
 class AccessKey(db_models.Model):
     """
@@ -508,6 +523,7 @@ class DashboardAdminQuickFilter(db_models.Model):
         # (user_id, program_id, course_id, company_id, group_work_project_id)
         # see notes in the class docstring for details.
 
+
 class BrandingSettings(db_models.Model):
 
     background_image = db_models.ImageField(upload_to=settings.LEARNER_DASHBOARD_BACKGROUND_IMAGE, blank=True)
@@ -529,6 +545,7 @@ class BrandingSettings(db_models.Model):
 
     client_id = db_models.IntegerField(blank=False, unique=True)
 
+
 class LearnerDashboard(db_models.Model):
 
     title = db_models.CharField(blank=True, max_length=80)
@@ -539,6 +556,7 @@ class LearnerDashboard(db_models.Model):
 
     client_id = db_models.IntegerField(null=True)
     course_id = db_models.CharField(blank=False, max_length=500)
+
 
 class LearnerDashboardTile(db_models.Model):
 
@@ -568,13 +586,13 @@ class LearnerDashboardTile(db_models.Model):
     tile_background_color = db_models.CharField(max_length=20, default=settings.TILE_BACKGROUND_COLOR, blank=True)
 
     TYPES = (
-        (u'1', u'Article'),
-        (u'2', u'Lesson'),
-        (u'3', u'Module'),
-        (u'4', u'Course'),
-        (u'5', u'In Person Session'),
-        (u'6', u'Webinar'),
-        (u'7', u'Group work'),
+        (u'1', _('Article')),
+        (u'2', _('Lesson')),
+        (u'3', _('Module')),
+        (u'4', _('Course')),
+        (u'5', _('In Person Session')),
+        (u'6', _('Webinar')),
+        (u'7', _('Group work')),
     )
     tile_type = db_models.CharField(max_length=1, choices=TYPES)
 
@@ -592,6 +610,7 @@ class LearnerDashboardTile(db_models.Model):
         on_delete=db_models.CASCADE,
     )
 
+
 class LearnerDashboardDiscovery(db_models.Model):
 
     link = db_models.URLField(blank=True, null=True)
@@ -603,6 +622,7 @@ class LearnerDashboardDiscovery(db_models.Model):
         'LearnerDashboard',
         on_delete=db_models.CASCADE,
     )
+
 
 class LearnerDashboardBranding(db_models.Model):
 
@@ -628,6 +648,7 @@ class LearnerDashboardBranding(db_models.Model):
         on_delete=db_models.CASCADE,
     )
 
+
 class EmailTemplate(db_models.Model):
     title = db_models.CharField(blank=False, null=False, max_length=64)
     subject = db_models.CharField(blank=False, null=False, max_length=256)
@@ -637,6 +658,7 @@ class EmailTemplate(db_models.Model):
     def create(cls, title, subject, body):
         email_template = cls(title=title, subject=subject, body=body)
         return email_template
+
 
 class TileBookmark(db_models.Model):
     user = db_models.IntegerField(blank=False, unique=True)
@@ -651,15 +673,16 @@ class TileBookmark(db_models.Model):
         on_delete=db_models.CASCADE,
     )
 
+
 class LearnerDashboardTileProgress(db_models.Model):
 
     user = db_models.IntegerField(blank=False, null=False)
 
     PROGRESS_TYPES = (
-        (u'1', u'Not Started'),
-        (u'2', u'In Progress'),
-        (u'3', u'Complete'),
-        (u'3', u'Incomplete')
+        (u'1', _('Not Started')),
+        (u'2', _('In Progress')),
+        (u'3', _('Complete')),
+        (u'3', _('Incomplete'))
     )
     progress = db_models.CharField(max_length=1, choices=PROGRESS_TYPES, blank=True, null=True)
     percentage = db_models.IntegerField(blank=True, null=True)
@@ -668,6 +691,7 @@ class LearnerDashboardTileProgress(db_models.Model):
         'LearnerDashboardTile',
         on_delete=db_models.CASCADE,
     )
+
 
 class CourseRun(db_models.Model):
 

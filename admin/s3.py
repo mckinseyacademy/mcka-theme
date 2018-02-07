@@ -1,6 +1,7 @@
 import uuid
 
 from django.conf import settings
+from django.utils.translation import ugettext as _
 
 import boto
 from boto.s3.key import Key
@@ -95,4 +96,4 @@ class s3file_api(APIView):
         if len(request.files) == len(list_of_uploaded):
             return Response({"status":"ok", "urls":list_of_uploaded})
         else:
-            return Response({"status":"error", "message":"Some of the files aren't uploaded, Please upload again!", "urls":list_of_uploaded})
+            return Response({"status":"error", "message":_("Some of the files aren't uploaded, Please upload again!"), "urls":list_of_uploaded})

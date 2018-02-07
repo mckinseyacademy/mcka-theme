@@ -2,7 +2,6 @@
 import re
 from datetime import date
 from django import forms
-from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.forms.extras.widgets import SelectDateWidget
 from django.core.validators import validate_email, RegexValidator
@@ -19,6 +18,7 @@ from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.json_object import JsonObjectWithImage
 from util.validators import UsernameValidator, AlphanumericWithAccentedChars, alphanum_accented_validator
+from util.i18n_helpers import format_lazy, mark_safe_lazy
 
 from django.forms import CharField
 
@@ -29,6 +29,7 @@ THIS_YEAR = date.today().year
 PROGRAM_YEAR_CHOICES = [yr for yr in range(THIS_YEAR, THIS_YEAR + 10)]
 HEX_COLOR_VALIDATION_REGEX = '^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{8})$'
 HEX_COLOR_INVALID_MESSAGE = _("Hex code should starts with # and followed by 6 or 8 hex digits.")
+
 
 class ClientForm(forms.Form):
 
@@ -162,7 +163,7 @@ class SubAdminPermissionForm(BasePermissionForm):
 
 class UploadCompanyImageForm(forms.Form):
     ''' form to upload file for company image '''
-    company_image = forms.FileField(label='', help_text="Formats accepted: JPG, PNG and GIF", required=False)
+    company_image = forms.FileField(label='', help_text=_("Formats accepted: JPG, PNG and GIF"), required=False)
 
 
 class MultiEmailField(forms.Field):
@@ -191,7 +192,7 @@ class MultiEmailField(forms.Field):
                 invalid_emails.append(email)
 
         if invalid_emails:
-            message = _('Enter a valid email address ({}).').format(', '.join(invalid_emails))
+            message = format_lazy('Enter a valid email address ({}).', ', '.join(invalid_emails))
             raise ValidationError(message, code=validate_email.code)
 
 
@@ -215,8 +216,9 @@ class CreateCourseAccessKeyForm(forms.ModelForm):
             'course_id': forms.Select,
         }
         labels = {
-            'name': mark_safe('Name <span class="required-field"></span>')
+            'name': mark_safe_lazy(format_lazy(_('Name {}'), ' <span class="required-field"></span>'))
         }
+
 
 class CreateAccessKeyForm(forms.ModelForm):
     class Meta:
@@ -232,8 +234,9 @@ class CreateAccessKeyForm(forms.ModelForm):
             'course_id': forms.Select,
         }
         labels = {
-            'name': mark_safe('Name <span class="required-field"></span>')
+            'name': mark_safe_lazy(format_lazy(_('Name'), ' <span class="required-field"></span>'))
         }
+
 
 class EditExistingUserForm(forms.Form):
     first_name = forms.CharField(required=True, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
@@ -427,16 +430,16 @@ class CourseRunForm(forms.ModelForm):
             course = course_api.get_course_shallow(course_id)
             return course_id
         except:
-            raise forms.ValidationError("Course with this ID does not exist")
+            raise forms.ValidationError(_("Course with this ID does not exist"))
 
     def clean_max_participants(self):
 
         max_participants = self.cleaned_data.get("max_participants")
 
         if max_participants < 1:
-            raise forms.ValidationError("That number is not allowed")
+            raise forms.ValidationError(_("That number is not allowed"))
         if max_participants > 5000:
-            raise forms.ValidationError("Number of participants is limited to 5000")
+            raise forms.ValidationError(_("Number of participants is limited to 5000"))
 
         return max_participants
 
