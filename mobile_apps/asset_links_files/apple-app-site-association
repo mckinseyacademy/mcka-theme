@@ -108,7 +108,7 @@
             ]
          },
          {
-            "appID": "Q33Y56JV3W.com.mckinsey.mck-academy",
+            "appID": "Q33Y56JV3W.com.mckinsey.mck-academy-learning",
             "paths": [
                "NOT /accounts/activate/*",
                "NOT /accounts/password/reset/*",
