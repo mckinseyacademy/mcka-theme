@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content
   .admin-dashboard
@@ -8,25 +9,26 @@
           .large-12
             .large-10.columns
               %h1.principal-title
-                = _("Group Work Dashboard")
+                {% trans "Group Work Dashboard" %}
             .large-2.columns.run-report
               %a.button.radius.small.disabled{'disabled': 'disabled'}
                 %span.fa.fa-download
-                = _("Report")
+                {% trans "Report" %}
           .row
           .add-message.detail-message
-            = _("Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view.")
+            {% trans "Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view." %}
         %hr
         %section
           .row
           .large-12.medium-12
-            .sub-2= _("Filter by:")
+            .sub-2
+              {% trans "Filter by:" %}
 
             .dashboard_filters
               .small-3.columns
                 %select#select-program{'data-outline-component': 'program'}
                   %option{'data-static': 'true', 'value': ''}
-                    = _("Program")
+                    {% trans "Program" %}
                   - for program in programs
                     %option{'value': '#{program.id}'}
                       = program.display_name
@@ -37,31 +39,33 @@
               .small-3.columns
                 %select#select-course{'data-filter-endpoint': '/admin/workgroup/dashboard/programs/$value$/courses', 'data-outline-component': 'course'}
                   %option{'data-static': 'true', 'value': ''}
-                    = _("Course")
+                    {% trans "Course" %}
 
               .small-2.columns
                 %select#select-project{'data-filter-endpoint': '/admin/workgroup/dashboard/courses/$value$/projects', 'data-outline-component': 'project'}
                   %option{'data-static': 'true', 'value': ''}
-                    = _("Project")
+                    {% trans "Project" %}
 
               .small-2.columns
                 %select#select-company{'data-filter-endpoint': '/admin/workgroup/dashboard/companies', 'data-outline-component': 'company', 'data-query-mode': 'data', 'data-value-parameter': 'program_id', 'data-autoselect-only-option': 'true', 'data-allow-empty-value': 'true'}
                   %option{'data-static': 'true', 'value': ''}
-                    = _("All companies")
+                    {% trans "All companies" %}
               .small-2.columns
                 %a#save-filter.button.radius.small.disabled
-                  Save filter
+                  {% trans "Save filter" %}
           #quick-links-section.hidden
             .row
             .large-12.medium-12
-              .sub-2= _("Saved filters:")
+              .sub-2
+                {% trans "Saved filters:" %}
             .large-12.medium-12
               #quick-links-scroll
                 %table#quick-links
                   %tbody
           .row
           .large-12.dashboard_outline_wrapper
-            %span.dashboard_outline_label= _("Displaying:")
+            %span.dashboard_outline_label
+              {% trans "Displaying:" %}
             %span.dashboard_outline.program
               %i.fa.fa-spin.fa-spinner
             %span= "|"

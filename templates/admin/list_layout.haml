@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content
   .admin-list
@@ -7,13 +8,14 @@
         %header
           %h1.principal-title {{principal_name_plural}}: Overview
           - if not read_only
-            .sub-1.add= _("Add a new ")
+            .sub-1.add
+              {% trans "Add a new " %}
               %span= principal_name
             .add-message
               - block principal_message
-                Use this block to update the message describing the principal at hand
+                {% trans "Use this block to update the message describing the principal at hand" %}
             %a.button.radius.small{"data-reveal-id": "new-principal", "data-reveal-ajax": "#{principal_new_url}", href: ""}
-              = _("Add ")
+              {% trans "Add " %}
               %span= principal_name
         %hr
         .principal-list

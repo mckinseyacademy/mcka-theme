@@ -1,25 +1,28 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content
   .admin-list
     .row
       .large-10.large-centered.columns
         %header
-          %h1.principal-title {{principal_name_plural}}: Overview
-          %a{href: '/admin/workgroup/dashboard'}= _("Access V2 Dashboard")
+          %h1.principal-title {{principal_name_plural}}: {% trans "Overview" %}
+          %a{href: '/admin/workgroup/dashboard'}
+            {% trans "Access V2 Dashboard" %}
           %br
-          %a{href: '/admin/workgroup/dashboardV2'}= _("Access V2 Dashboard without programs")
+          %a{href: '/admin/workgroup/dashboardV2'}
+            {% trans "Access V2 Dashboard without programs" %}
           .add-message
             - block principal_message
-              Use this block to update the message describing the principal at hand
+              {% trans "Use this block to update the message describing the principal at hand" %}
         %hr
         .principal-list
           .title= principal_list_plural
           .message
             - block principal_list_message
-              Add a message here to describe the list of principals
+              {% trans "Add a message here to describe the list of principals" %}
           %form.admin-form{action: "/admin/workgroup", method: "POST"}
-            - csrf_token   
+            - csrf_token
             - if not user.is_mcka_admin and not user.is_mcka_subadmin
               .div.select-group-wrapper{'data-enable-cache': 'false'}
                 %select.select-program{'name': 'select-course'}

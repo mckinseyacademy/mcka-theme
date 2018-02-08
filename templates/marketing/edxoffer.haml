@@ -1,31 +1,45 @@
 - extends "layout.haml"
-
+- load i18n
 - block page_title
-  %title= _("Offer | McKinsey Academy")
-  %meta{property: "og:title", content: "McKinsey Academy Offer"}
+  %title
+    {% trans "Offer | McKinsey Academy" %}
+  %meta{property: "og:title", content: '{% trans "McKinsey Academy Offer" %}'}
 
 - block content
   #offer_confirmation.course-pop.reveal-modal.small{"data-reveal": "true"}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    %p Thank you for your interest in McKinsey Academy. We will keep you updated.
+    %p
+      {% trans "Thank you for your interest in McKinsey Academy. We will keep you updated." %}
 
   #structured_communications.course-pop.reveal-modal.small{"data-reveal": "true"}
-    %h1 Business Strategy
+    %h1
+      {% trans "Business Strategy" %}
     %hr
-    %p Learn how to assess the robustness of a strategy and apply McKinsey’s Strategy Method to construct a strategic plan to gain a sustainable advantage in the market.
+    %p
+      {% trans "Learn how to assess the robustness of a strategy and apply McKinsey’s Strategy Method to construct a strategic plan to gain a sustainable advantage in the market." %}
     %ul
-      %li Assess the robustness of a strategy by applying McKinsey’s Ten Timeless Tests
-      %li Identify available strategic decisions and potential alternatives
-      %li Develop insight into where and why a company does (or does not) create value, including its positional and proprietary advantages
-      %li Interpret the outputs of a SCP (structure, conduct, and performance) diagnostic to assess competitive position
-      %li Create scenarios to deal with uncertain futures, including identifying key drivers and strategic options for each scenario
-      %li Develop and evaluate where- and how-to-compete sets of options
-      %li Determine which strategy to pursue in order to beat the market
-      %li Finish the strategy by translating the strategic choice into an executable plan of action
-      %li Facilitate ongoing monitoring and refresh of the strategy as new information becomes available
-      %li Understand the various portfolio moves available at the corporate level, and how to allocate resources to support a specific move
-      
+      %li
+        {% trans "Assess the robustness of a strategy by applying McKinsey’s Ten Timeless Tests" %}
+      %li
+        {% trans "Identify available strategic decisions and potential alternatives" %}
+      %li
+        {% trans "Develop insight into where and why a company does (or does not) create value, including its positional and proprietary advantages" %}
+      %li
+        {% trans "Interpret the outputs of a SCP (structure, conduct, and performance) diagnostic to assess competitive position" %}
+      %li
+        {% trans "Create scenarios to deal with uncertain futures, including identifying key drivers and strategic options for each scenario" %}
+      %li
+        {% trans "Develop and evaluate where- and how-to-compete sets of options" %}
+      %li
+        {% trans "Determine which strategy to pursue in order to beat the market" %}
+      %li
+        {% trans "Finish the strategy by translating the strategic choice into an executable plan of action" %}
+      %li
+        {% trans "Facilitate ongoing monitoring and refresh of the strategy as new information becomes available" %}
+      %li
+        {% trans "Understand the various portfolio moves available at the corporate level, and how to allocate resources to support a specific move" %}
+
     .close-reveal-modal
       %i.fa.fa-times-circle
 
@@ -34,25 +48,36 @@
     .row.collapse
       .large-11.large-centered.columns
         %section
-          %h1 edX Offer
+          %h1
+            {% trans "edX Offer" %}
         %section
-          %p McKinsey has set aside a number of places for qualified participants. We will offer priority placement to firms that propose well qualified candidates in groups of four. After reviewing applications, if we find sufficient suitable applicants we will launch the course in June 2015. If we do not find sufficient participants the course will be cancelled. Once the cohort has been declared viable, we will reach out to those who have been selected with course logistics, and will at that time secure course fees via invoice. Payment must be made in full before the course commences.
+          %p
+            {% trans "McKinsey has set aside a number of places for qualified participants. We will offer priority placement to firms that propose well qualified candidates in groups of four. After reviewing applications, if we find sufficient suitable applicants we will launch the course in June 2015. If we do not find sufficient participants the course will be cancelled. Once the cohort has been declared viable, we will reach out to those who have been selected with course logistics, and will at that time secure course fees via invoice. Payment must be made in full before the course commences." %}
         %section
-          .sub-1 Target Audience:
-          %p Rising professionals looking to build leadership and management capabilities.
+          .sub-1
+            {% trans "Target Audience:" %}
+          %p
+            {% trans "Rising professionals looking to build leadership and management capabilities." %}
         %section
-          .sub-1 Course:
-          %a{'data-reveal-id': 'structured_communications'} Business Strategy
-          %p Learn how to evaluate a strategy and apply McKinsey’s Strategy Method to develop a strategy to gain a sustainable advantage in the market.
+          .sub-1
+            {% trans "Course:" %}
+          %a{'data-reveal-id': 'structured_communications'}
+            {% trans "Business Strategy" %}
+          %p
+            {% trans "Learn how to evaluate a strategy and apply McKinsey’s Strategy Method to develop a strategy to gain a sustainable advantage in the market." %}
         %section
-          %p.style-5 Fee for course: $2,500 per place
-          %p.style-5 Applications must be received by May 15th, 2015.
+          %p.style-5
+            {% trans "Fee for course: $2,500 per place" %}
+          %p.style-5
+            {% trans "Applications must be received by May 15th, 2015." %}
         %hr
         .large-6.columns.background-white
-          .sub-1 Application
-          %p Please submit the information below and we will respond.
+          .sub-1
+            {% trans "Application" %}
+          %p
+            {% trans "Please submit the information below and we will respond." %}
           %form#edxoffer{action: '', method: 'POST', 'data-key': '1BDYsSrfUY6cRzyfSx1lsv396i-EywuepL5qRwF574dg'}
             %fieldset
               = edx_offer_form
               %div
-                %input.button.small.radius{type: 'submit', value: 'Submit', disabled: None}
+                %input.button.small.radius{type: 'submit', value: '{% trans "Submit" %}', disabled: None}

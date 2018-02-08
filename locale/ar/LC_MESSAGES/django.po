@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-07 17:31+0500\n"
+"POT-Creation-Date: 2018-02-08 14:26+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1403,7 +1403,9 @@ msgid "Enter your full name"
 msgstr "ثرفثق غخعق بعمم رشوث"
 
 #: accounts/views.py accounts/views.py admin/views.py admin/views.py
-#: admin/views.py templates/admin/client/navigation.haml
+#: admin/views.py
+#: templates/admin/client-admin/course_branding_settings_create_edit.haml
+#: templates/admin/client/navigation.haml
 #: templates/admin/course_meta_content/item_detail.haml
 #: templates/admin/course_run/form_modal.haml
 #: templates/admin/participants/participant_edit_status.haml
@@ -1537,6 +1539,8 @@ msgstr "عسثقرشوث"
 #: templates/admin/companies/company_details.haml
 #: templates/admin/companies/company_details.haml
 #: templates/admin/companies/company_details.haml
+#: templates/admin/learner_dashboard/discovery_list.haml
+#: templates/admin/learner_dashboard/element_list.haml
 msgid "Title"
 msgstr "فهفمث"
 
@@ -1544,16 +1548,18 @@ msgstr "فهفمث"
 msgid "Progress %"
 msgstr "حقخلقثسس %"
 
-#: admin/controller.py templates/admin/course_meta_content/item_list.haml
+#: admin/controller.py templates/admin/client-admin/course_analytics.haml
+#: templates/admin/course_meta_content/item_list.haml
 msgid "Engagement"
 msgstr "ثرلشلثوثرف"
 
 #: admin/controller.py admin/views.py
+#: templates/admin/client-admin/course_analytics.haml
 #: templates/admin/course_meta_content/item_list.haml
 msgid "Proficiency"
 msgstr "حقخبهذهثرذغ"
 
-#: admin/controller.py
+#: admin/controller.py templates/admin/client-admin/course_participants.haml
 msgid "Course Completed"
 msgstr "ذخعقسث ذخوحمثفثي"
 
@@ -1736,12 +1742,14 @@ msgid "No company"
 msgstr "رخ ذخوحشرغ"
 
 #: admin/controller.py admin/views.py admin/views.py admin/views.py
+#: templates/admin/client-admin/course_participants.haml
 #: templates/admin/mobile_apps/company_app_details.haml
 msgid "Yes"
 msgstr "غثس"
 
 #: admin/controller.py admin/views.py admin/views.py admin/views.py
 #: admin/views.py admin/views.py
+#: templates/admin/client-admin/course_participants.haml
 #: templates/admin/mobile_apps/company_app_details.haml
 msgid "No"
 msgstr "رخ"
@@ -1792,6 +1800,7 @@ msgid "Message (optional)"
 msgstr "وثسسشلث (خحفهخرشم)"
 
 #: admin/forms.py admin/forms.py admin/forms.py marketing/forms.py
+#: templates/admin/client-admin/course_participants.haml
 #: templates/admin/course_run/list.haml
 #: templates/admin/participants/participants_list.haml
 #: templates/certificates/certificate_templates.haml
@@ -1807,6 +1816,7 @@ msgid "Name {}"
 msgstr "رشوث {}"
 
 #: admin/forms.py admin/views.py admin/views.py admin/views.py
+#: templates/admin/program/list.haml templates/admin/workgroup/dashboard.haml
 #: templates/courses/course_learner_dashboard_header.haml
 #: templates/header.haml
 msgid "Program"
@@ -1888,6 +1898,8 @@ msgstr "وخيعمث"
 
 #: admin/models.py admin/views.py admin/views.py
 #: templates/admin/participants/participants_list.haml
+#: templates/admin/workgroup/dashboard.haml
+#: templates/admin/workgroup/dashboardV2.haml
 msgid "Course"
 msgstr "ذخعقسث"
 
@@ -1903,7 +1915,7 @@ msgstr "صثزهرشق"
 msgid "Group work"
 msgstr "لقخعح صخقن"
 
-#: admin/models.py
+#: admin/models.py templates/admin/client-admin/course_info.haml
 msgid "Not Started"
 msgstr "رخف سفشقفثي"
 
@@ -2102,7 +2114,8 @@ msgstr "بشهم"
 msgid "success"
 msgstr "سعذذثسس"
 
-#: admin/views.py
+#: admin/views.py templates/admin/admin_header.haml
+#: templates/marketing/programs.haml
 msgid "Programs"
 msgstr "حقخلقشوس"
 
@@ -2197,6 +2210,7 @@ msgid "No group projects available for this course"
 msgstr "رخ لقخعح حقختثذفس شدشهمشزمث بخق فاهس ذخعقسث"
 
 #: admin/views.py admin/views.py admin/views.py admin/views.py
+#: templates/admin/admin_header.haml
 #: templates/admin/course_meta_content/item_list.haml
 #: templates/courses/content_page/course_tabs.haml
 #: templates/courses/course_group_work.haml
@@ -2280,7 +2294,9 @@ msgstr "ذشر'ف بهري عسثق هر يشفشزشسث"
 msgid "There is a problem with selected user role on new course!"
 msgstr "فاثقث هس ش حقخزمثو صهفا سثمثذفثي عسثق قخمث خر رثص ذخعقسث!"
 
-#: admin/views.py templates/courses/content_page/course_tabs.haml
+#: admin/views.py templates/admin/client-admin/course_analytics.haml
+#: templates/admin/client-admin/course_participants.haml
+#: templates/courses/content_page/course_tabs.haml
 msgid "Progress"
 msgstr "حقخلقثسس"
 
@@ -2288,7 +2304,8 @@ msgstr "حقخلقثسس"
 msgid "Status"
 msgstr "سفشفعس"
 
-#: admin/views.py templates/courses/content_page/course_menu.haml
+#: admin/views.py templates/admin/client-admin/course_info.haml
+#: templates/courses/content_page/course_menu.haml
 #: templates/courses/course_progress.haml
 msgid "Completed"
 msgstr "ذخوحمثفثي"
@@ -2443,6 +2460,8 @@ msgid "Enrolled"
 msgstr "ثرقخممثي"
 
 #: admin/workgroup_reports.py
+#: templates/admin/workgroup/workgroup_detail_report.haml
+#: templates/admin/workgroup/workgroup_report.haml
 msgid "--"
 msgstr "--"
 
@@ -2476,6 +2495,7 @@ msgid "No Stages"
 msgstr "رخ سفشلثس"
 
 #: admin/workgroup_reports.py admin/workgroup_reports.py
+#: templates/admin/workgroup/workgroup_detail_report.haml
 msgid "TA Graded"
 msgstr "فش لقشيثي"
 
@@ -2816,7 +2836,7 @@ msgstr "هر ش بثص مهرثس فثمم عس صاغ غخع صخعمي مهن�
 msgid "Thank you. We will get back to you as soon as possible."
 msgstr "فاشرن غخع. صث صهمم لثف زشذن فخ غخع شس سخخر شس حخسسهزمث."
 
-#: marketing/views.py
+#: marketing/views.py templates/marketing/edxoffer.haml
 msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr ""
@@ -3217,6 +3237,314 @@ msgstr "ثيهف"
 msgid "Log out"
 msgstr "مخل خعف"
 
+#: templates/admin/admin_header.haml templates/admin/admin_header.haml
+#: templates/admin/courses/courses_list.haml templates/marketing/programs.haml
+msgid "Courses"
+msgstr "ذخعقسثس"
+
+#: templates/admin/admin_header.haml
+#: templates/admin/client-admin/course_header.haml
+#: templates/admin/client-admin/course_header.haml
+msgid "Participants"
+msgstr "حشقفهذهحشرفس"
+
+#: templates/admin/admin_header.haml templates/admin/admin_header.haml
+#: templates/admin/companies/companies_list.haml
+#: templates/admin/companies/company_dashboard.haml
+msgid "Companies"
+msgstr "ذخوحشرهثس"
+
+#: templates/admin/admin_header.haml templates/courses/course_navigation.haml
+msgid "Course Content"
+msgstr "ذخعقسث ذخرفثرف"
+
+#: templates/admin/admin_header.haml
+#: templates/admin/course_meta_content/item_list.haml
+msgid "Certificates"
+msgstr "ذثقفهبهذشفثس"
+
+#: templates/admin/admin_header.haml
+msgid "Customization"
+msgstr "ذعسفخوهظشفهخر"
+
+#: templates/admin/admin_header.haml
+msgid "Contact"
+msgstr "ذخرفشذف"
+
+#: templates/admin/client-admin/contact.haml
+msgid "Contact: "
+msgstr "ذخرفشذف: "
+
+#: templates/admin/client-admin/contact.haml
+msgid ""
+"If you need assistance or have questions please contact your McKinsey Admin "
+"representative(s) below."
+msgstr ""
+"هب غخع رثثي شسسهسفشرذث خق اشدث ضعثسفهخرس حمثشسث ذخرفشذف غخعق وذنهرسثغ شيوهر "
+"قثحقثسثرفشفهدث(س) زثمخص."
+
+#: templates/admin/client-admin/course_analytics.haml
+msgid "Analytics: "
+msgstr "شرشمغفهذس: "
+
+#: templates/admin/client-admin/course_analytics.haml
+msgid ""
+"Interested in how your company's participants are doing in the course? See "
+"below to measure your participant's engagement, progress through course "
+"content, social impact score, and demonstrated proficiency. Including how "
+"your company's participants are performing relative to their peers in the "
+"overall course cohort."
+msgstr ""
+"هرفثقثسفثي هر اخص غخعق ذخوحشرغ'س حشقفهذهحشرفس شقث يخهرل هر فاث ذخعقسث? سثث "
+"زثمخص فخ وثشسعقث غخعق حشقفهذهحشرف'س ثرلشلثوثرف, حقخلقثسس فاقخعلا ذخعقسث "
+"ذخرفثرف, سخذهشم هوحشذف سذخقث, شري يثوخرسفقشفثي حقخبهذهثرذغ. هرذمعيهرل اخص "
+"غخعق ذخوحشرغ'س حشقفهذهحشرفس شقث حثقبخقوهرل قثمشفهدث فخ فاثهق حثثقس هر فاث "
+"خدثقشمم ذخعقسث ذخاخقف."
+
+#: templates/admin/client-admin/course_analytics.haml
+msgid "Participant activity"
+msgstr "حشقفهذهحشرف شذفهدهفغ"
+
+#: templates/admin/client-admin/course_analytics.haml
+msgid ""
+"Daily sum of activity for your participants, with activity defined as # of "
+"modules completed. # of participants - those active on that day"
+msgstr ""
+"يشهمغ سعو خب شذفهدهفغ بخق غخعق حشقفهذهحشرفس, صهفا شذفهدهفغ يثبهرثي شس # خب "
+"وخيعمثس ذخوحمثفثي. # خب حشقفهذهحشرفس - فاخسث شذفهدث خر فاشف يشغ"
+
+#: templates/admin/client-admin/course_analytics.haml
+#, python-format
+msgid ""
+"%% of content consumed by participants (total number of modules completed "
+"divided by total number of modules)"
+msgstr ""
+"%% خب ذخرفثرف ذخرسعوثي زغ حشقفهذهحشرفس (فخفشم رعوزثق خب وخيعمثس ذخوحمثفثي "
+"يهدهيثي زغ فخفشم رعوزثق خب وخيعمثس)"
+
+#: templates/admin/client-admin/course_analytics.haml
+msgid "Your Company: "
+msgstr "غخعق ذخوحشرغ: "
+
+#: templates/admin/client-admin/course_analytics.haml
+#: templates/admin/client-admin/course_analytics.haml
+#: templates/admin/client-admin/course_participants.haml
+#, python-format
+msgid "%%"
+msgstr "%%"
+
+#: templates/admin/client-admin/course_analytics.haml
+msgid "Your Cohort: "
+msgstr "غخعق ذخاخقف: "
+
+#: templates/admin/client-admin/course_analytics.haml
+msgid "Average grade based on current grade of participants."
+msgstr "شدثقشلث لقشيث زشسثي خر ذعققثرف لقشيث خب حشقفهذهحشرفس."
+
+#: templates/admin/client-admin/course_analytics.haml
+msgid ""
+"Note: Grades may not appear until later in the course depending on number of"
+" graded items and their location within course content."
+msgstr ""
+"رخفث: لقشيثس وشغ رخف شححثشق عرفهم مشفثق هر فاث ذخعقسث يثحثريهرل خر رعوزثق خب"
+" لقشيثي هفثوس شري فاثهق مخذشفهخر صهفاهر ذخعقسث ذخرفثرف."
+
+#: templates/admin/client-admin/course_analytics.haml
+msgid ""
+"Participant engagement increases through engagement on the discussion "
+"forums."
+msgstr ""
+"حشقفهذهحشرف ثرلشلثوثرف هرذقثشسثس فاقخعلا ثرلشلثوثرف خر فاث يهسذعسسهخر "
+"بخقعوس."
+
+#: templates/admin/client-admin/course_branding_settings_create_edit.haml
+msgid "Edit Learner dashboard branding: "
+msgstr "ثيهف مثشقرثق يشسازخشقي زقشريهرل: "
+
+#: templates/admin/client-admin/course_branding_settings_create_edit.haml
+msgid "Create Learner dashboard branding: "
+msgstr "ذقثشفث مثشقرثق يشسازخشقي زقشريهرل: "
+
+#: templates/admin/client-admin/course_branding_settings_create_edit.haml
+msgid "Rule color:"
+msgstr "قعمث ذخمخق:"
+
+#: templates/admin/client-admin/course_branding_settings_create_edit.haml
+#: templates/admin/client-admin/course_branding_settings_create_edit.haml
+msgid "Reset colors"
+msgstr "قثسثف ذخمخقس"
+
+#: templates/admin/client-admin/course_branding_settings_create_edit.haml
+#: templates/admin/client/navigation.haml
+#: templates/admin/client/navigation.haml
+#: templates/admin/companies/companies_list.haml
+#: templates/admin/companies/company_details.haml
+#: templates/admin/companies/company_details.haml
+#: templates/admin/companies/company_details.haml
+#: templates/admin/course_meta_content/item_detail.haml
+#: templates/admin/courses/course_details.haml
+#: templates/admin/courses/course_details.haml
+#: templates/admin/mobile_apps/company_app_details.haml
+#: templates/admin/participants/participant_details.haml
+#: templates/admin/participants/participant_details.haml
+#: templates/admin/participants/participant_details.haml
+#: templates/admin/participants/participants_list.haml
+#: templates/admin/participants/participants_list.haml
+#: templates/admin/participants/participants_list.haml
+#: templates/admin/participants/participants_list.haml
+#: templates/admin/workgroup/course_detail.haml
+msgid "Cancel"
+msgstr "ذشرذثم"
+
+#: templates/admin/client-admin/course_header.haml
+#: templates/admin/client-admin/course_header.haml
+msgid "Course Info"
+msgstr "ذخعقسث هربخ"
+
+#: templates/admin/client-admin/course_header.haml
+#: templates/admin/client-admin/course_header.haml
+msgid "Analytics"
+msgstr "شرشمغفهذس"
+
+#: templates/admin/client-admin/course_header.haml
+#: templates/admin/client-admin/course_header.haml
+#: templates/admin/course_meta_content/item_list.haml
+#: templates/admin/learner_dashboard/header.haml
+msgid "Branding"
+msgstr "زقشريهرل"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "Course Info: "
+msgstr "ذخعقسث هربخ: "
+
+#: templates/admin/client-admin/course_info.haml
+msgid "ENROLLMENT INFORMATION"
+msgstr "ثرقخمموثرف هربخقوشفهخر"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "Total number of participants:"
+msgstr "فخفشم رعوزثق خب حشقفهذهحشرفس:"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "BASIC COURSE INFORMATION"
+msgstr "زشسهذ ذخعقسث هربخقوشفهخر"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "Course name:"
+msgstr "ذخعقسث رشوث:"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "Course start date:"
+msgstr "ذخعقسث سفشقف يشفث:"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "Course end date:"
+msgstr "ذخعقسث ثري يشفث:"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "Grade cutoffs:"
+msgstr "لقشيث ذعفخببس:"
+
+#: templates/admin/client-admin/course_info.haml
+#: templates/admin/courses/course_details.haml
+msgid "PARTICIPANTS"
+msgstr "حشقفهذهحشرفس"
+
+#: templates/admin/client-admin/course_info.haml
+#: templates/admin/courses/course_details.haml
+msgid "Participants:"
+msgstr "حشقفهذهحشرفس:"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "Started:"
+msgstr "سفشقفثي:"
+
+#: templates/admin/client-admin/course_info.haml
+#: templates/admin/courses/course_details.haml
+msgid "Completed:"
+msgstr "ذخوحمثفثي:"
+
+#: templates/admin/client-admin/course_info.haml
+#, python-format
+msgid "%% Completed:"
+msgstr "%% ذخوحمثفثي:"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "FORUM INFORMATION"
+msgstr "بخقعو هربخقوشفهخر"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "Active discussions:"
+msgstr "شذفهدث يهسذعسسهخرس:"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "Threads:"
+msgstr "فاقثشيس:"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "STATUS"
+msgstr "سفشفعس"
+
+#: templates/admin/client-admin/course_info.haml
+msgid ""
+"Current status of all participants who have completed, are in progress, or "
+"not yet started this course."
+msgstr ""
+"ذعققثرف سفشفعس خب شمم حشقفهذهحشرفس صاخ اشدث ذخوحمثفثي, شقث هر حقخلقثسس, خق "
+"رخف غثف سفشقفثي فاهس ذخعقسث."
+
+#: templates/admin/client-admin/course_info.haml
+msgid "In progress"
+msgstr "هر حقخلقثسس"
+
+#: templates/admin/client-admin/course_info.haml
+#: templates/admin/client-admin/course_info.haml
+msgid "Email participants not started"
+msgstr "ثوشهم حشقفهذهحشرفس رخف سفشقفثي"
+
+#: templates/admin/client-admin/course_info.haml
+msgid "All participants have already started the course"
+msgstr "شمم حشقفهذهحشرفس اشدث شمقثشيغ سفشقفثي فاث ذخعقسث"
+
+#: templates/admin/client-admin/course_participants.haml
+#: templates/admin/client-admin/course_participants.haml
+msgid "Participants: "
+msgstr "حشقفهذهحشرفس: "
+
+#: templates/admin/client-admin/course_participants.haml
+msgid "Data Download "
+msgstr "يشفش يخصرمخشي "
+
+#: templates/admin/client-admin/course_participants.haml
+msgid ""
+"The following button downloads a list of all participants enrolled in this "
+"course, their percent complete, engagement scores, and course grade, along "
+"with profile informations such as email address and username."
+msgstr ""
+"فاث بخممخصهرل زعففخر يخصرمخشيس ش مهسف خب شمم حشقفهذهحشرفس ثرقخممثي هر فاهس "
+"ذخعقسث, فاثهق حثقذثرف ذخوحمثفث, ثرلشلثوثرف سذخقثس, شري ذخعقسث لقشيث, شمخرل "
+"صهفا حقخبهمث هربخقوشفهخرس سعذا شس ثوشهم شييقثسس شري عسثقرشوث."
+
+#: templates/admin/client-admin/course_participants.haml
+msgid "Download Report for course"
+msgstr "يخصرمخشي قثحخقف بخق ذخعقسث"
+
+#: templates/admin/client-admin/course_participants.haml
+msgid "Participant-Specific grade inspection "
+msgstr "حشقفهذهحشرف-سحثذهبهذ لقشيث هرسحثذفهخر "
+
+#: templates/admin/client-admin/course_participants.haml
+msgid "Specify the name of a participant to access their details"
+msgstr "سحثذهبغ فاث رشوث خب ش حشقفهذهحشرف فخ شذذثسس فاثهق يثفشهمس"
+
+#: templates/admin/client-admin/course_participants.haml
+msgid ""
+"Progress = # of modules complete out of total number of modules. Course "
+"Completed = completion of all required course work."
+msgstr ""
+"حقخلقثسس = # خب وخيعمثس ذخوحمثفث خعف خب فخفشم رعوزثق خب وخيعمثس. ذخعقسث "
+"ذخوحمثفثي = ذخوحمثفهخر خب شمم قثضعهقثي ذخعقسث صخقن."
+
 #: templates/admin/client/edit_mobile_app_image.haml
 msgid "Mobile App Image"
 msgstr "وخزهمث شحح هوشلث"
@@ -3270,26 +3598,6 @@ msgstr "ثرفثق مهرن"
 #: templates/admin/client/navigation.haml
 msgid "Save Links"
 msgstr "سشدث مهرنس"
-
-#: templates/admin/client/navigation.haml
-#: templates/admin/client/navigation.haml
-#: templates/admin/companies/companies_list.haml
-#: templates/admin/companies/company_details.haml
-#: templates/admin/companies/company_details.haml
-#: templates/admin/companies/company_details.haml
-#: templates/admin/course_meta_content/item_detail.haml
-#: templates/admin/courses/course_details.haml
-#: templates/admin/courses/course_details.haml
-#: templates/admin/mobile_apps/company_app_details.haml
-#: templates/admin/participants/participant_details.haml
-#: templates/admin/participants/participant_details.haml
-#: templates/admin/participants/participant_details.haml
-#: templates/admin/participants/participants_list.haml
-#: templates/admin/participants/participants_list.haml
-#: templates/admin/participants/participants_list.haml
-#: templates/admin/participants/participants_list.haml
-msgid "Cancel"
-msgstr "ذشرذثم"
 
 #: templates/admin/client/navigation.haml
 msgid "Global Branding"
@@ -3396,11 +3704,6 @@ msgid "Navigation Text Color:"
 msgstr "رشدهلشفهخر فثطف ذخمخق:"
 
 #: templates/admin/companies/companies_list.haml
-#: templates/admin/companies/company_dashboard.haml
-msgid "Companies"
-msgstr "ذخوحشرهثس"
-
-#: templates/admin/companies/companies_list.haml
 #: templates/admin/companies/companies_list.haml
 msgid "Create New Company"
 msgstr "ذقثشفث رثص ذخوحشرغ"
@@ -3473,6 +3776,8 @@ msgstr "هردخهذهرل يثفشهمس"
 #: templates/admin/companies/company_details.haml
 #: templates/admin/course_meta_content/item_list.haml
 #: templates/admin/course_run/list.haml templates/admin/course_run/view.haml
+#: templates/admin/learner_dashboard/discovery_list.haml
+#: templates/admin/learner_dashboard/element_list.haml
 #: templates/admin/participants/participant_details.haml
 #: templates/certificates/certificate_templates.haml
 msgid "Edit"
@@ -3595,6 +3900,9 @@ msgid "TYPE"
 msgstr "فغحث"
 
 #: templates/admin/course_meta_content/item_list.haml
+#: templates/admin/learner_dashboard/discovery_list.haml
+#: templates/admin/learner_dashboard/element_list.haml
+#: templates/admin/workgroup/course_detail.haml
 msgid "Delete"
 msgstr "يثمثفث"
 
@@ -3655,10 +3963,6 @@ msgid "Notifications"
 msgstr "رخفهبهذشفهخرس"
 
 #: templates/admin/course_meta_content/item_list.haml
-msgid "Branding"
-msgstr "زقشريهرل"
-
-#: templates/admin/course_meta_content/item_list.haml
 #: templates/courses/content_page/course_tabs.haml
 msgid "Learner Dashboard"
 msgstr "مثشقرثق يشسازخشقي"
@@ -3674,10 +3978,6 @@ msgstr "قثسخعقذثس"
 #: templates/admin/course_meta_content/item_list.haml
 msgid "Cohort Average"
 msgstr "ذخاخقف شدثقشلث"
-
-#: templates/admin/course_meta_content/item_list.haml
-msgid "Certificates"
-msgstr "ذثقفهبهذشفثس"
 
 #: templates/admin/course_meta_content/item_list.haml
 msgid "Mobile Available"
@@ -3832,10 +4132,6 @@ msgid "Back to All Courses"
 msgstr "زشذن فخ شمم ذخعقسثس"
 
 #: templates/admin/courses/course_details.haml
-msgid "Participants:"
-msgstr "حشقفهذهحشرفس:"
-
-#: templates/admin/courses/course_details.haml
 msgid "Avg Progress:"
 msgstr "شدل حقخلقثسس:"
 
@@ -3844,16 +4140,8 @@ msgid "Avg Proficiency:"
 msgstr "شدل حقخبهذهثرذغ:"
 
 #: templates/admin/courses/course_details.haml
-msgid "Completed:"
-msgstr "ذخوحمثفثي:"
-
-#: templates/admin/courses/course_details.haml
 msgid "Passed:"
 msgstr "حشسسثي:"
-
-#: templates/admin/courses/course_details.haml
-msgid "PARTICIPANTS"
-msgstr "حشقفهذهحشرفس"
 
 #: templates/admin/courses/course_details.haml
 msgid "STATS"
@@ -3976,9 +4264,71 @@ msgstr ""
 "سهرذث فاهس فشل يخثس رخف غثف ثطهسف, ش رثص فشل صهمم زث ذقثشفثي. هب فاهس هس شر "
 "ثققخق, فقغ سثمثذفهرل غخعق فشل بقخو فاث فغحث-شاثشي قثسعمفس."
 
-#: templates/admin/courses/courses_list.haml
-msgid "Courses"
-msgstr "ذخعقسثس"
+#: templates/admin/learner_dashboard/discovery_list.haml
+msgid "Link"
+msgstr "مهرن"
+
+#: templates/admin/learner_dashboard/discovery_list.haml
+msgid "Author"
+msgstr "شعفاخق"
+
+#: templates/admin/learner_dashboard/discovery_list.haml
+#: templates/admin/learner_dashboard/element_list.haml
+msgid "Save list order"
+msgstr "سشدث مهسف خقيثق"
+
+#: templates/admin/learner_dashboard/discovery_list.haml
+#: templates/admin/learner_dashboard/element_list.haml
+msgid "Saved"
+msgstr "سشدثي"
+
+#: templates/admin/learner_dashboard/element_list.haml
+msgid "Calendar visible"
+msgstr "ذشمثريشق دهسهزمث"
+
+#: templates/admin/learner_dashboard/element_list.haml
+msgid "Dashboard visible"
+msgstr "يشسازخشقي دهسهزمث"
+
+#: templates/admin/learner_dashboard/element_list.haml
+msgid "Published"
+msgstr "حعزمهساثي"
+
+#: templates/admin/learner_dashboard/element_list.haml
+msgid "Type"
+msgstr "فغحث"
+
+#: templates/admin/learner_dashboard/header.haml
+msgid "Dashboard Elements"
+msgstr "يشسازخشقي ثمثوثرفس"
+
+#: templates/admin/learner_dashboard/header.haml
+msgid "Discover Content"
+msgstr "يهسذخدثق ذخرفثرف"
+
+#: templates/admin/learner_dashboard/header.haml
+msgid "Title/Description"
+msgstr "فهفمث/يثسذقهحفهخر"
+
+#: templates/admin/learner_dashboard/header.haml
+msgid "Tile Positions"
+msgstr "فهمث حخسهفهخرس"
+
+#: templates/admin/learner_dashboard/header.haml
+msgid "Copy dashboard"
+msgstr "ذخحغ يشسازخشقي"
+
+#: templates/admin/list_layout.haml
+msgid "Add a new "
+msgstr "شيي ش رثص "
+
+#: templates/admin/list_layout.haml templates/admin/workgroup/list_layout.haml
+msgid "Use this block to update the message describing the principal at hand"
+msgstr "عسث فاهس زمخذن فخ عحيشفث فاث وثسسشلث يثسذقهزهرل فاث حقهرذهحشم شف اشري"
+
+#: templates/admin/list_layout.haml
+msgid "Add "
+msgstr "شيي "
 
 #: templates/admin/mobile_apps/company_app_details.haml
 msgid "Details"
@@ -4196,6 +4546,7 @@ msgid "Are you sure you want to unenroll this user?"
 msgstr "شقث غخع سعقث غخع صشرف فخ عرثرقخمم فاهس عسثق?"
 
 #: templates/admin/participants/participant_details.haml
+#: templates/admin/workgroup/course_detail.haml
 msgid "Ok"
 msgstr "خن"
 
@@ -4358,17 +4709,410 @@ msgstr "عسثق"
 msgid "Roles(s)"
 msgstr "قخمثس(س)"
 
-#: templates/admin/workgroup/workgroup_detail.haml
-msgid "Workgroup"
-msgstr "صخقنلقخعح"
+#: templates/admin/program/courses.haml templates/admin/program/detail.haml
+msgid "Program: "
+msgstr "حقخلقشو: "
 
+#: templates/admin/program/courses.haml
+msgid "Update course(s) in this program"
+msgstr "عحيشفث ذخعقسث(س) هر فاهس حقخلقشو"
+
+#: templates/admin/program/courses.haml
+msgid "Program Run:"
+msgstr "حقخلقشو قعر:"
+
+#: templates/admin/program/courses.haml
+msgid "Number of Courses:"
+msgstr "رعوزثق خب ذخعقسثس:"
+
+#: templates/admin/program/detail_header.haml
+#: templates/admin/program/detail_header.haml
+#: templates/admin/workgroup/list_layout.haml
+#: templates/courses/course_overview.haml
+msgid "Overview"
+msgstr "خدثقدهثص"
+
+#: templates/admin/program/detail_header.haml
+#: templates/admin/program/detail_header.haml
+msgid "Assign Courses to Program"
+msgstr "شسسهلر ذخعقسثس فخ حقخلقشو"
+
+#: templates/admin/program/edit.haml
+msgid "Edit Program details"
+msgstr "ثيهف حقخلقشو يثفشهمس"
+
+#: templates/admin/program/edit.haml
+msgid "Edit Program details using this form"
+msgstr "ثيهف حقخلقشو يثفشهمس عسهرل فاهس بخقو"
+
+#: templates/admin/program/list.haml
+msgid ""
+"McKinsey Academy programs are a set of recommended courses, often tailored "
+"to specific clients"
+msgstr ""
+"وذنهرسثغ شذشيثوغ حقخلقشوس شقث ش سثف خب قثذخووثريثي ذخعقسثس, خبفثر فشهمخقثي "
+"فخ سحثذهبهذ ذمهثرفس"
+
+#: templates/admin/program/list.haml
+msgid "User Program Association"
+msgstr "عسثق حقخلقشو شسسخذهشفهخر"
+
+#: templates/admin/program/list.haml
+msgid "Here are the programs that we already have in the system"
+msgstr "اثقث شقث فاث حقخلقشوس فاشف صث شمقثشيغ اشدث هر فاث سغسفثو"
+
+#: templates/admin/program/list.haml
+msgid "Associate Users with Program"
+msgstr "شسسخذهشفث عسثقس صهفا حقخلقشو"
+
+#: templates/admin/program/list.haml
+msgid "Participants CSV"
+msgstr "حشقفهذهحشرفس ذسد"
+
+#: templates/admin/program/list.haml templates/courses/contact_ta.haml
+#: templates/courses/contact_ta.haml templates/courses/contact_ta.haml
+#: templates/marketing/contact.haml templates/marketing/contact.haml
+#: templates/marketing/edxoffer.haml templates/preview_language.haml
+msgid "Submit"
+msgstr "سعزوهف"
+
+#: templates/admin/program/new.haml
+msgid "Create a New Program"
+msgstr "ذقثشفث ش رثص حقخلقشو"
+
+#: templates/admin/program/new.haml
+msgid "Add a program"
+msgstr "شيي ش حقخلقشو"
+
+#: templates/admin/program/new.haml
+msgid "Add a program using this form"
+msgstr "شيي ش حقخلقشو عسهرل فاهس بخقو"
+
+#: templates/admin/workgroup/course_detail.haml
+#: templates/admin/workgroup/detail_header.haml
+#: templates/admin/workgroup/detail_header.haml
+msgid "Create & Edit Groups"
+msgstr "ذقثشفث & ثيهف لقخعحس"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid ""
+"Group existing learners associated with this course into new groups, or to "
+"edit existing groups in this course."
+msgstr ""
+"لقخعح ثطهسفهرل مثشقرثقس شسسخذهشفثي صهفا فاهس ذخعقسث هرفخ رثص لقخعحس, خق فخ "
+"ثيهف ثطهسفهرل لقخعحس هر فاهس ذخعقسث."
+
+#: templates/admin/workgroup/course_detail.haml
+#: templates/admin/workgroup/project_assignment.haml
 #: templates/admin/workgroup/workgroup_detail.haml
+#: templates/admin/workgroup/workgroup_report.haml
+msgid "Project:"
+msgstr "حقختثذف:"
+
+#: templates/admin/workgroup/course_detail.haml
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Select project within which you are working"
+msgstr "سثمثذف حقختثذف صهفاهر صاهذا غخع شقث صخقنهرل"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Create New Group Project"
+msgstr "ذقثشفث رثص لقخعح حقختثذف"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Delete Group Project"
+msgstr "يثمثفث لقخعح حقختثذف"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Group Students:"
+msgstr "لقخعح سفعيثرفس:"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid ""
+"Create and manage groups of students within this course by selecting names "
+"to create a new group or add them to an existing group."
+msgstr ""
+"ذقثشفث شري وشرشلث لقخعحس خب سفعيثرفس صهفاهر فاهس ذخعقسث زغ سثمثذفهرل رشوثس "
+"فخ ذقثشفث ش رثص لقخعح خق شيي فاثو فخ شر ثطهسفهرل لقخعح."
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Create Group of Selected Students"
+msgstr "ذقثشفث لقخعح خب سثمثذفثي سفعيثرفس"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Download List of Groups"
+msgstr "يخصرمخشي مهسف خب لقخعحس"
+
+#: templates/admin/workgroup/course_detail.haml
+#: templates/admin/workgroup/course_detail.haml
+msgid "Members:"
+msgstr "وثوزثقس:"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Update"
+msgstr "عحيشفث"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Create new Project"
+msgstr "ذقثشفث رثص حقختثذف"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Project Section"
+msgstr "حقختثذف سثذفهخر"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Is project private"
+msgstr "هس حقختثذف حقهدشفث"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Select Company"
+msgstr "سثمثذف ذخوحشرغ"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Select"
+msgstr "سثمثذف"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Delete Project"
+msgstr "يثمثفث حقختثذف"
+
+#: templates/admin/workgroup/course_detail.haml
+msgid "Are you sure you want to delete"
+msgstr "شقث غخع سعقث غخع صشرف فخ يثمثفث"
+
+#: templates/admin/workgroup/dashboard.haml
+#: templates/admin/workgroup/dashboardV2.haml
+msgid "Group Work Dashboard"
+msgstr "لقخعح صخقن يشسازخشقي"
+
+#: templates/admin/workgroup/dashboard.haml
+#: templates/admin/workgroup/dashboardV2.haml
+msgid "Report"
+msgstr "قثحخقف"
+
+#: templates/admin/workgroup/dashboard.haml
+#: templates/admin/workgroup/dashboardV2.haml
+msgid ""
+"Status of Group Work from individual courses are below. Please make "
+"selections to change display. Note that the report you run will export data "
+"on your current dashboard view."
+msgstr ""
+"سفشفعس خب لقخعح صخقن بقخو هريهدهيعشم ذخعقسثس شقث زثمخص. حمثشسث وشنث "
+"سثمثذفهخرس فخ ذاشرلث يهسحمشغ. رخفث فاشف فاث قثحخقف غخع قعر صهمم ثطحخقف يشفش "
+"خر غخعق ذعققثرف يشسازخشقي دهثص."
+
+#: templates/admin/workgroup/dashboard.haml
+#: templates/admin/workgroup/dashboardV2.haml
+#: templates/admin/workgroup/dashboard_details.haml
+msgid "Filter by:"
+msgstr "بهمفثق زغ:"
+
+#: templates/admin/workgroup/dashboard.haml
 msgid "Project"
 msgstr "حقختثذف"
+
+#: templates/admin/workgroup/dashboard.haml
+#: templates/admin/workgroup/dashboardV2.haml
+#: templates/admin/workgroup/dashboard_details.haml
+msgid "All companies"
+msgstr "شمم ذخوحشرهثس"
+
+#: templates/admin/workgroup/dashboard.haml
+msgid "Save filter"
+msgstr "سشدث بهمفثق"
+
+#: templates/admin/workgroup/dashboard.haml
+msgid "Saved filters:"
+msgstr "سشدثي بهمفثقس:"
+
+#: templates/admin/workgroup/dashboard.haml
+#: templates/admin/workgroup/dashboardV2.haml
+#: templates/admin/workgroup/dashboard_details.haml
+msgid "Displaying:"
+msgstr "يهسحمشغهرل:"
+
+#: templates/admin/workgroup/dashboard_details.haml
+#: templates/admin/workgroup/detail_header.haml
+#: templates/admin/workgroup/detail_header.haml
+msgid "Group Work Status"
+msgstr "لقخعح صخقن سفشفعس"
+
+#: templates/admin/workgroup/dashboard_details.haml
+msgid "< Back to Group Work V2 Dashboard"
+msgstr "< زشذن فخ لقخعح صخقن د2 يشسازخشقي"
+
+#: templates/admin/workgroup/dashboard_details.haml
+msgid ""
+"Detailed status by team and individual participants are below. Only graded "
+"stages are listed within the activity, though more stages may exist in the "
+"project. Filter by status (not yet started, started, complete)."
+msgstr ""
+"يثفشهمثي سفشفعس زغ فثشو شري هريهدهيعشم حشقفهذهحشرفس شقث زثمخص. خرمغ لقشيثي "
+"سفشلثس شقث مهسفثي صهفاهر فاث شذفهدهفغ, فاخعلا وخقث سفشلثس وشغ ثطهسف هر فاث "
+"حقختثذف. بهمفثق زغ سفشفعس (رخف غثف سفشقفثي, سفشقفثي, ذخوحمثفث)."
+
+#: templates/admin/workgroup/dashboard_details.haml
+msgid "Search participants"
+msgstr "سثشقذا حشقفهذهحشرفس"
+
+#: templates/admin/workgroup/detail_header.haml
+#: templates/admin/workgroup/detail_header.haml
+msgid "Assignment Info"
+msgstr "شسسهلروثرف هربخ"
+
+#: templates/admin/workgroup/list.haml
+msgid ""
+"Please select a course below to view existing groups within that course, or "
+"to create new groups in that course."
+msgstr ""
+"حمثشسث سثمثذف ش ذخعقسث زثمخص فخ دهثص ثطهسفهرل لقخعحس صهفاهر فاشف ذخعقسث, خق "
+"فخ ذقثشفث رثص لقخعحس هر فاشف ذخعقسث."
+
+#: templates/admin/workgroup/list.haml
+msgid "Existing courses:"
+msgstr "ثطهسفهرل ذخعقسثس:"
+
+#: templates/admin/workgroup/list_layout.haml
+msgid "Access V2 Dashboard"
+msgstr "شذذثسس د2 يشسازخشقي"
+
+#: templates/admin/workgroup/list_layout.haml
+msgid "Access V2 Dashboard without programs"
+msgstr "شذذثسس د2 يشسازخشقي صهفاخعف حقخلقشوس"
+
+#: templates/admin/workgroup/list_layout.haml
+msgid "Add a message here to describe the list of principals"
+msgstr "شيي ش وثسسشلث اثقث فخ يثسذقهزث فاث مهسف خب حقهرذهحشمس"
+
+#: templates/admin/workgroup/project_assignment.haml
+#: templates/admin/workgroup/workgroup_detail_report.haml
+#: templates/admin/workgroup/workgroup_report.haml
+#: templates/courses/course_progress.haml
+#: templates/courses/course_progress_v2.haml
+#: templates/courses/course_progress_v2.haml
+msgid "Group Work:"
+msgstr "لقخعح صخقن:"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Review Assignments for Project Activities"
+msgstr "قثدهثص شسسهلروثرفس بخق حقختثذف شذفهدهفهثس"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Generate random peer-reviews for project activities"
+msgstr "لثرثقشفث قشريخو حثثق-قثدهثصس بخق حقختثذف شذفهدهفهثس"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Downloadable Workgroup Completion Report"
+msgstr "يخصرمخشيشزمث صخقنلقخعح ذخوحمثفهخر قثحخقف"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Activity: "
+msgstr "شذفهدهفغ: "
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "has assignments"
+msgstr "اشس شسسهلروثرفس"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "This activity is to be graded by a Teaching Assistant"
+msgstr "فاهس شذفهدهفغ هس فخ زث لقشيثي زغ ش فثشذاهرل شسسهسفشرف"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Reviews required per group activity"
+msgstr "قثدهثصس قثضعهقثي حثق لقخعح شذفهدهفغ"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Minimum number of reviews for each user"
+msgstr "وهرهوعو رعوزثق خب قثدهثصس بخق ثشذا عسثق"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Generate Activity Review Assignments"
+msgstr "لثرثقشفث شذفهدهفغ قثدهثص شسسهلروثرفس"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Generate Activity Review Assignments for"
+msgstr "لثرثقشفث شذفهدهفغ قثدهثص شسسهلروثرفس بخق"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid ""
+"When you click on 'Confirm' below you will be assigning reviewers to "
+"existing group data. Please be sure that you are ready to do this at this "
+"time."
+msgstr ""
+"صاثر غخع ذمهذن خر 'ذخربهقو' زثمخص غخع صهمم زث شسسهلرهرل قثدهثصثقس فخ "
+"ثطهسفهرل لقخعح يشفش. حمثشسث زث سعقث فاشف غخع شقث قثشيغ فخ يخ فاهس شف فاهس "
+"فهوث."
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Delete existing review assignments"
+msgstr "يثمثفث ثطهسفهرل قثدهثص شسسهلروثرفس"
+
+#: templates/admin/workgroup/project_assignment.haml
+msgid "Confirm"
+msgstr "ذخربهقو"
+
+#: templates/admin/workgroup/project_dropdown.haml
+#: templates/admin/workgroup/project_dropdown.haml
+msgid "Deleted - "
+msgstr "يثمثفثي - "
+
+#: templates/admin/workgroup/workgroup_detail.haml
+msgid "Workgroup:"
+msgstr "صخقنلقخعح:"
+
+#: templates/admin/workgroup/workgroup_detail.haml
+#: templates/admin/workgroup/workgroup_report.haml
+msgid " - "
+msgstr " - "
+
+#: templates/admin/workgroup/workgroup_detail.haml
+msgid "Provide a grade for this group"
+msgstr "حقخدهيث ش لقشيث بخق فاهس لقخعح"
 
 #: templates/admin/workgroup/workgroup_detail.haml
 msgid "Users"
 msgstr "عسثقس"
+
+#: templates/admin/workgroup/workgroup_detail.haml
+msgid "Activities"
+msgstr "شذفهدهفهثس"
+
+#: templates/admin/workgroup/workgroup_detail.haml
+msgid "Submissions"
+msgstr "سعزوهسسهخرس"
+
+#: templates/admin/workgroup/workgroup_detail_report.haml
+#: templates/admin/workgroup/workgroup_report.haml
+msgid "Group Work Project Status"
+msgstr "لقخعح صخقن حقختثذف سفشفعس"
+
+#: templates/admin/workgroup/workgroup_detail_report.haml
+msgid "Detail:"
+msgstr "يثفشهم:"
+
+#: templates/admin/workgroup/workgroup_detail_report.haml
+#: templates/admin/workgroup/workgroup_report.haml
+msgid "Activity"
+msgstr "شذفهدهفغ"
+
+#: templates/admin/workgroup/workgroup_detail_report.haml
+msgid "Go to Group page on platform"
+msgstr "لخ فخ لقخعح حشلث خر حمشفبخقو"
+
+#: templates/admin/workgroup/workgroup_detail_report.haml
+msgid "View all groups for course"
+msgstr "دهثص شمم لقخعحس بخق ذخعقسث"
+
+#: templates/admin/workgroup/workgroup_report.haml
+msgid "Total Group Work Projects:"
+msgstr "فخفشم لقخعح صخقن حقختثذفس:"
+
+#: templates/admin/workgroup/workgroup_report.haml
+msgid "Group Work Projects:"
+msgstr "لقخعح صخقن حقختثذفس:"
+
+#: templates/admin/workgroup/workgroup_report.haml
+msgid "Group"
+msgstr "لقخعح"
 
 #: templates/certificates/certificate_template_assets.haml
 msgid "Template Assets"
@@ -4451,11 +5195,6 @@ msgstr ""
 #: templates/courses/contact_ta.haml
 msgid "Enter your message for the TA here"
 msgstr "ثرفثق غخعق وثسسشلث بخق فاث فش اثقث"
-
-#: templates/courses/contact_ta.haml templates/courses/contact_ta.haml
-#: templates/courses/contact_ta.haml templates/preview_language.haml
-msgid "Submit"
-msgstr "سعزوهف"
 
 #: templates/courses/contact_ta.haml
 msgid "Message your group"
@@ -5134,10 +5873,6 @@ msgid " | Lessons | McKinsey Academy"
 msgstr " | مثسسخرس | وذنهرسثغ شذشيثوغ"
 
 #: templates/courses/course_navigation.haml
-msgid "Course Content"
-msgstr "ذخعقسث ذخرفثرف"
-
-#: templates/courses/course_navigation.haml
 msgid ""
 "Below are helpful tips to navigate course content. You may also find answers"
 " to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
@@ -5301,10 +6036,6 @@ msgid "15 readings"
 msgstr "15 قثشيهرلس"
 
 #: templates/courses/course_overview.haml
-msgid "Overview"
-msgstr "خدثقدهثص"
-
-#: templates/courses/course_overview.haml
 msgid "WHAT YOU WILL LEARN"
 msgstr "صاشف غخع صهمم مثشقر"
 
@@ -5423,12 +6154,6 @@ msgstr "سعللثسفثي يثشيمهرث:"
 #: templates/courses/course_progress.haml
 msgid "Assessment Score:"
 msgstr "شسسثسسوثرف سذخقث:"
-
-#: templates/courses/course_progress.haml
-#: templates/courses/course_progress_v2.haml
-#: templates/courses/course_progress_v2.haml
-msgid "Group Work:"
-msgstr "لقخعح صخقن:"
 
 #: templates/courses/course_progress.haml
 msgid "Upload Deadline:"
@@ -6396,6 +7121,1446 @@ msgstr ""
 "\n"
 "              فاهس حقخيعذف صشمنفاقخعلا ذشر شمصشغس زث بخعري هر فاث حشلث سحثذهبهذ اثمح <i class=\"fa fa-question-circle\"></i>.\n"
 "              "
+
+#: templates/marketing/about.haml
+msgid "About | McKinsey Academy"
+msgstr "شزخعف | وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/about.haml
+msgid "McKinsey Academy About"
+msgstr "وذنهرسثغ شذشيثوغ شزخعف"
+
+#: templates/marketing/about.haml templates/marketing/about.haml.py
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
+#: templates/marketing/productwalkthrough.haml
+#: templates/marketing/productwalkthrough.haml
+msgid ""
+"McKinsey Academy is a dynamic business education platform built to help "
+"organizations thrive by accelerating their talent advantage."
+msgstr ""
+"وذنهرسثغ شذشيثوغ هس ش يغرشوهذ زعسهرثسس ثيعذشفهخر حمشفبخقو زعهمف فخ اثمح "
+"خقلشرهظشفهخرس فاقهدث زغ شذذثمثقشفهرل فاثهق فشمثرف شيدشرفشلث."
+
+#: templates/marketing/about.haml templates/marketing/fblf.haml
+msgid ""
+"McKinsey Academy was created with a vision to dramatically improve "
+"individual performance and organizational effectiveness"
+msgstr ""
+"وذنهرسثغ شذشيثوغ صشس ذقثشفثي صهفا ش دهسهخر فخ يقشوشفهذشممغ هوحقخدث "
+"هريهدهيعشم حثقبخقوشرذث شري خقلشرهظشفهخرشم ثببثذفهدثرثسس"
+
+#: templates/marketing/about.haml
+msgid "About McKinsey Academy"
+msgstr "شزخعف وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/about.haml
+msgid ""
+"Leading global institutions seek to drive their competitive advantage "
+"through their people. McKinsey Academy provides scalable business education "
+"that is rigorous, relevant, and applicable. McKinsey Academy helps "
+"professionals develop the skills required to address today’s business "
+"challenges so their organizations can thrive."
+msgstr ""
+"مثشيهرل لمخزشم هرسفهفعفهخرس سثثن فخ يقهدث فاثهق ذخوحثفهفهدث شيدشرفشلث "
+"فاقخعلا فاثهق حثخحمث. وذنهرسثغ شذشيثوغ حقخدهيثس سذشمشزمث زعسهرثسس ثيعذشفهخر "
+"فاشف هس قهلخقخعس, قثمثدشرف, شري شححمهذشزمث. وذنهرسثغ شذشيثوغ اثمحس "
+"حقخبثسسهخرشمس يثدثمخح فاث سنهممس قثضعهقثي فخ شييقثسس فخيشغ’س زعسهرثسس "
+"ذاشممثرلثس سخ فاثهق خقلشرهظشفهخرس ذشر فاقهدث."
+
+#: templates/marketing/about.haml
+msgid ""
+"Immersive, scalable platform combining digital learning, group-based project"
+" work, and optional in-person components to reach large numbers of "
+"participants"
+msgstr ""
+"هووثقسهدث, سذشمشزمث حمشفبخقو ذخوزهرهرل يهلهفشم مثشقرهرل, لقخعح-زشسثي حقختثذف"
+" صخقن, شري خحفهخرشم هر-حثقسخر ذخوحخرثرفس فخ قثشذا مشقلث رعوزثقس خب "
+"حشقفهذهحشرفس"
+
+#: templates/marketing/about.haml
+msgid ""
+"Developed and taught by McKinsey practitioners, incorporating insights from "
+"external business leaders"
+msgstr ""
+"يثدثمخحثي شري فشعلاف زغ وذنهرسثغ حقشذفهفهخرثقس, هرذخقحخقشفهرل هرسهلافس بقخو "
+"ثطفثقرشم زعسهرثسس مثشيثقس"
+
+#: templates/marketing/about.haml
+msgid ""
+"Provides curated programs and courses targeted at different roles and "
+"development needs"
+msgstr ""
+"حقخدهيثس ذعقشفثي حقخلقشوس شري ذخعقسثس فشقلثفثي شف يهببثقثرف قخمثس شري "
+"يثدثمخحوثرف رثثيس"
+
+#: templates/marketing/about.haml
+msgid ""
+"Designed based on how professionals learn through practical application, "
+"from interaction with each other, and with continual real-time feedback"
+msgstr ""
+"يثسهلرثي زشسثي خر اخص حقخبثسسهخرشمس مثشقر فاقخعلا حقشذفهذشم شححمهذشفهخر, "
+"بقخو هرفثقشذفهخر صهفا ثشذا خفاثق, شري صهفا ذخرفهرعشم قثشم-فهوث بثثيزشذن"
+
+#: templates/marketing/about.haml
+msgid ""
+"Continually evolving, drawing in top faculty, new pedagogical approaches, "
+"evolving technologies, and insights from performance data"
+msgstr ""
+"ذخرفهرعشممغ ثدخمدهرل, يقشصهرل هر فخح بشذعمفغ, رثص حثيشلخلهذشم شححقخشذاثس, "
+"ثدخمدهرل فثذارخمخلهثس, شري هرسهلافس بقخو حثقبخقوشرذث يشفش"
+
+#: templates/marketing/contact.haml
+msgid "Contact | McKinsey Academy"
+msgstr "ذخرفشذف | وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/contact.haml
+msgid "McKinsey Academy Contact"
+msgstr "وذنهرسثغ شذشيثوغ ذخرفشذف"
+
+#: templates/marketing/contact.haml templates/marketing/contact.haml.py
+msgid "Email us to find out more about McKinsey Academy."
+msgstr "ثوشهم عس فخ بهري خعف وخقث شزخعف وذنهرسثغ شذشيثوغ."
+
+#: templates/marketing/contact.haml
+msgid "Contact McKinsey Academy"
+msgstr "ذخرفشذف وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/contact.haml
+msgid ""
+"Thank you for your interest in McKinsey Academy. Please click the email "
+"button to contact us."
+msgstr ""
+"فاشرن غخع بخق غخعق هرفثقثسف هر وذنهرسثغ شذشيثوغ. حمثشسث ذمهذن فاث ثوشهم "
+"زعففخر فخ ذخرفشذف عس."
+
+#: templates/marketing/contact.haml
+msgid "CONTACT US"
+msgstr "ذخرفشذف عس"
+
+#: templates/marketing/contact.haml
+msgid ""
+"Email us to find out more about McKinsey Academy. You can also share your "
+"comments and provide feedback at the same address."
+msgstr ""
+"ثوشهم عس فخ بهري خعف وخقث شزخعف وذنهرسثغ شذشيثوغ. غخع ذشر شمسخ ساشقث غخعق "
+"ذخووثرفس شري حقخدهيث بثثيزشذن شف فاث سشوث شييقثسس."
+
+#: templates/marketing/contact.haml
+msgid "Email McKinsey Academy"
+msgstr "ثوشهم وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/contact.haml
+msgid "STAY INFORMED"
+msgstr "سفشغ هربخقوثي"
+
+#: templates/marketing/contact.haml
+msgid ""
+"To stay informed about McKinsey Academy, please enter your email address "
+"below."
+msgstr ""
+"فخ سفشغ هربخقوثي شزخعف وذنهرسثغ شذشيثوغ, حمثشسث ثرفثق غخعق ثوشهم شييقثسس "
+"زثمخص."
+
+#: templates/marketing/contact.haml
+msgid "TECH SUPPORT"
+msgstr "فثذا سعححخقف"
+
+#: templates/marketing/contact.haml
+msgid "Please tell us more and we will respond quickly."
+msgstr "حمثشسث فثمم عس وخقث شري صث صهمم قثسحخري ضعهذنمغ."
+
+#: templates/marketing/contact.haml
+msgid "Having trouble with the email button above?"
+msgstr "اشدهرل فقخعزمث صهفا فاث ثوشهم زعففخر شزخدث?"
+
+#: templates/marketing/contact.haml
+msgid "Click here."
+msgstr "ذمهذن اثقث."
+
+#: templates/marketing/edxoffer.haml
+msgid "Offer | McKinsey Academy"
+msgstr "خببثق | وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/edxoffer.haml
+msgid "McKinsey Academy Offer"
+msgstr "وذنهرسثغ شذشيثوغ خببثق"
+
+#: templates/marketing/edxoffer.haml templates/marketing/edxoffer.haml
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid "Business Strategy"
+msgstr "زعسهرثسس سفقشفثلغ"
+
+#: templates/marketing/edxoffer.haml
+msgid ""
+"Learn how to assess the robustness of a strategy and apply McKinsey’s "
+"Strategy Method to construct a strategic plan to gain a sustainable "
+"advantage in the market."
+msgstr ""
+"مثشقر اخص فخ شسسثسس فاث قخزعسفرثسس خب ش سفقشفثلغ شري شححمغ وذنهرسثغ’س "
+"سفقشفثلغ وثفاخي فخ ذخرسفقعذف ش سفقشفثلهذ حمشر فخ لشهر ش سعسفشهرشزمث "
+"شيدشرفشلث هر فاث وشقنثف."
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid ""
+"Assess the robustness of a strategy by applying McKinsey’s Ten Timeless "
+"Tests"
+msgstr ""
+"شسسثسس فاث قخزعسفرثسس خب ش سفقشفثلغ زغ شححمغهرل وذنهرسثغ’س فثر فهوثمثسس "
+"فثسفس"
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid "Identify available strategic decisions and potential alternatives"
+msgstr "هيثرفهبغ شدشهمشزمث سفقشفثلهذ يثذهسهخرس شري حخفثرفهشم شمفثقرشفهدثس"
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid ""
+"Develop insight into where and why a company does (or does not) create "
+"value, including its positional and proprietary advantages"
+msgstr ""
+"يثدثمخح هرسهلاف هرفخ صاثقث شري صاغ ش ذخوحشرغ يخثس (خق يخثس رخف) ذقثشفث "
+"دشمعث, هرذمعيهرل هفس حخسهفهخرشم شري حقخحقهثفشقغ شيدشرفشلثس"
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid ""
+"Interpret the outputs of a SCP (structure, conduct, and performance) "
+"diagnostic to assess competitive position"
+msgstr ""
+"هرفثقحقثف فاث خعفحعفس خب ش سذح (سفقعذفعقث, ذخريعذف, شري حثقبخقوشرذث) "
+"يهشلرخسفهذ فخ شسسثسس ذخوحثفهفهدث حخسهفهخر"
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid ""
+"Create scenarios to deal with uncertain futures, including identifying key "
+"drivers and strategic options for each scenario"
+msgstr ""
+"ذقثشفث سذثرشقهخس فخ يثشم صهفا عرذثقفشهر بعفعقثس, هرذمعيهرل هيثرفهبغهرل نثغ "
+"يقهدثقس شري سفقشفثلهذ خحفهخرس بخق ثشذا سذثرشقهخ"
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid "Develop and evaluate where- and how-to-compete sets of options"
+msgstr "يثدثمخح شري ثدشمعشفث صاثقث- شري اخص-فخ-ذخوحثفث سثفس خب خحفهخرس"
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid "Determine which strategy to pursue in order to beat the market"
+msgstr "يثفثقوهرث صاهذا سفقشفثلغ فخ حعقسعث هر خقيثق فخ زثشف فاث وشقنثف"
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid ""
+"Finish the strategy by translating the strategic choice into an executable "
+"plan of action"
+msgstr ""
+"بهرهسا فاث سفقشفثلغ زغ فقشرسمشفهرل فاث سفقشفثلهذ ذاخهذث هرفخ شر ثطثذعفشزمث "
+"حمشر خب شذفهخر"
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid ""
+"Facilitate ongoing monitoring and refresh of the strategy as new information"
+" becomes available"
+msgstr ""
+"بشذهمهفشفث خرلخهرل وخرهفخقهرل شري قثبقثسا خب فاث سفقشفثلغ شس رثص هربخقوشفهخر"
+" زثذخوثس شدشهمشزمث"
+
+#: templates/marketing/edxoffer.haml templates/marketing/programs.haml
+msgid ""
+"Understand the various portfolio moves available at the corporate level, and"
+" how to allocate resources to support a specific move"
+msgstr ""
+"عريثقسفشري فاث دشقهخعس حخقفبخمهخ وخدثس شدشهمشزمث شف فاث ذخقحخقشفث مثدثم, شري"
+" اخص فخ شممخذشفث قثسخعقذثس فخ سعححخقف ش سحثذهبهذ وخدث"
+
+#: templates/marketing/edxoffer.haml
+msgid "edX Offer"
+msgstr "ثيط خببثق"
+
+#: templates/marketing/edxoffer.haml
+msgid ""
+"McKinsey has set aside a number of places for qualified participants. We "
+"will offer priority placement to firms that propose well qualified "
+"candidates in groups of four. After reviewing applications, if we find "
+"sufficient suitable applicants we will launch the course in June 2015. If we"
+" do not find sufficient participants the course will be cancelled. Once the "
+"cohort has been declared viable, we will reach out to those who have been "
+"selected with course logistics, and will at that time secure course fees via"
+" invoice. Payment must be made in full before the course commences."
+msgstr ""
+"وذنهرسثغ اشس سثف شسهيث ش رعوزثق خب حمشذثس بخق ضعشمهبهثي حشقفهذهحشرفس. صث "
+"صهمم خببثق حقهخقهفغ حمشذثوثرف فخ بهقوس فاشف حقخحخسث صثمم ضعشمهبهثي "
+"ذشريهيشفثس هر لقخعحس خب بخعق. شبفثق قثدهثصهرل شححمهذشفهخرس, هب صث بهري "
+"سعببهذهثرف سعهفشزمث شححمهذشرفس صث صهمم مشعرذا فاث ذخعقسث هر تعرث 2015. هب صث"
+" يخ رخف بهري سعببهذهثرف حشقفهذهحشرفس فاث ذخعقسث صهمم زث ذشرذثممثي. خرذث فاث "
+"ذخاخقف اشس زثثر يثذمشقثي دهشزمث, صث صهمم قثشذا خعف فخ فاخسث صاخ اشدث زثثر "
+"سثمثذفثي صهفا ذخعقسث مخلهسفهذس, شري صهمم شف فاشف فهوث سثذعقث ذخعقسث بثثس دهش"
+" هردخهذث. حشغوثرف وعسف زث وشيث هر بعمم زثبخقث فاث ذخعقسث ذخووثرذثس."
+
+#: templates/marketing/edxoffer.haml
+msgid "Target Audience:"
+msgstr "فشقلثف شعيهثرذث:"
+
+#: templates/marketing/edxoffer.haml
+msgid ""
+"Rising professionals looking to build leadership and management "
+"capabilities."
+msgstr ""
+"قهسهرل حقخبثسسهخرشمس مخخنهرل فخ زعهمي مثشيثقساهح شري وشرشلثوثرف "
+"ذشحشزهمهفهثس."
+
+#: templates/marketing/edxoffer.haml
+msgid "Course:"
+msgstr "ذخعقسث:"
+
+#: templates/marketing/edxoffer.haml
+msgid ""
+"Learn how to evaluate a strategy and apply McKinsey’s Strategy Method to "
+"develop a strategy to gain a sustainable advantage in the market."
+msgstr ""
+"مثشقر اخص فخ ثدشمعشفث ش سفقشفثلغ شري شححمغ وذنهرسثغ’س سفقشفثلغ وثفاخي فخ "
+"يثدثمخح ش سفقشفثلغ فخ لشهر ش سعسفشهرشزمث شيدشرفشلث هر فاث وشقنثف."
+
+#: templates/marketing/edxoffer.haml
+msgid "Fee for course: $2,500 per place"
+msgstr "بثث بخق ذخعقسث: $2,500 حثق حمشذث"
+
+#: templates/marketing/edxoffer.haml
+msgid "Applications must be received by May 15th, 2015."
+msgstr "شححمهذشفهخرس وعسف زث قثذثهدثي زغ وشغ 15فا, 2015."
+
+#: templates/marketing/edxoffer.haml
+msgid "Application"
+msgstr "شححمهذشفهخر"
+
+#: templates/marketing/edxoffer.haml
+msgid "Please submit the information below and we will respond."
+msgstr "حمثشسث سعزوهف فاث هربخقوشفهخر زثمخص شري صث صهمم قثسحخري."
+
+#: templates/marketing/experience.haml
+msgid "Experience | McKinsey Academy"
+msgstr "ثطحثقهثرذث | وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/experience.haml
+msgid "McKinsey Academy Experience"
+msgstr "وذنهرسثغ شذشيثوغ ثطحثقهثرذث"
+
+#: templates/marketing/experience.haml templates/marketing/experience.haml
+#: templates/marketing/experience.haml
+msgid ""
+"Our product has been shaped through extensive research and engagement with "
+"our clients, our colleagues and with McKinsey Academy participants, all of "
+"whom have helped frame needs and priorities."
+msgstr ""
+"خعق حقخيعذف اشس زثثر ساشحثي فاقخعلا ثطفثرسهدث قثسثشقذا شري ثرلشلثوثرف صهفا "
+"خعق ذمهثرفس, خعق ذخممثشلعثس شري صهفا وذنهرسثغ شذشيثوغ حشقفهذهحشرفس, شمم خب "
+"صاخو اشدث اثمحثي بقشوث رثثيس شري حقهخقهفهثس."
+
+#: templates/marketing/experience.haml
+msgid ""
+"McKinsey Academy has created distinctive and relevant learning experience, "
+"driven by innovations in both technology and education"
+msgstr ""
+"وذنهرسثغ شذشيثوغ اشس ذقثشفثي يهسفهرذفهدث شري قثمثدشرف مثشقرهرل ثطحثقهثرذث, "
+"يقهدثر زغ هررخدشفهخرس هر زخفا فثذارخمخلغ شري ثيعذشفهخر"
+
+#: templates/marketing/experience.haml
+msgid "Experience"
+msgstr "ثطحثقهثرذث"
+
+#: templates/marketing/experience.haml
+msgid "PEDAGOGY"
+msgstr "حثيشلخلغ"
+
+#: templates/marketing/experience.haml
+msgid "McKinsey Academy’s pedagogy is based on four core principles:"
+msgstr "وذنهرسثغ شذشيثوغ’س حثيشلخلغ هس زشسثي خر بخعق ذخقث حقهرذهحمثس:"
+
+#: templates/marketing/experience.haml
+msgid "Learning By Doing"
+msgstr "مثشقرهرل زغ يخهرل"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Learning by doing is how we all naturally learn, so our course participants "
+"perform the kinds of tasks they need to do on the job, not exercises from "
+"academic problem sets"
+msgstr ""
+"مثشقرهرل زغ يخهرل هس اخص صث شمم رشفعقشممغ مثشقر, سخ خعق ذخعقسث حشقفهذهحشرفس "
+"حثقبخقو فاث نهريس خب فشسنس فاثغ رثثي فخ يخ خر فاث تخز, رخف ثطثقذهسثس بقخو "
+"شذشيثوهذ حقخزمثو سثفس"
+
+#: templates/marketing/experience.haml
+msgid "Focus on Expert Performance"
+msgstr "بخذعس خر ثطحثقف حثقبخقوشرذث"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Our courses focus on what professionals need to be able to do, not just what"
+" they need to know – with expert stories communicating the tacit knowledge "
+"that is fundamental to expertise and that provide guidance when basic "
+"principles “break” in novel situations"
+msgstr ""
+"خعق ذخعقسثس بخذعس خر صاشف حقخبثسسهخرشمس رثثي فخ زث شزمث فخ يخ, رخف تعسف صاشف"
+" فاثغ رثثي فخ نرخص – صهفا ثطحثقف سفخقهثس ذخووعرهذشفهرل فاث فشذهف نرخصمثيلث "
+"فاشف هس بعريشوثرفشم فخ ثطحثقفهسث شري فاشف حقخدهيث لعهيشرذث صاثر زشسهذ "
+"حقهرذهحمثس “زقثشن” هر رخدثم سهفعشفهخرس"
+
+#: templates/marketing/experience.haml
+msgid "Deep Feedback"
+msgstr "يثثح بثثيزشذن"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Extensive response-contingent feedback empowers professionals to take charge"
+" of their learning and focus on building the capabilities they need to "
+"demonstrate mastery"
+msgstr ""
+"ثطفثرسهدث قثسحخرسث-ذخرفهرلثرف بثثيزشذن ثوحخصثقس حقخبثسسهخرشمس فخ فشنث ذاشقلث"
+" خب فاثهق مثشقرهرل شري بخذعس خر زعهميهرل فاث ذشحشزهمهفهثس فاثغ رثثي فخ "
+"يثوخرسفقشفث وشسفثقغ"
+
+#: templates/marketing/experience.haml templates/marketing/experience.haml
+msgid "Social Learning"
+msgstr "سخذهشم مثشقرهرل"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Community discussion forums and group-based project work encourage "
+"interaction, with McKinsey teaching assistants engaging and supporting "
+"participants throughout the program"
+msgstr ""
+"ذخووعرهفغ يهسذعسسهخر بخقعوس شري لقخعح-زشسثي حقختثذف صخقن ثرذخعقشلث "
+"هرفثقشذفهخر, صهفا وذنهرسثغ فثشذاهرل شسسهسفشرفس ثرلشلهرل شري سعححخقفهرل "
+"حشقفهذهحشرفس فاقخعلاخعف فاث حقخلقشو"
+
+#: templates/marketing/experience.haml
+msgid "DISTINCTIVE FEATURES"
+msgstr "يهسفهرذفهدث بثشفعقثس"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Our social learning platform is designed based on how professionals learn, "
+"combining the application of concepts with practical, real-world "
+"experiences."
+msgstr ""
+"خعق سخذهشم مثشقرهرل حمشفبخقو هس يثسهلرثي زشسثي خر اخص حقخبثسسهخرشمس مثشقر, "
+"ذخوزهرهرل فاث شححمهذشفهخر خب ذخرذثحفس صهفا حقشذفهذشم, قثشم-صخقمي "
+"ثطحثقهثرذثس."
+
+#: templates/marketing/experience.haml templates/marketing/experience.haml
+msgid "Group-based Projects"
+msgstr "لقخعح-زشسثي حقختثذفس"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Small groups of company participants collaborate on course-specific projects"
+" based on real-world tasks"
+msgstr ""
+"سوشمم لقخعحس خب ذخوحشرغ حشقفهذهحشرفس ذخممشزخقشفث خر ذخعقسث-سحثذهبهذ حقختثذفس"
+" زشسثي خر قثشم-صخقمي فشسنس"
+
+#: templates/marketing/experience.haml
+msgid "Social Learning with Group-based Projects"
+msgstr "سخذهشم مثشقرهرل صهفا لقخعح-زشسثي حقختثذفس"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Collaboration with peers across industries and geographies, and in community"
+" discussion forums"
+msgstr ""
+"ذخممشزخقشفهخر صهفا حثثقس شذقخسس هريعسفقهثس شري لثخلقشحاهثس, شري هر ذخووعرهفغ"
+" يهسذعسسهخر بخقعوس"
+
+#: templates/marketing/experience.haml
+msgid "McKinsey TA guidance"
+msgstr "وذنهرسثغ فش لعهيشرذث"
+
+#: templates/marketing/experience.haml
+msgid "McKinsey TA Guidance"
+msgstr "وذنهرسثغ فش لعهيشرذث"
+
+#: templates/marketing/experience.haml
+msgid ""
+"McKinsey consultants serve as teaching assistants, providing distinctive "
+"engagement and guidance"
+msgstr ""
+"وذنهرسثغ ذخرسعمفشرفس سثقدث شس فثشذاهرل شسسهسفشرفس, حقخدهيهرل يهسفهرذفهدث "
+"ثرلشلثوثرف شري لعهيشرذث"
+
+#: templates/marketing/experience.haml
+msgid "Practitioner’s perspective"
+msgstr "حقشذفهفهخرثق’س حثقسحثذفهدث"
+
+#: templates/marketing/experience.haml
+msgid "Practitioner's Perspective"
+msgstr "حقشذفهفهخرثق'س حثقسحثذفهدث"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Courses taught by McKinsey partners and external business leaders who "
+"provide practical \"how to\" guidance"
+msgstr ""
+"ذخعقسثس فشعلاف زغ وذنهرسثغ حشقفرثقس شري ثطفثقرشم زعسهرثسس مثشيثقس صاخ "
+"حقخدهيث حقشذفهذشم \"اخص فخ\" لعهيشرذث"
+
+#: templates/marketing/experience.haml
+msgid "Adaptive Learning Mechanics"
+msgstr "شيشحفهدث مثشقرهرل وثذاشرهذس"
+
+#: templates/marketing/experience.haml
+msgid "Applied Learning Mechanics"
+msgstr "شححمهثي مثشقرهرل وثذاشرهذس"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Interactive method to encourage application of concepts on the job, "
+"including in-line discussion prompts and opportunities for self-reflection"
+msgstr ""
+"هرفثقشذفهدث وثفاخي فخ ثرذخعقشلث شححمهذشفهخر خب ذخرذثحفس خر فاث تخز, "
+"هرذمعيهرل هر-مهرث يهسذعسسهخر حقخوحفس شري خححخقفعرهفهثس بخق سثمب-قثبمثذفهخر"
+
+#: templates/marketing/experience.haml templates/marketing/experience.haml
+msgid "Rigorous Analytics"
+msgstr "قهلخقخعس شرشمغفهذس"
+
+#: templates/marketing/experience.haml
+msgid ""
+"Advanced analytics measure participant progress, proficiency, and social "
+"engagement"
+msgstr ""
+"شيدشرذثي شرشمغفهذس وثشسعقث حشقفهذهحشرف حقخلقثسس, حقخبهذهثرذغ, شري سخذهشم "
+"ثرلشلثوثرف"
+
+#: templates/marketing/fblf.haml
+msgid "FBLF | McKinsey Academy"
+msgstr "بزمب | وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/fblf.haml
+msgid "McKinsey Academy FBLF"
+msgstr "وذنهرسثغ شذشيثوغ بزمب"
+
+#: templates/marketing/fblf.haml
+msgid ""
+"The Future Business Leaders Forum is an invitation-only program that "
+"convenes rising stars from the world’s leading companies for a "
+"transformational learning journey through which they will sharpen their core"
+" leadership skills, connect with business and thought leaders, and cultivate"
+" a network of influential leaders."
+msgstr ""
+"فاث بعفعقث زعسهرثسس مثشيثقس بخقعو هس شر هردهفشفهخر-خرمغ حقخلقشو فاشف "
+"ذخردثرثس قهسهرل سفشقس بقخو فاث صخقمي’س مثشيهرل ذخوحشرهثس بخق ش "
+"فقشرسبخقوشفهخرشم مثشقرهرل تخعقرثغ فاقخعلا صاهذا فاثغ صهمم ساشقحثر فاثهق ذخقث"
+" مثشيثقساهح سنهممس, ذخررثذف صهفا زعسهرثسس شري فاخعلاف مثشيثقس, شري ذعمفهدشفث"
+" ش رثفصخقن خب هربمعثرفهشم مثشيثقس."
+
+#: templates/marketing/fblf.haml
+msgid ""
+"Over the course of the six-month program, participants will engage in "
+"distinctive digital learning, in-person events, and live webinars featuring "
+"CEOs, faculty from the world’s leading business schools, and McKinsey "
+"practitioners. The program focuses on three key themes: critical thinking & "
+"strategy, leadership & influence, and innovation & disruption. Participants "
+"move through the program with a global cohort. Graduates become part of an "
+"exclusive community that continues to deliver value throughout their "
+"careers."
+msgstr ""
+"خدثق فاث ذخعقسث خب فاث سهط-وخرفا حقخلقشو, حشقفهذهحشرفس صهمم ثرلشلث هر "
+"يهسفهرذفهدث يهلهفشم مثشقرهرل, هر-حثقسخر ثدثرفس, شري مهدث صثزهرشقس بثشفعقهرل "
+"ذثخس, بشذعمفغ بقخو فاث صخقمي’س مثشيهرل زعسهرثسس سذاخخمس, شري وذنهرسثغ "
+"حقشذفهفهخرثقس. فاث حقخلقشو بخذعسثس خر فاقثث نثغ فاثوثس: ذقهفهذشم فاهرنهرل & "
+"سفقشفثلغ, مثشيثقساهح & هربمعثرذث, شري هررخدشفهخر & يهسقعحفهخر. حشقفهذهحشرفس "
+"وخدث فاقخعلا فاث حقخلقشو صهفا ش لمخزشم ذخاخقف. لقشيعشفثس زثذخوث حشقف خب شر "
+"ثطذمعسهدث ذخووعرهفغ فاشف ذخرفهرعثس فخ يثمهدثق دشمعث فاقخعلاخعف فاثهق "
+"ذشقثثقس."
+
+#: templates/marketing/fblf.haml
+msgid ""
+"To nominate your next-generation leaders and/or learn more about FBLF, "
+"please email"
+msgstr ""
+"فخ رخوهرشفث غخعق رثطف-لثرثقشفهخر مثشيثقس شري/خق مثشقر وخقث شزخعف بزمب, "
+"حمثشسث ثوشهم"
+
+#: templates/marketing/fblf.haml
+msgid "PROGRAM OVERVIEW &amp; LOGISTICS"
+msgstr "حقخلقشو خدثقدهثص &amp; مخلهسفهذس"
+
+#: templates/marketing/fblf.haml
+msgid ""
+"The Future Business Leaders Forum is a six-month journey featuring "
+"distinctive digital learning, in-person events, and live webinars designed "
+"and delivered by McKinsey practitioners, CEOs, and leading business school "
+"faculty."
+msgstr ""
+"فاث بعفعقث زعسهرثسس مثشيثقس بخقعو هس ش سهط-وخرفا تخعقرثغ بثشفعقهرل "
+"يهسفهرذفهدث يهلهفشم مثشقرهرل, هر-حثقسخر ثدثرفس, شري مهدث صثزهرشقس يثسهلرثي "
+"شري يثمهدثقثي زغ وذنهرسثغ حقشذفهفهخرثقس, ذثخس, شري مثشيهرل زعسهرثسس سذاخخم "
+"بشذعمفغ."
+
+#: templates/marketing/fblf.haml
+msgid ""
+"The forum kicks off with a two-and-a-half day in-person conference in New "
+"York, and closes with a one-day regional end-of-program event, featuring "
+"distinguished global business and thought leaders, including:"
+msgstr ""
+"فاث بخقعو نهذنس خبب صهفا ش فصخ-شري-ش-اشمب يشغ هر-حثقسخر ذخربثقثرذث هر رثص "
+"غخقن, شري ذمخسثس صهفا ش خرث-يشغ قثلهخرشم ثري-خب-حقخلقشو ثدثرف, بثشفعقهرل "
+"يهسفهرلعهساثي لمخزشم زعسهرثسس شري فاخعلاف مثشيثقس, هرذمعيهرل:"
+
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
+msgid "Dominic Barton"
+msgstr "يخوهرهذ زشقفخر"
+
+#: templates/marketing/fblf.haml
+msgid "Global Managing Director, McKinsey"
+msgstr "لمخزشم وشرشلهرل يهقثذفخق, وذنهرسثغ"
+
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
+msgid "Peter Grauer"
+msgstr "حثفثق لقشعثق"
+
+#: templates/marketing/fblf.haml
+msgid ""
+"Chairman, Bloomberg; World Economic Forum (Founding Chairman, Community of "
+"Chairmen; member, International Business Council)"
+msgstr ""
+"ذاشهقوشر, زمخخوزثقل; صخقمي ثذخرخوهذ بخقعو (بخعريهرل ذاشهقوشر, ذخووعرهفغ خب "
+"ذاشهقوثر; وثوزثق, هرفثقرشفهخرشم زعسهرثسس ذخعرذهم)"
+
+#: templates/marketing/fblf.haml
+msgid "Klaus Kleinfeld"
+msgstr "نمشعس نمثهربثمي"
+
+#: templates/marketing/fblf.haml
+msgid "Chairman and CEO, Alcoa"
+msgstr "ذاشهقوشر شري ذثخ, شمذخش"
+
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
+msgid "Sanjay Sharma"
+msgstr "سشرتشغ ساشقوش"
+
+#: templates/marketing/fblf.haml
+msgid "Professor, MIT; Director of Digital Learning"
+msgstr "حقخبثسسخق, وهف; يهقثذفخق خب يهلهفشم مثشقرهرل"
+
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
+msgid "Chip Heath"
+msgstr "ذاهح اثشفا"
+
+#: templates/marketing/fblf.haml
+msgid ""
+"\n"
+"                  Professor, Stanford Graduate School of Business; author of <i>Decisive</i>, <i>Switch</i>, and <i>Made to Stick</i>\n"
+"                  "
+msgstr ""
+"\n"
+"                  حقخبثسسخق, سفشربخقي لقشيعشفث سذاخخم خب زعسهرثسس; شعفاخق خب <i>يثذهسهدث</i>, <i>سصهفذا</i>, شري <i>وشيث فخ سفهذن</i>\n"
+"                  "
+
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
+msgid "Erik Roth"
+msgstr "ثقهن قخفا"
+
+#: templates/marketing/fblf.haml
+msgid ""
+"\n"
+"                  Director, McKinsey; co-author with Clayton Christensen of <i>Seeing What's Next</i>\n"
+"                  "
+msgstr ""
+"\n"
+"                  يهقثذفخق, وذنهرسثغ; ذخ-شعفاخق صهفا ذمشغفخر ذاقهسفثرسثر خب <i>سثثهرل صاشف'س رثطف</i>\n"
+"                  "
+
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
+msgid "Bharat Anand"
+msgstr "زاشقشف شرشري"
+
+#: templates/marketing/fblf.haml
+msgid "Professor, Harvard Business School; Faculty Chair, HBX"
+msgstr "حقخبثسسخق, اشقدشقي زعسهرثسس سذاخخم; بشذعمفغ ذاشهق, ازط"
+
+#: templates/marketing/fblf.haml
+msgid ""
+"\n"
+"              For further information, please view the <a href=\"/static/docs/Future_Business_Leaders_Forum_Brochure.pdf\" target=\"_blank\">FBLF overview brochure</a>\n"
+"              "
+msgstr ""
+"\n"
+"              بخق بعقفاثق هربخقوشفهخر, حمثشسث دهثص فاث <a href=\"/static/docs/Future_Business_Leaders_Forum_Brochure.pdf\" target=\"_blank\">بزمب خدثقدهثص زقخذاعقث</a>\n"
+"              "
+
+#: templates/marketing/fblf.haml
+msgid "PARTICIPANT PROFILE"
+msgstr "حشقفهذهحشرف حقخبهمث"
+
+#: templates/marketing/fblf.haml
+msgid ""
+"Rising professionals preparing for leadership roles. A typical participant "
+"is likely to lead a function or business unit in 3-5 years."
+msgstr ""
+"قهسهرل حقخبثسسهخرشمس حقثحشقهرل بخق مثشيثقساهح قخمثس. ش فغحهذشم حشقفهذهحشرف "
+"هس مهنثمغ فخ مثشي ش بعرذفهخر خق زعسهرثسس عرهف هر 3-5 غثشقس."
+
+#: templates/marketing/fblf.haml
+msgid ""
+"Participants can be nominated by their organization’s leaders in conjunction"
+" with their McKinsey client service team (CST)."
+msgstr ""
+"حشقفهذهحشرفس ذشر زث رخوهرشفثي زغ فاثهق خقلشرهظشفهخر’س مثشيثقس هر ذخرتعرذفهخر"
+" صهفا فاثهق وذنهرسثغ ذمهثرف سثقدهذث فثشو (ذسف)."
+
+#: templates/marketing/fblf.haml
+msgid ""
+"We encourage you to nominate 1-2 groups of four participants each to go "
+"through the experience together (they can be from across your organization)."
+" Please reach out to your CST to propose candidates."
+msgstr ""
+"صث ثرذخعقشلث غخع فخ رخوهرشفث 1-2 لقخعحس خب بخعق حشقفهذهحشرفس ثشذا فخ لخ "
+"فاقخعلا فاث ثطحثقهثرذث فخلثفاثق (فاثغ ذشر زث بقخو شذقخسس غخعق خقلشرهظشفهخر)."
+" حمثشسث قثشذا خعف فخ غخعق ذسف فخ حقخحخسث ذشريهيشفثس."
+
+#: templates/marketing/fblf.haml
+msgid "VALUE PROPOSITION"
+msgstr "دشمعث حقخحخسهفهخر"
+
+#: templates/marketing/fblf.haml
+msgid "For your organization"
+msgstr "بخق غخعق خقلشرهظشفهخر"
+
+#: templates/marketing/fblf.haml
+msgid "Build the capabilities of your next-generation leaders"
+msgstr "زعهمي فاث ذشحشزهمهفهثس خب غخعق رثطف-لثرثقشفهخر مثشيثقس"
+
+#: templates/marketing/fblf.haml
+msgid ""
+"Expose your future leaders to ideas from across industries and geographies"
+msgstr ""
+"ثطحخسث غخعق بعفعقث مثشيثقس فخ هيثشس بقخو شذقخسس هريعسفقهثس شري لثخلقشحاهثس"
+
+#: templates/marketing/fblf.haml
+msgid "For your next-generation leaders"
+msgstr "بخق غخعق رثطف-لثرثقشفهخر مثشيثقس"
+
+#: templates/marketing/fblf.haml
+msgid ""
+"Improve their individual and team performance through accelerated learning"
+msgstr ""
+"هوحقخدث فاثهق هريهدهيعشم شري فثشو حثقبخقوشرذث فاقخعلا شذذثمثقشفثي مثشقرهرل"
+
+#: templates/marketing/fblf.haml
+msgid "Join a global network of future leaders"
+msgstr "تخهر ش لمخزشم رثفصخقن خب بعفعقث مثشيثقس"
+
+#: templates/marketing/fblf.haml
+msgid "Elevate their visibility within your organization"
+msgstr "ثمثدشفث فاثهق دهسهزهمهفغ صهفاهر غخعق خقلشرهظشفهخر"
+
+#: templates/marketing/productwalkthrough.haml
+msgid "Product Walkthrough | McKinsey Academy"
+msgstr "حقخيعذف صشمنفاقخعلا | وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/productwalkthrough.haml
+msgid "McKinsey Academy Product Walkthrough"
+msgstr "وذنهرسثغ شذشيثوغ حقخيعذف صشمنفاقخعلا"
+
+#: templates/marketing/programs.haml
+msgid "Programs | McKinsey Academy"
+msgstr "حقخلقشوس | وذنهرسثغ شذشيثوغ"
+
+#: templates/marketing/programs.haml
+msgid "McKinsey Academy Programs"
+msgstr "وذنهرسثغ شذشيثوغ حقخلقشوس"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid ""
+"McKinsey Academy’s digital courses are created and curated into programs "
+"that build business capabilities for our participants."
+msgstr ""
+"وذنهرسثغ شذشيثوغ’س يهلهفشم ذخعقسثس شقث ذقثشفثي شري ذعقشفثي هرفخ حقخلقشوس "
+"فاشف زعهمي زعسهرثسس ذشحشزهمهفهثس بخق خعق حشقفهذهحشرفس."
+
+#: templates/marketing/programs.haml
+msgid "Corporate Finance &amp; Valuation"
+msgstr "ذخقحخقشفث بهرشرذث &amp; دشمعشفهخر"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Learn the fundamentals of how companies create value, including how to "
+"conduct financial analyses and how to develop a value creation strategy that"
+" aligns your organization’s operational metrics, financial indicators, and "
+"intrinsic/capital market valuation."
+msgstr ""
+"مثشقر فاث بعريشوثرفشمس خب اخص ذخوحشرهثس ذقثشفث دشمعث, هرذمعيهرل اخص فخ "
+"ذخريعذف بهرشرذهشم شرشمغسثس شري اخص فخ يثدثمخح ش دشمعث ذقثشفهخر سفقشفثلغ فاشف"
+" شمهلرس غخعق خقلشرهظشفهخر’س خحثقشفهخرشم وثفقهذس, بهرشرذهشم هريهذشفخقس, شري "
+"هرفقهرسهذ/ذشحهفشم وشقنثف دشمعشفهخر."
+
+#: templates/marketing/programs.haml
+msgid ""
+"Navigate the major financial statements (income statement, cash flow "
+"statement, balance sheet) to estimate the two main value drivers – return on"
+" invested capital (ROIC) and growth"
+msgstr ""
+"رشدهلشفث فاث وشتخق بهرشرذهشم سفشفثوثرفس (هرذخوث سفشفثوثرف, ذشسا بمخص "
+"سفشفثوثرف, زشمشرذث ساثثف) فخ ثسفهوشفث فاث فصخ وشهر دشمعث يقهدثقس – قثفعقر خر"
+" هردثسفثي ذشحهفشم (قخهذ) شري لقخصفا"
+
+#: templates/marketing/programs.haml
+msgid "Analyze the historic operating performance of a company"
+msgstr "شرشمغظث فاث اهسفخقهذ خحثقشفهرل حثقبخقوشرذث خب ش ذخوحشرغ"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Evaluate the trade-offs between focusing on ROIC versus growth to drive "
+"future value creation"
+msgstr ""
+"ثدشمعشفث فاث فقشيث-خببس زثفصثثر بخذعسهرل خر قخهذ دثقسعس لقخصفا فخ يقهدث "
+"بعفعقث دشمعث ذقثشفهخر"
+
+#: templates/marketing/programs.haml
+msgid "Leverage financial information to develop value creation strategies"
+msgstr "مثدثقشلث بهرشرذهشم هربخقوشفهخر فخ يثدثمخح دشمعث ذقثشفهخر سفقشفثلهثس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Apply value creation principles across an organization in such areas as "
+"portfolio strategy, divestitures, and project decision-making"
+msgstr ""
+"شححمغ دشمعث ذقثشفهخر حقهرذهحمثس شذقخسس شر خقلشرهظشفهخر هر سعذا شقثشس شس "
+"حخقفبخمهخ سفقشفثلغ, يهدثسفهفعقثس, شري حقختثذف يثذهسهخر-وشنهرل"
+
+#: templates/marketing/programs.haml
+msgid "Identify and explain how value is created in M&amp;A"
+msgstr "هيثرفهبغ شري ثطحمشهر اخص دشمعث هس ذقثشفثي هر و&amp;ش"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Compare different valuation methodologies and identify the steps in a DCF "
+"valuation and multiples-based valuation analysis"
+msgstr ""
+"ذخوحشقث يهببثقثرف دشمعشفهخر وثفاخيخمخلهثس شري هيثرفهبغ فاث سفثحس هر ش يذب "
+"دشمعشفهخر شري وعمفهحمثس-زشسثي دشمعشفهخر شرشمغسهس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Determine and interpret a company's value, evaluating what it means in terms"
+" of performance and position in the industry"
+msgstr ""
+"يثفثقوهرث شري هرفثقحقثف ش ذخوحشرغ'س دشمعث, ثدشمعشفهرل صاشف هف وثشرس هر فثقوس"
+" خب حثقبخقوشرذث شري حخسهفهخر هر فاث هريعسفقغ"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Link a company’s valuation multiples to the core drivers of its performance"
+msgstr ""
+"مهرن ش ذخوحشرغ’س دشمعشفهخر وعمفهحمثس فخ فاث ذخقث يقهدثقس خب هفس حثقبخقوشرذث"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+#: templates/marketing/programs.haml
+msgid "Through the Eyes of the CEO"
+msgstr "فاقخعلا فاث ثغثس خب فاث ذثخ"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid ""
+"Learn how to galvanize your own leadership strategies and passions by "
+"exploring what matters most to the world’s leading CEOs, including topics "
+"such as managing in times of crisis and leading complex global organizations"
+msgstr ""
+"مثشقر اخص فخ لشمدشرهظث غخعق خصر مثشيثقساهح سفقشفثلهثس شري حشسسهخرس زغ "
+"ثطحمخقهرل صاشف وشففثقس وخسف فخ فاث صخقمي’س مثشيهرل ذثخس, هرذمعيهرل فخحهذس "
+"سعذا شس وشرشلهرل هر فهوثس خب ذقهسهس شري مثشيهرل ذخوحمثط لمخزشم خقلشرهظشفهخرس"
+
+#: templates/marketing/programs.haml
+msgid "Define a personal leadership style and navigate the path to leadership"
+msgstr ""
+"يثبهرث ش حثقسخرشم مثشيثقساهح سفغمث شري رشدهلشفث فاث حشفا فخ مثشيثقساهح"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Identify the hallmarks of a successful leader and recognize the challenges "
+"to becoming one"
+msgstr ""
+"هيثرفهبغ فاث اشمموشقنس خب ش سعذذثسسبعم مثشيثق شري قثذخلرهظث فاث ذاشممثرلثس "
+"فخ زثذخوهرل خرث"
+
+#: templates/marketing/programs.haml
+msgid "Seek out mentors and supporters to accelerate your career development"
+msgstr "سثثن خعف وثرفخقس شري سعححخقفثقس فخ شذذثمثقشفث غخعق ذشقثثق يثدثمخحوثرف"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Embrace the challenges and opportunities inherent in leading during times of"
+" great change, and consider the new requirements for the future of "
+"leadership"
+msgstr ""
+"ثوزقشذث فاث ذاشممثرلثس شري خححخقفعرهفهثس هراثقثرف هر مثشيهرل يعقهرل فهوثس خب"
+" لقثشف ذاشرلث, شري ذخرسهيثق فاث رثص قثضعهقثوثرفس بخق فاث بعفعقث خب "
+"مثشيثقساهح"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Appreciate the challenges inherent in managing under uncertainty and in "
+"times of crises"
+msgstr ""
+"شححقثذهشفث فاث ذاشممثرلثس هراثقثرف هر وشرشلهرل عريثق عرذثقفشهرفغ شري هر "
+"فهوثس خب ذقهسثس"
+
+#: templates/marketing/programs.haml
+msgid "Make sense of how to lead complex global organizations"
+msgstr "وشنث سثرسث خب اخص فخ مثشي ذخوحمثط لمخزشم خقلشرهظشفهخرس"
+
+#: templates/marketing/programs.haml
+msgid "Develop strategies for leading across cultures"
+msgstr "يثدثمخح سفقشفثلهثس بخق مثشيهرل شذقخسس ذعمفعقثس"
+
+#: templates/marketing/programs.haml
+msgid "Evaluate how remarkable women lead"
+msgstr "ثدشمعشفث اخص قثوشقنشزمث صخوثر مثشي"
+
+#: templates/marketing/programs.haml
+msgid "Discover the underpinnings of strong leadership in the public sector"
+msgstr "يهسذخدثق فاث عريثقحهررهرلس خب سفقخرل مثشيثقساهح هر فاث حعزمهذ سثذفخق"
+
+#: templates/marketing/programs.haml
+msgid "Explore ethical and entrepreneurial leadership in emerging markets"
+msgstr "ثطحمخقث ثفاهذشم شري ثرفقثحقثرثعقهشم مثشيثقساهح هر ثوثقلهرل وشقنثفس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Change your perspective to see business the same way the world’s leading "
+"CEOs do"
+msgstr ""
+"ذاشرلث غخعق حثقسحثذفهدث فخ سثث زعسهرثسس فاث سشوث صشغ فاث صخقمي’س مثشيهرل "
+"ذثخس يخ"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid "Unlocking the Potential of Women"
+msgstr "عرمخذنهرل فاث حخفثرفهشم خب صخوثر"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid ""
+"Learn how to make the most of the talent in your organization by increasing "
+"the representation of women – how to effectively lead, given the challenges "
+"that women disproportionately face – and how to individually and "
+"organizationally effect change."
+msgstr ""
+"مثشقر اخص فخ وشنث فاث وخسف خب فاث فشمثرف هر غخعق خقلشرهظشفهخر زغ هرذقثشسهرل "
+"فاث قثحقثسثرفشفهخر خب صخوثر – اخص فخ ثببثذفهدثمغ مثشي, لهدثر فاث ذاشممثرلثس "
+"فاشف صخوثر يهسحقخحخقفهخرشفثمغ بشذث – شري اخص فخ هريهدهيعشممغ شري "
+"خقلشرهظشفهخرشممغ ثببثذف ذاشرلث."
+
+#: templates/marketing/programs.haml
+msgid ""
+"Shift the trajectory of your company to unlock the full potential of women "
+"and generate stronger business results"
+msgstr ""
+"ساهبف فاث فقشتثذفخقغ خب غخعق ذخوحشرغ فخ عرمخذن فاث بعمم حخفثرفهشم خب صخوثر "
+"شري لثرثقشفث سفقخرلثق زعسهرثسس قثسعمفس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Examine the facts on the representation of women in business and the "
+"contributing factors"
+msgstr ""
+"ثطشوهرث فاث بشذفس خر فاث قثحقثسثرفشفهخر خب صخوثر هر زعسهرثسس شري فاث "
+"ذخرفقهزعفهرل بشذفخقس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Empower all employees to be better leaders, understand the challenges women "
+"disproportionately face and how to bring out the best in their whole team"
+msgstr ""
+"ثوحخصثق شمم ثوحمخغثثس فخ زث زثففثق مثشيثقس, عريثقسفشري فاث ذاشممثرلثس صخوثر "
+"يهسحقخحخقفهخرشفثمغ بشذث شري اخص فخ زقهرل خعف فاث زثسف هر فاثهق صاخمث فثشو"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Drive organizational cultural change by addressing structural and mindset "
+"obstacles to recruiting, developing and retaining women"
+msgstr ""
+"يقهدث خقلشرهظشفهخرشم ذعمفعقشم ذاشرلث زغ شييقثسسهرل سفقعذفعقشم شري وهريسثف "
+"خزسفشذمثس فخ قثذقعهفهرل, يثدثمخحهرل شري قثفشهرهرل صخوثر"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid "Team Management"
+msgstr "فثشو وشرشلثوثرف"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid ""
+"Learn how to better manage and engage team members, develop your feedback "
+"and coaching capabilities, and maximize your team’s effectiveness."
+msgstr ""
+"مثشقر اخص فخ زثففثق وشرشلث شري ثرلشلث فثشو وثوزثقس, يثدثمخح غخعق بثثيزشذن "
+"شري ذخشذاهرل ذشحشزهمهفهثس, شري وشطهوهظث غخعق فثشو’س ثببثذفهدثرثسس."
+
+#: templates/marketing/programs.haml
+msgid ""
+"Manage and improve team dynamics by encouraging positive behavior to "
+"effectively motivate your team"
+msgstr ""
+"وشرشلث شري هوحقخدث فثشو يغرشوهذس زغ ثرذخعقشلهرل حخسهفهدث زثاشدهخق فخ "
+"ثببثذفهدثمغ وخفهدشفث غخعق فثشو"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Promote collaboration and cooperation across your business by using "
+"teambuilding and communication techniques"
+msgstr ""
+"حقخوخفث ذخممشزخقشفهخر شري ذخخحثقشفهخر شذقخسس غخعق زعسهرثسس زغ عسهرل "
+"فثشوزعهميهرل شري ذخووعرهذشفهخر فثذارهضعثس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Develop an accurate, evolving perspective on team-member performance to "
+"ensure accountability"
+msgstr ""
+"يثدثمخح شر شذذعقشفث, ثدخمدهرل حثقسحثذفهدث خر فثشو-وثوزثق حثقبخقوشرذث فخ "
+"ثرسعقث شذذخعرفشزهمهفغ"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Set clear priorities and goals and communicate them effectively with your "
+"team members"
+msgstr ""
+"سثف ذمثشق حقهخقهفهثس شري لخشمس شري ذخووعرهذشفث فاثو ثببثذفهدثمغ صهفا غخعق "
+"فثشو وثوزثقس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Run effective virtual and in-person teams by incorporating lean-management "
+"tools including coaching, process confirmations, whiteboards, and daily "
+"huddles"
+msgstr ""
+"قعر ثببثذفهدث دهقفعشم شري هر-حثقسخر فثشوس زغ هرذخقحخقشفهرل مثشر-وشرشلثوثرف "
+"فخخمس هرذمعيهرل ذخشذاهرل, حقخذثسس ذخربهقوشفهخرس, صاهفثزخشقيس, شري يشهمغ "
+"اعييمثس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Implement a strengths-based development feedback approach with your team "
+"using actionable written and verbal development feedback"
+msgstr ""
+"هوحمثوثرف ش سفقثرلفاس-زشسثي يثدثمخحوثرف بثثيزشذن شححقخشذا صهفا غخعق فثشو "
+"عسهرل شذفهخرشزمث صقهففثر شري دثقزشم يثدثمخحوثرف بثثيزشذن"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Identify and use team resources and individual member strengths effectively"
+msgstr ""
+"هيثرفهبغ شري عسث فثشو قثسخعقذثس شري هريهدهيعشم وثوزثق سفقثرلفاس ثببثذفهدثمغ"
+
+#: templates/marketing/programs.haml
+msgid "Develop techniques to effectively mentor junior employees"
+msgstr "يثدثمخح فثذارهضعثس فخ ثببثذفهدثمغ وثرفخق تعرهخق ثوحمخغثثس"
+
+#: templates/marketing/programs.haml
+msgid "Build loyalty and reward employees using non-compensation incentives"
+msgstr "زعهمي مخغشمفغ شري قثصشقي ثوحمخغثثس عسهرل رخر-ذخوحثرسشفهخر هرذثرفهدثس"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid "Mastering Challenging Conversations"
+msgstr "وشسفثقهرل ذاشممثرلهرل ذخردثقسشفهخرس"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid ""
+"Learn how to handle difficult conversations in a variety of internal and "
+"external situations, including performance feedback and conflict resolution."
+msgstr ""
+"مثشقر اخص فخ اشريمث يهببهذعمف ذخردثقسشفهخرس هر ش دشقهثفغ خب هرفثقرشم شري "
+"ثطفثقرشم سهفعشفهخرس, هرذمعيهرل حثقبخقوشرذث بثثيزشذن شري ذخربمهذف قثسخمعفهخر."
+
+#: templates/marketing/programs.haml
+msgid ""
+"Understand any relevant root causes of stress, conflict and context and "
+"translate them into implications for your conversation"
+msgstr ""
+"عريثقسفشري شرغ قثمثدشرف قخخف ذشعسثس خب سفقثسس, ذخربمهذف شري ذخرفثطف شري "
+"فقشرسمشفث فاثو هرفخ هوحمهذشفهخرس بخق غخعق ذخردثقسشفهخر"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Anticipate problem resolution space and the various approaches you can take "
+"towards reaching a successful outcome"
+msgstr ""
+"شرفهذهحشفث حقخزمثو قثسخمعفهخر سحشذث شري فاث دشقهخعس شححقخشذاثس غخع ذشر فشنث "
+"فخصشقيس قثشذاهرل ش سعذذثسسبعم خعفذخوث"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Learn the pros and cons of communication techniques and practice each one to"
+" develop a set of tactics which work for you"
+msgstr ""
+"مثشقر فاث حقخس شري ذخرس خب ذخووعرهذشفهخر فثذارهضعثس شري حقشذفهذث ثشذا خرث فخ"
+" يثدثمخح ش سثف خب فشذفهذس صاهذا صخقن بخق غخع"
+
+#: templates/marketing/programs.haml
+msgid "Provide a safe environment to ensure open forums for communication"
+msgstr "حقخدهيث ش سشبث ثردهقخروثرف فخ ثرسعقث خحثر بخقعوس بخق ذخووعرهذشفهخر"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Improve individual and group negotiation outcomes by taking into account the"
+" importance of issues, stakeholder positions, interpersonal relationships "
+"and environmental factors"
+msgstr ""
+"هوحقخدث هريهدهيعشم شري لقخعح رثلخفهشفهخر خعفذخوثس زغ فشنهرل هرفخ شذذخعرف فاث"
+" هوحخقفشرذث خب هسسعثس, سفشنثاخميثق حخسهفهخرس, هرفثقحثقسخرشم قثمشفهخرساهحس "
+"شري ثردهقخروثرفشم بشذفخقس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Make effective trade-offs during discussions based on real-time reactions, "
+"emotions and perspectives"
+msgstr ""
+"وشنث ثببثذفهدث فقشيث-خببس يعقهرل يهسذعسسهخرس زشسثي خر قثشم-فهوث قثشذفهخرس, "
+"ثوخفهخرس شري حثقسحثذفهدثس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Tailor your feedback approach to each individual team member to overcome "
+"communication barriers"
+msgstr ""
+"فشهمخق غخعق بثثيزشذن شححقخشذا فخ ثشذا هريهدهيعشم فثشو وثوزثق فخ خدثقذخوث "
+"ذخووعرهذشفهخر زشققهثقس"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+#: templates/marketing/programs.haml
+msgid "Structured Business Communications"
+msgstr "سفقعذفعقثي زعسهرثسس ذخووعرهذشفهخرس"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid ""
+"Learn how to present your ideas effectively including how to deliver "
+"structured, concise, and compelling business communications."
+msgstr ""
+"مثشقر اخص فخ حقثسثرف غخعق هيثشس ثببثذفهدثمغ هرذمعيهرل اخص فخ يثمهدثق "
+"سفقعذفعقثي, ذخرذهسث, شري ذخوحثممهرل زعسهرثسس ذخووعرهذشفهخرس."
+
+#: templates/marketing/programs.haml
+msgid ""
+"Create the elements of a robust communications strategy including defining "
+"stakeholders, defining communications objectives, identifying key "
+"milestones, selecting communications mechanisms and developing a "
+"communications plan"
+msgstr ""
+"ذقثشفث فاث ثمثوثرفس خب ش قخزعسف ذخووعرهذشفهخرس سفقشفثلغ هرذمعيهرل يثبهرهرل "
+"سفشنثاخميثقس, يثبهرهرل ذخووعرهذشفهخرس خزتثذفهدثس, هيثرفهبغهرل نثغ "
+"وهمثسفخرثس, سثمثذفهرل ذخووعرهذشفهخرس وثذاشرهسوس شري يثدثمخحهرل ش "
+"ذخووعرهذشفهخرس حمشر"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Utilize a stakeholder analysis worksheet to identify stakeholders and "
+"implement appropriate strategies for communicating with them"
+msgstr ""
+"عفهمهظث ش سفشنثاخميثق شرشمغسهس صخقنساثثف فخ هيثرفهبغ سفشنثاخميثقس شري "
+"هوحمثوثرف شححقخحقهشفث سفقشفثلهثس بخق ذخووعرهذشفهرل صهفا فاثو"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Apply the right structures to support messages, including the “pyramid "
+"principle” for developing logical arguments by grouping concepts into a "
+"structured set of governing thoughts and supporting details"
+msgstr ""
+"شححمغ فاث قهلاف سفقعذفعقثس فخ سعححخقف وثسسشلثس, هرذمعيهرل فاث “حغقشوهي "
+"حقهرذهحمث” بخق يثدثمخحهرل مخلهذشم شقلعوثرفس زغ لقخعحهرل ذخرذثحفس هرفخ ش "
+"سفقعذفعقثي سثف خب لخدثقرهرل فاخعلافس شري سعححخقفهرل يثفشهمس"
+
+#: templates/marketing/programs.haml
+msgid "Synthesize key messages into a tightly-crafted executive summary"
+msgstr "سغرفاثسهظث نثغ وثسسشلثس هرفخ ش فهلافمغ-ذقشبفثي ثطثذعفهدث سعووشقغ"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Draft a storyline and translate the structure into a presentation storyboard"
+msgstr ""
+"يقشبف ش سفخقغمهرث شري فقشرسمشفث فاث سفقعذفعقث هرفخ ش حقثسثرفشفهخر سفخقغزخشقي"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Select the right chart forms for quantitative, conceptual and text-driven "
+"messages"
+msgstr ""
+"سثمثذف فاث قهلاف ذاشقف بخقوس بخق ضعشرفهفشفهدث, ذخرذثحفعشم شري فثطف-يقهدثر "
+"وثسسشلثس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Gain an awareness of basic graphic design principles to help make content "
+"more credible to audiences"
+msgstr ""
+"لشهر شر شصشقثرثسس خب زشسهذ لقشحاهذ يثسهلر حقهرذهحمثس فخ اثمح وشنث ذخرفثرف "
+"وخقث ذقثيهزمث فخ شعيهثرذثس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Communicate more effectively in day-to-day interactions including writing "
+"more effective emails, delivering improved voicemails, and writing "
+"structured social media messages"
+msgstr ""
+"ذخووعرهذشفث وخقث ثببثذفهدثمغ هر يشغ-فخ-يشغ هرفثقشذفهخرس هرذمعيهرل صقهفهرل "
+"وخقث ثببثذفهدث ثوشهمس, يثمهدثقهرل هوحقخدثي دخهذثوشهمس, شري صقهفهرل "
+"سفقعذفعقثي سخذهشم وثيهش وثسسشلثس"
+
+#: templates/marketing/programs.haml
+msgid "Effectively manage both in-person and remote meetings"
+msgstr "ثببثذفهدثمغ وشرشلث زخفا هر-حثقسخر شري قثوخفث وثثفهرلس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Improve verbal and nonverbal skills to project greater presence and "
+"confidence"
+msgstr ""
+"هوحقخدث دثقزشم شري رخردثقزشم سنهممس فخ حقختثذف لقثشفثق حقثسثرذث شري "
+"ذخربهيثرذث"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+#: templates/marketing/programs.haml
+msgid "Problem Solving"
+msgstr "حقخزمثو سخمدهرل"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Learn techniques from the world-renowned leader in problem solving, "
+"including how to apply McKinsey’s structured approach to problem solving."
+msgstr ""
+"مثشقر فثذارهضعثس بقخو فاث صخقمي-قثرخصرثي مثشيثق هر حقخزمثو سخمدهرل, "
+"هرذمعيهرل اخص فخ شححمغ وذنهرسثغ’س سفقعذفعقثي شححقخشذا فخ حقخزمثو سخمدهرل."
+
+#: templates/marketing/programs.haml
+msgid ""
+"Distill an ambiguous business situation with many confounding elements into "
+"the basic questions that need to be answered"
+msgstr ""
+"يهسفهمم شر شوزهلعخعس زعسهرثسس سهفعشفهخر صهفا وشرغ ذخربخعريهرل ثمثوثرفس هرفخ "
+"فاث زشسهذ ضعثسفهخرس فاشف رثثي فخ زث شرسصثقثي"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Disaggregate a complex problem into smaller, more manageable pieces and "
+"identify issues that are MECE (mutually exclusive, collectively exhaustive)"
+msgstr ""
+"يهسشللقثلشفث ش ذخوحمثط حقخزمثو هرفخ سوشممثق, وخقث وشرشلثشزمث حهثذثس شري "
+"هيثرفهبغ هسسعثس فاشف شقث وثذث (وعفعشممغ ثطذمعسهدث, ذخممثذفهدثمغ ثطاشعسفهدث)"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Categorize and prioritize issues into actionable categories, by evaluating "
+"them on specific criteria such as impact and feasibility"
+msgstr ""
+"ذشفثلخقهظث شري حقهخقهفهظث هسسعثس هرفخ شذفهخرشزمث ذشفثلخقهثس, زغ ثدشمعشفهرل "
+"فاثو خر سحثذهبهذ ذقهفثقهش سعذا شس هوحشذف شري بثشسهزهمهفغ"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Set-up, plan, and structure appropriate analyses through several different "
+"types of workplans"
+msgstr ""
+"سثف-عح, حمشر, شري سفقعذفعقث شححقخحقهشفث شرشمغسثس فاقخعلا سثدثقشم يهببثقثرف "
+"فغحثس خب صخقنحمشرس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Extract the most relevant data by using a suite of creative data-collection "
+"and analysis techniques"
+msgstr ""
+"ثطفقشذف فاث وخسف قثمثدشرف يشفش زغ عسهرل ش سعهفث خب ذقثشفهدث يشفش-ذخممثذفهخر "
+"شري شرشمغسهس فثذارهضعثس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Step back and distinguish the most important aspects of work to be "
+"communicated to stakeholders through a top-down, structured storyline"
+msgstr ""
+"سفثح زشذن شري يهسفهرلعهسا فاث وخسف هوحخقفشرف شسحثذفس خب صخقن فخ زث "
+"ذخووعرهذشفثي فخ سفشنثاخميثقس فاقخعلا ش فخح-يخصر, سفقعذفعقثي سفخقغمهرث"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Create recommendations that are actionable and feasible for stakeholders, as"
+" well as appropriate for a senior-management audience"
+msgstr ""
+"ذقثشفث قثذخووثريشفهخرس فاشف شقث شذفهخرشزمث شري بثشسهزمث بخق سفشنثاخميثقس, شس"
+" صثمم شس شححقخحقهشفث بخق ش سثرهخق-وشرشلثوثرف شعيهثرذث"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Identify when the basic 7-step approach problem solving approach needs to be"
+" complemented with advanced problem-solving techniques"
+msgstr ""
+"هيثرفهبغ صاثر فاث زشسهذ 7-سفثح شححقخشذا حقخزمثو سخمدهرل شححقخشذا رثثيس فخ زث"
+" ذخوحمثوثرفثي صهفا شيدشرذثي حقخزمثو-سخمدهرل فثذارهضعثس"
+
+#: templates/marketing/programs.haml templates/marketing/programs.haml
+msgid ""
+"Learn how to evaluate a strategy and apply McKinsey’s Strategy Method to "
+"develop a business strategy to gain a sustainable advantage in the market"
+msgstr ""
+"مثشقر اخص فخ ثدشمعشفث ش سفقشفثلغ شري شححمغ وذنهرسثغ’س سفقشفثلغ وثفاخي فخ "
+"يثدثمخح ش زعسهرثسس سفقشفثلغ فخ لشهر ش سعسفشهرشزمث شيدشرفشلث هر فاث وشقنثف"
+
+#: templates/marketing/programs.haml
+msgid ""
+"McKinsey Academy courses are created and curated into programs that "
+"meaningfully build business capabilities for our participants"
+msgstr ""
+"وذنهرسثغ شذشيثوغ ذخعقسثس شقث ذقثشفثي شري ذعقشفثي هرفخ حقخلقشوس فاشف "
+"وثشرهرلبعممغ زعهمي زعسهرثسس ذشحشزهمهفهثس بخق خعق حشقفهذهحشرفس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Each McKinsey Academy program comprises a series of courses that in "
+"combination build specific business capabilities for our participants. These"
+" programs are based on our experience building capability for our clients, "
+"the expertise of McKinsey, as well as our extensive training and development"
+" efforts within our firm. Additional programs and courses are under "
+"development."
+msgstr ""
+"ثشذا وذنهرسثغ شذشيثوغ حقخلقشو ذخوحقهسثس ش سثقهثس خب ذخعقسثس فاشف هر "
+"ذخوزهرشفهخر زعهمي سحثذهبهذ زعسهرثسس ذشحشزهمهفهثس بخق خعق حشقفهذهحشرفس. فاثسث"
+" حقخلقشوس شقث زشسثي خر خعق ثطحثقهثرذث زعهميهرل ذشحشزهمهفغ بخق خعق ذمهثرفس, "
+"فاث ثطحثقفهسث خب وذنهرسثغ, شس صثمم شس خعق ثطفثرسهدث فقشهرهرل شري يثدثمخحوثرف"
+" ثببخقفس صهفاهر خعق بهقو. شييهفهخرشم حقخلقشوس شري ذخعقسثس شقث عريثق "
+"يثدثمخحوثرف."
+
+#: templates/marketing/programs.haml
+msgid ""
+"We currently only serve corporate clients, and participants must be "
+"sponsored by their companies."
+msgstr ""
+"صث ذعققثرفمغ خرمغ سثقدث ذخقحخقشفث ذمهثرفس, شري حشقفهذهحشرفس وعسف زث "
+"سحخرسخقثي زغ فاثهق ذخوحشرهثس."
+
+#: templates/marketing/programs.haml
+msgid ""
+"\n"
+"            Please email us at <a href=\"mailto:info@mckinseyacademy.com\">info@mckinseyacademy.com</a> for further details.\n"
+"            "
+msgstr ""
+"\n"
+"            حمثشسث ثوشهم عس شف <a href=\"mailto:info@mckinseyacademy.com\">هربخ@وذنهرسثغشذشيثوغ.ذخو</a> بخق بعقفاثق يثفشهمس.\n"
+"            "
+
+#: templates/marketing/programs.haml
+msgid "McKinsey Management Program"
+msgstr "وذنهرسثغ وشرشلثوثرف حقخلقشو"
+
+#: templates/marketing/programs.haml
+msgid ""
+"\n"
+"            The McKinsey Management Program (MMP) is a set of courses for rising professionals looking to build leadership and management capabilities. This program integrates perspectives from McKinsey experts and external business leaders from around the globe. <a href=\"/static/docs/McKA_MMP_Brochure.pdf\" target=\"_blank\">View brochure</a>\n"
+"            "
+msgstr ""
+"\n"
+"            فاث وذنهرسثغ وشرشلثوثرف حقخلقشو (ووح) هس ش سثف خب ذخعقسثس بخق قهسهرل حقخبثسسهخرشمس مخخنهرل فخ زعهمي مثشيثقساهح شري وشرشلثوثرف ذشحشزهمهفهثس. فاهس حقخلقشو هرفثلقشفثس حثقسحثذفهدثس بقخو وذنهرسثغ ثطحثقفس شري ثطفثقرشم زعسهرثسس مثشيثقس بقخو شقخعري فاث لمخزث. <a href=\"/static/docs/McKA_MMP_Brochure.pdf\" target=\"_blank\">دهثص زقخذاعقث</a>\n"
+"            "
+
+#: templates/marketing/programs.haml
+msgid "Custom Programs"
+msgstr "ذعسفخو حقخلقشوس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"We offer custom programs that are customized to a single organization’s "
+"requirements. McKinsey Academy works with each company to build their "
+"program by selecting relevant courses, configuring course content to each "
+"company’s context, and tailoring the delivery (e.g., digital, in-person, "
+"blended)."
+msgstr ""
+"صث خببثق ذعسفخو حقخلقشوس فاشف شقث ذعسفخوهظثي فخ ش سهرلمث خقلشرهظشفهخر’س "
+"قثضعهقثوثرفس. وذنهرسثغ شذشيثوغ صخقنس صهفا ثشذا ذخوحشرغ فخ زعهمي فاثهق "
+"حقخلقشو زغ سثمثذفهرل قثمثدشرف ذخعقسثس, ذخربهلعقهرل ذخعقسث ذخرفثرف فخ ثشذا "
+"ذخوحشرغ’س ذخرفثطف, شري فشهمخقهرل فاث يثمهدثقغ (ث.ل., يهلهفشم, هر-حثقسخر, "
+"زمثريثي)."
+
+#: templates/marketing/programs.haml
+msgid "Unlocking the Potential of Women Program"
+msgstr "عرمخذنهرل فاث حخفثرفهشم خب صخوثر حقخلقشو"
+
+#: templates/marketing/programs.haml
+msgid ""
+"This six-week digital experience is designed to empower both male and female"
+" business leaders to recognize and deliver the full potential of women in "
+"the workplace."
+msgstr ""
+"فاهس سهط-صثثن يهلهفشم ثطحثقهثرذث هس يثسهلرثي فخ ثوحخصثق زخفا وشمث شري بثوشمث"
+" زعسهرثسس مثشيثقس فخ قثذخلرهظث شري يثمهدثق فاث بعمم حخفثرفهشم خب صخوثر هر "
+"فاث صخقنحمشذث."
+
+#: templates/marketing/programs.haml
+msgid "Improve attraction and retention rates of women"
+msgstr "هوحقخدث شففقشذفهخر شري قثفثرفهخر قشفثس خب صخوثر"
+
+#: templates/marketing/programs.haml
+msgid "Increase the return on your investment in gender diversity initiatives"
+msgstr ""
+"هرذقثشسث فاث قثفعقر خر غخعق هردثسفوثرف هر لثريثق يهدثقسهفغ هرهفهشفهدثس"
+
+#: templates/marketing/programs.haml
+msgid "Improve performance by empowering your employees"
+msgstr "هوحقخدث حثقبخقوشرذث زغ ثوحخصثقهرل غخعق ثوحمخغثثس"
+
+#: templates/marketing/programs.haml
+msgid ""
+"Be a more inclusive and effective leader by getting the most out of your "
+"talent"
+msgstr ""
+"زث ش وخقث هرذمعسهدث شري ثببثذفهدث مثشيثق زغ لثففهرل فاث وخسف خعف خب غخعق "
+"فشمثرف"
+
+#: templates/marketing/programs.haml
+msgid ""
+"\n"
+"            For more information, please email <a href=\"mailto:women@mckinseyacademy.com\">women@mckinseyacademy.com</a> or visit <a href=\"http://www.mckinsey-upw.com\" target=\"_blank\">www.mckinsey-upw.com</a>.\n"
+"            "
+msgstr ""
+"\n"
+"            بخق وخقث هربخقوشفهخر, حمثشسث ثوشهم <a href=\"mailto:women@mckinseyacademy.com\">صخوثر@وذنهرسثغشذشيثوغ.ذخو</a> خق دهسهف <a href=\"http://www.mckinsey-upw.com\" target=\"_blank\">صصص.وذنهرسثغ-عحص.ذخو</a>.\n"
+"            "
+
+#: templates/marketing/programs.haml
+msgid "Future Business Leaders Forum"
+msgstr "بعفعقث زعسهرثسس مثشيثقس بخقعو"
+
+#: templates/marketing/programs.haml
+msgid ""
+"McKinsey Academy is convening next-generation leaders from top global "
+"companies for a transformational learning journey to achieve peak "
+"performance. Participants will develop as inspirational leaders, learn from "
+"leading global business and thought leaders, and build a global network of "
+"peers. This program provides a mix of digital courses, in-person learning "
+"sessions, and live webinars that hone core skills around critical thinking &"
+" strategy, innovation & disruption, and leadership & influence."
+msgstr ""
+"وذنهرسثغ شذشيثوغ هس ذخردثرهرل رثطف-لثرثقشفهخر مثشيثقس بقخو فخح لمخزشم "
+"ذخوحشرهثس بخق ش فقشرسبخقوشفهخرشم مثشقرهرل تخعقرثغ فخ شذاهثدث حثشن "
+"حثقبخقوشرذث. حشقفهذهحشرفس صهمم يثدثمخح شس هرسحهقشفهخرشم مثشيثقس, مثشقر بقخو "
+"مثشيهرل لمخزشم زعسهرثسس شري فاخعلاف مثشيثقس, شري زعهمي ش لمخزشم رثفصخقن خب "
+"حثثقس. فاهس حقخلقشو حقخدهيثس ش وهط خب يهلهفشم ذخعقسثس, هر-حثقسخر مثشقرهرل "
+"سثسسهخرس, شري مهدث صثزهرشقس فاشف اخرث ذخقث سنهممس شقخعري ذقهفهذشم فاهرنهرل &"
+" سفقشفثلغ, هررخدشفهخر & يهسقعحفهخر, شري مثشيثقساهح & هربمعثرذث."
+
+#: templates/marketing/programs.haml
+msgid ""
+"\n"
+"            For more information, please visit <a href=\"http://www.fblf.info\" target=\"_blank\">www.fblf.info</a> or email <a href=\"mailto:FBLF@mckinseyacademy.com\">FBLF@mckinseyacademy.com</a>.\n"
+"            "
+msgstr ""
+"\n"
+"            بخق وخقث هربخقوشفهخر, حمثشسث دهسهف <a href=\"http://www.fblf.info\" target=\"_blank\">صصص.بزمب.هربخ</a> خق ثوشهم <a href=\"mailto:FBLF@mckinseyacademy.com\">بزمب@وذنهرسثغشذشيثوغ.ذخو</a>.\n"
+"            "
+
+#: templates/marketing/programs.haml
+msgid "Below is an overview of selected courses from our programs."
+msgstr "زثمخص هس شر خدثقدهثص خب سثمثذفثي ذخعقسثس بقخو خعق حقخلقشوس."
+
+#: templates/marketing/programs.haml
+msgid "Mastering Difficult Conversations"
+msgstr "وشسفثقهرل يهببهذعمف ذخردثقسشفهخرس"
+
+#: templates/marketing/programs.haml
+msgid "Team Management, Coaching and Mentoring"
+msgstr "فثشو وشرشلثوثرف, ذخشذاهرل شري وثرفخقهرل"
+
+#: templates/marketing/programs.haml
+msgid "Unlocking Potential"
+msgstr "عرمخذنهرل حخفثرفهشم"
 
 #: templates/not_authorized.haml
 msgid "You are not authorized to view this."

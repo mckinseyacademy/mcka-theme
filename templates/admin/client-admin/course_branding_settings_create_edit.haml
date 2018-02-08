@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content
   .admin-detail.row
@@ -6,9 +7,11 @@
       - block admin_detail
         %h1
           - if instance
-            %span= _("Edit Learner dashboard branding: ")
+            %span
+              {% trans "Edit Learner dashboard branding: " %}
           - else
-            %span= _("Create Learner dashboard branding: ")
+            %span
+              {% trans "Create Learner dashboard branding: " %}
     %hr
     %form{action: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/create_edit", method: "POST", enctype: "multipart/form-data"}
       - csrf_token
@@ -63,7 +66,8 @@
           .small-3.columns
           .small-9.columns= form.rule_color.errors
         .row
-          .small-3.columns Rule color:
+          .small-3.columns
+            {% trans "Rule color:" %}
           .small-9.columns
             %input{'type': 'color', 'id': 'id_rule_color', 'name': 'rule_color', 'value': "#{form.rule_color.value}", 'data-default-value': "#{default_colors.rule_color}"}
 
@@ -87,12 +91,12 @@
           = error
       %div.submit-area
         - if instance
-          %input.button.radius.small.left{id: "resetColors", type: "submit", value: "Reset colors"}
+          %input.button.radius.small.left{id: "resetColors", type: "submit", value: '{% trans "Reset colors" %}'}
         - else
-          %input.button.radius.small.left{id: "resetColors", type: "submit", value: "Reset colors", disabled: "True"}
-        %input.formSubmit.button.radius.small.right{id: "formSubmit", type: "submit", value: "Save", disabled: "True", style:"margin-left:10px"}
+          %input.button.radius.small.left{id: "resetColors", type: "submit", value: '{% trans "Reset colors" %}', disabled: "True"}
+        %input.formSubmit.button.radius.small.right{id: "formSubmit", type: "submit", value: '{% trans "Save" %}', disabled: "True", style:"margin-left:10px"}
         %a{class: "button radius small right", href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
-          Cancel
+          {% trans "Cancel" %}
 
 - block js_snippets
   %script{src: "{% static 'js/form_changed_check.js' %}"}
@@ -107,7 +111,7 @@
     var discover_author_color = $('#id_discover_author_color');
     var discover_rule_color = $('#id_discover_rule_color');
     var background_color = $('#id_background_color');
-    
+
     $('#resetColors').on('click', function(event){
       event.preventDefault();
 

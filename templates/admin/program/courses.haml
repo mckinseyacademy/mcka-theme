@@ -1,8 +1,10 @@
 - extends 'admin/program/detail.haml'
+- load i18n
 - load staticfiles
 - block admin_detail
   %h1
-    %span= _("Program: ")
+    %span
+      {% trans "Program: " %}
     %span= program.display_name
   %hr
   %section
@@ -10,7 +12,8 @@
       %table.course-list
     .large-5.columns.course-selection
       %a#course-program-action.button.radius.tiny{href: "/admin/programs/#{program.id}/add_courses/"}
-        %span= _("Update course(s) in this program")
+        %span
+          {% trans "Update course(s) in this program" %}
       .select-program-box
         .name
           = program.display_name
@@ -19,8 +22,10 @@
             = program.name
           )
         .prog-info
-          %span= _("Program Run:")
+          %span
+            {% trans "Program Run:" %}
           %span= program.date_range
         .prog-info
-          %span= _("Number of Courses:")
+          %span
+            {% trans "Number of Courses:" %}
           %span= course_count

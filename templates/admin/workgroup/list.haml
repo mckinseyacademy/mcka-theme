@@ -1,5 +1,9 @@
 - extends "admin/workgroup/list_layout.haml"
+- load i18n
+
 - block principal_message
-  %p= _("Please select a course below to view existing groups within that course, or to create new groups in that course.")
+  %p
+    {% trans "Please select a course below to view existing groups within that course, or to create new groups in that course." %}
 - block principal_list_message
-  .sub-1= _("Existing courses:")
+  .sub-1
+    {% trans "Existing courses:" %}

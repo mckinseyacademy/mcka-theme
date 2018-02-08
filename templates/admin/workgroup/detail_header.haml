@@ -1,20 +1,25 @@
+- load i18n
+
 %ul
   %li
     - if selected_client_tab == 'edit_groups'
-      %span.selected= _("Create & Edit Groups")
+      %span.selected
+        {% trans "Create & Edit Groups" %}
     - else
       %a{href:"/admin/workgroup/course/#{course.id}"}
-        = _("Create & Edit Groups")
+        {% trans "Create & Edit Groups" %}
   - if user.is_mcka_admin or user.is_mcka_ta or user.is_client_ta or user.is_internal_admin or user.is_mcka_subadmin
     %li
       - if selected_client_tab == 'group_work_status'
-        %span.selected= _("Group Work Status")
+        %span.selected
+          {% trans "Group Work Status" %}
       - else
         %a{href:"/admin/workgroup/course/#{course.id}/group_work_status"}
-          = _("Group Work Status")
+          {% trans "Group Work Status" %}
   %li
     - if selected_client_tab == 'assignments'
-      %span.selected= _("Assignment Info")
+      %span.selected
+        {% trans "Assignment Info" %}
     - else
       %a{href:"/admin/workgroup/course/#{course.id}/assignments"}
-        = _("Assignment Info")
+        {% trans "Assignment Info" %}

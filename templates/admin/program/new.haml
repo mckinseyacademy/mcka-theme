@@ -1,7 +1,11 @@
+-load i18n
 %header
-  %h1= _("Create a New Program")
-  .sub-1= _("Add a program")
-  %p.description Add a program using this form
+  %h1
+    {% trans "Create a New Program" %}
+  .sub-1
+    {% trans "Add a program" %}
+  %p.description
+    {% trans "Add a program using this form" %}
 
 .close-reveal-modal
   %i.fa.fa-times-circle

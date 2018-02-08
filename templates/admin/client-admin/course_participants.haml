@@ -1,4 +1,5 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 - load staticfiles
 - block content
   .admin-detail.row
@@ -8,37 +9,45 @@
     .large-12.large.columns
       - block admin_detail
         %h1
-          %span= _("Participants: ")
+          %span
+            {% trans "Participants: " %}
           %span= target_course.name
-        .sub-1.add= _("Data Download ")
-        .participants-message= _("The following button downloads a list of all participants enrolled in this course, their percent complete, engagement scores, and course grade, along with profile informations such as email address and username.")
+        .sub-1.add
+          {% trans "Data Download " %}
+        .participants-message
+          {% trans "The following button downloads a list of all participants enrolled in this course, their percent complete, engagement scores, and course grade, along with profile informations such as email address and username." %}
         %br
         %a.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/download_course_report", target: "_blank"}
-          Download Report for course
+          {% trans "Download Report for course" %}
         %hr
-        .sub-1.add= _("Participant-Specific grade inspection ")
-        .participants-message= _("Specify the name of a participant to access their details")
+        .sub-1.add
+          {% trans "Participant-Specific grade inspection " %}
+        .participants-message
+          {% trans "Specify the name of a participant to access their details" %}
         %br
         / %input{type: "search"}
         / %hr
       %table#course-participants.student-list.ready-for-collapse
         %caption
-          .sub-1.add= _("Participants: ")
+          .sub-1.add
+            {% trans "Participants: " %}
             %span= total_participants
-          .add-message= _("Progress = # of modules complete out of total number of modules. Course Completed = completion of all required course work.")
+          .add-message
+            {% trans "Progress = # of modules complete out of total number of modules. Course Completed = completion of all required course work." %}
         %thead
             %th
-            %th.sorting-column Name
+            %th.sorting-column
+              {% trans "Name" %}
               %span{class: 'asc'}
                 ▲
               %span{class: 'desc'}
                 ▼
-            %th.sorting-column Progress
+            %th.sorting-column {% trans "Progress" %}
               %span{class: 'asc'}
                 ▲
               %span{class: 'desc'}
                 ▼
-            %th.sorting-column Course Completed
+            %th.sorting-column {% trans "Course Completed" %}
               %span{class: 'asc'}
                 ▲
               %span{class: 'desc'}
@@ -58,12 +67,12 @@
                 %p= student.title
               %td
                 = student.progress
-                = _('%')
+                {% trans '%' %}
               %td
                 - if student.completed
-                  = _("Yes")
+                  {% trans "Yes" %}
                 - else
-                  = _("No")
+                  {% trans "No" %}
               %td.actions
                 %a{href: "mailto:#{student.email}"}
                   = student.email

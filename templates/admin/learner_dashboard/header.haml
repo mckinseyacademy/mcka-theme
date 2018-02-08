@@ -1,24 +1,26 @@
+- load i18n
+
 %ul#header-ld
   - if learner_dashboard_id
     %li
       %a{href:"#"}
-        = _("Dashboard Elements")
+        {% trans "Dashboard Elements" %}
     %li
       %a{href:"#"}
-        = _("Discover Content")
+        {% trans "Discover Content" %}
   %li
       %a{href:"#"}
-        = _("Title/Description")
+        {% trans "Title/Description" %}
   - if learner_dashboard_id
     %li
       %a{href:"#"}
-        = _("Tile Positions")
+        {% trans "Tile Positions" %}
     %li
       %a{href:"#"}
-        = _("Branding")
+        {% trans "Branding" %}
     %li
       %a{href:"#"}
-        = _("Copy dashboard")
+        {% trans "Copy dashboard" %}
 
 %script
   $("#header-ld li").on('click', function (){

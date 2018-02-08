@@ -1,4 +1,6 @@
 - extends 'admin/admin_layout.haml'
+-load i18n
+
 - block content
   .admin-detail.row
     .large-12.large.columns
@@ -7,7 +9,8 @@
     .large-12.large.columns
       - block admin_detail
         %h1
-          %span= _("Program: ")
+          %span
+            {% trans "Program: " %}
           %span
             = program.display_name
             (

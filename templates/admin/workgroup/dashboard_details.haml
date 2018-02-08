@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content
   .admin-dashboard
@@ -7,15 +8,18 @@
         %header
           .large-12
             .large-10.columns
-              %h1.principal-title= _("Group Work Status")
-              %a{href: '#{return_url}'}= _("< Back to Group Work V2 Dashboard")
+              %h1.principal-title
+                {% trans "Group Work Status" %}
+              %a{href: '#{return_url}'}
+                {% trans "< Back to Group Work V2 Dashboard" %}
           .row
           .add-message.detail-message
-            = _("Detailed status by team and individual participants are below. Only graded stages are listed within the activity, though more stages may exist in the project. Filter by status (not yet started, started, complete).")
+            {% trans "Detailed status by team and individual participants are below. Only graded stages are listed within the activity, though more stages may exist in the project. Filter by status (not yet started, started, complete)." %}
         %hr
         %section
           .large-12.medium-12
-            .sub-2= _("Filter by:")
+            .sub-2
+              {% trans "Filter by:" %}
 
             .dashboard_filters
               -#.small-4.columns
@@ -27,15 +31,16 @@
               .small-4.columns
                 %select#company_filter{'data-filter-endpoint': '/admin/workgroup/dashboard/companies', 'data-outline-component': 'company', 'data-query-mode': 'data', 'data-value-parameter': 'program_id', 'data-autoselect-only-option': 'true', 'data-allow-empty-value': 'true'}
                   %option{'data-static': 'true', 'value': ''}
-                    = _("All companies")
+                    {% trans "All companies" %}
 
 
 
               .small-8.columns
-                %input{type: 'text', placeholder: 'Search participants', id:'user_search'}
+                %input{type: 'text', placeholder: '{% trans "Search participants" %}', id:'user_search'}
 
           .large-12.dashboard_outline_wrapper
-            %span.dashboard_outline_label= _("Displaying:")
+            %span.dashboard_outline_label
+              {% trans "Displaying:" %}
             %span.dashboard_outline.program= program.name
             |
             %span.dashboard_outline.course= course.name

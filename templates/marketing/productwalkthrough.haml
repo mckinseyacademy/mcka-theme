@@ -1,12 +1,13 @@
 - extends "layout.haml"
-
+- load i18n
 - block page_title
-  %title= _("Product Walkthrough | McKinsey Academy")
-  %meta{property: "og:title", content: "McKinsey Academy Product Walkthrough"}
+  %title
+    {% trans "Product Walkthrough | McKinsey Academy" %}
+  %meta{property: "og:title", content: '{% trans "McKinsey Academy Product Walkthrough" %}'}
 
 - block page_description
-  %meta{name: "description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
-  %meta{property: "og:description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
+  %meta{name: "description", content: '{% trans "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage." %}'}
+  %meta{property: "og:description", content: '{% trans "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage." %}'}
 
 - block content
   %article#product-walkthrough

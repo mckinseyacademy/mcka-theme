@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content
   .admin-dashboard.dashboardV2
@@ -8,26 +9,27 @@
           .large-12
             .large-10.columns
               %h1.principal-title
-                = _("Group Work Dashboard")
+                {% trans "Group Work Dashboard" %}
             .large-2.columns.run-report
               %a.button.radius.small.disabled{'disabled': 'disabled'}
                 %span.fa.fa-download
-                = _("Report")
+                {% trans "Report" %}
           .row
           .add-message.detail-message
-            = _("Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view.")
+            {% trans "Status of Group Work from individual courses are below. Please make selections to change display. Note that the report you run will export data on your current dashboard view." %}
         %hr
         %section
           .row
           .large-12.medium-12
-            .sub-2= _("Filter by:")
+            .sub-2
+              {% trans "Filter by:" %}
 
             .dashboard_filters
               .small-6.columns.selectContainer
                 - if not user.is_mcka_admin and not user.is_mcka_subadmin
                   %select#select-course{'data-outline-component': 'course'}
                     %option{'data-static': 'true', 'value': ''}
-                      = _("Course")
+                      {% trans "Course" %}
                     - for course in courses
                       %option{'value': '#{course.id}'}
                         = course.name
@@ -43,10 +45,11 @@
               .small-3.columns
                 %select#select-company{'data-filter-endpoint': '/admin/workgroup/dashboardV2/companies', 'data-outline-component': 'company', 'data-query-mode': 'company', 'data-autoselect-only-option': 'true', 'data-allow-empty-value': 'true'}
                   %option{'data-static': 'true', 'value': ''}
-                    = _("All companies")
+                    {% trans "All companies" %}
           .row
           .large-12.dashboard_outline_wrapper
-            %span.dashboard_outline_label= _("Displaying:")
+            %span.dashboard_outline_label
+              {% trans "Displaying:" %}
             %span.dashboard_outline.course
               %i.fa.fa-spin.fa-spinner
             %span= "|"

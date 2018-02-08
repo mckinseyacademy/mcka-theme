@@ -1,67 +1,94 @@
 - extends "layout.haml"
-
+- load i18n
 - block page_title
-  %title= _("Experience | McKinsey Academy")
-  %meta{property: "og:title", content: "McKinsey Academy Experience"}
+  %title
+    {% trans "Experience | McKinsey Academy" %}
+  %meta{property: "og:title", content: '{% trans "McKinsey Academy Experience" %}'}
 
 - block page_description
-  %meta{name: "description", content: "Our product has been shaped through extensive research and engagement with our clients, our colleagues and with McKinsey Academy participants, all of whom have helped frame needs and priorities."}
-  %meta{property: "og:description", content: "Our product has been shaped through extensive research and engagement with our clients, our colleagues and with McKinsey Academy participants, all of whom have helped frame needs and priorities."}
+  %meta{name: "description", content: '{% trans "Our product has been shaped through extensive research and engagement with our clients, our colleagues and with McKinsey Academy participants, all of whom have helped frame needs and priorities." %}'}
+  %meta{property: "og:description", content: '{% trans "Our product has been shaped through extensive research and engagement with our clients, our colleagues and with McKinsey Academy participants, all of whom have helped frame needs and priorities." %}'}
 
 - block content
   %article#experience-page
-    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_experience.jpg", srcset: "/static/image/marketing/McKA_TopTiles_experience@2x.jpg 2x", alt: "McKinsey Academy has created distinctive and relevant learning experience, driven by innovations in both technology and education"}
+    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_experience.jpg", srcset: "/static/image/marketing/McKA_TopTiles_experience@2x.jpg 2x", alt: '{% trans "McKinsey Academy has created distinctive and relevant learning experience, driven by innovations in both technology and education" %}'}
     .row.collapse
       .large-10.large-centered.columns
         %section
-          %h1 Experience
+          %h1
+            {% trans "Experience" %}
         %section
-          %p Our product has been shaped through extensive research and engagement with our clients, our colleagues and with McKinsey Academy participants, all of whom have helped frame needs and priorities.
+          %p
+            {% trans "Our product has been shaped through extensive research and engagement with our clients, our colleagues and with McKinsey Academy participants, all of whom have helped frame needs and priorities." %}
 
         %hr
         %section
-          %p.style-2 PEDAGOGY
-          %p McKinsey Academy’s pedagogy is based on four core principles:
+          %p.style-2
+            {% trans "PEDAGOGY" %}
+          %p
+            {% trans "McKinsey Academy’s pedagogy is based on four core principles:" %}
         %section
-          %p.style-2 Learning By Doing
-          %p Learning by doing is how we all naturally learn, so our course participants perform the kinds of tasks they need to do on the job, not exercises from academic problem sets
+          %p.style-2
+            {% trans "Learning By Doing" %}
+          %p
+            {% trans "Learning by doing is how we all naturally learn, so our course participants perform the kinds of tasks they need to do on the job, not exercises from academic problem sets" %}
         %section
-          %p.style-2 Focus on Expert Performance
-          %p Our courses focus on what professionals need to be able to do, not just what they need to know – with expert stories communicating the tacit knowledge that is fundamental to expertise and that provide guidance when basic principles “break” in novel situations
+          %p.style-2
+            {% trans "Focus on Expert Performance" %}
+          %p
+            {% trans "Our courses focus on what professionals need to be able to do, not just what they need to know – with expert stories communicating the tacit knowledge that is fundamental to expertise and that provide guidance when basic principles “break” in novel situations" %}
         %section
-          %p.style-2 Deep Feedback
-          %p Extensive response-contingent feedback empowers professionals to take charge of their learning and focus on building the capabilities they need to demonstrate mastery
+          %p.style-2
+            {% trans "Deep Feedback" %}
+          %p
+            {% trans "Extensive response-contingent feedback empowers professionals to take charge of their learning and focus on building the capabilities they need to demonstrate mastery" %}
         %section
-          %p.style-2 Social Learning
-          %p Community discussion forums and group-based project work encourage interaction, with McKinsey teaching assistants engaging and supporting participants throughout the program
+          %p.style-2
+            {% trans "Social Learning" %}
+          %p
+            {% trans "Community discussion forums and group-based project work encourage interaction, with McKinsey teaching assistants engaging and supporting participants throughout the program" %}
 
         %hr
         %section
-          .sub-1 DISTINCTIVE FEATURES
-          %p Our social learning platform is designed based on how professionals learn, combining the application of concepts with practical, real-world experiences.
+          .sub-1
+            {% trans "DISTINCTIVE FEATURES" %}
+          %p
+            {% trans "Our social learning platform is designed based on how professionals learn, combining the application of concepts with practical, real-world experiences." %}
         %section
           %ul.features.flexible
             %li
-              %img{src: '/static/image/experience/feature_group.png', alt: "Group-based Projects"}
-              %p.style-2 Group-based Projects
-              %p.style-3 Small groups of company participants collaborate on course-specific projects based on real-world tasks
+              %img{src: '/static/image/experience/feature_group.png', alt: '{% trans "Group-based Projects" %}'}
+              %p.style-2
+                {% trans "Group-based Projects" %}
+              %p.style-3
+                {% trans "Small groups of company participants collaborate on course-specific projects based on real-world tasks" %}
             %li
-              %img{src: '/static/image/experience/feature_sociallearning.png', alt: "Social Learning with Group-based Projects"}
-              %p.style-2 Social Learning
-              %p.style-3 Collaboration with peers across industries and geographies, and in community discussion forums
+              %img{src: '/static/image/experience/feature_sociallearning.png', alt: '{% trans "Social Learning with Group-based Projects" %}'}
+              %p.style-2
+                {% trans "Social Learning" %}
+              %p.style-3
+                {% trans "Collaboration with peers across industries and geographies, and in community discussion forums" %}
             %li
-              %img{src: '/static/image/experience/feature_TAs.png', alt: "McKinsey TA guidance"}
-              %p.style-2 McKinsey TA Guidance
-              %p.style-3 McKinsey consultants serve as teaching assistants, providing distinctive engagement and guidance
+              %img{src: '/static/image/experience/feature_TAs.png', alt: '{% trans "McKinsey TA guidance" %}'}
+              %p.style-2
+                {% trans "McKinsey TA Guidance" %}
+              %p.style-3
+                {% trans "McKinsey consultants serve as teaching assistants, providing distinctive engagement and guidance" %}
             %li
-              %img{src: '/static/image/experience/feature_practitionersperspective.png', alt: "Practitioner’s perspective"}
-              %p.style-2 Practitioner's Perspective
-              %p.style-3 Courses taught by McKinsey partners and external business leaders who provide practical "how to" guidance
+              %img{src: '/static/image/experience/feature_practitionersperspective.png', alt: '{% trans "Practitioner’s perspective" %}'}
+              %p.style-2
+                {% trans "Practitioner's Perspective" %}
+              %p.style-3
+                {% trans 'Courses taught by McKinsey partners and external business leaders who provide practical "how to" guidance' %}
             %li
-              %img{src: '/static/image/experience/feature_adaptivelearning.png', alt: "Adaptive Learning Mechanics"}
-              %p.style-2 Applied Learning Mechanics
-              %p.style-3 Interactive method to encourage application of concepts on the job, including in-line discussion prompts and opportunities for self-reflection
+              %img{src: '/static/image/experience/feature_adaptivelearning.png', alt: '{% trans "Adaptive Learning Mechanics" %}'}
+              %p.style-2
+                {% trans "Applied Learning Mechanics" %}
+              %p.style-3
+                {% trans "Interactive method to encourage application of concepts on the job, including in-line discussion prompts and opportunities for self-reflection" %}
             %li
-              %img{src: '/static/image/experience/feature_analytics.png', alt: "Rigorous Analytics"}
-              %p.style-2 Rigorous Analytics
-              %p.style-3 Advanced analytics measure participant progress, proficiency, and social engagement
+              %img{src: '/static/image/experience/feature_analytics.png', alt: '{% trans "Rigorous Analytics" %}'}
+              %p.style-2
+                {% trans "Rigorous Analytics" %}
+              %p.style-3
+                {% trans "Advanced analytics measure participant progress, proficiency, and social engagement" %}

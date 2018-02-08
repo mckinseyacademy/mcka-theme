@@ -1,89 +1,129 @@
 - extends "layout.haml"
-
+- load i18n
 - block page_title
-  %title= _("FBLF | McKinsey Academy")
-  %meta{property: "og:title", content: "McKinsey Academy FBLF"}
+  %title
+    {% trans "FBLF | McKinsey Academy" %}
+  %meta{property: "og:title", content: '{% trans "McKinsey Academy FBLF" %}'}
 
 - block page_description
-  %meta{name: "description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
-  %meta{property: "og:description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
+  %meta{name: "description", content: '{% trans "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage." %}'}
+  %meta{property: "og:description", content: '{% trans "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage." %}'}
 
 - block content
   %article#fblf-page
-    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_FBLF.jpg", srcset: "/static/image/marketing/McKA_TopTiles_FBLF@2x.jpg 2x", alt: "McKinsey Academy was created with a vision to dramatically improve individual performance and organizational effectiveness"}
+    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_FBLF.jpg", srcset: "/static/image/marketing/McKA_TopTiles_FBLF@2x.jpg 2x", alt: '{% trans "McKinsey Academy was created with a vision to dramatically improve individual performance and organizational effectiveness" %}'}
     .row.collapse
       .large-10.large-centered.columns
         %section
-          %h1 The Future Business Leaders Forum is an invitation-only program that convenes rising stars from the world’s leading companies for a transformational learning journey through which they will sharpen their core leadership skills, connect with business and thought leaders, and cultivate a network of influential leaders.
+          %h1
+            {% trans "The Future Business Leaders Forum is an invitation-only program that convenes rising stars from the world’s leading companies for a transformational learning journey through which they will sharpen their core leadership skills, connect with business and thought leaders, and cultivate a network of influential leaders." %}
         %hr
         %section
-          %p Over the course of the six-month program, participants will engage in distinctive digital learning, in-person events, and live webinars featuring CEOs, faculty from the world’s leading business schools, and McKinsey practitioners. The program focuses on three key themes: critical thinking & strategy, leadership & influence, and innovation & disruption. Participants move through the program with a global cohort. Graduates become part of an exclusive community that continues to deliver value throughout their careers.
+          %p
+            {% trans "Over the course of the six-month program, participants will engage in distinctive digital learning, in-person events, and live webinars featuring CEOs, faculty from the world’s leading business schools, and McKinsey practitioners. The program focuses on three key themes: critical thinking & strategy, leadership & influence, and innovation & disruption. Participants move through the program with a global cohort. Graduates become part of an exclusive community that continues to deliver value throughout their careers." %}
         %section
-          %p To nominate your next-generation leaders and/or learn more about FBLF, please email <a href="mailto:FBLF@mckinseyacademy.com">FBLF@mckinseyacademy.com</a>.
+          %p
+            {% trans "To nominate your next-generation leaders and/or learn more about FBLF, please email"%} <a href="mailto:FBLF@mckinseyacademy.com">FBLF@mckinseyacademy.com</a>.
         %hr
         %section
-          .label-5 PROGRAM OVERVIEW &amp; LOGISTICS
+          .label-5
+            {% trans "PROGRAM OVERVIEW &amp; LOGISTICS" %}
         %section
           %ul
-            %li The Future Business Leaders Forum is a six-month journey featuring distinctive digital learning, in-person events, and live webinars designed and delivered by McKinsey practitioners, CEOs, and leading business school faculty.
-            %li The forum kicks off with a two-and-a-half day in-person conference in New York, and closes with a one-day regional end-of-program event, featuring distinguished global business and thought leaders, including:
+            %li
+              {% trans "The Future Business Leaders Forum is a six-month journey featuring distinctive digital learning, in-person events, and live webinars designed and delivered by McKinsey practitioners, CEOs, and leading business school faculty." %}
+            %li
+              {% trans "The forum kicks off with a two-and-a-half day in-person conference in New York, and closes with a one-day regional end-of-program event, featuring distinguished global business and thought leaders, including:" %}
           %ul.faculty
             %li
-              %img{src: '/static/image/fblf/dom_barton.jpg', srcset: '/static/image/fblf/dom_barton@2x.jpg 2x', alt: "Dominic Barton"}
+              %img{src: '/static/image/fblf/dom_barton.jpg', srcset: '/static/image/fblf/dom_barton@2x.jpg 2x', alt: '{% trans "Dominic Barton" %}'}
               %div
-                .person-name Dominic Barton
-                %p.person-title Global Managing Director, McKinsey
+                .person-name
+                  {% trans "Dominic Barton" %}
+                %p.person-title
+                  {% trans "Global Managing Director, McKinsey" %}
             %li
-              %img{src: '/static/image/fblf/peter_grauer.jpg', srcset: '/static/image/fblf/peter_grauer@2x.jpg 2x', alt: "Peter Grauer"}
+              %img{src: '/static/image/fblf/peter_grauer.jpg', srcset: '/static/image/fblf/peter_grauer@2x.jpg 2x', alt: '{% trans "Peter Grauer" %}'}
               %div
-                .person-name Peter Grauer
-                %p.person-title Chairman, Bloomberg; World Economic Forum (Founding Chairman, Community of Chairmen; member, International Business Council)
+                .person-name
+                  {% trans "Peter Grauer" %}
+                %p.person-title
+                  {% trans "Chairman, Bloomberg; World Economic Forum (Founding Chairman, Community of Chairmen; member, International Business Council)" %}
             %li
               %img{src: '/static/image/fblf/klaus_kleinfeld.jpg', srcset: '/static/image/fblf/klaus_kleinfeld@2x.jpg 2x', alt: "Klas Kleinfeld"}
               %div
-                .person-name Klaus Kleinfeld
-                %p.person-title Chairman and CEO, Alcoa
+                .person-name
+                  {% trans "Klaus Kleinfeld" %}
+                %p.person-title
+                  {% trans "Chairman and CEO, Alcoa" %}
             %li
-              %img{src: '/static/image/fblf/sanjay_sharam.jpg', srcset: '/static/image/fblf/sanjay_sharam@2x.jpg 2x', alt: "Sanjay Sharma"}
+              %img{src: '/static/image/fblf/sanjay_sharam.jpg', srcset: '/static/image/fblf/sanjay_sharam@2x.jpg 2x', alt: '{% trans "Sanjay Sharma" %}'}
               %div
-                .person-name Sanjay Sharma
-                %p.person-title Professor, MIT; Director of Digital Learning
+                .person-name
+                  {% trans "Sanjay Sharma" %}
+                %p.person-title
+                  {% trans "Professor, MIT; Director of Digital Learning" %}
             %li
-              %img{src: '/static/image/fblf/chip_heath.jpg', srcset: '/static/image/fblf/chip_heath@2x.jpg 2x', alt: "Chip Heath"}
+              %img{src: '/static/image/fblf/chip_heath.jpg', srcset: '/static/image/fblf/chip_heath@2x.jpg 2x', alt: '{% trans "Chip Heath" %}'}
               %div
-                .person-name Chip Heath
-                %p.person-title Professor, Stanford Graduate School of Business; author of <i>Decisive</i>, <i>Switch</i>, and <i>Made to Stick</i>
+                .person-name
+                  {% trans "Chip Heath" %}
+                %p.person-title
+                  {% blocktrans %}
+                  Professor, Stanford Graduate School of Business; author of <i>Decisive</i>, <i>Switch</i>, and <i>Made to Stick</i>
+                  {% endblocktrans %}
             %li
-              %img{src: '/static/image/fblf/erik_roth.jpg', srcset: '/static/image/fblf/erik_roth@2x.jpg 2x', alt: "Erik Roth"}
+              %img{src: '/static/image/fblf/erik_roth.jpg', srcset: '/static/image/fblf/erik_roth@2x.jpg 2x', alt: '{% trans "Erik Roth" %}'}
               %div
-                .person-name Erik Roth
-                %p.person-title Director, McKinsey; co-author with Clayton Christensen of <i>Seeing What's Next</i>
+                .person-name
+                  {% trans "Erik Roth" %}
+                %p.person-title
+                  {% blocktrans %}
+                  Director, McKinsey; co-author with Clayton Christensen of <i>Seeing What's Next</i>
+                  {% endblocktrans %}
             %li
-              %img{src: '/static/image/fblf/bharat_anand.jpg', srcset: '/static/image/fblf/bharat_anand@2x.jpg 2x', alt: "Bharat Anand"}
+              %img{src: '/static/image/fblf/bharat_anand.jpg', srcset: '/static/image/fblf/bharat_anand@2x.jpg 2x', alt: '{% trans "Bharat Anand" %}'}
               %div
-                .person-name Bharat Anand
-                %p.person-title Professor, Harvard Business School; Faculty Chair, HBX
+                .person-name
+                  {% trans "Bharat Anand" %}
+                %p.person-title
+                  {% trans "Professor, Harvard Business School; Faculty Chair, HBX" %}
           %ul
-            %li For further information, please view the <a href="/static/docs/Future_Business_Leaders_Forum_Brochure.pdf" target="_blank">FBLF overview brochure</a>
+            %li
+              {% blocktrans %}
+              For further information, please view the <a href="/static/docs/Future_Business_Leaders_Forum_Brochure.pdf" target="_blank">FBLF overview brochure</a>
+              {% endblocktrans %}
         %section
-          .label-5 PARTICIPANT PROFILE
+          .label-5
+            {% trans "PARTICIPANT PROFILE" %}
         %section
           %ul
-            %li Rising professionals preparing for leadership roles. A typical participant is likely to lead a function or business unit in 3-5 years.
-            %li Participants can be nominated by their organization’s leaders in conjunction with their McKinsey client service team (CST).
-            %li We encourage you to nominate 1-2 groups of four participants each to go through the experience together (they can be from across your organization). Please reach out to your CST to propose candidates.
+            %li
+              {% trans "Rising professionals preparing for leadership roles. A typical participant is likely to lead a function or business unit in 3-5 years." %}
+            %li
+              {% trans "Participants can be nominated by their organization’s leaders in conjunction with their McKinsey client service team (CST)." %}
+            %li
+              {% trans "We encourage you to nominate 1-2 groups of four participants each to go through the experience together (they can be from across your organization). Please reach out to your CST to propose candidates." %}
         %section
-          .label-5 VALUE PROPOSITION
+          .label-5
+            {% trans "VALUE PROPOSITION" %}
         %section
           .row.collapse
             .medium-5.columns
-              %p.style-2 For your organization
+              %p.style-2
+                {% trans "For your organization" %}
               %ul
-                %li Build the capabilities of your next-generation leaders
-                %li Expose your future leaders to ideas from across industries and geographies
+                %li
+                  {% trans "Build the capabilities of your next-generation leaders" %}
+                %li
+                  {% trans "Expose your future leaders to ideas from across industries and geographies" %}
             .medium-5.columns
-              %p.style-2 For your next-generation leaders
+              %p.style-2
+                {% trans "For your next-generation leaders" %}
               %ul
-                %li Improve their individual and team performance through accelerated learning
-                %li Join a global network of future leaders
-                %li Elevate their visibility within your organization
+                %li
+                  {% trans "Improve their individual and team performance through accelerated learning" %}
+                %li
+                  {% trans "Join a global network of future leaders" %}
+                %li
+                  {% trans "Elevate their visibility within your organization" %}

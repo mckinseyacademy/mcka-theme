@@ -1,4 +1,5 @@
 - extends "header.haml"
+- load i18n
 
 - block header_home
   - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
@@ -13,39 +14,49 @@
     %ul
       - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
         %li
-          %a{href: '/admin/courses/'}= _("Courses")
+          %a{href: '/admin/courses/'}
+            {% trans "Courses" %}
 
       - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
         %li
-          %a{href: '/admin/participants'}= _("Participants")
+          %a{href: '/admin/participants'}
+            {% trans "Participants" %}
 
       - if user.is_mcka_admin or user.is_client_admin or user.is_mcka_subadmin
         %li
-          %a{href: '/admin/companies'}= _("Companies")
+          %a{href: '/admin/companies'}
+            {% trans "Companies" %}
       - elif user.is_company_admin
         %li
-          %a{href: '/admin/company_dashboard'}= _("Companies")
+          %a{href: '/admin/company_dashboard'}
+            {% trans "Companies" %}
 
       - if user.is_mcka_admin or user.is_mcka_ta or user.is_internal_admin or user.is_mcka_subadmin
         %li
-          %a{href: '/admin/workgroup'}= _("Group Work")
+          %a{href: '/admin/workgroup'}
+            {% trans "Group Work" %}
 
       - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
         %li
-          %a{href: '/admin/course-meta-content'}= _("Course Content")
+          %a{href: '/admin/course-meta-content'}
+            {% trans "Course Content" %}
 
       - if user.is_mcka_admin or user.is_mcka_subadmin or user.is_internal_admin
         %li
-          %a{href: '{% url "certificate_templates" %}'}= _("Certificates")
+          %a{href: '{% url "certificate_templates" %}'}
+            {% trans "Certificates" %}
 
       - if user.is_internal_admin
         %li
-          %a{href: '/admin'}= _("Customization")
-
+          %a{href: '/admin'}
+            {% trans "Customization" %}
       - if user.is_client_admin
         %li
-          %a{href: '/admin/client-admin/courses'}= _("Courses")
+          %a{href: '/admin/client-admin/courses'}
+            {% trans "Courses" %}
         %li
-          %a{href: '/admin/client-admin/programs'}= _("Programs")
+          %a{href: '/admin/client-admin/programs'}
+            {% trans "Programs" %}
         %li
-          %a{href: '/admin/client-admin/contact'}= _("Contact")
+          %a{href: '/admin/client-admin/contact'}
+            {% trans "Contact" %}

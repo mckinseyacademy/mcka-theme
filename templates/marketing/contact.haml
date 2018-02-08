@@ -1,12 +1,13 @@
 - extends "layout.haml"
-
+- load i18n
 - block page_title
-  %title= _("Contact | McKinsey Academy")
-  %meta{property: "og:title", content: "McKinsey Academy Contact"}
+  %title
+    {% trans "Contact | McKinsey Academy" %}
+  %meta{property: "og:title", content: '{% trans "McKinsey Academy Contact" %}'}
 
 - block page_description
-  %meta{name: "description", content: "Email us to find out more about McKinsey Academy."}
-  %meta{property: "og:description", content: "Email us to find out more about McKinsey Academy."}
+  %meta{name: "description", content: '{% trans "Email us to find out more about McKinsey Academy." %}'}
+  %meta{property: "og:description", content: '{% trans "Email us to find out more about McKinsey Academy." %}'}
 
 - block content
   %article#contact-page
@@ -14,37 +15,46 @@
     .row.collapse
       .large-11.large-centered.columns
         %section
-          %h1 Contact McKinsey Academy
+          %h1
+            {% trans "Contact McKinsey Academy" %}
         %section
           %p
-            Thank you for your interest in McKinsey Academy. Please click the email button to contact us.
+            {% trans "Thank you for your interest in McKinsey Academy. Please click the email button to contact us." %}
         %hr
         .large-6.columns
           .background-white
-            .sub-1 CONTACT US
-            %p Email us to find out more about McKinsey Academy. You can also share your comments and provide feedback at the same address.
-            %a.mk-email.button.small.radius{href: 'mailto:info@mckinseyacademy.com'} Email McKinsey Academy
+            .sub-1
+              {% trans "CONTACT US" %}
+            %p
+              {% trans "Email us to find out more about McKinsey Academy. You can also share your comments and provide feedback at the same address." %}
+            %a.mk-email.button.small.radius{href: 'mailto:info@mckinseyacademy.com'}
+              {% trans "Email McKinsey Academy" %}
           .background-white
-            .sub-1 STAY INFORMED
-            %p To stay informed about McKinsey Academy, please enter your email address below.
+            .sub-1
+              {% trans "STAY INFORMED" %}
+            %p
+              {% trans "To stay informed about McKinsey Academy, please enter your email address below." %}
             %form{action: '/subscribe/', method: 'POST'}
               - csrf_token
               %fieldset
                 = subscribe_form
                 %div
-                  %input.button.small.radius{type: 'submit', value: 'Submit'}
+                  %input.button.small.radius{type: 'submit', value: '{% trans "Submit" %}'}
         .large-6.columns.background-white
-          .sub-1 TECH SUPPORT
-          %p Please tell us more and we will respond quickly.
+          .sub-1
+            {% trans "TECH SUPPORT" %}
+          %p
+            {% trans "Please tell us more and we will respond quickly." %}
           %form#tech-support{action: '/support/', method: 'POST'}
             - csrf_token
             %fieldset
               = support_form
               %div
-                %input.button.small.radius{type: 'submit', value: 'Submit'}
+                %input.button.small.radius{type: 'submit', value: '{% trans "Submit" %}'}
         %section.trouble.label-2.hidden
-          Having trouble with the email button above?
-          %a{href: '#'} Click here.
+          {% trans "Having trouble with the email button above?" %}
+          %a{href: '#'}
+            {% trans "Click here." %}
   - if messages
     #support_success.reveal-modal.small{'data-reveal': None}
       .close-reveal-modal

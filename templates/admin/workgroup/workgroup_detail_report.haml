@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - block content
   .admin-detail.row
     .large-12.large.columns
@@ -8,12 +9,12 @@
       .large-12.large-centered.columns
         %header
           %h1
-            = _("Group Work:")
+            {% trans "Group Work:" %}
             = course.name
           .sub-1
-            = _("Group Work Project Status")
+            {% trans "Group Work Project Status" %}
           %div
-            = _("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore.")
+
 
     - for project in projects
       - for workgroup in project.workgroups
@@ -23,14 +24,14 @@
             %section
               .sub-1
                 %span= workgroup.name
-                = _("Detail:")
+                {% trans "Detail:" %}
           %table.group-detail
             %thead
               %tr
                 %th
                 - for activity in project.activities
                   %th{colspan: "{{ activity.stage_count }}", title: "#{activity.name}", class: "activity-name activity_{% cycle 'odd' 'even' %}"}
-                    = _("Activity")
+                    {% trans "Activity" %}
                     = forloop.counter
                     - if activity.grade_type
                       %span.grade-type
@@ -59,7 +60,7 @@
                         - if stage.is_grading_stage
                           - if activity_status.ta_graded
                             %a{href: "#{stage.link}", class:"status grading"}
-                              = _("TA Graded")
+                              {% trans "TA Graded" %}
                           - else
                             %a{href: "#{stage.link}", class:"status grading #{stage.status}"}
                         - else
@@ -88,7 +89,7 @@
                         %td
                           - if stage.is_grading_stage
                             - if activity_status.ta_graded
-                              = _("--")
+                              {% trans "--" %}
                             - else
                               %a{href: "#{stage.link}", class:"status grading #{stage.status}"}
                           - else
@@ -100,10 +101,10 @@
             %ul.nav-links
               %li
                 %a{href: "#{workgroup.review_link}"}
-                  = _("Go to Group page on platform")
+                  {% trans "Go to Group page on platform" %}
               %li
                 %a{href: "/admin/workgroup/course/#{course.id}/group_work_status"}
-                  = _("View all groups for course")
+                  {% trans "View all groups for course" %}
 
 - block js_snippets
   :javascript

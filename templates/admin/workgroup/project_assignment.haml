@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
   -# CSS
   - block css
@@ -14,20 +15,25 @@
     .admin-detail.row
       .large-12.large-centered.columns
         %header
-          %h1.principal-title Group Work: {{course.name}}
-          .sub-1.add= _("Review Assignments for Project Activities")
+          %h1.principal-title
+            {% trans "Group Work:" %} {{course.name}}
+          .sub-1.add
+            {% trans "Review Assignments for Project Activities" %}
           .add-message
             - block principal_message
-              %p= _("Generate random peer-reviews for project activities")
+              %p
+                {% trans "Generate random peer-reviews for project activities" %}
           - if user.is_mcka_admin or user.is_mcka_ta or user.is_internal_admin or user.is_mcka_subadmin
             %div
               %p
                 %a{href: "/admin/workgroup/course/#{course.id}/download_group_projects_report", target: "_blank"}
-                  Downloadable Workgroup Completion Report
+                  {% trans "Downloadable Workgroup Completion Report" %}
         %hr
         %section
-          .sub-1= _("Project:")
-          %p= _("Select project within which you are working")
+          .sub-1
+            {% trans "Project:" %}
+          %p
+            {% trans "Select project within which you are working" %}
           - include 'admin/workgroup/project_dropdown.haml'
         %hr
         %section
@@ -36,45 +42,45 @@
               - for activity in group_project.activities
                 .activity
                   .name
-                    = _("Activity: ")
+                    {% trans "Activity: " %}
                     = activity.name
                     - if activity.has_assignments
                       %span.assignment_message><
-                        = _("has assignments")
+                        {% trans "has assignments" %}
                   - if activity.xblock.ta_graded
                     .detail.ta-graded
-                      = _("This activity is to be graded by a Teaching Assistant")
+                      {% trans "This activity is to be graded by a Teaching Assistant" %}
                   - else
                     .detail
                       %table
                         %tr
                           %td
-                            = _("Reviews required per group activity")
+                            {% trans "Reviews required per group activity" %}
                           %td
                             = activity.xblock.group_reviews_required_count
                         %tr
                           %td
-                            = _("Minimum number of reviews for each user")
+                            {% trans "Minimum number of reviews for each user" %}
                           %td
                             = activity.xblock.user_review_count
                       %a.show_generate_options.button.radius.small{href: "#", "data-reveal-id": "generate-reviews-modal", "data-activity-id": "#{activity.js_safe_id}", "data-project-id": "#{group_project.id}"}
-                        = _("Generate Activity Review Assignments")
+                        {% trans "Generate Activity Review Assignments" %}
                       .generation-submission{"data-activity-id": "#{activity.js_safe_id}", "data-project-id": "#{group_project.id}"}
                         .close-reveal-modal
                           %i.fa.fa-times-circle
                         %form.generate_assignment_form{action: "/admin/project/#{group_project.id}/activity/#{activity.id}/generate_assignments", method: "POST"}
                           - csrf_token
                           %h2
-                            Generate Activity Review Assignments for
+                            {% trans "Generate Activity Review Assignments for" %}
                             = activity.name
                           .error
-                            = _("When you click on 'Confirm' below you will be assigning reviewers to existing group data. Please be sure that you are ready to do this at this time.")
+                            {% trans "When you click on 'Confirm' below you will be assigning reviewers to existing group data. Please be sure that you are ready to do this at this time." %}
                           - if activity.has_assignments
                             %input.delete-choice{type: "checkbox", name: "delete_choice", checked: "checked", id: "delete_choice_#{activity.js_safe_id}"}
                             %label.delete-label{"for": "delete_choice_#{activity.js_safe_id}"}
-                              = _("Delete existing review assignments")
+                              {% trans "Delete existing review assignments" %}
                           %div
-                            %input.button.radius.tiny{type: "submit", value: "Confirm"}
+                            %input.button.radius.tiny{type: "submit", value: '{% trans "Confirm" %}'}
                         .informational-message
 
   #generate-reviews-modal.reveal-modal{"data-reveal": "true"}

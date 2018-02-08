@@ -1,14 +1,17 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 
 - block content
   .admin-detail.row
     .large-12.large.columns
       - block admin_detail
         %h1
-          %span= _("Contact: ")
+          %span
+            {% trans "Contact: " %}
           %span= client.display_name
         %br
-        %p= _("If you need assistance or have questions please contact your McKinsey Admin representative(s) below.")
+        %p
+          {% trans "If you need assistance or have questions please contact your McKinsey Admin representative(s) below." %}
 
     .large-12.large.columns
       %br

@@ -1,22 +1,28 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
+
 - block content
   .workgroup-detail
     .row
       .large-10.large-centered.columns
         %header
-          %h1 {{ _("Workgroup") }}: {{ workgroup.name }}
+          %h1
+            {% trans "Workgroup:" %} {{ workgroup.name }}
         %section
-          .sub-1 {{ _("Project") }}:
+          .sub-1
+            {% trans "Project:" %}
             %span= project.name
             - if project.organization_name
-              %span= _(' - ')
+              %span
+                {% trans ' - ' %}
               %span= project.organization_name
           - if user.is_mcka_ta
             %a{href: "/courses/#{project.course_id}/group_work/#{workgroup.id}"}
-              Provide a grade for this group
+              {% trans "Provide a grade for this group" %}
         %hr
         %section
-          .sub-1 {{ _("Users") }}
+          .sub-1
+            {% trans "Users" %}
           %ul.users
             - for user in users
               %li
@@ -28,14 +34,16 @@
                 )
         %hr
         %section
-          .sub-1= _("Activities")
+          .sub-1
+            {% trans "Activities" %}
           %ul.activities
             - for activity in activities
               %li= activity.name
               -# %a.submit_grade{href: } - add more detail here to submit grades for each activity
         %hr
         %section
-          .sub-1= _("Submissions")
+          .sub-1
+            {% trans "Submissions" %}
           %ul.submissions
             - for submission in submissions
               %li

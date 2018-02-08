@@ -1,15 +1,18 @@
 - extends "admin/list_layout.haml"
+- load i18n
 
 - block principal_message
-  %p= _("McKinsey Academy programs are a set of recommended courses, often tailored to specific clients")
+  %p
+    {% trans "McKinsey Academy programs are a set of recommended courses, often tailored to specific clients" %}
   %a.button.radius.small{"id": "program-association"}
-    = _("User Program Association")
+    {% trans "User Program Association" %}
 - block principal_list_message
-  %p= _("Here are the programs that we already have in the system")
+  %p
+    {% trans "Here are the programs that we already have in the system" %}
 
   #courseDetailsMainModal.reveal-modal.medium{'data-reveal': None}
     %h2.title.courseModalTitle
-      = _("Associate Users with Program")
+      {% trans "Associate Users with Program" %}
     %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
     .progress.courseModalStatus
     %hr
@@ -19,17 +22,17 @@
         - csrf_token
         %input{type: 'hidden', name: 'type', value: 'user_program_association'}
         %label
-          =_("Program")
+          {% trans "Program" %}
         %select{name: 'program_id'}
           - for principal in principals
             %option{value: "#{principal.id}"}
               = principal.display_name
         %label
-          =_("Participants CSV")
+          {% trans "Participants CSV" %}
         %input{id: "participants_csv_file", type: 'file', name: 'participants_file'}
     .courseModalControl
       .button.submit.saveChanges
-        = _("Submit")
+        {% trans "Submit" %}
 
     %a{'class': "close-reveal-modal fa fa-times-circle"}
 

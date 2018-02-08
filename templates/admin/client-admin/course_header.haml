@@ -1,29 +1,34 @@
+- load i18n
 %ul
   %li
     - if request.resolver_match.url_name == 'client_admin_course'
-      %span.selected= _("Course Info")
+      %span.selected
+        {% trans "Course Info" %}
     - else
       %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}"}
-        = _("Course Info")
+        {% trans "Course Info" %}
   %li
     - if request.resolver_match.url_name == 'client_admin_course_participants'
-      %span.selected= _("Participants")
+      %span.selected
+        {% trans "Participants" %}
     - else
       %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/participants"}
-        = _("Participants")
+        {% trans "Participants" %}
   - if user.is_client_admin or user.is_mcka_admin or user.is_mcka_subadmin
     %li
       - if request.resolver_match.url_name == 'client_admin_course_analytics'
-        %span.selected= _("Analytics")
+        %span.selected
+          {% trans "Analytics" %}
       - else
         %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/analytics"}
-          = _("Analytics")
-  - if user.is_mcka_admin or user.is_mcka_subadmin 
+          {% trans "Analytics" %}
+  - if user.is_mcka_admin or user.is_mcka_subadmin
     - if learner_dashboard_enabled
       %li
         - if request.resolver_match.url_name == 'client_admin_branding_settings'
-          %span.selected= _("Branding")
+          %span.selected
+            {% trans "Branding" %}
         - else
           %a{href:"/admin/client-admin/#{client_id}/courses/#{course_id}/branding"}
-            = _("Branding")
-        
+            {% trans "Branding" %}
+

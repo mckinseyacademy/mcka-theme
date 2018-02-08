@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
   -# CSS
   - block css
@@ -15,24 +16,30 @@
       .large-12.large-centered.columns
         %header
           %h1.principal-title {{principal_name_plural}}: {{course.name}}
-          .sub-1.add= _("Create & Edit Groups")
+          .sub-1.add
+            {% trans "Create & Edit Groups" %}
           .add-message
             - block principal_message
-              %p= _("Group existing learners associated with this course into new groups, or to edit existing groups in this course.")
+              %p
+                {% trans "Group existing learners associated with this course into new groups, or to edit existing groups in this course." %}
         %hr
         %section
           .large-12.medium-12.columns
-            .sub-1= _("Project:")
-            %p= _("Select project within which you are working")
+            .sub-1
+              {% trans "Project:" %}
+            %p
+              {% trans "Select project within which you are working" %}
           .large-7.medium-7.columns
           .large-7.medium-7.columns
             - include 'admin/workgroup/project_dropdown.haml'
           .large-5.medium-5.columns.group-selection
             - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
               %a#create-group-project.button.radius.tiny{href: "#", "data-reveal-id": "create-project-modal"}
-                %span= _("Create New Group Project")
+                %span
+                  {% trans "Create New Group Project" %}
               %a#delete-group-project.button.radius.tiny{href: "#", "data-reveal-id": "delete-project-modal"}
-                %span= _("Delete Group Project")
+                %span
+                  {% trans "Delete Group Project" %}
         %hr
         %section
           %input#course_id{'type': 'hidden', 'value': '#{course.id}'}
@@ -42,23 +49,27 @@
               - include 'admin/workgroup/student_table.haml'
           .large-5.columns.group-selection
             - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
-              .sub-1= _("Group Students:")
-              .description= _("Create and manage groups of students within this course by selecting names to create a new group or add them to an existing group.")
+              .sub-1
+                {% trans "Group Students:" %}
+              .description
+                {% trans "Create and manage groups of students within this course by selecting names to create a new group or add them to an existing group." %}
               %a#student-group-action.button.radius.small{href: "/admin/workgroup/group/create/#{course.id}"}
-                = _("Create Group of Selected Students")
+                {% trans "Create Group of Selected Students" %}
               %a.button.radius.small{href: "/admin/workgroup/course/#{course.id}/download_group_list", target: "_blank"}
-                Download List of Groups
+                {% trans "Download List of Groups" %}
             - for group_project in group_projects
               - for group in group_project.groups
                 .select-group-box{id: "#{group.id}", class: "#{group.privacy}", "data-project-id": "#{group_project.id}"}
                   .group-data
                     %a.group-detail{href: "/admin/workgroup/course/#{course.id}/detail/#{group.id}"}
                       %span.label-1= group.name
-                    %span.detail-link= _("Members:")
+                    %span.detail-link
+                      {% trans "Members:" %}
                       %span.student-count= group.students_count
                     %i.caret.fa.fa-caret-down
                   .group-info.students
-                    %span.label-1= _("Members:")
+                    %span.label-1
+                      {% trans "Members:" %}
                     .students-list
                       - for student in group.users
                         .student{'name': '#{student.id}'}
@@ -70,30 +81,30 @@
                               %i.remove-student-icon.remove-icon.fa.fa-times{'name': '#{student.id}'}
                     - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
                       .update-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/update/#{group.id}/#{course.id}', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
-                        = _("Update")
+                        {% trans "Update" %}
                       .delete-group.button.radius.small{'data-group-id': '#{group.id}', 'data-url': '/admin/workgroup/group/#{group.id}/remove', 'data-privacy': '#{group.privacy}', 'data-client-id': '#{group.client_id}'}
-                        = _("Delete")
+                        {% trans "Delete" %}
   #create-project-modal.reveal-modal{"data-reveal": "true"}
     %form#new-project-form{action: "/admin/workgroup/project/create/#{course.id}", method: "POST"}
       .close-reveal-modal
         %i.fa.fa-times-circle
       - csrf_token
       %h2
-        Create new Project
+        {% trans "Create new Project" %}
       %label{"for": "project_section"}
-        Project Section
+        {% trans "Project Section" %}
       %select#project_section{type: "text", name: "project_section"}
         - for group_project in course.group_projects
           %option{value: "#{group_project.id}"}
             = group_project.name
       %input#new-project-private{type: "checkbox", name: "new-project-private"}
       %label{"for": "new-project-private"}
-        Is project private
+        {% trans "Is project private" %}
       %label{"for": "new-project-company"}
-        Select Company
+        {% trans "Select Company" %}
       %select#new-project-company{name: "new-project-company"}
         %option{value: ""}
-          Select
+          {% trans "Select" %}
        - for company in companies
         %option{value: "#{company.id}"}
           = company.display_name
@@ -104,13 +115,15 @@
         %i.fa.fa-times-circle
       - csrf_token
       %h2
-        Delete Project
-      %p= _("Are you sure you want to delete")
+        {% trans "Delete Project" %}
+      %p
+        {% trans "Are you sure you want to delete" %}
         %span#delete-project-view-name
         %span?
       .inputs
-        %input#delete-project-button.button.radius.tiny{type: "submit", value: "Ok"}
-        %a.button.radius.tiny.close-dialog= _("Cancel")
+        %input#delete-project-button.button.radius.tiny{type: "submit", value: '{% trans "Ok" %}'}
+        %a.button.radius.tiny.close-dialog
+          {% trans "Cancel" %}
 - block js_snippets
   -# %script{src: "{% static 'js/plugins/select_and_assign.js' %}"}
   %script{src: "{% static 'js/course_drag_drop.js' %}"}

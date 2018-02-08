@@ -1,13 +1,17 @@
+-load i18n
+
 %ul
   %li
     - if selected_program_tab == 'detail'
-      %span.selected= _("Overview")
+      %span.selected
+        {% trans "Overview" %}
     - else
       %a{href:"/admin/programs/#{program.id}"}
-        = _("Overview")
+        {% trans "Overview" %}
   %li
     - if selected_program_tab == 'courses'
-      %span.selected= _("Assign Courses to Program")
+      %span.selected
+        {% trans "Assign Courses to Program" %}
     - else
       %a{href:"/admin/programs/#{program.id}/courses"}
-        = _("Assign Courses to Program")
+        {% trans "Assign Courses to Program" %}

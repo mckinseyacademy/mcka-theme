@@ -1,25 +1,34 @@
 - extends "layout.haml"
+- load i18n
 
 - block page_title
-  %title= _("About | McKinsey Academy")
-  %meta{property: "og:title", content: "McKinsey Academy About"}
+  %title
+    {% trans "About | McKinsey Academy" %}
+  %meta{property: "og:title", content: '{% trans "McKinsey Academy About" %}'}
 
 - block page_description
-  %meta{name: "description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
-  %meta{property: "og:description", content: "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage."}
+  %meta{name: "description", content: '{% trans "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage." %}'}
+  %meta{property: "og:description", content: '{% trans "McKinsey Academy is a dynamic business education platform built to help organizations thrive by accelerating their talent advantage." %}'}
 
 - block content
   %article#about-page
-    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_about.jpg", srcset: "/static/image/marketing/McKA_TopTiles_about@2x.jpg 2x", alt: "McKinsey Academy was created with a vision to dramatically improve individual performance and organizational effectiveness"}
+    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_about.jpg", srcset: "/static/image/marketing/McKA_TopTiles_about@2x.jpg 2x", alt: '{% trans "McKinsey Academy was created with a vision to dramatically improve individual performance and organizational effectiveness" %}'}
     .row.collapse
       .large-10.large-centered.columns
         %section
-          %h1 About McKinsey Academy
-          %p Leading global institutions seek to drive their competitive advantage through their people. McKinsey Academy provides scalable business education that is rigorous, relevant, and applicable. McKinsey Academy helps professionals develop the skills required to address today’s business challenges so their organizations can thrive.
+          %h1
+            {% trans "About McKinsey Academy" %}
+          %p
+            {% trans "Leading global institutions seek to drive their competitive advantage through their people. McKinsey Academy provides scalable business education that is rigorous, relevant, and applicable. McKinsey Academy helps professionals develop the skills required to address today’s business challenges so their organizations can thrive." %}
         %section
           %ul.info
-            %li Immersive, scalable platform combining digital learning, group-based project work, and optional in-person components to reach large numbers of participants
-            %li Developed and taught by McKinsey practitioners, incorporating insights from external business leaders
-            %li Provides curated programs and courses targeted at different roles and development needs
-            %li Designed based on how professionals learn through practical application, from interaction with each other, and with continual real-time feedback
-            %li Continually evolving, drawing in top faculty, new pedagogical approaches, evolving technologies, and insights from performance data
+            %li
+              {% trans "Immersive, scalable platform combining digital learning, group-based project work, and optional in-person components to reach large numbers of participants" %}
+            %li
+              {% trans "Developed and taught by McKinsey practitioners, incorporating insights from external business leaders" %}
+            %li
+              {% trans "Provides curated programs and courses targeted at different roles and development needs" %}
+            %li
+              {% trans "Designed based on how professionals learn through practical application, from interaction with each other, and with continual real-time feedback" %}
+            %li
+              {% trans "Continually evolving, drawing in top faculty, new pedagogical approaches, evolving technologies, and insights from performance data" %}

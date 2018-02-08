@@ -1,3 +1,5 @@
+- load i18n
+
 .row
   .large-12.columns
     %a.button.radius.small{:href => "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true', style: "margin-bottom: 15px"}
@@ -7,13 +9,20 @@
       %table{style:"table-layout: fixed; width: 100%"}
         %thead
           %tr
-            %th= _("Title")
-            %th= _("Calendar visible")
-            %th= _("Dashboard visible")
-            %th= _("Published")
-            %th= _("Type")
-            %th= _("Edit")
-            %th= _("Delete")
+            %th
+              {% trans "Title" %}
+            %th
+              {% trans "Calendar visible" %}
+            %th
+              {% trans "Dashboard visible" %}
+            %th
+              {% trans "Published" %}
+            %th
+              {% trans "Type" %}
+            %th
+              {% trans "Edit" %}
+            %th
+              {% trans "Delete" %}
         %tbody#element-body
           - for tile in learner_dashboard_tiles
             %tr{id: "#{tile.id}"}
@@ -36,9 +45,9 @@
                   %i.fa.fa-times{'style': "color:red"}
     -if learner_dashboard_tiles
       %a#saveSortElement.button.radius.small{style: "display:none"}
-        Save list order
+        {% trans "Save list order" %}
           %i.fa.fa-save
 
       %div#savedSortElement.button.radius.small.disabled{style: "display:none"}
-        Saved
+        {% trans "Saved" %}
           %i.fa.fa-check{style: "color:green"}

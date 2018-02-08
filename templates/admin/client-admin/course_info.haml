@@ -1,4 +1,5 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 - load staticfiles
 - block content
   .admin-detail.row
@@ -7,73 +8,93 @@
   .row
     .medium-12.large.columns
       %h1
-        %span= _("Course Info: ")
+        %span
+          {% trans "Course Info: " %}
         %span
           = course_info.name
       %hr
   .row
     .medium-6.large.columns
-      %h2= _("ENROLLMENT INFORMATION")
-      %p= _("Total number of participants:")
+      %h2
+        {% trans "ENROLLMENT INFORMATION" %}
+      %p
+        {% trans "Total number of participants:" %}
         %b= metrics.users_enrolled
       %br
 
-      %h2= _("BASIC COURSE INFORMATION")
+      %h2
+        {% trans "BASIC COURSE INFORMATION" %}
       %ul
-        %li= _("Course name:")
+        %li
+          {% trans "Course name:" %}
           %b= course_info.number
-        %li= _("Course start date:")
+        %li
+          {% trans "Course start date:" %}
           %b= course_start
-        %li= _("Course end date:")
+        %li
+          {% trans "Course end date:" %}
           %b= course_end
-        %li= _("Grade cutoffs:")
+        %li
+          {% trans "Grade cutoffs:" %}
           %b= cutoffs
 
     .medium-6.large.columns
-      %h2= _("PARTICIPANTS")
+      %h2
+        {% trans "PARTICIPANTS" %}
       %ul
-        %li= _("Participants:")
+        %li
+          {% trans "Participants:" %}
           %b= metrics.users_enrolled
-        %li= _("Started:")
+        %li
+          {% trans "Started:" %}
           %b= metrics.users_started
-        %li= _("Completed:")
+        %li
+          {% trans "Completed:" %}
           %b= metrics.users_completed
-        %li= _("% Completed:")
+        %li
+          {% trans "% Completed:" %}
           %b= metrics.percent_completed
 
-      %h2= _("FORUM INFORMATION")
+      %h2
+        {% trans "FORUM INFORMATION" %}
       %ul
-        %li= _("Active discussions:")
+        %li
+          {% trans "Active discussions:" %}
           %b= metrics.thread_stats.num_active_threads
-        %li= _("Threads:")
+        %li
+          {% trans "Threads:" %}
           %b= metrics.thread_stats.num_threads
     %hr
     - if user.is_client_admin
-      %h2= _("STATUS")
-      %p= _("Current status of all participants who have completed, are in progress, or not yet started this course.")
+      %h2
+        {% trans "STATUS" %}
+      %p
+        {% trans "Current status of all participants who have completed, are in progress, or not yet started this course." %}
       #course-status-chart-wrapper
         %svg#course-status-chart
       .status-chart-legend
         %ul.inline-list
           %li
             .color.warm-gray
-            = _("Completed")
+            {% trans "Completed" %}
           %li
             .color.turquoise
-            = _("In progress")
+            {% trans "In progress" %}
           %li
             .color.orange
-            = _("Not Started")
+            {% trans "Not Started" %}
         %br
         .medium-8.large.columns
         #email_not_started.medium-4.large.columns
           - if metrics.users_started < metrics.users_enrolled
-            %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/email_not_started", data-reveal-id: "send-email-not-started-modal", data-reveal-ajax: "true"}= _("Email participants not started")
+            %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/email_not_started", data-reveal-id: "send-email-not-started-modal", data-reveal-ajax: "true"}
+              {% trans "Email participants not started" %}
           - else
-            %a.no-participants= _("Email participants not started")
+            %a.no-participants
+              {% trans "Email participants not started" %}
               .mcka-tooltip
                 %p.style-4
-                  All participants have already started the course
+                  {% trans "All participants have already started the course" %}
 
       #send-email-not-started-modal.reveal-modal.medium{'data-reveal': None}
 

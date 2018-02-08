@@ -1,184 +1,296 @@
 - extends "layout.haml"
-
+- load i18n
 - block page_title
-  %title= _("Programs | McKinsey Academy")
-  %meta{property: "og:title", content: "McKinsey Academy Programs"}
+  %title
+    {% trans "Programs | McKinsey Academy" %}
+  %meta{property: "og:title", content: '{% trans "McKinsey Academy Programs" %}'}
 
 - block page_description
-  %meta{name: "description", content: "McKinsey Academy’s digital courses are created and curated into programs that build business capabilities for our participants."}
-  %meta{property: "og:description", content: "McKinsey Academy’s digital courses are created and curated into programs that build business capabilities for our participants."}
+  %meta{name: "description", content: '{% trans "McKinsey Academy’s digital courses are created and curated into programs that build business capabilities for our participants." %}'}
+  %meta{property: "og:description", content: '{% trans "McKinsey Academy’s digital courses are created and curated into programs that build business capabilities for our participants." %}'}
 
 - block content
   #corp_finance.course-pop.reveal-modal.small{"data-reveal": "true"}
-    %h1 Corporate Finance &amp; Valuation
+    %h1
+      {% trans "Corporate Finance &amp; Valuation" %}
     %hr
-    %p Learn the fundamentals of how companies create value, including how to conduct financial analyses and how to develop a value creation strategy that aligns your organization’s operational metrics, financial indicators, and intrinsic/capital market valuation.
+    %p
+      {% trans "Learn the fundamentals of how companies create value, including how to conduct financial analyses and how to develop a value creation strategy that aligns your organization’s operational metrics, financial indicators, and intrinsic/capital market valuation." %}
     %ul
-      %li Navigate the major financial statements (income statement, cash flow statement, balance sheet) to estimate the two main value drivers – return on invested capital (ROIC) and growth
-      %li Analyze the historic operating performance of a company
-      %li Evaluate the trade-offs between focusing on ROIC versus growth to drive future value creation
-      %li Leverage financial information to develop value creation strategies
-      %li Apply value creation principles across an organization in such areas as portfolio strategy, divestitures, and project decision-making
-      %li Identify and explain how value is created in M&amp;A
-      %li Compare different valuation methodologies and identify the steps in a DCF valuation and multiples-based valuation analysis
-      %li Determine and interpret a company's value, evaluating what it means in terms of performance and position in the industry
-      %li Link a company’s valuation multiples to the core drivers of its performance
+      %li
+        {% trans "Navigate the major financial statements (income statement, cash flow statement, balance sheet) to estimate the two main value drivers – return on invested capital (ROIC) and growth" %}
+      %li
+        {% trans "Analyze the historic operating performance of a company" %}
+      %li
+        {% trans "Evaluate the trade-offs between focusing on ROIC versus growth to drive future value creation" %}
+      %li
+        {% trans "Leverage financial information to develop value creation strategies" %}
+      %li
+        {% trans "Apply value creation principles across an organization in such areas as portfolio strategy, divestitures, and project decision-making" %}
+      %li
+        {% trans "Identify and explain how value is created in M&amp;A" %}
+      %li
+        {% trans "Compare different valuation methodologies and identify the steps in a DCF valuation and multiples-based valuation analysis" %}
+      %li
+        {% trans "Determine and interpret a company's value, evaluating what it means in terms of performance and position in the industry" %}
+      %li
+        {% trans "Link a company’s valuation multiples to the core drivers of its performance" %}
     .close-reveal-modal
       %i.fa.fa-times-circle
 
   #eyes_of_ceo.course-pop.reveal-modal.small{"data-reveal": "true"}
-    %h1 Through the Eyes of the CEO
+    %h1
+      {% trans "Through the Eyes of the CEO" %}
     %hr
-    %p Learn how to galvanize your own leadership strategies and passions by exploring what matters most to the world’s leading CEOs, including topics such as managing in times of crisis and leading complex global organizations
+    %p
+      {% trans "Learn how to galvanize your own leadership strategies and passions by exploring what matters most to the world’s leading CEOs, including topics such as managing in times of crisis and leading complex global organizations" %}
     %ul
-      %li Define a personal leadership style and navigate the path to leadership
-      %li Identify the hallmarks of a successful leader and recognize the challenges to becoming one
-      %li Seek out mentors and supporters to accelerate your career development
-      %li Embrace the challenges and opportunities inherent in leading during times of great change, and consider the new requirements for the future of leadership
-      %li Appreciate the challenges inherent in managing under uncertainty and in times of crises
-      %li Make sense of how to lead complex global organizations
-      %li Develop strategies for leading across cultures
-      %li Evaluate how remarkable women lead
-      %li Discover the underpinnings of strong leadership in the public sector
-      %li Explore ethical and entrepreneurial leadership in emerging markets
-      %li Change your perspective to see business the same way the world’s leading CEOs do
+      %li
+        {% trans "Define a personal leadership style and navigate the path to leadership" %}
+      %li
+        {% trans "Identify the hallmarks of a successful leader and recognize the challenges to becoming one" %}
+      %li
+        {% trans "Seek out mentors and supporters to accelerate your career development" %}
+      %li
+        {% trans "Embrace the challenges and opportunities inherent in leading during times of great change, and consider the new requirements for the future of leadership" %}
+      %li
+        {% trans "Appreciate the challenges inherent in managing under uncertainty and in times of crises" %}
+      %li
+        {% trans "Make sense of how to lead complex global organizations" %}
+      %li
+        {% trans "Develop strategies for leading across cultures" %}
+      %li
+        {% trans "Evaluate how remarkable women lead" %}
+      %li
+        {% trans "Discover the underpinnings of strong leadership in the public sector" %}
+      %li
+        {% trans "Explore ethical and entrepreneurial leadership in emerging markets" %}
+      %li
+        {% trans "Change your perspective to see business the same way the world’s leading CEOs do" %}
     .close-reveal-modal
       %i.fa.fa-times-circle
 
   #unlocking_potential.course-pop.reveal-modal.small{"data-reveal": "true"}
-    %h1 Unlocking the Potential of Women
+    %h1
+      {% trans "Unlocking the Potential of Women" %}
     %hr
-    %p Learn how to make the most of the talent in your organization by increasing the representation of women – how to effectively lead, given the challenges that women disproportionately face – and how to individually and organizationally effect change.
+    %p
+      {% trans "Learn how to make the most of the talent in your organization by increasing the representation of women – how to effectively lead, given the challenges that women disproportionately face – and how to individually and organizationally effect change." %}
     %ul
-      %li Shift the trajectory of your company to unlock the full potential of women and generate stronger business results
-      %li Examine the facts on the representation of women in business and the contributing factors
-      %li Empower all employees to be better leaders, understand the challenges women disproportionately face and how to bring out the best in their whole team
-      %li Drive organizational cultural change by addressing structural and mindset obstacles to recruiting, developing and retaining women
+      %li
+        {% trans "Shift the trajectory of your company to unlock the full potential of women and generate stronger business results" %}
+      %li
+        {% trans "Examine the facts on the representation of women in business and the contributing factors" %}
+      %li
+        {% trans "Empower all employees to be better leaders, understand the challenges women disproportionately face and how to bring out the best in their whole team" %}
+      %li
+        {% trans "Drive organizational cultural change by addressing structural and mindset obstacles to recruiting, developing and retaining women" %}
 
     .close-reveal-modal
       %i.fa.fa-times-circle
 
   #team_management.course-pop.reveal-modal.small{"data-reveal": "true"}
-    %h1 Team Management
+    %h1
+      {% trans "Team Management" %}
     %hr
-    %p Learn how to better manage and engage team members, develop your feedback and coaching capabilities, and maximize your team’s effectiveness.
+    %p
+      {% trans "Learn how to better manage and engage team members, develop your feedback and coaching capabilities, and maximize your team’s effectiveness." %}
     %ul
-      %li Manage and improve team dynamics by encouraging positive behavior to effectively motivate your team
-      %li Promote collaboration and cooperation across your business by using teambuilding and communication techniques
-      %li Develop an accurate, evolving perspective on team-member performance to ensure accountability
-      %li Set clear priorities and goals and communicate them effectively with your team members
-      %li Run effective virtual and in-person teams by incorporating lean-management tools including coaching, process confirmations, whiteboards, and daily huddles
-      %li Implement a strengths-based development feedback approach with your team using actionable written and verbal development feedback
-      %li Identify and use team resources and individual member strengths effectively
-      %li Develop techniques to effectively mentor junior employees
-      %li Build loyalty and reward employees using non-compensation incentives
+      %li
+        {% trans "Manage and improve team dynamics by encouraging positive behavior to effectively motivate your team" %}
+      %li
+        {% trans "Promote collaboration and cooperation across your business by using teambuilding and communication techniques" %}
+      %li
+        {% trans "Develop an accurate, evolving perspective on team-member performance to ensure accountability" %}
+      %li
+        {% trans "Set clear priorities and goals and communicate them effectively with your team members" %}
+      %li
+        {% trans "Run effective virtual and in-person teams by incorporating lean-management tools including coaching, process confirmations, whiteboards, and daily huddles" %}
+      %li
+        {% trans "Implement a strengths-based development feedback approach with your team using actionable written and verbal development feedback" %}
+      %li
+        {% trans "Identify and use team resources and individual member strengths effectively" %}
+      %li
+        {% trans "Develop techniques to effectively mentor junior employees" %}
+      %li
+        {% trans "Build loyalty and reward employees using non-compensation incentives" %}
 
     .close-reveal-modal
       %i.fa.fa-times-circle
 
   #difficult_conversations.course-pop.reveal-modal.small{"data-reveal": "true"}
-    %h1 Mastering Challenging Conversations
+    %h1
+      {% trans "Mastering Challenging Conversations" %}
     %hr
-    %p Learn how to handle difficult conversations in a variety of internal and external situations, including performance feedback and conflict resolution.
+    %p
+      {% trans "Learn how to handle difficult conversations in a variety of internal and external situations, including performance feedback and conflict resolution." %}
     %ul
-      %li Understand any relevant root causes of stress, conflict and context and translate them into implications for your conversation
-      %li Anticipate problem resolution space and the various approaches you can take towards reaching a successful outcome
-      %li Learn the pros and cons of communication techniques and practice each one to develop a set of tactics which work for you
-      %li Provide a safe environment to ensure open forums for communication
-      %li Improve individual and group negotiation outcomes by taking into account the importance of issues, stakeholder positions, interpersonal relationships and environmental factors
-      %li Make effective trade-offs during discussions based on real-time reactions, emotions and perspectives
-      %li Tailor your feedback approach to each individual team member to overcome communication barriers
+      %li
+        {% trans "Understand any relevant root causes of stress, conflict and context and translate them into implications for your conversation" %}
+      %li
+        {% trans "Anticipate problem resolution space and the various approaches you can take towards reaching a successful outcome" %}
+      %li
+        {% trans "Learn the pros and cons of communication techniques and practice each one to develop a set of tactics which work for you" %}
+      %li
+        {% trans "Provide a safe environment to ensure open forums for communication" %}
+      %li
+        {% trans "Improve individual and group negotiation outcomes by taking into account the importance of issues, stakeholder positions, interpersonal relationships and environmental factors" %}
+      %li
+        {% trans "Make effective trade-offs during discussions based on real-time reactions, emotions and perspectives" %}
+      %li
+        {% trans "Tailor your feedback approach to each individual team member to overcome communication barriers" %}
     .close-reveal-modal
       %i.fa.fa-times-circle
 
   #structured_communications.course-pop.reveal-modal.small{"data-reveal": "true"}
-    %h1 Structured Business Communications
+    %h1
+      {% trans "Structured Business Communications" %}
     %hr
-    %p Learn how to present your ideas effectively including how to deliver structured, concise, and compelling business communications.
+    %p
+      {% trans "Learn how to present your ideas effectively including how to deliver structured, concise, and compelling business communications." %}
     %ul
-      %li Create the elements of a robust communications strategy including defining stakeholders, defining communications objectives, identifying key milestones, selecting communications mechanisms and developing a communications plan
-      %li Utilize a stakeholder analysis worksheet to identify stakeholders and implement appropriate strategies for communicating with them
-      %li Apply the right structures to support messages, including the “pyramid principle” for developing logical arguments by grouping concepts into a structured set of governing thoughts and supporting details
-      %li Synthesize key messages into a tightly-crafted executive summary
-      %li Draft a storyline and translate the structure into a presentation storyboard
-      %li Select the right chart forms for quantitative, conceptual and text-driven messages
-      %li Gain an awareness of basic graphic design principles to help make content more credible to audiences
-      %li Communicate more effectively in day-to-day interactions including writing more effective emails, delivering improved voicemails, and writing structured social media messages
-      %li Effectively manage both in-person and remote meetings
-      %li Improve verbal and nonverbal skills to project greater presence and confidence
+      %li
+        {% trans "Create the elements of a robust communications strategy including defining stakeholders, defining communications objectives, identifying key milestones, selecting communications mechanisms and developing a communications plan" %}
+      %li
+        {% trans "Utilize a stakeholder analysis worksheet to identify stakeholders and implement appropriate strategies for communicating with them" %}
+      %li
+        {% trans "Apply the right structures to support messages, including the “pyramid principle” for developing logical arguments by grouping concepts into a structured set of governing thoughts and supporting details" %}
+      %li
+        {% trans "Synthesize key messages into a tightly-crafted executive summary" %}
+      %li
+        {% trans "Draft a storyline and translate the structure into a presentation storyboard" %}
+      %li
+        {% trans "Select the right chart forms for quantitative, conceptual and text-driven messages" %}
+      %li
+        {% trans "Gain an awareness of basic graphic design principles to help make content more credible to audiences" %}
+      %li
+        {% trans "Communicate more effectively in day-to-day interactions including writing more effective emails, delivering improved voicemails, and writing structured social media messages" %}
+      %li
+        {% trans "Effectively manage both in-person and remote meetings" %}
+      %li
+        {% trans "Improve verbal and nonverbal skills to project greater presence and confidence" %}
     .close-reveal-modal
       %i.fa.fa-times-circle
 
   #problem_solving.course-pop.reveal-modal.small{"data-reveal": "true"}
-    %h1 Problem Solving
+    %h1
+      {% trans  "Problem Solving" %}
     %hr
-    %p Learn techniques from the world-renowned leader in problem solving, including how to apply McKinsey’s structured approach to problem solving.
+    %p
+      {% trans "Learn techniques from the world-renowned leader in problem solving, including how to apply McKinsey’s structured approach to problem solving." %}
     %ul
-      %li Distill an ambiguous business situation with many confounding elements into the basic questions that need to be answered
-      %li Disaggregate a complex problem into smaller, more manageable pieces and identify issues that are MECE (mutually exclusive, collectively exhaustive)
-      %li Categorize and prioritize issues into actionable categories, by evaluating them on specific criteria such as impact and feasibility
-      %li Set-up, plan, and structure appropriate analyses through several different types of workplans
-      %li Extract the most relevant data by using a suite of creative data-collection and analysis techniques
-      %li Step back and distinguish the most important aspects of work to be communicated to stakeholders through a top-down, structured storyline
-      %li Create recommendations that are actionable and feasible for stakeholders, as well as appropriate for a senior-management audience
-      %li Identify when the basic 7-step approach problem solving approach needs to be complemented with advanced problem-solving techniques
+      %li
+        {% trans "Distill an ambiguous business situation with many confounding elements into the basic questions that need to be answered" %}
+      %li
+        {% trans "Disaggregate a complex problem into smaller, more manageable pieces and identify issues that are MECE (mutually exclusive, collectively exhaustive)" %}
+      %li
+        {% trans "Categorize and prioritize issues into actionable categories, by evaluating them on specific criteria such as impact and feasibility" %}
+      %li
+        {% trans "Set-up, plan, and structure appropriate analyses through several different types of workplans" %}
+      %li
+        {% trans "Extract the most relevant data by using a suite of creative data-collection and analysis techniques" %}
+      %li
+        {% trans "Step back and distinguish the most important aspects of work to be communicated to stakeholders through a top-down, structured storyline" %}
+      %li
+        {% trans "Create recommendations that are actionable and feasible for stakeholders, as well as appropriate for a senior-management audience" %}
+      %li
+        {% trans "Identify when the basic 7-step approach problem solving approach needs to be complemented with advanced problem-solving techniques" %}
     .close-reveal-modal
       %i.fa.fa-times-circle
 
   #business_strategy.course-pop.reveal-modal.small{"data-reveal": "true"}
-    %h1 Business Strategy
+    %h1
+      {% trans "Business Strategy" %}
     %hr
-    %p Learn how to evaluate a strategy and apply McKinsey’s Strategy Method to develop a business strategy to gain a sustainable advantage in the market
+    %p
+      {% trans "Learn how to evaluate a strategy and apply McKinsey’s Strategy Method to develop a business strategy to gain a sustainable advantage in the market" %}
     %ul
-      %li Assess the robustness of a strategy by applying McKinsey’s Ten Timeless Tests
-      %li Identify available strategic decisions and potential alternatives
-      %li Develop insight into where and why a company does (or does not) create value, including its positional and proprietary advantages
-      %li Interpret the outputs of a SCP (structure, conduct, and performance) diagnostic to assess competitive position
-      %li Create scenarios to deal with uncertain futures, including identifying key drivers and strategic options for each scenario
-      %li Develop and evaluate where- and how-to-compete sets of options
-      %li Determine which strategy to pursue in order to beat the market
-      %li Finish the strategy by translating the strategic choice into an executable plan of action
-      %li Facilitate ongoing monitoring and refresh of the strategy as new information becomes available
-      %li Understand the various portfolio moves available at the corporate level, and how to allocate resources to support a specific move
+      %li
+        {% trans "Assess the robustness of a strategy by applying McKinsey’s Ten Timeless Tests" %}
+      %li
+        {% trans "Identify available strategic decisions and potential alternatives" %}
+      %li
+        {% trans "Develop insight into where and why a company does (or does not) create value, including its positional and proprietary advantages" %}
+      %li
+        {% trans "Interpret the outputs of a SCP (structure, conduct, and performance) diagnostic to assess competitive position" %}
+      %li
+        {% trans "Create scenarios to deal with uncertain futures, including identifying key drivers and strategic options for each scenario" %}
+      %li
+        {% trans "Develop and evaluate where- and how-to-compete sets of options" %}
+      %li
+        {% trans "Determine which strategy to pursue in order to beat the market" %}
+      %li
+        {% trans "Finish the strategy by translating the strategic choice into an executable plan of action" %}
+      %li
+        {% trans "Facilitate ongoing monitoring and refresh of the strategy as new information becomes available" %}
+      %li
+        {% trans "Understand the various portfolio moves available at the corporate level, and how to allocate resources to support a specific move" %}
     .close-reveal-modal
       %i.fa.fa-times-circle
 
   %article#programs-page
-    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_programs.jpg", srcset: "/static/image/marketing/McKA_TopTiles_programs@2x.jpg 2x", alt: "McKinsey Academy courses are created and curated into programs that meaningfully build business capabilities for our participants"}
+    %img.tileset{src: "/static/image/marketing/McKA_TopTiles_programs.jpg", srcset: "/static/image/marketing/McKA_TopTiles_programs@2x.jpg 2x", alt: '{% trans "McKinsey Academy courses are created and curated into programs that meaningfully build business capabilities for our participants" %}'}
     .row.collapse
       .large-10.large-centered.columns
         %section
-          %h1 Programs
-          %p Each McKinsey Academy program comprises a series of courses that in combination build specific business capabilities for our participants. These programs are based on our experience building capability for our clients, the expertise of McKinsey, as well as our extensive training and development efforts within our firm. Additional programs and courses are under development.
-          %p We currently only serve corporate clients, and participants must be sponsored by their companies.
-          %p Please email us at <a href="mailto:info@mckinseyacademy.com">info@mckinseyacademy.com</a> for further details.
+          %h1
+            {% trans "Programs" %}
+          %p
+            {% trans "Each McKinsey Academy program comprises a series of courses that in combination build specific business capabilities for our participants. These programs are based on our experience building capability for our clients, the expertise of McKinsey, as well as our extensive training and development efforts within our firm. Additional programs and courses are under development." %}
+          %p
+            {% trans "We currently only serve corporate clients, and participants must be sponsored by their companies." %}
+          %p
+            {% blocktrans %}
+            Please email us at <a href="mailto:info@mckinseyacademy.com">info@mckinseyacademy.com</a> for further details.
+            {% endblocktrans %}
+        %section
+          .sub-1
+            {% trans "McKinsey Management Program" %}
+          %p
+            {% blocktrans %}
+            The McKinsey Management Program (MMP) is a set of courses for rising professionals looking to build leadership and management capabilities. This program integrates perspectives from McKinsey experts and external business leaders from around the globe. <a href="/static/docs/McKA_MMP_Brochure.pdf" target="_blank">View brochure</a>
+            {% endblocktrans %}
 
         %section
-          .sub-1 McKinsey Management Program
-          %p The McKinsey Management Program (MMP) is a set of courses for rising professionals looking to build leadership and management capabilities. This program integrates perspectives from McKinsey experts and external business leaders from around the globe. <a href="/static/docs/McKA_MMP_Brochure.pdf" target="_blank">View brochure</a>
+          .sub-1
+            {% trans "Custom Programs" %}
+          %p
+            {% trans "We offer custom programs that are customized to a single organization’s requirements. McKinsey Academy works with each company to build their program by selecting relevant courses, configuring course content to each company’s context, and tailoring the delivery (e.g., digital, in-person, blended)." %}
 
         %section
-          .sub-1 Custom Programs
-          %p We offer custom programs that are customized to a single organization’s requirements. McKinsey Academy works with each company to build their program by selecting relevant courses, configuring course content to each company’s context, and tailoring the delivery (e.g., digital, in-person, blended).
-
-        %section
-          .sub-1 Unlocking the Potential of Women Program
-          %p This six-week digital experience is designed to empower both male and female business leaders to recognize and deliver the full potential of women in the workplace.
+          .sub-1
+            {% trans "Unlocking the Potential of Women Program" %}
+          %p
+            {% trans "This six-week digital experience is designed to empower both male and female business leaders to recognize and deliver the full potential of women in the workplace." %}
           %ul
-            %li Improve attraction and retention rates of women
-            %li Increase the return on your investment in gender diversity initiatives
-            %li Improve performance by empowering your employees
-            %li Be a more inclusive and effective leader by getting the most out of your talent
-          %p For more information, please email <a href="mailto:women@mckinseyacademy.com">women@mckinseyacademy.com</a> or visit <a href="http://www.mckinsey-upw.com" target="_blank">www.mckinsey-upw.com</a>.
+            %li
+              {% trans "Improve attraction and retention rates of women" %}
+            %li
+              {% trans "Increase the return on your investment in gender diversity initiatives" %}
+            %li
+              {% trans "Improve performance by empowering your employees" %}
+            %li
+              {% trans "Be a more inclusive and effective leader by getting the most out of your talent" %}
+          %p
+            {% blocktrans %}
+            For more information, please email <a href="mailto:women@mckinseyacademy.com">women@mckinseyacademy.com</a> or visit <a href="http://www.mckinsey-upw.com" target="_blank">www.mckinsey-upw.com</a>.
+            {% endblocktrans %}
 
         %section
-          .sub-1 Future Business Leaders Forum
-          %p McKinsey Academy is convening next-generation leaders from top global companies for a transformational learning journey to achieve peak performance. Participants will develop as inspirational leaders, learn from leading global business and thought leaders, and build a global network of peers. This program provides a mix of digital courses, in-person learning sessions, and live webinars that hone core skills around critical thinking & strategy, innovation & disruption, and leadership & influence.
-          %p For more information, please visit <a href="http://www.fblf.info" target="_blank">www.fblf.info</a> or email <a href="mailto:FBLF@mckinseyacademy.com">FBLF@mckinseyacademy.com</a>.
+          .sub-1
+            {% trans "Future Business Leaders Forum" %}
+          %p
+            {% trans "McKinsey Academy is convening next-generation leaders from top global companies for a transformational learning journey to achieve peak performance. Participants will develop as inspirational leaders, learn from leading global business and thought leaders, and build a global network of peers. This program provides a mix of digital courses, in-person learning sessions, and live webinars that hone core skills around critical thinking & strategy, innovation & disruption, and leadership & influence." %}
+          %p
+            {% blocktrans %}
+            For more information, please visit <a href="http://www.fblf.info" target="_blank">www.fblf.info</a> or email <a href="mailto:FBLF@mckinseyacademy.com">FBLF@mckinseyacademy.com</a>.
+            {% endblocktrans %}
 
         %section
-          .sub-1 Courses
-          %p Below is an overview of selected courses from our programs.
+          .sub-1
+            {% trans "Courses" %}
+          %p
+            {% trans "Below is an overview of selected courses from our programs." %}
 
         %section
           %ul.programs.flexible
@@ -188,56 +300,70 @@
                   .front
                     %img{src: '/static/image/programs/course_businessstrategy.png', alt: "Business Strategy"}
                   .back.background-alt-blue
-                    .label-2 Learn how to evaluate a strategy and apply McKinsey’s Strategy Method to develop a business strategy to gain a sustainable advantage in the market
-                .title Business Strategy
+                    .label-2
+                      {% trans "Learn how to evaluate a strategy and apply McKinsey’s Strategy Method to develop a business strategy to gain a sustainable advantage in the market" %}
+                .title
+                  {% trans "Business Strategy" %}
             %li
               %a{href: '#', data-reveal-id: 'problem_solving'}
                 .card-flip
                   .front
-                    %img{src: '/static/image/programs/course_problemsolving.png', alt: "Problem Solving"}
+                    %img{src: '/static/image/programs/course_problemsolving.png', alt: '{% trans "Problem Solving" %}'}
                   .back.background-alt-blue
-                    .label-2 Learn techniques from the world-renowned leader in problem solving, including how to apply McKinsey’s structured approach to problem solving.
-                .title Problem Solving
+                    .label-2
+                      {% trans "Learn techniques from the world-renowned leader in problem solving, including how to apply McKinsey’s structured approach to problem solving." %]
+                .title
+                  {% trans "Problem Solving" %}
             %li
               %a{href: '#', data-reveal-id: 'structured_communications'}
                 .card-flip
                   .front
-                    %img{src: '/static/image/programs/course_structuredcommunications.png', alt: "Structured Business Communications"}
+                    %img{src: '/static/image/programs/course_structuredcommunications.png', alt: '{% trans "Structured Business Communications" %}'}
                   .back.background-alt-blue
-                    .label-2 Learn how to present your ideas effectively including how to deliver structured, concise, and compelling business communications.
-                .title Structured Business Communications
+                    .label-2
+                      {% trans "Learn how to present your ideas effectively including how to deliver structured, concise, and compelling business communications." %}
+                .title
+                  {% trans "Structured Business Communications" %}
             %li
               %a{href: '#', data-reveal-id: 'difficult_conversations'}
                 .card-flip
                   .front
-                    %img{src: '/static/image/programs/course_masteringdifficultconversations.png', alt: "Mastering Difficult Conversations"}
+                    %img{src: '/static/image/programs/course_masteringdifficultconversations.png', alt: '{% trans "Mastering Difficult Conversations" %}'}
                   .back.background-alt-blue
-                    .label-2 Learn how to handle difficult conversations in a variety of internal and external situations, including performance feedback and conflict resolution.
-                .title Mastering Challenging Conversations
+                    .label-2
+                      {% trans "Learn how to handle difficult conversations in a variety of internal and external situations, including performance feedback and conflict resolution." %}
+                .title
+                  {% trans "Mastering Challenging Conversations" %}
 
             %li
               %a{href: '#', data-reveal-id: 'team_management'}
                 .card-flip
                   .front
-                    %img{src: '/static/image/programs/course_teammanagement.png', alt: "Team Management, Coaching and Mentoring"}
+                    %img{src: '/static/image/programs/course_teammanagement.png', alt: '{% trans "Team Management, Coaching and Mentoring" %}'}
                   .back.background-alt-blue
-                    .label-2 Learn how to better manage and engage team members, develop your feedback and coaching capabilities, and maximize your team’s effectiveness.
-                .title Team Management
+                    .label-2
+                      {% trans "Learn how to better manage and engage team members, develop your feedback and coaching capabilities, and maximize your team’s effectiveness." %}
+                .title
+                  {% trans "Team Management" %}
             %li
               %a{href: '#', data-reveal-id: 'unlocking_potential'}
                 .card-flip
                   .front
-                    %img{src: '/static/image/programs/course_unlockingpotential.png', alt: "Unlocking Potential"}
+                    %img{src: '/static/image/programs/course_unlockingpotential.png', alt: '{% trans "Unlocking Potential" %}'}
                   .back.background-alt-blue
-                    .label-2 Learn how to make the most of the talent in your organization by increasing the representation of women – how to effectively lead, given the challenges that women disproportionately face – and how to individually and organizationally effect change.
-                .title Unlocking the Potential of Women
+                    .label-2
+                      {% trans "Learn how to make the most of the talent in your organization by increasing the representation of women – how to effectively lead, given the challenges that women disproportionately face – and how to individually and organizationally effect change." %}
+                .title
+                  {% trans "Unlocking the Potential of Women" %}
             %li
               %a{href: '#', data-reveal-id: 'eyes_of_ceo'}
                 .card-flip
                   .front
-                    %img{src: '/static/image/programs/course_througheyesofceo.png', alt: "Through the Eyes of the CEO"}
+                    %img{src: '/static/image/programs/course_througheyesofceo.png', alt: '{% trans "Through the Eyes of the CEO" %}'}
                   .back.background-alt-blue
-                    .label-2 Learn how to galvanize your own leadership strategies and passions by exploring what matters most to the world’s leading CEOs, including topics such as managing in times of crisis and leading complex global organizations
-                .title Through the Eyes of the CEO
+                    .label-2
+                      {% trans "Learn how to galvanize your own leadership strategies and passions by exploring what matters most to the world’s leading CEOs, including topics such as managing in times of crisis and leading complex global organizations" %}
+                .title
+                  {% trans "Through the Eyes of the CEO" %}
             %li
               .card-flip

@@ -1,5 +1,5 @@
 - extends "admin/admin_layout.haml"
-
+- load i18n
 - block content
   .admin-detail.row
     .large-12.large.columns
@@ -9,38 +9,50 @@
     .large-12.large.columns
       - block admin_detail
         %h1
-          %span= _("Analytics: ")
+          %span
+            {% trans "Analytics: " %}
           %span= course.name
-        %p= _("Interested in how your company's participants are doing in the course? See below to measure your participant's engagement, progress through course content, social impact score, and demonstrated proficiency. Including how your company's participants are performing relative to their peers in the overall course cohort.")
+        %p
+          {% trans "Interested in how your company's participants are doing in the course? See below to measure your participant's engagement, progress through course content, social impact score, and demonstrated proficiency. Including how your company's participants are performing relative to their peers in the overall course cohort." %}
         %hr
 
-        .sub-1= _("Participant activity")
-        %p.style-5= _("Daily sum of activity for your participants, with activity defined as # of modules completed. # of participants - those active on that day")
+        .sub-1
+          {% trans "Participant activity" %}
+        %p.style-5
+          {% trans "Daily sum of activity for your participants, with activity defined as # of modules completed. # of participants - those active on that day" %}
         .admin-analytics-participant-activity-wrapper
           %svg#admin-analytics-participant-activity
         %hr
 
-        .sub-1= _("Progress")
-        %p.style-5= _("% of content consumed by participants (total number of modules completed divided by total number of modules)")
+        .sub-1
+          {% trans "Progress" %}
+        %p.style-5
+          {% trans "% of content consumed by participants (total number of modules completed divided by total number of modules)" %}
         .admin-analytics-progress-wrapper
           %svg#admin-analytics-progress
         .progress_stats
           %ul
-            %li= _("Your Company: ")
+            %li
+              {% trans "Your Company: " %}
               %br
               %span.progress-stat.company= course.company_progress | floatformat:0
-              %span.progress-stat.company= _("%")
-            %li= _("Your Cohort: ")
+              %span.progress-stat.company
+                {% trans "%" %}
+            %li
+              {% trans "Your Cohort: " %}
               %br
               %span.progress-stat.cohort= course.cohort_progress | floatformat:0
-              %span.progress-stat.cohort= _("%")
+              %span.progress-stat.cohort
+                {% trans "%" %}
         %hr
 
         .proficiency-engagement
           .medium-6{class: "{% if feature_flags.discussions %}left{% else %}medium-centered columns{% endif %}"}
             .course-proficiency
-              .sub-1= _("Proficiency")
-              %p.style-5= _("Average grade based on current grade of participants.")
+              .sub-1
+                {% trans "Proficiency" %}
+              %p.style-5
+                {% trans "Average grade based on current grade of participants." %}
               .visualization{'class': "progress-#{company_proficiency_graph} cohort-progress-#{cohort_proficiency_graph}"}
                 .total= company_proficiency | floatformat:0
                 .inner-circle.gradient
@@ -49,13 +61,16 @@
               .cohort-average
                 .label-4 cohort average = ={cohort_proficiency}
               %br
-              %p.style-5= _("Note: Grades may not appear until later in the course depending on number of graded items and their location within course content.")
+              %p.style-5
+                {% trans "Note: Grades may not appear until later in the course depending on number of graded items and their location within course content." %}
 
           - if feature_flags.discussions
             .medium-6.left
               .course-engagement
-                .sub-1= _("Engagement")
-                %p.style-5= _("Participant engagement increases through engagement on the discussion forums.")
+                .sub-1
+                  {% trans "Engagement" %}
+                %p.style-5
+                  {% trans "Participant engagement increases through engagement on the discussion forums." %}
                 .visualization{class: "{% if company_engagement >= 90 %}filled{% endif %}"}
                   .band-1{class: "{% if company_engagement >= 30 %}filled{% endif %}"}
                   .band-2{class: "{% if company_engagement >= 60 %}filled{% endif %}"}
