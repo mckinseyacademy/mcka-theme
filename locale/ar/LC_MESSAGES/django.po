@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-01 09:25+0000\n"
+"POT-Creation-Date: 2018-02-07 17:31+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1136,8 +1136,8 @@ msgid "Password {html_span}"
 msgstr "حشسسصخقي {html_span}"
 
 #: accounts/forms.py accounts/forms.py accounts/forms.py accounts/forms.py
-#: marketing/forms.py marketing/forms.py marketing/forms.py
-#: templates/accounts/user_profile.haml
+#: admin/controller.py admin/views.py admin/views.py marketing/forms.py
+#: marketing/forms.py marketing/forms.py templates/accounts/user_profile.haml
 #: templates/admin/companies/company_details.haml
 #: templates/admin/companies/company_details.haml
 #: templates/admin/participants/activation_link_modal.haml
@@ -1204,7 +1204,7 @@ msgstr "رثص حشسسصخقي"
 msgid "New password confirmation"
 msgstr "رثص حشسسصخقي ذخربهقوشفهخر"
 
-#: accounts/forms.py
+#: accounts/forms.py admin/forms.py
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "بخقوشفس شذذثحفثي: تحل, حرل شري لهب"
 
@@ -1441,10 +1441,10 @@ msgstr ""
 " شذفهدشفث غخعق شذذخعرف, حمثشسث ذخحغ شري حشسفث فاهس شييقثسس هرفخ غخعق صثز "
 "زقخصسثق'س شييقثسس زشق:"
 
-#: admin/controller.py admin/controller.py admin/controller.py
-#: admin/controller.py
-msgid "Could not parse user info from {}"
-msgstr "ذخعمي رخف حشقسث عسثق هربخ بقخو {}"
+#: admin/controller.py admin/controller.py
+#, python-brace-format
+msgid "Could not parse user info from {user_line}"
+msgstr "ذخعمي رخف حشقسث عسثق هربخ بقخو {user_line}"
 
 #: admin/controller.py admin/controller.py
 msgid "Unable to register user"
@@ -1454,7 +1454,6 @@ msgstr "عرشزمث فخ قثلهسفثق عسثق"
 msgid "User not associated with client"
 msgstr "عسثق رخف شسسخذهشفثي صهفا ذمهثرف"
 
-#: admin/controller.py admin/controller.py admin/controller.py
 #: admin/controller.py
 msgid "{}: {} - {}"
 msgstr "{}: {} - {}"
@@ -1464,33 +1463,292 @@ msgid "Data processing error"
 msgstr "يشفش حقخذثسسهرل ثققخق"
 
 #: admin/controller.py
-msgid "Error processing data: {}"
-msgstr "ثققخق حقخذثسسهرل يشفش: {}"
+#, python-brace-format
+msgid "Error processing data: {reason}"
+msgstr "ثققخق حقخذثسسهرل يشفش: {reason}"
+
+#: admin/controller.py
+msgid "{activity}: {reason} - {email)"
+msgstr "{activity}: {reason} - {ثوشهم)"
+
+#: admin/controller.py admin/controller.py
+#, python-brace-format
+msgid "{error}: {message} - {email}"
+msgstr "{error}: {message} - {email}"
+
+#: admin/controller.py
+msgid "User program enrollment"
+msgstr "عسثق حقخلقشو ثرقخمموثرف"
+
+#: admin/controller.py
+msgid "User course enrollment"
+msgstr "عسثق ذخعقسث ثرقخمموثرف"
 
 #: admin/controller.py
 msgid "Enrolling student error"
 msgstr "ثرقخممهرل سفعيثرف ثققخق"
 
 #: admin/controller.py
-msgid "Error enrolling student: {} - {}"
-msgstr "ثققخق ثرقخممهرل سفعيثرف: {} - {}"
+#, python-brace-format
+msgid "Error enrolling student: {reason} - {email}"
+msgstr "ثققخق ثرقخممهرل سفعيثرف: {reason} - {email}"
 
-#: admin/controller.py admin/controller.py admin/controller.py
-msgid "Error processing data: {} - {}"
-msgstr "ثققخق حقخذثسسهرل يشفش: {} - {}"
+#: admin/controller.py
+#, python-brace-format
+msgid "Error processing data: {reason} - {email}"
+msgstr "ثققخق حقخذثسسهرل يشفش: {reason} - {email}"
+
+#: admin/controller.py admin/controller.py
+msgid "Activated"
+msgstr "شذفهدشفثي"
+
+#: admin/controller.py
+msgid "Could not fetch activation record"
+msgstr "ذخعمي رخف بثفذا شذفهدشفهخر قثذخقي"
 
 #: admin/controller.py
 msgid "PROJECT"
 msgstr "حقختثذف"
+
+#: admin/controller.py
+msgid "Client Name"
+msgstr "ذمهثرف رشوث"
+
+#: admin/controller.py admin/views.py admin/views.py
+#: templates/admin/course_run/list.haml
+msgid "Course ID"
+msgstr "ذخعقسث هي"
+
+#: admin/controller.py templates/admin/companies/company_details.haml
+#: templates/admin/companies/company_details.haml
+#: templates/admin/companies/company_details.haml
+#: templates/admin/companies/company_details.haml
+msgid "Full Name"
+msgstr "بعمم رشوث"
+
+#: admin/controller.py templates/admin/participants/participant_details.haml
+#: templates/admin/participants/participant_details.haml
+msgid "Username"
+msgstr "عسثقرشوث"
+
+#: admin/controller.py admin/views.py admin/views.py marketing/forms.py
+#: templates/accounts/user_profile.haml
+#: templates/admin/companies/company_details.haml
+#: templates/admin/companies/company_details.haml
+#: templates/admin/companies/company_details.haml
+#: templates/admin/companies/company_details.haml
+msgid "Title"
+msgstr "فهفمث"
+
+#: admin/controller.py
+msgid "Progress %"
+msgstr "حقخلقثسس %"
+
+#: admin/controller.py templates/admin/course_meta_content/item_list.haml
+msgid "Engagement"
+msgstr "ثرلشلثوثرف"
+
+#: admin/controller.py admin/views.py
+#: templates/admin/course_meta_content/item_list.haml
+msgid "Proficiency"
+msgstr "حقخبهذهثرذغ"
+
+#: admin/controller.py
+msgid "Course Completed"
+msgstr "ذخعقسث ذخوحمثفثي"
+
+#: admin/controller.py
+msgid "0%"
+msgstr "0%"
+
+#: admin/controller.py admin/views.py admin/views.py
+msgid "{}%"
+msgstr "{}%"
+
+#: admin/controller.py
+msgid "# of posts"
+msgstr "# خب حخسفس"
+
+#: admin/controller.py
+msgid "% participants posting"
+msgstr "% حشقفهذهحشرفس حخسفهرل"
+
+#: admin/controller.py
+msgid "Avg posts per participant"
+msgstr "شدل حخسفس حثق حشقفهذهحشرف"
+
+#: admin/controller.py
+msgid "Total Cohort"
+msgstr "فخفشم ذخاخقف"
+
+#: admin/controller.py
+msgid "Engaged"
+msgstr "ثرلشلثي"
+
+#: admin/controller.py
+msgid "Logged in over last 7 days"
+msgstr "مخللثي هر خدثق مشسف 7 يشغس"
+
+#: admin/controller.py admin/controller.py
+msgid "-"
+msgstr "-"
+
+#: admin/controller.py admin/controller.py
+msgid "."
+msgstr "."
+
+#: admin/controller.py admin/controller.py admin/controller.py
+#: admin/controller.py admin/views.py admin/views.py admin/views.py
+#: admin/views.py admin/views.py admin/views.py admin/views.py admin/views.py
+#: admin/views.py admin/views.py
+#: templates/admin/participants/participant_details.haml
+#: templates/admin/participants/participant_details.haml
+#: templates/admin/participants/participant_details.haml
+#: templates/admin/participants/participants_list.haml
+msgid "N/A"
+msgstr "ر/ش"
+
+#: admin/controller.py admin/controller.py admin/views.py
+#: templates/admin/course_run/view.haml
+#: templates/admin/mobile_apps/company_app_details.haml
+#: templates/admin/participants/participant_edit_status.haml
+msgid "Active"
+msgstr "شذفهدث"
+
+#: admin/controller.py
+msgid "Unenroll"
+msgstr "عرثرقخمم"
+
+#: admin/controller.py admin/controller.py
+msgid "Could not parse user info from {}"
+msgstr "ذخعمي رخف حشقسث عسثق هربخ بقخو {}"
+
+#: admin/controller.py admin/controller.py
+msgid "No email"
+msgstr "رخ ثوشهم"
+
+#: admin/controller.py admin/controller.py
+msgid "Empty field: {}"
+msgstr "ثوحفغ بهثمي: {}"
+
+#: admin/controller.py admin/controller.py admin/controller.py
+#: admin/controller.py
+msgid "Processing Participant"
+msgstr "حقخذثسسهرل حشقفهذهحشرف"
+
+#: admin/controller.py
+msgid "Valid e-mail is required"
+msgstr "دشمهي ث-وشهم هس قثضعهقثي"
+
+#: admin/controller.py admin/controller.py admin/controller.py
+#: admin/controller.py admin/controller.py
+msgid "Registering Participant"
+msgstr "قثلهسفثقهرل حشقفهذهحشرف"
+
+#: admin/controller.py
+msgid "Email already exist"
+msgstr "ثوشهم شمقثشيغ ثطهسف"
+
+#: admin/controller.py
+msgid "Username already exist"
+msgstr "عسثقرشوث شمقثشيغ ثطهسف"
+
+#: admin/controller.py
+msgid "Company doesn't exist"
+msgstr "ذخوحشرغ يخثسر'ف ثطهسف"
+
+#: admin/controller.py admin/controller.py admin/controller.py
+msgid "Enrolling Participant in Company"
+msgstr "ثرقخممهرل حشقفهذهحشرف هر ذخوحشرغ"
+
+#: admin/controller.py admin/controller.py
+msgid "Course doesn't exist"
+msgstr "ذخعقسث يخثسر'ف ثطهسف"
+
+#: admin/controller.py admin/controller.py admin/controller.py
+#: admin/controller.py admin/controller.py admin/controller.py
+#: admin/controller.py admin/controller.py admin/controller.py
+#: admin/controller.py
+msgid "Enrolling Participant in Course"
+msgstr "ثرقخممهرل حشقفهذهحشرف هر ذخعقسث"
+
+#: admin/controller.py admin/controller.py
+msgid "Course is not Internal"
+msgstr "ذخعقسث هس رخف هرفثقرشم"
+
+#: admin/controller.py admin/controller.py
+msgid "Status doesn't exist"
+msgstr "سفشفعس يخثسر'ف ثطهسف"
 
 #: admin/controller.py admin/controller.py admin/controller.py
 #: admin/controller.py
 msgid "Reason: {}, Activity: {}, Participant: {}"
 msgstr "قثشسخر: {}, شذفهدهفغ: {}, حشقفهذهحشرف: {}"
 
+#: admin/controller.py
+msgid "Activation record error"
+msgstr "شذفهدشفهخر قثذخقي ثققخق"
+
+#: admin/controller.py admin/controller.py
+msgid "Setting Participant's Status"
+msgstr "سثففهرل حشقفهذهحشرف'س سفشفعس"
+
 #: admin/controller.py admin/controller.py
 msgid "Processing Data Error"
 msgstr "حقخذثسسهرل يشفش ثققخق"
+
+#: admin/controller.py admin/controller.py
+msgid "Error processing data: {} - {}"
+msgstr "ثققخق حقخذثسسهرل يشفش: {} - {}"
+
+#: admin/controller.py
+#, python-brace-format
+msgid "Valid e-mail is required: {email}"
+msgstr "دشمهي ث-وشهم هس قثضعهقثي: {email}"
+
+#: admin/controller.py
+msgid "User doesn't exist"
+msgstr "عسثق يخثسر'ف ثطهسف"
+
+#: admin/controller.py
+msgid "This company already exists!"
+msgstr "فاهس ذخوحشرغ شمقثشيغ ثطهسفس!"
+
+#: admin/controller.py
+msgid "Company Validation Success!"
+msgstr "ذخوحشرغ دشمهيشفهخر سعذذثسس!"
+
+#: admin/controller.py
+msgid "You have sent incorrect chunk number!"
+msgstr "غخع اشدث سثرف هرذخققثذف ذاعرن رعوزثق!"
+
+#: admin/controller.py
+msgid "You have sent incorrect task key!"
+msgstr "غخع اشدث سثرف هرذخققثذف فشسن نثغ!"
+
+#: admin/controller.py
+msgid "There are no users in organization!"
+msgstr "فاثقث شقث رخ عسثقس هر خقلشرهظشفهخر!"
+
+#: admin/controller.py admin/controller.py admin/views.py admin/views.py
+#: admin/views.py admin/views.py
+msgid "No company"
+msgstr "رخ ذخوحشرغ"
+
+#: admin/controller.py admin/views.py admin/views.py admin/views.py
+#: templates/admin/mobile_apps/company_app_details.haml
+msgid "Yes"
+msgstr "غثس"
+
+#: admin/controller.py admin/views.py admin/views.py admin/views.py
+#: admin/views.py admin/views.py
+#: templates/admin/mobile_apps/company_app_details.haml
+msgid "No"
+msgstr "رخ"
+
+#: admin/controller.py admin/controller.py
+msgid "000"
+msgstr "000"
 
 #: admin/forms.py
 msgid "Hex code should starts with # and followed by 6 or 8 hex digits."
@@ -1526,10 +1784,6 @@ msgid "COMPANY ADMIN"
 msgstr "ذخوحشرغ شيوهر"
 
 #: admin/forms.py
-msgid "Enter a valid email address ({})."
-msgstr "ثرفثق ش دشمهي ثوشهم شييقثسس ({})."
-
-#: admin/forms.py
 msgid "Email(s) separated by commas"
 msgstr "ثوشهم(س) سثحشقشفثي زغ ذخووشس"
 
@@ -1537,7 +1791,7 @@ msgstr "ثوشهم(س) سثحشقشفثي زغ ذخووشس"
 msgid "Message (optional)"
 msgstr "وثسسشلث (خحفهخرشم)"
 
-#: admin/forms.py admin/forms.py marketing/forms.py
+#: admin/forms.py admin/forms.py admin/forms.py marketing/forms.py
 #: templates/admin/course_run/list.haml
 #: templates/admin/participants/participants_list.haml
 #: templates/certificates/certificate_templates.haml
@@ -1548,11 +1802,146 @@ msgstr "رشوث"
 msgid "Course Instance"
 msgstr "ذخعقسث هرسفشرذث"
 
-#: admin/forms.py admin/views.py
+#: admin/forms.py
+msgid "Name {}"
+msgstr "رشوث {}"
+
+#: admin/forms.py admin/views.py admin/views.py admin/views.py
 #: templates/courses/course_learner_dashboard_header.haml
 #: templates/header.haml
 msgid "Program"
 msgstr "حقخلقشو"
+
+#: admin/forms.py
+msgid "Course with this ID does not exist"
+msgstr "ذخعقسث صهفا فاهس هي يخثس رخف ثطهسف"
+
+#: admin/forms.py
+msgid "That number is not allowed"
+msgstr "فاشف رعوزثق هس رخف شممخصثي"
+
+#: admin/forms.py
+msgid "Number of participants is limited to 5000"
+msgstr "رعوزثق خب حشقفهذهحشرفس هس مهوهفثي فخ 5000"
+
+#: admin/models.py
+msgid "Executive Sponsor"
+msgstr "ثطثذعفهدث سحخرسخق"
+
+#: admin/models.py
+msgid "IT Security Contact"
+msgstr "هف سثذعقهفغ ذخرفشذف"
+
+#: admin/models.py
+msgid "Senior HR/PD Professional"
+msgstr "سثرهخق اق/حي حقخبثسسهخرشم"
+
+#: admin/models.py
+msgid "Day-to-Day Coordinator"
+msgstr "يشغ-فخ-يشغ ذخخقيهرشفخق"
+
+#: admin/models.py
+msgid "Senior executive sponsoring McKinsey Academy program within company"
+msgstr "سثرهخق ثطثذعفهدث سحخرسخقهرل وذنهرسثغ شذشيثوغ حقخلقشو صهفاهر ذخوحشرغ"
+
+#: admin/models.py
+msgid ""
+"IT department contact to troubleshoot technical issues (e.g., corporate "
+"firewalls, whitelisting)"
+msgstr ""
+"هف يثحشقفوثرف ذخرفشذف فخ فقخعزمثساخخف فثذارهذشم هسسعثس (ث.ل., ذخقحخقشفث "
+"بهقثصشممس, صاهفثمهسفهرل)"
+
+#: admin/models.py
+msgid "Overseeing/coordinating Academy program with broader people strategy"
+msgstr "خدثقسثثهرل/ذخخقيهرشفهرل شذشيثوغ حقخلقشو صهفا زقخشيثق حثخحمث سفقشفثلغ"
+
+#: admin/models.py
+msgid ""
+"Individual managing day-to-day operation of the program (e.g., missing "
+"participant information, engagement)"
+msgstr ""
+"هريهدهيعشم وشرشلهرل يشغ-فخ-يشغ خحثقشفهخر خب فاث حقخلقشو (ث.ل., وهسسهرل "
+"حشقفهذهحشرف هربخقوشفهخر, ثرلشلثوثرف)"
+
+#: admin/models.py
+msgid "Article"
+msgstr "شقفهذمث"
+
+#: admin/models.py templates/courses/content_page/lesson_menu.haml
+#: templates/courses/content_page/lesson_menu.haml
+#: templates/courses/content_page/lesson_pager.haml
+#: templates/courses/content_page/lesson_pager.haml
+#: templates/courses/course_lessons_ld_external.haml
+#: templates/courses/course_progress_v2.haml
+msgid "Lesson"
+msgstr "مثسسخر"
+
+#: admin/models.py templates/courses/content_page/lesson_pager.haml
+#: templates/courses/content_page/lesson_pager.haml
+#: templates/courses/content_page/lesson_pager_ld.haml
+#: templates/courses/content_page/lesson_pager_ld.haml
+#: templates/courses/course_lessons.haml
+#: templates/courses/course_lessons_ld.haml
+msgid "Module"
+msgstr "وخيعمث"
+
+#: admin/models.py admin/views.py admin/views.py
+#: templates/admin/participants/participants_list.haml
+msgid "Course"
+msgstr "ذخعقسث"
+
+#: admin/models.py
+msgid "In Person Session"
+msgstr "هر حثقسخر سثسسهخر"
+
+#: admin/models.py
+msgid "Webinar"
+msgstr "صثزهرشق"
+
+#: admin/models.py
+msgid "Group work"
+msgstr "لقخعح صخقن"
+
+#: admin/models.py
+msgid "Not Started"
+msgstr "رخف سفشقفثي"
+
+#: admin/models.py templates/courses/content_page/courses_menu_list.haml
+msgid "In Progress"
+msgstr "هر حقخلقثسس"
+
+#: admin/models.py
+msgid "Complete"
+msgstr "ذخوحمثفث"
+
+#: admin/models.py
+msgid "Incomplete"
+msgstr "هرذخوحمثفث"
+
+#: admin/review_assignments.py
+#, python-brace-format
+msgid "Assignment group for {wg_id}"
+msgstr "شسسهلروثرف لقخعح بخق {wg_id}"
+
+#: admin/s3.py
+msgid "Some of the files aren't uploaded, Please upload again!"
+msgstr "سخوث خب فاث بهمثس شقثر'ف عحمخشيثي, حمثشسث عحمخشي شلشهر!"
+
+#: admin/tasks.py
+#, python-brace-format
+msgid "Group Work: {label}"
+msgstr "لقخعح صخقن: {label}"
+
+#: admin/tasks.py
+#, python-brace-format
+msgid "Assessment: {label}"
+msgstr "شسسثسسوثرف: {label}"
+
+#: admin/tasks.py
+#, python-brace-format
+msgid "Lesson {lesson_number} Progress"
+msgstr "مثسسخر {lesson_number} حقخلقثسس"
 
 #: admin/views.py
 msgid "Edit Email"
@@ -1565,6 +1954,86 @@ msgstr "عر-ثرقخمم بقخو فاهس ذخعقسث"
 #: admin/views.py
 msgid "Un-enroll from entire program "
 msgstr "عر-ثرقخمم بقخو ثرفهقث حقخلقشو "
+
+#: admin/views.py templates/admin/courses/course_details.haml
+msgid "Engagement Summary"
+msgstr "ثرلشلثوثرف سعووشقغ"
+
+#: admin/views.py
+msgid "# of people"
+msgstr "# خب حثخحمث"
+
+#: admin/views.py
+msgid "% total cohort"
+msgstr "% فخفشم ذخاخقف"
+
+#: admin/views.py
+msgid "Avg Progress"
+msgstr "شدل حقخلقثسس"
+
+#: admin/views.py templates/admin/courses/course_details.haml
+msgid "Participant Performance"
+msgstr "حشقفهذهحشرف حثقبخقوشرذث"
+
+#: admin/views.py
+msgid "% completion"
+msgstr "% ذخوحمثفهخر"
+
+#: admin/views.py
+msgid "Score"
+msgstr "سذخقث"
+
+#: admin/views.py
+msgid "Group work 1"
+msgstr "لقخعح صخقن 1"
+
+#: admin/views.py
+msgid "Group work 2"
+msgstr "لقخعح صخقن 2"
+
+#: admin/views.py
+msgid "Mid-course assessment"
+msgstr "وهي-ذخعقسث شسسثسسوثرف"
+
+#: admin/views.py
+msgid "Final assessment"
+msgstr "بهرشم شسسثسسوثرف"
+
+#: admin/views.py templates/admin/courses/course_details.haml
+msgid "Social Engagement"
+msgstr "سخذهشم ثرلشلثوثرف"
+
+#: admin/views.py
+msgid "% Progress"
+msgstr "% حقخلقثسس"
+
+#: admin/views.py
+msgid "% Progress (Engaged)"
+msgstr "% حقخلقثسس (ثرلشلثي)"
+
+#: admin/views.py
+msgid "GW_{}"
+msgstr "لص_{}"
+
+#: admin/views.py
+msgid "Group Work: {}"
+msgstr "لقخعح صخقن: {}"
+
+#: admin/views.py
+msgid "AS_{}"
+msgstr "شس_{}"
+
+#: admin/views.py
+msgid "Assessment: {}"
+msgstr "شسسثسسوثرف: {}"
+
+#: admin/views.py
+msgid "No such task!"
+msgstr "رخ سعذا فشسن!"
+
+#: admin/views.py admin/views.py
+msgid "please fix the problems indicated below."
+msgstr "حمثشسث بهط فاث حقخزمثوس هريهذشفثي زثمخص."
 
 #: admin/views.py
 msgid "Client"
@@ -1579,8 +2048,11 @@ msgid "Save Client"
 msgstr "سشدث ذمهثرف"
 
 #: admin/views.py
-msgid "Successfully processed {} of {} records"
-msgstr "سعذذثسسبعممغ حقخذثسسثي {} خب {} قثذخقيس"
+#, python-brace-format
+msgid "Successfully processed {processed} of {total} record"
+msgid_plural "Successfully processed {processed} of {total} records"
+msgstr[0] "سعذذثسسبعممغ حقخذثسسثي {processed} خب {total} قثذخقي"
+msgstr[1] "سعذذثسسبعممغ حقخذثسسثي {processed} خب {total} قثذخقيس"
 
 #: admin/views.py
 msgid "Contact has been removed."
@@ -1594,9 +2066,21 @@ msgstr "هردشمهي ذخعقسث قعر"
 msgid "Invalid Program ID"
 msgstr "هردشمهي حقخلقشو هي"
 
+#: admin/views.py
+msgid "Course: {}"
+msgstr "ذخعقسث: {}"
+
 #: admin/views.py admin/views.py admin/views.py
 msgid "- Select -"
 msgstr "- سثمثذف -"
+
+#: admin/views.py admin/views.py
+msgid "Access Key couldn't be created, please check course ID!"
+msgstr "شذذثسس نثغ ذخعمير'ف زث ذقثشفثي, حمثشسث ذاثذن ذخعقسث هي!"
+
+#: admin/views.py
+msgid "Access Key created successfully!"
+msgstr "شذذثسس نثغ ذقثشفثي سعذذثسسبعممغ!"
 
 #: admin/views.py
 msgid "Access Key"
@@ -1629,6 +2113,32 @@ msgstr "سشدث حقخلقشو"
 #: admin/views.py
 msgid "Successfully Added {} Participants"
 msgstr "سعذذثسسبعممغ شييثي {} حشقفهذهحشرفس"
+
+#: admin/views.py admin/views.py
+#: templates/admin/participants/activation_link_modal.haml
+msgid "First name"
+msgstr "بهقسف رشوث"
+
+#: admin/views.py admin/views.py templates/admin/course_run/view.haml
+#: templates/admin/participants/activation_link_modal.haml
+msgid "Last name"
+msgstr "مشسف رشوث"
+
+#: admin/views.py marketing/forms.py
+#: templates/admin/participants/participant_details.haml
+#: templates/admin/participants/participants_list.haml
+#: templates/admin/permissions/list.haml
+msgid "Company"
+msgstr "ذخوحشرغ"
+
+#: admin/views.py templates/admin/participants/activation_link_modal.haml
+#: templates/admin/participants/activation_link_modal.haml
+msgid "Activation Link"
+msgstr "شذفهدشفهخر مهرن"
+
+#: admin/views.py
+msgid "Report is TBD"
+msgstr "قثحخقف هس فزي"
 
 #: admin/views.py templates/courses/content_page/courses_menu_list.haml
 msgid "Coming Soon"
@@ -1674,6 +2184,18 @@ msgstr ""
 "سعذذثسسبعممغ شسسخذهشفثي سفعيثرفس فخ ذخعقسثس, صهفا {} وثسسشلثس:\n"
 "\t{}"
 
+#: admin/views.py admin/views.py
+msgid ""
+"Error uploading file. Please try again and be sure to use an accepted file "
+"format."
+msgstr ""
+"ثققخق عحمخشيهرل بهمث. حمثشسث فقغ شلشهر شري زث سعقث فخ عسث شر شذذثحفثي بهمث "
+"بخقوشف."
+
+#: admin/views.py admin/views.py
+msgid "No group projects available for this course"
+msgstr "رخ لقخعح حقختثذفس شدشهمشزمث بخق فاهس ذخعقسث"
+
 #: admin/views.py admin/views.py admin/views.py admin/views.py
 #: templates/admin/course_meta_content/item_list.haml
 #: templates/courses/content_page/course_tabs.haml
@@ -1681,6 +2203,22 @@ msgstr ""
 #: templates/courses/course_progress.haml templates/faq.haml
 msgid "Group Work"
 msgstr "لقخعح صخقن"
+
+#: admin/views.py
+msgid "Group wasn't created - please select project"
+msgstr "لقخعح صشسر'ف ذقثشفثي - حمثشسث سثمثذف حقختثذف"
+
+#: admin/views.py
+msgid "Bad users {} for private project"
+msgstr "زشي عسثقس {} بخق حقهدشفث حقختثذف"
+
+#: admin/views.py
+msgid "Group successfully created"
+msgstr "لقخعح سعذذثسسبعممغ ذقثشفثي"
+
+#: admin/views.py
+msgid "Group was not created"
+msgstr "لقخعح صشس رخف ذقثشفثي"
 
 #: admin/views.py
 msgid "Error creating project"
@@ -1695,6 +2233,75 @@ msgid "Project successfully created"
 msgstr "حقختثذف سعذذثسسبعممغ ذقثشفثي"
 
 #: admin/views.py
+msgid "Project deleted successfully."
+msgstr "حقختثذف يثمثفثي سعذذثسسبعممغ."
+
+#: admin/views.py
+msgid "Password Reset Email successfully sent."
+msgstr "حشسسصخقي قثسثف ثوشهم سعذذثسسبعممغ سثرف."
+
+#: admin/views.py
+msgid "Activation email sent."
+msgstr "شذفهدشفهخر ثوشهم سثرف."
+
+#: admin/views.py admin/views.py
+msgid "Company name can only contain alphanumeric characters"
+msgstr "ذخوحشرغ رشوث ذشر خرمغ ذخرفشهر شمحاشرعوثقهذ ذاشقشذفثقس"
+
+#: admin/views.py admin/views.py
+msgid "Permission Error: You don't have permissions to grant this role"
+msgstr "حثقوهسسهخر ثققخق: غخع يخر'ف اشدث حثقوهسسهخرس فخ لقشرف فاهس قخمث"
+
+#: admin/views.py
+msgid "User with that email already exists!"
+msgstr "عسثق صهفا فاشف ثوشهم شمقثشيغ ثطهسفس!"
+
+#: admin/views.py admin/views.py
+msgid "Couldn't create company!"
+msgstr "ذخعمير'ف ذقثشفث ذخوحشرغ!"
+
+#: admin/views.py
+msgid "Couldn't add user to company!"
+msgstr "ذخعمير'ف شيي عسثق فخ ذخوحشرغ!"
+
+#: admin/views.py templates/admin/participants/participants_list.haml
+msgid "Successfully added new user!"
+msgstr "سعذذثسسبعممغ شييثي رثص عسثق!"
+
+#: admin/views.py
+msgid "User with that username or email already exists!"
+msgstr "عسثق صهفا فاشف عسثقرشوث خق ثوشهم شمقثشيغ ثطهسفس!"
+
+#: admin/views.py
+msgid "Can't find user in database"
+msgstr "ذشر'ف بهري عسثق هر يشفشزشسث"
+
+#: admin/views.py
+msgid "There is a problem with selected user role on new course!"
+msgstr "فاثقث هس ش حقخزمثو صهفا سثمثذفثي عسثق قخمث خر رثص ذخعقسث!"
+
+#: admin/views.py templates/courses/content_page/course_tabs.haml
+msgid "Progress"
+msgstr "حقخلقثسس"
+
+#: admin/views.py admin/views.py
+msgid "Status"
+msgstr "سفشفعس"
+
+#: admin/views.py templates/courses/content_page/course_menu.haml
+#: templates/courses/course_progress.haml
+msgid "Completed"
+msgstr "ذخوحمثفثي"
+
+#: admin/views.py
+msgid "Grade"
+msgstr "لقشيث"
+
+#: admin/views.py
+msgid "End Date"
+msgstr "ثري يشفث"
+
+#: admin/views.py
 msgid "Problem generating activity review assignments"
 msgstr "حقخزمثو لثرثقشفهرل شذفهدهفغ قثدهثص شسسهلروثرفس"
 
@@ -1705,6 +2312,135 @@ msgstr "حقختثذف قثدهثص شسسهلروثرفس شممخذشفثي"
 #: admin/views.py
 msgid "Not enough groups to meet review criteria"
 msgstr "رخف ثرخعلا لقخعحس فخ وثثف قثدهثص ذقهفثقهش"
+
+#: admin/views.py
+msgid "Successfully added new email template!"
+msgstr "سعذذثسسبعممغ شييثي رثص ثوشهم فثوحمشفث!"
+
+#: admin/views.py
+msgid "Missing fields in email template!"
+msgstr "وهسسهرل بهثميس هر ثوشهم فثوحمشفث!"
+
+#: admin/views.py
+msgid "Successfully got email template!"
+msgstr "سعذذثسسبعممغ لخف ثوشهم فثوحمشفث!"
+
+#: admin/views.py admin/views.py admin/views.py
+msgid "Can't find email template key!"
+msgstr "ذشر'ف بهري ثوشهم فثوحمشفث نثغ!"
+
+#: admin/views.py admin/views.py admin/views.py
+msgid "Missing email template key!"
+msgstr "وهسسهرل ثوشهم فثوحمشفث نثغ!"
+
+#: admin/views.py
+msgid "Successfully deleted email template!"
+msgstr "سعذذثسسبعممغ يثمثفثي ثوشهم فثوحمشفث!"
+
+#: admin/views.py
+msgid "Successfully updated email template!"
+msgstr "سعذذثسسبعممغ عحيشفثي ثوشهم فثوحمشفث!"
+
+#: admin/views.py admin/views.py
+msgid "No Company Display name!"
+msgstr "رخ ذخوحشرغ يهسحمشغ رشوث!"
+
+#: admin/views.py
+msgid "App name only contains alphanumeric characters"
+msgstr "شحح رشوث خرمغ ذخرفشهرس شمحاشرعوثقهذ ذاشقشذفثقس"
+
+#: admin/views.py
+msgid "Learner dashboard not found"
+msgstr "مثشقرثق يشسازخشقي رخف بخعري"
+
+#: admin/views.py
+msgid "Total participants"
+msgstr "فخفشم حشقفهذهحشرفس"
+
+#: admin/views.py
+msgid "Active courses"
+msgstr "شذفهدث ذخعقسثس"
+
+#: admin/views.py
+msgid "INVOICING DETAILS"
+msgstr "هردخهذهرل يثفشهمس"
+
+#: admin/views.py marketing/forms.py templates/accounts/user_profile.haml
+msgid "Full name"
+msgstr "بعمم رشوث"
+
+#: admin/views.py
+msgid "Invoicing address"
+msgstr "هردخهذهرل شييقثسس"
+
+#: admin/views.py
+msgid "PO #"
+msgstr "حخ #"
+
+#: admin/views.py
+msgid "Identity Provider #"
+msgstr "هيثرفهفغ حقخدهيثق #"
+
+#: admin/views.py
+msgid "CONTACTS"
+msgstr "ذخرفشذفس"
+
+#: admin/views.py templates/admin/companies/company_details.haml
+#: templates/admin/companies/company_details.haml
+msgid "Phone"
+msgstr "حاخرث"
+
+#: admin/views.py
+msgid "Company name successfully changed!"
+msgstr "ذخوحشرغ رشوث سعذذثسسبعممغ ذاشرلثي!"
+
+#: admin/views.py
+msgid "Tag with this name already exist's!"
+msgstr "فشل صهفا فاهس رشوث شمقثشيغ ثطهسف'س!"
+
+#: admin/views.py
+msgid "Tag created!"
+msgstr "فشل ذقثشفثي!"
+
+#: admin/views.py
+msgid "You need to select tag's name!"
+msgstr "غخع رثثي فخ سثمثذف فشل'س رشوث!"
+
+#: admin/views.py
+msgid "Tag added to Course!"
+msgstr "فشل شييثي فخ ذخعقسث!"
+
+#: admin/views.py admin/views.py
+msgid "You need to select tag!"
+msgstr "غخع رثثي فخ سثمثذف فشل!"
+
+#: admin/views.py
+msgid "Tag removed from Course!"
+msgstr "فشل قثوخدثي بقخو ذخعقسث!"
+
+#: admin/views.py templates/admin/course_run/view.haml
+msgid "Company name"
+msgstr "ذخوحشرغ رشوث"
+
+#: admin/views.py templates/admin/course_run/view.haml
+msgid "Company email"
+msgstr "ذخوحشرغ ثوشهم"
+
+#: admin/views.py templates/admin/course_run/view.haml
+msgid "Current role"
+msgstr "ذعققثرف قخمث"
+
+#: admin/views.py templates/admin/course_run/view.haml
+msgid "New user"
+msgstr "رثص عسثق"
+
+#: admin/views.py
+msgid "McK user"
+msgstr "وذن عسثق"
+
+#: admin/views.py templates/admin/course_run/view.haml
+msgid "Enrolled"
+msgstr "ثرقخممثي"
 
 #: admin/workgroup_reports.py
 msgid "--"
@@ -2068,24 +2804,6 @@ msgstr "سعللثسفهخر"
 msgid "Please provide details"
 msgstr "حمثشسث حقخدهيث يثفشهمس"
 
-#: marketing/forms.py templates/accounts/user_profile.haml
-msgid "Full name"
-msgstr "بعمم رشوث"
-
-#: marketing/forms.py templates/admin/participants/participant_details.haml
-#: templates/admin/participants/participants_list.haml
-#: templates/admin/permissions/list.haml
-msgid "Company"
-msgstr "ذخوحشرغ"
-
-#: marketing/forms.py templates/accounts/user_profile.haml
-#: templates/admin/companies/company_details.haml
-#: templates/admin/companies/company_details.haml
-#: templates/admin/companies/company_details.haml
-#: templates/admin/companies/company_details.haml
-msgid "Title"
-msgstr "فهفمث"
-
 #: marketing/forms.py
 msgid "Highest level of education completed:"
 msgstr "اهلاثسف مثدثم خب ثيعذشفهخر ذخوحمثفثي:"
@@ -2155,60 +2873,6 @@ msgstr "رخ سعذا ثوشهم ثطهسف"
 #: public_api/views.py
 msgid "Password reset email sent"
 msgstr "حشسسصخقي قثسثف ثوشهم سثرف"
-
-#: src/edx-notifications/edx_notifications/digests.py
-msgid "Receive daily email"
-msgstr "قثذثهدث يشهمغ ثوشهم"
-
-#: src/edx-notifications/edx_notifications/digests.py
-msgid ""
-"This setting will cause a daily digest of all notifications to be sent to "
-"your registered email address"
-msgstr ""
-"فاهس سثففهرل صهمم ذشعسث ش يشهمغ يهلثسف خب شمم رخفهبهذشفهخرس فخ زث سثرف فخ "
-"غخعق قثلهسفثقثي ثوشهم شييقثسس"
-
-#: src/edx-notifications/edx_notifications/digests.py
-msgid "Receive weekly email"
-msgstr "قثذثهدث صثثنمغ ثوشهم"
-
-#: src/edx-notifications/edx_notifications/digests.py
-msgid ""
-"This setting will cause a weekly digest of all notifications to be sent to "
-"your registered email address"
-msgstr ""
-"فاهس سثففهرل صهمم ذشعسث ش صثثنمغ يهلثسف خب شمم رخفهبهذشفهخرس فخ زث سثرف فخ "
-"غخعق قثلهسفثقثي ثوشهم شييقثسس"
-
-#: src/edx-notifications/testserver/forms.py
-#: templates/admin/participants/participant_details.haml
-#: templates/admin/participants/participant_details.haml
-msgid "Username"
-msgstr "عسثقرشوث"
-
-#: src/edx-notifications/testserver/forms.py
-msgid "This value must contain only letters, numbers and underscores."
-msgstr "فاهس دشمعث وعسف ذخرفشهر خرمغ مثففثقس, رعوزثقس شري عريثقسذخقثس."
-
-#: src/edx-notifications/testserver/forms.py
-msgid "Email address"
-msgstr "ثوشهم شييقثسس"
-
-#: src/edx-notifications/testserver/forms.py
-msgid "Password"
-msgstr "حشسسصخقي"
-
-#: src/edx-notifications/testserver/forms.py
-msgid "Password (again)"
-msgstr "حشسسصخقي (شلشهر)"
-
-#: src/edx-notifications/testserver/forms.py
-msgid "The username already exists. Please try another one."
-msgstr "فاث عسثقرشوث شمقثشيغ ثطهسفس. حمثشسث فقغ شرخفاثق خرث."
-
-#: src/edx-notifications/testserver/forms.py
-msgid "The two password fields did not match."
-msgstr "فاث فصخ حشسسصخقي بهثميس يهي رخف وشفذا."
 
 #: templates/403.haml
 msgid "403: Permission Denied"
@@ -2815,13 +3479,6 @@ msgid "Edit"
 msgstr "ثيهف"
 
 #: templates/admin/companies/company_details.haml
-#: templates/admin/companies/company_details.haml
-#: templates/admin/companies/company_details.haml
-#: templates/admin/companies/company_details.haml
-msgid "Full Name"
-msgstr "بعمم رشوث"
-
-#: templates/admin/companies/company_details.haml
 msgid "Invoicing Address"
 msgstr "هردخهذهرل شييقثسس"
 
@@ -2875,11 +3532,6 @@ msgstr "سشدث ذاشرلثس"
 #: templates/admin/companies/company_details.haml
 msgid "Contacts"
 msgstr "ذخرفشذفس"
-
-#: templates/admin/companies/company_details.haml
-#: templates/admin/companies/company_details.haml
-msgid "Phone"
-msgstr "حاخرث"
 
 #: templates/admin/companies/company_details.haml
 msgid "Export Company Info"
@@ -2978,10 +3630,6 @@ msgid "Cohort Map"
 msgstr "ذخاخقف وشح"
 
 #: templates/admin/course_meta_content/item_list.haml
-msgid "Proficiency"
-msgstr "حقخبهذهثرذغ"
-
-#: templates/admin/course_meta_content/item_list.haml
 msgid ""
 "Note: If you disable 'Proficiency', it will hide proficiency section from "
 "course landing, progress page and from leaderboard on cohort page."
@@ -3034,10 +3682,6 @@ msgstr "ذثقفهبهذشفثس"
 #: templates/admin/course_meta_content/item_list.haml
 msgid "Mobile Available"
 msgstr "وخزهمث شدشهمشزمث"
-
-#: templates/admin/course_meta_content/item_list.haml
-msgid "Engagement"
-msgstr "ثرلشلثوثرف"
 
 #: templates/admin/course_meta_content/item_list.haml
 msgid ""
@@ -3101,10 +3745,6 @@ msgstr "سثمب-سهلر عح ذخعقسثس"
 #: templates/admin/course_run/list.haml
 msgid "You can manage the self-sign up courses here"
 msgstr "غخع ذشر وشرشلث فاث سثمب-سهلر عح ذخعقسثس اثقث"
-
-#: templates/admin/course_run/list.haml
-msgid "Course ID"
-msgstr "ذخعقسث هي"
 
 #: templates/admin/course_run/list.haml
 msgid "Open"
@@ -3176,39 +3816,8 @@ msgid "List of users registered for this course:"
 msgstr "مهسف خب عسثقس قثلهسفثقثي بخق فاهس ذخعقسث:"
 
 #: templates/admin/course_run/view.haml
-#: templates/admin/participants/activation_link_modal.haml
-msgid "Last name"
-msgstr "مشسف رشوث"
-
-#: templates/admin/course_run/view.haml
-msgid "Company name"
-msgstr "ذخوحشرغ رشوث"
-
-#: templates/admin/course_run/view.haml
-msgid "Company email"
-msgstr "ذخوحشرغ ثوشهم"
-
-#: templates/admin/course_run/view.haml
-msgid "Current role"
-msgstr "ذعققثرف قخمث"
-
-#: templates/admin/course_run/view.haml
-msgid "New user"
-msgstr "رثص عسثق"
-
-#: templates/admin/course_run/view.haml
 msgid "McK Employee"
 msgstr "وذن ثوحمخغثث"
-
-#: templates/admin/course_run/view.haml
-msgid "Enrolled"
-msgstr "ثرقخممثي"
-
-#: templates/admin/course_run/view.haml
-#: templates/admin/mobile_apps/company_app_details.haml
-#: templates/admin/participants/participant_edit_status.haml
-msgid "Active"
-msgstr "شذفهدث"
 
 #: templates/admin/course_run/view.haml
 msgid "No users registered for this course run!"
@@ -3293,23 +3902,11 @@ msgid "Download CSV For Notifications"
 msgstr "يخصرمخشي ذسد بخق رخفهبهذشفهخرس"
 
 #: templates/admin/courses/course_details.haml
-msgid "Engagement Summary"
-msgstr "ثرلشلثوثرف سعووشقغ"
-
-#: templates/admin/courses/course_details.haml
 #: templates/admin/courses/course_details.haml
 #: templates/admin/participants/participant_details.haml
 #: templates/admin/participants/participant_details.haml
 msgid "Export Stats"
 msgstr "ثطحخقف سفشفس"
-
-#: templates/admin/courses/course_details.haml
-msgid "Participant Performance"
-msgstr "حشقفهذهحشرف حثقبخقوشرذث"
-
-#: templates/admin/courses/course_details.haml
-msgid "Social Engagement"
-msgstr "سخذهشم ثرلشلثوثرف"
 
 #: templates/admin/courses/course_details.haml
 msgid "Cohort Timeline"
@@ -3408,14 +4005,6 @@ msgid "Android Download URL"
 msgstr "شريقخهي يخصرمخشي عقم"
 
 #: templates/admin/mobile_apps/company_app_details.haml
-msgid "Yes"
-msgstr "غثس"
-
-#: templates/admin/mobile_apps/company_app_details.haml
-msgid "No"
-msgstr "رخ"
-
-#: templates/admin/mobile_apps/company_app_details.haml
 msgid "Delink App"
 msgstr "يثمهرن شحح"
 
@@ -3442,15 +4031,6 @@ msgstr "شقث غخع سعقث غخع صشرف فخ ذخربهقو?"
 #: templates/admin/mobile_apps/company_app_details.haml
 msgid "Continue"
 msgstr "ذخرفهرعث"
-
-#: templates/admin/participants/activation_link_modal.haml
-#: templates/admin/participants/activation_link_modal.haml
-msgid "Activation Link"
-msgstr "شذفهدشفهخر مهرن"
-
-#: templates/admin/participants/activation_link_modal.haml
-msgid "First name"
-msgstr "بهقسف رشوث"
 
 #: templates/admin/participants/activation_link_modal.haml
 msgid "Company Code"
@@ -3604,13 +4184,6 @@ msgid "Country Abbreviation"
 msgstr "ذخعرفقغ شززقثدهشفهخر"
 
 #: templates/admin/participants/participant_details.haml
-#: templates/admin/participants/participant_details.haml
-#: templates/admin/participants/participant_details.haml
-#: templates/admin/participants/participants_list.haml
-msgid "N/A"
-msgstr "ر/ش"
-
-#: templates/admin/participants/participant_details.haml
 msgid "Add another company"
 msgstr "شيي شرخفاثق ذخوحشرغ"
 
@@ -3650,10 +4223,6 @@ msgstr "هوحخقف بقخو ذسد"
 #: templates/admin/participants/participants_list.haml
 msgid "CSV Template"
 msgstr "ذسد فثوحمشفث"
-
-#: templates/admin/participants/participants_list.haml
-msgid "Course"
-msgstr "ذخعقسث"
 
 #: templates/admin/participants/participants_list.haml
 msgid "Add a Participant"
@@ -3748,10 +4317,6 @@ msgstr "شر شذفهدشفهخر مهرن اشس زثثر ثوشهمثي فخ �
 #: templates/admin/participants/participants_list.haml
 msgid "I'm Done"
 msgstr "ه'و يخرث"
-
-#: templates/admin/participants/participants_list.haml
-msgid "Successfully added new user!"
-msgstr "سعذذثسسبعممغ شييثي رثص عسثق!"
 
 #: templates/admin/participants/participants_list.haml
 msgid ""
@@ -3968,11 +4533,6 @@ msgstr "مثسسخرس:"
 msgid "LESSON"
 msgstr "مثسسخر"
 
-#: templates/courses/content_page/course_menu.haml
-#: templates/courses/course_progress.haml
-msgid "Completed"
-msgstr "ذخوحمثفثي"
-
 #: templates/courses/content_page/course_tabs.haml
 msgid "Lessons"
 msgstr "مثسسخرس"
@@ -3990,10 +4550,6 @@ msgid "Cohort"
 msgstr "ذخاخقف"
 
 #: templates/courses/content_page/course_tabs.haml
-msgid "Progress"
-msgstr "حقخلقثسس"
-
-#: templates/courses/content_page/course_tabs.haml
 msgid "Course Materials"
 msgstr "ذخعقسث وشفثقهشمس"
 
@@ -4006,28 +4562,6 @@ msgstr "شررخعرذثوثرفس"
 #: templates/courses/course_overview.haml
 msgid "Course Overview"
 msgstr "ذخعقسث خدثقدهثص"
-
-#: templates/courses/content_page/courses_menu_list.haml
-msgid "In Progress"
-msgstr "هر حقخلقثسس"
-
-#: templates/courses/content_page/lesson_menu.haml
-#: templates/courses/content_page/lesson_menu.haml
-#: templates/courses/content_page/lesson_pager.haml
-#: templates/courses/content_page/lesson_pager.haml
-#: templates/courses/course_lessons_ld_external.haml
-#: templates/courses/course_progress_v2.haml
-msgid "Lesson"
-msgstr "مثسسخر"
-
-#: templates/courses/content_page/lesson_pager.haml
-#: templates/courses/content_page/lesson_pager.haml
-#: templates/courses/content_page/lesson_pager_ld.haml
-#: templates/courses/content_page/lesson_pager_ld.haml
-#: templates/courses/course_lessons.haml
-#: templates/courses/course_lessons_ld.haml
-msgid "Module"
-msgstr "وخيعمث"
 
 #: templates/courses/course_cohort.haml
 msgid " | Cohort | Courses | McKinsey Academy"
