@@ -40,3 +40,16 @@ body{
     }
   }
 }
+
+//Image Explorer
+
+.image-explorer-hotspot-reveal{
+  .image-explorer-close-reveal{
+    @include float(right);
+  }
+  .image-explorer-hotspot-reveal-body {
+    ul {
+      @include margin-left(1.1rem);
+    }
+  }
+}
