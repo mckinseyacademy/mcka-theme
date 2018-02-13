@@ -501,12 +501,13 @@ def get_mobile_apps_id(organization):
 
     if mobile_id.get('results'):
 
-        results = mobile_id['results'][0]
-        user_org = results['name']
+        for mobile_app in mobile_id['results']:
 
-        if results['deployment_mechanism'] == MOBILE_APP_DEPLOYMENT_MECHANISMS['public_store']:
-            ios_app_id = results['ios_app_id']
-            android_app_id = results['android_app_id']
+            if mobile_app['deployment_mechanism'] == MOBILE_APP_DEPLOYMENT_MECHANISMS['public_store']:
+                user_org = mobile_app['name']
+                ios_app_id = mobile_app['ios_app_id']
+                android_app_id = mobile_app['android_app_id']
+                break
 
     return {'ios_app_id': ios_app_id,
             'android_app_id': android_app_id,
