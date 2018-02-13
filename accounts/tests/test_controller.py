@@ -1,17 +1,22 @@
 import mock
+import ddt
 
 from django.contrib import messages
-from django.test import TestCase
+from django.core import mail
+from django.test import TestCase, RequestFactory
 
 from accounts.controller import (AssignStudentToProgramResult,
                                  EnrollStudentInCourseResult,
                                  enroll_student_in_course,
                                  process_access_key,
-                                 append_user_mobile_app_id_cookie)
+                                 append_user_mobile_app_id_cookie,
+                                 ExistingSelfRegistration,
+                                 NewSelfRegistration,
+                                 process_registration_request)
 from accounts.tests.utils import (ApplyPatchMixin, _make_company,
                                   _make_course, _make_program,
                                   _make_user)
-from admin.models import AccessKey
+from admin.models import AccessKey, CourseRun
 from api_client.api_error import ApiError
 from django.http.response import HttpResponseBase
 from lib.utils import DottableDict
@@ -205,3 +210,90 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
 
         self.assertIsNone(result.cookies.get('ios_app_id'))
         self.assertIsNone(result.cookies.get('android_app_id'))
+
+
+@ddt.ddt
+class SelfRegistrationTest(TestCase, ApplyPatchMixin):
+    generate_activation_link = "https://www.testlink.com"
+    inactive_user = DottableDict(id=1, email="test@test.com", first_name="test", last_name="test",
+                                 company_email="test@test.com", is_active=False, new_user=False)
+    active_user = DottableDict(id=1, email="test@test.com", first_name="test", last_name="test",
+                               company_email="test@test.com", is_active=True, new_user=False)
+    new_user = DottableDict(id=1, email="test@test.com", first_name="test", last_name="test",
+                            company_email="test@test.com", new_user=True, is_active=False)
+
+    def setUp(self):
+        super(SelfRegistrationTest, self).setUp()
+        request_factory = RequestFactory()
+        self.request = request_factory.get('http://apros.mcka.local/registration/test/')
+        self.request.META = {'HTTP_HOST': 'apros.mcka.local'}
+
+        self.course_run = CourseRun.objects.create(
+            name="test_course", course_id="test", email_template_new="new", email_template_existing="existing",
+            email_template_mcka="mcka", email_template_closed="closed", self_registration_page_heading="test_heading",
+            self_registration_description_text="test description"
+        )
+
+        self.enroll_without_program = self.apply_patch('accounts.controller.enroll_student_in_course_without_program')
+        self.enroll_without_program.return_value = DottableDict(enrolled=True)
+
+        self.register_user_on_platform = self.apply_patch(
+            'accounts.controller.NewSelfRegistration._register_user_on_platform')
+
+        self.enroll_user_in_course = self.apply_patch('accounts.controller.enroll_user_in_course')
+        self.apply_patch('accounts.controller.NewSelfRegistration._get_set_company')
+
+    @ddt.data(
+        (new_user, None, False),
+        (inactive_user, inactive_user, True),
+        (active_user, active_user, True),
+    )
+    @ddt.unpack
+    def test_process_registration_request(self, user, existing_user, success):
+        process_registration_request(self.request, user, self.course_run, existing_user)
+        result = user.email in [email.to[0] for email in mail.outbox]
+        self.assertEqual(result, success)
+
+    @ddt.data(
+        (None, generate_activation_link, False, False),
+        (inactive_user, generate_activation_link, False, True),
+        (active_user, generate_activation_link, False, False),
+        (active_user, None, ValueError, False),
+    )
+    @ddt.unpack
+    def test_new_user_registration(self, registration_request, generate_activation_link, exception, success):
+        self.register_user_on_platform.return_value = registration_request
+
+        generate_link = self.apply_patch('accounts.controller.NewSelfRegistration.generate_activation_link')
+        generate_link.return_value = generate_activation_link
+
+        if exception:
+            self.assertRaises(exception,
+                              NewSelfRegistration.process_registration(self.request, registration_request,
+                                                                       self.course_run))
+        else:
+            NewSelfRegistration.process_registration(self.request, registration_request, self.course_run)
+
+        if registration_request:
+            result = registration_request.email in [email.to[0] for email in mail.outbox]
+            self.assertEqual(result, success)
+
+    @ddt.data(
+        (active_user, DottableDict(enrolled=True), False, True),
+        (active_user, DottableDict(enrolled=False), ValueError, False),
+    )
+    @ddt.unpack
+    def test_existing_user_registration(self, registration_request, enroll_without_program, exception, success):
+
+        self.enroll_without_program.return_value = enroll_without_program
+        if exception:
+            with self.assertRaises(exception):
+                ExistingSelfRegistration.process_registration(self.request, registration_request,
+                                                              self.course_run, registration_request)
+
+        else:
+            ExistingSelfRegistration.process_registration(self.request, registration_request,
+                                                          self.course_run, registration_request)
+
+        result = registration_request.email in [email.to[0] for email in mail.outbox]
+        self.assertEqual(result, success)
