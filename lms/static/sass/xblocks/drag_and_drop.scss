@@ -35,6 +35,14 @@
     .sidebar-buttons button:disabled {
         background-color: transparent;
     }
+
+    .feedback p::before {
+        display: none;
+    }
+
+    .keyboard-help-button {
+        display: none;
+    }
 }
 
 /* Align the Reset button to the right on mobile (non-McKinsey version has it left on mobile, right on desktop) */
