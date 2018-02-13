@@ -38,6 +38,9 @@ body{
         }
       }
     }
+    main[role=main] {
+      margin-top: 0;
+    }
   }
 }
 
@@ -45,6 +48,7 @@ body{
 main[role=main] {
   min-height: 50%;
   margin-bottom: 100px;
+  margin-top: 48px;
 }
 
 h1 {
