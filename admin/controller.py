@@ -171,7 +171,8 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
         '''
         Check if a chapter is normal or special. GROUP_PROJECT_WORK and DISCUSSION are special chapters.
         '''
-        return (not is_group_project_chapter(chapter) and
+        return (not is_discussion_chapter(chapter) and
+                not is_group_project_chapter(chapter) and
                 not is_group_project_v2_chapter(chapter))
 
     course = course_api_impl.get_course(course_id, depth, user=user)
