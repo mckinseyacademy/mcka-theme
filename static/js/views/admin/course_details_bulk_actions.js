@@ -264,7 +264,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         $('#courseDetailsMainModal').find('.courseModalTitle').text(gettext('Select Course'));
         var messageTemplate = gettext('Selected: %(selectedRows)s, Successful: 0, Failed: 0');
         var context = {'selectedRows': selectedRowsIdsLen};
-        $('#courseDetailsMainModal').find('.courseModalStatus').text(interpolate(messageTemplate, context, text));
+        $('#courseDetailsMainModal').find('.courseModalStatus').text(interpolate(messageTemplate, context, true));
         messageTemplate = ngettext('%(selectedRows)s Participants will be enroll in course selected below.',
             '%(selectedRows)s Participant will be enroll in course selected below.',selectedRowsIdsLen);
 
