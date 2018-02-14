@@ -25,10 +25,10 @@ class CertificateStatus(object):
     """
     Enum for certificate statuses
     """
-    notavailable = _('notavailable')
-    available = _('available')
-    generating = _('generating')
-    generated = _('generated')
+    notavailable = 'notavailable'
+    available = 'available'
+    generating = 'generating'
+    generated = 'generated'
 
 
 class CourseCertificateStatus(models.Model):
@@ -77,14 +77,15 @@ class CertificateTemplate(models.Model):
     """
     Model for custom certificate django templates
     """
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name=_("Name"))
     description = models.CharField(
         max_length=255,
         null=True,
         blank=True,
+        verbose_name=_("Description")
     )
-    template = models.TextField()
-    course_id = models.CharField(max_length=200, unique=True)
+    template = models.TextField(verbose_name=_("Template"))
+    course_id = models.CharField(max_length=200, unique=True, verbose_name=_("Course ID"))
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -97,10 +98,12 @@ class CertificateTemplateAsset(models.Model):
         max_length=255,
         null=True,
         blank=True,
+        verbose_name=_("Description"),
     )
     asset = models.FileField(
         max_length=255,
         upload_to=template_assets_path,
+        verbose_name=_("Asset"),
         validators=[
             FileTypeValidator(
                 allowed_types=[

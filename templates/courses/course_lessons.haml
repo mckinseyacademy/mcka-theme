@@ -7,7 +7,8 @@
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     .lesson-title
-      %span.label-4.lesson-index Lesson {{course.current_lesson.index}}:
+      %span.label-4.lesson-index
+        {% trans "Lesson" %} {{course.current_lesson.index}}:
       %span.label-3.lesson-name= course.current_lesson.name
     %h1
       %a{'data-reveal-id': 'module_list', "data-tooltip": "{% trans 'Lesson Modules' %}"}

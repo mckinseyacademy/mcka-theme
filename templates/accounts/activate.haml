@@ -19,9 +19,9 @@
           %h4 {% trans "Create your McKinsey Academy account" %}
           .description {% trans "Complete the fields below." %}
           .description
-            %span {% blocktrans %} Required fields are noted by an asterisk (
+            %span {% trans "Required fields are noted by an asterisk" %} (
             %span.required-field><
-            %span ) {% endblocktrans %}
+            %span )
           %form{action: "", method: "POST"}
             .error
               - if error

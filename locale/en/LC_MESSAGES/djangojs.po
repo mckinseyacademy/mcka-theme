@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-08 14:26+0500\n"
+"POT-Creation-Date: 2018-02-13 15:46+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -165,6 +165,16 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
+#: static/gen/packed.js:37729 static/gen/packed_ie8.js:1321
+#: static/js/views/courses/lesson_note.js:2
+msgid "Lesson"
+msgstr ""
+
+#: static/gen/packed.js:37730 static/gen/packed_ie8.js:1322
+#: static/js/views/courses/lesson_note.js:3
+msgid "Module"
+msgstr ""
+
 #: static/gen/packed.js:38193 static/gen/packed_ie8.js:1338
 #: static/js/views/admin/group_work_dashboard.js:52
 msgid "None"
@@ -256,6 +266,41 @@ msgstr ""
 #: static/js/views/admin/participant_details_edit_info.js:363
 #: static/js/views/admin/participantsinfo.js:129
 msgid "Status"
+msgstr ""
+
+#: static/gen/packed.js:38839 static/gen/packed.js:41188
+#: static/gen/packed.js:41404 static/gen/packed.js:41731
+#: static/gen/packed.js:41829 static/gen/packed_ie8.js:1445
+#: static/gen/packed_ie8.js:1817 static/gen/packed_ie8.js:1875
+#: static/gen/packed_ie8.js:1928 static/gen/packed_ie8.js:1953
+#: static/js/views/admin/company_linked_apps.js:41
+#: static/js/views/admin/course_details_bulk_actions.js:183
+#: static/js/views/admin/course_details_bulk_actions.js:281
+#: static/js/views/admin/participant_details_edit_info.js:365
+#: static/js/views/admin/participantsinfo.js:133
+msgid "Active"
+msgstr ""
+
+#: static/gen/packed.js:38840 static/gen/packed.js:41190
+#: static/gen/packed.js:41733 static/gen/packed.js:41831
+#: static/gen/packed_ie8.js:1446 static/gen/packed_ie8.js:1819
+#: static/gen/packed_ie8.js:1930 static/gen/packed_ie8.js:1955
+#: static/js/views/admin/course_details_bulk_actions.js:185
+#: static/js/views/admin/course_details_bulk_actions.js:283
+#: static/js/views/admin/participant_details_edit_info.js:367
+#: static/js/views/admin/participantsinfo.js:134
+msgid "TA"
+msgstr ""
+
+#: static/gen/packed.js:38841 static/gen/packed.js:41189
+#: static/gen/packed.js:41732 static/gen/packed.js:41830
+#: static/gen/packed_ie8.js:1447 static/gen/packed_ie8.js:1818
+#: static/gen/packed_ie8.js:1929 static/gen/packed_ie8.js:1954
+#: static/js/views/admin/course_details_bulk_actions.js:184
+#: static/js/views/admin/course_details_bulk_actions.js:282
+#: static/js/views/admin/participant_details_edit_info.js:366
+#: static/js/views/admin/participantsinfo.js:135
+msgid "Observer"
 msgstr ""
 
 #: static/gen/packed.js:39070 static/gen/packed.js:39455
@@ -563,38 +608,6 @@ msgstr ""
 #: static/gen/packed.js:41178 static/gen/packed_ie8.js:1809
 #: static/js/views/admin/participant_details_edit_info.js:355
 msgid "User will be enrolled in course selected below."
-msgstr ""
-
-#: static/gen/packed.js:41188 static/gen/packed.js:41404
-#: static/gen/packed.js:41731 static/gen/packed.js:41829
-#: static/gen/packed_ie8.js:1817 static/gen/packed_ie8.js:1875
-#: static/gen/packed_ie8.js:1928 static/gen/packed_ie8.js:1953
-#: static/js/views/admin/company_linked_apps.js:41
-#: static/js/views/admin/course_details_bulk_actions.js:183
-#: static/js/views/admin/course_details_bulk_actions.js:281
-#: static/js/views/admin/participant_details_edit_info.js:365
-#: static/js/views/admin/participantsinfo.js:133
-msgid "Active"
-msgstr ""
-
-#: static/gen/packed.js:41189 static/gen/packed.js:41732
-#: static/gen/packed.js:41830 static/gen/packed_ie8.js:1818
-#: static/gen/packed_ie8.js:1929 static/gen/packed_ie8.js:1954
-#: static/js/views/admin/course_details_bulk_actions.js:184
-#: static/js/views/admin/course_details_bulk_actions.js:282
-#: static/js/views/admin/participant_details_edit_info.js:366
-#: static/js/views/admin/participantsinfo.js:135
-msgid "Observer"
-msgstr ""
-
-#: static/gen/packed.js:41190 static/gen/packed.js:41733
-#: static/gen/packed.js:41831 static/gen/packed_ie8.js:1819
-#: static/gen/packed_ie8.js:1930 static/gen/packed_ie8.js:1955
-#: static/js/views/admin/course_details_bulk_actions.js:185
-#: static/js/views/admin/course_details_bulk_actions.js:283
-#: static/js/views/admin/participant_details_edit_info.js:367
-#: static/js/views/admin/participantsinfo.js:134
-msgid "TA"
 msgstr ""
 
 #: static/gen/packed.js:41200 static/gen/packed_ie8.js:1821
@@ -990,12 +1003,4 @@ msgstr ""
 
 #: static/js/image_editor.js:52
 msgid "Please select file for upload."
-msgstr ""
-
-#: static/js/views/courses/lesson_note.js:2
-msgid "Lesson"
-msgstr ""
-
-#: static/js/views/courses/lesson_note.js:3
-msgid "Module"
 msgstr ""

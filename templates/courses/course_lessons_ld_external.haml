@@ -28,7 +28,7 @@
           %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
           .lesson-item-name
             %a{href: "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}", class: "{% if module.is_current %}current{% endif %}"}
-              Module ={module.index}:
+              {% trans "Module" %} ={module.index}:
             %span= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle

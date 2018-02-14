@@ -15,9 +15,12 @@
 -block content
   %article#course-progress-v2.row
     .medium-11.large-10.medium-centered.columns.course-page
-      %h1 Dashboard for '={progress_user.username}'
+      %h1 {% trans "Dashboard for" %} '={progress_user.username}'
       .label-5 {% trans "PROGRESS" %}
-      %p.style-6 {% blocktrans %} You are ={course.user_progress}% of the way through the course based on completion of modules within lessons. The cohort average is  ={average_progress}%. {% endblocktrans %}
+      %p.style-6
+        {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
+          You are {{user_course_progress}}% of the way through the course based on completion of modules within lessons. The cohort average is {{user_average_progress}}%.
+        {% endblocktrans %}
       %table.user-progress
         %thead
           %tr
@@ -42,7 +45,8 @@
               - if not course.is_evergreen
                 %td.week
                   - if week.start
-                    %span Week ={week.index}:
+                    %span
+                      {% trans 'Week' %} ={week.index}:
                     ={week.start}-={week.end}
               %td
                 - if feature_flags.group_work and week.group_only
@@ -64,7 +68,7 @@
                             %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
                             .lesson-item-name
                               %a{href: "#{module.navigation_url}"}
-                                Module ={module.index}:
+                                {% trans "Module" %} ={module.index}:
                               %span= module.name
                       .close-reveal-modal
                         %i.fa.fa-times-circle
@@ -95,7 +99,10 @@
     - if feature_flags.proficiency and graded_items_count > 0
       .medium-11.large-10.medium-centered.columns.course-page
         .label-5 {% trans "PROFICIENCY" %}
-        %p.style-6 {% blocktrans %} Your current proficiency score is ={proficiency}% following completion of ={completed_items_count} of ={graded_items_count} graded items in this course. The cohort average is ={cohort_proficiency_average}%. {% endblocktrans %}
+        %p.style-6
+          {% blocktrans %}
+            Your current proficiency score is {{proficiency}}% following completion of {{completed_items_count}} of {{graded_items_count}} graded items in this course. The cohort average is {{cohort_proficiency_average}}%.
+          {% endblocktrans %}
         %table
           %thead
             %tr
@@ -146,11 +153,18 @@
         .legend-status
           .label-3 <i class="status fa fa-circle"></i> {% trans "not started / incomplete" %}
           .label-3 <i class="status fa fa-check-circle complete"></i> {% trans "complete" %}
-        %p.style-6 {% blocktrans %} You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: ={graders}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information. {% endblocktrans %}
+        %p.style-6
+          {% blocktrans %}
+            You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: {{graders}}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+          {% endblocktrans %}
     - if feature_flags.discussions
       .medium-10.medium-centered.columns.course-page
         .label-5 {% trans "ENGAGEMENT" %}
-        %p.style-6 {% blocktrans %}Your current engagement score is ={social.points} based on your social interactions with other participants in your cohort in the <a href="#{course.nav_url}/discussion">discussion</a> forums. The cohort average is ={social.course_avg}. {% endblocktrans %}
+        %p.style-6
+          {% trans "discussion" as discussion_text %}
+          {% blocktrans with social_points=social.points social_course_avg=social.course_avg course_nav_url=course.nav_url %}
+            Your current engagement score is {{social_points}} based on your social interactions with other participants in your cohort in the <a href="{{course_nav_url}}/discussion">{{discussion_text}}</a> forums. The cohort average is {{social_course_avg}}.
+          {% endblocktrans %}
         %table
           %thead
             %tr

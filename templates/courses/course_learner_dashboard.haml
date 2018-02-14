@@ -49,14 +49,15 @@
                   </a>
                 .label-3{style: "color: #{tile.note_color};"}= tile.note
       .large-4.columns.dash-widget{style: "{% if branding and branding.discover_rule_color %} border-color:#{branding.discover_rule_color}{% endif %}"}
-        %h5.label-4{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"} {% trans "FOR DISCOVERY" %}
+        %h5.label-4{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}
+          {% trans "FOR DISCOVERY" %}
         -for item in discovery_items
           .learner-info
             -if item.link
               -if item.title
                 <a href="#{item.link}" target="_blank" onclick="ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')">
                   <p class="title-font" style="{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}">#{item.title}</p>
-                </a>                
+                </a>
               -if item.author
                 %h5
                   <a href="#{item.link}" target="_blank" onclick="ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')">

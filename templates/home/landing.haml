@@ -1,4 +1,5 @@
 - extends "layout.haml"
+- load i18n
 - load staticfiles
 
 - block content
@@ -10,20 +11,25 @@
           %h1
             %img.hidden-mobile{src: "/static/image/mckinsey-academy.png", srcset: "/static/image/mckinsey-academy@2x.png 2x"}
             %img.visible-mobile{src: "/static/image/mckinsey-academy-mobile.png", srcset: "/static/image/mckinsey-academy-mobile@2x.png 2x"}
-            %span Unlocking Leadership Potential
+            %span
+              {% trans "Unlocking Leadership Potential" %}
     .header-cards
       .row.text-center
         .card.padding-low
-          %h3 For Information:
+          %h3
+            {% trans "For Information:" %}
           %p
-            Learn more about how we accelerate transformations of individuals, organizations, and communities by unlocking the potential of people
-          %a{:href => "http://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients", :target => "_blank"} Learn more
+            {% trans "Learn more about how we accelerate transformations of individuals, organizations, and communities by unlocking the potential of people" %}
+          %a{:href => "http://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients", :target => "_blank"}
+            {% trans "Learn more" %}
         .card
-          %h3 For Participants:
+          %h3
+            {% trans "For Participants:" %}
           %p
-            If you are an enrolled participant, please log in below to access your McKinsey Academy learning experience
+            {% trans "If you are an enrolled participant, please log in below to access your McKinsey Academy learning experience" %}
           - if is_login_button_enabled
-            %a.login-btn{:href => "/accounts/login"} Log in
+            %a.login-btn{:href => "/accounts/login"}
+              {% trans "Log in" %}
 
   - include "marketing/app_link_popup.haml"
 

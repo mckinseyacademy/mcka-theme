@@ -198,7 +198,7 @@ LMS_SESSION_COOKIE_DOMAIN = None  # Default: use current/same domain
 # Normally this is on the same domain as Apros and is forwarded to the LMS by an nginx reverse proxy rule
 LMS_AUTH_URL = '/auth/'
 
-NO_PROGRAM_NAME = "McKinsey Management Program"
+NO_PROGRAM_NAME = _("McKinsey Management Program")
 GROUP_PROJECT_IDENTIFIER = "GROUP_PROJECT_"
 
 DISCUSSION_IDENTIFIER = "DISCUSSION_"
@@ -275,7 +275,7 @@ APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
 
 MCKINSEY_EMAIL_DOMAIN = "@mckinsey.com"
 
-CERTIFICATES_EMAIL_SUBJECT = "Congratulations! Your certificate has been generated"
+CERTIFICATES_EMAIL_SUBJECT = _("Congratulations! Your certificate has been generated")
 
 # Date formatting rules
 DATE_DISPLAY_FORMAT = "%B %d, %Y"
