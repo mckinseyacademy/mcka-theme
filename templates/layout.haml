@@ -50,7 +50,7 @@
       %link{rel:"manifest", href: "/static/android_app_banner_manifest_files/manifest{{user_organization_id}}.json"}
     -# CSS
     - if not request.is_IE8
-      %link{href: '//fonts.googleapis.com/css?family=Open+Sans:400,600,700', rel: 'stylesheet', type: 'text/css'}
+      %link{href: '//cdn.jsdelivr.net/npm/npm-font-open-sans@1.1.0/open-sans.css?family=Open+Sans:400,600,700', rel: 'stylesheet', type: 'text/css'}
       %link{href: '//api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.css', rel: 'stylesheet'}
 
     - block css
@@ -136,9 +136,9 @@
     -# Override if you need another version of jQuery
     - block foundation_jquery
       /[if lt IE 9]
-        %script{src: "//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
+        %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
       <!--[if (gte IE 9) | (!IE)]><!-->
-        %script{src: "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
+        %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"}
       <!--<![endif]-->
       %script
         window.jQuery || document.write('<script src="{% static 'js/vendor/jquery.js' %}"><\/script>')
