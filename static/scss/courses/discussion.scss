@@ -146,7 +146,7 @@ header .course-tabs li {
         }
       }
 
-      .search-btn {
+      .search-button {
         padding: 8px;
         line-height: normal;
       }
@@ -654,6 +654,10 @@ header .course-tabs li {
       left: unquote(($pos_left * ($button_idx - 3)) + 'px ' + !important);
     }
   }
+}
+
+.wmd-panel .wmd-preview-container {
+  margin: 0 !important;
 }
 
 .discussion-body .reply-post-control, .discussion-module .reply-post-control {
