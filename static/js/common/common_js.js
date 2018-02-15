@@ -21,7 +21,7 @@ $(function() {
     $('.clearableParticipantsList').val('').change();
     
     // change width
-    $('.clearableParticipantsList').width('200px').change();
+    $('.clearableParticipantsList').width('170px').change();
 });
 
 $(function() {
