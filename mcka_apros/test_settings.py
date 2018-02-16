@@ -7,3 +7,5 @@ from .settings import *
 OAUTH2_SAFE_URL_PREFIXES = ['https://', 'http://', ]
 
 CELERY_ALWAYS_EAGER = True
+
+GA_TRACKING_ID = 'test'
