@@ -14,6 +14,14 @@
     border: none;
 }
 
+.lesson-content .xblock--drag-and-drop .feedback p::before {
+    display: none;
+}
+
+.xblock--drag-and-drop .keyboard-help-button {
+    display: none;
+}
+
 .lesson-content .xblock--drag-and-drop button:disabled {
     background-color: transparent;
 }

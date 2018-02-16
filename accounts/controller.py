@@ -283,60 +283,100 @@ def send_password_reset_email(
 
 def process_registration_request(request, user, course_run, existing_user_object=None):
 
-    domain = request.META.get('HTTP_HOST')
-    protocol = 'https' if request.is_secure() else 'http'
-
-    if not user.new_user and not user.mcka_user:
-        _process_existing_non_mcka_user(domain, protocol, user, course_run, existing_user_object)
-
-    if user.new_user and not user.mcka_user:
-        _process_new_non_mcka_user(request, user, course_run)
-
-    if user.mcka_user:
-        _process_mcka_user(request, user, course_run, protocol, domain)
+    if user.new_user:
+        NewSelfRegistration.process_registration(request, user, course_run)
+    else:
+        ExistingSelfRegistration.process_registration(request, user, course_run, existing_user_object)
 
 
-def _process_existing_non_mcka_user(domain, protocol, user, course_run, existing_user_object):
-
-    email_template_html = "registration/public_registration_existing_non_mcka.haml"
+class SelfRegistration(object):
     subject = "Welcome to Digital Academy"
-    link = protocol + "://" + domain + "/courses/" + course_run.course_id
-    template_text = course_run.email_template_existing
-
-    enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
-    if not enroll_in_course_result.enrolled:
-        raise ValueError('Problem with course enrollment')
-    send_email(email_template_html, subject, link, template_text, user.first_name, existing_user_object.email)
 
 
-def _process_new_non_mcka_user(request, registration_request, course_run):
+class ExistingSelfRegistration(SelfRegistration):
+    email_template_html = "registration/public_registration_existing.haml"
 
+    @classmethod
+    def process_registration(cls, request, user, course_run, existing_user_object):
+        link = cls.generate_activation_link(request, course_run)
+        template_text = course_run.email_template_existing
+
+        enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
+        if not enroll_in_course_result.enrolled:
+            raise ValueError('Problem with course enrollment')
+
+        send_email(cls.email_template_html, cls.subject, link,
+                   template_text, user.first_name, existing_user_object.email)
+
+    @staticmethod
+    def generate_activation_link(request, course_run):
+        domain = request.META.get('HTTP_HOST')
+        protocol = 'https' if request.is_secure() else 'http'
+        return protocol + "://" + domain + "/courses/" + course_run.course_id
+
+
+class NewSelfRegistration(SelfRegistration):
     email_template_html = "registration/public_registration_activation_link.haml"
-    subject = "Welcome to Digital Academy"
-    template_text = course_run.email_template_new
 
-    user = _register_user_on_platform(registration_request)
+    @classmethod
+    def process_registration(cls, request, registration_request, course_run):
+        template_text = course_run.email_template_new
+        user = cls._register_user_on_platform(registration_request)
 
-    if user and not user.is_active:
-        link = generate_activation_link(request, user)
-        if link:
-            send_email(email_template_html, subject, link, template_text, registration_request.first_name, user.email)
-            _get_set_company(user.id)
-            enroll_user_in_course(user.id, course_run.course_id)
-            course_run.total_activations_sent += 1
-            course_run.save()
+        if user and not user.is_active:
+            link = cls.generate_activation_link(request, user)
+            if link:
+                enroll_user_in_course(user.id, course_run.course_id)
+                course_run.total_activations_sent += 1
+                course_run.save()
+                cls._get_set_company(user.id)
+                send_email(cls.email_template_html, cls.subject, link,
+                           template_text, registration_request.first_name, user.email)
+
+            else:
+                raise ValueError('Activation link generation problem')
+
+    @staticmethod
+    def _register_user_on_platform(user):
+
+        data = {}
+
+        if len(user.company_email) > 30:
+            data['username'] = user.company_email[:29]
         else:
-            raise ValueError('Activation link generation problem')
+            data['username'] = user.company_email
+        data['first_name'] = user.first_name
+        data['last_name'] = user.last_name
+        data['email'] = user.company_email
+        data['username'] = re.sub(r'\W', '', user.company_email)
+        data['password'] = settings.INITIAL_PASSWORD
+        data['is_active'] = False
 
+        try:
+            return user_api.register_user(data)
+        except:
+            raise ValueError('Api error')
 
-def _process_mcka_user(request, registration_request, course_run, protocol, domain):
+    @staticmethod
+    def generate_activation_link(request, user):
+        activation_record = UserActivation.user_activation(user)
+        absolute_activation_uri = request.build_absolute_uri('/accounts/activate')
+        return "{}/{}/{}".format(absolute_activation_uri, activation_record.activation_key, "activation/")
 
-    email_template_html = "registration/public_registration_mcka_user.haml"
-    subject = "Welcome to Digital Academy"
-    template_text = course_run.email_template_mcka
-    link = protocol + "://" + domain + "/courses/" + course_run.course_id
+    @staticmethod
+    def _get_set_company(user_id):
 
-    send_email(email_template_html, subject, link, template_text, registration_request.first_name, registration_request.company_email)
+        companies = organization_api.get_organization_by_display_name("demo_course")
+
+        if companies['count'] != 0:
+            company = companies['results'][0]['id']
+        else:
+            new_company = organization_api.create_organization(organization_name="demo_course",
+                                                               organization_data={"display_name": "demo_course"})
+            company = vars(new_company).get("id", None)
+
+        client = Client.fetch(company)
+        client.add_user(user_id)
 
 
 def _process_course_run_closed(registration_request, course_run):
@@ -347,45 +387,6 @@ def _process_course_run_closed(registration_request, course_run):
     link = None
 
     send_email(email_template_html, subject, link, template_text, registration_request.first_name, registration_request.company_email)
-
-
-def generate_activation_link(request, user):
-    activation_record = UserActivation.user_activation(user)
-    absolute_activation_uri = request.build_absolute_uri('/accounts/activate')
-    return "{}/{}/{}".format(absolute_activation_uri, activation_record.activation_key, "activation/")
-
-def _get_set_company(user_id):
-
-    companies = organization_api.get_organization_by_display_name("demo_course")
-
-    if companies['count'] != 0:
-        company = companies['results'][0]['id']
-    else:
-        new_company = organization_api.create_organization(organization_name="demo_course", organization_data={"display_name": "demo_course"})
-        company = vars(new_company).get("id", None)
-
-    client = Client.fetch(company)
-    client.add_user(user_id)
-
-def _register_user_on_platform(user):
-
-    data = {}
-
-    if len(user.company_email) > 30:
-        data['username'] = user.company_email[:29]
-    else:
-        data['username'] = user.company_email
-    data['first_name'] = user.first_name
-    data['last_name'] = user.last_name
-    data['email'] = user.company_email
-    data['username'] = re.sub(r'\W', '', user.company_email)
-    data['password'] = settings.INITIAL_PASSWORD
-    data['is_active'] = False
-
-    try:
-        return user_api.register_user(data)
-    except:
-        raise ValueError('Api error')
 
 
 def send_email(email_template_html, subject, link, template_text, user_name, user_email):
@@ -426,6 +427,7 @@ def _set_number_of_enrolled_users(course_run):
     course_run.total_participants = len(course_users)
     course_run.save()
     return course_users
+
 
 def send_warning_email_to_admin(course_run):
 
@@ -501,12 +503,13 @@ def get_mobile_apps_id(organization):
 
     if mobile_id.get('results'):
 
-        results = mobile_id['results'][0]
-        user_org = results['name']
+        for mobile_app in mobile_id['results']:
 
-        if results['deployment_mechanism'] == MOBILE_APP_DEPLOYMENT_MECHANISMS['public_store']:
-            ios_app_id = results['ios_app_id']
-            android_app_id = results['android_app_id']
+            if mobile_app['deployment_mechanism'] == MOBILE_APP_DEPLOYMENT_MECHANISMS['public_store']:
+                user_org = mobile_app['name']
+                ios_app_id = mobile_app['ios_app_id']
+                android_app_id = mobile_app['android_app_id']
+                break
 
     return {'ios_app_id': ios_app_id,
             'android_app_id': android_app_id,
