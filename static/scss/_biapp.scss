@@ -2,6 +2,7 @@
 // Define SASS in LTR abd Bi-App-Sass will automatically write respective RTL
 
 @import "mixins";
+@import "colors";
 
 body{
   &.with-program{
@@ -50,6 +51,56 @@ body{
   .image-explorer-hotspot-reveal-body {
     ul {
       @include margin-left(1.1rem);
+    }
+  }
+}
+
+// Simmulated Chat
+
+.chat-block{
+  .bot{
+    .message-body{
+      @include margin-left(25px $imp);
+    }
+  }
+  .user{
+    .message-body{
+      @include margin-right(25px $imp);
+    }
+  }
+}
+
+// RTL specified CSS selectors
+
+.rtl {
+  .chat-block{
+    .user{
+        text-align: left !important;
+      .message-body{
+        &::after{
+          border-color: transparent $chat-bg-color $chat-bg-color transparent;
+          right: 100%;
+        }
+        &::before{
+          left: -16px;
+          right: auto;
+          border-color: transparent $chat-user-message-bg-color $chat-user-message-bg-color transparent;
+        }
+      }
+    }
+    .bot{
+      .message-body{
+        &::after{
+          border-color: transparent transparent $chat-bg-color $chat-bg-color;
+          left: 100%;
+        }
+        &::before{
+          border-color: transparent transparent $chat-bot-message-bg-color $chat-bot-message-bg-color;
+          bottom: 0;
+          right: -16px;
+          left: auto;
+        }
+      }
     }
   }
 }
