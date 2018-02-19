@@ -62,6 +62,15 @@
             %input#cohort_map{type: 'checkbox', name: 'proficiency'}
           %label{for: 'proficiency'} Proficiency
           %p.style-6 Note: If you disable 'Proficiency', it will hide proficiency section from course landing, progress page and from leaderboard on cohort page.
+
+        %li
+          - if feature_flags.progress
+            %input#cohort_map{type: 'checkbox', name: 'progress', checked: None}
+          - else
+            %input#cohort_map{type: 'checkbox', name: 'progress'}
+          %label{for: 'proficiency'} Progress Widget
+          %p.style-6 Note: If you disable 'Progress Widget', it will hide progress section from course landing page.
+
         %li
           - if feature_flags.progress_page
             %input#cohort_map{type: 'checkbox', name: 'progress_page', checked: None}

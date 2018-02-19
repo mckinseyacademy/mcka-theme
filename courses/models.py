@@ -42,6 +42,7 @@ class FeatureFlags(db_models.Model):
     discussions = db_models.BooleanField(default=True)
     cohort_map = db_models.BooleanField(default=True)
     proficiency = db_models.BooleanField(default=True)
+    progress = db_models.BooleanField(default=True)
     learner_dashboard = db_models.BooleanField(default=False)
     progress_page = db_models.BooleanField(default=True)
     notifications = db_models.BooleanField(default=True)

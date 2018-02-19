@@ -4,6 +4,7 @@
       - include "courses/visualizations/course_proficiency.haml"
   - if graded_items_count < 1 and not feature_flags.discussions
     %section.no-border &nbsp;
-  - include "courses/visualizations/course_progress.haml"
+  - if feature_flags.progress
+    - include "courses/visualizations/course_progress.haml"
   - if feature_flags.discussions
     - include "courses/visualizations/course_engagement.haml"
