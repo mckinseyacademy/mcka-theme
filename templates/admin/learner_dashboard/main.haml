@@ -1,4 +1,5 @@
 - extends 'admin/admin_layout.haml'
+- load i18n
 - load staticfiles
 - block content
   %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
@@ -147,7 +148,8 @@
     #button-row.row
       .large-10.large-offset-2.columns
         - if learner_dashboard_id
-          %a#previewLearnerDashboard.button.radius.small.right.bottom-buttons{href:"/", data-reveal-id: 'previewModal'} Preview
-          %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: 'Preview'}
+          %a#previewLearnerDashboard.button.radius.small.right.bottom-buttons{href:"/", data-reveal-id: 'previewModal'}
+            {% trans "Preview" %}
+          %input#unchangedLearnerDashboard.button.radius.small.right.bottom-buttons.disabled{type: 'button', value: '{% trans "Preview" %}'}
         - else
-          %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: 'Save', disabled: 'disabled'}
+          %input#saveLearnerDashboard.button.radius.small.right.bottom-buttons{type: 'button', value: '{% trans "Save" %}', disabled: 'disabled'}

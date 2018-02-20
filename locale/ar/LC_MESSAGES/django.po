@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-13 15:46+0500\n"
+"POT-Creation-Date: 2018-02-16 18:35+0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1408,6 +1408,7 @@ msgstr "ثرفثق غخعق بعمم رشوث"
 #: templates/admin/client/navigation.haml
 #: templates/admin/course_meta_content/item_detail.haml
 #: templates/admin/course_run/form_modal.haml
+#: templates/admin/learner_dashboard/main.haml
 #: templates/admin/learner_dashboard/preview.haml
 #: templates/admin/participants/participant_edit_status.haml
 #: templates/certificates/new_certificate_template.haml
@@ -3352,6 +3353,7 @@ msgid "Create Learner dashboard branding: "
 msgstr "ذقثشفث مثشقرثق يشسازخشقي زقشريهرل: "
 
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml
+#: templates/admin/learner_dashboard/branding.haml
 msgid "Rule color:"
 msgstr "قعمث ذخمخق:"
 
@@ -3762,6 +3764,7 @@ msgstr "هردخهذهرل يثفشهمس"
 #: templates/admin/companies/company_details.haml
 #: templates/admin/course_meta_content/item_list.haml
 #: templates/admin/course_run/list.haml templates/admin/course_run/view.haml
+#: templates/admin/learner_dashboard/branding.haml
 #: templates/admin/learner_dashboard/discovery_list.haml
 #: templates/admin/learner_dashboard/element_list.haml
 #: templates/admin/participants/participant_details.haml
@@ -4207,6 +4210,8 @@ msgid "Remove selected template"
 msgstr "قثوخدث سثمثذفثي فثوحمشفث"
 
 #: templates/admin/courses/course_details.haml
+#: templates/admin/learner_dashboard/branding.haml
+#: templates/admin/learner_dashboard/branding.haml
 #: templates/admin/participants/participant_details.haml
 #: templates/admin/participants/participant_details.haml
 #: templates/admin/participants/participants_list.haml
@@ -4250,6 +4255,54 @@ msgid ""
 "This is the McKA Admin homepage. Please select one of the menu items above."
 msgstr ""
 "فاهس هس فاث وذنش شيوهر اخوثحشلث. حمثشسث سثمثذف خرث خب فاث وثرع هفثوس شزخدث."
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Background Image:"
+msgstr "زشذنلقخعري هوشلث:"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Discover title color:"
+msgstr "يهسذخدثق فهفمث ذخمخق:"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Discover author color:"
+msgstr "يهسذخدثق شعفاخق ذخمخق:"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Icon color:"
+msgstr "هذخر ذخمخق:"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Discover rule color:"
+msgstr "يهسذخدثق قعمث ذخمخق:"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Top Bar color:"
+msgstr "فخح زشق ذخمخق:"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Background color:"
+msgstr "زشذنلقخعري ذخمخق:"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Background style:"
+msgstr "زشذنلقخعري سفغمث:"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Logo Image:"
+msgstr "مخلخ هوشلث:"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Delete Branding"
+msgstr "يثمثفث زقشريهرل"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Learner dashboard branding is not defined"
+msgstr "مثشقرثق يشسازخشقي زقشريهرل هس رخف يثبهرثي"
+
+#: templates/admin/learner_dashboard/branding.haml
+msgid "Create Branding"
+msgstr "ذقثشفث زقشريهرل"
 
 #: templates/admin/learner_dashboard/discovery_list.haml
 msgid "Link"
@@ -4305,10 +4358,39 @@ msgstr "فهمث حخسهفهخرس"
 msgid "Copy dashboard"
 msgstr "ذخحغ يشسازخشقي"
 
+#: templates/admin/learner_dashboard/learner_dashboard_copy.haml
+msgid "Source course:"
+msgstr "سخعقذث ذخعقسث:"
+
+#: templates/admin/learner_dashboard/learner_dashboard_copy.haml
+msgid "Destination course:"
+msgstr "يثسفهرشفهخر ذخعقسث:"
+
+#: templates/admin/learner_dashboard/main.haml
+#: templates/admin/learner_dashboard/main.haml
+msgid "Preview"
+msgstr "حقثدهثص"
+
 #: templates/admin/learner_dashboard/preview.haml
 #: templates/courses/course_learner_dashboard.haml
 msgid "FOR DISCOVERY"
 msgstr "بخق يهسذخدثقغ"
+
+#: templates/admin/learner_dashboard/title_description.haml
+msgid "Title:"
+msgstr "فهفمث:"
+
+#: templates/admin/learner_dashboard/title_description.haml
+msgid "Title color:"
+msgstr "فهفمث ذخمخق:"
+
+#: templates/admin/learner_dashboard/title_description.haml
+msgid "Description:"
+msgstr "يثسذقهحفهخر:"
+
+#: templates/admin/learner_dashboard/title_description.haml
+msgid "Description color:"
+msgstr "يثسذقهحفهخر ذخمخق:"
 
 #: templates/admin/list_layout.haml
 msgid "Add a new "

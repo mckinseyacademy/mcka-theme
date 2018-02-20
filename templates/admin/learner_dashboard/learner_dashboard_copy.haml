@@ -1,10 +1,14 @@
+- load i18n
+
 .row
   .large-12.columns
-    %p.strong Source course: #{course_id}
+    %p.strong
+      {% trans "Source course:" %} #{course_id}
     %table{style:"table-layout: fixed; width: 100%"}
       %thead
         %tr
-          %th="Destination course:"
+          %th
+            {% trans "Destination course:" %}
           %th
       %tbody
         - for course in courses

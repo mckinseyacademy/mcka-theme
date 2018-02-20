@@ -1,60 +1,72 @@
+- load i18n
+
 .row
   .large-12.columns
     -if learner_dashboard_branding
       .row
-        .large-6.columns 
-          .sub-1 Background Image:
+        .large-6.columns
+          .sub-1
+            {% trans "Background Image:" %}
           -if learner_dashboard_branding.background_image
             %img{src: "/company_images/#{learner_dashboard_branding.background_image}", width: 150, height:150}
           -else
-            None
+            {% trans "None" %}
           %br
           %br
           .div
-            .sub-1 Discover title color:
+            .sub-1
+              {% trans "Discover title color:" %}
             .sub-2{style: "color:#{learner_dashboard_branding.discover_title_color}"}= learner_dashboard_branding.discover_title_color
           %br
           .div
-            .sub-1 Discover author color:
+            .sub-1
+              {% trans "Discover author color:" %}
             .sub-2{style: "color:#{learner_dashboard_branding.discover_author_color}"}= learner_dashboard_branding.discover_author_color
           %br
           .div
-            .sub-1 Icon color:
+            .sub-1
+              {% trans "Icon color:" %}
             .sub-2{style: "color:#{learner_dashboard_branding.icon_color}"}= learner_dashboard_branding.icon_color
           %br
           .div
-            .sub-1 Discover rule color:
+            .sub-1
+              {% trans "Discover rule color:" %}
             .sub-2{style: "color:#{learner_dashboard_branding.discover_rule_color}"}= learner_dashboard_branding.discover_rule_color
           %br
           .div
-            .sub-1 Rule color:
+            .sub-1
+              {% trans "Rule color:" %}
             .sub-2{style: "color:#{learner_dashboard_branding.rule_color}"}= learner_dashboard_branding.rule_color
           .div
-            .sub-1 Top Bar color:
+            .sub-1
+              {% trans "Top Bar color:" %}
             .sub-2{style: "color:#{learner_dashboard_branding.top_bar_color}"}= learner_dashboard_branding.top_bar_color
           %br
           .div
-            .sub-1 Background color:
+            .sub-1
+              {% trans "Background color:" %}
             .sub-2{style: "color:#{learner_dashboard_branding.background_color}"}= learner_dashboard_branding.background_color
           %br
           .div
-            .sub-1 Background style:
+            .sub-1
+              {% trans "Background style:" %}
             .sub-2= learner_dashboard_branding.get_background_style_display
           %br
           %br
-        .large-6.columns 
-          .sub-1 Logo Image:
+        .large-6.columns
+          .sub-1
+            {% trans "Logo Image:" %}
           -if learner_dashboard_branding.logo_image
             %img{src: "/company_images/#{learner_dashboard_branding.logo_image}", width: 150, height:150}
           -else
-            None
+            {% trans "None" %}
       %div
         %a.button.radius.small{href: "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding", data-reveal-id: 'brandingModal', data-reveal-ajax: 'true'}
-            Edit
+          {% trans "Edit" %}
         %a.button.radius.small.confirm{href: "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding_reset"}
-            Delete Branding
-    - else 
+          {% trans "Delete Branding" %}
+    - else
       %p
-        Learner dashboard branding is not defined
+        {% trans "Learner dashboard branding is not defined" %}
       %a.button.radius.small{href: "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/branding", data-reveal-id: 'brandingModal', data-reveal-ajax: 'true'}
-            Create Branding
+        {% trans "Create Branding" %}
