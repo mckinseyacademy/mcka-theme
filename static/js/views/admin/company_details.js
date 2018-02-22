@@ -55,6 +55,7 @@
     initialize: function(){
       this.collection.fetch({success: function(){
         cloneHeader('#companyDetailsCoursesViewGridBlock');
+        $('i.fa-spinner').hide();
       }});
       this.setEditCompanyNameEvents();
     },
@@ -73,6 +74,7 @@
         enableSearch: true,
         colModel: _this.gridColumns
       });
+      $('.bbGrid-container').append('<i class="fa fa-spinner fa-spin"></i>');
       $(document).on('onClearSearchEvent', this.onClearSearchEvent);
 
       $('#addAppPopupLink').hide();

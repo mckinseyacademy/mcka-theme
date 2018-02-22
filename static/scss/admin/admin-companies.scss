@@ -279,6 +279,16 @@
 	}
 }
 
+.spinnerContainer{
+	position: relative;
+	.fa-spinner{
+			position: absolute;
+			left: 50%;
+			transform: translateX(-50%);
+			top: 62%;
+			font-size: 25px;
+		}
+}
 .companyCompanyInfo
 {
 	margin-left: auto;

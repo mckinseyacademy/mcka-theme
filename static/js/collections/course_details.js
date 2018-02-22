@@ -29,6 +29,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
   },
   parse: function(data) {
     participants = data.results;
+    $('i.fa-spinner').hide();
     return participants;
   },
   updateCompanyQuerryParams: function(company_id){

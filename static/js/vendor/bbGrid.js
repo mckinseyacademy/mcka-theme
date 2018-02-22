@@ -32,7 +32,7 @@
     bbGrid.Dict = {
         'en': {
             loading: 'Loading...',
-            noData: 'No rows',
+            noData: '',
             search: 'Search',
             rowsOnPage: 'Rows on page',
             page: 'Pg',

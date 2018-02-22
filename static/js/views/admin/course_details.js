@@ -149,7 +149,7 @@
         },
         colModel: _this.generatedGridColumns
       });
-
+      $('.bbGrid-container').append('<i class="fa fa-spinner fa-spin"></i>');
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       this.coursesListDetailsViewGrid = coursesListDetailsViewGrid;
       this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);
