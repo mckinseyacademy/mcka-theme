@@ -274,8 +274,8 @@ def enroll_student_in_course_without_program(user, course_id):
 
 def send_password_reset_email(
     domain, user, use_https,
-    subject_template_name='registration/password_reset_subject.txt',
-    email_template_name='registration/password_reset_email.html',
+    subject_template_name='registration/password_reset_subject.haml',
+    email_template_name='registration/password_reset_email.haml',
     from_email=settings.APROS_EMAIL_SENDER
 ):
 

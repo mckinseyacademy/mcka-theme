@@ -499,7 +499,7 @@ class FpasswordForm(forms.Form):
         return email
 
     def save(self, domain_override=None,
-             subject_template_name='registration/password_reset_subject.txt',
+             subject_template_name='registration/password_reset_subject.haml',
              email_template_name='registration/password_reset_email.html',
              use_https=False, from_email=None, request=None):
         """
@@ -522,6 +522,7 @@ class FpasswordForm(forms.Form):
                 email_template_name=email_template_name,
                 from_email=from_email
             )
+
 
 class SetNewPasswordForm(forms.Form):
     """
