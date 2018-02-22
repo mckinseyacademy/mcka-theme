@@ -373,6 +373,15 @@
                 cache: false,
                 xhrFields: {
                     withCredentials: true
+                },
+                statusCode: {
+                    404: function() {
+                        if(blockURL.match("discussion_board_fragment_view")) {
+                            alert(gettext('The discussion you are trying to access has been deleted'));
+                            var discussionHomeUrl = blockURL.split("discussion");
+                            window.location.href = discussionHomeUrl[0] + "discussion";
+                        }
+                    }
                 }
             }).done(function(response) {
                 if(response.hasOwnProperty('content')) {
