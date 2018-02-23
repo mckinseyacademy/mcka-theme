@@ -1495,6 +1495,7 @@ def get_user_courses_helper(user_id, request):
             user_course['proficiency'] = "."
             user_course['completed'] = 'N/A'
             user_course['grade'] = 'N/A'
+            user_course['status'] = 'Active'
             user_course['start'] = course['start']
             if course['end'] is not None:
                 user_course['end'] = course['end']
