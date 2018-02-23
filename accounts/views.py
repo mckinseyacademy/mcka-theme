@@ -752,6 +752,7 @@ def reset_done(request,
                template_name=template_name,
                current_app=current_app, extra_context=extra_context)
 
+
 @ajaxify_http_redirects
 def reset_complete(request,
                    template_name='registration/password_reset_complete.haml',
@@ -759,6 +760,7 @@ def reset_complete(request,
     return password_reset_complete(request=request,
                    template_name=template_name,
                    current_app=current_app, extra_context=extra_context)
+
 
 def home(request):
     ''' show me the home page '''
@@ -813,9 +815,11 @@ def home(request):
 
     return render(request, 'home/landing.haml', data)
 
+
 @login_required
 def protected_home(request):
     return home(request)
+
 
 @login_required
 @never_cache
@@ -853,7 +857,7 @@ def user_profile_image_edit(request):
         avatar_image_io.seek(0)
         avatar_file_data = {'file': ('avatar.jpg', avatar_image_io, 'image/jpeg')}
         response = platform_api.update_user_profile_image(
-            request.user.username,
+            request.user,
             avatar_file_data
         )
 
@@ -861,14 +865,15 @@ def user_profile_image_edit(request):
 
         return change_profile_image(request, user_id, template='edit_profile_image')
 
+
 @login_required
 def change_profile_image(request, user_id, template='change_profile_image', user_profile_image=None, error=None):
     ''' handles requests for login form and their submission '''
 
-    user = user_api.get_user(user_id)
     if user_profile_image:
         profile_image = user_profile_image
     else:
+        user = user_api.get_user(user_id)
         profile_image = user.image_url_full
 
     if '?' in profile_image:

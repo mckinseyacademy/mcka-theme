@@ -8,6 +8,9 @@ from django.conf import settings
 
 from .http_request_methods import GET, PUT, POST, SESSION_AUTH
 
+from api_data_manager.user_data import USER_PROPERTIES
+from api_data_manager.signals import user_data_updated
+
 
 ADVANCED_SETTINGS_API = urlparse.urljoin(
     settings.STUDIO_SERVER_ADDRESS, '/settings/advanced/'
@@ -15,10 +18,15 @@ ADVANCED_SETTINGS_API = urlparse.urljoin(
 PLATFORM_USER_API = urlparse.urljoin(settings.API_SERVER_ADDRESS, 'api/user/v1/')
 
 
-def update_user_profile_image(username, file):
+def update_user_profile_image(user, file):
     url = urlparse.urljoin(
         PLATFORM_USER_API,
-        'accounts/{}/image'.format(username)
+        'accounts/{}/image'.format(user.username)
+    )
+
+    user_data_updated.send(
+        sender=__name__, user_ids=[user.id],
+        data_type=USER_PROPERTIES.PROFILE
     )
 
     return POST(url, {}, auth=SESSION_AUTH, files=file)
