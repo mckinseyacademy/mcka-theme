@@ -2352,7 +2352,7 @@ def download_activation_links_by_task_key(request):
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="' + file_name + '"'
 
-        writer = UnicodeWriter.writer(response)
+        writer = UnicodeWriter(response)
         writer.writerow([_('Email'), _('First name'), _('Last name'), _('Company'), _('Activation Link')])
         for record in activation_records:
             user = vars(record)
@@ -4012,7 +4012,7 @@ def download_active_courses_stats(request, user_id):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="active_courses_stats.csv"'
 
-    writer = UnicodeWriter.writer(response)
+    writer = UnicodeWriter(response)
     writer.writerow([_('Course'), _('Course ID'), _('Program'), _('Progress'), _('Proficiency'), _('Status')])
     for course in active_courses:
         course_data = None
@@ -4110,7 +4110,7 @@ def download_course_history_stats(request, user_id):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="course_history_stats.csv"'
 
-    writer = UnicodeWriter.writer(response)
+    writer = UnicodeWriter(response)
     writer.writerow([_('Course'), _('Course ID'), _('Program'), _('Completed'), _('Grade'), _('Status'), _('End Date')])
     for course in course_history:
         writer.writerow([course['name'], course['id'], course['program'], course['completed'], course['grade'], course['status'], course['end']])
@@ -5346,7 +5346,7 @@ def company_course_details(request, company_id, course_id):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="' + name.replace(' ', '_') + '_info.csv"'
 
-    writer = UnicodeWriter.writer(response)
+    writer = UnicodeWriter(response)
     writer.writerow([name])
     writer.writerow([_('Total participants'), numberParticipants])
     writer.writerow([_('Active courses'), activeCourses])
@@ -5713,7 +5713,7 @@ def course_run_csv_download(request, course_run_id):
 
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="' + course_run.name + '.csv"'
-        writer = UnicodeWriter.writer(response)
+        writer = UnicodeWriter(response)
         writer.writerow([
             _("First name"),
             _("Last name"),
