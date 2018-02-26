@@ -9,7 +9,6 @@
         colModel:[
         { title: ' ', index: false, name: 'name'},
         { title: '#', index: false, name: 'value' },
-        { title: '', index: false, name: '' }
         ]
       });
     }

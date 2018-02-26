@@ -11,7 +11,6 @@
         { title: '# of people', index: false, name: 'people' },
         { title: '% total cohort', index: false, name: 'invited' }, 
         { title: 'Avg Progress', index: false, name: 'progress' },
-        { title: '', index: false, name: '' }
         ]
       });
     }
