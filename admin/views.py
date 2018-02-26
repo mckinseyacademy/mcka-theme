@@ -5551,7 +5551,7 @@ class company_edit_api(APIView):
 
     @permission_group_required_api(
         PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
-        PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN,
     )
     def get(self, request, company_id):
         company_display_name = request.GET.get('company_display_name', None)
@@ -5565,7 +5565,7 @@ class company_edit_api(APIView):
 
     @permission_group_required_api(
         PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
-        PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN,
     )
     def post(self, request, company_id):
         try:

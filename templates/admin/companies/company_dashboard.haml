@@ -33,7 +33,8 @@
                         - else
                           ={course.start} - ={course.end}
           .companyDashboardCompanyDown
-            .companyDashboardCompanyInfo  
-              %a{:href => '/admin/companies/#{company.id}', :target => '_self'} Edit Company Info
+            - if not user.is_company_admin
+              .companyDashboardCompanyInfo
+                %a{:href => '/admin/companies/#{company.id}', :target => '_self'} Edit Company Info
             .companyDashboardCompanyAllCourses
               %a.button.small.radius{:href => "/admin/companies/#{company.id}", :target => '_self'} View All Courses

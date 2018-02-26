@@ -5,7 +5,7 @@
     #coursesModal.reveal-modal.tiny{'data-reveal': None}
     #mainCompanyDetailsContainer
       #companyDetailsNavigation
-        - if user.is_company_admin
+        - if companyAdminFlag
           %a{:href => '/admin/company_dashboard', :target => '_self'}> < Back to All Companies
         - else
           %a{:href => '/admin/companies', :target => '_self'}> < Back to All Companies
@@ -14,10 +14,11 @@
           .row.companyDetailsCompanyName
             .companyDetailsTextName
               ={company.name}
-            %i.fa.fa-pencil.editCompanyNameIcon
-            .companyDetailsInputName{:style => 'display:none;'}
-              %input{:type => 'text', :value => '#{company.name}'}
-            .errorMessage
+            - if not companyAdminFlag
+              %i.fa.fa-pencil.editCompanyNameIcon
+              .companyDetailsInputName{:style => 'display:none;'}
+                %input{:type => 'text', :value => '#{company.name}'}
+              .errorMessage
 
           .row.companyDetailsNumberParticipants
             %p Total Participants: ={company.numberParticipants}
