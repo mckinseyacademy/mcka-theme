@@ -19,16 +19,11 @@
                       ={name}
                       ={id}
                     .courseDetailsTags
-                      - for tag in tags
-                        - if user.is_company_admin
-                          .courseDetailsTagsListCompAdmin.button.small.radius{:data-id => '#{tag.id}'}
-                            %span ={tag.name}
-                        - else
+                      - if not user.is_company_admin
+                        - for tag in tags
                           .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
                             %span ={tag.name}
                             %i.fa.fa-times.courseTagsDeleteIcon
-                      - if user.is_company_admin
-                      - else
                         %i.fa.fa-pencil.courseTagsIcon
                 .row.courseDetailsBlocks
                     .large-4.columns.courseDetailsLeftBlock

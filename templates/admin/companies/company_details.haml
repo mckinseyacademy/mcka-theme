@@ -22,8 +22,9 @@
 
           .row.companyDetailsNumberParticipants
             %p Total Participants: ={company.numberParticipants}
-          .row.companyDetailsCompanyID
-            %p Company ID: ={company.id}
+          - if not user.is_company_admin
+            .row.companyDetailsCompanyID
+              %p Company ID: ={company.id}
           .row.companyDetailsNumberActiveCourses
             %p Active Courses: ={company.activeCourses}
 
