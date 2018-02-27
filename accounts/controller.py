@@ -59,6 +59,7 @@ def is_future_start(date):
     else:
         return True
 
+
 def save_new_client_image(old_image_url, new_image_url, client):
 
     import StringIO
@@ -78,17 +79,23 @@ def save_new_client_image(old_image_url, new_image_url, client):
             io_new_client_image(old_gen_image_url, new_gen_image_url)
         client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + "{}.jpg".format(new_image_url_name)})
 
+
 def io_new_client_image(old_gen_image_url, new_gen_image_url):
 
+    '''It raises IOError if old image is not available '''
     import StringIO
     from PIL import Image
     from django.core.files.storage import default_storage
 
     thumb_io = StringIO.StringIO()
-    original = Image.open(default_storage.open(old_gen_image_url))
-    original.convert('RGB').save(thumb_io, format='JPEG')
-    cropped_image_path = default_storage.save(new_gen_image_url, thumb_io)
-    default_storage.delete(old_gen_image_url)
+    try:
+        original = Image.open(default_storage.open(old_gen_image_url))
+        original.convert('RGB').save(thumb_io, format='JPEG')
+        cropped_image_path = default_storage.save(new_gen_image_url, thumb_io)
+        default_storage.delete(old_gen_image_url)
+    except IOError:
+        #TODO handle this error with IOERROR class
+        raise
 
 
 def get_sso_provider(email):
@@ -353,9 +360,11 @@ class NewSelfRegistration(SelfRegistration):
         data['is_active'] = False
 
         try:
-            return user_api.register_user(data)
+            result = user_api.register_user(data)
         except:
+            # TODO handle this error with ValueError class
             raise ValueError('Api error')
+        return result
 
     @staticmethod
     def generate_activation_link(request, user):
@@ -417,16 +426,11 @@ def _set_number_of_enrolled_users(course_run):
     course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=100))
     roles_user_ids = course_api.get_users_filtered_by_role(course_run.course_id)
     exclude_user_ids = [role.id for role in roles_user_ids]
-    #removing duplicates
     exclude_user_ids = list(set(exclude_user_ids))
-
-    for user in course_users:
-        if user['id'] in exclude_user_ids:
-            course_users.remove(user)
-
-    course_run.total_participants = len(course_users)
+    users_without_roles = [user for user in course_users if user['id'] not in exclude_user_ids]
+    course_run.total_participants = len(users_without_roles)
     course_run.save()
-    return course_users
+    return users_without_roles
 
 
 def send_warning_email_to_admin(course_run):

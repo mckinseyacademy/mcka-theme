@@ -7,7 +7,7 @@ from django.test import TestCase
 
 from accounts.json_backend import JsonBackend
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin, _make_user
+from accounts.tests.utils import ApplyPatchMixin, make_user
 from api_client.api_error import ApiError
 from api_client.user_models import AuthenticationResponse, UserResponse
 
@@ -37,7 +37,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
         return result
 
     def test_authenticate_username_and_password_existing_user(self):
-        existing_user = _make_user()
+        existing_user = make_user()
         self.user_api.authenticate.return_value = self._make_auth_response(existing_user)
         self.user_api.get_user.return_value = self._make_user_response(existing_user)
 
@@ -54,7 +54,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
     )
     @ddt.unpack
     def test_authenticate_missing_username_or_password(self, username, password):
-        existing_user = _make_user(username='username', password='password')
+        existing_user = make_user(username='username', password='password')
         self.user_api.authenticate.return_value = self._make_auth_response(existing_user)
         self.user_api.get_user.return_value = self._make_user_response(existing_user)
 
@@ -69,7 +69,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
     )
     @ddt.unpack
     def test_authenticate_remote_session_key(self, session_key, existing_session_keys, raises):
-        existing_user = _make_user()
+        existing_user = make_user()
 
         def _get_session(remote_session_key):
             if remote_session_key not in existing_session_keys:
@@ -90,7 +90,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
             self.assertEqual(auth_response.username, existing_user.username)
 
     def test_authenticate_remote_session_key_username_and_password(self):
-        existing_user = _make_user()
+        existing_user = make_user()
 
         def _authenticate(username, password, remote_session_key=None):
             if username == existing_user.username and password == existing_user.password:
@@ -113,7 +113,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
         self.assertEqual(auth_response.username, existing_user.username)
 
     def test_authenticate_remote_session_key_none(self):
-        existing_user = _make_user()
+        existing_user = make_user()
 
         self.user_api.authenticate.return_value = self._make_auth_response(existing_user)
         self.user_api.get_session.return_value = mock.Mock(user_id=existing_user.id)
