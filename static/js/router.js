@@ -293,15 +293,6 @@ var Router = Backbone.Router.extend({
 
     company_learner_dashboards_view.render();
   },
-
-  company_details_company_info: function(company_id){
-    $('#companyDetailsDataWrapper').find('.companyInfoTopic').each(function(index, value){
-      val = $(value);
-      val.show();
-    });
-    var company_info_view = new Apros.views.CompanyInfoView();
-    company_info_view.render();
-  },
   assign_students_in_courses: function(client_id)
   {
     if ($(".course-box").length === 0)
@@ -397,10 +388,6 @@ Apros.Router.linked_views = {
   },
   'companyLearnerDashboards': {
     'function':Apros.Router.company_learner_dashboards,
-    'drawn': false
-  },
-  'companyCompanyInfo': {
-    'function':Apros.Router.company_details_company_info,
     'drawn': false
   },
   'companyLinkedApps': {
