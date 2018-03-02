@@ -14,74 +14,124 @@ Apros.views.CourseCohort = Backbone.View.extend({
     'click .select-board a': 'update_scope',
     'click .student-data a': 'toggle_profiles'
   },
-
+  map: null,
   initialize: function() {
-    this.collection = new Apros.collections.CohortCities;
-    this.listenTo(this.collection, 'sync', this.addGeodata);
-    this.map = L.mapbox.map('map-cohort', mapbox_map_id, map_opts)
-      .setView([51.505, -0.09], 1);
-    this.mapLayer = L.mapbox.featureLayer().addTo(this.map);
-    this.listenTo(this.mapLayer, 'layeradd', this.addLayer);
-  },
+     this.collection = new Apros.collections.CohortCities;
+     this.listenTo(this.collection, 'sync', this.addGeodata);
 
-  geoJsonTemplate: function() {
+    mapboxgl.accessToken = 'pk.eyJ1Ijoic2hhZnFhdGZhcmhhbiIsImEiOiJjamU1b2hoeXA0djVxMzNwZHg2MWdseXp0In0.xt99vVDUAFdmP_Lv2Eeamg';
+    this.map = new mapboxgl.Map({
+      container: 'map-cohort',
+      style: 'mapbox://styles/mapbox/light-v9',
+      center: [-0.09, 51.505],
+      zoom: 1
+    });
+
+    mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
+    this.map.addControl(new MapboxLanguage({
+       defaultLanguage: $('html').attr('lang')
+    }));
+  },
+  geoJsonUserTemplate: function() {
     var geoJson = {
       type: 'FeatureCollection',
       features: []
-    }
+    };
     return geoJson;
   },
-
+  geoJsonCityTemplate: function () {
+  var geoJson = {
+        id: "cities",
+        type: "circle",
+        source: {
+            type: "geojson",
+            data: {
+                type: "FeatureCollection",
+                features: []
+            }
+        },
+        paint: {
+            'circle-color': '#3384CA',
+            'circle-opacity': 0.5,
+            'circle-radius': ['get', 'radius']
+        }
+      };
+      return geoJson;
+  },
   addGeodata: function(models) {
     var _this = this,
-        cityJsonData = this.geoJsonTemplate(),
-        userJsonData = this.geoJsonTemplate();
+        cityJsonData = this.geoJsonCityTemplate(),
+        userJsonData = this.geoJsonUserTemplate();
 
-    models.each(function(model){
-      var users = model.users()
-      cityJsonData.features.push(model.markerGeoJson());
+    models.each(function (model) {
+        var users = model.users();
+        cityJsonData.source.data.features.push(model.markerGeoJson());
 
-      if (typeof TAUser !== 'undefined' && TAUser.username && model.name() === TAUser.city) {
-        var user = model.userGeoJson(TAUser, users.length, true);
-        userJsonData.features.push(user);
-      }
+        if (typeof TAUser !== 'undefined' && TAUser.username && model.name() === TAUser.city) {
+            var user = model.userGeoJson(TAUser, users.length, true);
+            userJsonData.features.push(user);
+        }
 
-      _(users).each(function(user, idx){
-        userJsonData.features.push(model.userGeoJson(user, idx));
-      });
+        _(users).each(function (user, idx) {
+            userJsonData.features.push(model.userGeoJson(user, idx));
+        });
     });
 
-    var geoJson = L.geoJson(cityJsonData, {
-      pointToLayer: function(feature, latlng) {
-        var marker = L.circleMarker(latlng, feature.properties.circle);
-        marker.bindPopup(feature.properties.popup, {'closeOnClick': false});
-        _this.hoverizePopup(marker);
-        return marker;
-      }
-    }).addTo(this.map);
+    _this.map.on('load', function () {
+        _this.map.addLayer(cityJsonData);
 
-    this.mapLayer.setGeoJSON(userJsonData);
-  },
+        userJsonData.features.forEach(function(marker) {
+            var width = marker.properties.iconSize[0];
+            var x_offset = -(marker.properties.iconAnchor[0] - (width/2));
+            var y_offset = -(marker.properties.iconAnchor[1] - (width/2));
+            var el = document.createElement('div');
+            el.className = marker.properties.className;
+            el.style.backgroundImage = marker.properties.iconUrl;
+            el.style.width = marker.properties.iconSize[0] + 'px';
+            el.style.height = marker.properties.iconSize[1] + 'px';
+            var userPopup = new mapboxgl.Popup({
+                closeOnClick: false,
+                offset: [x_offset, y_offset]
+            });
+            el.addEventListener('mouseenter', function () {
+                _this.map.getCanvas().style.cursor = 'pointer';
+                userPopup.setLngLat(marker.geometry.coordinates)
+                    .setHTML(marker.properties.popup)
+                    .addTo(_this.map);
+            });
+            el.addEventListener('mouseleave', function () {
+                _this.map.getCanvas().style.cursor = '';
+                    setTimeout(function() {
+                        userPopup.remove();
+                    }, _this.popupTime);
+            });
 
-  addLayer: function(e) {
-    var marker = e.layer,
-        feature = marker.feature,
-        width = feature.properties.icon.iconSize[0],
-        offset = [0,0];
+            new mapboxgl.Marker(el, {offset: [x_offset, y_offset]})
+                .setLngLat(marker.geometry.coordinates)
+                .addTo(_this.map);
+        });
 
-    if (feature.properties.icon) {
-      marker.setIcon(L.icon(feature.properties.icon));
-      offset[0] = -(feature.properties.icon.iconAnchor[0] - (width/2))
-      offset[1] = -(feature.properties.icon.iconAnchor[1] - (width/2))
-    }
+        var cityPopup = new mapboxgl.Popup({
+            closeOnClick: false
+        });
 
-    var popup_opts = {
-      closeOnClick: false,
-      offset: offset
-    }
+        function showPopup(e) {
+            _this.map.getCanvas().style.cursor = 'pointer';
+            cityPopup.setLngLat(e.features[0].geometry.coordinates)
+              .setHTML(e.features[0].properties.popup)
+              .addTo(_this.map);
+        }
 
-    marker.bindPopup(feature.properties.popup, popup_opts);
-    this.hoverizePopup(marker);
+        function hidePopup() {
+            _this.map.getCanvas().style.cursor = '';
+            setTimeout(function() {
+                cityPopup.remove();
+            }, _this.popupTime);
+        }
+
+        _this.map.on('mouseenter', 'cities', showPopup);
+        _this.map.on('mouseleave', 'cities', hidePopup);
+    });
   },
 
   update_scope: function(e) {
@@ -99,18 +149,6 @@ Apros.views.CourseCohort = Backbone.View.extend({
     this.mapLayer.setFilter(function(f){
       var toggle = f.properties.icon ? show : true;
       return toggle;
-    });
-  },
-
-  hoverizePopup: function(marker){
-    var _this = this;
-    marker.on('mouseover', function (e) {
-      this.openPopup();
-      clearTimeout(marker.timer);
-    });
-    marker.on('mouseout', function (e) {
-      var that = this;
-      marker.timer = setTimeout(function(){that.closePopup();}, _this.popupTime);
     });
   },
 

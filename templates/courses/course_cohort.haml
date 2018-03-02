@@ -250,8 +250,9 @@
   - include "courses/contact_ta.haml"
 
 - block js_snippets
-  %script{src: "{% static 'js/course_contact_modal.js' %}"}
-  %script{src: '//api.tiles.mapbox.com/mapbox.js/v2.1.2/mapbox.js'}
+  %script{src: 'https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'}
+  %script{src: 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.9.2/mapbox-gl-language.js'}
+  %link{href:'https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css', rel:'stylesheet'}
   %script
     var CohortMapUsers = {{metrics.groups_users|safe}};
     var CohortMapCities = {{metrics.cities|safe}};

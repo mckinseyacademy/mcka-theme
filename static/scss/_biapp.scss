@@ -70,6 +70,78 @@ body{
   }
 }
 
+//Course Cohort
+
+#course-lessons,
+#course-group-work,
+#course-cohort,
+#course-discussion,
+#course-news,
+#course-overview,
+#course-progress,
+#course-resources,
+#course-syllabus{
+  .global-help,
+  .global-help:visited {
+    @include right(10px);
+  }
+}
+
+#course-cohort{
+  .student-data{
+    ul.students{
+      @include float(left);
+      li{
+        @include float(left);
+        @include border-right(1px solid $almost-white);
+        &:first-child,
+        &:last-child {
+          @include border-right(none);
+        }
+      }
+    }
+    a.hide-team{
+
+      @include float(right);
+    }
+  }
+  .leaderboards{
+    .leaderboards-list{
+      li{
+        @include border-right(1px solid $almost-white);
+        .header{
+          [class*="label"]{
+            @include text-align(left);
+          }
+        }
+        .user{
+          .avatar{
+            @include float(left);
+            @include margin-right(10px);
+          }
+          .info{
+            @include margin-left(60px);
+            @include text-align(left);
+          }
+        }
+        .rank{
+          min-height: 71px;
+        }
+      }
+    }
+  }
+}
+
+//Misc
+
+#mckinsey_help{
+  .help-line{
+    padding: 15px 0;
+    @include padding-left(50px);
+  }
+}
+
+
 // RTL specified CSS selectors
 
 .rtl {
@@ -102,5 +174,53 @@ body{
         }
       }
     }
+  }
+
+  //ooyala video controls
+  .oo-interactive-container{
+    direction: ltr;
+  }
+
+  //Cohort
+  #course-lessons,
+  #course-group-work,
+  #course-cohort,
+  #course-discussion,
+  #course-news,
+  #course-overview,
+  #course-progress,
+  #course-resources,
+  #course-syllabus{
+    .global-help,
+    .global-help:visited {
+      transform: scale(-1, 1);
+    }
+  }
+
+  #course-cohort{
+    .leaderboards{
+      .leaderboards-list{
+        li{
+          &:last-child{
+            border-left: 0;
+          }
+          .rank{
+            min-height: 71px;
+          }
+        }
+      }
+    }
+    #map-cohort{
+      .leaflet-popup-close-button{
+        left: 0;
+        right: auto !important;
+      }
+    }
+  }
+
+  //Modal
+  .close-reveal-modal{
+    right: auto;
+    left: .78571rem;
   }
 }

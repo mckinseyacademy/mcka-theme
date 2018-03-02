@@ -19,22 +19,22 @@ Apros.models.City = Backbone.Model.extend({
       return user.city === city;
     });
   },
-
   markerGeoJson: function() {
-    var size = this.size(),
+    var size = this.size()
         radius = 3 + (47 * size) / (25 + size);
 
     var geoJson = {
       type: 'Feature',
       properties: {
         popup: '<div class="city-name">' + this.name() + '<div><div class="city-participants">' + gettext('Participants:')  + this.size() + '</div>',
-        circle: {
-          color: '#3384CA',
-          fillColor: '#3384CA',
-          stroke: false,
-          fillOpacity: 0.5,
-          radius: radius
-        }
+        radius: radius
+        // circle: {
+        //   color: '#3384CA',
+        //   fillColor: '#3384CA',
+        //   stroke: false,
+        //   fillOpacity: 0.5,
+        //   radius: radius
+        // }
       },
       geometry: {
         type: 'Point',
@@ -44,7 +44,6 @@ Apros.models.City = Backbone.Model.extend({
 
     return geoJson;
   },
-
   userGeoJson: function(user, idx, isTA) {
     var size = isTA ? 44 : 40;
     var className = isTA ? 'ta_user' : 'user';
@@ -53,13 +52,11 @@ Apros.models.City = Backbone.Model.extend({
       type: 'Feature',
       properties: {
         popup: '<div class="person-username">' + user.username + '</div><div class="person-fullname">' + user.full_name + '</div><div class="person-title">' + user.title + '</div>',
-        icon: {
-          iconUrl: user.image_url_small,
-          iconRetinaUrl: user.image_url_small,
-          iconSize: [size, size],
-          iconAnchor: [-8 * idx, (size / 2 * idx) + size],
-          className: className
-        }
+        iconUrl: user.image_url_small,
+        iconRetinaUrl: user.image_url_small,
+        iconSize: [size, size],
+        iconAnchor: [-8 * idx, (size / 2 * idx) + size],
+        className: className
       },
       geometry: {
         type: 'Point',

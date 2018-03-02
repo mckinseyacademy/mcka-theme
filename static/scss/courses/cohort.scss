@@ -28,27 +28,17 @@
     @include clearfix;
 
     ul.students {
-      float: left;
       margin: 0;
       list-style-type: none;
       @include clearfix;
 
       li {
-        float: left;
         padding: 0 5px;
-        border-right: 1px solid $almost-white;
-
         &:first-child { padding: 0; }
-
-        &:first-child,
-        &:last-child {
-          border-right: none;
-        }
       }
     }
 
     a.hide-team {
-      float: right;
       @include font-spec(12, bold, 14);
 
     }
@@ -185,7 +175,6 @@
         max-width: 33.33%;
         margin-left: -4px;
         width: 100%;
-        border-right: 1px solid $almost-white;
         @media only screen and (max-width: 767px) {
           display: block;
           margin-left: 0;
@@ -214,14 +203,10 @@
           .avatar {
             width: 40px;
             height: 40px;
-            float: left;
-            margin-right: 10px;
           }
 
           .info {
-            margin-left: 60px;
             min-height: 75px;
-            text-align: left;
 
             .person-rank {
               color: $mckinsey-academy-blue-gray;
