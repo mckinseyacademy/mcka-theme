@@ -3,6 +3,7 @@
 
 @import "mixins";
 @import "colors";
+@import "foundation/functions";
 
 body{
   &.with-program{
@@ -132,6 +133,39 @@ body{
   }
 }
 
+// Progress Page
+
+#course-progress-v2{
+  table{
+    tr{
+      td, th{
+        @include border-right(1px solid $border-line);
+        &:last-child{
+          @include border-right(none);
+        }
+      }
+    }
+  }
+}
+
+.lesson-with-list {
+  @include padding-right(rem-calc(40));
+    a[data-reveal-id] {
+      @include right(rem-calc(10));
+    }
+}
+
+.lesson-row-item{
+    .status{
+      @include float(left);
+    }
+    .lesson-item-name{
+      @include text-align(left);
+      @include margin-left(18px);
+    }
+}
+
+
 //Misc
 
 #mckinsey_help{
@@ -214,6 +248,40 @@ body{
       .leaflet-popup-close-button{
         left: 0;
         right: auto !important;
+      }
+    }
+  }
+
+  // Progress Page
+
+  #course-progress-v2{
+    tbody{
+      tr{
+        td{
+          .course-progress{
+            .total{
+              right: auto !important;
+              left: -50px !important;
+            }
+            .visualization{
+              .bar{
+                right: 0;
+                left: auto;
+                background: linear-gradient(to left, #389b46, #b8d432);
+                -pie-background: linear-gradient(to left, #389b46, #b8d432);
+                &.trailing {
+                  background: #ef4326;
+                  background: linear-gradient(to left, #ef4326, #fbac40);
+                  -pie-background: linear-gradient(to left, #ef4326, #fbac40);
+                }
+              }
+            }
+          }
+          &.visual{
+            border-left: 1px solid $border-line;
+            border-right: 0;
+          }
+        }
       }
     }
   }

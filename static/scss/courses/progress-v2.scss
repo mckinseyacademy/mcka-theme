@@ -39,13 +39,11 @@
             .lesson-with-list {
               position: relative;
               margin-bottom: rem-calc(10);
-              padding-right: rem-calc(40);
               max-width: rem-calc(335);
 
               a[data-reveal-id] {
                 position: absolute;
                 top: 50%;
-                right: rem-calc(10);
                 margin-top: -6px;
               }
 
@@ -81,14 +79,12 @@
         padding: 0;
         text-indent: 12px;
         text-transform: uppercase;
-        border-bottom: 1px solid $border-line;
         border-right: 1px solid $border-line;
         @include font-spec(12, 600, 20);
         &:first-child { width: 22% }
 
         &:last-child {
           width: 33%;
-          border-right: none;
         }
       }
 
@@ -111,15 +107,12 @@
           color: $mckinsey-dark-grey;
           padding: rem-calc(18) rem-calc(12);
           border-bottom: 1px solid $border-line;
-          border-right: 1px solid $border-line;
           @include font-spec(12, normal, 14);
-          &:last-child { border-right: none; }
 
           &.visual {
             text-indent: 0;
             text-align: center;
             vertical-align: top;
-            border-right: 1px solid $border-line;
 
             section {
               display: inline-block;
@@ -174,6 +167,9 @@
           }
         }
       }
+    }
+    th , td{
+      text-align: initial;
     }
   }
 

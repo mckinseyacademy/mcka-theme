@@ -683,13 +683,10 @@ i.status {
   }
 
   i.status {
-    float: left;
     @include font-spec(16);
   }
 
   .lesson-item-name {
-    text-align: left;
-    margin-left: 18px;
     @include font-spec(12, 500, 16);
 
     a, a:visited {
