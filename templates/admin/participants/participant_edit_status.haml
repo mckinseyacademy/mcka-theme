@@ -8,7 +8,7 @@
         %input#active-radio{"type" => "radio", "name" => "role-group", "value" => "Active", 'checked': 'checked'}
       - else
         %input#active-radio{"type" => "radio", "name" => "role-group", "value" => "Active"}
-      %label{"for" => "active-radio"} Active
+      %label{"for" => "active-radio"} Participant
       - if current_roles == 'Observer'
         %input#observer-radio{"type" => "radio", "name" => "role-group", "value" => "Observer", 'checked': 'checked'}
       - else

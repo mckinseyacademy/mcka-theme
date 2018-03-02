@@ -1475,7 +1475,7 @@ def get_user_courses_helper(user_id, request):
         user_course['proficiency'] = "."
         user_course['completed'] = 'N/A'
         user_course['grade'] = 'N/A'
-        user_course['status'] = 'Active'
+        user_course['status'] = 'Participant'
         user_course['unenroll'] = 'Unenroll'
         user_course['start'] = course['start']
         if course['end'] is not None:
@@ -1495,7 +1495,7 @@ def get_user_courses_helper(user_id, request):
             user_course['proficiency'] = "."
             user_course['completed'] = 'N/A'
             user_course['grade'] = 'N/A'
-            user_course['status'] = 'Active'
+            user_course['status'] = 'Participant'
             user_course['start'] = course['start']
             if course['end'] is not None:
                 user_course['end'] = course['end']
@@ -2283,7 +2283,7 @@ class CourseParticipantStats(object):
                 elif 'instructor' in course_participant['roles']:
                     course_participant['custom_user_status'] = self.permission_map['instructor']
             else:
-                course_participant['custom_user_status'] = 'Active'
+                course_participant['custom_user_status'] = 'Participant'
 
             if course_participant['is_active']:
                 course_participant['custom_activated'] = 'Yes'
