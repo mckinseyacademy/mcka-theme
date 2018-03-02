@@ -934,7 +934,7 @@ def get_contacts_for_client(client_id):
             users = group_api.get_users_in_group(group.id)
             if len(users) > 0:
                 user_ids = [str(user.id) for user in users]
-                contacts.extend(user_api.get_users(fields=fields, ids=(',').join(user_ids)))
+                contacts.extend(user_api.get_users(fields=fields, ids=user_ids))
 
     return contacts
 
