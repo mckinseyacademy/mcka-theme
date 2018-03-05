@@ -26,6 +26,7 @@ class ApiError(Exception):
     message = _("Unknown error calling API")
     content_dictionary = {}
     http_error = None
+    SENSITIVE_DATA_FIELDS = ["password", "remote_session_key"]
 
     def __init__(self, thrown_error, function_name, error_code_messages=None, **call_context):
         if isinstance(thrown_error, RequestsHTTPError):
@@ -66,11 +67,11 @@ class ApiError(Exception):
 
     def __str__(self):
         argument_list = ', '.join(
-            ['{}={}'.format(
-                context_name,
-                self.context[context_name]
-            )
-            for context_name in self.context]
+            [
+                '{}={}'.format(context_name, self.context[context_name])
+                for context_name in self.context
+                if not context_name in self.SENSITIVE_DATA_FIELDS
+            ]
         )
         return "ApiError '{}' ({}) - {}({})".format(
             self.message,
