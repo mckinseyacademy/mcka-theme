@@ -4,6 +4,7 @@ import atexit
 import collections
 import logging
 import re
+import csv
 import string
 import tempfile
 import threading
@@ -20,6 +21,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email, ValidationError
 from django.utils import timezone
+from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from pytz import UTC
 from rest_framework.response import Response
@@ -29,6 +31,7 @@ from accounts.middleware.thread_local import set_course_context, get_course_cont
 from accounts.models import UserActivation
 from admin.forms import MobileBrandingForm
 from admin.models import Program, SelfRegistrationRoles
+from courses.models import FeatureFlags
 from api_client import (
     course_api,
     course_models,
@@ -2499,3 +2502,45 @@ def delete_self_reg_role(role_id):
     except ObjectDoesNotExist:
 
         return Response({'status': status.HTTP_404_NOT_FOUND, 'message': _('Sorry, We can not process your request')})
+
+def get_course_stats_report(company_id, course_id):
+    """ returns course stats in csv format inside http response """
+    course = course_api.get_course_details(course_id)
+    course_name = course['name'].replace(' ', '_')
+
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="' + course_name + '_stats.csv"'
+
+    writer = csv.writer(response)
+    write_engagement_summary_on_csv(writer, course_id, company_id)
+    write_participant_performance_on_csv(writer)
+
+    (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
+    if course_features.discussions:
+        write_social_engagement_report_on_csv(writer, course_id, company_id)
+
+    return response
+
+def write_engagement_summary_on_csv(csv_writer, course_id, company_id):
+    course_engagement_summary = get_course_engagement_summary(course_id, company_id)
+
+    csv_writer.writerow([_('Engagement Summary'), _('# of people'), _('% total cohort'), _('Avg Progress')])
+    for stat in course_engagement_summary:
+        csv_writer.writerow([stat['name'], stat['people'], stat['invited'], stat['progress']])
+
+def write_participant_performance_on_csv(csv_writer):
+    csv_writer.writerow([])
+    csv_writer.writerow([_('Participant Performance'), _('% completion'), _('Score')])
+    csv_writer.writerow([_('Group work 1'), '-', '-'])
+    csv_writer.writerow([_('Group work 2'), '-', '-'])
+    csv_writer.writerow([_('Mid-course assessment'), '-', '-'])
+    csv_writer.writerow([_('Final assessment'), '-', '-'])
+
+
+def write_social_engagement_report_on_csv(csv_writer, course_id, company_id):
+    course_social_engagement = get_course_social_engagement(course_id, company_id)
+
+    csv_writer.writerow([])
+    csv_writer.writerow([_('Social Engagement'), '#'])
+    for stat in course_social_engagement:
+        csv_writer.writerow([stat['name'], stat['value']])

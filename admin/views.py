@@ -84,7 +84,7 @@ from .controller import (
     _enroll_participant_with_status, get_accessible_courses, get_ta_accessible_course_ids,
     validate_company_display_name, get_internal_courses_ids,
     student_list_chunks_tracker, get_internal_courses_list, construct_users_list,
-    CourseParticipantStats
+    CourseParticipantStats, get_course_stats_report
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -784,9 +784,11 @@ def course_details(request, course_id):
     course_tags = Tag.course_tags(course_id)
     course['tags'] = [vars(tag) for tag in course_tags]
 
-    companyAdminFlag = False
     course['internalAdminFlag'] = request.user.is_internal_admin
     course['companyAdminFlag'] = False
+
+    (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
+    course['discussion_feature'] = course_features.discussions
 
     return render(request, 'admin/courses/course_details.haml', course)
 
@@ -805,36 +807,13 @@ class course_details_stats_api(APIView):
         return Response(course_stats)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                           PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 @internal_admin_course_access
 def download_course_stats(request, course_id):
     company_id = request.GET.get('company_id', None)
-
-    course = course_api.get_course_details(course_id)
-    course_name = course['name'].replace(' ', '_')
-
-    course_social_engagement = get_course_social_engagement(course_id, company_id)
-    course_engagement_summary = get_course_engagement_summary(course_id, company_id)
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="' + course_name + '_stats.csv"'
-
-    writer = csv.writer(response)
-    writer.writerow(['Engagement Summary', '# of people', '% total cohort', 'Avg Progress'])
-    for stat in course_engagement_summary:
-        writer.writerow([stat['name'], stat['people'], stat['invited'], stat['progress']])
-    writer.writerow([])
-    writer.writerow(['Participant Performance', '% completion', 'Score'])
-    writer.writerow(['Group work 1', '-', '-'])
-    writer.writerow(['Group work 2', '-', '-'])
-    writer.writerow(['Mid-course assessment', '-', '-'])
-    writer.writerow(['Final assessment', '-', '-'])
-    writer.writerow([])
-    writer.writerow(['Social Engagement', '#'])
-    for stat in course_social_engagement:
-        writer.writerow([stat['name'], stat['value']])
-
-    return response
+    csv_response = get_course_stats_report(company_id, course_id)
+    return csv_response
 
 
 class course_details_engagement_api(APIView):

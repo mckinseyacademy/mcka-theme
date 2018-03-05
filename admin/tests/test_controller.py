@@ -1,14 +1,18 @@
 import os
 import ddt
-from django.core.exceptions import ValidationError
+import csv
 
-from django.test import TestCase, override_settings
+from django.http import HttpResponse
 from django.test.client import RequestFactory
+from django.core.exceptions import ValidationError
+from django.test import TestCase, override_settings
 
 import admin.controller as controller
 from accounts.tests.utils import ApplyPatchMixin
-from admin.controller import CourseParticipantStats, create_roles_list
+from admin.controller import CourseParticipantStats, create_roles_list, write_participant_performance_on_csv,\
+    write_engagement_summary_on_csv, write_social_engagement_report_on_csv, get_course_stats_report
 from admin.models import SelfRegistrationRoles, CourseRun
+from courses.models import FeatureFlags
 from admin.tests.utils import BASE_DIR
 from api_client.json_object import JsonParser as JP
 from rest_framework import status
@@ -208,3 +212,74 @@ class TestCreateRolesList(TestCase):
         request = self.factory.post('/', data)
         with self.assertRaises(ValidationError):
             roles = create_roles_list(request)
+
+
+class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
+    social_stats = [
+        {"name": "test1", "value": "test value"},
+        {"name": "test2", "value": "1234567799"},
+        {"name": "test3", "value": "test 12345"},
+    ]
+
+    engagement_stats = [
+        {"name": "test1", "people": 40, "invited": 0, "progress": 100},
+        {"name": "test2", "people": 00, "invited": 10, "progress": 66},
+    ]
+
+    expected_result_for_social = '\r\nSocial Engagement,#\r\ntest1,test value' \
+                                 '\r\ntest2,1234567799\r\ntest3,test 12345\r\n'
+
+    expected_result_for_summary = 'Engagement Summary,# of people,% total cohort,' \
+                                  'Avg Progress\r\ntest1,40,0,100\r\ntest2,0,10,66\r\n'
+
+    expected_result_for_perfromance = '\r\nParticipant Performance,% completion,Score' \
+                                      '\r\nGroup work 1,-,-\r\nGroup work 2,-,-\r\nMid-course' \
+                                      ' assessment,-,-\r\nFinal assessment,-,-\r\n'
+
+    def setUp(self):
+        engagement_function = 'admin.controller.get_course_social_engagement'
+        engagement_summary_function = 'admin.controller.get_course_engagement_summary'
+
+        self.social_engagement = self.apply_patch(engagement_function)
+        self.engagement_summary = self.apply_patch(engagement_summary_function)
+
+        self.social_engagement.return_value = self.social_stats
+        self.engagement_summary.return_value = self.engagement_stats
+
+    def test_write_social_engagement_report_on_csv(self):
+        response = HttpResponse(content_type='text/csv')
+        writer = csv.writer(response)
+
+        write_social_engagement_report_on_csv(writer, "123", "123")
+        self.assertEqual(self.expected_result_for_social, response.content)
+
+    def test_write_engagement_summary_on_csv(self):
+        response = HttpResponse(content_type='text/csv')
+        writer = csv.writer(response)
+
+        write_engagement_summary_on_csv(writer, "123", "123")
+        self.assertEqual(self.expected_result_for_summary, response.content)
+
+    def test_write_participant_performance_on_csv(self):
+        response = HttpResponse(content_type='text/csv')
+        writer = csv.writer(response)
+
+        write_participant_performance_on_csv(writer)
+        self.assertEqual(self.expected_result_for_perfromance, response.content)
+
+    def test_get_course_stats_report(self):
+        course_api = self.apply_patch('api_client.course_api.get_course_details')
+        course_api.return_value = {"name": "test_course"}
+        response = get_course_stats_report("test_company", "test_Course")
+        expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance\
+            + self.expected_result_for_social
+
+        self.assertEqual(response.content, expected_result)
+        course_features = FeatureFlags.objects.get(course_id="test_course")
+        course_features.discussions = False
+        course_features.save()
+
+        response = get_course_stats_report("test_company", "test_Course")
+        expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance
+
+        self.assertEqual(response.content, expected_result)

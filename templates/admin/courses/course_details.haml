@@ -1,4 +1,5 @@
 - extends "admin/admin_layout.haml"
+- load i18n
 
 - load staticfiles
 - block custom_js
@@ -94,9 +95,13 @@
                   - else
                     %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}> Export Stats
                 #courseDetailsEngagementViewGrid.courseDetailsViewGrid.large-12.columns
-                #courseDetailsStatsTopic.courseDetailsTopic
-                  Social Engagement
-                #courseDetailsStatsViewGrid.courseDetailsViewGrid.large-12.columns
+
+                %input#discussionFeature{type: 'hidden', name: 'discussion_feature', value: '{{discussion_feature}}'}
+                - if discussion_feature
+                  #courseDetailsStatsTopic.courseDetailsTopic
+                    {% trans "Social Engagement" %}
+                  #courseDetailsStatsViewGrid.courseDetailsViewGrid.large-12.columns
+
                 #courseDetailsTimelineTopic.courseDetailsTopic
                   Cohort Timeline
                 #course-details-timeline-wrapper
