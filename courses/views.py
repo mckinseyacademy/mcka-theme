@@ -48,9 +48,12 @@ from .controller import (
     get_social_leaders,
     fix_resource_page_video_scripts,
 )
-from .user_courses import check_user_course_access, standard_data, load_course_progress,\
-    check_company_admin_user_access, get_current_course_for_user,\
-    set_current_course_for_user, get_current_program_for_user, check_course_shell_access
+from .user_courses import (
+    check_user_course_access, standard_data, load_course_progress,
+    check_company_admin_user_access, get_current_course_for_user,
+    set_current_course_for_user, get_current_program_for_user, check_course_shell_access,
+    STANDARD_DATA_FEATURES
+)
 from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.query_manager import get_object_or_none
 
@@ -603,6 +606,9 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
 
+    # add in progress info
+    load_course_progress(course, user_id)
+
     graders = gradebook.grading_policy.GRADER
 
     graders_weight_sum = 0
@@ -659,13 +665,15 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     }
 
     if progress_user.id != request.user.id:
-        # Inject course progress for nav header
-        load_course_progress(course, user_id)
         # Add index to lesson
         for idx, lesson in enumerate(course.chapters, start=1):
             lesson.index = idx
 
         data["course"] = course
+
+    # don't request progress in standard data retrieval
+    standard_data_features = DottableDict(STANDARD_DATA_FEATURES, course_progress=False)
+    setattr(request, 'standard_data_features', standard_data_features)
 
     return render(request, 'courses/course_progress_v2.haml', data)
 

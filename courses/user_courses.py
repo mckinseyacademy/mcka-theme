@@ -1,21 +1,35 @@
 from __future__ import division
 import functools
+
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
-from accounts.middleware.thread_local import get_static_tab_context
-from admin.controller import load_course
-from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings, LearnerDashboard
-from api_client import user_api, course_api, mobileapp_api, organization_api
-from api_client.user_api import get_user_courses_progress
-from license import controller as license_controller
-from courses.models import FeatureFlags
 
-from .controller import build_page_info_for_course, locate_chapter_page, load_static_tabs, load_lesson_estimated_time, round_to_int
+from admin.controller import load_course
+from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings
+from api_client import user_api, course_api, mobileapp_api, organization_api
+from license import controller as license_controller
+from lib.utils import DottableDict
+
+from .models import FeatureFlags
+from .controller import (
+    build_page_info_for_course, locate_chapter_page,
+    load_static_tabs, round_to_int
+)
 
 CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
 CURRENT_PROGRAM = "current_program"
+
+# controls data that is included in standard data
+# To turn some feature off, add it in HTTP request object
+# e.g;
+#   standard_data_features = DottableDict(STANDARD_DATA_FEATURES, course_progress=False)
+#   setattr(request, 'standard_data_features', standard_data_features)
+STANDARD_DATA_FEATURES = DottableDict({
+    "course_progress": True,
+})
+
 
 def _load_intersecting_program_courses(program, courses):
     if program.id == Program.NO_PROGRAM_ID:
@@ -252,11 +266,6 @@ def return_course_completions_stats(course, user_id):
     return _get_course_progress_data(course, user_id)
 
 
-STANDARD_DATA_FEATURES = {
-    "course_progress": True,
-}
-
-
 def standard_data(request):
     features_to_include = getattr(request, 'standard_data_features', STANDARD_DATA_FEATURES)
 
@@ -313,7 +322,7 @@ def standard_data(request):
             # Inject formatted data for view (don't pass page_id in here - if needed it will be processed from elsewhere)
             _inject_formatted_data(program, course, None, load_static_tabs(course_id))
 
-            if features_to_include['course_progress']:
+            if features_to_include.course_progress:
                 # Inject course progress for nav header
                 load_course_progress(course, request.user.id)
 
