@@ -63,10 +63,13 @@
               .user.dummy
                 %img.avatar{src: '/static/image/empty_avatar.png'}
                 .info
-                  .person-name username
-                  .person-title title
+                  .person-name
+                    {% trans "username" %}
+                  .person-title
+                    {% trans "title" %}
                   .person-rank #={leaderboard_ranks.0}
-                    %span 100
+                    %span
+                      {% trans "100" %}
 
             - if proficiency.has_leaders and  proficiency.leaders.1
               .user
@@ -80,10 +83,13 @@
               .user.dummy
                 %img.avatar{src: '/static/image/empty_avatar.png'}
                 .info
-                  .person-name username
-                  .person-title title
+                  .person-name
+                    {% trans "username" %}
+                  .person-title
+                    {% trans "title" %}
                   .person-rank #={leaderboard_ranks.1}
-                    %span 100
+                    %span
+                      {% trans "100" %}
 
             - if proficiency.has_leaders and  proficiency.leaders.2
               .user
@@ -97,10 +103,13 @@
               .user.dummy
                 %img.avatar{src: '/static/image/empty_avatar.png'}
                 .info
-                  .person-name username
-                  .person-title title
+                  .person-name
+                    {% trans "username" %}
+                  .person-title
+                    {% trans "title" %}
                   .person-rank #={leaderboard_ranks.2}
-                    %span 100
+                    %span
+                      {% trans "100" %}
 
         %li
           .header

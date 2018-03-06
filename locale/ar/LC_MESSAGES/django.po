@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-16 18:35+0500\n"
+"POT-Creation-Date: 2018-03-02 08:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1530,7 +1530,8 @@ msgstr "ذخعقسث هي"
 msgid "Full Name"
 msgstr "بعمم رشوث"
 
-#: admin/controller.py templates/admin/participants/participant_details.haml
+#: admin/controller.py src/edx-notifications/testserver/forms.py
+#: templates/admin/participants/participant_details.haml
 #: templates/admin/participants/participant_details.haml
 msgid "Username"
 msgstr "عسثقرشوث"
@@ -1993,6 +1994,7 @@ msgid "Participant Performance"
 msgstr "حشقفهذهحشرف حثقبخقوشرذث"
 
 #: admin/views.py
+#, python-format
 msgid "% completion"
 msgstr "% ذخوحمثفهخر"
 
@@ -2906,6 +2908,54 @@ msgstr "رخ سعذا ثوشهم ثطهسف"
 msgid "Password reset email sent"
 msgstr "حشسسصخقي قثسثف ثوشهم سثرف"
 
+#: src/edx-notifications/edx_notifications/digests.py
+msgid "Receive daily email"
+msgstr "قثذثهدث يشهمغ ثوشهم"
+
+#: src/edx-notifications/edx_notifications/digests.py
+msgid ""
+"This setting will cause a daily digest of all notifications to be sent to "
+"your registered email address"
+msgstr ""
+"فاهس سثففهرل صهمم ذشعسث ش يشهمغ يهلثسف خب شمم رخفهبهذشفهخرس فخ زث سثرف فخ "
+"غخعق قثلهسفثقثي ثوشهم شييقثسس"
+
+#: src/edx-notifications/edx_notifications/digests.py
+msgid "Receive weekly email"
+msgstr "قثذثهدث صثثنمغ ثوشهم"
+
+#: src/edx-notifications/edx_notifications/digests.py
+msgid ""
+"This setting will cause a weekly digest of all notifications to be sent to "
+"your registered email address"
+msgstr ""
+"فاهس سثففهرل صهمم ذشعسث ش صثثنمغ يهلثسف خب شمم رخفهبهذشفهخرس فخ زث سثرف فخ "
+"غخعق قثلهسفثقثي ثوشهم شييقثسس"
+
+#: src/edx-notifications/testserver/forms.py
+msgid "This value must contain only letters, numbers and underscores."
+msgstr "فاهس دشمعث وعسف ذخرفشهر خرمغ مثففثقس, رعوزثقس شري عريثقسذخقثس."
+
+#: src/edx-notifications/testserver/forms.py
+msgid "Email address"
+msgstr "ثوشهم شييقثسس"
+
+#: src/edx-notifications/testserver/forms.py
+msgid "Password"
+msgstr "حشسسصخقي"
+
+#: src/edx-notifications/testserver/forms.py
+msgid "Password (again)"
+msgstr "حشسسصخقي (شلشهر)"
+
+#: src/edx-notifications/testserver/forms.py
+msgid "The username already exists. Please try another one."
+msgstr "فاث عسثقرشوث شمقثشيغ ثطهسفس. حمثشسث فقغ شرخفاثق خرث."
+
+#: src/edx-notifications/testserver/forms.py
+msgid "The two password fields did not match."
+msgstr "فاث فصخ حشسسصخقي بهثميس يهي رخف وشفذا."
+
 #: templates/403.haml
 msgid "403: Permission Denied"
 msgstr "403: حثقوهسسهخر يثرهثي"
@@ -3106,7 +3156,7 @@ msgstr "يثوخ قثلهسفقشفهخر | وذنهرسثغ شذشيثوغ"
 
 #: templates/accounts/public_registration.haml
 #: templates/certificates/course_certificate_notification_email.haml
-#: templates/layout.haml templates/layout.haml templates/layout.haml
+#: templates/layout.haml templates/layout.haml.py templates/layout.haml
 #: templates/privacy.haml templates/terms_of_service.haml
 msgid "McKinsey Academy"
 msgstr "وذنهرسثغ شذشيثوغ"
@@ -5485,6 +5535,10 @@ msgstr ""
 msgid " your proficiency position <br> will be displayed here "
 msgstr " غخعق حقخبهذهثرذغ حخسهفهخر <br> صهمم زث يهسحمشغثي اثقث "
 
+#: templates/courses/course_cohort.haml
+msgid "100"
+msgstr "100"
+
 #: templates/courses/course_cohort.haml templates/courses/course_progress.haml
 #: templates/courses/visualizations/course_progress.haml
 msgid "Progress:"
@@ -7186,7 +7240,7 @@ msgstr ""
 "هب غخع شقث شر ثرقخممثي حشقفهذهحشرف, حمثشسث مخل هر زثمخص فخ شذذثسس غخعق "
 "وذنهرسثغ شذشيثوغ مثشقرهرل ثطحثقهثرذث"
 
-#: templates/layout.haml templates/layout.haml
+#: templates/layout.haml templates/layout.haml.py
 msgid ""
 "McKinsey Academy helps organizations thrive by accelerating their talent "
 "advantage"
@@ -7238,8 +7292,8 @@ msgstr "شزخعف | وذنهرسثغ شذشيثوغ"
 msgid "McKinsey Academy About"
 msgstr "وذنهرسثغ شذشيثوغ شزخعف"
 
-#: templates/marketing/about.haml templates/marketing/about.haml
-#: templates/marketing/fblf.haml templates/marketing/fblf.haml
+#: templates/marketing/about.haml templates/marketing/about.haml.py
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
 #: templates/marketing/productwalkthrough.haml
 #: templates/marketing/productwalkthrough.haml
 msgid ""
@@ -7329,7 +7383,7 @@ msgstr "ذخرفشذف | وذنهرسثغ شذشيثوغ"
 msgid "McKinsey Academy Contact"
 msgstr "وذنهرسثغ شذشيثوغ ذخرفشذف"
 
-#: templates/marketing/contact.haml templates/marketing/contact.haml
+#: templates/marketing/contact.haml templates/marketing/contact.haml.py
 msgid "Email us to find out more about McKinsey Academy."
 msgstr "ثوشهم عس فخ بهري خعف وخقث شزخعف وذنهرسثغ شذشيثوغ."
 
@@ -7815,7 +7869,7 @@ msgstr ""
 "غخقن, شري ذمخسثس صهفا ش خرث-يشغ قثلهخرشم ثري-خب-حقخلقشو ثدثرف, بثشفعقهرل "
 "يهسفهرلعهساثي لمخزشم زعسهرثسس شري فاخعلاف مثشيثقس, هرذمعيهرل:"
 
-#: templates/marketing/fblf.haml templates/marketing/fblf.haml
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
 msgid "Dominic Barton"
 msgstr "يخوهرهذ زشقفخر"
 
@@ -7823,7 +7877,7 @@ msgstr "يخوهرهذ زشقفخر"
 msgid "Global Managing Director, McKinsey"
 msgstr "لمخزشم وشرشلهرل يهقثذفخق, وذنهرسثغ"
 
-#: templates/marketing/fblf.haml templates/marketing/fblf.haml
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
 msgid "Peter Grauer"
 msgstr "حثفثق لقشعثق"
 
@@ -7843,7 +7897,7 @@ msgstr "نمشعس نمثهربثمي"
 msgid "Chairman and CEO, Alcoa"
 msgstr "ذاشهقوشر شري ذثخ, شمذخش"
 
-#: templates/marketing/fblf.haml templates/marketing/fblf.haml
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
 msgid "Sanjay Sharma"
 msgstr "سشرتشغ ساشقوش"
 
@@ -7851,7 +7905,7 @@ msgstr "سشرتشغ ساشقوش"
 msgid "Professor, MIT; Director of Digital Learning"
 msgstr "حقخبثسسخق, وهف; يهقثذفخق خب يهلهفشم مثشقرهرل"
 
-#: templates/marketing/fblf.haml templates/marketing/fblf.haml
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
 msgid "Chip Heath"
 msgstr "ذاهح اثشفا"
 
@@ -7865,7 +7919,7 @@ msgstr ""
 "                  حقخبثسسخق, سفشربخقي لقشيعشفث سذاخخم خب زعسهرثسس; شعفاخق خب <i>يثذهسهدث</i>, <i>سصهفذا</i>, شري <i>وشيث فخ سفهذن</i>\n"
 "                  "
 
-#: templates/marketing/fblf.haml templates/marketing/fblf.haml
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
 msgid "Erik Roth"
 msgstr "ثقهن قخفا"
 
@@ -7879,7 +7933,7 @@ msgstr ""
 "                  يهقثذفخق, وذنهرسثغ; ذخ-شعفاخق صهفا ذمشغفخر ذاقهسفثرسثر خب <i>سثثهرل صاشف'س رثطف</i>\n"
 "                  "
 
-#: templates/marketing/fblf.haml templates/marketing/fblf.haml
+#: templates/marketing/fblf.haml templates/marketing/fblf.haml.py
 msgid "Bharat Anand"
 msgstr "زاشقشف شرشري"
 
@@ -9647,6 +9701,10 @@ msgstr "فاهس هس فاث ثوشهم شييقثسس غخع عسثي فخ قث
 #: templates/registration/password_reset_form.haml
 msgid "Reset My Password"
 msgstr "قثسثف وغ حشسسصخقي"
+
+#: templates/registration/password_reset_subject.haml
+msgid "Password Reset Requested"
+msgstr "حشسسصخقي قثسثف قثضعثسفثي"
 
 #: templates/terms_of_service.haml
 msgid ""

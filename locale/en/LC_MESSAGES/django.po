@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-16 18:35+0500\n"
+"POT-Creation-Date: 2018-03-02 08:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 
 #: accounts/controller.py:308 accounts/controller.py:321
-#: accounts/controller.py:340 accounts/views.py:785
+#: accounts/controller.py:340 accounts/views.py:787
 #: templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:42 templates/layout.haml:240
 msgid "Welcome to McKinsey Academy"
@@ -1130,7 +1130,7 @@ msgid "Password {html_span}"
 msgstr ""
 
 #: accounts/forms.py:370 accounts/forms.py:444 accounts/forms.py:462
-#: accounts/forms.py:559 admin/controller.py:803 admin/views.py:2306
+#: accounts/forms.py:560 admin/controller.py:803 admin/views.py:2306
 #: admin/views.py:5581 marketing/forms.py:49 marketing/forms.py:93
 #: marketing/forms.py:127 templates/accounts/user_profile.haml:33
 #: templates/admin/companies/company_details.haml:181
@@ -1150,7 +1150,7 @@ msgid ""
 "{html_span_end}"
 msgstr ""
 
-#: accounts/forms.py:386 accounts/forms.py:571
+#: accounts/forms.py:386 accounts/forms.py:572
 #, python-brace-format
 msgid ""
 "Password {html_span_start} Must be at least 8 characters and include upper "
@@ -1162,14 +1162,14 @@ msgstr ""
 msgid "City {html_span}"
 msgstr ""
 
-#: accounts/forms.py:408 accounts/forms.py:584
+#: accounts/forms.py:408 accounts/forms.py:585
 #, python-brace-format
 msgid ""
 "I agree to the {html_anchor_start} Terms of Service {html_anchor_end} and "
 "{html_anchor_second} Privacy Policy {html_anchor_end} {html_span}"
 msgstr ""
 
-#: accounts/forms.py:421 accounts/forms.py:596
+#: accounts/forms.py:421 accounts/forms.py:597
 msgid "You must accept terms of service in order to continue"
 msgstr ""
 
@@ -1177,116 +1177,116 @@ msgstr ""
 msgid "The account associated with this email is not activated yet"
 msgstr ""
 
-#: accounts/forms.py:508
+#: accounts/forms.py:509
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: accounts/forms.py:509
+#: accounts/forms.py:510
 msgid "Password doesn't match creation criteria."
 msgstr ""
 
-#: accounts/forms.py:511
+#: accounts/forms.py:512
 msgid "New password"
 msgstr ""
 
-#: accounts/forms.py:513
+#: accounts/forms.py:514
 msgid "New password confirmation"
 msgstr ""
 
-#: accounts/forms.py:543 admin/forms.py:165
+#: accounts/forms.py:544 admin/forms.py:165
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr ""
 
-#: accounts/forms.py:548 templates/admin/course_run/view.haml:63
+#: accounts/forms.py:549 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:90
 msgid "First Name"
 msgstr ""
 
-#: accounts/forms.py:549
+#: accounts/forms.py:550
 #: templates/admin/participants/participant_details.haml:95
 msgid "Last Name"
 msgstr ""
 
-#: accounts/forms.py:563
+#: accounts/forms.py:564
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later. "
 "{html_span_end}"
 msgstr ""
 
-#: accounts/forms.py:630
+#: accounts/forms.py:631
 #, python-brace-format
 msgid "First Name {html_span}"
 msgstr ""
 
-#: accounts/forms.py:634
+#: accounts/forms.py:635
 #, python-brace-format
 msgid "Last Name {html_span}"
 msgstr ""
 
-#: accounts/forms.py:638
+#: accounts/forms.py:639
 #, python-brace-format
 msgid "Company Name {html_span}"
 msgstr ""
 
-#: accounts/forms.py:642
+#: accounts/forms.py:643
 #, python-brace-format
 msgid "Company Email {html_span}"
 msgstr ""
 
-#: accounts/forms.py:646
+#: accounts/forms.py:647
 #, python-brace-format
 msgid "Current Role {html_span}"
 msgstr ""
 
-#: accounts/forms.py:650
+#: accounts/forms.py:651
 #, python-brace-format
 msgid ""
 "{html_div_start}Note: personal email addresses will not be "
 "processed{html_div_end}"
 msgstr ""
 
-#: accounts/forms.py:656 accounts/forms.py:662
+#: accounts/forms.py:657 accounts/forms.py:663
 #, python-brace-format
 msgid ""
 "{html_div_start}(please choose one of the following options) {html_div_end}"
 msgstr ""
 
-#: accounts/forms.py:675 accounts/forms.py:683
+#: accounts/forms.py:676 accounts/forms.py:684
 msgid "Special characters or numbers are not valid."
 msgstr ""
 
-#: accounts/forms.py:692
+#: accounts/forms.py:693
 msgid "Email must be a string."
 msgstr ""
 
-#: accounts/forms.py:697
+#: accounts/forms.py:698
 #, python-brace-format
 msgid "Email '{email}' must be at least {min} characters long"
 msgstr ""
 
-#: accounts/forms.py:704
+#: accounts/forms.py:705
 #, python-brace-format
 msgid "Email '{email}' must be at most {max} characters long"
 msgstr ""
 
-#: accounts/forms.py:714
+#: accounts/forms.py:715
 msgid "This email address has already been registered."
 msgstr ""
 
-#: accounts/forms.py:719
+#: accounts/forms.py:720
 msgid "Please enter a valid company email address."
 msgstr ""
 
-#: accounts/forms.py:729
+#: accounts/forms.py:730
 msgid "Special characters are not valid."
 msgstr ""
 
-#: accounts/forms.py:741
+#: accounts/forms.py:742
 msgid "Please specify your Role."
 msgstr ""
 
-#: accounts/forms.py:745
+#: accounts/forms.py:746
 msgid "Please enter a valid Role."
 msgstr ""
 
@@ -1358,25 +1358,25 @@ msgstr ""
 msgid "Password reset unsuccessful"
 msgstr ""
 
-#: accounts/views.py:786
+#: accounts/views.py:788
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
 "more about the experience in the meantime."
 msgstr ""
 
-#: accounts/views.py:790
+#: accounts/views.py:792
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
 "this site to learn more about what to expect."
 msgstr ""
 
-#: accounts/views.py:930
+#: accounts/views.py:935
 msgid "Enter your full name"
 msgstr ""
 
-#: accounts/views.py:932 accounts/views.py:955 admin/views.py:1814
+#: accounts/views.py:937 accounts/views.py:960 admin/views.py:1814
 #: admin/views.py:1847 admin/views.py:4155
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:147
@@ -1389,23 +1389,23 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: accounts/views.py:953
+#: accounts/views.py:958
 msgid "Enter your title"
 msgstr ""
 
-#: accounts/views.py:1005 accounts/views.py:1035
+#: accounts/views.py:1010 accounts/views.py:1040
 msgid "Initial"
 msgstr ""
 
-#: accounts/views.py:1032
+#: accounts/views.py:1037
 msgid "Course Closed"
 msgstr ""
 
-#: accounts/views.py:1041
+#: accounts/views.py:1046
 msgid "Registered"
 msgstr ""
 
-#: accounts/views.py:1043
+#: accounts/views.py:1048
 msgid "Error"
 msgstr ""
 
@@ -1501,7 +1501,7 @@ msgstr ""
 msgid "Full Name"
 msgstr ""
 
-#: admin/controller.py:803
+#: admin/controller.py:803 src/edx-notifications/testserver/forms.py:8
 #: templates/admin/participants/participant_details.haml:102
 #: templates/admin/participants/participant_details.haml:184
 msgid "Username"
@@ -2861,6 +2861,50 @@ msgstr ""
 msgid "Password reset email sent"
 msgstr ""
 
+#: src/edx-notifications/edx_notifications/digests.py:200
+msgid "Receive daily email"
+msgstr ""
+
+#: src/edx-notifications/edx_notifications/digests.py:201
+msgid ""
+"This setting will cause a daily digest of all notifications to be sent to "
+"your registered email address"
+msgstr ""
+
+#: src/edx-notifications/edx_notifications/digests.py:210
+msgid "Receive weekly email"
+msgstr ""
+
+#: src/edx-notifications/edx_notifications/digests.py:211
+msgid ""
+"This setting will cause a weekly digest of all notifications to be sent to "
+"your registered email address"
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:8
+msgid "This value must contain only letters, numbers and underscores."
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:9
+msgid "Email address"
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:10
+msgid "Password"
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:11
+msgid "Password (again)"
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:18
+msgid "The username already exists. Please try another one."
+msgstr ""
+
+#: src/edx-notifications/testserver/forms.py:23
+msgid "The two password fields did not match."
+msgstr ""
+
 #: templates/403.haml:8
 msgid "403: Permission Denied"
 msgstr ""
@@ -3041,8 +3085,9 @@ msgstr ""
 
 #: templates/accounts/public_registration.haml:5
 #: templates/certificates/course_certificate_notification_email.haml:13
-#: templates/layout.haml:18 templates/layout.haml:19 templates/layout.haml:26
-#: templates/privacy.haml:130 templates/terms_of_service.haml:111
+#: templates/layout.haml:18 templates/layout.haml.py:19
+#: templates/layout.haml:26 templates/privacy.haml:130
+#: templates/terms_of_service.haml:111
 msgid "McKinsey Academy"
 msgstr ""
 
@@ -3799,7 +3844,7 @@ msgid "This is the course feature list."
 msgstr ""
 
 #: templates/admin/course_meta_content/item_list.haml:47
-#: templates/courses/course_cohort.haml:234
+#: templates/courses/course_cohort.haml:237
 msgid "Discussions"
 msgstr ""
 
@@ -5297,7 +5342,7 @@ msgid "Proficiency:"
 msgstr ""
 
 #: templates/courses/course_cohort.haml:47
-#: templates/courses/course_cohort.haml:109
+#: templates/courses/course_cohort.haml:112
 #: templates/courses/visualizations/course_engagement.haml:15
 #: templates/courses/visualizations/course_proficiency.haml:16
 #: templates/courses/visualizations/course_progress.haml:16
@@ -5321,113 +5366,117 @@ msgstr ""
 msgid " your proficiency position <br> will be displayed here "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:108
+#: templates/courses/course_cohort.haml:73
+msgid "100"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:111
 #: templates/courses/course_progress.haml:68
 #: templates/courses/visualizations/course_progress.haml:8
 msgid "Progress:"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:111
+#: templates/courses/course_cohort.haml:114
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:113
+#: templates/courses/course_cohort.haml:116
 #, python-format
 msgid ""
 " your progress position: <br><span>%(position)s</span> with <span>"
 "%(progress_value)s%%</span> "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:115
+#: templates/courses/course_cohort.haml:118
 msgid "your progress position <br> will be displayed here"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:129
-#: templates/courses/course_cohort.haml:146
-#: templates/courses/course_cohort.haml:163
-#: templates/courses/course_cohort.haml:192
-#: templates/courses/course_cohort.haml:209
-#: templates/courses/course_cohort.haml:226
+#: templates/courses/course_cohort.haml:132
+#: templates/courses/course_cohort.haml:149
+#: templates/courses/course_cohort.haml:166
+#: templates/courses/course_cohort.haml:195
+#: templates/courses/course_cohort.haml:212
+#: templates/courses/course_cohort.haml:229
 msgid "username"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:130
-#: templates/courses/course_cohort.haml:147
-#: templates/courses/course_cohort.haml:164
-#: templates/courses/course_cohort.haml:193
-#: templates/courses/course_cohort.haml:210
-#: templates/courses/course_cohort.haml:227
+#: templates/courses/course_cohort.haml:133
+#: templates/courses/course_cohort.haml:150
+#: templates/courses/course_cohort.haml:167
+#: templates/courses/course_cohort.haml:196
+#: templates/courses/course_cohort.haml:213
+#: templates/courses/course_cohort.haml:230
 msgid "title"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:166
+#: templates/courses/course_cohort.haml:169
 #, python-format
 msgid "100%%"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:171
+#: templates/courses/course_cohort.haml:174
 #: templates/courses/visualizations/course_engagement.haml:8
 msgid "Engagement:"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:172
+#: templates/courses/course_cohort.haml:175
 #, python-format
 msgid " cohort average = %(course_avg)s points "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:174
+#: templates/courses/course_cohort.haml:177
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:176
+#: templates/courses/course_cohort.haml:179
 #, python-format
 msgid ""
 "  your engagement position: <br><span>%(position)s</span> with <span>"
 "%(points)s pts.</span>\" "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:178
+#: templates/courses/course_cohort.haml:181
 msgid " your engagement position <br> will be displayed here "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:195
-#: templates/courses/course_cohort.haml:212
-#: templates/courses/course_cohort.haml:229
+#: templates/courses/course_cohort.haml:198
+#: templates/courses/course_cohort.haml:215
+#: templates/courses/course_cohort.haml:232
 msgid "100 pts."
 msgstr ""
 
-#: templates/courses/course_cohort.haml:235
+#: templates/courses/course_cohort.haml:238
 msgid ""
 "Even if we cannot directly shape an outcome, a model’s prediction may be "
 "communicated in a way that alters behavior and indirectly shapes it."
 msgstr ""
 
-#: templates/courses/course_cohort.haml:239
+#: templates/courses/course_cohort.haml:242
 msgid "gwensisco"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:240
+#: templates/courses/course_cohort.haml:243
 msgid "Media Buyer"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:243
+#: templates/courses/course_cohort.haml:246
 msgid "Recommendations"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:246
+#: templates/courses/course_cohort.haml:249
 msgid "Scientists Without Borders"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:247
+#: templates/courses/course_cohort.haml:250
 msgid ""
 "A worldwide community of changemakers collaborating to accelerate solutions "
 "to urgent development challenges."
 msgstr ""
 
-#: templates/courses/course_cohort.haml:249
+#: templates/courses/course_cohort.haml:252
 msgid "Suggest a Link"
 msgstr ""
 
@@ -6742,7 +6791,7 @@ msgid ""
 "McKinsey Academy learning experience"
 msgstr ""
 
-#: templates/layout.haml:22 templates/layout.haml:23
+#: templates/layout.haml:22 templates/layout.haml.py:23
 msgid ""
 "McKinsey Academy helps organizations thrive by accelerating their talent "
 "advantage"
@@ -6783,8 +6832,8 @@ msgstr ""
 msgid "McKinsey Academy About"
 msgstr ""
 
-#: templates/marketing/about.haml:10 templates/marketing/about.haml:11
-#: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml:10
+#: templates/marketing/about.haml:10 templates/marketing/about.haml.py:11
+#: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml.py:10
 #: templates/marketing/productwalkthrough.haml:9
 #: templates/marketing/productwalkthrough.haml:10
 msgid ""
@@ -6854,7 +6903,7 @@ msgstr ""
 msgid "McKinsey Academy Contact"
 msgstr ""
 
-#: templates/marketing/contact.haml:9 templates/marketing/contact.haml:10
+#: templates/marketing/contact.haml:9 templates/marketing/contact.haml.py:10
 msgid "Email us to find out more about McKinsey Academy."
 msgstr ""
 
@@ -7249,7 +7298,7 @@ msgid ""
 "distinguished global business and thought leaders, including:"
 msgstr ""
 
-#: templates/marketing/fblf.haml:39 templates/marketing/fblf.haml:42
+#: templates/marketing/fblf.haml:39 templates/marketing/fblf.haml.py:42
 msgid "Dominic Barton"
 msgstr ""
 
@@ -7257,7 +7306,7 @@ msgstr ""
 msgid "Global Managing Director, McKinsey"
 msgstr ""
 
-#: templates/marketing/fblf.haml:46 templates/marketing/fblf.haml:49
+#: templates/marketing/fblf.haml:46 templates/marketing/fblf.haml.py:49
 msgid "Peter Grauer"
 msgstr ""
 
@@ -7275,7 +7324,7 @@ msgstr ""
 msgid "Chairman and CEO, Alcoa"
 msgstr ""
 
-#: templates/marketing/fblf.haml:60 templates/marketing/fblf.haml:63
+#: templates/marketing/fblf.haml:60 templates/marketing/fblf.haml.py:63
 msgid "Sanjay Sharma"
 msgstr ""
 
@@ -7283,7 +7332,7 @@ msgstr ""
 msgid "Professor, MIT; Director of Digital Learning"
 msgstr ""
 
-#: templates/marketing/fblf.haml:67 templates/marketing/fblf.haml:70
+#: templates/marketing/fblf.haml:67 templates/marketing/fblf.haml.py:70
 msgid "Chip Heath"
 msgstr ""
 
@@ -7295,7 +7344,7 @@ msgid ""
 "                  "
 msgstr ""
 
-#: templates/marketing/fblf.haml:76 templates/marketing/fblf.haml:79
+#: templates/marketing/fblf.haml:76 templates/marketing/fblf.haml.py:79
 msgid "Erik Roth"
 msgstr ""
 
@@ -7307,7 +7356,7 @@ msgid ""
 "                  "
 msgstr ""
 
-#: templates/marketing/fblf.haml:85 templates/marketing/fblf.haml:88
+#: templates/marketing/fblf.haml:85 templates/marketing/fblf.haml.py:88
 msgid "Bharat Anand"
 msgstr ""
 
@@ -8620,6 +8669,10 @@ msgstr ""
 
 #: templates/registration/password_reset_form.haml:20
 msgid "Reset My Password"
+msgstr ""
+
+#: templates/registration/password_reset_subject.haml:3
+msgid "Password Reset Requested"
 msgstr ""
 
 #: templates/terms_of_service.haml:5
