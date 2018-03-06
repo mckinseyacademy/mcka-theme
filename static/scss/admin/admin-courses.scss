@@ -173,8 +173,28 @@
 	.bbGrid-grid
 	{
 		width: 100%;
+		th , td{
+			text-align: left;
+			&:last-child{
+				text-align: left;
+			}
+		}
 	}
 }
+
+#courseDetailsStatsViewGrid
+{
+	.bbGrid-grid
+	{
+		width: auto;
+		th, td{
+			max-width: 215px;
+			width: 39%;
+		}
+	}
+}
+
+
 
 #courseDetailsParticipantsGridWrapper{
 	margin-left: auto;
