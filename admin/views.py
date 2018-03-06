@@ -17,11 +17,13 @@ from dateutil.parser import parse as parsedate
 from django.conf import settings
 from django.contrib import messages
 from django.core import serializers
+from django.core.files.storage import default_storage
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, ValidationError
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
 from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404, HttpResponseServerError
+from django.http.response import HttpResponseBadRequest
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader, RequestContext
 from django.utils import timezone
@@ -40,7 +42,7 @@ from accounts.controller import is_future_start, save_new_client_image, send_pas
 from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
-    create_roles_list, edit_self_register_role, delete_self_reg_role
+    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
@@ -1514,6 +1516,10 @@ def client_detail_navigation(request, client_id, errors=None):
     mobile_app_themes = get_mobile_app_themes(client_id)
     if mobile_app_themes:
         mobile_theme = mobile_app_themes[0]
+        if mobile_theme['logo_image']['has_image']:
+            data['client_mobile_logo_image'] = mobile_theme['logo_image']['image_url_full']
+        if mobile_theme['header_bg_image']['has_image']:
+            data['client_mobile_header_image'] = mobile_theme['header_bg_image']['image_url_xxxhdpi']
         data['completed_course_tint'] = mobile_theme['completed_course_tint'] if mobile_theme[
             'completed_course_tint'] else ''
         data['header_background_color'] = mobile_theme['header_background_color'] if mobile_theme[
@@ -1552,6 +1558,46 @@ def client_detail_nav_links(request, client_id):
 
     return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                           PERMISSION_GROUPS.MCKA_SUBADMIN)
+@client_admin_access
+def remove_client_branding_image(request, client_id):
+    ''' Remove the client branding images'''
+
+    allowed_img_type = [
+        'logo_image',
+        'header_bg_image',
+        'client_background',
+        'client_logo',
+        'global_client_logo'
+    ]
+
+    img_type = request.POST['image_type']
+    if img_type not in allowed_img_type:
+        response = HttpResponse(
+            json.dumps({'message': _('Bad request, The Image type is not valid.')}),
+            content_type='application/json'
+        )
+        response.status_code = 400
+        return response
+
+    if img_type == 'logo_image' or img_type == 'header_bg_image':
+        try:
+            mobile_app_theme = get_mobile_app_themes(client_id)[0]
+            mobileapp_api.remove_mobile_app_theme_image(mobile_app_theme['id'], img_type)
+        except ApiError:
+            response = HttpResponse(
+                json.dumps({'message': _('Could not delete the image, Please try later')}),
+                content_type='application/json'
+            )
+            response.status_code = 500
+            return response
+    else:
+        remove_desktop_branding_image(img_type, client_id)
+    return HttpResponse(json.dumps({'message': 'Successfully deleted'}), content_type='application/json')
+
+
 @require_POST
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
@@ -1568,7 +1614,6 @@ def client_detail_customization(request, client_id):
         )
         if request.FILES:
             allowed_types = ["image/jpeg", "image/png", 'image/gif']
-            from django.core.files.storage import default_storage
             from django.core.files.base import ContentFile
             from PIL import Image
 

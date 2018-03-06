@@ -63,6 +63,13 @@
             %label.nav2.selected {% trans "Upload Global Logo:" %}
             %a.button.radius.tiny.upload_logo {% trans "Upload Logo" %}
             %input{type: 'file', name: 'global_client_logo'}
+            - if customization.global_client_logo
+              .display_image
+                %a.remove_image{"type":"global_client_logo", "client_id": "#{client.id}"}
+                  %i.fa.fa-times-circle
+                .global_client_logo
+                  %img{src: "#{customization.global_client_logo}", height:'100px', width:'100px'}
+
           %li
             %label.nav2.selected {% trans "Top Navigation Background:" %}
             %input{type: 'text', name: 'hex_background_main_navigation', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_background_main_navigation}"}
@@ -73,6 +80,12 @@
             %label.nav2.selected {% trans "Upload Logo:" %}
             %a.button.radius.tiny.upload_logo {% trans "Upload Logo" %}
             %input{type: 'file', name: 'client_logo'}
+            - if customization.client_logo
+              .display_image
+                %a.remove_image{"type":"client_logo", "client_id": "#{client.id}"}
+                  %i.fa.fa-times-circle
+                .client_logo
+                  %img{src: "#{customization.client_logo}", height:'100px', width:'100px'}
           %li
             %label.nav2.selected {% trans "Notification Circle Color:" %}
             %input{type: 'text', name: 'hex_notification', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_notification}"}
@@ -95,6 +108,13 @@
             %label.nav2.selected {% trans "Page Background Image:" %}
             %a.button.radius.tiny.upload_logo {% trans "Upload Image" %}
             %input{type: 'file', name: 'client_background'}
+            - if customization.client_background
+              .display_image
+                %a.remove_image{"type":"client_background", "client_id": "#{client.id}"}
+                  %i.fa.fa-times-circle
+                .client_background
+                  %img{src: "#{customization.client_background}", height:'100px', width:'100px'}
+
           %li
             %label.nav2.selected {% trans "Navigation Icon Color:" %}
             %input{type: 'text', name: 'hex_navigation_icons', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_navigation_icons}"}
@@ -116,6 +136,13 @@
             %a.button.radius.tiny.upload_logo{"data-reveal-id": "edit-client-mobile-logo-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/logo/edit_client_mobile_image"}
               {% trans "Upload Logo" %}
 
+            - if client_mobile_logo_image
+              .display_image
+                %a.remove_image{"type":"logo_image", "client_id": "#{client.id}"}
+                  %i.fa.fa-times-circle
+                .logo_image
+                  %img{src: "#{client_mobile_logo_image}", height:'100px', width:'100px'}
+
           %li
             %label.nav2.selected {% trans "Completed Course Tint:" %}
             %input{type: 'text', name: 'completed_course_tint', placeholder: "#{hex_text}", maxlength: "9", value: "#{completed_course_tint}", pattern:'^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{8})$', title: '#000000 - #FFFFFF'}
@@ -131,6 +158,13 @@
             %a.button.radius.tiny.upload_logo{"data-reveal-id": "edit-client-mobile-logo-modal", "data-reveal-ajax": "true", 'href': "/admin/clients/#{client.id}/header/edit_client_mobile_image"}
               {% trans "Upload Image" %}
 
+            - if client_mobile_header_image
+              .display_image
+                %a.remove_image{"type":"header_bg_image", "client_id": "#{client.id}"}
+                  %i.fa.fa-times-circle
+                .header_bg_image
+                  %img{src: "#{client_mobile_header_image}", height:'100px', width:'100px'}
+
 
           %li
             %label.nav2.selected {% trans "Navigation Text Color:" %}
@@ -139,6 +173,14 @@
           %li
             %label.nav2.selected {% trans "Navigation Icon Color:" %}
             %input{type: 'text', name: 'navigation_icon_color', placeholder: "#{hex_text}", maxlength: "9" , value: "#{navigation_icon_color}", pattern:'^#+([a-fA-F0-9]{6}|[a-fA-F0-9]{8})$', title: '#000000 - #FFFFFF'}
+
+      #removeBrandingImageError.reveal-modal.small.error{'data-reveal': None}
+        %h3.error
+
+        %br
+          .button.radius.small.closeModal
+            {% trans "Close" %}
+
 
       %div
         {% trans "Cancel" as cancel_text %}

@@ -18,6 +18,7 @@ from dateutil.parser import parse as parsedate
 from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email, ValidationError
 from django.utils import timezone
@@ -30,7 +31,7 @@ from accounts.helpers import get_user_activation_links, get_complete_country_nam
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from accounts.models import UserActivation
 from admin.forms import MobileBrandingForm
-from admin.models import Program, SelfRegistrationRoles
+from admin.models import Program, SelfRegistrationRoles, ClientCustomization
 from courses.models import FeatureFlags
 from api_client import (
     course_api,
@@ -2413,6 +2414,16 @@ def crop_image(request, img_name):
     image_io.seek(0)
 
     return image_io
+
+
+def remove_desktop_branding_image(img_type, client_id):
+    '''Removes the global, desktop logo and Background image '''
+    customization = ClientCustomization.objects.get(client_id=client_id)
+    image_url = getattr(customization, img_type).replace('/accounts/', '')
+    if image_url and default_storage.exists(image_url):
+        default_storage.delete(image_url)
+    setattr(customization, img_type, '')
+    customization.save()
 
 
 def upload_mobile_branding_image(request, client_id):

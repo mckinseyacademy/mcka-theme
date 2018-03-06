@@ -6,7 +6,8 @@ import json
 from django.conf import settings
 from urllib import urlencode
 
-from .api_error import api_error_protect
+from lib.utils import DottableDict
+from .api_error import api_error_protect, ApiError
 from .oauth2_requests import get_oauth2_session
 
 
@@ -111,7 +112,15 @@ def get_mobile_app_themes(organization_id):
         organization_id
     )
     response = get_oauth2_session().get(url)
-    return response.json()['results']
+    if response:
+        return response.json()['results']
+    raise ApiError(DottableDict(
+        {
+            'code': '500',
+            'reason': 'Server not running'
+        }),
+        get_mobile_app_themes
+    )
 
 
 @api_error_protect
@@ -125,4 +134,19 @@ def update_mobile_app_theme(mobile_app_theme_id, data, mobile_image_upload=None)
         mobile_app_theme_id
     )
     response = get_oauth2_session().patch(url, data=data, files=mobile_image_upload)
+    return response
+
+
+@api_error_protect
+def remove_mobile_app_theme_image(mobile_app_theme_id, image_type):
+    """
+    Removes mobile app theme images depending upon the type
+    """
+    url = '{}/{}/themes/{}/remove/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        MOBILE_APP_API,
+        mobile_app_theme_id,
+        image_type
+    )
+    response = get_oauth2_session().delete(url)
     return response

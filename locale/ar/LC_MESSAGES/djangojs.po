@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-22 09:25+0000\n"
+"POT-Creation-Date: 2018-03-02 07:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,24 +24,29 @@ msgstr ""
 msgid "'"
 msgstr ""
 
-#: static/gen/packed.js:37886 static/gen/packed_ie8.js:1321
+#: static/gen/packed.js:37887 static/gen/packed_ie8.js:1321
 #: static/js/views/admin/courses_list.js:13
 msgid "Course Name"
 msgstr ""
 
-#: static/gen/packed.js:37896 static/gen/packed_ie8.js:1322
+#: static/gen/packed.js:37897 static/gen/packed_ie8.js:1322
 #: static/js/views/admin/courses_list.js:23
 msgid "Course ID"
 msgstr ""
 
-#: static/gen/packed.js:37897 static/gen/packed_ie8.js:1322
+#: static/gen/packed.js:37898 static/gen/packed_ie8.js:1322
 #: static/js/views/admin/courses_list.js:24
 msgid "Start"
 msgstr ""
 
-#: static/gen/packed.js:37906 static/gen/packed_ie8.js:1323
+#: static/gen/packed.js:37907 static/gen/packed_ie8.js:1323
 #: static/js/views/admin/courses_list.js:33
 msgid "End"
+msgstr ""
+
+#: static/gen/packed.js:40558 static/gen/packed_ie8.js:1841
+#: static/js/views/admin/navigation.js:6
+msgid "Are you sure you want to remove this ?"
 msgstr ""
 
 #: static/js/admin_learner_dashboard/self_registration_roles.js:9

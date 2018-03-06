@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-02-22 09:24+0000\n"
+"POT-Creation-Date: 2018-03-02 07:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,30 +19,30 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: accounts/controller.py:118
+#: accounts/controller.py:125
 #, python-brace-format
 msgid ""
 "Access Key {key} is associated with company {company}, but you're not "
 "registered with it"
 msgstr ""
 
-#: accounts/controller.py:183
+#: accounts/controller.py:190
 msgid "Unable to enroll you in the requested program, {}. No remaining places."
 msgstr ""
 
-#: accounts/controller.py:205 accounts/controller.py:237
+#: accounts/controller.py:212 accounts/controller.py:244
 msgid "Successfully enrolled you in a course {}."
 msgstr ""
 
-#: accounts/controller.py:212 accounts/controller.py:244
+#: accounts/controller.py:219 accounts/controller.py:251
 msgid "You are already enrolled in course \"{}\""
 msgstr ""
 
-#: accounts/controller.py:218 accounts/controller.py:250
+#: accounts/controller.py:225 accounts/controller.py:257
 msgid "Unable to enroll you in course \"{}\"."
 msgstr ""
 
-#: accounts/controller.py:223
+#: accounts/controller.py:230
 msgid ""
 "Unable to enroll you in course \"{}\" - it is no longer part of your program."
 msgstr ""
@@ -1170,88 +1170,88 @@ msgstr ""
 msgid "Password reset unsuccessful"
 msgstr ""
 
-#: accounts/views.py:927
+#: accounts/views.py:932
 msgid "Enter your full name"
 msgstr ""
 
-#: accounts/views.py:929 accounts/views.py:952 admin/views.py:1796
-#: admin/views.py:1830 admin/views.py:4116
-#: templates/admin/client/navigation.haml:147
+#: accounts/views.py:934 accounts/views.py:957 admin/views.py:1841
+#: admin/views.py:1875 admin/views.py:4161
+#: templates/admin/client/navigation.haml:189
 #: templates/admin/course_run/form_modal.haml:116
 msgid "Save"
 msgstr ""
 
-#: accounts/views.py:950
+#: accounts/views.py:955
 msgid "Enter your title"
 msgstr ""
 
-#: admin/controller.py:281
+#: admin/controller.py:282
 msgid ""
 "An administrator has created an account on McKinsey Academy for your use. To "
 "activate your account, please copy and paste this address into your web "
 "browser's address bar:"
 msgstr ""
 
-#: admin/controller.py:326 admin/controller.py:374 admin/controller.py:1643
-#: admin/controller.py:1662
+#: admin/controller.py:327 admin/controller.py:375 admin/controller.py:1645
+#: admin/controller.py:1664
 msgid "Could not parse user info from {}"
 msgstr ""
 
-#: admin/controller.py:410 admin/controller.py:487
+#: admin/controller.py:411 admin/controller.py:488
 msgid "Unable to register user"
 msgstr ""
 
-#: admin/controller.py:420 admin/controller.py:498
+#: admin/controller.py:421 admin/controller.py:499
 msgid "User not associated with client"
 msgstr ""
 
-#: admin/controller.py:424 admin/controller.py:502 admin/controller.py:516
-#: admin/controller.py:524
+#: admin/controller.py:425 admin/controller.py:503 admin/controller.py:517
+#: admin/controller.py:525
 msgid "{}: {} - {}"
 msgstr ""
 
-#: admin/controller.py:432 admin/controller.py:538
+#: admin/controller.py:433 admin/controller.py:539
 msgid "Data processing error"
 msgstr ""
 
-#: admin/controller.py:433
+#: admin/controller.py:434
 msgid "Error processing data: {}"
 msgstr ""
 
-#: admin/controller.py:530
+#: admin/controller.py:531
 msgid "Enrolling student error"
 msgstr ""
 
-#: admin/controller.py:531
+#: admin/controller.py:532
 msgid "Error enrolling student: {} - {}"
 msgstr ""
 
-#: admin/controller.py:539 admin/controller.py:1793 admin/controller.py:1892
+#: admin/controller.py:540 admin/controller.py:1795 admin/controller.py:1894
 msgid "Error processing data: {} - {}"
 msgstr ""
 
-#: admin/controller.py:672
+#: admin/controller.py:673
 msgid "PROJECT"
 msgstr ""
 
-#: admin/controller.py:1750 admin/controller.py:1786 admin/controller.py:1865
-#: admin/controller.py:1885
+#: admin/controller.py:1752 admin/controller.py:1788 admin/controller.py:1867
+#: admin/controller.py:1887
 msgid "Reason: {}, Activity: {}, Participant: {}"
 msgstr ""
 
-#: admin/controller.py:1792 admin/controller.py:1891
+#: admin/controller.py:1794 admin/controller.py:1893
 msgid "Processing Data Error"
 msgstr ""
 
-#: admin/controller.py:2478 admin/controller.py:2500
+#: admin/controller.py:2490 admin/controller.py:2512
 msgid "Sorry, We can not process your request"
 msgstr ""
 
-#: admin/controller.py:2485 admin/controller.py:2497
+#: admin/controller.py:2497 admin/controller.py:2509
 msgid "Operation Successful"
 msgstr ""
 
-#: admin/controller.py:2488
+#: admin/controller.py:2500
 msgid "Please enter role text"
 msgstr ""
 
@@ -1263,27 +1263,27 @@ msgstr ""
 msgid "Enter new email address"
 msgstr ""
 
-#: admin/forms.py:120 admin/views.py:4150
+#: admin/forms.py:120 admin/views.py:4195
 msgid "TA"
 msgstr ""
 
-#: admin/forms.py:120 admin/views.py:4151
+#: admin/forms.py:120 admin/views.py:4196
 msgid "OBSERVER"
 msgstr ""
 
-#: admin/forms.py:144 admin/views.py:4152
+#: admin/forms.py:144 admin/views.py:4197
 msgid "ADMIN"
 msgstr ""
 
-#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4155
+#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4200
 msgid "COURSE OPS"
 msgstr ""
 
-#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4154
+#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4199
 msgid "INTERNAL ADMIN"
 msgstr ""
 
-#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4153
+#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4198
 msgid "COMPANY ADMIN"
 msgstr ""
 
@@ -1307,155 +1307,163 @@ msgstr ""
 msgid "Course Instance"
 msgstr ""
 
-#: admin/forms.py:227 admin/views.py:1933
+#: admin/forms.py:227 admin/views.py:1978
 msgid "Program"
 msgstr ""
 
-#: admin/views.py:554
+#: admin/views.py:556
 msgid "Edit Email"
 msgstr ""
 
-#: admin/views.py:592
+#: admin/views.py:594
 msgid "Un-enroll from this course"
 msgstr ""
 
-#: admin/views.py:593
+#: admin/views.py:595
 msgid "Un-enroll from entire program "
 msgstr ""
 
-#: admin/views.py:1308
+#: admin/views.py:1310
 msgid "Client"
 msgstr ""
 
-#: admin/views.py:1309
+#: admin/views.py:1311
 msgid "Clients"
 msgstr ""
 
-#: admin/views.py:1368 admin/views.py:1418
+#: admin/views.py:1370 admin/views.py:1420
 msgid "Save Client"
 msgstr ""
 
-#: admin/views.py:1428
+#: admin/views.py:1430
 msgid "Successfully processed {} of {} records"
 msgstr ""
 
-#: admin/views.py:1716
+#: admin/views.py:1600
+msgid "Bad request, The Image type is not valid."
+msgstr ""
+
+#: admin/views.py:1612
+msgid "Could not delete the image, Please try later"
+msgstr ""
+
+#: admin/views.py:1761
 msgid "Contact has been removed."
 msgstr ""
 
-#: admin/views.py:1731 admin/views.py:1737
+#: admin/views.py:1776 admin/views.py:1782
 msgid "Invalid Course Run"
 msgstr ""
 
-#: admin/views.py:1733
+#: admin/views.py:1778
 msgid "Invalid Program ID"
 msgstr ""
 
-#: admin/views.py:1790 admin/views.py:1791 admin/views.py:1825
+#: admin/views.py:1835 admin/views.py:1836 admin/views.py:1870
 msgid "- Select -"
 msgstr ""
 
-#: admin/views.py:1863
+#: admin/views.py:1908
 msgid "Access Key"
 msgstr ""
 
-#: admin/views.py:1884
+#: admin/views.py:1929
 msgid "Send"
 msgstr ""
 
-#: admin/views.py:1907
+#: admin/views.py:1952
 msgid "This student hasn't been added to any programs yet."
 msgstr ""
 
-#: admin/views.py:1918
+#: admin/views.py:1963
 msgid "fail"
 msgstr ""
 
-#: admin/views.py:1922
+#: admin/views.py:1967
 msgid "success"
 msgstr ""
 
-#: admin/views.py:1934
+#: admin/views.py:1979
 msgid "Programs"
 msgstr ""
 
-#: admin/views.py:1971 admin/views.py:2018
+#: admin/views.py:2016 admin/views.py:2063
 msgid "Save Program"
 msgstr ""
 
-#: admin/views.py:2222
+#: admin/views.py:2267
 msgid "Successfully Added {} Participants"
 msgstr ""
 
-#: admin/views.py:2415
+#: admin/views.py:2460
 msgid "Coming Soon"
 msgstr ""
 
-#: admin/views.py:2417
+#: admin/views.py:2462
 msgid "Archived"
 msgstr ""
 
-#: admin/views.py:2479
+#: admin/views.py:2524
 msgid "Successfully saved courses to {} program"
 msgstr ""
 
-#: admin/views.py:2492 admin/views.py:2864 admin/views.py:2897
-#: admin/views.py:2952
+#: admin/views.py:2537 admin/views.py:2909 admin/views.py:2942
+#: admin/views.py:2997
 msgid "Invalid program_id specified: {}"
 msgstr ""
 
-#: admin/views.py:2501
+#: admin/views.py:2546
 msgid "Invalid student_id specified: {}"
 msgstr ""
 
-#: admin/views.py:2507
+#: admin/views.py:2552
 msgid "Not enough places available for {} program - {} left"
 msgstr ""
 
-#: admin/views.py:2534
+#: admin/views.py:2579
 msgid "Successfully associated students to {} program"
 msgstr ""
 
-#: admin/views.py:2564
+#: admin/views.py:2609
 msgid "{} already enrolled in {}"
 msgstr ""
 
-#: admin/views.py:2571
+#: admin/views.py:2616
 msgid "Successfully associated students to courses"
 msgstr ""
 
-#: admin/views.py:2573
+#: admin/views.py:2618
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
 msgstr ""
 
-#: admin/views.py:3186 admin/views.py:3187 admin/views.py:3414
-#: admin/views.py:3415
+#: admin/views.py:3231 admin/views.py:3232 admin/views.py:3459
+#: admin/views.py:3460
 msgid "Group Work"
 msgstr ""
 
-#: admin/views.py:3339
+#: admin/views.py:3384
 msgid "Error creating project"
 msgstr ""
 
-#: admin/views.py:3353
+#: admin/views.py:3398
 msgid "Project already exists"
 msgstr ""
 
-#: admin/views.py:3358
+#: admin/views.py:3403
 msgid "Project successfully created"
 msgstr ""
 
-#: admin/views.py:4176
+#: admin/views.py:4221
 msgid "Problem generating activity review assignments"
 msgstr ""
 
-#: admin/views.py:4200
+#: admin/views.py:4245
 msgid "Project review assignments allocated"
 msgstr ""
 
-#: admin/views.py:4207
+#: admin/views.py:4252
 msgid "Not enough groups to meet review criteria"
 msgstr ""
 
@@ -1868,7 +1876,7 @@ msgid "Save Links"
 msgstr ""
 
 #: templates/admin/client/navigation.haml:50
-#: templates/admin/client/navigation.haml:144
+#: templates/admin/client/navigation.haml:186
 msgid "Cancel"
 msgstr ""
 
@@ -1889,91 +1897,95 @@ msgid "Upload Global Logo:"
 msgstr ""
 
 #: templates/admin/client/navigation.haml:64
-#: templates/admin/client/navigation.haml:74
-#: templates/admin/client/navigation.haml:117
+#: templates/admin/client/navigation.haml:81
+#: templates/admin/client/navigation.haml:137
 msgid "Upload Logo"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:67
+#: templates/admin/client/navigation.haml:74
 msgid "Top Navigation Background:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:70
+#: templates/admin/client/navigation.haml:77
 msgid "Desktop, Tablet and Mobile Web"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:73
+#: templates/admin/client/navigation.haml:80
 msgid "Upload Logo:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:77
+#: templates/admin/client/navigation.haml:90
 msgid "Notification Circle Color:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:80
+#: templates/admin/client/navigation.haml:93
 msgid "Second Navigation Background:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:83
+#: templates/admin/client/navigation.haml:96
 msgid "Notification Text Color:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:86
+#: templates/admin/client/navigation.haml:99
 msgid "Program Name Text Color:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:89
+#: templates/admin/client/navigation.haml:102
 msgid "Page Background Color:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:92
+#: templates/admin/client/navigation.haml:105
 msgid "Course Title Text Color:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:95
+#: templates/admin/client/navigation.haml:108
 msgid "Page Background Image:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:96
-#: templates/admin/client/navigation.haml:132
+#: templates/admin/client/navigation.haml:109
+#: templates/admin/client/navigation.haml:159
 msgid "Upload Image"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:99
-#: templates/admin/client/navigation.haml:140
+#: templates/admin/client/navigation.haml:119
+#: templates/admin/client/navigation.haml:174
 msgid "Navigation Icon Color:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:102
+#: templates/admin/client/navigation.haml:122
 msgid "Page Background CSS:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:107
+#: templates/admin/client/navigation.haml:127
 msgid "Native Mobile & Tablet Apps"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:115
+#: templates/admin/client/navigation.haml:135
 msgid "Upload Mobile Logo:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:120
+#: templates/admin/client/navigation.haml:147
 msgid "Completed Course Tint:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:123
+#: templates/admin/client/navigation.haml:150
 msgid "Header Background Color:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:126
+#: templates/admin/client/navigation.haml:153
 msgid "Lesson Navigation Color:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:130
+#: templates/admin/client/navigation.haml:157
 msgid "Header Background Image:"
 msgstr ""
 
-#: templates/admin/client/navigation.haml:136
+#: templates/admin/client/navigation.haml:170
 msgid "Navigation Text Color:"
+msgstr ""
+
+#: templates/admin/client/navigation.haml:182
+msgid "Close"
 msgstr ""
 
 #: templates/admin/companies/company_dashboard.haml:9
