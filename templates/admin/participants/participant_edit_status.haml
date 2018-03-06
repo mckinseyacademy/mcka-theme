@@ -1,3 +1,4 @@
+- load i18n
   %h2.modalTitle
     Select new user role on a course:
   %p.lead
@@ -8,7 +9,7 @@
         %input#active-radio{"type" => "radio", "name" => "role-group", "value" => "Active", 'checked': 'checked'}
       - else
         %input#active-radio{"type" => "radio", "name" => "role-group", "value" => "Active"}
-      %label{"for" => "active-radio"} Participant
+      %label{"for" => "active-radio"} {% trans "Participant" %}
       - if current_roles == 'Observer'
         %input#observer-radio{"type" => "radio", "name" => "role-group", "value" => "Observer", 'checked': 'checked'}
       - else

@@ -176,7 +176,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         $('#courseDetailsMainModal').find('.courseModalStatus').text('Selected: '+selectedRowsIdsLen+', Successful: 0, Failed: 0');
         $('#courseDetailsMainModal').find('.courseModalDescription').text('Change status of all selected participants to:');
         $('#courseDetailsMainModal').find('.courseModalContent').html(
-          '<input type="radio" name="status" value="Active" id="participantCheckbox"><label for="participantCheckbox">Active</label>'+
+          '<input type="radio" name="status" value="Active" id="participantCheckbox"><label for="participantCheckbox">'+gettext('Participant')+'</label>'+
           '<input type="radio" name="status" value="Observer" id="observerCheckbox"><label for="observerCheckbox">Observer</label>'+
           '<input type="radio" name="status" value="TA" id="taCheckbox"><label for="taCheckbox">TA</label>'
         );
