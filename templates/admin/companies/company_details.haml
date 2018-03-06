@@ -41,7 +41,7 @@
         #companyDetailsNavigationButtonsContainer
           .row
             .companyDetailsCoursesButton.large-3.columns
-              %a.hashPageButton.activeTab{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}> COURSES
+              %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}> COURSES
 
             - if user.is_mcka_admin
               .companyDetailsLinkedAppsButton.large-3.columns

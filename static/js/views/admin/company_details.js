@@ -81,14 +81,10 @@
       $('.companyDetailsLinkedAppsButton').on('click', 'a', function(){
         $('#additionalCompanyButtons a').hide();
         $('#addAppPopupLink').show();
-        $('#companyDetailsNavigationButtonsContainer a').removeClass("activeTab");
-        $(this).addClass("activeTab");
       });
       $('#companyDetailsNavigationButtonsContainer').on('click', 'a[data-target!="companyLinkedApps"]', function(){
         $('#additionalCompanyButtons a').show();
         $('#addAppPopupLink').hide();
-        $('#companyDetailsNavigationButtonsContainer a').removeClass("activeTab");
-        $(this).addClass("activeTab");
       });
     },
     onClearSearchEvent: function(){

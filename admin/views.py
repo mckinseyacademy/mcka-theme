@@ -5223,6 +5223,10 @@ def company_course_details(request, company_id, course_id):
     course['companyId'] = company_id
     course['companyName'] = vars(organization_api.fetch_organization(company_id))['display_name']
     course['internalAdminFlag'] = bool(request.user.is_internal_admin)
+
+    (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
+    course['discussion_feature'] = course_features.discussions
+
     return render(request, 'admin/courses/course_details.haml', course)
 
 
