@@ -342,9 +342,9 @@ class LearnerDashboardBrandingForm(forms.ModelForm):
 
 class LearnerDashboardTileForm(forms.ModelForm):
 
-	class Meta:
-		model = LearnerDashboardTile
-		fields = [
+    class Meta:
+        model = LearnerDashboardTile
+        fields = [
             'track_progress',
             'label',
             'title',
@@ -365,11 +365,11 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'show_in_dashboard',
             'fa_icon',
             'row'
-       	]
+        ]
 
-       	widgets = {
-       		'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
-			'link': forms.TextInput(attrs={'type': 'url'}),
+        widgets = {
+            'learner_dashboard': forms.TextInput(attrs={'type': 'hidden'}),
+            'link': forms.TextInput(attrs={'type': 'text'}),
             'label_color': forms.TextInput(attrs={'type': 'color'}),
             'title_color': forms.TextInput(attrs={'type': 'color'}),
             'note_color': forms.TextInput(attrs={'type': 'color'}),
@@ -377,22 +377,22 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'download_link': forms.TextInput(attrs={'type': 'url'}),
         }
 
-        def __init__(self, *args, **kwargs):
-            super(LearnerDashboardTileForm, self).__init__(*args, **kwargs)
-            self.fields['label'].widget.attrs['maxlength'] = 16
+    def __init__(self, *args, **kwargs):
+        super(LearnerDashboardTileForm, self).__init__(*args, **kwargs)
+        self.fields['label'].widget.attrs['maxlength'] = 16
 
-        def clean(self):
-            cleaned_data = super(LearnerDashboardTileForm, self).clean()
-            link = cleaned_data.get("link")
-            tile_type = cleaned_data.get("tile_type")
+    def clean(self):
+        cleaned_data = super(LearnerDashboardTileForm, self).clean()
+        link = cleaned_data.get("link")
+        tile_type = cleaned_data.get("tile_type")
 
-            if tile_type == "4" and "/courses/" not in link:
-                raise forms.ValidationError({'link': "Link to course is not valid"})
-            if tile_type == "2" and "/chapter/" not in link:
-                raise forms.ValidationError({'link': "Link to lesson is not valid"})
-            if tile_type == "3" and "/module/" not in link:
-                raise forms.ValidationError({'link': "Link to module is not valid"})
-            return self.cleaned_data
+        if tile_type == "4" and "/courses/" not in link:
+            raise forms.ValidationError({'link': "Link to course is not valid"})
+        if tile_type == "2" and "/chapter/" not in link:
+            raise forms.ValidationError({'link': "Link to lesson is not valid"})
+        if tile_type == "3" and "/module/" not in link:
+            raise forms.ValidationError({'link': "Link to module is not valid"})
+        return self.cleaned_data
 
 
 class CourseRunForm(forms.ModelForm):
