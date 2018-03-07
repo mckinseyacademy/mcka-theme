@@ -291,4 +291,13 @@ body{
     right: auto;
     left: .78571rem;
   }
+
+  // Misc
+
+  .fa-arrow-circle-right{
+    &:before{
+      content: "\f0a8";
+    }
+  }
+
 }
