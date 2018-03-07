@@ -16,6 +16,8 @@ from courses.models import FeatureFlags
 from admin.tests.utils import BASE_DIR
 from api_client.json_object import JsonParser as JP
 from rest_framework import status
+from api_client.json_object import JsonObject
+from api_client import user_models
 
 
 class AdminControllerTests(TestCase):
@@ -108,7 +110,6 @@ def MockEngagementScore(object):
 
 
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
-
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_get_engagement_scores(self):
         self.apply_patch('api_client.course_api.get_course_social_metrics', new=MockEngagementScore)
@@ -284,3 +285,40 @@ class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
         expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance
 
         self.assertEqual(response.content, expected_result)
+
+
+class TestContactsForClient(TestCase, ApplyPatchMixin):
+    def setUp(self):
+        # Mocking Apis for the method
+        self.organization_api = self.apply_patch('api_client.organization_models.organization_api')
+        self.group_api = self.apply_patch('admin.controller.group_api')
+        self.user_api = self.apply_patch('admin.controller.user_api')
+
+    def test_get_contacts_for_client(self):
+        # Dummy Data for the Apis
+        client_id = '2'
+        client_groups_data = '[{"id": 12,"type": "contact_group","data": {}}]'
+        client_groups_users_data = '{"users": [{"id": 3, "email": "audit@example.com", "username": "audit"},' \
+                                   '{"id": 10, "email": "test@example.com", "username": "test"}]}'
+        client_groups_user_profile_data = '[{"id": 3, "email": "audit@example.com","username": "audit"},' \
+                                          '{"id": 10, "email": "test@example.com","username": "test"}]'
+        # Mocking Api Calls
+        self.organization_api.get_organization_groups.return_value = JP.from_json(client_groups_data, JsonObject)
+        self.group_api.get_users_in_group.return_value = JP.from_json(client_groups_users_data,
+                                                                      user_models.UserList).users
+        self.user_api.get_users.return_value = JP.from_json(client_groups_user_profile_data, user_models.UserResponse)
+
+        contacts = controller.get_contacts_for_client(client_id)
+
+        self.assertEqual(contacts[0].email, "audit@example.com")
+        self.assertEqual(contacts[1].email, "test@example.com")
+
+    def test_get_contacts_for_client_with_no_contact(self):
+        client_id = '2'
+        client_groups_data = '[]'
+
+        # Mocking Api Calls
+        self.organization_api.get_organization_groups.return_value = JP.from_json(client_groups_data, JsonObject)
+
+        contacts = controller.get_contacts_for_client(client_id)
+        self.assertEqual(contacts, [])

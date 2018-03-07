@@ -815,37 +815,8 @@ class course_details_stats_api(APIView):
 @internal_admin_course_access
 def download_course_stats(request, course_id):
     company_id = request.GET.get('company_id', None)
-<<<<<<< HEAD
     csv_response = get_course_stats_report(company_id, course_id)
     return csv_response
-=======
-
-    course = course_api.get_course_details(course_id)
-    course_name = course['name'].replace(' ', '_')
-
-    course_social_engagement = get_course_social_engagement(course_id, company_id)
-    course_engagement_summary = get_course_engagement_summary(course_id, company_id)
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="' + course_name + '_stats.csv"'
-
-    writer = UnicodeWriter(response)
-    writer.writerow([_('Engagement Summary'), _('# of people'), _('% total cohort'), _('Avg Progress')])
-    for stat in course_engagement_summary:
-        writer.writerow([stat['name'], stat['people'], stat['invited'], stat['progress']])
-    writer.writerow([])
-    writer.writerow([_('Participant Performance'), _('% completion'), _('Score')])
-    writer.writerow([_('Group work 1'), '-', '-'])
-    writer.writerow([_('Group work 2'), '-', '-'])
-    writer.writerow([_('Mid-course assessment'), '-', '-'])
-    writer.writerow([_('Final assessment'), '-', '-'])
-    writer.writerow([])
-    writer.writerow([_('Social Engagement'), '#'])
-    for stat in course_social_engagement:
-        writer.writerow([stat['name'], stat['value']])
-
-    return response
->>>>>>> Mckin 6713 - Internationalized admin app
 
 
 class course_details_engagement_api(APIView):
@@ -1598,7 +1569,6 @@ def client_detail_nav_links(request, client_id):
     return HttpResponseRedirect('/admin/clients/{}/navigation'.format(client_id))
 
 
-<<<<<<< HEAD
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
                            PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
@@ -1638,8 +1608,6 @@ def remove_client_branding_image(request, client_id):
     return HttpResponse(json.dumps({'message': 'Successfully deleted'}), content_type='application/json')
 
 
-=======
->>>>>>> Mckin 6713 - Internationalized admin app
 @require_POST
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
@@ -5334,38 +5302,8 @@ def company_course_details(request, company_id, course_id):
     course['companyName'] = vars(organization_api.fetch_organization(company_id))['display_name']
     course['internalAdminFlag'] = bool(request.user.is_internal_admin)
 
-<<<<<<< HEAD
     (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
     course['discussion_feature'] = course_features.discussions
-=======
-    invoicing = sanitize_data(
-        data=invoicing, props_to_clean=settings.COMPANY_PROPERTIES_TO_CLEAN,
-        clean_methods=(clean_formula_characters, )
-    )
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="' + name.replace(' ', '_') + '_info.csv"'
-
-    writer = UnicodeWriter(response)
-    writer.writerow([name])
-    writer.writerow([_('Total participants'), numberParticipants])
-    writer.writerow([_('Active courses'), activeCourses])
-    writer.writerow([])
-    writer.writerow([_('INVOICING DETAILS')])
-    writer.writerow([_('Full name'), invoicing['full_name']])
-    writer.writerow([_('Title'), invoicing['title']])
-    writer.writerow([_('Invoicing address'), invoicing['address1'], invoicing['address2'], invoicing['city'], invoicing['state'], invoicing['postal_code'], invoicing['country'].encode("utf-8")])
-    writer.writerow([_('PO #'), invoicing['po']])
-    writer.writerow([_('Identity Provider #'), invoicing['identity_provider']])
-    writer.writerow([])
-    writer.writerow([_('CONTACTS')])
-    for contact in contacts:
-        writer.writerow([contact['type'], contact['full_name']])
-        writer.writerow([_('Title'), contact['title']])
-        writer.writerow([_('Email'), contact['email']])
-        writer.writerow([_('Phone'), contact['phone']])
-        writer.writerow([])
->>>>>>> Mckin 6713 - Internationalized admin app
 
     return render(request, 'admin/courses/course_details.haml', course)
 
