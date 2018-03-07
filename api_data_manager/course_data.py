@@ -7,6 +7,7 @@ from django.conf import settings
 COURSE_PROPERTIES = DottableDict(
     DETAIL='detail',
     TABS='tabs',
+    TAB_CONTENT='tabs_content'
 )
 
 

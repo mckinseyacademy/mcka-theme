@@ -110,7 +110,15 @@ def course_api_cache_wrapper(parse_method, parse_object, property_name, post_pro
             if not course_id:
                 raise ValueError('Course Id is not passed')
 
-            if data_property == COURSE_PROPERTIES.DETAIL:
+            if data_property == COURSE_PROPERTIES.TAB_CONTENT:
+                try:
+                    tab_id = kwargs['tab_id']
+                    data_property = '{}_{}'.format(data_property, tab_id)
+                except KeyError:
+                    tab_name = kwargs['name']
+                    data_property = '{}_{}'.format(data_property, tab_name)
+
+            elif data_property == COURSE_PROPERTIES.DETAIL:
                 tree_depth = kwargs.get('depth')
 
                 if tree_depth is None:

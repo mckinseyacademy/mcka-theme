@@ -155,8 +155,19 @@ def get_course_tabs(course_id, details=True):
     return response.read()
 
 
+def course_tab_post_process(tab):
+    tab.name = tab.name.lower()
+    return tab
+
+
 @api_error_protect
-def get_course_tab(course_id, name=None, tab_id=None):
+@course_api_cache_wrapper(
+    parse_method=JP.from_json,
+    parse_object=course_models.CourseTabs,
+    property_name=COURSE_PROPERTIES.TAB_CONTENT,
+    post_process_method=course_tab_post_process
+)
+def get_course_tab(course_id, tab_id=None, name=None):
     """
     Return static tab content requested by tab name or id.
     """
@@ -167,9 +178,7 @@ def get_course_tab(course_id, name=None, tab_id=None):
         course_id,
         query)
     )
-    array = JP.from_json(response.read(), course_models.CourseTab)
-    array.name = array.name.lower()
-    return array
+    return response.read()
 
 
 @api_error_protect
