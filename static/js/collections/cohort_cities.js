@@ -7,7 +7,7 @@ Apros.collections.CohortCities = Backbone.Collection.extend({
       var prefix = list.length ? ';' : '';
       return list += prefix + city.city;
     }, '');
-    return this.url + cityList + '.json?access_token=' + L.mapbox.accessToken;
+    return this.url + cityList + '.json?access_token=' + mapbox_access_token;
   },
 
   fetch: function(opts) {

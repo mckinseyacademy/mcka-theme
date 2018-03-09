@@ -24,8 +24,17 @@ Apros.views.CourseCohort = Backbone.View.extend({
       container: 'map-cohort',
       style: 'mapbox://styles/mapbox/light-v9',
       center: [-0.09, 51.505],
-      zoom: 1
+      zoom: 1,
+      attributionControl: false
     });
+
+    this.map.addControl(new mapboxgl.AttributionControl({
+        compact: true
+    }));
+
+    this.map.addControl(new mapboxgl.NavigationControl({
+        showCompass: false
+    }), "top-left");
 
     mapboxgl.setRTLTextPlugin('https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.1.0/mapbox-gl-rtl-text.js');
     this.map.addControl(new MapboxLanguage({
@@ -85,8 +94,11 @@ Apros.views.CourseCohort = Backbone.View.extend({
             var x_offset = -(marker.properties.iconAnchor[0] - (width/2));
             var y_offset = -(marker.properties.iconAnchor[1] - (width/2));
             var el = document.createElement('div');
-            el.className = marker.properties.className;
-            el.style.backgroundImage = marker.properties.iconUrl;
+            el.classList.add(marker.properties.className);
+            el.style.backgroundImage = "url(" + marker.properties.iconUrl + ")";
+            el.style.backgroundRepeat = "no-repeat";
+            el.style.backgroundPosition = "center";
+            el.style.backgroundSize = marker.properties.iconSize[0] + 'px ' + marker.properties.iconSize[1] + 'px';
             el.style.width = marker.properties.iconSize[0] + 'px';
             el.style.height = marker.properties.iconSize[1] + 'px';
             var userPopup = new mapboxgl.Popup({
@@ -146,9 +158,10 @@ Apros.views.CourseCohort = Backbone.View.extend({
         el = $(e.currentTarget),
         show = /Show/.test(el.text());
     this.$('.student-data a').toggle();
-    this.mapLayer.setFilter(function(f){
-      var toggle = f.properties.icon ? show : true;
-      return toggle;
+    var container = document.querySelector("#map-cohort");
+    var selectedElements = document.querySelectorAll("div.ta_user, div.user");
+    selectedElements.forEach(function(selectedElement) {
+        $(selectedElement).toggle();
     });
   },
 

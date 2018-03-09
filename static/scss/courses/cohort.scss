@@ -12,7 +12,12 @@
       width:auto;
       height:auto;
     }
-    .leaflet-marker-icon.ta_user{
+
+    .mapboxgl-ctrl-group > button {
+      margin: 0;
+    }
+
+    .ta_user{
       border: 2px solid $mckinsey-orange;
     }
     .leaflet-map-pane,
