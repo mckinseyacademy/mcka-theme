@@ -300,4 +300,20 @@ body{
     }
   }
 
+  ol, ul{
+    margin-left: 0;
+    margin-right: 1.4rem;
+  }
+
+  img[align="right"]{
+    float: left;
+  }
+
+  table{
+    tr{
+      td{
+        text-align: initial;
+      }
+    }
+  }
 }
