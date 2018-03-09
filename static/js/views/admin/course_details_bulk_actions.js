@@ -612,7 +612,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
       $('#courseDetailsMainModal').find('.courseModalTitle').text(gettext('Successfully Enrolled in 1 Course'));
       $('#courseDetailsMainModal').find('.courseModalStatus').empty();
       $('#courseDetailsMainModal').find('.courseModalDescription').text(gettext('What would you like to do now?'));
-      var courseLinkText = interpolate(gettext('Go to %(course_id)s Course'), [course_id]);
+      var courseLinkText = interpolate(gettext('Go to %(course_id)s Course'), {'course_id': course_id}, true);
       $('#courseDetailsMainModal').find('.courseModalContent').html(
         '<a href="#" target="_blank">'+gettext('Send Course Intro Email')+'</a><br><br>' +
         '<a href="/admin/courses/'+course_id+'" target="_blank">'+  courseLinkText+'</a><br><br>' +
