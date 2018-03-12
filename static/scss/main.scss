@@ -734,7 +734,6 @@ span.xns-counter.multi-digit {
   border-radius: 0 0 4px 4px;
   border-style: solid;
   border-width: 1px;
-  right: 0px;
   position: absolute;
   top: 48px;
   width: 340px;
@@ -748,9 +747,9 @@ span.xns-counter.multi-digit {
     display: none;
 }
 .xns-container{
-  border-top: 0px;
+  border-top: 0;
   border-radius: 0 0 3px 3px;
-  padding: 0px 0px 20px 10px;
+  padding-bottom: 20px;
   position: relative;
   max-height: calc(100vh - 150px);
   overflow: auto;
@@ -781,8 +780,6 @@ span.xns-counter.multi-digit {
   }
   ul.xns-items {
     list-style-type: none;
-    margin-left: 0px;
-    padding-right: 15px;
     line-height: 1.2em;
     a {
       color: #3384CA;
@@ -823,14 +820,6 @@ span.xns-counter.multi-digit {
       li{
         display: inline-block;
         padding: 0 15px;
-        border-right: 1px solid #ddd;
-        &:first-child{
-          padding-left: 0;
-        }
-        &:last-child{
-          padding-right: 0;
-          border: none;
-        }
         &.active a{
           color: #999;
           text-decoration: none;

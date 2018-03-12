@@ -175,6 +175,48 @@ body{
   }
 }
 
+#course-menu{
+  .bookmark{
+    @include right(rem-calc(5));
+  }
+}
+
+header[role=banner]{
+  &.background-blue{
+    .header-logo-img{
+      @include float(left);
+      @include margin-right(15px);
+    }
+  }
+}
+
+.course_nav{
+  .xns-pane{
+    @include right(0);
+  }
+}
+
+.xns-container{
+  @include padding-left(10px);
+  .xns-content{
+    .xns-tab-list{
+      @include margin-left(0);
+      li{
+        @include border-right(1px solid #ddd);
+        &:first-child{
+          @include padding-left(0);
+        }
+        &:last-child{
+          @include border-right(0);
+        }
+      }
+    }
+  }
+  .xns-items{
+    @include margin-left(0);
+    @include padding-right(10px);
+  }
+}
 
 // RTL specified CSS selectors
 
@@ -313,6 +355,19 @@ body{
     tr{
       td{
         text-align: initial;
+      }
+    }
+  }
+
+  header[role=banner]{
+    &.background-blue{
+      #profile-container{
+        display: none;
+        &.open{
+          display: inline;
+          right: auto !important;
+          left: 0 !important;
+        }
       }
     }
   }

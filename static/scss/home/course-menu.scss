@@ -67,7 +67,6 @@
           color: $mckinsey-orange;
           position: absolute;
           top: rem-calc(-5);
-          right: rem-calc(5);
           @include font-spec(25);
           .fa-lock{
             margin-top: 10px;
