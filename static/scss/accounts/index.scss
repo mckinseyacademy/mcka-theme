@@ -100,7 +100,6 @@
 
   .columns + .columns {
     display: block;
-    border-left: 1px solid $mckinsey-grey;
     min-height: 500px;
   }
 
@@ -136,7 +135,6 @@
   }
 
   label[for=id_accept_terms] {
-    padding-left: 20px;
     @media #{$screen} and (min-width: #{upper-bound($small-range)}) {
       white-space: nowrap;
     }

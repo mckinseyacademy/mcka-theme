@@ -218,6 +218,16 @@ header[role=banner]{
   }
 }
 
+.login-form{
+  .help{
+    @include border-left(1px solid $mckinsey-grey);
+  }
+  label[for=id_accept_terms]{
+    @include padding-left(20px);
+  }
+}
+
+
 // RTL specified CSS selectors
 
 .rtl {
@@ -371,4 +381,22 @@ header[role=banner]{
       }
     }
   }
+
+  select{
+    background-position: 0 center;
+  }
+
+  // Login & Activation
+
+  .login-form{
+    .columns{
+      &:first-child{
+        float: right;
+      }
+      &:last-child{
+        float: left;
+      }
+    }
+  }
+
 }
