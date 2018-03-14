@@ -399,6 +399,9 @@ def get_program_menu_list(request, current_course):
     # get the mobile available courses of companion app
     companion_app_courses_id = [course['id'] for course in companion_app_courses if course['mobile_available']]
 
+    # remove the user courses that are part of companion app
+    user_courses = [course for course in user_courses if course.id not in companion_app_courses_id]
+
     for program in user_programs:
         row = []
         program_courses = []
@@ -416,7 +419,6 @@ def get_program_menu_list(request, current_course):
         programs.append(row)
         user_courses = [course for course in user_courses if course not in program_courses]
     if user_courses:
-        user_courses = [course for course in user_courses if course.id not in companion_app_courses_id]
         row = []
         row.append(Program.no_program())
         row.append(user_courses)
