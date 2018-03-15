@@ -296,15 +296,38 @@ def send_password_reset_email(
 
 
 def process_registration_request(request, user, course_run, existing_user_object=None):
-
     if user.new_user:
         NewSelfRegistration.process_registration(request, user, course_run)
+    elif user.mcka_user:
+        MckaUserSelfregistration.process_registration(request, user, course_run, existing_user_object)
     else:
         ExistingSelfRegistration.process_registration(request, user, course_run, existing_user_object)
 
 
 class SelfRegistration(object):
     subject = "Welcome to Digital Academy"
+
+    @staticmethod
+    def generate_activation_link(request, course_run):
+        domain = request.META.get('HTTP_HOST')
+        protocol = 'https' if request.is_secure() else 'http'
+        return "{}://{}/courses/{}".format(protocol, domain, course_run.course_id)
+
+
+class MckaUserSelfregistration(SelfRegistration):
+    email_template_html = "registration/public_registration_mcka_user.haml"
+
+    @classmethod
+    def process_registration(cls, request, user, course_run, existing_user_object):
+        link = cls.generate_activation_link(request, course_run)
+        template_text = course_run.email_template_mcka
+
+        enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
+        if not enroll_in_course_result.enrolled:
+            raise ValueError(_('Problem with course enrollment'))
+
+        send_email(cls.email_template_html, cls.subject, link,
+                   template_text, user.first_name, user.company_email)
 
 
 class ExistingSelfRegistration(SelfRegistration):
@@ -321,12 +344,6 @@ class ExistingSelfRegistration(SelfRegistration):
 
         send_email(cls.email_template_html, cls.subject, link,
                    template_text, user.first_name, existing_user_object.email)
-
-    @staticmethod
-    def generate_activation_link(request, course_run):
-        domain = request.META.get('HTTP_HOST')
-        protocol = 'https' if request.is_secure() else 'http'
-        return protocol + "://" + domain + "/courses/" + course_run.course_id
 
 
 class NewSelfRegistration(SelfRegistration):

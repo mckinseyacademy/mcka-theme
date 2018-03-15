@@ -17,7 +17,7 @@ from accounts.controller import (AssignStudentToProgramResult, EnrollStudentInCo
                                  send_email, send_password_reset_email, user_activation_with_data,
                                  io_new_client_image, save_new_client_image, get_mobile_apps_id,
                                  get_sso_provider, _set_number_of_enrolled_users, ExistingSelfRegistration,
-                                 NewSelfRegistration,
+                                 NewSelfRegistration, MckaUserSelfregistration,
                                  process_registration_request, _process_course_run_closed)
 from accounts.models import UserActivation
 from accounts.tests.utils import (ApplyPatchMixin, make_company,
@@ -359,12 +359,14 @@ class TestNewSelfRegistration(TestCase, ApplyPatchMixin):
 @ddt.ddt
 class SelfRegistrationTest(TestCase, ApplyPatchMixin):
     generate_activation_link = "https://www.testlink.com"
-    inactive_user = DottableDict(id=1, email="test@test.com", first_name="test", last_name="test",
-                                 company_email="test@test.com", is_active=False, new_user=False)
-    active_user = DottableDict(id=1, email="test@test.com", first_name="test", last_name="test",
-                               company_email="test@test.com", is_active=True, new_user=False)
-    new_user = DottableDict(id=1, email="test@test.com", first_name="test", last_name="test",
-                            company_email="test@test.com", new_user=True, is_active=False)
+    inactive_user = DottableDict(id=1, email="inactive@test.com", first_name="test", last_name="test", mcka_user=False,
+                                 company_email="inacvtive@test.com", is_active=False, new_user=False)
+    active_user = DottableDict(id=1, email="active@test.com", first_name="test", last_name="test", mcka_user=False,
+                               company_email="active@test.com", is_active=True, new_user=False)
+    new_user = DottableDict(id=1, email="new@test.com", first_name="test", last_name="test", mcka_user=False,
+                            company_email="new@test.com", new_user=True, is_active=False)
+    mcka_user = DottableDict(id=1, email="mcka@test.com", first_name="test", last_name="test", mcka_user=True,
+                             company_email="mcka@test.com", new_user=False, is_active=False)
 
     def setUp(self):
         super(SelfRegistrationTest, self).setUp()
@@ -391,6 +393,7 @@ class SelfRegistrationTest(TestCase, ApplyPatchMixin):
         (new_user, None, False),
         (inactive_user, inactive_user, True),
         (active_user, active_user, True),
+        (mcka_user, mcka_user, True)
     )
     @ddt.unpack
     def test_process_registration_request(self, user, existing_user, success):
@@ -402,7 +405,7 @@ class SelfRegistrationTest(TestCase, ApplyPatchMixin):
         (None, generate_activation_link, False, False),
         (inactive_user, generate_activation_link, False, True),
         (active_user, generate_activation_link, False, False),
-        (active_user, None, ValueError, False),
+        (inactive_user, None, ValueError, False),
     )
     @ddt.unpack
     def test_new_user_registration(self, registration_request, generate_activation_link, exception, success):
@@ -412,9 +415,9 @@ class SelfRegistrationTest(TestCase, ApplyPatchMixin):
         generate_link.return_value = generate_activation_link
 
         if exception:
-            self.assertRaises(exception,
-                              NewSelfRegistration.process_registration(self.request, registration_request,
-                                                                       self.course_run))
+            with self.assertRaises(exception):
+                NewSelfRegistration.process_registration(self.request, registration_request,
+                                                       self.course_run)
         else:
             NewSelfRegistration.process_registration(self.request, registration_request, self.course_run)
 
@@ -437,6 +440,25 @@ class SelfRegistrationTest(TestCase, ApplyPatchMixin):
 
         else:
             ExistingSelfRegistration.process_registration(self.request, registration_request,
+                                                          self.course_run, registration_request)
+
+        result = registration_request.email in [email.to[0] for email in mail.outbox]
+        self.assertEqual(result, success)
+
+    @ddt.data(
+        (mcka_user, DottableDict(enrolled=True), False, True),
+        (active_user, DottableDict(enrolled=False), ValueError, False),
+    )
+    @ddt.unpack
+    def test_mcka_user_registration(self, registration_request, enroll_without_program, exception, success):
+        self.enroll_without_program.return_value = enroll_without_program
+        if exception:
+            with self.assertRaises(exception):
+                MckaUserSelfregistration.process_registration(self.request, registration_request,
+                                                              self.course_run, registration_request)
+
+        else:
+            MckaUserSelfregistration.process_registration(self.request, registration_request,
                                                           self.course_run, registration_request)
 
         result = registration_request.email in [email.to[0] for email in mail.outbox]
