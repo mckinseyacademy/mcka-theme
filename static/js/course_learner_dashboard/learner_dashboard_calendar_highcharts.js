@@ -109,7 +109,7 @@ $(function() {
                     case '3':
                     case '4':
                         if (this.point.track_progress){
-                            var progressValue = {'value': this.point.user_progress;}
+                            var progressValue = {'value': this.point.user_progress};
                             var progressText = gettext('Your Progress: %(value)s%');
                             tooltipHTML += interpolate(progressText,progressValue,true) + '</br> </div>';
                         } else {

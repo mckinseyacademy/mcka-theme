@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-02 08:17+0000\n"
+"POT-Creation-Date: 2018-03-12 12:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1501,7 +1501,7 @@ msgstr ""
 msgid "Full Name"
 msgstr ""
 
-#: admin/controller.py:803 src/edx-notifications/testserver/forms.py:8
+#: admin/controller.py:803
 #: templates/admin/participants/participant_details.haml:102
 #: templates/admin/participants/participant_details.haml:184
 msgid "Username"
@@ -2861,50 +2861,6 @@ msgstr ""
 msgid "Password reset email sent"
 msgstr ""
 
-#: src/edx-notifications/edx_notifications/digests.py:200
-msgid "Receive daily email"
-msgstr ""
-
-#: src/edx-notifications/edx_notifications/digests.py:201
-msgid ""
-"This setting will cause a daily digest of all notifications to be sent to "
-"your registered email address"
-msgstr ""
-
-#: src/edx-notifications/edx_notifications/digests.py:210
-msgid "Receive weekly email"
-msgstr ""
-
-#: src/edx-notifications/edx_notifications/digests.py:211
-msgid ""
-"This setting will cause a weekly digest of all notifications to be sent to "
-"your registered email address"
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:8
-msgid "This value must contain only letters, numbers and underscores."
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:9
-msgid "Email address"
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:10
-msgid "Password"
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:11
-msgid "Password (again)"
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:18
-msgid "The username already exists. Please try another one."
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:23
-msgid "The two password fields did not match."
-msgstr ""
-
 #: templates/403.haml:8
 msgid "403: Permission Denied"
 msgstr ""
@@ -3844,7 +3800,7 @@ msgid "This is the course feature list."
 msgstr ""
 
 #: templates/admin/course_meta_content/item_list.haml:47
-#: templates/courses/course_cohort.haml:237
+#: templates/courses/course_cohort.haml:243
 msgid "Discussions"
 msgstr ""
 
@@ -5342,7 +5298,7 @@ msgid "Proficiency:"
 msgstr ""
 
 #: templates/courses/course_cohort.haml:47
-#: templates/courses/course_cohort.haml:112
+#: templates/courses/course_cohort.haml:118
 #: templates/courses/visualizations/course_engagement.haml:15
 #: templates/courses/visualizations/course_proficiency.haml:16
 #: templates/courses/visualizations/course_progress.haml:16
@@ -5366,117 +5322,125 @@ msgstr ""
 msgid " your proficiency position <br> will be displayed here "
 msgstr ""
 
+#: templates/courses/course_cohort.haml:68
+#: templates/courses/course_cohort.haml:88
+#: templates/courses/course_cohort.haml:108
+#: templates/courses/course_cohort.haml:138
+#: templates/courses/course_cohort.haml:155
+#: templates/courses/course_cohort.haml:172
+#: templates/courses/course_cohort.haml:201
+#: templates/courses/course_cohort.haml:218
+#: templates/courses/course_cohort.haml:235
+msgid "username"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:70
+#: templates/courses/course_cohort.haml:90
+#: templates/courses/course_cohort.haml:110
+#: templates/courses/course_cohort.haml:139
+#: templates/courses/course_cohort.haml:156
+#: templates/courses/course_cohort.haml:173
+#: templates/courses/course_cohort.haml:202
+#: templates/courses/course_cohort.haml:219
+#: templates/courses/course_cohort.haml:236
+msgid "title"
+msgstr ""
+
 #: templates/courses/course_cohort.haml:73
+#: templates/courses/course_cohort.haml:93
+#: templates/courses/course_cohort.haml:113
 msgid "100"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:111
+#: templates/courses/course_cohort.haml:117
 #: templates/courses/course_progress.haml:68
 #: templates/courses/visualizations/course_progress.haml:8
 msgid "Progress:"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:114
+#: templates/courses/course_cohort.haml:120
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:116
+#: templates/courses/course_cohort.haml:122
 #, python-format
 msgid ""
 " your progress position: <br><span>%(position)s</span> with <span>"
 "%(progress_value)s%%</span> "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:118
+#: templates/courses/course_cohort.haml:124
 msgid "your progress position <br> will be displayed here"
-msgstr ""
-
-#: templates/courses/course_cohort.haml:132
-#: templates/courses/course_cohort.haml:149
-#: templates/courses/course_cohort.haml:166
-#: templates/courses/course_cohort.haml:195
-#: templates/courses/course_cohort.haml:212
-#: templates/courses/course_cohort.haml:229
-msgid "username"
-msgstr ""
-
-#: templates/courses/course_cohort.haml:133
-#: templates/courses/course_cohort.haml:150
-#: templates/courses/course_cohort.haml:167
-#: templates/courses/course_cohort.haml:196
-#: templates/courses/course_cohort.haml:213
-#: templates/courses/course_cohort.haml:230
-msgid "title"
-msgstr ""
-
-#: templates/courses/course_cohort.haml:169
-#, python-format
-msgid "100%%"
-msgstr ""
-
-#: templates/courses/course_cohort.haml:174
-#: templates/courses/visualizations/course_engagement.haml:8
-msgid "Engagement:"
 msgstr ""
 
 #: templates/courses/course_cohort.haml:175
 #, python-format
+msgid "100%%"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:180
+#: templates/courses/visualizations/course_engagement.haml:8
+msgid "Engagement:"
+msgstr ""
+
+#: templates/courses/course_cohort.haml:181
+#, python-format
 msgid " cohort average = %(course_avg)s points "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:177
+#: templates/courses/course_cohort.haml:183
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:179
+#: templates/courses/course_cohort.haml:185
 #, python-format
 msgid ""
 "  your engagement position: <br><span>%(position)s</span> with <span>"
 "%(points)s pts.</span>\" "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:181
+#: templates/courses/course_cohort.haml:187
 msgid " your engagement position <br> will be displayed here "
 msgstr ""
 
-#: templates/courses/course_cohort.haml:198
-#: templates/courses/course_cohort.haml:215
-#: templates/courses/course_cohort.haml:232
+#: templates/courses/course_cohort.haml:204
+#: templates/courses/course_cohort.haml:221
+#: templates/courses/course_cohort.haml:238
 msgid "100 pts."
 msgstr ""
 
-#: templates/courses/course_cohort.haml:238
+#: templates/courses/course_cohort.haml:244
 msgid ""
 "Even if we cannot directly shape an outcome, a model’s prediction may be "
 "communicated in a way that alters behavior and indirectly shapes it."
 msgstr ""
 
-#: templates/courses/course_cohort.haml:242
+#: templates/courses/course_cohort.haml:248
 msgid "gwensisco"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:243
+#: templates/courses/course_cohort.haml:249
 msgid "Media Buyer"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:246
+#: templates/courses/course_cohort.haml:252
 msgid "Recommendations"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:249
+#: templates/courses/course_cohort.haml:255
 msgid "Scientists Without Borders"
 msgstr ""
 
-#: templates/courses/course_cohort.haml:250
+#: templates/courses/course_cohort.haml:256
 msgid ""
 "A worldwide community of changemakers collaborating to accelerate solutions "
 "to urgent development challenges."
 msgstr ""
 
-#: templates/courses/course_cohort.haml:252
+#: templates/courses/course_cohort.haml:258
 msgid "Suggest a Link"
 msgstr ""
 

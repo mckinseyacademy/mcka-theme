@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-02 08:17+0000\n"
+"POT-Creation-Date: 2018-03-12 12:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,908 +19,75 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: static/gen/packed.js:32180 static/gen/packed_ie8.js:722
-#: static/js/vendor/jquery-ui.min.js:10
+#: static/js/vendor/jquery-ui.min.js:10 static_cache/gen/packed.js:32180
+#: static_cache/gen/packed_ie8.js:722
+#: static_cache/js/vendor/jquery-ui.min.js:10 static_cache/packed.js:32180
+#: static_cache/packed_ie8.js:722
 msgid "'"
 msgstr ""
 
-#: static/gen/packed.js:34241 static/gen/packed_ie8.js:879
-#: static/js/application.js:192
-msgid "Your course hasn't begun yet. "
+#: static/gen/packed.js:39462 static/gen/packed_ie8.js:1595
+#: static_cache/gen/packed.js:39462 static_cache/gen/packed_ie8.js:1595
+#: static_cache/js/views/admin/course_details_bulk_actions.js:179
+#: static_cache/packed.js:39462 static_cache/packed_ie8.js:1595
+msgid "Participant"
 msgstr ""
 
-#: static/gen/packed.js:34244 static/gen/packed_ie8.js:880
-#: static/js/application.js:195
-msgid "Your course begins in %(days)s day."
-msgid_plural "Your course begins in %(days)d days."
-msgstr[0] ""
-msgstr[1] ""
-
-#: static/gen/packed.js:34247 static/gen/packed_ie8.js:881
-#: static/js/application.js:198
-msgid "Welcome to McKinsey Academy"
-msgstr ""
-
-#: static/gen/packed.js:34744 static/gen/packed_ie8.js:920
-#: static/js/router.js:354
-msgid "Please select at least one course"
-msgstr ""
-
-#: static/gen/packed.js:35065 static/gen/packed.js:36835
-#: static/gen/packed_ie8.js:936 static/gen/packed_ie8.js:1231
-#: static/js/admin_upload_students.js:73
-#: static/js/common/mass_participants_enroll.js:147
-#: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
-msgid "Please select file first."
-msgstr ""
-
-#: static/gen/packed.js:35086 static/gen/packed.js:36856
-#: static/gen/packed_ie8.js:940 static/gen/packed_ie8.js:1235
-#: static/js/admin_upload_students.js:8
-#: static/js/common/mass_participants_enroll.js:168
-#: static/js/common/mass_participants_upload.js:115
-msgid "Show Errors"
-msgstr ""
-
-#: static/gen/packed.js:35098 static/gen/packed.js:36868
-#: static/gen/packed_ie8.js:949 static/gen/packed_ie8.js:1244
-#: static/js/common/mass_participants_enroll.js:180
-#: static/js/common/mass_participants_upload.js:127
-msgid "Errors:"
-msgstr ""
-
-#: static/gen/packed.js:35107 static/gen/packed.js:36877
-#: static/gen/packed_ie8.js:955 static/gen/packed_ie8.js:1250
-#: static/js/common/mass_participants_enroll.js:189
-#: static/js/common/mass_participants_upload.js:136
-msgid "Total:"
-msgstr ""
-
-#: static/gen/packed.js:35108 static/gen/packed.js:35110
-#: static/gen/packed.js:35112 static/gen/packed_ie8.js:956
-#: static/gen/packed_ie8.js:958 static/gen/packed_ie8.js:960
-#: static/js/common/mass_participants_upload.js:137
-#: static/js/common/mass_participants_upload.js:139
-#: static/js/common/mass_participants_upload.js:141
-msgid "0"
-msgstr ""
-
-#: static/gen/packed.js:35109 static/gen/packed.js:36879
-#: static/gen/packed_ie8.js:957 static/gen/packed_ie8.js:1252
-#: static/js/common/mass_participants_enroll.js:191
-#: static/js/common/mass_participants_upload.js:138
-msgid "Succeded:"
-msgstr ""
-
-#: static/gen/packed.js:35111 static/gen/packed.js:36881
-#: static/gen/packed_ie8.js:959 static/gen/packed_ie8.js:1254
-#: static/js/common/mass_participants_enroll.js:193
-#: static/js/common/mass_participants_upload.js:140
-msgid "Failed:"
-msgstr ""
-
-#: static/gen/packed.js:35429 static/gen/packed_ie8.js:1012
-#: static/js/common/bbGridExtend.js:70
-msgid "Keyword Search"
-msgstr ""
-
-#: static/gen/packed.js:35809 static/gen/packed_ie8.js:1074
-#: static/js/common/admin_bulk_actions.js:17
-msgid "Progress: %(value)s%"
-msgstr ""
-
-#: static/gen/packed.js:35999 static/gen/packed_ie8.js:1096
-#: static/js/common/common_js.js:171
-msgid "NoName"
-msgstr ""
-
-#: static/gen/packed.js:36342 static/gen/packed_ie8.js:1152
-#: static/js/common/common_js.js:514
-msgid "Send"
-msgstr ""
-
-#: static/gen/packed.js:36572 static/gen/packed_ie8.js:1198
-#: static/js/common/common_js.js:744
-msgid "Fetching data for file: %(filename)s"
-msgstr ""
-
-#: static/gen/packed.js:36684 static/gen/packed_ie8.js:1221
-#: static/js/common/common_js.js:856
-msgid "%(value)s%"
-msgstr ""
-
-#: static/gen/packed.js:36745 static/gen/packed.js:36816
-#: static/gen/packed_ie8.js:1225 static/gen/packed_ie8.js:1230
-#: static/js/common/mass_participants_enroll.js:57
-#: static/js/common/mass_participants_enroll.js:128
-msgid ""
-"The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
-"more files!"
-msgstr ""
-
-#: static/gen/packed.js:36933 static/gen/packed_ie8.js:1262
-#: static/js/common/mass_participants_enroll.js:245
-msgid "email"
-msgstr ""
-
-#: static/gen/packed.js:36933 static/gen/packed_ie8.js:1262
-#: static/js/common/mass_participants_enroll.js:245
-msgid "course id"
-msgstr ""
-
-#: static/gen/packed.js:36933 static/gen/packed_ie8.js:1262
-#: static/js/common/mass_participants_enroll.js:245
-msgid "status"
-msgstr ""
-
-#: static/gen/packed.js:37011 static/gen/packed_ie8.js:1263
-#: static/js/models/city.js:30
-msgid "Participants:"
-msgstr ""
-
-#: static/gen/packed.js:37052 static/gen/packed.js:38196
-#: static/gen/packed.js:41849 static/gen/packed_ie8.js:1265
-#: static/gen/packed_ie8.js:1349 static/gen/packed_ie8.js:1998
-#: static/js/models/city.js:71 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:23
-msgid "Email"
-msgstr ""
-
-#: static/gen/packed.js:37899 static/gen/packed.js:40639
-#: static/gen/packed.js:41194 static/gen/packed.js:41593
-#: static/gen/packed.js:42126 static/gen/packed_ie8.js:1322
-#: static/gen/packed_ie8.js:1842 static/gen/packed_ie8.js:1914
-#: static/gen/packed_ie8.js:1950 static/gen/packed_ie8.js:2058
+#: static/gen/packed.js:40300 static/gen/packed_ie8.js:1718
 #: static/js/views/admin/company_details.js:4
 #: static/js/views/admin/course_details.js:305
 #: static/js/views/admin/courses_list.js:13
 #: static/js/views/admin/participant_details_active_courses_view.js:54
 #: static/js/views/admin/participant_details_course_history_view.js:10
+#: static_cache/gen/packed.js:40300 static_cache/gen/packed_ie8.js:1718
+#: static_cache/js/views/admin/courses_list.js:13 static_cache/packed.js:40300
+#: static_cache/packed_ie8.js:1718
 msgid "Course Name"
 msgstr ""
 
-#: static/gen/packed.js:37909 static/gen/packed.js:40657
-#: static/gen/packed.js:41212 static/gen/packed.js:41609
-#: static/gen/packed.js:42136 static/gen/packed_ie8.js:1323
-#: static/gen/packed_ie8.js:1845 static/gen/packed_ie8.js:1919
-#: static/gen/packed_ie8.js:1954 static/gen/packed_ie8.js:2061
+#: static/gen/packed.js:40310 static/gen/packed_ie8.js:1719
 #: static/js/views/admin/company_details.js:20
 #: static/js/views/admin/course_details.js:315
 #: static/js/views/admin/courses_list.js:23
 #: static/js/views/admin/participant_details_active_courses_view.js:72
 #: static/js/views/admin/participant_details_course_history_view.js:28
+#: static_cache/gen/packed.js:40310 static_cache/gen/packed_ie8.js:1719
+#: static_cache/js/views/admin/courses_list.js:23 static_cache/packed.js:40310
+#: static_cache/packed_ie8.js:1719
 msgid "Course ID"
 msgstr ""
 
-#: static/gen/packed.js:37910 static/gen/packed.js:41611
-#: static/gen/packed_ie8.js:1323 static/gen/packed_ie8.js:1954
+#: static/gen/packed.js:40311 static/gen/packed_ie8.js:1719
 #: static/js/views/admin/company_details.js:22
-#: static/js/views/admin/courses_list.js:24
+#: static/js/views/admin/courses_list.js:24 static_cache/gen/packed.js:40311
+#: static_cache/gen/packed_ie8.js:1719
+#: static_cache/js/views/admin/courses_list.js:24 static_cache/packed.js:40311
+#: static_cache/packed_ie8.js:1719
 msgid "Start"
 msgstr ""
 
-#: static/gen/packed.js:37919 static/gen/packed.js:41627
-#: static/gen/packed_ie8.js:1324 static/gen/packed_ie8.js:1958
+#: static/gen/packed.js:40320 static/gen/packed_ie8.js:1720
 #: static/js/views/admin/company_details.js:38
-#: static/js/views/admin/courses_list.js:33
+#: static/js/views/admin/courses_list.js:33 static_cache/gen/packed.js:40320
+#: static_cache/gen/packed_ie8.js:1720
+#: static_cache/js/views/admin/courses_list.js:33 static_cache/packed.js:40320
+#: static_cache/packed_ie8.js:1720
 msgid "End"
 msgstr ""
 
-#: static/gen/packed.js:38161 static/gen/packed_ie8.js:1345
-#: static/js/views/admin/course_details_timeline.js:59
-msgid "days"
+#: static/gen/packed.js:40962 static/gen/packed_ie8.js:1787
+#: static_cache/gen/packed.js:40962 static_cache/gen/packed_ie8.js:1787
+#: static_cache/js/views/admin/navigation.js:6 static_cache/packed.js:40962
+#: static_cache/packed_ie8.js:1787
+msgid "Are you sure you want to remove this ?"
 msgstr ""
 
-#: static/gen/packed.js:38161 static/gen/packed_ie8.js:1345
-#: static/js/views/admin/course_details_timeline.js:59
-msgid "weeks"
-msgstr ""
-
-#: static/gen/packed.js:38185 static/gen/packed.js:41827
-#: static/gen/packed_ie8.js:1346 static/gen/packed_ie8.js:1991
-#: static/js/views/admin/course_details.js:6
-#: static/js/views/admin/participantsinfo.js:12
-msgid "Name"
-msgstr ""
-
-#: static/gen/packed.js:38195 static/gen/packed.js:38567
-#: static/gen/packed.js:41850 static/gen/packed.js:41919
-#: static/gen/packed_ie8.js:1349 static/gen/packed_ie8.js:1462
-#: static/gen/packed_ie8.js:1998 static/gen/packed_ie8.js:2012
-#: static/js/views/admin/companies_list.js:15
-#: static/js/views/admin/course_details.js:29
-#: static/js/views/admin/course_details.js:98
-#: static/js/views/admin/participantsinfo.js:22
-msgid "Company"
-msgstr ""
-
-#: static/gen/packed.js:38197 static/gen/packed_ie8.js:1349
-#: static/js/views/admin/participantsinfo.js:24
-msgid "Date Added"
-msgstr ""
-
-#: static/gen/packed.js:38207 static/gen/packed_ie8.js:1352
-#: static/js/views/admin/participantsinfo.js:34
-msgid "Enrolled In"
-msgstr ""
-
-#: static/gen/packed.js:38213 static/gen/packed.js:41852
-#: static/gen/packed_ie8.js:1353 static/gen/packed_ie8.js:1998
-#: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:40
-msgid "Activated"
-msgstr ""
-
-#: static/gen/packed.js:38273 static/gen/packed.js:39390
-#: static/gen/packed_ie8.js:1365 static/gen/packed_ie8.js:1627
-#: static/js/views/admin/participant_details_edit_info.js:521
-#: static/js/views/admin/participantsinfo.js:100
-msgid "Admin Company"
-msgstr ""
-
-#: static/gen/packed.js:38282 static/gen/packed.js:39400
-#: static/gen/packed_ie8.js:1374 static/gen/packed_ie8.js:1637
-#: static/js/views/admin/participant_details_edit_info.js:531
-#: static/js/views/admin/participantsinfo.js:109
-msgid "Admin Permissions"
-msgstr ""
-
-#: static/gen/packed.js:38285 static/gen/packed.js:39403
-#: static/gen/packed_ie8.js:1377 static/gen/packed_ie8.js:1640
-#: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:112
-msgid "Company Admin"
-msgstr ""
-
-#: static/gen/packed.js:38293 static/gen/packed.js:39228
-#: static/gen/packed.js:39684 static/gen/packed.js:41241
-#: static/gen/packed_ie8.js:1384 static/gen/packed_ie8.js:1584
-#: static/gen/packed_ie8.js:1700 static/gen/packed_ie8.js:1921
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:275
 #: static/js/views/admin/participant_details_edit_info.js:359
 #: static/js/views/admin/participantsinfo.js:120
 msgid "Course"
-msgstr ""
-
-#: static/gen/packed.js:38302 static/gen/packed.js:39232
-#: static/gen/packed.js:39688 static/gen/packed.js:40696
-#: static/gen/packed.js:41216 static/gen/packed.js:41851
-#: static/gen/packed_ie8.js:1393 static/gen/packed_ie8.js:1588
-#: static/gen/packed_ie8.js:1704 static/gen/packed_ie8.js:1853
-#: static/gen/packed_ie8.js:1919 static/gen/packed_ie8.js:1998
-#: static/js/views/admin/course_details.js:30
-#: static/js/views/admin/course_details_bulk_actions.js:279
-#: static/js/views/admin/participant_details_active_courses_view.js:111
-#: static/js/views/admin/participant_details_course_history_view.js:32
-#: static/js/views/admin/participant_details_edit_info.js:363
-#: static/js/views/admin/participantsinfo.js:129
-msgid "Status"
-msgstr ""
-
-#: static/gen/packed.js:38306 static/gen/packed.js:39234
-#: static/gen/packed.js:39592 static/gen/packed.js:39690
-#: static/gen/packed.js:41445 static/gen/packed_ie8.js:1397
-#: static/gen/packed_ie8.js:1590 static/gen/packed_ie8.js:1681
-#: static/gen/packed_ie8.js:1706 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:41
-#: static/js/views/admin/course_details_bulk_actions.js:183
-#: static/js/views/admin/course_details_bulk_actions.js:281
-#: static/js/views/admin/participant_details_edit_info.js:365
-#: static/js/views/admin/participantsinfo.js:133
-msgid "Active"
-msgstr ""
-
-#: static/gen/packed.js:38307 static/gen/packed.js:39236
-#: static/gen/packed.js:39594 static/gen/packed.js:39692
-#: static/gen/packed_ie8.js:1398 static/gen/packed_ie8.js:1592
-#: static/gen/packed_ie8.js:1683 static/gen/packed_ie8.js:1708
-#: static/js/views/admin/course_details_bulk_actions.js:185
-#: static/js/views/admin/course_details_bulk_actions.js:283
-#: static/js/views/admin/participant_details_edit_info.js:367
-#: static/js/views/admin/participantsinfo.js:134
-msgid "TA"
-msgstr ""
-
-#: static/gen/packed.js:38308 static/gen/packed.js:39235
-#: static/gen/packed.js:39593 static/gen/packed.js:39691
-#: static/gen/packed_ie8.js:1399 static/gen/packed_ie8.js:1591
-#: static/gen/packed_ie8.js:1682 static/gen/packed_ie8.js:1707
-#: static/js/views/admin/course_details_bulk_actions.js:184
-#: static/js/views/admin/course_details_bulk_actions.js:282
-#: static/js/views/admin/participant_details_edit_info.js:366
-#: static/js/views/admin/participantsinfo.js:135
-msgid "Observer"
-msgstr ""
-
-#: static/gen/packed.js:38537 static/gen/packed.js:38657
-#: static/gen/packed.js:39337 static/gen/packed.js:41362
-#: static/gen/packed.js:41775 static/gen/packed_ie8.js:1458
-#: static/gen/packed_ie8.js:1482 static/gen/packed_ie8.js:1610
-#: static/gen/packed_ie8.js:1927 static/gen/packed_ie8.js:1983
-#: static/js/views/admin/companies_list.js:105
-#: static/js/views/admin/company_details.js:186
-#: static/js/views/admin/company_learner_dashboard_list.js:135
-#: static/js/views/admin/participant_details_edit_info.js:468
-#: static/js/views/admin/participantsinfo.js:364
-msgid "This company name cannot have more than 30 characters!"
-msgstr ""
-
-#: static/gen/packed.js:38543 static/gen/packed.js:38650
-#: static/gen/packed.js:39343 static/gen/packed.js:41366
-#: static/gen/packed.js:41780 static/gen/packed_ie8.js:1460
-#: static/gen/packed_ie8.js:1480 static/gen/packed_ie8.js:1612
-#: static/gen/packed_ie8.js:1928 static/gen/packed_ie8.js:1985
-#: static/js/views/admin/companies_list.js:98
-#: static/js/views/admin/company_details.js:191
-#: static/js/views/admin/company_learner_dashboard_list.js:139
-#: static/js/views/admin/participant_details_edit_info.js:474
-#: static/js/views/admin/participantsinfo.js:370
-msgid "This company name cannot contain non-alphanumeric characters!"
-msgstr ""
-
-#: static/gen/packed.js:38575 static/gen/packed_ie8.js:1463
-#: static/js/views/admin/companies_list.js:23
-msgid "Company ID"
-msgstr ""
-
-#: static/gen/packed.js:38576 static/gen/packed_ie8.js:1463
-#: static/js/views/admin/companies_list.js:24
-msgid "No. of Participants"
-msgstr ""
-
-#: static/gen/packed.js:38577 static/gen/packed_ie8.js:1463
-#: static/js/views/admin/companies_list.js:25
-msgid "No. of Courses"
-msgstr ""
-
-#: static/gen/packed.js:38694 static/gen/packed_ie8.js:1489
-#: static/js/views/admin/companies_list.js:142
-msgid "Couldn't create new company!"
-msgstr ""
-
-#: static/gen/packed.js:38731 static/gen/packed_ie8.js:1490
-#: static/js/views/admin/courseinfo.js:21
-msgid ".0%"
-msgstr ""
-
-#: static/gen/packed.js:38758 static/gen/packed_ie8.js:1490
-#: static/js/views/admin/courseinfo.js:48
-msgid " day"
-msgstr ""
-
-#: static/gen/packed.js:38759 static/gen/packed_ie8.js:1490
-#: static/js/views/admin/courseinfo.js:49
-msgid " week"
-msgstr ""
-
-#: static/gen/packed.js:38861 static/gen/packed_ie8.js:1493
-#: static/js/views/admin/course_details_engagement.js:11
-msgid "# of people"
-msgstr ""
-
-#: static/gen/packed.js:38862 static/gen/packed_ie8.js:1493
-#: static/js/views/admin/course_details_engagement.js:12
-msgid "% total cohort"
-msgstr ""
-
-#: static/gen/packed.js:38863 static/gen/packed_ie8.js:1493
-#: static/js/views/admin/course_details_engagement.js:13
-msgid "Avg Progress"
-msgstr ""
-
-#: static/gen/packed.js:38982 static/gen/packed_ie8.js:1515
-#: static/js/views/admin/participant_details_edit_info.js:113
-msgid "Username can't be empty! "
-msgstr ""
-
-#: static/gen/packed.js:38987 static/gen/packed_ie8.js:1517
-#: static/js/views/admin/participant_details_edit_info.js:118
-msgid "First name can't be empty! "
-msgstr ""
-
-#: static/gen/packed.js:38992 static/gen/packed_ie8.js:1519
-#: static/js/views/admin/participant_details_edit_info.js:123
-msgid "Last name can't be empty! "
-msgstr ""
-
-#: static/gen/packed.js:38997 static/gen/packed_ie8.js:1521
-#: static/js/views/admin/participant_details_edit_info.js:128
-msgid "Email can't be empty! "
-msgstr ""
-
-#: static/gen/packed.js:39021 static/gen/packed_ie8.js:1531
-#: static/js/views/admin/participant_details_edit_info.js:152
-msgid "Company doesn't exist! "
-msgstr ""
-
-#: static/gen/packed.js:39071 static/gen/packed_ie8.js:1542
-#: static/js/views/admin/participant_details_edit_info.js:202
-msgid "Updated user data!"
-msgstr ""
-
-#: static/gen/packed.js:39122 static/gen/packed.js:39155
-#: static/gen/packed_ie8.js:1552 static/gen/packed_ie8.js:1559
-#: static/js/views/admin/participant_details_edit_info.js:253
-#: static/js/views/admin/participant_details_edit_info.js:286
-msgid "Male"
-msgstr ""
-
-#: static/gen/packed.js:39124 static/gen/packed.js:39153
-#: static/gen/packed_ie8.js:1553 static/gen/packed_ie8.js:1558
-#: static/js/views/admin/participant_details_edit_info.js:255
-#: static/js/views/admin/participant_details_edit_info.js:284
-msgid "Female"
-msgstr ""
-
-#: static/gen/packed.js:39223 static/gen/packed.js:39673
-#: static/gen/packed_ie8.js:1582 static/gen/packed_ie8.js:1698
-#: static/js/views/admin/course_details_bulk_actions.js:264
-#: static/js/views/admin/participant_details_edit_info.js:354
-msgid "Select Course"
-msgstr ""
-
-#: static/gen/packed.js:39224 static/gen/packed_ie8.js:1582
-#: static/js/views/admin/participant_details_edit_info.js:355
-msgid "User will be enrolled in course selected below."
-msgstr ""
-
-#: static/gen/packed.js:39246 static/gen/packed_ie8.js:1594
-#: static/js/views/admin/participant_details_edit_info.js:377
-msgid "Enroll Participant"
-msgstr ""
-
-#: static/gen/packed.js:39269 static/gen/packed.js:39275
-#: static/gen/packed.js:39632 static/gen/packed.js:39736
-#: static/gen/packed.js:39742 static/gen/packed_ie8.js:1596
-#: static/gen/packed_ie8.js:1598 static/gen/packed_ie8.js:1692
-#: static/gen/packed_ie8.js:1715 static/gen/packed_ie8.js:1717
-#: static/js/views/admin/course_details_bulk_actions.js:223
-#: static/js/views/admin/course_details_bulk_actions.js:327
-#: static/js/views/admin/course_details_bulk_actions.js:333
-#: static/js/views/admin/participant_details_edit_info.js:400
-#: static/js/views/admin/participant_details_edit_info.js:406
-msgid "You need to select status!"
-msgstr ""
-
-#: static/gen/packed.js:39280 static/gen/packed.js:39284
-#: static/gen/packed.js:39747 static/gen/packed.js:39751
-#: static/gen/packed_ie8.js:1599 static/gen/packed_ie8.js:1600
-#: static/gen/packed_ie8.js:1718 static/gen/packed_ie8.js:1719
-#: static/js/views/admin/course_details_bulk_actions.js:338
-#: static/js/views/admin/course_details_bulk_actions.js:342
-#: static/js/views/admin/participant_details_edit_info.js:411
-#: static/js/views/admin/participant_details_edit_info.js:415
-msgid "You need to select course!"
-msgstr ""
-
-#: static/gen/packed.js:39304 static/gen/packed_ie8.js:1602
-#: static/js/views/admin/participant_details_edit_info.js:435
-msgid "User successfully enrolled in course"
-msgstr ""
-
-#: static/gen/packed.js:39394 static/gen/packed_ie8.js:1631
-#: static/js/views/admin/participant_details_edit_info.js:525
-msgid "Try selecting your company from the type-ahead results."
-msgstr ""
-
-#: static/gen/packed.js:39467 static/gen/packed_ie8.js:1657
-#: static/js/views/admin/course_details_bulk_actions.js:58
-msgid "File successfully uploaded!"
-msgstr ""
-
-#: static/gen/packed.js:39525 static/gen/packed_ie8.js:1671
-#: static/js/views/admin/course_details_bulk_actions.js:116
-msgid "Unenroll Participants"
-msgstr ""
-
-#: static/gen/packed.js:39526 static/gen/packed.js:39587
-#: static/gen/packed.js:39674 static/gen/packed_ie8.js:1671
-#: static/gen/packed_ie8.js:1681 static/gen/packed_ie8.js:1698
-#: static/js/views/admin/course_details_bulk_actions.js:117
-#: static/js/views/admin/course_details_bulk_actions.js:178
-#: static/js/views/admin/course_details_bulk_actions.js:265
-msgid "Selected: %(selectedRows)s, Successful: 0, Failed: 0"
-msgstr ""
-
-#: static/gen/packed.js:39529 static/gen/packed_ie8.js:1671
-#: static/js/views/admin/course_details_bulk_actions.js:120
-msgid "Unenroll all selected participants from this course?"
-msgstr ""
-
-#: static/gen/packed.js:39542 static/gen/packed.js:39607
-#: static/gen/packed.js:39708 static/gen/packed.js:40034
-#: static/gen/packed_ie8.js:1674 static/gen/packed_ie8.js:1686
-#: static/gen/packed_ie8.js:1712 static/gen/packed_ie8.js:1764
-#: static/js/views/admin/course_details_bulk_actions.js:133
-#: static/js/views/admin/course_details_bulk_actions.js:198
-#: static/js/views/admin/course_details_bulk_actions.js:299
-#: static/js/views/admin/course_details_bulk_actions.js:625
-msgid ""
-"You need to select at least one participant to be able to apply bulk actions."
-msgstr ""
-
-#: static/gen/packed.js:39546 static/gen/packed.js:40716
-#: static/gen/packed.js:40718 static/gen/packed_ie8.js:1675
-#: static/gen/packed_ie8.js:1859
-#: static/js/views/admin/course_details_bulk_actions.js:137
-#: static/js/views/admin/participant_details_active_courses_view.js:131
-#: static/js/views/admin/participant_details_active_courses_view.js:133
-msgid "Unenroll"
-msgstr ""
-
-#: static/gen/packed.js:39586 static/gen/packed_ie8.js:1681
-#: static/js/views/admin/course_details_bulk_actions.js:177
-msgid "Change Status"
-msgstr ""
-
-#: static/gen/packed.js:39590 static/gen/packed_ie8.js:1681
-#: static/js/views/admin/course_details_bulk_actions.js:181
-msgid "Change status of all selected participants to:"
-msgstr ""
-
-#: static/gen/packed.js:39611 static/gen/packed_ie8.js:1687
-#: static/js/views/admin/course_details_bulk_actions.js:202
-msgid "Save Changes"
-msgstr ""
-
-#: static/gen/packed.js:39677 static/gen/packed_ie8.js:1698
-#: static/js/views/admin/course_details_bulk_actions.js:268
-msgid "%(selectedRows)s Participants will be enroll in course selected below."
-msgid_plural ""
-"%(selectedRows)s Participant will be enroll in course selected below."
-msgstr[0] ""
-msgstr[1] ""
-
-#: static/gen/packed.js:39712 static/gen/packed_ie8.js:1713
-#: static/js/views/admin/course_details_bulk_actions.js:303
-msgid "Enroll Participants"
-msgstr ""
-
-#: static/gen/packed.js:39821 static/gen/packed_ie8.js:1729
-#: static/js/views/admin/course_details_bulk_actions.js:412
-msgid "Download"
-msgstr ""
-
-#: static/gen/packed.js:39821 static/gen/packed_ie8.js:1729
-#: static/js/views/admin/course_details_bulk_actions.js:412
-msgid "Progress : 0%"
-msgstr ""
-
-#: static/gen/packed.js:39822 static/gen/packed_ie8.js:1729
-#: static/js/views/admin/course_details_bulk_actions.js:413
-msgid "Download CSV File"
-msgstr ""
-
-#: static/gen/packed.js:39861 static/gen/packed_ie8.js:1732
-#: static/js/views/admin/course_details_bulk_actions.js:452
-msgid "Download Notifications CSV"
-msgstr ""
-
-#: static/gen/packed.js:39895 static/gen/packed_ie8.js:1735
-#: static/js/views/admin/course_details_bulk_actions.js:486
-msgid "Download Participants"
-msgstr ""
-
-#: static/gen/packed.js:39950 static/gen/packed_ie8.js:1746
-#: static/js/views/admin/course_details_bulk_actions.js:541
-msgid "Group Work: %(label)s"
-msgstr ""
-
-#: static/gen/packed.js:39978 static/gen/packed_ie8.js:1755
-#: static/js/views/admin/course_details_bulk_actions.js:569
-msgid "Assessment: %(label)s"
-msgstr ""
-
-#: static/gen/packed.js:40004 static/gen/packed_ie8.js:1760
-#: static/js/views/admin/course_details_bulk_actions.js:595
-msgid "Task failed to execute. Please retry later."
-msgstr ""
-
-#: static/gen/packed.js:40021 static/gen/packed_ie8.js:1762
-#: static/js/views/admin/course_details_bulk_actions.js:612
-msgid "Successfully Enrolled in 1 Course"
-msgstr ""
-
-#: static/gen/packed.js:40023 static/gen/packed_ie8.js:1762
-#: static/js/views/admin/course_details_bulk_actions.js:614
-msgid "What would you like to do now?"
-msgstr ""
-
-#: static/gen/packed.js:40024 static/gen/packed_ie8.js:1762
-#: static/js/views/admin/course_details_bulk_actions.js:615
-msgid "Go to %(course_id)s Course"
-msgstr ""
-
-#: static/gen/packed.js:40026 static/gen/packed_ie8.js:1762
-#: static/js/views/admin/course_details_bulk_actions.js:617
-msgid "Send Course Intro Email"
-msgstr ""
-
-#: static/gen/packed.js:40028 static/gen/packed_ie8.js:1764
-#: static/js/views/admin/course_details_bulk_actions.js:619
-msgid "Enroll this list in another course"
-msgstr ""
-
-#: static/gen/packed.js:40040 static/gen/packed_ie8.js:1765
-#: static/js/views/admin/course_details_bulk_actions.js:631
-msgid "I'm Done"
-msgstr ""
-
-#: static/gen/packed.js:40060 static/gen/packed_ie8.js:1769
-#: static/js/views/admin/course_details_bulk_actions.js:651
-msgid "Successfully deleted template!"
-msgstr ""
-
-#: static/gen/packed.js:40067 static/gen/packed_ie8.js:1771
-#: static/js/views/admin/course_details_bulk_actions.js:658
-msgid "Successfully added new template!"
-msgstr ""
-
-#: static/gen/packed.js:40080 static/gen/packed_ie8.js:1775
-#: static/js/views/admin/course_details_bulk_actions.js:671
-msgid "Successfully updated template!"
-msgstr ""
-
-#: static/gen/packed.js:40085 static/gen/packed_ie8.js:1777
-#: static/js/views/admin/course_details_bulk_actions.js:676
-msgid "Email Preview Success!"
-msgstr ""
-
-#: static/gen/packed.js:40085 static/gen/packed_ie8.js:1777
-#: static/js/views/admin/course_details_bulk_actions.js:676
-msgid "Successfully sent preview email!"
-msgstr ""
-
-#: static/gen/packed.js:40088 static/gen/packed_ie8.js:1778
-#: static/js/views/admin/course_details_bulk_actions.js:679
-msgid "Email Success!"
-msgstr ""
-
-#: static/gen/packed.js:40088 static/gen/packed_ie8.js:1778
-#: static/js/views/admin/course_details_bulk_actions.js:679
-msgid "Successfully sent email!"
-msgstr ""
-
-#: static/gen/packed.js:40130 static/gen/packed_ie8.js:1785
-#: static/js/views/admin/course_details_bulk_actions.js:721
-msgid "Preview Email!"
-msgstr ""
-
-#: static/gen/packed.js:40130 static/gen/packed_ie8.js:1785
-#: static/js/views/admin/course_details_bulk_actions.js:721
-msgid "Please enter preview email!"
-msgstr ""
-
-#: static/gen/packed.js:40150 static/gen/packed_ie8.js:1790
-#: static/js/views/admin/course_details_bulk_actions.js:741
-msgid "Please enter new template name!"
-msgstr ""
-
-#: static/gen/packed.js:40165 static/gen/packed_ie8.js:1793
-#: static/js/views/admin/course_details_bulk_actions.js:756
-msgid "Please enter updated template name or leave the old one!"
-msgstr ""
-
-#: static/gen/packed.js:40178 static/gen/packed_ie8.js:1796
-#: static/js/views/admin/course_details_bulk_actions.js:769
-msgid "You are about to delete email template. Are you sure?"
-msgstr ""
-
-#: static/gen/packed.js:40237 static/gen/packed_ie8.js:1801
-#: static/js/views/admin/group_work_dashboard.js:52
-msgid "None"
-msgstr ""
-
-#: static/gen/packed.js:40380 static/gen/packed_ie8.js:1819
-#: static/js/views/admin/group_work_dashboard.js:195
-msgid "Do you really want to delete: \n"
-msgstr ""
-
-#: static/gen/packed.js:40658 static/gen/packed.js:41213
-#: static/gen/packed_ie8.js:1845 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/participant_details_active_courses_view.js:73
-#: static/js/views/admin/participant_details_course_history_view.js:29
-msgid "Program"
-msgstr ""
-
-#: static/gen/packed.js:40659 static/gen/packed.js:41864
-#: static/gen/packed_ie8.js:1845 static/gen/packed_ie8.js:2001
-#: static/js/views/admin/course_details.js:43
-#: static/js/views/admin/participant_details_active_courses_view.js:74
-msgid "Progress"
-msgstr ""
-
-#: static/gen/packed.js:40678 static/gen/packed.js:41871
-#: static/gen/packed_ie8.js:1849 static/gen/packed_ie8.js:2003
-#: static/js/views/admin/course_details.js:50
-#: static/js/views/admin/participant_details_active_courses_view.js:93
-msgid "Proficiency"
-msgstr ""
-
-#: static/gen/packed.js:40795 static/gen/packed_ie8.js:1866
-#: static/js/views/admin/company_mobileapp_details.js:31
-msgid "Couldn't delink App!"
-msgstr ""
-
-#: static/gen/packed.js:40872 static/gen/packed_ie8.js:1880
-#: static/js/views/admin/company_mobileapp_details.js:108
-msgid "This app name cannot have more than 30 characters!"
-msgstr ""
-
-#: static/gen/packed.js:40877 static/gen/packed_ie8.js:1882
-#: static/js/views/admin/company_mobileapp_details.js:113
-msgid "This app name cannot contain non-alphanumeric characters!"
-msgstr ""
-
-#: static/gen/packed.js:40882 static/gen/packed_ie8.js:1884
-#: static/js/views/admin/company_mobileapp_details.js:118
-msgid "No App Display Name!"
-msgstr ""
-
-#: static/gen/packed.js:41156 static/gen/packed_ie8.js:1907
-#: static/js/views/admin/company_info_view.js:226
-msgid "Please correct following error: %(errors)s"
-msgid_plural "Please correct following errors: %(errors)s"
-msgstr[0] ""
-msgstr[1] ""
-
-#: static/gen/packed.js:41214 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/participant_details_course_history_view.js:30
-msgid "Completed"
-msgstr ""
-
-#: static/gen/packed.js:41215 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/participant_details_course_history_view.js:31
-msgid "Grade"
-msgstr ""
-
-#: static/gen/packed.js:41217 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/participant_details_course_history_view.js:33
-msgid "End Date"
-msgstr ""
-
-#: static/gen/packed.js:41231 static/gen/packed_ie8.js:1919
-#: static/js/views/admin/company_learner_dashboard_list.js:4
-msgid "Dashboard Name"
-msgstr ""
-
-#: static/gen/packed.js:41370 static/gen/packed.js:41785
-#: static/gen/packed_ie8.js:1929 static/gen/packed_ie8.js:1987
-#: static/js/views/admin/company_details.js:196
-#: static/js/views/admin/company_learner_dashboard_list.js:143
-msgid "No Company Display Name!"
-msgstr ""
-
-#: static/gen/packed.js:41408 static/gen/packed_ie8.js:1930
-#: static/js/views/admin/company_linked_apps.js:4
-msgid "App Name"
-msgstr ""
-
-#: static/gen/packed.js:41424 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:20
-msgid "Deployment Mech"
-msgstr ""
-
-#: static/gen/packed.js:41425 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:21
-msgid "iOS DL URL"
-msgstr ""
-
-#: static/gen/packed.js:41430 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:26
-msgid "Android DL URL"
-msgstr ""
-
-#: static/gen/packed.js:41435 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:31
-msgid "Urban Airship URL"
-msgstr ""
-
-#: static/gen/packed.js:41440 static/gen/packed_ie8.js:1934
-#: static/js/views/admin/company_linked_apps.js:36
-msgid "Analytics URL"
-msgstr ""
-
-#: static/gen/packed.js:41551 static/gen/packed_ie8.js:1946
-#: static/js/views/admin/company_linked_apps.js:147
-msgid "Couldn't link this App!"
-msgstr ""
-
-#: static/gen/packed.js:41610 static/gen/packed_ie8.js:1954
-#: static/js/views/admin/company_details.js:21
-msgid "Participants"
-msgstr ""
-
-#: static/gen/packed.js:41656 static/gen/packed_ie8.js:1963
-#: static/js/views/admin/company_details.js:67
-msgid "Cohort Comp."
-msgstr ""
-
-#: static/gen/packed.js:41853 static/gen/packed_ie8.js:1998
-#: static/js/views/admin/course_details.js:32
-msgid "Last Log In"
-msgstr ""
-
-#: static/gen/packed.js:41878 static/gen/packed_ie8.js:2005
-#: static/js/views/admin/course_details.js:57
-msgid "Engagement"
-msgstr ""
-
-#: static/gen/packed.js:41885 static/gen/packed.js:41889
-#: static/gen/packed_ie8.js:2007 static/gen/packed_ie8.js:2008
-#: static/js/views/admin/course_details.js:64
-#: static/js/views/admin/course_details.js:68
-msgid "Activation Link"
-msgstr ""
-
-#: static/gen/packed.js:41893 static/gen/packed_ie8.js:2008
-#: static/js/views/admin/course_details.js:72
-msgid "Username"
-msgstr ""
-
-#: static/gen/packed.js:41894 static/gen/packed_ie8.js:2008
-#: static/js/views/admin/course_details.js:73
-msgid "Country"
-msgstr ""
-
-#: static/gen/packed.js:42055 static/gen/packed_ie8.js:2044
-#: static/js/views/admin/course_details.js:234
-msgid "Couldn't create new tag!"
-msgstr ""
-
-#: static/gen/packed.js:42069 static/gen/packed_ie8.js:2049
-#: static/js/views/admin/course_details.js:248
-msgid ""
-"You don't have permission to create a new tag, please select one from the "
-"list!"
-msgstr ""
-
-#: static/gen/packed.js:42099 static/gen/packed_ie8.js:2054
-#: static/js/views/admin/course_details.js:278
-msgid "Couldn't delete tag!"
-msgstr ""
-
-#: static/gen/packed.js:42139 static/gen/packed_ie8.js:2061
-#: static/js/views/admin/course_details.js:318
-msgid "%(count)s Course Tagged with %(tagDetails)s"
-msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
-msgstr[0] ""
-msgstr[1] ""
-
-#: static/gen/packed.js:42194 static/gen/packed_ie8.js:2070
-#: static/js/views/admin/course_details.js:373
-msgid "Progress: %(progress)s %"
-msgstr ""
-
-#: static/gen/packed.js:42230 static/gen/packed_ie8.js:2076
-#: static/js/views/admin/course_details.js:409
-msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
-msgstr ""
-
-#: static/gen/packed.js:42281 static/gen/packed_ie8.js:2087
-#: static/js/views/admin/course_details.js:460
-msgid "This tag name cannot have more than 30 characters!"
-msgstr ""
-
-#: static/gen/packed.js:42288 static/gen/packed_ie8.js:2089
-#: static/js/views/admin/course_details.js:467
-msgid "This tag name cannot contain non-alphanumeric characters!"
-msgstr ""
-
-#: static/gen/packed.js:42328 static/gen/packed_ie8.js:2095
-#: static/js/views/admin/course_details.js:507
-msgid "Couldn't add tag to course!"
-msgstr ""
-
-#: static/gen/packed.js:42787 static/gen/packed_ie8.js:2117
-#: static/js/views/courses/lesson_note.js:2
-msgid "Lesson"
-msgstr ""
-
-#: static/gen/packed.js:42788 static/gen/packed_ie8.js:2118
-#: static/js/views/courses/lesson_note.js:3
-msgid "Module"
 msgstr ""
 
 #: static/js/admin_learner_dashboard/element_modal.js:72
@@ -930,7 +97,105 @@ msgstr ""
 
 #: static/js/admin_learner_dashboard/sort.js:72
 #: static/js/learner_dashboard_sort.js:54
+#: templates/admin/client-admin/course_branding_settings.haml:7
+#: templates/admin/learner_dashboard/main.haml:90
+#: templates/admin/learner_dashboard/main.haml:104
 msgid "Are you sure?"
+msgstr ""
+
+#: static/js/admin_upload_students.js:8
+#: static/js/common/mass_participants_enroll.js:168
+#: static/js/common/mass_participants_upload.js:115
+msgid "Show Errors"
+msgstr ""
+
+#: static/js/admin_upload_students.js:73
+#: static/js/common/mass_participants_enroll.js:147
+#: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
+msgid "Please select file first."
+msgstr ""
+
+#: static/js/application.js:192
+msgid "Your course hasn't begun yet. "
+msgstr ""
+
+#: static/js/application.js:195
+msgid "Your course begins in %(days)s day."
+msgid_plural "Your course begins in %(days)d days."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/application.js:198
+msgid "Welcome to McKinsey Academy"
+msgstr ""
+
+#: static/js/common/admin_bulk_actions.js:17
+msgid "Progress: %(value)s%"
+msgstr ""
+
+#: static/js/common/bbGridExtend.js:70
+msgid "Keyword Search"
+msgstr ""
+
+#: static/js/common/common_js.js:171
+msgid "NoName"
+msgstr ""
+
+#: static/js/common/common_js.js:514
+msgid "Send"
+msgstr ""
+
+#: static/js/common/common_js.js:744
+msgid "Fetching data for file: %(filename)s"
+msgstr ""
+
+#: static/js/common/common_js.js:856
+msgid "%(value)s%"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:57
+#: static/js/common/mass_participants_enroll.js:128
+msgid ""
+"The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
+"more files!"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:180
+#: static/js/common/mass_participants_upload.js:127
+msgid "Errors:"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:189
+#: static/js/common/mass_participants_upload.js:136
+msgid "Total:"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:191
+#: static/js/common/mass_participants_upload.js:138
+msgid "Succeded:"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:193
+#: static/js/common/mass_participants_upload.js:140
+msgid "Failed:"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:245
+msgid "email"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:245
+msgid "course id"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:245
+msgid "status"
+msgstr ""
+
+#: static/js/common/mass_participants_upload.js:137
+#: static/js/common/mass_participants_upload.js:139
+#: static/js/common/mass_participants_upload.js:141
+msgid "0"
 msgstr ""
 
 #: static/js/course_contact_modal.js:15
@@ -941,7 +206,9 @@ msgstr ""
 msgid "Group successfully updated"
 msgstr ""
 
-#: static/js/course_drag_drop.js:153
+#: static/js/course_drag_drop.js:153 templates/admin/client/courses.haml:46
+#: templates/admin/client/courses_without_programs.haml:68
+#: templates/admin/client/programs.haml:41
 msgid "Please select at least one student"
 msgstr ""
 
@@ -968,6 +235,7 @@ msgid "Your Progress: %(value)s%"
 msgstr ""
 
 #: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+#: templates/admin/workgroup/dashboard_details.haml:30
 msgid "Complete"
 msgstr ""
 
@@ -1005,6 +273,1138 @@ msgstr ""
 msgid "Please select file for upload."
 msgstr ""
 
+#: static/js/models/city.js:29
+#: templates/admin/client-admin/home_course_metrics.haml:17
+msgid "Participants:"
+msgstr ""
+
+#: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
+#: static/js/views/admin/participantsinfo.js:23
+msgid "Email"
+msgstr ""
+
+#: static/js/router.js:354 templates/admin/client/courses.haml:52
+#: templates/admin/client/courses_without_programs.haml:74
+msgid "Please select at least one course"
+msgstr ""
+
 #: static/js/vendor/jquery.xblock.js:380
 msgid "The discussion you are trying to access has been deleted"
+msgstr ""
+
+#: static/js/views/admin/companies_list.js:15
+#: static/js/views/admin/course_details.js:29
+#: static/js/views/admin/course_details.js:98
+#: static/js/views/admin/participantsinfo.js:22
+msgid "Company"
+msgstr ""
+
+#: static/js/views/admin/companies_list.js:23
+msgid "Company ID"
+msgstr ""
+
+#: static/js/views/admin/companies_list.js:24
+msgid "No. of Participants"
+msgstr ""
+
+#: static/js/views/admin/companies_list.js:25
+msgid "No. of Courses"
+msgstr ""
+
+#: static/js/views/admin/companies_list.js:98
+#: static/js/views/admin/company_details.js:191
+#: static/js/views/admin/company_learner_dashboard_list.js:139
+#: static/js/views/admin/participant_details_edit_info.js:474
+#: static/js/views/admin/participantsinfo.js:370
+msgid "This company name cannot contain non-alphanumeric characters!"
+msgstr ""
+
+#: static/js/views/admin/companies_list.js:105
+#: static/js/views/admin/company_details.js:186
+#: static/js/views/admin/company_learner_dashboard_list.js:135
+#: static/js/views/admin/participant_details_edit_info.js:468
+#: static/js/views/admin/participantsinfo.js:364
+msgid "This company name cannot have more than 30 characters!"
+msgstr ""
+
+#: static/js/views/admin/companies_list.js:142
+msgid "Couldn't create new company!"
+msgstr ""
+
+#: static/js/views/admin/company_details.js:21
+#: templates/admin/client-admin/program_detail.haml:28
+msgid "Participants"
+msgstr ""
+
+#: static/js/views/admin/company_details.js:67
+msgid "Cohort Comp."
+msgstr ""
+
+#: static/js/views/admin/company_details.js:196
+#: static/js/views/admin/company_learner_dashboard_list.js:143
+msgid "No Company Display Name!"
+msgstr ""
+
+#: static/js/views/admin/company_info_view.js:226
+msgid "Please correct following error: %(errors)s"
+msgid_plural "Please correct following errors: %(errors)s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/company_learner_dashboard_list.js:4
+msgid "Dashboard Name"
+msgstr ""
+
+#: static/js/views/admin/company_linked_apps.js:4
+msgid "App Name"
+msgstr ""
+
+#: static/js/views/admin/company_linked_apps.js:20
+msgid "Deployment Mech"
+msgstr ""
+
+#: static/js/views/admin/company_linked_apps.js:21
+msgid "iOS DL URL"
+msgstr ""
+
+#: static/js/views/admin/company_linked_apps.js:26
+msgid "Android DL URL"
+msgstr ""
+
+#: static/js/views/admin/company_linked_apps.js:31
+msgid "Urban Airship URL"
+msgstr ""
+
+#: static/js/views/admin/company_linked_apps.js:36
+msgid "Analytics URL"
+msgstr ""
+
+#: static/js/views/admin/company_linked_apps.js:41
+#: static/js/views/admin/course_details_bulk_actions.js:183
+#: static/js/views/admin/course_details_bulk_actions.js:281
+#: static/js/views/admin/participant_details_edit_info.js:365
+#: static/js/views/admin/participantsinfo.js:133
+msgid "Active"
+msgstr ""
+
+#: static/js/views/admin/company_linked_apps.js:147
+msgid "Couldn't link this App!"
+msgstr ""
+
+#: static/js/views/admin/company_mobileapp_details.js:31
+msgid "Couldn't delink App!"
+msgstr ""
+
+#: static/js/views/admin/company_mobileapp_details.js:108
+msgid "This app name cannot have more than 30 characters!"
+msgstr ""
+
+#: static/js/views/admin/company_mobileapp_details.js:113
+msgid "This app name cannot contain non-alphanumeric characters!"
+msgstr ""
+
+#: static/js/views/admin/company_mobileapp_details.js:118
+msgid "No App Display Name!"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:6
+#: static/js/views/admin/participantsinfo.js:12
+#: templates/admin/client/access_key_list.haml:12
+msgid "Name"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:30
+#: static/js/views/admin/course_details_bulk_actions.js:279
+#: static/js/views/admin/participant_details_active_courses_view.js:111
+#: static/js/views/admin/participant_details_course_history_view.js:32
+#: static/js/views/admin/participant_details_edit_info.js:363
+#: static/js/views/admin/participantsinfo.js:129
+msgid "Status"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:31
+#: static/js/views/admin/participantsinfo.js:40
+msgid "Activated"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:32
+msgid "Last Log In"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:43
+#: static/js/views/admin/participant_details_active_courses_view.js:74
+msgid "Progress"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:50
+#: static/js/views/admin/participant_details_active_courses_view.js:93
+msgid "Proficiency"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:57
+msgid "Engagement"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:64
+#: static/js/views/admin/course_details.js:68
+msgid "Activation Link"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:72
+msgid "Username"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:73
+msgid "Country"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:234
+msgid "Couldn't create new tag!"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:248
+msgid ""
+"You don't have permission to create a new tag, please select one from the "
+"list!"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:278
+msgid "Couldn't delete tag!"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:318
+msgid "%(count)s Course Tagged with %(tagDetails)s"
+msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/course_details.js:373
+msgid "Progress: %(progress)s %"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:409
+msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:460
+msgid "This tag name cannot have more than 30 characters!"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:467
+msgid "This tag name cannot contain non-alphanumeric characters!"
+msgstr ""
+
+#: static/js/views/admin/course_details.js:507
+msgid "Couldn't add tag to course!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:58
+msgid "File successfully uploaded!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:116
+msgid "Unenroll Participants"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:117
+#: static/js/views/admin/course_details_bulk_actions.js:178
+#: static/js/views/admin/course_details_bulk_actions.js:265
+msgid "Selected: %(selectedRows)s, Successful: 0, Failed: 0"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:120
+msgid "Unenroll all selected participants from this course?"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:133
+#: static/js/views/admin/course_details_bulk_actions.js:198
+#: static/js/views/admin/course_details_bulk_actions.js:299
+#: static/js/views/admin/course_details_bulk_actions.js:625
+msgid ""
+"You need to select at least one participant to be able to apply bulk actions."
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:137
+#: static/js/views/admin/participant_details_active_courses_view.js:131
+#: static/js/views/admin/participant_details_active_courses_view.js:133
+msgid "Unenroll"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:177
+msgid "Change Status"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:181
+msgid "Change status of all selected participants to:"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:184
+#: static/js/views/admin/course_details_bulk_actions.js:282
+#: static/js/views/admin/participant_details_edit_info.js:366
+#: static/js/views/admin/participantsinfo.js:135
+msgid "Observer"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:185
+#: static/js/views/admin/course_details_bulk_actions.js:283
+#: static/js/views/admin/participant_details_edit_info.js:367
+#: static/js/views/admin/participantsinfo.js:134
+msgid "TA"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:202
+msgid "Save Changes"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:223
+#: static/js/views/admin/course_details_bulk_actions.js:327
+#: static/js/views/admin/course_details_bulk_actions.js:333
+#: static/js/views/admin/participant_details_edit_info.js:400
+#: static/js/views/admin/participant_details_edit_info.js:406
+msgid "You need to select status!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:264
+#: static/js/views/admin/participant_details_edit_info.js:354
+msgid "Select Course"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:268
+msgid "%(selectedRows)s Participants will be enroll in course selected below."
+msgid_plural ""
+"%(selectedRows)s Participant will be enroll in course selected below."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:303
+msgid "Enroll Participants"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:338
+#: static/js/views/admin/course_details_bulk_actions.js:342
+#: static/js/views/admin/participant_details_edit_info.js:411
+#: static/js/views/admin/participant_details_edit_info.js:415
+msgid "You need to select course!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:412
+msgid "Download"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:412
+msgid "Progress : 0%"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:413
+msgid "Download CSV File"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:452
+msgid "Download Notifications CSV"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:486
+msgid "Download Participants"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:541
+msgid "Group Work: %(label)s"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:569
+msgid "Assessment: %(label)s"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:595
+msgid "Task failed to execute. Please retry later."
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:612
+msgid "Successfully Enrolled in 1 Course"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:614
+msgid "What would you like to do now?"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:615
+msgid "Go to %(course_id)s Course"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:617
+msgid "Send Course Intro Email"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:619
+msgid "Enroll this list in another course"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:631
+msgid "I'm Done"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:651
+msgid "Successfully deleted template!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:658
+msgid "Successfully added new template!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:671
+msgid "Successfully updated template!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:676
+msgid "Email Preview Success!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:676
+msgid "Successfully sent preview email!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:679
+msgid "Email Success!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:679
+msgid "Successfully sent email!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:721
+msgid "Preview Email!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:721
+msgid "Please enter preview email!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:741
+msgid "Please enter new template name!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:756
+msgid "Please enter updated template name or leave the old one!"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:769
+msgid "You are about to delete email template. Are you sure?"
+msgstr ""
+
+#: static/js/views/admin/course_details_engagement.js:11
+msgid "# of people"
+msgstr ""
+
+#: static/js/views/admin/course_details_engagement.js:12
+msgid "% total cohort"
+msgstr ""
+
+#: static/js/views/admin/course_details_engagement.js:13
+msgid "Avg Progress"
+msgstr ""
+
+#: static/js/views/admin/course_details_timeline.js:59
+msgid "days"
+msgstr ""
+
+#: static/js/views/admin/course_details_timeline.js:59
+msgid "weeks"
+msgstr ""
+
+#: static/js/views/admin/courseinfo.js:21
+msgid ".0%"
+msgstr ""
+
+#: static/js/views/admin/courseinfo.js:48
+msgid " day"
+msgstr ""
+
+#: static/js/views/admin/courseinfo.js:49
+msgid " week"
+msgstr ""
+
+#: static/js/views/admin/group_work_dashboard.js:52
+msgid "None"
+msgstr ""
+
+#: static/js/views/admin/group_work_dashboard.js:195
+msgid "Do you really want to delete: \n"
+msgstr ""
+
+#: static/js/views/admin/participant_details_active_courses_view.js:73
+#: static/js/views/admin/participant_details_course_history_view.js:29
+msgid "Program"
+msgstr ""
+
+#: static/js/views/admin/participant_details_course_history_view.js:30
+#: templates/admin/client-admin/program_detail.haml:30
+msgid "Completed"
+msgstr ""
+
+#: static/js/views/admin/participant_details_course_history_view.js:31
+msgid "Grade"
+msgstr ""
+
+#: static/js/views/admin/participant_details_course_history_view.js:33
+msgid "End Date"
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:113
+msgid "Username can't be empty! "
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:118
+msgid "First name can't be empty! "
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:123
+msgid "Last name can't be empty! "
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:128
+msgid "Email can't be empty! "
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:152
+msgid "Company doesn't exist! "
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:202
+msgid "Updated user data!"
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:253
+#: static/js/views/admin/participant_details_edit_info.js:286
+msgid "Male"
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:255
+#: static/js/views/admin/participant_details_edit_info.js:284
+msgid "Female"
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:355
+msgid "User will be enrolled in course selected below."
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:377
+msgid "Enroll Participant"
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:435
+msgid "User successfully enrolled in course"
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:521
+#: static/js/views/admin/participantsinfo.js:100
+msgid "Admin Company"
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:525
+msgid "Try selecting your company from the type-ahead results."
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:531
+#: static/js/views/admin/participantsinfo.js:109
+msgid "Admin Permissions"
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:534
+#: static/js/views/admin/participantsinfo.js:112
+msgid "Company Admin"
+msgstr ""
+
+#: static/js/views/admin/participantsinfo.js:24
+msgid "Date Added"
+msgstr ""
+
+#: static/js/views/admin/participantsinfo.js:34
+msgid "Enrolled In"
+msgstr ""
+
+#: static/js/views/courses/lesson_note.js:2
+msgid "Lesson"
+msgstr ""
+
+#: static/js/views/courses/lesson_note.js:3
+msgid "Module"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:45
+#, javascript-format
+msgid "Available %s"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:46
+#, javascript-format
+msgid ""
+"This is the list of available %s. You may choose some by selecting them in "
+"the box below and then clicking the \"Choose\" arrow between the two boxes."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:53
+#, javascript-format
+msgid "Type into this box to filter down the list of available %s."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:57
+msgid "Filter"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:61
+msgid "Choose all"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:61
+#, javascript-format
+msgid "Click to choose all %s at once."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:67
+msgid "Choose"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:69
+msgid "Remove"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:75
+#, javascript-format
+msgid "Chosen %s"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:76
+#, javascript-format
+msgid ""
+"This is the list of chosen %s. You may remove some by selecting them in the "
+"box below and then clicking the \"Remove\" arrow between the two boxes."
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:80
+msgid "Remove all"
+msgstr ""
+
+#: static_cache/admin/js/SelectFilter2.js:80
+#, javascript-format
+msgid "Click to remove all chosen %s at once."
+msgstr ""
+
+#: static_cache/admin/js/actions.js:22 static_cache/admin/js/actions.min.js:1
+msgid "%(sel)s of %(cnt)s selected"
+msgid_plural "%(sel)s of %(cnt)s selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/admin/js/actions.js:114 static_cache/admin/js/actions.min.js:4
+msgid ""
+"You have unsaved changes on individual editable fields. If you run an "
+"action, your unsaved changes will be lost."
+msgstr ""
+
+#: static_cache/admin/js/actions.js:126 static_cache/admin/js/actions.min.js:5
+msgid ""
+"You have selected an action, but you haven't saved your changes to "
+"individual fields yet. Please click OK to save. You'll need to re-run the "
+"action."
+msgstr ""
+
+#: static_cache/admin/js/actions.js:128 static_cache/admin/js/actions.min.js:5
+msgid ""
+"You have selected an action, and you haven't made any changes on individual "
+"fields. You're probably looking for the Go button rather than the Save "
+"button."
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:79
+#, javascript-format
+msgid "Note: You are %s hour ahead of server time."
+msgid_plural "Note: You are %s hours ahead of server time."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:87
+#, javascript-format
+msgid "Note: You are %s hour behind server time."
+msgid_plural "Note: You are %s hours behind server time."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:114
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:149
+msgid "Now"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:118
+msgid "Clock"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:146
+msgid "Choose a time"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:150
+msgid "Midnight"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:151
+msgid "6 a.m."
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:152
+msgid "Noon"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:156
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:276
+#: templates/admin/client-admin/unenroll_dialog.haml:19
+msgid "Cancel"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:216
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:269
+msgid "Today"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:220
+msgid "Calendar"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:267
+msgid "Yesterday"
+msgstr ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:271
+msgid "Tomorrow"
+msgstr ""
+
+#: static_cache/admin/js/calendar.js:8
+msgid ""
+"January February March April May June July August September October November "
+"December"
+msgstr ""
+
+#: static_cache/admin/js/calendar.js:9
+msgid "S M T W T F S"
+msgstr ""
+
+#: static_cache/admin/js/collapse.js:8 static_cache/admin/js/collapse.js:19
+#: static_cache/admin/js/collapse.min.js:1
+msgid "Show"
+msgstr ""
+
+#: static_cache/admin/js/collapse.js:16 static_cache/admin/js/collapse.min.js:1
+msgid "Hide"
+msgstr ""
+
+#: static_cache/js/admin_learner_dashboard/self_registration_roles.js:9
+msgid "Add new role e.g CEO,CTO"
+msgstr ""
+
+#: static_cache/js/admin_learner_dashboard/self_registration_roles.js:10
+msgid "Delete Role"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "radio"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "checkbox"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "file"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "password"
+msgstr ""
+
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "image"
+msgstr ""
+
+#: templates/admin/client-admin/edit_email_modal.haml:2
+msgid "Edit Email"
+msgstr ""
+
+#: templates/admin/client-admin/email_not_started_dialog.haml:2
+msgid "Send email to non-started participants"
+msgstr ""
+
+#: templates/admin/client-admin/email_not_started_dialog.haml:12
+msgid "List of participants"
+msgstr ""
+
+#: templates/admin/client-admin/email_not_started_dialog.haml:19
+msgid "Message"
+msgstr ""
+
+#: templates/admin/client-admin/home_course_metrics.haml:13
+msgid "Course run:"
+msgstr ""
+
+#: templates/admin/client-admin/home_course_metrics.haml:21
+msgid "Started:"
+msgstr ""
+
+#: templates/admin/client-admin/home_course_metrics.haml:25
+msgid "Completed:"
+msgstr ""
+
+#: templates/admin/client-admin/home_course_metrics.haml:29
+msgid "% Completed:"
+msgstr ""
+
+#: templates/admin/client-admin/program_detail.haml:7
+msgid "Program: "
+msgstr ""
+
+#: templates/admin/client-admin/program_detail.haml:20
+msgid "Download Report for Program"
+msgstr ""
+
+#: templates/admin/client-admin/program_detail.haml:27
+msgid "COURSES"
+msgstr ""
+
+#: templates/admin/client-admin/program_detail.haml:29
+#: templates/admin/workgroup/dashboard_details.haml:29
+msgid "Started"
+msgstr ""
+
+#: templates/admin/client-admin/program_detail.haml:31
+msgid "% Completed"
+msgstr ""
+
+#: templates/admin/client-admin/program_detail.haml:32
+msgid "Avg. grade"
+msgstr ""
+
+#: templates/admin/client-admin/program_detail.haml:44
+#, javascript-format
+msgid ""
+"Totals (% completed, avg. grade) only apply to courses that have started."
+msgstr ""
+
+#: templates/admin/client-admin/unenroll_dialog.haml:2
+msgid "Un-enroll participant"
+msgstr ""
+
+#: templates/admin/client-admin/unenroll_dialog.haml:6
+msgid ""
+"You can un-enroll this participant from only this course, or from the entire "
+"program (all courses they are currently enrolled in)."
+msgstr ""
+
+#: templates/admin/client-admin/unenroll_dialog_confirm.haml:2
+msgid "Are you sure you would like to un-enroll user"
+msgstr ""
+
+#: templates/admin/client-admin/unenroll_dialog_confirm.haml:5
+msgid "from the program?"
+msgstr ""
+
+#: templates/admin/client-admin/unenroll_dialog_confirm.haml:7
+msgid "from the course?"
+msgstr ""
+
+#: templates/admin/client-admin/user_progress.haml:7
+msgid "Also enrolled in: "
+msgstr ""
+
+#: templates/admin/client-admin/user_progress.haml:19
+msgid "%"
+msgstr ""
+
+#: templates/admin/client-admin/user_progress.haml:22
+msgid "Yes"
+msgstr ""
+
+#: templates/admin/client-admin/user_progress.haml:24
+msgid "No"
+msgstr ""
+
+#: templates/admin/client-admin/user_progress.haml:34
+msgid "No other courses enrolled."
+msgstr ""
+
+#: templates/admin/client/access_key_list.haml:5
+#: templates/admin/client/contact.haml:5 templates/admin/client/courses.haml:5
+#: templates/admin/client/courses_without_programs.haml:31
+#: templates/admin/client/detail.haml:11 templates/admin/client/programs.haml:5
+msgid "Client: "
+msgstr ""
+
+#: templates/admin/client/access_key_list.haml:13
+msgid "Instance"
+msgstr ""
+
+#: templates/admin/client/access_key_list.haml:14
+msgid "Share"
+msgstr ""
+
+#: templates/admin/client/access_key_list.haml:34
+msgid "Create Access Key"
+msgstr ""
+
+#: templates/admin/client/access_key_list.haml:144
+msgid "You need to enter name!"
+msgstr ""
+
+#: templates/admin/client/access_key_list.haml:149
+msgid "You need to enter course ID!"
+msgstr ""
+
+#: templates/admin/client/add_program_dialog.haml:1
+msgid "Add a Program to Client"
+msgstr ""
+
+#: templates/admin/client/add_program_dialog.haml:4
+msgid "Associate a program with a client"
+msgstr ""
+
+#: templates/admin/client/add_program_dialog.haml:10
+msgid "Program Details"
+msgstr ""
+
+#: templates/admin/client/contact.haml:10
+msgid "Current Contacts: "
+msgstr ""
+
+#: templates/admin/client/courses.haml:13
+#: templates/admin/client/courses_without_programs.haml:39
+msgid "Move Selected Students into Course(s)"
+msgstr ""
+
+#: templates/admin/client/courses.haml:14
+#: templates/admin/client/programs.haml:14
+msgid "Select a Program:"
+msgstr ""
+
+#: templates/admin/client/courses.haml:15
+msgid ""
+"Expand a program below, select one or more courses and assign courses to "
+"students."
+msgstr ""
+
+#: templates/admin/client/courses.haml:25
+#: templates/admin/client/programs.haml:25
+msgid "Program Run:"
+msgstr ""
+
+#: templates/admin/client/courses.haml:33
+#: templates/admin/client/courses_without_programs.haml:52
+msgid "Course Run:"
+msgstr ""
+
+#: templates/admin/client/courses.haml:36
+#: templates/admin/client/courses_without_programs.haml:55
+msgid "Company Participants:"
+msgstr ""
+
+#: templates/admin/client/courses_without_programs.haml:40
+msgid "Select one or more courses and assign courses to students."
+msgstr ""
+
+#: templates/admin/client/courses_without_programs.haml:49
+msgid "Course Id:"
+msgstr ""
+
+#: templates/admin/client/create_access_key.haml:3
+#: templates/admin/client/create_course_access_key.haml:3
+msgid "Create access key"
+msgstr ""
+
+#: templates/admin/client/detail_header.haml:4
+#: templates/admin/client/detail_header.haml:7
+msgid "Overview"
+msgstr ""
+
+#: templates/admin/client/detail_header.haml:10
+#: templates/admin/client/detail_header.haml:13
+msgid "Assign Students to Program"
+msgstr ""
+
+#: templates/admin/client/detail_header.haml:16
+#: templates/admin/client/detail_header.haml:19
+msgid "Assign Students to Courses"
+msgstr ""
+
+#: templates/admin/client/detail_header.haml:22
+#: templates/admin/client/detail_header.haml:25
+msgid "Assign Students to Courses in Programs"
+msgstr ""
+
+#: templates/admin/client/detail_header.haml:29
+#: templates/admin/client/detail_header.haml:32
+msgid "Contacts"
+msgstr ""
+
+#: templates/admin/client/detail_header.haml:35
+#: templates/admin/client/detail_header.haml:38
+msgid "Navigation"
+msgstr ""
+
+#: templates/admin/client/detail_header.haml:41
+#: templates/admin/client/detail_header.haml:44
+msgid "Access Keys"
+msgstr ""
+
+#: templates/admin/client/edit.haml:3
+msgid "Edit Client details"
+msgstr ""
+
+#: templates/admin/client/mass_student_enroll.haml:5
+msgid "Mass Student Enroll"
+msgstr ""
+
+#: templates/admin/client/mass_student_enroll.haml:6
+msgid "Add student(s) to clients program and course"
+msgstr ""
+
+#: templates/admin/client/new.haml:3
+msgid "Create New Client"
+msgstr ""
+
+#: templates/admin/client/new.haml:4
+msgid "Add a client"
+msgstr ""
+
+#: templates/admin/client/programs.haml:13
+msgid "Move Selected Students into Program"
+msgstr ""
+
+#: templates/admin/client/programs.haml:15
+msgid "Select a program below"
+msgstr ""
+
+#: templates/admin/client/programs.haml:28
+msgid "Places:"
+msgstr ""
+
+#: templates/admin/client/programs.haml:31
+msgid "Enrolled Students:"
+msgstr ""
+
+#: templates/admin/client/programs.haml:46
+msgid "Please select one program"
+msgstr ""
+
+#: templates/admin/client/programs.haml:79
+msgid "Invitation has been resent"
+msgstr ""
+
+#: templates/admin/client/programs.haml:82
+#: templates/admin/client/programs.haml:88
+msgid "Invitation not sent"
+msgstr ""
+
+#: templates/admin/client/share_access_key.haml:3
+msgid "Share access key"
+msgstr ""
+
+#: templates/admin/client/share_access_key.haml:22
+msgid "Copy"
+msgstr ""
+
+#: templates/admin/client/share_access_key.haml:23
+msgid "Copied to clipboard."
+msgstr ""
+
+#: templates/admin/client/upload_list_dialog.haml:2
+msgid "Upload Student List"
+msgstr ""
+
+#: templates/admin/client/upload_list_dialog.haml:3
+msgid "Add student(s) to client"
+msgstr ""
+
+#: templates/admin/learner_dashboard/learner_dashboard_copy.haml:24
+msgid "You are about to copy dashboard %(source)s to %(destination)s"
+msgstr ""
+
+#: templates/admin/learner_dashboard/learner_dashboard_copy.haml:48
+#, javascript-format
+msgid "Something went wrong: %s"
+msgstr ""
+
+#: templates/admin/program/list.haml:76
+msgid "Please select a file first."
+msgstr ""
+
+#: templates/admin/program/list.haml:85
+msgid "Progress: 0%"
+msgstr ""
+
+#: templates/admin/workgroup/dashboardV2.haml:43
+msgid "Project"
+msgstr ""
+
+#: templates/admin/workgroup/dashboard_details.haml:27
+msgid "All"
+msgstr ""
+
+#: templates/admin/workgroup/dashboard_details.haml:28
+msgid "Not started"
+msgstr ""
+
+#: templates/admin/workgroup/workgroup_detail_report.haml:47
+msgid "Email Group"
+msgstr ""
+
+#: templates/admin/workgroup/workgroup_detail_report.haml:55
+msgid "Group Status"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_branding.haml:75
+msgid "Optimized for landscape view, please rotate your device."
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:62
+msgid "January"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:63
+msgid "February"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:64
+msgid "March"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:65
+msgid "April"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:66
+msgid "May"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:67
+msgid "June"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:68
+msgid "July"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:69
+msgid "August"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:70
+msgid "September"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:71
+msgid "October"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:72
+msgid "November"
+msgstr ""
+
+#: templates/courses/course_learner_dashboard_calendar.haml:73
+msgid "December"
 msgstr ""
