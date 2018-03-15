@@ -1,4 +1,4 @@
-import os, re, json, datetime
+import os, re, json, datetime, logging
 from collections import namedtuple
 
 from django.contrib import messages
@@ -21,6 +21,9 @@ from mobile_apps.constants import MOBILE_APP_DEPLOYMENT_MECHANISMS
 from license import controller as license_controller
 
 from .models import UserPasswordReset, UserActivation
+
+
+logger = logging.getLogger(__name__)
 
 
 class ActivationError(Exception):
@@ -49,7 +52,11 @@ def user_activation_with_data(user_id, user_data, activation_record):
     except ApiError as e:
         raise ActivationError(e.message)
 
-    activation_record.delete()
+    try:
+        activation_record.delete()
+    except Exception as e:
+        logger.error("Unable to delete activation record for user with id {}".format(user_id))
+        logger.error(e)
 
 
 def is_future_start(date):

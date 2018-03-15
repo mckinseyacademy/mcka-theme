@@ -594,6 +594,14 @@ class TestUserActivationWithData(TestCase, ApplyPatchMixin):
         with self.assertRaises(ActivationError):
             user_activation_with_data(self.user.id, self.user, self.user_activation)
 
+    def test_user_with_no_activation_record(self):
+        self.user_api.update_user_information.return_value = HttpResponseBase(status=200)
+        self.user_api.activate_user.return_value = HttpResponseBase(status=200)
+        self.user_activation.delete()
+
+        user_activation_with_data(self.user.id, self.user, self.user_activation)
+        self.assertEquals(UserActivation.objects.count(), 0)
+
 
 class TestIoNewClientImage(TestCase):
     ''' Unit test for the method io_new_client_image from controller'''

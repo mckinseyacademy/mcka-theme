@@ -2355,10 +2355,7 @@ class CourseParticipantStats(object):
         """
         Gets activation urls for participants records
         """
-        user_ids = [
-            result.get('id')
-            for result in participants_data['results']
-        ]
+        user_ids = [result.get('id') for result in participants_data['results'] if not result['is_active']]
 
         return get_user_activation_links(
             user_ids, base_url=self.base_url
