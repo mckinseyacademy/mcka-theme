@@ -56,21 +56,6 @@ body{
   }
 }
 
-// Simmulated Chat
-
-.chat-block{
-  .bot{
-    .message-body{
-      @include margin-left(25px $imp);
-    }
-  }
-  .user{
-    .message-body{
-      @include margin-right(25px $imp);
-    }
-  }
-}
-
 //Course Cohort
 
 #course-lessons,
@@ -233,30 +218,32 @@ header[role=banner]{
 .rtl {
   .chat-block{
     .user{
-        text-align: left !important;
       .message-body{
         &::after{
-          border-color: transparent $chat-bg-color $chat-bg-color transparent;
-          right: 100%;
+          border-color: transparent $chat-bg-color $chat-bg-color transparent !important;
+          right: 100% !important;
+          border-width: 12px !important;
         }
         &::before{
-          left: -16px;
-          right: auto;
-          border-color: transparent $chat-user-message-bg-color $chat-user-message-bg-color transparent;
+          left: -16px !important;
+          right: auto !important;
+          border-color: transparent $chat-user-message-bg-color $chat-user-message-bg-color transparent !important;
         }
       }
     }
     .bot{
       .message-body{
         &::after{
-          border-color: transparent transparent $chat-bg-color $chat-bg-color;
-          left: 100%;
+          border-color: transparent transparent $chat-bg-color $chat-bg-color !important;
+          left: 100% !important;
+          border-width: 12px !important;
+          right: auto !important;
         }
         &::before{
-          border-color: transparent transparent $chat-bot-message-bg-color $chat-bot-message-bg-color;
+          border-color: transparent transparent $chat-bot-message-bg-color $chat-bot-message-bg-color !important;
           bottom: 0;
-          right: -16px;
-          left: auto;
+          right: -16px !important;
+          left: auto !important;
         }
       }
     }
