@@ -1,11 +1,15 @@
+- load i18n
+
 - for lesson in course.chapters
   - if lesson.is_released and lesson.id != current_chapter.id
-    .lesson-row-item
+    %div{class: "lesson-row-item {% if lesson.is_started %}active{% else %}future{% endif %}"}
       %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
       .lesson-item-name
         %a{class: "{% if course.current_lesson == lesson %}current{% endif %}", href: "#{lesson.navigation_url}", title: "#{lesson.name}"}
-          Lesson ={lesson.index}:
+          {% trans "Lesson" %} ={lesson.index}:
         %span= lesson.name
+        - if not lesson.is_started
+          %i.fa.fa-lock
   - else
     %a{href: "#{lesson.navigation_url}", title: "#{lesson.name}", disabled: None}
-      Lesson ={lesson.index}: ={lesson.name}
+      {% trans "Lesson" %} ={lesson.index}: ={lesson.name}

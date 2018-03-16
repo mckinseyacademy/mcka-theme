@@ -332,6 +332,12 @@ button,
   }
 }
 
+.lesson-card.future{
+  a {
+    cursor: default;
+  }
+}
+
 .card-flip {
   position: relative;
   @include perspective(1000px);
@@ -662,6 +668,21 @@ i.status {
 
 .lesson-row-item {
   line-height: rem-calc(16);
+  position: relative;
+
+  &.future {
+    a{
+      color: $disabled-link-color !important;
+      pointer-events: none;
+    }
+    i.fa-lock{
+      position: absolute;
+      right: 0;
+      font-size: 1.2rem;
+      top: 10px;
+      color: $mckinsey-orange;
+    }
+  }
 
   i.status {
     float: left;

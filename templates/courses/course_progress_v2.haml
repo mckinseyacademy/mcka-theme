@@ -47,7 +47,7 @@
                 - if feature_flags.group_work and week.group_only
                   %div N/A (focus on Group Work)
                 - for lesson in week.lessons
-                  .lesson-with-list.lesson-row-item
+                  %div{class: "lesson-with-list lesson-row-item {% if lesson.is_started %}active{% else %}future{% endif %}"}
                     %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
                     .lesson-item-name
                       %a{href: "#{lesson.navigation_url}"}

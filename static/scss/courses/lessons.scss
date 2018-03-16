@@ -167,6 +167,12 @@
         }
       }
 
+      &.future{
+        pointer-events: auto;
+        background-color: $mckinsey-academy-blue-gray;
+        cursor: default;
+      }
+
       .go-to-next {
         @include font-spec(14,semibold,16);
         color: $mckinsey-academy-alt-blue;

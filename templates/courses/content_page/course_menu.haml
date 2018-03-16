@@ -1,5 +1,7 @@
+- load i18n
+
 %article#course-menu
-  .sub-2 LESSONS:
+  .sub-2 {% trans "LESSONS" %}:
   .rotator
     .nav-left.disabled
       %i.fa.fa-chevron-left
@@ -10,22 +12,30 @@
       .slides
         %ul
           - for lesson in course.chapters
-            %li>
-              %a.card-flip{href: "#{lesson.navigation_url}"}
+            %li{class: "lesson-card {% if lesson.is_started %}active{% else %}future{% endif %}"}
+              %a.card-flip{href: "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}#{% endif %}"}
                 .front.background-white
+                  - if not lesson.is_started
+                    .bookmark
+                      %i.fa.fa-lock
                   - if lesson.bookmark
                     .bookmark
                       %i.fa.fa-bookmark
-                  .label-5.index LESSON {{lesson.index}}:
+                  .label-5.index {% trans "LESSON" %} {{lesson.index}}:
                   %h2.name= lesson.name
                   - if lesson.estimated_time
                     %p.estimated-time.style-6= lesson.estimated_time
                   - if lesson.progress > 0
                     - if lesson.progress == 100
-                      .lesson-progress.complete Completed
+                      .lesson-progress.complete {% trans "Completed" %}
                     - else
-                      .lesson-progress ={lesson.progress}% complete
+                      .lesson-progress ={lesson.progress}% {% trans "complete" %}
                 .back.background-alt-blue
                   .label-2.description
                     - autoescape off
-                      = lesson.description
+                     {% if not lesson.is_started %}
+                        {% blocktrans with start_date=lesson.start_upon %} This lesson will be available on {{ start_date }} {% endblocktrans %}
+                     {% else %}
+                        = lesson.description
+                     {% endif %}
+                     

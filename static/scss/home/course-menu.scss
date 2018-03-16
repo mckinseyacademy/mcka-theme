@@ -69,6 +69,11 @@
           top: rem-calc(-5);
           right: rem-calc(5);
           @include font-spec(25);
+          .fa-lock{
+            margin-top: 10px;
+            margin-right: 3px;
+            font-size: 1.2rem;
+          }
         }
 
         .front, .back {

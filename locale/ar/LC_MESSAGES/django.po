@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-02 07:12+0000\n"
+"POT-Creation-Date: 2018-03-16 09:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1174,8 +1174,8 @@ msgstr ""
 msgid "Enter your full name"
 msgstr ""
 
-#: accounts/views.py:934 accounts/views.py:957 admin/views.py:1841
-#: admin/views.py:1875 admin/views.py:4161
+#: accounts/views.py:934 accounts/views.py:957 admin/views.py:1820
+#: admin/views.py:1854 admin/views.py:4140
 #: templates/admin/client/navigation.haml:189
 #: templates/admin/course_run/form_modal.haml:116
 msgid "Save"
@@ -1185,74 +1185,123 @@ msgstr ""
 msgid "Enter your title"
 msgstr ""
 
-#: admin/controller.py:282
+#: admin/controller.py:285
 msgid ""
 "An administrator has created an account on McKinsey Academy for your use. To "
 "activate your account, please copy and paste this address into your web "
 "browser's address bar:"
 msgstr ""
 
-#: admin/controller.py:327 admin/controller.py:375 admin/controller.py:1645
-#: admin/controller.py:1664
+#: admin/controller.py:330 admin/controller.py:378 admin/controller.py:1648
+#: admin/controller.py:1667
 msgid "Could not parse user info from {}"
 msgstr ""
 
-#: admin/controller.py:411 admin/controller.py:488
+#: admin/controller.py:414 admin/controller.py:491
 msgid "Unable to register user"
 msgstr ""
 
-#: admin/controller.py:421 admin/controller.py:499
+#: admin/controller.py:424 admin/controller.py:502
 msgid "User not associated with client"
 msgstr ""
 
-#: admin/controller.py:425 admin/controller.py:503 admin/controller.py:517
-#: admin/controller.py:525
+#: admin/controller.py:428 admin/controller.py:506 admin/controller.py:520
+#: admin/controller.py:528
 msgid "{}: {} - {}"
 msgstr ""
 
-#: admin/controller.py:433 admin/controller.py:539
+#: admin/controller.py:436 admin/controller.py:542
 msgid "Data processing error"
 msgstr ""
 
-#: admin/controller.py:434
+#: admin/controller.py:437
 msgid "Error processing data: {}"
 msgstr ""
 
-#: admin/controller.py:531
+#: admin/controller.py:534
 msgid "Enrolling student error"
 msgstr ""
 
-#: admin/controller.py:532
+#: admin/controller.py:535
 msgid "Error enrolling student: {} - {}"
 msgstr ""
 
-#: admin/controller.py:540 admin/controller.py:1795 admin/controller.py:1894
+#: admin/controller.py:543 admin/controller.py:1798 admin/controller.py:1897
 msgid "Error processing data: {} - {}"
 msgstr ""
 
-#: admin/controller.py:673
+#: admin/controller.py:676
 msgid "PROJECT"
 msgstr ""
 
-#: admin/controller.py:1752 admin/controller.py:1788 admin/controller.py:1867
-#: admin/controller.py:1887
+#: admin/controller.py:1755 admin/controller.py:1791 admin/controller.py:1870
+#: admin/controller.py:1890
 msgid "Reason: {}, Activity: {}, Participant: {}"
 msgstr ""
 
-#: admin/controller.py:1794 admin/controller.py:1893
+#: admin/controller.py:1797 admin/controller.py:1896
 msgid "Processing Data Error"
 msgstr ""
 
-#: admin/controller.py:2490 admin/controller.py:2512
+#: admin/controller.py:2493 admin/controller.py:2515
 msgid "Sorry, We can not process your request"
 msgstr ""
 
-#: admin/controller.py:2497 admin/controller.py:2509
+#: admin/controller.py:2500 admin/controller.py:2512
 msgid "Operation Successful"
 msgstr ""
 
-#: admin/controller.py:2500
+#: admin/controller.py:2503
 msgid "Please enter role text"
+msgstr ""
+
+#: admin/controller.py:2538
+msgid "Engagement Summary"
+msgstr ""
+
+#: admin/controller.py:2538
+msgid "# of people"
+msgstr ""
+
+#: admin/controller.py:2538
+msgid "% total cohort"
+msgstr ""
+
+#: admin/controller.py:2538
+msgid "Avg Progress"
+msgstr ""
+
+#: admin/controller.py:2544
+msgid "Participant Performance"
+msgstr ""
+
+#: admin/controller.py:2544
+#, python-format
+msgid "% completion"
+msgstr ""
+
+#: admin/controller.py:2544
+msgid "Score"
+msgstr ""
+
+#: admin/controller.py:2545
+msgid "Group work 1"
+msgstr ""
+
+#: admin/controller.py:2546
+msgid "Group work 2"
+msgstr ""
+
+#: admin/controller.py:2547
+msgid "Mid-course assessment"
+msgstr ""
+
+#: admin/controller.py:2548
+msgid "Final assessment"
+msgstr ""
+
+#: admin/controller.py:2555 templates/admin/courses/course_details.haml:102
+msgid "Social Engagement"
 msgstr ""
 
 #: admin/forms.py:31
@@ -1263,27 +1312,27 @@ msgstr ""
 msgid "Enter new email address"
 msgstr ""
 
-#: admin/forms.py:120 admin/views.py:4195
+#: admin/forms.py:120 admin/views.py:4174
 msgid "TA"
 msgstr ""
 
-#: admin/forms.py:120 admin/views.py:4196
+#: admin/forms.py:120 admin/views.py:4175
 msgid "OBSERVER"
 msgstr ""
 
-#: admin/forms.py:144 admin/views.py:4197
+#: admin/forms.py:144 admin/views.py:4176
 msgid "ADMIN"
 msgstr ""
 
-#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4200
+#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4179
 msgid "COURSE OPS"
 msgstr ""
 
-#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4199
+#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4178
 msgid "INTERNAL ADMIN"
 msgstr ""
 
-#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4198
+#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4177
 msgid "COMPANY ADMIN"
 msgstr ""
 
@@ -1307,7 +1356,7 @@ msgstr ""
 msgid "Course Instance"
 msgstr ""
 
-#: admin/forms.py:227 admin/views.py:1978
+#: admin/forms.py:227 admin/views.py:1957
 msgid "Program"
 msgstr ""
 
@@ -1323,147 +1372,147 @@ msgstr ""
 msgid "Un-enroll from entire program "
 msgstr ""
 
-#: admin/views.py:1310
+#: admin/views.py:1289
 msgid "Client"
 msgstr ""
 
-#: admin/views.py:1311
+#: admin/views.py:1290
 msgid "Clients"
 msgstr ""
 
-#: admin/views.py:1370 admin/views.py:1420
+#: admin/views.py:1349 admin/views.py:1399
 msgid "Save Client"
 msgstr ""
 
-#: admin/views.py:1430
+#: admin/views.py:1409
 msgid "Successfully processed {} of {} records"
 msgstr ""
 
-#: admin/views.py:1600
+#: admin/views.py:1579
 msgid "Bad request, The Image type is not valid."
 msgstr ""
 
-#: admin/views.py:1612
+#: admin/views.py:1591
 msgid "Could not delete the image, Please try later"
 msgstr ""
 
-#: admin/views.py:1761
+#: admin/views.py:1740
 msgid "Contact has been removed."
 msgstr ""
 
-#: admin/views.py:1776 admin/views.py:1782
+#: admin/views.py:1755 admin/views.py:1761
 msgid "Invalid Course Run"
 msgstr ""
 
-#: admin/views.py:1778
+#: admin/views.py:1757
 msgid "Invalid Program ID"
 msgstr ""
 
-#: admin/views.py:1835 admin/views.py:1836 admin/views.py:1870
+#: admin/views.py:1814 admin/views.py:1815 admin/views.py:1849
 msgid "- Select -"
 msgstr ""
 
-#: admin/views.py:1908
+#: admin/views.py:1887
 msgid "Access Key"
 msgstr ""
 
-#: admin/views.py:1929
+#: admin/views.py:1908
 msgid "Send"
 msgstr ""
 
-#: admin/views.py:1952
+#: admin/views.py:1931
 msgid "This student hasn't been added to any programs yet."
 msgstr ""
 
-#: admin/views.py:1963
+#: admin/views.py:1942
 msgid "fail"
 msgstr ""
 
-#: admin/views.py:1967
+#: admin/views.py:1946
 msgid "success"
 msgstr ""
 
-#: admin/views.py:1979
+#: admin/views.py:1958
 msgid "Programs"
 msgstr ""
 
-#: admin/views.py:2016 admin/views.py:2063
+#: admin/views.py:1995 admin/views.py:2042
 msgid "Save Program"
 msgstr ""
 
-#: admin/views.py:2267
+#: admin/views.py:2246
 msgid "Successfully Added {} Participants"
 msgstr ""
 
-#: admin/views.py:2460
+#: admin/views.py:2439
 msgid "Coming Soon"
 msgstr ""
 
-#: admin/views.py:2462
+#: admin/views.py:2441
 msgid "Archived"
 msgstr ""
 
-#: admin/views.py:2524
+#: admin/views.py:2503
 msgid "Successfully saved courses to {} program"
 msgstr ""
 
-#: admin/views.py:2537 admin/views.py:2909 admin/views.py:2942
-#: admin/views.py:2997
+#: admin/views.py:2516 admin/views.py:2888 admin/views.py:2921
+#: admin/views.py:2976
 msgid "Invalid program_id specified: {}"
 msgstr ""
 
-#: admin/views.py:2546
+#: admin/views.py:2525
 msgid "Invalid student_id specified: {}"
 msgstr ""
 
-#: admin/views.py:2552
+#: admin/views.py:2531
 msgid "Not enough places available for {} program - {} left"
 msgstr ""
 
-#: admin/views.py:2579
+#: admin/views.py:2558
 msgid "Successfully associated students to {} program"
 msgstr ""
 
-#: admin/views.py:2609
+#: admin/views.py:2588
 msgid "{} already enrolled in {}"
 msgstr ""
 
-#: admin/views.py:2616
+#: admin/views.py:2595
 msgid "Successfully associated students to courses"
 msgstr ""
 
-#: admin/views.py:2618
+#: admin/views.py:2597
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
 msgstr ""
 
-#: admin/views.py:3231 admin/views.py:3232 admin/views.py:3459
-#: admin/views.py:3460
+#: admin/views.py:3210 admin/views.py:3211 admin/views.py:3438
+#: admin/views.py:3439
 msgid "Group Work"
 msgstr ""
 
-#: admin/views.py:3384
+#: admin/views.py:3363
 msgid "Error creating project"
 msgstr ""
 
-#: admin/views.py:3398
+#: admin/views.py:3377
 msgid "Project already exists"
 msgstr ""
 
-#: admin/views.py:3403
+#: admin/views.py:3382
 msgid "Project successfully created"
 msgstr ""
 
-#: admin/views.py:4221
+#: admin/views.py:4200
 msgid "Problem generating activity review assignments"
 msgstr ""
 
-#: admin/views.py:4245
+#: admin/views.py:4224
 msgid "Project review assignments allocated"
 msgstr ""
 
-#: admin/views.py:4252
+#: admin/views.py:4231
 msgid "Not enough groups to meet review criteria"
 msgstr ""
 
@@ -1516,6 +1565,7 @@ msgid "Available"
 msgstr ""
 
 #: api_client/course_models.py:143
+#: templates/courses/content_page/course_menu.haml:32
 msgid "complete"
 msgstr ""
 
@@ -1553,32 +1603,32 @@ msgstr ""
 msgid "Username or email already registered"
 msgstr ""
 
-#: courses/views.py:767
+#: courses/views.py:773
 msgid "This lesson does not start until {}"
 msgstr ""
 
-#: courses/views.py:938 courses/views.py:966 courses/views.py:998
+#: courses/views.py:944 courses/views.py:972 courses/views.py:1004
 msgid "Message not sent."
 msgstr ""
 
-#: courses/views.py:942 courses/views.py:970 courses/views.py:1002
-#: courses/views.py:1044
+#: courses/views.py:948 courses/views.py:976 courses/views.py:1008
+#: courses/views.py:1050
 msgid "Message successfully sent."
 msgstr ""
 
-#: courses/views.py:1007
+#: courses/views.py:1013
 msgid "Message not sent. Email is not valid"
 msgstr ""
 
-#: courses/views.py:1021
+#: courses/views.py:1027
 msgid "Submission not found."
 msgstr ""
 
-#: courses/views.py:1027
+#: courses/views.py:1033
 msgid "We've received your submission!"
 msgstr ""
 
-#: courses/views.py:1028
+#: courses/views.py:1034
 #, python-brace-format
 msgid ""
 "Thank you for your group work submission. We received {file_name} uploaded "
@@ -1586,7 +1636,7 @@ msgid ""
 "time before the group work deadline."
 msgstr ""
 
-#: courses/views.py:1040
+#: courses/views.py:1046
 msgid "There was a problem; message not sent."
 msgstr ""
 
@@ -1653,54 +1703,6 @@ msgstr ""
 
 #: public_api/api_protect.py:76 public_api/api_protect.py:79
 msgid "User not found"
-msgstr ""
-
-#: src/edx-notifications/edx_notifications/digests.py:200
-msgid "Receive daily email"
-msgstr ""
-
-#: src/edx-notifications/edx_notifications/digests.py:201
-msgid ""
-"This setting will cause a daily digest of all notifications to be sent to "
-"your registered email address"
-msgstr ""
-
-#: src/edx-notifications/edx_notifications/digests.py:210
-msgid "Receive weekly email"
-msgstr ""
-
-#: src/edx-notifications/edx_notifications/digests.py:211
-msgid ""
-"This setting will cause a weekly digest of all notifications to be sent to "
-"your registered email address"
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:8
-msgid "Username"
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:8
-msgid "This value must contain only letters, numbers and underscores."
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:9
-msgid "Email address"
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:10
-msgid "Password"
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:11
-msgid "Password (again)"
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:18
-msgid "The username already exists. Please try another one."
-msgstr ""
-
-#: src/edx-notifications/testserver/forms.py:23
-msgid "The two password fields did not match."
 msgstr ""
 
 #: templates/accounts/login.haml:5
@@ -2007,6 +2009,10 @@ msgstr ""
 msgid "Add New Role"
 msgstr ""
 
+#: templates/admin/participants/participant_edit_status.haml:12
+msgid "Participant"
+msgstr ""
+
 #: templates/admin/workgroup/workgroup_detail.haml:7
 msgid "Workgroup"
 msgstr ""
@@ -2017,6 +2023,41 @@ msgstr ""
 
 #: templates/admin/workgroup/workgroup_detail.haml:19
 msgid "Users"
+msgstr ""
+
+#: templates/courses/content_page/course_menu.haml:4
+msgid "LESSONS"
+msgstr ""
+
+#: templates/courses/content_page/course_menu.haml:24
+msgid "LESSON"
+msgstr ""
+
+#: templates/courses/content_page/course_menu.haml:30
+msgid "Completed"
+msgstr ""
+
+#: templates/courses/content_page/course_menu.haml:37
+#, python-format
+msgid " This lesson will be available on %(start_date)s "
+msgstr ""
+
+#: templates/courses/content_page/lesson_menu.haml:9
+#: templates/courses/content_page/lesson_menu.haml:15
+#: templates/courses/content_page/lesson_pager.haml:10
+#: templates/courses/content_page/lesson_pager.haml:28
+msgid "Lesson"
+msgstr ""
+
+#: templates/courses/content_page/lesson_pager.haml:11
+#: templates/courses/content_page/lesson_pager.haml:29
+msgid "Module"
+msgstr ""
+
+#: templates/courses/content_page/lesson_pager.haml:18
+#: templates/courses/content_page/lesson_pager.haml:36
+#, python-format
+msgid "Lesson available on %(start_date)s"
 msgstr ""
 
 #: templates/courses/course_cohort.haml:8
