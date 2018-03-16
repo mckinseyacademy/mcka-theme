@@ -130,7 +130,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
             '</div>'+
             '<div class="participantCoursePermissionsValue permissionSelect large-10">'+
               '<select disabled>'+
-                '<option value="active">Active</option>'+
+                '<option value="active">Participant</option>'+
                 '<option value="assistant">TA</option>'+
                 '<option value="observer">Observer</option>'+
               '</select>'+

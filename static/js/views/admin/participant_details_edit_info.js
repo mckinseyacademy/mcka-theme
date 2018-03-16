@@ -362,7 +362,7 @@
           '<div class="large-6 columns enrollParticipantsStatus">' +
           '<p class="labelUnirvesal">Status</p>' +
           '<select name="status">' +
-          '<option value="Active">Active</option>' +
+          '<option value="Active">Participant</option>' +
           '<option value="Observer">Observer</option>' +
           '<option value="TA">TA</option></select>' +
           '</div></div>'
