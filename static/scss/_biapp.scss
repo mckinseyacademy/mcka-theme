@@ -212,6 +212,48 @@ header[role=banner]{
   }
 }
 
+#home-courses{
+  #course-statistics{
+    section{
+      @include border-right(1px solid $almost-white);
+      &:last-child{
+        @include border-right(none);
+      }
+      .info{
+        @include right(10px);
+      }
+    }
+  }
+  #home-discover{
+    .wrapper{
+      section{
+        @include border-right(1px solid $almost-white);
+        &:first-of-type {
+          @include padding-left(0);
+        }
+        &:last-of-type {
+          @include padding-right(0);
+          @include border-right(0);
+        }
+        ul{
+          li{
+            time{
+              @include margin-right(1px);
+              @include border-right(1px solid $mckinsey-academy-black);
+              @include padding-right(5px);
+            }
+          }
+        }
+        .tweet{
+          .content{
+            @include float(left);
+          }
+        }
+      }
+    }
+  }
+}
+
 
 // RTL specified CSS selectors
 
@@ -291,7 +333,7 @@ header[role=banner]{
     }
   }
 
-  // Progress Page
+  // Progress Page v2
 
   #course-progress-v2{
     tbody{
@@ -320,6 +362,24 @@ header[role=banner]{
             border-left: 1px solid $border-line;
             border-right: 0;
           }
+        }
+      }
+    }
+  }
+
+  //Cousre Progress
+
+  .course-progress{
+    .visualization{
+      .bar{
+        left: auto;
+        right: 0;
+        background: linear-gradient(to left, #389b46, #b8d432);
+        -pie-background: linear-gradient(to left, #389b46, #b8d432);
+        &.trailing {
+          background: #ef4326;
+          background: linear-gradient(to left, #ef4326, #fbac40);
+          -pie-background: linear-gradient(to left, #ef4326, #fbac40);
         }
       }
     }
@@ -385,5 +445,4 @@ header[role=banner]{
       }
     }
   }
-
 }

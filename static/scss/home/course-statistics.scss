@@ -7,7 +7,6 @@
     display: inline-block;
     margin-left: -4px;
     width: 25%;
-    border-right: 1px solid $almost-white;
 
     @media only screen and (max-width: 767px) {
       width: 100% !important;
@@ -21,8 +20,6 @@
         margin-bottom: 0;
       }
     }
-
-    &:last-child { border-right: none; }
 
     &.course-progress { width: 50%; }
     &.no-border { border-right: none; }
@@ -57,7 +54,6 @@
       color: $almost-white;
       position: absolute;
       bottom: -2px;
-      right: 10px;
       z-index: 25;
       @media only screen and (max-width: 767px){
         bottom: 17px;
