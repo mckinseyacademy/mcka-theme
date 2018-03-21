@@ -416,6 +416,29 @@ header[role=banner]{
     }
   }
 
+  #course-overview{
+    .col-left{
+      float: right;
+    }
+    .col-right{
+      float: left;
+      padding-left: 0;
+      padding-right: 20px;
+    }
+  }
+
+  #course-resources{
+    .fa-li{
+      left: auto;
+      right: -2.14285714em;
+    }
+  }
+
+  #OoyalaPingerIFrame0{
+    left: auto;
+    right: -5px;
+  }
+  
   header[role=banner]{
     &.background-blue{
       #profile-container{
