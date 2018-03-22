@@ -149,9 +149,8 @@ class TestEnrollStudentInCourseWithoutProgram(TestCase, ApplyPatchMixin):
         self.user_api.enroll_user_in_course.side_effect = make_side_effect_raise_api_error(409)
 
         result = enroll_student_in_course_without_program(user, course_id)
-        expected_message = 'You are already enrolled in course "{}"'.format(course_id)
         expected_result = DottableDict({'course_id': course_id,
-                                        'expected_message': (messages.INFO, expected_message),
+                                        'expected_message': None,
                                         'enrolled': True,
                                         'new_enrollment': False})
         self._assert_result(result, expected_result)
@@ -223,9 +222,8 @@ class TestEnrollStudentInCourse(TestCase, ApplyPatchMixin):
         self.user_api.enroll_user_in_course.side_effect = make_side_effect_raise_api_error(409)
 
         result = enroll_student_in_course(user, program, course_id)
-        expected_message = 'You are already enrolled in course "{}"'.format(course_id)
         expected_result = DottableDict({'course_id': course_id,
-                                        'expected_message': (messages.INFO, expected_message),
+                                        'expected_message': None,
                                         'enrolled': True,
                                         'new_enrollment': False})
         self._assert_result(result, expected_result)
