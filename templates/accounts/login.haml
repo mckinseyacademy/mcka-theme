@@ -23,7 +23,10 @@
               %span.required-field><
               %span ).
               %span.login-mode-selector
-                %span {% trans "McKinsey & Co. users" %}
+                %span.normal-login {% trans "Single-Sign-On users," %}
+                  %a{href: "#"}
+                    {% trans "click here" %}.
+                %span.sso-login {% trans "To login with a username," %}
                   %a{href: "#"}
                     {% trans "click here" %}.
             %form.normal-login{action: "/accounts/login/", method: "POST"}
@@ -88,10 +91,11 @@
 
       function switchToMode(mode) {
         current_mode = mode;
-        $("form.normal-login, form.sso-login").hide();
+        $("form.normal-login, form.sso-login, span.normal-login, span.sso-login").hide();
         $("span.login-mode-label").hide();
         $("form."+mode+"-login").show();
         $("span.login-mode-label.mode-"+mode).show();
+        $("span."+mode+"-login").show();
       }
 
       $(".login-mode-selector a").click(function(ev) {
