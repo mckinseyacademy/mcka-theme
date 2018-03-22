@@ -53,6 +53,13 @@
     display: none;
   }
 
+  span.login-mode-selector {
+    .sso-login, .normal-login {
+      // hide them both until JS code decides which one to show
+      display: none;
+    }
+  }
+
   form {
     &.sso-login, &.normal-login {
       // hide them both until JS code decides which one to show
