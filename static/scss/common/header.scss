@@ -158,7 +158,6 @@ header[role=banner].background-blue {
 
         > div {
           padding: 10px 10px;
-          text-align: left;
           border-bottom: 1px solid $border-line;
           height: 40px;
           vertical-align: middle;
@@ -184,8 +183,6 @@ header[role=banner].background-blue {
           }
         }
 
-        $detail_icon_size: 18px;
-
         .fa {
           width: $detail_icon_size;
           font-size: rem-calc($detail_icon_size);
@@ -194,15 +191,12 @@ header[role=banner].background-blue {
         }
         .field-group {
           @include font-spec(10, semibold);
-          margin-left: $detail_icon_size + 5;
           margin-top: -1*$detail_icon_size;
           .fieldtitle{
             font-weight: bold;
             .editfield{
               color: $mckinsey-academy-alt-blue;
               @include font-spec(10, semibold);
-              padding-left: 4px;
-              border-left: 1px solid $border-line;
             }
           }
           .fieldcontent{

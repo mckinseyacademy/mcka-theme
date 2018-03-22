@@ -4,6 +4,8 @@
 @import "mixins";
 @import "colors";
 @import "foundation/functions";
+@import "variables";
+
 
 body{
   &.with-program{
@@ -171,6 +173,19 @@ header[role=banner]{
     .header-logo-img{
       @include float(left);
       @include margin-right(15px);
+    }
+    .user-info{
+      .user-profile{
+        .user-detail{
+          .field-group{
+            @include margin-left($detail_icon_size + 5);
+            .editfield{
+              @include border-left(1px solid $border-line);
+              @include padding-left(4px);
+            }
+          }
+        }
+      }
     }
   }
 }
@@ -381,6 +396,13 @@ header[role=banner]{
           background: linear-gradient(to left, #ef4326, #fbac40);
           -pie-background: linear-gradient(to left, #ef4326, #fbac40);
         }
+      }
+      .total{
+        -webkit-transform: translate(50%,0);
+        -moz-transform: translate(50%,0);
+        -ms-transform: translate(50%,0);
+        -o-transform: translate(50%,0);
+        transform: translate(50%,0);
       }
     }
   }
