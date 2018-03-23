@@ -215,6 +215,7 @@ def enroll_student_in_course(user, program, course_id):
     """
     valid_course_ids = set(c.course_id for c in program.courses)
     enrolled, new_enrollment = False, False
+    message = None
     if course_id in valid_course_ids:
         try:
             user_api.enroll_user_in_course(user.id, course_id)
@@ -224,10 +225,6 @@ def enroll_student_in_course(user, program, course_id):
             enrolled, new_enrollment = True, True
         except ApiError as e:
             if e.code == 409:
-                message = (
-                    messages.INFO,
-                    format_lazy(_('You are already enrolled in course "{}"'), course_id)
-                )
                 enrolled = True
             else:
                 message = (
@@ -250,6 +247,7 @@ def enroll_student_in_course_without_program(user, course_id):
     Returns EnrollStudentInCourseResult, containing the course_id (if exists) and messages (if any)
     """
     enrolled, new_enrollment = False, False
+    message = None
     try:
         user_api.enroll_user_in_course(user.id, course_id)
         message = (
@@ -258,10 +256,6 @@ def enroll_student_in_course_without_program(user, course_id):
         enrolled, new_enrollment = True, True
     except ApiError as e:
         if e.code == 409:
-            message = (
-                messages.INFO,
-                _('You are already enrolled in course "{}"').format(course_id)
-            )
             enrolled = True
         else:
             message = (
