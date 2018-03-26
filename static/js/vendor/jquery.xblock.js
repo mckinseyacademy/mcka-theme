@@ -377,7 +377,7 @@
                 statusCode: {
                     404: function() {
                         if(blockURL.match("discussion_board_fragment_view")) {
-                            alert(gettext('The discussion you are trying to access has been deleted'));
+                            alert(gettext('You are not permitted to view this discussion.'));
                             var discussionHomeUrl = blockURL.split("discussion");
                             window.location.href = discussionHomeUrl[0] + "discussion";
                         }
