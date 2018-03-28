@@ -257,6 +257,42 @@ header .course-tabs li {
     }
   }
 
+  .forum-new-post-form .thread-title {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 15px;
+    color: #373939;
+    font-weight: 700;
+  }
+
+  .post-type-label .field-input.input-radio{
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .post-type-label .field-input-label{
+    border: 1px solid #d9d9d9;
+    padding: 10px 20px;
+    display: block;
+  }
+
+  .post-type-label .field-input.input-radio:checked + .field-input-label{
+    background: #dce9f2;
+  }
+
+  .field-input-label{
+    color: #000000;
+  }
+
+  .wmd-panel .wmd-input{
+    box-shadow: 0 2px #c7c7c7;
+  }
+
   .new-post-article form.forum-new-post-form,
   .thread-content-wrapper form.edit-post-form {
     min-width: 500px;
