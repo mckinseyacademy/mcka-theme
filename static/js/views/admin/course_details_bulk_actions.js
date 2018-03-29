@@ -278,7 +278,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           '<div class="large-6 columns enrollParticipantsStatus">' +
           '<p class="labelUnirvesal">'+gettext('Status')+'</p>' +
           '<select name="status">' +
-          '<option value="Active">'+gettext('Active') + '</option>' +
+          '<option value="Active">'+gettext('Participant') + '</option>' +
           '<option value="Observer">'+gettext('Observer')+'</option>' +
           '<option value="TA">'+gettext('TA')+'</option></select>' +
           '</div></div>'
