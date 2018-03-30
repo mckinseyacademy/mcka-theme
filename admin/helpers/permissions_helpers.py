@@ -96,7 +96,7 @@ class CompanyAdminUserPermission(permissions.BasePermission):
         user_id = view.kwargs.get('user_id')
         company_id = view.kwargs.get('company_id')
 
-        if request.user.is_authenticated() and not request.user.is_company_admin:
+        if not request.user.is_authenticated() or not request.user.is_company_admin:
             return True
 
         if company_id:
