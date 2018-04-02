@@ -357,7 +357,7 @@ header[role=banner]{
           .course-progress{
             .total{
               right: auto !important;
-              left: -50px !important;
+              left: rem-calc(-85) !important;
             }
             .visualization{
               .bar{
@@ -374,8 +374,10 @@ header[role=banner]{
             }
           }
           &.visual{
-            border-left: 1px solid $border-line;
-            border-right: 0;
+            &[rowspan="2"]{
+              border-left: 1px solid $border-line;
+              border-right: 0;
+            }
           }
         }
       }
