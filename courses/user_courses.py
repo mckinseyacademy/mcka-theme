@@ -4,7 +4,7 @@ import functools
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext as _, get_language_bidi
 
 from accounts.middleware.thread_local import get_static_tab_context
 from admin.controller import load_course
@@ -385,6 +385,16 @@ def standard_data(request):
 
             programs = get_program_menu_list(request, course)
 
+    try:
+        if get_language_bidi():
+            right_lesson_module_navigator = course.current_lesson.previous_module
+            left_lesson_module_navigator = course.current_lesson.next_module
+        else:
+            right_lesson_module_navigator = course.current_lesson.next_module
+            left_lesson_module_navigator = course.current_lesson.previous_module
+    except AttributeError:
+        right_lesson_module_navigator = None
+        left_lesson_module_navigator = None
     data = {
         "course": course,
         "program": program,
@@ -395,7 +405,9 @@ def standard_data(request):
         "branding": branding,
         "learner_dashboard_flag": learner_dashboard_flag,
         "discover_flag": discover_flag,
-        "organization_id": organization_id
+        "organization_id": organization_id,
+        "right_lesson_module_navigator": right_lesson_module_navigator,
+        "left_lesson_module_navigator": left_lesson_module_navigator
     }
 
     # point to this data from the request object, just in case we re-enter this method somewhere

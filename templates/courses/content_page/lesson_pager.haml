@@ -1,39 +1,39 @@
 - load i18n
 
 %div.controls
-  - if course.current_lesson.previous_module
-    - if course.current_lesson.previous_module.is_started
-      %a.page-to.previous{href: "#{course.current_lesson.previous_module.navigation_url}"}
+  - if left_lesson_module_navigator
+    - if left_lesson_module_navigator.is_started
+      %a.page-to.previous{href: "#{left_lesson_module_navigator.navigation_url}"}
         %i.fa.fa-chevron-left
         .mcka-tooltip
           %p.style-4
-            {% trans "Lesson" %} ={course.current_lesson.previous_module.lesson_index}:
-            {% trans "Module" %} ={course.current_lesson.previous_module.index} of ={course.current_lesson.previous_module.lesson_count}
-          .vertical-index= course.current_lesson.previous_module.name
+            {% trans "Lesson" %} ={left_lesson_module_navigator.lesson_index}:
+            {% trans "Module" %} ={left_lesson_module_navigator.index} of ={left_lesson_module_navigator.lesson_count}
+          .vertical-index= left_lesson_module_navigator.name
     - else
       %a.page-to.previous.future{href: "#"}
         %i.fa.fa-chevron-left
         .mcka-tooltip
           %p.style-4
-            {% blocktrans with start_date=course.current_lesson.previous_module.start_upon %}Lesson available on {{ start_date }}{% endblocktrans %}
+            {% blocktrans with start_date=left_lesson_module_navigator.start_upon %}Lesson available on {{ start_date }}{% endblocktrans %}
   - else
     %a.page-to.previous
       %i.fa.fa-chevron-left
-  - if course.current_lesson.next_module
-    - if course.current_lesson.next_module.is_started
-      %a.page-to.next{href: "#{course.current_lesson.next_module.navigation_url}"}
+  - if right_lesson_module_navigator
+    - if right_lesson_module_navigator.is_started
+      %a.page-to.next{href: "#{right_lesson_module_navigator.navigation_url}"}
         %i.fa.fa-chevron-right
         .mcka-tooltip
           %p.style-4
-            {% trans "Lesson" %} ={course.current_lesson.next_module.lesson_index}:
-            {% trans "Module" %} ={course.current_lesson.next_module.index} of ={course.current_lesson.next_module.lesson_count}
-          .vertical-index= course.current_lesson.next_module.name
+            {% trans "Lesson" %} ={right_lesson_module_navigator.lesson_index}:
+            {% trans "Module" %} ={right_lesson_module_navigator.index} of ={right_lesson_module_navigator.lesson_count}
+          .vertical-index= right_lesson_module_navigator.name
     - else
       %a.page-to.next.future{href: "#"}
         %i.fa.fa-chevron-right
         .mcka-tooltip
           %p.style-4
-            {% blocktrans with start_date=course.current_lesson.next_module.start_upon %}Lesson available on {{ start_date }}{% endblocktrans %}
+            {% blocktrans with start_date=right_lesson_module_navigator.start_upon %}Lesson available on {{ start_date }}{% endblocktrans %}
   - else
     %a.page-to.next
       %i.fa.fa-chevron-right
