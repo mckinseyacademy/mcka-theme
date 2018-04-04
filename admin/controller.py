@@ -2141,7 +2141,7 @@ class CourseParticipantStats(object):
     permission_map = {
         'assistant': 'TA',
         'instructor': 'Instructor',
-        'staff': 'Staff',
+        'staff': 'Participant',
         'observer': 'Observer'
     }
 
