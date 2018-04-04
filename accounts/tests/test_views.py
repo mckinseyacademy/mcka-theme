@@ -1,24 +1,23 @@
-import uuid
 import urllib2
+import uuid
 
 import ddt
 import mock
+import requests
 from django.conf import settings
-from django.utils import translation
-from mock import Mock, patch
-
-
+from django.http import HttpResponse, SimpleCookie
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
-from requests import ConnectionError, HTTPError
+from django.utils import translation
+from mock import Mock, patch
+from waffle.testutils import override_flag
 
 from accounts.controller import ProcessAccessKeyResult
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin
-from accounts.views import (_cleanup_username as cleanup_username, switch_language_based_on_preference,
-                            MOBILE_URL_SCHEME_COOKIE, _build_mobile_redirect_response, sso_launch,
-                            finalize_sso_mobile, sso_finalize, sso_error)
-from accounts.views import MISSING_ACCESS_KEY_ERROR, access_key
+from accounts.tests.utils import ApplyPatchMixin, make_user
+from accounts.views import (MISSING_ACCESS_KEY_ERROR, MOBILE_URL_SCHEME_COOKIE, _build_mobile_redirect_response,
+                            _cleanup_username as cleanup_username, access_key, finalize_sso_mobile, sso_error,
+                            sso_finalize, sso_launch, switch_language_based_on_preference, get_username_for_login_id)
 from admin.models import AccessKey, ClientCustomization
 from api_client.api_error import ApiError
 from util.i18n_helpers import set_language
@@ -443,8 +442,8 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         self.assertIn('/oauth2/authorize/', response.url)
 
     @ddt.data(
-        (ConnectionError, 'connection_error'),
-        (HTTPError, 'server_error'),
+        (requests.ConnectionError, 'connection_error'),
+        (requests.HTTPError, 'server_error'),
         (ValueError, 'server_error'),
     )
     @ddt.unpack
@@ -461,7 +460,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         mock_post = self.apply_patch('accounts.views.requests.post')
         mock_response = Mock()
         mock_response.status_code = 555
-        mock_response.raise_for_status = Mock(side_effect=HTTPError)
+        mock_response.raise_for_status = Mock(side_effect=requests.HTTPError)
         mock_post.return_value = mock_response
         request = self.factory.get('/accounts/finalize/', {'code': 'some-code'})
         self._setup_request(request)
@@ -518,3 +517,256 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         request.session.get = lambda val: 'test-error' if val == 'error' else None
         response = sso_error(request)
         self.assertIn('?error=test-error', response.content)
+
+
+@ddt.ddt
+class LoginViewTest(TestCase, ApplyPatchMixin):
+    """
+    Tests for the login view
+    """
+
+    @patch('accounts.views.user_api.get_users')
+    @ddt.data(
+        ('testuser', 'username', 'testuser'),
+        ('testuser@example.com', 'email', 'testuser'),
+    )
+    @ddt.unpack
+    def test_get_username_for_login_id(self, login_id, id_type, username, mock_get_user):
+        user_mock = Mock()
+        user_mock.username = username
+        mock_get_user.return_value = [user_mock]
+        result = get_username_for_login_id(login_id)
+        mock_get_user.assert_called_with(**{id_type: login_id})
+        self.assertEqual(result, username)
+
+    @ddt.data(
+        (True, 'accounts/login_b.haml'),
+        (False, 'accounts/login_a.haml'),
+    )
+    @ddt.unpack
+    def test_login_waffle(self, use_new_login_flow, login_template):
+        """
+        Test that the correct login view is used based on the waffle flag.
+        """
+        with override_flag('use_new_login_flow', use_new_login_flow):
+            response = self.client.get('/accounts/login/')
+            self.assertTemplateUsed(response, login_template)
+
+    def test_login_redirects_for_ie(self):
+        host = 'apros.mcka.local'
+        response = self.client.get('/accounts/login/',
+                                   HTTP_HOST=host,
+                                   HTTP_USER_AGENT='Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)')
+        self.assertRedirects(response, 'http://{}/'.format(host))
+
+    @ddt.data(True, False)
+    def test_login_account_activate_check(self, use_new_login_flow):
+        with override_flag('use_new_login_flow', use_new_login_flow):
+            response = self.client.get('/accounts/login/', {'account_activate_check': True})
+            self.assertIn(
+                "Your account has already been activated. Please enter credentials to login",
+                response.content)
+
+    @ddt.unpack
+    @ddt.data(
+        (True, 'done', 'Password Reset Successful'),
+        (True, 'complete', 'Password Reset Complete'),
+        (True, 'failed', 'Password Reset Unsuccessful'),
+        (False, 'done', 'Password Reset Successful'),
+        (False, 'complete', 'Password Reset Complete'),
+        (False, 'failed', 'Password Reset Unsuccessful')
+    )
+    def test_login_account_reset(self, use_new_login_flow, reset_code, reset_message):
+        with override_flag('use_new_login_flow', use_new_login_flow):
+            response = self.client.get('/accounts/login/', {'reset': reset_code})
+            self.assertIn(reset_message, response.content)
+
+    @patch('django.contrib.auth.authenticate')
+    @ddt.data(True, False)
+    def test_login_with_session_id_error(self, use_new_login_flow, mock_authenticate):
+        with override_flag('use_new_login_flow', use_new_login_flow):
+            error_reason = "Error eb764978-01aa-40dd-beae-e942ba761641"
+            http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
+            mock_authenticate.side_effect = ApiError(http_error, "get_session", None)
+            self.client.cookies = SimpleCookie({'sessionid': 'test-session-id'})
+            response = self.client.get('/accounts/login/')
+            self.assertIn(error_reason, response.content)
+
+    @patch('django.contrib.auth.authenticate')
+    @ddt.data(
+        (True, 'accounts/login_b.haml'),
+        (False, 'accounts/login_a.haml'),
+    )
+    @ddt.unpack
+    def test_login_with_session_id_no_user(self, use_new_login_flow, login_template, mock_authenticate):
+        with override_flag('use_new_login_flow', use_new_login_flow):
+            self.client.cookies = SimpleCookie({'sessionid': 'test-session-id'})
+            response = self.client.get('/accounts/login/')
+            self.assertTemplateUsed(response, login_template)
+
+    @patch('django.contrib.auth.login')
+    @patch('accounts.views.append_user_mobile_app_id_cookie')
+    @patch('django.contrib.auth.authenticate')
+    @ddt.data(True, False)
+    def test_login_with_session_id_no_user(self, use_new_login_flow, mock_authenticate, mock_1, mock_2):
+        with override_flag('use_new_login_flow', use_new_login_flow):
+            mock_authenticate.return_value = make_user()
+            self.client.cookies = SimpleCookie({'sessionid': 'test-session-id'})
+            response = self.client.get('/accounts/login/', {'next': '/'})
+            self.assertRedirects(response, '/')
+
+    @patch('accounts.views.auth.authenticate')
+    def test_login_post_normal_error_no_password_a(self, mock_authenticate):
+        with override_flag('use_new_login_flow', False):
+            response = self.client.post('/accounts/login/', {'username': 'test'})
+            self.assertInHTML(
+                """
+                <tr>
+                    <th><label for="id_password">Password <span class="required-field"></span></label></th>
+                    <td>
+                        <ul class="errorlist"><li>This field is required.</li></ul>
+                        <input id="id_password" name="password" type="password" />
+                    </td>
+                </tr>
+                """,
+                response.content
+            )
+
+    @patch('accounts.views.auth.authenticate')
+    def test_login_post_normal_error_invalid_password_a(self, mock_authenticate):
+        with override_flag('use_new_login_flow', False):
+            mock_authenticate.return_value = None
+            response = self.client.post('/accounts/login/', {'username': 'test', 'password': 'password'})
+            self.assertIn("Username or password is incorrect", response.content)
+
+    @patch('accounts.views.auth.authenticate')
+    def test_login_post_normal_error_invalid_password_a(self, mock_authenticate):
+        with override_flag('use_new_login_flow', False):
+            error_reason = "Error adccbfc7-33eb-484b-a917-b7d65a5d72f8"
+            http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
+            mock_authenticate.side_effect = ApiError(http_error, "get_session", None)
+            response = self.client.post('/accounts/login/', {'username': 'test', 'password': 'password'})
+            self.assertIn(error_reason, response.content)
+
+    @patch('accounts.views._process_authenticated_user')
+    @patch('accounts.views.auth.authenticate')
+    def test_login_post_normal_success_a(self, mock_authenticate, mock__process_authenticated_user):
+        self.apply_patch('accounts.views._append_login_mode_cookie')
+        self.apply_patch('accounts.views.append_user_mobile_app_id_cookie')
+        with override_flag('use_new_login_flow', False):
+            response_msg = "Test response ab7f8814-e84d-4bd5-a665-573285dc499f"
+            mock__process_authenticated_user.return_value = HttpResponse(response_msg)
+            mock_authenticate.return_value = make_user()
+            response = self.client.post('/accounts/login/', {'username': 'johndoe', 'password': 'password'})
+            self.assertIn(response_msg, response.content)
+
+    def test_login_post_sso_invalid_a(self):
+        with override_flag('use_new_login_flow', False):
+            response = self.client.post('/accounts/login/', {'sso_login_form_marker': True})
+            self.assertInHTML(
+                """
+                <tr>
+                    <th><label for="id_email">Email address <span class="required-field"></span></label></th>
+                    <td>
+                        <ul class="errorlist"><li>This field is required.</li></ul>
+                        <input id="id_email" maxlength="255" name="email" type="email" />
+                        <input id="id_sso_login_form_marker" name="sso_login_form_marker" type="hidden" value="True" />
+                    </td>
+                </tr>
+                """,
+                response.content
+            )
+
+    @patch('accounts.views.get_sso_provider')
+    def test_login_post_sso_no_association_a(self, mock_get_sso_provider):
+        with override_flag('use_new_login_flow', False):
+            mock_get_sso_provider.return_value = None
+            response = self.client.post('/accounts/login/', {'sso_login_form_marker': True, 'email': 'test@email.com'})
+            self.assertIn("This email is not associated with any identity provider", response.content)
+
+    @patch('accounts.views._build_sso_redirect_url')
+    @patch('accounts.views.get_sso_provider')
+    def test_login_post_sso_with_association_a(self, mock_get_sso_provider, mock__build_sso_redirect_url):
+        with override_flag('use_new_login_flow', False):
+            mock_get_sso_provider.return_value = 'saml-testprovider'
+            mock__build_sso_redirect_url.return_value = '/'
+            response = self.client.post('/accounts/login/', {'sso_login_form_marker': True, 'email': 'test@email.com'})
+            self.assertRedirects(response, '/')
+
+    @patch('accounts.views.get_sso_provider')
+    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.auth.authenticate')
+    @ddt.data('test', 'test@email.com')
+    def test_login_validate_invalid_login_id_b(self, login_id, mock_authenticate, mock_get_username,
+                                               mock_get_sso_provider):
+        with override_flag('use_new_login_flow', True):
+            mock_get_sso_provider.return_value = None
+            mock_authenticate.return_value = None
+            mock_get_username.return_value = None
+            response = self.client.post('/accounts/login/', {'login_id': login_id, 'validate_login_id': True})
+            self.assertIn("Username/email is not recognised. Try again.", response.content)
+
+    @patch('accounts.views.get_sso_provider')
+    @patch('accounts.views.get_username_for_login_id')
+    @ddt.data('test', 'test@email.com')
+    def test_login_validate_valid_login_id_b(self, login_id, mock_get_username, mock_get_sso_provider):
+        with override_flag('use_new_login_flow', True):
+            mock_get_sso_provider.return_value = None
+            mock_get_username.return_value = 'test'
+            response = self.client.post('/accounts/login/', {'login_id': login_id, 'validate_login_id': True})
+            self.assertIn('{"login_id": "valid"}', response.content)
+
+    @patch('accounts.views.get_sso_provider')
+    def test_login_validate_error_b(self, mock_get_sso_provider):
+        with override_flag('use_new_login_flow', True):
+            error_reason = "Error adccbfc7-33eb-484b-a917-b7d65a5d72f8"
+            http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
+            mock_get_sso_provider.side_effect = ApiError(http_error, "get_provider", None)
+            response = self.client.post('/accounts/login/', {'login_id': 'test@email.com', 'validate_login_id': True})
+            self.assertIn('{"error": "%s"}' % error_reason, response.content)
+
+    @patch('accounts.views._build_sso_redirect_url')
+    @patch('accounts.views.get_sso_provider')
+    @ddt.data('test', 'test@email.com')
+    def test_login_validate_sso_user_b(self, login_id, mock_get_sso_provider, mock_build_sso_redirect):
+        with override_flag('use_new_login_flow', True):
+            mock_get_sso_provider.return_value = 'saml-testprovider'
+            mock_build_sso_redirect.return_value = '/'
+            response = self.client.post('/accounts/login/', {'login_id': login_id, 'validate_login_id': True})
+            self.assertRedirects(response, '/')
+
+    @patch('accounts.views.get_username_for_login_id')
+    def test_login_normal_error_b(self, mock_get_username):
+        with override_flag('use_new_login_flow', True):
+            error_reason = "Error adccbfc7-33eb-484b-a917-b7d65a5d72f8"
+            http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
+            mock_get_username.side_effect = ApiError(http_error, "get_session", None)
+            response = self.client.post('/accounts/login/', {'login_id': 'test', 'password': 'password'})
+            self.assertIn(error_reason, response.content)
+
+    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.auth.authenticate')
+    @ddt.data('johndoe', 'john@doe.org')
+    def test_login_normal_invalid_password_b(self, login_id, mock_authenticate, mock_get_username):
+        with override_flag('use_new_login_flow', True):
+            mock_get_username.return_value = 'test'
+            mock_authenticate.return_value = None
+            response = self.client.post('/accounts/login/', {'login_id': login_id, 'password': 'password'})
+            self.assertIn('{"password": "Password doesn\'t match our records. Try again."}', response.content)
+
+    @patch('accounts.views._process_authenticated_user')
+    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.auth.authenticate')
+    @ddt.data('johndoe', 'john@doe.org')
+    def test_login_normal_success_b(self, login_id, mock_authenticate, mock_get_username,
+                                    mock__process_authenticated_user):
+        self.apply_patch('accounts.views._append_login_mode_cookie')
+        self.apply_patch('accounts.views.append_user_mobile_app_id_cookie')
+        with override_flag('use_new_login_flow', True):
+            response_msg = "Test response ab7f8814-e84d-4bd5-a665-573285dc499f"
+            mock__process_authenticated_user.return_value = HttpResponse(response_msg)
+            mock_get_username.return_value = 'test'
+            mock_authenticate.return_value = make_user()
+            response = self.client.post('/accounts/login/', {'login_id': login_id, 'password': 'password'})
+            self.assertIn(response_msg, response.content)
+

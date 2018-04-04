@@ -92,7 +92,7 @@ If something goes wrong instructions to install everything manually are availabl
 
 ### Override Specific Settings
 
-The McKinsey Academy application hosts it's `settings.py` file within the mcka_apros app folder (this is a subfolder
+The McKinsey Academy application hosts its `settings.py` file within the mcka_apros app folder (this is a subfolder
 within the same-named `mcka_apros` repository root folder). Alongside this file, create a new file
 named `local_settings.py`.
 
@@ -235,7 +235,7 @@ You should now be able to access apros at http://apros.mcka.local/ .
 
 See [Initial configuration][initial-configuration] for details on configuring Apros programs, clients and students.
 
-You may wish to enable to local mock server if you so desire. To do this, add the following to your local_settings.py file:
+You may wish to enable the local mock server if you so desire. To do this, add the following to your local_settings.py file:
 
     RUN_LOCAL_MOCK_API = True
 
@@ -273,7 +273,7 @@ Sessions are a bit persnickety in Apros due to the fact that they must be aligne
 
 In case you have issues with the Apros website on Linux and LMS and the forum are working, chances are that the port forwarding isn't working properly. To fix that try adding the [Mac rules in Vagrant](https://www.danpurdy.co.uk/web-development/osx-yosemite-port-forwarding-for-vagrant/) with adding the [iptables rules for Linux](http://serverfault.com/questions/112795/how-can-i-run-a-server-on-linux-on-port-80-as-a-normal-user). Note that the added iptables rules are deleted upon reboot, if you are on Debian you can use [this](http://unix.stackexchange.com/questions/52376/why-do-iptables-rules-disappear-when-restarting-my-debian-system) to make the rules permanent.
 
-## Appendix B: 'Real-Word' Deployments
+## Appendix B: 'Real-World' Deployments
 
 Deployments of Apros that are publicly accessible should differ in several respects. Chiefly:
 
@@ -431,7 +431,7 @@ Enable this new virtual host with:
 [appendix-c]: #appendix-c-complete-production-routing
 
 ## Appendix F: Celery Configuration
-We are using celery for background tasks processing it requires RabbitMQ as broker. To configure celery on dev environment set `BROKER_URL` in your `local_settings.py` with specified username, password and host and then start celery worker using command:
+We are using celery for background tasks processing it requires RabbitMQ as broker. To configure celery on dev environment set `BROKER_URL` in your `local_settings.py` with specified username, password and host and then start celery worker using the command:
 
     ./manage.py celery worker --loglevel=info
 
@@ -472,3 +472,8 @@ To build a dummy translation for testing, use:
 To compile messages files to `.mo` files:
 
     django-admin compilemessages
+
+## Appendix G: Using Waffle
+If you need to enable a feature behind a feature flag, you can see the 
+instructions for enabling flags, and a list of such flags and  in the [Waffle 
+Setup docs](docs/Waffle_Setup.md)

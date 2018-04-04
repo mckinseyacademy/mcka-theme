@@ -4,9 +4,9 @@ import ddt
 
 from admin.models import SelfRegistrationRoles, CourseRun, OTHER_ROLE
 from lib.utils import DottableDict
-from accounts.forms import ActivationForm, FinalizeRegistrationForm, BaseRegistrationForm,\
-    FpasswordForm, SetNewPasswordForm, BaseRegistrationFormV2, PublicRegistrationForm, SSOLoginForm,\
-    LoginForm, EditFullNameForm, EditTitleForm, ActivationFormV2
+from accounts.forms import (ActivationForm, FinalizeRegistrationForm, BaseRegistrationForm,
+    FpasswordForm, SetNewPasswordForm, BaseRegistrationFormV2, PublicRegistrationForm, SSOLoginForm,
+    LoginForm, EditFullNameForm, EditTitleForm, ActivationFormV2, LoginIdForm)
 
 from accounts.tests.utils import ApplyPatchMixin
 
@@ -43,6 +43,25 @@ class LoginFormTests(TestCase):
         """ Test validation """
         login_form = LoginForm(test_case)
         self.assertEqual(login_form.is_valid(), expected_result)
+
+@ddt.ddt
+class LoginIdFormTests(TestCase):
+    """ Tests for LoginIdForm """
+
+    @ddt.data(
+        ({"login_id": "test", "password": "tewerrr45st@gmail.com"}, True),
+        ({"login_id": "test123", "password": "test"}, True),
+        ({"login_id": "test", "password": None}, True),
+        ({"login_id": "test@testing.com", "password": "test"}, True),
+        ({"login_id": "test@testing.com", "password": None}, True),
+        ({"login_id": None, "password": "test"}, False),
+
+    )
+    @ddt.unpack
+    def test_validation(self, test_case, expected_result):
+        """ Test validation """
+        login_id_form = LoginIdForm(test_case)
+        self.assertEqual(login_id_form.is_valid(), expected_result)
 
 
 @ddt.ddt

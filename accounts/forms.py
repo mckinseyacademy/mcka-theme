@@ -377,6 +377,26 @@ class LoginForm(NoSuffixLabelForm):
     ))
 
 
+class LoginIdForm(NoSuffixLabelForm):
+    ''' login form for system '''
+
+    login_id = forms.CharField(
+        max_length=255,
+        label=mark_safe_lazy(format_lazy(
+            _('Username or Email {html_span}'),
+            html_span='<span class="required-field"></span>')
+        )
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(),
+        required=False,  # This form can also be used to validate just the ID.
+        label=mark_safe_lazy(format_lazy(
+            _('Password {html_span}'),
+            html_span='<span class="required-field"></span>')
+        )
+    )
+
+
 class BaseRegistrationForm(NoSuffixLabelForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
 
