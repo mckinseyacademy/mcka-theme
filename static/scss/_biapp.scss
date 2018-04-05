@@ -269,6 +269,25 @@ header[role=banner]{
   }
 }
 
+// Footer
+
+footer[role=contentinfo]{
+  .copyright{
+    @include float(left);
+    @include margin-right(10px);
+  }
+  nav{
+    @include float(left);
+    ul{
+      @include float(left);
+      li{
+        @include float(left);
+        @include border-left(1px solid $footer-separator);
+      }
+    }
+  }
+}
+
 
 // RTL specified CSS selectors
 

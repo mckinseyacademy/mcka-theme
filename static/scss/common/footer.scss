@@ -5,24 +5,16 @@ footer[role=contentinfo]{
 
   .copyright{
     color: $mckinsey-dark-grey;
-    float: left;
-    margin-right: 10px;
     @include font-spec(10, semibold, 20);
   }
 
   nav {
-    float: left;
-
     ul {
       margin: 0;
-      float: left;
       line-height: normal;
       list-style-type: none;
-
       li {
-        float: left;
         padding: 0 10px;
-        border-left: 1px solid $footer-separator;
         a { @include font-spec(10, semibold, 12); }
       }
     }
