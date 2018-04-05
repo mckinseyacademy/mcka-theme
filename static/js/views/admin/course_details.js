@@ -20,8 +20,7 @@
           }
           else
           {
-            var companyId = $('#courseDetailsDataWrapper').attr('company-id');
-            return '<a href="/admin/companies/' + companyId + '/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+              return attributes['username']
           }
         }
       }},

@@ -3693,7 +3693,7 @@ class ParticipantsListApi(APIView):
 class participant_details_api(APIView):
     permission_classes = (InternalAdminUserPermission, CompanyAdminUserPermission, )
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id):
         selectedUserResponse = user_api.get_user(user_id)
         selectedUserPermissions = Permissions(user_id)
@@ -5513,7 +5513,7 @@ def company_dashboard(request):
 class company_participant_details_api(APIView):
     permission_classes = (InternalAdminUserPermission, CompanyAdminCompanyPermission, CompanyAdminUserPermission, )
 
-    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, company_id, user_id):
         selectedUserResponse = user_api.get_user(user_id)
         selectedUserPermissions = Permissions(user_id)
