@@ -177,8 +177,12 @@ header[role=banner]{
     .user-info{
       .user-profile{
         .user-detail{
+          > div{
+            @include text-align(left);
+          }
           .field-group{
             @include margin-left($detail_icon_size + 5);
+            @include text-align(left);
             .editfield{
               @include border-left(1px solid $border-line);
               @include padding-left(4px);
