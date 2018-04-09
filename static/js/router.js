@@ -221,11 +221,6 @@ var Router = Backbone.Router.extend({
       course_details_stats_view.render();
 
     }
-
-    var progressModel = new Apros.models.CourseDetailsTimelineChart();
-    new Apros.views.AdminCourseDetailsTimeline({model: progressModel,
-                                          el: $('#course-details-timeline'),
-                                          course_id: courseId});
   },
   admin_course_details_participants: function(course_id){
     $('#courseDetailsMainContainer').find('.contentNavigationContainer').each(function(index, value){
