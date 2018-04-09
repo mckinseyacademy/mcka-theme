@@ -72,30 +72,30 @@
                 - if user.is_company_admin
                   #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                     .bulkButtonWrapper
-                      %a.button.bulkExportStats.bulkButton.disabled{:href => "#"}
-                        {% trans "Export stats" %}
+                      %a.button.radius.small.bulkExportStats.bulkButton.disabled{:href => "#"}
+                        {% trans "Export Stats" %}
                 - else
                   #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                     .bulkButtonWrapper
                       .hiddenButtonSplitModifier.bulkButton.disabled
                       - if user.is_internal_admin
-                        %a.bulkEmailSelectedParticipantsInternal.button.disabled{:href => "#"}
+                        %a.radius.small.bulkEmailSelectedParticipantsInternal.button.disabled{:href => "#"}
                           {% trans "Email Selected Participants" %}
                       - else
-                        %a.bulkEmailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
+                        %a.radius.small.bulkEmailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
                           {% trans "Email Selected Participants" %}
-                      %a.button.bulkDropdownIcon.bulkButton.disabled
+                      %a.button.radius.small.bulkDropdownIcon.bulkButton.disabled
                         .fa.fa-chevron-down
                     #dropBulkCourse.f-dropdown{:style => 'display: none',:aria-hidden => "true"}
-                      %a.button.submenuButtons.bulkChangeStatus.bulkButton.disabled{:href => "#"}
+                      %a.button.radius.small.submenuButtons.bulkChangeStatus.bulkButton.disabled{:href => "#"}
                         {% trans "Change status" %}
-                      %a.button.submenuButtons.bulkUnenrollFromCourse.bulkButton.disabled{:href => "#"}
+                      %a.button.radius.small.submenuButtons.bulkUnenrollFromCourse.bulkButton.disabled{:href => "#"}
                         {% trans "Unenroll from course" %}
-                      %a.button.submenuButtons.bulkEnrollInNewCourse.bulkButton.disabled{:href => "#"}
+                      %a.button.radius.small.submenuButtons.bulkEnrollInNewCourse.bulkButton.disabled{:href => "#"}
                         {% trans "Enroll in new course" %}
-                      %a.button.submenuButtons.bulkExportStats.bulkButton.disabled{:href => "#"}
+                      %a.button.radius.small.submenuButtons.bulkExportStats.bulkButton.disabled{:href => "#"}
                         {% trans "Export stats" %}
-                      %a.button.submenuButtons.bulkExportNotifData.bulkButton.disabled{:href => "#"}
+                      %a.button.radius.small.submenuButtons.bulkExportNotifData.bulkButton.disabled{:href => "#"}
                         {% trans "Download CSV For Notifications" %}
                 #courseDetailsParticipantsGridWrapper
                   #courseDetailsParticipantsGrid.large-12.columns.spinnerContainer
