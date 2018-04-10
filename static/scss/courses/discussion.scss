@@ -87,6 +87,14 @@ header .course-tabs li {
       background-color: $forum-nav-link-active;
   }
 
+  .forum-new-post-form .thread-title {
+    display: block;
+    margin-bottom: 20px;
+    font-size: 1.3125rem;
+    color: #373939;
+  }
+
+
   .page-header-secondary {
     float: right;
     text-align: right;
@@ -550,9 +558,9 @@ header .course-tabs li {
 .forum-new-post-form .thread-title {
   display: block;
   margin-bottom: 20px;
-  font-size: 15px;
+  font-size: 13px;
+  font-weight: bold;
   color: #373939;
-  font-weight: 700;
 }
 
 .post-type-label .field-input.input-radio{
@@ -567,12 +575,15 @@ header .course-tabs li {
 
 .post-type-label .field-input-label{
   border: 1px solid #d9d9d9;
+  border-radius: 3px;
+  -webkit-border-radius: 3px;
   padding: 10px 20px;
   display: block;
 }
 
 .post-type-label .field-input.input-radio:checked + .field-input-label{
   background: #dce9f2;
+  border-color: #dce9f2;
 }
 
 .field-label .field-input-label{
