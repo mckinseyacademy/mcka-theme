@@ -259,6 +259,8 @@ def login(request):
                         _append_login_mode_cookie(response, login_mode)
                         append_user_mobile_app_id_cookie(response, user.id)
                         return response
+                    else:
+                        error = _("Username or password is incorrect")
 
                 except ApiError as err:
                     error = err.message
