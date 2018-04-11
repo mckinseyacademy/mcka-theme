@@ -225,6 +225,9 @@ header[role=banner]{
     @include margin-left(0);
     @include padding-right(10px);
   }
+  .xns-close-item{
+    @include right(-7px);
+  }
 }
 
 .login-form{
