@@ -130,6 +130,11 @@ body{
         &:last-child{
           @include border-right(none);
         }
+        &:only-child{
+          &.visual{
+            @include border-right(1px solid $border-line);
+          }
+        }
       }
     }
   }

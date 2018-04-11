@@ -79,7 +79,6 @@
         padding: 0;
         text-indent: 12px;
         text-transform: uppercase;
-        border-right: 1px solid $border-line;
         @include font-spec(12, 600, 20);
         &:first-child { width: 22% }
 
