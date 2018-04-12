@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-09 10:45+0000\n"
+"POT-Creation-Date: 2018-04-12 08:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -220,7 +220,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: static/js/router.js:351
+#: static/js/router.js:346
 msgid "Please select at least one course"
 msgstr ""
 
@@ -654,14 +654,6 @@ msgstr ""
 
 #: static/js/views/admin/course_details_engagement.js:13
 msgid "Avg Progress"
-msgstr ""
-
-#: static/js/views/admin/course_details_timeline.js:59
-msgid "days"
-msgstr ""
-
-#: static/js/views/admin/course_details_timeline.js:59
-msgid "weeks"
 msgstr ""
 
 #: static/js/views/admin/courseinfo.js:21

@@ -1,15 +1,16 @@
+- load i18n
 - block edit_company_image
   .change_company_image_form
     %form#company-cropping-form{'action': '/admin/clients/#{client_id}/image/edit', 'method': 'POST'}
       %label.label-10
         %span.label-5
-          STEP 2:
-        CROP & SAVE
+          {% trans "STEP 2:" %}
+        {% trans "CROP & SAVE" %}
       %hr
       - csrf_token
       %p
-        Drag and adjust cropping tool to edit you company image.
-      .img-container
+        {% trans "Drag and adjust cropping tool to edit your company image." %}
+        .img-container
           %img.company-uploaded-image{'src': "#{company_image}", 'onload': "this.parentNode.style.visibility = \"visible\""}
       .img-preview
       %input.upload-image-url{'type': 'hidden', 'name': 'upload-image-url', 'value': '#{company_image}'}

@@ -9,9 +9,9 @@
       %hr
       - csrf_token
       %p
-        {% trans "Drag and adjust cropping tool to edit you profile image." %}
+        {% trans "Drag and adjust cropping tool to edit your profile image." %}
       .img-container
-          %img.user-uploaded-image{'src': "#{profile_image}", 'onload': "this.parentNode.style.visibility = \"visible\""}
+        %img.user-uploaded-image{'src': "#{profile_image}", 'onload': "this.parentNode.style.visibility = \"visible\""}
       .img-preview
       .hide
         = form

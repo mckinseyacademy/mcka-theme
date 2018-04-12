@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-09 10:47+0000\n"
+"POT-Creation-Date: 2018-04-12 08:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2513,7 +2513,7 @@ msgstr ""
 msgid "Description"
 msgstr ""
 
-#: certificates/models.py:87 templates/admin/courses/course_details.haml:158
+#: certificates/models.py:87 templates/admin/courses/course_details.haml:154
 #: templates/certificates/certificate_templates.haml:30
 msgid "Template"
 msgstr ""
@@ -2927,17 +2927,19 @@ msgid "Profile photo"
 msgstr ""
 
 #: templates/accounts/edit_profile_image.haml:7
+#: templates/admin/client/edit_company_image.haml:7
 #: templates/admin/client/edit_mobile_app_image.haml:33
 msgid "STEP 2:"
 msgstr ""
 
 #: templates/accounts/edit_profile_image.haml:8
+#: templates/admin/client/edit_company_image.haml:8
 #: templates/admin/client/edit_mobile_app_image.haml:34
 msgid "CROP & SAVE"
 msgstr ""
 
 #: templates/accounts/edit_profile_image.haml:12
-msgid "Drag and adjust cropping tool to edit you profile image."
+msgid "Drag and adjust cropping tool to edit your profile image."
 msgstr ""
 
 #: templates/accounts/edit_profile_image.haml:23
@@ -3215,8 +3217,8 @@ msgstr ""
 #: templates/admin/companies/companies_list.haml:31
 #: templates/admin/companies/company_details.haml:79
 #: templates/admin/course_meta_content/item_detail.haml:18
-#: templates/admin/courses/course_details.haml:138
-#: templates/admin/courses/course_details.haml:210
+#: templates/admin/courses/course_details.haml:134
+#: templates/admin/courses/course_details.haml:206
 #: templates/admin/mobile_apps/company_app_details.haml:64
 #: templates/admin/participants/participant_details.haml:300
 #: templates/admin/participants/participant_details.haml:332
@@ -3371,6 +3373,10 @@ msgid ""
 "Completed = completion of all required course work."
 msgstr ""
 
+#: templates/admin/client/edit_company_image.haml:12
+msgid "Drag and adjust cropping tool to edit your company image."
+msgstr ""
+
 #: templates/admin/client/edit_mobile_app_image.haml:5
 msgid "Mobile App Image"
 msgstr ""
@@ -3380,7 +3386,7 @@ msgid "SELECT NEW MOBILE APP IMAGE"
 msgstr ""
 
 #: templates/admin/client/edit_mobile_app_image.haml:38
-msgid "Drag and adjust cropping tool to edit you image."
+msgid "Drag and adjust cropping tool to edit your image."
 msgstr ""
 
 #: templates/admin/client/navigation.haml:6
@@ -3937,8 +3943,11 @@ msgid "Certificates Generated"
 msgstr ""
 
 #: templates/admin/courses/course_details.haml:76
-#: templates/admin/courses/course_details.haml:97
-msgid "Export stats"
+#: templates/admin/courses/course_details.haml:108
+#: templates/admin/courses/course_details.haml:111
+#: templates/admin/participants/participant_details.haml:306
+#: templates/admin/participants/participant_details.haml:312
+msgid "Export Stats"
 msgstr ""
 
 #: templates/admin/courses/course_details.haml:83
@@ -3958,48 +3967,41 @@ msgstr ""
 msgid "Enroll in new course"
 msgstr ""
 
+#: templates/admin/courses/course_details.haml:97
+msgid "Export stats"
+msgstr ""
+
 #: templates/admin/courses/course_details.haml:99
 msgid "Download CSV For Notifications"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:108
-#: templates/admin/courses/course_details.haml:111
-#: templates/admin/participants/participant_details.haml:306
-#: templates/admin/participants/participant_details.haml:312
-msgid "Export Stats"
-msgstr ""
-
-#: templates/admin/courses/course_details.haml:124
-msgid "Cohort Timeline"
-msgstr ""
-
-#: templates/admin/courses/course_details.haml:136
+#: templates/admin/courses/course_details.haml:132
 #: templates/admin/participants/participant_details.haml:298
 #: templates/admin/participants/participant_details.haml:348
 msgid "Save Changes"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:148
+#: templates/admin/courses/course_details.haml:144
 msgid "Email selected participants"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:153
+#: templates/admin/courses/course_details.haml:149
 msgid "From"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:160
+#: templates/admin/courses/course_details.haml:156
 msgid "Save as new template"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:161
+#: templates/admin/courses/course_details.haml:157
 msgid "Update selected template"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:162
+#: templates/admin/courses/course_details.haml:158
 msgid "Remove selected template"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:166
+#: templates/admin/courses/course_details.haml:162
 #: templates/admin/learner_dashboard/branding.haml:13
 #: templates/admin/learner_dashboard/branding.haml:62
 #: templates/admin/participants/participant_details.haml:219
@@ -4008,31 +4010,31 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:173
+#: templates/admin/courses/course_details.haml:169
 msgid "Subject"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:179
+#: templates/admin/courses/course_details.haml:175
 msgid "Body"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:185
+#: templates/admin/courses/course_details.haml:181
 msgid "Send Email"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:188
+#: templates/admin/courses/course_details.haml:184
 msgid "Preview email"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:190
+#: templates/admin/courses/course_details.haml:186
 msgid "Schedule for Later"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:197
+#: templates/admin/courses/course_details.haml:193
 msgid "Add Tags to this Course"
 msgstr ""
 
-#: templates/admin/courses/course_details.haml:205
+#: templates/admin/courses/course_details.haml:201
 msgid ""
 "Since this tag does not yet exist, a new Tag will be created. If this is an "
 "error, try selecting your tag from the type-ahead results."

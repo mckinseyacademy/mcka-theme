@@ -35,9 +35,9 @@
       %hr
       - csrf_token
       %p
-        {% trans "Drag and adjust cropping tool to edit you image." %}
+        {% trans "Drag and adjust cropping tool to edit your image." %}
       .img-container
-          %img.user-uploaded-image{'src': "#{client_mobile_image}"}
+        %img.user-uploaded-image{'src': "#{client_mobile_image}"}
       .img-preview
       %input#id_mobile_app_img.hide{:name => "#{img_type}", :type => "file"}
       %input.width-position{'type': 'hidden', 'name': 'width-position'}
