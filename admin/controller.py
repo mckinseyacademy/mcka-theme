@@ -1504,6 +1504,8 @@ def get_user_courses_helper(user_id, request):
                 user_course['status'] = 'Observer'
             if vars(role)['role'] == 'assistant':
                 user_course['status'] = 'TA'
+            if vars(role)['role'] == 'staff':
+                user_course['status'] = 'Staff'
             user_course['unenroll'] = 'Unenroll'
             user_courses.append(user_course)
         else:
@@ -1514,6 +1516,8 @@ def get_user_courses_helper(user_id, request):
                     user_course['status'] = 'Observer'
                 if vars(role)['role'] == 'assistant':
                     user_course['status'] = 'TA'
+                if vars(role)['role'] == 'staff':
+                    user_course['status'] = 'Staff'
 
     if request.user.is_internal_admin:
         internal_ids = get_internal_courses_ids()
@@ -2141,7 +2145,7 @@ class CourseParticipantStats(object):
     permission_map = {
         'assistant': 'TA',
         'instructor': 'Instructor',
-        'staff': 'Participant',
+        'staff': 'Staff',
         'observer': 'Observer'
     }
 
