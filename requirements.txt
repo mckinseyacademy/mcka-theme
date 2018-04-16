@@ -50,6 +50,4 @@ edx-django-release-util==0.3.1
 requests==2.18.4
 unicodecsv==0.14.1
 
-# Geo-Locating
-geoip2==2.7.0
 edx-i18n-tools==0.4.2

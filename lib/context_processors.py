@@ -2,19 +2,14 @@ import re
 import logging
 from django.conf import settings
 
-import geoip2.database
-from geoip2.errors import AddressNotFoundError
-
 from courses.user_courses import standard_data
 from courses.models import FeatureFlags
 
 from edx_notifications.server.web.utils import get_notifications_widget_context
 from util.user_agent_helpers import is_mobile_user_agent, is_ios, is_android
-from lib.utils import find_maxmind_database, get_client_ip_address
 
 
 log = logging.getLogger(__name__)
-max_mind_reader = geoip2.database.Reader(find_maxmind_database())
 
 
 def add_edx_notification_context(data):
@@ -124,31 +119,4 @@ def set_mobile_app_id(request):
         elif is_ios(request):
             data['user_ios_mobile_app_id'] = request.COOKIES.get('ios_app_id')
 
-    return data
-
-
-def geolocate_ip_address(request):
-    """
-    Geo-Locates the IP Address from a request.
-    :param request: A request object.
-    :return: Returns a dictionary of 'country_code' to the 2 digit country code
-    for the resulting country. Example: China = 'CN'
-    """
-    data = {}
-    country_code = request.session.get('country_code', None)
-    if country_code:
-        data['country_code'] = country_code
-        return data
-    country_code = None
-    ip_address = get_client_ip_address(request)
-    if ip_address:
-        try:
-            response = max_mind_reader.country(ip_address)
-        except AddressNotFoundError:
-            # This is likely a local IP Address.
-            response = None
-        if response:
-            country_code = response.country.iso_code
-    request.session['country_code'] = country_code
-    data['country_code'] = country_code
     return data

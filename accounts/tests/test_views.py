@@ -1,5 +1,4 @@
 import uuid
-import sys
 from urllib2 import HTTPError
 
 import ddt
@@ -309,14 +308,14 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
 
 
 @ddt.ddt
-class HomePageTest(TestCase):
+class GoogleAnalyticsTest(TestCase):
     """
-    Tests the Home Page.
+    Tests that we try to load Google Analytics loads for all IP addresses.
     """
 
     @ddt.data(
         ('8.8.8.8', True),  # US Google Servers
-        ('202.46.33.58', False),  # Chinese DNS Server
+        ('202.46.33.58', True),  # Chinese DNS Server
     )
     @ddt.unpack
     def test_google_analytics_on_homepage_with_different_origination(

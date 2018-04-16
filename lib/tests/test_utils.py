@@ -1,12 +1,8 @@
-import ddt
-
 from django.test import TestCase
 from django.test.client import RequestFactory
-from django.contrib.sessions.middleware import SessionMiddleware
 
-from lib.context_processors import geolocate_ip_address
-from lib.middleware.handle_prior_ids import PriorIdRequest
 from lib.utils import PriorIdConvert
+from lib.middleware.handle_prior_ids import PriorIdRequest
 
 
 class PriorIdsTest(TestCase):
@@ -65,29 +61,3 @@ class PriorIdsTest(TestCase):
         prior_url = "/courses/C1/C1/C1/lessons/i4x://C1/C1/chapter/7b5635e674e621502708dbde4594f825/module/i4x://C1/C1/vertical/c65b10f90552e061807431380140b552"
         redirect_to_url = prior_url
         self._check_middleware_operation(prior_url, redirect_to_url)
-
-
-@ddt.ddt
-class GeoLocateIPAddressTest(TestCase):
-
-    def setup_session(self, request):
-        """Annotate a request object with a session"""
-        middleware = SessionMiddleware()
-        middleware.process_request(request)
-        request.session.save()
-        request.session['country_code'] = None
-
-    @ddt.data(
-        ('8.8.8.8', 'US'),  # US Google Servers
-        ('202.46.33.58', 'CN'),  # Chinese DNS Server
-        ('212.28.34.65', 'DE'),  # German DNS Server
-        ('127.0.0.1', None),  # Local Server
-    )
-    @ddt.unpack
-    def test_ip_address_to_country(self, ip_address, expected_country):
-        fake_request = RequestFactory().get('/')
-        fake_request.META['HTTP_X_FORWARDED_FOR'] = ip_address
-        fake_request.META['REMOTE_ADDR'] = ip_address
-        self.setup_session(fake_request)
-        data = geolocate_ip_address(fake_request)
-        self.assertEqual(data['country_code'], expected_country)

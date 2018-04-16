@@ -1,5 +1,4 @@
 ''' A set of generic utilities '''
-import os
 
 
 class DottableDict(dict):
@@ -42,32 +41,3 @@ class PriorIdConvert(object):
         except:
             print "Error translating key - assuming already in new format for {}".format(prior_format_key)
             return prior_format_key
-
-
-def find_maxmind_database():
-    """
-    Attempts to find the path to the Maxmind database.
-
-    :exception IOError: An IOError will occur if path cannot be found.
-
-    :return: Returns the path to the database.
-    """
-    lib_directory = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.abspath(os.path.join(lib_directory, 'GeoLite2-Country.mmdb'))
-    if not os.path.exists(file_path):
-        raise IOError('Maxmind database not found in {0}.'.format(file_path))
-    return file_path
-
-
-def get_client_ip_address(request):
-    """
-    Gets the client's IP Address from the provided request.
-    :param request: The client's request.
-    :return: Returns the IP Address Example: '8.8.8.8'
-    """
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-    return ip
