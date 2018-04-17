@@ -16,6 +16,10 @@ header .course-tabs li {
   }
 }
 
+.inline-threads .forum-nav-thread-list-wrapper .forum-nav-refine-bar{
+  display: none !important;
+}
+
 .wmd-prompt-background {
   background-color: $pure-white !important;
 }
