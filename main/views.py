@@ -2,12 +2,18 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import Http404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, HttpResponseForbidden
 from django.views.generic.base import View
 from django.utils.translation import ugettext as _
 from django.utils.translation import LANGUAGE_SESSION_KEY
+from django.core.files.storage import default_storage
+from django.conf import settings
+
+import urllib
+from mimetypes import MimeTypes
 
 from api_client.user_api import mark_user_notification_read
+from util.s3_helpers import PrivateMediaStorageThroughApros
 
 LANGUAGE_INPUT_FIELD = 'preview_lang'
 
@@ -100,3 +106,30 @@ class PreviewLanguageView(View):
         context.update({'success': show_refresh_message})
 
         return render(request, self.template_name, context)
+
+
+@login_required
+def private_storage_access(request, path):
+    """
+    Endpoint to access private files on storage. Requires
+    authenticated user with necessary permissions
+    """
+    if settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage':
+        storage = PrivateMediaStorageThroughApros()
+
+        if not storage.can_access(user=request.user, file_name=path):
+            return HttpResponseForbidden()
+    else:
+        storage = default_storage
+
+    if storage.exists(path):
+        resource = storage.open(path).read()
+        mime = MimeTypes()
+        url = urllib.pathname2url(path)
+        mime_type = mime.guess_type(url)
+
+        return HttpResponse(
+            resource, content_type=mime_type[0]
+        )
+    else:
+        raise Http404

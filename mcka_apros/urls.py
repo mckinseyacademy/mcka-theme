@@ -35,6 +35,7 @@ urlpatterns = patterns(
     url(r'^__debug__/', include(debug_toolbar.urls)),
     url(r'^registration/(?P<course_run_name>.+)/$', accountsviews.demo_registration, name='demo_registration'),
     url(r'^jsi18n/$', javascript_catalog, name='javascript-catalog'),
+    url(r'^storage/(?P<path>.*)', views.private_storage_access, name='private_storage'),
 )
 
 if settings.DEBUG:

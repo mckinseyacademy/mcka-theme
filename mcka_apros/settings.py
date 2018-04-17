@@ -14,6 +14,8 @@ from logsettings import get_logger_config
 
 from django.utils.translation import ugettext_lazy as _
 
+from kombu import Queue, Exchange
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -309,6 +311,15 @@ CELERY_RESULT_SERIALIZER = 'json'
 BROKER_TRANSPORT_OPTIONS = {'confirm_publish': True}
 CELERYD_PREFETCH_MULTIPLIER = 1  # Each worker should only fetch one message at a time
 
+CELERY_QUEUES = (
+    Queue('default', Exchange('default'), routing_key='default'),
+    Queue('high_priority', Exchange('high_priority'), routing_key='high_priority'),
+)
+
+CELERY_DEFAULT_QUEUE = 'default'
+CELERY_DEFAULT_ROUTING_KEY = 'default'
+CELERY_CREATE_MISSING_QUEUES = True
+
 # Api locations
 COURSEWARE_API = '/'.join([API_SERVER_PREFIX, 'courses'])
 GROUP_API = '/'.join([API_SERVER_PREFIX, 'groups'])
@@ -583,6 +594,9 @@ OAUTH2_SAFE_URL_PREFIXES = [
 
 # Ooyala CDN url of Video Player V4
 OOYALA_PLAYER_V4_SCRIPT_FILE = '//player.ooyala.com/core/10efd95b66124001b415aa2a4bee29c8?plugins=main,bm'
+
+# storage directory fo stats/reports
+EXPORT_STATS_DIR = 'csv_exports'
 
 ################################### Theme Settings###################################
 

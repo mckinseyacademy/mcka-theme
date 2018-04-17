@@ -7,23 +7,27 @@ from tempfile import TemporaryFile
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.utils.translation import ugettext as _
+from django.conf import settings
+from django.core.urlresolvers import reverse
 
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from celery import states as celery_states
 from celery.exceptions import Ignore
+from urlparse import urljoin
 
 from api_client import course_api
 from api_client import group_api
 from api_client.api_error import ApiError
 from util.csv_helpers import CSVWriter
+from util.s3_helpers import PrivateMediaStorageThroughApros
 
 from .controller import CourseParticipantStats
 
 logger = get_task_logger(__name__)
 
 
-@task(name='admin.course_participants_data_retrieval_task', max_retries=3)
+@task(name='admin.course_participants_data_retrieval_task', max_retries=3, queue='high_priority')
 def course_participants_data_retrieval_task(course_id, company_id, task_id, base_url, retry_params=None):
     """
     Retrieves course participants' data using API
@@ -155,10 +159,14 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
 
     logger.info('Created temp CSV file - {}'.format(task_log_msg))
 
-    storage_path = 'csv_exports/{}'.format(file_name)
+    storage_path = '{}/{}_{}'.format(settings.EXPORT_STATS_DIR, task_id, file_name)
+    storage = default_storage
 
     try:
-        storage_path = default_storage.save(storage_path, ContentFile(temp_csv_file.read()))
+        # use private s3 storage for export files
+        if settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage':
+            storage = PrivateMediaStorageThroughApros()
+        storage_path = storage.save(storage_path, ContentFile(temp_csv_file.read()))
     except Exception as e:
         course_participants_data_retrieval_task.update_state(
             task_id=task_id, state=celery_states.RETRY
@@ -168,7 +176,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     else:
         logger.info('Saved CSV to S3 - {}'.format(task_log_msg))
 
-        storage_url = default_storage.url(storage_path)
+        storage_url = storage.url(storage_path)
         temp_csv_file.close()
 
     logger.info('Finished - {}'.format(task_log_msg))
