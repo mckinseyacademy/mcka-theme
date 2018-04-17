@@ -91,6 +91,7 @@ MIDDLEWARE_CLASSES = (
     'main.middleware.allow_embed_url.AllowEmbedUrlMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',      # explicitly add this, otherwise this doesn't seem to appear on AWS environments
+    'courses.middleware.apros_platform_language.AprosPlatformLanguage',
     'accounts.middleware.ajax_redirect.AjaxRedirect',
     'lib.middleware.handle_prior_ids.PriorIdRequest',
 )
@@ -149,6 +150,11 @@ LANGUAGES = (
     ('rtl', _('RTL Test Language')),
     ('fake2', _('Fake translations')), # Another dummy language for testing
 )
+
+SUPPORTED_LANGUAGES_CODE = [
+    'en',
+    'ar'
+]
 
 USE_I18N = True
 USE_L10N = True
@@ -581,3 +587,6 @@ OOYALA_PLAYER_V4_SCRIPT_FILE = '//player.ooyala.com/core/10efd95b66124001b415aa2
 ################################### Theme Settings###################################
 
 XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'
+
+# Course Key Regex
+COURSE_KEY_PATTERN = r'(?P<course_key_string>[^/+]+(/|\+)[^/+]+(/|\+)[^/?]+)'

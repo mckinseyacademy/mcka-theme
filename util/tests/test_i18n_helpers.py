@@ -26,7 +26,7 @@ class I18nHelperTest(TestCase, ApplyPatchMixin):
         get_current_request = self.apply_patch('util.i18n_helpers.get_current_request')
         get_current_request.return_value = self.request
 
-        language = 'hb'
+        language = 'ar'
         set_language(language)
         self.assertEqual(language, translation.get_language())
         self.assertEqual(language, self.request.session[translation.LANGUAGE_SESSION_KEY])

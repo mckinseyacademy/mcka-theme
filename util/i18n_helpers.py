@@ -3,12 +3,14 @@ from django.utils.functional import lazy
 from django.utils.safestring import mark_safe
 
 from accounts.middleware.thread_local import get_current_request
+from mcka_apros.settings import SUPPORTED_LANGUAGES_CODE, LANGUAGE_CODE
 
 
-def set_language(language):
+def set_language(language=LANGUAGE_CODE):
     """
     sets language for session
     """
+    language = language if language in SUPPORTED_LANGUAGES_CODE else LANGUAGE_CODE
     request = get_current_request()
     if request.LANGUAGE_CODE != language:
         translation.activate(language)
