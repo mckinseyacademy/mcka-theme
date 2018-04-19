@@ -16,18 +16,15 @@ EXPORT_STATS_ALLOWED_GROUPS = [
 class PrivateMediaStorage(S3BotoStorage):
     """
     S3 storage class to use for private files. URLs with expiry times
-    are generated to access files
+    are generated to access files and files are saved with S3 provided
+    encryption
     """
     default_acl = 'private'
     file_overwrite = False
     custom_domain = False
     querystring_auth = True
     gzip = True
-
-    bucket_name = getattr(settings, 'AWS_SECURE_STORAGE_BUCKET_NAME', 'AWS_STORAGE_BUCKET_NAME')
-    querystring_expire = getattr(settings, 'AWS_SECURE_STORAGE_EXPIRY', 'AWS_QUERYSTRING_EXPIRE')
-    access_key = getattr(settings, 'AWS_SECURE_STORAGE_ACCESS_KEY_ID', 'AWS_S3_ACCESS_KEY_ID')
-    secret_key = getattr(settings, 'AWS_SECURE_STORAGE_SECRET_ACCESS_KEY', 'AWS_SECRET_ACCESS_KEY')
+    encryption = True
 
     def __init__(self, url_expiry_time=None):
         super(PrivateMediaStorage, self).__init__(
