@@ -3,24 +3,25 @@
     coursesListDetailsViewGrid: {},
     generatedGridColumns:
     [
-      { title: gettext('Name'), index: true, name: 'username', titleAttribute: 'full_name',
+      { title: gettext('Name'), index: true, name: 'full_name', titleAttribute: 'full_name',
       actions: function(id, attributes)
       {
         var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+
         if (companyPageFlag == 'False')
         {
-          return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+          return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['full_name'] + '</a>';
         }
         else
         {
           var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
           if (companyAdminFlag == 'False')
           {
-            return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['username'] + '</a>';
+            return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['full_name'] + '</a>';
           }
           else
           {
-              return attributes['username']
+              return attributes['full_name']
           }
         }
       }},
@@ -101,7 +102,7 @@
         }
         _this.generatedGridColumns.splice(index,1);
       }
-      var coursesListDetailsViewGrid = {}
+      var coursesListDetailsViewGrid = {};
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       coursesListDetailsViewGrid = new bbGrid.View({
         container: this.$el,
