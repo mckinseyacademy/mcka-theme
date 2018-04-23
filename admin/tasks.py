@@ -122,7 +122,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
             participant[key] = '{}%'.format(completion)
 
     fields = OrderedDict([
-        ("ID", ("id", '')),
+        ("Id", ("id", '')),
         ("First name", ("first_name", '')),
         ("Last name", ("last_name", '')),
         ("Username", ("username", '')),
