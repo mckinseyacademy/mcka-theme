@@ -539,4 +539,8 @@ footer[role=contentinfo]{
     -webkit-transform: scaleX(-1);
     -ms-transform: scaleX(-1);
   }
+  .themed-xblock.mentoring .choice .choice-tips-container.with-tips,
+  .themed-xblock.mentoring .questionnaire .feedback{
+    border: 0 !important;
+  }
 }
