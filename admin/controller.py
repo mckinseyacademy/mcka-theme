@@ -1506,6 +1506,8 @@ def get_user_courses_helper(user_id, request):
                 user_course['status'] = 'TA'
             if vars(role)['role'] == 'staff':
                 user_course['status'] = 'Staff'
+            if vars(role)['role'] == 'instructor':
+                user_course['status'] = 'Instructor'
             user_course['unenroll'] = 'Unenroll'
             user_courses.append(user_course)
         else:
@@ -1518,6 +1520,8 @@ def get_user_courses_helper(user_id, request):
                     user_course['status'] = 'TA'
                 if vars(role)['role'] == 'staff':
                     user_course['status'] = 'Staff'
+                if vars(role)['role'] == 'instructor':
+                    user_course['status'] = 'Instructor'
 
     if request.user.is_internal_admin:
         internal_ids = get_internal_courses_ids()
