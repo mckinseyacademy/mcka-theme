@@ -11,7 +11,8 @@
 {
 	margin-left: auto;
 	margin-right: auto;
-	width: 60%;
+	max-width: 68.57143rem;
+	padding: 0 10px;
 }
 
 #coursesListTitle p
@@ -26,6 +27,7 @@
 	margin-right: auto;
 	display:table;
 	width: 100%;
+	max-width: 68.57143rem;
 }
 
 #coursesListViewGridBlock
@@ -37,11 +39,13 @@
 	position: relative;
 	display: table;
 	min-width: 60%;
+	width: 100%;
+	max-width: 68.57143rem;
 
 	.bbGrid-container
 	{
 		max-height: 28em;
-		overflow-y: scroll;
+		overflow-y: auto;
 	}
 
 	.bbGrid-grid.table
@@ -60,8 +64,6 @@
 		float: none!important;
 		display: table;
 		min-width: 60%;
-		margin-left: auto;
-		margin-right: auto;
 
 		.bbGrid-pager
 		{
@@ -74,26 +76,23 @@
 {
 	margin-left: auto;
 	margin-right: auto;
-	display:table;
-	width: 100%;
+	max-width: 68.57143rem;
+	padding: 0 10px;
 
 	.courseDetailsNavigationButton
 	{
 		margin-right: auto;
 		margin-left: auto;
-		width: 60%;
 	}
 
 	#courseDetailsDataWrapper
 	{
 		margin-top: 25px;
-		width: 100%;
 
 		#courseDetailsTopContainer
 		{
 			margin-left: auto;
 			margin-right: auto;
-			width: 60%;
 		}
 
 		.courseDetailsHeader
@@ -132,7 +131,7 @@
 		.courseDetailsBlocks{
 
 			.courseDetailsLeftBlock{
-				padding-left: 0px!important; 
+				padding-left: 0 !important;
 			}
 
 			.courseDetailsCenterBlock{
@@ -153,11 +152,10 @@
 	margin-top: 50px;
 	margin-left: auto;
 	margin-right: auto;
-	width: 60%;
 
 	.courseParticipantsButton
 	{
-		padding-left: 0px!important;
+		padding-left: 0 !important;
 	}
 
 	hr
@@ -168,7 +166,7 @@
 
 .courseDetailsViewGrid
 {
-	padding-left: 0px!important;
+	padding-left: 0 !important;
 
 	.bbGrid-grid
 	{
@@ -199,17 +197,15 @@
 #courseDetailsParticipantsGridWrapper{
 	margin-left: auto;
 	margin-right: auto;
-	min-width: 60%;
 
 	#courseDetailsParticipantsGrid{
-		margin: 0px;
-		padding: 0px;
+		margin: 0;
+		padding: 0;
 		margin-left: auto;
 		margin-right: auto;
 		margin-bottom: 100px;
 		max-height: 120em;
 		position: relative;
-		display: table;
 		float: none !important;
 
 		.bbGrid-container
@@ -218,7 +214,6 @@
 			overflow: auto;
 		    margin-left: auto;
 		    margin-right: auto;
-		    max-width: 90%;
 		}
 
 		.bbGrid-grid.table
@@ -241,7 +236,6 @@
 
 	.bbGrid-search-bar{
 		position: relative;
-		left: 25%;
 		float: none!important;
 		display: inline-block;
 	}
@@ -264,7 +258,6 @@
 
 	&.bulkActionsButtonContainer
 	{
-		right: 25%;
 		float: right;
 		z-index: 1000;
 		position: relative;

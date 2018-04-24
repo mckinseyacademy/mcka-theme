@@ -8,13 +8,21 @@
 #mainParticipantsWrapper
 {
 	width: 100%;
+	max-width: 68.57143rem;
 }
 
 #mainParticipantsDetailsWrapper
 {
 	max-width: 80%;
 }
-
+#participantsAddWrapper{
+  text-align: center;
+}
+#participantsSearchWrapper{
+	.columns{
+		padding-left: 0;
+	}
+}
 #participantsAddWrapper, .participantDetailsNavigationButton{
 	margin-bottom: 10px;
 }
@@ -26,7 +34,7 @@
 	.bbGrid-container
 	{
 		max-height: 120em;
-		overflow-y: scroll;
+		overflow-y: auto;
 	}
 }
 
@@ -51,7 +59,7 @@
 	display: table;
 	margin-left: auto;
 	margin-right: auto;
-	min-width: 50%;
+	min-width: 100%;
 
 	.bbGrid-grid{
 		min-width: 100%;

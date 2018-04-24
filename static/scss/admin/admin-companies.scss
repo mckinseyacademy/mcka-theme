@@ -2,7 +2,8 @@
 {
 	margin-left: auto;
 	margin-right: auto;
-	width: 60%;
+	max-width: 68.57143rem;
+	padding: 0 10px;
 }
 
 #mainCompaniesListGridContainer
@@ -11,6 +12,8 @@
 	margin-right: auto;
 	width: 100%;
 	display: table;
+	max-width: 68.57143rem;
+	padding: 0 10px;
 }
 
 #companiesListTitle 
@@ -53,8 +56,6 @@
 		float: none !important;
 	    display: table;
 	    min-width: 60%;
-		max-width: 68.57143rem;
-		margin: 0 auto;
 
 	    .bbGrid-pager
 	    {
@@ -71,6 +72,7 @@
 	min-width: 60%;
 	display: table;
 	position: relative;
+	width: 100%;
 
 	.bbGrid-container
 	{
@@ -229,6 +231,9 @@
 	margin-right: auto;
 	display: table;
 	width: 100%;
+	.table{
+		width: 100%;
+	}
 }
 
 #companyDetailsCoursesContainer, #companyLearnerDashboardsContainer
@@ -561,9 +566,6 @@
 }
 
 .bbGrid-grid{
-	th{
-		white-space: nowrap;
-	}
 	td{
 		white-space: normal;
 		word-wrap: break-word;
