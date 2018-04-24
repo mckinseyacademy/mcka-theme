@@ -108,6 +108,7 @@ Put the following into `mcka_apros/mcka_apros/local_settings.py`
     ALLOWED_HOSTS = ['apros.mcka.local']
     SESSION_EXPIRE_AT_BROWSER_CLOSE = False
     SESSION_TIMEOUT_SECONDS = 300000
+    WAFFLE_SECURE = False
 
 Details:
 * `API_SERVER_ADDRESS` is the base URI for accessing the LMS via the Apros server application
@@ -115,6 +116,7 @@ Details:
 * `LMS_SUB_DOMAIN` is the subdomain for the LMS system that users will fetch assets from-- note that it's the same as apros because we use NginX's reverse proxying to do a bit of magic later in the configuration.
 * `EDX_API_KEY` is the api key used for accessing the LMS API.
 * `SESSION_COOKIE_SECURE` to `False` allows cookies to work with HTTP setup.
+* `WAFFLE_SECURE` to `False` allows cookies set by Waffle to work with HTTP setup.
 
 ##### Configure the `EDX_API_KEY` in `lms.auth.json`
 

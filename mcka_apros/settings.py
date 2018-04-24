@@ -60,6 +60,8 @@ THIRD_PARTY_APPS = (
     'rest_framework',
     # additional release utilities to ease automation
     'release_util',
+    # Django Waffle for feature-flipping
+    'waffle',
 )
 
 LOCAL_APPS = (
@@ -96,6 +98,7 @@ MIDDLEWARE_CLASSES = (
     'courses.middleware.apros_platform_language.AprosPlatformLanguage',
     'accounts.middleware.ajax_redirect.AjaxRedirect',
     'lib.middleware.handle_prior_ids.PriorIdRequest',
+    'waffle.middleware.WaffleMiddleware',
 )
 
 ROOT_URLCONF = 'mcka_apros.urls'
