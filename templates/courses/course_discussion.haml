@@ -54,6 +54,7 @@
       };
       $.when.apply($, discussion_content.xblock(discussion_data)).
         done(function() {
+          $.getScript('/static/js/foundation.min.js', function() {  $(document).foundation();});
           if ($('#discussion-ta-template').length > 0) {
             $('.discussion-body').prepend($("#discussion-ta-template").html());
           }
