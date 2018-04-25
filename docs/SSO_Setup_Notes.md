@@ -82,7 +82,7 @@ To use testshib as an identity provider, do the following:
 2. Export LMS metadata to a file with a unique name (go to `lms_address/auth/saml/metadata.xml`, save as file)
 3. Register the exported metadata with testshib at [Testshib Register page][testshib-register]
 4. [Add LMS Identity Provider][lms-add-idp], using testshib [metadata URL][testshib-metadata] as Metadata Source.
-5. Set `Email Attribute` to `urn:oid:1.3.6.1.4.1.5923.1.1.1`
+5. Set `Email Attribute` to `urn:oid:1.3.6.1.4.1.5923.1.1.1.6`
 
 
 [testshib-register]: https://www.testshib.org/register.html
