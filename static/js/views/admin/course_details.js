@@ -3,25 +3,25 @@
     coursesListDetailsViewGrid: {},
     generatedGridColumns:
     [
-      { title: gettext('Name'), index: true, name: 'full_name', titleAttribute: 'full_name',
+      { title: gettext('Name'), index: true, name: 'custom_full_name', titleAttribute: 'custom_full_name',
       actions: function(id, attributes)
       {
         var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
 
         if (companyPageFlag == 'False')
         {
-          return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['full_name'] + '</a>';
+          return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['custom_full_name'] + '</a>';
         }
         else
         {
           var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
           if (companyAdminFlag == 'False')
           {
-            return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['full_name'] + '</a>';
+            return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + attributes['custom_full_name'] + '</a>';
           }
           else
           {
-              return attributes['full_name']
+              return attributes['custom_full_name']
           }
         }
       }},
