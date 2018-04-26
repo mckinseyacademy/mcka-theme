@@ -16,10 +16,6 @@ $(function(){
     imageEditor.reloadImages(imageClass, modal, aspectRatio);
   });
 
-  $(document).on('closed.fndtn.reveal', '#edit-client-mobile-logo-modal', function () {
-    window.location.reload(true);
-  });
-
   $(document).on('mouseenter', '#id_mobile_app_img', function(){
     $('#browse-image').addClass('hover');
   });
