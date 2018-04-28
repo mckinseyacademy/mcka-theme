@@ -611,3 +611,20 @@ COURSE_KEY_PATTERN = r'(?P<course_key_string>[^/+]+(/|\+)[^/+]+(/|\+)[^/?]+)'
 
 #Cookies expiry time
 COOKIES_YEARLY_EXPIRY_TIME = datetime.datetime.utcnow() + datetime.timedelta(days=365)
+
+################################ Mobile app settings ################################
+
+# OAuth2 Credentials for Mobile
+# * These are the values for client_id and client_secret defined in the LMS in
+#   /admin/oauth2/client/
+# * The client should have "Client type" of "Confidential (Web applications)"
+# * The client should added as a trusted client in the LMS at
+#   /admin/edx_oauth2_provider/trustedclient/
+# * The redirect uri should be "{APROS_BASE_URL}/accounts/finalize/"
+# * These values can be overridden to the appropriate value in local_settings.py.
+OAUTH2_MOBILE_CLIENT_ID = 'responsible'
+OAUTH2_MOBILE_CLIENT_SECRET = 'silk'
+
+# The path to the endpoint on the mobile scheme where the mobile auth
+# credentials or error message is to be sent. e.g. mcka://sso/?access_token=...
+MOBILE_SSO_PATH = 'sso/'
