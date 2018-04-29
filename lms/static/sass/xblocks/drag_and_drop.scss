@@ -151,4 +151,17 @@
         content: "\f06a";
         color: #ff143d;
     }
+
+    //Drag & Drop list indentation
+    ul{
+        margin-left: 20px;
+        padding: 0;
+    }
+
+    //To normalize extra indentation of nested list as it is being in use at number of places and a bit difficult
+    //task to relocate all the <ul><ul></ul></ul> structure to make it a valid markup. Issue # MCKIN-6959
+    ul > ul{
+        margin-left: 0;
+        padding: 0;
+    }
 }}
