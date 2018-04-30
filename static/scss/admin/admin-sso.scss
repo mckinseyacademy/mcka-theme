@@ -1,0 +1,43 @@
+// Reusing form spacing as defined by foundation. Update if default is changed.
+$form-spacing: rem-calc(16);
+
+.admin_client_sso {
+  .identity-provider {
+    label {
+      padding: $form-spacing/2 $form-spacing;
+    }
+    p.message {
+      padding: $form-spacing;
+    }
+  }
+
+  .access-key-search-create .button {
+    margin-bottom: $form-spacing;
+  }
+
+  .dataTables_empty {
+    text-align: center;
+    color: gray;
+  }
+
+  .identity-provider {
+    position: relative;
+    #identity_provider.save-failed {
+      border-color: red;
+    }
+    .status-icon {
+      position: absolute;
+      top: $form-spacing * 3 / 4;
+      right: $form-spacing * 3 / 4;
+      .fa-exclamation-circle {
+        color: red;
+      }
+      .fa-check-circle {
+        color: green;
+      }
+    }
+    .idp-cancel-save a {
+      margin: 0 0.5rem;
+    }
+  }
+}

@@ -100,7 +100,7 @@ detection by Apros work, cookies must be shared between LMS and Apros. To do so,
 
 Then make the corresponding change to Apros in `mcka_apros/local_settings.py`, by adding `LMS_SESSION_COOKIE_DOMAIN = '.mcka.local'`
 
-# Step 3: Wire Apros registration form into LMS third party authentication pilpeline
+# Step 3: Wire Apros registration form into LMS third party authentication pipeline
 
 In `~/lms.auth.json`, configure the LMS to integrate with Apros by adding the following setting. Adjust `mcka.local` to match the domain name you are using for Apros.
 
@@ -118,10 +118,20 @@ In `~/lms.auth.json`, configure the LMS to integrate with Apros by adding the fo
 
 # Using SSO
 
-1. To use SSO it is necessary first to go into the Apros Client Admin screen at `(apros)/admin/clients/`, then find the client you wish to link to an IdP. Click the pencil icon to edit that client, and set the "Identity Provider" value to same the "IDP Slug" value seen in the LMS SAML admin at `(LMS)/admin/third_party_auth/samlproviderconfig/`.
-1. Next, create an access key for that client: From the Apros admin screen, go to Companies > (Company Name) > Access, which should bring you to `(apros)/admin/clients/(client_ID)/access_keys`. Click "Create Course Access Key". Complete the form and save the access key URL that is given.
-1. In an incognito window, open the access key URL. It should redirect you to that company's SSO provider, then upon successful login, allow you to complete the registration form on the Apros site. After that point, it will enroll you into any courses specified by the access key.
-1. After a user has created an account using an access key, that user will be able to use SSO to login again from the SSO option on `/accounts/login/`. Using that login method before creating an account with an access key will not work, and will result in the error "This email is not associated with any identity provider."
+1. To use SSO it is necessary first to go into the Apros Client Admin screen at `(apros)/admin/clients/`, and click on 
+   the client you wish to link to an IdP. In the Client Overview page click on "SSO" in the navigation menu. Here you 
+   will see a field for the "Identity Provider", you should set this value to the same the "IDP Slug" value seen in the 
+   LMS SAML admin at `(LMS)/admin/third_party_auth/samlproviderconfig/`, and hit "Save". A green check mark should 
+   appear in the text field to indicate success.  
+1. Next, create an access key for that client: From the Apros admin screen, go to Companies > (Company Name) > Access, 
+   which should bring you to `(apros)/admin/clients/(client_ID)/sso`. Click "Create Course Access Key". Complete the 
+   form and save the access key URL that is given.
+1. In an incognito window, open the access key URL. It should redirect you to that company's SSO provider, then upon 
+   successful login, allow you to complete the registration form on the Apros site. After that point, it will enroll 
+   you into any courses specified by the access key.
+1. After a user has created an account using an access key, that user will be able to use SSO to login again from the 
+   SSO option on `/accounts/login/`. Using that login method before creating an account with an access key will not 
+   work, and will result in the error "This email is not associated with any identity provider."
 
 # Skipping the registration form
 

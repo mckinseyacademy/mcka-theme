@@ -1,0 +1,107 @@
+- extends 'admin/client/detail.haml'
+- load staticfiles
+- block admin_detail
+  %h1
+    %span= _("Client: ")
+    %span= client.display_name
+  %hr
+  %section.admin_client_sso
+    .row.identity-provider
+      .large-8.columns
+        .row
+          .small-12.columns
+            %p.message
+              #{identity_provider_message}
+      .large-12.columns
+        .row
+          .large-8.columns
+            .row
+              .small-4.columns
+                %label{"for":"identity_provider"}= _("Identity provider")
+              .small-8.columns
+                .identity-provider
+                  %input#identity_provider{"name": "identity_provider", "type": "text", "value": "#{identity_provider}"}
+                  %span.status-icon
+                    .icon
+          .small-4.columns.idp-cancel-save
+            %a#reset-idp{href: ""}
+              %span= _("Cancel")
+            %a#save-idp.button.radius.tiny{href: ""}
+              %span= _("Save")
+
+    .row.access-key-search-create
+      .large-8.columns
+        .row
+          .small-4.columns
+            -# %label &nbsp;
+            -# %a#create-access-key.button.radius.tiny{"data-reveal-id": "new-principal", "data-reveal-ajax": "access_keys/create", href: ""}
+            -#   %span= _("Create Access Key")
+            / %label &nbsp;
+            / %a#create-access-key-course.button.radius.tiny{"data-reveal-id": "new-principal", "data-reveal-ajax": "access_keys/course-create", href: ""}
+            /   %span= _("Create Course Access Key")
+            %a#create-access-key-course-quick.button.radius.tiny{"data-reveal-id": "ajaxAccessKeyCreation", href: ""}
+              %span= _("Create Course Access Key")
+          .small-8.columns
+            %input#access_key_search{"name": "access_key_search", "type": "text", placeholder:"Search"}
+    .row
+      .large-9.columns
+        %table.access-key-list
+          %thead
+            %th= _("Name")
+            %th= _("Course ID")
+            %th.text-right= _("Share")
+          %tbody
+            - for key in access_keys
+              - if key.disabled
+                %tr.access-key-disabled
+                  %td= key.name
+                  %td= key.instance
+                  %td.text-right
+                    %span
+                      %i.fa.fa-lg.fa-paper-plane
+              - else
+                %tr
+                  %td= key.name
+                  %td= key.instance
+                  %td.text-right
+                    %a{href: "", "data-reveal-id": "new-principal", "data-options": "hover_delay: 0;", "data-reveal-ajax": "{% url 'share_access_key' client_id=client.id access_key_id=key.pk %}"}
+                      %i.fa.fa-lg.fa-paper-plane
+
+  #new-principal.reveal-modal.medium{"data-reveal": "true"}
+
+
+  #ajaxAccessKeyCreation.reveal-modal.small{'data-reveal': None}
+    %header
+      %h1= _("Create access key")
+
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+
+    %form.admin-form{action: "{% url 'create_course_access_key_api' client_id=client.id %}", method: "POST"}
+      - csrf_token
+      %fieldset
+        %label &nbsp;
+        .row
+          .small-3.columns
+            %label{"for":"id_name"}
+              Name:
+          .small-9.columns
+            %input#id_name{"name": "name", "type": "text"}
+        .row
+          .small-3.columns
+            %label{"for":"id_course_id"}
+              Course id:
+          .small-9.columns
+            %input#id_course_id{"name": "course_id", "type": "text"}
+
+      .submit-area
+        #create_access_key.button.radius.small
+          Create
+
+
+- block js_snippets
+  :javascript
+    let noAccessKeysMsg = "{{ _('No access keys') }}";
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  %script{src: "{% static 'js/vendor/ZeroClipboard.min.js' %}"}
+  %script{src: "{% static 'js/admin/client_sso.js' %}"}

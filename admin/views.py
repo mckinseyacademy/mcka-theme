@@ -22,8 +22,8 @@ from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, Validat
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email
-from django.http import HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404, HttpResponseServerError
-from django.http.response import HttpResponseBadRequest
+from django.http import (HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404,
+                         HttpResponseServerError, HttpResponseBadRequest, JsonResponse)
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader, RequestContext
 from django.utils import timezone
@@ -1372,8 +1372,6 @@ def client_edit(request, client_id):
         if form.is_valid():  # All validation rules pass
             try:
                 client = Client.update_and_fetch(client_id, request.POST)
-                customization.identity_provider = form.cleaned_data['identity_provider']
-                customization.save()
                 # Redirect after POST
                 return HttpResponseRedirect('/admin/clients/')
 
@@ -1386,7 +1384,6 @@ def client_edit(request, client_id):
             'contact_email': client.contact_email,
             'contact_phone': client.contact_phone,
             'logo_url': client.logo_url,
-            'identity_provider': customization.identity_provider,
         })
 
     # set focus to company name field
@@ -1403,7 +1400,7 @@ def client_edit(request, client_id):
     return render(
         request,
         'admin/client/edit.haml',
-        data
+        data,
     )
 
 
@@ -1754,7 +1751,7 @@ def client_detail_remove_contact(request, client_id, user_id):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def access_key_list(request, client_id):
+def client_sso(request, client_id):
 
     def build_instance_name(program_id, course_id):
         instance = ""
@@ -1773,7 +1770,17 @@ def access_key_list(request, client_id):
                 instance += _("Course: {}").format(courses.get(course_id, _("Invalid Course Run")))
         return instance
 
+    (customization, created) = ClientCustomization.objects.get_or_create(
+        client_id=client_id,
+    )
+
+    # If the identity_provider field has been updated
+    if request.method == 'POST' and 'identity_provider' in request.POST:
+        customization.identity_provider = request.POST.get('identity_provider')
+        customization.save()
+
     client = Client.fetch(client_id)
+
     programs = {p.id: p.name for p in client.fetch_programs()}
     access_keys = list(AccessKey.objects.filter(client_id=client_id))
 
@@ -1784,12 +1791,18 @@ def access_key_list(request, client_id):
     data = {
         'client': client,
         'access_keys': access_keys,
-        'selected_client_tab': 'access_key_list',
+        'selected_client_tab': 'sso',
+        'identity_provider': customization.identity_provider,
+        'identity_provider_message': _("""
+            If this client should use SSO: DevOps must configure and enable their SAML Identity Provider
+            in the LMS django admin ("Provider Configuration - SAML IdP"). Enter the configured "Idp slug"
+            value here. If this client will not use SSO, leave this field blank.
+        """),
     }
 
     return render(
         request,
-        'admin/client/access_key_list',
+        'admin/client/sso',
         data,
     )
 
@@ -1817,7 +1830,7 @@ def create_access_key(request, client_id):
             model.client_id = int(client_id)
             model.code = code
             model.save()
-            return HttpResponseRedirect('/admin/clients/{}/access_keys'.format(client_id))
+            return HttpResponseRedirect(reverse('client_sso', args={'client_id': client_id}))
     else:
         form = CreateAccessKeyForm()
 
@@ -1829,6 +1842,7 @@ def create_access_key(request, client_id):
     data = {
         'form': form,
         'course': {"course_id": 0},
+        'client_id': client_id,
         'submit_label': _('Save'),
     }
     return render(request, 'admin/client/create_access_key', data)
@@ -1851,7 +1865,7 @@ def create_course_access_key(request, client_id):
             model.client_id = int(client_id)
             model.code = code
             model.save()
-            return HttpResponseRedirect('/admin/clients/{}/access_keys'.format(client_id))
+            return HttpResponseRedirect(reverse('client_sso', args={'client_id': client_id}))
     else:
         form = CreateCourseAccessKeyForm()
 
@@ -1862,6 +1876,7 @@ def create_course_access_key(request, client_id):
     data = {
         'form': form,
         'course': {"course_id": 0},
+        'client_id': client_id,
         'submit_label': _('Save'),
     }
     return render(request, 'admin/client/create_course_access_key', data)
@@ -1906,7 +1921,7 @@ def share_access_key(request, client_id, access_key_id):
             except SMTPException as e:
                 error = e.message
             else:
-                return HttpResponseRedirect('/admin/clients/{}/access_keys'.format(client_id))
+                return HttpResponseRedirect(reverse('client_sso', args={'client_id': client_id}))
     else:
         # An unbound form
         link = request.build_absolute_uri(reverse('access_key', kwargs={'code': access_key.code}))
@@ -1917,6 +1932,7 @@ def share_access_key(request, client_id, access_key_id):
         'error': error,
         'form': form,
         'access_key': access_key,
+        'client_id': client_id,
         'submit_label': _('Send'),
     }
     return render(request, 'admin/client/share_access_key.haml', data)
