@@ -41,10 +41,12 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         'additional_fields': "grades,roles,organizations,lesson_completions,progress",
     }
     task_log_msg = "Participants data retrieval task for course: {}".format(course_id)
+    storage_path = settings.EXPORT_STATS_DIR
 
     # for company, keep data retrieval to company participants
     if company_id:
         api_params.update({'organizations': company_id})
+        storage_path += '/' + company_id
         task_log_msg += " and company: {}".format(company_id)
 
     participants_data = []
@@ -159,7 +161,8 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
 
     logger.info('Created temp CSV file - {}'.format(task_log_msg))
 
-    storage_path = '{}/{}_{}'.format(settings.EXPORT_STATS_DIR, task_id, file_name)
+    # path is created as: /company_id/course_id/file_name
+    storage_path = '{}/{}/{}'.format(storage_path, course_id.replace('/', '__'), file_name)
     storage = default_storage
 
     try:

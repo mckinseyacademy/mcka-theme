@@ -373,6 +373,29 @@ class AccessChecker(object):
 
         return wrapper
 
+
+def export_stats_permission_check(user, company_id, course_id):
+    """
+    Checks permissions for course access
+    """
+    if user.is_company_admin:
+        if not company_id or int(company_id) not in [
+            user_org.id
+            for user_org in Permissions(user.id).get_all_user_organizations_with_permissions()
+                    .get(PERMISSION_GROUPS.COMPANY_ADMIN, [])
+        ]:
+            return False
+
+        company_courses = organization_api.get_organizations_courses(company_id)
+
+        if course_id not in [course.get('id') for course in company_courses]:
+            return False
+    elif user.is_internal_admin:
+        return check_if_course_is_internal(course_id)
+
+    return True
+
+
 checked_course_access = AccessChecker.course_access_wrapper
 checked_user_access = AccessChecker.users_access_wrapper
 checked_program_access = AccessChecker.program_access_wrapper

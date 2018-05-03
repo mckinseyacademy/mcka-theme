@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from storages.backends.s3boto import S3BotoStorage
 
 from lib.authorization import is_user_in_permission_group
+from admin.helpers.permissions_helpers import export_stats_permission_check
 from api_client.group_api import PERMISSION_GROUPS
 
 
@@ -11,6 +12,26 @@ EXPORT_STATS_ALLOWED_GROUPS = [
     PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
     PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
 ]
+
+
+def exports_stats_check(user, path):
+    """
+    Implements exports stats permissions based on path
+    """
+    company_id = None
+    course_id = None
+
+    _, resource_path = path.split(settings.EXPORT_STATS_DIR + '/')
+    path_parts = resource_path.split('/')
+    if len(path_parts) == 3:
+        company_id, course_id, _ = path_parts
+    elif len(path_parts) == 2:
+        course_id, _ = path_parts
+
+    if course_id:
+        course_id = course_id.replace('__', '/')
+
+    return export_stats_permission_check(user, company_id, course_id)
 
 
 class PrivateMediaStorage(S3BotoStorage):
@@ -53,13 +74,22 @@ class PrivateMediaStorageThroughApros(PrivateMediaStorage):
         else:
             return []
 
+    def _additional_permission_checks(self, user, path):
+        """
+        Additional permissions checks to apply for resource
+        """
+        if settings.EXPORT_STATS_DIR in path:
+            return exports_stats_check(user, path)
+        else:
+            return True
+
     def can_access(self, file_name, user):
         """
         Checks if request user can access this resource
         """
         allowed_groups = self._get_permission_groups(file_name)
 
-        if allowed_groups:
-            return is_user_in_permission_group(user, *allowed_groups)
-        else:
-            return True
+        groups_check = is_user_in_permission_group(user, *allowed_groups) if allowed_groups else True
+        additional_checks = self._additional_permission_checks(user, file_name)
+
+        return groups_check and additional_checks
