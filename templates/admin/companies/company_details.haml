@@ -35,7 +35,7 @@
           #additionalCompanyButtons
             %a.button.small.radius.navigationLink{:href => "/admin/clients/#{company.id}/navigation"}
               {% trans "Navigation" %}
-            %a.button.small.radius.accessLink{:href => "/admin/clients/#{company.id}/access_keys"}
+            %a.button.small.radius.accessLink{:href => "{% url 'client_sso' client_id=company.id %}"}
               {% trans "Access" %}
             - if user.is_mcka_admin
               %a#addAppPopupLink.companyLinkedApps.button.small.radius{"data-reveal-id" => "linkApp", :href => "#"}

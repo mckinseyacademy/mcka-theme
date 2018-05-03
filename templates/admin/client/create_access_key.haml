@@ -5,7 +5,7 @@
 .close-reveal-modal
   %i.fa.fa-times-circle
 
-%form.admin-form{action: "access_keys/create", method: "POST"}
+%form.admin-form{action: "{% url 'create_access_key' client_id=client_id %}", method: "POST"}
   - if error
     .error= error
   - csrf_token

@@ -37,8 +37,8 @@
       %a{href:"/admin/clients/#{client.id}/navigation"}
         = _("Navigation")
   %li
-    - if selected_client_tab == 'access_key_list'
-      %span.selected= _("Access Keys")
+    - if selected_client_tab == 'sso'
+      %span.selected= _("SSO")
     - else
-      %a{href:"/admin/clients/#{client.id}/access_keys"}
-        = _("Access Keys")
+      %a{href: "{% url 'client_sso' client_id=client.id %}" }
+        = _("SSO")

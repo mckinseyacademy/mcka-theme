@@ -39,7 +39,6 @@ class ClientForm(forms.Form):
     contact_name = forms.CharField(max_length=255)
     contact_phone = forms.CharField(max_length=20)
     contact_email = forms.EmailField()
-    identity_provider = forms.CharField(max_length=200, required=False)
 
 
 class EditEmailForm(forms.Form):

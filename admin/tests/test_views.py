@@ -1,14 +1,19 @@
+import json
 from functools import wraps
 
 from ddt import ddt, data
 from django.core.urlresolvers import reverse
 from django.test import TestCase, override_settings
-from django.test.client import Client
+from django.test.client import Client, RequestFactory
 from django.utils.decorators import available_attrs
-from mock import patch
+from mock import patch, Mock
 from rest_framework import status
 
+from accounts.models import RemoteUser
+from admin.models import Client as ClientModel
+from admin.views import client_sso
 from api_client.group_api import PERMISSION_GROUPS
+from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map, permission_group_required
 from accounts.tests.utils import ApplyPatchMixin
 from api_client import user_api, group_api
@@ -201,3 +206,54 @@ def mocked_execute_task(task_runner):
 #         if state == 'SUCCESS':
 #             self.assertEqual(response_data.get('values', {}).get('progress'), '100')
 
+
+class AdminClientSSOTest(TestCase, ApplyPatchMixin):
+
+    def setUp(self):
+        user_api = self.apply_patch('accounts.controller.user_api')
+        is_user_in_permission_group_lib = self.apply_patch("lib.authorization.is_user_in_permission_group")
+        is_user_in_permission_group_lib.return_value = True
+        is_user_in_permission_group_accounts = self.apply_patch("accounts.models.is_user_in_permission_group")
+        is_user_in_permission_group_accounts.return_value = True
+        fetch_programs = self.apply_patch('admin.views.Client.fetch_programs')
+        fetch_programs.return_value = []
+
+        self.factory = RequestFactory()
+        self.user = RemoteUser.objects.create_user(
+            username='johndoe', email='john@doe.org', password='password')
+        self.mock_session = Mock(session_key='', __contains__=lambda _a, _b: False)
+
+        org_data_str = json.dumps({
+            "url": "http://lms.mcka.local/api/server/organizations/1/",
+            "id": 1,
+            "name": "test_company",
+            "display_name": "Test Company Inc",
+            "contact_name": "Test Company",
+            "contact_email": "contact@test.company",
+            "contact_phone": "112233445566",
+            "logo_url": "",
+            "created": "2018-03-05T15:20:51.096508Z",
+            "modified": "2018-04-26T13:02:53.077131Z"
+        })
+        mock_fetch_organization = self.apply_patch('api_client.organization_api.fetch_organization')
+        mock_fetch_organization.return_value = JsonParser.from_json(org_data_str, ClientModel)
+
+    def test_no_access_keys_message(self):
+        request = self.factory.get('/admin/clients/1/sso')
+        request.user = self.user
+        request.session = self.mock_session
+        response = client_sso(request, 1)
+        self.assertIn('No access keys', response.content)
+
+    def test_save_identity_provider_success(self):
+        test_provider = 'test-provider'
+        request = self.factory.post('/admin/clients/1/sso', {
+            'identity_provider': test_provider,
+        })
+        request.user = self.user
+        request.session = self.mock_session
+        response = client_sso(request, 1)
+        idp_input_html = """
+            <input id='identity_provider' type='text' name='identity_provider' value='{}' />
+        """.format(test_provider)
+        self.assertInHTML(idp_input_html, response.content)
