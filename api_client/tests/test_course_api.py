@@ -96,7 +96,7 @@ class TestCourseApi(TestCase):
 
         def courseware_response(request, uri, headers):  # pylint: disable=unused-argument
             # staff user gets the course with 1 chapter
-            if self.STAFF_USER.username in uri:
+            if self.STAFF_USER.username in uri or "username" not in uri:
                 return (200, headers, self.course_response)
 
             # Everyone else gets the "empty course"
@@ -116,25 +116,25 @@ class TestCourseApi(TestCase):
 
     @ddt.data(
         # Test with positional arguments
-        ([COURSE_ID], {}),
-        ([COURSE_ID, DEPTH], {}),
-        ([COURSE_ID, DEPTH, TEST_USER], {}),
-        ([COURSE_ID, DEPTH], dict(user=TEST_USER)),
+        ([COURSE_ID], {}, 1),
+        ([COURSE_ID, DEPTH], {}, 1),
+        ([COURSE_ID, DEPTH, TEST_USER], {}, 0),
+        ([COURSE_ID, DEPTH], dict(user=TEST_USER), 0),
         # Test with keyword arguments
-        ([COURSE_ID], dict(depth=DEPTH)),
-        ([COURSE_ID], dict(depth=DEPTH, user=TEST_USER)),
+        ([COURSE_ID], dict(depth=DEPTH), 1),
+        ([COURSE_ID], dict(depth=DEPTH, user=TEST_USER), 0),
         # Test with dict user
-        ([COURSE_ID], dict(depth=DEPTH, user=USER_DICT)),
+        ([COURSE_ID], dict(depth=DEPTH, user=USER_DICT), 0),
     )
     @ddt.unpack
     @httpretty.activate
-    def test_get_course(self, args, kwargs):
+    def test_get_course(self, args, kwargs, expected_result):
         """
         Test get_course with positional and keyword argments.
         """
         self._setup_courseware_response()
         course = get_course(*args, **kwargs)
-        self.assertEquals(len(course.chapters), 0)
+        self.assertEquals(len(course.chapters), expected_result)
 
     @httpretty.activate
     def test_get_course_different_users(self):
