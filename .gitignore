@@ -4,7 +4,7 @@
 *.esproj
 local_settings.py
 Gemfile.lock
-tracking.log
+tracking.log*
 
 /static/gen/
 /static/scss/static/gen/

@@ -12,21 +12,25 @@ import math
 import logging
 import string
 import re
+import requests
 import StringIO
 
 from django.conf import settings
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.core.validators import validate_slug
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, HttpResponseBadRequest, HttpResponseForbidden
+from django.http import (HttpResponse, HttpResponseRedirect,
+                         HttpResponseNotFound, HttpResponseBadRequest,
+                         HttpResponseForbidden, JsonResponse)
 from django.contrib import auth, messages
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 from django.forms.widgets import HiddenInput
 from django.views.decorators.cache import never_cache
 from django.template.loader import render_to_string
+from requests import ConnectionError, HTTPError
 
 from util.url_helpers import get_referer_from_request
 from courses.models import FeatureFlags
@@ -74,12 +78,16 @@ VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "c
 USERNAME_INVALID_CHARS_REGEX = re.compile("[^-\w]")
 
 LOGIN_MODE_COOKIE = 'login_mode'
+MOBILE_URL_SCHEME_COOKIE = 'mobile_url_scheme'
 SSO_ACCESS_KEY_SESSION_ENTRY = 'sso_access_key_id'
 SSO_AUTH_ENTRY = 'apros'
 
 MISSING_ACCESS_KEY_ERROR = _("Your login did not match any known accounts, a registration key is required "
                              "in order to create a new account.")
 CANT_PROCESS_ACCESS_KEY = _("There was an error enrolling you in a course using the registration key you provided")
+
+OAUTH2_AUTHORIZE_PATH = '/oauth2/authorize/'
+OAUTH2_ACCESS_TOKEN_PATH = '/oauth2/access_token/'
 
 
 def _get_qs_value_from_url(value_name, url):
@@ -221,10 +229,32 @@ def _append_login_mode_cookie(response, login_mode):
     )
 
 
+def _append_mobile_url_scheme_cookie(response, mobile_url_scheme):
+    response.set_cookie(
+        MOBILE_URL_SCHEME_COOKIE, mobile_url_scheme, expires=datetime.datetime.utcnow() + datetime.timedelta(hours=1)
+    )
+
+
 def _expire_session_cookies(response):
     expire_in_past = datetime.datetime.utcnow() - datetime.timedelta(days=7)
     response.set_cookie('sessionid', 'to-delete', domain=settings.LMS_SESSION_COOKIE_DOMAIN, expires=expire_in_past)
     response.set_cookie('csrftoken', 'to-delete', expires=expire_in_past)
+
+
+def _get_mobile_url_scheme(request):
+    return request.GET.get(
+        'mobile_url_scheme',
+        request.COOKIES.get(MOBILE_URL_SCHEME_COOKIE, None))
+
+
+def _build_mobile_redirect_response(request, data):
+    ''' Builds a redirect response (via an HTML page) for mobile platforms. '''
+    scheme = _get_mobile_url_scheme(request)
+    redirect_url = '{scheme}://{path}?{query}'.format(
+        scheme=scheme,
+        path=settings.MOBILE_SSO_PATH,
+        query=urlencode(data))
+    return render(request, 'accounts/oauth_mobile_redirect.haml', {'redirect_to': redirect_url})
 
 
 def login(request):
@@ -324,6 +354,86 @@ def login(request):
         _expire_session_cookies(response)
 
     return response
+
+@require_http_methods(['GET'])
+def sso_launch(request):
+    ''' Initiates the SSO process for mobile clients. '''
+    provider = None
+    provider_id = request.GET.get('provider_id', None)
+    mobile_url_scheme = request.GET.get('mobile_url_scheme', None)
+
+    if provider_id is not None:
+        provider = "-".join(provider_id.split("-")[1:])
+
+    # If provider is not provided or is in an invalid format that doesn't include a ``-``
+    if not provider:
+        error = {"error": "invalid_provider_id"}
+        if mobile_url_scheme is not None:
+            return _build_mobile_redirect_response(request, error)
+        return JsonResponse(error, status=400)
+
+    redirect_url = _build_sso_redirect_url(provider, reverse('sso_finalize'))
+    response = HttpResponseRedirect(redirect_url)
+
+    _append_login_mode_cookie(response, 'sso')
+    if mobile_url_scheme is not None:
+        _append_mobile_url_scheme_cookie(response, mobile_url_scheme)
+
+    return response
+
+
+def finalize_sso_mobile(request):
+    '''
+    Handles getting Oauth2 credentials for mobile and redirecting to native app
+    url.
+    '''
+    error = request.GET.get('error', None)
+
+    if error is not None:
+        return _build_mobile_redirect_response(request, {'error': error})
+
+    # If we already have a code, it's because we've already completed the
+    # OAuth2 authorization process
+    code = request.GET.get('code', None)
+    if code is not None:
+        # Get an access token that the mobile app can use
+        try:
+            response = requests.post(
+                "{api_server}{access_token_path}".format(
+                    api_server=settings.API_SERVER_ADDRESS,
+                    access_token_path=OAUTH2_ACCESS_TOKEN_PATH,
+                ),
+                data={
+                    'client_id': settings.OAUTH2_MOBILE_CLIENT_ID,
+                    "client_secret": settings.OAUTH2_MOBILE_CLIENT_SECRET,
+                    "grant_type": "authorization_code",
+                    "code": code,
+                },
+            )
+            if response.status_code // 100 == 5:
+                response.raise_for_status()
+            oauth_data = response.json()
+            return _build_mobile_redirect_response(request, oauth_data)
+        except ConnectionError:
+            # Unable to connect to server
+            return _build_mobile_redirect_response(request, {'error': 'connection_error'})
+        except (HTTPError, ValueError):
+            # Server raised a 500 status, or returned a response that couldn't be parsed as JSON
+            return _build_mobile_redirect_response(request, {'error': 'server_error'})
+
+    # We don't have an authorization code yet, so redirect users to the authorization url.
+    # NOTE: This shouldn't need input from the user if the client is marked as trusted.
+    oauth_data = {
+        'client_id': settings.OAUTH2_MOBILE_CLIENT_ID,
+        'response_type': 'code',
+        'redirect_uri': request.build_absolute_uri(reverse('sso_finalize')),
+    }
+    access_token_redirect = "{api_server}{authorize_path}?{query}".format(
+        api_server=settings.API_SERVER_ADDRESS,
+        authorize_path=OAUTH2_AUTHORIZE_PATH,
+        query=urlencode(oauth_data)
+    )
+    return HttpResponseRedirect(access_token_redirect)
 
 
 def logout(request):
@@ -488,12 +598,27 @@ def activate_v2(request, activation_code):
     return render(request, 'accounts/activate.haml', data)
 
 @csrf_exempt
-@require_POST
-def finalize_sso_registration(request):
-    ''' Validate SSO data sent by the LMS, then display the registration form '''
+def sso_finalize(request):
+    '''
+    Call the desktop SSO registration view, or the mobile view. If already
+    logged in redirect to the home page.
+    '''
+
+    # If a mobile_url_scheme is defined, this view is called as part of the
+    # mobile SSO auth flow.
+    scheme = _get_mobile_url_scheme(request)
+    if scheme is not None:
+        return finalize_sso_mobile(request)
+
     if request.user.is_authenticated():
         return HttpResponseRedirect(reverse('protected_home'))
 
+    return finalize_sso_registration(request)
+
+
+@require_POST
+def finalize_sso_registration(request):
+    ''' Validate SSO data sent by the LMS, then display the registration form '''
     # Check the data sent by the provider:
     hmac_key = settings.EDX_SSO_DATA_HMAC_KEY
     if isinstance(hmac_key, unicode):
@@ -644,7 +769,18 @@ def sso_registration_form(request):
 
 def sso_error(request):
     ''' The LMS will redirect users here if an SSO error occurs '''
-    context = {'error_details': request.session.get('sso_error_details')}
+    # If a mobile_url_scheme is defined, this view is called as part of the
+    # mobile SSO auth flow.
+    scheme = _get_mobile_url_scheme(request)
+    error_details = request.session.get('sso_error_details')
+    error = request.session.get('error')
+
+    if scheme is not None:
+        return _build_mobile_redirect_response(request, {
+            'error': error or error_details or 'Unknown SSO Error'
+        })
+
+    context = {'error_details': error_details}
     return render(request, 'accounts/sso_error.haml', context)
 
 @ajaxify_http_redirects

@@ -1,19 +1,23 @@
 import uuid
-from urllib2 import HTTPError
+import urllib2
 
 import ddt
 import mock
+from django.conf import settings
 from django.utils import translation
 from mock import Mock, patch
 
 
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
+from requests import ConnectionError, HTTPError
 
 from accounts.controller import ProcessAccessKeyResult
 from accounts.models import RemoteUser
 from accounts.tests.utils import ApplyPatchMixin
-from accounts.views import _cleanup_username as cleanup_username, switch_language_based_on_preference
+from accounts.views import (_cleanup_username as cleanup_username, switch_language_based_on_preference,
+                            MOBILE_URL_SCHEME_COOKIE, _build_mobile_redirect_response, sso_launch,
+                            finalize_sso_mobile, sso_finalize, sso_error)
 from accounts.views import MISSING_ACCESS_KEY_ERROR, access_key
 from admin.models import AccessKey, ClientCustomization
 from api_client.api_error import ApiError
@@ -288,7 +292,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
 
         error_reason = "Duplicate user"
-        http_error = HTTPError("http://irrelevant", 409, error_reason, None, None)
+        http_error = urllib2.HTTPError("http://irrelevant", 404, error_reason, None, None)
         api_error = ApiError(http_error, "create_user", None)
 
         with mock.patch('accounts.views.user_api') as user_api_mock:
@@ -376,3 +380,141 @@ class TestSwitchLanguageBasedOnPreference(TestCase, ApplyPatchMixin):
     def tearDown(self):
         set_language('en-us')
 
+
+
+@ddt.ddt
+class TestMobileSSOApi(TestCase, ApplyPatchMixin):
+
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def _setup_request(self, request, user=None, sessionid=''):
+        request.user = user
+        request.session = Mock(session_key=sessionid, __contains__=lambda _a, _b: False)
+
+    def test_built_mobile_redirect_response(self):
+        request = self.factory.get('/')
+        self._setup_request(request)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
+        redirect_path = 'test-scheme://{}?test=data'.format(settings.MOBILE_SSO_PATH)
+        response = _build_mobile_redirect_response(request, {'test': 'data'})
+        self.assertIn(redirect_path, response.content)
+
+    @ddt.data(None, 'providerid')
+    def test_sso_launch_invalid_provider_id(self, provider_id):
+        request = self.factory.get('/accounts/sso_launch/', {'provider_id': provider_id})
+        self._setup_request(request)
+        response = sso_launch(request)
+        self.assertEqual('{"error": "invalid_provider_id"}', response.content)
+
+    @ddt.data(None, 'providerid')
+    def test_sso_launch_invalid_provider_id_mobile(self, provider_id):
+        request = self.factory.get('/accounts/sso_launch/', {
+            'provider_id': provider_id,
+            'mobile_url_scheme': 'test-scheme',
+        })
+        self._setup_request(request)
+        response = sso_launch(request)
+        self.assertIn('?error=invalid_provider_id', response.content)
+
+    @patch('accounts.views._build_sso_redirect_url')
+    def test_sso_launch_valid_provider_id(self, mock__build_sso_redirect_url):
+        request = self.factory.get('/accounts/sso_launch/', {
+            'provider_id': 'saml-test',
+            'mobile_url_scheme': 'test-scheme',
+        })
+        self._setup_request(request)
+        response = sso_launch(request)
+        mock__build_sso_redirect_url.assert_called_with('test', '/accounts/finalize/')
+
+    def test_finalize_sso_mobile_error(self):
+        request = self.factory.get('/accounts/finalize/', {'error': 'test-error'})
+        self._setup_request(request)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
+        response = finalize_sso_mobile(request)
+        self.assertIn('?error=test-error', response.content)
+
+    def test_finalize_sso_mobile_authorize_step(self):
+        request = self.factory.get('/accounts/finalize/')
+        self._setup_request(request)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
+        response = finalize_sso_mobile(request)
+        self.assertEqual(302, response.status_code)
+        self.assertIn('/oauth2/authorize/', response.url)
+
+    @ddt.data(
+        (ConnectionError, 'connection_error'),
+        (HTTPError, 'server_error'),
+        (ValueError, 'server_error'),
+    )
+    @ddt.unpack
+    def test_finalize_sso_mobile_access_token_step_error(self, error_class, error_message):
+        mock_post = self.apply_patch('accounts.views.requests.post')
+        mock_post.side_effect = error_class
+        request = self.factory.get('/accounts/finalize/', {'code': 'some-code'})
+        self._setup_request(request)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
+        response = finalize_sso_mobile(request)
+        self.assertIn('?error={}'.format(error_message), response.content)
+
+    def test_finalize_sso_mobile_access_token_step_error_500(self):
+        mock_post = self.apply_patch('accounts.views.requests.post')
+        mock_response = Mock()
+        mock_response.status_code = 555
+        mock_response.raise_for_status = Mock(side_effect=HTTPError)
+        mock_post.return_value = mock_response
+        request = self.factory.get('/accounts/finalize/', {'code': 'some-code'})
+        self._setup_request(request)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
+        response = finalize_sso_mobile(request)
+        self.assertIn('?error=server_error', response.content)
+
+    def test_finalize_sso_mobile_access_token_step_success(self):
+        mock_post = self.apply_patch('accounts.views.requests.post')
+        mock_response = Mock()
+        mock_response.status_code = 333
+        mock_response.json = Mock()
+        mock_response.json.return_value = {
+            'access_token': 'some-token'
+        }
+        mock_post.return_value = mock_response
+        request = self.factory.get('/accounts/finalize/', {'code': 'some-code'})
+        self._setup_request(request)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
+        response = finalize_sso_mobile(request)
+        self.assertIn('?access_token=some-token', response.content)
+
+    def test_sso_finalize_uses_mobile_route(self):
+        mock_finalize_sso_mobile = self.apply_patch('accounts.views.finalize_sso_mobile')
+        request = self.factory.get('/accounts/finalize/')
+        self._setup_request(request)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
+        response = sso_finalize(request)
+        mock_finalize_sso_mobile.assert_called_with(request)
+
+    def test_sso_finalize_uses_normal_route_authenticated(self):
+        mock_finalize_sso_registration = self.apply_patch('accounts.views.finalize_sso_registration')
+        request = self.factory.get('/accounts/finalize/')
+        mock_user = Mock()
+        mock_user.is_authenticated = lambda: True
+        self._setup_request(request, user=mock_user)
+        response = sso_finalize(request)
+        self.assertEqual('/home', response.url)
+        self.assertEqual(302, response.status_code)
+
+    def test_sso_finalize_uses_normal_route_unauthenticated(self):
+        mock_finalize_sso_registration = self.apply_patch('accounts.views.finalize_sso_registration')
+        request = self.factory.get('/accounts/finalize/')
+        mock_user = Mock()
+        mock_user.is_authenticated = lambda: False
+        self._setup_request(request, user=mock_user)
+        response = sso_finalize(request)
+        mock_finalize_sso_registration.assert_called_with(request)
+
+    def test_sso_error_mobile(self):
+        request = self.factory.get('/accounts/sso_error/')
+        self._setup_request(request)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
+        request.session.get = lambda val: 'test-error' if val == 'error' else None
+        response = sso_error(request)
+        self.assertIn('?error=test-error', response.content)
