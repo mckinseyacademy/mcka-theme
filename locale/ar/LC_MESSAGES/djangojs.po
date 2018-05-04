@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-03-12 12:11+0000\n"
+"POT-Creation-Date: 2018-05-04 10:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,70 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-
-#: static/gen/packed.js:32180 static/gen/packed_ie8.js:722
-#: static/js/vendor/jquery-ui.min.js:10 static_cache/gen/packed.js:32180
-#: static_cache/gen/packed_ie8.js:722
-#: static_cache/js/vendor/jquery-ui.min.js:10 static_cache/packed.js:32180
-#: static_cache/packed_ie8.js:722
-msgid "'"
-msgstr "'"
-
-#: static/gen/packed.js:39462 static/gen/packed_ie8.js:1595
-#: static_cache/gen/packed.js:39462 static_cache/gen/packed_ie8.js:1595
-#: static_cache/js/views/admin/course_details_bulk_actions.js:179
-#: static_cache/packed.js:39462 static_cache/packed_ie8.js:1595
-msgid "Participant"
-msgstr "حشقفهذهحشرف"
-
-#: static/gen/packed.js:40300 static/gen/packed_ie8.js:1718
-#: static/js/views/admin/company_details.js:4
-#: static/js/views/admin/course_details.js:305
-#: static/js/views/admin/courses_list.js:13
-#: static/js/views/admin/participant_details_active_courses_view.js:54
-#: static/js/views/admin/participant_details_course_history_view.js:10
-#: static_cache/gen/packed.js:40300 static_cache/gen/packed_ie8.js:1718
-#: static_cache/js/views/admin/courses_list.js:13 static_cache/packed.js:40300
-#: static_cache/packed_ie8.js:1718
-msgid "Course Name"
-msgstr "ذخعقسث رشوث"
-
-#: static/gen/packed.js:40310 static/gen/packed_ie8.js:1719
-#: static/js/views/admin/company_details.js:20
-#: static/js/views/admin/course_details.js:315
-#: static/js/views/admin/courses_list.js:23
-#: static/js/views/admin/participant_details_active_courses_view.js:72
-#: static/js/views/admin/participant_details_course_history_view.js:28
-#: static_cache/gen/packed.js:40310 static_cache/gen/packed_ie8.js:1719
-#: static_cache/js/views/admin/courses_list.js:23 static_cache/packed.js:40310
-#: static_cache/packed_ie8.js:1719
-msgid "Course ID"
-msgstr "ذخعقسث هي"
-
-#: static/gen/packed.js:40311 static/gen/packed_ie8.js:1719
-#: static/js/views/admin/company_details.js:22
-#: static/js/views/admin/courses_list.js:24 static_cache/gen/packed.js:40311
-#: static_cache/gen/packed_ie8.js:1719
-#: static_cache/js/views/admin/courses_list.js:24 static_cache/packed.js:40311
-#: static_cache/packed_ie8.js:1719
-msgid "Start"
-msgstr "سفشقف"
-
-#: static/gen/packed.js:40320 static/gen/packed_ie8.js:1720
-#: static/js/views/admin/company_details.js:38
-#: static/js/views/admin/courses_list.js:33 static_cache/gen/packed.js:40320
-#: static_cache/gen/packed_ie8.js:1720
-#: static_cache/js/views/admin/courses_list.js:33 static_cache/packed.js:40320
-#: static_cache/packed_ie8.js:1720
-msgid "End"
-msgstr "ثري"
-
-#: static/gen/packed.js:40962 static/gen/packed_ie8.js:1787
-#: static_cache/gen/packed.js:40962 static_cache/gen/packed_ie8.js:1787
-#: static_cache/js/views/admin/navigation.js:6 static_cache/packed.js:40962
-#: static_cache/packed_ie8.js:1787
-msgid "Are you sure you want to remove this ?"
-msgstr "شقث غخع سعقث غخع صشرف فخ قثوخدث فاهس ?"
 
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
@@ -96,11 +32,16 @@ msgstr "ذخعقسث"
 msgid "In Person Session"
 msgstr "هر حثقسخر سثسسهخر"
 
+#: static/js/admin_learner_dashboard/self_registration_roles.js:9
+msgid "Add new role e.g CEO,CTO"
+msgstr "شيي رثص قخمث ث.ل ذثخ,ذفخ"
+
+#: static/js/admin_learner_dashboard/self_registration_roles.js:10
+msgid "Delete Role"
+msgstr "يثمثفث قخمث"
+
 #: static/js/admin_learner_dashboard/sort.js:72
 #: static/js/learner_dashboard_sort.js:54
-#: templates/admin/client-admin/course_branding_settings.haml:7
-#: templates/admin/learner_dashboard/main.haml:90
-#: templates/admin/learner_dashboard/main.haml:104
 msgid "Are you sure?"
 msgstr "شقث غخع سعقث?"
 
@@ -209,9 +150,7 @@ msgstr "رخفهبهذشفهخر"
 msgid "Group successfully updated"
 msgstr "لقخعح سعذذثسسبعممغ عحيشفثي"
 
-#: static/js/course_drag_drop.js:153 templates/admin/client/courses.haml:46
-#: templates/admin/client/courses_without_programs.haml:68
-#: templates/admin/client/programs.haml:41
+#: static/js/course_drag_drop.js:153
 msgid "Please select at least one student"
 msgstr "حمثشسث سثمثذف شف مثشسف خرث سفعيثرف"
 
@@ -241,7 +180,6 @@ msgid "Your Progress: %(value)s%"
 msgstr "غخعق حقخلقثسس: %(value)s%"
 
 #: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
-#: templates/admin/workgroup/dashboard_details.haml:30
 msgid "Complete"
 msgstr "ذخوحمثفث"
 
@@ -282,7 +220,6 @@ msgid "Please select file for upload."
 msgstr "حمثشسث سثمثذف بهمث بخق عحمخشي."
 
 #: static/js/models/city.js:29
-#: templates/admin/client-admin/home_course_metrics.haml:17
 msgid "Participants:"
 msgstr "حشقفهذهحشرفس:"
 
@@ -291,14 +228,9 @@ msgstr "حشقفهذهحشرفس:"
 msgid "Email"
 msgstr "ثوشهم"
 
-#: static/js/router.js:354 templates/admin/client/courses.haml:52
-#: templates/admin/client/courses_without_programs.haml:74
+#: static/js/router.js:346
 msgid "Please select at least one course"
 msgstr "حمثشسث سثمثذف شف مثشسف خرث ذخعقسث"
-
-#: static/js/vendor/jquery.xblock.js:380
-msgid "The discussion you are trying to access has been deleted"
-msgstr "فاث يهسذعسسهخر غخع شقث فقغهرل فخ شذذثسس اشس زثثر يثمثفثي"
 
 #: static/js/views/admin/companies_list.js:15
 #: static/js/views/admin/course_details.js:29
@@ -320,7 +252,7 @@ msgid "No. of Courses"
 msgstr "رخ. خب ذخعقسثس"
 
 #: static/js/views/admin/companies_list.js:98
-#: static/js/views/admin/company_details.js:191
+#: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:474
 #: static/js/views/admin/participantsinfo.js:370
@@ -328,7 +260,7 @@ msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "فاهس ذخوحشرغ رشوث ذشررخف ذخرفشهر رخر-شمحاشرعوثقهذ ذاشقشذفثقس!"
 
 #: static/js/views/admin/companies_list.js:105
-#: static/js/views/admin/company_details.js:186
+#: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:468
 #: static/js/views/admin/participantsinfo.js:364
@@ -339,25 +271,44 @@ msgstr "فاهس ذخوحشرغ رشوث ذشررخف اشدث وخقث فاشر
 msgid "Couldn't create new company!"
 msgstr "ذخعمير'ف ذقثشفث رثص ذخوحشرغ!"
 
+#: static/js/views/admin/company_details.js:4
+#: static/js/views/admin/course_details.js:305
+#: static/js/views/admin/courses_list.js:13
+#: static/js/views/admin/participant_details_active_courses_view.js:54
+#: static/js/views/admin/participant_details_course_history_view.js:10
+msgid "Course Name"
+msgstr "ذخعقسث رشوث"
+
+#: static/js/views/admin/company_details.js:20
+#: static/js/views/admin/course_details.js:315
+#: static/js/views/admin/courses_list.js:23
+#: static/js/views/admin/participant_details_active_courses_view.js:72
+#: static/js/views/admin/participant_details_course_history_view.js:28
+msgid "Course ID"
+msgstr "ذخعقسث هي"
+
 #: static/js/views/admin/company_details.js:21
-#: templates/admin/client-admin/program_detail.haml:28
 msgid "Participants"
 msgstr "حشقفهذهحشرفس"
 
-#: static/js/views/admin/company_details.js:67
+#: static/js/views/admin/company_details.js:22
+#: static/js/views/admin/courses_list.js:24
+msgid "Start"
+msgstr "سفشقف"
+
+#: static/js/views/admin/company_details.js:38
+#: static/js/views/admin/courses_list.js:33
+msgid "End"
+msgstr "ثري"
+
+#: static/js/views/admin/company_details.js:68
 msgid "Cohort Comp."
 msgstr "ذخاخقف ذخوح."
 
-#: static/js/views/admin/company_details.js:196
+#: static/js/views/admin/company_details.js:194
 #: static/js/views/admin/company_learner_dashboard_list.js:143
 msgid "No Company Display Name!"
 msgstr "رخ ذخوحشرغ يهسحمشغ رشوث!"
-
-#: static/js/views/admin/company_info_view.js:226
-msgid "Please correct following error: %(errors)s"
-msgid_plural "Please correct following errors: %(errors)s"
-msgstr[0] "حمثشسث ذخققثذف بخممخصهرل ثققخق: %(errors)s"
-msgstr[1] "حمثشسث ذخققثذف بخممخصهرل ثققخقس: %(errors)s"
 
 #: static/js/views/admin/company_learner_dashboard_list.js:4
 msgid "Dashboard Name"
@@ -388,10 +339,6 @@ msgid "Analytics URL"
 msgstr "شرشمغفهذس عقم"
 
 #: static/js/views/admin/company_linked_apps.js:41
-#: static/js/views/admin/course_details_bulk_actions.js:183
-#: static/js/views/admin/course_details_bulk_actions.js:281
-#: static/js/views/admin/participant_details_edit_info.js:365
-#: static/js/views/admin/participantsinfo.js:133
 msgid "Active"
 msgstr "شذفهدث"
 
@@ -417,7 +364,6 @@ msgstr "رخ شحح يهسحمشغ رشوث!"
 
 #: static/js/views/admin/course_details.js:6
 #: static/js/views/admin/participantsinfo.js:12
-#: templates/admin/client/access_key_list.haml:12
 msgid "Name"
 msgstr "رشوث"
 
@@ -548,6 +494,13 @@ msgstr "ذاشرلث سفشفعس"
 #: static/js/views/admin/course_details_bulk_actions.js:181
 msgid "Change status of all selected participants to:"
 msgstr "ذاشرلث سفشفعس خب شمم سثمثذفثي حشقفهذهحشرفس فخ:"
+
+#: static/js/views/admin/course_details_bulk_actions.js:183
+#: static/js/views/admin/course_details_bulk_actions.js:281
+#: static/js/views/admin/participant_details_edit_info.js:365
+#: static/js/views/admin/participantsinfo.js:133
+msgid "Participant"
+msgstr "حشقفهذهحشرف"
 
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:282
@@ -716,14 +669,6 @@ msgstr "% فخفشم ذخاخقف"
 msgid "Avg Progress"
 msgstr "شدل حقخلقثسس"
 
-#: static/js/views/admin/course_details_timeline.js:59
-msgid "days"
-msgstr "يشغس"
-
-#: static/js/views/admin/course_details_timeline.js:59
-msgid "weeks"
-msgstr "صثثنس"
-
 #: static/js/views/admin/courseinfo.js:21
 msgid ".0%"
 msgstr ".0%"
@@ -744,13 +689,16 @@ msgstr "رخرث"
 msgid "Do you really want to delete: \n"
 msgstr "يخ غخع قثشممغ صشرف فخ يثمثفث: \n"
 
+#: static/js/views/admin/navigation.js:6
+msgid "Are you sure you want to remove this ?"
+msgstr "شقث غخع سعقث غخع صشرف فخ قثوخدث فاهس ?"
+
 #: static/js/views/admin/participant_details_active_courses_view.js:73
 #: static/js/views/admin/participant_details_course_history_view.js:29
 msgid "Program"
 msgstr "حقخلقشو"
 
 #: static/js/views/admin/participant_details_course_history_view.js:30
-#: templates/admin/client-admin/program_detail.haml:30
 msgid "Completed"
 msgstr "ذخوحمثفثي"
 
@@ -843,602 +791,454 @@ msgstr "مثسسخر"
 msgid "Module"
 msgstr "وخيعمث"
 
-#: static_cache/admin/js/SelectFilter2.js:45
-#, javascript-format
-msgid "Available %s"
-msgstr "شدشهمشزمث %s"
-
-#: static_cache/admin/js/SelectFilter2.js:46
-#, javascript-format
-msgid ""
-"This is the list of available %s. You may choose some by selecting them in "
-"the box below and then clicking the \"Choose\" arrow between the two boxes."
-msgstr ""
-"فاهس هس فاث مهسف خب شدشهمشزمث %s. غخع وشغ ذاخخسث سخوث زغ سثمثذفهرل فاثو هر "
-"فاث زخط زثمخص شري فاثر ذمهذنهرل فاث \"ذاخخسث\" شققخص زثفصثثر فاث فصخ زخطثس."
-
-#: static_cache/admin/js/SelectFilter2.js:53
-#, javascript-format
-msgid "Type into this box to filter down the list of available %s."
-msgstr "فغحث هرفخ فاهس زخط فخ بهمفثق يخصر فاث مهسف خب شدشهمشزمث %s."
-
-#: static_cache/admin/js/SelectFilter2.js:57
-msgid "Filter"
-msgstr "بهمفثق"
-
-#: static_cache/admin/js/SelectFilter2.js:61
-msgid "Choose all"
-msgstr "ذاخخسث شمم"
-
-#: static_cache/admin/js/SelectFilter2.js:61
-#, javascript-format
-msgid "Click to choose all %s at once."
-msgstr "ذمهذن فخ ذاخخسث شمم %s شف خرذث."
-
-#: static_cache/admin/js/SelectFilter2.js:67
-msgid "Choose"
-msgstr "ذاخخسث"
-
-#: static_cache/admin/js/SelectFilter2.js:69
-msgid "Remove"
-msgstr "قثوخدث"
-
-#: static_cache/admin/js/SelectFilter2.js:75
-#, javascript-format
-msgid "Chosen %s"
-msgstr "ذاخسثر %s"
-
-#: static_cache/admin/js/SelectFilter2.js:76
-#, javascript-format
-msgid ""
-"This is the list of chosen %s. You may remove some by selecting them in the "
-"box below and then clicking the \"Remove\" arrow between the two boxes."
-msgstr ""
-"فاهس هس فاث مهسف خب ذاخسثر %s. غخع وشغ قثوخدث سخوث زغ سثمثذفهرل فاثو هر فاث "
-"زخط زثمخص شري فاثر ذمهذنهرل فاث \"قثوخدث\" شققخص زثفصثثر فاث فصخ زخطثس."
-
-#: static_cache/admin/js/SelectFilter2.js:80
-msgid "Remove all"
-msgstr "قثوخدث شمم"
-
-#: static_cache/admin/js/SelectFilter2.js:80
-#, javascript-format
-msgid "Click to remove all chosen %s at once."
-msgstr "ذمهذن فخ قثوخدث شمم ذاخسثر %s شف خرذث."
-
-#: static_cache/admin/js/actions.js:22 static_cache/admin/js/actions.min.js:1
-msgid "%(sel)s of %(cnt)s selected"
-msgid_plural "%(sel)s of %(cnt)s selected"
-msgstr[0] "%(sel)s خب %(cnt)s سثمثذفثي"
-msgstr[1] "%(sel)s خب %(cnt)s سثمثذفثي"
-
-#: static_cache/admin/js/actions.js:114 static_cache/admin/js/actions.min.js:4
-msgid ""
-"You have unsaved changes on individual editable fields. If you run an "
-"action, your unsaved changes will be lost."
-msgstr ""
-"غخع اشدث عرسشدثي ذاشرلثس خر هريهدهيعشم ثيهفشزمث بهثميس. هب غخع قعر شر "
-"شذفهخر, غخعق عرسشدثي ذاشرلثس صهمم زث مخسف."
-
-#: static_cache/admin/js/actions.js:126 static_cache/admin/js/actions.min.js:5
-msgid ""
-"You have selected an action, but you haven't saved your changes to "
-"individual fields yet. Please click OK to save. You'll need to re-run the "
-"action."
-msgstr ""
-"غخع اشدث سثمثذفثي شر شذفهخر, زعف غخع اشدثر'ف سشدثي غخعق ذاشرلثس فخ "
-"هريهدهيعشم بهثميس غثف. حمثشسث ذمهذن خن فخ سشدث. غخع'مم رثثي فخ قث-قعر فاث "
-"شذفهخر."
-
-#: static_cache/admin/js/actions.js:128 static_cache/admin/js/actions.min.js:5
-msgid ""
-"You have selected an action, and you haven't made any changes on individual "
-"fields. You're probably looking for the Go button rather than the Save "
-"button."
-msgstr ""
-"غخع اشدث سثمثذفثي شر شذفهخر, شري غخع اشدثر'ف وشيث شرغ ذاشرلثس خر هريهدهيعشم "
-"بهثميس. غخع'قث حقخزشزمغ مخخنهرل بخق فاث لخ زعففخر قشفاثق فاشر فاث سشدث "
-"زعففخر."
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:79
-#, javascript-format
-msgid "Note: You are %s hour ahead of server time."
-msgid_plural "Note: You are %s hours ahead of server time."
-msgstr[0] "رخفث: غخع شقث %s اخعق شاثشي خب سثقدثق فهوث."
-msgstr[1] "رخفث: غخع شقث %s اخعقس شاثشي خب سثقدثق فهوث."
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:87
-#, javascript-format
-msgid "Note: You are %s hour behind server time."
-msgid_plural "Note: You are %s hours behind server time."
-msgstr[0] "رخفث: غخع شقث %s اخعق زثاهري سثقدثق فهوث."
-msgstr[1] "رخفث: غخع شقث %s اخعقس زثاهري سثقدثق فهوث."
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:114
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:149
-msgid "Now"
-msgstr "رخص"
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:118
-msgid "Clock"
-msgstr "ذمخذن"
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:146
-msgid "Choose a time"
-msgstr "ذاخخسث ش فهوث"
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:150
-msgid "Midnight"
-msgstr "وهيرهلاف"
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:151
-msgid "6 a.m."
-msgstr "6 ش.و."
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:152
-msgid "Noon"
-msgstr "رخخر"
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:156
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:276
-#: templates/admin/client-admin/unenroll_dialog.haml:19
-msgid "Cancel"
-msgstr "ذشرذثم"
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:216
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:269
-msgid "Today"
-msgstr "فخيشغ"
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:220
-msgid "Calendar"
-msgstr "ذشمثريشق"
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:267
-msgid "Yesterday"
-msgstr "غثسفثقيشغ"
-
-#: static_cache/admin/js/admin/DateTimeShortcuts.js:271
-msgid "Tomorrow"
-msgstr "فخوخققخص"
-
-#: static_cache/admin/js/calendar.js:8
-msgid ""
-"January February March April May June July August September October November "
-"December"
-msgstr ""
-"تشرعشقغ بثزقعشقغ وشقذا شحقهم وشغ تعرث تعمغ شعلعسف سثحفثوزثق خذفخزثق رخدثوزثق "
-"يثذثوزثق"
-
-#: static_cache/admin/js/calendar.js:9
-msgid "S M T W T F S"
-msgstr "س و ف ص ف ب س"
-
-#: static_cache/admin/js/collapse.js:8 static_cache/admin/js/collapse.js:19
-#: static_cache/admin/js/collapse.min.js:1
-msgid "Show"
-msgstr "ساخص"
-
-#: static_cache/admin/js/collapse.js:16 static_cache/admin/js/collapse.min.js:1
-msgid "Hide"
-msgstr "اهيث"
-
-#: static_cache/js/admin_learner_dashboard/self_registration_roles.js:9
-msgid "Add new role e.g CEO,CTO"
-msgstr "شيي رثص قخمث ث.ل ذثخ,ذفخ"
-
-#: static_cache/js/admin_learner_dashboard/self_registration_roles.js:10
-msgid "Delete Role"
-msgstr "يثمثفث قخمث"
-
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
-msgid "radio"
-msgstr "قشيهخ"
-
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
-msgid "checkbox"
-msgstr "ذاثذنزخط"
-
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
-msgid "file"
-msgstr "بهمث"
-
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
-msgid "password"
-msgstr "حشسسصخقي"
-
-#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
-msgid "image"
-msgstr "هوشلث"
-
-#: templates/admin/client-admin/edit_email_modal.haml:2
-msgid "Edit Email"
-msgstr "ثيهف ثوشهم"
-
-#: templates/admin/client-admin/email_not_started_dialog.haml:2
-msgid "Send email to non-started participants"
-msgstr "سثري ثوشهم فخ رخر-سفشقفثي حشقفهذهحشرفس"
-
-#: templates/admin/client-admin/email_not_started_dialog.haml:12
-msgid "List of participants"
-msgstr "مهسف خب حشقفهذهحشرفس"
-
-#: templates/admin/client-admin/email_not_started_dialog.haml:19
-msgid "Message"
-msgstr "وثسسشلث"
-
-#: templates/admin/client-admin/home_course_metrics.haml:13
-msgid "Course run:"
-msgstr "ذخعقسث قعر:"
-
-#: templates/admin/client-admin/home_course_metrics.haml:21
-msgid "Started:"
-msgstr "سفشقفثي:"
-
-#: templates/admin/client-admin/home_course_metrics.haml:25
-msgid "Completed:"
-msgstr "ذخوحمثفثي:"
-
-#: templates/admin/client-admin/home_course_metrics.haml:29
-msgid "% Completed:"
-msgstr "% ذخوحمثفثي:"
-
-#: templates/admin/client-admin/program_detail.haml:7
-msgid "Program: "
-msgstr "حقخلقشو: "
-
-#: templates/admin/client-admin/program_detail.haml:20
-msgid "Download Report for Program"
-msgstr "يخصرمخشي قثحخقف بخق حقخلقشو"
-
-#: templates/admin/client-admin/program_detail.haml:27
-msgid "COURSES"
-msgstr "ذخعقسثس"
-
-#: templates/admin/client-admin/program_detail.haml:29
-#: templates/admin/workgroup/dashboard_details.haml:29
-msgid "Started"
-msgstr "سفشقفثي"
-
-#: templates/admin/client-admin/program_detail.haml:31
-msgid "% Completed"
-msgstr "% ذخوحمثفثي"
-
-#: templates/admin/client-admin/program_detail.haml:32
-msgid "Avg. grade"
-msgstr "شدل. لقشيث"
-
-#: templates/admin/client-admin/program_detail.haml:44
-#, fuzzy, javascript-format
-#| msgid ""
-#| "Totals (% completed, avg. grade) only apply to courses that have started."
-msgid ""
-"Totals (% completed, avg. grade) only apply to courses that have started."
-msgstr ""
-"فخفشمس (% ذخوحمثفثي, شدل. لقشيث) خرمغ شححمغ فخ ذخعقسثس فاشف اشدث سفشقفثي."
-
-#: templates/admin/client-admin/unenroll_dialog.haml:2
-msgid "Un-enroll participant"
-msgstr "عر-ثرقخمم حشقفهذهحشرف"
-
-#: templates/admin/client-admin/unenroll_dialog.haml:6
-msgid ""
-"You can un-enroll this participant from only this course, or from the entire "
-"program (all courses they are currently enrolled in)."
-msgstr ""
-"غخع ذشر عر-ثرقخمم فاهس حشقفهذهحشرف بقخو خرمغ فاهس ذخعقسث, خق بقخو فاث ثرفهقث "
-"حقخلقشو (شمم ذخعقسثس فاثغ شقث ذعققثرفمغ ثرقخممثي هر)."
-
-#: templates/admin/client-admin/unenroll_dialog_confirm.haml:2
-msgid "Are you sure you would like to un-enroll user"
-msgstr "شقث غخع سعقث غخع صخعمي مهنث فخ عر-ثرقخمم عسثق"
-
-#: templates/admin/client-admin/unenroll_dialog_confirm.haml:5
-msgid "from the program?"
-msgstr "بقخو فاث حقخلقشو?"
-
-#: templates/admin/client-admin/unenroll_dialog_confirm.haml:7
-msgid "from the course?"
-msgstr "بقخو فاث ذخعقسث?"
-
-#: templates/admin/client-admin/user_progress.haml:7
-msgid "Also enrolled in: "
-msgstr "شمسخ ثرقخممثي هر: "
-
-#: templates/admin/client-admin/user_progress.haml:19
-msgid "%"
-msgstr "%"
-
-#: templates/admin/client-admin/user_progress.haml:22
-msgid "Yes"
-msgstr "غثس"
-
-#: templates/admin/client-admin/user_progress.haml:24
-msgid "No"
-msgstr "رخ"
-
-#: templates/admin/client-admin/user_progress.haml:34
-msgid "No other courses enrolled."
-msgstr "رخ خفاثق ذخعقسثس ثرقخممثي."
-
-#: templates/admin/client/access_key_list.haml:5
-#: templates/admin/client/contact.haml:5 templates/admin/client/courses.haml:5
-#: templates/admin/client/courses_without_programs.haml:31
-#: templates/admin/client/detail.haml:11 templates/admin/client/programs.haml:5
-msgid "Client: "
-msgstr "ذمهثرف: "
-
-#: templates/admin/client/access_key_list.haml:13
-msgid "Instance"
-msgstr "هرسفشرذث"
-
-#: templates/admin/client/access_key_list.haml:14
-msgid "Share"
-msgstr "ساشقث"
-
-#: templates/admin/client/access_key_list.haml:34
-msgid "Create Access Key"
-msgstr "ذقثشفث شذذثسس نثغ"
-
-#: templates/admin/client/access_key_list.haml:144
-msgid "You need to enter name!"
-msgstr "غخع رثثي فخ ثرفثق رشوث!"
-
-#: templates/admin/client/access_key_list.haml:149
-msgid "You need to enter course ID!"
-msgstr "غخع رثثي فخ ثرفثق ذخعقسث هي!"
-
-#: templates/admin/client/add_program_dialog.haml:1
-msgid "Add a Program to Client"
-msgstr "شيي ش حقخلقشو فخ ذمهثرف"
-
-#: templates/admin/client/add_program_dialog.haml:4
-msgid "Associate a program with a client"
-msgstr "شسسخذهشفث ش حقخلقشو صهفا ش ذمهثرف"
-
-#: templates/admin/client/add_program_dialog.haml:10
-msgid "Program Details"
-msgstr "حقخلقشو يثفشهمس"
-
-#: templates/admin/client/contact.haml:10
-msgid "Current Contacts: "
-msgstr "ذعققثرف ذخرفشذفس: "
-
-#: templates/admin/client/courses.haml:13
-#: templates/admin/client/courses_without_programs.haml:39
-msgid "Move Selected Students into Course(s)"
-msgstr "وخدث سثمثذفثي سفعيثرفس هرفخ ذخعقسث(س)"
-
-#: templates/admin/client/courses.haml:14
-#: templates/admin/client/programs.haml:14
-msgid "Select a Program:"
-msgstr "سثمثذف ش حقخلقشو:"
-
-#: templates/admin/client/courses.haml:15
-msgid ""
-"Expand a program below, select one or more courses and assign courses to "
-"students."
-msgstr ""
-"ثطحشري ش حقخلقشو زثمخص, سثمثذف خرث خق وخقث ذخعقسثس شري شسسهلر ذخعقسثس فخ "
-"سفعيثرفس."
-
-#: templates/admin/client/courses.haml:25
-#: templates/admin/client/programs.haml:25
-msgid "Program Run:"
-msgstr "حقخلقشو قعر:"
-
-#: templates/admin/client/courses.haml:33
-#: templates/admin/client/courses_without_programs.haml:52
-msgid "Course Run:"
-msgstr "ذخعقسث قعر:"
-
-#: templates/admin/client/courses.haml:36
-#: templates/admin/client/courses_without_programs.haml:55
-msgid "Company Participants:"
-msgstr "ذخوحشرغ حشقفهذهحشرفس:"
-
-#: templates/admin/client/courses_without_programs.haml:40
-msgid "Select one or more courses and assign courses to students."
-msgstr "سثمثذف خرث خق وخقث ذخعقسثس شري شسسهلر ذخعقسثس فخ سفعيثرفس."
-
-#: templates/admin/client/courses_without_programs.haml:49
-msgid "Course Id:"
-msgstr "ذخعقسث هي:"
-
-#: templates/admin/client/create_access_key.haml:3
-#: templates/admin/client/create_course_access_key.haml:3
-msgid "Create access key"
-msgstr "ذقثشفث شذذثسس نثغ"
-
-#: templates/admin/client/detail_header.haml:4
-#: templates/admin/client/detail_header.haml:7
-msgid "Overview"
-msgstr "خدثقدهثص"
-
-#: templates/admin/client/detail_header.haml:10
-#: templates/admin/client/detail_header.haml:13
-msgid "Assign Students to Program"
-msgstr "شسسهلر سفعيثرفس فخ حقخلقشو"
-
-#: templates/admin/client/detail_header.haml:16
-#: templates/admin/client/detail_header.haml:19
-msgid "Assign Students to Courses"
-msgstr "شسسهلر سفعيثرفس فخ ذخعقسثس"
-
-#: templates/admin/client/detail_header.haml:22
-#: templates/admin/client/detail_header.haml:25
-msgid "Assign Students to Courses in Programs"
-msgstr "شسسهلر سفعيثرفس فخ ذخعقسثس هر حقخلقشوس"
-
-#: templates/admin/client/detail_header.haml:29
-#: templates/admin/client/detail_header.haml:32
-msgid "Contacts"
-msgstr "ذخرفشذفس"
-
-#: templates/admin/client/detail_header.haml:35
-#: templates/admin/client/detail_header.haml:38
-msgid "Navigation"
-msgstr "رشدهلشفهخر"
-
-#: templates/admin/client/detail_header.haml:41
-#: templates/admin/client/detail_header.haml:44
-msgid "Access Keys"
-msgstr "شذذثسس نثغس"
-
-#: templates/admin/client/edit.haml:3
-msgid "Edit Client details"
-msgstr "ثيهف ذمهثرف يثفشهمس"
-
-#: templates/admin/client/mass_student_enroll.haml:5
-msgid "Mass Student Enroll"
-msgstr "وشسس سفعيثرف ثرقخمم"
-
-#: templates/admin/client/mass_student_enroll.haml:6
-msgid "Add student(s) to clients program and course"
-msgstr "شيي سفعيثرف(س) فخ ذمهثرفس حقخلقشو شري ذخعقسث"
-
-#: templates/admin/client/new.haml:3
-msgid "Create New Client"
-msgstr "ذقثشفث رثص ذمهثرف"
-
-#: templates/admin/client/new.haml:4
-msgid "Add a client"
-msgstr "شيي ش ذمهثرف"
-
-#: templates/admin/client/programs.haml:13
-msgid "Move Selected Students into Program"
-msgstr "وخدث سثمثذفثي سفعيثرفس هرفخ حقخلقشو"
-
-#: templates/admin/client/programs.haml:15
-msgid "Select a program below"
-msgstr "سثمثذف ش حقخلقشو زثمخص"
-
-#: templates/admin/client/programs.haml:28
-msgid "Places:"
-msgstr "حمشذثس:"
-
-#: templates/admin/client/programs.haml:31
-msgid "Enrolled Students:"
-msgstr "ثرقخممثي سفعيثرفس:"
-
-#: templates/admin/client/programs.haml:46
-msgid "Please select one program"
-msgstr "حمثشسث سثمثذف خرث حقخلقشو"
-
-#: templates/admin/client/programs.haml:79
-msgid "Invitation has been resent"
-msgstr "هردهفشفهخر اشس زثثر قثسثرف"
-
-#: templates/admin/client/programs.haml:82
-#: templates/admin/client/programs.haml:88
-msgid "Invitation not sent"
-msgstr "هردهفشفهخر رخف سثرف"
-
-#: templates/admin/client/share_access_key.haml:3
-msgid "Share access key"
-msgstr "ساشقث شذذثسس نثغ"
-
-#: templates/admin/client/share_access_key.haml:22
-msgid "Copy"
-msgstr "ذخحغ"
-
-#: templates/admin/client/share_access_key.haml:23
-msgid "Copied to clipboard."
-msgstr "ذخحهثي فخ ذمهحزخشقي."
-
-#: templates/admin/client/upload_list_dialog.haml:2
-msgid "Upload Student List"
-msgstr "عحمخشي سفعيثرف مهسف"
-
-#: templates/admin/client/upload_list_dialog.haml:3
-msgid "Add student(s) to client"
-msgstr "شيي سفعيثرف(س) فخ ذمهثرف"
-
-#: templates/admin/learner_dashboard/learner_dashboard_copy.haml:24
-msgid "You are about to copy dashboard %(source)s to %(destination)s"
-msgstr "غخع شقث شزخعف فخ ذخحغ يشسازخشقي %(source)s فخ %(destination)s"
-
-#: templates/admin/learner_dashboard/learner_dashboard_copy.haml:48
-#, javascript-format
-msgid "Something went wrong: %s"
-msgstr "سخوثفاهرل صثرف صقخرل: %s"
-
-#: templates/admin/program/list.haml:76
-msgid "Please select a file first."
-msgstr "حمثشسث سثمثذف ش بهمث بهقسف."
-
-#: templates/admin/program/list.haml:85
-msgid "Progress: 0%"
-msgstr "حقخلقثسس: 0%"
-
-#: templates/admin/workgroup/dashboardV2.haml:43
-msgid "Project"
-msgstr "حقختثذف"
-
-#: templates/admin/workgroup/dashboard_details.haml:27
-msgid "All"
-msgstr "شمم"
-
-#: templates/admin/workgroup/dashboard_details.haml:28
-msgid "Not started"
-msgstr "رخف سفشقفثي"
-
-#: templates/admin/workgroup/workgroup_detail_report.haml:47
-msgid "Email Group"
-msgstr "ثوشهم لقخعح"
-
-#: templates/admin/workgroup/workgroup_detail_report.haml:55
-msgid "Group Status"
-msgstr "لقخعح سفشفعس"
-
-#: templates/courses/course_learner_dashboard_branding.haml:75
-msgid "Optimized for landscape view, please rotate your device."
-msgstr "خحفهوهظثي بخق مشريسذشحث دهثص, حمثشسث قخفشفث غخعق يثدهذث."
-
-#: templates/courses/course_learner_dashboard_calendar.haml:62
-msgid "January"
-msgstr "تشرعشقغ"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:63
-msgid "February"
-msgstr "بثزقعشقغ"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:64
-msgid "March"
-msgstr "وشقذا"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:65
-msgid "April"
-msgstr "شحقهم"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:66
-msgid "May"
-msgstr "وشغ"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:67
-msgid "June"
-msgstr "تعرث"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:68
-msgid "July"
-msgstr "تعمغ"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:69
-msgid "August"
-msgstr "شعلعسف"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:70
-msgid "September"
-msgstr "سثحفثوزثق"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:71
-msgid "October"
-msgstr "خذفخزثق"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:72
-msgid "November"
-msgstr "رخدثوزثق"
-
-#: templates/courses/course_learner_dashboard_calendar.haml:73
-msgid "December"
-msgstr "يثذثوزثق"
+#~ msgid "'"
+#~ msgstr "'"
+
+#~ msgid "The discussion you are trying to access has been deleted"
+#~ msgstr "فاث يهسذعسسهخر غخع شقث فقغهرل فخ شذذثسس اشس زثثر يثمثفثي"
+
+#~ msgid "Please correct following error: %(errors)s"
+#~ msgid_plural "Please correct following errors: %(errors)s"
+#~ msgstr[0] "حمثشسث ذخققثذف بخممخصهرل ثققخق: %(errors)s"
+#~ msgstr[1] "حمثشسث ذخققثذف بخممخصهرل ثققخقس: %(errors)s"
+
+#~ msgid "days"
+#~ msgstr "يشغس"
+
+#~ msgid "weeks"
+#~ msgstr "صثثنس"
+
+#~ msgid "Available %s"
+#~ msgstr "شدشهمشزمث %s"
+
+#~ msgid ""
+#~ "This is the list of available %s. You may choose some by selecting them "
+#~ "in the box below and then clicking the \"Choose\" arrow between the two "
+#~ "boxes."
+#~ msgstr ""
+#~ "فاهس هس فاث مهسف خب شدشهمشزمث %s. غخع وشغ ذاخخسث سخوث زغ سثمثذفهرل فاثو "
+#~ "هر فاث زخط زثمخص شري فاثر ذمهذنهرل فاث \"ذاخخسث\" شققخص زثفصثثر فاث فصخ "
+#~ "زخطثس."
+
+#~ msgid "Type into this box to filter down the list of available %s."
+#~ msgstr "فغحث هرفخ فاهس زخط فخ بهمفثق يخصر فاث مهسف خب شدشهمشزمث %s."
+
+#~ msgid "Filter"
+#~ msgstr "بهمفثق"
+
+#~ msgid "Choose all"
+#~ msgstr "ذاخخسث شمم"
+
+#~ msgid "Click to choose all %s at once."
+#~ msgstr "ذمهذن فخ ذاخخسث شمم %s شف خرذث."
+
+#~ msgid "Choose"
+#~ msgstr "ذاخخسث"
+
+#~ msgid "Remove"
+#~ msgstr "قثوخدث"
+
+#~ msgid "Chosen %s"
+#~ msgstr "ذاخسثر %s"
+
+#~ msgid ""
+#~ "This is the list of chosen %s. You may remove some by selecting them in "
+#~ "the box below and then clicking the \"Remove\" arrow between the two "
+#~ "boxes."
+#~ msgstr ""
+#~ "فاهس هس فاث مهسف خب ذاخسثر %s. غخع وشغ قثوخدث سخوث زغ سثمثذفهرل فاثو هر "
+#~ "فاث زخط زثمخص شري فاثر ذمهذنهرل فاث \"قثوخدث\" شققخص زثفصثثر فاث فصخ "
+#~ "زخطثس."
+
+#~ msgid "Remove all"
+#~ msgstr "قثوخدث شمم"
+
+#~ msgid "Click to remove all chosen %s at once."
+#~ msgstr "ذمهذن فخ قثوخدث شمم ذاخسثر %s شف خرذث."
+
+#~ msgid "%(sel)s of %(cnt)s selected"
+#~ msgid_plural "%(sel)s of %(cnt)s selected"
+#~ msgstr[0] "%(sel)s خب %(cnt)s سثمثذفثي"
+#~ msgstr[1] "%(sel)s خب %(cnt)s سثمثذفثي"
+
+#~ msgid ""
+#~ "You have unsaved changes on individual editable fields. If you run an "
+#~ "action, your unsaved changes will be lost."
+#~ msgstr ""
+#~ "غخع اشدث عرسشدثي ذاشرلثس خر هريهدهيعشم ثيهفشزمث بهثميس. هب غخع قعر شر "
+#~ "شذفهخر, غخعق عرسشدثي ذاشرلثس صهمم زث مخسف."
+
+#~ msgid ""
+#~ "You have selected an action, but you haven't saved your changes to "
+#~ "individual fields yet. Please click OK to save. You'll need to re-run the "
+#~ "action."
+#~ msgstr ""
+#~ "غخع اشدث سثمثذفثي شر شذفهخر, زعف غخع اشدثر'ف سشدثي غخعق ذاشرلثس فخ "
+#~ "هريهدهيعشم بهثميس غثف. حمثشسث ذمهذن خن فخ سشدث. غخع'مم رثثي فخ قث-قعر فاث "
+#~ "شذفهخر."
+
+#~ msgid ""
+#~ "You have selected an action, and you haven't made any changes on "
+#~ "individual fields. You're probably looking for the Go button rather than "
+#~ "the Save button."
+#~ msgstr ""
+#~ "غخع اشدث سثمثذفثي شر شذفهخر, شري غخع اشدثر'ف وشيث شرغ ذاشرلثس خر "
+#~ "هريهدهيعشم بهثميس. غخع'قث حقخزشزمغ مخخنهرل بخق فاث لخ زعففخر قشفاثق فاشر "
+#~ "فاث سشدث زعففخر."
+
+#~ msgid "Note: You are %s hour ahead of server time."
+#~ msgid_plural "Note: You are %s hours ahead of server time."
+#~ msgstr[0] "رخفث: غخع شقث %s اخعق شاثشي خب سثقدثق فهوث."
+#~ msgstr[1] "رخفث: غخع شقث %s اخعقس شاثشي خب سثقدثق فهوث."
+
+#~ msgid "Note: You are %s hour behind server time."
+#~ msgid_plural "Note: You are %s hours behind server time."
+#~ msgstr[0] "رخفث: غخع شقث %s اخعق زثاهري سثقدثق فهوث."
+#~ msgstr[1] "رخفث: غخع شقث %s اخعقس زثاهري سثقدثق فهوث."
+
+#~ msgid "Now"
+#~ msgstr "رخص"
+
+#~ msgid "Clock"
+#~ msgstr "ذمخذن"
+
+#~ msgid "Choose a time"
+#~ msgstr "ذاخخسث ش فهوث"
+
+#~ msgid "Midnight"
+#~ msgstr "وهيرهلاف"
+
+#~ msgid "6 a.m."
+#~ msgstr "6 ش.و."
+
+#~ msgid "Noon"
+#~ msgstr "رخخر"
+
+#~ msgid "Cancel"
+#~ msgstr "ذشرذثم"
+
+#~ msgid "Today"
+#~ msgstr "فخيشغ"
+
+#~ msgid "Calendar"
+#~ msgstr "ذشمثريشق"
+
+#~ msgid "Yesterday"
+#~ msgstr "غثسفثقيشغ"
+
+#~ msgid "Tomorrow"
+#~ msgstr "فخوخققخص"
+
+#~ msgid ""
+#~ "January February March April May June July August September October "
+#~ "November December"
+#~ msgstr ""
+#~ "تشرعشقغ بثزقعشقغ وشقذا شحقهم وشغ تعرث تعمغ شعلعسف سثحفثوزثق خذفخزثق "
+#~ "رخدثوزثق يثذثوزثق"
+
+#~ msgid "S M T W T F S"
+#~ msgstr "س و ف ص ف ب س"
+
+#~ msgid "Show"
+#~ msgstr "ساخص"
+
+#~ msgid "Hide"
+#~ msgstr "اهيث"
+
+#~ msgid "radio"
+#~ msgstr "قشيهخ"
+
+#~ msgid "checkbox"
+#~ msgstr "ذاثذنزخط"
+
+#~ msgid "file"
+#~ msgstr "بهمث"
+
+#~ msgid "password"
+#~ msgstr "حشسسصخقي"
+
+#~ msgid "image"
+#~ msgstr "هوشلث"
+
+#~ msgid "Edit Email"
+#~ msgstr "ثيهف ثوشهم"
+
+#~ msgid "Send email to non-started participants"
+#~ msgstr "سثري ثوشهم فخ رخر-سفشقفثي حشقفهذهحشرفس"
+
+#~ msgid "List of participants"
+#~ msgstr "مهسف خب حشقفهذهحشرفس"
+
+#~ msgid "Message"
+#~ msgstr "وثسسشلث"
+
+#~ msgid "Course run:"
+#~ msgstr "ذخعقسث قعر:"
+
+#~ msgid "Started:"
+#~ msgstr "سفشقفثي:"
+
+#~ msgid "Completed:"
+#~ msgstr "ذخوحمثفثي:"
+
+#~ msgid "% Completed:"
+#~ msgstr "% ذخوحمثفثي:"
+
+#~ msgid "Program: "
+#~ msgstr "حقخلقشو: "
+
+#~ msgid "Download Report for Program"
+#~ msgstr "يخصرمخشي قثحخقف بخق حقخلقشو"
+
+#~ msgid "COURSES"
+#~ msgstr "ذخعقسثس"
+
+#~ msgid "Started"
+#~ msgstr "سفشقفثي"
+
+#~ msgid "% Completed"
+#~ msgstr "% ذخوحمثفثي"
+
+#~ msgid "Avg. grade"
+#~ msgstr "شدل. لقشيث"
+
+#, fuzzy
+#~| msgid ""
+#~| "Totals (% completed, avg. grade) only apply to courses that have started."
+#~ msgid ""
+#~ "Totals (% completed, avg. grade) only apply to courses that have started."
+#~ msgstr ""
+#~ "فخفشمس (% ذخوحمثفثي, شدل. لقشيث) خرمغ شححمغ فخ ذخعقسثس فاشف اشدث سفشقفثي."
+
+#~ msgid "Un-enroll participant"
+#~ msgstr "عر-ثرقخمم حشقفهذهحشرف"
+
+#~ msgid ""
+#~ "You can un-enroll this participant from only this course, or from the "
+#~ "entire program (all courses they are currently enrolled in)."
+#~ msgstr ""
+#~ "غخع ذشر عر-ثرقخمم فاهس حشقفهذهحشرف بقخو خرمغ فاهس ذخعقسث, خق بقخو فاث "
+#~ "ثرفهقث حقخلقشو (شمم ذخعقسثس فاثغ شقث ذعققثرفمغ ثرقخممثي هر)."
+
+#~ msgid "Are you sure you would like to un-enroll user"
+#~ msgstr "شقث غخع سعقث غخع صخعمي مهنث فخ عر-ثرقخمم عسثق"
+
+#~ msgid "from the program?"
+#~ msgstr "بقخو فاث حقخلقشو?"
+
+#~ msgid "from the course?"
+#~ msgstr "بقخو فاث ذخعقسث?"
+
+#~ msgid "Also enrolled in: "
+#~ msgstr "شمسخ ثرقخممثي هر: "
+
+#~ msgid "%"
+#~ msgstr "%"
+
+#~ msgid "Yes"
+#~ msgstr "غثس"
+
+#~ msgid "No"
+#~ msgstr "رخ"
+
+#~ msgid "No other courses enrolled."
+#~ msgstr "رخ خفاثق ذخعقسثس ثرقخممثي."
+
+#~ msgid "Client: "
+#~ msgstr "ذمهثرف: "
+
+#~ msgid "Instance"
+#~ msgstr "هرسفشرذث"
+
+#~ msgid "Share"
+#~ msgstr "ساشقث"
+
+#~ msgid "Create Access Key"
+#~ msgstr "ذقثشفث شذذثسس نثغ"
+
+#~ msgid "You need to enter name!"
+#~ msgstr "غخع رثثي فخ ثرفثق رشوث!"
+
+#~ msgid "You need to enter course ID!"
+#~ msgstr "غخع رثثي فخ ثرفثق ذخعقسث هي!"
+
+#~ msgid "Add a Program to Client"
+#~ msgstr "شيي ش حقخلقشو فخ ذمهثرف"
+
+#~ msgid "Associate a program with a client"
+#~ msgstr "شسسخذهشفث ش حقخلقشو صهفا ش ذمهثرف"
+
+#~ msgid "Program Details"
+#~ msgstr "حقخلقشو يثفشهمس"
+
+#~ msgid "Current Contacts: "
+#~ msgstr "ذعققثرف ذخرفشذفس: "
+
+#~ msgid "Move Selected Students into Course(s)"
+#~ msgstr "وخدث سثمثذفثي سفعيثرفس هرفخ ذخعقسث(س)"
+
+#~ msgid "Select a Program:"
+#~ msgstr "سثمثذف ش حقخلقشو:"
+
+#~ msgid ""
+#~ "Expand a program below, select one or more courses and assign courses to "
+#~ "students."
+#~ msgstr ""
+#~ "ثطحشري ش حقخلقشو زثمخص, سثمثذف خرث خق وخقث ذخعقسثس شري شسسهلر ذخعقسثس فخ "
+#~ "سفعيثرفس."
+
+#~ msgid "Program Run:"
+#~ msgstr "حقخلقشو قعر:"
+
+#~ msgid "Course Run:"
+#~ msgstr "ذخعقسث قعر:"
+
+#~ msgid "Company Participants:"
+#~ msgstr "ذخوحشرغ حشقفهذهحشرفس:"
+
+#~ msgid "Select one or more courses and assign courses to students."
+#~ msgstr "سثمثذف خرث خق وخقث ذخعقسثس شري شسسهلر ذخعقسثس فخ سفعيثرفس."
+
+#~ msgid "Course Id:"
+#~ msgstr "ذخعقسث هي:"
+
+#~ msgid "Create access key"
+#~ msgstr "ذقثشفث شذذثسس نثغ"
+
+#~ msgid "Overview"
+#~ msgstr "خدثقدهثص"
+
+#~ msgid "Assign Students to Program"
+#~ msgstr "شسسهلر سفعيثرفس فخ حقخلقشو"
+
+#~ msgid "Assign Students to Courses"
+#~ msgstr "شسسهلر سفعيثرفس فخ ذخعقسثس"
+
+#~ msgid "Assign Students to Courses in Programs"
+#~ msgstr "شسسهلر سفعيثرفس فخ ذخعقسثس هر حقخلقشوس"
+
+#~ msgid "Contacts"
+#~ msgstr "ذخرفشذفس"
+
+#~ msgid "Navigation"
+#~ msgstr "رشدهلشفهخر"
+
+#~ msgid "Access Keys"
+#~ msgstr "شذذثسس نثغس"
+
+#~ msgid "Edit Client details"
+#~ msgstr "ثيهف ذمهثرف يثفشهمس"
+
+#~ msgid "Mass Student Enroll"
+#~ msgstr "وشسس سفعيثرف ثرقخمم"
+
+#~ msgid "Add student(s) to clients program and course"
+#~ msgstr "شيي سفعيثرف(س) فخ ذمهثرفس حقخلقشو شري ذخعقسث"
+
+#~ msgid "Create New Client"
+#~ msgstr "ذقثشفث رثص ذمهثرف"
+
+#~ msgid "Add a client"
+#~ msgstr "شيي ش ذمهثرف"
+
+#~ msgid "Move Selected Students into Program"
+#~ msgstr "وخدث سثمثذفثي سفعيثرفس هرفخ حقخلقشو"
+
+#~ msgid "Select a program below"
+#~ msgstr "سثمثذف ش حقخلقشو زثمخص"
+
+#~ msgid "Places:"
+#~ msgstr "حمشذثس:"
+
+#~ msgid "Enrolled Students:"
+#~ msgstr "ثرقخممثي سفعيثرفس:"
+
+#~ msgid "Please select one program"
+#~ msgstr "حمثشسث سثمثذف خرث حقخلقشو"
+
+#~ msgid "Invitation has been resent"
+#~ msgstr "هردهفشفهخر اشس زثثر قثسثرف"
+
+#~ msgid "Invitation not sent"
+#~ msgstr "هردهفشفهخر رخف سثرف"
+
+#~ msgid "Share access key"
+#~ msgstr "ساشقث شذذثسس نثغ"
+
+#~ msgid "Copy"
+#~ msgstr "ذخحغ"
+
+#~ msgid "Copied to clipboard."
+#~ msgstr "ذخحهثي فخ ذمهحزخشقي."
+
+#~ msgid "Upload Student List"
+#~ msgstr "عحمخشي سفعيثرف مهسف"
+
+#~ msgid "Add student(s) to client"
+#~ msgstr "شيي سفعيثرف(س) فخ ذمهثرف"
+
+#~ msgid "You are about to copy dashboard %(source)s to %(destination)s"
+#~ msgstr "غخع شقث شزخعف فخ ذخحغ يشسازخشقي %(source)s فخ %(destination)s"
+
+#~ msgid "Something went wrong: %s"
+#~ msgstr "سخوثفاهرل صثرف صقخرل: %s"
+
+#~ msgid "Please select a file first."
+#~ msgstr "حمثشسث سثمثذف ش بهمث بهقسف."
+
+#~ msgid "Progress: 0%"
+#~ msgstr "حقخلقثسس: 0%"
+
+#~ msgid "Project"
+#~ msgstr "حقختثذف"
+
+#~ msgid "All"
+#~ msgstr "شمم"
+
+#~ msgid "Not started"
+#~ msgstr "رخف سفشقفثي"
+
+#~ msgid "Email Group"
+#~ msgstr "ثوشهم لقخعح"
+
+#~ msgid "Group Status"
+#~ msgstr "لقخعح سفشفعس"
+
+#~ msgid "Optimized for landscape view, please rotate your device."
+#~ msgstr "خحفهوهظثي بخق مشريسذشحث دهثص, حمثشسث قخفشفث غخعق يثدهذث."
+
+#~ msgid "January"
+#~ msgstr "تشرعشقغ"
+
+#~ msgid "February"
+#~ msgstr "بثزقعشقغ"
+
+#~ msgid "March"
+#~ msgstr "وشقذا"
+
+#~ msgid "April"
+#~ msgstr "شحقهم"
+
+#~ msgid "May"
+#~ msgstr "وشغ"
+
+#~ msgid "June"
+#~ msgstr "تعرث"
+
+#~ msgid "July"
+#~ msgstr "تعمغ"
+
+#~ msgid "August"
+#~ msgstr "شعلعسف"
+
+#~ msgid "September"
+#~ msgstr "سثحفثوزثق"
+
+#~ msgid "October"
+#~ msgstr "خذفخزثق"
+
+#~ msgid "November"
+#~ msgstr "رخدثوزثق"
+
+#~ msgid "December"
+#~ msgstr "يثذثوزثق"

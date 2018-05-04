@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import datetime
 import os
 from logsettings import get_logger_config
 
@@ -607,3 +608,6 @@ XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'
 
 # Course Key Regex
 COURSE_KEY_PATTERN = r'(?P<course_key_string>[^/+]+(/|\+)[^/+]+(/|\+)[^/?]+)'
+
+#Cookies expiry time
+COOKIES_YEARLY_EXPIRY_TIME = datetime.datetime.utcnow() + datetime.timedelta(days=365)

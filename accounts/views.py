@@ -28,12 +28,14 @@ from django.forms.widgets import HiddenInput
 from django.views.decorators.cache import never_cache
 from django.template.loader import render_to_string
 
+from util.url_helpers import get_referer_from_request
 from courses.models import FeatureFlags
 from api_client import user_api, course_api
 from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from api_client import platform_api
 from api_client import http_request_methods
+from mcka_apros.settings import COOKIES_YEARLY_EXPIRY_TIME
 from mobile_apps.controller import get_mobile_app_download_popup_data
 
 from admin.models import Client, Program, LearnerDashboard, CourseRun, SelfRegistrationRoles
@@ -42,6 +44,7 @@ from admin.models import AccessKey, ClientCustomization, OTHER_ROLE
 from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
     CURRENT_PROGRAM, set_current_course_for_user
 from lib.context_processors import add_edx_notification_context
+from util.i18n_helpers import set_language
 
 from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistrationRequest
 from .controller import (
@@ -214,7 +217,7 @@ def _get_access_key(key_code):
 
 def _append_login_mode_cookie(response, login_mode):
     response.set_cookie(
-        LOGIN_MODE_COOKIE, login_mode, expires=datetime.datetime.utcnow() + datetime.timedelta(days=365)
+        LOGIN_MODE_COOKIE, login_mode, expires=COOKIES_YEARLY_EXPIRY_TIME
     )
 
 
@@ -1064,3 +1067,19 @@ def demo_registration(request, course_run_name):
 
     else:
         return render(request, '404.haml')
+
+def switch_language_based_on_preference(request):
+    try:
+        language_code = request.GET.get('LANG')
+    except AttributeError:
+        language_code = request.LANGUAGE_CODE
+    set_language(language_code)
+    referer = get_referer_from_request(request)
+    response = HttpResponseRedirect(referer)
+    if language_code in settings.SUPPORTED_LANGUAGES_CODE:
+        response.set_cookie(
+            'preferred_language',
+            language_code,
+            expires=COOKIES_YEARLY_EXPIRY_TIME
+        )
+    return response

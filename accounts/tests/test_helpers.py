@@ -1,17 +1,15 @@
 """
 Tests for helpers.py module
 """
-from ddt import ddt, data
+from ddt import ddt, data, unpack
 
 from django.core.urlresolvers import reverse
-from django.test import TestCase
+from django.test import TestCase, RequestFactory, Client
 
 from accounts.helpers import (
-    get_user_activation_links, create_activation_url, TestUser,
-    get_complete_country_name,
-)
+    get_user_activation_links, create_activation_url, TestUser, get_complete_country_name)
 from accounts.models import UserActivation
-
+from  util.url_helpers import get_referer_from_request
 
 @ddt
 class AccountActivationHelpersTest(TestCase):
@@ -63,3 +61,29 @@ class AccountActivationHelpersTest(TestCase):
         short_form = 'IT'
 
         self.assertEqual(get_complete_country_name(short_form), full_country_name)
+
+@ddt
+class TestGetRefererFromRequest(TestCase):
+
+    def setUp(self):
+        factory = RequestFactory()
+        self.request = factory.get('/')
+
+    @data(
+        ('https://apros.mcka.local/terms', '/terms'),
+        ('https://apros.mcka.local', None),
+        ('http://www.mckisneyacademy.com/privacy', '/privacy')
+    )
+    @unpack
+    def test_with_valid_language_url(self, url, expected_referer):
+        self.request.META['HTTP_REFERER'] = url
+        self.assertEquals(expected_referer, get_referer_from_request(self.request))
+
+    @data(
+        'https:/apros.mcka.local/terms',
+        'https//apros.mcka.local',
+        'htt://www.mckisneyacademy.com/privacy'
+    )
+    def test_with_invalid_language_url(self, url):
+        self.request.META['HTTP_REFERER'] = url
+        self.assertRaises(get_referer_from_request(self.request))

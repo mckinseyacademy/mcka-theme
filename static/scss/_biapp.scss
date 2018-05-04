@@ -197,6 +197,18 @@ header[role=banner]{
       }
     }
   }
+  .language-selector{
+    @include right(10px);
+    .select-box{
+      select{
+        @include padding-right(30px);
+        @include padding-left(10px);
+      }
+      &:after{
+        @include right(10px);
+      }
+    }
+  }
 }
 
 .course_nav{

@@ -36,6 +36,8 @@ urlpatterns = patterns(
     url(r'^registration/(?P<course_run_name>.+)/$', accountsviews.demo_registration, name='demo_registration'),
     url(r'^jsi18n/$', javascript_catalog, name='javascript-catalog'),
     url(r'^storage/(?P<path>.*)', views.private_storage_access, name='private_storage'),
+    url(r'^language_switch',
+        accountsviews.switch_language_based_on_preference, name='language_switcher')
 )
 
 if settings.DEBUG:

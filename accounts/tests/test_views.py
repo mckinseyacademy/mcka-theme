@@ -3,20 +3,21 @@ from urllib2 import HTTPError
 
 import ddt
 import mock
+from django.utils import translation
 from mock import Mock, patch
 
 
-from django.core.urlresolvers import reverse
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 
 from accounts.controller import ProcessAccessKeyResult
 from accounts.models import RemoteUser
 from accounts.tests.utils import ApplyPatchMixin
-from accounts.views import _cleanup_username as cleanup_username
+from accounts.views import _cleanup_username as cleanup_username, switch_language_based_on_preference
 from accounts.views import MISSING_ACCESS_KEY_ERROR, access_key
 from admin.models import AccessKey, ClientCustomization
 from api_client.api_error import ApiError
+from util.i18n_helpers import set_language
 
 
 class AccessLandingTests(TestCase, ApplyPatchMixin):
@@ -330,3 +331,48 @@ class GoogleAnalyticsTest(TestCase):
             self.assertIn('google-analytics.com', rendered)
         else:
             self.assertNotIn('google-analytics.com', rendered)
+
+
+@ddt.ddt
+class TestSwitchLanguageBasedOnPreference(TestCase, ApplyPatchMixin):
+
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.get_current_request = self.apply_patch('util.i18n_helpers.get_current_request')
+
+    def _populate_dummy_request(self, url):
+        request = self.factory.get(url)
+        request.META['HTTP_REFERER'] = url
+        request.LANGUAGE_CODE = 'gb'
+        request.session = {}
+        return request
+
+    @ddt.data(
+        ('https://apros.mcka.local/terms?LANG=ar', 'ar'),
+        ('https://apros.mcka.local?LANG=en', 'en'),
+        ('http://www.mckisneyacademy.com/privacy?LANG=ar', 'ar')
+    )
+    @ddt.unpack
+    def test_with_valid_language_input(self, url, expected_language):
+        request = self._populate_dummy_request(url)
+        self.get_current_request.return_value = request
+        response = switch_language_based_on_preference(request)
+        self.assertEquals(expected_language, response.cookies['preferred_language'].value)
+        self.assertEquals(expected_language, request.session[translation.LANGUAGE_SESSION_KEY])
+
+    @ddt.data(
+        ('https://apros.mcka.local/terms?LANG=hb', 'en-us'),
+        ('https://apros.mcka.local', 'en-us'),
+        ('http://www.mckisneyacademy.com/privacy?LANG=lr', 'en-us')
+    )
+    @ddt.unpack
+    def test_with_invalid_language(self, url, expected_language):
+        request = self._populate_dummy_request(url)
+        self.get_current_request.return_value = request
+        response = switch_language_based_on_preference(request)
+        self.assertEquals(None, response.cookies.get('preferred_language'))
+        self.assertEquals(expected_language, request.session[translation.LANGUAGE_SESSION_KEY])
+
+    def tearDown(self):
+        set_language('en-us')
+

@@ -64,12 +64,59 @@ header[role=banner].background-blue {
 
   }
 
-  .logo {
-    width: 170px;
-    height: 48px;
-    margin: 0 auto;
-    display: block;
+  .top-bar{
+    text-align: center;
+    position: relative;
+    .logo {
+      width: 170px;
+      height: 48px;
+      display: inline-block;
+      margin: 3px 0;
+    }
+    .language-selector{
+      background-color: darken($mckinsey-dark-blue , 5%);
+      position: absolute;
+      top: 9px;
+      width: auto;
+      padding: 0 10px;
+      span{
+        color: $mckinsey-bubble-gray;
+        display: inline-block;
+      }
+      .select-box{
+        position: relative;
+        display: inline-block;
+        select{
+          background-color: transparent;
+          border: 0;
+          margin: 0;
+          width: auto;
+          padding-top: 0;
+          padding-bottom: 0;
+          height: 30px;
+          color: darken($mckinsey-light-blue , 5%);
+          background-image: none;
+          -moz-appearance: none;
+          &:focus{
+            outline: 0;
+          }
+
+          option{
+            background-color: darken($mckinsey-dark-blue , 5%);
+            color: $mckinsey-light-blue;
+          }
+        }
+        &:after{
+          position: absolute;
+          color: darken($mckinsey-light-blue , 5%);
+          content: "\f0dd";
+          font-family: "FontAwesome";
+          top: 6px;
+        }
+      }
+    }
   }
+
   .header-logo-img{
     max-height: 48px;
     position: relative;

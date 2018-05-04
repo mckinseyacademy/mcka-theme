@@ -37,5 +37,7 @@ class AprosPlatformLanguage(object):
 			if course_detail.language:
 				language = course_detail.language
 		elif path in general_pages or path.startswith('/accounts/activate/'):
-			language = self._get_browser_preferred_language(request)
+			language = request.COOKIES.get(
+				'preferred_language',
+				self._get_browser_preferred_language(request))
 		set_language(language)

@@ -3,7 +3,9 @@ helper methods/utils related to accounts
 """
 from urlparse import urljoin
 
+import re
 from django.core.urlresolvers import reverse
+from django.http.response import Http404
 
 from .models import UserActivation
 
@@ -73,3 +75,4 @@ def get_complete_country_name(shorter_name):
     return dict(COUNTRY_CHOICES).get(
         shorter_name.upper(), shorter_name
     )
+
