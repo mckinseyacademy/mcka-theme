@@ -151,7 +151,7 @@ $(function () {
         var dictionaryToSend = {"name": name, "course_id": course_id};
 
         var options = {
-            url: "{% url 'create_course_access_key_api' client_id=client.id %}",
+            url: form.find('form.admin-form').attr('action'),
             data: dictionaryToSend,
             type: "POST",
             dataType: "json",

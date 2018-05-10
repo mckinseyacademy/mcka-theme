@@ -1830,7 +1830,7 @@ def create_access_key(request, client_id):
             model.client_id = int(client_id)
             model.code = code
             model.save()
-            return HttpResponseRedirect(reverse('client_sso', args={'client_id': client_id}))
+            return HttpResponseRedirect(reverse('client_sso', kwargs={'client_id': client_id}))
     else:
         form = CreateAccessKeyForm()
 
@@ -1865,7 +1865,7 @@ def create_course_access_key(request, client_id):
             model.client_id = int(client_id)
             model.code = code
             model.save()
-            return HttpResponseRedirect(reverse('client_sso', args={'client_id': client_id}))
+            return HttpResponseRedirect(reverse('client_sso', kwargs={'client_id': client_id}))
     else:
         form = CreateCourseAccessKeyForm()
 
@@ -1921,7 +1921,7 @@ def share_access_key(request, client_id, access_key_id):
             except SMTPException as e:
                 error = e.message
             else:
-                return HttpResponseRedirect(reverse('client_sso', args={'client_id': client_id}))
+                return HttpResponseRedirect(reverse('client_sso', kwargs={'client_id': client_id}))
     else:
         # An unbound form
         link = request.build_absolute_uri(reverse('access_key', kwargs={'code': access_key.code}))
