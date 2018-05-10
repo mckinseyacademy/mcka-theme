@@ -1,0 +1,17 @@
+@import 'lms/static/sass/discussion/lms-discussion-main';
+@import '../base/variables';
+body{
+  background-color: $mckinsey-academy-bright-gray;
+}
+
+footer[role=contentinfo]{
+  nav{
+    ul{
+      li{
+        a{
+          color: $mckinsey-academy-alt-blue;
+        }
+      }
+    }
+  }
+}
