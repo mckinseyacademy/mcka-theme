@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-11 08:00+0000\n"
+"POT-Creation-Date: 2018-05-11 10:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1800,7 +1800,7 @@ msgstr ""
 #: admin/views.py:4098 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:63
-#: templates/header.haml:92
+#: templates/header.haml:97
 msgid "Program"
 msgstr ""
 
@@ -2757,13 +2757,11 @@ msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr ""
 
-#: mcka_apros/settings.py:152 templates/header.haml:27
-#: templates/header.haml.py:32
+#: mcka_apros/settings.py:152
 msgid "English"
 msgstr ""
 
-#: mcka_apros/settings.py:153 templates/header.haml:29
-#: templates/header.haml.py:34
+#: mcka_apros/settings.py:153
 msgid "Arabic"
 msgstr ""
 
@@ -4415,7 +4413,7 @@ msgstr ""
 #: templates/admin/participants/participant_details.haml:239
 #: templates/admin/participants/participant_details.haml:242
 #: templates/admin/participants/participants_list.haml:105
-#: templates/header.haml:66
+#: templates/header.haml:71
 msgid "Internal Admin"
 msgstr ""
 
@@ -6662,27 +6660,31 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: templates/header.haml:22
+#: templates/header.haml:21
 msgid "Language :"
 msgstr ""
 
-#: templates/header.haml:62
+#: templates/header.haml:33
+msgid "Select Your Language"
+msgstr ""
+
+#: templates/header.haml:67
 msgid "McKA Admin"
 msgstr ""
 
-#: templates/header.haml:70
+#: templates/header.haml:75
 msgid "Client Admin"
 msgstr ""
 
-#: templates/header.haml:74
+#: templates/header.haml:79
 msgid "Company Admin"
 msgstr ""
 
-#: templates/header.haml:101
+#: templates/header.haml:106
 msgid "COURSE CLOSED"
 msgstr ""
 
-#: templates/header.haml:114
+#: templates/header.haml:119
 #, python-format
 msgid "course begins in %(remaining_days)s days"
 msgstr ""
@@ -9133,8 +9135,8 @@ msgstr ""
 
 #: util/validators.py:17
 msgid ""
-"Username can only consist of letters, numbers underscores and hyphens, with "
-"no spaces."
+"Username can only consist of English letters, numbers, underscores, and "
+"hyphens with no spaces."
 msgstr ""
 
 #: util/validators.py:26

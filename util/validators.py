@@ -14,7 +14,7 @@ class UsernameValidator(RegexValidator):
     the username validation used at EdX platform API
     """
     regex = r'^[a-zA-Z0-9_-]+\Z'
-    message = _("Username can only consist of letters, numbers underscores and hyphens, with no spaces.")
+    message = _("Username can only consist of English letters, numbers, underscores, and hyphens with no spaces.")
 
 
 class AlphanumericValidator(RegexValidator):
