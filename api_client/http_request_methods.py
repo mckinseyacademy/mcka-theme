@@ -19,8 +19,8 @@ def _get_cookies():
     request = get_current_request()
     if request:
         return dict(
-            sessionid=request.COOKIES['sessionid'],
-            csrftoken=request.COOKIES['csrftoken']
+            sessionid=request.COOKIES.get('sessionid'),
+            csrftoken=request.COOKIES.get('csrftoken')
         )
 
     return dict()
