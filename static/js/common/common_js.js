@@ -857,3 +857,15 @@ function InternationalizePercentage(value){
     var templateContext = {"value": value.toString()};
     return interpolate(textTemplate, templateContext, true);
 }
+
+
+// Language bar
+$(document).ready(function () {
+    $('.select-box').click(function () {
+        $(this).toggleClass("is-open");
+    });
+
+    var currentLanguage = $('a.current span').attr('class');
+    $('li.'+currentLanguage+' a').addClass("selected");
+
+});

@@ -199,13 +199,21 @@ header[role=banner]{
   }
   .language-selector{
     @include right(10px);
+    @include text-align(left);
     .select-box{
-      select{
-        @include padding-right(30px);
-        @include padding-left(10px);
+      ul{
+        @include right(-11px);
+        @include mobile {
+          @include right(-30px);
+        }
+        li{
+          a{
+            @include text-align(left);
+          }
+        }
       }
       &:after{
-        @include right(10px);
+        @include right(0);
       }
     }
   }

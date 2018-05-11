@@ -15,6 +15,9 @@ header[role=banner].background-blue {
     .columns {
       height: $header-bar-height;
       z-index: 5;
+      @include mobile {
+        height: $header-bar-height-mobile;
+      }
     }
   }
 
@@ -67,6 +70,7 @@ header[role=banner].background-blue {
   .top-bar{
     text-align: center;
     position: relative;
+    min-width: 100px;
     .logo {
       width: 170px;
       height: 48px;
@@ -79,39 +83,88 @@ header[role=banner].background-blue {
       top: 9px;
       width: auto;
       padding: 0 10px;
-      span{
+      @include mobile {
+        position: relative;
+        width: 200px;
+        margin: -6px auto 0;
+        top: 0;
+        right: auto;
+        left: auto;
+      }
+      > span{
         color: $mckinsey-bubble-gray;
         display: inline-block;
       }
       .select-box{
         position: relative;
         display: inline-block;
-        select{
-          background-color: transparent;
-          border: 0;
-          margin: 0;
-          width: auto;
-          padding-top: 0;
-          padding-bottom: 0;
+        min-width: 100px;
+        a.current{
+          display: block;
+          padding-right: 20px;
           height: 30px;
-          color: darken($mckinsey-light-blue , 5%);
-          background-image: none;
-          -moz-appearance: none;
-          &:focus{
-            outline: 0;
+          line-height: 30px;
+          color: $mckinsey-light-blue;
+          span{
+            line-height: 30px;
           }
-
-          option{
-            background-color: darken($mckinsey-dark-blue , 5%);
-            color: $mckinsey-light-blue;
+        }
+        ul{
+          list-style: none;
+          display: none;
+          visibility: hidden;
+          position: absolute;
+          top: 100%;
+          background-color: $pure-white;
+          width: 230px;
+          margin: 9px 0 0 0;
+          padding: 5px 0;
+          @include drop-shadow($mckinsey-academy-black, 0.2, -3px, 3px, 4px, 0px);
+          @include mobile {
+            margin-top: 0;
+          }
+          li{
+            padding: 0 15px;
+            a{
+              display: block;
+              color: $pure-black;
+              border-bottom: 1px solid $mckinsey-academy-light-gray;
+              padding: 5px;
+              @include font-spec(12, 600, 18);
+              &.selected{
+                color: $mckinsey-orange;
+              }
+              &:hover{
+                color: $mckinsey-orange;
+              }
+            }
+            &:last-child{
+              a{
+                border-bottom: 0;
+              }
+            }
+            h5{
+              @include font-spec(11, 600, 16);
+              border-bottom: 1px solid $mckinsey-academy-light-gray;
+              margin-bottom: 0;
+              padding-bottom: 5px;
+              text-transform: uppercase;
+              color: $mckinsey-dark-blue;
+            }
           }
         }
         &:after{
           position: absolute;
-          color: darken($mckinsey-light-blue , 5%);
+          color: $mckinsey-light-blue;
           content: "\f0dd";
           font-family: "FontAwesome";
           top: 6px;
+        }
+        &.is-open{
+          ul{
+            display: block !important;
+            visibility: visible;
+          }
         }
       }
     }

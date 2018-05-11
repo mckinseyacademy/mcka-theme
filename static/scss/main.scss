@@ -47,7 +47,10 @@ body{
 main[role=main] {
   min-height: 50%;
   margin-bottom: 100px;
-  margin-top: 48px;
+  margin-top: $header-bar-height;
+  @include mobile {
+    margin-top: $header-bar-height-mobile;
+  }
 }
 
 h1 {

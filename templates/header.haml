@@ -1,6 +1,5 @@
 - load i18n
-
-- get_current_language_bidi as LANGUAGE_BIDI
+- get_current_language as LANGUAGE_CODE
 
 %header.background-blue{style: "{% if client_customization and client_customization.hex_background_main_navigation %}background-color:#{client_customization.hex_background_main_navigation};{% endif %}" , role: 'banner'}
   .row.collapse.main-nav
@@ -21,17 +20,23 @@
                 {# TODO: generate dynamic list using settings.SUPPORTED_LANGUAGES #}
                 {% trans "Language :" %}
               .select-box
-                %select{:onchange => "window.location.href = this.value;"}
-                  - if LANGUAGE_BIDI
-                    %option{"value" => "/language_switch?LANG=en"}
-                      {% trans "English" %}
-                    %option{"value" => "/language_switch?LANG=ar" , :selected => ""}
-                      {% trans "Arabic" %}
+                %a.current
+                  -if LANGUAGE_CODE == 'ar'
+                    %span.arabic
+                      العربية
                   - else
-                    %option{"value" => "/language_switch?LANG=en" , :selected => ""}
-                      {% trans "English" %}
-                    %option{"value" => "/language_switch?LANG=ar"}
-                      {% trans "Arabic" %}
+                    %span.english
+                      English
+                %ul
+                  %li
+                    %h5
+                      {% trans "Select Your Language" %}
+                  %li.arabic
+                    %a{href: "/language_switch?LANG=ar"}
+                      العربية
+                  %li.english
+                    %a{href: "/language_switch?LANG=en"}
+                      English
       %input#mobile-menu-toggle{type: 'checkbox'}
       - block header_menu
         %nav{role: 'navigation'}
