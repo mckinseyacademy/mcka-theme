@@ -27,7 +27,7 @@ from .controller import CourseParticipantStats
 logger = get_task_logger(__name__)
 
 
-@task(name='admin.course_participants_data_retrieval_task', max_retries=3, queue='high_priority')
+@task(name='admin.course_participants_data_retrieval_task', max_retries=3)
 def course_participants_data_retrieval_task(course_id, company_id, task_id, base_url, retry_params=None):
     """
     Retrieves course participants' data using API
