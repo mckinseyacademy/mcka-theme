@@ -215,6 +215,9 @@ header[role=banner]{
       &:after{
         @include right(0);
       }
+      a.current{
+        @include padding-right(20px);
+      }
     }
   }
 }
