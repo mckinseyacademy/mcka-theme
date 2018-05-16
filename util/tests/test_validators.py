@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 import ddt
 from django.core.exceptions import ValidationError
 from django.test import TestCase
 
-from util.validators import RoleTitleValidator
+from util.validators import RoleTitleValidator, normalize_foreign_characters
 
 
 @ddt.ddt
@@ -31,3 +32,26 @@ class TestRoleTitleValidator(TestCase):
 		"""With in_valid input which doesnt passes the regex"""
 		with self.assertRaises(ValidationError):
 			self.validator(test_text)
+
+
+class TestNormalizeCsvForeignCharacters(TestCase):
+    """Test the method normalize_foreign_characters from utils/validators.py"""
+
+    def test_normalize_foreign_characters(self):
+        normalize_grave_characters = normalize_foreign_characters("testàèìòùÀÈÌÒÙ")
+        self.assertEqual(normalize_grave_characters, 'testaeiouAEIOU')
+
+        normalize_acute_characters = normalize_foreign_characters("testáéíóúýÁÉÍÓÚÝ")
+        self.assertEqual(normalize_acute_characters, 'testaeiouyAEIOUY')
+
+        normalize_caret_characters = normalize_foreign_characters("testâêîôûðÂÊÎÔÛÐ")
+        self.assertEqual(normalize_caret_characters, 'testaeiouAEIOU')
+
+        normalize_tilde_characters = normalize_foreign_characters("testãñõÃÑÕ")
+        self.assertEqual(normalize_tilde_characters, 'testanoANO')
+
+        normalize_umlaut_characters = normalize_foreign_characters("testäëïöüÿÄËÏÖÜŸ")
+        self.assertEqual(normalize_umlaut_characters, 'testaeiouyAEIOUY')
+
+        normalize_other_foreign_characters = normalize_foreign_characters("teståÅðÇ")
+        self.assertEqual(normalize_other_foreign_characters, 'testaAC')

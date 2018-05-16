@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """ validation utils """
-
+import unicodedata
 from django.core.validators import RegexValidator
 from django.utils.translation import ugettext_lazy as _
 
@@ -94,3 +94,8 @@ def validate_last_name(last_name):
 
 
 alphanum_accented_validator = AlphanumericWithAccentedChars()
+
+
+def normalize_foreign_characters(value):
+    value = value.decode("utf-8")
+    return unicodedata.normalize('NFD', value).encode('ascii', 'ignore').rstrip()

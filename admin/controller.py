@@ -56,7 +56,7 @@ from lib.mail import (
 from lib.utils import DottableDict
 from license import controller as license_controller
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.validators import validate_first_name, validate_last_name, AlphanumericValidator, RoleTitleValidator
+from util.validators import validate_first_name, validate_last_name, RoleTitleValidator, normalize_foreign_characters
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
@@ -1624,19 +1624,23 @@ def _process_line_register_participants_csv(user_line):
         fields = user_line.strip().split(',')
         # format is FirstName, LastName, Email, Company, CourseID, Status
 
+        first_name = normalize_foreign_characters(fields[0])
+        last_name = normalize_foreign_characters(fields[1])
+        email = normalize_foreign_characters(fields[2])
+
         # temporarily set the user name to the first 30 characters of the allowed characters within the email
         username = re.sub(r'\W', '', fields[2])
         if len(username) > 30:
             username = username[:29]
 
-        validate_first_name(fields[0])
-        validate_last_name(fields[1])
-        validate_email(fields[2])
+        validate_first_name(first_name)
+        validate_last_name(last_name)
+        validate_email(email)
 
         user_info = {
-            "first_name": fields[0],
-            "last_name": fields[1],
-            "email": fields[2],
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
             "company_id": fields[3],
             "course_id": fields[4],
             "status": fields[5],
