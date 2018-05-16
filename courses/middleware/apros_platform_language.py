@@ -22,6 +22,7 @@ class AprosPlatformLanguage(object):
 
 	def process_request(self, request):
 		path = request.path
+		language = None
 		if path.startswith('/jsi18n/'):
 			return None
 		if path.startswith('/courses') and request.user.is_authenticated():
