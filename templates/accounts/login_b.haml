@@ -1,0 +1,82 @@
+- extends "layout.haml"
+- load i18n
+
+- block page_title
+  %title {% trans "Login | McKinsey Academy" %}
+
+- block header
+  - include 'accounts/login_header.haml'
+- load staticfiles
+- block body_class
+  version-b
+- block content
+  .row.login-page
+    .back-link.large-10.medium-10.large-centered.medium-centered.columns
+      .row
+        %button#go-back{href: "#"}
+          {% trans "< Back" %}
+    .login-form.large-10.medium-10.large-centered.medium-centered.columns
+      - if request.is_IE8
+        %br
+        .outdated_browser
+          {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
+      - else
+        .row
+          .large-8.medium-8.columns
+            %h1 {% trans "Login to McKinsey Academy" %}
+            %form{id: "login-form", action: "/accounts/login/", method: "POST"}
+              .error.error-msg
+                - if activation_message
+                  = activation_message
+                - if error
+                  = error
+              - csrf_token
+              %label{for: "login_id"}
+                {% trans "Username or Email:" %}
+                %span.required-field
+                .error.login-error{"aria-live": "polite", role: "alert"}
+              %input{type: "text", name: "login_id", id: "login_id"}
+              .password-login
+                .username_display
+                  .username
+                  %i.check-icon.fa.fa-check-circle-o
+                %label{for: "password"}
+                  {% trans "Password" %}
+                  %span.required-field
+                  .error.password-error{"aria-live": "polite", role: "alert"}
+                %input{type: "password", name: "password", id: "password"}
+                %a{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "/accounts/password/reset/"}
+                  {% trans "Forgot password?" %}
+              %br
+              %input.button.radius.small{type: "submit", value: "#{login_label}"}
+          .large-3.medium-3.columns.help
+            %h4 {% trans "Need Help?" %}
+            .sidebar
+              %ul
+                %li
+                  %a{href: "/faq"}
+                    {% trans "View our FAQ for answers to commonly asked questions." %}
+                %li
+                  %a{href: "mailto:support@mckinseyacademy.com?subject=#{contact_subject}", id: "email-support"}
+                    {% trans "Trouble logging in? Contact us." %}
+
+  #reset-password.reveal-modal.small{"data-reveal": "true"}
+
+  - block general_modal
+    %a.reveal-general-modal{'href': "#", 'data-reveal-id': "generalModal"}
+    .reveal-modal.small{'id': "generalModal", 'data-reveal': ''}
+      - if form.reset == 'done'
+        - include 'registration/password_reset_done.haml'
+        %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+      - if form.reset == 'complete'
+        - include 'registration/password_reset_complete.haml'
+        %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+      - if form.reset == 'failed'
+        - include 'registration/password_reset_failed.haml'
+        %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+
+
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  %script{src: "{% static 'js/vendor/jquery.query-object.js' %}"}
+  %script{src: "{% static 'js/accounts/login.js' %}"}

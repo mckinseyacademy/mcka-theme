@@ -7,6 +7,8 @@
 - block header
   - include 'accounts/login_header.haml'
 - load staticfiles
+- block body_class
+  version-a
 - block content
   .row
     .login-form.large-10.medium-10.large-centered.medium-centered.columns
@@ -79,15 +81,45 @@
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
   %script{src: "{% static 'js/vendor/jquery.query-object.js' %}"}
   :javascript
+    ga('send', 'pageview', {dimension4: 'old_flow'});
     ajaxify_overlay_form('#reset-password', 'form');
     $('form input[type="text"]').on('keypress', function(){
       $('.error').text('');
     });
+
+    function getHashedId() {
+      let email = $('input[name="email"]').val().trim();
+      let username = $('input[name="username"]').val().trim();
+      if (username) {
+        return 'u:' + $.md5(username).slice(-20);
+      } else if (email) {
+        return 'e:' + $.md5(email).slice(-20);
+      } else {
+        return "";
+      }
+    }
+
     $(function(){
+      let hashed_id = getHashedId();
       var current_mode = "{{login_mode}}";
+
       if($('#generalModal input.show-modal').length > 0){
         $('#generalModal').foundation('reveal', 'open');
       }
+
+      $('.sso-login').submit(function(){
+        ga('send', 'event', 'Login', current_mode + '_login', {
+          dimension1: hashed_id,
+          dimension4: 'old_flow'
+        });
+      });
+
+      $('a[data-reveal-id="reset-password"]').click(function() {
+          ga('send', 'event', 'Login', 'forgot_password', {
+            dimension1: hashed_id,
+            dimension4: 'old_flow'
+        });
+      });
 
       function switchToMode(mode) {
         current_mode = mode;
@@ -96,11 +128,15 @@
         $("form."+mode+"-login").show();
         $("span.login-mode-label.mode-"+mode).show();
         $("span."+mode+"-login").show();
+        ga('send', 'event', 'Login', 'switch_mode', mode, {
+          dimension1: hashed_id,
+          dimension4: 'old_flow'
+        });
       }
 
       $(".login-mode-selector a").click(function(ev) {
         ev.preventDefault();
-        current_mode = (current_mode != 'normal') ? 'normal' : 'sso';
+        current_mode = (current_mode !== 'normal') ? 'normal' : 'sso';
         switchToMode(current_mode);
       });
 
