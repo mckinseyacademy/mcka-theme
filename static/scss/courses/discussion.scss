@@ -106,8 +106,6 @@ header .course-tabs li {
 
 
   .page-header-secondary {
-    float: right;
-    text-align: right;
     display: inline-block;
     vertical-align: text-bottom;
 
@@ -147,7 +145,6 @@ header .course-tabs li {
     }
 
     .forum-search {
-      margin-left: 20px;
       display: inline-block;
       @media only screen and (max-width: 767px){
         display: block;
