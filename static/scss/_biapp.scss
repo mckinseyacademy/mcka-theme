@@ -335,6 +335,11 @@ header[role=banner]{
   }
 }
 
+#generalModal.reveal-modal,
+#messagesModal.reveal-modal {
+  @include padding-right(6em);
+}
+
 // Footer
 
 footer[role=contentinfo]{
@@ -504,6 +509,12 @@ footer[role=contentinfo]{
   }
 
   // Misc
+
+  .reset-password-form{
+    form{
+      float: right;
+    }
+  }
 
   .fa-arrow-circle-right{
     &:before{

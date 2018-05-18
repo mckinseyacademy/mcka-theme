@@ -453,7 +453,6 @@ form {
 /* Styles for general purpouse modal dialog */
 #generalModal.reveal-modal,
 #messagesModal.reveal-modal {
-  padding-right: 6em;
 
   h2 {
     @include font-spec(22, normal, 24);
