@@ -389,7 +389,8 @@ class BaseRegistrationForm(NoSuffixLabelForm):
     username = forms.CharField(
         max_length=255,
         label=mark_safe_lazy(format_lazy(
-            _('Public username {html_span_start} This cannot be changed later.{html_span_end}'),
+            _('Public username {html_span_start} This cannot be changed later and '
+              'cannot contain non-English characters.{html_span_end}'),
             html_span_start='<span class="tip">',
             html_span_end='</span> <span class="required-field"></span>'
         )),

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-15 08:26+0000\n"
+"POT-Creation-Date: 2018-05-18 07:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1098,8 +1098,8 @@ msgstr ""
 msgid "Password {html_span}"
 msgstr ""
 
-#: accounts/forms.py:386 accounts/forms.py:460 accounts/forms.py:478
-#: accounts/forms.py:576 admin/controller.py:810 admin/views.py:2340
+#: accounts/forms.py:386 accounts/forms.py:461 accounts/forms.py:479
+#: accounts/forms.py:577 admin/controller.py:810 admin/views.py:2340
 #: marketing/forms.py:49 marketing/forms.py:93 marketing/forms.py:127
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1113,147 +1113,147 @@ msgstr ""
 #: accounts/forms.py:392
 #, python-brace-format
 msgid ""
-"Public username {html_span_start} This cannot be changed later."
-"{html_span_end}"
+"Public username {html_span_start} This cannot be changed later and cannot "
+"contain non-English characters.{html_span_end}"
 msgstr ""
 
-#: accounts/forms.py:402 accounts/forms.py:588
+#: accounts/forms.py:403 accounts/forms.py:589
 #, python-brace-format
 msgid ""
 "Password {html_span_start} Must be at least 8 characters and include upper "
 "and lowercase letters - plus numbers OR special characters.{html_span_end}"
 msgstr ""
 
-#: accounts/forms.py:416
+#: accounts/forms.py:417
 #, python-brace-format
 msgid "City {html_span}"
 msgstr ""
 
-#: accounts/forms.py:424 accounts/forms.py:601
+#: accounts/forms.py:425 accounts/forms.py:602
 #, python-brace-format
 msgid ""
 "I agree to the {html_anchor_start} Terms of Service {html_anchor_end} and "
 "{html_anchor_second} Privacy Policy {html_anchor_end} {html_span}"
 msgstr ""
 
-#: accounts/forms.py:437 accounts/forms.py:613
+#: accounts/forms.py:438 accounts/forms.py:614
 msgid "You must accept terms of service in order to continue"
 msgstr ""
 
-#: accounts/forms.py:487
+#: accounts/forms.py:488
 msgid "The account associated with this email is not activated yet"
 msgstr ""
 
-#: accounts/forms.py:525
+#: accounts/forms.py:526
 msgid "The two password fields didn't match."
 msgstr ""
 
-#: accounts/forms.py:526
+#: accounts/forms.py:527
 msgid "Password doesn't match creation criteria."
 msgstr ""
 
-#: accounts/forms.py:528
+#: accounts/forms.py:529
 msgid "New password"
 msgstr ""
 
-#: accounts/forms.py:530
+#: accounts/forms.py:531
 msgid "New password confirmation"
 msgstr ""
 
-#: accounts/forms.py:560 admin/forms.py:165
+#: accounts/forms.py:561 admin/forms.py:165
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr ""
 
-#: accounts/forms.py:565 templates/admin/course_run/view.haml:63
+#: accounts/forms.py:566 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:90
 msgid "First Name"
 msgstr ""
 
-#: accounts/forms.py:566
+#: accounts/forms.py:567
 #: templates/admin/participants/participant_details.haml:95
 msgid "Last Name"
 msgstr ""
 
-#: accounts/forms.py:580
+#: accounts/forms.py:581
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later. "
 "{html_span_end}"
 msgstr ""
 
-#: accounts/forms.py:647
+#: accounts/forms.py:648
 #, python-brace-format
 msgid "First Name {html_span}"
 msgstr ""
 
-#: accounts/forms.py:651
+#: accounts/forms.py:652
 #, python-brace-format
 msgid "Last Name {html_span}"
 msgstr ""
 
-#: accounts/forms.py:655
+#: accounts/forms.py:656
 #, python-brace-format
 msgid "Company Name {html_span}"
 msgstr ""
 
-#: accounts/forms.py:659
+#: accounts/forms.py:660
 #, python-brace-format
 msgid "Company Email {html_span}"
 msgstr ""
 
-#: accounts/forms.py:663
+#: accounts/forms.py:664
 #, python-brace-format
 msgid "Current Role {html_span}"
 msgstr ""
 
-#: accounts/forms.py:667
+#: accounts/forms.py:668
 #, python-brace-format
 msgid ""
 "{html_div_start}Note: personal email addresses will not be "
 "processed{html_div_end}"
 msgstr ""
 
-#: accounts/forms.py:673 accounts/forms.py:679
+#: accounts/forms.py:674 accounts/forms.py:680
 #, python-brace-format
 msgid ""
 "{html_div_start}(please choose one of the following options) {html_div_end}"
 msgstr ""
 
-#: accounts/forms.py:699 accounts/forms.py:707
+#: accounts/forms.py:700 accounts/forms.py:708
 msgid "Special characters or numbers are not valid."
 msgstr ""
 
-#: accounts/forms.py:716
+#: accounts/forms.py:717
 msgid "Email must be a string."
 msgstr ""
 
-#: accounts/forms.py:721
+#: accounts/forms.py:722
 #, python-brace-format
 msgid "Email '{email}' must be at least {min} characters long"
 msgstr ""
 
-#: accounts/forms.py:728
+#: accounts/forms.py:729
 #, python-brace-format
 msgid "Email '{email}' must be at most {max} characters long"
 msgstr ""
 
-#: accounts/forms.py:738
+#: accounts/forms.py:739
 msgid "This email address has already been registered."
 msgstr ""
 
-#: accounts/forms.py:744
+#: accounts/forms.py:745
 msgid "Email you provided is not allowed."
 msgstr ""
 
-#: accounts/forms.py:746
+#: accounts/forms.py:747
 msgid "Please enter a valid company email address."
 msgstr ""
 
-#: accounts/forms.py:764
+#: accounts/forms.py:765
 msgid "Special characters are not valid."
 msgstr ""
 
-#: accounts/forms.py:783
+#: accounts/forms.py:784
 msgid "Please enter a valid Role."
 msgstr ""
 
@@ -1544,197 +1544,197 @@ msgstr ""
 msgid "-"
 msgstr ""
 
-#: admin/controller.py:1651 admin/controller.py:1670
+#: admin/controller.py:1655 admin/controller.py:1674
 msgid "Could not parse user info from {}"
 msgstr ""
 
-#: admin/controller.py:1706 admin/controller.py:1834
+#: admin/controller.py:1710 admin/controller.py:1838
 msgid "No email"
 msgstr ""
 
-#: admin/controller.py:1708 admin/controller.py:1835
+#: admin/controller.py:1712 admin/controller.py:1839
 msgid "Empty field: {}"
 msgstr ""
 
-#: admin/controller.py:1708 admin/controller.py:1835 admin/controller.py:1840
-#: admin/controller.py:1844
+#: admin/controller.py:1712 admin/controller.py:1839 admin/controller.py:1844
+#: admin/controller.py:1848
 msgid "Processing Participant"
 msgstr ""
 
-#: admin/controller.py:1713
+#: admin/controller.py:1717
 msgid "Valid e-mail is required"
 msgstr ""
 
-#: admin/controller.py:1713 admin/controller.py:1720 admin/controller.py:1725
-#: admin/controller.py:1763 admin/controller.py:1774
+#: admin/controller.py:1717 admin/controller.py:1724 admin/controller.py:1729
+#: admin/controller.py:1767 admin/controller.py:1778
 msgid "Registering Participant"
 msgstr ""
 
-#: admin/controller.py:1720
+#: admin/controller.py:1724
 msgid "Email already exist"
 msgstr ""
 
-#: admin/controller.py:1725
+#: admin/controller.py:1729
 msgid "Username already exist"
 msgstr ""
 
-#: admin/controller.py:1731
+#: admin/controller.py:1735
 msgid "Company doesn't exist"
 msgstr ""
 
-#: admin/controller.py:1731 admin/controller.py:1733 admin/controller.py:1768
+#: admin/controller.py:1735 admin/controller.py:1737 admin/controller.py:1772
 msgid "Enrolling Participant in Company"
 msgstr ""
 
-#: admin/controller.py:1739 admin/controller.py:1850
+#: admin/controller.py:1743 admin/controller.py:1854
 msgid "Course doesn't exist"
 msgstr ""
 
-#: admin/controller.py:1739 admin/controller.py:1741 admin/controller.py:1745
-#: admin/controller.py:1748 admin/controller.py:1779 admin/controller.py:1850
-#: admin/controller.py:1852 admin/controller.py:1856 admin/controller.py:1859
-#: admin/controller.py:1874
+#: admin/controller.py:1743 admin/controller.py:1745 admin/controller.py:1749
+#: admin/controller.py:1752 admin/controller.py:1783 admin/controller.py:1854
+#: admin/controller.py:1856 admin/controller.py:1860 admin/controller.py:1863
+#: admin/controller.py:1878
 msgid "Enrolling Participant in Course"
 msgstr ""
 
-#: admin/controller.py:1745 admin/controller.py:1856
+#: admin/controller.py:1749 admin/controller.py:1860
 msgid "Course is not Internal"
 msgstr ""
 
-#: admin/controller.py:1748 admin/controller.py:1859
+#: admin/controller.py:1752 admin/controller.py:1863
 msgid "Status doesn't exist"
 msgstr ""
 
-#: admin/controller.py:1752 admin/controller.py:1788 admin/controller.py:1863
-#: admin/controller.py:1883
+#: admin/controller.py:1756 admin/controller.py:1792 admin/controller.py:1867
+#: admin/controller.py:1887
 msgid "Reason: {}, Activity: {}, Participant: {}"
 msgstr ""
 
-#: admin/controller.py:1774
+#: admin/controller.py:1778
 msgid "Activation record error"
 msgstr ""
 
-#: admin/controller.py:1786 admin/controller.py:1881
+#: admin/controller.py:1790 admin/controller.py:1885
 msgid "Setting Participant's Status"
 msgstr ""
 
-#: admin/controller.py:1794 admin/controller.py:1889
+#: admin/controller.py:1798 admin/controller.py:1893
 msgid "Processing Data Error"
 msgstr ""
 
-#: admin/controller.py:1795 admin/controller.py:1890
+#: admin/controller.py:1799 admin/controller.py:1894
 msgid "Error processing data: {} - {}"
 msgstr ""
 
-#: admin/controller.py:1840
+#: admin/controller.py:1844
 #, python-brace-format
 msgid "Valid e-mail is required: {email}"
 msgstr ""
 
-#: admin/controller.py:1844
+#: admin/controller.py:1848
 msgid "User doesn't exist"
 msgstr ""
 
-#: admin/controller.py:2005
+#: admin/controller.py:2009
 msgid "This company already exists!"
 msgstr ""
 
-#: admin/controller.py:2007
+#: admin/controller.py:2011
 msgid "Company Validation Success!"
 msgstr ""
 
-#: admin/controller.py:2083
+#: admin/controller.py:2087
 msgid "You have sent incorrect chunk number!"
 msgstr ""
 
-#: admin/controller.py:2085
+#: admin/controller.py:2089
 msgid "You have sent incorrect task key!"
 msgstr ""
 
-#: admin/controller.py:2106
+#: admin/controller.py:2110
 msgid "There are no users in organization!"
 msgstr ""
 
-#: admin/controller.py:2267 admin/controller.py:2268 admin/views.py:3573
+#: admin/controller.py:2271 admin/controller.py:2272 admin/views.py:3573
 #: admin/views.py:3574 admin/views.py:3730 admin/views.py:5550
 msgid "No company"
 msgstr ""
 
-#: admin/controller.py:2285 admin/views.py:3578 admin/views.py:4057
+#: admin/controller.py:2289 admin/views.py:3578 admin/views.py:4057
 #: admin/views.py:4084 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/mobile_apps/company_app_details.haml:46
 msgid "Yes"
 msgstr ""
 
-#: admin/controller.py:2287 admin/views.py:3580 admin/views.py:4059
+#: admin/controller.py:2291 admin/views.py:3580 admin/views.py:4059
 #: admin/views.py:4063 admin/views.py:4086 admin/views.py:4090
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
 msgstr ""
 
-#: admin/controller.py:2304 admin/controller.py:2312
+#: admin/controller.py:2308 admin/controller.py:2316
 msgid "000"
 msgstr ""
 
-#: admin/controller.py:2482 admin/controller.py:2504
+#: admin/controller.py:2486 admin/controller.py:2508
 msgid "Sorry, We can not process your request"
 msgstr ""
 
-#: admin/controller.py:2489 admin/controller.py:2501
+#: admin/controller.py:2493 admin/controller.py:2505
 msgid "Operation Successful"
 msgstr ""
 
-#: admin/controller.py:2492
+#: admin/controller.py:2496
 msgid "Please enter role text"
 msgstr ""
 
-#: admin/controller.py:2527 templates/admin/courses/course_details.haml:104
+#: admin/controller.py:2531 templates/admin/courses/course_details.haml:104
 msgid "Engagement Summary"
 msgstr ""
 
-#: admin/controller.py:2527
+#: admin/controller.py:2531
 msgid "# of people"
 msgstr ""
 
-#: admin/controller.py:2527
+#: admin/controller.py:2531
 msgid "% total cohort"
 msgstr ""
 
-#: admin/controller.py:2527
+#: admin/controller.py:2531
 msgid "Avg Progress"
 msgstr ""
 
-#: admin/controller.py:2533
+#: admin/controller.py:2537
 msgid "Participant Performance"
 msgstr ""
 
-#: admin/controller.py:2533
+#: admin/controller.py:2537
 #, python-format
 msgid "% completion"
 msgstr ""
 
-#: admin/controller.py:2533
+#: admin/controller.py:2537
 msgid "Score"
 msgstr ""
 
-#: admin/controller.py:2534
+#: admin/controller.py:2538
 msgid "Group work 1"
 msgstr ""
 
-#: admin/controller.py:2535
+#: admin/controller.py:2539
 msgid "Group work 2"
 msgstr ""
 
-#: admin/controller.py:2536
+#: admin/controller.py:2540
 msgid "Mid-course assessment"
 msgstr ""
 
-#: admin/controller.py:2537
+#: admin/controller.py:2541
 msgid "Final assessment"
 msgstr ""
 
-#: admin/controller.py:2544 templates/admin/courses/course_details.haml:117
+#: admin/controller.py:2548 templates/admin/courses/course_details.haml:117
 msgid "Social Engagement"
 msgstr ""
 
