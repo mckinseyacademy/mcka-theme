@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-11 10:18+0000\n"
+"POT-Creation-Date: 2018-05-15 08:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5127,7 +5127,7 @@ msgid ""
 msgstr ""
 
 #: templates/courses/content_page/course_menu.haml:4
-msgid "LESSONS"
+msgid "LESSONS:"
 msgstr ""
 
 #: templates/courses/content_page/course_menu.haml:24
