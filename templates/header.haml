@@ -15,28 +15,29 @@
           .top-bar
             %a.logo{href: "/"}
               %img{src: "/static/image/mckinsey&academy.png", srcset: "/static/image/mckinsey&academy@2x.png 2x"}
-            .language-selector
-              %span
-                {# TODO: generate dynamic list using settings.SUPPORTED_LANGUAGES #}
-                {% trans "Language :" %}
-              .select-box
-                %a.current
-                  -if LANGUAGE_CODE == 'ar'
-                    %span.arabic
-                      العربية
-                  - else
-                    %span.english
-                      English
-                %ul
-                  %li
-                    %h5
-                      {% trans "Select Your Language" %}
-                  %li.arabic
-                    %a{href: "/language_switch?LANG=ar"}
-                      العربية
-                  %li.english
-                    %a{href: "/language_switch?LANG=en"}
-                      English
+            -if use_i18n
+              .language-selector
+                %span
+                  {# TODO: generate dynamic list using settings.SUPPORTED_LANGUAGES #}
+                  {% trans "Language :" %}
+                .select-box
+                  %a.current
+                    -if LANGUAGE_CODE == 'ar'
+                      %span.arabic
+                        العربية
+                    - else
+                      %span.english
+                        English
+                  %ul
+                    %li
+                      %h5
+                        {% trans "Select Your Language" %}
+                    %li.arabic
+                      %a{href: "/language_switch?LANG=ar"}
+                        العربية
+                    %li.english
+                      %a{href: "/language_switch?LANG=en"}
+                        English
       %input#mobile-menu-toggle{type: 'checkbox'}
       - block header_menu
         %nav{role: 'navigation'}

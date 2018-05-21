@@ -79,6 +79,7 @@ def settings_data(request):
                 request.is_IE8 = True
 
     data = {
+        "use_i18n": settings.USE_I18N,
         "ga_tracking_id": settings.GA_TRACKING_ID,
         "ta_email_group": settings.TA_EMAIL_GROUP,
         "ie_favicon_prefix": ie_favicon_prefix,

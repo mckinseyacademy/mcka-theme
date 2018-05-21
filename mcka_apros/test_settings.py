@@ -9,3 +9,4 @@ OAUTH2_SAFE_URL_PREFIXES = ['https://', 'http://', ]
 CELERY_ALWAYS_EAGER = True
 
 GA_TRACKING_ID = 'test'
+USE_I18N = True

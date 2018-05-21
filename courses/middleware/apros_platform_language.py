@@ -4,7 +4,7 @@ from django.http import Http404
 
 from api_client import user_api
 from api_client.api_error import ApiError
-from mcka_apros.settings import LANGUAGE_CODE, COURSE_KEY_PATTERN
+from mcka_apros.settings import LANGUAGE_CODE, COURSE_KEY_PATTERN, USE_I18N
 from util.i18n_helpers import set_language
 
 
@@ -19,6 +19,12 @@ class AprosPlatformLanguage(object):
 			return request.META.get('HTTP_ACCEPT_LANGUAGE').split(',')[0]
 
 	def process_request(self, request):
+		if USE_I18N:
+			self._enable_internationalization(request)
+		else:
+			set_language(LANGUAGE_CODE)
+
+	def _enable_internationalization(self, request):
 		path = request.path
 		language = None
 		general_pages = [
