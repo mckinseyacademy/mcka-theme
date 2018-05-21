@@ -12,18 +12,23 @@
           .small-12.columns
             %p.message
               #{identity_provider_message}
-      .large-12.columns
+      .large-12.columns.idp-setup
         .row
           .large-8.columns
             .row
               .small-4.columns
                 %label{"for":"identity_provider"}= _("Identity provider")
               .small-8.columns
-                .identity-provider
+                .identity-provider-input
                   %input#identity_provider{"name": "identity_provider", "type": "text", "value": "#{identity_provider}"}
+                  .read-only-idp
                   %span.status-icon
                     .icon
-          .small-4.columns.idp-cancel-save
+          .small-4.columns.idp-buttons
+            %a#add-idp.button.radius.tiny{href: ""}
+              %span= _("Add")
+            %a#edit-idp.button.radius.tiny{href: ""}
+              %span= _("Edit")
             %a#reset-idp{href: ""}
               %span= _("Cancel")
             %a#save-idp.button.radius.tiny{href: ""}
@@ -102,6 +107,7 @@
 - block js_snippets
   :javascript
     let noAccessKeysMsg = "{{ _('No access keys') }}";
+    let noIdPMsg = "{{ _('Click Add to specify an identity provider') }}"
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
   %script{src: "{% static 'js/vendor/ZeroClipboard.min.js' %}"}
   %script{src: "{% static 'js/admin/client_sso.js' %}"}

@@ -20,10 +20,55 @@ $form-spacing: rem-calc(16);
     color: gray;
   }
 
-  .identity-provider {
+  .idp-buttons a {
+    display: none;
+    margin: 0 0.5rem;
+  }
+
+  .idp-setup {
+    margin: 2rem 0;
+  }
+
+  .idp-setup.edit-mode .idp-buttons #edit-idp {
+    display: inline-block;
+  }
+
+  .idp-setup.add-mode {
+    .idp-buttons #add-idp {
+      display: inline-block;
+    }
+    .read-only-idp {
+      font-style: italic;
+    }
+  }
+
+  .idp-setup.save-mode .idp-buttons {
+    #save-idp, #reset-idp {
+      display: inline-block;
+    }
+  }
+
+  .idp-setup.save-mode .identity-provider-input {
+    #identity_provider {
+      display: block;
+    }
+    .read-only-idp {
+      display: none;
+    }
+  }
+
+  .identity-provider-input {
     position: relative;
-    #identity_provider.save-failed {
-      border-color: red;
+    #identity_provider {
+      display: none;
+      margin-bottom: 0;
+      &.save-failed {
+        border-color: red;
+      }
+    }
+    .read-only-idp {
+      padding: $form-spacing/2 $form-spacing;
+      line-height: 21px;
     }
     .status-icon {
       position: absolute;
@@ -35,9 +80,6 @@ $form-spacing: rem-calc(16);
       .fa-check-circle {
         color: green;
       }
-    }
-    .idp-cancel-save a {
-      margin: 0 0.5rem;
     }
   }
 }
