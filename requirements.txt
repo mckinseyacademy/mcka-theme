@@ -52,3 +52,6 @@ requests==2.18.4
 unicodecsv==0.14.1
 
 edx-i18n-tools==0.4.2
+
+# Redis version
+redis==2.10.6
