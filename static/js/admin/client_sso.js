@@ -1,4 +1,4 @@
-/* global noAccessKeysMsg */
+/* global noAccessKeysMsg, noIdPMsg */
 $(function () {
     let identityProviderInput = $('#identity_provider');
     let originalIdP = identityProviderInput.val();
@@ -14,6 +14,28 @@ $(function () {
         }
     });
 
+    function switchIdPMode(mode) {
+        $('.idp-setup').removeClass('edit-mode add-mode save-mode').addClass(mode + '-mode');
+        $('.identity-provider-input .read-only-idp').text(originalIdP || noIdPMsg);
+        if (mode === 'save') {
+            identityProviderInput.focus();
+        }
+    }
+
+    function resetIdPMode() {
+        if (originalIdP) {
+            switchIdPMode('edit');
+        } else {
+            switchIdPMode('add');
+        }
+    }
+
+    resetIdPMode();
+
+    $('#add-idp, #edit-idp').click(function (event) {
+        event.preventDefault();
+        switchIdPMode('save');
+    });
 
     $('#access_key_search').on('input',
         Foundation.utils.debounce(
@@ -58,19 +80,37 @@ $(function () {
         }).done(function () {
             setSaveStatus("saved");
             originalIdP = newIdP;
+            resetIdPMode();
         }).fail(function () {
             setSaveStatus("error");
         });
     }
 
-    $("#reset-idp").click(function (event) {
+    function onResetIdPEvent(event) {
         event.preventDefault();
         identityProviderInput.val(originalIdP);
-    });
+        resetIdPMode();
+        return false;
+    }
 
-    $("#save-idp").click(function (event) {
+    function onSaveIdPEvent(event) {
         event.preventDefault();
         saveIdP();
+        return false;
+    }
+
+    $("#reset-idp").click(onResetIdPEvent);
+    $("#save-idp").click(onSaveIdPEvent);
+
+    identityProviderInput.on('keyup', function (event) {
+        // Reset when Escape key pressed
+        if (event.keyCode === 27) {
+            onResetIdPEvent(event);
+        }
+        // Save when Enter key pressed
+        if (event.keyCode === 13) {
+            onSaveIdPEvent(event);
+        }
     });
 
     ajaxify_overlay_form('#new-principal', 'form', enableCopyButton);
