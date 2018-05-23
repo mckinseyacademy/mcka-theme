@@ -5,3 +5,263 @@
 .version-b {
   @import "version_b";
 }
+
+.registration-form, .reset-password-form{
+  button[type="submit"]{
+    white-space: pre-line;
+  }
+  input:not([type="submit"]), select{
+    max-width: 430px;
+  }
+  .help {
+    @media only screen and (max-width: 548px) {
+      border-left: 0 !important;
+      min-height: 0 !important;
+    }
+  }
+  margin-top: rem-calc(48);
+  padding: rem-calc(20);
+  background-color: $pure-white;
+
+  h1 {
+    padding-bottom: rem-calc(20);
+  }
+
+  h4 {
+    text-transform: uppercase;
+  }
+
+  .description{
+    @include font-spec(14, normal, 24);
+    height: rem-calc(40);
+  }
+
+  .tip{
+    @include font-spec(14, normal, 24);
+    height: rem-calc(20);
+    font-style: italic;
+  }
+
+  .sidebar {
+    @include font-spec(14, normal, 22);
+
+    a {
+      font-size: rem-calc(12);
+    }
+
+    span {
+      color: $mckinsey-orange;
+    }
+  }
+
+  span.login-mode-label {
+    // hide them both until JS code decides which one to show
+    display: none;
+  }
+
+  span.login-mode-selector {
+    .sso-login, .normal-login {
+      // hide them both until JS code decides which one to show
+      display: none;
+    }
+  }
+
+  form {
+    &.sso-login, &.normal-login {
+      // hide them both until JS code decides which one to show
+      display: none;
+    }
+
+    .errorlist{
+      margin-bottom: 0px;
+      padding-top: 0px;
+    }
+
+    #id_current_role + .errorlist{
+      display: none;
+    }
+
+    #id_current_role{
+      margin-bottom: 0px;
+      list-style-type: none;
+    }
+
+    #id_current_role_other{
+      margin-left: 1.1rem;
+      width: calc(100% - 1.1rem);
+    }
+
+    #id_company_email{
+      margin-bottom: 0px;
+    }
+
+    .company_email_helptext + label{
+      padding-bottom:0px!important;
+    }
+
+    .company_email_helptext, .current_role_helptext{
+      font-style: italic;
+      color:#888;
+      padding-bottom: 10px;
+    }
+  }
+
+  form label {
+    @include font-spec(14, semibold);
+    padding-bottom: rem-calc(10);
+  }
+
+  .columns + .columns {
+    display: block;
+    min-height: 500px;
+  }
+
+  .required-field {
+    color: $mckinsey-orange;
+    @include font-spec(14, semibold);
+    &::after{
+      content: '*';
+    }
+  }
+
+  input[readonly], select[disabled]{
+    border: none;
+    box-shadow: none;
+    padding: 0;
+    color: $mckinsey-academy-blue-gray;
+    margin-top: -10px;
+    background-color: transparent;
+  }
+
+  .errorlist + #id_accept_terms{
+    top: -54px!important;
+  }
+
+  #id_accept_terms {
+    position: relative;
+    margin: 0;
+    top: -26px;
+    @media only screen and
+    (max-width: 400px){
+      top: -40px;
+    }
+  }
+
+  label[for=id_accept_terms] {
+    @media #{$screen} and (min-width: #{upper-bound($small-range)}) {
+      white-space: nowrap;
+    }
+  }
+
+  input[submit] {
+    padding-top: 20px;
+  }
+
+  .outdated_browser {
+    color: $mckinsey-orange;
+    margin-bottom: 30px;
+  }
+
+  .terms-of-service {
+    height: 300px;
+    margin-bottom: 20px;
+    overflow-y: scroll;
+  }
+}
+
+#generalModal.reveal-modal{
+  p.medium-font{
+    @include font-spec(14, normal, 22);
+  }
+}
+
+#upload-profile-image-form{
+
+  .spinner-image{
+    position: relative;
+    width: inherit;
+    height: 69px;
+  }
+
+  .spinner.upload-image{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    &.svg-ie-image{
+      padding-top:5px;
+      padding-left:40%;
+    }
+  }
+}
+
+// Mobile app download popup design
+#mobileAppLinkModal {
+  font-family: "Open Sans", sans-serif;
+  margin: 0 auto;
+  overflow: hidden;
+  min-height: 100vh;
+  background-size: cover !important;
+  top: 0;
+  padding: 0 !important;
+  max-height: 100vh;
+}
+.mobile-container{
+  padding: 0 20px;
+}
+.logo{
+  text-align: center;
+  margin: 35px 0 0;
+}
+.logo img{
+  max-width: 300px;
+  width: 90%;
+}
+
+.tagline{
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+  color: #FFF;
+  margin: 0 0 10px 0;
+}
+.close-popup-tagline {
+  text-align: center;
+}
+.close-popup-tagline a {
+  margin: 0 0 10px 18px;
+  position: relative !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  color: #FFF !important;
+}
+
+.downlaods{
+  margin: 40px 0;
+}
+.downlaods .store{
+  width: 160px;
+  margin: 10px auto;
+  background-color: #000;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+.downlaods .store img{
+  width: 100%;
+}
+
+.mobile-screen{
+  width: 100%;
+  bottom: -1px;
+}
+.mobile-screen img{
+  width: 100%;
+}
+
+@media (min-width: 1000px){
+  .mobile-container{
+    max-width: none;
+  }
+}
