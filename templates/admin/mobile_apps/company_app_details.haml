@@ -52,7 +52,8 @@
 
 
         .columns.medium-12
-          %button.button.radius.small.pull-right.bordered{"data-reveal-id" => "linkAppConfirm", :href => "#"} {% trans "Delink App" %}
+          %button.button.radius.small.pull-right.bordered{"data-reveal-id" => "linkAppConfirm", :href => "#"}
+            {% trans "Delink App" %}
           %button.button.radius.small.pull-right.bordered.blank{"aria-haspopup" => "true", "data-disable-hover" => "false", "data-tooltip" => "", :tabindex => "1", :title => "{% trans 'Please contact the mobile dev team to edit this page' %}", :type => "button"}
             {% trans "Help ?" %}
 
@@ -60,6 +61,8 @@
       %h4 {% trans "Delinking" %}
       %p {% trans "Delinking an active app from a company can lead to unstability." %}
       %p.focused {% trans "ARE YOU SURE YOU WANT TO CONFIRM?" %}
-      %button#delinkAppButton.button.small.radius{:value => "Continue", :type => "Submit", :data-id => "#{appDetails.id}"} {% trans "Continue" %}
-      %button.button.small.blank.close-reveal-modal{:value => "Cancel", :type => "button"} {% trans "Cancel" %}
+      %button#delinkAppButton.button.small.radius{:value => "Continue", :type => "Submit", :data-id => "#{appDetails.id}"}
+        {% trans "Continue" %}
+      %button.button.small.blank.close-reveal-modal{:value => "Cancel", :type => "button"}
+        {% trans "Cancel" %}
       %a.close-reveal-modal{"aria-label" => "Close"} ×
