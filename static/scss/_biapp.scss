@@ -250,7 +250,7 @@ header[role=banner]{
   }
 }
 
-.login-form{
+.login-form, .registration-form {
   .help{
     @include border-left(1px solid $mckinsey-grey);
   }
@@ -516,7 +516,7 @@ footer[role=contentinfo]{
     left: auto;
     right: -5px;
   }
-  
+
   header[role=banner]{
     &.background-blue{
       #profile-container{
@@ -536,7 +536,7 @@ footer[role=contentinfo]{
 
   // Login & Activation
 
-  .login-form{
+  .login-form, .registration-form {
     .columns{
       &:first-child{
         float: right;
