@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-18 07:25+0000\n"
+"POT-Creation-Date: 2018-05-23 08:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6312,9 +6312,9 @@ msgstr ""
 #: templates/faq.haml:35
 #, python-format
 msgid ""
-"You need to complete all group work and feedback activities and earn a "
+" You need to complete all group work and feedback activities and earn a "
 "combined course grade of at least 70%% to work towards a program certificate "
-"of completion. Your course grade is calculated as follows:"
+"of completion. Your course grade is calculated as follows: "
 msgstr ""
 
 #: templates/faq.haml:37
@@ -8017,6 +8017,10 @@ msgid ""
 "have searched for, viewed and use. The information automatically collected "
 "may be associated with your personal data, and in some instances may itself "
 "constitute personal data."
+msgstr ""
+
+#: templates/privacy.haml:28
+msgid "Use of information"
 msgstr ""
 
 #: templates/privacy.haml:30

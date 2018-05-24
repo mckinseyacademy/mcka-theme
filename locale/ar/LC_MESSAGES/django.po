@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-18 07:25+0000\n"
+"POT-Creation-Date: 2018-05-23 08:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6709,9 +6709,9 @@ msgstr "ما هي متطلبات النجاح للدورات؟"
 #: templates/faq.haml:35
 #, python-format
 msgid ""
-"You need to complete all group work and feedback activities and earn a "
+" You need to complete all group work and feedback activities and earn a "
 "combined course grade of at least 70%% to work towards a program certificate "
-"of completion. Your course grade is calculated as follows:"
+"of completion. Your course grade is calculated as follows: "
 msgstr ""
 "تحتاج إلى إكمال جميع أنشطة المجموعة وأنشطة الملاحظات والتغذية الراجعة وكسب "
 "درجة شاملة في الدورة تصل 70 على الأقل، لتتمكن من الحصول على شهادة إتمام "
@@ -8784,6 +8784,12 @@ msgstr ""
 "أدناه). قد نقوم أيضًا بجمع المعلومات حول كيفية استخدامك لأكاديمية ماكنزي، مثل "
 "ما قمت بالبحث عنه وعرضه واستخدامه. قد ترتبط المعلومات التي يتم جمعها تلقائيًا "
 "ببياناتك الشخصية، وفي بعض الحالات قد تشكل في حد ذاتها بيانات شخصية."
+
+#: templates/privacy.haml:28
+#, fuzzy
+#| msgid "For Information:"
+msgid "Use of information"
+msgstr "للحصول على معلومات:"
 
 #: templates/privacy.haml:30
 msgid ""
