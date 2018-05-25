@@ -417,6 +417,11 @@
 
   /* Text Edit Form */
 
+  .wmd-preview ul,
+  .wmd-preview ol{
+    padding-left: 0;
+  }
+
   .wmd-panel{
     margin-bottom: 20px;
   }

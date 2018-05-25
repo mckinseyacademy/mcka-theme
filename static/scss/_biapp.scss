@@ -179,6 +179,9 @@ body{
       .post-header-actions{
         @include float(right);
       }
+      ol, ul{
+        margin-right: 2.5rem;
+      }
     }
     .forum-response{
       .response-header-actions{
@@ -628,7 +631,7 @@ footer[role=contentinfo]{
       }
       .page-header-secondary{
         .forum-search{
-          margin-left: 8px;
+          margin-left: 0;
           .search-button{
             border-radius: 3px 0 0 3px;
             margin-left: 0;
@@ -671,6 +674,11 @@ footer[role=contentinfo]{
             padding-left: 10px;
             padding-right: 20px;
           }
+        }
+      }
+      .forum-nav{
+        select{
+          width: 100% !important;
         }
       }
       .forum-nav-thread-list{
@@ -797,6 +805,10 @@ footer[role=contentinfo]{
       .post-cancel{
         float: right;
       }
+      .wmd-preview ul,
+      .wmd-preview ol{
+        margin-right: 2.5rem;
+      }
     }
     .action-button{
       &:hover{
@@ -833,6 +845,13 @@ footer[role=contentinfo]{
             margin-right: 20px;
           }
         }
+      }
+      button.cancel{
+        float: right !important;
+      }
+      button.submit{
+        float: left;
+        margin-left: 0;
       }
     }
   }
