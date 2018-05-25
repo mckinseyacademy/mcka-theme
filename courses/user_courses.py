@@ -385,16 +385,14 @@ def standard_data(request):
 
             programs = get_program_menu_list(request, course)
 
-    try:
-        if get_language_bidi():
-            right_lesson_module_navigator = course.current_lesson.previous_module
-            left_lesson_module_navigator = course.current_lesson.next_module
-        else:
-            right_lesson_module_navigator = course.current_lesson.next_module
-            left_lesson_module_navigator = course.current_lesson.previous_module
-    except AttributeError:
-        right_lesson_module_navigator = None
-        left_lesson_module_navigator = None
+    current_lesson = getattr(course, 'current_lesson', None)
+    right_lesson_module_navigator = getattr(current_lesson, 'next_module', None)
+    left_lesson_module_navigator = getattr(current_lesson, 'previous_module', None)
+
+    if get_language_bidi():
+        right_lesson_module_navigator, left_lesson_module_navigator = left_lesson_module_navigator, \
+                                                                      right_lesson_module_navigator
+
     data = {
         "course": course,
         "program": program,
