@@ -213,7 +213,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
     return course
 
 
-def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, request=None):
+def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, request=None, enable_cache=True):
     """
     Gets the course from the API, and performs any post-processing for Apros specific purposes
 
@@ -263,7 +263,7 @@ def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_ap
         course = _load_course(course_id, depth, course_api_impl, user=user)
 
         # if we have fetched the course, let's put it in the session cache
-        if course:
+        if course and enable_cache:
             # note, since we're change the schema of the session data, we have to be able to
             # bootstrap existing sessions
             if 'course_cache' not in request.session:

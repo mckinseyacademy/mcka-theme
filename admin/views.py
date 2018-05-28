@@ -3973,7 +3973,9 @@ class participant_details_active_courses_api(APIView):
                 user_course = {}
                 user_course['id'] = course_id
                 course_data = None
-                course_data = load_course(user_course['id'], request=request)
+                # disbale session for this endpoint because when user has a lot of active courses, session
+                # size exceeds cache size limit causing session to be destroyed.
+                course_data = load_course(user_course['id'], request=request, enable_cache=False)
                 load_course_progress(course_data, user_id)
                 user_course['progress'] = '{:03d}'.format(int(course_data.user_progress))
                 proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
