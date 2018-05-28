@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-23 08:30+0000\n"
+"POT-Creation-Date: 2018-05-28 07:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1911,8 +1911,8 @@ msgstr "الدرس"
 
 #: admin/models.py:591 templates/courses/content_page/lesson_pager.haml:11
 #: templates/courses/content_page/lesson_pager.haml:29
-#: templates/courses/content_page/lesson_pager_ld.haml:9
-#: templates/courses/content_page/lesson_pager_ld.haml:21
+#: templates/courses/content_page/lesson_pager_ld.haml:10
+#: templates/courses/content_page/lesson_pager_ld.haml:22
 #: templates/courses/course_lessons.haml:29
 #: templates/courses/course_lessons_ld.haml:38
 #: templates/courses/course_lessons_ld_external.haml:31
