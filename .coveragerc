@@ -1,0 +1,42 @@
+# .coveragerc for mcka_apros
+[run]
+data_file = reports/.coverage
+
+omit =
+    */migrations/*
+    */tests/*
+    */fixtures/*
+    */management/*
+    */__init__.py
+    */urls.py
+    */tests.py
+    */test.py
+    manage.py
+    mobile_apps/constants.py
+    mcka_apros/*
+    admin/test_data/*
+    certificates/template_assets/*
+    debug_remote_calls/templates/*
+    mobile_apps/asset_links_files/*
+    util/unit_test_helpers/*
+
+#concurrency=multiprocessing
+
+[report]
+ignore_errors = True
+show_missing = True
+
+exclude_lines =
+    pragma: no cover
+    raise NotImplementedError
+
+[html]
+title = mcka_apros Python Test Coverage Report
+directory = reports/cover_html
+
+[xml]
+output = reports/coverage.xml
+
+[paths]
+devstack_source =
+    /edx/app/mcka_apros/
