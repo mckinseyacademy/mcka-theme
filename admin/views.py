@@ -42,7 +42,7 @@ from accounts.controller import is_future_start, save_new_client_image, send_pas
 from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
-    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image
+    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, get_organization_active_courses
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
@@ -168,8 +168,7 @@ def client_admin_home(request, client_id):
 
     organization = Client.fetch(client_id)
 
-    courses = []
-    courses.extend(organization_api.get_organizations_courses(client_id))
+    courses = get_organization_active_courses(request, client_id)
 
     if request.method == 'POST':
         myDict = dict(request.POST.iterlists())
@@ -183,10 +182,6 @@ def client_admin_home(request, client_id):
                     course["id"], organization=client_id, metrics_required='users_started'
                 )
                 course["metrics"].users_completed, course["metrics"].percent_completed = get_organizations_users_completion(client_id, course["id"], course["metrics"].users_enrolled)
-                if course["start"]:
-                    course["start"] = parsedate(course["start"]).replace(tzinfo=None)
-                if course["end"]:
-                    course["end"] = parsedate(course["end"]).replace(tzinfo=None)
                 if is_future_start(course["start"]):
                     course["started"] = False
                 else:
@@ -2475,16 +2470,22 @@ def _prepare_program_display(program):
 
 
 def _prepare_course_display(course):
-    if timezone.now() <= parsedate(course['start']):
+    if timezone.now() <= (course['start']):
         course['date_range'] = _("Coming Soon")
-    elif course['end'] != None and timezone.now() >= parsedate(course['end']):
+    elif course['end'] != None and timezone.now() >= (course['end']):
         course['date_range'] = _("Archived")
     else:
         end = ''
         if course['end'] is not None:
-            end = parsedate(course['end']).strftime(settings.SHORT_DATE_FORMAT)
-        start = parsedate(course['start']).strftime(settings.SHORT_DATE_FORMAT)
+            end = (course['end']).strftime(settings.SHORT_DATE_FORMAT)
+        start = (course['start']).strftime(settings.SHORT_DATE_FORMAT)
         course['date_range'] = '' + start + ' - ' + end
+
+    if course["start"]:
+        course["start"] = (course["start"]).replace(tzinfo=None)
+    if course["end"]:
+        course["end"] = (course["end"]).replace(tzinfo=None)
+
     return course
 
 
@@ -4714,7 +4715,7 @@ def company_details(request, company_id):
     participants = user_api.get_filtered_users(requestParams)
     company['numberParticipants'] = participants['count']
 
-    company_courses = organization_api.get_organizations_courses(company_id)
+    company_courses = get_organization_active_courses(request, company_id)
     company['activeCourses'] = len(get_company_active_courses(company_courses))
 
     invoicing = {}
@@ -5504,7 +5505,7 @@ def company_dashboard(request):
                     company['id'] = vars(client)['id']
                     company['numberParticipants'] = vars(client)['number_of_participants']
                     company['numberCourses'] = vars(client)['number_of_courses']
-                    company_courses = organization_api.get_organizations_courses(company['id'])
+                    company_courses = get_organization_active_courses(request, company['id'])
                     company['activeCourses'] = len(get_company_active_courses(company_courses))
                     company['courses'] = []
                     if len(company_courses) > 3:
@@ -5512,10 +5513,10 @@ def company_dashboard(request):
                     else:
                         courses = company_courses
                     for course in courses:
-                        start = parsedate(course['start'])
+                        start = (course['start'])
                         course['start'] = start.strftime("%m/%d/%Y")
                         if course['end']:
-                            end = parsedate(course['end'])
+                            end = course['end']
                             course['end'] = end.strftime("%m/%d/%Y")
                         else:
                             course['end'] = '-'

@@ -1994,10 +1994,10 @@ def send_activation_emails_by_task_key(request, task_key):
 def get_company_active_courses(company_courses):
     active_courses = []
     for company_course in company_courses:
-        if timezone.now() >= parsedate(company_course['start']):
-            if company_course['end'] is None:
+        if timezone.now() >= (company_course['start']):
+            if company_course['end'] is None or '-':
                 active_courses.append(company_course)
-            elif timezone.now() <= parsedate(company_course['end']):
+            elif timezone.now() <= (company_course['end']):
                 active_courses.append(company_course)
 
     return active_courses
@@ -2548,3 +2548,41 @@ def write_social_engagement_report_on_csv(csv_writer, course_id, company_id):
     csv_writer.writerow([_('Social Engagement'), '#'])
     for stat in course_social_engagement:
         csv_writer.writerow([stat['name'], stat['value']])
+
+
+def get_organization_active_courses(request, company_id):
+    user_organizations = Permissions(request.user.id).get_all_user_organizations_with_permissions()
+    user_main_companies = [user_org.id for user_org in user_organizations["main_company"]]
+
+    is_main_company = int(company_id) in user_main_companies
+
+    company_courses = organization_api.get_organizations_courses(company_id)
+    courses = []
+
+    for company_course in company_courses:
+        course = {}
+        course['name'] = clean_xss_characters(company_course['name'])
+        course['id'] = company_course['id']
+        course['participants'] = len(company_course['enrolled_users'])
+        course_roles = course_api.get_users_filtered_by_role(company_course['id'])
+        for user_id in company_course['enrolled_users']:
+            not_active_user = any(role.id == user_id for role in course_roles)
+            admin_from_different_company = not is_main_company and user_id == request.user.id
+
+            if not_active_user or admin_from_different_company:
+                course['participants'] -= 1
+
+        # Skip courses having no active participant
+        if not course['participants']:
+            continue
+
+        course['start'] = parsedate(company_course['start'])
+        if company_course['end'] is not None:
+            course['end'] = parsedate(company_course['end'])
+        else:
+            course['end'] = '-'
+        course['cohort'] = '-'
+
+        courses.append(course)
+
+    return courses
