@@ -698,7 +698,10 @@ def sso_registration_form(request):
     provider_data = request.session['provider_data']
     provider_user_data = provider_data['user_details']
     username = _cleanup_username(provider_user_data.get('username', ''))
-    should_autoprovision = provider_data['provider_id'] in settings.SSO_AUTOPROVISION_PROVIDERS
+    should_autoprovision = (
+            settings.SSO_AUTOPROVISION_ALL or
+            provider_data['provider_id'] in settings.SSO_AUTOPROVISION_PROVIDERS
+    )
 
     remote_session_key = request.COOKIES.get('sessionid')
     if not remote_session_key:
