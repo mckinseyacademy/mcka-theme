@@ -22,7 +22,7 @@
   function confirmAndCopy(source, learner_dashboard_id, destination, id){
       var values = {'source': source, 'destination': destination};
       var copyDashboardString = gettext("You are about to copy dashboard %(source)s to %(destination)s");
-      if (window.confirm(interpolate(copyDashboardString, values, true)) {
+      if (window.confirm(interpolate(copyDashboardString, values, true))) {
         var url = "/admin/courses/" + source + "/learner_dashboard/" + learner_dashboard_id + "/duplicate/" + destination;
         var element = $("#" + id);
         var hrefElement = element.find('a');
