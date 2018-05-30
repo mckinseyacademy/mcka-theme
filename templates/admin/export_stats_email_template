@@ -2,22 +2,23 @@
   %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "max-width: 750px; margin: 0 auto;border-collapse: collapse;", :width => "100%"}
     %tr
       %td{:style => "text-align: center; padding: 10px 0;"}
-        %img{:alt => "", :src => "https://integration.mckinsey.edx.org/static/image/mckinsey-academy-logo.png"}/
+
+        %img{:alt => "MCKA-logo", :src => "https://mckinseyacademy.atlassian.net/wiki/download/attachments/1736792/McKA_logoBLUE.png?version=1&modificationDate=1395255854690&cacheVersion=1&api=v2", :style => "max-width: 185px;", :width => "185"}/
     %tr
       %td
         %div{:style => "background-color: #ffffff; padding: 40px; -webkit-border-radius: 5px 5px 0 0;-moz-border-radius: 5px 5px 0 0;border-radius: 5px 5px 0 0;"}
-          %h3{:style => "margin-top: 0;font-size: 18px;margin-bottom: 10px;"} First Name
-          %p{:style => "line-height: 22px;font-size: 15px;"} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto atque aut debitis dolorem, ducimus eaque est hic nemo nulla perspiciatis porro quam quibusdam quo repellat similique voluptatem. Est, quia?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto atque aut debitis dolorem, ducimus eaque est hic nemo nulla perspiciatis porro quam quibusdam quo repellat similique voluptatem. Est, quia?
-          %p{:style => "line-height: 22px;font-size: 15px;margin-top: 20px;"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+          %h3{:style => "margin-top: 0;font-size: 18px;margin-bottom: 10px;color: #333333;"} First Name
+          %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"} Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto atque aut debitis dolorem, ducimus eaque est hic nemo nulla perspiciatis porro quam quibusdam quo repellat similique voluptatem. Est, quia?Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium architecto atque aut debitis dolorem, ducimus eaque est hic nemo nulla perspiciatis porro quam quibusdam quo repellat similique voluptatem. Est, quia?
+          %p{:style => "line-height: 22px;font-size: 15px;margin-top: 20px;color: #333333;"} Lorem ipsum dolor sit amet, consectetur adipisicing elit.
           %a{:href => "#", :style => "text-transform: uppercase;margin-top: 15px;margin-bottom: 20px; display: inline-block; border: 1px solid #004fa4;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;font-size: 15px;font-weight: bold; color: #004fa4;padding: 12px 38px;text-decoration: none;"}
             Call to Action
-          %p{:style => "line-height: 22px;"}
+          %p{:style => "line-height: 22px;color: #333333;"}
             Best Regards,
             %br/
             Mckinsey Academy team
-          %p{:style => "line-height: 22px;margin-bottom: 0;"}
+          %p{:style => "line-height: 22px;margin-bottom: 0;color: #333333;"}
             Contact
-            %a{:href => "mailto:support@mckinseyacademy.com"} support@mckinseyacademy.com
+            %a{:href => "mailto:support@mckinseyacademy.com", :style => "text-decoration: none;color: #004fa4;"} support@mckinseyacademy.com
             if you have any questions
     %tr
       %td
