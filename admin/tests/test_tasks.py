@@ -1,14 +1,16 @@
 """ Tests for admin app celery tasks """
-import unicodecsv as csv
-
+from django.core import mail
 from django.test import TestCase, override_settings
 
-from accounts.tests.utils import ApplyPatchMixin
+from util.unit_test_helpers import ApplyPatchMixin
+from util.unit_test_helpers.common_mocked_objects import mock_storage_save
 from admin.tasks import (
     course_participants_data_retrieval_task,
+    export_stats_notification_email_task,
     participants_notifications_data_task,
     users_program_association_task
 )
+from api_client.user_models import UserResponse
 
 
 class MockParticipantsStats(object):
@@ -73,6 +75,20 @@ class MockParticipantsStats(object):
 
 
 class BulkTasksTest(TestCase, ApplyPatchMixin):
+    def setUp(self):
+        super(BulkTasksTest, self).setUp()
+
+        # mocking storage save to prevent creating actual files
+        self.apply_patch(
+            'django.core.files.storage.FileSystemStorage.save',
+            new=mock_storage_save
+        )
+
+        user_api = self.apply_patch('admin.tasks.user_api')
+        user_api.get_user.return_value = UserResponse(dictionary={
+            'username': 'user1', 'email': 'user@exmple.com', 'first_name': 'Test User'
+        })
+
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_course_participants_data_retrieval_task(self):
         """
@@ -85,10 +101,22 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
 
         result = course_participants_data_retrieval_task(
             course_id=test_course_id, company_id=None, base_url='http://url.xyz',
-            task_id='xyz'
+            task_id='xyz', user_id=123
         )
 
         self.assertIn(file_name, result)
+
+    @override_settings(CELERY_ALWAYS_EAGER=True)
+    def test_export_stats_notification_email_task(self):
+        """
+        Tests export stats email notification task
+        """
+        export_stats_notification_email_task(
+            user_id=123, course_id='xyz', report_name='test_report',
+            base_url='http://abc.xyz', download_url='http://url.xyz'
+        )
+
+        self.assertEqual(len(mail.outbox), 1)
 
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_participants_notifications_data_task(self):

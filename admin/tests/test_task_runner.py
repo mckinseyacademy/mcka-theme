@@ -9,7 +9,7 @@ from django.test.client import RequestFactory
 
 from accounts.tests.utils import ApplyPatchMixin
 from admin.bulk_task_runner import BulkTaskRunner
-
+from util.unit_test_helpers.common_mocked_objects import TestUser
 
 TEST_TASKS = (
     ('participants_csv_data', {'course_id': 'xyz', 'company_id': 'abc', 'base_url': 'http://abc.xyz'}),
@@ -33,6 +33,9 @@ class BulkTaskRunnerTests(TestCase, ApplyPatchMixin):
     def setUp(self):
         super(BulkTaskRunnerTests, self).setUp()
 
+        self.request = RequestFactory().get('/')
+        self.request.user = TestUser
+
         # Patching tasks as we'r testing task runner and not the actual tasks
         self.apply_patch('admin.bulk_task_runner.course_participants_data_retrieval_task', new=mocked_task)
         self.apply_patch('admin.bulk_task_runner.participants_notifications_data_task', new=mocked_task)
@@ -44,7 +47,7 @@ class BulkTaskRunnerTests(TestCase, ApplyPatchMixin):
         task_name, params = TEST_TASKS[0]
 
         task_runner = BulkTaskRunner(
-            request=RequestFactory().get('/'), params=params,
+            request=self.request, params=params,
             task_name=task_name
         )
 
@@ -59,7 +62,7 @@ class BulkTaskRunnerTests(TestCase, ApplyPatchMixin):
         task_name, params = task
 
         task_runner = BulkTaskRunner(
-            request=RequestFactory().get('/'), params=params,
+            request=self.request, params=params,
             task_name=task_name
         )
 
@@ -75,7 +78,7 @@ class BulkTaskRunnerTests(TestCase, ApplyPatchMixin):
         task_name, params = TEST_TASKS[0]
 
         task_id = BulkTaskRunner(
-            request=RequestFactory().get('/'), params=params,
+            request=self.request, params=params,
             task_name=task_name
         ).execute_task()
 
@@ -91,7 +94,7 @@ class BulkTaskRunnerTests(TestCase, ApplyPatchMixin):
         task_name, params = TEST_TASKS[0]
 
         task_id = BulkTaskRunner(
-            request=RequestFactory().get('/'), params=params,
+            request=self.request, params=params,
             task_name=task_name
         ).execute_task()
 

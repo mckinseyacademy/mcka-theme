@@ -42,8 +42,11 @@ class BulkTaskRunner(object):
         course_id = self.params.get('course_id')
 
         if self.task_name == 'participants_csv_data':
+            lesson_completions = self.params.get('lesson_completions', False)
+
             task_id = _execute_participants_data_task(
-                course_id, company_id, base_url
+                course_id, company_id, base_url,
+                lesson_completions, user_id=self.request.user.id
             )
         elif self.task_name == 'push_notifications_data':
             task_id = _execute_notifications_data_task(course_id, company_id)
@@ -79,12 +82,13 @@ class BulkTaskRunner(object):
         return result.state, result.info
 
 
-def _execute_participants_data_task(course_id, company_id, base_url):
+def _execute_participants_data_task(course_id, company_id, base_url, lesson_completions, user_id):
     """
     Executes the csv data task
     """
     return course_participants_data_retrieval_task.delay(
-        course_id=course_id, company_id=company_id, base_url=base_url
+        course_id=course_id, company_id=company_id, base_url=base_url,
+        lesson_completions=lesson_completions, user_id=user_id
     ).task_id
 
 

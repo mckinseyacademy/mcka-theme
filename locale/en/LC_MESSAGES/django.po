@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-01 07:37+0000\n"
+"POT-Creation-Date: 2018-06-01 09:27+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1932,19 +1932,23 @@ msgstr ""
 msgid "Some of the files aren't uploaded, Please upload again!"
 msgstr ""
 
-#: admin/tasks.py:110
+#: admin/tasks.py:122
 #, python-brace-format
 msgid "Group Work: {label}"
 msgstr ""
 
-#: admin/tasks.py:117
+#: admin/tasks.py:129
 #, python-brace-format
 msgid "Assessment: {label}"
 msgstr ""
 
-#: admin/tasks.py:123
+#: admin/tasks.py:135
 #, python-brace-format
 msgid "Lesson {lesson_number} Progress"
+msgstr ""
+
+#: admin/tasks.py:235
+msgid "Participant stats for {} is ready to download"
 msgstr ""
 
 #: admin/views.py:551
@@ -2785,7 +2789,7 @@ msgstr ""
 msgid "McKinsey Management Program"
 msgstr ""
 
-#: mcka_apros/settings.py:290
+#: mcka_apros/settings.py:293
 msgid "Congratulations! Your certificate has been generated"
 msgstr ""
 
@@ -3135,6 +3139,7 @@ msgid "Customization"
 msgstr ""
 
 #: templates/admin/admin_header.haml:62
+#: templates/admin/export_stats_email_template.haml:24
 msgid "Contact"
 msgstr ""
 
@@ -4067,6 +4072,27 @@ msgstr ""
 msgid ""
 "Since this tag does not yet exist, a new Tag will be created. If this is an "
 "error, try selecting your tag from the type-ahead results."
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:14
+#, python-format
+msgid " The \"%(report)s\" report is ready to download. "
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:16
+msgid "Please click below to login and download your report."
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:18
+msgid "Download Report"
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:20
+msgid "Best Regards,"
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:27
+msgid "if you have any questions"
 msgstr ""
 
 #: templates/admin/home.haml:6

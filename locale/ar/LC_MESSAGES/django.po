@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-01 07:36+0000\n"
+"POT-Creation-Date: 2018-06-01 09:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1975,20 +1975,24 @@ msgstr "مجموعة التعيين لـ {wg_id}"
 msgid "Some of the files aren't uploaded, Please upload again!"
 msgstr "بعض الملفات لم يتم تحميلها، الرجاء التحميل مرة أخرى!"
 
-#: admin/tasks.py:110
+#: admin/tasks.py:122
 #, python-brace-format
 msgid "Group Work: {label}"
 msgstr "عمل المجموعة {label}"
 
-#: admin/tasks.py:117
+#: admin/tasks.py:129
 #, python-brace-format
 msgid "Assessment: {label}"
 msgstr "التقييم: {label}"
 
-#: admin/tasks.py:123
+#: admin/tasks.py:135
 #, python-brace-format
 msgid "Lesson {lesson_number} Progress"
 msgstr "تقدم العمل{lesson_number} في الدرس"
+
+#: admin/tasks.py:235
+msgid "Participant stats for {} is ready to download"
+msgstr ""
 
 #: admin/views.py:551
 msgid "Edit Email"
@@ -2850,7 +2854,7 @@ msgstr "ترجمات وهمية"
 msgid "McKinsey Management Program"
 msgstr "McKinsey Management Program"
 
-#: mcka_apros/settings.py:290
+#: mcka_apros/settings.py:293
 msgid "Congratulations! Your certificate has been generated"
 msgstr "تهانينا! لقد تم إنشاء الشهادة الخاصة بك"
 
@@ -3225,6 +3229,7 @@ msgid "Customization"
 msgstr "التخصيص"
 
 #: templates/admin/admin_header.haml:62
+#: templates/admin/export_stats_email_template.haml:24
 msgid "Contact"
 msgstr "جهة الاتصال"
 
@@ -4218,6 +4223,29 @@ msgid ""
 msgstr ""
 "بما أن هذه العلامة غير موجودة، سيتم إنشاء علامة جديدة. إذا كان هذا خطأ، حاول "
 "تحديد العلامة الخاصة بك من نتائج المذكورة مسبقًا."
+
+#: templates/admin/export_stats_email_template.haml:14
+#, python-format
+msgid " The \"%(report)s\" report is ready to download. "
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:16
+msgid "Please click below to login and download your report."
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:18
+#, fuzzy
+#| msgid "Download Template"
+msgid "Download Report"
+msgstr "تزيل النموذج"
+
+#: templates/admin/export_stats_email_template.haml:20
+msgid "Best Regards,"
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:27
+msgid "if you have any questions"
+msgstr ""
 
 #: templates/admin/home.haml:6
 msgid ""
