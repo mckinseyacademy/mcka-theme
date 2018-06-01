@@ -383,7 +383,7 @@ class BaseRegistrationForm(NoSuffixLabelForm):
     email = forms.CharField(
         max_length=255,
         widget=forms.TextInput(attrs={'readonly': 'readonly'}),
-        label=mark_safe(_('Email'))
+        label=_('Email')
     )
 
     username = forms.CharField(
@@ -408,9 +408,9 @@ class BaseRegistrationForm(NoSuffixLabelForm):
         )
     )
 
-    company = forms.CharField(max_length=255, required=False)
-    full_name = forms.CharField(max_length=512, required=False)
-    title = forms.CharField(max_length=255, required=False, validators=[RoleTitleValidator()])
+    company = forms.CharField(max_length=255, required=False, label=_("Company"))
+    full_name = forms.CharField(max_length=512, required=False, label=_("Full Name"))
+    title = forms.CharField(max_length=255, required=False, label=_("Title"), validators=[RoleTitleValidator()])
     city = forms.CharField(
         max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}),
         label=mark_safe_lazy(format_lazy(
@@ -418,7 +418,7 @@ class BaseRegistrationForm(NoSuffixLabelForm):
             html_span='<span class="required-field"></span>')),
         validators=[AlphanumericWithAccentedChars()]
     )
-    country = forms.ChoiceField(choices=COUNTRY_CHOICES, required=False)
+    country = forms.ChoiceField(choices=COUNTRY_CHOICES, label=_("Country"), required=False)
     accept_terms = forms.BooleanField(
         required=False,
         label=mark_safe_lazy(format_lazy(
