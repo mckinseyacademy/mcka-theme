@@ -1649,7 +1649,7 @@ def _process_line_register_participants_csv(user_line):
             "password": settings.INITIAL_PASSWORD,
         }
     except ValidationError as e:
-        user_info = {'error': e.message}
+        user_info = {'error': ("{} Participant {}".format(e.message, fields[2]))}
     except Exception as e:
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
