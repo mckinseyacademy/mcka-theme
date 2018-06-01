@@ -53,6 +53,7 @@ from api_client.user_api import USER_ROLES
 from lib.mail import (
     sendMultipleEmails, email_add_single_new_user, create_multiple_emails
 )
+from api_client.group_api import PERMISSION_GROUPS
 from lib.utils import DottableDict
 from license import controller as license_controller
 from util.data_sanitizing import sanitize_data, clean_xss_characters
@@ -2551,13 +2552,19 @@ def write_social_engagement_report_on_csv(csv_writer, course_id, company_id):
 
 
 def get_organization_active_courses(request, company_id):
-    user_organizations = Permissions(request.user.id).get_all_user_organizations_with_permissions()
+    permission_handler = Permissions(request.user.id)
+    user_organizations = permission_handler.get_all_user_organizations_with_permissions()
     user_main_companies = [user_org.id for user_org in user_organizations["main_company"]]
 
     is_main_company = int(company_id) in user_main_companies
 
     company_courses = organization_api.get_organizations_courses(company_id)
     courses = []
+
+    company_admin_group_id = permission_handler.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
+    company_admin_ids = [
+        user['id'] for user in organization_api.get_users_from_organization_group(company_id, company_admin_group_id)
+    ]
 
     for company_course in company_courses:
         course = {}
@@ -2568,6 +2575,16 @@ def get_organization_active_courses(request, company_id):
         for user_id in company_course['enrolled_users']:
             not_active_user = any(role.id == user_id for role in course_roles)
             admin_from_different_company = not is_main_company and user_id == request.user.id
+
+            # If another company admin is made company admin of this company, then
+            # his courses also get included in `company_courses`, we need to
+            # filter them out
+            if user_id in company_admin_ids:
+                user_organizations = user_api.get_user_organizations(user_id)
+                if user_organizations:
+                    user_main_company = user_organizations[0]
+                    if int(company_id) != user_main_company.id:
+                        not_active_user = True
 
             if not_active_user or admin_from_different_company:
                 course['participants'] -= 1

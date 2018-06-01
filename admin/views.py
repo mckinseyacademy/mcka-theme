@@ -4795,40 +4795,7 @@ class CompanyCoursesApi(APIView):
         PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN,
     )
     def get(self, request, company_id):
-        user_organizations = Permissions(request.user.id).get_all_user_organizations_with_permissions()
-        user_main_companies = [user_org.id for user_org in user_organizations["main_company"]]
-
-        is_main_company = int(company_id) in user_main_companies
-
-        company_courses = organization_api.get_organizations_courses(company_id)
-        courses = []
-        for company_course in company_courses:
-            course = {}
-            course['name'] = clean_xss_characters(company_course['name'])
-            course['id'] = company_course['id']
-            course['participants'] = len(company_course['enrolled_users'])
-            course_roles = course_api.get_users_filtered_by_role(company_course['id'])
-            for user_id in company_course['enrolled_users']:
-                not_active_user = any(role.id == user_id for role in course_roles)
-                admin_from_different_company = not is_main_company and user_id == request.user.id
-
-                if not_active_user or admin_from_different_company:
-                    course['participants'] -= 1
-
-            #  Skip courses having no active participant
-            if not course['participants']:
-                continue
-
-            start = parsedate(company_course['start'])
-            course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
-            if company_course['end'] is not None:
-                end = parsedate(company_course['end'])
-                course['end'] = end.strftime("%Y/%m/%d")  + ',' + end.strftime("%m/%d/%Y")
-            else:
-                course['end'] = '-'
-            course['cohort'] = '-'
-            courses.append(course)
-
+        courses = get_organization_active_courses(request, company_id)
         return Response(courses)
 
 
@@ -5515,7 +5482,7 @@ def company_dashboard(request):
                     for course in courses:
                         start = (course['start'])
                         course['start'] = start.strftime("%m/%d/%Y")
-                        if course['end']:
+                        if course['end'] and course['end'] != '-':
                             end = course['end']
                             course['end'] = end.strftime("%m/%d/%Y")
                         else:
