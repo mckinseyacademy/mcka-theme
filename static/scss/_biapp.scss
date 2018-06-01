@@ -519,14 +519,10 @@ footer[role=contentinfo]{
     }
   }
 
-  .program-bar{
-    .course_info{
-      .program-name,
-      .course-name{
-        direction: ltr;
-        text-align: right;
-      }
-    }
+  .program-name,
+  .course-name{
+    direction: ltr;
+    text-align: right;
   }
 
   .fa-arrow-circle-right{
