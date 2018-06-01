@@ -203,34 +203,10 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         self.get_users_patch = self.apply_patch('api_client.user_api.get_users', return_value=[])
         self.apply_patch('django_assets.templatetags.assets.AssetsNode.render', return_value='')
 
-    def test_sso_flow(self):
-        response = self.client.get('/access/{}'.format(self.access_key.code))
-        self.assertEqual(response.status_code, 200)
-        # That will then redirect us to the SSO provider...
-        self.assertTrue(response.context['redirect_to'].startswith('/auth/login/tpa-saml/?'))
-        for pair in ('auth_entry=apros', 'idp=testshib', 'next=%2Faccounts%2Flogin%2F'):
-            self.assertIn(pair, response.context['redirect_to'])
-
-        # The user then logs in and gets redirected back to Apros:
-        response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
-
-        response = self.client.get(response['Location'])
-        self.assertEqual(response.status_code, 200)
-
-        form = response.context['form']
-        self.assertEqual(form.is_bound, False)
-        self.assertEqual(form.initial['username'], 'myself')
-        self.assertEqual(form.initial['full_name'], 'Me Myself And I')
-        self.assertEqual(form.initial['email'], 'myself@testshib.org')
-        self.assertEqual(form.initial['company'], 'TestCo')
-
-    @override_settings(SSO_AUTOPROVISION_PROVIDERS=['saml-testshib'])
     @patch('api_client.user_api.register_user')
     @patch('django.contrib.auth.login')
     @ddt.data(True, False)
-    def test_sso_autoprovision_flow(self, with_existing_user, mock_login, mock_register_user):
+    def test_sso_flow(self, with_existing_user, mock_login, mock_register_user):
         if with_existing_user:
             # Mock to simulate a user named 'myself' already existing on the system:
             self.get_users_patch.side_effect = lambda username: [Mock()] if username == "myself" else []
@@ -297,19 +273,19 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
 
         with mock.patch('accounts.views.user_api') as user_api_mock:
             user_api_mock.register_user.side_effect = self.make_raise_exception_side_effect(api_error)
-            self.client.session['provider_data'] = {}
-
-            response = self.client.post('/accounts/sso_reg/', data={
+            self.client.session['provider_data'] = {
                 'username': 'myself',
                 'full_name': 'Me Myself And I',
                 'email': 'myself@testshib.org',
                 'city': 'Mogadishu',
                 'accept_terms': True
-            })
+            }
 
-        self.assertIn('error', response.context)
-        self.assertIn(error_reason, response.context['error'])
-        self.assertIn('Failed to register user', response.context['error'])
+            response = self.client.post('/accounts/sso_reg/')
+
+        self.assertIn('error_details', response.context)
+        self.assertIn(error_reason, response.context['error_details'])
+        self.assertIn('Failed to register user', response.context['error_details'])
 
 
 @ddt.ddt
