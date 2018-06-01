@@ -273,19 +273,19 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
 
         with mock.patch('accounts.views.user_api') as user_api_mock:
             user_api_mock.register_user.side_effect = self.make_raise_exception_side_effect(api_error)
-            self.client.session['provider_data'] = {}
-
-            response = self.client.post('/accounts/sso_reg/', data={
+            self.client.session['provider_data'] = {
                 'username': 'myself',
                 'full_name': 'Me Myself And I',
                 'email': 'myself@testshib.org',
                 'city': 'Mogadishu',
                 'accept_terms': True
-            })
+            }
 
-        self.assertIn('error', response.context)
-        self.assertIn(error_reason, response.context['error'])
-        self.assertIn('Failed to register user', response.context['error'])
+            response = self.client.post('/accounts/sso_reg/')
+
+        self.assertIn('error_details', response.context)
+        self.assertIn(error_reason, response.context['error_details'])
+        self.assertIn('Failed to register user', response.context['error_details'])
 
 
 @ddt.ddt
