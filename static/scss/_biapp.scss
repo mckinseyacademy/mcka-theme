@@ -188,6 +188,18 @@ body{
         @include right(0);
       }
     }
+    .forum-nav-filter-main{
+      float: right;
+    }
+    .forum-nav-refine-bar{
+      label{
+        select{
+          &:focus{
+            outline: 0;
+          }
+        }
+      }
+    }
   }
 }
 
