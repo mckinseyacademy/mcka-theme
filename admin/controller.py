@@ -2580,7 +2580,7 @@ def get_organization_active_courses(request, company_id):
         if company_course['end'] is not None:
             course['end'] = parsedate(company_course['end'])
         else:
-            course['end'] = '-'
+            course['end'] = None
         course['cohort'] = '-'
 
         courses.append(course)
