@@ -1,16 +1,31 @@
-.*
-*.py[cod]
-*.sqlite3
+### IDE artifacts
+.idea/
 *.esproj
+
+### OS X artifacts
+*.DS_Store
+
+### Python artifacts
+*.py[cod]
 local_settings.py
-Gemfile.lock
+
+### Testing artifacts
+.coverage
+coverage.xml
+cover_html/
+
+### Logging artifacts
 tracking.log*
 
+### Datastore artifacts
+*.sqlite3
+
+### Static Assets artifacts
 /static/gen/
 /static/scss/static/gen/
-/util/djtemp/*
-/static_cache
-
 /static/image/learner_dashboard/
-
+/static_cache
 refresh_assets.sh
+
+### Other artifacts
+/util/djtemp/*

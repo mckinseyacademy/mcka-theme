@@ -157,6 +157,52 @@ body{
     }
 }
 
+// Discussion Page
+
+.discussion-board{
+  .page-header{
+    .page-header-main {
+      @include float(left);
+    }
+    .page-header-secondary{
+      @include float(right);
+      @include text-align(right);
+    }
+  }
+  .page-header-secondary{
+    .forum-search{
+      @include margin-left(20px);
+    }
+  }
+  .page-content{
+    .discussion-post{
+      .post-header-actions{
+        @include float(right);
+      }
+      ol, ul{
+        margin-right: 2.5rem;
+      }
+    }
+    .forum-response{
+      .response-header-actions{
+        @include right(0);
+      }
+    }
+    .forum-nav-filter-main{
+      float: right;
+    }
+    .forum-nav-refine-bar{
+      label{
+        select{
+          &:focus{
+            outline: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
 
 //Misc
 
@@ -214,6 +260,9 @@ header[role=banner]{
       }
       &:after{
         @include right(0);
+      }
+      a.current{
+        @include padding-right(20px);
       }
     }
   }
@@ -299,6 +348,11 @@ header[role=banner]{
       }
     }
   }
+}
+
+#generalModal.reveal-modal,
+#messagesModal.reveal-modal {
+  @include padding-right(6em);
 }
 
 // Footer
@@ -471,6 +525,18 @@ footer[role=contentinfo]{
 
   // Misc
 
+  .reset-password-form{
+    form{
+      float: right;
+    }
+  }
+
+  .program-name,
+  .course-name{
+    direction: ltr;
+    text-align: right;
+  }
+
   .fa-arrow-circle-right{
     &:before{
       content: "\f0a8";
@@ -562,5 +628,249 @@ footer[role=contentinfo]{
   .themed-xblock.mentoring .choice .choice-tips-container.with-tips,
   .themed-xblock.mentoring .questionnaire .feedback{
     border: 0 !important;
+  }
+
+  // Discussion Page
+
+  .discussion-board{
+    .page-header{
+      .page-header-main{
+        .all-topics{
+          .fa{
+            margin-right: 0;
+            margin-left: 10px;
+          }
+        }
+        .breadcrumbs{
+          .nav-item{
+            margin-right: 5px;
+          }
+        }
+      }
+      .page-header-secondary{
+        .forum-search{
+          margin-left: 0;
+          .search-button{
+            border-radius: 3px 0 0 3px;
+            margin-left: 0;
+            margin-right: -5px;
+          }
+        }
+        .form-actions{
+          .btn{
+            margin-bottom: 18px !important;
+          }
+        }
+      }
+    }
+    .page-content{
+      .forum-nav-browse-filter{
+        .icon{
+          right: auto;
+          left: 11px;
+        }
+      }
+      .forum-nav-browse-menu{
+        margin-right: 0;
+        .forum-nav-browse-title{
+          text-align: right;
+        }
+        .forum-nav-browse-menu-following{
+          .forum-nav-browse-title{
+            padding-left: 10px;
+            padding-right: 30px;
+          }
+          .icon{
+            float: right;
+            left: auto;
+            right: 10px;
+          }
+        }
+        .forum-nav-browse-submenu{
+          margin-right: 0;
+          .forum-nav-browse-title{
+            padding-left: 10px;
+            padding-right: 20px;
+          }
+        }
+      }
+      .forum-nav{
+        select{
+          width: 100% !important;
+        }
+      }
+      .forum-nav-thread-list{
+        margin-right: 0;
+      }
+      .home-helpgrid{
+        th{
+          text-align: right;
+        }
+      }
+      .post-actions-list{
+        text-align: left;
+        .actions-dropdown{
+          left: 0;
+          right: auto;
+          .actions-dropdown-list{
+            &:before{
+              right: auto;
+              left: 6px;
+              border-width: 8px 6px;
+            }
+            &:after{
+              left: 6px;
+              right: auto;
+            }
+            .action-list-item{
+              text-align: left;
+              .action-label{
+                float: right;
+              }
+              .action-icon{
+                margin-left: 0;
+                margin-right: 5px;
+              }
+            }
+          }
+        }
+        .action-button{
+          .action-label{
+            float: right;
+          }
+        }
+      }
+      .forum-response{
+        .response-header-actions{
+          float: left;
+          right: auto;
+          .response-actions-list{
+            text-align: left;
+            .actions-dropdown{
+              left: 0;
+              right: auto;
+            }
+            .actions-dropdown-list{
+              .action-list-item{
+                text-align: left;
+                .action-label{
+                  float: right;
+                }
+              }
+              &:before{
+                left: 6px;
+                right: auto;
+                border-width: 8px 6px;
+              }
+              &:after{
+                left: 6px;
+                right: auto;
+              }
+            }
+            .action-label{
+              float: right;
+            }
+          }
+        }
+        .comment-actions-list{
+          float: left;
+          left: 10px;
+          right: auto;
+          text-align: left;
+          .action-label{
+            float: right;
+          }
+        }
+        .response-body{
+          padding: 10px 0 0 30px;
+        }
+        .actions-dropdown{
+          left: 0;
+          right: auto;
+          border-width: 8px 6px;
+          .actions-dropdown-list{
+            &:before{
+              left: 6px;
+              right: auto;
+              border-width: 8px 6px;
+            }
+            &:after{
+              right: auto;
+              left: 6px;
+            }
+            .action-list-item{
+              text-align: left;
+            }
+          }
+        }
+      }
+      .wmd-button-row{
+        text-align: right;
+        .wmd-button {
+          left: auto !important;
+          position: relative;
+          margin: 0 2px;
+        }
+        .wmd-spacer {
+          left: auto !important;
+          margin-right: 14px;
+          position: relative;
+        }
+      }
+      .post-update{
+        float: left !important;
+      }
+      .post-cancel{
+        float: right;
+      }
+      .wmd-preview ul,
+      .wmd-preview ol{
+        margin-right: 2.5rem;
+      }
+    }
+    .action-button{
+      &:hover{
+        .action-icon{
+          border-radius: 3px 0 0 3px;
+        }
+      }
+    }
+    .wmd-preview-label{
+      padding-right: 5px;
+    }
+  }
+  #course-discussion{
+    .discussion-content{
+      .add-response{
+        .add-response-btn{
+          float: left;
+          margin-right: 20px;
+          margin-left: 0;
+        }
+      }
+      .discussion-column{
+        .response-count{
+          margin-right: 0;
+          margin-left: 10px;
+          float: left;
+        }
+      }
+      .comments{
+        .comment-form{
+          .discussion-submit-comment{
+            float: left;
+            margin-left: 0;
+            margin-right: 20px;
+          }
+        }
+      }
+      button.cancel{
+        float: right !important;
+      }
+      button.submit{
+        float: left;
+        margin-left: 0;
+      }
+    }
   }
 }

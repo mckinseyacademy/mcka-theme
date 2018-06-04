@@ -16,7 +16,9 @@ class AprosPlatformLanguage(object):
 
 	def _get_browser_preferred_language(self, request):
 		if request.META.get('HTTP_ACCEPT_LANGUAGE'):
-			return request.META.get('HTTP_ACCEPT_LANGUAGE').split(',')[0]
+			language = request.META.get('HTTP_ACCEPT_LANGUAGE').split(',')[0]
+			language_without_variant = language.split('-')[0]
+			return language_without_variant
 
 	def process_request(self, request):
 		if USE_I18N:
@@ -27,13 +29,8 @@ class AprosPlatformLanguage(object):
 	def _enable_internationalization(self, request):
 		path = request.path
 		language = None
-		general_pages = [
-			'/accounts/login/',
-			'/faq/',
-			'/privacy/',
-			'/terms/',
-			'/',
-		]
+		if path.startswith('/jsi18n/'):
+			return None
 		if path.startswith('/courses') and request.user.is_authenticated():
 			try:
 				course_id = re.search(COURSE_KEY_PATTERN, path[8:]).group(0)
@@ -42,7 +39,9 @@ class AprosPlatformLanguage(object):
 				return None
 			if course_detail.language:
 				language = course_detail.language
-		elif path in general_pages or path.startswith('/accounts/activate/'):
+		elif path.startswith('/admin'):
+			language = 'en-us'
+		else:
 			language = request.COOKIES.get(
 				'preferred_language',
 				self._get_browser_preferred_language(request))

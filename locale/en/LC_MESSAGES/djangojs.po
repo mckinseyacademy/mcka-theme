@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-11 10:17+0000\n"
+"POT-Creation-Date: 2018-06-01 09:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -473,7 +473,7 @@ msgstr ""
 #: static/js/views/admin/course_details_bulk_actions.js:133
 #: static/js/views/admin/course_details_bulk_actions.js:198
 #: static/js/views/admin/course_details_bulk_actions.js:299
-#: static/js/views/admin/course_details_bulk_actions.js:625
+#: static/js/views/admin/course_details_bulk_actions.js:710
 msgid ""
 "You need to select at least one participant to be able to apply bulk actions."
 msgstr ""
@@ -548,107 +548,125 @@ msgstr ""
 msgid "You need to select course!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:412
+#: static/js/views/admin/course_details_bulk_actions.js:426
 msgid "Download"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:412
+#: static/js/views/admin/course_details_bulk_actions.js:426
 msgid "Progress : 0%"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:413
+#: static/js/views/admin/course_details_bulk_actions.js:427
 msgid "Download CSV File"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:452
-msgid "Download Notifications CSV"
+#: static/js/views/admin/course_details_bulk_actions.js:463
+msgid ""
+"Include breakdown of progress for each lesson (Note: the export will take "
+"more time)"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:486
-msgid "Download Participants"
+#: static/js/views/admin/course_details_bulk_actions.js:469
+msgid "We'll e-mail you when your report is ready to download."
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:472
+msgid "Exporting Stats for All Users"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:473
+msgid "Export Report"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:512
+msgid "Error initiating the report generation. Please retry later."
 msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:541
+msgid "Download Notifications CSV"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:626
 msgid "Group Work: %(label)s"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:569
+#: static/js/views/admin/course_details_bulk_actions.js:654
 msgid "Assessment: %(label)s"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:595
+#: static/js/views/admin/course_details_bulk_actions.js:680
 msgid "Task failed to execute. Please retry later."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:612
+#: static/js/views/admin/course_details_bulk_actions.js:697
 msgid "Successfully Enrolled in 1 Course"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:614
+#: static/js/views/admin/course_details_bulk_actions.js:699
 msgid "What would you like to do now?"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:615
+#: static/js/views/admin/course_details_bulk_actions.js:700
 msgid "Go to %(course_id)s Course"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:617
+#: static/js/views/admin/course_details_bulk_actions.js:702
 msgid "Send Course Intro Email"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:619
+#: static/js/views/admin/course_details_bulk_actions.js:704
 msgid "Enroll this list in another course"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:631
+#: static/js/views/admin/course_details_bulk_actions.js:716
 msgid "I'm Done"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:651
+#: static/js/views/admin/course_details_bulk_actions.js:736
 msgid "Successfully deleted template!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:658
+#: static/js/views/admin/course_details_bulk_actions.js:743
 msgid "Successfully added new template!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:671
+#: static/js/views/admin/course_details_bulk_actions.js:756
 msgid "Successfully updated template!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:676
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Email Preview Success!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:676
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Successfully sent preview email!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:679
+#: static/js/views/admin/course_details_bulk_actions.js:764
 msgid "Email Success!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:679
+#: static/js/views/admin/course_details_bulk_actions.js:764
 msgid "Successfully sent email!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:721
+#: static/js/views/admin/course_details_bulk_actions.js:806
 msgid "Preview Email!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:721
+#: static/js/views/admin/course_details_bulk_actions.js:806
 msgid "Please enter preview email!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:741
+#: static/js/views/admin/course_details_bulk_actions.js:826
 msgid "Please enter new template name!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:756
+#: static/js/views/admin/course_details_bulk_actions.js:841
 msgid "Please enter updated template name or leave the old one!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:769
+#: static/js/views/admin/course_details_bulk_actions.js:854
 msgid "You are about to delete email template. Are you sure?"
 msgstr ""
 

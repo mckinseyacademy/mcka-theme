@@ -435,7 +435,12 @@
 	width: auto!important;
 }
 
-#courseDetailsEngagementViewGrid, #courseDetailsStatsViewGrid
+#courseDetailsEngagementViewGrid,
+#courseDetailsStatsViewGrid
 {
 	margin-bottom: 20px;
+}
+
+#courseDetailsEngagementViewGrid{
+	padding-right: 0;
 }

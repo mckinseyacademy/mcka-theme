@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-11 10:18+0000\n"
+"POT-Creation-Date: 2018-06-01 09:28+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1102,8 +1102,8 @@ msgstr "اسم المستخدم {html_span}"
 msgid "Password {html_span}"
 msgstr "كلمة المرور {html_span}"
 
-#: accounts/forms.py:386 accounts/forms.py:460 accounts/forms.py:478
-#: accounts/forms.py:576 admin/controller.py:810 admin/views.py:2340
+#: accounts/forms.py:386 accounts/forms.py:461 accounts/forms.py:479
+#: accounts/forms.py:577 admin/controller.py:810 admin/views.py:2335
 #: marketing/forms.py:49 marketing/forms.py:93 marketing/forms.py:127
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1115,14 +1115,17 @@ msgid "Email"
 msgstr "البريد الإلكتروني"
 
 #: accounts/forms.py:392
-#, python-brace-format
+#, fuzzy, python-brace-format
+#| msgid ""
+#| "Public username {html_span_start} This cannot be changed later."
+#| "{html_span_end}"
 msgid ""
-"Public username {html_span_start} This cannot be changed later."
-"{html_span_end}"
+"Public username {html_span_start} This cannot be changed later and cannot "
+"contain non-English characters.{html_span_end}"
 msgstr ""
 "اسم المستخدم {html_span_start}العام الذي لا يمكن تغييره لاحقًا{html_span_end}"
 
-#: accounts/forms.py:402 accounts/forms.py:588
+#: accounts/forms.py:403 accounts/forms.py:589
 #, python-brace-format
 msgid ""
 "Password {html_span_start} Must be at least 8 characters and include upper "
@@ -1131,12 +1134,34 @@ msgstr ""
 "كلمة المرور{html_span_start} يجب أن تكون 8 أحرف على الأقل وتشمل الأحرف "
 "الصغيرة والكبيرة-بالإضافة إلى أرقام أو أحرف خاصة.{html_span_end}"
 
-#: accounts/forms.py:416
+#: accounts/forms.py:411 admin/views.py:2335 marketing/forms.py:135
+#: templates/admin/participants/participant_details.haml:123
+#: templates/admin/participants/participants_list.haml:16
+#: templates/admin/permissions/list.haml:36
+msgid "Company"
+msgstr "الشركة"
+
+#: accounts/forms.py:412 admin/controller.py:810
+msgid "Full Name"
+msgstr "الاسم الكامل"
+
+#: accounts/forms.py:413 admin/controller.py:810 marketing/forms.py:142
+#: templates/accounts/user_profile.haml:24
+#: templates/admin/learner_dashboard/discovery_list.haml:12
+#: templates/admin/learner_dashboard/element_list.haml:13
+msgid "Title"
+msgstr "العنوان"
+
+#: accounts/forms.py:417
 #, python-brace-format
 msgid "City {html_span}"
 msgstr "المدينة {html_span}"
 
-#: accounts/forms.py:424 accounts/forms.py:601
+#: accounts/forms.py:421
+msgid "Country"
+msgstr "البلد"
+
+#: accounts/forms.py:425 accounts/forms.py:602
 #, python-brace-format
 msgid ""
 "I agree to the {html_anchor_start} Terms of Service {html_anchor_end} and "
@@ -1145,45 +1170,45 @@ msgstr ""
 "أوافق على {html_anchor_start}شروط الخدمة {html_anchor_end}"
 "وسياسة{html_anchor_second} الخصوصية {html_anchor_end} {html_span}"
 
-#: accounts/forms.py:437 accounts/forms.py:613
+#: accounts/forms.py:438 accounts/forms.py:614
 msgid "You must accept terms of service in order to continue"
 msgstr "يجب عليك قبول شروط الخدمة للاستمرار"
 
-#: accounts/forms.py:487
+#: accounts/forms.py:488
 msgid "The account associated with this email is not activated yet"
 msgstr "لم يتم تفعيل الحساب المقترن مع هذا البريد الإلكتروني حتى الآن"
 
-#: accounts/forms.py:525
+#: accounts/forms.py:526
 msgid "The two password fields didn't match."
 msgstr "لم تتطابق كلمتا المرور."
 
-#: accounts/forms.py:526
+#: accounts/forms.py:527
 msgid "Password doesn't match creation criteria."
 msgstr "كلمة المرور لا تطابق معايير إنشاء الحسابات."
 
-#: accounts/forms.py:528
+#: accounts/forms.py:529
 msgid "New password"
 msgstr "كلمة مرور جديدة"
 
-#: accounts/forms.py:530
+#: accounts/forms.py:531
 msgid "New password confirmation"
 msgstr "تأكيد كلمة المرور الجديدة"
 
-#: accounts/forms.py:560 admin/forms.py:165
+#: accounts/forms.py:561 admin/forms.py:165
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "صيغ مقبولة: JPG, PNG و GIF"
 
-#: accounts/forms.py:565 templates/admin/course_run/view.haml:63
+#: accounts/forms.py:566 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:90
 msgid "First Name"
 msgstr "الاسم الأول"
 
-#: accounts/forms.py:566
+#: accounts/forms.py:567
 #: templates/admin/participants/participant_details.haml:95
 msgid "Last Name"
 msgstr "اسم العائلة"
 
-#: accounts/forms.py:580
+#: accounts/forms.py:581
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later. "
@@ -1192,32 +1217,32 @@ msgstr ""
 "اسم المستخدم العام{html_span_start} الذي لا يمكن تغييره في وقت "
 "لاحق{html_span_end}"
 
-#: accounts/forms.py:647
+#: accounts/forms.py:648
 #, python-brace-format
 msgid "First Name {html_span}"
 msgstr "الاسم الأول {html_span}"
 
-#: accounts/forms.py:651
+#: accounts/forms.py:652
 #, python-brace-format
 msgid "Last Name {html_span}"
 msgstr "الاسم العائلة{html_span}"
 
-#: accounts/forms.py:655
+#: accounts/forms.py:656
 #, python-brace-format
 msgid "Company Name {html_span}"
 msgstr "اسم الشركة {html_span}"
 
-#: accounts/forms.py:659
+#: accounts/forms.py:660
 #, python-brace-format
 msgid "Company Email {html_span}"
 msgstr "البريد الإلكتروني للشركة {html_span}"
 
-#: accounts/forms.py:663
+#: accounts/forms.py:664
 #, python-brace-format
 msgid "Current Role {html_span}"
 msgstr "الدور الحالي {html_span}"
 
-#: accounts/forms.py:667
+#: accounts/forms.py:668
 #, python-brace-format
 msgid ""
 "{html_div_start}Note: personal email addresses will not be "
@@ -1226,49 +1251,49 @@ msgstr ""
 "{html_div_start}ملاحظة: عناوين البريد الإلكتروني الشخصية لن تتم "
 "معالجتها{html_div_end}"
 
-#: accounts/forms.py:673 accounts/forms.py:679
+#: accounts/forms.py:674 accounts/forms.py:680
 #, python-brace-format
 msgid ""
 "{html_div_start}(please choose one of the following options) {html_div_end}"
 msgstr "{html_div_start}(الرجاء اختيار أحد الخيارات التالية) {html_div_end}"
 
-#: accounts/forms.py:699 accounts/forms.py:707
+#: accounts/forms.py:700 accounts/forms.py:708
 msgid "Special characters or numbers are not valid."
 msgstr "الأحرف الخاصة أو أرقام غير صالحة."
 
-#: accounts/forms.py:716
+#: accounts/forms.py:717
 msgid "Email must be a string."
 msgstr "البريد الإلكتروني يجب أن يكون سلسلة."
 
-#: accounts/forms.py:721
+#: accounts/forms.py:722
 #, python-brace-format
 msgid "Email '{email}' must be at least {min} characters long"
 msgstr "البريد الإلكتروني '{email}' يجب أن يضم على الأقل{min} (عدد) حرفًا"
 
-#: accounts/forms.py:728
+#: accounts/forms.py:729
 #, fuzzy, python-brace-format
 msgid "Email '{email}' must be at most {max} characters long"
 msgstr "البريد الإلكتروني '{email}' يجب أن يضم على الأقل ( عدد) حرفًا"
 
-#: accounts/forms.py:738
+#: accounts/forms.py:739
 msgid "This email address has already been registered."
 msgstr "عنوان البريد الإلكتروني هذا قد تم تسجيله سابقًا"
 
-#: accounts/forms.py:744
+#: accounts/forms.py:745
 #, fuzzy
 #| msgid "That number is not allowed"
 msgid "Email you provided is not allowed."
 msgstr "غير مسموح بهذا العدد"
 
-#: accounts/forms.py:746
+#: accounts/forms.py:747
 msgid "Please enter a valid company email address."
 msgstr "الرجاء إدخال عنوان بريد إلكتروني صالح للشركة."
 
-#: accounts/forms.py:764
+#: accounts/forms.py:765
 msgid "Special characters are not valid."
 msgstr "الأحرف الخاصة غير صالحة."
 
-#: accounts/forms.py:783
+#: accounts/forms.py:784
 msgid "Please enter a valid Role."
 msgstr "الرجاء إدخال دور متوفر."
 
@@ -1306,7 +1331,7 @@ msgstr ""
 #: accounts/views.py:344
 msgid "Log in to my McKinsey Academy account & access my courses"
 msgstr ""
-"تسجيل الدخول إلى حساب في أكاديمية ماكنزي والوصول إلى الدورات التدريبية "
+"تسجيل الدخول إلى حساب في McKinsey Academy والوصول إلى الدورات التدريبية "
 "الخاصة بي"
 
 #: accounts/views.py:512 accounts/views.py:584 accounts/views.py:760
@@ -1315,7 +1340,7 @@ msgstr "بعض المعلومات المطلوبة لم يتم تقديمها، 
 
 #: accounts/views.py:532 accounts/views.py:596 accounts/views.py:765
 msgid "Create my McKinsey Academy account"
-msgstr "إنشاء حساب خاص بي على أكاديمية ماكنزي"
+msgstr "إنشاء حساب خاص بي على McKinsey Academy"
 
 #: accounts/views.py:562
 msgid "Invalid Activation Code"
@@ -1357,7 +1382,7 @@ msgstr "إعادة تعيين كلمة المرور غير ناجحة"
 #: accounts/views.py:928 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45 templates/layout.haml:243
 msgid "Welcome to McKinsey Academy"
-msgstr "مرحبا بكم في أكاديمية ماكنزي"
+msgstr "مرحبا بكم في McKinsey Academy"
 
 #: accounts/views.py:929
 #, python-brace-format
@@ -1381,8 +1406,8 @@ msgstr ""
 msgid "Enter your full name"
 msgstr "أدخل اسمك بالكامل"
 
-#: accounts/views.py:1078 accounts/views.py:1101 admin/views.py:1846
-#: admin/views.py:1880 admin/views.py:4189
+#: accounts/views.py:1078 accounts/views.py:1101 admin/views.py:1841
+#: admin/views.py:1875 admin/views.py:4192
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
 #: templates/admin/course_meta_content/item_detail.haml:16
@@ -1420,7 +1445,7 @@ msgid ""
 "activate your account, please copy and paste this address into your web "
 "browser's address bar:"
 msgstr ""
-"قام مدير بإنشاء حساب على أكاديمية ماكنزي لاستخدامك. لتفعيل الحساب الخاص بك، "
+"قام مدير بإنشاء حساب على McKinsey Academy لاستخدامك. لتفعيل الحساب الخاص بك، "
 "الرجاء نسخ ولصق هذا العنوان في شريط العناوين في متصفح الويب الخاص بك:"
 
 #: admin/controller.py:331 admin/controller.py:379
@@ -1497,27 +1522,16 @@ msgstr "المشروع"
 msgid "Client Name"
 msgstr "اسم العميل"
 
-#: admin/controller.py:802 admin/views.py:4000 admin/views.py:4098
+#: admin/controller.py:802 admin/views.py:4003 admin/views.py:4101
 #: certificates/models.py:88 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "معرّف الدورة"
-
-#: admin/controller.py:810
-msgid "Full Name"
-msgstr "الاسم الكامل"
 
 #: admin/controller.py:810
 #: templates/admin/participants/participant_details.haml:102
 #: templates/admin/participants/participant_details.haml:184
 msgid "Username"
 msgstr "اسم المستخدم"
-
-#: admin/controller.py:810 marketing/forms.py:142
-#: templates/accounts/user_profile.haml:24
-#: templates/admin/learner_dashboard/discovery_list.haml:12
-#: templates/admin/learner_dashboard/element_list.haml:13
-msgid "Title"
-msgstr "العنوان"
 
 #: admin/controller.py:810
 msgid "Progress %"
@@ -1529,7 +1543,7 @@ msgstr "% من التقدم"
 msgid "Engagement"
 msgstr "المشاركة"
 
-#: admin/controller.py:810 admin/views.py:4000
+#: admin/controller.py:810 admin/views.py:4003
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:70
 msgid "Proficiency"
@@ -1544,7 +1558,7 @@ msgstr "الانتهاء من الدورة التدريبية"
 msgid "0%"
 msgstr "0%"
 
-#: admin/controller.py:833 admin/views.py:933 admin/views.py:942
+#: admin/controller.py:833 admin/views.py:928 admin/views.py:937
 msgid "{}%"
 msgstr "{}%"
 
@@ -1576,199 +1590,199 @@ msgstr "تسجيل الدخول في خلال آخر 7 أيام"
 msgid "-"
 msgstr "-"
 
-#: admin/controller.py:1651 admin/controller.py:1670
+#: admin/controller.py:1655 admin/controller.py:1674
 msgid "Could not parse user info from {}"
 msgstr "تعذر تحليل معلومات المستخدم من {}"
 
-#: admin/controller.py:1706 admin/controller.py:1834
+#: admin/controller.py:1710 admin/controller.py:1838
 msgid "No email"
 msgstr "لا يوجد بريد إلكتروني"
 
-#: admin/controller.py:1708 admin/controller.py:1835
+#: admin/controller.py:1712 admin/controller.py:1839
 msgid "Empty field: {}"
 msgstr "حقل فارغ: {}"
 
-#: admin/controller.py:1708 admin/controller.py:1835 admin/controller.py:1840
-#: admin/controller.py:1844
+#: admin/controller.py:1712 admin/controller.py:1839 admin/controller.py:1844
+#: admin/controller.py:1848
 msgid "Processing Participant"
 msgstr "جاري التحقق من المشارك"
 
-#: admin/controller.py:1713
+#: admin/controller.py:1717
 msgid "Valid e-mail is required"
 msgstr "مطلوب بريد إلكتروني صحيح"
 
-#: admin/controller.py:1713 admin/controller.py:1720 admin/controller.py:1725
-#: admin/controller.py:1763 admin/controller.py:1774
+#: admin/controller.py:1717 admin/controller.py:1724 admin/controller.py:1729
+#: admin/controller.py:1767 admin/controller.py:1778
 msgid "Registering Participant"
 msgstr "جاري تسجيل المشارك"
 
-#: admin/controller.py:1720
+#: admin/controller.py:1724
 msgid "Email already exist"
 msgstr "البريد الإلكتروني موجود مسبقًا"
 
-#: admin/controller.py:1725
+#: admin/controller.py:1729
 msgid "Username already exist"
 msgstr "اسم المستخدم موجود مسبقاً"
 
-#: admin/controller.py:1731
+#: admin/controller.py:1735
 msgid "Company doesn't exist"
 msgstr "الشركة غير موجودة"
 
-#: admin/controller.py:1731 admin/controller.py:1733 admin/controller.py:1768
+#: admin/controller.py:1735 admin/controller.py:1737 admin/controller.py:1772
 msgid "Enrolling Participant in Company"
 msgstr "جاري تسجيل المشارك في الشركة"
 
-#: admin/controller.py:1739 admin/controller.py:1850
+#: admin/controller.py:1743 admin/controller.py:1854
 msgid "Course doesn't exist"
 msgstr "الدورة غير موجودة"
 
-#: admin/controller.py:1739 admin/controller.py:1741 admin/controller.py:1745
-#: admin/controller.py:1748 admin/controller.py:1779 admin/controller.py:1850
-#: admin/controller.py:1852 admin/controller.py:1856 admin/controller.py:1859
-#: admin/controller.py:1874
+#: admin/controller.py:1743 admin/controller.py:1745 admin/controller.py:1749
+#: admin/controller.py:1752 admin/controller.py:1783 admin/controller.py:1854
+#: admin/controller.py:1856 admin/controller.py:1860 admin/controller.py:1863
+#: admin/controller.py:1878
 msgid "Enrolling Participant in Course"
 msgstr "تسجيل المشاركين في الدورة التدريبية"
 
-#: admin/controller.py:1745 admin/controller.py:1856
+#: admin/controller.py:1749 admin/controller.py:1860
 msgid "Course is not Internal"
 msgstr "الدورة ليست داخلية"
 
-#: admin/controller.py:1748 admin/controller.py:1859
+#: admin/controller.py:1752 admin/controller.py:1863
 msgid "Status doesn't exist"
 msgstr "لا توجد حالة"
 
-#: admin/controller.py:1752 admin/controller.py:1788 admin/controller.py:1863
-#: admin/controller.py:1883
+#: admin/controller.py:1756 admin/controller.py:1792 admin/controller.py:1867
+#: admin/controller.py:1887
 msgid "Reason: {}, Activity: {}, Participant: {}"
 msgstr "السبب: {}، النشاط: {}، مشارك: {}"
 
-#: admin/controller.py:1774
+#: admin/controller.py:1778
 msgid "Activation record error"
 msgstr "خطأ في سجل التفعيل"
 
-#: admin/controller.py:1786 admin/controller.py:1881
+#: admin/controller.py:1790 admin/controller.py:1885
 msgid "Setting Participant's Status"
 msgstr "إعداد حالة المشاركين"
 
-#: admin/controller.py:1794 admin/controller.py:1889
+#: admin/controller.py:1798 admin/controller.py:1893
 msgid "Processing Data Error"
 msgstr "خطأ في معالجة البيانات"
 
-#: admin/controller.py:1795 admin/controller.py:1890
+#: admin/controller.py:1799 admin/controller.py:1894
 msgid "Error processing data: {} - {}"
 msgstr "حدث خطأ أثناء معالجة البيانات: {}-{}"
 
-#: admin/controller.py:1840
+#: admin/controller.py:1844
 #, python-brace-format
 msgid "Valid e-mail is required: {email}"
 msgstr "مطلوب بريد إلكتروني صالح: {email}"
 
-#: admin/controller.py:1844
+#: admin/controller.py:1848
 msgid "User doesn't exist"
 msgstr "المستخدم غير موجود"
 
-#: admin/controller.py:2005
+#: admin/controller.py:2009
 msgid "This company already exists!"
 msgstr "هذه الشركة موجودة مسبقًا!"
 
-#: admin/controller.py:2007
+#: admin/controller.py:2011
 msgid "Company Validation Success!"
 msgstr "نجاح التحقق من صحة الشركة!"
 
-#: admin/controller.py:2083
+#: admin/controller.py:2087
 msgid "You have sent incorrect chunk number!"
 msgstr "لقد قمت بإرسال رقم قطعة غير صحيح!"
 
-#: admin/controller.py:2085
+#: admin/controller.py:2089
 msgid "You have sent incorrect task key!"
 msgstr "لقد قمت بإرسال مفتاح مهمة غير صحيح!"
 
-#: admin/controller.py:2106
+#: admin/controller.py:2110
 msgid "There are no users in organization!"
 msgstr "لا يوجد مستخدمون في المؤسسة!"
 
-#: admin/controller.py:2267 admin/controller.py:2268 admin/views.py:3573
-#: admin/views.py:3574 admin/views.py:3730 admin/views.py:5550
+#: admin/controller.py:2271 admin/controller.py:2272 admin/views.py:3574
+#: admin/views.py:3575 admin/views.py:3731 admin/views.py:5553
 msgid "No company"
 msgstr "لا توجد أي شركة"
 
-#: admin/controller.py:2285 admin/views.py:3578 admin/views.py:4057
-#: admin/views.py:4084 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2289 admin/views.py:3579 admin/views.py:4060
+#: admin/views.py:4087 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/mobile_apps/company_app_details.haml:46
 msgid "Yes"
 msgstr "نعم"
 
-#: admin/controller.py:2287 admin/views.py:3580 admin/views.py:4059
-#: admin/views.py:4063 admin/views.py:4086 admin/views.py:4090
+#: admin/controller.py:2291 admin/views.py:3581 admin/views.py:4062
+#: admin/views.py:4066 admin/views.py:4089 admin/views.py:4093
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
 msgstr "لا"
 
-#: admin/controller.py:2304 admin/controller.py:2312
+#: admin/controller.py:2308 admin/controller.py:2316
 msgid "000"
 msgstr "000"
 
-#: admin/controller.py:2482 admin/controller.py:2504
+#: admin/controller.py:2486 admin/controller.py:2508
 msgid "Sorry, We can not process your request"
 msgstr ""
 
-#: admin/controller.py:2489 admin/controller.py:2501
+#: admin/controller.py:2493 admin/controller.py:2505
 msgid "Operation Successful"
 msgstr ""
 
-#: admin/controller.py:2492
+#: admin/controller.py:2496
 #, fuzzy
 #| msgid "Please enter a valid Role."
 msgid "Please enter role text"
 msgstr "الرجاء إدخال دور متوفر."
 
-#: admin/controller.py:2527 templates/admin/courses/course_details.haml:104
+#: admin/controller.py:2531 templates/admin/courses/course_details.haml:104
 msgid "Engagement Summary"
 msgstr "ملخص المشاركة"
 
-#: admin/controller.py:2527
+#: admin/controller.py:2531
 msgid "# of people"
 msgstr "# الناس"
 
-#: admin/controller.py:2527
+#: admin/controller.py:2531
 msgid "% total cohort"
 msgstr "% من إجمالي الأفواج"
 
-#: admin/controller.py:2527
+#: admin/controller.py:2531
 msgid "Avg Progress"
 msgstr "معدل سير العمل"
 
-#: admin/controller.py:2533
+#: admin/controller.py:2537
 msgid "Participant Performance"
 msgstr "أداء المشاركين"
 
-#: admin/controller.py:2533
+#: admin/controller.py:2537
 #, python-format
 msgid "% completion"
 msgstr "% cالاستكمال"
 
-#: admin/controller.py:2533
+#: admin/controller.py:2537
 msgid "Score"
 msgstr "النتيجة"
 
-#: admin/controller.py:2534
+#: admin/controller.py:2538
 msgid "Group work 1"
 msgstr "العمل الجماعي 1"
 
-#: admin/controller.py:2535
+#: admin/controller.py:2539
 msgid "Group work 2"
 msgstr "العمل الجماعي 2"
 
-#: admin/controller.py:2536
+#: admin/controller.py:2540
 msgid "Mid-course assessment"
 msgstr "تقييم منتصف الدورة"
 
-#: admin/controller.py:2537
+#: admin/controller.py:2541
 msgid "Final assessment"
 msgstr "التقييم النهائي"
 
-#: admin/controller.py:2544 templates/admin/courses/course_details.haml:117
+#: admin/controller.py:2548 templates/admin/courses/course_details.haml:117
 msgid "Social Engagement"
 msgstr "المشاركة الاجتماعية"
 
@@ -1780,28 +1794,28 @@ msgstr "يجب أن يبدأ الرمز السداسي بـ # ومتبوعًا �
 msgid "Enter new email address"
 msgstr "أدخل عنوان البريد الإلكتروني الجديد"
 
-#: admin/forms.py:120 admin/views.py:4223
+#: admin/forms.py:120 admin/views.py:4226
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "مساعد مدرّس"
 
-#: admin/forms.py:120 admin/views.py:4224
+#: admin/forms.py:120 admin/views.py:4227
 msgid "OBSERVER"
 msgstr "المراقب"
 
-#: admin/forms.py:144 admin/views.py:4225
+#: admin/forms.py:144 admin/views.py:4228
 msgid "ADMIN"
 msgstr "المشرف"
 
-#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4228
+#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4231
 msgid "COURSE OPS"
 msgstr "خيارات الدورة"
 
-#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4227
+#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4230
 msgid "INTERNAL ADMIN"
 msgstr "المشرف الداخلي"
 
-#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4226
+#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4229
 msgid "COMPANY ADMIN"
 msgstr "مسؤول الشركة"
 
@@ -1831,8 +1845,8 @@ msgstr "موضوع الدورة"
 msgid "Name {}"
 msgstr "{الاسم}"
 
-#: admin/forms.py:228 admin/views.py:1987 admin/views.py:4000
-#: admin/views.py:4098 templates/admin/program/list.haml:25
+#: admin/forms.py:228 admin/views.py:1982 admin/views.py:4003
+#: admin/views.py:4101 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:63
 #: templates/header.haml:97
@@ -1870,7 +1884,7 @@ msgstr "منسق يومي"
 #: admin/models.py:445
 msgid "Senior executive sponsoring McKinsey Academy program within company"
 msgstr ""
-"الموظف التنفيذ من الدرجة العليا الذي يرعى برنامج أكاديمية ماكنزي داخل الشركة"
+"الموظف التنفيذ من الدرجة العليا الذي يرعى برنامج McKinsey Academy داخل الشركة"
 
 #: admin/models.py:446
 msgid ""
@@ -1908,8 +1922,8 @@ msgstr "الدرس"
 
 #: admin/models.py:591 templates/courses/content_page/lesson_pager.haml:11
 #: templates/courses/content_page/lesson_pager.haml:29
-#: templates/courses/content_page/lesson_pager_ld.haml:9
-#: templates/courses/content_page/lesson_pager_ld.haml:21
+#: templates/courses/content_page/lesson_pager_ld.haml:10
+#: templates/courses/content_page/lesson_pager_ld.haml:22
 #: templates/courses/course_lessons.haml:29
 #: templates/courses/course_lessons_ld.haml:38
 #: templates/courses/course_lessons_ld_external.haml:31
@@ -1917,7 +1931,7 @@ msgstr "الدرس"
 msgid "Module"
 msgstr "الوحدة النمطية"
 
-#: admin/models.py:592 admin/views.py:4000 admin/views.py:4098
+#: admin/models.py:592 admin/views.py:4003 admin/views.py:4101
 #: templates/admin/participants/participants_list.haml:18
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
@@ -1961,109 +1975,113 @@ msgstr "مجموعة التعيين لـ {wg_id}"
 msgid "Some of the files aren't uploaded, Please upload again!"
 msgstr "بعض الملفات لم يتم تحميلها، الرجاء التحميل مرة أخرى!"
 
-#: admin/tasks.py:110
+#: admin/tasks.py:122
 #, python-brace-format
 msgid "Group Work: {label}"
 msgstr "عمل المجموعة {label}"
 
-#: admin/tasks.py:117
+#: admin/tasks.py:129
 #, python-brace-format
 msgid "Assessment: {label}"
 msgstr "التقييم: {label}"
 
-#: admin/tasks.py:123
+#: admin/tasks.py:135
 #, python-brace-format
 msgid "Lesson {lesson_number} Progress"
 msgstr "تقدم العمل{lesson_number} في الدرس"
 
-#: admin/views.py:556
+#: admin/tasks.py:235
+msgid "Participant stats for {} is ready to download"
+msgstr ""
+
+#: admin/views.py:551
 msgid "Edit Email"
 msgstr "تحرير البريد الإلكتروني"
 
-#: admin/views.py:594
+#: admin/views.py:589
 msgid "Un-enroll from this course"
 msgstr "إلغاء الالتحاق بهذه الدورة"
 
-#: admin/views.py:595
+#: admin/views.py:590
 msgid "Un-enroll from entire program "
 msgstr "إلغاء الالتحاق بالبرنامج كاملًا"
 
-#: admin/views.py:860
+#: admin/views.py:855
 msgid "% Progress"
 msgstr "% التقدم"
 
-#: admin/views.py:861
+#: admin/views.py:856
 msgid "% Progress (Engaged)"
 msgstr "% من التقدم (مشترك)"
 
-#: admin/views.py:928
+#: admin/views.py:923
 msgid "GW_{}"
 msgstr "العمل الجماعي_{}"
 
-#: admin/views.py:931
+#: admin/views.py:926
 msgid "Group Work: {}"
 msgstr "العمل الجماعي: {}"
 
-#: admin/views.py:937
+#: admin/views.py:932
 msgid "AS_{}"
 msgstr "التقييم_{}"
 
-#: admin/views.py:940
+#: admin/views.py:935
 msgid "Assessment: {}"
 msgstr "التقييم: {}"
 
-#: admin/views.py:1120
+#: admin/views.py:1115
 msgid "No such task!"
 msgstr "لا توجد مثل هذه المهمة!"
 
-#: admin/views.py:1205 admin/views.py:1244
+#: admin/views.py:1200 admin/views.py:1239
 msgid "please fix the problems indicated below."
 msgstr "الرجاء إصلاح المشاكل المشار إليها أدناه."
 
-#: admin/views.py:1290
+#: admin/views.py:1285
 msgid "Client"
 msgstr "العميل"
 
-#: admin/views.py:1291
+#: admin/views.py:1286
 msgid "Clients"
 msgstr "العملاء"
 
-#: admin/views.py:1350 admin/views.py:1397
+#: admin/views.py:1345 admin/views.py:1392
 msgid "Save Client"
 msgstr "حفظ العميل"
 
-#: admin/views.py:1409
+#: admin/views.py:1404
 #, python-brace-format
 msgid "Successfully processed {processed} of {total} record"
 msgid_plural "Successfully processed {processed} of {total} records"
 msgstr[0] "معالجة السجل{processed} بنجاح{total}"
 msgstr[1] "نجاح {processed}معالجة{total} السجلات"
 
-#: admin/views.py:1586
+#: admin/views.py:1581
 msgid "Bad request, The Image type is not valid."
 msgstr ""
 
-#: admin/views.py:1598
+#: admin/views.py:1593
 msgid "Could not delete the image, Please try later"
 msgstr ""
 
-#: admin/views.py:1748
+#: admin/views.py:1743
 msgid "Contact has been removed."
 msgstr "لقد تمت إزالة جهة الاتصال."
 
-#: admin/views.py:1764 admin/views.py:1770
+#: admin/views.py:1759 admin/views.py:1765
 msgid "Invalid Course Run"
 msgstr "تشغيل المسار غير صالح"
 
-#: admin/views.py:1766
+#: admin/views.py:1761
 msgid "Invalid Program ID"
 msgstr "معرف البرنامج غير صالح"
 
-#: admin/views.py:1770
+#: admin/views.py:1765
 msgid "Course: {}"
 msgstr "الدورة: {}"
 
-#: admin/views.py:1796
+#: admin/views.py:1791
 msgid ""
 "\n"
 "            If this client should use SSO: DevOps must configure and enable "
@@ -2075,123 +2093,116 @@ msgid ""
 "        "
 msgstr ""
 
-#: admin/views.py:1839 admin/views.py:1840 admin/views.py:1874
+#: admin/views.py:1834 admin/views.py:1835 admin/views.py:1869
 msgid "- Select -"
 msgstr "-اختر-"
 
-#: admin/views.py:1899 admin/views.py:1901
+#: admin/views.py:1894 admin/views.py:1896
 msgid "Access Key couldn't be created, please check course ID!"
 msgstr "تعذ إنشاء مفتاح الوصول، الرجاء التحقق من معرّف الدورة!"
 
-#: admin/views.py:1900
+#: admin/views.py:1895
 msgid "Access Key created successfully!"
 msgstr "تم إنشاء مفتاح الوصول بنجاح!"
 
-#: admin/views.py:1914
+#: admin/views.py:1909
 msgid "Access Key"
 msgstr "مفتاح الوصول"
 
-#: admin/views.py:1936
+#: admin/views.py:1931
 msgid "Send"
 msgstr "إرسال"
 
-#: admin/views.py:1960
+#: admin/views.py:1955
 msgid "This student hasn't been added to any programs yet."
 msgstr "لم تتم إضافة هذا الطالب إلى أي برامج بعد."
 
-#: admin/views.py:1971
+#: admin/views.py:1966
 msgid "fail"
 msgstr "فشل"
 
-#: admin/views.py:1975
+#: admin/views.py:1970
 msgid "success"
 msgstr "نجاح"
 
-#: admin/views.py:1988 templates/admin/admin_header.haml:59
+#: admin/views.py:1983 templates/admin/admin_header.haml:59
 #: templates/marketing/programs.haml:237
 msgid "Programs"
 msgstr "البرامج"
 
-#: admin/views.py:2026 admin/views.py:2074
+#: admin/views.py:2021 admin/views.py:2069
 msgid "Save Program"
 msgstr "حفظ البرنامج"
 
-#: admin/views.py:2282
+#: admin/views.py:2277
 msgid "Successfully Added {} Participants"
 msgstr "إضافة المشاركين بنجاح {}"
 
-#: admin/views.py:2340 admin/views.py:5672
+#: admin/views.py:2335 admin/views.py:5675
 #: templates/admin/participants/activation_link_modal.haml:15
 msgid "First name"
 msgstr "الاسم الأول"
 
-#: admin/views.py:2340 admin/views.py:5673
+#: admin/views.py:2335 admin/views.py:5676
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 msgid "Last name"
 msgstr "اسم العائلة"
 
-#: admin/views.py:2340 marketing/forms.py:135
-#: templates/admin/participants/participant_details.haml:123
-#: templates/admin/participants/participants_list.haml:16
-#: templates/admin/permissions/list.haml:36
-msgid "Company"
-msgstr "الشركة"
-
-#: admin/views.py:2340
+#: admin/views.py:2335
 #: templates/admin/participants/activation_link_modal.haml:4
 #: templates/admin/participants/activation_link_modal.haml:21
 msgid "Activation Link"
 msgstr "رابط التفعيل"
 
-#: admin/views.py:2457
+#: admin/views.py:2452
 msgid "Report is TBD"
 msgstr "الرابط يحدد لاحقًا"
 
-#: admin/views.py:2479 templates/courses/content_page/courses_menu_list.haml:17
+#: admin/views.py:2474 templates/courses/content_page/courses_menu_list.haml:17
 msgid "Coming Soon"
 msgstr "قريباً"
 
-#: admin/views.py:2481 templates/courses/content_page/courses_menu_list.haml:8
+#: admin/views.py:2476 templates/courses/content_page/courses_menu_list.haml:8
 msgid "Archived"
 msgstr "تمت الأرشفة"
 
-#: admin/views.py:2545
+#: admin/views.py:2546
 msgid "Successfully saved courses to {} program"
 msgstr "تم حفظ الدورات التدريبية بنجاح في البرنامج {}"
 
-#: admin/views.py:2559 admin/views.py:2937 admin/views.py:2970
-#: admin/views.py:3025
+#: admin/views.py:2560 admin/views.py:2938 admin/views.py:2971
+#: admin/views.py:3026
 msgid "Invalid program_id specified: {}"
 msgstr "تم تحديد معرّف برنامج غير صحيح: {}"
 
-#: admin/views.py:2568
+#: admin/views.py:2569
 msgid "Invalid student_id specified: {}"
 msgstr "تم حديد معرّف طالب غير صحيح {}"
 
-#: admin/views.py:2574
+#: admin/views.py:2575
 msgid "Not enough places available for {} program - {} left"
 msgstr "تبقى أماكن غير كافية للبرنامج"
 
-#: admin/views.py:2601
+#: admin/views.py:2602
 msgid "Successfully associated students to {} program"
 msgstr "تم ربط الطلبة بالبرنامج بنجاح"
 
-#: admin/views.py:2632
+#: admin/views.py:2633
 msgid "{} already enrolled in {}"
 msgstr "مسجّل مسبقًا في"
 
-#: admin/views.py:2639
+#: admin/views.py:2640
 msgid "Successfully associated students to courses"
 msgstr "تم ربط الطلبة بنجاح بالدورة التدريبية"
 
-#: admin/views.py:2641
+#: admin/views.py:2642
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
 msgstr "تم ربط الطلبة بالدورات التدريبية بنجاح مع\t رسائل"
 
-#: admin/views.py:2755 admin/views.py:2758
+#: admin/views.py:2756 admin/views.py:2759
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
@@ -2199,12 +2210,12 @@ msgstr ""
 "خطأ في تحميل الملف. الرجاء المحاولة مرة أخرى والتأكد من استخدام هيئة ملفات "
 "مقبولة."
 
-#: admin/views.py:3186 admin/views.py:3249
+#: admin/views.py:3187 admin/views.py:3250
 msgid "No group projects available for this course"
 msgstr "لا يوجد مشاريع جماعية ضمن هذه الدورة"
 
-#: admin/views.py:3259 admin/views.py:3260 admin/views.py:3487
-#: admin/views.py:3488 templates/admin/admin_header.haml:37
+#: admin/views.py:3260 admin/views.py:3261 admin/views.py:3488
+#: admin/views.py:3489 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:55
 #: templates/courses/content_page/course_tabs.haml:18
 #: templates/courses/course_group_work.haml:13
@@ -2212,74 +2223,74 @@ msgstr "لا يوجد مشاريع جماعية ضمن هذه الدورة"
 msgid "Group Work"
 msgstr "العمل الجماعي"
 
-#: admin/views.py:3339
+#: admin/views.py:3340
 msgid "Group wasn't created - please select project"
 msgstr "لم يتم إنشاء المجموعة-يرجى تحديد المشروع"
 
-#: admin/views.py:3350
+#: admin/views.py:3351
 msgid "Bad users {} for private project"
 msgstr "مستخدمون سيئون للمشروع الخاص"
 
-#: admin/views.py:3366
+#: admin/views.py:3367
 msgid "Group successfully created"
 msgstr "تم إنشاء المجموعة بنجاح"
 
-#: admin/views.py:3370
+#: admin/views.py:3371
 msgid "Group was not created"
 msgstr "لم يتم إنشاء مجموعة"
 
-#: admin/views.py:3412
+#: admin/views.py:3413
 msgid "Error creating project"
 msgstr "خطأ في إنشاء المشروع"
 
-#: admin/views.py:3426
+#: admin/views.py:3427
 msgid "Project already exists"
 msgstr "المشروع موجود مسبقًا"
 
-#: admin/views.py:3431
+#: admin/views.py:3432
 msgid "Project successfully created"
 msgstr "تم إنشاء المشروع بنجاح"
 
-#: admin/views.py:3464
+#: admin/views.py:3465
 msgid "Project deleted successfully."
 msgstr "تم حذف المشروع بنجاح"
 
-#: admin/views.py:3526
+#: admin/views.py:3527
 msgid "Password Reset Email successfully sent."
 msgstr "تم إرسال البريد الإلكتروني الخاص بإعادة تعيين كلمة المرور بنجاح"
 
-#: admin/views.py:3545
+#: admin/views.py:3546
 msgid "Activation email sent."
 msgstr "تم إرسال البريد الإلكتروني الخاص بالتفعيل"
 
-#: admin/views.py:3618 admin/views.py:3803
+#: admin/views.py:3619 admin/views.py:3804
 msgid "Company name can only contain alphanumeric characters"
 msgstr "اسم الشركة يمكن أن يحتوي فقط على أحرف أبجدية رقمية"
 
-#: admin/views.py:3630 admin/views.py:3635
+#: admin/views.py:3631 admin/views.py:3636
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr "خطأ في الإذن: لا تمتلك إذن لمنح هذا الدور"
 
-#: admin/views.py:3644
+#: admin/views.py:3645
 msgid "User with that email already exists!"
 msgstr "هنالك مستخدم مسبق بهذا البريد الإلكتروني!"
 
-#: admin/views.py:3669 admin/views.py:3830
+#: admin/views.py:3670 admin/views.py:3831
 msgid "Couldn't create company!"
 msgstr "تعذر إنشاء الشركة!"
 
-#: admin/views.py:3680
+#: admin/views.py:3681
 msgid "Couldn't add user to company!"
 msgstr "لا يمكن إضافة المستخدم إلى الشركة!"
 
-#: admin/views.py:3704 templates/admin/participants/participants_list.haml:221
+#: admin/views.py:3705 templates/admin/participants/participants_list.haml:221
 msgid "Successfully added new user!"
 msgstr "تمت إضافة مستخدم جديد بنجاح!"
 
-#: admin/views.py:3723 admin/views.py:3725 admin/views.py:3734
-#: admin/views.py:3740 admin/views.py:3746 admin/views.py:5543
-#: admin/views.py:5545 admin/views.py:5554 admin/views.py:5560
-#: admin/views.py:5566
+#: admin/views.py:3724 admin/views.py:3726 admin/views.py:3735
+#: admin/views.py:3741 admin/views.py:3747 admin/views.py:5546
+#: admin/views.py:5548 admin/views.py:5557 admin/views.py:5563
+#: admin/views.py:5569
 #: templates/admin/participants/participant_details.haml:267
 #: templates/admin/participants/participant_details.haml:275
 #: templates/admin/participants/participant_details.haml:283
@@ -2287,147 +2298,147 @@ msgstr "تمت إضافة مستخدم جديد بنجاح!"
 msgid "N/A"
 msgstr "لا يوجد"
 
-#: admin/views.py:3821
+#: admin/views.py:3822
 msgid "User with that username or email already exists!"
 msgstr "المستخدم باسم المستخدم أو البريد الإلكتروني هذا موجود مسبقًا!"
 
-#: admin/views.py:3876
+#: admin/views.py:3877
 msgid "Can't find user in database"
 msgstr "لا يمكن العثور على المستخدم في قاعدة البيانات"
 
-#: admin/views.py:3953
+#: admin/views.py:3954
 msgid "There is a problem with selected user role on new course!"
 msgstr "هناك مشكلة مع دور المستخدم المحدد في الدورة الجديدة!"
 
-#: admin/views.py:4000 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4003 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:26
 msgid "Progress"
 msgstr "التقدم المحرز"
 
-#: admin/views.py:4000 admin/views.py:4098
+#: admin/views.py:4003 admin/views.py:4101
 msgid "Status"
 msgstr "الحالة"
 
-#: admin/views.py:4098 templates/admin/client-admin/course_info.haml:79
+#: admin/views.py:4101 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:30
 #: templates/courses/course_progress.haml:54
 msgid "Completed"
 msgstr "مُنجز"
 
-#: admin/views.py:4098
+#: admin/views.py:4101
 msgid "Grade"
 msgstr "الدرجة"
 
-#: admin/views.py:4098
+#: admin/views.py:4101
 msgid "End Date"
 msgstr "تاريخ الانتهاء"
 
-#: admin/views.py:4249
+#: admin/views.py:4252
 msgid "Problem generating activity review assignments"
 msgstr "واجبات استعراض أنشطة توليد المشاكل"
 
-#: admin/views.py:4273
+#: admin/views.py:4276
 msgid "Project review assignments allocated"
 msgstr "تم تعيين واجبات مراجعة للمشروع"
 
-#: admin/views.py:4280
+#: admin/views.py:4283
 msgid "Not enough groups to meet review criteria"
 msgstr "لا يوجد عدد مجموعات كافية للعمل وفق المعايير"
 
-#: admin/views.py:4508
+#: admin/views.py:4511
 msgid "Successfully added new email template!"
 msgstr "تمت إضافة نموذج البريد الإلكتروني الجديد بنجاح!"
 
-#: admin/views.py:4511
+#: admin/views.py:4514
 msgid "Missing fields in email template!"
 msgstr "يوجد مجالات فارغة في نموذج البريد الإلكتروني!"
 
-#: admin/views.py:4522
+#: admin/views.py:4525
 msgid "Successfully got email template!"
 msgstr "حصلت على نموذج البريد الإلكتروني بنجاح!"
 
-#: admin/views.py:4525 admin/views.py:4538 admin/views.py:4561
+#: admin/views.py:4528 admin/views.py:4541 admin/views.py:4564
 msgid "Can't find email template key!"
 msgstr "لا يمكن العثور على مفتاح نموذج البريد الإلكتروني!"
 
-#: admin/views.py:4527 admin/views.py:4540 admin/views.py:4563
+#: admin/views.py:4530 admin/views.py:4543 admin/views.py:4566
 msgid "Missing email template key!"
 msgstr "مفتاح نموذج البريد الإلكتروني غير موجود!"
 
-#: admin/views.py:4536
+#: admin/views.py:4539
 msgid "Successfully deleted email template!"
 msgstr "تم حذف نموذج البريد الإلكتروني بنجاح!"
 
-#: admin/views.py:4558
+#: admin/views.py:4561
 msgid "Successfully updated email template!"
 msgstr "تم تحديث نموذج البريد الإلكتروني بنجاح!"
 
-#: admin/views.py:4673 admin/views.py:5337
+#: admin/views.py:4676 admin/views.py:5340
 msgid "No Company Display name!"
 msgstr "لا يوجد اسم عرض للشركة!"
 
-#: admin/views.py:4879
+#: admin/views.py:4882
 msgid "App name only contains alphanumeric characters"
 msgstr "اسم التطبيق يحتوي فقط على أحرف أبجدية رقمية"
 
-#: admin/views.py:4995
+#: admin/views.py:4998
 msgid "Learner dashboard not found"
 msgstr "لم يتم العثور على لوحة  متابعة المتعلمين"
 
-#: admin/views.py:5354
+#: admin/views.py:5357
 msgid "Company name successfully changed!"
 msgstr "تم تغيير اسم الشركة بنجاح!"
 
-#: admin/views.py:5397
+#: admin/views.py:5400
 msgid "Tag with this name already exist's!"
 msgstr "العلامة بهذا الاسم موجودة مسبقًا!"
 
-#: admin/views.py:5408
+#: admin/views.py:5411
 msgid "Tag created!"
 msgstr "تم إنشاء علامة!"
 
-#: admin/views.py:5410
+#: admin/views.py:5413
 msgid "You need to select tag's name!"
 msgstr "أنت بحاجة إلى تحديد اسم العلامة!"
 
-#: admin/views.py:5460
+#: admin/views.py:5463
 msgid "Tag added to Course!"
 msgstr "تمت إضافة العلامة للدورة!"
 
-#: admin/views.py:5462 admin/views.py:5484
+#: admin/views.py:5465 admin/views.py:5487
 msgid "You need to select tag!"
 msgstr "أنت بحاجة لتحديد علامة!"
 
-#: admin/views.py:5482
+#: admin/views.py:5485
 msgid "Tag removed from Course!"
 msgstr "تمت إزالة العلامة من الدورة!"
 
-#: admin/views.py:5674 templates/admin/course_run/view.haml:65
+#: admin/views.py:5677 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "اسم الشركة"
 
-#: admin/views.py:5675 templates/admin/course_run/view.haml:66
+#: admin/views.py:5678 templates/admin/course_run/view.haml:66
 msgid "Company email"
 msgstr "البريد الإلكتروني للشركة"
 
-#: admin/views.py:5676 templates/admin/course_run/view.haml:67
+#: admin/views.py:5679 templates/admin/course_run/view.haml:67
 msgid "Current role"
 msgstr "الدور الحالي"
 
-#: admin/views.py:5677 templates/admin/course_run/view.haml:68
+#: admin/views.py:5680 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "مستخدم جديد"
 
-#: admin/views.py:5678
+#: admin/views.py:5681
 msgid "McK user"
 msgstr "مستخدم ماكنزي"
 
-#: admin/views.py:5679 templates/admin/course_run/view.haml:70
+#: admin/views.py:5682 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "مسجّل"
 
-#: admin/views.py:5680 templates/admin/course_run/view.haml:71
+#: admin/views.py:5683 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "فعال"
@@ -2707,7 +2718,7 @@ msgstr ""
 
 #: lib/mail.py:88
 msgid "Mckinsey academy activation mail!"
-msgstr "بريد التفعيل الإلكتروني الخاص بأكاديمية ماكنزي!"
+msgstr "بريد التفعيل الإلكتروني الخاص بMcKinsey Academy!"
 
 #: lib/mail.py:91
 #, python-brace-format
@@ -2716,7 +2727,7 @@ msgid ""
 "McKinsey Academy for your use. To activate your account, please copy and "
 "paste this address into your web browser's address bar: {uri}/{url}"
 msgstr ""
-"مرحبا بكم في أكاديمية ماكنزي! قام مدير بإنشاء حساب على أكاديمية ماكنزي "
+"مرحبا بكم في McKinsey Academy! قام مدير بإنشاء حساب على McKinsey Academy "
 "لاستخدامك الخاص بك. لتفعيل الحساب الخاص بك، الرجاء نسخ ولصق هذا العنوان في "
 "شريط العناوين في متصفح الويب الخاص بك:{uri}/{url}"
 
@@ -2728,8 +2739,8 @@ msgid ""
 "account, please {html_anchor_start} Click here{html_anchor_end} to register "
 "a user account and get started.{html_p_end}"
 msgstr ""
-"{html_h2}مرحبا بكم أكاديمية ماكنزي! {html_h2_end}قام مدير بإنشاء حساب على "
-"أكاديمية ماكنزي لاستخدامك الخاص. لتفعيل الحساب الخاص بك، "
+"{html_h2}مرحبا بكم McKinsey Academy! {html_h2_end}قام مدير بإنشاء حساب على "
+"McKinsey Academy لاستخدامك الخاص. لتفعيل الحساب الخاص بك، "
 "الرجاء{html_anchor_start} النقر هنا{html_anchor_end} لتسجيل حساب مستخدم "
 "والبدء.{html_p_end}"
 
@@ -2817,7 +2828,7 @@ msgstr "شكرا. سوف نعود إليكم بالسرعة الممكنة."
 #: marketing/views.py:51 templates/marketing/edxoffer.haml:13
 msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
-msgstr "شكرا لاهتمامك بأكاديمية ماكنزي. سوف نبقيكم على اطلاع بآخر المستجدات."
+msgstr "شكرا لاهتمامك بMcKinsey Academy. سوف نبقيكم على اطلاع بآخر المستجدات."
 
 #: mcka_apros/settings.py:152
 msgid "English"
@@ -2841,9 +2852,9 @@ msgstr "ترجمات وهمية"
 
 #: mcka_apros/settings.py:213 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
-msgstr "برنامج إدارة ماكنزي"
+msgstr "McKinsey Management Program"
 
-#: mcka_apros/settings.py:290
+#: mcka_apros/settings.py:293
 msgid "Congratulations! Your certificate has been generated"
 msgstr "تهانينا! لقد تم إنشاء الشهادة الخاصة بك"
 
@@ -2932,11 +2943,11 @@ msgstr "503: معطل بسبب الصيانة"
 msgid ""
 "McKinsey Academy is currently undergoing scheduled maintenance. Sorry for "
 "any inconvenience."
-msgstr "تخضع أكاديمية ماكنزي يخضع حاليًا للصيانة المجدولة. نأسف للإزعاج."
+msgstr "تخضع McKinsey Academy يخضع حاليًا للصيانة المجدولة. نأسف للإزعاج."
 
 #: templates/accounts/access.haml:4
 msgid "Access | McKinsey Academy"
-msgstr "الوصول | أكاديمية ماكنزي"
+msgstr "الوصول | McKinsey Academy"
 
 #: templates/accounts/access.haml:14
 msgid "You will be redirected to your login provider."
@@ -2948,7 +2959,7 @@ msgstr "هناك مشكلة في رمز الوصول الخاص بك."
 
 #: templates/accounts/activate.haml:6
 msgid "Register | McKinsey Academy"
-msgstr "تسجيل | أكاديمية ماكنزي"
+msgstr "تسجيل | McKinsey Academy"
 
 #: templates/accounts/activate.haml:18
 msgid ""
@@ -2957,14 +2968,14 @@ msgid ""
 "content without updating your browser. We recommend the latest versions of "
 "Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience."
 msgstr ""
-"نأسف، أكاديمية ماكنزي غير متوافقة مع المتصفح الخاص بك. يمكنك الاستمرار في "
+"نأسف، McKinsey Academy غير متوافقة مع المتصفح الخاص بك. يمكنك الاستمرار في "
 "عملية التسجيل، ولكن لن تكون قادراً على الوصول إلى محتوى الدورة دون تحديث "
 "متصفحك. نوصي بأحدث الإصدارات من جوجل كروم، موزيلا فايرفوكس، وأبل سفاري  "
 "للحصول على تجربة مثالية."
 
 #: templates/accounts/activate.haml:19
 msgid "Create your McKinsey Academy account"
-msgstr "إنشاء حسابك أكاديمية ماكنزي الخاص بك"
+msgstr "إنشاء حسابك McKinsey Academy الخاص بك"
 
 #: templates/accounts/activate.haml:20
 msgid "Complete the fields below."
@@ -2993,7 +3004,7 @@ msgid ""
 "updates and notifications from McKinsey Academy."
 msgstr ""
 "يمنحك التسجيل القدرة على الوصول إلى محتوى الدورة ويضمن أن تتلقى تحديثات "
-"وإخطارات من أكاديمية ماكنزي."
+"وإخطارات من McKinsey Academy."
 
 #: templates/accounts/activate.haml:44 templates/accounts/login.haml:57
 #: templates/accounts/public_registration.haml:78
@@ -3037,7 +3048,7 @@ msgstr "القطع والتخزين"
 
 #: templates/accounts/login.haml:5
 msgid "Login | McKinsey Academy"
-msgstr "تسجيل الدخول | أكاديمية ماكنزي"
+msgstr "تسجيل الدخول | McKinsey Academy"
 
 #: templates/accounts/login.haml:16
 #: templates/accounts/public_registration.haml:41
@@ -3047,7 +3058,7 @@ msgid ""
 "recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple "
 "Safari for an optimal experience."
 msgstr ""
-"نأسف، أكاديمية ماكنزي غير متوافقة مع المتصفح الخاص لن تكون قادراً على الوصول "
+"نأسف، McKinsey Academy غير متوافقة مع المتصفح الخاص لن تكون قادراً على الوصول "
 "إلى محتوى الدورة دون تحديث المتصفح الخاص بك. نوصي بأحدث الإصدارات من جوجل "
 "كروم، موزيلا فايرفوكس، وأبل سفاري للحصول على تجربة مثالية."
 
@@ -3078,15 +3089,14 @@ msgstr "استعرض الأسئلة المتداولة للحصول على إج�
 
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
-msgstr "تسجيل تجريبي| أكاديمية ماكنزي"
+msgstr "تسجيل تجريبي| McKinsey Academy"
 
 #: templates/accounts/public_registration.haml:8
 #: templates/certificates/course_certificate_notification_email.haml:13
-#: templates/layout.haml:18 templates/layout.haml.py:19
 #: templates/layout.haml:26 templates/privacy.haml:130
 #: templates/terms_of_service.haml:113
 msgid "McKinsey Academy"
-msgstr "أكاديمية ماكنزي"
+msgstr "McKinsey Academy"
 
 #: templates/accounts/public_registration.haml:18
 #: templates/accounts/public_registration.haml:32
@@ -3132,7 +3142,7 @@ msgstr ""
 
 #: templates/accounts/sso_error.haml:4
 msgid "Login Process Failed | McKinsey Academy"
-msgstr "فشلت عملية تسجيل الدخول | أكاديمية ماكنزي"
+msgstr "فشلت عملية تسجيل الدخول | McKinsey Academy"
 
 #: templates/accounts/sso_error.haml:10
 msgid "Sign in error"
@@ -3219,6 +3229,7 @@ msgid "Customization"
 msgstr "التخصيص"
 
 #: templates/admin/admin_header.haml:62
+#: templates/admin/export_stats_email_template.haml:24
 msgid "Contact"
 msgstr "جهة الاتصال"
 
@@ -4213,6 +4224,29 @@ msgstr ""
 "بما أن هذه العلامة غير موجودة، سيتم إنشاء علامة جديدة. إذا كان هذا خطأ، حاول "
 "تحديد العلامة الخاصة بك من نتائج المذكورة مسبقًا."
 
+#: templates/admin/export_stats_email_template.haml:14
+#, python-format
+msgid " The \"%(report)s\" report is ready to download. "
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:16
+msgid "Please click below to login and download your report."
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:18
+#, fuzzy
+#| msgid "Download Template"
+msgid "Download Report"
+msgstr "تزيل النموذج"
+
+#: templates/admin/export_stats_email_template.haml:20
+msgid "Best Regards,"
+msgstr ""
+
+#: templates/admin/export_stats_email_template.haml:27
+msgid "if you have any questions"
+msgstr ""
+
 #: templates/admin/home.haml:6
 msgid ""
 "This is the McKA Admin homepage. Please select one of the menu items above."
@@ -4799,7 +4833,7 @@ msgid ""
 "McKinsey Academy programs are a set of recommended courses, often tailored "
 "to specific clients"
 msgstr ""
-"برامج أكاديمية ماكنزي هي مجموعة من الدورات الموصى بها، والتي عادة ما تكون "
+"برامج McKinsey Academy هي مجموعة من الدورات الموصى بها، والتي عادة ما تكون "
 "مصممة خصيصا لعملاء محددين"
 
 #: templates/admin/program/list.haml:8
@@ -5300,9 +5334,7 @@ msgid ""
 msgstr "لن يتغير كل من الكفاءة، والتقدم، والمشاركة في الدورات المغلقة."
 
 #: templates/courses/content_page/course_menu.haml:4
-#, fuzzy
-#| msgid "LESSONS:"
-msgid "LESSONS"
+msgid "LESSONS:"
 msgstr "الدروس:"
 
 #: templates/courses/content_page/course_menu.haml:24
@@ -5355,7 +5387,7 @@ msgstr ""
 #, fuzzy
 #| msgid " | Cohort | Courses | McKinsey Academy"
 msgid "| Cohort | Courses | McKinsey Academy"
-msgstr " | الفوج | دورات | أكاديمية ماكنزي"
+msgstr " | الفوج | دورات | McKinsey Academy"
 
 #: templates/courses/course_cohort.haml:15
 msgid ""
@@ -5604,7 +5636,7 @@ msgstr "اقترح وصلة"
 #: templates/courses/course_discussion.haml:8
 #: templates/courses/course_discussion_ld.haml:8
 msgid " | Discussion | Courses | McKinsey Academy"
-msgstr " | مناقشة | دورات | أكاديمية ماكنزي"
+msgstr " | مناقشة | دورات | McKinsey Academy"
 
 #: templates/courses/course_discussion.haml:15
 msgid ""
@@ -5674,7 +5706,7 @@ msgstr "ملفات تعريف المستخدمين غير متاحة حتى ال
 #: templates/courses/course_group_work.haml:7
 #: templates/courses/course_group_work_ld.haml:8
 msgid " | Group Work | Courses | McKinsey Academy"
-msgstr " | أعمال المجموعات | دورات | أكاديمية ماكنزي"
+msgstr " | أعمال المجموعات | دورات | McKinsey Academy"
 
 #: templates/courses/course_group_work.haml:15
 #: templates/courses/course_group_work.haml:22
@@ -5850,7 +5882,7 @@ msgstr "اسأل مساعد مدرّس"
 
 #: templates/courses/course_learner_dashboard.haml:10
 msgid " | McKinsey Academy | Learner Dashboard"
-msgstr " | أكاديمية ماكنزي | لوحة متابعة المتعلم"
+msgstr " | McKinsey Academy | لوحة متابعة المتعلم"
 
 #: templates/courses/course_learner_dashboard_calendar.haml:36
 msgid "not available"
@@ -5913,14 +5945,15 @@ msgstr "لقد أتممت %(course_current_progress)s%%من %(lesson_name)s "
 
 #: templates/courses/course_main.haml:8
 msgid " | Courses | McKinsey Academy"
-msgstr " | دورات | أكاديمية ماكنزي"
+msgstr " | دورات | McKinsey Academy"
 
 #: templates/courses/course_main.haml:34 templates/layout.haml:224
 msgid ""
 "This is the McKinsey Academy Beta and we are happy to have you participate "
 "ahead of the official public launch!"
 msgstr ""
-"هذه هي \"أكاديمية ماكنزي بيتا\" ونحن سعداء لمشاركتك قبل الإطلاق الرسمي العام!"
+"هذه هي \"McKinsey Academy بيتا\" ونحن سعداء لمشاركتك قبل الإطلاق الرسمي "
+"العام!"
 
 #: templates/courses/course_main.haml:35 templates/layout.haml:225
 msgid ""
@@ -5934,7 +5967,7 @@ msgstr ""
 
 #: templates/courses/course_navigation.haml:7
 msgid " | Lessons | McKinsey Academy"
-msgstr " | الدروس | أكاديمية ماكنزي"
+msgstr " | الدروس | McKinsey Academy"
 
 #: templates/courses/course_navigation.haml:14
 msgid ""
@@ -5986,11 +6019,11 @@ msgstr ""
 
 #: templates/courses/course_navigation_ld.haml:9
 msgid " | McKinsey Academy | "
-msgstr " | أكاديمية ماكنزي | "
+msgstr " | McKinsey Academy | "
 
 #: templates/courses/course_news.haml:7
 msgid " | Announcements | Courses | McKinsey Academy"
-msgstr " | إعلانات | دورات | أكاديمية ماكنزي"
+msgstr " | إعلانات | دورات | McKinsey Academy"
 
 #: templates/courses/course_news.haml:13
 #: templates/courses/course_overview.haml:13
@@ -6065,7 +6098,7 @@ msgstr "هذا المحتوى غير متوفر حتى الآن."
 
 #: templates/courses/course_overview.haml:7
 msgid " | Overview | Courses | McKinsey Academy"
-msgstr " | نظرة عامة | دورات | أكاديمية ماكنزي"
+msgstr " | نظرة عامة | دورات | McKinsey Academy"
 
 #: templates/courses/course_overview.haml:15
 msgid ""
@@ -6114,7 +6147,7 @@ msgstr "أعضاء هيئة التدريس"
 #: templates/courses/course_progress.haml:7
 #: templates/courses/course_progress_v2.haml:7
 msgid " | Progress | Courses | McKinsey Academy"
-msgstr " | التقدم | دورات | أكاديمية ماكنزي"
+msgstr " | التقدم | دورات | McKinsey Academy"
 
 #: templates/courses/course_progress.haml:20
 msgid ""
@@ -6243,11 +6276,11 @@ msgid ""
 "company. You could read more about our privacy and information "
 "sharing practices in our"
 msgstr ""
-"إذا كنت تشارك في أكاديمية ماكنزي كجزء من برنامج تحت إشراف صاحب العمل، قد "
+"إذا كنت تشارك في McKinsey Academy كجزء من برنامج تحت إشراف صاحب العمل، قد "
 "نقوم بتقديم إمكانية الوصول إلى بعض المعلومات الخاصة بك--الشخصية، بما في ذلك "
 "الدورات التي سجلت فيها، والتقدم المحرز الخاص بك من خلال تلك الدورات ومستوى "
 "الإنجاز (بما في ذلك الدرجات الخاصة بك)، والمشاركة في تلك الدورات، إلى رب "
-"العمل، من أجل مساعدتهم ومساعدتك في  تقييم أكاديمية ماكنزي وقيمتها لك "
+"العمل، من أجل مساعدتهم ومساعدتك في  تقييم McKinsey Academy وقيمتها لك "
 "ولشركتك. يمكن قراءة المزيد حول الخصوصية وممارسات تبادل المعلومات الخاصة بنا "
 "في"
 
@@ -6453,20 +6486,20 @@ msgid ""
 "company. You could read more about our privacy and information sharing "
 "practices in our"
 msgstr ""
-"إذا كنت تشارك في أكاديمية ماكنزي كجزء من برنامج تحت إشراف صاحب العمل، قد "
+"إذا كنت تشارك في McKinsey Academy كجزء من برنامج تحت إشراف صاحب العمل، قد "
 "نقوم بتقديم إمكانية الوصول إلى بعض المعلومات الخاصة بك--الشخصية، بما في ذلك "
 "الدورات التي سجلت فيها، والتقدم المحرز الخاص بك خلال تلك الدورات ومستوى "
 "الإنجاز (بما في ذلك الدرجات الخاصة بك)، والمشاركة في تلك الدورات، إلى رب "
-"العمل، من أجل مساعدتهم ومساعدتك في تقييم أكاديمية ماكنزي وقيمتها لك ولشركتك. "
-"يمكن قراءة المزيد حول الخصوصية وممارسات تبادل المعلومات لدينا"
+"العمل، من أجل مساعدتهم ومساعدتك في تقييم McKinsey Academy وقيمتها لك "
+"ولشركتك. يمكن قراءة المزيد حول الخصوصية وممارسات تبادل المعلومات لدينا"
 
 #: templates/courses/course_resources.haml:7
 msgid " | Resources | Courses | McKinsey Academy"
-msgstr " | الموارد | دورات | أكاديمية ماكنزي"
+msgstr " | الموارد | دورات | McKinsey Academy"
 
 #: templates/courses/course_resources_learner_dashboard.haml:8
 msgid " | Resources | McKinsey Academy"
-msgstr " | الموارد | أكاديمية ماكنزي"
+msgstr " | الموارد | McKinsey Academy"
 
 #: templates/courses/course_syllabus.haml:6
 msgid "Syllabus"
@@ -6538,7 +6571,7 @@ msgstr "إمكانية الوصول:"
 
 #: templates/faq.haml:10
 msgid "Which browsers are recommended for use with McKinsey Academy?"
-msgstr "ما هي المتصفحات الموصى بها للاستخدام مع أكاديمية ماكنزي؟"
+msgstr "ما هي المتصفحات الموصى بها للاستخدام مع McKinsey Academy؟"
 
 #: templates/faq.haml:11
 msgid ""
@@ -6547,7 +6580,7 @@ msgid ""
 "with some older versions of browsers (such as Internet Explorer 8)."
 msgstr ""
 "نوصي بأحدث الإصدارات من جوجل كروم، موزيلا فايرفوكس، وأبل سفاري للحصول على "
-"تجربة مثالية. لا يمكن الوصول إلى أكاديمية ماكنزي من خلال بعض الإصدارات "
+"تجربة مثالية. لا يمكن الوصول إلى McKinsey Academy من خلال بعض الإصدارات "
 "القديمة من المتصفحات (مثل إنترنت إكسبلورر 8)."
 
 #: templates/faq.haml:12
@@ -6581,7 +6614,7 @@ msgstr "مسح ذاكرة التخزين المؤقت للمتصفح الخاص 
 
 #: templates/faq.haml:18
 msgid "Which devices are recommended for use with McKinsey Academy?"
-msgstr "ما هي الأجهزة التي ينصح باستخدامها مع أكاديمية ماكنزي؟"
+msgstr "ما هي الأجهزة التي ينصح باستخدامها مع McKinsey Academy؟"
 
 #: templates/faq.haml:19
 msgid ""
@@ -6595,14 +6628,14 @@ msgstr ""
 
 #: templates/faq.haml:20
 msgid "How can I sign-up for a McKinsey Academy course or program?"
-msgstr "كيف يمكنني التسجيل في دورة أو برنامج في أكاديمية ماكنزي؟"
+msgstr "كيف يمكنني التسجيل في دورة أو برنامج في McKinsey Academy؟"
 
 #: templates/faq.haml:21
 msgid ""
 "At this time, McKinsey Academy courses are only available to companies. If "
 "you are interested in inquiring further, please contact us."
 msgstr ""
-"في الوقت الحالي، تتوفر دورات أكاديمية ماكنزي فقط للشركات. إذا كنت مهتمًا في "
+"في الوقت الحالي، تتوفر دورات McKinsey Academy فقط للشركات. إذا كنت مهتمًا في "
 "الاستعلام أكثر عن هذا الموضوع، الرجاء التواصل معنا."
 
 #: templates/faq.haml:22
@@ -6708,9 +6741,9 @@ msgstr "ما هي متطلبات النجاح للدورات؟"
 #: templates/faq.haml:35
 #, python-format
 msgid ""
-"You need to complete all group work and feedback activities and earn a "
+" You need to complete all group work and feedback activities and earn a "
 "combined course grade of at least 70%% to work towards a program certificate "
-"of completion. Your course grade is calculated as follows:"
+"of completion. Your course grade is calculated as follows: "
 msgstr ""
 "تحتاج إلى إكمال جميع أنشطة المجموعة وأنشطة الملاحظات والتغذية الراجعة وكسب "
 "درجة شاملة في الدورة تصل 70 على الأقل، لتتمكن من الحصول على شهادة إتمام "
@@ -6750,7 +6783,7 @@ msgstr ""
 
 #: templates/faq.haml:43
 msgid "How do I log in to take a McKinsey Academy course?"
-msgstr "كيف يمكنني تسجيل الدخول للتسجيل في دورات أكاديمية ماكنزي؟"
+msgstr "كيف يمكنني تسجيل الدخول للتسجيل في دورات McKinsey Academy؟"
 
 #: templates/faq.haml:44
 msgid ""
@@ -6759,7 +6792,7 @@ msgid ""
 "take you to your current course page."
 msgstr ""
 "عندما تقوم بتفعيل حسابك، انقر على زر «تسجيل الدخول» في الصفحة الرئيسية "
-"لأكاديمية ماكنزي وأدخل اسم المستخدم وكلمة المرور. سينقلك ذلك إلى الصفحة "
+"لMcKinsey Academy وأدخل اسم المستخدم وكلمة المرور. سينقلك ذلك إلى الصفحة "
 "الحالية للدورة الخاصة بك."
 
 #: templates/faq.haml:45
@@ -6784,7 +6817,8 @@ msgstr "هل يمكنني التسجيل في أكثر من دورة في الو
 msgid ""
 "McKinsey Academy programs are a collection of courses taken one at a time."
 msgstr ""
-"برامج أكاديمية ماكنزي عبارة عن مجموعة من المقررات التي يتم أخذها في وقت واحد."
+"برامج McKinsey Academy عبارة عن مجموعة من المقررات التي يتم أخذها في وقت "
+"واحد."
 
 #: templates/faq.haml:49
 msgid "What time is the class?"
@@ -6799,11 +6833,11 @@ msgid ""
 "deadlines, these are designed to offer enough lead time that you can easily "
 "schedule your work."
 msgstr ""
-"يتم عقد دورات أكاديمية ماكنزي بما يتلاءم معك. وتتوفر الفيديوهات والواجبات 24 "
-"ساعة في اليوم، وهذا يعني يمكنك مشاهدة أشركة الفيديو وإتمام العمل كلما تسنى "
-"لك ذلك. بكل بشاطة قم بتسجيل الدخول بدورتك واطلع على مادة الدورة. وبينما يوجد "
-"مواعيد محددة لإتمام الأنشطة والأعمال الجماعية، فقد تم تصميمها لمنحك وقتًا "
-"مسبقًا حتى تتمكن من جدولة أعمالك بكل سهولة."
+"يتم عقد دورات McKinsey Academy بما يتلاءم معك. وتتوفر الفيديوهات والواجبات "
+"24 ساعة في اليوم، وهذا يعني يمكنك مشاهدة أشركة الفيديو وإتمام العمل كلما "
+"تسنى لك ذلك. بكل بشاطة قم بتسجيل الدخول بدورتك واطلع على مادة الدورة. وبينما "
+"يوجد مواعيد محددة لإتمام الأنشطة والأعمال الجماعية، فقد تم تصميمها لمنحك "
+"وقتًا مسبقًا حتى تتمكن من جدولة أعمالك بكل سهولة."
 
 #: templates/faq.haml:51
 msgid "If I miss a week, how does this affect my performance?"
@@ -6818,7 +6852,7 @@ msgid ""
 "group work and course overview for important dates and times, so you don't "
 "miss a submission deadline while you are away."
 msgstr ""
-"يمكنك طبعًا إنهاء دورة في أكاديمية ماكنزي حتى لو لم تحضر لمدة أسبوع، ولكن "
+"يمكنك طبعًا إنهاء دورة في McKinsey Academy حتى لو لم تحضر لمدة أسبوع، ولكن "
 "عبيك مراجعة المحتوى الذي لم تحضره . وإذا كنت على علم بفترة انقطاعك مسبقًا "
 "خلال مدة انعقاد الدورة، تأكد من التواصل مع أعضاء مجموعتك واطلع على العمل "
 "الجماعي وموجز عن الدورة للحصول على المواعيد والأوقات المهمة، حتى لا يفوتك "
@@ -6873,7 +6907,7 @@ msgid ""
 "All McKinsey Academy courses have discussion forums where you can chat with "
 "and help other participants."
 msgstr ""
-"لدى جميع دورات أكاديمية ماكنزي منتديات المناقشة حيث يمكنك الدردشة مع "
+"لدى جميع دورات McKinsey Academy منتديات المناقشة حيث يمكنك الدردشة مع "
 "المشتركين الآخرين ومساعدتهم."
 
 #: templates/faq.haml:61
@@ -6888,7 +6922,7 @@ msgid ""
 "course team for your cohort; just post your questions or email the TA. We do "
 "our best to respond as promptly as possible."
 msgstr ""
-"منتدى النقاش هو أفضل مكان للوصول إلى فريق دورة أكاديمية ماكنزي للفوج الخاص "
+"منتدى النقاش هو أفضل مكان للوصول إلى فريق دورة McKinsey Academy للفوج الخاص "
 "بك؛ فقط قم بنشر الأسئلة الخاصة بك أو أرسل بريدًا إلكترونيًا لمساعد المدرس. "
 "ونحن نبذل قصارى جهدنا للرد في أسرع وقت ممكن."
 
@@ -6922,7 +6956,7 @@ msgid ""
 "McKinsey Academy courses cannot be re-taken, but exercises and materials "
 "remain available for 12 months after the course ends."
 msgstr ""
-"لا يمكن إعادة أخذ دورات أكاديمية ماكنزي، ولكن تبقى المواد والتمارين متاحة "
+"لا يمكن إعادة أخذ دورات McKinsey Academy، ولكن تبقى المواد والتمارين متاحة "
 "لمدة 12 شهرًا بعد انتهاء الدورة."
 
 #: templates/faq.haml:67
@@ -6935,7 +6969,7 @@ msgid ""
 "the course ends. These courses can only be audited and some features, such "
 "as the discussion forums, may not be available."
 msgstr ""
-"تبقى دورات أكاديمية ماكنزي القديمة متاحة لمدة 12 شهرًا بعد انتهائها، ويمكن "
+"تبقى دورات McKinsey Academy القديمة متاحة لمدة 12 شهرًا بعد انتهائها، ويمكن "
 "فقط تدقيق الدورات فقط إلى جانب بعض الخصائص، مثل منتديات النقاش، التي يمكن "
 "ألا تكون متاحة."
 
@@ -6993,7 +7027,8 @@ msgstr "هل يمكنني الحصول على نسخة ورقية من شهاد�
 msgid ""
 "McKinsey Academy certificates are digital files which you can print on "
 "standard size paper."
-msgstr "شهادات أكاديمية ماكنزي هي ملفات رقمية يمكن طباعتها على ورق بحجم قياسي."
+msgstr ""
+"شهادات McKinsey Academy هي ملفات رقمية يمكن طباعتها على ورق بحجم قياسي."
 
 #: templates/faq.haml:79
 msgid "How are certificates determined?"
@@ -7010,14 +7045,14 @@ msgstr ""
 
 #: templates/faq.haml:81
 msgid "How are McKinsey Academy certificates delivered?"
-msgstr "كيف يتم تسليم شهادات أكاديمية ماكنزي؟"
+msgstr "كيف يتم تسليم شهادات McKinsey Academy؟"
 
 #: templates/faq.haml:82
 msgid ""
 "McKinsey Academy certificates are delivered via email following successful "
 "completion of a program."
 msgstr ""
-"يتم تسليم شهادات أكاديمية ماكنزي عبر البريد الإلكتروني بعد إتمام البرنامج "
+"يتم تسليم شهادات McKinsey Academy عبر البريد الإلكتروني بعد إتمام البرنامج "
 "نجاح."
 
 #: templates/faq.haml:83
@@ -7078,7 +7113,7 @@ msgid ""
 "please try registering again with the same email address (if an account "
 "already exists, you'll see an error regarding a duplicate email address)"
 msgstr ""
-"لم تنجح في تسجيل حساب مع أكاديمية ماكنزي، الرجاء محاولة التسجيل مرة أخرى "
+"لم تنجح في تسجيل حساب مع McKinsey Academy، الرجاء محاولة التسجيل مرة أخرى "
 "بنفس عنوان البريد الإلكتروني ( في حالو وجود حساب، سوف ترى خطأ متعلقًا بوجود "
 "عنوان بريد إلكتروني مكرر)"
 
@@ -7101,7 +7136,7 @@ msgstr ""
 
 #: templates/faq.haml:96
 msgid "How can I sign up for a McKinsey Academy course or program?"
-msgstr "كيف يمكنني الاشتراك بدورة أو برنامج في أكاديمية ماكنزي؟"
+msgstr "كيف يمكنني الاشتراك بدورة أو برنامج في McKinsey Academy؟"
 
 #: templates/faq.haml:97
 msgid "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
@@ -7118,10 +7153,6 @@ msgid ""
 msgstr ""
 "الرجاء <a href=\"mailto:info@mckinseyacademy.com\">اتصل بنا!</a> سوف نبذل "
 "قصارى جهدنا للمساعدة."
-
-#: templates/footer.haml:6 templates/footer_ld.haml:6
-msgid "McKinsey & Company"
-msgstr "ماكنزي أند كومباني"
 
 #: templates/footer.haml:11
 msgid "Terms of Service"
@@ -7196,13 +7227,13 @@ msgid ""
 "McKinsey Academy learning experience"
 msgstr ""
 "إذا كنت أحد المشاركين المسجلين، الرجاء تسجيل الدخول أدناه للوصول إلى تجربة "
-"التعلم الخصة بك في أكاديمية ماكنزي"
+"التعلم الخصة بك في McKinsey Academy"
 
 #: templates/layout.haml:22 templates/layout.haml.py:23
 msgid ""
 "McKinsey Academy helps organizations thrive by accelerating their talent "
 "advantage"
-msgstr "تساعد أكاديمية ماكنزي المنظمات لتزدهر بتسريع ميزة مواهبها"
+msgstr "تساعد McKinsey Academy المنظمات لتزدهر بتسريع ميزة مواهبها"
 
 #: templates/layout.haml:208
 msgid "Notice"
@@ -7215,7 +7246,7 @@ msgid ""
 "versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal "
 "experience."
 msgstr ""
-"نأسف، أكاديمية ماكنزي غير متوافقة مع متصفحك. الرجاء تحديث متصفحك للوصول إلى "
+"نأسف، McKinsey Academy غير متوافقة مع متصفحك. الرجاء تحديث متصفحك للوصول إلى "
 "محتوى الدورة التدريبية. نوصي بأحدث الإصدارات من جوجل كروم، موزيلا فايرفوكس، "
 "وأبل سفاري  للحصول على تجربة مثالية."
 
@@ -7225,7 +7256,7 @@ msgid ""
 "organizations thrive by accelerating their talent advantage. This video will "
 "walk you through our learner experience."
 msgstr ""
-"أكاديمية ماكنزي هي منبر تعليم أعمال حيوية بنيت لمساعدة المنظمات لتزدهر "
+"McKinsey Academy هي منبر تعليم أعمال حيوية بنيت لمساعدة المنظمات لتزدهر "
 "بتسريع ميزة مواهبها. هذا الفيديو سوف يأخذكم في جولة في تجربة التعلم لدينا."
 
 #: templates/layout.haml:247
@@ -7242,11 +7273,11 @@ msgstr ""
 
 #: templates/marketing/about.haml:6
 msgid "About | McKinsey Academy"
-msgstr "حول | أكاديمية ماكنزي"
+msgstr "حول | McKinsey Academy"
 
 #: templates/marketing/about.haml:7
 msgid "McKinsey Academy About"
-msgstr "أكاديمية ماكنزي حول"
+msgstr "McKinsey Academy حول"
 
 #: templates/marketing/about.haml:10 templates/marketing/about.haml.py:11
 #: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml.py:10
@@ -7256,18 +7287,19 @@ msgid ""
 "McKinsey Academy is a dynamic business education platform built to help "
 "organizations thrive by accelerating their talent advantage."
 msgstr ""
-"أكاديمية ماكنزي هي منبر تعليم أعمال حيوية بنيت لمساعدة المنظمات لتزدهر "
+"McKinsey Academy هي منبر تعليم أعمال حيوية بنيت لمساعدة المنظمات لتزدهر "
 "بتسريع ميزة مواهبها."
 
 #: templates/marketing/about.haml:15 templates/marketing/fblf.haml:14
 msgid ""
 "McKinsey Academy was created with a vision to dramatically improve "
 "individual performance and organizational effectiveness"
-msgstr "تم تأسيس أكاديمية ماكنزي برؤية تحسين الأداء الفردي والفعالية التنظيمية"
+msgstr ""
+"تم تأسيس McKinsey Academy برؤية تحسين الأداء الفردي والفعالية التنظيمية"
 
 #: templates/marketing/about.haml:20
 msgid "About McKinsey Academy"
-msgstr "حول أكاديمية ماكنزي"
+msgstr "حول McKinsey Academy"
 
 #: templates/marketing/about.haml:22
 msgid ""
@@ -7278,8 +7310,8 @@ msgid ""
 "challenges so their organizations can thrive."
 msgstr ""
 "تسعى المؤسسات العالمية الرائدة إلى تحسين ميزتها التنافسية من خلال موظفيها. "
-"وتوفر أكاديمية ماكنزي تعليمًا متعلقًا بالأعمال يمكن قياسه بحيث يكون صارمًا وذا "
-"صلة وقابلًا للتطبيق وتساعد. أكاديمية ماكنزي المهنيين في تطوير المهارات "
+"وتوفر McKinsey Academy تعليمًا متعلقًا بالأعمال يمكن قياسه بحيث يكون صارمًا وذا "
+"صلة وقابلًا للتطبيق وتساعد. McKinsey Academy المهنيين في تطوير المهارات "
 "المطلوبة لمواجهة تحديات اليوم حتى تتمكن مؤسساتهم من الازدهار."
 
 #: templates/marketing/about.haml:26
@@ -7328,26 +7360,26 @@ msgstr "المواصلة إلى الإنترنت"
 
 #: templates/marketing/contact.haml:5
 msgid "Contact | McKinsey Academy"
-msgstr "الاتصال | أكاديمية ماكنزي"
+msgstr "الاتصال | McKinsey Academy"
 
 #: templates/marketing/contact.haml:6
 msgid "McKinsey Academy Contact"
-msgstr "جهة اتصال أكاديمية ماكنزي"
+msgstr "جهة اتصال McKinsey Academy"
 
 #: templates/marketing/contact.haml:9 templates/marketing/contact.haml.py:10
 msgid "Email us to find out more about McKinsey Academy."
-msgstr "تواصل معنا عبر البريد الإلكتروني  لمعرفة المزيد عن أكاديمية ماكنزي."
+msgstr "تواصل معنا عبر البريد الإلكتروني  لمعرفة المزيد عن McKinsey Academy."
 
 #: templates/marketing/contact.haml:19
 msgid "Contact McKinsey Academy"
-msgstr "اتصل بأكاديمية ماكنزي"
+msgstr "اتصل بMcKinsey Academy"
 
 #: templates/marketing/contact.haml:22
 msgid ""
 "Thank you for your interest in McKinsey Academy. Please click the email "
 "button to contact us."
 msgstr ""
-"شكرا لاهتمامك بأكاديمية ماكنزي. الرجاء الضغط على زر البريد الإلكتروني "
+"شكرا لاهتمامك بMcKinsey Academy. الرجاء الضغط على زر البريد الإلكتروني "
 "للاتصال بنا."
 
 #: templates/marketing/contact.haml:27
@@ -7359,13 +7391,13 @@ msgid ""
 "Email us to find out more about McKinsey Academy. You can also share your "
 "comments and provide feedback at the same address."
 msgstr ""
-"تواصل معنا عبر البريد الإلكتروني  لمعرفة المزيد عن أكاديمية ماكنزي. يمكنك "
+"تواصل معنا عبر البريد الإلكتروني  لمعرفة المزيد عن McKinsey Academy. يمكنك "
 "أيضا مشاركة التعليقات الخاصة بك وتوفير التغذية الراجعة والملاحظات في نفس "
 "العنوان."
 
 #: templates/marketing/contact.haml:31
 msgid "Email McKinsey Academy"
-msgstr "أرسل بريدًا إلكترونيًا لأكاديمية ماكنزي"
+msgstr "أرسل بريدًا إلكترونيًا لMcKinsey Academy"
 
 #: templates/marketing/contact.haml:34
 msgid "STAY INFORMED"
@@ -7376,7 +7408,7 @@ msgid ""
 "To stay informed about McKinsey Academy, please enter your email address "
 "below."
 msgstr ""
-"للبقاء على اطلاع بأكاديمية ماكنزي، الرجاء إدخال عنوان البريد الإلكتروني "
+"للبقاء على اطلاع بMcKinsey Academy، الرجاء إدخال عنوان البريد الإلكتروني "
 "الخاص بك أدناه."
 
 #: templates/marketing/contact.haml:45
@@ -7397,11 +7429,11 @@ msgstr "انقر هنا."
 
 #: templates/marketing/edxoffer.haml:5
 msgid "Offer | McKinsey Academy"
-msgstr "العرض | أكاديمية ماكنزي"
+msgstr "العرض | McKinsey Academy"
 
 #: templates/marketing/edxoffer.haml:6
 msgid "McKinsey Academy Offer"
-msgstr "عرض أكاديمية ماكنزي"
+msgstr "عرض McKinsey Academy"
 
 #: templates/marketing/edxoffer.haml:17 templates/marketing/edxoffer.haml:65
 #: templates/marketing/programs.haml:203 templates/marketing/programs.haml:306
@@ -7542,11 +7574,11 @@ msgstr "يرجى تقديم المعلومات الواردة أدناه، وس�
 
 #: templates/marketing/experience.haml:5
 msgid "Experience | McKinsey Academy"
-msgstr "الخبرات | أكاديمية ماكنزي"
+msgstr "الخبرات | McKinsey Academy"
 
 #: templates/marketing/experience.haml:6
 msgid "McKinsey Academy Experience"
-msgstr "خبرات أكاديمية ماكنزي"
+msgstr "خبرات McKinsey Academy"
 
 #: templates/marketing/experience.haml:9 templates/marketing/experience.haml:10
 #: templates/marketing/experience.haml:22
@@ -7556,14 +7588,14 @@ msgid ""
 "whom have helped frame needs and priorities."
 msgstr ""
 "تم تشكيل منتجاتنا بعد مشاركات وأبحاث معمقة مع عملائنا وزملائنا والمشاركين في "
-"أكاديمية ماكنزي، وجميعهم ساعدونا في تحديد أطر الاحتياجات والأولويات"
+"McKinsey Academy، وجميعهم ساعدونا في تحديد أطر الاحتياجات والأولويات"
 
 #: templates/marketing/experience.haml:14
 msgid ""
 "McKinsey Academy has created distinctive and relevant learning experience, "
 "driven by innovations in both technology and education"
 msgstr ""
-"أوجدت أكاديمية ماكنزي خبرات تعلمية مميزة وذات صلة، مستندة بذلك على "
+"أوجدت McKinsey Academy خبرات تعلمية مميزة وذات صلة، مستندة بذلك على "
 "الابتكارات في كل من مجالي التعليم والتكنولوجيا"
 
 #: templates/marketing/experience.haml:19
@@ -7576,7 +7608,7 @@ msgstr "علم أصول التدريس"
 
 #: templates/marketing/experience.haml:29
 msgid "McKinsey Academy’s pedagogy is based on four core principles:"
-msgstr "تستند منهجية أصول التعليم في أكاديمية ماكنزي على أربعة مبادئ رئيسية:"
+msgstr "تستند منهجية أصول التعليم في McKinsey Academy على أربعة مبادئ رئيسية:"
 
 #: templates/marketing/experience.haml:32
 msgid "Learning By Doing"
@@ -7731,7 +7763,7 @@ msgstr "تقيس التحليلات المتقدمة تقدم المشارك و�
 
 #: templates/marketing/fblf.haml:5
 msgid "FBLF | McKinsey Academy"
-msgstr "منتدى قادة الأعمال المستقبليين | أكاديمية ماكنزي"
+msgstr "منتدى قادة الأعمال المستقبليين | McKinsey Academy"
 
 #: templates/marketing/fblf.haml:6
 msgid "McKinsey Academy FBLF"
@@ -7957,26 +7989,26 @@ msgstr "قم بتحسين تواجدهم داخل مؤسستك"
 
 #: templates/marketing/productwalkthrough.haml:5
 msgid "Product Walkthrough | McKinsey Academy"
-msgstr "معاينة المنتجات | أكاديمية ماكنزي"
+msgstr "معاينة المنتجات | McKinsey Academy"
 
 #: templates/marketing/productwalkthrough.haml:6
 msgid "McKinsey Academy Product Walkthrough"
-msgstr "معاينة المنتجات في أكاديمية ماكنزي"
+msgstr "معاينة المنتجات في McKinsey Academy"
 
 #: templates/marketing/programs.haml:5
 msgid "Programs | McKinsey Academy"
-msgstr "البرامج | أكاديمية ماكنزي"
+msgstr "البرامج | McKinsey Academy"
 
 #: templates/marketing/programs.haml:6
 msgid "McKinsey Academy Programs"
-msgstr "برامج أكاديمية ماكنزي"
+msgstr "برامج McKinsey Academy"
 
 #: templates/marketing/programs.haml:9 templates/marketing/programs.haml:10
 msgid ""
 "McKinsey Academy’s digital courses are created and curated into programs "
 "that build business capabilities for our participants."
 msgstr ""
-"تم إعداد الدورات الرقمية في أكاديمية ماكنزي وتنسيقها إلى برامج تبني القدرات "
+"تم إعداد الدورات الرقمية في McKinsey Academy وتنسيقها إلى برامج تبني القدرات "
 "في مجال الأعمال لمشتركينا."
 
 #: templates/marketing/programs.haml:15
@@ -8479,7 +8511,7 @@ msgid ""
 "McKinsey Academy courses are created and curated into programs that "
 "meaningfully build business capabilities for our participants"
 msgstr ""
-"يتم إعداد دورات أكاديمية ماكنزي وصياغتها في شكل برامج تهدف إلى بناء وتطوير "
+"يتم إعداد دورات McKinsey Academy وصياغتها في شكل برامج تهدف إلى بناء وتطوير "
 "قدرات إدارة الأعمال بشكل ناجح لدى المشاركين في دوراتنا"
 
 #: templates/marketing/programs.haml:239
@@ -8491,7 +8523,7 @@ msgid ""
 "efforts within our firm. Additional programs and courses are under "
 "development."
 msgstr ""
-"ويتألف كلٌ من برامج أكاديمية ماكنزي من سلسلة من الدورات التي تجمع بين بناء "
+"ويتألف كلٌ من برامج McKinsey Academy من سلسلة من الدورات التي تجمع بين بناء "
 "قدرات محددة في إدارة الأعمال لدى المشاركين. وتعتمد هذه البرامج على خبرتنا في "
 "بناء القدرات لدى عملائنا، وخبرات شركة ماكنزي، بالإضافة إلى جهودنا التدريبية "
 "والتطويرية المكثفة داخل شركتنا. وثمة برامج ودورات إضافية قيد التطوير."
@@ -8526,11 +8558,11 @@ msgid ""
 "McKA_MMP_Brochure.pdf\" target=\"_blank\">View brochure</a>\n"
 "            "
 msgstr ""
-"برنامج ماكنزي للإدارة (MMP) هو مجموعة من الدورات التدريبية للمهنيين الناشئين "
-"الذين يتطلعون إلى بناء القدرات الإدارية والقيادية. ويجمع هذا البرنامج بين "
-"تصورات خبراء ماكنزي ورواد قطاع الأعمال الخارجيين من جميع أنحاء العالم. <a "
-"href=\"/static/docs/McKA_MMP_Brochure.pdf\" target=\"_blank\">View brochure</"
-"a>"
+"McKinsey Management Program (MMP) هو مجموعة من الدورات التدريبية للمهنيين "
+"الناشئين الذين يتطلعون إلى بناء القدرات الإدارية والقيادية. ويجمع هذا "
+"البرنامج بين تصورات خبراء ماكنزي ورواد قطاع الأعمال الخارجيين من جميع أنحاء "
+"العالم. <a href=\"/static/docs/McKA_MMP_Brochure.pdf\" target=\"_blank"
+"\">View brochure</a>"
 
 #: templates/marketing/programs.haml:256
 msgid "Custom Programs"
@@ -8545,7 +8577,7 @@ msgid ""
 "blended)."
 msgstr ""
 "نحن نقدم برامج مخصصة يتم تصميمها وفقًا لمتطلبات كل مؤسسة على حدة. حيث تعمل "
-"أكاديمية ماكنزي مع كل شركة لإعداد برنامجها باختيار الدورات التدريبية ذات "
+"McKinsey Academy مع كل شركة لإعداد برنامجها باختيار الدورات التدريبية ذات "
 "الصلة، وإعداد محتوى الدورة بما يتناسب مع سياق كل شركة، وتصميم آلية تقديمها "
 "(رقميًا، على سبيل المثال، أو شخصيًا، أو بمزيج يجمع ما بين الأمرين)."
 
@@ -8608,7 +8640,7 @@ msgid ""
 "sessions, and live webinars that hone core skills around critical thinking & "
 "strategy, innovation & disruption, and leadership & influence."
 msgstr ""
-"تعقد أكاديمية ماكنزي ملتقى يجمع قادة الجيل القادم من كبرى الشركات العالمية "
+"تعقد McKinsey Academy ملتقى يجمع قادة الجيل القادم من كبرى الشركات العالمية "
 "في رحلة تعليمية تحويلية لتحقيق أعلى مستويات الأداء؛ حيث سيتم تنمية مهارات "
 "المشاركين كي يصيروا قادة ملهمين، ويتعلمون من رواد قادة الأعمال والفكر "
 "العالميين، ويتمكنوا من بناء شبكة عالمية من الأقران؛ ويوفر هذا البرنامج مزيجًا "
@@ -8682,17 +8714,17 @@ msgid ""
 "capable of identifying you as an individual person, collected in connection "
 "with McKinsey Academy."
 msgstr ""
-"تتفهم شركة ماكنزي آند كومباني وفروعها والشركات التابعة لها (والتي يشار إليها "
+"تتفهم شركة McKinsey & Company وفروعها والشركات التابعة لها (والتي يشار إليها "
 "إجمالًا باسم \"ماكنزي\" أو \"نحن\" أو \"شركتنا\") أن خصوصيتك مسألة في غاية "
 "الأهمية بالنسبة لك؛ وفيما قد نقوم بمعالجة بياناتك الشخصية، فإننا نبدي "
 "التزامنا باحترام خصوصيتك وحماية بياناتك الشخصية، وهي أي معلومات من شأنها أن "
 "تفصح عن هويتك كشخص له استقلاليته الفردية، والتي تم جمعها فيما يتعلق بأعمال "
-"أكاديمية ماكنزي."
+"McKinsey Academy."
 
 #: templates/privacy.haml:14
 msgid "“McKinsey Academy” refers collectively to any website, including"
 msgstr ""
-"تشير \"أكاديمية ماكنزي\" إجمالًا إلى أي موقع على شبكة الإنترنت، بما في ذلك"
+"تشير \"McKinsey Academy\" إجمالًا إلى أي موقع على شبكة الإنترنت، بما في ذلك"
 
 #: templates/privacy.haml:17
 msgid ""
@@ -8721,7 +8753,7 @@ msgid ""
 "apply to your use of McKinsey Academy."
 msgstr ""
 "(\"الشروط\") لمزيد من المعلومات حول شروطنا وسياساتنا الإلكترونية والتي تنطبق "
-"على استخدامك لأكاديمية ماكنزي."
+"على استخدامك لMcKinsey Academy."
 
 #: templates/privacy.haml:21
 msgid "Information we collect"
@@ -8736,8 +8768,8 @@ msgid ""
 "such term is defined in the Terms) and participation in user posting areas "
 "(such as bulletin boards, discussion forums and surveys)."
 msgstr ""
-"تقوم ماكنزي بجمع البيانات الشخصية عند التسجيل في أكاديمية ماكنزي أو الوصول "
-"إليها أو استخدام محتوى أكاديمية ماكنزي (على النحو المحدد في الشروط)، سواء "
+"تقوم ماكنزي بجمع البيانات الشخصية عند التسجيل في McKinsey Academy أو الوصول "
+"إليها أو استخدام محتوى McKinsey Academy (على النحو المحدد في الشروط)، سواء "
 "عبر الموقع أو عروض الجوال أو غير ذلك، شاملًا كل ما يتعلق باستخدامك لمحتوى "
 "الدورة التدريبية، وإرسال محتوى المستخدم (على النحو المحدد في الشروط) "
 "والمشاركة في مناطق نشر المستخدمين (مثل لوحات الإعلانات، ومنتديات النقاش "
@@ -8756,10 +8788,10 @@ msgid ""
 msgstr ""
 "قد تتألف البيانات الشخصية التي يتم جمعها من المعلومات التي تقدمها، مثل اسمك "
 "وعنوان بريدك الإلكتروني ومعلومات حساب المستخدم الأخرى (على النحو المحدد في "
-"الشروط). بالإضافة إلى ذلك، قد تقوم أكاديمية ماكنزي (أ) بتلقي بيانات شخصية "
+"الشروط). بالإضافة إلى ذلك، قد تقوم McKinsey Academy (أ) بتلقي بيانات شخصية "
 "عنك مباشرة من الشركة الراعية (على النحو المحدد في الشروط) أو أي طرف ثالث "
 "تعطيه الإذن بمشاركته معنا؛ (ب) جمع و / أو إنشاء بيانات شخصية تتعلق باستخدامك "
-"والمشاركة في أكاديمية ماكنزي، بما في ذلك بيانات المشاركة (على النحو المحدد "
+"والمشاركة في McKinsey Academy، بما في ذلك بيانات المشاركة (على النحو المحدد "
 "في الشروط أدناه)."
 
 #: templates/privacy.haml:27
@@ -8778,11 +8810,17 @@ msgstr ""
 "قد نقوم أيضًا بجمع معلومات حول الأجهزة التي تستخدمها للتفاعل مع أكاديمية "
 "ماكنزي؛ وقد تشمل المعلومات التي نجمعها تلقائيًا عنوان IP، أو معرف الجهاز، أو "
 "متصفح الويب، وتصفح أو رؤية المعلومات أو غيرها من معلومات الاستخدام الأخرى أو "
-"البيانات المتصلة باستخدامك لأكاديمية ماكنزي مثل بيانات تصفح الإنترنت وعناصر "
+"البيانات المتصلة باستخدامك لMcKinsey Academy مثل بيانات تصفح الإنترنت وعناصر "
 "بروتوكول HTTP وحالة ملفات تعريف الارتباط الموضوعة على الكمبيوتر (كما هو موضح "
-"أدناه). قد نقوم أيضًا بجمع المعلومات حول كيفية استخدامك لأكاديمية ماكنزي، مثل "
-"ما قمت بالبحث عنه وعرضه واستخدامه. قد ترتبط المعلومات التي يتم جمعها تلقائيًا "
-"ببياناتك الشخصية، وفي بعض الحالات قد تشكل في حد ذاتها بيانات شخصية."
+"أدناه). قد نقوم أيضًا بجمع المعلومات حول كيفية استخدامك لMcKinsey Academy، "
+"مثل ما قمت بالبحث عنه وعرضه واستخدامه. قد ترتبط المعلومات التي يتم جمعها "
+"تلقائيًا ببياناتك الشخصية، وفي بعض الحالات قد تشكل في حد ذاتها بيانات شخصية."
+
+#: templates/privacy.haml:28
+#, fuzzy
+#| msgid "For Information:"
+msgid "Use of information"
+msgstr "للحصول على معلومات:"
 
 #: templates/privacy.haml:30
 msgid ""
@@ -8804,12 +8842,12 @@ msgstr ""
 "ويمكن استخدام البيانات الشخصية التي نجمعها في حال ما إذا كان لماكنزي مصلحة "
 "مشروعة أو غيرها من الأسس القانونية لمعالجة مثل هذه المعلومات. في بعض "
 "الحالات، قد تكون عملية جمع أو معالجة البيانات الشخصية مطلوبة لتشغيل أكاديمية "
-"ماكنزي، بما في ذلك تمكينك من الوصول إلى الدورات ومحتوى أكاديمية ماكنزي. "
+"ماكنزي، بما في ذلك تمكينك من الوصول إلى الدورات ومحتوى McKinsey Academy. "
 "تستخدم ماكنزي بياناتك الشخصية لتلبية طلباتك للحصول على المعلومات، ومعالجة "
 "طلباتك للمشاركة في المؤتمرات والفعاليات، وتخصيص المحتوى الذي تشاهده أو "
-"تتلقاه من خلال أكاديمية ماكنزي، وتقييم وتحسين خدماتنا، وإرسال النشرات "
-"الإخبارية والتنبيهات إليك، وتحليل أداء أكاديمية ماكنزي وعمل أو نشر أو معالجة "
-"محتوى المستخدم الخاص بك، ومنع الاحتيال، وفرض الشروط، والامتثال لجميع "
+"تتلقاه من خلال McKinsey Academy، وتقييم وتحسين خدماتنا، وإرسال النشرات "
+"الإخبارية والتنبيهات إليك، وتحليل أداء McKinsey Academy وعمل أو نشر أو "
+"معالجة محتوى المستخدم الخاص بك، ومنع الاحتيال، وفرض الشروط، والامتثال لجميع "
 "القوانين المعمول بها والتزامات إفصاح الشركات عن المعلومات، وتنفيذ اتفاقات "
 "ماكنزي والامتثال لها، وتحقيق أغراض أخرى قد نبادر بها أو نطلبها. وقد نحتفظ "
 "بأي من بياناتك الشخصية في الملف ونستخدمها للاتصال بك."
@@ -8821,7 +8859,7 @@ msgid ""
 "follows McKinsey’s"
 msgstr ""
 "قد تستخدم ماكنزي ملفات تعريف الارتباط الخاصة بالطرف الأول والثالث لإدارة "
-"مواقعنا وخدماتنا وجمع التحليلات حول كيفية استخدامها. تتبع أكاديمية ماكنزي "
+"مواقعنا وخدماتنا وجمع التحليلات حول كيفية استخدامها. تتبع McKinsey Academy "
 "سياسة ملفات الارتباط الخاصة بماكنزي،"
 
 #: templates/privacy.haml:34
@@ -8865,21 +8903,21 @@ msgid ""
 msgstr ""
 "وقد نستخدم أيضًا بياناتك الشخصية (بما في ذلك معلومات حساب المستخدم وبيانات "
 "المشاركة)، بالإضافة إلى محتوى المستخدم الخاص بك، بغرض (أ) التحقق من هويتك "
-"وأهليتك للوصول إلى محتوى أكاديمية ماكنزي أو استخدام أكاديمية ماكنزي أو "
-"المشاركة فيها؛ (ب) التواصل معك حول أكاديمية ماكنزي، بما في ذلك مشاركتك في أي "
-"من الدورات ذات الصلة أو الخدمات الأخرى التي نقدمها؛ (ج) السماح للمستخدمين "
-"الآخرين بالتواصل معك حول أكاديمية ماكنزي، بما في ذلك مشاركتك في أي من "
+"وأهليتك للوصول إلى محتوى McKinsey Academy أو استخدام McKinsey Academy أو "
+"المشاركة فيها؛ (ب) التواصل معك حول McKinsey Academy، بما في ذلك مشاركتك في "
+"أي من الدورات ذات الصلة أو الخدمات الأخرى التي نقدمها؛ (ج) السماح للمستخدمين "
+"الآخرين بالتواصل معك حول McKinsey Academy، بما في ذلك مشاركتك في أي من "
 "الدورات ذات الصلة أو غيرها من الخدمات التي نقدمها؛ (د) إدارة أكاديمية "
 "ماكنزي، بما في ذلك إدارة الدورات والخدمات التي تشارك فيها، وتوفير دعم "
-"المستخدم، ومسار التقدم المحرز وتقييم الدرجات، ودمج أكاديمية ماكنزي، بما في "
+"المستخدم، ومسار التقدم المحرز وتقييم الدرجات، ودمج McKinsey Academy، بما في "
 "ذلك المواقع وعروض الجوال، مع المنصات والمحتوى والخدمات التي يقدمها طرف ثالث "
-"كجزء من تجربة أكاديمية ماكنزي؛ (هـ) تقديم معلومات إلى الشركة الراعية حول "
-"مشاركتك في أكاديمية ماكنزي، كما هو موضح بمزيد من التفاصيل أدناه؛ (و) تطوير "
-"وتنمية مهاراتك، والتواصل معك حول أكاديمية ماكنزي، بما في ذلك طلب ملاحظاتك "
+"كجزء من تجربة McKinsey Academy؛ (هـ) تقديم معلومات إلى الشركة الراعية حول "
+"مشاركتك في McKinsey Academy، كما هو موضح بمزيد من التفاصيل أدناه؛ (و) تطوير "
+"وتنمية مهاراتك، والتواصل معك حول McKinsey Academy، بما في ذلك طلب ملاحظاتك "
 "وتحديد الدورات أو الخدمات أو العروض الأخرى المقدمة من جانبنا والتي قد تهمك. "
-"إذا كنت تفضل عدم تلقي اتصالات غير ضرورية من أكاديمية ماكنزي، بما في ذلك تلقي "
-"معلومات حول الدورات أو الخدمات أو العروض المستقبلية، يرجى الاتصال بنا على "
-"العنوان المذكور أدناه في قسم الاتصال بنا في سياسة الخصوصية هذه."
+"إذا كنت تفضل عدم تلقي اتصالات غير ضرورية من McKinsey Academy، بما في ذلك "
+"تلقي معلومات حول الدورات أو الخدمات أو العروض المستقبلية، يرجى الاتصال بنا "
+"على العنوان المذكور أدناه في قسم الاتصال بنا في سياسة الخصوصية هذه."
 
 #: templates/privacy.haml:39
 msgid ""
@@ -8905,11 +8943,11 @@ msgstr ""
 "قد يتم أيضًا استخدام بياناتك الشخصية، سواء من جانبنا أو من قِبل مزودي خدماتنا "
 "المعتمدين من الجهات الخارجية، لجمع واكتشاف وإعداد المعلومات والتحليلات "
 "الإحصائية والكمية المجمعة وغيرها من البيانات المشابهة، بما في ذلك ما يتعلق "
-"بعدد وخصائص وسلوكيات، وأداء أكاديمية ماكنزي، ومستخدمي وزوار المواقع وعروض "
-"الجوال أو غيرها من مكونات أكاديمية ماكنزي، ومستخدمي محتوى أكاديمية ماكنزي "
+"بعدد وخصائص وسلوكيات، وأداء McKinsey Academy، ومستخدمي وزوار المواقع وعروض "
+"الجوال أو غيرها من مكونات McKinsey Academy، ومستخدمي محتوى McKinsey Academy "
 "(المعروف إجمالًا باسم، \"معلومات مجمعة\"). وقد نستخدم، ونسمح لمزودي خدمات "
 "الطرف الثالث لدينا باستخدام، هذه المعلومات المجمعة من أجل إدارة أكاديمية "
-"ماكنزي، لأغراض البحث ولتطوير أكاديمية ماكنزي وتحسين أدائها والترويج لها، أو "
+"ماكنزي، لأغراض البحث ولتطوير McKinsey Academy وتحسين أدائها والترويج لها، أو "
 "لأي غرض آخر شريطة ألا يؤدي هذا الاستخدام إلى التعرف على هويتك وألا يكون "
 "محظورًا بحكم القانون المعمول به. وقد نستخدم نحن و / أو مزودي خدمات الطرف "
 "الثالث لدينا ملفات تعريف الارتباط الثابتة والأدوات والتقنيات التكنولوجية "
@@ -8938,11 +8976,11 @@ msgid ""
 "Sponsoring Organization’s policies (including privacy policies) applicable "
 "to you."
 msgstr ""
-"إذا كنت تشارك في أكاديمية ماكنزي بمساعدة إحدى الشركات الراعية (على النحو "
+"إذا كنت تشارك في McKinsey Academy بمساعدة إحدى الشركات الراعية (على النحو "
 "المحدد في الشروط)، فقد نقدم معلومات للشركة الراعية، بناءً على طلب منها، حول "
-"الأنشطة والأداء فيما يتعلق بأكاديمية ماكنزي، والتي قد تشمل الدرجات والتقييم "
+"الأنشطة والأداء فيما يتعلق بMcKinsey Academy، والتي قد تشمل الدرجات والتقييم "
 "والأداء وأوجه النقد، وغيرها من بيانات التقدم والاستخدام والمشاركة، والمقاييس "
-"ذات الصلة بدورات أو خدمات معينة مقدمة من أكاديمية ماكنزي، والتي قد يشتمل "
+"ذات الصلة بدورات أو خدمات معينة مقدمة من McKinsey Academy، والتي قد يشتمل "
 "بعضها على بياناتك الشخصية (والتي تعرف إجمالًا باسم \"بيانات المشاركة\"). "
 "وتخلي ماكنزي مسؤوليتها عن استخدام مثل هذه المعلومات من قِبل الشركة الراعية، "
 "ويخضع هذا الاستخدام لسياسات الشركة الراعية (بما في ذلك سياسات الخصوصية) "
@@ -8968,16 +9006,16 @@ msgid ""
 "using McKinsey Academy you voluntarily consent to such trans-border transfer "
 "and hosting of such information."
 msgstr ""
-"يمكن نقل البيانات الشخصية التي يتم جمعها أو معالجتها بواسطة أكاديمية ماكنزي "
+"يمكن نقل البيانات الشخصية التي يتم جمعها أو معالجتها بواسطة McKinsey Academy "
 "من حين لآخر إلى فروع شركة ماكنزي والشركات التابعة لها وموظفيها (بما في ذلك "
 "الموظفين والمقاولين) عبر فروع شركتنا العالمية، فضلاً عن موفري الخدمات من "
 "الجهات الخارجية المنتشرين في جميع أنحاء العالم. بالإضافة إلى ذلك، قد يتم عرض "
-"واستضافة ودعم محتوى أكاديمية ماكنزي، علاوة على المواقع وعروض الجوّال، من قبل "
+"واستضافة ودعم محتوى McKinsey Academy، علاوة على المواقع وعروض الجوّال، من قبل "
 "ماكنزي ومقدمي الخدمات كجهات خارجية في أي مكان في العالم. وحيثما تنص "
 "القوانين، فقد وضعنا آليات قانونية مصممة خصيصًا لضمان الحماية المناسبة "
 "لبياناتك الشخصية التي تتم معالجتها من قبل الشركات الفرعية والشركات التابعة "
 "لها، ومقدمي الخدمات التابعين كطرف ثالث، بما في ذلك نقل بياناتك الشخصية إلى "
-"دول أخرى غير تلك التي تقيم فيها. وباستخدامك أكاديمية ماكنزي، فإنك توافق "
+"دول أخرى غير تلك التي تقيم فيها. وباستخدامك McKinsey Academy، فإنك توافق "
 "طواعية على مثل هذا النقل عبر الحدود واستضافة مثل هذه المعلومات."
 
 #: templates/privacy.haml:47
@@ -8998,7 +9036,7 @@ msgstr ""
 "موافقة مسبقة منك، سواء لأغراض التسويق الخاصة بهذا الجهات الخارجية أو خلافه، "
 "باستثناء ما هو موضح في سياسة الخصوصية هذه. ويحق لشركة ماكنزي إتاحة إمكانية "
 "وصول مقدمي الخدمات كجهات خارجية الذين تعمل معهم ماكنزي إلى بياناتك الشخصية "
-"بغرض توفير الخدمات المتعلقة بأكاديمية ماكنزي؛ شريطة أن يوافق مقدمو الخدمات "
+"بغرض توفير الخدمات المتعلقة بMcKinsey Academy؛ شريطة أن يوافق مقدمو الخدمات "
 "من الجهات الخارجية أولاً على الحفاظ على سرية هذه المعلومات وتوفير مستوى معادل "
 "أو أكبر من أمن البيانات كما هو منصوص عليه من قبل شركة ماكنزي فيما يتعلق بهذه "
 "البيانات الشخصية."
@@ -9111,12 +9149,12 @@ msgid ""
 "contact us at the address listed below in the Contact Us section of this "
 "Privacy Policy."
 msgstr ""
-"إذا شاركت في استبيان فيما يتعلق بأكاديمية ماكنزي، فقد يتم الإبلاغ عن نتائج "
+"إذا شاركت في استبيان فيما يتعلق بMcKinsey Academy، فقد يتم الإبلاغ عن نتائج "
 "أبحاثنا كمجاميع أو في شكل تجميعي آخر، ولن يتم نشر أي معلومات عنك كفرد إلا "
 "إذا وافقت على خلاف ذلك مسبقًا. ومع ذلك، فقد نكون قادرين على تحديد شخصيات "
 "المشاركين في الاستبيان من خلال عناوين البريد الإلكتروني الخاصة بهم، وقد "
-"نتابع مع الأفراد للحصول على معلومات إضافية لتحسين تجربة أكاديمية ماكنزي بشكل "
-"عام. فإذا كنت تفضل عدم المتابعة معك بناءً على ردودك على الاستبيان، فيرجى "
+"نتابع مع الأفراد للحصول على معلومات إضافية لتحسين تجربة McKinsey Academy "
+"بشكل عام. فإذا كنت تفضل عدم المتابعة معك بناءً على ردودك على الاستبيان، فيرجى "
 "الاتصال بنا على العنوان المذكور أدناه في قسم \"اتصل بنا\" في سياسة الخصوصية."
 
 #: templates/privacy.haml:82
@@ -9135,10 +9173,10 @@ msgid ""
 msgstr ""
 "يتعين عليك إدراك أنك متى أقدمت على الإفصاح عن المعلومات، حتى وإن كان لمجموعة "
 "محدودة من المتلقين (على سبيل المثال، المستخدمين الآخرين المسجلين مثلك في "
-"دورة أكاديمية ماكنزي)، فقد يتم جمع تلك المعلومات واستخدامها من قبل الغير. "
+"دورة McKinsey Academy)، فقد يتم جمع تلك المعلومات واستخدامها من قبل الغير. "
 "وتخلي ماكنزي مسؤوليتها عن أي إجراءات أو سياسات لأي أطراف خارجية، بما في ذلك "
-"مستخدمي أكاديمية ماكنزي الآخرين، تجمع معلومات يفصح عنها المستخدمون لهذه "
-"الأطراف فيما يتعلق باستخدامهم لأكاديمية ماكنزي."
+"مستخدمي McKinsey Academy الآخرين، تجمع معلومات يفصح عنها المستخدمون لهذه "
+"الأطراف فيما يتعلق باستخدامهم لMcKinsey Academy."
 
 #: templates/privacy.haml:85
 msgid "Third-party websites and platforms"
@@ -9156,7 +9194,7 @@ msgid ""
 msgstr ""
 "قد تقدم ماكنزي روابط أو توجيهات إلى المواقع الإلكترونية التابعة لجهات خارجية "
 "أو المعلومات خاصة بطرف ثالث كخدمة لمستخدمينا. فإذا استخدمت هذه الروابط، "
-"فستغادر أكاديمية ماكنزي. ولا تشكل هذه الروابط أو تشير ضمنًا إلى تأييد أو "
+"فستغادر McKinsey Academy. ولا تشكل هذه الروابط أو تشير ضمنًا إلى تأييد أو "
 "رعاية أو توصية من ماكنزي للطرف الخارجي أو موقعه الإلكتروني أو المعلومات "
 "الواردة فيه، ولا تتحمل ماكنزي أية مسؤولية عن استخدامك لها. ويخضع مثل هذا "
 "الاستخدام لشروط الاستخدام وسياسات الخصوصية السارية على تلك المواقع."
@@ -9189,7 +9227,7 @@ msgstr ""
 "استخدام مثل هذه المواقع، التطبيقات و / أو المنصات وعروض الجوال المقابلة. على "
 "سبيل المثال، قد يطلب منك مقدم خدمات منصات الجوال مشاركة أو إنشاء بيانات "
 "اعتماد المستخدم، ونتيجة لذلك قد يتمكن من استنتاج أنك و / أو الشركة الراعية "
-"تشاركون في أكاديمية ماكنزي و / أو يجمع معلومات الاستخدام أو غيره من الأنشطة "
+"تشاركون في McKinsey Academy و / أو يجمع معلومات الاستخدام أو غيره من الأنشطة "
 "حولك. ويخضع استخدام مثل هذه المعلومات من قِبل مقدم (مقدمي) منصة الجوال لكل "
 "الشروط وسياسات الخصوصية ذات الصلة بمقدم منصة الجوال، والتي لا تخضع لسيطرتنا "
 "وننصحك بمراجعتها بعناية، ولا تخضع لشروطنا أو سياسة الخصوصية هذه."
@@ -9240,7 +9278,7 @@ msgstr ""
 "وموفري خدمات الطرف الثالث، ويتعين على هؤلاء الأفراد ومقدمي الخدمة التعامل مع "
 "هذه المعلومات على أنها سرية. على الرغم من هذه الاحتياطات، لا تستطيع ماكنزي "
 "ضمان عدم وصول الأشخاص غير المصرح لهم إلى بياناتك الشخصية. وفي حال علمت أن "
-"أيًا من بياناتك الشخصية المقدمة فيما يتعلق بأكاديمية ماكنزي (بما في ذلك "
+"أيًا من بياناتك الشخصية المقدمة فيما يتعلق بMcKinsey Academy (بما في ذلك "
 "معلومات حساب المستخدم الخاص بك) قد تعرضت للاختراق، يرجى الاتصال بنا على "
 "الفور على العنوان المذكور أدناه في قسم الاتصال بنا في سياسة الخصوصية."
 
@@ -9274,9 +9312,9 @@ msgid ""
 "or younger, and McKinsey does not intentionally collect or maintain personal "
 "data about anyone under this age."
 msgstr ""
-"أكاديمية ماكنزي غير مصممة ولا موجهة للأطفال البالغين من العمر 13 سنة أو أقل، "
-"ولا تقوم ماكنزي بجمع بيانات شخصية عن أي شخص تحت هذا السن، أو الاحتفاظ بها عن "
-"قصد."
+"McKinsey Academy غير مصممة ولا موجهة للأطفال البالغين من العمر 13 سنة أو "
+"أقل، ولا تقوم ماكنزي بجمع بيانات شخصية عن أي شخص تحت هذا السن، أو الاحتفاظ "
+"بها عن قصد."
 
 #: templates/privacy.haml:101
 msgid "Your rights"
@@ -9333,11 +9371,11 @@ msgstr ""
 "المعمول بها. وهناك قوانين أو ظروف مختلفة قد تمنعنا من إتاحة الوصول إلى "
 "بياناتك الشخصية أو الامتثال التام لطلبك تبعاً للظروف والطلب؛ مثلما يحدث، "
 "حينما يؤدي الإفصاح عن المعلومات الخاصة بك إلى الكشف عن هوية شخص ما. وحيث أنك "
-"تشارك في أكاديمية ماكنزي بمساعدة \"شركة راعية\"، فيحق لنا، حيثما ينص القانون "
-"المطبق أو العقد المبرم، إخطار \"الشركة الراعية\" بطلبك والتنسيق معها حول "
-"الاستجابة لطلبك. ونحتفظ لأنفسنا بحق فرض رسوم مناسبة امتثالًا لطلبك حيثما يجيز "
-"القانون المعمول به، و/أو رفض طلبك حيثما يعتبر لا أساس له، و/أو مفرطًا، أو غير "
-"مرغوب فيه أو لا مبرر له بموجب القانون المعمول به."
+"تشارك في McKinsey Academy بمساعدة \"شركة راعية\"، فيحق لنا، حيثما ينص "
+"القانون المطبق أو العقد المبرم، إخطار \"الشركة الراعية\" بطلبك والتنسيق معها "
+"حول الاستجابة لطلبك. ونحتفظ لأنفسنا بحق فرض رسوم مناسبة امتثالًا لطلبك حيثما "
+"يجيز القانون المعمول به، و/أو رفض طلبك حيثما يعتبر لا أساس له، و/أو مفرطًا، "
+"أو غير مرغوب فيه أو لا مبرر له بموجب القانون المعمول به."
 
 #: templates/privacy.haml:110
 msgid ""
@@ -9361,9 +9399,9 @@ msgid ""
 msgstr ""
 "يحق لك إلغاء موافقتك على جمع ومعالجة و / أو الإفصاح عن بياناتك الشخصية في أي "
 "وقت. للقيام بذلك، يرجى إما اتباع التعليمات المتعلقة بالجزء ذي الصلة من "
-"أكاديمية ماكنزي حيث قدمت هذه البيانات الشخصية، إن وجدت، أو الاتصال بنا على "
+"McKinsey Academy حيث قدمت هذه البيانات الشخصية، إن وجدت، أو الاتصال بنا على "
 "العنوان المذكور أسفل سياسة الخصوصية هذه. يرجى ملاحظة أنه في حالة إلغاء "
-"موافقتك، فقد لا تتوفر بعض الميزات في أكاديمية ماكنزي، بما في ذلك الدورات "
+"موافقتك، فقد لا تتوفر بعض الميزات في McKinsey Academy، بما في ذلك الدورات "
 "التدريبية المسجل بها حاليًا، نظرًا لأنها تعتمد على جمع بياناتك الشخصية "
 "ومعالجتها و / أو الإفصاح عنها."
 
@@ -9420,11 +9458,11 @@ msgid ""
 "changes to this Privacy Policy from time to time. We will alert you to any "
 "such changes by updating this Privacy Policy as made available at"
 msgstr ""
-"باستخدام أكاديمية ماكنزي، بما في ذلك الموقع أو أي من عروض الجوال، فإنك توافق "
-"على جمع واستخدام وتخزين معلوماتك، بما في ذلك بياناتك الشخصية، من جانبنا "
-"بالطريقة الموضحة في سياسة الخصوصية، والشروط، وكما هو متفق عليه معك. ونحتفظ "
-"لأنفسنا بالحق في إجراء تغييرات على سياسة الخصوصية هذه من وقت لآخر. وسنخطرك "
-"بأي تغييرات من هذا القبيل عن طريق تحديث سياسة الخصوصية وإتاحتها"
+"باستخدام McKinsey Academy، بما في ذلك الموقع أو أي من عروض الجوال، فإنك "
+"توافق على جمع واستخدام وتخزين معلوماتك، بما في ذلك بياناتك الشخصية، من "
+"جانبنا بالطريقة الموضحة في سياسة الخصوصية، والشروط، وكما هو متفق عليه معك. "
+"ونحتفظ لأنفسنا بالحق في إجراء تغييرات على سياسة الخصوصية هذه من وقت لآخر. "
+"وسنخطرك بأي تغييرات من هذا القبيل عن طريق تحديث سياسة الخصوصية وإتاحتها"
 
 #: templates/privacy.haml:125
 msgid ""
@@ -9437,7 +9475,7 @@ msgstr ""
 "إذا أجرينا تغييرات جوهرية على سياسة الخصوصية من شأنها أن تزيد من حقوقنا في "
 "استخدام البيانات الشخصية التي جمعناها عنك سابقًا، فسنحصل على موافقتك إما من "
 "خلال بريد إلكتروني مرسل إلى عنوان بريدك الإلكتروني المسجل أو عن طريق نشر "
-"معلومات حول التغييرات بطريقة واضحة في متناول مستخدمي أكاديمية ماكنزي."
+"معلومات حول التغييرات بطريقة واضحة في متناول مستخدمي McKinsey Academy."
 
 #: templates/privacy.haml:126
 msgid "Contact our privacy department"
@@ -9532,7 +9570,7 @@ msgid ""
 "user account at McKinsey Academy."
 msgstr ""
 "تتلقى رسالة البريد الإلكتروني هذه لأنك طلبت إعادة تعيين كلمة مرور لحساب "
-"المستخدم الخاص بك في أكاديمية ماكنزي."
+"المستخدم الخاص بك في McKinsey Academy."
 
 #: templates/registration/password_reset_email.haml:5
 msgid "Please go to the following page and choose a new password:"
@@ -9548,7 +9586,7 @@ msgstr "شكرا لاستخدام موقعنا!"
 
 #: templates/registration/password_reset_email.haml:14
 msgid "The McKinsey Academy team."
-msgstr "فريق أكاديمية ماكنزي."
+msgstr "فريق McKinsey Academy."
 
 #: templates/registration/password_reset_failed.haml:6
 msgid "We couldn't reset your password. Please check email and try again."
@@ -9575,7 +9613,7 @@ msgstr "عنوان البريد الإلكتروني الخاص بك:"
 #: templates/registration/password_reset_form.haml:17
 msgid "This is the email address you used to register with McKinsey Academy"
 msgstr ""
-"هذا هو عنوان البريد الإلكتروني الذي استخدمته للتسجيل مع أكاديمية ماكنزي"
+"هذا هو عنوان البريد الإلكتروني الذي استخدمته للتسجيل مع McKinsey Academy"
 
 #: templates/registration/password_reset_form.haml:20
 msgid "Reset My Password"
@@ -9609,9 +9647,9 @@ msgid ""
 "not agree to these Terms, or are legally unable to agree to these Terms, you "
 "may not use McKinsey Academy."
 msgstr ""
-"بالوصول إلى أكاديمية ماكنزي واستخدامها، فإنك توافق على هذه الشروط. إذا كنت "
+"بالوصول إلى McKinsey Academy واستخدامها، فإنك توافق على هذه الشروط. إذا كنت "
 "لا توافق على هذه الشروط، أو كنت غير قادر قانونًا على الموافقة على هذه الشروط، "
-"فلا يجوز لك استخدام أكاديمية ماكنزي."
+"فلا يجوز لك استخدام McKinsey Academy."
 
 #: templates/terms_of_service.haml:12
 msgid "We may periodically change the Terms, which are available at"
@@ -9637,7 +9675,7 @@ msgid ""
 "use and storage of your information, please refer to Section 10 of these "
 "Terms as well as to our Privacy Policy (available at"
 msgstr ""
-"،لذا يرجى مراجعتها من وقت لآخر. بالوصول إلى أكاديمية ماكنزي واستخدامها بعد "
+"،لذا يرجى مراجعتها من وقت لآخر. بالوصول إلى McKinsey Academy واستخدامها بعد "
 "إجراء أي تغييرات على هذه الشروط، فإنك توافق على الالتزام بهذه الشروط "
 "المعدلة. تم آخر تحديث لهذه الشروط بتاريخ 13 نوفمبر 2017.للحصول على شرح حول "
 "ممارساتنا وسياساتنا المتعلقة بجمع واستخدام وتخزين معلوماتك، يرجى الرجوع إلى "
@@ -9647,7 +9685,7 @@ msgstr ""
 #, fuzzy
 #| msgid "McKinsey Academy Contact"
 msgid "1. Copyrights and McKinsey Academy Content"
-msgstr "جهة اتصال أكاديمية ماكنزي"
+msgstr "جهة اتصال McKinsey Academy"
 
 #: templates/terms_of_service.haml:23
 #, fuzzy
@@ -9683,17 +9721,17 @@ msgid ""
 "information or other proprietary rights used or made available in connection "
 "with McKinsey Academy."
 msgstr ""
-"ما لم يُشَر إلى خلاف ذلك، فإن كل محتويات ومنتجات أكاديمية ماكنزي (باستثناء "
+"ما لم يُشَر إلى خلاف ذلك، فإن كل محتويات ومنتجات McKinsey Academy (باستثناء "
 "محتوى المستخدم المحدد في القسم 5 أدناه)، بما في ذلك النص ومحتوى المواد "
 "الدراسية ومقاطع الفيديو والرسومات والشعارات والرموز والصور واختيارها "
-"وترتيبها (\"محتوى أكاديمية ماكنزي\")، ملكية حصرية لنا أو لمرخصينا وهي محمية "
+"وترتيبها (\"محتوى McKinsey Academy\")، ملكية حصرية لنا أو لمرخصينا وهي محمية "
 "بموجب قوانين حقوق النشر الأمريكية والدولية. ولا يجوز نسخ محتويات أو منتجات "
-"أكاديمية ماكنزي، بما في ذلك أي موقع أو أي عروض للجوال، أو إعادة إنتاجها أو "
+"McKinsey Academy، بما في ذلك أي موقع أو أي عروض للجوال، أو إعادة إنتاجها أو "
 "تعديلها أو نشرها أو تحميلها أو مشاركتها أو نقلها أو توزيعها بأي شكل من "
 "الأشكال دون إذن كتابي منا. وباستثناء ما هو منصوص عليه صراحة في هذه الوثيقة، "
 "فإننا لا نمنح أي حق صريح أو ضمني لك بموجب أي براءات اختراع أو حقوق نشر أو "
 "علامات تجارية أو معلومات سرية تجارية أو حقوق ملكية أخرى مستخدمة أو متوافرة "
-"فيما يتعلق بأكاديمية ماكنزي."
+"فيما يتعلق بMcKinsey Academy."
 
 #: templates/terms_of_service.haml:25
 msgid "2. Trademarks"
@@ -9713,7 +9751,7 @@ msgid ""
 "relationship with us or our licensors."
 msgstr ""
 "العلامات التجارية وعلامات الخدمة والتصاميم والشعارات (والتي يشار إليها "
-"إجمالًا باسم \"العلامات التجارية\") المعروضة فيما يتعلق بأكاديمية ماكنزي هي "
+"إجمالًا باسم \"العلامات التجارية\") المعروضة فيما يتعلق بMcKinsey Academy هي "
 "العلامات التجارية المسجلة وغير المسجلة باسمنا ولمرخصينا. وأنت توافق على أنك، "
 "باستثناء ما هو مسموح به صراحة (أو من قبل مرخصينا، حيثما ينطبق ذلك)، لن (1) "
 "تشير إلى أو تنسب أي معلومات لنا أو لمرخصينا في أي وسيط عام (كالبيانات "
@@ -9726,7 +9764,7 @@ msgstr ""
 #, fuzzy
 #| msgid "McKinsey Academy Contact"
 msgid "3. Use of McKinsey Academy Content"
-msgstr "جهة اتصال أكاديمية ماكنزي"
+msgstr "جهة اتصال McKinsey Academy"
 
 #: templates/terms_of_service.haml:31
 #, fuzzy
@@ -9761,13 +9799,13 @@ msgid ""
 "our prior written consent."
 msgstr ""
 "نمنحك بموجب هذه الاتفاقية ترخيصًا محدودًا وغير حصري، وغير قابل للتنازل عنه "
-"للغير، لمدة محددة، للوصول إلى محتوى أكاديمية ماكنزي الذي تم توفيره لك، سواء "
+"للغير، لمدة محددة، للوصول إلى محتوى McKinsey Academy الذي تم توفيره لك، سواء "
 "كمستخدم مسجل أو غير مسجل، وتنزيله وعرضه، لاستخدامك الشخصي وغير التجاري فقط، "
 "ولاستخدامه، حيثما ينطبق، في تعزيز أنشطتك التجارية المشروعة والداخلية نيابة "
-"عن الشركة الراعية، بشرط ألا تقوم بتعديل محتوى أكاديمية ماكنزي بأي طريقة (بما "
-"في ذلك إنشاء أعمال مشتقة منه) وألا تحتفظ بجميع حقوق الطبع والنشر وغيرها من "
-"إشعارات الملكية المعروضة على محتوى أكاديمية ماكنزي. ولا يحق لك إعادة أو "
-"تعديل أو توزيع أو نقل أو نشر أو الكشف عن أي محتوى من أكاديمية ماكنزي دون "
+"عن الشركة الراعية، بشرط ألا تقوم بتعديل محتوى McKinsey Academy بأي طريقة "
+"(بما في ذلك إنشاء أعمال مشتقة منه) وألا تحتفظ بجميع حقوق الطبع والنشر وغيرها "
+"من إشعارات الملكية المعروضة على محتوى McKinsey Academy. ولا يحق لك إعادة أو "
+"تعديل أو توزيع أو نقل أو نشر أو الكشف عن أي محتوى من McKinsey Academy دون "
 "الحصول على موافقة كتابية مسبقة."
 
 #: templates/terms_of_service.haml:33
@@ -9783,12 +9821,12 @@ msgid ""
 "Content."
 msgstr ""
 "لا يحق لك بأي حال من الأحوال، محاولة الوصول إلى أي موقع أو جزء أو ميزة من "
-"أكاديمية ماكنزي، أو أي محتوى من أكاديمية ماكنزي، أو أي حساب مستخدم بخلاف "
+"McKinsey Academy، أو أي محتوى من McKinsey Academy، أو أي حساب مستخدم بخلاف "
 "حسابك الخاص، أو أي مواد أو معلومات أو بيانات أو شبكات أو أنظمة أخرى نملكها "
 "نديرها نحن أو الغير نيابة عنا، بأي وسيلة لا تتاح لك عمدًا. بالإضافة إلى ذلك، "
 "فإنك توافق على عدم استخدام برامج الروبوت أو العناكب أو البرامج النصية أو "
 "برامج تجميع البيانات أو التطبيقات أو أدوات استخراج البيانات لاستخراج، أو "
-"تحميل أو جمع أي محتوى من أكاديمية ماكنزي، بما في ذلك محتوى المستخدم."
+"تحميل أو جمع أي محتوى من McKinsey Academy، بما في ذلك محتوى المستخدم."
 
 #: templates/terms_of_service.haml:35
 msgid "4. User Registration"
@@ -9813,18 +9851,18 @@ msgid ""
 "information. All of this information comprises your “User Account "
 "Information”."
 msgstr ""
-"للمشاركة في جوانب معينة من أكاديمية ماكنزي، يتعين أن تقوم أنت أو الشركة "
+"للمشاركة في جوانب معينة من McKinsey Academy، يتعين أن تقوم أنت أو الشركة "
 "الراعية (على سبيل المثال، صاحب العمل أو أي مؤسسة أو جهة أخرى، بما في ذلك "
-"المنظمات المهنية، التي تسعى من خلالها للمشاركة في أكاديمية ماكنزي) (\"الشركة "
-"الراعية\") نيابة عنك وبموافقتك، بالتسجيل معنا أولاً عن طريق إنشاء حساب مستخدم "
-"(\"حساب المستخدم\"). ولإنشاء حساب مستخدم، يجب أن تقوم أنت أو الشركة الراعية "
-"بتزويدنا، سواء بشكل مباشر أو غير مباشر (على سبيل المثال، من خلال تفويض موقع "
-"طرف ثالث مثل LinkedIn)، باسمك الأول واسم عائلتك وعنوان بريدك الإلكتروني. "
-"ويتعين عليك أيضًا اختيار كلمة مرور، وبالنسبة لبعض وظائف أكاديمية ماكنزي، فقد "
-"يُطلب منك أيضًا تقديم معلومات إضافية كما هو موضح في وقت التسجيل. كما قد يُطلب "
-"منك و / أو من الشركة الراعية أيضًا تقديم معلومات اختيارية إضافية عن نفسك، بما "
-"في ذلك المعلومات الشخصية والديموغرافية والوظيفية و / أو معلومات أخرى. تشكل "
-"كل هذه المعلومات \"معلومات حساب المستخدم\"."
+"المنظمات المهنية، التي تسعى من خلالها للمشاركة في McKinsey Academy) "
+"(\"الشركة الراعية\") نيابة عنك وبموافقتك، بالتسجيل معنا أولاً عن طريق إنشاء "
+"حساب مستخدم (\"حساب المستخدم\"). ولإنشاء حساب مستخدم، يجب أن تقوم أنت أو "
+"الشركة الراعية بتزويدنا، سواء بشكل مباشر أو غير مباشر (على سبيل المثال، من "
+"خلال تفويض موقع طرف ثالث مثل LinkedIn)، باسمك الأول واسم عائلتك وعنوان بريدك "
+"الإلكتروني. ويتعين عليك أيضًا اختيار كلمة مرور، وبالنسبة لبعض وظائف McKinsey "
+"Academy، فقد يُطلب منك أيضًا تقديم معلومات إضافية كما هو موضح في وقت التسجيل. "
+"كما قد يُطلب منك و / أو من الشركة الراعية أيضًا تقديم معلومات اختيارية إضافية "
+"عن نفسك، بما في ذلك المعلومات الشخصية والديموغرافية والوظيفية و / أو معلومات "
+"أخرى. تشكل كل هذه المعلومات \"معلومات حساب المستخدم\"."
 
 #: templates/terms_of_service.haml:39
 msgid ""
@@ -9870,8 +9908,8 @@ msgid ""
 msgstr ""
 "ويحق لنا الاحتفاظ بمعلومات حساب المستخدم لأجل غير مسمى من أجل استخدامها "
 "لضمان الالتزام بهذه الشروط وأي متطلبات قانونية سارية، ومن أجل تعديل وتحسين "
-"أكاديمية ماكنزي وعروض الخدمات ذات الصلة، بالإضافة إلى أي أغراض أخرى مصرح بها "
-"بموجب هذه الشروط أو سياسة الخصوصية الخاصة بنا."
+"McKinsey Academy وعروض الخدمات ذات الصلة، بالإضافة إلى أي أغراض أخرى مصرح "
+"بها بموجب هذه الشروط أو سياسة الخصوصية الخاصة بنا."
 
 #: templates/terms_of_service.haml:45
 msgid "User Content"
@@ -9904,27 +9942,27 @@ msgid ""
 "attribution in connection with our use of such User Content as permitted by "
 "these Terms."
 msgstr ""
-"فيما يتعلق باستخدامك لأكاديمية ماكنزي، قد تتاح لك الفرصة لإرسال أو نشر أو "
+"فيما يتعلق باستخدامك لMcKinsey Academy، قد تتاح لك الفرصة لإرسال أو نشر أو "
 "توزيع أو مشاركة معلومات أو صور أو مقاطع فيديو أو مواد أو بيانات أو غيرها من "
 "أشكال المحتوى، بما في ذلك على سبيل المثال لا الحصر: مشاركة منتديات المناقشة "
 "أو الرسائل؛ والإجابات على استطلاعات الرأي أو الاستبيانات أو تقييماتها؛ "
 "ومنتجات العمل (في شكل إلكتروني أو مادي) فيما يتعلق بالدورات التدريبية أو "
-"الأنشطة الأخرى المقدمة من أكاديمية ماكنزي؛ والتعديلات أو التعليقات على محتوى "
-"أكاديمية ماكنزي أو منتج آخر لمستخدمي أكاديمية ماكنزي؛ والردود أو التعليقات "
-"على أكاديمية ماكنزي، ومحتوى أكاديمية ماكنزي، والدورات أو الخدمات التي يتم "
-"تقديمها أو دراسة توفيرها فيما يتعلق بأكاديمية ماكنزي (والتي يشار إليها "
-"إجمالًا باسم \"محتوى المستخدم\"). وتقر وتوافق على أنه من خلال تزويدنا بأي "
-"محتوى مستخدم من هذا القبيل، فإنك تمنح تلقائيًا، وبموجبه، حقًا عالميًا، غير "
+"الأنشطة الأخرى المقدمة من McKinsey Academy؛ والتعديلات أو التعليقات على "
+"محتوى McKinsey Academy أو منتج آخر لمستخدمي McKinsey Academy؛ والردود أو "
+"التعليقات على McKinsey Academy، ومحتوى McKinsey Academy، والدورات أو الخدمات "
+"التي يتم تقديمها أو دراسة توفيرها فيما يتعلق بMcKinsey Academy (والتي يشار "
+"إليها إجمالًا باسم \"محتوى المستخدم\"). وتقر وتوافق على أنه من خلال تزويدنا "
+"بأي محتوى مستخدم من هذا القبيل، فإنك تمنح تلقائيًا، وبموجبه، حقًا عالميًا، غير "
 "حصري، وقابلًا لنقل ملكيته والتنازل عنه للغير، وإصدار تراخيص فرعية منه، "
 "ومدفوعًا بالكامل، وبدون حقوق ملكية، ودائمًا، وترخيصًا غير قابل للإلغاء؛ والحق "
 "في استخدام، أو إعادة إنتاج، أو نشر، أو توزيع، أو تعديل، أو استغلال محتوى "
 "المستخدم لأي غرض كان، وبأي شكل أو وسيلة إعلام، لا يحظرها القانون المعمول به. "
-"كما تمنح المستخدمين الآخرين لخدمات أكاديمية ماكنزي ترخيصًا غير حصري للوصول "
+"كما تمنح المستخدمين الآخرين لخدمات McKinsey Academy ترخيصًا غير حصري للوصول "
 "إلى محتوى المستخدم الخاص بك وإعادة إنتاجه واستخدامه فيما يتعلق باستخدامهم "
-"لخدمات أكاديمية ماكنزي وفقًا لهذه الشروط. بالإضافة إلى ذلك، فإنك تتنازل عن أي "
-"مطالبات ضدنا عن أي انتهاك مزعوم أو فعلي لأي حقوق تتعلق بالخصوصية أو الدعاية "
-"أو حقوق الملكية الفكرية أو الحقوق المعنوية أو حقوق الإحالة فيما يتعلق "
-"باستخدامنا لمحتوى المستخدم، وفق هذه الأحكام."
+"لخدمات McKinsey Academy وفقًا لهذه الشروط. بالإضافة إلى ذلك، فإنك تتنازل عن "
+"أي مطالبات ضدنا عن أي انتهاك مزعوم أو فعلي لأي حقوق تتعلق بالخصوصية أو "
+"الدعاية أو حقوق الملكية الفكرية أو الحقوق المعنوية أو حقوق الإحالة فيما "
+"يتعلق باستخدامنا لمحتوى المستخدم، وفق هذه الأحكام."
 
 #: templates/terms_of_service.haml:49
 msgid ""
@@ -9944,17 +9982,18 @@ msgid ""
 "other users of the same or (h) violates any applicable policy or requirement "
 "of your Sponsoring Organization."
 msgstr ""
-"وتتعهد بالامتناع عن إرسال أو تحرير أو نشر أو إتاحة - من خلال أكاديمية ماكنزي "
-"أو غيرها - أي محتوى مستخدم (أ) يشكل خطرًا محتملًا أو تشهيرًا أو خدشًا للحياء؛ "
-"(ب) يمثل، أو يشجع، سلوكًا قد يشكل جريمة جنائية، أو يسفر عن مسؤولية مدنية، أو "
-"ينتهك القانون المعمول به؛ (ج) ينتهك حقوق الملكية الفكرية أو الخصوصية أو "
-"الدعاية أو الحقوق الأخرى لأي طرف ثالث؛ (د) يحتوي على فيروس إلكتروني أو غيره "
-"من العناصر الضارة أو المدمرة؛ (هـ) يحتوي على إعلانات؛ (و) يشكل أويحتوي على "
-"بيانات خاطئة أو مضللة، بغرض إخفاء هويتك الحقيقية أو أغراضك أو نواياك في "
-"الوصول إلى أكاديمية ماكنزي أو تقديم أي محتوى مستخدم من هذا القبيل؛ (ز) ينتهك "
-"هذه الشروط أو مصمم للتداخل، أو من المتوقع بشكل معقول أن يتداخل، مع تقديمنا "
-"لأكاديمية ماكنزي والاستخدام المعقول من جانب المستخدمين الآخرين وتمتعهم بنفس "
-"الحقوق؛ أو (ح) ينتهك أي سياسة مطبقة أو مطلب للشركة الراعية."
+"وتتعهد بالامتناع عن إرسال أو تحرير أو نشر أو إتاحة - من خلال McKinsey "
+"Academy أو غيرها - أي محتوى مستخدم (أ) يشكل خطرًا محتملًا أو تشهيرًا أو خدشًا "
+"للحياء؛ (ب) يمثل، أو يشجع، سلوكًا قد يشكل جريمة جنائية، أو يسفر عن مسؤولية "
+"مدنية، أو ينتهك القانون المعمول به؛ (ج) ينتهك حقوق الملكية الفكرية أو "
+"الخصوصية أو الدعاية أو الحقوق الأخرى لأي طرف ثالث؛ (د) يحتوي على فيروس "
+"إلكتروني أو غيره من العناصر الضارة أو المدمرة؛ (هـ) يحتوي على إعلانات؛ (و) "
+"يشكل أويحتوي على بيانات خاطئة أو مضللة، بغرض إخفاء هويتك الحقيقية أو أغراضك "
+"أو نواياك في الوصول إلى McKinsey Academy أو تقديم أي محتوى مستخدم من هذا "
+"القبيل؛ (ز) ينتهك هذه الشروط أو مصمم للتداخل، أو من المتوقع بشكل معقول أن "
+"يتداخل، مع تقديمنا لMcKinsey Academy والاستخدام المعقول من جانب المستخدمين "
+"الآخرين وتمتعهم بنفس الحقوق؛ أو (ح) ينتهك أي سياسة مطبقة أو مطلب للشركة "
+"الراعية."
 
 #: templates/terms_of_service.haml:51
 msgid ""
@@ -9968,7 +10007,7 @@ msgid ""
 msgstr ""
 "لا نقوم ولا يمكننا مراجعة جميع محتوى المستخدم، ولسنا مسؤولين تجاهك أو أي طرف "
 "آخر فيما يتعلق بذلك، ولا نقر أو نقدم أي تأكيدات أو ضمانات فيما يتعلق بأي "
-"محتوى مستخدم يتم توفيره أو إتاحته فيما يتعلق بأكاديمية ماكنزي. ونحتفظ "
+"محتوى مستخدم يتم توفيره أو إتاحته فيما يتعلق بMcKinsey Academy. ونحتفظ "
 "لأنفسنا بحق رفض قبول أو نشر أي محتوى مستخدم، وحذف أي محتوى مستخدم تم قبوله "
 "أو نشره، كليًا أو جزئيًا، لأي سبب أو بدون سبب."
 
@@ -10007,11 +10046,11 @@ msgid ""
 "“Contact Us” Section of these Terms."
 msgstr ""
 "بالإضافة إلى القيود المفروضة على محتوى المستخدم المنصوص عليها في القسم 5، "
-"نحظر نشر أي معلومات تتعلق بأكاديمية ماكنزي التي تنتهك أو تخالف حقوق الطبع "
+"نحظر نشر أي معلومات تتعلق بMcKinsey Academy التي تنتهك أو تخالف حقوق الطبع "
 "والنشر و / أو حقوق الملكية الفكرية الأخرى (بما في ذلك حقوق الخصوصية والنشر) "
 "من أي شخص أو كيان. وإذا كنت تعتقد أن حقوق الملكية الفكرية الخاصة بك (أو مثل "
 "هذا الحق الذي تتحمل المسؤولية عنه) تتعرض للانتهاك من قبل أي محتوى متوفر من "
-"خلال أكاديمية ماكنزي، يرجى مراسلتنا على العنوان المبين أدناه، مع تقديم بيان "
+"خلال McKinsey Academy، يرجى مراسلتنا على العنوان المبين أدناه، مع تقديم بيان "
 "مكتوب يحتوي على: (أ) تحديد العمل المحمي بحقوق الطبع والنشر و / أو حقوق "
 "الملكية الفكرية التي تدعي أنها تتعرض للانتهاك؛ (ب) تحديد المادة التي تدعي "
 "أنها تنتهِك حقوقك والمطلوب حذفها؛ (ج) اسمك وعنوانك ورقم هاتفك المفتوح خلال "
@@ -10058,23 +10097,23 @@ msgid ""
 "OR PROVIDED BY THIRD PARTIES, INCLUDING APPLICABLE MOBILE PLATFORM PROVIDERS "
 "(AS SUCH TERM IS DEFINED IN THE PRIVACY POLICY)."
 msgstr ""
-"يتم توفير محتوى ووظائف أكاديمية ماكنزي \"على وضعه\"، دون أي ضمان من أي نوع، "
+"يتم توفير محتوى ووظائف McKinsey Academy \"على وضعه\"، دون أي ضمان من أي نوع، "
 "سواء أكان صريحًا أم ضمنيًا، بما في ذلك، وبدون تحديد، الضمانات الضمنية للرواج "
 "والصلاحية لغرض معين. بالإضافة إلى ذلك، فإننا لا نقدم أي ضمانات أو إقرارات "
-"بأن (I) أي موقع، أو عرض جوال، أو غيرهما من جوانب أكاديمية ماكنزي سيعمل دون "
+"بأن (I) أي موقع، أو عرض جوال، أو غيرهما من جوانب McKinsey Academy سيعمل دون "
 "انقطاع أو على نحوٍ خالٍ من الأخطاء، أو سيتاح باستمرار، أو سيكون خاليًا من "
 "الفيروسات الإلكترونية أو غيرها من المكونات الضارة، أو أن أي عيوب سوف يتم "
-"تحديدها أو تصحيحها أو (II) أن أكاديمية ماكنزي، وأي موقع أو عروض الجوال، "
-"ومحتوى أكاديمية ماكنزي، وأي محتوى مستخدم يتم توفيره في التواصل مع أكاديمية "
+"تحديدها أو تصحيحها أو (II) أن McKinsey Academy، وأي موقع أو عروض الجوال، "
+"ومحتوى McKinsey Academy، وأي محتوى مستخدم يتم توفيره في التواصل مع أكاديمية "
 "ماكنزي أو أي من الدورات أو الخدمات المقدمة لك بشكل مباشر أو غير مباشر كجزء "
-"من أكاديمية ماكنزي، سوف تلبي احتياجاتك أو توقعاتك. نحن، وأكاديمية ماكنزي "
+"من McKinsey Academy، سوف تلبي احتياجاتك أو توقعاتك. نحن، وMcKinsey Academy "
 "والدورات التي تقدم فيما يتصل بها، لسنا مقدمي خدمات تعليمية معتمدة. ولا نملك "
 "نحن أو غيرنا من مقدمي المحتوى أو أي مرخصين أي ضمانات، صريحة أو ضمنية، فيما "
-"يتعلق بملكية محتوى أكاديمية ماكنزي أو أي محتوى مستخدم أو دقته أو صلته أو "
+"يتعلق بملكية محتوى McKinsey Academy أو أي محتوى مستخدم أو دقته أو صلته أو "
 "كفايته. وباستثناء ما هو منصوص عليه صراحة في هذه الشروط، فإننا لا نتحمل أي "
 "مسؤولية عن أي معلومات أو مواد أو محتوى أو خدمات منشورة أو متوفرة على المواقع "
 "المرتبطة، أو متضمنة في أي من محتويات المستخدم المنشورة، أو متاحة لك من خلال "
-"أكاديمية ماكنزي، أو يقدمها طرف ثالث، بما في ذلك مقدمو خدمات الهاتف الجوال "
+"McKinsey Academy، أو يقدمها طرف ثالث، بما في ذلك مقدمو خدمات الهاتف الجوال "
 "(كما هو محدد في سياسة الخصوصية)."
 
 #: templates/terms_of_service.haml:61
@@ -10094,8 +10133,8 @@ msgstr ""
 "تجاهك أو مؤسستك أو أي شخص أو كيان آخر عن أي أضرار غير مباشرة أو عرضية أو "
 "تبعية أو عقابية أو أي خسائر أو نقص في الإيرادات أو الأرباح، سواء تم أو لم "
 "يتم تقديم المشورة بإمكانية وقوع مثل هذه الأضرار والخسائر، وبغض النظر عن "
-"نظرية المسؤولية، فيما يتعلق باستخدامك أكاديمية ماكنزي، أو أي موقع أو عرض "
-"للجوال، أو أي من محتويات أكاديمية ماكنزي أو محتوى المستخدم، أو أي إجراء، أو "
+"نظرية المسؤولية، فيما يتعلق باستخدامك McKinsey Academy، أو أي موقع أو عرض "
+"للجوال، أو أي من محتويات McKinsey Academy أو محتوى المستخدم، أو أي إجراء، أو "
 "تراخ أو قرار متخذ من قبلك أو من أي طرف آخر فيما يتعلق بذلك."
 
 #: templates/terms_of_service.haml:63
@@ -10107,8 +10146,8 @@ msgid ""
 "MONTHS."
 msgstr ""
 "لا تتعدى مسؤوليتنا بأي حال من الأحوال تجاه جميع المطالبات والإجراءات "
-"والأحداث التي تنشأ عن توفيرنا لأكاديمية ماكنزي الرسوم التراكمية، إن وجدت، "
-"إذا تم تلقيها من قبل ماكنزي منك فيما يتعلق باستخدامك أكاديمية ماكنزي خلال "
+"والأحداث التي تنشأ عن توفيرنا لMcKinsey Academy الرسوم التراكمية، إن وجدت، "
+"إذا تم تلقيها من قبل ماكنزي منك فيما يتعلق باستخدامك McKinsey Academy خلال "
 "فترة الإعداد البالغة اثنتا عشر شهرًا."
 
 #: templates/terms_of_service.haml:65
@@ -10126,11 +10165,11 @@ msgid ""
 "your use thereof in any manner and for any purpose consistent with these "
 "Terms and our Privacy Policy."
 msgstr ""
-"يمكن استضافة أكاديمية ماكنزي، بما في ذلك بعض المواقع وعروض الجوال، ومحتوى "
-"أكاديمية ماكنزي، والميزات والخدمات ذات الصلة مثل خدمات الدعم، أو دعمها أو "
-"تقديمها بشكل مباشر أو غير مباشر من قبل جهة خارجية. باستخدامك أكاديمية ماكنزي "
-"فإنك تقر وتوافق على أنه يحق لنا تزويد جهة خارجية بإمكانية الوصول إلى "
-"أكاديمية ماكنزي، والمواقع وعروض الجوال، وأي محتوى مستخدم مقدم من قبلك فيما "
+"يمكن استضافة McKinsey Academy، بما في ذلك بعض المواقع وعروض الجوال، ومحتوى "
+"McKinsey Academy، والميزات والخدمات ذات الصلة مثل خدمات الدعم، أو دعمها أو "
+"تقديمها بشكل مباشر أو غير مباشر من قبل جهة خارجية. باستخدامك McKinsey "
+"Academy فإنك تقر وتوافق على أنه يحق لنا تزويد جهة خارجية بإمكانية الوصول إلى "
+"McKinsey Academy، والمواقع وعروض الجوال، وأي محتوى مستخدم مقدم من قبلك فيما "
 "يتعلق باستخدامك له بأي طريقة ولأية أغراض تتفق مع هذه الشروط وسياسة الخصوصية "
 "الخاصة بنا."
 
@@ -10154,13 +10193,13 @@ msgstr ""
 "بدون تقييد أي شيء في هذا القسم، نتعاون مع edX Inc. (\"edX\")، وهي مؤسسة غير "
 "ربحية تأسست من قبل عدد من كبرى المؤسسات الأكاديمية الرائدة التي توفر التدريب "
 "والاستضافة وغيرها من الخدمات فيما يتعلق بالتعلم عبر الإنترنت والتعلم "
-"المختلط، للمساعدة في تطوير وتوفير وتحسين أكاديمية ماكنزي. كجزء من تعاوننا مع "
-"edX، يمكن تطوير بعض جوانب أكاديمية ماكنزي واستضافتها وصيانتها ودعمها و / أو "
-"تقديمها كليًا أو جزئيًا من قبل edX، إما بشكل مباشر أو غير مباشر. فيما يتعلق "
+"المختلط، للمساعدة في تطوير وتوفير وتحسين McKinsey Academy. كجزء من تعاوننا "
+"مع edX، يمكن تطوير بعض جوانب McKinsey Academy واستضافتها وصيانتها ودعمها و / "
+"أو تقديمها كليًا أو جزئيًا من قبل edX، إما بشكل مباشر أو غير مباشر. فيما يتعلق "
 "بذلك، قد تحصل edX ومقدمو الخدمات من الجهات الخارجية أيضًا على القدرة على "
 "الوصول إلى محتوى المستخدم ومعلومات حساب المستخدم وغيرها من المعلومات حول "
-"استخدامك لأكاديمية ماكنزي. وتماشياً مع سياسة الخصوصية الخاصة بنا، يتعين على "
-"edX الحفاظ على سرية أي معلومات شخصية عنك واستخدامك لأكاديمية ماكنزي التي قد "
+"استخدامك لMcKinsey Academy. وتماشياً مع سياسة الخصوصية الخاصة بنا، يتعين على "
+"edX الحفاظ على سرية أي معلومات شخصية عنك واستخدامك لMcKinsey Academy التي قد "
 "يكون الوصول إليها متاحًا أمام edX فيما يتعلق بتوفيرها للخدمات والدعم الموضح "
 "أعلاه."
 
@@ -10192,11 +10231,11 @@ msgstr ""
 "الهاتف الجوال، التي توافق بموجبها على الامتثال والتي لا تخضع لسيطرتنا، "
 "وننصحك بمراجعتها بعناية. ودون تقييد لما سبق، فإنك تقر بأنه لا يوجد لدى مقدم "
 "خدمة منصة الجوال أي سلطة، ولا يقدم أي ضمان أو يتحمل أي مسؤولية تجاهك، أو "
-"أكاديمية ماكنزي أو أي محتوى من أكاديمية ماكنزي، وأي مطالبة أو دعاوى من جانبك "
-"فيما يتعلق بذلك محكومة بهذه الشروط. وعندما يكون ذلك مطلوبًا بموجب اتفاقيتنا "
-"مع مقدم منصة الجوال هذه، فإن مقدم خدمة منصة الجوال هذا هو طرف ثالث مستفيد من "
-"هذه الفقرة من هذه الشروط ويجوز له تنفيذ هذه الشروط ضدك بصفته طرفًا ثالثًا "
-"مستفيدًا منها."
+"McKinsey Academy أو أي محتوى من McKinsey Academy، وأي مطالبة أو دعاوى من "
+"جانبك فيما يتعلق بذلك محكومة بهذه الشروط. وعندما يكون ذلك مطلوبًا بموجب "
+"اتفاقيتنا مع مقدم منصة الجوال هذه، فإن مقدم خدمة منصة الجوال هذا هو طرف ثالث "
+"مستفيد من هذه الفقرة من هذه الشروط ويجوز له تنفيذ هذه الشروط ضدك بصفته طرفًا "
+"ثالثًا مستفيدًا منها."
 
 #: templates/terms_of_service.haml:73
 msgid "9. Certificates"
@@ -10222,7 +10261,7 @@ msgstr ""
 "وفقًا لتقديرنا الخاص، قد نختار تقديم شهادة أو بيان أو إقرار أو وثيقة أخرى لك "
 "و / أو شركتك الراعية إذا كنت تستوفي معايير معينة (على سبيل المثال، إكمال "
 "الدورة التدريبية) فيما يتعلق بواحدة أو أكثر من الدورات أو البرامج المتاحة لك "
-"من خلال أكاديمية ماكنزي (\"شهادة\")، مع الوضع في الاعتبار أن إصدار شهادة لك "
+"من خلال McKinsey Academy (\"شهادة\")، مع الوضع في الاعتبار أن إصدار شهادة لك "
 "و / أو لشركتك الراعية، والمعايير التي تحكم مثل هذا الإصدار، تخضع لتقديرنا "
 "نحن فقط ويمكن تغييرها في أي وقت. بالإضافة إلى ذلك، فإنك تقر بأن (أ) أن تلقيك "
 "للشهادة، إن وجدت، لا يمثل مصادقة من جانبنا و (ب) لسنا مؤسسة تعليمية معتمدة، "
@@ -10263,7 +10302,7 @@ msgid ""
 "otherwise using or participating in McKinsey Academy you confirm your "
 "agreement with, and understanding of, our Privacy Policy."
 msgstr ""
-"يخضع استخدامك لأكاديمية ماكنزي لهذه الشروط وسياسة الخصوصية الخاصة بنا، "
+"يخضع استخدامك لMcKinsey Academy لهذه الشروط وسياسة الخصوصية الخاصة بنا، "
 "وباستخدام أي موقع أو أي من عروض الجوال، أو باستخدام أو المشاركة في أكاديمية "
 "ماكنزي، فإنك تؤكد موافقتك على سياسة الخصوصية الخاصة بنا وفهمها."
 
@@ -10274,7 +10313,7 @@ msgid ""
 "QUESTIONS ABOUT OUR PRIVACY POLICY OR THESE TERMS."
 msgstr ""
 "وننصحك بطباعة وقراءة سياسة الخصوصية بعناية والاتصال بنا قبل بدء استخدامك "
-"لأكاديمية ماكنزي إذا كان لديك أي أسئلة أو استفسارات حول سياسة الخصوصية أو "
+"لMcKinsey Academy إذا كان لديك أي أسئلة أو استفسارات حول سياسة الخصوصية أو "
 "هذه الشروط."
 
 #: templates/terms_of_service.haml:88
@@ -10317,21 +10356,21 @@ msgstr ""
 "ماكنزي، والمشاركة فيها، لأي سبب من الأسباب أو دون أي سبب، بموجب إخطار منا "
 "بذلك. بالإضافة إلى عمليات إخلاء المسؤولية المنصوص عليها في المادة 7، فإنك "
 "تقر وتوافق على أن احتفاظنا بحقنا في تقديرنا الوحيد لإلغاء أو تأخير، أو إعادة "
-"جدولة، أو تغيير تنسيق أي دورة أو خدمة تقدم من خلال أكاديمية ماكنزي، أو وقف "
-"توفير أي جزء من أو كل أكاديمية ماكنزي، أو محتوى أكاديمية ماكنزي، أو الخدمات "
-"ذات الصلة، في أي وقت، كما توافق على انتفاء حقك في استخدام أكاديمية ماكنزي "
-"(أو أي جزء منها) وأي من محتويات أكاديمية ماكنزي فورًا دون أن تترتب علينا أية "
-"مسؤولية تجاهك أو أي طرف ثالث عند اتخاذ مثل هذا الإجراء بخلاف رد أية رسوم "
-"مدفوعة مسبقاً من قبلك (أو من قبل \"الشركة الراعية\" التي قامت بدفع ذلك الجزء "
-"من الرسوم مسبقًا نيابة عنك) نظير ذلك الجزء فيما يتعلق بالمشاركة في دورات "
-"أكاديمية ماكنزي أو غيرها من الأنشطة التي لم تعد متوفرة لك نتيجة لمثل هذا "
-"الإنهاء، شريطة ألا يكون هذا الإنهاء لسبب مرتبط بخرقك لهذه الشروط. وفي حال لم "
-"تعد لديك الرغبة في الوصول إلى أكاديمية ماكنزي، فيمكنك التوقف عن المشاركة في "
-"أكاديمية ماكنزي في أي وقت. وسيتم إنهاء الحقوق الممنوحة لك بموجبه تلقائياً عند "
-"إنهاء أي من حقوقك في استخدام أكاديمية ماكنزي، حسب الاقتضاء؛ ولكن شريطة سريان "
-"إنهاء هذه الشروط على أي من التراخيص الممنوحة لك وأي شرط من هذه الشروط أو "
-"سياسة الخصوصية اللازمة لإنفاذ أو ممارسة حقوقك أو حقوقنا أو التزاماتك أو "
-"التزاماتنا."
+"جدولة، أو تغيير تنسيق أي دورة أو خدمة تقدم من خلال McKinsey Academy، أو وقف "
+"توفير أي جزء من أو كل McKinsey Academy، أو محتوى McKinsey Academy، أو "
+"الخدمات ذات الصلة، في أي وقت، كما توافق على انتفاء حقك في استخدام McKinsey "
+"Academy (أو أي جزء منها) وأي من محتويات McKinsey Academy فورًا دون أن تترتب "
+"علينا أية مسؤولية تجاهك أو أي طرف ثالث عند اتخاذ مثل هذا الإجراء بخلاف رد "
+"أية رسوم مدفوعة مسبقاً من قبلك (أو من قبل \"الشركة الراعية\" التي قامت بدفع "
+"ذلك الجزء من الرسوم مسبقًا نيابة عنك) نظير ذلك الجزء فيما يتعلق بالمشاركة في "
+"دورات McKinsey Academy أو غيرها من الأنشطة التي لم تعد متوفرة لك نتيجة لمثل "
+"هذا الإنهاء، شريطة ألا يكون هذا الإنهاء لسبب مرتبط بخرقك لهذه الشروط. وفي "
+"حال لم تعد لديك الرغبة في الوصول إلى McKinsey Academy، فيمكنك التوقف عن "
+"المشاركة في McKinsey Academy في أي وقت. وسيتم إنهاء الحقوق الممنوحة لك "
+"بموجبه تلقائياً عند إنهاء أي من حقوقك في استخدام McKinsey Academy، حسب "
+"الاقتضاء؛ ولكن شريطة سريان إنهاء هذه الشروط على أي من التراخيص الممنوحة لك "
+"وأي شرط من هذه الشروط أو سياسة الخصوصية اللازمة لإنفاذ أو ممارسة حقوقك أو "
+"حقوقنا أو التزاماتك أو التزاماتنا."
 
 #: templates/terms_of_service.haml:94
 msgid "12. Governing Law; Jurisdiction"
@@ -10355,7 +10394,7 @@ msgid ""
 "children 13 years of age or younger, and we will not intentionally collect "
 "or maintain information about anyone under this age."
 msgstr ""
-"نتفهم أهمية حماية خصوصية الأطفال، خاصة في بيئة الإنترنت. وأكاديمية ماكنزي "
+"نتفهم أهمية حماية خصوصية الأطفال، خاصة في بيئة الإنترنت. وMcKinsey Academy "
 "غير مصممة ولا موجهة للأطفال البالغين من العمر 13 سنة أو أقل، ولن نقوم بجمع "
 "بيانات شخصية عن أي شخص تحت هذا السن، أو الاحتفاظ بها عن قصد."
 
@@ -10374,12 +10413,12 @@ msgid ""
 "shall continue in full force and effect. Any rights not expressly granted "
 "herein are reserved."
 msgstr ""
-"إن استخدام أكاديمية ماكنزي غير مصرح به في أي ولاية قضائية لا تنفذ جميع أحكام "
-"هذه الشروط، بما في ذلك هذه المادة 14، وسياسة الخصوصية، على سبيل المثال لا "
-"الحصر. إذا اعتبر أي حكم من هذه الشروط باطلاً أو غير قابل للتنفيذ لأي سبب من "
-"الأسباب، فسيتم اعتبار هذه الحكم محكومًا بحكم ساري وقابل للتنفيذ يطابق تمامًا "
-"القصد من النص الأصلي وما تبقى من الشروط سيستمر بكامل تأثيره. وأي حقوق غير "
-"منصوص عليها صراحة نحتفظ بها لأنفسنا."
+"إن استخدام McKinsey Academy غير مصرح به في أي ولاية قضائية لا تنفذ جميع "
+"أحكام هذه الشروط، بما في ذلك هذه المادة 14، وسياسة الخصوصية، على سبيل المثال "
+"لا الحصر. إذا اعتبر أي حكم من هذه الشروط باطلاً أو غير قابل للتنفيذ لأي سبب "
+"من الأسباب، فسيتم اعتبار هذه الحكم محكومًا بحكم ساري وقابل للتنفيذ يطابق "
+"تمامًا القصد من النص الأصلي وما تبقى من الشروط سيستمر بكامل تأثيره. وأي حقوق "
+"غير منصوص عليها صراحة نحتفظ بها لأنفسنا."
 
 #: templates/terms_of_service.haml:106
 msgid ""
@@ -10403,7 +10442,7 @@ msgid ""
 "Privacy Policy, please contact us at:"
 msgstr ""
 "إذا كان لديك أي أسئلة أو استفسارات حول هذه الشروط، أو سياسة الخصوصية، أو إذا "
-"كنت بحاجة إلى أي مساعدة في التعرف على أكاديمية ماكنزي، أو هذه الشروط ، أو "
+"كنت بحاجة إلى أي مساعدة في التعرف على McKinsey Academy، أو هذه الشروط ، أو "
 "سياسة الخصوصية، يرجى الاتصال بنا على:"
 
 #: util/validators.py:17
@@ -10450,11 +10489,14 @@ msgstr "الاسم الأول: {}"
 msgid "Last name: {}"
 msgstr "اسم العائلة: {}"
 
+#~ msgid "McKinsey & Company"
+#~ msgstr "ماكنزي أند كومباني"
+
 #~ msgid "You are already enrolled in course \"{}\""
 #~ msgstr "أنت ملتحق بالدورة\"{}\""
 
 #~ msgid "Your request to access McKinsey Academy"
-#~ msgstr "الطلب الخاص بك الوصول إلى أكاديمية ماكنزي"
+#~ msgstr "الطلب الخاص بك الوصول إلى McKinsey Academy"
 
 #~ msgid "Senior Executive (e.g. SVP+)"
 #~ msgstr "التنفيذية العليا (مثل النائب الأول للرئيس +)"
@@ -10470,9 +10512,6 @@ msgstr "اسم العائلة: {}"
 
 #~ msgid "Other (please describe below)"
 #~ msgstr "أخرى (يرجى تقديم وصف لذلك أدناه)"
-
-#~ msgid "Country"
-#~ msgstr "البلد"
 
 #~ msgid "Please specify your Role."
 #~ msgstr "الرجاء تحديد الدور الخاص بك."

@@ -243,7 +243,6 @@
       padding: 20px;
 
       .response-header-actions {
-        right: 0;
         top: 0;
       }
     }
@@ -342,7 +341,7 @@
     .post-update,
     a.post-cancel, a.cancel {
       &, &:visited, &:hover, &:focus {
-        margin: 15px 0px;
+        margin: 15px 0;
       }
     }
 
@@ -351,6 +350,11 @@
         float: left;
       }
     }
+    .post-cancel,
+      .post-update{
+        padding: 5px 28px !important;
+        margin-top: 10px !important;
+      }
   }
 
   .add-response .add-response-btn {
@@ -412,6 +416,15 @@
   }
 
   /* Text Edit Form */
+
+  .wmd-preview ul,
+  .wmd-preview ol{
+    padding-left: 0;
+  }
+
+  .wmd-panel{
+    margin-bottom: 20px;
+  }
 
   .wmd-panel .wmd-button span {
     background-image: url("/static/image/lesson-content/discussion/wmd-buttons-transparent.png");
@@ -783,7 +796,6 @@ body > .tooltip {
             border-bottom: 1px solid $mckinsey-academy-light-gray;
           }
           .post-header-actions{
-            float: right;
             position: absolute;
             right: 0;
             top: 0;

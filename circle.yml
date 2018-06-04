@@ -2,6 +2,11 @@ machine:
   python:
     version: 2.7.12
 
+
+general:
+  artifacts:
+    - "reports"
+
 dependencies:
   override:
     - pip install -r requirements.txt
@@ -10,3 +15,11 @@ test:
   override:
     - pip install -r test-requirements.txt
     - python manage.py test --settings=mcka_apros.test_settings
+    - coverage run --source='.' manage.py test --settings=mcka_apros.test_settings
+    - coverage report
+    - coverage html
+    - coverage xml
+
+  post:
+    - mkdir -p $CIRCLE_ARTIFACTS/codecoverage
+    - cp -r reports/cover_html $CIRCLE_ARTIFACTS/codecoverage/coverage_html/

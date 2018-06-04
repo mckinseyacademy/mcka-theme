@@ -53,10 +53,11 @@ from api_client.user_api import USER_ROLES
 from lib.mail import (
     sendMultipleEmails, email_add_single_new_user, create_multiple_emails
 )
+from api_client.group_api import PERMISSION_GROUPS
 from lib.utils import DottableDict
 from license import controller as license_controller
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.validators import validate_first_name, validate_last_name, AlphanumericValidator, RoleTitleValidator
+from util.validators import validate_first_name, validate_last_name, RoleTitleValidator, normalize_foreign_characters
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
@@ -213,7 +214,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
     return course
 
 
-def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, request=None):
+def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, request=None, enable_cache=True):
     """
     Gets the course from the API, and performs any post-processing for Apros specific purposes
 
@@ -263,7 +264,7 @@ def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_ap
         course = _load_course(course_id, depth, course_api_impl, user=user)
 
         # if we have fetched the course, let's put it in the session cache
-        if course:
+        if course and enable_cache:
             # note, since we're change the schema of the session data, we have to be able to
             # bootstrap existing sessions
             if 'course_cache' not in request.session:
@@ -1624,19 +1625,23 @@ def _process_line_register_participants_csv(user_line):
         fields = user_line.strip().split(',')
         # format is FirstName, LastName, Email, Company, CourseID, Status
 
+        first_name = normalize_foreign_characters(fields[0])
+        last_name = normalize_foreign_characters(fields[1])
+        email = normalize_foreign_characters(fields[2])
+
         # temporarily set the user name to the first 30 characters of the allowed characters within the email
         username = re.sub(r'\W', '', fields[2])
         if len(username) > 30:
             username = username[:29]
 
-        validate_first_name(fields[0])
-        validate_last_name(fields[1])
-        validate_email(fields[2])
+        validate_first_name(first_name)
+        validate_last_name(last_name)
+        validate_email(email)
 
         user_info = {
-            "first_name": fields[0],
-            "last_name": fields[1],
-            "email": fields[2],
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": email,
             "company_id": fields[3],
             "course_id": fields[4],
             "status": fields[5],
@@ -1645,7 +1650,7 @@ def _process_line_register_participants_csv(user_line):
             "password": settings.INITIAL_PASSWORD,
         }
     except ValidationError as e:
-        user_info = {'error': e.message}
+        user_info = {'error': ("{} Participant {}".format(e.message, fields[2]))}
     except Exception as e:
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
@@ -1990,10 +1995,10 @@ def send_activation_emails_by_task_key(request, task_key):
 def get_company_active_courses(company_courses):
     active_courses = []
     for company_course in company_courses:
-        if timezone.now() >= parsedate(company_course['start']):
-            if company_course['end'] is None:
+        if timezone.now() >= (company_course['start']):
+            if company_course['end'] is None or '-':
                 active_courses.append(company_course)
-            elif timezone.now() <= parsedate(company_course['end']):
+            elif timezone.now() <= (company_course['end']):
                 active_courses.append(company_course)
 
     return active_courses
@@ -2544,3 +2549,57 @@ def write_social_engagement_report_on_csv(csv_writer, course_id, company_id):
     csv_writer.writerow([_('Social Engagement'), '#'])
     for stat in course_social_engagement:
         csv_writer.writerow([stat['name'], stat['value']])
+
+
+def get_organization_active_courses(request, company_id):
+    permission_handler = Permissions(request.user.id)
+    user_organizations = permission_handler.get_all_user_organizations_with_permissions()
+    user_main_companies = [user_org.id for user_org in user_organizations["main_company"]]
+
+    is_main_company = int(company_id) in user_main_companies
+
+    company_courses = organization_api.get_organizations_courses(company_id)
+    courses = []
+
+    company_admin_group_id = permission_handler.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
+    company_admin_ids = [
+        user['id'] for user in organization_api.get_users_from_organization_group(company_id, company_admin_group_id)
+    ]
+
+    for company_course in company_courses:
+        course = {}
+        course['name'] = clean_xss_characters(company_course['name'])
+        course['id'] = company_course['id']
+        course['participants'] = len(company_course['enrolled_users'])
+        course_roles = course_api.get_users_filtered_by_role(company_course['id'])
+        for user_id in company_course['enrolled_users']:
+            not_active_user = any(role.id == user_id for role in course_roles)
+            admin_from_different_company = not is_main_company and user_id == request.user.id
+
+            # If another company admin is made company admin of this company, then
+            # his courses also get included in `company_courses`, we need to
+            # filter them out
+            if user_id in company_admin_ids:
+                user_organizations = user_api.get_user_organizations(user_id)
+                if user_organizations:
+                    user_main_company = user_organizations[0]
+                    if int(company_id) != user_main_company.id:
+                        not_active_user = True
+
+            if not_active_user or admin_from_different_company:
+                course['participants'] -= 1
+
+        # Skip courses having no active participant
+        if not course['participants']:
+            continue
+
+        course['start'] = parsedate(company_course['start'])
+        if company_course['end'] is not None:
+            course['end'] = parsedate(company_course['end'])
+        else:
+            course['end'] = None
+        course['cohort'] = '-'
+
+        courses.append(course)
+
+    return courses

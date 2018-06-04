@@ -255,12 +255,6 @@ OAUTH2_OPENEDX_CLIENT_SECRET = 'sesame'
 # edX LMS shared secret used to validate provider data during SSO logins
 EDX_SSO_DATA_HMAC_KEY = '1private_apros_key'
 
-# A list of the provider_id values of any SSO providers for which we want the SSO user
-# registration process to be as fast as possible, skipping the registration form completely.
-# Provider IDs for the default SAML provider are of the form "saml-[slug]" where [slug] is the
-# "IdP Slug" value in /admin/third_party_auth/samlproviderconfig/
-SSO_AUTOPROVISION_PROVIDERS = ["saml-mckinsey"]
-
 # When autoprovisioning (see previous setting), set the user's city to this value. (A city is
 # required for things like the map of students, but we don't get 'city' from the SSO provider.)
 SSO_AUTOPROVISION_CITY = "New York"
@@ -277,6 +271,9 @@ INITIAL_PASSWORD = 'PassworD12!@'
 
 # Email address students get their enrollment email sent from
 ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
+
+# Mcka support email
+MCKA_SUPPORT_EMAIL = 'support@mckinseyacademy.com'
 
 # Disabling automatic program enrollment for no (MCKIN-1750)
 ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False

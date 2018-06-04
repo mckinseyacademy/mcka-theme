@@ -1,0 +1,9 @@
+### This file is added for the purpose of pushing empty `reports` directory in repo.
+### `reports` directory will be used by CircleCI to create coverage reports.
+### See `.coveragerc` and `circle.yml` to see the use of `reports` directory.
+
+
+# Ignore everything in this directory
+*
+# Except this file
+!.gitignore

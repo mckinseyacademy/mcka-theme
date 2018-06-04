@@ -133,10 +133,6 @@ In `~/lms.auth.json`, configure the LMS to integrate with Apros by adding the fo
    SSO option on `/accounts/login/`. Using that login method before creating an account with an access key will not 
    work, and will result in the error "This email is not associated with any identity provider."
 
-# Skipping the registration form
-
-To skip the registration form for certain trusted identity providers, configure the `SSO_AUTOPROVISION_PROVIDERS` and `SSO_AUTOPROVISION_CITY` Apros django settings [as described in settings.py](https://github.com/mckinseyacademy/mcka_apros/blob/8eb09f6510c12b1d90d1c470de4bd2c04f5c0117/mcka_apros/settings.py#L206-L214).
-
 # Troubleshooting
 
 ## SSO works when initiated from LMS, but fails when initiated from Apros

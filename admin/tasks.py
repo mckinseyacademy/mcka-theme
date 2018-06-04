@@ -4,6 +4,8 @@ Celery tasks related to admin app
 from collections import OrderedDict
 from tempfile import TemporaryFile
 
+from urlparse import urljoin
+
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.utils.translation import ugettext as _
@@ -14,13 +16,14 @@ from celery.decorators import task
 from celery.utils.log import get_task_logger
 from celery import states as celery_states
 from celery.exceptions import Ignore
-from urlparse import urljoin
-
 from api_client import course_api
 from api_client import group_api
+from api_client import user_api
 from api_client.api_error import ApiError
 from util.csv_helpers import CSVWriter
 from util.s3_helpers import PrivateMediaStorageThroughApros
+from util.email_helpers import send_html_email
+
 
 from .controller import CourseParticipantStats
 
@@ -28,17 +31,26 @@ logger = get_task_logger(__name__)
 
 
 @task(name='admin.course_participants_data_retrieval_task', max_retries=3, queue='high_priority')
-def course_participants_data_retrieval_task(course_id, company_id, task_id, base_url, retry_params=None):
+def course_participants_data_retrieval_task(
+        course_id, company_id, task_id, base_url, user_id,
+        lesson_completions=False, retry_params=None
+    ):
     """
     Retrieves course participants' data using API
 
     results are set in celery result backend, batch status is updated on each successful retrieval
     """
+
+    additional_fields = ['grades', 'roles', 'organizations']
+
+    if lesson_completions:
+        additional_fields.append('lesson_completions')
+
     api_params = {
         'page': 1,
         'per_page': 200,
         'page_size': 200,
-        'additional_fields': "grades,roles,organizations,lesson_completions,progress",
+        'additional_fields': ",".join(additional_fields),
     }
     task_log_msg = "Participants data retrieval task for course: {}".format(course_id)
     storage_path = settings.EXPORT_STATS_DIR
@@ -178,13 +190,64 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         raise course_participants_data_retrieval_task.retry(exc=e)
     else:
         logger.info('Saved CSV to S3 - {}'.format(task_log_msg))
-
-        storage_url = storage.url(storage_path)
         temp_csv_file.close()
 
     logger.info('Finished - {}'.format(task_log_msg))
 
-    return storage_url
+    download_url = urljoin(
+        base=base_url,
+        url=reverse('private_storage', kwargs={'path': storage_path})
+    )
+
+    # invoke email send task
+    export_stats_notification_email_task.delay(
+        user_id, course_id, file_name, base_url, download_url
+    )
+
+    return download_url
+
+
+@task(name='admin.export_stats_notification_email', max_retries=5)
+def export_stats_notification_email_task(user_id, course_id, report_name, base_url, download_url):
+    """
+    Sends export stats completion notification email to admin
+    created as a separate task to support retries
+    """
+    task_log_msg = "Export Stats notification email task for course: {}".format(course_id)
+    logger.info('Starting - {}'.format(task_log_msg))
+
+    mcka_logo = urljoin(
+        base=base_url,
+        url='/static/image/McKA_logoBLUE.png'
+    )
+
+    try:
+        user_data = user_api.get_user(user_id).to_dict()
+    except Exception as e:
+        logger.error(
+            'Failed retrieving Admin User info from API - {} - {}'
+            .format(e.message, task_log_msg)
+        )
+        raise export_stats_notification_email_task.retry(exc=e)
+
+    try:
+        send_html_email(
+            subject=_('Participant stats for {} is ready to download').format(course_id),
+            to_emails=[user_data.get('email')], template_name='admin/export_stats_email_template',
+            template_data={
+                'first_name': user_data.get('first_name'),
+                'download_link': download_url, 'support_email': settings.MCKA_SUPPORT_EMAIL,
+                'report_name': report_name, 'mcka_logo_url': mcka_logo
+            }
+        )
+        logger.info('Email successfully sent - {}'.format(task_log_msg))
+    except Exception as e:
+        logger.error('Failed sending download link email to Admin {} - {}'.format(e.message, task_log_msg))
+        raise export_stats_notification_email_task.retry(exc=e)
+
+    logger.info('Finished - {}'.format(task_log_msg))
+
+    return True
 
 
 @task(name='admin.course_notifications_data_retrieval_task', max_retries=3)

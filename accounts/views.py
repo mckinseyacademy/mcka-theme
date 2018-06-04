@@ -835,24 +835,20 @@ def sso_registration_form(request):
     provider_data = request.session['provider_data']
     provider_user_data = provider_data['user_details']
     username = _cleanup_username(provider_user_data.get('username', ''))
-    should_autoprovision = provider_data['provider_id'] in settings.SSO_AUTOPROVISION_PROVIDERS
-
     remote_session_key = request.COOKIES.get('sessionid')
+
     if not remote_session_key:
         error = _("Authentication cookie is missing. Your session may have timed out. Please start over.")
 
     if request.method == 'POST':
         user_data = request.POST.copy()
-    elif should_autoprovision:
-        # Autoprovision is enabled for this provider. Fill out the required fields that don't
-        # come from the provider so the user can skip the registration form completely.
-        user_data = {
-            'accept_terms': True,
-            'city': settings.SSO_AUTOPROVISION_CITY,
-            'username': username,
-        }
+    user_data = {
+        'accept_terms': True,
+        'city': settings.SSO_AUTOPROVISION_CITY,
+        'username': username,
+    }
 
-    initial_values = {  # Default values from the provider that the user can change:
+    initial_values = {  # Default values from the provider:
         'username': username,
     }
     fixed_values = {  # Values that we prevent the user from editing:
@@ -865,8 +861,7 @@ def sso_registration_form(request):
         fixed_values['email'] = provider_user_data['email']
 
     form = FinalizeRegistrationForm(user_data, fixed_values, initial=initial_values)
-    if (request.method == 'POST' or should_autoprovision) and error is None:
-        # If the form has been submitted or auto-submitted:
+    if error is None:
         if form.is_valid():
             # Create a random secure password for this user:
             random_password = base64.b64encode(os.urandom(32))
@@ -894,14 +889,10 @@ def sso_registration_form(request):
             except ApiError as exc:
                 error = _("Failed to register user: {exception_message}").format(exception_message=exc.message)
         else:
-            error = _("Some required information was missing. Please check the fields below.")
+            error = _("Some required information was missing.")
 
-    data = {
-        "form": form,
-        "error": error,
-        "activate_label": _("Create my McKinsey Academy account"),
-    }
-    return render(request, 'accounts/activate.haml', data)
+    context = {'error_details': error}
+    return render(request, 'accounts/sso_error.haml', context)
 
 
 def sso_error(request):

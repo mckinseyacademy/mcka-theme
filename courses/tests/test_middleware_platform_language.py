@@ -32,6 +32,8 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 	@ddt.data(
 		('jp,de-DE,de;q=0.8,en-GB;q=0.6,en;q=0.4', 'jp'),
 		('ar,de-DE', 'ar'),
+		('ar-AE,de-DE', 'ar'),
+		('en-AU,de-DE', 'en'),
 		('en', 'en')
 	)
 	@ddt.unpack
@@ -55,6 +57,7 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 		('/faq/', 'en'),
 		('/privacy/', 'en'),
 		('/terms/', 'en'),
+		('/accounts/edit_fullname', 'en'),
 		('/accounts/activate/123basdyadq', 'en'),
 		('/admin/', LANGUAGE_CODE),
 		('/admin/clients/1/navigation', LANGUAGE_CODE)

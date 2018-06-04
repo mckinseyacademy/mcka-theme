@@ -394,6 +394,20 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         if(dataurl)
           saveButton.attr('data-download-url', dataurl);
       }
+      /* utility function for resetting course modal */
+      function resetModal(){
+          var courseModal = $('#courseDetailsMainModal');
+          var saveButton = courseModal.find('.courseModalControl').find('.saveChanges');
+
+          saveButton.off();
+          saveButton.removeAttr('disabled');
+          saveButton.removeClass('disabled');
+          courseModal.find('.courseModalTitle').text('');
+          courseModal.find('.courseModalStatus').text('');
+          courseModal.find('.courseModalDescription').text('');
+          courseModal.find('.courseModalContent').html('');
+      }
+
       /**
        * Initiates a backend background task and its periodical status check
       */
@@ -434,10 +448,83 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           .fail(function(data) {
             console.log("Ajax failed to fetch data");
             console.log(data);
-          })
+          });
         
           $('#courseDetailsMainModal').foundation('reveal', 'open');
       }
+
+      function exportStatsDownloader(){
+          resetModal();
+
+          // append a checkbox selection in the popup
+          var progressCheckBox = $('<input/>').css({'margin': 0}).attr({type: 'checkbox', name:'include_lesson_progress'})
+              .addClass("progress-check-box");
+          var label = $('<label />').css({'fontSize': '12px', 'display': 'inline'}).text(
+              gettext('Include breakdown of progress for each lesson (Note: the export will take more time)')
+          );
+          var selectionDiv = $('<div />').append(progressCheckBox).append(label);
+
+          $('#courseDetailsMainModal').find('.courseModalContent').css({'padding': '0 0 20px 0'}).append(selectionDiv);
+          $('#courseDetailsMainModal').find('.courseModalDescription').text(
+              gettext("We'll e-mail you when your report is ready to download.")
+          );
+
+          updateModalAttrs(gettext('Exporting Stats for All Users'), '');
+          updateSaveButtonAttrs(gettext('Export Report'), null, null);
+
+          var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
+          var cancelButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.cancelChanges');
+
+          saveButton.on('click', function () {
+              updateSaveButtonAttrs(null, true, null);
+
+              var courseId = $("#courseDetailsDataWrapper").attr("data-id");
+              var url = ApiUrls.admin_bulk_task;
+              var dictionaryToSend = {
+                type:'participants_csv_data', course_id: courseId, 
+                lesson_completions: $('.progress-check-box').is(':checked')
+              };
+
+              // if company page; pass in company id
+              var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+              if (companyPageFlag == 'True'){
+                var companyId = $('#courseDetailsDataWrapper').attr('company-id');
+                dictionaryToSend['company_id'] = companyId;
+              }
+
+              var options = {
+                url: url,
+                data: JSON.stringify(dictionaryToSend),
+                processData: false,
+                type: "POST",
+                dataType: "json"
+              };
+              options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+            
+              $.ajax(options)
+              .done(function(data, textStatus, xhr) {
+                if (xhr.status === 201){
+                  $('#courseDetailsMainModal').foundation('reveal', 'close');
+                }
+              })
+              .fail(function(data) {
+                $('#courseDetailsMainModal').find('.courseModalDescription').text(
+                  gettext("Error initiating the report generation. Please retry later.")
+                );
+                console.log("Ajax failed to fetch data");
+                console.log(data);
+              });
+          });
+
+          cancelButton.on('click', function () {
+            $('#courseDetailsMainModal').foundation('reveal', 'close');
+            resetModal();
+          });
+
+          $('#courseDetailsMainModal').foundation('reveal', 'open');
+      }
+
+
       $('#courseBulkActionsMainContainer').on('click','.bulkExportNotifData',function(){
         if ($(this).hasClass('disabled'))
           return;
@@ -447,6 +534,8 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
                 .replace(/ /g,'_') + '_push_notification_data.csv';
 
         if($(this).hasClass('allselected')){
+            resetModal();
+
             // transfer control to backend downloader in case of select-all
             backendCSVDownloader({
               type: 'push_notifications_data', modalTitle: gettext('Download Notifications CSV'),
@@ -482,11 +571,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         
         if($(this).hasClass('allselected')){
             // transfer control to backend downloader in case of select-all
-            backendCSVDownloader({
-              type: 'participants_csv_data', modalTitle: gettext('Download Participants'),
-              downloadLink: '/admin/download_task_generated_csv/',
-              linkParams: 'task_name=participants_stats&file_name=' + filename
-            });
+            exportStatsDownloader();
             return;
         }
 
