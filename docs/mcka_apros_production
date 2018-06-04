@@ -29,7 +29,7 @@ server {
     if (-f /edx/app/apros/mcka_apros/maintenance.lock) {
         return 503;
     }
-    
+
     try_files $uri @proxy_to_appros;
   }
 
@@ -98,6 +98,11 @@ server {
   location ~ /static/(?P<file>.*) {
     root /edx/app/apros/mcka_apros;
     try_files /static_cache/$file /static/$file @proxy_to_lms_nginx;
+  }
+
+  # Needed for mobile SSO-based auth to work
+  location /oauth2/ {
+    try_files $uri @proxy_to_lms_app;
   }
 
   location @proxy_to_lms_nginx {

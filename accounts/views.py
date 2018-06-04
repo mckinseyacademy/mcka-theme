@@ -536,10 +536,9 @@ def finalize_sso_mobile(request):
         # Get an access token that the mobile app can use
         try:
             response = requests.post(
-                "{api_server}{access_token_path}".format(
-                    api_server=settings.API_SERVER_ADDRESS,
+                request.build_absolute_uri("{access_token_path}".format(
                     access_token_path=OAUTH2_ACCESS_TOKEN_PATH,
-                ),
+                )),
                 data={
                     'client_id': settings.OAUTH2_MOBILE_CLIENT_ID,
                     "client_secret": settings.OAUTH2_MOBILE_CLIENT_SECRET,
@@ -565,8 +564,7 @@ def finalize_sso_mobile(request):
         'response_type': 'code',
         'redirect_uri': request.build_absolute_uri(reverse('sso_finalize')),
     }
-    access_token_redirect = "{api_server}{authorize_path}?{query}".format(
-        api_server=settings.API_SERVER_ADDRESS,
+    access_token_redirect = "{authorize_path}?{query}".format(
         authorize_path=OAUTH2_AUTHORIZE_PATH,
         query=urlencode(oauth_data)
     )
