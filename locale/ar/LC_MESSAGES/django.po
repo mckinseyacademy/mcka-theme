@@ -7041,7 +7041,7 @@ msgid ""
 "achieve a score of 70%% or above across the program’s 5 core courses."
 msgstr ""
 "للتأهل للحصول على شهادة إتمام دورة مهني إدارة الصيانة، على المشاركين تحقيق "
-"درجة 70 %%أو أعلى في كافة دورات البرنامج الأساسية الخمس"
+"درجة %%70 أو أعلى في كافة دورات البرنامج الأساسية الخمس"
 
 #: templates/faq.haml:81
 msgid "How are McKinsey Academy certificates delivered?"
