@@ -218,7 +218,7 @@ def export_stats_notification_email_task(user_id, course_id, report_name, base_u
 
     mcka_logo = urljoin(
         base=base_url,
-        url='/static/image/McKA_logoBLUE.png'
+        url='/static/image/mcka_email_logo.png'
     )
 
     try:
