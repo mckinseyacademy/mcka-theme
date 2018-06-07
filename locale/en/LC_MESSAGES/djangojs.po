@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-01 09:28+0000\n"
+"POT-Creation-Date: 2018-06-07 08:29+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,788 +18,1899 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: static/js/admin/client_sso.js:142
-msgid "You need to enter name!"
+#: static/gen/packed.js:32180 static/gen/packed_ie8.js:722
+#: static/js/vendor/jquery-ui.min.js:10 static_cache/gen/packed.js:32180
+#: static_cache/gen/packed_ie8.js:722
+#: static_cache/js/vendor/jquery-ui.min.js:10 static_cache/packed.js:32180
+#: static_cache/packed_ie8.js:722
+msgid "'"
 msgstr ""
 
-#: static/js/admin/client_sso.js:147
-msgid "You need to enter course ID!"
-msgstr ""
-
-#: static/js/admin_learner_dashboard/element_modal.js:64
-#: static/js/views/admin/company_learner_dashboard_list.js:14
-#: static/js/views/admin/course_details_bulk_actions.js:275
-#: static/js/views/admin/participant_details_edit_info.js:359
-#: static/js/views/admin/participantsinfo.js:120
-msgid "Course"
-msgstr ""
-
-#: static/js/admin_learner_dashboard/element_modal.js:72
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
-msgid "In Person Session"
-msgstr ""
-
-#: static/js/admin_learner_dashboard/self_registration_roles.js:9
-msgid "Add new role e.g CEO,CTO"
-msgstr ""
-
-#: static/js/admin_learner_dashboard/self_registration_roles.js:10
-msgid "Delete Role"
-msgstr ""
-
-#: static/js/admin_learner_dashboard/sort.js:72
-#: static/js/learner_dashboard_sort.js:54
-msgid "Are you sure?"
-msgstr ""
-
-#: static/js/admin_upload_students.js:8
-#: static/js/common/mass_participants_enroll.js:168
-#: static/js/common/mass_participants_upload.js:115
-msgid "Show Errors"
-msgstr ""
-
-#: static/js/admin_upload_students.js:73
-#: static/js/common/mass_participants_enroll.js:147
-#: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
-msgid "Please select file first."
-msgstr ""
-
-#: static/js/application.js:192
+#: static/gen/packed.js:34241 static/gen/packed_ie8.js:879
+#: static/js/application.js:192 static_cache/gen/packed.js:34241
+#: static_cache/gen/packed_ie8.js:879 static_cache/js/application.js:192
+#: static_cache/packed.js:34241 static_cache/packed_ie8.js:879
 msgid "Your course hasn't begun yet. "
 msgstr ""
 
-#: static/js/application.js:195
+#: static/gen/packed.js:34244 static/gen/packed_ie8.js:880
+#: static/js/application.js:195 static_cache/gen/packed.js:34244
+#: static_cache/gen/packed_ie8.js:880 static_cache/js/application.js:195
+#: static_cache/packed.js:34244 static_cache/packed_ie8.js:880
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)d days."
 msgstr[0] ""
 msgstr[1] ""
 
-#: static/js/application.js:198
+#: static/gen/packed.js:34247 static/gen/packed_ie8.js:881
+#: static/js/application.js:198 static_cache/gen/packed.js:34247
+#: static_cache/gen/packed_ie8.js:881 static_cache/js/application.js:198
+#: static_cache/packed.js:34247 static_cache/packed_ie8.js:881
 msgid "Welcome to McKinsey Academy"
 msgstr ""
 
-#: static/js/common/admin_bulk_actions.js:17
+#: static/gen/packed.js:34736 static/gen/packed_ie8.js:921
+#: static/js/router.js:346 static_cache/gen/packed.js:34736
+#: static_cache/gen/packed_ie8.js:921 static_cache/js/router.js:346
+#: static_cache/packed.js:34736 static_cache/packed_ie8.js:921
+msgid "Please select at least one course"
+msgstr ""
+
+#: static/gen/packed.js:34940 static/gen/packed_ie8.js:929
+#: static/js/common/admin_bulk_actions.js:17 static_cache/gen/packed.js:34940
+#: static_cache/gen/packed_ie8.js:929
+#: static_cache/js/common/admin_bulk_actions.js:17 static_cache/packed.js:34940
+#: static_cache/packed_ie8.js:929
 msgid "Progress: %(value)s%"
 msgstr ""
 
-#: static/js/common/bbGridExtend.js:70
+#: static/gen/packed.js:35066 static/gen/packed_ie8.js:955
+#: static/js/common/bbGridExtend.js:70 static_cache/gen/packed.js:35066
+#: static_cache/gen/packed_ie8.js:955 static_cache/js/common/bbGridExtend.js:70
+#: static_cache/packed.js:35066 static_cache/packed_ie8.js:955
 msgid "Keyword Search"
 msgstr ""
 
-#: static/js/common/common_js.js:171
+#: static/gen/packed.js:35600 static/gen/packed_ie8.js:1036
+#: static/js/common/common_js.js:171 static_cache/gen/packed.js:35600
+#: static_cache/gen/packed_ie8.js:1036 static_cache/js/common/common_js.js:171
+#: static_cache/packed.js:35600 static_cache/packed_ie8.js:1036
 msgid "NoName"
 msgstr ""
 
-#: static/js/common/common_js.js:514
+#: static/gen/packed.js:35943 static/gen/packed_ie8.js:1092
+#: static/js/common/common_js.js:514 static_cache/gen/packed.js:35943
+#: static_cache/gen/packed_ie8.js:1092 static_cache/js/common/common_js.js:514
+#: static_cache/packed.js:35943 static_cache/packed_ie8.js:1092
 msgid "Send"
 msgstr ""
 
-#: static/js/common/common_js.js:744
+#: static/gen/packed.js:36173 static/gen/packed_ie8.js:1138
+#: static/js/common/common_js.js:744 static_cache/gen/packed.js:36173
+#: static_cache/gen/packed_ie8.js:1138 static_cache/js/common/common_js.js:744
+#: static_cache/packed.js:36173 static_cache/packed_ie8.js:1138
 msgid "Fetching data for file: %(filename)s"
 msgstr ""
 
-#: static/js/common/common_js.js:856
+#: static/gen/packed.js:36285 static/gen/packed_ie8.js:1161
+#: static/js/common/common_js.js:856 static_cache/gen/packed.js:36285
+#: static_cache/gen/packed_ie8.js:1161 static_cache/js/common/common_js.js:856
+#: static_cache/packed.js:36285 static_cache/packed_ie8.js:1161
 msgid "%(value)s%"
 msgstr ""
 
+#: static/gen/packed.js:36346 static/gen/packed.js:36417
+#: static/gen/packed_ie8.js:1165 static/gen/packed_ie8.js:1170
 #: static/js/common/mass_participants_enroll.js:57
 #: static/js/common/mass_participants_enroll.js:128
+#: static_cache/gen/packed.js:36346 static_cache/gen/packed.js:36417
+#: static_cache/gen/packed_ie8.js:1165 static_cache/gen/packed_ie8.js:1170
+#: static_cache/js/common/mass_participants_enroll.js:57
+#: static_cache/js/common/mass_participants_enroll.js:128
+#: static_cache/packed.js:36346 static_cache/packed.js:36417
+#: static_cache/packed_ie8.js:1165 static_cache/packed_ie8.js:1170
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
 msgstr ""
 
+#: static/gen/packed.js:36436 static/gen/packed.js:36641
+#: static/gen/packed_ie8.js:1171 static/gen/packed_ie8.js:1206
+#: static/js/admin_upload_students.js:73
+#: static/js/common/mass_participants_enroll.js:147
+#: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
+#: static_cache/gen/packed.js:36436 static_cache/gen/packed.js:36641
+#: static_cache/gen/packed_ie8.js:1171 static_cache/gen/packed_ie8.js:1206
+#: static_cache/js/admin_upload_students.js:73
+#: static_cache/js/common/mass_participants_enroll.js:147
+#: static_cache/js/common/mass_participants_upload.js:94
+#: static_cache/js/image_editor.js:77 static_cache/packed.js:36436
+#: static_cache/packed.js:36641 static_cache/packed_ie8.js:1171
+#: static_cache/packed_ie8.js:1206
+msgid "Please select file first."
+msgstr ""
+
+#: static/gen/packed.js:36457 static/gen/packed.js:36662
+#: static/gen/packed_ie8.js:1175 static/gen/packed_ie8.js:1210
+#: static/js/admin_upload_students.js:8
+#: static/js/common/mass_participants_enroll.js:168
+#: static/js/common/mass_participants_upload.js:115
+#: static_cache/gen/packed.js:36457 static_cache/gen/packed.js:36662
+#: static_cache/gen/packed_ie8.js:1175 static_cache/gen/packed_ie8.js:1210
+#: static_cache/js/admin_upload_students.js:8
+#: static_cache/js/common/mass_participants_enroll.js:168
+#: static_cache/js/common/mass_participants_upload.js:115
+#: static_cache/packed.js:36457 static_cache/packed.js:36662
+#: static_cache/packed_ie8.js:1175 static_cache/packed_ie8.js:1210
+msgid "Show Errors"
+msgstr ""
+
+#: static/gen/packed.js:36469 static/gen/packed.js:36674
+#: static/gen/packed_ie8.js:1184 static/gen/packed_ie8.js:1219
 #: static/js/common/mass_participants_enroll.js:180
 #: static/js/common/mass_participants_upload.js:127
+#: static_cache/gen/packed.js:36469 static_cache/gen/packed.js:36674
+#: static_cache/gen/packed_ie8.js:1184 static_cache/gen/packed_ie8.js:1219
+#: static_cache/js/common/mass_participants_enroll.js:180
+#: static_cache/js/common/mass_participants_upload.js:127
+#: static_cache/packed.js:36469 static_cache/packed.js:36674
+#: static_cache/packed_ie8.js:1184 static_cache/packed_ie8.js:1219
 msgid "Errors:"
 msgstr ""
 
+#: static/gen/packed.js:36478 static/gen/packed.js:36683
+#: static/gen/packed_ie8.js:1190 static/gen/packed_ie8.js:1225
 #: static/js/common/mass_participants_enroll.js:189
 #: static/js/common/mass_participants_upload.js:136
+#: static_cache/gen/packed.js:36478 static_cache/gen/packed.js:36683
+#: static_cache/gen/packed_ie8.js:1190 static_cache/gen/packed_ie8.js:1225
+#: static_cache/js/common/mass_participants_enroll.js:189
+#: static_cache/js/common/mass_participants_upload.js:136
+#: static_cache/packed.js:36478 static_cache/packed.js:36683
+#: static_cache/packed_ie8.js:1190 static_cache/packed_ie8.js:1225
 msgid "Total:"
 msgstr ""
 
+#: static/gen/packed.js:36480 static/gen/packed.js:36685
+#: static/gen/packed_ie8.js:1192 static/gen/packed_ie8.js:1227
 #: static/js/common/mass_participants_enroll.js:191
 #: static/js/common/mass_participants_upload.js:138
+#: static_cache/gen/packed.js:36480 static_cache/gen/packed.js:36685
+#: static_cache/gen/packed_ie8.js:1192 static_cache/gen/packed_ie8.js:1227
+#: static_cache/js/common/mass_participants_enroll.js:191
+#: static_cache/js/common/mass_participants_upload.js:138
+#: static_cache/packed.js:36480 static_cache/packed.js:36685
+#: static_cache/packed_ie8.js:1192 static_cache/packed_ie8.js:1227
 msgid "Succeded:"
 msgstr ""
 
+#: static/gen/packed.js:36482 static/gen/packed.js:36687
+#: static/gen/packed_ie8.js:1194 static/gen/packed_ie8.js:1229
 #: static/js/common/mass_participants_enroll.js:193
 #: static/js/common/mass_participants_upload.js:140
+#: static_cache/gen/packed.js:36482 static_cache/gen/packed.js:36687
+#: static_cache/gen/packed_ie8.js:1194 static_cache/gen/packed_ie8.js:1229
+#: static_cache/js/common/mass_participants_enroll.js:193
+#: static_cache/js/common/mass_participants_upload.js:140
+#: static_cache/packed.js:36482 static_cache/packed.js:36687
+#: static_cache/packed_ie8.js:1194 static_cache/packed_ie8.js:1229
 msgid "Failed:"
 msgstr ""
 
+#: static/gen/packed.js:36534 static/gen/packed_ie8.js:1202
 #: static/js/common/mass_participants_enroll.js:245
+#: static_cache/gen/packed.js:36534 static_cache/gen/packed_ie8.js:1202
+#: static_cache/js/common/mass_participants_enroll.js:245
+#: static_cache/packed.js:36534 static_cache/packed_ie8.js:1202
 msgid "email"
 msgstr ""
 
+#: static/gen/packed.js:36534 static/gen/packed_ie8.js:1202
 #: static/js/common/mass_participants_enroll.js:245
+#: static_cache/gen/packed.js:36534 static_cache/gen/packed_ie8.js:1202
+#: static_cache/js/common/mass_participants_enroll.js:245
+#: static_cache/packed.js:36534 static_cache/packed_ie8.js:1202
 msgid "course id"
 msgstr ""
 
+#: static/gen/packed.js:36534 static/gen/packed_ie8.js:1202
 #: static/js/common/mass_participants_enroll.js:245
+#: static_cache/gen/packed.js:36534 static_cache/gen/packed_ie8.js:1202
+#: static_cache/js/common/mass_participants_enroll.js:245
+#: static_cache/packed.js:36534 static_cache/packed_ie8.js:1202
 msgid "status"
 msgstr ""
 
+#: static/gen/packed.js:36684 static/gen/packed.js:36686
+#: static/gen/packed.js:36688 static/gen/packed_ie8.js:1226
+#: static/gen/packed_ie8.js:1228 static/gen/packed_ie8.js:1230
 #: static/js/common/mass_participants_upload.js:137
 #: static/js/common/mass_participants_upload.js:139
 #: static/js/common/mass_participants_upload.js:141
+#: static_cache/gen/packed.js:36684 static_cache/gen/packed.js:36686
+#: static_cache/gen/packed.js:36688 static_cache/gen/packed_ie8.js:1226
+#: static_cache/gen/packed_ie8.js:1228 static_cache/gen/packed_ie8.js:1230
+#: static_cache/js/common/mass_participants_upload.js:137
+#: static_cache/js/common/mass_participants_upload.js:139
+#: static_cache/js/common/mass_participants_upload.js:141
+#: static_cache/packed.js:36684 static_cache/packed.js:36686
+#: static_cache/packed.js:36688 static_cache/packed_ie8.js:1226
+#: static_cache/packed_ie8.js:1228 static_cache/packed_ie8.js:1230
 msgid "0"
 msgstr ""
 
-#: static/js/course_contact_modal.js:15
-msgid "Notification"
-msgstr ""
-
-#: static/js/course_drag_drop.js:70
-msgid "Group successfully updated"
-msgstr ""
-
-#: static/js/course_drag_drop.js:153
-msgid "Please select at least one student"
-msgstr ""
-
-#: static/js/course_drag_drop.js:160
-msgid "Please select project"
-msgstr ""
-
-#: static/js/course_drag_drop.js:174
-msgid "Group was not created"
-msgstr ""
-
-#: static/js/course_drag_drop.js:234
-msgid "All students added to private group have to be members of same company."
-msgstr ""
-
-#: static/js/course_drag_drop.js:242
-msgid ""
-"Are you sure you want to remove this group? Doing so will remove submissions "
-"and feedback associated with the group."
-msgstr ""
-
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
-msgid "Your Progress: %(value)s%"
-msgstr ""
-
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
-msgid "Complete"
-msgstr ""
-
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
-msgid "Incomplete"
-msgstr ""
-
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
-msgid "Digital Course"
-msgstr ""
-
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
-msgid "Group work"
-msgstr ""
-
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
-msgid "Webinar"
-msgstr ""
-
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
-msgid "Digital Content"
-msgstr ""
-
-#: static/js/image_editor.js:3
-msgid "No file Selected"
-msgstr ""
-
-#: static/js/image_editor.js:45
-msgid ""
-"Error uploading file. Please try again and be sure to use an accepted file "
-"format."
-msgstr ""
-
-#: static/js/image_editor.js:52
-msgid "Please select file for upload."
-msgstr ""
-
-#: static/js/models/city.js:29
+#: static/gen/packed.js:37089 static/gen/packed_ie8.js:1267
+#: static/js/models/city.js:29 static_cache/gen/packed.js:37089
+#: static_cache/gen/packed_ie8.js:1267 static_cache/js/models/city.js:29
+#: static_cache/packed.js:37089 static_cache/packed_ie8.js:1267
 msgid "Participants:"
 msgstr ""
 
+#: static/gen/packed.js:37128 static/gen/packed.js:38812
+#: static/gen/packed.js:41728 static/gen/packed_ie8.js:1270
+#: static/gen/packed_ie8.js:1462 static/gen/packed_ie8.js:1970
 #: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
 #: static/js/views/admin/participantsinfo.js:23
+#: static_cache/gen/packed.js:37128 static_cache/gen/packed.js:38812
+#: static_cache/gen/packed.js:41728 static_cache/gen/packed_ie8.js:1270
+#: static_cache/gen/packed_ie8.js:1462 static_cache/gen/packed_ie8.js:1970
+#: static_cache/js/models/city.js:68
+#: static_cache/js/views/admin/course_details.js:28
+#: static_cache/js/views/admin/participantsinfo.js:23
+#: static_cache/packed.js:37128 static_cache/packed.js:38812
+#: static_cache/packed.js:41728 static_cache/packed_ie8.js:1270
+#: static_cache/packed_ie8.js:1462 static_cache/packed_ie8.js:1970
 msgid "Email"
 msgstr ""
 
-#: static/js/router.js:346
-msgid "Please select at least one course"
-msgstr ""
-
+#: static/gen/packed.js:37888 static/gen/packed.js:38813
+#: static/gen/packed.js:38882 static/gen/packed.js:41727
+#: static/gen/packed_ie8.js:1330 static/gen/packed_ie8.js:1462
+#: static/gen/packed_ie8.js:1476 static/gen/packed_ie8.js:1970
 #: static/js/views/admin/companies_list.js:15
 #: static/js/views/admin/course_details.js:29
 #: static/js/views/admin/course_details.js:98
 #: static/js/views/admin/participantsinfo.js:22
+#: static_cache/gen/packed.js:37888 static_cache/gen/packed.js:38813
+#: static_cache/gen/packed.js:38882 static_cache/gen/packed.js:41727
+#: static_cache/gen/packed_ie8.js:1330 static_cache/gen/packed_ie8.js:1462
+#: static_cache/gen/packed_ie8.js:1476 static_cache/gen/packed_ie8.js:1970
+#: static_cache/js/views/admin/companies_list.js:15
+#: static_cache/js/views/admin/course_details.js:29
+#: static_cache/js/views/admin/course_details.js:98
+#: static_cache/js/views/admin/participantsinfo.js:22
+#: static_cache/packed.js:37888 static_cache/packed.js:38813
+#: static_cache/packed.js:38882 static_cache/packed.js:41727
+#: static_cache/packed_ie8.js:1330 static_cache/packed_ie8.js:1462
+#: static_cache/packed_ie8.js:1476 static_cache/packed_ie8.js:1970
 msgid "Company"
 msgstr ""
 
-#: static/js/views/admin/companies_list.js:23
+#: static/gen/packed.js:37896 static/gen/packed_ie8.js:1331
+#: static/js/views/admin/companies_list.js:23 static_cache/gen/packed.js:37896
+#: static_cache/gen/packed_ie8.js:1331
+#: static_cache/js/views/admin/companies_list.js:23
+#: static_cache/packed.js:37896 static_cache/packed_ie8.js:1331
 msgid "Company ID"
 msgstr ""
 
-#: static/js/views/admin/companies_list.js:24
+#: static/gen/packed.js:37897 static/gen/packed_ie8.js:1331
+#: static/js/views/admin/companies_list.js:24 static_cache/gen/packed.js:37897
+#: static_cache/gen/packed_ie8.js:1331
+#: static_cache/js/views/admin/companies_list.js:24
+#: static_cache/packed.js:37897 static_cache/packed_ie8.js:1331
 msgid "No. of Participants"
 msgstr ""
 
-#: static/js/views/admin/companies_list.js:25
+#: static/gen/packed.js:37898 static/gen/packed_ie8.js:1331
+#: static/js/views/admin/companies_list.js:25 static_cache/gen/packed.js:37898
+#: static_cache/gen/packed_ie8.js:1331
+#: static_cache/js/views/admin/companies_list.js:25
+#: static_cache/packed.js:37898 static_cache/packed_ie8.js:1331
 msgid "No. of Courses"
 msgstr ""
 
+#: static/gen/packed.js:37971 static/gen/packed.js:38220
+#: static/gen/packed.js:38400 static/gen/packed.js:41644
+#: static/gen/packed.js:42078 static/gen/packed_ie8.js:1348
+#: static/gen/packed_ie8.js:1393 static/gen/packed_ie8.js:1408
+#: static/gen/packed_ie8.js:1937 static/gen/packed_ie8.js:2084
 #: static/js/views/admin/companies_list.js:98
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:474
 #: static/js/views/admin/participantsinfo.js:370
+#: static_cache/gen/packed.js:37971 static_cache/gen/packed.js:38220
+#: static_cache/gen/packed.js:38400 static_cache/gen/packed.js:41644
+#: static_cache/gen/packed.js:42078 static_cache/gen/packed_ie8.js:1348
+#: static_cache/gen/packed_ie8.js:1393 static_cache/gen/packed_ie8.js:1408
+#: static_cache/gen/packed_ie8.js:1937 static_cache/gen/packed_ie8.js:2084
+#: static_cache/js/views/admin/companies_list.js:98
+#: static_cache/js/views/admin/company_details.js:189
+#: static_cache/js/views/admin/company_learner_dashboard_list.js:139
+#: static_cache/js/views/admin/participant_details_edit_info.js:474
+#: static_cache/js/views/admin/participantsinfo.js:370
+#: static_cache/packed.js:37971 static_cache/packed.js:38220
+#: static_cache/packed.js:38400 static_cache/packed.js:41644
+#: static_cache/packed.js:42078 static_cache/packed_ie8.js:1348
+#: static_cache/packed_ie8.js:1393 static_cache/packed_ie8.js:1408
+#: static_cache/packed_ie8.js:1937 static_cache/packed_ie8.js:2084
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr ""
 
+#: static/gen/packed.js:37978 static/gen/packed.js:38215
+#: static/gen/packed.js:38396 static/gen/packed.js:41638
+#: static/gen/packed.js:42072 static/gen/packed_ie8.js:1350
+#: static/gen/packed_ie8.js:1391 static/gen/packed_ie8.js:1407
+#: static/gen/packed_ie8.js:1935 static/gen/packed_ie8.js:2082
 #: static/js/views/admin/companies_list.js:105
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:468
 #: static/js/views/admin/participantsinfo.js:364
+#: static_cache/gen/packed.js:37978 static_cache/gen/packed.js:38215
+#: static_cache/gen/packed.js:38396 static_cache/gen/packed.js:41638
+#: static_cache/gen/packed.js:42072 static_cache/gen/packed_ie8.js:1350
+#: static_cache/gen/packed_ie8.js:1391 static_cache/gen/packed_ie8.js:1407
+#: static_cache/gen/packed_ie8.js:1935 static_cache/gen/packed_ie8.js:2082
+#: static_cache/js/views/admin/companies_list.js:105
+#: static_cache/js/views/admin/company_details.js:184
+#: static_cache/js/views/admin/company_learner_dashboard_list.js:135
+#: static_cache/js/views/admin/participant_details_edit_info.js:468
+#: static_cache/js/views/admin/participantsinfo.js:364
+#: static_cache/packed.js:37978 static_cache/packed.js:38215
+#: static_cache/packed.js:38396 static_cache/packed.js:41638
+#: static_cache/packed.js:42072 static_cache/packed_ie8.js:1350
+#: static_cache/packed_ie8.js:1391 static_cache/packed_ie8.js:1407
+#: static_cache/packed_ie8.js:1935 static_cache/packed_ie8.js:2082
 msgid "This company name cannot have more than 30 characters!"
 msgstr ""
 
-#: static/js/views/admin/companies_list.js:142
+#: static/gen/packed.js:38015 static/gen/packed_ie8.js:1357
+#: static/js/views/admin/companies_list.js:142 static_cache/gen/packed.js:38015
+#: static_cache/gen/packed_ie8.js:1357
+#: static_cache/js/views/admin/companies_list.js:142
+#: static_cache/packed.js:38015 static_cache/packed_ie8.js:1357
 msgid "Couldn't create new company!"
 msgstr ""
 
+#: static/gen/packed.js:38035 static/gen/packed.js:39089
+#: static/gen/packed.js:40263 static/gen/packed.js:41013
+#: static/gen/packed.js:41137 static/gen/packed_ie8.js:1358
+#: static/gen/packed_ie8.js:1521 static/gen/packed_ie8.js:1716
+#: static/gen/packed_ie8.js:1794 static/gen/packed_ie8.js:1813
 #: static/js/views/admin/company_details.js:4
 #: static/js/views/admin/course_details.js:305
 #: static/js/views/admin/courses_list.js:13
 #: static/js/views/admin/participant_details_active_courses_view.js:54
 #: static/js/views/admin/participant_details_course_history_view.js:10
+#: static_cache/gen/packed.js:38035 static_cache/gen/packed.js:39089
+#: static_cache/gen/packed.js:40263 static_cache/gen/packed.js:41013
+#: static_cache/gen/packed.js:41137 static_cache/gen/packed_ie8.js:1358
+#: static_cache/gen/packed_ie8.js:1521 static_cache/gen/packed_ie8.js:1716
+#: static_cache/gen/packed_ie8.js:1794 static_cache/gen/packed_ie8.js:1813
+#: static_cache/js/views/admin/company_details.js:4
+#: static_cache/js/views/admin/course_details.js:305
+#: static_cache/js/views/admin/courses_list.js:13
+#: static_cache/js/views/admin/participant_details_active_courses_view.js:54
+#: static_cache/js/views/admin/participant_details_course_history_view.js:10
+#: static_cache/packed.js:38035 static_cache/packed.js:39089
+#: static_cache/packed.js:40263 static_cache/packed.js:41013
+#: static_cache/packed.js:41137 static_cache/packed_ie8.js:1358
+#: static_cache/packed_ie8.js:1521 static_cache/packed_ie8.js:1716
+#: static_cache/packed_ie8.js:1794 static_cache/packed_ie8.js:1813
 msgid "Course Name"
 msgstr ""
 
+#: static/gen/packed.js:38051 static/gen/packed.js:39099
+#: static/gen/packed.js:40273 static/gen/packed.js:41031
+#: static/gen/packed.js:41155 static/gen/packed_ie8.js:1362
+#: static/gen/packed_ie8.js:1524 static/gen/packed_ie8.js:1717
+#: static/gen/packed_ie8.js:1797 static/gen/packed_ie8.js:1818
 #: static/js/views/admin/company_details.js:20
 #: static/js/views/admin/course_details.js:315
 #: static/js/views/admin/courses_list.js:23
 #: static/js/views/admin/participant_details_active_courses_view.js:72
 #: static/js/views/admin/participant_details_course_history_view.js:28
+#: static_cache/gen/packed.js:38051 static_cache/gen/packed.js:39099
+#: static_cache/gen/packed.js:40273 static_cache/gen/packed.js:41031
+#: static_cache/gen/packed.js:41155 static_cache/gen/packed_ie8.js:1362
+#: static_cache/gen/packed_ie8.js:1524 static_cache/gen/packed_ie8.js:1717
+#: static_cache/gen/packed_ie8.js:1797 static_cache/gen/packed_ie8.js:1818
+#: static_cache/js/views/admin/company_details.js:20
+#: static_cache/js/views/admin/course_details.js:315
+#: static_cache/js/views/admin/courses_list.js:23
+#: static_cache/js/views/admin/participant_details_active_courses_view.js:72
+#: static_cache/js/views/admin/participant_details_course_history_view.js:28
+#: static_cache/packed.js:38051 static_cache/packed.js:39099
+#: static_cache/packed.js:40273 static_cache/packed.js:41031
+#: static_cache/packed.js:41155 static_cache/packed_ie8.js:1362
+#: static_cache/packed_ie8.js:1524 static_cache/packed_ie8.js:1717
+#: static_cache/packed_ie8.js:1797 static_cache/packed_ie8.js:1818
 msgid "Course ID"
 msgstr ""
 
-#: static/js/views/admin/company_details.js:21
+#: static/gen/packed.js:38052 static/gen/packed_ie8.js:1362
+#: static/js/views/admin/company_details.js:21 static_cache/gen/packed.js:38052
+#: static_cache/gen/packed_ie8.js:1362
+#: static_cache/js/views/admin/company_details.js:21
+#: static_cache/packed.js:38052 static_cache/packed_ie8.js:1362
 msgid "Participants"
 msgstr ""
 
+#: static/gen/packed.js:38053 static/gen/packed.js:40274
+#: static/gen/packed_ie8.js:1362 static/gen/packed_ie8.js:1717
 #: static/js/views/admin/company_details.js:22
-#: static/js/views/admin/courses_list.js:24
+#: static/js/views/admin/courses_list.js:24 static_cache/gen/packed.js:38053
+#: static_cache/gen/packed.js:40274 static_cache/gen/packed_ie8.js:1362
+#: static_cache/gen/packed_ie8.js:1717
+#: static_cache/js/views/admin/company_details.js:22
+#: static_cache/js/views/admin/courses_list.js:24 static_cache/packed.js:38053
+#: static_cache/packed.js:40274 static_cache/packed_ie8.js:1362
+#: static_cache/packed_ie8.js:1717
 msgid "Start"
 msgstr ""
 
+#: static/gen/packed.js:38069 static/gen/packed.js:40283
+#: static/gen/packed_ie8.js:1366 static/gen/packed_ie8.js:1718
 #: static/js/views/admin/company_details.js:38
-#: static/js/views/admin/courses_list.js:33
+#: static/js/views/admin/courses_list.js:33 static_cache/gen/packed.js:38069
+#: static_cache/gen/packed.js:40283 static_cache/gen/packed_ie8.js:1366
+#: static_cache/gen/packed_ie8.js:1718
+#: static_cache/js/views/admin/company_details.js:38
+#: static_cache/js/views/admin/courses_list.js:33 static_cache/packed.js:38069
+#: static_cache/packed.js:40283 static_cache/packed_ie8.js:1366
+#: static_cache/packed_ie8.js:1718
 msgid "End"
 msgstr ""
 
-#: static/js/views/admin/company_details.js:68
+#: static/gen/packed.js:38099 static/gen/packed_ie8.js:1371
+#: static/js/views/admin/company_details.js:68 static_cache/gen/packed.js:38099
+#: static_cache/gen/packed_ie8.js:1371
+#: static_cache/js/views/admin/company_details.js:68
+#: static_cache/packed.js:38099 static_cache/packed_ie8.js:1371
 msgid "Cohort Comp."
 msgstr ""
 
+#: static/gen/packed.js:38225 static/gen/packed.js:38404
+#: static/gen/packed_ie8.js:1395 static/gen/packed_ie8.js:1409
 #: static/js/views/admin/company_details.js:194
 #: static/js/views/admin/company_learner_dashboard_list.js:143
+#: static_cache/gen/packed.js:38225 static_cache/gen/packed.js:38404
+#: static_cache/gen/packed_ie8.js:1395 static_cache/gen/packed_ie8.js:1409
+#: static_cache/js/views/admin/company_details.js:194
+#: static_cache/js/views/admin/company_learner_dashboard_list.js:143
+#: static_cache/packed.js:38225 static_cache/packed.js:38404
+#: static_cache/packed_ie8.js:1395 static_cache/packed_ie8.js:1409
 msgid "No Company Display Name!"
 msgstr ""
 
+#: static/gen/packed.js:38265 static/gen/packed_ie8.js:1399
 #: static/js/views/admin/company_learner_dashboard_list.js:4
+#: static_cache/gen/packed.js:38265 static_cache/gen/packed_ie8.js:1399
+#: static_cache/js/views/admin/company_learner_dashboard_list.js:4
+#: static_cache/packed.js:38265 static_cache/packed_ie8.js:1399
 msgid "Dashboard Name"
 msgstr ""
 
+#: static/gen/packed.js:38275 static/gen/packed.js:39575
+#: static/gen/packed.js:41529 static/gen/packed.js:41828
+#: static/gen/packed_ie8.js:1401 static/gen/packed_ie8.js:1615
+#: static/gen/packed_ie8.js:1909 static/gen/packed_ie8.js:2008
+#: static/js/admin_learner_dashboard/element_modal.js:64
+#: static/js/views/admin/company_learner_dashboard_list.js:14
+#: static/js/views/admin/course_details_bulk_actions.js:275
+#: static/js/views/admin/participant_details_edit_info.js:359
+#: static/js/views/admin/participantsinfo.js:120
+#: static_cache/gen/packed.js:38275 static_cache/gen/packed.js:39575
+#: static_cache/gen/packed.js:41529 static_cache/gen/packed.js:41828
+#: static_cache/gen/packed_ie8.js:1401 static_cache/gen/packed_ie8.js:1615
+#: static_cache/gen/packed_ie8.js:1909 static_cache/gen/packed_ie8.js:2008
+#: static_cache/js/admin_learner_dashboard/element_modal.js:64
+#: static_cache/js/views/admin/company_learner_dashboard_list.js:14
+#: static_cache/js/views/admin/course_details_bulk_actions.js:275
+#: static_cache/js/views/admin/participant_details_edit_info.js:359
+#: static_cache/js/views/admin/participantsinfo.js:120
+#: static_cache/packed.js:38275 static_cache/packed.js:39575
+#: static_cache/packed.js:41529 static_cache/packed.js:41828
+#: static_cache/packed_ie8.js:1401 static_cache/packed_ie8.js:1615
+#: static_cache/packed_ie8.js:1909 static_cache/packed_ie8.js:2008
+msgid "Course"
+msgstr ""
+
+#: static/gen/packed.js:38442 static/gen/packed_ie8.js:1410
 #: static/js/views/admin/company_linked_apps.js:4
+#: static_cache/gen/packed.js:38442 static_cache/gen/packed_ie8.js:1410
+#: static_cache/js/views/admin/company_linked_apps.js:4
+#: static_cache/packed.js:38442 static_cache/packed_ie8.js:1410
 msgid "App Name"
 msgstr ""
 
+#: static/gen/packed.js:38458 static/gen/packed_ie8.js:1414
 #: static/js/views/admin/company_linked_apps.js:20
+#: static_cache/gen/packed.js:38458 static_cache/gen/packed_ie8.js:1414
+#: static_cache/js/views/admin/company_linked_apps.js:20
+#: static_cache/packed.js:38458 static_cache/packed_ie8.js:1414
 msgid "Deployment Mech"
 msgstr ""
 
+#: static/gen/packed.js:38459 static/gen/packed_ie8.js:1414
 #: static/js/views/admin/company_linked_apps.js:21
+#: static_cache/gen/packed.js:38459 static_cache/gen/packed_ie8.js:1414
+#: static_cache/js/views/admin/company_linked_apps.js:21
+#: static_cache/packed.js:38459 static_cache/packed_ie8.js:1414
 msgid "iOS DL URL"
 msgstr ""
 
+#: static/gen/packed.js:38464 static/gen/packed_ie8.js:1414
 #: static/js/views/admin/company_linked_apps.js:26
+#: static_cache/gen/packed.js:38464 static_cache/gen/packed_ie8.js:1414
+#: static_cache/js/views/admin/company_linked_apps.js:26
+#: static_cache/packed.js:38464 static_cache/packed_ie8.js:1414
 msgid "Android DL URL"
 msgstr ""
 
+#: static/gen/packed.js:38469 static/gen/packed_ie8.js:1414
 #: static/js/views/admin/company_linked_apps.js:31
+#: static_cache/gen/packed.js:38469 static_cache/gen/packed_ie8.js:1414
+#: static_cache/js/views/admin/company_linked_apps.js:31
+#: static_cache/packed.js:38469 static_cache/packed_ie8.js:1414
 msgid "Urban Airship URL"
 msgstr ""
 
+#: static/gen/packed.js:38474 static/gen/packed_ie8.js:1414
 #: static/js/views/admin/company_linked_apps.js:36
+#: static_cache/gen/packed.js:38474 static_cache/gen/packed_ie8.js:1414
+#: static_cache/js/views/admin/company_linked_apps.js:36
+#: static_cache/packed.js:38474 static_cache/packed_ie8.js:1414
 msgid "Analytics URL"
 msgstr ""
 
+#: static/gen/packed.js:38479 static/gen/packed_ie8.js:1414
 #: static/js/views/admin/company_linked_apps.js:41
+#: static_cache/gen/packed.js:38479 static_cache/gen/packed_ie8.js:1414
+#: static_cache/js/views/admin/company_linked_apps.js:41
+#: static_cache/packed.js:38479 static_cache/packed_ie8.js:1414
 msgid "Active"
 msgstr ""
 
+#: static/gen/packed.js:38585 static/gen/packed_ie8.js:1426
 #: static/js/views/admin/company_linked_apps.js:147
+#: static_cache/gen/packed.js:38585 static_cache/gen/packed_ie8.js:1426
+#: static_cache/js/views/admin/company_linked_apps.js:147
+#: static_cache/packed.js:38585 static_cache/packed_ie8.js:1426
 msgid "Couldn't link this App!"
 msgstr ""
 
+#: static/gen/packed.js:38654 static/gen/packed_ie8.js:1435
 #: static/js/views/admin/company_mobileapp_details.js:31
+#: static_cache/gen/packed.js:38654 static_cache/gen/packed_ie8.js:1435
+#: static_cache/js/views/admin/company_mobileapp_details.js:31
+#: static_cache/packed.js:38654 static_cache/packed_ie8.js:1435
 msgid "Couldn't delink App!"
 msgstr ""
 
+#: static/gen/packed.js:38731 static/gen/packed_ie8.js:1449
 #: static/js/views/admin/company_mobileapp_details.js:108
+#: static_cache/gen/packed.js:38731 static_cache/gen/packed_ie8.js:1449
+#: static_cache/js/views/admin/company_mobileapp_details.js:108
+#: static_cache/packed.js:38731 static_cache/packed_ie8.js:1449
 msgid "This app name cannot have more than 30 characters!"
 msgstr ""
 
+#: static/gen/packed.js:38736 static/gen/packed_ie8.js:1451
 #: static/js/views/admin/company_mobileapp_details.js:113
+#: static_cache/gen/packed.js:38736 static_cache/gen/packed_ie8.js:1451
+#: static_cache/js/views/admin/company_mobileapp_details.js:113
+#: static_cache/packed.js:38736 static_cache/packed_ie8.js:1451
 msgid "This app name cannot contain non-alphanumeric characters!"
 msgstr ""
 
+#: static/gen/packed.js:38741 static/gen/packed_ie8.js:1453
 #: static/js/views/admin/company_mobileapp_details.js:118
+#: static_cache/gen/packed.js:38741 static_cache/gen/packed_ie8.js:1453
+#: static_cache/js/views/admin/company_mobileapp_details.js:118
+#: static_cache/packed.js:38741 static_cache/packed_ie8.js:1453
 msgid "No App Display Name!"
 msgstr ""
 
+#: static/gen/packed.js:38790 static/gen/packed.js:41722
+#: static/gen/packed_ie8.js:1455 static/gen/packed_ie8.js:1969
 #: static/js/views/admin/course_details.js:6
 #: static/js/views/admin/participantsinfo.js:12
+#: static_cache/gen/packed.js:38790 static_cache/gen/packed.js:41722
+#: static_cache/gen/packed_ie8.js:1455 static_cache/gen/packed_ie8.js:1969
+#: static_cache/js/views/admin/course_details.js:6
+#: static_cache/js/views/admin/participantsinfo.js:12
+#: static_cache/packed.js:38790 static_cache/packed.js:41722
+#: static_cache/packed_ie8.js:1455 static_cache/packed_ie8.js:1969
 msgid "Name"
 msgstr ""
 
+#: static/gen/packed.js:38814 static/gen/packed.js:39579
+#: static/gen/packed.js:41070 static/gen/packed.js:41159
+#: static/gen/packed.js:41533 static/gen/packed.js:41837
+#: static/gen/packed_ie8.js:1462 static/gen/packed_ie8.js:1619
+#: static/gen/packed_ie8.js:1805 static/gen/packed_ie8.js:1818
+#: static/gen/packed_ie8.js:1913 static/gen/packed_ie8.js:2017
 #: static/js/views/admin/course_details.js:30
 #: static/js/views/admin/course_details_bulk_actions.js:279
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:363
 #: static/js/views/admin/participantsinfo.js:129
+#: static_cache/gen/packed.js:38814 static_cache/gen/packed.js:39579
+#: static_cache/gen/packed.js:41070 static_cache/gen/packed.js:41159
+#: static_cache/gen/packed.js:41533 static_cache/gen/packed.js:41837
+#: static_cache/gen/packed_ie8.js:1462 static_cache/gen/packed_ie8.js:1619
+#: static_cache/gen/packed_ie8.js:1805 static_cache/gen/packed_ie8.js:1818
+#: static_cache/gen/packed_ie8.js:1913 static_cache/gen/packed_ie8.js:2017
+#: static_cache/js/views/admin/course_details.js:30
+#: static_cache/js/views/admin/course_details_bulk_actions.js:279
+#: static_cache/js/views/admin/participant_details_active_courses_view.js:111
+#: static_cache/js/views/admin/participant_details_course_history_view.js:32
+#: static_cache/js/views/admin/participant_details_edit_info.js:363
+#: static_cache/js/views/admin/participantsinfo.js:129
+#: static_cache/packed.js:38814 static_cache/packed.js:39579
+#: static_cache/packed.js:41070 static_cache/packed.js:41159
+#: static_cache/packed.js:41533 static_cache/packed.js:41837
+#: static_cache/packed_ie8.js:1462 static_cache/packed_ie8.js:1619
+#: static_cache/packed_ie8.js:1805 static_cache/packed_ie8.js:1818
+#: static_cache/packed_ie8.js:1913 static_cache/packed_ie8.js:2017
 msgid "Status"
 msgstr ""
 
+#: static/gen/packed.js:38815 static/gen/packed.js:41745
+#: static/gen/packed_ie8.js:1462 static/gen/packed_ie8.js:1974
 #: static/js/views/admin/course_details.js:31
 #: static/js/views/admin/participantsinfo.js:40
+#: static_cache/gen/packed.js:38815 static_cache/gen/packed.js:41745
+#: static_cache/gen/packed_ie8.js:1462 static_cache/gen/packed_ie8.js:1974
+#: static_cache/js/views/admin/course_details.js:31
+#: static_cache/js/views/admin/participantsinfo.js:40
+#: static_cache/packed.js:38815 static_cache/packed.js:41745
+#: static_cache/packed_ie8.js:1462 static_cache/packed_ie8.js:1974
 msgid "Activated"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:32
+#: static/gen/packed.js:38816 static/gen/packed_ie8.js:1462
+#: static/js/views/admin/course_details.js:32 static_cache/gen/packed.js:38816
+#: static_cache/gen/packed_ie8.js:1462
+#: static_cache/js/views/admin/course_details.js:32
+#: static_cache/packed.js:38816 static_cache/packed_ie8.js:1462
 msgid "Last Log In"
 msgstr ""
 
+#: static/gen/packed.js:38827 static/gen/packed.js:41033
+#: static/gen/packed_ie8.js:1465 static/gen/packed_ie8.js:1797
 #: static/js/views/admin/course_details.js:43
 #: static/js/views/admin/participant_details_active_courses_view.js:74
+#: static_cache/gen/packed.js:38827 static_cache/gen/packed.js:41033
+#: static_cache/gen/packed_ie8.js:1465 static_cache/gen/packed_ie8.js:1797
+#: static_cache/js/views/admin/course_details.js:43
+#: static_cache/js/views/admin/participant_details_active_courses_view.js:74
+#: static_cache/packed.js:38827 static_cache/packed.js:41033
+#: static_cache/packed_ie8.js:1465 static_cache/packed_ie8.js:1797
 msgid "Progress"
 msgstr ""
 
+#: static/gen/packed.js:38834 static/gen/packed.js:41052
+#: static/gen/packed_ie8.js:1467 static/gen/packed_ie8.js:1801
 #: static/js/views/admin/course_details.js:50
 #: static/js/views/admin/participant_details_active_courses_view.js:93
+#: static_cache/gen/packed.js:38834 static_cache/gen/packed.js:41052
+#: static_cache/gen/packed_ie8.js:1467 static_cache/gen/packed_ie8.js:1801
+#: static_cache/js/views/admin/course_details.js:50
+#: static_cache/js/views/admin/participant_details_active_courses_view.js:93
+#: static_cache/packed.js:38834 static_cache/packed.js:41052
+#: static_cache/packed_ie8.js:1467 static_cache/packed_ie8.js:1801
 msgid "Proficiency"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:57
+#: static/gen/packed.js:38841 static/gen/packed_ie8.js:1469
+#: static/js/views/admin/course_details.js:57 static_cache/gen/packed.js:38841
+#: static_cache/gen/packed_ie8.js:1469
+#: static_cache/js/views/admin/course_details.js:57
+#: static_cache/packed.js:38841 static_cache/packed_ie8.js:1469
 msgid "Engagement"
 msgstr ""
 
+#: static/gen/packed.js:38848 static/gen/packed.js:38852
+#: static/gen/packed_ie8.js:1471 static/gen/packed_ie8.js:1472
 #: static/js/views/admin/course_details.js:64
-#: static/js/views/admin/course_details.js:68
+#: static/js/views/admin/course_details.js:68 static_cache/gen/packed.js:38848
+#: static_cache/gen/packed.js:38852 static_cache/gen/packed_ie8.js:1471
+#: static_cache/gen/packed_ie8.js:1472
+#: static_cache/js/views/admin/course_details.js:64
+#: static_cache/js/views/admin/course_details.js:68
+#: static_cache/packed.js:38848 static_cache/packed.js:38852
+#: static_cache/packed_ie8.js:1471 static_cache/packed_ie8.js:1472
 msgid "Activation Link"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:72
+#: static/gen/packed.js:38856 static/gen/packed_ie8.js:1472
+#: static/js/views/admin/course_details.js:72 static_cache/gen/packed.js:38856
+#: static_cache/gen/packed_ie8.js:1472
+#: static_cache/js/views/admin/course_details.js:72
+#: static_cache/packed.js:38856 static_cache/packed_ie8.js:1472
 msgid "Username"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:73
+#: static/gen/packed.js:38857 static/gen/packed_ie8.js:1472
+#: static/js/views/admin/course_details.js:73 static_cache/gen/packed.js:38857
+#: static_cache/gen/packed_ie8.js:1472
+#: static_cache/js/views/admin/course_details.js:73
+#: static_cache/packed.js:38857 static_cache/packed_ie8.js:1472
 msgid "Country"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:234
+#: static/gen/packed.js:39018 static/gen/packed_ie8.js:1507
+#: static/js/views/admin/course_details.js:234 static_cache/gen/packed.js:39018
+#: static_cache/gen/packed_ie8.js:1507
+#: static_cache/js/views/admin/course_details.js:234
+#: static_cache/packed.js:39018 static_cache/packed_ie8.js:1507
 msgid "Couldn't create new tag!"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:248
+#: static/gen/packed.js:39032 static/gen/packed_ie8.js:1512
+#: static/js/views/admin/course_details.js:248 static_cache/gen/packed.js:39032
+#: static_cache/gen/packed_ie8.js:1512
+#: static_cache/js/views/admin/course_details.js:248
+#: static_cache/packed.js:39032 static_cache/packed_ie8.js:1512
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:278
+#: static/gen/packed.js:39062 static/gen/packed_ie8.js:1517
+#: static/js/views/admin/course_details.js:278 static_cache/gen/packed.js:39062
+#: static_cache/gen/packed_ie8.js:1517
+#: static_cache/js/views/admin/course_details.js:278
+#: static_cache/packed.js:39062 static_cache/packed_ie8.js:1517
 msgid "Couldn't delete tag!"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:318
+#: static/gen/packed.js:39102 static/gen/packed_ie8.js:1524
+#: static/js/views/admin/course_details.js:318 static_cache/gen/packed.js:39102
+#: static_cache/gen/packed_ie8.js:1524
+#: static_cache/js/views/admin/course_details.js:318
+#: static_cache/packed.js:39102 static_cache/packed_ie8.js:1524
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
 msgstr[0] ""
 msgstr[1] ""
 
-#: static/js/views/admin/course_details.js:373
+#: static/gen/packed.js:39157 static/gen/packed_ie8.js:1533
+#: static/js/views/admin/course_details.js:373 static_cache/gen/packed.js:39157
+#: static_cache/gen/packed_ie8.js:1533
+#: static_cache/js/views/admin/course_details.js:373
+#: static_cache/packed.js:39157 static_cache/packed_ie8.js:1533
 msgid "Progress: %(progress)s %"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:409
+#: static/gen/packed.js:39193 static/gen/packed_ie8.js:1539
+#: static/js/views/admin/course_details.js:409 static_cache/gen/packed.js:39193
+#: static_cache/gen/packed_ie8.js:1539
+#: static_cache/js/views/admin/course_details.js:409
+#: static_cache/packed.js:39193 static_cache/packed_ie8.js:1539
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:460
+#: static/gen/packed.js:39244 static/gen/packed_ie8.js:1550
+#: static/js/views/admin/course_details.js:460 static_cache/gen/packed.js:39244
+#: static_cache/gen/packed_ie8.js:1550
+#: static_cache/js/views/admin/course_details.js:460
+#: static_cache/packed.js:39244 static_cache/packed_ie8.js:1550
 msgid "This tag name cannot have more than 30 characters!"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:467
+#: static/gen/packed.js:39251 static/gen/packed_ie8.js:1552
+#: static/js/views/admin/course_details.js:467 static_cache/gen/packed.js:39251
+#: static_cache/gen/packed_ie8.js:1552
+#: static_cache/js/views/admin/course_details.js:467
+#: static_cache/packed.js:39251 static_cache/packed_ie8.js:1552
 msgid "This tag name cannot contain non-alphanumeric characters!"
 msgstr ""
 
-#: static/js/views/admin/course_details.js:507
+#: static/gen/packed.js:39291 static/gen/packed_ie8.js:1558
+#: static/js/views/admin/course_details.js:507 static_cache/gen/packed.js:39291
+#: static_cache/gen/packed_ie8.js:1558
+#: static_cache/js/views/admin/course_details.js:507
+#: static_cache/packed.js:39291 static_cache/packed_ie8.js:1558
 msgid "Couldn't add tag to course!"
 msgstr ""
 
+#: static/gen/packed.js:39358 static/gen/packed_ie8.js:1572
 #: static/js/views/admin/course_details_bulk_actions.js:58
+#: static_cache/gen/packed.js:39358 static_cache/gen/packed_ie8.js:1572
+#: static_cache/js/views/admin/course_details_bulk_actions.js:58
+#: static_cache/packed.js:39358 static_cache/packed_ie8.js:1572
 msgid "File successfully uploaded!"
 msgstr ""
 
+#: static/gen/packed.js:39416 static/gen/packed_ie8.js:1586
 #: static/js/views/admin/course_details_bulk_actions.js:116
+#: static_cache/gen/packed.js:39416 static_cache/gen/packed_ie8.js:1586
+#: static_cache/js/views/admin/course_details_bulk_actions.js:116
+#: static_cache/packed.js:39416 static_cache/packed_ie8.js:1586
 msgid "Unenroll Participants"
 msgstr ""
 
+#: static/gen/packed.js:39417 static/gen/packed.js:39478
+#: static/gen/packed.js:39565 static/gen/packed_ie8.js:1586
+#: static/gen/packed_ie8.js:1596 static/gen/packed_ie8.js:1613
 #: static/js/views/admin/course_details_bulk_actions.js:117
 #: static/js/views/admin/course_details_bulk_actions.js:178
 #: static/js/views/admin/course_details_bulk_actions.js:265
+#: static_cache/gen/packed.js:39417 static_cache/gen/packed.js:39478
+#: static_cache/gen/packed.js:39565 static_cache/gen/packed_ie8.js:1586
+#: static_cache/gen/packed_ie8.js:1596 static_cache/gen/packed_ie8.js:1613
+#: static_cache/js/views/admin/course_details_bulk_actions.js:117
+#: static_cache/js/views/admin/course_details_bulk_actions.js:178
+#: static_cache/js/views/admin/course_details_bulk_actions.js:265
+#: static_cache/packed.js:39417 static_cache/packed.js:39478
+#: static_cache/packed.js:39565 static_cache/packed_ie8.js:1586
+#: static_cache/packed_ie8.js:1596 static_cache/packed_ie8.js:1613
 msgid "Selected: %(selectedRows)s, Successful: 0, Failed: 0"
 msgstr ""
 
+#: static/gen/packed.js:39420 static/gen/packed_ie8.js:1586
 #: static/js/views/admin/course_details_bulk_actions.js:120
+#: static_cache/gen/packed.js:39420 static_cache/gen/packed_ie8.js:1586
+#: static_cache/js/views/admin/course_details_bulk_actions.js:120
+#: static_cache/packed.js:39420 static_cache/packed_ie8.js:1586
 msgid "Unenroll all selected participants from this course?"
 msgstr ""
 
+#: static/gen/packed.js:39433 static/gen/packed.js:39498
+#: static/gen/packed.js:39599 static/gen/packed.js:39925
+#: static/gen/packed_ie8.js:1589 static/gen/packed_ie8.js:1601
+#: static/gen/packed_ie8.js:1627 static/gen/packed_ie8.js:1679
 #: static/js/views/admin/course_details_bulk_actions.js:133
 #: static/js/views/admin/course_details_bulk_actions.js:198
 #: static/js/views/admin/course_details_bulk_actions.js:299
 #: static/js/views/admin/course_details_bulk_actions.js:710
+#: static_cache/gen/packed.js:39433 static_cache/gen/packed.js:39498
+#: static_cache/gen/packed.js:39599 static_cache/gen/packed.js:39925
+#: static_cache/gen/packed_ie8.js:1589 static_cache/gen/packed_ie8.js:1601
+#: static_cache/gen/packed_ie8.js:1627 static_cache/gen/packed_ie8.js:1679
+#: static_cache/js/views/admin/course_details_bulk_actions.js:133
+#: static_cache/js/views/admin/course_details_bulk_actions.js:198
+#: static_cache/js/views/admin/course_details_bulk_actions.js:299
+#: static_cache/js/views/admin/course_details_bulk_actions.js:710
+#: static_cache/packed.js:39433 static_cache/packed.js:39498
+#: static_cache/packed.js:39599 static_cache/packed.js:39925
+#: static_cache/packed_ie8.js:1589 static_cache/packed_ie8.js:1601
+#: static_cache/packed_ie8.js:1627 static_cache/packed_ie8.js:1679
 msgid ""
 "You need to select at least one participant to be able to apply bulk actions."
 msgstr ""
 
+#: static/gen/packed.js:39437 static/gen/packed.js:41090
+#: static/gen/packed.js:41092 static/gen/packed_ie8.js:1590
+#: static/gen/packed_ie8.js:1811
 #: static/js/views/admin/course_details_bulk_actions.js:137
 #: static/js/views/admin/participant_details_active_courses_view.js:131
 #: static/js/views/admin/participant_details_active_courses_view.js:133
+#: static_cache/gen/packed.js:39437 static_cache/gen/packed.js:41090
+#: static_cache/gen/packed.js:41092 static_cache/gen/packed_ie8.js:1590
+#: static_cache/gen/packed_ie8.js:1811
+#: static_cache/js/views/admin/course_details_bulk_actions.js:137
+#: static_cache/js/views/admin/participant_details_active_courses_view.js:131
+#: static_cache/js/views/admin/participant_details_active_courses_view.js:133
+#: static_cache/packed.js:39437 static_cache/packed.js:41090
+#: static_cache/packed.js:41092 static_cache/packed_ie8.js:1590
+#: static_cache/packed_ie8.js:1811
 msgid "Unenroll"
 msgstr ""
 
+#: static/gen/packed.js:39477 static/gen/packed_ie8.js:1596
 #: static/js/views/admin/course_details_bulk_actions.js:177
+#: static_cache/gen/packed.js:39477 static_cache/gen/packed_ie8.js:1596
+#: static_cache/js/views/admin/course_details_bulk_actions.js:177
+#: static_cache/packed.js:39477 static_cache/packed_ie8.js:1596
 msgid "Change Status"
 msgstr ""
 
+#: static/gen/packed.js:39481 static/gen/packed_ie8.js:1596
 #: static/js/views/admin/course_details_bulk_actions.js:181
+#: static_cache/gen/packed.js:39481 static_cache/gen/packed_ie8.js:1596
+#: static_cache/js/views/admin/course_details_bulk_actions.js:181
+#: static_cache/packed.js:39481 static_cache/packed_ie8.js:1596
 msgid "Change status of all selected participants to:"
 msgstr ""
 
+#: static/gen/packed.js:39483 static/gen/packed.js:39581
+#: static/gen/packed.js:41535 static/gen/packed.js:41841
+#: static/gen/packed_ie8.js:1596 static/gen/packed_ie8.js:1621
+#: static/gen/packed_ie8.js:1915 static/gen/packed_ie8.js:2021
 #: static/js/views/admin/course_details_bulk_actions.js:183
 #: static/js/views/admin/course_details_bulk_actions.js:281
 #: static/js/views/admin/participant_details_edit_info.js:365
 #: static/js/views/admin/participantsinfo.js:133
+#: static_cache/gen/packed.js:39483 static_cache/gen/packed.js:39581
+#: static_cache/gen/packed.js:41535 static_cache/gen/packed.js:41841
+#: static_cache/gen/packed_ie8.js:1596 static_cache/gen/packed_ie8.js:1621
+#: static_cache/gen/packed_ie8.js:1915 static_cache/gen/packed_ie8.js:2021
+#: static_cache/js/views/admin/course_details_bulk_actions.js:183
+#: static_cache/js/views/admin/course_details_bulk_actions.js:281
+#: static_cache/js/views/admin/participant_details_edit_info.js:365
+#: static_cache/js/views/admin/participantsinfo.js:133
+#: static_cache/packed.js:39483 static_cache/packed.js:39581
+#: static_cache/packed.js:41535 static_cache/packed.js:41841
+#: static_cache/packed_ie8.js:1596 static_cache/packed_ie8.js:1621
+#: static_cache/packed_ie8.js:1915 static_cache/packed_ie8.js:2021
 msgid "Participant"
 msgstr ""
 
+#: static/gen/packed.js:39484 static/gen/packed.js:39582
+#: static/gen/packed.js:41536 static/gen/packed.js:41843
+#: static/gen/packed_ie8.js:1597 static/gen/packed_ie8.js:1622
+#: static/gen/packed_ie8.js:1916 static/gen/packed_ie8.js:2023
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:282
 #: static/js/views/admin/participant_details_edit_info.js:366
 #: static/js/views/admin/participantsinfo.js:135
+#: static_cache/gen/packed.js:39484 static_cache/gen/packed.js:39582
+#: static_cache/gen/packed.js:41536 static_cache/gen/packed.js:41843
+#: static_cache/gen/packed_ie8.js:1597 static_cache/gen/packed_ie8.js:1622
+#: static_cache/gen/packed_ie8.js:1916 static_cache/gen/packed_ie8.js:2023
+#: static_cache/js/views/admin/course_details_bulk_actions.js:184
+#: static_cache/js/views/admin/course_details_bulk_actions.js:282
+#: static_cache/js/views/admin/participant_details_edit_info.js:366
+#: static_cache/js/views/admin/participantsinfo.js:135
+#: static_cache/packed.js:39484 static_cache/packed.js:39582
+#: static_cache/packed.js:41536 static_cache/packed.js:41843
+#: static_cache/packed_ie8.js:1597 static_cache/packed_ie8.js:1622
+#: static_cache/packed_ie8.js:1916 static_cache/packed_ie8.js:2023
 msgid "Observer"
 msgstr ""
 
+#: static/gen/packed.js:39485 static/gen/packed.js:39583
+#: static/gen/packed.js:41537 static/gen/packed.js:41842
+#: static/gen/packed_ie8.js:1598 static/gen/packed_ie8.js:1623
+#: static/gen/packed_ie8.js:1917 static/gen/packed_ie8.js:2022
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:367
 #: static/js/views/admin/participantsinfo.js:134
+#: static_cache/gen/packed.js:39485 static_cache/gen/packed.js:39583
+#: static_cache/gen/packed.js:41537 static_cache/gen/packed.js:41842
+#: static_cache/gen/packed_ie8.js:1598 static_cache/gen/packed_ie8.js:1623
+#: static_cache/gen/packed_ie8.js:1917 static_cache/gen/packed_ie8.js:2022
+#: static_cache/js/views/admin/course_details_bulk_actions.js:185
+#: static_cache/js/views/admin/course_details_bulk_actions.js:283
+#: static_cache/js/views/admin/participant_details_edit_info.js:367
+#: static_cache/js/views/admin/participantsinfo.js:134
+#: static_cache/packed.js:39485 static_cache/packed.js:39583
+#: static_cache/packed.js:41537 static_cache/packed.js:41842
+#: static_cache/packed_ie8.js:1598 static_cache/packed_ie8.js:1623
+#: static_cache/packed_ie8.js:1917 static_cache/packed_ie8.js:2022
 msgid "TA"
 msgstr ""
 
+#: static/gen/packed.js:39502 static/gen/packed_ie8.js:1602
 #: static/js/views/admin/course_details_bulk_actions.js:202
+#: static_cache/gen/packed.js:39502 static_cache/gen/packed_ie8.js:1602
+#: static_cache/js/views/admin/course_details_bulk_actions.js:202
+#: static_cache/packed.js:39502 static_cache/packed_ie8.js:1602
 msgid "Save Changes"
 msgstr ""
 
+#: static/gen/packed.js:39523 static/gen/packed.js:39627
+#: static/gen/packed.js:39633 static/gen/packed.js:41570
+#: static/gen/packed.js:41576 static/gen/packed_ie8.js:1607
+#: static/gen/packed_ie8.js:1630 static/gen/packed_ie8.js:1632
+#: static/gen/packed_ie8.js:1921 static/gen/packed_ie8.js:1923
 #: static/js/views/admin/course_details_bulk_actions.js:223
 #: static/js/views/admin/course_details_bulk_actions.js:327
 #: static/js/views/admin/course_details_bulk_actions.js:333
 #: static/js/views/admin/participant_details_edit_info.js:400
 #: static/js/views/admin/participant_details_edit_info.js:406
+#: static_cache/gen/packed.js:39523 static_cache/gen/packed.js:39627
+#: static_cache/gen/packed.js:39633 static_cache/gen/packed.js:41570
+#: static_cache/gen/packed.js:41576 static_cache/gen/packed_ie8.js:1607
+#: static_cache/gen/packed_ie8.js:1630 static_cache/gen/packed_ie8.js:1632
+#: static_cache/gen/packed_ie8.js:1921 static_cache/gen/packed_ie8.js:1923
+#: static_cache/js/views/admin/course_details_bulk_actions.js:223
+#: static_cache/js/views/admin/course_details_bulk_actions.js:327
+#: static_cache/js/views/admin/course_details_bulk_actions.js:333
+#: static_cache/js/views/admin/participant_details_edit_info.js:400
+#: static_cache/js/views/admin/participant_details_edit_info.js:406
+#: static_cache/packed.js:39523 static_cache/packed.js:39627
+#: static_cache/packed.js:39633 static_cache/packed.js:41570
+#: static_cache/packed.js:41576 static_cache/packed_ie8.js:1607
+#: static_cache/packed_ie8.js:1630 static_cache/packed_ie8.js:1632
+#: static_cache/packed_ie8.js:1921 static_cache/packed_ie8.js:1923
 msgid "You need to select status!"
 msgstr ""
 
+#: static/gen/packed.js:39564 static/gen/packed.js:41524
+#: static/gen/packed_ie8.js:1613 static/gen/packed_ie8.js:1907
 #: static/js/views/admin/course_details_bulk_actions.js:264
 #: static/js/views/admin/participant_details_edit_info.js:354
+#: static_cache/gen/packed.js:39564 static_cache/gen/packed.js:41524
+#: static_cache/gen/packed_ie8.js:1613 static_cache/gen/packed_ie8.js:1907
+#: static_cache/js/views/admin/course_details_bulk_actions.js:264
+#: static_cache/js/views/admin/participant_details_edit_info.js:354
+#: static_cache/packed.js:39564 static_cache/packed.js:41524
+#: static_cache/packed_ie8.js:1613 static_cache/packed_ie8.js:1907
 msgid "Select Course"
 msgstr ""
 
+#: static/gen/packed.js:39568 static/gen/packed_ie8.js:1613
 #: static/js/views/admin/course_details_bulk_actions.js:268
+#: static_cache/gen/packed.js:39568 static_cache/gen/packed_ie8.js:1613
+#: static_cache/js/views/admin/course_details_bulk_actions.js:268
+#: static_cache/packed.js:39568 static_cache/packed_ie8.js:1613
 msgid "%(selectedRows)s Participants will be enroll in course selected below."
 msgid_plural ""
 "%(selectedRows)s Participant will be enroll in course selected below."
 msgstr[0] ""
 msgstr[1] ""
 
+#: static/gen/packed.js:39603 static/gen/packed_ie8.js:1628
 #: static/js/views/admin/course_details_bulk_actions.js:303
+#: static_cache/gen/packed.js:39603 static_cache/gen/packed_ie8.js:1628
+#: static_cache/js/views/admin/course_details_bulk_actions.js:303
+#: static_cache/packed.js:39603 static_cache/packed_ie8.js:1628
 msgid "Enroll Participants"
 msgstr ""
 
+#: static/gen/packed.js:39638 static/gen/packed.js:39642
+#: static/gen/packed.js:41581 static/gen/packed.js:41585
+#: static/gen/packed_ie8.js:1633 static/gen/packed_ie8.js:1634
+#: static/gen/packed_ie8.js:1924 static/gen/packed_ie8.js:1925
 #: static/js/views/admin/course_details_bulk_actions.js:338
 #: static/js/views/admin/course_details_bulk_actions.js:342
 #: static/js/views/admin/participant_details_edit_info.js:411
 #: static/js/views/admin/participant_details_edit_info.js:415
+#: static_cache/gen/packed.js:39638 static_cache/gen/packed.js:39642
+#: static_cache/gen/packed.js:41581 static_cache/gen/packed.js:41585
+#: static_cache/gen/packed_ie8.js:1633 static_cache/gen/packed_ie8.js:1634
+#: static_cache/gen/packed_ie8.js:1924 static_cache/gen/packed_ie8.js:1925
+#: static_cache/js/views/admin/course_details_bulk_actions.js:338
+#: static_cache/js/views/admin/course_details_bulk_actions.js:342
+#: static_cache/js/views/admin/participant_details_edit_info.js:411
+#: static_cache/js/views/admin/participant_details_edit_info.js:415
+#: static_cache/packed.js:39638 static_cache/packed.js:39642
+#: static_cache/packed.js:41581 static_cache/packed.js:41585
+#: static_cache/packed_ie8.js:1633 static_cache/packed_ie8.js:1634
+#: static_cache/packed_ie8.js:1924 static_cache/packed_ie8.js:1925
 msgid "You need to select course!"
 msgstr ""
 
+#: static/gen/packed.js:39712 static/gen/packed_ie8.js:1644
 #: static/js/views/admin/course_details_bulk_actions.js:426
+#: static_cache/gen/packed.js:39712 static_cache/gen/packed_ie8.js:1644
+#: static_cache/js/views/admin/course_details_bulk_actions.js:426
+#: static_cache/packed.js:39712 static_cache/packed_ie8.js:1644
 msgid "Download"
 msgstr ""
 
+#: static/gen/packed.js:39712 static/gen/packed_ie8.js:1644
 #: static/js/views/admin/course_details_bulk_actions.js:426
+#: static_cache/gen/packed.js:39712 static_cache/gen/packed_ie8.js:1644
+#: static_cache/js/views/admin/course_details_bulk_actions.js:426
+#: static_cache/packed.js:39712 static_cache/packed_ie8.js:1644
 msgid "Progress : 0%"
 msgstr ""
 
+#: static/gen/packed.js:39713 static/gen/packed_ie8.js:1644
 #: static/js/views/admin/course_details_bulk_actions.js:427
+#: static_cache/gen/packed.js:39713 static_cache/gen/packed_ie8.js:1644
+#: static_cache/js/views/admin/course_details_bulk_actions.js:427
+#: static_cache/packed.js:39713 static_cache/packed_ie8.js:1644
 msgid "Download CSV File"
 msgstr ""
 
+#: static/gen/packed.js:39752 static/gen/packed_ie8.js:1647
+#: static/js/views/admin/course_details_bulk_actions.js:541
+#: static_cache/gen/packed.js:39752 static_cache/gen/packed_ie8.js:1647
+#: static_cache/js/views/admin/course_details_bulk_actions.js:541
+#: static_cache/packed.js:39752 static_cache/packed_ie8.js:1647
+msgid "Download Notifications CSV"
+msgstr ""
+
+#: static/gen/packed.js:39786 static/gen/packed_ie8.js:1650
+#: static_cache/gen/packed.js:39786 static_cache/gen/packed_ie8.js:1650
+#: static_cache/packed.js:39786 static_cache/packed_ie8.js:1650
+msgid "Download Participants"
+msgstr ""
+
+#: static/gen/packed.js:39841 static/gen/packed_ie8.js:1661
+#: static/js/views/admin/course_details_bulk_actions.js:626
+#: static_cache/gen/packed.js:39841 static_cache/gen/packed_ie8.js:1661
+#: static_cache/js/views/admin/course_details_bulk_actions.js:626
+#: static_cache/packed.js:39841 static_cache/packed_ie8.js:1661
+msgid "Group Work: %(label)s"
+msgstr ""
+
+#: static/gen/packed.js:39869 static/gen/packed_ie8.js:1670
+#: static/js/views/admin/course_details_bulk_actions.js:654
+#: static_cache/gen/packed.js:39869 static_cache/gen/packed_ie8.js:1670
+#: static_cache/js/views/admin/course_details_bulk_actions.js:654
+#: static_cache/packed.js:39869 static_cache/packed_ie8.js:1670
+msgid "Assessment: %(label)s"
+msgstr ""
+
+#: static/gen/packed.js:39895 static/gen/packed_ie8.js:1675
+#: static/js/views/admin/course_details_bulk_actions.js:680
+#: static_cache/gen/packed.js:39895 static_cache/gen/packed_ie8.js:1675
+#: static_cache/js/views/admin/course_details_bulk_actions.js:680
+#: static_cache/packed.js:39895 static_cache/packed_ie8.js:1675
+msgid "Task failed to execute. Please retry later."
+msgstr ""
+
+#: static/gen/packed.js:39912 static/gen/packed_ie8.js:1677
+#: static/js/views/admin/course_details_bulk_actions.js:697
+#: static_cache/gen/packed.js:39912 static_cache/gen/packed_ie8.js:1677
+#: static_cache/js/views/admin/course_details_bulk_actions.js:697
+#: static_cache/packed.js:39912 static_cache/packed_ie8.js:1677
+msgid "Successfully Enrolled in 1 Course"
+msgstr ""
+
+#: static/gen/packed.js:39914 static/gen/packed_ie8.js:1677
+#: static/js/views/admin/course_details_bulk_actions.js:699
+#: static_cache/gen/packed.js:39914 static_cache/gen/packed_ie8.js:1677
+#: static_cache/js/views/admin/course_details_bulk_actions.js:699
+#: static_cache/packed.js:39914 static_cache/packed_ie8.js:1677
+msgid "What would you like to do now?"
+msgstr ""
+
+#: static/gen/packed.js:39915 static/gen/packed_ie8.js:1677
+#: static/js/views/admin/course_details_bulk_actions.js:700
+#: static_cache/gen/packed.js:39915 static_cache/gen/packed_ie8.js:1677
+#: static_cache/js/views/admin/course_details_bulk_actions.js:700
+#: static_cache/packed.js:39915 static_cache/packed_ie8.js:1677
+msgid "Go to %(course_id)s Course"
+msgstr ""
+
+#: static/gen/packed.js:39917 static/gen/packed_ie8.js:1677
+#: static/js/views/admin/course_details_bulk_actions.js:702
+#: static_cache/gen/packed.js:39917 static_cache/gen/packed_ie8.js:1677
+#: static_cache/js/views/admin/course_details_bulk_actions.js:702
+#: static_cache/packed.js:39917 static_cache/packed_ie8.js:1677
+msgid "Send Course Intro Email"
+msgstr ""
+
+#: static/gen/packed.js:39919 static/gen/packed_ie8.js:1679
+#: static/js/views/admin/course_details_bulk_actions.js:704
+#: static_cache/gen/packed.js:39919 static_cache/gen/packed_ie8.js:1679
+#: static_cache/js/views/admin/course_details_bulk_actions.js:704
+#: static_cache/packed.js:39919 static_cache/packed_ie8.js:1679
+msgid "Enroll this list in another course"
+msgstr ""
+
+#: static/gen/packed.js:39931 static/gen/packed_ie8.js:1680
+#: static/js/views/admin/course_details_bulk_actions.js:716
+#: static_cache/gen/packed.js:39931 static_cache/gen/packed_ie8.js:1680
+#: static_cache/js/views/admin/course_details_bulk_actions.js:716
+#: static_cache/packed.js:39931 static_cache/packed_ie8.js:1680
+msgid "I'm Done"
+msgstr ""
+
+#: static/gen/packed.js:39951 static/gen/packed_ie8.js:1684
+#: static/js/views/admin/course_details_bulk_actions.js:736
+#: static_cache/gen/packed.js:39951 static_cache/gen/packed_ie8.js:1684
+#: static_cache/js/views/admin/course_details_bulk_actions.js:736
+#: static_cache/packed.js:39951 static_cache/packed_ie8.js:1684
+msgid "Successfully deleted template!"
+msgstr ""
+
+#: static/gen/packed.js:39958 static/gen/packed_ie8.js:1686
+#: static/js/views/admin/course_details_bulk_actions.js:743
+#: static_cache/gen/packed.js:39958 static_cache/gen/packed_ie8.js:1686
+#: static_cache/js/views/admin/course_details_bulk_actions.js:743
+#: static_cache/packed.js:39958 static_cache/packed_ie8.js:1686
+msgid "Successfully added new template!"
+msgstr ""
+
+#: static/gen/packed.js:39971 static/gen/packed_ie8.js:1690
+#: static/js/views/admin/course_details_bulk_actions.js:756
+#: static_cache/gen/packed.js:39971 static_cache/gen/packed_ie8.js:1690
+#: static_cache/js/views/admin/course_details_bulk_actions.js:756
+#: static_cache/packed.js:39971 static_cache/packed_ie8.js:1690
+msgid "Successfully updated template!"
+msgstr ""
+
+#: static/gen/packed.js:39976 static/gen/packed_ie8.js:1692
+#: static/js/views/admin/course_details_bulk_actions.js:761
+#: static_cache/gen/packed.js:39976 static_cache/gen/packed_ie8.js:1692
+#: static_cache/js/views/admin/course_details_bulk_actions.js:761
+#: static_cache/packed.js:39976 static_cache/packed_ie8.js:1692
+msgid "Email Preview Success!"
+msgstr ""
+
+#: static/gen/packed.js:39976 static/gen/packed_ie8.js:1692
+#: static/js/views/admin/course_details_bulk_actions.js:761
+#: static_cache/gen/packed.js:39976 static_cache/gen/packed_ie8.js:1692
+#: static_cache/js/views/admin/course_details_bulk_actions.js:761
+#: static_cache/packed.js:39976 static_cache/packed_ie8.js:1692
+msgid "Successfully sent preview email!"
+msgstr ""
+
+#: static/gen/packed.js:39979 static/gen/packed_ie8.js:1693
+#: static/js/views/admin/course_details_bulk_actions.js:764
+#: static_cache/gen/packed.js:39979 static_cache/gen/packed_ie8.js:1693
+#: static_cache/js/views/admin/course_details_bulk_actions.js:764
+#: static_cache/packed.js:39979 static_cache/packed_ie8.js:1693
+msgid "Email Success!"
+msgstr ""
+
+#: static/gen/packed.js:39979 static/gen/packed_ie8.js:1693
+#: static/js/views/admin/course_details_bulk_actions.js:764
+#: static_cache/gen/packed.js:39979 static_cache/gen/packed_ie8.js:1693
+#: static_cache/js/views/admin/course_details_bulk_actions.js:764
+#: static_cache/packed.js:39979 static_cache/packed_ie8.js:1693
+msgid "Successfully sent email!"
+msgstr ""
+
+#: static/gen/packed.js:40021 static/gen/packed_ie8.js:1700
+#: static/js/views/admin/course_details_bulk_actions.js:806
+#: static_cache/gen/packed.js:40021 static_cache/gen/packed_ie8.js:1700
+#: static_cache/js/views/admin/course_details_bulk_actions.js:806
+#: static_cache/packed.js:40021 static_cache/packed_ie8.js:1700
+msgid "Preview Email!"
+msgstr ""
+
+#: static/gen/packed.js:40021 static/gen/packed_ie8.js:1700
+#: static/js/views/admin/course_details_bulk_actions.js:806
+#: static_cache/gen/packed.js:40021 static_cache/gen/packed_ie8.js:1700
+#: static_cache/js/views/admin/course_details_bulk_actions.js:806
+#: static_cache/packed.js:40021 static_cache/packed_ie8.js:1700
+msgid "Please enter preview email!"
+msgstr ""
+
+#: static/gen/packed.js:40041 static/gen/packed_ie8.js:1705
+#: static/js/views/admin/course_details_bulk_actions.js:826
+#: static_cache/gen/packed.js:40041 static_cache/gen/packed_ie8.js:1705
+#: static_cache/js/views/admin/course_details_bulk_actions.js:826
+#: static_cache/packed.js:40041 static_cache/packed_ie8.js:1705
+msgid "Please enter new template name!"
+msgstr ""
+
+#: static/gen/packed.js:40056 static/gen/packed_ie8.js:1708
+#: static/js/views/admin/course_details_bulk_actions.js:841
+#: static_cache/gen/packed.js:40056 static_cache/gen/packed_ie8.js:1708
+#: static_cache/js/views/admin/course_details_bulk_actions.js:841
+#: static_cache/packed.js:40056 static_cache/packed_ie8.js:1708
+msgid "Please enter updated template name or leave the old one!"
+msgstr ""
+
+#: static/gen/packed.js:40069 static/gen/packed_ie8.js:1711
+#: static/js/views/admin/course_details_bulk_actions.js:854
+#: static_cache/gen/packed.js:40069 static_cache/gen/packed_ie8.js:1711
+#: static_cache/js/views/admin/course_details_bulk_actions.js:854
+#: static_cache/packed.js:40069 static_cache/packed_ie8.js:1711
+msgid "You are about to delete email template. Are you sure?"
+msgstr ""
+
+#: static/gen/packed.js:40087 static/gen/packed_ie8.js:1713
+#: static/js/views/admin/course_details_engagement.js:11
+#: static_cache/gen/packed.js:40087 static_cache/gen/packed_ie8.js:1713
+#: static_cache/js/views/admin/course_details_engagement.js:11
+#: static_cache/packed.js:40087 static_cache/packed_ie8.js:1713
+msgid "# of people"
+msgstr ""
+
+#: static/gen/packed.js:40088 static/gen/packed_ie8.js:1713
+#: static/js/views/admin/course_details_engagement.js:12
+#: static_cache/gen/packed.js:40088 static_cache/gen/packed_ie8.js:1713
+#: static_cache/js/views/admin/course_details_engagement.js:12
+#: static_cache/packed.js:40088 static_cache/packed_ie8.js:1713
+msgid "% total cohort"
+msgstr ""
+
+#: static/gen/packed.js:40089 static/gen/packed_ie8.js:1713
+#: static/js/views/admin/course_details_engagement.js:13
+#: static_cache/gen/packed.js:40089 static_cache/gen/packed_ie8.js:1713
+#: static_cache/js/views/admin/course_details_engagement.js:13
+#: static_cache/packed.js:40089 static_cache/packed_ie8.js:1713
+msgid "Avg Progress"
+msgstr ""
+
+#: static/gen/packed.js:40131 static/gen/packed_ie8.js:1713
+#: static/js/views/admin/courseinfo.js:21 static_cache/gen/packed.js:40131
+#: static_cache/gen/packed_ie8.js:1713
+#: static_cache/js/views/admin/courseinfo.js:21 static_cache/packed.js:40131
+#: static_cache/packed_ie8.js:1713
+msgid ".0%"
+msgstr ""
+
+#: static/gen/packed.js:40158 static/gen/packed_ie8.js:1713
+#: static/js/views/admin/courseinfo.js:48 static_cache/gen/packed.js:40158
+#: static_cache/gen/packed_ie8.js:1713
+#: static_cache/js/views/admin/courseinfo.js:48 static_cache/packed.js:40158
+#: static_cache/packed_ie8.js:1713
+msgid " day"
+msgstr ""
+
+#: static/gen/packed.js:40159 static/gen/packed_ie8.js:1713
+#: static/js/views/admin/courseinfo.js:49 static_cache/gen/packed.js:40159
+#: static_cache/gen/packed_ie8.js:1713
+#: static_cache/js/views/admin/courseinfo.js:49 static_cache/packed.js:40159
+#: static_cache/packed_ie8.js:1713
+msgid " week"
+msgstr ""
+
+#: static/gen/packed.js:40353 static/gen/packed_ie8.js:1722
+#: static/js/views/admin/group_work_dashboard.js:52
+#: static_cache/gen/packed.js:40353 static_cache/gen/packed_ie8.js:1722
+#: static_cache/js/views/admin/group_work_dashboard.js:52
+#: static_cache/packed.js:40353 static_cache/packed_ie8.js:1722
+msgid "None"
+msgstr ""
+
+#: static/gen/packed.js:40496 static/gen/packed_ie8.js:1740
+#: static/js/views/admin/group_work_dashboard.js:195
+#: static_cache/gen/packed.js:40496 static_cache/gen/packed_ie8.js:1740
+#: static_cache/js/views/admin/group_work_dashboard.js:195
+#: static_cache/packed.js:40496 static_cache/packed_ie8.js:1740
+msgid "Do you really want to delete: \n"
+msgstr ""
+
+#: static/gen/packed.js:40925 static/gen/packed_ie8.js:1785
+#: static/js/views/admin/navigation.js:6 static_cache/gen/packed.js:40925
+#: static_cache/gen/packed_ie8.js:1785
+#: static_cache/js/views/admin/navigation.js:6 static_cache/packed.js:40925
+#: static_cache/packed_ie8.js:1785
+msgid "Are you sure you want to remove this ?"
+msgstr ""
+
+#: static/gen/packed.js:41032 static/gen/packed.js:41156
+#: static/gen/packed_ie8.js:1797 static/gen/packed_ie8.js:1818
+#: static/js/views/admin/participant_details_active_courses_view.js:73
+#: static/js/views/admin/participant_details_course_history_view.js:29
+#: static_cache/gen/packed.js:41032 static_cache/gen/packed.js:41156
+#: static_cache/gen/packed_ie8.js:1797 static_cache/gen/packed_ie8.js:1818
+#: static_cache/js/views/admin/participant_details_active_courses_view.js:73
+#: static_cache/js/views/admin/participant_details_course_history_view.js:29
+#: static_cache/packed.js:41032 static_cache/packed.js:41156
+#: static_cache/packed_ie8.js:1797 static_cache/packed_ie8.js:1818
+msgid "Program"
+msgstr ""
+
+#: static/gen/packed.js:41157 static/gen/packed_ie8.js:1818
+#: static/js/views/admin/participant_details_course_history_view.js:30
+#: static_cache/gen/packed.js:41157 static_cache/gen/packed_ie8.js:1818
+#: static_cache/js/views/admin/participant_details_course_history_view.js:30
+#: static_cache/packed.js:41157 static_cache/packed_ie8.js:1818
+msgid "Completed"
+msgstr ""
+
+#: static/gen/packed.js:41158 static/gen/packed_ie8.js:1818
+#: static/js/views/admin/participant_details_course_history_view.js:31
+#: static_cache/gen/packed.js:41158 static_cache/gen/packed_ie8.js:1818
+#: static_cache/js/views/admin/participant_details_course_history_view.js:31
+#: static_cache/packed.js:41158 static_cache/packed_ie8.js:1818
+msgid "Grade"
+msgstr ""
+
+#: static/gen/packed.js:41160 static/gen/packed_ie8.js:1818
+#: static/js/views/admin/participant_details_course_history_view.js:33
+#: static_cache/gen/packed.js:41160 static_cache/gen/packed_ie8.js:1818
+#: static_cache/js/views/admin/participant_details_course_history_view.js:33
+#: static_cache/packed.js:41160 static_cache/packed_ie8.js:1818
+msgid "End Date"
+msgstr ""
+
+#: static/gen/packed.js:41283 static/gen/packed_ie8.js:1840
+#: static/js/views/admin/participant_details_edit_info.js:113
+#: static_cache/gen/packed.js:41283 static_cache/gen/packed_ie8.js:1840
+#: static_cache/js/views/admin/participant_details_edit_info.js:113
+#: static_cache/packed.js:41283 static_cache/packed_ie8.js:1840
+msgid "Username can't be empty! "
+msgstr ""
+
+#: static/gen/packed.js:41288 static/gen/packed_ie8.js:1842
+#: static/js/views/admin/participant_details_edit_info.js:118
+#: static_cache/gen/packed.js:41288 static_cache/gen/packed_ie8.js:1842
+#: static_cache/js/views/admin/participant_details_edit_info.js:118
+#: static_cache/packed.js:41288 static_cache/packed_ie8.js:1842
+msgid "First name can't be empty! "
+msgstr ""
+
+#: static/gen/packed.js:41293 static/gen/packed_ie8.js:1844
+#: static/js/views/admin/participant_details_edit_info.js:123
+#: static_cache/gen/packed.js:41293 static_cache/gen/packed_ie8.js:1844
+#: static_cache/js/views/admin/participant_details_edit_info.js:123
+#: static_cache/packed.js:41293 static_cache/packed_ie8.js:1844
+msgid "Last name can't be empty! "
+msgstr ""
+
+#: static/gen/packed.js:41298 static/gen/packed_ie8.js:1846
+#: static/js/views/admin/participant_details_edit_info.js:128
+#: static_cache/gen/packed.js:41298 static_cache/gen/packed_ie8.js:1846
+#: static_cache/js/views/admin/participant_details_edit_info.js:128
+#: static_cache/packed.js:41298 static_cache/packed_ie8.js:1846
+msgid "Email can't be empty! "
+msgstr ""
+
+#: static/gen/packed.js:41322 static/gen/packed_ie8.js:1856
+#: static/js/views/admin/participant_details_edit_info.js:152
+#: static_cache/gen/packed.js:41322 static_cache/gen/packed_ie8.js:1856
+#: static_cache/js/views/admin/participant_details_edit_info.js:152
+#: static_cache/packed.js:41322 static_cache/packed_ie8.js:1856
+msgid "Company doesn't exist! "
+msgstr ""
+
+#: static/gen/packed.js:41372 static/gen/packed_ie8.js:1867
+#: static/js/views/admin/participant_details_edit_info.js:202
+#: static_cache/gen/packed.js:41372 static_cache/gen/packed_ie8.js:1867
+#: static_cache/js/views/admin/participant_details_edit_info.js:202
+#: static_cache/packed.js:41372 static_cache/packed_ie8.js:1867
+msgid "Updated user data!"
+msgstr ""
+
+#: static/gen/packed.js:41423 static/gen/packed.js:41456
+#: static/gen/packed_ie8.js:1877 static/gen/packed_ie8.js:1884
+#: static/js/views/admin/participant_details_edit_info.js:253
+#: static/js/views/admin/participant_details_edit_info.js:286
+#: static_cache/gen/packed.js:41423 static_cache/gen/packed.js:41456
+#: static_cache/gen/packed_ie8.js:1877 static_cache/gen/packed_ie8.js:1884
+#: static_cache/js/views/admin/participant_details_edit_info.js:253
+#: static_cache/js/views/admin/participant_details_edit_info.js:286
+#: static_cache/packed.js:41423 static_cache/packed.js:41456
+#: static_cache/packed_ie8.js:1877 static_cache/packed_ie8.js:1884
+msgid "Male"
+msgstr ""
+
+#: static/gen/packed.js:41425 static/gen/packed.js:41454
+#: static/gen/packed_ie8.js:1878 static/gen/packed_ie8.js:1883
+#: static/js/views/admin/participant_details_edit_info.js:255
+#: static/js/views/admin/participant_details_edit_info.js:284
+#: static_cache/gen/packed.js:41425 static_cache/gen/packed.js:41454
+#: static_cache/gen/packed_ie8.js:1878 static_cache/gen/packed_ie8.js:1883
+#: static_cache/js/views/admin/participant_details_edit_info.js:255
+#: static_cache/js/views/admin/participant_details_edit_info.js:284
+#: static_cache/packed.js:41425 static_cache/packed.js:41454
+#: static_cache/packed_ie8.js:1878 static_cache/packed_ie8.js:1883
+msgid "Female"
+msgstr ""
+
+#: static/gen/packed.js:41525 static/gen/packed_ie8.js:1907
+#: static/js/views/admin/participant_details_edit_info.js:355
+#: static_cache/gen/packed.js:41525 static_cache/gen/packed_ie8.js:1907
+#: static_cache/js/views/admin/participant_details_edit_info.js:355
+#: static_cache/packed.js:41525 static_cache/packed_ie8.js:1907
+msgid "User will be enrolled in course selected below."
+msgstr ""
+
+#: static/gen/packed.js:41547 static/gen/packed_ie8.js:1919
+#: static/js/views/admin/participant_details_edit_info.js:377
+#: static_cache/gen/packed.js:41547 static_cache/gen/packed_ie8.js:1919
+#: static_cache/js/views/admin/participant_details_edit_info.js:377
+#: static_cache/packed.js:41547 static_cache/packed_ie8.js:1919
+msgid "Enroll Participant"
+msgstr ""
+
+#: static/gen/packed.js:41605 static/gen/packed_ie8.js:1927
+#: static/js/views/admin/participant_details_edit_info.js:435
+#: static_cache/gen/packed.js:41605 static_cache/gen/packed_ie8.js:1927
+#: static_cache/js/views/admin/participant_details_edit_info.js:435
+#: static_cache/packed.js:41605 static_cache/packed_ie8.js:1927
+msgid "User successfully enrolled in course"
+msgstr ""
+
+#: static/gen/packed.js:41691 static/gen/packed.js:41808
+#: static/gen/packed_ie8.js:1952 static/gen/packed_ie8.js:1989
+#: static/js/views/admin/participant_details_edit_info.js:521
+#: static/js/views/admin/participantsinfo.js:100
+#: static_cache/gen/packed.js:41691 static_cache/gen/packed.js:41808
+#: static_cache/gen/packed_ie8.js:1952 static_cache/gen/packed_ie8.js:1989
+#: static_cache/js/views/admin/participant_details_edit_info.js:521
+#: static_cache/js/views/admin/participantsinfo.js:100
+#: static_cache/packed.js:41691 static_cache/packed.js:41808
+#: static_cache/packed_ie8.js:1952 static_cache/packed_ie8.js:1989
+msgid "Admin Company"
+msgstr ""
+
+#: static/gen/packed.js:41695 static/gen/packed_ie8.js:1956
+#: static/js/views/admin/participant_details_edit_info.js:525
+#: static_cache/gen/packed.js:41695 static_cache/gen/packed_ie8.js:1956
+#: static_cache/js/views/admin/participant_details_edit_info.js:525
+#: static_cache/packed.js:41695 static_cache/packed_ie8.js:1956
+msgid "Try selecting your company from the type-ahead results."
+msgstr ""
+
+#: static/gen/packed.js:41701 static/gen/packed.js:41817
+#: static/gen/packed_ie8.js:1962 static/gen/packed_ie8.js:1998
+#: static/js/views/admin/participant_details_edit_info.js:531
+#: static/js/views/admin/participantsinfo.js:109
+#: static_cache/gen/packed.js:41701 static_cache/gen/packed.js:41817
+#: static_cache/gen/packed_ie8.js:1962 static_cache/gen/packed_ie8.js:1998
+#: static_cache/js/views/admin/participant_details_edit_info.js:531
+#: static_cache/js/views/admin/participantsinfo.js:109
+#: static_cache/packed.js:41701 static_cache/packed.js:41817
+#: static_cache/packed_ie8.js:1962 static_cache/packed_ie8.js:1998
+msgid "Admin Permissions"
+msgstr ""
+
+#: static/gen/packed.js:41704 static/gen/packed.js:41820
+#: static/gen/packed_ie8.js:1965 static/gen/packed_ie8.js:2001
+#: static/js/views/admin/participant_details_edit_info.js:534
+#: static/js/views/admin/participantsinfo.js:112
+#: static_cache/gen/packed.js:41704 static_cache/gen/packed.js:41820
+#: static_cache/gen/packed_ie8.js:1965 static_cache/gen/packed_ie8.js:2001
+#: static_cache/js/views/admin/participant_details_edit_info.js:534
+#: static_cache/js/views/admin/participantsinfo.js:112
+#: static_cache/packed.js:41704 static_cache/packed.js:41820
+#: static_cache/packed_ie8.js:1965 static_cache/packed_ie8.js:2001
+msgid "Company Admin"
+msgstr ""
+
+#: static/gen/packed.js:41729 static/gen/packed_ie8.js:1970
+#: static/js/views/admin/participantsinfo.js:24
+#: static_cache/gen/packed.js:41729 static_cache/gen/packed_ie8.js:1970
+#: static_cache/js/views/admin/participantsinfo.js:24
+#: static_cache/packed.js:41729 static_cache/packed_ie8.js:1970
+msgid "Date Added"
+msgstr ""
+
+#: static/gen/packed.js:41739 static/gen/packed_ie8.js:1973
+#: static/js/views/admin/participantsinfo.js:34
+#: static_cache/gen/packed.js:41739 static_cache/gen/packed_ie8.js:1973
+#: static_cache/js/views/admin/participantsinfo.js:34
+#: static_cache/packed.js:41739 static_cache/packed_ie8.js:1973
+msgid "Enrolled In"
+msgstr ""
+
+#: static/gen/packed.js:42359 static/gen/packed_ie8.js:2091
+#: static/js/views/courses/lesson_note.js:2 static_cache/gen/packed.js:42359
+#: static_cache/gen/packed_ie8.js:2091
+#: static_cache/js/views/courses/lesson_note.js:2 static_cache/packed.js:42359
+#: static_cache/packed_ie8.js:2091
+msgid "Lesson"
+msgstr ""
+
+#: static/gen/packed.js:42360 static/gen/packed_ie8.js:2092
+#: static/js/views/courses/lesson_note.js:3 static_cache/gen/packed.js:42360
+#: static_cache/gen/packed_ie8.js:2092
+#: static_cache/js/views/courses/lesson_note.js:3 static_cache/packed.js:42360
+#: static_cache/packed_ie8.js:2092
+msgid "Module"
+msgstr ""
+
+#: static/js/admin/client_sso.js:182 static_cache/js/admin/client_sso.js:182
+msgid "You need to enter name!"
+msgstr ""
+
+#: static/js/admin/client_sso.js:187 static_cache/js/admin/client_sso.js:187
+msgid "You need to enter course ID!"
+msgstr ""
+
+#: static/js/admin_learner_dashboard/element_modal.js:72
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
+#: static_cache/js/admin_learner_dashboard/element_modal.js:72
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
+msgid "In Person Session"
+msgstr ""
+
+#: static/js/admin_learner_dashboard/self_registration_roles.js:9
+#: static_cache/js/admin_learner_dashboard/self_registration_roles.js:9
+msgid "Add new role e.g CEO,CTO"
+msgstr ""
+
+#: static/js/admin_learner_dashboard/self_registration_roles.js:10
+#: static_cache/js/admin_learner_dashboard/self_registration_roles.js:10
+msgid "Delete Role"
+msgstr ""
+
+#: static/js/admin_learner_dashboard/sort.js:72
+#: static/js/learner_dashboard_sort.js:54
+#: static_cache/js/admin_learner_dashboard/sort.js:72
+#: static_cache/js/learner_dashboard_sort.js:54
+msgid "Are you sure?"
+msgstr ""
+
+#: static/js/course_contact_modal.js:15
+#: static_cache/js/course_contact_modal.js:15
+msgid "Notification"
+msgstr ""
+
+#: static/js/course_drag_drop.js:70 static_cache/js/course_drag_drop.js:70
+msgid "Group successfully updated"
+msgstr ""
+
+#: static/js/course_drag_drop.js:153 static_cache/js/course_drag_drop.js:153
+msgid "Please select at least one student"
+msgstr ""
+
+#: static/js/course_drag_drop.js:160 static_cache/js/course_drag_drop.js:160
+msgid "Please select project"
+msgstr ""
+
+#: static/js/course_drag_drop.js:174 static_cache/js/course_drag_drop.js:174
+msgid "Group was not created"
+msgstr ""
+
+#: static/js/course_drag_drop.js:234 static_cache/js/course_drag_drop.js:234
+msgid "All students added to private group have to be members of same company."
+msgstr ""
+
+#: static/js/course_drag_drop.js:242 static_cache/js/course_drag_drop.js:242
+msgid ""
+"Are you sure you want to remove this group? Doing so will remove submissions "
+"and feedback associated with the group."
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
+msgid "Your Progress: %(value)s%"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+msgid "Complete"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+msgid "Incomplete"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
+msgid "Digital Course"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
+msgid "Group work"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
+msgid "Webinar"
+msgstr ""
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
+#: static_cache/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
+msgid "Digital Content"
+msgstr ""
+
+#: static/js/image_editor.js:3 static_cache/js/image_editor.js:3
+msgid "No file Selected"
+msgstr ""
+
+#: static/js/image_editor.js:45 static_cache/js/image_editor.js:45
+msgid ""
+"Error uploading file. Please try again and be sure to use an accepted file "
+"format."
+msgstr ""
+
+#: static/js/image_editor.js:52 static_cache/js/image_editor.js:52
+msgid "Please select file for upload."
+msgstr ""
+
+#: static/js/vendor/jquery.xblock.js:380
+#: static_cache/js/vendor/jquery.xblock.js:380
+msgid "You are not permitted to view this discussion."
+msgstr ""
+
 #: static/js/views/admin/course_details_bulk_actions.js:463
+#: static_cache/js/views/admin/course_details_bulk_actions.js:463
 msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
 msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:469
+#: static_cache/js/views/admin/course_details_bulk_actions.js:469
 msgid "We'll e-mail you when your report is ready to download."
 msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:472
+#: static_cache/js/views/admin/course_details_bulk_actions.js:472
 msgid "Exporting Stats for All Users"
 msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
+#: static_cache/js/views/admin/course_details_bulk_actions.js:473
 msgid "Export Report"
 msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:512
+#: static_cache/js/views/admin/course_details_bulk_actions.js:512
 msgid "Error initiating the report generation. Please retry later."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:541
-msgid "Download Notifications CSV"
+#: static_cache/admin/js/SelectFilter2.js:45
+#, javascript-format
+msgid "Available %s"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:626
-msgid "Group Work: %(label)s"
+#: static_cache/admin/js/SelectFilter2.js:46
+#, javascript-format
+msgid ""
+"This is the list of available %s. You may choose some by selecting them in "
+"the box below and then clicking the \"Choose\" arrow between the two boxes."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:654
-msgid "Assessment: %(label)s"
+#: static_cache/admin/js/SelectFilter2.js:53
+#, javascript-format
+msgid "Type into this box to filter down the list of available %s."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:680
-msgid "Task failed to execute. Please retry later."
+#: static_cache/admin/js/SelectFilter2.js:57
+msgid "Filter"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:697
-msgid "Successfully Enrolled in 1 Course"
+#: static_cache/admin/js/SelectFilter2.js:61
+msgid "Choose all"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:699
-msgid "What would you like to do now?"
+#: static_cache/admin/js/SelectFilter2.js:61
+#, javascript-format
+msgid "Click to choose all %s at once."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:700
-msgid "Go to %(course_id)s Course"
+#: static_cache/admin/js/SelectFilter2.js:67
+msgid "Choose"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:702
-msgid "Send Course Intro Email"
+#: static_cache/admin/js/SelectFilter2.js:69
+msgid "Remove"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:704
-msgid "Enroll this list in another course"
+#: static_cache/admin/js/SelectFilter2.js:75
+#, javascript-format
+msgid "Chosen %s"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:716
-msgid "I'm Done"
+#: static_cache/admin/js/SelectFilter2.js:76
+#, javascript-format
+msgid ""
+"This is the list of chosen %s. You may remove some by selecting them in the "
+"box below and then clicking the \"Remove\" arrow between the two boxes."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:736
-msgid "Successfully deleted template!"
+#: static_cache/admin/js/SelectFilter2.js:80
+msgid "Remove all"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:743
-msgid "Successfully added new template!"
+#: static_cache/admin/js/SelectFilter2.js:80
+#, javascript-format
+msgid "Click to remove all chosen %s at once."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:756
-msgid "Successfully updated template!"
+#: static_cache/admin/js/actions.js:22 static_cache/admin/js/actions.min.js:1
+msgid "%(sel)s of %(cnt)s selected"
+msgid_plural "%(sel)s of %(cnt)s selected"
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/admin/js/actions.js:114 static_cache/admin/js/actions.min.js:4
+msgid ""
+"You have unsaved changes on individual editable fields. If you run an "
+"action, your unsaved changes will be lost."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:761
-msgid "Email Preview Success!"
+#: static_cache/admin/js/actions.js:126 static_cache/admin/js/actions.min.js:5
+msgid ""
+"You have selected an action, but you haven't saved your changes to "
+"individual fields yet. Please click OK to save. You'll need to re-run the "
+"action."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:761
-msgid "Successfully sent preview email!"
+#: static_cache/admin/js/actions.js:128 static_cache/admin/js/actions.min.js:5
+msgid ""
+"You have selected an action, and you haven't made any changes on individual "
+"fields. You're probably looking for the Go button rather than the Save "
+"button."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:764
-msgid "Email Success!"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:79
+#, javascript-format
+msgid "Note: You are %s hour ahead of server time."
+msgid_plural "Note: You are %s hours ahead of server time."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:87
+#, javascript-format
+msgid "Note: You are %s hour behind server time."
+msgid_plural "Note: You are %s hours behind server time."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:114
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:149
+msgid "Now"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:764
-msgid "Successfully sent email!"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:118
+msgid "Clock"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:806
-msgid "Preview Email!"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:146
+msgid "Choose a time"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:806
-msgid "Please enter preview email!"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:150
+msgid "Midnight"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:826
-msgid "Please enter new template name!"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:151
+msgid "6 a.m."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:841
-msgid "Please enter updated template name or leave the old one!"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:152
+msgid "Noon"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:854
-msgid "You are about to delete email template. Are you sure?"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:156
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:276
+msgid "Cancel"
 msgstr ""
 
-#: static/js/views/admin/course_details_engagement.js:11
-msgid "# of people"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:216
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:269
+msgid "Today"
 msgstr ""
 
-#: static/js/views/admin/course_details_engagement.js:12
-msgid "% total cohort"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:220
+msgid "Calendar"
 msgstr ""
 
-#: static/js/views/admin/course_details_engagement.js:13
-msgid "Avg Progress"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:267
+msgid "Yesterday"
 msgstr ""
 
-#: static/js/views/admin/courseinfo.js:21
-msgid ".0%"
+#: static_cache/admin/js/admin/DateTimeShortcuts.js:271
+msgid "Tomorrow"
 msgstr ""
 
-#: static/js/views/admin/courseinfo.js:48
-msgid " day"
+#: static_cache/admin/js/calendar.js:8
+msgid ""
+"January February March April May June July August September October November "
+"December"
 msgstr ""
 
-#: static/js/views/admin/courseinfo.js:49
-msgid " week"
+#: static_cache/admin/js/calendar.js:9
+msgid "S M T W T F S"
 msgstr ""
 
-#: static/js/views/admin/group_work_dashboard.js:52
-msgid "None"
+#: static_cache/admin/js/collapse.js:8 static_cache/admin/js/collapse.js:19
+#: static_cache/admin/js/collapse.min.js:1
+msgid "Show"
 msgstr ""
 
-#: static/js/views/admin/group_work_dashboard.js:195
-msgid "Do you really want to delete: \n"
+#: static_cache/admin/js/collapse.js:16 static_cache/admin/js/collapse.min.js:1
+msgid "Hide"
 msgstr ""
 
-#: static/js/views/admin/navigation.js:6
-msgid "Are you sure you want to remove this ?"
+#: static_cache/js/views/admin/company_info_view.js:226
+msgid "Please correct following error: %(errors)s"
+msgid_plural "Please correct following errors: %(errors)s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: static_cache/js/views/admin/course_details_timeline.js:59
+msgid "days"
 msgstr ""
 
-#: static/js/views/admin/participant_details_active_courses_view.js:73
-#: static/js/views/admin/participant_details_course_history_view.js:29
-msgid "Program"
+#: static_cache/js/views/admin/course_details_timeline.js:59
+msgid "weeks"
 msgstr ""
 
-#: static/js/views/admin/participant_details_course_history_view.js:30
-msgid "Completed"
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "radio"
 msgstr ""
 
-#: static/js/views/admin/participant_details_course_history_view.js:31
-msgid "Grade"
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "checkbox"
 msgstr ""
 
-#: static/js/views/admin/participant_details_course_history_view.js:33
-msgid "End Date"
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "file"
 msgstr ""
 
-#: static/js/views/admin/participant_details_edit_info.js:113
-msgid "Username can't be empty! "
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "password"
 msgstr ""
 
-#: static/js/views/admin/participant_details_edit_info.js:118
-msgid "First name can't be empty! "
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:123
-msgid "Last name can't be empty! "
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:128
-msgid "Email can't be empty! "
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:152
-msgid "Company doesn't exist! "
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:202
-msgid "Updated user data!"
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:253
-#: static/js/views/admin/participant_details_edit_info.js:286
-msgid "Male"
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:255
-#: static/js/views/admin/participant_details_edit_info.js:284
-msgid "Female"
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:355
-msgid "User will be enrolled in course selected below."
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:377
-msgid "Enroll Participant"
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:435
-msgid "User successfully enrolled in course"
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:521
-#: static/js/views/admin/participantsinfo.js:100
-msgid "Admin Company"
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:525
-msgid "Try selecting your company from the type-ahead results."
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:531
-#: static/js/views/admin/participantsinfo.js:109
-msgid "Admin Permissions"
-msgstr ""
-
-#: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:112
-msgid "Company Admin"
-msgstr ""
-
-#: static/js/views/admin/participantsinfo.js:24
-msgid "Date Added"
-msgstr ""
-
-#: static/js/views/admin/participantsinfo.js:34
-msgid "Enrolled In"
-msgstr ""
-
-#: static/js/views/courses/lesson_note.js:2
-msgid "Lesson"
-msgstr ""
-
-#: static/js/views/courses/lesson_note.js:3
-msgid "Module"
+#: static_cache/rest_framework/js/jquery-1.8.1-min.js:2
+msgid "image"
 msgstr ""

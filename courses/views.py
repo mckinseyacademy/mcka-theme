@@ -713,6 +713,10 @@ def course_progress_v2(request, course_id):
 @check_user_course_access
 @cache_page(60 * 10)
 def course_resources(request, course_id):
+    feature_flags = FeatureFlags.objects.get(course_id=course_id)
+    if feature_flags and not feature_flags.resources:
+        return render(request, '404.haml')
+
     resources = load_static_tabs(course_id, name="resources")
     resources_content = fix_resource_page_video_scripts(getattr(resources, 'content', ''))
 

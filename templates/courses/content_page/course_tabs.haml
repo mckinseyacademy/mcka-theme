@@ -33,8 +33,9 @@
         {% trans "Announcements" %}
       %a{class: "{% ifequal request.resolver_match.url_name 'course_overview' %}selected{% endifequal %}", href: "/courses/#{course.id}/overview"}
         {% trans "Course Overview" %}
-      %a{class: "{% ifequal request.resolver_match.url_name 'course_resources' %}selected{% endifequal %}", href: "/courses/#{course.id}/resources"}
-        {% trans "Resources" %}
+      - if feature_flags.resources
+        %a{class: "{% ifequal request.resolver_match.url_name 'course_resources' %}selected{% endifequal %}", href: "/courses/#{course.id}/resources"}
+          {% trans "Resources" %}
   - if feature_flags.notifications
     %li
       %a.xns-icon{class:"nav-1", "data-tooltip": '{% trans "Notifications" %}', style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
