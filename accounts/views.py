@@ -831,37 +831,31 @@ def sso_registration_form(request):
         return HttpResponseNotFound()
 
     error = None
-    user_data = None
     provider_data = request.session['provider_data']
     provider_user_data = provider_data['user_details']
     username = _cleanup_username(provider_user_data.get('username', ''))
     remote_session_key = request.COOKIES.get('sessionid')
 
-    if not remote_session_key:
-        error = _("Authentication cookie is missing. Your session may have timed out. Please start over.")
+    if remote_session_key:
+        user_data = {
+            'accept_terms': True,
+            'city': settings.SSO_AUTOPROVISION_CITY,
+            'username': username,
+        }
 
-    if request.method == 'POST':
-        user_data = request.POST.copy()
-    user_data = {
-        'accept_terms': True,
-        'city': settings.SSO_AUTOPROVISION_CITY,
-        'username': username,
-    }
+        initial_values = {  # Default values from the provider:
+            'username': username,
+        }
+        fixed_values = {  # Values that we prevent the user from editing:
+            'company': client.display_name,
+        }
+        # We also set a fixed value for full name and email, but only if we got those from the provider:
+        if provider_user_data.get('fullname'):
+            fixed_values['full_name'] = provider_user_data['fullname']  # provider uses 'fullname', we use 'full_name'
+        if provider_user_data.get('email'):
+            fixed_values['email'] = provider_user_data['email']
 
-    initial_values = {  # Default values from the provider:
-        'username': username,
-    }
-    fixed_values = {  # Values that we prevent the user from editing:
-        'company': client.display_name,
-    }
-    # We also set a fixed value for full name and email, but only if we got those from the provider:
-    if provider_user_data.get('fullname'):
-        fixed_values['full_name'] = provider_user_data['fullname']  # provider uses 'fullname', we use 'full_name'
-    if provider_user_data.get('email'):
-        fixed_values['email'] = provider_user_data['email']
-
-    form = FinalizeRegistrationForm(user_data, fixed_values, initial=initial_values)
-    if error is None:
+        form = FinalizeRegistrationForm(user_data, fixed_values, initial=initial_values)
         if form.is_valid():
             # Create a random secure password for this user:
             random_password = base64.b64encode(os.urandom(32))
@@ -890,6 +884,8 @@ def sso_registration_form(request):
                 error = _("Failed to register user: {exception_message}").format(exception_message=exc.message)
         else:
             error = _("Some required information was missing.")
+    else:
+        error = _("Authentication cookie is missing. Your session may have timed out. Please start over.")
 
     context = {'error_details': error}
     return render(request, 'accounts/sso_error.haml', context)
