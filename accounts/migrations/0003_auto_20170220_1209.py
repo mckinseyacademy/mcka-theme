@@ -6,14 +6,10 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
+    # Note: We are making this migration blank as it is somehow handled badly in the past
+    # We have included migration 0006_auto_20180605_2114 to fix this issue
     dependencies = [
         ('accounts', '0002_auto_20160705_1123'),
     ]
 
-    operations = [
-        migrations.AlterField(
-            model_name='remoteuser',
-            name='groups',
-            field=models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Group', blank=True, help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.', verbose_name='groups'),
-        ),
-    ]
+    operations = []
