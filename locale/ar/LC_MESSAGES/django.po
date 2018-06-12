@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-07 08:29+0000\n"
+"POT-Creation-Date: 2018-06-12 08:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1384,7 +1384,19 @@ msgstr "بيانات الموفر لا تبدو صحيحة."
 msgid "Access Key missing."
 msgstr "مفتاح الوصول غير متوفر."
 
-#: accounts/views.py:841
+#: accounts/views.py:884
+#, python-brace-format
+msgid "Failed to register user: {exception_message}"
+msgstr "فشل في تسجيل المستخدم: {exception_message}"
+
+#: accounts/views.py:886
+#, fuzzy
+#| msgid ""
+#| "Some required information was missing. Please check the fields below."
+msgid "Some required information was missing."
+msgstr "بعض المعلومات المطلوبة لم يتم تقديمها، يرجى التحقق من الحقول أدناه."
+
+#: accounts/views.py:888
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1392,32 +1404,20 @@ msgstr ""
 "ملف تعريف ارتباط المصادقة مفقود. قد تكون جلسة العمل الخاصة بك قد انتهت. "
 "الرجاء البدء من جديد."
 
-#: accounts/views.py:890
-#, python-brace-format
-msgid "Failed to register user: {exception_message}"
-msgstr "فشل في تسجيل المستخدم: {exception_message}"
-
-#: accounts/views.py:892
-#, fuzzy
-#| msgid ""
-#| "Some required information was missing. Please check the fields below."
-msgid "Some required information was missing."
-msgstr "بعض المعلومات المطلوبة لم يتم تقديمها، يرجى التحقق من الحقول أدناه."
-
-#: accounts/views.py:941
+#: accounts/views.py:937
 msgid "Enter new password"
 msgstr "أدخل كلمة المرور الجديدة"
 
-#: accounts/views.py:958
+#: accounts/views.py:954
 msgid "Password reset unsuccessful"
 msgstr "إعادة تعيين كلمة المرور غير ناجحة"
 
-#: accounts/views.py:1056 templates/accounts/activate.haml:16
+#: accounts/views.py:1052 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45 templates/layout.haml:260
 msgid "Welcome to McKinsey Academy"
 msgstr "مرحبا بكم في McKinsey Academy"
 
-#: accounts/views.py:1057
+#: accounts/views.py:1053
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1426,7 +1426,7 @@ msgstr ""
 "سيتم تشغيل البرنامج الخاص بك خلال {days}أيام. الرجاء استكشاف الموقع للتعرف "
 "على المزيد حول التجربة."
 
-#: accounts/views.py:1061
+#: accounts/views.py:1057
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1435,11 +1435,11 @@ msgstr ""
 "تبدأ الدورة التدريبية الخاصة بك خلال{days} أيام، قبل بدء الدورة، يمكنك "
 "استكشاف هذا الموقع لمعرفة المزيد حول ما يمكن توقعه."
 
-#: accounts/views.py:1204
+#: accounts/views.py:1200
 msgid "Enter your full name"
 msgstr "أدخل اسمك بالكامل"
 
-#: accounts/views.py:1206 accounts/views.py:1229 admin/views.py:1841
+#: accounts/views.py:1202 accounts/views.py:1225 admin/views.py:1841
 #: admin/views.py:1875 admin/views.py:4192
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
@@ -1452,23 +1452,23 @@ msgstr "أدخل اسمك بالكامل"
 msgid "Save"
 msgstr "حفظ"
 
-#: accounts/views.py:1227
+#: accounts/views.py:1223
 msgid "Enter your title"
 msgstr "أدخل منصبك"
 
-#: accounts/views.py:1279 accounts/views.py:1309
+#: accounts/views.py:1275 accounts/views.py:1305
 msgid "Initial"
 msgstr "الأولى"
 
-#: accounts/views.py:1306
+#: accounts/views.py:1302
 msgid "Course Closed"
 msgstr "دورة مغلقة"
 
-#: accounts/views.py:1315
+#: accounts/views.py:1311
 msgid "Registered"
 msgstr "مسجلة"
 
-#: accounts/views.py:1317
+#: accounts/views.py:1313
 msgid "Error"
 msgstr "خطأ"
 
@@ -7266,8 +7266,8 @@ msgid "course begins in %(remaining_days)s days"
 msgstr "تبدأ الدورة في%(remaining_days)s الأيام"
 
 #: templates/home/landing.haml:15
-msgid "Unlocking Leadership Potential"
-msgstr "إطلاق القدرات القيادية"
+msgid "Leading transformations, transforming leaders"
+msgstr ""
 
 #: templates/home/landing.haml:20
 msgid "For Information:"
@@ -10556,6 +10556,9 @@ msgstr "الاسم الأول: {}"
 #: util/validators.py:90
 msgid "Last name: {}"
 msgstr "اسم العائلة: {}"
+
+#~ msgid "Unlocking Leadership Potential"
+#~ msgstr "إطلاق القدرات القيادية"
 
 #~ msgid "McKinsey & Company"
 #~ msgstr "ماكنزي أند كومباني"
