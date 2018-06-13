@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-12 08:37+0000\n"
+"POT-Creation-Date: 2018-06-13 10:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3291,7 +3291,7 @@ msgid "Customization"
 msgstr "التخصيص"
 
 #: templates/admin/admin_header.haml:62
-#: templates/admin/export_stats_email_template.haml:24
+#: templates/admin/export_stats_email_template.haml:26
 msgid "Contact"
 msgstr "جهة الاتصال"
 
@@ -4292,16 +4292,16 @@ msgstr ""
 "بما أن هذه العلامة غير موجودة، سيتم إنشاء علامة جديدة. إذا كان هذا خطأ، حاول "
 "تحديد العلامة الخاصة بك من نتائج المذكورة مسبقًا."
 
-#: templates/admin/export_stats_email_template.haml:14
+#: templates/admin/export_stats_email_template.haml:12
 #, python-format
 msgid " The \"%(report)s\" report is ready to download. "
 msgstr ""
 
-#: templates/admin/export_stats_email_template.haml:16
+#: templates/admin/export_stats_email_template.haml:14
 msgid "Please click below to login and download your report."
 msgstr ""
 
-#: templates/admin/export_stats_email_template.haml:18
+#: templates/admin/export_stats_email_template.haml:16
 #, fuzzy
 #| msgid "Download Template"
 msgid "Download Report"
@@ -4311,7 +4311,7 @@ msgstr "تزيل النموذج"
 msgid "Best Regards,"
 msgstr ""
 
-#: templates/admin/export_stats_email_template.haml:27
+#: templates/admin/export_stats_email_template.haml:29
 msgid "if you have any questions"
 msgstr ""
 

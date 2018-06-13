@@ -1,0 +1,18 @@
+- load i18n
+
+%div{:style => "background-color: #336ab1;padding: 10px 20px 100px;font-family: Arial, sans-serif;color: #333333;font-size: 15px;font-weight: 400;"}
+  %table{:border => "0", :cellpadding => "0", :cellspacing => "0", :style => "max-width: 750px; margin: 0 auto;border-collapse: collapse;", :width => "100%"}
+    %tr
+      %td{:style => "text-align: center; padding: 10px 0;"}
+        - block logo
+    %tr
+      %td
+        %div{:style => "background-color: #ffffff; padding: 40px; -webkit-border-radius: 5px 5px 0 0;-moz-border-radius: 5px 5px 0 0;border-radius: 5px 5px 0 0;"}
+          %h3{:style => "margin-top: 0;font-size: 18px;margin-bottom: 10px;color: #333333;"}
+            - block greetings
+          - block body
+          - block closing
+          - block footer
+    %tr
+      %td
+        %div{:style => "padding: 10px; background-color: #062750; -webkit-border-radius: 0 0 5px 5px;-moz-border-radius: 0 0 5px 5px;border-radius: 0 0 5px 5px;"}
