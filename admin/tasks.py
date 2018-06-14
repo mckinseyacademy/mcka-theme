@@ -41,7 +41,7 @@ def course_participants_data_retrieval_task(
     results are set in celery result backend, batch status is updated on each successful retrieval
     """
 
-    additional_fields = ['grades', 'roles', 'organizations']
+    additional_fields = ['grades', 'roles', 'organizations', 'progress']
 
     if lesson_completions:
         additional_fields.append('lesson_completions')

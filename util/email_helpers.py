@@ -36,4 +36,7 @@ def send_html_email(
     email.content_subtype = "html"
     email.attach_alternative(html_content, "text/html")
 
+    # ensure html email is displayed correctly on all client especially outlook
+    email.mixed_subtype = 'related'
+
     email.send(fail_silently=False)
