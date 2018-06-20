@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-13 10:53+0000\n"
+"POT-Creation-Date: 2018-06-20 10:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1329,77 +1329,77 @@ msgstr ""
 msgid "Password doesn't match our records. Try again."
 msgstr ""
 
-#: accounts/views.py:649 accounts/views.py:721
+#: accounts/views.py:647 accounts/views.py:719
 msgid "Some required information was missing. Please check the fields below."
 msgstr ""
 
-#: accounts/views.py:669 accounts/views.py:733
+#: accounts/views.py:667 accounts/views.py:731
 msgid "Create my McKinsey Academy account"
 msgstr ""
 
-#: accounts/views.py:699
+#: accounts/views.py:697
 msgid "Invalid Activation Code"
 msgstr ""
 
-#: accounts/views.py:771
+#: accounts/views.py:769
 msgid "No provider data found."
 msgstr ""
 
-#: accounts/views.py:773
+#: accounts/views.py:771
 msgid "Provider data does not seem valid."
 msgstr ""
 
-#: accounts/views.py:827
+#: accounts/views.py:825
 msgid "Access Key missing."
 msgstr ""
 
-#: accounts/views.py:884
+#: accounts/views.py:882
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr ""
 
-#: accounts/views.py:886
+#: accounts/views.py:884
 msgid "Some required information was missing."
 msgstr ""
 
-#: accounts/views.py:888
+#: accounts/views.py:886
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
 msgstr ""
 
-#: accounts/views.py:937
+#: accounts/views.py:935
 msgid "Enter new password"
 msgstr ""
 
-#: accounts/views.py:954
+#: accounts/views.py:952
 msgid "Password reset unsuccessful"
 msgstr ""
 
-#: accounts/views.py:1052 templates/accounts/activate.haml:16
+#: accounts/views.py:1050 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45 templates/layout.haml:260
 msgid "Welcome to McKinsey Academy"
 msgstr ""
 
-#: accounts/views.py:1053
+#: accounts/views.py:1051
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
 "more about the experience in the meantime."
 msgstr ""
 
-#: accounts/views.py:1057
+#: accounts/views.py:1055
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
 "this site to learn more about what to expect."
 msgstr ""
 
-#: accounts/views.py:1200
+#: accounts/views.py:1198
 msgid "Enter your full name"
 msgstr ""
 
-#: accounts/views.py:1202 accounts/views.py:1225 admin/views.py:1841
+#: accounts/views.py:1200 accounts/views.py:1223 admin/views.py:1841
 #: admin/views.py:1875 admin/views.py:4192
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
@@ -1412,23 +1412,23 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: accounts/views.py:1223
+#: accounts/views.py:1221
 msgid "Enter your title"
 msgstr ""
 
-#: accounts/views.py:1275 accounts/views.py:1305
+#: accounts/views.py:1273 accounts/views.py:1303
 msgid "Initial"
 msgstr ""
 
-#: accounts/views.py:1302
+#: accounts/views.py:1300
 msgid "Course Closed"
 msgstr ""
 
-#: accounts/views.py:1311
+#: accounts/views.py:1309
 msgid "Registered"
 msgstr ""
 
-#: accounts/views.py:1313
+#: accounts/views.py:1311
 msgid "Error"
 msgstr ""
 
@@ -3185,7 +3185,7 @@ msgid "Customization"
 msgstr ""
 
 #: templates/admin/admin_header.haml:62
-#: templates/admin/export_stats_email_template.haml:26
+#: templates/admin/export_stats_email_template.haml:29
 msgid "Contact"
 msgstr ""
 
@@ -4133,15 +4133,15 @@ msgstr ""
 msgid "Please click below to login and download your report."
 msgstr ""
 
-#: templates/admin/export_stats_email_template.haml:16
+#: templates/admin/export_stats_email_template.haml:19
 msgid "Download Report"
 msgstr ""
 
-#: templates/admin/export_stats_email_template.haml:20
+#: templates/admin/export_stats_email_template.haml:23
 msgid "Best Regards,"
 msgstr ""
 
-#: templates/admin/export_stats_email_template.haml:29
+#: templates/admin/export_stats_email_template.haml:32
 msgid "if you have any questions"
 msgstr ""
 

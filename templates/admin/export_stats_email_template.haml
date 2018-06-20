@@ -13,7 +13,10 @@
   %p{:style => "line-height: 22px;font-size: 15px;margin-top: 20px;color: #333333;"}
     {% trans "Please click below to login and download your report." %}
   %a{:href => "{{download_link}}", :style => "text-transform: uppercase;margin-top: 15px;margin-bottom: 20px; display: inline-block; border: 1px solid #004fa4;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;font-size: 15px;font-weight: bold; color: #004fa4;padding: 12px 38px;text-decoration: none;"}
-    {% trans "Download Report" %}
+    - if text_version
+      #{download_link}
+    - else
+      {% trans "Download Report" %}
 
 - block closing
   %p{:style => "line-height: 22px;color: #333333;"}

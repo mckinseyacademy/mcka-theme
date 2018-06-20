@@ -10,8 +10,8 @@ from django.core.mail import EmailMultiAlternatives
 def send_html_email(
     subject='', to_emails=[],
     from_email=settings.APROS_EMAIL_SENDER,
-    reply_to=[settings.MCKA_SUPPORT_EMAIL],
-    template_name=None, template_data=None
+    reply_to=(settings.MCKA_SUPPORT_EMAIL, ),
+    template_name=None, template_data={}
 ):
     """
     helper method for sending out html emails
@@ -19,24 +19,26 @@ def send_html_email(
     if not to_emails:
         raise ValueError('To emails is a required param')
 
-    if template_name:
-        html_content = loader.render_to_string(
-            template_name,
-            template_data or {}
-        )
-        text_content = strip_tags(html_content)
-    else:
+    if not template_name:
         raise ValueError('Please provide an email template (path or name)')
+
+    html_content = loader.render_to_string(
+        template_name,
+        template_data
+    )
+
+    # load text-adapted version
+    template_data['text_version'] = True
+    text_version = loader.render_to_string(
+        template_name,
+        template_data
+    )
+    text_content = strip_tags(text_version)
 
     email = EmailMultiAlternatives(
         subject, text_content, from_email, to_emails,
         reply_to=reply_to
     )
 
-    email.content_subtype = "html"
     email.attach_alternative(html_content, "text/html")
-
-    # ensure html email is displayed correctly on all client especially outlook
-    email.mixed_subtype = 'related'
-
     email.send(fail_silently=False)
