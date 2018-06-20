@@ -66,15 +66,18 @@ class ApiError(Exception):
         super(ApiError, self).__init__()
 
     def __str__(self):
+        return unicode(self).encode('utf-8')
+
+    def __unicode__(self):
         self.filter_sensitive_data(self.context)
 
-        argument_list = ', '.join(
+        argument_list = u', '.join(
             [
-                '{}={}'.format(context_name, self.context[context_name])
+                u'{}={}'.format(context_name, self.context[context_name])
                 for context_name in self.context
             ]
         )
-        return "ApiError '{}' ({}) - {}({})".format(
+        return u"ApiError '{}' ({}) - {}({})".format(
             self.message,
             self.code,
             self.function_name,
@@ -111,6 +114,6 @@ def api_error_protect(func):
                 ERROR_CODE_MESSAGES.get(func.__name__, None),
                 **call_context
             )
-            log.error("Error calling {}: {}".format(func, api_error))
+            log.error(u"Error calling {}: {}".format(func, api_error))
             raise api_error
     return call_api_method
