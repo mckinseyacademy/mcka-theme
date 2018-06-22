@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-20 10:26+0000\n"
+"POT-Creation-Date: 2018-06-21 11:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2810,11 +2810,11 @@ msgstr ""
 msgid "Fake translations"
 msgstr ""
 
-#: mcka_apros/settings.py:213 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:214 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr ""
 
-#: mcka_apros/settings.py:287
+#: mcka_apros/settings.py:288
 msgid "Congratulations! Your certificate has been generated"
 msgstr ""
 

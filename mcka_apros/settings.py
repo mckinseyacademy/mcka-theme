@@ -151,7 +151,7 @@ LANGUAGE_CODE = 'en-us'
 LANGUAGES = (
     ('en', _('English')),
     ('ar', _('Arabic')),  # Arabic
-
+    ('zh', 'Chinese'),
     ('eo', _('Esperanto')),  # Dummy languaged used for testing
     ('rtl', _('RTL Test Language')),
     ('fake2', _('Fake translations')), # Another dummy language for testing
@@ -159,7 +159,8 @@ LANGUAGES = (
 
 SUPPORTED_LANGUAGES_CODE = [
     'en',
-    'ar'
+    'ar',
+    'zh'
 ]
 
 USE_I18N = True
