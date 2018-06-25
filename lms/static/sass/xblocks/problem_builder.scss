@@ -1,25 +1,5 @@
 // Overrides for Problem Builder
 // from https://github.com/open-craft/problem-builder/blob/7e76920/problem_builder/public/themes/apros.css
-.mentoring {
-    .questionnaire {
-        .choice-tips, .feedback {
-            // Avoid a global reset to border-box found on Apros
-            box-sizing: content-box;  
-        }
-        .choice-label {
-            // Fill the full page width for MRC/MCQ choices
-            width: 100%
-        }
-    }
-    .title h3 {
-        // Same as h2.main in Apros, amended to h3
-        color: #66a5b5;
-    }
-    h4 {
-        text-transform: uppercase;
-    }
-}
-
 .themed-xblock.mentoring {
     .choices-list .choice-selector {
         padding: 4px 3px 0 3px;
@@ -36,5 +16,18 @@
     .copyright {
         // Hide the copyright message
         display: none;
+    }
+    .questionnaire {
+        .choice-tips, .feedback {
+            // Avoid a global reset to border-box found on Apros
+            box-sizing: content-box;  
+        }
+    }
+    .title h3 {
+        // Same as h2.main in Apros, amended to h3
+        color: #66a5b5;
+    }
+    h4 {
+        text-transform: uppercase;
     }
 }
