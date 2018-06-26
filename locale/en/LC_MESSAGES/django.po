@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-25 13:04+0000\n"
+"POT-Creation-Date: 2018-06-26 14:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1692,7 +1692,7 @@ msgid "There are no users in organization!"
 msgstr ""
 
 #: admin/controller.py:2272 admin/controller.py:2273 admin/views.py:3574
-#: admin/views.py:3575 admin/views.py:3731 admin/views.py:5520
+#: admin/views.py:3575 admin/views.py:3731 admin/views.py:5532
 msgid "No company"
 msgstr ""
 
@@ -1836,7 +1836,7 @@ msgstr ""
 #: admin/views.py:4101 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:63
-#: templates/header.haml:97
+#: templates/header.haml:96
 msgid "Program"
 msgstr ""
 
@@ -2120,12 +2120,12 @@ msgstr ""
 msgid "Successfully Added {} Participants"
 msgstr ""
 
-#: admin/views.py:2335 admin/views.py:5642
+#: admin/views.py:2335 admin/views.py:5654
 #: templates/admin/participants/activation_link_modal.haml:15
 msgid "First name"
 msgstr ""
 
-#: admin/views.py:2335 admin/views.py:5643
+#: admin/views.py:2335 admin/views.py:5655
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 msgid "Last name"
@@ -2268,9 +2268,9 @@ msgid "Successfully added new user!"
 msgstr ""
 
 #: admin/views.py:3724 admin/views.py:3726 admin/views.py:3735
-#: admin/views.py:3741 admin/views.py:3747 admin/views.py:5513
-#: admin/views.py:5515 admin/views.py:5524 admin/views.py:5530
-#: admin/views.py:5536
+#: admin/views.py:3741 admin/views.py:3747 admin/views.py:5525
+#: admin/views.py:5527 admin/views.py:5536 admin/views.py:5542
+#: admin/views.py:5548
 #: templates/admin/participants/participant_details.haml:267
 #: templates/admin/participants/participant_details.haml:275
 #: templates/admin/participants/participant_details.haml:283
@@ -2354,71 +2354,71 @@ msgstr ""
 msgid "Successfully updated email template!"
 msgstr ""
 
-#: admin/views.py:4676 admin/views.py:5307
+#: admin/views.py:4676 admin/views.py:5319
 msgid "No Company Display name!"
 msgstr ""
 
-#: admin/views.py:4849
+#: admin/views.py:4859
 msgid "App name only contains alphanumeric characters"
 msgstr ""
 
-#: admin/views.py:4965
+#: admin/views.py:4975
 msgid "Learner dashboard not found"
 msgstr ""
 
-#: admin/views.py:5324
+#: admin/views.py:5336
 msgid "Company name successfully changed!"
 msgstr ""
 
-#: admin/views.py:5367
+#: admin/views.py:5379
 msgid "Tag with this name already exist's!"
 msgstr ""
 
-#: admin/views.py:5378
+#: admin/views.py:5390
 msgid "Tag created!"
 msgstr ""
 
-#: admin/views.py:5380
+#: admin/views.py:5392
 msgid "You need to select tag's name!"
 msgstr ""
 
-#: admin/views.py:5430
+#: admin/views.py:5442
 msgid "Tag added to Course!"
 msgstr ""
 
-#: admin/views.py:5432 admin/views.py:5454
+#: admin/views.py:5444 admin/views.py:5466
 msgid "You need to select tag!"
 msgstr ""
 
-#: admin/views.py:5452
+#: admin/views.py:5464
 msgid "Tag removed from Course!"
 msgstr ""
 
-#: admin/views.py:5644 templates/admin/course_run/view.haml:65
+#: admin/views.py:5656 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr ""
 
-#: admin/views.py:5645 templates/admin/course_run/view.haml:66
+#: admin/views.py:5657 templates/admin/course_run/view.haml:66
 msgid "Company email"
 msgstr ""
 
-#: admin/views.py:5646 templates/admin/course_run/view.haml:67
+#: admin/views.py:5658 templates/admin/course_run/view.haml:67
 msgid "Current role"
 msgstr ""
 
-#: admin/views.py:5647 templates/admin/course_run/view.haml:68
+#: admin/views.py:5659 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr ""
 
-#: admin/views.py:5648
+#: admin/views.py:5660
 msgid "McK user"
 msgstr ""
 
-#: admin/views.py:5649 templates/admin/course_run/view.haml:70
+#: admin/views.py:5661 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr ""
 
-#: admin/views.py:5650 templates/admin/course_run/view.haml:71
+#: admin/views.py:5662 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr ""
@@ -4472,7 +4472,7 @@ msgstr ""
 #: templates/admin/participants/participant_details.haml:239
 #: templates/admin/participants/participant_details.haml:242
 #: templates/admin/participants/participants_list.haml:105
-#: templates/header.haml:71
+#: templates/header.haml:70
 msgid "Internal Admin"
 msgstr ""
 
@@ -6715,37 +6715,37 @@ msgstr ""
 msgid "FAQ"
 msgstr ""
 
-#: templates/header.haml:22
+#: templates/header.haml:21
 msgid "Language :"
 msgstr ""
 
-#: templates/header.haml:30
+#: templates/header.haml:29
 msgid "Select Your Language"
 msgstr ""
 
-#: templates/header.haml:67
+#: templates/header.haml:66
 msgid "McKA Admin"
 msgstr ""
 
-#: templates/header.haml:75
+#: templates/header.haml:74
 msgid "Client Admin"
 msgstr ""
 
-#: templates/header.haml:79
+#: templates/header.haml:78
 msgid "Company Admin"
 msgstr ""
 
-#: templates/header.haml:106
+#: templates/header.haml:105
 msgid "COURSE CLOSED"
 msgstr ""
 
-#: templates/header.haml:119
+#: templates/header.haml:118
 #, python-format
 msgid "course begins in %(remaining_days)s days"
 msgstr ""
 
 #: templates/home/landing.haml:15
-msgid "Leading transformations, transforming leaders"
+msgid "Leading transformation, transforming leaders"
 msgstr ""
 
 #: templates/home/landing.haml:20
