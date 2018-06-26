@@ -1826,7 +1826,7 @@ def _just_enroll_participants(participants, request, reg_status):
 
         course_id = user_dict['course_id'].strip()
         status = user_dict['status'].lower().strip()
-        status_check = ['active', 'observer', 'ta']
+        status_check = ['participant', 'observer', 'ta']
         check_errors = []
         user_error = []
         user_email = user_dict.get('email', '').strip()
@@ -1880,7 +1880,7 @@ def _just_enroll_participants(participants, request, reg_status):
                     #Set Participant Status on Course
                     try:
                         permissions = Permissions(user_data["results"][0]["id"])
-                        if status != 'active':
+                        if status != 'participant':
                             permissions.add_course_role(course_id, permissonsMap[status])
                     except ApiError as e:
                         raise ValueError('{}'.format(e.message), _("Setting Participant's Status"))

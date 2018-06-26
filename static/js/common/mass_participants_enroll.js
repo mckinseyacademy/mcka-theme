@@ -243,7 +243,7 @@ checkForEnrollStatus = function(data, form) {
 PopulateTemplateData = function()
 {
   var data = [[gettext("email"), gettext("course id"), gettext("status")],
-  ["sinatest@yopmail.com", "edX/TwoX/Two_Course", "active"], 
+  ["sinatest@yopmail.com", "edX/TwoX/Two_Course", "participant"],
   ["sinatest1@yopmail.com", "edX/TwoX/Two_Course", "ta"], 
   ["sinatest2@yopmail.com", "edX/TwoX/Two_Course", "observer"]];
   var csvContent = "data:text/csv;charset=utf-8,";
