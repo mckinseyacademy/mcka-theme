@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
 """
 Django settings for academy project.
 
@@ -149,12 +151,9 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 LANGUAGE_CODE = 'en-us'
 LANGUAGES = (
-    ('en', _('English')),
-    ('ar', _('Arabic')),  # Arabic
-    ('zh', 'Chinese'),
-    ('eo', _('Esperanto')),  # Dummy languaged used for testing
-    ('rtl', _('RTL Test Language')),
-    ('fake2', _('Fake translations')), # Another dummy language for testing
+    ('en', u'English '),
+    ('ar', u'العربية'),  # Arabic
+    ('zh', u'中文(简体)'),
 )
 
 SUPPORTED_LANGUAGES_CODE = [

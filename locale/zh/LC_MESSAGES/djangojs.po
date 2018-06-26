@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-11 10:18+0000\n"
+"POT-Creation-Date: 2018-06-25 13:03+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: static/js/admin/client_sso.js:142
+#: static/js/admin/client_sso.js:182
 msgid "You need to enter name!"
 msgstr "您需要输入名字！"
 
-#: static/js/admin/client_sso.js:147
+#: static/js/admin/client_sso.js:187
 msgid "You need to enter course ID!"
 msgstr "您需要输入课程编号！"
 
@@ -474,7 +474,7 @@ msgstr "取消本课程所有选定参与者的报名？"
 #: static/js/views/admin/course_details_bulk_actions.js:133
 #: static/js/views/admin/course_details_bulk_actions.js:198
 #: static/js/views/admin/course_details_bulk_actions.js:299
-#: static/js/views/admin/course_details_bulk_actions.js:625
+#: static/js/views/admin/course_details_bulk_actions.js:710
 msgid ""
 "You need to select at least one participant to be able to apply bulk actions."
 msgstr "要应用批量操作，您必须至少选择一个参与者。"
@@ -533,7 +533,8 @@ msgstr "选择课程"
 
 #: static/js/views/admin/course_details_bulk_actions.js:268
 msgid "%(selectedRows)s Participants will be enroll in course selected below."
-msgid_plural "%(selectedRows)s Participant will be enroll in course selected below."
+msgid_plural ""
+"%(selectedRows)s Participant will be enroll in course selected below."
 msgstr[0] "%(selectedRows)s 参与者将报名参加下面选择的课程。"
 msgstr[1] "%(selectedRows)s 参与者将报名参加下面选择的课程。"
 
@@ -548,107 +549,127 @@ msgstr "报名参与者"
 msgid "You need to select course!"
 msgstr "您需要选择课程！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:412
+#: static/js/views/admin/course_details_bulk_actions.js:426
 msgid "Download"
 msgstr "下载"
 
-#: static/js/views/admin/course_details_bulk_actions.js:412
+#: static/js/views/admin/course_details_bulk_actions.js:426
 msgid "Progress : 0%"
 msgstr "进度: 0%"
 
-#: static/js/views/admin/course_details_bulk_actions.js:413
+#: static/js/views/admin/course_details_bulk_actions.js:427
 msgid "Download CSV File"
 msgstr "下载 CSV 文件"
 
-#: static/js/views/admin/course_details_bulk_actions.js:452
+#: static/js/views/admin/course_details_bulk_actions.js:463
+msgid ""
+"Include breakdown of progress for each lesson (Note: the export will take "
+"more time)"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:469
+msgid "We'll e-mail you when your report is ready to download."
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:472
+msgid "Exporting Stats for All Users"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:473
+msgid "Export Report"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:512
+#, fuzzy
+#| msgid "Task failed to execute. Please retry later."
+msgid "Error initiating the report generation. Please retry later."
+msgstr "任务未能执行。请稍后重试。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:541
 msgid "Download Notifications CSV"
 msgstr "下载通知 CSV"
 
-#: static/js/views/admin/course_details_bulk_actions.js:486
-msgid "Download Participants"
-msgstr "下载参与者"
-
-#: static/js/views/admin/course_details_bulk_actions.js:541
+#: static/js/views/admin/course_details_bulk_actions.js:626
 msgid "Group Work: %(label)s"
 msgstr "小组合作: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:569
+#: static/js/views/admin/course_details_bulk_actions.js:654
 msgid "Assessment: %(label)s"
 msgstr "评定: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:595
+#: static/js/views/admin/course_details_bulk_actions.js:680
 msgid "Task failed to execute. Please retry later."
 msgstr "任务未能执行。请稍后重试。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:612
+#: static/js/views/admin/course_details_bulk_actions.js:697
 msgid "Successfully Enrolled in 1 Course"
 msgstr "成功报名 1 门课程"
 
-#: static/js/views/admin/course_details_bulk_actions.js:614
+#: static/js/views/admin/course_details_bulk_actions.js:699
 msgid "What would you like to do now?"
 msgstr "您现在想要做什么？"
 
-#: static/js/views/admin/course_details_bulk_actions.js:615
+#: static/js/views/admin/course_details_bulk_actions.js:700
 msgid "Go to %(course_id)s Course"
 msgstr "转至 %(course_id)s 课程"
 
-#: static/js/views/admin/course_details_bulk_actions.js:617
+#: static/js/views/admin/course_details_bulk_actions.js:702
 msgid "Send Course Intro Email"
 msgstr "发送课程介绍电子邮件"
 
-#: static/js/views/admin/course_details_bulk_actions.js:619
+#: static/js/views/admin/course_details_bulk_actions.js:704
 msgid "Enroll this list in another course"
 msgstr "在另一门课程中注册此列表"
 
-#: static/js/views/admin/course_details_bulk_actions.js:631
+#: static/js/views/admin/course_details_bulk_actions.js:716
 msgid "I'm Done"
 msgstr "我已完成"
 
-#: static/js/views/admin/course_details_bulk_actions.js:651
+#: static/js/views/admin/course_details_bulk_actions.js:736
 msgid "Successfully deleted template!"
 msgstr "模板删除成功！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:658
+#: static/js/views/admin/course_details_bulk_actions.js:743
 msgid "Successfully added new template!"
 msgstr "新模板添加成功！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:671
+#: static/js/views/admin/course_details_bulk_actions.js:756
 msgid "Successfully updated template!"
 msgstr "模板更新成功！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:676
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Email Preview Success!"
 msgstr "电子邮件预览成功！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:676
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Successfully sent preview email!"
 msgstr "预览电子邮件发送成功！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:679
+#: static/js/views/admin/course_details_bulk_actions.js:764
 msgid "Email Success!"
 msgstr "电子邮件发送成功！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:679
+#: static/js/views/admin/course_details_bulk_actions.js:764
 msgid "Successfully sent email!"
 msgstr "电子邮件发送成功！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:721
+#: static/js/views/admin/course_details_bulk_actions.js:806
 msgid "Preview Email!"
 msgstr "预览电子邮件！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:721
+#: static/js/views/admin/course_details_bulk_actions.js:806
 msgid "Please enter preview email!"
 msgstr "请输入预览电子邮件！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:741
+#: static/js/views/admin/course_details_bulk_actions.js:826
 msgid "Please enter new template name!"
 msgstr "请输入新模板名称！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:756
+#: static/js/views/admin/course_details_bulk_actions.js:841
 msgid "Please enter updated template name or leave the old one!"
 msgstr "请输入更新的模板名称或保留旧的模板名称！"
 
-#: static/js/views/admin/course_details_bulk_actions.js:769
+#: static/js/views/admin/course_details_bulk_actions.js:854
 msgid "You are about to delete email template. Are you sure?"
 msgstr "您即将删除电子邮件模板。确定？"
 
@@ -785,6 +806,9 @@ msgstr "课程"
 #: static/js/views/courses/lesson_note.js:3
 msgid "Module"
 msgstr "模块"
+
+#~ msgid "Download Participants"
+#~ msgstr "下载参与者"
 
 #~ msgid "'"
 #~ msgstr "'"

@@ -865,7 +865,7 @@ $(document).ready(function () {
         $(this).toggleClass("is-open");
     });
 
-    var currentLanguage = $('a.current span').attr('class');
-    $('li.'+currentLanguage+' a').addClass("selected");
+    var currentLanguage = $('a.selected', '.language-selector').text();
+    $('span.current_language').html(currentLanguage);
 
 });

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-21 11:06+0000\n"
+"POT-Creation-Date: 2018-06-25 13:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1836,7 +1836,7 @@ msgstr ""
 #: admin/views.py:4101 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:63
-#: templates/header.haml:98
+#: templates/header.haml:97
 msgid "Program"
 msgstr ""
 
@@ -2790,31 +2790,11 @@ msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr ""
 
-#: mcka_apros/settings.py:152
-msgid "English"
-msgstr ""
-
-#: mcka_apros/settings.py:153
-msgid "Arabic"
-msgstr ""
-
-#: mcka_apros/settings.py:155
-msgid "Esperanto"
-msgstr ""
-
-#: mcka_apros/settings.py:156
-msgid "RTL Test Language"
-msgstr ""
-
-#: mcka_apros/settings.py:157
-msgid "Fake translations"
-msgstr ""
-
-#: mcka_apros/settings.py:214 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:213 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr ""
 
-#: mcka_apros/settings.py:288
+#: mcka_apros/settings.py:287
 msgid "Congratulations! Your certificate has been generated"
 msgstr ""
 
@@ -4492,7 +4472,7 @@ msgstr ""
 #: templates/admin/participants/participant_details.haml:239
 #: templates/admin/participants/participant_details.haml:242
 #: templates/admin/participants/participants_list.haml:105
-#: templates/header.haml:72
+#: templates/header.haml:71
 msgid "Internal Admin"
 msgstr ""
 
@@ -6739,27 +6719,27 @@ msgstr ""
 msgid "Language :"
 msgstr ""
 
-#: templates/header.haml:34
+#: templates/header.haml:30
 msgid "Select Your Language"
 msgstr ""
 
-#: templates/header.haml:68
+#: templates/header.haml:67
 msgid "McKA Admin"
 msgstr ""
 
-#: templates/header.haml:76
+#: templates/header.haml:75
 msgid "Client Admin"
 msgstr ""
 
-#: templates/header.haml:80
+#: templates/header.haml:79
 msgid "Company Admin"
 msgstr ""
 
-#: templates/header.haml:107
+#: templates/header.haml:106
 msgid "COURSE CLOSED"
 msgstr ""
 
-#: templates/header.haml:120
+#: templates/header.haml:119
 #, python-format
 msgid "course begins in %(remaining_days)s days"
 msgstr ""

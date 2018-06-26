@@ -1,6 +1,6 @@
 - load i18n
 - get_current_language as LANGUAGE_CODE
-
+- get_available_languages as LANGUAGES
 %header.background-blue{style: "{% if client_customization and client_customization.hex_background_main_navigation %}background-color:#{client_customization.hex_background_main_navigation};{% endif %}" , role: 'banner'}
   .row.collapse.main-nav
     .large-12.columns
@@ -18,29 +18,24 @@
             -if use_i18n
               .language-selector
                 %span
-                  {# TODO: generate dynamic list using settings.SUPPORTED_LANGUAGES #}
                   {% trans "Language :" %}
                 .select-box
                   %a.current
-                    -if LANGUAGE_CODE == 'ar'
-                      %span.arabic
-                        العربية
-                    - else
-                      %span.english
-                        English
+                    %span.current_language
+
                   %ul
                     %li
                       %h5
                         {% trans "Select Your Language" %}
-                    %li.arabic
-                      %a{href: "/language_switch?LANG=ar"}
-                        العربية
-                    %li.english
-                      %a{href: "/language_switch?LANG=en"}
-                        English
-                    %li.chinese
-                      %a{href: "/language_switch?LANG=zh"}
-                        Chinese
+                    - for language_code, language_name in LANGUAGES
+                      %li
+                        - if LANGUAGE_CODE == language_code
+                          %a.selected
+                            {{language_name}}
+                        - else
+                          %a{href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                            {{language_name}}
+
       %input#mobile-menu-toggle{type: 'checkbox'}
       - block header_menu
         %nav{role: 'navigation'}
