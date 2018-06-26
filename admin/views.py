@@ -4795,7 +4795,17 @@ class CompanyCoursesApi(APIView):
         PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN,
     )
     def get(self, request, company_id):
-        courses = get_organization_active_courses(request, company_id)
+        active_courses = get_organization_active_courses(request, company_id)
+        courses = []
+        for course in active_courses:
+            start = (course['start'])
+            course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
+            if course['end'] and course['end'] != '-':
+                end = course['end']
+                course['end'] = end.strftime("%Y/%m/%d") + ',' + end.strftime("%m/%d/%Y")
+            else:
+                course['end'] = '-'
+            courses.append(course)
         return Response(courses)
 
 
@@ -5251,9 +5261,11 @@ def course_learner_dashboard_branding_reset(request, course_id, learner_dashboar
 def company_course_details(request, company_id, course_id):
     course = course_api.get_course_details(course_id)
     if course['start'] is not None:
-        course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
+        start = parsedate(course['start'])
+        course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
     if course['end'] is not None:
-        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y")
+        end = parsedate(course['end'])
+        course['end'] = end.strftime("%Y/%m/%d") + ',' + end.strftime("%m/%d/%Y")
     for data in course:
         if course.get(data) is None:
             course[data] = "-"
