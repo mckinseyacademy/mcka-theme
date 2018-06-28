@@ -41,8 +41,10 @@ class AprosPlatformLanguage(object):
 				language = course_detail.language
 		elif path.startswith('/admin'):
 			language = 'en-us'
-		else:
+		elif not request.user.is_authenticated():
 			language = request.COOKIES.get(
 				'preferred_language',
 				self._get_browser_preferred_language(request))
+		else:
+			return None
 		set_language(language)

@@ -16,7 +16,7 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 		self.apros_platform_language = AprosPlatformLanguage()
 		self.factory = RequestFactory()
 
-	def mock_request_object(self, path, language_code):
+	def mock_request_object(self, path, language_code, is_authenticated=True):
 		'''
 		Mocking the actual request to use in test cases
 		:param path: relative path for url to be build for request
@@ -52,23 +52,23 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 		('/courses/arbisSOFT/SAMPLe/1', 'ar'),
 		('/courses/arbisoft/TEst123/TEST', 'ar'),
 		('/courses/arbisoft/Test12abc/1/', 'ar'),
-		('/', 'en'),
-		('/accounts/login/', 'en'),
-		('/faq/', 'en'),
-		('/privacy/', 'en'),
-		('/terms/', 'en'),
-		('/accounts/edit_fullname', 'en'),
-		('/accounts/activate/123basdyadq', 'en'),
 		('/admin/', LANGUAGE_CODE),
+		('/', 'en-us', False),
+		('/accounts/login/', 'en-us', False),
+		('/faq/', 'en-us', False),
+		('/privacy/', 'en-us', False),
+		('/terms/', 'en-us', False),
+		('/accounts/edit_fullname', 'en-us', False),
+		('/accounts/activate/123basdyadq', 'en-us', False),
 		('/admin/clients/1/navigation', LANGUAGE_CODE)
 	)
 	@ddt.unpack
-	def test_process_request(self, path, expected_language):
+	def test_process_request(self, path, expected_language, authenication=False):
 		"""
 		:param path: Relative url for parsing
 		:param expected_language: language of platform which is expected
 		"""
-		request = self.mock_request_object(path, 'en,jp,de-DE,en-GB;q=0.6')
+		request = self.mock_request_object(path, 'en,jp,de-DE,en-GB;q=0.6', authenication)
 
 		get_current_request = self.apply_patch('util.i18n_helpers.get_current_request')
 		get_current_request.return_value = request
@@ -78,7 +78,6 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 
 		self.apros_platform_language.process_request(request)
 		self.assertEqual(expected_language, translation.get_language())
-		self.assertEqual(expected_language, request.session[translation.LANGUAGE_SESSION_KEY])
 
 	def test_process_request_with_invalid_course_url(self):
 		"""
