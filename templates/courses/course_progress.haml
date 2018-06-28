@@ -34,8 +34,7 @@
     .sub-1 PROGRESS
     %p.style-6
       {% blocktrans with user_course_progress=course.user_progress %}
-        You are {{user_course_progress}}% of the way through the course based on completion of modules within lessons:
-      {% endblocktrans %}
+        You are {{user_course_progress}}% of the way through the course based on completion of modules within lessons:{% endblocktrans %}
     - include "courses/visualizations/course_progress.haml"
     %hr
     .sub-1 {% trans "GRADES" %}

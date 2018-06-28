@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-26 14:15+0000\n"
+"POT-Creation-Date: 2018-06-27 10:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1486,10 +1486,6 @@ msgstr "数据处理错误"
 msgid "Error processing data: {reason}"
 msgstr "处理数据时出错：{reason}"
 
-#: admin/controller.py:506
-msgid "{activity}: {reason} - {email)"
-msgstr "{activity}: {reason} - {email)"
-
 #: admin/controller.py:520 admin/controller.py:528
 #, python-brace-format
 msgid "{error}: {message} - {email}"
@@ -2230,7 +2226,7 @@ msgstr "此课程没有可用的小组项目"
 #: templates/admin/course_meta_content/item_list.haml:55
 #: templates/courses/content_page/course_tabs.haml:18
 #: templates/courses/course_group_work.haml:13
-#: templates/courses/course_progress.haml:58 templates/faq.haml:40
+#: templates/courses/course_progress.haml:57 templates/faq.haml:40
 msgid "Group Work"
 msgstr "小组作业"
 
@@ -2333,7 +2329,7 @@ msgstr "状态"
 
 #: admin/views.py:4101 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:30
-#: templates/courses/course_progress.haml:54
+#: templates/courses/course_progress.haml:53
 msgid "Completed"
 msgstr "已完成"
 
@@ -5024,7 +5020,7 @@ msgstr "在此添加一条消息来描述负责人名单"
 #: templates/admin/workgroup/project_assignment.haml:19
 #: templates/admin/workgroup/workgroup_detail_report.haml:12
 #: templates/admin/workgroup/workgroup_report.haml:12
-#: templates/courses/course_progress.haml:87
+#: templates/courses/course_progress.haml:86
 #: templates/courses/course_progress_v2.haml:134
 #: templates/courses/course_progress_v2.haml:147
 msgid "Group Work:"
@@ -5478,7 +5474,7 @@ msgid "100"
 msgstr "100"
 
 #: templates/courses/course_cohort.haml:116
-#: templates/courses/course_progress.haml:68
+#: templates/courses/course_progress.haml:67
 #: templates/courses/visualizations/course_progress.haml:8
 msgid "Progress:"
 msgstr "进度："
@@ -6088,22 +6084,21 @@ msgid "Course Progress for"
 msgstr "以下课程进度："
 
 #: templates/courses/course_progress.haml:36
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "        You are %(user_course_progress)s%% of the way through the course "
-"based on completion of modules within lessons:\n"
-"      "
+"based on completion of modules within lessons:"
 msgstr ""
 "\n"
-"        根据课时模块的完成情况，您的课程进度为 %(user_course_progress)s%%：\n"
+"        根据课时模块的完成情况，您的课程进度为 %(user_course_progress)s%%："
 "      "
 
-#: templates/courses/course_progress.haml:41
+#: templates/courses/course_progress.haml:40
 msgid "GRADES"
 msgstr "评分"
 
-#: templates/courses/course_progress.haml:43
+#: templates/courses/course_progress.haml:42
 #, python-format, python-brace-format
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
@@ -6113,7 +6108,7 @@ msgstr ""
 " 您需要完成所有小组作业和反馈活动，并获得至少 ={pass_grade}%% 分的综合课程评"
 "分，才可获得计划结业证书。您的课程评分计算如下："
 
-#: templates/courses/course_progress.haml:45
+#: templates/courses/course_progress.haml:44
 #, python-format, python-brace-format
 msgid ""
 " You need a combined course grade of at least ={pass_grade}%% to earn a "
@@ -6122,19 +6117,19 @@ msgstr ""
 " 您需要获得至少 ={pass_grade}%% 分的综合课程评分才能获得结业证书。您的最终评"
 "分计算如下："
 
-#: templates/courses/course_progress.haml:49
+#: templates/courses/course_progress.haml:48
 msgid "percent of your grade"
 msgstr "评分百分比"
 
-#: templates/courses/course_progress.haml:56
+#: templates/courses/course_progress.haml:55
 msgid "Dropped"
 msgstr "已下降"
 
-#: templates/courses/course_progress.haml:59
+#: templates/courses/course_progress.haml:58
 msgid "Current grade"
 msgstr "当前评分"
 
-#: templates/courses/course_progress.haml:60
+#: templates/courses/course_progress.haml:59
 msgid ""
 " Pro forma grade is an estimate of your final grade assuming you continue to "
 "demonstrate the same level of proficiency on your uncompleted assessments as "
@@ -6145,31 +6140,31 @@ msgstr ""
 " 预计评分是对最终评分的估计，前提是您持续在未完成的评定中表现出与截至目前已完"
 "成评定相同的熟练程度。</a>单击此处深入了解我们如何分享您的课程信息。"
 
-#: templates/courses/course_progress.haml:65
+#: templates/courses/course_progress.haml:64
 msgid "Lesson:"
 msgstr "课时："
 
-#: templates/courses/course_progress.haml:66
+#: templates/courses/course_progress.haml:65
 msgid "Suggested Deadline:"
 msgstr "建议的截止日期："
 
-#: templates/courses/course_progress.haml:67
+#: templates/courses/course_progress.haml:66
 msgid "Assessment Score:"
 msgstr "评定分数："
 
-#: templates/courses/course_progress.haml:88
+#: templates/courses/course_progress.haml:87
 msgid "Upload Deadline:"
 msgstr "上传截止日期："
 
-#: templates/courses/course_progress.haml:89
+#: templates/courses/course_progress.haml:88
 msgid "Score:"
 msgstr "分数："
 
-#: templates/courses/course_progress.haml:90
+#: templates/courses/course_progress.haml:89
 msgid "Grades:"
 msgstr "评分："
 
-#: templates/courses/course_progress.haml:113
+#: templates/courses/course_progress.haml:112
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -6186,7 +6181,7 @@ msgstr ""
 "其对您和您公司的价值。您可以在隐私政策中了解更多有关我们的隐私和信息共享实践"
 "的"
 
-#: templates/courses/course_progress.haml:115
+#: templates/courses/course_progress.haml:114
 #: templates/courses/course_progress_v2.haml:199
 msgid "privacy policy."
 msgstr "信息。"
@@ -10022,6 +10017,9 @@ msgstr "名字：{}"
 #: util/validators.py:90
 msgid "Last name: {}"
 msgstr "姓氏：{}"
+
+#~ msgid "{activity}: {reason} - {email)"
+#~ msgstr "{activity}: {reason} - {email)"
 
 #~ msgid "McKinsey & Company"
 #~ msgstr "麦肯锡公司"

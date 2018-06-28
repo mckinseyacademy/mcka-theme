@@ -503,7 +503,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     }
 
             if failure:
-                user_error.append(_("{activity}: {reason} - {email)").format(
+                user_error.append("{activity}: {reason} - {email)".format(
                     activity=failure["activity"],
                     failure=failure["reason"],
                     email=user_dict["email"],

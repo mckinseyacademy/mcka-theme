@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-26 14:14+0000\n"
+"POT-Creation-Date: 2018-06-27 10:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1465,10 +1465,6 @@ msgstr ""
 msgid "Error processing data: {reason}"
 msgstr ""
 
-#: admin/controller.py:506
-msgid "{activity}: {reason} - {email)"
-msgstr ""
-
 #: admin/controller.py:520 admin/controller.py:528
 #, python-brace-format
 msgid "{error}: {message} - {email}"
@@ -2199,7 +2195,7 @@ msgstr ""
 #: templates/admin/course_meta_content/item_list.haml:55
 #: templates/courses/content_page/course_tabs.haml:18
 #: templates/courses/course_group_work.haml:13
-#: templates/courses/course_progress.haml:58 templates/faq.haml:40
+#: templates/courses/course_progress.haml:57 templates/faq.haml:40
 msgid "Group Work"
 msgstr ""
 
@@ -2302,7 +2298,7 @@ msgstr ""
 
 #: admin/views.py:4101 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:30
-#: templates/courses/course_progress.haml:54
+#: templates/courses/course_progress.haml:53
 msgid "Completed"
 msgstr ""
 
@@ -4926,7 +4922,7 @@ msgstr ""
 #: templates/admin/workgroup/project_assignment.haml:19
 #: templates/admin/workgroup/workgroup_detail_report.haml:12
 #: templates/admin/workgroup/workgroup_report.haml:12
-#: templates/courses/course_progress.haml:87
+#: templates/courses/course_progress.haml:86
 #: templates/courses/course_progress_v2.haml:134
 #: templates/courses/course_progress_v2.haml:147
 msgid "Group Work:"
@@ -5366,7 +5362,7 @@ msgid "100"
 msgstr ""
 
 #: templates/courses/course_cohort.haml:116
-#: templates/courses/course_progress.haml:68
+#: templates/courses/course_progress.haml:67
 #: templates/courses/visualizations/course_progress.haml:8
 msgid "Progress:"
 msgstr ""
@@ -5912,15 +5908,14 @@ msgstr ""
 msgid ""
 "\n"
 "        You are %(user_course_progress)s%% of the way through the course "
-"based on completion of modules within lessons:\n"
-"      "
+"based on completion of modules within lessons:"
 msgstr ""
 
-#: templates/courses/course_progress.haml:41
+#: templates/courses/course_progress.haml:40
 msgid "GRADES"
 msgstr ""
 
-#: templates/courses/course_progress.haml:43
+#: templates/courses/course_progress.haml:42
 #, python-format, python-brace-format
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
@@ -5928,26 +5923,26 @@ msgid ""
 "certificate of completion. Your course grade is calculated as follows: "
 msgstr ""
 
-#: templates/courses/course_progress.haml:45
+#: templates/courses/course_progress.haml:44
 #, python-format, python-brace-format
 msgid ""
 " You need a combined course grade of at least ={pass_grade}%% to earn a "
 "certificate of completion. Your final grade is calculated as follows: "
 msgstr ""
 
-#: templates/courses/course_progress.haml:49
+#: templates/courses/course_progress.haml:48
 msgid "percent of your grade"
 msgstr ""
 
-#: templates/courses/course_progress.haml:56
+#: templates/courses/course_progress.haml:55
 msgid "Dropped"
 msgstr ""
 
-#: templates/courses/course_progress.haml:59
+#: templates/courses/course_progress.haml:58
 msgid "Current grade"
 msgstr ""
 
-#: templates/courses/course_progress.haml:60
+#: templates/courses/course_progress.haml:59
 msgid ""
 " Pro forma grade is an estimate of your final grade assuming you continue to "
 "demonstrate the same level of proficiency on your uncompleted assessments as "
@@ -5956,31 +5951,31 @@ msgid ""
 "course information. "
 msgstr ""
 
-#: templates/courses/course_progress.haml:65
+#: templates/courses/course_progress.haml:64
 msgid "Lesson:"
 msgstr ""
 
-#: templates/courses/course_progress.haml:66
+#: templates/courses/course_progress.haml:65
 msgid "Suggested Deadline:"
 msgstr ""
 
-#: templates/courses/course_progress.haml:67
+#: templates/courses/course_progress.haml:66
 msgid "Assessment Score:"
 msgstr ""
 
-#: templates/courses/course_progress.haml:88
+#: templates/courses/course_progress.haml:87
 msgid "Upload Deadline:"
 msgstr ""
 
-#: templates/courses/course_progress.haml:89
+#: templates/courses/course_progress.haml:88
 msgid "Score:"
 msgstr ""
 
-#: templates/courses/course_progress.haml:90
+#: templates/courses/course_progress.haml:89
 msgid "Grades:"
 msgstr ""
 
-#: templates/courses/course_progress.haml:113
+#: templates/courses/course_progress.haml:112
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -5992,7 +5987,7 @@ msgid ""
 "sharing practices in our"
 msgstr ""
 
-#: templates/courses/course_progress.haml:115
+#: templates/courses/course_progress.haml:114
 #: templates/courses/course_progress_v2.haml:199
 msgid "privacy policy."
 msgstr ""
