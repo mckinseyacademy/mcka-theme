@@ -63,18 +63,18 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 		('/admin/clients/1/navigation', LANGUAGE_CODE)
 	)
 	@ddt.unpack
-	def test_process_request(self, path, expected_language, authenication=False):
+	def test_process_request(self, path, expected_language, authentication=False):
 		"""
 		:param path: Relative url for parsing
 		:param expected_language: language of platform which is expected
 		"""
-		request = self.mock_request_object(path, 'en,jp,de-DE,en-GB;q=0.6', authenication)
+		request = self.mock_request_object(path, 'en,jp,de-DE,en-GB;q=0.6', authentication)
 
 		get_current_request = self.apply_patch('util.i18n_helpers.get_current_request')
 		get_current_request.return_value = request
 
 		course_detail = self.apply_patch('courses.middleware.apros_platform_language.user_api')
-		course_detail.get_user_course_detail.return_value = DottableDict({'language': 'ar'})
+		course_detail.get_user_course_detail.return_value = DottableDict({'language': 'ar_MD'})
 
 		self.apros_platform_language.process_request(request)
 		self.assertEqual(expected_language, translation.get_language())

@@ -38,7 +38,7 @@ class AprosPlatformLanguage(object):
 			except Exception:
 				return None
 			if course_detail.language:
-				language = course_detail.language
+				language = course_detail.language.split('_')[0]
 		elif path.startswith('/admin'):
 			language = 'en-us'
 		elif not request.user.is_authenticated():
