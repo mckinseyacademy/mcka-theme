@@ -3970,18 +3970,17 @@ class participant_details_active_courses_api(APIView):
             return Response(active_courses)
         elif include_slow_fields == 'true':
             fetch_courses =[]
-            for course_id in request.GET['ids'].split(','):
+            user_courses_progress = user_api.get_user_courses_progress(
+                user_id, 
+                dict(courses=request.GET['ids'])
+            )
+            for user_course_progress in user_courses_progress:
                 user_course = {}
-                user_course['id'] = course_id
-                course_data = None
-                # disbale session for this endpoint because when user has a lot of active courses, session
-                # size exceeds cache size limit causing session to be destroyed.
-                course_data = load_course(user_course['id'], request=request, enable_cache=False)
-                load_course_progress(course_data, user_id)
-                user_course['progress'] = '{:03d}'.format(int(course_data.user_progress))
-                proficiency = course_api.get_course_metrics_grades(user_course['id'], user_id=user_id, grade_object_type=Proficiency)
-                user_course['proficiency'] = '{:03d}'.format(round_to_int(proficiency.user_grade_value * 100))
+                user_course['id'] = user_course_progress['course']['id']
+                user_course['progress'] = '{:03d}'.format(int(user_course_progress['progress']))
+                user_course['proficiency'] = '{:03d}'.format(round_to_int(user_course_progress['proficiency']))
                 fetch_courses.append(user_course)
+
             return Response(fetch_courses)
 
         return Response({})
