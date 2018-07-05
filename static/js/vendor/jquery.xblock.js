@@ -189,7 +189,6 @@
                     var usageId = $(element).data('usage-id'),
                         courseId = $(element).data('course-id'),
                         lmsBaseURL = $this.getLmsBaseURL(options);
-
                     if (handlerName=="submit")
                         $this.dispatcher.trigger(handlerName, element);
 
@@ -322,12 +321,13 @@
         },
 
         getViewUrl: function(viewName, options) {
+            var language_code = ($('html').attr('lang') ? $('html').attr('lang') : 'en-us');
             if (options.viewUrl){
-                return (this.getLmsBaseURL(options) + options.viewUrl);
+                return (this.getLmsBaseURL(options) + options.viewUrl + '&course_lang='+language_code);
             }
             else {
                 return (this.getLmsBaseURL(options) + '/courses/' + options.courseId +
-                '/xblock/' + options.usageId + '/view/' + viewName);
+                '/xblock/' + options.usageId + '/view/' + viewName+'?course_lang='+language_code);
             }
         },
 
