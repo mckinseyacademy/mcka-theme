@@ -159,7 +159,8 @@ LANGUAGES = (
 SUPPORTED_LANGUAGES_CODE = [
     'en',
     'ar',
-    'zh'
+    'zh',
+    'es'
 ]
 
 USE_I18N = True

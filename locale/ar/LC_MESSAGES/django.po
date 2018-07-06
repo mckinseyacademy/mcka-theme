@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-06-27 12:42+0000\n"
+"POT-Creation-Date: 2018-07-06 08:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3361,7 +3361,7 @@ msgstr "إعادة تعيين الألوان"
 #: templates/admin/client/navigation.haml:50
 #: templates/admin/client/navigation.haml:186
 #: templates/admin/companies/companies_list.haml:31
-#: templates/admin/companies/company_details.haml:79
+#: templates/admin/companies/company_details.haml:76
 #: templates/admin/course_meta_content/item_detail.haml:18
 #: templates/admin/courses/course_details.haml:131
 #: templates/admin/courses/course_details.haml:203
@@ -3761,30 +3761,26 @@ msgstr "ربط التطبيقات"
 msgid "COURSES"
 msgstr "الدورات"
 
-#: templates/admin/companies/company_details.haml:51
-msgid "COMPANY INFO"
-msgstr "معلومات الشركات"
-
-#: templates/admin/companies/company_details.haml:56
+#: templates/admin/companies/company_details.haml:53
 msgid "LINKED APPS"
 msgstr "التطبيقات المربوطة"
 
-#: templates/admin/companies/company_details.haml:72
+#: templates/admin/companies/company_details.haml:69
 msgid "Link mobile app"
 msgstr "ربط تطبيق المحمول"
 
-#: templates/admin/companies/company_details.haml:73
+#: templates/admin/companies/company_details.haml:70
 msgid ""
 " Type in the name of the mobile app that you want to link with \"Company Name"
 "\" "
 msgstr "الرجاء كتابة اسم تطبيق المحمول الذي تريد ربطه مع «اسم الشركة»."
 
-#: templates/admin/companies/company_details.haml:74
-#: templates/admin/companies/company_details.haml:75
+#: templates/admin/companies/company_details.haml:71
+#: templates/admin/companies/company_details.haml:72
 msgid "App Name"
 msgstr "اسم التطبيق"
 
-#: templates/admin/companies/company_details.haml:78
+#: templates/admin/companies/company_details.haml:75
 msgid "Link App"
 msgstr "ربط التطبيق"
 
@@ -6186,6 +6182,11 @@ msgid "Course Progress for"
 msgstr "تقدم العمل في الدورة لـ"
 
 #: templates/courses/course_progress.haml:36
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "        You are %(user_course_progress)s%% of the way through the course "
+#| "based on completion of modules within lessons:"
 msgid ""
 "\n"
 "        You are %(user_course_progress)s%% of the way through the course "
@@ -10452,6 +10453,9 @@ msgstr "الاسم الأول: {}"
 #: util/validators.py:90
 msgid "Last name: {}"
 msgstr "اسم العائلة: {}"
+
+#~ msgid "COMPANY INFO"
+#~ msgstr "معلومات الشركات"
 
 #~ msgid "English"
 #~ msgstr "الإنجليزية"
