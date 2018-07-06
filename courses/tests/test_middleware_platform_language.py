@@ -53,13 +53,13 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 		('/courses/arbisoft/TEst123/TEST', 'ar'),
 		('/courses/arbisoft/Test12abc/1/', 'ar'),
 		('/admin/', LANGUAGE_CODE),
-		('/', 'en-us', False),
-		('/accounts/login/', 'en-us', False),
-		('/faq/', 'en-us', False),
-		('/privacy/', 'en-us', False),
-		('/terms/', 'en-us', False),
-		('/accounts/edit_fullname', 'en-us', False),
-		('/accounts/activate/123basdyadq', 'en-us', False),
+		('/', 'en', False),
+		('/accounts/login/', 'en', False),
+		('/faq/', 'en', False),
+		('/privacy/', 'en', False),
+		('/terms/', 'en', False),
+		('/accounts/edit_fullname', 'en', False),
+		('/accounts/activate/123basdyadq', 'en', False),
 		('/admin/clients/1/navigation', LANGUAGE_CODE)
 	)
 	@ddt.unpack

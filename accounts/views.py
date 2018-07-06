@@ -40,7 +40,7 @@ from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from api_client import platform_api
 from api_client import http_request_methods
-from mcka_apros.settings import COOKIES_YEARLY_EXPIRY_TIME
+from mcka_apros.settings import COOKIES_YEARLY_EXPIRY_TIME, LANGUAGES
 from mobile_apps.controller import get_mobile_app_download_popup_data
 
 from admin.models import Client, Program, LearnerDashboard, CourseRun, SelfRegistrationRoles
@@ -1334,7 +1334,7 @@ def switch_language_based_on_preference(request):
     set_language(language_code)
     referer = get_referer_from_request(request)
     response = HttpResponseRedirect(referer)
-    if language_code in settings.SUPPORTED_LANGUAGES_CODE:
+    if [lang for lang in LANGUAGES if lang[0] == language_code]:
         response.set_cookie(
             'preferred_language',
             language_code,

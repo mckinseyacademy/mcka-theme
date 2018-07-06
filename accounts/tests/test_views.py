@@ -340,9 +340,9 @@ class TestSwitchLanguageBasedOnPreference(TestCase, ApplyPatchMixin):
         self.assertEquals(expected_language, request.session[translation.LANGUAGE_SESSION_KEY])
 
     @ddt.data(
-        ('https://apros.mcka.local/terms?LANG=hb', 'en-us'),
-        ('https://apros.mcka.local', 'en-us'),
-        ('http://www.mckisneyacademy.com/privacy?LANG=lr', 'en-us')
+        ('https://apros.mcka.local/terms?LANG=hb', 'en'),
+        ('https://apros.mcka.local', 'en'),
+        ('http://www.mckisneyacademy.com/privacy?LANG=lr', 'en')
     )
     @ddt.unpack
     def test_with_invalid_language(self, url, expected_language):
