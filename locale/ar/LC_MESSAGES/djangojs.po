@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-06 08:32+0000\n"
+"POT-Creation-Date: 2018-07-06 13:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,11 +42,11 @@ msgstr "الدورات الواجب حضورها شخصيًا"
 
 #: static/js/admin_learner_dashboard/self_registration_roles.js:9
 msgid "Add new role e.g CEO,CTO"
-msgstr ""
+msgstr "أضف منصبًا جديدًا، مثل الرئيس تنفيذي أو مدير العمليات التقني "
 
 #: static/js/admin_learner_dashboard/self_registration_roles.js:10
 msgid "Delete Role"
-msgstr ""
+msgstr "حذف منصب"
 
 #: static/js/admin_learner_dashboard/sort.js:72
 #: static/js/learner_dashboard_sort.js:54
@@ -80,9 +80,8 @@ msgid "Welcome to McKinsey Academy"
 msgstr "مرحبا بكم في McKinsey Academy"
 
 #: static/js/common/admin_bulk_actions.js:17
-#, fuzzy
 msgid "Progress: %(value)s%"
-msgstr "التقدم: %(قيمة)"
+msgstr "نسبة التقدم: %(value)s%"
 
 #: static/js/common/bbGridExtend.js:70
 msgid "Keyword Search"
@@ -97,24 +96,21 @@ msgid "Send"
 msgstr "إرسال"
 
 #: static/js/common/common_js.js:744
-#, fuzzy
 msgid "Fetching data for file: %(filename)s"
-msgstr "إحضار البيانات للملف: % (اسم الملف)"
+msgstr "نسبة جلب البيانات للملف: %(filename)s"
 
 #: static/js/common/common_js.js:856
-#, fuzzy
 msgid "%(value)s%"
-msgstr "% (قيمة)%"
+msgstr "%(value)s%"
 
 #: static/js/common/mass_participants_enroll.js:57
 #: static/js/common/mass_participants_enroll.js:128
-#, fuzzy
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
 msgstr ""
-"ملف.csv يتضمن أكثر من % (الحد الأقصى): (الصفوف) %، الرجاء تقسيم ذلك إلى "
-"المزيد من الملفات!"
+"ملف.csv يتضمن أكثر من %(limit)s: %(lines)s: يرجى تقسيم ذلك إلى مزيد من "
+"الملفات!"
 
 #: static/js/common/mass_participants_enroll.js:180
 #: static/js/common/mass_participants_upload.js:127
@@ -189,9 +185,8 @@ msgstr ""
 "والملاحظات المرتبطة بالمجموعة."
 
 #: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
-#, fuzzy
 msgid "Your Progress: %(value)s%"
-msgstr "التقدم المحرز الخاص بك: %(القيمة)%"
+msgstr "التقدم المحرز الخاص بك: %(value)s%"
 
 #: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
 msgid "Complete"
@@ -210,9 +205,8 @@ msgid "Group work"
 msgstr "العمل الجماعي"
 
 #: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
-#, fuzzy
 msgid "Webinar"
-msgstr "مؤتمر عبر الإنترنت (ويبينار)"
+msgstr "الدورات عبر الإنترنت (ويبينار)"
 
 #: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
 msgid "Digital Content"
@@ -442,21 +436,18 @@ msgid "Couldn't delete tag!"
 msgstr "تعذر حذف العلامة!"
 
 #: static/js/views/admin/course_details.js:318
-#, fuzzy
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
-msgstr[0] "% (العدد) الدورات ذات العلامة مع % (من تفاصيل العلامة)"
+msgstr[0] "%(count)s الدورات الموسومة مع %(tagDetails)s"
 msgstr[1] "% (العدد) الدورات ذات العلامة مع % (من تفاصيل العلامة)"
 
 #: static/js/views/admin/course_details.js:373
-#, fuzzy
 msgid "Progress: %(progress)s %"
-msgstr "التقدم: % (التقدم)%"
+msgstr "التقدم: %(progress)s %"
 
 #: static/js/views/admin/course_details.js:409
-#, fuzzy
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
-msgstr "المحدد: % (مختارة)، بنجاح: % (الناجحة)، فشل: % (فشل)"
+msgstr "دورات محددة: %(selected)s، نجاح: %(successful)s، فشل: %(failed)s"
 
 #: static/js/views/admin/course_details.js:460
 msgid "This tag name cannot have more than 30 characters!"
@@ -481,9 +472,8 @@ msgstr "إلغاء التحاق المشتركين"
 #: static/js/views/admin/course_details_bulk_actions.js:117
 #: static/js/views/admin/course_details_bulk_actions.js:178
 #: static/js/views/admin/course_details_bulk_actions.js:265
-#, fuzzy
 msgid "Selected: %(selectedRows)s, Successful: 0, Failed: 0"
-msgstr "محددة: % (من الصفوف المختارة)، بنجاح: 0 فشل  0"
+msgstr "دورات محددة: %(selectedRows)s، نجاح: 0 فشل  0"
 
 #: static/js/views/admin/course_details_bulk_actions.js:120
 msgid "Unenroll all selected participants from this course?"
@@ -553,11 +543,8 @@ msgstr "اختر دورة"
 msgid "%(selectedRows)s Participants will be enroll in course selected below."
 msgid_plural ""
 "%(selectedRows)s Participant will be enroll in course selected below."
-msgstr[0] ""
-"% من المشاركين (الصفوف المختارة) سيتم إلحاقهم في الدورة التي اختيارها أدناه."
-msgstr[1] ""
-"% من المشاركين (الصفوف المختارة) سيتم إلحاقهم في الدورة التي تم اختيارها "
-"أدناه."
+msgstr[0] "%(selectedRows)s من المشاركين سيسجلون في الدورة المحددة أدناه."
+msgstr[1] "%(selectedRows)s مشارك سيسجل في الدورة المحددة أدناه."
 
 #: static/js/views/admin/course_details_bulk_actions.js:303
 msgid "Enroll Participants"
@@ -587,38 +574,37 @@ msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
 msgstr ""
+"وتشمل بينًا مفصلًا حول نسبة التقدم المحرز لكل درس (ملاحظة: سيستغرق التصدير "
+"مزيدًا من الوقت)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:469
 msgid "We'll e-mail you when your report is ready to download."
 msgstr ""
+"سنتواصل معك عبر البريد الإلكتروني عندما يكون التقرير الخاص بك جاهزًا للتحميل."
 
 #: static/js/views/admin/course_details_bulk_actions.js:472
 msgid "Exporting Stats for All Users"
-msgstr ""
+msgstr "إحصائيات التصدير لكافة المستخدمين"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
 msgid "Export Report"
-msgstr ""
+msgstr "تصدير التقرير"
 
 #: static/js/views/admin/course_details_bulk_actions.js:512
-#, fuzzy
-#| msgid "Task failed to execute. Please retry later."
 msgid "Error initiating the report generation. Please retry later."
-msgstr "فشل في تنفيذ المهمة/ الرجاء إعادة المحاولة"
+msgstr "حدث خطأ أثناء إعداد التقرير، يرجى إعادة المحاولةلاحقًا."
 
 #: static/js/views/admin/course_details_bulk_actions.js:541
 msgid "Download Notifications CSV"
 msgstr "تنزيل إخطارات CSV"
 
 #: static/js/views/admin/course_details_bulk_actions.js:626
-#, fuzzy
 msgid "Group Work: %(label)s"
-msgstr "العمل الجماعي: % (التسمية)"
+msgstr "عمل المجموعة: %(label)s"
 
 #: static/js/views/admin/course_details_bulk_actions.js:654
-#, fuzzy
 msgid "Assessment: %(label)s"
-msgstr "التقييم: %(تسمية)"
+msgstr "التقييم: %(label)s"
 
 #: static/js/views/admin/course_details_bulk_actions.js:680
 msgid "Task failed to execute. Please retry later."
@@ -633,9 +619,8 @@ msgid "What would you like to do now?"
 msgstr "ماذا تريد أن تفعل الآن؟"
 
 #: static/js/views/admin/course_details_bulk_actions.js:700
-#, fuzzy
 msgid "Go to %(course_id)s Course"
-msgstr "الانتقال إلى % (معرّف الدورة) الدورة"
+msgstr "الانتقال إلى الدورة %(course_id)s"
 
 #: static/js/views/admin/course_details_bulk_actions.js:702
 msgid "Send Course Intro Email"
@@ -730,10 +715,8 @@ msgid "Do you really want to delete: \n"
 msgstr "هل تريد حقاً الحذف: \n"
 
 #: static/js/views/admin/navigation.js:6
-#, fuzzy
-#| msgid "Do you really want to delete: \n"
 msgid "Are you sure you want to remove this ?"
-msgstr "هل تريد حقاً الحذف: \n"
+msgstr "هل تريد إزالة هذا بالفعل؟"
 
 #: static/js/views/admin/participant_details_active_courses_view.js:73
 #: static/js/views/admin/participant_details_course_history_view.js:29
