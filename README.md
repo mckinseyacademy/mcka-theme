@@ -21,8 +21,8 @@ Mckinsey Academy custom front end application
 
 * Notes for configuring Group Work v2 can be found [there][group-work-config]
 
-* Instruction for working with Waffle flags and a list of waffle flags can be 
-  found [here](docs/Waffle_Setup.md)
+* Instruction for working with Waffle flags and a list of waffle flags can be
+found [here](docs/Waffle_Setup.md)
 
 [setup-notes]: /docs/SetupNotes.md
 [upgrade-notes]: /docs/UpgradeNotes.md

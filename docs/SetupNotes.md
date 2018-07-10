@@ -458,22 +458,23 @@ To find coverage of tests, enter these commands:
 After adding new translatable strings in any file, we need to run following commands to generate or update `.po` files:
 
 To create messages files for Python and html/haml code:
-    
+
     django-admin makemessages --locale=en --extension=html,haml,py
- 
+
 To create messages file from JavaScript code:
 
     django-admin makemessages --locale=en --domain=djangojs --ignore=gen/* --ignore=static_cache/* --ignore=vendor/*
- 
+
 To build a dummy translation for testing, use:
 
     i18n_tool dummy && i18n_tool generate
- 
+
 To compile messages files to `.mo` files:
 
     django-admin compilemessages
 
+
 ## Appendix G: Using Waffle
-If you need to enable a feature behind a feature flag, you can see the 
-instructions for enabling flags, and a list of such flags and  in the [Waffle 
+If you need to enable a feature behind a feature flag, you can see the
+instructions for enabling flags, and a list of such flags and  in the [Waffle
 Setup docs](docs/Waffle_Setup.md)
