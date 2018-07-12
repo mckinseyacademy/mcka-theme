@@ -2184,6 +2184,10 @@ class CourseParticipantStats(object):
         Calls course api to get the stats
         """
         course_participants = course_api.get_course_details_users(self.course_id, self.request_params)
+        organization_id = self.request_params.get('organizations', None)
+        if organization_id:
+            course_participants = remove_specific_user_roles_of_other_companies(course_participants, int(organization_id))
+
         lesson_completions = self._get_lesson_completions(course_participants)
         participants_engagement_lookup = self._get_engagement_scores()
         return course_participants, lesson_completions, participants_engagement_lookup
@@ -2375,6 +2379,23 @@ class CourseParticipantStats(object):
             'progress': '{}%'.format(participant_data.get('progress')),
             'custom_last_login': last_login
         })
+
+
+def remove_specific_user_roles_of_other_companies(course_participants, organization_id):
+    """
+    Returns course_participants with out users who are uber admin of one company
+    and enrolled in other company course as company admin and observer or company
+    admin and assidtant role.
+    """
+    remove_permissions = ['assistant', 'observer']
+
+    for user in course_participants["results"]:
+        if user["organizations"][0]["id"] != organization_id:
+            for role in user["roles"]:
+                if role in remove_permissions:
+                    course_participants["results"].remove(user)
+
+    return course_participants
 
 
 def participant_csv_line_id_extractor(user_line):
