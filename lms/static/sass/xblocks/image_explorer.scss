@@ -1,0 +1,22 @@
+// Overrides for Image Explorer V2:
+@import '../base/variables';
+
+
+// New design of Image Explorer has different Blue & Magenta shades
+// so we need to apply that colors in MCKA theme
+
+.tutorial-wrapper {
+  .tutorial-container{
+    h3{
+      color: $mckinsey-royal-blue !important;
+      margin-bottom: 20px;
+    }
+    a{
+      color: $mckinsey-royal-blue !important;
+      padding: 25px 0 10px !important;
+    }
+  }
+  .tutorial-video{
+    background-image: url("../images/IE_Instruction_Anim.gif") !important;
+  }
+}
