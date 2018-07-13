@@ -20,3 +20,29 @@
     background-image: url("../images/IE_Instruction_Anim.gif") !important;
   }
 }
+
+// Image Explorer V2 hotspot details panel theme
+
+.image-explorer-hotspot-reveal{
+  background-color: white !important;
+  overflow: auto;
+  .image-explorer-hotspot-content-wrapper{
+    color: $mckinsey-academy-black !important;
+  }
+  .image-explorer-close-reveal{
+    border-radius: 50%;
+    background-color: white;
+    font-size: 0;
+    position: relative;
+    width: 20px;
+    height: 20px;
+    &:before{
+      content: '\2715';
+      position: absolute;
+      color: #333;
+      font-size: 16px;
+      left: 3px;
+      top: 3px;
+    }
+  }
+}
