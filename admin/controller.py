@@ -2388,12 +2388,16 @@ def remove_specific_user_roles_of_other_companies(course_participants, organizat
     admin and assidtant role.
     """
     remove_permissions = ['assistant', 'observer']
+    users = []
 
     for user in course_participants["results"]:
         if user["organizations"][0]["id"] != organization_id:
             for role in user["roles"]:
                 if role in remove_permissions:
-                    course_participants["results"].remove(user)
+                    users.append(user)
+
+    for user in users:
+        course_participants["results"].remove(user)
 
     return course_participants
 
