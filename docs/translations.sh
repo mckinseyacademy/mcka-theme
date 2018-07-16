@@ -2,9 +2,9 @@
 
 # This file is for devstack and developers only for running traslation commands.
 # Usage:
-# 1: sudo chmod +x filename.sh
+# 1: chmod +x filename.sh
 # 2: ./translations.sh
-
+cd ..
 for lang in locale/*
 do
 	bn=$(basename $lang)
