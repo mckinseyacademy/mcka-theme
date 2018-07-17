@@ -5261,10 +5261,10 @@ def company_course_details(request, company_id, course_id):
     course = course_api.get_course_details(course_id)
     if course['start'] is not None:
         start = parsedate(course['start'])
-        course['start'] = start.strftime("%Y/%m/%d") + ',' + start.strftime("%m/%d/%Y")
+        course['start'] = start.strftime("%m/%d/%Y")
     if course['end'] is not None:
         end = parsedate(course['end'])
-        course['end'] = end.strftime("%Y/%m/%d") + ',' + end.strftime("%m/%d/%Y")
+        course['end'] = end.strftime("%m/%d/%Y")
     for data in course:
         if course.get(data) is None:
             course[data] = "-"
