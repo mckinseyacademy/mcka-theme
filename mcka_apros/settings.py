@@ -154,7 +154,8 @@ LANGUAGES = (
     ('en', u'English '),
     ('ar', u'العربية'),  # Arabic
     ('zh', u'中文(简体)'),
-    ('es', u'Español')
+    ('es', u'Español'),
+    ('nl', u'Nederlands'),
 )
 
 
