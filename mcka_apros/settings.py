@@ -155,7 +155,7 @@ LANGUAGES = (
     ('ar', u'العربية'),  # Arabic
     ('zh', u'中文(简体)'),
     ('es', u'Español'),
-    ('nl', u'Nederlands'),
+    ('nl', u'Dutch '),
 )
 
 
