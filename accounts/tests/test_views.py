@@ -370,8 +370,8 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         request = self.factory.get('/')
         self._setup_request(request)
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
-        redirect_path = 'test-scheme://{}?test=data'.format(settings.MOBILE_SSO_PATH)
-        response = _build_mobile_redirect_response(request, {'test': 'data'})
+        redirect_path = 'test-scheme://{}?test=data&more=data'.format(settings.MOBILE_SSO_PATH)
+        response = _build_mobile_redirect_response(request, {'test': 'data', 'more': 'data'})
         self.assertIn(redirect_path, response.content)
 
     @ddt.data(None, 'providerid')
