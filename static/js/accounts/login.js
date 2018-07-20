@@ -44,6 +44,16 @@ $(function () {
         }
     }
 
+    function redirectAfterLogin(xhr) {
+        function redirect(){
+            window.location.href = xhr.getResponseHeader("Location");
+        }
+        // Wait for analytics events to submit before redirecting
+        ga(redirect);
+        // If the above doesn't work, redirect in 250ms anyway.
+        window.setTimeout(redirect, 250);
+    }
+
     $('#go-back').on('click', function () {
         ga('send', 'event', 'Login', 'navigate', 'back', {
             dimension1: getHashedId(),
@@ -81,9 +91,7 @@ $(function () {
                         dimension1: hashed_id,
                         dimension4: 'new_flow'
                     });
-                    ga(function () {
-                        window.location.href = xhr.getResponseHeader("Location");
-                    });
+                    redirectAfterLogin(xhr);
                 },
                 error: function (error) {
                     ga('send', 'event', 'Login', 'normal_login', 'failure', {
@@ -109,9 +117,7 @@ $(function () {
                             dimension1: hashed_id,
                             dimension4: 'new_flow'
                         });
-                        ga(function () {
-                            window.location.href = xhr.getResponseHeader("Location");
-                        });
+                        redirectAfterLogin(xhr);
                     } else {
                         loginWithPassword();
                     }

@@ -15,7 +15,6 @@ import re
 import requests
 import StringIO
 
-import waffle
 from django.conf import settings
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
 from django.core.validators import validate_slug
@@ -260,137 +259,6 @@ def _build_mobile_redirect_response(request, data):
 
 def login(request):
     ''' handles requests for login form and their submission '''
-    if waffle.flag_is_active(request, 'use_new_login_flow'):
-        return login_b(request)
-    else:
-        return login_a(request)
-
-def login_a(request):
-    ''' handles requests for login form and their submission (version a) '''
-    error = None
-    request.session['ddt'] = False  # Django Debug Tool session key init.
-    # Get the query param if user is already activated
-    account_activate_check = request.GET.get('account_activate_check', None)
-
-    # Redirect IE to home page, login not available
-    if request.META.has_key('HTTP_USER_AGENT'):
-        ua = request.META['HTTP_USER_AGENT'].lower()
-        if re.search('msie [1-8]\.', ua):
-            return HttpResponseRedirect('/')
-
-    data = {}
-    form = None
-    sso_login_form = None
-    login_mode = request.COOKIES.get(LOGIN_MODE_COOKIE, 'normal')
-    expire_in_past = datetime.datetime.utcnow() - datetime.timedelta(days=7)
-
-    if request.method == 'POST':  # If the form has been submitted...
-        if 'sso_login_form_marker' not in request.POST:
-            # normal login
-            login_mode = 'normal'
-            form = LoginForm(request.POST)
-            if form.is_valid():
-                try:
-                    user = auth.authenticate(
-                        username=form.cleaned_data['username'],
-                        password=form.cleaned_data['password']
-                    )
-                    if user:
-                        response = _process_authenticated_user(request, user)
-                        _append_login_mode_cookie(response, login_mode)
-                        append_user_mobile_app_id_cookie(response, user.id)
-                        return response
-                    else:
-                        error = _("Username or password is incorrect")
-
-                except ApiError as err:
-                    error = err.message
-        else:
-            # SSO login
-            sso_login_form = SSOLoginForm(request.POST)
-            if sso_login_form.is_valid():
-                provider = get_sso_provider(sso_login_form.cleaned_data['email'])
-                if provider:
-                    redirect_url = _build_sso_redirect_url(provider, reverse('login'))
-                    response = HttpResponseRedirect(redirect_url)
-                    _append_login_mode_cookie(response, 'sso')
-                    return response
-                else:
-                    error = _(u"This email is not associated with any identity provider")
-
-    elif request.method == 'GET' and 'sessionid' in request.COOKIES:
-        # The user may already be logged in to the LMS.
-        # (e.g. they used the LMS's third_party_auth to authenticate, then got redirected back here)
-        try:
-            user = auth.authenticate(remote_session_key=request.COOKIES['sessionid'])
-            if user:
-                response = _process_authenticated_user(request, user)
-                _append_login_mode_cookie(response, login_mode)
-                append_user_mobile_app_id_cookie(response, user.id)
-                return response
-        except ApiError as err:
-            error = err.message
-
-    elif 'reset' in request.GET:
-        form = LoginForm()
-        # set focus to username field
-        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
-        form.reset = request.GET['reset']
-    else:
-        form = LoginForm()
-        # set focus to username field
-        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
-
-    if account_activate_check:
-        data["activation_message"] = _("Your account has already been activated. Please enter credentials to login")
-
-    data["user"] = None
-    data["form"] = form or LoginForm()
-    data["sso_login_form"] = sso_login_form or SSOLoginForm()
-    data["login_mode"] = login_mode
-    data["error"] = error
-    data["login_label"] = _("Log in to my McKinsey Academy account & access my courses")
-
-    response = render(request, 'accounts/login_a.haml', data)
-
-    _append_login_mode_cookie(response, login_mode)
-
-    if request.method == 'GET':
-        # if loading the login page
-        # then remove all LMS-bound wildcard cookies which may have been set in the past. We do that
-        # by setting a cookie that already expired
-        _expire_session_cookies(response)
-
-    return response
-
-@require_http_methods(['GET'])
-def sso_launch(request):
-    ''' Initiates the SSO process for mobile clients. '''
-    provider = None
-    provider_id = request.GET.get('provider_id', None)
-    mobile_url_scheme = request.GET.get('mobile_url_scheme', None)
-
-    if provider_id is not None:
-        provider = "-".join(provider_id.split("-")[1:])
-
-    # If provider is not provided or is in an invalid format that doesn't include a ``-``
-    if not provider:
-        error = {"error": "invalid_provider_id"}
-        if mobile_url_scheme is not None:
-            return _build_mobile_redirect_response(request, error)
-        return JsonResponse(error, status=400)
-
-    redirect_url = _build_sso_redirect_url(provider, reverse('sso_finalize'))
-    response = HttpResponseRedirect(redirect_url)
-
-    _append_login_mode_cookie(response, 'sso')
-    if mobile_url_scheme is not None:
-        _append_mobile_url_scheme_cookie(response, mobile_url_scheme)
-
-    return response
-
-def login_b(request):
-    ''' handles requests for login form and their submission (version b) '''
     request.session['ddt'] = False  # Django Debug Tool session key init.
 
     # Redirect IE to home page, login not available
@@ -400,15 +268,15 @@ def login_b(request):
             return HttpResponseRedirect('/')
 
     if request.method == 'POST':  # If the form has been submitted...
-        return login_post_view_b(request)
+        return login_post_view(request)
 
     elif request.method == 'GET':
-        return login_view_get_b(request)
+        return login_get_view(request)
 
     return HttpResponseNotAllowed(permitted_methods=('GET', 'POST'))
 
 
-def login_view_get_b(request):
+def login_get_view(request):
     error = None
     data = {}
 
@@ -446,7 +314,7 @@ def login_view_get_b(request):
     data["login_label"] = _("Log In")
     data["contact_subject"] = quote(_("Trouble logging in"))
 
-    response = render(request, 'accounts/login_b.haml', data)
+    response = render(request, 'accounts/login.haml', data)
 
     _append_login_mode_cookie(response, login_mode)
 
@@ -458,7 +326,7 @@ def login_view_get_b(request):
     return response
 
 
-def login_post_view_b(request):
+def login_post_view(request):
     form = LoginIdForm(request.POST)
     # Check if we just want to validate the login id
     if form.is_valid():
@@ -508,6 +376,33 @@ def login_post_view_b(request):
     return JsonResponse({
         "login_id": _("Username/email is not recognised. Try again.")
     }, status=403)
+
+
+@require_http_methods(['GET'])
+def sso_launch(request):
+    ''' Initiates the SSO process for mobile clients. '''
+    provider = None
+    provider_id = request.GET.get('provider_id', None)
+    mobile_url_scheme = request.GET.get('mobile_url_scheme', None)
+
+    if provider_id is not None:
+        provider = "-".join(provider_id.split("-")[1:])
+
+    # If provider is not provided or is in an invalid format that doesn't include a ``-``
+    if not provider:
+        error = {"error": "invalid_provider_id"}
+        if mobile_url_scheme is not None:
+            return _build_mobile_redirect_response(request, error)
+        return JsonResponse(error, status=400)
+
+    redirect_url = _build_sso_redirect_url(provider, reverse('sso_finalize'))
+    response = HttpResponseRedirect(redirect_url)
+
+    _append_login_mode_cookie(response, 'sso')
+    if mobile_url_scheme is not None:
+        _append_mobile_url_scheme_cookie(response, mobile_url_scheme)
+
+    return response
 
 
 def get_username_for_login_id(login_id):

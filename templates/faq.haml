@@ -1,6 +1,5 @@
 - extends "layout.haml"
 - load i18n
-- load waffle_tags
 
 - block content
   %article#faq-page.row.collapse
@@ -99,11 +98,7 @@
         %p.style-2 {% trans "What if my question isn’t answered here?" %}
         %p {% blocktrans %}Please <a href="mailto:info@mckinseyacademy.com">contact us!</a> We’ll do our best to help.{% endblocktrans %}
   %script
-    -flag "use_new_login_flow"
-      let login_flow = 'new_flow';
-    -else
-      let login_flow = 'old_flow';
-    -endflag
+    let login_flow = 'new_flow';
   :javascript
     $("a[href='mailto:support@mckinseyacademy.com']").click(function(){
       let data = { dimension4: login_flow };
