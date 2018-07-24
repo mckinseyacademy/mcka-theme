@@ -256,10 +256,29 @@ EDX_SSO_DATA_HMAC_KEY = '1private_apros_key'
 # required for things like the map of students, but we don't get 'city' from the SSO provider.)
 SSO_AUTOPROVISION_CITY = "New York"
 
+########################### Mobile app settings ################################
+
+# OAuth2 Credentials for Mobile
+# * These are the values for client_id and client_secret defined in the LMS in
+#   /admin/oauth2/client/
+# * The client should have "Client type" of "Confidential (Web applications)"
+# * The client should added as a trusted client in the LMS at
+#   /admin/edx_oauth2_provider/trustedclient/
+# * The redirect uri should be "{APROS_BASE_URL}/accounts/finalize/"
+# * These values can be overridden to the appropriate value in local_settings.py.
+OAUTH2_MOBILE_CLIENT_ID = 'responsible'
+OAUTH2_MOBILE_CLIENT_SECRET = 'silk'
+
+# The path to the endpoint on the mobile scheme where the mobile auth
+# credentials or error message is to be sent. e.g. mcka://sso/?access_token=...
+MOBILE_SSO_PATH = 'sso/'
+
+################################################################################
+
 # Whether or not to cache courseware content locally, defult=False but can be overridden in local_settings.py
 USE_SESSION_COURSEWARE_CACHING = False
 
-# Goog Analytics Tracking ID
+# Google Analytics Tracking ID
 GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
@@ -606,20 +625,3 @@ COURSE_KEY_PATTERN = r'(?P<course_key_string>[^/+]+(/|\+)[^/+]+(/|\+)[^/?]+)'
 
 #Cookies expiry time
 COOKIES_YEARLY_EXPIRY_TIME = datetime.datetime.utcnow() + datetime.timedelta(days=365)
-
-################################ Mobile app settings ################################
-
-# OAuth2 Credentials for Mobile
-# * These are the values for client_id and client_secret defined in the LMS in
-#   /admin/oauth2/client/
-# * The client should have "Client type" of "Confidential (Web applications)"
-# * The client should added as a trusted client in the LMS at
-#   /admin/edx_oauth2_provider/trustedclient/
-# * The redirect uri should be "{APROS_BASE_URL}/accounts/finalize/"
-# * These values can be overridden to the appropriate value in local_settings.py.
-OAUTH2_MOBILE_CLIENT_ID = 'responsible'
-OAUTH2_MOBILE_CLIENT_SECRET = 'silk'
-
-# The path to the endpoint on the mobile scheme where the mobile auth
-# credentials or error message is to be sent. e.g. mcka://sso/?access_token=...
-MOBILE_SSO_PATH = 'sso/'

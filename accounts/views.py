@@ -436,9 +436,10 @@ def finalize_sso_mobile(request):
                 )),
                 data={
                     'client_id': settings.OAUTH2_MOBILE_CLIENT_ID,
-                    "client_secret": settings.OAUTH2_MOBILE_CLIENT_SECRET,
-                    "grant_type": "authorization_code",
-                    "code": code,
+                    'client_secret': settings.OAUTH2_MOBILE_CLIENT_SECRET,
+                    'grant_type': 'authorization_code',
+                    'code': code,
+                    'redirect_uri': request.build_absolute_uri(reverse('sso_finalize')),
                 },
             )
             if response.status_code // 100 == 5:

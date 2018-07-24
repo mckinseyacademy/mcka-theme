@@ -6,6 +6,6 @@
   %body
     :javascript
       (function(){
-        window.location = '{{redirect_to}}';
+        window.location = '{{ redirect_to|safe }}';
       })();
 
