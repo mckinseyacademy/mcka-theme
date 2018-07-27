@@ -2164,6 +2164,7 @@ class CourseParticipantStats(object):
         self.base_url = base_url
         self.request_params = {}
         self.record_parser = record_parser
+        self.participants_engagement_lookup = None
 
     def get_participants_data(self, request_params):
         """
@@ -2189,8 +2190,11 @@ class CourseParticipantStats(object):
             course_participants = remove_specific_user_roles_of_other_companies(course_participants, int(organization_id))
 
         lesson_completions = self._get_lesson_completions(course_participants)
-        participants_engagement_lookup = self._get_engagement_scores()
-        return course_participants, lesson_completions, participants_engagement_lookup
+
+        if self.participants_engagement_lookup is None:
+            self.participants_engagement_lookup = self._get_engagement_scores()
+
+        return course_participants, lesson_completions, self.participants_engagement_lookup
 
     def _get_engagement_scores(self):
         """

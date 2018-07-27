@@ -1,4 +1,6 @@
 """ Tests for admin app celery tasks """
+import ddt
+
 from django.core import mail
 from django.test import TestCase, override_settings
 
@@ -6,7 +8,8 @@ from util.unit_test_helpers import ApplyPatchMixin
 from util.unit_test_helpers.common_mocked_objects import mock_storage_save
 from admin.tasks import (
     course_participants_data_retrieval_task,
-    export_stats_notification_email_task,
+    send_export_stats_status_email,
+    export_stats_status_email_task,
     participants_notifications_data_task,
     users_program_association_task
 )
@@ -74,6 +77,7 @@ class MockParticipantsStats(object):
         }
 
 
+@ddt.ddt
 class BulkTasksTest(TestCase, ApplyPatchMixin):
     def setUp(self):
         super(BulkTasksTest, self).setUp()
@@ -111,12 +115,37 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
         """
         Tests export stats email notification task
         """
-        export_stats_notification_email_task(
+        export_stats_status_email_task(
             user_id=123, course_id='xyz', report_name='test_report',
-            base_url='http://abc.xyz', download_url='http://url.xyz'
+            base_url='http://abc.xyz', download_url='http://url.xyz',
+            subject='subject', template='admin/export_stats_email_template.haml',
         )
 
         self.assertEqual(len(mail.outbox), 1)
+
+    @override_settings(CELERY_ALWAYS_EAGER=True)
+    @ddt.data(
+        ('xyz', True,),
+        ('abc', False,),
+    )
+    @ddt.unpack
+    def test_send_notification_email(self, course_id, report_succeeded):
+        """
+        Tests send notification helper method
+        """
+        send_export_stats_status_email(
+            user_id=123, course_id=course_id, report_name='test_report',
+            base_url='http://abc.xyz', download_url='http://url.xyz',
+            report_succeeded=report_succeeded,
+        )
+
+        if report_succeeded:
+            subject = 'Participant stats for {} is ready to download'.format(course_id)
+        else:
+            subject = 'Participant stats for {} did not generate'.format(course_id)
+
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEquals(mail.outbox[0].subject, subject)
 
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_participants_notifications_data_task(self):

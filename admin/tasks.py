@@ -15,7 +15,8 @@ from django.core.urlresolvers import reverse
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from celery import states as celery_states
-from celery.exceptions import Ignore
+from celery.exceptions import Ignore, MaxRetriesExceededError, Reject
+
 from api_client import course_api
 from api_client import group_api
 from api_client import user_api
@@ -52,7 +53,9 @@ def course_participants_data_retrieval_task(
         'page_size': 200,
         'additional_fields': ",".join(additional_fields),
     }
-    task_log_msg = "Participants data retrieval task for course: {}".format(course_id)
+    task_log_msg = "Participants data retrieval task for course: " \
+                   "`{}`, triggered by user `{}`".format(course_id, user_id)
+
     storage_path = settings.EXPORT_STATS_DIR
 
     # for company, keep data retrieval to company participants
@@ -84,12 +87,29 @@ def course_participants_data_retrieval_task(
                 task_id=task_id, state=celery_states.RETRY,
             )
             logger.error('Failed retrieving data from Participants API - {}'.format(e.message))
-            raise course_participants_data_retrieval_task.retry(
-                exc=e, kwargs={
-                    'course_id': course_id, 'company_id': company_id, 'base_url': base_url,
-                    'retry_params': {'api_params': api_params, 'data': participants_data},
-                }
-            )
+
+            try:
+                raise course_participants_data_retrieval_task.retry(
+                    kwargs={
+                        'course_id': course_id, 'company_id': company_id, 'base_url': base_url,
+                        'user_id': user_id, 'lesson_completions': lesson_completions,
+                        'retry_params': {'api_params': api_params, 'data': participants_data},
+                    }
+                )
+            except (MaxRetriesExceededError, Reject) as e:
+                # exit with a failure email on reject/max-retries
+                if isinstance(e, MaxRetriesExceededError):
+                    logger.error('Max retires reached - EXITING - {}'.format(task_log_msg))
+                else:
+                    logger.error('Retry rejected with error `{}` - EXITING - {}'.format(e.reason, task_log_msg))
+
+                send_export_stats_status_email(
+                    user_id=user_id, course_id=course_id,
+                    report_name='', base_url=base_url,
+                    download_url='', report_succeeded=False,
+                )
+
+                raise
 
         participants_data.extend(participants_stats.get('results'))
 
@@ -199,21 +219,54 @@ def course_participants_data_retrieval_task(
         url=reverse('private_storage', kwargs={'path': storage_path})
     )
 
-    # invoke email send task
-    export_stats_notification_email_task.delay(
-        user_id, course_id, file_name, base_url, download_url
+    send_export_stats_status_email(
+        user_id=user_id, course_id=course_id,
+        report_name=file_name, base_url=base_url,
+        download_url=download_url, report_succeeded=True,
     )
 
     return download_url
 
 
-@task(name='admin.export_stats_notification_email', max_retries=5)
-def export_stats_notification_email_task(user_id, course_id, report_name, base_url, download_url):
+def send_export_stats_status_email(
+        user_id, course_id, report_name, base_url,
+        download_url, report_succeeded=True,
+):
     """
-    Sends export stats completion notification email to admin
+    Invokes notification email task
+    """
+    if report_succeeded:
+        subject = _('Participant stats for {} is ready to download').format(course_id)
+        email_template = 'admin/export_stats_email_template.haml'
+    else:
+        subject = _('Participant stats for {} did not generate').format(course_id)
+        email_template = 'admin/export_stats_failure_email_template.haml'
+        # create admin/course details url
+        download_url = urljoin(
+            base=base_url,
+            url=reverse('course_details', kwargs={'course_id': course_id})
+        )
+
+    export_stats_status_email_task.delay(
+        user_id=user_id, course_id=course_id,
+        report_name=report_name, base_url=base_url, download_url=download_url,
+        subject=subject, template=email_template,
+    )
+
+
+@task(name='admin.export_stats_notification_email', max_retries=5)
+def export_stats_status_email_task(
+        user_id, course_id, report_name,
+        base_url, download_url,
+        subject, template,
+):
+    """
+    Sends export stats notification email to admin
     created as a separate task to support retries
     """
-    task_log_msg = "Export Stats notification email task for course: {}".format(course_id)
+    task_log_msg = "Export Stats notification email task for course:" \
+                   " `{}` and user `{}`".format(course_id, user_id)
+
     logger.info('Starting - {}'.format(task_log_msg))
 
     mcka_logo = urljoin(
@@ -228,22 +281,22 @@ def export_stats_notification_email_task(user_id, course_id, report_name, base_u
             'Failed retrieving Admin User info from API - {} - {}'
             .format(e.message, task_log_msg)
         )
-        raise export_stats_notification_email_task.retry(exc=e)
+        raise export_stats_status_email_task.retry(exc=e)
 
     try:
         send_html_email(
-            subject=_('Participant stats for {} is ready to download').format(course_id),
-            to_emails=[user_data.get('email')], template_name='admin/export_stats_email_template',
+            subject=subject,
+            to_emails=[user_data.get('email')], template_name=template,
             template_data={
                 'first_name': user_data.get('first_name'),
                 'download_link': download_url, 'support_email': settings.MCKA_SUPPORT_EMAIL,
-                'report_name': report_name, 'mcka_logo_url': mcka_logo
+                'report_name': report_name, 'mcka_logo_url': mcka_logo, 'course_id': course_id,
             }
         )
         logger.info('Email successfully sent - {}'.format(task_log_msg))
     except Exception as e:
-        logger.error('Failed sending download link email to Admin {} - {}'.format(e.message, task_log_msg))
-        raise export_stats_notification_email_task.retry(exc=e)
+        logger.error('Failed sending notification email to Admin {} - {}'.format(e.message, task_log_msg))
+        raise export_stats_status_email_task.retry(exc=e)
 
     logger.info('Finished - {}'.format(task_log_msg))
 

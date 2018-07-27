@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-17 08:35+0000\n"
+"POT-Creation-Date: 2018-07-26 06:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1308,7 +1308,7 @@ msgstr "Speciale tekens zijn niet geldig."
 msgid "Please enter a valid Role."
 msgstr "Voer een geldige functie in."
 
-#: accounts/views.py:86
+#: accounts/views.py:85
 msgid ""
 "Your login did not match any known accounts, a registration key is required "
 "in order to create a new account."
@@ -1316,7 +1316,7 @@ msgstr ""
 "Uw aanmelding komt niet overeen met bekende accounts; er is een "
 "registratiesleutel vereist om een nieuwe account aan te maken."
 
-#: accounts/views.py:88
+#: accounts/views.py:87
 msgid ""
 "There was an error enrolling you in a course using the registration key you "
 "provided"
@@ -1324,79 +1324,67 @@ msgstr ""
 "Er is een fout opgetreden bij uw inschrijving voor een cursus met de "
 "registratiesleutel die u heeft opgegeven"
 
-#: accounts/views.py:304
-msgid "Username or password is incorrect"
-msgstr "Gebruikersnaam of wachtwoord is onjuist"
-
-#: accounts/views.py:319
-msgid "This email is not associated with any identity provider"
-msgstr "Dit e-mailadres is aan geen enkele identiteitsprovider gekoppeld"
-
-#: accounts/views.py:345 accounts/views.py:440
+#: accounts/views.py:308
 msgid ""
 "Your account has already been activated. Please enter credentials to login"
 msgstr ""
 "Uw account is al geactiveerd. Voer uw aanmeldgegevens in om u aan te melden"
 
-#: accounts/views.py:352
-msgid "Log in to my McKinsey Academy account & access my courses"
-msgstr "Meld u aan bij Mijn McKinsey Academy-account en open Mijn cursussen"
-
-#: accounts/views.py:446
+#: accounts/views.py:314
 msgid "Log In"
 msgstr "Inloggen"
 
-#: accounts/views.py:447
+#: accounts/views.py:315
 msgid "Trouble logging in"
 msgstr ""
 
-#: accounts/views.py:485 accounts/views.py:509
+#: accounts/views.py:353 accounts/views.py:377
 msgid "Username/email is not recognised. Try again."
 msgstr ""
 
-#: accounts/views.py:501
+#: accounts/views.py:369
 #, fuzzy
 #| msgid "Password doesn't match creation criteria."
 msgid "Password doesn't match our records. Try again."
 msgstr "Wachtwoord voldoet niet aan aanmaakcriteria."
 
-#: accounts/views.py:647 accounts/views.py:719
+#: accounts/views.py:542 accounts/views.py:614
 msgid "Some required information was missing. Please check the fields below."
 msgstr "Enkele vereiste informatie ontbreekt. Controleer onderstaande velden."
 
-#: accounts/views.py:667 accounts/views.py:731
+#: accounts/views.py:562 accounts/views.py:626
 msgid "Create my McKinsey Academy account"
 msgstr "Maak Mijn McKinsey Academy-account aan"
 
-#: accounts/views.py:697
+#: accounts/views.py:592
 msgid "Invalid Activation Code"
 msgstr "Ongeldige activeringscode"
 
-#: accounts/views.py:769
+#: accounts/views.py:664
 msgid "No provider data found."
 msgstr "Geen providergegevens gevonden."
 
-#: accounts/views.py:771
+#: accounts/views.py:666
 msgid "Provider data does not seem valid."
 msgstr "Providergegevens lijken ongeldig."
 
-#: accounts/views.py:825
+#: accounts/views.py:720
 msgid "Access Key missing."
 msgstr "Toegangssleutel ontbreekt."
 
-#: accounts/views.py:882
+#: accounts/views.py:777
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "Registreren van gebruiker mislukt: {exception_message}"
 
-#: accounts/views.py:884
+#: accounts/views.py:779
 #, fuzzy
 #| msgid ""
 #| "Some required information was missing. Please check the fields below."
 msgid "Some required information was missing."
 msgstr "Enkele vereiste informatie ontbreekt. Controleer onderstaande velden."
 
-#: accounts/views.py:886
+#: accounts/views.py:781
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1404,20 +1392,20 @@ msgstr ""
 "Verificatie-cookie ontbreekt. Er kan een time-out van uw sessie zijn "
 "opgetreden. Begin opnieuw."
 
-#: accounts/views.py:935
+#: accounts/views.py:830
 msgid "Enter new password"
 msgstr "Voer nieuw wachtwoord in"
 
-#: accounts/views.py:952
+#: accounts/views.py:847
 msgid "Password reset unsuccessful"
 msgstr "Wachtwoord opnieuw instellen mislukt"
 
-#: accounts/views.py:1050 templates/accounts/activate.haml:16
+#: accounts/views.py:945 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45 templates/layout.haml:260
 msgid "Welcome to McKinsey Academy"
 msgstr "Welkom bij McKinsey Academy"
 
-#: accounts/views.py:1051
+#: accounts/views.py:946
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1426,7 +1414,7 @@ msgstr ""
 "Uw programma start over {days} dagen. Verken in de tussentijd de site voor "
 "meer informatie hierover."
 
-#: accounts/views.py:1055
+#: accounts/views.py:950
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1435,11 +1423,11 @@ msgstr ""
 "Uw cursus begint over {days} dagen. Voordat de cursus begint, kunt u deze "
 "site verkennen voor meer informatie over wat u kunt verwachten."
 
-#: accounts/views.py:1198
+#: accounts/views.py:1093
 msgid "Enter your full name"
 msgstr "Voer uw volledige naam in"
 
-#: accounts/views.py:1200 accounts/views.py:1223 admin/views.py:1841
+#: accounts/views.py:1095 accounts/views.py:1118 admin/views.py:1841
 #: admin/views.py:1875 admin/views.py:4191
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
@@ -1452,23 +1440,23 @@ msgstr "Voer uw volledige naam in"
 msgid "Save"
 msgstr "Opslaan"
 
-#: accounts/views.py:1221
+#: accounts/views.py:1116
 msgid "Enter your title"
 msgstr "Voer uw functietitel in"
 
-#: accounts/views.py:1273 accounts/views.py:1303
+#: accounts/views.py:1168 accounts/views.py:1198
 msgid "Initial"
 msgstr "Voorletter"
 
-#: accounts/views.py:1300
+#: accounts/views.py:1195
 msgid "Course Closed"
 msgstr "Cursus gesloten"
 
-#: accounts/views.py:1309
+#: accounts/views.py:1204
 msgid "Registered"
 msgstr "Geregistreerd"
 
-#: accounts/views.py:1311
+#: accounts/views.py:1206
 msgid "Error"
 msgstr "Fout"
 
@@ -1730,85 +1718,87 @@ msgstr "U heeft een ongeldige taaksleutel verzonden!"
 msgid "There are no users in organization!"
 msgstr "Er zijn geen gebruikers in de organisatie!"
 
-#: admin/controller.py:2276 admin/controller.py:2277 admin/views.py:3574
+#: admin/controller.py:2280 admin/controller.py:2281 admin/views.py:3574
 #: admin/views.py:3575 admin/views.py:3731 admin/views.py:5531
 msgid "No company"
 msgstr "Geen bedrijf"
 
-#: admin/controller.py:2294 admin/views.py:3579 admin/views.py:4059
+#: admin/controller.py:2298 admin/views.py:3579 admin/views.py:4059
 #: admin/views.py:4086 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/mobile_apps/company_app_details.haml:46
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/controller.py:2296 admin/views.py:3581 admin/views.py:4061
+#: admin/controller.py:2300 admin/views.py:3581 admin/views.py:4061
 #: admin/views.py:4065 admin/views.py:4088 admin/views.py:4092
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
 msgstr "Nee"
 
-#: admin/controller.py:2313 admin/controller.py:2321
+#: admin/controller.py:2317 admin/controller.py:2325
 msgid "000"
 msgstr "000"
 
-#: admin/controller.py:2512 admin/controller.py:2534
+#: admin/controller.py:2516 admin/controller.py:2538
 msgid "Sorry, We can not process your request"
 msgstr "Helaas kunnen we uw aanvraag niet verwerken"
 
-#: admin/controller.py:2519 admin/controller.py:2531
+#: admin/controller.py:2523 admin/controller.py:2535
 msgid "Operation Successful"
 msgstr "Bewerking gelukt"
 
-#: admin/controller.py:2522
+#: admin/controller.py:2526
 msgid "Please enter role text"
 msgstr "Voer functietekst in"
 
-#: admin/controller.py:2557 templates/admin/courses/course_details.haml:104
+#: admin/controller.py:2561 templates/admin/courses/course_details.haml:104
 msgid "Engagement Summary"
 msgstr "Samenvatting betrokkenheid"
 
-#: admin/controller.py:2557
+#: admin/controller.py:2561
 msgid "# of people"
 msgstr "Aantal personen"
 
-#: admin/controller.py:2557
+#: admin/controller.py:2561
 msgid "% total cohort"
 msgstr "% totale groep"
 
-#: admin/controller.py:2557
+#: admin/controller.py:2561
 msgid "Avg Progress"
 msgstr "Gem. voortgang"
 
-#: admin/controller.py:2563
+#: admin/controller.py:2567
 msgid "Participant Performance"
 msgstr "Prestaties deelnemer"
 
-#: admin/controller.py:2563
+#: admin/controller.py:2567
+#, fuzzy, python-format
+#| msgid "% completion"
 msgid "% completion"
 msgstr "% voltooid"
 
-#: admin/controller.py:2563
+#: admin/controller.py:2567
 msgid "Score"
 msgstr "Score"
 
-#: admin/controller.py:2564
+#: admin/controller.py:2568
 msgid "Group work 1"
 msgstr "Groepswerk 1"
 
-#: admin/controller.py:2565
+#: admin/controller.py:2569
 msgid "Group work 2"
 msgstr "Groepswerk 2"
 
-#: admin/controller.py:2566
+#: admin/controller.py:2570
 msgid "Mid-course assessment"
 msgstr "Beoordeling halverwege cursus"
 
-#: admin/controller.py:2567
+#: admin/controller.py:2571
 msgid "Final assessment"
 msgstr "Eindbeoordeling"
 
-#: admin/controller.py:2574 templates/admin/courses/course_details.haml:117
+#: admin/controller.py:2578 templates/admin/courses/course_details.haml:117
 msgid "Social Engagement"
 msgstr "Sociale betrokkenheid"
 
@@ -2004,23 +1994,27 @@ msgstr "Opdracht groep voor {wg_id}"
 msgid "Some of the files aren't uploaded, Please upload again!"
 msgstr "Sommige bestanden zijn niet geüpload. Upload ze opnieuw!"
 
-#: admin/tasks.py:122
+#: admin/tasks.py:142
 #, python-brace-format
 msgid "Group Work: {label}"
 msgstr "Groepswerk: {label}"
 
-#: admin/tasks.py:129
+#: admin/tasks.py:149
 #, python-brace-format
 msgid "Assessment: {label}"
 msgstr "Beoordeling: {label}"
 
-#: admin/tasks.py:135
+#: admin/tasks.py:155
 #, python-brace-format
 msgid "Lesson {lesson_number} Progress"
 msgstr "Les {lesson_number} Voortgang"
 
-#: admin/tasks.py:235
+#: admin/tasks.py:239
 msgid "Participant stats for {} is ready to download"
+msgstr ""
+
+#: admin/tasks.py:242
+msgid "Participant stats for {} did not generate"
 msgstr ""
 
 #: admin/views.py:551
@@ -2258,7 +2252,7 @@ msgstr "Er zijn geen groepsprojecten beschikbaar voor deze cursus"
 #: templates/admin/course_meta_content/item_list.haml:55
 #: templates/courses/content_page/course_tabs.haml:18
 #: templates/courses/course_group_work.haml:13
-#: templates/courses/course_progress.haml:57 templates/faq.haml:40
+#: templates/courses/course_progress.haml:57 templates/faq.haml:39
 msgid "Group Work"
 msgstr "Groepswerk"
 
@@ -2636,7 +2630,8 @@ msgstr "Toegang tot cursus ‘{course_id}’ geweigerd voor gebruiker {user_id}"
 #, python-brace-format
 msgid "Access denied to user {admin_user_id} for data belonging to {user_id}"
 msgstr ""
-"Toegang aan gebruiker {admin_user_id} geweigerd voor gegevens die toebehoren aan {user_id}"
+"Toegang aan gebruiker {admin_user_id} geweigerd voor gegevens die toebehoren "
+"aan {user_id}"
 
 #: courses/views.py:558
 msgid "TOTAL"
@@ -2874,11 +2869,11 @@ msgstr ""
 "Hartelijk dank voor uw belangstelling voor McKinsey Academy. We houden u op "
 "de hoogte."
 
-#: mcka_apros/settings.py:209 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:210 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr "McKinsey Management-programma"
 
-#: mcka_apros/settings.py:283
+#: mcka_apros/settings.py:284
 msgid "Congratulations! Your certificate has been generated"
 msgstr "Gefeliciteerd! Uw certificaat is gegenereerd"
 
@@ -3011,7 +3006,7 @@ msgstr "Maak uw McKinsey Academy-account aan"
 msgid "Complete the fields below."
 msgstr "Vul de onderstaande velden in."
 
-#: templates/accounts/activate.haml:22 templates/accounts/login_a.haml:24
+#: templates/accounts/activate.haml:22
 msgid "Required fields are noted by an asterisk"
 msgstr "De verplichte velden zijn gemarkeerd met een asterisk"
 
@@ -3036,8 +3031,7 @@ msgstr ""
 "Door u te registreren krijgt u toegang tot cursusinhoud en zo ontvangt u "
 "updates en meldingen van McKinsey Academy."
 
-#: templates/accounts/activate.haml:44 templates/accounts/login_a.haml:59
-#: templates/accounts/login_b.haml:53
+#: templates/accounts/activate.haml:44 templates/accounts/login.haml:52
 #: templates/accounts/public_registration.haml:78
 msgid "Need Help?"
 msgstr "Hulp nodig?"
@@ -3076,11 +3070,15 @@ msgstr ""
 msgid "Crop & Save"
 msgstr "Bijsnijden en opslaan"
 
-#: templates/accounts/login_a.haml:5 templates/accounts/login_b.haml:5
+#: templates/accounts/login.haml:5
 msgid "Login | McKinsey Academy"
 msgstr "Aanmelden | McKinsey Academy"
 
-#: templates/accounts/login_a.haml:18 templates/accounts/login_b.haml:22
+#: templates/accounts/login.haml:16
+msgid "< Back"
+msgstr "< Terug"
+
+#: templates/accounts/login.haml:21
 #: templates/accounts/public_registration.haml:41
 msgid ""
 "We're sorry, McKinsey Academy is not compatible with your browser. You will "
@@ -3093,55 +3091,35 @@ msgstr ""
 "optimale ervaring raden we u de meest recente versies van Google Chrome, "
 "Mozilla Firefox en Apple Safari aan."
 
-#: templates/accounts/login_a.haml:22
-msgid "Please log in"
-msgstr "Meld u aan"
-
-#: templates/accounts/login_a.haml:28
-msgid "Single-Sign-On users,"
-msgstr "SSO (Single-Sign-On)-gebruikers,"
-
-#: templates/accounts/login_a.haml:30 templates/accounts/login_a.haml.py:33
-msgid "click here"
-msgstr "klik hier"
-
-#: templates/accounts/login_a.haml:31
-msgid "To login with a username,"
-msgstr "Als u zich wilt aanmelden met een gebruikersnaam,"
-
-#: templates/accounts/login_a.haml:43 templates/accounts/login_b.haml:49
-msgid "Forgot password?"
-msgstr "Wachtwoord vergeten?"
-
-#: templates/accounts/login_a.haml:62 templates/accounts/login_b.haml:58
-#: templates/accounts/public_registration.haml:81
-msgid "View our FAQ for answers to commonly asked questions."
-msgstr ""
-"Bekijk onze veelgestelde vragen voor antwoorden op de meestgestelde vragen."
-
-#: templates/accounts/login_b.haml:17
-msgid "< Back"
-msgstr "< Terug"
-
-#: templates/accounts/login_b.haml:26
+#: templates/accounts/login.haml:25
 #, fuzzy
 #| msgid "Login | McKinsey Academy"
 msgid "Login to McKinsey Academy"
 msgstr "Aanmelden | McKinsey Academy"
 
-#: templates/accounts/login_b.haml:35
+#: templates/accounts/login.haml:34
 #, fuzzy
 #| msgid "Username or password invalid"
 msgid "Username or Email:"
 msgstr "Gebruikersnaam of wachtwoord ongeldig"
 
-#: templates/accounts/login_b.haml:44
+#: templates/accounts/login.haml:43
 #, fuzzy
 #| msgid "Password Reset"
 msgid "Password"
 msgstr "Wachtwoord opnieuw ingesteld"
 
-#: templates/accounts/login_b.haml:61
+#: templates/accounts/login.haml:48
+msgid "Forgot password?"
+msgstr "Wachtwoord vergeten?"
+
+#: templates/accounts/login.haml:57
+#: templates/accounts/public_registration.haml:81
+msgid "View our FAQ for answers to commonly asked questions."
+msgstr ""
+"Bekijk onze veelgestelde vragen voor antwoorden op de meestgestelde vragen."
+
+#: templates/accounts/login.haml:60
 msgid "Trouble logging in? Contact us."
 msgstr ""
 
@@ -3290,6 +3268,7 @@ msgstr "Aanpassing"
 
 #: templates/admin/admin_header.haml:62
 #: templates/admin/export_stats_email_template.haml:29
+#: templates/admin/export_stats_failure_email_template.haml:29
 msgid "Contact"
 msgstr "Contactpersoon"
 
@@ -4300,11 +4279,31 @@ msgid "Download Report"
 msgstr "Sjabloon downloaden"
 
 #: templates/admin/export_stats_email_template.haml:23
+#: templates/admin/export_stats_failure_email_template.haml:23
 msgid "Best Regards,"
 msgstr ""
 
 #: templates/admin/export_stats_email_template.haml:32
 msgid "if you have any questions"
+msgstr ""
+
+#: templates/admin/export_stats_failure_email_template.haml:12
+#, python-format
+msgid ""
+" We unfortunately encountered an issue while generating your report for "
+"%(course_id)s "
+msgstr ""
+
+#: templates/admin/export_stats_failure_email_template.haml:14
+msgid "Please click below to login and try again."
+msgstr ""
+
+#: templates/admin/export_stats_failure_email_template.haml:19
+msgid "Try Again"
+msgstr ""
+
+#: templates/admin/export_stats_failure_email_template.haml:32
+msgid "if you have any further issues"
 msgstr ""
 
 #: templates/admin/home.haml:6
@@ -5660,6 +5659,7 @@ msgstr ""
 "betrokkenheid "
 
 #: templates/courses/course_cohort.haml:184
+#, python-format
 msgid ""
 "  your engagement position: <br><span>%(position)s</span> with <span>"
 "%(points)s pts.</span> "
@@ -6666,19 +6666,19 @@ msgstr ""
 "voortgang wordt gebaseerd op het volgen van alle individuele modules en "
 "leesopdrachten binnen de cursus."
 
-#: templates/faq.haml:9
+#: templates/faq.haml:8
 msgid "Participant FAQ"
 msgstr "Veelgestelde vragen deelnemer"
 
-#: templates/faq.haml:10
+#: templates/faq.haml:9
 msgid "ACCESS:"
 msgstr "TOEGANG:"
 
-#: templates/faq.haml:11
+#: templates/faq.haml:10
 msgid "Which browsers are recommended for use with McKinsey Academy?"
 msgstr "Welke browsers worden aanbevolen voor gebruik van McKinsey Academy?"
 
-#: templates/faq.haml:12
+#: templates/faq.haml:11
 msgid ""
 "We recommend the latest versions of Google Chrome, Mozilla Firefox, and "
 "Apple Safari for an optimal experience. McKinsey Academy is not accessible "
@@ -6689,14 +6689,14 @@ msgstr ""
 "toegankelijk in sommige oudere versies van browsers (zoals Internet Explorer "
 "8)."
 
-#: templates/faq.haml:13
+#: templates/faq.haml:12
 msgid ""
 "What if I have technical trouble with registration, login, or course access?"
 msgstr ""
 "Wat als ik technische problemen heb met registratie, aanmelding of "
 "cursustoegang?"
 
-#: templates/faq.haml:14
+#: templates/faq.haml:13
 msgid ""
 "Many problems with registration, login, or access to courses are caused by "
 "browser issues. Here are some things to try:"
@@ -6705,26 +6705,26 @@ msgstr ""
 "veroorzaakt door browserproblemen. Hier zijn enkele dingen die u kunt "
 "proberen:"
 
-#: templates/faq.haml:16
+#: templates/faq.haml:15
 msgid "Switch to a current version of Chrome or Firefox"
 msgstr "Schakel over op een actuele versie van Chrome of Firefox"
 
-#: templates/faq.haml:17
+#: templates/faq.haml:16
 msgid ""
 "Check your browser settings to ensure both JavaScript and cookies are enabled"
 msgstr ""
 "Controleer uw browserinstellingen om ervoor te zorgen dat zowel JavaScript "
 "als cookies zijn ingeschakeld"
 
-#: templates/faq.haml:18
+#: templates/faq.haml:17
 msgid "Clear your browser's cache"
 msgstr "Maak de cache van uw browser leeg"
 
-#: templates/faq.haml:19
+#: templates/faq.haml:18
 msgid "Which devices are recommended for use with McKinsey Academy?"
 msgstr "Welke apparaten worden aanbevolen voor gebruik van McKinsey Academy?"
 
-#: templates/faq.haml:20
+#: templates/faq.haml:19
 msgid ""
 "The platform is accessible on all computer and tablet devices. The site is "
 "currently not optimized for mobile device use, and you will not currently be "
@@ -6734,12 +6734,12 @@ msgstr ""
 "momenteel niet geoptimaliseerd voor gebruik met een mobiel apparaat, en u "
 "kunt de cursusinhoud op dit moment niet openen op mobiele telefoons."
 
-#: templates/faq.haml:21
+#: templates/faq.haml:20
 msgid "How can I sign-up for a McKinsey Academy course or program?"
 msgstr ""
 "Hoe kan ik me aanmelden voor een McKinsey Academy-cursus of -programma?"
 
-#: templates/faq.haml:22
+#: templates/faq.haml:21
 msgid ""
 "At this time, McKinsey Academy courses are only available to companies. If "
 "you are interested in inquiring further, please contact us."
@@ -6747,11 +6747,11 @@ msgstr ""
 "Op dit moment zijn McKinsey Academy-cursussen alleen beschikbaar voor "
 "bedrijven. Als u meer wilt weten, neem dan contact met ons op."
 
-#: templates/faq.haml:23
+#: templates/faq.haml:22
 msgid "How can I change the name or email address on my account?"
 msgstr "Hoe kan ik de naam of het e-mailadres voor mijn account veranderen?"
 
-#: templates/faq.haml:24
+#: templates/faq.haml:23
 msgid ""
 "To change your name, log in, and find your profile in the upper right-hand "
 "corner of your screen. Click the down arrow and select \"Edit\" next to your "
@@ -6761,7 +6761,7 @@ msgstr ""
 "rechter bovenhoek van het scherm. Klik op het pijltje omlaag en selecteer "
 "“Bewerken” naast uw naam."
 
-#: templates/faq.haml:25
+#: templates/faq.haml:24
 msgid ""
 "To change your email address, please email <a href=\"mailto:"
 "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
@@ -6769,11 +6769,11 @@ msgstr ""
 "Als u uw e-mailadres wilt veranderen, stuurt u een e-mail naar <a href="
 "\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
 
-#: templates/faq.haml:26
+#: templates/faq.haml:25
 msgid "My account login isn't working."
 msgstr "Het aanmelden bij mijn account werkt niet."
 
-#: templates/faq.haml:27
+#: templates/faq.haml:26
 msgid ""
 "If you've forgotten your password, please try resetting it by clicking "
 "\"Forgot my password\" on the log in screen. If that does not work, please "
@@ -6785,11 +6785,11 @@ msgstr ""
 "niet werkt, stuurt u een e-mail naar <a href=\"mailto:"
 "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
 
-#: templates/faq.haml:28
+#: templates/faq.haml:27
 msgid "I can't access a course I'm enrolled in."
 msgstr "Ik heb geen toegang tot een cursus waarvoor ik ben ingeschreven."
 
-#: templates/faq.haml:29
+#: templates/faq.haml:28
 msgid ""
 "The drop down for moving between multiple courses is on the far left of the "
 "second (lighter blue) navigation bar. If the course you are supposed to be "
@@ -6802,13 +6802,13 @@ msgstr ""
 "vervolgkeuzelijst verschijnt, stuur dan een e-mail naar <a href=\"mailto:"
 "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
 
-#: templates/faq.haml:30
+#: templates/faq.haml:29
 msgid "How can I stop or start receiving emails from my courses?"
 msgstr ""
 "Hoe kan ik het ontvangen van e-mails van mijn cursussen stoppen of laten "
 "beginnen?"
 
-#: templates/faq.haml:31
+#: templates/faq.haml:30
 msgid ""
 "We try to keep our email communication at an optimal level to ensure all "
 "participants know what is happening in the course without cluttering your "
@@ -6829,15 +6829,15 @@ msgstr ""
 "mailbericht dat u van ons ontvangt). Bekijk ook regelmatig onze pagina "
 "“Mededelingen” om op de hoogte te blijven!"
 
-#: templates/faq.haml:32
+#: templates/faq.haml:31
 msgid "COURSES:"
 msgstr "CURSUSSEN:"
 
-#: templates/faq.haml:33
+#: templates/faq.haml:32
 msgid "When does my course start and/or finish?"
 msgstr "Wanneer begint en/of eindigt mijn cursus?"
 
-#: templates/faq.haml:34
+#: templates/faq.haml:33
 msgid ""
 "You can find the start date and course duration for each course on its "
 "course overview page.  You will receive a welcome email when the course is "
@@ -6847,11 +6847,12 @@ msgstr ""
 "cursusoverzichtspagina. U ontvangt een welkomstmail wanneer de cursus is "
 "geopend."
 
-#: templates/faq.haml:35
+#: templates/faq.haml:34
 msgid "What are passing requirements for courses?"
 msgstr "Wat zijn de vereisten om voor cursussen te slagen?"
 
-#: templates/faq.haml:36
+#: templates/faq.haml:35
+#, python-format
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
 "combined course grade of at least 70%% to work towards a program certificate "
@@ -6862,11 +6863,11 @@ msgstr ""
 "een programmacertificaat van voltooiing. Uw cursuscijfer wordt als volgt "
 "berekend:"
 
-#: templates/faq.haml:38
+#: templates/faq.haml:37
 msgid "End of lesson (EOL) assessments"
 msgstr "Einde les (EOL)-beoordelingen"
 
-#: templates/faq.haml:39
+#: templates/faq.haml:38
 msgid ""
 "Note that EOL assessments vary based on number of lessons and may not be "
 "included in some lessons"
@@ -6874,7 +6875,7 @@ msgstr ""
 "Let op: de EOL-beoordelingen kunnen verschillen al naar gelang het aantal "
 "lessen en zijn mogelijk niet in alle lessen opgenomen"
 
-#: templates/faq.haml:41
+#: templates/faq.haml:40
 msgid ""
 "Note that Group Work may be made up of one or more activities which are "
 "graded throughout the duration of a course"
@@ -6882,11 +6883,11 @@ msgstr ""
 "Let op: groepswerk kan bestaan uit een of meer activiteiten die gedurende de "
 "loop van een cursus met een cijfer worden beoordeeld"
 
-#: templates/faq.haml:42
+#: templates/faq.haml:41
 msgid "Final Assessment"
 msgstr "Eindbeoordeling"
 
-#: templates/faq.haml:43
+#: templates/faq.haml:42
 msgid ""
 "There is no minimum amount of course content that must be completed, but "
 "participants must complete the Final Assessment."
@@ -6894,11 +6895,11 @@ msgstr ""
 "Er is geen minimumhoeveelheid cursusinhoud die moet worden voltooid, maar "
 "deelnemers moeten wel de eindbeoordeling afronden."
 
-#: templates/faq.haml:44
+#: templates/faq.haml:43
 msgid "How do I log in to take a McKinsey Academy course?"
 msgstr "Hoe meld ik me aan om een McKinsey Academy-cursus te volgen?"
 
-#: templates/faq.haml:45
+#: templates/faq.haml:44
 msgid ""
 "Once you activate your account, click on the \"Log in\" button on the "
 "McKinsey Academy home page and type in your username and password. This will "
@@ -6908,11 +6909,11 @@ msgstr ""
 "startpagina van McKinsey Academy en typt u uw gebruikersnaam en wachtwoord. "
 "Hiermee wordt u naar de huidige cursuspagina geleid."
 
-#: templates/faq.haml:46
+#: templates/faq.haml:45
 msgid "How much time should I expect to devote to each course?"
 msgstr "Hoeveel tijd moet ik naar verwachting besteden aan elke cursus?"
 
-#: templates/faq.haml:47
+#: templates/faq.haml:46
 msgid ""
 "The projected time commitment required for each course is included on the "
 "course overview page. We typically find that dedicating 60-120 minutes per "
@@ -6923,22 +6924,22 @@ msgstr ""
 "minuten per week voldoende is om alle cursusvereisten te voltooien, "
 "inclusief het groepswerk."
 
-#: templates/faq.haml:48
+#: templates/faq.haml:47
 msgid "Can I take more than one course at a time?"
 msgstr "Kan ik meer dan een cursus tegelijkertijd volgen?"
 
-#: templates/faq.haml:49
+#: templates/faq.haml:48
 msgid ""
 "McKinsey Academy programs are a collection of courses taken one at a time."
 msgstr ""
 "McKinsey Academy-programma’s zijn een verzameling cursussen die een voor een "
 "worden gevolgd."
 
-#: templates/faq.haml:50
+#: templates/faq.haml:49
 msgid "What time is the class?"
 msgstr "Hoe laat vindt de les plaats?"
 
-#: templates/faq.haml:51
+#: templates/faq.haml:50
 msgid ""
 "McKinsey Academy courses take place at your convenience. Videos and "
 "assignments are available 24 hours a day, which means you can watch videos "
@@ -6954,11 +6955,11 @@ msgstr ""
 "activiteiten voor het groepswerk deadlines hebben, zijn deze zo opgezet dat "
 "ze voldoende looptijd bieden om uw werk eenvoudig daarbinnen te plannen."
 
-#: templates/faq.haml:52
+#: templates/faq.haml:51
 msgid "If I miss a week, how does this affect my performance?"
 msgstr "Als ik een week mis, wat zijn dan de gevolgen voor mijn prestaties?"
 
-#: templates/faq.haml:53
+#: templates/faq.haml:52
 msgid ""
 "It is certainly possible to finish a McKinsey Academy course if you miss a "
 "week; however you should certainly review content you may have missed. If "
@@ -6974,11 +6975,11 @@ msgstr ""
 "Controleer uw groepswerk en cursusoverzicht op belangrijke datums en tijden, "
 "zodat u geen deadline voor indiening mist terwijl u afwezig bent."
 
-#: templates/faq.haml:54
+#: templates/faq.haml:53
 msgid "I missed a deadline; can I get an extension?"
 msgstr "Ik heb een deadline gemist, kan ik uitstel krijgen?"
 
-#: templates/faq.haml:55
+#: templates/faq.haml:54
 msgid ""
 "We are not able to offer individual extensions as course schedules are fixed "
 "and there is no way to change the dates of assignments or exams for one "
@@ -6988,11 +6989,11 @@ msgstr ""
 "en we op geen enkele manier de datums van opdrachten of examens kunnen "
 "wijzigen voor één deelnemer."
 
-#: templates/faq.haml:56
+#: templates/faq.haml:55
 msgid "My course deadlines are in UTC, what’s that?"
 msgstr "De deadlines voor mijn cursussen zijn in UTC, wat betekent dat?"
 
-#: templates/faq.haml:57
+#: templates/faq.haml:56
 msgid ""
 "UTC refers to Universal Coordinated Time. To find the current time in UTC "
 "and convert it to your local time, check World Time Server or other Internet "
@@ -7003,13 +7004,13 @@ msgstr ""
 "omzetten, controleer dan de World Time Server of andere tijddiensten op het "
 "internet."
 
-#: templates/faq.haml:58
+#: templates/faq.haml:57
 msgid "What if I have a question or concern regarding course grading?"
 msgstr ""
 "Wat als ik een vraag of opmerking heb met betrekking tot de "
 "cijferbeoordeling van de cursus?"
 
-#: templates/faq.haml:59
+#: templates/faq.haml:58
 msgid ""
 "If you have any questions about a grade you received, please email <a href="
 "\"mailto:tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>."
@@ -7017,11 +7018,11 @@ msgstr ""
 "Als u vragen heeft over een cijfer, stuur dan een e-mail naar <a href="
 "\"mailto:tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>."
 
-#: templates/faq.haml:60
+#: templates/faq.haml:59
 msgid "How can I meet/find other participants?"
 msgstr "Hoe kan ik andere deelnemers vinden/ontmoeten?"
 
-#: templates/faq.haml:61
+#: templates/faq.haml:60
 msgid ""
 "All McKinsey Academy courses have discussion forums where you can chat with "
 "and help other participants."
@@ -7029,7 +7030,7 @@ msgstr ""
 "Alle McKinsey Academy-cursussen hebben discussieforums waarop u met andere "
 "deelnemers kunt chatten en hen kunt helpen."
 
-#: templates/faq.haml:62
+#: templates/faq.haml:61
 msgid ""
 "How can I talk to McKinsey practitioners teaching my courses and teaching "
 "assistants?"
@@ -7037,7 +7038,7 @@ msgstr ""
 "Hoe kan ik met McKinsey-onderwijzers die mijn cursussen geven en met "
 "onderwijsassistenten communiceren?"
 
-#: templates/faq.haml:63
+#: templates/faq.haml:62
 msgid ""
 "The discussion forum is the best place to reach out to the McKinsey Academy "
 "course team for your cohort; just post your questions or email the TA. We do "
@@ -7047,11 +7048,11 @@ msgstr ""
 "Academy-cursusteam voor uw cohort; post gewoon uw vragen of stuur een e-mail "
 "naar de OA. We doen ons best om zo snel mogelijk te antwoorden."
 
-#: templates/faq.haml:64
+#: templates/faq.haml:63
 msgid "How do I get help and support regarding my course?"
 msgstr "Hoe kan ik hulp en ondersteuning voor mijn cursus krijgen?"
 
-#: templates/faq.haml:65
+#: templates/faq.haml:64
 msgid ""
 "You are part of a cohort of participants you can engage with questions as "
 "well as support from the TAs who monitor the course. Take a look at the "
@@ -7069,11 +7070,11 @@ msgstr ""
 "onderwijsassistenten door <a href=\"mailto:tas@mckinseyacademy.com\">ze een "
 "e-mail te sturen</a>; zij komen dan zo snel mogelijk bij u terug."
 
-#: templates/faq.haml:66
+#: templates/faq.haml:65
 msgid "Can I re-take a course?"
 msgstr "Kan ik een cursus opnieuw volgen?"
 
-#: templates/faq.haml:67
+#: templates/faq.haml:66
 msgid ""
 "McKinsey Academy courses cannot be re-taken, but exercises and materials "
 "remain available for 12 months after the course ends."
@@ -7082,11 +7083,11 @@ msgstr ""
 "oefeningen en materialen blijven 12 maanden na afloop van de cursus "
 "beschikbaar."
 
-#: templates/faq.haml:68
+#: templates/faq.haml:67
 msgid "Can I access the course content after my course ends?"
 msgstr "Kan ik de cursusinhoud na afloop van de cursus openen?"
 
-#: templates/faq.haml:69
+#: templates/faq.haml:68
 msgid ""
 "McKinsey Academy past courses are available as archives for 12 months after "
 "the course ends. These courses can only be audited and some features, such "
@@ -7097,14 +7098,14 @@ msgstr ""
 "worden gecontroleerd en sommige functies, zoals de discussieforums, zijn "
 "mogelijk niet beschikbaar."
 
-#: templates/faq.haml:70
+#: templates/faq.haml:69
 msgid ""
 "What information is displayed in visualizations on the course home page?"
 msgstr ""
 "Welke informatie wordt weergegeven in visualisaties op de startpagina van de "
 "cursus?"
 
-#: templates/faq.haml:72
+#: templates/faq.haml:71
 msgid ""
 "<span>Proficiency:</span> Your proficiency is based on performance on all "
 "graded items in the course (including end of lesson assessments, group work, "
@@ -7115,7 +7116,7 @@ msgstr ""
 "(waaronder beoordelingen aan het einde van de les, groepswerk en de "
 "eindbeoordeling)"
 
-#: templates/faq.haml:73
+#: templates/faq.haml:72
 msgid ""
 "<span>Progress:</span> Your progress through course content is displayed as "
 "you move through all items in the course (including videos, exercises, "
@@ -7125,7 +7126,7 @@ msgstr ""
 "bij het doorlopen van alle items in de cursus (waaronder video’s, "
 "oefeningen, beoordelingen en leesopdrachten)"
 
-#: templates/faq.haml:74
+#: templates/faq.haml:73
 msgid ""
 "<span>Engagement:</span> Your engagement increases through your social "
 "interactions with other participants in your cohort (through engagement on "
@@ -7135,23 +7136,23 @@ msgstr ""
 "interactie met andere deelnemers in uw cohort (via betrokkenheid op de "
 "discussieforums)"
 
-#: templates/faq.haml:75
+#: templates/faq.haml:74
 msgid "CERTIFICATES:"
 msgstr "CERTIFICATEN:"
 
-#: templates/faq.haml:76
+#: templates/faq.haml:75
 msgid "Will my certificate include an overall program grade?"
 msgstr "Bevat mijn certificaat een cijfer voor het gehele programma?"
 
-#: templates/faq.haml:77
+#: templates/faq.haml:76
 msgid "Your certificate will not include final grades."
 msgstr "Uw certificaat bevat geen eindcijfers."
 
-#: templates/faq.haml:78
+#: templates/faq.haml:77
 msgid "Can I get a paper copy of my certificate?"
 msgstr "Kan ik een papieren exemplaar van mijn certificaat krijgen?"
 
-#: templates/faq.haml:79
+#: templates/faq.haml:78
 msgid ""
 "McKinsey Academy certificates are digital files which you can print on "
 "standard size paper."
@@ -7159,11 +7160,11 @@ msgstr ""
 "McKinsey Academy-certificaten zijn digitale bestanden die u kunt afdrukken "
 "op papier van een standaardformaat."
 
-#: templates/faq.haml:80
+#: templates/faq.haml:79
 msgid "How are certificates determined?"
 msgstr "Op basis waarvan worden certificaten toegekend?"
 
-#: templates/faq.haml:81
+#: templates/faq.haml:80
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
@@ -7173,11 +7174,11 @@ msgstr ""
 "deelnemers een score behalen van 70%% of hoger voor de 5 kerncursussen van "
 "het programma."
 
-#: templates/faq.haml:82
+#: templates/faq.haml:81
 msgid "How are McKinsey Academy certificates delivered?"
 msgstr "Hoe worden McKinsey Academy-certificaten bezorgd?"
 
-#: templates/faq.haml:83
+#: templates/faq.haml:82
 msgid ""
 "McKinsey Academy certificates are delivered via email following successful "
 "completion of a program."
@@ -7185,15 +7186,15 @@ msgstr ""
 "McKinsey Academy-certificaten worden na een geslaagde afronding van een "
 "programma per e-mail bezorgd."
 
-#: templates/faq.haml:84
+#: templates/faq.haml:83
 msgid "TECHNICAL ISSUES:"
 msgstr "TECHNISCHE PROBLEMEN:"
 
-#: templates/faq.haml:85
+#: templates/faq.haml:84
 msgid "How can I get technical support?"
 msgstr "Hoe kan ik technische ondersteuning krijgen?"
 
-#: templates/faq.haml:86
+#: templates/faq.haml:85
 msgid ""
 "If you are having technical issues, please contact us here so we can resolve "
 "your problem. and we will get back to you by the next business day (likely "
@@ -7203,30 +7204,30 @@ msgstr ""
 "zodat we uw probleem kunnen oplossen. Wij nemen vervolgens de volgende "
 "werkdag (maar waarschijnlijk eerder) contact met u op."
 
-#: templates/faq.haml:87
+#: templates/faq.haml:86
 msgid "What if I did not receive my password reset email?"
 msgstr ""
 "Waarom heb ik geen e-mail ontvangen voor het opnieuw instellen van mijn "
 "wachtwoord?"
 
-#: templates/faq.haml:88
+#: templates/faq.haml:87
 msgid "If you did not receive an automated email it may be because:"
 msgstr ""
 "Als u geen geautomatiseerd e-mailbericht heeft ontvangen, wordt dat mogelijk "
 "veroorzaakt door het volgende:"
 
-#: templates/faq.haml:90
+#: templates/faq.haml:89
 msgid "There was a typo in your email address"
 msgstr "Een typfout in uw e-mailadres"
 
-#: templates/faq.haml:91
+#: templates/faq.haml:90
 msgid ""
 "Your spam filter may have caught the email; please check your spam folder"
 msgstr ""
 "Het e-mailbericht is mogelijk terechtgekomen in uw spamfilter; controleer uw "
 "map voor spam"
 
-#: templates/faq.haml:92
+#: templates/faq.haml:91
 msgid ""
 "You may be using an older browser; we recommend downloading the current "
 "version of Chrome or Firefox"
@@ -7234,7 +7235,7 @@ msgstr ""
 "U gebruikt mogelijk een oudere browser. Aangeraden wordt om de actuele "
 "versie van Chrome of Firefox te downloaden"
 
-#: templates/faq.haml:93
+#: templates/faq.haml:92
 msgid ""
 "JavaScript is disabled in your browser; please check your browser settings "
 "and confirm that JavaScript is enabled"
@@ -7242,7 +7243,7 @@ msgstr ""
 "JavaScript is uitgeschakeld in uw browser. Controleer uw browserinstellingen "
 "en controleer of JavaScript is ingeschakeld"
 
-#: templates/faq.haml:94
+#: templates/faq.haml:93
 msgid ""
 "You have not successfully registered an account with McKinsey Academy' "
 "please try registering again with the same email address (if an account "
@@ -7252,7 +7253,7 @@ msgstr ""
 "probeert u het dan opnieuw met hetzelfde e-mailadres (als het account al "
 "bestaat, wordt er een fout weergegeven over een dubbel e-mailadres)"
 
-#: templates/faq.haml:95
+#: templates/faq.haml:94
 msgid ""
 "What if I have problems with the display (e.g., there are tools missing from "
 "the course display, or I am unable to view video)?"
@@ -7260,7 +7261,7 @@ msgstr ""
 "Wat als ik problemen ondervind bij het weergeven (bijvoorbeeld hulpmiddelen "
 "die ontbreken in de cursusweergave of als ik geen video’s kan bekijken)?"
 
-#: templates/faq.haml:96
+#: templates/faq.haml:95
 msgid ""
 "Please check your browser and settings - JavaScript must be enabled. We "
 "recommend downloading and using the current version of either Chrome or "
@@ -7270,21 +7271,21 @@ msgstr ""
 "raden aan om de actuele versie van Chrome of Firefox te downloaden en "
 "gebruiken."
 
-#: templates/faq.haml:97
+#: templates/faq.haml:96
 msgid "How can I sign up for a McKinsey Academy course or program?"
 msgstr ""
 "Hoe kan ik me registreren voor een McKinsey Academy-cursus of -programma?"
 
-#: templates/faq.haml:98
+#: templates/faq.haml:97
 msgid "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
 msgstr ""
 "Neem <a href=\"mailto:info@mckinseyacademy.com\">contact met ons op.</a>"
 
-#: templates/faq.haml:99
+#: templates/faq.haml:98
 msgid "What if my question isn’t answered here?"
 msgstr "Wat als mijn vraag hier niet wordt beantwoord?"
 
-#: templates/faq.haml:100
+#: templates/faq.haml:99
 msgid ""
 "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a> We’ll do "
 "our best to help."
@@ -10944,6 +10945,27 @@ msgstr "Voornaam: {}"
 #: util/validators.py:90
 msgid "Last name: {}"
 msgstr "Achternaam: {}"
+
+#~ msgid "Username or password is incorrect"
+#~ msgstr "Gebruikersnaam of wachtwoord is onjuist"
+
+#~ msgid "This email is not associated with any identity provider"
+#~ msgstr "Dit e-mailadres is aan geen enkele identiteitsprovider gekoppeld"
+
+#~ msgid "Log in to my McKinsey Academy account & access my courses"
+#~ msgstr "Meld u aan bij Mijn McKinsey Academy-account en open Mijn cursussen"
+
+#~ msgid "Please log in"
+#~ msgstr "Meld u aan"
+
+#~ msgid "Single-Sign-On users,"
+#~ msgstr "SSO (Single-Sign-On)-gebruikers,"
+
+#~ msgid "click here"
+#~ msgstr "klik hier"
+
+#~ msgid "To login with a username,"
+#~ msgstr "Als u zich wilt aanmelden met een gebruikersnaam,"
 
 #, fuzzy
 #~ msgid "{activity}: {reason} - {email)"
