@@ -43,6 +43,26 @@
     .keyboard-help-button {
         display: none;
     }
+
+    .drag-container .square-option .show-item-detail-popup{
+        // Removing margin that is applying via apros
+        margin-bottom: 0;
+    }
+
+    .item-detail-popup{
+        // Mckinsey specific color
+        background-color: $mckinsey-royal-blue;
+    }
+
+    .item-detail-popup .fa{
+        // Overriding apros color and reducing the stroke of icon
+        color: #ffffff;
+        &.fa-times{
+            &:before{
+                content: '\2715';
+            }
+        }
+    }
 }
 
 /* Align the Reset button to the right on mobile (non-McKinsey version has it left on mobile, right on desktop) */
