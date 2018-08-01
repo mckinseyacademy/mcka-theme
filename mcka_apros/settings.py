@@ -156,6 +156,7 @@ LANGUAGES = (
     ('zh', u'中文(简体)'),
     ('es', u'Español'),
     ('nl', u'Dutch '),
+    ('pt', u'Português')
 )
 
 
