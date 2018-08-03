@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-26 06:34+0000\n"
+"POT-Creation-Date: 2018-08-02 12:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1329,62 +1329,62 @@ msgstr ""
 msgid "Password doesn't match our records. Try again."
 msgstr "密码不符合创建标准。"
 
-#: accounts/views.py:542 accounts/views.py:614
+#: accounts/views.py:543 accounts/views.py:615
 msgid "Some required information was missing. Please check the fields below."
 msgstr "缺少一些必填信息。请检查下面的字段。"
 
-#: accounts/views.py:562 accounts/views.py:626
+#: accounts/views.py:563 accounts/views.py:627
 msgid "Create my McKinsey Academy account"
 msgstr "创建我的麦肯锡学院账户"
 
-#: accounts/views.py:592
+#: accounts/views.py:593
 msgid "Invalid Activation Code"
 msgstr "激活码无效"
 
-#: accounts/views.py:664
+#: accounts/views.py:665
 msgid "No provider data found."
 msgstr "找不到提供程序数据。"
 
-#: accounts/views.py:666
+#: accounts/views.py:667
 msgid "Provider data does not seem valid."
 msgstr "提供程序数据似乎无效。"
 
-#: accounts/views.py:720
+#: accounts/views.py:721
 msgid "Access Key missing."
 msgstr "缺少访问密钥。"
 
-#: accounts/views.py:777
+#: accounts/views.py:778
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "无法注册用户：{exception_message}"
 
-#: accounts/views.py:779
+#: accounts/views.py:780
 #, fuzzy
 #| msgid ""
 #| "Some required information was missing. Please check the fields below."
 msgid "Some required information was missing."
 msgstr "缺少一些必填信息。请检查下面的字段。"
 
-#: accounts/views.py:781
+#: accounts/views.py:782
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
 msgstr "缺少身份验证 cookie。您的会话可能已超时。请重新开始。"
 
-#: accounts/views.py:830
+#: accounts/views.py:831
 msgid "Enter new password"
 msgstr "输入新密码"
 
-#: accounts/views.py:847
+#: accounts/views.py:848
 msgid "Password reset unsuccessful"
 msgstr "密码重置不成功"
 
-#: accounts/views.py:945 templates/accounts/activate.haml:16
+#: accounts/views.py:946 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45 templates/layout.haml:260
 msgid "Welcome to McKinsey Academy"
 msgstr "欢迎来到麦肯锡学院"
 
-#: accounts/views.py:946
+#: accounts/views.py:947
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1393,7 +1393,7 @@ msgstr ""
 "您的计划将在 {days} 天后开始。在此期间，请浏览该网站了解更多有关此体验的信"
 "息。"
 
-#: accounts/views.py:950
+#: accounts/views.py:951
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1402,11 +1402,11 @@ msgstr ""
 "您的课程将在 {days} 天后开始。在课程开始之前，您可以浏览本网站了解更多有关课"
 "程内容的信息。"
 
-#: accounts/views.py:1093
+#: accounts/views.py:1094
 msgid "Enter your full name"
 msgstr "输入您的全名"
 
-#: accounts/views.py:1095 accounts/views.py:1118 admin/views.py:1841
+#: accounts/views.py:1096 accounts/views.py:1119 admin/views.py:1841
 #: admin/views.py:1875 admin/views.py:4191
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
@@ -1419,23 +1419,23 @@ msgstr "输入您的全名"
 msgid "Save"
 msgstr "保存"
 
-#: accounts/views.py:1116
+#: accounts/views.py:1117
 msgid "Enter your title"
 msgstr "输入您的职位"
 
-#: accounts/views.py:1168 accounts/views.py:1198
+#: accounts/views.py:1169 accounts/views.py:1199
 msgid "Initial"
 msgstr "初始"
 
-#: accounts/views.py:1195
+#: accounts/views.py:1196
 msgid "Course Closed"
 msgstr "课程已结束"
 
-#: accounts/views.py:1204
+#: accounts/views.py:1205
 msgid "Registered"
 msgstr "已注册"
 
-#: accounts/views.py:1206
+#: accounts/views.py:1207
 msgid "Error"
 msgstr "错误"
 
@@ -2825,11 +2825,11 @@ msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr "感谢您对麦肯锡学院的关注。我们将及时告知您最新消息。"
 
-#: mcka_apros/settings.py:210 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:211 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr "麦肯锡管理计划"
 
-#: mcka_apros/settings.py:284
+#: mcka_apros/settings.py:304
 msgid "Congratulations! Your certificate has been generated"
 msgstr "恭喜！您的证书已生成"
 
@@ -5318,6 +5318,11 @@ msgstr "公告"
 #: templates/courses/course_overview.haml:50
 msgid "Course Overview"
 msgstr "课程概述"
+
+#: templates/courses/content_page/lesson_pager.haml:11
+#: templates/courses/content_page/lesson_pager.haml:29
+msgid "of"
+msgstr "的"
 
 #: templates/courses/content_page/lesson_pager.haml:18
 #: templates/courses/content_page/lesson_pager.haml:36

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-05-11 10:18+0000\n"
+"POT-Creation-Date: 2018-08-02 12:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: static/js/admin/client_sso.js:142
+#: static/js/admin/client_sso.js:182
 msgid "You need to enter name!"
 msgstr "Você deve inserir seu nome!"
 
-#: static/js/admin/client_sso.js:147
+#: static/js/admin/client_sso.js:187
 msgid "You need to enter course ID!"
 msgstr "Você deve inserir o ID do curso!"
 
@@ -108,7 +108,9 @@ msgstr "%(value)s%"
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
-msgstr "O arquivo .csv tem mais de %(limit)s linhas: %(lines)s , divida-o em mais arquivos!"
+msgstr ""
+"O arquivo .csv tem mais de %(limit)s linhas: %(lines)s , divida-o em mais "
+"arquivos!"
 
 #: static/js/common/mass_participants_enroll.js:180
 #: static/js/common/mass_participants_upload.js:127
@@ -170,13 +172,17 @@ msgstr "Grupo não criado"
 
 #: static/js/course_drag_drop.js:234
 msgid "All students added to private group have to be members of same company."
-msgstr "Todos os alunos adicionados ao grupo privado devem ser membros da mesma empresa."
+msgstr ""
+"Todos os alunos adicionados ao grupo privado devem ser membros da mesma "
+"empresa."
 
 #: static/js/course_drag_drop.js:242
 msgid ""
 "Are you sure you want to remove this group? Doing so will remove submissions "
 "and feedback associated with the group."
-msgstr "Tem certeza que deseja remover este grupo? Ao fazer isso, você removerá os envios e comentários associados a ele."
+msgstr ""
+"Tem certeza que deseja remover este grupo? Ao fazer isso, você removerá os "
+"envios e comentários associados a ele."
 
 #: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
 msgid "Your Progress: %(value)s%"
@@ -214,7 +220,9 @@ msgstr "Nenhum arquivo selecionado"
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
-msgstr "Erro no upload do arquivo. Tente novamente e certifique-se de usar um formato de arquivo aceito."
+msgstr ""
+"Erro no upload do arquivo. Tente novamente e certifique-se de usar um "
+"formato de arquivo aceito."
 
 #: static/js/image_editor.js:52
 msgid "Please select file for upload."
@@ -421,7 +429,8 @@ msgstr "Não foi possível criar um novo tag!"
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
-msgstr "Você não tem permissão para criar um novo tag, selecione um tag na lista!"
+msgstr ""
+"Você não tem permissão para criar um novo tag, selecione um tag na lista!"
 
 #: static/js/views/admin/course_details.js:278
 msgid "Couldn't delete tag!"
@@ -434,13 +443,13 @@ msgstr[0] "%(count)s curso  recebeu tag com %(tagDetails)s"
 msgstr[1] "%(count)s cursos receberam tag com %(tagDetails)s"
 
 #: static/js/views/admin/course_details.js:373
-
 msgid "Progress: %(progress)s %"
 msgstr "Progresso: %(progress)s %"
 
 #: static/js/views/admin/course_details.js:409
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
-msgstr "Selecionados: %(selected)s, Sucesso: %(successful)s, Falha): %(failed)s"
+msgstr ""
+"Selecionados: %(selected)s, Sucesso: %(successful)s, Falha): %(failed)s"
 
 #: static/js/views/admin/course_details.js:460
 msgid "This tag name cannot have more than 30 characters!"
@@ -470,15 +479,18 @@ msgstr "Selecionados: %(selectedRows)s, Sucesso: 0, Falha: 0"
 
 #: static/js/views/admin/course_details_bulk_actions.js:120
 msgid "Unenroll all selected participants from this course?"
-msgstr "Cancelar a inscrição neste curso de todos os participantes selecionados?"
+msgstr ""
+"Cancelar a inscrição neste curso de todos os participantes selecionados?"
 
 #: static/js/views/admin/course_details_bulk_actions.js:133
 #: static/js/views/admin/course_details_bulk_actions.js:198
 #: static/js/views/admin/course_details_bulk_actions.js:299
-#: static/js/views/admin/course_details_bulk_actions.js:625
+#: static/js/views/admin/course_details_bulk_actions.js:710
 msgid ""
 "You need to select at least one participant to be able to apply bulk actions."
-msgstr "Você deve selecionar, no mínimo, um participante para poder aplicar ações múltiplas."
+msgstr ""
+"Você deve selecionar, no mínimo, um participante para poder aplicar ações "
+"múltiplas."
 
 #: static/js/views/admin/course_details_bulk_actions.js:137
 #: static/js/views/admin/participant_details_active_courses_view.js:131
@@ -534,9 +546,13 @@ msgstr "Selecione Curso"
 
 #: static/js/views/admin/course_details_bulk_actions.js:268
 msgid "%(selectedRows)s Participants will be enroll in course selected below."
-msgid_plural "%(selectedRows)s Participant will be enroll in course selected below."
-msgstr[0] "Os participantes das %(selectedRows)s serão inscritos no curso selecionado abaixo."
-msgstr[1] "O participante %(selectedRows)s será inscrito no curso selecionado abaixo."
+msgid_plural ""
+"%(selectedRows)s Participant will be enroll in course selected below."
+msgstr[0] ""
+"Os participantes das %(selectedRows)s serão inscritos no curso selecionado "
+"abaixo."
+msgstr[1] ""
+"O participante %(selectedRows)s será inscrito no curso selecionado abaixo."
 
 #: static/js/views/admin/course_details_bulk_actions.js:303
 msgid "Enroll Participants"
@@ -549,109 +565,131 @@ msgstr "Inscrever participantes"
 msgid "You need to select course!"
 msgstr "Você deve selecionar o curso!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:412
+#: static/js/views/admin/course_details_bulk_actions.js:426
 msgid "Download"
 msgstr "Fazer o download"
 
-#: static/js/views/admin/course_details_bulk_actions.js:412
+#: static/js/views/admin/course_details_bulk_actions.js:426
 msgid "Progress : 0%"
 msgstr "Progresso : 0%"
 
-#: static/js/views/admin/course_details_bulk_actions.js:413
+#: static/js/views/admin/course_details_bulk_actions.js:427
 msgid "Download CSV File"
 msgstr "Baixar arquivo CSV"
 
-#: static/js/views/admin/course_details_bulk_actions.js:452
+#: static/js/views/admin/course_details_bulk_actions.js:463
+msgid ""
+"Include breakdown of progress for each lesson (Note: the export will take "
+"more time)"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:469
+msgid "We'll e-mail you when your report is ready to download."
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:472
+msgid "Exporting Stats for All Users"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:473
+msgid "Export Report"
+msgstr ""
+
+#: static/js/views/admin/course_details_bulk_actions.js:512
+#, fuzzy
+#| msgid "Task failed to execute. Please retry later."
+msgid "Error initiating the report generation. Please retry later."
+msgstr "A tarefa não foi executada. Tente mais tarde."
+
+#: static/js/views/admin/course_details_bulk_actions.js:541
 msgid "Download Notifications CSV"
 msgstr "Fazer o Download de Notificações em CSV"
 
-#: static/js/views/admin/course_details_bulk_actions.js:486
-msgid "Download Participants"
-msgstr "Fazer o Download de Participantes"
-
-#: static/js/views/admin/course_details_bulk_actions.js:541
+#: static/js/views/admin/course_details_bulk_actions.js:626
 msgid "Group Work: %(label)s"
 msgstr "Grupo de Trabalho: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:569
+#: static/js/views/admin/course_details_bulk_actions.js:654
 msgid "Assessment: %(label)s"
 msgstr "Avaliação: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:595
+#: static/js/views/admin/course_details_bulk_actions.js:680
 msgid "Task failed to execute. Please retry later."
 msgstr "A tarefa não foi executada. Tente mais tarde."
 
-#: static/js/views/admin/course_details_bulk_actions.js:612
+#: static/js/views/admin/course_details_bulk_actions.js:697
 msgid "Successfully Enrolled in 1 Course"
 msgstr "Sucesso na inscrição em 1 curso"
 
-#: static/js/views/admin/course_details_bulk_actions.js:614
+#: static/js/views/admin/course_details_bulk_actions.js:699
 msgid "What would you like to do now?"
 msgstr "O que você gostaria de fazer agora?"
 
-#: static/js/views/admin/course_details_bulk_actions.js:615
+#: static/js/views/admin/course_details_bulk_actions.js:700
 msgid "Go to %(course_id)s Course"
 msgstr "Ir para Curso %(course_id)s "
 
-#: static/js/views/admin/course_details_bulk_actions.js:617
+#: static/js/views/admin/course_details_bulk_actions.js:702
 msgid "Send Course Intro Email"
 msgstr "Enviar E-mail de Introdução ao Curso"
 
-#: static/js/views/admin/course_details_bulk_actions.js:619
+#: static/js/views/admin/course_details_bulk_actions.js:704
 msgid "Enroll this list in another course"
 msgstr "Inscrever esta lista em outro curso"
 
-#: static/js/views/admin/course_details_bulk_actions.js:631
+#: static/js/views/admin/course_details_bulk_actions.js:716
 msgid "I'm Done"
 msgstr "Concluído"
 
-#: static/js/views/admin/course_details_bulk_actions.js:651
+#: static/js/views/admin/course_details_bulk_actions.js:736
 msgid "Successfully deleted template!"
 msgstr "Template excluído com sucesso!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:658
+#: static/js/views/admin/course_details_bulk_actions.js:743
 msgid "Successfully added new template!"
 msgstr "Novo template adicionado com sucesso!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:671
+#: static/js/views/admin/course_details_bulk_actions.js:756
 msgid "Successfully updated template!"
 msgstr "Template atualizado com sucesso!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:676
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Email Preview Success!"
 msgstr "Pré-visualização de e-mail bem-sucedida!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:676
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Successfully sent preview email!"
 msgstr "E-mail de visualização enviado com sucesso!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:679
+#: static/js/views/admin/course_details_bulk_actions.js:764
 msgid "Email Success!"
 msgstr "E-mail bem-sucedido!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:679
+#: static/js/views/admin/course_details_bulk_actions.js:764
 msgid "Successfully sent email!"
 msgstr "E-mail enviado com sucesso!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:721
+#: static/js/views/admin/course_details_bulk_actions.js:806
 msgid "Preview Email!"
 msgstr "Pré-visualizar e-mail!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:721
+#: static/js/views/admin/course_details_bulk_actions.js:806
 msgid "Please enter preview email!"
 msgstr "Insira pré-visualização do e-mail!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:741
+#: static/js/views/admin/course_details_bulk_actions.js:826
 msgid "Please enter new template name!"
 msgstr "Insira novo nome do template!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:756
+#: static/js/views/admin/course_details_bulk_actions.js:841
 msgid "Please enter updated template name or leave the old one!"
 msgstr "Insira nome do template atualizado ou mantenha o nome antigo!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:769
+#: static/js/views/admin/course_details_bulk_actions.js:854
 msgid "You are about to delete email template. Are you sure?"
-msgstr "Você está prestes a excluir o modelo de template. Tem certeza que deseja prosseguir?"
+msgstr ""
+"Você está prestes a excluir o modelo de template. Tem certeza que deseja "
+"prosseguir?"
 
 #: static/js/views/admin/course_details_engagement.js:11
 msgid "# of people"
@@ -759,7 +797,9 @@ msgstr "Empresa do Administrador"
 
 #: static/js/views/admin/participant_details_edit_info.js:525
 msgid "Try selecting your company from the type-ahead results."
-msgstr "Tente selecionar a sua empresa a partir dos resultados de digitação antecipada."
+msgstr ""
+"Tente selecionar a sua empresa a partir dos resultados de digitação "
+"antecipada."
 
 #: static/js/views/admin/participant_details_edit_info.js:531
 #: static/js/views/admin/participantsinfo.js:109
@@ -787,6 +827,9 @@ msgstr "Lição"
 msgid "Module"
 msgstr "Módulo"
 
+#~ msgid "Download Participants"
+#~ msgstr "Fazer o Download de Participantes"
+
 #~ msgid "'"
 #~ msgstr "'"
 
@@ -803,4 +846,3 @@ msgstr "Módulo"
 
 #~ msgid "The discussion you are trying to access has been deleted"
 #~ msgstr "لقد تم حذف المناقشة التي تحاول الوصول إليها"
-

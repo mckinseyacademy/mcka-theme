@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-31 11:51+0000\n"
+"POT-Creation-Date: 2018-08-02 12:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1775,6 +1775,8 @@ msgid "Participant Performance"
 msgstr "Desempenho do Participante"
 
 #: admin/controller.py:2567
+#, fuzzy, python-format
+#| msgid "% completion"
 msgid "% completion"
 msgstr "% de conclusão"
 
@@ -2867,11 +2869,11 @@ msgid ""
 msgstr ""
 "Obrigado por seu interesse no McKinsey Academy. Nós o manteremos informado."
 
-#: mcka_apros/settings.py:210 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:211 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr "Programa de Gestão da McKinsey"
 
-#: mcka_apros/settings.py:303
+#: mcka_apros/settings.py:304
 msgid "Congratulations! Your certificate has been generated"
 msgstr "Parabéns! Seu certificado foi gerado"
 
@@ -5447,6 +5449,11 @@ msgstr "Anúncios"
 #: templates/courses/course_overview.haml:50
 msgid "Course Overview"
 msgstr "Visão Geral do Curso"
+
+#: templates/courses/content_page/lesson_pager.haml:11
+#: templates/courses/content_page/lesson_pager.haml:29
+msgid "of"
+msgstr "do"
 
 #: templates/courses/content_page/lesson_pager.haml:18
 #: templates/courses/content_page/lesson_pager.haml:36

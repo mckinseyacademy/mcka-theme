@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-26 06:34+0000\n"
+"POT-Creation-Date: 2018-08-02 12:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1348,43 +1348,43 @@ msgstr ""
 msgid "Password doesn't match our records. Try again."
 msgstr "Wachtwoord voldoet niet aan aanmaakcriteria."
 
-#: accounts/views.py:542 accounts/views.py:614
+#: accounts/views.py:543 accounts/views.py:615
 msgid "Some required information was missing. Please check the fields below."
 msgstr "Enkele vereiste informatie ontbreekt. Controleer onderstaande velden."
 
-#: accounts/views.py:562 accounts/views.py:626
+#: accounts/views.py:563 accounts/views.py:627
 msgid "Create my McKinsey Academy account"
 msgstr "Maak Mijn McKinsey Academy-account aan"
 
-#: accounts/views.py:592
+#: accounts/views.py:593
 msgid "Invalid Activation Code"
 msgstr "Ongeldige activeringscode"
 
-#: accounts/views.py:664
+#: accounts/views.py:665
 msgid "No provider data found."
 msgstr "Geen providergegevens gevonden."
 
-#: accounts/views.py:666
+#: accounts/views.py:667
 msgid "Provider data does not seem valid."
 msgstr "Providergegevens lijken ongeldig."
 
-#: accounts/views.py:720
+#: accounts/views.py:721
 msgid "Access Key missing."
 msgstr "Toegangssleutel ontbreekt."
 
-#: accounts/views.py:777
+#: accounts/views.py:778
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "Registreren van gebruiker mislukt: {exception_message}"
 
-#: accounts/views.py:779
+#: accounts/views.py:780
 #, fuzzy
 #| msgid ""
 #| "Some required information was missing. Please check the fields below."
 msgid "Some required information was missing."
 msgstr "Enkele vereiste informatie ontbreekt. Controleer onderstaande velden."
 
-#: accounts/views.py:781
+#: accounts/views.py:782
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1392,20 +1392,20 @@ msgstr ""
 "Verificatie-cookie ontbreekt. Er kan een time-out van uw sessie zijn "
 "opgetreden. Begin opnieuw."
 
-#: accounts/views.py:830
+#: accounts/views.py:831
 msgid "Enter new password"
 msgstr "Voer nieuw wachtwoord in"
 
-#: accounts/views.py:847
+#: accounts/views.py:848
 msgid "Password reset unsuccessful"
 msgstr "Wachtwoord opnieuw instellen mislukt"
 
-#: accounts/views.py:945 templates/accounts/activate.haml:16
+#: accounts/views.py:946 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45 templates/layout.haml:260
 msgid "Welcome to McKinsey Academy"
 msgstr "Welkom bij McKinsey Academy"
 
-#: accounts/views.py:946
+#: accounts/views.py:947
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1414,7 +1414,7 @@ msgstr ""
 "Uw programma start over {days} dagen. Verken in de tussentijd de site voor "
 "meer informatie hierover."
 
-#: accounts/views.py:950
+#: accounts/views.py:951
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1423,11 +1423,11 @@ msgstr ""
 "Uw cursus begint over {days} dagen. Voordat de cursus begint, kunt u deze "
 "site verkennen voor meer informatie over wat u kunt verwachten."
 
-#: accounts/views.py:1093
+#: accounts/views.py:1094
 msgid "Enter your full name"
 msgstr "Voer uw volledige naam in"
 
-#: accounts/views.py:1095 accounts/views.py:1118 admin/views.py:1841
+#: accounts/views.py:1096 accounts/views.py:1119 admin/views.py:1841
 #: admin/views.py:1875 admin/views.py:4191
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
@@ -1440,23 +1440,23 @@ msgstr "Voer uw volledige naam in"
 msgid "Save"
 msgstr "Opslaan"
 
-#: accounts/views.py:1116
+#: accounts/views.py:1117
 msgid "Enter your title"
 msgstr "Voer uw functietitel in"
 
-#: accounts/views.py:1168 accounts/views.py:1198
+#: accounts/views.py:1169 accounts/views.py:1199
 msgid "Initial"
 msgstr "Voorletter"
 
-#: accounts/views.py:1195
+#: accounts/views.py:1196
 msgid "Course Closed"
 msgstr "Cursus gesloten"
 
-#: accounts/views.py:1204
+#: accounts/views.py:1205
 msgid "Registered"
 msgstr "Geregistreerd"
 
-#: accounts/views.py:1206
+#: accounts/views.py:1207
 msgid "Error"
 msgstr "Fout"
 
@@ -2869,11 +2869,11 @@ msgstr ""
 "Hartelijk dank voor uw belangstelling voor McKinsey Academy. We houden u op "
 "de hoogte."
 
-#: mcka_apros/settings.py:210 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:211 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr "McKinsey Management-programma"
 
-#: mcka_apros/settings.py:284
+#: mcka_apros/settings.py:304
 msgid "Congratulations! Your certificate has been generated"
 msgstr "Gefeliciteerd! Uw certificaat is gegenereerd"
 
@@ -5454,6 +5454,11 @@ msgstr "Mededelingen"
 #: templates/courses/course_overview.haml:50
 msgid "Course Overview"
 msgstr "Cursusoverzicht"
+
+#: templates/courses/content_page/lesson_pager.haml:11
+#: templates/courses/content_page/lesson_pager.haml:29
+msgid "of"
+msgstr "van"
 
 #: templates/courses/content_page/lesson_pager.haml:18
 #: templates/courses/content_page/lesson_pager.haml:36
