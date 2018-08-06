@@ -20,14 +20,37 @@
     .questionnaire {
         .choice-tips, .feedback {
             // Avoid a global reset to border-box found on Apros
-            box-sizing: content-box;  
+            box-sizing: content-box;
         }
+
+        .choice-label {
+            // Fill the full page width for MRC/MCQ choices
+            width: 100%
+        }
+
     }
+
+    .checkmark-incorrect::before {
+        content: "\f12a";
+    }
+
+    .choice .choice-tips-container.with-tips {
+        border: none;
+    }
+
     .title h3 {
         // Same as h2.main in Apros, amended to h3
         color: #66a5b5;
     }
+
     h4 {
         text-transform: uppercase;
     }
+
+    .questionnaire .choice-tips .close {
+        display: block;
+    }
+
+    @import 'pb-questionnaire';
+
 }
