@@ -307,7 +307,7 @@ def login_get_view(request):
     if account_activate_check:
         data["activation_message"] = _("Your account has already been activated. Please enter credentials to login")
 
-    data["user"] = None
+    data["login_id"] = request.GET.get('login_id', '')
     data["form"] = form or LoginForm()
     data["login_mode"] = login_mode
     data["error"] = error

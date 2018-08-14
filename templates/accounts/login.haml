@@ -34,7 +34,7 @@
                 {% trans "Username or Email:" %}
                 %span.required-field
                 .error.login-error{"aria-live": "polite", role: "alert"}
-              %input{type: "text", name: "login_id", id: "login_id"}
+              %input{type: "text", name: "login_id", id: "login_id", value: "#{login_id}"}
               .password-login
                 .username_display
                   .username

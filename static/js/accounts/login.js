@@ -64,8 +64,15 @@ $(function () {
 
     $('form input[type="text"], form input[type="password"]').on('keypress', resetErrors);
 
-    $('#login-form').submit(function (ev) {
-        ev.preventDefault();
+    $("#login-form").submit(handleLoginFormSubmit);
+
+    // Email has been prefilled, go directly to login-mode.
+    if ($("input[name=login_id]").val()) {
+        handleLoginFormSubmit();
+    }
+
+    function handleLoginFormSubmit(ev) {
+        ev && ev.preventDefault();
         resetErrors();
 
         let passwordLogin = $(".login-page").hasClass("login-with-password");
@@ -131,7 +138,7 @@ $(function () {
                 }
             });
         }
-    });
+    }
 
     $('a[data-reveal-id="reset-password"]').click(function() {
         ga('send', 'event', 'Login', 'forgot_password', {

@@ -7,7 +7,6 @@ import requests
 from django.conf import settings
 from django.http import HttpResponse, SimpleCookie
 from django.test import RequestFactory, TestCase
-from django.test.utils import override_settings
 from django.utils import translation
 from mock import Mock, patch
 
@@ -566,12 +565,27 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     @patch('accounts.views.auth.authenticate')
     @ddt.data('test', 'test@email.com')
     def test_login_validate_invalid_login_id(self, login_id, mock_authenticate, mock_get_username,
-                                               mock_get_sso_provider):
+                                             mock_get_sso_provider):
         mock_get_sso_provider.return_value = None
         mock_authenticate.return_value = None
         mock_get_username.return_value = None
         response = self.client.post('/accounts/login/', {'login_id': login_id, 'validate_login_id': True})
         self.assertIn("Username/email is not recognised. Try again.", response.content)
+
+    @patch('accounts.views.get_sso_provider')
+    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.auth.authenticate')
+    @ddt.data('atestuser', 'atestuser@email.com')
+    def test_login_prefill_login_id(self, login_id, mock_authenticate, mock_get_username,
+                                    mock_get_sso_provider):
+        mock_get_sso_provider.return_value = None
+        mock_authenticate.return_value = None
+        mock_get_username.return_value = None
+        response = self.client.get('/accounts/login/', {'login_id': login_id})
+        self.assertInHTML(
+            "<input id='login_id' type='text' name='login_id' value='{login_id}' />".format(login_id=login_id),
+            response.content,
+        )
 
     @patch('accounts.views.get_sso_provider')
     @patch('accounts.views.get_username_for_login_id')
