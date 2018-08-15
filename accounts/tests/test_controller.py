@@ -466,11 +466,11 @@ class SelfRegistrationTest(TestCase, ApplyPatchMixin):
         _process_course_run_closed(self.new_user, self.course_run)
         self.course_run.template_text = 'Dear {},\nclosed\nPlease reach out to your McKinsey contact or' \
                            ' info@mckinseyacademy.com if you have any further questions.\n\n  ' \
-                           'Best,\n  \n  Digital Academy\n\n\n'.format(self.new_user.first_name)
+                           'Best,\n  \n  McKinsey Academy\n\n\n'.format(self.new_user.first_name)
         self.assertEquals(mail.outbox[0].body, self.course_run.template_text)
         self.assertEquals(mail.outbox[0].to[0], self.new_user.email)
         self.assertEquals(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
-        self.assertEquals(mail.outbox[0].subject, 'Your request to access Digital Academy')
+        self.assertEquals(mail.outbox[0].subject, 'Your request to access McKinsey Academy')
 
 
 class TestActivationError(TestCase):

@@ -304,7 +304,7 @@ def process_registration_request(request, user, course_run, existing_user_object
 
 
 class SelfRegistration(object):
-    subject = "Welcome to Digital Academy"
+    subject = "Welcome to McKinsey Academy"
 
     @staticmethod
     def generate_activation_link(request, course_run):
@@ -414,7 +414,7 @@ class NewSelfRegistration(SelfRegistration):
 def _process_course_run_closed(registration_request, course_run):
 
     email_template_html = 'registration/public_registration_course_closed.haml'
-    subject = "Your request to access Digital Academy"
+    subject = "Your request to access McKinsey Academy"
     template_text = course_run.email_template_closed
     link = None
 
