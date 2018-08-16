@@ -181,10 +181,10 @@
 
     %script
       $(document).ready(function() {
-        // Disable Log in button on mobile
+        /* Disable Log in button on mobile */
         $(".with-program .login-btn").attr("href", "javascript:void(0)");
 
-        // if in an iframe, set referrer url into a cookie
+        /* if in an iframe, set referrer url into a cookie */
         if(parent !== window){
           $.cookie('referrer_url', document.referrer);
         }
