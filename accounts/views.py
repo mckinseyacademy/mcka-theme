@@ -257,6 +257,22 @@ def _build_mobile_redirect_response(request, data):
     return render(request, 'accounts/oauth_mobile_redirect.haml', {'redirect_to': redirect_url})
 
 
+def fill_email_and_redirect(request, redirect_url):
+    '''
+    Append the email of currently-logged-in user to the redirect_url and initiate redirect.
+    '''
+    url_parts = list(urlparse.urlparse(redirect_url))
+    # The query string is the 4th element in the tuple.
+    query_params = urlparse.parse_qs(url_parts[4])
+    # Add in existing query_parameters
+    query_params.update(request.GET)
+    if not request.user.is_anonymous():
+        query_params.update({'email': request.user.email})
+    url_parts[4] = urlencode(query_params, doseq=True)
+    redirect_url_with_email = urlparse.urlunparse(url_parts)
+
+    return HttpResponseRedirect(redirect_url_with_email)
+
 def login(request):
     ''' handles requests for login form and their submission '''
     request.session['ddt'] = False  # Django Debug Tool session key init.

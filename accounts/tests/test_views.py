@@ -1,10 +1,13 @@
 import urllib2
 import uuid
+from urllib import urlencode
 
 import ddt
 import mock
 import requests
 from django.conf import settings
+from django.contrib.auth.models import AnonymousUser
+from django.core.urlresolvers import reverse
 from django.http import HttpResponse, SimpleCookie
 from django.test import RequestFactory, TestCase
 from django.utils import translation
@@ -15,7 +18,8 @@ from accounts.models import RemoteUser
 from accounts.tests.utils import ApplyPatchMixin, make_user
 from accounts.views import (MISSING_ACCESS_KEY_ERROR, MOBILE_URL_SCHEME_COOKIE, _build_mobile_redirect_response,
                             _cleanup_username as cleanup_username, access_key, finalize_sso_mobile, sso_error,
-                            sso_finalize, sso_launch, switch_language_based_on_preference, get_username_for_login_id)
+                            sso_finalize, sso_launch, switch_language_based_on_preference, get_username_for_login_id,
+                            fill_email_and_redirect)
 from admin.models import AccessKey, ClientCustomization
 from api_client.api_error import ApiError
 from util.i18n_helpers import set_language
@@ -644,3 +648,35 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_authenticate.return_value = make_user()
         response = self.client.post('/accounts/login/', {'login_id': login_id, 'password': 'password'})
         self.assertIn(response_msg, response.content)
+
+
+@ddt.ddt
+class FillEmailRedirectViewTest(TestCase, ApplyPatchMixin):
+    """
+    Tests for the fill_email_and_redirect view.
+    """
+
+    def setUp(self):
+        self.factory = RequestFactory()
+
+    def test_fill_email_and_redirect_anonymous(self):
+        redirect_url = 'http://some.url/?existing=parameter'
+        request = self.factory.get(reverse('fill_email_and_redirect', kwargs={
+            'redirect_url': redirect_url,
+        }))
+        request.user = AnonymousUser()
+        response = fill_email_and_redirect(request, redirect_url)
+        self.assertEqual(response.url, 'http://some.url/?existing=parameter')
+
+    def test_fill_email_and_redirect_authenticated(self):
+        redirect_url = 'http://some.url/?existing=parameter'
+        request = self.factory.get(reverse('fill_email_and_redirect', kwargs={
+            'redirect_url': redirect_url,
+        }))
+        request.user = Mock()
+        request.user.is_anonymous = lambda: False
+        request.user.email = 'some@email.org'
+        response = fill_email_and_redirect(request, redirect_url)
+        self.assertTrue(response.url.startswith('http://some.url/'))
+        self.assertIn('existing=parameter', response.url)
+        self.assertIn(urlencode({'email': request.user.email}), response.url)

@@ -22,4 +22,10 @@ urlpatterns = patterns('accounts',
     url(r'^password/reset/$', views.reset, name='reset'),
     url(r'^user/(?P<user_id>[0-9]+)/change_profile_image', views.change_profile_image, name='change_profile_image'),
     url(r'^images/(?P<image_url>.*)$', views.load_profile_image, name='load_profile_image'),
+    url(
+        r'^fill_email_and_redirect/(?P<redirect_url>.*)$',
+        views.fill_email_and_redirect,
+        name='fill_email_and_redirect'
+    ),
+
 )
