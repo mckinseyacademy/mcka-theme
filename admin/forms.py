@@ -128,7 +128,7 @@ class BasePermissionForm(forms.Form):
         for course in courses:
             self.fields[course.id] = forms.MultipleChoiceField(
                 required=False,
-                label="{} ({})".format(course.name, course.display_id),
+                label=u"{} ({})".format(course.name, course.display_id),
                 widget=forms.CheckboxSelectMultiple,
                 choices=self.available_roles()
             )
