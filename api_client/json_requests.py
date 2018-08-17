@@ -19,12 +19,6 @@ def json_headers():
     # TODO: Add this in when API can deal with requests that have session but
     # not csrf_token
     headers = JSON_HEADERS.copy()
-    request = get_current_request()
-    if request:
-        token = request.META.get("HTTP_AUTHORIZATION")
-        if token:
-            # Token will be passed to authorize mobile request on apros
-            headers["Authorization"] = token
     return headers
 
     if request:
