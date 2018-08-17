@@ -37,10 +37,7 @@ def json_headers():
 def GET(url_path):
     ''' GET request wrapper to json web server '''
     url_request = url_access.Request(url=url_path, headers=json_headers())
-    try:
-        return url_access.urlopen(url=url_request, timeout=TIMEOUT)
-    except url_access.HTTPError as error:
-        return error
+    return url_access.urlopen(url=url_request, timeout=TIMEOUT)
 
 
 def POST(url_path, data):
