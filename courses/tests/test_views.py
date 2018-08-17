@@ -1,8 +1,11 @@
 import traceback
 import mock
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
+from lib.utils import DottableDict
+from courses.models import FeatureFlags
 from courses.user_courses import CURRENT_PROGRAM
-from courses.views import infer_page_navigation
+from courses.views import infer_page_navigation, get_feature_flag_mobile
+from accounts.tests.utils import ApplyPatchMixin
 
 
 class InferPageNavigationTests(TestCase):
@@ -52,3 +55,48 @@ class InferPageNavigationTests(TestCase):
             self.fail("infer_page_navigation raised exception {exception} unexpectedly\n{traceback}".format(
                 exception=exc, traceback=traceback.format_exc()
             ))
+
+
+class MobileFeatureFlagAccessTest(TestCase, ApplyPatchMixin):
+
+    def setUp(self):
+        self.response = {"id": 7}
+        self.status_code = 200
+        self.factory = RequestFactory()
+        get_user_by_bearer_token = 'api_client.user_api.get_user_by_bearer_token'
+        self.get_user_by_bearer_token = self.apply_patch(get_user_by_bearer_token)
+
+    def test_user_single_feature_flag_access(self):
+
+        course_id = '1st-course'
+        request = self.factory.get('/courses/1st-course/feature_flag', HTTP_AUTHORIZATION='Bearer token')
+        get_user_by_bearer_token = self.get_user_by_bearer_token
+        get_user_by_bearer_token.return_value = self.response, self.status_code
+        FeatureFlags.objects.create(
+            course_id=course_id,
+        )
+        course_participants = get_feature_flag_mobile(request, course_id)
+        self.assertEqual(course_participants.status_code, 200)
+
+    def test_user_all_courses_feature_flag_access(self):
+
+        request = self.factory.get('/courses/feature_flag', HTTP_AUTHORIZATION='Bearer token')
+        get_user_by_bearer_token = self.get_user_by_bearer_token
+        get_user_by_bearer_token.return_value = self.response, self.status_code
+        course = [
+            DottableDict({'id': '1st-course'}),
+            DottableDict({'id': '2nd-course'}),
+        ]
+        FeatureFlags.objects.create(
+            course_id="1st-course",
+        )
+        FeatureFlags.objects.create(
+            course_id="2nd-course",
+        )
+
+        get_user_courses = 'api_client.user_api.get_user_courses'
+        get_user_courses = self.apply_patch(get_user_courses)
+        get_user_courses.return_value = course
+        course_participants = get_feature_flag_mobile(request)
+        self.assertEqual(course_participants.status_code, 200)
+

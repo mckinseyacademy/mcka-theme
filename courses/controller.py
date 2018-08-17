@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
+from django.http import Http404
 
 from accounts.middleware.thread_local import (
     set_static_tab_context,
@@ -28,6 +29,7 @@ from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile,
 from lib.utils import PriorIdConvert
 from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
 from util.i18n_helpers import set_language
+from .models import FeatureFlags
 
 log = logging.getLogger(__name__)
 
@@ -948,3 +950,15 @@ def fix_resource_page_video_scripts(resources_page_html):
     resource_page_soup.insert(0, v4_script)
 
     return str(resource_page_soup)
+
+
+def add_course_feature_flag_in_list(feature_flag, course_id):
+    """
+    append feature flag of required course in list
+    """
+    try:
+        feature_flags = FeatureFlags.objects.get(course_id=course_id)
+        feature_flag.append({feature_flags.course_id: feature_flags.as_json()})
+    except:
+        raise Http404()
+

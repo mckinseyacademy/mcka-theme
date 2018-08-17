@@ -739,3 +739,17 @@ def get_user_courses_progress(user_id, qs_params=''):
     )
 
     return json.loads(response.read())
+
+
+@api_error_protect
+def get_user_by_bearer_token():
+    """
+    verify passed authorization bearer token and get specified user as a dict
+    """
+    response = GET(
+        '{}/{}/validate-token/'.format(
+            settings.API_SERVER_ADDRESS, USER_API
+        )
+    )
+    return json.loads(response.read()), response.code
+

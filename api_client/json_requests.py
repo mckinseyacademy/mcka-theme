@@ -18,10 +18,15 @@ TIMEOUT = 40
 def json_headers():
     # TODO: Add this in when API can deal with requests that have session but
     # not csrf_token
-    return JSON_HEADERS
-
     headers = JSON_HEADERS.copy()
     request = get_current_request()
+    if request:
+        token = request.META.get("HTTP_AUTHORIZATION")
+        if token:
+            # Token will be passed to authorize mobile request on apros
+            headers["Authorization"] = token
+    return headers
+
     if request:
         remote_session_key = request.session.get('remote_session_key')
         if remote_session_key:
@@ -32,7 +37,10 @@ def json_headers():
 def GET(url_path):
     ''' GET request wrapper to json web server '''
     url_request = url_access.Request(url=url_path, headers=json_headers())
-    return url_access.urlopen(url=url_request, timeout=TIMEOUT)
+    try:
+        return url_access.urlopen(url=url_request, timeout=TIMEOUT)
+    except url_access.HTTPError as error:
+        return error
 
 
 def POST(url_path, data):

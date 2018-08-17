@@ -47,6 +47,7 @@ from .controller import (
     get_user_social_metrics,
     get_social_leaders,
     fix_resource_page_video_scripts,
+    add_course_feature_flag_in_list,
 )
 from .user_courses import (
     check_user_course_access, standard_data, load_course_progress,
@@ -1420,3 +1421,28 @@ def get_user_complete_gradebook_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
+
+
+def get_feature_flag_mobile(request, course_id=None):
+    ''' This will return the feature flags for one course
+     or all user courses depends on demand
+    '''
+    feature_flag = []
+
+    response, status_code = user_api.get_user_by_bearer_token()
+    if not status_code == 200:
+        return HttpResponse(status=401)
+    user_id = response['id']
+
+    if course_id:
+        add_course_feature_flag_in_list(feature_flag, course_id)
+    else:
+        courses = user_api.get_user_courses(user_id)
+        for course in courses:
+            add_course_feature_flag_in_list(feature_flag, course.id)
+
+    return HttpResponse(
+        json.dumps(feature_flag),
+        content_type='application/json'
+    )
+
