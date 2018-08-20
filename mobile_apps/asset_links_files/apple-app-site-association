@@ -6,126 +6,144 @@
       "details": [{
             "appID": "FN75PC35CY.com.mckinsey.Pique.QA",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "FN75PC35CY.com.mckinsey.MCKA.QA",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "FN75PC35CY.com.mckinsey.MCKA",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "FN75PC35CY.com.mckinsey.MCKA.Stage",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "FN75PC35CY.com.mckinsey.Pique",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "FN75PC35CY.com.mckinsey.Pique.Stage",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "2FLRSSAJ72.com.mckinsey.internal.rts-academy-dev",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "2FLRSSAJ72.com.mckinsey.internal.rts-academy",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "FN75PC35CY.com.mckacademy.rts-academy",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "Q33Y56JV3W.com.mckinsey.rts-academy-learning",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "2FLRSSAJ72.com.mckinsey.internal.mck-academy-dev",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "2FLRSSAJ72.com.mckinsey.internal.mck-academy",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "FN75PC35CY.com.mckacademy.mck-academy",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          },
          {
             "appID": "Q33Y56JV3W.com.mckinsey.mck-academy-learning",
             "paths": [
-               "NOT /accounts/activate/*",
-               "NOT /accounts/password/reset/*",
-               "NOT /accounts/sso_launch/*",
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
+               "*"
+            ]
+         },
+         {
+            "appID": "FN75PC35CY.com.mckinsey.HLA-QA",
+            "paths": [
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
+               "*"
+            ]
+         },
+         {
+            "appID": "FN75PC35CY.com.mckinsey.HLA-Stage",
+            "paths": [
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
                "*"
             ]
          }
