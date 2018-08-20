@@ -3,8 +3,6 @@ from django.conf.urls import patterns, url
 from . import views
 
 urlpatterns = patterns('',
-    url(r'^feature_flag$', views.get_feature_flag_mobile, name='get_feature_flag_mobile'),
-    url(r'^(?P<course_id>.*)/feature_flag$', views.get_feature_flag_mobile, name='get_feature_flag_mobile'),
     url(r'^(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)$', views.navigate_to_lesson_module, name='navigate_to_lesson_module'),
     url(r'^(?P<course_id>.*)/overview$', views.course_overview, name='course_overview'),
     url(r'^(?P<course_id>.*)/announcements$', views.course_news, name='course_news'),

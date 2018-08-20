@@ -2,14 +2,17 @@
 Test cases for public_api app
 """
 import json
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.test.client import Client
 from django.core import mail
 
 from django.core.urlresolvers import reverse
 
+from lib.utils import DottableDict
 from api_client.user_models import UserResponse
 from accounts.tests.utils import ApplyPatchMixin
+from courses.models import FeatureFlags
+from public_api.views import get_feature_flag_mobile
 
 
 class UserPasswordResetViewTest(TestCase, ApplyPatchMixin):
@@ -91,3 +94,48 @@ class UserPasswordResetViewTest(TestCase, ApplyPatchMixin):
         )
         self.assertEqual(len(mail.outbox), 0)
         self.assertEqual(response.status_code, 422)
+
+
+class MobileFeatureFlagAccessTest(TestCase, ApplyPatchMixin):
+
+    def setUp(self):
+        self.response = {"id": 7}
+        self.status_code = 200
+        self.factory = RequestFactory()
+        get_user_by_bearer_token = 'api_client.user_api.get_user_by_bearer_token'
+        self.get_user_by_bearer_token = self.apply_patch(get_user_by_bearer_token)
+
+    def test_user_single_feature_flag_access(self):
+
+        course_id = '1st-course'
+        request = self.factory.get('/courses/1st-course/feature_flag', HTTP_AUTHORIZATION='Bearer token')
+        get_user_by_bearer_token = self.get_user_by_bearer_token
+        get_user_by_bearer_token.return_value = self.response, self.status_code
+        FeatureFlags.objects.create(
+            course_id=course_id,
+        )
+        course_participants = get_feature_flag_mobile(request, course_id)
+        self.assertEqual(course_participants.status_code, 200)
+
+    def test_user_all_courses_feature_flag_access(self):
+
+        request = self.factory.get('/courses/feature_flag', HTTP_AUTHORIZATION='Bearer token')
+        get_user_by_bearer_token = self.get_user_by_bearer_token
+        get_user_by_bearer_token.return_value = self.response, self.status_code
+        course = [
+            DottableDict({'id': '1st-course'}),
+            DottableDict({'id': '2nd-course'}),
+        ]
+        FeatureFlags.objects.create(
+            course_id="1st-course",
+        )
+        FeatureFlags.objects.create(
+            course_id="2nd-course",
+        )
+
+        get_user_courses = 'api_client.user_api.get_user_courses'
+        get_user_courses = self.apply_patch(get_user_courses)
+        get_user_courses.return_value = course
+        course_participants = get_feature_flag_mobile(request)
+        self.assertEqual(course_participants.status_code, 200)
+

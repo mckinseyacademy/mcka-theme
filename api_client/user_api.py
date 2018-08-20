@@ -746,10 +746,13 @@ def get_user_by_bearer_token():
     """
     verify passed authorization bearer token and get specified user as a dict
     """
-    response = GET(
-        '{}/{}/validate-token/'.format(
-            settings.API_SERVER_ADDRESS, USER_API
+    try:
+        response = GET(
+            '{}/{}/validate-token/'.format(
+                settings.API_SERVER_ADDRESS, USER_API
+            )
         )
-    )
-    return json.loads(response.read()), response.code
+        return json.loads(response.read()), response.code
+    except Exception as error:
+        return None, error.code
 

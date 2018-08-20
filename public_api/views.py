@@ -23,6 +23,7 @@ from courses.user_courses import standard_data
 from courses.controller import round_to_int, Proficiency, get_user_social_metrics, average_progress, load_static_tabs
 from admin.models import Client
 from .serializers import ResetPasswordSerializer
+from public_api.controller import add_course_feature_flag_in_list
 
 
 @require_POST
@@ -155,3 +156,28 @@ def reset_password(request):
         return Response({'detail': _('Password reset email sent')}, status=status.HTTP_200_OK)
     else:
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def get_feature_flag_mobile(request, course_id=None):
+    ''' This will return the feature flags for one course
+     or all user courses depends on demand
+    '''
+    feature_flag = []
+
+    response, status_code = user_api.get_user_by_bearer_token()
+    if not status_code == status.HTTP_200_OK:
+        return HttpResponse(status=status_code)
+    user_id = response['id']
+
+    if course_id:
+        add_course_feature_flag_in_list(feature_flag, course_id)
+    else:
+        courses = user_api.get_user_courses(user_id)
+        for course in courses:
+            add_course_feature_flag_in_list(feature_flag, course.id)
+
+    return HttpResponse(
+        json.dumps(feature_flag),
+        content_type='application/json'
+    )
+
