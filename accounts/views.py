@@ -351,8 +351,15 @@ def login_post_view(request):
             try:
                 provider = get_sso_provider(form.cleaned_data['login_id'])
                 if provider:
-                    # If SSO is set up redirect use to login via SSO
-                    redirect_url = _build_sso_redirect_url(provider, reverse('login'))
+                    # If SSO is set up redirect to login via SSO
+                    next_url = reverse('login')
+                    redirect_url = request.GET.get('next')
+                    if redirect_url:
+                        # Chain the current redirect url to the next login redirect so
+                        # we redirect here after returning to the login view POST SSO
+                        # authentication
+                        next_url = '{}?{}'.format(next_url, urlencode({'next': redirect_url}))
+                    redirect_url = _build_sso_redirect_url(provider, next_url)
                     response = HttpResponseRedirect(redirect_url)
                     _append_login_mode_cookie(response, 'sso')
                     return response

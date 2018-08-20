@@ -1,6 +1,7 @@
 import urllib2
 import uuid
 from urllib import urlencode
+from urlparse import urlparse, parse_qs
 
 import ddt
 import mock
@@ -519,13 +520,13 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
 
     def test_login_redirects_for_ie(self):
         host = 'apros.mcka.local'
-        response = self.client.get('/accounts/login/',
+        response = self.client.get(reverse('login'),
                                    HTTP_HOST=host,
                                    HTTP_USER_AGENT='Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)')
         self.assertRedirects(response, 'http://{}/'.format(host))
 
     def test_login_account_activate_check(self):
-        response = self.client.get('/accounts/login/', {'account_activate_check': True})
+        response = self.client.get(reverse('login'), {'account_activate_check': True})
         self.assertIn(
             "Your account has already been activated. Please enter credentials to login",
             response.content)
@@ -537,7 +538,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         ('failed', 'Password Reset Unsuccessful'),
     )
     def test_login_account_reset(self, reset_code, reset_message):
-        response = self.client.get('/accounts/login/', {'reset': reset_code})
+        response = self.client.get(reverse('login'), {'reset': reset_code})
         self.assertIn(reset_message, response.content)
 
     @patch('django.contrib.auth.authenticate')
@@ -546,13 +547,13 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
         mock_authenticate.side_effect = ApiError(http_error, "get_session", None)
         self.client.cookies = SimpleCookie({'sessionid': 'test-session-id'})
-        response = self.client.get('/accounts/login/')
+        response = self.client.get(reverse('login'))
         self.assertIn(error_reason, response.content)
 
     @patch('django.contrib.auth.authenticate')
     def test_login_with_session_id_no_user(self, mock_authenticate):
         self.client.cookies = SimpleCookie({'sessionid': 'test-session-id'})
-        response = self.client.get('/accounts/login/')
+        response = self.client.get(reverse('login'))
         self.assertTemplateUsed(response, 'accounts/login.haml')
 
     @patch('django.contrib.auth.login')
@@ -561,7 +562,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     def test_login_with_session_id_no_user(self, mock_authenticate, mock_1, mock_2):
         mock_authenticate.return_value = make_user()
         self.client.cookies = SimpleCookie({'sessionid': 'test-session-id'})
-        response = self.client.get('/accounts/login/', {'next': '/'})
+        response = self.client.get(reverse('login'), {'next': '/'})
         self.assertRedirects(response, '/')
 
     @patch('accounts.views.get_sso_provider')
@@ -573,7 +574,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_get_sso_provider.return_value = None
         mock_authenticate.return_value = None
         mock_get_username.return_value = None
-        response = self.client.post('/accounts/login/', {'login_id': login_id, 'validate_login_id': True})
+        response = self.client.post(reverse('login'), {'login_id': login_id, 'validate_login_id': True})
         self.assertIn("Username/email is not recognised. Try again.", response.content)
 
     @patch('accounts.views.get_sso_provider')
@@ -585,7 +586,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_get_sso_provider.return_value = None
         mock_authenticate.return_value = None
         mock_get_username.return_value = None
-        response = self.client.get('/accounts/login/', {'login_id': login_id})
+        response = self.client.get(reverse('login'), {'login_id': login_id})
         self.assertInHTML(
             "<input id='login_id' type='text' name='login_id' value='{login_id}' />".format(login_id=login_id),
             response.content,
@@ -597,7 +598,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     def test_login_validate_valid_login_id(self, login_id, mock_get_username, mock_get_sso_provider):
         mock_get_sso_provider.return_value = None
         mock_get_username.return_value = 'test'
-        response = self.client.post('/accounts/login/', {'login_id': login_id, 'validate_login_id': True})
+        response = self.client.post(reverse('login'), {'login_id': login_id, 'validate_login_id': True})
         self.assertIn('{"login_id": "valid"}', response.content)
 
     @patch('accounts.views.get_sso_provider')
@@ -605,7 +606,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         error_reason = "Error adccbfc7-33eb-484b-a917-b7d65a5d72f8"
         http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
         mock_get_sso_provider.side_effect = ApiError(http_error, "get_provider", None)
-        response = self.client.post('/accounts/login/', {'login_id': 'test@email.com', 'validate_login_id': True})
+        response = self.client.post(reverse('login'), {'login_id': 'test@email.com', 'validate_login_id': True})
         self.assertIn('{"error": "%s"}' % error_reason, response.content)
 
     @patch('accounts.views._build_sso_redirect_url')
@@ -614,15 +615,37 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     def test_login_validate_sso_user(self, login_id, mock_get_sso_provider, mock_build_sso_redirect):
         mock_get_sso_provider.return_value = 'saml-testprovider'
         mock_build_sso_redirect.return_value = '/'
-        response = self.client.post('/accounts/login/', {'login_id': login_id, 'validate_login_id': True})
+        response = self.client.post(reverse('login'), {'login_id': login_id, 'validate_login_id': True})
         self.assertRedirects(response, '/')
+
+    @patch('accounts.views.get_sso_provider')
+    @ddt.data('test', 'test@email.com')
+    def test_login_validate_sso_user(self, login_id, mock_get_sso_provider):
+        """
+        Test deep linking when using SSO
+        """
+        mock_get_sso_provider.return_value = 'saml-testprovider'
+        # Set up redirect after login
+        post_login_redirect_url = '/some/url'
+        login_url_with_next = '{}?{}'.format(reverse('login'), urlencode({'next': post_login_redirect_url}))
+        response = self.client.post(login_url_with_next, {'login_id': login_id, 'validate_login_id': True})
+        # Ensure that the response will redirect
+        self.assertEqual(response.status_code, 302)
+        # Get response query params
+        parsed_url = urlparse(response['Location'])
+        query_params = parse_qs(parsed_url.query)
+        # Get query params for post SSO URL
+        parsed_redirect_url = urlparse(query_params['next'][0])
+        redirect_query_params = parse_qs(parsed_redirect_url.query)
+        # Ensue post-SSO-login URL has a next param to redirect to the correct location post-login
+        self.assertIn(post_login_redirect_url, redirect_query_params.get('next'))
 
     @patch('accounts.views.get_username_for_login_id')
     def test_login_normal_error(self, mock_get_username):
         error_reason = "Error adccbfc7-33eb-484b-a917-b7d65a5d72f8"
         http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
         mock_get_username.side_effect = ApiError(http_error, "get_session", None)
-        response = self.client.post('/accounts/login/', {'login_id': 'test', 'password': 'password'})
+        response = self.client.post(reverse('login'), {'login_id': 'test', 'password': 'password'})
         self.assertIn(error_reason, response.content)
 
     @patch('accounts.views.get_username_for_login_id')
@@ -631,7 +654,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     def test_login_normal_invalid_password(self, login_id, mock_authenticate, mock_get_username):
         mock_get_username.return_value = 'test'
         mock_authenticate.return_value = None
-        response = self.client.post('/accounts/login/', {'login_id': login_id, 'password': 'password'})
+        response = self.client.post(reverse('login'), {'login_id': login_id, 'password': 'password'})
         self.assertIn('{"password": "Password doesn\'t match our records. Try again."}', response.content)
 
     @patch('accounts.views._process_authenticated_user')
@@ -639,14 +662,14 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     @patch('accounts.views.auth.authenticate')
     @ddt.data('johndoe', 'john@doe.org')
     def test_login_normal_success(self, login_id, mock_authenticate, mock_get_username,
-                                    mock__process_authenticated_user):
+                                  mock__process_authenticated_user):
         self.apply_patch('accounts.views._append_login_mode_cookie')
         self.apply_patch('accounts.views.append_user_mobile_app_id_cookie')
         response_msg = "Test response ab7f8814-e84d-4bd5-a665-573285dc499f"
         mock__process_authenticated_user.return_value = HttpResponse(response_msg)
         mock_get_username.return_value = 'test'
         mock_authenticate.return_value = make_user()
-        response = self.client.post('/accounts/login/', {'login_id': login_id, 'password': 'password'})
+        response = self.client.post(reverse('login'), {'login_id': login_id, 'password': 'password'})
         self.assertIn(response_msg, response.content)
 
 

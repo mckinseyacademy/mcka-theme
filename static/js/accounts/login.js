@@ -113,7 +113,6 @@ $(function () {
                 headers: headers,
                 data: {login_id: login_id, validate_login_id: true},
                 type: 'POST',
-                url: '/accounts/login/',
                 success: function (_1, _2, xhr) {
                     ga('send', 'event', 'Login', 'validate', 'success', {
                         dimension1: hashed_id,
