@@ -1,8 +1,10 @@
 ''' API calls with respect to users and authentication '''
 from urllib2 import HTTPError
 from urllib import urlencode
-import copy
 import json
+
+from rest_framework import status
+
 from lib.utils import DottableDict
 
 from django.conf import settings
@@ -13,6 +15,7 @@ from . import user_models, gradebook_models, organization_models, workgroup_mode
 from .json_requests import GET, POST, PUT, DELETE
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from .group_models import GroupInfo
+from .oauth2_requests import get_oauth2_session, get_and_unpaginate
 
 from api_data_manager.decorators import user_api_cache_wrapper
 from api_data_manager.user_data import USER_PROPERTIES
@@ -21,6 +24,7 @@ from api_data_manager.signals import user_data_updated
 AUTH_API = getattr(settings, 'AUTH_API', 'api/server/sessions')
 USER_API = getattr(settings, 'USER_API', 'api/server/users')
 GROUP_API = getattr(settings, 'GROUP_API', 'api/server/groups')
+MANAGER_API = getattr(settings, 'MANAGER_API', 'api/user_manager/v1')
 
 USER_ROLES = DottableDict(
     STAFF='staff',
@@ -30,7 +34,8 @@ USER_ROLES = DottableDict(
     INTERNAL_ADMIN='internal_admin',
 )
 
-VALID_USER_KEYS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education", "password", "gender", "title", "is_active", "profile_image"]
+VALID_USER_KEYS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "level_of_education",
+                   "password", "gender", "title", "is_active", "profile_image"]
 
 
 def _clean_user_keys(user_hash):
@@ -98,11 +103,10 @@ def _chunked_get_users_by_id(request_fields, ids):
     # is expected
     for chunk in chunks(ids, 100):
         qs_params = {
-            "page_size": 0,
-            "fields": ",".join(request_fields),
+            'page_size': 0,
+            'fields': ','.join(request_fields),
+            'ids': ','.join(chunk),
         }
-
-        qs_params['ids'] = ",".join(chunk)
 
         response = GET(
             '{}/{}?{}'.format(
@@ -756,3 +760,16 @@ def get_user_by_bearer_token():
     except Exception as error:
         return None, error.code
 
+
+@api_error_protect
+def get_reports_for_manager(manager_email, edx_oauth2_session=None):
+    """
+    Get reports for manager.
+    """
+    url = '{}/{}/managers/{}/reports/'.format(
+        settings.API_SERVER_ADDRESS,
+        MANAGER_API,
+        manager_email,
+    )
+    data = get_and_unpaginate(url, edx_oauth2_session)
+    return JP.from_dictionary(data)

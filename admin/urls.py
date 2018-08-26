@@ -69,6 +69,7 @@ urlpatterns += patterns(
     url(r'^api/courses/(?P<course_id>.*)/tags$', views.course_details_tags_api.as_view(), name='course_details_tags_api'),
     url(r'^api/courses/(?P<course_id>.+)$', views.CourseDetailsApi.as_view(), name='course_details_api'),
     url(r'^api/courses$', views.courses_list_api.as_view(), name='courses_list_api'),
+    url(r'^api/manager/courses/(?P<course_id>.+)$', views.ManagerReportsCourseDetailsApi.as_view(), name='manager_reports_course_details_api'),
     url(r'^courses/(?P<course_id>.*)/download_course_stats/$', views.download_course_stats, name='download_course_stats'),
     url(
         r'^download_task_generated_csv/(?P<task_id>[-\w]+)/$',

@@ -2158,13 +2158,16 @@ class CourseParticipantStats(object):
         'observer': 'Observer'
     }
 
-    def __init__(self, course_id, base_url, record_parser=None):
+    def __init__(self, course_id, base_url, record_parser=None, restrict_to_participants=None):
         self._additional_fields = None
         self.course_id = course_id
         self.base_url = base_url
         self.request_params = {}
         self.record_parser = record_parser
         self.participants_engagement_lookup = None
+        self.restrict_to_participants = None
+        if restrict_to_participants is not None:
+            self.restrict_to_participants = {participant.username for participant in restrict_to_participants}
 
     def get_participants_data(self, request_params):
         """
@@ -2185,6 +2188,10 @@ class CourseParticipantStats(object):
         Calls course api to get the stats
         """
         course_participants = course_api.get_course_details_users(self.course_id, self.request_params)
+
+        if self.restrict_to_participants is not None:
+            course_participants = filter_course_participants(course_participants, self.restrict_to_participants)
+
         organization_id = self.request_params.get('organizations', None)
         if organization_id:
             course_participants = remove_specific_user_roles_of_other_companies(course_participants, int(organization_id))
@@ -2276,13 +2283,13 @@ class CourseParticipantStats(object):
             if course_participant.get('country'):
                 course_participant['country'] = get_complete_country_name(course_participant.get('country'))
 
-            if not course_participant['organizations']:
+            if not course_participant.get('organizations'):
                 course_participant['organizations'] = [{'display_name': _('No company')}]
                 course_participant['organizations_display_name'] = _('No company')
             else:
                 course_participant['organizations_display_name'] = course_participant['organizations'][0][
                     'display_name']
-            if course_participant['roles']:
+            if course_participant.get('roles'):
                 if 'assistant' in course_participant['roles']:
                     course_participant['custom_user_status'] = self.permission_map['assistant']
                 elif 'observer' in course_participant['roles']:
@@ -2329,7 +2336,7 @@ class CourseParticipantStats(object):
             course_participant['groupworks'] = []
             course_participant['assessments'] = []
             if participants['count']:
-                if course_participant['grades']['section_breakdown']:
+                if course_participant.get('grades', {}).get('section_breakdown'):
                     for user_grade in course_participant['grades']['section_breakdown']:
                         data = user_grade
                         data['percent'] = '{:03d}'.format(round_to_int(float(user_grade['percent']) * 100))
@@ -2383,6 +2390,20 @@ class CourseParticipantStats(object):
             'progress': '{}%'.format(participant_data.get('progress')),
             'custom_last_login': last_login
         })
+
+
+def filter_course_participants(course_participants, limit_participants):
+    """
+    Returns only those course participants also found in the limited list of participants.
+    """
+    updates = {
+        'results': [
+            participant for participant in course_participants.get('results', [])
+                if participant.get('username') in limit_participants
+        ]
+    }
+    updates['count'] = len(updates['results'])
+    return dict(course_participants, **updates)
 
 
 def remove_specific_user_roles_of_other_companies(course_participants, organization_id):

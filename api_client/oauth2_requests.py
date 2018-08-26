@@ -103,3 +103,17 @@ def _request_new_token(session):
     )
     cache.set(OAUTH2_TOKEN_CACHE_KEY, token)
     return token
+
+
+def get_and_unpaginate(url, edx_oauth2_session=None):
+    if not edx_oauth2_session:
+        edx_oauth2_session = get_oauth2_session()
+    results = []
+    next_page = url
+    while next_page:
+        response = edx_oauth2_session.get(next_page)
+        data = response.json()
+        result = data['results']
+        results.extend(result)
+        next_page = data.get('pagination', {}).get('next')
+    return results

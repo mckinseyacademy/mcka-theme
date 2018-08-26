@@ -347,6 +347,7 @@ AUTH_API = '/'.join([API_SERVER_PREFIX, 'sessions'])
 USER_API = '/'.join([API_SERVER_PREFIX, 'users'])
 WORKGROUP_API = '/'.join([API_SERVER_PREFIX, 'workgroups'])
 MOBILE_APP_API = '/'.join([API_SERVER_PREFIX, 'mobileapps'])
+MANAGER_API = '/'.join(['api', 'user_manager', 'v1'])
 
 # set AWS querystring authentication to false
 AWS_QUERYSTRING_AUTH = False

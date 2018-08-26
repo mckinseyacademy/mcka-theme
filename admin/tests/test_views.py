@@ -1,7 +1,7 @@
 import json
 from functools import wraps
 
-from ddt import ddt, data
+import ddt
 from django.core.urlresolvers import reverse
 from django.test import TestCase, override_settings
 from django.test.client import Client, RequestFactory
@@ -11,11 +11,11 @@ from rest_framework import status
 
 from accounts.models import RemoteUser
 from admin.models import Client as ClientModel
-from admin.views import client_sso
+from admin.views import client_sso, CourseDetailsApi, ManagerReportsCourseDetailsApi
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map, permission_group_required
-from accounts.tests.utils import ApplyPatchMixin
+from accounts.tests.utils import ApplyPatchMixin, make_course, make_user
 from api_client import user_api, group_api
 from api_client.api_error import ApiError
 from lib.utils import DottableDict
@@ -257,3 +257,166 @@ class AdminClientSSOTest(TestCase, ApplyPatchMixin):
             <input id='identity_provider' type='text' name='identity_provider' value='{}' />
         """.format(test_provider)
         self.assertInHTML(idp_input_html, response.content)
+
+
+class CourseParticipantsStatsMixin(ApplyPatchMixin):
+    """
+    Utilities for testing the views that use CourseParticipantsStats.
+    """
+    def setUp(self):
+        """
+        Create the base data.
+        """
+        super(CourseParticipantsStatsMixin, self).setUp()
+        self.course = make_course(course_id='course_1', display_name='Course One')
+        self.students = [
+            make_user(username="student{}".format(idx), email="student{}@example.com".format(idx))
+                for idx in range(4)
+        ]
+        self.admin_user = make_user(username="mcka_admin", email="mcka_admin@example.com")
+        self.admin_user.is_internal_admin = True
+        self.admin_user.is_company_admin = False
+        self.factory = RequestFactory()
+
+    def get_request(self, url, user=None):
+        """
+        GET the given URL, for the optional user, and return the request.
+        """
+        request = self.factory.get(url)
+        if user:
+            request.user = user
+            request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
+        return request
+
+    def patch_user_permissions(self):
+        """
+        Patch the authorization hit to say that the mcka_admin is in all groups.
+        """
+        def admin_is_in_all_groups(user, *_args, **_kwargs):
+            """
+            Our admin user is in all groups.
+            """
+            return (user.username == self.admin_user.username)
+
+        lib_auth = self.apply_patch("lib.authorization.is_user_in_permission_group")
+        lib_auth.side_effect = admin_is_in_all_groups
+
+    def patch_course_users(self, students):
+        """
+        Patch the given api method with course user data.
+        """
+        api_data = {
+            'results': [
+                {
+                    'id': student.id,
+                    'username': student.username,
+                    'email': student.email,
+                    'is_active': True,
+                } for student in students
+            ],
+            'next': ''
+        }
+        api_data['count'] = len(api_data['results'])
+        api_client = self.apply_patch('admin.controller.course_api')
+        api_client.get_course_details_users.return_value = api_data
+        return api_client
+
+    def assert_expected_result(self, result, idx=0):
+        """
+        Ensure that the expected data was returned.
+        """
+        expected_data = {
+            'is_active': True,
+            'id': None,  # for some reason, these demo users don't have IDs
+            'email': self.students[idx].email,
+            'username': self.students[idx].username,
+            'activation_link': "",
+            'custom_user_status': 'Participant',
+            'custom_activated': 'Yes',
+            'custom_last_login': '-',
+            'assessments': [],
+            'groupworks': [],
+            'number_of_groupworks': 0,
+            'organizations': [{ 'display_name': 'No company'}],
+            'organizations_display_name': 'No company',
+            'engagement': 0,
+            'proficiency': '000',
+            'progress': '000',
+            'number_of_assessments': 0,
+        }
+        self.assertEqual(expected_data, result)
+
+
+class CourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test the CourseDetailsApi view.
+    """
+    def setUp(self):
+        """
+        Patch the required APIs
+        """
+        super(CourseDetailsApiTest, self).setUp()
+        self.patch_course_users(self.students)
+        self.patch_user_permissions()
+
+    def test_get(self):
+        """
+        Test GET /admin/api/courses/<course_id>
+        """
+        course_detail_url = reverse('course_details_api', kwargs={'course_id': unicode(self.course.course_id)})
+        request = self.get_request(course_detail_url, self.admin_user)
+        response = CourseDetailsApi().get(request, self.course.course_id)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], 4)
+        for idx in range(4):
+            self.assert_expected_result(response.data["results"][idx], idx)
+
+
+@ddt.ddt
+class ManagerReportsCourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test the ManagerReportsCourseDetailsApi view.
+    """
+    def setUp(self):
+        """
+        Patch the required APIs
+        """
+        super(ManagerReportsCourseDetailsApiTest, self).setUp()
+        # Enroll only students 0-3, leaving student 4 unenrolled.
+        self.patch_course_users(self.students[0:3])
+
+    def patch_manager_reports(self, direct_reports):
+        """
+        Patch the get_reports_for_manager API with our data
+        """
+        api_data = [
+            {
+                'id': student.id,
+                'username': student.username,
+                'email': student.email,
+            } for student in direct_reports
+        ]
+        api_client = self.apply_patch('admin.views.user_api')
+        api_client.get_reports_for_manager.return_value = JsonParser.from_dictionary(api_data)
+        return api_client
+
+    @ddt.data(
+        ([], []),
+        ([0, 2], [0, 2]),
+        ([0, 2, 3], [0, 2]),
+    )
+    @ddt.unpack
+    def test_get(self, direct_reports, expected_students):
+        """
+        Only the user's direct reports should be returned.
+        """
+        self.patch_manager_reports([self.students[idx] for idx in direct_reports])
+        course_detail_url = reverse('manager_reports_course_details_api',
+                                    kwargs={'course_id': unicode(self.course.course_id)})
+        request = self.get_request(course_detail_url, self.admin_user)
+        response = ManagerReportsCourseDetailsApi().get(request, self.course.course_id)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["count"], len(expected_students))
+        for idx, student_idx in enumerate(expected_students):
+            self.assert_expected_result(response.data["results"][idx], student_idx)

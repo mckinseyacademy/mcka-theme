@@ -33,7 +33,8 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _, ungettext
 from django.views.decorators.http import require_POST
 from django.views.generic.base import View
-from rest_framework import status, viewsets
+from rest_framework import status, viewsets, permissions
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -1123,6 +1124,27 @@ class CourseDetailsApi(APIView):
             task_id = BulkTaskRunner(request=request, params=data, task_name=data.get('type')).execute_task()
 
             return Response({'status':'ok', 'data': data, 'task_id': task_id})
+
+
+class ManagerReportsCourseDetailsApi(APIView):
+    """
+    Fetch the course participant stats for the current user's direct reports.
+
+    Any logged-in user can invoke this API, but only those with direct reports will see any data.
+    """
+    authentication_classes = (SessionAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get(self, request, course_id=None, *args, **kwargs):
+        """
+        Perform the request, assuming the current user is the manager fetching the report.
+        """
+        direct_reports = user_api.get_reports_for_manager(request.user.email)
+        course_participants_stats = CourseParticipantStats(course_id=course_id,
+                                                           restrict_to_participants=direct_reports,
+                                                           base_url=request.build_absolute_uri())
+        course_participants = course_participants_stats.get_participants_data(request.GET)
+        return Response(course_participants)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
