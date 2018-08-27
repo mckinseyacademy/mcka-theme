@@ -2,6 +2,8 @@
 from __future__ import absolute_import, division, print_function, unicode_literals
 
 import logging
+import urlparse
+from urllib import urlencode
 
 from django.conf import settings
 from django.core.cache import cache
@@ -105,15 +107,53 @@ def _request_new_token(session):
     return token
 
 
-def get_and_unpaginate(url, edx_oauth2_session=None):
+def update_query_params(url, updater):
+    """
+    Change query params in `url` by calling `updater` function on them.
+    Args:
+        url (str): url in which to update query params
+        updater (Function): a function that takes a dict with query
+        params and updates it in place
+
+    Returns:
+        New url that has updated query params.
+    """
+    url_parts = list(urlparse.urlparse(url))
+    query_params = urlparse.parse_qs(url_parts[4])
+    updater(query_params)
+    url_parts[4] = urlencode(query_params, doseq=True)
+    new_url = urlparse.urlunparse(url_parts)
+    return new_url
+
+
+def get_and_unpaginate(url, edx_oauth2_session=None, max_page=None):
+    """
+    Return data combined from all pages, up to optional `max_page` starting at `url`.
+    Args:
+        url (str): paginated URL to fetch.
+        edx_oauth2_session (AprosOAuth2Session): optional session to reuse while fetching data.
+        max_page (int): maximum number of pages to fetch.
+
+    Returns:
+        List[dict] data combined from multiple pages
+    """
     if not edx_oauth2_session:
         edx_oauth2_session = get_oauth2_session()
     results = []
     next_page = url
-    while next_page:
+    current_page = 0
+    while next_page and current_page != max_page:
         response = edx_oauth2_session.get(next_page)
         data = response.json()
         result = data['results']
         results.extend(result)
-        next_page = data.get('pagination', {}).get('next')
+        next_page_val = data.get('pagination', {}).get('next')
+        if isinstance(next_page_val, basestring) and next_page_val.startswith('http'):
+            next_page = next_page_val
+        else:
+            next_page = next_page_val and update_query_params(
+                url,
+                lambda query_params: query_params.update({'page': next_page_val})
+            )
+        current_page += 1
     return results

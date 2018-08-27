@@ -1,10 +1,17 @@
-from django.test import TestCase
-from django.conf import settings
+import json
+from urlparse import urlparse, parse_qs
+
 import ddt
 import httpretty
+from django.conf import settings
+from django.test import TestCase
+from mock import patch
 
 from accounts.helpers import TestUser
-from api_client.course_api import get_course, COURSEWARE_API
+from api_client.course_api import get_course, COURSEWARE_API, get_course_enrollments, \
+    get_course_list_for_manager_reports, get_manager_reports_in_course
+from api_client.json_object import JsonParser
+from mcka_apros.settings import COURSE_ENROLLMENT_API
 
 
 @ddt.ddt
@@ -89,6 +96,61 @@ class TestCourseApi(TestCase):
             "course_image_url":"/c4x/test/course/asset/logo.png"
         }'''
 
+        self.enrollment_api_response = """
+        {
+          "count": 6,
+          "num_pages": 1,
+          "current_page": 1,
+          "results": [
+            {
+              "created": "2018-04-22T05:58:04.008954Z",
+              "mode": "verified",
+              "is_active": true,
+              "user": "edx",
+              "course_id": "course-v1:edX+DemoX+Demo_Course"
+            },
+            {
+              "created": "2018-06-27T06:19:34.282080Z",
+              "mode": "audit",
+              "is_active": true,
+              "user": "edx",
+              "course_id": "course-v1:OpenCraft+EOCJ001+2018_1"
+            },
+            {
+              "created": "2017-06-07T00:44:28.308850Z",
+              "mode": "audit",
+              "is_active": true,
+              "user": "honor",
+              "course_id": "course-v1:edX+DemoX+Demo_Course"
+            },
+            {
+              "created": "2017-06-07T00:44:32.887985Z",
+              "mode": "audit",
+              "is_active": true,
+              "user": "audit",
+              "course_id": "course-v1:edX+DemoX+Demo_Course"
+            },
+            {
+              "created": "2017-06-07T00:44:37.447686Z",
+              "mode": "audit",
+              "is_active": true,
+              "user": "verified",
+              "course_id": "course-v1:edX+DemoX+Demo_Course"
+            },
+            {
+              "created": "2017-06-07T00:44:41.997373Z",
+              "mode": "audit",
+              "is_active": true,
+              "user": "staff",
+              "course_id": "course-v1:edX+DemoX+Demo_Course"
+            }
+          ],
+          "next": null,
+          "start": 0,
+          "previous": null
+        }
+        """
+
     def _setup_courseware_response(self):
         """
         Stub out the courseware API
@@ -148,3 +210,87 @@ class TestCourseApi(TestCase):
         self.assertNotEqual(course1, course2)
         self.assertEquals(len(course1.chapters), 1)
         self.assertEquals(len(course2.chapters), 0)
+
+    def _setup_enrollment_response(self):
+        def _filter_by_usernames(data, usernames):
+            if usernames is None:
+                return data
+            usernames = usernames[0].split(',')
+            return [
+                item for item in data
+                if item['user'] in usernames
+            ]
+
+        def _filter_by_course(data, course_id):
+            if course_id is None:
+                return data
+            return [
+                item for item in data
+                if item['course_id'] == course_id[0]
+            ]
+
+        def enrollment_api_response(request, uri, headers):  # pylint: disable=unused-argument
+            query_params = parse_qs(urlparse(uri).query)
+            data = json.loads(self.enrollment_api_response)['results']
+            data = _filter_by_usernames(data, query_params.get('username'))
+            data = _filter_by_course(data, query_params.get('course_id'))
+            response = json.dumps({
+                'pagination': {
+                    'next': None,
+                    'count': len(data)
+                },
+                'results': data
+            })
+            return 200, headers, response
+        httpretty.register_uri(
+            httpretty.GET,
+            '{}/{}'.format(
+                settings.API_SERVER_ADDRESS,
+                COURSE_ENROLLMENT_API,
+                match_querystring=False,
+            ),
+            body=enrollment_api_response,
+            status=200,
+            content_type='application/json',
+        )
+
+    @ddt.data(
+        # No filter
+        {'course_id': None, 'usernames': None, 'count': 6},
+        # No users
+        {'course_id': 'course-v1:edX+DemoX+Demo_Course', 'usernames': [], 'count': 0},
+        {'course_id': 'course-v1:edX+DemoX+Demo_Course', 'usernames': None, 'count': 5},
+        {'course_id': 'course-v1:edX+DemoX+Demo_Course', 'usernames': ['edx'], 'count': 1},
+        {'course_id': None, 'usernames': ['edx'], 'count': 2},
+        {'course_id': None, 'usernames': ['edx', 'honor'], 'count': 3},
+        {'course_id': 'course-v1:edX+DemoX+Demo_Course', 'usernames': ['edx', 'honor'], 'count': 2},
+    )
+    @ddt.unpack
+    @httpretty.httprettified
+    def test_get_course_enrollments(self, course_id, usernames, count):
+        self._setup_enrollment_response()
+        data = get_course_enrollments(course_id, usernames)
+        self.assertEqual(len(data), count)
+
+    @httpretty.httprettified
+    @patch('api_client.course_api.get_reports_for_manager')
+    def test_get_course_list_for_manager_reports(self, mock_get_reports_for_manager):
+        self._setup_enrollment_response()
+        mock_get_reports_for_manager.return_value = JsonParser.from_dictionary([
+            {'username': 'edx'},
+            {'username': 'honor'},
+        ])
+        data = get_course_list_for_manager_reports('staff@example.com')
+        self.assertEqual(data, [u'course-v1:OpenCraft+EOCJ001+2018_1', u'course-v1:edX+DemoX+Demo_Course'])
+
+    @httpretty.httprettified
+    @patch('api_client.course_api.get_reports_for_manager')
+    def test_get_manager_reports_in_course(self, mock_get_reports_for_manager):
+        self._setup_enrollment_response()
+        mock_get_reports_for_manager.return_value = JsonParser.from_dictionary([
+            {'username': 'edx'},
+            {'username': 'honor'},
+            {'username': 'noone'},
+        ])
+        data = get_manager_reports_in_course('staff@example.com', 'course-v1:edX+DemoX+Demo_Course')
+        self.assertEqual(data, [u'edx', u'honor'])

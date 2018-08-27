@@ -300,7 +300,7 @@ class Course(CategorisedJsonObject):
         for lesson in self.chapters:
             appended = None
             due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
-            
+
             for key, week in weeks.iteritems():
                 if lesson.index in week['grouped']:
                     week["lessons"].append(lesson)
@@ -485,3 +485,10 @@ class CourseTimeSeriesMetrics(JsonObject):
         'users_not_started': DataOnly,
         'users_started': DataOnly,
     }
+
+
+class UserCourseEnrollment(JsonObject):
+    """
+    Data structure linking a user and a course they are enrolled in.
+    """
+    required_fields = ['created', 'mode', 'is_active', 'user', 'course_id']

@@ -746,6 +746,72 @@ def get_user_courses_progress(user_id, qs_params=''):
 
 
 @api_error_protect
+def get_reports_for_manager(manager_email, edx_oauth2_session=None):
+    """
+    Get reports for manager.
+    """
+    url = '{}/{}/managers/{}/reports/'.format(
+        settings.API_SERVER_ADDRESS,
+        MANAGER_API,
+        manager_email,
+    )
+    data = get_and_unpaginate(url, edx_oauth2_session)
+    return JP.from_dictionary(data)
+
+
+@api_error_protect
+def add_report_for_manager(manager_email, user_email, edx_oauth2_session=None):
+    """
+    Add report under manager.
+    """
+    if not edx_oauth2_session:
+        edx_oauth2_session = get_oauth2_session()
+    url = '{}/{}/managers/{}/reports/'.format(
+        settings.API_SERVER_ADDRESS,
+        MANAGER_API,
+        manager_email,
+    )
+    response = edx_oauth2_session.post(
+        url=url,
+        data={
+            'email': user_email
+        }
+    )
+    return JP.from_json(response.content)
+
+
+@api_error_protect
+def remove_report_for_manager(manager_email, user_email, edx_oauth2_session=None):
+    """
+    Remove report from manager.
+    """
+    if not edx_oauth2_session:
+        edx_oauth2_session = get_oauth2_session()
+    url = '{}/{}/managers/{}/reports/?user={}'.format(
+        settings.API_SERVER_ADDRESS,
+        MANAGER_API,
+        manager_email,
+        user_email
+    )
+    response = edx_oauth2_session.delete(url)
+    return response.status_code == status.HTTP_204_NO_CONTENT
+
+
+@api_error_protect
+def get_managers_for_report(user_email, edx_oauth2_session=None):
+    """
+    Get managers for user.
+    """
+    url = '{}/{}/users/{}/managers/'.format(
+        settings.API_SERVER_ADDRESS,
+        MANAGER_API,
+        user_email,
+    )
+    data = get_and_unpaginate(url, edx_oauth2_session)
+    return JP.from_dictionary(data)
+
+
+@api_error_protect
 def get_user_by_bearer_token():
     """
     verify passed authorization bearer token and get specified user as a dict
@@ -759,17 +825,3 @@ def get_user_by_bearer_token():
         return json.loads(response.read()), response.code
     except Exception as error:
         return None, error.code
-
-
-@api_error_protect
-def get_reports_for_manager(manager_email, edx_oauth2_session=None):
-    """
-    Get reports for manager.
-    """
-    url = '{}/{}/managers/{}/reports/'.format(
-        settings.API_SERVER_ADDRESS,
-        MANAGER_API,
-        manager_email,
-    )
-    data = get_and_unpaginate(url, edx_oauth2_session)
-    return JP.from_dictionary(data)

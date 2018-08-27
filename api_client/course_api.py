@@ -5,6 +5,7 @@ from urllib import urlencode
 
 from django.conf import settings
 
+from api_client.user_api import get_reports_for_manager
 from api_data_manager.course_data import COURSE_PROPERTIES
 from api_data_manager.decorators import course_api_cache_wrapper
 
@@ -16,11 +17,12 @@ from .json_object import CategorisedJsonObject
 from .json_object import JsonParser as JP
 from .json_object import JsonObject
 from .json_requests import GET, POST
-from .oauth2_requests import get_oauth2_session
+from .oauth2_requests import get_oauth2_session, get_and_unpaginate
 from . import user_models
 
-
 COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
+COURSE_ENROLLMENT_API = getattr(settings, 'COURSE_ENROLLMENT_API', 'api/enrollment/v1/enrollments')
+COURSE_ENROLLMENT_API_MAX_PAGE = 3
 
 OBJECT_CATEGORY_MAP = {
     # Core objects for our desire
@@ -67,7 +69,7 @@ def get_course_list_in_pages(ids=None, page_size=100):
         qs_params['course_id'] = ",".join(ids)
         qs_params["page_size"] = 0
     else:
-        qs_params["page"]=1
+        qs_params["page"] = 1
         qs_params["page_size"] = page_size
     response = GET('{}/{}?{}'.format(
             settings.API_SERVER_ADDRESS,
@@ -79,8 +81,8 @@ def get_course_list_in_pages(ids=None, page_size=100):
     if data.get("results", None):
         data_range = data.get("num_pages", 1)
         data = []
-        for index in range(1, data_range+1):
-            qs_params["page"]=index
+        for index in range(1, data_range + 1):
+            qs_params["page"] = index
             response = GET('{}/{}?{}'.format(
                     settings.API_SERVER_ADDRESS,
                     COURSEWARE_API,
@@ -266,6 +268,7 @@ def get_course_shallow(course_id):
 
     return response.json()
 
+
 @api_error_protect
 def get_courses(**kwargs):
     '''
@@ -326,7 +329,7 @@ def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args,
 
 
 @api_error_protect
-def get_user_list_json(course_id, program_id = None, page_size=0):
+def get_user_list_json(course_id, program_id=None, page_size=0):
     '''
     Retrieves course user list structure information from the API for specified course
     '''
@@ -582,6 +585,7 @@ def get_course_metrics_grades(course_id, grade_object_type=JsonObject, **kwargs)
     response = GET(url)
 
     return JP.from_json(response.read(), grade_object_type)
+
 
 @api_error_protect
 def get_course_metrics_completions(course_id, completions_object_type=JsonObject, **kwargs):
@@ -953,10 +957,69 @@ def get_course_passed_users(course_id, page_num=1, page_size=100):
 
 
 @api_error_protect
-def get_user_list_dictionary(course_id, program_id = None):
+def get_user_list_dictionary(course_id, program_id=None):
     return json.loads(get_user_list_json(course_id, program_id))
 
 
 def parse_course_list_json_object(course_list_json_object):
     return CJP.from_json(json.dumps(course_list_json_object))
 
+
+@api_error_protect
+def get_course_enrollments(course_id=None, usernames=None, edx_oauth2_session=None):
+    """
+    Return a list of user course enrollment records filtered by ``course_id`` and ``usernames``.
+
+    If `course_id` is `None`', returns enrollments across all courses.
+    If `usernames` is `None`, returns all enrollments for the given course.
+    If `usernames` is an empty list, returns an empty list.
+    If both are `None` returns all enrollments across all courses.
+    """
+    params = {}
+    if course_id is not None:
+        params['course_id'] = course_id
+    if usernames is not None:
+        if len(usernames) > 0:
+            params['username'] = ','.join(usernames)
+        else:
+            # If usernames is explicitly passed as an empty list, treat that as
+            # wanting data for no users
+            return []
+    url = '{}/{}?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSE_ENROLLMENT_API,
+        urlencode(params)
+    )
+    # Adding a max_pages limit here to prevent too many queries
+    data = get_and_unpaginate(url, edx_oauth2_session, max_page=COURSE_ENROLLMENT_API_MAX_PAGE)
+    return JP.from_dictionary(data, course_models.UserCourseEnrollment)
+
+
+def get_course_list_for_manager_reports(manager_email, edx_oauth2_session=None):
+    """
+    Return list of courses in which a manager has reports.
+    """
+    reports = get_reports_for_manager(manager_email, edx_oauth2_session)
+    usernames = [report.username for report in reports]
+    course_enrollments = get_course_enrollments(usernames=usernames, edx_oauth2_session=edx_oauth2_session)
+    return list({
+        enrollment.course_id
+        for enrollment in course_enrollments
+    })
+
+
+def get_manager_reports_in_course(manager_email, course_id, edx_oauth2_session=None):
+    """
+    Get list of reports that a manager has enrolled in a given course.
+    """
+    reports = get_reports_for_manager(manager_email, edx_oauth2_session)
+    usernames = [report.username for report in reports]
+    course_enrollments = get_course_enrollments(
+        course_id=course_id,
+        usernames=usernames,
+        edx_oauth2_session=edx_oauth2_session,
+    )
+    return list({
+        enrollment.user
+        for enrollment in course_enrollments
+    })
