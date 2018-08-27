@@ -139,3 +139,26 @@ class MobileFeatureFlagAccessTest(TestCase, ApplyPatchMixin):
         course_participants = get_feature_flag_mobile(request)
         self.assertEqual(course_participants.status_code, 200)
 
+    def test_course_wrong_id_feature_flag_access(self):
+
+        course_id = '1st-course'
+        course_id_two = '2nd-course'
+        request = self.factory.get('/courses/1st-course/feature_flag', HTTP_AUTHORIZATION='Bearer token')
+        get_user_by_bearer_token = self.get_user_by_bearer_token
+        get_user_by_bearer_token.return_value = self.response, self.status_code
+        course = [
+            DottableDict({'id': '3rd-course'}),
+        ]
+        FeatureFlags.objects.create(
+            course_id="1st-course",
+        )
+
+        get_user_courses = 'api_client.user_api.get_user_courses'
+        get_user_courses = self.apply_patch(get_user_courses)
+        get_user_courses.return_value = course
+        FeatureFlags.objects.create(
+            course_id=course_id,
+        )
+        course_participants = get_feature_flag_mobile(request, course_id_two)
+        self.assertEqual(course_participants.status_code, 404)
+

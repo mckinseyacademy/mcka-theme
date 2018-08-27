@@ -23,7 +23,7 @@ from courses.user_courses import standard_data
 from courses.controller import round_to_int, Proficiency, get_user_social_metrics, average_progress, load_static_tabs
 from admin.models import Client
 from .serializers import ResetPasswordSerializer
-from public_api.controller import add_course_feature_flag_in_list
+from public_api.controller import get_course_feature_flag, create_and_add_course_feature_flag_in_list
 
 
 @require_POST
@@ -170,11 +170,13 @@ def get_feature_flag_mobile(request, course_id=None):
     user_id = response['id']
 
     if course_id:
-        add_course_feature_flag_in_list(feature_flag, course_id)
+        course_feature_flag = get_course_feature_flag(user_id, feature_flag, course_id)
+        if not course_feature_flag:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
     else:
         courses = user_api.get_user_courses(user_id)
         for course in courses:
-            add_course_feature_flag_in_list(feature_flag, course.id)
+            create_and_add_course_feature_flag_in_list(feature_flag, course.id)
 
     return HttpResponse(
         json.dumps(feature_flag),
