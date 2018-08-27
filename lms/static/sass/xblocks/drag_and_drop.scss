@@ -45,28 +45,6 @@
     }
 }
 
-.xblock--drag-and-drop {
-    .drag-container{
-        .option{
-            // Mckinsey specific color & font size for item
-            background-color: $mckinsey-royal-blue !important;
-            font-size: 10px;
-            &.dropped{
-                // Mckinsey specific color for the dropped item placeholder
-                background-color: $mckinsey-DnD-gray !important;
-                .item-content{
-                    // Removing the text from item bank after the item is dropped on drop zone
-                    display: none;
-                    visibility: hidden;
-                }
-            }
-        }
-    }
-    .bx-controls .bx-controls-direction > a .fa{
-        // Mckinsey specific color of navigation arrow
-        color: $mckinsey-royal-blue;
-    }
-}
 
 /* Align the Reset button to the right on mobile (non-McKinsey version has it left on mobile, right on desktop) */
 .ltr .themed-xblock.xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
