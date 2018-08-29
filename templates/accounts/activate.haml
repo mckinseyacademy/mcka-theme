@@ -44,8 +44,8 @@
           %h4 {% trans "Need Help?" %}
           .sidebar
             %a{href: "/faq"}><
-              {% blocktrans %} View our FAQ for answers to commonly asked questions
-            , or raise a question in course-specific discussion forums.{% endblocktrans %}
+              {% trans "View our FAQ for answers to commonly asked questions" %}
+            {% trans " , or raise a question in course-specific discussion forums." %}
 
 - block js_snippets
   :javascript
