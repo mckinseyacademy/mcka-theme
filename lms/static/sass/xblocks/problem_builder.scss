@@ -29,27 +29,31 @@
             p {
                 color: #fff;
             }
+            .close {
+                display: block;
+            }
         }
+
         .choice-label {
             // Fill the full page width for MRC/MCQ choices
             width: 100%
         }
-        .choice-tips .close {
-            display: block;
-        }
+
         .choices-list {
             border-spacing: 0 2px;
         }
     }
-    .checkmark-incorrect::before {
-        content: "\f12a";
+    .checkmark-incorrect {
+        color: #ff0000;
+        &::before {
+            content: "\f12a";
+        }
     }
     .checkmark-correct::before {
         content: "\f00c";
     }
     .choice {
         .choice-tips-container {
-            position: relative;
             &.with-tips {
                 border: none;
             }
