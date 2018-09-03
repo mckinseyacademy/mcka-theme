@@ -93,6 +93,10 @@ class RemoteUser(AbstractUser):
     def is_internal_admin(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.INTERNAL_ADMIN)
 
+    @cached_property
+    def is_manager(self):
+        return is_user_in_permission_group(self, PERMISSION_GROUPS.MANAGER)
+
 
 class UserActivation(db_models.Model):
     user_id = db_models.IntegerField(unique=True)
