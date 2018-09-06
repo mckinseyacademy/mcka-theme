@@ -123,6 +123,7 @@
         ga('set', 'transport', 'beacon');
 
         - if request.user.is_authenticated
+          ga('set', 'userId', '#{request.user.id}');
           document.addEventListener("DOMContentLoaded", function() {
             window.hashedUserId = 'u:' + $.md5('#{request.user.username}').slice(-20);
             ga('send', 'pageview', {
