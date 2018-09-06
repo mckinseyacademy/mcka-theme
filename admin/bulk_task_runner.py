@@ -3,6 +3,7 @@ Handles running of different bulk tasks for admin
 """
 
 from celery.result import AsyncResult
+from celery.utils.log import get_task_logger
 from upload_validator import FileTypeValidator
 
 from .tasks import (
@@ -15,6 +16,7 @@ from .controller import (
 )
 from .models import BatchOperationStatus
 
+logger = get_task_logger(__name__)
 
 class BulkTaskRunner(object):
     """
@@ -60,6 +62,10 @@ class BulkTaskRunner(object):
             batch_status = BatchOperationStatus.create()
             task_id = batch_status.task_key
             course_bulk_actions(course_id, self.params, batch_status, self.request)
+
+        task_log_msg = "`{}` task (`{}`) for course: `{}` " \
+                       "triggered by user `{}`".format(self.task_name, task_id, course_id, self.request.user.id)
+        logger.info(task_log_msg)
 
         return task_id
 
