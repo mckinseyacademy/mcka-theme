@@ -232,7 +232,7 @@ API_MOCK_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'
 
 RUN_LOCAL_MOCK_API = False
 LOCAL_MOCK_API_FILES = [
-    os.path.join(BASE_DIR, 'apiary.apib'),
+    os.path.join(BASE_DIR, 'edx-solutions-apiary.apib'),
     os.path.join(BASE_DIR, 'mock_supplementals.apib'),
 ]
 
