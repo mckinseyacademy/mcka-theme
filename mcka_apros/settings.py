@@ -82,6 +82,7 @@ LOCAL_APPS = (
     'certificates',
     'mobile_apps',
     'api_data_manager',
+    'manager_dashboard',
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS

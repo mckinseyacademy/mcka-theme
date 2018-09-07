@@ -1,0 +1,29 @@
+- extends "admin/admin_layout.haml"
+- load i18n
+
+- load staticfiles
+- block custom_js
+  %script{src: "{% static 'js/vendor/tinymce/tinymce.min.js' %}"}
+
+- block content
+  #manager_courses{'course-length': '{{manager_courses|length}}'}
+  #managerDashboardWrapper
+    .navigation
+      %a{'href': "/courses/" + "#{course.id}"}
+        < {% trans "Back to Courses" %}
+      %br
+      %br
+      %ul
+        - for index,course_id, course_name in manager_courses
+          %li
+            - if index == 0
+              %a.hashPageButton.active{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
+                = course_name
+            - else
+              %a.hashPageButton{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
+                = course_name
+
+    #managerDashboardContainer
+      - for index,course_id, course_name in manager_courses
+        .contentNavigationContainer{class: "managerDashboardCourse#{index}"}
+          .large-12.columns.spinnerContainer{id: "managerDashboardReportGrid#{index}"}

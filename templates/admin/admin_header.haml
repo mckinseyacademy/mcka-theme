@@ -2,7 +2,7 @@
 - load i18n
 
 - block header_home
-  - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin
+  - if user.is_mcka_admin or user.is_internal_admin or user.is_mcka_subadmin or user.is_manager
     %a.admin-logo{href: '/admin'}
   - elif user.is_client_admin
     %a.admin-logo{href: '/admin/client-admin'}

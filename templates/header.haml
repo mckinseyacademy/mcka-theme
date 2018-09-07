@@ -64,6 +64,11 @@
               %li
                 %a{href: '/admin'}
                   {% trans "McKA Admin" %}
+            - if user.is_manager
+              %li
+                %a{href: '/admin/manager/team_report'}
+                  {% trans "TEAM REPORTS" %}
+
             - if user.is_internal_admin
               %li
                 %a{href: '/admin'}

@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns, url, include
 from rest_framework.routers import SimpleRouter
 
 from admin import views
@@ -69,7 +69,6 @@ urlpatterns += patterns(
     url(r'^api/courses/(?P<course_id>.*)/tags$', views.course_details_tags_api.as_view(), name='course_details_tags_api'),
     url(r'^api/courses/(?P<course_id>.+)$', views.CourseDetailsApi.as_view(), name='course_details_api'),
     url(r'^api/courses$', views.courses_list_api.as_view(), name='courses_list_api'),
-    url(r'^api/manager/courses/(?P<course_id>.+)$', views.ManagerReportsCourseDetailsApi.as_view(), name='manager_reports_course_details_api'),
     url(r'^courses/(?P<course_id>.*)/download_course_stats/$', views.download_course_stats, name='download_course_stats'),
     url(
         r'^download_task_generated_csv/(?P<task_id>[-\w]+)/$',
@@ -214,5 +213,5 @@ urlpatterns += patterns(
     url(r'^certificates/templates$', certificate_views.certificate_templates, name='certificate_templates'),
     url(r'^certificates/templates/new$', certificate_views.new_certificate_template, name='new_certificate_template'),
     url(r'^certificates/templates/(?P<template_id>\d+)/edit$', certificate_views.edit_certificate_template, name='edit_certificate_template'),
-
+    url(r'^manager/', include('manager_dashboard.urls'), name='manager_dashboard_urls'),
 )

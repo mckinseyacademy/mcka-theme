@@ -1,5 +1,6 @@
 var ApiUrls = {
   courses_list: '/admin/api/courses',
+  manager_dashboard: '/admin/manager/courses',
   participants_list: '/admin/api/participants',
   companies_list: '/admin/api/companies',
   cache: '/admin/api/cache',

@@ -39,6 +39,7 @@ var Router = Backbone.Router.extend({
     'admin/companies/*company_id': 'company_details_courses',
     'admin/workgroup':'workgroup_main',
     'admin/programs/*program_id/courses': 'program_courses_main',
+    'admin/manager/team_report': 'manager_dashboard_report',
   },
 
   home: function() {
@@ -238,6 +239,14 @@ var Router = Backbone.Router.extend({
     var bulkActions = new Apros.views.CourseDetailsBulkActions({'courseId':courseId,'courses_details_view':courses_details_view, 'courseDetails':courseDetails});
     bulkActions.render(); 
   },
+  manager_dashboard_report: function () {
+    var course_index = $('a.hashPageButton.active').attr("data-course-index");
+     Apros.Router.linked_views['managerDashboardCourse'+course_index]['drawn'] = true;
+     var course_id = $('a.hashPageButton.active').attr("data-course");
+    var managerDashboardCollection = new Apros.collections.ManagerDashboard([],{ path : course_id});
+    var manager_dashboard_view = new Apros.views.ManagerDashboardView({collection: managerDashboardCollection, el: '#managerDashboardReportGrid'+course_index});
+    manager_dashboard_view.render();
+  },
   company_mobileapp_details: function(){
     var company_mobileapp_view = new Apros.views.CompanyMobileappDetails();
     company_mobileapp_view.render();
@@ -397,12 +406,34 @@ Apros.Router.linked_views = {
   },
 }
 
+// This function will add eateries for manager course in linked views dynamically
+function update_manager_dashboard_tabs(course_length)
+{
+    for (var i = 0; i < course_length; ++i) {
+        Apros.Router.linked_views['managerDashboardCourse' + i] = {
+            'function': Apros.Router.manager_dashboard_report,
+            'drawn': false
+        }
+    }
+}
+
+//Getting no: of manager course and if there are any course then calling function
+// which will update lined views with manager courses.
+
+var course_length = $('#manager_courses').attr('course-length');
+if (course_length)
+{
+  update_manager_dashboard_tabs(course_length);
+}
+
 Apros.Router.HashPageChanger = function(element) {
   var el = $(element);
   var _selectedClass = el.attr('data-target');
   var _parentContainer = $(el.attr('data-container'));
   el.parent().parent().find('.hashPageButton').css('font-weight','');
   el.css('font-weight','bold');
+  $('.active').removeClass('active');
+  el.addClass('active');
   _parentContainer.find('.contentNavigationContainer').each(function(index, value){
     val = $(value);
     if (val.hasClass(_selectedClass))
