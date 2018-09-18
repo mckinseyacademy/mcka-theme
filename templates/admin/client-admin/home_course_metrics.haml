@@ -25,8 +25,7 @@
           = _("Completed:")
           %span.course-stat-value
             = course.metrics.users_completed
-        .course-stat-label
-          = _("% Completed:")
+        .course-stat-label % #{_("Completed:")}
           %span.course-stat-value
             = course.metrics.percent_completed
       .go-to-link

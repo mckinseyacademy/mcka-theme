@@ -22,8 +22,8 @@ class TestEmailMethods(TestCase, ApplyPatchMixin):
         })
 
     @ddt.data(
-        (['test@example.org'], 'admin/export_stats_email_template', True),
-        ([], 'admin/export_stats_email_template', False),
+        (['test@example.org'], 'admin/export_stats_email_template.haml', True),
+        ([], 'admin/export_stats_email_template.haml', False),
         (['test@example.org'], '', False),
     )
     @ddt.unpack

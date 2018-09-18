@@ -68,6 +68,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='learnerdashboardtileprogress',
             name='milestone',
-            field=models.ForeignKey(to='admin_apros.LearnerDashboardTile'),
+            field=models.ForeignKey(to='admin_apros.LearnerDashboardTile', on_delete=models.CASCADE),
         ),
     ]

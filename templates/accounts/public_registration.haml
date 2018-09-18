@@ -12,21 +12,21 @@
 
 - load staticfiles
 - block content
-  #confirmation_registration.reveal-modal.small{'data-reveal': None}
+  #confirmation_registration.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     %h2 {% trans "Thank you for your request" %}
     %p
       {% trans "We will send you an email shortly." %}
 
-  #error_registration.reveal-modal.small{'data-reveal': None}
+  #error_registration.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     %h2 {% trans "Registration Error!" %}
     %p
       {% blocktrans %}Sorry, there seems to be a problem with registering your account, please contact info@mckinseyacademy.com{% endblocktrans %}
 
-  #course_closed_registration.reveal-modal.small{'data-reveal': None}
+  #course_closed_registration.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     %h2 {% trans "Thank you for your request" %}
@@ -44,8 +44,8 @@
           .large-8.medium-8.columns{style:"height: 100%;border-right: 1px solid #ccc;"}
             %h1 {% trans "Welcome to McKinsey Academy" %}
             .description{style:"height:auto;"}
-              %h4 #{course_run.self_registration_page_heading}
-              %span #{course_run.self_registration_description_text}
+              %h4= course_run.self_registration_page_heading
+              %span= course_run.self_registration_description_text
               %br
               %br
               %span {% trans "Complete the fields below. Required fields are noted by an asterisk" %} (
@@ -58,7 +58,7 @@
                 - csrf_token
                 - for field in form
                   - if field.id_for_label != "id_current_role_other"
-                    <label for="#{field.id_for_label}">#{field.label}</label>
+                    <label for="#{field.id_for_label}"> #{field.label}</label>
                   - if field.help_text and "options" in field.help_text
                     = field.help_text|safe
                   = field.errors

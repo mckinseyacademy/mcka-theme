@@ -33,13 +33,13 @@
       #participantsTopDetailsContainer
         .row
           .large-2.columns
-            .participantImage{ :style => 'background-image:url("={image_url_large}")'}
+            .participantImage{ :style => 'background-image:url("#{image_url_large}")'}
           .large-5.columns
             .participantNameAndLogin
               .participantFullName
-                ={full_name}
+                = full_name
               .participantLastLogin
-                {% trans "Last logged in:" %} ={custom_last_login}
+                {% trans "Last logged in:" %} #{custom_last_login}
           .large-2.columns
           .large-3.columns
             - if user.is_company_admin
@@ -89,12 +89,12 @@
             .participantFirstNameLabel.labelUniversal
               {% trans "First Name" %}
             .participantFirstNameValue
-              ={first_name}
+              = first_name
           .large-6.columns.participantLastName
             .participantLastNameLabel.labelUniversal
               {% trans "Last Name" %}
             .participantLastNameValue
-              ={last_name}
+              = last_name
         %hr
         .row
           .large-6.columns.participantUsername
@@ -102,7 +102,7 @@
               {% trans "Username" %}
             .participantUsernameValue
               - if is_active
-                ={username}
+                = username
               - else
                 &#8212;
           .large-6.columns.participantEmail
@@ -115,7 +115,7 @@
                   %a{:href => '/admin/participants/#{id}/reset_password', :target => '_self'}>
                     {% trans "Send reset password email" %}
             .participantEmailValue
-              ={email}
+              = email
         %hr
         .row
           .large-6.columns.participantCompany
@@ -124,10 +124,10 @@
             .participantCompanyValue
               - if user.is_internal_admin
                 %a.disabledATag{:href => '/admin/companies/#{company_id}', :data-id => '#{company_id}'}>
-                  ={company_name}
+                  = company_name
               - else
                 %a{:href => '/admin/companies/#{company_id}', :target => '_self', :data-id => '#{company_id}'}>
-                  ={company_name}
+                  = company_name
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
               {% trans "Gender" %}
@@ -146,7 +146,7 @@
               {% trans "Location" %}
             .participantLocationValue{:title => '#{location}'}
               - if is_active
-                ={location}
+                = location
               - else
                 &#8212;
           .large-6.columns.participantPermissions
@@ -311,16 +311,16 @@
         %a.button.radius.small{:href => '/admin/api/participants/#{id}/course_history/export_stats', :target => '_self'}>
           {% trans "Export Stats" %}
 
-  #participantDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+  #participantDetailsMainModal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
     %h2.modalTitle
     %p.lead
     %p.mainText
-    %a.close-reveal-modal{"aria-label" => "Close"}
+    %a.close-reveal-modal{"aria-label": "Close"}
       &#215;
 
-  #edit-status-modal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "true", :role => "dialog"}
+  #edit-status-modal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "true", :role => "dialog"}
 
-  #unenroll-user-modal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+  #unenroll-user-modal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
     %h2.modalTitle
     {% trans "Are you sure you want to unenroll this user?" %}
     %p.lead
@@ -332,12 +332,12 @@
         {% trans "Cancel" %}
     %p
       .error
-    %a.close-reveal-modal{"aria-label" => "Close"}
+    %a.close-reveal-modal{"aria-label": "Close"}
       &#215;
 
   #activation-link-modal.reveal-modal.large{"data-reveal": "true"}
 
-  #participantEnrollMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+  #participantEnrollMainModal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
     %h2.participantModalTitle
     .participantModalStatus
     %hr
@@ -348,5 +348,5 @@
         {% trans "Save Changes" %}
       %a.cancelChanges{:href => "#"}
         {% trans "Cancel" %}
-    %a.close-reveal-modal{"aria-label" => "Close"}
+    %a.close-reveal-modal{"aria-label": "Close"}
       &#215;

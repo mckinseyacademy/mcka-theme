@@ -221,7 +221,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         # The user then logs in and gets redirected back to Apros:
         response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
+        self.assertEqual(response['Location'], '/accounts/sso_reg/')
 
         # The form is bypassed completely, and the user gets redirected to the LMS then the
         # apros dashboard.
@@ -232,7 +232,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
              patch('accounts.views._process_access_key_and_remove_from_session'):
             response = self.client.get(response['Location'])
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/auth/complete/tpa-saml/')
+        self.assertEqual(response['Location'], '/auth/complete/tpa-saml/')
 
         # Then the user should be registered:
         expected_username = u'myself' if not with_existing_user else u'myself1'
@@ -253,7 +253,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         # The user arrives at reg finalization form without access key in session:
         response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_error/')
+        self.assertEqual(response['Location'], '/accounts/sso_error/')
         session = self.client.session
 
         self.assertIn('sso_error_details', session)
@@ -267,7 +267,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         # Setting up provider_data in session
         response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
+        self.assertEqual(response['Location'], '/accounts/sso_reg/')
 
         error_reason = "Duplicate user"
         http_error = urllib2.HTTPError("http://irrelevant", 404, error_reason, None, None)
@@ -474,7 +474,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         mock_finalize_sso_registration = self.apply_patch('accounts.views.finalize_sso_registration')
         request = self.factory.get('/accounts/finalize/')
         mock_user = Mock()
-        mock_user.is_authenticated = lambda: True
+        mock_user.is_authenticated = True
         self._setup_request(request, user=mock_user)
         response = sso_finalize(request)
         self.assertEqual('/home', response.url)
@@ -484,7 +484,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         mock_finalize_sso_registration = self.apply_patch('accounts.views.finalize_sso_registration')
         request = self.factory.get('/accounts/finalize/')
         mock_user = Mock()
-        mock_user.is_authenticated = lambda: False
+        mock_user.is_authenticated = False
         self._setup_request(request, user=mock_user)
         response = sso_finalize(request)
         mock_finalize_sso_registration.assert_called_with(request)

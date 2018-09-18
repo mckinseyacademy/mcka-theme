@@ -56,7 +56,7 @@
           %a{href: '#'}
             {% trans "Click here." %}
   - if messages
-    #support_success.reveal-modal.small{'data-reveal': None}
+    #support_success.reveal-modal.small{'data-reveal': ''}
       .close-reveal-modal
         %i.fa.fa-times-circle
       - for message in messages

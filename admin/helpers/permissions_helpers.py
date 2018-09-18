@@ -3,7 +3,7 @@ import functools
 from rest_framework import permissions
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
-from django.template import loader, RequestContext
+from django.template import loader
 from django.http import HttpResponseForbidden
 
 from api_client import user_api, organization_api
@@ -17,8 +17,7 @@ from admin.models import Client
 
 def permission_denied(request):
     template = loader.get_template('not_authorized.haml')
-    context = RequestContext(request, {'request_path': request.path})
-    return HttpResponseForbidden(template.render(context))
+    return HttpResponseForbidden(template.render({'request_path': request.path}, request))
 
 
 class InternalAdminCoursePermission(permissions.BasePermission):
@@ -35,7 +34,7 @@ class InternalAdminCoursePermission(permissions.BasePermission):
         """
         course_id = view.kwargs.get('course_id')
 
-        return not (request.user.is_authenticated() and
+        return not (request.user.is_authenticated and
                     request.user.is_internal_admin and not check_if_course_is_internal(course_id))
 
 
@@ -53,7 +52,7 @@ class InternalAdminUserPermission(permissions.BasePermission):
         """
         user_id = view.kwargs.get('user_id')
 
-        return not (request.user.is_authenticated() and
+        return not (request.user.is_authenticated and
                     request.user.is_internal_admin and not check_if_user_is_internal(user_id))
 
 
@@ -75,7 +74,7 @@ class CompanyAdminCompanyPermission(permissions.BasePermission):
         user_administrated_organizations = user_organization_permissions.get(PERMISSION_GROUPS.COMPANY_ADMIN, [])
 
         is_current_company_admin = company_id in [user_org.id for user_org in user_administrated_organizations]
-        unauthorized_user = request.user.is_authenticated() and request.user.is_company_admin and\
+        unauthorized_user = request.user.is_authenticated and request.user.is_company_admin and\
             not is_current_company_admin
 
         return not unauthorized_user
@@ -96,12 +95,12 @@ class CompanyAdminUserPermission(permissions.BasePermission):
         user_id = view.kwargs.get('user_id')
         company_id = view.kwargs.get('company_id')
 
-        if not request.user.is_authenticated() or not request.user.is_company_admin:
+        if not request.user.is_authenticated or not request.user.is_company_admin:
             return True
 
         if company_id:
             return not (
-                request.user.is_authenticated() and int(company_id)
+                request.user.is_authenticated and int(company_id)
                 not in [user_org.id for user_org in user_api.get_user_organizations(user_id)]
             )
         else:

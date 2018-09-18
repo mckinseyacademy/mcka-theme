@@ -26,7 +26,7 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 		request.META['HTTP_ACCEPT_LANGUAGE'] = language_code
 		request.LANGUAGE_CODE = 'jp'
 		request.session = {}
-		request.user = DottableDict({'id': 1, 'is_authenticated': lambda: True})
+		request.user = DottableDict({'id': 1, 'is_authenticated': True})
 		return request
 
 	@ddt.data(

@@ -3,11 +3,11 @@
   - for program_course in courses
     %li
       - if program_course.ended
-        %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
+        %a.course-name{"href": "#{program_course.nav_url}", "title": "#{program_course.name}", "class": "#{program_course.course_class}"}
           = program_course.name
         .status {% trans "Archived" %}
       - elif program_course.started
-        %a.course-name{href: "#{program_course.nav_url}", title: "#{program_course.name}", class: "#{program_course.course_class}"}
+        %a.course-name{"href": "#{program_course.nav_url}", "title": "#{program_course.name}", "class": "#{program_course.course_class}"}
           = program_course.name
         .status {% trans "In Progress" %}
       - else

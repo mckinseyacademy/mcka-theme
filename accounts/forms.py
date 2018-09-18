@@ -332,9 +332,8 @@ class UserNameInput(forms.TextInput):
         super(UserNameInput, self).__init__(attrs)
 
     def render(self, name, value, attrs=None):
-        value = ''
-        final_attrs = self.build_attrs(attrs, type=self.input_type, name=name)
-        final_attrs['value'] = force_text(self._format_value(value))
+        final_attrs = self.build_attrs(attrs, extra_attrs={'type': self.input_type, 'name': name})
+        final_attrs['value'] = ''
         return format_html('<input{0} />', flatatt(final_attrs))
 
 
@@ -513,7 +512,7 @@ class FpasswordForm(forms.Form):
 
     def save(self, domain_override=None,
              subject_template_name='registration/password_reset_subject.haml',
-             email_template_name='registration/password_reset_email.html',
+             email_template_name='registration/password_reset_email.haml',
              use_https=False, from_email=None, request=None):
         """
         Generates a one-use only link for resetting password and sends to the

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-07 09:14+0000\n"
+"POT-Creation-Date: 2018-09-18 07:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,7 @@ msgstr "يجب تحديد دورة!"
 
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
-#: static/js/views/admin/course_details_bulk_actions.js:275
+#: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:359
 #: static/js/views/admin/participantsinfo.js:120
 msgid "Course"
@@ -91,15 +91,15 @@ msgstr "البحث عن الكلمات الرئيسية"
 msgid "NoName"
 msgstr "بدون اسم"
 
-#: static/js/common/common_js.js:514
+#: static/js/common/common_js.js:515
 msgid "Send"
 msgstr "إرسال"
 
-#: static/js/common/common_js.js:744
+#: static/js/common/common_js.js:745
 msgid "Fetching data for file: %(filename)s"
 msgstr "نسبة جلب البيانات للملف: %(filename)s"
 
-#: static/js/common/common_js.js:856
+#: static/js/common/common_js.js:857
 msgid "%(value)s%"
 msgstr "%(value)s%"
 
@@ -377,7 +377,7 @@ msgid "Name"
 msgstr "الاسم"
 
 #: static/js/views/admin/course_details.js:30
-#: static/js/views/admin/course_details_bulk_actions.js:279
+#: static/js/views/admin/course_details_bulk_actions.js:281
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:363
@@ -446,19 +446,19 @@ msgstr[1] "% (العدد) الدورات ذات العلامة مع % (من تف
 msgid "Progress: %(progress)s %"
 msgstr "التقدم: %(progress)s %"
 
-#: static/js/views/admin/course_details.js:409
+#: static/js/views/admin/course_details.js:410
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr "دورات محددة: %(selected)s، نجاح: %(successful)s، فشل: %(failed)s"
 
-#: static/js/views/admin/course_details.js:460
+#: static/js/views/admin/course_details.js:461
 msgid "This tag name cannot have more than 30 characters!"
 msgstr "لا يمكن أن يحتوي اسم العلامة على أكثر من 30 حرفاً!"
 
-#: static/js/views/admin/course_details.js:467
+#: static/js/views/admin/course_details.js:468
 msgid "This tag name cannot contain non-alphanumeric characters!"
 msgstr "لا يمكن أن يحتوي اسم العلامة على رموز حرفية ورقمية!"
 
-#: static/js/views/admin/course_details.js:507
+#: static/js/views/admin/course_details.js:508
 msgid "Couldn't add tag to course!"
 msgstr "لا يمكن إضافة علامة للدورة!"
 
@@ -471,8 +471,8 @@ msgid "Unenroll Participants"
 msgstr "إلغاء التحاق المشتركين"
 
 #: static/js/views/admin/course_details_bulk_actions.js:117
-#: static/js/views/admin/course_details_bulk_actions.js:178
-#: static/js/views/admin/course_details_bulk_actions.js:265
+#: static/js/views/admin/course_details_bulk_actions.js:179
+#: static/js/views/admin/course_details_bulk_actions.js:267
 msgid "Selected: %(selectedRows)s, Successful: 0, Failed: 0"
 msgstr "دورات محددة: %(selectedRows)s، نجاح: 0 فشل  0"
 
@@ -481,9 +481,9 @@ msgid "Unenroll all selected participants from this course?"
 msgstr "إلغاء التحاق جميع المشاركين المختارين من الدورة"
 
 #: static/js/views/admin/course_details_bulk_actions.js:133
-#: static/js/views/admin/course_details_bulk_actions.js:198
-#: static/js/views/admin/course_details_bulk_actions.js:299
-#: static/js/views/admin/course_details_bulk_actions.js:710
+#: static/js/views/admin/course_details_bulk_actions.js:199
+#: static/js/views/admin/course_details_bulk_actions.js:301
+#: static/js/views/admin/course_details_bulk_actions.js:715
 msgid ""
 "You need to select at least one participant to be able to apply bulk actions."
 msgstr "يجب تحديد مشارك واحد على الأقل ليتمكن من تطبيق الإجراءات الكبرى."
@@ -494,83 +494,83 @@ msgstr "يجب تحديد مشارك واحد على الأقل ليتمكن م�
 msgid "Unenroll"
 msgstr "إلغاء الالتحاق"
 
-#: static/js/views/admin/course_details_bulk_actions.js:177
+#: static/js/views/admin/course_details_bulk_actions.js:178
 msgid "Change Status"
 msgstr "تغيير الحالة"
 
-#: static/js/views/admin/course_details_bulk_actions.js:181
+#: static/js/views/admin/course_details_bulk_actions.js:182
 msgid "Change status of all selected participants to:"
 msgstr "تغيير حالة جميع المشاركين المختارين إلى:"
 
-#: static/js/views/admin/course_details_bulk_actions.js:183
-#: static/js/views/admin/course_details_bulk_actions.js:281
+#: static/js/views/admin/course_details_bulk_actions.js:184
+#: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:365
 #: static/js/views/admin/participantsinfo.js:133
 msgid "Participant"
 msgstr "المشاركون"
 
-#: static/js/views/admin/course_details_bulk_actions.js:184
-#: static/js/views/admin/course_details_bulk_actions.js:282
+#: static/js/views/admin/course_details_bulk_actions.js:185
+#: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:366
 #: static/js/views/admin/participantsinfo.js:135
 msgid "Observer"
 msgstr "المراقب"
 
-#: static/js/views/admin/course_details_bulk_actions.js:185
-#: static/js/views/admin/course_details_bulk_actions.js:283
+#: static/js/views/admin/course_details_bulk_actions.js:186
+#: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:367
 #: static/js/views/admin/participantsinfo.js:134
 msgid "TA"
 msgstr "مساعد مدرّس"
 
-#: static/js/views/admin/course_details_bulk_actions.js:202
+#: static/js/views/admin/course_details_bulk_actions.js:203
 msgid "Save Changes"
 msgstr "حفظ التغييرات"
 
-#: static/js/views/admin/course_details_bulk_actions.js:223
-#: static/js/views/admin/course_details_bulk_actions.js:327
-#: static/js/views/admin/course_details_bulk_actions.js:333
+#: static/js/views/admin/course_details_bulk_actions.js:224
+#: static/js/views/admin/course_details_bulk_actions.js:329
+#: static/js/views/admin/course_details_bulk_actions.js:335
 #: static/js/views/admin/participant_details_edit_info.js:400
 #: static/js/views/admin/participant_details_edit_info.js:406
 msgid "You need to select status!"
 msgstr "يجب تحديد حالة!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:264
+#: static/js/views/admin/course_details_bulk_actions.js:266
 #: static/js/views/admin/participant_details_edit_info.js:354
 msgid "Select Course"
 msgstr "اختر دورة"
 
-#: static/js/views/admin/course_details_bulk_actions.js:268
+#: static/js/views/admin/course_details_bulk_actions.js:270
 msgid "%(selectedRows)s Participants will be enroll in course selected below."
 msgid_plural ""
 "%(selectedRows)s Participant will be enroll in course selected below."
 msgstr[0] "%(selectedRows)s من المشاركين سيسجلون في الدورة المحددة أدناه."
 msgstr[1] "%(selectedRows)s مشارك سيسجل في الدورة المحددة أدناه."
 
-#: static/js/views/admin/course_details_bulk_actions.js:303
+#: static/js/views/admin/course_details_bulk_actions.js:305
 msgid "Enroll Participants"
 msgstr "تسجيل المشاركين"
 
-#: static/js/views/admin/course_details_bulk_actions.js:338
-#: static/js/views/admin/course_details_bulk_actions.js:342
+#: static/js/views/admin/course_details_bulk_actions.js:340
+#: static/js/views/admin/course_details_bulk_actions.js:344
 #: static/js/views/admin/participant_details_edit_info.js:411
 #: static/js/views/admin/participant_details_edit_info.js:415
 msgid "You need to select course!"
 msgstr "يجب تحديد دورة!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:426
+#: static/js/views/admin/course_details_bulk_actions.js:429
 msgid "Download"
 msgstr "تنزيل"
 
-#: static/js/views/admin/course_details_bulk_actions.js:426
+#: static/js/views/admin/course_details_bulk_actions.js:429
 msgid "Progress : 0%"
 msgstr "التقدم: 0%"
 
-#: static/js/views/admin/course_details_bulk_actions.js:427
+#: static/js/views/admin/course_details_bulk_actions.js:430
 msgid "Download CSV File"
 msgstr "تنزيل ملفات CSV"
 
-#: static/js/views/admin/course_details_bulk_actions.js:463
+#: static/js/views/admin/course_details_bulk_actions.js:467
 msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
@@ -578,108 +578,108 @@ msgstr ""
 "وتشمل بينًا مفصلًا حول نسبة التقدم المحرز لكل درس (ملاحظة: سيستغرق التصدير "
 "مزيدًا من الوقت)"
 
-#: static/js/views/admin/course_details_bulk_actions.js:469
+#: static/js/views/admin/course_details_bulk_actions.js:473
 msgid "We'll e-mail you when your report is ready to download."
 msgstr ""
 "سنتواصل معك عبر البريد الإلكتروني عندما يكون التقرير الخاص بك جاهزًا للتحميل."
 
-#: static/js/views/admin/course_details_bulk_actions.js:472
+#: static/js/views/admin/course_details_bulk_actions.js:476
 msgid "Exporting Stats for All Users"
 msgstr "إحصائيات التصدير لكافة المستخدمين"
 
-#: static/js/views/admin/course_details_bulk_actions.js:473
+#: static/js/views/admin/course_details_bulk_actions.js:477
 msgid "Export Report"
 msgstr "تصدير التقرير"
 
-#: static/js/views/admin/course_details_bulk_actions.js:512
+#: static/js/views/admin/course_details_bulk_actions.js:517
 msgid "Error initiating the report generation. Please retry later."
 msgstr "حدث خطأ أثناء إعداد التقرير، يرجى إعادة المحاولةلاحقًا."
 
-#: static/js/views/admin/course_details_bulk_actions.js:541
+#: static/js/views/admin/course_details_bulk_actions.js:546
 msgid "Download Notifications CSV"
 msgstr "تنزيل إخطارات CSV"
 
-#: static/js/views/admin/course_details_bulk_actions.js:626
+#: static/js/views/admin/course_details_bulk_actions.js:631
 msgid "Group Work: %(label)s"
 msgstr "عمل المجموعة: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:654
+#: static/js/views/admin/course_details_bulk_actions.js:659
 msgid "Assessment: %(label)s"
 msgstr "التقييم: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:680
+#: static/js/views/admin/course_details_bulk_actions.js:685
 msgid "Task failed to execute. Please retry later."
 msgstr "فشل في تنفيذ المهمة/ الرجاء إعادة المحاولة"
 
-#: static/js/views/admin/course_details_bulk_actions.js:697
+#: static/js/views/admin/course_details_bulk_actions.js:702
 msgid "Successfully Enrolled in 1 Course"
 msgstr "تم الالتحاق بنجاح في دورة واحدة"
 
-#: static/js/views/admin/course_details_bulk_actions.js:699
+#: static/js/views/admin/course_details_bulk_actions.js:704
 msgid "What would you like to do now?"
 msgstr "ماذا تريد أن تفعل الآن؟"
 
-#: static/js/views/admin/course_details_bulk_actions.js:700
+#: static/js/views/admin/course_details_bulk_actions.js:705
 msgid "Go to %(course_id)s Course"
 msgstr "الانتقال إلى الدورة %(course_id)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:702
+#: static/js/views/admin/course_details_bulk_actions.js:707
 msgid "Send Course Intro Email"
 msgstr "إرسال بريد إلكتروني يتضمن مقدمة عن الدورة"
 
-#: static/js/views/admin/course_details_bulk_actions.js:704
+#: static/js/views/admin/course_details_bulk_actions.js:709
 msgid "Enroll this list in another course"
 msgstr "تسجيل هذه القائمة في دورة أخرى"
 
-#: static/js/views/admin/course_details_bulk_actions.js:716
+#: static/js/views/admin/course_details_bulk_actions.js:721
 msgid "I'm Done"
 msgstr "لقد انتهيت"
 
-#: static/js/views/admin/course_details_bulk_actions.js:736
+#: static/js/views/admin/course_details_bulk_actions.js:741
 msgid "Successfully deleted template!"
 msgstr "تم حذف النموذج بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:743
+#: static/js/views/admin/course_details_bulk_actions.js:748
 msgid "Successfully added new template!"
 msgstr "تمت إضافة نموذج جديد بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:756
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Successfully updated template!"
 msgstr "تم تحديث النموذج بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:761
+#: static/js/views/admin/course_details_bulk_actions.js:766
 msgid "Email Preview Success!"
 msgstr "استعراض البريد الإلكتروني بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:761
+#: static/js/views/admin/course_details_bulk_actions.js:766
 msgid "Successfully sent preview email!"
 msgstr "تم إرسال البريد الإلكتروني للاستعراض بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:764
+#: static/js/views/admin/course_details_bulk_actions.js:769
 msgid "Email Success!"
 msgstr "البريد الإلكتروني ناجح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:764
+#: static/js/views/admin/course_details_bulk_actions.js:769
 msgid "Successfully sent email!"
 msgstr "إرسال البريد الإلكتروني بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:806
+#: static/js/views/admin/course_details_bulk_actions.js:811
 msgid "Preview Email!"
 msgstr "البريد الإلكتروني الخاص بالاستعراض!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:806
+#: static/js/views/admin/course_details_bulk_actions.js:811
 msgid "Please enter preview email!"
 msgstr "الرجاء إدخال البريد الإلكتروني الخاص بالاستعراض!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:826
+#: static/js/views/admin/course_details_bulk_actions.js:831
 msgid "Please enter new template name!"
 msgstr "الرجاء إدخال اسم نموذج جديد!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:841
+#: static/js/views/admin/course_details_bulk_actions.js:846
 msgid "Please enter updated template name or leave the old one!"
 msgstr "الرجاء إدخال اسم النموذج المحدث أو ترك القديم!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:854
+#: static/js/views/admin/course_details_bulk_actions.js:859
 msgid "You are about to delete email template. Are you sure?"
 msgstr "أنت على وشك حذف نموذج البريد الإلكتروني. هل أنت متأكد؟"
 

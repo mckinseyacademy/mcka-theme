@@ -59,7 +59,7 @@
                 .progress-radial.gradient
                 .triangle
               .cohort-average
-                .label-4 cohort average = ={cohort_proficiency}
+                .label-4 {% trans "cohort average" %} = #{cohort_proficiency}
               %br
               %p.style-5
                 {% trans "Note: Grades may not appear until later in the course depending on number of graded items and their location within course content." %}
@@ -76,4 +76,4 @@
                   .band-2{class: "{% if company_engagement >= 60 %}filled{% endif %}"}
                   .total= company_engagement
                 .cohort-average
-                  .label-4 cohort average = ={cohort_engagement} points
+                  .label-4 {% trans "cohort average" %} = #{cohort_engagement} points

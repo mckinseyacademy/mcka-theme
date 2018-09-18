@@ -41,7 +41,7 @@
               - for member in project_group.members
                 - include "courses/group_work/group_member.haml" with group_member=member data_reveal_id="email-member"
               - if project_group.id
-                %a.email-team{href: "#", data-reveal-id: 'email-team'}
+                %a.email-team{"href": "#", 'data-reveal-id': 'email-team'}
                   {% trans "Email your group" %}
             %hr
             - if ta_user.id and not course.ended

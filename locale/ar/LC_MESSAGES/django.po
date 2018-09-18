@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-07 09:14+0000\n"
+"POT-Creation-Date: 2018-09-18 07:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1085,28 +1085,28 @@ msgstr "زامبيا"
 msgid "Zimbabwe"
 msgstr "زيمبابوي"
 
-#: accounts/forms.py:357
+#: accounts/forms.py:356
 #, python-brace-format
 msgid "Email address {html_span}"
 msgstr "عنوان البريد الإلكتروني {html_span}"
 
-#: accounts/forms.py:368
+#: accounts/forms.py:367
 #, python-brace-format
 msgid "Username {html_span}"
 msgstr "اسم المستخدم {html_span}"
 
-#: accounts/forms.py:375 accounts/forms.py:394
+#: accounts/forms.py:374 accounts/forms.py:393
 #, python-brace-format
 msgid "Password {html_span}"
 msgstr "كلمة المرور {html_span}"
 
-#: accounts/forms.py:386
+#: accounts/forms.py:385
 #, python-brace-format
 msgid "Username or Email {html_span}"
 msgstr "اسم المستخدم أو البريد الإلكتروني {html_span}"
 
-#: accounts/forms.py:406 accounts/forms.py:481 accounts/forms.py:499
-#: accounts/forms.py:597 admin/controller.py:811 admin/views.py:2335
+#: accounts/forms.py:405 accounts/forms.py:480 accounts/forms.py:498
+#: accounts/forms.py:596 admin/controller.py:811 admin/views.py:2334
 #: marketing/forms.py:49 marketing/forms.py:93 marketing/forms.py:127
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1117,7 +1117,7 @@ msgstr "اسم المستخدم أو البريد الإلكتروني {html_spa
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
-#: accounts/forms.py:412
+#: accounts/forms.py:411
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later and cannot "
@@ -1126,7 +1126,7 @@ msgstr ""
 "اسم مستخدم عام {html_span_start}لا يمكن تغييره لاحقًا كما لا يمكن أن يحوي على "
 "أحرف بغير اللغة الإنجليزية{html_span_end}"
 
-#: accounts/forms.py:423 accounts/forms.py:609
+#: accounts/forms.py:422 accounts/forms.py:608
 #, python-brace-format
 msgid ""
 "Password {html_span_start} Must be at least 8 characters and include upper "
@@ -1135,34 +1135,34 @@ msgstr ""
 "كلمة المرور{html_span_start} يجب أن تكون 8 أحرف على الأقل وتشمل الأحرف "
 "الصغيرة والكبيرة-بالإضافة إلى أرقام أو أحرف خاصة.{html_span_end}"
 
-#: accounts/forms.py:431 admin/views.py:2335 marketing/forms.py:135
+#: accounts/forms.py:430 admin/views.py:2334 marketing/forms.py:135
 #: templates/admin/participants/participant_details.haml:123
 #: templates/admin/participants/participants_list.haml:16
 #: templates/admin/permissions/list.haml:36
 msgid "Company"
 msgstr "الشركة"
 
-#: accounts/forms.py:432 admin/controller.py:811
+#: accounts/forms.py:431 admin/controller.py:811
 msgid "Full Name"
 msgstr "الاسم الكامل"
 
-#: accounts/forms.py:433 admin/controller.py:811 marketing/forms.py:142
+#: accounts/forms.py:432 admin/controller.py:811 marketing/forms.py:142
 #: templates/accounts/user_profile.haml:24
 #: templates/admin/learner_dashboard/discovery_list.haml:12
 #: templates/admin/learner_dashboard/element_list.haml:13
 msgid "Title"
 msgstr "العنوان"
 
-#: accounts/forms.py:437
+#: accounts/forms.py:436
 #, python-brace-format
 msgid "City {html_span}"
 msgstr "المدينة {html_span}"
 
-#: accounts/forms.py:441
+#: accounts/forms.py:440
 msgid "Country"
 msgstr "البلد"
 
-#: accounts/forms.py:445 accounts/forms.py:622
+#: accounts/forms.py:444 accounts/forms.py:621
 #, python-brace-format
 msgid ""
 "I agree to the {html_anchor_start} Terms of Service {html_anchor_end} and "
@@ -1171,45 +1171,45 @@ msgstr ""
 "أوافق على {html_anchor_start}شروط الخدمة {html_anchor_end}"
 "وسياسة{html_anchor_second} الخصوصية {html_anchor_end} {html_span}"
 
-#: accounts/forms.py:458 accounts/forms.py:634
+#: accounts/forms.py:457 accounts/forms.py:633
 msgid "You must accept terms of service in order to continue"
 msgstr "يجب عليك قبول شروط الخدمة للاستمرار"
 
-#: accounts/forms.py:508
+#: accounts/forms.py:507
 msgid "The account associated with this email is not activated yet"
 msgstr "لم يتم تفعيل الحساب المقترن مع هذا البريد الإلكتروني حتى الآن"
 
-#: accounts/forms.py:546
+#: accounts/forms.py:545
 msgid "The two password fields didn't match."
 msgstr "لم تتطابق كلمتا المرور."
 
-#: accounts/forms.py:547
+#: accounts/forms.py:546
 msgid "Password doesn't match creation criteria."
 msgstr "كلمة المرور لا تطابق معايير إنشاء الحسابات."
 
-#: accounts/forms.py:549
+#: accounts/forms.py:548
 msgid "New password"
 msgstr "كلمة مرور جديدة"
 
-#: accounts/forms.py:551
+#: accounts/forms.py:550
 msgid "New password confirmation"
 msgstr "تأكيد كلمة المرور الجديدة"
 
-#: accounts/forms.py:581 admin/forms.py:165
+#: accounts/forms.py:580 admin/forms.py:165
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "صيغ مقبولة: JPG, PNG و GIF"
 
-#: accounts/forms.py:586 templates/admin/course_run/view.haml:63
+#: accounts/forms.py:585 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:90
 msgid "First Name"
 msgstr "الاسم الأول"
 
-#: accounts/forms.py:587
+#: accounts/forms.py:586
 #: templates/admin/participants/participant_details.haml:95
 msgid "Last Name"
 msgstr "اسم العائلة"
 
-#: accounts/forms.py:601
+#: accounts/forms.py:600
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later. "
@@ -1218,32 +1218,32 @@ msgstr ""
 "اسم المستخدم العام{html_span_start} الذي لا يمكن تغييره في وقت "
 "لاحق{html_span_end}"
 
-#: accounts/forms.py:668
+#: accounts/forms.py:667
 #, python-brace-format
 msgid "First Name {html_span}"
 msgstr "الاسم الأول {html_span}"
 
-#: accounts/forms.py:672
+#: accounts/forms.py:671
 #, python-brace-format
 msgid "Last Name {html_span}"
 msgstr "الاسم العائلة{html_span}"
 
-#: accounts/forms.py:676
+#: accounts/forms.py:675
 #, python-brace-format
 msgid "Company Name {html_span}"
 msgstr "اسم الشركة {html_span}"
 
-#: accounts/forms.py:680
+#: accounts/forms.py:679
 #, python-brace-format
 msgid "Company Email {html_span}"
 msgstr "البريد الإلكتروني للشركة {html_span}"
 
-#: accounts/forms.py:684
+#: accounts/forms.py:683
 #, python-brace-format
 msgid "Current Role {html_span}"
 msgstr "الدور الحالي {html_span}"
 
-#: accounts/forms.py:688
+#: accounts/forms.py:687
 #, python-brace-format
 msgid ""
 "{html_div_start}Note: personal email addresses will not be "
@@ -1252,47 +1252,47 @@ msgstr ""
 "{html_div_start}ملاحظة: عناوين البريد الإلكتروني الشخصية لن تتم "
 "معالجتها{html_div_end}"
 
-#: accounts/forms.py:694 accounts/forms.py:700
+#: accounts/forms.py:693 accounts/forms.py:699
 #, python-brace-format
 msgid ""
 "{html_div_start}(please choose one of the following options) {html_div_end}"
 msgstr "{html_div_start}(الرجاء اختيار أحد الخيارات التالية) {html_div_end}"
 
-#: accounts/forms.py:720 accounts/forms.py:728
+#: accounts/forms.py:719 accounts/forms.py:727
 msgid "Special characters or numbers are not valid."
 msgstr "الأحرف الخاصة أو أرقام غير صالحة."
 
-#: accounts/forms.py:737
+#: accounts/forms.py:736
 msgid "Email must be a string."
 msgstr "البريد الإلكتروني يجب أن يكون سلسلة."
 
-#: accounts/forms.py:742
+#: accounts/forms.py:741
 #, python-brace-format
 msgid "Email '{email}' must be at least {min} characters long"
 msgstr "البريد الإلكتروني '{email}' يجب أن يضم على الأقل{min} (عدد) حرفًا"
 
-#: accounts/forms.py:749
+#: accounts/forms.py:748
 #, python-brace-format
 msgid "Email '{email}' must be at most {max} characters long"
 msgstr "البريد الإلكتروني '{email}' يجب أن يضم {max} حرفًا على الأقل"
 
-#: accounts/forms.py:759
+#: accounts/forms.py:758
 msgid "This email address has already been registered."
 msgstr "عنوان البريد الإلكتروني هذا قد تم تسجيله سابقًا"
 
-#: accounts/forms.py:765
+#: accounts/forms.py:764
 msgid "Email you provided is not allowed."
 msgstr "البريد الإلكتروني الذي وفّرته غير مسموح به."
 
-#: accounts/forms.py:767
+#: accounts/forms.py:766
 msgid "Please enter a valid company email address."
 msgstr "الرجاء إدخال عنوان بريد إلكتروني صالح للشركة."
 
-#: accounts/forms.py:785
+#: accounts/forms.py:784
 msgid "Special characters are not valid."
 msgstr "الأحرف الخاصة غير صالحة."
 
-#: accounts/forms.py:804
+#: accounts/forms.py:803
 msgid "Please enter a valid Role."
 msgstr "الرجاء إدخال دور متوفر."
 
@@ -1374,20 +1374,20 @@ msgstr ""
 "ملف تعريف ارتباط المصادقة مفقود. قد تكون جلسة العمل الخاصة بك قد انتهت. "
 "الرجاء البدء من جديد."
 
-#: accounts/views.py:854
+#: accounts/views.py:853
 msgid "Enter new password"
 msgstr "أدخل كلمة المرور الجديدة"
 
-#: accounts/views.py:871
+#: accounts/views.py:870
 msgid "Password reset unsuccessful"
 msgstr "إعادة تعيين كلمة المرور غير ناجحة"
 
-#: accounts/views.py:969 templates/accounts/activate.haml:16
+#: accounts/views.py:961 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45 templates/layout.haml:266
 msgid "Welcome to McKinsey Academy"
 msgstr "مرحبا بكم في أكاديمية ماكنزي"
 
-#: accounts/views.py:970
+#: accounts/views.py:962
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1396,7 +1396,7 @@ msgstr ""
 "سيتم تشغيل البرنامج الخاص بك خلال {days}أيام. الرجاء استكشاف الموقع للتعرف "
 "على المزيد حول التجربة."
 
-#: accounts/views.py:974
+#: accounts/views.py:966
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1405,12 +1405,12 @@ msgstr ""
 "تبدأ الدورة التدريبية الخاصة بك خلال{days} أيام، قبل بدء الدورة، يمكنك "
 "استكشاف هذا الموقع لمعرفة المزيد حول ما يمكن توقعه."
 
-#: accounts/views.py:1117
+#: accounts/views.py:1109
 msgid "Enter your full name"
 msgstr "أدخل اسمك بالكامل"
 
-#: accounts/views.py:1119 accounts/views.py:1142 admin/views.py:1841
-#: admin/views.py:1875 admin/views.py:4191
+#: accounts/views.py:1111 accounts/views.py:1134 admin/views.py:1840
+#: admin/views.py:1874 admin/views.py:4190
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
 #: templates/admin/course_meta_content/item_detail.haml:16
@@ -1422,23 +1422,23 @@ msgstr "أدخل اسمك بالكامل"
 msgid "Save"
 msgstr "حفظ"
 
-#: accounts/views.py:1140
+#: accounts/views.py:1132
 msgid "Enter your title"
 msgstr "أدخل منصبك"
 
-#: accounts/views.py:1192 accounts/views.py:1222
+#: accounts/views.py:1184 accounts/views.py:1214
 msgid "Initial"
 msgstr "الأولى"
 
-#: accounts/views.py:1219
+#: accounts/views.py:1211
 msgid "Course Closed"
 msgstr "دورة مغلقة"
 
-#: accounts/views.py:1228
+#: accounts/views.py:1220
 msgid "Registered"
 msgstr "مسجلة"
 
-#: accounts/views.py:1230
+#: accounts/views.py:1222
 msgid "Error"
 msgstr "خطأ"
 
@@ -1520,7 +1520,7 @@ msgstr "المشروع"
 msgid "Client Name"
 msgstr "اسم العميل"
 
-#: admin/controller.py:803 admin/views.py:4002 admin/views.py:4100
+#: admin/controller.py:803 admin/views.py:4001 admin/views.py:4099
 #: certificates/models.py:88 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "معرّف الدورة"
@@ -1541,7 +1541,7 @@ msgstr "% من التقدم"
 msgid "Engagement"
 msgstr "المشاركة"
 
-#: admin/controller.py:811 admin/views.py:4002
+#: admin/controller.py:811 admin/views.py:4001
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:70
 msgid "Proficiency"
@@ -1556,7 +1556,7 @@ msgstr "الانتهاء من الدورة التدريبية"
 msgid "0%"
 msgstr "0%"
 
-#: admin/controller.py:834 admin/views.py:928 admin/views.py:937
+#: admin/controller.py:834 admin/views.py:927 admin/views.py:936
 msgid "{}%"
 msgstr "{}%"
 
@@ -1699,19 +1699,19 @@ msgstr "لقد قمت بإرسال مفتاح مهمة غير صحيح!"
 msgid "There are no users in organization!"
 msgstr "لا يوجد مستخدمون في المؤسسة!"
 
-#: admin/controller.py:2287 admin/controller.py:2288 admin/views.py:3574
-#: admin/views.py:3575 admin/views.py:3731 admin/views.py:5531
+#: admin/controller.py:2287 admin/controller.py:2288 admin/views.py:3573
+#: admin/views.py:3574 admin/views.py:3730 admin/views.py:5530
 msgid "No company"
 msgstr "لا توجد أي شركة"
 
-#: admin/controller.py:2305 admin/views.py:3579 admin/views.py:4059
-#: admin/views.py:4086 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2305 admin/views.py:3578 admin/views.py:4058
+#: admin/views.py:4085 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/mobile_apps/company_app_details.haml:46
 msgid "Yes"
 msgstr "نعم"
 
-#: admin/controller.py:2307 admin/views.py:3581 admin/views.py:4061
-#: admin/views.py:4065 admin/views.py:4088 admin/views.py:4092
+#: admin/controller.py:2307 admin/views.py:3580 admin/views.py:4060
+#: admin/views.py:4064 admin/views.py:4087 admin/views.py:4091
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
@@ -1790,28 +1790,28 @@ msgstr "يجب أن يبدأ الرمز السداسي بـ # ومتبوعًا �
 msgid "Enter new email address"
 msgstr "أدخل عنوان البريد الإلكتروني الجديد"
 
-#: admin/forms.py:120 admin/views.py:4225
+#: admin/forms.py:120 admin/views.py:4224
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "مساعد مدرّس"
 
-#: admin/forms.py:120 admin/views.py:4226
+#: admin/forms.py:120 admin/views.py:4225
 msgid "OBSERVER"
 msgstr "المراقب"
 
-#: admin/forms.py:144 admin/views.py:4227
+#: admin/forms.py:144 admin/views.py:4226
 msgid "ADMIN"
 msgstr "المشرف"
 
-#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4230
+#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4229
 msgid "COURSE OPS"
 msgstr "خيارات الدورة"
 
-#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4229
+#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4228
 msgid "INTERNAL ADMIN"
 msgstr "المشرف الداخلي"
 
-#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4228
+#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4227
 msgid "COMPANY ADMIN"
 msgstr "مسؤول الشركة"
 
@@ -1840,8 +1840,8 @@ msgstr "موضوع الدورة"
 msgid "Name {}"
 msgstr "الاسم {}"
 
-#: admin/forms.py:228 admin/views.py:1982 admin/views.py:4002
-#: admin/views.py:4100 templates/admin/program/list.haml:25
+#: admin/forms.py:228 admin/views.py:1981 admin/views.py:4001
+#: admin/views.py:4099 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:63
 #: templates/header.haml:101
@@ -1906,7 +1906,7 @@ msgid "Article"
 msgstr "المقال"
 
 #: admin/models.py:590 templates/courses/content_page/lesson_menu.haml:9
-#: templates/courses/content_page/lesson_menu.haml:15
+#: templates/courses/content_page/lesson_menu.haml:16
 #: templates/courses/content_page/lesson_pager.haml:10
 #: templates/courses/content_page/lesson_pager.haml:28
 #: templates/courses/course_lessons.haml:11
@@ -1926,7 +1926,7 @@ msgstr "الدرس"
 msgid "Module"
 msgstr "الوحدة النمطية"
 
-#: admin/models.py:592 admin/views.py:4002 admin/views.py:4100
+#: admin/models.py:592 admin/views.py:4001 admin/views.py:4099
 #: templates/admin/participants/participants_list.haml:18
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
@@ -1995,94 +1995,94 @@ msgstr "إحصائيات المشارك {} جاهزة للتحميل"
 msgid "Participant stats for {} did not generate"
 msgstr "إحصائيات المشارك {} جاهزة للتحميل"
 
-#: admin/views.py:551
+#: admin/views.py:550
 msgid "Edit Email"
 msgstr "تحرير البريد الإلكتروني"
 
-#: admin/views.py:589
+#: admin/views.py:588
 msgid "Un-enroll from this course"
 msgstr "إلغاء الالتحاق بهذه الدورة"
 
-#: admin/views.py:590
+#: admin/views.py:589
 msgid "Un-enroll from entire program "
 msgstr "إلغاء الالتحاق بالبرنامج كاملًا"
 
-#: admin/views.py:855
+#: admin/views.py:854
 msgid "% Progress"
 msgstr "% التقدم"
 
-#: admin/views.py:856
+#: admin/views.py:855
 msgid "% Progress (Engaged)"
 msgstr "% من التقدم (مشترك)"
 
-#: admin/views.py:923
+#: admin/views.py:922
 msgid "GW_{}"
 msgstr "العمل الجماعي_{}"
 
-#: admin/views.py:926
+#: admin/views.py:925
 msgid "Group Work: {}"
 msgstr "العمل الجماعي: {}"
 
-#: admin/views.py:932
+#: admin/views.py:931
 msgid "AS_{}"
 msgstr "التقييم_{}"
 
-#: admin/views.py:935
+#: admin/views.py:934
 msgid "Assessment: {}"
 msgstr "التقييم: {}"
 
-#: admin/views.py:1115
+#: admin/views.py:1114
 msgid "No such task!"
 msgstr "لا توجد مثل هذه المهمة!"
 
-#: admin/views.py:1200 admin/views.py:1239
+#: admin/views.py:1199 admin/views.py:1238
 msgid "please fix the problems indicated below."
 msgstr "الرجاء إصلاح المشاكل المشار إليها أدناه."
 
-#: admin/views.py:1285
+#: admin/views.py:1284
 msgid "Client"
 msgstr "العميل"
 
-#: admin/views.py:1286
+#: admin/views.py:1285
 msgid "Clients"
 msgstr "العملاء"
 
-#: admin/views.py:1345 admin/views.py:1392
+#: admin/views.py:1344 admin/views.py:1391
 msgid "Save Client"
 msgstr "حفظ العميل"
 
-#: admin/views.py:1404
+#: admin/views.py:1403
 #, python-brace-format
 msgid "Successfully processed {processed} of {total} record"
 msgid_plural "Successfully processed {processed} of {total} records"
 msgstr[0] "معالجة السجل{processed} بنجاح{total}"
 msgstr[1] "نجاح {processed}معالجة{total} السجلات"
 
-#: admin/views.py:1581
+#: admin/views.py:1580
 msgid "Bad request, The Image type is not valid."
 msgstr "طلب غير صحيح، نوع الصورة غير صحيح."
 
-#: admin/views.py:1593
+#: admin/views.py:1592
 msgid "Could not delete the image, Please try later"
 msgstr "يتعذر إزالة الصورة، يرجى إعادة المحاولة في وقت لاحق."
 
-#: admin/views.py:1743
+#: admin/views.py:1742
 msgid "Contact has been removed."
 msgstr "لقد تمت إزالة جهة الاتصال."
 
-#: admin/views.py:1759 admin/views.py:1765
+#: admin/views.py:1758 admin/views.py:1764
 msgid "Invalid Course Run"
 msgstr "تشغيل المسار غير صالح"
 
-#: admin/views.py:1761
+#: admin/views.py:1760
 msgid "Invalid Program ID"
 msgstr "معرف البرنامج غير صالح"
 
-#: admin/views.py:1765
+#: admin/views.py:1764
 msgid "Course: {}"
 msgstr "الدورة: {}"
 
-#: admin/views.py:1791
+#: admin/views.py:1790
 msgid ""
 "\n"
 "            If this client should use SSO: DevOps must configure and enable "
@@ -2101,116 +2101,116 @@ msgstr ""
 "الحقل فارغًا.\n"
 "        "
 
-#: admin/views.py:1834 admin/views.py:1835 admin/views.py:1869
+#: admin/views.py:1833 admin/views.py:1834 admin/views.py:1868
 msgid "- Select -"
 msgstr "-اختر-"
 
-#: admin/views.py:1894 admin/views.py:1896
+#: admin/views.py:1893 admin/views.py:1895
 msgid "Access Key couldn't be created, please check course ID!"
 msgstr "تعذ إنشاء مفتاح الوصول، الرجاء التحقق من معرّف الدورة!"
 
-#: admin/views.py:1895
+#: admin/views.py:1894
 msgid "Access Key created successfully!"
 msgstr "تم إنشاء مفتاح الوصول بنجاح!"
 
-#: admin/views.py:1909
+#: admin/views.py:1908
 msgid "Access Key"
 msgstr "مفتاح الوصول"
 
-#: admin/views.py:1931
+#: admin/views.py:1930
 msgid "Send"
 msgstr "إرسال"
 
-#: admin/views.py:1955
+#: admin/views.py:1954
 msgid "This student hasn't been added to any programs yet."
 msgstr "لم تتم إضافة هذا الطالب إلى أي برامج بعد."
 
-#: admin/views.py:1966
+#: admin/views.py:1965
 msgid "fail"
 msgstr "فشل"
 
-#: admin/views.py:1970
+#: admin/views.py:1969
 msgid "success"
 msgstr "نجاح"
 
-#: admin/views.py:1983 templates/admin/admin_header.haml:59
+#: admin/views.py:1982 templates/admin/admin_header.haml:59
 #: templates/marketing/programs.haml:237
 msgid "Programs"
 msgstr "البرامج"
 
-#: admin/views.py:2021 admin/views.py:2069
+#: admin/views.py:2020 admin/views.py:2068
 msgid "Save Program"
 msgstr "حفظ البرنامج"
 
-#: admin/views.py:2277
+#: admin/views.py:2276
 msgid "Successfully Added {} Participants"
 msgstr "إضافة المشاركين بنجاح {}"
 
-#: admin/views.py:2335 admin/views.py:5653
+#: admin/views.py:2334 admin/views.py:5652
 #: templates/admin/participants/activation_link_modal.haml:15
 msgid "First name"
 msgstr "الاسم الأول"
 
-#: admin/views.py:2335 admin/views.py:5654
+#: admin/views.py:2334 admin/views.py:5653
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 msgid "Last name"
 msgstr "اسم العائلة"
 
-#: admin/views.py:2335
+#: admin/views.py:2334
 #: templates/admin/participants/activation_link_modal.haml:4
 #: templates/admin/participants/activation_link_modal.haml:21
 msgid "Activation Link"
 msgstr "رابط التفعيل"
 
-#: admin/views.py:2452
+#: admin/views.py:2451
 msgid "Report is TBD"
 msgstr "الرابط يحدد لاحقًا"
 
-#: admin/views.py:2474 templates/courses/content_page/courses_menu_list.haml:17
+#: admin/views.py:2473 templates/courses/content_page/courses_menu_list.haml:17
 msgid "Coming Soon"
 msgstr "قريباً"
 
-#: admin/views.py:2476 templates/courses/content_page/courses_menu_list.haml:8
+#: admin/views.py:2475 templates/courses/content_page/courses_menu_list.haml:8
 msgid "Archived"
 msgstr "تمت الأرشفة"
 
-#: admin/views.py:2546
+#: admin/views.py:2545
 msgid "Successfully saved courses to {} program"
 msgstr "تم حفظ الدورات التدريبية بنجاح في البرنامج {}"
 
-#: admin/views.py:2560 admin/views.py:2938 admin/views.py:2971
-#: admin/views.py:3026
+#: admin/views.py:2559 admin/views.py:2937 admin/views.py:2970
+#: admin/views.py:3025
 msgid "Invalid program_id specified: {}"
 msgstr "تم تحديد معرّف برنامج غير صحيح: {}"
 
-#: admin/views.py:2569
+#: admin/views.py:2568
 msgid "Invalid student_id specified: {}"
 msgstr "تم حديد معرّف طالب غير صحيح {}"
 
-#: admin/views.py:2575
+#: admin/views.py:2574
 msgid "Not enough places available for {} program - {} left"
 msgstr "تبقى أماكن غير كافية للبرنامج"
 
-#: admin/views.py:2602
+#: admin/views.py:2601
 msgid "Successfully associated students to {} program"
 msgstr "تم ربط الطلبة بالبرنامج بنجاح"
 
-#: admin/views.py:2633
+#: admin/views.py:2632
 msgid "{} already enrolled in {}"
 msgstr "مسجّل مسبقًا في"
 
-#: admin/views.py:2640
+#: admin/views.py:2639
 msgid "Successfully associated students to courses"
 msgstr "تم ربط الطلبة بنجاح بالدورة التدريبية"
 
-#: admin/views.py:2642
+#: admin/views.py:2641
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
 msgstr "تم ربط الطلبة بالدورات التدريبية بنجاح مع\t رسائل"
 
-#: admin/views.py:2756 admin/views.py:2759
+#: admin/views.py:2755 admin/views.py:2758
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
@@ -2218,12 +2218,12 @@ msgstr ""
 "خطأ في تحميل الملف. الرجاء المحاولة مرة أخرى والتأكد من استخدام هيئة ملفات "
 "مقبولة."
 
-#: admin/views.py:3187 admin/views.py:3250
+#: admin/views.py:3186 admin/views.py:3249
 msgid "No group projects available for this course"
 msgstr "لا يوجد مشاريع جماعية ضمن هذه الدورة"
 
-#: admin/views.py:3260 admin/views.py:3261 admin/views.py:3488
-#: admin/views.py:3489 templates/admin/admin_header.haml:37
+#: admin/views.py:3259 admin/views.py:3260 admin/views.py:3487
+#: admin/views.py:3488 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:55
 #: templates/courses/content_page/course_tabs.haml:18
 #: templates/courses/course_group_work.haml:13
@@ -2231,74 +2231,74 @@ msgstr "لا يوجد مشاريع جماعية ضمن هذه الدورة"
 msgid "Group Work"
 msgstr "العمل الجماعي"
 
-#: admin/views.py:3340
+#: admin/views.py:3339
 msgid "Group wasn't created - please select project"
 msgstr "لم يتم إنشاء المجموعة-يرجى تحديد المشروع"
 
-#: admin/views.py:3351
+#: admin/views.py:3350
 msgid "Bad users {} for private project"
 msgstr "مستخدمون سيئون للمشروع الخاص"
 
-#: admin/views.py:3367
+#: admin/views.py:3366
 msgid "Group successfully created"
 msgstr "تم إنشاء المجموعة بنجاح"
 
-#: admin/views.py:3371
+#: admin/views.py:3370
 msgid "Group was not created"
 msgstr "لم يتم إنشاء مجموعة"
 
-#: admin/views.py:3413
+#: admin/views.py:3412
 msgid "Error creating project"
 msgstr "خطأ في إنشاء المشروع"
 
-#: admin/views.py:3427
+#: admin/views.py:3426
 msgid "Project already exists"
 msgstr "المشروع موجود مسبقًا"
 
-#: admin/views.py:3432
+#: admin/views.py:3431
 msgid "Project successfully created"
 msgstr "تم إنشاء المشروع بنجاح"
 
-#: admin/views.py:3465
+#: admin/views.py:3464
 msgid "Project deleted successfully."
 msgstr "تم حذف المشروع بنجاح"
 
-#: admin/views.py:3527
+#: admin/views.py:3526
 msgid "Password Reset Email successfully sent."
 msgstr "تم إرسال البريد الإلكتروني الخاص بإعادة تعيين كلمة المرور بنجاح"
 
-#: admin/views.py:3546
+#: admin/views.py:3545
 msgid "Activation email sent."
 msgstr "تم إرسال البريد الإلكتروني الخاص بالتفعيل"
 
-#: admin/views.py:3619 admin/views.py:3804
+#: admin/views.py:3618 admin/views.py:3803
 msgid "Company name can only contain alphanumeric characters"
 msgstr "اسم الشركة يمكن أن يحتوي فقط على أحرف أبجدية رقمية"
 
-#: admin/views.py:3631 admin/views.py:3636
+#: admin/views.py:3630 admin/views.py:3635
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr "خطأ في الإذن: لا تمتلك إذن لمنح هذا الدور"
 
-#: admin/views.py:3645
+#: admin/views.py:3644
 msgid "User with that email already exists!"
 msgstr "هنالك مستخدم مسبق بهذا البريد الإلكتروني!"
 
-#: admin/views.py:3670 admin/views.py:3831
+#: admin/views.py:3669 admin/views.py:3830
 msgid "Couldn't create company!"
 msgstr "تعذر إنشاء الشركة!"
 
-#: admin/views.py:3681
+#: admin/views.py:3680
 msgid "Couldn't add user to company!"
 msgstr "لا يمكن إضافة المستخدم إلى الشركة!"
 
-#: admin/views.py:3705 templates/admin/participants/participants_list.haml:221
+#: admin/views.py:3704 templates/admin/participants/participants_list.haml:221
 msgid "Successfully added new user!"
 msgstr "تمت إضافة مستخدم جديد بنجاح!"
 
-#: admin/views.py:3724 admin/views.py:3726 admin/views.py:3735
-#: admin/views.py:3741 admin/views.py:3747 admin/views.py:5524
-#: admin/views.py:5526 admin/views.py:5535 admin/views.py:5541
-#: admin/views.py:5547
+#: admin/views.py:3723 admin/views.py:3725 admin/views.py:3734
+#: admin/views.py:3740 admin/views.py:3746 admin/views.py:5523
+#: admin/views.py:5525 admin/views.py:5534 admin/views.py:5540
+#: admin/views.py:5546
 #: templates/admin/participants/participant_details.haml:267
 #: templates/admin/participants/participant_details.haml:275
 #: templates/admin/participants/participant_details.haml:283
@@ -2306,147 +2306,147 @@ msgstr "تمت إضافة مستخدم جديد بنجاح!"
 msgid "N/A"
 msgstr "لا يوجد"
 
-#: admin/views.py:3822
+#: admin/views.py:3821
 msgid "User with that username or email already exists!"
 msgstr "المستخدم باسم المستخدم أو البريد الإلكتروني هذا موجود مسبقًا!"
 
-#: admin/views.py:3877
+#: admin/views.py:3876
 msgid "Can't find user in database"
 msgstr "لا يمكن العثور على المستخدم في قاعدة البيانات"
 
-#: admin/views.py:3954
+#: admin/views.py:3953
 msgid "There is a problem with selected user role on new course!"
 msgstr "هناك مشكلة مع دور المستخدم المحدد في الدورة الجديدة!"
 
-#: admin/views.py:4002 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4001 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:26
 msgid "Progress"
 msgstr "التقدم المحرز"
 
-#: admin/views.py:4002 admin/views.py:4100
+#: admin/views.py:4001 admin/views.py:4099
 msgid "Status"
 msgstr "الحالة"
 
-#: admin/views.py:4100 templates/admin/client-admin/course_info.haml:79
+#: admin/views.py:4099 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:30
 #: templates/courses/course_progress.haml:53
 msgid "Completed"
 msgstr "مُنجز"
 
-#: admin/views.py:4100
+#: admin/views.py:4099
 msgid "Grade"
 msgstr "الدرجة"
 
-#: admin/views.py:4100
+#: admin/views.py:4099
 msgid "End Date"
 msgstr "تاريخ الانتهاء"
 
-#: admin/views.py:4251
+#: admin/views.py:4250
 msgid "Problem generating activity review assignments"
 msgstr "واجبات استعراض أنشطة توليد المشاكل"
 
-#: admin/views.py:4275
+#: admin/views.py:4274
 msgid "Project review assignments allocated"
 msgstr "تم تعيين واجبات مراجعة للمشروع"
 
-#: admin/views.py:4282
+#: admin/views.py:4281
 msgid "Not enough groups to meet review criteria"
 msgstr "لا يوجد عدد مجموعات كافية للعمل وفق المعايير"
 
-#: admin/views.py:4510
+#: admin/views.py:4509
 msgid "Successfully added new email template!"
 msgstr "تمت إضافة نموذج البريد الإلكتروني الجديد بنجاح!"
 
-#: admin/views.py:4513
+#: admin/views.py:4512
 msgid "Missing fields in email template!"
 msgstr "يوجد مجالات فارغة في نموذج البريد الإلكتروني!"
 
-#: admin/views.py:4524
+#: admin/views.py:4523
 msgid "Successfully got email template!"
 msgstr "حصلت على نموذج البريد الإلكتروني بنجاح!"
 
-#: admin/views.py:4527 admin/views.py:4540 admin/views.py:4563
+#: admin/views.py:4526 admin/views.py:4539 admin/views.py:4562
 msgid "Can't find email template key!"
 msgstr "لا يمكن العثور على مفتاح نموذج البريد الإلكتروني!"
 
-#: admin/views.py:4529 admin/views.py:4542 admin/views.py:4565
+#: admin/views.py:4528 admin/views.py:4541 admin/views.py:4564
 msgid "Missing email template key!"
 msgstr "مفتاح نموذج البريد الإلكتروني غير موجود!"
 
-#: admin/views.py:4538
+#: admin/views.py:4537
 msgid "Successfully deleted email template!"
 msgstr "تم حذف نموذج البريد الإلكتروني بنجاح!"
 
-#: admin/views.py:4560
+#: admin/views.py:4559
 msgid "Successfully updated email template!"
 msgstr "تم تحديث نموذج البريد الإلكتروني بنجاح!"
 
-#: admin/views.py:4675 admin/views.py:5318
+#: admin/views.py:4674 admin/views.py:5317
 msgid "No Company Display name!"
 msgstr "لا يوجد اسم عرض للشركة!"
 
-#: admin/views.py:4858
+#: admin/views.py:4857
 msgid "App name only contains alphanumeric characters"
 msgstr "اسم التطبيق يحتوي فقط على أحرف أبجدية رقمية"
 
-#: admin/views.py:4974
+#: admin/views.py:4973
 msgid "Learner dashboard not found"
 msgstr "لم يتم العثور على لوحة  متابعة المتعلمين"
 
-#: admin/views.py:5335
+#: admin/views.py:5334
 msgid "Company name successfully changed!"
 msgstr "تم تغيير اسم الشركة بنجاح!"
 
-#: admin/views.py:5378
+#: admin/views.py:5377
 msgid "Tag with this name already exist's!"
 msgstr "العلامة بهذا الاسم موجودة مسبقًا!"
 
-#: admin/views.py:5389
+#: admin/views.py:5388
 msgid "Tag created!"
 msgstr "تم إنشاء علامة!"
 
-#: admin/views.py:5391
+#: admin/views.py:5390
 msgid "You need to select tag's name!"
 msgstr "أنت بحاجة إلى تحديد اسم العلامة!"
 
-#: admin/views.py:5441
+#: admin/views.py:5440
 msgid "Tag added to Course!"
 msgstr "تمت إضافة العلامة للدورة!"
 
-#: admin/views.py:5443 admin/views.py:5465
+#: admin/views.py:5442 admin/views.py:5464
 msgid "You need to select tag!"
 msgstr "أنت بحاجة لتحديد علامة!"
 
-#: admin/views.py:5463
+#: admin/views.py:5462
 msgid "Tag removed from Course!"
 msgstr "تمت إزالة العلامة من الدورة!"
 
-#: admin/views.py:5655 templates/admin/course_run/view.haml:65
+#: admin/views.py:5654 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "اسم الشركة"
 
-#: admin/views.py:5656 templates/admin/course_run/view.haml:66
+#: admin/views.py:5655 templates/admin/course_run/view.haml:66
 msgid "Company email"
 msgstr "البريد الإلكتروني للشركة"
 
-#: admin/views.py:5657 templates/admin/course_run/view.haml:67
+#: admin/views.py:5656 templates/admin/course_run/view.haml:67
 msgid "Current role"
 msgstr "الدور الحالي"
 
-#: admin/views.py:5658 templates/admin/course_run/view.haml:68
+#: admin/views.py:5657 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "مستخدم جديد"
 
-#: admin/views.py:5659
+#: admin/views.py:5658
 msgid "McK user"
 msgstr "مستخدم ماكنزي"
 
-#: admin/views.py:5660 templates/admin/course_run/view.haml:70
+#: admin/views.py:5659 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "مسجّل"
 
-#: admin/views.py:5661 templates/admin/course_run/view.haml:71
+#: admin/views.py:5660 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "فعال"
@@ -2504,7 +2504,7 @@ msgid "Available"
 msgstr "متاح"
 
 #: api_client/course_models.py:147
-#: templates/courses/content_page/course_menu.haml:32
+#: templates/courses/content_page/course_menu.haml:33
 #: templates/courses/course_learner_dashboard_calendar.haml:45
 #: templates/courses/course_progress_v2.haml:91
 #: templates/courses/course_progress_v2.haml:155
@@ -2838,11 +2838,11 @@ msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr "شكرا لاهتمامك بأكاديمية ماكنزي. سوف نبقيكم على اطلاع بآخر المستجدات."
 
-#: mcka_apros/settings.py:212 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:201 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr "برنامج إدارة ماكنزي"
 
-#: mcka_apros/settings.py:305
+#: mcka_apros/settings.py:294
 msgid "Congratulations! Your certificate has been generated"
 msgstr "تهانينا! لقد تم إنشاء الشهادة الخاصة بك"
 
@@ -3292,6 +3292,16 @@ msgstr "فوجك:"
 #: templates/admin/client-admin/course_analytics.haml:55
 msgid "Average grade based on current grade of participants."
 msgstr "يعتمد متوسط العلامة على الدرجات الحالية للمشاركين"
+
+#: templates/admin/client-admin/course_analytics.haml:62
+#: templates/admin/client-admin/course_analytics.haml:79
+#: templates/courses/course_cohort.haml:47
+#: templates/courses/course_cohort.haml:117
+#: templates/courses/visualizations/course_engagement.haml:15
+#: templates/courses/visualizations/course_proficiency.haml:16
+#: templates/courses/visualizations/course_progress.haml:16
+msgid "cohort average"
+msgstr "متوسط الفوج"
 
 #: templates/admin/client-admin/course_analytics.haml:65
 msgid ""
@@ -5341,7 +5351,7 @@ msgstr "الدروس:"
 msgid "LESSON"
 msgstr "الدرس"
 
-#: templates/courses/content_page/course_menu.haml:37
+#: templates/courses/content_page/course_menu.haml:38
 #, python-format
 msgid " This lesson will be available on %(start_date)s "
 msgstr " هذا الدرس سوف تكون متاحة عبر%(start_date)s "
@@ -5475,14 +5485,6 @@ msgstr "لوائح المتابعة للقادة"
 #: templates/courses/visualizations/course_proficiency.haml:8
 msgid "Proficiency:"
 msgstr "الكفاءة:"
-
-#: templates/courses/course_cohort.haml:47
-#: templates/courses/course_cohort.haml:117
-#: templates/courses/visualizations/course_engagement.haml:15
-#: templates/courses/visualizations/course_proficiency.haml:16
-#: templates/courses/visualizations/course_progress.haml:16
-msgid "cohort average"
-msgstr "متوسط الفوج"
 
 #: templates/courses/course_cohort.haml:49
 #, python-format
@@ -6198,10 +6200,15 @@ msgid "GRADES"
 msgstr "الدرجات"
 
 #: templates/courses/course_progress.haml:42
-#, python-format, python-brace-format
+#, fuzzy, python-format, python-brace-format
+#| msgid ""
+#| " You need to complete all group work and feedback activities and earn a "
+#| "combined course grade of at least ={pass_grade}%% to work towards a "
+#| "program certificate of completion. Your course grade is calculated as "
+#| "follows: "
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
-"combined course grade of at least ={pass_grade}%% to work towards a program "
+"combined course grade of at least #{pass_grade}%% to work towards a program "
 "certificate of completion. Your course grade is calculated as follows: "
 msgstr ""
 " تحتاج إلى إكمال جميع أنشطة فريق العمل وأنشطة تقديم الملاحظات والتغذية "
@@ -6209,9 +6216,12 @@ msgstr ""
 "أجل شهادة إكمال البرنامج. علامة الدورة الخاصة بك تحسب كما يلي: "
 
 #: templates/courses/course_progress.haml:44
-#, python-format, python-brace-format
+#, fuzzy, python-format, python-brace-format
+#| msgid ""
+#| " You need a combined course grade of at least ={pass_grade}%% to earn a "
+#| "certificate of completion. Your final grade is calculated as follows: "
 msgid ""
-" You need a combined course grade of at least ={pass_grade}%% to earn a "
+" You need a combined course grade of at least #{pass_grade}%% to earn a "
 "certificate of completion. Your final grade is calculated as follows: "
 msgstr ""
 "تحتاج إلى تحصيل درجة مدمجة لا تقل عن = {pass_grade} % % للحصول على شهادة "
@@ -7229,7 +7239,7 @@ msgstr ""
 "إذا كنت أحد المشاركين المسجلين، الرجاء تسجيل الدخول أدناه للوصول إلى تجربة "
 "التعلم الخصة بك في أكاديمية ماكنزي"
 
-#: templates/layout.haml:22 templates/layout.haml.py:23
+#: templates/layout.haml:22 templates/layout.haml:23
 msgid ""
 "McKinsey Academy helps organizations thrive by accelerating their talent "
 "advantage"
@@ -7279,8 +7289,8 @@ msgstr "حول | أكاديمية ماكنزي"
 msgid "McKinsey Academy About"
 msgstr "أكاديمية ماكنزي حول"
 
-#: templates/marketing/about.haml:10 templates/marketing/about.haml.py:11
-#: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml.py:10
+#: templates/marketing/about.haml:10 templates/marketing/about.haml:11
+#: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml:10
 #: templates/marketing/productwalkthrough.haml:9
 #: templates/marketing/productwalkthrough.haml:10
 msgid ""
@@ -7365,7 +7375,7 @@ msgstr "الاتصال | أكاديمية ماكنزي"
 msgid "McKinsey Academy Contact"
 msgstr "جهة اتصال أكاديمية ماكنزي"
 
-#: templates/marketing/contact.haml:9 templates/marketing/contact.haml.py:10
+#: templates/marketing/contact.haml:9 templates/marketing/contact.haml:10
 msgid "Email us to find out more about McKinsey Academy."
 msgstr "تواصل معنا عبر البريد الإلكتروني  لمعرفة المزيد عن أكاديمية ماكنزي."
 
@@ -7832,7 +7842,7 @@ msgstr ""
 "تنطلق أعمال المنتدى بمؤتمر شخصي لمدة يوم ونصف في نيويورك، وينتهي بفعالية "
 "إقليمية لمدة يوم كامل، ليتضمن قادة أعمال وفكر رائدين من حول العالم، ومنهم:"
 
-#: templates/marketing/fblf.haml:39 templates/marketing/fblf.haml.py:42
+#: templates/marketing/fblf.haml:39 templates/marketing/fblf.haml:42
 msgid "Dominic Barton"
 msgstr "دومينيك بارتون"
 
@@ -7840,7 +7850,7 @@ msgstr "دومينيك بارتون"
 msgid "Global Managing Director, McKinsey"
 msgstr "المدير العام العالمي، ماكنزي"
 
-#: templates/marketing/fblf.haml:46 templates/marketing/fblf.haml.py:49
+#: templates/marketing/fblf.haml:46 templates/marketing/fblf.haml:49
 msgid "Peter Grauer"
 msgstr "بيتر جروير"
 
@@ -7860,7 +7870,7 @@ msgstr "كلاوس كلينفيلد"
 msgid "Chairman and CEO, Alcoa"
 msgstr "رئيس مجلس إدارة والرئيس التنفيذ في ألكوا"
 
-#: templates/marketing/fblf.haml:60 templates/marketing/fblf.haml.py:63
+#: templates/marketing/fblf.haml:60 templates/marketing/fblf.haml:63
 msgid "Sanjay Sharma"
 msgstr "سانجاي شارما"
 
@@ -7868,7 +7878,7 @@ msgstr "سانجاي شارما"
 msgid "Professor, MIT; Director of Digital Learning"
 msgstr "أستاذ بمعهد ماساتشوستس للتكنولوجيا؛ مدير التعلم الرقمي"
 
-#: templates/marketing/fblf.haml:67 templates/marketing/fblf.haml.py:70
+#: templates/marketing/fblf.haml:67 templates/marketing/fblf.haml:70
 msgid "Chip Heath"
 msgstr "تشيب هيث"
 
@@ -7884,7 +7894,7 @@ msgstr ""
 "التجارية؛ الكاتب <i>حاسمة</i>، و <i>التبديل</i>، و <i>صنع بعصا</i>\n"
 "                  "
 
-#: templates/marketing/fblf.haml:76 templates/marketing/fblf.haml.py:79
+#: templates/marketing/fblf.haml:76 templates/marketing/fblf.haml:79
 msgid "Erik Roth"
 msgstr "إريك روث"
 
@@ -7900,7 +7910,7 @@ msgstr ""
 "هو قادم</i>\n"
 "                  "
 
-#: templates/marketing/fblf.haml:85 templates/marketing/fblf.haml.py:88
+#: templates/marketing/fblf.haml:85 templates/marketing/fblf.haml:88
 msgid "Bharat Anand"
 msgstr "بهارات أناند"
 

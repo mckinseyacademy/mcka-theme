@@ -39,8 +39,6 @@ LOGGING = get_logger_config(BASE_DIR,
                             dev_env=True,
                             debug=True)
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -114,15 +112,6 @@ WSGI_APPLICATION = 'mcka_apros.wsgi.application'
 AUTHENTICATION_BACKENDS = (
     #'django.contrib.auth.backends.ModelBackend',
     'accounts.json_backend.JsonBackend',
-)
-
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-
-TEMPLATE_LOADERS = (
-    'hamlpy.template.loaders.HamlPyFilesystemLoader',
-    'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
 )
 
 # Database
@@ -452,15 +441,35 @@ LOGIN_BUTTON_FOR_MOBILE_ENABLED = False
 COURSE_RUN_PARTICIPANTS_TRESHOLD = 4000
 DEDICATED_COURSE_RUN_PERSON = "staff@mckinseyacademy.com"
 
-# Add request object to templates
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
-TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-    'django.core.context_processors.request',
-    'lib.context_processors.user_program_data',
-    'lib.context_processors.settings_data',
-    'lib.context_processors.mobile_login_data',
-    'lib.context_processors.set_mobile_app_id',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'OPTIONS': {
+            'debug' : True,
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+                'lib.context_processors.user_program_data',
+                'lib.context_processors.settings_data',
+                'lib.context_processors.mobile_login_data',
+                'lib.context_processors.set_mobile_app_id',
+            ],
+            'loaders': [
+                'hamlpy.template.loaders.HamlPyFilesystemLoader',
+                'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]
+        },
+    },
+]
 
 try:
     from local_settings import *
@@ -503,11 +512,6 @@ DEBUG_TOOLBAR_CONFIG = {
 
 INSTALLED_APPS += (
     'edx_notifications.server.web',
-)
-
-TEMPLATE_LOADERS += (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
 )
 
 ################################### CLIENT BRANDING DEFAULT SETTINGS ###################################

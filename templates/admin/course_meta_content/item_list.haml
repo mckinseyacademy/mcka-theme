@@ -40,7 +40,7 @@
       %ul
         %li
           - if feature_flags.discussions
-            %input#discussions{type: 'checkbox', name: 'discussions', checked: None}
+            %input#discussions{type: 'checkbox', name: 'discussions', checked: 'checked'}
           - else
             %input#discussions{type: 'checkbox', name: 'discussions'}
           %label{for: 'discussions'}
@@ -48,21 +48,21 @@
           %p.style-6 {% trans "Note: If you disable the discussion page, notifications coming from existing lesson inline discussion modules in the course will redirect the user to the course home page. It is suggested that lesson inline discussion modules are not present in courses without discussions enabled. It will also disable Engagement section from Leaderboard even if 'Engagement' flag is enabled." %}
         %li
           - if feature_flags.group_work
-            %input#group_work{type: 'checkbox', name: 'group_work', checked: None}
+            %input#group_work{type: 'checkbox', name: 'group_work', checked: 'checked'}
           - else
             %input#group_work{type: 'checkbox', name: 'group_work'}
           %label{for: 'group_work'}
             {% trans "Group Work" %}
         %li
           - if feature_flags.cohort_map
-            %input#cohort_map{type: 'checkbox', name: 'cohort_map', checked: None}
+            %input#cohort_map{type: 'checkbox', name: 'cohort_map', checked: 'checked'}
           - else
             %input#cohort_map{type: 'checkbox', name: 'cohort_map'}
           %label{for: 'cohort_map'}
             {% trans "Cohort Map" %}
         %li
           - if feature_flags.proficiency
-            %input#cohort_map{type: 'checkbox', name: 'proficiency', checked: None}
+            %input#cohort_map{type: 'checkbox', name: 'proficiency', checked: 'checked'}
           - else
             %input#cohort_map{type: 'checkbox', name: 'proficiency'}
 
@@ -72,7 +72,7 @@
 
         %li
           - if feature_flags.progress
-            %input#cohort_map{type: 'checkbox', name: 'progress', checked: None}
+            %input#cohort_map{type: 'checkbox', name: 'progress', checked: 'checked'}
           - else
             %input#cohort_map{type: 'checkbox', name: 'progress'}
           %label{for: 'progress'}
@@ -81,7 +81,7 @@
 
         %li
           - if feature_flags.progress_page
-            %input#cohort_map{type: 'checkbox', name: 'progress_page', checked: None}
+            %input#cohort_map{type: 'checkbox', name: 'progress_page', checked: 'checked'}
           - else
             %input#cohort_map{type: 'checkbox', name: 'progress_page'}
           %label{for: 'progress_page'}
@@ -89,42 +89,42 @@
           %p.style-6 {% trans "Note: If you disable 'Progress Page', it will hide progress page icon from secondary navigation." %}
         %li
           - if feature_flags.notifications
-            %input#cohort_map{type: 'checkbox', name: 'notifications', checked: None}
+            %input#cohort_map{type: 'checkbox', name: 'notifications', checked: 'checked'}
           - else
             %input#cohort_map{type: 'checkbox', name: 'notifications'}
           %label{for: 'notifications'}
             {% trans "Notifications" %}
         %li
           - if feature_flags.branding
-            %input#cohort_map{type: 'checkbox', name: 'branding', checked: None}
+            %input#cohort_map{type: 'checkbox', name: 'branding', checked: 'checked'}
           - else
             %input#cohort_map{type: 'checkbox', name: 'branding'}
           %label{for: 'learner_dashboard'}
             {% trans "Branding" %}
         %li
           - if feature_flags.learner_dashboard
-            %input#cohort_map{type: 'checkbox', name: 'learner_dashboard', checked: None}
+            %input#cohort_map{type: 'checkbox', name: 'learner_dashboard', checked: 'checked'}
           - else
             %input#cohort_map{type: 'checkbox', name: 'learner_dashboard'}
           %label{for: 'learner_dashboard'}
             {% trans "Learner Dashboard" %}
         %li
           - if feature_flags.resources
-            %input#cohort_map{type: 'checkbox', name: 'resources', checked: None}
+            %input#cohort_map{type: 'checkbox', name: 'resources', checked: 'checked'}
           - else
             %input#cohort_map{type: 'checkbox', name: 'resources'}
           %label{for: 'resources'}
             {% trans "Resources" %}
         %li
           - if feature_flags.cohort_avg
-            %input#cohort_avg{type: 'checkbox', name: 'cohort_avg', checked: None}
+            %input#cohort_avg{type: 'checkbox', name: 'cohort_avg', checked: 'checked'}
           - else
             %input#cohort_avg{type: 'checkbox', name: 'cohort_avg'}
           %label{for: 'cohort_avg'}
             {% trans "Cohort Average" %}
         %li
           - if feature_flags.certificates
-            %input#certificates{type: 'checkbox', name: 'certificates', checked: None}
+            %input#certificates{type: 'checkbox', name: 'certificates', checked: 'checked'}
           - else
             %input#certificates{type: 'checkbox', name: 'certificates'}
           %label{for: 'certificates'}
@@ -133,14 +133,14 @@
           %li
             - if mobile_available
               %input#mobile_available{type: 'hidden', name: 'mobile_available', value: 'off'}
-              %input#mobile_available{type: 'checkbox', name: 'mobile_available', checked: None}
+              %input#mobile_available{type: 'checkbox', name: 'mobile_available', checked: 'checked'}
             - else
               %input#mobile_available{type: 'checkbox', name: 'mobile_available'}
             %label{for: 'mobile_available'}
               {% trans "Mobile Available" %}
         %li
           - if feature_flags.engagement
-            %input#engagement{type: 'checkbox', name: 'engagement', checked: None}
+            %input#engagement{type: 'checkbox', name: 'engagement', checked: 'checked'}
           - else
             %input#engagement{type: 'checkbox', name: 'engagement'}
           %label{for: 'engagement'}
@@ -148,7 +148,7 @@
           %p.style-6 {% trans "Note: If you disable 'Engagement', it will hide Engagement section from leaderboard." %}
         %li
           - if feature_flags.discover
-            %input#discover{type: 'checkbox', name: 'discover', checked: None}
+            %input#discover{type: 'checkbox', name: 'discover', checked: 'checked'}
           - else
             %input#discover{type: 'checkbox', name: 'discover'}
           %label{for: 'discover'}

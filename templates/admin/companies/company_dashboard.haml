@@ -16,23 +16,23 @@
             %tr
               %td.companyDashboardCompanyDataContainer
                 .companyDashboardCompanyName
-                  %p ={company.name}
+                  %p= company.name
                 .companyDashboardCompanyOtherData
-                  %p {% trans "Total Participants:" %} ={company.numberParticipants}
-                  %p {% trans "Active Courses:" %} ={company.activeCourses}
+                  %p {% trans "Total Participants:" %} #{company.numberParticipants}
+                  %p {% trans "Active Courses:" %} #{company.activeCourses}
               %td.companyDashboardCompanyCoursesContainer
                 %table.companyDashboardCompanyCoursesTable
                   - for course in company.courses
                     %tr.companyDashboardCompanyCourse
                       %td 
                         %a{:href => "/admin/companies/#{company.id}/courses/#{course.id}", :target => '_self'}
-                          ={course.name}
-                      %td ={course.id}
+                          = course.name
+                      %td= course.id
                       %td 
                         - if course.end == '-'
                           {% trans "Evergreen" %}
                         - else
-                          ={course.start} - ={course.end}
+                          #{course.start} - #{course.end}
           .companyDashboardCompanyDown
             - if not user.is_company_admin
               .companyDashboardCompanyInfo

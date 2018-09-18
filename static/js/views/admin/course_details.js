@@ -396,6 +396,7 @@
       var interval_id = setInterval(function(){
         var options = {
             url: url,
+            contentType: "application/json; charset=utf-8",         
             data: JSON.stringify({'type': 'status_check', 'task_id':task_id}),
             processData: false,
             type: "POST",

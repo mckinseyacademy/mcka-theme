@@ -1,10 +1,10 @@
 - load i18n
-%header#learner-dashboard-header.background-blue{role: 'banner', style: "position: fixed; {% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %} {% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
-  .row.collapse.main-nav{style: "{% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
+%header#learner-dashboard-header.background-blue{'role': 'banner', "style": "position: fixed; {% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %} {% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
+  .row.collapse.main-nav{"style": "{% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
     .large-6.small-6.columns.header-row
       -if branding and branding.logo_image
         %a{:href => "/learnerdashboard/#{learner_dashboard.id}"}
-          %img.header-logo{src: "/company_images/#{branding.logo_image}"}
+          %img.header-logo{"src": "/company_images/#{branding.logo_image}"}
     .large-6.small-6.columns.header-row
       .row
         .large-12.columns.header-padding
@@ -12,15 +12,15 @@
             .large-12.columns.header-padding
               - block user_region
                 - if request.user.is_authenticated
-                  %a.user-info{data-dropdown: "profile-container", style:"position:inherit;"}
+                  %a.user-info{"data-dropdown": "profile-container", "style":"position:inherit;"}
                     .user-name= user.username
                     %i.fa.fa-sort-desc
                     .user-image
-                      %img{src: "#{user.image_url_medium}", alt: "#{user.username}"}
-                    #profile-container{data-dropdown-content: "true"}
+                      %img{"src": "#{user.image_url_medium}", "alt": "#{user.username}"}
+                    #profile-container{"data-dropdown-content": "true"}
                 - else
                   .login-action
-                    %a.small.radius.button{href: "/accounts/login"}
+                    %a.small.radius.button{"href": "/accounts/login"}
                       {% trans "Log in" %}
       .row
         .large-12.columns.header-padding
@@ -30,7 +30,7 @@
                 %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "{% trans 'Resources' %}"}
                   .fa.fa-file-text-o.header-link
               - else
-                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "{% trans 'Resources' %}", style: "{% if branding %} color: #{branding.icon_color};{% endif %}"}
+                %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources", :data-tooltip => "{% trans 'Resources' %}", "style": "{% if branding %} color: #{branding.icon_color};{% endif %}"}
                   .fa.fa-file-text-o.header-link
 
             - if feature_flags.group_work
@@ -53,14 +53,14 @@
               %a.disabled.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "{% trans 'Portal Home' %}"}
                 .fa.fa-map-marker.header-link
             - else
-              %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "{% trans 'Portal Home' %}", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
+              %a.right{:href => "/learnerdashboard/#{learner_dashboard.id}", :data-tooltip => "{% trans 'Portal Home' %}", "style": "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
                 .fa.fa-map-marker.header-link
 
             - if calendar_enabled
-              %a.right{:href => "#", :data-tooltip => "{% trans 'Calendar' %}", style: "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
+              %a.right{:href => "#", :data-tooltip => "{% trans 'Calendar' %}", "style": "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
                 %i#open-calendar.fa.fa-calendar.header-link
 
-            %a.right{"data-dropdown": "program-menu-content", 'data-tooltip': '{% trans "Program" %}', style: "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
+            %a.right{"data-dropdown": "program-menu-content", 'data-tooltip': '{% trans "Program" %}', "style": "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
               .fa.fa-th-large.header-link
             #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
               - include "courses/content_page/program_menu.haml"

@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('discover_rule_color', models.CharField(default=b'#000000', max_length=20, blank=True)),
                 ('background_color', models.CharField(default=b'#D3D3D3', max_length=20, blank=True)),
                 ('background_style', models.CharField(blank=True, max_length=1, choices=[('1', 'Normal'), ('2', 'Tiled'), ('3', 'Stretched')])),
-                ('learner_dashboard', models.ForeignKey(to='admin_apros.LearnerDashboard')),
+                ('learner_dashboard', models.ForeignKey(to='admin_apros.LearnerDashboard', on_delete=models.CASCADE)),
             ],
         ),
     ]

@@ -12,8 +12,8 @@
       .slides
         %ul
           - for lesson in course.chapters
-            %li{class: "lesson-card {% if lesson.is_started %}active{% else %}future{% endif %}"}
-              %a.card-flip{href: "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}#{% endif %}"}
+            %li{"class": "lesson-card {% if lesson.is_started %}active{% else %}future{% endif %}"}
+              %a.card-flip{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}{% endif %}"}
                 .front.background-white
                   - if not lesson.is_started
                     .bookmark
@@ -29,7 +29,8 @@
                     - if lesson.progress == 100
                       .lesson-progress.complete {% trans "Completed" %}
                     - else
-                      .lesson-progress ={lesson.progress}% {% trans "complete" %}
+                      .lesson-progress
+                        #{lesson.progress}% {% trans "complete" %}
                 .back.background-alt-blue
                   .label-2.description
                     - autoescape off

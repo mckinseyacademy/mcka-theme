@@ -1,9 +1,8 @@
-from django.conf.urls import include, patterns, url
+from django.conf.urls import include, url
 
 from . import views
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(r'^styleguide/$', views.styleguide, name='styleguide'),
     url(r'^contact/$', views.contact, name='contact'),
     url(r'^support/$', views.support, name='support'),
@@ -11,4 +10,4 @@ urlpatterns = patterns(
     url(r'^edxoffer/$', views.edxoffer, name='edxoffer'),
     url(r'^(?i)fblf/$', views.fblf, name='fblf'),
     url(r'^(?P<page_name>.*)/$', views.infer_default_navigation, name='infer_default_navigation'),
-)
+]

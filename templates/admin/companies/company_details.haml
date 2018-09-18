@@ -3,7 +3,7 @@
 
 - block content
   .row
-    #coursesModal.reveal-modal.tiny{'data-reveal': None}
+    #coursesModal.reveal-modal.tiny{'data-reveal': ''}
     #mainCompanyDetailsContainer
       #companyDetailsNavigation
         - if companyAdminFlag
@@ -16,7 +16,7 @@
         #companyDetailsTopDataWrapper
           .row.companyDetailsCompanyName
             .companyDetailsTextName
-              ={company.name}
+              = company.name
             - if not companyAdminFlag
               %i.fa.fa-pencil.editCompanyNameIcon
               .companyDetailsInputName{:style => 'display:none;'}
@@ -24,12 +24,12 @@
               .errorMessage
 
           .row.companyDetailsNumberParticipants
-            %p {% trans "Total Participants:" %} ={company.numberParticipants}
+            %p {% trans "Total Participants:" %} #{company.numberParticipants}
           - if not user.is_company_admin
             .row.companyDetailsCompanyID
-              %p {% trans "Company ID:" %} ={company.id}
+              %p {% trans "Company ID:" %} #{company.id}
           .row.companyDetailsNumberActiveCourses
-            %p {% trans "Active Courses:" %} ={company.activeCourses}
+            %p {% trans "Active Courses:" %} #{company.activeCourses}
 
         - if not user.is_company_admin
           #additionalCompanyButtons
@@ -38,7 +38,7 @@
             %a.button.small.radius.accessLink{:href => "{% url 'client_sso' client_id=company.id %}"}
               {% trans "Access" %}
             - if user.is_mcka_admin
-              %a#addAppPopupLink.companyLinkedApps.button.small.radius{"data-reveal-id" => "linkApp", :href => "#"}
+              %a#addAppPopupLink.companyLinkedApps.button.small.radius{"data-reveal-id" : "linkApp", :href => "#"}
                 {% trans "Link Apps" %}
 
         #companyDetailsNavigationButtonsContainer
@@ -65,7 +65,7 @@
               #companyLinkedAppsViewGridBlock
 
     - if user.is_mcka_admin
-      #linkApp.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+      #linkApp.reveal-modal.small{"aria-hidden" : "true", "aria-labelledby" : "modalTitle", "data-reveal" : "", :role => "dialog"}
         %h4 {% trans "Link mobile app" %}
         %p {% blocktrans %} Type in the name of the mobile app that you want to link with "Company Name" {% endblocktrans %}
         %b {% trans "App Name" %}
@@ -74,4 +74,4 @@
         %button.button.small.radius.linkAppButton{:value => "Link App", :type => "Submit"}
           {% trans "Link App" %}
         %input.button.small.radius.close-reveal-modal{:value => "{% trans 'Cancel' %}", :type => "button"}/
-        %a.close-reveal-modal{"aria-label" => "Close"} ×
+        %a.close-reveal-modal{"aria-label" : "Close"} ×

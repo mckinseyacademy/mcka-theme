@@ -2,14 +2,14 @@
 %header
   %h1
     {% trans "Roles for " %}
-    ={user.username}
+    #{user.username}
   %p.description
     
 
 .close-reveal-modal
   %i.fa.fa-times-circle
 
-%form.admin-form{action: "/admin/permissions/={user.id}/edit", method: "POST"}
+%form.admin-form{action: "/admin/permissions/#{user.id}/edit", method: "POST"}
   - csrf_token
 
   %table

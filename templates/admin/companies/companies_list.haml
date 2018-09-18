@@ -15,7 +15,7 @@
       #companiesListViewGridBlock
 
 
-  #createNewCompanyModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+  #createNewCompanyModal.reveal-modal.small{"aria-hidden" : "true", "aria-labelledby" : "modalTitle", "data-reveal" : "", :role => "dialog"}
     %h2 {% trans "Enter Display Name for New Company" %}
     %hr
     .row.companyDisplayNameValue
@@ -29,5 +29,5 @@
         {% trans "Create New Company" %}
       %a.closeModal{:href => "#"}
         {% trans "Cancel" %}
-    %a.close-reveal-modal{"aria-label" => "Close"}
+    %a.close-reveal-modal{"aria-label" : "Close"}
       &#215;

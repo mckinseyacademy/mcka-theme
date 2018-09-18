@@ -1,4 +1,4 @@
-%article#course-statistics{class: "{% if not feature_flags.discussions and graded_items_count > 0 %}no-social{% endif %}"}
+%article#course-statistics{"class": "{% if not feature_flags.discussions and graded_items_count > 0 %}no-social{% endif %}"}
   - if feature_flags.proficiency
     - if graded_items_count > 0 or course.has_group_work
       - include "courses/visualizations/course_proficiency.haml"

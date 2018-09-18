@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.conf import settings
 
 from .api_parser import ApiParser
@@ -12,9 +12,7 @@ def transform_chunk(chunk):
 
     return chunk
 
-urlpatterns = patterns(
-    '',
-)
+urlpatterns = []
 
 mock_responses = ApiParser(settings.LOCAL_MOCK_API_FILES).responses()
 pattern_list = {}
@@ -45,4 +43,4 @@ for mock_response in mock_responses:
 mock_urls = [key for key in pattern_list]
 mock_urls = sorted(mock_urls, key=lambda x: len(x), reverse=True)
 for mock_url in mock_urls:
-    urlpatterns += patterns('', url(mock_url, MockResponseView.as_view(mock_responses=pattern_list[mock_url])),)
+    urlpatterns.extend([url(mock_url, MockResponseView.as_view(mock_responses=pattern_list[mock_url]))])

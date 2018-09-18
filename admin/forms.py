@@ -3,7 +3,7 @@ import re
 from datetime import date
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from django.forms.extras.widgets import SelectDateWidget
+from django.forms.widgets import SelectDateWidget
 from django.core.validators import validate_email, RegexValidator
 from django.core.exceptions import ValidationError
 

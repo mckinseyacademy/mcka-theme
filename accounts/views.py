@@ -664,7 +664,7 @@ def sso_finalize(request):
     if scheme is not None:
         return finalize_sso_mobile(request)
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('protected_home'))
 
     return finalize_sso_registration(request)
@@ -735,7 +735,7 @@ def _cleanup_username(username):
 
 def sso_registration_form(request):
     ''' handles requests for activation form and their submission '''
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         # The user should not be logged in or even registered at this point.
         return HttpResponseRedirect(reverse('protected_home'))
 
@@ -826,10 +826,9 @@ def sso_error(request):
 
 @ajaxify_http_redirects
 def reset_confirm(request, uidb64=None, token=None,
-                  template_name='registration/password_reset_confirm.html',
+                  template_name='registration/password_reset_confirm.haml',
                   post_reset_redirect='/accounts/login?reset=complete',
-                  set_password_form=SetNewPasswordForm,
-                  current_app=None, extra_context=None):
+                  set_password_form=SetNewPasswordForm, extra_context=None):
     """
     View that checks the hash in a password reset link and presents a
     form for entering a new password.
@@ -876,8 +875,7 @@ def reset_confirm(request, uidb64=None, token=None,
     }
     if extra_context is not None:
         context.update(extra_context)
-    return TemplateResponse(request, template_name, context,
-                            current_app=current_app)
+    return TemplateResponse(request, template_name, context)
 
 @ajaxify_http_redirects
 def reset(request, is_admin_site=False,
@@ -887,7 +885,6 @@ def reset(request, is_admin_site=False,
           subject_template_name='registration/password_reset_subject.haml',
           post_reset_redirect='/accounts/login?reset=done',
           from_email=settings.APROS_EMAIL_SENDER,
-          current_app=None,
           extra_context=None):
 
     if post_reset_redirect is None:
@@ -923,25 +920,20 @@ def reset(request, is_admin_site=False,
     }
     if extra_context is not None:
         context.update(extra_context)
-    return TemplateResponse(request, template_name, context,
-                            current_app=current_app)
+    return TemplateResponse(request, template_name, context)
 
 @ajaxify_http_redirects
 def reset_done(request,
-               template_name='registration/password_reset_done.haml',
-               current_app=None, extra_context=None):
+               template_name='registration/password_reset_done.haml', extra_context=None):
     return password_reset_done(request=request,
-               template_name=template_name,
-               current_app=current_app, extra_context=extra_context)
+               template_name=template_name, extra_context=extra_context)
 
 
 @ajaxify_http_redirects
 def reset_complete(request,
-                   template_name='registration/password_reset_complete.haml',
-                   current_app=None, extra_context=None):
+                   template_name='registration/password_reset_complete.haml', extra_context=None):
     return password_reset_complete(request=request,
-                   template_name=template_name,
-                   current_app=current_app, extra_context=extra_context)
+                   template_name=template_name, extra_context=extra_context)
 
 
 def home(request):
@@ -1145,7 +1137,7 @@ def edit_title(request):
 
 
 def access_key(request, code):
-    template = 'accounts/access.html'
+    template = 'accounts/access.haml'
     # Try to find the unique code.
     try:
         key, client = _get_access_key(code)
@@ -1154,7 +1146,7 @@ def access_key(request, code):
         return render(request, template, status=404)
 
     # If already authenticated, add to a program and enroll to a course, than redirect back to home page
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         if key and client:
             _process_access_key_and_remove_from_session(request, request.user, key, client)
         return HttpResponseRedirect(_get_redirect_to_current_course(request))

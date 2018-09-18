@@ -31,7 +31,7 @@ class AprosPlatformLanguage(object):
 		language = None
 		if path.startswith('/jsi18n/'):
 			return None
-		if path.startswith('/courses') and request.user.is_authenticated():
+		if path.startswith('/courses') and request.user.is_authenticated:
 			try:
 				course_id = re.search(COURSE_KEY_PATTERN, path[8:]).group(0)
 				course_detail = user_api.get_user_course_detail(request.user.id, course_id)
@@ -41,7 +41,7 @@ class AprosPlatformLanguage(object):
 				language = course_detail.language.split('_')[0]
 		elif path.startswith('/admin'):
 			language = 'en-us'
-		elif not request.user.is_authenticated():
+		elif not request.user.is_authenticated:
 			language = request.COOKIES.get(
 				'preferred_language',
 				self._get_browser_preferred_language(request))

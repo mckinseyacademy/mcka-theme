@@ -15,7 +15,7 @@
 -block content
   %article#course-progress-v2.row
     .medium-11.large-10.medium-centered.columns.course-page
-      %h1 {% trans "Dashboard for" %} '={progress_user.username}'
+      %h1 {% trans "Dashboard for" %} '#{progress_user.username}'
       .label-5 {% trans "PROGRESS" %}
       %p.style-6
         {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
@@ -28,11 +28,11 @@
             %th {% trans "Overall:" %}
         %tbody
           %tr
-            %td <span>={course.module_count}</span> {% trans "in this course" %}
+            %td <span>#{course.module_count}</span> {% trans "in this course" %}
             %td.visual
               - include "courses/visualizations/course_progress.haml"
       %table
-        %thead{class: "{% if course.is_evergreen %}col-2{% endif %} {% if not feature_flags.group_work %}no-group-work{% endif %}"}
+        %thead{"class": "{% if course.is_evergreen %}col-2{% endif %} {% if not feature_flags.group_work %}no-group-work{% endif %}"}
           %tr
             - if not course.is_evergreen
               %th {% trans "Course Run:" %}
@@ -46,18 +46,18 @@
                 %td.week
                   - if week.start
                     %span
-                      {% trans 'Week' %} ={week.index}:
-                    ={week.start}-={week.end}
+                      {% trans 'Week' %} #{week.index}:
+                    #{week.start}-#{week.end}
               %td
                 - if feature_flags.group_work and week.group_only
                   %div {% trans "N/A (focus on Group Work)" %}
                 - for lesson in week.lessons
-                  %div{class: "lesson-with-list lesson-row-item {% if lesson.is_started %}active{% else %}future{% endif %}"}
-                    %i.status.fa{class: "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
+                  %div{"class": "lesson-with-list lesson-row-item {% if lesson.is_started %}active{% else %}future{% endif %}"}
+                    %i.status.fa{"class": "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
                     .lesson-item-name
-                      %a{href: "#{lesson.navigation_url}"}
-                        {% trans "Lesson" %} ={lesson.index}:
-                      ={lesson.name}
+                      %a{"href": "#{lesson.navigation_url}"}
+                        {% trans "Lesson" %} #{lesson.index}:
+                      =lesson.name
                     %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "{% trans 'Lesson Modules' %}"}
                       %i.fa.fa-list-ul
                     %div.reveal-modal.tiny.lesson-modules-modal{'id': "module_list-#{lesson.index}", 'data-reveal': True}
@@ -65,10 +65,10 @@
                       %ul
                         - for module in lesson.modules
                           %li.lesson-row-item
-                            %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+                            %i.status.fa{"class": "fa{% if module.is_complete %}-check{% endif %}-circle"}
                             .lesson-item-name
-                              %a{href: "#{module.navigation_url}"}
-                                {% trans "Module" %} ={module.index}:
+                              %a{"href": "#{module.navigation_url}"}
+                                {% trans "Module" %} #{module.index}:
                               %span= module.name
                       .close-reveal-modal
                         %i.fa.fa-times-circle
@@ -77,10 +77,10 @@
                   %td
                     - for activity in week.group_activities
                       .lesson-with-list.lesson-row-item
-                        %i.status.fa{class: "fa-{% if activity.score %}check-circle complete{% else %}circle{% endif %}"}
+                        %i.status.fa{"class": "fa-{% if activity.score %}check-circle complete{% else %}circle{% endif %}"}
                         .lesson-item-name
-                          %a{href: "#{activity.link}"}
-                            ={activity.name}:
+                          %a{"href": "#{activity.link}"}
+                            #{activity.name}:
                           %span= activity.due_on
                 - else
                   - if course.has_group_work
@@ -111,17 +111,17 @@
               %th {% trans "Grade:" %}
           %tbody
             %tr
-              %td.visual{rowspan: "#{graded_items_rows}"}
+              %td.visual{"rowspan": "#{graded_items_rows}"}
                 - include "courses/visualizations/course_proficiency.haml"
             - for module in course.graded_items.modules
               %tr
                 %td
                   .lesson-row-item
-                    %i.status.fa{class: "fa-{% if module.is_complete %}check-circle complete{% else %}circle{% endif %}"}
+                    %i.status.fa{"class": "fa-{% if module.is_complete %}check-circle complete{% else %}circle{% endif %}"}
                     .lesson-item-name
-                      %a{href: "#{module.navigation_url}"}
-                        ={module.lesson_name}: ={module.name}
-                %td.number{class: "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
+                      %a{"href": "#{module.navigation_url}"}
+                        #{module.lesson_name}: #{module.name}
+                %td.number{"class": "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
             - if feature_flags.group_work
               - for activity in course.graded_items.group_activities
                 - if activity.score
@@ -130,9 +130,9 @@
                       .lesson-row-item
                         %i.status.fa.fa-check-circle.complete
                         .lesson-item-name
-                          %a{href: "#{activity.link}"}
+                          %a{"href": "#{activity.link}"}
                             {% trans "Group Work:" %}
-                          ={activity.name}
+                          =activity.name
                     - ifequal activity.score None
                       %td.number.zero 0
                     - else
@@ -143,9 +143,9 @@
                       .lesson-row-item
                         %i.status.fa.fa-circle
                         .lesson-item-name
-                          %a{href: "#{activity.link}"}
+                          %a{"href": "#{activity.link}"}
                             {% trans "Group Work:" %}
-                          ={activity.name}
+                          =activity.name
                     - if activity.is_pending
                       %td {% trans "Grading in progress" %}
                     - else
@@ -173,27 +173,27 @@
               %th {% trans "Stats:" %}
           %tbody
             %tr
-              %td.visual{rowspan: 5}
+              %td.visual{"rowspan": "5"}
                 - include "courses/visualizations/course_engagement.haml"
               %td {% blocktrans %}Number of <span>New Posts</span> you created {% endblocktrans %}
-              %td.number{class: "{% if social.metrics.num_threads == 0 %}zero{% endif %}"}= social.metrics.num_threads
+              %td.number{"class": "{% if social.metrics.num_threads == 0 %}zero{% endif %}"}= social.metrics.num_threads
             %tr
               %td {% blocktrans %}Number of <span>Replies</span> you made to other posts {% endblocktrans%}
-              %td.number{class: "{% if total_replies == 0 %}zero{% endif %}"}= total_replies
+              %td.number{"class": "{% if total_replies == 0 %}zero{% endif %}"}= total_replies
             %tr
               %td {% blocktrans %} Number of <span>Comments Generated </span> by your posts {% endblocktrans %}
-              %td.number{class: "{% if social.metrics.num_comments_generated == 0 %}zero{% endif %}"}= social.metrics.num_comments_generated
+              %td.number{"class": "{% if social.metrics.num_comments_generated == 0 %}zero{% endif %}"}= social.metrics.num_comments_generated
             %tr
               %td {% blocktrans %} Number of <span>Upvotes</span> your posts have received {% endblocktrans %}
-              %td.number{class: "{% if social.metrics.num_upvotes == 0 %}zero{% endif %}"}= social.metrics.num_upvotes
+              %td.number{"class": "{% if social.metrics.num_upvotes == 0 %}zero{% endif %}"}= social.metrics.num_upvotes
             %tr
               %td {% blocktrans %} Number of your posts being <span>Followed</span> {% endblocktrans %}
-              %td.number{class: "{% if social.metrics.num_thread_followers == 0 %}zero{% endif %}"}= social.metrics.num_thread_followers
+              %td.number{"class": "{% if social.metrics.num_thread_followers == 0 %}zero{% endif %}"}= social.metrics.num_thread_followers
 
-  #progress_modal.reveal-modal.small{'data-reveal': None}
+  #progress_modal.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     %p
       {% trans "If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our" %}
-      %a{href: '/privacy'}
+      %a{'href': '/privacy'}
         {% trans "privacy policy." %}

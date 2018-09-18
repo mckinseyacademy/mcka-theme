@@ -1,12 +1,11 @@
 """
 URLs for the certificates djangoapp.
 """
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from . import views
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     url(
         r'^(?P<course_id>.*)/generate$',
         views.generate_course_certificates,
@@ -22,4 +21,4 @@ urlpatterns = patterns(
         views.load_template_asset,
         name='load_template_asset'
     ),
-)
+]

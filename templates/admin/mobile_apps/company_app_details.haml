@@ -6,15 +6,15 @@
   .row
     #mainCompanyDetailsContainer.mobileAppLink
       %a.backLink{:href => "/admin/companies/#{companyId}", :target => "_self"}
-        \< Back to ={companyName}
+        \< Back to #{companyName}
 
       %p#mainCompanyDetailsDataContainer{:data-id => '#{companyId}'}
-        ={companyName}
+        = companyName
 
       #mainAppDetailsDataContainer{:data-id => '#{appDetails.id}'}
         #appDetailsTopDataWrapper
           .row.appDetailsAppName
-            %h4.appDetailsTextName ={appDetails.name}
+            %h4.appDetailsTextName #{appDetails.name}
             %i.fa.fa-pencil.editAppNameIcon
             .appDetailsInputName{:style => 'display:none;'}
               %input{:type => 'text', :value => '#{appDetails.name}'}
@@ -52,12 +52,12 @@
 
 
         .columns.medium-12
-          %button.button.radius.small.pull-right.bordered{"data-reveal-id" => "linkAppConfirm", :href => "#"}
+          %button.button.radius.small.pull-right.bordered{"data-reveal-id" : "linkAppConfirm", :href => "#"}
             {% trans "Delink App" %}
-          %button.button.radius.small.pull-right.bordered.blank{"aria-haspopup" => "true", "data-disable-hover" => "false", "data-tooltip" => "", :tabindex => "1", :title => "{% trans 'Please contact the mobile dev team to edit this page' %}", :type => "button"}
+          %button.button.radius.small.pull-right.bordered.blank{"aria-haspopup" : "true", "data-disable-hover" : "false", "data-tooltip" : "", :tabindex => "1", :title => "{% trans 'Please contact the mobile dev team to edit this page' %}", :type => "button"}
             {% trans "Help ?" %}
 
-    #linkAppConfirm.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+    #linkAppConfirm.reveal-modal.small{"aria-hidden" : "true", "aria-labelledby" : "modalTitle", "data-reveal" : "", :role => "dialog"}
       %h4 {% trans "Delinking" %}
       %p {% trans "Delinking an active app from a company can lead to unstability." %}
       %p.focused {% trans "ARE YOU SURE YOU WANT TO CONFIRM?" %}
@@ -65,4 +65,4 @@
         {% trans "Continue" %}
       %button.button.small.blank.close-reveal-modal{:value => "Cancel", :type => "button"}
         {% trans "Cancel" %}
-      %a.close-reveal-modal{"aria-label" => "Close"} ×
+      %a.close-reveal-modal{"aria-label" : "Close"} ×

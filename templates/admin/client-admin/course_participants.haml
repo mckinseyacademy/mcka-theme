@@ -86,8 +86,8 @@
                 %a{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/participants/#{student.id}/unenroll", data-reveal-id: "edit_field_modal", data-reveal-ajax: "true"}
                   %i.fa.fa-times-circle-o
 
-  #unenroll-confirm-dialog.reveal-modal.small{'data-reveal': None}
-  #edit-email.reveal-modal.small{'data-reveal': None}
+  #unenroll-confirm-dialog.reveal-modal.small{'data-reveal': ''}
+  #edit-email.reveal-modal.small{'data-reveal': ''}
 
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}

@@ -25,7 +25,7 @@ from django.core.validators import validate_email
 from django.http import (HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404,
                          HttpResponseServerError, HttpResponseBadRequest, JsonResponse)
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template import loader, RequestContext
+from django.template import loader
 from django.utils import timezone
 from django.utils.dateformat import format
 from django.utils.decorators import method_decorator
@@ -143,8 +143,7 @@ def ajaxify_http_redirects(func):
 
 def permission_denied(request):
     template = loader.get_template('not_authorized.haml')
-    context = RequestContext(request, {'request_path': request.path})
-    return HttpResponseForbidden(template.render(context))
+    return HttpResponseForbidden(template.render({'request_path': request.path}, request))
 
 def make_json_error(message, code):
     response = HttpResponse(
@@ -1050,7 +1049,7 @@ class BulkTaskAPI(APIView):
             task_id(integer): id of the created task
         """
         try:
-            data = json.loads(request.body)
+            data = request.data
         except:
             data = request.POST
 
@@ -1100,7 +1099,7 @@ class CourseDetailsApi(APIView):
         PERMISSION_GROUPS.MCKA_SUBADMIN
     )
     def post(self, request, course_id=None, format=None):
-        data = json.loads(request.body)
+        data = request.data
         if data['type'] == 'status_check':
             batch_status = BatchOperationStatus.objects.filter(task_key=data['task_id'])
             BatchOperationStatus.clean_old()
@@ -1797,7 +1796,7 @@ def client_sso(request, client_id):
 
     return render(
         request,
-        'admin/client/sso',
+        'admin/client/sso.haml',
         data,
     )
 
@@ -3597,7 +3596,7 @@ class ParticipantsListApi(APIView):
         PERMISSION_GROUPS.MCKA_SUBADMIN
     )
     def post(self, request):
-        post_data = json.loads(request.body)
+        post_data = request.data
         form = CreateNewParticipant(post_data.copy())
 
         # ToDo: drop need of this mapping by supplying groups in the form
@@ -4568,7 +4567,7 @@ class email_templates_put_and_delete_api(APIView):
 class email_send_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, format=None):
-        data = json.loads(request.body)
+        data = request.data
         result = _send_multiple_emails(from_email = data.get('from_email', None), to_email_list = data.get('to_email_list', None), \
             subject = data.get('subject', None), email_body = data.get('email_body', None), template_id = data.get('template_id', None), optional_data = data.get('optional_data', None))
         if result == True:
@@ -4610,7 +4609,7 @@ class users_company_admin_get_post_put_delete_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def put(self, request, user_id, format=None):
-        data = json.loads(request.body)
+        data = request.data
         company_ids = data.get('ids', None)
         response_dict = {}
         response_dict["status"] = "error"
