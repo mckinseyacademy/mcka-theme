@@ -4,6 +4,7 @@
 
 import logging
 import unicodedata
+import re
 
 from django.conf import settings
 from django.utils.html import escape
@@ -117,3 +118,14 @@ def sanitize_data(data, props_to_clean=None, clean_methods=()):
 
 
 DEFAULT_CLEAN_METHODS = (clean_xss_characters, clean_formula_characters, )
+
+
+def allow_foreign_and_normal_character(value):
+    """
+    This method will allow only foreign and normal characters
+    """
+    if re.search(settings.FOREIGN_AND_NORMAL_CHARACTERS_PATTERN, value):
+        return value
+
+    return None
+

@@ -33,7 +33,7 @@ from accounts.middleware.thread_local import set_course_context, get_course_cont
 from accounts.models import UserActivation
 from admin.forms import MobileBrandingForm
 from admin.models import Program, SelfRegistrationRoles, ClientCustomization
-from courses.models import FeatureFlags
+from courses.models import FeatureFlags, CourseMetaData
 from api_client import (
     course_api,
     course_models,
@@ -56,7 +56,7 @@ from lib.mail import (
 from api_client.group_api import PERMISSION_GROUPS
 from lib.utils import DottableDict
 from license import controller as license_controller
-from util.data_sanitizing import sanitize_data, clean_xss_characters
+from util.data_sanitizing import sanitize_data, clean_xss_characters, allow_foreign_and_normal_character
 from util.validators import validate_first_name, validate_last_name, RoleTitleValidator, normalize_foreign_characters
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
@@ -2653,3 +2653,20 @@ def get_organization_active_courses(request, company_id):
         courses.append(course)
 
     return courses
+
+
+def edit_course_meta_data(course_id, lesson_label, module_label,
+                             lesson_label_flag, module_label_flag):
+
+    data_saved = False
+    course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=course_id)
+    if lesson_label_flag:
+        course_meta_data.lesson_label = lesson_label
+        data_saved = True
+    if module_label_flag:
+        course_meta_data.module_label = module_label
+        data_saved = True
+    course_meta_data.save()
+
+    return data_saved
+

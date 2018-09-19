@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 07:39+0000\n"
+"POT-Creation-Date: 2018-09-18 21:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1113,7 +1113,7 @@ msgid "Username or Email {html_span}"
 msgstr "Usuário {html_span}"
 
 #: accounts/forms.py:405 accounts/forms.py:480 accounts/forms.py:498
-#: accounts/forms.py:596 admin/controller.py:811 admin/views.py:2334
+#: accounts/forms.py:596 admin/controller.py:811 admin/views.py:2339
 #: marketing/forms.py:49 marketing/forms.py:93 marketing/forms.py:127
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1146,7 +1146,7 @@ msgstr ""
 "maiúsculas e minúsculas - deve incluir também números OU caracteres "
 "especiais.{html_span_end}"
 
-#: accounts/forms.py:430 admin/views.py:2334 marketing/forms.py:135
+#: accounts/forms.py:430 admin/views.py:2339 marketing/forms.py:135
 #: templates/admin/participants/participant_details.haml:123
 #: templates/admin/participants/participants_list.haml:16
 #: templates/admin/permissions/list.haml:36
@@ -1429,11 +1429,13 @@ msgstr ""
 msgid "Enter your full name"
 msgstr "Digite seu nome completo"
 
-#: accounts/views.py:1111 accounts/views.py:1134 admin/views.py:1840
-#: admin/views.py:1874 admin/views.py:4190
+#: accounts/views.py:1111 accounts/views.py:1134 admin/views.py:1845
+#: admin/views.py:1879 admin/views.py:4195
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
 #: templates/admin/course_meta_content/item_detail.haml:16
+#: templates/admin/course_meta_content/item_list.haml:187
+#: templates/admin/course_meta_content/item_list.haml:216
 #: templates/admin/course_run/form_modal.haml:118
 #: templates/admin/learner_dashboard/main.haml:155
 #: templates/admin/learner_dashboard/preview.haml:34
@@ -1541,7 +1543,7 @@ msgstr "PROJETO"
 msgid "Client Name"
 msgstr "Nome do cliente"
 
-#: admin/controller.py:803 admin/views.py:4001 admin/views.py:4099
+#: admin/controller.py:803 admin/views.py:4006 admin/views.py:4104
 #: certificates/models.py:88 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "ID do curso"
@@ -1558,13 +1560,13 @@ msgstr "Progresso %"
 
 #: admin/controller.py:811
 #: templates/admin/client-admin/course_analytics.haml:71
-#: templates/admin/course_meta_content/item_list.haml:147
+#: templates/admin/course_meta_content/item_list.haml:148
 msgid "Engagement"
 msgstr "Engajamento"
 
-#: admin/controller.py:811 admin/views.py:4001
+#: admin/controller.py:811 admin/views.py:4006
 #: templates/admin/client-admin/course_analytics.haml:53
-#: templates/admin/course_meta_content/item_list.haml:70
+#: templates/admin/course_meta_content/item_list.haml:71
 msgid "Proficiency"
 msgstr "Proficiência"
 
@@ -1577,7 +1579,7 @@ msgstr "Curso Concluído"
 msgid "0%"
 msgstr "0%"
 
-#: admin/controller.py:834 admin/views.py:927 admin/views.py:936
+#: admin/controller.py:834 admin/views.py:929 admin/views.py:938
 msgid "{}%"
 msgstr "{}%"
 
@@ -1720,19 +1722,19 @@ msgstr "Você enviou uma chave de tarefa incorreta!"
 msgid "There are no users in organization!"
 msgstr "Não há usuários na organização!"
 
-#: admin/controller.py:2287 admin/controller.py:2288 admin/views.py:3573
-#: admin/views.py:3574 admin/views.py:3730 admin/views.py:5530
+#: admin/controller.py:2287 admin/controller.py:2288 admin/views.py:3578
+#: admin/views.py:3579 admin/views.py:3735 admin/views.py:5535
 msgid "No company"
 msgstr "Nenhuma empresa"
 
-#: admin/controller.py:2305 admin/views.py:3578 admin/views.py:4058
-#: admin/views.py:4085 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2305 admin/views.py:3583 admin/views.py:4063
+#: admin/views.py:4090 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/mobile_apps/company_app_details.haml:46
 msgid "Yes"
 msgstr "Sim"
 
-#: admin/controller.py:2307 admin/views.py:3580 admin/views.py:4060
-#: admin/views.py:4064 admin/views.py:4087 admin/views.py:4091
+#: admin/controller.py:2307 admin/views.py:3585 admin/views.py:4065
+#: admin/views.py:4069 admin/views.py:4092 admin/views.py:4096
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
@@ -1814,28 +1816,28 @@ msgstr ""
 msgid "Enter new email address"
 msgstr "Digite o novo endereço de e-mail"
 
-#: admin/forms.py:120 admin/views.py:4224
+#: admin/forms.py:120 admin/views.py:4229
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "TA"
 
-#: admin/forms.py:120 admin/views.py:4225
+#: admin/forms.py:120 admin/views.py:4230
 msgid "OBSERVER"
 msgstr "OBSERVADOR"
 
-#: admin/forms.py:144 admin/views.py:4226
+#: admin/forms.py:144 admin/views.py:4231
 msgid "ADMIN"
 msgstr "ADMIN"
 
-#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4229
+#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4234
 msgid "COURSE OPS"
 msgstr "OPS CURSO"
 
-#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4228
+#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4233
 msgid "INTERNAL ADMIN"
 msgstr "ADMIN INTERNO"
 
-#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4227
+#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4232
 msgid "COMPANY ADMIN"
 msgstr "ADMIN EMPRESA"
 
@@ -1864,8 +1866,8 @@ msgstr "Instância do Curso"
 msgid "Name {}"
 msgstr "Nome {}"
 
-#: admin/forms.py:228 admin/views.py:1981 admin/views.py:4001
-#: admin/views.py:4099 templates/admin/program/list.haml:25
+#: admin/forms.py:228 admin/views.py:1986 admin/views.py:4006
+#: admin/views.py:4104 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:63
 #: templates/header.haml:101
@@ -1932,7 +1934,8 @@ msgstr ""
 msgid "Article"
 msgstr "Artigo"
 
-#: admin/models.py:590 templates/courses/content_page/lesson_menu.haml:9
+#: admin/models.py:590 templates/admin/course_meta_content/item_list.haml:168
+#: templates/courses/content_page/lesson_menu.haml:9
 #: templates/courses/content_page/lesson_menu.haml:16
 #: templates/courses/content_page/lesson_pager.haml:10
 #: templates/courses/content_page/lesson_pager.haml:28
@@ -1942,7 +1945,8 @@ msgstr "Artigo"
 msgid "Lesson"
 msgstr "Lição"
 
-#: admin/models.py:591 templates/courses/content_page/lesson_pager.haml:11
+#: admin/models.py:591 templates/admin/course_meta_content/item_list.haml:197
+#: templates/courses/content_page/lesson_pager.haml:11
 #: templates/courses/content_page/lesson_pager.haml:29
 #: templates/courses/content_page/lesson_pager_ld.haml:10
 #: templates/courses/content_page/lesson_pager_ld.haml:22
@@ -1953,7 +1957,7 @@ msgstr "Lição"
 msgid "Module"
 msgstr "Módulo"
 
-#: admin/models.py:592 admin/views.py:4001 admin/views.py:4099
+#: admin/models.py:592 admin/views.py:4006 admin/views.py:4104
 #: templates/admin/participants/participants_list.haml:18
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
@@ -2020,94 +2024,94 @@ msgstr ""
 msgid "Participant stats for {} did not generate"
 msgstr ""
 
-#: admin/views.py:550
+#: admin/views.py:552
 msgid "Edit Email"
 msgstr "Editar e-mail"
 
-#: admin/views.py:588
+#: admin/views.py:590
 msgid "Un-enroll from this course"
 msgstr "Cancelar inscrição neste curso"
 
-#: admin/views.py:589
+#: admin/views.py:591
 msgid "Un-enroll from entire program "
 msgstr "Cancelar inscrição no programa inteiro "
 
-#: admin/views.py:854
+#: admin/views.py:856
 msgid "% Progress"
 msgstr "% do progresso"
 
-#: admin/views.py:855
+#: admin/views.py:857
 msgid "% Progress (Engaged)"
 msgstr "% do progresso (Engajado)"
 
-#: admin/views.py:922
+#: admin/views.py:924
 msgid "GW_{}"
 msgstr "GW_{}"
 
-#: admin/views.py:925
+#: admin/views.py:927
 msgid "Group Work: {}"
 msgstr "Trabalho em Grupo: {}"
 
-#: admin/views.py:931
+#: admin/views.py:933
 msgid "AS_{}"
 msgstr "AS_{}"
 
-#: admin/views.py:934
+#: admin/views.py:936
 msgid "Assessment: {}"
 msgstr "Avaliação: {}"
 
-#: admin/views.py:1114
+#: admin/views.py:1116
 msgid "No such task!"
 msgstr "Esta tarefa não existe!"
 
-#: admin/views.py:1199 admin/views.py:1238
+#: admin/views.py:1204 admin/views.py:1243
 msgid "please fix the problems indicated below."
 msgstr "Corrija os problemas indicados abaixo."
 
-#: admin/views.py:1284
+#: admin/views.py:1289
 msgid "Client"
 msgstr "Cliente"
 
-#: admin/views.py:1285
+#: admin/views.py:1290
 msgid "Clients"
 msgstr "Clientes"
 
-#: admin/views.py:1344 admin/views.py:1391
+#: admin/views.py:1349 admin/views.py:1396
 msgid "Save Client"
 msgstr "Salvar cliente"
 
-#: admin/views.py:1403
+#: admin/views.py:1408
 #, python-brace-format
 msgid "Successfully processed {processed} of {total} record"
 msgid_plural "Successfully processed {processed} of {total} records"
 msgstr[0] "{processed} de {total} registro processado com sucesso"
 msgstr[1] "{processed} de {total} registros processados com sucesso"
 
-#: admin/views.py:1580
+#: admin/views.py:1585
 msgid "Bad request, The Image type is not valid."
 msgstr "Solicitação inválida. Tipo de imagem inválida."
 
-#: admin/views.py:1592
+#: admin/views.py:1597
 msgid "Could not delete the image, Please try later"
 msgstr "Não foi possível excluir a imagem. Tente mais tarde"
 
-#: admin/views.py:1742
+#: admin/views.py:1747
 msgid "Contact has been removed."
 msgstr "O contato foi removido."
 
-#: admin/views.py:1758 admin/views.py:1764
+#: admin/views.py:1763 admin/views.py:1769
 msgid "Invalid Course Run"
 msgstr "Série do Curso inválida"
 
-#: admin/views.py:1760
+#: admin/views.py:1765
 msgid "Invalid Program ID"
 msgstr "ID do Programa inválido"
 
-#: admin/views.py:1764
+#: admin/views.py:1769
 msgid "Course: {}"
 msgstr "Curso: {}"
 
-#: admin/views.py:1790
+#: admin/views.py:1795
 msgid ""
 "\n"
 "            If this client should use SSO: DevOps must configure and enable "
@@ -2127,111 +2131,111 @@ msgstr ""
 "campo em branco.\n"
 "        "
 
-#: admin/views.py:1833 admin/views.py:1834 admin/views.py:1868
+#: admin/views.py:1838 admin/views.py:1839 admin/views.py:1873
 msgid "- Select -"
 msgstr "- Selecione -"
 
-#: admin/views.py:1893 admin/views.py:1895
+#: admin/views.py:1898 admin/views.py:1900
 msgid "Access Key couldn't be created, please check course ID!"
 msgstr "Não foi possível criar a chave de acesso. Verifique ID do curso!"
 
-#: admin/views.py:1894
+#: admin/views.py:1899
 msgid "Access Key created successfully!"
 msgstr "Chave de acesso criada com sucesso!"
 
-#: admin/views.py:1908
+#: admin/views.py:1913
 msgid "Access Key"
 msgstr "Chave de acesso"
 
-#: admin/views.py:1930
+#: admin/views.py:1935
 msgid "Send"
 msgstr "Enviar"
 
-#: admin/views.py:1954
+#: admin/views.py:1959
 msgid "This student hasn't been added to any programs yet."
 msgstr "Esse aluno não foi adicionado a nenhum programa até o momento."
 
-#: admin/views.py:1965
+#: admin/views.py:1970
 msgid "fail"
 msgstr "falha"
 
-#: admin/views.py:1969
+#: admin/views.py:1974
 msgid "success"
 msgstr "sucesso"
 
-#: admin/views.py:1982 templates/admin/admin_header.haml:59
+#: admin/views.py:1987 templates/admin/admin_header.haml:59
 #: templates/marketing/programs.haml:237
 msgid "Programs"
 msgstr "Programas"
 
-#: admin/views.py:2020 admin/views.py:2068
+#: admin/views.py:2025 admin/views.py:2073
 msgid "Save Program"
 msgstr "Salvar programa"
 
-#: admin/views.py:2276
+#: admin/views.py:2281
 msgid "Successfully Added {} Participants"
 msgstr "{} Participantes Adicionados com Sucesso"
 
-#: admin/views.py:2334 admin/views.py:5652
+#: admin/views.py:2339 admin/views.py:5657
 #: templates/admin/participants/activation_link_modal.haml:15
 msgid "First name"
 msgstr "Nome"
 
-#: admin/views.py:2334 admin/views.py:5653
+#: admin/views.py:2339 admin/views.py:5658
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 msgid "Last name"
 msgstr "Sobrenome"
 
-#: admin/views.py:2334
+#: admin/views.py:2339
 #: templates/admin/participants/activation_link_modal.haml:4
 #: templates/admin/participants/activation_link_modal.haml:21
 msgid "Activation Link"
 msgstr "Link de ativação"
 
-#: admin/views.py:2451
+#: admin/views.py:2456
 msgid "Report is TBD"
 msgstr "Relatório a ser definido"
 
-#: admin/views.py:2473 templates/courses/content_page/courses_menu_list.haml:17
+#: admin/views.py:2478 templates/courses/content_page/courses_menu_list.haml:17
 msgid "Coming Soon"
 msgstr "Em breve"
 
-#: admin/views.py:2475 templates/courses/content_page/courses_menu_list.haml:8
+#: admin/views.py:2480 templates/courses/content_page/courses_menu_list.haml:8
 msgid "Archived"
 msgstr "Arquivado"
 
-#: admin/views.py:2545
+#: admin/views.py:2550
 msgid "Successfully saved courses to {} program"
 msgstr "Cursos salvos com sucesso no programa {}"
 
-#: admin/views.py:2559 admin/views.py:2937 admin/views.py:2970
-#: admin/views.py:3025
+#: admin/views.py:2564 admin/views.py:2942 admin/views.py:2975
+#: admin/views.py:3030
 msgid "Invalid program_id specified: {}"
 msgstr "program_id inválido especificado: {}"
 
-#: admin/views.py:2568
+#: admin/views.py:2573
 msgid "Invalid student_id specified: {}"
 msgstr "student_id inválido especificado: {}"
 
-#: admin/views.py:2574
+#: admin/views.py:2579
 msgid "Not enough places available for {} program - {} left"
 msgstr ""
 "Não há vagas suficientes disponíveis para o programa {} - {} disponíveis"
 
-#: admin/views.py:2601
+#: admin/views.py:2606
 msgid "Successfully associated students to {} program"
 msgstr "Alunos associados com sucesso ao programa {} "
 
-#: admin/views.py:2632
+#: admin/views.py:2637
 msgid "{} already enrolled in {}"
 msgstr "{} já inscritos em {}"
 
-#: admin/views.py:2639
+#: admin/views.py:2644
 msgid "Successfully associated students to courses"
 msgstr "Alunos associados com sucesso aos cursos"
 
-#: admin/views.py:2641
+#: admin/views.py:2646
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
@@ -2239,7 +2243,7 @@ msgstr ""
 "Alunos associados com sucesso aos cursos, com {} mensagens:\n"
 "\\t{}"
 
-#: admin/views.py:2755 admin/views.py:2758
+#: admin/views.py:2760 admin/views.py:2763
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
@@ -2247,87 +2251,87 @@ msgstr ""
 "Erro no upload do arquivo. Tente novamente e certifique-se de usar um "
 "formato de arquivo aceito."
 
-#: admin/views.py:3186 admin/views.py:3249
+#: admin/views.py:3191 admin/views.py:3254
 msgid "No group projects available for this course"
 msgstr "Nenhum projeto de grupo disponível para este curso"
 
-#: admin/views.py:3259 admin/views.py:3260 admin/views.py:3487
-#: admin/views.py:3488 templates/admin/admin_header.haml:37
-#: templates/admin/course_meta_content/item_list.haml:55
+#: admin/views.py:3264 admin/views.py:3265 admin/views.py:3492
+#: admin/views.py:3493 templates/admin/admin_header.haml:37
+#: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:18
 #: templates/courses/course_group_work.haml:13
 #: templates/courses/course_progress.haml:57 templates/faq.haml:39
 msgid "Group Work"
 msgstr "Trabalho em Grupo"
 
-#: admin/views.py:3339
+#: admin/views.py:3344
 msgid "Group wasn't created - please select project"
 msgstr "O grupo não foi criado - selecione o projeto"
 
-#: admin/views.py:3350
+#: admin/views.py:3355
 msgid "Bad users {} for private project"
 msgstr "Usuários inválidos {} para projeto privado"
 
-#: admin/views.py:3366
+#: admin/views.py:3371
 msgid "Group successfully created"
 msgstr "Grupo criado com sucesso"
 
-#: admin/views.py:3370
+#: admin/views.py:3375
 msgid "Group was not created"
 msgstr "Não foi possível criar grupo "
 
-#: admin/views.py:3412
+#: admin/views.py:3417
 msgid "Error creating project"
 msgstr "Erro ao criar projeto"
 
-#: admin/views.py:3426
+#: admin/views.py:3431
 msgid "Project already exists"
 msgstr "Projeto já existe"
 
-#: admin/views.py:3431
+#: admin/views.py:3436
 msgid "Project successfully created"
 msgstr "Projeto criado com sucesso"
 
-#: admin/views.py:3464
+#: admin/views.py:3469
 msgid "Project deleted successfully."
 msgstr "Projeto excluído com sucesso."
 
-#: admin/views.py:3526
+#: admin/views.py:3531
 msgid "Password Reset Email successfully sent."
 msgstr "E-mail de redefinição de senha enviado com sucesso."
 
-#: admin/views.py:3545
+#: admin/views.py:3550
 msgid "Activation email sent."
 msgstr "E-mail de ativação enviado."
 
-#: admin/views.py:3618 admin/views.py:3803
+#: admin/views.py:3623 admin/views.py:3808
 msgid "Company name can only contain alphanumeric characters"
 msgstr "O nome da empresa pode conter apenas caracteres alfanuméricos"
 
-#: admin/views.py:3630 admin/views.py:3635
+#: admin/views.py:3635 admin/views.py:3640
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr "Erro de permissão: você não tem permissão para conceder esta função"
 
-#: admin/views.py:3644
+#: admin/views.py:3649
 msgid "User with that email already exists!"
 msgstr "Usuário com esse e-mail já existe!"
 
-#: admin/views.py:3669 admin/views.py:3830
+#: admin/views.py:3674 admin/views.py:3835
 msgid "Couldn't create company!"
 msgstr "Não foi possível criar empresa!"
 
-#: admin/views.py:3680
+#: admin/views.py:3685
 msgid "Couldn't add user to company!"
 msgstr "Não foi possível adicionar usuário à empresa!"
 
-#: admin/views.py:3704 templates/admin/participants/participants_list.haml:221
+#: admin/views.py:3709 templates/admin/participants/participants_list.haml:221
 msgid "Successfully added new user!"
 msgstr "Novo usuário adicionado com sucesso !"
 
-#: admin/views.py:3723 admin/views.py:3725 admin/views.py:3734
-#: admin/views.py:3740 admin/views.py:3746 admin/views.py:5523
-#: admin/views.py:5525 admin/views.py:5534 admin/views.py:5540
-#: admin/views.py:5546
+#: admin/views.py:3728 admin/views.py:3730 admin/views.py:3739
+#: admin/views.py:3745 admin/views.py:3751 admin/views.py:5528
+#: admin/views.py:5530 admin/views.py:5539 admin/views.py:5545
+#: admin/views.py:5551
 #: templates/admin/participants/participant_details.haml:267
 #: templates/admin/participants/participant_details.haml:275
 #: templates/admin/participants/participant_details.haml:283
@@ -2335,147 +2339,147 @@ msgstr "Novo usuário adicionado com sucesso !"
 msgid "N/A"
 msgstr "N/A"
 
-#: admin/views.py:3821
+#: admin/views.py:3826
 msgid "User with that username or email already exists!"
 msgstr "Usuário com esse nome de usuário ou e-mail já existe!"
 
-#: admin/views.py:3876
+#: admin/views.py:3881
 msgid "Can't find user in database"
 msgstr "Não foi possível encontrar usuário no banco de dados"
 
-#: admin/views.py:3953
+#: admin/views.py:3958
 msgid "There is a problem with selected user role on new course!"
 msgstr "Há um problema com a função do usuário selecionado no novo curso!"
 
-#: admin/views.py:4001 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4006 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:26
 msgid "Progress"
 msgstr "Progresso"
 
-#: admin/views.py:4001 admin/views.py:4099
+#: admin/views.py:4006 admin/views.py:4104
 msgid "Status"
 msgstr "Status"
 
-#: admin/views.py:4099 templates/admin/client-admin/course_info.haml:79
+#: admin/views.py:4104 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:30
 #: templates/courses/course_progress.haml:53
 msgid "Completed"
 msgstr "Concluído"
 
-#: admin/views.py:4099
+#: admin/views.py:4104
 msgid "Grade"
 msgstr "Nota"
 
-#: admin/views.py:4099
+#: admin/views.py:4104
 msgid "End Date"
 msgstr "Data de Término"
 
-#: admin/views.py:4250
+#: admin/views.py:4255
 msgid "Problem generating activity review assignments"
 msgstr "Problema ao gerar atribuições de revisão das atividades"
 
-#: admin/views.py:4274
+#: admin/views.py:4279
 msgid "Project review assignments allocated"
 msgstr "Atribuições de revisão do projeto alocadas"
 
-#: admin/views.py:4281
+#: admin/views.py:4286
 msgid "Not enough groups to meet review criteria"
 msgstr "Não há grupos suficientes para atender os critérios de revisão"
 
-#: admin/views.py:4509
+#: admin/views.py:4514
 msgid "Successfully added new email template!"
 msgstr "Novo modelo de e-mail adicionado com sucesso!"
 
-#: admin/views.py:4512
+#: admin/views.py:4517
 msgid "Missing fields in email template!"
 msgstr "Campos ausentes no template de e-mail!"
 
-#: admin/views.py:4523
+#: admin/views.py:4528
 msgid "Successfully got email template!"
 msgstr "Template de e-mail obtido com sucesso!"
 
-#: admin/views.py:4526 admin/views.py:4539 admin/views.py:4562
+#: admin/views.py:4531 admin/views.py:4544 admin/views.py:4567
 msgid "Can't find email template key!"
 msgstr "Não foi possível encontrar a chave do modelo de e-mail!"
 
-#: admin/views.py:4528 admin/views.py:4541 admin/views.py:4564
+#: admin/views.py:4533 admin/views.py:4546 admin/views.py:4569
 msgid "Missing email template key!"
 msgstr "Chave de modelo de e-mail faltante!"
 
-#: admin/views.py:4537
+#: admin/views.py:4542
 msgid "Successfully deleted email template!"
 msgstr "Modelo de e-mail excluído com sucesso!"
 
-#: admin/views.py:4559
+#: admin/views.py:4564
 msgid "Successfully updated email template!"
 msgstr "Modelo de e-mail atualizado com sucesso!"
 
-#: admin/views.py:4674 admin/views.py:5317
+#: admin/views.py:4679 admin/views.py:5322
 msgid "No Company Display name!"
 msgstr "Não há nome de Exibição da Empresa!"
 
-#: admin/views.py:4857
+#: admin/views.py:4862
 msgid "App name only contains alphanumeric characters"
 msgstr "O nome do aplicativo contém apenas caracteres alfanuméricos"
 
-#: admin/views.py:4973
+#: admin/views.py:4978
 msgid "Learner dashboard not found"
 msgstr "Painel do aluno não encontrado"
 
-#: admin/views.py:5334
+#: admin/views.py:5339
 msgid "Company name successfully changed!"
 msgstr "Nome da empresa alterado com sucesso!"
 
-#: admin/views.py:5377
+#: admin/views.py:5382
 msgid "Tag with this name already exist's!"
 msgstr "Tag com este nome já existe!"
 
-#: admin/views.py:5388
+#: admin/views.py:5393
 msgid "Tag created!"
 msgstr "Tag criado!"
 
-#: admin/views.py:5390
+#: admin/views.py:5395
 msgid "You need to select tag's name!"
 msgstr "Você precisa selecionar o nome do tag!"
 
-#: admin/views.py:5440
+#: admin/views.py:5445
 msgid "Tag added to Course!"
 msgstr "Tag adicionado ao Curso!"
 
-#: admin/views.py:5442 admin/views.py:5464
+#: admin/views.py:5447 admin/views.py:5469
 msgid "You need to select tag!"
 msgstr "Você precisa selecionar o tag!"
 
-#: admin/views.py:5462
+#: admin/views.py:5467
 msgid "Tag removed from Course!"
 msgstr "Tag eliminado do Curso!"
 
-#: admin/views.py:5654 templates/admin/course_run/view.haml:65
+#: admin/views.py:5659 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "Nome da empresa"
 
-#: admin/views.py:5655 templates/admin/course_run/view.haml:66
+#: admin/views.py:5660 templates/admin/course_run/view.haml:66
 msgid "Company email"
 msgstr "E-mail de empresa"
 
-#: admin/views.py:5656 templates/admin/course_run/view.haml:67
+#: admin/views.py:5661 templates/admin/course_run/view.haml:67
 msgid "Current role"
 msgstr "Função atual"
 
-#: admin/views.py:5657 templates/admin/course_run/view.haml:68
+#: admin/views.py:5662 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "Novo usuário"
 
-#: admin/views.py:5658
+#: admin/views.py:5663
 msgid "McK user"
 msgstr "Usuário McK"
 
-#: admin/views.py:5659 templates/admin/course_run/view.haml:70
+#: admin/views.py:5664 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "Inscrito"
 
-#: admin/views.py:5660 templates/admin/course_run/view.haml:71
+#: admin/views.py:5665 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "Ativo"
@@ -3256,7 +3260,7 @@ msgid "Course Content"
 msgstr "Conteúdo do curso"
 
 #: templates/admin/admin_header.haml:47
-#: templates/admin/course_meta_content/item_list.haml:131
+#: templates/admin/course_meta_content/item_list.haml:132
 msgid "Certificates"
 msgstr "Certificados"
 
@@ -3391,6 +3395,8 @@ msgstr "Redefinir cores"
 #: templates/admin/companies/companies_list.haml:31
 #: templates/admin/companies/company_details.haml:76
 #: templates/admin/course_meta_content/item_detail.haml:18
+#: templates/admin/course_meta_content/item_list.haml:184
+#: templates/admin/course_meta_content/item_list.haml:213
 #: templates/admin/courses/course_details.haml:131
 #: templates/admin/courses/course_details.haml:203
 #: templates/admin/mobile_apps/company_app_details.haml:67
@@ -3417,7 +3423,7 @@ msgstr "Analytics"
 
 #: templates/admin/client-admin/course_header.haml:30
 #: templates/admin/client-admin/course_header.haml:33
-#: templates/admin/course_meta_content/item_list.haml:103
+#: templates/admin/course_meta_content/item_list.haml:104
 #: templates/admin/learner_dashboard/header.haml:20
 msgid "Branding"
 msgstr "Branding"
@@ -3835,27 +3841,29 @@ msgstr "Esta é a página de detalhes do metaconteúdo do curso."
 msgid "ERRORS:"
 msgstr "ERROS:"
 
-#: templates/admin/course_meta_content/item_list.haml:6
+#: templates/admin/course_meta_content/item_list.haml:7
 msgid "This is the course meta content list page."
 msgstr "Esta é a página da lista de metaconteúdo do curso."
 
-#: templates/admin/course_meta_content/item_list.haml:10
+#: templates/admin/course_meta_content/item_list.haml:11
 msgid "ID"
 msgstr "ID"
 
-#: templates/admin/course_meta_content/item_list.haml:11
+#: templates/admin/course_meta_content/item_list.haml:12
 msgid "SEQUENCE"
 msgstr "SEQUÊNCIA"
 
-#: templates/admin/course_meta_content/item_list.haml:12
+#: templates/admin/course_meta_content/item_list.haml:13
 msgid "TITLE"
 msgstr "TÍTULO"
 
-#: templates/admin/course_meta_content/item_list.haml:13
+#: templates/admin/course_meta_content/item_list.haml:14
 msgid "TYPE"
 msgstr "TIPO"
 
-#: templates/admin/course_meta_content/item_list.haml:29
+#: templates/admin/course_meta_content/item_list.haml:30
+#: templates/admin/course_meta_content/item_list.haml:181
+#: templates/admin/course_meta_content/item_list.haml:210
 #: templates/admin/course_run/list.haml:28
 #: templates/admin/course_run/view.haml:17
 #: templates/admin/learner_dashboard/branding.haml:65
@@ -3866,27 +3874,27 @@ msgstr "TIPO"
 msgid "Edit"
 msgstr "Editar"
 
-#: templates/admin/course_meta_content/item_list.haml:32
+#: templates/admin/course_meta_content/item_list.haml:33
 #: templates/admin/learner_dashboard/discovery_list.haml:20
 #: templates/admin/learner_dashboard/element_list.haml:25
 #: templates/admin/workgroup/course_detail.haml:86
 msgid "Delete"
 msgstr "Excluir"
 
-#: templates/admin/course_meta_content/item_list.haml:35
+#: templates/admin/course_meta_content/item_list.haml:36
 msgid "Create New Item"
 msgstr "Criar novo item"
 
-#: templates/admin/course_meta_content/item_list.haml:37
+#: templates/admin/course_meta_content/item_list.haml:38
 msgid "This is the course feature list."
 msgstr "Esta é a lista de recursos do curso."
 
-#: templates/admin/course_meta_content/item_list.haml:47
+#: templates/admin/course_meta_content/item_list.haml:48
 #: templates/courses/course_cohort.haml:242
 msgid "Discussions"
 msgstr "Discussões"
 
-#: templates/admin/course_meta_content/item_list.haml:48
+#: templates/admin/course_meta_content/item_list.haml:49
 msgid ""
 "Note: If you disable the discussion page, notifications coming from existing "
 "lesson inline discussion modules in the course will redirect the user to the "
@@ -3901,11 +3909,11 @@ msgstr ""
 "discussões ativadas. A seção Engajamento também será desativada na Tabela de "
 "Classificação, mesmo que o sinalizador Engajamento esteja ativado."
 
-#: templates/admin/course_meta_content/item_list.haml:62
+#: templates/admin/course_meta_content/item_list.haml:63
 msgid "Cohort Map"
 msgstr "Mapa do Grupo"
 
-#: templates/admin/course_meta_content/item_list.haml:71
+#: templates/admin/course_meta_content/item_list.haml:72
 msgid ""
 "Note: If you disable 'Proficiency', it will hide proficiency section from "
 "course landing, progress page and from leaderboard on cohort page."
@@ -3914,11 +3922,11 @@ msgstr ""
 "proficiência da página inicial do curso, da página de progresso e da tabela "
 "de classificação na página do grupo."
 
-#: templates/admin/course_meta_content/item_list.haml:79
+#: templates/admin/course_meta_content/item_list.haml:80
 msgid "Progress Widget"
 msgstr "Widget de Progresso"
 
-#: templates/admin/course_meta_content/item_list.haml:80
+#: templates/admin/course_meta_content/item_list.haml:81
 msgid ""
 "Note: If you disable 'Progress Widget', it will hide progress section from "
 "course landing page."
@@ -3926,11 +3934,11 @@ msgstr ""
 "Nota: Se você desativar o 'Widget de Progresso', isso ocultará a seção de "
 "progresso da página de destino do curso."
 
-#: templates/admin/course_meta_content/item_list.haml:88
+#: templates/admin/course_meta_content/item_list.haml:89
 msgid "Progress Page"
 msgstr "Página de Progresso"
 
-#: templates/admin/course_meta_content/item_list.haml:89
+#: templates/admin/course_meta_content/item_list.haml:90
 msgid ""
 "Note: If you disable 'Progress Page', it will hide progress page icon from "
 "secondary navigation."
@@ -3938,17 +3946,17 @@ msgstr ""
 "Nova: Se você desativar a \"Página de progresso\", isso ocultará o ícone da "
 "página de progresso da navegação secundária."
 
-#: templates/admin/course_meta_content/item_list.haml:96
+#: templates/admin/course_meta_content/item_list.haml:97
 #: templates/courses/content_page/course_tabs.haml:41
 msgid "Notifications"
 msgstr "Notificações"
 
-#: templates/admin/course_meta_content/item_list.haml:110
+#: templates/admin/course_meta_content/item_list.haml:111
 #: templates/courses/content_page/course_tabs.haml:5
 msgid "Learner Dashboard"
 msgstr "Painel do Aluno"
 
-#: templates/admin/course_meta_content/item_list.haml:117
+#: templates/admin/course_meta_content/item_list.haml:118
 #: templates/courses/content_page/course_tabs.haml:38
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_learner_dashboard_header.haml:33
@@ -3956,15 +3964,15 @@ msgstr "Painel do Aluno"
 msgid "Resources"
 msgstr "Recursos"
 
-#: templates/admin/course_meta_content/item_list.haml:124
+#: templates/admin/course_meta_content/item_list.haml:125
 msgid "Cohort Average"
 msgstr "Média do Grupo"
 
-#: templates/admin/course_meta_content/item_list.haml:140
+#: templates/admin/course_meta_content/item_list.haml:141
 msgid "Mobile Available"
 msgstr "Disponível para Dispositivos Móveis"
 
-#: templates/admin/course_meta_content/item_list.haml:148
+#: templates/admin/course_meta_content/item_list.haml:149
 msgid ""
 "Note: If you disable 'Engagement', it will hide Engagement section from "
 "leaderboard."
@@ -3972,17 +3980,36 @@ msgstr ""
 "Nota: Se você desativar  \"Engajamento\", isso ocultará a seção Engajamento "
 "da tabela de classificação."
 
-#: templates/admin/course_meta_content/item_list.haml:155
+#: templates/admin/course_meta_content/item_list.haml:156
 msgid "Discover"
 msgstr "Descobrir"
 
-#: templates/admin/course_meta_content/item_list.haml:156
+#: templates/admin/course_meta_content/item_list.haml:157
 msgid ""
 "Note: If you disable the 'Discover', it will hide Discover section from "
 "course main page."
 msgstr ""
 "Nota: Se você desativar \"Descobrir\", isso ocultará a seção Descobrir da "
 "página principal do curso."
+
+#: templates/admin/course_meta_content/item_list.haml:178
+#: templates/admin/course_meta_content/item_list.haml:207
+#, fuzzy
+#| msgid "Add "
+msgid "Add"
+msgstr "Adicionar "
+
+#: templates/admin/course_meta_content/item_list.haml:221
+#, fuzzy
+#| msgid "This email is not associated with any identity provider"
+msgid "Click Add to specify Lesson Label"
+msgstr "Esse e-mail não está associado a nenhum provedor de identidade"
+
+#: templates/admin/course_meta_content/item_list.haml:222
+#, fuzzy
+#| msgid "This email is not associated with any identity provider"
+msgid "Click Add to specify Module Label"
+msgstr "Esse e-mail não está associado a nenhum provedor de identidade"
 
 #: templates/admin/course_run/form_modal.haml:5
 msgid "Edit Course Run"

@@ -73,3 +73,15 @@ class FeatureFlags(db_models.Model):
             engagement=self.engagement,
             discover=self.discover,
         )
+
+
+class CourseMetaData(db_models.Model):
+    """
+    This table is used to handle custom terminologies related to course.
+    """
+    course_id = db_models.CharField(max_length=200, unique=True, db_index=True)
+    lesson_label = db_models.CharField(max_length=20, blank=True)
+    module_label = db_models.CharField(max_length=20, blank=True)
+    created_at = db_models.DateTimeField(auto_now_add=True)
+    updated_at = db_models.DateTimeField(auto_now=True)
+

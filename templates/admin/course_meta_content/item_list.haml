@@ -1,4 +1,5 @@
 - extends "admin/admin_layout.haml"
+- load staticfiles
 - load i18n
 
 - block content
@@ -154,3 +155,71 @@
           %label{for: 'discover'}
             {% trans "Discover" %}
           %p.style-6 {% trans "Note: If you disable the 'Discover', it will hide Discover section from course main page." %}
+
+  - if user.is_mcka_admin or user.is_mcka_subadmin
+    %section.course_custom_terminology
+      .row.lesson-label
+        .large-12.columns.ll-setup
+          .row
+            .large-8.columns
+              .row
+                .small-4.columns
+                  %label{for:'lesson_label'}
+                    {% trans "Lesson" %}
+                .small-8.columns
+                  .lesson-label-input
+                    %input#lesson_label{"name": "lesson_label", "type": "text", "maxlength":15, "value": "#{lesson_label}"}
+                    .read-only-ll
+                    %span.status-icon-ll
+                      .icon
+            .small-4.columns.ll-buttons
+              %a#add-ll.button.radius.tiny{href: ""}
+                %span#add-ll
+                  {% trans "Add" %}
+              %a#edit-ll.button.radius.tiny{href: ""}
+                %span#edit-ll
+                  {% trans "Edit" %}
+              %a#reset-ll{href: ""}
+                %span#reset-ll
+                  {% trans "Cancel" %}
+              %a#save-ll.button.radius.tiny{href: ""}
+                %span#save-ll
+                  {% trans "Save" %}
+
+    %section.course_custom_terminology
+      .row.module-label
+        .large-12.columns.ml-setup
+          .row
+            .large-8.columns
+              .row
+                .small-4.columns
+                  %label{for:'module_label'}
+                    {% trans "Module" %}
+                .small-8.columns
+                  .module-label-input
+                    %input#module_label{"name": "module_label", "type": "text", "maxlength":15, "value": "#{module_label}"}
+                    .read-only-ml
+                    %span.status-icon-ml
+                      .icon
+            .small-4.columns.ml-buttons
+              %a#add-ml.button.radius.tiny{href: ""}
+                %span#add-ml
+                  {% trans "Add" %}
+              %a#edit-ml.button.radius.tiny{href: ""}
+                %span#edit-ml
+                  {% trans "Edit" %}
+              %a#reset-ml{href: ""}
+                %span#reset-ml
+                  {% trans "Cancel" %}
+              %a#save-ml.button.radius.tiny{href: ""}
+                %span#save-ml
+                  {% trans "Save" %}
+
+
+- block js_snippets
+  :javascript
+    var noLlMsg = "{% trans 'Click Add to specify Lesson Label' %}"
+    var noMlMsg = "{% trans 'Click Add to specify Module Label' %}"
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  %script{src: "{% static 'js/vendor/ZeroClipboard.min.js' %}"}
+  %script{src: "{% static 'js/admin/course_meta_content.js' %}"}

@@ -12,7 +12,7 @@ from accounts.tests.utils import ApplyPatchMixin
 from admin.controller import CourseParticipantStats, create_roles_list, write_participant_performance_on_csv,\
     write_engagement_summary_on_csv, write_social_engagement_report_on_csv, get_course_stats_report
 from admin.models import SelfRegistrationRoles, CourseRun
-from courses.models import FeatureFlags
+from courses.models import FeatureFlags, CourseMetaData
 from admin.tests.utils import BASE_DIR
 from api_client.json_object import JsonParser as JP
 from rest_framework import status
@@ -273,8 +273,8 @@ class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
         course_api = self.apply_patch('api_client.course_api.get_course_details')
         course_api.return_value = {"name": "test_course"}
         response = get_course_stats_report("test_company", "test_Course")
-        expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance\
-            + self.expected_result_for_social
+        expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance \
+                          + self.expected_result_for_social
 
         self.assertEqual(response.content, expected_result)
         course_features = FeatureFlags.objects.get(course_id="test_course")
@@ -353,3 +353,35 @@ class TestSpecificUserRolesOfOtherCompanies(TestCase):
         course_participants = controller.remove_specific_user_roles_of_other_companies(course_participants,
                                                                                       int(organization_id))
         self.assertEqual(len(course_participants["results"]), 3)
+
+
+class EditCourseCustomTermsTest(TestCase):
+    def setUp(self):
+        self.course_id = "course_id/1"
+
+    def test_edit_course_lesson_custom_terms(self):
+        lesson_label = "test_lesson_label"
+        module_label = "test_module_label"
+        lesson_label_flag = True
+        module_label_flag = False
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                            lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertEqual(course_meta_data.lesson_label, lesson_label)
+        self.assertNotEqual(course_meta_data.module_label, module_label)
+
+    def test_edit_course_module_custom_terms(self):
+        lesson_label = "test_lesson_label_1"
+        module_label = "test_module_label_1"
+        lesson_label_flag = False
+        module_label_flag = True
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                            lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertEqual(course_meta_data.module_label, module_label)
+        self.assertNotEqual(course_meta_data.lesson_label, lesson_label)
+

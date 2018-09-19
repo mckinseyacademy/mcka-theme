@@ -61,6 +61,8 @@ urlpatterns += [
     url(r'^client-admin/contact', views.client_admin_contact, name='client_admin_contact'),
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
 
+    url(r'^api/courses/(?P<course_id>.*)/edit_course_meta_data/$', views.CourseMetaDataApiView.as_view(),
+        name='course_meta_data_api_view'),
     url(r'^api/courses/(?P<course_id>.*)/stats/$', views.course_details_stats_api.as_view(), name='course_details_stats_api'),
     url(r'^api/courses/(?P<course_id>.*)/engagement/$', views.course_details_engagement_api.as_view(), name='course_details_engagement_api'),
     url(r'^api/courses/(?P<course_id>.*)/performance/$', views.course_details_performance_api.as_view(), name='course_details_performance_api'),

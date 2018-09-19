@@ -36,13 +36,15 @@ from django.views.generic.base import View
 from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
 
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, \
     _set_number_of_enrolled_users
 from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
-    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, get_organization_active_courses
+    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image,\
+    get_organization_active_courses, edit_course_meta_data
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
@@ -60,7 +62,7 @@ from courses.controller import (
     return_course_progress, organization_course_progress_user_list,
     social_total, round_to_int_bump_zero, round_to_int, create_tile_progress_data
 )
-from courses.models import FeatureFlags
+from courses.models import FeatureFlags, CourseMetaData
 from courses.user_courses import load_course_progress
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
@@ -1140,7 +1142,7 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
             course.id = urlquote(course.id)
 
         data = {
-            "courses": courses
+            "courses": courses,
         }
 
     return render(
@@ -1153,6 +1155,7 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
 @internal_admin_course_access
 def course_meta_content_course_items(request, course_id, restrict_to_courses_ids=None):
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
+    (course_meta_data, created) = CourseMetaData.objects.get_or_create(course_id=course_id)
 
     has_advanced_settings_permissions = True
     mobile_available = False
@@ -1169,6 +1172,8 @@ def course_meta_content_course_items(request, course_id, restrict_to_courses_ids
         "feature_flags": features,
         "has_advanced_settings_permissions": has_advanced_settings_permissions,
         "mobile_available": mobile_available,
+        "lesson_label": course_meta_data.lesson_label,
+        "module_label": course_meta_data.module_label,
     }
 
     return render(
@@ -5700,3 +5705,23 @@ class EditAndDeleteSelfRegRole(APIView):
         role_id = request.DATA.get('role_id', None)
 
         return delete_self_reg_role(role_id)
+
+
+class CourseMetaDataApiView(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+        """
+        Post request handler for Editing Course Custom Terms
+        """
+        lesson_label_flag = request.data.get('lesson_label_flag')
+        module_label_flag = request.data.get('module_label_flag')
+        lesson_label = request.data.get('lesson_label', None)
+        module_label = request.data.get('module_label', None)
+
+        edit_status = edit_course_meta_data(course_id, lesson_label, module_label,
+                                        lesson_label_flag, module_label_flag)
+        if edit_status:
+            return Response(status = status.HTTP_200_OK)
+        else:
+            return Response(status = status.HTTP_400_BAD_REQUEST)

@@ -630,5 +630,8 @@ XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'
 # Course Key Regex
 COURSE_KEY_PATTERN = r'(?P<course_key_string>[^/+]+(/|\+)[^/+]+(/|\+)[^/?]+)'
 
+# Foreign And Normal Characters Regex
+FOREIGN_AND_NORMAL_CHARACTERS_PATTERN = r'[ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðñòóôõöùúûüýÿ+ \w ]+'
+
 #Cookies expiry time
 COOKIES_YEARLY_EXPIRY_TIME = datetime.datetime.utcnow() + datetime.timedelta(days=365)
