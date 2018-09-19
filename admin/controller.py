@@ -2,38 +2,37 @@ import Queue
 import StringIO
 import atexit
 import collections
-import logging
-import re
 import csv
+import logging
 import string
 import tempfile
 import threading
 import urllib
 import uuid
 from datetime import datetime
-from bs4 import BeautifulSoup
-from PIL import Image
-from dateutil.parser import parse as parsedate
 
+import re
+from PIL import Image
+from bs4 import BeautifulSoup
+from dateutil.parser import parse as parsedate
 from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email, ValidationError
-from django.utils import timezone
 from django.http import HttpResponse
+from django.utils import timezone
 from django.utils.translation import ugettext as _
 from pytz import UTC
-from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.response import Response
 
 from accounts.helpers import get_user_activation_links, get_complete_country_name
 from accounts.middleware.thread_local import set_course_context, get_course_context
 from accounts.models import UserActivation
 from admin.forms import MobileBrandingForm
 from admin.models import Program, SelfRegistrationRoles, ClientCustomization
-from courses.models import FeatureFlags, CourseMetaData
 from api_client import (
     course_api,
     course_models,
@@ -46,22 +45,24 @@ from api_client import (
     workgroup_api
 )
 from api_client.api_error import ApiError
+from api_client.group_api import PERMISSION_GROUPS
 from api_client.group_api import TAG_GROUPS
 from api_client.mobileapp_api import create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme
 from api_client.project_models import Project
 from api_client.user_api import USER_ROLES
+from courses.models import FeatureFlags, CourseMetaData
 from lib.mail import (
     sendMultipleEmails, email_add_single_new_user, create_multiple_emails
 )
-from api_client.group_api import PERMISSION_GROUPS
 from lib.utils import DottableDict
 from license import controller as license_controller
-from util.data_sanitizing import sanitize_data, clean_xss_characters, allow_foreign_and_normal_character
+from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.validators import validate_first_name, validate_last_name, RoleTitleValidator, normalize_foreign_characters
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
-    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate, )
+    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate
+)
 from .permissions import Permissions, SlimAddingPermissions
 
 # need to load everything up to first level nested XBlocks to properly get Group Project V2 activities
@@ -232,14 +233,21 @@ def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_ap
     if depth < MINIMAL_COURSE_DEPTH:
         depth = MINIMAL_COURSE_DEPTH
     course_context = get_course_context()
-    if course_context and course_context.get("course_id", None) == course_id and course_context.get("depth",
-                                                                                                    0) >= depth:
+    if (
+            course_context and
+            course_context.get("course_id", None) == course_id and
+            course_context.get("depth", 0) >= depth
+    ):
         return course_context["course_content"]
 
     user = request.user if request else None
 
     # See if we will cache courseware on the user's session
-    if not getattr(settings, 'USE_SESSION_COURSEWARE_CACHING', False) or not request or not request.session:
+    if (
+            not getattr(settings, 'USE_SESSION_COURSEWARE_CACHING', False) or
+            not request or
+            not request.session
+    ):
         # simple path: load and return
         return _load_course(course_id, depth, course_api_impl, user=user)
 
@@ -847,14 +855,14 @@ def get_course_metrics_for_organization(course_id, client_id):
 
 
 def get_course_analytics_progress_data(course, course_modules, client_id=None):
+    params = {
+        'page_size': 0,
+        'fields': 'id,username',
+    }
     if client_id:
-        users_count = len({u['id']: u['username'] for u in course_api.get_course_details_users(course.id,
-                                                                                               {'page_size': 0,
-                                                                                                'fields': 'id,username',
-                                                                                                'organizations': client_id})})
-    else:
-        users_count = len({u['id']: u['username'] for u in
-                           course_api.get_course_details_users(course.id, {'page_size': 0, 'fields': 'id,username'})})
+        params.update({'organizations': client_id})
+    user_list = course_api.get_course_details_users(course.id, params)
+    users_count = len({u['id'] for u in user_list})
     total = users_count * len(course_modules)
     start_date = course.start
     end_date = datetime.now()
@@ -1262,13 +1270,13 @@ def get_course_social_engagement(course_id, company_id):
 
 
 def get_course_engagement_summary(course_id, company_id):
+    params = {
+        'page_size': 0,
+        'fields': 'id,is_active,last_login',
+    }
     if company_id:
-        course_users_simple = course_api.get_course_details_users(course_id,
-                                                                  {'page_size': 0, 'fields': 'id,is_active,last_login',
-                                                                   'organizations': company_id})
-    else:
-        course_users_simple = course_api.get_course_details_users(course_id,
-                                                                  {'page_size': 0, 'fields': 'id,is_active,last_login'})
+        params.update({'organizations': company_id})
+    course_users_simple = course_api.get_course_details_users(course_id, params)
 
     course_users_ids = [str(user['id']) for user in course_users_simple]
     roles = course_api.get_users_filtered_by_role(course_id)
@@ -1547,29 +1555,6 @@ def get_user_courses_helper(user_id, request):
                 course_history.append(user_course)
 
     return active_courses, course_history
-
-
-def get_course_progress(course_id, exclude_users, company_id=None):
-    '''
-    Helper method for calculating user pogress on course.
-    Returns dictionary of users with user_id and progress.
-    Can be filtered with exclude_users array.
-    '''
-
-    users_progress = []
-    if company_id:
-        leaders = course_api.get_course_details_completions_leaders(course_id, company_id)
-    else:
-        leaders = course_api.get_course_details_completions_leaders(course_id)
-
-    for user in leaders['leaders']:
-        if str(user['id']) not in exclude_users:
-            user_progress = {}
-            user_progress['user_id'] = user['id']
-            user_progress['progress'] = user['completions']
-            users_progress.append(user_progress)
-
-    return users_progress
 
 
 def import_participants_threaded(student_list, request, reg_status):
@@ -2175,9 +2160,19 @@ class CourseParticipantStats(object):
         based on `request_params`
         """
         self.request_params = request_params
-        participants, lesson_completion, participants_engagement_lookup = self._retrieve_api_data()
+        (
+            course_participants,
+            lesson_completions,
+            participants_engagement_lookup,
+            course_completions,
+        ) = self._retrieve_api_data()
 
-        return self._process_results(participants, lesson_completion, participants_engagement_lookup)
+        return self._process_results(
+            course_participants,
+            course_completions,
+            lesson_completions,
+            participants_engagement_lookup,
+        )
 
     @property
     def additional_fields(self):
@@ -2201,7 +2196,13 @@ class CourseParticipantStats(object):
         if self.participants_engagement_lookup is None:
             self.participants_engagement_lookup = self._get_engagement_scores()
 
-        return course_participants, lesson_completions, self.participants_engagement_lookup
+        course_completions = course_api.get_course_completions(self.course_id, extra_fields=None)
+        return (
+            course_participants,
+            lesson_completions,
+            self.participants_engagement_lookup,
+            course_completions,
+        )
 
     def _get_engagement_scores(self):
         """
@@ -2226,20 +2227,13 @@ class CourseParticipantStats(object):
             return None
         oauth2_session = oauth2_requests.get_oauth2_session()
         lesson_completions = {}
+        completions = course_api.get_course_completions(
+            self.course_id,
+            extra_fields='chapter',
+            edx_oauth2_session=oauth2_session,
+        )
         for user in course_participants['results']:
-            try:
-                lesson_completions[user['id']] = course_api.get_user_lesson_completion(
-                    user['username'],
-                    self.course_id,
-                    oauth2_session
-                )
-            except Exception as e:
-                _logger.error(
-                    'Lesson completion retrieval failed for participant `{}` with message: `{}`'
-                        .format(user['id'], e.message)
-                )
-                lesson_completions[user['id']] = None
-
+            lesson_completions[user['id']] = completions.get(user['username'])
         return lesson_completions
 
     def _get_lesson_mapping(self, user):
@@ -2267,13 +2261,17 @@ class CourseParticipantStats(object):
         if users:
             return users[0]
 
-    def _process_results(self, participants, lesson_completions=None, participants_engagement_lookup=None):
+    def _process_results(
+            self,
+            participants,
+            course_completions,
+            lesson_completions=None,
+            participants_engagement_lookup=None,
+    ):
         """
         Integrates and process results set
         """
         participants_activation_links = self._participants_activation_urls(participants)
-        if lesson_completions is not None:
-            lesson_mapping = self._get_lesson_mapping(self._get_normal_user(participants))
 
         for course_participant in participants['results']:
             # add in user activation link
@@ -2316,9 +2314,11 @@ class CourseParticipantStats(object):
                     course_participant['custom_last_login'] = '-'
             else:
                 course_participant['custom_last_login'] = '-'
-
-            if course_participant.get('progress'):
-                progress = round_to_int(course_participant['progress'])
+            completion_data = course_completions.get(
+                course_participant['username'], {}
+            ).get('completion')
+            if completion_data:
+                progress = round_to_int(completion_data.get('percent', 0.0) * 100)
                 course_participant['progress'] = '{:03d}'.format(progress)
             else:
                 course_participant['progress'] = _("000")
@@ -2352,11 +2352,15 @@ class CourseParticipantStats(object):
             if self.record_parser:
                 self.record_parser(course_participant)
             if lesson_completions is not None:
+                lesson_mapping = self._get_lesson_mapping(self._get_normal_user(participants))
                 course_participant['lesson_completions'] = {}
-                lesson_completion = lesson_completions[course_participant['id']]
+                lesson_completion = lesson_completions.get(course_participant['id'], None)
                 if lesson_completion:
-                    for lesson in lesson_completion['chapter']:
-                        completion_percentage = round_to_int(float(lesson['completion']['ratio']) * 100)
+                    del lesson_completion['completion']  # get rid of the course-level completion
+                    for lesson in lesson_completion.values():
+                        completion_percentage = round_to_int(
+                            float(lesson['completion']['percent']) * 100
+                        )
                         block_key = lesson['block_key']
                         if block_key in lesson_mapping:
                             lesson_number = lesson_mapping[block_key]

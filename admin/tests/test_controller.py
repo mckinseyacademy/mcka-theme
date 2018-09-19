@@ -1,23 +1,29 @@
-import os
-import ddt
 import csv
 
-from django.http import HttpResponse
-from django.test.client import RequestFactory
+import ddt
+import os
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 from django.test import TestCase, override_settings
+from django.test.client import RequestFactory
+from rest_framework import status
 
 import admin.controller as controller
 from accounts.tests.utils import ApplyPatchMixin
-from admin.controller import CourseParticipantStats, create_roles_list, write_participant_performance_on_csv,\
-    write_engagement_summary_on_csv, write_social_engagement_report_on_csv, get_course_stats_report
+from admin.controller import (
+    CourseParticipantStats,
+    create_roles_list,
+    write_participant_performance_on_csv,
+    write_engagement_summary_on_csv,
+    write_social_engagement_report_on_csv,
+    get_course_stats_report
+)
 from admin.models import SelfRegistrationRoles, CourseRun
-from courses.models import FeatureFlags, CourseMetaData
 from admin.tests.utils import BASE_DIR
-from api_client.json_object import JsonParser as JP
-from rest_framework import status
-from api_client.json_object import JsonObject
 from api_client import user_models
+from api_client.json_object import JsonObject, JsonParser as JP
+from courses.models import CourseMetaData
+from courses.models import FeatureFlags
 
 
 class AdminControllerTests(TestCase):
@@ -110,6 +116,7 @@ def MockEngagementScore(object):
 
 
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
+
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_get_engagement_scores(self):
         self.apply_patch('api_client.course_api.get_course_social_metrics', new=MockEngagementScore)
@@ -118,6 +125,47 @@ class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
         engagement_scores = test_object._get_engagement_scores()
         self.assertEqual(engagement_scores[u_ids[0]], 85)
         self.assertEqual(engagement_scores[u_ids[1]], 35)
+
+    def test__get_lesson_completions(self):
+        test_username = u'test_user'
+        test_userid = 93
+
+        self.apply_patch(
+            'api_client.course_api.get_course_completions',
+            lambda *a, **kw: {
+                test_username: {
+                    u'completion': {
+                        u'percent': 0.25,
+                        u'possible': 60.0,
+                        u'earned': 15.0,
+                    },
+                },
+            },
+        )
+        course_participants_response = {
+            u'count': 1,
+            u'next': None,
+            u'num_pages': 1,
+            u'results': [
+                {
+                    u'username': test_username,
+                    u'id': test_userid,  # This get
+                }
+            ],
+            u'previous': None
+        }
+        stats = CourseParticipantStats('course-v1:a+b+c', 'base/url')
+        stats.request_params = {'additional_fields': 'lesson_completions'}
+        completions = stats._get_lesson_completions(course_participants_response)  # pylint: disable=protected-access
+        self.assertEqual(completions, {
+            test_userid: {
+                u'completion': {
+                    u'percent': 0.25,
+                    u'possible': 60.0,
+                    u'earned': 15.0,
+                },
+            },
+        })
 
 
 @ddt.ddt
