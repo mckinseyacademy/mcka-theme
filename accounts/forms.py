@@ -396,7 +396,28 @@ class LoginIdForm(NoSuffixLabelForm):
     )
 
 
-class BaseRegistrationForm(NoSuffixLabelForm):
+class AcceptTermsForm(NoSuffixLabelForm):
+    accept_terms = forms.BooleanField(
+        required=False,
+        label=mark_safe_lazy(format_lazy(
+            _('I agree to the {html_anchor_start} Terms of Service '
+              '{html_anchor_end} and {html_anchor_second} Privacy Policy '
+              '{html_anchor_end} {html_span}'),
+            html_anchor_start='<a href="/terms" target="_blank">',
+            html_anchor_end='</a>',
+            html_anchor_second='<a href="/privacy" target="_blank">',
+            html_span='<span class="required-field"></span>'
+        ))
+    )
+
+    def clean_accept_terms(self):
+        value = self.cleaned_data['accept_terms']
+        if not value:
+            raise forms.ValidationError(_("You must accept terms of service in order to continue"))
+        return value
+
+
+class BaseRegistrationForm(AcceptTermsForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
 
     email = forms.CharField(
@@ -438,24 +459,6 @@ class BaseRegistrationForm(NoSuffixLabelForm):
         validators=[AlphanumericWithAccentedChars()]
     )
     country = forms.ChoiceField(choices=COUNTRY_CHOICES, label=_("Country"), required=False)
-    accept_terms = forms.BooleanField(
-        required=False,
-        label=mark_safe_lazy(format_lazy(
-            _('I agree to the {html_anchor_start} Terms of Service '
-              '{html_anchor_end} and {html_anchor_second} Privacy Policy '
-              '{html_anchor_end} {html_span}'),
-            html_anchor_start='<a href="/terms" target="_blank">',
-            html_anchor_end='</a>',
-            html_anchor_second='<a href="/privacy" target="_blank">',
-            html_span='<span class="required-field"></span>'
-        ))
-    )
-
-    def clean_accept_terms(self):
-        value = self.cleaned_data['accept_terms']
-        if not value:
-            raise forms.ValidationError(_("You must accept terms of service in order to continue"))
-        return value
 
 
 class ActivationForm(BaseRegistrationForm):
@@ -591,7 +594,7 @@ class EditTitleForm(forms.Form):
     title = forms.CharField(max_length=255, label='', required=False, validators=[AlphanumericWithAccentedChars()])
 
 
-class BaseRegistrationFormV2(NoSuffixLabelForm):
+class BaseRegistrationFormV2(AcceptTermsForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
     email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe(_('Email')))
     username = forms.CharField(
@@ -615,23 +618,6 @@ class BaseRegistrationFormV2(NoSuffixLabelForm):
     title = forms.CharField(max_length=255, required=False)
     level_of_education = forms.ChoiceField(choices=EDUCATION_LEVEL_CHOICES, required=False)
     year_of_birth = forms.ChoiceField(choices=YEAR_CHOICES, required=False, initial=("", "---"))
-    accept_terms = forms.BooleanField(
-        required=False,
-        label=mark_safe_lazy(format_lazy(
-            _('I agree to the {html_anchor_start} Terms of Service {html_anchor_end} '
-              'and {html_anchor_second} Privacy Policy {html_anchor_end} {html_span}'),
-            html_anchor_start='<a href="/terms" target="_blank">',
-            html_anchor_end='</a>',
-            html_anchor_second='<a href="/privacy" target="_blank">',
-            html_span='<span class="required-field"></span>'
-        ))
-    )
-
-    def clean_accept_terms(self):
-        value = self.cleaned_data['accept_terms']
-        if not value:
-            raise forms.ValidationError(_("You must accept terms of service in order to continue"))
-        return value
 
 
 class ActivationFormV2(BaseRegistrationFormV2):

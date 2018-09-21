@@ -221,18 +221,31 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         # The user then logs in and gets redirected back to Apros:
         response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], '/accounts/sso_reg/')
 
-        # The form is bypassed completely, and the user gets redirected to the LMS then the
-        # apros dashboard.
+        url = response['Location']
+        self.assertTrue(url.endswith('/accounts/sso_reg/'))
 
         with patch('courses.user_courses.set_current_course_for_user'), \
              patch('os.urandom', return_value='0000'), \
              patch('django.contrib.auth.authenticate'), \
              patch('accounts.views._process_access_key_and_remove_from_session'):
-            response = self.client.get(response['Location'])
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], '/auth/complete/tpa-saml/')
+            response = self.client.get(url)
+            # The user should see the terms of service for new users.
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, 'accounts/sso_terms_of_service.haml')
+            self.assertNotIn(
+                "You must accept terms of service in order to continue",
+                response.content,
+            )
+            response = self.client.post(url, {'accept_terms': False})
+            # Display error if TOS are not accepted
+            self.assertIn(
+                "You must accept terms of service in order to continue",
+                response.content,
+            )
+            response = self.client.post(url, {'accept_terms': True})
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue(response['Location'].endswith('/auth/complete/tpa-saml/'))
 
         # Then the user should be registered:
         expected_username = u'myself' if not with_existing_user else u'myself1'
@@ -283,7 +296,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
                 'accept_terms': True
             }
 
-            response = self.client.post('/accounts/sso_reg/')
+            response = self.client.post('/accounts/sso_reg/', {'accept_terms': True})
 
         self.assertIn('error_details', response.context)
         self.assertIn(error_reason, response.context['error_details'])
