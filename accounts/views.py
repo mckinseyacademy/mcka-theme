@@ -328,7 +328,7 @@ def login_get_view(request):
     data["login_mode"] = login_mode
     data["error"] = error
     data["login_label"] = _("Log In")
-    data["contact_subject"] = quote(_("Trouble logging in"))
+    data["contact_subject"] = quote(_("Trouble logging in").encode('utf8'))
 
     response = render(request, 'accounts/login.haml', data)
 
