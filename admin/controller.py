@@ -56,7 +56,7 @@ from lib.mail import (
 )
 from lib.utils import DottableDict
 from license import controller as license_controller
-from util.data_sanitizing import sanitize_data, clean_xss_characters
+from util.data_sanitizing import sanitize_data, clean_xss_characters, remove_characters
 from util.validators import validate_first_name, validate_last_name, RoleTitleValidator, normalize_foreign_characters
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
@@ -1610,8 +1610,8 @@ def _process_line_register_participants_csv(user_line):
         fields = user_line.strip().split(',')
         # format is FirstName, LastName, Email, Company, CourseID, Status
 
-        first_name = normalize_foreign_characters(fields[0])
-        last_name = normalize_foreign_characters(fields[1])
+        first_name = normalize_foreign_characters(remove_characters(fields[0], ["'"]).encode("utf-8"))
+        last_name = normalize_foreign_characters(remove_characters(fields[1], ["'"]).encode("utf-8"))
         email = normalize_foreign_characters(fields[2])
 
         # temporarily set the user name to the first 30 characters of the allowed characters within the email
