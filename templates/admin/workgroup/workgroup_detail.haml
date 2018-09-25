@@ -7,7 +7,7 @@
       .large-10.large-centered.columns
         %header
           %h1
-            {% trans "Workgroup:" %} {{ workgroup.name }}
+            {% trans "Workgroup:" %} #{ workgroup.name }
         %section
           .sub-1
             {% trans "Project:" %}
@@ -29,7 +29,7 @@
                 %img{src: "#{user.image_url_medium}"}
                 %span= user.username
                 (
-                %a><{href: "mailto:{{user.email}}"}
+                %a{"href": "mailto:#{user.email}"}><
                   = user.email
                 )
         %hr
