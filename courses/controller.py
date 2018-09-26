@@ -743,11 +743,16 @@ def get_completion_percentage_from_id(completions, aggregation, block_key=None):
 
 
 def update_progress(tile, user, course, completions, link):
-    user_completions = completions.get(user.username, {})
+    if isinstance(user, dict):
+        user_completions = completions.get(user["username"], {})
+        user_id = user['id']
+    else:
+        user_completions = completions.get(user.username, {})
+        user_id = user.id
 
     obj, created = LearnerDashboardTileProgress.objects.get_or_create(
         milestone=tile,
-        user=user.id,
+        user=user_id,
     )
 
     if tile.tile_type == '4':
