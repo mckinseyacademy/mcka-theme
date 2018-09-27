@@ -447,7 +447,7 @@ def get_block_completions(course_id, username, edx_oauth2_session=None):
 def get_course_completions(
         course_id=None,
         username=None,
-        page_size=1000,
+        page_size=200,
         extra_fields='all',
         edx_oauth2_session=None,
 ):
