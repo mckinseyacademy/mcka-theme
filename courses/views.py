@@ -1203,6 +1203,8 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.engagement = request.POST.get('engagement', None) == 'on'
     feature_flags.discover = request.POST.get('discover', None) == 'on'
     feature_flags.progress = request.POST.get('progress', None) == 'on'
+    feature_flags.progress_indication = request.POST.get('progress_indication', None) == 'on'
+    feature_flags.lesson_label = request.POST.get('lesson_label', None) == 'on'
     feature_flags.save()
 
     if request.POST.get('mobile_available', None) is not None:

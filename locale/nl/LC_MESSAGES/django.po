@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-18 21:18+0000\n"
+"POT-Creation-Date: 2018-09-26 21:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1112,8 +1112,22 @@ msgstr "Wachtwoord {html_span}"
 msgid "Username or Email {html_span}"
 msgstr "Gebruikersnaam {html_span}"
 
-#: accounts/forms.py:405 accounts/forms.py:480 accounts/forms.py:498
-#: accounts/forms.py:596 admin/controller.py:811 admin/views.py:2339
+#: accounts/forms.py:403
+#, python-brace-format
+msgid ""
+"I agree to the {html_anchor_start} Terms of Service {html_anchor_end} and "
+"{html_anchor_second} Privacy Policy {html_anchor_end} {html_span}"
+msgstr ""
+"Ik ga akkoord met de {html_anchor_start} Servicevoorwaarden "
+"{html_anchor_end} en het {html_anchor_second} Privacybeleid "
+"{html_anchor_end} {html_span}"
+
+#: accounts/forms.py:416
+msgid "You must accept terms of service in order to continue"
+msgstr "U moet de Servicevoorwaarden accepteren om verder te kunnen gaan"
+
+#: accounts/forms.py:426 accounts/forms.py:483 accounts/forms.py:501
+#: accounts/forms.py:599 admin/controller.py:819 admin/views.py:2337
 #: marketing/forms.py:49 marketing/forms.py:93 marketing/forms.py:127
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1124,7 +1138,7 @@ msgstr "Gebruikersnaam {html_span}"
 msgid "Email"
 msgstr "E-mail"
 
-#: accounts/forms.py:411
+#: accounts/forms.py:432
 #, fuzzy, python-brace-format
 #| msgid ""
 #| "Public username {html_span_start} This cannot be changed later."
@@ -1136,7 +1150,7 @@ msgstr ""
 "Openbare gebruikersnaam {html_span_start} U kunt dit later niet meer "
 "wijzigen.{html_span_end}"
 
-#: accounts/forms.py:422 accounts/forms.py:608
+#: accounts/forms.py:443 accounts/forms.py:611
 #, python-brace-format
 msgid ""
 "Password {html_span_start} Must be at least 8 characters and include upper "
@@ -1146,82 +1160,68 @@ msgstr ""
 "hoofdletters en kleine letters bevatten, plus cijfers OF speciale tekens."
 "{html_span_end}"
 
-#: accounts/forms.py:430 admin/views.py:2339 marketing/forms.py:135
+#: accounts/forms.py:451 admin/views.py:2337 marketing/forms.py:135
 #: templates/admin/participants/participant_details.haml:123
 #: templates/admin/participants/participants_list.haml:16
 #: templates/admin/permissions/list.haml:36
 msgid "Company"
 msgstr "Bedrijf"
 
-#: accounts/forms.py:431 admin/controller.py:811
+#: accounts/forms.py:452 admin/controller.py:819
 msgid "Full Name"
 msgstr "Volledige naam"
 
-#: accounts/forms.py:432 admin/controller.py:811 marketing/forms.py:142
+#: accounts/forms.py:453 admin/controller.py:819 marketing/forms.py:142
 #: templates/accounts/user_profile.haml:24
 #: templates/admin/learner_dashboard/discovery_list.haml:12
 #: templates/admin/learner_dashboard/element_list.haml:13
 msgid "Title"
 msgstr "Titel"
 
-#: accounts/forms.py:436
+#: accounts/forms.py:457
 #, python-brace-format
 msgid "City {html_span}"
 msgstr "Plaats {html_span}"
 
-#: accounts/forms.py:440
+#: accounts/forms.py:461
 msgid "Country"
 msgstr "البلد"
 
-#: accounts/forms.py:444 accounts/forms.py:621
-#, python-brace-format
-msgid ""
-"I agree to the {html_anchor_start} Terms of Service {html_anchor_end} and "
-"{html_anchor_second} Privacy Policy {html_anchor_end} {html_span}"
-msgstr ""
-"Ik ga akkoord met de {html_anchor_start} Servicevoorwaarden "
-"{html_anchor_end} en het {html_anchor_second} Privacybeleid "
-"{html_anchor_end} {html_span}"
-
-#: accounts/forms.py:457 accounts/forms.py:633
-msgid "You must accept terms of service in order to continue"
-msgstr "U moet de Servicevoorwaarden accepteren om verder te kunnen gaan"
-
-#: accounts/forms.py:507
+#: accounts/forms.py:510
 msgid "The account associated with this email is not activated yet"
 msgstr "De aan deze e-mail gekoppelde account is nog niet geactiveerd"
 
-#: accounts/forms.py:545
+#: accounts/forms.py:548
 msgid "The two password fields didn't match."
 msgstr "De twee wachtwoordvelden komen niet overeen."
 
-#: accounts/forms.py:546
+#: accounts/forms.py:549
 msgid "Password doesn't match creation criteria."
 msgstr "Wachtwoord voldoet niet aan aanmaakcriteria."
 
-#: accounts/forms.py:548
+#: accounts/forms.py:551
 msgid "New password"
 msgstr "Nieuw wachtwoord"
 
-#: accounts/forms.py:550
+#: accounts/forms.py:553
 msgid "New password confirmation"
 msgstr "Bevestiging nieuw wachtwoord"
 
-#: accounts/forms.py:580 admin/forms.py:165
+#: accounts/forms.py:583 admin/forms.py:165
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "Geaccepteerde formaten: JPG, PNG en GIF"
 
-#: accounts/forms.py:585 templates/admin/course_run/view.haml:63
+#: accounts/forms.py:588 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:90
 msgid "First Name"
 msgstr "Voornaam"
 
-#: accounts/forms.py:586
+#: accounts/forms.py:589
 #: templates/admin/participants/participant_details.haml:95
 msgid "Last Name"
 msgstr "Achternaam"
 
-#: accounts/forms.py:600
+#: accounts/forms.py:603
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later. "
@@ -1230,32 +1230,32 @@ msgstr ""
 "Openbare gebruikersnaam {html_span_start} U kunt dit later niet meer "
 "wijzigen. {html_span_end}"
 
-#: accounts/forms.py:667
+#: accounts/forms.py:653
 #, python-brace-format
 msgid "First Name {html_span}"
 msgstr "Voornaam {html_span}"
 
-#: accounts/forms.py:671
+#: accounts/forms.py:657
 #, python-brace-format
 msgid "Last Name {html_span}"
 msgstr "Achternaam {html_span}"
 
-#: accounts/forms.py:675
+#: accounts/forms.py:661
 #, python-brace-format
 msgid "Company Name {html_span}"
 msgstr "Bedrijfsnaam {html_span}"
 
-#: accounts/forms.py:679
+#: accounts/forms.py:665
 #, python-brace-format
 msgid "Company Email {html_span}"
 msgstr "Bedrijfse-mail {html_span}"
 
-#: accounts/forms.py:683
+#: accounts/forms.py:669
 #, python-brace-format
 msgid "Current Role {html_span}"
 msgstr "Huidige functie {html_span}"
 
-#: accounts/forms.py:687
+#: accounts/forms.py:673
 #, python-brace-format
 msgid ""
 "{html_div_start}Note: personal email addresses will not be "
@@ -1264,51 +1264,51 @@ msgstr ""
 "{html_div_start}Opmerking: persoonlijke e-mailadressen worden niet "
 "verwerkt{html_div_end}"
 
-#: accounts/forms.py:693 accounts/forms.py:699
+#: accounts/forms.py:679 accounts/forms.py:685
 #, python-brace-format
 msgid ""
 "{html_div_start}(please choose one of the following options) {html_div_end}"
 msgstr "{html_div_start}(kies een van de volgende opties) {html_div_end}"
 
-#: accounts/forms.py:719 accounts/forms.py:727
+#: accounts/forms.py:705 accounts/forms.py:713
 msgid "Special characters or numbers are not valid."
 msgstr "Speciale tekens of cijfers zijn niet geldig."
 
-#: accounts/forms.py:736
+#: accounts/forms.py:722
 msgid "Email must be a string."
 msgstr "E-mail moet een string zijn."
 
-#: accounts/forms.py:741
+#: accounts/forms.py:727
 #, python-brace-format
 msgid "Email '{email}' must be at least {min} characters long"
 msgstr "E-mail ‘{email}’ moet minstens {min} tekens lang zijn"
 
-#: accounts/forms.py:748
+#: accounts/forms.py:734
 #, python-brace-format
 msgid "Email '{email}' must be at most {max} characters long"
 msgstr "E-mail ‘{email}’ mag {max}  tekens lang zijn"
 
-#: accounts/forms.py:758
+#: accounts/forms.py:744
 msgid "This email address has already been registered."
 msgstr "Dit e-mailadres is al geregistreerd."
 
-#: accounts/forms.py:764
+#: accounts/forms.py:750
 msgid "Email you provided is not allowed."
 msgstr "De e-mail die u heeft opgegeven, is niet toegestaan."
 
-#: accounts/forms.py:766
+#: accounts/forms.py:752
 msgid "Please enter a valid company email address."
 msgstr "Voer een geldig bedrijfse-mailadres in."
 
-#: accounts/forms.py:784
+#: accounts/forms.py:770
 msgid "Special characters are not valid."
 msgstr "Speciale tekens zijn niet geldig."
 
-#: accounts/forms.py:803
+#: accounts/forms.py:789
 msgid "Please enter a valid Role."
 msgstr "Voer een geldige functie in."
 
-#: accounts/views.py:85
+#: accounts/views.py:86
 msgid ""
 "Your login did not match any known accounts, a registration key is required "
 "in order to create a new account."
@@ -1316,7 +1316,7 @@ msgstr ""
 "Uw aanmelding komt niet overeen met bekende accounts; er is een "
 "registratiesleutel vereist om een nieuwe account aan te maken."
 
-#: accounts/views.py:87
+#: accounts/views.py:88
 msgid ""
 "There was an error enrolling you in a course using the registration key you "
 "provided"
@@ -1324,67 +1324,73 @@ msgstr ""
 "Er is een fout opgetreden bij uw inschrijving voor een cursus met de "
 "registratiesleutel die u heeft opgegeven"
 
-#: accounts/views.py:324
+#: accounts/views.py:325
 msgid ""
 "Your account has already been activated. Please enter credentials to login"
 msgstr ""
 "Uw account is al geactiveerd. Voer uw aanmeldgegevens in om u aan te melden"
 
-#: accounts/views.py:330
+#: accounts/views.py:331
 msgid "Log In"
 msgstr "Inloggen"
 
-#: accounts/views.py:331
+#: accounts/views.py:332
 msgid "Trouble logging in"
 msgstr ""
 
-#: accounts/views.py:376 accounts/views.py:400
+#: accounts/views.py:377 accounts/views.py:401
 msgid "Username/email is not recognised. Try again."
 msgstr ""
 
-#: accounts/views.py:392
+#: accounts/views.py:393
 #, fuzzy
 #| msgid "Password doesn't match creation criteria."
 msgid "Password doesn't match our records. Try again."
 msgstr "Wachtwoord voldoet niet aan aanmaakcriteria."
 
-#: accounts/views.py:566 accounts/views.py:638
+#: accounts/views.py:567 accounts/views.py:639
 msgid "Some required information was missing. Please check the fields below."
 msgstr "Enkele vereiste informatie ontbreekt. Controleer onderstaande velden."
 
-#: accounts/views.py:586 accounts/views.py:650
+#: accounts/views.py:587 accounts/views.py:651
 msgid "Create my McKinsey Academy account"
 msgstr "Maak Mijn McKinsey Academy-account aan"
 
-#: accounts/views.py:616
+#: accounts/views.py:617
 msgid "Invalid Activation Code"
 msgstr "Ongeldige activeringscode"
 
-#: accounts/views.py:688
+#: accounts/views.py:689
 msgid "No provider data found."
 msgstr "Geen providergegevens gevonden."
 
-#: accounts/views.py:690
+#: accounts/views.py:691
 msgid "Provider data does not seem valid."
 msgstr "Providergegevens lijken ongeldig."
 
-#: accounts/views.py:744
+#: accounts/views.py:745
 msgid "Access Key missing."
 msgstr "Toegangssleutel ontbreekt."
 
-#: accounts/views.py:801
+#: accounts/views.py:762 accounts/views.py:769
+#, fuzzy
+#| msgid "Access"
+msgid "Accept"
+msgstr "Toegang"
+
+#: accounts/views.py:816
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "Registreren van gebruiker mislukt: {exception_message}"
 
-#: accounts/views.py:803
+#: accounts/views.py:818
 #, fuzzy
 #| msgid ""
 #| "Some required information was missing. Please check the fields below."
 msgid "Some required information was missing."
 msgstr "Enkele vereiste informatie ontbreekt. Controleer onderstaande velden."
 
-#: accounts/views.py:805
+#: accounts/views.py:820
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1392,20 +1398,21 @@ msgstr ""
 "Verificatie-cookie ontbreekt. Er kan een time-out van uw sessie zijn "
 "opgetreden. Begin opnieuw."
 
-#: accounts/views.py:853
+#: accounts/views.py:868
 msgid "Enter new password"
 msgstr "Voer nieuw wachtwoord in"
 
-#: accounts/views.py:870
+#: accounts/views.py:885
 msgid "Password reset unsuccessful"
 msgstr "Wachtwoord opnieuw instellen mislukt"
 
-#: accounts/views.py:961 templates/accounts/activate.haml:16
-#: templates/accounts/public_registration.haml:45 templates/layout.haml:266
+#: accounts/views.py:976 templates/accounts/activate.haml:16
+#: templates/accounts/public_registration.haml:45
+#: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:266
 msgid "Welcome to McKinsey Academy"
 msgstr "Welkom bij McKinsey Academy"
 
-#: accounts/views.py:962
+#: accounts/views.py:977
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1414,7 +1421,7 @@ msgstr ""
 "Uw programma start over {days} dagen. Verken in de tussentijd de site voor "
 "meer informatie hierover."
 
-#: accounts/views.py:966
+#: accounts/views.py:981
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1423,17 +1430,17 @@ msgstr ""
 "Uw cursus begint over {days} dagen. Voordat de cursus begint, kunt u deze "
 "site verkennen voor meer informatie over wat u kunt verwachten."
 
-#: accounts/views.py:1109
+#: accounts/views.py:1124
 msgid "Enter your full name"
 msgstr "Voer uw volledige naam in"
 
-#: accounts/views.py:1111 accounts/views.py:1134 admin/views.py:1845
-#: admin/views.py:1879 admin/views.py:4195
+#: accounts/views.py:1126 accounts/views.py:1149 admin/views.py:1843
+#: admin/views.py:1877 admin/views.py:4211
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
 #: templates/admin/course_meta_content/item_detail.haml:16
-#: templates/admin/course_meta_content/item_list.haml:187
-#: templates/admin/course_meta_content/item_list.haml:216
+#: templates/admin/course_meta_content/item_list.haml:206
+#: templates/admin/course_meta_content/item_list.haml:235
 #: templates/admin/course_run/form_modal.haml:118
 #: templates/admin/learner_dashboard/main.haml:155
 #: templates/admin/learner_dashboard/preview.haml:34
@@ -1442,27 +1449,27 @@ msgstr "Voer uw volledige naam in"
 msgid "Save"
 msgstr "Opslaan"
 
-#: accounts/views.py:1132
+#: accounts/views.py:1147
 msgid "Enter your title"
 msgstr "Voer uw functietitel in"
 
-#: accounts/views.py:1184 accounts/views.py:1214
+#: accounts/views.py:1199 accounts/views.py:1229
 msgid "Initial"
 msgstr "Voorletter"
 
-#: accounts/views.py:1211
+#: accounts/views.py:1226
 msgid "Course Closed"
 msgstr "Cursus gesloten"
 
-#: accounts/views.py:1220
+#: accounts/views.py:1235
 msgid "Registered"
 msgstr "Geregistreerd"
 
-#: accounts/views.py:1222
+#: accounts/views.py:1237
 msgid "Error"
 msgstr "Fout"
 
-#: admin/controller.py:287
+#: admin/controller.py:295
 msgid ""
 "An administrator has created an account on McKinsey Academy for your use. To "
 "activate your account, please copy and paste this address into your web "
@@ -1472,267 +1479,267 @@ msgstr ""
 "Kopieer dit adres in de adresbalk van uw webbrowser om uw account te "
 "activeren:"
 
-#: admin/controller.py:332 admin/controller.py:380
+#: admin/controller.py:340 admin/controller.py:388
 #, python-brace-format
 msgid "Could not parse user info from {user_line}"
 msgstr "Gebruikersinfo kan niet worden geparseerd van {user_line}"
 
-#: admin/controller.py:416 admin/controller.py:491
+#: admin/controller.py:424 admin/controller.py:499
 msgid "Unable to register user"
 msgstr "Niet mogelijk om gebruiker te registreren"
 
-#: admin/controller.py:426 admin/controller.py:502
+#: admin/controller.py:434 admin/controller.py:510
 msgid "User not associated with client"
 msgstr "Gebruiker niet gekoppeld aan klant"
 
-#: admin/controller.py:430
+#: admin/controller.py:438
 msgid "{}: {} - {}"
 msgstr "{}: {} - {}"
 
-#: admin/controller.py:438 admin/controller.py:542
+#: admin/controller.py:446 admin/controller.py:550
 msgid "Data processing error"
 msgstr "Fout in gegevensverwerking"
 
-#: admin/controller.py:439
+#: admin/controller.py:447
 #, python-brace-format
 msgid "Error processing data: {reason}"
 msgstr "Fout in gegevensverwerking: {reason}"
 
-#: admin/controller.py:520 admin/controller.py:528
+#: admin/controller.py:528 admin/controller.py:536
 #, python-brace-format
 msgid "{error}: {message} - {email}"
 msgstr "{error}: {message} - {email}"
 
-#: admin/controller.py:521
+#: admin/controller.py:529
 msgid "User program enrollment"
 msgstr "Programma-inschrijving gebruiker"
 
-#: admin/controller.py:529
+#: admin/controller.py:537
 msgid "User course enrollment"
 msgstr "Cursusinschrijving gebruiker"
 
-#: admin/controller.py:534
+#: admin/controller.py:542
 msgid "Enrolling student error"
 msgstr "Fout bij inschrijven student"
 
-#: admin/controller.py:535
+#: admin/controller.py:543
 #, python-brace-format
 msgid "Error enrolling student: {reason} - {email}"
 msgstr "Fout bij inschrijven student: {reason} - {email}"
 
-#: admin/controller.py:543
+#: admin/controller.py:551
 #, python-brace-format
 msgid "Error processing data: {reason} - {email}"
 msgstr "Fout in gegevensverwerking: {reason} - {email}"
 
-#: admin/controller.py:657 admin/controller.py:1324
+#: admin/controller.py:665 admin/controller.py:1332
 msgid "Activated"
 msgstr "Geactiveerd"
 
-#: admin/controller.py:659
+#: admin/controller.py:667
 msgid "Could not fetch activation record"
 msgstr "Activeringsrecord kan niet worden opgehaald"
 
-#: admin/controller.py:676
+#: admin/controller.py:684
 msgid "PROJECT"
 msgstr "PROJECT"
 
-#: admin/controller.py:803
+#: admin/controller.py:811
 msgid "Client Name"
 msgstr "Naam klant"
 
-#: admin/controller.py:803 admin/views.py:4006 admin/views.py:4104
+#: admin/controller.py:811 admin/views.py:4022 admin/views.py:4120
 #: certificates/models.py:88 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "Cursus-ID"
 
-#: admin/controller.py:811
+#: admin/controller.py:819
 #: templates/admin/participants/participant_details.haml:102
 #: templates/admin/participants/participant_details.haml:184
 msgid "Username"
 msgstr "Gebruikersnaam"
 
-#: admin/controller.py:811
+#: admin/controller.py:819
 msgid "Progress %"
 msgstr "Voortgangs-%"
 
-#: admin/controller.py:811
+#: admin/controller.py:819
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:148
 msgid "Engagement"
 msgstr "Betrokkenheid"
 
-#: admin/controller.py:811 admin/views.py:4006
+#: admin/controller.py:819 admin/views.py:4022
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:71
 msgid "Proficiency"
 msgstr "Vaardigheid"
 
-#: admin/controller.py:811
+#: admin/controller.py:819
 #: templates/admin/client-admin/course_participants.haml:50
 msgid "Course Completed"
 msgstr "Cursus voltooid"
 
-#: admin/controller.py:832
+#: admin/controller.py:840
 msgid "0%"
 msgstr "0%"
 
-#: admin/controller.py:834 admin/views.py:929 admin/views.py:938
+#: admin/controller.py:842 admin/views.py:927 admin/views.py:936
 msgid "{}%"
 msgstr "{}%"
 
-#: admin/controller.py:1256
+#: admin/controller.py:1264
 msgid "# of posts"
 msgstr "Aantal posts"
 
-#: admin/controller.py:1257
+#: admin/controller.py:1265
 msgid "% participants posting"
 msgstr "% deelnemers dat post"
 
-#: admin/controller.py:1258
+#: admin/controller.py:1266
 msgid "Avg posts per participant"
 msgstr "Gemiddeld aantal posts per deelnemer"
 
-#: admin/controller.py:1323
+#: admin/controller.py:1331
 msgid "Total Cohort"
 msgstr "Totale groep"
 
-#: admin/controller.py:1325
+#: admin/controller.py:1333
 msgid "Engaged"
 msgstr "Betrokkenheid"
 
-#: admin/controller.py:1326
+#: admin/controller.py:1334
 msgid "Logged in over last 7 days"
 msgstr "Aangemeld in de afgelopen 7 dagen"
 
-#: admin/controller.py:1484
+#: admin/controller.py:1492
 msgid "-"
 msgstr "-"
 
-#: admin/controller.py:1656 admin/controller.py:1675
+#: admin/controller.py:1641 admin/controller.py:1660
 msgid "Could not parse user info from {}"
 msgstr "Gebruikersinfo kan niet worden geparseerd van {}"
 
-#: admin/controller.py:1711 admin/controller.py:1839
+#: admin/controller.py:1696 admin/controller.py:1824
 msgid "No email"
 msgstr "Geen e-mail"
 
-#: admin/controller.py:1713 admin/controller.py:1840
+#: admin/controller.py:1698 admin/controller.py:1825
 msgid "Empty field: {}"
 msgstr "Leeg veld: {}"
 
-#: admin/controller.py:1713 admin/controller.py:1840 admin/controller.py:1845
-#: admin/controller.py:1849
+#: admin/controller.py:1698 admin/controller.py:1825 admin/controller.py:1830
+#: admin/controller.py:1834
 msgid "Processing Participant"
 msgstr "Deelnemer wordt verwerkt"
 
-#: admin/controller.py:1718
+#: admin/controller.py:1703
 msgid "Valid e-mail is required"
 msgstr "Geldige e-mail is vereist"
 
-#: admin/controller.py:1718 admin/controller.py:1725 admin/controller.py:1730
-#: admin/controller.py:1768 admin/controller.py:1779
+#: admin/controller.py:1703 admin/controller.py:1710 admin/controller.py:1715
+#: admin/controller.py:1753 admin/controller.py:1764
 msgid "Registering Participant"
 msgstr "Deelnemer wordt geregistreerd"
 
-#: admin/controller.py:1725
+#: admin/controller.py:1710
 msgid "Email already exist"
 msgstr "E-mail bestaat al"
 
-#: admin/controller.py:1730
+#: admin/controller.py:1715
 msgid "Username already exist"
 msgstr "Gebruikersnaam bestaat al"
 
-#: admin/controller.py:1736
+#: admin/controller.py:1721
 msgid "Company doesn't exist"
 msgstr "Bedrijf bestaat niet"
 
-#: admin/controller.py:1736 admin/controller.py:1738 admin/controller.py:1773
+#: admin/controller.py:1721 admin/controller.py:1723 admin/controller.py:1758
 msgid "Enrolling Participant in Company"
 msgstr "Deelnemer wordt ingeschreven bij bedrijf"
 
-#: admin/controller.py:1744 admin/controller.py:1855
+#: admin/controller.py:1729 admin/controller.py:1840
 msgid "Course doesn't exist"
 msgstr "Cursus bestaat niet"
 
-#: admin/controller.py:1744 admin/controller.py:1746 admin/controller.py:1750
-#: admin/controller.py:1753 admin/controller.py:1784 admin/controller.py:1855
-#: admin/controller.py:1857 admin/controller.py:1861 admin/controller.py:1864
-#: admin/controller.py:1879
+#: admin/controller.py:1729 admin/controller.py:1731 admin/controller.py:1735
+#: admin/controller.py:1738 admin/controller.py:1769 admin/controller.py:1840
+#: admin/controller.py:1842 admin/controller.py:1846 admin/controller.py:1849
+#: admin/controller.py:1864
 msgid "Enrolling Participant in Course"
 msgstr "Deelnemer wordt ingeschreven voor cursus"
 
-#: admin/controller.py:1750 admin/controller.py:1861
+#: admin/controller.py:1735 admin/controller.py:1846
 msgid "Course is not Internal"
 msgstr "Cursus is niet intern"
 
-#: admin/controller.py:1753 admin/controller.py:1864
+#: admin/controller.py:1738 admin/controller.py:1849
 msgid "Status doesn't exist"
 msgstr "Status bestaat niet"
 
-#: admin/controller.py:1757 admin/controller.py:1793 admin/controller.py:1868
-#: admin/controller.py:1888
+#: admin/controller.py:1742 admin/controller.py:1778 admin/controller.py:1853
+#: admin/controller.py:1873
 msgid "Reason: {}, Activity: {}, Participant: {}"
 msgstr "Reden: {}, activiteit: {}, deelnemer: {}"
 
-#: admin/controller.py:1779
+#: admin/controller.py:1764
 msgid "Activation record error"
 msgstr "Fout activeringsrecord"
 
-#: admin/controller.py:1791 admin/controller.py:1886
+#: admin/controller.py:1776 admin/controller.py:1871
 msgid "Setting Participant's Status"
 msgstr "Status van deelnemer wordt ingesteld"
 
-#: admin/controller.py:1799 admin/controller.py:1894
+#: admin/controller.py:1784 admin/controller.py:1879
 msgid "Processing Data Error"
 msgstr "Fout in gegevensverwerking"
 
-#: admin/controller.py:1800 admin/controller.py:1895
+#: admin/controller.py:1785 admin/controller.py:1880
 msgid "Error processing data: {} - {}"
 msgstr "Fout in gegevensverwerking: {} - {}"
 
-#: admin/controller.py:1845
+#: admin/controller.py:1830
 #, python-brace-format
 msgid "Valid e-mail is required: {email}"
 msgstr "Geldige e-mail is vereist: {email}"
 
-#: admin/controller.py:1849
+#: admin/controller.py:1834
 msgid "User doesn't exist"
 msgstr "Gebruiker bestaat niet"
 
-#: admin/controller.py:2010
+#: admin/controller.py:1995
 msgid "This company already exists!"
 msgstr "Dit bedrijf bestaat al!"
 
-#: admin/controller.py:2012
+#: admin/controller.py:1997
 msgid "Company Validation Success!"
 msgstr "Bedrijf met succes gevalideerd!"
 
-#: admin/controller.py:2088
+#: admin/controller.py:2073
 msgid "You have sent incorrect chunk number!"
 msgstr "U heeft een ongeldig segmentnummer verzonden!"
 
-#: admin/controller.py:2090
+#: admin/controller.py:2075
 msgid "You have sent incorrect task key!"
 msgstr "U heeft een ongeldige taaksleutel verzonden!"
 
-#: admin/controller.py:2111
+#: admin/controller.py:2096
 msgid "There are no users in organization!"
 msgstr "Er zijn geen gebruikers in de organisatie!"
 
-#: admin/controller.py:2287 admin/controller.py:2288 admin/views.py:3578
-#: admin/views.py:3579 admin/views.py:3735 admin/views.py:5535
+#: admin/controller.py:2285 admin/controller.py:2286 admin/views.py:3584
+#: admin/views.py:3585 admin/views.py:3741 admin/views.py:5551
 msgid "No company"
 msgstr "Geen bedrijf"
 
-#: admin/controller.py:2305 admin/views.py:3583 admin/views.py:4063
-#: admin/views.py:4090 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2303 admin/views.py:3589 admin/views.py:4079
+#: admin/views.py:4106 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/mobile_apps/company_app_details.haml:46
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/controller.py:2307 admin/views.py:3585 admin/views.py:4065
-#: admin/views.py:4069 admin/views.py:4092 admin/views.py:4096
+#: admin/controller.py:2305 admin/views.py:3591 admin/views.py:4081
+#: admin/views.py:4085 admin/views.py:4108 admin/views.py:4112
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
@@ -1742,65 +1749,65 @@ msgstr "Nee"
 msgid "000"
 msgstr "000"
 
-#: admin/controller.py:2537 admin/controller.py:2559
+#: admin/controller.py:2541 admin/controller.py:2563
 msgid "Sorry, We can not process your request"
 msgstr "Helaas kunnen we uw aanvraag niet verwerken"
 
-#: admin/controller.py:2544 admin/controller.py:2556
+#: admin/controller.py:2548 admin/controller.py:2560
 msgid "Operation Successful"
 msgstr "Bewerking gelukt"
 
-#: admin/controller.py:2547
+#: admin/controller.py:2551
 msgid "Please enter role text"
 msgstr "Voer functietekst in"
 
-#: admin/controller.py:2582 templates/admin/courses/course_details.haml:104
+#: admin/controller.py:2586 templates/admin/courses/course_details.haml:104
 msgid "Engagement Summary"
 msgstr "Samenvatting betrokkenheid"
 
-#: admin/controller.py:2582
+#: admin/controller.py:2586
 msgid "# of people"
 msgstr "Aantal personen"
 
-#: admin/controller.py:2582
+#: admin/controller.py:2586
 msgid "% total cohort"
 msgstr "% totale groep"
 
-#: admin/controller.py:2582
+#: admin/controller.py:2586
 msgid "Avg Progress"
 msgstr "Gem. voortgang"
 
-#: admin/controller.py:2588
+#: admin/controller.py:2592
 msgid "Participant Performance"
 msgstr "Prestaties deelnemer"
 
-#: admin/controller.py:2588
+#: admin/controller.py:2592
 #, fuzzy, python-format
 #| msgid "% completion"
 msgid "% completion"
 msgstr "% voltooid"
 
-#: admin/controller.py:2588
+#: admin/controller.py:2592
 msgid "Score"
 msgstr "Score"
 
-#: admin/controller.py:2589
+#: admin/controller.py:2593
 msgid "Group work 1"
 msgstr "Groepswerk 1"
 
-#: admin/controller.py:2590
+#: admin/controller.py:2594
 msgid "Group work 2"
 msgstr "Groepswerk 2"
 
-#: admin/controller.py:2591
+#: admin/controller.py:2595
 msgid "Mid-course assessment"
 msgstr "Beoordeling halverwege cursus"
 
-#: admin/controller.py:2592
+#: admin/controller.py:2596
 msgid "Final assessment"
 msgstr "Eindbeoordeling"
 
-#: admin/controller.py:2599 templates/admin/courses/course_details.haml:117
+#: admin/controller.py:2603 templates/admin/courses/course_details.haml:117
 msgid "Social Engagement"
 msgstr "Sociale betrokkenheid"
 
@@ -1813,28 +1820,28 @@ msgstr ""
 msgid "Enter new email address"
 msgstr "Voer nieuw e-mailadres in"
 
-#: admin/forms.py:120 admin/views.py:4229
+#: admin/forms.py:120 admin/views.py:4245
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "OA"
 
-#: admin/forms.py:120 admin/views.py:4230
+#: admin/forms.py:120 admin/views.py:4246
 msgid "OBSERVER"
 msgstr "WAARNEMER"
 
-#: admin/forms.py:144 admin/views.py:4231
+#: admin/forms.py:144 admin/views.py:4247
 msgid "ADMIN"
 msgstr "BEHEER"
 
-#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4234
+#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4250
 msgid "COURSE OPS"
 msgstr "CURSUSOPTIES"
 
-#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4233
+#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4249
 msgid "INTERNAL ADMIN"
 msgstr "INTERN BEHEER"
 
-#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4232
+#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4248
 msgid "COMPANY ADMIN"
 msgstr "BEDRIJFSBEHEER"
 
@@ -1863,8 +1870,8 @@ msgstr "Cursusversie"
 msgid "Name {}"
 msgstr "Naam {}"
 
-#: admin/forms.py:228 admin/views.py:1986 admin/views.py:4006
-#: admin/views.py:4104 templates/admin/program/list.haml:25
+#: admin/forms.py:228 admin/views.py:1984 admin/views.py:4022
+#: admin/views.py:4120 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:63
 #: templates/header.haml:101
@@ -1931,7 +1938,7 @@ msgstr ""
 msgid "Article"
 msgstr "Artikel"
 
-#: admin/models.py:590 templates/admin/course_meta_content/item_list.haml:168
+#: admin/models.py:590 templates/admin/course_meta_content/item_list.haml:187
 #: templates/courses/content_page/lesson_menu.haml:9
 #: templates/courses/content_page/lesson_menu.haml:16
 #: templates/courses/content_page/lesson_pager.haml:10
@@ -1942,7 +1949,7 @@ msgstr "Artikel"
 msgid "Lesson"
 msgstr "Les"
 
-#: admin/models.py:591 templates/admin/course_meta_content/item_list.haml:197
+#: admin/models.py:591 templates/admin/course_meta_content/item_list.haml:216
 #: templates/courses/content_page/lesson_pager.haml:11
 #: templates/courses/content_page/lesson_pager.haml:29
 #: templates/courses/content_page/lesson_pager_ld.haml:10
@@ -1954,7 +1961,7 @@ msgstr "Les"
 msgid "Module"
 msgstr "Module"
 
-#: admin/models.py:592 admin/views.py:4006 admin/views.py:4104
+#: admin/models.py:592 admin/views.py:4022 admin/views.py:4120
 #: templates/admin/participants/participants_list.haml:18
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
@@ -2021,94 +2028,94 @@ msgstr ""
 msgid "Participant stats for {} did not generate"
 msgstr ""
 
-#: admin/views.py:552
+#: admin/views.py:550
 msgid "Edit Email"
 msgstr "E-mail bewerken"
 
-#: admin/views.py:590
+#: admin/views.py:588
 msgid "Un-enroll from this course"
 msgstr "Uitschrijven uit deze cursus"
 
-#: admin/views.py:591
+#: admin/views.py:589
 msgid "Un-enroll from entire program "
 msgstr "Uit gehele programma uitschrijven "
 
-#: admin/views.py:856
+#: admin/views.py:854
 msgid "% Progress"
 msgstr "% voortgang"
 
-#: admin/views.py:857
+#: admin/views.py:855
 msgid "% Progress (Engaged)"
 msgstr "% voortgang (betrokken)"
 
-#: admin/views.py:924
+#: admin/views.py:922
 msgid "GW_{}"
 msgstr "GW_{}"
 
-#: admin/views.py:927
+#: admin/views.py:925
 msgid "Group Work: {}"
 msgstr "Groepswerk: {}"
 
-#: admin/views.py:933
+#: admin/views.py:931
 msgid "AS_{}"
 msgstr "AS_{}"
 
-#: admin/views.py:936
+#: admin/views.py:934
 msgid "Assessment: {}"
 msgstr "Beoordeling: {}"
 
-#: admin/views.py:1116
+#: admin/views.py:1114
 msgid "No such task!"
 msgstr "Zo'n taak bestaat niet!"
 
-#: admin/views.py:1204 admin/views.py:1243
+#: admin/views.py:1202 admin/views.py:1241
 msgid "please fix the problems indicated below."
 msgstr "los de hieronder aangegeven problemen op."
 
-#: admin/views.py:1289
+#: admin/views.py:1287
 msgid "Client"
 msgstr "Klant"
 
-#: admin/views.py:1290
+#: admin/views.py:1288
 msgid "Clients"
 msgstr "Klanten"
 
-#: admin/views.py:1349 admin/views.py:1396
+#: admin/views.py:1347 admin/views.py:1394
 msgid "Save Client"
 msgstr "Klant opslaan"
 
-#: admin/views.py:1408
+#: admin/views.py:1406
 #, python-brace-format
 msgid "Successfully processed {processed} of {total} record"
 msgid_plural "Successfully processed {processed} of {total} records"
 msgstr[0] "Met succes {processed} van {total} records verwerkt"
 msgstr[1] "Met succes {processed} van {total} records verwerkt"
 
-#: admin/views.py:1585
+#: admin/views.py:1583
 msgid "Bad request, The Image type is not valid."
 msgstr "Onjuiste aanvraag. Het afbeeldingstype is niet geldig."
 
-#: admin/views.py:1597
+#: admin/views.py:1595
 msgid "Could not delete the image, Please try later"
 msgstr "De afbeelding kan niet worden gewist. Probeer het later opnieuw."
 
-#: admin/views.py:1747
+#: admin/views.py:1745
 msgid "Contact has been removed."
 msgstr "Contactpersoon is verwijderd."
 
-#: admin/views.py:1763 admin/views.py:1769
+#: admin/views.py:1761 admin/views.py:1767
 msgid "Invalid Course Run"
 msgstr "Ongeldige cursusrun"
 
-#: admin/views.py:1765
+#: admin/views.py:1763
 msgid "Invalid Program ID"
 msgstr "Ongeldige programma-ID"
 
-#: admin/views.py:1769
+#: admin/views.py:1767
 msgid "Course: {}"
 msgstr "Cursus: {}"
 
-#: admin/views.py:1795
+#: admin/views.py:1793
 msgid ""
 "\n"
 "            If this client should use SSO: DevOps must configure and enable "
@@ -2128,110 +2135,110 @@ msgstr ""
 "leeg.\n"
 "        "
 
-#: admin/views.py:1838 admin/views.py:1839 admin/views.py:1873
+#: admin/views.py:1836 admin/views.py:1837 admin/views.py:1871
 msgid "- Select -"
 msgstr "- Selecteer -"
 
-#: admin/views.py:1898 admin/views.py:1900
+#: admin/views.py:1896 admin/views.py:1898
 msgid "Access Key couldn't be created, please check course ID!"
 msgstr "Toegangssleutel kan niet worden aangemaakt, controleer cursus-ID!"
 
-#: admin/views.py:1899
+#: admin/views.py:1897
 msgid "Access Key created successfully!"
 msgstr "Toegangssleutel aangemaakt!"
 
-#: admin/views.py:1913
+#: admin/views.py:1911
 msgid "Access Key"
 msgstr "Toegangssleutel"
 
-#: admin/views.py:1935
+#: admin/views.py:1933
 msgid "Send"
 msgstr "Verzenden"
 
-#: admin/views.py:1959
+#: admin/views.py:1957
 msgid "This student hasn't been added to any programs yet."
 msgstr "Deze student is nog niet aan programma’s toegevoegd."
 
-#: admin/views.py:1970
+#: admin/views.py:1968
 msgid "fail"
 msgstr "mislukt"
 
-#: admin/views.py:1974
+#: admin/views.py:1972
 msgid "success"
 msgstr "gelukt"
 
-#: admin/views.py:1987 templates/admin/admin_header.haml:59
+#: admin/views.py:1985 templates/admin/admin_header.haml:59
 #: templates/marketing/programs.haml:237
 msgid "Programs"
 msgstr "Programma’s"
 
-#: admin/views.py:2025 admin/views.py:2073
+#: admin/views.py:2023 admin/views.py:2071
 msgid "Save Program"
 msgstr "Programma opslaan"
 
-#: admin/views.py:2281
+#: admin/views.py:2279
 msgid "Successfully Added {} Participants"
 msgstr "Toegevoegd {} Deelnemers"
 
-#: admin/views.py:2339 admin/views.py:5657
+#: admin/views.py:2337 admin/views.py:5674
 #: templates/admin/participants/activation_link_modal.haml:15
 msgid "First name"
 msgstr "Voornaam"
 
-#: admin/views.py:2339 admin/views.py:5658
+#: admin/views.py:2337 admin/views.py:5675
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 msgid "Last name"
 msgstr "Achternaam"
 
-#: admin/views.py:2339
+#: admin/views.py:2337
 #: templates/admin/participants/activation_link_modal.haml:4
 #: templates/admin/participants/activation_link_modal.haml:21
 msgid "Activation Link"
 msgstr "Activeringslink"
 
-#: admin/views.py:2456
+#: admin/views.py:2454
 msgid "Report is TBD"
 msgstr "Rapport is n.t.b."
 
-#: admin/views.py:2478 templates/courses/content_page/courses_menu_list.haml:17
+#: admin/views.py:2476 templates/courses/content_page/courses_menu_list.haml:17
 msgid "Coming Soon"
 msgstr "Komt binnenkort"
 
-#: admin/views.py:2480 templates/courses/content_page/courses_menu_list.haml:8
+#: admin/views.py:2478 templates/courses/content_page/courses_menu_list.haml:8
 msgid "Archived"
 msgstr "Gearchiveerd"
 
-#: admin/views.py:2550
+#: admin/views.py:2548
 msgid "Successfully saved courses to {} program"
 msgstr "Cursussen zijn met succes opgeslagen naar {}-programma"
 
-#: admin/views.py:2564 admin/views.py:2942 admin/views.py:2975
-#: admin/views.py:3030
+#: admin/views.py:2562 admin/views.py:2948 admin/views.py:2981
+#: admin/views.py:3036
 msgid "Invalid program_id specified: {}"
 msgstr "Ongeldig(e) program_id opgegeven: {}"
 
-#: admin/views.py:2573
+#: admin/views.py:2571
 msgid "Invalid student_id specified: {}"
 msgstr "Ongeldig(e) student_id opgegeven: {}"
 
-#: admin/views.py:2579
+#: admin/views.py:2577
 msgid "Not enough places available for {} program - {} left"
 msgstr "Onvoldoende plaatsen beschikbaar voor {}-programma - {} over"
 
-#: admin/views.py:2606
+#: admin/views.py:2604
 msgid "Successfully associated students to {} program"
 msgstr "Studenten met succes gekoppeld aan {}-programma"
 
-#: admin/views.py:2637
+#: admin/views.py:2643
 msgid "{} already enrolled in {}"
 msgstr "{} al ingeschreven bij {}"
 
-#: admin/views.py:2644
+#: admin/views.py:2650
 msgid "Successfully associated students to courses"
 msgstr "Studenten met succes aan cursussen toegevoegd"
 
-#: admin/views.py:2646
+#: admin/views.py:2652
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
@@ -2239,7 +2246,7 @@ msgstr ""
 "Studenten met succes gekoppeld aan cursussen, met {}-berichten:\n"
 "\\t{}"
 
-#: admin/views.py:2760 admin/views.py:2763
+#: admin/views.py:2766 admin/views.py:2769
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
@@ -2247,12 +2254,12 @@ msgstr ""
 "Fout bij uploaden van bestand. Probeer het opnieuw en zorg ervoor dat u een "
 "geaccepteerd bestandsformaat gebruikt."
 
-#: admin/views.py:3191 admin/views.py:3254
+#: admin/views.py:3197 admin/views.py:3260
 msgid "No group projects available for this course"
 msgstr "Er zijn geen groepsprojecten beschikbaar voor deze cursus"
 
-#: admin/views.py:3264 admin/views.py:3265 admin/views.py:3492
-#: admin/views.py:3493 templates/admin/admin_header.haml:37
+#: admin/views.py:3270 admin/views.py:3271 admin/views.py:3498
+#: admin/views.py:3499 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:18
 #: templates/courses/course_group_work.haml:13
@@ -2260,74 +2267,74 @@ msgstr "Er zijn geen groepsprojecten beschikbaar voor deze cursus"
 msgid "Group Work"
 msgstr "Groepswerk"
 
-#: admin/views.py:3344
+#: admin/views.py:3350
 msgid "Group wasn't created - please select project"
 msgstr "Groep is niet aangemaakt - selecteer project"
 
-#: admin/views.py:3355
+#: admin/views.py:3361
 msgid "Bad users {} for private project"
 msgstr "Onjuiste gebruikers {} voor privé-project"
 
-#: admin/views.py:3371
+#: admin/views.py:3377
 msgid "Group successfully created"
 msgstr "Groep is aangemaakt"
 
-#: admin/views.py:3375
+#: admin/views.py:3381
 msgid "Group was not created"
 msgstr "Groep is niet gemaakt"
 
-#: admin/views.py:3417
+#: admin/views.py:3423
 msgid "Error creating project"
 msgstr "Fout bij aanmaken van project"
 
-#: admin/views.py:3431
+#: admin/views.py:3437
 msgid "Project already exists"
 msgstr "Project bestaat al"
 
-#: admin/views.py:3436
+#: admin/views.py:3442
 msgid "Project successfully created"
 msgstr "Project is aangemaakt"
 
-#: admin/views.py:3469
+#: admin/views.py:3475
 msgid "Project deleted successfully."
 msgstr "Project is gewist."
 
-#: admin/views.py:3531
+#: admin/views.py:3537
 msgid "Password Reset Email successfully sent."
 msgstr "E-mail voor wachtwoord opnieuw instellen verzonden."
 
-#: admin/views.py:3550
+#: admin/views.py:3556
 msgid "Activation email sent."
 msgstr "E-mail voor activering verzonden."
 
-#: admin/views.py:3623 admin/views.py:3808
+#: admin/views.py:3629 admin/views.py:3814
 msgid "Company name can only contain alphanumeric characters"
 msgstr "Bedrijfsnaam mag alleen alfanumerieke tekens bevatten"
 
-#: admin/views.py:3635 admin/views.py:3640
+#: admin/views.py:3641 admin/views.py:3646
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr "Fout in rechten: U heeft geen rechten om deze functie te verlenen"
 
-#: admin/views.py:3649
+#: admin/views.py:3655
 msgid "User with that email already exists!"
 msgstr "Er bestaat al een gebruiker met dat e-mailadres!"
 
-#: admin/views.py:3674 admin/views.py:3835
+#: admin/views.py:3680 admin/views.py:3841
 msgid "Couldn't create company!"
 msgstr "Bedrijf kan niet worden aangemaakt!"
 
-#: admin/views.py:3685
+#: admin/views.py:3691
 msgid "Couldn't add user to company!"
 msgstr "Gebruiker kan niet worden toegevoegd aan bedrijf!"
 
-#: admin/views.py:3709 templates/admin/participants/participants_list.haml:221
+#: admin/views.py:3715 templates/admin/participants/participants_list.haml:221
 msgid "Successfully added new user!"
 msgstr "Nieuwe gebruiker is toegevoegd!"
 
-#: admin/views.py:3728 admin/views.py:3730 admin/views.py:3739
-#: admin/views.py:3745 admin/views.py:3751 admin/views.py:5528
-#: admin/views.py:5530 admin/views.py:5539 admin/views.py:5545
-#: admin/views.py:5551
+#: admin/views.py:3734 admin/views.py:3736 admin/views.py:3745
+#: admin/views.py:3751 admin/views.py:3757 admin/views.py:5544
+#: admin/views.py:5546 admin/views.py:5555 admin/views.py:5561
+#: admin/views.py:5567
 #: templates/admin/participants/participant_details.haml:267
 #: templates/admin/participants/participant_details.haml:275
 #: templates/admin/participants/participant_details.haml:283
@@ -2335,193 +2342,193 @@ msgstr "Nieuwe gebruiker is toegevoegd!"
 msgid "N/A"
 msgstr "N.v.t."
 
-#: admin/views.py:3826
+#: admin/views.py:3832
 msgid "User with that username or email already exists!"
 msgstr "Er bestaat al een gebruiker met die gebruikersnaam of dat e-mailadres!"
 
-#: admin/views.py:3881
+#: admin/views.py:3887
 msgid "Can't find user in database"
 msgstr "Kan gebruiker niet vinden in database"
 
-#: admin/views.py:3958
+#: admin/views.py:3964
 msgid "There is a problem with selected user role on new course!"
 msgstr ""
 "Er is een probleem met de geselecteerde gebruikersrol voor de nieuwe cursus!"
 
-#: admin/views.py:4006 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4022 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:26
 msgid "Progress"
 msgstr "Voortgang"
 
-#: admin/views.py:4006 admin/views.py:4104
+#: admin/views.py:4022 admin/views.py:4120
 msgid "Status"
 msgstr "Status"
 
-#: admin/views.py:4104 templates/admin/client-admin/course_info.haml:79
+#: admin/views.py:4120 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:30
 #: templates/courses/course_progress.haml:53
 msgid "Completed"
 msgstr "Voltooid"
 
-#: admin/views.py:4104
+#: admin/views.py:4120
 msgid "Grade"
 msgstr "Cijfer"
 
-#: admin/views.py:4104
+#: admin/views.py:4120
 msgid "End Date"
 msgstr "Einddatum"
 
-#: admin/views.py:4255
+#: admin/views.py:4271
 msgid "Problem generating activity review assignments"
 msgstr "Probleem bij het genereren van opdrachten beoordeling activiteit"
 
-#: admin/views.py:4279
+#: admin/views.py:4295
 msgid "Project review assignments allocated"
 msgstr "Opdrachten projectbeoordeling toegewezen"
 
-#: admin/views.py:4286
+#: admin/views.py:4302
 msgid "Not enough groups to meet review criteria"
 msgstr "Onvoldoende groepen die voldoen aan beoordelingscriteria"
 
-#: admin/views.py:4514
+#: admin/views.py:4530
 msgid "Successfully added new email template!"
 msgstr "Nieuwe e-mailsjabloon is toegevoegd!"
 
-#: admin/views.py:4517
+#: admin/views.py:4533
 msgid "Missing fields in email template!"
 msgstr "Ontbrekende velden in e-mailsjabloon!"
 
-#: admin/views.py:4528
+#: admin/views.py:4544
 msgid "Successfully got email template!"
 msgstr "E-mailsjabloon is opgehaald!"
 
-#: admin/views.py:4531 admin/views.py:4544 admin/views.py:4567
+#: admin/views.py:4547 admin/views.py:4560 admin/views.py:4583
 msgid "Can't find email template key!"
 msgstr "Kan e-mailsjabloonsleutel niet vinden!"
 
-#: admin/views.py:4533 admin/views.py:4546 admin/views.py:4569
+#: admin/views.py:4549 admin/views.py:4562 admin/views.py:4585
 msgid "Missing email template key!"
 msgstr "Ontbrekende e-mailsjabloonsleutel!"
 
-#: admin/views.py:4542
+#: admin/views.py:4558
 msgid "Successfully deleted email template!"
 msgstr "E-mailsjabloon is verwijderd!"
 
-#: admin/views.py:4564
+#: admin/views.py:4580
 msgid "Successfully updated email template!"
 msgstr "E-mailsjabloon is bijgewerkt!"
 
-#: admin/views.py:4679 admin/views.py:5322
+#: admin/views.py:4695 admin/views.py:5338
 msgid "No Company Display name!"
 msgstr "Geen bedrijfsweergavenaam."
 
-#: admin/views.py:4862
+#: admin/views.py:4878
 msgid "App name only contains alphanumeric characters"
 msgstr "App-naam bevat alleen alfanumerieke tekens"
 
-#: admin/views.py:4978
+#: admin/views.py:4994
 msgid "Learner dashboard not found"
 msgstr "Dashboard leerling niet gevonden"
 
-#: admin/views.py:5339
+#: admin/views.py:5355
 msgid "Company name successfully changed!"
 msgstr "Bedrijfsnaam is gewijzigd!"
 
-#: admin/views.py:5382
+#: admin/views.py:5398
 msgid "Tag with this name already exist's!"
 msgstr "Tag met deze naam bestaat al!"
 
-#: admin/views.py:5393
+#: admin/views.py:5409
 msgid "Tag created!"
 msgstr "Tag aangemaakt!"
 
-#: admin/views.py:5395
+#: admin/views.py:5411
 msgid "You need to select tag's name!"
 msgstr "U moet de naam van de tag selecteren!"
 
-#: admin/views.py:5445
+#: admin/views.py:5461
 msgid "Tag added to Course!"
 msgstr "Tag toegevoegd aan cursus!"
 
-#: admin/views.py:5447 admin/views.py:5469
+#: admin/views.py:5463 admin/views.py:5485
 msgid "You need to select tag!"
 msgstr "U moet de tag selecteren!"
 
-#: admin/views.py:5467
+#: admin/views.py:5483
 msgid "Tag removed from Course!"
 msgstr "Tag uit cursus verwijderd!"
 
-#: admin/views.py:5659 templates/admin/course_run/view.haml:65
+#: admin/views.py:5676 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "Bedrijfsnaam"
 
-#: admin/views.py:5660 templates/admin/course_run/view.haml:66
+#: admin/views.py:5677 templates/admin/course_run/view.haml:66
 msgid "Company email"
 msgstr "Bedrijfse-mail"
 
-#: admin/views.py:5661 templates/admin/course_run/view.haml:67
+#: admin/views.py:5678 templates/admin/course_run/view.haml:67
 msgid "Current role"
 msgstr "Huidige functie"
 
-#: admin/views.py:5662 templates/admin/course_run/view.haml:68
+#: admin/views.py:5679 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "Nieuwe gebruiker"
 
-#: admin/views.py:5663
+#: admin/views.py:5680
 msgid "McK user"
 msgstr "McK-gebruiker"
 
-#: admin/views.py:5664 templates/admin/course_run/view.haml:70
+#: admin/views.py:5681 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "Ingeschreven"
 
-#: admin/views.py:5665 templates/admin/course_run/view.haml:71
+#: admin/views.py:5682 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "Actief"
 
-#: admin/workgroup_reports.py:34
+#: admin/workgroup_reports.py:33
 #: templates/admin/workgroup/workgroup_detail_report.haml:92
 #: templates/admin/workgroup/workgroup_report.haml:80
 msgid "--"
 msgstr "--"
 
-#: admin/workgroup_reports.py:35
+#: admin/workgroup_reports.py:34
 msgid "n/a"
 msgstr "n.v.t."
 
-#: admin/workgroup_reports.py:38
+#: admin/workgroup_reports.py:37
 #: templates/certificates/certificate_template_assets.haml:22
 msgid "Upload"
 msgstr "Uploaden"
 
-#: admin/workgroup_reports.py:39
+#: admin/workgroup_reports.py:38
 msgid "Evaluation"
 msgstr "Evaluatie"
 
-#: admin/workgroup_reports.py:40
+#: admin/workgroup_reports.py:39
 msgid "Review"
 msgstr "Beoordeling"
 
-#: admin/workgroup_reports.py:41
+#: admin/workgroup_reports.py:40
 msgid "Grading"
 msgstr "Cijfers"
 
-#: admin/workgroup_reports.py:45
+#: admin/workgroup_reports.py:44
 msgid "This activity does not exist"
 msgstr "Deze activiteit bestaat niet"
 
-#: admin/workgroup_reports.py:67
+#: admin/workgroup_reports.py:66
 msgid "No Stages"
 msgstr "Geen fases"
 
-#: admin/workgroup_reports.py:243 admin/workgroup_reports.py:484
+#: admin/workgroup_reports.py:273 admin/workgroup_reports.py:514
 #: templates/admin/workgroup/workgroup_detail_report.haml:63
 msgid "TA Graded"
 msgstr "Cijfer gegeven door OA"
 
-#: admin/workgroup_reports.py:243 admin/workgroup_reports.py:484
+#: admin/workgroup_reports.py:273 admin/workgroup_reports.py:514
 msgid "Peer Graded"
 msgstr "Cijfer gegeven door collega"
 
@@ -2529,11 +2536,11 @@ msgstr "Cijfer gegeven door collega"
 msgid "Unknown error calling API"
 msgstr "Onbekende fout bij aanroepen API"
 
-#: api_client/course_models.py:111 api_client/course_models.py:120
+#: api_client/course_models.py:109 api_client/course_models.py:118
 msgid "Available"
 msgstr "Beschikbaar"
 
-#: api_client/course_models.py:147
+#: api_client/course_models.py:145
 #: templates/courses/content_page/course_menu.haml:33
 #: templates/courses/course_learner_dashboard_calendar.haml:45
 #: templates/courses/course_progress_v2.haml:91
@@ -2541,19 +2548,19 @@ msgstr "Beschikbaar"
 msgid "complete"
 msgstr "voltooid"
 
-#: api_client/course_models.py:188
+#: api_client/course_models.py:186
 msgid "COURSE_ENDED"
 msgstr "COURSE_ENDED"
 
-#: api_client/course_models.py:190
+#: api_client/course_models.py:188
 msgid "COURSE_STARTED"
 msgstr "COURSE_STARTED"
 
-#: api_client/course_models.py:192
+#: api_client/course_models.py:190
 msgid "COURSE_UNAVAILABLE"
 msgstr "COURSE_UNAVAILABLE"
 
-#: api_client/course_models.py:467
+#: api_client/course_models.py:465
 #, python-brace-format
 msgid "group {group_id} in course {course_id}"
 msgstr "groep {group_id} in cursus{course_id}"
@@ -2625,12 +2632,12 @@ msgstr "Sjabloon"
 msgid "Asset"
 msgstr "Activum"
 
-#: courses/user_courses.py:166 courses/user_courses.py:172
+#: courses/user_courses.py:165 courses/user_courses.py:171
 #, python-brace-format
 msgid "Access denied to course '{course_id}' for user {user_id}"
 msgstr "Toegang tot cursus ‘{course_id}’ geweigerd voor gebruiker {user_id}"
 
-#: courses/user_courses.py:222 courses/user_courses.py:228
+#: courses/user_courses.py:221 courses/user_courses.py:227
 #, python-brace-format
 msgid "Access denied to user {admin_user_id} for data belonging to {user_id}"
 msgstr ""
@@ -2986,10 +2993,12 @@ msgid "There was a problem with your access code."
 msgstr "Er is een probleem opgetreden met uw toegangscode."
 
 #: templates/accounts/activate.haml:6
+#: templates/accounts/sso_terms_of_service.haml:6
 msgid "Register | McKinsey Academy"
 msgstr "Registreren | McKinsey Academy"
 
 #: templates/accounts/activate.haml:18
+#: templates/accounts/sso_terms_of_service.haml:18
 msgid ""
 "We're sorry, McKinsey Academy is not compatible with your browser. You can "
 "continue the registration process, but will not be able to access course "
@@ -3015,19 +3024,23 @@ msgid "Required fields are noted by an asterisk"
 msgstr "De verplichte velden zijn gemarkeerd met een asterisk"
 
 #: templates/accounts/activate.haml:35
+#: templates/accounts/sso_terms_of_service.haml:26
 msgid "Already Registered?"
 msgstr "Al geregistreerd?"
 
 #: templates/accounts/activate.haml:38
+#: templates/accounts/sso_terms_of_service.haml:29
 msgid "Click here to log in."
 msgstr "Klik hier om u aan te melden."
 
 #: templates/accounts/activate.haml:40
+#: templates/accounts/sso_terms_of_service.haml:31
 msgid "Welcome"
 msgstr "Welkom"
 
 #: templates/accounts/activate.haml:42
 #: templates/accounts/public_registration.haml:74
+#: templates/accounts/sso_terms_of_service.haml:33
 msgid ""
 "Registering gives you access to course content and ensures that you receive "
 "updates and notifications from McKinsey Academy."
@@ -3037,15 +3050,18 @@ msgstr ""
 
 #: templates/accounts/activate.haml:44 templates/accounts/login.haml:52
 #: templates/accounts/public_registration.haml:78
+#: templates/accounts/sso_terms_of_service.haml:35
 msgid "Need Help?"
 msgstr "Hulp nodig?"
 
 #: templates/accounts/activate.haml:47
+#: templates/accounts/sso_terms_of_service.haml:38
 msgid "View our FAQ for answers to commonly asked questions"
 msgstr ""
 "Bekijk onze veelgestelde vragen voor antwoorden op de meestgestelde vragen"
 
 #: templates/accounts/activate.haml:48
+#: templates/accounts/sso_terms_of_service.haml:39
 msgid " , or raise a question in course-specific discussion forums."
 msgstr " , of stel zelf een vraag in cursusspecifieke discussieforums."
 
@@ -3398,8 +3414,8 @@ msgstr "Kleuren opnieuw instellen"
 #: templates/admin/companies/companies_list.haml:31
 #: templates/admin/companies/company_details.haml:76
 #: templates/admin/course_meta_content/item_detail.haml:18
-#: templates/admin/course_meta_content/item_list.haml:184
-#: templates/admin/course_meta_content/item_list.haml:213
+#: templates/admin/course_meta_content/item_list.haml:203
+#: templates/admin/course_meta_content/item_list.haml:232
 #: templates/admin/courses/course_details.haml:131
 #: templates/admin/courses/course_details.haml:203
 #: templates/admin/mobile_apps/company_app_details.haml:67
@@ -3866,8 +3882,8 @@ msgid "TYPE"
 msgstr "TYPE"
 
 #: templates/admin/course_meta_content/item_list.haml:30
-#: templates/admin/course_meta_content/item_list.haml:181
-#: templates/admin/course_meta_content/item_list.haml:210
+#: templates/admin/course_meta_content/item_list.haml:200
+#: templates/admin/course_meta_content/item_list.haml:229
 #: templates/admin/course_run/list.haml:28
 #: templates/admin/course_run/view.haml:17
 #: templates/admin/learner_dashboard/branding.haml:65
@@ -3997,20 +4013,54 @@ msgstr ""
 "Opmerking: als u ‘Ontdekken’ uitschakelt, wordt het gedeelte Ontdekken op de "
 "cursushoofdpagina verborgen."
 
-#: templates/admin/course_meta_content/item_list.haml:178
-#: templates/admin/course_meta_content/item_list.haml:207
+#: templates/admin/course_meta_content/item_list.haml:165
+#, fuzzy
+#| msgid "Lesson Name"
+msgid "Lesson Label"
+msgstr "Lesnaam"
+
+#: templates/admin/course_meta_content/item_list.haml:166
+#, fuzzy
+#| msgid ""
+#| "Note: If you disable the 'Discover', it will hide Discover section from "
+#| "course main page."
+msgid "Note: If you disable the 'Lesson Label', it will hide Lesson Label."
+msgstr ""
+"Opmerking: als u ‘Ontdekken’ uitschakelt, wordt het gedeelte Ontdekken op de "
+"cursushoofdpagina verborgen."
+
+#: templates/admin/course_meta_content/item_list.haml:173
+#, fuzzy
+#| msgid "Progress Widget"
+msgid "Progress Indication"
+msgstr "Voortgangswidget"
+
+#: templates/admin/course_meta_content/item_list.haml:174
+#, fuzzy
+#| msgid ""
+#| "Note: If you disable 'Progress Widget', it will hide progress section "
+#| "from course landing page."
+msgid ""
+"Note: If you disable the 'Progress Indication', it will hide Progress Level "
+"on the lesson and module levels."
+msgstr ""
+"Opmerking: als u 'Voortgangswidget' uitschakelt, wordt het gedeelte met de "
+"voortgang op de cursusopeningspagina verborgen."
+
+#: templates/admin/course_meta_content/item_list.haml:197
+#: templates/admin/course_meta_content/item_list.haml:226
 #, fuzzy
 #| msgid "Add "
 msgid "Add"
 msgstr "Toevoegen "
 
-#: templates/admin/course_meta_content/item_list.haml:221
+#: templates/admin/course_meta_content/item_list.haml:240
 #, fuzzy
 #| msgid "This email is not associated with any identity provider"
 msgid "Click Add to specify Lesson Label"
 msgstr "Dit e-mailadres is aan geen enkele identiteitsprovider gekoppeld"
 
-#: templates/admin/course_meta_content/item_list.haml:222
+#: templates/admin/course_meta_content/item_list.haml:241
 #, fuzzy
 #| msgid "This email is not associated with any identity provider"
 msgid "Click Add to specify Module Label"

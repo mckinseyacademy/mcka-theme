@@ -155,6 +155,25 @@
           %label{for: 'discover'}
             {% trans "Discover" %}
           %p.style-6 {% trans "Note: If you disable the 'Discover', it will hide Discover section from course main page." %}
+        - if user.is_mcka_admin or user.is_mcka_subadmin
+          %li
+            - if feature_flags.lesson_label
+              %input#lesson_label{type: 'checkbox', name: 'lesson_label', checked: 'checked'}
+            - else
+              %input#lesson_label{type: 'checkbox', name: 'lesson_label'}
+            %label{for: 'lesson_label'}
+              {% trans "Lesson Label" %}
+            %p.style-6 {% trans "Note: If you disable the 'Lesson Label', it will hide Lesson Label." %}
+          %li
+            - if feature_flags.progress_indication
+              %input#progress_indication{type: 'checkbox', name: 'progress_indication', checked: 'checked'}
+            - else
+              %input#progress_indication{type: 'checkbox', name: 'progress_indication'}
+            %label{for: 'progress_indication'}
+              {% trans "Progress Indication" %}
+            %p.style-6 {% trans "Note: If you disable the 'Progress Indication', it will hide Progress Level on the lesson and module levels." %}
+
+
 
   - if user.is_mcka_admin or user.is_mcka_subadmin
     %section.course_custom_terminology
