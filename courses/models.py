@@ -42,8 +42,10 @@ class FeatureFlags(db_models.Model):
     group_work = db_models.BooleanField(default=True)
     discussions = db_models.BooleanField(default=True)
     cohort_map = db_models.BooleanField(default=True)
+    lesson_label = db_models.BooleanField(default=True)
     proficiency = db_models.BooleanField(default=True)
     progress = db_models.BooleanField(default=True)
+    progress_indication = db_models.BooleanField(default=True)
     learner_dashboard = db_models.BooleanField(default=False)
     progress_page = db_models.BooleanField(default=True)
     notifications = db_models.BooleanField(default=True)
@@ -61,6 +63,8 @@ class FeatureFlags(db_models.Model):
             group_work=self.group_work,
             discussions=self.discussions,
             cohort_map=self.cohort_map,
+            lesson_label=self.lesson_label,
+            progress_indication=self.progress_indication,
             proficiency=self.proficiency,
             progress=self.progress,
             learner_dashboard=self.learner_dashboard,

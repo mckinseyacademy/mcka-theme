@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-22 16:12+0000\n"
+"POT-Creation-Date: 2018-09-26 21:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1421,8 +1421,8 @@ msgstr "أدخل اسمك بالكامل"
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
 #: templates/admin/course_meta_content/item_detail.haml:16
-#: templates/admin/course_meta_content/item_list.haml:187
-#: templates/admin/course_meta_content/item_list.haml:216
+#: templates/admin/course_meta_content/item_list.haml:206
+#: templates/admin/course_meta_content/item_list.haml:235
 #: templates/admin/course_run/form_modal.haml:118
 #: templates/admin/learner_dashboard/main.haml:155
 #: templates/admin/learner_dashboard/preview.haml:34
@@ -1914,7 +1914,7 @@ msgstr ""
 msgid "Article"
 msgstr "المقال"
 
-#: admin/models.py:590 templates/admin/course_meta_content/item_list.haml:168
+#: admin/models.py:590 templates/admin/course_meta_content/item_list.haml:187
 #: templates/courses/content_page/lesson_menu.haml:9
 #: templates/courses/content_page/lesson_menu.haml:16
 #: templates/courses/content_page/lesson_pager.haml:10
@@ -1925,7 +1925,7 @@ msgstr "المقال"
 msgid "Lesson"
 msgstr "الدرس"
 
-#: admin/models.py:591 templates/admin/course_meta_content/item_list.haml:197
+#: admin/models.py:591 templates/admin/course_meta_content/item_list.haml:216
 #: templates/courses/content_page/lesson_pager.haml:11
 #: templates/courses/content_page/lesson_pager.haml:29
 #: templates/courses/content_page/lesson_pager_ld.haml:10
@@ -3360,8 +3360,8 @@ msgstr "إعادة تعيين الألوان"
 #: templates/admin/companies/companies_list.haml:31
 #: templates/admin/companies/company_details.haml:76
 #: templates/admin/course_meta_content/item_detail.haml:18
-#: templates/admin/course_meta_content/item_list.haml:184
-#: templates/admin/course_meta_content/item_list.haml:213
+#: templates/admin/course_meta_content/item_list.haml:203
+#: templates/admin/course_meta_content/item_list.haml:232
 #: templates/admin/courses/course_details.haml:131
 #: templates/admin/courses/course_details.haml:203
 #: templates/admin/mobile_apps/company_app_details.haml:67
@@ -3819,8 +3819,8 @@ msgid "TYPE"
 msgstr "النوع"
 
 #: templates/admin/course_meta_content/item_list.haml:30
-#: templates/admin/course_meta_content/item_list.haml:181
-#: templates/admin/course_meta_content/item_list.haml:210
+#: templates/admin/course_meta_content/item_list.haml:200
+#: templates/admin/course_meta_content/item_list.haml:229
 #: templates/admin/course_run/list.haml:28
 #: templates/admin/course_run/view.haml:17
 #: templates/admin/learner_dashboard/branding.haml:65
@@ -3947,18 +3947,52 @@ msgstr ""
 "ملاحظة: إذا قمت بتعطيل 'اكتشاف'، سيتم إخفاء اكتشاف قسم من الصفحة الرئيسية "
 "للدورة."
 
-#: templates/admin/course_meta_content/item_list.haml:178
-#: templates/admin/course_meta_content/item_list.haml:207
+#: templates/admin/course_meta_content/item_list.haml:165
+#, fuzzy
+#| msgid "Lesson Name"
+msgid "Lesson Label"
+msgstr "اسم الدرس"
+
+#: templates/admin/course_meta_content/item_list.haml:166
+#, fuzzy
+#| msgid ""
+#| "Note: If you disable the 'Discover', it will hide Discover section from "
+#| "course main page."
+msgid "Note: If you disable the 'Lesson Label', it will hide Lesson Label."
+msgstr ""
+"ملاحظة: إذا قمت بتعطيل 'اكتشاف'، سيتم إخفاء اكتشاف قسم من الصفحة الرئيسية "
+"للدورة."
+
+#: templates/admin/course_meta_content/item_list.haml:173
+#, fuzzy
+#| msgid "Progress Widget"
+msgid "Progress Indication"
+msgstr "ودجة التقدم المحرز"
+
+#: templates/admin/course_meta_content/item_list.haml:174
+#, fuzzy
+#| msgid ""
+#| "Note: If you disable 'Progress Widget', it will hide progress section "
+#| "from course landing page."
+msgid ""
+"Note: If you disable the 'Progress Indication', it will hide Progress Level "
+"on the lesson and module levels."
+msgstr ""
+"ملاحظة: إذا قمت بتعطيل ’ودجة التقدم المحرز'، سيتم إخفاء قسم التقدم المحرز من "
+"صفحة الوصول إلى الدورة."
+
+#: templates/admin/course_meta_content/item_list.haml:197
+#: templates/admin/course_meta_content/item_list.haml:226
 msgid "Add"
 msgstr "إضافة "
 
-#: templates/admin/course_meta_content/item_list.haml:221
+#: templates/admin/course_meta_content/item_list.haml:240
 #, fuzzy
 #| msgid "Click Add to specify an identity provider"
 msgid "Click Add to specify Lesson Label"
 msgstr "انقر على إضافة لتحديد موفر الهوية"
 
-#: templates/admin/course_meta_content/item_list.haml:222
+#: templates/admin/course_meta_content/item_list.haml:241
 #, fuzzy
 #| msgid "Click Add to specify an identity provider"
 msgid "Click Add to specify Module Label"
@@ -7280,7 +7314,7 @@ msgstr ""
 "إذا كنت أحد المشاركين المسجلين، الرجاء تسجيل الدخول أدناه للوصول إلى تجربة "
 "التعلم الخصة بك في أكاديمية ماكنزي"
 
-#: templates/layout.haml:22 templates/layout.haml.py:23
+#: templates/layout.haml:22 templates/layout.haml:23
 msgid ""
 "McKinsey Academy helps organizations thrive by accelerating their talent "
 "advantage"
@@ -7330,8 +7364,8 @@ msgstr "حول | أكاديمية ماكنزي"
 msgid "McKinsey Academy About"
 msgstr "أكاديمية ماكنزي حول"
 
-#: templates/marketing/about.haml:10 templates/marketing/about.haml.py:11
-#: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml.py:10
+#: templates/marketing/about.haml:10 templates/marketing/about.haml:11
+#: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml:10
 #: templates/marketing/productwalkthrough.haml:9
 #: templates/marketing/productwalkthrough.haml:10
 msgid ""
@@ -7416,7 +7450,7 @@ msgstr "الاتصال | أكاديمية ماكنزي"
 msgid "McKinsey Academy Contact"
 msgstr "جهة اتصال أكاديمية ماكنزي"
 
-#: templates/marketing/contact.haml:9 templates/marketing/contact.haml.py:10
+#: templates/marketing/contact.haml:9 templates/marketing/contact.haml:10
 msgid "Email us to find out more about McKinsey Academy."
 msgstr "تواصل معنا عبر البريد الإلكتروني  لمعرفة المزيد عن أكاديمية ماكنزي."
 
@@ -7883,7 +7917,7 @@ msgstr ""
 "تنطلق أعمال المنتدى بمؤتمر شخصي لمدة يوم ونصف في نيويورك، وينتهي بفعالية "
 "إقليمية لمدة يوم كامل، ليتضمن قادة أعمال وفكر رائدين من حول العالم، ومنهم:"
 
-#: templates/marketing/fblf.haml:39 templates/marketing/fblf.haml.py:42
+#: templates/marketing/fblf.haml:39 templates/marketing/fblf.haml:42
 msgid "Dominic Barton"
 msgstr "دومينيك بارتون"
 
@@ -7891,7 +7925,7 @@ msgstr "دومينيك بارتون"
 msgid "Global Managing Director, McKinsey"
 msgstr "المدير العام العالمي، ماكنزي"
 
-#: templates/marketing/fblf.haml:46 templates/marketing/fblf.haml.py:49
+#: templates/marketing/fblf.haml:46 templates/marketing/fblf.haml:49
 msgid "Peter Grauer"
 msgstr "بيتر جروير"
 
@@ -7911,7 +7945,7 @@ msgstr "كلاوس كلينفيلد"
 msgid "Chairman and CEO, Alcoa"
 msgstr "رئيس مجلس إدارة والرئيس التنفيذ في ألكوا"
 
-#: templates/marketing/fblf.haml:60 templates/marketing/fblf.haml.py:63
+#: templates/marketing/fblf.haml:60 templates/marketing/fblf.haml:63
 msgid "Sanjay Sharma"
 msgstr "سانجاي شارما"
 
@@ -7919,7 +7953,7 @@ msgstr "سانجاي شارما"
 msgid "Professor, MIT; Director of Digital Learning"
 msgstr "أستاذ بمعهد ماساتشوستس للتكنولوجيا؛ مدير التعلم الرقمي"
 
-#: templates/marketing/fblf.haml:67 templates/marketing/fblf.haml.py:70
+#: templates/marketing/fblf.haml:67 templates/marketing/fblf.haml:70
 msgid "Chip Heath"
 msgstr "تشيب هيث"
 
@@ -7935,7 +7969,7 @@ msgstr ""
 "التجارية؛ الكاتب <i>حاسمة</i>، و <i>التبديل</i>، و <i>صنع بعصا</i>\n"
 "                  "
 
-#: templates/marketing/fblf.haml:76 templates/marketing/fblf.haml.py:79
+#: templates/marketing/fblf.haml:76 templates/marketing/fblf.haml:79
 msgid "Erik Roth"
 msgstr "إريك روث"
 
@@ -7951,7 +7985,7 @@ msgstr ""
 "هو قادم</i>\n"
 "                  "
 
-#: templates/marketing/fblf.haml:85 templates/marketing/fblf.haml.py:88
+#: templates/marketing/fblf.haml:85 templates/marketing/fblf.haml:88
 msgid "Bharat Anand"
 msgstr "بهارات أناند"
 
