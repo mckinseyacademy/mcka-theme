@@ -5739,6 +5739,6 @@ class CourseMetaDataApiView(APIView):
         edit_status = edit_course_meta_data(course_id, lesson_label, module_label,
                                         lesson_label_flag, module_label_flag)
         if edit_status:
-            return Response(status=status.HTTP_200_OK)
+            return Response(status = status.HTTP_200_OK)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response(status = status.HTTP_400_BAD_REQUEST)

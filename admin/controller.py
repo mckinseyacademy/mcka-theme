@@ -56,7 +56,7 @@ from lib.mail import (
 )
 from lib.utils import DottableDict
 from license import controller as license_controller
-from util.data_sanitizing import sanitize_data, clean_xss_characters, remove_characters, special_characters_match
+from util.data_sanitizing import sanitize_data, clean_xss_characters, remove_characters
 from util.validators import validate_first_name, validate_last_name, RoleTitleValidator, normalize_foreign_characters
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
@@ -2660,20 +2660,16 @@ def get_organization_active_courses(request, company_id):
 
 
 def edit_course_meta_data(course_id, lesson_label, module_label,
-                          lesson_label_flag, module_label_flag):
+                             lesson_label_flag, module_label_flag):
+
     data_saved = False
     course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=course_id)
-
-    if lesson_label_flag == 'true':
-        if not special_characters_match(lesson_label):
-            course_meta_data.lesson_label = lesson_label
-            data_saved = True
-
-    if module_label_flag == 'true':
-        if not special_characters_match(module_label):
-            course_meta_data.module_label = module_label
-            data_saved = True
-
+    if lesson_label_flag:
+        course_meta_data.lesson_label = lesson_label
+        data_saved = True
+    if module_label_flag:
+        course_meta_data.module_label = module_label
+        data_saved = True
     course_meta_data.save()
 
     return data_saved

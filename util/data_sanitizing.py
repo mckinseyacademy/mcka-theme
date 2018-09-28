@@ -120,10 +120,12 @@ def sanitize_data(data, props_to_clean=None, clean_methods=()):
 DEFAULT_CLEAN_METHODS = (clean_xss_characters, clean_formula_characters, )
 
 
-def special_characters_match(value):
+def allow_foreign_and_normal_character(value):
     """
-    This method will return special character if there are any in string.
+    This method will allow only foreign and normal characters
     """
+    if re.search(settings.FOREIGN_AND_NORMAL_CHARACTERS_PATTERN, value):
+        return value
 
-    return re.sub(settings.FOREIGN_AND_NORMAL_CHARACTERS_PATTERN, u'', value.encode('utf-8').decode('latin_1'))
+    return None
 
