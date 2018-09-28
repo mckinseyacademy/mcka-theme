@@ -299,7 +299,7 @@ header[role=banner]{
   }
 }
 
-.login-form, .registration-form, .tos-form {
+.login-form, .registration-form {
   .help{
     @include border-left(1px solid $mckinsey-grey);
   }
@@ -602,7 +602,7 @@ footer[role=contentinfo]{
 
   // Login & Activation
 
-  .login-form, .registration-form, .tos-form {
+  .login-form, .registration-form {
     .columns{
       &:first-child{
         float: right;
