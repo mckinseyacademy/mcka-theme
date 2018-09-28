@@ -24,7 +24,8 @@ from courses.controller import round_to_int, Proficiency, get_user_social_metric
 from admin.models import Client
 from .serializers import ResetPasswordSerializer
 from public_api.controller import get_course_ff_and_custom_taxonomy, \
-    create_and_add_course_ff_and_custom_taxonomy_in_list
+    create_and_add_course_ff_and_custom_taxonomy_in_list, get_course_ff, \
+    create_and_add_course_ff_in_list
 
 
 @require_POST
@@ -183,4 +184,28 @@ def get_course_feature_flag_and_custom_taxonomy(request, course_id=None):
         json.dumps(course_ff_custom_taxonomy),
         content_type='application/json'
     )
+
+
+def get_course_feature_flag(request, course_id=None):
+    """ This will return the feature flags for one course or all user courses depends on demand
+    """
+    feature_flag = []
+
+    response, status_code = user_api.get_user_by_bearer_token()
+    if not status_code == status.HTTP_200_OK:
+        return HttpResponse(status=status_code)
+    user_id = response['id']
+
+    if course_id:
+        course_feature_flag = get_course_ff(user_id, feature_flag, course_id)
+        if not course_feature_flag:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+    else:
+        courses = user_api.get_user_courses(user_id)
+        for course in courses:
+            create_and_add_course_ff_in_list(feature_flag, course.id)
+
+    return HttpResponse(
+        json.dumps(feature_flag),
+        content_type='application/json')
 
