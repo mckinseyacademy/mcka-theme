@@ -33,3 +33,29 @@ def create_and_add_course_ff_and_custom_taxonomy_in_list(course_ff_custom_taxono
         {feature_flags.course_id: {"feature_flags": feature_flags.as_json(), "custom_taxonomy": course_meta_data.as_json()}})
 
 
+def get_course_ff(user_id, feature_flag, course_id):
+    """
+    check the required course feature flag entry in database and then add in list
+    """
+    try:
+        feature_flags = FeatureFlags.objects.get(course_id=course_id)
+        feature_flag.append({feature_flags.course_id: feature_flags.as_json()})
+    except FeatureFlags.DoesNotExist:
+        feature_flags = None
+    if not feature_flags:
+        try:
+            user_api.get_user_course_detail(user_id, course_id)
+            create_and_add_course_ff_in_list(feature_flag, course_id)
+        except:
+            return feature_flags
+
+    return feature_flags
+
+
+def create_and_add_course_ff_in_list(feature_flag, course_id):
+    """
+    append feature flag of required course in list
+    """
+    feature_flags, created = FeatureFlags.objects.get_or_create(course_id=course_id)
+    feature_flag.append({feature_flags.course_id: feature_flags.as_json()})
+

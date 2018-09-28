@@ -12,4 +12,8 @@ urlpatterns = [
         name='get_course_feature_flag_and_custom_taxonomy'),
     url(r'^(?P<course_id>.*)/feature_flag_custom_taxonomy$', views.get_course_feature_flag_and_custom_taxonomy,
         name='get_course_feature_flag_and_custom_taxonomy'),
+    url(r'^feature_flag$', views.get_course_feature_flag,
+        name='get_course_feature_flag'),
+    url(r'^(?P<course_id>.*)/feature_flag$', views.get_course_feature_flag,
+        name='get_course_feature_flag'),
 ]
