@@ -10,7 +10,7 @@
         .courseDetailsNavigationButton
           - if companyCourseDeatilsPage
             %a{:href => '/admin/companies/#{companyId}', :target => '_self'}>
-              < {% trans "Back to" %} ={companyName}
+              < {% trans "Back to" %} #{companyName}
           - else
             %a{:href => '/admin/courses/', :target => '_self'}> <
               {% trans "Back to All Courses" %}
@@ -18,13 +18,13 @@
             #courseDetailsTopContainer
                 .row.courseDetailsHeader
                     .courseDetailsNameAndId
-                      ={name}
-                      ={id}
+                      = name
+                      = id
                     .courseDetailsTags
                       - if not user.is_company_admin
                         - for tag in tags
                           .courseDetailsTagsList.button.small.radius{:data-id => '#{tag.id}'}
-                            %span ={tag.name}
+                            %span= tag.name
                             %i.fa.fa-times.courseTagsDeleteIcon
                         %i.fa.fa-pencil.courseTagsIcon
                 .row.courseDetailsBlocks
@@ -32,14 +32,14 @@
                       - if start == '-' or end == '-'
                         %p {% trans "Evergreen" %}
                       - else
-                        %p ={start} - ={end}
-                      %p {% trans "Participants:" %} ={users_enrolled}
+                        %p #{start} - #{end}
+                      %p {% trans "Participants:" %} #{users_enrolled}
                     .large-4.columns.courseDetailsCenterBlock
-                      %p {% trans "Avg Progress:" %} ={average_progress}%
-                      %p {% trans "Avg Proficiency:" %} ={proficiency}
+                      %p {% trans "Avg Progress:" %} #{average_progress}%
+                      %p {% trans "Avg Proficiency:" %} #{proficiency}
                     .large-4.columns.courseDetailsRightBlock
-                      %p {% trans "Completed:" %} ={completed}%
-                      %p {% trans "Passed:" %} ={passed}%
+                      %p {% trans "Completed:" %} #{completed}%
+                      %p {% trans "Passed:" %} #{passed}%
             #courseMainDetailsContainerView
               .courseDetailsMenuButtons.row
                 .courseParticipantsButton.large-2.columns
@@ -117,7 +117,7 @@
                     {% trans "Social Engagement" %}
                   #courseDetailsStatsViewGrid.courseDetailsViewGrid.large-12.columns
 
-  #courseDetailsMainModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+  #courseDetailsMainModal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
     %h2.courseModalTitle
     %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
     .courseModalStatus
@@ -129,9 +129,9 @@
         {% trans "Save Changes" %}
       %a.cancelChanges{:href => "#"}
         {% trans "Cancel" %}
-    %a.close-reveal-modal{"aria-label" => "Close"}
+    %a.close-reveal-modal{"aria-label": "Close"}
       &#215;
-  #courseDetailsBulkEmail.reveal-modal.medium{"aria-hidden" => "true", "data-reveal" => "", :role => "dialog"}
+  #courseDetailsBulkEmail.reveal-modal.medium{"aria-hidden": "true", "data-reveal": "", :role => "dialog"}
     %h2.emailModalTitle
     %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
     .emailModalStatus
@@ -182,11 +182,11 @@
           %a.scheduleForLater{:href => "#"}
             {% trans "Schedule for Later" %}
 
-    %a.close-reveal-modal{"aria-label" => "Close"}
+    %a.close-reveal-modal{"aria-label": "Close"}
       &#215;
 
 
-  #courseTagsModal.reveal-modal.small{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+  #courseTagsModal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
     %h2 {% trans "Add Tags to this Course" %}
     %hr
     .row
@@ -201,16 +201,16 @@
         Save
       %a.closeModal{:href => "#"}
         {% trans "Cancel" %}
-    %a.close-reveal-modal{"aria-label" => "Close"}
+    %a.close-reveal-modal{"aria-label": "Close"}
       &#215;
 
 
-  #tagCoursesListModal.reveal-modal.tiny{"aria-hidden" => "true", "aria-labelledby" => "modalTitle", "data-reveal" => "", :role => "dialog"}
+  #tagCoursesListModal.reveal-modal.tiny{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
     %h2.tagCoursesListTitle
     %hr
     .row
       #tagCoursesListBlock
-    %a.close-reveal-modal{"aria-label" => "Close"}
+    %a.close-reveal-modal{"aria-label": "Close"}
       &#215;
 
   - include "admin/fragments/hidden_image_upload_form.haml"

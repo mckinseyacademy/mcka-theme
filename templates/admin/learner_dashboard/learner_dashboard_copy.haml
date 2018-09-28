@@ -15,7 +15,7 @@
           %tr{id: "#{course.pk}"}
             %td{style: "word-wrap: break-word"}= course.course_id
             %td
-              %a{href: '#', :OnClick => 'confirmAndCopy(\"#{course_id}\", \"#{learner_dashboard_id}\", \"#{course.course_id}\", #{course.pk})'}
+              %a{'href': '#', :OnClick => "confirmAndCopy('#{course_id}', '#{learner_dashboard_id}', '#{course.course_id}', '#{course.pk}')"}
                 %i.fa.fa-copy{'style': "color:green; float: right;"}
 
 %script

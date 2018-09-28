@@ -14,10 +14,10 @@
           %select#company_filter
             -for org in organization_options
               - if organization_id == org.0
-                %option{value: "={org.0}", selected: "selected"}
+                %option{value: "#{org.0}", selected: "selected"}
                   = org.1
               - else
-                %option{value: "={org.0}" }
+                %option{value: "#{org.0}" }
                   = org.1
         %section
           %table.data-table
@@ -43,14 +43,14 @@
               - for user in users
                 %tr{data-id: "#{user.id}"}
                   %td
-                    %a{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "/admin/permissions/={user.id}/edit", href: ""}
+                    %a{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "/admin/permissions/#{user.id}/edit", href: ""}
                       = user.username
                   %td= user.roles
                   %td
                     %a{href: "mailto:#{user.email}"}= user.email
                   %td= user.company_list
                   %td
-                    %a.fa.fa-pencil{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "/admin/permissions/={user.id}/edit", href: ""}
+                    %a.fa.fa-pencil{"data-reveal-id": "edit-permissions", "data-reveal-ajax": "/admin/permissions/#{user.id}/edit", href: ""}
 
   #edit-permissions.reveal-modal.small{"data-reveal": "true"}
 - block js_snippets

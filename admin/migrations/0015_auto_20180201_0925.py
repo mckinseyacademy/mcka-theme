@@ -31,6 +31,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='selfregistrationroles',
             name='course_run',
-            field=models.ForeignKey(to='admin_apros.CourseRun'),
+            field=models.ForeignKey(to='admin_apros.CourseRun', on_delete=models.CASCADE),
         ),
     ]

@@ -37,7 +37,6 @@ class ManagerReportsCourseDetailsApi(APIView):
         """
         Perform the request, assuming the current user is the manager fetching the report.
         """
-        import pdb
         direct_reports = user_api.get_reports_for_manager(request.user.email)
         if course_id:
             course_participants_stats = CourseParticipantStats(

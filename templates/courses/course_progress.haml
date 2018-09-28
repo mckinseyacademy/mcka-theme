@@ -13,7 +13,7 @@
     - include "admin/admin_header.haml"
 
 - block help_context
-  #mckinsey_help.reveal-modal.small{'data-reveal': None}
+  #mckinsey_help.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     .sub-1 Progress
@@ -25,10 +25,10 @@
   #course-progress
     - if progress_user.id == user.id
       %h1
-        {% trans "Course Progress for" %} '={progress_user.username}'
+        {% trans "Course Progress for" %} '#{progress_user.username}'
     - else
       %h1.admin-view
-        Viewing Course Progress for '={progress_user.username} (={progress_user.full_name})'
+        Viewing Course Progress for '#{progress_user.username} (#{progress_user.full_name})'
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     .sub-1 PROGRESS
@@ -39,13 +39,13 @@
     %hr
     .sub-1 {% trans "GRADES" %}
     - ifnotequal group_activities None
-      %p.style-6 {% blocktrans %} You need to complete all group work and feedback activities and earn a combined course grade of at least ={pass_grade}% to work towards a program certificate of completion. Your course grade is calculated as follows: {% endblocktrans %}
+      %p.style-6 {% blocktrans %} You need to complete all group work and feedback activities and earn a combined course grade of at least #{pass_grade}% to work towards a program certificate of completion. Your course grade is calculated as follows: {% endblocktrans %}
     - else
-      %p.style-6 {% blocktrans %} You need a combined course grade of at least ={pass_grade}% to earn a certificate of completion. Your final grade is calculated as follows: {% endblocktrans %}
+      %p.style-6 {% blocktrans %} You need a combined course grade of at least #{pass_grade}% to earn a certificate of completion. Your final grade is calculated as follows: {% endblocktrans %}
     .grades
       %ul
         - for grader in graders
-          %li ={grader.type_name}: ={grader.weight} {% trans "percent of your grade" %}
+          %li #{grader.type_name}: #{grader.weight} {% trans "percent of your grade" %}
       #chart-grades
         %svg
     %ul.legend
@@ -68,16 +68,16 @@
       %tbody
         - for lesson in course.chapters
           %tr
-            %td.lesson.sub-1 ={lesson.index}: ={lesson.name}
+            %td.lesson.sub-1 #{lesson.index}: #{lesson.name}
             %td.deadline
               = lesson.due_upon
             - ifequal lesson.assesment_score None
               %td.assessment -
             - else
-              %td.assessment ={lesson.assesment_score}%
+              %td.assessment #{lesson.assesment_score}%
             %td.lesson-progress
               .lesson-progress-bar
-                .bar{style: "width:#{lesson.progress}%;"}
+                .bar{"style": "width:#{lesson.progress}%;"}
     - ifnotequal group_activities None
       %hr
       %table.lesson-table
@@ -90,27 +90,27 @@
         %tbody
           - for activity in group_activities
             %tr
-              %td.lesson.sub-1 ={activity.name}
+              %td.lesson.sub-1=activity.name
               %td.deadline
                 = activity.due_on
               %td.assessment
                 - ifequal activity.score None
                   \-
                 - else
-                  ={activity.score}%
+                  #{activity.score}%
               %td.lesson-progress
                 %ul.group-grades
                   - for grade in activity.grades
-                    %li ={grade}
+                    %li=grade
                   - for i in activity.pending_grades
                     %li -
 
-  #progress_modal.reveal-modal.small{'data-reveal': None}
+  #progress_modal.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     %p
       {% trans "If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our" %}
-      %a{href: '/privacy'}
+      %a{'href': '/privacy'}
         {% trans "privacy policy." %}
 
   %script

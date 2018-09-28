@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
                 ('current_role_other', models.CharField(max_length=60, null=True, blank=True)),
                 ('mcka_user', models.BooleanField()),
                 ('new_user', models.BooleanField()),
-                ('course_run', models.ForeignKey(to='admin_apros.CourseRun')),
+                ('course_run', models.ForeignKey(to='admin_apros.CourseRun', on_delete=models.CASCADE)),
             ],
         ),
     ]

@@ -1,8 +1,8 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from . import views
 
-urlpatterns = patterns('accounts',
+urlpatterns = [
     url(r'^user_profile.html$', views.user_profile, name='user_profile'),
     url(r'^user_profile/image/edit$', views.user_profile_image_edit, name='user_profile_image_edit'),
     url(r'^edit_fullname/$', views.edit_fullname, name='edit_fullname'),
@@ -27,5 +27,4 @@ urlpatterns = patterns('accounts',
         views.fill_email_and_redirect,
         name='fill_email_and_redirect'
     ),
-
-)
+]

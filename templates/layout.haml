@@ -6,7 +6,7 @@
 - get_current_language_bidi as LANGUAGE_BIDI
 
 !!! 5
-%html.no-js{lang:"#{LANGUAGE_CODE}", dir: '{{ LANGUAGE_BIDI|yesno:"rtl,ltr,ltr" }}'}
+%html.no-js{lang:"#{LANGUAGE_CODE}", dir: "{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"}
   %head
     %meta{charset: "utf-8"}
     %meta{'http-equiv': "X-UA-Compatible", content: "IE=edge"}
@@ -193,7 +193,7 @@
 
   %body{
     id: "{% if '/admin' in request.path %}admin-body{% endif %}",
-    class: "{{ LANGUAGE_BIDI|yesno:'rtl,ltr,ltr' }} {% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %} {% block body_class %}{% endblock %}",
+    class: "{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %} {% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %} {% block body_class %}{% endblock %}",
     style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"
   }
     - block help_context
@@ -212,14 +212,14 @@
 
     -# Video overlay
     - block video_overlay
-      #mckinsey_video.reveal-modal.medium{'data-reveal': None}
+      #mckinsey_video.reveal-modal.medium{'data-reveal': ''}
         .close-reveal-modal
           %i.fa.fa-times-circle
         .player-wrapper
 
     -# Block for general purpouse modal dialog
     - block general_modal
-      #generalModal.reveal-modal.small{'data-reveal': None}
+      #generalModal.reveal-modal.small{'data-reveal': ''}
         %h2.title
         %p{'class': "lead description"}
         %a{'class': "close-reveal-modal fa fa-times-circle"}
@@ -241,13 +241,13 @@
 
     -# Beta content overlay
     - block beta_content
-      #beta_content.reveal-modal.small{'data-reveal': None}
+      #beta_content.reveal-modal.small{'data-reveal': ''}
         .close-reveal-modal
           %i.fa.fa-times-circle
         %p {% trans "This is the McKinsey Academy Beta and we are happy to have you participate ahead of the official public launch!" %}
         %p {% trans "As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks." %}
 
-    #edit_field_modal.reveal-modal.small{data-reveal: None }
+    #edit_field_modal.reveal-modal.small{data-reveal: ''}
 
     - if request.is_IE8
       #unsupported_modal
@@ -260,7 +260,7 @@
     - if request.user.is_authenticated
       - ifequal request.session.learner_dashboard_id None
         - if request.session.learner_dashboard_id
-          #intro_modal.reveal-modal.small{'data-reveal': None, 'data-options': "close_on_esc: false;"}
+          #intro_modal.reveal-modal.small{'data-reveal': '', 'data-options': "close_on_esc: false;"}
             .close-reveal-modal
               %i.fa.fa-times-circle
             %h1 {% trans "Welcome to McKinsey Academy" %}

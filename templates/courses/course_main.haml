@@ -24,17 +24,17 @@
             %article.course-quote
               %blockquote= quote.body
               .attribution
-                %img{src: "#{quote.thumbnail_url}"}
+                %img{"src": "#{quote.thumbnail_url}"}
                 .person-name= quote.byline
                 .person-title= quote.byline_title
 
-  #beta_visualizations.reveal-modal.large{'data-reveal': None}
+  #beta_visualizations.reveal-modal.large{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     %p {% trans "This is the McKinsey Academy Beta and we are happy to have you participate ahead of the official public launch!" %}
     %p {% trans "As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks." %}
     .screencap
-      %img{src: '/static/image/McKA_home_progress_v12.png'}
+      %img{'src': '/static/image/McKA_home_progress_v12.png'}
 
 
 

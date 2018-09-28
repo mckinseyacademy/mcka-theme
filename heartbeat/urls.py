@@ -1,5 +1,7 @@
-from django.conf.urls import url, patterns
+from django.conf.urls import url
+from heartbeat import views as heartbeatviews
 
-urlpatterns = patterns('',  # nopep8
-    url(r'^$', 'heartbeat.views.heartbeat', name='heartbeat'),
-)
+
+urlpatterns = [
+    url(r'^$', heartbeatviews.heartbeat, name='heartbeat'),
+]

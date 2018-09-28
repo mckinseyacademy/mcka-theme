@@ -1,23 +1,22 @@
 from __future__ import division
+
 import functools
 
-from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _, get_language_bidi
 
-from accounts.middleware.thread_local import get_static_tab_context
 from admin.controller import load_course
 from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings
 from api_client import user_api, course_api, mobileapp_api, organization_api
-from license import controller as license_controller
 from lib.utils import DottableDict
-
-from .models import FeatureFlags
+from license import controller as license_controller
 from .controller import (
     build_page_info_for_course, locate_chapter_page,
-    load_static_tabs, round_to_int
+    load_static_tabs, get_completion_percentage_from_id,
+    set_user_course_progress,
 )
+from .models import FeatureFlags
 
 CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
@@ -264,31 +263,12 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
                 lesson.description = lesson_description.content
 
 
-def _get_course_progress_data(course, user_id):
-    completions = course_api.get_course_completions(course.id, user_id)
-    completed_ids = [result.content_id for result in completions]
-    component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
-    for lesson in course.chapters:
-        lesson.progress = 0
-        lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
-                                                           settings.PROGRESS_IGNORE_COMPONENTS)
-        if len(lesson_component_ids) > 0:
-            matches = set(lesson_component_ids).intersection(completed_ids)
-            lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
-    actual_completions = set(component_ids).intersection(completed_ids)
-    return len(actual_completions), len(component_ids)
-
-
 def load_course_progress(course, user_id):
-    actual_completions_len, component_ids_len = _get_course_progress_data(course, user_id)
-    try:
-        course.user_progress = round_to_int(100 * actual_completions_len / component_ids_len)
-    except ZeroDivisionError:
-        course.user_progress = 0
-
-
-def return_course_completions_stats(course, user_id):
-    return _get_course_progress_data(course, user_id)
+    username = user_api.get_user(user_id).username
+    completions = course_api.get_course_completions(course.id, username)
+    user_completions = completions.get(username, {})
+    course.user_progress = get_completion_percentage_from_id(user_completions, 'course')
+    set_user_course_progress(course, user_completions)
 
 
 def standard_data(request):
@@ -374,7 +354,7 @@ def standard_data(request):
 
             client_nav_links = ClientNavLinks.objects.filter(client_id=organization_id)
             client_nav_links = dict((link.link_name, link) for link in client_nav_links)
-            
+
         if course:
             if course.ended:
                 if len(course.name) > 37:

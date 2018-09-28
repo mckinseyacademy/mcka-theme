@@ -4,7 +4,7 @@ from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.core.cache import cache
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.utils.decorators import available_attrs
-from django.template import loader, RequestContext
+from django.template import loader
 from django.utils.http import urlquote
 
 from api_client import user_api, group_api
@@ -36,7 +36,7 @@ def permission_group_required(*group_names):
     '''
     def decorator(view_fn):
         def _wrapped_view(request, *args, **kwargs):
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 if is_user_in_permission_group(request.user, *group_names):
                     return view_fn(request, *args, **kwargs)
                 return permission_group_required_not_in_group(request)
@@ -51,7 +51,7 @@ def permission_group_required_api(*group_names):
     '''
     def decorator(view_fn):
         def _wrapped_view(self, request, *args, **kwargs):
-            if request.user.is_authenticated():
+            if request.user.is_authenticated:
                 if is_user_in_permission_group(request.user, *group_names):
                     return view_fn(self, request, *args, **kwargs)
                 return permission_group_required_not_in_group(request)
@@ -62,8 +62,7 @@ def permission_group_required_api(*group_names):
 
 def permission_group_required_not_in_group(request):
     template = loader.get_template('not_authorized.haml')
-    context = RequestContext(request, {'request_path': request.path})
-    return HttpResponseForbidden(template.render(context))
+    return HttpResponseForbidden(template.render({'request_path': request.path}, request))
 
 
 def permission_group_required_not_authenticated(request):

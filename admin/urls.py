@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from rest_framework.routers import SimpleRouter
 
 from admin import views
@@ -10,8 +10,7 @@ router = SimpleRouter()
 router.register(r'^api/mobileapps', views.MobileAppsApi, base_name='mobileapps_api')
 
 urlpatterns = router.urls
-urlpatterns += patterns(
-    'admin',
+urlpatterns += [
     url(r'^$', views.home, name='admin_home'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/(?P<user_id>[0-9]+)/unenroll$', views.client_admin_unenroll_participant, name='client_admin_unenroll'),
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/participants/(?P<user_id>[0-9]+)/edit-email$', views.client_admin_edit_email, name='client_admin_edit_email'),
@@ -62,6 +61,8 @@ urlpatterns += patterns(
     url(r'^client-admin/contact', views.client_admin_contact, name='client_admin_contact'),
     url(r'^client-admin/(?P<client_id>[0-9]*)', views.client_admin_home, name='client_admin_home'),
 
+    url(r'^api/courses/(?P<course_id>.*)/edit_course_meta_data/$', views.CourseMetaDataApiView.as_view(),
+        name='course_meta_data_api_view'),
     url(r'^api/courses/(?P<course_id>.*)/stats/$', views.course_details_stats_api.as_view(), name='course_details_stats_api'),
     url(r'^api/courses/(?P<course_id>.*)/engagement/$', views.course_details_engagement_api.as_view(), name='course_details_engagement_api'),
     url(r'^api/courses/(?P<course_id>.*)/performance/$', views.course_details_performance_api.as_view(), name='course_details_performance_api'),
@@ -213,5 +214,6 @@ urlpatterns += patterns(
     url(r'^certificates/templates$', certificate_views.certificate_templates, name='certificate_templates'),
     url(r'^certificates/templates/new$', certificate_views.new_certificate_template, name='new_certificate_template'),
     url(r'^certificates/templates/(?P<template_id>\d+)/edit$', certificate_views.edit_certificate_template, name='edit_certificate_template'),
+
     url(r'^manager/', include('manager_dashboard.urls'), name='manager_dashboard_urls'),
-)
+]

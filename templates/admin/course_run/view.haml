@@ -3,13 +3,13 @@
 - load staticfiles
 - block content  
   .admin-detail.row
-    #contentModal.reveal-modal.small{'data-reveal': None}
+    #contentModal.reveal-modal.small{'data-reveal': ''}
     %section
       .row
         .large-4.columns
           %a{:href => "/admin/course_runs/"}
             %p < {% trans "Back to list" %}
-          %h1 {% trans "Course Run:" %} ={course_run.name}
+          %h1 {% trans "Course Run:" %} #{course_run.name}
           %a{:href => "/registration/#{course_run.name}"}
             {% trans "View live" %}
         .large-4.columns
@@ -22,15 +22,15 @@
         .large-4.columns
           %strong {% trans "Course ID:" %}
             %a{:href => "/admin/courses/#{course_run.course_id}"}
-              %p ={course_run.course_id}
+              %p= course_run.course_id
           %strong {% trans "Max users in course:" %}
-          %p ={course_run.max_participants}
+          %p= course_run.max_participants
           %strong {% trans "Total enrolled users in course:" %}
-          %p ={course_run.total_participants}
+          %p= course_run.total_participants
           %strong {% trans "No. of users signed up:" %}
-          %p ={total_registered_users}
+          %p= total_registered_users
           %strong {% trans "Total activation emails sent:" %}
-          %p ={course_run.total_activations_sent}
+          %p= course_run.total_activations_sent
           - if total_registered_users < 1
             %button{:class => "button radius small disabled"}
               {% trans "Download CSV" %}
@@ -41,16 +41,16 @@
               %i{'class': "fa fa-download"}
         .large-8.columns
           %strong {% trans "Email template for existing McKA users:" %}
-          %p ={course_run.email_template_existing}
+          %p= course_run.email_template_existing
           %br
           %strong {% trans "Email template for new McKA users:" %}
-          %p ={course_run.email_template_new}
+          %p= course_run.email_template_new
           %br
           %strong {% trans "Email template for McKA employees (SSO):" %}
-          %p ={course_run.email_template_mcka}
+          %p= course_run.email_template_mcka
           %br
           %strong {% trans "Copy for closed status message:" %}
-          %p ={course_run.email_template_closed}
+          %p= course_run.email_template_closed
           %br
     %hr
     .large-10.large.columns

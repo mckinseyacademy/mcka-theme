@@ -3,7 +3,7 @@
 %div.controls
   - if left_lesson_module_navigator
     - if left_lesson_module_navigator.is_started
-      %a.page-to.previous{href: "#{left_lesson_module_navigator.navigation_url}"}
+      %a.page-to.previous{"href": "#{left_lesson_module_navigator.navigation_url}"}
         %i.fa.fa-chevron-left
         .mcka-tooltip
           %p.style-4
@@ -11,7 +11,7 @@
             {% trans "Module" %} #{left_lesson_module_navigator.index} {% trans "of" %} #{left_lesson_module_navigator.lesson_count}
           .vertical-index= left_lesson_module_navigator.name
     - else
-      %a.page-to.previous.future{href: "#"}
+      %a.page-to.previous.future{"href": "#"}
         %i.fa.fa-chevron-left
         .mcka-tooltip
           %p.style-4
@@ -21,7 +21,7 @@
       %i.fa.fa-chevron-left
   - if right_lesson_module_navigator
     - if right_lesson_module_navigator.is_started
-      %a.page-to.next{href: "#{right_lesson_module_navigator.navigation_url}"}
+      %a.page-to.next{"href": "#{right_lesson_module_navigator.navigation_url}"}
         %i.fa.fa-chevron-right
         .mcka-tooltip
           %p.style-4
@@ -29,7 +29,7 @@
             {% trans "Module" %} #{right_lesson_module_navigator.index} {% trans "of" %} #{right_lesson_module_navigator.lesson_count}
           .vertical-index= right_lesson_module_navigator.name
     - else
-      %a.page-to.next.future{href: "#"}
+      %a.page-to.next.future{"href": "#"}
         %i.fa.fa-chevron-right
         .mcka-tooltip
           %p.style-4

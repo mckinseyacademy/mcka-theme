@@ -11,28 +11,28 @@
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block content
-  %link{rel: 'stylesheet', href: "{% static 'css/jquery-ui.min.css' %}"}
-  %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
-  %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
+  %link{'rel': 'stylesheet', 'href': "{% static 'css/jquery-ui.min.css' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts.js' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
 
   - include 'courses/course_learner_dashboard_branding.haml'
   #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
   #home-courses.learner-dashboard-enabled
     .row
       .large-8.columns.dash-programs
-        %h3{style: "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
-        %p{style: "color:#{learner_dashboard.description_color}"}= learner_dashboard.description
+        %h3{"style": "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
+        %p{"style": "color:#{learner_dashboard.description_color}"}= learner_dashboard.description
         .row
           -for tile in learner_dashboard_tiles
-            .learner-program{class: '{% if tile.publish_date|date:"Y-m-d-H-i" <= today|date:"Y-m-d-H-i" %}published{%else%}not-published{%endif%}'}
+            .learner-program{'class': '{% if tile.publish_date|date:"Y-m-d-H-i" <= today|date:"Y-m-d-H-i" %}published{%else%}not-published{%endif%}'}
               -if bookmark.tile.id == tile.id
-                %i.bookmark{class: "fa fa-bookmark fa-2x"}
-              .panel.panel-program{style: "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
-                .sub-1{style: "color: #{tile.label_color};"}
+                %i.bookmark{"class": "fa fa-bookmark fa-2x"}
+              .panel.panel-program{"style": "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
+                .sub-1{"style": "color: #{tile.label_color};"}
                   -if tile.label
-                    #{tile.label}
+                    =tile.label
                   -else
-                    #{tile.get_tile_type_display}
+                    =tile.get_tile_type_display
                 -if bookmark.tile.id == tile.id
                   -if tile.publish_date|date:"Y-m-d-H-i" <= today|date:"Y-m-d-H-i"
                     <a class="last_visited" href="{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}" target="{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}" onclick="ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')" data-tile-id="#{tile.id}">
@@ -47,9 +47,9 @@
                     #{tile.title}
                   </blockquote>
                   </a>
-                .label-3{style: "color: #{tile.note_color};"}= tile.note
-      .large-4.columns.dash-widget{style: "{% if branding and branding.discover_rule_color %} border-color:#{branding.discover_rule_color}{% endif %}"}
-        %h5.label-4{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}
+                .label-3{'style': "color: #{tile.note_color};"}= tile.note
+      .large-4.columns.dash-widget{"style": "{% if branding and branding.discover_rule_color %} border-color:#{branding.discover_rule_color}{% endif %}"}
+        %h5.label-4{"style": "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}
           {% trans "FOR DISCOVERY" %}
         -for item in discovery_items
           .learner-info
@@ -65,10 +65,10 @@
                   </a>
             -else
               -if item.title
-                %p.title-font{style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
+                %p.title-font{"style": "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}= item.title
               -if item.author
                 %h5
-                  %span.author-font{style: "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
+                  %span.author-font{"style": "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}= item.author
 
   - include "marketing/app_link_popup.haml"
 

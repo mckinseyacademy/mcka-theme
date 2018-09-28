@@ -147,6 +147,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             var url = ApiUrls.course_details+'/'+_this.courseId;
             var options = {
               url: url,
+              contentType: "application/json; charset=utf-8",
               data: JSON.stringify(dictionaryToSend),
               processData: false,
               type: "POST",
@@ -234,6 +235,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             var url = ApiUrls.course_details+'/'+_this.courseId;
             var options = {
               url: url,
+              contentType: "application/json; charset=utf-8",
               data: JSON.stringify(dictionaryToSend),
               processData: false,
               type: "POST",
@@ -352,6 +354,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             var url = ApiUrls.course_details+'/'+_this.courseId;
             var options = {
               url: url,
+              contentType: "application/json; charset=utf-8",
               data: JSON.stringify(dictionaryToSend),
               processData: false,
               type: "POST",
@@ -428,6 +431,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
 
           var options = {
             url: url,
+            contentType: "application/json; charset=utf-8",
             data: JSON.stringify(dictionaryToSend),
             processData: false,
             type: "POST",
@@ -494,6 +498,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
 
               var options = {
                 url: url,
+                contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(dictionaryToSend),
                 processData: false,
                 type: "POST",

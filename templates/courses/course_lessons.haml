@@ -8,7 +8,7 @@
       %i.fa.fa-question-circle
     .lesson-title
       %span.label-4.lesson-index
-        {% trans "Lesson" %} {{course.current_lesson.index}}:
+        {% trans "Lesson" %} #{course.current_lesson.index}:
       %span.label-3.lesson-name= course.current_lesson.name
     %h1
       %a{'data-reveal-id': 'module_list', "data-tooltip": "{% trans 'Lesson Modules' %}"}
@@ -23,10 +23,10 @@
     %ul
       - for module in course.current_lesson.modules
         %li.lesson-row-item
-          %i.status.fa{class: "fa{% if module.is_complete %}-check{% endif %}-circle"}
+          %i.status.fa{"class": "fa{% if module.is_complete %}-check{% endif %}-circle"}
           .lesson-item-name
-            %a{href: "#{module.navigation_url}", class: "{% if module.is_current %}current{% endif %}"}
-              {% trans "Module" %} ={module.index}:
+            %a{"href": "#{module.navigation_url}", "class": "{% if module.is_current %}current{% endif %}"}
+              {% trans "Module" %} #{module.index}:
             %span= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle

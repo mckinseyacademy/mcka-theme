@@ -23,7 +23,8 @@ from courses.user_courses import standard_data
 from courses.controller import round_to_int, Proficiency, get_user_social_metrics, average_progress, load_static_tabs
 from admin.models import Client
 from .serializers import ResetPasswordSerializer
-from public_api.controller import get_course_feature_flag, create_and_add_course_feature_flag_in_list
+from public_api.controller import get_course_ff_and_custom_taxonomy, \
+    create_and_add_course_ff_and_custom_taxonomy_in_list
 
 
 @require_POST
@@ -158,11 +159,11 @@ def reset_password(request):
         return Response({'errors': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
 
-def get_feature_flag_mobile(request, course_id=None):
-    ''' This will return the feature flags for one course
+def get_course_feature_flag_and_custom_taxonomy(request, course_id=None):
+    """ This api will return the feature flags and custom taxonomy for one course
      or all user courses depends on demand
-    '''
-    feature_flag = []
+    """
+    course_ff_custom_taxonomy = []
 
     response, status_code = user_api.get_user_by_bearer_token()
     if not status_code == status.HTTP_200_OK:
@@ -170,16 +171,16 @@ def get_feature_flag_mobile(request, course_id=None):
     user_id = response['id']
 
     if course_id:
-        course_feature_flag = get_course_feature_flag(user_id, feature_flag, course_id)
+        course_feature_flag = get_course_ff_and_custom_taxonomy(user_id, course_ff_custom_taxonomy, course_id)
         if not course_feature_flag:
             return HttpResponse(status=status.HTTP_404_NOT_FOUND)
     else:
         courses = user_api.get_user_courses(user_id)
         for course in courses:
-            create_and_add_course_feature_flag_in_list(feature_flag, course.id)
+            create_and_add_course_ff_and_custom_taxonomy_in_list(course_ff_custom_taxonomy, course.id)
 
     return HttpResponse(
-        json.dumps(feature_flag),
+        json.dumps(course_ff_custom_taxonomy),
         content_type='application/json'
     )
 

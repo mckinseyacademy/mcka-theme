@@ -392,6 +392,7 @@ SendEmailManager = function(sender, subject, to_email_list, body, template_id, p
     dictionaryToSend['optional_data'] = optional_data;
   var options = {
     url: ApiUrls.email,
+    contentType: "application/json; charset=utf-8",  
     data: JSON.stringify(dictionaryToSend),
     processData: false,
     type: "POST",

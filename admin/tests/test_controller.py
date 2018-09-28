@@ -1,23 +1,30 @@
-import os
-import ddt
+# -*- coding: utf-8 -*-
 import csv
 
-from django.http import HttpResponse
-from django.test.client import RequestFactory
+import ddt
+import os
 from django.core.exceptions import ValidationError
+from django.http import HttpResponse
 from django.test import TestCase, override_settings
+from django.test.client import RequestFactory
+from rest_framework import status
 
 import admin.controller as controller
 from accounts.tests.utils import ApplyPatchMixin
-from admin.controller import CourseParticipantStats, create_roles_list, write_participant_performance_on_csv,\
-    write_engagement_summary_on_csv, write_social_engagement_report_on_csv, get_course_stats_report
+from admin.controller import (
+    CourseParticipantStats,
+    create_roles_list,
+    write_participant_performance_on_csv,
+    write_engagement_summary_on_csv,
+    write_social_engagement_report_on_csv,
+    get_course_stats_report
+)
 from admin.models import SelfRegistrationRoles, CourseRun
-from courses.models import FeatureFlags
 from admin.tests.utils import BASE_DIR
-from api_client.json_object import JsonParser as JP
-from rest_framework import status
-from api_client.json_object import JsonObject
 from api_client import user_models
+from api_client.json_object import JsonObject, JsonParser as JP
+from courses.models import CourseMetaData
+from courses.models import FeatureFlags
 
 
 class AdminControllerTests(TestCase):
@@ -110,6 +117,7 @@ def MockEngagementScore(object):
 
 
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
+
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_get_engagement_scores(self):
         self.apply_patch('api_client.course_api.get_course_social_metrics', new=MockEngagementScore)
@@ -118,6 +126,47 @@ class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
         engagement_scores = test_object._get_engagement_scores()
         self.assertEqual(engagement_scores[u_ids[0]], 85)
         self.assertEqual(engagement_scores[u_ids[1]], 35)
+
+    def test__get_lesson_completions(self):
+        test_username = u'test_user'
+        test_userid = 93
+
+        self.apply_patch(
+            'api_client.course_api.get_course_completions',
+            lambda *a, **kw: {
+                test_username: {
+                    u'completion': {
+                        u'percent': 0.25,
+                        u'possible': 60.0,
+                        u'earned': 15.0,
+                    },
+                },
+            },
+        )
+        course_participants_response = {
+            u'count': 1,
+            u'next': None,
+            u'num_pages': 1,
+            u'results': [
+                {
+                    u'username': test_username,
+                    u'id': test_userid,  # This get
+                }
+            ],
+            u'previous': None
+        }
+        stats = CourseParticipantStats('course-v1:a+b+c', 'base/url')
+        stats.request_params = {'additional_fields': 'lesson_completions'}
+        completions = stats._get_lesson_completions(course_participants_response)  # pylint: disable=protected-access
+        self.assertEqual(completions, {
+            test_userid: {
+                u'completion': {
+                    u'percent': 0.25,
+                    u'possible': 60.0,
+                    u'earned': 15.0,
+                },
+            },
+        })
 
 
 @ddt.ddt
@@ -273,8 +322,8 @@ class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
         course_api = self.apply_patch('api_client.course_api.get_course_details')
         course_api.return_value = {"name": "test_course"}
         response = get_course_stats_report("test_company", "test_Course")
-        expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance\
-            + self.expected_result_for_social
+        expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance \
+                          + self.expected_result_for_social
 
         self.assertEqual(response.content, expected_result)
         course_features = FeatureFlags.objects.get(course_id="test_course")
@@ -353,3 +402,80 @@ class TestSpecificUserRolesOfOtherCompanies(TestCase):
         course_participants = controller.remove_specific_user_roles_of_other_companies(course_participants,
                                                                                       int(organization_id))
         self.assertEqual(len(course_participants["results"]), 3)
+
+
+class EditCourseCustomTermsTest(TestCase):
+    def setUp(self):
+        self.course_id = "course_id/1"
+
+    def test_edit_course_lesson_custom_terms(self):
+        lesson_label = 'test_lesson_label'
+        module_label = 'test_module_label'
+        lesson_label_flag = 'true'
+        module_label_flag = 'false'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                            lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertEqual(course_meta_data.lesson_label, lesson_label)
+
+    def test_edit_course_module_custom_terms(self):
+        lesson_label = 'test_lesson_label_1'
+        module_label = 'test_module_label_1'
+        lesson_label_flag = 'false'
+        module_label_flag = 'true'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                            lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertEqual(course_meta_data.module_label, module_label)
+
+    def test_edit_course_lesson_custom_terms_with_foreign_characters(self):
+        lesson_label = u'ŠŽšžŸÀÁÂÃÄÅÇ'
+        module_label = 'test_module_label_1'
+        lesson_label_flag = 'true'
+        module_label_flag = 'false'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                            lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertEqual(course_meta_data.lesson_label, lesson_label)
+
+    def test_edit_course_module_custom_terms_with_foreign_characters(self):
+        lesson_label = 'test_lesson_label_1'
+        module_label = u'ËÌÍÎÏÐÑÒÓÔ'
+        lesson_label_flag = 'false'
+        module_label_flag = 'true'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                            lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertEqual(course_meta_data.module_label, module_label)
+
+    def test_edit_course_lesson_custom_terms_with_special_characters(self):
+        lesson_label = '$%^&&&'
+        module_label = 'test_module_label_1'
+        lesson_label_flag = 'false'
+        module_label_flag = 'true'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                         lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertNotEqual(course_meta_data.lesson_label, lesson_label)
+
+    def test_edit_course_module_custom_terms_with_special_characters(self):
+        lesson_label = 'test_lesson_label_1'
+        module_label = '$%^&&&'
+        lesson_label_flag = 'false'
+        module_label_flag = 'true'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                         lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertNotEqual(course_meta_data.module_label, module_label)

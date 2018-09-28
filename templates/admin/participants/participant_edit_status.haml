@@ -3,30 +3,30 @@
     {% trans "Select new user role on a course:" %}
   %p.lead
   %p.mainText
-    %form{"action" => "/admin/participants/#{user_id}/courses/#{course_id}/edit_status", "method" => "POST"}
+    %form{"action": "/admin/participants/#{user_id}/courses/#{course_id}/edit_status", "method": "POST"}
       - csrf_token
       - if current_roles == 'Active'
-        %input#active-radio{"type" => "radio", "name" => "role-group", "value" => "Active", 'checked': 'checked'}
+        %input#active-radio{"type" : "radio", "name" : "role-group", "value" : "Active", 'checked': 'checked'}
       - else
-        %input#active-radio{"type" => "radio", "name" => "role-group", "value" => "Active"}
-      %label{"for" => "active-radio"}
+        %input#active-radio{"type" : "radio", "name" : "role-group", "value" : "Active"}
+      %label{"for" : "active-radio"}
         {% trans "Participant" %}
       - if current_roles == 'Observer'
-        %input#observer-radio{"type" => "radio", "name" => "role-group", "value" => "Observer", 'checked': 'checked'}
+        %input#observer-radio{"type" : "radio", "name" : "role-group", "value" : "Observer", 'checked': 'checked'}
       - else
-        %input#observer-radio{"type" => "radio", "name" => "role-group", "value" => "Observer"}
-      %label{"for" => "observer-radio"}
+        %input#observer-radio{"type" : "radio", "name" : "role-group", "value" : "Observer"}
+      %label{"for" : "observer-radio"}
         {% trans "Observer" %}
       - if current_roles == 'TA'
-        %input#ta-radio{"type" => "radio", "name" => "role-group", "value" => "TA", 'checked': 'checked'}
+        %input#ta-radio{"type" : "radio", "name" : "role-group", "value" : "TA", 'checked': 'checked'}
       - else
-        %input#ta-radio{"type" => "radio", "name" => "role-group", "value" => "TA"}
-      %label{"for" => "ta-radio"}
+        %input#ta-radio{"type" : "radio", "name" : "role-group", "value" : "TA"}
+      %label{"for" : "ta-radio"}
         {% trans "TA" %}
-      %input{"type" => "hidden", "name" => "current-roles", "id" => 'current-roles', "value" => "#{current_roles}"}
+      %input{"type" : "hidden", "name" : "current-roles", "id" : 'current-roles', "value" : "#{current_roles}"}
       .submit-area
-        %input{"class" => "button small radius", "type" => "submit", "value" => "{% trans 'Save' %}"}
+        %input{"class" : "button small radius", "type" : "submit", "value" : "{% trans 'Save' %}"}
     .status
       = status
-  %a.close-reveal-modal{"aria-label" => "Close"}
+  %a.close-reveal-modal{"aria-label" : "Close"}
     &#215;

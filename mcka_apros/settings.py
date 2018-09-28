@@ -39,8 +39,6 @@ LOGGING = get_logger_config(BASE_DIR,
                             dev_env=True,
                             debug=True)
 
-TEMPLATE_DEBUG = True
-
 ALLOWED_HOSTS = []
 
 # Application definition
@@ -114,15 +112,6 @@ WSGI_APPLICATION = 'mcka_apros.wsgi.application'
 AUTHENTICATION_BACKENDS = (
     #'django.contrib.auth.backends.ModelBackend',
     'accounts.json_backend.JsonBackend',
-)
-
-TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-
-TEMPLATE_LOADERS = (
-    'hamlpy.template.loaders.HamlPyFilesystemLoader',
-    'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
 )
 
 # Database
@@ -350,6 +339,8 @@ WORKGROUP_API = '/'.join([API_SERVER_PREFIX, 'workgroups'])
 MOBILE_APP_API = '/'.join([API_SERVER_PREFIX, 'mobileapps'])
 MANAGER_API = '/'.join(['api', 'user_manager', 'v1'])
 COURSE_ENROLLMENT_API = '/'.join(['api', 'enrollment', 'v1', 'enrollments'])
+COURSE_COMPLETION_API = os.path.join('api', 'completion-aggregator', 'v1', 'course')
+COURSE_BLOCK_API = os.path.join('api', 'courses', 'v1', 'blocks')
 
 # set AWS querystring authentication to false
 AWS_QUERYSTRING_AUTH = False
@@ -452,15 +443,35 @@ LOGIN_BUTTON_FOR_MOBILE_ENABLED = False
 COURSE_RUN_PARTICIPANTS_TRESHOLD = 4000
 DEDICATED_COURSE_RUN_PERSON = "staff@mckinseyacademy.com"
 
-# Add request object to templates
-from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS as TCP
-TEMPLATE_CONTEXT_PROCESSORS = TCP + (
-    'django.core.context_processors.request',
-    'lib.context_processors.user_program_data',
-    'lib.context_processors.settings_data',
-    'lib.context_processors.mobile_login_data',
-    'lib.context_processors.set_mobile_app_id',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'OPTIONS': {
+            'debug' : True,
+            'context_processors': [
+                'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.debug',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
+                'django.template.context_processors.tz',
+                'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
+                'lib.context_processors.user_program_data',
+                'lib.context_processors.settings_data',
+                'lib.context_processors.mobile_login_data',
+                'lib.context_processors.set_mobile_app_id',
+            ],
+            'loaders': [
+                'hamlpy.template.loaders.HamlPyFilesystemLoader',
+                'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
+                'django.template.loaders.filesystem.Loader',
+                'django.template.loaders.app_directories.Loader',
+            ]
+        },
+    },
+]
 
 try:
     from local_settings import *
@@ -503,11 +514,6 @@ DEBUG_TOOLBAR_CONFIG = {
 
 INSTALLED_APPS += (
     'edx_notifications.server.web',
-)
-
-TEMPLATE_LOADERS += (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
 )
 
 ################################### CLIENT BRANDING DEFAULT SETTINGS ###################################
@@ -625,6 +631,9 @@ XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'
 
 # Course Key Regex
 COURSE_KEY_PATTERN = r'(?P<course_key_string>[^/+]+(/|\+)[^/+]+(/|\+)[^/?]+)'
+
+# Foreign And Normal Characters Regex
+FOREIGN_AND_NORMAL_CHARACTERS_PATTERN = '[ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðñòóôõöùúûüýÿ+ \w ]+'
 
 #Cookies expiry time
 COOKIES_YEARLY_EXPIRY_TIME = datetime.datetime.utcnow() + datetime.timedelta(days=365)

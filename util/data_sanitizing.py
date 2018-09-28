@@ -4,6 +4,7 @@
 
 import logging
 import unicodedata
+import re
 
 from django.conf import settings
 from django.utils.html import escape
@@ -117,3 +118,12 @@ def sanitize_data(data, props_to_clean=None, clean_methods=()):
 
 
 DEFAULT_CLEAN_METHODS = (clean_xss_characters, clean_formula_characters, )
+
+
+def special_characters_match(value):
+    """
+    This method will return special character if there are any in string.
+    """
+
+    return re.sub(settings.FOREIGN_AND_NORMAL_CHARACTERS_PATTERN, u'', value.encode('utf-8').decode('latin_1'))
+

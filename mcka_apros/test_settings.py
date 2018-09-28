@@ -10,3 +10,5 @@ CELERY_ALWAYS_EAGER = True
 
 GA_TRACKING_ID = 'test'
 USE_I18N = True
+
+ALLOWED_HOSTS = ['apros.mcka.local']

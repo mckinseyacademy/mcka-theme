@@ -1,0 +1,39 @@
+- extends "layout.haml"
+- load i18n
+- comment "This template is used for /accounts/finalize/ (SSO registration)"
+
+- block page_title
+  %title {% trans "Register | McKinsey Academy" %}
+
+- block header
+  - include 'accounts/login_header.haml'
+
+- block content
+  .row
+    .tos-form.large-10.medium-10.large-centered.medium-centered.columns
+      .row
+        .large-7.medium-7.columns
+          %h1 {% trans "Welcome to McKinsey Academy" %}
+          - if request.is_IE8
+            .outdated_browser {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You can continue the registration process, but will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
+          %form{action: "", method: "POST"}
+            {% csrf_token %}
+            .terms-of-service
+              - include "terms_of_service.haml"
+            = form.as_p
+            %input.button.radius.small{type: "submit", value: "#{accept_label}"}
+        .large-3.medium-4.columns.help
+          %h4 {% trans "Already Registered?" %}
+          .sidebar
+            %a{href: "/accounts/login"}
+              {% trans "Click here to log in." %}
+          %hr
+          %h4 {% trans "Welcome" %}
+          .sidebar
+            {% trans "Registering gives you access to course content and ensures that you receive updates and notifications from McKinsey Academy." %}
+          %hr
+          %h4 {% trans "Need Help?" %}
+          .sidebar
+            %a{href: "/faq"}><
+              {% trans "View our FAQ for answers to commonly asked questions" %}
+            {% trans " , or raise a question in course-specific discussion forums." %}

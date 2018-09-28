@@ -1347,7 +1347,7 @@ def course_learner_dashboard_calendar(request, learner_dashboard_id):
     }
 
     if request.is_ajax():
-        html = loader.render_to_string('courses/course_learner_dashboard_calendar.haml', data, context_instance=RequestContext(request))
+        html = loader.render_to_string('courses/course_learner_dashboard_calendar.haml', data)
 
         return HttpResponse(json.dumps({'html': html}), content_type="application/json")
     else:

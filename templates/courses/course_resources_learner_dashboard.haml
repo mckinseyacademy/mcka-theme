@@ -9,8 +9,8 @@
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block content
-  %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
-  %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts.js' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
   - include 'courses/course_learner_dashboard_branding.haml'
   #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
   #course-resources

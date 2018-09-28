@@ -1,5 +1,4 @@
 import copy
-import csv
 import functools
 import json
 import operator
@@ -17,15 +16,14 @@ from dateutil.parser import parse as parsedate
 from django.conf import settings
 from django.contrib import messages
 from django.core import serializers
-from django.core.files.storage import default_storage
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, ValidationError
+from django.core.files.storage import default_storage
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core.urlresolvers import reverse
-from django.core.validators import validate_email
 from django.http import (HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404,
-                         HttpResponseServerError, HttpResponseBadRequest, JsonResponse)
+                         HttpResponseServerError)
 from django.shortcuts import render, redirect, get_object_or_404
-from django.template import loader, RequestContext
+from django.template import loader
 from django.utils import timezone
 from django.utils.dateformat import format
 from django.utils.decorators import method_decorator
@@ -33,7 +31,8 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _, ungettext
 from django.views.decorators.http import require_POST
 from django.views.generic.base import View
-from rest_framework import status, viewsets
+from rest_framework import status
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -42,7 +41,8 @@ from accounts.controller import is_future_start, save_new_client_image, send_pas
 from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
-    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, get_organization_active_courses
+    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
+    get_organization_active_courses, edit_course_meta_data
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
@@ -60,17 +60,16 @@ from courses.controller import (
     return_course_progress, organization_course_progress_user_list,
     social_total, round_to_int_bump_zero, round_to_int, create_tile_progress_data
 )
-from courses.models import FeatureFlags
+from courses.models import FeatureFlags, CourseMetaData
 from courses.user_courses import load_course_progress
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from license import controller as license_controller
 from main.models import CuratedContentItem
 from util.csv_helpers import csv_file_response, UnicodeWriter
-from util.data_sanitizing import sanitize_data, clean_formula_characters, clean_xss_characters
+from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.validators import (
-    AlphanumericValidator, alphanum_accented_validator,
-    PhoneNumberValidator)
+    AlphanumericValidator, alphanum_accented_validator)
 from .bulk_task_runner import BulkTaskRunner
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -108,7 +107,8 @@ from .models import (
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
     AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings,
     LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails,
-    CompanyContact, Tag, LearnerDashboardBranding, CourseRun, SelfRegistrationRoles, OTHER_ROLE)
+    CompanyContact, Tag, LearnerDashboardBranding, CourseRun, SelfRegistrationRoles, OTHER_ROLE
+)
 from .permissions import Permissions, PermissionSaveError
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -143,8 +143,7 @@ def ajaxify_http_redirects(func):
 
 def permission_denied(request):
     template = loader.get_template('not_authorized.haml')
-    context = RequestContext(request, {'request_path': request.path})
-    return HttpResponseForbidden(template.render(context))
+    return HttpResponseForbidden(template.render({'request_path': request.path}, request))
 
 def make_json_error(message, code):
     response = HttpResponse(
@@ -1050,7 +1049,7 @@ class BulkTaskAPI(APIView):
             task_id(integer): id of the created task
         """
         try:
-            data = json.loads(request.body)
+            data = request.data
         except:
             data = request.POST
 
@@ -1100,7 +1099,7 @@ class CourseDetailsApi(APIView):
         PERMISSION_GROUPS.MCKA_SUBADMIN
     )
     def post(self, request, course_id=None, format=None):
-        data = json.loads(request.body)
+        data = request.data
         if data['type'] == 'status_check':
             batch_status = BatchOperationStatus.objects.filter(task_key=data['task_id'])
             BatchOperationStatus.clean_old()
@@ -1141,7 +1140,7 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
             course.id = urlquote(course.id)
 
         data = {
-            "courses": courses
+            "courses": courses,
         }
 
     return render(
@@ -1154,6 +1153,7 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
 @internal_admin_course_access
 def course_meta_content_course_items(request, course_id, restrict_to_courses_ids=None):
     (features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
+    (course_meta_data, created) = CourseMetaData.objects.get_or_create(course_id=course_id)
 
     has_advanced_settings_permissions = True
     mobile_available = False
@@ -1170,6 +1170,8 @@ def course_meta_content_course_items(request, course_id, restrict_to_courses_ids
         "feature_flags": features,
         "has_advanced_settings_permissions": has_advanced_settings_permissions,
         "mobile_available": mobile_available,
+        "lesson_label": course_meta_data.lesson_label,
+        "module_label": course_meta_data.module_label,
     }
 
     return render(
@@ -1797,7 +1799,7 @@ def client_sso(request, client_id):
 
     return render(
         request,
-        'admin/client/sso',
+        'admin/client/sso.haml',
         data,
     )
 
@@ -2627,7 +2629,15 @@ def add_students_to_course(request, client_id, restrict_to_users_ids=None, restr
         students = [u_id for u_id in students if u_id in restrict_to_users_ids]
     exception_messages = []
     for course_id in courses:
-        enrolled_users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'}) if u['id'] in students}
+        course_details_users = course_api.get_course_details_users(course_id, {
+            'page_size': 0,
+            'fields': 'id,username'
+        })
+        enrolled_users = {
+            u['id']: u['username']
+            for u in course_details_users
+            if u['id'] in students
+        }
         for student_id in students:
             if student_id in enrolled_users:
                 exception_messages.append(_("{} already enrolled in {}").format(
@@ -3597,7 +3607,7 @@ class ParticipantsListApi(APIView):
         PERMISSION_GROUPS.MCKA_SUBADMIN
     )
     def post(self, request):
-        post_data = json.loads(request.body)
+        post_data = request.data
         form = CreateNewParticipant(post_data.copy())
 
         # ToDo: drop need of this mapping by supplying groups in the form
@@ -3969,16 +3979,26 @@ class participant_details_active_courses_api(APIView):
             active_courses, course_history = get_user_courses_helper(user_id, request)
             return Response(active_courses)
         elif include_slow_fields == 'true':
-            fetch_courses =[]
+            fetch_courses = []
+
             user_courses_progress = user_api.get_user_courses_progress(
-                user_id, 
+                user_id,
                 dict(courses=request.GET['ids'])
             )
+
+            username = user_api.get_user(user_id).username
+            user_courses_completion = course_api.get_course_completions(username=username)
+
             for user_course_progress in user_courses_progress:
-                user_course = {}
-                user_course['id'] = user_course_progress['course']['id']
-                user_course['progress'] = '{:03d}'.format(int(user_course_progress['progress']))
-                user_course['proficiency'] = '{:03d}'.format(round_to_int(user_course_progress['proficiency']))
+                course_id = user_course_progress['course']['id']
+                completion = user_courses_completion[course_id]['completion']['percent']
+                user_course = {
+                    'id': course_id,
+                    'progress': '{:03d}'.format(int(completion * 100)),
+                    'proficiency': '{:03d}'.format(
+                        round_to_int(user_course_progress['proficiency'])
+                    ),
+                }
                 fetch_courses.append(user_course)
 
             return Response(fetch_courses)
@@ -4568,7 +4588,7 @@ class email_templates_put_and_delete_api(APIView):
 class email_send_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, format=None):
-        data = json.loads(request.body)
+        data = request.data
         result = _send_multiple_emails(from_email = data.get('from_email', None), to_email_list = data.get('to_email_list', None), \
             subject = data.get('subject', None), email_body = data.get('email_body', None), template_id = data.get('template_id', None), optional_data = data.get('optional_data', None))
         if result == True:
@@ -4610,7 +4630,7 @@ class users_company_admin_get_post_put_delete_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def put(self, request, user_id, format=None):
-        data = json.loads(request.body)
+        data = request.data
         company_ids = data.get('ids', None)
         response_dict = {}
         response_dict["status"] = "error"
@@ -5629,10 +5649,11 @@ def course_run_create_edit(request, course_run_id=None):
         'self_register_created_roles': self_register_created_roles,
         'course_run': course_run,
         'error': error,
-        'self_registration_roles':json.dumps(self_registration_roles)
+        'self_registration_roles': json.dumps(self_registration_roles)
     }
 
     return render(request, 'admin/course_run/form_modal.haml', data)
+
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_csv_download(request, course_run_id):
@@ -5701,3 +5722,23 @@ class EditAndDeleteSelfRegRole(APIView):
         role_id = request.DATA.get('role_id', None)
 
         return delete_self_reg_role(role_id)
+
+
+class CourseMetaDataApiView(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+        """
+        Post request handler for Editing Course Custom Terms
+        """
+        lesson_label_flag = request.data.get('lesson_label_flag')
+        module_label_flag = request.data.get('module_label_flag')
+        lesson_label = request.data.get('lesson_label', None)
+        module_label = request.data.get('module_label', None)
+
+        edit_status = edit_course_meta_data(course_id, lesson_label, module_label,
+                                        lesson_label_flag, module_label_flag)
+        if edit_status:
+            return Response(status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST)

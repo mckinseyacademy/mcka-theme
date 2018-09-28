@@ -194,7 +194,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=5000, null=True, blank=True)),
                 ('author', models.CharField(max_length=5000, null=True, blank=True)),
                 ('position', models.IntegerField(default=100)),
-                ('learner_dashboard', models.ForeignKey(to='admin_apros.LearnerDashboard')),
+                ('learner_dashboard', models.ForeignKey(to='admin_apros.LearnerDashboard', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -215,7 +215,7 @@ class Migration(migrations.Migration):
                 ('note_color', models.CharField(default=b'#868685', max_length=20, blank=True)),
                 ('tile_background_color', models.CharField(default=b'#FFFFFF', max_length=20, blank=True)),
                 ('tile_type', models.CharField(max_length=1, choices=[('1', 'Article'), ('2', 'Lesson'), ('3', 'Module'), ('4', 'Course')])),
-                ('learner_dashboard', models.ForeignKey(to='admin_apros.LearnerDashboard')),
+                ('learner_dashboard', models.ForeignKey(to='admin_apros.LearnerDashboard', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -227,8 +227,8 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('user', models.IntegerField(unique=True)),
                 ('lesson_link', models.CharField(max_length=2000, null=True, blank=True)),
-                ('learner_dashboard', models.ForeignKey(to='admin_apros.LearnerDashboard')),
-                ('tile', models.ForeignKey(to='admin_apros.LearnerDashboardTile')),
+                ('learner_dashboard', models.ForeignKey(to='admin_apros.LearnerDashboard', on_delete=models.CASCADE)),
+                ('tile', models.ForeignKey(to='admin_apros.LearnerDashboardTile', on_delete=models.CASCADE)),
             ],
             options={
             },

@@ -7,7 +7,7 @@
     {% trans " | Overview | Courses | McKinsey Academy" %}
 
 - block help_context
-  #mckinsey_help.reveal-modal.small{'data-reveal': None}
+  #mckinsey_help.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     .sub-1 {% trans "Announcements, Course Overview, and Resources" %}
@@ -44,7 +44,7 @@
             - if overview.video
               #mk-player{'data-video-id': "#{overview.course_video}"}
             - elif overview.course_image_url
-              %img{src: '#{overview.course_image_url}'}
+              %img{'src': '#{overview.course_image_url}'}
           .video-overview.hidden
             %i.fa.fa-play-circle
             %span {% trans "Course Overview" %}
@@ -59,13 +59,13 @@
           .sub-1 {% trans "Faculty" %}
           - for teacher in overview.faculty
             - if teacher.idx == 0
-              %input{id: "faculty_#{teacher.idx}", type: 'radio', name: 'faculty_tabs', checked: None}
+              %input{"id": "faculty_#{teacher.idx}", 'type': 'radio', 'name': 'faculty_tabs', 'checked': 'checked'}
             - else
-              %input{id: "faculty_#{teacher.idx}", type: 'radio', name: 'faculty_tabs'}
-            %label{for: "faculty_#{teacher.idx}"}
-              %img{src: "#{teacher.image_src}"}
+              %input{"id": "faculty_#{teacher.idx}", 'type': 'radio', 'name': 'faculty_tabs'}
+            %label{"for": "faculty_#{teacher.idx}"}
+              %img{"src": "#{teacher.image_src}"}
           - for teacher in overview.faculty
-            %div.teacher{id: "teacher_#{teacher.idx}"}
+            %div.teacher{"id": "teacher_#{teacher.idx}"}
               %h2= teacher.name
               %p.style-3
                 - autoescape off

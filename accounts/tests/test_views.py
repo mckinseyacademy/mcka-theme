@@ -221,18 +221,31 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         # The user then logs in and gets redirected back to Apros:
         response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
 
-        # The form is bypassed completely, and the user gets redirected to the LMS then the
-        # apros dashboard.
+        url = response['Location']
+        self.assertTrue(url.endswith('/accounts/sso_reg/'))
 
         with patch('courses.user_courses.set_current_course_for_user'), \
              patch('os.urandom', return_value='0000'), \
              patch('django.contrib.auth.authenticate'), \
              patch('accounts.views._process_access_key_and_remove_from_session'):
-            response = self.client.get(response['Location'])
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/auth/complete/tpa-saml/')
+            response = self.client.get(url)
+            # The user should see the terms of service for new users.
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(response, 'accounts/sso_terms_of_service.haml')
+            self.assertNotIn(
+                "You must accept terms of service in order to continue",
+                response.content,
+            )
+            response = self.client.post(url, {'accept_terms': False})
+            # Display error if TOS are not accepted
+            self.assertIn(
+                "You must accept terms of service in order to continue",
+                response.content,
+            )
+            response = self.client.post(url, {'accept_terms': True})
+            self.assertEqual(response.status_code, 302)
+            self.assertTrue(response['Location'].endswith('/auth/complete/tpa-saml/'))
 
         # Then the user should be registered:
         expected_username = u'myself' if not with_existing_user else u'myself1'
@@ -253,7 +266,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         # The user arrives at reg finalization form without access key in session:
         response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_error/')
+        self.assertEqual(response['Location'], '/accounts/sso_error/')
         session = self.client.session
 
         self.assertIn('sso_error_details', session)
@@ -267,7 +280,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         # Setting up provider_data in session
         response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], 'http://testserver/accounts/sso_reg/')
+        self.assertEqual(response['Location'], '/accounts/sso_reg/')
 
         error_reason = "Duplicate user"
         http_error = urllib2.HTTPError("http://irrelevant", 404, error_reason, None, None)
@@ -283,7 +296,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
                 'accept_terms': True
             }
 
-            response = self.client.post('/accounts/sso_reg/')
+            response = self.client.post('/accounts/sso_reg/', {'accept_terms': True})
 
         self.assertIn('error_details', response.context)
         self.assertIn(error_reason, response.context['error_details'])
@@ -474,7 +487,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         mock_finalize_sso_registration = self.apply_patch('accounts.views.finalize_sso_registration')
         request = self.factory.get('/accounts/finalize/')
         mock_user = Mock()
-        mock_user.is_authenticated = lambda: True
+        mock_user.is_authenticated = True
         self._setup_request(request, user=mock_user)
         response = sso_finalize(request)
         self.assertEqual('/home', response.url)
@@ -484,7 +497,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         mock_finalize_sso_registration = self.apply_patch('accounts.views.finalize_sso_registration')
         request = self.factory.get('/accounts/finalize/')
         mock_user = Mock()
-        mock_user.is_authenticated = lambda: False
+        mock_user.is_authenticated = False
         self._setup_request(request, user=mock_user)
         response = sso_finalize(request)
         mock_finalize_sso_registration.assert_called_with(request)

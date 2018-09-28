@@ -1,8 +1,8 @@
 // Reusing form spacing as defined by foundation. Update if default is changed.
 $form-spacing: rem-calc(16);
 
-.admin_client_sso {
-  .identity-provider {
+.admin_client_sso , .course_custom_terminology{
+  .identity-provider , .lesson-label, .module-label{
     label {
       padding: $form-spacing/2 $form-spacing;
     }
@@ -20,57 +20,59 @@ $form-spacing: rem-calc(16);
     color: gray;
   }
 
-  .idp-buttons a {
-    display: none;
-    margin: 0 0.5rem;
-  }
-
-  .idp-setup {
-    margin: 2rem 0;
-  }
-
-  .idp-setup.edit-mode .idp-buttons #edit-idp {
-    display: inline-block;
-  }
-
-  .idp-setup.add-mode {
-    .idp-buttons #add-idp {
-      display: inline-block;
-    }
-    .read-only-idp {
-      font-style: italic;
-    }
-  }
-
-  .idp-setup.save-mode .idp-buttons {
-    #save-idp, #reset-idp {
-      display: inline-block;
-    }
-  }
-
-  .idp-setup.save-mode .identity-provider-input {
-    #identity_provider {
-      display: block;
-    }
-    .read-only-idp {
+  .idp-buttons , .ll-buttons, .ml-buttons{
+    a{
       display: none;
+      margin: 0 0.5rem;
     }
   }
 
-  .identity-provider-input {
+  .idp-setup , .ll-setup, .ml-setup{
+    margin: 2rem 0;
+    &.edit-mode .idp-buttons #edit-idp,
+    &.edit-mode-ll .ll-buttons #edit-ll,
+    &.edit-mode-ml .ml-buttons #edit-ml{
+      display: inline-block;
+    }
+    &.add-mode , &.add-mode-ll , &.add-mode-ml {
+      .idp-buttons #add-idp, .ll-buttons #add-ll , .ml-buttons #add-ml{
+        display: inline-block;
+      }
+      .read-only-idp , .read-only-ll, .read-only-ml{
+        font-style: italic;
+      }
+    }
+    &.save-mode , &.save-mode-ll , &.save-mode-ml{
+      .idp-buttons, .ll-buttons , .ml-buttons{
+        #save-idp, #reset-idp , #save-ll , #reset-ll, #save-ml, #reset-ml{
+          display: inline-block;
+        }
+      }
+      .identity-provider-input, .lesson-label-input, .module-label-input{
+        #identity_provider, #lesson_label, #module_label{
+          display: block;
+        }
+        .read-only-idp, .read-only-ll , .read-only-ml{
+          display: none;
+        }
+      }
+    }
+  }
+
+  .identity-provider-input, .lesson-label-input, .module-label-input {
     position: relative;
-    #identity_provider {
+    #identity_provider , #lesson_label, #module_label{
       display: none;
       margin-bottom: 0;
       &.save-failed {
         border-color: red;
       }
     }
-    .read-only-idp {
+    .read-only-idp, .read-only-ll, .read-only-ml {
       padding: $form-spacing/2 $form-spacing;
       line-height: 21px;
     }
-    .status-icon {
+    .status-icon , .status-icon-ll, .status-icon-ml{
       position: absolute;
       top: $form-spacing * 3 / 4;
       right: $form-spacing * 3 / 4;

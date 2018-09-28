@@ -23,7 +23,7 @@
 
     #participantsListViewGridBlock
 
-    #add_a_participant.reveal-modal.small{'data-reveal': None}
+    #add_a_participant.reveal-modal.small{'data-reveal': ''}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2 {% trans "Add a Participant" %}
@@ -128,7 +128,7 @@
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
           {% trans "Cancel" %}
     
-    #download_csv_template.reveal-modal.small{'data-reveal': None}
+    #download_csv_template.reveal-modal.small{'data-reveal': ''}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2 {% trans "CSV Template and Formatting" %}
@@ -142,7 +142,7 @@
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
           {% trans "Cancel" %}
 
-    #import_from_csv.reveal-modal.medium{'data-reveal': None}
+    #import_from_csv.reveal-modal.medium{'data-reveal': ''}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2 {% trans "Import Participants from CSV" %}
@@ -171,7 +171,7 @@
               %label.emailActivation{:for => 'emailActivationCheckboxId' }
                 {% trans "Email activation links now" %}
 
-    #enroll_to_course_from_csv.reveal-modal.medium{'data-reveal': None}
+    #enroll_to_course_from_csv.reveal-modal.medium{'data-reveal': ''}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2 {% trans "Enroll Participants to courses from CSV" %}
@@ -195,7 +195,7 @@
             %i.fa.fa-spin.fa-spinner{style: "display:none;"}
         #enroll-participants-error-list
 
-    #confirmation_screen.reveal-modal.big{'data-reveal': None, 'data-task-key': None, 'data-uploaded': None}   
+    #confirmation_screen.reveal-modal.big{'data-reveal': '', 'data-task-key': '', 'data-uploaded': ''}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2.upload_message
@@ -214,7 +214,7 @@
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"}
           {% trans "I'm Done" %}
 
-    #confirmation_screen_single_participant.reveal-modal.big{'data-reveal': None}   
+    #confirmation_screen_single_participant.reveal-modal.big{'data-reveal': ''}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2.upload_message

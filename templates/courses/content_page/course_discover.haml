@@ -7,7 +7,7 @@
       %ul
         - for article in articles
           %li
-            %a.article-title{href: "#{article.url}", target: '_blank'}
+            %a.article-title{"href": "#{article.url}", 'target': '_blank'}
               = article.title
             .attribution
               .when
@@ -15,22 +15,22 @@
                   %time.label-2= article.display_date
                 %span.label-2= article.byline
               .person-title= article.author
-            %a{href: "#{article.url}", target: '_blank'}
+            %a{"href": "#{article.url}", 'target': '_blank'}
               %i.fa.fa-arrow-circle-right
     %section.infographic
       .label-6 {% trans "INFOGRAPHIC" %}
       .infographic-holder
-        %a{href: "#{infographic.url}", target: '_blank'}
-          %img{src: "#{infographic.thumbnail_url}", alt: "#{infographic.title}"}
+        %a{"href": "#{infographic.url}", 'target': '_blank'}
+          %img{"src": "#{infographic.thumbnail_url}", "alt": "#{infographic.title}"}
       %hr
       .label-6 {% trans "ON TWITTER" %}
       .tweet
-        %a{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}
-          %img{src: "#{tweet.thumbnail_url}"}
+        %a{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}
+          %img{"src": "#{tweet.thumbnail_url}"}
         .content
           %div
             %span.label-8= tweet.twitter_username
-            %a.twitter-handle{href: "https://twitter.com/#{tweet.twitter_username}", target: '_blank'}= tweet.twitter_username
+            %a.twitter-handle{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}= tweet.twitter_username
             - if tweet.display_date
               %time.label-3= tweet.display_date
           .tweet-body.label-2= tweet.body|safe

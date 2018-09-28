@@ -6,16 +6,16 @@
         %span {% trans "Your social engagement will be displayed here." %}
   .sub-2
     {% trans "Engagement:" %}
-    %a{href: "/courses/#{course.id}/cohort"}
+    %a{"href": "/courses/#{course.id}/cohort"}
       %i.fa.fa-arrow-circle-right
-  .visualization{class: "{% if social.points >= 90 %}filled{% endif %}"}
-    .band-1{class: "{% if social.points >= 30 %}filled{% endif %}"}
-    .band-2{class: "{% if social.points >= 60 %}filled{% endif %}"}
+  .visualization{"class": "{% if social.points >= 90 %}filled{% endif %}"}
+    .band-1{"class": "{% if social.points >= 30 %}filled{% endif %}"}
+    .band-2{"class": "{% if social.points >= 60 %}filled{% endif %}"}
     .total= social.points
-  .label-4 {% trans "cohort average" %} = ={social.course_avg} {% trans "points" %}
+  .label-4 {% trans "cohort average" %} = #{social.course_avg} {% trans "points" %}
   %a.info{'data-reveal-id': 'mckinsey_social_help'}
     %i.fa.fa-info-circle
-  #mckinsey_social_help.reveal-modal.small{'data-reveal': None}
+  #mckinsey_social_help.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     %p {% trans "This visualization displays your social engagement within the course. The average engagement of your cohort is displayed as well. You accrue engagement points for interactions on discussion forums." %}

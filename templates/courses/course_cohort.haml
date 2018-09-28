@@ -8,7 +8,7 @@
     {% trans "| Cohort | Courses | McKinsey Academy" %}
 
 - block help_context
-  #mckinsey_help.reveal-modal.small{'data-reveal': None}
+  #mckinsey_help.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
     .sub-1 {% trans "Cohort" %}
@@ -31,9 +31,9 @@
         %li.label-2 # {% trans "of participants:" %}
         %li.label-4 #{metrics.users_enrolled} {% trans "in your cohort" %}
         %li.label-4 #{metrics.group_enrolled} {% trans "group work team members" %}
-      %a.hide-team{href: '#'}
+      %a.hide-team{'href': '#'}
         {% trans "Hide team profiles" %}
-      %a.hide-team.hide{href: '#'}
+      %a.hide-team.hide{'href': '#'}
         {% trans "Show team profiles" %}
     %hr
     .leaderboard-header
@@ -44,7 +44,7 @@
           %li
             .header
               .label-5 {% trans "Proficiency:" %}
-              .label-4 {% trans "cohort average" %} = ={proficiency.course_average_display}
+              .label-4 {% trans "cohort average" %} = #{proficiency.course_average_display}
               - if user_role
                 .rank {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the proficiency leaderboard {% endblocktrans %}
               - elif proficiency.user_position and proficiency.user_grade_value
@@ -53,68 +53,68 @@
                 .rank {% trans "your proficiency position <br> will be displayed here" %}
             - if proficiency.has_leaders and  proficiency.leaders.0
               .user
-                %img.avatar{src: '={proficiency.leaders.0.profile_image.image_url_small}', title: '={proficiency.leaders.0.username}'}
+                %img.avatar{'src': '#{proficiency.leaders.0.profile_image.image_url_small}', 'title': '#{proficiency.leaders.0.username}'}
                   .info
-                    .person-name ={proficiency.leaders.0.username}
+                    .person-name=proficiency.leaders.0.username
                     - if proficiency.leaders.0.title
-                      .person-title ={proficiency.leaders.0.title}
-                    .person-rank #={proficiency.leaders.0.rank} <span>={proficiency.leaders.0.grade_display_value}</span>
+                      .person-title=proficiency.leaders.0.title
+                    .person-rank ##{proficiency.leaders.0.rank} <span>#{proficiency.leaders.0.grade_display_value}</span>
             - else
               .user.dummy
-                %img.avatar{src: '/static/image/empty_avatar.png'}
+                %img.avatar{'src': '/static/image/empty_avatar.png'}
                 .info
                   .person-name
                     {% trans "username" %}
                   .person-title
                     {% trans "title" %}
-                  .person-rank #={leaderboard_ranks.0}
+                  .person-rank ##{leaderboard_ranks.0}
                     %span
                       {% trans "100" %}
 
             - if proficiency.has_leaders and  proficiency.leaders.1
               .user
-                %img.avatar{src: '={proficiency.leaders.1.profile_image.image_url_small}', title: '={proficiency.leaders.1.username}'}
+                %img.avatar{'src': '#{proficiency.leaders.1.profile_image.image_url_small}', 'title': '#{proficiency.leaders.1.username}'}
                 .info
-                  .person-name ={proficiency.leaders.1.username}
+                  .person-name=proficiency.leaders.1.username
                   - if proficiency.leaders.1.title
-                    .person-title ={proficiency.leaders.1.title}
-                  .person-rank #={proficiency.leaders.1.rank} <span>={proficiency.leaders.1.grade_display_value}</span>
+                    .person-title=proficiency.leaders.1.title
+                  .person-rank ##{proficiency.leaders.1.rank} <span>#{proficiency.leaders.1.grade_display_value}</span>
             - else
               .user.dummy
-                %img.avatar{src: '/static/image/empty_avatar.png'}
+                %img.avatar{'src': '/static/image/empty_avatar.png'}
                 .info
                   .person-name
                     {% trans "username" %}
                   .person-title
                     {% trans "title" %}
-                  .person-rank #={leaderboard_ranks.1}
+                  .person-rank ##{leaderboard_ranks.1}
                     %span
                       {% trans "100" %}
 
             - if proficiency.has_leaders and  proficiency.leaders.2
               .user
-                %img.avatar{src: '={proficiency.leaders.2.profile_image.image_url_small}', title: '={proficiency.leaders.2.username}'}
+                %img.avatar{'src': '#{proficiency.leaders.2.profile_image.image_url_small}', 'title': '#{proficiency.leaders.2.username}'}
                 .info
-                  .person-name ={proficiency.leaders.2.username}
+                  .person-name=proficiency.leaders.2.username
                   - if proficiency.leaders.2.title
-                    .person-title ={proficiency.leaders.2.title}
-                  .person-rank #={proficiency.leaders.2.rank} <span>={proficiency.leaders.2.grade_display_value}</span>
+                    .person-title=proficiency.leaders.2.title
+                  .person-rank ##{proficiency.leaders.2.rank} <span>#{proficiency.leaders.2.grade_display_value}</span>
             - else
               .user.dummy
-                %img.avatar{src: '/static/image/empty_avatar.png'}
+                %img.avatar{'src': '/static/image/empty_avatar.png'}
                 .info
                   .person-name
                     {% trans "username" %}
                   .person-title
                     {% trans "title" %}
-                  .person-rank #={leaderboard_ranks.2}
+                  .person-rank ##{leaderboard_ranks.2}
                     %span
                       {% trans "100" %}
 
         %li
           .header
             .label-5 {% trans "Progress:" %}
-            .label-4 {% trans "cohort average" %} = ={completions.course_average_display}%
+            .label-4 {% trans "cohort average" %} = #{completions.course_average_display}%
             - if user_role
               .rank {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the progress leaderboard {% endblocktrans %}
             - elif completions.position and completions.user_progress_value
@@ -124,53 +124,53 @@
 
           - if completions.has_leaders and completions.leaders.0
             .user
-              %img.avatar{src: '={completions.leaders.0.profile_image.image_url_small}', title: '={completions.leaders.0.username}'}
+              %img.avatar{'src': '#{completions.leaders.0.profile_image.image_url_small}', 'title': '#{completions.leaders.0.username}'}
               .info
-                .person-name ={completions.leaders.0.username}
+                .person-name=completions.leaders.0.username
                 - if completions.leaders.0.title
-                  .person-title ={completions.leaders.0.title}
-                .person-rank #={completions.leaders.0.rank} <span>={completions.leaders.0.user_progress_display}%</span>
+                  .person-title=completions.leaders.0.title
+                .person-rank ##{completions.leaders.0.rank} <span>#{completions.leaders.0.user_progress_display}%</span>
           - else
             .user.dummy
-              %img.avatar{src: '/static/image/empty_avatar.png'}
+              %img.avatar{'src': '/static/image/empty_avatar.png'}
               .info
                 .person-name {% trans "username" %}
                 .person-title {% trans "title" %}
-                .person-rank #={leaderboard_ranks.0}
+                .person-rank ##{leaderboard_ranks.0}
                   %span 100%
 
           - if completions.has_leaders and completions.leaders.1
             .user
-              %img.avatar{src: '={completions.leaders.1.profile_image.image_url_small}', title: '={completions.leaders.1.username}'}
+              %img.avatar{'src': '#{completions.leaders.1.profile_image.image_url_small}', 'title': '#{completions.leaders.1.username}'}
               .info
-                .person-name ={completions.leaders.1.username}
+                .person-name=completions.leaders.1.username
                 - if completions.leaders.1.title
-                  .person-title ={completions.leaders.1.title}
-                .person-rank #={completions.leaders.1.rank} <span>={completions.leaders.1.user_progress_display}%</span>
+                  .person-title=completions.leaders.1.title
+                .person-rank ##{completions.leaders.1.rank} <span>#{completions.leaders.1.user_progress_display}%</span>
           - else
             .user.dummy
-              %img.avatar{src: '/static/image/empty_avatar.png'}
+              %img.avatar{'src': '/static/image/empty_avatar.png'}
               .info
                 .person-name {% trans "username" %}
                 .person-title {% trans "title" %}
-                .person-rank #={leaderboard_ranks.1}
+                .person-rank ##{leaderboard_ranks.1}
                   %span 100%
 
           - if completions.has_leaders and completions.leaders.2
             .user
-              %img.avatar{src: '={completions.leaders.2.profile_image.image_url_small}', title: '={completions.leaders.2.username}'}
+              %img.avatar{'src': '#{completions.leaders.2.profile_image.image_url_small}', 'title': '#{completions.leaders.2.username}'}
               .info
-                .person-name ={completions.leaders.2.username}
+                .person-name=completions.leaders.2.username
                 - if completions.leaders.2.title
-                  .person-title ={completions.leaders.2.title}
-                .person-rank #={completions.leaders.2.rank} <span>={completions.leaders.2.user_progress_display}%</span>
+                  .person-title=completions.leaders.2.title
+                .person-rank ##{completions.leaders.2.rank} <span>#{completions.leaders.2.user_progress_display}%</span>
           - else
             .user.dummy
-              %img.avatar{src: '/static/image/empty_avatar.png'}
+              %img.avatar{'src': '/static/image/empty_avatar.png'}
               .info
                 .person-name {% trans "username" %}
                 .person-title {% trans "title" %}
-                .person-rank #={leaderboard_ranks.2}
+                .person-rank ##{leaderboard_ranks.2}
                   %span {% trans "100%" %}
 
         - if social
@@ -187,53 +187,53 @@
 
             - if social.leaders and social.leaders.0
               .user
-                %img.avatar{src: '={social.leaders.0.profile_image.image_url_small}', title: '={social.leaders.0.username}'}
+                %img.avatar{'src': '#{social.leaders.0.profile_image.image_url_small}', 'title': '#{social.leaders.0.username}'}
                 .info
-                  .person-name ={social.leaders.0.username}
+                  .person-name=social.leaders.0.username
                   - if social.leaders.0.title
-                    .person-title ={social.leaders.0.title}
-                  .person-rank #={social.leaders.0.rank} <span>={social.leaders.0.points} pts.</span>
+                    .person-title=social.leaders.0.title
+                  .person-rank ##{social.leaders.0.rank} <span>#{social.leaders.0.points} pts.</span>
             - else
               .user.dummy
-                %img.avatar{src: '/static/image/empty_avatar.png'}
+                %img.avatar{'src': '/static/image/empty_avatar.png'}
                 .info
                   .person-name {% trans "username" %}
                   .person-title {% trans "title" %}
-                  .person-rank #={leaderboard_ranks.0}
+                  .person-rank ##{leaderboard_ranks.0}
                     %span {% trans "100 pts." %}
 
             - if social.leaders and social.leaders.1
               .user
-                %img.avatar{src: '={social.leaders.1.profile_image.image_url_small}', title: '={social.leaders.1.username}'}
+                %img.avatar{'src': '#{social.leaders.1.profile_image.image_url_small}', 'title': '#{social.leaders.1.username}'}
                 .info
-                  .person-name ={social.leaders.1.username}
+                  .person-name=social.leaders.1.username
                   - if social.leaders.1.title
-                    .person-title ={social.leaders.1.title}
-                  .person-rank #={social.leaders.1.rank} <span>={social.leaders.1.points} pts.</span>
+                    .person-title=social.leaders.1.title
+                  .person-rank ##{social.leaders.1.rank} <span>#{social.leaders.1.points} pts.</span>
             - else
               .user.dummy
-                %img.avatar{src: '/static/image/empty_avatar.png'}
+                %img.avatar{'src': '/static/image/empty_avatar.png'}
                 .info
                   .person-name {% trans "username" %}
                   .person-title {% trans "title" %}
-                  .person-rank #={leaderboard_ranks.1}
+                  .person-rank ##{leaderboard_ranks.1}
                     %span {% trans "100 pts." %}
 
             - if social.leaders and social.leaders.2
               .user
-                %img.avatar{src: '={social.leaders.2.profile_image.image_url_small}', title: '={social.leaders.2.username}'}
+                %img.avatar{'src': '#{social.leaders.2.profile_image.image_url_small}', 'title': '#{social.leaders.2.username}'}
                 .info
-                  .person-name ={social.leaders.2.username}
+                  .person-name=social.leaders.2.username
                   - if social.leaders.2.title
-                    .person-title ={social.leaders.2.title}
-                  .person-rank #={social.leaders.2.rank} <span>={social.leaders.2.points} pts.</span>
+                    .person-title=social.leaders.2.title
+                  .person-rank ##{social.leaders.2.rank} <span>#{social.leaders.2.points} pts.</span>
             - else
               .user.dummy
-                %img.avatar{src: '/static/image/empty_avatar.png'}
+                %img.avatar{'src': '/static/image/empty_avatar.png'}
                 .info
                   .person-name {% trans "username" %}
                   .person-title {% trans "title" %}
-                  .person-rank #={leaderboard_ranks.2}
+                  .person-rank ##{leaderboard_ranks.2}
                     %span {% trans "100 pts." %}
 
     %hr.hidden
@@ -242,15 +242,15 @@
         %h1 {% trans "Discussions" %}
         %blockquote {% trans "Even if we cannot directly shape an outcome, a model’s prediction may be communicated in a way that alters behavior and indirectly shapes it." %}
         .attribution
-          %img{src: 'http://dummyimage.com/50/000/fff&text=User'}
+          %img{'src': 'http://dummyimage.com/50/000/fff&text=User'}
           .person
             .person-name {% trans "gwensisco" %}
             .person-title {% trans "Media Buyer" %}
-            %time.label-2{datetime: '2014-07-07T04:00:00.000Z'} JUL 07, 2014 | 3:52PM
+            %time.label-2{'datetime': '2014-07-07T04:00:00.000Z'} JUL 07, 2014 | 3:52PM
       %section.recommendations
         %h1 {% trans "Recommendations" %}
         .link
-          %a{href: '#'}
+          %a{'href': '#'}
             {% trans "Scientists Without Borders" %}
         %p.style-4 {% trans "A worldwide community of changemakers collaborating to accelerate solutions to urgent development challenges." %}
         .person-name janejohnson <span class='person-title'>COO</span>
