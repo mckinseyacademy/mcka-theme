@@ -11,8 +11,8 @@ from django.core.urlresolvers import reverse
 from lib.utils import DottableDict
 from api_client.user_models import UserResponse
 from accounts.tests.utils import ApplyPatchMixin
-from courses.models import FeatureFlags, CourseMetaData
-from public_api.views import get_course_feature_flag_and_custom_taxonomy
+from courses.models import FeatureFlags
+from public_api.views import get_feature_flag_mobile
 
 
 class UserPasswordResetViewTest(TestCase, ApplyPatchMixin):
@@ -96,7 +96,7 @@ class UserPasswordResetViewTest(TestCase, ApplyPatchMixin):
         self.assertEqual(response.status_code, 422)
 
 
-class MobileFeatureFlagAndCustomTaxonomyAccessTest(TestCase, ApplyPatchMixin):
+class MobileFeatureFlagAccessTest(TestCase, ApplyPatchMixin):
 
     def setUp(self):
         self.response = {"id": 7}
@@ -105,7 +105,7 @@ class MobileFeatureFlagAndCustomTaxonomyAccessTest(TestCase, ApplyPatchMixin):
         get_user_by_bearer_token = 'api_client.user_api.get_user_by_bearer_token'
         self.get_user_by_bearer_token = self.apply_patch(get_user_by_bearer_token)
 
-    def test_user_single_course_ff_and_custom_taxonomy_access(self):
+    def test_user_single_feature_flag_access(self):
 
         course_id = '1st-course'
         request = self.factory.get('/courses/1st-course/feature_flag', HTTP_AUTHORIZATION='Bearer token')
@@ -114,13 +114,10 @@ class MobileFeatureFlagAndCustomTaxonomyAccessTest(TestCase, ApplyPatchMixin):
         FeatureFlags.objects.create(
             course_id=course_id,
         )
-        CourseMetaData.objects.create(
-            course_id=course_id,
-        )
-        course_participants = get_course_feature_flag_and_custom_taxonomy(request, course_id)
+        course_participants = get_feature_flag_mobile(request, course_id)
         self.assertEqual(course_participants.status_code, 200)
 
-    def test_user_all_courses_ff_and_custom_taxonomy_access(self):
+    def test_user_all_courses_feature_flag_access(self):
 
         request = self.factory.get('/courses/feature_flag', HTTP_AUTHORIZATION='Bearer token')
         get_user_by_bearer_token = self.get_user_by_bearer_token
@@ -135,20 +132,14 @@ class MobileFeatureFlagAndCustomTaxonomyAccessTest(TestCase, ApplyPatchMixin):
         FeatureFlags.objects.create(
             course_id="2nd-course",
         )
-        CourseMetaData.objects.create(
-            course_id="1st-course",
-        )
-        CourseMetaData.objects.create(
-            course_id="2nd-course",
-        )
 
         get_user_courses = 'api_client.user_api.get_user_courses'
         get_user_courses = self.apply_patch(get_user_courses)
         get_user_courses.return_value = course
-        course_participants = get_course_feature_flag_and_custom_taxonomy(request)
+        course_participants = get_feature_flag_mobile(request)
         self.assertEqual(course_participants.status_code, 200)
 
-    def test_course_wrong_id_ff_and_custom_taxonomy_access(self):
+    def test_course_wrong_id_feature_flag_access(self):
 
         course_id = '1st-course'
         course_id_two = '2nd-course'
@@ -159,10 +150,7 @@ class MobileFeatureFlagAndCustomTaxonomyAccessTest(TestCase, ApplyPatchMixin):
             DottableDict({'id': '3rd-course'}),
         ]
         FeatureFlags.objects.create(
-            course_id=course_id,
-        )
-        CourseMetaData.objects.create(
-            course_id=course_id,
+            course_id="1st-course",
         )
 
         get_user_courses = 'api_client.user_api.get_user_courses'
@@ -171,6 +159,6 @@ class MobileFeatureFlagAndCustomTaxonomyAccessTest(TestCase, ApplyPatchMixin):
         FeatureFlags.objects.create(
             course_id=course_id,
         )
-        course_participants = get_course_feature_flag_and_custom_taxonomy(request, course_id_two)
+        course_participants = get_feature_flag_mobile(request, course_id_two)
         self.assertEqual(course_participants.status_code, 404)
 

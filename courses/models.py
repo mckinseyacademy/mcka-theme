@@ -56,20 +56,20 @@ class FeatureFlags(db_models.Model):
 
     def as_json(self):
         return dict(
-            id=self.id,
-            course_id=self.course_id,
-            group_work=self.group_work,
-            discussions=self.discussions,
-            cohort_map=self.cohort_map,
+            id = self.id,
+            course_id = self.course_id,
+            group_work = self.group_work,
+            discussions = self.discussions,
+            cohort_map = self.cohort_map,
             proficiency=self.proficiency,
             progress=self.progress,
-            learner_dashboard=self.learner_dashboard,
-            progress_page=self.progress_page,
-            notifications=self.notifications,
-            branding=self.branding,
-            resources=self.resources,
-            cohort_avg=self.cohort_avg,
-            certificates=self.certificates,
+            learner_dashboard = self.learner_dashboard,
+            progress_page = self.progress_page,
+            notifications = self.notifications,
+            branding = self.branding,
+            resources = self.resources,
+            cohort_avg = self.cohort_avg,
+            certificates = self.certificates,
             engagement=self.engagement,
             discover=self.discover,
         )
@@ -84,12 +84,4 @@ class CourseMetaData(db_models.Model):
     module_label = db_models.CharField(max_length=20, blank=True)
     created_at = db_models.DateTimeField(auto_now_add=True)
     updated_at = db_models.DateTimeField(auto_now=True)
-
-    def as_json(self):
-        return dict(
-            id=self.id,
-            course_id=self.course_id,
-            lesson_label=self.lesson_label,
-            module_label=self.module_label,
-        )
 
