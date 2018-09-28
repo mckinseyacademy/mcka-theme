@@ -3987,7 +3987,7 @@ class participant_details_active_courses_api(APIView):
             )
 
             username = user_api.get_user(user_id).username
-            user_courses_completion = course_api.get_course_completions(username=username)
+            user_courses_completion = course_api.get_course_completions(username=username, extra_fields=None)
 
             for user_course_progress in user_courses_progress:
                 course_id = user_course_progress['course']['id']
@@ -4023,7 +4023,7 @@ def download_active_courses_stats(request, user_id):
     for course in active_courses:
         course_data = None
         course_data = load_course(course['id'], request=request)
-        load_course_progress(course_data, user_id)
+        load_course_progress(course_data, user_id=user_id)
         course['progress'] = '{:d}%'.format(int(course_data.user_progress))
         proficiency = course_api.get_course_metrics_grades(course['id'], user_id=user_id, grade_object_type=Proficiency)
         course['proficiency'] = '{:d}%'.format(round_to_int(proficiency.user_grade_value * 100))

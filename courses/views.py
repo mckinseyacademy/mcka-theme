@@ -578,7 +578,7 @@ def _course_progress_for_user(request, course_id, user_id):
 
     if progress_user.id != request.user.id:
         # Inject course progress for nav header
-        load_course_progress(course, user_id)
+        load_course_progress(course, username=progress_user.username)
         # Add index to lesson
         for idx, lesson in enumerate(course.chapters, start=1):
             lesson.index = idx
@@ -612,7 +612,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     gradebook = inject_gradebook_info(user_id, course)
 
     # add in progress info
-    load_course_progress(course, user_id)
+    load_course_progress(course, username=progress_user.username)
 
     graders = gradebook.grading_policy.GRADER
 
