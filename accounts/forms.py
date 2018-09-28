@@ -420,6 +420,13 @@ class AcceptTermsForm(NoSuffixLabelForm):
 class BaseRegistrationForm(AcceptTermsForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
 
+    field_order = [
+        'email', 'username', 'password', 'company', 'full_name',
+        'title', 'city', 'country',
+        # From AcceptTermsForm
+        'accept_terms',
+    ]
+
     email = forms.CharField(
         max_length=255,
         widget=forms.TextInput(attrs={'readonly': 'readonly'}),
@@ -596,6 +603,14 @@ class EditTitleForm(forms.Form):
 
 class BaseRegistrationFormV2(AcceptTermsForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
+
+    field_order = [
+        'email', 'username', 'password', 'title', 'level_of_education',
+        'year_of_birth',
+        # From AcceptTermsForm
+        'accept_terms',
+    ]
+
     email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe(_('Email')))
     username = forms.CharField(
         max_length=255,
