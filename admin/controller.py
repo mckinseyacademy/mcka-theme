@@ -2318,7 +2318,8 @@ class CourseParticipantStats(object):
                 course_participant['username'], {}
             ).get('completion')
             if completion_data:
-                progress = round_to_int(completion_data.get('percent', 0.0) * 100)
+                percent = completion_data.get('percent') or 0.
+                progress = round_to_int(percent * 100)
                 course_participant['progress'] = '{:03d}'.format(progress)
             else:
                 course_participant['progress'] = _("000")
@@ -2359,7 +2360,7 @@ class CourseParticipantStats(object):
                     del lesson_completion['completion']  # get rid of the course-level completion
                     for lesson in lesson_completion.values():
                         completion_percentage = round_to_int(
-                            float(lesson['completion']['percent']) * 100
+                            float(lesson['completion']['percent'] or 0.) * 100
                         )
                         block_key = lesson['block_key']
                         if block_key in lesson_mapping:

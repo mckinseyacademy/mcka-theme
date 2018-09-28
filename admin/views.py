@@ -3991,10 +3991,10 @@ class participant_details_active_courses_api(APIView):
 
             for user_course_progress in user_courses_progress:
                 course_id = user_course_progress['course']['id']
-                completion = user_courses_completion[course_id]['completion']['percent']
+                completion = user_courses_completion[course_id]['completion']['percent'] or 0.
                 user_course = {
                     'id': course_id,
-                    'progress': '{:03d}'.format(int(completion * 100)),
+                    'progress': '{:03d}'.format(round_to_int(completion * 100)),
                     'proficiency': '{:03d}'.format(
                         round_to_int(user_course_progress['proficiency'])
                     ),
@@ -4024,7 +4024,7 @@ def download_active_courses_stats(request, user_id):
         course_data = None
         course_data = load_course(course['id'], request=request)
         load_course_progress(course_data, user_id=user_id)
-        course['progress'] = '{:d}%'.format(int(course_data.user_progress))
+        course['progress'] = '{:d}%'.format(round_to_int(course_data.user_progress))
         proficiency = course_api.get_course_metrics_grades(course['id'], user_id=user_id, grade_object_type=Proficiency)
         course['proficiency'] = '{:d}%'.format(round_to_int(proficiency.user_grade_value * 100))
         writer.writerow([course['name'], course['id'], course['program'], course['progress'], course['proficiency'], course['status']])
