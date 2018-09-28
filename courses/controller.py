@@ -2,29 +2,34 @@
 #from urllib import quote_plus, unquote_plus
 
 import copy
-import json
-import logging
 import random
 from datetime import datetime
-
 import re
+import json
+import logging
+
 from bs4 import BeautifulSoup
+
 from django.conf import settings
+from django.utils.translation import ugettext as _
+from django.http import Http404
 
 from accounts.middleware.thread_local import (
     set_static_tab_context,
     get_static_tab_context,
 )
-from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
-from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress
 from api_client import course_api, user_api, workgroup_api, project_api
-from api_client.api_error import ApiError
-from api_client.gradebook_models import CourseSummary, GradeSummary
-from api_client.group_api import get_users_in_group
-from api_client.json_object import JsonObject, DataOnly
 from api_client.project_models import Project
+from api_client.group_api import get_users_in_group
+from api_client.gradebook_models import CourseSummary, GradeSummary
+from api_client.json_object import JsonObject, DataOnly
 from api_client.user_api import USER_ROLES, workgroup_models
+from api_client.api_error import ApiError
+from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress
 from lib.utils import PriorIdConvert
+from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
+from util.i18n_helpers import set_language
+from .models import FeatureFlags
 
 log = logging.getLogger(__name__)
 
@@ -136,7 +141,6 @@ class UserProgress(JsonObject):
     @property
     def user_progress_display(self):
         return round_to_int(self.user_progress_value)
-
 
 class Progress(UserProgress):
     object_map = {
@@ -699,11 +703,12 @@ def create_tile_progress_data(tile):
     for user in users:
         course = get_course_object(user['id'], link['course_id'])
         if course:
-            user_completions = completions[user['username']]
-            update_progress(tile, user, course, user_completions, link)
+            user_completions = [u for u in completions if u.user_id == user['id']]
+            update_progress(tile, user['id'], course, user_completions, link)
 
 
 def progress_update_handler(request, course, chapter_id=None, page_id=None):
+
     '''
     Triggered by user visiting the module. Filters tiles with current course_ids.
     Updates progress only for current module and parent lesson/course.
@@ -711,7 +716,7 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
 
     tiles = LearnerDashboardTile.objects.filter(link__icontains=course.id)
 
-    completions = course_api.get_course_completions(course.id, request.user.username)
+    completions = course_api.get_course_completions(course.id, request.user.id)
 
     if completions and tiles:
         for tile in tiles:
@@ -723,22 +728,7 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
                     continue
                 if tile.tile_type == '7' and not link['block_id'] in tile.link:
                     continue
-                update_progress(
-                    tile,
-                    request.user,
-                    course,
-                    completions,
-                    link,
-                )
-
-
-def get_completion_percentage_from_id(completions, aggregation, block_key=None):
-    percentage = 0.0
-    if aggregation == 'course':
-        percentage = completions.get('completion', {}).get('percent', 0.)
-    else:
-        percentage = completions.get(block_key, {}).get('completion', {}).get('percent', 0.)
-    return round_to_int(percentage * 100)
+                update_progress(tile, request.user.id, course, completions, link)
 
 
 def update_progress(tile, user, course, completions, link):
@@ -755,39 +745,20 @@ def update_progress(tile, user, course, completions, link):
     )
 
     if tile.tile_type == '4':
-        obj.percentage = get_completion_percentage_from_id(user_completions, 'course')
-        set_user_course_progress(course, user_completions)
+        obj.percentage = calculate_user_course_progress(user_id, course, completions)
     elif tile.tile_type == '2':
-        obj.percentage = get_completion_percentage_from_id(
-            user_completions,
-            'chapter',
-            link['lesson_id'],
-        )
-        set_user_course_progress(course, user_completions, chapter_id=link['lesson_id'])
+        obj.percentage = calculate_user_lesson_progress(user_id, course, link['lesson_id'], completions)
     elif tile.tile_type == '3' or tile.tile_type == '5':
-        obj.percentage = get_completion_percentage_from_id(
-            user_completions,
-            'sequential',
-            link['page_id'],
-        )
+        obj.percentage = calculate_user_module_progress(user_id, course, link['lesson_id'], link['page_id'], completions)
     elif tile.tile_type == '7' and link['block_id']:
-        obj.percentage = calculate_user_group_activity_progress(user, course, link['block_id'])
+        obj.percentage = calculate_user_group_activity_progress(user_id, course, link['block_id'], completions)
     obj.save()
 
 
-def calculate_user_group_activity_progress(user, course, link):
-    block_completions = course_api.get_block_completions(
-        course_id=course.id,
-        username=user.username,
-    )
+def calculate_user_group_activity_progress(user_id, course, link, completions):
 
-    completed_ids = [
-        block.id
-        for block in block_completions
-        if block.is_complete()
-    ]
-
-    project_group, group_project = get_group_project_for_user_course(user.id, course)
+    completed_ids = [result.content_id for result in completions]
+    project_group, group_project = get_group_project_for_user_course(user_id, course)
 
     if group_project:
         for activity in group_project._activities:
@@ -800,14 +771,72 @@ def calculate_user_group_activity_progress(user, course, link):
         return 0
 
 
-def set_user_course_progress(course, completions, chapter_id=None):
+def calculate_user_course_progress(user_id, course, completions):
+
+    completed_ids = [result.content_id for result in completions]
+    component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
     for lesson in course.chapters:
-        if chapter_id is None or lesson.id == chapter_id:
-            lesson.progress = get_completion_percentage_from_id(
-                completions,
-                'chapter',
+        lesson.progress = 0
+        lesson_component_ids = course.lesson_component_ids(lesson.id, completed_ids,
+                                                           settings.PROGRESS_IGNORE_COMPONENTS)
+        if len(lesson_component_ids) > 0:
+            matches = set(lesson_component_ids).intersection(completed_ids)
+            lesson.progress = round_to_int(100 * len(matches)/len(lesson_component_ids))
+    actual_completions = set(component_ids).intersection(completed_ids)
+
+    try:
+        return round_to_int(float(100 * len(actual_completions))/len(component_ids))
+    except ZeroDivisionError:
+        return 0
+
+
+def calculate_user_lesson_progress(user_id, course, chapter_id, completions):
+
+    completed_ids = [result.content_id for result in completions]
+    component_ids = course.components_ids(settings.PROGRESS_IGNORE_COMPONENTS)
+
+    for lesson in course.chapters:
+        if lesson.id == chapter_id:
+            lesson.progress = 0
+            lesson_component_ids = course.lesson_component_ids(
                 lesson.id,
+                completed_ids,
+                settings.PROGRESS_IGNORE_COMPONENTS,
             )
+            if len(lesson_component_ids) > 0:
+                matches = set(lesson_component_ids).intersection(completed_ids)
+                lesson.progress = round_to_int(100 * len(matches) / len(lesson_component_ids))
+            return lesson.progress
+
+
+def calculate_user_module_progress(user_id, course, chapter_id, page_id, completions):
+
+    completed_ids = [result.content_id for result in completions]
+
+    module = course.get_module(chapter_id, page_id)
+    if module:
+        child_ids = [child.id for child in module.children]
+        completed = set(completed_ids).intersection(child_ids)
+        if len(completed) == len(module.children):
+            return 100
+        else:
+            return 0
+
+    else:
+        sequential = course.get_current_sequential(chapter_id, page_id)
+        if sequential:
+            for vertical in sequential.children:
+                if vertical.id == page_id:
+                    child_ids = [child.id for child in vertical.children]
+                    completed = set(completed_ids).intersection(child_ids)
+                    if len(completed) == len(vertical.children):
+                        return 100
+                    else:
+                        return 0
+        else:
+            #this should never happen
+            return None
+
 
 def get_course_object(user_id, course_id):
 

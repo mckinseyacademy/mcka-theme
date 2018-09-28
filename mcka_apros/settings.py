@@ -339,8 +339,6 @@ WORKGROUP_API = '/'.join([API_SERVER_PREFIX, 'workgroups'])
 MOBILE_APP_API = '/'.join([API_SERVER_PREFIX, 'mobileapps'])
 MANAGER_API = '/'.join(['api', 'user_manager', 'v1'])
 COURSE_ENROLLMENT_API = '/'.join(['api', 'enrollment', 'v1', 'enrollments'])
-COURSE_COMPLETION_API = os.path.join('api', 'completion-aggregator', 'v1', 'course')
-COURSE_BLOCK_API = os.path.join('api', 'courses', 'v1', 'blocks')
 
 # set AWS querystring authentication to false
 AWS_QUERYSTRING_AUTH = False
