@@ -33,20 +33,21 @@ from django.template.loader import render_to_string
 from requests import ConnectionError, HTTPError
 
 from util.url_helpers import get_referer_from_request
-from courses.models import FeatureFlags
 from api_client import user_api, course_api
-from api_client.json_object import JsonObjectWithImage
 from api_client.api_error import ApiError
 from api_client import platform_api
-from api_client import http_request_methods
 from mcka_apros.settings import COOKIES_YEARLY_EXPIRY_TIME, LANGUAGES
 from mobile_apps.controller import get_mobile_app_download_popup_data
 
-from admin.models import Client, Program, LearnerDashboard, CourseRun, SelfRegistrationRoles
-from admin.controller import load_course
+from admin.models import Client, Program, CourseRun
 from admin.models import AccessKey, ClientCustomization, OTHER_ROLE
-from courses.user_courses import standard_data, get_current_course_for_user, get_current_program_for_user, \
-    CURRENT_PROGRAM, set_current_course_for_user
+from courses.user_courses import (
+    standard_data,
+    get_current_course_for_user,
+    get_current_program_for_user,
+    CURRENT_PROGRAM,
+    set_current_course_for_user
+)
 from lib.context_processors import add_edx_notification_context
 from util.i18n_helpers import set_language
 
@@ -59,8 +60,8 @@ from .controller import (
 from util.user_agent_helpers import is_mobile_user_agent
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
-    EditFullNameForm, EditTitleForm, SSOLoginForm, ActivationFormV2, PublicRegistrationForm,
-    LoginIdForm)
+    EditFullNameForm, EditTitleForm, ActivationFormV2, PublicRegistrationForm, LoginIdForm, AcceptTermsForm,
+)
 from django.shortcuts import resolve_url
 from django.utils.http import urlsafe_base64_decode
 from django.utils.dateformat import format
@@ -584,7 +585,7 @@ def activate(request, activation_code, registration=None):
         "error": error,
         "activation_code": activation_code,
         "activate_label": _("Create my McKinsey Academy account"),
-        }
+    }
     return render(request, 'accounts/activate.haml', data)
 
 def activate_v2(request, activation_code):
@@ -754,6 +755,20 @@ def sso_registration_form(request):
     remote_session_key = request.COOKIES.get('sessionid')
 
     if remote_session_key:
+        if request.method == 'GET':
+            # After redirecting to this page after registering
+            form = AcceptTermsForm()
+            return render(request, 'accounts/sso_terms_of_service.haml', {
+                'accept_label': _('Accept'),
+                'form': form,
+            })
+        elif request.method == 'POST':
+            form = AcceptTermsForm(request.POST)
+            if not form.is_valid():
+                return render(request, 'accounts/sso_terms_of_service.haml', {
+                    'accept_label': _('Accept'),
+                    'form': form,
+                })
         user_data = {
             'accept_terms': True,
             'city': settings.SSO_AUTOPROVISION_CITY,
@@ -799,9 +814,9 @@ def sso_registration_form(request):
                 return HttpResponseRedirect(complete_url)
             except ApiError as exc:
                 error = _("Failed to register user: {exception_message}").format(exception_message=exc.message)
-        else:
+        else:  # if form.is_valid()
             error = _("Some required information was missing.")
-    else:
+    else:  # if remote_session_key
         error = _("Authentication cookie is missing. Your session may have timed out. Please start over.")
 
     context = {'error_details': error}

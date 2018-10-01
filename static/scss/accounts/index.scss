@@ -203,7 +203,7 @@
   }
 }
 
-.registration-form, .reset-password-form{
+.registration-form, .reset-password-form, .tos-form {
   button[type="submit"]{
     white-space: pre-line;
   }
@@ -269,9 +269,9 @@
       display: none;
     }
 
-    .errorlist{
-      margin-bottom: 0px;
-      padding-top: 0px;
+    .errorlist {
+      margin-bottom: 0;
+      padding-top: 0;
     }
 
     #id_current_role + .errorlist{
