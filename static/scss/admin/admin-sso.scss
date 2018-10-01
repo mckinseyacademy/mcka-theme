@@ -48,8 +48,8 @@ $form-spacing: rem-calc(16);
           display: inline-block;
         }
       }
-      .identity-provider-input, .lesson-label-input, .module-label-input{
-        #identity_provider, #lesson_label, #module_label{
+      .identity-provider-input, .custom-lesson-label-input, .custom-module-label-input{
+        #identity_provider, #custom_lesson_label, #custom_module_label{
           display: block;
         }
         .read-only-idp, .read-only-ll , .read-only-ml{
@@ -59,9 +59,9 @@ $form-spacing: rem-calc(16);
     }
   }
 
-  .identity-provider-input, .lesson-label-input, .module-label-input {
+  .identity-provider-input, .custom-lesson-label-input, .custom-module-label-input {
     position: relative;
-    #identity_provider , #lesson_label, #module_label{
+    #identity_provider , #custom_lesson_label, #custom_module_label{
       display: none;
       margin-bottom: 0;
       &.save-failed {

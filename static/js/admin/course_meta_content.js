@@ -1,14 +1,14 @@
 /* global noMlMsg, noLlMsg */
 $(function () {
-    var lessonLabelInput = $('#lesson_label');
-    var moduleLabelInput = $('#module_label');
+    var lessonLabelInput = $('#custom_lesson_label');
+    var moduleLabelInput = $('#custom_module_label');
     var originalLl = lessonLabelInput.val();
     var originalMl = moduleLabelInput.val();
 
 
     function switchMlMode(mode) {
         $('.ml-setup').removeClass('edit-mode-ml add-mode-ml save-mode-ml').addClass(mode + '-mode-ml');
-        $('.module-label-input .read-only-ml').text(originalMl || noMlMsg);
+        $('.custom-module-label-input .read-only-ml').text(originalMl || noMlMsg);
         if (mode === 'save') {
             moduleLabelInput.focus();
         }
@@ -16,7 +16,7 @@ $(function () {
 
     function switchLlMode(mode) {
         $('.ll-setup').removeClass('edit-mode-ll add-mode-ll save-mode-ll').addClass(mode + '-mode-ll');
-        $('.lesson-label-input .read-only-ll').text(originalLl || noLlMsg);
+        $('.custom-lesson-label-input .read-only-ll').text(originalLl || noLlMsg);
         if (mode === 'save') {
             lessonLabelInput.focus();
         }

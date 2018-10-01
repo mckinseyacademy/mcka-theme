@@ -1172,8 +1172,8 @@ def course_meta_content_course_items(request, course_id, restrict_to_courses_ids
         "feature_flags": features,
         "has_advanced_settings_permissions": has_advanced_settings_permissions,
         "mobile_available": mobile_available,
-        "lesson_label": course_meta_data.lesson_label,
-        "module_label": course_meta_data.module_label,
+        "custom_lesson_label": course_meta_data.lesson_label,
+        "custom_module_label": course_meta_data.module_label,
     }
 
     return render(

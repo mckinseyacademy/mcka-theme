@@ -177,17 +177,17 @@
 
   - if user.is_mcka_admin or user.is_mcka_subadmin
     %section.course_custom_terminology
-      .row.lesson-label
+      .row.custom-lesson-label
         .large-12.columns.ll-setup
           .row
             .large-8.columns
               .row
                 .small-4.columns
-                  %label{for:'lesson_label'}
+                  %label{for:'custom_lesson_label'}
                     {% trans "Lesson" %}
                 .small-8.columns
-                  .lesson-label-input
-                    %input#lesson_label{"name": "lesson_label", "type": "text", "maxlength":15, "value": "#{lesson_label}"}
+                  .custom-lesson-label-input
+                    %input#custom_lesson_label{"name": "custom_lesson_label", "type": "text", "maxlength":15, "value": "#{custom_lesson_label}"}
                     .read-only-ll
                     %span.status-icon-ll
                       .icon
@@ -206,17 +206,17 @@
                   {% trans "Save" %}
 
     %section.course_custom_terminology
-      .row.module-label
+      .row.custom-module-label
         .large-12.columns.ml-setup
           .row
             .large-8.columns
               .row
                 .small-4.columns
-                  %label{for:'module_label'}
+                  %label{for:'custom_module_label'}
                     {% trans "Module" %}
                 .small-8.columns
-                  .module-label-input
-                    %input#module_label{"name": "module_label", "type": "text", "maxlength":15, "value": "#{module_label}"}
+                  .custom-module-label-input
+                    %input#custom_module_label{"name": "custom_module_label", "type": "text", "maxlength":15, "value": "#{custom_module_label}"}
                     .read-only-ml
                     %span.status-icon-ml
                       .icon
