@@ -577,11 +577,12 @@ def get_course_metrics_completions(course_id, completions_object_type=JsonObject
 @api_error_protect
 def get_course_social_metrics(course_id, organization_id=None):
     ''' fetch social metrics for course '''
+    edx_oauth2_session = get_oauth2_session()
     qs_params = {}
     if organization_id:
         qs_params['organization'] = organization_id
 
-    response = GET(
+    url = (
         '{}/{}/{}/metrics/social/?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
@@ -589,9 +590,9 @@ def get_course_social_metrics(course_id, organization_id=None):
             urlencode(qs_params)
         )
     )
+    response = edx_oauth2_session.get(url)
 
-    return JP.from_json(response.read())
-
+    return JP.from_json(response.text)
 
 @api_error_protect
 def get_social_engagement_leaderboard(course_id, count, **kwargs):
@@ -725,15 +726,18 @@ def get_course_details(course_id):
 
 @api_error_protect
 def get_course_details_users(course_id, qs_params=''):
+    edx_oauth2_session = get_oauth2_session()
 
-    response = GET('{}/{}/{}/users?{}'.format(
+    url = '{}/{}/{}/users?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
-        urlencode(qs_params))
+        urlencode(qs_params)
     )
 
-    return json.loads(response.read())
+    response = edx_oauth2_session.get(url)
+
+    return response.json()
 
 
 @api_error_protect
