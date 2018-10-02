@@ -20,6 +20,22 @@
         -ms-user-select: none;
         user-select: none;
     }
+
+    .actions-toolbar{
+        // Submit button and remaining attempts
+        .submit-answer-button{
+            background-color: $mckinsey-success-green;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .attempts-used{
+          margin-top: 8px;
+        }
+        .sidebar-button-wrapper{
+          border: 0 !important;
+        }
+    }
 }
 
 .themed-xblock.xblock--drag-and-drop {
@@ -31,9 +47,21 @@
     .feedback p {
         border: none;
     }
-    // Remove the grey background from disabled "reset" button
-    .sidebar-buttons button:disabled {
-        background-color: transparent;
+    // Sidebar buttons active and disabled states
+    .sidebar-buttons{
+        padding-top: 0 !important;
+        button {
+            background-color: transparent !important;
+            border: 1px solid white !important;
+            color: white;
+            font-size: 12px !important;
+            font-weight: 600;
+            &:disabled{
+                background-color: #566a85 !important;
+                color: #8094af;
+                border: 0 !important;
+            }
+        }
     }
 
     .feedback p::before {
@@ -44,6 +72,7 @@
         display: none;
     }
 }
+
 
 /* Align the Reset button to the right on mobile (non-McKinsey version has it left on mobile, right on desktop) */
 .ltr .themed-xblock.xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {

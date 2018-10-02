@@ -18,9 +18,48 @@
         display: none;
     }
     .questionnaire {
-        .choice-tips, .feedback {
+        .choice-tips,
+        .feedback {
             // Avoid a global reset to border-box found on Apros
-            box-sizing: content-box;  
+            box-sizing: content-box;
+            color: #fff;
+            background: none repeat scroll 0 0 #66A5B5;
+            opacity: 0.9;
+            padding: 22px 10px 10px 10px;
+            p {
+                color: #fff;
+            }
+            .close {
+                display: block;
+            }
+        }
+
+        .choice-label {
+            // Fill the full page width for MRC/MCQ choices
+            width: 100%
+        }
+
+        .choices-list {
+            border-spacing: 0 2px;
+        }
+    }
+    .checkmark-incorrect {
+        color: #ff0000;
+        &::before {
+            content: "\f12a";
+        }
+    }
+    .checkmark-correct::before {
+        content: "\f00c";
+    }
+    .choice {
+        .choice-tips-container {
+            &.with-tips {
+                border: none;
+            }
+            .choice-tips {
+                position: absolute;
+            }
         }
     }
     .title h3 {
