@@ -29,3 +29,6 @@ refresh_assets.sh
 
 ### Other artifacts
 /util/djtemp/*
+
+### pycharm helper folder
+.pycharm_helpers/

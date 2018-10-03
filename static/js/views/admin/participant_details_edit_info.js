@@ -243,6 +243,7 @@
       details.find('.participantEmailValue').text(edit.find('.participantEmailValue input').val());
       details.find('.participantCompanyValue a').text(edit.find('.participantCompanyValue input').val());
       details.find('.participantPermissionsValue').text(edit.find('.participantPermissionsValue select option:selected').text());
+      details.find('.participantManagerValue').text(edit.find('.participantManagerValue input').val());
       var company_data_id = edit.find('.participantCompanyValue input').attr('data-id');
       details.find('.participantCompanyValue a').attr('data-id',company_data_id);
       var company_href = details.find('.participantCompanyValue a').attr('href')

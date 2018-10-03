@@ -42,7 +42,8 @@ from api_client import (
     project_api,
     user_api,
     user_models,
-    workgroup_api
+    workgroup_api,
+    manager_api
 )
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
@@ -2679,3 +2680,10 @@ def edit_course_meta_data(course_id, lesson_label, module_label,
 
     return data_saved
 
+
+def _get_user_managers(username):
+    user_manager_response = manager_api.get_user_manager(username)
+    user_managers = None
+    if user_manager_response is not None:
+        user_managers = user_manager_response["results"]
+    return user_managers

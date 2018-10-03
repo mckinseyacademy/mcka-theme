@@ -243,6 +243,7 @@ class EditExistingUserForm(forms.Form):
     username = forms.CharField(required=False, widget=forms.TextInput(), validators=[UsernameValidator()])
     email = forms.EmailField(required=True, widget=forms.TextInput())
     company = forms.CharField(required=True, widget=forms.TextInput())
+    manager_email = forms.EmailField(required=False, widget=forms.TextInput())
     gender = forms.CharField(required=False, widget=forms.TextInput())
     country = forms.CharField(required=False, widget=forms.TextInput())
     city = forms.CharField(required=False, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])

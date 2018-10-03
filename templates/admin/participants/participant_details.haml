@@ -128,6 +128,15 @@
               - else
                 %a{:href => '/admin/companies/#{company_id}', :target => '_self', :data-id => '#{company_id}'}>
                   = company_name
+          - if user.is_mcka_admin or user.is_mcka_subadmin
+            .large-6.columns.participantManager
+              .participantManagerLabel.labelUniversal
+                {% trans "Manager Email" %}
+              .participantManagerValue
+                - if manager_email
+                  = manager_email
+        %hr
+        .row
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
               {% trans "Gender" %}
@@ -139,8 +148,7 @@
                   {% trans "Female" %}
               - else
                 &#8212;
-        %hr
-        .row
+
           .large-6.columns.participantLocation
             .participantLocationLabel.labelUniversal
               {% trans "Location" %}
@@ -149,6 +157,8 @@
                 = location
               - else
                 &#8212;
+        %hr
+        .row
           .large-6.columns.participantPermissions
             .participantPermissionsLabel.labelUniversal
               {% trans "Admin Permissions" %}
@@ -241,18 +251,27 @@
                   %option{:value => "internal_admin"}
                     {% trans "Internal Admin" %}
         .row
-          .large-6.columns.participantCountry
-            .participantCountryLabel.labelUniversal
-              {% trans "Country Abbreviation" %}
-            .participantCountryValue
-              %input{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2"}
-              %input{:type => "hidden", :id =>'country_edit_code', :name => "country", :maxlength => "2"}
+          - if user.is_mcka_admin or user.is_mcka_subadmin
+            .large-6.columns.participantManager
+              .participantManagerLabel.labelUniversal
+                {% trans "Manager Email" %}
+                .fa.fa-check-circle-o.checkMark
+              .participantManagerValue
+                %input{:type => "text", :value => '#{manager_email}', :name => 'manager_email', :maxlength => "60", :onkeyup => 'validateManagerEmail()', :class => 'participantManagerInput'}
+                .warningText
+                  %p {% trans "That email is already taken" %}
+            .large-6.columns.participantCountry
+              .participantCountryLabel.labelUniversal
+                {% trans "Country Abbreviation" %}
+              .participantCountryValue
+                %input{:type => "text", :id =>'country_edit', :name => "country_fullname", :readonly => '', :maxlength => "2"}
+                %input{:type => "hidden", :id =>'country_edit_code', :name => "country", :maxlength => "2"}
+        .row
           .large-6.columns.participantCity
             .participantCityLabel.labelUniversal
               {% trans "City" %}
             .participantCityValue
               %input{:type => "text", :value => '#{city}', :name => "city", :maxlength => "60"}
-        .row
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
               {% trans "Gender" %}

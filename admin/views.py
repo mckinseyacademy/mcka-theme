@@ -43,7 +43,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
     get_organization_active_courses, edit_course_meta_data
-from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api
+from api_client import course_api, user_api, manager_api, group_api, workgroup_api, organization_api, mobileapp_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.json_object import JsonObjectWithImage
@@ -85,7 +85,7 @@ from .controller import (
     _enroll_participant_with_status, get_accessible_courses, get_ta_accessible_course_ids,
     validate_company_display_name, get_internal_courses_ids,
     student_list_chunks_tracker, get_internal_courses_list, construct_users_list,
-    CourseParticipantStats, get_course_stats_report
+    CourseParticipantStats, get_course_stats_report, _get_user_managers
 )
 from .forms import (
     ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
@@ -3785,6 +3785,10 @@ class participant_details_api(APIView):
                         selectedUser['company_permission'] = key
 
             selectedUser['mcka_permissions'] = nice_perms
+            if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
+                user_managers = _get_user_managers(selectedUser['username'])
+                if user_managers:
+                    selectedUser['manager_email'] = user_managers[0]['email']
 
             if UserActivation.get_user_activation(user=selectedUserResponse):
                 selectedUser['has_activation_record'] = True
@@ -3828,6 +3832,7 @@ class participant_details_api(APIView):
                 for user in existing_users['results']:
                     if int(user['id']) == int(user_id):
                         existing_users_length -= 1
+
             if (existing_users_length > 0):
                 return Response({'status':'error', 'type': 'user_exist', 'message':_('User with that username or email already exists!')})
             else:
@@ -3868,6 +3873,22 @@ class participant_details_api(APIView):
                             if not permissions:
                                 permissions = Permissions(user_id)
                             permissions.remove_permission(permissions_groups[request.data['company_permissions_old']])
+
+                    if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
+                        manager_email = data.get('manager_email', None)
+                        user_managers = _get_user_managers(data.get('username'))
+                        if user_managers:
+                            if manager_email:
+                                # if manager_email exists , update the manager
+                                manager_api.post_user_manager(data.get('username'), manager_email)
+                            else:
+                                # else delete the manager
+                                manager_api.delete_user_manager(data.get('username'), manager_email)
+                        else:
+                            if manager_email:
+                                # if manager_email exists , create the manager
+                                manager_api.post_user_manager(data.get('username'), manager_email)
+
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
                 return Response({'status':'ok', 'message':vars(response), 'company': company, 'company_permissions': request.data['company_permissions']})
