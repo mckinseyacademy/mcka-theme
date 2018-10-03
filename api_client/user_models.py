@@ -115,7 +115,7 @@ class CityList(JsonObject):
 
 
 class UserSSOProviderAssociation(JsonObject):
-    required_fields = ['provider_id', 'remote_id', 'name']
+    required_fields = ['provider_id', 'name']
 
 
 class UserSSOProviderAssociationList(JsonObject):

@@ -104,8 +104,8 @@ def io_new_client_image(old_gen_image_url, new_gen_image_url):
         raise
 
 
-def get_sso_provider(email):
-    provider_associations = third_party_auth_api.get_providers_by_email(email)
+def get_sso_provider(login_id):
+    provider_associations = third_party_auth_api.get_providers_by_login_id(login_id)
 
     if provider_associations:
         # provider ids are prefixed with auth type: saml, oauth, etc.

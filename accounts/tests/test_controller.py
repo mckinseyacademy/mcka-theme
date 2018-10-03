@@ -720,12 +720,13 @@ class TestGetSsoProvider(TestCase, ApplyPatchMixin):
         self.email = 'test@test.com'
 
     def test_with_associations(self):
-        self.third_party_auth_api.get_providers_by_email.return_value = [
-            DottableDict({'provider_id': 'oauth-123456789'})]
+        self.third_party_auth_api.get_providers_by_login_id.return_value = [
+            DottableDict({'provider_id': 'oauth-123456789'})
+        ]
         self.assertEquals(get_sso_provider(self.email), '123456789')
 
     def test_without_associations(self):
-        self.third_party_auth_api.get_providers_by_email.return_value = []
+        self.third_party_auth_api.get_providers_by_login_id.return_value = []
         self.assertIsNone(get_sso_provider(self.email))
 
 
