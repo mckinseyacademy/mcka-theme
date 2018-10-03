@@ -112,6 +112,60 @@
         }
 	  }
 	}
+	.manager-progress-cards{
+		padding: 20px 20px 5px;
+		background-color: darken($mckinsey-academy-bright-gray , 3%);
+		ul{
+			border-bottom: 0;
+			li{
+				width: 24%;
+				vertical-align: top;
+				display: inline-block;
+				box-sizing: border-box;
+				margin: 0 2% 2% 0;
+				text-align: center;
+				color: lighten($mckinsey-academy-black , 15%);
+				> div:nth-child(odd){
+					font-size: 21px;
+					padding: 15px 5px;
+					line-height: 24px;
+					border-bottom: 1px solid $mckinsey-academy-bright-gray;
+					background-color: $pure-white;
+					span{
+						color: $mckinsey-academy-alt-blue;
+						&.inherit-color{
+							color: lighten($mckinsey-academy-black , 15%);
+						}
+					}
+					large{
+						font-size: 50px;
+						display: block;
+						line-height: 80px;
+						margin-top: 10px;
+					}
+					small{
+						font-size: 22px;
+						line-height: normal;
+					}
+				}
+				> div:nth-child(even){
+					background-color: $ash-white;
+					padding: 10px 7px;
+					font-size: 15px;
+					line-height: normal;
+					span{
+						line-height: normal;
+                        &.green{
+                          color: $mckinsey-green;
+                        }
+                        &.red{
+                          color:$mckinsey-red;
+                        }
+					}
+				}
+			}
+		}
+	}
 }
 
 #coursesListViewGridBlock
