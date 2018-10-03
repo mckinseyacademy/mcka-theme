@@ -38,6 +38,29 @@
     }
 }
 
+.xblock--drag-and-drop {
+    .drag-container{
+        .option{
+            // Mckinsey specific color & font size for item
+            background-color: $mckinsey-royal-blue !important;
+            font-size: 10px;
+            &.dropped{
+                // Mckinsey specific color for the dropped item placeholder
+                background-color: $mckinsey-DnD-gray !important;
+                .item-content{
+                    // Removing the text from item bank after the item is dropped on drop zone
+                    display: none;
+                    visibility: hidden;
+                }
+            }
+        }
+    }
+    .bx-controls .bx-controls-direction > a .fa{
+        // Mckinsey specific color of navigation arrow
+        color: $mckinsey-royal-blue;
+    }
+}
+
 .themed-xblock.xblock--drag-and-drop {
     // Hide the text at the top that says e.g. "1 point possible (ungraded)" (MCKIN-6169)
     .problem-progress {
