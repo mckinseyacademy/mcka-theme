@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-04 11:59+0000\n"
+"POT-Creation-Date: 2018-10-04 14:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3170,9 +3170,13 @@ msgid "Registration Error!"
 msgstr "Registratiefout!"
 
 #: templates/accounts/public_registration.haml:27
+#, fuzzy
+#| msgid ""
+#| "Sorry, there seems to be a problem with registering your account, please "
+#| "contact info@mckinseyacademy.com"
 msgid ""
 "Sorry, there seems to be a problem with registering your account, please "
-"contact info@mckinseyacademy.com"
+"contact academy_info@mckinsey.com"
 msgstr ""
 "Helaas, er lijkt een probleem te zijn met het registreren van uw account; "
 "neem contact op met info@mckinseyacademy.com"
@@ -7400,7 +7404,9 @@ msgstr ""
 "Hoe kan ik me registreren voor een McKinsey Academy-cursus of -programma?"
 
 #: templates/faq.haml:97
-msgid "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
+#, fuzzy
+#| msgid "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
+msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 msgstr ""
 "Neem <a href=\"mailto:info@mckinseyacademy.com\">contact met ons op.</a>"
 
@@ -7409,8 +7415,12 @@ msgid "What if my question isn’t answered here?"
 msgstr "Wat als mijn vraag hier niet wordt beantwoord?"
 
 #: templates/faq.haml:99
+#, fuzzy
+#| msgid ""
+#| "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a> We’ll "
+#| "do our best to help."
 msgid ""
-"Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a> We’ll do "
+"Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a> We’ll do "
 "our best to help."
 msgstr ""
 "Neem <a href=\"mailto:info@mckinseyacademy.com\">contact met ons op.</a> We "
@@ -8911,10 +8921,16 @@ msgstr ""
 "deelnemers moeten door bedrijven worden gesponsord."
 
 #: templates/marketing/programs.haml:243
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "            Please email us at <a href=\"mailto:info@mckinseyacademy.com"
+#| "\">info@mckinseyacademy.com</a> for further details.\n"
+#| "            "
 msgid ""
 "\n"
-"            Please email us at <a href=\"mailto:info@mckinseyacademy.com"
-"\">info@mckinseyacademy.com</a> for further details.\n"
+"            Please email us at <a href=\"mailto:academy_info@mckinsey.com"
+"\">academy_info@mckinsey.com</a> for further details.\n"
 "            "
 msgstr ""
 "\n"

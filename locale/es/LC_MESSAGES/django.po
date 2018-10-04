@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-04 11:59+0000\n"
+"POT-Creation-Date: 2018-10-04 14:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3160,9 +3160,13 @@ msgid "Registration Error!"
 msgstr "Error en el registro"
 
 #: templates/accounts/public_registration.haml:27
+#, fuzzy
+#| msgid ""
+#| "Sorry, there seems to be a problem with registering your account, please "
+#| "contact info@mckinseyacademy.com"
 msgid ""
 "Sorry, there seems to be a problem with registering your account, please "
-"contact info@mckinseyacademy.com"
+"contact academy_info@mckinsey.com"
 msgstr ""
 "Lo sentimos, hubo un problema al intentar registrar su cuenta; por favor, "
 "escríbanos a info@mckinseyacademy.com"
@@ -7418,7 +7422,9 @@ msgid "How can I sign up for a McKinsey Academy course or program?"
 msgstr "¿Cómo me inscribo en un curso o programa de McKinsey Academy?"
 
 #: templates/faq.haml:97
-msgid "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
+#, fuzzy
+#| msgid "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
+msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 msgstr ""
 "¡Comuníquese <a href=\"mailto:info@mckinseyacademy.com\">con nosotros!</a>"
 
@@ -7427,8 +7433,12 @@ msgid "What if my question isn’t answered here?"
 msgstr "¿Qué sucede si la respuesta a mi pregunta no está aquí?"
 
 #: templates/faq.haml:99
+#, fuzzy
+#| msgid ""
+#| "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a> We’ll "
+#| "do our best to help."
 msgid ""
-"Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a> We’ll do "
+"Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a> We’ll do "
 "our best to help."
 msgstr ""
 "¡Comuníquese <a href=\"mailto:info@mckinseyacademy.com\">con nosotros!</a> "
@@ -8913,10 +8923,16 @@ msgstr ""
 "participantes deben estar patrocinados por sus compañías."
 
 #: templates/marketing/programs.haml:243
+#, fuzzy
+#| msgid ""
+#| "\n"
+#| "            Please email us at <a href=\"mailto:info@mckinseyacademy.com"
+#| "\">info@mckinseyacademy.com</a> for further details.\n"
+#| "            "
 msgid ""
 "\n"
-"            Please email us at <a href=\"mailto:info@mckinseyacademy.com"
-"\">info@mckinseyacademy.com</a> for further details.\n"
+"            Please email us at <a href=\"mailto:academy_info@mckinsey.com"
+"\">academy_info@mckinsey.com</a> for further details.\n"
 "            "
 msgstr ""
 "\n"
