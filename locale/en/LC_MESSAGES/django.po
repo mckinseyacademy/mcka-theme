@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< d2788a2eb939ae25e940222cf732e6161badd2be
-"POT-Creation-Date: 2018-10-03 13:23+0000\n"
-=======
-"POT-Creation-Date: 2018-10-03 11:16+0000\n"
->>>>>>> fix locale
+"POT-Creation-Date: 2018-10-04 11:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1300,103 +1296,103 @@ msgid ""
 "provided"
 msgstr ""
 
-#: accounts/views.py:325
+#: accounts/views.py:326
 msgid ""
 "Your account has already been activated. Please enter credentials to login"
 msgstr ""
 
-#: accounts/views.py:331
+#: accounts/views.py:332
 msgid "Log In"
 msgstr ""
 
-#: accounts/views.py:332
+#: accounts/views.py:333
 msgid "Trouble logging in"
 msgstr ""
 
-#: accounts/views.py:377 accounts/views.py:401
+#: accounts/views.py:378 accounts/views.py:402
 msgid "Username/email is not recognised. Try again."
 msgstr ""
 
-#: accounts/views.py:393
+#: accounts/views.py:394
 msgid "Password doesn't match our records. Try again."
 msgstr ""
 
-#: accounts/views.py:567 accounts/views.py:639
+#: accounts/views.py:568 accounts/views.py:640
 msgid "Some required information was missing. Please check the fields below."
 msgstr ""
 
-#: accounts/views.py:587 accounts/views.py:651
+#: accounts/views.py:588 accounts/views.py:652
 msgid "Create my McKinsey Academy account"
 msgstr ""
 
-#: accounts/views.py:617
+#: accounts/views.py:618
 msgid "Invalid Activation Code"
 msgstr ""
 
-#: accounts/views.py:689
+#: accounts/views.py:690
 msgid "No provider data found."
 msgstr ""
 
-#: accounts/views.py:691
+#: accounts/views.py:692
 msgid "Provider data does not seem valid."
 msgstr ""
 
-#: accounts/views.py:745
+#: accounts/views.py:746
 msgid "Access Key missing."
 msgstr ""
 
-#: accounts/views.py:762 accounts/views.py:769
+#: accounts/views.py:763 accounts/views.py:770
 msgid "Accept"
 msgstr ""
 
-#: accounts/views.py:816
+#: accounts/views.py:817
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr ""
 
-#: accounts/views.py:818
+#: accounts/views.py:819
 msgid "Some required information was missing."
 msgstr ""
 
-#: accounts/views.py:820
+#: accounts/views.py:821
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
 msgstr ""
 
-#: accounts/views.py:868
+#: accounts/views.py:869
 msgid "Enter new password"
 msgstr ""
 
-#: accounts/views.py:885
+#: accounts/views.py:886
 msgid "Password reset unsuccessful"
 msgstr ""
 
-#: accounts/views.py:976 templates/accounts/activate.haml:16
+#: accounts/views.py:977 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:266
 msgid "Welcome to McKinsey Academy"
 msgstr ""
 
-#: accounts/views.py:977
+#: accounts/views.py:978
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
 "more about the experience in the meantime."
 msgstr ""
 
-#: accounts/views.py:981
+#: accounts/views.py:982
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
 "this site to learn more about what to expect."
 msgstr ""
 
-#: accounts/views.py:1124
+#: accounts/views.py:1125
 msgid "Enter your full name"
 msgstr ""
 
-#: accounts/views.py:1126 accounts/views.py:1149 admin/views.py:1843
+#: accounts/views.py:1127 accounts/views.py:1150 admin/views.py:1843
 #: admin/views.py:1877 admin/views.py:4232
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
@@ -1411,23 +1407,23 @@ msgstr ""
 msgid "Save"
 msgstr ""
 
-#: accounts/views.py:1147
+#: accounts/views.py:1148
 msgid "Enter your title"
 msgstr ""
 
-#: accounts/views.py:1199 accounts/views.py:1229
+#: accounts/views.py:1200 accounts/views.py:1230
 msgid "Initial"
 msgstr ""
 
-#: accounts/views.py:1226
+#: accounts/views.py:1227
 msgid "Course Closed"
 msgstr ""
 
-#: accounts/views.py:1235
+#: accounts/views.py:1236
 msgid "Registered"
 msgstr ""
 
-#: accounts/views.py:1237
+#: accounts/views.py:1238
 msgid "Error"
 msgstr ""
 

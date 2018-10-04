@@ -8,11 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-<<<<<<< d2788a2eb939ae25e940222cf732e6161badd2be
-"POT-Creation-Date: 2018-10-03 13:23+0000\n"
-=======
-"POT-Creation-Date: 2018-10-03 11:16+0000\n"
->>>>>>> fix locale
+"POT-Creation-Date: 2018-10-04 11:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1315,68 +1311,68 @@ msgid ""
 msgstr ""
 "حدث خطأ أثناء تسجيلك في دورة تدريبية باستخدام مفتاح التسجيل الذي قمت بتوفيره"
 
-#: accounts/views.py:325
+#: accounts/views.py:326
 msgid ""
 "Your account has already been activated. Please enter credentials to login"
 msgstr ""
 "لقد تم تفعيل الحساب الخاص بك سابقًا الرجاء إدخال بيانات الاعتماد لتسجيل الدخول"
 
-#: accounts/views.py:331
+#: accounts/views.py:332
 msgid "Log In"
 msgstr "تسجيل الدخول"
 
-#: accounts/views.py:332
+#: accounts/views.py:333
 msgid "Trouble logging in"
 msgstr "هل تواجهك مشكلة في تسجيل الدخول؟"
 
-#: accounts/views.py:377 accounts/views.py:401
+#: accounts/views.py:378 accounts/views.py:402
 msgid "Username/email is not recognised. Try again."
 msgstr "لم يتم التعرف على اسم المستخدم / البريد الإلكتروني، حاول مرة أخرى."
 
-#: accounts/views.py:393
+#: accounts/views.py:394
 msgid "Password doesn't match our records. Try again."
 msgstr "كلمة المرور غير صحيحة، حاول مرة أخرى."
 
-#: accounts/views.py:567 accounts/views.py:639
+#: accounts/views.py:568 accounts/views.py:640
 msgid "Some required information was missing. Please check the fields below."
 msgstr "يرجى تعبئة المعلومات المطلوبة، تحقق من الحقول أدناه."
 
-#: accounts/views.py:587 accounts/views.py:651
+#: accounts/views.py:588 accounts/views.py:652
 msgid "Create my McKinsey Academy account"
 msgstr "إنشاء حساب خاص بي على أكاديمية ماكنزي"
 
-#: accounts/views.py:617
+#: accounts/views.py:618
 msgid "Invalid Activation Code"
 msgstr "رمز تفعيل غير صالح"
 
-#: accounts/views.py:689
+#: accounts/views.py:690
 msgid "No provider data found."
 msgstr "لم يتم العثور على بيانات الموفر."
 
-#: accounts/views.py:691
+#: accounts/views.py:692
 msgid "Provider data does not seem valid."
 msgstr "بيانات الموفر لا تبدو صحيحة."
 
-#: accounts/views.py:745
+#: accounts/views.py:746
 msgid "Access Key missing."
 msgstr "مفتاح الوصول غير متوفر."
 
-#: accounts/views.py:762 accounts/views.py:769
+#: accounts/views.py:763 accounts/views.py:770
 #, fuzzy
 #| msgid "Access"
 msgid "Accept"
 msgstr "الوصول"
 
-#: accounts/views.py:816
+#: accounts/views.py:817
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "فشل في تسجيل المستخدم: {exception_message}"
 
-#: accounts/views.py:818
+#: accounts/views.py:819
 msgid "Some required information was missing."
 msgstr "بعض المعلومات المطلوبة لم يتم تقديمها، يرجى التحقق من الحقول أدناه."
 
-#: accounts/views.py:820
+#: accounts/views.py:821
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1384,21 +1380,21 @@ msgstr ""
 "ملف تعريف ارتباط المصادقة مفقود. قد تكون جلسة العمل الخاصة بك قد انتهت. "
 "الرجاء البدء من جديد."
 
-#: accounts/views.py:868
+#: accounts/views.py:869
 msgid "Enter new password"
 msgstr "أدخل كلمة المرور الجديدة"
 
-#: accounts/views.py:885
+#: accounts/views.py:886
 msgid "Password reset unsuccessful"
 msgstr "إعادة تعيين كلمة المرور غير ناجحة"
 
-#: accounts/views.py:976 templates/accounts/activate.haml:16
+#: accounts/views.py:977 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:266
 msgid "Welcome to McKinsey Academy"
 msgstr "مرحبا بكم في أكاديمية ماكنزي"
 
-#: accounts/views.py:977
+#: accounts/views.py:978
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1407,7 +1403,7 @@ msgstr ""
 "سيتم تشغيل البرنامج الخاص بك خلال {days}أيام. الرجاء استكشاف الموقع للتعرف "
 "على المزيد حول التجربة."
 
-#: accounts/views.py:981
+#: accounts/views.py:982
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1416,11 +1412,11 @@ msgstr ""
 "تبدأ الدورة التدريبية الخاصة بك خلال{days} أيام، قبل بدء الدورة، يمكنك "
 "استكشاف هذا الموقع لمعرفة المزيد حول ما يمكن توقعه."
 
-#: accounts/views.py:1124
+#: accounts/views.py:1125
 msgid "Enter your full name"
 msgstr "أدخل اسمك بالكامل"
 
-#: accounts/views.py:1126 accounts/views.py:1149 admin/views.py:1843
+#: accounts/views.py:1127 accounts/views.py:1150 admin/views.py:1843
 #: admin/views.py:1877 admin/views.py:4232
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
@@ -1435,23 +1431,23 @@ msgstr "أدخل اسمك بالكامل"
 msgid "Save"
 msgstr "حفظ"
 
-#: accounts/views.py:1147
+#: accounts/views.py:1148
 msgid "Enter your title"
 msgstr "أدخل منصبك"
 
-#: accounts/views.py:1199 accounts/views.py:1229
+#: accounts/views.py:1200 accounts/views.py:1230
 msgid "Initial"
 msgstr "الأولى"
 
-#: accounts/views.py:1226
+#: accounts/views.py:1227
 msgid "Course Closed"
 msgstr "دورة مغلقة"
 
-#: accounts/views.py:1235
+#: accounts/views.py:1236
 msgid "Registered"
 msgstr "مسجلة"
 
-#: accounts/views.py:1237
+#: accounts/views.py:1238
 msgid "Error"
 msgstr "خطأ"
 

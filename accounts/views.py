@@ -274,6 +274,7 @@ def fill_email_and_redirect(request, redirect_url):
 
     return HttpResponseRedirect(redirect_url_with_email)
 
+
 def login(request):
     ''' handles requests for login form and their submission '''
     request.session['ddt'] = False  # Django Debug Tool session key init.
