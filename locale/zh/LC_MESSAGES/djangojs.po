@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-26 21:32+0000\n"
+"POT-Creation-Date: 2018-10-04 12:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr "您需要输入课程编号！"
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
-#: static/js/views/admin/participant_details_edit_info.js:359
+#: static/js/views/admin/participant_details_edit_info.js:360
 #: static/js/views/admin/participantsinfo.js:120
 msgid "Course"
 msgstr "课程"
@@ -255,7 +255,7 @@ msgstr "课程数量"
 #: static/js/views/admin/companies_list.js:98
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
-#: static/js/views/admin/participant_details_edit_info.js:474
+#: static/js/views/admin/participant_details_edit_info.js:475
 #: static/js/views/admin/participantsinfo.js:370
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "公司名称不能包含非字母数字字符！"
@@ -263,7 +263,7 @@ msgstr "公司名称不能包含非字母数字字符！"
 #: static/js/views/admin/companies_list.js:105
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
-#: static/js/views/admin/participant_details_edit_info.js:468
+#: static/js/views/admin/participant_details_edit_info.js:469
 #: static/js/views/admin/participantsinfo.js:364
 msgid "This company name cannot have more than 30 characters!"
 msgstr "公司名称不得超过 30 个字符！"
@@ -372,7 +372,7 @@ msgstr "名称"
 #: static/js/views/admin/course_details_bulk_actions.js:281
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
-#: static/js/views/admin/participant_details_edit_info.js:363
+#: static/js/views/admin/participant_details_edit_info.js:364
 #: static/js/views/admin/participantsinfo.js:129
 msgid "Status"
 msgstr "状态"
@@ -496,21 +496,21 @@ msgstr "将所有选定参与者的状态更改为:"
 
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
-#: static/js/views/admin/participant_details_edit_info.js:365
+#: static/js/views/admin/participant_details_edit_info.js:366
 #: static/js/views/admin/participantsinfo.js:133
 msgid "Participant"
 msgstr "参与者"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
-#: static/js/views/admin/participant_details_edit_info.js:366
+#: static/js/views/admin/participant_details_edit_info.js:367
 #: static/js/views/admin/participantsinfo.js:135
 msgid "Observer"
 msgstr "观察员"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
-#: static/js/views/admin/participant_details_edit_info.js:367
+#: static/js/views/admin/participant_details_edit_info.js:368
 #: static/js/views/admin/participantsinfo.js:134
 msgid "TA"
 msgstr "助教"
@@ -522,13 +522,13 @@ msgstr "保存更改"
 #: static/js/views/admin/course_details_bulk_actions.js:224
 #: static/js/views/admin/course_details_bulk_actions.js:329
 #: static/js/views/admin/course_details_bulk_actions.js:335
-#: static/js/views/admin/participant_details_edit_info.js:400
-#: static/js/views/admin/participant_details_edit_info.js:406
+#: static/js/views/admin/participant_details_edit_info.js:401
+#: static/js/views/admin/participant_details_edit_info.js:407
 msgid "You need to select status!"
 msgstr "您需要选择状态！"
 
 #: static/js/views/admin/course_details_bulk_actions.js:266
-#: static/js/views/admin/participant_details_edit_info.js:354
+#: static/js/views/admin/participant_details_edit_info.js:355
 msgid "Select Course"
 msgstr "选择课程"
 
@@ -545,8 +545,8 @@ msgstr "报名参与者"
 
 #: static/js/views/admin/course_details_bulk_actions.js:340
 #: static/js/views/admin/course_details_bulk_actions.js:344
-#: static/js/views/admin/participant_details_edit_info.js:411
-#: static/js/views/admin/participant_details_edit_info.js:415
+#: static/js/views/admin/participant_details_edit_info.js:412
+#: static/js/views/admin/participant_details_edit_info.js:416
 msgid "You need to select course!"
 msgstr "您需要选择课程！"
 
@@ -751,43 +751,43 @@ msgstr "公司不存在！"
 msgid "Updated user data!"
 msgstr "用户数据已更新！"
 
-#: static/js/views/admin/participant_details_edit_info.js:253
-#: static/js/views/admin/participant_details_edit_info.js:286
+#: static/js/views/admin/participant_details_edit_info.js:254
+#: static/js/views/admin/participant_details_edit_info.js:287
 msgid "Male"
 msgstr "男"
 
-#: static/js/views/admin/participant_details_edit_info.js:255
-#: static/js/views/admin/participant_details_edit_info.js:284
+#: static/js/views/admin/participant_details_edit_info.js:256
+#: static/js/views/admin/participant_details_edit_info.js:285
 msgid "Female"
 msgstr "女"
 
-#: static/js/views/admin/participant_details_edit_info.js:355
+#: static/js/views/admin/participant_details_edit_info.js:356
 msgid "User will be enrolled in course selected below."
 msgstr "用户将在下面选择的课程中注册。"
 
-#: static/js/views/admin/participant_details_edit_info.js:377
+#: static/js/views/admin/participant_details_edit_info.js:378
 msgid "Enroll Participant"
 msgstr "注册参与者"
 
-#: static/js/views/admin/participant_details_edit_info.js:435
+#: static/js/views/admin/participant_details_edit_info.js:436
 msgid "User successfully enrolled in course"
 msgstr "用户成功注册了课程"
 
-#: static/js/views/admin/participant_details_edit_info.js:521
+#: static/js/views/admin/participant_details_edit_info.js:522
 #: static/js/views/admin/participantsinfo.js:100
 msgid "Admin Company"
 msgstr "管理公司"
 
-#: static/js/views/admin/participant_details_edit_info.js:525
+#: static/js/views/admin/participant_details_edit_info.js:526
 msgid "Try selecting your company from the type-ahead results."
 msgstr "尝试从预输入结果中选择您的公司。"
 
-#: static/js/views/admin/participant_details_edit_info.js:531
+#: static/js/views/admin/participant_details_edit_info.js:532
 #: static/js/views/admin/participantsinfo.js:109
 msgid "Admin Permissions"
 msgstr "管理权限"
 
-#: static/js/views/admin/participant_details_edit_info.js:534
+#: static/js/views/admin/participant_details_edit_info.js:535
 #: static/js/views/admin/participantsinfo.js:112
 msgid "Company Admin"
 msgstr "公司管理员"

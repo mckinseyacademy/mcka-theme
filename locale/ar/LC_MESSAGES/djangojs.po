@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-26 21:30+0000\n"
+"POT-Creation-Date: 2018-10-04 11:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr "يجب تحديد دورة!"
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
-#: static/js/views/admin/participant_details_edit_info.js:359
+#: static/js/views/admin/participant_details_edit_info.js:360
 #: static/js/views/admin/participantsinfo.js:120
 msgid "Course"
 msgstr "الدورة"
@@ -263,7 +263,7 @@ msgstr "عدد الدورات التدريبية"
 #: static/js/views/admin/companies_list.js:98
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
-#: static/js/views/admin/participant_details_edit_info.js:474
+#: static/js/views/admin/participant_details_edit_info.js:475
 #: static/js/views/admin/participantsinfo.js:370
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "لا يمكن لاسم هذه الشركة أن تحتوي على رموز أحرف وأرقام!"
@@ -271,7 +271,7 @@ msgstr "لا يمكن لاسم هذه الشركة أن تحتوي على رمو
 #: static/js/views/admin/companies_list.js:105
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
-#: static/js/views/admin/participant_details_edit_info.js:468
+#: static/js/views/admin/participant_details_edit_info.js:469
 #: static/js/views/admin/participantsinfo.js:364
 msgid "This company name cannot have more than 30 characters!"
 msgstr "لا يمكن لاسم الشركة أن يتضمّن أكثر من 30 حرفاً!"
@@ -380,7 +380,7 @@ msgstr "الاسم"
 #: static/js/views/admin/course_details_bulk_actions.js:281
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
-#: static/js/views/admin/participant_details_edit_info.js:363
+#: static/js/views/admin/participant_details_edit_info.js:364
 #: static/js/views/admin/participantsinfo.js:129
 msgid "Status"
 msgstr "الحالة"
@@ -504,21 +504,21 @@ msgstr "تغيير حالة جميع المشاركين المختارين إل�
 
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
-#: static/js/views/admin/participant_details_edit_info.js:365
+#: static/js/views/admin/participant_details_edit_info.js:366
 #: static/js/views/admin/participantsinfo.js:133
 msgid "Participant"
 msgstr "المشاركون"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
-#: static/js/views/admin/participant_details_edit_info.js:366
+#: static/js/views/admin/participant_details_edit_info.js:367
 #: static/js/views/admin/participantsinfo.js:135
 msgid "Observer"
 msgstr "المراقب"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
-#: static/js/views/admin/participant_details_edit_info.js:367
+#: static/js/views/admin/participant_details_edit_info.js:368
 #: static/js/views/admin/participantsinfo.js:134
 msgid "TA"
 msgstr "مساعد مدرّس"
@@ -530,13 +530,13 @@ msgstr "حفظ التغييرات"
 #: static/js/views/admin/course_details_bulk_actions.js:224
 #: static/js/views/admin/course_details_bulk_actions.js:329
 #: static/js/views/admin/course_details_bulk_actions.js:335
-#: static/js/views/admin/participant_details_edit_info.js:400
-#: static/js/views/admin/participant_details_edit_info.js:406
+#: static/js/views/admin/participant_details_edit_info.js:401
+#: static/js/views/admin/participant_details_edit_info.js:407
 msgid "You need to select status!"
 msgstr "يجب تحديد حالة!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:266
-#: static/js/views/admin/participant_details_edit_info.js:354
+#: static/js/views/admin/participant_details_edit_info.js:355
 msgid "Select Course"
 msgstr "اختر دورة"
 
@@ -553,8 +553,8 @@ msgstr "تسجيل المشاركين"
 
 #: static/js/views/admin/course_details_bulk_actions.js:340
 #: static/js/views/admin/course_details_bulk_actions.js:344
-#: static/js/views/admin/participant_details_edit_info.js:411
-#: static/js/views/admin/participant_details_edit_info.js:415
+#: static/js/views/admin/participant_details_edit_info.js:412
+#: static/js/views/admin/participant_details_edit_info.js:416
 msgid "You need to select course!"
 msgstr "يجب تحديد دورة!"
 
@@ -760,43 +760,43 @@ msgstr "الشركة غير موجودة! "
 msgid "Updated user data!"
 msgstr "تحديث بيانات المستخدم!"
 
-#: static/js/views/admin/participant_details_edit_info.js:253
-#: static/js/views/admin/participant_details_edit_info.js:286
+#: static/js/views/admin/participant_details_edit_info.js:254
+#: static/js/views/admin/participant_details_edit_info.js:287
 msgid "Male"
 msgstr "ذكر"
 
-#: static/js/views/admin/participant_details_edit_info.js:255
-#: static/js/views/admin/participant_details_edit_info.js:284
+#: static/js/views/admin/participant_details_edit_info.js:256
+#: static/js/views/admin/participant_details_edit_info.js:285
 msgid "Female"
 msgstr "أنثى"
 
-#: static/js/views/admin/participant_details_edit_info.js:355
+#: static/js/views/admin/participant_details_edit_info.js:356
 msgid "User will be enrolled in course selected below."
 msgstr "سوف يتم إلحاق المستخدم  بالدورة المحددة أدناه"
 
-#: static/js/views/admin/participant_details_edit_info.js:377
+#: static/js/views/admin/participant_details_edit_info.js:378
 msgid "Enroll Participant"
 msgstr "تسجيل المشارك"
 
-#: static/js/views/admin/participant_details_edit_info.js:435
+#: static/js/views/admin/participant_details_edit_info.js:436
 msgid "User successfully enrolled in course"
 msgstr "تم تسجيل المستخدم بنجاح في الدورة التدريبية"
 
-#: static/js/views/admin/participant_details_edit_info.js:521
+#: static/js/views/admin/participant_details_edit_info.js:522
 #: static/js/views/admin/participantsinfo.js:100
 msgid "Admin Company"
 msgstr "الشركة المشرفة"
 
-#: static/js/views/admin/participant_details_edit_info.js:525
+#: static/js/views/admin/participant_details_edit_info.js:526
 msgid "Try selecting your company from the type-ahead results."
 msgstr "حاول تحديد الشركة من النتائج المحددة مسبقًا."
 
-#: static/js/views/admin/participant_details_edit_info.js:531
+#: static/js/views/admin/participant_details_edit_info.js:532
 #: static/js/views/admin/participantsinfo.js:109
 msgid "Admin Permissions"
 msgstr "أذونات المشرف"
 
-#: static/js/views/admin/participant_details_edit_info.js:534
+#: static/js/views/admin/participant_details_edit_info.js:535
 #: static/js/views/admin/participantsinfo.js:112
 msgid "Company Admin"
 msgstr "مشرف الشركة"
