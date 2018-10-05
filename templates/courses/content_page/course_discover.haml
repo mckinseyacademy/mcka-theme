@@ -7,45 +7,60 @@
       %ul
         - for article in articles
           %li
-            %a.article-title{"href": "#{article.url}", 'target': '_blank'}
-              = article.title
+            - if article.url
+              %a.article-title{"href": "#{article.url}", 'target': '_blank'}
+                - if article.title
+                  = article.title
             .attribution
               .when
                 - if article.display_date
                   %time.label-2= article.display_date
-                %span.label-2= article.byline
+                - if article.byline
+                  %span.label-2= article.byline
               .person-title= article.author
-            %a{"href": "#{article.url}", 'target': '_blank'}
-              %i.fa.fa-arrow-circle-right
+            - if article.url
+              %a{"href": "#{article.url}", 'target': '_blank'}
+                %i.fa.fa-arrow-circle-right
     %section.infographic
       .label-6 {% trans "INFOGRAPHIC" %}
       .infographic-holder
-        %a{"href": "#{infographic.url}", 'target': '_blank'}
-          %img{"src": "#{infographic.thumbnail_url}", "alt": "#{infographic.title}"}
+        - if infographic.url
+          %a{"href": "#{infographic.url}", 'target': '_blank'}
+            - if infographic.thumbnail_url and infographic.title
+              %img{"src": "#{infographic.thumbnail_url}", "alt": "#{infographic.title}"}
       %hr
       .label-6 {% trans "ON TWITTER" %}
       .tweet
-        %a{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}
-          %img{"src": "#{tweet.thumbnail_url}"}
+        - if tweet.twitter_username
+          %a{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}
+            - if tweet.thumbnail_url
+              %img{"src": "#{tweet.thumbnail_url}"}
         .content
           %div
-            %span.label-8= tweet.twitter_username
-            %a.twitter-handle{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}= tweet.twitter_username
+            - if tweet.twitter_username
+              %span.label-8= tweet.twitter_username
+              %a.twitter-handle{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}= tweet.twitter_username
             - if tweet.display_date
               %time.label-3= tweet.display_date
-          .tweet-body.label-2= tweet.body|safe
+          - if tweet.body
+            .tweet-body.label-2= tweet.body|safe
     %section.videos
       .label-6 {% trans "VIDEOS" %}
       %ul
         - for video in videos
           %li
-            %a.article-title{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}"}
-              = video.title
+            - if video.url
+              %a.article-title{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}"}
+                - if video.title
+                  = video.title
             .attribution
               .when
                 - if video.display_date
                   %time.label-2= video.display_date
-                %span.label-2= video.byline
-              .label-9= video.body
-            %a{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}"}
-              %i.fa.fa-play-circle
+                - if video.byline
+                  %span.label-2= video.byline
+              - if video.body
+                .label-9= video.body
+            - if video.url
+              %a{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}"}
+                %i.fa.fa-play-circle
