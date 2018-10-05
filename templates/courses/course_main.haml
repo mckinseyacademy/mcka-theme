@@ -22,11 +22,18 @@
             - include "courses/content_page/course_discover.haml"
             %hr
             %article.course-quote
-              %blockquote= quote.body
+              %blockquote
+              - if quote.body
+                = quote.body
               .attribution
-                %img{"src": "#{quote.thumbnail_url}"}
-                .person-name= quote.byline
-                .person-title= quote.byline_title
+                - if quote.thumbnail_url
+                  %img{"src": "#{quote.thumbnail_url}"}
+                .person-name
+                  - if quote.byline
+                    = quote.byline
+                .person-title
+                  - if quote.byline_title
+                    = quote.byline_title
 
   #beta_visualizations.reveal-modal.large{'data-reveal': ''}
     .close-reveal-modal
