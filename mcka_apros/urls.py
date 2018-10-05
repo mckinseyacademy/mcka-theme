@@ -79,5 +79,6 @@ urlpatterns.extend([
     url(r'^company_images/(?P<image_url>.*)$', adminviews.load_background_image, name='load_background_image')
 ])
 
+handler403 = main_views.error_403
 handler404 = main_views.error_404
 handler500 = main_views.error_500
