@@ -120,13 +120,63 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .lesson-content .themed-xblock.xblock--drag-and-drop // .lesson-content is specific to Apros
 {
-    // In Apros, the popups should always have a turquiose color, whether they're right or wrong (MCKIN-6169)
+    // In Apros, the popups should always have a blue color, whether they're right or wrong (MCKIN-6169)
     .popup, .popup.popup-incorrect {
-        background-color: $mckinsey-academy-turquoise;
+        background-color: $mckinsey-royal-blue;
     }
 
-    .popup .close-feedback-popup-desktop-button:focus {
-        outline: none;
+    .popup .close-feedback-popup-desktop-button{
+        &:focus{
+            outline: none;
+        }
+        span.text{
+            // .fa class carry font-awesome but as the button has a text so font-family should be open-sans
+            font-family: "Open Sans", sans-serif;
+            font-size: 11px;
+            padding: 10px 14px;
+            min-width: 155px;
+            &:after{
+                font-family: "fontawesome";
+                top: 5px;
+            }
+        }
+    }
+
+    .fa-remove:before, .fa-close:before, .fa-times:before{
+        // the cross icon is bit bolder so changing the content for a thinner icon
+        content: '\2715';
+    }
+
+    .fa-check:before{
+        // The tick icon is a bit bolder so changing the content for a thinner icon
+        content: '';
+        position: absolute;
+        left: 15px;
+        top: 9px;
+        right: 0;
+        bottom: 0;
+        width: 10px;
+        height: 18px;
+        border: solid #fff;
+        border-width: 0 2px 2px 0;
+        -moz-transform: rotate(45deg);
+        -o-transform: rotate(45deg);
+        -ms-transform: rotate(45deg);
+        -webkit-transform: rotate(45deg);
+        transform: rotate(45deg);
+    }
+
+    .popup .popup-header-icon .fa{
+        // Icon background is always green color no matter the answer is true or false
+        background-color: $mckinsey-success-green;
+        color: white;
+        position: relative;
+        line-height: 42px;
+    }
+
+    .popup.popup-incorrect .popup-header-icon .fa{
+        // Wrong anwer icon is red
+        background-color: $mckinsey-danger-red;
     }
 
     // Apros mobile web overrides:
