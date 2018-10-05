@@ -201,6 +201,7 @@ PutUserAdminCompanies = function(user_id, list_of_company_ids){
   var options = {
       url: ApiUrls.company_admin_get_post_put_delete(user_id),
       type: "PUT",
+      contentType: "application/json; charset=utf-8",
       dataType: "json",
       timeout: 10000,
       data: JSON.stringify({"ids":list_of_company_ids}),
