@@ -1,5 +1,6 @@
 - extends "admin/admin_layout.haml"
 - load i18n
+- load static
 
 - block content
   .row
@@ -44,7 +45,7 @@
         #companyDetailsNavigationButtonsContainer
           .row
             .companyDetailsCoursesButton.large-3.columns
-              %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}>
+              %a.hashPageButton.active{:href => '#', :target => '_self', :data-target => 'companyCourses', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)', :style => 'font-weight: bold'}>
                 {% trans "COURSES" %}
 
             - if user.is_mcka_admin
@@ -52,17 +53,53 @@
                 %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLinkedApps', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                   {% trans "LINKED APPS" %}
 
+            - if user.is_mcka_subadmin
+              .companyCustomFieldsButton.large-3.columns
+                %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCustomFields', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                  {% trans "COMPANY FIELDS" %}
+
             .large-6.columns
-          %hr
+
+
+
       #companyDetailsDataWrapper
         .companyCourses.contentNavigationContainer
           #companyDetailsCoursesContainer
             #companyDetailsCoursesViewGridBlock
 
+        .companyCustomFields.contentNavigationContainer
+          #companyCustomFieldsContainer
+            - if user.is_mcka_subadmin
+              .row.manager-info
+                .large-9.columns
+                  %input{"name": "manager_check", "type":"checkbox", "value": "manager_check"}
+                    Include Manager Info
+                .large-3.columns
+                  %a.button.medium{"data-reveal-id" : "companyfields", "href" : "#"}
+                    {% trans "Add new field "%}
+            %br
+            #companyCustomFieldsGridBlockDisplay
+
         - if user.is_mcka_admin
           .companyLinkedApps.contentNavigationContainer
             #companyLinkedAppsContainer
               #companyLinkedAppsViewGridBlock
+
+    - if user.is_mcka_subadmin
+      #companyfields.reveal-modal.small{"aria-hidden" : "true", "aria-labelledby" : "modalTitle", "data-reveal" : "", "role": "dialog"}
+        %h4 {% trans "Add New Fields" %}
+        %p {% trans "Create upto 4 new fields of new additional data" %}
+        %br
+        %form#additionalFieldForm{"action":"/admin/api/companies/#{company.id}/fields", "method":"post"}
+          {% csrf_token %}
+          #customFieldsTable
+
+        .error
+        %a#submitCompanyFields.button.small
+          {% trans "+ New Company Fields  "%}
+        %a#closeCompanyField.button.small
+          {% trans "Cancel"%}
+        %a.close-reveal-modal{"aria-label" : "Close"} ×
 
     - if user.is_mcka_admin
       #linkApp.reveal-modal.small{"aria-hidden" : "true", "aria-labelledby" : "modalTitle", "data-reveal" : "", :role => "dialog"}
@@ -75,3 +112,5 @@
           {% trans "Link App" %}
         %input.button.small.radius.close-reveal-modal{:value => "{% trans 'Cancel' %}", :type => "button"}/
         %a.close-reveal-modal{"aria-label" : "Close"} ×
+
+  %script{src: "{% static 'js/company_fields.js' %}"}

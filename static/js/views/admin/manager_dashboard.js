@@ -37,7 +37,6 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
     }},
   ],
   initialize: function(){
-    InitializeTooltipOnPage();
     var _this = this;
     var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
     if (companyPageFlag == 'True')
@@ -45,8 +44,6 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       var companyId = $('#courseDetailsDataWrapper').attr('company-id');
       this.collection.updateCompanyQuerryParams(companyId);
     }
-    var count = 2;
-    this.collection.updateCountQuerryParams(count);
     this.collection.fetch();
   },
   render: function(){

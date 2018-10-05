@@ -180,6 +180,7 @@ urlpatterns += [
 
     url(r'^api/companies/(?P<company_id>[0-9]+)/linkedapps$', views.CompanyLinkedAppsApi.as_view(), name='company_linked_apps_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/courses$', views.CompanyCoursesApi.as_view(), name='company_courses_api'),
+    url(r'^api/companies/(?P<company_id>[0-9]+)/fields$', views.CompanyCustomFields.as_view(), name='company_custom_fileds_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/edit$', views.company_edit_api.as_view(), name='company_edit_api'),
     url(r'^api/companies/new_company$', views.create_new_company_api.as_view(), name='create_new_company_api'),
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),

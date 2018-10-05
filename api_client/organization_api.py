@@ -4,6 +4,7 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 from urllib import urlencode
 
+from api_client.oauth2_requests import get_oauth2_session
 from lib.utils import DottableDict
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 
@@ -383,4 +384,33 @@ ORGANIZATION_ERROR_CODE_MESSAGES = {
 }
 ERROR_CODE_MESSAGES.update(ORGANIZATION_ERROR_CODE_MESSAGES)
 
+
+@api_error_protect
+def get_organization_fields(organization_id):
+    """Get all custom fields for any given organization"""
+
+    edx_oauth2_session = get_oauth2_session()
+
+    url = '{}/{}/{}/attributes'.format(
+        settings.API_SERVER_ADDRESS,
+        ORGANIZATION_API,
+        organization_id
+    )
+
+    response = edx_oauth2_session.get(url)
+    return response.json()
+
+
+@api_error_protect
+def add_organization_fields(organization_id, data):
+    """ Add custom field name for any given organization"""
+    edx_oauth2_session = get_oauth2_session()
+
+    url = '{}/{}/{}/attributes'.format(
+        settings.API_SERVER_ADDRESS,
+        ORGANIZATION_API,
+        organization_id
+    )
+    for field in data:
+        edx_oauth2_session.post(url=url, data={'name': field})
 

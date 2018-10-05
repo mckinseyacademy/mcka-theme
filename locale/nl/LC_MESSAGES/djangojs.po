@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-04 14:05+0000\n"
+"POT-Creation-Date: 2018-10-05 05:25+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -150,6 +150,18 @@ msgstr "status"
 msgid "0"
 msgstr "0"
 
+#: static/js/company_fields.js:9
+msgid "2 or more fields can not have the same name"
+msgstr ""
+
+#: static/js/company_fields.js:13
+msgid "Only alphanumeric characters and spaces allowed"
+msgstr ""
+
+#: static/js/company_fields.js:53 static/js/company_fields.js:72
+msgid "You can only add up to 4 fields"
+msgstr ""
+
 #: static/js/course_contact_modal.js:15
 msgid "Notification"
 msgstr "Melding"
@@ -237,7 +249,7 @@ msgstr "Deelnemers:"
 msgid "Email"
 msgstr "E-mail"
 
-#: static/js/router.js:355
+#: static/js/router.js:363
 msgid "Please select at least one course"
 msgstr "Selecteer ten minste één cursus"
 

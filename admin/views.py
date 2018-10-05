@@ -48,6 +48,7 @@ from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.json_object import JsonObjectWithImage
 from api_client.mobileapp_api import get_mobile_app_themes
+from api_client.organization_api import get_organization_fields, add_organization_fields
 from api_client.organization_models import Organization
 from api_client.platform_api import get_course_advanced_settings
 from api_client.project_models import Project
@@ -4825,6 +4826,24 @@ def company_details(request, company_id):
     }
 
     return render(request, 'admin/companies/company_details.haml', data)
+
+
+class CompanyCustomFields(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, )
+    def get(self, request, company_id):
+        data = get_organization_fields(company_id)
+        return Response(data)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, )
+    def post(self, request, company_id):
+        fields_length = len(request.POST)
+        data = []
+        for field_index in range(fields_length-1):
+            if request.POST['field_name_{}'.format(field_index)]:
+                data.append(request.POST['field_name_{}'.format(field_index)])
+        add_organization_fields(company_id, data)
+        return redirect('company_details', company_id=company_id)
 
 
 class CompanyCoursesApi(APIView):

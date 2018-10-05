@@ -267,6 +267,14 @@ var Router = Backbone.Router.extend({
     var company_courses_view = new Apros.views.CompanyDetailsCoursesView({collection: companyCourses, el: '#companyDetailsCoursesViewGridBlock'});
     company_courses_view.render();
   },
+  company_custom_fields: function () {
+    var companyId = $('#mainCompanyDetailsDataContainer').attr('data-id');
+    Apros.Router.linked_views['companyCustomFields']['drawn'] = true;
+    var url = ApiUrls.companies_list+'/'+companyId+'/fields';
+    var companyFieldsCollection  = new Apros.collections.companyCustomFieldsCollection({url: url});
+    var company_custom_fields_view = new Apros.views.CompanyCustomFieldsView({collection: companyFieldsCollection, el: '#companyCustomFieldsGridBlockDisplay'});
+    company_custom_fields_view.render();
+  },
   company_details_linked_apps: function(company_id){
     $('#companyDetailsDataWrapper').find('.contentNavigationContainer').each(function(index, value){
       val = $(value);
@@ -402,6 +410,10 @@ Apros.Router.linked_views = {
   },
   'companyLinkedApps': {
     'function':Apros.Router.company_details_linked_apps,
+    'drawn': false
+  },
+  'companyCustomFields':{
+    'function': Apros.Router.company_custom_fields,
     'drawn': false
   },
 }
