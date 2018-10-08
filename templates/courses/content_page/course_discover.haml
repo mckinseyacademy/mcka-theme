@@ -26,7 +26,7 @@
       .infographic-holder
         - if infographic.url
           %a{"href": "#{infographic.url}", 'target': '_blank'}
-            - if infographic.thumbnail_url and infographic.title
+            - if infographic.thumbnail_url
               %img{"src": "#{infographic.thumbnail_url}", "alt": "#{infographic.title}"}
       %hr
       .label-6 {% trans "ON TWITTER" %}
