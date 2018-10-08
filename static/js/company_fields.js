@@ -8,7 +8,7 @@ $(function() {
             {
                 return gettext("2 or more fields can not have the same name");
             }
-            if(!fields[i].match(/^[0-9a-z]+$/))
+            if(!fields[i].match(/^[0-9a-zA-Z]+$/))
             {
                 return gettext("Only alphanumeric characters and spaces allowed");
             }
