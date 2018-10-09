@@ -17,10 +17,10 @@
         - for index,course_id, course_name in manager_courses
           %li
             - if index == 0
-              %a.hashPageButton.active{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
+              %a.hashPageButton.active{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
                 = course_name
             - else
-              %a.hashPageButton{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
+              %a.hashPageButton{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
                 = course_name
 
       .manager-progress-cards

@@ -871,3 +871,34 @@ $(document).ready(function () {
     $('span.current_language').html(currentLanguage);
 
 });
+
+function InitializeAverageCalculate(){
+  var totalProgress = 0;
+  var totalProficiency = 0;
+  var total = 0;
+    // Progressbar for progress column
+
+  var dataTarget = $("a.hashPageButton.active").attr('data-target');
+  $('.'+dataTarget+' td.progress').each(function () {
+    var text = $(this).text();
+    $(this).css("width" , text);
+    totalProgress += parseInt(text.replace("%", ""));
+    total++;
+  });
+
+  $('.'+dataTarget+' td.proficiency').each(function () {
+    var text = $(this).text();
+    $(this).css("width" , text);
+    totalProficiency += parseInt(text.replace("%", ""));
+  });
+
+  // Set the Average progess and proficiency
+  if(total) {
+    $('.progress-average large').text(parseInt(totalProgress / total) + "%");
+    $('.proficiency-average large span').text(parseInt(totalProficiency / total));
+  }
+  else{
+    $('.progress-average large').text("0%");
+    $('.proficiency-average large span').text("0");
+  }
+}

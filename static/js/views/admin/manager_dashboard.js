@@ -36,6 +36,10 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       return InternationalizePercentage(parseInt(value));
     }},
   ],
+  // Delegated events for creating new items, and clearing completed ones.
+  events: {
+    'click .hashPageButton': 'calculateAverage',
+  },
   initialize: function(){
     var _this = this;
     var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
@@ -46,7 +50,7 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
     }
     this.collection.fetch();
   },
-  render: function(){
+  render: function() {
     managerDashboardReportGridBlock = new bbGrid.View({
       container: this.$el,
       enableSearch: true,
@@ -54,44 +58,26 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       collection: this.collection,
       colModel: this.generatedGridColumns,
       onReady: function () {
-
-        var totalProgress = 0;
-        var totalProficiency = 0;
-        var total = 0;
-        // Progressbar for progress column
-        $('#managerDashboardWrapper td.progress').each(function (index, value) {
-            var text = $(this).text();
-            $(this).css("width" , text);
-            totalProgress += parseInt(text.replace("%", ""));
-            total++;
-        });
-
-        $('#managerDashboardWrapper td.proficiency').each(function (index, value) {
-          var text = $(this).text();
-          $(this).css("width" , text);
-            totalProficiency += parseInt(text.replace("%", ""));
-        });
-
-        // Set the Average progess and proficiency
-        if(total) {
-            $('.progress-average large').text(parseInt(totalProgress / total) + "%");
-            $('.proficiency-average large span').text(parseInt(totalProficiency / total));
-        }
+        InitializeAverageCalculate();
 
         // Activation status icon
         $('#managerDashboardWrapper .status').each(function () {
           if($(this).text().toLowerCase().indexOf("yes") >= 0) {
             $(this).addClass("yes")
-        }
-        else{
+          }
+          else{
             $(this).addClass("no")
-        }});
-
-      }
+          }
+        });
+     }
     });
     $('.bbGrid-container').append('<i class="fa fa-spinner fa-spin"></i>');
     managerDashboardReportGridBlock['partial_collection'] = this.collection;
     this.managerDashboardReportGridBlock = managerDashboardReportGridBlock;
-    this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);
-    $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
-}});
+    this.$el.find('.bbGrid-container').on('scroll', {extra: this}, this.fetchPages);
+    $(document).on('onClearSearchEvent', {extra: this}, this.onClearSearchEvent);
+  },
+  calculateAverage: function(){
+    InitializeAverageCalculate();
+  }
+});
