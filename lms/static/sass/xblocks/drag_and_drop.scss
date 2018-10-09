@@ -59,6 +59,72 @@
         // Mckinsey specific color of navigation arrow
         color: $mckinsey-royal-blue;
     }
+
+    // Fixed sizing feedback in assessment mode
+    .fixed-sizing-feedback{
+        background-color: $mckinsey-royal-blue;
+        top: 15%;
+        bottom: 15%;
+        .fa-check{
+            &:before{
+                // positioning of icon carrying thinner stroke
+                left: 24px !important;
+                top: 18px !important;
+            }
+        }
+        &.partial{
+            .feedback-detail{
+              //
+              .icon{
+                background-color: rgba(255,255,255,0.3) !important;
+                .fa-check{
+                  opacity: 1 !important;
+                  &:before{
+                    opacity: 0.4;
+                  }
+                  &:after{
+                    height: 28% !important;
+                    background-color: $mckinsey-success-green !important;
+                  }
+                }
+              }
+            }
+        }
+        &.incorrect{
+            .feedback-detail{
+                .icon{
+                    background-color: $mckinsey-danger-red !important;
+                }
+                p{
+                    &:before{
+                        background-color: $mckinsey-danger-red !important;
+                    }
+                }
+            }
+            .fa-check{
+                &:before{
+                    left: 28px !important;
+                    top: 32px !important;
+                }
+            }
+        }
+        .feedback-detail{
+            button{
+                color: $mckinsey-royal-blue;
+                padding: 17px 40px;
+            }
+            .icon{
+                background-color: $mckinsey-success-green !important;
+
+            }
+        }
+        .hint-detail{
+            border-left-color: rgba(255,255,255,0.2);
+            ol{
+                margin-left: 0;
+            }
+        }
+    }
 }
 
 .themed-xblock.xblock--drag-and-drop {
