@@ -23,8 +23,8 @@
             %hr
             %article.course-quote
               %blockquote
-              - if quote.body
-                = quote.body
+                - if quote.body
+                  = quote.body
               .attribution
                 - if quote.thumbnail_url
                   %img{"src": "#{quote.thumbnail_url}"}
