@@ -269,6 +269,14 @@
       
       details.find('.participantLocationValue').text(combinedLocation);
       $('#participantsTopDetailsContainer').find('.participantFullName').text(edit.find('.participantFirstNameValue input').val() + ' ' + edit.find('.participantLastNameValue input').val());
+
+      var updated_company_fields_values = $('.participantCompanyField input');
+      var company_field_values = $('.participantCompanyFieldValue');
+      for(var i=0;i< updated_company_fields_values.length;++i)
+      {
+        if(updated_company_fields_values[i].value)
+          company_field_values[i].innerText = updated_company_fields_values[i].value;
+      }
     },
 
     update_edit_field_data: function(_this)

@@ -479,3 +479,53 @@ class EditCourseCustomTermsTest(TestCase):
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
 
         self.assertNotEqual(course_meta_data.module_label, module_label)
+
+
+class TestGetUserCompanyFields(TestCase, ApplyPatchMixin):
+    """ Testing get_user_company_fields of controller """
+
+    def setUp(self):
+        """ Setting up commons """
+        self.user_id = 1
+        self.organization_id = 1
+        self.get_organization_fields = self.apply_patch('admin.controller.get_organization_fields')
+        self.get_company_fields_value_for_user = self.apply_patch('admin.controller.get_company_fields_value_for_user')
+        self.get_organization_fields.return_value = [
+            {'key': 'phone', 'label': 'phone'},
+            {'key': 'email', 'label': 'email'}
+        ]
+
+    def test_with_no_user_field(self):
+        """ With no user value for fields """
+        self.get_company_fields_value_for_user.return_value = []
+        expected_output = [
+            {'key': 'phone', 'label': 'phone', 'value': None},
+            {'key': 'email', 'label': 'email', 'value': None}
+        ]
+        output = controller.get_user_company_fields(self.user_id, self.organization_id)
+        self.assertEqual(output, expected_output)
+
+    def test_with_partial_user_fields(self):
+        """ With partial user values for fields """
+        self.get_company_fields_value_for_user.return_value = [
+            {'key': 'phone', 'value': '123123'}
+        ]
+        expected_output = [
+            {'key': 'phone', 'label': 'phone', 'value': '123123'},
+            {'key': 'email', 'label': 'email', 'value': None}
+        ]
+        output = controller.get_user_company_fields(self.user_id, self.organization_id)
+        self.assertEqual(output, expected_output)
+
+    def test_with_all_user_fields(self):
+        """ With all user values for fields """
+        self.get_company_fields_value_for_user.return_value = [
+            {'key': 'phone', 'value': '123123'},
+            {'key': 'email', 'value': 'abc@xyz.com'}
+        ]
+        expected_output = [
+            {'key': 'phone', 'label': 'phone', 'value': '123123'},
+            {'key': 'email', 'label': 'email', 'value': 'abc@xyz.com'}
+        ]
+        output = controller.get_user_company_fields(self.user_id, self.organization_id)
+        self.assertEqual(output, expected_output)

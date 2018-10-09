@@ -49,8 +49,9 @@ from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.group_api import TAG_GROUPS
 from api_client.mobileapp_api import create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme
+from api_client.organization_api import get_organization_fields
 from api_client.project_models import Project
-from api_client.user_api import USER_ROLES
+from api_client.user_api import USER_ROLES, update_user_company_field_values, get_company_fields_value_for_user
 from courses.models import FeatureFlags, CourseMetaData
 from lib.mail import (
     sendMultipleEmails, email_add_single_new_user, create_multiple_emails
@@ -2687,3 +2688,24 @@ def _get_user_managers(username):
     if user_manager_response is not None:
         user_managers = user_manager_response["results"]
     return user_managers
+
+
+def get_user_company_fields(user_id, organization_id):
+    org_fields = get_organization_fields(organization_id)
+    fields_keys = ','.join([field.get('key') for field in org_fields])
+    fields_value = get_company_fields_value_for_user(user_id, organization_id, fields_keys)
+    result = {field['key']: field for field in fields_value}
+
+    for field in org_fields:
+        field['value'] = result.get(field['key'], {}).get('value')
+    return org_fields
+
+
+def update_user_company_fields_value(user_id, values):
+    if not values.get('company'):
+        return
+    else:
+        organization_id = values.get('company')
+        fields = get_organization_fields(organization_id)
+        fields = [(field['key'], values.get(field['key'])) for field in fields if values.get(field['key'])]
+        update_user_company_field_values(user_id, organization_id, fields)

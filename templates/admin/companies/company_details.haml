@@ -53,7 +53,7 @@
                 %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyLinkedApps', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                   {% trans "LINKED APPS" %}
 
-            - if user.is_mcka_subadmin
+            - if user.is_mcka_subadmin or user.mcka_admin
               .companyCustomFieldsButton.large-3.columns
                 %a.hashPageButton{:href => '#', :target => '_self', :data-target => 'companyCustomFields', :data-container => '#companyDetailsDataWrapper', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                   {% trans "COMPANY FIELDS" %}

@@ -42,7 +42,7 @@ from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
-    get_organization_active_courses, edit_course_meta_data
+    get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value
 from api_client import course_api, user_api, manager_api, group_api, workgroup_api, organization_api, mobileapp_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
@@ -3738,6 +3738,8 @@ class participant_details_api(APIView):
             if len(userOrganizations["main_company"]):
                 selectedUser['company_name'] = userOrganizations["main_company"][0].display_name
                 selectedUser['company_id'] = userOrganizations["main_company"][0].id
+                selectedUser['custom_fields'] = get_user_company_fields(selectedUser.get('id'),userOrganizations["main_company"][0].id)
+
             else:
                 selectedUser['company_name'] = _('No company')
                 selectedUser['company_id'] = ''
@@ -3801,10 +3803,16 @@ class participant_details_api(APIView):
                 companyAdminFlag = True
             selectedUser['companyAdminFlag'] = companyAdminFlag
             selectedUser['internalAdminFlag'] = request.user.is_internal_admin
-            return render( request, 'admin/participants/participant_details.haml', selectedUser)
+            return render(request, 'admin/participants/participant_details.haml', selectedUser)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, user_id, format=None):
+
+        try:
+            update_user_company_fields_value(user_id ,request.POST)
+        except ApiError, e:
+            return Response({'status': 'error', 'type': 'api_error', 'message': e.message})
+
         form = EditExistingUserForm(request.POST.copy())
         if form.is_valid():
             cleaned_data = form.cleaned_data

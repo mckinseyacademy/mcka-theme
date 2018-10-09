@@ -825,3 +825,43 @@ def get_user_by_bearer_token():
         return json.loads(response.read()), response.code
     except Exception as error:
         return None, error.code
+
+
+@api_error_protect
+def get_company_fields_value_for_user(user_id, organization_id, fields):
+
+    edx_oauth2_session = get_oauth2_session()
+
+    url = '{}/{}/{}/attributes?organization_id={}&key_list={}'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id,
+        organization_id,
+        fields
+    )
+    response = edx_oauth2_session.get(url)
+    return response.json()
+
+
+@api_error_protect
+def update_user_company_field_values(user_id, organization_id, fields):
+
+    edx_oauth2_session = get_oauth2_session()
+
+    url = '{}/{}/{}/attributes/'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id,
+    )
+
+    for key, value in fields:
+        data = {
+            'organization_id': organization_id,
+            'key': key,
+            'value': value,
+        }
+        response = edx_oauth2_session.put(url=url, data=data)
+        if response.status_code == status.HTTP_404_NOT_FOUND:
+            # Send post id entry doesn't exist against field
+            response = edx_oauth2_session.post(url=url, data=data)
+
