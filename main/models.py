@@ -6,12 +6,12 @@ class CuratedContentItem(models.Model):
         db_table = 'curated_content_item'
 
     course_id = models.CharField(max_length=255, null=False)
-    title = models.CharField(max_length=255, blank=True, null=True)
+    title = models.CharField(max_length=255, blank=True, default='')
     body = models.CharField(max_length=1000, blank=True, null=True)
     source = models.CharField(max_length=255, blank=True, null=True)
     byline = models.CharField(max_length=255, blank=True, null=True)
     byline_title = models.CharField(max_length=255, blank=True, null=True)
-    url = models.URLField(blank=True, null=True)
+    url = models.URLField(blank=True, default='')
     thumbnail_url = models.URLField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     twitter_username = models.CharField(max_length=255, blank=True, null=True)
