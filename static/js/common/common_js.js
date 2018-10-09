@@ -894,8 +894,8 @@ function InitializeAverageCalculate(){
 
   // Set the Average progess and proficiency
   if(total) {
-    $('.progress-average large').text(parseInt(totalProgress / total) + "%");
-    $('.proficiency-average large span').text(parseInt(totalProficiency / total));
+    $('.progress-average large').text(Math.round(totalProgress / total) + "%");
+    $('.proficiency-average large span').text(Math.round(totalProficiency / total));
   }
   else{
     $('.progress-average large').text("0%");
