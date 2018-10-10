@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-05 05:25+0000\n"
+"POT-Creation-Date: 2018-10-09 14:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -739,6 +739,27 @@ msgstr "Geen"
 msgid "Do you really want to delete: \n"
 msgstr "Weet u zeker dat u de volgende verwijdering wilt uitvoeren: \n"
 
+#: static/js/views/admin/manager_dashboard.js:130
+#: static/js/views/courses/lesson_note.js:2
+msgid "Lesson"
+msgstr "Les"
+
+#: static/js/views/admin/manager_dashboard.js:130
+msgid "complete"
+msgstr "Onvolledig"
+
+#: static/js/views/admin/manager_dashboard.js:135
+msgid "Error Occured!"
+msgstr ""
+
+#: static/js/views/admin/manager_dashboard.js:138
+msgid "Hide Details"
+msgstr ""
+
+#: static/js/views/admin/manager_dashboard.js:168
+msgid "View Details"
+msgstr ""
+
 #: static/js/views/admin/navigation.js:6
 msgid "Are you sure you want to remove this ?"
 msgstr "Weet u zeker dat u deze verwijdering wilt uitvoeren?"
@@ -833,10 +854,6 @@ msgstr "Toevoegingsdatum"
 #: static/js/views/admin/participantsinfo.js:34
 msgid "Enrolled In"
 msgstr "Ingeschreven voor"
-
-#: static/js/views/courses/lesson_note.js:2
-msgid "Lesson"
-msgstr "Les"
 
 #: static/js/views/courses/lesson_note.js:3
 msgid "Module"

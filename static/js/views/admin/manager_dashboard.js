@@ -6,7 +6,7 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
     { title: 'Email', index: true, name: 'email',
       actions: function(id, attributes)
       {
-        return '<a href="mailto:' + attributes['email']+'">'+attributes['email'] + '</a>';
+        return '<a id="email" href="mailto:' + attributes['email']+'">'+attributes['email'] + '</a>';
       }
     },
     { title: 'Status', index: true, name: 'custom_user_status'},
@@ -35,11 +35,20 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
         return value;
       return InternationalizePercentage(parseInt(value));
     }},
+      { title: '', name: '',
+          actions: function(id, attributes)
+    {
+      return '<a href="#" class="toggle-subgrid show-subgrid button tiny" data-title="'+attributes["username"]+'">View Details</a>';
+    }},
+
   ],
   // Delegated events for creating new items, and clearing completed ones.
   events: {
-    'click .hashPageButton': 'calculateAverage',
+    'click .show-subgrid': 'showSubGrid',
+    'click .bbGrid-row': 'hideSubGrid',
+    'click .hide-subgrid': 'hideSubGrid'
   },
+  buttonClicked: false,
   initialize: function(){
     var _this = this;
     var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
@@ -58,7 +67,29 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       collection: this.collection,
       colModel: this.generatedGridColumns,
       onReady: function () {
-        InitializeAverageCalculate();
+
+        var totalProgress = 0;
+        var totalProficiency = 0;
+        var total = 0;
+        // Progressbar for progress column
+        $('#managerDashboardWrapper td.progress').each(function (index, value) {
+            var text = $(this).text();
+            $(this).css("width" , text);
+            totalProgress += parseInt(text.replace("%", ""));
+            total++;
+        });
+
+        $('#managerDashboardWrapper td.proficiency').each(function (index, value) {
+          var text = $(this).text();
+          $(this).css("width" , text);
+            totalProficiency += parseInt(text.replace("%", ""));
+        });
+
+        // Set the Average progess and proficiency
+        if(total) {
+            $('.progress-average large').text(parseInt(totalProgress / total) + "%");
+            $('.proficiency-average large span').text(parseInt(totalProficiency / total));
+        }
 
         // Activation status icon
         $('#managerDashboardWrapper .status').each(function () {
@@ -74,10 +105,65 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
     $('.bbGrid-container').append('<i class="fa fa-spinner fa-spin"></i>');
     managerDashboardReportGridBlock['partial_collection'] = this.collection;
     this.managerDashboardReportGridBlock = managerDashboardReportGridBlock;
-    this.$el.find('.bbGrid-container').on('scroll', {extra: this}, this.fetchPages);
-    $(document).on('onClearSearchEvent', {extra: this}, this.onClearSearchEvent);
+    this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);
+    $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
   },
-  calculateAverage: function(){
-    InitializeAverageCalculate();
+  showSubGrid: function(e){
+    var element = $(e.target);
+
+    RemoveExistingSubGird(element);
+    var parentElement = $(element).parent().parent();
+    var index = $(parentElement).attr('data-cid');
+    var course_id = $("a.hashPageButton.active").attr('data-course');
+    var username = $(element).attr("data-title");
+    var url = "student_report/"+username+"/course/"+course_id;
+    Backbone.ajax({
+      dataType: "json",
+      url: url,
+      data: "",
+      success: function (val) {
+        var container = "";
+        $.each( val, function( key, value ){
+          container += '<tr class="bbGrid-row bbSubGrid subgrid-' + index + '" data-parent-cid="'+index+'"><td></td><td colspan="4">'+gettext("Lesson")+' '+parseInt(key + 1)+': '+value.name+'</td><td colspan="3"> '+value.progress+'% '+gettext("complete")+'</td></tr>';
+        });
+        $(container).insertAfter(parentElement);
+      },
+      fail: function(error){
+        alert(gettext("Error Occured!"));
+      }
+    });
+    $(element).text(gettext('Hide Details'));
+    $(element).removeClass('show-subgrid');
+    $(element).addClass('hide-subgrid');
+    this.buttonClicked = true;
+  },
+  hideSubGrid: function(e){
+    var element = $(e.target);
+    var tagName = $(element).prop('tagName');
+      if(this.buttonClicked) {
+        this.buttonClicked = false;
+        return;
+      }
+
+      if(tagName == "A") {
+        // if clicked on other anchor tags like email, course tabs
+        if(!$(element).hasClass("toggle-subgrid")){
+          RemoveExistingSubGird(element);
+          return;
+        }
+      }
+      else {
+        var parentElement = $("[class*='bbSubGrid']")[0];
+        var data_cid = $(parentElement).attr('data-parent-cid');
+        element = $("a.toggle-subgrid", "tr[data-cid='"+data_cid+"']");
+
+      }
+
+    $("tr.bbSubGrid").each(function(){
+      $(this).remove();
+    });
+    $(element).text(gettext('View Details'));
+    $(element).removeClass('hide-subgrid');
+    $(element).addClass('show-subgrid');
   }
 });
