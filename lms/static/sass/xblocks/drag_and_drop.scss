@@ -80,9 +80,13 @@
             font-size: 12px !important;
             font-weight: 600;
             &:disabled{
-                background-color: #566a85 !important;
-                color: #8094af;
+                background-color: darken($mckinsey-disabled-blue , 20%) !important;
+                color: $mckinsey-disabled-blue;
                 border: 0 !important;
+            }
+            &.reset-button{
+                background-color: transparent !important;
+                border: 1px solid $mckinsey-disabled-blue !important;;
             }
         }
     }
