@@ -809,6 +809,18 @@ def set_user_course_progress(course, completions, chapter_id=None):
                 'chapter',
                 lesson.id,
             )
+            for sequential in lesson.sequentials:
+                sequential.progress = get_completion_percentage_from_id(
+                    completions,
+                    'sequential',
+                    sequential.id,
+                )
+                for module in sequential.children:
+                    module.progress = get_completion_percentage_from_id(
+                        completions,
+                        'vertical',
+                        module.id,
+                    )
 
 def get_course_object(user_id, course_id):
 
