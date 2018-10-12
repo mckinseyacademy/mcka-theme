@@ -10,7 +10,7 @@ def get_course_ff_and_custom_taxonomy(user_id, course_ff_custom_taxonomy, course
     try:
         feature_flags = FeatureFlags.objects.get(course_id=course_id)
         course_meta_data = CourseMetaData.objects.get(course_id=course_id)
-        course_ff_custom_taxonomy.append({feature_flags.course_id: {"flags":feature_flags.as_json(),"taxonomy":course_meta_data.as_json()}})
+        course_ff_custom_taxonomy.append({feature_flags.course_id: {"feature_flags":feature_flags.as_json(),"custom_taxonomy":course_meta_data.as_json()}})
     except FeatureFlags.DoesNotExist:
         feature_flags = None
     if not feature_flags:
