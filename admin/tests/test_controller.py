@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import csv
 
 import ddt
@@ -408,28 +409,73 @@ class EditCourseCustomTermsTest(TestCase):
         self.course_id = "course_id/1"
 
     def test_edit_course_lesson_custom_terms(self):
-        lesson_label = "test_lesson_label"
-        module_label = "test_module_label"
-        lesson_label_flag = True
-        module_label_flag = False
+        lesson_label = 'test_lesson_label'
+        module_label = 'test_module_label'
+        lesson_label_flag = 'true'
+        module_label_flag = 'false'
         controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
                                             lesson_label_flag, module_label_flag)
 
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
 
         self.assertEqual(course_meta_data.lesson_label, lesson_label)
-        self.assertNotEqual(course_meta_data.module_label, module_label)
 
     def test_edit_course_module_custom_terms(self):
-        lesson_label = "test_lesson_label_1"
-        module_label = "test_module_label_1"
-        lesson_label_flag = False
-        module_label_flag = True
+        lesson_label = 'test_lesson_label_1'
+        module_label = 'test_module_label_1'
+        lesson_label_flag = 'false'
+        module_label_flag = 'true'
         controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
                                             lesson_label_flag, module_label_flag)
 
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
 
         self.assertEqual(course_meta_data.module_label, module_label)
+
+    def test_edit_course_lesson_custom_terms_with_foreign_characters(self):
+        lesson_label = u'ŠŽšžŸÀÁÂÃÄÅÇ'
+        module_label = 'test_module_label_1'
+        lesson_label_flag = 'true'
+        module_label_flag = 'false'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                            lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertEqual(course_meta_data.lesson_label, lesson_label)
+
+    def test_edit_course_module_custom_terms_with_foreign_characters(self):
+        lesson_label = 'test_lesson_label_1'
+        module_label = u'ËÌÍÎÏÐÑÒÓÔ'
+        lesson_label_flag = 'false'
+        module_label_flag = 'true'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                            lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertEqual(course_meta_data.module_label, module_label)
+
+    def test_edit_course_lesson_custom_terms_with_special_characters(self):
+        lesson_label = '$%^&&&'
+        module_label = 'test_module_label_1'
+        lesson_label_flag = 'false'
+        module_label_flag = 'true'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                         lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
         self.assertNotEqual(course_meta_data.lesson_label, lesson_label)
 
+    def test_edit_course_module_custom_terms_with_special_characters(self):
+        lesson_label = 'test_lesson_label_1'
+        module_label = '$%^&&&'
+        lesson_label_flag = 'false'
+        module_label_flag = 'true'
+        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
+                                         lesson_label_flag, module_label_flag)
+
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+
+        self.assertNotEqual(course_meta_data.module_label, module_label)
