@@ -13,7 +13,14 @@ def get_user_progress(course, chapters):
                 user_course_progress.append(
                     {
                         'name': course_chapter.name,
-                        'progress': (chapter['completion']['percent'] * 100)
+                        'progress': round(chapter['completion']['percent'] * 100)
+                    }
+                )
+            else:
+                user_course_progress.append(
+                    {
+                        'name': course_chapter.name,
+                        'progress': 0
                     }
                 )
     return user_course_progress

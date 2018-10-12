@@ -873,6 +873,35 @@ $(document).ready(function () {
 });
 
 
+function InitializeAverageCalculate() {
+  var totalProgress = 0;
+  var totalProficiency = 0;
+  var total = 0;
+  // Progressbar for progress column
+  var dataTarget = $("a.hashPageButton.active").attr('data-target');
+  $('.'+dataTarget+' td.progress').each(function () {
+    var text = $(this).text();
+    $(this).css("width" , text);
+    totalProgress += parseInt(text.replace("%", ""));
+    total++;
+  });
+   $('.'+dataTarget+' td.proficiency').each(function () {
+    var text = $(this).text();
+    $(this).css("width" , text);
+    totalProficiency += parseInt(text.replace("%", ""));
+  });
+
+  // Set the Average progess and proficiency	// remove existing subgrid for manager team
+  if(total) {
+    $('.progress-average large').text(Math.round(totalProgress / total) + "%");
+    $('.proficiency-average large span').text(Math.round(totalProficiency / total));
+  }
+  else{
+    $('.progress-average large').text("0%");
+    $('.proficiency-average large span').text("0");
+  }
+}
+
 // remove existing subgrid for manager team
 function RemoveExistingSubGird(element) {
   // check if already subgrid is loaded for some other record

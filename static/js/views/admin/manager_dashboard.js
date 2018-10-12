@@ -46,10 +46,11 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
   events: {
     'click .show-subgrid': 'showSubGrid',
     'click .bbGrid-row': 'hideSubGrid',
-    'click .hide-subgrid': 'hideSubGrid'
+    'click .hide-subgrid': 'hideSubGrid',
+    'click .hashPageButton': 'calculateAverage',
   },
   buttonClicked: false,
-  initialize: function(){
+  initialize: function() {
     var _this = this;
     var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
     if (companyPageFlag == 'True')
@@ -67,16 +68,16 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       collection: this.collection,
       colModel: this.generatedGridColumns,
       onReady: function () {
-
+        InitializeAverageCalculate();
         var totalProgress = 0;
         var totalProficiency = 0;
         var total = 0;
         // Progressbar for progress column
         $('#managerDashboardWrapper td.progress').each(function (index, value) {
-            var text = $(this).text();
-            $(this).css("width" , text);
-            totalProgress += parseInt(text.replace("%", ""));
-            total++;
+          var text = $(this).text();
+          $(this).css("width" , text);
+          totalProgress += parseInt(text.replace("%", ""));
+          total++;
         });
 
         $('#managerDashboardWrapper td.proficiency').each(function (index, value) {
@@ -87,8 +88,8 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
 
         // Set the Average progess and proficiency
         if(total) {
-            $('.progress-average large').text(parseInt(totalProgress / total) + "%");
-            $('.proficiency-average large span').text(parseInt(totalProficiency / total));
+          $('.progress-average large').text(parseInt(totalProgress / total) + "%");
+          $('.proficiency-average large span').text(parseInt(totalProficiency / total));
         }
 
         // Activation status icon
@@ -108,9 +109,8 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
     this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);
     $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
   },
-  showSubGrid: function(e){
+  showSubGrid: function(e) {
     var element = $(e.target);
-
     RemoveExistingSubGird(element);
     var parentElement = $(element).parent().parent();
     var index = $(parentElement).attr('data-cid');
@@ -137,7 +137,7 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
     $(element).addClass('hide-subgrid');
     this.buttonClicked = true;
   },
-  hideSubGrid: function(e){
+  hideSubGrid: function(e) {
     var element = $(e.target);
     var tagName = $(element).prop('tagName');
       if(this.buttonClicked) {
@@ -159,11 +159,14 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
 
       }
 
-    $("tr.bbSubGrid").each(function(){
+    $("tr.bbSubGrid").each(function() {
       $(this).remove();
     });
     $(element).text(gettext('View Details'));
     $(element).removeClass('hide-subgrid');
     $(element).addClass('show-subgrid');
+  },
+  calculateAverage: function() {
+    InitializeAverageCalculate();
   }
 });
