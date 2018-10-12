@@ -1,14 +1,12 @@
 ''' Objects for courses built from json responses from API '''
 import datetime
-import math
-import json
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-
 from .json_object import CategorisedJsonObject, JsonObject, DataOnly
+
 
 # Create your models here.
 
@@ -485,6 +483,13 @@ class CourseTimeSeriesMetrics(JsonObject):
         'users_not_started': DataOnly,
         'users_started': DataOnly,
     }
+
+
+class CourseBlockData(JsonObject):
+    required_fields = ['id', 'block_id', 'type']
+
+    def is_complete(self):
+        return hasattr(self, 'completion') and self.completion == 1.0
 
 
 class UserCourseEnrollment(JsonObject):

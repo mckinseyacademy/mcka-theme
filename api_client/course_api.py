@@ -8,21 +8,22 @@ from django.conf import settings
 from api_client.user_api import get_reports_for_manager
 from api_data_manager.course_data import COURSE_PROPERTIES
 from api_data_manager.decorators import course_api_cache_wrapper
-
-from .api_error import api_error_protect
 from . import course_models
+from . import user_models
+from .api_error import api_error_protect
 from .group_models import GroupInfo
-from .json_object import CategorisedJsonParser
 from .json_object import CategorisedJsonObject
-from .json_object import JsonParser as JP
+from .json_object import CategorisedJsonParser
 from .json_object import JsonObject
+from .json_object import JsonParser as JP
 from .json_requests import GET, POST
 from .oauth2_requests import get_oauth2_session, get_and_unpaginate
-from . import user_models
 
 COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
 COURSE_ENROLLMENT_API = getattr(settings, 'COURSE_ENROLLMENT_API', 'api/enrollment/v1/enrollments')
 COURSE_ENROLLMENT_API_MAX_PAGE = 3
+COURSE_COMPLETION_API = getattr(settings, 'COURSE_COMPLETION_API', 'api/completion-aggregator/v1/course')
+COURSE_BLOCK_API = getattr(settings, 'COURSE_BLOCK_API', 'api/courses/v1/blocks')
 
 OBJECT_CATEGORY_MAP = {
     # Core objects for our desire
@@ -353,7 +354,7 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
             result = data['results']
             results.extend(result)
             if data['next']:
-                response =  GET(data['next'])
+                response = GET(data['next'])
                 data = json.loads(response.read())
         return json.dumps(results)
     else:
@@ -362,27 +363,12 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
 
 
 @api_error_protect
-def get_user_list(course_id, program_id = None):
+def get_user_list(course_id, program_id=None):
 
-    return JP.from_json(get_user_list_json(course_id, program_id), course_models.CourseEnrollmentList).enrollments
-
-
-@api_error_protect
-def get_users_list_in_organizations(course_id, organizations):
-    '''
-    Retrieves course user list structure information from the API for specified course
-    '''
-    qs_params = {"organizations": organizations}
-    response = GET('{}/{}/{}/users?{}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            urlencode(qs_params),
-        )
-    )
-
-    return JP.from_json(response.read(), course_models.CourseEnrollmentList).enrollments
-
+    return JP.from_json(
+        get_user_list_json(course_id, program_id),
+        course_models.CourseEnrollmentList
+    ).enrollments
 
 @api_error_protect
 def add_group_to_course_content(group_id, course_id, content_id):
@@ -405,42 +391,6 @@ def add_group_to_course_content(group_id, course_id, content_id):
     )
 
     return JP.from_json(response.read())
-
-
-@api_error_protect
-def get_users_content_filtered(course_id, content_id, *args, **kwargs):
-    ''' filter and get course content'''
-
-    qs_params = {}
-    qs_params.update(kwargs)
-    response = GET(
-        '{}/{}/{}/content/{}/users?{}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            content_id,
-            urlencode(qs_params),
-        )
-    )
-
-    return JP.from_json(response.read())
-
-
-@api_error_protect
-def get_users_filtered_by_group(course_id, group_ids):
-    ''' filter and get course users'''
-
-    qs_params = {"groups": group_ids}
-    response = GET(
-        '{}/{}/{}/users?{}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            urlencode(qs_params),
-        )
-    )
-
-    return JP.from_json(response.read()).enrollments
 
 
 @api_error_protect
@@ -474,47 +424,66 @@ def get_course_content_groups(course_id, content_id):
 
 
 @api_error_protect
-def get_user_lesson_completion(username, course_id, edx_oauth2_session=None):
-    ''' Query the LMS for completion data. '''
+def get_block_completions(course_id, username, edx_oauth2_session=None):
     if not edx_oauth2_session:
         edx_oauth2_session = get_oauth2_session()
-    url = '{}/api/completion/v0/course/{}/?username={}&requested_fields=chapter'.format(
+    params = {
+        'course_id': course_id,
+        'depth': 'all',
+        'return_type': 'list',
+        'requested_fields': 'completion',
+        'username': username,
+    }
+    url = '{}/{}/?{}'.format(
         settings.API_SERVER_ADDRESS,
-        course_id,
-        username
+        COURSE_BLOCK_API,
+        urlencode(params)
     )
     response = edx_oauth2_session.get(url)
-    return response.json()
+    return JP.from_dictionary(response.json(), course_models.CourseBlockData)
 
 
 @api_error_protect
-def get_course_completions(course_id, user_id=None, page_size=0):
+def get_course_completions(
+        course_id=None,
+        username=None,
+        page_size=1000,
+        extra_fields='all',
+        edx_oauth2_session=None,
+):
     ''' fetch course module completion list '''
-    qs_params = {"page_size": page_size}
-    if user_id:
-        qs_params["user_id"] = user_id
+    api_params = {
+        'page_size': page_size,
+    }
 
-    url = '{}/{}/{}/completions/?{}'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSEWARE_API,
-        course_id,
-        urlencode(qs_params),
+    if extra_fields == 'all':
+        api_params['requested_fields'] = 'chapter,sequential,vertical'
+    elif extra_fields is not None:
+        api_params['requested_fields'] = extra_fields
+
+    if username:
+        api_params['username'] = username
+
+    course_path = ''
+    if course_id is not None:
+        course_path = '{}/'.format(course_id)
+
+    url = '{api_base}/{course_completion_api}/{course_path}?{params}'.format(
+        api_base=settings.API_SERVER_ADDRESS,
+        course_completion_api=COURSE_COMPLETION_API,
+        course_path=course_path,
+        params=urlencode(api_params),
     )
-    if page_size != 0:
-        results = []
-        response = GET(url)
-        data = json.loads(response.read())
-        pages = data['num_pages']
-        for _ in range(0, pages):
-            result = data['results']
-            results.extend(result)
-            if data['next']:
-                response = GET(data['next'])
-                data = json.loads(response.read())
-        return JP.from_json(json.dumps(results))
+
+    if course_id is None:
+        # The API will return data for multiple courses, so group them by course
+        return group_completions_by_course(get_and_unpaginate(url, edx_oauth2_session))
     else:
-        response = GET(url)
-        return JP.from_json(response.read())
+        # Otherwise, group by users
+        return group_completions_by_user(
+            get_and_unpaginate(url, edx_oauth2_session),
+            username=username,
+        )
 
 
 @api_error_protect
@@ -755,7 +724,7 @@ def get_course_details(course_id):
 
 
 @api_error_protect
-def get_course_details_users(course_id, qs_params = ''):
+def get_course_details_users(course_id, qs_params=''):
 
     response = GET('{}/{}/{}/users?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -778,52 +747,6 @@ def get_course_details_groups(course_id):
 
     return json.loads(response.read())
 
-
-@api_error_protect
-def get_course_details_users_groups(course_id, groups_ids):
-    ''' filter and get course users'''
-
-    response = GET(
-        '{}/{}/{}/users?groups={}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            groups_ids
-        )
-    )
-
-    return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_details_metrics_completions(course_id, count):
-
-    response = GET(
-        '{}/{}/{}/metrics/completions/leaders?count={}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            count
-        )
-    )
-
-    return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_module_completions(course_id, user_id, content_id):
-
-    response = GET(
-        '{}/{}/{}/completions/?user_id={}&content_id={}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            user_id,
-            content_id,
-        )
-    )
-
-    return json.loads(response.read())
 
 
 @api_error_protect
@@ -875,35 +798,6 @@ def get_course_details_completions_leaders(course_id, organization_id='', **kwar
 
 
 @api_error_protect
-def get_course_details_completions_all_users(course_id):
-
-    response = GET(
-        '{}/{}/{}/metrics/completions/leaders?exclude_roles=none'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id
-        )
-    )
-
-    return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_details_metrics_grades_all_users(course_id, count):
-
-    response = GET(
-        '{}/{}/{}/metrics/grades/leaders?exclude_roles=none&count={}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            count
-        )
-    )
-
-    return json.loads(response.read())
-
-
-@api_error_protect
 def get_course_details_metrics_all_users(course_id, organization_id=''):
 
     response = GET(
@@ -912,22 +806,6 @@ def get_course_details_metrics_all_users(course_id, organization_id=''):
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
-            organization_id
-        )
-    )
-
-    return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_details_metrics_filtered_by_groups(course_id, group_ids, organization_id = ''):
-
-    response = GET(
-        '{}/{}/{}/metrics/?metrics_required=users_completed&groups={}&organization={}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            group_ids,
             organization_id
         )
     )
@@ -964,6 +842,34 @@ def get_user_list_dictionary(course_id, program_id=None):
 def parse_course_list_json_object(course_list_json_object):
     return CJP.from_json(json.dumps(course_list_json_object))
 
+
+def _group_completions_by_block_key(completions):
+    grouped_completions = {
+        block_completion[u'block_key']: block_completion
+        for aggregation in ('chapter', 'sequential', 'vertical')
+        for block_completion in completions.get(aggregation, [])
+    }
+    grouped_completions[u'completion'] = completions[u'completion']
+    return grouped_completions
+
+
+def group_completions_by_course(completions):
+    return {
+        course_completions[u'course_key']: course_completions
+        for course_completions in completions
+    }
+
+
+def group_completions_by_user(completions, username=None):
+    if username is None:
+        return {
+            user_completions[u'username']: _group_completions_by_block_key(user_completions)
+            for user_completions in completions
+        }
+    else:
+        return {
+            username: _group_completions_by_block_key(completions[0])
+        }
 
 @api_error_protect
 def get_course_enrollments(course_id=None, usernames=None, edx_oauth2_session=None):

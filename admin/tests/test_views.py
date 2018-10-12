@@ -9,16 +9,15 @@ from mock import patch, Mock
 from rest_framework import status
 
 from accounts.models import RemoteUser
+from accounts.tests.utils import ApplyPatchMixin, make_course, make_user
 from admin.models import Client as ClientModel
 from admin.views import client_sso, CourseDetailsApi
-from api_client.json_object import JsonParser
-from lib.authorization import permission_groups_map
-from accounts.tests.utils import ApplyPatchMixin, make_course, make_user
 from api_client import user_api, group_api
 from api_client.api_error import ApiError
+from api_client.json_object import JsonParser
+from lib.authorization import permission_groups_map
 from lib.utils import DottableDict
 from .test_task_runner import mocked_task
-
 
 _FAKE_USER_OBJ = DottableDict({
     "id": '1',
@@ -317,6 +316,9 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         api_data['count'] = len(api_data['results'])
         api_client = self.apply_patch('admin.controller.course_api')
         api_client.get_course_details_users.return_value = api_data
+        # When coerced to an int, a mock returns 1, which messes up completions, so
+        # instead return no completions at all to get the desired result.
+        api_client.get_course_completions.return_value = {}
         return api_client
 
     def assert_expected_result(self, result, idx=0):
@@ -335,7 +337,7 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
             'assessments': [],
             'groupworks': [],
             'number_of_groupworks': 0,
-            'organizations': [{ 'display_name': 'No company'}],
+            'organizations': [{'display_name': 'No company'}],
             'organizations_display_name': 'No company',
             'engagement': 0,
             'proficiency': '000',
@@ -356,6 +358,7 @@ class CourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
         super(CourseDetailsApiTest, self).setUp()
         self.patch_course_users(self.students)
         self.patch_user_permissions()
+        self.maxDiff = None
 
     def test_get(self):
         """

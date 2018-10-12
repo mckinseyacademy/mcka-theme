@@ -1,15 +1,14 @@
-from collections import OrderedDict
-import datetime
 import copy
+import datetime
+from collections import OrderedDict
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
-from lib.utils import DottableDict
-from api_client.project_models import Project
 from api_client import course_api, user_api, group_api
 from api_client.organization_models import Organization
-
+from api_client.project_models import Project
+from lib.utils import DottableDict
 from .controller import load_course, GROUP_WORK_REPORT_DEPTH
 from .models import WorkGroup, WorkGroupV2StageXBlock, GROUP_PROJECT_V2_GRADING_STAGES
 from .models import WorkGroupActivityXBlock
@@ -111,7 +110,8 @@ class WorkgroupCompletionData(object):
             self.workgroup_id = int(group_id)
             self.projects = [Project.fetch(WorkGroup.fetch(self.workgroup_id).project)]
 
-        self._load(course_id)
+        self.completions = self._load_completions_data(course_id)
+        self._load()
 
     @staticmethod
     def _make_completion_key(content_id, user_id, stage=None):
@@ -133,24 +133,50 @@ class WorkgroupCompletionData(object):
                     ra.id in self.project_workgroups[project.id]
                 ]
 
-    def _load(self, course_id):
-        completion_data = course_api.get_course_completions(course_id)
-        self.completions = {
-            WorkgroupCompletionData._make_completion_key(c.content_id, c.user_id, c.stage): c for c in completion_data
-        }
+    def _load_completions_data(self, course_id):
+        completions = {}
 
+        course_users = course_api.get_course_details_users(course_id).get('results', [])
+        for user in course_users:
+            username = user['username']
+            user_id = user['id']
+            user_completions = course_api.get_block_completions(
+                course_id=course_id,
+                username=username,
+            )
+            for completion in user_completions:
+                if completion.is_complete():
+                    completion_key = WorkgroupCompletionData._make_completion_key(
+                        content_id=completion.id,
+                        user_id=user_id,
+                    )
+                    completions[completion_key] = completion
+
+        return completions
+
+    def _load(self):
         for project in self.projects:
             if project.organization:
                 organization = Organization.fetch(project.organization)
                 project.organization_name = organization.display_name
-            self.project_workgroups[project.id] = {w_id:WorkGroup.fetch_with_members(w_id) for w_id in project.workgroups}
-            group_project = [gp for gp in self.course.group_projects if gp.id == project.content_id][0]
+            self.project_workgroups[project.id] = {
+                w_id: WorkGroup.fetch_with_members(w_id)
+                for w_id in project.workgroups
+            }
+            group_project = next((
+                gp
+                for gp in self.course.group_projects
+                if gp.id == project.content_id
+            ))
             project.name = group_project.name
             self.project_activities[project.id] = group_project.activities
 
             # load up user review assignments
             if self.workgroup_id:
-                self._load_project_workgroup_status(project, self.project_workgroups[project.id][self.workgroup_id])
+                self._load_project_workgroup_status(
+                    project,
+                    self.project_workgroups[project.id][self.workgroup_id],
+                )
             else:
                 for k, pw in self.project_workgroups[project.id].iteritems():
                     self._load_project_workgroup_status(project, pw)
@@ -187,7 +213,11 @@ class WorkgroupCompletionData(object):
                 stage = None
 
             return all(
-                WorkgroupCompletionData._make_completion_key(group_xblock.id, u_id, stage) in self.completions
+                WorkgroupCompletionData._make_completion_key(
+                    group_xblock.id,
+                    u_id,
+                    stage,
+                ) in self.completions
                 for u_id in user_ids
             )
 
