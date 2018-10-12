@@ -1,4 +1,5 @@
 import copy
+import csv
 import functools
 import json
 import operator
@@ -16,12 +17,13 @@ from dateutil.parser import parse as parsedate
 from django.conf import settings
 from django.contrib import messages
 from django.core import serializers
-from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, ValidationError
 from django.core.files.storage import default_storage
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, ValidationError
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core.urlresolvers import reverse
+from django.core.validators import validate_email
 from django.http import (HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404,
-                         HttpResponseServerError)
+                         HttpResponseServerError, HttpResponseBadRequest, JsonResponse)
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.utils import timezone
@@ -31,17 +33,17 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _, ungettext
 from django.views.decorators.http import require_POST
 from django.views.generic.base import View
-from rest_framework import status
-from rest_framework import viewsets
+from rest_framework import status, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
 
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, \
     _set_number_of_enrolled_users
 from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
-    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
+    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image,\
     get_organization_active_courses, edit_course_meta_data
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api
 from api_client.api_error import ApiError
@@ -67,9 +69,10 @@ from lib.mail import sendMultipleEmails, email_add_active_student, email_add_ina
 from license import controller as license_controller
 from main.models import CuratedContentItem
 from util.csv_helpers import csv_file_response, UnicodeWriter
-from util.data_sanitizing import sanitize_data, clean_xss_characters
+from util.data_sanitizing import sanitize_data, clean_formula_characters, clean_xss_characters
 from util.validators import (
-    AlphanumericValidator, alphanum_accented_validator)
+    AlphanumericValidator, alphanum_accented_validator,
+    PhoneNumberValidator)
 from .bulk_task_runner import BulkTaskRunner
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -107,8 +110,7 @@ from .models import (
     UserRegistrationBatch, UserRegistrationError, ClientNavLinks, ClientCustomization,
     AccessKey, DashboardAdminQuickFilter, BatchOperationStatus, BatchOperationErrors, BrandingSettings,
     LearnerDashboard, LearnerDashboardDiscovery, LearnerDashboardTile, EmailTemplate, CompanyInvoicingDetails,
-    CompanyContact, Tag, LearnerDashboardBranding, CourseRun, SelfRegistrationRoles, OTHER_ROLE
-)
+    CompanyContact, Tag, LearnerDashboardBranding, CourseRun, SelfRegistrationRoles, OTHER_ROLE)
 from .permissions import Permissions, PermissionSaveError
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
@@ -2629,15 +2631,7 @@ def add_students_to_course(request, client_id, restrict_to_users_ids=None, restr
         students = [u_id for u_id in students if u_id in restrict_to_users_ids]
     exception_messages = []
     for course_id in courses:
-        course_details_users = course_api.get_course_details_users(course_id, {
-            'page_size': 0,
-            'fields': 'id,username'
-        })
-        enrolled_users = {
-            u['id']: u['username']
-            for u in course_details_users
-            if u['id'] in students
-        }
+        enrolled_users = {u['id']:u['username'] for u in course_api.get_course_details_users(course_id, {'page_size': 0, 'fields': 'id,username'}) if u['id'] in students}
         for student_id in students:
             if student_id in enrolled_users:
                 exception_messages.append(_("{} already enrolled in {}").format(
@@ -3979,26 +3973,16 @@ class participant_details_active_courses_api(APIView):
             active_courses, course_history = get_user_courses_helper(user_id, request)
             return Response(active_courses)
         elif include_slow_fields == 'true':
-            fetch_courses = []
-
+            fetch_courses =[]
             user_courses_progress = user_api.get_user_courses_progress(
-                user_id,
+                user_id, 
                 dict(courses=request.GET['ids'])
             )
-
-            username = user_api.get_user(user_id).username
-            user_courses_completion = course_api.get_course_completions(username=username)
-
             for user_course_progress in user_courses_progress:
-                course_id = user_course_progress['course']['id']
-                completion = user_courses_completion[course_id]['completion']['percent']
-                user_course = {
-                    'id': course_id,
-                    'progress': '{:03d}'.format(int(completion * 100)),
-                    'proficiency': '{:03d}'.format(
-                        round_to_int(user_course_progress['proficiency'])
-                    ),
-                }
+                user_course = {}
+                user_course['id'] = user_course_progress['course']['id']
+                user_course['progress'] = '{:03d}'.format(int(user_course_progress['progress']))
+                user_course['proficiency'] = '{:03d}'.format(round_to_int(user_course_progress['proficiency']))
                 fetch_courses.append(user_course)
 
             return Response(fetch_courses)
@@ -5649,11 +5633,10 @@ def course_run_create_edit(request, course_run_id=None):
         'self_register_created_roles': self_register_created_roles,
         'course_run': course_run,
         'error': error,
-        'self_registration_roles': json.dumps(self_registration_roles)
+        'self_registration_roles':json.dumps(self_registration_roles)
     }
 
     return render(request, 'admin/course_run/form_modal.haml', data)
-
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_csv_download(request, course_run_id):
