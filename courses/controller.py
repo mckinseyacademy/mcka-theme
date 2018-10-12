@@ -732,12 +732,11 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
 
 
 def get_completion_percentage_from_id(completions, aggregation, block_key=None):
+    percentage = 0.0
     if aggregation == 'course':
         percentage = completions.get('completion', {}).get('percent', 0.)
     else:
         percentage = completions.get(block_key, {}).get('completion', {}).get('percent', 0.)
-    if percentage is None:
-        percentage = 0.0
     return round_to_int(percentage * 100)
 
 
