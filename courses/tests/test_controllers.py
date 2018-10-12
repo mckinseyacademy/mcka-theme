@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 from django.test import TestCase
 from django.conf import settings
 
-from api_client import course_models, user_models
+from api_client import course_api, course_models, user_models
 from courses import controller
 
 
@@ -459,6 +459,61 @@ class CoursesAPITest(TestCase):
         self.assertEqual(_get_chapter("0", "I'm page"), (None, None, None))
         self.assertEqual(_get_chapter("0", "I'm page too"), (None, None, None))
 
+    def test_get_completion_percentage_from_id(self):
+        data = {
+            'completion': {
+                'earned': 12.0,
+                'possible': 24.0,
+                'percent': 0.5,
+            },
+            'chapter': [
+                {
+                    'course_key': 'a/b/c',
+                    'block_key': 'i4x://a/b/chapter/chapter-1',
+                    'completion': {
+                        'earned': 6.0,
+                        'possible': 8.0,
+                        'percent': 0.75,
+                    }
+                },
+                {
+                    'course_key': 'a/b/c',
+                    'block_key': 'i4x://a/b/chapter/chapter-2',
+                    'completion': {
+                        'earned': 6.0,
+                        'possible': 12.0,
+                        'percent': 0.5,
+                    }
+                },
+                {
+                    'course_key': 'a/b/c',
+                    'block_key': 'i4x://a/b/chapter/chapter-3',
+                    'completion': {
+                        'earned': 0.0,
+                        'possible': 2.0,
+                        'percent': 0.0,
+                    }
+                },
+                {
+                    'course_key': 'a/b/c',
+                    'block_key': 'i4x://a/b/chapter/chapter-4',
+                    'completion': {
+                        'earned': 0.0,
+                        'possible': None,
+                        'percent': None,
+                    }
+                },
+            ]
+        }
+
+        completions = course_api.group_completions_by_user([data], 'ali')['ali']
+        get_completions = controller.get_completion_percentage_from_id
+        self.assertEqual(get_completions(completions, 'course'), 50)
+        self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-1'), 75)
+        self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-2'), 50)
+        self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-3'), 0)
+        self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-4'), 0)
+        self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-5'), 0)
 
 class ResourcePageScriptsFixTest(TestCase):
     def setUp(self):
