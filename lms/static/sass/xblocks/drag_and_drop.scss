@@ -94,6 +94,32 @@
     .keyboard-help-button {
         display: none;
     }
+
+    // instructions pop
+    .instructions-visible{
+        &:after{
+            background-color: white;
+        }
+        .instructions-wrapper{
+            box-shadow: 0 2px 20px $mckinsey-grey;
+            .instructions-container{
+                h3{
+                    color: $mckinsey-royal-blue;
+                }
+                p{
+                    font-family: "Times New Roman", Serif;
+                    margin-top: 15px;
+                }
+                button{
+                    margin-bottom: 0;
+                    color: $mckinsey-royal-blue;
+                }
+            }
+        }
+        .assessment-notification{
+            box-shadow: none;
+        }
+    }
 }
 
 
