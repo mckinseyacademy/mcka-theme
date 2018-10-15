@@ -3170,16 +3170,12 @@ msgid "Registration Error!"
 msgstr "Erreur d'enregistrement !"
 
 #: templates/accounts/public_registration.haml:27
-#, fuzzy
-#| msgid ""
-#| "Sorry, there seems to be a problem with registering your account, please "
-#| "contact info@mckinseyacademy.com"
 msgid ""
 "Sorry, there seems to be a problem with registering your account, please "
 "contact academy_info@mckinsey.com"
 msgstr ""
 "Désolé, il semble y avoir un problème d'enregistrement avec votre compte, "
-"veuillez contacter info@mckinseyacademy.com"
+"veuillez contacter academy_info@mckinsey.com"
 
 #: templates/accounts/public_registration.haml:51
 msgid "Complete the fields below. Required fields are noted by an asterisk"
@@ -7467,25 +7463,19 @@ msgstr ""
 "Comment puis-je m’inscrire à un programme ou à un cours McKinsey Academy ?"
 
 #: templates/faq.haml:97
-#, fuzzy
-#| msgid "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
 msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
-msgstr "Contactez <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
+msgstr "Contactez <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 
 #: templates/faq.haml:98
 msgid "What if my question isn’t answered here?"
 msgstr "Que faire si la réponse à ma question ne se trouve pas ici ?"
 
 #: templates/faq.haml:99
-#, fuzzy
-#| msgid ""
-#| "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a> We’ll "
-#| "do our best to help."
 msgid ""
 "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a> We’ll do "
 "our best to help."
 msgstr ""
-"Contactez <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a> Nous "
+"Contactez <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a> Nous "
 "ferons de notre mieux pour vous aider."
 
 #: templates/footer.haml:11
@@ -8996,12 +8986,6 @@ msgstr ""
 "participants doivent être financés par leurs sociétés."
 
 #: templates/marketing/programs.haml:243
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "            Please email us at <a href=\"mailto:info@mckinseyacademy.com"
-#| "\">info@mckinseyacademy.com</a> for further details.\n"
-#| "            "
 msgid ""
 "\n"
 "            Please email us at <a href=\"mailto:academy_info@mckinsey.com"
@@ -9010,7 +8994,7 @@ msgid ""
 msgstr ""
 "\n"
 "            Contactez-nous par e-mail à <a href=\"mailto:"
-"info@mckinseyacademy.com\">info@mckinseyacademy.com</a> pour de plus amples "
+"academy_info@mckinsey.com\">academy_info@mckinsey.com</a> pour de plus amples "
 "renseignements.\n"
 "            "
 

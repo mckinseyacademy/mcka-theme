@@ -3116,14 +3116,10 @@ msgid "Registration Error!"
 msgstr "注册错误！"
 
 #: templates/accounts/public_registration.haml:27
-#, fuzzy
-#| msgid ""
-#| "Sorry, there seems to be a problem with registering your account, please "
-#| "contact info@mckinseyacademy.com"
 msgid ""
 "Sorry, there seems to be a problem with registering your account, please "
 "contact academy_info@mckinsey.com"
-msgstr "抱歉，注册账户时似乎遇到问题，请联系 info@mckinseyacademy.com"
+msgstr "抱歉，注册账户时似乎遇到问题，请联系 academy_info@mckinsey.com"
 
 #: templates/accounts/public_registration.haml:51
 msgid "Complete the fields below. Required fields are noted by an asterisk"
@@ -7129,25 +7125,19 @@ msgid "How can I sign up for a McKinsey Academy course or program?"
 msgstr "如何注册参加麦肯锡学院的课程或计划？"
 
 #: templates/faq.haml:97
-#, fuzzy
-#| msgid "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
 msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
-msgstr "请<a href=\"mailto:info@mckinseyacademy.com\">联系我们！</a>"
+msgstr "请<a href=\"mailto:academy_info@mckinsey.com\">联系我们！</a>"
 
 #: templates/faq.haml:98
 msgid "What if my question isn’t answered here?"
 msgstr "如果问题在这里没有得到解答，该怎么办？"
 
 #: templates/faq.haml:99
-#, fuzzy
-#| msgid ""
-#| "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a> We’ll "
-#| "do our best to help."
 msgid ""
 "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a> We’ll do "
 "our best to help."
 msgstr ""
-"请<a href=\"mailto:info@mckinseyacademy.com\">联系我们！</a>我们会尽力帮忙解"
+"请<a href=\"mailto:academy_info@mckinsey.com\">联系我们！</a>我们会尽力帮忙解"
 "决。"
 
 #: templates/footer.haml:11
@@ -8430,12 +8420,6 @@ msgid ""
 msgstr "我们目前只为企业客户提供服务，参与者必须由其公司赞助。"
 
 #: templates/marketing/programs.haml:243
-#, fuzzy
-#| msgid ""
-#| "\n"
-#| "            Please email us at <a href=\"mailto:info@mckinseyacademy.com"
-#| "\">info@mckinseyacademy.com</a> for further details.\n"
-#| "            "
 msgid ""
 "\n"
 "            Please email us at <a href=\"mailto:academy_info@mckinsey.com"
@@ -8444,7 +8428,7 @@ msgid ""
 msgstr ""
 "\n"
 "            有关详细信息，请发送电子邮件至 <a href=\"mailto:"
-"info@mckinseyacademy.com\">info@mckinseyacademy.com</a>。\n"
+"academy_info@mckinsey.com\">academy_info@mckinsey.com</a>。\n"
 "            "
 
 #: templates/marketing/programs.haml:250
