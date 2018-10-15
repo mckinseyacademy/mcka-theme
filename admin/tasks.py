@@ -130,11 +130,16 @@ def course_participants_data_retrieval_task(
         if not participants_stats.get('next'):
             break
 
-    groupworks, assessments, lesson_completions = OrderedDict(), OrderedDict(), OrderedDict()
+    groupworks, assessments, lesson_completions, attributes = OrderedDict(), OrderedDict(), OrderedDict(), OrderedDict()
 
     # custom processing is needed for groupworks and assessments data
     # as csv column names are also dynamic for them
     for participant in participants_data:
+
+        for field in participant.get('attributes'):
+            attributes[field['key']] = field['label']
+            participant[field['key']] = field['value']
+
         for groupwork in participant.get('groupworks'):
             label = groupwork.get('label')
             key = 'GW_{}'.format(label)
@@ -162,6 +167,12 @@ def course_participants_data_retrieval_task(
         ("Username", ("username", '')),
         ("Email", ("email", '')),
         ("Company", ("organizations_display_name", '')),
+    ])
+
+    for key, label in attributes.items():
+        fields.update([(label, (key, ''))])
+
+    fields.update([
         ("Status", ("custom_user_status", '')),
         ("Activated", ("custom_activated", '')),
         ("Last login", ("custom_last_login", '')),

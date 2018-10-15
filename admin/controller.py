@@ -10,6 +10,7 @@ import threading
 import urllib
 import uuid
 from datetime import datetime
+from copy import deepcopy
 
 import re
 from PIL import Image
@@ -2191,6 +2192,7 @@ class CourseParticipantStats(object):
 
         organization_id = self.request_params.get('organizations', None)
         if organization_id:
+            course_participants = self._associate_company_attributes(course_participants,organization_id)
             course_participants = remove_specific_user_roles_of_other_companies(course_participants, int(organization_id))
 
         lesson_completions = self._get_lesson_completions(course_participants)
@@ -2205,6 +2207,16 @@ class CourseParticipantStats(object):
             self.participants_engagement_lookup,
             course_completions,
         )
+
+    def _associate_company_attributes(self, course_participants, organization_id):
+        org_fields = get_organization_fields(organization_id)
+        for participant in course_participants['results']:
+            result = {field['key']: field for field in participant['attributes']}
+            field_values = deepcopy(org_fields)
+            for field in field_values:
+                field['value'] = result.get(field['key'], {}).get('value')
+            participant['attributes'] = field_values
+        return course_participants
 
     def _get_engagement_scores(self):
         """
