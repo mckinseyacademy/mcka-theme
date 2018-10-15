@@ -5,6 +5,8 @@ from django.conf.urls import handler500
 from django.conf import settings
 from django.views.i18n import javascript_catalog
 from django.contrib.sitemaps.views import sitemap
+from django.contrib.staticfiles.storage import staticfiles_storage
+from django.views.generic.base import RedirectView
 
 from main import views as main_views
 from sitemap import *
@@ -37,7 +39,8 @@ urlpatterns = [
     url(r'^jsi18n/$', javascript_catalog, name='javascript-catalog'),
     url(r'^storage/(?P<path>.*)', main_views.private_storage_access, name='private_storage'),
     url(r'^language_switch',
-        accountsviews.switch_language_based_on_preference, name='language_switcher')
+        accountsviews.switch_language_based_on_preference, name='language_switcher'),
+    url(r'^favicon.ico$', RedirectView.as_view(url=staticfiles_storage.url('favicons/favicon.ico')), name="favicon")
 ]
 
 if settings.DEBUG:
