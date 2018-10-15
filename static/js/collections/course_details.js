@@ -15,7 +15,7 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     totalPages: null,
     totalRecords: null,
     page_size: 100,
-    additional_fields: 'grades,roles,organizations,progress',
+    additional_fields: 'grades,roles,organizations,progress,course_groups',
   },
   parseLinks: function (resp, options) {
     returnObject={};

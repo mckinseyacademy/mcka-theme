@@ -8,8 +8,15 @@ from django.test import TestCase
 from mock import patch
 
 from accounts.helpers import TestUser
-from api_client.course_api import get_course, COURSEWARE_API, get_course_enrollments, \
-    get_course_list_for_manager_reports, get_manager_reports_in_course
+from api_client.course_api import (
+    COURSEWARE_API,
+    COURSE_COHORTS_API,
+    get_course,
+    get_course_cohort_settings,
+    get_course_enrollments,
+    get_course_list_for_manager_reports,
+    get_manager_reports_in_course,
+)
 from api_client.json_object import JsonParser
 from mcka_apros.settings import COURSE_ENROLLMENT_API
 
@@ -294,3 +301,27 @@ class TestCourseApi(TestCase):
         ])
         data = get_manager_reports_in_course('staff@example.com', 'course-v1:edX+DemoX+Demo_Course')
         self.assertEqual(data, [u'edx', u'honor'])
+
+    @ddt.data(
+        ('{"is_cohorted": true, "id": 1}', True),
+        ('{"is_cohorted": false, "id": 1}', False),
+    )
+    @ddt.unpack
+    @httpretty.httprettified
+    def test_get_course_cohort_settings(self, body, is_cohorted):
+        def cohort_settings_response(request, uri, headers):
+            return (200, headers, body)
+
+        httpretty.register_uri(
+            httpretty.GET,
+            '{}/{}/settings/{}'.format(
+                settings.API_SERVER_ADDRESS,
+                COURSE_COHORTS_API,
+                self.COURSE_ID,
+            ),
+            body=cohort_settings_response,
+            status=200,
+            content_type='application/json'
+        )
+        cohort_settings = get_course_cohort_settings(self.COURSE_ID)
+        self.assertEqual(cohort_settings.is_cohorted, is_cohorted)
