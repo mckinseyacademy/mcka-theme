@@ -67,6 +67,7 @@ from .models import (
     GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate
 )
 from .permissions import Permissions, SlimAddingPermissions
+from accounts.helpers import make_user_manager, get_user_by_email
 
 # need to load everything up to first level nested XBlocks to properly get Group Project V2 activities
 MINIMAL_COURSE_DEPTH = 5
@@ -2700,6 +2701,46 @@ def _get_user_managers(username):
     if user_manager_response is not None:
         user_managers = user_manager_response["results"]
     return user_managers
+
+
+def process_manager_email(manager_email, username, company_id):
+    """
+    POST manager email in participant details page
+    """
+    manager = get_user_by_email(manager_email)
+    if not manager:
+        error_message = 'Error: User does not exist with email {0}'.format(manager_email)
+    else:
+        organizations = manager['organizations']
+        if not organizations:
+            error_message = "Error: User does not belong to any organization!"
+        elif int(company_id) != organizations[0]['id']:
+            error_message = "Error: User belongs to a different organization!"
+        else:
+            return create_update_delete_manager(manager['id'], manager_email, username)
+    return {'status': 'error', 'type': 'api_error', 'message': error_message}
+
+
+def create_update_delete_manager(user_id, manager_email, username):
+    user_managers = _get_user_managers(username)
+    if user_managers:
+        if not manager_email:
+            manager_api.delete_user_manager(username, manager_email)
+        elif manager_email != user_managers[0]['email']:
+            update_user_manager(user_id, username,
+                                    user_managers[0]['email'], manager_email)
+    elif manager_email:
+        create_user_manager(user_id, username, manager_email)
+
+
+def create_user_manager(user_id, username, email):
+    manager_api.post_user_manager(username, email)
+    make_user_manager(user_id)
+
+
+def update_user_manager(user_id, username, manager_email, email):
+    manager_api.delete_user_manager(username, manager_email)
+    create_user_manager(user_id, username, email)
 
 
 def get_user_company_fields(user_id, organization_id):

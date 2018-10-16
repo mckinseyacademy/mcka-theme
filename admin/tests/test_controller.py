@@ -529,3 +529,51 @@ class TestGetUserCompanyFields(TestCase, ApplyPatchMixin):
         ]
         output = controller.get_user_company_fields(self.user_id, self.organization_id)
         self.assertEqual(output, expected_output)
+
+
+class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
+    def setUp(self):
+        self.manager_email = ""
+        self.username = ""
+        self.company_id = None
+        self.get_user_by_email = self.apply_patch('admin.controller.get_user_by_email')
+        self.get_user_manager = self.apply_patch('admin.controller.manager_api.get_user_manager')
+        self.post_user_manager = self.apply_patch('admin.controller.manager_api.post_user_manager')
+        self.delete_user_manager = self.apply_patch('admin.controller.manager_api.delete_user_manager')
+        self.create_update_delete_manager = self.apply_patch('admin.controller.create_update_delete_manager')
+
+    def test_user_not_exist(self):
+        self.manager_email = "abc@example.com"
+        expected_output = {'status': 'error', 'message': 'Error: User does not exist with email abc@example.com', 'type': 'api_error'}
+        self.get_user_by_email.return_value = []
+        output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
+        self.assertEqual(output, expected_output)
+
+    def test_user_belongs_to_different_organization(self):
+        self.manager_email = "mcka_admin_user@mckinseyacademy.com"
+        self.username = "client_admin_user"
+        self.company_id = 4
+        expected_output = {'status': 'error', 'message': 'Error: User belongs to a different organization!', 'type': 'api_error'}
+        output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
+        self.assertEqual(output, expected_output)
+
+    def test_update_user_manager(self):
+        self.manager_email = "mcka_admin_user@mckinseyacademy.com"
+        self.username = "mcka_subadmin_user"
+        self.get_user_by_email.return_value = {
+                "id": 8,
+                "email": "mcka_admin_user@mckinseyacademy.com",
+                "username": "mcka_admin_user",
+                "organizations": [
+                    {
+                        "id": 1,
+                    }
+                ],
+            }
+
+        self.create_update_delete_manager.return_value = None
+
+        self.company_id = 1
+        expected_output = None
+        output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
+        self.assertEqual(output, expected_output)

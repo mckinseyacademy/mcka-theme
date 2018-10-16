@@ -26,7 +26,7 @@ def get_user_manager(user_id):
 @api_error_protect
 def post_user_manager(user_id, manager_email):
     '''
-    create / update specified user manager
+    create specified user manager
     user_id: it can be either username or email
     '''
     edx_oauth2_session = get_oauth2_session()

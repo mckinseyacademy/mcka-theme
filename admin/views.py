@@ -42,7 +42,8 @@ from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
-    get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value
+    get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
+    process_manager_email
 from api_client import course_api, user_api, manager_api, group_api, workgroup_api, organization_api, mobileapp_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
@@ -3885,18 +3886,10 @@ class participant_details_api(APIView):
 
                     if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
                         manager_email = data.get('manager_email', None)
-                        user_managers = _get_user_managers(data.get('username'))
-                        if user_managers:
-                            if manager_email:
-                                # if manager_email exists , update the manager
-                                manager_api.post_user_manager(data.get('username'), manager_email)
-                            else:
-                                # else delete the manager
-                                manager_api.delete_user_manager(data.get('username'), manager_email)
-                        else:
-                            if manager_email:
-                                # if manager_email exists , create the manager
-                                manager_api.post_user_manager(data.get('username'), manager_email)
+                        if manager_email:
+                            error = process_manager_email(manager_email, data.get('username'), company)
+                            if error:
+                                return Response(error)
 
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
