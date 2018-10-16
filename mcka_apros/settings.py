@@ -148,6 +148,7 @@ LANGUAGES = (
     ('nl', u'Dutch '),
     ('pt', u'Português'),
     ('fr', u'French'),
+    ('de', u'Deutsche'),
 )
 
 
