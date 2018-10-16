@@ -69,7 +69,7 @@
 
         .companyCustomFields.contentNavigationContainer
           #companyCustomFieldsContainer
-            - if user.is_mcka_subadmin
+            - if user.is_mcka_subadmin or user.is_mcka_admin
               .row.manager-info
                 .large-9.columns
                   %input{"name": "manager_check", "type":"checkbox", "value": "manager_check"}
@@ -85,7 +85,7 @@
             #companyLinkedAppsContainer
               #companyLinkedAppsViewGridBlock
 
-    - if user.is_mcka_subadmin
+    - if user.is_mcka_subadmin or user.is_mcka_admin
       #companyfields.reveal-modal.small{"aria-hidden" : "true", "aria-labelledby" : "modalTitle", "data-reveal" : "", "role": "dialog"}
         %h4 {% trans "Add New Fields" %}
         %p {% trans "Create upto 4 new fields of new additional data" %}
