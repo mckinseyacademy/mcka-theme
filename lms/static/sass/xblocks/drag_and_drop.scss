@@ -164,6 +164,27 @@
     .keyboard-help-button {
         display: none;
     }
+
+    // Fixed sizing feedback window for completed state in standard mode
+    .fixed-sizing-feedback{
+        background-color: $mckinsey-royal-blue;
+        .feedback-detail{
+            &.completed{
+                .icon{
+                  background-color: transparent !important;
+                    .icon-shield{
+                        &:before{
+                            background: url("../images/completed-icon.png") no-repeat !important;
+                            background-size: 100% !important;
+                        }
+                    }
+                }
+            }
+            button{
+                color: $mckinsey-royal-blue;
+            }
+        }
+    }
 }
 
 
