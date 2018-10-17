@@ -775,7 +775,7 @@ def get_course_details_metrics_social(course_id, qs_params = ''):
     ''' fetch social metrics for course '''
 
     response = GET(
-        '{}/{}/{}/metrics/social/?'.format(
+        '{}/{}/{}/metrics/social/?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
