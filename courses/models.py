@@ -43,6 +43,7 @@ class FeatureFlags(db_models.Model):
     discussions = db_models.BooleanField(default=True)
     cohort_map = db_models.BooleanField(default=True)
     lesson_label = db_models.BooleanField(default=True)
+    leaderboard = db_models.BooleanField(default=False)
     proficiency = db_models.BooleanField(default=True)
     progress = db_models.BooleanField(default=True)
     progress_indication = db_models.BooleanField(default=True)
@@ -64,6 +65,7 @@ class FeatureFlags(db_models.Model):
             discussions=self.discussions,
             cohort_map=self.cohort_map,
             lesson_label=self.lesson_label,
+            leaderboard=self.leaderboard,
             progress_indication=self.progress_indication,
             proficiency=self.proficiency,
             progress=self.progress,

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-09 14:31+0000\n"
+"POT-Creation-Date: 2018-10-11 14:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr "Você deve inserir o ID do curso!"
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
-#: static/js/views/admin/participant_details_edit_info.js:360
+#: static/js/views/admin/participant_details_edit_info.js:368
 #: static/js/views/admin/participantsinfo.js:120
 msgid "Course"
 msgstr "Curso"
@@ -91,15 +91,15 @@ msgstr "Pesquisa por Palavra-Chave"
 msgid "NoName"
 msgstr "SemNome"
 
-#: static/js/common/common_js.js:515
+#: static/js/common/common_js.js:516
 msgid "Send"
 msgstr "Enviar"
 
-#: static/js/common/common_js.js:745
+#: static/js/common/common_js.js:746
 msgid "Fetching data for file: %(filename)s"
 msgstr "Buscando dados para o arquivo: %(filename)s"
 
-#: static/js/common/common_js.js:857
+#: static/js/common/common_js.js:858
 msgid "%(value)s%"
 msgstr "%(value)s%"
 
@@ -275,7 +275,7 @@ msgstr "Nº de cursos"
 #: static/js/views/admin/companies_list.js:98
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
-#: static/js/views/admin/participant_details_edit_info.js:475
+#: static/js/views/admin/participant_details_edit_info.js:483
 #: static/js/views/admin/participantsinfo.js:370
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "O nome da empresa deve conter apenas caracteres alfanuméricos!"
@@ -283,7 +283,7 @@ msgstr "O nome da empresa deve conter apenas caracteres alfanuméricos!"
 #: static/js/views/admin/companies_list.js:105
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
-#: static/js/views/admin/participant_details_edit_info.js:469
+#: static/js/views/admin/participant_details_edit_info.js:477
 #: static/js/views/admin/participantsinfo.js:364
 msgid "This company name cannot have more than 30 characters!"
 msgstr "O nome da empresa deve ter, no máximo, 30 caracteres!"
@@ -392,7 +392,7 @@ msgstr "Nome"
 #: static/js/views/admin/course_details_bulk_actions.js:281
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
-#: static/js/views/admin/participant_details_edit_info.js:364
+#: static/js/views/admin/participant_details_edit_info.js:372
 #: static/js/views/admin/participantsinfo.js:129
 msgid "Status"
 msgstr "Status"
@@ -521,21 +521,21 @@ msgstr "Alterar o status de todos os participantes selecionados para:"
 
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
-#: static/js/views/admin/participant_details_edit_info.js:366
+#: static/js/views/admin/participant_details_edit_info.js:374
 #: static/js/views/admin/participantsinfo.js:133
 msgid "Participant"
 msgstr "Participante"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
-#: static/js/views/admin/participant_details_edit_info.js:367
+#: static/js/views/admin/participant_details_edit_info.js:375
 #: static/js/views/admin/participantsinfo.js:135
 msgid "Observer"
 msgstr "Observador"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
-#: static/js/views/admin/participant_details_edit_info.js:368
+#: static/js/views/admin/participant_details_edit_info.js:376
 #: static/js/views/admin/participantsinfo.js:134
 msgid "TA"
 msgstr "TA"
@@ -547,13 +547,13 @@ msgstr "Salvar Alterações"
 #: static/js/views/admin/course_details_bulk_actions.js:224
 #: static/js/views/admin/course_details_bulk_actions.js:329
 #: static/js/views/admin/course_details_bulk_actions.js:335
-#: static/js/views/admin/participant_details_edit_info.js:401
-#: static/js/views/admin/participant_details_edit_info.js:407
+#: static/js/views/admin/participant_details_edit_info.js:409
+#: static/js/views/admin/participant_details_edit_info.js:415
 msgid "You need to select status!"
 msgstr "Você deve  selecionar o status!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:266
-#: static/js/views/admin/participant_details_edit_info.js:355
+#: static/js/views/admin/participant_details_edit_info.js:363
 msgid "Select Course"
 msgstr "Selecione Curso"
 
@@ -573,8 +573,8 @@ msgstr "Inscrever participantes"
 
 #: static/js/views/admin/course_details_bulk_actions.js:340
 #: static/js/views/admin/course_details_bulk_actions.js:344
-#: static/js/views/admin/participant_details_edit_info.js:412
-#: static/js/views/admin/participant_details_edit_info.js:416
+#: static/js/views/admin/participant_details_edit_info.js:420
+#: static/js/views/admin/participant_details_edit_info.js:424
 msgid "You need to select course!"
 msgstr "Você deve selecionar o curso!"
 
@@ -736,24 +736,24 @@ msgstr "Nenhum"
 msgid "Do you really want to delete: \n"
 msgstr "Você realmente deseja excluir: \n"
 
-#: static/js/views/admin/manager_dashboard.js:130
+#: static/js/views/admin/manager_dashboard.js:127
 #: static/js/views/courses/lesson_note.js:2
 msgid "Lesson"
 msgstr "Lição"
 
-#: static/js/views/admin/manager_dashboard.js:130
+#: static/js/views/admin/manager_dashboard.js:127
 msgid "complete"
 msgstr "Incompleto"
 
-#: static/js/views/admin/manager_dashboard.js:135
+#: static/js/views/admin/manager_dashboard.js:132
 msgid "Error Occured!"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:138
+#: static/js/views/admin/manager_dashboard.js:135
 msgid "Hide Details"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:168
+#: static/js/views/admin/manager_dashboard.js:165
 msgid "View Details"
 msgstr ""
 
@@ -803,44 +803,44 @@ msgid "Updated user data!"
 msgstr "Dados do usuário atualizados!"
 
 #: static/js/views/admin/participant_details_edit_info.js:254
-#: static/js/views/admin/participant_details_edit_info.js:287
+#: static/js/views/admin/participant_details_edit_info.js:295
 msgid "Male"
 msgstr "Masculino"
 
 #: static/js/views/admin/participant_details_edit_info.js:256
-#: static/js/views/admin/participant_details_edit_info.js:285
+#: static/js/views/admin/participant_details_edit_info.js:293
 msgid "Female"
 msgstr "Feminino"
 
-#: static/js/views/admin/participant_details_edit_info.js:356
+#: static/js/views/admin/participant_details_edit_info.js:364
 msgid "User will be enrolled in course selected below."
 msgstr "O usuário será inscrito no curso selecionado abaixo."
 
-#: static/js/views/admin/participant_details_edit_info.js:378
+#: static/js/views/admin/participant_details_edit_info.js:386
 msgid "Enroll Participant"
 msgstr "Inscrever participante"
 
-#: static/js/views/admin/participant_details_edit_info.js:436
+#: static/js/views/admin/participant_details_edit_info.js:444
 msgid "User successfully enrolled in course"
 msgstr "Usuário inscrito no curso com sucesso "
 
-#: static/js/views/admin/participant_details_edit_info.js:522
+#: static/js/views/admin/participant_details_edit_info.js:530
 #: static/js/views/admin/participantsinfo.js:100
 msgid "Admin Company"
 msgstr "Empresa do Administrador"
 
-#: static/js/views/admin/participant_details_edit_info.js:526
+#: static/js/views/admin/participant_details_edit_info.js:534
 msgid "Try selecting your company from the type-ahead results."
 msgstr ""
 "Tente selecionar a sua empresa a partir dos resultados de digitação "
 "antecipada."
 
-#: static/js/views/admin/participant_details_edit_info.js:532
+#: static/js/views/admin/participant_details_edit_info.js:540
 #: static/js/views/admin/participantsinfo.js:109
 msgid "Admin Permissions"
 msgstr "Permissões do Administrador"
 
-#: static/js/views/admin/participant_details_edit_info.js:535
+#: static/js/views/admin/participant_details_edit_info.js:543
 #: static/js/views/admin/participantsinfo.js:112
 msgid "Company Admin"
 msgstr "Empresa do Administrador"

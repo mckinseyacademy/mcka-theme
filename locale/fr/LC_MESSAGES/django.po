@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-10 11:01+0000\n"
+"POT-Creation-Date: 2018-10-11 14:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1432,8 +1432,8 @@ msgstr "Saisir votre nom complet"
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
 #: templates/admin/course_meta_content/item_detail.haml:16
-#: templates/admin/course_meta_content/item_list.haml:206
-#: templates/admin/course_meta_content/item_list.haml:235
+#: templates/admin/course_meta_content/item_list.haml:214
+#: templates/admin/course_meta_content/item_list.haml:243
 #: templates/admin/course_run/form_modal.haml:118
 #: templates/admin/learner_dashboard/main.haml:155
 #: templates/admin/learner_dashboard/preview.haml:34
@@ -1929,7 +1929,7 @@ msgstr ""
 msgid "Article"
 msgstr "Article"
 
-#: admin/models.py:590 templates/admin/course_meta_content/item_list.haml:187
+#: admin/models.py:590 templates/admin/course_meta_content/item_list.haml:195
 #: templates/courses/content_page/lesson_menu.haml:9
 #: templates/courses/content_page/lesson_menu.haml:16
 #: templates/courses/content_page/lesson_pager.haml:10
@@ -1940,7 +1940,7 @@ msgstr "Article"
 msgid "Lesson"
 msgstr "Leçon"
 
-#: admin/models.py:591 templates/admin/course_meta_content/item_list.haml:216
+#: admin/models.py:591 templates/admin/course_meta_content/item_list.haml:224
 #: templates/courses/content_page/lesson_pager.haml:11
 #: templates/courses/content_page/lesson_pager.haml:29
 #: templates/courses/content_page/lesson_pager_ld.haml:10
@@ -3417,8 +3417,8 @@ msgstr "Réinitialiser les couleurs"
 #: templates/admin/companies/company_details.haml:101
 #: templates/admin/companies/company_details.haml:113
 #: templates/admin/course_meta_content/item_detail.haml:18
-#: templates/admin/course_meta_content/item_list.haml:203
-#: templates/admin/course_meta_content/item_list.haml:232
+#: templates/admin/course_meta_content/item_list.haml:211
+#: templates/admin/course_meta_content/item_list.haml:240
 #: templates/admin/courses/course_details.haml:131
 #: templates/admin/courses/course_details.haml:203
 #: templates/admin/mobile_apps/company_app_details.haml:67
@@ -3914,8 +3914,8 @@ msgid "TYPE"
 msgstr "TYPE"
 
 #: templates/admin/course_meta_content/item_list.haml:30
-#: templates/admin/course_meta_content/item_list.haml:200
-#: templates/admin/course_meta_content/item_list.haml:229
+#: templates/admin/course_meta_content/item_list.haml:208
+#: templates/admin/course_meta_content/item_list.haml:237
 #: templates/admin/course_run/list.haml:28
 #: templates/admin/course_run/view.haml:17
 #: templates/admin/learner_dashboard/branding.haml:65
@@ -4079,20 +4079,38 @@ msgstr ""
 "Remarque : si vous désactivez « Widget de progression », cela masquera la "
 "section Progression de la page d’accueil du cours."
 
-#: templates/admin/course_meta_content/item_list.haml:197
-#: templates/admin/course_meta_content/item_list.haml:226
+#: templates/admin/course_meta_content/item_list.haml:181
+#, fuzzy
+#| msgid "Leaderboards"
+msgid "Leaderboard"
+msgstr "Tableaux de classement"
+
+#: templates/admin/course_meta_content/item_list.haml:182
+#, fuzzy
+#| msgid ""
+#| "Note: If you disable the 'Discover', it will hide Discover section from "
+#| "course main page."
+msgid ""
+"Note: If you disable the 'Leaderboard', it will hide leaderboard on the "
+"cohort page."
+msgstr ""
+"Remarque : si vous désactivez la section « Découvrir », cela masquera la "
+"section Découvrir de la page principale du cours."
+
+#: templates/admin/course_meta_content/item_list.haml:205
+#: templates/admin/course_meta_content/item_list.haml:234
 #, fuzzy
 #| msgid "Add "
 msgid "Add"
 msgstr "Ajouter "
 
-#: templates/admin/course_meta_content/item_list.haml:240
+#: templates/admin/course_meta_content/item_list.haml:248
 #, fuzzy
 #| msgid "Click Add to specify an identity provider"
 msgid "Click Add to specify Lesson Label"
 msgstr "Cliquez sur Ajouter pour spécifier un fournisseur d'identité"
 
-#: templates/admin/course_meta_content/item_list.haml:241
+#: templates/admin/course_meta_content/item_list.haml:249
 #, fuzzy
 #| msgid "Click Add to specify an identity provider"
 msgid "Click Add to specify Module Label"

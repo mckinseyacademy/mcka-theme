@@ -172,6 +172,14 @@
             %label{for: 'progress_indication'}
               {% trans "Progress Indication" %}
             %p.style-6 {% trans "Note: If you disable the 'Progress Indication', it will hide Progress Level on the lesson and module levels." %}
+          %li
+            - if feature_flags.leaderboard
+              %input#leaderboard{type: 'checkbox', name: 'leaderboard', checked: 'checked'}
+            - else
+              %input#leaderboard{type: 'checkbox', name: 'leaderboard'}
+            %label{for: 'leaderboard'}
+              {% trans "Leaderboard" %}
+            %p.style-6 {% trans "Note: If you disable the 'Leaderboard', it will hide leaderboard on the cohort page." %}
 
 
 
