@@ -1,3 +1,5 @@
+from jsonfield import JSONField
+import collections
 from django.db import models as db_models
 
 
@@ -90,6 +92,12 @@ class CourseMetaData(db_models.Model):
     module_label = db_models.CharField(max_length=20, blank=True)
     created_at = db_models.DateTimeField(auto_now_add=True)
     updated_at = db_models.DateTimeField(auto_now=True)
+    lessons_label = JSONField(default={'zero': "", 'one': "",
+                                               'two': "", 'few': "",
+                                               'many': "", 'other': ""}, load_kwargs={'object_pairs_hook': collections.OrderedDict})
+    modules_label = JSONField(default={'zero': "", 'one': "",
+                                               'two': "", 'few': "",
+                                               'many': "", 'other': ""}, load_kwargs={'object_pairs_hook': collections.OrderedDict})
 
     def as_json(self):
         return dict(
@@ -97,5 +105,7 @@ class CourseMetaData(db_models.Model):
             course_id=self.course_id,
             lesson_label=self.lesson_label,
             module_label=self.module_label,
+            lesson_pluralist=self.lessons_label,
+            module_pluralist=self.modules_label,
         )
 
