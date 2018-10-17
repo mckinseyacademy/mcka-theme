@@ -44,6 +44,11 @@ def course_participants_data_retrieval_task(
 
     additional_fields = ['grades', 'roles', 'organizations', 'progress']
 
+    cohorts_enabled = course_api.get_course_cohort_settings(course_id).is_cohorted
+
+    if cohorts_enabled:
+        additional_fields.append('course_groups')
+
     if lesson_completions:
         additional_fields.append('lesson_completions')
 
@@ -160,6 +165,10 @@ def course_participants_data_retrieval_task(
                 lesson_completions[key] = _('Lesson {lesson_number} Progress').format(lesson_number=lesson_number)
             participant[key] = '{}%'.format(completion)
 
+        if cohorts_enabled:
+            course_groups = participant.get('course_groups')
+            participant['course_group'] = course_groups[0] if course_groups else '-'
+
     fields = OrderedDict([
         ("Id", ("id", '')),
         ("First name", ("first_name", '')),
@@ -182,6 +191,9 @@ def course_participants_data_retrieval_task(
         ("Activation Link", ("activation_link", '')),
         ("Country", ("country", '')),
     ])
+
+    if cohorts_enabled:
+        fields['Course group'] = ("course_group", '')
 
     # update fields with groupworks/assignments data
     for label, title in groupworks.items() + assessments.items() + lesson_completions.items():
