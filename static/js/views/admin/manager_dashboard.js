@@ -69,28 +69,6 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       colModel: this.generatedGridColumns,
       onReady: function () {
         InitializeAverageCalculate();
-        var totalProgress = 0;
-        var totalProficiency = 0;
-        var total = 0;
-        // Progressbar for progress column
-        $('#managerDashboardWrapper td.progress').each(function (index, value) {
-          var text = $(this).text();
-          $(this).css("width" , text);
-          totalProgress += parseInt(text.replace("%", ""));
-          total++;
-        });
-
-        $('#managerDashboardWrapper td.proficiency').each(function (index, value) {
-          var text = $(this).text();
-          $(this).css("width" , text);
-            totalProficiency += parseInt(text.replace("%", ""));
-        });
-
-        // Set the Average progess and proficiency
-        if(total) {
-          $('.progress-average large').text(parseInt(totalProgress / total) + "%");
-          $('.proficiency-average large span').text(parseInt(totalProficiency / total));
-        }
 
         // Activation status icon
         $('#managerDashboardWrapper .status').each(function () {
