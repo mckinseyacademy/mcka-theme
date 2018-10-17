@@ -44,7 +44,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
     process_manager_email
-from api_client import course_api, user_api, manager_api, group_api, workgroup_api, organization_api, mobileapp_api
+from api_client import course_api, user_api, manager_api, group_api, workgroup_api, organization_api, mobileapp_api, cohort_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.json_object import JsonObjectWithImage
@@ -5783,3 +5783,76 @@ class CourseMetaDataApiView(APIView):
             return Response(status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class CohortSettings(APIView):
+    permission_classes = (InternalAdminCoursePermission, )
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, course_id):
+        return Response({'is_cohorted': cohort_api.is_course_cohorted(course_id)})
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+        is_cohorted = request.data['is_cohorted']
+        return Response({'is_cohorted': cohort_api.set_course_cohorted(course_id, is_cohorted)})
+
+
+class CohortList(APIView):
+    permission_classes = (InternalAdminCoursePermission, )
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, course_id):
+        return Response(cohort_api.get_all_cohorts_for_course(course_id))
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+        name = request.data.get('name')
+        assignment_type = request.data.get('assignment_type')
+        return Response(cohort_api.add_cohort_for_course(course_id, name, assignment_type))
+
+
+class CohortHandler(APIView):
+    permission_classes = (InternalAdminCoursePermission, )
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, course_id, cohort_id):
+        return Response(cohort_api.get_cohort_for_course(course_id, cohort_id))
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def put(self, request, course_id, cohort_id):
+        name = request.data.get('name')
+        assignment_type = request.data.get('assignment_type')
+        return Response(cohort_api.update_cohort_for_course(course_id, cohort_id, name, assignment_type))
+
+
+class CohortUsers(APIView):
+    permission_classes = (InternalAdminCoursePermission,)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id, cohort_id):
+        usernames = request.data['users']
+        return Response(cohort_api.add_multiple_users_to_cohort(course_id, cohort_id, usernames))
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def put(self, request, course_id, cohort_id, username):
+        return Response(cohort_api.add_user_to_cohort(course_id, cohort_id, username))
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def cohorts_courses_list(request):
+    return render(request, 'admin/cohorts/courses_list.haml')
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def cohorts_course_details(request, course_id):
+    course = course_api.get_course_details(course_id)
+    return render(request, 'admin/cohorts/course_details.html', course)
+
+
+class CohortImport(APIView):
+    permission_classes = (InternalAdminCoursePermission,)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+        return Response(cohort_api.import_users(course_id, request.FILES))

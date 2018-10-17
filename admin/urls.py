@@ -217,4 +217,14 @@ urlpatterns += [
     url(r'^certificates/templates/(?P<template_id>\d+)/edit$', certificate_views.edit_certificate_template, name='edit_certificate_template'),
 
     url(r'^manager/', include('manager_dashboard.urls'), name='manager_dashboard_urls'),
+
+    # Cohorting
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/(?P<cohort_id>.+)/users/(?P<username>.+)$', views.CohortUsers.as_view(), name='cohort_user_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/(?P<cohort_id>.+)/users', views.CohortUsers.as_view(), name='cohort_users_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/(?P<cohort_id>.+)$', views.CohortHandler.as_view(), name='cohort_list_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/settings$', views.CohortSettings.as_view(), name='cohort_settings_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/$', views.CohortList.as_view(), name='cohort_list_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/users$', views.CohortImport.as_view(), name='cohort_import_api'),
+    url(r'^cohorts/?$', views.cohorts_courses_list, name='cohort_course_list'),
+    url(r'^cohorts/(?P<course_id>.*)/$', views.cohorts_course_details, name='cohorts_course_details'),
 ]

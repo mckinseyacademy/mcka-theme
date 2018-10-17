@@ -5,6 +5,7 @@ import json
 
 from rest_framework import status
 
+from api_client import discussions_api
 from lib.utils import DottableDict
 
 from django.conf import settings
@@ -30,6 +31,7 @@ USER_ROLES = DottableDict(
     STAFF='staff',
     INSTRUCTOR='instructor',
     OBSERVER='observer',
+    MODERATOR='instructor',
     TA='assistant',
     INTERNAL_ADMIN='internal_admin',
 )
@@ -272,6 +274,7 @@ def get_user_roles(user_id):
             user_id,
         )
     )
+
     return JP.from_json(response.read())
 
 
@@ -290,12 +293,26 @@ def add_user_role(user_id, course_id, role):
         ),
         data
     )
+
+    # Add discussion moderator in LMS if necessary
+    if role == USER_ROLES.MODERATOR:
+        discussions_api.add_discussion_moderator(course_id, user_id)
+
     return JP.from_json(response.read())
 
 
 @api_error_protect
 def update_user_roles(user_id, role_list):
     ''' update roles, where role_list is a list of dictionaries containing course_id & role '''
+
+    for entry in role_list.get('roles'):
+        # Update discussion moderator permission
+        discussions_api.set_discussions_moderator(
+            course_id=entry['course_id'],
+            user_id=user_id,
+            is_moderator=entry['role'] == USER_ROLES.MODERATOR
+        )
+
     response = PUT(
         '{}/{}/{}/roles'.format(
             settings.API_SERVER_ADDRESS,
@@ -304,6 +321,7 @@ def update_user_roles(user_id, role_list):
         ),
         role_list
     )
+
     return JP.from_json(response.read())
 
 
@@ -318,6 +336,10 @@ def delete_user_role(user_id, course_id, role):
             course_id
         )
     )
+
+    # Remove discussion moderator from LMS if necessary
+    if role == USER_ROLES.MODERATOR:
+        discussions_api.remove_discussion_moderator(course_id, user_id)
 
     return (response.code == 204)
 

@@ -117,7 +117,9 @@ class BasePermissionForm(forms.Form):
     _per_course_roles = []
 
     def available_roles(self):
-        return ((USER_ROLES.TA, _("TA")), (USER_ROLES.OBSERVER, _("OBSERVER")))
+        return ((USER_ROLES.TA, _("TA")),
+                (USER_ROLES.OBSERVER, _("OBSERVER")),
+                (USER_ROLES.MODERATOR, _("MODERATOR")))
 
     def per_course_roles(self):
         return [self[name] for name in self._per_course_roles]

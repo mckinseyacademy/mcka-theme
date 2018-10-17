@@ -26,6 +26,8 @@ var Router = Backbone.Router.extend({
     'admin/course-meta-content':'course_meta_content',
     'admin/participants': 'participants_list',
     'admin/participants/*id': 'initialize_participant_details',
+    'admin/cohorts/': 'admin_cohorts',
+    'admin/cohorts/*course_id/': 'admin_cohorts_detail',
     'admin/courses/': 'admin_courses',
     'admin/courses/*course_id/': 'admin_course_details_participants',
     'admin/clients/*client_id/courses_without_programs': 'assign_students_in_courses',
@@ -188,9 +190,35 @@ var Router = Backbone.Router.extend({
     participant_details_course_history_view.render();
   },
 
+  admin_cohorts: function() {
+    var courses = new Apros.collections.AdminCourses();
+    var cohorts_courses_list_view = new Apros.views.CoursesListView({
+      collection: courses,
+      el: '#coursesListViewGridBlock',
+      context: 'cohorts'
+    });
+    cohorts_courses_list_view.render();
+  },
+
+  admin_cohorts_detail: function(course_id) {
+    var settings = new Apros.models.AdminCohortSettings({course_id: course_id});
+    var cohorts = new Apros.collections.AdminCohorts({course_id: course_id});
+    var cohorts_detail_view = new Apros.views.CohortsDetailView({
+      collection: cohorts,
+      settings: settings,
+      course_id: course_id,
+      el: '#mainCohortDetailsWrapper'
+    });
+    cohorts_detail_view.render();
+  },
+
   admin_courses: function(){
     var courses = new Apros.collections.AdminCourses();
-    var courses_list_view = new Apros.views.CoursesListView({collection: courses, el: '#coursesListViewGridBlock'});
+    var courses_list_view = new Apros.views.CoursesListView({
+      collection: courses,
+      el: '#coursesListViewGridBlock',
+      context: 'courses'
+    });
     courses_list_view.render();
   },
 

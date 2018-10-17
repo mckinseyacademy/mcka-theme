@@ -1,0 +1,168 @@
+{% extends "admin/admin_layout.haml" %}
+{% load i18n %}
+
+{% load staticfiles %}
+{% block custom_js %}
+  <script src="{% static 'js/vendor/tinymce/tinymce.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+<div id="mainCohortDetailsWrapper"></div>
+
+<!-- Modal code conflicts inside Backbone template -->
+<div data-reveal="" class="reveal-modal medium" id="create_cohort">
+  <div class="close-reveal-modal">
+    <i class="fa fa-times-circle"></i>
+  </div>
+  <h2>Create a new cohort</h2>
+  <hr/>
+  <div>
+    <h4 class="form-label">
+      {% trans "Cohort Name" %}
+    </h4>
+    <input id="newCohortName" placeholder="Cohort Name">
+  </div>
+  <div class="newCohortAssignment field field-radio">
+    <h4 class="form-label">
+      {% trans "Cohort Assignment Method" %}
+    </h4>
+    <label>
+      <input type="radio" class="type-random" name="cohort-assignment-type" value="random" checked="checked"> {% trans "Automatic" %}
+    </label>
+    <label>
+      <input type="radio" class="type-manual" name="cohort-assignment-type" value="manual"> {% trans "Manual" %}
+    </label>
+    <button id="createCohortBtn" class="button small radius">{% trans 'Create' %}</button>
+  </div>
+</div>
+
+<script type="text/template" id="cohortsTemplate">
+  <div class='cohortDetailsNavigationButton'>
+      <a href='/admin/cohorts/' target='_self'>< {% trans "Back to Course List" %}</a>
+      <%if (enabled) {%>
+      <button id="addCohortBtn" data-reveal-id="create_cohort" class="right button small radius menuButton">
+          <span class="fa fa-plus"></span> {% trans 'Add Cohort' %}
+      </button>
+      <%}%>
+  </div>
+  <div id="cohortDetailsDataWrapper">
+    <div class="cohortDetailsHeader">
+      <div class='cohortDetailsNameAndId'>
+        {{ name }}
+      </div>
+      <hr/>
+    </div>
+    <div id='cohortDetailsBlock'>
+      <div class="cohortDetailContent">
+        <div class="row">
+            <label>
+                <input type="checkbox" id="cohortCheckbox" <%= enabled ? 'checked' : '' %> >
+                {% trans "Enable Cohorts" %}
+            </label>
+        </div>
+      <%if (enabled && cohorts.length && cohorts[0].id) {%>
+        <div class="row">
+          <select id="cohortSelect">
+          <%_.forEach(cohorts, function(cohort, i) {%>
+            <% if (selected == i) {%>
+              <option value="<%=i%>" selected><%=cohort.name%> (<%=cohort.user_count%>)</option>
+            <%} else {%>
+              <option value="<%=i%>"><%=cohort.name%> (<%=cohort.user_count%>)</option>
+            <%}%>
+          <%})%>
+          </select>
+        </div>
+        <% selected = selected ? cohorts[selected] : cohorts[0] %>
+        <div class="row">
+          <h3 class="cohortDetailsNameAndId"><%=selected.name%></h3>
+          <em>({% trans "contains <%=selected.user_count%> learners" %})</em>
+          <div class="small">
+            <% if (selected.assignment_type === 'random') { %>
+              <em>{% trans "Learners are added automatically to this cohort." %}</em>
+            <% } else { %>
+              <em>{% trans "Learners are added to this cohort only when you provide their email addresses or usernames on this page." %}</em>
+            <% } %>
+          </div>
+        </div>
+        <hr/>
+      <%}%>
+      </div>
+    </div>
+  </div>
+  <% if (enabled && selected) { %>
+  <div class="cohortTabs container">
+    <div class="row">
+      <div class="content active" id="manage">
+        <div id="manageUsersMainContainer">
+          <div>
+            <div class="tabTitle">{% trans "Add Learners to this Cohort" %}</div>
+            <span class="subtitle">{% trans "Note: Learners can be in only one cohort. Adding learners to this group overrides any previous group assignment." %}</span>
+          <div>
+          <div>
+            <div>
+              <p>{% trans "Enter email addresses and/or usernames, separated by new lines or commas, for the learners you want to add. *" %}</p>
+              <textarea id="addUsersForm" rows="10" placeholder="user@example.com"></textarea>
+            </div>
+            <div>
+              <p class="subtitle">{% trans "You will not receive notifications or emails that bounce, so double-check your spelling." %}</p>
+              <button id="addLearnersBtn" class="button small radius addLearnersBtn">
+                  <span class="fa fa-plus"></span> {% trans 'Add Learners' %}
+              </button>
+            </div>
+            <div id="alertContainer">
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr/>
+      <div class="content" id="settings">
+        <div>
+          <div class="tabTitle">{% trans "Settings" %}</div>
+        </div>
+        <div>
+          <h4 class="form-label">
+            {% trans "Cohort Name" %}
+          </h4>
+          <input id="updateCohortName" value="<%=selected.name%>">
+        </div>
+        <div class="updateCohortAssignment field field-radio">
+          <h4 class="form-label">
+            {% trans "Cohort Assignment Method" %}
+          </h4>
+          <label>
+            <input type="radio" class="type-random" name="cohort-assignment-type" value="random"> {% trans "Automatic" %}
+          </label>
+          <label>
+            <input type="radio" class="type-manual" name="cohort-assignment-type" value="manual"> {% trans "Manual" %}
+          </label>
+          <button id="updateCohortBtn" class="button small radius">
+              {% trans 'Save' %}
+          </button>
+        </div>
+      </div>
+{#      <hr/>#}
+{#      <div class="content" id="csv">#}
+{#        <div class="cohort-management-file-upload csv-upload" id="cohort-management-file-upload" tabindex="-1">#}
+{#          <div class="wrapper-form">#}
+{#            <h3 class="hd hd-3 form-title subsection-title">{% trans "Assign students to cohorts by uploading a CSV file" %}.</h3>#}
+{#            <div class="file-upload-form-result result"></div>#}
+{#              <form class="file-upload-form" id="file-upload-form" method="post" action="/api/cohorts/v1/courses/<%=course_id%>/users/" enctype="multipart/form-data">#}
+{#                <div class="form-fields">#}
+{#                  <div class="field field-file is-required">#}
+{#                    <label class="field-label sr" for="file-upload-form-file">{% trans "Choose a .csv file" %}</label>#}
+{#                    <input id="file-upload-form-file" class="input input-file" name="uploaded-file" type="file" accept=".csv">#}
+{#                    <span class="tip tip-stacked">{% trans "Only properly formatted .csv files will be accepted" %}.</span>#}
+{#                  </div>#}
+{#                </div>#}
+{#                <div class="form-actions">#}
+{#                  <button id="importLearnersBtn" class="button small radius">{% trans 'Upload File and Assign Students' %}</button>#}
+{#                </div>#}
+{#              </form>#}
+{#            </div>#}
+{#          </div>#}
+{#        </div>#}
+{#      </div>#}
+    </div>
+  </div>
+  <%}%>
+</script>
+{% endblock %}

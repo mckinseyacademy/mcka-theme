@@ -875,6 +875,7 @@ def group_completions_by_user(completions, username=None):
             username: _group_completions_by_block_key(completions[0])
         }
 
+
 @api_error_protect
 def get_course_enrollments(course_id=None, usernames=None, edx_oauth2_session=None):
     """
