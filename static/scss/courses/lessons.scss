@@ -307,7 +307,12 @@
       border-bottom: 1px solid $border-line;
 
       .fa-check-circle { color: $mckinsey-green; }
-      .fa-circle { color: $mckinsey-academy-light-gray; }
+      .fa-circle {
+        color: $mckinsey-academy-light-gray;
+        &.partial{
+          color: $mckinsey-status-partial;
+        }
+      }
 
       &:last-child {
         border-bottom: none;
