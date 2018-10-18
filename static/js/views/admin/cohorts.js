@@ -2,12 +2,13 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
   initialize: function (options) {
     this.course_id = options['course_id'];
     this.settings = options['settings'];
+    this.template = _.template($('#cohortsTemplate').html());
     this.listenTo(this.settings, 'sync change', this.render);
     this.settings.fetch();
     let view = this;
-    $('button#createCohortBtn').on('click', function() {
+    $('button#createCohortBtn').on('click', function () {
       view.createCohort();
-    })
+    });
   },
   events: {
     'click #cohortCheckbox': 'toggleCohorting',
@@ -16,8 +17,6 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
     'change #cohortSelect': 'changeSelectedCohort'
     // 'click #importLearnersBtn': 'submitUsersCSV'
   },
-
-  template: _.template($('#cohortsTemplate').html()),
 
   createCohort: function () {
     let name = $('input#newCohortName').val();
@@ -129,7 +128,7 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
     // Check current assignment type
     let assignmentRadios = this.$('div.updateCohortAssignment input').toArray();
     let selected = this.collection.at(this.selectedCohort || 0);
-    assignmentRadios.forEach(function(radio) {
+    assignmentRadios.forEach(function (radio) {
       radio.checked = radio.value === selected.assignment_type();
     });
   },
@@ -139,7 +138,7 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
     if (this.settings.is_cohorted() && !this.fetchingCollection) {
       this.fetchingCollection = true;
       this.collection.fetch({
-        success: function() {
+        success: function () {
           view.fetchingCollection = false;
           view.renderTemplate();
         }
