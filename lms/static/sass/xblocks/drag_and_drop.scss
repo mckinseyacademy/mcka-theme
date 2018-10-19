@@ -165,23 +165,42 @@
         display: none;
     }
 
+
     // Fixed sizing feedback window for completed state in standard mode
-    .fixed-sizing-feedback{
+    .fixed-sizing-feedback {
         background-color: $mckinsey-royal-blue;
-        .feedback-detail{
-            &.completed{
-                .icon{
-                  background-color: transparent !important;
-                    .icon-shield{
-                        &:before{
+        .feedback-detail {
+            &.completed {
+                .icon {
+                    background-color: transparent !important;
+                    .icon-shield {
+                        &:before {
                             background: url("../images/completed-icon.png") no-repeat !important;
                             background-size: 100% !important;
                         }
                     }
                 }
             }
-            button{
+            button {
                 color: $mckinsey-royal-blue;
+            }
+        }
+    }
+
+    // Assessment mode window notification
+    .assessment-notification{
+        background-color: $mckinsey-royal-blue;
+        > .icon{
+            .fa{
+                background-color: $mckinsey-warning-orange;
+                &:before{
+                    color: white;
+                }
+            }
+        }
+        > .instructions{
+            ol{
+                margin-left: 0;
             }
         }
     }
