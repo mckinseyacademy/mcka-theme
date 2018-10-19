@@ -523,11 +523,12 @@ def get_course_metrics(course_id, *args, **kwargs):
 
 
 @api_error_protect
-def get_course_metrics_by_city(course_id, cities=None):
+def get_course_metrics_by_city(course_id, cities=None, **kwargs):
     ''' retrieves course metrics '''
     qs_params = {"page_size": 0}
     if cities:
         qs_params["city"] = cities
+    qs_params.update(kwargs)
 
     url = '{}/{}/{}/metrics/cities/?{}'.format(
         settings.API_SERVER_ADDRESS,

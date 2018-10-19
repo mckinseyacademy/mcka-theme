@@ -197,7 +197,7 @@ def course_cohort(request, course_id):
         course_id, request.user.id
     ) if feature_flags and (feature_flags.discussions and feature_flags.engagement) else None
 
-    metrics = course_api.get_course_metrics(course_id)
+    metrics = course_api.get_course_metrics(course_id, user_id=request.user.id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
     metrics.group_enrolled = 0
 
@@ -231,7 +231,7 @@ def course_cohort(request, course_id):
     metrics.groups_users = json.dumps(metrics.groups_users)
 
     metrics.cities = []
-    cities = course_api.get_course_metrics_by_city(course_id)
+    cities = course_api.get_course_metrics_by_city(course_id, user_id=request.user.id)
     for city in cities:
         if city.city != '':
             city_name = clean_xss_characters(city.city)
