@@ -407,78 +407,115 @@ class TestSpecificUserRolesOfOtherCompanies(TestCase):
 class EditCourseCustomTermsTest(TestCase):
     def setUp(self):
         self.course_id = "course_id/1"
+        self.factory = RequestFactory()
+        self.url = '/api/courses/course_id/1/edit_course_meta_data/'
+        self.data = {
+            'lesson_label': 'test_lesson_label',
+            'lessons_label': 'test_lessons_label',
+            'module_label': 'test_module_label',
+            'modules_label': 'test_modules_label',
+            'lesson_label_flag': 'false',
+            'lessons_label_flag': 'false',
+            'module_label_flag': 'false',
+            'modules_label_flag': 'false',
+        }
+
+    def post_request(self, data=None):
+        request = self.factory.post(self.url)
+        request.data = data
+        return request
 
     def test_edit_course_lesson_custom_terms(self):
-        lesson_label = 'test_lesson_label'
-        module_label = 'test_module_label'
-        lesson_label_flag = 'true'
-        module_label_flag = 'false'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                            lesson_label_flag, module_label_flag)
-
+        self.data["lesson_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertEqual(course_meta_data.lesson_label, lesson_label)
+        self.assertEqual(course_meta_data.lesson_label, self.data['lesson_label'])
 
     def test_edit_course_module_custom_terms(self):
-        lesson_label = 'test_lesson_label_1'
-        module_label = 'test_module_label_1'
-        lesson_label_flag = 'false'
-        module_label_flag = 'true'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                            lesson_label_flag, module_label_flag)
-
+        self.data["module_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertEqual(course_meta_data.module_label, module_label)
+        self.assertEqual(course_meta_data.module_label, self.data['module_label'])
 
     def test_edit_course_lesson_custom_terms_with_foreign_characters(self):
-        lesson_label = u'ŠŽšžŸÀÁÂÃÄÅÇ'
-        module_label = 'test_module_label_1'
-        lesson_label_flag = 'true'
-        module_label_flag = 'false'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                            lesson_label_flag, module_label_flag)
-
+        self.data["lesson_label"] = u'ŠŽšžŸÀÁÂÃÄÅÇ'
+        self.data["lesson_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertEqual(course_meta_data.lesson_label, lesson_label)
+        self.assertEqual(course_meta_data.lesson_label, self.data['lesson_label'])
 
     def test_edit_course_module_custom_terms_with_foreign_characters(self):
-        lesson_label = 'test_lesson_label_1'
-        module_label = u'ËÌÍÎÏÐÑÒÓÔ'
-        lesson_label_flag = 'false'
-        module_label_flag = 'true'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                            lesson_label_flag, module_label_flag)
-
+        self.data["module_label"] = u'ËÌÍÎÏÐÑÒÓÔ'
+        self.data["module_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertEqual(course_meta_data.module_label, module_label)
+        self.assertEqual(course_meta_data.module_label, self.data['module_label'])
 
     def test_edit_course_lesson_custom_terms_with_special_characters(self):
-        lesson_label = '$%^&&&'
-        module_label = 'test_module_label_1'
-        lesson_label_flag = 'false'
-        module_label_flag = 'true'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                         lesson_label_flag, module_label_flag)
-
+        self.data["lesson_label"] = '$%^&&&'
+        self.data["lesson_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertNotEqual(course_meta_data.lesson_label, lesson_label)
+        self.assertNotEqual(course_meta_data.lesson_label, self.data['lesson_label'])
 
     def test_edit_course_module_custom_terms_with_special_characters(self):
-        lesson_label = 'test_lesson_label_1'
-        module_label = '$%^&&&'
-        lesson_label_flag = 'false'
-        module_label_flag = 'true'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                         lesson_label_flag, module_label_flag)
-
+        self.data["module_label"] = '$%^&&&'
+        self.data["module_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertNotEqual(course_meta_data.module_label, self.data['module_label'])
 
-        self.assertNotEqual(course_meta_data.module_label, module_label)
+    def test_edit_course_lessons_custom_terms(self):
+        self.data["lessons_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertEqual(course_meta_data.lessons_label["zero"], self.data['lessons_label'])
+
+    def test_edit_course_modules_custom_terms(self):
+        self.data["modules_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertEqual(course_meta_data.modules_label["zero"], self.data['modules_label'])
+
+    def test_edit_course_lessons_custom_terms_with_foreign_characters(self):
+        self.data["lessons_label"] = u'ŠŽšžŸÀÁÂÃÄÅÇ'
+        self.data["lessons_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertEqual(course_meta_data.lessons_label["zero"], self.data['lessons_label'])
+
+    def test_edit_course_modules_custom_terms_with_foreign_characters(self):
+        self.data["modules_label"] = u'ËÌÍÎÏÐÑÒÓÔ'
+        self.data["modules_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertEqual(course_meta_data.modules_label["zero"], self.data['modules_label'])
+
+    def test_edit_course_lessons_custom_terms_with_special_characters(self):
+        self.data["lessons_label"] = '$%^&&&'
+        self.data["lessons_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertNotEqual(course_meta_data.lessons_label["zero"], self.data['lessons_label'])
+
+    def test_edit_course_modules_custom_terms_with_special_characters(self):
+        self.data["modules_label"] = '$%^&&&'
+        self.data["modules_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertNotEqual(course_meta_data.modules_label["zero"], self.data['modules_label'])
 
 
 class TestGetUserCompanyFields(TestCase, ApplyPatchMixin):

@@ -214,6 +214,35 @@
                   {% trans "Save" %}
 
     %section.course_custom_terminology
+      .row.custom-lessons-label
+        .large-12.columns.lsl-setup
+          .row
+            .large-8.columns
+              .row
+                .small-4.columns
+                  %label{for:'custom_lessons_label'}
+                    {% trans "Lessons" %}
+                .small-8.columns
+                  .custom-lessons-label-input
+                    %input#custom_lessons_label{"name": "custom_lessons_label", "type": "text", "maxlength":15, "value": "#{custom_lessons_label}"}
+                    .read-only-lsl
+                    %span.status-icon-lsl
+                      .icon
+            .small-4.columns.lsl-buttons
+              %a#add-lsl.button.radius.tiny{href: ""}
+                %span#add-lsl
+                  {% trans "Add" %}
+              %a#edit-lsl.button.radius.tiny{href: ""}
+                %span#edit-lsl
+                  {% trans "Edit" %}
+              %a#reset-lsl{href: ""}
+                %span#reset-lsl
+                  {% trans "Cancel" %}
+              %a#save-lsl.button.radius.tiny{href: ""}
+                %span#save-lsl
+                  {% trans "Save" %}
+
+    %section.course_custom_terminology
       .row.custom-module-label
         .large-12.columns.ml-setup
           .row
@@ -242,11 +271,35 @@
                 %span#save-ml
                   {% trans "Save" %}
 
+    %section.course_custom_terminology
+      .row.custom-modules-label
+        .large-12.columns.msl-setup
+          .row
+            .large-8.columns
+              .row
+                .small-4.columns
+                  %label{for:'custom_modules_label'}
+                    {% trans "Modules" %}
+                .small-8.columns
+                  .custom-modules-label-input
+                    %input#custom_modules_label{"name": "custom_modules_label", "type": "text", "maxlength":15, "value": "#{custom_modules_label}"}
+                    .read-only-msl
+                    %span.status-icon-msl
+                      .icon
+            .small-4.columns.msl-buttons
+              %a#add-msl.button.radius.tiny{href: ""}
+                %span#add-msl
+                  {% trans "Add" %}
+              %a#edit-msl.button.radius.tiny{href: ""}
+                %span#edit-msl
+                  {% trans "Edit" %}
+              %a#reset-msl{href: ""}
+                %span#reset-msl
+                  {% trans "Cancel" %}
+              %a#save-msl.button.radius.tiny{href: ""}
+                %span#save-msl
+                  {% trans "Save" %}
+
 
 - block js_snippets
-  :javascript
-    var noLlMsg = "{% trans 'Click Add to specify Lesson Label' %}"
-    var noMlMsg = "{% trans 'Click Add to specify Module Label' %}"
-  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
-  %script{src: "{% static 'js/vendor/ZeroClipboard.min.js' %}"}
   %script{src: "{% static 'js/admin/course_meta_content.js' %}"}

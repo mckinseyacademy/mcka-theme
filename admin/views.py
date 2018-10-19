@@ -1174,7 +1174,9 @@ def course_meta_content_course_items(request, course_id, restrict_to_courses_ids
         "has_advanced_settings_permissions": has_advanced_settings_permissions,
         "mobile_available": mobile_available,
         "custom_lesson_label": course_meta_data.lesson_label,
+        "custom_lessons_label": course_meta_data.lessons_label["zero"],
         "custom_module_label": course_meta_data.module_label,
+        "custom_modules_label": course_meta_data.modules_label["zero"],
     }
 
     return render(
@@ -5773,17 +5775,11 @@ class CourseMetaDataApiView(APIView):
         """
         Post request handler for Editing Course Custom Terms
         """
-        lesson_label_flag = request.data.get('lesson_label_flag')
-        module_label_flag = request.data.get('module_label_flag')
-        lesson_label = request.data.get('lesson_label', None)
-        module_label = request.data.get('module_label', None)
-
-        edit_status = edit_course_meta_data(course_id, lesson_label, module_label,
-                                        lesson_label_flag, module_label_flag)
+        edit_status = edit_course_meta_data(course_id, request)
         if edit_status:
             return Response(status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class CohortSettings(APIView):

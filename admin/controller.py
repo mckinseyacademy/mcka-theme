@@ -2679,10 +2679,18 @@ def get_organization_active_courses(request, company_id):
     return courses
 
 
-def edit_course_meta_data(course_id, lesson_label, module_label,
-                          lesson_label_flag, module_label_flag):
-    data_saved = False
+def edit_course_meta_data(course_id, request):
     course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=course_id)
+    data_saved = False
+
+    lesson_label_flag = request.data.get('lesson_label_flag')
+    module_label_flag = request.data.get('module_label_flag')
+    lessons_label_flag = request.data.get('lessons_label_flag')
+    modules_label_flag = request.data.get('modules_label_flag')
+    lesson_label = request.data.get('lesson_label', None)
+    module_label = request.data.get('module_label', None)
+    lessons_label = request.data.get('lessons_label', None)
+    modules_label = request.data.get('modules_label', None)
 
     if lesson_label_flag == 'true':
         if not special_characters_match(lesson_label):
@@ -2692,6 +2700,20 @@ def edit_course_meta_data(course_id, lesson_label, module_label,
     if module_label_flag == 'true':
         if not special_characters_match(module_label):
             course_meta_data.module_label = module_label
+            data_saved = True
+
+    if lessons_label_flag == 'true':
+        if not special_characters_match(lessons_label):
+            course_meta_data.lessons_label = {'zero': lessons_label, 'one': lessons_label,
+                                              'two': lessons_label, 'few': lessons_label,
+                                              'many': lessons_label, 'other': lessons_label}
+            data_saved = True
+
+    if modules_label_flag == 'true':
+        if not special_characters_match(modules_label):
+            course_meta_data.modules_label = {'zero': modules_label, 'one': modules_label,
+                                              'two': modules_label, 'few': modules_label,
+                                              'many': modules_label, 'other': modules_label}
             data_saved = True
 
     course_meta_data.save()
