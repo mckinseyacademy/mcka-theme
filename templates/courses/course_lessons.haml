@@ -23,7 +23,8 @@
     %ul
       - for module in course.current_lesson.modules
         %li.lesson-row-item
-          %i.status.fa{"class": "fa{% if module.is_complete %}-check{% endif %}-circle"}
+          %i.status.fa{"class": "{% if module.progress == 100 %}fa-check-circle complete{% else %}fa-circle {% if module.progress > 0 %}partial{% endif %}{% endif %}"}
+
           .lesson-item-name
             %a{"href": "#{module.navigation_url}", "class": "{% if module.is_current %}current{% endif %}"}
               {% trans "Module" %} #{module.index}:
