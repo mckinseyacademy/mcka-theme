@@ -30,10 +30,10 @@
             text-transform: uppercase;
         }
         .attempts-used{
-          margin-top: 8px;
+            margin-top: 8px;
         }
         .sidebar-button-wrapper{
-          border: 0 !important;
+            border: 0 !important;
         }
     }
 }
@@ -74,20 +74,20 @@
         }
         &.partial{
             .feedback-detail{
-              //
-              .icon{
-                background-color: rgba(255,255,255,0.3) !important;
-                .fa-check{
-                  opacity: 1 !important;
-                  &:before{
-                    opacity: 0.4;
-                  }
-                  &:after{
-                    height: 28% !important;
-                    background-color: $mckinsey-success-green !important;
-                  }
+                //
+                .icon{
+                    background-color: rgba(255,255,255,0.3) !important;
+                    .fa-check{
+                        opacity: 1 !important;
+                        &:before{
+                            opacity: 0.4;
+                        }
+                        &:after{
+                            height: 28% !important;
+                            background-color: $mckinsey-success-green !important;
+                        }
+                    }
                 }
-              }
             }
         }
         &.incorrect{
@@ -165,13 +165,39 @@
         display: none;
     }
 
+    // instructions pop
+    .instructions-visible{
+        &:after{
+            background-color: white;
+        }
+        .instructions-wrapper{
+            box-shadow: 0 2px 20px $mckinsey-grey;
+            .instructions-container{
+                h3{
+                    color: $mckinsey-royal-blue;
+                }
+                p{
+                    font-family: "Times New Roman", Serif;
+                    margin-top: 15px;
+                }
+                button{
+                    margin-bottom: 0;
+                    color: $mckinsey-royal-blue;
+                }
+            }
+        }
+        .assessment-notification{
+            box-shadow: none;
+        }
+    }
+
     // Fixed sizing feedback window for completed state in standard mode
     .fixed-sizing-feedback{
         background-color: $mckinsey-royal-blue;
         .feedback-detail{
             &.completed{
                 .icon{
-                  background-color: transparent !important;
+                    background-color: transparent !important;
                     .icon-shield{
                         &:before{
                             background: url("../images/completed-icon.png") no-repeat !important;
