@@ -30,10 +30,10 @@
             text-transform: uppercase;
         }
         .attempts-used{
-          margin-top: 8px;
+            margin-top: 8px;
         }
         .sidebar-button-wrapper{
-          border: 0 !important;
+            border: 0 !important;
         }
     }
 }
@@ -59,6 +59,72 @@
         // Mckinsey specific color of navigation arrow
         color: $mckinsey-royal-blue;
     }
+
+    // Fixed sizing feedback in assessment mode
+    .fixed-sizing-feedback{
+        background-color: $mckinsey-royal-blue;
+        top: 15%;
+        bottom: 15%;
+        .fa-check{
+            &:before{
+                // positioning of icon carrying thinner stroke
+                left: 24px !important;
+                top: 18px !important;
+            }
+        }
+        &.partial{
+            .feedback-detail{
+                //
+                .icon{
+                    background-color: rgba(255,255,255,0.3) !important;
+                    .fa-check{
+                        opacity: 1 !important;
+                        &:before{
+                            opacity: 0.4;
+                        }
+                        &:after{
+                            height: 28% !important;
+                            background-color: $mckinsey-success-green !important;
+                        }
+                    }
+                }
+            }
+        }
+        &.incorrect{
+            .feedback-detail{
+                .icon{
+                    background-color: $mckinsey-danger-red !important;
+                }
+                p{
+                    &:before{
+                        background-color: $mckinsey-danger-red !important;
+                    }
+                }
+            }
+            .fa-check{
+                &:before{
+                    left: 28px !important;
+                    top: 32px !important;
+                }
+            }
+        }
+        .feedback-detail{
+            button{
+                color: $mckinsey-royal-blue;
+                padding: 17px 40px;
+            }
+            .icon{
+                background-color: $mckinsey-success-green !important;
+
+            }
+        }
+        .hint-detail{
+            border-left-color: rgba(255,255,255,0.2);
+            ol{
+                margin-left: 0;
+            }
+        }
+    }
 }
 
 .themed-xblock.xblock--drag-and-drop {
@@ -80,9 +146,13 @@
             font-size: 12px !important;
             font-weight: 600;
             &:disabled{
-                background-color: #566a85 !important;
-                color: #8094af;
+                background-color: darken($mckinsey-disabled-blue , 20%) !important;
+                color: $mckinsey-disabled-blue;
                 border: 0 !important;
+            }
+            &.reset-button{
+                background-color: transparent !important;
+                border: 1px solid $mckinsey-disabled-blue !important;;
             }
         }
     }
@@ -118,6 +188,27 @@
         }
         .assessment-notification{
             box-shadow: none;
+        }
+    }
+
+    // Fixed sizing feedback window for completed state in standard mode
+    .fixed-sizing-feedback{
+        background-color: $mckinsey-royal-blue;
+        .feedback-detail{
+            &.completed{
+                .icon{
+                    background-color: transparent !important;
+                    .icon-shield{
+                        &:before{
+                            background: url("../images/completed-icon.png") no-repeat !important;
+                            background-size: 100% !important;
+                        }
+                    }
+                }
+            }
+            button{
+                color: $mckinsey-royal-blue;
+            }
         }
     }
 }
