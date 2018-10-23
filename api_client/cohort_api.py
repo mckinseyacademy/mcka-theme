@@ -46,7 +46,7 @@ def set_course_cohorted(course_id, is_cohorted, edx_oauth2_session=None):
         discussions_api.set_divided_discussions(course_id, is_cohorted)
     data = edx_oauth2_session.put(
         url,
-        data=json.dumps({'is_cohorted': is_cohorted})
+        json={'is_cohorted': is_cohorted}
     ).json()
     if is_cohorted:
         # Must enable after cohorting
@@ -106,7 +106,7 @@ def update_cohort_for_course(
         cohort_id,
     )
 
-    return edx_oauth2_session.patch(url, data=json.dumps(params))
+    return edx_oauth2_session.patch(url, json=params)
 
 
 @api_error_protect
@@ -119,17 +119,17 @@ def add_cohort_for_course(
     if not edx_oauth2_session:
         edx_oauth2_session = get_oauth2_session()
 
-    params = json.dumps({
+    params = {
         'name': name,
         'assignment_type': assignment_type,
-    })
+    }
 
     url = '{}/{}/{}/cohorts/'.format(
         settings.API_SERVER_ADDRESS,
         COHORTS_COURSES_API,
         course_id,
     )
-    data = edx_oauth2_session.post(url, data=params).json()
+    data = edx_oauth2_session.post(url, json=params).json()
     return data
 
 
@@ -195,7 +195,7 @@ def add_multiple_users_to_cohort(
         course_id,
         cohort_id,
     )
-    return edx_oauth2_session.post(url, data=json.dumps({'users': usernames})).json()
+    return edx_oauth2_session.post(url, json={'users': usernames}).json()
 
 
 @api_error_protect

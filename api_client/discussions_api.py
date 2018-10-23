@@ -65,8 +65,8 @@ def set_discussions_moderator(course_id, user_id, is_moderator, edx_oauth2_sessi
     )
     from api_client import user_api
     user = user_api.get_user(user_id)
-    data = json.dumps({'user_id': user.username, 'action': 'allow' if is_moderator else 'revoke'})
-    return edx_oauth2_session.post(url, data=data)
+    data = {'user_id': user.username, 'action': 'allow' if is_moderator else 'revoke'}
+    return edx_oauth2_session.post(url, json=data)
 
 
 def add_discussion_moderator(course_id, user_id):
