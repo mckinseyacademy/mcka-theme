@@ -32,7 +32,6 @@
 
 #managerDashboardWrapper{
   margin: 0 auto;
-  display: table;
   max-width: 68.57143rem;
   .navigation{
     padding: 0 1.07143rem;
@@ -94,7 +93,7 @@
             content: '';
             position: absolute;
             left: 10px;
-            top: 10px;
+            top: 12px;
             width: 10px;
             height: 10px;
             border-radius: 100%;
@@ -115,7 +114,6 @@
 	.manager-progress-cards{
 		padding: 20px 20px 5px;
 		background-color: darken($mckinsey-academy-bright-gray , 3%);
-		width: 565px;
 		ul{
 			border-bottom: 0;
 			li{
@@ -162,6 +160,47 @@
                         &.red{
                           color:$mckinsey-red;
                         }
+					}
+				}
+			}
+		}
+	}
+	#managerDashboardContainer{
+		overflow: hidden;
+		margin: 0 1.07143rem;
+		background-color: darken($mckinsey-academy-bright-gray , 3%);
+		padding-bottom: 20px;
+		.bbGrid-container{
+			max-width: 100%;
+			overflow-x: auto;
+			table{
+				tr{
+					td{
+						&:last-child{
+							width: 256px;
+							position: relative;
+							display: block;
+						}
+						.toggle-subgrid{
+							position: absolute;
+							right: 5px;
+							top: 9px;
+							background: transparent;
+							color: $mckinsey-academy-alt-blue;
+							padding: 0;
+							box-shadow: none;
+							font-weight: normal;
+							font-size: 13px;
+						}
+					}
+					&[class*="subgrid"]{
+						td{
+							&:last-child{
+								width: auto;
+								position: static;
+								display: table-cell;
+							}
+						}
 					}
 				}
 			}
