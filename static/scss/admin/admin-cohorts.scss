@@ -526,3 +526,13 @@
 #cohortDetailsEngagementViewGrid {
   padding-right: 0;
 }
+
+.file-upload-form-result {
+  .error-message {
+    color: #f04124;
+  }
+
+  .success-message {
+    color: #43AC6A;
+  }
+}

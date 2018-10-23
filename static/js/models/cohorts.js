@@ -1,4 +1,5 @@
 Apros.models.Cohort = Backbone.Model.extend({
+  idAttribute: 'id',
   initialize: function (options) {
     this.urlRoot = ApiUrls.cohorts_list(options['course_id']);
   },
