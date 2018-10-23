@@ -14,7 +14,6 @@ from requests_oauthlib import OAuth2Session
 
 HTTP_HEADERS = {
     'Accept': 'application/json',
-    'Content-Type': 'application/json',
 }
 OAUTH2_TOKEN_CACHE_KEY = 'oauth2-openedx-client-credentials-token'
 
