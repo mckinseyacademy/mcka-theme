@@ -143,11 +143,11 @@ LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('en', u'English '),
     ('ar', u'العربية'),  # Arabic
-    ('zh', u'中文(简体)'),
     ('es', u'Español'),
     ('nl', u'Dutch '),
     ('pt', u'Português'),
-    ('fr', u'French'),
+    ('zh', u'中文(简体)'),
+    ('fr', u'Français'),
     ('jp', u'日本人'),
     ('de', u'Deutsche'),
 )
