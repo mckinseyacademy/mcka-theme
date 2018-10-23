@@ -225,6 +225,5 @@ urlpatterns += [
     url(r'^api/cohorts/courses/(?P<course_id>.+)/settings$', views.CohortSettings.as_view(), name='cohort_settings_api'),
     url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/$', views.CohortList.as_view(), name='cohort_list_api'),
     url(r'^api/cohorts/courses/(?P<course_id>.+)/users$', views.CohortImport.as_view(), name='cohort_import_api'),
-    url(r'^cohorts/?$', views.cohorts_courses_list, name='cohort_course_list'),
     url(r'^cohorts/(?P<course_id>.*)/$', views.cohorts_course_details, name='cohorts_course_details'),
 ]
