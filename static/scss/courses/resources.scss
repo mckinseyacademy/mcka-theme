@@ -9,4 +9,11 @@
     line-height: 25px;
     &:last-child { margin-bottom: 0; }
   }
+
+  @media (min-width: 768px) {
+    .sub-1 {
+      margin-top: -96px;
+      padding-top: 96px;
+    }
+  }
 }
