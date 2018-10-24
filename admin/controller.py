@@ -2151,6 +2151,7 @@ class CourseParticipantStats(object):
         self.record_parser = record_parser
         self.participants_engagement_lookup = None
         self.restrict_to_participants = None
+        self._prefetched_completions = None
         if restrict_to_participants is not None:
             self.restrict_to_participants = {participant.username for participant in restrict_to_participants}
 
@@ -2190,13 +2191,12 @@ class CourseParticipantStats(object):
         organization_id = self.request_params.get('organizations', None)
         if organization_id:
             course_participants = remove_specific_user_roles_of_other_companies(course_participants, int(organization_id))
-
         lesson_completions = self._get_lesson_completions(course_participants)
+        course_completions = self._get_course_completions(course_participants)
 
         if self.participants_engagement_lookup is None:
             self.participants_engagement_lookup = self._get_engagement_scores()
 
-        course_completions = course_api.get_course_completions(self.course_id, extra_fields=None)
         return (
             course_participants,
             lesson_completions,
@@ -2219,22 +2219,53 @@ class CourseParticipantStats(object):
 
         return participants_engagement_lookup
 
+    def _get_course_completions(self, course_participants):
+        """
+        Returns course completion data for all participants in the course.
+
+        Returns: {username: completion_data}, where completion data includes
+            course-level completion data, and may or may not include
+            lesson-level completion data.
+        """
+        if self._prefetched_completions is None:
+            self._prefetched_completions = self._prefetch_completions()
+        return self._prefetched_completions
+
     def _get_lesson_completions(self, course_participants):
         """
-        Returns completion data for all participants in the course.
+        Returns lesson completion data for all participants in the course.
+
+        Returns: None|{user_id: completion_data}, where the response is None
+            if 'lesson_completions' is not in self.additional_fields.
+            Otherwise completion data includes both course-level and
+            lesson-level completion data.
         """
         if 'lesson_completions' not in self.additional_fields:
             return None
+        if self._prefetched_completions is None:
+            self._prefetched_completions = self._prefetch_completions()
+
+        lesson_completions = {
+            user['id']: self._prefetched_completions.get(user['username'])
+            for user in course_participants['results']
+        }
+        return lesson_completions
+
+    def _prefetch_completions(self):
+        """
+        Retrieve completion data from the completion-aggregator api.
+
+        Returns: {username: completion_data} where completion data always
+            includes course-level completion data, and includes lesson-level
+            completion data if 'lesson_completions' is in self.additional_fields.
+        """
+        with_lessons = 'lesson_completions' in self.additional_fields
         oauth2_session = oauth2_requests.get_oauth2_session()
-        lesson_completions = {}
-        completions = course_api.get_course_completions(
+        return course_api.get_course_completions(
             self.course_id,
-            extra_fields='chapter',
+            extra_fields='chapter' if with_lessons else None,
             edx_oauth2_session=oauth2_session,
         )
-        for user in course_participants['results']:
-            lesson_completions[user['id']] = completions.get(user['username'])
-        return lesson_completions
 
     def _get_lesson_mapping(self, user):
         """
