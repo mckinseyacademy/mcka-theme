@@ -88,6 +88,19 @@ class AdminControllerTests(TestCase):
         self.assertEqual(user_objects[3]["country"], "US")
 
 
+def mock_completion_score(*args, **kwargs):
+    return {
+        "user1": {
+            u'completion': {
+                u'percent': 0.25,
+                u'possible': 60.0,
+                u'earned': 15.0,
+            },
+        }
+    }
+    return JP.from_dictionary(data)
+
+
 def MockEngagementScore(object):
     data = {
         'users':
@@ -167,6 +180,27 @@ class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
                 },
             },
         })
+
+    def test_completion_caching(self):
+        patch = self.apply_patch('api_client.course_api.get_course_completions', return_value=mock_completion_score())
+        stats = CourseParticipantStats('course-v1:a+b+c', 'base/url')
+        stats.request_params = {
+            'page': 1,
+            'per_page': 200,
+            'page_size': 200,
+            'additional_fields': ",".join(['lesson_completions']),
+        }
+        participants = {
+            'results': [
+                {'username': 'user1', 'id': 14},
+                {'username': 'user2', 'id': 15},
+            ]
+        }
+        stats._get_lesson_completions(participants)
+        stats._get_course_completions(participants)
+        stats._get_lesson_completions(participants)
+        self.assertEqual(patch.call_count, 1)
+
 
 
 @ddt.ddt

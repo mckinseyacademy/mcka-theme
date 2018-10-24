@@ -6,7 +6,6 @@ import string
 import urlparse
 from collections import OrderedDict
 from datetime import datetime
-from operator import attrgetter
 from smtplib import SMTPException
 from urllib import quote as urlquote, urlencode
 
@@ -343,7 +342,7 @@ def client_admin_download_course_report(request, client_id, course_id):
         student.proficiency, completed = get_user_metrics_from_lookup(str(student.id), user_grade_lookup)
         student.completed = "Y" if completed else "N"
 
-    students.sort(key = attrgetter('progress'), reverse = True)
+    students.sort(key = operator.attrgetter('progress'), reverse = True)
 
     url_prefix = "{}://{}".format(
         "https" if request.is_secure() else "http",
