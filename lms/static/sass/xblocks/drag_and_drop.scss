@@ -30,10 +30,10 @@
             text-transform: uppercase;
         }
         .attempts-used{
-          margin-top: 8px;
+            margin-top: 8px;
         }
         .sidebar-button-wrapper{
-          border: 0 !important;
+            border: 0 !important;
         }
     }
 }
@@ -74,20 +74,20 @@
         }
         &.partial{
             .feedback-detail{
-              //
-              .icon{
-                background-color: rgba(255,255,255,0.3) !important;
-                .fa-check{
-                  opacity: 1 !important;
-                  &:before{
-                    opacity: 0.4;
-                  }
-                  &:after{
-                    height: 28% !important;
-                    background-color: $mckinsey-success-green !important;
-                  }
+                //
+                .icon{
+                    background-color: rgba(255,255,255,0.3) !important;
+                    .fa-check{
+                        opacity: 1 !important;
+                        &:before{
+                            opacity: 0.4;
+                        }
+                        &:after{
+                            height: 28% !important;
+                            background-color: $mckinsey-success-green !important;
+                        }
+                    }
                 }
-              }
             }
         }
         &.incorrect{
@@ -128,82 +128,118 @@
 }
 
 .themed-xblock.xblock--drag-and-drop {
-    // Hide the text at the top that says e.g. "1 point possible (ungraded)" (MCKIN-6169)
-    .problem-progress {
-        display: none;
+  // Hide the text at the top that says e.g. "1 point possible (ungraded)" (MCKIN-6169)
+  .problem-progress {
+    display: none;
+  }
+  // Don't display a border around the feedback text that appears below the drag and drop exercise (MCKIN-6169)
+  .feedback p {
+    border: none;
+  }
+  // Sidebar buttons active and disabled states
+  .sidebar-buttons{
+    padding-top: 0 !important;
+    button {
+      background-color: transparent !important;
+      border: 1px solid white !important;
+      color: white;
+      font-size: 12px !important;
+      font-weight: 600;
+      &:disabled{
+        background-color: darken($mckinsey-disabled-blue , 20%) !important;
+        color: $mckinsey-disabled-blue;
+        border: 0 !important;
+      }
+      &.reset-button{
+        background-color: transparent !important;
+        border: 1px solid $mckinsey-disabled-blue !important;;
+      }
     }
-    // Don't display a border around the feedback text that appears below the drag and drop exercise (MCKIN-6169)
-    .feedback p {
-        border: none;
+  }
+
+  .feedback p::before {
+    display: none;
+  }
+
+  .keyboard-help-button {
+    display: none;
+  }
+
+  // instructions pop
+  .instructions-visible{
+    &:after{
+      background-color: white;
     }
-    // Sidebar buttons active and disabled states
-    .sidebar-buttons{
-        padding-top: 0 !important;
-        button {
-            background-color: transparent !important;
-            border: 1px solid white !important;
-            color: white;
-            font-size: 12px !important;
-            font-weight: 600;
-            &:disabled{
-                background-color: darken($mckinsey-disabled-blue , 20%) !important;
-                color: $mckinsey-disabled-blue;
-                border: 0 !important;
-            }
-            &.reset-button{
-                background-color: transparent !important;
-                border: 1px solid $mckinsey-disabled-blue !important;;
-            }
+    .instructions-wrapper{
+      box-shadow: 0 2px 20px $mckinsey-grey;
+      .instructions-container{
+        h3{
+          color: $mckinsey-royal-blue;
         }
+        p{
+          font-family: "Times New Roman", Serif;
+          margin-top: 15px;
+        }
+        button{
+          margin-bottom: 0;
+          color: $mckinsey-royal-blue;
+        }
+      }
     }
-
-    .feedback p::before {
-        display: none;
+    .assessment-notification{
+      box-shadow: none;
     }
+  }
 
-    .keyboard-help-button {
-        display: none;
-    }
-
-
-    // Fixed sizing feedback window for completed state in standard mode
-    .fixed-sizing-feedback {
-        background-color: $mckinsey-royal-blue;
-        .feedback-detail {
-            &.completed {
-                .icon {
+  // Fixed sizing feedback window for completed state in standard mode
+  .fixed-sizing-feedback {
+    background-color: $mckinsey-royal-blue;
+    .feedback-detail {
+      &.completed {
+        .icon {
+          background-color: transparent !important;
+          .icon-shield {
+            &:before {
+              .feedback-detail {
+                &.completed {
+                  .icon {
                     background-color: transparent !important;
                     .icon-shield {
-                        &:before {
-                            background: url("../images/completed-icon.png") no-repeat !important;
-                            background-size: 100% !important;
-                        }
+                      &:before {
+                        background: url("../images/completed-icon.png") no-repeat !important;
+                        background-size: 100% !important;
+                      }
                     }
+                  }
                 }
+                button {
+                  color: $mckinsey-royal-blue;
+                }
+              }
             }
-            button {
-                color: $mckinsey-royal-blue;
-            }
+          }
         }
+      }
     }
+  }
 
-    // Assessment mode window notification
-    .assessment-notification{
-        background-color: $mckinsey-royal-blue;
-        > .icon{
-            .fa{
-                background-color: $mckinsey-warning-orange;
-                &:before{
-                    color: white;
-                }
-            }
+  // Assessment mode window notification
+  .assessment-notification{
+    background-color: $mckinsey-royal-blue;
+    > .icon{
+      .fa{
+        background-color: $mckinsey-warning-orange;
+        &:before{
+          color: white;
         }
-        > .instructions{
-            ol{
-                margin-left: 0;
-            }
-        }
+      }
     }
+    > .instructions{
+      ol{
+        margin-left: 0;
+      }
+    }
+  } 
 }
 
 
