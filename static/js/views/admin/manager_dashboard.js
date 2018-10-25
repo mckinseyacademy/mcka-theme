@@ -9,7 +9,6 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
         return '<a id="email" href="mailto:' + attributes['email']+'">'+attributes['email'] + '</a>';
       }
     },
-    { title: 'Status', index: true, name: 'custom_user_status'},
     { title: 'Activated', index: true, name: 'custom_activated', class: 'status'},
     { title: 'Last Log In', index: true, name: 'custom_last_login',
     actions: function(id, attributes)
@@ -33,7 +32,7 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       value = attributes['progress'];
       if (value == '-')
         return value;
-      return InternationalizePercentage(parseInt(value)) + '<a href="#" class="toggle-subgrid show-subgrid button tiny" data-title="'+attributes["username"]+'">View Details</a>';
+        return '<span>'+InternationalizePercentage(parseInt(value))+'</span>' + '<a href="JavaScript:Void(0)" class="toggle-subgrid show-subgrid button tiny" data-title="'+attributes["username"]+'">View Details</a>';
     }},
 
   ],
