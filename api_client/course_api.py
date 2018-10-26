@@ -336,6 +336,7 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
     '''
     Retrieves course user list structure information from the API for specified course
     '''
+    edx_oauth2_session = get_oauth2_session()
     qs_params = {"page_size": page_size}
     if program_id:
         qs_params['project'] = program_id
@@ -349,19 +350,19 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
 
     if page_size != 0:
         results = []
-        response = GET(url)
-        data = json.loads(response.read())
+        response = edx_oauth2_session.get(url=url)
+        data = json.loads(response.content)
         pages = data['num_pages']
         for x in range(0, pages):
             result = data['results']
             results.extend(result)
             if data['next']:
-                response = GET(data['next'])
-                data = json.loads(response.read())
+                response = edx_oauth2_session.get(data['next'])
+                data = json.loads(response.content)
         return json.dumps(results)
     else:
-        response = GET(url)
-        return response.read()
+        response = edx_oauth2_session.get(url=url)
+        return json.loads(response.content)
 
 
 @api_error_protect
