@@ -6,11 +6,17 @@
       %i.status.fa{"class": "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
       .lesson-item-name
         %a{"class": "{% if course.current_lesson == lesson %}current{% endif %}", "href": "#{lesson.navigation_url}", "title": "#{lesson.name}"}
-          {% trans "Lesson" %} #{lesson.index}:
+          -if lesson_custom_label
+            {% blocktrans with lesson_index=lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
+          -else
+            {% trans "Lesson" %} #{lesson.index}:
         %span= lesson.name
         - if not lesson.is_started
           %i.fa.fa-lock
   - else
 
     %a{"href": "#{lesson.navigation_url}", "title": "#{lesson.name}", 'disabled': 'disabled'}
-      {% trans "Lesson" %} #{lesson.index}: #{lesson.name}
+      -if lesson_custom_label
+        {% blocktrans with lesson_index=lesson.index %} {{lesson_custom_label}} {{lesson_index}}: #{lesson.name}{% endblocktrans %}
+      -else
+        {% trans "Lesson" %} #{lesson.index}: #{lesson.name}

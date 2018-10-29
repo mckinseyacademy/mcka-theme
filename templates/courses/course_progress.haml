@@ -18,7 +18,10 @@
       %i.fa.fa-times-circle
     .sub-1 Progress
     %p {% blocktrans %} Below are helpful tips to review your progress. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
-    .help-line {% trans "PROGRESS marks your progress (based on completion of modules and readings) through course content; the average progress of your cohort is also displayed" %}
+    - if modules_custom_label
+      .help-line {% blocktrans %} PROGRESS marks your progress (based on completion of {{modules_custom_label}} and readings) through course content; the average progress of your cohort is also displayed{% endblocktrans %}
+    - else
+      .help-line {% trans "PROGRESS marks your progress (based on completion of modules and readings) through course content; the average progress of your cohort is also displayed" %}
     .help-line {% trans "GRADE displays your proficiency against a total possible score of 100; your proficiency is based on graded assessments and group work performance." %}
 
 - block current_content
@@ -33,8 +36,18 @@
       %i.fa.fa-question-circle
     .sub-1 PROGRESS
     %p.style-6
-      {% blocktrans with user_course_progress=course.user_progress %}
-        You are {{user_course_progress}}% of the way through the course based on completion of modules within lessons:{% endblocktrans %}
+      -if lessons_custom_label and modules_custom_label
+        {% blocktrans with user_course_progress=course.user_progress %}
+          You are {{user_course_progress}}% of the way through the course based on completion of {{modules_custom_label}} within {{lessons_custom_label}}:{% endblocktrans %}
+      - elif lessons_custom_label
+        {% blocktrans with user_course_progress=course.user_progress %}
+          You are {{user_course_progress}}% of the way through the course based on completion of modules within #{{lessons_custom_label}}:{% endblocktrans %}
+      - elif modules_custom_label
+        {% blocktrans with user_course_progress=course.user_progress %}
+          You are {{user_course_progress}}% of the way through the course based on completion of {{modules_custom_label}} within lessons:{% endblocktrans %}
+      -else
+        {% blocktrans with user_course_progress=course.user_progress %}
+          You are {{user_course_progress}}% of the way through the course based on completion of modules within lessons:{% endblocktrans %}
     - include "courses/visualizations/course_progress.haml"
     %hr
     .sub-1 {% trans "GRADES" %}
@@ -61,7 +74,11 @@
     %table.lesson-table
       %thead
         %tr
-          %th.label-4 {% trans "Lesson:" %}
+          -if lesson_custom_label
+            %th.label-4 #{lesson_custom_label}:
+          -else
+            %th.label-4 {% trans "Lesson:" %}
+
           %th.label-4 {% trans "Suggested Deadline:" %}
           %th.label-4 {% trans "Assessment Score:" %}
           %th.label-4 {% trans "Progress:" %}

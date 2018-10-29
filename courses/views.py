@@ -33,7 +33,7 @@ from lib.authorization import permission_group_required
 from lib.utils import DottableDict
 from main.models import CuratedContentItem
 
-from .models import LessonNotesItem, FeatureFlags
+from .models import LessonNotesItem, FeatureFlags, CourseMetaData
 from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location, return_course_progress
 from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
 from .controller import update_bookmark, group_project_reviews, add_months_to_date, progress_update_handler
@@ -783,10 +783,19 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
         "tile_type": tile_type,
         "tile_id": tile_id,
     }
+    try:
+        course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=course_id)
+        custom_lesson_label = course_meta_data.lesson_label
+    except:
+        custom_lesson_label = None
 
     if not current_sequential.is_started:
-        data["not_started_message"] = _("This lesson does not start until {start_upon}").format(
-            start_upon=current_sequential.start_upon)
+        if not custom_lesson_label:
+            data["not_started_message"] = _("This lesson does not start until {start_upon}").format(
+                start_upon=current_sequential.start_upon)
+        else:
+            data["not_started_message"] = _("This {custom_lesson_label} does not start until {start_upon}").format(
+                custom_lesson_label=custom_lesson_label,start_upon=current_sequential.start_upon)
         return render(request, 'courses/course_future_lesson.haml', data)
 
     # Take note that the user has gone here

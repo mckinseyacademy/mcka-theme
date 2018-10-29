@@ -15,7 +15,10 @@
     .help-line {% blocktrans %} "Access Announcements, Course Overview, and Resources from the <i class="fa fa-file-text-o"></i> icon in the main navigation bar. {% endblocktrans %}
     .help-line {% trans "ANNOUNCEMENTS provides course news and events in a blog format" %}
     .help-line {% trans "COURSE OVERVIEW details what you will learn and provides faculty information; it also includes a course calendar to guide your pace through the course and alert you to key deadlines" %}
-    .help-line {% trans "RESOURCES provides key takeaways and frameworks from each lesson, as well as supplemental readings and videos" %}
+    - if lesson_custom_label
+      .help-line {% blocktrans %} RESOURCES provides key takeaways and frameworks from each {{lesson_custom_label}}, as well as supplemental readings and videos{% endblocktrans %}
+    - else
+      .help-line {% trans "RESOURCES provides key takeaways and frameworks from each lesson, as well as supplemental readings and videos" %}
     .help-line {% trans "This video walks you through the learner experience:" %}
     #mk-help-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
 

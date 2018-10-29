@@ -16,7 +16,7 @@ from .controller import (
     load_static_tabs, get_completion_percentage_from_id,
     set_user_course_progress,
 )
-from .models import FeatureFlags
+from .models import FeatureFlags, CourseMetaData
 
 CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
@@ -287,6 +287,10 @@ def standard_data(request):
     discover_flag = False
     programs = None
     organization_id = None
+    lesson_custom_label = None
+    lessons_custom_label = None
+    module_custom_label = None
+    modules_custom_label = None
 
     # have we already fetched this before and attached it to the current request?
     if hasattr(request, 'user_program_data'):
@@ -316,6 +320,17 @@ def standard_data(request):
             except:
                 learner_dashboard_flag = False
                 discover_flag = False
+
+            try:
+                course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=course_id)
+            except:
+                course_meta_data = None
+
+            if course_meta_data:
+                lesson_custom_label = course_meta_data.lesson_label
+                lessons_custom_label = course_meta_data.lessons_label.get('zero')
+                module_custom_label = course_meta_data.module_label
+                modules_custom_label = course_meta_data.modules_label.get('zero')
 
             lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
             module_id = request.resolver_match.kwargs.get('page_id', None)
@@ -386,7 +401,11 @@ def standard_data(request):
         "discover_flag": discover_flag,
         "organization_id": organization_id,
         "right_lesson_module_navigator": right_lesson_module_navigator,
-        "left_lesson_module_navigator": left_lesson_module_navigator
+        "left_lesson_module_navigator": left_lesson_module_navigator,
+        "lesson_custom_label": lesson_custom_label,
+        "module_custom_label": module_custom_label,
+        "lessons_custom_label": lessons_custom_label,
+        "modules_custom_label": modules_custom_label,
     }
 
     # point to this data from the request object, just in case we re-enter this method somewhere

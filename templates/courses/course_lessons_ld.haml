@@ -19,8 +19,18 @@
       .lesson-title
         %span.label-3.lesson-name= course.current_lesson.name
       %h1
-        %a{'data-reveal-id': 'module_list', "data-tooltip": "{% trans 'Lesson Modules' %}"}
-          %i.fa.fa-list-ul
+        - if lesson_custom_label and modules_custom_label
+          %a{'data-reveal-id': 'module_list', "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+            %i.fa.fa-list-ul
+        - elif lesson_custom_label
+          %a{'data-reveal-id': 'module_list', "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+            %i.fa.fa-list-ul
+        - elif modules_custom_label
+          %a{'data-reveal-id': 'module_list', "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+            %i.fa.fa-list-ul
+        -else
+          %a{'data-reveal-id': 'module_list', "data-tooltip": "{% trans 'Lesson Modules' %}"}
+            %i.fa.fa-list-ul
         = course.current_module.name
     - block lesson_content
       .lesson-content
@@ -34,8 +44,13 @@
         %li.lesson-row-item
           %i.status.fa{"class": "fa{% if module.is_complete %}-check{% endif %}-circle"}
           .lesson-item-name
-            %a{"href": "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}", "class": "{% if module.is_current %}current{% endif %}"}
-              {% trans "Module" %} #{module.index}:
+            - if module_custom_label
+              %a{"href": "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}", "class": "{% if module.is_current %}current{% endif %}"}
+                {% blocktrans with module_index=module.index %} {{module_custom_label}} {{module_index}}:{% endblocktrans %}
+
+            - else
+              %a{"href": "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}", "class": "{% if module.is_current %}current{% endif %}"}
+                {% trans "Module" %} #{module.index}:
             %span= module.name
     .close-reveal-modal
       %i.fa.fa-times-circle
