@@ -450,6 +450,7 @@ def get_course_completions(
         page_size=200,
         extra_fields='all',
         edx_oauth2_session=None,
+        user_ids=None,
 ):
     ''' fetch course module completion list '''
     api_params = {
@@ -463,6 +464,9 @@ def get_course_completions(
 
     if username:
         api_params['username'] = username
+
+    if user_ids:
+        api_params['user_ids'] = ','.join([str(user_id) for user_id in user_ids])
 
     course_path = ''
     if course_id is not None:
@@ -727,6 +731,14 @@ def get_course_details(course_id):
 @api_error_protect
 def get_course_details_users(course_id, qs_params=''):
     edx_oauth2_session = get_oauth2_session()
+    if isinstance(qs_params, dict):
+        qs_params = qs_params.copy()
+        for page_size_param in ('page_size', 'per_page'):
+            if page_size_param in qs_params:
+                # If provided a query size > 100, this endpoint reverts to returning
+                # the default of 20 items per query.  We would rather get the maximum
+                # number of results.
+                qs_params[page_size_param] = min(qs_params[page_size_param], 100)
 
     url = '{}/{}/{}/users?{}'.format(
         settings.API_SERVER_ADDRESS,
