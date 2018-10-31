@@ -38,29 +38,13 @@ def add_edx_notification_context(data):
 
 
 def user_program_data(request):
-    ''' Makes user and program info available to all templates '''
-
-    course_name = None
-
+    """
+    Makes user and program info available to all templates
+    """
     data = standard_data(request)
 
     # add in edx-notifications context
     data = add_edx_notification_context(data)
-
-    if 'course' in data and data['course']:
-        if data['course'].id:
-            (features, created) = FeatureFlags.objects.get_or_create(course_id=data['course'].id)
-
-            course_name = data['course'].name
-
-            data.update({
-                'namespace': data['course'].id,
-                'feature_flags': features,
-            })
-
-    data.update({
-        'course_name': course_name,
-    })
 
     return data
 

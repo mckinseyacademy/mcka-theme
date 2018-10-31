@@ -2,6 +2,7 @@
 Celery tasks related to admin app
 """
 from collections import OrderedDict
+from multiprocessing.pool import ThreadPool
 from tempfile import TemporaryFile
 
 from urlparse import urljoin
@@ -24,6 +25,8 @@ from api_client.api_error import ApiError
 from util.csv_helpers import CSVWriter
 from util.s3_helpers import PrivateMediaStorageThroughApros
 from util.email_helpers import send_html_email
+from .controller import _enroll_participants, _process_line_register_participants_csv, build_student_list_from_file
+from .models import UserRegistrationError
 
 
 from .controller import CourseParticipantStats
@@ -417,3 +420,53 @@ def users_program_association_task(program_id, user_ids, task_id):
             )
 
     return {'successful': added, 'total': total}
+
+
+@task(name='admin.import_participants_task', serializer='pickle', queue='high_priority')
+def import_participants_task(file_stream, is_internal_admin, registration_batch):
+    """
+    Processes a CSV file of participants.
+
+    Note on pickle serialization:
+        This job requires pickle serialization because it takes in a CSV file object.
+        This isn't a security concern, because the input is not directly from the user,
+        but rather from Django. The user does input the file to the webserver which hands
+        it to Django, but Django validates and turns it into a safe Python data structure.
+        At that point, it isn't dangerous to un-pickle the object, as it's already been around
+        in our runtime without issue.
+    """
+    user_list = build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
+    clean_user_list, unclean_user_list, user_registration_errors = [], [], []
+    for user_info in user_list:
+        if "error" in user_info:
+            unclean_user_list.append(user_info)
+            user_registration_errors.append(
+                UserRegistrationError(error=user_info["error"], task_key=registration_batch.task_key)
+            )
+        else:
+            clean_user_list.append(user_info)
+    UserRegistrationError.objects.bulk_create(user_registration_errors)
+    registration_batch.attempted = len(user_list)
+    registration_batch.failed += len(user_registration_errors)
+    registration_batch.save()
+    del user_list
+
+    # The bottleneck with processing these users from the POV of Apros is the network, i.e. when we wait for the
+    # LMS to process the user and return an HTTP response. Thus we run this in multiple threads with batches.
+    total_clean_users = len(clean_user_list)
+    pool_size = settings.MAX_IMPORT_JOB_THREAD_POOL_SIZE or 4
+    batch_size = total_clean_users // pool_size or 1
+    pool = ThreadPool(pool_size)
+    threads = []
+    for index in xrange(0, total_clean_users, batch_size):
+        batch = clean_user_list[index:min(index + batch_size, total_clean_users)]
+        threads.append(pool.apply_async(
+            _enroll_participants, args=(
+                batch,
+                is_internal_admin,
+                registration_batch,
+        )))
+
+    # Run queued up jobs.
+    for thread in threads:
+        thread.get()

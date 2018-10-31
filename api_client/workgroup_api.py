@@ -1,15 +1,13 @@
 ''' API calls with respect to groups '''
-from django.utils.translation import ugettext as _
 from django.conf import settings
 
-from lib.utils import DottableDict
-from .api_error import api_error_protect, ERROR_CODE_MESSAGES
+from .api_error import api_error_protect
+from api_data_manager.signals import user_data_updated
+from api_data_manager.user_data import USER_PROPERTIES
 
 from .json_object import JsonParser as JP
 from .json_object import JsonObject
 from .json_requests import GET, POST, DELETE
-from . import user_models
-from . import course_models
 
 
 WORKGROUP_API = getattr(settings, 'WORKGROUP_API', 'api/server/workgroups')
@@ -94,6 +92,7 @@ def update_workgroup(workgroup_id, workgroup_data, group_object=JsonObject):
 
     return JP.from_json(response.read(), group_object)
 
+
 @api_error_protect
 def add_user_to_workgroup(workgroup_id, user_id):
     response = POST(
@@ -105,7 +104,13 @@ def add_user_to_workgroup(workgroup_id, user_id):
         {"id": user_id}
     )
 
-    return (response.code == 201)
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.USER_COURSE_WORKGROUPS
+    )
+
+    return response.code == 201
+
 
 @api_error_protect
 def remove_user_from_workgroup(workgroup_id, user_id):
@@ -118,7 +123,13 @@ def remove_user_from_workgroup(workgroup_id, user_id):
         {"id": user_id}
     )
 
-    return (response.code == 204)
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=USER_PROPERTIES.USER_COURSE_WORKGROUPS
+    )
+
+    return response.code == 204
+
 
 @api_error_protect
 def get_workgroup_users(workgroup_id, group_object=JsonObject):

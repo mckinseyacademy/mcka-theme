@@ -17,7 +17,7 @@ from accounts import views as accountsviews
 
 urlpatterns = [
     url(r'^$', accountsviews.home, name='home'),
-    url(r'^home$', accountsviews.protected_home, name='protected_home'),
+    url(r'^home$', accountsviews.home, name='protected_home'),
     url(r'^login$', accountsviews.login, name='login'),
     url(r'^terms/', main_views.terms, name='terms'),
     url(r'^privacy/', main_views.privacy, name='privacy'),

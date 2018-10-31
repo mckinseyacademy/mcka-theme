@@ -165,9 +165,10 @@ class TestCourseApi(TestCase):
 
         def courseware_response(request, uri, headers):  # pylint: disable=unused-argument
             # staff user gets the course with 1 chapter
-            if self.STAFF_USER.username in uri or "username" not in uri:
+            if self.STAFF_USER.username in uri:
                 return (200, headers, self.course_response)
 
+            # if no user is passed, then a generic course response is returned
             # Everyone else gets the "empty course"
             return (200, headers, self.empty_course_response)
 
@@ -185,12 +186,12 @@ class TestCourseApi(TestCase):
 
     @ddt.data(
         # Test with positional arguments
-        ([COURSE_ID], {}, 1),
-        ([COURSE_ID, DEPTH], {}, 1),
+        ([COURSE_ID], {}, 0),
+        ([COURSE_ID, DEPTH], {}, 0),
         ([COURSE_ID, DEPTH, TEST_USER], {}, 0),
         ([COURSE_ID, DEPTH], dict(user=TEST_USER), 0),
         # Test with keyword arguments
-        ([COURSE_ID], dict(depth=DEPTH), 1),
+        ([COURSE_ID], dict(depth=DEPTH), 0),
         ([COURSE_ID], dict(depth=DEPTH, user=TEST_USER), 0),
         # Test with dict user
         ([COURSE_ID], dict(depth=DEPTH, user=USER_DICT), 0),

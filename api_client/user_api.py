@@ -19,13 +19,14 @@ from .group_models import GroupInfo
 from .oauth2_requests import get_oauth2_session, get_and_unpaginate
 
 from api_data_manager.decorators import user_api_cache_wrapper
-from api_data_manager.user_data import USER_PROPERTIES
+from api_data_manager.user_data import USER_PROPERTIES, UserDataManager
 from api_data_manager.signals import user_data_updated
 
 AUTH_API = getattr(settings, 'AUTH_API', 'api/server/sessions')
 USER_API = getattr(settings, 'USER_API', 'api/server/users')
 GROUP_API = getattr(settings, 'GROUP_API', 'api/server/groups')
 MANAGER_API = getattr(settings, 'MANAGER_API', 'api/user_manager/v1')
+IMPORT_API = getattr(settings, 'IMPORT_API', 'api/server/imports')
 
 USER_ROLES = DottableDict(
     STAFF='staff',
@@ -201,7 +202,7 @@ def get_session(session_key):
 
 @api_error_protect
 def register_user(user_hash):
-    ''' register the given user within the openedx server '''
+    """Register the given user within the LMS."""
     response = POST(
         '{}/{}'.format(settings.API_SERVER_ADDRESS, USER_API),
         _clean_user_keys(user_hash)
@@ -302,10 +303,14 @@ def add_user_role(user_id, course_id, role):
 
 
 @api_error_protect
-def update_user_roles(user_id, role_list):
-    ''' update roles, where role_list is a list of dictionaries containing course_id & role '''
+def update_user_roles(user_id, role_data):
+    """
+    Update a user's roles.
 
-    for entry in role_list.get('roles'):
+    `role_data` should contain a key `roles` which is a list of dictionaries containing course_id & role.
+    """
+
+    for entry in role_data.get('roles'):
         # Update discussion moderator permission
         discussions_api.set_discussions_moderator(
             course_id=entry['course_id'],
@@ -319,7 +324,7 @@ def update_user_roles(user_id, role_list):
             USER_API,
             user_id,
         ),
-        role_list
+        role_data
     )
 
     return JP.from_json(response.read())
@@ -392,6 +397,7 @@ def enroll_user_in_course(user_id, course_id):
         sender=__name__, user_ids=[user_id],
         data_type=USER_PROPERTIES.COURSES
     )
+    return response.code == 201
 
 
 @api_error_protect
@@ -416,6 +422,11 @@ def unenroll_user_from_course(user_id, course_id):
 
 
 @api_error_protect
+@user_api_cache_wrapper(
+    parse_method=JP.from_json,
+    parse_object=user_models.UserCourseStatus,
+    property_name=USER_PROPERTIES.USER_COURSE_DETAIL
+)
 def get_user_course_detail(user_id, course_id):
     ''' get details for the user for this course'''
     response = GET(
@@ -427,7 +438,7 @@ def get_user_course_detail(user_id, course_id):
         )
     )
 
-    return JP.from_json(response.read(), user_models.UserCourseStatus)
+    return response.read()
 
 
 @api_error_protect
@@ -492,6 +503,13 @@ def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
             course_id
         ),
         data
+    )
+
+    # trigger event that data is updated for this user
+    property_name = '{}_{}'.format(USER_PROPERTIES.USER_COURSE_DETAIL, course_id)
+    user_data_updated.send(
+        sender=__name__, user_ids=[user_id],
+        data_type=property_name
     )
 
     return JP.from_json(response.read())
@@ -598,6 +616,11 @@ def get_user_organizations(user_id, parse_object=None):
 
 
 @api_error_protect
+@user_api_cache_wrapper(
+    parse_method=JP.from_json,
+    parse_object=workgroup_models.Workgroup,
+    property_name=USER_PROPERTIES.USER_COURSE_WORKGROUPS
+)
 def get_user_workgroups(user_id, course_id=None, workgroup_object=workgroup_models.Workgroup):
     ''' return organizations with which the user is associated '''
     qs_params = {"page_size": 0}
@@ -612,7 +635,7 @@ def get_user_workgroups(user_id, course_id=None, workgroup_object=workgroup_mode
     )
 
     response = GET(url)
-    return JP.from_json(response.read(), workgroup_object)
+    return response.read()
 
 
 @api_error_protect
@@ -718,25 +741,23 @@ def get_user_full_gradebook(user_id, course_id):
 
 @api_error_protect
 def get_user_by_email(user_email):
-
+    """Returns a user object associated with `user_email`."""
     response = GET('{}/{}?email={}'.format(
         settings.API_SERVER_ADDRESS,
         USER_API,
-        user_email)
-    )
-
+        user_email
+    ))
     return json.loads(response.read())
 
 
 @api_error_protect
 def get_user_by_username(user_username):
-
+    """Returns a user object associated with `user_email`."""
     response = GET('{}/{}?username={}'.format(
         settings.API_SERVER_ADDRESS,
         USER_API,
         user_username)
     )
-
     return json.loads(response.read())
 
 

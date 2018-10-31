@@ -6,9 +6,9 @@ import json
 import logging
 import random
 from datetime import datetime
-
 import re
 from bs4 import BeautifulSoup
+
 from django.conf import settings
 
 from accounts.middleware.thread_local import (
@@ -25,6 +25,10 @@ from api_client.json_object import JsonObject, DataOnly
 from api_client.project_models import Project
 from api_client.user_api import USER_ROLES, workgroup_models
 from lib.utils import PriorIdConvert
+from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
+from api_client.json_object import JsonParser
+from api_client.course_models import CourseTabs
+from api_client.course_api import tabs_post_process
 
 log = logging.getLogger(__name__)
 
@@ -131,7 +135,7 @@ class Proficiency(JsonObject):
 class UserProgress(JsonObject):
     @property
     def user_progress_value(self):
-        return self.completions if hasattr(self, "completions") and self.completions is not None else 0
+        return getattr(self, "completions", 0)
 
     @property
     def user_progress_display(self):
@@ -145,7 +149,7 @@ class Progress(UserProgress):
 
     @property
     def course_average_value(self):
-        return self.course_avg if hasattr(self, "course_avg") and self.course_avg is not None else 0
+        return getattr(self, "course_avg", 0)
 
     @property
     def course_average_display(self):
@@ -163,6 +167,28 @@ class Progress(UserProgress):
                 if user_progress.user_progress_value >= 100:
                     completed_users += 1
         return round_to_int_bump_zero(100 * completed_users / len(users))
+
+
+class Social(JsonObject):
+    object_map = {
+        "leaders": JsonObject,
+    }
+
+    @property
+    def course_average_value(self):
+        return getattr(self, "course_avg", 0)
+
+    @property
+    def course_average_display(self):
+        return round_to_int_bump_zero(self.course_average_value)
+
+
+class CourseMetricsLeaders(JsonObject):
+    object_map = {
+        "grades": Proficiency,
+        "completions": Progress,
+        "social": Social,
+    }
 
 
 def build_page_info_for_course(
@@ -402,28 +428,33 @@ def group_project_location(group_project, sequential_id=None):
 
 def load_static_tabs(course_id, name=None):
     if name:
-        static_tabs = get_static_tab_context(course_id)
-        if static_tabs is None:
-            static_tabs = load_static_tabs_api(course_id, None)
-        static_tab = get_static_tab_context(course_id, name)
-        if getattr(static_tab, 'content', None) is None and getattr(static_tab, 'name', None):
-            try:
-                static_tab = course_api.get_course_tab(course_id, tab_id=static_tab.id)
-                set_static_tab_context(course_id, static_tab, static_tab.name.lower())
-            except ApiError as e:
-                pass
-        return static_tab
+        # first try getting from thread local
+        course_tabs = get_static_tab_context()
+
+        # look into cache then
+        if course_tabs is None:
+            data_property = '{}_{}'.format(COURSE_PROPERTIES.TABS, 'details')
+            course_tabs = CourseDataManager(course_id=course_id).get_cached_data(
+                property_name=data_property,
+                parsers=[
+                    {'method': JsonParser.from_json, 'params': CourseTabs},
+                    {'method': tabs_post_process},
+                ]
+            )
+
+        if course_tabs is not None:
+            course_tab = course_tabs.get(name)
+        else:
+            course_tabs = course_api.get_course_tabs(course_id, details=False)
+            course_tab = course_tabs.get(name)
+            if course_tab:
+                course_tab = course_api.get_course_tab(course_id, tab_id=course_tab.id)
+
+        return course_tab
     else:
-        static_tabs = get_static_tab_context(course_id)
-        if static_tabs is None:
-            static_tabs = load_static_tabs_api(course_id, True)
-        return static_tabs
-
-
-def load_static_tabs_api(course_id, details):
-    static_tabs = course_api.get_course_tabs(course_id, details=details)
-    set_static_tab_context(course_id, static_tabs)
-    return static_tabs
+        course_tabs = course_api.get_course_tabs(course_id, details=True)
+        set_static_tab_context(course_tabs)
+        return course_tabs
 
 
 def round_to_int(value):
@@ -522,6 +553,9 @@ def is_number(s):
 
 
 def get_proficiency_leaders(course_id, user_id, count=3):
+    """
+    If you need it along with progress or social leaders, please use `get_leaders`.
+    """
     proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency, count=count)
     if hasattr(proficiency, "leaders"):
         tailor_leader_list(proficiency.leaders)
@@ -529,6 +563,9 @@ def get_proficiency_leaders(course_id, user_id, count=3):
 
 
 def get_progress_leaders(course_id, user_id):
+    """
+    If you need it along with proficiency or social leaders, please use `get_leaders`.
+    """
     completions = course_api.get_course_metrics_completions(course_id, user_id=user_id, completions_object_type=Progress)
     tailor_leader_list(completions.leaders)
     return completions
@@ -590,6 +627,7 @@ def get_user_social_metrics(user_id, course_id, include_stats=False):
 
 def get_social_leaders(course_id, user_id, count=3):
     """
+    If you need it along with proficiency or progress leaders, please use `get_leaders`.
     :param course_id:
     :param user_id:
     :param count:
@@ -613,6 +651,32 @@ def get_social_leaders(course_id, user_id, count=3):
             count,
             error,
         )
+    return data
+
+
+def get_leaders(**kwargs):
+    """
+    Get completions, proficiency and social metrics in one request.
+    :param kwargs:
+        - `course_id`
+        - `user_id`
+        - `count`
+    """
+    try:
+        data = course_api.get_course_metrics_leaders(**kwargs)
+        tailor_leader_list(data.grades.leaders)
+        tailor_leader_list(data.completions.leaders)
+        tailor_leader_list(data.social.leaders)
+    except ApiError as error:
+        log.exception(
+            u"Error getting leaders. course_id=%s, user_id=%s, count=%s, error=%s",
+            kwargs.get('course_id'),
+            kwargs.get('user_id'),
+            kwargs.get('count'),
+            error,
+        )
+        raise error
+
     return data
 
 
@@ -821,6 +885,7 @@ def set_user_course_progress(course, completions, chapter_id=None):
                         'vertical',
                         module.id,
                     )
+                    module.is_complete = module.progress == 100
 
 def get_course_object(user_id, course_id):
 

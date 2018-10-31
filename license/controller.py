@@ -3,7 +3,6 @@ from .models import LicenseGrant
 
 
 class NoAvailableLicensesError(Exception):
-
     '''
     Exception to be thrown when no licenses are available for use
     '''

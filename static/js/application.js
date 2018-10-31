@@ -243,6 +243,39 @@ $(function(){
     });
   }
 
+  // Load user program menu
+  $('.program-bar .program-menu, #learner-dashboard-header .program-menu').on('click', function(){
+    if(!$('#program-menu-content').hasClass('open')){
+      $('body, .program-menu').css('cursor', 'wait');
+      $.ajax({
+            url: '/courses/courses_menu/',
+            method: 'GET',
+            contentType: 'text/html'
+          }).done(function(data, status, xhr) {
+            if(xhr.status == 200){
+              $('body, .program-menu').css('cursor', 'inherit');
+              $('#program-menu-content').html(data);
+            }
+      });
+    }
+  });
+
+  $("#lessons-content").on('opened.fndtn.dropdown', function(e) {  
+    if($(e.target).hasClass('load-course-lessons')) {
+      var course_id = $(e.target).data('course-id');
+      $.ajax({
+            url: '/courses/'+course_id+'/course_lessons_menu',
+            method: 'GET',
+            contentType: 'text/html'
+          }).done(function(data, status, xhr) {
+            if(xhr.status == 200){
+              $(e.target).html(data);
+              $(e.target).removeClass('load-course-lessons');
+            }
+      });
+    }
+  });
+
   $(document).on('closed.fndtn.reveal', '[data-reveal]', function () {
     var el = $(this),
         player = el.data('ooyala_player');

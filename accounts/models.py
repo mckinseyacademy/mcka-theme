@@ -129,9 +129,17 @@ class UserActivation(db_models.Model):
         return None
 
     @classmethod
-    def user_activation_by_task_key(cls, user, task_key, company_id):
-        activation_record = cls.objects.create(user_id=user.id, activation_key=cls.generate_activation_key(user.email), task_key=task_key,
-            first_name=user.first_name, last_name=user.last_name, email=user.email, company_id=company_id)
+    def user_activation_by_task_key(cls, user_id, email, first_name, last_name, task_key, company_id):
+        """Create a user activation record by task key."""
+        activation_record = cls.objects.create(
+            user_id=user_id,
+            activation_key=cls.generate_activation_key(email),
+            task_key=task_key,
+            first_name=first_name,
+            last_name=last_name,
+            email=email,
+            company_id=company_id
+        )
         activation_record.save()
         return activation_record
 

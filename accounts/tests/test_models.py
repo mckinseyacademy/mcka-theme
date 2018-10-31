@@ -25,7 +25,10 @@ class UserActivationTests(TestCase):
     def test_get_activation_by_task_key(self):
         setattr(self.user, 'first_name', 'first_name')
         setattr(self.user, 'last_name', 'last_name')
-        UserActivation.user_activation_by_task_key(self.user, 'sample_key', 1)
+        UserActivation.user_activation_by_task_key(
+            self.user.id, self.user.email, self.user.first_name, self.user.last_name,
+            'sample_key', 1
+        )
         activation_records = UserActivation.get_activations_by_task_key('sample_key')
         self.assertEqual(len(activation_records), 1)
 
@@ -33,7 +36,10 @@ class UserActivationTests(TestCase):
         setattr(self.user, 'first_name', 'first_name')
         setattr(self.user, 'last_name', 'last_name')
         UserActivation.user_activation(self.user)
-        user_activation = UserActivation.user_activation_by_task_key(self.user, 'test_key', 1)
+        user_activation = UserActivation.user_activation_by_task_key(
+            self.user.id, self.user.email, self.user.first_name, self.user.last_name,
+            'test_key', 1
+        )
         self.assertIsInstance(user_activation, UserActivation)
 
 

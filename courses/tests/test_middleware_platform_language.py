@@ -1,8 +1,10 @@
-from django.test import TestCase, RequestFactory
 import ddt
+from mock import patch
+from django.test import TestCase, RequestFactory
 from django.utils import translation
 
 from accounts.tests.utils import ApplyPatchMixin
+from api_data_manager.course_data import CourseDataManager
 from courses.middleware.apros_platform_language import AprosPlatformLanguage
 from lib.utils import DottableDict
 from mcka_apros.settings import LANGUAGE_CODE
@@ -63,6 +65,7 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 		('/admin/clients/1/navigation', LANGUAGE_CODE)
 	)
 	@ddt.unpack
+	@patch.object(CourseDataManager, 'get_language', lambda x, y: 'ar')
 	def test_process_request(self, path, expected_language, authentication=False):
 		"""
 		:param path: Relative url for parsing
@@ -72,9 +75,6 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 
 		get_current_request = self.apply_patch('util.i18n_helpers.get_current_request')
 		get_current_request.return_value = request
-
-		course_detail = self.apply_patch('courses.middleware.apros_platform_language.user_api')
-		course_detail.get_user_course_detail.return_value = DottableDict({'language': 'ar_MD'})
 
 		self.apros_platform_language.process_request(request)
 		self.assertEqual(expected_language, translation.get_language())

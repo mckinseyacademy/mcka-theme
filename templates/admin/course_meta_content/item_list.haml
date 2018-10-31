@@ -181,6 +181,15 @@
               {% trans "Leaderboard" %}
             %p.style-6 {% trans "Note: If you disable the 'Leaderboard', it will hide leaderboard on the cohort page." %}
 
+          %li
+            - if feature_flags.enhanced_caching
+              %input#enhanced-caching{type: 'checkbox', name: 'enhanced_caching', checked: 'checked'}
+            - else
+              %input#enhanced-caching{type: 'checkbox', name: 'enhanced_caching'}
+            %label{for: 'leaderboard'}
+              {% trans "Enhanced Caching" %}
+            %p.style-6 {% trans "Note: Enabling enhanced caching will improve the performance but changes to course content would not reflect until the cache refreshes (cache refresh frequency 24 hours)" %}
+
 
 
   - if user.is_mcka_admin or user.is_mcka_subadmin

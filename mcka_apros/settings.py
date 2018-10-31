@@ -15,9 +15,10 @@ import datetime
 import os
 from logsettings import get_logger_config
 
-from django.utils.translation import ugettext_lazy as _
-
 from kombu import Queue, Exchange
+
+
+from django.utils.translation import ugettext_lazy as _
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -84,6 +85,7 @@ LOCAL_APPS = (
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -316,7 +318,11 @@ API_SERVER_PREFIX = '/'.join(['api', 'server'])
 
 # CELERY SETTINGS
 CELERY_RESULT_BACKEND = 'djcelery.backends.database:DatabaseBackend'
-CELERY_ACCEPT_CONTENT = ['json']
+# Important: we allow pickle serialization so that large CSV files can easily be transferred
+# for async processing, but pickle serialization should *only* be used for such files
+# that are validated and handed to us by Django first. Do not use pickle under any other
+# circumstances, because it opens doors to remote code execution.
+CELERY_ACCEPT_CONTENT = ['json', 'pickle']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 BROKER_TRANSPORT_OPTIONS = {'confirm_publish': True}
@@ -330,6 +336,7 @@ CELERY_QUEUES = (
 CELERY_DEFAULT_QUEUE = 'default'
 CELERY_DEFAULT_ROUTING_KEY = 'default'
 CELERY_CREATE_MISSING_QUEUES = True
+CELERY_TIMEZONE = 'UTC'
 
 # Api locations
 COURSEWARE_API = '/'.join([API_SERVER_PREFIX, 'courses'])
@@ -452,7 +459,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'OPTIONS': {
-            'debug' : True,
+            'debug': DEBUG,
             'context_processors': [
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.debug',
@@ -468,10 +475,12 @@ TEMPLATES = [
                 'lib.context_processors.set_mobile_app_id',
             ],
             'loaders': [
-                'hamlpy.template.loaders.HamlPyFilesystemLoader',
-                'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
+                ('django.template.loaders.cached.Loader', [
+                    'hamlpy.template.loaders.HamlPyFilesystemLoader',
+                    'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
+                    'django.template.loaders.filesystem.Loader',
+                    'django.template.loaders.app_directories.Loader',
+                ])
             ]
         },
     },
@@ -605,11 +614,16 @@ COURSE_PROPERTIES_TO_CLEAN = [
 
 # Cache timeout settings
 CACHE_TIMEOUTS = {
-    'user_data': (60 * 1) * 10,  # 10 minutes
-    'course_data': (60 * 1) * 10,  # 10 minutes
-    'group_data': (60 * 1) * 10,  # 10 minutes
+    'user_data': (60 * 1) * 30,  # 30 minutes
+    'course_data': (60 * 1) * 30,
+    'longterm_course_data': (60 * 60) * 24,  # 24 hours
+    'group_data': (60 * 1) * 30,
+    'org_data': (60 * 1) * 30,
+    'common_data': (60 * 60) * 24,  # 24 hours
+    'course_language': (60 * 60) * 24,
+    'prefetched_course_data': (60 * 60) * 24,
 }
-
+DEFAULT_CACHE_TIMEOUT = (60 * 1) * 15  # 15 minutes
 
 # default course depth to fetch from API
 COURSE_DEFAULT_DEPTH = 3
@@ -641,3 +655,5 @@ FOREIGN_AND_NORMAL_CHARACTERS_PATTERN = '[ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎ
 
 #Cookies expiry time
 COOKIES_YEARLY_EXPIRY_TIME = datetime.datetime.utcnow() + datetime.timedelta(days=365)
+
+MAX_IMPORT_JOB_THREAD_POOL_SIZE = 4

@@ -30,7 +30,6 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from accounts.helpers import get_user_activation_links, get_complete_country_name
-from accounts.middleware.thread_local import set_course_context, get_course_context
 from accounts.models import UserActivation
 from admin.forms import MobileBrandingForm
 from admin.models import Program, SelfRegistrationRoles, ClientCustomization
@@ -49,6 +48,7 @@ from api_client import (
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.group_api import TAG_GROUPS
+from api_client.import_api import import_participant
 from api_client.mobileapp_api import create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme
 from api_client.organization_api import get_organization_fields
 from api_client.project_models import Project
@@ -61,6 +61,8 @@ from lib.utils import DottableDict
 from license import controller as license_controller
 from util.data_sanitizing import sanitize_data, clean_xss_characters, remove_characters, special_characters_match
 from util.validators import validate_first_name, validate_last_name, RoleTitleValidator, normalize_foreign_characters
+from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
+
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
@@ -214,12 +216,13 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
 
     course.chapters = [chapter for chapter in course.chapters if is_normal_chapter(chapter)]
 
-    set_course_context(course, depth)
-
     return course
 
 
-def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, request=None, enable_cache=True):
+def load_course(
+        course_id, depth=MINIMAL_COURSE_DEPTH,
+        course_api_impl=course_api, request=None,
+    ):
     """
     Gets the course from the API, and performs any post-processing for Apros specific purposes
 
@@ -234,62 +237,18 @@ def load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_ap
         course_api_impl: module  - implementation of course API
         request: DjangoRequest - current django request
     """
-    if depth < MINIMAL_COURSE_DEPTH:
-        depth = MINIMAL_COURSE_DEPTH
-    course_context = get_course_context()
-    if (
-            course_context and
-            course_context.get("course_id", None) == course_id and
-            course_context.get("depth", 0) >= depth
-    ):
-        return course_context["course_content"]
 
-    user = request.user if request else None
+    feature_flags = CourseDataManager(course_id).get_feature_flags()
 
-    # See if we will cache courseware on the user's session
-    if (
-            not getattr(settings, 'USE_SESSION_COURSEWARE_CACHING', False) or
-            not request or
-            not request.session
-    ):
-        # simple path: load and return
-        return _load_course(course_id, depth, course_api_impl, user=user)
+    # if enhanced caching is enabled
+    if feature_flags.enhanced_caching:
+        course = CourseDataManager(course_id=course_id) \
+            .get_cached_data(COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT)
 
-    course = None
-    if 'course_cache' in request.session:
-        # see if our cached course is the same as the one wanting to be fetched
-        if course_id in request.session['course_cache']:
-            cache_entry = request.session['course_cache'][course_id]
-            cached_time = cache_entry['time_fetched']
-            fetch_depth = cache_entry['fetch_depth']
+        if course is not None:
+            return course
 
-            # is the course entry too old?!?
-            age = datetime.now(UTC) - cached_time
-
-            # don't let the cache entry age indefinately
-            if age.seconds < getattr(settings, 'SESSION_COURSEWARE_CACHING_EXPIRY_IN_SEC',
-                                     300) and depth <= fetch_depth:
-                course = cache_entry['course_data']
-
-    if not course:
-        # actually go to the API to fetch
-        course = _load_course(course_id, depth, course_api_impl, user=user)
-
-        # if we have fetched the course, let's put it in the session cache
-        if course and enable_cache:
-            # note, since we're change the schema of the session data, we have to be able to
-            # bootstrap existing sessions
-            if 'course_cache' not in request.session:
-                request.session['course_cache'] = {}
-
-            request.session['course_cache'][course_id] = {
-                'course_data': course,
-                'transaction_counter': 0,
-                'time_fetched': datetime.now(UTC),
-                'fetch_depth': depth
-            }
-
-    return course
+    return _load_course(course_id, depth, course_api_impl, user=request.user if request else None)
 
 
 def generate_email_text_for_user_activation(activation_record, activation_link_head):
@@ -396,8 +355,7 @@ def _process_line_proposed(user_line):
 
 
 def build_student_list_from_file(file_stream, parse_method=_process_line):
-    # Don't need to read into a tmep file if small enough
-    user_objects = []
+    # Don't need to read into a temporary file if small enough
     with tempfile.TemporaryFile() as temp_file:
         for chunk in file_stream.chunks():
             temp_file.write(chunk)
@@ -451,7 +409,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             user_error = _("Error processing data: {reason}").format(reason=reason)
 
         if user_error:
-            error = UserRegistrationError.create(error=user_error, task_key=reg_status.task_key)
+            error = UserRegistrationError.objects.create(error=user_error, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
@@ -559,7 +517,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
 
         if user_error:
             for user_e in user_error:
-                error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
+                error = UserRegistrationError.objects.create(error=user_e, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
@@ -576,7 +534,7 @@ def process_uploaded_student_list(file_stream, client_id, activation_link_head, 
         reg_status.save()
     for user_info in user_list:
         if "error" in user_info:
-            UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
+            UserRegistrationError.objects.create(error=user_info["error"], task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
     user_list = [user_info for user_info in user_list if "error" not in user_info]
@@ -594,7 +552,7 @@ def process_mass_student_enroll_list(file_stream, client_id, program_id, course_
         reg_status.save()
     for user_info in user_list:
         if "error" in user_info:
-            UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
+            UserRegistrationError.objects.create(error=user_info["error"], task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
     user_list = [user_info for user_info in user_list if "error" not in user_info]
@@ -1563,35 +1521,11 @@ def get_user_courses_helper(user_id, request):
     return active_courses, course_history
 
 
-def import_participants_threaded(student_list, request, reg_status):
-    _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
-    _thread.daemon = True  # so we can exit
-    _thread.start()
-    process_import_participants_list(student_list, request, reg_status)
-
-
 def enroll_participants_threaded(student_list, request, reg_status):
     _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
     _thread.daemon = True  # so we can exit
     _thread.start()
     process_enroll_participants_list(student_list, request, reg_status)
-
-
-@postpone
-def process_import_participants_list(file_stream, request, reg_status=None):
-    # 1) Build user list
-    user_list = build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
-    if reg_status is not None:
-        reg_status.attempted = len(user_list)
-        reg_status.save()
-    for user_info in user_list:
-        if "error" in user_info:
-            error = UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
-            reg_status.failed = reg_status.failed + 1
-            reg_status.save()
-    user_list = [user_info for user_info in user_list if "error" not in user_info]
-    # 2) Register the users, and associate them with client
-    _enroll_participants(user_list, request, reg_status)
 
 
 @postpone
@@ -1603,7 +1537,7 @@ def process_enroll_participants_list(file_stream, request, reg_status=None):
         reg_status.save()
     for user_info in user_list:
         if "error" in user_info:
-            error = UserRegistrationError.create(error=user_info["error"], task_key=reg_status.task_key)
+            error = UserRegistrationError.objects.create(error=user_info["error"], task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
     user_list = [user_info for user_info in user_list if "error" not in user_info]
@@ -1669,139 +1603,52 @@ def _process_line_enroll_participants_csv(user_line):
     return user_info
 
 
-def _enroll_participants(participants, request, reg_status):
-    permissonsMap = {
-        'ta': USER_ROLES.TA,
-        'observer': USER_ROLES.OBSERVER,
-        'instructor': USER_ROLES.MODERATOR
+def _add_error(errors, reason, activity, participant):
+    error = _("Reason: {}, Activity: {}, Participant: {}").format(reason, activity, participant)
+    errors.append(error)
+    return error
+
+
+def _enroll_participants(participants, is_internal_admin, reg_status):
+    data = {
+        'internal': is_internal_admin,
+        'statuses': ['participant', 'observer', 'ta'],
+        'roles': {'ta': USER_ROLES.TA, 'observer': USER_ROLES.OBSERVER, 'instructor': USER_ROLES.MODERATOR},
+        'ignore_roles': settings.IGNORE_ROLES,
+        'permissions': {USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA, USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER},
     }
-
-    internalAdminFlag = False
-    if request.user.is_internal_admin:
-        internalAdminFlag = True
-
     for user_dict in participants:
-
-        user = None
-        client = None
-        course = None
-        username = user_dict['username']
-        client_id = user_dict['company_id']
-        course_id = user_dict['course_id']
-        status = user_dict['status'].lower()
-        status_check = ['participant', 'observer', 'ta']
-        check_errors = []
-        user_error = []
-        user_email = user_dict.get('email', '')
-        email = user_dict.get('email', '')
-
+        errors, email = [], user_dict.get('email', '')
         try:
-            # Check for empty fields
-            for key, value in user_dict.items():
-                if str(value).strip() == '':
-                    if key == 'email':
-                        email = _("No email")
-                    if key != 'username':
-                        check_errors.append({'reason': _('Empty field: {}').format(key), 'activity': _('Processing Participant')})
-            #Check if email is valid
-            try:
-                validate_email(user_email)
-            except ValidationError:
-                check_errors.append({'reason': _('Valid e-mail is required'), 'activity': _('Registering Participant')})
-            else:
-                # run through API only if valid email is given as API breaks on wrong email
+            # Call into the API to do verification and registration/association/enrollment/assignment.
+            data.update({
+                'user': user_api._clean_user_keys(user_dict),
+                'status': user_dict.get('status', ''),
+                'course_id': user_dict.get('course_id', ''),
+                'company_id': user_dict.get('company_id', ''),
+            })
+            user_id, lms_errors = import_participant(data)
+            errors.extend(lms_errors)
 
-                # Check if email already exist
-                check_user_email = user_api.get_user_by_email(user_email)
-                if check_user_email['count'] == 1:
-                    check_errors.append({'reason': _('Email already exist'), 'activity': _('Registering Participant')})
-                else:
-                    # Check if username already exist
-                    check_user_username = user_api.get_user_by_username(username)
-                    if check_user_username['count'] == 1:
-                        check_errors.append({'reason': _('Username already exist'), 'activity': _('Registering Participant')})
-            #Check if client exist
-            try:
-                client = Client.fetch(client_id)
-            except ApiError as e:
-                if e.message == 'NOT FOUND':
-                    check_errors.append({'reason': _("Company doesn't exist"), 'activity': _('Enrolling Participant in Company')})
-                else:
-                    check_errors.append({'reason': '{}'.format(e.message), 'activity': _('Enrolling Participant in Company')})
-            #Check if course exist
-            try:
-                course = course_api.get_course_details(course_id)
-            except ApiError as e:
-                if e.message == 'NOT FOUND':
-                    check_errors.append({'reason': _("Course doesn't exist"), 'activity': _('Enrolling Participant in Course')})
-                else:
-                    check_errors.append({'reason': '{}'.format(e.message), 'activity': _('Enrolling Participant in Course')})
-            #For Internal Admin Check if Course Is Internal
-            if internalAdminFlag:
-                if not check_if_course_is_internal(course_id):
-                    check_errors.append({'reason': _("Course is not Internal"), 'activity': _('Enrolling Participant in Course')})
-            #Check if status exist
-            if status not in status_check:
-                check_errors.append({'reason': _("Status doesn't exist"), 'activity': _('Enrolling Participant in Course')})
-            #If errors exist add them, else continue
-            if check_errors:
-                for error in check_errors:
-                    user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
-                        error['reason'],
-                        error['activity'],
-                        email
-                    ))
-            else:
-                try:
-                    # Register Participant
-                    try:
-                        user = user_api.register_user(user_dict)
-                    except ApiError as e:
-                        raise ValueError('{}'.format(e.message), _('Registering Participant'))
-                    #Enroll Participant in Client
-                    try:
-                        client.add_user(user.id)
-                    except ApiError as e:
-                        raise ValueError('{}'.format(e.message), _('Enrolling Participant in Company'))
-                    #Create Activation Record for Participant
-                    if not user.is_active:
-                        activation_record = UserActivation.user_activation_by_task_key(user, reg_status.task_key,
-                                                                                       client_id)
-                    if not activation_record:
-                        raise ValueError(_('Activation record error'), _('Registering Participant'))
-                    #Enroll Participant in Course
-                    try:
-                        user_api.enroll_user_in_course(user.id, course_id)
-                    except ApiError as e:
-                        raise ValueError('{}'.format(e.message), _('Enrolling Participant in Course'))
-                    #Set Participant Status on Course
-                    try:
-                        permissions = SlimAddingPermissions(user.id)
-                        if status != 'participant':
-                            permissions.add_course_role(course_id, permissonsMap[status])
-                    except ApiError as e:
-                        raise ValueError('{}'.format(e.message), _("Setting Participant's Status"))
-                except ValueError as e:
-                    user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
-                        e.args[0],
-                        e.args[1],
-                        email
-                    ))
+            # Upon success, create the activation record.
+            if not errors and user_id and not UserActivation.user_activation_by_task_key(
+                    user_id, email, user_dict.get('first_name', ''), user_dict.get('last_name', ''),
+                    reg_status.task_key,
+                    user_dict.get('company_id', ''),
+            ):
+                _add_error(errors, _('Activation record error'), _('Registering Participant'), email)
         except Exception as e:
             reason = e.message if e.message else _("Processing Data Error")
-            user_error.append(_("Error processing data: {} - {}").format(
-                reason,
-                email
-            ))
+            errors.append(_("Error processing data: {} - {}").format(reason, email))
 
-        if user_error:
-            for user_e in user_error:
-                error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
-            reg_status.failed = reg_status.failed + 1
-            reg_status.save()
+        if errors:
+            UserRegistrationError.objects.bulk_create(
+                [UserRegistrationError(error=error, task_key=reg_status.task_key) for error in errors]
+            )
+            reg_status.failed += 1
         else:
-            reg_status.succeded = reg_status.succeded + 1
-            reg_status.save()
+            reg_status.succeded += 1
+        reg_status.save()
 
 
 def _just_enroll_participants(participants, request, reg_status):
@@ -1892,7 +1739,7 @@ def _just_enroll_participants(participants, request, reg_status):
 
         if user_error:
             for user_e in user_error:
-                error = UserRegistrationError.create(error=user_e, task_key=reg_status.task_key)
+                error = UserRegistrationError.objects.create(error=user_e, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
@@ -2015,29 +1862,22 @@ def get_internal_courses_ids():
 
 
 def get_internal_courses_list():
-    """ Return a List of courses tagged :internal """
-    internal_tags = group_api.get_groups_of_type(group_type=TAG_GROUPS.INTERNAL)
+    """Return a List of courses tagged :internal."""
+    internal_tags = group_api.get_groups_of_type(TAG_GROUPS.INTERNAL)
     internal_courses = []
     for internal_tag in internal_tags:
         internal_courses.extend(group_api.get_courses_in_group(group_id=vars(internal_tag)['id']))
-
     return internal_courses
 
 
 def check_if_course_is_internal(course_id):
-    internal_ids = get_internal_courses_ids()
-    if str(course_id) in internal_ids:
-        return True
-    return False
+    return str(course_id) in get_internal_courses_ids()
 
 
 def check_if_user_is_internal(user_id):
     user_courses = user_api.get_courses_from_user(user_id)
     internal_ids = get_internal_courses_ids()
-    for course in user_courses:
-        if course['id'] in internal_ids:
-            return True
-    return False
+    return any([course['id'] in internal_ids for course in user_courses])
 
 
 class CustomTemplate(string.Template):
@@ -2053,8 +1893,6 @@ class CustomTemplate(string.Template):
 
 def student_list_chunks_tracker(data, client_id, activation_link):
     default_chunk_size = 100
-    respone_data = {}
-
     if data.get("task_id", None):
         cached_student_progress = cache.get('student-list-' + data["task_id"], None)
 
@@ -2082,19 +1920,15 @@ def student_list_chunks_tracker(data, client_id, activation_link):
         else:
             return {"status": "error", "message": _("You have sent incorrect task key!")}
     else:
-        unique_id = str(uuid.uuid4());
+        unique_id = str(uuid.uuid4())
         cached_data = {}
         user_list = organization_api.fetch_organization_user_ids(client_id)
-        user_list_chunked = None
         chunk_size = int(data.get("chunk_size", default_chunk_size))
-
         if len(user_list):
-
             client = Client.fetch(client_id)
             file_name = unicode("Student List for {} on {}.csv".format(client.display_name, datetime.now().isoformat()))
-
             user_list_chunked = [user_list[i:i + chunk_size] for i in xrange(0, len(user_list), chunk_size)]
-            cached_data["chunk_count"] = len(user_list_chunked);
+            cached_data["chunk_count"] = len(user_list_chunked)
             cached_data["list_chunked"] = user_list_chunked
             cached_data["element_count"] = len(user_list)
             cached_data["chunk_size"] = chunk_size

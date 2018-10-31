@@ -1,6 +1,9 @@
 - load i18n
+- load cache
+- load template_helpers
 - get_current_language as LANGUAGE_CODE
 - get_available_languages as LANGUAGES
+
 %header.background-blue{style: "{% if client_customization and client_customization.hex_background_main_navigation %}background-color:#{client_customization.hex_background_main_navigation};{% endif %}" , role: 'banner'}
   .row.collapse.main-nav
     .large-12.columns
@@ -90,7 +93,7 @@
               %img{src: "#{user.image_url_small}", alt: "#{user.username}"}
             #profile-container{data-dropdown-content: "true"}
   - block program_bar
-    - if program and course and course.started
+    - if program and current_course and current_course.started
       .program-bar.background-alt-blue{style: "{% if client_customization and client_customization.hex_background_bar %}background-color:#{client_customization.hex_background_bar};{% endif %}"}
         - if client_customization.client_logo
           .client-logo
@@ -101,14 +104,13 @@
               %a{"data-dropdown": "program-menu-content", 'data-tooltip': '{% trans "Program" %}'}
                 %i.fa.fa-th-large{style: "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
               #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
-                - include "courses/content_page/program_menu.haml"
             .label-4.program-name{style: "{% if client_customization and client_customization.hex_program_name %}color:#{client_customization.hex_program_name};{% endif %}"}<
-              = programs.0.0.display_name
+              = program.display_name
             %h4.course-name
-              - if course.ended
+              - if current_course.ended
                 %span
                     {% trans "COURSE CLOSED" %}
-              %a{href: "#{course.nav_url}", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= course.name
+              %a{href: "#{current_course.nav_url}", style: "{% if client_customization and client_customization.hex_course_title %}color:#{client_customization.hex_course_title};{% endif %}"}= current_course.name
           .medium-2.columns
           .medium-5.columns.course_nav
             - include "courses/content_page/course_tabs.haml"

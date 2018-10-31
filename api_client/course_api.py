@@ -279,11 +279,11 @@ def get_courses(**kwargs):
     '''
     qs_params = {"page_size": 0}
 
-    for karg in kwargs:
-        if isinstance(kwargs[karg], list):
-            qs_params[karg] = ",".join(kwargs[karg])
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            qs_params[key] = ",".join(value)
         else:
-            qs_params[karg] = kwargs[karg]
+            qs_params[key] = value
 
     response = GET('{}/{}/?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -506,11 +506,11 @@ def get_course_metrics(course_id, *args, **kwargs):
 
     qs_params = {}
 
-    for karg in kwargs:
-        if isinstance(kwargs[karg], list):
-            qs_params[karg] = ",".join(kwargs[karg])
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            qs_params[key] = ",".join(value)
         else:
-            qs_params[karg] = kwargs[karg]
+            qs_params[key] = value
 
     url = '{}/{}/{}/metrics/?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -521,6 +521,35 @@ def get_course_metrics(course_id, *args, **kwargs):
 
     response = GET(url)
     return JP.from_json(response.read(), course_models.CourseMetrics)
+
+
+@api_error_protect
+def get_course_metrics_leaders(course_id, **kwargs):
+    """
+    retrieves course metrics leaders
+    :param kwargs:
+        - `course_id`
+        - `user_id`
+        - `count`
+    """
+    from courses.controller import CourseMetricsLeaders
+    qs_params = {}
+
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            qs_params[key] = ",".join(value)
+        else:
+            qs_params[key] = value
+
+    url = '{}/{}/{}/metrics/leaders/?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        urlencode(qs_params),
+    )
+
+    response = GET(url)
+    return JP.from_json(response.read(), CourseMetricsLeaders)
 
 
 @api_error_protect
@@ -716,15 +745,12 @@ def get_courses_list(getParameters):
 @api_error_protect
 def get_course_details(course_id):
     edx_oauth2_session = get_oauth2_session()
-
     url = '{}/{}/{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id
     )
-
     response = edx_oauth2_session.get(url)
-
     return response.json()
 
 

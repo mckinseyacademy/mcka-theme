@@ -6,39 +6,39 @@
         %i.fa.fa-map-marker
   %li
     -if lessons_custom_label
-      %a.nav-1{"class": "{% ifequal request.resolver_match.url_name 'navigate_to_lesson_module' %}selected{% endifequal %}", "href": "/courses/#{course.id}/lessons", "data-dropdown": "lessons-content", "data-tooltip": "#{lessons_custom_label}", "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+      %a.nav-1{"href": "#", "data-dropdown": "lessons-content", "data-tooltip": "#{lessons_custom_label}", "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.mk-icon-lessonsnav
     -else
-      %a.nav-1{"class": "{% ifequal request.resolver_match.url_name 'navigate_to_lesson_module' %}selected{% endifequal %}", "href": "/courses/#{course.id}/lessons", "data-dropdown": "lessons-content", "data-tooltip": '{% trans "Lessons" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+      %a.nav-1{"href": "#", "data-dropdown": "lessons-content", "data-tooltip": '{% trans "Lessons" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.mk-icon-lessonsnav
-    #lessons-content.course-tab-dropdown{"data-dropdown-content": "true"}
+    #lessons-content.course-tab-dropdown{class: "{% if not course.chapters %}load-course-lessons{% endif %}", "data-dropdown-content": "true", "data-course-id": "#{current_course.id}"}
       - include "courses/content_page/lesson_menu.haml"
   - if feature_flags.discussions
     %li
-      %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_discussion' %}selected{% endifequal %}", "href": "/courses/#{course.id}/discussion", "data-tooltip": '{% trans "Discussion" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+      %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_discussion' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/discussion", "data-tooltip": '{% trans "Discussion" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.fa.fa-comments-o
   - if feature_flags.group_work
     %li
-      %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_group_work' %}selected{% endifequal %}", "href": "/courses/#{course.id}/group_work", "data-tooltip": '{% trans "Group Work" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+      %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_group_work' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/group_work", "data-tooltip": '{% trans "Group Work" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.mk-icon-groupworknav
   - if feature_flags.cohort_map
     %li
-      %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_cohort' %}selected{% endifequal %}", "href": "/courses/#{course.id}/cohort", "data-tooltip": '{% trans "Cohort" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+      %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_cohort' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/cohort", "data-tooltip": '{% trans "Cohort" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.fa.fa-globe
   - if feature_flags.progress_page
     %li
-      %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_progress' %}selected{% endifequal %}", "href": "/courses/#{course.id}/progress", "data-tooltip": '{% trans "Progress" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+      %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_progress' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/progress", "data-tooltip": '{% trans "Progress" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.old-fa-bar-chart
   %li
-    %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", "href": "/courses/#{course.id}/announcements", "data-dropdown": "announcements-content", "data-tooltip": '{% trans "Course Materials" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
+    %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/announcements", "data-dropdown": "announcements-content", "data-tooltip": '{% trans "Course Materials" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
       %i.fa.fa-file-text-o
     #announcements-content.course-tab-dropdown{"data-dropdown-content": "true"}
-      %a{"class": "{% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", "href": "/courses/#{course.id}/announcements"}
+      %a{"class": "{% ifequal request.resolver_match.url_name 'course_news' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/announcements"}
         {% trans "Announcements" %}
-      %a{"class": "{% ifequal request.resolver_match.url_name 'course_overview' %}selected{% endifequal %}", "href": "/courses/#{course.id}/overview"}
+      %a{"class": "{% ifequal request.resolver_match.url_name 'course_overview' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/overview"}
         {% trans "Course Overview" %}
       - if feature_flags.resources
-        %a{"class": "{% ifequal request.resolver_match.url_name 'course_resources' %}selected{% endifequal %}", "href": "/courses/#{course.id}/resources"}
+        %a{"class": "{% ifequal request.resolver_match.url_name 'course_resources' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/resources"}
           {% trans "Resources" %}
   - if feature_flags.notifications
     %li

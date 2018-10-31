@@ -299,13 +299,6 @@ class UserRegistrationError(db_models.Model):
     task_key = db_models.CharField(max_length=40, unique=False, db_index=True)
     error = db_models.TextField(default='')
 
-    @classmethod
-    def create(cls, error='', task_key=''):
-        reg_record = cls.objects.create(error=error, task_key= task_key)
-        reg_record.save()
-
-        return reg_record
-
 
 class UserRegistrationBatch(db_models.Model):
     task_key = db_models.CharField(max_length=40, unique=True, db_index=True)
@@ -555,7 +548,7 @@ class LearnerDashboard(db_models.Model):
     description_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_DESCRIPTION_COLOR)
 
     client_id = db_models.IntegerField(null=True)
-    course_id = db_models.CharField(blank=False, max_length=500)
+    course_id = db_models.CharField(blank=False, max_length=500, db_index=True)
 
 
 class LearnerDashboardTile(db_models.Model):

@@ -1,8 +1,6 @@
-''' rendering templates from requests related to courses '''
 import json
 import csv
-from datetime import datetime, timedelta
-import re
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
@@ -14,51 +12,56 @@ from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
-from django.core import serializers
-from django.template import loader, RequestContext
+from django.template import loader
 
 from admin.controller import load_course
 from admin.models import (
     WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery,
-    BrandingSettings, TileBookmark, LearnerDashboardTileProgress, LearnerDashboardBranding
-    )
-from admin.views import checked_course_access, AccessChecker
+    TileBookmark, LearnerDashboardTileProgress, LearnerDashboardBranding
+)
+from admin.views import AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.platform_api import update_course_mobile_available_status
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
-from api_client.user_api import USER_ROLES
 from api_client.workgroup_models import Submission
+from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
 from lib.authorization import permission_group_required
 from lib.utils import DottableDict
-from main.models import CuratedContentItem
+from util.data_sanitizing import sanitize_data, clean_xss_characters
+from util.query_manager import get_object_or_none
+from mobile_apps.controller import get_mobile_app_download_popup_data
 
-from .models import LessonNotesItem, FeatureFlags, CourseMetaData
-from .controller import inject_gradebook_info, round_to_int, Proficiency, get_chapter_and_target_by_location, return_course_progress
-from .controller import locate_chapter_page, load_static_tabs, load_lesson_estimated_time
-from .controller import update_bookmark, group_project_reviews, add_months_to_date, progress_update_handler
-from .controller import get_progress_leaders, get_proficiency_leaders, average_progress, choose_random_ta
+from .models import LessonNotesItem, FeatureFlags
 from .controller import (
+    inject_gradebook_info,
+    round_to_int,
+    Proficiency,
+    get_chapter_and_target_by_location,
+    get_leaders,
+    locate_chapter_page,
+    load_static_tabs,
+    update_bookmark,
+    group_project_reviews,
+    add_months_to_date,
+    progress_update_handler,
+    average_progress,
+    choose_random_ta,
     get_group_project_for_user_course,
     get_group_project_for_workgroup_course,
     group_project_location,
     createProgressObjects,
     _remove_duplicate_grader,
     get_user_social_metrics,
-    get_social_leaders,
     fix_resource_page_video_scripts,
 )
 from .user_courses import (
-    check_user_course_access, standard_data, load_course_progress,
-    check_company_admin_user_access, get_current_course_for_user,
-    set_current_course_for_user, get_current_program_for_user, check_course_shell_access,
-    STANDARD_DATA_FEATURES
+    check_user_course_access, load_course_progress,
+    check_company_admin_user_access,
+    set_current_course_for_user, check_course_shell_access,
+    get_program_menu_list, UserDataManager,
 )
-from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.query_manager import get_object_or_none
-
-from mobile_apps.controller import get_mobile_app_download_popup_data
-# Create your views here.
+from .course_tree_builder import CourseTreeBuilder
 
 _progress_bar_dictionary = {
     "normal": "#b1c2cc",
@@ -75,44 +78,59 @@ PROGRESS_BAR_COLORS = DottableDict(_progress_bar_dictionary)
 @login_required
 @check_user_course_access
 def course_landing_page(request, course_id):
-    '''
+    """
     Course landing page for user for specified course
     etc. from user settings
-    '''
+    """
     set_current_course_for_user(request, course_id)
+    feature_flags = CourseDataManager(course_id).get_feature_flags()
+    course_data_manager = CourseDataManager(course_id=course_id)
 
     learner_dashboard = get_learner_dashboard(request, course_id)
     if learner_dashboard:
         redirect_url = '/learnerdashboard/' + str(learner_dashboard.id)
         return HttpResponseRedirect(redirect_url)
 
-    course = standard_data(request).get("course", None)
-    proficiency = course_api.get_course_metrics_grades(
-        course_id, user_id=request.user.id, skipleaders=True, grade_object_type=Proficiency
-    )
-    load_lesson_estimated_time(course)
+    course_tree_builder = CourseTreeBuilder(course_id=course_id, request=request)
 
+    # if enhanced caching is enabled
+    if feature_flags.enhanced_caching:
+        # check if it's already in cache
+        course = course_data_manager.get_cached_data(COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT)
+
+        # if already cached then add-in just the dynamic part
+        if course is not None:
+            course = course_tree_builder.get_processed_course_dynamic_data(course=course)
+        else:
+            course = course_tree_builder.get_processed_course()
+    else:
+        course = course_tree_builder.get_processed_course()
+
+    # load scores for user
+    proficiency = course_api.get_course_metrics_grades(
+        course_id, user_id=request.user.id, skipleaders=True,
+        grade_object_type=Proficiency
+    )
     social = get_user_social_metrics(request.user.id, course_id)
-    # add in all the grading information
-    gradebook = inject_gradebook_info(request.user.id, course)
-    graded_items_count = sum(len(graded) for graded in course.graded_items().values())
+
+    graded_items_count = course_tree_builder.get_graded_items_count(course=course)
 
     data = {
         "user": request.user,
         "course": course,
-        "articles": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.ARTICLE).order_by('sequence')[:3],
-        "videos": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.VIDEO).order_by('sequence')[:3],
-        "tweet": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.TWEET).order_by('sequence').last(),
-        "quote": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.QUOTE).order_by('sequence').last(),
-        "infographic": CuratedContentItem.objects.filter(course_id=course_id, content_type=CuratedContentItem.IMAGE).order_by('sequence').last(),
         "proficiency": round_to_int(proficiency.user_grade_value * 100),
         "proficiency_graph": int(5 * round(proficiency.user_grade_value * 20)),
         "cohort_proficiency_average": proficiency.course_average_display,
         "cohort_proficiency_graph": int(5 * round(proficiency.course_average_value * 20)),
         "social": social,
+        "discover_flag": feature_flags.discover,
         "average_progress": average_progress(course, request.user.id),
         "graded_items_count": graded_items_count,
     }
+
+    if feature_flags.discover:
+        curated_content = CourseDataManager(course_id).get_curated_content_data()
+        data.update(curated_content)
 
     if 'username' in request.GET:
         mobile_popup_data = get_mobile_app_download_popup_data(request)
@@ -126,13 +144,8 @@ def get_learner_dashboard(request, course_id):
     learner_dashboard = None
 
     if settings.LEARNER_DASHBOARD_ENABLED:
-        try:
-            feature_flags = FeatureFlags.objects.get(course_id=course_id)
-            learner_dashboard_flag = feature_flags.learner_dashboard
-        except:
-            learner_dashboard_flag = None
-
-        if learner_dashboard_flag:
+        feature_flags = CourseDataManager(course_id).get_feature_flags()
+        if feature_flags.learner_dashboard:
             organizations = user_api.get_user_organizations(request.user.id)
             if len(organizations) > 0:
                 organization = organizations[0]
@@ -186,16 +199,15 @@ def course_cohort(request, course_id):
     if feature_flags and not feature_flags.cohort_map:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
-    proficiency = get_proficiency_leaders(course_id, request.user.id) if feature_flags \
-        and feature_flags.proficiency else None
-
-    completions = get_progress_leaders(course_id, request.user.id)
-
-    # Social (aka Engagement) section is retrieved/displayed only if
-    # both of `Discussions` and `Engagement` flags are enabled
-    social_metrics = get_social_leaders(
-        course_id, request.user.id
-    ) if feature_flags and (feature_flags.discussions and feature_flags.engagement) else None
+    try:
+        leaders = get_leaders(course_id=course_id, user_id=request.user.id, count=3)
+        completions = leaders.completions
+        proficiency = leaders.grades \
+            if feature_flags and feature_flags.proficiency else None
+        social_metrics = leaders.social \
+            if feature_flags and (feature_flags.discussions and feature_flags.engagement) else None
+    except ApiError:
+        completions = proficiency = social_metrics = None
 
     metrics = course_api.get_course_metrics(course_id, user_id=request.user.id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
@@ -578,7 +590,7 @@ def _course_progress_for_user(request, course_id, user_id):
 
     if progress_user.id != request.user.id:
         # Inject course progress for nav header
-        load_course_progress(course, username=progress_user.username)
+        load_course_progress(course, user_id=progress_user.id)
         # Add index to lesson
         for idx, lesson in enumerate(course.chapters, start=1):
             lesson.index = idx
@@ -589,15 +601,17 @@ def _course_progress_for_user(request, course_id, user_id):
 
 
 def _course_progress_for_user_v2(request, course_id, user_id):
-    feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
-    if feature_flags and not feature_flags.progress_page:
+    feature_flags = CourseDataManager(course_id).get_feature_flags()
+
+    if not feature_flags.progress_page:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     course = load_course(course_id, request=request)
     progress_user = user_api.get_user(user_id)
     social = get_user_social_metrics(user_id, course_id, include_stats=True)
     proficiency = course_api.get_course_metrics_grades(
-        course_id, user_id=user_id, skipleaders=True, grade_object_type=Proficiency
+        course_id, user_id=user_id, skipleaders=True,
+        grade_object_type=Proficiency
     )
     course.group_work_enabled = feature_flags.group_work if feature_flags else True
     course_run = load_static_tabs(course_id, name="course run")
@@ -611,8 +625,10 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
 
+    course_tree_builder = CourseTreeBuilder(course_id=course_id, request=request)
+    course_tree_builder.build_page_info(course)
     # add in progress info
-    load_course_progress(course, username=progress_user.username)
+    course_tree_builder.include_progress_data(course)
 
     graders = gradebook.grading_policy.GRADER
 
@@ -667,18 +683,13 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "total_replies": social["metrics"].num_replies + social["metrics"].num_comments,
         "course_run": course_run,
         'feature_flags': feature_flags,
+        'course': course,
     }
 
     if progress_user.id != request.user.id:
         # Add index to lesson
         for idx, lesson in enumerate(course.chapters, start=1):
             lesson.index = idx
-
-        data["course"] = course
-
-    # don't request progress in standard data retrieval
-    standard_data_features = DottableDict(STANDARD_DATA_FEATURES, course_progress=False)
-    setattr(request, 'standard_data_features', standard_data_features)
 
     return render(request, 'courses/course_progress_v2.haml', data)
 
@@ -761,27 +772,35 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
 
     return render(request, 'courses/course_resources_learner_dashboard.haml', data)
 
+
 @login_required
 @check_user_course_access
 def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type=None, tile_id=None, learner_dashboard_id=None):
-
-    ''' go to given page within given chapter within given course '''
+    """
+    go to given page within given chapter within given course
+    """
+    course_tree_builder = CourseTreeBuilder(course_id, request)
     course = load_course(course_id, request=request)
+    course_tree_builder.include_progress_data(course)
+
+    course_tree_builder.build_page_info(course=course)
+    right_lesson_module_navigator, left_lesson_module_navigator = course_tree_builder\
+        .get_module_navigators(course=course)
+
     current_sequential = course.get_current_sequential(chapter_id, page_id)
     if not current_sequential:
         raise Http404()
 
-    # Load the current program for this user
-    program = get_current_program_for_user(request)
-
     data = {
         "user": request.user,
-        "program": program,
         "lesson_content_parent_id": "course-lessons",
         "course_id": course_id,
         "legacy_course_id": course_id,
         "tile_type": tile_type,
         "tile_id": tile_id,
+        "course": course,
+        "right_lesson_module_navigator": right_lesson_module_navigator,
+        "left_lesson_module_navigator": left_lesson_module_navigator,
     }
     try:
         course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=course_id)
@@ -873,8 +892,11 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     If no chapter or course given, system tries to go to location within last
     visited course
     '''
+    user_data = UserDataManager(request.user.id).get_basic_user_data()
+    current_course = user_data.current_course
+
     if not course_id:
-        course_id = get_current_course_for_user(request)
+        course_id = current_course.id
 
     course_id, chapter_id, page_id = locate_chapter_page(
         request,
@@ -896,8 +918,11 @@ def infer_page_navigation(request, course_id, page_id):
     Go to the specified page
     If no course given, system tries to go to location within last visited course
     '''
+    user_data = UserDataManager(request.user.id).get_basic_user_data()
+    current_course = user_data.current_course
+
     if not course_id:
-        course_id = get_current_course_for_user(request)
+        course_id = current_course.id if current_course else None
 
     course = load_course(course_id, request=request)
     ta_grading_group = user_api.get_user_preferences(request.user.id).get("TA_REVIEW_WORKGROUP", None)
@@ -1162,10 +1187,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
     except:
         bookmark = None
 
-    try:
-        feature_flags = FeatureFlags.objects.get(course_id=learner_dashboard.course_id)
-    except:
-        feature_flags = []
+    feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
 
     data = {
         'learner_dashboard': learner_dashboard,
@@ -1215,6 +1237,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.progress_indication = request.POST.get('progress_indication', None) == 'on'
     feature_flags.lesson_label = request.POST.get('lesson_label', None) == 'on'
     feature_flags.leaderboard = request.POST.get('leaderboard', None) == 'on'
+    feature_flags.enhanced_caching = request.POST.get('enhanced_caching', None) == 'on'
     feature_flags.save()
 
     if request.POST.get('mobile_available', None) is not None:
@@ -1432,4 +1455,27 @@ def get_user_complete_gradebook_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
+
+
+@login_required
+def courses_menu(request):
+    """
+    renders user courses menu on click from frontend
+    """
+    programs = get_program_menu_list(request)
+    data = dict(programs=programs)
+    return render(request, 'courses/content_page/program_menu.haml', data)
+
+
+@login_required
+def course_lessons_menu(request, course_id):
+    """
+    Renders user course lessons menu
+    """
+    course = load_course(course_id, request=request)
+    course_tree_builder = CourseTreeBuilder(course_id=course_id, request=request)
+    course_tree_builder.build_page_info(course)
+    course_tree_builder.include_progress_data(course)
+
+    return render(request, 'courses/content_page/lesson_menu.haml', dict(course=course))
 

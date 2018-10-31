@@ -80,7 +80,7 @@ from .controller import (
     get_program_data_for_report, MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link,
     get_course_details_progress_data,
     get_course_engagement_summary, get_course_social_engagement,
-    get_user_courses_helper, import_participants_threaded, change_user_status, unenroll_participant,
+    get_user_courses_helper, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key,
     get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, get_ta_accessible_course_ids,
@@ -112,6 +112,7 @@ from .models import (
 )
 from .permissions import Permissions, PermissionSaveError
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
+from .tasks import import_participants_task
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 
 
@@ -2233,15 +2234,14 @@ class download_student_list_api(APIView):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def import_participants(request):
-
     if request.method == 'POST':  # If the form has been submitted...
         # A form bound to the POST data and FILE data
         form = MassStudentListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
-            reg_status = UserRegistrationBatch.create();
-            import_participants_threaded(
+            reg_status = UserRegistrationBatch.create()
+            import_participants_task.delay(
                 request.FILES['student_list'],
-                request,
+                request.user.is_internal_admin,
                 reg_status
             )
             return HttpResponse(
