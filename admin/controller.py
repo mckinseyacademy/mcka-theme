@@ -2036,7 +2036,7 @@ class CourseParticipantStats(object):
             course_participants = remove_specific_user_roles_of_other_companies(course_participants, int(organization_id))
         lesson_completions = self._get_lesson_completions(course_participants)
         course_completions = self._get_course_completions(course_participants)
-
+        self._prefetched_completions = None
         if self.participants_engagement_lookup is None:
             self.participants_engagement_lookup = self._get_engagement_scores()
 
@@ -2081,7 +2081,7 @@ class CourseParticipantStats(object):
             lesson-level completion data.
         """
         if self._prefetched_completions is None:
-            self._prefetched_completions = self._prefetch_completions()
+            self._prefetched_completions = self._prefetch_completions(course_participants)
         return self._prefetched_completions
 
     def _get_lesson_completions(self, course_participants):
@@ -2096,7 +2096,7 @@ class CourseParticipantStats(object):
         if 'lesson_completions' not in self.additional_fields:
             return None
         if self._prefetched_completions is None:
-            self._prefetched_completions = self._prefetch_completions()
+            self._prefetched_completions = self._prefetch_completions(course_participants)
 
         lesson_completions = {
             user['id']: self._prefetched_completions.get(user['username'])
@@ -2104,7 +2104,7 @@ class CourseParticipantStats(object):
         }
         return lesson_completions
 
-    def _prefetch_completions(self):
+    def _prefetch_completions(self, course_participants):
         """
         Retrieve completion data from the completion-aggregator api.
 
@@ -2118,6 +2118,8 @@ class CourseParticipantStats(object):
             self.course_id,
             extra_fields='chapter' if with_lessons else None,
             edx_oauth2_session=oauth2_session,
+            page_size=200,
+            user_ids=[user['id'] for user in course_participants['results']],
         )
 
     def _get_lesson_mapping(self, user):
