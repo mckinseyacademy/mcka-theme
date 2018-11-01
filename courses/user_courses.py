@@ -196,6 +196,10 @@ def standard_data(request):
     branding = None
     feature_flags = None
     organization_id = None
+    lesson_custom_label = None
+    lessons_custom_label = None
+    module_custom_label = None
+    modules_custom_label = None
 
     if request.user and request.user.id:
         user_data_manager = UserDataManager(user_id=request.user.id)
@@ -208,6 +212,7 @@ def standard_data(request):
 
         if course:
             feature_flags = CourseDataManager(course.id).get_feature_flags()
+            course_meta_data = CourseDataManager(course.id).get_course_meta_data()
 
             if course.ended:
                 if len(course.name) > 37:
@@ -215,6 +220,12 @@ def standard_data(request):
             else:
                 if len(course.name) > 57:
                     course.name = course.name[:57] + '...'
+
+            if course_meta_data:
+                lesson_custom_label = course_meta_data.lesson_label
+                lessons_custom_label = course_meta_data.lessons_label.get('zero')
+                module_custom_label = course_meta_data.module_label
+                modules_custom_label = course_meta_data.modules_label.get('zero')
 
         if organization:
             client_data_manager = OrgDataManager(org_id=organization.id)
@@ -236,6 +247,10 @@ def standard_data(request):
         "client_nav_links": client_nav_links,
         "branding": branding,
         "organization_id": organization_id,
+        "lesson_custom_label": lesson_custom_label,
+        "module_custom_label": module_custom_label,
+        "lessons_custom_label": lessons_custom_label,
+        "modules_custom_label": modules_custom_label,
     }
 
     return data

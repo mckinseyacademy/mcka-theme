@@ -4,7 +4,7 @@ from lib.utils import DottableDict
 from django.conf import settings
 
 from main.models import CuratedContentItem
-from courses.models import FeatureFlags
+from courses.models import FeatureFlags, CourseMetaData
 
 
 COURSE_PROPERTIES = DottableDict(
@@ -16,6 +16,7 @@ COURSE_PROPERTIES = DottableDict(
     LANGUAGE='language',
     PREFETCHED_COURSE_OBJECT='prefetched_course_object',
     GRADED_ITEMS_COUNT='graded_items_count',
+    COURSE_META_DATA='course_meta_data',
 )
 
 
@@ -61,6 +62,19 @@ class CourseDataManager(DataManager):
             data=feature_flags
         )
         return feature_flags
+
+    def get_course_meta_data(self):
+        course_meta_data = self.get_cached_data(property_name=COURSE_PROPERTIES.COURSE_META_DATA)
+        if course_meta_data is not None:
+            return course_meta_data
+
+        course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=self.course_id)
+
+        self.set_cached_data(
+            property_name=COURSE_PROPERTIES.COURSE_META_DATA,
+            data=course_meta_data
+        )
+        return course_meta_data
 
     def get_language(self, user_id):
         language = self.get_cached_data(property_name=COURSE_PROPERTIES.LANGUAGE)

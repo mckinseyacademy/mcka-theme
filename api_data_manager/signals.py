@@ -2,7 +2,7 @@ from django.dispatch import Signal, receiver
 from django.db.models.signals import post_save, post_delete
 
 from main.models import CuratedContentItem
-from courses.models import FeatureFlags
+from courses.models import FeatureFlags, CourseMetaData
 from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
 
 from .user_data import UserDataManager
@@ -42,3 +42,9 @@ def delete_curated_content_cache(sender, instance, **kwargs):
 def delete_feature_flags_cache(sender, instance, **kwargs):
     course_manager = CourseDataManager(instance.course_id)
     course_manager.delete_cached_data(COURSE_PROPERTIES.FEATURE_FLAG)
+
+
+@receiver(post_save, sender=CourseMetaData)
+def delete_course_meta_data_cache(sender, instance, **kwargs):
+    course_manager = CourseDataManager(instance.course_id)
+    course_manager.delete_cached_data(COURSE_PROPERTIES.COURSE_META_DATA)
