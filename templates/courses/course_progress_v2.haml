@@ -99,10 +99,10 @@
                             .lesson-item-name
                               - if module_custom_label
                                 %a{"href": "#{module.navigation_url}"}
-                                  #{module_custom_label} #{module.index}:
+                                  {% blocktrans with module.index as module_index %} {{module_custom_label}} {{module_index}}:{% endblocktrans %}
                               - else
                                 %a{"href": "#{module.navigation_url}"}
-                                  {% blocktrans with module.index as module_index %} {{module_custom_label}} {{module_index}}:{% endblocktrans %}
+                                  {% trans "Module" %} #{module.index}:
                               %span= module.name
                       .close-reveal-modal
                         %i.fa.fa-times-circle
