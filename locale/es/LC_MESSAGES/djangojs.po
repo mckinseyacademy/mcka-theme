@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-29 11:58+0000\n"
+"POT-Creation-Date: 2018-11-01 09:57+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -711,18 +711,22 @@ msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
 msgstr ""
+"Incluir el desglose del proceso para cada sesión (nota: exportar tomará más "
+"tiempo)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
 msgid "We'll e-mail you when your report is ready to download."
 msgstr ""
+"Le enviaremos un correo electrónico cuando el informe esté listo para "
+"descargarlo."
 
 #: static/js/views/admin/course_details_bulk_actions.js:476
 msgid "Exporting Stats for All Users"
-msgstr ""
+msgstr "Exportar estadísticas para todos los usuarios"
 
 #: static/js/views/admin/course_details_bulk_actions.js:477
 msgid "Export Report"
-msgstr ""
+msgstr "Exportar informe"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #, fuzzy
@@ -857,6 +861,8 @@ msgid "Lesson"
 msgstr "Lección"
 
 #: static/js/views/admin/manager_dashboard.js:99
+#, fuzzy
+#| msgid "Incomplete"
 msgid "complete"
 msgstr "Incompleto"
 
