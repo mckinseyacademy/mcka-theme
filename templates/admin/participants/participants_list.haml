@@ -8,6 +8,7 @@
         %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "{% trans 'Add New Participant' %}"}
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Enroll Existing Participants' %}", 'data-reveal-id': 'enroll_to_course_from_csv'}
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Import from CSV' %}", 'data-reveal-id': 'import_from_csv'}
+        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update profile data' %}", 'data-reveal-id': 'update_profile_data'}
         %input.button.small.radius.secondary.menuButton{:type => "button", :value => "{% trans 'CSV Template' %}", 'data-reveal-id': 'download_csv_template'}
       %hr
       #participantsSearchWrapper
@@ -167,7 +168,7 @@
 
         .emailActivationWrapper
             .emailActivationLinkCheckboxWrapper
-              %input.emailActivationCheckbox{:type => 'checkbox', :disabled => 'disabled', :id => 'emailActivationCheckboxId'} 
+              %input.emailActivationCheckbox{:type => 'checkbox', :disabled => 'disabled', :id => 'emailActivationCheckboxId'}
               %label.emailActivation{:for => 'emailActivationCheckboxId' }
                 {% trans "Email activation links now" %}
 
@@ -194,6 +195,9 @@
               {% trans "Cancel" %}
             %i.fa.fa-spin.fa-spinner{style: "display:none;"}
         #enroll-participants-error-list
+
+
+
 
     #confirmation_screen.reveal-modal.big{'data-reveal': '', 'data-task-key': '', 'data-uploaded': ''}
       .close-reveal-modal
@@ -233,3 +237,33 @@
       .button-wrapper.topPadding
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"}
           {% trans "I'm Done" %}
+
+
+  #update_profile_data.reveal-modal.medium{'data-reveal': ''}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2 {% trans "Update organization fields of participants from CSV" %}
+    %hr
+    .bottomPadding
+      %a#companyFieldUpdateDownload{:href => "#", 'download': 'template.csv'}
+        {% trans "CSV Template" %}
+    .admin-form{style: "padding-bottom:0px;"}
+
+      %form{action: "/admin/api/participants/update_company_fields_from_csv$", method: "POST", enctype: "multipart/form-data", :class => "fileInputCompanyField"}
+        - csrf_token
+        = form_company_fields
+
+      %form{action: "/admin/api/participants/update_company_fields_from_csv$", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsProfileUpdate'}
+        - csrf_token
+
+      .upload_stats
+      .button-wrapper.topPadding{style: "padding-top:10px;padding-bottom:10px;position:relative;"}
+        %input.button.radius.small{type: "submit", value: "{% trans 'Add Participants' %}", id: 'submitCompanyFieldsUpdate'}
+        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+          {% trans "Cancel" %}
+        %i.fa.fa-spin.fa-spinner{style: "display:none;"}
+
+  #participantUpdateStatus.reveal-modal.small{"data-reveal": ""}
+    %p.mainText
+    %a.close-reveal-modal#closeParticipantUpdateStatus{"aria-label": "Close"}
+      &#215;

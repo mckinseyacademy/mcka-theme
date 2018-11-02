@@ -129,3 +129,9 @@ def get_user_by_email(email):
     }
     users = get_filtered_users(query_params)['results']
     return users[0] if users else None
+
+
+def get_organization_by_user_email(user_email):
+    organization_user = get_user_by_email(user_email)
+    organization_id = organization_user['organizations'][0]['id']
+    return organization_id

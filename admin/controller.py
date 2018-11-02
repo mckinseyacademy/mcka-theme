@@ -354,6 +354,17 @@ def _process_line_proposed(user_line):
     return user_info
 
 
+def parse_company_field_csv(file_stream):
+    with tempfile.TemporaryFile() as temp_file:
+        for chunk in file_stream.chunks():
+            temp_file.write(chunk)
+
+        temp_file.seek(0)
+
+        user_records = [user_line.strip().split(',') for user_line in temp_file.read().splitlines()]
+        return user_records
+
+
 def build_student_list_from_file(file_stream, parse_method=_process_line):
     # Don't need to read into a temporary file if small enough
     with tempfile.TemporaryFile() as temp_file:
@@ -1520,6 +1531,12 @@ def get_user_courses_helper(user_id, request):
 
     return active_courses, course_history
 
+def update_company_field_threaded(student_list, request, reg_status):
+    # _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
+    # _thread.daemon = True  # so we can exit
+    # _thread.start()
+    users = build_student_list_from_file(student_list)
+
 
 def enroll_participants_threaded(student_list, request, reg_status):
     _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
@@ -2653,5 +2670,44 @@ def update_user_company_fields_value(user_id, values):
     else:
         organization_id = values.get('company')
         fields = get_organization_fields(organization_id)
-        fields = [(field['key'], values.get(field['key'])) for field in fields if values.get(field['key'])]
-        update_user_company_field_values(user_id, organization_id, fields)
+        fields_keys = ','.join([field['key'] for field in fields if values.get(field['key'])])
+        field_values = ','.join([values.get(field['key']) for field in fields if values.get(field['key'])])
+        update_user_company_field_values(user_id, organization_id, fields_keys, field_values)
+
+
+def update_company_field_for_users(user_list, fields_key, organization_id):
+    errors = []
+    fields_key = ','.join(fields_key)
+    records_count = 0
+    for record in user_list:
+        email = record[0]
+        fields_value = ','.join(record[1:])
+        user = get_user_by_email(email)
+        if user:
+            response = update_user_company_field_values(
+                user_id=user.get('id'),
+                organization_id=organization_id,
+                fields_key=fields_key,
+                fields_value=fields_value
+            )
+            if response.code == status.HTTP_200_OK:
+                records_count += 1
+            else:
+                errors.append(_('user {} is not updated'.format(email)))
+        else:
+            errors.append(_('user {} doesn\'t exists'.format(email)))
+    return records_count, errors
+
+
+def validate_company_field(csv_fields, organization_id):
+    errors, csv_keys = [],[]
+    org_fields_labels = {}
+    org_fields = get_organization_fields(organization_id)
+    for field in org_fields:
+        org_fields_labels[field['label']] = field['key']
+    for csv_field in csv_fields:
+        if csv_field in org_fields_labels:
+            csv_keys.append(org_fields_labels[csv_field])
+        else:
+            errors.append(_('Field {} does not match with organization fields'.format(csv_field)))
+    return csv_keys, errors

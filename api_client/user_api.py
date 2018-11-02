@@ -887,24 +887,19 @@ def get_company_fields_value_for_user(user_id, organization_id, fields):
 
 
 @api_error_protect
-def update_user_company_field_values(user_id, organization_id, fields):
-
-    edx_oauth2_session = get_oauth2_session()
-
-    url = '{}/{}/{}/attributes/'.format(
-        settings.API_SERVER_ADDRESS,
-        USER_API,
-        user_id,
+def update_user_company_field_values(user_id, organization_id, fields_key, fields_value):
+    """ Update user's company custom fields value"""
+    fields_data = {
+        'organization_id':organization_id,
+        'attribute_keys': fields_key,
+        'attribute_values': fields_value
+    }
+    response = POST(
+        '{}/{}/{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            user_id,
+        ),
+        fields_data
     )
-
-    for key, value in fields:
-        data = {
-            'organization_id': organization_id,
-            'key': key,
-            'value': value,
-        }
-        response = edx_oauth2_session.put(url=url, data=data)
-        if response.status_code == status.HTTP_404_NOT_FOUND:
-            # Send post id entry doesn't exist against field
-            response = edx_oauth2_session.post(url=url, data=data)
-
+    return response

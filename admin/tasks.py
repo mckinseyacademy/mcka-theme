@@ -9,6 +9,8 @@ from urlparse import urljoin
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from django.core.serializers import json
+from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -18,6 +20,7 @@ from celery.utils.log import get_task_logger
 from celery import states as celery_states
 from celery.exceptions import Ignore, MaxRetriesExceededError, Reject
 
+from accounts.helpers import get_organization_by_user_email
 from api_client import course_api
 from api_client import group_api
 from api_client import user_api
@@ -29,7 +32,8 @@ from .controller import _enroll_participants, _process_line_register_participant
 from .models import UserRegistrationError
 
 
-from .controller import CourseParticipantStats
+from .controller import CourseParticipantStats, parse_company_field_csv, validate_company_field, \
+    update_company_field_for_users
 
 logger = get_task_logger(__name__)
 
@@ -254,6 +258,30 @@ def course_participants_data_retrieval_task(
     return download_url
 
 
+def send_bulk_company_fields_update_email(
+        user_id, total_records, record_count, errors, base_url
+):
+    """ Send report of bulk company fields update on user's email """
+    subject = _('Report for bulk company fields update')
+    template = 'admin/bulk_company_fields_update_report_email.haml'
+    user_detail = user_api.get_user(user_id).to_dict()
+    mcka_logo = urljoin(
+        base=base_url,
+        url='/static/image/mcka_email_logo.png'
+    )
+
+    send_html_email(
+        subject=subject,
+        to_emails=[user_detail.get('email')], template_name=template,
+        template_data={
+            'first_name': user_detail.get('first_name'), 'total_records': total_records,
+            'success_count': record_count, 'failed_count': (total_records-record_count),
+            'errors': errors, 'support_email': settings.MCKA_SUPPORT_EMAIL,
+            'mcka_logo_url': mcka_logo,
+        }
+    )
+
+
 def send_export_stats_status_email(
         user_id, course_id, report_name, base_url,
         download_url, report_succeeded=True,
@@ -470,3 +498,30 @@ def import_participants_task(file_stream, is_internal_admin, registration_batch)
     # Run queued up jobs.
     for thread in threads:
         thread.get()
+
+
+@task(name='admin.user_company_fields_update_task', queue='high_priority')
+def user_company_fields_update_task(user_id, users_records, base_url):
+    task_log_msg = 'Updating company field\'s data for user from csv'
+    record_count = 0
+    errors = []
+    logger.info('Starting - {}'.format(task_log_msg))
+    try:
+        total_records = len(users_records) - 1
+        organization_id = get_organization_by_user_email(users_records[1][0])
+        org_fields_csv = users_records[0][1:]
+    except (TypeError, IndexError):
+        errors.append(_('File is not formatted properly. Please format according to given template.'))
+        send_bulk_company_fields_update_email(user_id, total_records, record_count, errors, base_url)
+        return
+
+    csv_keys, errors = validate_company_field(org_fields_csv, organization_id)
+    users_records = users_records[1:]
+    if errors:
+        send_bulk_company_fields_update_email(user_id, total_records, record_count, errors, base_url)
+        return
+    else:
+        record_count, errors = update_company_field_for_users(users_records, csv_keys, organization_id)
+    send_bulk_company_fields_update_email(user_id, total_records, record_count, errors, base_url)
+    logger.info('Successfully finishing - {}'.format(task_log_msg))
+    return

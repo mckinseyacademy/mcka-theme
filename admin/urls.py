@@ -170,6 +170,7 @@ urlpatterns += [
     url(r'^api/participants/import_participants$', views.import_participants, name='import_participants'),
     url(r'^api/participants/enroll_participants_from_csv/check/(?P<task_key>.*)$', views.import_participants_check, name='import_participants_check'),
     url(r'^api/participants/enroll_participants_from_csv$', views.enroll_participants_from_csv, name='enroll_participants_from_csv'),
+    url(r'^api/participants/update_company_fields_from_csv', views.update_company_field_from_csv, name='update_company_fields_from_csv$'),
     url(r'^api/participants$', views.ParticipantsListApi.as_view(), name='participants_list_api'),
     url(r'^participants/(?P<user_id>[0-9]+)/courses/(?P<course_id>.*)/unenroll$', views.participant_details_courses_unenroll_api.as_view(), name='participant_details_courses_unenroll_api'),
     url(r'^participants/(?P<user_id>[0-9]+)/courses/(?P<course_id>.*)/edit_status$', views.participant_details_course_edit_status_api.as_view(), name='participant_details_course_edit_status_api'),

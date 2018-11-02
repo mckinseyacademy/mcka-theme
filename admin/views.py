@@ -37,12 +37,14 @@ from rest_framework.views import APIView
 
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, \
     _set_number_of_enrolled_users
+from accounts.helpers import get_organization_by_user_email
 from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
-    process_manager_email
+    process_manager_email, parse_company_field_csv, update_company_field_for_users, validate_company_field
+from admin.tasks import user_company_fields_update_task
 from api_client import course_api, user_api, manager_api, group_api, workgroup_api, organization_api, mobileapp_api, cohort_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
@@ -95,7 +97,7 @@ from .forms import (
     MassParticipantsEnrollListForm,
     EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm,
     LearnerDashboardTileForm,
-    CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm)
+    CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm, MassCompanyFieldsUpdateForm)
 from .helpers.permissions_helpers import (
     AccessChecker, InternalAdminCoursePermission, InternalAdminUserPermission,
     CompanyAdminCompanyPermission, CompanyAdminUserPermission, CompanyAdminCoursePermission,
@@ -2233,6 +2235,27 @@ class download_student_list_api(APIView):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@require_POST
+def update_company_field_from_csv(request):
+    form = MassCompanyFieldsUpdateForm(request.POST, request.FILES)
+    if form.is_valid():
+        base_url = request.build_absolute_uri('/')
+        users_records = parse_company_field_csv(request.FILES['student_field_list'])
+        user_company_fields_update_task.delay(request.user.id, users_records, base_url)
+        return HttpResponse(
+            json.dumps({'success': True}),
+            content_type='application/json'
+        )
+    else:
+        HttpResponse(
+            json.dumps({'success': False}),
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content_type='application/json'
+        )
+
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def import_participants(request):
     if request.method == 'POST':  # If the form has been submitted...
         # A form bound to the POST data and FILE data
@@ -3519,11 +3542,13 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 def participants_list(request):
     form = MassStudentListForm()
     form_enroll = MassParticipantsEnrollListForm()
+    form_company_fields = MassCompanyFieldsUpdateForm()
     internal_admin_flag = request.user.is_internal_admin
 
     data = {
         'form': form,
         'form_enroll': form_enroll,
+        'form_company_fields': form_company_fields,
         'internalAdminFlag': internal_admin_flag
     }
     return render( request, 'admin/participants/participants_list.haml', data)

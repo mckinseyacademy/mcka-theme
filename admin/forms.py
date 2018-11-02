@@ -87,6 +87,12 @@ class MassParticipantsEnrollListForm(forms.Form):
 
     ''' form to upload file for student list '''
     student_enroll_list = forms.FileField(help_text="ParticipantsCourseList.csv")
+    
+
+class MassCompanyFieldsUpdateForm(forms.Form):
+    """ form to upload file for student list for updating company fields """
+    student_field_list = forms.FileField()
+
 
 class ProgramAssociationForm(forms.Form):
 

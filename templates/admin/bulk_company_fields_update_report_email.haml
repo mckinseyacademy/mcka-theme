@@ -1,0 +1,37 @@
+- extends "base_email_template.haml"
+- load i18n
+
+- block logo
+  %img{:alt => "MCKA-logo", :src => "{{mcka_logo_url}}", :style => "max-width: 185px;", :width => "185"}
+
+- block greetings
+  #{first_name},
+
+- block body
+  %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
+    {% blocktrans %} The report of bulk company fields update: {% endblocktrans %}
+  %p{:style => "line-height: 22px;font-size: 15px;margin-top: 20px;color: #333333;"}
+    {% blocktrans %} Total: {{ total_records }} {% endblocktrans %}
+    %br
+    {% blocktrans %}Succeeded: {{ success_count }} {% endblocktrans %}
+    %br
+    {% blocktrans %}Failed: {{ failed_count }} {% endblocktrans %}
+
+  - if errors
+    %ul
+    {% trans "Errors:" %}
+      - for error in errors
+        %li #{error}
+
+- block closing
+  %p{:style => "line-height: 22px;color: #333333;"}
+    {% trans "Best Regards," %}
+    %br
+    McKinsey Academy Team
+
+- block footer
+  %p{:style => "line-height: 22px;margin-bottom: 0;color: #333333;"}
+    {% trans "Contact" %}
+      %a{:href => "mailto:{{support_email}}", :style => "text-decoration: none;color: #004fa4;"}
+        #{support_email}
+    {% trans "if you have any questions" %}
