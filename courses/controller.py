@@ -821,6 +821,7 @@ def set_user_course_progress(course, completions, chapter_id=None):
                         'vertical',
                         module.id,
                     )
+                    module.is_complete = module.progress == 100
 
 def get_course_object(user_id, course_id):
 
