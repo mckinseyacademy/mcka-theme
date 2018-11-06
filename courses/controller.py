@@ -711,8 +711,11 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
 
     tiles = LearnerDashboardTile.objects.filter(link__icontains=course.id)
 
-    completions = course_api.get_course_completions(course.id, request.user.username)
-
+    if chapter_id:
+        kwargs = {'root_block': chapter_id}
+    else:
+        kwargs = {}
+    completions = course_api.get_course_completions(course.id, request.user.username, **kwargs)
     if completions and tiles:
         for tile in tiles:
             link = strip_tile_link(tile.link)

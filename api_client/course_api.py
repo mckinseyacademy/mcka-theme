@@ -451,6 +451,7 @@ def get_course_completions(
         extra_fields='all',
         edx_oauth2_session=None,
         user_ids=None,
+        root_block=None,
 ):
     ''' fetch course module completion list '''
     api_params = {
@@ -467,6 +468,8 @@ def get_course_completions(
 
     if user_ids:
         api_params['user_ids'] = ','.join([str(user_id) for user_id in user_ids])
+    if root_block:
+        api_params['root_block'] = root_block
 
     course_path = ''
     if course_id is not None:
