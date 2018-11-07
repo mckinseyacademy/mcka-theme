@@ -37,7 +37,12 @@
                             {{language_name}}
                         - else
                           %a{href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
-                            {{language_name}}
+                            -if language_code == 'en' or language_code == 'nl'
+                              - get_language_info for language_code as lang
+                              {{lang.name}}
+                            -else
+                              {{language_name}}
+
 
       %input#mobile-menu-toggle{type: 'checkbox'}
       - block header_menu

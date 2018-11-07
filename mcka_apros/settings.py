@@ -143,10 +143,10 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
-    ('en', u'English '),
+    ('en', u'English'),
     ('ar', u'العربية'),  # Arabic
     ('es', u'Español'),
-    ('nl', u'Dutch '),
+    ('nl', u'Dutch'),
     ('pt', u'Português'),
     ('zh', u'中文(简体)'),
     ('fr', u'Français'),
