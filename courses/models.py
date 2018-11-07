@@ -39,6 +39,27 @@ class LessonNotesItem(db_models.Model):
         )
 
 
+class FeatureFlagsManager(db_models.Manager):
+    """
+    There are multiple entries being created of FeatureFlags against one course randomly.
+     So these methods are being used to return the first entry of FeatureFlags if there are multiple entries or
+     create new try if there is no entry.
+    """
+    def get(self, **obj_data):
+
+        try:
+            return super(FeatureFlagsManager, FeatureFlags.objects).get(course_id=obj_data['course_id'])
+        except FeatureFlags.MultipleObjectsReturned:
+            return FeatureFlags.objects.filter(course_id=obj_data['course_id']).first()
+
+    def get_or_create(self, **obj_data):
+
+        try:
+            return super(FeatureFlagsManager, FeatureFlags.objects).get_or_create(course_id=obj_data['course_id'])
+        except FeatureFlags.MultipleObjectsReturned:
+            return FeatureFlags.objects.filter(course_id=obj_data['course_id']).first(), False
+
+
 class FeatureFlags(db_models.Model):
     course_id = db_models.CharField(max_length=200, unique=False, db_index=True)
     group_work = db_models.BooleanField(default=True)
@@ -84,6 +105,7 @@ class FeatureFlags(db_models.Model):
             engagement=self.engagement,
             discover=self.discover,
         )
+    objects = FeatureFlagsManager()
 
 
 class CourseMetaData(db_models.Model):
