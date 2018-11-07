@@ -567,6 +567,7 @@ class LearnerDashboardTile(db_models.Model):
     show_in_calendar = db_models.BooleanField(default=False)
     show_in_dashboard = db_models.BooleanField(default=True)
     track_progress = db_models.BooleanField(default=True)
+    hidden_from_learners = db_models.BooleanField(default=False)
 
     start_date = db_models.DateTimeField(null=True, blank=True)
     end_date = db_models.DateTimeField(null=True, blank=True)

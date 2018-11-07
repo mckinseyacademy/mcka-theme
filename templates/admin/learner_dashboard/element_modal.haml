@@ -32,6 +32,14 @@
 
   .row
     .small-3.columns
+    .small-9.columns= form.hidden_from_learners.errors
+  .row
+    .small-3.columns= "Hide from learners:"
+    .small-9.columns= form.hidden_from_learners
+  %br
+
+  .row
+    .small-3.columns
     .small-9.columns= form.publish_date.errors
   .row
     .small-3.columns= "Access date:"

@@ -374,6 +374,7 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'end_date',
             'show_in_calendar',
             'show_in_dashboard',
+            'hidden_from_learners',
             'fa_icon',
             'row'
         ]

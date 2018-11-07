@@ -1165,7 +1165,6 @@ def course_article(request, course_id):
 
 @login_required
 def course_learner_dashboard(request, learner_dashboard_id):
-
     if settings.LEARNER_DASHBOARD_ENABLED:
         try:
             learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
@@ -1177,8 +1176,19 @@ def course_learner_dashboard(request, learner_dashboard_id):
 
     check_course_shell_access(request, learner_dashboard.course_id)
 
-    learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_dashboard=True).order_by('position')
-    discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by('position')
+    # Filter tiles on the basis of user role. Hide Staff only tiles for learners
+    roles = request.user.get_roles_on_course(learner_dashboard.course_id)
+    is_staff = 'staff' in [role.role for role in roles]
+    if is_staff and request.user.is_mcka_admin:
+        learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id,
+                                                                      show_in_dashboard=True).order_by('position')
+    else:
+        learner_dashboard_tiles = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id,
+                                                                      show_in_dashboard=True,
+                                                                      hidden_from_learners=False).order_by('position')
+
+    discovery_items = LearnerDashboardDiscovery.objects.filter(learner_dashboard=learner_dashboard.id).order_by(
+        'position')
 
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard.id, show_in_calendar=True)
 
