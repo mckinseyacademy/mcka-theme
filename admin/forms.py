@@ -94,6 +94,11 @@ class MassCompanyFieldsUpdateForm(forms.Form):
     student_field_list = forms.FileField()
 
 
+class MassManagerDataUpdateForm(forms.Form):
+    """ form to upload file for updating manager for users """
+    student_manager_list = forms.FileField()
+
+
 class ProgramAssociationForm(forms.Form):
 
     ''' form to select program to add to client '''

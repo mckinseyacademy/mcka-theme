@@ -28,11 +28,11 @@ from api_client.api_error import ApiError
 from util.csv_helpers import CSVWriter
 from util.s3_helpers import PrivateMediaStorageThroughApros
 from util.email_helpers import send_html_email
-from .controller import _enroll_participants, _process_line_register_participants_csv, build_student_list_from_file
+from .controller import _enroll_participants, _process_line_register_participants_csv, build_student_list_from_file, create_update_delete_manager, validate_participant_and_manager_records
 from .models import UserRegistrationError
 
 
-from .controller import CourseParticipantStats, parse_company_field_csv, validate_company_field, \
+from .controller import CourseParticipantStats, validate_company_field, \
     update_company_field_for_users
 
 logger = get_task_logger(__name__)
@@ -258,12 +258,12 @@ def course_participants_data_retrieval_task(
     return download_url
 
 
-def send_bulk_company_fields_update_email(
+def send_bulk_fields_update_email(
         user_id, total_records, record_count, errors, base_url
 ):
     """ Send report of bulk company fields update on user's email """
-    subject = _('Report for bulk company fields update')
-    template = 'admin/bulk_company_fields_update_report_email.haml'
+    subject = _('Report for bulk update')
+    template = 'admin/bulk_fields_update_report_email.haml'
     user_detail = user_api.get_user(user_id).to_dict()
     mcka_logo = urljoin(
         base=base_url,
@@ -512,16 +512,39 @@ def user_company_fields_update_task(user_id, users_records, base_url):
         org_fields_csv = users_records[0][1:]
     except (TypeError, IndexError):
         errors.append(_('File is not formatted properly. Please format according to given template.'))
-        send_bulk_company_fields_update_email(user_id, total_records, record_count, errors, base_url)
+        send_bulk_fields_update_email(user_id, total_records, record_count, errors, base_url)
         return
 
     csv_keys, errors = validate_company_field(org_fields_csv, organization_id)
     users_records = users_records[1:]
     if errors:
-        send_bulk_company_fields_update_email(user_id, total_records, record_count, errors, base_url)
+        send_bulk_fields_update_email(user_id, total_records, record_count, errors, base_url)
         return
     else:
         record_count, errors = update_company_field_for_users(users_records, csv_keys, organization_id)
-    send_bulk_company_fields_update_email(user_id, total_records, record_count, errors, base_url)
+    send_bulk_fields_update_email(user_id, total_records, record_count, errors, base_url)
     logger.info('Successfully finishing - {}'.format(task_log_msg))
     return
+
+
+@task(name='admin.user_manager_update_task', queue='high_priority')
+def bulk_user_manager_update_task(user_id, users_records, base_url):
+    task_log_msg = 'Updating manager data for user from csv'
+    record_count = 0
+    errors = []
+    logger.info('Starting - {}'.format(task_log_msg))
+    total_records = len(users_records) - 1
+    validated_records, errors = validate_participant_and_manager_records(users_records)
+    if validated_records:
+        for participant, manager in validated_records:
+            try:
+                create_update_delete_manager(
+                    user_id=manager.get('id'),
+                    manager_email=manager.get('email'),
+                    username=participant.get('username')
+                )
+                record_count += 1
+            except ApiError:
+                errors.append(_("User with email {} and manager with email {} was unsuccessfull.")
+                              .format(participant.get('email'), manager.get('email')))
+    send_bulk_fields_update_email(user_id, total_records, record_count, errors, base_url)

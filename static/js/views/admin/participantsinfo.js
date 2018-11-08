@@ -3,6 +3,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
     massParticipantsInit();
     massParticipantsEnrollInit();
     massParticipantsProfileUpdateInit();
+    massParticipantsManagerUpdateInit();
     this.renderAddSingleUser();
     },
     render: function(){

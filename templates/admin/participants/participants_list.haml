@@ -9,6 +9,7 @@
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Enroll Existing Participants' %}", 'data-reveal-id': 'enroll_to_course_from_csv'}
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Import from CSV' %}", 'data-reveal-id': 'import_from_csv'}
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update profile data' %}", 'data-reveal-id': 'update_profile_data'}
+        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update manager data' %}", 'data-reveal-id': 'update_manager_data'}
         %input.button.small.radius.secondary.menuButton{:type => "button", :value => "{% trans 'CSV Template' %}", 'data-reveal-id': 'download_csv_template'}
       %hr
       #participantsSearchWrapper
@@ -237,6 +238,30 @@
       .button-wrapper.topPadding
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"}
           {% trans "I'm Done" %}
+
+  #update_manager_data.reveal-modal.medium{'data-reveal': ''}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2 {% trans "Update manager info of participants from CSV" %}
+    %hr
+    .bottomPadding
+      %a#managerUpdateDownload{:href => "#", 'download': 'template.csv'}
+        {% trans "CSV Template" %}
+    .admin-form{style: "padding-bottom:0px;"}
+
+      %form{action: "/admin/api/participants/update_manager_from_csv$", method: "POST", enctype: "multipart/form-data", :class => "fileInputManager"}
+        - csrf_token
+        = form_manager_update
+
+      %form{action: "/admin/api/participants/update_manager_from_csv$", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsManagerUpdate'}
+        - csrf_token
+
+      .upload_stats
+      .button-wrapper.topPadding{style: "padding-top:10px;padding-bottom:10px;position:relative;"}
+        %input.button.radius.small{type: "submit", value: "{% trans 'Add Participants' %}", id: 'submitManagerUpdate'}
+        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+          {% trans "Cancel" %}
+        %i.fa.fa-spin.fa-spinner{style: "display:none;"}
 
 
   #update_profile_data.reveal-modal.medium{'data-reveal': ''}

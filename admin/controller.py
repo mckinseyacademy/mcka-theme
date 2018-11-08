@@ -354,7 +354,7 @@ def _process_line_proposed(user_line):
     return user_info
 
 
-def parse_company_field_csv(file_stream):
+def parse_participant_profile_csv(file_stream):
     with tempfile.TemporaryFile() as temp_file:
         for chunk in file_stream.chunks():
             temp_file.write(chunk)
@@ -2711,3 +2711,59 @@ def validate_company_field(csv_fields, organization_id):
         else:
             errors.append(_('Field {} does not match with organization fields'.format(csv_field)))
     return csv_keys, errors
+
+
+def validate_participant_and_manager_records(user_records):
+
+    error = validate_manager_csv(user_records[0])
+    if error:
+        return False, [error]
+    errors = []
+    validated_records = []
+
+    user_records = user_records[1:]
+    for participant_email, manager_email in user_records:
+
+        participant, manager, result = validate_participant_manager_email(participant_email, manager_email)
+        if result is None:
+            participant_org = participant['organizations'][0]['id']
+            manager_org = manager['organizations'][0]['id']
+            if participant_org != manager_org:
+                errors.append(_("Participant with email {} and "
+                                "manager with email {} doesn't belong "
+                                "to a same organization")
+                              .format(participant_email, manager_email))
+            else:
+                validated_records.append((participant, manager))
+        else:
+            errors += result
+    return validated_records, errors
+
+
+def validate_manager_csv(csv_meta):
+    try:
+        if csv_meta[0] != "Learner email" or csv_meta[1] != "Manager email":
+            raise TypeError
+    except (TypeError, IndexError):
+        error = _('File is not formatted properly. Please format according to given template.')
+        return error
+    return None
+
+
+def validate_participant_manager_email(participant_email, manager_email):
+    errors = []
+    if participant_email and manager_email:
+        participant = get_user_by_email(participant_email)
+        manager = get_user_by_email(manager_email)
+        if participant and manager:
+            return participant, manager, None
+        if not participant:
+            errors.append(_("User with email {} doesn't exists").format(participant_email))
+        if not manager:
+            errors.append(_("User with email {} doesn't exists").format(manager_email))
+    else:
+        errors.append(_("User and manager email cannot be empty"))
+    return None, None, errors
+
+
+
