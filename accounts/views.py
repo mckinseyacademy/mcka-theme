@@ -68,6 +68,7 @@ import logout as logout_handler
 from django.contrib.auth.views import password_reset_done, password_reset_complete
 from django.core.urlresolvers import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
+from rest_framework import status
 
 log = logging.getLogger(__name__)
 
@@ -1199,6 +1200,25 @@ def access_key(request, code):
     }
 
     return render(request, template, data)
+
+
+def get_access_key(request, access_key_code):
+    try:
+        access_key = AccessKey.objects.get(code=access_key_code)
+    except AccessKey.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        customization = ClientCustomization.objects.get(client_id=access_key.client_id)
+    except ClientCustomization.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+    data = {
+        "provider_id": customization.identity_provider,
+        "course_id": access_key.course_id,
+        "organization_id": access_key.client_id,
+    }
+    return JsonResponse(data)
 
 
 def demo_registration(request, course_run_name):
