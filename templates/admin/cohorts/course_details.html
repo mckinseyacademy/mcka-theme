@@ -45,7 +45,7 @@
 
     <script type="text/template" id="cohortsTemplate">
         <div class='cohortDetailsNavigationButton'>
-            <a href='{% url 'course_details' id %}' target='_self'>< {% trans "Back to Course List" %}</a>
+            <a href='{% url 'course_details' id %}' target='_self'>< {% trans "Back to Course page" %}</a>
             <% if (enabled) { %>
             <button id="addCohortBtn" data-reveal-id="create_cohort" class="right button small radius menuButton">
                 <i class="fa fa-plus"></i> {% trans 'Add Cohort' %}
@@ -89,6 +89,48 @@
                     <% } %>
                 </div>
                 <hr/>
+                <% } else { %>
+                {% blocktrans %}
+                    <strong>To use cohorts within your course, click Enable Cohorts:</strong>
+                    <ul>
+                        <li>
+                            Each course has a &lt;default_cohort&gt; in which all learners are
+                            automatically assigned.
+                        </li>
+                        <li>
+                            Additional cohorts can be added and should follow the naming/numbering
+                            format of &lt;cohort#&gt;
+                        </li>
+                        <li>
+                            Learners can safely move between cohorts before a course starts, but
+                            not afterwards.
+                        </li>
+                        <li>
+                            New learners not yet enrolled in the course can be preassigned to a
+                            cohort.
+                        </li>
+                        <li>
+                            Progress indicators are averaged by cohort.
+                        </li>
+                        <li>
+                            Courses with Discussions are divided by cohort, but each shares the
+                            same topics course-wide.
+                        </li>
+                        <li>
+                            Moderators can view, post/reply to Discussions per cohort.
+                        </li>
+                        <li>
+                            Progress Report export will include cohort column and value of each
+                            learner, when enabled in course.
+                        </li>
+                        <li>
+                            Cohorts should not be used with Group Work.
+                        </li>
+                        <li>
+                            Cohorts cannot be deleted, only renamed.
+                        </li>
+                    </ul>
+                {% endblocktrans %}
                 <% } %>
             </div>
         </div>
