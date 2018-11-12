@@ -4,6 +4,9 @@ from django.utils.translation import ugettext_lazy as _
 class CuratedContentItem(models.Model):
     class Meta:
         db_table = 'curated_content_item'
+        index_together = [
+            ('course_id', 'content_type')
+        ]
 
     course_id = models.CharField(max_length=255, null=False)
     title = models.CharField(max_length=255, blank=True, default='')
@@ -15,7 +18,7 @@ class CuratedContentItem(models.Model):
     thumbnail_url = models.URLField(blank=True, null=True)
     image_url = models.URLField(blank=True, null=True)
     twitter_username = models.CharField(max_length=255, blank=True, null=True)
-    sequence = models.IntegerField(null=False)
+    sequence = models.IntegerField(null=False, db_index=True)
     created_at = models.DateTimeField(null=True, blank=True)
     display_date = models.DateTimeField(null=True, blank=True)
 

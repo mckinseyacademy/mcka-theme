@@ -8,15 +8,20 @@ from django.template import loader
 from django.utils.http import urlquote
 
 from api_client import user_api, group_api
+from api_data_manager.common_data import CommonDataManager, COMMON_DATA_PROPERTIES
 
 
 def permission_groups_map():
     ''' Loads and caches group names and ids via the edX platform '''
-    permission_groups_map = cache.get('permission_groups_map', None)
+    common_data_manager = CommonDataManager()
+    permission_groups_map = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.PERMISSION_GROUPS)
+
     if permission_groups_map is None:
         permission_groups = group_api.get_groups_of_type('permission')
         permission_groups_map = {permission_group.name: permission_group.id for permission_group in permission_groups}
-        cache.set('permission_groups_map', permission_groups_map)
+
+        common_data_manager.set_cached_data(COMMON_DATA_PROPERTIES.PERMISSION_GROUPS, permission_groups_map)
+
     return permission_groups_map
 
 

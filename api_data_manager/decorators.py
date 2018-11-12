@@ -24,6 +24,17 @@ def user_api_cache_wrapper(parse_method, property_name, parse_object=None, post_
             cache_identifiers = []
             skip_caching = False
 
+            if data_property in (USER_PROPERTIES.USER_COURSE_DETAIL, USER_PROPERTIES.USER_COURSE_WORKGROUPS):
+                try:
+                    course_id = args[1]
+                except IndexError:
+                    course_id = kwargs.get('course_id')
+
+                if not course_id:
+                    raise ValueError(_('Course Id is not passed'))
+
+                cache_identifiers.append(course_id)
+
             if data_property == USER_PROPERTIES.GROUPS:
                 group_type = kwargs.get('group_type')
                 course_id = kwargs.get('course')
@@ -110,6 +121,10 @@ def course_api_cache_wrapper(parse_method, parse_object, property_name, post_pro
             if not course_id:
                 raise ValueError(_('Course Id is not passed'))
 
+            if data_property == COURSE_PROPERTIES.TABS:
+                if kwargs.get('details'):
+                    data_property = '{}_{}'.format(data_property, 'details')
+
             if data_property == COURSE_PROPERTIES.TAB_CONTENT:
                 try:
                     tab_id = kwargs['tab_id']
@@ -133,7 +148,7 @@ def course_api_cache_wrapper(parse_method, parse_object, property_name, post_pro
                 # the cache maintains JUST TWO type of responses of course details API
                 # one for staff users and one for all normal users
                 # change this implementation if we need to get per-user course tree
-                user_type = 'staff'
+                user_type = 'generic'
                 try:
                     user = args[2]
                 except IndexError:

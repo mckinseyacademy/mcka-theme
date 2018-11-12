@@ -38,7 +38,8 @@ class Permissions(object):
 
     permission_for_role = {
         USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA,
-        USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER
+        USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER,
+        USER_ROLES.MODERATOR: PERMISSION_GROUPS.MODERATOR
     }
     CACHE_EXPIRE_TIME = 300 # every five minutes it will refresh courses list
     def __init__(self, user_id, ):
@@ -66,7 +67,7 @@ class Permissions(object):
             else:
                 cache.set('course_list_cached_last_update_time', time_now)
         return course_list
-    
+
     def get_groups_of_type_permission_cached(self):
         ''' Loads and caches group names and ids via the edX platform '''
         permission_groups = cache.get('permission_groups_cached', None)
@@ -179,7 +180,7 @@ class Permissions(object):
             if permission_name == PERMISSION_GROUPS.INTERNAL_ADMIN:
                 # internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
                 new_internal_admin_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
-    
+
     def add_company_admin_permissions(self, organization_ids):
         group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
         if group_id:
@@ -192,7 +193,7 @@ class Permissions(object):
                 add_company_admin_group = True
                 for organization_group in all_organization_groups:
                     if organization_group["type"] == PERMISSION_TYPE and int(group_id) == int(organization_group["id"]):
-                        add_company_admin_group = False 
+                        add_company_admin_group = False
                         break
                 if add_company_admin_group:
                     organization_api.add_group_to_organization(organization_id, group_id)
@@ -223,13 +224,13 @@ class Permissions(object):
                 remove_global_company_admin = True
                 if len(user_organizations[PERMISSION_GROUPS.COMPANY_ADMIN]) > 1:
                     remove_global_company_admin = False
-                    
+
                 if remove_global_company_admin:
                     group_api.remove_user_from_group(self.user_id, group_id)
                 organization_api.remove_users_from_organization_group(organization_id, group_id, self.user_id)
-                user_organizations[PERMISSION_GROUPS.COMPANY_ADMIN] = [organization for organization in user_organizations[PERMISSION_GROUPS.COMPANY_ADMIN] 
+                user_organizations[PERMISSION_GROUPS.COMPANY_ADMIN] = [organization for organization in user_organizations[PERMISSION_GROUPS.COMPANY_ADMIN]
                                                                         if int(organization_id) != int(organization.id)]
-                                                                        
+
     def update_company_admin_permissions(self, organization_ids):
         group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
         if group_id:
@@ -310,7 +311,7 @@ class Permissions(object):
 
 
 class SlimAddingPermissions(object):
-    
+
     permission_for_role = {
         USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA,
         USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER
@@ -330,12 +331,7 @@ class SlimAddingPermissions(object):
         return permission_groups
 
     def add_course_role(self, course_id, role):
-        per_course_roles = []
-        per_course_roles.append({
-            "course_id": course_id,
-            "role": role,
-        })
-
+        per_course_roles = [{"course_id": course_id, "role": role}]
         user_api.update_user_roles(self.user_id, {'roles': per_course_roles, 'ignore_roles': settings.IGNORE_ROLES})
         self.add_permission(self.permission_for_role.get(role, ""))
 

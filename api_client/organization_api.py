@@ -4,7 +4,7 @@ from django.utils.translation import ugettext as _
 from django.conf import settings
 from urllib import urlencode
 
-from lib.utils import DottableDict
+from api_client.oauth2_requests import get_oauth2_session
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 
 from .json_object import JsonParser as JP
@@ -40,7 +40,7 @@ def create_organization(organization_name, organization_data=None, organization_
 
 @api_error_protect
 def fetch_organization(organization_id, organization_object=JsonObjectWithImage):
-    ''' fetch organization by id '''
+    """Fetch organization by ID."""
     response = GET(
         '{}/{}/{}/'.format(
             settings.API_SERVER_ADDRESS,
@@ -48,7 +48,6 @@ def fetch_organization(organization_id, organization_object=JsonObjectWithImage)
             organization_id,
         )
     )
-
     return JP.from_json(response.read(), organization_object)
 
 
@@ -62,7 +61,6 @@ def fetch_organization_user_ids(organization_id):
             organization_id,
         )
     )
-
     return json.loads(response.read())
 
 
@@ -76,7 +74,6 @@ def fetch_organization_group_ids(organization_id):
             organization_id,
         )
     )
-
     return json.loads(response.read())
 
 
@@ -85,7 +82,6 @@ def get_users_by_enrolled(organization_id, user_object=JsonObjectWithImage, *arg
     ''' fetch organization users list, with additional courses enrolled flag '''
     qs_params = {}
     qs_params.update(kwargs)
-
     response = GET(
         '{}/{}/{}/users/?{}'.format(
             settings.API_SERVER_ADDRESS,
@@ -94,7 +90,6 @@ def get_users_by_enrolled(organization_id, user_object=JsonObjectWithImage, *arg
             urlencode(qs_params)
         )
     )
-
     return JP.from_json(response.read(), user_object)
 
 
@@ -383,4 +378,33 @@ ORGANIZATION_ERROR_CODE_MESSAGES = {
 }
 ERROR_CODE_MESSAGES.update(ORGANIZATION_ERROR_CODE_MESSAGES)
 
+
+@api_error_protect
+def get_organization_fields(organization_id):
+    """Get all custom fields for any given organization"""
+
+    edx_oauth2_session = get_oauth2_session()
+
+    url = '{}/{}/{}/attributes'.format(
+        settings.API_SERVER_ADDRESS,
+        ORGANIZATION_API,
+        organization_id
+    )
+
+    response = edx_oauth2_session.get(url)
+    return response.json()
+
+
+@api_error_protect
+def add_organization_fields(organization_id, data):
+    """ Add custom field name for any given organization"""
+    edx_oauth2_session = get_oauth2_session()
+
+    url = '{}/{}/{}/attributes'.format(
+        settings.API_SERVER_ADDRESS,
+        ORGANIZATION_API,
+        organization_id
+    )
+    for field in data:
+        edx_oauth2_session.post(url=url, data={'name': field})
 

@@ -28,9 +28,13 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_http_methods
 from django.forms.widgets import HiddenInput
-from django.views.decorators.cache import never_cache
+from django.views.decorators.cache import never_cache, cache_page
 from django.template.loader import render_to_string
 from requests import ConnectionError, HTTPError
+from django.shortcuts import resolve_url
+from django.utils.http import urlsafe_base64_decode
+from django.utils.dateformat import format
+from django.template.response import TemplateResponse
 
 from util.url_helpers import get_referer_from_request
 from api_client import user_api, course_api
@@ -38,18 +42,16 @@ from api_client.api_error import ApiError
 from api_client import platform_api
 from mcka_apros.settings import COOKIES_YEARLY_EXPIRY_TIME, LANGUAGES
 from mobile_apps.controller import get_mobile_app_download_popup_data
-
 from admin.models import Client, Program, CourseRun
 from admin.models import AccessKey, ClientCustomization, OTHER_ROLE
 from courses.user_courses import (
-    standard_data,
-    get_current_course_for_user,
-    get_current_program_for_user,
     CURRENT_PROGRAM,
     set_current_course_for_user
 )
 from lib.context_processors import add_edx_notification_context
 from util.i18n_helpers import set_language
+from util.user_agent_helpers import is_mobile_user_agent
+from api_data_manager.user_data import UserDataManager
 
 from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistrationRequest
 from .controller import (
@@ -57,21 +59,16 @@ from .controller import (
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
     send_warning_email_to_admin, append_user_mobile_app_id_cookie
 )
-from util.user_agent_helpers import is_mobile_user_agent
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
     EditFullNameForm, EditTitleForm, ActivationFormV2, PublicRegistrationForm, LoginIdForm, AcceptTermsForm,
 )
-from django.shortcuts import resolve_url
-from django.utils.http import urlsafe_base64_decode
-from django.utils.dateformat import format
-from django.template.response import TemplateResponse
-
 import logout as logout_handler
 
 from django.contrib.auth.views import password_reset_done, password_reset_complete
 from django.core.urlresolvers import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
+from rest_framework import status
 
 log = logging.getLogger(__name__)
 
@@ -147,27 +144,30 @@ def _build_sso_redirect_url(provider, next):
 
 
 def _get_redirect_to_current_course(request):
-    course_id = get_current_course_for_user(request)
+    user_data = UserDataManager(request.user.id).get_basic_user_data()
+
+    current_course = user_data.current_course
     future_start_date = False
 
-    if course_id:
-        course = course_api.get_course(course_id=course_id, depth=0)
-        if hasattr(course, 'start'):
-            future_start_date = is_future_start(course.start)
+    if current_course:
+        if hasattr(current_course, 'start'):
+            future_start_date = is_future_start(current_course.start)
         else:
-            program = get_current_program_for_user(request)
+            current_program = user_data.current_program
+            if hasattr(current_program, 'start_date') and future_start_date is False:
+                future_start_date = is_future_start(current_program.start_date)
 
-            for program_course in program.courses:
-                if program_course.id == course_id:
-                    if hasattr(program, 'start_date') and future_start_date is False:
-                        future_start_date = is_future_start(program.start_date)
+    if current_course and not future_start_date:
+        return reverse('course_landing_page', kwargs=dict(course_id=current_course.id))
 
-    if course_id and not future_start_date:
-        return reverse('course_landing_page', kwargs=dict(course_id=course_id))
     return reverse('protected_home')
 
 
 def _process_authenticated_user(request, user, activate_account=False):
+    # prefetch some basic data in cache for the authenticated user
+    if user.id:
+        UserDataManager(user.id).get_basic_user_data()
+
     redirect_to = _get_redirect_to(request)
     _validate_path(redirect_to)
 
@@ -953,11 +953,12 @@ def reset_complete(request,
 
 
 def home(request):
-    ''' show me the home page '''
+    if not request.user.is_authenticated:
+        return public_home(request)
 
-    programData = standard_data(request)
-    program = programData.get('program')
-    course = programData.get('course')
+    user_data = UserDataManager(request.user.id).get_basic_user_data()
+    program = user_data.current_program
+    course = user_data.current_course
 
     data = {'popup': {'title': '', 'description': ''}}
     if request.session.get('program_popup') is None:
@@ -986,12 +987,6 @@ def home(request):
                         data.update({'course': course})
                     data.update({'program': program, 'popup': popup})
                     request.session['program_popup'] = True
-    cells = []
-    with open('main/fixtures/landing_data.json') as json_file:
-        landing_tiles = json.load(json_file)
-        for tile in landing_tiles["order"]:
-            tileset = landing_tiles[tile]
-            cells.append(tileset.pop(random.randrange(len(tileset))))
 
     # if mobile device then display login button on the basis of
     # `LOGIN_BUTTON_FOR_MOBILE_ENABLED` setting
@@ -1000,7 +995,7 @@ def home(request):
         data.update(
             {'is_login_button_enabled': settings.LOGIN_BUTTON_FOR_MOBILE_ENABLED}
         )
-    data.update({"user": request.user, "cells": cells})
+    data.update({"user": request.user})
 
     if 'username' in request.GET:
         mobile_popup_data = get_mobile_app_download_popup_data(request)
@@ -1009,9 +1004,26 @@ def home(request):
     return render(request, 'home/landing.haml', data)
 
 
-@login_required
-def protected_home(request):
-    return home(request)
+@cache_page(60 * 60)
+def public_home(request):
+    data = {
+        'popup': {'title': '', 'description': ''},
+        'is_login_button_enabled': True,
+        'user': request.user
+    }
+
+    # if mobile device then display login button on the basis of
+    # `LOGIN_BUTTON_FOR_MOBILE_ENABLED` setting
+    if is_mobile_user_agent(request):
+        data.update(
+            {'is_login_button_enabled': settings.LOGIN_BUTTON_FOR_MOBILE_ENABLED}
+        )
+
+    if 'username' in request.GET:
+        mobile_popup_data = get_mobile_app_download_popup_data(request)
+        data.update(mobile_popup_data)
+
+    return render(request, 'home/landing.haml', data)
 
 
 @login_required
@@ -1188,6 +1200,25 @@ def access_key(request, code):
     }
 
     return render(request, template, data)
+
+
+def get_access_key(request, access_key_code):
+    try:
+        access_key = AccessKey.objects.get(code=access_key_code)
+    except AccessKey.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+    try:
+        customization = ClientCustomization.objects.get(client_id=access_key.client_id)
+    except ClientCustomization.DoesNotExist:
+        return HttpResponse(status=status.HTTP_404_NOT_FOUND)
+
+    data = {
+        "provider_id": customization.identity_provider,
+        "course_id": access_key.course_id,
+        "organization_id": access_key.client_id,
+    }
+    return JsonResponse(data)
 
 
 def demo_registration(request, course_run_name):

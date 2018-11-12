@@ -871,3 +871,44 @@ $(document).ready(function () {
     $('span.current_language').html(currentLanguage);
 
 });
+
+
+function InitializeAverageCalculate() {
+  var totalProgress = 0;
+  var totalProficiency = 0;
+  var total = 0;
+  // Progressbar for progress column
+  var dataTarget = $("a.hashPageButton.active").attr('data-target');
+  $('.'+dataTarget+' td.progress span').each(function () {
+    var text = $(this).text();
+    $(this).css("width" , text);
+    totalProgress += parseInt(text.replace("%", ""));
+    total++;
+  });
+   $('.'+dataTarget+' td.proficiency').each(function () {
+    var text = $(this).text();
+    $(this).css("width" , text);
+    totalProficiency += parseInt(text.replace("%", ""));
+  });
+
+  // Set the Average progess and proficiency	// remove existing subgrid for manager team
+  if(total) {
+    $('.progress-average large').text(Math.round(totalProgress / total) + "%");
+    $('.proficiency-average large span').text(Math.round(totalProficiency / total));
+  }
+  else{
+    $('.progress-average large').text("0%");
+    $('.proficiency-average large span').text("0");
+  }
+}
+
+// remove existing subgrid for manager team
+function RemoveExistingSubGird(element) {
+  // check if already subgrid is loaded for some other record
+  var checkSubGrid = $("tr.bbSubGrid");
+  if(checkSubGrid){
+    // if it exists, trigger click from tr
+    // its needed to close the any other opened subgrid
+    $(element).parent().click();
+  }
+}

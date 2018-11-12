@@ -1,8 +1,9 @@
-''' Objects for users / authentication built from json responses from API '''
-import json
+"""
+Objects for users / authentication built from json responses from API.
+"""
+
 import os
-from datetime import datetime
-from .json_object import JsonObject, JsonObjectWithImage
+from .json_object import JsonObjectWithImage
 import organization_api
 from django.conf import settings
 from django.core.files.storage import default_storage

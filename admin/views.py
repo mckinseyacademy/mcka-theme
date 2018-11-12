@@ -37,16 +37,20 @@ from rest_framework.views import APIView
 
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, \
     _set_number_of_enrolled_users
+from accounts.helpers import get_organization_by_user_email
 from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
-    get_organization_active_courses, edit_course_meta_data
-from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api
+    get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
+    process_manager_email, update_company_field_for_users, validate_company_field, parse_participant_profile_csv
+from admin.tasks import user_company_fields_update_task, bulk_user_manager_update_task
+from api_client import course_api, user_api, manager_api, group_api, workgroup_api, organization_api, mobileapp_api, cohort_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.json_object import JsonObjectWithImage
 from api_client.mobileapp_api import get_mobile_app_themes
+from api_client.organization_api import get_organization_fields, add_organization_fields
 from api_client.organization_models import Organization
 from api_client.platform_api import get_course_advanced_settings
 from api_client.project_models import Project
@@ -78,22 +82,23 @@ from .controller import (
     get_program_data_for_report, MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link,
     get_course_details_progress_data,
     get_course_engagement_summary, get_course_social_engagement,
-    get_user_courses_helper, import_participants_threaded, change_user_status, unenroll_participant,
+    get_user_courses_helper, change_user_status, unenroll_participant,
     _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key,
     get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, get_ta_accessible_course_ids,
     validate_company_display_name, get_internal_courses_ids,
     student_list_chunks_tracker, get_internal_courses_list, construct_users_list,
-    CourseParticipantStats, get_course_stats_report
+    CourseParticipantStats, get_course_stats_report, _get_user_managers
 )
 from .forms import (
-    ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
-    AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
-    EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm,
-    MassParticipantsEnrollListForm,
-    EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm,
-    LearnerDashboardTileForm,
-    CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm)
+	ClientForm, ProgramForm, UploadStudentListForm, ProgramAssociationForm, CuratedContentItemForm,
+	AdminPermissionForm, SubAdminPermissionForm, BasePermissionForm, UploadCompanyImageForm,
+	EditEmailForm, ShareAccessKeyForm, CreateAccessKeyForm, CreateCourseAccessKeyForm, MassStudentListForm,
+	MassParticipantsEnrollListForm,
+	EditExistingUserForm, DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm,
+	LearnerDashboardTileForm,
+	CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm, MassCompanyFieldsUpdateForm,
+	MassManagerDataUpdateForm)
 from .helpers.permissions_helpers import (
     AccessChecker, InternalAdminCoursePermission, InternalAdminUserPermission,
     CompanyAdminCompanyPermission, CompanyAdminUserPermission, CompanyAdminCoursePermission,
@@ -110,6 +115,7 @@ from .models import (
 )
 from .permissions import Permissions, PermissionSaveError
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
+from .tasks import import_participants_task
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 
 
@@ -785,6 +791,7 @@ def course_details(request, course_id):
 
     (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
     course['discussion_feature'] = course_features.discussions
+    course['cohorts_enabled'] = course_api.get_course_cohort_settings(course_id).is_cohorted
 
     return render(request, 'admin/courses/course_details.haml', course)
 
@@ -1170,7 +1177,9 @@ def course_meta_content_course_items(request, course_id, restrict_to_courses_ids
         "has_advanced_settings_permissions": has_advanced_settings_permissions,
         "mobile_available": mobile_available,
         "custom_lesson_label": course_meta_data.lesson_label,
+        "custom_lessons_label": course_meta_data.lessons_label["zero"],
         "custom_module_label": course_meta_data.module_label,
+        "custom_modules_label": course_meta_data.modules_label["zero"],
     }
 
     return render(
@@ -2227,16 +2236,55 @@ class download_student_list_api(APIView):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def import_participants(request):
+@require_POST
+def update_company_field_from_csv(request):
+    form = MassCompanyFieldsUpdateForm(request.POST, request.FILES)
+    if form.is_valid():
+        base_url = request.build_absolute_uri('/')
+        users_records = parse_participant_profile_csv(request.FILES['student_field_list'])
+        user_company_fields_update_task.delay(request.user.id, users_records, base_url)
+        return HttpResponse(
+            json.dumps({'success': True}),
+            content_type='application/json'
+        )
+    else:
+        HttpResponse(
+            json.dumps({'success': False}),
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content_type='application/json'
+        )
 
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@require_POST
+def update_manager_from_csv(request):
+    form = MassManagerDataUpdateForm(request.POST, request.FILES)
+    if form.is_valid():
+        base_url = request.build_absolute_uri('/')
+        users_records = parse_participant_profile_csv(request.FILES['student_manager_list'])
+        bulk_user_manager_update_task.delay(request.user.id, users_records, base_url)
+        return HttpResponse(
+            json.dumps({'success': True}),
+            content_type='application/json'
+        )
+    else:
+        HttpResponse(
+            json.dumps({'success': False}),
+            status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            content_type='application/json'
+        )
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def import_participants(request):
     if request.method == 'POST':  # If the form has been submitted...
         # A form bound to the POST data and FILE data
         form = MassStudentListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
-            reg_status = UserRegistrationBatch.create();
-            import_participants_threaded(
+            reg_status = UserRegistrationBatch.create()
+            import_participants_task.delay(
                 request.FILES['student_list'],
-                request,
+                request.user.is_internal_admin,
                 reg_status
             )
             return HttpResponse(
@@ -3514,11 +3562,15 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 def participants_list(request):
     form = MassStudentListForm()
     form_enroll = MassParticipantsEnrollListForm()
+    form_company_fields = MassCompanyFieldsUpdateForm()
+    form_manager_update = MassManagerDataUpdateForm()
     internal_admin_flag = request.user.is_internal_admin
 
     data = {
         'form': form,
         'form_enroll': form_enroll,
+        'form_company_fields': form_company_fields,
+	    'form_manager_update': form_manager_update,
         'internalAdminFlag': internal_admin_flag
     }
     return render( request, 'admin/participants/participants_list.haml', data)
@@ -3736,6 +3788,8 @@ class participant_details_api(APIView):
             if len(userOrganizations["main_company"]):
                 selectedUser['company_name'] = userOrganizations["main_company"][0].display_name
                 selectedUser['company_id'] = userOrganizations["main_company"][0].id
+                selectedUser['custom_fields'] = get_user_company_fields(selectedUser.get('id'),userOrganizations["main_company"][0].id)
+
             else:
                 selectedUser['company_name'] = _('No company')
                 selectedUser['company_id'] = ''
@@ -3784,6 +3838,10 @@ class participant_details_api(APIView):
                         selectedUser['company_permission'] = key
 
             selectedUser['mcka_permissions'] = nice_perms
+            if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
+                user_managers = _get_user_managers(selectedUser['username'])
+                if user_managers:
+                    selectedUser['manager_email'] = user_managers[0]['email']
 
             if UserActivation.get_user_activation(user=selectedUserResponse):
                 selectedUser['has_activation_record'] = True
@@ -3795,10 +3853,16 @@ class participant_details_api(APIView):
                 companyAdminFlag = True
             selectedUser['companyAdminFlag'] = companyAdminFlag
             selectedUser['internalAdminFlag'] = request.user.is_internal_admin
-            return render( request, 'admin/participants/participant_details.haml', selectedUser)
+            return render(request, 'admin/participants/participant_details.haml', selectedUser)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, user_id, format=None):
+
+        try:
+            update_user_company_fields_value(user_id ,request.POST)
+        except ApiError, e:
+            return Response({'status': 'error', 'type': 'api_error', 'message': e.message})
+
         form = EditExistingUserForm(request.POST.copy())
         if form.is_valid():
             cleaned_data = form.cleaned_data
@@ -3827,6 +3891,7 @@ class participant_details_api(APIView):
                 for user in existing_users['results']:
                     if int(user['id']) == int(user_id):
                         existing_users_length -= 1
+
             if (existing_users_length > 0):
                 return Response({'status':'error', 'type': 'user_exist', 'message':_('User with that username or email already exists!')})
             else:
@@ -3867,6 +3932,14 @@ class participant_details_api(APIView):
                             if not permissions:
                                 permissions = Permissions(user_id)
                             permissions.remove_permission(permissions_groups[request.data['company_permissions_old']])
+
+                    if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
+                        manager_email = data.get('manager_email', None)
+                        if manager_email:
+                            error = process_manager_email(manager_email, data.get('username'), company)
+                            if error:
+                                return Response(error)
+
                 except ApiError, e:
                     return Response({'status':'error','type': 'api_error', 'message':e.message})
                 return Response({'status':'ok', 'message':vars(response), 'company': company, 'company_permissions': request.data['company_permissions']})
@@ -4805,6 +4878,24 @@ def company_details(request, company_id):
     return render(request, 'admin/companies/company_details.haml', data)
 
 
+class CompanyCustomFields(APIView):
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, )
+    def get(self, request, company_id):
+        data = get_organization_fields(company_id)
+        return Response(data)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, )
+    def post(self, request, company_id):
+        fields_length = len(request.POST)
+        data = []
+        for field_index in range(fields_length-1):
+            if request.POST['field_name_{}'.format(field_index)]:
+                data.append(request.POST['field_name_{}'.format(field_index)])
+        add_organization_fields(company_id, data)
+        return redirect('company_details', company_id=company_id)
+
+
 class CompanyCoursesApi(APIView):
     permission_classes = (CompanyAdminCompanyPermission, )
 
@@ -5321,6 +5412,8 @@ def company_course_details(request, company_id, course_id):
     (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
     course['discussion_feature'] = course_features.discussions
 
+    # Hide cohorts column if it's disabled
+    course['cohorts_enabled'] = course_api.get_course_cohort_settings(course_id).is_cohorted
     return render(request, 'admin/courses/course_details.haml', course)
 
 
@@ -5730,14 +5823,81 @@ class CourseMetaDataApiView(APIView):
         """
         Post request handler for Editing Course Custom Terms
         """
-        lesson_label_flag = request.data.get('lesson_label_flag')
-        module_label_flag = request.data.get('module_label_flag')
-        lesson_label = request.data.get('lesson_label', None)
-        module_label = request.data.get('module_label', None)
-
-        edit_status = edit_course_meta_data(course_id, lesson_label, module_label,
-                                        lesson_label_flag, module_label_flag)
+        edit_status = edit_course_meta_data(course_id, request)
         if edit_status:
             return Response(status=status.HTTP_200_OK)
+
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+class CohortSettings(APIView):
+    permission_classes = (InternalAdminCoursePermission, )
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, course_id):
+        return Response({'is_cohorted': cohort_api.is_course_cohorted(course_id)})
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+        is_cohorted = request.data['is_cohorted']
+        return Response({'is_cohorted': cohort_api.set_course_cohorted(course_id, is_cohorted)})
+
+
+class CohortList(APIView):
+    permission_classes = (InternalAdminCoursePermission, )
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, course_id):
+        return Response(cohort_api.get_all_cohorts_for_course(course_id))
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+        name = request.data.get('name')
+        assignment_type = request.data.get('assignment_type')
+        return Response(cohort_api.add_cohort_for_course(course_id, name, assignment_type))
+
+
+class CohortHandler(APIView):
+    permission_classes = (InternalAdminCoursePermission, )
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def get(self, request, course_id, cohort_id):
+        return Response(cohort_api.get_cohort_for_course(course_id, cohort_id))
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def put(self, request, course_id, cohort_id):
+        name = request.data.get('name')
+        assignment_type = request.data.get('assignment_type')
+        return Response(cohort_api.update_cohort_for_course(course_id, cohort_id, name, assignment_type))
+
+
+class CohortUsers(APIView):
+    permission_classes = (InternalAdminCoursePermission,)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id, cohort_id):
+        usernames = request.data['users']
+        return Response(cohort_api.add_multiple_users_to_cohort(course_id, cohort_id, usernames))
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def put(self, request, course_id, cohort_id, username):
+        return Response(cohort_api.add_user_to_cohort(course_id, cohort_id, username))
+
+
+@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+def cohorts_course_details(request, course_id):
+    course = course_api.get_course_details(course_id)
+    return render(request, 'admin/cohorts/course_details.html', course)
+
+
+class CohortImport(APIView):
+    permission_classes = (InternalAdminCoursePermission,)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+        uploaded_file = request.FILES.get('uploaded-file')
+        response = cohort_api.import_users(course_id, uploaded_file)
+        if response is not None:
+            return Response(response)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+            return Response({'status': 'OK'})

@@ -1,0 +1,241 @@
+{% extends "admin/admin_layout.haml" %}
+{% load i18n %}
+
+{% load staticfiles %}
+{% block custom_js %}
+    <script src="{% static 'js/vendor/tinymce/tinymce.min.js' %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="mainCohortDetailsWrapper"></div>
+
+    <!-- Modal code conflicts inside Backbone template -->
+    <div data-reveal="" class="reveal-modal medium" id="create_cohort">
+        <div class="close-reveal-modal">
+            <i class="fa fa-times-circle"></i>
+        </div>
+        <h2>{% trans "Add a new cohort" %}</h2>
+        <hr/>
+        <div>
+            <h4 class="form-label">
+                {% trans "Cohort Name" %}
+            </h4>
+            <input id="newCohortName" placeholder="Cohort Name">
+        </div>
+        <div class="newCohortAssignment field field-radio">
+            <h4 class="form-label">
+                {% trans "Cohort Assignment Method" %}
+            </h4>
+            <label>
+                <input type="radio" class="type-random" name="cohort-assignment-type" value="random"
+                       checked="checked"> {% trans "Automatic" %}
+            </label>
+            <label>
+                <input type="radio" class="type-manual" name="cohort-assignment-type"
+                       value="manual"> {% trans "Manual" %}
+            </label>
+            <button id="createCohortBtn"
+                    class="button small radius">
+                {% trans 'Save' %}
+            </button>
+            <a id="cancelCreateCohort">
+                {% trans "Cancel" %}
+            </a>
+        </div>
+    </div>
+
+    <script type="text/template" id="cohortsTemplate">
+        <div class='cohortDetailsNavigationButton'>
+            <a href='{% url 'course_details' id %}' target='_self'>< {% trans "Back to Course page" %}</a>
+            <% if (enabled) { %>
+            <button id="addCohortBtn" data-reveal-id="create_cohort" class="right button small radius menuButton">
+                <i class="fa fa-plus"></i> {% trans 'Add Cohort' %}
+            </button>
+            <% } %>
+        </div>
+        <div id="cohortDetailsDataWrapper">
+            <div class="cohortDetailsHeader row">
+                <div class='cohortDetailsNameAndId'>
+                    {{ name }}
+                </div>
+                <hr/>
+            </div>
+            <div class="cohortDetailsBlock row">
+                <label>
+                    <input type="checkbox" id="cohortCheckbox" <%= enabled ? 'checked' : '' %> >
+                    {% trans "Enable Cohorts" %}
+                </label>
+                <%if (enabled && cohorts.length && cohorts[0].id) { %>
+                <label for="cohortSelect" class="sr-only">Select Cohort</label>
+                <select id="cohortSelect" name="cohortSelect">
+                    <%_.forEach(cohorts, function(cohort, i) { %>
+                    <option value="<%=i%>"
+                    <%= (selected==i) ? 'selected' : '' %> >
+                    <%= cohort.name %> (<%= cohort.user_count %>)
+                    </option>
+                    <% }) %>
+                </select>
+                <% selected = selected ? cohorts[selected] : cohorts[0] %>
+                <h3 class="cohortName">
+                    <%= selected.name %>
+                    <span class="cohortUserCount">
+                        (<%= learnerCountMessage(selected.user_count) %>)
+                    </span>
+                </h3>
+                <div class="small">
+                    <% if (selected.assignment_type === 'random') { %>
+                    {% trans "Learners are added automatically to this cohort." %}
+                    <% } else { %>
+                    {% trans "Learners are added to this cohort only when you provide their email addresses or usernames on this page." %}
+                    <% } %>
+                </div>
+                <hr/>
+                <% } else { %>
+                {% blocktrans %}
+                    <strong>To use cohorts within your course, click Enable Cohorts:</strong>
+                    <ul>
+                        <li>
+                            Each course has a &lt;default_cohort&gt; in which all learners are
+                            automatically assigned.
+                        </li>
+                        <li>
+                            Additional cohorts can be added and should follow the naming/numbering
+                            format of &lt;cohort#&gt;
+                        </li>
+                        <li>
+                            Learners can safely move between cohorts before a course starts, but
+                            not afterwards.
+                        </li>
+                        <li>
+                            New learners not yet enrolled in the course can be preassigned to a
+                            cohort.
+                        </li>
+                        <li>
+                            Progress indicators are averaged by cohort.
+                        </li>
+                        <li>
+                            Courses with Discussions are divided by cohort, but each shares the
+                            same topics course-wide.
+                        </li>
+                        <li>
+                            Moderators can view, post/reply to Discussions per cohort.
+                        </li>
+                        <li>
+                            Progress Report export will include cohort column and value of each
+                            learner, when enabled in course.
+                        </li>
+                        <li>
+                            Cohorts should not be used with Group Work.
+                        </li>
+                        <li>
+                            Cohorts cannot be deleted, only renamed.
+                        </li>
+                    </ul>
+                {% endblocktrans %}
+                <% } %>
+            </div>
+        </div>
+        <% if (enabled && selected) { %>
+        <div class="cohortTabs row">
+            <div class="tabs">
+                <a class="tab active"
+                   id="addUsersTab"
+                   data-panel-id="addUsersPanel">
+                    {% trans "Manage Users" %}
+                </a>
+                <a class="tab"
+                   id="settingsTab"
+                   data-panel-id="settingsPanel">
+                    {% trans "Settings" %}
+                </a>
+            </div>
+            <div class="panels">
+                <div id="addUsersPanel" class="panel active">
+                    <h3 class="tabTitle">
+                        {% trans "Add Learners to this Cohort" %}
+                    </h3>
+                    <span class="subtitle small">
+                        {% trans "Note: Learners can be in only one cohort. Adding learners to this group overrides any previous group assignment." %}
+                    </span>
+                    <div class="results">
+                        <% _(userAddResults).forEach(function(item) {
+                        if (item) { %>
+                        <div class="result <%= item.label %>">
+                            <%= item.message %>
+                        </div>
+                        <% }}); %>
+                    </div>
+                    <p>
+                        {% trans "Enter email addresses and/or usernames, separated by new lines or commas, for the learners you want to add. *" %}
+                    </p>
+                    <textarea id="addUsersForm" rows="10" placeholder="user@example.com"></textarea>
+                    <p class="subtitle">{% trans "You will not receive notifications or emails that bounce, so double-check your spelling." %}</p>
+                    <button id="addLearnersBtn" class="button small radius addLearnersBtn">
+                        <i class="fa fa-plus"></i> {% trans 'Add Learners' %}
+                    </button>
+                </div>
+                <div id="settingsPanel" class="panel">
+                    <h3 class="tabTitle">{% trans "Settings" %}</h3>
+                    <label for="updateCohortName" class="form-label">{% trans "Cohort Name" %}</label>
+                    <input id="updateCohortName" name="updateCohortName" value="<%=selected.name%>">
+                    <label class="form-label">
+                        {% trans "Cohort Assignment Method" %}
+                    </label>
+                    <label>
+                        <input type="radio" class="type-random" name="cohort-assignment-type"
+                        <%= selected.assignment_type === 'random' && 'checked' %>
+                        value="random">
+                        {% trans "Automatic" %}
+                    </label>
+                    <label>
+                        <input type="radio" class="type-manual" name="cohort-assignment-type"
+                        <%= selected.assignment_type === 'manual' && 'checked' %>
+                        value="manual">
+                        {% trans "Manual" %}
+                    </label>
+
+                    <button id="updateCohortBtn" class="button small radius">
+                        {% trans 'Save' %}
+                    </button>
+                </div>
+            </div>
+        </div>
+        <hr/>
+        <div id="cohortsUpload" class="row"></div>
+        <%}%>
+    </script>
+    <script type="text/template" id="cohortsUploadTemplate">
+        <div class="content cohort-management-file-upload csv-upload"
+             id="cohort-management-file-upload" tabindex="-1">
+            <h3 class="hd hd-3 form-title subsection-title">
+                {% trans "Assign students to cohorts by uploading a CSV file" %}.
+            </h3>
+            <div class="file-upload-form-result result">
+                <% if (uploadError) { %>
+                <span class="error-message"><%= uploadError %></span>
+                <% } %>
+                <% if (uploadSuccess) { %>
+                <span class="success-message">
+                    {% trans "CSV file uploaded successfully." %}
+                </span>
+                <% } %>
+            </div>
+            <form class="file-upload-form" id="file-upload-form" method="post"
+                  action="/admin/api/cohorts/courses/<%=course_id%>/users"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <label class="field-label sr"
+                       for="file-upload-form-file">
+                    {% trans "Choose a .csv file" %}
+                </label>
+                <input id="file-upload-form-file" class="input input-file"
+                       name="uploaded-file" type="file" accept=".csv">
+                <span class="tip tip-stacked">
+                    {% trans "Only properly formatted .csv files will be accepted" %}.
+                </span>
+                <button id="importLearnersBtn" class="button small radius" disabled type="submit">
+                    {% trans 'Upload File and Assign Students' %}
+                </button>
+            </form>
+        </div>
+    </script>
+{% endblock %}

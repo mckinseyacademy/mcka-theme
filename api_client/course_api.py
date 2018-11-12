@@ -24,6 +24,8 @@ COURSE_ENROLLMENT_API = getattr(settings, 'COURSE_ENROLLMENT_API', 'api/enrollme
 COURSE_ENROLLMENT_API_MAX_PAGE = 3
 COURSE_COMPLETION_API = getattr(settings, 'COURSE_COMPLETION_API', 'api/completion-aggregator/v1/course')
 COURSE_BLOCK_API = getattr(settings, 'COURSE_BLOCK_API', 'api/courses/v1/blocks')
+COURSE_COHORTS_API = getattr(settings, 'COURSE_COHORTS_API', 'api/cohorts/v1')
+
 
 OBJECT_CATEGORY_MAP = {
     # Core objects for our desire
@@ -277,11 +279,11 @@ def get_courses(**kwargs):
     '''
     qs_params = {"page_size": 0}
 
-    for karg in kwargs:
-        if isinstance(kwargs[karg], list):
-            qs_params[karg] = ",".join(kwargs[karg])
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            qs_params[key] = ",".join(value)
         else:
-            qs_params[karg] = kwargs[karg]
+            qs_params[key] = value
 
     response = GET('{}/{}/?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -334,6 +336,7 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
     '''
     Retrieves course user list structure information from the API for specified course
     '''
+    edx_oauth2_session = get_oauth2_session()
     qs_params = {"page_size": page_size}
     if program_id:
         qs_params['project'] = program_id
@@ -347,19 +350,19 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
 
     if page_size != 0:
         results = []
-        response = GET(url)
-        data = json.loads(response.read())
+        response = edx_oauth2_session.get(url=url)
+        data = json.loads(response.content)
         pages = data['num_pages']
         for x in range(0, pages):
             result = data['results']
             results.extend(result)
             if data['next']:
-                response = GET(data['next'])
-                data = json.loads(response.read())
+                response = edx_oauth2_session.get(data['next'])
+                data = json.loads(response.content)
         return json.dumps(results)
     else:
-        response = GET(url)
-        return response.read()
+        response = edx_oauth2_session.get(url=url)
+        return json.loads(response.content)
 
 
 @api_error_protect
@@ -510,11 +513,11 @@ def get_course_metrics(course_id, *args, **kwargs):
 
     qs_params = {}
 
-    for karg in kwargs:
-        if isinstance(kwargs[karg], list):
-            qs_params[karg] = ",".join(kwargs[karg])
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            qs_params[key] = ",".join(value)
         else:
-            qs_params[karg] = kwargs[karg]
+            qs_params[key] = value
 
     url = '{}/{}/{}/metrics/?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -528,11 +531,41 @@ def get_course_metrics(course_id, *args, **kwargs):
 
 
 @api_error_protect
-def get_course_metrics_by_city(course_id, cities=None):
+def get_course_metrics_leaders(course_id, **kwargs):
+    """
+    retrieves course metrics leaders
+    :param kwargs:
+        - `course_id`
+        - `user_id`
+        - `count`
+    """
+    from courses.controller import CourseMetricsLeaders
+    qs_params = {}
+
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            qs_params[key] = ",".join(value)
+        else:
+            qs_params[key] = value
+
+    url = '{}/{}/{}/metrics/leaders/?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        urlencode(qs_params),
+    )
+
+    response = GET(url)
+    return JP.from_json(response.read(), CourseMetricsLeaders)
+
+
+@api_error_protect
+def get_course_metrics_by_city(course_id, cities=None, **kwargs):
     ''' retrieves course metrics '''
     qs_params = {"page_size": 0}
     if cities:
         qs_params["city"] = cities
+    qs_params.update(kwargs)
 
     url = '{}/{}/{}/metrics/cities/?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -719,15 +752,12 @@ def get_courses_list(getParameters):
 @api_error_protect
 def get_course_details(course_id):
     edx_oauth2_session = get_oauth2_session()
-
     url = '{}/{}/{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id
     )
-
     response = edx_oauth2_session.get(url)
-
     return response.json()
 
 
@@ -788,7 +818,7 @@ def get_course_details_metrics_social(course_id, qs_params = ''):
     ''' fetch social metrics for course '''
 
     response = GET(
-        '{}/{}/{}/metrics/social/?'.format(
+        '{}/{}/{}/metrics/social/?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
@@ -890,6 +920,7 @@ def group_completions_by_user(completions, username=None):
             username: _group_completions_by_block_key(completions[0])
         }
 
+
 @api_error_protect
 def get_course_enrollments(course_id=None, usernames=None, edx_oauth2_session=None):
     """
@@ -948,3 +979,18 @@ def get_manager_reports_in_course(manager_email, course_id, edx_oauth2_session=N
         enrollment.user
         for enrollment in course_enrollments
     })
+
+
+@api_error_protect
+def get_course_cohort_settings(course_id, edx_oauth_session=None):
+    """
+    Get the cohort settings for a given course.
+    """
+    edx_oauth_session = get_oauth2_session() if edx_oauth_session is None else edx_oauth_session
+    url = '{}/{}/settings/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSE_COHORTS_API,
+        course_id
+    )
+    response = edx_oauth_session.get(url)
+    return JP.from_dictionary(response.json(), course_models.CourseCohortSettings)

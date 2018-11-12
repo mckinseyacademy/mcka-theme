@@ -2,12 +2,15 @@
 Celery tasks related to admin app
 """
 from collections import OrderedDict
+from multiprocessing.pool import ThreadPool
 from tempfile import TemporaryFile
 
 from urlparse import urljoin
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
+from django.core.serializers import json
+from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -17,6 +20,7 @@ from celery.utils.log import get_task_logger
 from celery import states as celery_states
 from celery.exceptions import Ignore, MaxRetriesExceededError, Reject
 
+from accounts.helpers import get_organization_by_user_email
 from api_client import course_api
 from api_client import group_api
 from api_client import user_api
@@ -24,9 +28,12 @@ from api_client.api_error import ApiError
 from util.csv_helpers import CSVWriter
 from util.s3_helpers import PrivateMediaStorageThroughApros
 from util.email_helpers import send_html_email
+from .controller import _enroll_participants, _process_line_register_participants_csv, build_student_list_from_file, create_update_delete_manager, validate_participant_and_manager_records
+from .models import UserRegistrationError
 
 
-from .controller import CourseParticipantStats
+from .controller import CourseParticipantStats, validate_company_field, \
+    update_company_field_for_users
 
 logger = get_task_logger(__name__)
 
@@ -43,6 +50,11 @@ def course_participants_data_retrieval_task(
     """
 
     additional_fields = ['grades', 'roles', 'organizations', 'progress']
+
+    cohorts_enabled = course_api.get_course_cohort_settings(course_id).is_cohorted
+
+    if cohorts_enabled:
+        additional_fields.append('course_groups')
 
     if lesson_completions:
         additional_fields.append('lesson_completions')
@@ -130,11 +142,16 @@ def course_participants_data_retrieval_task(
         if not participants_stats.get('next'):
             break
 
-    groupworks, assessments, lesson_completions = OrderedDict(), OrderedDict(), OrderedDict()
+    groupworks, assessments, lesson_completions, attributes = OrderedDict(), OrderedDict(), OrderedDict(), OrderedDict()
 
     # custom processing is needed for groupworks and assessments data
     # as csv column names are also dynamic for them
     for participant in participants_data:
+
+        for field in participant.get('attributes'):
+            attributes[field['key']] = field['label']
+            participant[field['key']] = field['value']
+
         for groupwork in participant.get('groupworks'):
             label = groupwork.get('label')
             key = 'GW_{}'.format(label)
@@ -155,6 +172,10 @@ def course_participants_data_retrieval_task(
                 lesson_completions[key] = _('Lesson {lesson_number} Progress').format(lesson_number=lesson_number)
             participant[key] = '{}%'.format(completion)
 
+        if cohorts_enabled:
+            course_groups = participant.get('course_groups')
+            participant['course_group'] = course_groups[0] if course_groups else '-'
+
     fields = OrderedDict([
         ("Id", ("id", '')),
         ("First name", ("first_name", '')),
@@ -162,6 +183,12 @@ def course_participants_data_retrieval_task(
         ("Username", ("username", '')),
         ("Email", ("email", '')),
         ("Company", ("organizations_display_name", '')),
+    ])
+
+    for key, label in attributes.items():
+        fields.update([(label, (key, ''))])
+
+    fields.update([
         ("Status", ("custom_user_status", '')),
         ("Activated", ("custom_activated", '')),
         ("Last login", ("custom_last_login", '')),
@@ -171,6 +198,9 @@ def course_participants_data_retrieval_task(
         ("Activation Link", ("activation_link", '')),
         ("Country", ("country", '')),
     ])
+
+    if cohorts_enabled:
+        fields['Course group'] = ("course_group", '')
 
     # update fields with groupworks/assignments data
     for label, title in groupworks.items() + assessments.items() + lesson_completions.items():
@@ -226,6 +256,30 @@ def course_participants_data_retrieval_task(
     )
 
     return download_url
+
+
+def send_bulk_fields_update_email(
+        user_id, total_records, record_count, errors, base_url
+):
+    """ Send report of bulk company fields update on user's email """
+    subject = _('Report for bulk update')
+    template = 'admin/bulk_fields_update_report_email.haml'
+    user_detail = user_api.get_user(user_id).to_dict()
+    mcka_logo = urljoin(
+        base=base_url,
+        url='/static/image/mcka_email_logo.png'
+    )
+
+    send_html_email(
+        subject=subject,
+        to_emails=[user_detail.get('email')], template_name=template,
+        template_data={
+            'first_name': user_detail.get('first_name'), 'total_records': total_records,
+            'success_count': record_count, 'failed_count': (total_records-record_count),
+            'errors': errors, 'support_email': settings.MCKA_SUPPORT_EMAIL,
+            'mcka_logo_url': mcka_logo,
+        }
+    )
 
 
 def send_export_stats_status_email(
@@ -394,3 +448,103 @@ def users_program_association_task(program_id, user_ids, task_id):
             )
 
     return {'successful': added, 'total': total}
+
+
+@task(name='admin.import_participants_task', serializer='pickle', queue='high_priority')
+def import_participants_task(file_stream, is_internal_admin, registration_batch):
+    """
+    Processes a CSV file of participants.
+
+    Note on pickle serialization:
+        This job requires pickle serialization because it takes in a CSV file object.
+        This isn't a security concern, because the input is not directly from the user,
+        but rather from Django. The user does input the file to the webserver which hands
+        it to Django, but Django validates and turns it into a safe Python data structure.
+        At that point, it isn't dangerous to un-pickle the object, as it's already been around
+        in our runtime without issue.
+    """
+    user_list = build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
+    clean_user_list, unclean_user_list, user_registration_errors = [], [], []
+    for user_info in user_list:
+        if "error" in user_info:
+            unclean_user_list.append(user_info)
+            user_registration_errors.append(
+                UserRegistrationError(error=user_info["error"], task_key=registration_batch.task_key)
+            )
+        else:
+            clean_user_list.append(user_info)
+    UserRegistrationError.objects.bulk_create(user_registration_errors)
+    registration_batch.attempted = len(user_list)
+    registration_batch.failed += len(user_registration_errors)
+    registration_batch.save()
+    del user_list
+
+    # The bottleneck with processing these users from the POV of Apros is the network, i.e. when we wait for the
+    # LMS to process the user and return an HTTP response. Thus we run this in multiple threads with batches.
+    total_clean_users = len(clean_user_list)
+    pool_size = settings.MAX_IMPORT_JOB_THREAD_POOL_SIZE or 4
+    batch_size = total_clean_users // pool_size or 1
+    pool = ThreadPool(pool_size)
+    threads = []
+    for index in xrange(0, total_clean_users, batch_size):
+        batch = clean_user_list[index:min(index + batch_size, total_clean_users)]
+        threads.append(pool.apply_async(
+            _enroll_participants, args=(
+                batch,
+                is_internal_admin,
+                registration_batch,
+        )))
+
+    # Run queued up jobs.
+    for thread in threads:
+        thread.get()
+
+
+@task(name='admin.user_company_fields_update_task', queue='high_priority')
+def user_company_fields_update_task(user_id, users_records, base_url):
+    task_log_msg = 'Updating company field\'s data for user from csv'
+    record_count = 0
+    errors = []
+    logger.info('Starting - {}'.format(task_log_msg))
+    try:
+        total_records = len(users_records) - 1
+        organization_id = get_organization_by_user_email(users_records[1][0])
+        org_fields_csv = users_records[0][1:]
+    except (TypeError, IndexError):
+        errors.append(_('File is not formatted properly. Please format according to given template.'))
+        send_bulk_fields_update_email(user_id, total_records, record_count, errors, base_url)
+        return
+
+    csv_keys, errors = validate_company_field(org_fields_csv, organization_id)
+    users_records = users_records[1:]
+    if errors:
+        send_bulk_fields_update_email(user_id, total_records, record_count, errors, base_url)
+        return
+    else:
+        record_count, errors = update_company_field_for_users(users_records, csv_keys, organization_id)
+    send_bulk_fields_update_email(user_id, total_records, record_count, errors, base_url)
+    logger.info('Successfully finishing - {}'.format(task_log_msg))
+    return
+
+
+@task(name='admin.user_manager_update_task', queue='high_priority')
+def bulk_user_manager_update_task(user_id, users_records, base_url):
+    task_log_msg = 'Updating manager data for user from csv'
+    record_count = 0
+    errors = []
+    logger.info('Starting - {}'.format(task_log_msg))
+    total_records = len(users_records) - 1
+    validated_records, errors = validate_participant_and_manager_records(users_records)
+    if validated_records:
+        for participant, manager in validated_records:
+            try:
+                create_update_delete_manager(
+                    user_id=manager.get('id'),
+                    manager_email=manager.get('email'),
+                    username=participant.get('username')
+                )
+                record_count += 1
+            except ApiError:
+                errors.append(_("User with email {} and manager with email {} was unsuccessfull.")
+                              .format(participant.get('email'), manager.get('email')))
+    send_bulk_fields_update_email(user_id, total_records, record_count, errors, base_url)

@@ -32,7 +32,6 @@
 
 #managerDashboardWrapper{
   margin: 0 auto;
-  display: table;
   max-width: 68.57143rem;
   .navigation{
     padding: 0 1.07143rem;
@@ -73,18 +72,22 @@
 	  td{
         position: relative;
         z-index: 0;
+        padding: 0.64286rem 0.5rem;
 		&.progress{
           color: $mckinsey-dark-grey;
           text-align: left;
-          &:before{
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            background-color: $manager-progress-green;
-            z-index: -1;
-            width: inherit;
+          span{
+            vertical-align: middle;
+            &:before{
+              content: "";
+              position: absolute;
+              left: 0;
+              top: 0;
+              bottom: 0;
+              background-color: $manager-progress-green;
+              z-index: -1;
+              width: inherit;
+            }
           }
 		}
         &.status{
@@ -94,7 +97,7 @@
             content: '';
             position: absolute;
             left: 10px;
-            top: 10px;
+            top: 12px;
             width: 10px;
             height: 10px;
             border-radius: 100%;
@@ -111,6 +114,101 @@
           }
         }
 	  }
+	}
+	.manager-progress-cards{
+		padding: 20px 20px 5px;
+		background-color: darken($mckinsey-academy-bright-gray , 3%);
+		ul{
+			border-bottom: 0;
+			li{
+				width: 250px;
+				vertical-align: top;
+				display: inline-block;
+				box-sizing: border-box;
+				margin: 0 2% 2% 0;
+				text-align: center;
+				color: lighten($mckinsey-academy-black , 15%);
+				> div:nth-child(odd){
+					font-size: 21px;
+					padding: 15px 5px;
+					line-height: 24px;
+					border-bottom: 1px solid $mckinsey-academy-bright-gray;
+					background-color: $pure-white;
+					span{
+						color: $mckinsey-academy-alt-blue;
+						&.inherit-color{
+							color: lighten($mckinsey-academy-black , 15%);
+						}
+					}
+					large{
+						font-size: 50px;
+						display: block;
+						line-height: 80px;
+						margin-top: 10px;
+					}
+					small{
+						font-size: 22px;
+						line-height: normal;
+					}
+				}
+				> div:nth-child(even){
+					background-color: $ash-white;
+					padding: 10px 7px;
+					font-size: 15px;
+					line-height: normal;
+					span{
+						line-height: normal;
+                        &.green{
+                          color: $mckinsey-green;
+                        }
+                        &.red{
+                          color:$mckinsey-red;
+                        }
+					}
+				}
+			}
+		}
+	}
+	#managerDashboardContainer{
+		overflow: hidden;
+		margin: 0 1.07143rem;
+		background-color: darken($mckinsey-academy-bright-gray , 3%);
+		padding-bottom: 20px;
+		.bbGrid-container{
+			max-width: 100%;
+			overflow-x: auto;
+			table{
+				tr{
+					td{
+						&:last-child{
+							width: 134px;
+							position: relative;
+							display: table-cell;
+						}
+						.toggle-subgrid{
+							position: absolute;
+							right: 5px;
+							top: 9px;
+							background: transparent;
+							color: $mckinsey-academy-alt-blue;
+							padding: 0;
+							box-shadow: none;
+							font-weight: normal;
+							font-size: 13px;
+						}
+					}
+					&[class*="subgrid"]{
+						td{
+							&:last-child{
+								width: auto;
+								position: static;
+								display: table-cell;
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }
 

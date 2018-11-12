@@ -1,3 +1,5 @@
+from jsonfield import JSONField
+import collections
 from django.db import models as db_models
 
 
@@ -37,12 +39,34 @@ class LessonNotesItem(db_models.Model):
         )
 
 
+class FeatureFlagsManager(db_models.Manager):
+    """
+    There are multiple entries being created of FeatureFlags against one course randomly.
+     So these methods are being used to return the first entry of FeatureFlags if there are multiple entries or
+     create new try if there is no entry.
+    """
+    def get(self, **obj_data):
+
+        try:
+            return super(FeatureFlagsManager, FeatureFlags.objects).get(course_id=obj_data['course_id'])
+        except FeatureFlags.MultipleObjectsReturned:
+            return FeatureFlags.objects.filter(course_id=obj_data['course_id']).first()
+
+    def get_or_create(self, **obj_data):
+
+        try:
+            return super(FeatureFlagsManager, FeatureFlags.objects).get_or_create(course_id=obj_data['course_id'])
+        except FeatureFlags.MultipleObjectsReturned:
+            return FeatureFlags.objects.filter(course_id=obj_data['course_id']).first(), False
+
+
 class FeatureFlags(db_models.Model):
     course_id = db_models.CharField(max_length=200, unique=False, db_index=True)
     group_work = db_models.BooleanField(default=True)
     discussions = db_models.BooleanField(default=True)
     cohort_map = db_models.BooleanField(default=True)
     lesson_label = db_models.BooleanField(default=True)
+    leaderboard = db_models.BooleanField(default=False)
     proficiency = db_models.BooleanField(default=True)
     progress = db_models.BooleanField(default=True)
     progress_indication = db_models.BooleanField(default=True)
@@ -55,6 +79,9 @@ class FeatureFlags(db_models.Model):
     certificates = db_models.BooleanField(default=False)
     engagement = db_models.BooleanField(default=True)
     discover = db_models.BooleanField(default=True)
+    # flagged courses are picked up by celery background task
+    # and advanced caching is built for them
+    enhanced_caching = db_models.BooleanField(default=False)
 
     def as_json(self):
         return dict(
@@ -64,6 +91,7 @@ class FeatureFlags(db_models.Model):
             discussions=self.discussions,
             cohort_map=self.cohort_map,
             lesson_label=self.lesson_label,
+            leaderboard=self.leaderboard,
             progress_indication=self.progress_indication,
             proficiency=self.proficiency,
             progress=self.progress,
@@ -77,6 +105,7 @@ class FeatureFlags(db_models.Model):
             engagement=self.engagement,
             discover=self.discover,
         )
+    objects = FeatureFlagsManager()
 
 
 class CourseMetaData(db_models.Model):
@@ -88,6 +117,12 @@ class CourseMetaData(db_models.Model):
     module_label = db_models.CharField(max_length=20, blank=True)
     created_at = db_models.DateTimeField(auto_now_add=True)
     updated_at = db_models.DateTimeField(auto_now=True)
+    lessons_label = JSONField(default={'zero': "", 'one': "",
+                                               'two': "", 'few': "",
+                                               'many': "", 'other': ""}, load_kwargs={'object_pairs_hook': collections.OrderedDict})
+    modules_label = JSONField(default={'zero': "", 'one': "",
+                                               'two': "", 'few': "",
+                                               'many': "", 'other': ""}, load_kwargs={'object_pairs_hook': collections.OrderedDict})
 
     def as_json(self):
         return dict(
@@ -95,5 +130,7 @@ class CourseMetaData(db_models.Model):
             course_id=self.course_id,
             lesson_label=self.lesson_label,
             module_label=self.module_label,
+            lesson_pluralist=self.lessons_label,
+            module_pluralist=self.modules_label,
         )
 

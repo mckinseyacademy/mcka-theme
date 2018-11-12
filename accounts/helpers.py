@@ -12,6 +12,7 @@ from .models import UserActivation
 from api_client.api_error import ApiError
 from api_client.group_api import add_user_to_group, PERMISSION_GROUPS, remove_user_from_group
 from lib.authorization import permission_groups_map
+from api_client.user_api import get_filtered_users
 
 log = logging.getLogger(__name__)
 
@@ -120,3 +121,17 @@ def unmake_user_manager(user_id):
             )
         else:
             raise
+
+
+def get_user_by_email(email):
+    query_params = {
+        'email': str(email),
+    }
+    users = get_filtered_users(query_params)['results']
+    return users[0] if users else None
+
+
+def get_organization_by_user_email(user_email):
+    organization_user = get_user_by_email(user_email)
+    organization_id = organization_user['organizations'][0]['id']
+    return organization_id

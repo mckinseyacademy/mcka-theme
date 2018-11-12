@@ -26,6 +26,7 @@ var Router = Backbone.Router.extend({
     'admin/course-meta-content':'course_meta_content',
     'admin/participants': 'participants_list',
     'admin/participants/*id': 'initialize_participant_details',
+    'admin/cohorts/*course_id/': 'admin_cohorts_detail',
     'admin/courses/': 'admin_courses',
     'admin/courses/*course_id/': 'admin_course_details_participants',
     'admin/clients/*client_id/courses_without_programs': 'assign_students_in_courses',
@@ -188,9 +189,25 @@ var Router = Backbone.Router.extend({
     participant_details_course_history_view.render();
   },
 
+  admin_cohorts_detail: function(course_id) {
+    var settings = new Apros.models.AdminCohortSettings({course_id: course_id});
+    var cohorts = new Apros.collections.AdminCohorts({course_id: course_id});
+    var cohorts_detail_view = new Apros.views.CohortsDetailView({
+      collection: cohorts,
+      settings: settings,
+      course_id: course_id,
+      el: '#mainCohortDetailsWrapper'
+    });
+    cohorts_detail_view.render();
+  },
+
   admin_courses: function(){
     var courses = new Apros.collections.AdminCourses();
-    var courses_list_view = new Apros.views.CoursesListView({collection: courses, el: '#coursesListViewGridBlock'});
+    var courses_list_view = new Apros.views.CoursesListView({
+      collection: courses,
+      el: '#coursesListViewGridBlock',
+      context: 'courses'
+    });
     courses_list_view.render();
   },
 
@@ -237,7 +254,7 @@ var Router = Backbone.Router.extend({
     var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid'});
     courses_details_view.render();
     var bulkActions = new Apros.views.CourseDetailsBulkActions({'courseId':courseId,'courses_details_view':courses_details_view, 'courseDetails':courseDetails});
-    bulkActions.render(); 
+    bulkActions.render();
   },
   manager_dashboard_report: function () {
     var course_index = $('a.hashPageButton.active').attr("data-course-index");
@@ -266,6 +283,14 @@ var Router = Backbone.Router.extend({
     var companyCourses = new Apros.collections.CompanyDetailsCourses({ url : url});
     var company_courses_view = new Apros.views.CompanyDetailsCoursesView({collection: companyCourses, el: '#companyDetailsCoursesViewGridBlock'});
     company_courses_view.render();
+  },
+  company_custom_fields: function () {
+    var companyId = $('#mainCompanyDetailsDataContainer').attr('data-id');
+    Apros.Router.linked_views['companyCustomFields']['drawn'] = true;
+    var url = ApiUrls.companies_list+'/'+companyId+'/fields';
+    var companyFieldsCollection  = new Apros.collections.companyCustomFieldsCollection({url: url});
+    var company_custom_fields_view = new Apros.views.CompanyCustomFieldsView({collection: companyFieldsCollection, el: '#companyCustomFieldsGridBlockDisplay'});
+    company_custom_fields_view.render();
   },
   company_details_linked_apps: function(company_id){
     $('#companyDetailsDataWrapper').find('.contentNavigationContainer').each(function(index, value){
@@ -316,7 +341,7 @@ var Router = Backbone.Router.extend({
   },
   mass_student_enroll: function(client_id){
     massParticipantsInit();
-  }, 
+  },
   workgroup_main: function(){
     if($(".select-group-wrapper").attr('data-enable-cache')==='true')
     {
@@ -404,6 +429,10 @@ Apros.Router.linked_views = {
     'function':Apros.Router.company_details_linked_apps,
     'drawn': false
   },
+  'companyCustomFields':{
+    'function': Apros.Router.company_custom_fields,
+    'drawn': false
+  },
 }
 
 // This function will add eateries for manager course in linked views dynamically
@@ -451,3 +480,6 @@ Apros.Router.HashPageChanger = function(element) {
   updateHeader();
 }
 
+Apros.Router.calculateAverage = function(){
+  InitializeAverageCalculate();
+}

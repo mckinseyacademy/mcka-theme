@@ -1,0 +1,962 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-11-07 11:36+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: static/js/admin/client_sso.js:182
+msgid "You need to enter name!"
+msgstr "名前を入力してください。"
+
+#: static/js/admin/client_sso.js:187
+msgid "You need to enter course ID!"
+msgstr "コースIDを入力してください。"
+
+#: static/js/admin/course_meta_content.js:1
+msgid "Click Add to specify Lesson Label"
+msgstr ""
+
+#: static/js/admin/course_meta_content.js:2
+msgid "Click Add to specify Module Label"
+msgstr ""
+
+#: static/js/admin/course_meta_content.js:3
+msgid "Click Add to specify Lessons Label"
+msgstr ""
+
+#: static/js/admin/course_meta_content.js:4
+msgid "Click Add to specify Modules Label"
+msgstr ""
+
+#: static/js/admin_learner_dashboard/element_modal.js:64
+#: static/js/views/admin/company_learner_dashboard_list.js:14
+#: static/js/views/admin/course_details_bulk_actions.js:277
+#: static/js/views/admin/participant_details_edit_info.js:368
+#: static/js/views/admin/participantsinfo.js:121
+msgid "Course"
+msgstr "コース"
+
+#: static/js/admin_learner_dashboard/element_modal.js:72
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
+msgid "In Person Session"
+msgstr "対面セッション"
+
+#: static/js/admin_learner_dashboard/self_registration_roles.js:9
+msgid "Add new role e.g CEO,CTO"
+msgstr "新規のロール (CEO、CTOなど) を追加する"
+
+#: static/js/admin_learner_dashboard/self_registration_roles.js:10
+msgid "Delete Role"
+msgstr "ロールを削除する"
+
+#: static/js/admin_learner_dashboard/sort.js:72
+#: static/js/learner_dashboard_sort.js:54
+msgid "Are you sure?"
+msgstr "本当によろしいですか?"
+
+#: static/js/admin_upload_students.js:8
+#: static/js/common/mass_participants_enroll.js:169
+#: static/js/common/mass_participants_upload.js:115
+msgid "Show Errors"
+msgstr "エラーを表示する"
+
+#: static/js/admin_upload_students.js:73
+#: static/js/common/mass_participants_enroll.js:147
+#: static/js/common/mass_participants_enroll.js:325
+#: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
+msgid "Please select file first."
+msgstr "まずファイルをクリックしてください。"
+
+#: static/js/application.js:192
+msgid "Your course hasn't begun yet. "
+msgstr "あなたのコースはまだ始まっていません。"
+
+#: static/js/application.js:195
+msgid "Your course begins in %(days)s day."
+msgid_plural "Your course begins in %(days)d days."
+msgstr[0] "あなたのコースは、%(days)s日後に始まります。"
+msgstr[1] "あなたのコースは、%(days)d日後に始まります。"
+
+#: static/js/application.js:198
+msgid "Welcome to McKinsey Academy"
+msgstr "McKinsey Academyへようこそ"
+
+#: static/js/common/admin_bulk_actions.js:17
+msgid "Progress: %(value)s%"
+msgstr "進度: %(value)s%"
+
+#: static/js/common/bbGridExtend.js:70
+msgid "Keyword Search"
+msgstr "キーワード検索"
+
+#: static/js/common/common_js.js:171
+msgid "NoName"
+msgstr "無名"
+
+#: static/js/common/common_js.js:516
+msgid "Send"
+msgstr "送信する"
+
+#: static/js/common/common_js.js:746
+msgid "Fetching data for file: %(filename)s"
+msgstr "ファイル: %(filename)sのデータを取り込み中"
+
+#: static/js/common/common_js.js:858
+msgid "%(value)s%"
+msgstr "%(value)s%"
+
+#: static/js/common/mass_participants_enroll.js:57
+#: static/js/common/mass_participants_enroll.js:128
+#: static/js/common/mass_participants_enroll.js:298
+#: static/js/common/mass_participants_enroll.js:373
+msgid ""
+"The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
+"more files!"
+msgstr ""
+"この.csvファイルは%(limit)s行: %(lines)s以上です。ファイルを分割してくださ"
+"い。"
+
+#: static/js/common/mass_participants_enroll.js:181
+#: static/js/common/mass_participants_upload.js:127
+msgid "Errors:"
+msgstr "エラー:"
+
+#: static/js/common/mass_participants_enroll.js:190
+#: static/js/common/mass_participants_upload.js:136
+msgid "Total:"
+msgstr "合計:"
+
+#: static/js/common/mass_participants_enroll.js:192
+#: static/js/common/mass_participants_upload.js:138
+msgid "Succeded:"
+msgstr "完了:"
+
+#: static/js/common/mass_participants_enroll.js:194
+#: static/js/common/mass_participants_upload.js:140
+msgid "Failed:"
+msgstr "失敗:"
+
+#: static/js/common/mass_participants_enroll.js:246
+msgid "email"
+msgstr "Eメール"
+
+#: static/js/common/mass_participants_enroll.js:246
+msgid "course id"
+msgstr "コースID"
+
+#: static/js/common/mass_participants_enroll.js:246
+msgid "status"
+msgstr "ステータス"
+
+#: static/js/common/mass_participants_enroll.js:260
+msgid "Learner email"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:260
+msgid "Business Function"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:260
+msgid "Business Unit"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:260
+#, fuzzy
+#| msgid "Notification"
+msgid "location"
+msgstr "通知"
+
+#: static/js/common/mass_participants_enroll.js:396
+msgid "Report of bulk update will be sent to your email."
+msgstr ""
+
+#: static/js/common/mass_participants_upload.js:137
+#: static/js/common/mass_participants_upload.js:139
+#: static/js/common/mass_participants_upload.js:141
+msgid "0"
+msgstr "0"
+
+#: static/js/company_fields.js:9
+msgid "2 or more fields can not have the same name"
+msgstr ""
+
+#: static/js/company_fields.js:13
+msgid "Only alphanumeric characters and spaces allowed"
+msgstr ""
+
+#: static/js/company_fields.js:53 static/js/company_fields.js:72
+msgid "You can only add up to 4 fields"
+msgstr ""
+
+#: static/js/course_contact_modal.js:15
+msgid "Notification"
+msgstr "通知"
+
+#: static/js/course_drag_drop.js:70
+msgid "Group successfully updated"
+msgstr "グループの更新が完了しました"
+
+#: static/js/course_drag_drop.js:153
+msgid "Please select at least one student"
+msgstr "生徒を最低1名選択してください"
+
+#: static/js/course_drag_drop.js:160
+msgid "Please select project"
+msgstr "プロジェクトを選択してください"
+
+#: static/js/course_drag_drop.js:174
+msgid "Group was not created"
+msgstr "グループは作成されませんでした"
+
+#: static/js/course_drag_drop.js:234
+msgid "All students added to private group have to be members of same company."
+msgstr ""
+"プライベートグループに追加される生徒は全員、同じ会社の社員である必要がありま"
+"す。"
+
+#: static/js/course_drag_drop.js:242
+msgid ""
+"Are you sure you want to remove this group? Doing so will remove submissions "
+"and feedback associated with the group."
+msgstr ""
+"本当にこのグループを削除してよろしいですか? それにより、このグループに関係す"
+"る提出物およびフィードバックが削除されます。"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
+msgid "Your Progress: %(value)s%"
+msgstr "あなたの進度: %(value)s%"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+msgid "Complete"
+msgstr "完了"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+msgid "Incomplete"
+msgstr "未完了"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
+msgid "Digital Course"
+msgstr "デジタルコース"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
+msgid "Group work"
+msgstr "グループワーク"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
+msgid "Webinar"
+msgstr "ウェビナー"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
+msgid "Digital Content"
+msgstr "デジタルコンテンツ"
+
+#: static/js/image_editor.js:3
+msgid "No file Selected"
+msgstr "ファイルが選択されていません。"
+
+#: static/js/image_editor.js:45
+msgid ""
+"Error uploading file. Please try again and be sure to use an accepted file "
+"format."
+msgstr ""
+"ファイルのアップロード中にエラーが発生しました。使用可能なファイル形式を確認"
+"し、再度試してください。"
+
+#: static/js/image_editor.js:52
+msgid "Please select file for upload."
+msgstr "アップロードするファイルをクリックしてください。"
+
+#: static/js/models/city.js:29
+msgid "Participants:"
+msgstr "参加者:"
+
+#: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
+#: static/js/views/admin/participantsinfo.js:24
+msgid "Email"
+msgstr "Eメール"
+
+#: static/js/router.js:380
+msgid "Please select at least one course"
+msgstr "コースを最低1個選択してください"
+
+#: static/js/views/admin/cohorts.js:30
+msgid "There was an error submitting your file."
+msgstr ""
+
+#: static/js/views/admin/cohorts.js:35
+msgid "Invalid format for CSV file."
+msgstr ""
+
+#: static/js/views/admin/cohorts.js:37
+msgid "Error processing CSV file."
+msgstr ""
+
+#: static/js/views/admin/cohorts.js:132
+#, javascript-format
+msgid "%s learner has been added to this cohort."
+msgid_plural "%s learners have been added to this cohort."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/cohorts.js:138
+#, javascript-format
+msgid ""
+"%s learner was preassigned to this cohort. This learner will automatically "
+"be added to the cohort when they enroll in the course."
+msgid_plural ""
+"%s learners were preassigned to this cohort. These learners will "
+"automatically be added to the cohort when they enroll in the course."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/cohorts.js:144
+#, javascript-format
+msgid "%s learner has been moved to this cohort."
+msgid_plural "%s learners have been moved to this cohort."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/cohorts.js:150
+#, javascript-format
+msgid "%s invalid email was ignored."
+msgid_plural "%s invalid emails were ignored."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/cohorts.js:156
+#, javascript-format
+msgid "%s user was already in this cohort."
+msgid_plural "%s users were already in this cohort."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/cohorts.js:162
+#, javascript-format
+msgid "%s user/email was not found."
+msgid_plural "%s users/email were not found."
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/cohorts.js:222
+#, javascript-format
+msgid "contains %s learner"
+msgid_plural "contains %s learners"
+msgstr[0] ""
+msgstr[1] ""
+
+#: static/js/views/admin/companies_list.js:15
+#: static/js/views/admin/course_details.js:29
+#: static/js/views/admin/participantsinfo.js:23
+msgid "Company"
+msgstr "会社"
+
+#: static/js/views/admin/companies_list.js:23
+msgid "Company ID"
+msgstr "会社ID"
+
+#: static/js/views/admin/companies_list.js:24
+msgid "No. of Participants"
+msgstr "参加者数"
+
+#: static/js/views/admin/companies_list.js:25
+msgid "No. of Courses"
+msgstr "コース数:"
+
+#: static/js/views/admin/companies_list.js:98
+#: static/js/views/admin/company_details.js:189
+#: static/js/views/admin/company_learner_dashboard_list.js:139
+#: static/js/views/admin/participant_details_edit_info.js:484
+#: static/js/views/admin/participantsinfo.js:371
+msgid "This company name cannot contain non-alphanumeric characters!"
+msgstr "会社名には英数字しか使用できません。"
+
+#: static/js/views/admin/companies_list.js:105
+#: static/js/views/admin/company_details.js:184
+#: static/js/views/admin/company_learner_dashboard_list.js:135
+#: static/js/views/admin/participant_details_edit_info.js:478
+#: static/js/views/admin/participantsinfo.js:365
+msgid "This company name cannot have more than 30 characters!"
+msgstr "会社名は30文字以下にしてください。"
+
+#: static/js/views/admin/companies_list.js:142
+msgid "Couldn't create new company!"
+msgstr "新しい会社を作成できませんでした。"
+
+#: static/js/views/admin/company_details.js:4
+#: static/js/views/admin/course_details.js:321
+#: static/js/views/admin/courses_list.js:16
+#: static/js/views/admin/participant_details_active_courses_view.js:54
+#: static/js/views/admin/participant_details_course_history_view.js:10
+msgid "Course Name"
+msgstr "コース名"
+
+#: static/js/views/admin/company_details.js:20
+#: static/js/views/admin/course_details.js:331
+#: static/js/views/admin/courses_list.js:26
+#: static/js/views/admin/participant_details_active_courses_view.js:72
+#: static/js/views/admin/participant_details_course_history_view.js:28
+msgid "Course ID"
+msgstr "コースID"
+
+#: static/js/views/admin/company_details.js:21
+msgid "Participants"
+msgstr "参加者"
+
+#: static/js/views/admin/company_details.js:22
+#: static/js/views/admin/courses_list.js:27
+msgid "Start"
+msgstr "開始"
+
+#: static/js/views/admin/company_details.js:38
+#: static/js/views/admin/courses_list.js:36
+msgid "End"
+msgstr "終了"
+
+#: static/js/views/admin/company_details.js:68
+msgid "Cohort Comp."
+msgstr "コホート会社"
+
+#: static/js/views/admin/company_details.js:194
+#: static/js/views/admin/company_learner_dashboard_list.js:143
+msgid "No Company Display Name!"
+msgstr "会社表示名がありません。"
+
+#: static/js/views/admin/company_learner_dashboard_list.js:4
+msgid "Dashboard Name"
+msgstr "ダッシュボード名"
+
+#: static/js/views/admin/company_linked_apps.js:4
+msgid "App Name"
+msgstr "アプリ名"
+
+#: static/js/views/admin/company_linked_apps.js:20
+msgid "Deployment Mech"
+msgstr "開発メカニズム"
+
+#: static/js/views/admin/company_linked_apps.js:21
+msgid "iOS DL URL"
+msgstr "iOS DL URL"
+
+#: static/js/views/admin/company_linked_apps.js:26
+msgid "Android DL URL"
+msgstr "Android DL URL"
+
+#: static/js/views/admin/company_linked_apps.js:31
+msgid "Urban Airship URL"
+msgstr "Urban Airship URL"
+
+#: static/js/views/admin/company_linked_apps.js:36
+msgid "Analytics URL"
+msgstr "Analytics URL"
+
+#: static/js/views/admin/company_linked_apps.js:41
+msgid "Active"
+msgstr "有効"
+
+#: static/js/views/admin/company_linked_apps.js:147
+msgid "Couldn't link this App!"
+msgstr "このアプリをリンクできません。"
+
+#: static/js/views/admin/company_mobileapp_details.js:31
+msgid "Couldn't delink App!"
+msgstr "アプリへのリンクを削除できません。"
+
+#: static/js/views/admin/company_mobileapp_details.js:108
+msgid "This app name cannot have more than 30 characters!"
+msgstr "アプリ名は30文字以下にしてください。"
+
+#: static/js/views/admin/company_mobileapp_details.js:113
+msgid "This app name cannot contain non-alphanumeric characters!"
+msgstr "アプリ名には英数字しか使用できません。"
+
+#: static/js/views/admin/company_mobileapp_details.js:118
+msgid "No App Display Name!"
+msgstr "アプリ表示名がありません。"
+
+#: static/js/views/admin/course_details.js:6
+#: static/js/views/admin/participantsinfo.js:13
+msgid "Name"
+msgstr "名前"
+
+#: static/js/views/admin/course_details.js:30
+#: static/js/views/admin/course_details_bulk_actions.js:281
+#: static/js/views/admin/participant_details_active_courses_view.js:111
+#: static/js/views/admin/participant_details_course_history_view.js:32
+#: static/js/views/admin/participant_details_edit_info.js:372
+#: static/js/views/admin/participantsinfo.js:130
+msgid "Status"
+msgstr "ステータス"
+
+#: static/js/views/admin/course_details.js:31
+#: static/js/views/admin/participantsinfo.js:41
+msgid "Activated"
+msgstr "有効化済み"
+
+#: static/js/views/admin/course_details.js:32
+#, fuzzy
+#| msgid "Cohort Comp."
+msgid "Cohort"
+msgstr "コホート会社"
+
+#: static/js/views/admin/course_details.js:40
+msgid "Last Log In"
+msgstr "最終ログイン"
+
+#: static/js/views/admin/course_details.js:51
+#: static/js/views/admin/manager_dashboard.js:30
+#: static/js/views/admin/participant_details_active_courses_view.js:74
+msgid "Progress"
+msgstr "進度"
+
+#: static/js/views/admin/course_details.js:58
+#: static/js/views/admin/participant_details_active_courses_view.js:93
+msgid "Proficiency"
+msgstr "習熟度"
+
+#: static/js/views/admin/course_details.js:65
+msgid "Engagement"
+msgstr "エンゲージメント"
+
+#: static/js/views/admin/course_details.js:72
+#: static/js/views/admin/course_details.js:76
+msgid "Activation Link"
+msgstr "有効化リンク"
+
+#: static/js/views/admin/course_details.js:80
+msgid "Username"
+msgstr "ユーザー名"
+
+#: static/js/views/admin/course_details.js:81
+msgid "Country"
+msgstr "国"
+
+#: static/js/views/admin/course_details.js:250
+msgid "Couldn't create new tag!"
+msgstr "新しいタグを作成できませんでした。"
+
+#: static/js/views/admin/course_details.js:264
+msgid ""
+"You don't have permission to create a new tag, please select one from the "
+"list!"
+msgstr "新しいタグを作成する権限がありません。一覧から一つ選択してください。"
+
+#: static/js/views/admin/course_details.js:294
+msgid "Couldn't delete tag!"
+msgstr "タグを削除できませんでした。"
+
+#: static/js/views/admin/course_details.js:334
+msgid "%(count)s Course Tagged with %(tagDetails)s"
+msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
+msgstr[0] "%(count)sのコースが%(tagDetails)sとタグ付けされました"
+msgstr[1] "%(count)sのコースが%(tagDetails)sとタグ付けされました"
+
+#: static/js/views/admin/course_details.js:389
+msgid "Progress: %(progress)s %"
+msgstr "進度: %(progress)s %"
+
+#: static/js/views/admin/course_details.js:426
+msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
+msgstr "選択済み: %(selected)s、完了: %(successful)s、失敗: %(failed)s"
+
+#: static/js/views/admin/course_details.js:477
+msgid "This tag name cannot have more than 30 characters!"
+msgstr "タグ名は30文字以下にしてください。"
+
+#: static/js/views/admin/course_details.js:484
+msgid "This tag name cannot contain non-alphanumeric characters!"
+msgstr "タグ名には英数字しか使用できません。"
+
+#: static/js/views/admin/course_details.js:524
+msgid "Couldn't add tag to course!"
+msgstr "コースにタグが追加できません。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:58
+msgid "File successfully uploaded!"
+msgstr "ファイルのアップロードを完了しました。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:116
+msgid "Unenroll Participants"
+msgstr "参加者の登録を解除する"
+
+#: static/js/views/admin/course_details_bulk_actions.js:117
+#: static/js/views/admin/course_details_bulk_actions.js:179
+#: static/js/views/admin/course_details_bulk_actions.js:267
+msgid "Selected: %(selectedRows)s, Successful: 0, Failed: 0"
+msgstr "選択済み: %(selectedRows)s、完了: 0、失敗: 0"
+
+#: static/js/views/admin/course_details_bulk_actions.js:120
+msgid "Unenroll all selected participants from this course?"
+msgstr "選択したすべての参加者をこのコースから登録解除しますか?"
+
+#: static/js/views/admin/course_details_bulk_actions.js:133
+#: static/js/views/admin/course_details_bulk_actions.js:199
+#: static/js/views/admin/course_details_bulk_actions.js:301
+#: static/js/views/admin/course_details_bulk_actions.js:715
+msgid ""
+"You need to select at least one participant to be able to apply bulk actions."
+msgstr "一括操作をするには、最低1名の参加者を選択してください。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:137
+#: static/js/views/admin/participant_details_active_courses_view.js:131
+#: static/js/views/admin/participant_details_active_courses_view.js:133
+msgid "Unenroll"
+msgstr "登録解除する"
+
+#: static/js/views/admin/course_details_bulk_actions.js:178
+msgid "Change Status"
+msgstr "ステータスを変更する"
+
+#: static/js/views/admin/course_details_bulk_actions.js:182
+msgid "Change status of all selected participants to:"
+msgstr "すべての選択した参加者を次のステータスに変更する:"
+
+#: static/js/views/admin/course_details_bulk_actions.js:184
+#: static/js/views/admin/course_details_bulk_actions.js:283
+#: static/js/views/admin/participant_details_edit_info.js:374
+#: static/js/views/admin/participantsinfo.js:134
+msgid "Participant"
+msgstr "参加者"
+
+#: static/js/views/admin/course_details_bulk_actions.js:185
+#: static/js/views/admin/course_details_bulk_actions.js:284
+#: static/js/views/admin/participant_details_edit_info.js:375
+#: static/js/views/admin/participantsinfo.js:136
+msgid "Observer"
+msgstr "監視者"
+
+#: static/js/views/admin/course_details_bulk_actions.js:186
+#: static/js/views/admin/course_details_bulk_actions.js:285
+#: static/js/views/admin/participant_details_edit_info.js:376
+#: static/js/views/admin/participantsinfo.js:135
+msgid "TA"
+msgstr "TA"
+
+#: static/js/views/admin/course_details_bulk_actions.js:203
+msgid "Save Changes"
+msgstr "変更を保存する"
+
+#: static/js/views/admin/course_details_bulk_actions.js:224
+#: static/js/views/admin/course_details_bulk_actions.js:329
+#: static/js/views/admin/course_details_bulk_actions.js:335
+#: static/js/views/admin/participant_details_edit_info.js:410
+#: static/js/views/admin/participant_details_edit_info.js:416
+msgid "You need to select status!"
+msgstr "タグを選択してください。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:266
+#: static/js/views/admin/participant_details_edit_info.js:363
+msgid "Select Course"
+msgstr "コースを選択する"
+
+#: static/js/views/admin/course_details_bulk_actions.js:270
+msgid "%(selectedRows)s Participants will be enroll in course selected below."
+msgid_plural ""
+"%(selectedRows)s Participant will be enroll in course selected below."
+msgstr[0] "%(selectedRows)s人の参加者が下記の選択されたコースに登録されます。"
+msgstr[1] "%(selectedRows)s人の参加者が下記の選択されたコースに登録されます。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:305
+msgid "Enroll Participants"
+msgstr "参加者を登録する"
+
+#: static/js/views/admin/course_details_bulk_actions.js:340
+#: static/js/views/admin/course_details_bulk_actions.js:344
+#: static/js/views/admin/participant_details_edit_info.js:421
+#: static/js/views/admin/participant_details_edit_info.js:425
+msgid "You need to select course!"
+msgstr "コースを選択してください。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:429
+msgid "Download"
+msgstr "ダウンロード"
+
+#: static/js/views/admin/course_details_bulk_actions.js:429
+msgid "Progress : 0%"
+msgstr "進度: 0%"
+
+#: static/js/views/admin/course_details_bulk_actions.js:430
+msgid "Download CSV File"
+msgstr "CSVファイルをダウンロードする"
+
+#: static/js/views/admin/course_details_bulk_actions.js:467
+msgid ""
+"Include breakdown of progress for each lesson (Note: the export will take "
+"more time)"
+msgstr ""
+"レッスンごとの進度の内訳を含む (注記: エクスポートにはさらに時間を要します)"
+
+#: static/js/views/admin/course_details_bulk_actions.js:473
+msgid "We'll e-mail you when your report is ready to download."
+msgstr ""
+"あなたのレポートのダウンロードの準備ができたときに、Eメールを送信します。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:476
+msgid "Exporting Stats for All Users"
+msgstr "すべてのユーザーのステイタスをエクスポートする"
+
+#: static/js/views/admin/course_details_bulk_actions.js:477
+msgid "Export Report"
+msgstr "レポートをエクスポートする"
+
+#: static/js/views/admin/course_details_bulk_actions.js:517
+msgid "Error initiating the report generation. Please retry later."
+msgstr "レポート作成開始エラー。後でやり直してください。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:546
+msgid "Download Notifications CSV"
+msgstr "通知CSVをダウンロードする"
+
+#: static/js/views/admin/course_details_bulk_actions.js:631
+msgid "Group Work: %(label)s"
+msgstr "グループワーク: %(label)s"
+
+#: static/js/views/admin/course_details_bulk_actions.js:659
+msgid "Assessment: %(label)s"
+msgstr "評価: %(label)s"
+
+#: static/js/views/admin/course_details_bulk_actions.js:685
+msgid "Task failed to execute. Please retry later."
+msgstr "タスクの実行に失敗しました。後でやり直してください。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:702
+msgid "Successfully Enrolled in 1 Course"
+msgstr "1コースに無事登録が完了しました。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:704
+msgid "What would you like to do now?"
+msgstr "次は何をしますか?"
+
+#: static/js/views/admin/course_details_bulk_actions.js:705
+msgid "Go to %(course_id)s Course"
+msgstr "%(course_id)sコースを見る"
+
+#: static/js/views/admin/course_details_bulk_actions.js:707
+msgid "Send Course Intro Email"
+msgstr "コース紹介をEメールで送信する"
+
+#: static/js/views/admin/course_details_bulk_actions.js:709
+msgid "Enroll this list in another course"
+msgstr "他のコースにこの一覧を登録する"
+
+#: static/js/views/admin/course_details_bulk_actions.js:721
+msgid "I'm Done"
+msgstr "終わりました"
+
+#: static/js/views/admin/course_details_bulk_actions.js:741
+msgid "Successfully deleted template!"
+msgstr "テンプレートの削除を完了しました。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:748
+msgid "Successfully added new template!"
+msgstr "新しいテンプレートの追加を完了しました。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:761
+msgid "Successfully updated template!"
+msgstr "テンプレートの更新を完了しました。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:766
+msgid "Email Preview Success!"
+msgstr "Eメールプレビューを完了しました。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:766
+msgid "Successfully sent preview email!"
+msgstr "プレビューのEメールの送信を完了しました。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:769
+msgid "Email Success!"
+msgstr "Eメール完了。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:769
+msgid "Successfully sent email!"
+msgstr "メッセージの送信を完了しました。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:811
+msgid "Preview Email!"
+msgstr "Eメールをプレビューする。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:811
+msgid "Please enter preview email!"
+msgstr "プレビューのEメールを入力してください。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:831
+msgid "Please enter new template name!"
+msgstr "新しいテンプレート名を入力してください。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:846
+msgid "Please enter updated template name or leave the old one!"
+msgstr ""
+"更新したテンプレート名を入力するか、古いテンプレート名を残してください。"
+
+#: static/js/views/admin/course_details_bulk_actions.js:859
+msgid "You are about to delete email template. Are you sure?"
+msgstr ""
+"あなたはEメールテンプレートを削除しようとしています。よろしいでしょうか?"
+
+#: static/js/views/admin/course_details_engagement.js:11
+msgid "# of people"
+msgstr "人数"
+
+#: static/js/views/admin/course_details_engagement.js:12
+msgid "% total cohort"
+msgstr "%合計コホート"
+
+#: static/js/views/admin/course_details_engagement.js:13
+msgid "Avg Progress"
+msgstr "平均進度"
+
+#: static/js/views/admin/courseinfo.js:21
+msgid ".0%"
+msgstr ".0%"
+
+#: static/js/views/admin/courseinfo.js:48
+msgid " day"
+msgstr " 日"
+
+#: static/js/views/admin/courseinfo.js:49
+msgid " week"
+msgstr " 週"
+
+#: static/js/views/admin/group_work_dashboard.js:52
+msgid "None"
+msgstr "なし"
+
+#: static/js/views/admin/group_work_dashboard.js:195
+msgid "Do you really want to delete: \n"
+msgstr "本当に消去しますか: \n"
+
+#: static/js/views/admin/manager_dashboard.js:99
+#: static/js/views/courses/lesson_note.js:2
+msgid "Lesson"
+msgstr "レッスン"
+
+#: static/js/views/admin/manager_dashboard.js:99
+msgid "complete"
+msgstr "未完了"
+
+#: static/js/views/admin/manager_dashboard.js:104
+msgid "Error Occured!"
+msgstr ""
+
+#: static/js/views/admin/manager_dashboard.js:107
+msgid "Hide Details"
+msgstr ""
+
+#: static/js/views/admin/manager_dashboard.js:137
+msgid "View Details"
+msgstr ""
+
+#: static/js/views/admin/navigation.js:6
+msgid "Are you sure you want to remove this ?"
+msgstr "本当にこれを消去しますか?"
+
+#: static/js/views/admin/participant_details_active_courses_view.js:73
+#: static/js/views/admin/participant_details_course_history_view.js:29
+msgid "Program"
+msgstr "プログラム"
+
+#: static/js/views/admin/participant_details_course_history_view.js:30
+msgid "Completed"
+msgstr "完了"
+
+#: static/js/views/admin/participant_details_course_history_view.js:31
+msgid "Grade"
+msgstr "成績"
+
+#: static/js/views/admin/participant_details_course_history_view.js:33
+msgid "End Date"
+msgstr "終了日"
+
+#: static/js/views/admin/participant_details_edit_info.js:113
+msgid "Username can't be empty! "
+msgstr "ユーザーネームは必ず記入してください。"
+
+#: static/js/views/admin/participant_details_edit_info.js:118
+msgid "First name can't be empty! "
+msgstr "名前は必ず記入してください。"
+
+#: static/js/views/admin/participant_details_edit_info.js:123
+msgid "Last name can't be empty! "
+msgstr "苗字は必ず記入してください。"
+
+#: static/js/views/admin/participant_details_edit_info.js:128
+msgid "Email can't be empty! "
+msgstr "Eメールは必ず記入してください。"
+
+#: static/js/views/admin/participant_details_edit_info.js:152
+msgid "Company doesn't exist! "
+msgstr "会社は存在しません。"
+
+#: static/js/views/admin/participant_details_edit_info.js:202
+msgid "Updated user data!"
+msgstr "ユーザーデータを更新しました。"
+
+#: static/js/views/admin/participant_details_edit_info.js:254
+#: static/js/views/admin/participant_details_edit_info.js:295
+msgid "Male"
+msgstr "男性"
+
+#: static/js/views/admin/participant_details_edit_info.js:256
+#: static/js/views/admin/participant_details_edit_info.js:293
+msgid "Female"
+msgstr "女性"
+
+#: static/js/views/admin/participant_details_edit_info.js:364
+msgid "User will be enrolled in course selected below."
+msgstr "選択された以下のコースにユーザーを登録します。"
+
+#: static/js/views/admin/participant_details_edit_info.js:377
+msgid "Moderator"
+msgstr ""
+
+#: static/js/views/admin/participant_details_edit_info.js:387
+msgid "Enroll Participant"
+msgstr "参加者を登録する"
+
+#: static/js/views/admin/participant_details_edit_info.js:445
+msgid "User successfully enrolled in course"
+msgstr "ユーザーのコースへの登録が完了しました"
+
+#: static/js/views/admin/participant_details_edit_info.js:531
+#: static/js/views/admin/participantsinfo.js:101
+msgid "Admin Company"
+msgstr "管理会社"
+
+#: static/js/views/admin/participant_details_edit_info.js:535
+msgid "Try selecting your company from the type-ahead results."
+msgstr "先行入力結果からあなたの会社を選択してみてください。"
+
+#: static/js/views/admin/participant_details_edit_info.js:541
+#: static/js/views/admin/participantsinfo.js:110
+msgid "Admin Permissions"
+msgstr "管理者の許可"
+
+#: static/js/views/admin/participant_details_edit_info.js:544
+#: static/js/views/admin/participantsinfo.js:113
+msgid "Company Admin"
+msgstr "会社の管理者"
+
+#: static/js/views/admin/participantsinfo.js:25
+msgid "Date Added"
+msgstr "データが追加されました"
+
+#: static/js/views/admin/participantsinfo.js:35
+msgid "Enrolled In"
+msgstr "登録済み"
+
+#: static/js/views/courses/lesson_note.js:3
+msgid "Module"
+msgstr "モジュール"

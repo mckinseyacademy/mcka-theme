@@ -87,9 +87,14 @@ To use testshib as an identity provider, do the following:
 4. [Add LMS Identity Provider][lms-add-idp], using testshib [metadata URL][testshib-metadata] as Metadata Source.
 5. Set `Email Attribute` to `urn:oid:1.3.6.1.4.1.5923.1.1.1.6`
 
+### `saml-idp` Integration
+
+An alternative to using Testshib is `saml-idp` which is a node-based IdP server that runs locally on your computer.
+
+To use `saml-idp` first [configure the LMS as a Service Provider][lms-configure-sp], and then follow the instructions [here](./saml-idp_Setup.md).
 
 [testshib-register]: https://www.testshib.org/register.html
-[lms-add-idp]: http://edx.readthedocs.org/projects/edx-installing-configuring-and-running/en/latest/configuration/tpa/tpa_SAML_IdP.html#add-and-enable-a-saml-identity-provider
+[lms-add-idp]: https://edx.readthedocs.io/projects/edx-installing-configuring-and-running/en/latest/configuration/tpa/tpa_integrate_open/tpa_SAML_IdP.html#add-and-enable-a-saml-identity-provider
 [lms-configure-sp]: http://edx.readthedocs.io/projects/edx-installing-configuring-and-running/en/latest/configuration/tpa/tpa_SAML_SP.html
 [testshib-metadata]: https://www.testshib.org/metadata/testshib-providers.xml
 

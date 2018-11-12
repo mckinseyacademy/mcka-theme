@@ -431,15 +431,23 @@ Enable this new virtual host with:
 [appendix-c]: #appendix-c-complete-production-routing
 
 ## Appendix F: Celery Configuration
-We are using celery for background tasks processing it requires RabbitMQ as broker. To configure celery on dev environment set `BROKER_URL` in your `local_settings.py` with specified username, password and host and then start celery worker using the command:
+
+We are using celery for background tasks processing, and it requires a broker like RabbitMQ. To configure celery in a dev environment, set `BROKER_URL` in your `local_settings.py` with the following:
+
+    BROKER_URL = 'amqp://celery:celery@127.0.0.1:5672'
+
+Then, in a new shell as the `apros` user, run the following command to start up the celery worker:
 
     ./manage.py celery worker --loglevel=info
 
-if want to avoid setting up RabbitMQ and running celery workers, you can directly execute the tasks when you queue them by adding following line in your `local_settings.py` file
+One can avoid using a broker and starting up the celery worker to process such asynchronous jobs by specifying the following variable in `local_settings.py`:
 
     CELERY_ALWAYS_EAGER = True
 
+This effectively causes the jobs to become synchronous, and will run in the main thread. You should only ever use this in a development environment.
+
 ## Appendix G: Running Tests
+
 First install requirements for running tests:
 
     pip install -r test-requirements.txt

@@ -243,6 +243,7 @@
       details.find('.participantEmailValue').text(edit.find('.participantEmailValue input').val());
       details.find('.participantCompanyValue a').text(edit.find('.participantCompanyValue input').val());
       details.find('.participantPermissionsValue').text(edit.find('.participantPermissionsValue select option:selected').text());
+      details.find('.participantManagerValue').text(edit.find('.participantManagerValue input').val());
       var company_data_id = edit.find('.participantCompanyValue input').attr('data-id');
       details.find('.participantCompanyValue a').attr('data-id',company_data_id);
       var company_href = details.find('.participantCompanyValue a').attr('href')
@@ -268,6 +269,14 @@
       
       details.find('.participantLocationValue').text(combinedLocation);
       $('#participantsTopDetailsContainer').find('.participantFullName').text(edit.find('.participantFirstNameValue input').val() + ' ' + edit.find('.participantLastNameValue input').val());
+
+      var updated_company_fields_values = $('.participantCompanyField input');
+      var company_field_values = $('.participantCompanyFieldValue');
+      for(var i=0;i< updated_company_fields_values.length;++i)
+      {
+        if(updated_company_fields_values[i].value)
+          company_field_values[i].innerText = updated_company_fields_values[i].value;
+      }
     },
 
     update_edit_field_data: function(_this)
@@ -364,7 +373,8 @@
           '<select name="status">' +
           '<option value="Active">'+gettext('Participant')+'</option>' +
           '<option value="Observer">' + gettext('Observer') + '</option>' +
-          '<option value="TA">' + gettext('TA') + '</option></select>' +
+          '<option value="TA">' + gettext('TA') + '</option>' +
+          '<option value="Instructor">' + gettext('Moderator') + '</option></select>' +
           '</div></div>'
         );
         var url = ApiUrls.participant_courses_get_api();

@@ -170,6 +170,9 @@ urlpatterns += [
     url(r'^api/participants/import_participants$', views.import_participants, name='import_participants'),
     url(r'^api/participants/enroll_participants_from_csv/check/(?P<task_key>.*)$', views.import_participants_check, name='import_participants_check'),
     url(r'^api/participants/enroll_participants_from_csv$', views.enroll_participants_from_csv, name='enroll_participants_from_csv'),
+    url(r'^api/participants/update_company_fields_from_csv', views.update_company_field_from_csv, name='update_company_fields_from_csv$'),
+    url(r'^api/participants/update_manager_from_csv', views.update_manager_from_csv,
+        name='update_manager_from_csv$'),
     url(r'^api/participants$', views.ParticipantsListApi.as_view(), name='participants_list_api'),
     url(r'^participants/(?P<user_id>[0-9]+)/courses/(?P<course_id>.*)/unenroll$', views.participant_details_courses_unenroll_api.as_view(), name='participant_details_courses_unenroll_api'),
     url(r'^participants/(?P<user_id>[0-9]+)/courses/(?P<course_id>.*)/edit_status$', views.participant_details_course_edit_status_api.as_view(), name='participant_details_course_edit_status_api'),
@@ -180,6 +183,7 @@ urlpatterns += [
 
     url(r'^api/companies/(?P<company_id>[0-9]+)/linkedapps$', views.CompanyLinkedAppsApi.as_view(), name='company_linked_apps_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/courses$', views.CompanyCoursesApi.as_view(), name='company_courses_api'),
+    url(r'^api/companies/(?P<company_id>[0-9]+)/fields$', views.CompanyCustomFields.as_view(), name='company_custom_fileds_api'),
     url(r'^api/companies/(?P<company_id>[0-9]+)/edit$', views.company_edit_api.as_view(), name='company_edit_api'),
     url(r'^api/companies/new_company$', views.create_new_company_api.as_view(), name='create_new_company_api'),
     url(r'^api/companies$', views.companies_list_api.as_view(), name='companies_list_api'),
@@ -216,4 +220,13 @@ urlpatterns += [
     url(r'^certificates/templates/(?P<template_id>\d+)/edit$', certificate_views.edit_certificate_template, name='edit_certificate_template'),
 
     url(r'^manager/', include('manager_dashboard.urls'), name='manager_dashboard_urls'),
+
+    # Cohorting
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/(?P<cohort_id>.+)/users/(?P<username>.+)$', views.CohortUsers.as_view(), name='cohort_user_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/(?P<cohort_id>.+)/users', views.CohortUsers.as_view(), name='cohort_users_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/(?P<cohort_id>.+)$', views.CohortHandler.as_view(), name='cohort_list_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/settings$', views.CohortSettings.as_view(), name='cohort_settings_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/$', views.CohortList.as_view(), name='cohort_list_api'),
+    url(r'^api/cohorts/courses/(?P<course_id>.+)/users$', views.CohortImport.as_view(), name='cohort_import_api'),
+    url(r'^cohorts/(?P<course_id>.*)/$', views.cohorts_course_details, name='cohorts_course_details'),
 ]

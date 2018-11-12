@@ -60,8 +60,9 @@
               %a.right{:href => "#", :data-tooltip => "{% trans 'Calendar' %}", "style": "{% if branding and branding.icon_color %} color: #{branding.icon_color};{% endif %}"}
                 %i#open-calendar.fa.fa-calendar.header-link
 
-            %a.right{"data-dropdown": "program-menu-content", 'data-tooltip': '{% trans "Program" %}', "style": "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
-              .fa.fa-th-large.header-link
+            %span.program-menu
+              %a.right{"data-dropdown": "program-menu-content", 'data-tooltip': '{% trans "Program" %}', "style": "{% if branding and branding.icon_color %} color: #{branding.icon_color}; {% endif %}"}
+                .fa.fa-th-large.header-link
             #program-menu-content.program-menu-content{"data-dropdown-content":"true"}
               - include "courses/content_page/program_menu.haml"
 

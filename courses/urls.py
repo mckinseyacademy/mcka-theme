@@ -3,6 +3,8 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
+    url(r'courses_menu/$', views.courses_menu, name='courses_menu'),
+    url(r'^(?P<course_id>.*)/course_lessons_menu$', views.course_lessons_menu, name='course_lessons_menu'),
     url(r'^(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)$', views.navigate_to_lesson_module, name='navigate_to_lesson_module'),
     url(r'^(?P<course_id>.*)/overview$', views.course_overview, name='course_overview'),
     url(r'^(?P<course_id>.*)/announcements$', views.course_news, name='course_news'),
