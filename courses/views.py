@@ -209,7 +209,7 @@ def course_cohort(request, course_id):
     except ApiError:
         completions = proficiency = social_metrics = None
 
-    metrics = course_api.get_course_metrics(course_id, user_id=request.user.id)
+    metrics = course_api.get_course_metrics(course_id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
     metrics.group_enrolled = 0
 
@@ -243,7 +243,7 @@ def course_cohort(request, course_id):
     metrics.groups_users = json.dumps(metrics.groups_users)
 
     metrics.cities = []
-    cities = course_api.get_course_metrics_by_city(course_id, user_id=request.user.id)
+    cities = course_api.get_course_metrics_by_city(course_id)
     for city in cities:
         if city.city != '':
             city_name = clean_xss_characters(city.city)
