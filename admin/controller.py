@@ -1373,8 +1373,7 @@ def course_bulk_action(course_id, data, batch_status, request):
 def _enroll_participant_with_status(course_id, user_id, status):
     permissonsMap = {
         'TA': USER_ROLES.TA,
-        'Observer': USER_ROLES.OBSERVER,
-        'Instructor': USER_ROLES.MODERATOR
+        'Observer': USER_ROLES.OBSERVER
     }
     failure = None
     try:
@@ -1417,8 +1416,7 @@ def unenroll_participant(course_id, user_id):
 def change_user_status(course_id, new_status, status_item):
     permissonsMap = {
         'TA': USER_ROLES.TA,
-        'Observer': USER_ROLES.OBSERVER,
-        'Instructor': USER_ROLES.MODERATOR
+        'Observer': USER_ROLES.OBSERVER
     }
     try:
         permissions = Permissions(status_item['id'])
@@ -1671,8 +1669,7 @@ def _enroll_participants(participants, is_internal_admin, reg_status):
 def _just_enroll_participants(participants, request, reg_status):
     permissonsMap = {
         'ta': USER_ROLES.TA,
-        'observer': USER_ROLES.OBSERVER,
-        'instructor': USER_ROLES.MODERATOR
+        'observer': USER_ROLES.OBSERVER
     }
 
     internalAdminFlag = False

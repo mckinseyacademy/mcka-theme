@@ -1,13 +1,10 @@
   Apros.views.CoursesListView = Backbone.View.extend({
-    initialize: function(options){
+    initialize: function(){
       this.collection.fetch({success: function(){
         cloneHeader('#coursesListViewGridBlock');
       }});
-      this.context = options['context'];
-      _.bindAll(this, 'render');
     },
     render: function(){
-      var context = this.context;
       coursesListViewGrid = new bbGrid.View({
         enableSearch: true,
         container: this.$el,
@@ -18,9 +15,9 @@
             var thisId = attributes['id'];
             var name = attributes['name'];
             if (name.length > 75){
-              return '<a href="/admin/' + context + '/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>';
+              return '<a href="/admin/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>';
             }
-            return '<a href="/admin/' + context + '/' + thisId + '" target="_self">' + name + '</a>';
+            return '<a href="/admin/courses/' + thisId + '" target="_self">' + name + '</a>';
           }
         },
         { title: gettext('Course ID'), index: true, name: 'id' },

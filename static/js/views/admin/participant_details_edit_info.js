@@ -373,8 +373,7 @@
           '<select name="status">' +
           '<option value="Active">'+gettext('Participant')+'</option>' +
           '<option value="Observer">' + gettext('Observer') + '</option>' +
-          '<option value="TA">' + gettext('TA') + '</option>' +
-          '<option value="Instructor">' + gettext('Moderator') + '</option></select>' +
+          '<option value="TA">' + gettext('TA') + '</option></select>' +
           '</div></div>'
         );
         var url = ApiUrls.participant_courses_get_api();

@@ -32,8 +32,7 @@ PERMISSION_GROUPS = DottableDict(
     CLIENT_OBSERVER='mcka_role_client_observer',
     INTERNAL_ADMIN='mcka_role_internal_admin',
     COMPANY_ADMIN='mcka_role_company_admin',
-    MANAGER='manager',
-    MODERATOR='instructor'
+    MANAGER='manager'
 )
 
 TAG_GROUPS = DottableDict(

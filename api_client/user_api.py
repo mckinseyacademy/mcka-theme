@@ -32,7 +32,6 @@ USER_ROLES = DottableDict(
     STAFF='staff',
     INSTRUCTOR='instructor',
     OBSERVER='observer',
-    MODERATOR='instructor',
     TA='assistant',
     INTERNAL_ADMIN='internal_admin',
 )
@@ -275,7 +274,6 @@ def get_user_roles(user_id):
             user_id,
         )
     )
-
     return JP.from_json(response.read())
 
 
@@ -294,11 +292,6 @@ def add_user_role(user_id, course_id, role):
         ),
         data
     )
-
-    # Add discussion moderator in LMS if necessary
-    if role == USER_ROLES.MODERATOR:
-        discussions_api.add_discussion_moderator(course_id, user_id)
-
     return JP.from_json(response.read())
 
 
@@ -326,7 +319,7 @@ def update_user_roles(user_id, role_data):
         ),
         role_data
     )
-
+    
     return JP.from_json(response.read())
 
 
@@ -341,10 +334,6 @@ def delete_user_role(user_id, course_id, role):
             course_id
         )
     )
-
-    # Remove discussion moderator from LMS if necessary
-    if role == USER_ROLES.MODERATOR:
-        discussions_api.remove_discussion_moderator(course_id, user_id)
 
     return (response.code == 204)
 
