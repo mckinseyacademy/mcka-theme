@@ -3,12 +3,9 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
     this.course_id = options['course_id'];
     this.settings = options['settings'];
     this.template = _.template($('#cohortsTemplate').html());
-    this.state = new Backbone.Model({
-      selectedCohort: 0
-    });
     this.listenTo(this.settings, 'sync change', this.render);
-    this.listenTo(this.state, 'change', this.renderTemplate);
     this.settings.fetch();
+    let view = this;
     $('button#createCohortBtn').on('click', function () {
       view.createCohort();
     });
@@ -17,13 +14,8 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
     'click #cohortCheckbox': 'toggleCohorting',
     'click #addLearnersBtn': 'submitUsers',
     'click #updateCohortBtn': 'updateCohort',
-    'change #cohortSelect': 'changeSelectedCohort',
-    'change #file-upload-form-file': 'fileSelectionChanged',
-    'click #importLearnersBtn': 'submitUsersCSV'
-  },
-
-  fileSelectionChanged: function (event) {
-    document.getElementById('importLearnersBtn').disabled = event.target.files.length === 0;
+    'change #cohortSelect': 'changeSelectedCohort'
+    // 'click #importLearnersBtn': 'submitUsersCSV'
   },
 
   createCohort: function () {
@@ -54,10 +46,10 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
   },
 
   submitUsers: function () {
-    let form = this.$('#addUsersForm');
+    let form = this.$(addUsersForm);
     let view = this;
     if (form.val()) {
-      let cohort = this.collection.toJSON()[this.state.get('selectedCohort') || 0];
+      let cohort = this.collection.toJSON()[this.selectedCohort || 0];
       let users = new Apros.models.AdminCohortUsers({course_id: this.course_id, cohort_id: cohort.id});
       let payload = {users: form.val().split(/[ ,\n]/)};
       users.save(payload, {
@@ -99,7 +91,7 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
       }
     }
     let view = this;
-    let model = this.collection.at(this.state.get('selectedCohort') || 0);
+    let model = this.collection.at(this.selectedCohort || 0);
     model.save({
       name: name, assignment_type: assignment
     }, {
@@ -112,52 +104,30 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
   },
 
   changeSelectedCohort: function (event) {
-    this.state.set('selectedCohort', event.currentTarget.value);
-  },
-
-  setUploadError: function (message) {
-    this.state.set({
-      uploadSuccess: false,
-      uploadError: message
-    });
-  },
-
-  submitUsersCSV: function (event) {
-    event.preventDefault();
-    const view = this;
-    const form = $('#file-upload-form');
-    form.ajaxSubmit({
-      error: function () {
-        view.setUploadError(gettext('There was an error submitting your file.'));
-      },
-      success: function (data) {
-        if (data.error_code) {
-          if (data.error_code === 'failed-validation') {
-            view.setUploadError(gettext('Invalid format for CSV file.'));
-          } else {
-            view.setUploadError(gettext('Error processing CSV file.'));
-          }
-        } else {
-          view.state.set({uploadSuccess: true, uploadError: null});
-        }
-      }
-    });
+    console.log(event);
+    this.selectedCohort = event.currentTarget.value;
     this.renderTemplate();
   },
+
+  // submitUsersCSV: function () {
+  //   // TODO Fetch currently selected file
+  //
+  //   // TODO Submit file to API endpoints configured in form
+  //
+  //   // TODO Show results
+  // },
 
   renderTemplate: function () {
     this.$el.html(this.template({
       enabled: this.settings.get('is_cohorted'),
       cohorts: this.collection.toJSON(),
-      selected: this.state.get('selectedCohort'),
-      uploadSuccess: this.state.get('uploadSuccess'),
-      uploadError: this.state.get('uploadError'),
+      selected: this.selectedCohort,
       course_id: this.course_id
     }));
 
     // Check current assignment type
     let assignmentRadios = this.$('div.updateCohortAssignment input').toArray();
-    let selected = this.collection.at(this.state.get('selectedCohort') || 0);
+    let selected = this.collection.at(this.selectedCohort || 0);
     assignmentRadios.forEach(function (radio) {
       radio.checked = radio.value === selected.assignment_type();
     });
