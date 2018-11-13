@@ -42,10 +42,9 @@
                       %p {% trans "Passed:" %} #{passed}%
             #courseMainDetailsContainerView
               .courseDetailsMenuButtons.row
-                - if request.resolver_match.url_name == 'course_details'
-                  .courseCohortsButton.large-2.columns
-                    %a{href: "{% url 'cohorts_course_details' id %}"}
-                      {% trans "COHORTS" %}
+                .courseCohortsButton.large-2.columns
+                  %a{href: "{% url 'cohorts_course_details' id %}"}
+                    {% trans "COHORTS" %}
                 .courseParticipantsButton.large-2.columns
                   %a{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                     {% trans "PARTICIPANTS" %}

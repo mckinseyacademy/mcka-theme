@@ -5412,8 +5412,6 @@ def company_course_details(request, company_id, course_id):
     (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
     course['discussion_feature'] = course_features.discussions
 
-    # Hide cohorts column if it's disabled
-    course['cohorts_enabled'] = course_api.get_course_cohort_settings(course_id).is_cohorted
     return render(request, 'admin/courses/course_details.haml', course)
 
 
