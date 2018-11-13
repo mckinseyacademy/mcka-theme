@@ -4,7 +4,7 @@ from urlparse import urlparse, parse_qs
 import ddt
 import httpretty
 from django.conf import settings
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from mock import patch
 
 from accounts.helpers import TestUser
@@ -207,6 +207,7 @@ class TestCourseApi(TestCase):
         self.assertEquals(len(course.chapters), expected_result)
 
     @httpretty.activate
+    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache',}})
     def test_get_course_different_users(self):
         """
         Ensure that get_course can return different content for different users.
