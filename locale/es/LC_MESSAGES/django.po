@@ -3066,13 +3066,13 @@ msgstr "¿Necesita ayuda?"
 #: templates/accounts/activate.haml:47
 #: templates/accounts/sso_terms_of_service.haml:38
 msgid "View our FAQ for answers to commonly asked questions"
-msgstr "Consulte nuestras sección de preguntas frecuentes"
+msgstr "Consulte las respuestas a las preguntas más frecuentes"
 
 #: templates/accounts/activate.haml:48
 #: templates/accounts/sso_terms_of_service.haml:39
 msgid " , or raise a question in course-specific discussion forums."
 msgstr ""
-", o publique una pregunta en los foros de debate específicos del curso."
+", o haga una pregunta en los foros de debate específicos de los cursos."
 
 #: templates/accounts/change_profile_image.haml:4
 msgid "Profile photo"
