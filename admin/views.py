@@ -3934,8 +3934,8 @@ class participant_details_api(APIView):
                             permissions.remove_permission(permissions_groups[request.data['company_permissions_old']])
 
                     if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
-                        manager_email = data.get('manager_email', None)
-                        if manager_email:
+                        manager_email = data.get('manager_email')
+                        if manager_email is not None:
                             error = process_manager_email(manager_email, data.get('username'), company)
                             if error:
                                 return Response(error)

@@ -2617,6 +2617,11 @@ def process_manager_email(manager_email, username, company_id):
     """
     POST manager email in participant details page
     """
+    if not manager_email:
+        user_managers = _get_user_managers(username)
+        if user_managers:
+            manager_api.delete_user_manager(username, user_managers[0].get('email'))
+        return
     manager = get_user_by_email(manager_email)
     if not manager:
         error_message = 'Error: User does not exist with email {0}'.format(manager_email)
