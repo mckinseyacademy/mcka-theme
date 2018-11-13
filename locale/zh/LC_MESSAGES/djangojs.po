@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-01 09:58+0000\n"
+"POT-Creation-Date: 2018-10-29 12:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -692,25 +692,25 @@ msgstr "下载 CSV 文件"
 msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
-msgstr "包括每个课程的进度明细（注意：导出将需要更多时间）"
+msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
 msgid "We'll e-mail you when your report is ready to download."
-msgstr "当您的报告准备就绪，可供下载时，我们将会向您发送电子邮件。"
+msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:476
 msgid "Exporting Stats for All Users"
-msgstr "导出所有用户的统计数据"
+msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:477
 msgid "Export Report"
-msgstr "导出报告"
+msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #, fuzzy
 #| msgid "Task failed to execute. Please retry later."
 msgid "Error initiating the report generation. Please retry later."
-msgstr "开始生成报告时出错。请稍后重试。"
+msgstr "任务未能执行。请稍后重试。"
 
 #: static/js/views/admin/course_details_bulk_actions.js:546
 msgid "Download Notifications CSV"
@@ -838,8 +838,6 @@ msgid "Lesson"
 msgstr "课程"
 
 #: static/js/views/admin/manager_dashboard.js:99
-#, fuzzy
-#| msgid "Incomplete"
 msgid "complete"
 msgstr "未完成"
 

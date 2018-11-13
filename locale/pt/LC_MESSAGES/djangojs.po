@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-01 09:57+0000\n"
+"POT-Creation-Date: 2018-10-29 12:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -709,27 +709,24 @@ msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
 msgstr ""
-"Incluir detalhamento do progresso para cada lição (Observação: a exportação "
-"levará mais tempo)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
 msgid "We'll e-mail you when your report is ready to download."
 msgstr ""
-"Enviaremos um e-mail quando seu relatório estiver pronto para download."
 
 #: static/js/views/admin/course_details_bulk_actions.js:476
 msgid "Exporting Stats for All Users"
-msgstr "Exportação de Estatísticas para Todos os Usuários"
+msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:477
 msgid "Export Report"
-msgstr "Exportar Relatório"
+msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #, fuzzy
 #| msgid "Task failed to execute. Please retry later."
 msgid "Error initiating the report generation. Please retry later."
-msgstr "Erro ao iniciar a geração do relatório. Tente mais tarde."
+msgstr "A tarefa não foi executada. Tente mais tarde."
 
 #: static/js/views/admin/course_details_bulk_actions.js:546
 msgid "Download Notifications CSV"
@@ -859,8 +856,6 @@ msgid "Lesson"
 msgstr "Lição"
 
 #: static/js/views/admin/manager_dashboard.js:99
-#, fuzzy
-#| msgid "Incomplete"
 msgid "complete"
 msgstr "Incompleto"
 
