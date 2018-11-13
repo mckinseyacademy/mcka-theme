@@ -148,7 +148,7 @@ def course_api_cache_wrapper(parse_method, parse_object, property_name, post_pro
                 # the cache maintains JUST TWO type of responses of course details API
                 # one for staff users and one for all normal users
                 # change this implementation if we need to get per-user course tree
-                user_type = 'generic'
+                user_type = 'staff'
                 try:
                     user = args[2]
                 except IndexError:
