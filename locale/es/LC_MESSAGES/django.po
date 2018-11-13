@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -7182,8 +7182,8 @@ msgid ""
 msgstr ""
 "\n"
 "Su puntaje de participación en el curso actual es %(social_points)s en base "
-"a sus interacciones sociales con otros participantes en su grupo en los <a "
-"href=\"%(course_nav_url)s/discussion\">%(discussion_text)s</a> foros. El "
+"a sus interacciones sociales con otros participantes en su grupo en los foros de <a "
+"href=\"%(course_nav_url)s/discussion\">%(discussion_text)s</a>. El "
 "promedio del grupo es %(social_course_avg)s."
 
 #: templates/courses/course_progress_v2.haml:206
