@@ -26,6 +26,7 @@ var Router = Backbone.Router.extend({
     'admin/course-meta-content':'course_meta_content',
     'admin/participants': 'participants_list',
     'admin/participants/*id': 'initialize_participant_details',
+    'admin/cohorts/': 'admin_cohorts',
     'admin/cohorts/*course_id/': 'admin_cohorts_detail',
     'admin/courses/': 'admin_courses',
     'admin/courses/*course_id/': 'admin_course_details_participants',
@@ -189,6 +190,16 @@ var Router = Backbone.Router.extend({
     participant_details_course_history_view.render();
   },
 
+  admin_cohorts: function() {
+    var courses = new Apros.collections.AdminCourses();
+    var cohorts_courses_list_view = new Apros.views.CoursesListView({
+      collection: courses,
+      el: '#coursesListViewGridBlock',
+      context: 'cohorts'
+    });
+    cohorts_courses_list_view.render();
+  },
+
   admin_cohorts_detail: function(course_id) {
     var settings = new Apros.models.AdminCohortSettings({course_id: course_id});
     var cohorts = new Apros.collections.AdminCohorts({course_id: course_id});
@@ -254,7 +265,7 @@ var Router = Backbone.Router.extend({
     var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid'});
     courses_details_view.render();
     var bulkActions = new Apros.views.CourseDetailsBulkActions({'courseId':courseId,'courses_details_view':courses_details_view, 'courseDetails':courseDetails});
-    bulkActions.render();
+    bulkActions.render(); 
   },
   manager_dashboard_report: function () {
     var course_index = $('a.hashPageButton.active').attr("data-course-index");
@@ -341,7 +352,7 @@ var Router = Backbone.Router.extend({
   },
   mass_student_enroll: function(client_id){
     massParticipantsInit();
-  },
+  }, 
   workgroup_main: function(){
     if($(".select-group-wrapper").attr('data-enable-cache')==='true')
     {

@@ -28,6 +28,154 @@
   padding: 0 10px;
 }
 
+#cohortsListTitle p {
+  font-size: xx-large;
+  margin-bottom: 20px;
+}
+
+#mainCohortsWrapper {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+  width: 100%;
+  max-width: 68.57143rem;
+}
+
+#managerDashboardWrapper {
+  margin: 0 auto;
+  max-width: 68.57143rem;
+
+  .navigation {
+    padding: 0 1.07143rem;
+
+    ul {
+      border-bottom: 1px solid lighten($mckinsey-bubble-gray, 20%);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: inline-block;
+        vertical-align: bottom;
+
+        .hashPageButton {
+          display: block;
+          margin-top: 10px;
+          margin-right: 20px;
+          text-transform: uppercase;
+          border-bottom: 3px solid transparent;
+
+          &.active {
+            border-bottom: 3px solid $mckinsey-light-blue;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .bbGrid-search-bar {
+    padding: 0 1.07143rem;
+    margin-top: 15px;
+
+    input {
+      float: left !important;
+    }
+  }
+
+  table {
+    min-width: 68.57143rem;
+
+    td, th {
+      white-space: nowrap;
+    }
+
+    td {
+      position: relative;
+      z-index: 0;
+
+      &.progress {
+        color: $mckinsey-dark-grey;
+        text-align: left;
+
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          background-color: $manager-progress-green;
+          z-index: -1;
+          width: inherit;
+        }
+      }
+
+      &.status {
+        padding-left: 24px;
+        position: relative;
+
+        &:before {
+          content: '';
+          position: absolute;
+          left: 10px;
+          top: 10px;
+          width: 10px;
+          height: 10px;
+          border-radius: 100%;
+        }
+
+        &.yes {
+          &:before {
+            background-color: $manager-green;
+          }
+        }
+
+        &.no {
+          &:before {
+            background-color: $manager-orange;
+          }
+        }
+      }
+    }
+  }
+}
+
+#cohortsListViewGridBlock {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 100px;
+  max-height: 28em;
+  position: relative;
+  display: table;
+  min-width: 60%;
+  width: 100%;
+  max-width: 68.57143rem;
+
+  .bbGrid-container {
+    max-height: 28em;
+    overflow-y: auto;
+  }
+
+  .bbGrid-grid.table {
+    min-width: 100%;
+  }
+}
+
+#mainCohortsListBlockContainer {
+  margin-left: auto;
+  margin-right: auto;
+
+  .bbGrid-search-bar {
+    float: none !important;
+    display: table;
+    min-width: 60%;
+
+    .bbGrid-pager {
+      float: left !important;
+    }
+  }
+}
+
 #mainCohortDetailsWrapper {
   margin-left: auto;
   margin-right: auto;
@@ -50,6 +198,7 @@
     .cohortDetailsHeader {
 
       .cohortDetailsNameAndId {
+        // color: #3384CA;
         font-size: medium;
         font-weight: bold;
         float: left;
@@ -76,6 +225,22 @@
       }
     }
 
+    .cohortDetailsBlocks {
+
+      .cohortDetailsLeftBlock {
+        padding-left: 0 !important;
+      }
+
+      .cohortDetailsCenterBlock {
+        border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        padding-left: 80px !important;
+      }
+
+      .cohortDetailsRightBlock {
+        padding-left: 80px !important;
+      }
+    }
   }
 }
 
@@ -368,102 +533,5 @@
 
   .success-message {
     color: #43AC6A;
-  }
-}
-
-#cohortSelect {
-  max-width: 400px;
-}
-
-#updateCohortName {
-  margin-bottom: 1rem;
-}
-
-
-#create_cohort {
-  h2 {
-    text-align: center;
-  }
-
-  #newCohortName {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-}
-
-
-#addUsersPanel {
-  .subtitle {
-    color: #bdbdbd;
-    margin-bottom: 1rem;
-  }
-
-  .results {
-    margin: 1rem 0;
-
-    .result {
-      margin: 0.5rem 0;
-      padding: 1rem;
-      font-weight: bold;
-
-      &.added, &.changed {
-        background-color: #f2f9f3;
-        border-top: 2px solid #008400;
-        color: #008400;
-      }
-
-      &.preassigned, &.present {
-        background-color: #fffcf4;
-        border-top: 2px solid #ffd15f;
-        color: #ffd15f;
-      }
-
-      &.invalid, &.unknown {
-        background-color: #f0c0c3;
-        border-top: 2px solid #ff1111;
-        color: #ff1111;
-      }
-    }
-  }
-}
-
-h3.cohortName {
-  .cohortUserCount {
-    font-size: 1rem;
-  }
-}
-
-.cohortTabs {
-  .tabs {
-    display: block;
-
-    .tab {
-      padding: 1.5rem 1.5rem;
-      display: inline-block;
-      color: #3384CA;
-
-      &.active {
-        background: white;
-        color: #000;
-        font-weight: bold;
-      }
-    }
-  }
-
-  .panels .panel {
-    background: #fff;
-    display: none;
-    border: none;
-
-    &.active {
-      display: block;
-    }
-  }
-}
-
-.cohort-management-file-upload {
-  #importLearnersBtn {
-    display: block;
-    margin-top: 1rem;
   }
 }
