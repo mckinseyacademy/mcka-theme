@@ -45,7 +45,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
     process_manager_email, update_company_field_for_users, validate_company_field, parse_participant_profile_csv
 from admin.tasks import user_company_fields_update_task, bulk_user_manager_update_task
-from api_client import course_api, user_api, manager_api, group_api, workgroup_api, organization_api, mobileapp_api,
+from api_client import course_api, user_api, manager_api, group_api, workgroup_api, organization_api, mobileapp_api
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS, TAG_GROUPS
 from api_client.json_object import JsonObjectWithImage
