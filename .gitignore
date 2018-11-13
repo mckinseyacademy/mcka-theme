@@ -32,6 +32,3 @@ refresh_assets.sh
 
 ### pycharm helper folder
 .pycharm_helpers/
-
-# Export artifacts
-csv_exports/
