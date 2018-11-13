@@ -24,8 +24,6 @@ COURSE_ENROLLMENT_API = getattr(settings, 'COURSE_ENROLLMENT_API', 'api/enrollme
 COURSE_ENROLLMENT_API_MAX_PAGE = 3
 COURSE_COMPLETION_API = getattr(settings, 'COURSE_COMPLETION_API', 'api/completion-aggregator/v1/course')
 COURSE_BLOCK_API = getattr(settings, 'COURSE_BLOCK_API', 'api/courses/v1/blocks')
-COURSE_COHORTS_API = getattr(settings, 'COURSE_COHORTS_API', 'api/cohorts/v1')
-
 
 OBJECT_CATEGORY_MAP = {
     # Core objects for our desire
@@ -978,18 +976,3 @@ def get_manager_reports_in_course(manager_email, course_id, edx_oauth2_session=N
         enrollment.user
         for enrollment in course_enrollments
     })
-
-
-@api_error_protect
-def get_course_cohort_settings(course_id, edx_oauth_session=None):
-    """
-    Get the cohort settings for a given course.
-    """
-    edx_oauth_session = get_oauth2_session() if edx_oauth_session is None else edx_oauth_session
-    url = '{}/{}/settings/{}'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSE_COHORTS_API,
-        course_id
-    )
-    response = edx_oauth_session.get(url)
-    return JP.from_dictionary(response.json(), course_models.CourseCohortSettings)

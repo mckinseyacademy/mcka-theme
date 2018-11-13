@@ -791,7 +791,6 @@ def course_details(request, course_id):
 
     (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
     course['discussion_feature'] = course_features.discussions
-    course['cohorts_enabled'] = course_api.get_course_cohort_settings(course_id).is_cohorted
 
     return render(request, 'admin/courses/course_details.haml', course)
 

@@ -10,14 +10,6 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       }
     },
     { title: 'Activated', index: true, name: 'custom_activated', class: 'status'},
-    { title: gettext('Cohort'), index: true, name: 'course_groups',
-    actions: function(id, attributes)
-    {
-      if (attributes['course_groups'].length > 0) {
-        return attributes['course_groups'][0];
-      }
-      return '-';
-    }},
     { title: 'Last Log In', index: true, name: 'custom_last_login',
     actions: function(id, attributes)
     {
@@ -60,24 +52,9 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       var companyId = $('#courseDetailsDataWrapper').attr('company-id');
       this.collection.updateCompanyQuerryParams(companyId);
     }
-    var course_id = $("a.hashPageButton.active").attr('data-course');
-
-    this.cohorts_enabled = course_details_cohorts_enabled[course_id];
     this.collection.fetch();
   },
   render: function() {
-    var _this = this;
-    if (this.cohorts_enabled == 'False') {
-      var index = 0;
-      for (var i=0; i < _this.generatedGridColumns.length; i++)
-      {
-        if (_this.generatedGridColumns[i]['title'] == gettext('Cohort'))
-        {
-          index = i;
-        }
-      }
-      _this.generatedGridColumns.splice(index, 1);
-    }
     managerDashboardReportGridBlock = new bbGrid.View({
       container: this.$el,
       enableSearch: true,

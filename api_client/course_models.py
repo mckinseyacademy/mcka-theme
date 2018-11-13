@@ -497,10 +497,3 @@ class UserCourseEnrollment(JsonObject):
     Data structure linking a user and a course they are enrolled in.
     """
     required_fields = ['created', 'mode', 'is_active', 'user', 'course_id']
-
-
-class CourseCohortSettings(JsonObject):
-    """
-    Data structure to hold the cohort settings of a course.
-    """
-    required_fields = ['id', 'is_cohorted']

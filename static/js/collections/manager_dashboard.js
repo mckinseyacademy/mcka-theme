@@ -15,7 +15,7 @@ Apros.collections.ManagerDashboard = Backbone.PageableCollection.extend({
     totalPages: null,
     totalRecords: null,
     page_size: 100,
-    additional_fields: 'grades,roles,organizations,progress,course_groups',
+    additional_fields: 'grades,roles,organizations,progress',
 
   },
   parseLinks: function (resp, options) {

@@ -14,7 +14,7 @@
       %br
       %br
       %ul
-        - for index,course_id, course_name, cohorts_enabled in manager_courses
+        - for index,course_id, course_name in manager_courses
           %li
             - if index == 0
               %a.hashPageButton.active{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
@@ -40,14 +40,6 @@
 
 
     #managerDashboardContainer
-      - for index,course_id, course_name, cohorts_enabled in manager_courses
+      - for index,course_id, course_name in manager_courses
         .contentNavigationContainer{class: "managerDashboardCourse#{index}"}
           .large-12.columns.spinnerContainer{id: "managerDashboardReportGrid#{index}"}
-
-- block js_snippets
-  :javascript
-
-    var course_details_cohorts_enabled = {};
-    {% for index, course_id, course_name, cohorts_enabled in manager_courses %}
-    course_details_cohorts_enabled['{{course_id}}'] = '{{cohorts_enabled}}';
-    {% endfor %}
