@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-07 11:36+0000\n"
+"POT-Creation-Date: 2018-11-13 12:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:368
-#: static/js/views/admin/participantsinfo.js:121
+#: static/js/views/admin/participantsinfo.js:122
 msgid "Course"
 msgstr "Cursus"
 
@@ -77,7 +77,8 @@ msgstr "Fouten weergeven"
 
 #: static/js/admin_upload_students.js:73
 #: static/js/common/mass_participants_enroll.js:147
-#: static/js/common/mass_participants_enroll.js:325
+#: static/js/common/mass_participants_enroll.js:337
+#: static/js/common/mass_participants_enroll.js:474
 #: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
 msgid "Please select file first."
 msgstr "Selecteer eerst een bestand."
@@ -122,8 +123,10 @@ msgstr "%(value)s%"
 
 #: static/js/common/mass_participants_enroll.js:57
 #: static/js/common/mass_participants_enroll.js:128
-#: static/js/common/mass_participants_enroll.js:298
-#: static/js/common/mass_participants_enroll.js:373
+#: static/js/common/mass_participants_enroll.js:311
+#: static/js/common/mass_participants_enroll.js:385
+#: static/js/common/mass_participants_enroll.js:447
+#: static/js/common/mass_participants_enroll.js:522
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
@@ -164,6 +167,7 @@ msgid "status"
 msgstr "status"
 
 #: static/js/common/mass_participants_enroll.js:260
+#: static/js/common/mass_participants_enroll.js:273
 msgid "Learner email"
 msgstr ""
 
@@ -181,7 +185,12 @@ msgstr ""
 msgid "location"
 msgstr "Melding"
 
-#: static/js/common/mass_participants_enroll.js:396
+#: static/js/common/mass_participants_enroll.js:273
+msgid "Manager email"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:407
+#: static/js/common/mass_participants_enroll.js:544
 msgid "Report of bulk update will be sent to your email."
 msgstr ""
 
@@ -286,7 +295,7 @@ msgid "Participants:"
 msgstr "Deelnemers:"
 
 #: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:24
+#: static/js/views/admin/participantsinfo.js:25
 msgid "Email"
 msgstr "E-mail"
 
@@ -389,7 +398,7 @@ msgstr[5] ""
 
 #: static/js/views/admin/companies_list.js:15
 #: static/js/views/admin/course_details.js:29
-#: static/js/views/admin/participantsinfo.js:23
+#: static/js/views/admin/participantsinfo.js:24
 msgid "Company"
 msgstr "Bedrijf"
 
@@ -409,7 +418,7 @@ msgstr "Aantal cursussen"
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:484
-#: static/js/views/admin/participantsinfo.js:371
+#: static/js/views/admin/participantsinfo.js:372
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "De bedrijfsnaam mag geen alfanumerieke tekens bevatten."
 
@@ -417,7 +426,7 @@ msgstr "De bedrijfsnaam mag geen alfanumerieke tekens bevatten."
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:478
-#: static/js/views/admin/participantsinfo.js:365
+#: static/js/views/admin/participantsinfo.js:366
 msgid "This company name cannot have more than 30 characters!"
 msgstr "De bedrijfsnaam mag niet meer dan 30 tekens bevatten."
 
@@ -517,7 +526,7 @@ msgid "No App Display Name!"
 msgstr "Geen app-weergavenaam."
 
 #: static/js/views/admin/course_details.js:6
-#: static/js/views/admin/participantsinfo.js:13
+#: static/js/views/admin/participantsinfo.js:14
 msgid "Name"
 msgstr "Naam"
 
@@ -526,12 +535,12 @@ msgstr "Naam"
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:372
-#: static/js/views/admin/participantsinfo.js:130
+#: static/js/views/admin/participantsinfo.js:131
 msgid "Status"
 msgstr "Status"
 
 #: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:41
+#: static/js/views/admin/participantsinfo.js:42
 msgid "Activated"
 msgstr "Geactiveerd"
 
@@ -664,21 +673,21 @@ msgstr "De status van alle geselecteerde deelnemers wijzigen in:"
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:374
-#: static/js/views/admin/participantsinfo.js:134
+#: static/js/views/admin/participantsinfo.js:135
 msgid "Participant"
 msgstr "Deelnemer"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:136
+#: static/js/views/admin/participantsinfo.js:137
 msgid "Observer"
 msgstr "Waarnemer"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:376
-#: static/js/views/admin/participantsinfo.js:135
+#: static/js/views/admin/participantsinfo.js:136
 msgid "TA"
 msgstr "OA"
 
@@ -972,7 +981,7 @@ msgid "User successfully enrolled in course"
 msgstr "De gebruiker is ingeschreven voor de cursus"
 
 #: static/js/views/admin/participant_details_edit_info.js:531
-#: static/js/views/admin/participantsinfo.js:101
+#: static/js/views/admin/participantsinfo.js:102
 msgid "Admin Company"
 msgstr "Beheerder van bedrijf"
 
@@ -981,20 +990,20 @@ msgid "Try selecting your company from the type-ahead results."
 msgstr "Probeer uw bedrijf te selecteren via de auto-aanvulresultaten."
 
 #: static/js/views/admin/participant_details_edit_info.js:541
-#: static/js/views/admin/participantsinfo.js:110
+#: static/js/views/admin/participantsinfo.js:111
 msgid "Admin Permissions"
 msgstr "Beheerrechten"
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:113
+#: static/js/views/admin/participantsinfo.js:114
 msgid "Company Admin"
 msgstr "Bedrijfsbeheer"
 
-#: static/js/views/admin/participantsinfo.js:25
+#: static/js/views/admin/participantsinfo.js:26
 msgid "Date Added"
 msgstr "Toevoegingsdatum"
 
-#: static/js/views/admin/participantsinfo.js:35
+#: static/js/views/admin/participantsinfo.js:36
 msgid "Enrolled In"
 msgstr "Ingeschreven voor"
 
