@@ -1,5 +1,6 @@
 import os, re, json, datetime, logging
 from collections import namedtuple
+from email.MIMEImage import MIMEImage
 
 from django.contrib import messages
 from django.conf import settings
@@ -10,16 +11,16 @@ from django.utils.encoding import force_bytes
 from django.utils.translation import ugettext as _
 from django.utils.http import urlsafe_base64_encode
 from django.utils.html import strip_tags
-from email.MIMEImage import MIMEImage
 
 from admin.controller import enroll_user_in_course
 from admin.models import Program, Client
-
 from api_client import user_api, third_party_auth_api, organization_api, course_api, mobileapp_api
 from api_client.api_error import ApiError
 from mobile_apps.constants import MOBILE_APP_DEPLOYMENT_MECHANISMS
 from license import controller as license_controller
 from util.i18n_helpers import format_lazy
+from api_data_manager.organization_data import OrgDataManager
+from api_data_manager.user_data import UserDataManager
 
 from .models import UserPasswordReset, UserActivation
 
@@ -485,12 +486,11 @@ def append_user_mobile_app_id_cookie(response, user_id):
     """
     Returns response by setting android_app_id and ios_app_id cookie.
     """
-    organizations = user_api.get_user_organizations(user_id)
+    user_data = UserDataManager(user_id).get_basic_user_data()
 
-    if len(organizations) > 0:
+    if user_data.organization:
         # we will get ios and android id
-        data = get_mobile_apps_id(organizations[0])
-        user_organization_id = organizations[0].id
+        data = get_mobile_apps_id(user_data.organization.id)
 
         response.set_cookie(
             'ios_app_id',
@@ -506,14 +506,14 @@ def append_user_mobile_app_id_cookie(response, user_id):
 
         response.set_cookie(
             'user_organization_id',
-            user_organization_id,
+            user_data.organization.id,
             domain=settings.LMS_SESSION_COOKIE_DOMAIN,
         )
 
     return response
 
 
-def get_mobile_apps_id(organization):
+def get_mobile_apps_id(organization_id):
     """
     Returns user ios_app_id and android app id based on organization
     """
@@ -522,13 +522,8 @@ def get_mobile_apps_id(organization):
     user_org = None
     mobile_id = None
 
-    try:
-        mobile_id = mobileapp_api.get_mobile_apps({"organization_ids": organization.id})
-    except ApiError:
-        return {'ios_app_id': ios_app_id,
-                'android_app_id': android_app_id,
-                'user_org': user_org
-                }
+    org_data = OrgDataManager(organization_id).get_org_common_data()
+    mobile_id = org_data.mobile_apps
 
     if mobile_id.get('results'):
 

@@ -1,5 +1,6 @@
 from django.conf import settings
 
+
 def show_toolbar(request):
     """
     Default function to determine whether to show the toolbar for a given user. For Apros we can enable the showing of the Django Debug Toolbar
@@ -15,8 +16,11 @@ def show_toolbar(request):
     if request.GET.get('ddt') == 'enable':
         request.session['ddt'] = True
 
-    # never return DjDT on an Ajax call
+    # never return DjDT on an Ajax call, except for djDT calls itself
     if request.is_ajax():
+        if request.GET.get('panel_id'):
+            return True
+
         return False
 
     # staff can see this if the session flag is set

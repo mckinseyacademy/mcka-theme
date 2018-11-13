@@ -716,3 +716,38 @@ class FillEmailRedirectViewTest(TestCase, ApplyPatchMixin):
         self.assertTrue(response.url.startswith('http://some.url/'))
         self.assertIn('existing=parameter', response.url)
         self.assertIn(urlencode({'email': request.user.email}), response.url)
+
+
+class AccessKeyAPITest(TestCase, ApplyPatchMixin):
+
+    def setUp(self):
+        self.client_id = 12
+        self.code = 'A1B2'
+        self.course_id = 'test-course'
+
+    def test_get_invalid_access_key(self):
+        """ Test get_access_key with invalid access key """
+
+        response = self.client.get(reverse('access_key_data_api_view', kwargs={'access_key_code': 'ABCDEF'}))
+        self.assertEqual(response.status_code, 404)
+
+    def test_missing_client_customization_get_access_key(self):
+        """ Test missing ClientCustomization when making a get_access_key request """
+
+        AccessKey.objects.create(client_id=self.client_id, code=self.code, course_id=self.course_id)
+        response = self.client.get(reverse('access_key_data_api_view', kwargs={'access_key_code': self.code}))
+        self.assertEqual(response.status_code, 404)
+
+    def test_get_valid_access_key(self):
+        """ Test get_access_key with valid access key"""
+
+        AccessKey.objects.create(client_id=self.client_id, code=self.code, course_id=self.course_id)
+        customization = ClientCustomization.objects.create(client_id=self.client_id, identity_provider='testshib')
+
+        response = self.client.get(reverse('access_key_data_api_view', kwargs={'access_key_code': self.code}))
+        data = response.json()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(data['course_id'], self.course_id)
+        self.assertEqual(data['organization_id'], self.client_id)
+        self.assertEqual(data['provider_id'], customization.identity_provider)

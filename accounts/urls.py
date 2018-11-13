@@ -27,4 +27,5 @@ urlpatterns = [
         views.fill_email_and_redirect,
         name='fill_email_and_redirect'
     ),
+    url(r'^api/access/(?P<access_key_code>.*)', views.get_access_key, name='access_key_data_api_view'),
 ]

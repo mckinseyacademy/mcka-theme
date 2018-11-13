@@ -6,8 +6,11 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _, get_language_bidi
 
-from admin.controller import load_course
-from admin.models import Program, ClientNavLinks, ClientCustomization, BrandingSettings
+from api_data_manager.user_data import UserDataManager
+from api_data_manager.organization_data import OrgDataManager
+from api_data_manager.common_data import CommonDataManager, COMMON_DATA_PROPERTIES
+from api_data_manager.course_data import CourseDataManager
+from admin.models import Program
 from api_client import user_api, course_api, mobileapp_api, organization_api
 from lib.utils import DottableDict
 from license import controller as license_controller
@@ -16,7 +19,7 @@ from .controller import (
     load_static_tabs, get_completion_percentage_from_id,
     set_user_course_progress,
 )
-from .models import FeatureFlags
+from .models import FeatureFlags, CourseMetaData
 
 CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
@@ -32,124 +35,43 @@ STANDARD_DATA_FEATURES = DottableDict({
 })
 
 
-def _load_intersecting_program_courses(program, courses):
-    if program.id == Program.NO_PROGRAM_ID:
-        program.courses = courses
-        program.outside_courses = None
-    else:
-        program_course_ids = [course.course_id for course in program.fetch_courses()]
-        program.courses = [course for course in courses if course.id in program_course_ids]
-        program.outside_courses = [course for course in courses if course.id not in program_course_ids]
-
-
-def get_current_course_by_user_id(user_id):
-    # Return first active course in the user's list
-    courses = user_api.get_user_courses(user_id)
-    courses = [c for c in courses if c.is_active and c.started]
-    if len(courses) > 0:
-        course_id = courses[0].id
-        return course_id
-    return None
-
-
-def get_current_course_for_user(request):
-    course_id = request.session.get(CURRENT_COURSE_ID, None)
-
-    if not course_id and request.user:
-        course_id = user_api.get_user_preferences(request.user.id).get(CURRENT_COURSE_ID, None)
-
-    if not course_id and request.user:
-        course_id = get_current_course_by_user_id(request.user.id)
-
-    return course_id
-
-
-def set_current_program_for_user(request, program, update_api=True):
-    prev_program = request.session.get(CURRENT_PROGRAM, None)
-    if prev_program is None or (prev_program.id != program.id):
-        request.session[CURRENT_PROGRAM] = program
-        request.session[CURRENT_PROGRAM_ID] = program.id
-
-        if update_api:
-            user_api.set_user_preferences(
-                request.user.id,
-                {
-                    CURRENT_PROGRAM_ID: str(program.id),
-                }
-            )
-
-
 def set_current_course_for_user(request, course_id):
-    prev_course_id = request.session.get(CURRENT_COURSE_ID, None)
-    if prev_course_id != course_id:
-        request.session[CURRENT_COURSE_ID] = course_id
+    """
+    Sets current course and program for the user in backend
+    """
+    user_data = UserDataManager(request.user.id).get_basic_user_data()
+    common_data_manager = CommonDataManager()
 
-        # Additionally set the current program for this user
-        current_program = None
-        courses = user_api.get_user_courses(request.user.id)
+    if user_data.current_course.id == course_id:
+        return
+
+    # get program for this course
+    user_programs = Program.user_program_list(request.user.id)
+    program_courses_mapping = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING)
+    current_program = Program.no_program()
+
+    if program_courses_mapping is not None:
+        for program in user_programs:
+            for program_course in program_courses_mapping.get(program.id, {}).get('courses', []):
+                if course_id == program_course.course_id:
+                    current_program = program
+                    break
+    else:
         for program in Program.user_programs_with_course(request.user.id, course_id):
-            if license_controller.fetch_granted_license(program.id, request.user.id) is not None:
                 current_program = program
                 break
 
-        if current_program is None:
-            # Fake program
-            current_program = Program.no_program()
-
-        user_api.set_user_preferences(
-            request.user.id,
-            {
-                CURRENT_COURSE_ID: course_id,
-                CURRENT_PROGRAM_ID: str(current_program.id),
-            }
-        )
-
-        _load_intersecting_program_courses(current_program, courses)
-        set_current_program_for_user(request, current_program, update_api=False)
+    # persist user choice
+    user_api.set_user_preferences(
+        request.user.id, {
+            CURRENT_COURSE_ID: course_id,
+            CURRENT_PROGRAM_ID: str(current_program.id),
+        }
+    )
 
 
 def clear_current_course_for_user(request):
-    request.session[CURRENT_COURSE_ID] = None
     user_api.delete_user_preference(request.user.id, CURRENT_COURSE_ID)
-
-
-def get_current_program_for_user(request):
-
-    # Attempt to load from current session
-    program = request.session.get(CURRENT_PROGRAM, None)
-
-    # Attempt to load from user preferences
-    if not program and request.user:
-        program_id = user_api.get_user_preferences(request.user.id).get(CURRENT_PROGRAM_ID, None)
-        if program_id == Program.NO_PROGRAM_ID:
-            program = Program.no_program()
-        elif program_id:
-            program = Program.fetch(program_id)
-
-        # if not attempt to load first program
-        if not program:
-            current_course_id = get_current_course_for_user(request)
-            programs = []
-            if current_course_id:
-                programs = Program.user_programs_with_course(
-                    request.user.id,
-                    current_course_id,
-                )
-            else:
-                programs = Program.user_program_list(request.user.id)
-            if len(programs) > 0:
-                program = Program.fetch(programs[0].id)
-
-            # if user goes to LD after the first login (without accessing any course)
-            if not program:
-                program = Program.no_program()
-
-        if program:
-            _load_intersecting_program_courses(program, user_api.get_user_courses(request.user.id))
-            set_current_program_for_user(request, program, update_api=False)
-
-    # Return the program to the caller
-    return program
 
 
 class CourseAccessDeniedError(PermissionDenied):
@@ -175,38 +97,30 @@ class CourseAccessDeniedError(PermissionDenied):
 
 
 def check_user_course_access(func):
-    '''
-    Decorator which will raise an CourseAccessDeniedError if the user does not have access to the requested course
-    '''
     @functools.wraps(func)
     def user_course_access_checker(request, course_id, *args, **kwargs):
-        try:
-            program = get_current_program_for_user(request)
-            if program is None:
-                set_current_course_for_user(request, course_id)
-                program = get_current_program_for_user(request)
-                if program is None:
-                    raise CourseAccessDeniedError(course_id, request.user.id)
-            course_access = [c for c in program.courses if c.id == course_id]
-            if len(course_access) < 1 and program.outside_courses and len(program.outside_courses) > 0:
-                course_access = [c for c in program.outside_courses if c.id == course_id]
-            if len(course_access) < 1:
-                raise CourseAccessDeniedError(course_id, request.user.id)
-            # Finally, even if they've got access - if not started redirect to notready page
-            if not course_access[0].started:
-                return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
-        except CourseAccessDeniedError:
-            # they've tried to go elsewhere, so let's not even worry about holding
-            # onto the last course visited, trash it so a visit to homepage after
-            # getting this error will do the right thing and rebuild a correct list
-            # in case this was a course for which they previously had access, but now don't
-            clear_current_course_for_user(request)
-            # re-raise this error
-            raise
+        """
+        Decorator which will raise an CourseAccessDeniedError
+        if the user does not have access to the requested course
+        """
+        user_data = UserDataManager(request.user.id).get_basic_user_data()
+
+        accessible_course = [course for course in user_data.courses if course.id == course_id]
+
+        if not accessible_course:
+            # if this is set as current course then clear it
+            if user_data.current_course and user_data.current_course.id == course_id:
+                clear_current_course_for_user(request)
+
+            raise CourseAccessDeniedError(course_id, request.user.id)
+
+        if not accessible_course[0].started:
+            return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
 
         return func(request, course_id, *args, **kwargs)
 
     return user_course_access_checker
+
 
 class CompanyAdminAccessDeniedError(PermissionDenied):
     '''
@@ -273,90 +187,34 @@ def load_course_progress(course, user_id=None, username=None):
 
 
 def standard_data(request):
-    features_to_include = getattr(request, 'standard_data_features', STANDARD_DATA_FEATURES)
-
-    ''' Makes user and program info available to all templates '''
+    """
+    Makes course, program and client info available to all templates
+    """
     course = None
     program = None
-    upcoming_course = None
     client_nav_links = None
     client_customization = None
     branding = None
     feature_flags = None
-    learner_dashboard_flag = False
-    discover_flag = False
-    programs = None
     organization_id = None
-
-    # have we already fetched this before and attached it to the current request?
-    if hasattr(request, 'user_program_data'):
-        return request.user_program_data
+    lesson_custom_label = None
+    lessons_custom_label = None
+    module_custom_label = None
+    modules_custom_label = None
 
     if request.user and request.user.id:
-        # test loading the course to see if we can; if not, we destroy cached
-        # information about current course and let the new course_id load again
-        # in subsequent calls
-        try:
-            course_id = get_current_course_for_user(request)
-            if course_id is not None:
-                course = load_course(course_id, request=request)
-                if not course.started:
-                    raise CourseAccessDeniedError(course_id, request.user.id)
-        except:
-            clear_current_course_for_user(request)
-            course = None
-            course_id = get_current_course_for_user(request)
+        user_data_manager = UserDataManager(user_id=request.user.id)
 
-        program = get_current_program_for_user(request)
-        if course_id:
-            try:
-                feature_flags = FeatureFlags.objects.get(course_id=course_id)
-                learner_dashboard_flag = feature_flags.learner_dashboard
-                discover_flag = feature_flags.discover
-            except:
-                learner_dashboard_flag = False
-                discover_flag = False
+        user_data = user_data_manager.get_basic_user_data()
 
-            lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
-            module_id = request.resolver_match.kwargs.get('page_id', None)
-
-            if module_id is None or lesson_id is None:
-                course_id, lesson_id, page_id = locate_chapter_page(
-                    request, request.user.id, course_id, None)
-
-            course = build_page_info_for_course(request, course_id, lesson_id, module_id)
-            # Inject formatted data for view (don't pass page_id in here - if needed it will be processed from elsewhere)
-            _inject_formatted_data(program, course, None, load_static_tabs(course_id))
-
-            if features_to_include.course_progress:
-                # Inject course progress for nav header
-                load_course_progress(course, username=request.user.username)
-
-        elif program and program.courses:
-            upcoming_course = program.courses[0]
-
-        organizations = user_api.get_user_organizations(request.user.id)
-
-        if organizations:
-            organization = organizations[0]
-            organization_id = organization.id
-            try:
-                client_customization = ClientCustomization.objects.get(client_id=organization_id)
-            except ClientCustomization.DoesNotExist:
-                client_customization = None
-
-            try:
-                if feature_flags and feature_flags.branding:
-                    branding = BrandingSettings.objects.get(client_id=organization_id)
-                else:
-                    branding = None
-            except:
-                branding = None
-
-            client_nav_links = ClientNavLinks.objects.filter(client_id=organization_id)
-            client_nav_links = dict((link.link_name, link) for link in client_nav_links)
+        program = user_data.current_program
+        course = user_data.current_course
+        organization = user_data.organization
 
         if course:
+            feature_flags = CourseDataManager(course.id).get_feature_flags()
+            course_meta_data = CourseDataManager(course.id).get_course_meta_data()
+
             if course.ended:
                 if len(course.name) > 37:
                     course.name = course.name[:37] + '...'
@@ -364,64 +222,88 @@ def standard_data(request):
                 if len(course.name) > 57:
                     course.name = course.name[:57] + '...'
 
-            programs = get_program_menu_list(request, course)
+            if course_meta_data:
+                lesson_custom_label = course_meta_data.lesson_label
+                lessons_custom_label = course_meta_data.lessons_label.get('zero')
+                module_custom_label = course_meta_data.module_label
+                modules_custom_label = course_meta_data.modules_label.get('zero')
 
-    current_lesson = getattr(course, 'current_lesson', None)
-    right_lesson_module_navigator = getattr(current_lesson, 'next_module', None)
-    left_lesson_module_navigator = getattr(current_lesson, 'previous_module', None)
+        if organization:
+            client_data_manager = OrgDataManager(org_id=organization.id)
+            organization_id = organization.id
+            client_data = client_data_manager.get_org_common_data()
+            client_customization = client_data.customization
+            client_nav_links = client_data.nav_links
 
-    if get_language_bidi():
-        right_lesson_module_navigator, left_lesson_module_navigator = left_lesson_module_navigator, \
-                                                                      right_lesson_module_navigator
+            if feature_flags and feature_flags.branding:
+                branding = client_data.branding
 
     data = {
-        "course": course,
+        "current_course": course,
         "program": program,
-        "programs": programs,
-        "upcoming_course": upcoming_course,
+        'feature_flags': feature_flags,
+        'namespace': course.id if course else None,
+        'course_name': course.name if course else None,
         "client_customization": client_customization,
         "client_nav_links": client_nav_links,
         "branding": branding,
-        "learner_dashboard_flag": learner_dashboard_flag,
-        "discover_flag": discover_flag,
         "organization_id": organization_id,
-        "right_lesson_module_navigator": right_lesson_module_navigator,
-        "left_lesson_module_navigator": left_lesson_module_navigator
+        "lesson_custom_label": lesson_custom_label,
+        "module_custom_label": module_custom_label,
+        "lessons_custom_label": lessons_custom_label,
+        "modules_custom_label": modules_custom_label,
     }
-
-    # point to this data from the request object, just in case we re-enter this method somewhere
-    # else down the execution pipeline, e.g. context_processing
-    request.user_program_data = data
 
     return data
 
 
-def get_program_menu_list(request, current_course):
+def get_program_menu_list(request):
+    common_data_manager = CommonDataManager()
 
-    programs = []
-    companion_app_courses = []
-    current_program = None
+    user_data_manager = UserDataManager(user_id=request.user.id)
+    user_data = user_data_manager.get_basic_user_data()
+    current_course = user_data.current_course
+
+    program_courses_mapping = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING)
+    companion_app_course_ids = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.COMPANION_APP_COURSES)
 
     user_programs = Program.user_program_list(request.user.id)
     user_courses = user_api.get_user_courses(request.user.id)
-    companion_app = mobileapp_api.get_mobile_apps({"app_name": "LBG"})
-    companion_app_orgs = companion_app['results'][0]['organizations'] if companion_app.get('results') else []
+    
+    if companion_app_course_ids is None:
+        companion_app = mobileapp_api.get_mobile_apps({"app_name": "LBG"})
+        companion_app_orgs = companion_app['results'][0]['organizations'] if companion_app.get('results') else []
 
-    # get all the courses of companion app
-    for org_id in companion_app_orgs:
-        org_companion_app_courses = organization_api.get_organizations_courses(org_id)
-        companion_app_courses.extend(org_companion_app_courses)
+        companion_app_courses = []
+        # get all the courses of companion app
+        for org_id in companion_app_orgs:
+            org_companion_app_courses = organization_api.get_organizations_courses(org_id)
+            companion_app_courses.extend(org_companion_app_courses)
 
-    # get the mobile available courses of companion app
-    companion_app_courses_id = [course['id'] for course in companion_app_courses if course['mobile_available']]
+        # get the mobile available courses of companion app
+        companion_app_course_ids = [course['id'] for course in companion_app_courses if course['mobile_available']]
+
+        common_data_manager.set_cached_data(
+            COMMON_DATA_PROPERTIES.COMPANION_APP_COURSES,
+            data=companion_app_course_ids
+        )
 
     # remove the user courses that are part of companion app
-    user_courses = [course for course in user_courses if course.id not in companion_app_courses_id]
+    user_courses = [course for course in user_courses if course.id not in companion_app_course_ids]
+
+    programs = []
+
+    current_program = None
 
     for program in user_programs:
         row = []
         program_courses = []
-        program_course_ids = [course.course_id for course in program.fetch_courses()]
+
+        if program_courses_mapping is not None:
+            program_data = program_courses_mapping.get(program.id, {})
+            program_course_ids = [course.course_id for course in program_data.get('courses', [])]
+        else:
+            program_course_ids = [course.course_id for course in program.fetch_courses()]
 
         for program_course_id in program_course_ids:
             for i, course in enumerate(user_courses):
@@ -434,8 +316,9 @@ def get_program_menu_list(request, current_course):
         row.append(program_courses)
         programs.append(row)
         user_courses = [course for course in user_courses if course not in program_courses]
+
     if user_courses:
-        row = []
+        row = list()
         row.append(Program.no_program())
         row.append(user_courses)
         programs.append(row)

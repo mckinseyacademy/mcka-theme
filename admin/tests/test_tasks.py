@@ -26,31 +26,36 @@ class MockParticipantsStats(object):
             'id': 'user_1',
             'groupworks': [{'label': 'xyz', 'percent': '98'}],
             'assessments': [{'label': 'xyz', 'percent': '95'}],
-            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+            'lesson_completions': {'lesson_number': 5, 'completion': 90},
+            'attributes':[]
         },
         {
             'id': 'user_2',
             'groupworks': [{'label': 'xyz', 'percent': '98'}],
             'assessments': [{'label': 'xyz', 'percent': '95'}],
-            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+            'lesson_completions': {'lesson_number': 5, 'completion': 90},
+            'attributes': []
         },
         {
             'id': 'user_3',
             'groupworks': [{'label': 'xyz', 'percent': '98'}],
             'assessments': [{'label': 'xyz', 'percent': '95'}],
-            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+            'lesson_completions': {'lesson_number': 5, 'completion': 90},
+            'attributes': []
         },
         {
             'id': 'user_4',
             'groupworks': [{'label': 'xyz', 'percent': '98'}],
             'assessments': [{'label': 'xyz', 'percent': '95'}],
-            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+            'lesson_completions': {'lesson_number': 5, 'completion': 90},
+            'attributes': []
         },
         {
             'id': 'user_5',
             'groupworks': [{'label': 'xyz', 'percent': '98'}],
             'assessments': [{'label': 'xyz', 'percent': '95'}],
-            'lesson_completions': {'lesson_number': 5, 'completion': 90}
+            'lesson_completions': {'lesson_number': 5, 'completion': 90},
+            'attributes': []
         },
 
     ]

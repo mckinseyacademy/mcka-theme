@@ -441,75 +441,210 @@ class TestSpecificUserRolesOfOtherCompanies(TestCase):
 class EditCourseCustomTermsTest(TestCase):
     def setUp(self):
         self.course_id = "course_id/1"
+        self.factory = RequestFactory()
+        self.url = '/api/courses/course_id/1/edit_course_meta_data/'
+        self.data = {
+            'lesson_label': 'test_lesson_label',
+            'lessons_label': 'test_lessons_label',
+            'module_label': 'test_module_label',
+            'modules_label': 'test_modules_label',
+            'lesson_label_flag': 'false',
+            'lessons_label_flag': 'false',
+            'module_label_flag': 'false',
+            'modules_label_flag': 'false',
+        }
+
+    def post_request(self, data=None):
+        request = self.factory.post(self.url)
+        request.data = data
+        return request
 
     def test_edit_course_lesson_custom_terms(self):
-        lesson_label = 'test_lesson_label'
-        module_label = 'test_module_label'
-        lesson_label_flag = 'true'
-        module_label_flag = 'false'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                            lesson_label_flag, module_label_flag)
-
+        self.data["lesson_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertEqual(course_meta_data.lesson_label, lesson_label)
+        self.assertEqual(course_meta_data.lesson_label, self.data['lesson_label'])
 
     def test_edit_course_module_custom_terms(self):
-        lesson_label = 'test_lesson_label_1'
-        module_label = 'test_module_label_1'
-        lesson_label_flag = 'false'
-        module_label_flag = 'true'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                            lesson_label_flag, module_label_flag)
-
+        self.data["module_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertEqual(course_meta_data.module_label, module_label)
+        self.assertEqual(course_meta_data.module_label, self.data['module_label'])
 
     def test_edit_course_lesson_custom_terms_with_foreign_characters(self):
-        lesson_label = u'ŠŽšžŸÀÁÂÃÄÅÇ'
-        module_label = 'test_module_label_1'
-        lesson_label_flag = 'true'
-        module_label_flag = 'false'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                            lesson_label_flag, module_label_flag)
-
+        self.data["lesson_label"] = u'ŠŽšžŸÀÁÂÃÄÅÇ'
+        self.data["lesson_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertEqual(course_meta_data.lesson_label, lesson_label)
+        self.assertEqual(course_meta_data.lesson_label, self.data['lesson_label'])
 
     def test_edit_course_module_custom_terms_with_foreign_characters(self):
-        lesson_label = 'test_lesson_label_1'
-        module_label = u'ËÌÍÎÏÐÑÒÓÔ'
-        lesson_label_flag = 'false'
-        module_label_flag = 'true'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                            lesson_label_flag, module_label_flag)
-
+        self.data["module_label"] = u'ËÌÍÎÏÐÑÒÓÔ'
+        self.data["module_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertEqual(course_meta_data.module_label, module_label)
+        self.assertEqual(course_meta_data.module_label, self.data['module_label'])
 
     def test_edit_course_lesson_custom_terms_with_special_characters(self):
-        lesson_label = '$%^&&&'
-        module_label = 'test_module_label_1'
-        lesson_label_flag = 'false'
-        module_label_flag = 'true'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                         lesson_label_flag, module_label_flag)
-
+        self.data["lesson_label"] = '$%^&&&'
+        self.data["lesson_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
-
-        self.assertNotEqual(course_meta_data.lesson_label, lesson_label)
+        self.assertNotEqual(course_meta_data.lesson_label, self.data['lesson_label'])
 
     def test_edit_course_module_custom_terms_with_special_characters(self):
-        lesson_label = 'test_lesson_label_1'
-        module_label = '$%^&&&'
-        lesson_label_flag = 'false'
-        module_label_flag = 'true'
-        controller.edit_course_meta_data(self.course_id, lesson_label, module_label,
-                                         lesson_label_flag, module_label_flag)
-
+        self.data["module_label"] = '$%^&&&'
+        self.data["module_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
         course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertNotEqual(course_meta_data.module_label, self.data['module_label'])
 
-        self.assertNotEqual(course_meta_data.module_label, module_label)
+    def test_edit_course_lessons_custom_terms(self):
+        self.data["lessons_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertEqual(course_meta_data.lessons_label["zero"], self.data['lessons_label'])
+
+    def test_edit_course_modules_custom_terms(self):
+        self.data["modules_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertEqual(course_meta_data.modules_label["zero"], self.data['modules_label'])
+
+    def test_edit_course_lessons_custom_terms_with_foreign_characters(self):
+        self.data["lessons_label"] = u'ŠŽšžŸÀÁÂÃÄÅÇ'
+        self.data["lessons_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertEqual(course_meta_data.lessons_label["zero"], self.data['lessons_label'])
+
+    def test_edit_course_modules_custom_terms_with_foreign_characters(self):
+        self.data["modules_label"] = u'ËÌÍÎÏÐÑÒÓÔ'
+        self.data["modules_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertEqual(course_meta_data.modules_label["zero"], self.data['modules_label'])
+
+    def test_edit_course_lessons_custom_terms_with_special_characters(self):
+        self.data["lessons_label"] = '$%^&&&'
+        self.data["lessons_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertNotEqual(course_meta_data.lessons_label["zero"], self.data['lessons_label'])
+
+    def test_edit_course_modules_custom_terms_with_special_characters(self):
+        self.data["modules_label"] = '$%^&&&'
+        self.data["modules_label_flag"] = 'true'
+        request = self.post_request(self.data)
+        controller.edit_course_meta_data(self.course_id, request)
+        course_meta_data = CourseMetaData.objects.get(course_id=self.course_id)
+        self.assertNotEqual(course_meta_data.modules_label["zero"], self.data['modules_label'])
+
+
+class TestGetUserCompanyFields(TestCase, ApplyPatchMixin):
+    """ Testing get_user_company_fields of controller """
+
+    def setUp(self):
+        """ Setting up commons """
+        self.user_id = 1
+        self.organization_id = 1
+        self.get_organization_fields = self.apply_patch('admin.controller.get_organization_fields')
+        self.get_company_fields_value_for_user = self.apply_patch('admin.controller.get_company_fields_value_for_user')
+        self.get_organization_fields.return_value = [
+            {'key': 'phone', 'label': 'phone'},
+            {'key': 'email', 'label': 'email'}
+        ]
+
+    def test_with_no_user_field(self):
+        """ With no user value for fields """
+        self.get_company_fields_value_for_user.return_value = []
+        expected_output = [
+            {'key': 'phone', 'label': 'phone', 'value': None},
+            {'key': 'email', 'label': 'email', 'value': None}
+        ]
+        output = controller.get_user_company_fields(self.user_id, self.organization_id)
+        self.assertEqual(output, expected_output)
+
+    def test_with_partial_user_fields(self):
+        """ With partial user values for fields """
+        self.get_company_fields_value_for_user.return_value = [
+            {'key': 'phone', 'value': '123123'}
+        ]
+        expected_output = [
+            {'key': 'phone', 'label': 'phone', 'value': '123123'},
+            {'key': 'email', 'label': 'email', 'value': None}
+        ]
+        output = controller.get_user_company_fields(self.user_id, self.organization_id)
+        self.assertEqual(output, expected_output)
+
+    def test_with_all_user_fields(self):
+        """ With all user values for fields """
+        self.get_company_fields_value_for_user.return_value = [
+            {'key': 'phone', 'value': '123123'},
+            {'key': 'email', 'value': 'abc@xyz.com'}
+        ]
+        expected_output = [
+            {'key': 'phone', 'label': 'phone', 'value': '123123'},
+            {'key': 'email', 'label': 'email', 'value': 'abc@xyz.com'}
+        ]
+        output = controller.get_user_company_fields(self.user_id, self.organization_id)
+        self.assertEqual(output, expected_output)
+
+
+class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
+    def setUp(self):
+        self.manager_email = ""
+        self.username = ""
+        self.company_id = None
+        self.get_user_by_email = self.apply_patch('admin.controller.get_user_by_email')
+        self.get_user_manager = self.apply_patch('admin.controller.manager_api.get_user_manager')
+        self.post_user_manager = self.apply_patch('admin.controller.manager_api.post_user_manager')
+        self.delete_user_manager = self.apply_patch('admin.controller.manager_api.delete_user_manager')
+        self.create_update_delete_manager = self.apply_patch('admin.controller.create_update_delete_manager')
+
+    def test_user_not_exist(self):
+        self.manager_email = "abc@example.com"
+        expected_output = {'status': 'error', 'message': 'Error: User does not exist with email abc@example.com', 'type': 'api_error'}
+        self.get_user_by_email.return_value = []
+        output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
+        self.assertEqual(output, expected_output)
+
+    def test_user_belongs_to_different_organization(self):
+        self.manager_email = "mcka_admin_user@mckinseyacademy.com"
+        self.username = "client_admin_user"
+        self.company_id = 4
+        expected_output = {'status': 'error', 'message': 'Error: User belongs to a different organization!', 'type': 'api_error'}
+        output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
+        self.assertEqual(output, expected_output)
+
+    def test_update_user_manager(self):
+        self.manager_email = "mcka_admin_user@mckinseyacademy.com"
+        self.username = "mcka_subadmin_user"
+        self.get_user_by_email.return_value = {
+                "id": 8,
+                "email": "mcka_admin_user@mckinseyacademy.com",
+                "username": "mcka_admin_user",
+                "organizations": [
+                    {
+                        "id": 1,
+                    }
+                ],
+            }
+
+        self.create_update_delete_manager.return_value = None
+
+        self.company_id = 1
+        expected_output = None
+        output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
+        self.assertEqual(output, expected_output)

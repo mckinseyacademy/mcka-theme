@@ -1,0 +1,527 @@
+.tabTitle {
+  font-size: medium;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#addUsersForm {
+  resize: none;
+  width: 100%;
+}
+
+#cohortName {
+  width: 50%;
+}
+
+#mainCohortsListContainer {
+  width: 100%;
+  min-width: 60%;
+  display: table;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#mainCohortsDetailContainer {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 68.57143rem;
+  padding: 0 10px;
+}
+
+#cohortsListTitle p {
+  font-size: xx-large;
+  margin-bottom: 20px;
+}
+
+#mainCohortsWrapper {
+  margin-left: auto;
+  margin-right: auto;
+  display: table;
+  width: 100%;
+  max-width: 68.57143rem;
+}
+
+#managerDashboardWrapper {
+  margin: 0 auto;
+  max-width: 68.57143rem;
+
+  .navigation {
+    padding: 0 1.07143rem;
+
+    ul {
+      border-bottom: 1px solid lighten($mckinsey-bubble-gray, 20%);
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: inline-block;
+        vertical-align: bottom;
+
+        .hashPageButton {
+          display: block;
+          margin-top: 10px;
+          margin-right: 20px;
+          text-transform: uppercase;
+          border-bottom: 3px solid transparent;
+
+          &.active {
+            border-bottom: 3px solid $mckinsey-light-blue;
+            font-weight: bold;
+          }
+        }
+      }
+    }
+  }
+
+  .bbGrid-search-bar {
+    padding: 0 1.07143rem;
+    margin-top: 15px;
+
+    input {
+      float: left !important;
+    }
+  }
+
+  table {
+    min-width: 68.57143rem;
+
+    td, th {
+      white-space: nowrap;
+    }
+
+    td {
+      position: relative;
+      z-index: 0;
+
+      &.progress {
+        color: $mckinsey-dark-grey;
+        text-align: left;
+
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          background-color: $manager-progress-green;
+          z-index: -1;
+          width: inherit;
+        }
+      }
+
+      &.status {
+        padding-left: 24px;
+        position: relative;
+
+        &:before {
+          content: '';
+          position: absolute;
+          left: 10px;
+          top: 10px;
+          width: 10px;
+          height: 10px;
+          border-radius: 100%;
+        }
+
+        &.yes {
+          &:before {
+            background-color: $manager-green;
+          }
+        }
+
+        &.no {
+          &:before {
+            background-color: $manager-orange;
+          }
+        }
+      }
+    }
+  }
+}
+
+#cohortsListViewGridBlock {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 100px;
+  max-height: 28em;
+  position: relative;
+  display: table;
+  min-width: 60%;
+  width: 100%;
+  max-width: 68.57143rem;
+
+  .bbGrid-container {
+    max-height: 28em;
+    overflow-y: auto;
+  }
+
+  .bbGrid-grid.table {
+    min-width: 100%;
+  }
+}
+
+#mainCohortsListBlockContainer {
+  margin-left: auto;
+  margin-right: auto;
+
+  .bbGrid-search-bar {
+    float: none !important;
+    display: table;
+    min-width: 60%;
+
+    .bbGrid-pager {
+      float: left !important;
+    }
+  }
+}
+
+#mainCohortDetailsWrapper {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 68.57143rem;
+  padding: 0 10px;
+
+  .cohortDetailsNavigationButton {
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  #cohortDetailsDataWrapper {
+    margin-top: 25px;
+
+    #cohortDetailsTopContainer {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .cohortDetailsHeader {
+
+      .cohortDetailsNameAndId {
+        // color: #3384CA;
+        font-size: medium;
+        font-weight: bold;
+        float: left;
+        margin-bottom: 10px;
+      }
+
+      .cohortDetailsTags {
+        float: right;
+        margin-bottom: 10px;
+
+        .cohortDetailsTagsList {
+          font-size: small;
+          padding: 5px;
+
+          .cohortTagsDeleteIcon {
+            display: none;
+          }
+        }
+
+        .cohortDetailsTagsListCompAdmin {
+          font-size: small;
+          padding: 5px;
+        }
+      }
+    }
+
+    .cohortDetailsBlocks {
+
+      .cohortDetailsLeftBlock {
+        padding-left: 0 !important;
+      }
+
+      .cohortDetailsCenterBlock {
+        border-left: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+        padding-left: 80px !important;
+      }
+
+      .cohortDetailsRightBlock {
+        padding-left: 80px !important;
+      }
+    }
+  }
+}
+
+#cohortMainDetailsContainerView {
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+
+  .cohortParticipantsButton {
+    padding-left: 0 !important;
+  }
+
+  hr {
+    margin-top: 40px;
+  }
+}
+
+.cohortDetailsViewGrid {
+  padding-left: 0 !important;
+
+  .bbGrid-grid {
+    width: 100%;
+
+    th, td {
+      text-align: left;
+
+      &:last-child {
+        text-align: left;
+      }
+    }
+  }
+}
+
+#cohortDetailsStatsViewGrid {
+  .bbGrid-grid {
+    width: auto;
+
+    th, td {
+      max-width: 215px;
+      width: 39%;
+    }
+  }
+}
+
+
+#cohortDetailsParticipantsGridWrapper {
+  margin-left: auto;
+  margin-right: auto;
+
+  #cohortDetailsParticipantsGrid {
+    margin: 0;
+    padding: 0;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 100px;
+    max-height: 120em;
+    position: relative;
+    float: none !important;
+
+    .bbGrid-container {
+      max-height: 120em;
+      overflow: auto;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .bbGrid-grid.table {
+      margin-left: auto;
+      margin-right: auto;
+      min-width: 100%;
+
+      td {
+        word-break: normal;
+      }
+    }
+  }
+}
+
+#cohortDetailsMainContainer {
+
+  .cohortParticipants {
+    max-width: 100% !important;
+  }
+
+  .bbGrid-search-bar {
+    position: relative;
+    float: none !important;
+    display: inline-block;
+  }
+
+  .cohortDetailsTopic {
+    float: left;
+    display: none;
+    font-size: xx-large;
+    margin-bottom: 20px;
+  }
+}
+
+#cohortsDownloadStatsButton {
+  float: right;
+  display: none;
+}
+
+#cohortBulkActionsMainContainer {
+
+  &.bulkActionsButtonContainer {
+    float: right;
+    z-index: 1000;
+    position: relative;
+  }
+
+  .bulkButtonWrapper {
+    position: relative;
+
+    .bulkEmailSelectedParticipants {
+      z-index: 3;
+      position: relative;
+
+      &.disabled {
+        background-color: #ccc;
+        outline: none;
+        color: white;
+      }
+    }
+
+    .hiddenButtonSplitModifier {
+      position: absolute;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+    }
+
+    .bulkDropdownIcon {
+      z-index: 1;
+      position: relative;
+    }
+  }
+
+  #dropBulkCohort {
+    width: 100%;
+    position: absolute;
+
+    .submenuButtons {
+      width: 100%;
+      border-top: 3px solid white !important;
+      text-align: left !important;
+    }
+  }
+}
+
+
+#cohortDetailsMainModal {
+  .cohortModalTitle {
+    float: left;
+  }
+
+  .cohortModalStatus {
+    float: right;
+    margin-top: 5px;
+  }
+
+  .cohortModalDescription {
+    margin-bottom: 20px;
+  }
+
+  .cohortModalContent {
+    padding: 10px;
+  }
+
+  .cohortModalControl .cancelChanges {
+    margin-left: 15px;
+  }
+}
+
+.loadingIcon {
+  float: right;
+  margin-top: 5px;
+  margin-left: 5px;
+
+  &.hidden {
+    display: none;
+  }
+}
+
+#cohortDetailsBulkEmail {
+
+  .templateNameLabel {
+    display: inline-block;
+  }
+
+  .templateControlButtons {
+    float: right;
+
+    i {
+      font-size: 24px;
+      margin-right: 5px;
+    }
+  }
+
+  .emailModalControl {
+    padding: 15px;
+
+    a {
+      display: block;
+      margin-top: 7px;
+    }
+  }
+
+  .cohortModalDescription {
+    margin-bottom: 15px;
+  }
+
+  .leftEmailButtonsContainer {
+    float: left;
+  }
+
+  .rightEmailButtonsContainer {
+    float: right;
+  }
+
+  .buttonBlock {
+    display: inline-block;
+    float: right;
+  }
+
+}
+
+#cohortTagsModal {
+  .errorMessage {
+    color: red;
+    padding-bottom: 10px;
+  }
+
+  .newTagCreationPopup {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translate(20px, -50%);
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 5px;
+    min-width: 200px;
+    padding: 5px;
+
+    &:after, &:before {
+      right: 100%;
+      top: 50%;
+      border: solid transparent;
+      content: " ";
+      height: 0;
+      width: 0;
+      position: absolute;
+      pointer-events: none;
+    }
+
+    &:after {
+      border-color: rgba(255, 255, 255, 0);
+      border-right-color: #ffffff;
+      border-width: 9px;
+      margin-top: -9px;
+    }
+
+    &:before {
+      border-color: rgba(0, 0, 0, 0);
+      border-right-color: #000000;
+      border-width: 10px;
+      margin-top: -10px;
+    }
+  }
+}
+
+#tagCohortsListModal {
+  width: auto !important;
+}
+
+#cohortDetailsEngagementViewGrid,
+#cohortDetailsStatsViewGrid {
+  margin-bottom: 20px;
+}
+
+#cohortDetailsEngagementViewGrid {
+  padding-right: 0;
+}

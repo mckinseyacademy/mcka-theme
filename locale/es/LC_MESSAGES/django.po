@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-04 11:59+0000\n"
+"POT-Creation-Date: 2018-10-29 11:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,18 +76,18 @@ msgstr "Otro"
 
 #: accounts/forms.py:38
 #: templates/admin/participants/participant_details.haml:148
-#: templates/admin/participants/participant_details.haml:284
-#: templates/admin/participants/participant_details.haml:292
-#: templates/admin/participants/participant_details.haml:300
+#: templates/admin/participants/participant_details.haml:294
+#: templates/admin/participants/participant_details.haml:302
+#: templates/admin/participants/participant_details.haml:310
 #: templates/admin/participants/participants_list.haml:90
 msgid "Female"
 msgstr "Femenino"
 
 #: accounts/forms.py:39
 #: templates/admin/participants/participant_details.haml:146
-#: templates/admin/participants/participant_details.haml:282
-#: templates/admin/participants/participant_details.haml:290
-#: templates/admin/participants/participant_details.haml:298
+#: templates/admin/participants/participant_details.haml:292
+#: templates/admin/participants/participant_details.haml:300
+#: templates/admin/participants/participant_details.haml:308
 #: templates/admin/participants/participants_list.haml:88
 msgid "Male"
 msgstr "Masculino"
@@ -1122,7 +1122,7 @@ msgid "You must accept terms of service in order to continue"
 msgstr "Debe aceptar las condiciones de servicio para continuar"
 
 #: accounts/forms.py:433 accounts/forms.py:490 accounts/forms.py:508
-#: accounts/forms.py:614 admin/controller.py:820 admin/views.py:2337
+#: accounts/forms.py:614 admin/controller.py:823 admin/views.py:2341
 #: marketing/forms.py:49 marketing/forms.py:93 marketing/forms.py:127
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1153,18 +1153,18 @@ msgstr ""
 "letras mayúsculas y minúsculas, además de números O caracteres especiales."
 "{html_span_end}"
 
-#: accounts/forms.py:458 admin/views.py:2337 marketing/forms.py:135
+#: accounts/forms.py:458 admin/views.py:2341 marketing/forms.py:135
 #: templates/admin/participants/participant_details.haml:123
 #: templates/admin/participants/participants_list.haml:16
 #: templates/admin/permissions/list.haml:36
 msgid "Company"
 msgstr "Compañía"
 
-#: accounts/forms.py:459 admin/controller.py:820
+#: accounts/forms.py:459 admin/controller.py:823
 msgid "Full Name"
 msgstr "Nombre completo"
 
-#: accounts/forms.py:460 admin/controller.py:820 marketing/forms.py:142
+#: accounts/forms.py:460 admin/controller.py:823 marketing/forms.py:142
 #: templates/accounts/user_profile.haml:24
 #: templates/admin/learner_dashboard/discovery_list.haml:12
 #: templates/admin/learner_dashboard/element_list.haml:13
@@ -1200,7 +1200,7 @@ msgstr "Nueva contraseña"
 msgid "New password confirmation"
 msgstr "Confirmación de la nueva contraseña"
 
-#: accounts/forms.py:590 admin/forms.py:165
+#: accounts/forms.py:590 admin/forms.py:167
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "Formatos aceptados: JPG, PNG y GIF"
 
@@ -1431,17 +1431,25 @@ msgstr ""
 msgid "Enter your full name"
 msgstr "Ingrese su nombre completo"
 
-#: accounts/views.py:1127 accounts/views.py:1150 admin/views.py:1843
-#: admin/views.py:1877 admin/views.py:4232
+#: accounts/views.py:1127 accounts/views.py:1150 admin/views.py:1847
+#: admin/views.py:1881 admin/views.py:4236
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
+#: templates/admin/cohorts/course_details.html:38
+#: templates/admin/cohorts/course_details.html:197
 #: templates/admin/course_meta_content/item_detail.haml:16
-#: templates/admin/course_meta_content/item_list.haml:206
-#: templates/admin/course_meta_content/item_list.haml:235
+#: templates/admin/course_meta_content/item_list.haml:214
+#: templates/admin/course_meta_content/item_list.haml:243
+#: templates/admin/course_meta_content/item_list.haml:272
+#: templates/admin/course_meta_content/item_list.haml:301
+#: templates/admin/course_meta_content/item_list2.haml:206
+#: templates/admin/course_meta_content/item_list2.haml:235
+#: templates/admin/course_meta_content/item_list2.haml:264
+#: templates/admin/course_meta_content/item_list2.haml:293
 #: templates/admin/course_run/form_modal.haml:118
 #: templates/admin/learner_dashboard/main.haml:155
 #: templates/admin/learner_dashboard/preview.haml:34
-#: templates/admin/participants/participant_edit_status.haml:28
+#: templates/admin/participants/participant_edit_status.haml:34
 #: templates/certificates/new_certificate_template.haml:21
 msgid "Save"
 msgstr "Guardar"
@@ -1466,7 +1474,7 @@ msgstr "Registrado"
 msgid "Error"
 msgstr "Error"
 
-#: admin/controller.py:296
+#: admin/controller.py:299
 msgid ""
 "An administrator has created an account on McKinsey Academy for your use. To "
 "activate your account, please copy and paste this address into your web "
@@ -1476,335 +1484,337 @@ msgstr ""
 "use. Para activarla, copie y pegue esta dirección en la barra de direcciones "
 "de su navegador:"
 
-#: admin/controller.py:341 admin/controller.py:389
+#: admin/controller.py:344 admin/controller.py:392
 #, python-brace-format
 msgid "Could not parse user info from {user_line}"
 msgstr "No se pudo analizar la información de usuario de {user_line}"
 
-#: admin/controller.py:425 admin/controller.py:500
+#: admin/controller.py:428 admin/controller.py:503
 msgid "Unable to register user"
 msgstr "No se puede registrar el usuario"
 
-#: admin/controller.py:435 admin/controller.py:511
+#: admin/controller.py:438 admin/controller.py:514
 msgid "User not associated with client"
 msgstr "El usuario no está asociado con el cliente"
 
-#: admin/controller.py:439
+#: admin/controller.py:442
 msgid "{}: {} - {}"
 msgstr "{}: {} - {}"
 
-#: admin/controller.py:447 admin/controller.py:551
+#: admin/controller.py:450 admin/controller.py:554
 msgid "Data processing error"
 msgstr "Error al procesar los datos"
 
-#: admin/controller.py:448
+#: admin/controller.py:451
 #, python-brace-format
 msgid "Error processing data: {reason}"
 msgstr "Error al procesar los datos: {reason}"
 
-#: admin/controller.py:529 admin/controller.py:537
+#: admin/controller.py:532 admin/controller.py:540
 #, python-brace-format
 msgid "{error}: {message} - {email}"
 msgstr "{error}: {message} - {email}"
 
-#: admin/controller.py:530
+#: admin/controller.py:533
 msgid "User program enrollment"
 msgstr "Inscripción del usuario al programa"
 
-#: admin/controller.py:538
+#: admin/controller.py:541
 msgid "User course enrollment"
 msgstr "Inscripción del usuario al curso"
 
-#: admin/controller.py:543
+#: admin/controller.py:546
 msgid "Enrolling student error"
 msgstr "Error en la inscripción del alumno"
 
-#: admin/controller.py:544
+#: admin/controller.py:547
 #, python-brace-format
 msgid "Error enrolling student: {reason} - {email}"
 msgstr "Error en la inscripción del alumno: {reason} - {email}"
 
-#: admin/controller.py:552
+#: admin/controller.py:555
 #, python-brace-format
 msgid "Error processing data: {reason} - {email}"
 msgstr "Error al procesar los datos: {reason} - {email}"
 
-#: admin/controller.py:666 admin/controller.py:1333
+#: admin/controller.py:669 admin/controller.py:1336
 msgid "Activated"
 msgstr "Activado"
 
-#: admin/controller.py:668
+#: admin/controller.py:671
 msgid "Could not fetch activation record"
 msgstr "No se pudo recuperar el registro de activación"
 
-#: admin/controller.py:685
+#: admin/controller.py:688
 msgid "PROJECT"
 msgstr "PROYECTO"
 
-#: admin/controller.py:812
+#: admin/controller.py:815
 msgid "Client Name"
 msgstr "Nombre del cliente"
 
-#: admin/controller.py:812 admin/views.py:4043 admin/views.py:4141
+#: admin/controller.py:815 admin/views.py:4047 admin/views.py:4145
 #: certificates/models.py:88 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "Identificador (ID) del curso"
 
-#: admin/controller.py:820
+#: admin/controller.py:823
 #: templates/admin/participants/participant_details.haml:102
-#: templates/admin/participants/participant_details.haml:194
+#: templates/admin/participants/participant_details.haml:204
 msgid "Username"
 msgstr "Nombre de usuario"
 
-#: admin/controller.py:820
+#: admin/controller.py:823
 msgid "Progress %"
 msgstr "Avance, %"
 
-#: admin/controller.py:820
+#: admin/controller.py:823
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:148
+#: templates/admin/course_meta_content/item_list2.haml:148
 msgid "Engagement"
 msgstr "Participación"
 
-#: admin/controller.py:820 admin/views.py:4043
+#: admin/controller.py:823 admin/views.py:4047
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:71
+#: templates/admin/course_meta_content/item_list2.haml:71
 msgid "Proficiency"
 msgstr "Competencia"
 
-#: admin/controller.py:820
+#: admin/controller.py:823
 #: templates/admin/client-admin/course_participants.haml:50
 msgid "Course Completed"
 msgstr "Curso completado"
 
-#: admin/controller.py:841
+#: admin/controller.py:844
 msgid "0%"
 msgstr "0 %"
 
-#: admin/controller.py:843 admin/views.py:927 admin/views.py:936
+#: admin/controller.py:846 admin/views.py:929 admin/views.py:938
 msgid "{}%"
 msgstr "{}%"
 
-#: admin/controller.py:1265
+#: admin/controller.py:1268
 msgid "# of posts"
 msgstr "Cantidad de publicaciones"
 
-#: admin/controller.py:1266
+#: admin/controller.py:1269
 msgid "% participants posting"
 msgstr "% de participantes con publicaciones"
 
-#: admin/controller.py:1267
+#: admin/controller.py:1270
 msgid "Avg posts per participant"
 msgstr "Promedio de publicaciones por participante"
 
-#: admin/controller.py:1332
+#: admin/controller.py:1335
 msgid "Total Cohort"
 msgstr "Grupo total"
 
-#: admin/controller.py:1334
+#: admin/controller.py:1337
 msgid "Engaged"
 msgstr "Participa en el curso"
 
-#: admin/controller.py:1335
+#: admin/controller.py:1338
 msgid "Logged in over last 7 days"
 msgstr "Inició sesión en los últimos 7 días"
 
-#: admin/controller.py:1493
+#: admin/controller.py:1498
 msgid "-"
 msgstr "-"
 
-#: admin/controller.py:1642 admin/controller.py:1661
+#: admin/controller.py:1647 admin/controller.py:1666
 msgid "Could not parse user info from {}"
 msgstr "No se pudo analizar la información de usuario de {}"
 
-#: admin/controller.py:1697 admin/controller.py:1825
+#: admin/controller.py:1703 admin/controller.py:1832
 msgid "No email"
 msgstr "No hay correo electrónico"
 
-#: admin/controller.py:1699 admin/controller.py:1826
+#: admin/controller.py:1705 admin/controller.py:1833
 msgid "Empty field: {}"
 msgstr "Campo vacío: {}"
 
-#: admin/controller.py:1699 admin/controller.py:1826 admin/controller.py:1831
-#: admin/controller.py:1835
+#: admin/controller.py:1705 admin/controller.py:1833 admin/controller.py:1838
+#: admin/controller.py:1842
 msgid "Processing Participant"
 msgstr "Procesando participante"
 
-#: admin/controller.py:1704
+#: admin/controller.py:1710
 msgid "Valid e-mail is required"
 msgstr "Se requiere un correo electrónico válido"
 
-#: admin/controller.py:1704 admin/controller.py:1711 admin/controller.py:1716
-#: admin/controller.py:1754 admin/controller.py:1765
+#: admin/controller.py:1710 admin/controller.py:1717 admin/controller.py:1722
+#: admin/controller.py:1760 admin/controller.py:1771
 msgid "Registering Participant"
 msgstr "Registrando participante"
 
-#: admin/controller.py:1711
+#: admin/controller.py:1717
 msgid "Email already exist"
 msgstr "El correo electrónico ya existe"
 
-#: admin/controller.py:1716
+#: admin/controller.py:1722
 msgid "Username already exist"
 msgstr "El nombre de usuario ya existe"
 
-#: admin/controller.py:1722
+#: admin/controller.py:1728
 msgid "Company doesn't exist"
 msgstr "La compañía no existe"
 
-#: admin/controller.py:1722 admin/controller.py:1724 admin/controller.py:1759
+#: admin/controller.py:1728 admin/controller.py:1730 admin/controller.py:1765
 msgid "Enrolling Participant in Company"
 msgstr "Inscribiendo al participante en la compañía"
 
-#: admin/controller.py:1730 admin/controller.py:1841
+#: admin/controller.py:1736 admin/controller.py:1848
 msgid "Course doesn't exist"
 msgstr "El curso no existe"
 
-#: admin/controller.py:1730 admin/controller.py:1732 admin/controller.py:1736
-#: admin/controller.py:1739 admin/controller.py:1770 admin/controller.py:1841
-#: admin/controller.py:1843 admin/controller.py:1847 admin/controller.py:1850
-#: admin/controller.py:1865
+#: admin/controller.py:1736 admin/controller.py:1738 admin/controller.py:1742
+#: admin/controller.py:1745 admin/controller.py:1776 admin/controller.py:1848
+#: admin/controller.py:1850 admin/controller.py:1854 admin/controller.py:1857
+#: admin/controller.py:1872
 msgid "Enrolling Participant in Course"
 msgstr "Inscribiendo al participante en el curso"
 
-#: admin/controller.py:1736 admin/controller.py:1847
+#: admin/controller.py:1742 admin/controller.py:1854
 msgid "Course is not Internal"
 msgstr "El curso no es interno"
 
-#: admin/controller.py:1739 admin/controller.py:1850
+#: admin/controller.py:1745 admin/controller.py:1857
 msgid "Status doesn't exist"
 msgstr "El estado no existe"
 
-#: admin/controller.py:1743 admin/controller.py:1779 admin/controller.py:1854
-#: admin/controller.py:1874
+#: admin/controller.py:1749 admin/controller.py:1785 admin/controller.py:1861
+#: admin/controller.py:1881
 msgid "Reason: {}, Activity: {}, Participant: {}"
 msgstr "Motivo: {}, Actividad: {}, Participante: {}"
 
-#: admin/controller.py:1765
+#: admin/controller.py:1771
 msgid "Activation record error"
 msgstr "Error en el registro de activación"
 
-#: admin/controller.py:1777 admin/controller.py:1872
+#: admin/controller.py:1783 admin/controller.py:1879
 msgid "Setting Participant's Status"
 msgstr "Configurando el estado del participante"
 
-#: admin/controller.py:1785 admin/controller.py:1880
+#: admin/controller.py:1791 admin/controller.py:1887
 msgid "Processing Data Error"
 msgstr "Error al procesar los datos"
 
-#: admin/controller.py:1786 admin/controller.py:1881
+#: admin/controller.py:1792 admin/controller.py:1888
 msgid "Error processing data: {} - {}"
 msgstr "Error al procesar los datos: {} - {}"
 
-#: admin/controller.py:1831
+#: admin/controller.py:1838
 #, python-brace-format
 msgid "Valid e-mail is required: {email}"
 msgstr "Se requiere un correo electrónico válido: {email}"
 
-#: admin/controller.py:1835
+#: admin/controller.py:1842
 msgid "User doesn't exist"
 msgstr "El usuario no existe"
 
-#: admin/controller.py:1996
+#: admin/controller.py:2003
 msgid "This company already exists!"
 msgstr "Esta compañía ya existe!"
 
-#: admin/controller.py:1998
+#: admin/controller.py:2005
 msgid "Company Validation Success!"
 msgstr "La compañía fue validada exitosamente"
 
-#: admin/controller.py:2074
+#: admin/controller.py:2081
 msgid "You have sent incorrect chunk number!"
 msgstr "Ha enviado un número de fragmento incorrecto"
 
-#: admin/controller.py:2076
+#: admin/controller.py:2083
 msgid "You have sent incorrect task key!"
 msgstr "Ha enviado una clave de tarea incorrecta"
 
-#: admin/controller.py:2097
+#: admin/controller.py:2104
 msgid "There are no users in organization!"
 msgstr "No hay usuarios en la organización"
 
-#: admin/controller.py:2286 admin/controller.py:2287 admin/views.py:3584
-#: admin/views.py:3585 admin/views.py:3741 admin/views.py:5572
+#: admin/controller.py:2335 admin/controller.py:2336 admin/views.py:3588
+#: admin/views.py:3589 admin/views.py:3747 admin/views.py:5594
 msgid "No company"
 msgstr "Compañía omitida"
 
-#: admin/controller.py:2304 admin/views.py:3589 admin/views.py:4100
-#: admin/views.py:4127 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2353 admin/views.py:3593 admin/views.py:4104
+#: admin/views.py:4131 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/mobile_apps/company_app_details.haml:46
 msgid "Yes"
 msgstr "Sí"
 
-#: admin/controller.py:2306 admin/views.py:3591 admin/views.py:4102
-#: admin/views.py:4106 admin/views.py:4129 admin/views.py:4133
+#: admin/controller.py:2355 admin/views.py:3595 admin/views.py:4106
+#: admin/views.py:4110 admin/views.py:4133 admin/views.py:4137
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
 msgstr "No"
 
-#: admin/controller.py:2326 admin/controller.py:2334
+#: admin/controller.py:2375 admin/controller.py:2383
 msgid "000"
 msgstr "000"
 
-#: admin/controller.py:2543 admin/controller.py:2565
+#: admin/controller.py:2592 admin/controller.py:2614
 msgid "Sorry, We can not process your request"
 msgstr "Lo sentimos, no podemos procesar su solicitud"
 
-#: admin/controller.py:2550 admin/controller.py:2562
+#: admin/controller.py:2599 admin/controller.py:2611
 msgid "Operation Successful"
 msgstr "Operación exitosa"
 
-#: admin/controller.py:2553
+#: admin/controller.py:2602
 msgid "Please enter role text"
 msgstr "Ingrese el texto del rol"
 
-#: admin/controller.py:2588 templates/admin/courses/course_details.haml:104
+#: admin/controller.py:2637 templates/admin/courses/course_details.haml:107
 msgid "Engagement Summary"
 msgstr "Resumen de participación en el curso"
 
-#: admin/controller.py:2588
+#: admin/controller.py:2637
 msgid "# of people"
 msgstr "Cantidad de personas"
 
-#: admin/controller.py:2588
+#: admin/controller.py:2637
 msgid "% total cohort"
 msgstr "% del grupo total"
 
-#: admin/controller.py:2588
+#: admin/controller.py:2637
 msgid "Avg Progress"
 msgstr "Avance promedio"
 
-#: admin/controller.py:2594
+#: admin/controller.py:2643
 msgid "Participant Performance"
 msgstr "Desempeño del participante"
 
-#: admin/controller.py:2594
+#: admin/controller.py:2643
 #, fuzzy, python-format
 #| msgid "% completion"
 msgid "% completion"
 msgstr "% de finalización"
 
-#: admin/controller.py:2594
+#: admin/controller.py:2643
 msgid "Score"
 msgstr "Puntaje"
 
-#: admin/controller.py:2595
+#: admin/controller.py:2644
 msgid "Group work 1"
 msgstr "Trabajo en grupo 1"
 
-#: admin/controller.py:2596
+#: admin/controller.py:2645
 msgid "Group work 2"
 msgstr "Trabajo en grupo 2"
 
-#: admin/controller.py:2597
+#: admin/controller.py:2646
 msgid "Mid-course assessment"
 msgstr "Evaluación de mitad de curso"
 
-#: admin/controller.py:2598
+#: admin/controller.py:2647
 msgid "Final assessment"
 msgstr "Evaluación final"
 
-#: admin/controller.py:2605 templates/admin/courses/course_details.haml:117
+#: admin/controller.py:2654 templates/admin/courses/course_details.haml:120
 msgid "Social Engagement"
 msgstr "Participación en el curso"
 
@@ -1818,40 +1828,44 @@ msgstr ""
 msgid "Enter new email address"
 msgstr "Escriba la nueva dirección de correo electrónico"
 
-#: admin/forms.py:120 admin/views.py:4266
+#: admin/forms.py:120 admin/views.py:4270
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "TA"
 
-#: admin/forms.py:120 admin/views.py:4267
+#: admin/forms.py:121 admin/views.py:4271
 msgid "OBSERVER"
 msgstr "OBSERVADOR"
 
-#: admin/forms.py:144 admin/views.py:4268
+#: admin/forms.py:122
+msgid "MODERATOR"
+msgstr ""
+
+#: admin/forms.py:146 admin/views.py:4272
 msgid "ADMIN"
 msgstr "ADMINISTRADOR"
 
-#: admin/forms.py:145 admin/forms.py:157 admin/views.py:4271
+#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4275
 msgid "COURSE OPS"
 msgstr "OPS. DEL CURSO"
 
-#: admin/forms.py:146 admin/forms.py:158 admin/views.py:4270
+#: admin/forms.py:148 admin/forms.py:160 admin/views.py:4274
 msgid "INTERNAL ADMIN"
 msgstr "ADMINISTRADOR INTERNO"
 
-#: admin/forms.py:147 admin/forms.py:159 admin/views.py:4269
+#: admin/forms.py:149 admin/forms.py:161 admin/views.py:4273
 msgid "COMPANY ADMIN"
 msgstr "ADMINISTRADOR DE LA COMPAÑÍA"
 
-#: admin/forms.py:201
+#: admin/forms.py:203
 msgid "Email(s) separated by commas"
 msgstr "Correo(s) electrónico(s) separados por comas"
 
-#: admin/forms.py:203
+#: admin/forms.py:205
 msgid "Message (optional)"
 msgstr "Mensaje (opcional)"
 
-#: admin/forms.py:211 admin/forms.py:227 admin/forms.py:236
+#: admin/forms.py:213 admin/forms.py:229 admin/forms.py:238
 #: certificates/models.py:80 marketing/forms.py:47
 #: templates/admin/client-admin/course_participants.haml:40
 #: templates/admin/course_run/list.haml:24
@@ -1860,31 +1874,31 @@ msgstr "Mensaje (opcional)"
 msgid "Name"
 msgstr "Nombre"
 
-#: admin/forms.py:212 admin/forms.py:229
+#: admin/forms.py:214 admin/forms.py:231
 msgid "Course Instance"
 msgstr "Instancia del curso"
 
-#: admin/forms.py:218
+#: admin/forms.py:220
 msgid "Name {}"
 msgstr "Nombre {}"
 
-#: admin/forms.py:228 admin/views.py:1984 admin/views.py:4043
-#: admin/views.py:4141 templates/admin/program/list.haml:25
+#: admin/forms.py:230 admin/views.py:1988 admin/views.py:4047
+#: admin/views.py:4145 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:63
 #: templates/header.haml:101
 msgid "Program"
 msgstr "Programa"
 
-#: admin/forms.py:433
+#: admin/forms.py:435
 msgid "Course with this ID does not exist"
 msgstr "No existe un curso con este identificador"
 
-#: admin/forms.py:440
+#: admin/forms.py:442
 msgid "That number is not allowed"
 msgstr "Ese número no está permitido"
 
-#: admin/forms.py:442
+#: admin/forms.py:444
 msgid "Number of participants is limited to 5000"
 msgstr "La cantidad de participantes está limitada a 5.000"
 
@@ -1935,30 +1949,31 @@ msgstr ""
 msgid "Article"
 msgstr "Artículo"
 
-#: admin/models.py:590 templates/admin/course_meta_content/item_list.haml:187
-#: templates/courses/content_page/lesson_menu.haml:9
-#: templates/courses/content_page/lesson_menu.haml:16
-#: templates/courses/content_page/lesson_pager.haml:10
-#: templates/courses/content_page/lesson_pager.haml:28
-#: templates/courses/course_lessons.haml:11
-#: templates/courses/course_lessons_ld_external.haml:13
-#: templates/courses/course_progress_v2.haml:59
+#: admin/models.py:590 templates/admin/course_meta_content/item_list.haml:195
+#: templates/admin/course_meta_content/item_list2.haml:187
+#: templates/courses/content_page/lesson_menu.haml:12
+#: templates/courses/content_page/lesson_menu.haml:22
+#: templates/courses/content_page/lesson_pager.haml:13
+#: templates/courses/content_page/lesson_pager.haml:42
+#: templates/courses/course_lessons.haml:14
+#: templates/courses/course_lessons_ld_external.haml:16
+#: templates/courses/course_progress_v2.haml:75
 msgid "Lesson"
 msgstr "Lección"
 
-#: admin/models.py:591 templates/admin/course_meta_content/item_list.haml:216
-#: templates/courses/content_page/lesson_pager.haml:11
-#: templates/courses/content_page/lesson_pager.haml:29
-#: templates/courses/content_page/lesson_pager_ld.haml:10
-#: templates/courses/content_page/lesson_pager_ld.haml:22
-#: templates/courses/course_lessons.haml:29
-#: templates/courses/course_lessons_ld.haml:38
-#: templates/courses/course_lessons_ld_external.haml:31
-#: templates/courses/course_progress_v2.haml:71
+#: admin/models.py:591 templates/admin/course_meta_content/item_list.haml:253
+#: templates/admin/course_meta_content/item_list2.haml:245
+#: templates/courses/content_page/lesson_pager.haml:17
+#: templates/courses/content_page/lesson_pager.haml:46
+#: templates/courses/content_page/lesson_pager_ld.haml:15
+#: templates/courses/content_page/lesson_pager_ld.haml:32
+#: templates/courses/course_lessons.haml:49
+#: templates/courses/course_lessons_ld.haml:53
+#: templates/courses/course_lessons_ld_external.haml:51
 msgid "Module"
 msgstr "Módulo"
 
-#: admin/models.py:592 admin/views.py:4043 admin/views.py:4141
+#: admin/models.py:592 admin/views.py:4047 admin/views.py:4145
 #: templates/admin/participants/participants_list.haml:18
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
@@ -2002,117 +2017,117 @@ msgstr "Grupo de tareas para {wg_id}"
 msgid "Some of the files aren't uploaded, Please upload again!"
 msgstr "Algunos de los archivos no se cargaron. Inténtelo nuevamente"
 
-#: admin/tasks.py:142
+#: admin/tasks.py:152
 #, python-brace-format
 msgid "Group Work: {label}"
 msgstr "Trabajo en grupo: {label}"
 
-#: admin/tasks.py:149
+#: admin/tasks.py:159
 #, python-brace-format
 msgid "Assessment: {label}"
 msgstr "Evaluación: {label}"
 
-#: admin/tasks.py:155
+#: admin/tasks.py:165
 #, python-brace-format
 msgid "Lesson {lesson_number} Progress"
 msgstr "Progreso de la Lección {lesson_number}"
 
-#: admin/tasks.py:239
+#: admin/tasks.py:262
 msgid "Participant stats for {} is ready to download"
 msgstr ""
 
-#: admin/tasks.py:242
+#: admin/tasks.py:265
 msgid "Participant stats for {} did not generate"
 msgstr ""
 
-#: admin/views.py:550
+#: admin/views.py:551
 msgid "Edit Email"
 msgstr "Editar correo electrónico"
 
-#: admin/views.py:588
+#: admin/views.py:589
 msgid "Un-enroll from this course"
 msgstr "Cancelar la inscripción a este curso"
 
-#: admin/views.py:589
+#: admin/views.py:590
 msgid "Un-enroll from entire program "
 msgstr "Cancelar la inscripción al programa completo"
 
-#: admin/views.py:854
+#: admin/views.py:856
 msgid "% Progress"
 msgstr "% de avance"
 
-#: admin/views.py:855
+#: admin/views.py:857
 msgid "% Progress (Engaged)"
 msgstr "% de avance (participa en el curso)"
 
-#: admin/views.py:922
+#: admin/views.py:924
 msgid "GW_{}"
 msgstr "GW_{}"
 
-#: admin/views.py:925
+#: admin/views.py:927
 msgid "Group Work: {}"
 msgstr "Trabajo en grupo: {}"
 
-#: admin/views.py:931
+#: admin/views.py:933
 msgid "AS_{}"
 msgstr "AS_{}"
 
-#: admin/views.py:934
+#: admin/views.py:936
 msgid "Assessment: {}"
 msgstr "Evaluación: {}"
 
-#: admin/views.py:1114
+#: admin/views.py:1116
 msgid "No such task!"
 msgstr "No existe esa tarea"
 
-#: admin/views.py:1202 admin/views.py:1241
+#: admin/views.py:1206 admin/views.py:1245
 msgid "please fix the problems indicated below."
 msgstr "Por favor, solucione los problemas que se indican a continuación."
 
-#: admin/views.py:1287
+#: admin/views.py:1291
 msgid "Client"
 msgstr "Cliente"
 
-#: admin/views.py:1288
+#: admin/views.py:1292
 msgid "Clients"
 msgstr "Clientes"
 
-#: admin/views.py:1347 admin/views.py:1394
+#: admin/views.py:1351 admin/views.py:1398
 msgid "Save Client"
 msgstr "Guardar cliente"
 
-#: admin/views.py:1406
+#: admin/views.py:1410
 #, python-brace-format
 msgid "Successfully processed {processed} of {total} record"
 msgid_plural "Successfully processed {processed} of {total} records"
 msgstr[0] "{processed} de {total} registro procesado exitosamente"
 msgstr[1] "{processed} de {total} registros procesados exitosamente"
 
-#: admin/views.py:1583
+#: admin/views.py:1587
 msgid "Bad request, The Image type is not valid."
 msgstr "Solicitud incorrecta. El tipo de imagen no es válido."
 
-#: admin/views.py:1595
+#: admin/views.py:1599
 msgid "Could not delete the image, Please try later"
 msgstr "No se pudo eliminar la imagen; inténtelo más tarde"
 
-#: admin/views.py:1745
+#: admin/views.py:1749
 msgid "Contact has been removed."
 msgstr "Se ha eliminado el contacto."
 
-#: admin/views.py:1761 admin/views.py:1767
+#: admin/views.py:1765 admin/views.py:1771
 msgid "Invalid Course Run"
 msgstr "Edición del curso no válida"
 
-#: admin/views.py:1763
+#: admin/views.py:1767
 msgid "Invalid Program ID"
 msgstr "Identificador del programa no válido"
 
-#: admin/views.py:1767
+#: admin/views.py:1771
 msgid "Course: {}"
 msgstr "Curso: {}"
 
-#: admin/views.py:1793
+#: admin/views.py:1797
 msgid ""
 "\n"
 "            If this client should use SSO: DevOps must configure and enable "
@@ -2130,110 +2145,110 @@ msgstr ""
 "valor “slug de IdP” configurado. Si el cliente no usará SSO, deje el campo "
 "en blanco."
 
-#: admin/views.py:1836 admin/views.py:1837 admin/views.py:1871
+#: admin/views.py:1840 admin/views.py:1841 admin/views.py:1875
 msgid "- Select -"
 msgstr "- Seleccionar -"
 
-#: admin/views.py:1896 admin/views.py:1898
+#: admin/views.py:1900 admin/views.py:1902
 msgid "Access Key couldn't be created, please check course ID!"
 msgstr "No se pudo crear la clave de acceso. Verifique el ID del curso"
 
-#: admin/views.py:1897
+#: admin/views.py:1901
 msgid "Access Key created successfully!"
 msgstr "Clave de acceso creada exitosamente"
 
-#: admin/views.py:1911
+#: admin/views.py:1915
 msgid "Access Key"
 msgstr "Clave de acceso"
 
-#: admin/views.py:1933
+#: admin/views.py:1937
 msgid "Send"
 msgstr "Enviar"
 
-#: admin/views.py:1957
+#: admin/views.py:1961
 msgid "This student hasn't been added to any programs yet."
 msgstr "Este alumno aún no ha sido añadido a ningún programa."
 
-#: admin/views.py:1968
+#: admin/views.py:1972
 msgid "fail"
 msgstr "la acción no pudo completarse"
 
-#: admin/views.py:1972
+#: admin/views.py:1976
 msgid "success"
 msgstr "la acción se completó exitosamente"
 
-#: admin/views.py:1985 templates/admin/admin_header.haml:59
+#: admin/views.py:1989 templates/admin/admin_header.haml:59
 #: templates/marketing/programs.haml:237
 msgid "Programs"
 msgstr "Programas"
 
-#: admin/views.py:2023 admin/views.py:2071
+#: admin/views.py:2027 admin/views.py:2075
 msgid "Save Program"
 msgstr "Guardar programa"
 
-#: admin/views.py:2279
+#: admin/views.py:2283
 msgid "Successfully Added {} Participants"
 msgstr "{} participantes añadidos exitosamente"
 
-#: admin/views.py:2337 admin/views.py:5695
+#: admin/views.py:2341 admin/views.py:5717
 #: templates/admin/participants/activation_link_modal.haml:15
 msgid "First name"
 msgstr "Nombre"
 
-#: admin/views.py:2337 admin/views.py:5696
+#: admin/views.py:2341 admin/views.py:5718
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 msgid "Last name"
 msgstr "Apellido"
 
-#: admin/views.py:2337
+#: admin/views.py:2341
 #: templates/admin/participants/activation_link_modal.haml:4
 #: templates/admin/participants/activation_link_modal.haml:21
 msgid "Activation Link"
 msgstr "Enlace de activación"
 
-#: admin/views.py:2454
+#: admin/views.py:2458
 msgid "Report is TBD"
 msgstr "Informe pendiente de definición"
 
-#: admin/views.py:2476 templates/courses/content_page/courses_menu_list.haml:17
+#: admin/views.py:2480 templates/courses/content_page/courses_menu_list.haml:17
 msgid "Coming Soon"
 msgstr "Próximamente"
 
-#: admin/views.py:2478 templates/courses/content_page/courses_menu_list.haml:8
+#: admin/views.py:2482 templates/courses/content_page/courses_menu_list.haml:8
 msgid "Archived"
 msgstr "Archivado"
 
-#: admin/views.py:2548
+#: admin/views.py:2552
 msgid "Successfully saved courses to {} program"
 msgstr "Cursos guardados exitosamente en el programa {}"
 
-#: admin/views.py:2562 admin/views.py:2948 admin/views.py:2981
-#: admin/views.py:3036
+#: admin/views.py:2566 admin/views.py:2952 admin/views.py:2985
+#: admin/views.py:3040
 msgid "Invalid program_id specified: {}"
 msgstr "program_id especificado no válido: {}"
 
-#: admin/views.py:2571
+#: admin/views.py:2575
 msgid "Invalid student_id specified: {}"
 msgstr "student_id especificado no válido: {}"
 
-#: admin/views.py:2577
+#: admin/views.py:2581
 msgid "Not enough places available for {} program - {} left"
 msgstr "No hay suficientes vacantes para el programa {} - {} disponibles"
 
-#: admin/views.py:2604
+#: admin/views.py:2608
 msgid "Successfully associated students to {} program"
 msgstr "Alumnos asociados exitosamente al programa {}"
 
-#: admin/views.py:2643
+#: admin/views.py:2647
 msgid "{} already enrolled in {}"
 msgstr "{} ya inscrito en {}"
 
-#: admin/views.py:2650
+#: admin/views.py:2654
 msgid "Successfully associated students to courses"
 msgstr "Alumnos asociados exitosamente a los cursos"
 
-#: admin/views.py:2652
+#: admin/views.py:2656
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
@@ -2241,7 +2256,7 @@ msgstr ""
 "Alumnos asociados exitosamente a los cursos, con {} mensajes:\n"
 "\\t{}"
 
-#: admin/views.py:2766 admin/views.py:2769
+#: admin/views.py:2770 admin/views.py:2773
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
@@ -2249,238 +2264,239 @@ msgstr ""
 "Error al cargar el archivo. Inténtelo de nuevo y asegúrese de usar un "
 "formato de archivo aceptado."
 
-#: admin/views.py:3197 admin/views.py:3260
+#: admin/views.py:3201 admin/views.py:3264
 msgid "No group projects available for this course"
 msgstr "No hay proyectos en grupo disponibles para este curso"
 
-#: admin/views.py:3270 admin/views.py:3271 admin/views.py:3498
-#: admin/views.py:3499 templates/admin/admin_header.haml:37
+#: admin/views.py:3274 admin/views.py:3275 admin/views.py:3502
+#: admin/views.py:3503 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:56
-#: templates/courses/content_page/course_tabs.haml:18
+#: templates/admin/course_meta_content/item_list2.haml:56
+#: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
-#: templates/courses/course_progress.haml:57 templates/faq.haml:39
+#: templates/courses/course_progress.haml:70 templates/faq.haml:39
 msgid "Group Work"
 msgstr "Trabajo en grupo"
 
-#: admin/views.py:3350
+#: admin/views.py:3354
 msgid "Group wasn't created - please select project"
 msgstr "El grupo no se ha creado - por favor, SELECCIONAR un proyecto"
 
-#: admin/views.py:3361
+#: admin/views.py:3365
 msgid "Bad users {} for private project"
 msgstr "Usuarios incorrectos {} para proyecto privado"
 
-#: admin/views.py:3377
+#: admin/views.py:3381
 msgid "Group successfully created"
 msgstr "El grupo se creó exitosamente"
 
-#: admin/views.py:3381
+#: admin/views.py:3385
 msgid "Group was not created"
 msgstr "El grupo no se ha creado"
 
-#: admin/views.py:3423
+#: admin/views.py:3427
 msgid "Error creating project"
 msgstr "Error al crear el proyecto"
 
-#: admin/views.py:3437
+#: admin/views.py:3441
 msgid "Project already exists"
 msgstr "El proyecto ya existe"
 
-#: admin/views.py:3442
+#: admin/views.py:3446
 msgid "Project successfully created"
 msgstr "El proyecto se creó exitosamente"
 
-#: admin/views.py:3475
+#: admin/views.py:3479
 msgid "Project deleted successfully."
 msgstr "El proyecto se eliminó exitosamente."
 
-#: admin/views.py:3537
+#: admin/views.py:3541
 msgid "Password Reset Email successfully sent."
 msgstr ""
 "El correo electrónico de restablecimiento de contraseña se envió "
 "exitosamente."
 
-#: admin/views.py:3556
+#: admin/views.py:3560
 msgid "Activation email sent."
 msgstr "Correo electrónico de activación enviado."
 
-#: admin/views.py:3629 admin/views.py:3818
+#: admin/views.py:3633 admin/views.py:3830
 msgid "Company name can only contain alphanumeric characters"
 msgstr "El nombre de la compañía solo puede contener caracteres alfanuméricos"
 
-#: admin/views.py:3641 admin/views.py:3646
+#: admin/views.py:3645 admin/views.py:3650
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr "Error de permisos: No tiene permiso para otorgar este rol"
 
-#: admin/views.py:3655
+#: admin/views.py:3659
 msgid "User with that email already exists!"
 msgstr "Ya existe un usuario con ese correo electrónico"
 
-#: admin/views.py:3680 admin/views.py:3846
+#: admin/views.py:3684 admin/views.py:3858
 msgid "Couldn't create company!"
 msgstr "No se pudo crear la compañía"
 
-#: admin/views.py:3691
+#: admin/views.py:3695
 msgid "Couldn't add user to company!"
 msgstr "No se pudo añadir el usuario a la compañía"
 
-#: admin/views.py:3715 templates/admin/participants/participants_list.haml:221
+#: admin/views.py:3719 templates/admin/participants/participants_list.haml:221
 msgid "Successfully added new user!"
 msgstr "El nuevo usuario se añadió exitosamente"
 
-#: admin/views.py:3734 admin/views.py:3736 admin/views.py:3745
-#: admin/views.py:3751 admin/views.py:3757 admin/views.py:5565
-#: admin/views.py:5567 admin/views.py:5576 admin/views.py:5582
-#: admin/views.py:5588
-#: templates/admin/participants/participant_details.haml:286
-#: templates/admin/participants/participant_details.haml:294
-#: templates/admin/participants/participant_details.haml:302
+#: admin/views.py:3738 admin/views.py:3740 admin/views.py:3751
+#: admin/views.py:3757 admin/views.py:3763 admin/views.py:5587
+#: admin/views.py:5589 admin/views.py:5598 admin/views.py:5604
+#: admin/views.py:5610
+#: templates/admin/participants/participant_details.haml:296
+#: templates/admin/participants/participant_details.haml:304
+#: templates/admin/participants/participant_details.haml:312
 #: templates/admin/participants/participants_list.haml:86
 msgid "N/A"
 msgstr "N/A"
 
-#: admin/views.py:3837
+#: admin/views.py:3849
 msgid "User with that username or email already exists!"
 msgstr "Ya existe un usuario con ese nombre de usuario o correo electrónico"
 
-#: admin/views.py:3908
+#: admin/views.py:3912
 msgid "Can't find user in database"
 msgstr "No se encontró el usuario en la base de datos"
 
-#: admin/views.py:3985
+#: admin/views.py:3989
 msgid "There is a problem with selected user role on new course!"
 msgstr ""
 "Existe un problema con el rol de usuario seleccionado en el nuevo curso"
 
-#: admin/views.py:4043 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4047 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
-#: templates/courses/content_page/course_tabs.haml:26
+#: templates/courses/content_page/course_tabs.haml:30
 msgid "Progress"
 msgstr "Avance"
 
-#: admin/views.py:4043 admin/views.py:4141
+#: admin/views.py:4047 admin/views.py:4145
 msgid "Status"
 msgstr "Estado"
 
-#: admin/views.py:4141 templates/admin/client-admin/course_info.haml:79
-#: templates/courses/content_page/course_menu.haml:30
-#: templates/courses/course_progress.haml:53
+#: admin/views.py:4145 templates/admin/client-admin/course_info.haml:79
+#: templates/courses/content_page/course_menu.haml:37
+#: templates/courses/course_progress.haml:66
 msgid "Completed"
 msgstr "Completado"
 
-#: admin/views.py:4141
+#: admin/views.py:4145
 msgid "Grade"
 msgstr "Calificación"
 
-#: admin/views.py:4141
+#: admin/views.py:4145
 msgid "End Date"
 msgstr "Fecha de finalización"
 
-#: admin/views.py:4292
+#: admin/views.py:4296
 msgid "Problem generating activity review assignments"
 msgstr "Ocurrió un problema al generar tareas de revisión de actividades"
 
-#: admin/views.py:4316
+#: admin/views.py:4320
 msgid "Project review assignments allocated"
 msgstr "Tareas de revisión de proyectos asignadas"
 
-#: admin/views.py:4323
+#: admin/views.py:4327
 msgid "Not enough groups to meet review criteria"
 msgstr "No hay suficientes grupos para cumplir con los criterios de revisión"
 
-#: admin/views.py:4551
+#: admin/views.py:4555
 msgid "Successfully added new email template!"
 msgstr "La nueva plantilla de correo electrónico se añadió exitosamente"
 
-#: admin/views.py:4554
+#: admin/views.py:4558
 msgid "Missing fields in email template!"
 msgstr "Faltan campos en la plantilla de correo electrónico"
 
-#: admin/views.py:4565
+#: admin/views.py:4569
 msgid "Successfully got email template!"
 msgstr "Se recibió exitosamente la plantilla de correo electrónico"
 
-#: admin/views.py:4568 admin/views.py:4581 admin/views.py:4604
+#: admin/views.py:4572 admin/views.py:4585 admin/views.py:4608
 msgid "Can't find email template key!"
 msgstr "No se encontró la clave de la plantilla de correo electrónico"
 
-#: admin/views.py:4570 admin/views.py:4583 admin/views.py:4606
+#: admin/views.py:4574 admin/views.py:4587 admin/views.py:4610
 msgid "Missing email template key!"
 msgstr "Falta la clave de la plantilla de correo electrónico"
 
-#: admin/views.py:4579
+#: admin/views.py:4583
 msgid "Successfully deleted email template!"
 msgstr "Se eliminó exitosamente la plantilla de correo electrónico"
 
-#: admin/views.py:4601
+#: admin/views.py:4605
 msgid "Successfully updated email template!"
 msgstr "Se actualizó exitosamente la plantilla de correo electrónico"
 
-#: admin/views.py:4716 admin/views.py:5359
+#: admin/views.py:4720 admin/views.py:5381
 msgid "No Company Display name!"
 msgstr "No hay nombre de la compañía para mostrar"
 
-#: admin/views.py:4899
+#: admin/views.py:4921
 msgid "App name only contains alphanumeric characters"
 msgstr "El nombre de la aplicación solo contiene caracteres alfanuméricos"
 
-#: admin/views.py:5015
+#: admin/views.py:5037
 msgid "Learner dashboard not found"
 msgstr "No se encontró el panel de información del alumno"
 
-#: admin/views.py:5376
+#: admin/views.py:5398
 msgid "Company name successfully changed!"
 msgstr "El nombre de la compañía se modificó exitosamente"
 
-#: admin/views.py:5419
+#: admin/views.py:5441
 msgid "Tag with this name already exist's!"
 msgstr "Ya existe una etiqueta con este nombre"
 
-#: admin/views.py:5430
+#: admin/views.py:5452
 msgid "Tag created!"
 msgstr "Etiqueta creada"
 
-#: admin/views.py:5432
+#: admin/views.py:5454
 msgid "You need to select tag's name!"
 msgstr "Debe seleccionar el nombre de la etiqueta"
 
-#: admin/views.py:5482
+#: admin/views.py:5504
 msgid "Tag added to Course!"
 msgstr "La etiqueta se añadió al curso"
 
-#: admin/views.py:5484 admin/views.py:5506
+#: admin/views.py:5506 admin/views.py:5528
 msgid "You need to select tag!"
 msgstr "Debe seleccionar una etiqueta"
 
-#: admin/views.py:5504
+#: admin/views.py:5526
 msgid "Tag removed from Course!"
 msgstr "Etiqueta eliminada del curso"
 
-#: admin/views.py:5697 templates/admin/course_run/view.haml:65
+#: admin/views.py:5719 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "Nombre de la compañía"
 
-#: admin/views.py:5698 templates/admin/course_run/view.haml:66
+#: admin/views.py:5720 templates/admin/course_run/view.haml:66
 msgid "Company email"
 msgstr "Correo electrónico de la compañía"
 
-#: admin/views.py:5699 templates/admin/course_run/view.haml:67
+#: admin/views.py:5721 templates/admin/course_run/view.haml:67
 msgid "Current role"
 msgstr "Rol actual"
 
-#: admin/views.py:5700 templates/admin/course_run/view.haml:68
+#: admin/views.py:5722 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "Nuevo usuario"
 
-#: admin/views.py:5701
+#: admin/views.py:5723
 msgid "McK user"
 msgstr "Usuario de McK"
 
-#: admin/views.py:5702 templates/admin/course_run/view.haml:70
+#: admin/views.py:5724 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "Inscrito"
 
-#: admin/views.py:5703 templates/admin/course_run/view.haml:71
+#: admin/views.py:5725 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "Activo"
@@ -2538,10 +2554,10 @@ msgid "Available"
 msgstr "Disponible"
 
 #: api_client/course_models.py:145
-#: templates/courses/content_page/course_menu.haml:33
+#: templates/courses/content_page/course_menu.haml:40
 #: templates/courses/course_learner_dashboard_calendar.haml:45
-#: templates/courses/course_progress_v2.haml:91
-#: templates/courses/course_progress_v2.haml:155
+#: templates/courses/course_progress_v2.haml:125
+#: templates/courses/course_progress_v2.haml:189
 msgid "complete"
 msgstr "completado"
 
@@ -2562,13 +2578,13 @@ msgstr "COURSE_UNAVAILABLE"
 msgid "group {group_id} in course {course_id}"
 msgstr "grupo {group_id} en curso {course_id}"
 
-#: api_client/group_api.py:331 api_client/group_api.py:335
-#: api_client/organization_api.py:376 api_client/organization_api.py:380
+#: api_client/group_api.py:332 api_client/group_api.py:336
+#: api_client/organization_api.py:377 api_client/organization_api.py:381
 msgid "Permission Denied"
 msgstr "Permiso denegado"
 
-#: api_client/group_api.py:332 api_client/group_api.py:336
-#: api_client/organization_api.py:377 api_client/organization_api.py:381
+#: api_client/group_api.py:333 api_client/group_api.py:337
+#: api_client/organization_api.py:378 api_client/organization_api.py:382
 msgid "Invalid data"
 msgstr "Datos no válidos"
 
@@ -2582,15 +2598,15 @@ msgstr "{date_field}_{component_value}"
 msgid "Missing required field '{value}'"
 msgstr "Falta el campo obligatorio '{value}'"
 
-#: api_client/user_api.py:655
+#: api_client/user_api.py:677
 msgid "User account not activated"
 msgstr "La cuenta del usuario no está activada"
 
-#: api_client/user_api.py:656 api_client/user_api.py:657
+#: api_client/user_api.py:678 api_client/user_api.py:679
 msgid "Username or password invalid"
 msgstr "El nombre de usuario o la contraseña no son válidos"
 
-#: api_client/user_api.py:660
+#: api_client/user_api.py:682
 msgid "Username or email already registered"
 msgstr "El nombre de usuario o la contraseña ya han sido registrados"
 
@@ -2620,7 +2636,7 @@ msgstr "aplicación de certificados"
 msgid "Description"
 msgstr "Descripción"
 
-#: certificates/models.py:87 templates/admin/courses/course_details.haml:151
+#: certificates/models.py:87 templates/admin/courses/course_details.haml:154
 #: templates/certificates/certificate_templates.haml:30
 msgid "Template"
 msgstr "Plantilla"
@@ -2645,38 +2661,44 @@ msgstr ""
 msgid "TOTAL"
 msgstr "TOTAL"
 
-#: courses/views.py:788
+#: courses/views.py:794
 #, python-brace-format
 msgid "This lesson does not start until {start_upon}"
 msgstr "Esta lección no comienza hasta {start_upon}"
 
-#: courses/views.py:965 courses/views.py:995 courses/views.py:1029
+#: courses/views.py:797
+#, fuzzy, python-brace-format
+#| msgid "This lesson does not start until {start_upon}"
+msgid "This {custom_lesson_label} does not start until {start_upon}"
+msgstr "Esta lección no comienza hasta {start_upon}"
+
+#: courses/views.py:974 courses/views.py:1004 courses/views.py:1038
 msgid "Message not sent."
 msgstr "Mensaje no enviado."
 
-#: courses/views.py:969 courses/views.py:999 courses/views.py:1033
-#: courses/views.py:1075
+#: courses/views.py:978 courses/views.py:1008 courses/views.py:1042
+#: courses/views.py:1084
 msgid "Message successfully sent."
 msgstr "Mensaje enviado exitosamente."
 
-#: courses/views.py:988 courses/views.py:1016
+#: courses/views.py:997 courses/views.py:1025
 #, python-brace-format
 msgid "Group Project Message - {course_name}"
 msgstr "Mensaje de proyecto en grupo - {course_name}"
 
-#: courses/views.py:1038
+#: courses/views.py:1047
 msgid "Message not sent. Email is not valid"
 msgstr "Mensaje no enviado. Correo electrónico no válido"
 
-#: courses/views.py:1052
+#: courses/views.py:1061
 msgid "Submission not found."
 msgstr "No se encontró la presentación."
 
-#: courses/views.py:1058
+#: courses/views.py:1067
 msgid "We've received your submission!"
 msgstr "Recibimos su presentación"
 
-#: courses/views.py:1059
+#: courses/views.py:1068
 #, python-brace-format
 msgid ""
 "Thank you for your group work submission. We received {file_name} uploaded "
@@ -2687,27 +2709,27 @@ msgstr ""
 "{user_full_name} el {submission_dt}. Puede reemplazar este archivo en "
 "cualquier momento antes de la fecha de entrega del trabajo."
 
-#: courses/views.py:1071
+#: courses/views.py:1080
 msgid "There was a problem; message not sent."
 msgstr "Ocurrió un problema; mensaje no enviado."
 
-#: courses/views.py:1088
+#: courses/views.py:1097
 msgid "Created At"
 msgstr "Creado el"
 
-#: courses/views.py:1088
+#: courses/views.py:1097
 msgid "Course Name"
 msgstr "Nombre del curso"
 
-#: courses/views.py:1088
+#: courses/views.py:1097
 msgid "Lesson Name"
 msgstr "Nombre de la Lección"
 
-#: courses/views.py:1088
+#: courses/views.py:1097
 msgid "Module Name"
 msgstr "Nombre del módulo"
 
-#: courses/views.py:1088
+#: courses/views.py:1097
 msgid "Note"
 msgstr "Nota"
 
@@ -2817,16 +2839,16 @@ msgstr "artículo"
 msgid "img"
 msgstr "img"
 
-#: main/views.py:89
+#: main/views.py:91
 msgid "Language code not provided"
 msgstr "Código de idioma no suministrado"
 
-#: main/views.py:93
+#: main/views.py:95
 #, python-brace-format
 msgid "Language set to language code: {preview_language_code}"
 msgstr "Idioma definido para código de idioma: {preview_language_code}"
 
-#: main/views.py:102
+#: main/views.py:104
 msgid "Language reset to default language"
 msgstr "Idioma restablecido a idioma predeterminado"
 
@@ -2875,11 +2897,11 @@ msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr "Gracias por su interés en McKinsey Academy. Lo mantendremos informado."
 
-#: mcka_apros/settings.py:201 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:204 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr "Programa de administración de McKinsey"
 
-#: mcka_apros/settings.py:294
+#: mcka_apros/settings.py:297
 msgid "Congratulations! Your certificate has been generated"
 msgstr "¡Felicitaciones! Se ha generado su certificado"
 
@@ -3162,10 +3184,10 @@ msgstr "Error en el registro"
 #: templates/accounts/public_registration.haml:27
 msgid ""
 "Sorry, there seems to be a problem with registering your account, please "
-"contact info@mckinseyacademy.com"
+"contact academy_info@mckinsey.com"
 msgstr ""
 "Lo sentimos, hubo un problema al intentar registrar su cuenta; por favor, "
-"escríbanos a info@mckinseyacademy.com"
+"escríbanos a academy_info@mckinsey.com"
 
 #: templates/accounts/public_registration.haml:51
 msgid "Complete the fields below. Required fields are noted by an asterisk"
@@ -3264,12 +3286,13 @@ msgid "Companies"
 msgstr "Compañías"
 
 #: templates/admin/admin_header.haml:42
-#: templates/courses/course_navigation.haml:13
+#: templates/courses/course_navigation.haml:16
 msgid "Course Content"
 msgstr "Contenido del curso"
 
 #: templates/admin/admin_header.haml:47
 #: templates/admin/course_meta_content/item_list.haml:132
+#: templates/admin/course_meta_content/item_list2.haml:132
 msgid "Certificates"
 msgstr "Certificados"
 
@@ -3404,17 +3427,25 @@ msgstr "Restablecer colores"
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:99
 #: templates/admin/client/navigation.haml:50
 #: templates/admin/client/navigation.haml:186
+#: templates/admin/cohorts/course_details.html:41
 #: templates/admin/companies/companies_list.haml:31
-#: templates/admin/companies/company_details.haml:76
+#: templates/admin/companies/company_details.haml:101
+#: templates/admin/companies/company_details.haml:113
 #: templates/admin/course_meta_content/item_detail.haml:18
-#: templates/admin/course_meta_content/item_list.haml:203
-#: templates/admin/course_meta_content/item_list.haml:232
-#: templates/admin/courses/course_details.haml:131
-#: templates/admin/courses/course_details.haml:203
+#: templates/admin/course_meta_content/item_list.haml:211
+#: templates/admin/course_meta_content/item_list.haml:240
+#: templates/admin/course_meta_content/item_list.haml:269
+#: templates/admin/course_meta_content/item_list.haml:298
+#: templates/admin/course_meta_content/item_list2.haml:203
+#: templates/admin/course_meta_content/item_list2.haml:232
+#: templates/admin/course_meta_content/item_list2.haml:261
+#: templates/admin/course_meta_content/item_list2.haml:290
+#: templates/admin/courses/course_details.haml:134
+#: templates/admin/courses/course_details.haml:206
 #: templates/admin/mobile_apps/company_app_details.haml:67
-#: templates/admin/participants/participant_details.haml:319
-#: templates/admin/participants/participant_details.haml:351
+#: templates/admin/participants/participant_details.haml:337
 #: templates/admin/participants/participant_details.haml:369
+#: templates/admin/participants/participant_details.haml:387
 #: templates/admin/participants/participants_list.haml:129
 #: templates/admin/participants/participants_list.haml:143
 #: templates/admin/participants/participants_list.haml:161
@@ -3436,6 +3467,7 @@ msgstr "Analítica"
 #: templates/admin/client-admin/course_header.haml:30
 #: templates/admin/client-admin/course_header.haml:33
 #: templates/admin/course_meta_content/item_list.haml:104
+#: templates/admin/course_meta_content/item_list2.haml:104
 #: templates/admin/learner_dashboard/header.haml:20
 msgid "Branding"
 msgstr "Personalización"
@@ -3473,7 +3505,7 @@ msgid "Grade cutoffs:"
 msgstr "Rangos de calificaciones:"
 
 #: templates/admin/client-admin/course_info.haml:43
-#: templates/admin/courses/course_details.haml:47
+#: templates/admin/courses/course_details.haml:50
 msgid "PARTICIPANTS"
 msgstr "PARTICIPANTES"
 
@@ -3755,6 +3787,180 @@ msgid "Click Add to specify an identity provider"
 msgstr ""
 "Este correo electrónico no está asociado con ningún proveedor de identidades"
 
+#: templates/admin/cohorts/course_details.html:16
+#, fuzzy
+#| msgid "Add a new "
+msgid "Add a new cohort"
+msgstr "Agregar un nuevo"
+
+#: templates/admin/cohorts/course_details.html:20
+#: templates/admin/cohorts/course_details.html:178
+#, fuzzy
+#| msgid "Cohort Map"
+msgid "Cohort Name"
+msgstr "Mapa del grupo"
+
+#: templates/admin/cohorts/course_details.html:26
+#: templates/admin/cohorts/course_details.html:181
+#, fuzzy
+#| msgid "Assignment Info"
+msgid "Cohort Assignment Method"
+msgstr "Información de la tarea"
+
+#: templates/admin/cohorts/course_details.html:30
+#: templates/admin/cohorts/course_details.html:187
+msgid "Automatic"
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:34
+#: templates/admin/cohorts/course_details.html:193
+#, fuzzy
+#| msgid "Vanuatu"
+msgid "Manual"
+msgstr "Vanuatu"
+
+#: templates/admin/cohorts/course_details.html:48
+#, fuzzy
+#| msgid "Back to All Courses"
+msgid "Back to Course page"
+msgstr "Volver a “todos los cursos”"
+
+#: templates/admin/cohorts/course_details.html:51
+#, fuzzy
+#| msgid "Cohort"
+msgid "Add Cohort"
+msgstr "Grupo"
+
+#: templates/admin/cohorts/course_details.html:65
+#, fuzzy
+#| msgid "Total Cohort"
+msgid "Enable Cohorts"
+msgstr "Grupo total"
+
+#: templates/admin/cohorts/course_details.html:86
+msgid "Learners are added automatically to this cohort."
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:88
+msgid ""
+"Learners are added to this cohort only when you provide their email "
+"addresses or usernames on this page."
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:93
+msgid ""
+"\n"
+"                    <strong>To use cohorts within your course, click Enable "
+"Cohorts:</strong>\n"
+"                    <ul>\n"
+"                        <li>\n"
+"                            Each course has a &lt;default_cohort&gt; in "
+"which all learners are\n"
+"                            automatically assigned.\n"
+"                        </li>\n"
+"                        <li>\n"
+"                            Additional cohorts can be added and should "
+"follow the naming/numbering\n"
+"                            format of &lt;cohort#&gt;\n"
+"                        </li>\n"
+"                        <li>\n"
+"                            Learners can safely move between cohorts before "
+"a course starts, but\n"
+"                            not afterwards.\n"
+"                        </li>\n"
+"                        <li>\n"
+"                            New learners not yet enrolled in the course can "
+"be preassigned to a\n"
+"                            cohort.\n"
+"                        </li>\n"
+"                        <li>\n"
+"                            Progress indicators are averaged by cohort.\n"
+"                        </li>\n"
+"                        <li>\n"
+"                            Courses with Discussions are divided by cohort, "
+"but each shares the\n"
+"                            same topics course-wide.\n"
+"                        </li>\n"
+"                        <li>\n"
+"                            Moderators can view, post/reply to Discussions "
+"per cohort.\n"
+"                        </li>\n"
+"                        <li>\n"
+"                            Progress Report export will include cohort "
+"column and value of each\n"
+"                            learner, when enabled in course.\n"
+"                        </li>\n"
+"                        <li>\n"
+"                            Cohorts should not be used with Group Work.\n"
+"                        </li>\n"
+"                        <li>\n"
+"                            Cohorts cannot be deleted, only renamed.\n"
+"                        </li>\n"
+"                    </ul>\n"
+"                "
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:143
+msgid "Manage Users"
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:148
+#: templates/admin/cohorts/course_details.html:177
+msgid "Settings"
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:154
+#, fuzzy
+#| msgid "Add Tags to this Course"
+msgid "Add Learners to this Cohort"
+msgstr "Añadir etiquetas a este curso"
+
+#: templates/admin/cohorts/course_details.html:157
+msgid ""
+"Note: Learners can be in only one cohort. Adding learners to this group "
+"overrides any previous group assignment."
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:168
+msgid ""
+"Enter email addresses and/or usernames, separated by new lines or commas, "
+"for the learners you want to add. *"
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:171
+msgid ""
+"You will not receive notifications or emails that bounce, so double-check "
+"your spelling."
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:173
+#, fuzzy
+#| msgid "Add a new "
+msgid "Add Learners"
+msgstr "Agregar un nuevo"
+
+#: templates/admin/cohorts/course_details.html:210
+msgid "Assign students to cohorts by uploading a CSV file"
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:218
+#, fuzzy
+#| msgid "Project deleted successfully."
+msgid "CSV file uploaded successfully."
+msgstr "El proyecto se eliminó exitosamente."
+
+#: templates/admin/cohorts/course_details.html:228
+msgid "Choose a .csv file"
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:233
+msgid "Only properly formatted .csv files will be accepted"
+msgstr ""
+
+#: templates/admin/cohorts/course_details.html:236
+msgid "Upload File and Assign Students"
+msgstr ""
+
 #: templates/admin/companies/companies_list.haml:10
 #: templates/admin/companies/companies_list.haml:29
 msgid "Create New Company"
@@ -3776,12 +3982,12 @@ msgstr ""
 "haga clic en el botón Ver todos los cursos."
 
 #: templates/admin/companies/company_dashboard.haml:21
-#: templates/admin/companies/company_details.haml:27
+#: templates/admin/companies/company_details.haml:28
 msgid "Total Participants:"
 msgstr "Cantidad total de participantes:"
 
 #: templates/admin/companies/company_dashboard.haml:22
-#: templates/admin/companies/company_details.haml:32
+#: templates/admin/companies/company_details.haml:33
 msgid "Active Courses:"
 msgstr "Cursos activos:"
 
@@ -3794,40 +4000,68 @@ msgstr "Cursos disponibles en todo momento"
 msgid "View All Courses"
 msgstr "Ver todos los cursos"
 
-#: templates/admin/companies/company_details.haml:11
-#: templates/admin/companies/company_details.haml:14
+#: templates/admin/companies/company_details.haml:12
+#: templates/admin/companies/company_details.haml:15
 msgid "Back to All Companies"
 msgstr "Volver a “todas las compañías”"
 
-#: templates/admin/companies/company_details.haml:30
+#: templates/admin/companies/company_details.haml:31
 msgid "Company ID:"
 msgstr "ID de la compañía:"
 
-#: templates/admin/companies/company_details.haml:37
+#: templates/admin/companies/company_details.haml:38
 msgid "Navigation"
 msgstr "Navegación"
 
-#: templates/admin/companies/company_details.haml:39
+#: templates/admin/companies/company_details.haml:40
 msgid "Access"
 msgstr "Acceso"
 
-#: templates/admin/companies/company_details.haml:42
+#: templates/admin/companies/company_details.haml:43
 msgid "Link Apps"
 msgstr "Vincular aplicaciones"
 
-#: templates/admin/companies/company_details.haml:48
+#: templates/admin/companies/company_details.haml:49
 msgid "COURSES"
 msgstr "CURSOS"
 
-#: templates/admin/companies/company_details.haml:53
+#: templates/admin/companies/company_details.haml:54
 msgid "LINKED APPS"
 msgstr "APLICACIONES VINCULADAS"
 
-#: templates/admin/companies/company_details.haml:69
+#: templates/admin/companies/company_details.haml:59
+#, fuzzy
+#| msgid "COMPANY INFO"
+msgid "COMPANY FIELDS"
+msgstr "INFORMACIÓN DE LA COMPAÑÍA"
+
+#: templates/admin/companies/company_details.haml:79
+#, fuzzy
+#| msgid "Add a new "
+msgid "Add new field "
+msgstr "Agregar un nuevo"
+
+#: templates/admin/companies/company_details.haml:90
+#, fuzzy
+#| msgid "Add New Role"
+msgid "Add New Fields"
+msgstr "Añadir nuevo rol"
+
+#: templates/admin/companies/company_details.haml:91
+msgid "Create upto 4 new fields of new additional data"
+msgstr ""
+
+#: templates/admin/companies/company_details.haml:99
+#, fuzzy
+#| msgid "Create New Company"
+msgid "+ New Company Fields  "
+msgstr "Crear nueva compañía"
+
+#: templates/admin/companies/company_details.haml:106
 msgid "Link mobile app"
 msgstr "Vincular aplicación móvil"
 
-#: templates/admin/companies/company_details.haml:70
+#: templates/admin/companies/company_details.haml:107
 msgid ""
 " Type in the name of the mobile app that you want to link with \"Company Name"
 "\" "
@@ -3835,12 +4069,12 @@ msgstr ""
 " Escriba el nombre de la aplicación móvil que desea vincular con el nombre "
 "de la compañía"
 
-#: templates/admin/companies/company_details.haml:71
-#: templates/admin/companies/company_details.haml:72
+#: templates/admin/companies/company_details.haml:108
+#: templates/admin/companies/company_details.haml:109
 msgid "App Name"
 msgstr "Nombre de la aplicación"
 
-#: templates/admin/companies/company_details.haml:75
+#: templates/admin/companies/company_details.haml:112
 msgid "Link App"
 msgstr "Vincular aplicación"
 
@@ -3861,28 +4095,40 @@ msgid "ERRORS:"
 msgstr "ERRORES:"
 
 #: templates/admin/course_meta_content/item_list.haml:7
+#: templates/admin/course_meta_content/item_list2.haml:7
 msgid "This is the course meta content list page."
 msgstr "Esta es la página de lista de meta-contenidos del curso."
 
 #: templates/admin/course_meta_content/item_list.haml:11
+#: templates/admin/course_meta_content/item_list2.haml:11
 msgid "ID"
 msgstr "ID"
 
 #: templates/admin/course_meta_content/item_list.haml:12
+#: templates/admin/course_meta_content/item_list2.haml:12
 msgid "SEQUENCE"
 msgstr "SECUENCIA"
 
 #: templates/admin/course_meta_content/item_list.haml:13
+#: templates/admin/course_meta_content/item_list2.haml:13
 msgid "TITLE"
 msgstr "Cargo"
 
 #: templates/admin/course_meta_content/item_list.haml:14
+#: templates/admin/course_meta_content/item_list2.haml:14
 msgid "TYPE"
 msgstr "TIPO"
 
 #: templates/admin/course_meta_content/item_list.haml:30
-#: templates/admin/course_meta_content/item_list.haml:200
-#: templates/admin/course_meta_content/item_list.haml:229
+#: templates/admin/course_meta_content/item_list.haml:208
+#: templates/admin/course_meta_content/item_list.haml:237
+#: templates/admin/course_meta_content/item_list.haml:266
+#: templates/admin/course_meta_content/item_list.haml:295
+#: templates/admin/course_meta_content/item_list2.haml:30
+#: templates/admin/course_meta_content/item_list2.haml:200
+#: templates/admin/course_meta_content/item_list2.haml:229
+#: templates/admin/course_meta_content/item_list2.haml:258
+#: templates/admin/course_meta_content/item_list2.haml:287
 #: templates/admin/course_run/list.haml:28
 #: templates/admin/course_run/view.haml:17
 #: templates/admin/learner_dashboard/branding.haml:65
@@ -3894,6 +4140,7 @@ msgid "Edit"
 msgstr "Editar"
 
 #: templates/admin/course_meta_content/item_list.haml:33
+#: templates/admin/course_meta_content/item_list2.haml:33
 #: templates/admin/learner_dashboard/discovery_list.haml:20
 #: templates/admin/learner_dashboard/element_list.haml:25
 #: templates/admin/workgroup/course_detail.haml:86
@@ -3901,19 +4148,23 @@ msgid "Delete"
 msgstr "Eliminar"
 
 #: templates/admin/course_meta_content/item_list.haml:36
+#: templates/admin/course_meta_content/item_list2.haml:36
 msgid "Create New Item"
 msgstr "Crear nuevo elemento"
 
 #: templates/admin/course_meta_content/item_list.haml:38
+#: templates/admin/course_meta_content/item_list2.haml:38
 msgid "This is the course feature list."
 msgstr "Ésta es la lista de funcionalidades del curso."
 
 #: templates/admin/course_meta_content/item_list.haml:48
+#: templates/admin/course_meta_content/item_list2.haml:48
 #: templates/courses/course_cohort.haml:242
 msgid "Discussions"
 msgstr "Debates"
 
 #: templates/admin/course_meta_content/item_list.haml:49
+#: templates/admin/course_meta_content/item_list2.haml:49
 msgid ""
 "Note: If you disable the discussion page, notifications coming from existing "
 "lesson inline discussion modules in the course will redirect the user to the "
@@ -3930,10 +4181,12 @@ msgstr ""
 "habilitada."
 
 #: templates/admin/course_meta_content/item_list.haml:63
+#: templates/admin/course_meta_content/item_list2.haml:63
 msgid "Cohort Map"
 msgstr "Mapa del grupo"
 
 #: templates/admin/course_meta_content/item_list.haml:72
+#: templates/admin/course_meta_content/item_list2.haml:72
 msgid ""
 "Note: If you disable 'Proficiency', it will hide proficiency section from "
 "course landing, progress page and from leaderboard on cohort page."
@@ -3943,10 +4196,12 @@ msgstr ""
 "calificaciones en la página del grupo."
 
 #: templates/admin/course_meta_content/item_list.haml:80
+#: templates/admin/course_meta_content/item_list2.haml:80
 msgid "Progress Widget"
 msgstr "Widget de avance"
 
 #: templates/admin/course_meta_content/item_list.haml:81
+#: templates/admin/course_meta_content/item_list2.haml:81
 msgid ""
 "Note: If you disable 'Progress Widget', it will hide progress section from "
 "course landing page."
@@ -3955,10 +4210,12 @@ msgstr ""
 "de la página de aterrizaje del curso."
 
 #: templates/admin/course_meta_content/item_list.haml:89
+#: templates/admin/course_meta_content/item_list2.haml:89
 msgid "Progress Page"
 msgstr "Página de avance"
 
 #: templates/admin/course_meta_content/item_list.haml:90
+#: templates/admin/course_meta_content/item_list2.haml:90
 msgid ""
 "Note: If you disable 'Progress Page', it will hide progress page icon from "
 "secondary navigation."
@@ -3967,32 +4224,38 @@ msgstr ""
 "avance de la navegación secundaria."
 
 #: templates/admin/course_meta_content/item_list.haml:97
-#: templates/courses/content_page/course_tabs.haml:41
+#: templates/admin/course_meta_content/item_list2.haml:97
+#: templates/courses/content_page/course_tabs.haml:45
 msgid "Notifications"
 msgstr "Notificaciones"
 
 #: templates/admin/course_meta_content/item_list.haml:111
+#: templates/admin/course_meta_content/item_list2.haml:111
 #: templates/courses/content_page/course_tabs.haml:5
 msgid "Learner Dashboard"
 msgstr "Panel de información del alumno"
 
 #: templates/admin/course_meta_content/item_list.haml:118
-#: templates/courses/content_page/course_tabs.haml:38
+#: templates/admin/course_meta_content/item_list2.haml:118
+#: templates/courses/content_page/course_tabs.haml:42
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_learner_dashboard_header.haml:33
-#: templates/courses/course_resources.haml:24
+#: templates/courses/course_resources.haml:27
 msgid "Resources"
 msgstr "Recursos"
 
 #: templates/admin/course_meta_content/item_list.haml:125
+#: templates/admin/course_meta_content/item_list2.haml:125
 msgid "Cohort Average"
 msgstr "Promedio del grupo"
 
 #: templates/admin/course_meta_content/item_list.haml:141
+#: templates/admin/course_meta_content/item_list2.haml:141
 msgid "Mobile Available"
 msgstr "Función móvil disponible"
 
 #: templates/admin/course_meta_content/item_list.haml:149
+#: templates/admin/course_meta_content/item_list2.haml:149
 msgid ""
 "Note: If you disable 'Engagement', it will hide Engagement section from "
 "leaderboard."
@@ -4001,10 +4264,12 @@ msgstr ""
 "correspondiente en la tabla de calificaciones."
 
 #: templates/admin/course_meta_content/item_list.haml:156
+#: templates/admin/course_meta_content/item_list2.haml:156
 msgid "Discover"
 msgstr "Consultar"
 
 #: templates/admin/course_meta_content/item_list.haml:157
+#: templates/admin/course_meta_content/item_list2.haml:157
 msgid ""
 "Note: If you disable the 'Discover', it will hide Discover section from "
 "course main page."
@@ -4013,12 +4278,14 @@ msgstr ""
 "la página principal del curso."
 
 #: templates/admin/course_meta_content/item_list.haml:165
+#: templates/admin/course_meta_content/item_list2.haml:165
 #, fuzzy
 #| msgid "Lesson Name"
 msgid "Lesson Label"
 msgstr "Nombre de la Lección"
 
 #: templates/admin/course_meta_content/item_list.haml:166
+#: templates/admin/course_meta_content/item_list2.haml:166
 #, fuzzy
 #| msgid ""
 #| "Note: If you disable the 'Discover', it will hide Discover section from "
@@ -4029,12 +4296,14 @@ msgstr ""
 "la página principal del curso."
 
 #: templates/admin/course_meta_content/item_list.haml:173
+#: templates/admin/course_meta_content/item_list2.haml:173
 #, fuzzy
 #| msgid "Progress Widget"
 msgid "Progress Indication"
 msgstr "Widget de avance"
 
 #: templates/admin/course_meta_content/item_list.haml:174
+#: templates/admin/course_meta_content/item_list2.haml:174
 #, fuzzy
 #| msgid ""
 #| "Note: If you disable 'Progress Widget', it will hide progress section "
@@ -4046,24 +4315,75 @@ msgstr ""
 "Nota: Si deshabilita el “widget de avance” se ocultará la sección de avance "
 "de la página de aterrizaje del curso."
 
-#: templates/admin/course_meta_content/item_list.haml:197
-#: templates/admin/course_meta_content/item_list.haml:226
+#: templates/admin/course_meta_content/item_list.haml:181
+#, fuzzy
+#| msgid "Leaderboards"
+msgid "Leaderboard"
+msgstr "Tableros de calificaciones"
+
+#: templates/admin/course_meta_content/item_list.haml:182
+#, fuzzy
+#| msgid ""
+#| "Note: If you disable the 'Discover', it will hide Discover section from "
+#| "course main page."
+msgid ""
+"Note: If you disable the 'Leaderboard', it will hide leaderboard on the "
+"cohort page."
+msgstr ""
+"Nota: Si deshabilita “consultar” se ocultará la sección correspondiente de "
+"la página principal del curso."
+
+#: templates/admin/course_meta_content/item_list.haml:205
+#: templates/admin/course_meta_content/item_list.haml:234
+#: templates/admin/course_meta_content/item_list.haml:263
+#: templates/admin/course_meta_content/item_list.haml:292
+#: templates/admin/course_meta_content/item_list2.haml:197
+#: templates/admin/course_meta_content/item_list2.haml:226
+#: templates/admin/course_meta_content/item_list2.haml:255
+#: templates/admin/course_meta_content/item_list2.haml:284
 #, fuzzy
 #| msgid "Add "
 msgid "Add"
 msgstr "Agregar"
 
-#: templates/admin/course_meta_content/item_list.haml:240
+#: templates/admin/course_meta_content/item_list.haml:224
+#: templates/admin/course_meta_content/item_list2.haml:216
+#: templates/courses/content_page/course_tabs.haml:12
+msgid "Lessons"
+msgstr "Lecciones"
+
+#: templates/admin/course_meta_content/item_list.haml:282
+#: templates/admin/course_meta_content/item_list2.haml:274
+#, fuzzy
+#| msgid "Modules:"
+msgid "Modules"
+msgstr "Módulos:"
+
+#: templates/admin/course_meta_content/item_list2.haml:298
 #, fuzzy
 #| msgid "This email is not associated with any identity provider"
 msgid "Click Add to specify Lesson Label"
 msgstr ""
 "Este correo electrónico no está asociado con ningún proveedor de identidades"
 
-#: templates/admin/course_meta_content/item_list.haml:241
+#: templates/admin/course_meta_content/item_list2.haml:299
 #, fuzzy
 #| msgid "This email is not associated with any identity provider"
 msgid "Click Add to specify Module Label"
+msgstr ""
+"Este correo electrónico no está asociado con ningún proveedor de identidades"
+
+#: templates/admin/course_meta_content/item_list2.haml:300
+#, fuzzy
+#| msgid "This email is not associated with any identity provider"
+msgid "Click Add to specify Lessons Label"
+msgstr ""
+"Este correo electrónico no está asociado con ningún proveedor de identidades"
+
+#: templates/admin/course_meta_content/item_list2.haml:301
+#, fuzzy
+#| msgid "This email is not associated with any identity provider"
+msgid "Click Add to specify Modules Label"
 msgstr ""
 "Este correo electrónico no está asociado con ningún proveedor de identidades"
 
@@ -4163,7 +4483,7 @@ msgid "Back to list"
 msgstr "Volver a la lista"
 
 #: templates/admin/course_run/view.haml:12
-#: templates/courses/course_progress_v2.haml:38
+#: templates/courses/course_progress_v2.haml:51
 msgid "Course Run:"
 msgstr "Edición del curso:"
 
@@ -4232,119 +4552,123 @@ msgstr "Competencia promedio:"
 msgid "Passed:"
 msgstr "Aprobado:"
 
-#: templates/admin/courses/course_details.haml:50
+#: templates/admin/courses/course_details.haml:47
+msgid "COHORTS"
+msgstr ""
+
+#: templates/admin/courses/course_details.haml:53
 msgid "STATS"
 msgstr "ESTADÍSTICAS"
 
-#: templates/admin/courses/course_details.haml:54
+#: templates/admin/courses/course_details.haml:57
 msgid "LEARNER DASHBOARD"
 msgstr "PANEL DE INFORMACIÓN DEL ALUMNO"
 
-#: templates/admin/courses/course_details.haml:62
+#: templates/admin/courses/course_details.haml:65
 msgid "Generate Certificates"
 msgstr "Generar certificados"
 
-#: templates/admin/courses/course_details.haml:65
+#: templates/admin/courses/course_details.haml:68
 msgid "Generating Certificates"
 msgstr "Generando certificados"
 
-#: templates/admin/courses/course_details.haml:68
+#: templates/admin/courses/course_details.haml:71
 msgid "Certificates Generated"
 msgstr "Certificados generados"
 
-#: templates/admin/courses/course_details.haml:76
-#: templates/admin/courses/course_details.haml:108
+#: templates/admin/courses/course_details.haml:79
 #: templates/admin/courses/course_details.haml:111
-#: templates/admin/participants/participant_details.haml:325
-#: templates/admin/participants/participant_details.haml:331
+#: templates/admin/courses/course_details.haml:114
+#: templates/admin/participants/participant_details.haml:343
+#: templates/admin/participants/participant_details.haml:349
 msgid "Export Stats"
 msgstr "Exportar estadísticas"
 
-#: templates/admin/courses/course_details.haml:83
 #: templates/admin/courses/course_details.haml:86
+#: templates/admin/courses/course_details.haml:89
 msgid "Email Selected Participants"
 msgstr "Enviar correo electrónico a participantes seleccionados"
 
-#: templates/admin/courses/course_details.haml:91
+#: templates/admin/courses/course_details.haml:94
 msgid "Change status"
 msgstr "Cambiar estado"
 
-#: templates/admin/courses/course_details.haml:93
+#: templates/admin/courses/course_details.haml:96
 msgid "Unenroll from course"
 msgstr "Cancelar la inscripción al curso"
 
-#: templates/admin/courses/course_details.haml:95
+#: templates/admin/courses/course_details.haml:98
 msgid "Enroll in new course"
 msgstr "Inscribir en un nuevo curso"
 
-#: templates/admin/courses/course_details.haml:97
+#: templates/admin/courses/course_details.haml:100
 msgid "Export stats"
 msgstr "Exportar estadísticas"
 
-#: templates/admin/courses/course_details.haml:99
+#: templates/admin/courses/course_details.haml:102
 msgid "Download CSV For Notifications"
 msgstr "Descargar CSV para notificaciones"
 
-#: templates/admin/courses/course_details.haml:129
-#: templates/admin/participants/participant_details.haml:317
-#: templates/admin/participants/participant_details.haml:367
+#: templates/admin/courses/course_details.haml:132
+#: templates/admin/participants/participant_details.haml:335
+#: templates/admin/participants/participant_details.haml:385
 msgid "Save Changes"
 msgstr "Guardar cambios"
 
-#: templates/admin/courses/course_details.haml:141
+#: templates/admin/courses/course_details.haml:144
 msgid "Email selected participants"
 msgstr "Enviar correo electrónico a participantes seleccionados"
 
-#: templates/admin/courses/course_details.haml:146
+#: templates/admin/courses/course_details.haml:149
 msgid "From"
 msgstr "De"
 
-#: templates/admin/courses/course_details.haml:153
+#: templates/admin/courses/course_details.haml:156
 msgid "Save as new template"
 msgstr "Guardar como nueva plantilla"
 
-#: templates/admin/courses/course_details.haml:154
+#: templates/admin/courses/course_details.haml:157
 msgid "Update selected template"
 msgstr "Actualizar plantilla seleccionada"
 
-#: templates/admin/courses/course_details.haml:155
+#: templates/admin/courses/course_details.haml:158
 msgid "Remove selected template"
 msgstr "Quitar plantilla seleccionada"
 
-#: templates/admin/courses/course_details.haml:159
+#: templates/admin/courses/course_details.haml:162
 #: templates/admin/learner_dashboard/branding.haml:13
 #: templates/admin/learner_dashboard/branding.haml:62
-#: templates/admin/participants/participant_details.haml:229
-#: templates/admin/participants/participant_details.haml:232
+#: templates/admin/participants/participant_details.haml:239
+#: templates/admin/participants/participant_details.haml:242
 #: templates/admin/participants/participants_list.haml:97
 msgid "None"
 msgstr "Ninguno"
 
-#: templates/admin/courses/course_details.haml:166
+#: templates/admin/courses/course_details.haml:169
 msgid "Subject"
 msgstr "Asunto"
 
-#: templates/admin/courses/course_details.haml:172
+#: templates/admin/courses/course_details.haml:175
 msgid "Body"
 msgstr "Cuerpo del mensaje"
 
-#: templates/admin/courses/course_details.haml:178
+#: templates/admin/courses/course_details.haml:181
 msgid "Send Email"
 msgstr "Enviar correo electrónico"
 
-#: templates/admin/courses/course_details.haml:181
+#: templates/admin/courses/course_details.haml:184
 msgid "Preview email"
 msgstr "Previsualizar correo electrónico"
 
-#: templates/admin/courses/course_details.haml:183
+#: templates/admin/courses/course_details.haml:186
 msgid "Schedule for Later"
 msgstr "Programar para más tarde"
 
-#: templates/admin/courses/course_details.haml:190
+#: templates/admin/courses/course_details.haml:193
 msgid "Add Tags to this Course"
 msgstr "Añadir etiquetas a este curso"
 
-#: templates/admin/courses/course_details.haml:198
+#: templates/admin/courses/course_details.haml:201
 msgid ""
 "Since this tag does not yet exist, a new Tag will be created. If this is an "
 "error, try selecting your tag from the type-ahead results."
@@ -4699,19 +5023,19 @@ msgid "Resend Activation Link"
 msgstr "Reenviar enlace de activación"
 
 #: templates/admin/participants/participant_details.haml:116
-#: templates/admin/participants/participant_details.haml:207
+#: templates/admin/participants/participant_details.haml:217
 msgid "Send reset password email"
 msgstr "Reenviar correo electrónico de restablecimiento de contraseña"
 
 #: templates/admin/participants/participant_details.haml:134
-#: templates/admin/participants/participant_details.haml:257
+#: templates/admin/participants/participant_details.haml:267
 #, fuzzy
 #| msgid "Username or Email:"
 msgid "Manager Email"
 msgstr "Usuario o correo electrónico:"
 
 #: templates/admin/participants/participant_details.haml:142
-#: templates/admin/participants/participant_details.haml:277
+#: templates/admin/participants/participant_details.haml:287
 #: templates/admin/participants/participants_list.haml:82
 msgid "Gender"
 msgstr "Sexo"
@@ -4720,42 +5044,42 @@ msgstr "Sexo"
 msgid "Location"
 msgstr "Ubicación"
 
-#: templates/admin/participants/participant_details.haml:164
+#: templates/admin/participants/participant_details.haml:173
 msgid "Admin Permissions"
 msgstr "Permisos de administrador"
 
-#: templates/admin/participants/participant_details.haml:175
+#: templates/admin/participants/participant_details.haml:185
 msgid "Archive Participant"
 msgstr "Archivar participante"
 
-#: templates/admin/participants/participant_details.haml:183
+#: templates/admin/participants/participant_details.haml:193
 #: templates/admin/participants/participants_list.haml:42
 msgid " First Name<sup>*</sup> "
 msgstr "Nombre<sup>*</sup>"
 
-#: templates/admin/participants/participant_details.haml:188
+#: templates/admin/participants/participant_details.haml:198
 msgid " Last Name<sup>*</sup> "
 msgstr "Apellido<sup>*</sup>"
 
-#: templates/admin/participants/participant_details.haml:199
+#: templates/admin/participants/participant_details.haml:209
 msgid "That username is already taken"
 msgstr "El nombre de usuario ya está en uso"
 
-#: templates/admin/participants/participant_details.haml:203
+#: templates/admin/participants/participant_details.haml:213
 msgid "Email<sup>*</sup> "
 msgstr "Correo electrónico<sup>*</sup>"
 
-#: templates/admin/participants/participant_details.haml:211
-#: templates/admin/participants/participant_details.haml:262
+#: templates/admin/participants/participant_details.haml:221
+#: templates/admin/participants/participant_details.haml:272
 msgid "That email is already taken"
 msgstr "Este correo electrónico ya está en uso"
 
-#: templates/admin/participants/participant_details.haml:215
+#: templates/admin/participants/participant_details.haml:225
 #: templates/admin/participants/participants_list.haml:60
 msgid " Company<sup>*</sup> "
 msgstr "Compañía<sup>*</sup>"
 
-#: templates/admin/participants/participant_details.haml:220
+#: templates/admin/participants/participant_details.haml:230
 #: templates/admin/participants/participants_list.haml:65
 msgid ""
 "Since this company does not yet exist, a new company will be created. If "
@@ -4765,53 +5089,53 @@ msgstr ""
 "un error, intente seleccionar su compañía de los resultados de escritura "
 "automática."
 
-#: templates/admin/participants/participant_details.haml:224
+#: templates/admin/participants/participant_details.haml:234
 #: templates/admin/participants/participants_list.haml:93
 msgid "Permissions"
 msgstr "Permisos"
 
-#: templates/admin/participants/participant_details.haml:236
-#: templates/admin/participants/participant_details.haml:239
+#: templates/admin/participants/participant_details.haml:246
+#: templates/admin/participants/participant_details.haml:249
 #: templates/admin/participants/participants_list.haml:100
 msgid "Uber admin"
 msgstr "Administrador de Uber"
 
-#: templates/admin/participants/participant_details.haml:243
-#: templates/admin/participants/participant_details.haml:246
+#: templates/admin/participants/participant_details.haml:253
+#: templates/admin/participants/participant_details.haml:256
 #: templates/admin/participants/participants_list.haml:103
 msgid "Course ops admin"
 msgstr "Administrador de ops del curso"
 
-#: templates/admin/participants/participant_details.haml:249
-#: templates/admin/participants/participant_details.haml:252
+#: templates/admin/participants/participant_details.haml:259
+#: templates/admin/participants/participant_details.haml:262
 #: templates/admin/participants/participants_list.haml:105
 #: templates/header.haml:75
 msgid "Internal Admin"
 msgstr "Administrador interno"
 
-#: templates/admin/participants/participant_details.haml:265
+#: templates/admin/participants/participant_details.haml:275
 #: templates/admin/participants/participants_list.haml:70
 msgid "Country Abbreviation"
 msgstr "Abreviatura de país"
 
-#: templates/admin/participants/participant_details.haml:272
+#: templates/admin/participants/participant_details.haml:282
 #: templates/admin/participants/participants_list.haml:76
 msgid "City"
 msgstr "Ciudad"
 
-#: templates/admin/participants/participant_details.haml:309
+#: templates/admin/participants/participant_details.haml:327
 msgid "Add another company"
 msgstr "Agregar otra compañía"
 
-#: templates/admin/participants/participant_details.haml:312
+#: templates/admin/participants/participant_details.haml:330
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: templates/admin/participants/participant_details.haml:344
+#: templates/admin/participants/participant_details.haml:362
 msgid "Are you sure you want to unenroll this user?"
 msgstr "¿Está seguro de que desea anular la inscripción de este usuario?"
 
-#: templates/admin/participants/participant_details.haml:349
+#: templates/admin/participants/participant_details.haml:367
 #: templates/admin/workgroup/course_detail.haml:124
 msgid "Ok"
 msgstr "Aceptar"
@@ -4827,6 +5151,10 @@ msgstr "Participante"
 #: templates/admin/participants/participant_edit_status.haml:19
 msgid "Observer"
 msgstr "Observador"
+
+#: templates/admin/participants/participant_edit_status.haml:31
+msgid "Moderator"
+msgstr ""
 
 #: templates/admin/participants/participants_list.haml:8
 msgid "Add New Participant"
@@ -5002,7 +5330,7 @@ msgstr "Cantidad de cursos:"
 #: templates/admin/program/detail_header.haml:7
 #: templates/admin/program/detail_header.haml:10
 #: templates/admin/workgroup/list_layout.haml:9
-#: templates/courses/course_overview.haml:36
+#: templates/courses/course_overview.haml:39
 msgid "Overview"
 msgstr "Descripción general"
 
@@ -5261,9 +5589,9 @@ msgstr "Agregue un mensaje aquí para describir la lista de rectores"
 #: templates/admin/workgroup/project_assignment.haml:19
 #: templates/admin/workgroup/workgroup_detail_report.haml:12
 #: templates/admin/workgroup/workgroup_report.haml:12
-#: templates/courses/course_progress.haml:86
-#: templates/courses/course_progress_v2.haml:134
-#: templates/courses/course_progress_v2.haml:147
+#: templates/courses/course_progress.haml:103
+#: templates/courses/course_progress_v2.haml:168
+#: templates/courses/course_progress_v2.haml:181
 msgid "Group Work:"
 msgstr "Trabajo en grupo:"
 
@@ -5497,15 +5825,15 @@ msgstr "CONSULTAR:"
 msgid "ARTICLES"
 msgstr "ARTÍCULOS"
 
-#: templates/courses/content_page/course_discover.haml:21
+#: templates/courses/content_page/course_discover.haml:25
 msgid "INFOGRAPHIC"
 msgstr "INFOGRAFÍA"
 
-#: templates/courses/content_page/course_discover.haml:26
+#: templates/courses/content_page/course_discover.haml:30
 msgid "ON TWITTER"
 msgstr "EN TWITTER"
 
-#: templates/courses/content_page/course_discover.haml:38
+#: templates/courses/content_page/course_discover.haml:46
 msgid "VIDEOS"
 msgstr "VIDEOS"
 
@@ -5532,60 +5860,102 @@ msgstr ""
 "Su competencia, avance y participación en el curso no cambiarán en los "
 "cursos cerrados."
 
-#: templates/courses/content_page/course_menu.haml:4
+#: templates/courses/content_page/course_menu.haml:7
 msgid "LESSONS:"
 msgstr "LECCIONES:"
 
-#: templates/courses/content_page/course_menu.haml:24
+#: templates/courses/content_page/course_menu.haml:29
+#: templates/courses/content_page/lesson_menu.haml:10
+#: templates/courses/content_page/lesson_pager.haml:11
+#: templates/courses/content_page/lesson_pager.haml:39
+#: templates/courses/course_lessons.haml:12
+#: templates/courses/course_progress_v2.haml:73
+#, fuzzy, python-format
+#| msgid "Lesson available on %(start_date)s"
+msgid " %(lesson_custom_label)s %(lesson_index)s:"
+msgstr "Lección disponible el %(start_date)s"
+
+#: templates/courses/content_page/course_menu.haml:31
 msgid "LESSON"
 msgstr "LECCIÓN"
 
-#: templates/courses/content_page/course_menu.haml:38
+#: templates/courses/content_page/course_menu.haml:46
+#, fuzzy, python-format
+#| msgid " This lesson will be available on %(start_date)s "
+msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
+msgstr "Esta lección estará disponible el %(start_date)s"
+
+#: templates/courses/content_page/course_menu.haml:48
 #, python-format
 msgid " This lesson will be available on %(start_date)s "
 msgstr "Esta lección estará disponible el %(start_date)s"
 
-#: templates/courses/content_page/course_tabs.haml:8
-msgid "Lessons"
-msgstr "Lecciones"
-
-#: templates/courses/content_page/course_tabs.haml:14
+#: templates/courses/content_page/course_tabs.haml:18
 #: templates/courses/course_discussion.haml:14
 #: templates/courses/course_learner_dashboard_header.haml:46
 #: templates/courses/course_learner_dashboard_header.haml:49
 msgid "Discussion"
 msgstr "Debate"
 
-#: templates/courses/content_page/course_tabs.haml:22
+#: templates/courses/content_page/course_tabs.haml:26
 #: templates/courses/course_cohort.haml:14
 #: templates/courses/course_cohort.haml:25
 msgid "Cohort"
 msgstr "Grupo"
 
-#: templates/courses/content_page/course_tabs.haml:29
+#: templates/courses/content_page/course_tabs.haml:33
 msgid "Course Materials"
 msgstr "Materiales del curso"
 
-#: templates/courses/content_page/course_tabs.haml:33
+#: templates/courses/content_page/course_tabs.haml:37
 #: templates/courses/course_news.haml:24
 msgid "Announcements"
 msgstr "Anuncios"
 
-#: templates/courses/content_page/course_tabs.haml:35
-#: templates/courses/course_overview.haml:50
+#: templates/courses/content_page/course_tabs.haml:39
+#: templates/courses/course_overview.haml:53
 msgid "Course Overview"
 msgstr "Descripción general del curso"
 
-#: templates/courses/content_page/lesson_pager.haml:11
-#: templates/courses/content_page/lesson_pager.haml:29
+#: templates/courses/content_page/lesson_menu.haml:20
+#, python-format, python-brace-format
+msgid " %(lesson_custom_label)s %(lesson_index)s: #{lesson.name}"
+msgstr ""
+
+#: templates/courses/content_page/lesson_pager.haml:15
+#, fuzzy, python-format
+#| msgid "Lesson available on %(start_date)s"
+msgid " %(lesson_custom_label)s %(index)s of %(lesson_count)s"
+msgstr "Lección disponible el %(start_date)s"
+
+#: templates/courses/content_page/lesson_pager.haml:17
+#: templates/courses/content_page/lesson_pager.haml:46
 msgid "of"
 msgstr "de"
 
-#: templates/courses/content_page/lesson_pager.haml:18
-#: templates/courses/content_page/lesson_pager.haml:36
+#: templates/courses/content_page/lesson_pager.haml:25
+#: templates/courses/content_page/lesson_pager.haml:54
+#, fuzzy, python-format
+#| msgid "Lesson available on %(start_date)s"
+msgid "%(lesson_custom_label)s available on %(start_date)s"
+msgstr "Lección disponible el %(start_date)s"
+
+#: templates/courses/content_page/lesson_pager.haml:27
+#: templates/courses/content_page/lesson_pager.haml:56
 #, python-format
 msgid "Lesson available on %(start_date)s"
 msgstr "Lección disponible el %(start_date)s"
+
+#: templates/courses/content_page/lesson_pager.haml:44
+#, python-format
+msgid " %(module_custom_label)s %(index)s of %(lesson_count)s"
+msgstr ""
+
+#: templates/courses/content_page/lesson_pager_ld.haml:11
+#: templates/courses/content_page/lesson_pager_ld.haml:28
+#, python-format
+msgid " %(module_custom_label)s %(lesson_index)s of %(lesson_count)s"
+msgstr ""
 
 #: templates/courses/course_cohort.haml:8
 msgid "| Cohort | Courses | McKinsey Academy"
@@ -5643,10 +6013,10 @@ msgstr ""
 
 #: templates/courses/course_cohort.haml:20
 #: templates/courses/course_discussion.haml:21
-#: templates/courses/course_navigation.haml:25
+#: templates/courses/course_navigation.haml:28
 #: templates/courses/course_news.haml:19
-#: templates/courses/course_overview.haml:19
-#: templates/courses/course_resources.haml:19
+#: templates/courses/course_overview.haml:22
+#: templates/courses/course_resources.haml:22
 msgid "This video walks you through the learner experience:"
 msgstr "Este video provee un recorrido por la experiencia del alumno:"
 
@@ -5731,7 +6101,7 @@ msgid "100"
 msgstr "100"
 
 #: templates/courses/course_cohort.haml:116
-#: templates/courses/course_progress.haml:67
+#: templates/courses/course_progress.haml:84
 #: templates/courses/visualizations/course_progress.haml:8
 msgid "Progress:"
 msgstr "Avance:"
@@ -6102,7 +6472,7 @@ msgid "not available"
 msgstr "no disponible"
 
 #: templates/courses/course_learner_dashboard_calendar.haml:39
-#: templates/courses/course_progress_v2.haml:89
+#: templates/courses/course_progress_v2.haml:123
 msgid "not started"
 msgstr "no iniciado"
 
@@ -6137,15 +6507,46 @@ msgstr "Página de inicio del portal"
 msgid "Calendar"
 msgstr "Calendario"
 
-#: templates/courses/course_lessons.haml:14
-#: templates/courses/course_lessons_ld.haml:22
-#: templates/courses/course_lessons_ld_external.haml:16
-#: templates/courses/course_progress_v2.haml:61
+#: templates/courses/course_lessons.haml:21
+#: templates/courses/course_lessons_ld.haml:26
+#: templates/courses/course_lessons_ld_external.haml:23
+#: templates/courses/course_progress_v2.haml:81
+#, fuzzy
+#| msgid "Modules:"
+msgid " Modules"
+msgstr "Módulos:"
+
+#: templates/courses/course_lessons.haml:24
+#: templates/courses/course_lessons_ld.haml:29
+#: templates/courses/course_lessons_ld_external.haml:26
+#: templates/courses/course_progress_v2.haml:84
+#, fuzzy
+#| msgid "Lesson"
+msgid "Lesson "
+msgstr "Lección"
+
+#: templates/courses/course_lessons.haml:27
+#: templates/courses/course_lessons_ld.haml:32
+#: templates/courses/course_lessons_ld_external.haml:29
+#: templates/courses/course_progress_v2.haml:87
 msgid "Lesson Modules"
 msgstr "Módulos de la Lección"
 
-#: templates/courses/course_lessons.haml:22
-#: templates/courses/course_lessons_ld_external.haml:24
+#: templates/courses/course_lessons.haml:36
+#: templates/courses/course_lessons_ld_external.haml:38
+#, fuzzy, python-format
+#| msgid ""
+#| "You have completed %(course_current_progress)s%% of Lesson "
+#| "%(lesson_index)s: "
+msgid ""
+"You have completed %(course_current_progress)s%% of %(lesson_custom_label)s "
+"%(lesson_index)s: "
+msgstr ""
+"Usted ha completado %(course_current_progress)s%% de la Lección "
+"%(lesson_index)s:"
+
+#: templates/courses/course_lessons.haml:38
+#: templates/courses/course_lessons_ld_external.haml:40
 #, python-format
 msgid ""
 "You have completed %(course_current_progress)s%% of Lesson %(lesson_index)s: "
@@ -6153,16 +6554,30 @@ msgstr ""
 "Usted ha completado %(course_current_progress)s%% de la Lección "
 "%(lesson_index)s:"
 
-#: templates/courses/course_lessons_ld.haml:31
+#: templates/courses/course_lessons.haml:46
+#: templates/courses/course_lessons_ld.haml:49
+#: templates/courses/course_lessons_ld_external.haml:48
+#: templates/courses/course_progress_v2.haml:105
+#, python-format
+msgid " %(module_custom_label)s %(module_index)s:"
+msgstr ""
+
+#: templates/courses/course_lessons_ld.haml:41
 #, python-format
 msgid " You have completed %(course_current_progress)s%% of %(lesson_name)s "
 msgstr "Usted ha completado %(course_current_progress)s%% de %(lesson_name)s"
+
+#: templates/courses/course_lessons_ld_external.haml:14
+#, fuzzy, python-format, python-brace-format
+#| msgid "Lesson available on %(start_date)s"
+msgid " #{lesson_custom_label} %(current_lesson_index)s:"
+msgstr "Lección disponible el %(start_date)s"
 
 #: templates/courses/course_main.haml:8
 msgid " | Courses | McKinsey Academy"
 msgstr "| Cursos | McKinsey Academy"
 
-#: templates/courses/course_main.haml:34 templates/layout.haml:247
+#: templates/courses/course_main.haml:41 templates/layout.haml:247
 msgid ""
 "This is the McKinsey Academy Beta and we are happy to have you participate "
 "ahead of the official public launch!"
@@ -6170,7 +6585,7 @@ msgstr ""
 "Ésta es la versión beta de McKinsey Academy, y nos complace contar con su "
 "participación antes del lanzamiento público oficial."
 
-#: templates/courses/course_main.haml:35 templates/layout.haml:248
+#: templates/courses/course_main.haml:42 templates/layout.haml:248
 msgid ""
 "As a beta user, you will occasionally see pages and features like this one "
 "in early stages of development. Please feel free to explore, and we’ll "
@@ -6181,11 +6596,23 @@ msgstr ""
 "libremente junto con las nuevas funcionalidades que iremos agregando en las "
 "próximas semanas."
 
-#: templates/courses/course_navigation.haml:7
+#: templates/courses/course_navigation.haml:8
+#, fuzzy
+#| msgid " - "
+msgid " | "
+msgstr " -"
+
+#: templates/courses/course_navigation.haml:8
+#, fuzzy
+#| msgid " | McKinsey Academy | "
+msgid " | McKinsey Academy"
+msgstr "| McKinsey Academy |"
+
+#: templates/courses/course_navigation.haml:10
 msgid " | Lessons | McKinsey Academy"
 msgstr "| Lecciones | McKinsey Academy"
 
-#: templates/courses/course_navigation.haml:14
+#: templates/courses/course_navigation.haml:17
 msgid ""
 "Below are helpful tips to navigate course content. You may also find answers "
 "to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
@@ -6200,7 +6627,7 @@ msgstr ""
 "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> y resolveremos "
 "su inquietud."
 
-#: templates/courses/course_navigation.haml:18
+#: templates/courses/course_navigation.haml:21
 msgid ""
 "See which modules you have completed and navigate directly to specific "
 "modules using the module navigation at the top of the page"
@@ -6209,7 +6636,7 @@ msgstr ""
 "usando la funcionalidad de navegación por módulos en la parte superior de la "
 "página"
 
-#: templates/courses/course_navigation.haml:22
+#: templates/courses/course_navigation.haml:25
 msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
 "arrows to see details of upcoming (or previous) modules"
@@ -6218,7 +6645,7 @@ msgstr ""
 "derecha. Pase el cursor por las flechas para ver los detalles de los módulos "
 "siguientes (o anteriores)"
 
-#: templates/courses/course_navigation.haml:23
+#: templates/courses/course_navigation.haml:26
 msgid ""
 "Modules with inline discussions post to the larger discussion page. View the "
 "discussion page using the <i class=\"fa fa-comments-o\"></i> icon in the "
@@ -6228,7 +6655,7 @@ msgstr ""
 "Vea la página de debate usando el ícono <i class=\"fa fa-comments-o\"></i> "
 "en la barra de navegación principal"
 
-#: templates/courses/course_navigation.haml:24
+#: templates/courses/course_navigation.haml:27
 msgid ""
 "Access individual lessons from the <i class=\"mk-icon-lessonsnav\"></i> icon "
 "in the main navigation bar"
@@ -6297,8 +6724,8 @@ msgstr ""
 "para guiarlo durante el programa y comunicar fechas clave"
 
 #: templates/courses/course_news.haml:18
-#: templates/courses/course_overview.haml:18
-#: templates/courses/course_resources.haml:18
+#: templates/courses/course_overview.haml:21
+#: templates/courses/course_resources.haml:21
 msgid ""
 "RESOURCES provides key takeaways and frameworks from each lesson, as well as "
 "supplemental readings and videos"
@@ -6331,39 +6758,52 @@ msgstr ""
 "ícono <i class=\"fa fa-file-text-o\"></i> en la barra de navegación "
 "principal."
 
-#: templates/courses/course_overview.haml:27
+#: templates/courses/course_overview.haml:19
+#: templates/courses/course_resources.haml:19
+#, fuzzy, python-format
+#| msgid ""
+#| "RESOURCES provides key takeaways and frameworks from each lesson, as well "
+#| "as supplemental readings and videos"
+msgid ""
+" RESOURCES provides key takeaways and frameworks from each "
+"%(lesson_custom_label)s, as well as supplemental readings and videos"
+msgstr ""
+"RECURSOS proporciona los conceptos clave y la metodología de cada lección, "
+"así como material de lectura y videos complementarios"
+
+#: templates/courses/course_overview.haml:30
 msgid "Details:"
 msgstr "Detalles:"
 
-#: templates/courses/course_overview.haml:28
+#: templates/courses/course_overview.haml:31
 msgid "10 lessons"
 msgstr "10 lecciones"
 
-#: templates/courses/course_overview.haml:29
+#: templates/courses/course_overview.haml:32
 msgid "32 videos"
 msgstr "32 videos"
 
-#: templates/courses/course_overview.haml:30
+#: templates/courses/course_overview.haml:33
 msgid "9 assessments"
 msgstr "9 evaluaciones"
 
-#: templates/courses/course_overview.haml:31
+#: templates/courses/course_overview.haml:34
 msgid "72 exercises"
 msgstr "72 ejercicios"
 
-#: templates/courses/course_overview.haml:32
+#: templates/courses/course_overview.haml:35
 msgid "1 group project"
 msgstr "1 proyecto en grupo"
 
-#: templates/courses/course_overview.haml:33
+#: templates/courses/course_overview.haml:36
 msgid "15 readings"
 msgstr "15 lecturas"
 
-#: templates/courses/course_overview.haml:53
+#: templates/courses/course_overview.haml:56
 msgid "WHAT YOU WILL LEARN"
 msgstr "LO QUE APRENDERÁ"
 
-#: templates/courses/course_overview.haml:59
+#: templates/courses/course_overview.haml:62
 msgid "Faculty"
 msgstr "Instructores"
 
@@ -6387,7 +6827,22 @@ msgstr ""
 "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> y resolveremos "
 "su inquietud."
 
-#: templates/courses/course_progress.haml:21
+#: templates/courses/course_progress.haml:22
+#, fuzzy, python-format
+#| msgid ""
+#| "PROGRESS marks your progress (based on completion of modules and "
+#| "readings) through course content; the average progress of your cohort is "
+#| "also displayed"
+msgid ""
+" PROGRESS marks your progress (based on completion of "
+"%(modules_custom_label)s and readings) through course content; the average "
+"progress of your cohort is also displayed"
+msgstr ""
+"AVANCE detalla su evolución (medida en módulos y lecturas completadas) a "
+"través de los contenidos del curso; también muestra el avance promedio de su "
+"grupo"
+
+#: templates/courses/course_progress.haml:24
 msgid ""
 "PROGRESS marks your progress (based on completion of modules and readings) "
 "through course content; the average progress of your cohort is also displayed"
@@ -6396,7 +6851,7 @@ msgstr ""
 "través de los contenidos del curso; también muestra el avance promedio de su "
 "grupo"
 
-#: templates/courses/course_progress.haml:22
+#: templates/courses/course_progress.haml:25
 msgid ""
 "GRADE displays your proficiency against a total possible score of 100; your "
 "proficiency is based on graded assessments and group work performance."
@@ -6405,26 +6860,76 @@ msgstr ""
 "posible de 100; la competencia se basa en la calificación de las "
 "evaluaciones y el desempeño en el trabajo en grupo."
 
-#: templates/courses/course_progress.haml:28
+#: templates/courses/course_progress.haml:31
 msgid "Course Progress for"
 msgstr "Avance en el curso para"
 
-#: templates/courses/course_progress.haml:36
-#, python-format
+#: templates/courses/course_progress.haml:40
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "        You are %(user_course_progress)s%% of the way through the course "
+#| "based on completion of modules within lessons:"
 msgid ""
 "\n"
-"        You are %(user_course_progress)s%% of the way through the course "
+"          You are %(user_course_progress)s%% of the way through the course "
+"based on completion of %(modules_custom_label)s within "
+"%(lessons_custom_label)s:"
+msgstr ""
+"\n"
+"Usted ha completado %(user_course_progress)s%% del curso en base al número "
+"de módulos finalizados de las lecciones:"
+
+#: templates/courses/course_progress.haml:43
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "        You are %(user_course_progress)s%% of the way through the course "
+#| "based on completion of modules within lessons:"
+msgid ""
+"\n"
+"          You are %(user_course_progress)s%% of the way through the course "
+"based on completion of modules within #%(lessons_custom_label)s:"
+msgstr ""
+"\n"
+"Usted ha completado %(user_course_progress)s%% del curso en base al número "
+"de módulos finalizados de las lecciones:"
+
+#: templates/courses/course_progress.haml:46
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "        You are %(user_course_progress)s%% of the way through the course "
+#| "based on completion of modules within lessons:"
+msgid ""
+"\n"
+"          You are %(user_course_progress)s%% of the way through the course "
+"based on completion of %(modules_custom_label)s within lessons:"
+msgstr ""
+"\n"
+"Usted ha completado %(user_course_progress)s%% del curso en base al número "
+"de módulos finalizados de las lecciones:"
+
+#: templates/courses/course_progress.haml:49
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "        You are %(user_course_progress)s%% of the way through the course "
+#| "based on completion of modules within lessons:"
+msgid ""
+"\n"
+"          You are %(user_course_progress)s%% of the way through the course "
 "based on completion of modules within lessons:"
 msgstr ""
 "\n"
 "Usted ha completado %(user_course_progress)s%% del curso en base al número "
 "de módulos finalizados de las lecciones:"
 
-#: templates/courses/course_progress.haml:40
+#: templates/courses/course_progress.haml:53
 msgid "GRADES"
 msgstr "CALIFICACIONES"
 
-#: templates/courses/course_progress.haml:42
+#: templates/courses/course_progress.haml:55
 #, fuzzy, python-format, python-brace-format
 #| msgid ""
 #| " You need to complete all group work and feedback activities and earn a "
@@ -6441,7 +6946,7 @@ msgstr ""
 "obtener el certificado de finalización del programa. Su calificación del "
 "curso se calcula de la siguiente forma:"
 
-#: templates/courses/course_progress.haml:44
+#: templates/courses/course_progress.haml:57
 #, fuzzy, python-format, python-brace-format
 #| msgid ""
 #| " You need a combined course grade of at least ={pass_grade}%% to earn a "
@@ -6454,19 +6959,19 @@ msgstr ""
 "para obtener un certificado de finalización. Su calificación final se "
 "calcula de la siguiente forma:"
 
-#: templates/courses/course_progress.haml:48
+#: templates/courses/course_progress.haml:61
 msgid "percent of your grade"
 msgstr "porcentaje de su calificación"
 
-#: templates/courses/course_progress.haml:55
+#: templates/courses/course_progress.haml:68
 msgid "Dropped"
 msgstr "Abandonado"
 
-#: templates/courses/course_progress.haml:58
+#: templates/courses/course_progress.haml:71
 msgid "Current grade"
 msgstr "Calificación actual"
 
-#: templates/courses/course_progress.haml:59
+#: templates/courses/course_progress.haml:72
 msgid ""
 " Pro forma grade is an estimate of your final grade assuming you continue to "
 "demonstrate the same level of proficiency on your uncompleted assessments as "
@@ -6479,31 +6984,31 @@ msgstr ""
 "evaluaciones no realizadas. <a data-reveal-id='progress_modal'>Haga clic "
 "aquí </a> para leer más sobre cómo compartimos su información del curso."
 
-#: templates/courses/course_progress.haml:64
+#: templates/courses/course_progress.haml:80
 msgid "Lesson:"
 msgstr "Lección:"
 
-#: templates/courses/course_progress.haml:65
+#: templates/courses/course_progress.haml:82
 msgid "Suggested Deadline:"
 msgstr "Fecha límite sugerida:"
 
-#: templates/courses/course_progress.haml:66
+#: templates/courses/course_progress.haml:83
 msgid "Assessment Score:"
 msgstr "Puntaje de la evaluación:"
 
-#: templates/courses/course_progress.haml:87
+#: templates/courses/course_progress.haml:104
 msgid "Upload Deadline:"
 msgstr "Cargar fecha límite:"
 
-#: templates/courses/course_progress.haml:88
+#: templates/courses/course_progress.haml:105
 msgid "Score:"
 msgstr "Puntaje:"
 
-#: templates/courses/course_progress.haml:89
+#: templates/courses/course_progress.haml:106
 msgid "Grades:"
 msgstr "Calificaciones:"
 
-#: templates/courses/course_progress.haml:112
+#: templates/courses/course_progress.haml:129
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -6523,8 +7028,8 @@ msgstr ""
 "sobre las prácticas de privacidad y divulgación de información, consulte "
 "nuestra"
 
-#: templates/courses/course_progress.haml:114
-#: templates/courses/course_progress_v2.haml:199
+#: templates/courses/course_progress.haml:131
+#: templates/courses/course_progress_v2.haml:233
 msgid "privacy policy."
 msgstr "política de privacidad."
 
@@ -6536,67 +7041,144 @@ msgstr "Panel para"
 msgid "PROGRESS"
 msgstr "AVANCE"
 
-#: templates/courses/course_progress_v2.haml:21
-#, python-format
+#: templates/courses/course_progress_v2.haml:22
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "          You are %(user_course_progress)s%% of the way through the "
+#| "course based on completion of modules within lessons. The cohort average "
+#| "is %(user_average_progress)s%%.\n"
+#| "        "
 msgid ""
 "\n"
-"          You are %(user_course_progress)s%% of the way through the course "
-"based on completion of modules within lessons. The cohort average is "
-"%(user_average_progress)s%%.\n"
-"        "
+"            You are  %(user_course_progress)s%% of the way through the "
+"course based on completion of %(modules_custom_label)s within "
+"%(lessons_custom_label)s. The cohort average is %(user_average_progress)s"
+"%%.\n"
+"          "
 msgstr ""
 "\n"
 "Usted ha completado %(user_course_progress)s%% del curso en base al número "
 "de módulos finalizados de las lecciones. El promedio del grupo es "
 "%(user_average_progress)s%%."
 
-#: templates/courses/course_progress_v2.haml:27
+#: templates/courses/course_progress_v2.haml:26
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "          You are %(user_course_progress)s%% of the way through the "
+#| "course based on completion of modules within lessons. The cohort average "
+#| "is %(user_average_progress)s%%.\n"
+#| "        "
+msgid ""
+"\n"
+"            You are and I am %(user_course_progress)s%% of the way through "
+"the course based on completion of modules within %(lessons_custom_label)s. "
+"The cohort average is %(user_average_progress)s%%.\n"
+"          "
+msgstr ""
+"\n"
+"Usted ha completado %(user_course_progress)s%% del curso en base al número "
+"de módulos finalizados de las lecciones. El promedio del grupo es "
+"%(user_average_progress)s%%."
+
+#: templates/courses/course_progress_v2.haml:30
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "          You are %(user_course_progress)s%% of the way through the "
+#| "course based on completion of modules within lessons. The cohort average "
+#| "is %(user_average_progress)s%%.\n"
+#| "        "
+msgid ""
+"\n"
+"            You are and I am %(user_course_progress)s%% of the way through "
+"the course based on completion of %(modules_custom_label)s within lessons. "
+"The cohort average is %(user_average_progress)s%%.\n"
+"          "
+msgstr ""
+"\n"
+"Usted ha completado %(user_course_progress)s%% del curso en base al número "
+"de módulos finalizados de las lecciones. El promedio del grupo es "
+"%(user_average_progress)s%%."
+
+#: templates/courses/course_progress_v2.haml:34
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "          You are %(user_course_progress)s%% of the way through the "
+#| "course based on completion of modules within lessons. The cohort average "
+#| "is %(user_average_progress)s%%.\n"
+#| "        "
+msgid ""
+"\n"
+"            You are and I am %(user_course_progress)s%% of the way through "
+"the course based on completion of modules within lessons. The cohort average "
+"is %(user_average_progress)s%%.\n"
+"          "
+msgstr ""
+"\n"
+"Usted ha completado %(user_course_progress)s%% del curso en base al número "
+"de módulos finalizados de las lecciones. El promedio del grupo es "
+"%(user_average_progress)s%%."
+
+#: templates/courses/course_progress_v2.haml:40
 msgid "Modules:"
 msgstr "Módulos:"
 
-#: templates/courses/course_progress_v2.haml:28
-#: templates/courses/course_progress_v2.haml:109
-#: templates/courses/course_progress_v2.haml:171
+#: templates/courses/course_progress_v2.haml:41
+#: templates/courses/course_progress_v2.haml:143
+#: templates/courses/course_progress_v2.haml:205
 msgid "Overall:"
 msgstr "General:"
 
-#: templates/courses/course_progress_v2.haml:31
+#: templates/courses/course_progress_v2.haml:44
 msgid "in this course"
 msgstr "en este curso"
 
-#: templates/courses/course_progress_v2.haml:39
+#: templates/courses/course_progress_v2.haml:52
 msgid "Individual Learning:"
 msgstr "Aprendizaje individual:"
 
-#: templates/courses/course_progress_v2.haml:41
+#: templates/courses/course_progress_v2.haml:54
 msgid "Group Work (Due Date):"
 msgstr "Trabajo en grupo (fecha de entrega):"
 
-#: templates/courses/course_progress_v2.haml:49
+#: templates/courses/course_progress_v2.haml:62
 msgid "Week"
 msgstr "Semana"
 
-#: templates/courses/course_progress_v2.haml:53
+#: templates/courses/course_progress_v2.haml:66
 msgid "N/A (focus on Group Work)"
 msgstr "N/A (foco en trabajo en grupo)"
 
-#: templates/courses/course_progress_v2.haml:64
+#: templates/courses/course_progress_v2.haml:91
+#, fuzzy, python-format
+#| msgid ""
+#| "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
+msgid ""
+"You have completed %(lesson_progress)s%% of %(lesson_custom_label)s "
+"%(lesson_index)s: "
+msgstr ""
+"Usted ha completado %(lesson_progress)s%% de la Lección %(lesson_index)s:"
+
+#: templates/courses/course_progress_v2.haml:93
 #, python-format
 msgid "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
 msgstr ""
 "Usted ha completado %(lesson_progress)s%% de la Lección %(lesson_index)s:"
 
-#: templates/courses/course_progress_v2.haml:90
+#: templates/courses/course_progress_v2.haml:124
 msgid "partially complete"
 msgstr "parcialmente completo"
 
-#: templates/courses/course_progress_v2.haml:93
+#: templates/courses/course_progress_v2.haml:127
 msgid "Note: Group Work Deliverables need to be submitted by 11pm GMT."
 msgstr ""
 "Nota: Las entregas de trabajos en grupo deben realizarse antes de las 11 PM "
 "GMT."
 
-#: templates/courses/course_progress_v2.haml:96
+#: templates/courses/course_progress_v2.haml:130
 msgid ""
 "Note: \"weeks\" begin Tuesday and end the following Monday; Group Work "
 "Deliverables need to be submitted by 11pm GMT."
@@ -6604,16 +7186,16 @@ msgstr ""
 "Nota: Las “semanas” comienzan los martes y terminan los lunes siguientes; "
 "las entregas de trabajos en grupo deben realizarse antes de las 11 PM GMT."
 
-#: templates/courses/course_progress_v2.haml:98
+#: templates/courses/course_progress_v2.haml:132
 msgid "Note: \"weeks\" begin Tuesday and end the following Monday"
 msgstr ""
 "Nota: Las \"semanas\" comienzan los martes y terminan los lunes siguientes"
 
-#: templates/courses/course_progress_v2.haml:101
+#: templates/courses/course_progress_v2.haml:135
 msgid "PROFICIENCY"
 msgstr "COMPETENCIA"
 
-#: templates/courses/course_progress_v2.haml:103
+#: templates/courses/course_progress_v2.haml:137
 #, python-format
 msgid ""
 "\n"
@@ -6629,23 +7211,23 @@ msgstr ""
 "este curso. El promedio del grupo es %(cohort_proficiency_average)s%% \n"
 "."
 
-#: templates/courses/course_progress_v2.haml:110
+#: templates/courses/course_progress_v2.haml:144
 msgid "Graded Items:"
 msgstr "Elementos calificados:"
 
-#: templates/courses/course_progress_v2.haml:111
+#: templates/courses/course_progress_v2.haml:145
 msgid "Grade:"
 msgstr "Calificación:"
 
-#: templates/courses/course_progress_v2.haml:150
+#: templates/courses/course_progress_v2.haml:184
 msgid "Grading in progress"
 msgstr "Cálculo de calificación en progreso"
 
-#: templates/courses/course_progress_v2.haml:154
+#: templates/courses/course_progress_v2.haml:188
 msgid "not started / incomplete"
 msgstr "no iniciado/ incompleto"
 
-#: templates/courses/course_progress_v2.haml:157
+#: templates/courses/course_progress_v2.haml:191
 #, python-format
 msgid ""
 "\n"
@@ -6661,15 +7243,15 @@ msgstr ""
 "siguiente forma: %(graders)s. <a data-reveal-id='progress_modal'>Haga clic "
 "aquí</a> para conocer más sobre cómo compartimos su información del curso."
 
-#: templates/courses/course_progress_v2.haml:162
+#: templates/courses/course_progress_v2.haml:196
 msgid "ENGAGEMENT"
 msgstr "PARTICIPACIÓN EN EL CURSO"
 
-#: templates/courses/course_progress_v2.haml:164
+#: templates/courses/course_progress_v2.haml:198
 msgid "discussion"
 msgstr "debate"
 
-#: templates/courses/course_progress_v2.haml:165
+#: templates/courses/course_progress_v2.haml:199
 #, python-format
 msgid ""
 "\n"
@@ -6685,36 +7267,36 @@ msgstr ""
 "href=\"%(course_nav_url)s/discussion\">%(discussion_text)s</a> foros. El "
 "promedio del grupo es %(social_course_avg)s."
 
-#: templates/courses/course_progress_v2.haml:172
+#: templates/courses/course_progress_v2.haml:206
 msgid "Measured Engagement:"
 msgstr "Participación en el curso medida:"
 
-#: templates/courses/course_progress_v2.haml:173
+#: templates/courses/course_progress_v2.haml:207
 msgid "Stats:"
 msgstr "Estadísticas:"
 
-#: templates/courses/course_progress_v2.haml:178
+#: templates/courses/course_progress_v2.haml:212
 msgid "Number of <span>New Posts</span> you created "
 msgstr "Cantidad de <span>publicaciones nuevas</span> creadas"
 
-#: templates/courses/course_progress_v2.haml:181
+#: templates/courses/course_progress_v2.haml:215
 msgid "Number of <span>Replies</span> you made to other posts "
 msgstr "Cantidad de <span>respuestas</span> a otras publicaciones"
 
-#: templates/courses/course_progress_v2.haml:184
+#: templates/courses/course_progress_v2.haml:218
 msgid " Number of <span>Comments Generated </span> by your posts "
 msgstr "Cantidad de <span>comentarios generados </span> por sus publicaciones"
 
-#: templates/courses/course_progress_v2.haml:187
+#: templates/courses/course_progress_v2.haml:221
 msgid " Number of <span>Upvotes</span> your posts have received "
 msgstr ""
 "Cantidad de <span>votos a favor</span> que han recibido sus publicaciones"
 
-#: templates/courses/course_progress_v2.haml:190
+#: templates/courses/course_progress_v2.haml:224
 msgid " Number of your posts being <span>Followed</span> "
 msgstr "Cantidad de publicaciones que son <span>seguidas</span>"
 
-#: templates/courses/course_progress_v2.haml:197
+#: templates/courses/course_progress_v2.haml:231
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -6788,7 +7370,25 @@ msgstr ""
 msgid "Your course progress will be displayed here."
 msgstr "Su nivel de avance en el curso se mostrará aquí."
 
-#: templates/courses/visualizations/course_progress.haml:22
+#: templates/courses/visualizations/course_progress.haml:23
+#, fuzzy, python-format
+#| msgid ""
+#| "This visualization displays your progress through course content. The "
+#| "average progress of your cohort is displayed as well. Note that your "
+#| "progress is based on consumption of all individual modules and readings "
+#| "within the course."
+msgid ""
+"This visualization displays your progress through course content. The "
+"average progress of your cohort is displayed as well. Note that your "
+"progress is based on consumption of all individual %(modules_custom_label)s "
+"and readings within the course."
+msgstr ""
+"Esta visualización muestra su avance a lo largo de los contenidos del curso. "
+"También se indica el nivel de avance promedio de su grupo. Tenga en cuenta "
+"que el avance se basa en el cumplimiento de todos los módulos individuales y "
+"lecturas del curso."
+
+#: templates/courses/visualizations/course_progress.haml:25
 msgid ""
 "This visualization displays your progress through course content. The "
 "average progress of your cohort is displayed as well. Note that your "
@@ -7418,9 +8018,9 @@ msgid "How can I sign up for a McKinsey Academy course or program?"
 msgstr "¿Cómo me inscribo en un curso o programa de McKinsey Academy?"
 
 #: templates/faq.haml:97
-msgid "Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a>"
+msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 msgstr ""
-"¡Comuníquese <a href=\"mailto:info@mckinseyacademy.com\">con nosotros!</a>"
+"¡Comuníquese <a href=\"mailto:academy_info@mckinsey.com\">con nosotros!</a>"
 
 #: templates/faq.haml:98
 msgid "What if my question isn’t answered here?"
@@ -7428,10 +8028,10 @@ msgstr "¿Qué sucede si la respuesta a mi pregunta no está aquí?"
 
 #: templates/faq.haml:99
 msgid ""
-"Please <a href=\"mailto:info@mckinseyacademy.com\">contact us!</a> We’ll do "
+"Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a> We’ll do "
 "our best to help."
 msgstr ""
-"¡Comuníquese <a href=\"mailto:info@mckinseyacademy.com\">con nosotros!</a> "
+"¡Comuníquese <a href=\"mailto:academy_info@mckinsey.com\">con nosotros!</a> "
 "Haremos todo lo posible por ayudarlo."
 
 #: templates/footer.haml:11
@@ -8915,13 +9515,13 @@ msgstr ""
 #: templates/marketing/programs.haml:243
 msgid ""
 "\n"
-"            Please email us at <a href=\"mailto:info@mckinseyacademy.com"
-"\">info@mckinseyacademy.com</a> for further details.\n"
+"            Please email us at <a href=\"mailto:academy_info@mckinsey.com"
+"\">academy_info@mckinsey.com</a> for further details.\n"
 "            "
 msgstr ""
 "\n"
-"Escríbanos a <a href=\"mailto:info@mckinseyacademy.com"
-"\">info@mckinseyacademy.com</a> para obtener más detalles."
+"Escríbanos a <a href=\"mailto:academy_info@mckinsey.com"
+"\">academy_info@mckinsey.com</a> para obtener más detalles."
 
 #: templates/marketing/programs.haml:250
 msgid ""
@@ -11052,9 +11652,6 @@ msgstr "Apellido: {}"
 
 #~ msgid "Fake translations"
 #~ msgstr "Traducciones falsas"
-
-#~ msgid "COMPANY INFO"
-#~ msgstr "INFORMACIÓN DE LA COMPAÑÍA"
 
 #~ msgid "McKinsey & Company"
 #~ msgstr "McKinsey & Company"

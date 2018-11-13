@@ -277,11 +277,11 @@ def get_courses(**kwargs):
     '''
     qs_params = {"page_size": 0}
 
-    for karg in kwargs:
-        if isinstance(kwargs[karg], list):
-            qs_params[karg] = ",".join(kwargs[karg])
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            qs_params[key] = ",".join(value)
         else:
-            qs_params[karg] = kwargs[karg]
+            qs_params[key] = value
 
     response = GET('{}/{}/?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -334,6 +334,7 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
     '''
     Retrieves course user list structure information from the API for specified course
     '''
+    edx_oauth2_session = get_oauth2_session()
     qs_params = {"page_size": page_size}
     if program_id:
         qs_params['project'] = program_id
@@ -347,19 +348,19 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
 
     if page_size != 0:
         results = []
-        response = GET(url)
-        data = json.loads(response.read())
+        response = edx_oauth2_session.get(url=url)
+        data = json.loads(response.content)
         pages = data['num_pages']
         for x in range(0, pages):
             result = data['results']
             results.extend(result)
             if data['next']:
-                response = GET(data['next'])
-                data = json.loads(response.read())
+                response = edx_oauth2_session.get(data['next'])
+                data = json.loads(response.content)
         return json.dumps(results)
     else:
-        response = GET(url)
-        return response.read()
+        response = edx_oauth2_session.get(url=url)
+        return json.loads(response.content)
 
 
 @api_error_protect
@@ -510,11 +511,11 @@ def get_course_metrics(course_id, *args, **kwargs):
 
     qs_params = {}
 
-    for karg in kwargs:
-        if isinstance(kwargs[karg], list):
-            qs_params[karg] = ",".join(kwargs[karg])
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            qs_params[key] = ",".join(value)
         else:
-            qs_params[karg] = kwargs[karg]
+            qs_params[key] = value
 
     url = '{}/{}/{}/metrics/?{}'.format(
         settings.API_SERVER_ADDRESS,
@@ -528,7 +529,36 @@ def get_course_metrics(course_id, *args, **kwargs):
 
 
 @api_error_protect
-def get_course_metrics_by_city(course_id, cities=None):
+def get_course_metrics_leaders(course_id, **kwargs):
+    """
+    retrieves course metrics leaders
+    :param kwargs:
+        - `course_id`
+        - `user_id`
+        - `count`
+    """
+    from courses.controller import CourseMetricsLeaders
+    qs_params = {}
+
+    for key, value in kwargs.items():
+        if isinstance(value, list):
+            qs_params[key] = ",".join(value)
+        else:
+            qs_params[key] = value
+
+    url = '{}/{}/{}/metrics/leaders/?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        urlencode(qs_params),
+    )
+
+    response = GET(url)
+    return JP.from_json(response.read(), CourseMetricsLeaders)
+
+
+@api_error_protect
+def get_course_metrics_by_city(course_id, cities=None, **kwargs):
     ''' retrieves course metrics '''
     qs_params = {"page_size": 0}
     if cities:
@@ -719,15 +749,12 @@ def get_courses_list(getParameters):
 @api_error_protect
 def get_course_details(course_id):
     edx_oauth2_session = get_oauth2_session()
-
     url = '{}/{}/{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id
     )
-
     response = edx_oauth2_session.get(url)
-
     return response.json()
 
 

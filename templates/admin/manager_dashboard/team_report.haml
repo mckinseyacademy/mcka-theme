@@ -9,7 +9,7 @@
   #manager_courses{'course-length': '{{manager_courses|length}}'}
   #managerDashboardWrapper
     .navigation
-      %a{'href': "/courses/" + "#{course.id}"}
+      %a{'href': "/courses/#{course.id}"}
         < {% trans "Back to Courses" %}
       %br
       %br
@@ -17,11 +17,27 @@
         - for index,course_id, course_name in manager_courses
           %li
             - if index == 0
-              %a.hashPageButton.active{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
+              %a.hashPageButton.active{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
                 = course_name
             - else
-              %a.hashPageButton{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
+              %a.hashPageButton{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
                 = course_name
+
+      .manager-progress-cards
+        %ul
+          %li
+            .progress-average
+              {% trans "Your team's average" %}
+              %span {% trans "progress" %}
+              %large 0%
+          %li
+            .proficiency-average
+              {% trans "Your team's average" %}
+              %span {% trans "proficiency" %}
+              %large
+                %span.inherit-color 0
+                %small {% trans "points" %}
+
 
     #managerDashboardContainer
       - for index,course_id, course_name in manager_courses

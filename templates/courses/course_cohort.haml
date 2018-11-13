@@ -177,11 +177,11 @@
           %li
             .header
               .label-5 {% trans "Engagement:" %}
-              .label-4 {% blocktrans with course_avg=social.course_avg %} cohort average = {{course_avg}} points {% endblocktrans %}
+              .label-4 {% blocktrans with course_avg=social.course_average_display %} cohort average = {{course_avg}} points {% endblocktrans %}
               - if user_role
                .rank {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the engagement leaderboard {% endblocktrans %}
               - elif social.position
-                .rank {% blocktrans with position=social.position points=social.points %}  your engagement position: <br><span>{{position}}</span> with <span>{{points}} pts.</span> {% endblocktrans %}
+                .rank {% blocktrans with position=social.position points=social.score %}  your engagement position: <br><span>{{position}}</span> with <span>{{points}} pts.</span> {% endblocktrans %}
               - else
                 .rank {% trans "your engagement position <br> will be displayed here" %}
 

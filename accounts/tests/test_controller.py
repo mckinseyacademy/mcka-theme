@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.core import mail
 from django.core.files.storage import default_storage
 from django.http.response import HttpResponseBase
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
 
 from accounts.controller import (AssignStudentToProgramResult, EnrollStudentInCourseResult,
@@ -29,6 +29,7 @@ from api_client.organization_models import Organization
 from lib.utils import DottableDict
 from license.models import LicenseGrant
 from mcka_apros import settings
+from api_data_manager.tests.utils import mock_api_data_manager
 
 
 class TestProcessAccessKey(TestCase, ApplyPatchMixin):
@@ -266,10 +267,6 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
             )
         ]
 
-        self.get_user_organizations = self.apply_patch(
-            'api_client.user_api.get_user_organizations'
-        )
-
         self.get_mobile_apps_id = self.apply_patch(
             'accounts.controller.get_mobile_apps_id'
         )
@@ -279,7 +276,8 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
         Tests append_user_mobile_app_id_cookie helper method when user login and has organization
         """
         user_id = 4
-        self.get_user_organizations.return_value = self.user_organizations
+        mock_api_data_manager(module_path='accounts.controller.UserDataManager',
+                              data={'organizations': self.user_organizations})
         self.get_mobile_apps_id.return_value = self.mobile_app_id
 
         result = append_user_mobile_app_id_cookie(HttpResponseBase(), user_id)
@@ -292,7 +290,8 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
         Tests append_user_mobile_app_id_cookie helper method when user login and has no organization
         """
         user_id = 4
-        self.get_user_organizations.return_value = []
+        mock_api_data_manager(module_path='accounts.controller.UserDataManager',
+                              data={'organizations': []})
         self.get_mobile_apps_id.return_value = self.mobile_app_id
         result = append_user_mobile_app_id_cookie(HttpResponseBase(), user_id)
 
@@ -677,36 +676,38 @@ class TestGetMobileAppsId(TestCase, ApplyPatchMixin):
     ''' Unit test for the method get_mobile_apps_id from controller'''
 
     def setUp(self):
-        self.mobile_api = self.apply_patch('accounts.controller.mobileapp_api')
+        self.get_mobile_apps = self.apply_patch('api_data_manager.organization_data.get_mobile_apps')
         self.organization = DottableDict({'id': 1})
 
     def test_with_mobile_apps(self):
-        self.mobile_api.get_mobile_apps.return_value = DottableDict(
+        self.get_mobile_apps.return_value = DottableDict(
             {'results': [{'name': 'demo',
                           'deployment_mechanism': 1,
                           'ios_app_id': 1,
                           'android_app_id': 2}]
              })
-        result = get_mobile_apps_id(self.organization)
+        result = get_mobile_apps_id(self.organization.id)
         self.assertEquals(result['ios_app_id'], 1)
         self.assertEquals(result['android_app_id'], 2)
         self.assertEquals(result['user_org'], 'demo')
 
+    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache',}})
     def test_without_mobile_apps(self):
-        self.mobile_api.get_mobile_apps.side_effect = make_side_effect_raise_api_error(404)
-        result = get_mobile_apps_id(self.organization)
+        self.get_mobile_apps.side_effect = make_side_effect_raise_api_error(404)
+        result = get_mobile_apps_id(self.organization.id)
         self.assertIsNone(result['ios_app_id'])
         self.assertIsNone(result['android_app_id'])
         self.assertIsNone(result['user_org'])
 
+    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache',}})
     def test_with_invalid_deployment_mechanism(self):
-        self.mobile_api.get_mobile_apps.return_value = DottableDict(
+        self.get_mobile_apps.return_value = DottableDict(
             {'results': [{'name': 'demo',
                           'deployment_mechanism': 2,
                           'ios_app_id': 1,
                           'android_app_id': 2}]
              })
-        result = get_mobile_apps_id(self.organization)
+        result = get_mobile_apps_id(self.organization.id)
         self.assertIsNone(result['ios_app_id'])
         self.assertIsNone(result['android_app_id'])
         self.assertIsNone(result['user_org'])

@@ -87,6 +87,17 @@ class MassParticipantsEnrollListForm(forms.Form):
 
     ''' form to upload file for student list '''
     student_enroll_list = forms.FileField(help_text="ParticipantsCourseList.csv")
+    
+
+class MassCompanyFieldsUpdateForm(forms.Form):
+    """ form to upload file for student list for updating company fields """
+    student_field_list = forms.FileField()
+
+
+class MassManagerDataUpdateForm(forms.Form):
+    """ form to upload file for updating manager for users """
+    student_manager_list = forms.FileField()
+
 
 class ProgramAssociationForm(forms.Form):
 
@@ -243,6 +254,7 @@ class EditExistingUserForm(forms.Form):
     username = forms.CharField(required=False, widget=forms.TextInput(), validators=[UsernameValidator()])
     email = forms.EmailField(required=True, widget=forms.TextInput())
     company = forms.CharField(required=True, widget=forms.TextInput())
+    manager_email = forms.EmailField(required=False, widget=forms.TextInput())
     gender = forms.CharField(required=False, widget=forms.TextInput())
     country = forms.CharField(required=False, widget=forms.TextInput())
     city = forms.CharField(required=False, widget=forms.TextInput(), validators=[AlphanumericWithAccentedChars()])
@@ -365,6 +377,7 @@ class LearnerDashboardTileForm(forms.ModelForm):
             'end_date',
             'show_in_calendar',
             'show_in_dashboard',
+            'hidden_from_learners',
             'fa_icon',
             'row'
         ]

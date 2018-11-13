@@ -1,7 +1,11 @@
 - load i18n
 
 %article#course-menu
-  .sub-2 {% trans "LESSONS:" %}
+  - if lessons_custom_label
+    = lessons_custom_label
+  - else
+    .sub-2 {% trans "LESSONS:" %}
+
   .rotator
     .nav-left.disabled
       %i.fa.fa-chevron-left
@@ -21,7 +25,10 @@
                   - if lesson.bookmark
                     .bookmark
                       %i.fa.fa-bookmark
-                  .label-5.index {% trans "LESSON" %} {{lesson.index}}:
+                  - if lesson_custom_label
+                    .label-5.index {% blocktrans with lesson_index=lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
+                  - else
+                    .label-5.index {% trans "LESSON" %} {{lesson.index}}:
                   %h2.name= lesson.name
                   - if lesson.estimated_time
                     %p.estimated-time.style-6= lesson.estimated_time
@@ -35,7 +42,11 @@
                   .label-2.description
                     - autoescape off
                      {% if not lesson.is_started %}
-                        {% blocktrans with start_date=lesson.start_upon %} This lesson will be available on {{ start_date }} {% endblocktrans %}
+                        {% if lesson_custom_label %}
+                           {% blocktrans with start_date=lesson.start_upon %} This {{lesson_custom_label}} will be available on {{ start_date }} {% endblocktrans %}
+                        {% else %}
+                           {% blocktrans with start_date=lesson.start_upon %} This lesson will be available on {{ start_date }} {% endblocktrans %}
+                        {% endif %}
                      {% else %}
                         = lesson.description
                      {% endif %}

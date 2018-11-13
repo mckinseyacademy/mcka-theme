@@ -19,4 +19,7 @@
   #mckinsey_progress_help.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal
       %i.fa.fa-times-circle
-    %p {% trans "This visualization displays your progress through course content. The average progress of your cohort is displayed as well. Note that your progress is based on consumption of all individual modules and readings within the course." %}
+    - if modules_custom_label
+      %p {% blocktrans %}This visualization displays your progress through course content. The average progress of your cohort is displayed as well. Note that your progress is based on consumption of all individual {{modules_custom_label}} and readings within the course.{% endblocktrans %}
+    - else
+      %p {% trans "This visualization displays your progress through course content. The average progress of your cohort is displayed as well. Note that your progress is based on consumption of all individual modules and readings within the course." %}

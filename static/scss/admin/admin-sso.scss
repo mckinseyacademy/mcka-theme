@@ -1,8 +1,8 @@
 // Reusing form spacing as defined by foundation. Update if default is changed.
 $form-spacing: rem-calc(16);
 
-.admin_client_sso , .course_custom_terminology{
-  .identity-provider , .lesson-label, .module-label{
+.admin_client_sso, .course_custom_terminology{
+  .identity-provider, .lesson-label, .module-label, .lessons-label, .modules-label{
     label {
       padding: $form-spacing/2 $form-spacing;
     }
@@ -20,59 +20,94 @@ $form-spacing: rem-calc(16);
     color: gray;
   }
 
-  .idp-buttons , .ll-buttons, .ml-buttons{
+  .idp-buttons, .ll-buttons, .ml-buttons, .lsl-buttons, .msl-buttons{
     a{
       display: none;
       margin: 0 0.5rem;
     }
   }
 
-  .idp-setup , .ll-setup, .ml-setup{
+  .idp-setup, .ll-setup, .ml-setup, .lsl-setup, .msl-setup{
     margin: 2rem 0;
     &.edit-mode .idp-buttons #edit-idp,
     &.edit-mode-ll .ll-buttons #edit-ll,
-    &.edit-mode-ml .ml-buttons #edit-ml{
+    &.edit-mode-ml .ml-buttons #edit-ml,
+    &.edit-mode-lsl .lsl-buttons #edit-lsl,
+    &.edit-mode-msl .msl-buttons #edit-msl{
       display: inline-block;
     }
-    &.add-mode , &.add-mode-ll , &.add-mode-ml {
-      .idp-buttons #add-idp, .ll-buttons #add-ll , .ml-buttons #add-ml{
+    &.add-mode, &.add-mode-ll, &.add-mode-ml, &.add-mode-lsl, &.add-mode-msl {
+      .idp-buttons #add-idp,
+      .ll-buttons #add-ll,
+      .ml-buttons #add-ml,
+      .lsl-buttons #add-lsl,
+      .msl-buttons #add-msl{
         display: inline-block;
       }
-      .read-only-idp , .read-only-ll, .read-only-ml{
+      .read-only-idp , .read-only-ll, .read-only-ml, .read-only-lsl, .read-only-msl{
         font-style: italic;
       }
     }
-    &.save-mode , &.save-mode-ll , &.save-mode-ml{
-      .idp-buttons, .ll-buttons , .ml-buttons{
-        #save-idp, #reset-idp , #save-ll , #reset-ll, #save-ml, #reset-ml{
+    &.save-mode, &.save-mode-ll, &.save-mode-ml, &.save-mode-lsl, &.save-mode-msl{
+      .idp-buttons{
+        #save-idp, #reset-idp{
           display: inline-block;
         }
       }
-      .identity-provider-input, .custom-lesson-label-input, .custom-module-label-input{
-        #identity_provider, #custom_lesson_label, #custom_module_label{
+      .ll-buttons{
+        #save-ll, #reset-ll{
+          display: inline-block;
+        }
+      }
+      .ml-buttons{
+        #save-ml, #reset-ml{
+          display: inline-block;
+        }
+      }
+      .lsl-buttons{
+        #save-lsl, #reset-lsl{
+          display: inline-block;
+        }
+      }
+      .msl-buttons{
+        #save-msl, #reset-msl{
+          display: inline-block;
+        }
+      }
+      .identity-provider-input, .custom-lesson-label-input, .custom-module-label-input,
+      .custom-lessons-label-input, .custom-modules-label-input{
+        #identity_provider, #custom_lesson_label, #custom_module_label, #custom_lessons_label, #custom_modules_label{
           display: block;
         }
-        .read-only-idp, .read-only-ll , .read-only-ml{
+        .read-only-idp, .read-only-ll, .read-only-ml, .read-only-lsl, .read-only-msl{
           display: none;
+        }
+      }
+    }
+    &.save-mode-ll{
+      .ll-buttons{
+        #save-ll, #reset-ll{
+          display: inline-block;
         }
       }
     }
   }
 
-  .identity-provider-input, .custom-lesson-label-input, .custom-module-label-input {
+  .identity-provider-input, .custom-lesson-label-input, .custom-module-label-input,
+  .custom-lessons-label-input, .custom-modules-label-input {
     position: relative;
-    #identity_provider , #custom_lesson_label, #custom_module_label{
+    #identity_provider, #custom_lesson_label, #custom_module_label, #custom_lessons_label, #custom_modules_label{
       display: none;
       margin-bottom: 0;
       &.save-failed {
         border-color: red;
       }
     }
-    .read-only-idp, .read-only-ll, .read-only-ml {
+    .read-only-idp, .read-only-ll, .read-only-ml, .read-only-lsl, .read-only-msl {
       padding: $form-spacing/2 $form-spacing;
       line-height: 21px;
     }
-    .status-icon , .status-icon-ll, .status-icon-ml{
+    .status-icon, .status-icon-ll, .status-icon-ml, .status-icon-lsl, .status-icon-msl{
       position: absolute;
       top: $form-spacing * 3 / 4;
       right: $form-spacing * 3 / 4;

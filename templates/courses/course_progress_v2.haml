@@ -18,9 +18,22 @@
       %h1 {% trans "Dashboard for" %} '#{progress_user.username}'
       .label-5 {% trans "PROGRESS" %}
       %p.style-6
-        {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
-          You are {{user_course_progress}}% of the way through the course based on completion of modules within lessons. The cohort average is {{user_average_progress}}%.
-        {% endblocktrans %}
+        - if lessons_custom_label and modules_custom_label
+          {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
+            You are  {{user_course_progress}}% of the way through the course based on completion of {{modules_custom_label}} within {{lessons_custom_label}}. The cohort average is {{user_average_progress}}%.
+          {% endblocktrans %}
+        - elif lesson_custom_label
+          {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
+            You are and I am {{user_course_progress}}% of the way through the course based on completion of modules within {{lessons_custom_label}}. The cohort average is {{user_average_progress}}%.
+          {% endblocktrans %}
+        - elif module_custom_label
+          {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
+            You are and I am {{user_course_progress}}% of the way through the course based on completion of {{modules_custom_label}} within lessons. The cohort average is {{user_average_progress}}%.
+          {% endblocktrans %}
+        -else
+          {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
+            You are and I am {{user_course_progress}}% of the way through the course based on completion of modules within lessons. The cohort average is {{user_average_progress}}%.
+          {% endblocktrans %}
       %table.user-progress
         %thead
           %tr
@@ -56,19 +69,40 @@
                     %i.status.fa{"class": "fa-{% if lesson.progress == 100 %}check-circle complete{% else %}circle {% if lesson.progress > 0 %}partial{% endif %}{% endif %}"}
                     .lesson-item-name
                       %a{"href": "#{lesson.navigation_url}"}
-                        {% trans "Lesson" %} #{lesson.index}:
+                        - if lesson_custom_label
+                          {% blocktrans with lesson_index=lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
+                        -else
+                          {% trans "Lesson" %} #{lesson.index}:
                       =lesson.name
-                    %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "{% trans 'Lesson Modules' %}"}
-                      %i.fa.fa-list-ul
+                    - if lesson_custom_label and modules_custom_label
+                      %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                        %i.fa.fa-list-ul
+                    - elif lesson_custom_label
+                      %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+                        %i.fa.fa-list-ul
+                    - elif modules_custom_label
+                      %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+                        %i.fa.fa-list-ul
+                    -else
+                      %a{'data-reveal-id': "module_list-#{lesson.index}", "data-tooltip": "{% trans 'Lesson Modules' %}"}
+                        %i.fa.fa-list-ul
                     %div.reveal-modal.tiny.lesson-modules-modal{'id': "module_list-#{lesson.index}", 'data-reveal': True}
-                      %p.style-2 {% blocktrans with lesson_progress=lesson.progress lesson_index=lesson.index %}You have completed {{ lesson_progress }}% of Lesson {{ lesson_index }}: {% endblocktrans %}
+                      - if lesson_custom_label
+                        %p.style-2 {% blocktrans with lesson_progress=lesson.progress lesson_index=lesson.index %}You have completed {{ lesson_progress }}% of {{lesson_custom_label}} {{ lesson_index }}: {% endblocktrans %}
+                      - else
+                        %p.style-2 {% blocktrans with lesson_progress=lesson.progress lesson_index=lesson.index %}You have completed {{ lesson_progress }}% of Lesson {{ lesson_index }}: {% endblocktrans %}
+
                       %ul
                         - for module in lesson.modules
                           %li.lesson-row-item
                             %i.status.fa{"class": "{% if module.progress == 100 %}fa-check-circle complete{% elif module.progress > 0 %}fa-circle partial{% else %}fa-circle{% endif %}"}
                             .lesson-item-name
-                              %a{"href": "#{module.navigation_url}"}
-                                {% trans "Module" %} #{module.index}:
+                              - if module_custom_label
+                                %a{"href": "#{module.navigation_url}"}
+                                  {% blocktrans with module.index as module_index %} {{module_custom_label}} {{module_index}}:{% endblocktrans %}
+                              - else
+                                %a{"href": "#{module.navigation_url}"}
+                                  {% trans "Module" %} #{module.index}:
                               %span= module.name
                       .close-reveal-modal
                         %i.fa.fa-times-circle
