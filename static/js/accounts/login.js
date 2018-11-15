@@ -1,7 +1,5 @@
 /* global ga */
 $(function () {
-    ga('send', 'pageview', 'Login', {dimension4: 'new_flow'});
-
     function getHashedId() {
         let login_id = $("input[name=login_id]").val().trim();
         if (login_id === "") {
@@ -56,8 +54,7 @@ $(function () {
 
     $('#go-back').on('click', function () {
         ga('send', 'event', 'Login', 'navigate', 'back', {
-            dimension1: getHashedId(),
-            dimension4: 'new_flow',
+            dimension4: getHashedId(),
         });
         resetLoginForm();
     });
@@ -85,8 +82,7 @@ $(function () {
 
         if (passwordLogin) {
             ga('send', 'event', 'Login', 'login', 'normal_login', {
-                dimension1: hashed_id,
-                dimension4: 'new_flow'
+                dimension4: hashed_id,
             });
             $.ajax({
                 headers: headers,
@@ -95,15 +91,13 @@ $(function () {
                 url: '/accounts/login/',
                 success: function (_1, _2, xhr) {
                     ga('send', 'event', 'Login', 'normal_login', 'success', {
-                        dimension1: hashed_id,
-                        dimension4: 'new_flow'
+                        dimension4: hashed_id,
                     });
                     redirectAfterLogin(xhr);
                 },
                 error: function (error) {
                     ga('send', 'event', 'Login', 'normal_login', 'failure', {
-                        dimension1: hashed_id,
-                        dimension4: 'new_flow'
+                        dimension4: hashed_id,
                     });
                     setError(error.responseJSON);
                 }
@@ -115,13 +109,11 @@ $(function () {
                 type: 'POST',
                 success: function (_1, _2, xhr) {
                     ga('send', 'event', 'Login', 'validate', 'success', {
-                        dimension1: hashed_id,
-                        dimension4: 'new_flow'
+                        dimension4: hashed_id,
                     });
                     if (xhr.status === 278) {
                         ga('send', 'event', 'Login', 'sso_login', 'redirecting', {
-                            dimension1: hashed_id,
-                            dimension4: 'new_flow'
+                            dimension4: hashed_id,
                         });
                         redirectAfterLogin(xhr);
                     } else {
@@ -130,8 +122,7 @@ $(function () {
                 },
                 error: function (error) {
                     ga('send', 'event', 'Login', 'validate', 'failure', {
-                        dimension1: hashed_id,
-                        dimension4: 'new_flow'
+                        dimension4: hashed_id,
                     });
                     setError(error.responseJSON);
                 }
@@ -141,15 +132,13 @@ $(function () {
 
     $('a[data-reveal-id="reset-password"]').click(function() {
         ga('send', 'event', 'Login', 'forgot_password', {
-            dimension1: getHashedId(),
-            dimension4: 'new_flow'
+            dimension4: getHashedId(),
         });
     });
 
     $('#email-support').click(function () {
         ga('send', 'event', 'Login', 'click_email_support', {
-            dimension1: getHashedId(),
-            dimension4: 'new_flow'
+            dimension4: getHashedId(),
         });
     });
 
