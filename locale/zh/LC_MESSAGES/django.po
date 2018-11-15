@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-13 12:26+0000\n"
+"POT-Creation-Date: 2018-11-15 12:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1765,40 +1765,40 @@ msgstr "期末评定"
 msgid "Social Engagement"
 msgstr "社交参与"
 
-#: admin/controller.py:2696
+#: admin/controller.py:2701
 #, fuzzy
 #| msgid "User Id is not passed"
 msgid "user {} is not updated"
 msgstr "用户 ID 未通过验证"
 
-#: admin/controller.py:2698
+#: admin/controller.py:2703
 #, fuzzy
 #| msgid "User doesn't exist"
 msgid "user {} doesn't exists"
 msgstr "用户不存在"
 
-#: admin/controller.py:2712
+#: admin/controller.py:2717
 msgid "Field {} does not match with organization fields"
 msgstr ""
 
-#: admin/controller.py:2732
+#: admin/controller.py:2737
 msgid ""
 "Participant with email {} and manager with email {} doesn't belong to a same "
 "organization"
 msgstr ""
 
-#: admin/controller.py:2748 admin/tasks.py:514
+#: admin/controller.py:2753 admin/tasks.py:514
 msgid ""
 "File is not formatted properly. Please format according to given template."
 msgstr ""
 
-#: admin/controller.py:2761 admin/controller.py:2763
+#: admin/controller.py:2766 admin/controller.py:2768
 #, fuzzy
 #| msgid "User doesn't exist"
 msgid "User with email {} doesn't exists"
 msgstr "用户不存在"
 
-#: admin/controller.py:2765
+#: admin/controller.py:2770
 msgid "User and manager email cannot be empty"
 msgstr ""
 
@@ -2356,7 +2356,7 @@ msgid "Status"
 msgstr "状态"
 
 #: admin/views.py:4192 templates/admin/client-admin/course_info.haml:79
-#: templates/courses/content_page/course_menu.haml:37
+#: templates/courses/content_page/course_menu.haml:46
 #: templates/courses/course_progress.haml:66
 msgid "Completed"
 msgstr "已完成"
@@ -2531,7 +2531,7 @@ msgid "Available"
 msgstr "可用"
 
 #: api_client/course_models.py:145
-#: templates/courses/content_page/course_menu.haml:40
+#: templates/courses/content_page/course_menu.haml:49
 #: templates/courses/course_learner_dashboard_calendar.haml:45
 #: templates/courses/course_progress_v2.haml:125
 #: templates/courses/course_progress_v2.haml:189
@@ -5733,11 +5733,11 @@ msgid ""
 "Your proficiency, progress, and engagement will not change in closed courses."
 msgstr "在已结束课程中，您的熟练程度、进度和参与度不会更改。"
 
-#: templates/courses/content_page/course_menu.haml:7
+#: templates/courses/content_page/course_menu.haml:9
 msgid "LESSONS:"
 msgstr "课时:"
 
-#: templates/courses/content_page/course_menu.haml:29
+#: templates/courses/content_page/course_menu.haml:38
 #: templates/courses/content_page/lesson_menu.haml:10
 #: templates/courses/content_page/lesson_pager.haml:11
 #: templates/courses/content_page/lesson_pager.haml:39
@@ -5747,17 +5747,17 @@ msgstr "课时:"
 msgid " %(lesson_custom_label)s %(lesson_index)s:"
 msgstr ""
 
-#: templates/courses/content_page/course_menu.haml:31
+#: templates/courses/content_page/course_menu.haml:40
 msgid "LESSON"
 msgstr "课时"
 
-#: templates/courses/content_page/course_menu.haml:46
+#: templates/courses/content_page/course_menu.haml:55
 #, fuzzy, python-format
 #| msgid " This lesson will be available on %(start_date)s "
 msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
 msgstr " 本课时的上课时间是 %(start_date)s"
 
-#: templates/courses/content_page/course_menu.haml:48
+#: templates/courses/content_page/course_menu.haml:57
 #, python-format
 msgid " This lesson will be available on %(start_date)s "
 msgstr " 本课时的上课时间是 %(start_date)s"

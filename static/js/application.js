@@ -192,7 +192,7 @@ $(function(){
       courseStr = gettext("Your course hasn't begun yet. ");
     }
     else{
-      var daysText = ngettext("Your course begins in %(days)s day.", "Your course begins in %(days)d days.", days);
+      var daysText = ngettext("Your course begins in %(days)s day.", "Your course begins in %(days)s days.", days);
       courseStr = interpolate(daysText, {"days": days}, true);
     }
     generalModal.find('.title').html(gettext("Welcome to McKinsey Academy"));

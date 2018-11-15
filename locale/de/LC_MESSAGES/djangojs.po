@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-13 12:25+0000\n"
+"POT-Creation-Date: 2018-11-15 12:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -88,9 +88,9 @@ msgstr "Ihr Kurs hat noch nicht begonnen. "
 
 #: static/js/application.js:195
 msgid "Your course begins in %(days)s day."
-msgid_plural "Your course begins in %(days)d days."
+msgid_plural "Your course begins in %(days)s days."
 msgstr[0] "Ihr Kurs fängt in %(days)s Tag an."
-msgstr[1] "Ihr Kurs fängt in %(days)d Tagen an."
+msgstr[1] "Ihr Kurs fängt in %(days)s Tagen an."
 
 #: static/js/application.js:198
 msgid "Welcome to McKinsey Academy"
