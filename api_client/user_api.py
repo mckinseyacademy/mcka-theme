@@ -302,15 +302,6 @@ def update_user_roles(user_id, role_data):
 
     `role_data` should contain a key `roles` which is a list of dictionaries containing course_id & role.
     """
-
-    for entry in role_data.get('roles'):
-        # Update discussion moderator permission
-        discussions_api.set_discussions_moderator(
-            course_id=entry['course_id'],
-            user_id=user_id,
-            is_moderator=entry['role'] == USER_ROLES.MODERATOR
-        )
-
     response = PUT(
         '{}/{}/{}/roles'.format(
             settings.API_SERVER_ADDRESS,

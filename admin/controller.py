@@ -1628,7 +1628,7 @@ def _enroll_participants(participants, is_internal_admin, reg_status):
     data = {
         'internal': is_internal_admin,
         'statuses': ['participant', 'observer', 'ta'],
-        'roles': {'ta': USER_ROLES.TA, 'observer': USER_ROLES.OBSERVER, 'instructor': USER_ROLES.MODERATOR},
+        'roles': {'ta': USER_ROLES.TA, 'observer': USER_ROLES.OBSERVER},
         'ignore_roles': settings.IGNORE_ROLES,
         'permissions': {USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA, USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER},
     }
