@@ -2,6 +2,7 @@ import urllib2
 import uuid
 from urllib import urlencode
 from urlparse import urlparse, parse_qs
+from lib.utils import DottableDict
 
 import ddt
 import mock
@@ -19,7 +20,7 @@ from accounts.models import RemoteUser
 from accounts.tests.utils import ApplyPatchMixin, make_user
 from accounts.views import (MISSING_ACCESS_KEY_ERROR, MOBILE_URL_SCHEME_COOKIE, _build_mobile_redirect_response,
                             _cleanup_username as cleanup_username, access_key, finalize_sso_mobile, sso_error,
-                            sso_finalize, sso_launch, switch_language_based_on_preference, get_username_for_login_id,
+                            sso_finalize, sso_launch, switch_language_based_on_preference, get_user_from_login_id,
                             fill_email_and_redirect)
 from admin.models import AccessKey, ClientCustomization
 from api_client.api_error import ApiError
@@ -523,13 +524,13 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         ('testuser@example.com', 'email', 'testuser'),
     )
     @ddt.unpack
-    def test_get_username_for_login_id(self, login_id, id_type, username, mock_get_user):
+    def test_get_user_from_login_id(self, login_id, id_type, username, mock_get_user):
         user_mock = Mock()
         user_mock.username = username
         mock_get_user.return_value = [user_mock]
-        result = get_username_for_login_id(login_id)
+        result = get_user_from_login_id(login_id)
         mock_get_user.assert_called_with(**{id_type: login_id})
-        self.assertEqual(result, username)
+        self.assertEqual(result.username, username)
 
     def test_login_redirects_for_ie(self):
         host = 'apros.mcka.local'
@@ -579,26 +580,26 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         self.assertRedirects(response, '/')
 
     @patch('accounts.views.get_sso_provider')
-    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.get_user_from_login_id')
     @patch('accounts.views.auth.authenticate')
     @ddt.data('test', 'test@email.com')
     def test_login_validate_invalid_login_id(self, login_id, mock_authenticate, mock_get_username,
                                              mock_get_sso_provider):
         mock_get_sso_provider.return_value = None
         mock_authenticate.return_value = None
-        mock_get_username.return_value = None
+        mock_get_username.return_value =  DottableDict({"username": None,"is_active":True})
         response = self.client.post(reverse('login'), {'login_id': login_id, 'validate_login_id': True})
         self.assertIn("Username/email is not recognised. Try again.", response.content)
 
     @patch('accounts.views.get_sso_provider')
-    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.get_user_from_login_id')
     @patch('accounts.views.auth.authenticate')
     @ddt.data('atestuser', 'atestuser@email.com')
     def test_login_prefill_login_id(self, login_id, mock_authenticate, mock_get_username,
                                     mock_get_sso_provider):
         mock_get_sso_provider.return_value = None
         mock_authenticate.return_value = None
-        mock_get_username.return_value = None
+        mock_get_username.return_value =  DottableDict({"username": None,"is_active":False})
         response = self.client.get(reverse('login'), {'login_id': login_id})
         self.assertInHTML(
             "<input id='login_id' type='text' name='login_id' value='{login_id}' />".format(login_id=login_id),
@@ -606,11 +607,11 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         )
 
     @patch('accounts.views.get_sso_provider')
-    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.get_user_from_login_id')
     @ddt.data('test', 'test@email.com')
     def test_login_validate_valid_login_id(self, login_id, mock_get_username, mock_get_sso_provider):
         mock_get_sso_provider.return_value = None
-        mock_get_username.return_value = 'test'
+        mock_get_username.return_value = DottableDict({"username": "test","is_active":True})
         response = self.client.post(reverse('login'), {'login_id': login_id, 'validate_login_id': True})
         self.assertIn('{"login_id": "valid"}', response.content)
 
@@ -653,7 +654,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         # Ensue post-SSO-login URL has a next param to redirect to the correct location post-login
         self.assertIn(post_login_redirect_url, redirect_query_params.get('next'))
 
-    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.get_user_from_login_id')
     def test_login_normal_error(self, mock_get_username):
         error_reason = "Error adccbfc7-33eb-484b-a917-b7d65a5d72f8"
         http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
@@ -661,17 +662,17 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         response = self.client.post(reverse('login'), {'login_id': 'test', 'password': 'password'})
         self.assertIn(error_reason, response.content)
 
-    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.get_user_from_login_id')
     @patch('accounts.views.auth.authenticate')
     @ddt.data('johndoe', 'john@doe.org')
     def test_login_normal_invalid_password(self, login_id, mock_authenticate, mock_get_username):
-        mock_get_username.return_value = 'test'
+        mock_get_username.return_value =  DottableDict({"username": "test","is_active":True})
         mock_authenticate.return_value = None
         response = self.client.post(reverse('login'), {'login_id': login_id, 'password': 'password'})
         self.assertIn('{"password": "Password doesn\'t match our records. Try again."}', response.content)
 
     @patch('accounts.views._process_authenticated_user')
-    @patch('accounts.views.get_username_for_login_id')
+    @patch('accounts.views.get_user_from_login_id')
     @patch('accounts.views.auth.authenticate')
     @ddt.data('johndoe', 'john@doe.org')
     def test_login_normal_success(self, login_id, mock_authenticate, mock_get_username,
@@ -680,7 +681,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         self.apply_patch('accounts.views.append_user_mobile_app_id_cookie')
         response_msg = "Test response ab7f8814-e84d-4bd5-a665-573285dc499f"
         mock__process_authenticated_user.return_value = HttpResponse(response_msg)
-        mock_get_username.return_value = 'test'
+        mock_get_username.return_value =  DottableDict({"username": "test","is_active":True})
         mock_authenticate.return_value = make_user()
         response = self.client.post(reverse('login'), {'login_id': login_id, 'password': 'password'})
         self.assertIn(response_msg, response.content)

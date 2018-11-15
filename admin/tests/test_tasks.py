@@ -96,7 +96,7 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
 
         user_api = self.apply_patch('admin.tasks.user_api')
         user_api.get_user.return_value = UserResponse(dictionary={
-            'username': 'user1', 'email': 'user@exmple.com', 'first_name': 'Test User'
+            "id": 1,'username': 'user1', 'email': 'user@exmple.com', 'first_name': 'Test User', 'is_active': True
         })
 
     @override_settings(CELERY_ALWAYS_EAGER=True)

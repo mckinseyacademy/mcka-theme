@@ -129,7 +129,7 @@ def _chunked_get_users_by_id(request_fields, ids):
 @api_error_protect
 def get_users(fields=[], *args, **kwargs):
     ''' get all users that meet filter criteria'''
-    request_fields = ['id', 'email', 'username']
+    request_fields = ['id', 'email', 'first_name', 'username', 'is_active']
     request_fields.extend(fields)
 
     # special case handling if we are retrieving a set of users

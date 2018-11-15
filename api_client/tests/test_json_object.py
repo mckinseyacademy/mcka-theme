@@ -71,7 +71,7 @@ class JsonObjectTest(TestCase):
         self.nested_nest = '{"id":101, "info": [{"id":22, "info":{"one":"a", "two":"b", "three":"c"}},{"id":23, "info":{"one":"x", "two":"y", "three":"z"}}]}'
 
     def test_authentication_response(self):
-        json_string = '{"token": "ceac67d033b98fbc5edd483a0e609193","expires": 1209600,"user": {"id": 4,"email": "staff@example.com","username": "staff"}}'
+        json_string = '{"token": "ceac67d033b98fbc5edd483a0e609193","expires": 1209600,"user": {"id": 4,"email": "staff@example.com","first_name": "first name","username": "staff","is_active":"True"}}'
         output = JP.from_json(json_string, AuthenticationResponse)
 
         self.assertTrue(isinstance(output, AuthenticationResponse))

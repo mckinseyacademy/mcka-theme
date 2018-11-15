@@ -367,9 +367,13 @@ def login_post_view(request):
                     return response
 
                 # Otherwise check if the username / email is valid
-                username = get_username_for_login_id(form.cleaned_data['login_id'])
-                if username:
-                    return JsonResponse({"login_id": "valid"})
+                user = get_user_from_login_id(form.cleaned_data['login_id'])
+                # check if the user is active
+                if user:
+                    if user.username and user.is_active:
+                        return JsonResponse({"login_id": "valid"})
+                    elif not user.is_active:
+                        return JsonResponse({"user_active": user.is_active}, status=403)
             except ApiError as err:
                 return JsonResponse({"error": err.message}, status=401)
 
@@ -382,8 +386,8 @@ def login_post_view(request):
         try:
             login_id = form.cleaned_data['login_id']
             password = form.cleaned_data['password']
-            username = get_username_for_login_id(login_id)
-            user = auth.authenticate(username=username, password=password)
+            user = get_user_from_login_id(login_id)
+            user = auth.authenticate(username=user.username, password=password)
             if user:
                 response = _process_authenticated_user(request, user)
                 _append_login_mode_cookie(response, login_mode='normal')
@@ -430,13 +434,13 @@ def sso_launch(request):
     return response
 
 
-def get_username_for_login_id(login_id):
+def get_user_from_login_id(login_id):
     if '@' in login_id:
         user = user_api.get_users(email=login_id)
     else:
         user = user_api.get_users(username=login_id)
     if user:
-        return user[0].username
+        return user[0]
 
 
 def finalize_sso_mobile(request):

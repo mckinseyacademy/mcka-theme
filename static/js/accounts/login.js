@@ -68,6 +68,33 @@ $(function () {
         handleLoginFormSubmit();
     }
 
+    $('a[data-reveal-id="resend-email"]').click(function () {
+        $('#user_activation_notification').foundation('reveal', 'close');
+        sendUserActivationEmail()
+    });
+
+    function sendUserActivationEmail(){
+        const headers = {
+            'X-CSRFToken': $.cookie('apros_csrftoken')
+        };
+        $.ajax({
+            headers: headers,
+            type: 'GET',
+            url: '/mcka-api/v1/send_activation_link/'+$("input[name=login_id]").val(),
+            success: function (_1, _2, xhr) {
+                openModalWithActivationMessage(xhr.responseJSON["message"])
+            },
+            error: function (error) {
+                openModalWithActivationMessage(error.responseJSON["error"])
+            }
+        });
+    }
+
+    function openModalWithActivationMessage(message){
+        $('.headline_message').text(message);
+        $('#user_activation_notification').foundation('reveal', 'open');
+    }
+
     function handleLoginFormSubmit(ev) {
         ev && ev.preventDefault();
         resetErrors();
@@ -121,10 +148,15 @@ $(function () {
                     }
                 },
                 error: function (error) {
+                    if (error.responseJSON["user_active"] == false) {
+                        sendUserActivationEmail();
+                    }
+                    else {
                     ga('send', 'event', 'Login', 'validate', 'failure', {
                         dimension4: hashed_id,
                     });
                     setError(error.responseJSON);
+                    }
                 }
             });
         }

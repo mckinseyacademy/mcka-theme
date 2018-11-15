@@ -38,6 +38,7 @@ class UserPasswordResetViewTest(TestCase, ApplyPatchMixin):
             'gender': u'M',
             'full_name': u'Test User',
             'company': u'',
+            'is_active':True,
         }
 
     def _apply_get_users_api_patch(self, user_json=None):

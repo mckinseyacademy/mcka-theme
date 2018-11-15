@@ -1,0 +1,33 @@
+- extends "base_email_template.haml"
+- load i18n
+
+- block logo
+  %img{:alt => "MCKA-logo", :src => "{{mcka_logo_url}}", :style => "max-width: 185px;", :width => "185"}
+
+- block greetings
+  #{first_name},
+
+- block body
+  %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
+    {% trans "Welcome to McKinsey Academy!" %}
+  %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
+    {% trans "We are excited for you to begin your learning journey. To get started, please click on the personalized link below to create a username and password for your account." %}
+  %p{:style => "line-height: 22px;font-size: 15px;margin-top: 20px;color: #333333;"}
+    #{activation_link}
+  %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
+    {% trans "After you've created your username and password, you can access your course at www.mckinseyacademy.com at anytime." %}
+  %a{:href => "{{activation_link}}", :style => "text-transform: uppercase;margin-top: 15px;margin-bottom: 20px; display: inline-block; border: 1px solid #004fa4;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;font-size: 15px;font-weight: bold; color: #004fa4;padding: 12px 38px;text-decoration: none;"}
+    {% trans "GET STARTED" %}
+
+- block closing
+  %p{:style => "line-height: 22px;color: #333333;"}
+    {% trans "Best Regards," %}
+    %br
+    McKinsey Academy Team
+
+- block footer
+  %p{:style => "line-height: 22px;margin-bottom: 0;color: #333333;"}
+    {% trans "Contact" %}
+      %a{:href => "mailto:{{support_email}}", :style => "text-decoration: none;color: #004fa4;"}
+        #{support_email}
+    {% trans "if you have any questions" %}

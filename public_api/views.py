@@ -12,7 +12,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+from accounts.views import get_user_from_login_id
 from accounts.controller import send_password_reset_email
+from accounts.models import UserActivation
 from api_client import course_api, user_api
 from api_protect import api_json_response, api_authenticate_protect, api_user_protect
 from mcka_apros import settings
@@ -26,6 +28,7 @@ from .serializers import ResetPasswordSerializer
 from public_api.controller import get_course_ff_and_custom_taxonomy, \
     create_and_add_course_ff_and_custom_taxonomy_in_list, get_course_ff, \
     create_and_add_course_ff_in_list
+from lib.mail import email_user_activation_link
 
 
 @require_POST
@@ -209,3 +212,22 @@ def get_course_feature_flag(request, course_id=None):
         json.dumps(feature_flag),
         content_type='application/json')
 
+
+
+@api_view(['GET'])
+def send_participant_activation_link(request, login_id):
+
+    user = get_user_from_login_id(login_id)
+    if user:
+        try:
+            if not user.is_active:
+                activation_record = UserActivation.get_user_activation(user)
+                email_head = request.build_absolute_uri('/accounts/activate')
+                activation_link =  '{}/{}'.format(email_head, activation_record.activation_key)
+
+                email_user_activation_link(request, user, activation_link)
+                return Response({'message': _('We just sent an email to <{}> with a link to create your account.').format(user.get("email"))}, status=status.HTTP_200_OK)
+        except:
+            return Response({'error':_("Sorry, Please try again later to receive an email with a link to create your account.")}, status=status.HTTP_400_BAD_REQUEST)
+
+    return Response({'error': _('User does not exist')}, status=status.HTTP_400_BAD_REQUEST)

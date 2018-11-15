@@ -381,10 +381,10 @@ class TestContactsForClient(TestCase, ApplyPatchMixin):
         # Dummy Data for the Apis
         client_id = '2'
         client_groups_data = '[{"id": 12,"type": "contact_group","data": {}}]'
-        client_groups_users_data = '{"users": [{"id": 3, "email": "audit@example.com", "username": "audit"},' \
-                                   '{"id": 10, "email": "test@example.com", "username": "test"}]}'
-        client_groups_user_profile_data = '[{"id": 3, "email": "audit@example.com","username": "audit"},' \
-                                          '{"id": 10, "email": "test@example.com","username": "test"}]'
+        client_groups_users_data = '{"users": [{"id": 3, "email": "audit@example.com", "username": "audit", "first_name": "First", "is_active":"True"},' \
+                                   '{"id": 10, "email": "test@example.com", "username": "test", "first_name": "First", "is_active":"True"}]}'
+        client_groups_user_profile_data = '[{"id": 3, "email": "audit@example.com","username": "audit", "first_name": "First", "is_active":"True"},' \
+                                          '{"id": 10, "email": "test@example.com","username": "test", "first_name": "First", "is_active":"True"}]'
         # Mocking Api Calls
         self.organization_api.get_organization_groups.return_value = JP.from_json(client_groups_data, JsonObject)
         self.group_api.get_users_in_group.return_value = JP.from_json(client_groups_users_data,
