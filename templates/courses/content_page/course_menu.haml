@@ -1,5 +1,7 @@
 - load i18n
 
+- get_current_language_bidi as LANGUAGE_BIDI
+
 %article#course-menu
   - if lessons_custom_label
     = lessons_custom_label
@@ -7,10 +9,17 @@
     .sub-2 {% trans "LESSONS:" %}
 
   .rotator
-    .nav-left.disabled
-      %i.fa.fa-chevron-left
-    .nav-right
-      %i.fa.fa-chevron-right
+    - if LANGUAGE_BIDI
+      .nav-left
+        %i.fa.fa-chevron-left
+      .nav-right.disabled
+        %i.fa.fa-chevron-right
+    - else
+      .nav-left.disabled
+        %i.fa.fa-chevron-left
+      .nav-right
+        %i.fa.fa-chevron-right
+
 
     .frame
       .slides
