@@ -185,7 +185,7 @@ $(function(){
     }
   });
 
-  $('.course-name.unavailable, .status.unavailable').on('click', function(){
+  $(document).on('click', '.course-name.unavailable, .status.unavailable', function(){
     var generalModal = $('#generalModal');
     var days = $(this).data('numdays');
     if(typeof days == "undefined"){
