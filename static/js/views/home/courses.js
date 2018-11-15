@@ -4,11 +4,14 @@ Apros.views.HomeCourses = Backbone.View.extend({
     this.rotator        = this.$('.rotator');
     this.slides         = $('.slides', this.rotator);
     this.cards          = $('li', this.slides);
-    this.card_index     = 0;
     this.per_section    = Math.floor(this.rotator.width() / this.cards.width());
     this.btn_left       = $('.nav-left', this.rotator);
     this.btn_right      = $('.nav-right', this.rotator);
-
+    this.direction      = $("html").attr("dir");
+    if(this.direction == "rtl")
+      this.card_index = this.cards.length - 1;
+    else
+      this.card_index = 0;
   },
 
   events: {
@@ -17,7 +20,7 @@ Apros.views.HomeCourses = Backbone.View.extend({
   },
 
   rotate: function(event) {
-    var el      = $(event.currentTarget);
+    var el = $(event.currentTarget);
     var offset  = el.is('.nav-left') ? -this.per_section : this.per_section;
     var idx     = this.card_index + offset;
     if (idx < 0) idx = 0;
@@ -37,18 +40,31 @@ Apros.views.HomeCourses = Backbone.View.extend({
   },
 
   slide_to: function(el) {
-    var last_in_view = el.index() + this.per_section -1 >= this.cards.last().index();
     this.card_index = this.cards.index(el);
-    this.slides.css('margin-left', -el.position().left);
-    this.btn_left.toggleClass('disabled', el.index() === 0);
+
+    if(this.direction == "rtl") {
+      var last_in_view = el.index() >= this.cards.last().index();
+      this.slides.css('margin-right', -el.position().left);
+      this.btn_left.toggleClass('disabled', el.index() <= this.per_section);
+    }
+    else{
+      var last_in_view = el.index() + this.per_section - 1 >= this.cards.last().index();
+      this.slides.css('margin-left', -el.position().left);
+      this.btn_left.toggleClass('disabled', el.index() === 0);
+    }
     this.btn_right.toggleClass('disabled', last_in_view);
+
   },
 
   render: function() {
     this.center_on_bookmark();
 
     var last_in_view = this.per_section - 1 >= this.cards.last().index();
-    this.btn_right.toggleClass('disabled', last_in_view);
+
+    if(this.direction == "rtl")
+      this.btn_left.toggleClass('disabled', last_in_view);
+    else
+      this.btn_right.toggleClass('disabled', last_in_view);
 
     _this = self;
     this.$(".rotator").touchwipe({
