@@ -402,7 +402,7 @@ class Course(CategorisedJsonObject):
                         is_assesment = module.name.find('Assessment') != -1
                         if is_assesment:
                             module.lesson_name = lesson.name
-                            module.assesment_score = lesson.assesment_score
+                            module.assesment_score = sequential.assesment_score
                             graded_items["modules"].append(module)
 
         if getattr(self, 'group_work_enabled', None):

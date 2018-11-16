@@ -90,8 +90,12 @@ msgstr "دورتك لم تبدأ بعد"
 #: static/js/application.js:195
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)s days."
-msgstr[0] "تبدأ دورتك في %(الأيام)"
-msgstr[1] "تبدأ دورتك في %(الأيام)"
+msgstr[0] "تبدأ دورتك في %(days)s"
+msgstr[1] "تبدأ دورتك في %(days)s"
+msgstr[2] "تبدأ دورتك في %(days)s"
+msgstr[3] "تبدأ دورتك في %(days)s"
+msgstr[4] "تبدأ دورتك في %(days)s"
+msgstr[5] "تبدأ دورتك في %(days)s"
 
 #: static/js/application.js:198
 msgid "Welcome to McKinsey Academy"
