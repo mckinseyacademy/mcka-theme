@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 11:35+0000\n"
+"POT-Creation-Date: 2018-11-16 14:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1185,7 +1185,7 @@ msgstr "Plaats {html_span}"
 
 #: accounts/forms.py:468
 msgid "Country"
-msgstr "البلد"
+msgstr "Land"
 
 #: accounts/forms.py:517
 msgid "The account associated with this email is not activated yet"

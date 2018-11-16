@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 11:34+0000\n"
+"POT-Creation-Date: 2018-11-16 14:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6073,7 +6073,7 @@ msgstr ""
 "Die JAHRGANGSKARTE zeigt Ihre Gruppenmitglieder, Ihren McKinsey TA und die "
 "Anzahl an Jahrgangsteilnehmern aus verschiedenen Städten an. Unter der Karte "
 "werden die Details über die Anzahl der Teilnehmer in Ihrer Firma und die "
-"Gesamtanzahl der Lehrgangsteilnehmer angezeigt."
+"Gesamtanzahl der Jahrgangsteilnehmer angezeigt."
 
 #: templates/courses/course_cohort.haml:18
 msgid "You can email your McKinsey TA who is displayed on the map"
@@ -6088,7 +6088,7 @@ msgid ""
 msgstr ""
 "Die BESTENLISTEN zeigen die besten Teilnehmer aus den Bereichen Kompetenzen, "
 "Fortschritt und Engagement sowie Ihre eigene Position im Vergleich zum "
-"Jahrgangsdurchschnitt"
+"Jahrgangsdurchschnitt."
 
 #: templates/courses/course_cohort.haml:20
 #: templates/courses/course_discussion.haml:21
@@ -6349,7 +6349,7 @@ msgid ""
 "the page"
 msgstr ""
 "Sie können Ihrem McKinsey TA, der in der oberen linken Ecke der Seite "
-"aufgeführt wird, eine E-Mail schicken"
+"aufgeführt wird, eine E-Mail schicken."
 
 #: templates/courses/course_discussion_userprofile.haml:9
 msgid "User profiles are not yet available"
@@ -7141,13 +7141,7 @@ msgstr ""
 "        "
 
 #: templates/courses/course_progress_v2.haml:26
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "          You are %(user_course_progress)s%% of the way through the "
-#| "course based on completion of modules within lessons. The cohort average "
-#| "is %(user_average_progress)s%%.\n"
-#| "        "
+#, python-format
 msgid ""
 "\n"
 "            You are and I am %(user_course_progress)s%% of the way through "
@@ -7155,20 +7149,9 @@ msgid ""
 "The cohort average is %(user_average_progress)s%%.\n"
 "          "
 msgstr ""
-"\n"
-"          Sie haben basierend auf den in Lektionen abgeschlossenen Modulen  "
-"%(user_course_progress)s%% des Kurses absolviert. Der Jahrgangsdurchschnitt "
-"beträgt %(user_average_progress)s%%.\n"
-"        "
 
 #: templates/courses/course_progress_v2.haml:30
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "          You are %(user_course_progress)s%% of the way through the "
-#| "course based on completion of modules within lessons. The cohort average "
-#| "is %(user_average_progress)s%%.\n"
-#| "        "
+#, python-format
 msgid ""
 "\n"
 "            You are and I am %(user_course_progress)s%% of the way through "
@@ -7176,20 +7159,9 @@ msgid ""
 "The cohort average is %(user_average_progress)s%%.\n"
 "          "
 msgstr ""
-"\n"
-"          Sie haben basierend auf den in Lektionen abgeschlossenen Modulen  "
-"%(user_course_progress)s%% des Kurses absolviert. Der Jahrgangsdurchschnitt "
-"beträgt %(user_average_progress)s%%.\n"
-"        "
 
 #: templates/courses/course_progress_v2.haml:34
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "          You are %(user_course_progress)s%% of the way through the "
-#| "course based on completion of modules within lessons. The cohort average "
-#| "is %(user_average_progress)s%%.\n"
-#| "        "
+#, python-format
 msgid ""
 "\n"
 "            You are and I am %(user_course_progress)s%% of the way through "
@@ -7197,11 +7169,6 @@ msgid ""
 "is %(user_average_progress)s%%.\n"
 "          "
 msgstr ""
-"\n"
-"          Sie haben basierend auf den in Lektionen abgeschlossenen Modulen  "
-"%(user_course_progress)s%% des Kurses absolviert. Der Jahrgangsdurchschnitt "
-"beträgt %(user_average_progress)s%%.\n"
-"        "
 
 #: templates/courses/course_progress_v2.haml:40
 msgid "Modules:"
@@ -10815,8 +10782,8 @@ msgstr "Das McKinsey Academy Team."
 #: templates/registration/password_reset_failed.haml:6
 msgid "We couldn't reset your password. Please check email and try again."
 msgstr ""
-"Wir konnten Ihr Passwort nicht zurücksetzen. Bitte überprüfen Sie die E-Mail "
-"und versuchen Sie es erneut."
+"Wir konnten Ihr Passwort nicht zurücksetzen. Bitte überprüfen Sie die E-Mail-"
+"Adresse und versuchen Sie es erneut."
 
 #: templates/registration/password_reset_form.haml:3
 msgid "Password Reset"

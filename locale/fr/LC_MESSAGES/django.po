@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 11:35+0000\n"
+"POT-Creation-Date: 2018-11-16 14:06+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3129,13 +3129,13 @@ msgstr "ÉTAPE 2 :"
 #: templates/admin/client/edit_company_image.haml:8
 #: templates/admin/client/edit_mobile_app_image.haml:34
 msgid "CROP & SAVE"
-msgstr "ROGNER ET ENREGISTRER"
+msgstr "RECADRER ET ENREGISTRER"
 
 #: templates/accounts/edit_profile_image.haml:12
 msgid "Drag and adjust cropping tool to edit your profile image."
 msgstr ""
 "Faites glisser et régler l'outil de recadrage pour modifier l'image de votre "
-"société."
+"profil."
 
 #: templates/accounts/edit_profile_image.haml:23
 #: templates/admin/client/edit_mobile_app_image.haml:48
