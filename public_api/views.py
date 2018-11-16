@@ -4,7 +4,7 @@ import json
 import datetime
 import functools
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils.translation import ugettext as _
 from api_client import course_api, user_api, workgroup_api
@@ -213,8 +213,6 @@ def get_course_feature_flag(request, course_id=None):
         content_type='application/json')
 
 
-
-@api_view(['GET'])
 def send_participant_activation_link(request, login_id):
 
     user = get_user_from_login_id(login_id)
@@ -226,8 +224,8 @@ def send_participant_activation_link(request, login_id):
                 activation_link =  '{}/{}'.format(email_head, activation_record.activation_key)
 
                 email_user_activation_link(request, user, activation_link)
-                return Response({'message': _('We just sent an email to <{}> with a link to create your account.').format(user.get("email"))}, status=status.HTTP_200_OK)
+                return JsonResponse({'message': _('We just sent an email to <{}> with a link to create your account.').format(user.get("email"))}, status=status.HTTP_200_OK)
         except:
-            return Response({'error':_("Sorry, Please try again later to receive an email with a link to create your account.")}, status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({'error':_("Sorry, Please try again later to receive an email with a link to create your account.")}, status=status.HTTP_400_BAD_REQUEST)
 
-    return Response({'error': _('User does not exist')}, status=status.HTTP_400_BAD_REQUEST)
+    return JsonResponse({'error': _('User does not exist')}, status=status.HTTP_400_BAD_REQUEST)
