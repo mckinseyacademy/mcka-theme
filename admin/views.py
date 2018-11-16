@@ -749,51 +749,57 @@ class courses_list_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @internal_admin_course_access
 def course_details(request, course_id):
-    course = course_api.get_course_details(course_id)
-    if course['start'] is not None:
-        course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
+    context = _get_course_context(load_course(course_id))
+    context.update({
+        'companyAdminFlag': False,
+        'internalAdminFlag': request.user.is_internal_admin,
+        'show_cohorts': True,
+    })
+    return render(request, 'admin/courses/course_details.haml', context)
 
-    course['certificates_status'] = CertificateStatus.notavailable
-    if course['end'] is not None:
-        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y")
 
-        course['certificates_status'] = get_course_certificates_status(course_id, parsedate(course['end']))
-        course['certificates_statuses'] = CertificateStatus()
-    for data in course:
-        if course.get(data) is None:
-            course[data] = "-"
+def _get_course_context(course):
+    """
+    Builds a context for rendering course details
 
-    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course_id)
-    course['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
-    course['proficiency'] = round_to_int_bump_zero(100 * course_metrics_active_users['avg_grade'])
+    :param course: api_client.course_models.Course
+    :return: dict
+    """
+    # General data and initial values
+    context = {
+        'id': course.id,
+        'name': course.name,
+        'start': course.start.strftime("%m/%d/%Y") if course.start is not None else '-',
+        'end': course.end.strftime("%m/%d/%Y") if course.end is not None else '-',
+        'certificates_status': CertificateStatus.notavailable,
+        'template_list': [{'pk': template.pk, 'title': template.title} for template in EmailTemplate.objects.all()],
+        'tags': [vars(tag) for tag in Tag.course_tags(course.id)],
+        'passed': 0,
+        'completed': 0,
+    }
 
-    course_completed_active_users = course_metrics_active_users['users_completed']
-    course['users_enrolled'] = course_metrics_active_users['users_enrolled']
-    pass_users = course_metrics_active_users['users_passed']
+    # Update certificate status
+    if course.end is not None:
+        context['certificates_status'] = get_course_certificates_status(course.id, parsedate(context['end']))
+        context['certificates_statuses'] = CertificateStatus()
 
-    if course['users_enrolled']:
-        course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
-        course['completed'] = round_to_int_bump_zero(100 * course_completed_active_users / course['users_enrolled'])
-    else:
-        course['passed'] = 0
-        course['completed'] = 0
+    # Update metrics
+    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course.id)
+    context['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
+    context['proficiency'] = round_to_int_bump_zero(100 * course_metrics_active_users['avg_grade'])
+    context['users_enrolled'] = course_metrics_active_users['users_enrolled']
+    if context['users_enrolled']:
+        pass_users = course_metrics_active_users['users_passed']
+        context['passed'] = round_to_int_bump_zero(100 * float(pass_users) / context['users_enrolled'])
+        course_completed_active_users = course_metrics_active_users['users_completed']
+        context['completed'] = round_to_int_bump_zero(100 * course_completed_active_users / context['users_enrolled'])
+    (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course.id)
 
-    list_of_email_templates = EmailTemplate.objects.all()
-    course['template_list'] = []
-    for email_template in list_of_email_templates:
-        course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
-
-    course_tags = Tag.course_tags(course_id)
-    course['tags'] = [vars(tag) for tag in course_tags]
-
-    course['internalAdminFlag'] = request.user.is_internal_admin
-    course['companyAdminFlag'] = False
-
-    (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
-    course['discussion_feature'] = course_features.discussions
-    course['cohorts_enabled'] = course_api.get_course_cohort_settings(course_id).is_cohorted
-
-    return render(request, 'admin/courses/course_details.haml', course)
+    # Update flags
+    context['discussion_feature'] = course_features.discussions
+    context['groupwork_enabled'] = len(course.group_projects) > 0
+    context['cohorts_enabled'] = course_api.get_course_cohort_settings(course.id).is_cohorted
+    return context
 
 
 class course_details_stats_api(APIView):
@@ -5368,53 +5374,16 @@ def course_learner_dashboard_branding_reset(request, course_id, learner_dashboar
 )
 @company_admin_company_access
 def company_course_details(request, company_id, course_id):
-    course = course_api.get_course_details(course_id)
-    if course['start'] is not None:
-        start = parsedate(course['start'])
-        course['start'] = start.strftime("%m/%d/%Y")
-    if course['end'] is not None:
-        end = parsedate(course['end'])
-        course['end'] = end.strftime("%m/%d/%Y")
-    for data in course:
-        if course.get(data) is None:
-            course[data] = "-"
-
-    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course_id, company_id)
-    course['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
-    course_proficiency = course_metrics_active_users['avg_grade']
-    course['proficiency'] = round_to_int_bump_zero(float(course_proficiency) * 100)
-
-    course['users_enrolled'] = course_metrics_active_users['users_enrolled']
-    course_completed_users = course_metrics_active_users['users_completed']
-    pass_users = course_metrics_active_users['users_passed']
-
-    if course['users_enrolled']:
-        course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
-        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
-    else:
-        course['passed'] = 0
-        course['completed'] = 0
-
-    list_of_email_templates = EmailTemplate.objects.all()
-    course['template_list'] = []
-    for email_template in list_of_email_templates:
-        course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
-
-    course_tags = Tag.course_tags(course_id)
-    course['tags'] = [vars(tag) for tag in course_tags]
-
-    course['companyAdminFlag'] = request.user.is_company_admin
-    course['companyCourseDeatilsPage'] = True
-    course['companyId'] = company_id
-    course['companyName'] = vars(organization_api.fetch_organization(company_id))['display_name']
-    course['internalAdminFlag'] = bool(request.user.is_internal_admin)
-
-    (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
-    course['discussion_feature'] = course_features.discussions
-
-    # Hide cohorts column if it's disabled
-    course['cohorts_enabled'] = course_api.get_course_cohort_settings(course_id).is_cohorted
-    return render(request, 'admin/courses/course_details.haml', course)
+    context = _get_course_context(load_course(course_id))
+    context.update({
+        'companyAdminFlag': request.user.is_company_admin,
+        'companyCourseDetailsPage': True,
+        'companyId': company_id,
+        'companyName': organization_api.fetch_organization(company_id).display_name,
+        'internalAdminFlag': request.user.is_internal_admin,
+        'show_cohorts': False,
+    })
+    return render(request, 'admin/courses/course_details.haml', context)
 
 
 class company_edit_api(APIView):

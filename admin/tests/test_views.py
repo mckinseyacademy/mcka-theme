@@ -7,9 +7,11 @@ from django.test.client import RequestFactory
 from django.utils.decorators import available_attrs
 from mock import patch, Mock
 from rest_framework import status
+import ddt
 
 from accounts.models import RemoteUser
 from accounts.tests.utils import ApplyPatchMixin, make_course, make_user
+from admin import views
 from admin.models import Client as ClientModel
 from admin.views import client_sso, CourseDetailsApi
 from api_client import user_api, group_api
@@ -372,3 +374,61 @@ class CourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
         self.assertEqual(response.data["count"], 4)
         for idx in range(4):
             self.assert_expected_result(response.data["results"][idx], idx)
+
+
+@ddt.ddt
+class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test course details view
+    """
+
+    def setUp(self):
+        """
+        Patch the required APIs
+        """
+        super(CourseDetailsTest, self).setUp()
+        self.patch_course_users(self.students)
+        self.patch_user_permissions()
+
+    @ddt.unpack
+    @ddt.data(
+        (True, False, False, True),
+        (False, False, False, True),
+        (True, True, False, False),
+        (False, True, False, False),
+        (True, False, True, False),
+        (False, False, True, False),
+        (True, True, True, False),
+        (False, True, True, False),
+    )
+    @patch('accounts.models.RemoteUser.is_client_admin', lambda x: False)
+    def test_cohorts_groupwork(self, is_cohorted, is_groupwork, is_client_admin, show_tab):
+        """
+        Make sure the cohort tab is correctly hidden or shown depending on
+        groupwork and company admin or internal admin. Also makes sure the
+        correct javascript variables are set for the client side.
+        """
+        def _get_course_context(t):
+            return {
+                'cohorts_enabled': t[0],
+                'groupwork_enabled': t[1],
+            }
+        views.load_course = Mock()
+        views.load_course.return_value = (is_cohorted, is_groupwork)
+        url = reverse('course_details', kwargs={'course_id': unicode(self.course.course_id)})
+        request = self.get_request(url, self.admin_user)
+        request.url_name = 'course_details'
+        with patch('admin.views.organization_api.fetch_organization', Mock()):
+            with patch('admin.views._get_course_context', _get_course_context):
+                if is_client_admin:
+                    response = views.company_course_details(request, self.course.course_id, 1)
+                else:
+                    response = views.course_details(request, self.course.course_id)
+                # Make sure the view works
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                # Make sure cohorts button is correctly shown/hidden
+                self.assertEqual(show_tab, '/admin/cohorts/' in response.content)
+                # Make sure javascript variables are correctly set
+                self.assertTrue('var course_details_cohorts_enabled = \'%s\'' % is_cohorted in response.content)
+                self.assertTrue('var course_details_groupwork_enabled = \'%s\'' % is_groupwork in response.content)
+                self.assertTrue('var course_details_show_cohorts = \'%s\'' % (not is_client_admin) in response.content)
