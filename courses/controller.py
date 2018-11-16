@@ -729,7 +729,7 @@ def inject_gradebook_info(user_id, course):
             url_name = PriorIdConvert.new_from_prior(sequential.id).split('/')[-1]
             if url_name in assesments:
                 lesson.assesment_score = assesments[url_name]
-                break
+                sequential.assesment_score = assesments[url_name]
 
     for project in course.group_projects:
         for activity in project.activities:
