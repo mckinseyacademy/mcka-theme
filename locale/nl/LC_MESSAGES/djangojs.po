@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-15 12:07+0000\n"
+"POT-Creation-Date: 2018-11-16 11:35+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -96,7 +96,6 @@ msgstr[2] "Uw cursus begint over %(days)s dagen."
 msgstr[3] "Uw cursus begint over %(days)s dagen."
 msgstr[4] "Uw cursus begint over %(days)s dagen."
 msgstr[5] "Uw cursus begint over %(days)s dagen."
-
 
 #: static/js/application.js:198
 msgid "Welcome to McKinsey Academy"

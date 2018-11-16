@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-15 12:06+0000\n"
+"POT-Creation-Date: 2018-11-16 11:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1324,54 +1324,54 @@ msgstr "تسجيل الدخول"
 msgid "Trouble logging in"
 msgstr "هل تواجهك مشكلة في تسجيل الدخول؟"
 
-#: accounts/views.py:378 accounts/views.py:402
+#: accounts/views.py:382 accounts/views.py:406
 msgid "Username/email is not recognised. Try again."
 msgstr "لم يتم التعرف على اسم المستخدم / البريد الإلكتروني، حاول مرة أخرى."
 
-#: accounts/views.py:394
+#: accounts/views.py:398
 msgid "Password doesn't match our records. Try again."
 msgstr "كلمة المرور غير صحيحة، حاول مرة أخرى."
 
-#: accounts/views.py:568 accounts/views.py:640
+#: accounts/views.py:572 accounts/views.py:644
 msgid "Some required information was missing. Please check the fields below."
 msgstr "يرجى تعبئة المعلومات المطلوبة، تحقق من الحقول أدناه."
 
-#: accounts/views.py:588 accounts/views.py:652
+#: accounts/views.py:592 accounts/views.py:656
 msgid "Create my McKinsey Academy account"
 msgstr "إنشاء حساب خاص بي على أكاديمية ماكنزي"
 
-#: accounts/views.py:618
+#: accounts/views.py:622
 msgid "Invalid Activation Code"
 msgstr "رمز تفعيل غير صالح"
 
-#: accounts/views.py:690
+#: accounts/views.py:694
 msgid "No provider data found."
 msgstr "لم يتم العثور على بيانات الموفر."
 
-#: accounts/views.py:692
+#: accounts/views.py:696
 msgid "Provider data does not seem valid."
 msgstr "بيانات الموفر لا تبدو صحيحة."
 
-#: accounts/views.py:746
+#: accounts/views.py:750
 msgid "Access Key missing."
 msgstr "مفتاح الوصول غير متوفر."
 
-#: accounts/views.py:763 accounts/views.py:770
+#: accounts/views.py:767 accounts/views.py:774
 #, fuzzy
 #| msgid "Access"
 msgid "Accept"
 msgstr "الوصول"
 
-#: accounts/views.py:817
+#: accounts/views.py:821
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "فشل في تسجيل المستخدم: {exception_message}"
 
-#: accounts/views.py:819
+#: accounts/views.py:823
 msgid "Some required information was missing."
 msgstr "بعض المعلومات المطلوبة لم يتم تقديمها، يرجى التحقق من الحقول أدناه."
 
-#: accounts/views.py:821
+#: accounts/views.py:825
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1379,21 +1379,21 @@ msgstr ""
 "ملف تعريف ارتباط المصادقة مفقود. قد تكون جلسة العمل الخاصة بك قد انتهت. "
 "الرجاء البدء من جديد."
 
-#: accounts/views.py:869
+#: accounts/views.py:873
 msgid "Enter new password"
 msgstr "أدخل كلمة المرور الجديدة"
 
-#: accounts/views.py:886
+#: accounts/views.py:890
 msgid "Password reset unsuccessful"
 msgstr "إعادة تعيين كلمة المرور غير ناجحة"
 
-#: accounts/views.py:978 templates/accounts/activate.haml:16
+#: accounts/views.py:982 lib/mail.py:131 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:266
 msgid "Welcome to McKinsey Academy"
 msgstr "مرحبا بكم في أكاديمية ماكنزي"
 
-#: accounts/views.py:979
+#: accounts/views.py:983
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1402,7 +1402,7 @@ msgstr ""
 "سيتم تشغيل البرنامج الخاص بك خلال {days}أيام. الرجاء استكشاف الموقع للتعرف "
 "على المزيد حول التجربة."
 
-#: accounts/views.py:983
+#: accounts/views.py:987
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1411,11 +1411,11 @@ msgstr ""
 "تبدأ الدورة التدريبية الخاصة بك خلال{days} أيام، قبل بدء الدورة، يمكنك "
 "استكشاف هذا الموقع لمعرفة المزيد حول ما يمكن توقعه."
 
-#: accounts/views.py:1137
+#: accounts/views.py:1141
 msgid "Enter your full name"
 msgstr "أدخل اسمك بالكامل"
 
-#: accounts/views.py:1139 accounts/views.py:1162 admin/views.py:1851
+#: accounts/views.py:1143 accounts/views.py:1166 admin/views.py:1851
 #: admin/views.py:1885 admin/views.py:4283
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
@@ -1434,23 +1434,23 @@ msgstr "أدخل اسمك بالكامل"
 msgid "Save"
 msgstr "حفظ"
 
-#: accounts/views.py:1160
+#: accounts/views.py:1164
 msgid "Enter your title"
 msgstr "أدخل منصبك"
 
-#: accounts/views.py:1231 accounts/views.py:1261
+#: accounts/views.py:1235 accounts/views.py:1265
 msgid "Initial"
 msgstr "الأولى"
 
-#: accounts/views.py:1258
+#: accounts/views.py:1262
 msgid "Course Closed"
 msgstr "دورة مغلقة"
 
-#: accounts/views.py:1267
+#: accounts/views.py:1271
 msgid "Registered"
 msgstr "مسجلة"
 
-#: accounts/views.py:1269
+#: accounts/views.py:1273
 msgid "Error"
 msgstr "خطأ"
 
@@ -2719,16 +2719,16 @@ msgstr "اسم الوحدة النمطية"
 msgid "Note"
 msgstr "ملاحظة"
 
-#: lib/mail.py:21 lib/mail.py:53
+#: lib/mail.py:22 lib/mail.py:54
 #, python-brace-format
 msgid "Welcome to the {display_name} Program!"
 msgstr "مرحبا بكم في {display_name}البرنامج!"
 
-#: lib/mail.py:23 lib/mail.py:56
+#: lib/mail.py:24 lib/mail.py:57
 msgid "%m/%d/%Y"
 msgstr "%شهر%يوم%سنة"
 
-#: lib/mail.py:25
+#: lib/mail.py:26
 #, python-brace-format
 msgid ""
 "Welcome to the {display_name} Program! Your program starts on {date}. Open "
@@ -2737,7 +2737,7 @@ msgstr ""
 "مرحبا بكم في {display_name}البرنامج! يبدأ تشغيل البرنامج الخاص بك من "
 "خلال{date} فتح الرابط أدناه للاطلاع على البرنامج. {url}"
 
-#: lib/mail.py:32
+#: lib/mail.py:33
 #, python-brace-format
 msgid ""
 "{html_h2}Welcome to the {display_name} Program!{html_h2_end}Your program "
@@ -2748,7 +2748,7 @@ msgstr ""
 "البرنامج الخاص بك من خلال {date}النقر{html_anchor_start} "
 "هنا{html_anchor_end} لمشاهدة لمحة عامة عن البرنامج.{html_p_end}"
 
-#: lib/mail.py:60
+#: lib/mail.py:61
 #, python-brace-format
 msgid ""
 "Welcome to the {display_name} Program! Your program starts on {date}. Open "
@@ -2757,7 +2757,7 @@ msgstr ""
 "مرحبا بكم في {display_name}البرنامج! يبدأ تشغيل البرنامج الخاص بك من خلال "
 "{date}فتح الرابط أدناه لتسجيل حساب مستخدم والبدء {url}"
 
-#: lib/mail.py:67
+#: lib/mail.py:68
 #, python-brace-format
 msgid ""
 "{html_h2}Welcome to the {display_name} Program!{html_h2_end} Your program "
@@ -2768,11 +2768,11 @@ msgstr ""
 "البرنامج الخاص بك من خلال {date}النقر{html_anchor_start} "
 "هنا{html_anchor_end} لتسجيل حساب مستخدم والبدء.{html_p_end}"
 
-#: lib/mail.py:88
+#: lib/mail.py:89
 msgid "Mckinsey academy activation mail!"
 msgstr "بريد التفعيل الإلكتروني الخاص بأكاديمية ماكنزي!"
 
-#: lib/mail.py:91
+#: lib/mail.py:92
 #, python-brace-format
 msgid ""
 "Welcome to the Mckinsey academy! An administrator has created an account on "
@@ -2783,7 +2783,7 @@ msgstr ""
 "لاستخدامك الخاص بك. لتفعيل الحساب الخاص بك، الرجاء نسخ ولصق هذا العنوان في "
 "شريط العناوين في متصفح الويب الخاص بك:{uri}/{url}"
 
-#: lib/mail.py:99
+#: lib/mail.py:100
 #, python-brace-format
 msgid ""
 "{html_h2}Welcome to the Mckinsey academy!{html_h2_end}An administrator has "
@@ -2910,17 +2910,33 @@ msgstr "البريد الإلكتروني مفقود"
 msgid "User not found"
 msgstr "المستخدم غير موجود"
 
-#: public_api/views.py:119
+#: public_api/views.py:122
 msgid "Student information not found"
 msgstr "معلومات الطلبة غير موجودة"
 
-#: public_api/views.py:148
+#: public_api/views.py:151
 msgid "No such email exist"
 msgstr "لا يوجد بريد إلكتروني مثل هذا"
 
-#: public_api/views.py:158
+#: public_api/views.py:161
 msgid "Password reset email sent"
 msgstr "تم إرسال البريد الإلكتروني الخاص بإعادة تعيين كلمة المرور"
+
+#: public_api/views.py:227
+msgid "We just sent an email to <{}> with a link to create your account."
+msgstr ""
+
+#: public_api/views.py:229
+msgid ""
+"Sorry, Please try again later to receive an email with a link to create your "
+"account."
+msgstr ""
+
+#: public_api/views.py:231
+#, fuzzy
+#| msgid "User doesn't exist"
+msgid "User does not exist"
+msgstr "المستخدم غير موجود"
 
 #: templates/403.haml:8
 msgid "403: Permission Denied"
@@ -3130,6 +3146,16 @@ msgstr "استعرض الأسئلة المتداولة للحصول على إج�
 msgid "Trouble logging in? Contact us."
 msgstr "هل تواجهك مشكلة في تسجيل الدخول؟ اتصل بنا."
 
+#: templates/accounts/login.haml:68
+msgid "Please Check Your Email Inbox"
+msgstr ""
+
+#: templates/accounts/login.haml:73
+#, fuzzy
+#| msgid "Send Email"
+msgid "Resend E-mail"
+msgstr "إرسال البريد الإلكتروني"
+
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
 msgstr "تسجيل تجريبي| أكاديمية ماكنزي"
@@ -3230,6 +3256,52 @@ msgstr "تصفح"
 msgid "No file selected."
 msgstr "لم يتم تحديد ملف."
 
+#: templates/accounts/user_activation_email.haml:12
+#, fuzzy
+#| msgid "Welcome to McKinsey Academy"
+msgid "Welcome to McKinsey Academy!"
+msgstr "مرحبا بكم في أكاديمية ماكنزي"
+
+#: templates/accounts/user_activation_email.haml:14
+msgid ""
+"We are excited for you to begin your learning journey. To get started, "
+"please click on the personalized link below to create a username and "
+"password for your account."
+msgstr ""
+
+#: templates/accounts/user_activation_email.haml:18
+msgid ""
+"After you've created your username and password, you can access your course "
+"at www.mckinseyacademy.com at anytime."
+msgstr ""
+
+#: templates/accounts/user_activation_email.haml:20
+#, fuzzy
+#| msgid "COURSE_STARTED"
+msgid "GET STARTED"
+msgstr "بدأت الدورة"
+
+#: templates/accounts/user_activation_email.haml:24
+#: templates/admin/bulk_fields_update_report_email.haml:28
+#: templates/admin/export_stats_email_template.haml:23
+#: templates/admin/export_stats_failure_email_template.haml:23
+msgid "Best Regards,"
+msgstr "مع أطيب التحيات،"
+
+#: templates/accounts/user_activation_email.haml:30
+#: templates/admin/admin_header.haml:62
+#: templates/admin/bulk_fields_update_report_email.haml:34
+#: templates/admin/export_stats_email_template.haml:29
+#: templates/admin/export_stats_failure_email_template.haml:29
+msgid "Contact"
+msgstr "جهة الاتصال"
+
+#: templates/accounts/user_activation_email.haml:33
+#: templates/admin/bulk_fields_update_report_email.haml:37
+#: templates/admin/export_stats_email_template.haml:32
+msgid "if you have any questions"
+msgstr "إذا كان لديك أية أسئلة"
+
 #: templates/accounts/user_profile.haml:7
 msgid "change photo"
 msgstr "تغيير الصورة"
@@ -3275,13 +3347,6 @@ msgstr "الشهادات"
 msgid "Customization"
 msgstr "التخصيص"
 
-#: templates/admin/admin_header.haml:62
-#: templates/admin/bulk_fields_update_report_email.haml:34
-#: templates/admin/export_stats_email_template.haml:29
-#: templates/admin/export_stats_failure_email_template.haml:29
-msgid "Contact"
-msgstr "جهة الاتصال"
-
 #: templates/admin/bulk_fields_update_report_email.haml:12
 msgid " The report of bulk update: "
 msgstr ""
@@ -3306,17 +3371,6 @@ msgstr ""
 #| msgid "Error"
 msgid "Errors:"
 msgstr "خطأ"
-
-#: templates/admin/bulk_fields_update_report_email.haml:28
-#: templates/admin/export_stats_email_template.haml:23
-#: templates/admin/export_stats_failure_email_template.haml:23
-msgid "Best Regards,"
-msgstr "مع أطيب التحيات،"
-
-#: templates/admin/bulk_fields_update_report_email.haml:37
-#: templates/admin/export_stats_email_template.haml:32
-msgid "if you have any questions"
-msgstr "إذا كان لديك أية أسئلة"
 
 #: templates/admin/client-admin/contact.haml:10
 msgid "Contact: "
@@ -4800,7 +4854,7 @@ msgstr "إضافة "
 #: templates/admin/manager_dashboard/team_report.haml:13
 #, fuzzy
 #| msgid "Back to All Courses"
-msgid "Back to Courses"
+msgid "Back to Course"
 msgstr "العودة إلى الدورات"
 
 #: templates/admin/manager_dashboard/team_report.haml:30
