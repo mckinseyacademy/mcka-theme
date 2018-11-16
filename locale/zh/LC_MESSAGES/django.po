@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-15 12:07+0000\n"
+"POT-Creation-Date: 2018-11-16 11:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1321,74 +1321,74 @@ msgstr "登录"
 msgid "Trouble logging in"
 msgstr "登录时遇到问题"
 
-#: accounts/views.py:378 accounts/views.py:402
+#: accounts/views.py:382 accounts/views.py:406
 msgid "Username/email is not recognised. Try again."
 msgstr "无法识别用户名/电子邮件。请重试。"
 
-#: accounts/views.py:394
+#: accounts/views.py:398
 msgid "Password doesn't match our records. Try again."
 msgstr "密码与我们的记录不匹配。请重试。"
 
-#: accounts/views.py:568 accounts/views.py:640
+#: accounts/views.py:572 accounts/views.py:644
 msgid "Some required information was missing. Please check the fields below."
 msgstr "缺少一些必填信息。请检查下面的字段。"
 
-#: accounts/views.py:588 accounts/views.py:652
+#: accounts/views.py:592 accounts/views.py:656
 msgid "Create my McKinsey Academy account"
 msgstr "创建我的麦肯锡学院账户"
 
-#: accounts/views.py:618
+#: accounts/views.py:622
 msgid "Invalid Activation Code"
 msgstr "激活码无效"
 
-#: accounts/views.py:690
+#: accounts/views.py:694
 msgid "No provider data found."
 msgstr "找不到提供程序数据。"
 
-#: accounts/views.py:692
+#: accounts/views.py:696
 msgid "Provider data does not seem valid."
 msgstr "提供程序数据似乎无效。"
 
-#: accounts/views.py:746
+#: accounts/views.py:750
 msgid "Access Key missing."
 msgstr "缺少访问密钥。"
 
-#: accounts/views.py:763 accounts/views.py:770
+#: accounts/views.py:767 accounts/views.py:774
 #, fuzzy
 #| msgid "Access"
 msgid "Accept"
 msgstr "访问"
 
-#: accounts/views.py:817
+#: accounts/views.py:821
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "无法注册用户：{exception_message}"
 
-#: accounts/views.py:819
+#: accounts/views.py:823
 msgid "Some required information was missing."
 msgstr "缺少一些必要信息。"
 
-#: accounts/views.py:821
+#: accounts/views.py:825
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
 msgstr "缺少身份验证 cookie。您的会话可能已超时。请重新开始。"
 
-#: accounts/views.py:869
+#: accounts/views.py:873
 msgid "Enter new password"
 msgstr "输入新密码"
 
-#: accounts/views.py:886
+#: accounts/views.py:890
 msgid "Password reset unsuccessful"
 msgstr "密码重置不成功"
 
-#: accounts/views.py:978 templates/accounts/activate.haml:16
+#: accounts/views.py:982 lib/mail.py:131 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:266
 msgid "Welcome to McKinsey Academy"
 msgstr "欢迎来到麦肯锡学院"
 
-#: accounts/views.py:979
+#: accounts/views.py:983
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1397,7 +1397,7 @@ msgstr ""
 "您的计划将在 {days} 天后开始。在此期间，请浏览该网站了解更多有关此体验的信"
 "息。"
 
-#: accounts/views.py:983
+#: accounts/views.py:987
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1406,11 +1406,11 @@ msgstr ""
 "您的课程将在 {days} 天后开始。在课程开始之前，您可以浏览本网站了解更多有关课"
 "程内容的信息。"
 
-#: accounts/views.py:1137
+#: accounts/views.py:1141
 msgid "Enter your full name"
 msgstr "输入您的全名"
 
-#: accounts/views.py:1139 accounts/views.py:1162 admin/views.py:1851
+#: accounts/views.py:1143 accounts/views.py:1166 admin/views.py:1851
 #: admin/views.py:1885 admin/views.py:4283
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
@@ -1429,23 +1429,23 @@ msgstr "输入您的全名"
 msgid "Save"
 msgstr "保存"
 
-#: accounts/views.py:1160
+#: accounts/views.py:1164
 msgid "Enter your title"
 msgstr "输入您的职位"
 
-#: accounts/views.py:1231 accounts/views.py:1261
+#: accounts/views.py:1235 accounts/views.py:1265
 msgid "Initial"
 msgstr "初始"
 
-#: accounts/views.py:1258
+#: accounts/views.py:1262
 msgid "Course Closed"
 msgstr "课程已结束"
 
-#: accounts/views.py:1267
+#: accounts/views.py:1271
 msgid "Registered"
 msgstr "已注册"
 
-#: accounts/views.py:1269
+#: accounts/views.py:1273
 msgid "Error"
 msgstr "错误"
 
@@ -2707,16 +2707,16 @@ msgstr "模块名称"
 msgid "Note"
 msgstr "注意"
 
-#: lib/mail.py:21 lib/mail.py:53
+#: lib/mail.py:22 lib/mail.py:54
 #, python-brace-format
 msgid "Welcome to the {display_name} Program!"
 msgstr "欢迎加入 {display_name} 计划！"
 
-#: lib/mail.py:23 lib/mail.py:56
+#: lib/mail.py:24 lib/mail.py:57
 msgid "%m/%d/%Y"
 msgstr "%m/%d/%Y"
 
-#: lib/mail.py:25
+#: lib/mail.py:26
 #, python-brace-format
 msgid ""
 "Welcome to the {display_name} Program! Your program starts on {date}. Open "
@@ -2725,7 +2725,7 @@ msgstr ""
 "欢迎加入 {display_name} 计划！您的计划于 {date} 开始。打开下面的链接查看计划"
 "概述。{url}"
 
-#: lib/mail.py:32
+#: lib/mail.py:33
 #, python-brace-format
 msgid ""
 "{html_h2}Welcome to the {display_name} Program!{html_h2_end}Your program "
@@ -2735,7 +2735,7 @@ msgstr ""
 "{html_h2}欢迎加入 {display_name} 计划！{html_h2_end}您的计划于 {date} 开始。"
 "{html_anchor_start}单击此处{html_anchor_end}可查看计划概述。{html_p_end}"
 
-#: lib/mail.py:60
+#: lib/mail.py:61
 #, python-brace-format
 msgid ""
 "Welcome to the {display_name} Program! Your program starts on {date}. Open "
@@ -2744,7 +2744,7 @@ msgstr ""
 "欢迎加入 {display_name} 计划！您的计划于 {date} 开始。打开下面的链接注册用户"
 "账户并开始使用。{url}"
 
-#: lib/mail.py:67
+#: lib/mail.py:68
 #, python-brace-format
 msgid ""
 "{html_h2}Welcome to the {display_name} Program!{html_h2_end} Your program "
@@ -2755,11 +2755,11 @@ msgstr ""
 "{html_anchor_start}单击此处{html_anchor_end}注册用户账户并开始使用。"
 "{html_p_end}"
 
-#: lib/mail.py:88
+#: lib/mail.py:89
 msgid "Mckinsey academy activation mail!"
 msgstr "麦肯锡学院激活邮件！"
 
-#: lib/mail.py:91
+#: lib/mail.py:92
 #, python-brace-format
 msgid ""
 "Welcome to the Mckinsey academy! An administrator has created an account on "
@@ -2769,7 +2769,7 @@ msgstr ""
 "欢迎来到麦肯锡学院！管理员已在麦肯锡学院中创建了一个账户供您使用。要激活您的"
 "账户，请将此地址复制并粘贴到 Web 浏览器的地址栏中：{uri}/{url}"
 
-#: lib/mail.py:99
+#: lib/mail.py:100
 #, python-brace-format
 msgid ""
 "{html_h2}Welcome to the Mckinsey academy!{html_h2_end}An administrator has "
@@ -2895,17 +2895,33 @@ msgstr "缺少电子邮件地址"
 msgid "User not found"
 msgstr "找不到用户"
 
-#: public_api/views.py:119
+#: public_api/views.py:122
 msgid "Student information not found"
 msgstr "找不到学员信息"
 
-#: public_api/views.py:148
+#: public_api/views.py:151
 msgid "No such email exist"
 msgstr "不存在此电子邮件地址"
 
-#: public_api/views.py:158
+#: public_api/views.py:161
 msgid "Password reset email sent"
 msgstr "密码重置电子邮件已发送"
+
+#: public_api/views.py:227
+msgid "We just sent an email to <{}> with a link to create your account."
+msgstr ""
+
+#: public_api/views.py:229
+msgid ""
+"Sorry, Please try again later to receive an email with a link to create your "
+"account."
+msgstr ""
+
+#: public_api/views.py:231
+#, fuzzy
+#| msgid "User doesn't exist"
+msgid "User does not exist"
+msgstr "用户不存在"
 
 #: templates/403.haml:8
 msgid "403: Permission Denied"
@@ -3117,6 +3133,16 @@ msgstr "查看我们的常见问题以获取相关解答。"
 msgid "Trouble logging in? Contact us."
 msgstr "登录时遇到问题？请与我们联系。"
 
+#: templates/accounts/login.haml:68
+msgid "Please Check Your Email Inbox"
+msgstr ""
+
+#: templates/accounts/login.haml:73
+#, fuzzy
+#| msgid "Send Email"
+msgid "Resend E-mail"
+msgstr "发送电子邮件"
+
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
 msgstr "注册演示视频 | 麦肯锡学院"
@@ -3211,6 +3237,52 @@ msgstr "浏览"
 msgid "No file selected."
 msgstr "未选择文件。"
 
+#: templates/accounts/user_activation_email.haml:12
+#, fuzzy
+#| msgid "Welcome to McKinsey Academy"
+msgid "Welcome to McKinsey Academy!"
+msgstr "欢迎来到麦肯锡学院"
+
+#: templates/accounts/user_activation_email.haml:14
+msgid ""
+"We are excited for you to begin your learning journey. To get started, "
+"please click on the personalized link below to create a username and "
+"password for your account."
+msgstr ""
+
+#: templates/accounts/user_activation_email.haml:18
+msgid ""
+"After you've created your username and password, you can access your course "
+"at www.mckinseyacademy.com at anytime."
+msgstr ""
+
+#: templates/accounts/user_activation_email.haml:20
+#, fuzzy
+#| msgid "COURSE_STARTED"
+msgid "GET STARTED"
+msgstr "COURSE_STARTED"
+
+#: templates/accounts/user_activation_email.haml:24
+#: templates/admin/bulk_fields_update_report_email.haml:28
+#: templates/admin/export_stats_email_template.haml:23
+#: templates/admin/export_stats_failure_email_template.haml:23
+msgid "Best Regards,"
+msgstr "顺颂商祺！"
+
+#: templates/accounts/user_activation_email.haml:30
+#: templates/admin/admin_header.haml:62
+#: templates/admin/bulk_fields_update_report_email.haml:34
+#: templates/admin/export_stats_email_template.haml:29
+#: templates/admin/export_stats_failure_email_template.haml:29
+msgid "Contact"
+msgstr "联系方式"
+
+#: templates/accounts/user_activation_email.haml:33
+#: templates/admin/bulk_fields_update_report_email.haml:37
+#: templates/admin/export_stats_email_template.haml:32
+msgid "if you have any questions"
+msgstr "如果您有任何疑问"
+
 #: templates/accounts/user_profile.haml:7
 msgid "change photo"
 msgstr "更换照片"
@@ -3256,13 +3328,6 @@ msgstr "证书"
 msgid "Customization"
 msgstr "自定义"
 
-#: templates/admin/admin_header.haml:62
-#: templates/admin/bulk_fields_update_report_email.haml:34
-#: templates/admin/export_stats_email_template.haml:29
-#: templates/admin/export_stats_failure_email_template.haml:29
-msgid "Contact"
-msgstr "联系方式"
-
 #: templates/admin/bulk_fields_update_report_email.haml:12
 msgid " The report of bulk update: "
 msgstr ""
@@ -3287,17 +3352,6 @@ msgstr ""
 #| msgid "Error"
 msgid "Errors:"
 msgstr "错误"
-
-#: templates/admin/bulk_fields_update_report_email.haml:28
-#: templates/admin/export_stats_email_template.haml:23
-#: templates/admin/export_stats_failure_email_template.haml:23
-msgid "Best Regards,"
-msgstr "顺颂商祺！"
-
-#: templates/admin/bulk_fields_update_report_email.haml:37
-#: templates/admin/export_stats_email_template.haml:32
-msgid "if you have any questions"
-msgstr "如果您有任何疑问"
 
 #: templates/admin/client-admin/contact.haml:10
 msgid "Contact: "
@@ -4751,7 +4805,7 @@ msgstr "添加 "
 #: templates/admin/manager_dashboard/team_report.haml:13
 #, fuzzy
 #| msgid "Back to All Courses"
-msgid "Back to Courses"
+msgid "Back to Course"
 msgstr "返回到课程"
 
 #: templates/admin/manager_dashboard/team_report.haml:30

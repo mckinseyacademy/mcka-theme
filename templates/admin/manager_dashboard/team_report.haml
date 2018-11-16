@@ -9,8 +9,8 @@
   #manager_courses{'course-length': '{{manager_courses|length}}'}
   #managerDashboardWrapper
     .navigation
-      %a{'href': "/courses/#{course.id}"}
-        < {% trans "Back to Courses" %}
+      %a{'href': "/courses/#{current_course.id}"}
+        < {% trans "Back to Course" %}
       %br
       %br
       %ul
