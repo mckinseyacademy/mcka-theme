@@ -92,6 +92,11 @@ msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)s days."
 msgstr[0] "Uw cursus begint over %(days)s dagen."
 msgstr[1] "Uw cursus begint over %(days)s dagen."
+msgstr[2] "Uw cursus begint over %(days)s dagen."
+msgstr[3] "Uw cursus begint over %(days)s dagen."
+msgstr[4] "Uw cursus begint over %(days)s dagen."
+msgstr[5] "Uw cursus begint over %(days)s dagen."
+
 
 #: static/js/application.js:198
 msgid "Welcome to McKinsey Academy"
