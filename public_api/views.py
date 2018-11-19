@@ -153,7 +153,7 @@ def reset_password(request):
             request.META.get('HTTP_HOST'),
             users[0],
             request.is_secure(),
-            subject_template_name='registration/password_reset_subject.txt',
+            subject_template_name='registration/password_reset_subject.haml',
             email_template_name='registration/password_reset_email.haml',
             from_email=settings.APROS_EMAIL_SENDER
         )
