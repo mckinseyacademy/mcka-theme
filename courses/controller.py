@@ -756,10 +756,8 @@ def create_tile_progress_data(tile):
     Triggered by admin creating the tile in learner dashboard CMS
     '''
     link = strip_tile_link(tile.link)
-    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=100))
-
-    completions = course_api.get_course_completions(link['course_id'], page_size=100)
-
+    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=1000))
+    completions = course_api.get_course_completions(link['course_id'])
     for user in users:
         course = get_course_object(user['id'], link['course_id'])
         if course:
@@ -772,9 +770,7 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
     Triggered by user visiting the module. Filters tiles with current course_ids.
     Updates progress only for current module and parent lesson/course.
     '''
-
     tiles = LearnerDashboardTile.objects.filter(link__icontains=course.id)
-
     if chapter_id:
         kwargs = {'root_block': chapter_id}
     else:

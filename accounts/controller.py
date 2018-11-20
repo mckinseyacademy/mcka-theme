@@ -337,7 +337,6 @@ class ExistingSelfRegistration(SelfRegistration):
     def process_registration(cls, request, user, course_run, existing_user_object):
         link = cls.generate_activation_link(request, course_run)
         template_text = course_run.email_template_existing
-
         enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
         if not enroll_in_course_result.enrolled:
             raise ValueError('Problem with course enrollment')
@@ -353,7 +352,6 @@ class NewSelfRegistration(SelfRegistration):
     def process_registration(cls, request, registration_request, course_run):
         template_text = course_run.email_template_new
         user = cls._register_user_on_platform(registration_request)
-
         if user and not user.is_active:
             link = cls.generate_activation_link(request, user)
             if link:
@@ -369,9 +367,7 @@ class NewSelfRegistration(SelfRegistration):
 
     @staticmethod
     def _register_user_on_platform(user):
-
         data = {}
-
         if len(user.company_email) > 30:
             data['username'] = user.company_email[:29]
         else:
@@ -398,42 +394,35 @@ class NewSelfRegistration(SelfRegistration):
 
     @staticmethod
     def _get_set_company(user_id):
-
         companies = organization_api.get_organization_by_display_name("demo_course")
-
         if companies['count'] != 0:
             company = companies['results'][0]['id']
         else:
             new_company = organization_api.create_organization(organization_name="demo_course",
                                                                organization_data={"display_name": "demo_course"})
             company = vars(new_company).get("id", None)
-
         client = Client.fetch(company)
         client.add_user(user_id)
 
 
 def _process_course_run_closed(registration_request, course_run):
-
     email_template_html = 'registration/public_registration_course_closed.haml'
     subject = "Your request to access McKinsey Academy"
     template_text = course_run.email_template_closed
     link = None
-
     send_email(email_template_html, subject, link, template_text, registration_request.first_name, registration_request.company_email)
 
 
 
 def send_email(email_template_html, subject, link, template_text, user_name, user_email):
-
-    c = {
+    context = {
         'username': user_name,
         'email': user_email,
         'link': link,
         'template_text': template_text,
     }
-    email_html = loader.render_to_string(email_template_html, c)
+    email_html = loader.render_to_string(email_template_html, context)
     email_plain = strip_tags(email_html)
-
     email = EmailMultiAlternatives(
         subject,
         email_plain,
@@ -442,13 +431,11 @@ def send_email(email_template_html, subject, link, template_text, user_name, use
         headers={'Reply-To': settings.APROS_EMAIL_SENDER})
     email.attach_alternative(email_html, "text/html")
     email.mixed_subtype = 'related'
-
     email.send(fail_silently=False)
 
 
 def _set_number_of_enrolled_users(course_run):
-
-    course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=100))
+    course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=1000))
     roles_user_ids = course_api.get_users_filtered_by_role(course_run.course_id)
     exclude_user_ids = [role.id for role in roles_user_ids]
     exclude_user_ids = list(set(exclude_user_ids))
@@ -458,19 +445,16 @@ def _set_number_of_enrolled_users(course_run):
     return users_without_roles
 
 
-
 def send_warning_email_to_admin(course_run):
-
     email_template_html = 'registration/public_registration_warning.haml'
     subject = _('Demo Registration - Warning')
-
-    c = {
+    context = {
         'max_participants': course_run.max_participants,
         'treshold': settings.COURSE_RUN_PARTICIPANTS_TRESHOLD,
         'course_id': course_run.course_id,
     }
 
-    email_html = loader.render_to_string(email_template_html, c)
+    email_html = loader.render_to_string(email_template_html, context=context)
     email_plain = strip_tags(email_html)
     email = EmailMultiAlternatives(
         subject,
@@ -487,7 +471,6 @@ def append_user_mobile_app_id_cookie(response, user_id):
     Returns response by setting android_app_id and ios_app_id cookie.
     """
     user_data = UserDataManager(user_id).get_basic_user_data()
-
     if user_data.organization:
         # we will get ios and android id
         data = get_mobile_apps_id(user_data.organization.id)
@@ -517,25 +500,19 @@ def get_mobile_apps_id(organization_id):
     """
     Returns user ios_app_id and android app id based on organization
     """
-    ios_app_id = None
-    android_app_id = None
-    user_org = None
-    mobile_id = None
-
+    ios_app_id, android_app_id, user_org = None, None, None
     org_data = OrgDataManager(organization_id).get_org_common_data()
     mobile_id = org_data.mobile_apps
-
     if mobile_id.get('results'):
-
         for mobile_app in mobile_id['results']:
-
             if mobile_app['deployment_mechanism'] == MOBILE_APP_DEPLOYMENT_MECHANISMS['public_store']:
                 user_org = mobile_app['name']
                 ios_app_id = mobile_app['ios_app_id']
                 android_app_id = mobile_app['android_app_id']
                 break
 
-    return {'ios_app_id': ios_app_id,
-            'android_app_id': android_app_id,
-            'user_org':user_org
-            }
+    return {
+        'ios_app_id': ios_app_id,
+        'android_app_id': android_app_id,
+        'user_org': user_org
+    }

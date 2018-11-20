@@ -61,9 +61,11 @@ def course_participants_data_retrieval_task(
 
     api_params = {
         'page': 1,
-        'per_page': 200,
-        'page_size': 200,
+        'per_page': 1000,
+        'page_size': 1000,
         'additional_fields': ",".join(additional_fields),
+        # Profile images take a long time to serialize, and we don't need them.
+        'exclude_fields': "profile_image",
     }
     task_log_msg = "Participants data retrieval task for course: " \
                    "`{}`, triggered by user `{}`".format(course_id, user_id)
@@ -183,12 +185,7 @@ def course_participants_data_retrieval_task(
         ("Username", ("username", '')),
         ("Email", ("email", '')),
         ("Company", ("organizations_display_name", '')),
-    ])
-
-    for key, label in attributes.items():
-        fields.update([(label, (key, ''))])
-
-    fields.update([
+    ] + [(label, (key, '')) for key, label in attributes.items()] + [
         ("Status", ("custom_user_status", '')),
         ("Activated", ("custom_activated", '')),
         ("Last login", ("custom_last_login", '')),
@@ -363,8 +360,10 @@ def participants_notifications_data_task(course_id, company_id, task_id, retry_p
     Retrieves course participants' notifications data using API
     """
     api_params = {
-        'fields': 'id', 'page': 1,
-        'per_page': 200, 'page_size': 200,
+        'fields': 'id',
+        'page': 1,
+        'per_page': 1000,
+        'page_size': 1000,
     }
     task_log_msg = "Notifications data retrieval task for course: {}".format(course_id)
 

@@ -305,7 +305,6 @@ def get_course_content(course_id, content_id):
             content_id,
         )
     )
-
     return JP.from_json(response.read())
 
 
@@ -333,11 +332,13 @@ def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args,
 
 @api_error_protect
 def get_user_list_json(course_id, program_id=None, page_size=0):
-    '''
-    Retrieves course user list structure information from the API for specified course
-    '''
+    """Retrieves a list of users from the API for specified course."""
     edx_oauth2_session = get_oauth2_session()
-    qs_params = {"page_size": page_size}
+    qs_params = {
+        "page_size": page_size,
+        # Profile images take a long time to serialize, and we don't need them.
+        "exclude_fields": "profile_image",
+    }
     if program_id:
         qs_params['project'] = program_id
 
@@ -364,14 +365,6 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
         response = edx_oauth2_session.get(url=url)
         return json.loads(response.content)
 
-
-@api_error_protect
-def get_user_list(course_id, program_id=None):
-
-    return JP.from_json(
-        get_user_list_json(course_id, program_id),
-        course_models.CourseEnrollmentList
-    ).enrollments
 
 @api_error_protect
 def add_group_to_course_content(group_id, course_id, content_id):
@@ -764,25 +757,13 @@ def get_course_details(course_id):
 @api_error_protect
 def get_course_details_users(course_id, qs_params=''):
     edx_oauth2_session = get_oauth2_session()
-    if isinstance(qs_params, dict):
-        qs_params = qs_params.copy()
-        for page_size_param in ('page_size', 'per_page'):
-            if page_size_param in qs_params:
-                # If provided a query size > 100, this endpoint reverts to returning
-                # the default of 20 items per query.  We would rather get the maximum
-                # number of results.
-                qs_params[page_size_param] = min(qs_params[page_size_param], 100)
-
     url = '{}/{}/{}/users?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSEWARE_API,
         course_id,
         urlencode(qs_params)
     )
-
-    response = edx_oauth2_session.get(url)
-
-    return response.json()
+    return edx_oauth2_session.get(url).json()
 
 
 @api_error_protect
@@ -881,11 +862,6 @@ def get_course_passed_users(course_id, page_num=1, page_size=100):
     )
 
     return JP.from_json(response.read(), user_models.UserListResponse)
-
-
-@api_error_protect
-def get_user_list_dictionary(course_id, program_id=None):
-    return json.loads(get_user_list_json(course_id, program_id))
 
 
 def parse_course_list_json_object(course_list_json_object):

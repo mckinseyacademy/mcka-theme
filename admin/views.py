@@ -5641,6 +5641,7 @@ class company_participant_details_api(APIView):
             selectedUser['internalAdminFlag'] = request.user.is_internal_admin
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_list(request):
 
@@ -5648,27 +5649,24 @@ def course_run_list(request):
     course_runs = CourseRun.objects.all().order_by(key)
     return render(request, 'admin/course_run/list.haml', {'course_runs': course_runs})
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_view(request, course_run_id):
-
     try:
         course_run = CourseRun.objects.get(pk=course_run_id)
     except ObjectDoesNotExist:
         return render(request, '404.haml')
-
     enrolled_users = _set_number_of_enrolled_users(course_run)
     registration_requests = PublicRegistrationRequest.objects.filter(course_run=course_run)
-
     full_users_list = construct_users_list(enrolled_users, registration_requests)
-
     data = {
         'course_run': course_run,
         'users': registration_requests,
         'total_registered_users': registration_requests.count(),
         'user_list': full_users_list
     }
-
     return render(request, 'admin/course_run/view.haml', data)
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -5684,7 +5682,6 @@ def course_run_create_edit(request, course_run_id=None):
         self_register_created_roles = None
 
     if request.method == 'POST':
-
         form = CourseRunForm(request.POST, instance=course_run)
         try:
             self_registration_roles = create_roles_list(request)
@@ -5692,7 +5689,6 @@ def course_run_create_edit(request, course_run_id=None):
             error = err.message
 
         if form.is_valid() and error is None:
-
             form.save()
             for role_text in self_registration_roles:
                 SelfRegistrationRoles.objects.create(course_run_id=form.instance.id, option_text=role_text)
@@ -5718,16 +5714,11 @@ def course_run_create_edit(request, course_run_id=None):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_csv_download(request, course_run_id):
-
     course_run = get_object_or_404(CourseRun, pk=course_run_id)
-
     enrolled_users = _set_number_of_enrolled_users(course_run)
     registration_requests = PublicRegistrationRequest.objects.filter(course_run=course_run)
-
     if registration_requests:
-
         full_users_list = construct_users_list(enrolled_users, registration_requests)
-
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="' + course_run.name + '.csv"'
         writer = UnicodeWriter(response)
@@ -5745,7 +5736,6 @@ def course_run_csv_download(request, course_run_id):
         for user in full_users_list:
             # sanitize data before writing to csv
             user = sanitize_data(data=user, props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
-
             writer.writerow([
                 user['first_name'],
                 user['last_name'],
@@ -5757,7 +5747,6 @@ def course_run_csv_download(request, course_run_id):
                 user['is_enrolled'],
                 user['is_active'],
             ])
-
         return response
     else:
         return render(request, '404.haml')

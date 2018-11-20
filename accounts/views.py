@@ -1284,9 +1284,9 @@ def demo_registration(request, course_run_name):
         }
 
         return render(request, 'accounts/public_registration.haml', data)
-
     else:
         return render(request, '404.haml')
+
 
 def switch_language_based_on_preference(request):
     try:

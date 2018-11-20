@@ -16,6 +16,8 @@ Apros.collections.CourseDetails = Backbone.PageableCollection.extend({
     totalRecords: null,
     page_size: 100,
     additional_fields: 'grades,roles,organizations,progress,course_groups',
+    // Profile images take a long time to serialize, and we don't need them.
+    exclude_fields: 'profile_image',
   },
   parseLinks: function (resp, options) {
     returnObject={};
