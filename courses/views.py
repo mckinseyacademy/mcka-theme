@@ -54,6 +54,7 @@ from .controller import (
     _remove_duplicate_grader,
     get_user_social_metrics,
     fix_resource_page_video_scripts,
+    get_assessment_module_name_translation,
 )
 from .user_courses import (
     check_user_course_access, load_course_progress,
@@ -489,7 +490,6 @@ def _course_progress_for_user(request, course_id, user_id):
 
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
-
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
         grader.weight = round_to_int(grader.weight*100)
@@ -679,7 +679,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "graded_items_count": graded_items_count,
         "graded_items_rows": graded_items_count + 1,
         "group_activities": group_activities,
-        "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders),
+        "graders": ', '.join("%s%% %s" % (grader.weight, get_assessment_module_name_translation(grader.type_name)) for grader in graders),
         "total_replies": social["metrics"].num_replies + social["metrics"].num_comments,
         "course_run": course_run,
         'feature_flags': feature_flags,

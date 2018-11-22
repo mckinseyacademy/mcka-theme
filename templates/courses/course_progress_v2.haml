@@ -1,5 +1,6 @@
 - extends "courses/course_navigation.haml"
 - load i18n
+{% load courses_extras %}
 
 - block page_title
   %title
@@ -154,7 +155,7 @@
                     %i.status.fa{"class": "{% if module.progress == 100 %}fa-check-circle complete{% elif module.progress > 0 %}fa-circle partial{% else %}fa-circle{% endif %}"}
                     .lesson-item-name
                       %a{"href": "#{module.navigation_url}"}
-                        #{module.lesson_name}: #{module.name}
+                        #{module.lesson_name}: {{ module.name|translate_assessment_if_needed }}
                 %td.number{"class": "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
             - if feature_flags.group_work
               - for activity in course.graded_items.group_activities

@@ -10,6 +10,7 @@ import re
 from bs4 import BeautifulSoup
 
 from django.conf import settings
+from django.utils.translation import ugettext as _
 
 from accounts.middleware.thread_local import (
     set_static_tab_context,
@@ -1005,3 +1006,8 @@ def fix_resource_page_video_scripts(resources_page_html):
 
     return str(resource_page_soup)
 
+def get_assessment_module_name_translation(module_name):
+    """ Translates assessment part of the module name """
+    if module_name.startswith("Assessment"):
+        return module_name.replace("Assessment", _("Assessment"))
+    return module_name
