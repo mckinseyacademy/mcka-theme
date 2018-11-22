@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-22 09:13+0000\n"
+"POT-Creation-Date: 2018-11-22 13:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2663,8 +2663,10 @@ msgid "Asset"
 msgstr "Asset"
 
 #: courses/controller.py:1012
+#, fuzzy
+#| msgid "Assessment: {}"
 msgid "Assessment"
-msgstr "Bewertung"
+msgstr "Bewertung: {}"
 
 #: courses/user_courses.py:87 courses/user_courses.py:93
 #, python-brace-format
@@ -7123,13 +7125,7 @@ msgid "PROGRESS"
 msgstr "FORTSCHRITT"
 
 #: templates/courses/course_progress_v2.haml:23
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "          You are %(user_course_progress)s%% of the way through the "
-#| "course based on completion of modules within lessons. The cohort average "
-#| "is %(user_average_progress)s%%.\n"
-#| "        "
+#, python-format
 msgid ""
 "\n"
 "            You are  %(user_course_progress)s%% of the way through the "
@@ -7139,40 +7135,58 @@ msgid ""
 "          "
 msgstr ""
 "\n"
-"          Sie haben basierend auf den in Lektionen abgeschlossenen Modulen  "
-"%(user_course_progress)s%% des Kurses absolviert. Der Jahrgangsdurchschnitt "
-"beträgt %(user_average_progress)s%%.\n"
+"            Sie durchlaufen den Kurs zu %(user_course_progress)s%%, "
+"basierend auf dem Abschluss des Moduls %(modules_custom_label)s innerhalb "
+"der Lektion %(lessons_custom_label)s. Der Kohortendurchschnitt liegt bei "
+"%(user_average_progress)s%%.\n"
 "        "
 
 #: templates/courses/course_progress_v2.haml:27
 #, python-format
 msgid ""
 "\n"
-"            You are and I am %(user_course_progress)s%% of the way through "
-"the course based on completion of modules within %(lessons_custom_label)s. "
-"The cohort average is %(user_average_progress)s%%.\n"
+"            You are %(user_course_progress)s%% of the way through the course "
+"based on completion of modules within %(lessons_custom_label)s. The cohort "
+"average is %(user_average_progress)s%%.\n"
 "          "
 msgstr ""
+"\n"
+"          Sie durchlaufen den Kurs zu %(user_course_progress)s%%, basierend "
+"auf dem Abschluss von Modulen innerhalb der Lektion "
+"%(lessons_custom_label)s. Der Kohortendurchschnitt liegt bei "
+"%(user_average_progress)s%%.\n"
+"        "
 
 #: templates/courses/course_progress_v2.haml:31
 #, python-format
 msgid ""
 "\n"
-"            You are and I am %(user_course_progress)s%% of the way through "
-"the course based on completion of %(modules_custom_label)s within lessons. "
-"The cohort average is %(user_average_progress)s%%.\n"
+"            You are %(user_course_progress)s%% of the way through the course "
+"based on completion of %(modules_custom_label)s within lessons. The cohort "
+"average is %(user_average_progress)s%%.\n"
 "          "
 msgstr ""
+"\n"
+"          Sie durchlaufen den Kurs zu %(user_course_progress)s%%, basierend "
+"auf dem Abschluss des Moduls %(modules_custom_label)s innerhalb der "
+"Lektionen. Der Kohortendurchschnitt liegt bei %(user_average_progress)s%%.\n"
+"        "
 
 #: templates/courses/course_progress_v2.haml:35
 #, python-format
 msgid ""
 "\n"
-"            You are and I am %(user_course_progress)s%% of the way through "
-"the course based on completion of modules within lessons. The cohort average "
-"is %(user_average_progress)s%%.\n"
+"            You are %(user_course_progress)s%% of the way through the course "
+"based on completion of modules within lessons. The cohort average is "
+"%(user_average_progress)s%%.\n"
 "          "
 msgstr ""
+"\n"
+"          Sie durchlaufen den Kurs zu %(user_course_progress)s%%, basierend "
+"auf dem Abschluss von Modulen innerhalb der Lektionen. Der "
+"Kohortendurchschnitt Lektionen. Der Kohortendurchschnitt liegt bei liegt bei "
+"%(user_average_progress)s%%.\n"
+"        "
 
 #: templates/courses/course_progress_v2.haml:41
 msgid "Modules:"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 14:06+0000\n"
+"POT-Creation-Date: 2018-11-22 13:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -439,7 +439,7 @@ msgid "Couldn't create new company!"
 msgstr "Kan geen nieuw bedrijf maken."
 
 #: static/js/views/admin/company_details.js:4
-#: static/js/views/admin/course_details.js:321
+#: static/js/views/admin/course_details.js:323
 #: static/js/views/admin/courses_list.js:16
 #: static/js/views/admin/participant_details_active_courses_view.js:54
 #: static/js/views/admin/participant_details_course_history_view.js:10
@@ -447,7 +447,7 @@ msgid "Course Name"
 msgstr "Cursusnaam"
 
 #: static/js/views/admin/company_details.js:20
-#: static/js/views/admin/course_details.js:331
+#: static/js/views/admin/course_details.js:333
 #: static/js/views/admin/courses_list.js:26
 #: static/js/views/admin/participant_details_active_courses_view.js:72
 #: static/js/views/admin/participant_details_course_history_view.js:28
@@ -586,11 +586,11 @@ msgstr "Gebruikersnaam"
 msgid "Country"
 msgstr "Land"
 
-#: static/js/views/admin/course_details.js:250
+#: static/js/views/admin/course_details.js:252
 msgid "Couldn't create new tag!"
 msgstr "Kan geen nieuw label maken."
 
-#: static/js/views/admin/course_details.js:264
+#: static/js/views/admin/course_details.js:266
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
@@ -598,35 +598,35 @@ msgstr ""
 "U beschikt niet over de machtiging voor het maken van een nieuw label. "
 "Selecteer een label in de lijst."
 
-#: static/js/views/admin/course_details.js:294
+#: static/js/views/admin/course_details.js:296
 msgid "Couldn't delete tag!"
 msgstr "Kan het label niet verwijderen."
 
-#: static/js/views/admin/course_details.js:334
+#: static/js/views/admin/course_details.js:336
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
 msgstr[0] "%(count)s Cursus gelabeld met %(tagDetails)s"
 msgstr[1] "%(count)s Cursussen gelabeld met %(tagDetails)s"
 
-#: static/js/views/admin/course_details.js:389
+#: static/js/views/admin/course_details.js:391
 msgid "Progress: %(progress)s %"
 msgstr "Voortgang: %(progress)s %"
 
-#: static/js/views/admin/course_details.js:426
+#: static/js/views/admin/course_details.js:428
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr ""
 "Geselecteerd: %(selected)s, geslaagd: %(successful)s, niet geslaagd: "
 "%(failed)s"
 
-#: static/js/views/admin/course_details.js:477
+#: static/js/views/admin/course_details.js:479
 msgid "This tag name cannot have more than 30 characters!"
 msgstr "De labelnaam mag niet meer dan 30 tekens bevatten."
 
-#: static/js/views/admin/course_details.js:484
+#: static/js/views/admin/course_details.js:486
 msgid "This tag name cannot contain non-alphanumeric characters!"
 msgstr "De labelnaam mag enkel alfanumerieke tekens bevatten."
 
-#: static/js/views/admin/course_details.js:524
+#: static/js/views/admin/course_details.js:526
 msgid "Couldn't add tag to course!"
 msgstr "Kan geen label aan de cursus toevoegen."
 

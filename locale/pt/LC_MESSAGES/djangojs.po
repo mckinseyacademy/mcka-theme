@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 14:06+0000\n"
+"POT-Creation-Date: 2018-11-22 13:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -439,7 +439,7 @@ msgid "Couldn't create new company!"
 msgstr "Não foi possível criar nova empresa!"
 
 #: static/js/views/admin/company_details.js:4
-#: static/js/views/admin/course_details.js:321
+#: static/js/views/admin/course_details.js:323
 #: static/js/views/admin/courses_list.js:16
 #: static/js/views/admin/participant_details_active_courses_view.js:54
 #: static/js/views/admin/participant_details_course_history_view.js:10
@@ -447,7 +447,7 @@ msgid "Course Name"
 msgstr "Nome do curso"
 
 #: static/js/views/admin/company_details.js:20
-#: static/js/views/admin/course_details.js:331
+#: static/js/views/admin/course_details.js:333
 #: static/js/views/admin/courses_list.js:26
 #: static/js/views/admin/participant_details_active_courses_view.js:72
 #: static/js/views/admin/participant_details_course_history_view.js:28
@@ -586,45 +586,45 @@ msgstr "Nome de usuário"
 msgid "Country"
 msgstr "País"
 
-#: static/js/views/admin/course_details.js:250
+#: static/js/views/admin/course_details.js:252
 msgid "Couldn't create new tag!"
 msgstr "Não foi possível criar um novo tag!"
 
-#: static/js/views/admin/course_details.js:264
+#: static/js/views/admin/course_details.js:266
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
 msgstr ""
 "Você não tem permissão para criar um novo tag, selecione um tag na lista!"
 
-#: static/js/views/admin/course_details.js:294
+#: static/js/views/admin/course_details.js:296
 msgid "Couldn't delete tag!"
 msgstr "Não foi possível excluir tag!"
 
-#: static/js/views/admin/course_details.js:334
+#: static/js/views/admin/course_details.js:336
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
 msgstr[0] "%(count)s curso  recebeu tag com %(tagDetails)s"
 msgstr[1] "%(count)s cursos receberam tag com %(tagDetails)s"
 
-#: static/js/views/admin/course_details.js:389
+#: static/js/views/admin/course_details.js:391
 msgid "Progress: %(progress)s %"
 msgstr "Progresso: %(progress)s %"
 
-#: static/js/views/admin/course_details.js:426
+#: static/js/views/admin/course_details.js:428
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr ""
 "Selecionados: %(selected)s, Sucesso: %(successful)s, Falha): %(failed)s"
 
-#: static/js/views/admin/course_details.js:477
+#: static/js/views/admin/course_details.js:479
 msgid "This tag name cannot have more than 30 characters!"
 msgstr "O nome do tag deve ter, no máximo, 30 caracteres!"
 
-#: static/js/views/admin/course_details.js:484
+#: static/js/views/admin/course_details.js:486
 msgid "This tag name cannot contain non-alphanumeric characters!"
 msgstr "O nome do tag deve conter apenas caracteres alfanuméricos!"
 
-#: static/js/views/admin/course_details.js:524
+#: static/js/views/admin/course_details.js:526
 msgid "Couldn't add tag to course!"
 msgstr "Não foi possível adicionar tag ao curso!"
 

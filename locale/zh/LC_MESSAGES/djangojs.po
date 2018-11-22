@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 14:07+0000\n"
+"POT-Creation-Date: 2018-11-22 13:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -431,7 +431,7 @@ msgid "Couldn't create new company!"
 msgstr "无法创建新公司！"
 
 #: static/js/views/admin/company_details.js:4
-#: static/js/views/admin/course_details.js:321
+#: static/js/views/admin/course_details.js:323
 #: static/js/views/admin/courses_list.js:16
 #: static/js/views/admin/participant_details_active_courses_view.js:54
 #: static/js/views/admin/participant_details_course_history_view.js:10
@@ -439,7 +439,7 @@ msgid "Course Name"
 msgstr "课程名称"
 
 #: static/js/views/admin/company_details.js:20
-#: static/js/views/admin/course_details.js:331
+#: static/js/views/admin/course_details.js:333
 #: static/js/views/admin/courses_list.js:26
 #: static/js/views/admin/participant_details_active_courses_view.js:72
 #: static/js/views/admin/participant_details_course_history_view.js:28
@@ -578,43 +578,43 @@ msgstr "用户名"
 msgid "Country"
 msgstr "国家/地区"
 
-#: static/js/views/admin/course_details.js:250
+#: static/js/views/admin/course_details.js:252
 msgid "Couldn't create new tag!"
 msgstr "无法创建新标签！"
 
-#: static/js/views/admin/course_details.js:264
+#: static/js/views/admin/course_details.js:266
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
 msgstr "您无权创建新标签，请从列表中选择一个标签！"
 
-#: static/js/views/admin/course_details.js:294
+#: static/js/views/admin/course_details.js:296
 msgid "Couldn't delete tag!"
 msgstr "无法删除标签！"
 
-#: static/js/views/admin/course_details.js:334
+#: static/js/views/admin/course_details.js:336
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
 msgstr[0] "%(count)s 门课程带标签 %(tagDetails)s"
 msgstr[1] "%(count)s 门课程带标签 %(tagDetails)s"
 
-#: static/js/views/admin/course_details.js:389
+#: static/js/views/admin/course_details.js:391
 msgid "Progress: %(progress)s %"
 msgstr "进度:%(progress)s% "
 
-#: static/js/views/admin/course_details.js:426
+#: static/js/views/admin/course_details.js:428
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr "已选择: %(selected)s，成功: %(successful)s，失败: %(failed)s"
 
-#: static/js/views/admin/course_details.js:477
+#: static/js/views/admin/course_details.js:479
 msgid "This tag name cannot have more than 30 characters!"
 msgstr "此标签名称不得超过 30 个字符！"
 
-#: static/js/views/admin/course_details.js:484
+#: static/js/views/admin/course_details.js:486
 msgid "This tag name cannot contain non-alphanumeric characters!"
 msgstr "此标签名称不得包含非字母数字字符！"
 
-#: static/js/views/admin/course_details.js:524
+#: static/js/views/admin/course_details.js:526
 msgid "Couldn't add tag to course!"
 msgstr "无法将标签添加至课程！"
 

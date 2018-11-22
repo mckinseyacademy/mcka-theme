@@ -25,15 +25,15 @@
           {% endblocktrans %}
         - elif lesson_custom_label
           {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
-            You are and I am {{user_course_progress}}% of the way through the course based on completion of modules within {{lessons_custom_label}}. The cohort average is {{user_average_progress}}%.
+            You are {{user_course_progress}}% of the way through the course based on completion of modules within {{lessons_custom_label}}. The cohort average is {{user_average_progress}}%.
           {% endblocktrans %}
         - elif module_custom_label
           {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
-            You are and I am {{user_course_progress}}% of the way through the course based on completion of {{modules_custom_label}} within lessons. The cohort average is {{user_average_progress}}%.
+            You are {{user_course_progress}}% of the way through the course based on completion of {{modules_custom_label}} within lessons. The cohort average is {{user_average_progress}}%.
           {% endblocktrans %}
         -else
           {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
-            You are and I am {{user_course_progress}}% of the way through the course based on completion of modules within lessons. The cohort average is {{user_average_progress}}%.
+            You are {{user_course_progress}}% of the way through the course based on completion of modules within lessons. The cohort average is {{user_average_progress}}%.
           {% endblocktrans %}
       %table.user-progress
         %thead

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-16 14:06+0000\n"
+"POT-Creation-Date: 2018-11-22 13:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -407,7 +407,7 @@ msgid "Couldn't create new company!"
 msgstr "Impossible de créer une nouvelle société !"
 
 #: static/js/views/admin/company_details.js:4
-#: static/js/views/admin/course_details.js:321
+#: static/js/views/admin/course_details.js:323
 #: static/js/views/admin/courses_list.js:16
 #: static/js/views/admin/participant_details_active_courses_view.js:54
 #: static/js/views/admin/participant_details_course_history_view.js:10
@@ -415,7 +415,7 @@ msgid "Course Name"
 msgstr "Nom du cours"
 
 #: static/js/views/admin/company_details.js:20
-#: static/js/views/admin/course_details.js:331
+#: static/js/views/admin/course_details.js:333
 #: static/js/views/admin/courses_list.js:26
 #: static/js/views/admin/participant_details_active_courses_view.js:72
 #: static/js/views/admin/participant_details_course_history_view.js:28
@@ -556,11 +556,11 @@ msgstr "Nom d’utilisateur"
 msgid "Country"
 msgstr "Pays"
 
-#: static/js/views/admin/course_details.js:250
+#: static/js/views/admin/course_details.js:252
 msgid "Couldn't create new tag!"
 msgstr "Impossible de créer une nouvelle étiquette !"
 
-#: static/js/views/admin/course_details.js:264
+#: static/js/views/admin/course_details.js:266
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
@@ -568,36 +568,36 @@ msgstr ""
 "Vous n'avez pas l'autorisation de créer une nouvelle étiquette, sélectionnez-"
 "en une dans la liste !"
 
-#: static/js/views/admin/course_details.js:294
+#: static/js/views/admin/course_details.js:296
 msgid "Couldn't delete tag!"
 msgstr "Impossible de supprimer l'étiquette !"
 
-#: static/js/views/admin/course_details.js:334
+#: static/js/views/admin/course_details.js:336
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
 msgstr[0] "%(count)s Cours étiqueté avec %(tagDetails)s"
 msgstr[1] "%(count)s Cours étiquetés avec %(tagDetails)s"
 
-#: static/js/views/admin/course_details.js:389
+#: static/js/views/admin/course_details.js:391
 msgid "Progress: %(progress)s %"
 msgstr "Progression : %(progress)s %"
 
-#: static/js/views/admin/course_details.js:426
+#: static/js/views/admin/course_details.js:428
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr ""
 "Sélectionné : %(selected)s, validé : %(successful)s, non validé : %(failed)s"
 
-#: static/js/views/admin/course_details.js:477
+#: static/js/views/admin/course_details.js:479
 msgid "This tag name cannot have more than 30 characters!"
 msgstr "Le nom de l’étiquette ne peut contenir plus de 30 caractères !"
 
-#: static/js/views/admin/course_details.js:484
+#: static/js/views/admin/course_details.js:486
 msgid "This tag name cannot contain non-alphanumeric characters!"
 msgstr ""
 "Le nom de cette étiquette ne peut contenir des caractères non "
 "alphanumériques !"
 
-#: static/js/views/admin/course_details.js:524
+#: static/js/views/admin/course_details.js:526
 msgid "Couldn't add tag to course!"
 msgstr "Impossible d'ajouter une étiquette au cours !"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-19 11:44+0000\n"
+"POT-Creation-Date: 2018-11-22 13:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr "无法为您注册课程“{}”，它不再是您计划的一部分。"
 msgid "Problem with course enrollment"
 msgstr "课程注册时遇到问题"
 
-#: accounts/controller.py:465
+#: accounts/controller.py:450
 msgid "Demo Registration - Warning"
 msgstr "注册演示视频 - 警告"
 
@@ -1787,7 +1787,7 @@ msgid ""
 "organization"
 msgstr ""
 
-#: admin/controller.py:2753 admin/tasks.py:514
+#: admin/controller.py:2753 admin/tasks.py:513
 msgid ""
 "File is not formatted properly. Please format according to given template."
 msgstr ""
@@ -1931,7 +1931,7 @@ msgstr "文章"
 #: templates/courses/content_page/lesson_pager.haml:42
 #: templates/courses/course_lessons.haml:14
 #: templates/courses/course_lessons_ld_external.haml:16
-#: templates/courses/course_progress_v2.haml:75
+#: templates/courses/course_progress_v2.haml:76
 msgid "Lesson"
 msgstr "课时"
 
@@ -1943,7 +1943,7 @@ msgstr "课时"
 #: templates/courses/course_lessons.haml:50
 #: templates/courses/course_lessons_ld.haml:53
 #: templates/courses/course_lessons_ld_external.haml:51
-#: templates/courses/course_progress_v2.haml:105
+#: templates/courses/course_progress_v2.haml:106
 msgid "Module"
 msgstr "模块"
 
@@ -1991,34 +1991,34 @@ msgstr "以下项的任务小组：{wg_id}"
 msgid "Some of the files aren't uploaded, Please upload again!"
 msgstr "部分文件未上传，请重新上传！"
 
-#: admin/tasks.py:159
+#: admin/tasks.py:161
 #, python-brace-format
 msgid "Group Work: {label}"
 msgstr "小组作业：{label}"
 
-#: admin/tasks.py:166
+#: admin/tasks.py:168
 #, python-brace-format
 msgid "Assessment: {label}"
 msgstr "评定：{label}"
 
-#: admin/tasks.py:172
+#: admin/tasks.py:174
 #, python-brace-format
 msgid "Lesson {lesson_number} Progress"
 msgstr "课时{lesson_number}进度"
 
-#: admin/tasks.py:265
+#: admin/tasks.py:262
 msgid "Report for bulk update"
 msgstr ""
 
-#: admin/tasks.py:293
+#: admin/tasks.py:290
 msgid "Participant stats for {} is ready to download"
 msgstr "{} 的参与者统计数据准备就绪，可供下载"
 
-#: admin/tasks.py:296
+#: admin/tasks.py:293
 msgid "Participant stats for {} did not generate"
 msgstr "未生成 {} 的参与者统计数据"
 
-#: admin/tasks.py:548
+#: admin/tasks.py:547
 msgid "User with email {} and manager with email {} was unsuccessfull."
 msgstr ""
 
@@ -2173,12 +2173,12 @@ msgstr "保存计划"
 msgid "Successfully Added {} Participants"
 msgstr "已成功添加 {} 名参与者"
 
-#: admin/views.py:2390 admin/views.py:5735
+#: admin/views.py:2390 admin/views.py:5726
 #: templates/admin/participants/activation_link_modal.haml:15
 msgid "First name"
 msgstr "名字"
 
-#: admin/views.py:2390 admin/views.py:5736
+#: admin/views.py:2390 admin/views.py:5727
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 msgid "Last name"
@@ -2250,13 +2250,11 @@ msgid "No group projects available for this course"
 msgstr "此课程没有可用的小组项目"
 
 #: admin/views.py:3323 admin/views.py:3324 admin/views.py:3551
-#: admin/views.py:3552 courses/controller.py:1017
-#: templates/admin/admin_header.haml:37
+#: admin/views.py:3552 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
-#: templates/courses/course_progress.haml:70
-#: templates/courses/course_progress_v2.haml:160 templates/faq.haml:39
+#: templates/courses/course_progress.haml:70 templates/faq.haml:39
 msgid "Group Work"
 msgstr "小组作业"
 
@@ -2451,31 +2449,31 @@ msgstr "您需要选择标签！"
 msgid "Tag removed from Course!"
 msgstr "已从课程删除标签！"
 
-#: admin/views.py:5737 templates/admin/course_run/view.haml:65
+#: admin/views.py:5728 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "公司名称"
 
-#: admin/views.py:5738 templates/admin/course_run/view.haml:66
+#: admin/views.py:5729 templates/admin/course_run/view.haml:66
 msgid "Company email"
 msgstr "公司电子邮件"
 
-#: admin/views.py:5739 templates/admin/course_run/view.haml:67
+#: admin/views.py:5730 templates/admin/course_run/view.haml:67
 msgid "Current role"
 msgstr "当前角色"
 
-#: admin/views.py:5740 templates/admin/course_run/view.haml:68
+#: admin/views.py:5731 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "新用户"
 
-#: admin/views.py:5741
+#: admin/views.py:5732
 msgid "McK user"
 msgstr "麦肯锡用户"
 
-#: admin/views.py:5742 templates/admin/course_run/view.haml:70
+#: admin/views.py:5733 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "已注册"
 
-#: admin/views.py:5743 templates/admin/course_run/view.haml:71
+#: admin/views.py:5734 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "激活"
@@ -2535,8 +2533,8 @@ msgstr "可用"
 #: api_client/course_models.py:145
 #: templates/courses/content_page/course_menu.haml:49
 #: templates/courses/course_learner_dashboard_calendar.haml:45
-#: templates/courses/course_progress_v2.haml:125
-#: templates/courses/course_progress_v2.haml:194
+#: templates/courses/course_progress_v2.haml:126
+#: templates/courses/course_progress_v2.haml:190
 msgid "complete"
 msgstr "完成"
 
@@ -2624,9 +2622,11 @@ msgstr "模板"
 msgid "Asset"
 msgstr "资产"
 
-#: courses/controller.py:1015 templates/courses/course_progress_v2.haml:158
+#: courses/controller.py:1012
+#, fuzzy
+#| msgid "Assessment: {}"
 msgid "Assessment"
-msgstr "评定"
+msgstr "评定：{}"
 
 #: courses/user_courses.py:87 courses/user_courses.py:93
 #, python-brace-format
@@ -4427,7 +4427,7 @@ msgid "Back to list"
 msgstr "返回列表"
 
 #: templates/admin/course_run/view.haml:12
-#: templates/courses/course_progress_v2.haml:51
+#: templates/courses/course_progress_v2.haml:52
 msgid "Course Run:"
 msgstr "课程安排："
 
@@ -5531,8 +5531,8 @@ msgstr "在此添加一条消息来描述负责人名单"
 #: templates/admin/workgroup/workgroup_detail_report.haml:12
 #: templates/admin/workgroup/workgroup_report.haml:12
 #: templates/courses/course_progress.haml:103
-#: templates/courses/course_progress_v2.haml:173
-#: templates/courses/course_progress_v2.haml:186
+#: templates/courses/course_progress_v2.haml:169
+#: templates/courses/course_progress_v2.haml:182
 msgid "Group Work:"
 msgstr "小组作业："
 
@@ -5802,7 +5802,7 @@ msgstr "课时:"
 #: templates/courses/content_page/lesson_pager.haml:11
 #: templates/courses/content_page/lesson_pager.haml:39
 #: templates/courses/course_lessons.haml:12
-#: templates/courses/course_progress_v2.haml:73
+#: templates/courses/course_progress_v2.haml:74
 #, python-format
 msgid " %(lesson_custom_label)s %(lesson_index)s:"
 msgstr ""
@@ -6346,7 +6346,7 @@ msgid "not available"
 msgstr "不可用"
 
 #: templates/courses/course_learner_dashboard_calendar.haml:39
-#: templates/courses/course_progress_v2.haml:123
+#: templates/courses/course_progress_v2.haml:124
 msgid "not started"
 msgstr "未开始"
 
@@ -6384,7 +6384,7 @@ msgstr "日历"
 #: templates/courses/course_lessons.haml:21
 #: templates/courses/course_lessons_ld.haml:26
 #: templates/courses/course_lessons_ld_external.haml:23
-#: templates/courses/course_progress_v2.haml:81
+#: templates/courses/course_progress_v2.haml:82
 #, fuzzy
 #| msgid "Modules:"
 msgid " Modules"
@@ -6393,7 +6393,7 @@ msgstr "模块："
 #: templates/courses/course_lessons.haml:24
 #: templates/courses/course_lessons_ld.haml:29
 #: templates/courses/course_lessons_ld_external.haml:26
-#: templates/courses/course_progress_v2.haml:84
+#: templates/courses/course_progress_v2.haml:85
 #, fuzzy
 #| msgid "Lesson"
 msgid "Lesson "
@@ -6402,7 +6402,7 @@ msgstr "课时"
 #: templates/courses/course_lessons.haml:27
 #: templates/courses/course_lessons_ld.haml:32
 #: templates/courses/course_lessons_ld_external.haml:29
-#: templates/courses/course_progress_v2.haml:87
+#: templates/courses/course_progress_v2.haml:88
 msgid "Lesson Modules"
 msgstr "课时模块"
 
@@ -6427,7 +6427,7 @@ msgstr "您已完成课时 %(lesson_index)s 的 %(course_current_progress)s%%：
 #: templates/courses/course_lessons.haml:47
 #: templates/courses/course_lessons_ld.haml:49
 #: templates/courses/course_lessons_ld_external.haml:48
-#: templates/courses/course_progress_v2.haml:102
+#: templates/courses/course_progress_v2.haml:103
 #, python-format
 msgid " %(module_custom_label)s %(module_index)s:"
 msgstr ""
@@ -6654,7 +6654,7 @@ msgid "Faculty"
 msgstr "教师"
 
 #: templates/courses/course_progress.haml:7
-#: templates/courses/course_progress_v2.haml:7
+#: templates/courses/course_progress_v2.haml:8
 msgid " | Progress | Courses | McKinsey Academy"
 msgstr " | 进度 | 课程 | 麦肯锡学院"
 
@@ -6862,26 +6862,20 @@ msgstr ""
 "的"
 
 #: templates/courses/course_progress.haml:131
-#: templates/courses/course_progress_v2.haml:238
+#: templates/courses/course_progress_v2.haml:234
 msgid "privacy policy."
 msgstr "信息。"
 
-#: templates/courses/course_progress_v2.haml:18
+#: templates/courses/course_progress_v2.haml:19
 msgid "Dashboard for"
 msgstr "以下的仪表板："
 
-#: templates/courses/course_progress_v2.haml:19
+#: templates/courses/course_progress_v2.haml:20
 msgid "PROGRESS"
 msgstr "进度"
 
-#: templates/courses/course_progress_v2.haml:22
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "          You are %(user_course_progress)s%% of the way through the "
-#| "course based on completion of modules within lessons. The cohort average "
-#| "is %(user_average_progress)s%%.\n"
-#| "        "
+#: templates/courses/course_progress_v2.haml:23
+#, python-format
 msgid ""
 "\n"
 "            You are  %(user_course_progress)s%% of the way through the "
@@ -6891,101 +6885,105 @@ msgid ""
 "          "
 msgstr ""
 "\n"
-"          根据课时模块的完成情况，您的课程进度为 %(user_course_progress)s%%。"
-"群组平均值是 %(user_average_progress)s%%。\n"
+"          当前 %(lessons_custom_label)s%%  中 %(modules_custom_label)s。模块"
+"的完成进度为 %(user_course_progress)s。当前学员平均进度为 "
+"%(user_average_progress)s%%。\n"
 "        "
 
-#: templates/courses/course_progress_v2.haml:26
+#: templates/courses/course_progress_v2.haml:27
 #, fuzzy, python-format
 #| msgid ""
 #| "\n"
-#| "          You are %(user_course_progress)s%% of the way through the "
-#| "course based on completion of modules within lessons. The cohort average "
-#| "is %(user_average_progress)s%%.\n"
-#| "        "
+#| "            You are %(user_course_progress)s%% of the way through the "
+#| "course based on completion of modules within %(lessons_custom_label)s. "
+#| "The cohort average is %(user_average_progress)s%%.\n"
+#| "          "
 msgid ""
 "\n"
-"            You are and I am %(user_course_progress)s%% of the way through "
-"the course based on completion of modules within %(lessons_custom_label)s. "
-"The cohort average is %(user_average_progress)s%%.\n"
+"            You are %(user_course_progress)s%% of the way through the course "
+"based on completion of modules within %(lessons_custom_label)s. The cohort "
+"average is %(user_average_progress)s%%.\n"
 "          "
 msgstr ""
 "\n"
-"          根据课时模块的完成情况，您的课程进度为 %(user_course_progress)s%%。"
-"群组平均值是 %(user_average_progress)s%%。\n"
+"          当前 %(lessons_custom_label)s%%  中 %(modules_custom_label)s。模块"
+"的完成进度为 %(user_course_progress)s。当前学员平均进度为 "
+"%(user_average_progress)s%%。\n"
 "        "
 
-#: templates/courses/course_progress_v2.haml:30
+#: templates/courses/course_progress_v2.haml:31
 #, fuzzy, python-format
 #| msgid ""
 #| "\n"
-#| "          You are %(user_course_progress)s%% of the way through the "
-#| "course based on completion of modules within lessons. The cohort average "
-#| "is %(user_average_progress)s%%.\n"
-#| "        "
+#| "            You are %(user_course_progress)s%% of the way through the "
+#| "course based on completion of %(modules_custom_label)s within lessons. "
+#| "The cohort average is %(user_average_progress)s%%.\n"
+#| "          "
 msgid ""
 "\n"
-"            You are and I am %(user_course_progress)s%% of the way through "
-"the course based on completion of %(modules_custom_label)s within lessons. "
-"The cohort average is %(user_average_progress)s%%.\n"
+"            You are %(user_course_progress)s%% of the way through the course "
+"based on completion of %(modules_custom_label)s within lessons. The cohort "
+"average is %(user_average_progress)s%%.\n"
 "          "
 msgstr ""
 "\n"
-"          根据课时模块的完成情况，您的课程进度为 %(user_course_progress)s%%。"
-"群组平均值是 %(user_average_progress)s%%。\n"
+"          当前 %(lessons_custom_label)s%%  中%(modules_custom_label)s。模块的"
+"完成进度为 %(user_course_progress)s。当前学员平均进度为 "
+"%(user_average_progress)s%%。\n"
 "        "
 
-#: templates/courses/course_progress_v2.haml:34
+#: templates/courses/course_progress_v2.haml:35
 #, fuzzy, python-format
 #| msgid ""
 #| "\n"
-#| "          You are %(user_course_progress)s%% of the way through the "
+#| "            You are %(user_course_progress)s%% of the way through the "
 #| "course based on completion of modules within lessons. The cohort average "
 #| "is %(user_average_progress)s%%.\n"
-#| "        "
+#| "          "
 msgid ""
 "\n"
-"            You are and I am %(user_course_progress)s%% of the way through "
-"the course based on completion of modules within lessons. The cohort average "
-"is %(user_average_progress)s%%.\n"
+"            You are %(user_course_progress)s%% of the way through the course "
+"based on completion of modules within lessons. The cohort average is "
+"%(user_average_progress)s%%.\n"
 "          "
 msgstr ""
 "\n"
-"          根据课时模块的完成情况，您的课程进度为 %(user_course_progress)s%%。"
-"群组平均值是 %(user_average_progress)s%%。\n"
+"          当前 %(lessons_custom_label)s%%  中%(modules_custom_label)s。模块的"
+"完成进度为 %(user_course_progress)s。当前学员平均进度为 "
+"%(user_average_progress)s%%。\n"
 "        "
 
-#: templates/courses/course_progress_v2.haml:40
+#: templates/courses/course_progress_v2.haml:41
 msgid "Modules:"
 msgstr "模块："
 
-#: templates/courses/course_progress_v2.haml:41
-#: templates/courses/course_progress_v2.haml:143
-#: templates/courses/course_progress_v2.haml:210
+#: templates/courses/course_progress_v2.haml:42
+#: templates/courses/course_progress_v2.haml:144
+#: templates/courses/course_progress_v2.haml:206
 msgid "Overall:"
 msgstr "总体："
 
-#: templates/courses/course_progress_v2.haml:44
+#: templates/courses/course_progress_v2.haml:45
 msgid "in this course"
 msgstr "本课程内"
 
-#: templates/courses/course_progress_v2.haml:52
+#: templates/courses/course_progress_v2.haml:53
 msgid "Individual Learning:"
 msgstr "个人学习："
 
-#: templates/courses/course_progress_v2.haml:54
+#: templates/courses/course_progress_v2.haml:55
 msgid "Group Work (Due Date):"
 msgstr "小组作业（到期日期）："
 
-#: templates/courses/course_progress_v2.haml:62
+#: templates/courses/course_progress_v2.haml:63
 msgid "Week"
 msgstr "周"
 
-#: templates/courses/course_progress_v2.haml:66
+#: templates/courses/course_progress_v2.haml:67
 msgid "N/A (focus on Group Work)"
 msgstr "不适用（关注小组作业）"
 
-#: templates/courses/course_progress_v2.haml:91
+#: templates/courses/course_progress_v2.haml:92
 #, fuzzy, python-format
 #| msgid ""
 #| "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
@@ -6994,20 +6992,20 @@ msgid ""
 "%(lesson_index)s: "
 msgstr "您已完成课时 %(lesson_index)s 的 %(lesson_progress)s%%："
 
-#: templates/courses/course_progress_v2.haml:93
+#: templates/courses/course_progress_v2.haml:94
 #, python-format
 msgid "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
 msgstr "您已完成课时 %(lesson_index)s 的 %(lesson_progress)s%%："
 
-#: templates/courses/course_progress_v2.haml:124
+#: templates/courses/course_progress_v2.haml:125
 msgid "partially complete"
 msgstr "部分完成"
 
-#: templates/courses/course_progress_v2.haml:127
+#: templates/courses/course_progress_v2.haml:128
 msgid "Note: Group Work Deliverables need to be submitted by 11pm GMT."
 msgstr "注：小组作业交付文件需在格林威治标准时间晚上 11 点之前提交。"
 
-#: templates/courses/course_progress_v2.haml:130
+#: templates/courses/course_progress_v2.haml:131
 msgid ""
 "Note: \"weeks\" begin Tuesday and end the following Monday; Group Work "
 "Deliverables need to be submitted by 11pm GMT."
@@ -7015,15 +7013,15 @@ msgstr ""
 "注：“周”从周二开始并在下周一结束；小组作业交付文件需在格林威治标准时间晚上 "
 "11 点之前提交。"
 
-#: templates/courses/course_progress_v2.haml:132
+#: templates/courses/course_progress_v2.haml:133
 msgid "Note: \"weeks\" begin Tuesday and end the following Monday"
 msgstr "注：“周”从周二开始并在下周一结束"
 
-#: templates/courses/course_progress_v2.haml:135
+#: templates/courses/course_progress_v2.haml:136
 msgid "PROFICIENCY"
 msgstr "熟练程度"
 
-#: templates/courses/course_progress_v2.haml:137
+#: templates/courses/course_progress_v2.haml:138
 #, python-format
 msgid ""
 "\n"
@@ -7039,23 +7037,23 @@ msgstr ""
 "群组平均值是 %(cohort_proficiency_average)s%%。\n"
 "          "
 
-#: templates/courses/course_progress_v2.haml:144
+#: templates/courses/course_progress_v2.haml:145
 msgid "Graded Items:"
 msgstr "已评分项目："
 
-#: templates/courses/course_progress_v2.haml:145
+#: templates/courses/course_progress_v2.haml:146
 msgid "Grade:"
 msgstr "评分："
 
-#: templates/courses/course_progress_v2.haml:189
+#: templates/courses/course_progress_v2.haml:185
 msgid "Grading in progress"
 msgstr "评分正在进行中"
 
-#: templates/courses/course_progress_v2.haml:193
+#: templates/courses/course_progress_v2.haml:189
 msgid "not started / incomplete"
 msgstr "未开始/未完成"
 
-#: templates/courses/course_progress_v2.haml:196
+#: templates/courses/course_progress_v2.haml:192
 #, python-format
 msgid ""
 "\n"
@@ -7071,15 +7069,15 @@ msgstr ""
 "我们如何共享您的课程信息。\n"
 "          "
 
-#: templates/courses/course_progress_v2.haml:201
+#: templates/courses/course_progress_v2.haml:197
 msgid "ENGAGEMENT"
 msgstr "参与度"
 
-#: templates/courses/course_progress_v2.haml:203
+#: templates/courses/course_progress_v2.haml:199
 msgid "discussion"
 msgstr "讨论"
 
-#: templates/courses/course_progress_v2.haml:204
+#: templates/courses/course_progress_v2.haml:200
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -7095,35 +7093,35 @@ msgstr ""
 "参与度分数是 %(social_points)s。群组平均分是 %(social_course_avg)s。\n"
 "          "
 
-#: templates/courses/course_progress_v2.haml:211
+#: templates/courses/course_progress_v2.haml:207
 msgid "Measured Engagement:"
 msgstr "衡量出来的参与度："
 
-#: templates/courses/course_progress_v2.haml:212
+#: templates/courses/course_progress_v2.haml:208
 msgid "Stats:"
 msgstr "统计数据："
 
-#: templates/courses/course_progress_v2.haml:217
+#: templates/courses/course_progress_v2.haml:213
 msgid "Number of <span>New Posts</span> you created "
 msgstr "您创建的<span>新帖子</span>数量"
 
-#: templates/courses/course_progress_v2.haml:220
+#: templates/courses/course_progress_v2.haml:216
 msgid "Number of <span>Replies</span> you made to other posts "
 msgstr "您对其他帖子的<span>回复</span>数量"
 
-#: templates/courses/course_progress_v2.haml:223
+#: templates/courses/course_progress_v2.haml:219
 msgid " Number of <span>Comments Generated </span> by your posts "
 msgstr "您的帖子<span>产生的评论</span>数量"
 
-#: templates/courses/course_progress_v2.haml:226
+#: templates/courses/course_progress_v2.haml:222
 msgid " Number of <span>Upvotes</span> your posts have received "
 msgstr "您的帖子收到的<span>赞成票</span>数量"
 
-#: templates/courses/course_progress_v2.haml:229
+#: templates/courses/course_progress_v2.haml:225
 msgid " Number of your posts being <span>Followed</span> "
 msgstr "您正在<span>被关注</span>的帖子数量"
 
-#: templates/courses/course_progress_v2.haml:236
+#: templates/courses/course_progress_v2.haml:232
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
