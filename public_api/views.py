@@ -224,7 +224,8 @@ def send_participant_activation_link(request, login_id):
                 activation_link =  '{}/{}'.format(email_head, activation_record.activation_key)
 
                 email_user_activation_link(request, user, activation_link)
-                return JsonResponse({'message': _('We just sent an email to <{}> with a link to create your account.').format(user.get("email"))}, status=status.HTTP_200_OK)
+                return JsonResponse({'message': _('We have sent an email to {} with a link to create an account for you.')
+                                    .format(user.get("email")), 'email':user.get("email")}, status=status.HTTP_200_OK)
         except:
             return JsonResponse({'error':_("Sorry, Please try again later to receive an email with a link to create your account.")}, status=status.HTTP_400_BAD_REQUEST)
 

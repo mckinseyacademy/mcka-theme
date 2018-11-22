@@ -15,7 +15,10 @@
   %a{:href => "{{activation_link}}", :style => "margin-top: 15px;margin-bottom: 20px; display: inline-block;"}
     #{activation_link}
   %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
-    {% trans "After you've created your username and password, you can access your course at www.mckinseyacademy.com at anytime." %}
+    {% trans "After you've created your username and password, you can access your course at" %}
+    %a{href: 'http://www.mckinseyacademy.com'}
+      http://www.mckinseyacademy.com
+    {% trans " at anytime." %}
   %a{:href => "{{activation_link}}", :style => "text-transform: uppercase;margin-top: 15px;margin-bottom: 20px; display: inline-block; border: 1px solid #004fa4;-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;font-size: 15px;font-weight: bold; color: #004fa4;padding: 12px 38px;text-decoration: none;"}
     {% trans "GET STARTED" %}
 

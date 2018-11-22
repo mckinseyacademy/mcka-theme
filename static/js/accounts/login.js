@@ -82,16 +82,24 @@ $(function () {
             type: 'GET',
             url: '/mcka-api/v1/send_activation_link/'+$("input[name=login_id]").val(),
             success: function (_1, _2, xhr) {
-                openModalWithActivationMessage(xhr.responseJSON["message"])
+                openModalWithActivationMessage(xhr)
             },
             error: function (error) {
-                openModalWithActivationMessage(error.responseJSON["error"])
+                openModalWithActivationMessage(error)
             }
         });
     }
 
-    function openModalWithActivationMessage(message){
-        $('.headline_message').text(message);
+    function openModalWithActivationMessage(xhr){
+        $('.headline_message').html("")
+        $('.activation_success_message').hide()
+        if (xhr.status === 200){
+            $('.headline_message').append(xhr.responseJSON["message"]);
+            $('.activation_success_message').show()
+        }
+        else {
+            $('.headline_message').append(xhr.responseJSON["error"]);
+        }
         $('#user_activation_notification').foundation('reveal', 'open');
     }
 
