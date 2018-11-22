@@ -348,6 +348,19 @@ header[role=banner]{
       }
     }
   }
+  #course-menu{
+    .rotator{
+      ul{
+        li{
+          @include margin-left(2px);
+          @include margin-right(9px);
+            .estimated-time{
+              @include left(7px);
+            }
+        }
+      }
+    }
+  }
 }
 
 #generalModal.reveal-modal,

@@ -21,7 +21,7 @@ Apros.views.CohortsDetailView = Backbone.View.extend({
   createCohort: function () {
     let name = $('input#newCohortName').val();
     let assignment;
-    for (let radio of $('div.newCohortAssignment input').toArray()) {
+    for (let radio in $('div.newCohortAssignment input').toArray()) {
       if (radio.checked) {
         assignment = radio.value;
         break;
