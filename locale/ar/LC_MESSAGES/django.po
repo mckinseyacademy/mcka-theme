@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-22 13:41+0000\n"
+"POT-Creation-Date: 2018-11-23 16:04+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2929,16 +2929,16 @@ msgid "Password reset email sent"
 msgstr "تم إرسال البريد الإلكتروني الخاص بإعادة تعيين كلمة المرور"
 
 #: public_api/views.py:227
-msgid "We just sent an email to <{}> with a link to create your account."
+msgid "We have sent an email to {} with a link to create an account for you."
 msgstr ""
 
-#: public_api/views.py:229
+#: public_api/views.py:230
 msgid ""
 "Sorry, Please try again later to receive an email with a link to create your "
 "account."
 msgstr ""
 
-#: public_api/views.py:231
+#: public_api/views.py:232
 #, fuzzy
 #| msgid "User doesn't exist"
 msgid "User does not exist"
@@ -3153,14 +3153,26 @@ msgid "Trouble logging in? Contact us."
 msgstr "هل تواجهك مشكلة في تسجيل الدخول؟ اتصل بنا."
 
 #: templates/accounts/login.haml:68
-msgid "Please Check Your E-mail Inbox"
+msgid "Check your email inbox"
 msgstr ""
 
-#: templates/accounts/login.haml:73
+#: templates/accounts/login.haml:75
+msgid "If you don't see the email in your inbox, check your spam folder or"
+msgstr ""
+
+#: templates/accounts/login.haml:77
 #, fuzzy
 #| msgid "Send Email"
-msgid "Resend E-mail"
+msgid "resend email"
 msgstr "إرسال البريد الإلكتروني"
+
+#: templates/accounts/login.haml:79
+msgid "with the link."
+msgstr ""
+
+#: templates/accounts/login.haml:82
+msgid "Return to Login"
+msgstr ""
 
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
@@ -3278,23 +3290,27 @@ msgstr ""
 #: templates/accounts/user_activation_email.haml:18
 msgid ""
 "After you've created your username and password, you can access your course "
-"at www.mckinseyacademy.com at anytime."
+"at"
 msgstr ""
 
-#: templates/accounts/user_activation_email.haml:20
+#: templates/accounts/user_activation_email.haml:21
+msgid " at anytime."
+msgstr ""
+
+#: templates/accounts/user_activation_email.haml:23
 #, fuzzy
 #| msgid "COURSE_STARTED"
 msgid "GET STARTED"
 msgstr "بدأت الدورة"
 
-#: templates/accounts/user_activation_email.haml:24
+#: templates/accounts/user_activation_email.haml:27
 #: templates/admin/bulk_fields_update_report_email.haml:28
 #: templates/admin/export_stats_email_template.haml:23
 #: templates/admin/export_stats_failure_email_template.haml:23
 msgid "Best Regards,"
 msgstr "مع أطيب التحيات،"
 
-#: templates/accounts/user_activation_email.haml:30
+#: templates/accounts/user_activation_email.haml:33
 #: templates/admin/admin_header.haml:62
 #: templates/admin/bulk_fields_update_report_email.haml:34
 #: templates/admin/export_stats_email_template.haml:29
@@ -3302,7 +3318,7 @@ msgstr "مع أطيب التحيات،"
 msgid "Contact"
 msgstr "جهة الاتصال"
 
-#: templates/accounts/user_activation_email.haml:33
+#: templates/accounts/user_activation_email.haml:36
 #: templates/admin/bulk_fields_update_report_email.haml:37
 #: templates/admin/export_stats_email_template.haml:32
 msgid "if you have any questions"
@@ -6980,7 +6996,8 @@ msgstr ""
 "\n"
 " لقد أكملت %(user_course_progress)s%% من الدورة التدريبية على أساس إكمال  "
 "الوحدة %(modules_custom_label)s بالدرس  %(lessons_custom_label)s. متوسط "
-"الفوج  %(user_average_progress)s%%.\n"
+"الفوج \n"
+" %(user_average_progress)s%%."
 
 #: templates/courses/course_progress_v2.haml:27
 #, python-format
@@ -6993,8 +7010,8 @@ msgid ""
 msgstr ""
 "\n"
 " لقد أكملت %(user_course_progress)s%% من الدورة التدريبية على أساس إكمال  "
-"الوحدات بالدرس %(lessons_custom_label)s. متوسط الفوج  "
-"%(user_average_progress)s%%.\n"
+"الوحدات بالدرس %(lessons_custom_label)s. متوسط الفوج \n"
+"%(user_average_progress)s%%."
 
 #: templates/courses/course_progress_v2.haml:31
 #, python-format
@@ -7007,8 +7024,8 @@ msgid ""
 msgstr ""
 "\n"
 " لقد أكملت %(user_course_progress)s%% من الدورة التدريبية على أساس إكمال   "
-"الوحدة %(modules_custom_label)s بالدروس. متوسط الفوج   "
-"%(user_average_progress)s%%.\n"
+"الوحدة %(modules_custom_label)s بالدروس. متوسط الفوج \n"
+"%(user_average_progress)s%%."
 
 #: templates/courses/course_progress_v2.haml:35
 #, python-format
@@ -7021,7 +7038,8 @@ msgid ""
 msgstr ""
 "\n"
 " لقد أكملت %(user_course_progress)s%% من الدورة التدريبية على أساس إكمال   "
-"الوحدات بالدروس. متوسط الفوج  %(user_average_progress)s%%.\n"
+"الوحدات بالدروس. متوسط الفوج \n"
+"%(user_average_progress)s%%."
 
 #: templates/courses/course_progress_v2.haml:41
 msgid "Modules:"

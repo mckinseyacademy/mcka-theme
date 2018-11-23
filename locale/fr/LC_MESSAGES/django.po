@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-22 13:42+0000\n"
+"POT-Creation-Date: 2018-11-23 16:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2958,16 +2958,16 @@ msgid "Password reset email sent"
 msgstr "E-mail de réinitialisation de mot de passe envoyé"
 
 #: public_api/views.py:227
-msgid "We just sent an email to <{}> with a link to create your account."
+msgid "We have sent an email to {} with a link to create an account for you."
 msgstr ""
 
-#: public_api/views.py:229
+#: public_api/views.py:230
 msgid ""
 "Sorry, Please try again later to receive an email with a link to create your "
 "account."
 msgstr ""
 
-#: public_api/views.py:231
+#: public_api/views.py:232
 #, fuzzy
 #| msgid "User doesn't exist"
 msgid "User does not exist"
@@ -3198,14 +3198,26 @@ msgid "Trouble logging in? Contact us."
 msgstr "Problème de connexion ? Contactez-nous."
 
 #: templates/accounts/login.haml:68
-msgid "Please Check Your E-mail Inbox"
+msgid "Check your email inbox"
 msgstr ""
 
-#: templates/accounts/login.haml:73
+#: templates/accounts/login.haml:75
+msgid "If you don't see the email in your inbox, check your spam folder or"
+msgstr ""
+
+#: templates/accounts/login.haml:77
 #, fuzzy
 #| msgid "Send Email"
-msgid "Resend E-mail"
+msgid "resend email"
 msgstr "Envoyer un e-mail"
+
+#: templates/accounts/login.haml:79
+msgid "with the link."
+msgstr ""
+
+#: templates/accounts/login.haml:82
+msgid "Return to Login"
+msgstr ""
 
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
@@ -3321,23 +3333,27 @@ msgstr ""
 #: templates/accounts/user_activation_email.haml:18
 msgid ""
 "After you've created your username and password, you can access your course "
-"at www.mckinseyacademy.com at anytime."
+"at"
 msgstr ""
 
-#: templates/accounts/user_activation_email.haml:20
+#: templates/accounts/user_activation_email.haml:21
+msgid " at anytime."
+msgstr ""
+
+#: templates/accounts/user_activation_email.haml:23
 #, fuzzy
 #| msgid "COURSE_STARTED"
 msgid "GET STARTED"
 msgstr "COURSE_STARTED"
 
-#: templates/accounts/user_activation_email.haml:24
+#: templates/accounts/user_activation_email.haml:27
 #: templates/admin/bulk_fields_update_report_email.haml:28
 #: templates/admin/export_stats_email_template.haml:23
 #: templates/admin/export_stats_failure_email_template.haml:23
 msgid "Best Regards,"
 msgstr "Cordialement,"
 
-#: templates/accounts/user_activation_email.haml:30
+#: templates/accounts/user_activation_email.haml:33
 #: templates/admin/admin_header.haml:62
 #: templates/admin/bulk_fields_update_report_email.haml:34
 #: templates/admin/export_stats_email_template.haml:29
@@ -3345,7 +3361,7 @@ msgstr "Cordialement,"
 msgid "Contact"
 msgstr "Contact"
 
-#: templates/accounts/user_activation_email.haml:33
+#: templates/accounts/user_activation_email.haml:36
 #: templates/admin/bulk_fields_update_report_email.haml:37
 #: templates/admin/export_stats_email_template.haml:32
 msgid "if you have any questions"
@@ -7149,13 +7165,7 @@ msgstr ""
 "        "
 
 #: templates/courses/course_progress_v2.haml:31
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "            You are %(user_course_progress)s%% of the way through the "
-#| "course based on completion of %(modules_custom_label)s within lessons. "
-#| "The cohort average is %(user_average_progress)s%%.\n"
-#| "          "
+#, python-format
 msgid ""
 "\n"
 "            You are %(user_course_progress)s%% of the way through the course "
@@ -7165,7 +7175,7 @@ msgid ""
 msgstr ""
 "\n"
 "          Vous avez fait %(user_course_progress)s%% du cours sur la base de "
-"l'exécution des modules dans la leçon %(lessons_custom_label)s. La moyenne "
+"l'exécution des modules dans la leçon %(modules_custom_label)s. La moyenne "
 "générale est %(user_average_progress)s%%.\n"
 "        "
 
