@@ -798,16 +798,16 @@ def get_course_details_metrics_grades(course_id, count):
 def get_course_details_metrics_social(course_id, qs_params = ''):
     ''' fetch social metrics for course '''
 
-    response = GET(
-        '{}/{}/{}/metrics/social/?{}'.format(
+    edx_oauth2_session = get_oauth2_session()
+
+    url = '{}/{}/{}/metrics/social/?{}'.format(
             settings.API_SERVER_ADDRESS,
             COURSEWARE_API,
             course_id,
             urlencode(qs_params)
         )
-    )
-
-    return json.loads(response.read())
+    response = edx_oauth2_session.get(url)
+    return response.json()
 
 
 @api_error_protect
