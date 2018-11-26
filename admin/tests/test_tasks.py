@@ -13,6 +13,7 @@ from admin.tasks import (
     participants_notifications_data_task,
     users_program_association_task
 )
+from api_client.course_models import CourseCohortSettings
 from api_client.user_models import UserResponse
 
 
@@ -108,6 +109,10 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
         test_course_id = 'abc'
         file_name = '{}_user_stats'.format(test_course_id)
 
+        course_api = self.apply_patch('admin.tasks.course_api')
+        course_api.get_cohorts_settings.return_value = CourseCohortSettings(
+            dictionary={'is_cohorted': True, 'id': 1}
+        )
         result = course_participants_data_retrieval_task(
             course_id=test_course_id, company_id=None, base_url='http://url.xyz',
             task_id='xyz', user_id=123
