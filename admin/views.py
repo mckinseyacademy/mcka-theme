@@ -5883,11 +5883,6 @@ class CohortUsers(APIView):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def cohorts_courses_list(request):
-    return render(request, 'admin/cohorts/courses_list.haml')
-
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def cohorts_course_details(request, course_id):
     course = course_api.get_course_details(course_id)
     return render(request, 'admin/cohorts/course_details.html', course)
