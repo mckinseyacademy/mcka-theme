@@ -565,6 +565,7 @@ def get_course_metrics_by_city(course_id, cities=None, **kwargs):
     qs_params = {"page_size": 0}
     if cities:
         qs_params["city"] = cities
+    qs_params.update(kwargs)
 
     url = '{}/{}/{}/metrics/cities/?{}'.format(
         settings.API_SERVER_ADDRESS,
