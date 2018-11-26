@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-01 09:57+0000\n"
+"POT-Creation-Date: 2018-11-07 11:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:368
-#: static/js/views/admin/participantsinfo.js:120
+#: static/js/views/admin/participantsinfo.js:121
 msgid "Course"
 msgstr "Curso"
 
@@ -70,13 +70,14 @@ msgid "Are you sure?"
 msgstr "Tem certeza?"
 
 #: static/js/admin_upload_students.js:8
-#: static/js/common/mass_participants_enroll.js:168
+#: static/js/common/mass_participants_enroll.js:169
 #: static/js/common/mass_participants_upload.js:115
 msgid "Show Errors"
 msgstr "Mostrar Erros"
 
 #: static/js/admin_upload_students.js:73
 #: static/js/common/mass_participants_enroll.js:147
+#: static/js/common/mass_participants_enroll.js:325
 #: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
 msgid "Please select file first."
 msgstr "Selecione o arquivo primeiro."
@@ -121,6 +122,8 @@ msgstr "%(value)s%"
 
 #: static/js/common/mass_participants_enroll.js:57
 #: static/js/common/mass_participants_enroll.js:128
+#: static/js/common/mass_participants_enroll.js:298
+#: static/js/common/mass_participants_enroll.js:373
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
@@ -128,37 +131,59 @@ msgstr ""
 "O arquivo .csv tem mais de %(limit)s linhas: %(lines)s , divida-o em mais "
 "arquivos!"
 
-#: static/js/common/mass_participants_enroll.js:180
+#: static/js/common/mass_participants_enroll.js:181
 #: static/js/common/mass_participants_upload.js:127
 msgid "Errors:"
 msgstr "Erros:"
 
-#: static/js/common/mass_participants_enroll.js:189
+#: static/js/common/mass_participants_enroll.js:190
 #: static/js/common/mass_participants_upload.js:136
 msgid "Total:"
 msgstr "Total:"
 
-#: static/js/common/mass_participants_enroll.js:191
+#: static/js/common/mass_participants_enroll.js:192
 #: static/js/common/mass_participants_upload.js:138
 msgid "Succeded:"
 msgstr "Sucesso:"
 
-#: static/js/common/mass_participants_enroll.js:193
+#: static/js/common/mass_participants_enroll.js:194
 #: static/js/common/mass_participants_upload.js:140
 msgid "Failed:"
 msgstr "Falha:"
 
-#: static/js/common/mass_participants_enroll.js:245
+#: static/js/common/mass_participants_enroll.js:246
 msgid "email"
 msgstr "e-mail"
 
-#: static/js/common/mass_participants_enroll.js:245
+#: static/js/common/mass_participants_enroll.js:246
 msgid "course id"
 msgstr "id do curso"
 
-#: static/js/common/mass_participants_enroll.js:245
+#: static/js/common/mass_participants_enroll.js:246
 msgid "status"
 msgstr "status"
+
+#: static/js/common/mass_participants_enroll.js:260
+msgid "Learner email"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:260
+msgid "Business Function"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:260
+msgid "Business Unit"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:260
+#, fuzzy
+#| msgid "Notification"
+msgid "location"
+msgstr "Notificação"
+
+#: static/js/common/mass_participants_enroll.js:396
+msgid "Report of bulk update will be sent to your email."
+msgstr ""
 
 #: static/js/common/mass_participants_upload.js:137
 #: static/js/common/mass_participants_upload.js:139
@@ -261,7 +286,7 @@ msgid "Participants:"
 msgstr "Participantes:"
 
 #: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:23
+#: static/js/views/admin/participantsinfo.js:24
 msgid "Email"
 msgstr "E-mail"
 
@@ -364,7 +389,7 @@ msgstr[5] ""
 
 #: static/js/views/admin/companies_list.js:15
 #: static/js/views/admin/course_details.js:29
-#: static/js/views/admin/participantsinfo.js:22
+#: static/js/views/admin/participantsinfo.js:23
 msgid "Company"
 msgstr "Empresa"
 
@@ -384,7 +409,7 @@ msgstr "Nº de cursos"
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:484
-#: static/js/views/admin/participantsinfo.js:370
+#: static/js/views/admin/participantsinfo.js:371
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "O nome da empresa deve conter apenas caracteres alfanuméricos!"
 
@@ -392,7 +417,7 @@ msgstr "O nome da empresa deve conter apenas caracteres alfanuméricos!"
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:478
-#: static/js/views/admin/participantsinfo.js:364
+#: static/js/views/admin/participantsinfo.js:365
 msgid "This company name cannot have more than 30 characters!"
 msgstr "O nome da empresa deve ter, no máximo, 30 caracteres!"
 
@@ -492,7 +517,7 @@ msgid "No App Display Name!"
 msgstr "Nenhum Nome de Exibição do Aplicativo!"
 
 #: static/js/views/admin/course_details.js:6
-#: static/js/views/admin/participantsinfo.js:12
+#: static/js/views/admin/participantsinfo.js:13
 msgid "Name"
 msgstr "Nome"
 
@@ -501,12 +526,12 @@ msgstr "Nome"
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:372
-#: static/js/views/admin/participantsinfo.js:129
+#: static/js/views/admin/participantsinfo.js:130
 msgid "Status"
 msgstr "Status"
 
 #: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:40
+#: static/js/views/admin/participantsinfo.js:41
 msgid "Activated"
 msgstr "Ativado"
 
@@ -636,21 +661,21 @@ msgstr "Alterar o status de todos os participantes selecionados para:"
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:374
-#: static/js/views/admin/participantsinfo.js:133
+#: static/js/views/admin/participantsinfo.js:134
 msgid "Participant"
 msgstr "Participante"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:135
+#: static/js/views/admin/participantsinfo.js:136
 msgid "Observer"
 msgstr "Observador"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:376
-#: static/js/views/admin/participantsinfo.js:134
+#: static/js/views/admin/participantsinfo.js:135
 msgid "TA"
 msgstr "TA"
 
@@ -948,7 +973,7 @@ msgid "User successfully enrolled in course"
 msgstr "Usuário inscrito no curso com sucesso "
 
 #: static/js/views/admin/participant_details_edit_info.js:531
-#: static/js/views/admin/participantsinfo.js:100
+#: static/js/views/admin/participantsinfo.js:101
 msgid "Admin Company"
 msgstr "Empresa do Administrador"
 
@@ -959,20 +984,20 @@ msgstr ""
 "antecipada."
 
 #: static/js/views/admin/participant_details_edit_info.js:541
-#: static/js/views/admin/participantsinfo.js:109
+#: static/js/views/admin/participantsinfo.js:110
 msgid "Admin Permissions"
 msgstr "Permissões do Administrador"
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:112
+#: static/js/views/admin/participantsinfo.js:113
 msgid "Company Admin"
 msgstr "Empresa do Administrador"
 
-#: static/js/views/admin/participantsinfo.js:24
+#: static/js/views/admin/participantsinfo.js:25
 msgid "Date Added"
 msgstr "Dados Adicionados"
 
-#: static/js/views/admin/participantsinfo.js:34
+#: static/js/views/admin/participantsinfo.js:35
 msgid "Enrolled In"
 msgstr "Inscrito em"
 
