@@ -2,6 +2,7 @@ import json
 from urllib import urlencode
 
 from django.conf import settings
+from rest_framework import status
 
 from api_client import cohort_models, user_models, discussions_api
 from api_client.api_error import api_error_protect
@@ -218,15 +219,22 @@ def remove_user_from_cohort(
 
 
 @api_error_protect
-def import_users(course_id, data, edx_oauth2_session=None):
+def import_users(course_id, data):
     """
     Return whether the course with given ``course_id``.
     """
-    if not edx_oauth2_session:
-        edx_oauth2_session = get_oauth2_session()
+    edx_oauth2_session = get_oauth2_session()
     url = '{}/{}/{}/users'.format(
         settings.API_SERVER_ADDRESS,
         COHORTS_COURSES_API,
         course_id,
     )
-    return edx_oauth2_session.post(url, data=data).json()
+    edx_oauth2_session.headers.clear()
+    response = edx_oauth2_session.post(
+        url,
+        files={'uploaded-file': ('cohort-user.csv', data.read())},
+    )
+    if response.status_code == status.HTTP_204_NO_CONTENT:
+        return None
+    else:
+        return response.json()

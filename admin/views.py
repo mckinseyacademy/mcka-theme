@@ -5898,4 +5898,9 @@ class CohortImport(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, course_id):
-        return Response(cohort_api.import_users(course_id, request.FILES))
+        uploaded_file = request.FILES.get('uploaded-file')
+        response = cohort_api.import_users(course_id, uploaded_file)
+        if response is not None:
+            return Response(response)
+        else:
+            return Response({'status': 'OK'})
