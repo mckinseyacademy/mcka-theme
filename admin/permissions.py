@@ -38,7 +38,8 @@ class Permissions(object):
 
     permission_for_role = {
         USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA,
-        USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER
+        USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER,
+        USER_ROLES.MODERATOR: PERMISSION_GROUPS.MODERATOR
     }
     CACHE_EXPIRE_TIME = 300 # every five minutes it will refresh courses list
     def __init__(self, user_id, ):
