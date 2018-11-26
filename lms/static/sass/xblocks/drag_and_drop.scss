@@ -36,7 +36,8 @@
         background-color: transparent;
     }
 
-    .feedback p::before {
+    .feedback p::before,
+    .feedback p::after {
         display: none;
     }
 
@@ -55,6 +56,13 @@
 .rtl .themed-xblock.xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
     float: left;
     padding-left: -5px;
+}
+
+// Default of this series of tags is set to text-align left in LMS
+.rtl {
+    h1, h2, h3, h4, h5, h6, p, label {
+        text-align: right;
+    }
 }
 
 @include dnd-mobile-only {
