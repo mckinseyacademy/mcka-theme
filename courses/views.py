@@ -25,14 +25,13 @@ from api_client.platform_api import update_course_mobile_available_status
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.workgroup_models import Submission
-from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
+from api_data_manager.course_data import CourseDataManager
 from lib.authorization import permission_group_required
 from lib.utils import DottableDict
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.query_manager import get_object_or_none
 from mobile_apps.controller import get_mobile_app_download_popup_data
 
-from .models import LessonNotesItem, FeatureFlags
+from .models import LessonNotesItem, FeatureFlags, CourseMetaData
 from .controller import (
     inject_gradebook_info,
     round_to_int,
@@ -97,7 +96,7 @@ def course_landing_page(request, course_id):
     # if enhanced caching is enabled
     if feature_flags.enhanced_caching:
         # check if it's already in cache
-        course = course_data_manager.get_cached_data(COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT)
+        course = course_data_manager.get_prefetched_course_object(user=request.user)
 
         # if already cached then add-in just the dynamic part
         if course is not None:
@@ -196,8 +195,8 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
-    feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
-    if feature_flags and not feature_flags.cohort_map:
+    feature_flags = CourseDataManager(course_id).get_feature_flags()
+    if not feature_flags.cohort_map:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     try:

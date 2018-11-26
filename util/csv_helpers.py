@@ -2,9 +2,15 @@
 Generic CSV related methods
 """
 
+from tempfile import TemporaryFile
 import unicodecsv
-import csv, codecs, cStringIO
+import csv
+import codecs
+import cStringIO
+
 from django.http import HttpResponse
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
 
 
 class CSVWriter(object):
@@ -97,3 +103,39 @@ class UnicodeWriter:
     def writerows(self, rows):
         for row in rows:
             self.writerow(row)
+
+
+def create_and_store_csv_file(fields, data, dir_name, file_name, logger, task_log_msg):
+    """
+    Creates and store csv file in storage
+
+    fields: ordered dict of the form {field_title: (field_key, default_value)}
+    data: the data to write; list of dicts
+    """
+    try:
+        temp_csv_file = TemporaryFile()
+    except Exception as e:
+        logger.error('Failed creating temp CSV file - {}'.format(e.message))
+        raise
+    else:
+        writer = CSVWriter(temp_csv_file, fields, data)
+        writer.write_csv()
+        temp_csv_file.seek(0)
+
+    logger.info('Created temp CSV file - {}'.format(task_log_msg))
+
+    storage_path = '{}/{}'.format(dir_name, file_name)
+    storage = default_storage
+
+    try:
+        file_path = storage.save(storage_path, ContentFile(temp_csv_file.read()))
+        file_url = storage.url(file_path)
+    except Exception as e:
+        logger.error('Failed storing file to storage - {}'.format(e.message))
+        raise
+    finally:
+        temp_csv_file.close()
+
+    logger.info('File stored at path {} - {}'.format(file_url, task_log_msg))
+
+    return file_url

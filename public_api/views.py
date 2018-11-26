@@ -45,18 +45,23 @@ def api_create_token(request):
 @api_authenticate_protect
 @api_json_response
 def course(request, course_id):
-    course = course_api.get_course(course_id)
+    course_ = course_api.get_course_v1(course_id, depth=0)
     overview = course_api.get_course_overview(course_id)
 
     data = {
-        "name": course.name,
-        "url": "https://www.mckinseyacademy.com{}".format(course.nav_url),
+        "name": course_.name,
+        "url": "https://www.mckinseyacademy.com{}".format(course_.nav_url),
         "overview": overview.about,
-        "start_date": course.start.isoformat(),
-        "end_date": course.end.isoformat(),
-        "week": course.week,
-        "status": course.status,
+        "week": course_.week,
+        "status": course_.status,
     }
+
+    if course_.start:
+        data["start_date"] = course_.start.isoformat()
+
+    if course_.end:
+        data["end_date"] = course_.end.isoformat()
+
     return data
 
 

@@ -4,7 +4,7 @@ import functools
 
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
-from django.utils.translation import ugettext as _, get_language_bidi
+from django.utils.translation import ugettext as _
 
 from api_data_manager.user_data import UserDataManager
 from api_data_manager.organization_data import OrgDataManager
@@ -12,27 +12,14 @@ from api_data_manager.common_data import CommonDataManager, COMMON_DATA_PROPERTI
 from api_data_manager.course_data import CourseDataManager
 from admin.models import Program
 from api_client import user_api, course_api, mobileapp_api, organization_api
-from lib.utils import DottableDict
-from license import controller as license_controller
 from .controller import (
-    build_page_info_for_course, locate_chapter_page,
     load_static_tabs, get_completion_percentage_from_id,
     set_user_course_progress,
 )
-from .models import FeatureFlags, CourseMetaData
 
 CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
 CURRENT_PROGRAM = "current_program"
-
-# controls data that is included in standard data
-# To turn some feature off, add it in HTTP request object
-# e.g;
-#   standard_data_features = DottableDict(STANDARD_DATA_FEATURES, course_progress=False)
-#   setattr(request, 'standard_data_features', standard_data_features)
-STANDARD_DATA_FEATURES = DottableDict({
-    "course_progress": True,
-})
 
 
 def set_current_course_for_user(request, course_id):

@@ -73,8 +73,8 @@ def _create_user():
     try:
         user = user_api.register_user(user_data)
         if user:
-            group_api.add_user_to_group(
-                user.id,
+            group_api.add_users_to_group(
+                [user.id],
                 permission_groups_map()[group_api.PERMISSION_GROUPS.MCKA_ADMIN]
             )
             return user
@@ -321,6 +321,10 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         # When coerced to an int, a mock returns 1, which messes up completions, so
         # instead return no completions at all to get the desired result.
         api_client.get_course_completions.return_value = {}
+        api_client.get_course_social_metrics.return_value = {
+            student.id: 0
+            for student in self.students
+        }
         return api_client
 
     def assert_expected_result(self, result, idx=0):
@@ -413,8 +417,9 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
                 'cohorts_enabled': t[0],
                 'groupwork_enabled': t[1],
             }
-        views.load_course = Mock()
-        views.load_course.return_value = (is_cohorted, is_groupwork)
+        course_api = self.apply_patch('api_client.course_api.get_course_v1')
+        course_api.return_value = (is_cohorted, is_groupwork)
+
         url = reverse('course_details', kwargs={'course_id': unicode(self.course.course_id)})
         request = self.get_request(url, self.admin_user)
         request.url_name = 'course_details'

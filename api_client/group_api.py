@@ -142,16 +142,17 @@ def update_group(group_id, group_name, group_type, group_data=None, group_object
 
 
 @api_error_protect
-def add_user_to_group(user_id, group_id, group_object=JsonObject):
+def add_users_to_group(user_ids, group_id, group_object=JsonObject):
     ''' adds user to group '''
 
     # trigger event that data is updated for this user
     user_data_updated.send(
-        sender=__name__, user_ids=[user_id],
+        sender=__name__, user_ids=user_ids,
         data_type=USER_PROPERTIES.GROUPS
     )
-
-    data = {"user_id": user_id}
+    
+    user_ids = ','.join(map(str, user_ids))
+    data = {"user_id": user_ids}
     response = POST(
         '{}/{}/{}/users'.format(
             settings.API_SERVER_ADDRESS,

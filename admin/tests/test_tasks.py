@@ -182,7 +182,7 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
         Tests users and program association task
         """
         group_api = self.apply_patch('admin.tasks.group_api')
-        group_api.add_user_to_group.return_value = True
+        group_api.add_users_to_group.return_value = True
 
         user_ids = [1, 2, 3]
 

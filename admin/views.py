@@ -5,13 +5,14 @@ import operator
 import string
 import urlparse
 from collections import OrderedDict
-from datetime import datetime
-from smtplib import SMTPException
-from urllib import quote as urlquote, urlencode
-
+from datetime import datetime, timedelta
 import os.path
 import re
+
+from smtplib import SMTPException
+from urllib import quote as urlquote, urlencode
 from dateutil.parser import parse as parsedate
+
 from django.conf import settings
 from django.contrib import messages
 from django.core import serializers
@@ -19,8 +20,12 @@ from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, Validat
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core.urlresolvers import reverse
-from django.http import (HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404,
-                         HttpResponseServerError)
+from django.http import (
+    HttpResponseForbidden,
+    HttpResponseRedirect,
+    HttpResponse, Http404,
+    HttpResponseServerError
+)
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.utils import timezone
@@ -30,6 +35,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _, ungettext
 from django.views.decorators.http import require_POST
 from django.views.generic.base import View
+from django.db.models import Q
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -438,7 +444,7 @@ def client_admin_course_analytics(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course_analytics_participants(request, client_id, course_id):
-    course = course_api.get_course(course_id)
+    course = course_api.get_course_v1(course_id)
     start_date = course.start
     end_date = course.end if course.end and course.end < datetime.today() else datetime.today()
     time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization=client_id)
@@ -749,7 +755,7 @@ class courses_list_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @internal_admin_course_access
 def course_details(request, course_id):
-    context = _get_course_context(load_course(course_id))
+    context = _get_course_context(course_api.get_course_v1(course_id))
     context.update({
         'companyAdminFlag': False,
         'internalAdminFlag': request.user.is_internal_admin,
@@ -761,7 +767,6 @@ def course_details(request, course_id):
 def _get_course_context(course):
     """
     Builds a context for rendering course details
-
     :param course: api_client.course_models.Course
     :return: dict
     """
@@ -799,6 +804,7 @@ def _get_course_context(course):
     context['discussion_feature'] = course_features.discussions
     context['groupwork_enabled'] = len(course.group_projects) > 0
     context['cohorts_enabled'] = course_api.get_course_cohort_settings(course.id).is_cohorted
+
     return context
 
 
@@ -1714,11 +1720,11 @@ def client_detail_add_contact(request, client_id):
         else:
             contact_group = contact_groups[0]
         selected_users =request.POST.getlist('checks[]')
-        for user in selected_users:
-            try:
-                group_api.add_user_to_group(user, contact_group.id)
-            except ApiError as err:
-                error = err.message
+
+        try:
+            group_api.add_users_to_group(selected_users, contact_group.id)
+        except ApiError as err:
+            error = err.message
 
         if error == None:
             return HttpResponseRedirect('/admin/clients/{}/contact'.format(client_id))
@@ -1896,20 +1902,26 @@ def create_course_access_key(request, client_id):
 class create_course_access_key_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, client_id):
-        form = CreateCourseAccessKeyForm(request.POST) # A form bound to the POST data
+        data = request.data
+        form = CreateCourseAccessKeyForm(data)  # A form bound to the request's data
 
-        if form.is_valid():  # All validation rules pass
+        if form.is_valid():  # Form validation rules pass
             try:
-                course_api.get_course_shallow(request.POST.get("course_id"))
+                course_api.get_course_v1(data.get("course_id"))
+            except Http404:
+                return Response({
+                    "status": "error",
+                    "msg": _("Access Key couldn't be created, please check course ID!")},
+                )
+            else:
                 code = generate_access_key()
                 model = form.save(commit=False)
                 model.client_id = int(client_id)
                 model.code = code
                 model.save()
-            except:
-                return Response({"status":"error", "msg": _("Access Key couldn't be created, please check course ID!")})
-            return Response({"status":"success", "msg": _("Access Key created successfully!")})
-        return Response({"status":"error", "msg": _("Access Key couldn't be created, please check course ID!")})
+                return Response({"status": "success", "msg": _("Access Key created successfully!")})
+
+        return Response({"status": "error", "msg": form.errors})
 
 
 @ajaxify_http_redirects
@@ -2288,7 +2300,13 @@ def import_participants(request):
         form = MassStudentListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
             reg_status = UserRegistrationBatch.create()
+            reg_status.triggered_by = request.user.username
+            reg_status.uploaded_file_name = request.FILES['student_list'].name
+            reg_status.save()
+
             import_participants_task.delay(
+                request.user.id,
+                request.build_absolute_uri(),
                 request.FILES['student_list'],
                 request.user.is_internal_admin,
                 reg_status
@@ -2316,6 +2334,52 @@ def enroll_participants_from_csv(request):
                 json.dumps({"task_key": _(reg_status.task_key)}),
                 content_type='text/plain'
             )
+
+
+class ParticipantsImportProgress(APIView):
+    def get(self, request):
+        week_older = timezone.now().date() - timedelta(days=7)
+        imports_this_week = UserRegistrationBatch.objects\
+            .filter(time_requested__gte=week_older).order_by('-time_requested')
+
+        # status retrieval call
+        if request.GET.get('progress_check'):
+            just_done = timezone.now().date() - timedelta(minutes=1)
+            imports_this_week = imports_this_week.filter(Q(time_completed=None) | Q(time_completed__gte=just_done))
+
+        imports_data = list()
+
+        for import_batch in imports_this_week:
+            start_time = import_batch.time_requested.strftime('%m/%d/%Y @ %I:%M %p') \
+                if import_batch.time_requested else ''
+            end_time = import_batch.time_completed.strftime('%m/%d/%Y @ %I:%M %p') \
+                if import_batch.time_completed else _('In Progress')
+
+            if import_batch.time_completed:
+                status = 'error' if import_batch.error_file_url else 'success'
+            else:
+                status = 'in_progress'
+
+            processed = import_batch.succeded + import_batch.failed
+            percentage = (100.0 / (import_batch.attempted or 1)) * processed
+
+            data = dict(
+                task_id=import_batch.task_key,
+                file_name=import_batch.uploaded_file_name,
+                start_time=start_time,
+                end_time=end_time,
+                status=status,
+                activation_file=import_batch.activation_file_url,
+                error_file=import_batch.error_file_url,
+                initiated_by=import_batch.triggered_by,
+                total=import_batch.attempted,
+                processed=processed,
+                percentage=percentage
+            )
+
+            imports_data.append(data)
+
+        return Response(imports_data)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -4745,6 +4809,14 @@ def companies_list(request):
     return render(request, 'admin/companies/companies_list.haml')
 
 
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
+def participants_import_progress(request):
+    return render(request, 'admin/participants/participants_import_progress.haml')
+
+
 class companies_list_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN,)
@@ -5312,7 +5384,7 @@ def course_learner_dashboard_branding(request, course_id, learner_dashboard_id):
 
     try:
         instance = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
-    except:
+    except ObjectDoesNotExist:
         instance = None
 
     if request.method == 'POST':
@@ -5374,7 +5446,7 @@ def course_learner_dashboard_branding_reset(request, course_id, learner_dashboar
 )
 @company_admin_company_access
 def company_course_details(request, company_id, course_id):
-    context = _get_course_context(load_course(course_id))
+    context = _get_course_context(course_api.get_course_v1(course_id))
     context.update({
         'companyAdminFlag': request.user.is_company_admin,
         'companyCourseDetailsPage': True,

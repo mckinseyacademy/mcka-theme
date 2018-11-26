@@ -471,6 +471,7 @@ def append_user_mobile_app_id_cookie(response, user_id):
     Returns response by setting android_app_id and ios_app_id cookie.
     """
     user_data = UserDataManager(user_id).get_basic_user_data()
+
     if user_data.organization:
         # we will get ios and android id
         data = get_mobile_apps_id(user_data.organization.id)
@@ -500,9 +501,14 @@ def get_mobile_apps_id(organization_id):
     """
     Returns user ios_app_id and android app id based on organization
     """
-    ios_app_id, android_app_id, user_org = None, None, None
+    ios_app_id = None
+    android_app_id = None
+    user_org = None
+    mobile_id = None
+
     org_data = OrgDataManager(organization_id).get_org_common_data()
     mobile_id = org_data.mobile_apps
+
     if mobile_id.get('results'):
         for mobile_app in mobile_id['results']:
             if mobile_app['deployment_mechanism'] == MOBILE_APP_DEPLOYMENT_MECHANISMS['public_store']:

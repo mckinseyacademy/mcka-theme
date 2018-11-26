@@ -25,7 +25,7 @@ class CourseTreeBuilder(object):
         self.current_lesson_id = None
         self.current_module_id = None
 
-        if request:
+        if request and request.resolver_match:
             self.current_lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
             self.current_module_id = request.resolver_match.kwargs.get('page_id', None)
 

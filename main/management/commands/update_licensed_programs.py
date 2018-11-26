@@ -12,7 +12,7 @@ class Command(BaseCommand):
         for license in all_licenses:
             if license.grantee_id is not None:
                 try:
-                    group_api.add_user_to_group(license.grantee_id, license.granted_id)
+                    group_api.add_users_to_group([license.grantee_id], license.granted_id)
                 except ApiError as e:
                     # Ignore 409 errors, because they indicate a user already added
                     if e.code != 409:

@@ -68,7 +68,7 @@ class Program(BaseGroupModel):
         return group_api.get_courses_in_group(self.id)
 
     def add_user(self, client_id, user_id):
-        group_api.add_user_to_group(user_id, self.id)
+        group_api.add_users_to_group([user_id], self.id)
         return license_controller.assign_license(self.id, client_id, user_id)
 
     def remove_user(self, client_id, user_id):
@@ -168,7 +168,7 @@ class ReviewAssignmentGroup(BaseGroupModel):
         return workgroup_api.add_group_to_workgroup(workgroup_id, self.id)
 
     def add_user(self, user_id):
-        return group_api.add_user_to_group(user_id, self.id)
+        return group_api.add_users_to_group([user_id], self.id)
 
     def remove_user(self, user_id):
         return group_api.remove_user_from_group(user_id, self.id)
@@ -298,6 +298,7 @@ class WorkGroupActivityXBlock(JsonObject):
 class UserRegistrationError(db_models.Model):
     task_key = db_models.CharField(max_length=40, unique=False, db_index=True)
     error = db_models.TextField(default='')
+    user_email = db_models.EmailField(blank=True)
 
 
 class UserRegistrationBatch(db_models.Model):
@@ -306,6 +307,11 @@ class UserRegistrationBatch(db_models.Model):
     failed = db_models.IntegerField(default=0)
     succeded = db_models.IntegerField(default=0)
     time_requested = db_models.DateTimeField(default=timezone.now)
+    error_file_url = db_models.CharField(max_length=200, null=True)
+    activation_file_url = db_models.CharField(max_length=200, null=True)
+    uploaded_file_name = db_models.CharField(max_length=200, null=True)
+    time_completed = db_models.DateTimeField(null=True, default=None)
+    triggered_by = db_models.CharField(max_length=200, null=True)
 
     @staticmethod
     def generate_task_key(time):

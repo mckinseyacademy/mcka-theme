@@ -207,7 +207,7 @@ class TestCourseApi(TestCase):
         self.assertEquals(len(course.chapters), expected_result)
 
     @httpretty.activate
-    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache',}})
+    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}})
     def test_get_course_different_users(self):
         """
         Ensure that get_course can return different content for different users.
