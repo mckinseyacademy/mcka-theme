@@ -47,7 +47,6 @@ urlpatterns += [
     url(r'^course_run/csv_download/(?P<course_run_id>.+)/$', views.course_run_csv_download, name='course_run_csv_download'),
     url(r'^course_run/edit$', views.EditAndDeleteSelfRegRole.as_view(),
         name='edit_and_delete_self_reg_role'),
-
     #Demo registration CMS urls
 
     url(r'^client-admin/(?P<client_id>[0-9]+)/courses/(?P<course_id>.+)/analytics/participant$', views.client_admin_course_analytics_participants, name='client_admin_course_analytics_participants'),
@@ -173,12 +172,14 @@ urlpatterns += [
     url(r'^api/participants/update_company_fields_from_csv', views.update_company_field_from_csv, name='update_company_fields_from_csv$'),
     url(r'^api/participants/update_manager_from_csv', views.update_manager_from_csv,
         name='update_manager_from_csv$'),
+    url(r'^api/participants/import_progress', views.ParticipantsImportProgress.as_view(), name='participants_import_progress_api'),
     url(r'^api/participants$', views.ParticipantsListApi.as_view(), name='participants_list_api'),
     url(r'^participants/(?P<user_id>[0-9]+)/courses/(?P<course_id>.*)/unenroll$', views.participant_details_courses_unenroll_api.as_view(), name='participant_details_courses_unenroll_api'),
     url(r'^participants/(?P<user_id>[0-9]+)/courses/(?P<course_id>.*)/edit_status$', views.participant_details_course_edit_status_api.as_view(), name='participant_details_course_edit_status_api'),
     url(r'^participants/(?P<user_id>[0-9]+)/resend_activation_link', views.participant_mail_activation_link, name='participant_mail_activation_link'),
     url(r'^participants/(?P<user_id>[0-9]+)/reset_password', views.participant_password_reset, name='participant_password_reset'),
     url(r'^participants/(?P<user_id>[0-9]+)', views.participant_details_api.as_view(), name='participants_details'),
+    url(r'^participants/import_progress', views.participants_import_progress, name='participants_import_progress'),
     url(r'^participants$', views.participants_list, name='participants_list'),
 
     url(r'^api/companies/(?P<company_id>[0-9]+)/linkedapps$', views.CompanyLinkedAppsApi.as_view(), name='company_linked_apps_api'),

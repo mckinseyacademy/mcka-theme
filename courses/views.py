@@ -25,14 +25,13 @@ from api_client.platform_api import update_course_mobile_available_status
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.workgroup_models import Submission
-from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
+from api_data_manager.course_data import CourseDataManager
 from lib.authorization import permission_group_required
 from lib.utils import DottableDict
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.query_manager import get_object_or_none
 from mobile_apps.controller import get_mobile_app_download_popup_data
 
-from .models import LessonNotesItem, FeatureFlags
+from .models import LessonNotesItem, FeatureFlags, CourseMetaData
 from .controller import (
     inject_gradebook_info,
     round_to_int,
@@ -54,6 +53,7 @@ from .controller import (
     _remove_duplicate_grader,
     get_user_social_metrics,
     fix_resource_page_video_scripts,
+    get_assessment_module_name_translation,
 )
 from .user_courses import (
     check_user_course_access, load_course_progress,
@@ -96,7 +96,7 @@ def course_landing_page(request, course_id):
     # if enhanced caching is enabled
     if feature_flags.enhanced_caching:
         # check if it's already in cache
-        course = course_data_manager.get_cached_data(COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT)
+        course = course_data_manager.get_prefetched_course_object(user=request.user)
 
         # if already cached then add-in just the dynamic part
         if course is not None:
@@ -195,8 +195,8 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
-    feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
-    if feature_flags and not feature_flags.cohort_map:
+    feature_flags = CourseDataManager(course_id).get_feature_flags()
+    if not feature_flags.cohort_map:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     try:
@@ -489,7 +489,6 @@ def _course_progress_for_user(request, course_id, user_id):
 
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
-
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
         grader.weight = round_to_int(grader.weight*100)
@@ -679,7 +678,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "graded_items_count": graded_items_count,
         "graded_items_rows": graded_items_count + 1,
         "group_activities": group_activities,
-        "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders),
+        "graders": ', '.join("%s%% %s" % (grader.weight, get_assessment_module_name_translation(grader.type_name)) for grader in graders),
         "total_replies": social["metrics"].num_replies + social["metrics"].num_comments,
         "course_run": course_run,
         'feature_flags': feature_flags,

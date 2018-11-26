@@ -11,7 +11,6 @@
         { title: gettext('# of people'), index: false, name: 'people' },
         { title: gettext('% total cohort'), index: false, name: 'invited' },
         { title: gettext('Avg Progress'), index: false, name: 'progress' },
-        { title: '', index: false, name: '' }
         ]
       });
     }

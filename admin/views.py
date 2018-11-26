@@ -5,13 +5,14 @@ import operator
 import string
 import urlparse
 from collections import OrderedDict
-from datetime import datetime
-from smtplib import SMTPException
-from urllib import quote as urlquote, urlencode
-
+from datetime import datetime, timedelta
 import os.path
 import re
+
+from smtplib import SMTPException
+from urllib import quote as urlquote, urlencode
 from dateutil.parser import parse as parsedate
+
 from django.conf import settings
 from django.contrib import messages
 from django.core import serializers
@@ -19,8 +20,12 @@ from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, Validat
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core.urlresolvers import reverse
-from django.http import (HttpResponseForbidden, HttpResponseRedirect, HttpResponse, Http404,
-                         HttpResponseServerError)
+from django.http import (
+    HttpResponseForbidden,
+    HttpResponseRedirect,
+    HttpResponse, Http404,
+    HttpResponseServerError
+)
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
 from django.utils import timezone
@@ -30,6 +35,7 @@ from django.utils.text import slugify
 from django.utils.translation import ugettext as _, ungettext
 from django.views.decorators.http import require_POST
 from django.views.generic.base import View
+from django.db.models import Q
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -438,7 +444,7 @@ def client_admin_course_analytics(request, client_id, course_id):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @client_admin_access
 def client_admin_course_analytics_participants(request, client_id, course_id):
-    course = course_api.get_course(course_id)
+    course = course_api.get_course_v1(course_id)
     start_date = course.start
     end_date = course.end if course.end and course.end < datetime.today() else datetime.today()
     time_series_metrics = course_api.get_course_time_series_metrics(course_id, start_date, end_date, organization=client_id)
@@ -749,51 +755,57 @@ class courses_list_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 @internal_admin_course_access
 def course_details(request, course_id):
-    course = course_api.get_course_details(course_id)
-    if course['start'] is not None:
-        course['start'] = parsedate(course['start']).strftime("%m/%d/%Y")
+    context = _get_course_context(course_api.get_course_v1(course_id))
+    context.update({
+        'companyAdminFlag': False,
+        'internalAdminFlag': request.user.is_internal_admin,
+        'show_cohorts': True,
+    })
+    return render(request, 'admin/courses/course_details.haml', context)
 
-    course['certificates_status'] = CertificateStatus.notavailable
-    if course['end'] is not None:
-        course['end'] = parsedate(course['end']).strftime("%m/%d/%Y")
 
-        course['certificates_status'] = get_course_certificates_status(course_id, parsedate(course['end']))
-        course['certificates_statuses'] = CertificateStatus()
-    for data in course:
-        if course.get(data) is None:
-            course[data] = "-"
+def _get_course_context(course):
+    """
+    Builds a context for rendering course details
+    :param course: api_client.course_models.Course
+    :return: dict
+    """
+    # General data and initial values
+    context = {
+        'id': course.id,
+        'name': course.name,
+        'start': course.start.strftime("%m/%d/%Y") if course.start is not None else '-',
+        'end': course.end.strftime("%m/%d/%Y") if course.end is not None else '-',
+        'certificates_status': CertificateStatus.notavailable,
+        'template_list': [{'pk': template.pk, 'title': template.title} for template in EmailTemplate.objects.all()],
+        'tags': [vars(tag) for tag in Tag.course_tags(course.id)],
+        'passed': 0,
+        'completed': 0,
+    }
 
-    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course_id)
-    course['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
-    course['proficiency'] = round_to_int_bump_zero(100 * course_metrics_active_users['avg_grade'])
+    # Update certificate status
+    if course.end is not None:
+        context['certificates_status'] = get_course_certificates_status(course.id, parsedate(context['end']))
+        context['certificates_statuses'] = CertificateStatus()
 
-    course_completed_active_users = course_metrics_active_users['users_completed']
-    course['users_enrolled'] = course_metrics_active_users['users_enrolled']
-    pass_users = course_metrics_active_users['users_passed']
+    # Update metrics
+    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course.id)
+    context['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
+    context['proficiency'] = round_to_int_bump_zero(100 * course_metrics_active_users['avg_grade'])
+    context['users_enrolled'] = course_metrics_active_users['users_enrolled']
+    if context['users_enrolled']:
+        pass_users = course_metrics_active_users['users_passed']
+        context['passed'] = round_to_int_bump_zero(100 * float(pass_users) / context['users_enrolled'])
+        course_completed_active_users = course_metrics_active_users['users_completed']
+        context['completed'] = round_to_int_bump_zero(100 * course_completed_active_users / context['users_enrolled'])
+    (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course.id)
 
-    if course['users_enrolled']:
-        course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
-        course['completed'] = round_to_int_bump_zero(100 * course_completed_active_users / course['users_enrolled'])
-    else:
-        course['passed'] = 0
-        course['completed'] = 0
+    # Update flags
+    context['discussion_feature'] = course_features.discussions
+    context['groupwork_enabled'] = len(course.group_projects) > 0
+    context['cohorts_enabled'] = course_api.get_course_cohort_settings(course.id).is_cohorted
 
-    list_of_email_templates = EmailTemplate.objects.all()
-    course['template_list'] = []
-    for email_template in list_of_email_templates:
-        course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
-
-    course_tags = Tag.course_tags(course_id)
-    course['tags'] = [vars(tag) for tag in course_tags]
-
-    course['internalAdminFlag'] = request.user.is_internal_admin
-    course['companyAdminFlag'] = False
-
-    (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
-    course['discussion_feature'] = course_features.discussions
-    course['cohorts_enabled'] = course_api.get_course_cohort_settings(course_id).is_cohorted
-
-    return render(request, 'admin/courses/course_details.haml', course)
+    return context
 
 
 class course_details_stats_api(APIView):
@@ -1708,11 +1720,11 @@ def client_detail_add_contact(request, client_id):
         else:
             contact_group = contact_groups[0]
         selected_users =request.POST.getlist('checks[]')
-        for user in selected_users:
-            try:
-                group_api.add_user_to_group(user, contact_group.id)
-            except ApiError as err:
-                error = err.message
+
+        try:
+            group_api.add_users_to_group(selected_users, contact_group.id)
+        except ApiError as err:
+            error = err.message
 
         if error == None:
             return HttpResponseRedirect('/admin/clients/{}/contact'.format(client_id))
@@ -1890,20 +1902,26 @@ def create_course_access_key(request, client_id):
 class create_course_access_key_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
     def post(self, request, client_id):
-        form = CreateCourseAccessKeyForm(request.POST) # A form bound to the POST data
+        data = request.data
+        form = CreateCourseAccessKeyForm(data)  # A form bound to the request's data
 
-        if form.is_valid():  # All validation rules pass
+        if form.is_valid():  # Form validation rules pass
             try:
-                course_api.get_course_shallow(request.POST.get("course_id"))
+                course_api.get_course_v1(data.get("course_id"))
+            except Http404:
+                return Response({
+                    "status": "error",
+                    "msg": _("Access Key couldn't be created, please check course ID!")},
+                )
+            else:
                 code = generate_access_key()
                 model = form.save(commit=False)
                 model.client_id = int(client_id)
                 model.code = code
                 model.save()
-            except:
-                return Response({"status":"error", "msg": _("Access Key couldn't be created, please check course ID!")})
-            return Response({"status":"success", "msg": _("Access Key created successfully!")})
-        return Response({"status":"error", "msg": _("Access Key couldn't be created, please check course ID!")})
+                return Response({"status": "success", "msg": _("Access Key created successfully!")})
+
+        return Response({"status": "error", "msg": form.errors})
 
 
 @ajaxify_http_redirects
@@ -2282,7 +2300,13 @@ def import_participants(request):
         form = MassStudentListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
             reg_status = UserRegistrationBatch.create()
+            reg_status.triggered_by = request.user.username
+            reg_status.uploaded_file_name = request.FILES['student_list'].name
+            reg_status.save()
+
             import_participants_task.delay(
+                request.user.id,
+                request.build_absolute_uri(),
                 request.FILES['student_list'],
                 request.user.is_internal_admin,
                 reg_status
@@ -2310,6 +2334,52 @@ def enroll_participants_from_csv(request):
                 json.dumps({"task_key": _(reg_status.task_key)}),
                 content_type='text/plain'
             )
+
+
+class ParticipantsImportProgress(APIView):
+    def get(self, request):
+        week_older = timezone.now().date() - timedelta(days=7)
+        imports_this_week = UserRegistrationBatch.objects\
+            .filter(time_requested__gte=week_older).order_by('-time_requested')
+
+        # status retrieval call
+        if request.GET.get('progress_check'):
+            just_done = timezone.now().date() - timedelta(minutes=1)
+            imports_this_week = imports_this_week.filter(Q(time_completed=None) | Q(time_completed__gte=just_done))
+
+        imports_data = list()
+
+        for import_batch in imports_this_week:
+            start_time = import_batch.time_requested.strftime('%m/%d/%Y @ %I:%M %p') \
+                if import_batch.time_requested else ''
+            end_time = import_batch.time_completed.strftime('%m/%d/%Y @ %I:%M %p') \
+                if import_batch.time_completed else _('In Progress')
+
+            if import_batch.time_completed:
+                status = 'error' if import_batch.error_file_url else 'success'
+            else:
+                status = 'in_progress'
+
+            processed = import_batch.succeded + import_batch.failed
+            percentage = (100.0 / (import_batch.attempted or 1)) * processed
+
+            data = dict(
+                task_id=import_batch.task_key,
+                file_name=import_batch.uploaded_file_name,
+                start_time=start_time,
+                end_time=end_time,
+                status=status,
+                activation_file=import_batch.activation_file_url,
+                error_file=import_batch.error_file_url,
+                initiated_by=import_batch.triggered_by,
+                total=import_batch.attempted,
+                processed=processed,
+                percentage=percentage
+            )
+
+            imports_data.append(data)
+
+        return Response(imports_data)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -3934,8 +4004,8 @@ class participant_details_api(APIView):
                             permissions.remove_permission(permissions_groups[request.data['company_permissions_old']])
 
                     if request.user.is_mcka_admin or request.user.is_mcka_subadmin:
-                        manager_email = data.get('manager_email', None)
-                        if manager_email:
+                        manager_email = data.get('manager_email')
+                        if manager_email is not None:
                             error = process_manager_email(manager_email, data.get('username'), company)
                             if error:
                                 return Response(error)
@@ -4739,6 +4809,14 @@ def companies_list(request):
     return render(request, 'admin/companies/companies_list.haml')
 
 
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
+def participants_import_progress(request):
+    return render(request, 'admin/participants/participants_import_progress.haml')
+
+
 class companies_list_api(APIView):
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN,)
@@ -5306,7 +5384,7 @@ def course_learner_dashboard_branding(request, course_id, learner_dashboard_id):
 
     try:
         instance = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
-    except:
+    except ObjectDoesNotExist:
         instance = None
 
     if request.method == 'POST':
@@ -5368,53 +5446,16 @@ def course_learner_dashboard_branding_reset(request, course_id, learner_dashboar
 )
 @company_admin_company_access
 def company_course_details(request, company_id, course_id):
-    course = course_api.get_course_details(course_id)
-    if course['start'] is not None:
-        start = parsedate(course['start'])
-        course['start'] = start.strftime("%m/%d/%Y")
-    if course['end'] is not None:
-        end = parsedate(course['end'])
-        course['end'] = end.strftime("%m/%d/%Y")
-    for data in course:
-        if course.get(data) is None:
-            course[data] = "-"
-
-    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course_id, company_id)
-    course['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
-    course_proficiency = course_metrics_active_users['avg_grade']
-    course['proficiency'] = round_to_int_bump_zero(float(course_proficiency) * 100)
-
-    course['users_enrolled'] = course_metrics_active_users['users_enrolled']
-    course_completed_users = course_metrics_active_users['users_completed']
-    pass_users = course_metrics_active_users['users_passed']
-
-    if course['users_enrolled']:
-        course['passed'] = round_to_int_bump_zero(100 * float(pass_users) / course['users_enrolled'])
-        course['completed'] = round_to_int_bump_zero(100 * course_completed_users / course['users_enrolled'])
-    else:
-        course['passed'] = 0
-        course['completed'] = 0
-
-    list_of_email_templates = EmailTemplate.objects.all()
-    course['template_list'] = []
-    for email_template in list_of_email_templates:
-        course['template_list'].append({'pk':email_template.pk, 'title':email_template.title})
-
-    course_tags = Tag.course_tags(course_id)
-    course['tags'] = [vars(tag) for tag in course_tags]
-
-    course['companyAdminFlag'] = request.user.is_company_admin
-    course['companyCourseDeatilsPage'] = True
-    course['companyId'] = company_id
-    course['companyName'] = vars(organization_api.fetch_organization(company_id))['display_name']
-    course['internalAdminFlag'] = bool(request.user.is_internal_admin)
-
-    (course_features, created) = FeatureFlags.objects.get_or_create(course_id=course_id)
-    course['discussion_feature'] = course_features.discussions
-
-    # Hide cohorts column if it's disabled
-    course['cohorts_enabled'] = course_api.get_course_cohort_settings(course_id).is_cohorted
-    return render(request, 'admin/courses/course_details.haml', course)
+    context = _get_course_context(course_api.get_course_v1(course_id))
+    context.update({
+        'companyAdminFlag': request.user.is_company_admin,
+        'companyCourseDetailsPage': True,
+        'companyId': company_id,
+        'companyName': organization_api.fetch_organization(company_id).display_name,
+        'internalAdminFlag': request.user.is_internal_admin,
+        'show_cohorts': False,
+    })
+    return render(request, 'admin/courses/course_details.haml', context)
 
 
 class company_edit_api(APIView):
@@ -5672,6 +5713,7 @@ class company_participant_details_api(APIView):
             selectedUser['internalAdminFlag'] = request.user.is_internal_admin
             return render( request, 'admin/participants/participant_details.haml', selectedUser)
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_list(request):
 
@@ -5679,27 +5721,24 @@ def course_run_list(request):
     course_runs = CourseRun.objects.all().order_by(key)
     return render(request, 'admin/course_run/list.haml', {'course_runs': course_runs})
 
+
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_view(request, course_run_id):
-
     try:
         course_run = CourseRun.objects.get(pk=course_run_id)
     except ObjectDoesNotExist:
         return render(request, '404.haml')
-
     enrolled_users = _set_number_of_enrolled_users(course_run)
     registration_requests = PublicRegistrationRequest.objects.filter(course_run=course_run)
-
     full_users_list = construct_users_list(enrolled_users, registration_requests)
-
     data = {
         'course_run': course_run,
         'users': registration_requests,
         'total_registered_users': registration_requests.count(),
         'user_list': full_users_list
     }
-
     return render(request, 'admin/course_run/view.haml', data)
+
 
 @ajaxify_http_redirects
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
@@ -5715,7 +5754,6 @@ def course_run_create_edit(request, course_run_id=None):
         self_register_created_roles = None
 
     if request.method == 'POST':
-
         form = CourseRunForm(request.POST, instance=course_run)
         try:
             self_registration_roles = create_roles_list(request)
@@ -5723,7 +5761,6 @@ def course_run_create_edit(request, course_run_id=None):
             error = err.message
 
         if form.is_valid() and error is None:
-
             form.save()
             for role_text in self_registration_roles:
                 SelfRegistrationRoles.objects.create(course_run_id=form.instance.id, option_text=role_text)
@@ -5749,16 +5786,11 @@ def course_run_create_edit(request, course_run_id=None):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def course_run_csv_download(request, course_run_id):
-
     course_run = get_object_or_404(CourseRun, pk=course_run_id)
-
     enrolled_users = _set_number_of_enrolled_users(course_run)
     registration_requests = PublicRegistrationRequest.objects.filter(course_run=course_run)
-
     if registration_requests:
-
         full_users_list = construct_users_list(enrolled_users, registration_requests)
-
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="' + course_run.name + '.csv"'
         writer = UnicodeWriter(response)
@@ -5776,7 +5808,6 @@ def course_run_csv_download(request, course_run_id):
         for user in full_users_list:
             # sanitize data before writing to csv
             user = sanitize_data(data=user, props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
-
             writer.writerow([
                 user['first_name'],
                 user['last_name'],
@@ -5788,7 +5819,6 @@ def course_run_csv_download(request, course_run_id):
                 user['is_enrolled'],
                 user['is_active'],
             ])
-
         return response
     else:
         return render(request, '404.haml')

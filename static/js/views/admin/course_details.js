@@ -91,6 +91,8 @@
       }
       var count = course_details_count_all_users;
       this.cohorts_enabled = course_details_cohorts_enabled;
+      this.groupwork_enabled = course_details_groupwork_enabled;
+      this.show_cohorts = course_details_show_cohorts;
       this.collection.updateCountQuerryParams(count);
       this.collection.fetch();
     },
@@ -115,7 +117,7 @@
       {
         _this.removeFromGeneratedGridColumns('Company');
       }
-      if (this.cohorts_enabled == 'False') {
+      if (this.cohorts_enabled == 'False' || this.groupwork_enabled == 'True' || this.show_cohorts == 'False') {
         _this.removeFromGeneratedGridColumns('Cohort');
       }
       var coursesListDetailsViewGrid = {};

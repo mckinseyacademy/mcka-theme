@@ -25,6 +25,7 @@ var Router = Backbone.Router.extend({
     'admin/course-meta-content/items/*course_id': 'admin_course_meta',
     'admin/course-meta-content':'course_meta_content',
     'admin/participants': 'participants_list',
+    'admin/participants/import_progress': 'import_progress',
     'admin/participants/*id': 'initialize_participant_details',
     'admin/cohorts/*course_id/': 'admin_cohorts_detail',
     'admin/courses/': 'admin_courses',
@@ -168,6 +169,11 @@ var Router = Backbone.Router.extend({
     var collection = new Apros.collections.Participants();
     var participant_list_view = new Apros.views.ParticipantsInfo({collection: collection, el: '#participantsListViewGridBlock'});
     participant_list_view.render();
+  },
+  import_progress: function(){
+    var collection = new Apros.collections.ImportProgress();
+    var importProgressView = new Apros.views.ImportProgress({collection: collection, el: '#importParticipantsGridBlock'});
+    importProgressView.render();
   },
   initialize_participant_details: function(user_id)
   {
@@ -433,7 +439,11 @@ Apros.Router.linked_views = {
     'function': Apros.Router.company_custom_fields,
     'drawn': false
   },
-}
+  'importProgress':{
+    'function': Apros.Router.import_progress,
+    'drawn': false
+  }
+};
 
 // This function will add eateries for manager course in linked views dynamically
 function update_manager_dashboard_tabs(course_length)
@@ -478,8 +488,8 @@ Apros.Router.HashPageChanger = function(element) {
       val.hide();
   });
   updateHeader();
-}
+};
 
 Apros.Router.calculateAverage = function(){
   InitializeAverageCalculate();
-}
+};

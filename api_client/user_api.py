@@ -18,9 +18,10 @@ from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from .group_models import GroupInfo
 from .oauth2_requests import get_oauth2_session, get_and_unpaginate
 
+from api_data_manager.course_data import COURSE_PROPERTIES
 from api_data_manager.decorators import user_api_cache_wrapper
+from api_data_manager.signals import user_data_updated, course_data_updated
 from api_data_manager.user_data import USER_PROPERTIES, UserDataManager
-from api_data_manager.signals import user_data_updated
 
 AUTH_API = getattr(settings, 'AUTH_API', 'api/server/sessions')
 USER_API = getattr(settings, 'USER_API', 'api/server/users')
@@ -129,7 +130,7 @@ def _chunked_get_users_by_id(request_fields, ids):
 @api_error_protect
 def get_users(fields=[], *args, **kwargs):
     ''' get all users that meet filter criteria'''
-    request_fields = ['id', 'email', 'username']
+    request_fields = ['id', 'email', 'first_name', 'username', 'is_active']
     request_fields.extend(fields)
 
     # special case handling if we are retrieving a set of users
@@ -299,6 +300,11 @@ def add_user_role(user_id, course_id, role):
     if role == USER_ROLES.MODERATOR:
         discussions_api.add_discussion_moderator(course_id, user_id)
 
+    course_data_updated.send(
+        sender=__name__, course_ids=[course_id],
+        data_type=COURSE_PROPERTIES.ROLES
+    )
+
     return JP.from_json(response.read())
 
 
@@ -316,6 +322,17 @@ def update_user_roles(user_id, role_data):
             user_id,
         ),
         role_data
+    )
+
+    course_ids = []
+    for course_roles in role_data.get('roles', []):
+        course_ids.append(
+            course_roles.get('course_id')
+        )
+
+    course_data_updated.send(
+        sender=__name__, course_ids=course_ids,
+        data_type=COURSE_PROPERTIES.ROLES
     )
 
     return JP.from_json(response.read())
@@ -336,6 +353,11 @@ def delete_user_role(user_id, course_id, role):
     # Remove discussion moderator from LMS if necessary
     if role == USER_ROLES.MODERATOR:
         discussions_api.remove_discussion_moderator(course_id, user_id)
+
+    course_data_updated.send(
+        sender=__name__, course_ids=[course_id],
+        data_type=COURSE_PROPERTIES.ROLES
+    )
 
     return (response.code == 204)
 

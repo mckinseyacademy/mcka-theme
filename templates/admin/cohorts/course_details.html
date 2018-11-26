@@ -90,47 +90,39 @@
                 </div>
                 <hr/>
                 <% } else { %>
-                {% blocktrans %}
-                    <strong>To use cohorts within your course, click Enable Cohorts:</strong>
+                    <strong>{% trans "To use cohorts within your course, click Enable Cohorts:" %}</strong>
                     <ul>
                         <li>
-                            Each course has a &lt;default_cohort&gt; in which all learners are
-                            automatically assigned.
+                            {% trans "Each course has a &lt;default_cohort&gt; in which all learners are automatically assigned." %}
                         </li>
                         <li>
-                            Additional cohorts can be added and should follow the naming/numbering
-                            format of &lt;cohort#&gt;
+                            {% trans "Additional cohorts can be added and should follow the naming/numbering format of &lt;cohort#&gt;" %}
                         </li>
                         <li>
-                            Learners can safely move between cohorts before a course starts, but
-                            not afterwards.
+                            {% trans "Learners can safely move between cohorts before a course starts, but not afterwards." %}
                         </li>
                         <li>
-                            New learners not yet enrolled in the course can be preassigned to a
-                            cohort.
+                            {% trans "New learners not yet enrolled in the course can be preassigned to a cohort." %}
                         </li>
                         <li>
-                            Progress indicators are averaged by cohort.
+                            {% trans "Progress indicators are averaged by cohort." %}
                         </li>
                         <li>
-                            Courses with Discussions are divided by cohort, but each shares the
-                            same topics course-wide.
+                            {% trans "Courses with Discussions are divided by cohort, but each shares the same topics course-wide." %}
                         </li>
                         <li>
-                            Moderators can view, post/reply to Discussions per cohort.
+                            {% trans "Moderators can view, post/reply to Discussions per cohort." %}
                         </li>
                         <li>
-                            Progress Report export will include cohort column and value of each
-                            learner, when enabled in course.
+                            {% trans "Progress Report export will include cohort column and value of each learner, when enabled in course." %}
                         </li>
                         <li>
-                            Cohorts should not be used with Group Work.
+                            {% trans "Cohorts should not be used with Group Work." %}
                         </li>
                         <li>
-                            Cohorts cannot be deleted, only renamed.
+                            {% trans "Cohorts cannot be deleted, only renamed." %}
                         </li>
                     </ul>
-                {% endblocktrans %}
                 <% } %>
             </div>
         </div>

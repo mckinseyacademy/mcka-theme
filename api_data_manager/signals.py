@@ -3,13 +3,14 @@ from django.db.models.signals import post_save, post_delete
 
 from main.models import CuratedContentItem
 from courses.models import FeatureFlags, CourseMetaData
-from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
 
 from .user_data import UserDataManager
 from .group_data import GroupDataManager
+from .course_data import CourseDataManager, COURSE_PROPERTIES
 
 user_data_updated = Signal(providing_args=['user_ids', 'data_type'])
 group_data_updated = Signal(providing_args=['group_ids', 'data_type'])
+course_data_updated = Signal(providing_args=['course_ids', 'data_type'])
 
 
 @receiver(user_data_updated)
@@ -20,6 +21,16 @@ def user_data_updated_handler(sender, *args, **kwargs):
     for user_id in user_ids:
         data_manager = UserDataManager(user_id=user_id)
         data_manager.delete_cached_data(user_property)
+
+
+@receiver(course_data_updated)
+def course_data_updated_handler(sender, *args, **kwargs):
+    course_ids = kwargs.get('course_ids')
+    course_property = kwargs.get('data_type')
+
+    for course_id in course_ids:
+        data_manager = CourseDataManager(course_id=course_id)
+        data_manager.delete_cached_data(course_property)
 
 
 @receiver(group_data_updated)

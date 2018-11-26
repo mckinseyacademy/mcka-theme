@@ -16,7 +16,7 @@ from .json_object import JsonObject, JsonObjectWithImage
 class UserResponse(JsonObjectWithImage):
 
     ''' object representing a user from api json response '''
-    required_fields = ["email", "username"]
+    required_fields = ["id", "email", "first_name", "username", "is_active"]
     date_fields = ["created"]
 
     def _get_profile_image_absolute_url(self, size_name):

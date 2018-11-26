@@ -89,10 +89,11 @@ class Chapter(_HasCourseDates):
 
 
 class Course(CategorisedJsonObject):
-
-    ''' object representing a course '''
-    required_fields = ["id", "name", ]
-    date_fields = ["start", "end",]
+    """
+    Object representing a course.
+    """
+    required_fields = ["id", "name"]
+    date_fields = ["start", "end", 'enrollment_start', 'enrollment_end']
 
     @property
     def display_id(self):

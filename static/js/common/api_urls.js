@@ -41,5 +41,6 @@ var ApiUrls = {
   company: '/admin/api/companies/',
   tags: '/admin/api/tags',
   admin_bulk_task: '/admin/api/admin_bulk_task/',
-  mobileapps: '/admin/api/mobileapps'
+  mobileapps: '/admin/api/mobileapps',
+  import_progress: '/admin/api/participants/import_progress'
 };

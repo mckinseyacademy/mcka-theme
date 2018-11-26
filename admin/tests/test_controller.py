@@ -27,6 +27,10 @@ from courses.models import CourseMetaData
 from courses.models import FeatureFlags
 
 
+class Dummy(object):
+    pass
+
+
 class AdminControllerTests(TestCase):
     def test__process_line(self):
         # format is email,username,password,firstname,lastname
@@ -98,47 +102,9 @@ def mock_completion_score(*args, **kwargs):
             },
         }
     }
-    return JP.from_dictionary(data)
-
-
-def MockEngagementScore(object):
-    data = {
-        'users':
-            {
-                '1':
-                    {
-                        'num_threads': 1,
-                        'num_comments': 1,
-                        'num_replies': 1,
-                        'num_upvotes': 1,
-                        'num_thread_followers': 1,
-                        'num_comments_generated': 1,
-                    },
-                '2':
-                    {
-                        'num_threads': 2,
-                        'num_comments': 1,
-                        'num_replies': 0,
-                        'num_upvotes': 0,
-                        'num_thread_followers': 0,
-                        'num_comments_generated': 0,
-                    }
-            }
-    }
-
-    return JP.from_dictionary(data)
 
 
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
-
-    @override_settings(CELERY_ALWAYS_EAGER=True)
-    def test_get_engagement_scores(self):
-        self.apply_patch('api_client.course_api.get_course_social_metrics', new=MockEngagementScore)
-        test_object = CourseParticipantStats('1', 'base/url')
-        u_ids = ['1', '2']
-        engagement_scores = test_object._get_engagement_scores()
-        self.assertEqual(engagement_scores[u_ids[0]], 85)
-        self.assertEqual(engagement_scores[u_ids[1]], 35)
 
     def test__get_lesson_completions(self):
         test_username = u'test_user'
@@ -353,8 +319,9 @@ class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
         self.assertEqual(self.expected_result_for_perfromance, response.content)
 
     def test_get_course_stats_report(self):
-        course_api = self.apply_patch('api_client.course_api.get_course_details')
-        course_api.return_value = {"name": "test_course"}
+        course_api = self.apply_patch('api_client.course_api.get_course_v1')
+        course_api.return_value = Dummy()
+        course_api.return_value.name = "test_course"
         response = get_course_stats_report("test_company", "test_Course")
         expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance \
                           + self.expected_result_for_social
@@ -381,10 +348,10 @@ class TestContactsForClient(TestCase, ApplyPatchMixin):
         # Dummy Data for the Apis
         client_id = '2'
         client_groups_data = '[{"id": 12,"type": "contact_group","data": {}}]'
-        client_groups_users_data = '{"users": [{"id": 3, "email": "audit@example.com", "username": "audit"},' \
-                                   '{"id": 10, "email": "test@example.com", "username": "test"}]}'
-        client_groups_user_profile_data = '[{"id": 3, "email": "audit@example.com","username": "audit"},' \
-                                          '{"id": 10, "email": "test@example.com","username": "test"}]'
+        client_groups_users_data = '{"users": [{"id": 3, "email": "audit@example.com", "username": "audit", "first_name": "First", "is_active":"True"},' \
+                                   '{"id": 10, "email": "test@example.com", "username": "test", "first_name": "First", "is_active":"True"}]}'
+        client_groups_user_profile_data = '[{"id": 3, "email": "audit@example.com","username": "audit", "first_name": "First", "is_active":"True"},' \
+                                          '{"id": 10, "email": "test@example.com","username": "test", "first_name": "First", "is_active":"True"}]'
         # Mocking Api Calls
         self.organization_api.get_organization_groups.return_value = JP.from_json(client_groups_data, JsonObject)
         self.group_api.get_users_in_group.return_value = JP.from_json(client_groups_users_data,

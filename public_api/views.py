@@ -4,7 +4,7 @@ import json
 import datetime
 import functools
 
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils.translation import ugettext as _
 from api_client import course_api, user_api, workgroup_api
@@ -12,7 +12,9 @@ from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+from accounts.views import get_user_from_login_id
 from accounts.controller import send_password_reset_email
+from accounts.models import UserActivation
 from api_client import course_api, user_api
 from api_protect import api_json_response, api_authenticate_protect, api_user_protect
 from mcka_apros import settings
@@ -26,6 +28,7 @@ from .serializers import ResetPasswordSerializer
 from public_api.controller import get_course_ff_and_custom_taxonomy, \
     create_and_add_course_ff_and_custom_taxonomy_in_list, get_course_ff, \
     create_and_add_course_ff_in_list
+from lib.mail import email_user_activation_link
 
 
 @require_POST
@@ -42,18 +45,23 @@ def api_create_token(request):
 @api_authenticate_protect
 @api_json_response
 def course(request, course_id):
-    course = course_api.get_course(course_id)
+    course_ = course_api.get_course_v1(course_id, depth=0)
     overview = course_api.get_course_overview(course_id)
 
     data = {
-        "name": course.name,
-        "url": "https://www.mckinseyacademy.com{}".format(course.nav_url),
+        "name": course_.name,
+        "url": "https://www.mckinseyacademy.com{}".format(course_.nav_url),
         "overview": overview.about,
-        "start_date": course.start.isoformat(),
-        "end_date": course.end.isoformat(),
-        "week": course.week,
-        "status": course.status,
+        "week": course_.week,
+        "status": course_.status,
     }
+
+    if course_.start:
+        data["start_date"] = course_.start.isoformat()
+
+    if course_.end:
+        data["end_date"] = course_.end.isoformat()
+
     return data
 
 
@@ -150,7 +158,7 @@ def reset_password(request):
             request.META.get('HTTP_HOST'),
             users[0],
             request.is_secure(),
-            subject_template_name='registration/password_reset_subject.txt',
+            subject_template_name='registration/password_reset_subject.haml',
             email_template_name='registration/password_reset_email.haml',
             from_email=settings.APROS_EMAIL_SENDER
         )
@@ -209,3 +217,21 @@ def get_course_feature_flag(request, course_id=None):
         json.dumps(feature_flag),
         content_type='application/json')
 
+
+def send_participant_activation_link(request, login_id):
+
+    user = get_user_from_login_id(login_id)
+    if user:
+        try:
+            if not user.is_active:
+                activation_record = UserActivation.get_user_activation(user)
+                email_head = request.build_absolute_uri('/accounts/activate')
+                activation_link =  '{}/{}'.format(email_head, activation_record.activation_key)
+
+                email_user_activation_link(request, user, activation_link)
+                return JsonResponse({'message': _('We have sent an email to {} with a link to create an account for you.')
+                                    .format(user.get("email")), 'email':user.get("email")}, status=status.HTTP_200_OK)
+        except:
+            return JsonResponse({'error':_("Sorry, Please try again later to receive an email with a link to create your account.")}, status=status.HTTP_400_BAD_REQUEST)
+
+    return JsonResponse({'error': _('User does not exist')}, status=status.HTTP_400_BAD_REQUEST)

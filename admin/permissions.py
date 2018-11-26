@@ -168,7 +168,7 @@ class Permissions(object):
     def add_permission(self, permission_name):
         group_id = self.get_group_id(permission_name)
         if group_id:
-            group_api.add_user_to_group(self.user_id, group_id)
+            group_api.add_users_to_group([self.user_id], group_id)
             if permission_name == PERMISSION_GROUPS.INTERNAL_ADMIN:
                 # internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.GRANT)
                 new_internal_admin_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.GRANT)
@@ -202,7 +202,7 @@ class Permissions(object):
                     organization_api.add_user_to_organization(organization_id, self.user_id)
 
                 if PERMISSION_GROUPS.COMPANY_ADMIN not in self.current_permissions and first_pass:
-                    group_api.add_user_to_group(self.user_id, group_id)
+                    group_api.add_users_to_group([self.user_id], group_id)
                     first_pass = False
 
                 add_user_to_company_admin = True
@@ -341,7 +341,7 @@ class SlimAddingPermissions(object):
     def add_permission(self, permission_name):
         group_id = self.get_group_id(permission_name)
         if group_id:
-            group_api.add_user_to_group(self.user_id, group_id)
+            group_api.add_users_to_group([self.user_id], group_id)
 
 
 class InternalAdminRoleManager(object):

@@ -462,3 +462,17 @@
     max-width: none;
   }
 }
+
+#user_activation_notification{
+  .close-reveal-modal{
+    &.button{
+      position: relative;
+      font-size: 18px;
+      font-weight: 600;
+      color: #fff;
+      border-radius: 5px;
+      margin: 12px 0 12px 12px;
+      padding: 15px 40px;
+    }
+  }
+}

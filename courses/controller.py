@@ -10,6 +10,7 @@ import re
 from bs4 import BeautifulSoup
 
 from django.conf import settings
+from django.utils.translation import ugettext as _
 
 from accounts.middleware.thread_local import (
     set_static_tab_context,
@@ -756,10 +757,8 @@ def create_tile_progress_data(tile):
     Triggered by admin creating the tile in learner dashboard CMS
     '''
     link = strip_tile_link(tile.link)
-    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=100))
-
-    completions = course_api.get_course_completions(link['course_id'], page_size=100)
-
+    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=1000))
+    completions = course_api.get_course_completions(link['course_id'])
     for user in users:
         course = get_course_object(user['id'], link['course_id'])
         if course:
@@ -772,9 +771,7 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
     Triggered by user visiting the module. Filters tiles with current course_ids.
     Updates progress only for current module and parent lesson/course.
     '''
-
     tiles = LearnerDashboardTile.objects.filter(link__icontains=course.id)
-
     if chapter_id:
         kwargs = {'root_block': chapter_id}
     else:
@@ -1009,3 +1006,26 @@ def fix_resource_page_video_scripts(resources_page_html):
 
     return str(resource_page_soup)
 
+
+def get_assessment_module_name_translation(module_name):
+    """ Translates assessment part of the module name """
+    if module_name.startswith("Assessment"):
+        return module_name.replace("Assessment", _("Assessment"))
+    return module_name
+
+
+def get_non_staff_user(course_id):
+    """
+    Returns a non-staff (with no role) user in a course
+    """
+    non_staff_user = None
+
+    course_users = course_api.get_course_details_users(course_id, {'fields': 'id,username,is_staff'})['results']
+    course_role_user_ids = [user.id for user in course_api.get_users_filtered_by_role(course_id)]
+
+    for user in course_users:
+        if user.get('id') not in course_role_user_ids and not user.get('is_staff'):
+            non_staff_user = user
+            break
+
+    return non_staff_user

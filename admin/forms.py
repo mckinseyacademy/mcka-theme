@@ -441,10 +441,11 @@ class CourseRunForm(forms.ModelForm):
     def clean_course_id(self):
         course_id = self.cleaned_data.get("course_id")
         try:
-            course = course_api.get_course_shallow(course_id)
-            return course_id
-        except:
+            course_api.get_course_v1(course_id)
+        except ValueError:
             raise forms.ValidationError(_("Course with this ID does not exist"))
+        else:
+            return course_id
 
     def clean_max_participants(self):
 

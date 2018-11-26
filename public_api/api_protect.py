@@ -48,7 +48,7 @@ def api_authenticate_protect(func):
                 else:
                     data = {"error": _("Client not found")}
                     return HttpResponse(json.dumps(data), 'application/json', 401)
-            except:
+            except ApiToken.DoesNotExist:
                 data = {"error": _("Token or Client not found")}
                 return HttpResponse(json.dumps(data), 'application/json', 401)
         data = {"error": _("Token missing")}

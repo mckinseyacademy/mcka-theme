@@ -57,7 +57,7 @@ class Command(BaseCommand):
                 self.stdout.write("Registering user: %s in the role: %s" % (user_tuple[0], user_tuple[1]))
                 u = user_api.register_user(user_data)
                 if u:
-                    group_api.add_user_to_group(u.id, permission_groups_map()[user_tuple[1]])
+                    group_api.add_users_to_group([u.id], permission_groups_map()[user_tuple[1]])
             except ApiError as e:
                 if e.code == 409:
                     self.stdout.write("User: %s already exists" % user_tuple[0])

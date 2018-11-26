@@ -18,6 +18,7 @@ from .models import BatchOperationStatus
 
 logger = get_task_logger(__name__)
 
+
 class BulkTaskRunner(object):
     """
     Handles execution of bulk admin tasks

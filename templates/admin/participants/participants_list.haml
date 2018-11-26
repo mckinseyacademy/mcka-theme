@@ -10,6 +10,8 @@
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Import from CSV' %}", 'data-reveal-id': 'import_from_csv'}
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update profile data' %}", 'data-reveal-id': 'update_profile_data'}
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update manager data' %}", 'data-reveal-id': 'update_manager_data'}
+        %a.button.small.radius{:href => "{% url 'participants_import_progress' %}"}
+          {% trans "Import Progress" %}
         %input.button.small.radius.secondary.menuButton{:type => "button", :value => "{% trans 'CSV Template' %}", 'data-reveal-id': 'download_csv_template'}
       %hr
       #participantsSearchWrapper
@@ -172,6 +174,17 @@
               %input.emailActivationCheckbox{:type => 'checkbox', :disabled => 'disabled', :id => 'emailActivationCheckboxId'}
               %label.emailActivation{:for => 'emailActivationCheckboxId' }
                 {% trans "Email activation links now" %}
+
+    #import_participants_popup_message.reveal-modal.tiny{:aria-hidden => "true", :aria-labelledby => "modalTitle", :data-reveal => "", :role => "dialog"}
+      %h2#modalTitle {% trans "You CSV is Importing..." %}
+      %p.lead
+        {% blocktrans %} Import will run in the background. You may access the status from the
+        %span
+          'Import Progress'
+        tab.
+        {% endblocktrans %}
+      %a.close-reveal-modal.button{:aria-label => "Close"} {% trans "Okay" %}
+      %a.close-reveal-modal{:aria-label => "Close"} ×
 
     #enroll_to_course_from_csv.reveal-modal.medium{'data-reveal': ''}
       .close-reveal-modal

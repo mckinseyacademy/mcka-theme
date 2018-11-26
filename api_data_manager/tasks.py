@@ -1,12 +1,14 @@
 from collections import defaultdict
 
 from django.conf import settings
+from django.http import HttpRequest
 
 from celery.utils.log import get_task_logger
 from celery.decorators import task
 
 from courses.models import FeatureFlags
 from courses.course_tree_builder import CourseTreeBuilder
+from courses.controller import get_non_staff_user
 from api_client import group_api
 from api_client import mobileapp_api
 from api_client import organization_api
@@ -144,8 +146,18 @@ def enhanced_course_caching_task():
 
     for course_id in course_ids:
         try:
-            course = CourseTreeBuilder(course_id=course_id, request=None)\
+            non_staff_course = None
+            staff_course = CourseTreeBuilder(course_id=course_id, request=None)\
                 .get_processed_course_static_data()
+
+            non_staff_user = get_non_staff_user(course_id=course_id)
+
+            if non_staff_user:
+                request = HttpRequest()
+                request.user = non_staff_user
+
+                non_staff_course = CourseTreeBuilder(course_id=course_id, request=request)\
+                    .get_processed_course_static_data()
         except Exception as e:
             logger.error('{} - Exception retrieving `{}` course tree data - {}'.format(
                 task_log_msg, course_id, e.message
@@ -153,11 +165,20 @@ def enhanced_course_caching_task():
         else:
             course_data_manager = CourseDataManager(course_id=course_id)
             course_data_manager.set_cached_data(
-                property_name=COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT,
-                data=course,
+                property_name=COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT_STAFF,
+                data=staff_course,
                 expiry_time=settings.CACHE_TIMEOUTS.get('prefetched_course_data',
                                                         settings.DEFAULT_CACHE_TIMEOUT)
             )
+
+            if non_staff_course:
+                course_data_manager.set_cached_data(
+                    property_name=COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT,
+                    data=non_staff_course,
+                    expiry_time=settings.CACHE_TIMEOUTS.get('prefetched_course_data',
+                                                            settings.DEFAULT_CACHE_TIMEOUT)
+                )
+
             success_ids.append(course_id)
 
     logger.info('{} - Successfully cached `{}` courses out of `{}`'

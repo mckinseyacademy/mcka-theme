@@ -61,6 +61,27 @@
 
   #reset-password.reveal-modal.small{"data-reveal": "true"}
 
+  #user_activation_notification.reveal-modal.tiny{'data-reveal': 'true'}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2.upload_message
+      {% trans "Check your email inbox" %}
+    %hr
+    %p.headline_message
+    %br
+    %br
+    .activation_success_message.hide
+      %span
+        {% trans "If you don't see the email in your inbox, check your spam folder or" %}
+      %a.download_user_activation{"data-reveal-id": "resend-email"}>
+        {% trans "resend email" %}
+      %span
+        {% trans "with the link." %}
+    %br
+    %a.close-reveal-modal.button
+      {% trans "Return to Login" %}
+
+
   - block general_modal
     %a.reveal-general-modal{'href': "#", 'data-reveal-id': "generalModal"}
     .reveal-modal.small{'id': "generalModal", 'data-reveal': ''}
