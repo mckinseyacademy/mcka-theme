@@ -146,6 +146,15 @@
                "NOT /oauth2/*",
                "*"
             ]
+         },
+         {
+            "appID": "53QJW7WK6Y.scfhs.org.sa.hla",
+            "paths": [
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
+               "*"
+            ]
          }
       ]
    }

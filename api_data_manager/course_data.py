@@ -4,8 +4,7 @@ from lib.utils import DottableDict
 from django.conf import settings
 
 from main.models import CuratedContentItem
-from courses.models import FeatureFlags
-
+from courses.models import FeatureFlags, CourseMetaData
 
 COURSE_PROPERTIES = DottableDict(
     CURATED_CONTENT='curated_content',

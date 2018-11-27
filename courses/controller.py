@@ -758,7 +758,7 @@ def create_tile_progress_data(tile):
     '''
     link = strip_tile_link(tile.link)
     users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=1000))
-    completions = course_api.get_course_completions(link['course_id'])
+    completions = course_api.get_course_completions(link['course_id'], page_size=1000)
     for user in users:
         course = get_course_object(user['id'], link['course_id'])
         if course:

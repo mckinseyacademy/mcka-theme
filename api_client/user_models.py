@@ -77,6 +77,13 @@ class UserResponse(JsonObjectWithImage):
         return user
 
 
+class SimpleUserResponse(UserResponse):
+    """
+    Class representing a simple user response from api json response
+    """
+    required_fields = ["email", "username"]
+
+
 class UserListResponse(JsonObject):
     object_map = {
         "results": UserResponse
@@ -100,7 +107,7 @@ class UserCourseStatus(JsonObject):
 
 class UserList(JsonObject):
     object_map = {
-        "users": UserResponse
+        "users": SimpleUserResponse
     }
 
 
