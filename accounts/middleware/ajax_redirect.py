@@ -1,5 +1,6 @@
 from django.http import HttpResponseRedirect
 
+
 class AjaxRedirect(object):
     def process_response(self, request, response):
         if request.is_ajax():

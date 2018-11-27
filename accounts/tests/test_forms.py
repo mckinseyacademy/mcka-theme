@@ -4,9 +4,9 @@ import ddt
 
 from admin.models import SelfRegistrationRoles, CourseRun, OTHER_ROLE
 from lib.utils import DottableDict
-from accounts.forms import (ActivationForm, FinalizeRegistrationForm, BaseRegistrationForm,
-    FpasswordForm, SetNewPasswordForm, BaseRegistrationFormV2, PublicRegistrationForm, SSOLoginForm,
-    LoginForm, EditFullNameForm, EditTitleForm, ActivationFormV2, LoginIdForm)
+from accounts.forms import (ActivationForm, FinalizeRegistrationForm, BaseRegistrationForm, FpasswordForm,
+                            SetNewPasswordForm, BaseRegistrationFormV2, PublicRegistrationForm, SSOLoginForm,
+                            LoginForm, EditFullNameForm, EditTitleForm, ActivationFormV2, LoginIdForm)
 
 from accounts.tests.utils import ApplyPatchMixin
 
@@ -43,6 +43,7 @@ class LoginFormTests(TestCase):
         """ Test validation """
         login_form = LoginForm(test_case)
         self.assertEqual(login_form.is_valid(), expected_result)
+
 
 @ddt.ddt
 class LoginIdFormTests(TestCase):
@@ -173,7 +174,7 @@ class FpasswordFormTests(TestCase, ApplyPatchMixin):
         if pass_reset_form.is_valid():
             request = DottableDict(META={})
             pass_reset_form.save(request=request)
-            result = email in [email.to[0] for email in mail.outbox]
+            result = email in [item.to[0] for item in mail.outbox]
             self.assertEqual(result, expected_result)
         else:
             self.assertFalse(expected_result)
@@ -284,6 +285,7 @@ class ActivationFormV2Tests(TestCase):
         }
         registration_form = ActivationFormV2(registration_data)
         self.assertEqual(registration_form.is_valid(), expected_result)
+
 
 @ddt.ddt
 class PublicRegistrationFormTests(TestCase):

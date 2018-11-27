@@ -3,7 +3,7 @@ import re
 
 from functools import wraps
 from django.utils.translation import ugettext as _
-from django.http import HttpResponse, HttpResponseForbidden, HttpResponseNotFound
+from django.http import HttpResponse
 
 from .models import ApiToken
 from admin.models import Client
@@ -25,7 +25,7 @@ def api_json_response(func):
                 # a jsonp response!
                 data = '%s(%s);' % (request.REQUEST['callback'], data)
                 return HttpResponse(data, "text/javascript")
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             data = json.dumps(str(objects))
         return HttpResponse(data, "application/json")
     return decorator
@@ -41,7 +41,7 @@ def api_authenticate_protect(func):
         if 'token' in auth:
             try:
                 token = re.search(r'[\w]{64}', auth).group(0)
-                organization = ApiToken.objects.get(token = token)
+                organization = ApiToken.objects.get(token=token)
                 if organization:
                     request.organization = organization
                     return func(request, *args, **kwargs)
@@ -78,7 +78,7 @@ def api_user_protect(func):
                 else:
                     data['error'] = _("User not found")
                     return HttpResponse(json.dumps(data), 'application/json', 400)
-            except:
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 data['error'] = _("User not found")
                 return HttpResponse(json.dumps(data), 'application/json', 400)
         return HttpResponse(json.dumps(data), 'application/json', 400)

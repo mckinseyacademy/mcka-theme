@@ -82,15 +82,15 @@ def get_certificate_url(base_domain, certificate_uuid):
         kwargs={'certificate_uuid': certificate_uuid}
     )
 
-    return  urlparse.urljoin(base_domain, certificate_path)
+    return urlparse.urljoin(base_domain, certificate_path)
 
 
 def send_certificate_generation_email(
-        course_id, # pylint: disable=unused-argument
-        user,
-        certificate_uuid,
-        base_domain
-    ):
+                                      course_id,  # pylint: disable=unused-argument
+                                      user,
+                                      certificate_uuid,
+                                      base_domain
+                                      ):
     """
     Send certificate generated email notification
     """

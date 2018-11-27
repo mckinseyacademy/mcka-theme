@@ -5,6 +5,7 @@ import subprocess
 import signal
 import atexit
 
+
 class Command(BaseCommand):
     help = 'Runs the dev server and watches compileable assets'
 

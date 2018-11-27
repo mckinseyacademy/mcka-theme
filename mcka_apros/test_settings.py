@@ -1,7 +1,7 @@
 # Test suite to be run with these settings
 # contains test specific settings/overrides
 
-from .settings import *
+from .settings import *  # noqa: F403, F401
 
 # for test environment, all http calls are safe
 OAUTH2_SAFE_URL_PREFIXES = ['https://', 'http://', ]

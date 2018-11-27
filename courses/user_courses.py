@@ -133,7 +133,8 @@ class CompanyAdminAccessDeniedError(PermissionDenied):
 
 def check_company_admin_user_access(func):
     '''
-    Decorator which will raise a CompanyAdminAccessDeniedError if user and company admin user do not have a common organization
+    Decorator which will raise a CompanyAdminAccessDeniedError if user and company admin user do not have a
+    common organization
     '''
     @functools.wraps(func)
     def admin_user_user_access_checker(request, user_id, *args, **kwargs):
@@ -256,7 +257,7 @@ def get_program_menu_list(request):
 
     user_programs = Program.user_program_list(request.user.id)
     user_courses = user_api.get_user_courses(request.user.id)
-    
+
     if companion_app_course_ids is None:
         companion_app = mobileapp_api.get_mobile_apps({"app_name": "LBG"})
         companion_app_orgs = companion_app['results'][0]['organizations'] if companion_app.get('results') else []

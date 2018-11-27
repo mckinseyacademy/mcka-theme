@@ -1,12 +1,12 @@
 from django.http import HttpResponse
 from django.views.generic.base import View
-from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import MockHttpResponse
 
 BASE_MOCK_RESPONSE = '### GET /mockapi\n+ Response 200\n    + Body\n            {"mock_api":"uninitialised"}'
 MOCK_NOT_FOUND_RESPONSE = '### GET /mockapi\n+ Response 404\n    + Body\n            {"mock_api":"mock path not found"}'
+
 
 class MockResponseView(View):
     mock_responses = [MockHttpResponse(BASE_MOCK_RESPONSE)]
@@ -27,7 +27,10 @@ class MockResponseView(View):
 
         print "Matched path with {}".format(mock_response_object._address)
 
-        fixed_content = mock_response_object._response_body.replace('http://openedxapi.apiary-mock.com/', request.build_absolute_uri('/mockapi/'))
+        fixed_content = mock_response_object._response_body.replace(
+            'http://openedxapi.apiary-mock.com/',
+            request.build_absolute_uri('/mockapi/')
+        )
 
         content_type = "application/json"
         if mock_response_object._content_type:

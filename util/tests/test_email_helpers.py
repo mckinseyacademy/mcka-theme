@@ -18,7 +18,7 @@ class TestEmailMethods(TestCase, ApplyPatchMixin):
 
         user_api = self.apply_patch('admin.tasks.user_api')
         user_api.get_user.return_value = UserResponse(dictionary={
-            "id": 1,'username': 'user1', 'email': 'user@exmple.com', 'first_name': 'Test User', 'is_active': True
+            "id": 1, 'username': 'user1', 'email': 'user@exmple.com', 'first_name': 'Test User', 'is_active': True
         })
 
     @ddt.data(

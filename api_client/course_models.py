@@ -19,7 +19,7 @@ class _HasCourseDates(CategorisedJsonObject):
 
     def _fetch_date(self, date_name):
         own_date = getattr(self, date_name, None)
-        if not own_date is None:
+        if own_date is not None:
             return own_date
 
         if not hasattr(self, "children"):
@@ -28,7 +28,7 @@ class _HasCourseDates(CategorisedJsonObject):
         last_child_date = None
         for ch in self.children:
             child_date = ch._fetch_date(date_name)
-            if not child_date is None:
+            if child_date is not None:
                 if last_child_date is None or child_date > last_child_date:
                     last_child_date = child_date
 
@@ -105,7 +105,7 @@ class Course(CategorisedJsonObject):
 
     @property
     def formatted_start_date(self):
-        if hasattr(self, 'start') and not self.start is None:
+        if hasattr(self, 'start') and self.start is not None:
             return "{} {}".format(
                 _("Available"),
                 self.start.strftime(settings.DATE_DISPLAY_FORMAT)
@@ -114,7 +114,7 @@ class Course(CategorisedJsonObject):
 
     @property
     def formatted_end_date(self):
-        if hasattr(self, 'end') and not self.end is None:
+        if hasattr(self, 'end') and self.end is not None:
             return "{} {}".format(
                 _("Available"),
                 self.end.strftime(settings.DATE_DISPLAY_FORMAT)
@@ -123,16 +123,16 @@ class Course(CategorisedJsonObject):
 
     @property
     def short_end_date(self):
-        if hasattr(self, 'end') and not self.end is None:
+        if hasattr(self, 'end') and self.end is not None:
             return self.end.strftime(settings.SHORT_DATE_FORMAT)
         return None
 
     @property
     def formatted_time_span(self):
         start = end = ''
-        if hasattr(self, 'start') and not self.start is None:
+        if hasattr(self, 'start') and self.start is not None:
             start = self.start.strftime(settings.SHORT_DATE_FORMAT)
-        if hasattr(self, 'end') and not self.end is None:
+        if hasattr(self, 'end') and self.end is not None:
             end = self.end.strftime(settings.SHORT_DATE_FORMAT)
         return "{} - {}".format(
             start, end
@@ -195,7 +195,7 @@ class Course(CategorisedJsonObject):
         if hasattr(self, 'course_run'):
             return False
         for lesson in self.chapters:
-            due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+            due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due is not None]
             if len(due_dates) > 0:
                 return False
         return True
@@ -234,7 +234,7 @@ class Course(CategorisedJsonObject):
                         completed = set(completions).intersection(children)
                         module.is_complete = len(completed) == len(children)
             return components
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return components
 
     def get_current_sequential(self, lesson_id, module_id):
@@ -243,14 +243,14 @@ class Course(CategorisedJsonObject):
             for sequential in lesson.sequentials:
                 if len([module for module in sequential.pages if module.id == module_id]) > 0:
                     return sequential
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return None
 
     def get_lesson(self, lesson_id):
         try:
             lesson = [lesson for lesson in self.chapters if lesson.id == lesson_id][0]
             return lesson
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return None
 
     def get_module(self, lesson_id, module_id):
@@ -261,7 +261,7 @@ class Course(CategorisedJsonObject):
                 if len(module) > 0:
                     return module[0]
                 return None
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return None
 
     def inject_basic_data(self):
@@ -298,7 +298,7 @@ class Course(CategorisedJsonObject):
 
         for lesson in self.chapters:
             appended = None
-            due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+            due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due is not None]
 
             for key, week in weeks.iteritems():
                 if lesson.index in week['grouped']:
@@ -308,17 +308,18 @@ class Course(CategorisedJsonObject):
             if not appended:
                 for key, week in weeks.iteritems():
                     if len(due_dates) > 0 and not appended:
-                        due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
+                        due_date = max(sequential.due for sequential in lesson.sequentials if
+                                       sequential.due is not None)
                         if week["start_date"] <= due_date <= week["end_date"]:
                             week["lessons"].append(lesson)
                             appended = True
 
             if not appended:
-                due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due != None]
+                due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due is not None]
                 if len(due_dates) == 0:
                     no_due_date["lessons"].append(lesson)
                 else:
-                    due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due != None)
+                    due_date = max(sequential.due for sequential in lesson.sequentials if sequential.due is not None)
                     due_date = due_date.replace(hour=0, minute=0, second=0, microsecond=0)
                     if due_date.weekday() == 0:
                         week_start = due_date - datetime.timedelta(days=due_date.weekday() - 1, weeks=1)
@@ -345,7 +346,7 @@ class Course(CategorisedJsonObject):
                 for activity in project.activities:
                     if activity.due:
                         activity.due_on = activity.due.strftime("%B %e")
-                    if activity.due == None or len(weeks.values()) == 0:
+                    if activity.due is None or len(weeks.values()) == 0:
                         no_due_date["has_group"] = True
                         no_due_date["group_activities"].append(activity)
                     else:
@@ -395,7 +396,7 @@ class Course(CategorisedJsonObject):
             "modules": [],
             "group_activities": [],
         }
-        graded_lessons = [lesson for lesson in self.chapters if getattr(lesson, 'assesment_score', None) != None]
+        graded_lessons = [lesson for lesson in self.chapters if getattr(lesson, 'assesment_score', None) is not None]
         for lesson in graded_lessons:
             for sequential in lesson.sequentials:
                 if sequential.name.find('Assessment') != -1:

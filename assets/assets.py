@@ -6,20 +6,22 @@ from django_assets import Bundle, register
 
 os.environ['SASS_USE_SCSS'] = 'false'
 
+
 def _build_file_list(folder, ext):
     current_dir = os.getcwd()
     os.chdir(os.path.join(settings.ASSETS_SOURCE_ROOT, folder))
     matching_files = []
-    for root, dirs, files in os.walk('.',topdown=True):
+    for root, dirs, files in os.walk('.', topdown=True):
         folder_root = root.split('/')
         folder_root[0] = folder
         folder_name = '/'.join(folder_root)
 
-        matching_files.extend(["/".join([folder_name,name]) for name in files if os.path.splitext(name)[-1]==ext])
+        matching_files.extend(["/".join([folder_name, name]) for name in files if os.path.splitext(name)[-1] == ext])
 
     os.chdir(current_dir)
 
     return matching_files
+
 
 js_ie8_files = []
 js_ie8_files.extend(_build_file_list("js/polyfills", ".js"))
@@ -31,8 +33,8 @@ js_ie8_files.extend([
     'js/vendor/backbone.js',
     'js/vendor/Backbone.CrossDomain.js',
     'js/vendor/backbone.paginator.js',
-    #'js/vendor/d3.v3.js',
-    #'js/vendor/nv.d3.js',
+    # 'js/vendor/d3.v3.js',
+    # 'js/vendor/nv.d3.js',
     'js/vendor/dataTables.foundation.js',
     'js/vendor/jquery.dataTables.rowGrouping.js',
     'js/vendor/bbGrid.js',

@@ -27,6 +27,7 @@ class GroupProjectV1Stages(object):
     GRADE = 'grade'
     GRADED = 'graded'
 
+
 INDIVIDUAL_STAGES = [GroupProjectV1Stages.EVALUATION, GroupProjectV1Stages.GRADE]
 COMPLETION_STAGES = [GroupProjectV1Stages.UPLOAD, GroupProjectV1Stages.EVALUATION, GroupProjectV1Stages.GRADE]
 
@@ -499,7 +500,8 @@ class WorkgroupCompletionData(object):
             stages_data = OrderedDict((
                 (
                     stage_xblock.id,
-                    DottableDict({'name': stage_xblock.name, 'deadline': self.format_date_value(stage_xblock.close_date)})
+                    DottableDict({'name': stage_xblock.name,
+                                  'deadline': self.format_date_value(stage_xblock.close_date)})
                 )
                 for stage_xblock in stage_xblocks
             ))

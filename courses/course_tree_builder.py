@@ -189,8 +189,7 @@ class CourseTreeBuilder(object):
             course_data_manager.set_cached_data(
                 property_name=COURSE_PROPERTIES.GRADED_ITEMS_COUNT,
                 data=graded_items_count,
-                expiry_time=settings.CACHE_TIMEOUTS
-                    .get('longterm_course_data', settings.DEFAULT_CACHE_TIMEOUT)
+                expiry_time=settings.CACHE_TIMEOUTS.get('longterm_course_data', settings.DEFAULT_CACHE_TIMEOUT)
             )
 
         return graded_items_count

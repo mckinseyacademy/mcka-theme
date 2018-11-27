@@ -1,9 +1,7 @@
-#from django.db import models
-
 import StringIO
 import json
 
-# Create your models here.
+
 RESPONSE_DICTIONARY = {}
 
 
@@ -47,27 +45,8 @@ class MockHttpResponse(object):
     def _process_request(self, request_info, remainder):
         self._next_request_body = True
 
-
     def __init__(self, init_data):
-# ### GET /api
-# + Response 200 (application/json)
 
-#     + Body
-
-#             {
-#                 "documentation": "http://docs.openedxapi.apiary.io", 
-#                 "name": "Open edX API", 
-#                 "uri": "/api", 
-#                 "description": "Machine interface for interactions with Open edX."
-#                 "resources":[
-#                     {
-#                         "uri":"/api/groups",
-#                         "uri":"/api/sessions",                        
-#                         "uri":"/api/system",
-#                         "uri":"/api/users",
-#                     }
-#                 ]
-#             }
         try:
             buf = StringIO.StringIO(init_data)
             top_line = buf.readline().strip()
@@ -126,9 +105,9 @@ class MockHttpResponse(object):
         try:
             _set_dictionary_from_dictionary(desired_format, given_format)
 
-            # after being updated, the desired format should be the same - otherwise we have something extra, or something missing in given format
+            # after being updated, the desired format should be the same - otherwise we have something extra, or
+            # something missing in given format
             return desired_format == given_format
 
-        except Exception, ex:
+        except Exception:
             return False
-

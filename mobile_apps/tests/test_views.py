@@ -48,6 +48,7 @@ class MobileAppViewTest(TestCase):
             android_asset_links_file_url,
             self.android_asset_links_file_name
         )
+
     def test_ios_site_association_file(self):
         """
         Test get ios site association file view

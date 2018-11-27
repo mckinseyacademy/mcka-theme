@@ -1,13 +1,10 @@
 ''' json for public api requests '''
 import re
 import json
-import datetime
-import functools
 
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST
 from django.utils.translation import ugettext as _
-from api_client import course_api, user_api, workgroup_api
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -35,9 +32,7 @@ from lib.mail import email_user_activation_link
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN)
 @api_json_response
 def api_create_token(request):
-    api_token = ApiToken(
-        client_id = request.POST['client_id']
-    )
+    api_token = ApiToken(client_id=request.POST['client_id'])
     api_token.save()
     return api_token.as_json()
 
@@ -113,7 +108,7 @@ def user_course(request):
                 "url": "https://www.mckinseyacademy.com{}/article".format(course.nav_url),
                 "excerpt": re.search(r'data-excerpt="([^"]+)"', article.content).group(1),
             }
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             data["article"] = None
 
     return data
@@ -226,12 +221,15 @@ def send_participant_activation_link(request, login_id):
             if not user.is_active:
                 activation_record = UserActivation.get_user_activation(user)
                 email_head = request.build_absolute_uri('/accounts/activate')
-                activation_link =  '{}/{}'.format(email_head, activation_record.activation_key)
+                activation_link = '{}/{}'.format(email_head, activation_record.activation_key)
 
                 email_user_activation_link(request, user, activation_link)
-                return JsonResponse({'message': _('We have sent an email to {} with a link to create an account for you.')
-                                    .format(user.get("email")), 'email':user.get("email")}, status=status.HTTP_200_OK)
-        except:
-            return JsonResponse({'error':_("Sorry, Please try again later to receive an email with a link to create your account.")}, status=status.HTTP_400_BAD_REQUEST)
+
+                return JsonResponse({'message':
+                                    _('We have sent an email to {} with a link to create an account for you.')
+                                    .format(user.get("email")), 'email': user.get("email")}, status=status.HTTP_200_OK)
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class:
+            return JsonResponse({'error': _("Sorry, Please try again later to receive an email with a "
+                                            "link to create your account.")}, status=status.HTTP_400_BAD_REQUEST)
 
     return JsonResponse({'error': _('User does not exist')}, status=status.HTTP_400_BAD_REQUEST)

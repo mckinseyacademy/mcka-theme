@@ -21,7 +21,7 @@ from .oauth2_requests import get_oauth2_session, get_and_unpaginate
 from api_data_manager.course_data import COURSE_PROPERTIES
 from api_data_manager.decorators import user_api_cache_wrapper
 from api_data_manager.signals import user_data_updated, course_data_updated
-from api_data_manager.user_data import USER_PROPERTIES, UserDataManager
+from api_data_manager.user_data import USER_PROPERTIES
 
 AUTH_API = getattr(settings, 'AUTH_API', 'api/server/sessions')
 USER_API = getattr(settings, 'USER_API', 'api/server/users')
@@ -491,8 +491,8 @@ def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
     within the sequential_id
     '''
 
-    data = {"positions":
-        [
+    data = {
+        "positions": [
             {
                 "parent_content_id": course_id,
                 "child_content_id": chapter_id,
@@ -552,7 +552,7 @@ def is_user_in_group(user_id, group_id):
 @api_error_protect
 def set_user_preferences(user_id, preference_dictionary):
     ''' sets users preferences information '''
-    response = POST(
+    POST(
         '{}/{}/{}/preferences'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,
@@ -689,7 +689,7 @@ def get_course_social_metrics(user_id, course_id, include_stats):
 def mark_user_notification_read(user_id, msg_id, read=True):
     '''Sets a user notification message as read'''
 
-    response = POST(
+    POST(
         '{}/{}/{}/notifications/{}/'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,
@@ -903,7 +903,7 @@ def get_company_fields_value_for_user(user_id, organization_id, fields):
 def update_user_company_field_values(user_id, organization_id, fields_key, fields_value):
     """ Update user's company custom fields value"""
     fields_data = {
-        'organization_id':organization_id,
+        'organization_id': organization_id,
         'attribute_keys': fields_key,
         'attribute_values': fields_value
     }

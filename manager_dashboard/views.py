@@ -6,7 +6,8 @@ from rest_framework.views import APIView
 
 from admin.controller import CourseParticipantStats
 from api_client import user_api
-from api_client.course_api import get_course_enrollments, get_course_list, get_course_completions, get_course, get_course_cohort_settings
+from api_client.course_api import get_course_enrollments, get_course_list, get_course_completions, get_course, \
+    get_course_cohort_settings
 from api_client.group_api import PERMISSION_GROUPS
 from lib.authorization import permission_group_required
 from api_client.oauth2_requests import get_oauth2_session

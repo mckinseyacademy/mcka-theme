@@ -1,8 +1,9 @@
-from django.test import TestCase
+# from django.test import TestCase
 
-from admin.review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
-from admin.tests.utils import MockReviewAssignmentGroup, MockReviewAssignmentGroupCollection, test_set, test_user, \
-    test_workgroup
+
+# from admin.review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
+# from admin.tests.utils import MockReviewAssignmentGroup, MockReviewAssignmentGroupCollection, test_set, test_user, \
+#    test_workgroup
 
 
 # TODO: mock API to fix test and uncomment
@@ -337,4 +338,3 @@ from admin.tests.utils import MockReviewAssignmentGroup, MockReviewAssignmentGro
 #         self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(13, 'test-activity-xblock-2')), 0)
 #         self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(12, 'test-activity-xblock-3')), 0)
 #         self.assertEqual(len(MockReviewAssignmentGroup.list_for_workgroup(13, 'test-activity-xblock-4')), 0)
-

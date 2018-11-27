@@ -54,7 +54,6 @@ permission_patcher = patch(
 ).start()
 
 
-
 def _create_user():
     """
     create a test user
@@ -209,7 +208,7 @@ def mocked_execute_task(task_runner):
 class AdminClientSSOTest(TestCase, ApplyPatchMixin):
 
     def setUp(self):
-        user_api = self.apply_patch('accounts.controller.user_api')
+        self.apply_patch('accounts.controller.user_api')
         is_user_in_permission_group_lib = self.apply_patch("lib.authorization.is_user_in_permission_group")
         is_user_in_permission_group_lib.return_value = True
         is_user_in_permission_group_accounts = self.apply_patch("accounts.models.is_user_in_permission_group")
@@ -268,10 +267,8 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         """
         super(CourseParticipantsStatsMixin, self).setUp()
         self.course = make_course(course_id='course_1', display_name='Course One')
-        self.students = [
-            make_user(username="student{}".format(idx), email="student{}@example.com".format(idx))
-                for idx in range(4)
-        ]
+        self.students = [make_user(username="student{}".format(idx),
+                                   email="student{}@example.com".format(idx)) for idx in range(4)]
         self.admin_user = make_user(username="mcka_admin", email="mcka_admin@example.com")
         self.admin_user.is_internal_admin = True
         self.admin_user.is_company_admin = False

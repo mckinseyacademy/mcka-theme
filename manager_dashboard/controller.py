@@ -24,4 +24,3 @@ def get_user_progress(course, chapters):
                     }
                 )
     return user_course_progress
-

@@ -56,51 +56,51 @@ class TestCourseApi(TestCase):
 
         # Staff user gets a course with a chapter
         self.course_response = '''{
-            "category":"course",
-            "end":null,
-            "name":"Test course",
-            "uri":"http://lms.mcka.local:8000/api/server/courses/test/course/1",
-            "due":null,
-            "number":"course",
-            "content":[
-                {
-                    "category": "chapter",
+          "category":"course",
+          "end":null,
+          "name":"Test course",
+          "uri":"http://lms.mcka.local:8000/api/server/courses/test/course/1",
+          "due":null,
+          "number":"course",
+          "content":[
+            {
+              "category": "chapter",
+                "children": [
+                  {
+                    "category": "sequential",
                     "children": [
-                        {
-                            "category": "sequential",
-                            "children": [
-                                {
-                                    "category": "pb-instructor-tool",
-                                    "children": [],
-                                    "due": null,
-                                    "end": null,
-                                    "id": "i4x://OpenCraft/MCKIN-5434/pb-instructor-tool/07ba964de0c4485d8163b8ba8eb84324",
-                                    "name": "Instructor Tool",
-                                    "start": "2016-01-01T00:00:00Z",
-                                    "uri": "http://lms.mcka.local:8000/...-instructor-tool/07ba964de0c4485d8163b8ba8eb84324"
-                                }
-                            ],
-                            "due": null,
-                            "end": null,
-                            "id": "i4x://test/course/sequential/432e55fd201d46aea2ddf815e54e83cb",
-                            "name": "Instructor Tool",
-                            "start": "2016-01-01T00:00:00Z",
-                            "uri": "http://lms.mcka.local:8000/...sequential/432e55fd201d46aea2ddf815e54e83cb"
-                        }
+                      {
+                        "category": "pb-instructor-tool",
+                        "children": [],
+                        "due": null,
+                        "end": null,
+                        "id": "i4x://OpenCraft/MCKIN-5434/pb-instructor-tool/07ba964de0c4485d8163b8ba8eb84324",
+                        "name": "Instructor Tool",
+                        "start": "2016-01-01T00:00:00Z",
+                        "uri": "http://lms.mcka.local:8000/...-instructor-tool/07ba964de0c4485d8163b8ba8eb84324"
+                      }
                     ],
                     "due": null,
                     "end": null,
-                    "id": "i4x://test/course/chapter/17419866267c4ce29ec0558ef21cbfe1",
-                    "name": "Features",
+                    "id": "i4x://test/course/sequential/432e55fd201d46aea2ddf815e54e83cb",
+                    "name": "Instructor Tool",
                     "start": "2016-01-01T00:00:00Z",
-                    "uri": "http://lms.mcka.local:8000/...chapter/17419866267c4ce29ec0558ef21cbfe1"
-                }
-            ],
-            "start":"2016-01-01T00:00:00Z",
-            "org":"OpenCraft",
-            "id":"test/course/1",
-            "resources":[],
-            "course_image_url":"/c4x/test/course/asset/logo.png"
+                    "uri": "http://lms.mcka.local:8000/...sequential/432e55fd201d46aea2ddf815e54e83cb"
+                  }
+                ],
+                "due": null,
+                "end": null,
+                "id": "i4x://test/course/chapter/17419866267c4ce29ec0558ef21cbfe1",
+                "name": "Features",
+                "start": "2016-01-01T00:00:00Z",
+                "uri": "http://lms.mcka.local:8000/...chapter/17419866267c4ce29ec0558ef21cbfe1"
+            }
+          ],
+          "start":"2016-01-01T00:00:00Z",
+          "org":"OpenCraft",
+          "id":"test/course/1",
+          "resources":[],
+          "course_image_url":"/c4x/test/course/asset/logo.png"
         }'''
 
         self.enrollment_api_response = """
@@ -213,8 +213,8 @@ class TestCourseApi(TestCase):
         Ensure that get_course can return different content for different users.
         """
         self._setup_courseware_response()
-        course1 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.STAFF_USER)
         course2 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.TEST_USER)
+        course1 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.STAFF_USER)
 
         self.assertNotEqual(course1, course2)
         self.assertEquals(len(course1.chapters), 1)

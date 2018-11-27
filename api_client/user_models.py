@@ -1,5 +1,4 @@
 ''' Objects for users / authentication built from json responses from API '''
-import hashlib
 import json
 from urlparse import urljoin
 

@@ -4,6 +4,7 @@ app configuration
 from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
+
 class CertificatesConfig(AppConfig):
     """
     Application Configuration for Certificates.
@@ -15,4 +16,4 @@ class CertificatesConfig(AppConfig):
         """
         Initialize certificates app and import certificate tasks
         """
-        import certificates.tasks # pylint: disable=unused-variable
+        import certificates.tasks  # noqa: F401 pylint: disable=unused-variable

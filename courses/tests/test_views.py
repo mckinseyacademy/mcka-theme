@@ -65,4 +65,3 @@ class InferPageNavigationTests(TestCase):
             self.fail("infer_page_navigation raised exception {exception} unexpectedly\n{traceback}".format(
                 exception=exc, traceback=traceback.format_exc()
             ))
-

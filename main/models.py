@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+
 class CuratedContentItem(models.Model):
     class Meta:
         db_table = 'curated_content_item'

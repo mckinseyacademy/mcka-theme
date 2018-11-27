@@ -10,7 +10,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 # disable no-member 'cos the members are getting created from the json
 # and some others that we don't care about for tests
-# pylint: disable=no-member,line-too-long,too-few-public-methods,missing-docstring,too-many-public-methods,pointless-statement,unused-argument,protected-access,maybe-no-member,invalid-name
+# pylint: disable=no-member,line-too-long,too-few-public-methods,missing-docstring,too-many-public-methods,
+# pointless-statement,unused-argument,protected-access,maybe-no-member,invalid-name
 
 def test_user(id):
     return DottableDict({"id": id, "name": "test_user_{}".format(id)})
@@ -80,4 +81,3 @@ class MockReviewAssignmentGroupCollection(object):
             rag = MockReviewAssignmentGroup(wg, review_assignment_processor.xblock_id)
             for user_id in review_assignment_processor.workgroup_reviewers[wg.id]:
                 rag.add_user(user_id)
-

@@ -182,7 +182,8 @@ class UserPasswordReset(db_models.Model):
     def check_user_validation_record(cls, user, token, current_time):
         reset_record = cls.get_user_validation_record(user)
         if reset_record is not None:
-            if reset_record.validation_key == token and (reset_record.time_requested + timedelta(days=1)) >= timezone.now():
+            if reset_record.validation_key == token and (reset_record.time_requested + timedelta(days=1)
+                                                         ) >= timezone.now():
                 return reset_record
         return None
 

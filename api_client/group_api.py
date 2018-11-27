@@ -150,7 +150,6 @@ def add_users_to_group(user_ids, group_id, group_object=JsonObject):
         sender=__name__, user_ids=user_ids,
         data_type=USER_PROPERTIES.GROUPS
     )
-    
     user_ids = ','.join(map(str, user_ids))
     data = {"user_id": user_ids}
     response = POST(
@@ -301,6 +300,7 @@ def get_groups_in_group(group_id, group_object=JsonObject, *args, **kwargs):
     )
 
     return JP.from_json(response.read(), group_object)
+
 
 @api_error_protect
 def get_organizations_in_group(group_id, group_object=JsonObject):

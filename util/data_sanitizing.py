@@ -126,4 +126,3 @@ def special_characters_match(value):
     """
 
     return re.sub(settings.FOREIGN_AND_NORMAL_CHARACTERS_PATTERN, u'', value.encode('utf-8').decode('latin_1'))
-

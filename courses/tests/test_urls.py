@@ -45,7 +45,9 @@ class UrlsTest(TestCase):
         self.assertEqual(resolver.kwargs['page_id'], 'XYZ/987/654/321')
 
         resolver = resolve(
-            '/courses/edX/Open_DemoX/edx_demo_course/lessons/jump_to_page/i4x://edX/Open_DemoX/page/interactive_demonstrations')
+            '/courses/edX/Open_DemoX/edx_demo_course/lessons/jump_to_page/i4x://edX/Open_DemoX/page/'
+            'interactive_demonstrations'
+        )
         self.assertEqual(resolver.view_name, 'infer_page_navigation')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
         self.assertEqual(resolver.kwargs['page_id'], 'i4x://edX/Open_DemoX/page/interactive_demonstrations')
@@ -64,7 +66,9 @@ class UrlsTest(TestCase):
         self.assertEqual(resolver.kwargs['page_id'], 'LMN/ZXC/LAKSJDFLASKJFLWE/444')
 
         resolver = resolve(
-            '/courses/edX/Open_DemoX/edx_demo_course/lessons/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b/module/i4x://edX/Open_DemoX/sequential/edx_introduction')
+            '/courses/edX/Open_DemoX/edx_demo_course/lessons/i4x://edX/Open_DemoX/chapter/'
+            'd8a6192ade314473a78242dfeedfbf5b/module/i4x://edX/Open_DemoX/sequential/edx_introduction'
+        )
         self.assertEqual(resolver.view_name, 'navigate_to_lesson_module')
         self.assertEqual(resolver.kwargs['course_id'], 'edX/Open_DemoX/edx_demo_course')
         self.assertEqual(resolver.kwargs['chapter_id'], 'i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b')

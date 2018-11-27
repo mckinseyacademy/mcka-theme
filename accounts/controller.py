@@ -1,6 +1,9 @@
-import os, re, json, datetime, logging
+import os
+import re
+import json
+import datetime
+import logging
 from collections import namedtuple
-from email.MIMEImage import MIMEImage
 
 from django.contrib import messages
 from django.conf import settings
@@ -14,7 +17,7 @@ from django.utils.html import strip_tags
 
 from admin.controller import enroll_user_in_course
 from admin.models import Program, Client
-from api_client import user_api, third_party_auth_api, organization_api, course_api, mobileapp_api
+from api_client import user_api, third_party_auth_api, organization_api, course_api
 from api_client.api_error import ApiError
 from mobile_apps.constants import MOBILE_APP_DEPLOYMENT_MECHANISMS
 from license import controller as license_controller
@@ -44,7 +47,7 @@ def user_activation_with_data(user_id, user_data, activation_record):
     try:
         # Make sure they'll be inactive while updating fields, then we explicitly activate them
         user_data["is_active"] = False
-        updated_user = user_api.update_user_information(user_id, user_data)
+        user_api.update_user_information(user_id, user_data)
     except ApiError as e:
         raise ActivationError(e.message)
 
@@ -56,7 +59,7 @@ def user_activation_with_data(user_id, user_data, activation_record):
 
     try:
         activation_record.delete()
-    except Exception as e:
+    except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
         logger.error("Unable to delete activation record for user with id {}".format(user_id))
         logger.error(e)
 
@@ -84,7 +87,7 @@ def save_new_client_image(old_image_url, new_image_url, client):
             old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size[0])
             new_gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size[0])
             io_new_client_image(old_gen_image_url, new_gen_image_url)
-        client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + "{}.jpg".format(new_image_url_name)})
+        client.update_and_fetch(client.id, {'logo_url': '/accounts/' + "{}.jpg".format(new_image_url_name)})
 
 
 def io_new_client_image(old_gen_image_url, new_gen_image_url):
@@ -98,10 +101,10 @@ def io_new_client_image(old_gen_image_url, new_gen_image_url):
     try:
         original = Image.open(default_storage.open(old_gen_image_url))
         original.convert('RGB').save(thumb_io, format='JPEG')
-        cropped_image_path = default_storage.save(new_gen_image_url, thumb_io)
+        default_storage.save(new_gen_image_url, thumb_io)
         default_storage.delete(old_gen_image_url)
     except IOError:
-        #TODO handle this error with IOERROR class
+        # TODO handle this error with IOERROR class
         raise
 
 
@@ -278,7 +281,7 @@ def send_password_reset_email(
 
     reset_record = UserPasswordReset.create_record(user)
 
-    url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': reset_record.validation_key})
+    url = reverse('reset_confirm', kwargs={'uidb64': uid, 'token': reset_record.validation_key})
 
     c = {
         'email': user.email,
@@ -291,7 +294,7 @@ def send_password_reset_email(
     # Email subject *must not* contain newlines
     subject = ''.join(subject.splitlines())
     email = loader.render_to_string(email_template_name, c)
-    email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
+    email = EmailMessage(subject, email, from_email, [user.email], headers={'Reply-To': from_email})
     email.send(fail_silently=False)
 
 
@@ -381,7 +384,7 @@ class NewSelfRegistration(SelfRegistration):
 
         try:
             result = user_api.register_user(data)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             # TODO handle this error with ValueError class
             raise ValueError('Api error')
         return result
@@ -410,8 +413,9 @@ def _process_course_run_closed(registration_request, course_run):
     subject = "Your request to access McKinsey Academy"
     template_text = course_run.email_template_closed
     link = None
-    send_email(email_template_html, subject, link, template_text, registration_request.first_name, registration_request.company_email)
 
+    send_email(email_template_html, subject, link, template_text, registration_request.first_name,
+               registration_request.company_email)
 
 
 def send_email(email_template_html, subject, link, template_text, user_name, user_email):

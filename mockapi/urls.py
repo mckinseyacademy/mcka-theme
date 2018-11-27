@@ -1,21 +1,23 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
 from django.conf import settings
 
 from .api_parser import ApiParser
 from .views import MockResponseView
 import re
 
+
 def transform_chunk(chunk):
-    chunk = re.sub(r'\{\?(?P<string>.*)\}', r'?\g<string>',chunk)
+    chunk = re.sub(r'\{\?(?P<string>.*)\}', r'?\g<string>', chunk)
     if len(chunk) > 2 and chunk[0] == '{' and chunk[-1] == '}':
         chunk = r"(?P<{}>.*)".format(chunk[1:-1])
 
     return chunk
 
-urlpatterns = []
 
+urlpatterns = []
 mock_responses = ApiParser(settings.LOCAL_MOCK_API_FILES).responses()
 pattern_list = {}
+
 
 def add_to_pattern_list(new_url, mock_response):
     if new_url in pattern_list:
@@ -31,11 +33,10 @@ for mock_response in mock_responses:
 
     new_url = r'^'
     new_url += '/'.join(url_chunks)
-    #print mock_response._address
-    #print new_url
 
     add_to_pattern_list(new_url, mock_response)
-    # Mocked POSTs have a problem with paramters at the end of the response in case they have /'s - remove $ character from the end
+    # Mocked POSTs have a problem with paramters at the end of the response in case they have /'s - remove $ character
+    # from the end
     if mock_response._address[-1] == '}' and mock_response._method == "POST":
         add_to_pattern_list(new_url[0:-1], mock_response)
 

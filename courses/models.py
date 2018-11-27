@@ -22,20 +22,20 @@ class LessonNotesItem(db_models.Model):
         module = course.get_module(self.lesson_id, self.module_id)
 
         return dict(
-            id = self.id,
-            body = self.body,
-            course_id = self.course_id,
-            course_name = course.name,
-            lesson_id = self.lesson_id,
-            lesson_index = lesson.index,
-            lesson_name = lesson.name,
-            lesson_navigation_url = lesson.navigation_url,
-            module_id = self.module_id,
-            module_index = module.index,
-            module_name = module.name,
-            module_navigation_url = module.navigation_url,
-            created_at = self.created_at.isoformat(),
-            updated_at = self.updated_at.isoformat(),
+            id=self.id,
+            body=self.body,
+            course_id=self.course_id,
+            course_name=course.name,
+            lesson_id=self.lesson_id,
+            lesson_index=lesson.index,
+            lesson_name=lesson.name,
+            lesson_navigation_url=lesson.navigation_url,
+            module_id=self.module_id,
+            module_index=module.index,
+            module_name=module.name,
+            module_navigation_url=module.navigation_url,
+            created_at=self.created_at.isoformat(),
+            updated_at=self.updated_at.isoformat(),
         )
 
 
@@ -117,12 +117,14 @@ class CourseMetaData(db_models.Model):
     module_label = db_models.CharField(max_length=20, blank=True)
     created_at = db_models.DateTimeField(auto_now_add=True)
     updated_at = db_models.DateTimeField(auto_now=True)
-    lessons_label = JSONField(default={'zero': "", 'one': "",
-                                               'two': "", 'few': "",
-                                               'many': "", 'other': ""}, load_kwargs={'object_pairs_hook': collections.OrderedDict})
-    modules_label = JSONField(default={'zero': "", 'one': "",
-                                               'two': "", 'few': "",
-                                               'many': "", 'other': ""}, load_kwargs={'object_pairs_hook': collections.OrderedDict})
+    lessons_label = JSONField(
+        default={'zero': "", 'one': "", 'two': "", 'few': "", 'many': "", 'other': ""},
+        load_kwargs={'object_pairs_hook': collections.OrderedDict}
+    )
+    modules_label = JSONField(
+        default={'zero': "", 'one': "", 'two': "", 'few': "", 'many': "", 'other': ""},
+        load_kwargs={'object_pairs_hook': collections.OrderedDict}
+    )
 
     def as_json(self):
         return dict(
@@ -133,4 +135,3 @@ class CourseMetaData(db_models.Model):
             lesson_pluralist=self.lessons_label,
             module_pluralist=self.modules_label,
         )
-

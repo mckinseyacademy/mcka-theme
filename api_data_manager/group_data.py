@@ -1,5 +1,3 @@
-from django.core.cache import cache
-
 from .common import DataManager
 from lib.utils import DottableDict
 

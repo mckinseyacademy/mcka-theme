@@ -4,6 +4,7 @@ from api_client import group_api
 from api_client.api_error import ApiError
 from license.models import LicenseGrant
 
+
 class Command(BaseCommand):
     help = 'Updates the program ("series") groups to match the license information in the Apros database'
 

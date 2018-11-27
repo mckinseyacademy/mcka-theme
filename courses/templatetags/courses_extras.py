@@ -5,6 +5,7 @@ from courses.controller import get_assessment_module_name_translation
 
 register = template.Library()
 
+
 @register.filter
 @stringfilter
 def translate_assessment_if_needed(value):

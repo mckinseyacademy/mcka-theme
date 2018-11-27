@@ -2,10 +2,8 @@
 # -*- coding: utf-8 -*-
 
 ''' forms for public marketing pages '''
-import datetime
 from django import forms
 from django.utils.translation import ugettext as _
-from django.utils.safestring import mark_safe
 from django.conf import settings
 
 import urllib2 as url_access
@@ -87,10 +85,13 @@ class TechSupportForm(forms.Form):
         url_request.add_header("Content-Type", "application/json")
         url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
 
+
 class SubscribeForm(forms.Form):
     auto_id = False
     email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(
-        attrs={'placeholder': _('Email')}
+        attrs={
+            'placeholder': _('Email')
+        }
     ))
 
     def save(self):
@@ -110,38 +111,44 @@ class SubscribeForm(forms.Form):
         url_request.add_header("Content-Type", "application/json")
         try:
             url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
-        except HTTPError, e:
+        except HTTPError:
             return False
+
 
 class EdxOfferForm(forms.Form):
     auto_id = False
     full_name = forms.CharField(label=False, max_length=254, widget=forms.TextInput(
-        attrs={'placeholder': _('Full name'),
-               'required': None,
-               'data-entry': 'entry.867370117'
-               }
+        attrs={
+            'placeholder': _('Full name'),
+            'required': None,
+            'data-entry': 'entry.867370117'
+        }
     ))
 
-    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(
-        attrs={'type': 'email',
-               'placeholder': _('Email'),
-               'required': '',
-               'pattern': '^[\w\d_.%+-]+@[\w\d.-]+\.[a-z]{2,6}$',
-               'data-entry': 'entry.161345890'
-               }
+    # TODO: handle invalid escape sequence
+    email = forms.EmailField(label=False, max_length=254, widget=forms.TextInput(  # noqa: W605
+        attrs={
+            'type': 'email',
+            'placeholder': _('Email'),
+            'required': '',
+            'pattern': '^[\w\d_.%+-]+@[\w\d.-]+\.[a-z]{2,6}$',
+            'data-entry': 'entry.161345890'
+        }
     ))
 
     company = forms.CharField(label=False, max_length=254, widget=forms.TextInput(
-        attrs={'placeholder': _('Company'),
-               'required': None,
-               'data-entry': 'entry.925379726'
-               }
+        attrs={
+            'placeholder': _('Company'),
+            'required': None,
+            'data-entry': 'entry.925379726'
+        }
     ))
 
     title = forms.CharField(label=False, max_length=254, widget=forms.TextInput(
-        attrs={'placeholder': _('Title'),
-               'required': None, 'data-entry': 'entry.143346488'
-               }
+        attrs={
+            'placeholder': _('Title'),
+            'required': None, 'data-entry': 'entry.143346488'
+        }
     ))
     education = forms.ChoiceField(
         label=_('Highest level of education completed:'),
@@ -152,9 +159,10 @@ class EdxOfferForm(forms.Form):
     comment = forms.CharField(
         label=False,
         widget=forms.widgets.Textarea(
-            attrs={'placeholder': _('In a few lines tell us why you would like to take the course.'),
-                   'required': None,
-                   'data-entry': 'entry.1495472333'
-                   }
+            attrs={
+                'placeholder': _('In a few lines tell us why you would like to take the course.'),
+                'required': None,
+                'data-entry': 'entry.1495472333'
+            }
         )
     )

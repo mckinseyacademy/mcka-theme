@@ -7,7 +7,11 @@ from admin.models import Program
 
 class ProgramTests(TestCase):
     def test_program(self):
-        test_json = '{"name": "Maggie","uri": "http://localhost:56480/api/groups/39","resources": [{"uri": "http://localhost:56480/api/groups/39/users"}, {"uri": "http://localhost:56480/api/groups/39/groups"}],"data": {"display_name": "Maggie","start_date": "2014-1-1T00:00:00.00000Z","end_date": "2014-12-3T00:00:00.00000Z"},"id": 39,"group_type": "series"}'
+        test_json = '{"name": "Maggie","uri": "http://localhost:56480/api/groups/39",' \
+                    '"resources": [{"uri": "http://localhost:56480/api/groups/39/users"}, ' \
+                    '{"uri": "http://localhost:56480/api/groups/39/groups"}],"data": ' \
+                    '{"display_name": "Maggie","start_date": "2014-1-1T00:00:00.00000Z",' \
+                    '"end_date": "2014-12-3T00:00:00.00000Z"},"id": 39,"group_type": "series"}'
 
         test_info = Program(test_json)
 
@@ -15,4 +19,3 @@ class ProgramTests(TestCase):
         self.assertEqual(test_info.display_name, "Maggie")
         self.assertEqual(test_info.start_date, datetime.datetime(2014, 1, 1))
         self.assertEqual(test_info.end_date, datetime.datetime(2014, 12, 3))
-

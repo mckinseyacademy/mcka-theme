@@ -7,13 +7,14 @@ CONVERT_SEGMENTS = [
     "location",
 ]
 
+
 class PriorIdRequest(object):
 
     def process_request(self, request):
         redirect = False
         url_path = request.path
         url_segments = url_path.split('/')
-        for segment_index in range(0,len(url_segments)):
+        for segment_index in range(0, len(url_segments)):
             url_segment = url_segments[segment_index]
             test_segment = url_segment.split(':')
             if len(test_segment) == 2 and test_segment[0] in CONVERT_SEGMENTS:
