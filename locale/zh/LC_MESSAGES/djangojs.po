@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 16:06+0000\n"
+"POT-Creation-Date: 2018-11-27 13:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,6 +100,13 @@ msgstr[5] "您的课程于 %(days)s 天后开始。"
 #: static/js/application.js:198
 msgid "Welcome to McKinsey Academy"
 msgstr "欢迎来到麦肯锡学院"
+
+#: static/js/application.js:199
+msgid ""
+"%(courseStr)s Before the course begins, you can explore this site to learn "
+"more about what to expect."
+msgstr ""
+"%(courseStr)s  在课程开始之前，您可以浏览本网站了解更多有关课程内容的信息。"
 
 #: static/js/common/admin_bulk_actions.js:17
 msgid "Progress: %(value)s%"
@@ -295,7 +302,7 @@ msgstr "参与者:"
 msgid "Email"
 msgstr "电子邮件"
 
-#: static/js/router.js:380
+#: static/js/router.js:386
 msgid "Please select at least one course"
 msgstr "请至少选择一门课程"
 
@@ -528,6 +535,7 @@ msgstr "名称"
 
 #: static/js/views/admin/course_details.js:30
 #: static/js/views/admin/course_details_bulk_actions.js:281
+#: static/js/views/admin/import_progress.js:11
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:372
@@ -869,6 +877,57 @@ msgstr "无"
 #: static/js/views/admin/group_work_dashboard.js:195
 msgid "Do you really want to delete: \n"
 msgstr "确定要删除: \n"
+
+#: static/js/views/admin/import_progress.js:4
+msgid "File name"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:5
+#, fuzzy
+#| msgid "Start"
+msgid "Start time"
+msgstr "开始"
+
+#: static/js/views/admin/import_progress.js:6
+#, fuzzy
+#| msgid "End Date"
+msgid "End time"
+msgstr "结束日期"
+
+#: static/js/views/admin/import_progress.js:14
+#: static/js/views/admin/import_progress.js:93
+msgid "Importing.."
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:19
+#: static/js/views/admin/import_progress.js:119
+msgid "Successful"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:22
+#: static/js/views/admin/import_progress.js:113
+#, fuzzy
+#| msgid "Show Errors"
+msgid "Contains Errors"
+msgstr "显示错误"
+
+#: static/js/views/admin/import_progress.js:30
+#, fuzzy
+#| msgid "Activation Link"
+msgid "Activation File"
+msgstr "激活链接"
+
+#: static/js/views/admin/import_progress.js:40
+msgid "Error File"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:49
+msgid "Initiated by"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:122
+msgid "Importing %(processed)s of %(total)s rows"
+msgstr ""
 
 #: static/js/views/admin/manager_dashboard.js:99
 #: static/js/views/courses/lesson_note.js:2

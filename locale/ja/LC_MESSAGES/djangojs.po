@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-23 16:05+0000\n"
+"POT-Creation-Date: 2018-11-27 13:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -95,6 +95,14 @@ msgstr[1] "あなたのコースは、%(days)s日後に始まります。"
 #: static/js/application.js:198
 msgid "Welcome to McKinsey Academy"
 msgstr "McKinsey Academyへようこそ"
+
+#: static/js/application.js:199
+msgid ""
+"%(courseStr)s Before the course begins, you can explore this site to learn "
+"more about what to expect."
+msgstr ""
+"%(courseStr)s コースが始まるまでは、サイト内の各ページの情報から提供内容をご"
+"確認ください。"
 
 #: static/js/common/admin_bulk_actions.js:17
 msgid "Progress: %(value)s%"
@@ -298,7 +306,7 @@ msgstr "参加者:"
 msgid "Email"
 msgstr "Eメール"
 
-#: static/js/router.js:380
+#: static/js/router.js:386
 msgid "Please select at least one course"
 msgstr "コースを最低1個選択してください"
 
@@ -503,6 +511,7 @@ msgstr "名前"
 
 #: static/js/views/admin/course_details.js:30
 #: static/js/views/admin/course_details_bulk_actions.js:281
+#: static/js/views/admin/import_progress.js:11
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:372
@@ -846,6 +855,57 @@ msgstr "なし"
 #: static/js/views/admin/group_work_dashboard.js:195
 msgid "Do you really want to delete: \n"
 msgstr "本当に消去しますか: \n"
+
+#: static/js/views/admin/import_progress.js:4
+msgid "File name"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:5
+#, fuzzy
+#| msgid "Start"
+msgid "Start time"
+msgstr "開始"
+
+#: static/js/views/admin/import_progress.js:6
+#, fuzzy
+#| msgid "End Date"
+msgid "End time"
+msgstr "終了日"
+
+#: static/js/views/admin/import_progress.js:14
+#: static/js/views/admin/import_progress.js:93
+msgid "Importing.."
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:19
+#: static/js/views/admin/import_progress.js:119
+msgid "Successful"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:22
+#: static/js/views/admin/import_progress.js:113
+#, fuzzy
+#| msgid "Show Errors"
+msgid "Contains Errors"
+msgstr "エラーを表示する"
+
+#: static/js/views/admin/import_progress.js:30
+#, fuzzy
+#| msgid "Activation Link"
+msgid "Activation File"
+msgstr "有効化リンク"
+
+#: static/js/views/admin/import_progress.js:40
+msgid "Error File"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:49
+msgid "Initiated by"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:122
+msgid "Importing %(processed)s of %(total)s rows"
+msgstr ""
 
 #: static/js/views/admin/manager_dashboard.js:99
 #: static/js/views/courses/lesson_note.js:2
