@@ -27,6 +27,7 @@ from api_client.api_error import ApiError
 from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros
 from util.email_helpers import send_html_email
+
 from accounts.models import UserActivation
 from accounts.helpers import create_activation_url
 
@@ -42,16 +43,14 @@ from .controller import (
 )
 from .models import UserRegistrationError, UserRegistrationBatch
 
-
 logger = get_task_logger(__name__)
 IMPORT_PARTICIPANTS_DIR = 'import_participant_files'
 
 
 @task(name='admin.course_participants_data_retrieval_task', max_retries=3, queue='high_priority')
-def course_participants_data_retrieval_task(
-        course_id, company_id, task_id, base_url, user_id,
-        lesson_completions=False, retry_params=None
-    ):
+def course_participants_data_retrieval_task(course_id, company_id, task_id, base_url, user_id,
+                                            lesson_completions=False, retry_params=None
+                                            ):
     """
     Retrieves course participants' data using API
 
@@ -194,7 +193,7 @@ def course_participants_data_retrieval_task(
         ("Username", ("username", '')),
         ("Email", ("email", '')),
         ("Company", ("organizations_display_name", '')),
-    ] + [(label, (key, '')) for key, label in attributes.items()] + [
+    ] + [(item_label, (item_key, '')) for item_key, item_label in attributes.items()] + [
         ("Status", ("custom_user_status", '')),
         ("Activated", ("custom_activated", '')),
         ("Last login", ("custom_last_login", '')),
@@ -446,7 +445,7 @@ def users_program_association_task(program_id, user_ids, task_id):
         try:
             group_api.add_users_to_group(user_ids_batch, program_id)
             added += len(user_ids_batch)
-        except ApiError as e:
+        except ApiError:
             failed += len(user_ids_batch)
         finally:
             percentage = (100.0 / (total or 1)) * (added + failed)
@@ -507,18 +506,18 @@ def import_participants_task(user_id, base_url, file_stream, is_internal_admin, 
     for index in xrange(0, total_clean_users, batch_size):
         batch = clean_user_list[index:min(index + batch_size, total_clean_users)]
         threads.append(pool.apply_async(
-            _enroll_participants, args=(
-                batch,
-                is_internal_admin,
-                registration_batch,
-        )))
+            _enroll_participants, args=(batch,
+                                        is_internal_admin,
+                                        registration_batch,
+                                        )
+        ))
 
     # Run queued up jobs.
     for thread in threads:
         thread.get()
 
     logger.info('{} of {} users registered successfully - {}'
-                    .format(registration_batch.succeded, total_clean_users, task_log_msg))
+                .format(registration_batch.succeded, total_clean_users, task_log_msg))
 
     logger.info('Completed - {}'.format(task_log_msg))
 
@@ -651,7 +650,7 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         completion_time = (registration_batch.time_completed - registration_batch.time_requested)\
                               .total_seconds() // 60.0
         completion_time = int(completion_time)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         completion_time = 'N/A'
 
     registration_batch.save()

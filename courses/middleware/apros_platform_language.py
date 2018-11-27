@@ -2,9 +2,8 @@ import re
 
 from django.conf import settings
 
-from api_client import user_api
 from util.i18n_helpers import set_language
-from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
+from api_data_manager.course_data import CourseDataManager
 
 
 class AprosPlatformLanguage(object):

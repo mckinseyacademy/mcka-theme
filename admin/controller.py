@@ -25,7 +25,6 @@ from django.core.validators import validate_email, ValidationError
 from django.http import Http404, HttpResponse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
-from pytz import UTC
 from rest_framework import status
 from rest_framework.response import Response
 
@@ -61,14 +60,14 @@ from lib.utils import DottableDict
 from license import controller as license_controller
 from util.data_sanitizing import sanitize_data, clean_xss_characters, remove_characters, special_characters_match
 from util.validators import validate_first_name, validate_last_name, RoleTitleValidator, normalize_foreign_characters
-from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
+from api_data_manager.course_data import CourseDataManager
 
 from .models import (
     Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
     GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
     GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate
 )
-from .permissions import Permissions, SlimAddingPermissions
+from .permissions import Permissions
 from accounts.helpers import make_user_manager, get_user_by_email
 
 # need to load everything up to first level nested XBlocks to properly get Group Project V2 activities
@@ -112,7 +111,7 @@ def _worker():
         func, args, kwargs = _queue.get()
         try:
             func(*args, **kwargs)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             pass  # bork or ignore here; ignore for now
         finally:
             _queue.task_done()  # so we can join at exit
@@ -220,9 +219,9 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
 
 
 def load_course(
-        course_id, depth=MINIMAL_COURSE_DEPTH,
-        course_api_impl=course_api, request=None,
-    ):
+                course_id, depth=MINIMAL_COURSE_DEPTH,
+                course_api_impl=course_api, request=None,
+                ):
     """
     Gets the course from the API, and performs any post-processing for Apros specific purposes
 
@@ -255,7 +254,8 @@ def generate_email_text_for_user_activation(activation_record, activation_link_h
     email_text = (
         "",
         _(
-            "An administrator has created an account on McKinsey Academy for your use. To activate your account, please copy and paste this address into your web browser's address bar:"),
+            "An administrator has created an account on McKinsey Academy for your use. To activate your account, "
+            "please copy and paste this address into your web browser's address bar:"),
         "{}/{}".format(activation_link_head, activation_record.activation_key),
     )
 
@@ -298,7 +298,7 @@ def _process_line(user_line):
             if fields[6]:
                 user_info["username"] = fields[6]
 
-    except Exception as e:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         user_info = {
             "error": _("Could not parse user info from {user_line}").format(user_line=user_line)
         }
@@ -346,7 +346,7 @@ def _process_line_proposed(user_line):
             #     if fields[6]:
             #         user_info["username"] = fields[6]
 
-    except Exception as e:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         user_info = {
             "error": _("Could not parse user info from {user_line}").format(user_line=user_line)
         }
@@ -386,8 +386,6 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
         user_error = None
         try:
             user = None
-            activation_record = None
-
             try:
                 user = user_api.register_user(user_dict)
             except ApiError as e:
@@ -399,7 +397,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             if user:
                 try:
                     if not user.is_active:
-                        activation_record = UserActivation.user_activation(user)
+                        UserActivation.user_activation(user)
                     client.add_user(user.id)
                 except ApiError, e:
                     failure = {
@@ -414,13 +412,13 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
                     user_dict["email"],
                 )
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
             user = None
             reason = e.message if e.message else _("Data processing error")
             user_error = _("Error processing data: {reason}").format(reason=reason)
 
         if user_error:
-            error = UserRegistrationError.objects.create(error=user_error, task_key=reg_status.task_key)
+            UserRegistrationError.objects.create(error=user_error, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
@@ -461,8 +459,6 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
         user_error = []
         try:
             user = None
-            activation_record = None
-
             try:
                 user = user_api.register_user(user_dict)
             except ApiError as e:
@@ -475,7 +471,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
             if user:
                 try:
                     if not user.is_active:
-                        activation_record = UserActivation.user_activation(user)
+                        UserActivation.user_activation(user)
                     client.add_user(user.id)
                 except ApiError as e:
                     failure = {
@@ -497,7 +493,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                 if (user.id in company_users_ids and failure) or not failure:
                     try:
                         program.add_user(client_id, user.id)
-                    except Exception as e:
+                    except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
                         user_error.append(_("{error}: {message} - {email}").format(
                             error=_("User program enrollment"),
                             message=e.message,
@@ -505,20 +501,20 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                         ))
                     try:
                         enroll_user_in_course(user.id, course_id)
-                    except Exception as e:
+                    except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
                         user_error.append(_("{error}: {message} - {email}").format(
                             error=_("User course enrollment"),
                             message=e.message,
                             email=user_dict["email"],
                         ))
-            except Exception as e:
+            except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
                 reason = e.message if e.message else _("Enrolling student error")
                 user_error.append(_("Error enrolling student: {reason} - {email}").format(
                     reason=reason,
                     email=user_dict["email"]
                 ))
 
-        except Exception as e:
+        except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
             user = None
             reason = e.message if e.message else _("Data processing error")
             user_error.append(_("Error processing data: {reason} - {email}").format(
@@ -528,7 +524,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
 
         if user_error:
             for user_e in user_error:
-                error = UserRegistrationError.objects.create(error=user_e, task_key=reg_status.task_key)
+                UserRegistrationError.objects.create(error=user_e, task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
         else:
@@ -636,7 +632,7 @@ def get_user_with_activation(user, activation_link):
             user.activation_link = "{}/{}".format(activation_link, activation_record.activation_key)
         else:
             user.activation_link = _('Activated')
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         user.activation_link = _('Could not fetch activation record')
 
     return user
@@ -671,7 +667,7 @@ def fetch_clients_with_program(program_id):
     for client in clients:
         try:
             client.places_allocated, client.places_assigned = license_controller.licenses_report(program_id, client.id)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             client.places_allocated = None
             client.places_assigned = None
 
@@ -740,7 +736,7 @@ def parse_studentslist_from_post(postValues):
             students.append({'id': postValues['students[{}]'.format(i)],
                              'company_id': postValues['students[{}][data_field]'.format(i)]})
             i = i + 1
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         pass
 
     return students, project_id
@@ -781,7 +777,7 @@ def generate_course_report(client_id, course_id, url_prefix, students):
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
 
-    activity_names_row = [_("Client Name"),"",_("Course ID"),""]
+    activity_names_row = [_("Client Name"), "", _("Course ID"), ""]
     output_line(activity_names_row)
 
     group_header_row = [client.name, "", course_id]
@@ -789,7 +785,8 @@ def generate_course_report(client_id, course_id, url_prefix, students):
 
     output_line("--------")
 
-    activity_names_row = [_("Full Name"),_("Username"),_("Title"),_("Email"), _("Progress %"), _("Engagement"), _("Proficiency"), _("Course Completed")]
+    activity_names_row = [_("Full Name"), _("Username"), _("Title"), _("Email"), _("Progress %"), _("Engagement"),
+                          _("Proficiency"), _("Course Completed")]
     output_line(activity_names_row)
 
     for student in students:
@@ -863,7 +860,6 @@ def get_course_details_progress_data(course, course_modules, users, company_id):
     if course.end is not None:
         if end_date > course.end:
             end_date = course.end
-    delta = end_date - start_date
     if company_id:
         metrics = course_api.get_course_time_series_metrics(course.id, start_date, end_date, interval='days',
                                                             organization=company_id)
@@ -1062,7 +1058,7 @@ def load_group_projects_info_for_course(course, companies):
         try:
             project_name = group_project_lookup[project.content_id]
             project_status = True
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             project_name = project.content_id
             project_status = False
 
@@ -1208,7 +1204,8 @@ def get_course_social_engagement(course_id, company_id):
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
     for role_id in roles_ids:
-        if role_id in course_users_ids: course_users_ids.remove(role_id)
+        if role_id in course_users_ids:
+            course_users_ids.remove(role_id)
 
     number_of_users = len(course_users_ids)
 
@@ -1236,9 +1233,9 @@ def get_course_social_engagement(course_id, company_id):
         avg_posts = 0
 
     course_stats = [
-        { 'name': _('# of posts'), 'value': number_of_posts},
-        { 'name': _('% participants posting'), 'value': participants_posting},
-        { 'name': _('Avg posts per participant'), 'value': avg_posts}
+        {'name': _('# of posts'), 'value': number_of_posts},
+        {'name': _('% participants posting'), 'value': participants_posting},
+        {'name': _('Avg posts per participant'), 'value': avg_posts}
     ]
 
     return course_stats
@@ -1257,7 +1254,8 @@ def get_course_engagement_summary(course_id, company_id):
     roles = course_api.get_users_filtered_by_role(course_id)
     roles_ids = [str(user.id) for user in roles]
     for role_id in roles_ids:
-        if role_id in course_users_ids: course_users_ids.remove(role_id)
+        if role_id in course_users_ids:
+            course_users_ids.remove(role_id)
 
     course_users = []
     for user in course_users_simple:
@@ -1284,7 +1282,7 @@ def get_course_engagement_summary(course_id, company_id):
         if course_user['is_active'] is True:
             active_users += 1
         if course_user['last_login'] and \
-                        parsedate(course_user['last_login']) >= (timezone.now() - timezone.timedelta(days=7)):
+                parsedate(course_user['last_login']) >= (timezone.now() - timezone.timedelta(days=7)):
             login_users += 1
             for leader in course_metrics['leaders']:
                 if leader['id'] == course_user['id']:
@@ -1303,10 +1301,14 @@ def get_course_engagement_summary(course_id, company_id):
     login_progress = round_to_int_bump_zero((float(login_users_progress) / login_users)) if login_users > 0 else 0
 
     course_stats = [
-         { 'name': _('Total Cohort'), 'people': len(course_users), 'invited': '-', 'progress': str(course_progress) + '%'},
-         { 'name': _('Activated'), 'people': active_users, 'invited': str(activated) + '%', 'progress': str(active_progress) + '%'},
-         { 'name': _('Engaged'), 'people': engaged_users, 'invited': str(engaged) + '%', 'progress': str(engaged_progress) + '%'},
-         { 'name': _('Logged in over last 7 days'), 'people': login_users, 'invited': str(logined_users) + '%', 'progress': str(login_progress) + '%'}
+         {'name': _('Total Cohort'), 'people': len(course_users), 'invited': '-',
+          'progress': str(course_progress) + '%'},
+         {'name': _('Activated'), 'people': active_users, 'invited': str(activated) + '%',
+          'progress': str(active_progress) + '%'},
+         {'name': _('Engaged'), 'people': engaged_users, 'invited': str(engaged) + '%',
+          'progress': str(engaged_progress) + '%'},
+         {'name': _('Logged in over last 7 days'), 'people': login_users, 'invited': str(logined_users) + '%',
+          'progress': str(login_progress) + '%'}
     ]
 
     return course_stats
@@ -1510,7 +1512,7 @@ def get_user_courses_helper(user_id, request):
 
     if request.user.is_internal_admin:
         internal_ids = get_internal_courses_ids()
-        user_courses = [course for course in user_courses if course['id'] in internal_ids]
+        user_courses = [ind_course for ind_course in user_courses if ind_course['id'] in internal_ids]
 
     # xss cleaning of course properties
     for course in user_courses:
@@ -1532,11 +1534,12 @@ def get_user_courses_helper(user_id, request):
 
     return active_courses, course_history
 
+
 def update_company_field_threaded(student_list, request, reg_status):
     # _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
     # _thread.daemon = True  # so we can exit
     # _thread.start()
-    users = build_student_list_from_file(student_list)
+    build_student_list_from_file(student_list)
 
 
 def enroll_participants_threaded(student_list, request, reg_status):
@@ -1555,7 +1558,7 @@ def process_enroll_participants_list(file_stream, request, reg_status=None):
         reg_status.save()
     for user_info in user_list:
         if "error" in user_info:
-            error = UserRegistrationError.objects.create(error=user_info["error"], task_key=reg_status.task_key)
+            UserRegistrationError.objects.create(error=user_info["error"], task_key=reg_status.task_key)
             reg_status.failed = reg_status.failed + 1
             reg_status.save()
     user_list = [user_info for user_info in user_list if "error" not in user_info]
@@ -1594,7 +1597,7 @@ def _process_line_register_participants_csv(user_line):
         }
     except ValidationError as e:
         user_info = {'error': ("{} Participant {}".format(e.message, fields[2]))}
-    except Exception as e:
+    except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
         user_info = {
             "error": _("Could not parse user info from {}").format(fields[2])
         }
@@ -1613,7 +1616,7 @@ def _process_line_enroll_participants_csv(user_line):
             "status": fields[2]
         }
 
-    except Exception as e:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         user_info = {
             "error": _("Could not parse user info from {}").format(user_line)
         }
@@ -1660,7 +1663,7 @@ def _enroll_participants(participants, is_internal_admin, reg_status):
                     user_dict.get('company_id', ''),
             ):
                 _add_errors(errors, _('Activation record error'), email)
-        except Exception as e:
+        except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
             reason = e.message if e.message else _("Processing Data Error")
             _add_errors(errors, _("Error processing data: {} ").format(reason), email)
 
@@ -1701,12 +1704,14 @@ def _just_enroll_participants(participants, request, reg_status):
                 if str(value).strip() == '':
                     if key == 'email':
                         email = _("No email")
-                    check_errors.append({'reason': _('Empty field: {}').format(key), 'activity': _('Processing Participant')})
+                    check_errors.append({'reason': _('Empty field: {}').format(key),
+                                         'activity': _('Processing Participant')})
             # Check if email is valid
             try:
                 validate_email(user_email)
             except ValidationError:
-                check_errors.append({'reason': _('Valid e-mail is required: {email}').format(user_email), 'activity': _('Processing Participant')})
+                check_errors.append({'reason': _('Valid e-mail is required: {email}').format(user_email),
+                                     'activity': _('Processing Participant')})
             # Check if user already exist
             user_data = user_api.get_user_by_email(user_email)
             if user_data['count'] == 0:
@@ -1715,14 +1720,17 @@ def _just_enroll_participants(participants, request, reg_status):
             try:
                 course_api.get_course_v1(course_id)
             except Http404:
-                check_errors.append({'reason': _("Course doesn't exist"), 'activity': _('Enrolling Participant in Course')})
+                check_errors.append({'reason': _("Course doesn't exist"),
+                                     'activity': _('Enrolling Participant in Course')})
             # For Internal Admin Check if Course Is Internal
             if internal_admin_flag:
                 if not check_if_course_is_internal(course_id):
-                    check_errors.append({'reason': _("Course is not Internal"), 'activity': _('Enrolling Participant in Course')})
+                    check_errors.append({'reason': _("Course is not Internal"),
+                                         'activity': _('Enrolling Participant in Course')})
             # Check if status exist
             if status not in status_check:
-                check_errors.append({'reason': _("Status doesn't exist"), 'activity': _('Enrolling Participant in Course')})
+                check_errors.append({'reason': _("Status doesn't exist"),
+                                     'activity': _('Enrolling Participant in Course')})
             # If errors exist add them, else continue
             if check_errors:
                 for error in check_errors:
@@ -1751,7 +1759,7 @@ def _just_enroll_participants(participants, request, reg_status):
                         e.args[1],
                         email
                     ))
-        except Exception as e:
+        except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
             reason = e.message if e.message else _("Processing Data Error")
             user_error.append(_("Error processing data: {} - {}").format(
                 reason,
@@ -1836,8 +1844,10 @@ def _parse_email_text_template(text_body, optional_data=None):
                             social_engagement_data = user_api.get_course_social_metrics(user["id"],
                                                                                         optional_data["course_id"])
                             if social_engagement_data:
-                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(social_engagement_data.num_threads,
-                                    social_engagement_data.num_comments, social_engagement_data.num_replies)
+                                constructed_vars[keyword.lower()] = "threads: {}, comments: {}, replies: {}".format(
+                                    social_engagement_data.num_threads,
+                                    social_engagement_data.num_comments,
+                                    social_engagement_data.num_replies)
                         elif keyword == "COMPANY":
                             constructed_vars[keyword.lower()] = user["organization_name"]
                 temp_text = string_template.safe_substitute(constructed_vars)
@@ -2053,8 +2063,9 @@ class CourseParticipantStats(object):
 
         organization_id = self.request_params.get('organizations', None)
         if organization_id:
-            course_participants = self._associate_company_attributes(course_participants,organization_id)
-            course_participants = remove_specific_user_roles_of_other_companies(course_participants, int(organization_id))
+            course_participants = self._associate_company_attributes(course_participants, organization_id)
+            course_participants = remove_specific_user_roles_of_other_companies(course_participants,
+                                                                                int(organization_id))
         lesson_completions = self._get_lesson_completions(course_participants)
         course_completions = self._get_course_completions(course_participants)
         self._prefetched_completions = None
@@ -2083,18 +2094,6 @@ class CourseParticipantStats(object):
         Returns engagement score for all participants in the course.
         """
         return course_api.get_course_social_metrics(self.course_id, scores=True)
-
-    def _get_course_completions(self, course_participants):
-        """
-        Returns course completion data for all participants in the course.
-
-        Returns: {username: completion_data}, where completion data includes
-            course-level completion data, and may or may not include
-            lesson-level completion data.
-        """
-        if self._prefetched_completions is None:
-            self._prefetched_completions = self._prefetch_completions()
-        return self._prefetched_completions
 
     def _get_course_completions(self, course_participants):
         """
@@ -2312,10 +2311,9 @@ def filter_course_participants(course_participants, limit_participants):
     Returns only those course participants also found in the limited list of participants.
     """
     updates = {
-        'results': [
-            participant for participant in course_participants.get('results', [])
-                if participant.get('username') in limit_participants
-        ]
+        'results': [participant for participant in course_participants.get('results', [])
+                    if participant.get('username') in limit_participants
+                    ]
     }
     updates['count'] = len(updates['results'])
     return dict(course_participants, **updates)
@@ -2653,7 +2651,7 @@ def create_update_delete_manager(user_id, manager_email, username):
             manager_api.delete_user_manager(username, manager_email)
         elif manager_email != user_managers[0]['email']:
             update_user_manager(user_id, username,
-                                    user_managers[0]['email'], manager_email)
+                                user_managers[0]['email'], manager_email)
     elif manager_email:
         create_user_manager(user_id, username, manager_email)
 
@@ -2715,7 +2713,7 @@ def update_company_field_for_users(user_list, fields_key, organization_id):
 
 
 def validate_company_field(csv_fields, organization_id):
-    errors, csv_keys = [],[]
+    errors, csv_keys = [], []
     org_fields_labels = {}
     org_fields = get_organization_fields(organization_id)
     for field in org_fields:
@@ -2779,6 +2777,3 @@ def validate_participant_manager_email(participant_email, manager_email):
     else:
         errors.append(_("User and manager email cannot be empty"))
     return None, None, errors
-
-
-

@@ -1,7 +1,6 @@
 """
 Tests for certificates django views
 """
-import os
 import uuid
 import datetime
 from functools import wraps
@@ -14,20 +13,20 @@ from django.test import TestCase
 from django.test.client import Client
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
-from django.conf import settings
+from django.conf import settings  # noqa: F401
 from django.utils.decorators import available_attrs
 from courses.models import FeatureFlags
 from accounts.tests.utils import ApplyPatchMixin
 from courses.tests.test_controllers import MockCourseAPI
 
-from ..models import (
+from ..models import (  # noqa: F401
     UserCourseCertificate,
     CertificateStatus,
     CourseCertificateStatus,
     CertificateTemplateAsset,
     CertificateTemplate
 )
-from ..forms import CertificateTemplateAssetForm, CertificateTemplateForm
+from ..forms import CertificateTemplateAssetForm, CertificateTemplateForm  # noqa: F401
 
 GENERATE_CERTIFICATES_TASK_DATA = [
     (True, datetime.datetime.now() + datetime.timedelta(days=4)),
@@ -243,34 +242,6 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
     #         len(response.context['certificate_template_assets']),
     #         len(self.template_assets)
     #    )
-
-    # TODO: mock API to fix test and uncomment
-    # def test_template_assets_post_valid(self):
-    #     """
-    #     Test post certificate template assets view with valid data
-    #     """
-    #     test_file_path = os.path.join(
-    #         settings.BASE_DIR,
-    #         'admin/test_data/test_user_list.csv'
-    #     )
-    #     with open(test_file_path) as test_file_content:
-    #         data = {'asset': test_file_content}
-    #         response = self.client.post(
-    #             reverse('certificate_template_assets'),
-    #             data
-    #         )
-    #
-    #     self.assertRedirects(
-    #         response,
-    #         expected_url=reverse('certificate_template_assets'),
-    #         status_code=302,
-    #         target_status_code=200
-    #     )
-    #     certificate_template_assets = CertificateTemplateAsset.objects.all()
-    #     self.assertEqual(
-    #         len(certificate_template_assets),
-    #         len(self.template_assets) + 1
-    #     )
 
     # TODO: mock API to fix test and uncomment
     # def test_template_assets_post_invalid(self):

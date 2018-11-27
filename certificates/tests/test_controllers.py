@@ -87,9 +87,7 @@ class CertificateControllerTest(TestCase, ApplyPatchMixin):
 
     @ddt.data(*GENERATE_CERTIFICATES_TASK_DATA)
     @ddt.unpack
-    def test_get_course_certificates_status(
-            self, certs_feature_flag, course_end_date
-        ):
+    def test_get_course_certificates_status(self, certs_feature_flag, course_end_date):
         """
         Test course certificates status
         """

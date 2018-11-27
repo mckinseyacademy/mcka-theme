@@ -15,6 +15,7 @@ UPDATE_COURSE_MSG = "As the edxapp user, run ./manage.py cms --settings=devstack
     DATA_DIR, TEST_COURSE_DIR
 )
 
+
 class Command(BaseCommand):
     help = "Checks whether the integration test course exists"
 

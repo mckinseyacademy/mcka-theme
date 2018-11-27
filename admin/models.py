@@ -1,7 +1,6 @@
 from api_client import group_api, workgroup_api, organization_api, user_api, course_api
-from api_client import(
-    group_models, user_models, workgroup_models, organization_models
-)
+from api_client import group_models, user_models, workgroup_models, organization_models
+
 from api_client.json_object import JsonObject
 from lib.utils import DottableDict
 from license import controller as license_controller
@@ -41,6 +40,7 @@ class BaseGroupModel(group_models.GroupInfo):
 
     def __unicode__(self):
         return self.name
+
 
 class Program(BaseGroupModel):
 
@@ -195,8 +195,9 @@ class Client(organization_models.Organization):
 
         for program in programs:
             try:
-                program.places_allocated, program.places_assigned = license_controller.licenses_report(program.id, self.id)
-            except:
+                program.places_allocated, program.places_assigned = license_controller.licenses_report(program.id,
+                                                                                                       self.id)
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 program.places_allocated = None
                 program.places_assigned = None
 
@@ -220,8 +221,8 @@ class Client(organization_models.Organization):
         if users_ids == []:
             return []
         else:
-            additional_fields = ["title","city","country","first_name","last_name"]
-            return user_api.get_users(ids=users_ids,fields=additional_fields)
+            additional_fields = ["title", "city", "country", "first_name", "last_name"]
+            return user_api.get_users(ids=users_ids, fields=additional_fields)
 
     def fetch_students_by_enrolled(self):
         return organization_api.get_users_by_enrolled(self.id, include_course_counts=True)
@@ -320,7 +321,8 @@ class UserRegistrationBatch(db_models.Model):
 
     @classmethod
     def create(cls):
-        reg_record = cls.objects.create(attempted=0, failed=0, succeded=0, task_key= cls.generate_task_key(str(timezone.now())))
+        reg_record = cls.objects.create(attempted=0, failed=0, succeded=0,
+                                        task_key=cls.generate_task_key(str(timezone.now())))
         reg_record.save()
 
         return reg_record
@@ -343,7 +345,7 @@ class BatchOperationErrors(db_models.Model):
 
     @classmethod
     def create(cls, error='', task_key='', user_id=0):
-        reg_record = cls.objects.create(error=error, task_key= task_key, user_id=user_id)
+        reg_record = cls.objects.create(error=error, task_key=task_key, user_id=user_id)
         reg_record.save()
 
         return reg_record
@@ -363,7 +365,8 @@ class BatchOperationStatus(db_models.Model):
 
     @classmethod
     def create(cls):
-        reg_record = cls.objects.create(attempted=0, failed=0, succeded=0, task_key= cls.generate_task_key(str(timezone.now())))
+        reg_record = cls.objects.create(attempted=0, failed=0, succeded=0,
+                                        task_key=cls.generate_task_key(str(timezone.now())))
         reg_record.save()
 
         return reg_record
@@ -386,7 +389,7 @@ class ClientNavLinks(db_models.Model):
     client_id = db_models.IntegerField(unique=False, db_index=True)
     link_name = db_models.CharField(max_length=200)
     link_label = db_models.CharField(max_length=200)
-    link_url= db_models.CharField(max_length=200)
+    link_url = db_models.CharField(max_length=200)
     created_at = db_models.DateTimeField(auto_now_add=True)
     updated_at = db_models.DateTimeField(auto_now=True)
 
@@ -444,7 +447,8 @@ class CompanyContact(db_models.Model):
         u'0': _('Senior executive sponsoring McKinsey Academy program within company'),
         u'1': _('IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)'),
         u'2': _('Overseeing/coordinating Academy program with broader people strategy'),
-        u'3': _('Individual managing day-to-day operation of the program (e.g., missing participant information, engagement)')
+        u'3': _('Individual managing day-to-day operation of the program (e.g., missing participant information, '
+                'engagement)')
     }
 
     @classmethod
@@ -532,7 +536,8 @@ class BrandingSettings(db_models.Model):
     discover_title_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TITLE_COLOR)
     discover_author_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_AUTHOR_COLOR)
     discover_rule_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_RULE_COLOR)
-    background_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_BACKGROUND_COLOR)
+    background_color = db_models.CharField(max_length=20, blank=True,
+                                           default=settings.LEARNER_DASHBOARD_BACKGROUND_COLOR)
     top_bar_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TOP_BAR_COLOR)
 
     TYPES = (
@@ -551,7 +556,8 @@ class LearnerDashboard(db_models.Model):
     description = db_models.CharField(blank=True, max_length=5000)
 
     title_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TITLE_COLOR)
-    description_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_DESCRIPTION_COLOR)
+    description_color = db_models.CharField(max_length=20, blank=True,
+                                            default=settings.LEARNER_DASHBOARD_DESCRIPTION_COLOR)
 
     client_id = db_models.IntegerField(null=True)
     course_id = db_models.CharField(blank=False, max_length=500, db_index=True)
@@ -633,7 +639,8 @@ class LearnerDashboardBranding(db_models.Model):
     discover_title_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_TITLE_COLOR)
     discover_author_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_AUTHOR_COLOR)
     discover_rule_color = db_models.CharField(max_length=20, blank=True, default=settings.DISCOVER_RULE_COLOR)
-    background_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_BACKGROUND_COLOR)
+    background_color = db_models.CharField(max_length=20, blank=True,
+                                           default=settings.LEARNER_DASHBOARD_BACKGROUND_COLOR)
     top_bar_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TOP_BAR_COLOR)
 
     TYPES = (
@@ -706,8 +713,10 @@ class CourseRun(db_models.Model):
     email_template_existing = db_models.CharField(blank=False, null=False, max_length=2000)
     email_template_mcka = db_models.CharField(blank=False, null=False, max_length=2000)
     email_template_closed = db_models.CharField(blank=False, null=False, max_length=2000)
-    self_registration_page_heading = db_models.CharField(blank=False, null=False, max_length=2000, default="Self Registration Page Heading")
-    self_registration_description_text = db_models.CharField(blank=False, null=False, max_length=2000, default="Self Registration Description Text")
+    self_registration_page_heading = db_models.CharField(blank=False, null=False, max_length=2000,
+                                                         default="Self Registration Page Heading")
+    self_registration_description_text = db_models.CharField(blank=False, null=False, max_length=2000,
+                                                             default="Self Registration Description Text")
 
 
 class SelfRegistrationRoles(db_models.Model):

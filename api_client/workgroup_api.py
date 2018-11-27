@@ -7,7 +7,7 @@ from api_data_manager.user_data import USER_PROPERTIES
 
 from .json_object import JsonParser as JP
 from .json_object import JsonObject
-from .json_requests import GET, POST, DELETE
+from .json_requests import GET, POST, DELETE, PATCH
 
 
 WORKGROUP_API = getattr(settings, 'WORKGROUP_API', 'api/server/workgroups')

@@ -1,10 +1,11 @@
 from django.core.management.base import BaseCommand
 from django.conf import settings
 
-from api_client import course_api, group_api, user_api
+from api_client import group_api, user_api
 from api_client.api_error import ApiError
 from api_client.organization_models import Organization
 from lib.authorization import permission_groups_map
+
 
 class Command(BaseCommand):
     help = 'Loads seed data into the apros db and into edX via the edX API'
@@ -31,7 +32,6 @@ class Command(BaseCommand):
                 group_api.create_group(group_name, group_type)
             else:
                 self.stdout.write("Skipping %s, already exists" % group_name)
-
 
         ''' Register McK and TA users '''
         user_suffix = '_user'
@@ -88,6 +88,5 @@ class Command(BaseCommand):
                 if users:
                     self.stdout.write("Adding %s to %s" % (user_tuple[0], settings.ADMINISTRATIVE_COMPANY))
                     admin_company.add_user(users[0].id)
-
 
         self.stdout.write("Done")

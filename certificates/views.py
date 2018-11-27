@@ -217,7 +217,7 @@ def edit_certificate_template(request, template_id):
     })
 
 
-def load_template_asset(request, asset_id, asset_name): # pylint: disable=unused-argument
+def load_template_asset(request, asset_id, asset_name):  # pylint: disable=unused-argument
     """
     View to locate and return template asset file
     """

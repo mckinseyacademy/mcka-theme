@@ -2,14 +2,14 @@
 import json
 import collections
 import datetime
-import os
 import StringIO
 
 from django.utils.translation import ugettext as _
 from django.core.files.storage import default_storage
 
 
-class DataOnly(object):pass
+class DataOnly(object):
+    pass
 
 
 # ignore too few public methods witin this file - these models almost always
@@ -156,16 +156,11 @@ class JsonObjectWithImage(JsonObject):
 
     @classmethod
     def save_profile_image(cls, cropped_example, image_url, new_image_url=None):
-        from PIL import Image
         from django.core.files.storage import default_storage
-        from django.core.files.base import ContentFile
 
         if not new_image_url:
             new_image_url = image_url
 
-        # Save normal path
-        old_image_url_name = os.path.splitext(image_url)[0]
-        new_image_url_name = os.path.splitext(new_image_url)[0]
         '''
         There's a slight chance the image won't be deleted since
         an exception might be raised while request for deletion was in progress,
@@ -174,7 +169,7 @@ class JsonObjectWithImage(JsonObject):
         '''
         try:
             default_storage.delete(image_url)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             pass
         cls._save_image(cropped_example, new_image_url)
 

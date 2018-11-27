@@ -19,6 +19,7 @@ test:
     - coverage report
     - coverage html
     - coverage xml
+    - flake8 ./
 
   post:
     - mkdir -p $CIRCLE_ARTIFACTS/codecoverage

@@ -2,20 +2,19 @@
 from django.shortcuts import render, redirect
 from django.template import TemplateDoesNotExist
 from django.template.loader import get_template
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404
 from django.views.decorators.http import require_POST
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from lib.authorization import permission_group_required
-from api_client.group_api import PERMISSION_GROUPS
 from .forms import TechSupportForm, SubscribeForm, EdxOfferForm
 
 
 def infer_default_navigation(request, page_name):
     page = "marketing/{0}.haml".format(page_name.lower())
     try:
-        template = get_template(page)
-        if page_name == "programs" or page_name == "about" or page_name == "experience" or page_name == "edxoffer" or page_name == "fblf":
+        get_template(page)  # TODO check if function call is needed or not
+        if page_name == "programs" or page_name == "about" or page_name == "experience" or page_name == "edxoffer" \
+                or page_name == "fblf":
             return redirect('/')
         else:
             return render(request, page)

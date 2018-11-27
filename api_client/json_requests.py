@@ -51,7 +51,7 @@ def DELETE(url_path, data=None):
     opener = url_access.build_opener(url_access.HTTPHandler)
     request = url_access.Request(url=url_path, headers=json_headers())
     request.get_method = lambda: 'DELETE'
-    json_data = json.dumps(data) if not data is None else None
+    json_data = json.dumps(data) if data is not None else None
     return opener.open(request, json_data, TIMEOUT)
 
 

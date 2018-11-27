@@ -26,7 +26,10 @@ class TestGroupInfoTest(TestCase):
     #     self.assertEqual(stored_test_info.birth_date, datetime(1968, 1, 31))
 
     def test_full_info_response(self):
-        test_json = '{"name": "Maggie","uri": "http://localhost:56480/api/groups/39","resources": [{"uri": "http://localhost:56480/api/groups/39/users"}, {"uri": "http://localhost:56480/api/groups/39/groups"}],"data": {"display_name": "Maggie","start_date": "2014-1-1T00:00:00.00000Z","end_date": "2014-12-3T00:00:00.00000Z"},"id": 39,"group_type": "series"}'
+        test_json = '{"name": "Maggie","uri": "http://localhost:56480/api/groups/39","resources": [{' \
+                    '"uri": "http://localhost:56480/api/groups/39/users"}, {"uri": "http://localhost:56480/api/' \
+                    'groups/39/groups"}],"data": {"display_name": "Maggie","start_date": "2014-1-1T00:00:00.00000Z",' \
+                    '"end_date": "2014-12-3T00:00:00.00000Z"},"id": 39,"group_type": "series"}'
 
         test_info = TestGroupInfo(test_json)
 

@@ -10,4 +10,4 @@ class APIDataManagerConfig(AppConfig):
     verbose_name = _('data manager app')
 
     def ready(self):
-        import api_data_manager.signals
+        import api_data_manager.signals  # noqa: F401

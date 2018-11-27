@@ -38,6 +38,6 @@ class PriorIdConvert(object):
                 raise Exception("Unsupported prior key format")
 
             return translator(split_head[1])
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             print "Error translating key - assuming already in new format for {}".format(prior_format_key)
             return prior_format_key

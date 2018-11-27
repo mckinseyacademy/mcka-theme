@@ -37,6 +37,7 @@ def is_supported_mobile_device(request):
     return user_agent.is_mobile and \
         user_agent.os.family == 'iOS' or user_agent.os.family == 'Android'
 
+
 def is_ios(request):
     """
     Helper method to check if request user agent is iOS

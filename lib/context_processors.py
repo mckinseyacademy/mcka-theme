@@ -3,7 +3,6 @@ import logging
 from django.conf import settings
 
 from courses.user_courses import standard_data
-from courses.models import FeatureFlags
 
 from edx_notifications.server.web.utils import get_notifications_widget_context
 from util.user_agent_helpers import is_mobile_user_agent, is_ios, is_android
@@ -52,14 +51,14 @@ def user_program_data(request):
 def settings_data(request):
     ''' makes global settings available to all templates '''
     ie_favicon_prefix = ""
-    if request.META.has_key('HTTP_USER_AGENT'):
+    if 'HTTP_USER_AGENT' in request.META:
         ua = request.META['HTTP_USER_AGENT'].lower()
         if re.search('msie ', ua):
             ie_favicon_prefix = "{}://{}".format(
                 "https" if request.is_secure() else "http",
                 request.META['HTTP_HOST'],
             )
-            if re.search('msie [1-8]\.', ua):
+            if re.search('msie [1-8]\.', ua):  # noqa: W605 TODO: handle invalid escape sequence
                 request.is_IE8 = True
 
     data = {

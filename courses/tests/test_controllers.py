@@ -515,6 +515,7 @@ class CoursesAPITest(TestCase):
         self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-4'), 0)
         self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-5'), 0)
 
+
 class ResourcePageScriptsFixTest(TestCase):
     def setUp(self):
         self.resource_page_html_with_v3 = '''

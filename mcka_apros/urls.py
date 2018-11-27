@@ -9,7 +9,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
 
 from main import views as main_views
-from sitemap import *
+from sitemap import *  # noqa: F403 TODO replace star imports with named imports
 from admin import views as adminviews
 from courses import views as courseviews
 from accounts import views as accountsviews
@@ -46,15 +46,53 @@ if settings.DEBUG:
     urlpatterns.extend([url(r'^update_language$', main_views.PreviewLanguageView.as_view(), name='preview_language')])
 
 urlpatterns.extend([
-    url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)$', courseviews.course_learner_dashboard, name='course_learner_dashboard'),
-    url(r'^learnerdashboard/bookmark_lesson/(?P<learner_dashboard_id>[0-9]+)/', courseviews.course_learner_dashboard_bookmark_lesson, name='course_learner_dashboard_bookmark_lesson'),
-    url(r'^learnerdashboard/bookmark_tile/(?P<learner_dashboard_id>[0-9]+)/', courseviews.course_learner_dashboard_bookmark_tile, name='course_learner_dashboard_bookmark_tile'),
-    url(r'^learnerdashboard/courses/(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)/(?P<tile_type>.*)/(?P<tile_id>.*)/(?P<learner_dashboard_id>[0-9]+)$', courseviews.navigate_to_lesson_module, name='navigate_to_lesson_module'),
-    url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/resources$', courseviews.course_resources_learner_dashboard, name='course_resources_learner_dashboard'),
-    url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/discussion', courseviews.course_discussion_learner_dashboard, name='course_discussion_learner_dashboard'),
-    url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/group_work/(?P<workgroup_id>[0-9]+)$', courseviews.workgroup_course_group_work, name='user_course_group_work_learner_dashboard'),
-    url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/group_work$', courseviews.user_course_group_work_learner_dashboard, name='user_course_group_work_learner_dashboard'),
-    url(r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/calendar$', courseviews.course_learner_dashboard_calendar, name='course_learner_dashboard_calendar')
+    url(
+        r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)$',
+        courseviews.course_learner_dashboard,
+        name='course_learner_dashboard'
+    ),
+    url(
+        r'^learnerdashboard/bookmark_lesson/(?P<learner_dashboard_id>[0-9]+)/',
+        courseviews.course_learner_dashboard_bookmark_lesson,
+        name='course_learner_dashboard_bookmark_lesson'
+    ),
+    url(
+        r'^learnerdashboard/bookmark_tile/(?P<learner_dashboard_id>[0-9]+)/',
+        courseviews.course_learner_dashboard_bookmark_tile,
+        name='course_learner_dashboard_bookmark_tile'
+    ),
+    url(
+        r'^learnerdashboard/courses/(?P<course_id>.*)/lessons/(?P<chapter_id>.*)/module/(?P<page_id>.*)/'
+        r'(?P<tile_type>.*)/(?P<tile_id>.*)/(?P<learner_dashboard_id>[0-9]+)$',
+        courseviews.navigate_to_lesson_module,
+        name='navigate_to_lesson_module'
+    ),
+    url(
+        r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/resources$',
+        courseviews.course_resources_learner_dashboard,
+        name='course_resources_learner_dashboard'
+    ),
+    url(
+        r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/discussion',
+        courseviews.course_discussion_learner_dashboard,
+        name='course_discussion_learner_dashboard'
+    ),
+    url(
+        r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/group_work/'
+        r'(?P<workgroup_id>[0-9]+)$',
+        courseviews.workgroup_course_group_work,
+        name='user_course_group_work_learner_dashboard'
+    ),
+    url(
+        r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/group_work$',
+        courseviews.user_course_group_work_learner_dashboard,
+        name='user_course_group_work_learner_dashboard'
+    ),
+    url(
+        r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/calendar$',
+        courseviews.course_learner_dashboard_calendar,
+        name='course_learner_dashboard_calendar'
+    )
 ])
 
 urlpatterns.extend([
@@ -65,8 +103,8 @@ if settings.RUN_LOCAL_MOCK_API:
     urlpatterns.extend([url(r'^mockapi/', include('mockapi.urls'), name='mockapi')])
 
 sitemaps = {
-    'pages': Sitemap(['home', 'terms', 'privacy', 'faq']),
-    'marketing': MarketingSitemap,
+    'pages': Sitemap(['home', 'terms', 'privacy', 'faq']),  # noqa: F405 TODO import Sitemap and dont use star imports
+    'marketing': MarketingSitemap,  # noqa: F405 TODO import MarketingSitemap and dont use star imports
 }
 
 urlpatterns.extend([
@@ -82,5 +120,5 @@ urlpatterns.extend([
 ])
 
 handler403 = main_views.error_403
-handler404 = main_views.error_404
-handler500 = main_views.error_500
+handler404 = main_views.error_404  # noqa: F811 TODO fix issue ----> redefinition of unused 'handler404' from line 3
+handler500 = main_views.error_500  # noqa: F811 TODO fix issue ----> redefinition of unused 'handler500' from line 4

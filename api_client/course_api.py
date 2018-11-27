@@ -251,7 +251,6 @@ def get_course(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None):
         depth,
         '&username={}'.format(username) if username else ''
     )
-
     response = edx_oauth2_session.get(url=url)
 
     # Load the depth from the API
@@ -403,6 +402,15 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
     else:
         response = edx_oauth2_session.get(url=url)
         return json.loads(response.content)
+
+
+@api_error_protect
+def get_user_list(course_id, program_id=None):
+
+    return JP.from_json(
+        get_user_list_json(course_id, program_id),
+        course_models.CourseEnrollmentList
+    ).enrollments
 
 
 @api_error_protect
@@ -703,7 +711,14 @@ def get_social_engagement_leaderboard(course_id, count, **kwargs):
 
 
 @api_error_protect
-def get_course_time_series_metrics(course_id, start_date, end_date, time_series_object=course_models.CourseTimeSeriesMetrics, *args, **kwargs):
+def get_course_time_series_metrics(
+        course_id,
+        start_date,
+        end_date,
+        time_series_object=course_models.CourseTimeSeriesMetrics,
+        *args,
+        **kwargs
+):
     ''' a list of Metrics for the specified Course in time series format '''
     qs_params = {
         'start_date': start_date,
@@ -739,7 +754,7 @@ def get_course_projects(course_id, page_size=0, project_object=JsonObject):
 
 
 @api_error_protect
-def get_module_details(module_uri, include_fields = [], module_object = None):
+def get_module_details(module_uri, include_fields=[], module_object=None):
     ''' Fetches the details of the object at the specific uri with the named custom fields'''
 
     qs_params = {"include_fields": ",".join(include_fields)} if len(include_fields) > 0 else None
@@ -756,7 +771,7 @@ def get_module_details(module_uri, include_fields = [], module_object = None):
 
 
 @api_error_protect
-def get_course_content_detail(course_id, content_id, include_fields = [], module_object = None):
+def get_course_content_detail(course_id, content_id, include_fields=[], module_object=None):
     ''' Fetches the details of the object at the specific uri with the named custom fields'''
 
     url = '{}/{}/{}/content/{}'.format(
@@ -833,7 +848,6 @@ def get_course_details_groups(course_id):
     return json.loads(response.read())
 
 
-
 @api_error_protect
 def get_course_details_metrics_grades(course_id, count):
 
@@ -850,7 +864,7 @@ def get_course_details_metrics_grades(course_id, count):
 
 
 @api_error_protect
-def get_course_details_metrics_social(course_id, qs_params = ''):
+def get_course_details_metrics_social(course_id, qs_params=''):
     """
     Fetch social metrics for course.
     """

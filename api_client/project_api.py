@@ -1,16 +1,12 @@
 ''' API calls with respect to groups '''
-from django.utils.translation import ugettext as _
 from django.conf import settings
 from urllib import urlencode
 
-from lib.utils import DottableDict
-from .api_error import api_error_protect, ERROR_CODE_MESSAGES
+from .api_error import api_error_protect
 
 from .json_object import JsonParser as JP
 from .json_object import JsonObject
 from .json_requests import GET, POST, DELETE, PUT
-from . import user_models
-from . import course_models
 from . import workgroup_models
 
 PROJECT_API = getattr(settings, 'PROJECT_API', 'api/server/projects')
@@ -63,7 +59,7 @@ def create_project(course_id, content_id, organization_id=None, project_object=J
         "content_id": content_id,
     }
 
-    if not organization_id is None:
+    if organization_id is not None:
         data["organization"] = organization_id
 
     response = POST(
@@ -99,8 +95,8 @@ def get_all_projects(course_id=None, content_id=None, project_object=JsonObject)
 
     qs_params = {}
     if course_id and content_id:
-        qs_params["course_id"]=course_id
-        qs_params["content_id"]=content_id
+        qs_params["course_id"] = course_id
+        qs_params["content_id"] = content_id
     response = GET(
         '{}/{}?{}'.format(
             settings.API_SERVER_ADDRESS,

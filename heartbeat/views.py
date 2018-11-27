@@ -6,6 +6,7 @@ from django.conf import settings
 from django.http import HttpResponse
 import json
 
+
 def heartbeat(request):
 
     API = 'api/server/'
@@ -13,15 +14,13 @@ def heartbeat(request):
 
     try:
         try:
-            response = GET(
-            '{}/{}'.format(
-                settings.API_SERVER_ADDRESS, API
-                )
+            GET(
+                '{}/{}'.format(settings.API_SERVER_ADDRESS, API)
             )
             output['API'] = True
         except ApiError as fail:
             output['API'] = unicode(fail.message)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         output['API'] = False
 
     cursor = connection.cursor()
@@ -31,6 +30,6 @@ def heartbeat(request):
         cursor.fetchone()
         output['SQL'] = True
     except DatabaseError as fail:
-        output['SQL'] = unicode(fail) 
+        output['SQL'] = unicode(fail)
 
     return HttpResponse(json.dumps(output), content_type="application/json")

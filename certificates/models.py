@@ -63,8 +63,7 @@ class UserCourseCertificate(models.Model):
         """
         User course certificate model property to get unhyphenated uuid
         """
-        return self.id.hex # pylint: disable=no-member
-
+        return self.id.hex  # pylint: disable=no-member
 
     class Meta(object):
         """

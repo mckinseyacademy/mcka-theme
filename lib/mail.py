@@ -5,6 +5,7 @@ from django.utils.translation import ugettext as _
 from util.email_helpers import send_html_email
 from urlparse import urljoin
 
+
 def sendMultipleEmails(messages):
     connection = mail.get_connection()
     connection.open()
@@ -144,4 +145,3 @@ def email_user_activation_link(request, user_data, activation_link):
             'mcka_logo_url': mcka_logo,
         }
     )
-

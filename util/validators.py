@@ -39,7 +39,8 @@ class RoleTitleValidator(RegexValidator):
     """Validates that given value is alphanumeric characters with hyphens,
     dots, underscore and spaces and parentheses """
     regex = r'^[a-zA-Z0-9\(\)-_\. ]+\Z'
-    message = _("Enter a valid value consisting of letters, numbers, underscores, dots, parentheses, hyphens or spaces.")
+    message = _("Enter a valid value consisting of letters, numbers, underscores, dots, parentheses, "
+                "hyphens or spaces.")
 
 
 class PhoneNumberValidator(RegexValidator):

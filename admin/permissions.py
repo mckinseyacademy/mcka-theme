@@ -41,7 +41,8 @@ class Permissions(object):
         USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER,
         USER_ROLES.MODERATOR: PERMISSION_GROUPS.MODERATOR
     }
-    CACHE_EXPIRE_TIME = 300 # every five minutes it will refresh courses list
+    CACHE_EXPIRE_TIME = 300  # every five minutes it will refresh courses list
+
     def __init__(self, user_id, ):
         self.permission_groups = self.get_groups_of_type_permission_cached()
         self.current_permissions = [pg.name for pg in user_api.get_user_groups(user_id, PERMISSION_TYPE)]
@@ -49,7 +50,7 @@ class Permissions(object):
         self.user_roles = user_api.get_user_roles(user_id)
         self.user_id = user_id
 
-    def get_course_list_or_cached(self, force_fetch = False):
+    def get_course_list_or_cached(self, force_fetch=False):
         course_list = cache.get('course_list_cached', None)
         time_now = time.time()
         if course_list is None or force_fetch:
@@ -118,7 +119,7 @@ class Permissions(object):
 
     def update_courses_roles_list(self, courses_roles_list):
         per_course_roles = [{"course_id": p.course_id, "role": p.role}
-                            for p in self.user_roles if p.course_id != course_id]
+                            for p in self.user_roles if p.course_id != course_id]  # noqa: F821 TODO course_id undefined
 
         for course_role in courses_roles_list:
             per_course_roles.append({
@@ -178,7 +179,7 @@ class Permissions(object):
         if group_id:
             group_api.remove_user_from_group(self.user_id, group_id)
             if permission_name == PERMISSION_GROUPS.INTERNAL_ADMIN:
-                # internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
+                # internal_admin_role_event.send(sender=self.__class__, user_id=self.user_id,action=ROLE_ACTIONS.REVOKE)
                 new_internal_admin_event.send(sender=self.__class__, user_id=self.user_id, action=ROLE_ACTIONS.REVOKE)
 
     def add_company_admin_permissions(self, organization_ids):
@@ -228,8 +229,10 @@ class Permissions(object):
                 if remove_global_company_admin:
                     group_api.remove_user_from_group(self.user_id, group_id)
                 organization_api.remove_users_from_organization_group(organization_id, group_id, self.user_id)
-                user_organizations[PERMISSION_GROUPS.COMPANY_ADMIN] = [organization for organization in user_organizations[PERMISSION_GROUPS.COMPANY_ADMIN]
-                                                                        if int(organization_id) != int(organization.id)]
+                user_organizations[PERMISSION_GROUPS.COMPANY_ADMIN] = [organization for organization in
+                                                                       user_organizations[
+                                                                        PERMISSION_GROUPS.COMPANY_ADMIN]
+                                                                       if int(organization_id) != int(organization.id)]
 
     def update_company_admin_permissions(self, organization_ids):
         group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
@@ -253,7 +256,7 @@ class Permissions(object):
             if len(list_to_remove):
                 self.remove_company_admin_permission(list_to_remove)
 
-    def check_if_company_admin(self, organization_id, group_id = None):
+    def check_if_company_admin(self, organization_id, group_id=None):
         if not group_id:
             group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
         if group_id:
@@ -267,7 +270,7 @@ class Permissions(object):
 
     def get_all_user_organizations_with_permissions(self):
         group_id = self.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
-        user_statuses = {PERMISSION_GROUPS.COMPANY_ADMIN:[], "main_company":[], "company_num":0}
+        user_statuses = {PERMISSION_GROUPS.COMPANY_ADMIN: [], "main_company": [], "company_num": 0}
         if group_id:
             organizations_list = user_api.get_user_organizations(self.user_id)
             user_statuses["company_num"] = len(organizations_list)
@@ -278,7 +281,8 @@ class Permissions(object):
                     user_statuses[PERMISSION_GROUPS.COMPANY_ADMIN].append(organization)
                 else:
                     user_statuses["main_company"].append(organization)
-            if user_statuses["company_num"] > 0 and len(user_statuses["main_company"]) == 0: #naive approach that main company is first company
+            # naive approach that main company is first company
+            if user_statuses["company_num"] > 0 and len(user_statuses["main_company"]) == 0:
                 user_statuses["main_company"].append(user_statuses[PERMISSION_GROUPS.COMPANY_ADMIN][0])
         else:
             organizations_list = user_api.get_user_organizations(self.user_id)
@@ -458,6 +462,7 @@ class InternalAdminRoleManager(object):
         for course_id in courses:
             for user_id in users:
                 operation(user_id, course_id, role)
+
 
 internal_admin_role_event.connect(InternalAdminRoleManager.handle_internal_admin_role_event)
 course_program_event.connect(InternalAdminRoleManager.handle_course_program_event)

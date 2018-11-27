@@ -272,7 +272,7 @@ def get_all_organization_groups(organization_id):
 @api_error_protect
 def add_group_to_organization(organization_id, group_id):
 
-    data = {"id":int(group_id)}
+    data = {"id": int(group_id)}
     response = POST(
         '{}/{}/{}/groups/'.format(
             settings.API_SERVER_ADDRESS,
@@ -407,4 +407,3 @@ def add_organization_fields(organization_id, data):
     )
     for field in data:
         edx_oauth2_session.post(url=url, data={'name': field})
-

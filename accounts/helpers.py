@@ -4,10 +4,7 @@ helper methods/utils related to accounts
 from urlparse import urljoin
 import logging
 
-import re
 from django.core.urlresolvers import reverse
-from django.http.response import Http404
-
 from .models import UserActivation
 from api_client.api_error import ApiError
 from api_client.group_api import add_users_to_group, PERMISSION_GROUPS, remove_user_from_group
@@ -15,6 +12,7 @@ from lib.authorization import permission_groups_map
 from api_client.user_api import get_filtered_users
 
 log = logging.getLogger(__name__)
+
 
 class TestUser(object):
     """
@@ -82,6 +80,7 @@ def get_complete_country_name(shorter_name):
         shorter_name.upper(), shorter_name
     )
 
+
 def make_user_manager(user_id):
     """
     Adds user to MANAGER permission group.
@@ -101,6 +100,7 @@ def make_user_manager(user_id):
             )
         else:
             raise
+
 
 def unmake_user_manager(user_id):
     """

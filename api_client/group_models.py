@@ -63,7 +63,7 @@ class GroupInfo(JsonObject):
                 component_values = [int(group_data[component])
                                     for component in date_components if component in group_data]
                 if len(component_values) == 3:
-                    clean_data[date_field]= datetime(
+                    clean_data[date_field] = datetime(
                         component_values[0],
                         component_values[1],
                         component_values[2]
@@ -73,7 +73,12 @@ class GroupInfo(JsonObject):
 
     @classmethod
     def create(cls, name, group_data):
-        return group_api.create_group(name, cls.group_type, group_data=cls._clean_group_data(group_data), group_object=cls)
+        return group_api.create_group(
+            name,
+            cls.group_type,
+            group_data=cls._clean_group_data(group_data),
+            group_object=cls
+        )
 
     @classmethod
     def list(cls):
@@ -89,4 +94,10 @@ class GroupInfo(JsonObject):
 
     @classmethod
     def update(cls, group_id, name, group_data):
-        return group_api.update_group(group_id, name, cls.group_type, cls._clean_group_data(group_data), group_object=cls)
+        return group_api.update_group(
+            group_id,
+            name,
+            cls.group_type,
+            cls._clean_group_data(group_data),
+            group_object=cls
+        )

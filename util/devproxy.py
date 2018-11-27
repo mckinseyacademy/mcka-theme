@@ -19,6 +19,8 @@ DOMAIN = getattr(settings, "LMS_BASE_DOMAIN", "mcka.local")
 def make_domain(sub, base):
     suffix = ":{}".format(PORT) if PORT != 80 else ""
     return (sub + "." + base + suffix) if sub else base+suffix
+
+
 APROS_HOST = make_domain(getattr(settings, "APROS_SUB_DOMAIN", ""), DOMAIN)  # mcka.local
 LMS_HOST = make_domain(getattr(settings, "LMS_SUB_DOMAIN", "lms"), DOMAIN)  # lms.mcka.local
 CMS_HOST = make_domain(getattr(settings, "CMS_SUM_DOMAIN", "studio"), DOMAIN)  # studio.mcka.local
@@ -33,15 +35,17 @@ class ReverseProxyResource(proxy.ReverseProxyResource):
     Reverse proxy that leaves the HOST header alone.
     Also supports overriding specific paths.
     """
-    def __init__(self, host, port, path, reactor = reactor, path_overrides = None):
+    def __init__(self, host, port, path, reactor=reactor, path_overrides=None):
         proxy.ReverseProxyResource.__init__(self, host, port, path)
         self.path_overrides = path_overrides
+
     def getChild(self, path, request):
         if self.path_overrides and path in self.path_overrides:
             return self.path_overrides[path]
         return ReverseProxyResource(
             self.host, self.port, self.path + '/' + urlquote(path, safe=""),
             self.reactor)
+
     def render(self, request):
         request.content.seek(0, 0)
         qs = urlparse.urlparse(request.uri)[4]

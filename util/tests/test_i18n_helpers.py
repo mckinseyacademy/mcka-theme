@@ -6,6 +6,7 @@ from django.utils import translation
 from accounts.tests.utils import ApplyPatchMixin
 from ..i18n_helpers import set_language
 
+
 class I18nHelperTest(TestCase, ApplyPatchMixin):
     """
     Test the course controller.

@@ -89,13 +89,13 @@ def get_logger_config(log_dir,
             '': {
                 'handlers': handlers,
                 'level': 'DEBUG',
-                'propagate': False
+                'propagate': False,
             },
             'django.request': {
                 'handlers': handlers,
                 'level': 'ERROR',
-                'propagate': False
-           },
+                'propagate': False,
+            },
         }
     }
 
@@ -127,14 +127,14 @@ def get_logger_config(log_dir,
             'local': {
                 'level': local_loglevel,
                 'class': 'logging.handlers.SysLogHandler',
-                #'address': '',
+                # 'address': '',
                 'formatter': 'syslog_format',
                 'facility': SysLogHandler.LOG_LOCAL0,
             },
             'tracking': {
                 'level': 'DEBUG',
                 'class': 'logging.handlers.SysLogHandler',
-                #'address': '',
+                # 'address': '',
                 'facility': SysLogHandler.LOG_LOCAL1,
                 'formatter': 'raw',
             },

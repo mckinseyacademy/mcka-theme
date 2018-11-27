@@ -181,7 +181,8 @@ class TestEnrollStudentInCourse(TestCase, ApplyPatchMixin):
         self.assertEqual(result.new_enrollment, expected_result.new_enrollment)
 
         def _raise(*args, **kwargs):
-            raise ApiError(thrown_error=thrown_error, function_name='irrelevant')
+            # TODO thrown_error undefined
+            raise ApiError(thrown_error=thrown_error, function_name='irrelevant')  # noqa: F821
 
         return _raise
 
@@ -414,7 +415,7 @@ class SelfRegistrationTest(TestCase, ApplyPatchMixin):
         if exception:
             with self.assertRaises(exception):
                 NewSelfRegistration.process_registration(self.request, registration_request,
-                                                       self.course_run)
+                                                         self.course_run)
         else:
             NewSelfRegistration.process_registration(self.request, registration_request, self.course_run)
 
@@ -482,7 +483,7 @@ class TestAssignStudentToProgram(TestCase, ApplyPatchMixin):
     ''' Unit test for the method assign_student_to_program from controller'''
 
     def setUp(self):
-        self.user = DottableDict({"id":1})
+        self.user = DottableDict({"id": 1})
         self.client = DottableDict({"id": 1})
         self.program_id = 1
         self.courses = make_course(1)
@@ -691,7 +692,7 @@ class TestGetMobileAppsId(TestCase, ApplyPatchMixin):
         self.assertEquals(result['android_app_id'], 2)
         self.assertEquals(result['user_org'], 'demo')
 
-    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache',}})
+    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache', }})
     def test_without_mobile_apps(self):
         self.get_mobile_apps.side_effect = make_side_effect_raise_api_error(404)
         result = get_mobile_apps_id(self.organization.id)
@@ -699,7 +700,7 @@ class TestGetMobileAppsId(TestCase, ApplyPatchMixin):
         self.assertIsNone(result['android_app_id'])
         self.assertIsNone(result['user_org'])
 
-    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache',}})
+    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache', }})
     def test_with_invalid_deployment_mechanism(self):
         self.get_mobile_apps.return_value = DottableDict(
             {'results': [{'name': 'demo',

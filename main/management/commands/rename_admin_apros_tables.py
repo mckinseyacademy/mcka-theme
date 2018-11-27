@@ -1,6 +1,6 @@
-from django.core.management.base import BaseCommand, CommandError
-from django.core.management import call_command
-from django.db import connections, transaction
+from django.core.management.base import BaseCommand
+from django.db import connections
+
 
 def get_table_names():
     """
@@ -25,18 +25,19 @@ def get_table_names():
         'userregistrationerror',
     ]
 
+
 class Command(BaseCommand):
 
     """
     Management command to rename admin_apros tables after Django upgrade to 1.8.13
     """
-    help = """Makes database level changes to rename admin_apros app tables after upgrading Django to 1.8.13. 
+    help = """Makes database level changes to rename admin_apros app tables after upgrading Django to 1.8.13.
         Usage: ./manage.py rename_admin_apros_tables {db_alias}
         """
 
     old_app = 'admin'
     new_app = 'admin_apros'
-    
+
     def add_arguments(self, parser):
         parser.add_argument('db_alias', type=str)
 
@@ -53,15 +54,16 @@ class Command(BaseCommand):
             try:
                 sql_tables = 'RENAME TABLE %s_%s TO %s_%s;' % (self.old_app, table_name, self.new_app, table_name)
                 cursor.execute(sql_tables)
-            except:
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 print "Warning: Problem renaming table: " + table_name
                 warnings += 1
 
             """Rename the app_labels in django_content_type"""
             try:
-                sql_models = 'UPDATE django_content_type SET app_label = "%s" WHERE (model = "%s" AND app_label = "%s")' % (self.new_app, table_name, self.old_app)
+                sql_models = 'UPDATE django_content_type SET app_label = "%s" ' \
+                             'WHERE (model = "%s" AND app_label = "%s")' % (self.new_app, table_name, self.old_app)
                 cursor.execute(sql_models)
-            except: 
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 print "Warning: Problem renaming django_content_type table where model = " + table_name
                 warnings += 1
 
