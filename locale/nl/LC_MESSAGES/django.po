@@ -2656,10 +2656,8 @@ msgid "Asset"
 msgstr "Activum"
 
 #: courses/controller.py:1012
-#, fuzzy
-#| msgid "Assessment: {}"
 msgid "Assessment"
-msgstr "Beoordeling: {}"
+msgstr "Beoordeling"
 
 #: courses/user_courses.py:87 courses/user_courses.py:93
 #, python-brace-format
