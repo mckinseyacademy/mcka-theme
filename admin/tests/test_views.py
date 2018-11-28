@@ -414,7 +414,7 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
                 'cohorts_enabled': t[0],
                 'groupwork_enabled': t[1],
             }
-        course_api = self.apply_patch('api_client.course_api.get_course_v1')
+        course_api = self.apply_patch('admin.views.load_course')
         course_api.return_value = (is_cohorted, is_groupwork)
 
         url = reverse('course_details', kwargs={'course_id': unicode(self.course.course_id)})
