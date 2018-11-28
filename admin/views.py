@@ -819,7 +819,7 @@ class courses_list_api(APIView):
                            PERMISSION_GROUPS.MCKA_SUBADMIN)
 @internal_admin_course_access
 def course_details(request, course_id):
-    context = _get_course_context(course_api.get_course_v1(course_id))
+    context = _get_course_context(load_course(course_id))
     context.update({
         'companyAdminFlag': False,
         'internalAdminFlag': request.user.is_internal_admin,
@@ -5672,7 +5672,7 @@ def course_learner_dashboard_branding_reset(request, course_id, learner_dashboar
 )
 @company_admin_company_access
 def company_course_details(request, company_id, course_id):
-    context = _get_course_context(course_api.get_course_v1(course_id))
+    context = _get_course_context(load_course(course_id))
     context.update({
         'companyAdminFlag': request.user.is_company_admin,
         'companyCourseDetailsPage': True,
