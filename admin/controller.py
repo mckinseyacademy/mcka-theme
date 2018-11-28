@@ -1454,10 +1454,10 @@ def _build_user_course_dict(course):
     Helper for `get_user_courses_helper` to avoid duplicated code while building user's course dict.
     :returns user's course dict
     """
-    course_name = getattr(course, 'name', course['name'])
-    course_id = getattr(course, 'id', course['id'])
-    course_start = getattr(course, 'start', course['start'])
-    course_end = getattr(course, 'end', course['end']) or '-'
+    course_name = getattr(course, 'name', None) or course['name']
+    course_id = getattr(course, 'id', None) or course['id']
+    course_start = getattr(course, 'start', None) or course['start']
+    course_end = getattr(course, 'end', None) or course['end'] or '-'
 
     user_course = {
         'name': course_name,
@@ -1501,9 +1501,9 @@ def get_user_courses_helper(user_id, request):
     user_roles = user_api.get_user_roles(user_id)
     for role in user_roles:
         if not any(item['id'] == vars(role)['course_id'] for item in user_courses):
-            course = course_api.get_course_v1(vars(role)['course_id'])
+            course = course_api.get_course_v1(vars(role)['course_id'], object_type=None)
             user_course = _build_user_course_dict(course)
-            _set_user_course_role(course, role)
+            _set_user_course_role(user_course, role)
             user_courses.append(user_course)
         else:
             user_course = (user_course for user_course in user_courses if

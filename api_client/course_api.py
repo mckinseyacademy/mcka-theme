@@ -274,7 +274,8 @@ def get_course_shallow(course_id):
 
 
 @api_error_protect
-def get_course_v1(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None, edx_oauth2_session=None):
+def get_course_v1(course_id, depth=settings.COURSE_DEFAULT_DEPTH,
+                  user=None, edx_oauth2_session=None, object_type=course_models.Course):
     """
     Retrieves course structure information from the v1 API for specified course and user
     (e.g. staff may see more content than students).
@@ -304,8 +305,11 @@ def get_course_v1(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None, edx
     )
     response = edx_oauth2_session.get(url)
 
+    if object_type is None:
+        return response.json()
+
     try:
-        return JP.from_dictionary(response.json(), course_models.Course)
+        return JP.from_dictionary(response.json(), object_type)
     except (ValueError, MissingRequiredFieldError):
         raise Http404()
 
