@@ -299,7 +299,8 @@ class WorkGroupActivityXBlock(JsonObject):
 class UserRegistrationError(db_models.Model):
     task_key = db_models.CharField(max_length=40, unique=False, db_index=True)
     error = db_models.TextField(default='')
-    user_email = db_models.EmailField(blank=True)
+    user_email = db_models.CharField(max_length=200, null=True, blank=True)
+    user_data = db_models.TextField(null=True, blank=True)
 
 
 class UserRegistrationBatch(db_models.Model):

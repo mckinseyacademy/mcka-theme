@@ -1,3 +1,5 @@
+from urlparse import urljoin
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 
@@ -62,7 +64,13 @@ class PrivateMediaStorageThroughApros(PrivateMediaStorage):
         """
         Creates an Apros url for accessing resource instead of S3's url
         """
-        return reverse('private_storage', kwargs={'path': name})
+        if base_url:
+            return urljoin(
+                base=base_url,
+                url=reverse('private_storage', kwargs={'path': name})
+            )
+        else:
+            return reverse('private_storage', kwargs={'path': name})
 
     def _get_permission_groups(self, path):
         """
