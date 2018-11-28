@@ -1,17 +1,18 @@
 """
 Celery tasks related to admin app
 """
+import json
 from collections import OrderedDict
 from multiprocessing.pool import ThreadPool
 from tempfile import TemporaryFile
-
+from datetime import timedelta
 from urlparse import urljoin
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.utils.translation import ugettext as _
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse, resolve, Resolver404
 from django.utils import timezone
 
 from celery.decorators import task
@@ -481,9 +482,19 @@ def import_participants_task(user_id, base_url, file_stream, is_internal_admin, 
 
     for user_info in user_list:
         if "error" in user_info:
+            try:
+                user_data = json.dumps(user_info)
+            except:
+                user_data = json.dumps({})
+
             unclean_user_list.append(user_info)
             user_registration_errors.append(
-                UserRegistrationError(error=user_info["error"], task_key=registration_batch.task_key)
+                UserRegistrationError(
+                    error=user_info.get('error'),
+                    task_key=registration_batch.task_key,
+                    user_email=user_info.get('email'),
+                    user_data=user_data
+                )
             )
         else:
             clean_user_list.append(user_info)
@@ -597,11 +608,24 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         logger.info('Failed retrieving batch - {} - EXITING'.format(task_log_msg))
         return False
 
-    errors = UserRegistrationError.objects.filter(task_key=registration_batch.task_key)
+    error_records = UserRegistrationError.objects.filter(task_key=registration_batch.task_key)
     activation_links = UserActivation.get_activations_by_task_key(task_key=registration_batch.task_key)
 
-    errors = [{'email': error.user_email, 'errors': error.error} for error in errors]
+    errors = []
+    for error in error_records:
+        error_data = dict(email=error.user_email, errors=error.error)
+
+        try:
+            user_data = json.loads(error.user_data)
+        except:
+            user_data = {}
+
+        error_data.update(user_data)
+        errors.append(error_data)
+
     activation_links = [{
+        'first_name': activation_link.first_name,
+        'last_name': activation_link.last_name,
         'email': activation_link.email,
         'activation_link': create_activation_url(activation_code=activation_link.activation_key, base_url=base_url)}
         for activation_link in activation_links
@@ -612,7 +636,12 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
 
     if errors:
         fields = OrderedDict([
+            ("First Name", ("first_name", '')),
+            ("Last Name", ("last_name", '')),
             ("Email", ("email", '')),
+            ("Company ID", ("company_id", '')),
+            ("Course ID", ("course_id", '')),
+            ("Status", ("status", '')),
             ("Errors", ("errors", '')),
         ])
 
@@ -621,13 +650,15 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         try:
             error_file_url = create_and_store_csv_file(
                 fields, errors, IMPORT_PARTICIPANTS_DIR,
-                file_name, logger, task_log_msg
+                file_name, logger, task_log_msg, secure=True
             )
         except Exception as e:
             raise generate_import_files_and_send_notification.retry(exc=e)
 
     if activation_links:
         fields = OrderedDict([
+            ("First Name", ("first_name", '')),
+            ("Last Name", ("last_name", '')),
             ("Email", ("email", '')),
             ("Activation Link", ("activation_link", '')),
         ])
@@ -637,7 +668,7 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         try:
             activations_links_file_url = create_and_store_csv_file(
                 fields, activation_links, IMPORT_PARTICIPANTS_DIR,
-                file_name, logger, task_log_msg
+                file_name, logger, task_log_msg, secure=True
             )
         except Exception as e:
             raise generate_import_files_and_send_notification.retry(exc=e)
@@ -682,8 +713,14 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
                     'completion_time': completion_time,
                     'total': registration_batch.attempted,
                     'successful': registration_batch.succeded,
-                    'error_file_url': error_file_url,
-                    'activation_links_url': activations_links_file_url,
+                    'error_file_url': urljoin(
+                        base=base_url,
+                        url=error_file_url
+                    ) if error_file_url else '',
+                    'activation_links_url': urljoin(
+                        base=base_url,
+                        url=activations_links_file_url
+                    ) if activations_links_file_url else '',
                     'support_email': settings.MCKA_SUPPORT_EMAIL,
                     'mcka_logo_url': mcka_logo,
                 }
@@ -693,5 +730,70 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
             raise generate_import_files_and_send_notification.retry(exc=e)
 
     logger.info('Email successfully sent - {}'.format(task_log_msg))
+
+    return True
+
+
+@task(name='admin.purge_import_errors_and_csv_files')
+def purge_old_import_records_and_csv_files():
+    """
+    Purges old import/enroll error records and CSV files
+    """
+    task_log_msg = "Purge Old Import Records Task"
+
+    logger.info('Started - {}'.format(task_log_msg))
+
+    end_date = timezone.now().date() - timedelta(days=14)
+    start_date = end_date - timedelta(days=14)
+
+    old_tasks = UserRegistrationBatch.objects.filter(time_requested__range=(start_date, end_date))\
+        .values_list('task_key', 'error_file_url', 'activation_file_url')
+
+    old_task_ids = []
+    file_paths = []
+
+    for task in old_tasks:
+        task_id, error_file_url, success_file_url = task
+        old_task_ids.append(task_id)
+
+        for url in (error_file_url, success_file_url):
+            if not url:
+                continue
+
+            try:
+                file_path = resolve(url).kwargs.get('path')
+            except Resolver404:
+                file_path = url
+
+            if file_path:
+                file_paths.append(file_path)
+
+    logger.info('Found {} DB records and {} CSV files for deletion - {}'
+                .format(len(old_task_ids), len(file_paths), task_log_msg))
+
+    if old_task_ids:
+        UserRegistrationError.objects.filter(task_key__in=old_task_ids).delete()
+        UserRegistrationBatch.objects.filter(task_key__in=old_task_ids).delete()
+
+        logger.info('Successfully deleted DB records - {}'.format(task_log_msg))
+
+    if file_paths:
+        logger.info('Deleting CSV Files - {}'.format(task_log_msg))
+
+        if default_storage == 'storages.backends.s3boto.S3BotoStorage':
+            try:
+                default_storage.bucket.delete_keys(file_paths)
+            except Exception as e:
+                logger.error('S3 exception while deleting files {} - {}'.format(e.message, task_log_msg))
+            else:
+                logger.info('Successfully deleted CSV files - {}'.format(task_log_msg))
+        else:
+            for path in file_paths:
+                try:
+                    default_storage.delete(path)
+                except OSError:
+                    pass
+
+    logger.info('Completed - {}'.format(task_log_msg))
 
     return True

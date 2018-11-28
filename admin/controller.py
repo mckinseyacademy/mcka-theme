@@ -11,6 +11,7 @@ import urllib
 import uuid
 from datetime import datetime
 from copy import deepcopy
+import json
 
 import re
 from PIL import Image
@@ -1567,40 +1568,40 @@ def process_enroll_participants_list(file_stream, request, reg_status=None):
 
 
 def _process_line_register_participants_csv(user_line):
+    fields = user_line.strip().split(',')
+
+    if len(fields) < 6:
+        return {
+            'error': _('Required fields missing; format is: FirstName, LastName, Email, Company, CourseID, Status')
+        }
+
+    first_name = normalize_foreign_characters(remove_characters(fields[0], ["'"]).encode("utf-8"))
+    last_name = normalize_foreign_characters(remove_characters(fields[1], ["'"]).encode("utf-8"))
+    email = normalize_foreign_characters(fields[2])
+
+    # temporarily set the user name to the first 30 characters of the allowed characters within the email
+    username = re.sub(r'\W', '', fields[2])
+    if len(username) > 30:
+        username = username[:29]
+
+    user_info = {
+        "first_name": first_name,
+        "last_name": last_name,
+        "email": email,
+        "company_id": fields[3],
+        "course_id": fields[4],
+        "status": fields[5],
+        "username": username,
+        "is_active": False,
+        "password": settings.INITIAL_PASSWORD,
+    }
+
     try:
-        fields = user_line.strip().split(',')
-        # format is FirstName, LastName, Email, Company, CourseID, Status
-
-        first_name = normalize_foreign_characters(remove_characters(fields[0], ["'"]).encode("utf-8"))
-        last_name = normalize_foreign_characters(remove_characters(fields[1], ["'"]).encode("utf-8"))
-        email = normalize_foreign_characters(fields[2])
-
-        # temporarily set the user name to the first 30 characters of the allowed characters within the email
-        username = re.sub(r'\W', '', fields[2])
-        if len(username) > 30:
-            username = username[:29]
-
         validate_first_name(first_name)
         validate_last_name(last_name)
         validate_email(email)
-
-        user_info = {
-            "first_name": first_name,
-            "last_name": last_name,
-            "email": email,
-            "company_id": fields[3],
-            "course_id": fields[4],
-            "status": fields[5],
-            "username": username,
-            "is_active": False,
-            "password": settings.INITIAL_PASSWORD,
-        }
     except ValidationError as e:
-        user_info = {'error': ("{} Participant {}".format(e.message, fields[2]))}
-    except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
-        user_info = {
-            "error": _("Could not parse user info from {}").format(fields[2])
-        }
+        user_info['error'] = e.message
 
     return user_info
 
@@ -1624,11 +1625,16 @@ def _process_line_enroll_participants_csv(user_line):
     return user_info
 
 
-def _add_errors(errors, error_message, user_email):
+def _add_errors(errors, error_message, user_email, user_data):
     if isinstance(error_message, list):
         error_message = ','.join(error_message)
 
-    error = dict(error=error_message, user_email=user_email)
+    try:
+        user_data = json.dumps(user_data)
+    except:
+        user_data = json.dumps({})
+
+    error = dict(error=error_message, user_email=user_email, user_data=user_data)
     errors.append(error)
 
 
@@ -1654,7 +1660,10 @@ def _enroll_participants(participants, is_internal_admin, reg_status):
             user_id, lms_errors = import_participant(data)
 
             if lms_errors:
-                _add_errors(errors=errors, error_message=lms_errors, user_email=email)
+                _add_errors(
+                    errors=errors, error_message=lms_errors,
+                    user_email=email, user_data=user_dict
+                )
 
             # Upon success, create the activation record.
             if not errors and user_id and not UserActivation.user_activation_by_task_key(
@@ -1662,17 +1671,18 @@ def _enroll_participants(participants, is_internal_admin, reg_status):
                     reg_status.task_key,
                     user_dict.get('company_id', ''),
             ):
-                _add_errors(errors, _('Activation record error'), email)
-        except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
+                _add_errors(errors, _('Activation record error'), email, user_dict)
+        except Exception as e:
             reason = e.message if e.message else _("Processing Data Error")
-            _add_errors(errors, _("Error processing data: {} ").format(reason), email)
+            _add_errors(errors, _("Error processing data: {} ").format(reason), email, user_dict)
 
         if errors:
             UserRegistrationError.objects.bulk_create([
                 UserRegistrationError(
                     error=error.get('error', ''),
                     task_key=reg_status.task_key,
-                    user_email=error.get('user_email', '')
+                    user_email=error.get('user_email', ''),
+                    user_data=error.get('user_data')
                 )
                 for error in errors
             ])

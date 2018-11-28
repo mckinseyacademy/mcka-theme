@@ -163,7 +163,7 @@ LOCALE_PATHS = (
 )
 
 USE_TZ = True
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Eastern'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/

@@ -98,5 +98,5 @@ alphanum_accented_validator = AlphanumericWithAccentedChars()
 
 
 def normalize_foreign_characters(value):
-    value = value.decode("utf-8")
+    value = value.decode("utf-8", errors='ignore')
     return unicodedata.normalize('NFD', value).encode('ascii', 'ignore').rstrip()

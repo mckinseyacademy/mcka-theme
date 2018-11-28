@@ -2452,9 +2452,9 @@ class ParticipantsImportProgress(APIView):
         imports_data = list()
 
         for import_batch in imports_this_week:
-            start_time = import_batch.time_requested.strftime('%m/%d/%Y @ %I:%M %p') \
+            start_time = timezone.localtime(import_batch.time_requested).strftime('%m/%d/%Y @ %I:%M %p') \
                 if import_batch.time_requested else ''
-            end_time = import_batch.time_completed.strftime('%m/%d/%Y @ %I:%M %p') \
+            end_time = timezone.localtime(import_batch.time_completed).strftime('%m/%d/%Y @ %I:%M %p') \
                 if import_batch.time_completed else _('In Progress')
 
             if import_batch.time_completed:

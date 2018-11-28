@@ -33,7 +33,7 @@ def remove_characters(value, char_blacklist):
     remove_chars_map = dict((ord(char), None) for char in char_blacklist)
 
     # encode strings to unicode for consistency
-    value = value if isinstance(value, unicode) else unicode(value, encoding='utf-8')
+    value = value if isinstance(value, unicode) else unicode(value, encoding='utf-8', errors='ignore')
 
     return value.translate(remove_chars_map)
 

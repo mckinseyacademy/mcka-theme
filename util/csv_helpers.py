@@ -11,6 +11,9 @@ import cStringIO
 from django.http import HttpResponse
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+from django.conf import settings
+
+from util.s3_helpers import PrivateMediaStorageThroughApros
 
 
 class CSVWriter(object):
@@ -105,7 +108,7 @@ class UnicodeWriter:
             self.writerow(row)
 
 
-def create_and_store_csv_file(fields, data, dir_name, file_name, logger, task_log_msg):
+def create_and_store_csv_file(fields, data, dir_name, file_name, logger, task_log_msg, secure=False):
     """
     Creates and store csv file in storage
 
@@ -125,7 +128,11 @@ def create_and_store_csv_file(fields, data, dir_name, file_name, logger, task_lo
     logger.info('Created temp CSV file - {}'.format(task_log_msg))
 
     storage_path = '{}/{}'.format(dir_name, file_name)
-    storage = default_storage
+
+    if settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage' and secure:
+        storage = PrivateMediaStorageThroughApros()
+    else:
+        storage = default_storage
 
     try:
         file_path = storage.save(storage_path, ContentFile(temp_csv_file.read()))
