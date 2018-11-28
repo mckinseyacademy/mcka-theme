@@ -57,8 +57,8 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
   render: function() {
     managerDashboardReportGridBlock = new bbGrid.View({
       container: this.$el,
-      enableSearch: true,
-      multisearch: true,
+      enableSearch: false,
+      multisearch: false,
       collection: this.collection,
       colModel: this.generatedGridColumns,
       onReady: function () {
