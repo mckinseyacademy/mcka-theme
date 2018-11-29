@@ -10,7 +10,7 @@
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Import from CSV' %}", 'data-reveal-id': 'import_from_csv'}
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update profile data' %}", 'data-reveal-id': 'update_profile_data'}
         %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update manager data' %}", 'data-reveal-id': 'update_manager_data'}
-        %a.button.small.radius{:href => "{% url 'participants_import_progress' %}"}
+        %a.button.small.radius.menuButton{:href => "{% url 'participants_import_progress' %}"}
           {% trans "Import Progress" %}
         %input.button.small.radius.secondary.menuButton{:type => "button", :value => "{% trans 'CSV Template' %}", 'data-reveal-id': 'download_csv_template'}
       %hr
