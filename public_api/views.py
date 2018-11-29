@@ -226,7 +226,7 @@ def send_participant_activation_link(request, login_id):
                 email_user_activation_link(request, user, activation_link)
 
                 return JsonResponse({'message':
-                                    _('We have sent an email to <a href="mailto:{0}">{0}</a>',
+                                    _('We have sent an email to <a href="mailto:{0}">{0}</a>'
                                       ' with a link to create an account for you.')
                                     .format(user.get("email")), 'email': user.get("email")}, status=status.HTTP_200_OK)
         except Exception:  # pylint: disable=bare-except TODO: add specific Exception class:
