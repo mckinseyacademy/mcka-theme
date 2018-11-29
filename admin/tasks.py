@@ -484,7 +484,7 @@ def import_participants_task(user_id, base_url, file_stream, is_internal_admin, 
         if "error" in user_info:
             try:
                 user_data = json.dumps(user_info)
-            except:
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 user_data = json.dumps({})
 
             unclean_user_list.append(user_info)
@@ -617,7 +617,7 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
 
         try:
             user_data = json.loads(error.user_data)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             user_data = {}
 
         error_data.update(user_data)
@@ -752,8 +752,8 @@ def purge_old_import_records_and_csv_files():
     old_task_ids = []
     file_paths = []
 
-    for task in old_tasks:
-        task_id, error_file_url, success_file_url = task
+    for old_task in old_tasks:
+        task_id, error_file_url, success_file_url = old_task
         old_task_ids.append(task_id)
 
         for url in (error_file_url, success_file_url):

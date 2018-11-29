@@ -1631,7 +1631,7 @@ def _add_errors(errors, error_message, user_email, user_data):
 
     try:
         user_data = json.dumps(user_data)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         user_data = json.dumps({})
 
     error = dict(error=error_message, user_email=user_email, user_data=user_data)

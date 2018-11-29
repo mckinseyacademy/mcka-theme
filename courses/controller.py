@@ -849,9 +849,10 @@ def update_progress(tile, user, course, completions, link):
 
 
 def calculate_user_group_activity_progress(user, course, link):
+    username = getattr(user, 'username', None) or user['username']
     block_completions = course_api.get_block_completions(
         course_id=course.id,
-        username=user.username,
+        username=username,
     )
 
     completed_ids = [
@@ -859,8 +860,8 @@ def calculate_user_group_activity_progress(user, course, link):
         for block in block_completions
         if block.is_complete()
     ]
-
-    project_group, group_project = get_group_project_for_user_course(user.id, course)
+    user_id = getattr(user, 'id', None) or user['id']
+    project_group, group_project = get_group_project_for_user_course(user_id, course)
 
     if group_project:
         for activity in group_project._activities:
