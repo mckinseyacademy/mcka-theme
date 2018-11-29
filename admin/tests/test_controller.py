@@ -5,7 +5,7 @@ import ddt
 import os
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.test.client import RequestFactory
 from rest_framework import status
 
@@ -25,6 +25,10 @@ from api_client import user_models
 from api_client.json_object import JsonObject, JsonParser as JP
 from courses.models import CourseMetaData
 from courses.models import FeatureFlags
+
+
+class Dummy(object):
+    pass
 
 
 class AdminControllerTests(TestCase):
@@ -98,47 +102,9 @@ def mock_completion_score(*args, **kwargs):
             },
         }
     }
-    return JP.from_dictionary(data)
-
-
-def MockEngagementScore(object):
-    data = {
-        'users':
-            {
-                '1':
-                    {
-                        'num_threads': 1,
-                        'num_comments': 1,
-                        'num_replies': 1,
-                        'num_upvotes': 1,
-                        'num_thread_followers': 1,
-                        'num_comments_generated': 1,
-                    },
-                '2':
-                    {
-                        'num_threads': 2,
-                        'num_comments': 1,
-                        'num_replies': 0,
-                        'num_upvotes': 0,
-                        'num_thread_followers': 0,
-                        'num_comments_generated': 0,
-                    }
-            }
-    }
-
-    return JP.from_dictionary(data)
 
 
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
-
-    @override_settings(CELERY_ALWAYS_EAGER=True)
-    def test_get_engagement_scores(self):
-        self.apply_patch('api_client.course_api.get_course_social_metrics', new=MockEngagementScore)
-        test_object = CourseParticipantStats('1', 'base/url')
-        u_ids = ['1', '2']
-        engagement_scores = test_object._get_engagement_scores()
-        self.assertEqual(engagement_scores[u_ids[0]], 85)
-        self.assertEqual(engagement_scores[u_ids[1]], 35)
 
     def test__get_lesson_completions(self):
         test_username = u'test_user'
@@ -200,7 +166,6 @@ class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
         stats._get_course_completions(participants)
         stats._get_lesson_completions(participants)
         self.assertEqual(patch.call_count, 1)
-
 
 
 @ddt.ddt
@@ -296,7 +261,7 @@ class TestCreateRolesList(TestCase):
         }
         request = self.factory.post('/', data)
         with self.assertRaises(ValidationError):
-            roles = create_roles_list(request)
+            create_roles_list(request)
 
 
 class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
@@ -353,11 +318,12 @@ class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
         self.assertEqual(self.expected_result_for_perfromance, response.content)
 
     def test_get_course_stats_report(self):
-        course_api = self.apply_patch('api_client.course_api.get_course_details')
-        course_api.return_value = {"name": "test_course"}
+        course_api = self.apply_patch('api_client.course_api.get_course_v1')
+        course_api.return_value = Dummy()
+        course_api.return_value.name = "test_course"
         response = get_course_stats_report("test_company", "test_Course")
-        expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance \
-                          + self.expected_result_for_social
+        expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance + \
+            self.expected_result_for_social
 
         self.assertEqual(response.content, expected_result)
         course_features = FeatureFlags.objects.get(course_id="test_course")
@@ -381,10 +347,14 @@ class TestContactsForClient(TestCase, ApplyPatchMixin):
         # Dummy Data for the Apis
         client_id = '2'
         client_groups_data = '[{"id": 12,"type": "contact_group","data": {}}]'
-        client_groups_users_data = '{"users": [{"id": 3, "email": "audit@example.com", "username": "audit"},' \
-                                   '{"id": 10, "email": "test@example.com", "username": "test"}]}'
-        client_groups_user_profile_data = '[{"id": 3, "email": "audit@example.com","username": "audit"},' \
-                                          '{"id": 10, "email": "test@example.com","username": "test"}]'
+        client_groups_users_data = '{"users": [{"id": 3, "email": "audit@example.com", "username": "audit", ' \
+                                   '"first_name": "First", "is_active":"True"}, {"id": 10, ' \
+                                   '"email": "test@example.com", "username": "test", "first_name": "First", ' \
+                                   '"is_active":"True"}]}'
+        client_groups_user_profile_data = '[{"id": 3, "email": "audit@example.com","username": "audit", ' \
+                                          '"first_name": "First", "is_active":"True"},' \
+                                          '{"id": 10, "email": "test@example.com","username": "test", ' \
+                                          '"first_name": "First", "is_active":"True"}]'
         # Mocking Api Calls
         self.organization_api.get_organization_groups.return_value = JP.from_json(client_groups_data, JsonObject)
         self.group_api.get_users_in_group.return_value = JP.from_json(client_groups_users_data,
@@ -411,30 +381,24 @@ class TestSpecificUserRolesOfOtherCompanies(TestCase):
 
     def test_remove_specific_user_roles_of_other_companies(self):
         organization_id = '7'
-        course_participants = {u'count': 4, u'previous': None, u'num_pages': 1, u'results':
-            [
-            {'username': 'UAdmin_user',
-             'roles': ['observer'], 'organizations': [
-                {'display_name': 'CompanyA', 'id': 6},
-                {'display_name': 'CompanyB','id': 7}]},
-            {'username': 'Cadmin', 'roles': [], 'organizations': [
-                {'display_name': 'CompanyB','id': 7}]},
-            {'username': 'companyB_TA',
-             'roles': ['observer'],
-              'organizations': [
-                {'display_name': 'CompanyB',u'id': 7}]},
-            {'username': 'uberadmin2',
-             'roles': ['assistant'],'organizations': [
-                {'id': 6},
-                ]},
-                {'username': 'uberadmin3',
-                 'roles': ['participant'], 'organizations': [
-                    {'id': 6},
-                ]}
-            ], 'next': None}
+        course_participants = {u'count': 4, u'previous': None,
+                               u'num_pages': 1,
+                               u'results': [
+                                            {'username': 'UAdmin_user', 'roles': ['observer'],
+                                             'organizations': [{'display_name': 'CompanyA', 'id': 6},
+                                                               {'display_name': 'CompanyB', 'id': 7}]},
+                                            {'username': 'Cadmin', 'roles': [],
+                                             'organizations': [{'display_name': 'CompanyB', 'id': 7}]},
+                                            {'username': 'companyB_TA', 'roles': ['observer'],
+                                             'organizations': [{'display_name': 'CompanyB', u'id': 7}]},
+                                            {'username': 'uberadmin2', 'roles': ['assistant'],
+                                             'organizations': [{'id': 6}, ]}, {'username': 'uberadmin3',
+                                                                               'roles': ['participant'],
+                                                                               'organizations': [{'id': 6}, ]}
+                                            ], 'next': None}
 
         course_participants = controller.remove_specific_user_roles_of_other_companies(course_participants,
-                                                                                      int(organization_id))
+                                                                                       int(organization_id))
         self.assertEqual(len(course_participants["results"]), 3)
 
 
@@ -615,7 +579,8 @@ class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
 
     def test_user_not_exist(self):
         self.manager_email = "abc@example.com"
-        expected_output = {'status': 'error', 'message': 'Error: User does not exist with email abc@example.com', 'type': 'api_error'}
+        expected_output = {'status': 'error', 'message': 'Error: User does not exist with email abc@example.com',
+                           'type': 'api_error'}
         self.get_user_by_email.return_value = []
         output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
         self.assertEqual(output, expected_output)
@@ -624,7 +589,8 @@ class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
         self.manager_email = "mcka_admin_user@mckinseyacademy.com"
         self.username = "client_admin_user"
         self.company_id = 4
-        expected_output = {'status': 'error', 'message': 'Error: User belongs to a different organization!', 'type': 'api_error'}
+        expected_output = {'status': 'error', 'message': 'Error: User belongs to a different organization!',
+                           'type': 'api_error'}
         output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
         self.assertEqual(output, expected_output)
 

@@ -29,6 +29,14 @@
       { title: gettext('Company'), index: true, name: 'organizations_display_name'},
       { title: gettext('Status'), index: true, name: 'custom_user_status'},
       { title: gettext('Activated'), index: true, name: 'custom_activated'},
+      { title: gettext('Cohort'), index: true, name: 'course_groups',
+      actions: function(id, attributes)
+      {
+        if (attributes['course_groups'].length > 0) {
+          return attributes['course_groups'][0];
+        }
+        return '-';
+      }},
       { title: gettext('Last Log In'), index: true, name: 'custom_last_login',
       actions: function(id, attributes)
       {
@@ -82,8 +90,23 @@
         this.collection.updateCompanyQuerryParams(companyId);
       }
       var count = course_details_count_all_users;
+      this.cohorts_enabled = course_details_cohorts_enabled;
+      this.groupwork_enabled = course_details_groupwork_enabled;
+      this.show_cohorts = course_details_show_cohorts;
       this.collection.updateCountQuerryParams(count);
       this.collection.fetch();
+    },
+    removeFromGeneratedGridColumns: function(title){
+      var _this = this;
+      var index = 0;
+      for (var i=0; i < _this.generatedGridColumns.length; i++ )
+      {
+        if (_this.generatedGridColumns[i]['title'] == gettext(title))
+        {
+          index = i;
+        }
+      }
+      _this.generatedGridColumns.splice(index, 1);
     },
     render: function(){
       var _this = this;
@@ -92,15 +115,10 @@
       var multiSelectFlag = true;
       if (companyAdminFlag == 'True')
       {
-        var index = 0;
-        for (var i=0; i < _this.generatedGridColumns.length; i++)
-        {
-          if (_this.generatedGridColumns[i]['title'] == gettext('Company'))
-          {
-            index = i;
-          }
-        }
-        _this.generatedGridColumns.splice(index,1);
+        _this.removeFromGeneratedGridColumns('Company');
+      }
+      if (this.cohorts_enabled == 'False' || this.groupwork_enabled == 'True' || this.show_cohorts == 'False') {
+        _this.removeFromGeneratedGridColumns('Cohort');
       }
       var coursesListDetailsViewGrid = {};
       coursesListDetailsViewGrid['partial_collection'] = this.collection;

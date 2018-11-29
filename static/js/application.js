@@ -185,19 +185,19 @@ $(function(){
     }
   });
 
-  $('.course-name.unavailable, .status.unavailable').on('click', function(){
+  $(document).on('click', '.course-name.unavailable, .status.unavailable', function(){
     var generalModal = $('#generalModal');
     var days = $(this).data('numdays');
     if(typeof days == "undefined"){
       courseStr = gettext("Your course hasn't begun yet. ");
     }
     else{
-      var daysText = ngettext("Your course begins in %(days)s day.", "Your course begins in %(days)d days.", days);
+      var daysText = ngettext("Your course begins in %(days)s day.", "Your course begins in %(days)s days.", days);
       courseStr = interpolate(daysText, {"days": days}, true);
     }
     generalModal.find('.title').html(gettext("Welcome to McKinsey Academy"));
-    var descriptionText = "%(courseStr)s Before the course begins, you can explore" +
-        " this site to learn more about what to expect.";
+    var descriptionText = gettext("%(courseStr)s Before the course begins, you can explore" +
+        " this site to learn more about what to expect.", courseStr);
     generalModal.find('.description').html(interpolate(descriptionText, {"courseStr": courseStr}, true));
     $('#generalModal').foundation('reveal', 'open');
   });
@@ -260,7 +260,7 @@ $(function(){
     }
   });
 
-  $("#lessons-content").on('opened.fndtn.dropdown', function(e) {  
+  $("#lessons-content").on('opened.fndtn.dropdown', function(e) {
     if($(e.target).hasClass('load-course-lessons')) {
       var course_id = $(e.target).data('course-id');
       $.ajax({

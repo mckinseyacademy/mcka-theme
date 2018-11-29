@@ -4,12 +4,13 @@ Tests for helpers.py module
 from ddt import ddt, data, unpack
 
 from django.core.urlresolvers import reverse
-from django.test import TestCase, RequestFactory, Client
+from django.test import TestCase, RequestFactory
 
 from accounts.helpers import (
     get_user_activation_links, create_activation_url, TestUser, get_complete_country_name)
 from accounts.models import UserActivation
-from  util.url_helpers import get_referer_from_request
+from util.url_helpers import get_referer_from_request
+
 
 @ddt
 class AccountActivationHelpersTest(TestCase):
@@ -61,6 +62,7 @@ class AccountActivationHelpersTest(TestCase):
         short_form = 'IT'
 
         self.assertEqual(get_complete_country_name(short_form), full_country_name)
+
 
 @ddt
 class TestGetRefererFromRequest(TestCase):

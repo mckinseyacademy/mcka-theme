@@ -3,6 +3,7 @@ from django.core.files.storage import default_storage
 from django.conf import settings
 from datetime import datetime, timedelta
 
+
 class Command(BaseCommand):
     """
     THIS IS A CUSTOM COMMAND TO BE ADDED TO CRON JOB.
@@ -21,5 +22,5 @@ class Command(BaseCommand):
                     mod_time = default_storage.modified_time('images/' + settings.TEMP_IMAGE_FOLDER + temp_file)
                     if mod_time < threshold:
                         default_storage.delete('images/' + settings.TEMP_IMAGE_FOLDER + temp_file)
-                except:
+                except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                     pass

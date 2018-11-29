@@ -1,7 +1,6 @@
 ''' Helper methods for accounts test
 '''
 from django.core.files.storage import default_storage
-from django.http import Http404
 from mock import patch, mock
 
 from accounts.models import RemoteUser
@@ -62,6 +61,7 @@ def make_side_effect_raise_api_error(api_error_code):
         raise ApiError(thrown_error=thrown_error, function_name='irrelevant')
 
     return _raise
+
 
 class TestUserObject(object):
     id = None

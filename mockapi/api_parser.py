@@ -1,5 +1,6 @@
 from models import MockHttpResponse
 
+
 class ApiParser(object):
 
     _responses = []
@@ -13,10 +14,10 @@ class ApiParser(object):
                     if response_data:
                         self._responses.append(MockHttpResponse(response_data))
                         response_data = None
-                
+
                 if response_data:
                     response_data += line
-                
+
                 if line[0:3] == '###':
                     response_data = line
 

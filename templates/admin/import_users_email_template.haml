@@ -1,0 +1,44 @@
+- extends "base_email_template.haml"
+- load i18n
+
+- block logo
+  %img{:alt => "MCKA-logo", :src => "{{mcka_logo_url}}", :style => "max-width: 185px;", :width => "185"}
+
+- block greetings
+  #{first_name},
+
+- block body
+  %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
+    {% blocktrans with file_name=file_name %} The import file "{{file_name}}" has been processed. {% endblocktrans %}
+
+  %ul{:style => "line-height: 22px;font-size: 15px;margin-top: 20px;color: #333333;"}
+    %li
+      {% blocktrans %} Completion Time: {{ completion_time }} min {% endblocktrans %}
+    %li
+      {% blocktrans %} No. of successful rows: {{ successful }}/{{ total }} {% endblocktrans %}
+    - if activation_links_url
+      %li
+        {% trans "Link to success file:" %}
+          %a{:href => "{{ activation_links_url }}", :style => "text-decoration: none;color: #004fa4;"}
+            {% trans "Activation Links" %}
+    - if error_file_url
+      %li
+        {% trans "Link to error file:" %}
+          %a{:href => "{{ error_file_url }}", :style => "text-decoration: none;color: #004fa4;"}
+            {% trans "Error file" %}
+
+  %p{:style => "line-height: 22px;font-size: 15px;margin-top: 20px;color: #333333;"}
+    {% trans "If your file contains errors, please fix and upload again." %}
+
+- block closing
+  %p{:style => "line-height: 22px;color: #333333;"}
+    {% trans "Best Regards," %}
+    %br
+    McKinsey Academy Team
+
+- block footer
+  %p{:style => "line-height: 22px;margin-bottom: 0;color: #333333;"}
+    {% trans "Contact" %}
+      %a{:href => "mailto:{{support_email}}", :style => "text-decoration: none;color: #004fa4;"}
+        #{support_email}
+    {% trans "if you have any questions" %}

@@ -19,10 +19,10 @@ class MockerTester(TestCase):
             "description": "Machine interface for interactions with Open edX.",
             "resources": [
                 {
-                    "uri": "/api/groups",
-                    "uri": "/api/sessions",
-                    "uri": "/api/system",
-                    "uri": "/api/users",
+                    "uri": "/api/groups",  # noqa F601
+                    "uri": "/api/sessions",  # noqa F601
+                    "uri": "/api/system",  # noqa F601
+                    "uri": "/api/users",  # noqa F601
                 }
             ]
         }
@@ -50,13 +50,15 @@ class MockerTester(TestCase):
         response_dictionary = [
             {
                 "category": "html",
-                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4",
+                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/"
+                       "i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4",
                 "id": "i4x://edX/Open_DemoX/html/030e35c4756a4ddc8d40b95fbbfff4d4",
                 "name": "Blank HTML Page"
             },
             {
                 "category": "video",
-                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd",
+                "uri": "http://openedxapi.apiary-mock.com/api/courses/edX/Open_DemoX/edx_demo_course/modules/"
+                       "i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd",
                 "id": "i4x://edX/Open_DemoX/video/0b9e39477cf34507a7a48f74be381fdd",
                 "name": "Welcome!"
             }
@@ -84,25 +86,6 @@ class MockerTester(TestCase):
         self.assertEqual(responded_dictionary, response_dictionary)
 
     def test_post(self):
-# POST /api/groups
-# + Request (application/json)
-
-#     + Body
-
-#             {
-#                 "name": "Alpha Group"
-#             }
-
-# + Response 201 (application/json)
-
-#     + Body
-
-#             {
-#                 "name": "Alpha Group",
-#                 "id": 98734,
-#                 "uri": "http://openedxapi.apiary-mock.com/api/groups/2468"
-#             }
-
         request_dictionary = {
             "name": "Alpha Group"
         }
@@ -135,14 +118,12 @@ class MockerTester(TestCase):
         responded_dictionary = json.loads(mock_response._response_body)
         self.assertEqual(responded_dictionary, response_dictionary)
 
-        # Now check that POST request checks only format, not content of
-        # request data
+        # Now check that POST request checks only format, not content of request data
         test_request_body = json.dumps({
             "name": "Fake Group Name"
         })
         self.assertTrue(mock_response.check_post_format(test_request_body))
 
-    
     def test_delete(self):
         test_data = (
             '### DELETE /api/groups/{group_id}\n'
@@ -158,29 +139,27 @@ class MockerTester(TestCase):
 
     def test_api_parser(self):
         mock_responses = ApiParser(settings.LOCAL_MOCK_API_FILES).responses()
-
-        #self.assertEqual(len(mock_responses), 30)
         self.assertEqual(mock_responses[0]._method, "GET")
 
         response_dictionary = json.loads(mock_responses[0]._response_body)
         expected_dictionary = {
-            "documentation": "http://docs.openedxapi.apiary.io", 
-            "name": "Open edX API", 
-            "uri": "http://openedxapi.apiary-mock.com/api/", 
+            "documentation": "http://docs.openedxapi.apiary.io",
+            "name": "Open edX API",
+            "uri": "http://openedxapi.apiary-mock.com/api/",
             "description": "Machine interface for interactions with Open edX.",
             "resources": [
                 {
                     "uri": "http://openedxapi.apiary-mock.com/api/courses"
-                }, 
+                },
                 {
                     "uri": "http://openedxapi.apiary-mock.com/api/groups"
-                }, 
+                },
                 {
                     "uri": "http://openedxapi.apiary-mock.com/api/sessions"
-                }, 
+                },
                 {
                     "uri": "http://openedxapi.apiary-mock.com/api/system"
-                }, 
+                },
                 {
                     "uri": "http://openedxapi.apiary-mock.com/api/users"
                 }
@@ -194,12 +173,12 @@ class MockerTester(TestCase):
             if mock_response._code != 204:
                 try:
                     json.loads(mock_response._response_body)
-                except:
-                    print 'Badly formed json for mock response {} {}'.format(mock_response._method, mock_response._address)
+                except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                     raise
 
     def test_rebuild_url(self):
-        url = r"/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b"
+        url = r"/api/courses/edX/Open_DemoX/edx_demo_course/modules/i4x://edX/Open_DemoX/chapter/" \
+              r"d8a6192ade314473a78242dfeedfbf5b"
         url_chunks = url.split('/')
         new_url = '/'.join(url_chunks)
 

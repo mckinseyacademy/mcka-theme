@@ -321,13 +321,19 @@
         },
 
         getViewUrl: function(viewName, options) {
-            var language_code = ($('html').attr('lang') ? $('html').attr('lang') : 'en-us');
+            var language_code = ($('html').attr('lang') ? $('html').attr('lang') : 'en');
+            var language_code_mapped = Apros.config.EDX_LANGUAGES_CODE_MAP.get(language_code);
+            if(language_code_mapped === undefined)
+            {
+                language_code_mapped = 'en';
+                console.log('language with code "'+language_code+'" is not in mapping for xblocks. Please add proper mapping in config.js.')
+            }
             if (options.viewUrl){
-                return (this.getLmsBaseURL(options) + options.viewUrl + '&course_lang='+language_code);
+                return (this.getLmsBaseURL(options) + options.viewUrl + '&course_lang='+language_code_mapped);
             }
             else {
                 return (this.getLmsBaseURL(options) + '/courses/' + options.courseId +
-                '/xblock/' + options.usageId + '/view/' + viewName+'?course_lang='+language_code);
+                '/xblock/' + options.usageId + '/view/' + viewName+'?course_lang='+language_code_mapped);
             }
         },
 

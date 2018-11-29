@@ -18,9 +18,10 @@ from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from .group_models import GroupInfo
 from .oauth2_requests import get_oauth2_session, get_and_unpaginate
 
+from api_data_manager.course_data import COURSE_PROPERTIES
 from api_data_manager.decorators import user_api_cache_wrapper
-from api_data_manager.user_data import USER_PROPERTIES, UserDataManager
-from api_data_manager.signals import user_data_updated
+from api_data_manager.signals import user_data_updated, course_data_updated
+from api_data_manager.user_data import USER_PROPERTIES
 
 AUTH_API = getattr(settings, 'AUTH_API', 'api/server/sessions')
 USER_API = getattr(settings, 'USER_API', 'api/server/users')
@@ -32,6 +33,7 @@ USER_ROLES = DottableDict(
     STAFF='staff',
     INSTRUCTOR='instructor',
     OBSERVER='observer',
+    MODERATOR='instructor',
     TA='assistant',
     INTERNAL_ADMIN='internal_admin',
 )
@@ -128,7 +130,7 @@ def _chunked_get_users_by_id(request_fields, ids):
 @api_error_protect
 def get_users(fields=[], *args, **kwargs):
     ''' get all users that meet filter criteria'''
-    request_fields = ['id', 'email', 'username']
+    request_fields = ['id', 'email', 'first_name', 'username', 'is_active']
     request_fields.extend(fields)
 
     # special case handling if we are retrieving a set of users
@@ -274,6 +276,7 @@ def get_user_roles(user_id):
             user_id,
         )
     )
+
     return JP.from_json(response.read())
 
 
@@ -292,6 +295,16 @@ def add_user_role(user_id, course_id, role):
         ),
         data
     )
+
+    # Add discussion moderator in LMS if necessary
+    if role == USER_ROLES.MODERATOR:
+        discussions_api.add_discussion_moderator(course_id, user_id)
+
+    course_data_updated.send(
+        sender=__name__, course_ids=[course_id],
+        data_type=COURSE_PROPERTIES.ROLES
+    )
+
     return JP.from_json(response.read())
 
 
@@ -310,7 +323,18 @@ def update_user_roles(user_id, role_data):
         ),
         role_data
     )
-    
+
+    course_ids = []
+    for course_roles in role_data.get('roles', []):
+        course_ids.append(
+            course_roles.get('course_id')
+        )
+
+    course_data_updated.send(
+        sender=__name__, course_ids=course_ids,
+        data_type=COURSE_PROPERTIES.ROLES
+    )
+
     return JP.from_json(response.read())
 
 
@@ -324,6 +348,15 @@ def delete_user_role(user_id, course_id, role):
             role,
             course_id
         )
+    )
+
+    # Remove discussion moderator from LMS if necessary
+    if role == USER_ROLES.MODERATOR:
+        discussions_api.remove_discussion_moderator(course_id, user_id)
+
+    course_data_updated.send(
+        sender=__name__, course_ids=[course_id],
+        data_type=COURSE_PROPERTIES.ROLES
     )
 
     return (response.code == 204)
@@ -458,8 +491,8 @@ def set_user_bookmark(user_id, course_id, chapter_id, sequential_id, page_id):
     within the sequential_id
     '''
 
-    data = {"positions":
-        [
+    data = {
+        "positions": [
             {
                 "parent_content_id": course_id,
                 "child_content_id": chapter_id,
@@ -519,7 +552,7 @@ def is_user_in_group(user_id, group_id):
 @api_error_protect
 def set_user_preferences(user_id, preference_dictionary):
     ''' sets users preferences information '''
-    response = POST(
+    POST(
         '{}/{}/{}/preferences'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,
@@ -656,7 +689,7 @@ def get_course_social_metrics(user_id, course_id, include_stats):
 def mark_user_notification_read(user_id, msg_id, read=True):
     '''Sets a user notification message as read'''
 
-    response = POST(
+    POST(
         '{}/{}/{}/notifications/{}/'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,
@@ -870,7 +903,7 @@ def get_company_fields_value_for_user(user_id, organization_id, fields):
 def update_user_company_field_values(user_id, organization_id, fields_key, fields_value):
     """ Update user's company custom fields value"""
     fields_data = {
-        'organization_id':organization_id,
+        'organization_id': organization_id,
         'attribute_keys': fields_key,
         'attribute_values': fields_value
     }

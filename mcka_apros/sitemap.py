@@ -2,6 +2,7 @@ from django.contrib import sitemaps
 from django.core.urlresolvers import reverse
 import datetime
 
+
 class Sitemap(sitemaps.Sitemap):
     def __init__(self, names):
         self.names = names
@@ -17,6 +18,7 @@ class Sitemap(sitemaps.Sitemap):
 
     def location(self, obj):
         return reverse(obj)
+
 
 class MarketingSitemap(sitemaps.Sitemap):
     def items(self):

@@ -38,6 +38,7 @@ class UserPasswordResetViewTest(TestCase, ApplyPatchMixin):
             'gender': u'M',
             'full_name': u'Test User',
             'company': u'',
+            'is_active': True,
         }
 
     def _apply_get_users_api_patch(self, user_json=None):
@@ -240,4 +241,3 @@ class MobileFeatureFlagAccessTest(TestCase, ApplyPatchMixin):
         )
         course_participants = get_course_feature_flag(request, course_id_two)
         self.assertEqual(course_participants.status_code, 404)
-

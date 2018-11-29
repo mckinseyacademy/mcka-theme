@@ -1,6 +1,9 @@
-import os, re, json, datetime, logging
+import os
+import re
+import json
+import datetime
+import logging
 from collections import namedtuple
-from email.MIMEImage import MIMEImage
 
 from django.contrib import messages
 from django.conf import settings
@@ -14,7 +17,7 @@ from django.utils.html import strip_tags
 
 from admin.controller import enroll_user_in_course
 from admin.models import Program, Client
-from api_client import user_api, third_party_auth_api, organization_api, course_api, mobileapp_api
+from api_client import user_api, third_party_auth_api, organization_api, course_api
 from api_client.api_error import ApiError
 from mobile_apps.constants import MOBILE_APP_DEPLOYMENT_MECHANISMS
 from license import controller as license_controller
@@ -44,7 +47,7 @@ def user_activation_with_data(user_id, user_data, activation_record):
     try:
         # Make sure they'll be inactive while updating fields, then we explicitly activate them
         user_data["is_active"] = False
-        updated_user = user_api.update_user_information(user_id, user_data)
+        user_api.update_user_information(user_id, user_data)
     except ApiError as e:
         raise ActivationError(e.message)
 
@@ -56,7 +59,7 @@ def user_activation_with_data(user_id, user_data, activation_record):
 
     try:
         activation_record.delete()
-    except Exception as e:
+    except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
         logger.error("Unable to delete activation record for user with id {}".format(user_id))
         logger.error(e)
 
@@ -84,7 +87,7 @@ def save_new_client_image(old_image_url, new_image_url, client):
             old_gen_image_url = "{}-{}.jpg".format(old_image_url_name, generate_size[0])
             new_gen_image_url = "{}-{}.jpg".format(new_image_url_name, generate_size[0])
             io_new_client_image(old_gen_image_url, new_gen_image_url)
-        client.update_and_fetch(client.id,  {'logo_url': '/accounts/' + "{}.jpg".format(new_image_url_name)})
+        client.update_and_fetch(client.id, {'logo_url': '/accounts/' + "{}.jpg".format(new_image_url_name)})
 
 
 def io_new_client_image(old_gen_image_url, new_gen_image_url):
@@ -98,10 +101,10 @@ def io_new_client_image(old_gen_image_url, new_gen_image_url):
     try:
         original = Image.open(default_storage.open(old_gen_image_url))
         original.convert('RGB').save(thumb_io, format='JPEG')
-        cropped_image_path = default_storage.save(new_gen_image_url, thumb_io)
+        default_storage.save(new_gen_image_url, thumb_io)
         default_storage.delete(old_gen_image_url)
     except IOError:
-        #TODO handle this error with IOERROR class
+        # TODO handle this error with IOERROR class
         raise
 
 
@@ -278,7 +281,7 @@ def send_password_reset_email(
 
     reset_record = UserPasswordReset.create_record(user)
 
-    url = reverse('reset_confirm', kwargs={'uidb64':uid, 'token': reset_record.validation_key})
+    url = reverse('reset_confirm', kwargs={'uidb64': uid, 'token': reset_record.validation_key})
 
     c = {
         'email': user.email,
@@ -291,7 +294,7 @@ def send_password_reset_email(
     # Email subject *must not* contain newlines
     subject = ''.join(subject.splitlines())
     email = loader.render_to_string(email_template_name, c)
-    email = EmailMessage(subject, email, from_email, [user.email], headers = {'Reply-To': from_email})
+    email = EmailMessage(subject, email, from_email, [user.email], headers={'Reply-To': from_email})
     email.send(fail_silently=False)
 
 
@@ -337,7 +340,6 @@ class ExistingSelfRegistration(SelfRegistration):
     def process_registration(cls, request, user, course_run, existing_user_object):
         link = cls.generate_activation_link(request, course_run)
         template_text = course_run.email_template_existing
-
         enroll_in_course_result = enroll_student_in_course_without_program(existing_user_object, course_run.course_id)
         if not enroll_in_course_result.enrolled:
             raise ValueError('Problem with course enrollment')
@@ -353,7 +355,6 @@ class NewSelfRegistration(SelfRegistration):
     def process_registration(cls, request, registration_request, course_run):
         template_text = course_run.email_template_new
         user = cls._register_user_on_platform(registration_request)
-
         if user and not user.is_active:
             link = cls.generate_activation_link(request, user)
             if link:
@@ -369,9 +370,7 @@ class NewSelfRegistration(SelfRegistration):
 
     @staticmethod
     def _register_user_on_platform(user):
-
         data = {}
-
         if len(user.company_email) > 30:
             data['username'] = user.company_email[:29]
         else:
@@ -385,7 +384,7 @@ class NewSelfRegistration(SelfRegistration):
 
         try:
             result = user_api.register_user(data)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             # TODO handle this error with ValueError class
             raise ValueError('Api error')
         return result
@@ -398,42 +397,36 @@ class NewSelfRegistration(SelfRegistration):
 
     @staticmethod
     def _get_set_company(user_id):
-
         companies = organization_api.get_organization_by_display_name("demo_course")
-
         if companies['count'] != 0:
             company = companies['results'][0]['id']
         else:
             new_company = organization_api.create_organization(organization_name="demo_course",
                                                                organization_data={"display_name": "demo_course"})
             company = vars(new_company).get("id", None)
-
         client = Client.fetch(company)
         client.add_user(user_id)
 
 
 def _process_course_run_closed(registration_request, course_run):
-
     email_template_html = 'registration/public_registration_course_closed.haml'
     subject = "Your request to access McKinsey Academy"
     template_text = course_run.email_template_closed
     link = None
 
-    send_email(email_template_html, subject, link, template_text, registration_request.first_name, registration_request.company_email)
-
+    send_email(email_template_html, subject, link, template_text, registration_request.first_name,
+               registration_request.company_email)
 
 
 def send_email(email_template_html, subject, link, template_text, user_name, user_email):
-
-    c = {
+    context = {
         'username': user_name,
         'email': user_email,
         'link': link,
         'template_text': template_text,
     }
-    email_html = loader.render_to_string(email_template_html, c)
+    email_html = loader.render_to_string(email_template_html, context)
     email_plain = strip_tags(email_html)
-
     email = EmailMultiAlternatives(
         subject,
         email_plain,
@@ -442,13 +435,11 @@ def send_email(email_template_html, subject, link, template_text, user_name, use
         headers={'Reply-To': settings.APROS_EMAIL_SENDER})
     email.attach_alternative(email_html, "text/html")
     email.mixed_subtype = 'related'
-
     email.send(fail_silently=False)
 
 
 def _set_number_of_enrolled_users(course_run):
-
-    course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=100))
+    course_users = json.loads(course_api.get_user_list_json(course_run.course_id, page_size=1000))
     roles_user_ids = course_api.get_users_filtered_by_role(course_run.course_id)
     exclude_user_ids = [role.id for role in roles_user_ids]
     exclude_user_ids = list(set(exclude_user_ids))
@@ -458,19 +449,16 @@ def _set_number_of_enrolled_users(course_run):
     return users_without_roles
 
 
-
 def send_warning_email_to_admin(course_run):
-
     email_template_html = 'registration/public_registration_warning.haml'
     subject = _('Demo Registration - Warning')
-
-    c = {
+    context = {
         'max_participants': course_run.max_participants,
         'treshold': settings.COURSE_RUN_PARTICIPANTS_TRESHOLD,
         'course_id': course_run.course_id,
     }
 
-    email_html = loader.render_to_string(email_template_html, c)
+    email_html = loader.render_to_string(email_template_html, context=context)
     email_plain = strip_tags(email_html)
     email = EmailMultiAlternatives(
         subject,
@@ -526,16 +514,15 @@ def get_mobile_apps_id(organization_id):
     mobile_id = org_data.mobile_apps
 
     if mobile_id.get('results'):
-
         for mobile_app in mobile_id['results']:
-
             if mobile_app['deployment_mechanism'] == MOBILE_APP_DEPLOYMENT_MECHANISMS['public_store']:
                 user_org = mobile_app['name']
                 ios_app_id = mobile_app['ios_app_id']
                 android_app_id = mobile_app['android_app_id']
                 break
 
-    return {'ios_app_id': ios_app_id,
-            'android_app_id': android_app_id,
-            'user_org':user_org
-            }
+    return {
+        'ios_app_id': ios_app_id,
+        'android_app_id': android_app_id,
+        'user_org': user_org
+    }

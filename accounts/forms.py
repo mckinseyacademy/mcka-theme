@@ -2,25 +2,25 @@
 # -*- coding: utf-8 -*-
 
 ''' forms for login and activation '''
-import datetime, re
+import datetime
+import re
 
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-from django.core.validators import validate_email, RegexValidator
+from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 
 from api_client import user_api
 from django.utils.html import format_html
 from django.forms.utils import flatatt
-from django.utils.encoding import force_text
 from api_client.api_error import ApiError
 from util.i18n_helpers import format_lazy, mark_safe_lazy
 
 from .controller import send_password_reset_email
 from .models import PublicRegistrationRequest
 from admin.models import CourseRun, SelfRegistrationRoles, OTHER_ROLE
-from util.validators import AlphanumericValidator, UsernameValidator, AlphanumericWithAccentedChars, RoleTitleValidator
+from util.validators import UsernameValidator, AlphanumericWithAccentedChars, RoleTitleValidator
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -39,8 +39,11 @@ GENDER_CHOICES = (
     ("m", _("Male")),
 )
 
-YEAR_CHOICES = [("", "---"),]
-YEAR_CHOICES.extend([(year_string, year_string) for year_string in ["{}".format(year_value) for year_value in reversed(range(datetime.date.today().year - 100, datetime.date.today().year - 10))]])
+YEAR_CHOICES = [("", "---"), ]
+YEAR_CHOICES.extend([(year_string, year_string)
+                     for year_string in ["{}".format(year_value)
+                                         for year_value in reversed(range(datetime.date.today().year - 100,
+                                                                          datetime.date.today().year - 10))]])
 
 COUNTRY_CHOICES = (
     ("", "---"),
@@ -368,12 +371,12 @@ class LoginForm(NoSuffixLabelForm):
             html_span='<span class="required-field"></span>')
         )
     )
-    password = forms.CharField(
-        widget=forms.PasswordInput(),
-        label=mark_safe_lazy(format_lazy(
-            _('Password {html_span}'),
-            html_span='<span class="required-field"></span>')
-    ))
+    password = forms.CharField(widget=forms.PasswordInput(),
+                               label=mark_safe_lazy(format_lazy(_('Password {html_span}'),
+                                                                html_span='<span class="required-field"></span>'
+                                                                )
+                                                    )
+                               )
 
 
 class LoginIdForm(NoSuffixLabelForm):
@@ -477,7 +480,8 @@ class ActivationForm(BaseRegistrationForm):
         if kwargs.get('initial'):
             initial_data = kwargs['initial']
             for read_only in READ_ONLY_IF_DATA_FIELDS:
-                if read_only in initial_data and initial_data[read_only] is not None and len(initial_data[read_only]) > 0:
+                if read_only in initial_data and initial_data[read_only] is not None \
+                        and len(initial_data[read_only]) > 0:
                     self.fields[read_only].widget.attrs['readonly'] = 'readonly'
 
             for disabled in DISABLED_IF_DATA_FIELDS:
@@ -532,9 +536,7 @@ class FpasswordForm(forms.Form):
         email = self.cleaned_data["email"]
 
         users = user_api.get_users(email=email)
-        if len(users) < 1:
-            post_reset_redirect = '/accounts/login?reset=failed'
-        else:
+        if len(users) > 0:
             user = users[0]
             send_password_reset_email(
                 request.META.get('HTTP_HOST'),
@@ -577,7 +579,7 @@ class SetNewPasswordForm(forms.Form):
 
     def save(self, commit=True):
         try:
-            response = user_api.update_user_information(self.user.id, {'password': self.cleaned_data['new_password1']})
+            user_api.update_user_information(self.user.id, {'password': self.cleaned_data['new_password1']})
         except ApiError as err:
             error = err.message
             self.user.error = error
@@ -611,7 +613,8 @@ class BaseRegistrationFormV2(AcceptTermsForm):
         'accept_terms',
     ]
 
-    email = forms.CharField(max_length=255, widget = forms.TextInput(attrs={'readonly':'readonly'}), label=mark_safe(_('Email')))
+    email = forms.CharField(max_length=255, widget=forms.TextInput(attrs={'readonly': 'readonly'}),
+                            label=mark_safe(_('Email')))
     username = forms.CharField(
         max_length=255,
         label=mark_safe_lazy(format_lazy(
@@ -644,7 +647,7 @@ class ActivationFormV2(BaseRegistrationFormV2):
 
 class PublicRegistrationForm(forms.ModelForm):
     current_role = forms.ModelChoiceField(widget=forms.RadioSelect,
-        queryset=SelfRegistrationRoles.objects.all(), empty_label=None)
+                                          queryset=SelfRegistrationRoles.objects.all(), empty_label=None)
     current_role_other = forms.CharField(widget=forms.TextInput, label='', required=False)
     company_email = forms.CharField(max_length=70)
 
@@ -746,11 +749,11 @@ class PublicRegistrationForm(forms.ModelForm):
 
         if len(company_email) > 70:
             raise forms.ValidationError(format_lazy(
-                _(u"Email '{email}' must be at most {max} characters long"),
-                    email=company_email,
-                    max=70
-                )
-            )
+                                                    _(u"Email '{email}' must be at most {max} characters long"),
+                                                    email=company_email,
+                                                    max=70
+                                                    )
+                                        )
 
         course_run = CourseRun.objects.filter(name=self.course_run_name)
         users = PublicRegistrationRequest.objects.filter(course_run=course_run)
@@ -763,7 +766,7 @@ class PublicRegistrationForm(forms.ModelForm):
             company_domain = company_email.split('@')[1].lower()
             if company_domain in BANNED_EMAILS:
                 raise forms.ValidationError(_("Email you provided is not allowed."))
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             raise forms.ValidationError(_("Please enter a valid company email address."))
 
         course_run = CourseRun.objects.filter(name=self.course_run_name)

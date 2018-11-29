@@ -1,19 +1,19 @@
 """
 Celery tasks related to admin app
 """
+import json
 from collections import OrderedDict
 from multiprocessing.pool import ThreadPool
 from tempfile import TemporaryFile
-
+from datetime import timedelta
 from urlparse import urljoin
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.core.serializers import json
-from django.http import HttpResponse
 from django.utils.translation import ugettext as _
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse, resolve, Resolver404
+from django.utils import timezone
 
 from celery.decorators import task
 from celery.utils.log import get_task_logger
@@ -25,24 +25,33 @@ from api_client import course_api
 from api_client import group_api
 from api_client import user_api
 from api_client.api_error import ApiError
-from util.csv_helpers import CSVWriter
+from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros
 from util.email_helpers import send_html_email
-from .controller import _enroll_participants, _process_line_register_participants_csv, build_student_list_from_file, create_update_delete_manager, validate_participant_and_manager_records
-from .models import UserRegistrationError
 
+from accounts.models import UserActivation
+from accounts.helpers import create_activation_url
 
-from .controller import CourseParticipantStats, validate_company_field, \
-    update_company_field_for_users
+from .controller import (
+    _enroll_participants,
+    _process_line_register_participants_csv,
+    build_student_list_from_file,
+    create_update_delete_manager,
+    validate_participant_and_manager_records,
+    validate_company_field,
+    update_company_field_for_users,
+    CourseParticipantStats,
+)
+from .models import UserRegistrationError, UserRegistrationBatch
 
 logger = get_task_logger(__name__)
+IMPORT_PARTICIPANTS_DIR = 'import_participant_files'
 
 
 @task(name='admin.course_participants_data_retrieval_task', max_retries=3, queue='high_priority')
-def course_participants_data_retrieval_task(
-        course_id, company_id, task_id, base_url, user_id,
-        lesson_completions=False, retry_params=None
-    ):
+def course_participants_data_retrieval_task(course_id, company_id, task_id, base_url, user_id,
+                                            lesson_completions=False, retry_params=None
+                                            ):
     """
     Retrieves course participants' data using API
 
@@ -51,14 +60,21 @@ def course_participants_data_retrieval_task(
 
     additional_fields = ['grades', 'roles', 'organizations', 'progress']
 
+    cohorts_enabled = course_api.get_course_cohort_settings(course_id).is_cohorted
+
+    if cohorts_enabled:
+        additional_fields.append('course_groups')
+
     if lesson_completions:
         additional_fields.append('lesson_completions')
 
     api_params = {
         'page': 1,
-        'per_page': 200,
-        'page_size': 200,
+        'per_page': 1000,
+        'page_size': 1000,
         'additional_fields': ",".join(additional_fields),
+        # Profile images take a long time to serialize, and we don't need them.
+        'exclude_fields': "profile_image",
     }
     task_log_msg = "Participants data retrieval task for course: " \
                    "`{}`, triggered by user `{}`".format(course_id, user_id)
@@ -167,6 +183,10 @@ def course_participants_data_retrieval_task(
                 lesson_completions[key] = _('Lesson {lesson_number} Progress').format(lesson_number=lesson_number)
             participant[key] = '{}%'.format(completion)
 
+        if cohorts_enabled:
+            course_groups = participant.get('course_groups')
+            participant['course_group'] = course_groups[0] if course_groups else '-'
+
     fields = OrderedDict([
         ("Id", ("id", '')),
         ("First name", ("first_name", '')),
@@ -174,12 +194,7 @@ def course_participants_data_retrieval_task(
         ("Username", ("username", '')),
         ("Email", ("email", '')),
         ("Company", ("organizations_display_name", '')),
-    ])
-
-    for key, label in attributes.items():
-        fields.update([(label, (key, ''))])
-
-    fields.update([
+    ] + [(item_label, (item_key, '')) for item_key, item_label in attributes.items()] + [
         ("Status", ("custom_user_status", '')),
         ("Activated", ("custom_activated", '')),
         ("Last login", ("custom_last_login", '')),
@@ -189,6 +204,9 @@ def course_participants_data_retrieval_task(
         ("Activation Link", ("activation_link", '')),
         ("Country", ("country", '')),
     ])
+
+    if cohorts_enabled:
+        fields['Course group'] = ("course_group", '')
 
     # update fields with groupworks/assignments data
     for label, title in groupworks.items() + assessments.items() + lesson_completions.items():
@@ -351,8 +369,10 @@ def participants_notifications_data_task(course_id, company_id, task_id, retry_p
     Retrieves course participants' notifications data using API
     """
     api_params = {
-        'fields': 'id', 'page': 1,
-        'per_page': 200, 'page_size': 200,
+        'fields': 'id',
+        'page': 1,
+        'per_page': 1000,
+        'page_size': 1000,
     }
     task_log_msg = "Notifications data retrieval task for course: {}".format(course_id)
 
@@ -419,13 +439,15 @@ def users_program_association_task(program_id, user_ids, task_id):
     total = len(user_ids)
     added = 0
     failed = 0
+    batch_size = 100
 
-    for user_id in user_ids:
+    for i in xrange(0, total, batch_size):
+        user_ids_batch = user_ids[i:i+batch_size]
         try:
-            group_api.add_user_to_group(user_id, program_id)
-            added += 1
-        except ApiError as e:
-            failed += 1
+            group_api.add_users_to_group(user_ids_batch, program_id)
+            added += len(user_ids_batch)
+        except ApiError:
+            failed += len(user_ids_batch)
         finally:
             percentage = (100.0 / (total or 1)) * (added + failed)
 
@@ -439,7 +461,7 @@ def users_program_association_task(program_id, user_ids, task_id):
 
 
 @task(name='admin.import_participants_task', serializer='pickle', queue='high_priority')
-def import_participants_task(file_stream, is_internal_admin, registration_batch):
+def import_participants_task(user_id, base_url, file_stream, is_internal_admin, registration_batch):
     """
     Processes a CSV file of participants.
 
@@ -451,21 +473,39 @@ def import_participants_task(file_stream, is_internal_admin, registration_batch)
         At that point, it isn't dangerous to un-pickle the object, as it's already been around
         in our runtime without issue.
     """
+    task_log_msg = "Import Participants task"
+
+    logger.info('Started - {}'.format(task_log_msg))
+
     user_list = build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
     clean_user_list, unclean_user_list, user_registration_errors = [], [], []
+
     for user_info in user_list:
         if "error" in user_info:
+            try:
+                user_data = json.dumps(user_info)
+            except:
+                user_data = json.dumps({})
+
             unclean_user_list.append(user_info)
             user_registration_errors.append(
-                UserRegistrationError(error=user_info["error"], task_key=registration_batch.task_key)
+                UserRegistrationError(
+                    error=user_info.get('error'),
+                    task_key=registration_batch.task_key,
+                    user_email=user_info.get('email'),
+                    user_data=user_data
+                )
             )
         else:
             clean_user_list.append(user_info)
+
     UserRegistrationError.objects.bulk_create(user_registration_errors)
     registration_batch.attempted = len(user_list)
     registration_batch.failed += len(user_registration_errors)
     registration_batch.save()
     del user_list
+
+    logger.info('Attempting to register {} Users - {}'.format(len(clean_user_list), task_log_msg))
 
     # The bottleneck with processing these users from the POV of Apros is the network, i.e. when we wait for the
     # LMS to process the user and return an HTTP response. Thus we run this in multiple threads with batches.
@@ -477,15 +517,27 @@ def import_participants_task(file_stream, is_internal_admin, registration_batch)
     for index in xrange(0, total_clean_users, batch_size):
         batch = clean_user_list[index:min(index + batch_size, total_clean_users)]
         threads.append(pool.apply_async(
-            _enroll_participants, args=(
-                batch,
-                is_internal_admin,
-                registration_batch,
-        )))
+            _enroll_participants, args=(batch,
+                                        is_internal_admin,
+                                        registration_batch,
+                                        )
+        ))
 
     # Run queued up jobs.
     for thread in threads:
         thread.get()
+
+    logger.info('{} of {} users registered successfully - {}'
+                .format(registration_batch.succeded, total_clean_users, task_log_msg))
+
+    logger.info('Completed - {}'.format(task_log_msg))
+
+    generate_import_files_and_send_notification.delay(
+        batch_id=registration_batch.task_key,
+        user_id=user_id,
+        base_url=base_url,
+        user_file_name=file_stream.name,
+    )
 
 
 @task(name='admin.user_company_fields_update_task', queue='high_priority')
@@ -536,3 +588,212 @@ def bulk_user_manager_update_task(user_id, users_records, base_url):
                 errors.append(_("User with email {} and manager with email {} was unsuccessfull.")
                               .format(participant.get('email'), manager.get('email')))
     send_bulk_fields_update_email(user_id, total_records, record_count, errors, base_url)
+
+
+@task(
+    name='admin.generate_import_files_and_send_notification',
+    max_retries=3
+)
+def generate_import_files_and_send_notification(batch_id, user_id, base_url, user_file_name):
+    """
+    Generates activation links and any error files of batch Import Participants
+    process and send notification link
+    """
+    task_log_msg = "Import Participants notification task for batch {}".format(batch_id)
+    logger.info('Generating result files - {}'.format(task_log_msg))
+
+    try:
+        registration_batch = UserRegistrationBatch.objects.get(task_key=batch_id)
+    except (UserRegistrationBatch.DoesNotExist, UserRegistrationBatch.MultipleObjectsReturned):
+        logger.info('Failed retrieving batch - {} - EXITING'.format(task_log_msg))
+        return False
+
+    error_records = UserRegistrationError.objects.filter(task_key=registration_batch.task_key)
+    activation_links = UserActivation.get_activations_by_task_key(task_key=registration_batch.task_key)
+
+    errors = []
+    for error in error_records:
+        error_data = dict(email=error.user_email, errors=error.error)
+
+        try:
+            user_data = json.loads(error.user_data)
+        except:
+            user_data = {}
+
+        error_data.update(user_data)
+        errors.append(error_data)
+
+    activation_links = [{
+        'first_name': activation_link.first_name,
+        'last_name': activation_link.last_name,
+        'email': activation_link.email,
+        'activation_link': create_activation_url(activation_code=activation_link.activation_key, base_url=base_url)}
+        for activation_link in activation_links
+    ]
+
+    error_file_url = ''
+    activations_links_file_url = ''
+
+    if errors:
+        fields = OrderedDict([
+            ("First Name", ("first_name", '')),
+            ("Last Name", ("last_name", '')),
+            ("Email", ("email", '')),
+            ("Company ID", ("company_id", '')),
+            ("Course ID", ("course_id", '')),
+            ("Status", ("status", '')),
+            ("Errors", ("errors", '')),
+        ])
+
+        file_name = '{}_import_errors.csv'.format(registration_batch.task_key)
+
+        try:
+            error_file_url = create_and_store_csv_file(
+                fields, errors, IMPORT_PARTICIPANTS_DIR,
+                file_name, logger, task_log_msg, secure=True
+            )
+        except Exception as e:
+            raise generate_import_files_and_send_notification.retry(exc=e)
+
+    if activation_links:
+        fields = OrderedDict([
+            ("First Name", ("first_name", '')),
+            ("Last Name", ("last_name", '')),
+            ("Email", ("email", '')),
+            ("Activation Link", ("activation_link", '')),
+        ])
+
+        file_name = '{}_activation_links.csv'.format(registration_batch.task_key)
+
+        try:
+            activations_links_file_url = create_and_store_csv_file(
+                fields, activation_links, IMPORT_PARTICIPANTS_DIR,
+                file_name, logger, task_log_msg, secure=True
+            )
+        except Exception as e:
+            raise generate_import_files_and_send_notification.retry(exc=e)
+
+    registration_batch.activation_file_url = activations_links_file_url
+    registration_batch.error_file_url = error_file_url
+    registration_batch.time_completed = timezone.now()
+
+    try:
+        completion_time = (registration_batch.time_completed - registration_batch.time_requested)\
+                              .total_seconds() // 60.0
+        completion_time = int(completion_time)
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
+        completion_time = 'N/A'
+
+    registration_batch.save()
+
+    subject = _('Import File Processed')
+    email_template = 'admin/import_users_email_template.haml'
+    mcka_logo = urljoin(
+        base=base_url,
+        url='/static/image/mcka_email_logo.png'
+    )
+
+    logger.info('Sending notification email - {}'.format(task_log_msg))
+
+    try:
+        user_data = user_api.get_user(user_id).to_dict()
+    except Exception as e:
+        logger.error(
+            'Failed retrieving Admin User info from API - {} - {}'.format(e.message, task_log_msg)
+        )
+        raise generate_import_files_and_send_notification.retry(exc=e)
+    else:
+        try:
+            send_html_email(
+                subject=subject,
+                to_emails=[user_data.get('email')], template_name=email_template,
+                template_data={
+                    'first_name': user_data.get('first_name'),
+                    'file_name': user_file_name,
+                    'completion_time': completion_time,
+                    'total': registration_batch.attempted,
+                    'successful': registration_batch.succeded,
+                    'error_file_url': urljoin(
+                        base=base_url,
+                        url=error_file_url
+                    ) if error_file_url else '',
+                    'activation_links_url': urljoin(
+                        base=base_url,
+                        url=activations_links_file_url
+                    ) if activations_links_file_url else '',
+                    'support_email': settings.MCKA_SUPPORT_EMAIL,
+                    'mcka_logo_url': mcka_logo,
+                }
+            )
+        except Exception as e:
+            logger.error('Failed sending notification email to Admin {} - {}'.format(e.message, task_log_msg))
+            raise generate_import_files_and_send_notification.retry(exc=e)
+
+    logger.info('Email successfully sent - {}'.format(task_log_msg))
+
+    return True
+
+
+@task(name='admin.purge_import_errors_and_csv_files')
+def purge_old_import_records_and_csv_files():
+    """
+    Purges old import/enroll error records and CSV files
+    """
+    task_log_msg = "Purge Old Import Records Task"
+
+    logger.info('Started - {}'.format(task_log_msg))
+
+    end_date = timezone.now().date() - timedelta(days=14)
+    start_date = end_date - timedelta(days=14)
+
+    old_tasks = UserRegistrationBatch.objects.filter(time_requested__range=(start_date, end_date))\
+        .values_list('task_key', 'error_file_url', 'activation_file_url')
+
+    old_task_ids = []
+    file_paths = []
+
+    for task in old_tasks:
+        task_id, error_file_url, success_file_url = task
+        old_task_ids.append(task_id)
+
+        for url in (error_file_url, success_file_url):
+            if not url:
+                continue
+
+            try:
+                file_path = resolve(url).kwargs.get('path')
+            except Resolver404:
+                file_path = url
+
+            if file_path:
+                file_paths.append(file_path)
+
+    logger.info('Found {} DB records and {} CSV files for deletion - {}'
+                .format(len(old_task_ids), len(file_paths), task_log_msg))
+
+    if old_task_ids:
+        UserRegistrationError.objects.filter(task_key__in=old_task_ids).delete()
+        UserRegistrationBatch.objects.filter(task_key__in=old_task_ids).delete()
+
+        logger.info('Successfully deleted DB records - {}'.format(task_log_msg))
+
+    if file_paths:
+        logger.info('Deleting CSV Files - {}'.format(task_log_msg))
+
+        if default_storage == 'storages.backends.s3boto.S3BotoStorage':
+            try:
+                default_storage.bucket.delete_keys(file_paths)
+            except Exception as e:
+                logger.error('S3 exception while deleting files {} - {}'.format(e.message, task_log_msg))
+            else:
+                logger.info('Successfully deleted CSV files - {}'.format(task_log_msg))
+        else:
+            for path in file_paths:
+                try:
+                    default_storage.delete(path)
+                except OSError:
+                    pass
+
+    logger.info('Completed - {}'.format(task_log_msg))
+
+    return True

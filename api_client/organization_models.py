@@ -93,7 +93,7 @@ class Organization(JsonObjectWithImage):
 
     def remove_group(self, group_id):
         if group_id in self.groups:
-            self.groups.remove(user_id)
+            self.groups.remove(group_id)
             organization_api.update_organization(self.id, {"groups": self.groups})
 
     def image_url(self, size=48, path='absolute'):
@@ -117,13 +117,14 @@ class Organization(JsonObjectWithImage):
 
                 if not default_storage.exists(self._strip_proxy_image_url(image_url)):
                     image_url = JsonObjectWithImage.default_image_url()
-                elif path == 'absolute' and settings.DEFAULT_FILE_STORAGE != 'django.core.files.storage.FileSystemStorage':
+                elif path == 'absolute' and \
+                        settings.DEFAULT_FILE_STORAGE != 'django.core.files.storage.FileSystemStorage':
                     image_url = default_storage.url(
                         self._strip_proxy_image_url(image_url)
                     )
             else:
                 image_url = JsonObjectWithImage.default_image_url()
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             image_url = JsonObjectWithImage.default_image_url()
 
         return image_url

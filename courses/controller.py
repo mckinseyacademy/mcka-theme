@@ -1,5 +1,5 @@
 ''' Core logic to sanitise information for views '''
-#from urllib import quote_plus, unquote_plus
+# from urllib import quote_plus, unquote_plus
 
 import copy
 import json
@@ -10,6 +10,7 @@ import re
 from bs4 import BeautifulSoup
 
 from django.conf import settings
+from django.utils.translation import ugettext as _
 
 from accounts.middleware.thread_local import (
     set_static_tab_context,
@@ -40,11 +41,12 @@ log = logging.getLogger(__name__)
 class AcademyGradeAssessmentType(JsonObject):
     @property
     def type_name(self):
-        return self.type[len(settings.GROUP_PROJECT_IDENTIFIER):] if self.is_group_assessment else self.type;
+        return self.type[len(settings.GROUP_PROJECT_IDENTIFIER):] if self.is_group_assessment else self.type
 
     @property
     def is_group_assessment(self):
         return self.type.startswith(settings.GROUP_PROJECT_IDENTIFIER)
+
 
 class AcademyGradePolicy(JsonObject):
     object_map = {
@@ -52,12 +54,14 @@ class AcademyGradePolicy(JsonObject):
         "GRADE_CUTOFFS": DataOnly,
     }
 
+
 class AcademyGradebook(JsonObject):
     object_map = {
         "courseware_summary": CourseSummary,
         "grade_summary": GradeSummary,
         "grading_policy": AcademyGradePolicy,
     }
+
 
 class UserGrade(JsonObject):
     @property
@@ -266,10 +270,10 @@ def get_course_position_tree(user_id, course_id, user_api_impl=user_api):
     course_detail = False
     try:
         course_detail = user_api_impl.get_user_course_detail(user_id, course_id)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         course_detail = False
 
-    if course_detail == False or not hasattr(course_detail, 'position_tree'):
+    if course_detail is False or not hasattr(course_detail, 'position_tree'):
         return None
 
     return course_detail.position_tree
@@ -282,7 +286,7 @@ def get_chapter_and_target_by_location(request, course_id, location_id, course_a
     nav = course_api_impl.get_course_navigation(course_id, location_id)
 
     # If the course doesn't exist
-    if nav == None:
+    if nav is None:
         return None, None, None
 
     return nav.chapter, nav.vertical, nav.final_target_id
@@ -321,7 +325,8 @@ def locate_chapter_page(
         chapter = course.chapters[0]
 
     if chapter and chapter.sequentials:
-        last_sequential_id = position_tree.sequential.id if position_tree and hasattr(position_tree, "sequential") else None
+        last_sequential_id = position_tree.sequential.id if position_tree and hasattr(position_tree,
+                                                                                      "sequential") else None
         sequential_candidates = [s for s in chapter.sequentials if s.id == last_sequential_id]
         if len(sequential_candidates) > 0 and sequential_candidates[0].pages:
             last_page_id = position_tree.vertical.id if position_tree and hasattr(position_tree, "vertical") else None
@@ -374,7 +379,7 @@ def get_group_project_for_user_course(user_id, course, workgroup_id=None):
 
     user_ids = [str(user.id) for user in workgroup_api.get_workgroup_users(project_group.id)]
     additional_fields = ["title", "first_name", "last_name", "profile_image"]
-    project_group.members = user_api.get_users(ids=user_ids,fields=additional_fields)
+    project_group.members = user_api.get_users(ids=user_ids, fields=additional_fields)
 
     the_user_project = Project.fetch_from_url(project_group.project)
     group_project = None
@@ -391,7 +396,7 @@ def get_group_project_for_workgroup_course(workgroup_id, course):
     workgroup = WorkGroup.fetch(workgroup_id)
     user_ids = [str(user.id) for user in workgroup.users]
     additional_fields = ["title", "first_name", "last_name", "profile_image"]
-    workgroup.members = user_api.get_users(ids=user_ids,fields=additional_fields)
+    workgroup.members = user_api.get_users(ids=user_ids, fields=additional_fields)
     project = Project.fetch(workgroup.project)
     group_project = [proj for proj in course.group_projects if proj.id == project.content_id][0]
 
@@ -540,7 +545,7 @@ def group_project_reviews(user_id, course_id, project_workgroup, group_project):
         # average score for this activity
         activity.score = mean(filter(None, activity.grades))
 
-    group_work_avg = mean([a.score for a in group_project.activities if not a.score is None])
+    group_work_avg = mean([a.score for a in group_project.activities if a.score is not None])
     return group_project.activities, group_work_avg
 
 
@@ -556,7 +561,9 @@ def get_proficiency_leaders(course_id, user_id, count=3):
     """
     If you need it along with progress or social leaders, please use `get_leaders`.
     """
-    proficiency = course_api.get_course_metrics_grades(course_id, user_id=user_id, grade_object_type=Proficiency, count=count)
+    proficiency = course_api.get_course_metrics_grades(
+        course_id, user_id=user_id, grade_object_type=Proficiency, count=count
+    )
     if hasattr(proficiency, "leaders"):
         tailor_leader_list(proficiency.leaders)
     return proficiency
@@ -566,7 +573,9 @@ def get_progress_leaders(course_id, user_id):
     """
     If you need it along with proficiency or social leaders, please use `get_leaders`.
     """
-    completions = course_api.get_course_metrics_completions(course_id, user_id=user_id, completions_object_type=Progress)
+    completions = course_api.get_course_metrics_completions(
+        course_id, user_id=user_id, completions_object_type=Progress
+    )
     tailor_leader_list(completions.leaders)
     return completions
 
@@ -685,7 +694,7 @@ def get_ta_users(course_id, course_role_users=None):
     role_users = course_role_users or course_api.get_users_filtered_by_role(course_id)
     ta_users_base = [str(user.id) for user in role_users if user.role == role]
     additional_fields = ["title", "profile_image", "city", "full_name"]
-    ta_users = user_api.get_users(ids=ta_users_base,fields=additional_fields) if ta_users_base else []
+    ta_users = user_api.get_users(ids=ta_users_base, fields=additional_fields) if ta_users_base else []
     return ta_users
 
 
@@ -714,7 +723,7 @@ def inject_gradebook_info(user_id, course):
         for lesson in gradebook.courseware_summary:
             percent = None
             for section in lesson.sections:
-                if section.graded == True:
+                if section.graded is True:
                     points = section.section_total[0]
                     max_points = section.section_total[1]
                     if max_points > 0:
@@ -756,10 +765,8 @@ def create_tile_progress_data(tile):
     Triggered by admin creating the tile in learner dashboard CMS
     '''
     link = strip_tile_link(tile.link)
-    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=100))
-
-    completions = course_api.get_course_completions(link['course_id'], page_size=100)
-
+    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=1000))
+    completions = course_api.get_course_completions(link['course_id'], page_size=1000)
     for user in users:
         course = get_course_object(user['id'], link['course_id'])
         if course:
@@ -772,9 +779,7 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
     Triggered by user visiting the module. Filters tiles with current course_ids.
     Updates progress only for current module and parent lesson/course.
     '''
-
     tiles = LearnerDashboardTile.objects.filter(link__icontains=course.id)
-
     if chapter_id:
         kwargs = {'root_block': chapter_id}
     else:
@@ -784,9 +789,9 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
         for tile in tiles:
             link = strip_tile_link(tile.link)
             if link:
-                if (tile.tile_type == '3' or tile.tile_type == '5') and not page_id in tile.link:
+                if (tile.tile_type == '3' or tile.tile_type == '5') and page_id not in tile.link:
                     continue
-                if tile.tile_type == '2' and not chapter_id in tile.link:
+                if tile.tile_type == '2' and chapter_id not in tile.link:
                     continue
                 if tile.tile_type == '7' and not link['block_id'] in tile.link:
                     continue
@@ -890,6 +895,7 @@ def set_user_course_progress(course, completions, chapter_id=None):
                     )
                     module.is_complete = module.progress == 100
 
+
 def get_course_object(user_id, course_id):
 
     courses = user_api.get_user_courses(user_id)
@@ -902,7 +908,7 @@ def get_course_object(user_id, course_id):
 
 def strip_tile_link(link):
 
-    #TODO: Refactor!!!
+    # TODO: Refactor!!!
 
     if link.startswith("/learnerdashboard/"):
         link = link[17:]
@@ -910,7 +916,7 @@ def strip_tile_link(link):
     if link.endswith("/lesson/") or link.endswith("/module/"):
         link = link[:-8]
 
-    discussion  = re.search('/discussion(.*)$', link)
+    discussion = re.search('/discussion(.*)$', link)
     if discussion:
         link = link.replace(discussion.group(0), "")
 
@@ -937,7 +943,7 @@ def strip_tile_link(link):
     try:
         substring = re.search('/courses/(.*)/lessons/', link)
         course_id = substring.group(1)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         stripped_link = {
             'course_id': link.replace("/courses/", ""),
             'lesson_id': None,
@@ -979,7 +985,7 @@ def _remove_duplicate_grader(graders):
     Removes duplicate graders, used for private group work configuration.
     """
     for i in range(0, len(graders)):
-        for j in range(i+1,len(graders)):
+        for j in range(i+1, len(graders)):
             if compare_graders(graders[i], graders[j]):
                 graders.pop(i)
                 break
@@ -1009,3 +1015,26 @@ def fix_resource_page_video_scripts(resources_page_html):
 
     return str(resource_page_soup)
 
+
+def get_assessment_module_name_translation(module_name):
+    """ Translates assessment part of the module name """
+    if module_name.startswith("Assessment"):
+        return module_name.replace("Assessment", _("Assessment"))
+    return module_name
+
+
+def get_non_staff_user(course_id):
+    """
+    Returns a non-staff (with no role) user in a course
+    """
+    non_staff_user = None
+
+    course_users = course_api.get_course_details_users(course_id, {'fields': 'id,username,is_staff'})['results']
+    course_role_user_ids = [user.id for user in course_api.get_users_filtered_by_role(course_id)]
+
+    for user in course_users:
+        if user.get('id') not in course_role_user_ids and not user.get('is_staff'):
+            non_staff_user = user
+            break
+
+    return non_staff_user

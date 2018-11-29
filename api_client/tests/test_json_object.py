@@ -66,12 +66,15 @@ class JsonObjectTest(TestCase):
         self.json_array = '[{"name":"Martyn", "age":21},{"name":"Matt", "age":19}]'
 
         self.nested_json = '{"id":22, "info":{"one":"a", "two":"b", "three":"c"}}'
-        self.nested_array = '[{"id":22, "info":{"one":"a", "two":"b", "three":"c"}},{"id":23, "info":{"one":"x", "two":"y", "three":"z"}}]'
+        self.nested_array = '[{"id":22, "info":{"one":"a", "two":"b", "three":"c"}},' \
+                            '{"id":23, "info":{"one":"x", "two":"y", "three":"z"}}]'
 
-        self.nested_nest = '{"id":101, "info": [{"id":22, "info":{"one":"a", "two":"b", "three":"c"}},{"id":23, "info":{"one":"x", "two":"y", "three":"z"}}]}'
+        self.nested_nest = '{"id":101, "info": [{"id":22, "info":{"one":"a", "two":"b", "three":"c"}},' \
+                           '{"id":23, "info":{"one":"x", "two":"y", "three":"z"}}]}'
 
     def test_authentication_response(self):
-        json_string = '{"token": "ceac67d033b98fbc5edd483a0e609193","expires": 1209600,"user": {"id": 4,"email": "staff@example.com","username": "staff"}}'
+        json_string = '{"token": "ceac67d033b98fbc5edd483a0e609193","expires": 1209600,"user": {"id": 4,' \
+                      '"email": "staff@example.com","first_name": "first name","username": "staff","is_active":"True"}}'
         output = JP.from_json(json_string, AuthenticationResponse)
 
         self.assertTrue(isinstance(output, AuthenticationResponse))
@@ -165,7 +168,8 @@ class JsonObjectTest(TestCase):
         If valid fields are provided, only required and valid fields should be accessible
         No exception if json contains additional fields, but these are dropped from results
         '''
-        json_string = '[{"name":"Martyn", "age":21, "gender":"male"}, {"name":"Matt", "age":19, "sport":"mountaineering"}]'
+        json_string = '[{"name":"Martyn", "age":21, "gender":"male"}, ' \
+                      '{"name":"Matt", "age":19, "sport":"mountaineering"}]'
 
         output = JP.from_json(json_string, JsonObjectTestValidFieldsClass)
 
@@ -259,7 +263,10 @@ class JsonObjectTest(TestCase):
 
     def test_groups(self):
         output = JP.from_json(
-            '[{"name": "super_admin","id":1234,"uri": "/api/users/14/groups/1234"},{"name": "sub_admin","id":1357,"uri": "/api/users/14/groups/1357"},{"name": "company_admin","id":5678,"uri": "/api/users/14/groups/5678"},{"name": "arbitrary_group","id":2468,"uri": "/api/users/14/groups/2468"}]')
+            '[{"name": "super_admin","id":1234,"uri": "/api/users/14/groups/1234"},{"name": "sub_admin","id":1357,'
+            '"uri": "/api/users/14/groups/1357"},{"name": "company_admin","id":5678,"uri": '
+            '"/api/users/14/groups/5678"},{"name": "arbitrary_group","id":2468,"uri": "/api/users/14/groups/2468"}]'
+        )
 
         self.assertTrue(len(output) == 4)
         self.assertTrue(output[0].name == "super_admin")
@@ -317,7 +324,26 @@ class CategorisedJsonParserTest(TestCase):
 
     def test_categorised_json_parser(self):
         output = self.CJP.from_json(
-            '{"category": "course", "name": "edX Demonstration Course", "content": [{"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", "name": "Introduction"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/interactive_demonstrations", "id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations", "name": "Example Week 1: Getting Started"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/graded_interactions", "id": "i4x://edX/Open_DemoX/chapter/graded_interactions", "name": "Example Week 2: Get Interactive"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/social_integration", "id": "i4x://edX/Open_DemoX/chapter/social_integration", "name": "Example Week 3: Be Social"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", "id": "i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", "name": "About Exams and Certificates"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", "id": "i4x://edX/Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", "name": "holding section"}], "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course", "number": "Open_DemoX", "org": "edX", "id": "edX/Open_DemoX/edx_demo_course"}')
+            '{"category": "course", "name": "edX Demonstration Course", "content": [{"category": "chapter", "uri": '
+            '"http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/'
+            'd8a6192ade314473a78242dfeedfbf5b", "id": "i4x://edX/Open_DemoX/chapter/d8a6192ade314473a78242dfeedfbf5b", '
+            '"name": "Introduction"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/'
+            'edx_demo_course/content/i4x://edX/Open_DemoX/chapter/interactive_demonstrations", '
+            '"id": "i4x://edX/Open_DemoX/chapter/interactive_demonstrations", "name": "Example Week 1: '
+            'Getting Started"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/'
+            'edx_demo_course/content/i4x://edX/Open_DemoX/chapter/graded_interactions", '
+            '"id": "i4x://edX/Open_DemoX/chapter/graded_interactions", "name": "Example Week 2: Get Interactive"}, '
+            '{"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course/content/'
+            'i4x://edX/Open_DemoX/chapter/social_integration", "id": "i4x://edX/Open_DemoX/chapter/social_integration",'
+            ' "name": "Example Week 3: Be Social"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses'
+            '/edX/Open_DemoX/edx_demo_course/content/i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", '
+            '"id": "i4x://edX/Open_DemoX/chapter/1414ffd5143b4b508f739b563ab468b7", "name": "About Exams and '
+            'Certificates"}, {"category": "chapter", "uri": "http://localhost:8000/api/courses/edX/Open_DemoX/'
+            'edx_demo_course/content/i4x://edX/Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", "id": "i4x://edX/'
+            'Open_DemoX/chapter/9fca584977d04885bc911ea76a9ef29e", "name": "holding section"}], '
+            '"uri": "http://localhost:8000/api/courses/edX/Open_DemoX/edx_demo_course", "number": "Open_DemoX", '
+            '"org": "edX", "id": "edX/Open_DemoX/edx_demo_course"}'
+        )
 
         self.assertTrue(isinstance(output, Course))
         self.assertTrue(isinstance(output.content[0], Chapter))

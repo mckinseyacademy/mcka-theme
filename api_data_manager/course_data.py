@@ -6,16 +6,17 @@ from django.conf import settings
 from main.models import CuratedContentItem
 from courses.models import FeatureFlags, CourseMetaData
 
-
 COURSE_PROPERTIES = DottableDict(
-    DETAIL='detail',
-    TABS='tabs',
-    TAB_CONTENT='tabs_content',
     CURATED_CONTENT='curated_content',
+    DETAIL='detail',
     FEATURE_FLAG='feature_flag',
+    GRADED_ITEMS_COUNT='graded_items_count',
     LANGUAGE='language',
     PREFETCHED_COURSE_OBJECT='prefetched_course_object',
-    GRADED_ITEMS_COUNT='graded_items_count',
+    PREFETCHED_COURSE_OBJECT_STAFF='prefetched_course_object_staff',
+    ROLES='roles',
+    TABS='tabs',
+    TAB_CONTENT='tabs_content',
     COURSE_META_DATA='course_meta_data',
 )
 
@@ -89,3 +90,17 @@ class CourseDataManager(DataManager):
             expiry_time=settings.CACHE_TIMEOUTS.get('course_language', settings.DEFAULT_CACHE_TIMEOUT)
         )
         return language
+
+    def get_prefetched_course_object(self, user):
+        cache_property = COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT
+
+        if user:  # User may be an object or a dict.
+            try:
+                is_staff = user.is_staff
+            except AttributeError:
+                is_staff = user.get('is_staff')
+
+            if is_staff:
+                cache_property = COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT_STAFF
+
+        return self.get_cached_data(cache_property)

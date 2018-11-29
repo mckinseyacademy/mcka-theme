@@ -24,18 +24,13 @@ class TestGetAndUnpaginate(TestCase):
                 )
             return None
 
-        def get_pagination(page, numbered=False):
-            return {
+        self.paginated_url = build_test_url(1)
+        self.data = {
+            build_test_url(page): {
                 'count': 10,
                 'previous': build_test_url(page - 1, numbered=True),
                 'next': build_test_url(page + 1, numbered=True),
                 'num_pages': self.MAX_PAGE,
-            }
-
-        self.paginated_url = build_test_url(1)
-        self.data = {
-            build_test_url(page): {
-                'pagination': get_pagination(page),
                 'results': [
                     {
                         'name': 'page-{}-object-{}'.format(page, num)
@@ -47,7 +42,10 @@ class TestGetAndUnpaginate(TestCase):
         }
         self.data.update({
             build_test_url(page, numbered=True): {
-                'pagination': get_pagination(page, numbered=True),
+                'count': 10,
+                'previous': build_test_url(page - 1, numbered=True),
+                'next': build_test_url(page + 1, numbered=True),
+                'num_pages': self.MAX_PAGE,
                 'results': [
                     {
                         'name': 'page-{}-object-{}'.format(page, num)

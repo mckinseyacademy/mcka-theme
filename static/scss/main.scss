@@ -414,7 +414,6 @@ form {
     .module-list {
       position: absolute;
       top: 50%;
-      left: 0;
       margin-top: rem-calc(-10);
       font-size: rem-calc(20);
       i { color: $mckinsey-academy-alt-blue; }
@@ -423,7 +422,6 @@ form {
     .page-left {
       position: absolute;
       top: 50%;
-      left: 0;
       margin-top: rem-calc(-15);
       border-radius: 50%;
       background: $mckinsey-academy-alt-blue;

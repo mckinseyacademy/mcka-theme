@@ -1,0 +1,12 @@
+- extends "admin/admin_layout.haml"
+- load i18n
+
+- block content
+  #mainParticipantsWrapper
+    %div#import-participants-progress
+      %a{:href => "{% url 'participants_list' %}"} < {% trans "Back to Participants" %}
+
+      %h1
+        {% trans "Import Progress" %}
+
+      #importParticipantsGridBlock.scroll-container

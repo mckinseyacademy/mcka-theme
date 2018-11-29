@@ -1,4 +1,4 @@
-from django.conf.urls import include, url
+from django.conf.urls import url
 
 from . import views
 
@@ -16,4 +16,6 @@ urlpatterns = [
         name='get_course_feature_flag'),
     url(r'^(?P<course_id>.*)/feature_flag$', views.get_course_feature_flag,
         name='get_course_feature_flag'),
+    url(r'^send_activation_link/(?P<login_id>[\w.%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4})',
+        views.send_participant_activation_link, name='send_participant_activation_link'),
 ]

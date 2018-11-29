@@ -70,4 +70,3 @@ class UrlsTest(TestCase):
 
         resolver = resolve('/admin/programs')
         self.assertEqual(resolver.view_name, 'program_list')
-

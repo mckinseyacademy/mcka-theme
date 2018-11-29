@@ -107,8 +107,8 @@ class CompanyAdminUserPermission(permissions.BasePermission):
             user_organizations = [user_org.id for user_org in user_api.get_user_organizations(user_id)]
             admin_organizations = [
                 user_org.id
-                for user_org in Permissions(request.user.id).get_all_user_organizations_with_permissions()
-                    .get(PERMISSION_GROUPS.COMPANY_ADMIN, [])
+                for user_org in Permissions(request.user.id).get_all_user_organizations_with_permissions().get(
+                    PERMISSION_GROUPS.COMPANY_ADMIN, [])
             ]
 
             return set(user_organizations).intersection(admin_organizations)
@@ -205,12 +205,13 @@ class AccessChecker(object):
         Ensure restricted roles (company admin, internal admin, ta)
         can only access programs mapped to their companies.
 
-        Note it changes function signature, passing additional parameter restrict_to_programs_ids. Due to the fact it would
-        make a huge list of programs for mcka admin, if user is mcka admin restrict_to_programs_ids is None
+        Note it changes function signature, passing additional parameter restrict_to_programs_ids. Due to the fact
+        it would make a huge list of programs for mcka admin, if user is mcka admin restrict_to_programs_ids is None
         """
         @functools.wraps(func)
         def wrapper(request, *args, **kwargs):
-            restrict_to_callback = lambda org: set(program.id for program in org.fetch_programs())
+            # TODO: do not assign a lambda expression, use a def
+            restrict_to_callback = lambda org: set(program.id for program in org.fetch_programs())  # noqa: E731
             return AccessChecker._do_wrapping(
                 func, request, 'restrict_to_programs_ids', restrict_to_callback, *args, **kwargs
             )
@@ -246,7 +247,8 @@ class AccessChecker(object):
         """
         @functools.wraps(func)
         def wrapper(request, *args, **kwargs):
-            restrict_to_callback = lambda org: set(user_id for user_id in org.users)
+            # TODO: do not assign a lambda expression, use a def
+            restrict_to_callback = lambda org: set(user_id for user_id in org.users)  # noqa: E731
             return AccessChecker._do_wrapping(
                 func, request, 'restrict_to_users_ids', restrict_to_callback, *args, **kwargs
             )
@@ -283,7 +285,6 @@ class AccessChecker(object):
                 return func(request, *args, **kwargs)
 
         return wrapper
-
 
     @staticmethod
     def company_admin_user_access_wrapper(func):

@@ -15,7 +15,11 @@
       }
     }
   }
-
+  header{
+    .row{
+      max-width: 80rem;
+    }
+  }
   main[role=main] {
     padding-top: 40px;
   }
@@ -615,6 +619,7 @@
   @import './workgroup-dashboard';
   @import './admin-participants';
   @import './admin-courses';
+  @import './admin-cohorts';
   @import './admin-companies';
   @import './admin-common';
   @import './admin-learner-dashboard';

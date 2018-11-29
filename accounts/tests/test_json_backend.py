@@ -6,7 +6,6 @@ import mock
 from django.test import TestCase
 
 from accounts.json_backend import JsonBackend
-from accounts.models import RemoteUser
 from accounts.tests.utils import ApplyPatchMixin, make_user
 from api_client.api_error import ApiError
 from api_client.user_models import AuthenticationResponse, UserResponse

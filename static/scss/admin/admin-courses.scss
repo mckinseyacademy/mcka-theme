@@ -32,7 +32,7 @@
 
 #managerDashboardWrapper{
   margin: 0 auto;
-  max-width: 68.57143rem;
+  max-width: 80rem;
   .navigation{
     padding: 0 1.07143rem;
     ul{
@@ -56,6 +56,15 @@
         }
       }
 	}
+  }
+  .note{
+	  padding: 0 25px 20px;
+	  background-color: #dce4e8;
+	  margin: 0 1.07143rem;
+	  font-size: 13px;
+	  color: $mckinsey-dark-grey;
+	  font-weight: 400;
+	  font-style: italic;
   }
   .bbGrid-search-bar{
     padding: 0 1.07143rem;
@@ -116,7 +125,7 @@
 	  }
 	}
 	.manager-progress-cards{
-		padding: 20px 20px 5px;
+		padding: 20px 20px 0;
 		background-color: darken($mckinsey-academy-bright-gray , 3%);
 		ul{
 			border-bottom: 0;
@@ -173,11 +182,12 @@
 		overflow: hidden;
 		margin: 0 1.07143rem;
 		background-color: darken($mckinsey-academy-bright-gray , 3%);
-		padding-bottom: 20px;
+		padding-bottom: 10px;
 		.bbGrid-container{
 			max-width: 100%;
 			overflow-x: auto;
 			table{
+				min-width: 100%;
 				tr{
 					td{
 						&:last-child{

@@ -10,14 +10,19 @@ def get_course_ff_and_custom_taxonomy(user_id, course_ff_custom_taxonomy, course
     try:
         feature_flags = FeatureFlags.objects.get(course_id=course_id)
         course_meta_data = CourseMetaData.objects.get(course_id=course_id)
-        course_ff_custom_taxonomy.append({feature_flags.course_id: {"feature_flags":feature_flags.as_json(),"custom_taxonomy":course_meta_data.as_json()}})
+        course_ff_custom_taxonomy.append({
+            feature_flags.course_id: {
+                "feature_flags": feature_flags.as_json(),
+                "custom_taxonomy": course_meta_data.as_json()
+            }
+        })
     except FeatureFlags.DoesNotExist:
         feature_flags = None
     if not feature_flags:
         try:
             user_api.get_user_course_detail(user_id, course_id)
             create_and_add_course_ff_and_custom_taxonomy_in_list(course_ff_custom_taxonomy, course_id)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return feature_flags
 
     return feature_flags
@@ -29,8 +34,12 @@ def create_and_add_course_ff_and_custom_taxonomy_in_list(course_ff_custom_taxono
     """
     feature_flags, created = FeatureFlags.objects.get_or_create(course_id=course_id)
     course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=course_id)
-    course_ff_custom_taxonomy.append(
-        {feature_flags.course_id: {"feature_flags": feature_flags.as_json(), "custom_taxonomy": course_meta_data.as_json()}})
+    course_ff_custom_taxonomy.append({
+        feature_flags.course_id: {
+            "feature_flags": feature_flags.as_json(),
+            "custom_taxonomy": course_meta_data.as_json()
+        }
+    })
 
 
 def get_course_ff(user_id, feature_flag, course_id):
@@ -46,7 +55,7 @@ def get_course_ff(user_id, feature_flag, course_id):
         try:
             user_api.get_user_course_detail(user_id, course_id)
             create_and_add_course_ff_in_list(feature_flag, course_id)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return feature_flags
 
     return feature_flags
@@ -58,4 +67,3 @@ def create_and_add_course_ff_in_list(feature_flag, course_id):
     """
     feature_flags, created = FeatureFlags.objects.get_or_create(course_id=course_id)
     feature_flag.append({feature_flags.course_id: feature_flags.as_json()})
-

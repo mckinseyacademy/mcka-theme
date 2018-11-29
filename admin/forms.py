@@ -1,5 +1,4 @@
 ''' forms for administration objects '''
-import re
 from datetime import date
 from django import forms
 from django.utils.translation import ugettext_lazy as _
@@ -8,7 +7,7 @@ from django.core.validators import validate_email, RegexValidator
 from django.core.exceptions import ValidationError
 
 from .models import (
-    Client, Program, AccessKey, DashboardAdminQuickFilter,
+    AccessKey, DashboardAdminQuickFilter,
     BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile,
     LearnerDashboardBranding, CourseRun
 )
@@ -16,11 +15,8 @@ from main.models import CuratedContentItem
 from api_client import course_api
 from api_client.user_api import USER_ROLES
 from api_client.group_api import PERMISSION_GROUPS
-from api_client.json_object import JsonObjectWithImage
-from util.validators import UsernameValidator, AlphanumericWithAccentedChars, alphanum_accented_validator
+from util.validators import UsernameValidator, AlphanumericWithAccentedChars
 from util.i18n_helpers import format_lazy, mark_safe_lazy
-
-from django.forms import CharField
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -45,6 +41,7 @@ class EditEmailForm(forms.Form):
     ''' Used to edit a user's email address. '''
     email = forms.EmailField(widget=forms.TextInput(attrs={'placeholder': _("Enter new email address")}))
 
+
 class CustomSelectDateWidget(SelectDateWidget):
 
     def create_select(self, *args, **kwargs):
@@ -53,6 +50,7 @@ class CustomSelectDateWidget(SelectDateWidget):
         result = super(CustomSelectDateWidget, self).create_select(*args, **kwargs)
         self.is_required = old_state
         return result
+
 
 class ProgramForm(forms.Form):
 
@@ -78,16 +76,18 @@ class UploadStudentListForm(forms.Form):
     ''' form to upload file for student list '''
     student_list = forms.FileField(help_text="ClientStudentList.csv")
 
+
 class MassStudentListForm(forms.Form):
 
     ''' form to upload file for student list '''
     student_list = forms.FileField(help_text="ClientStudentList.csv")
 
+
 class MassParticipantsEnrollListForm(forms.Form):
 
     ''' form to upload file for student list '''
     student_enroll_list = forms.FileField(help_text="ParticipantsCourseList.csv")
-    
+
 
 class MassCompanyFieldsUpdateForm(forms.Form):
     """ form to upload file for student list for updating company fields """
@@ -128,7 +128,9 @@ class BasePermissionForm(forms.Form):
     _per_course_roles = []
 
     def available_roles(self):
-        return ((USER_ROLES.TA, _("TA")), (USER_ROLES.OBSERVER, _("OBSERVER")))
+        return ((USER_ROLES.TA, _("TA")),
+                (USER_ROLES.OBSERVER, _("OBSERVER")),
+                (USER_ROLES.MODERATOR, _("MODERATOR")))
 
     def per_course_roles(self):
         return [self[name] for name in self._per_course_roles]
@@ -146,6 +148,7 @@ class BasePermissionForm(forms.Form):
 
         self._per_course_roles = [course.id for course in courses]
 
+
 class AdminPermissionForm(BasePermissionForm):
     permissions = forms.MultipleChoiceField(
         required=False,
@@ -159,6 +162,7 @@ class AdminPermissionForm(BasePermissionForm):
         ]
     )
 
+
 class SubAdminPermissionForm(BasePermissionForm):
     permissions = forms.MultipleChoiceField(
         required=False,
@@ -170,6 +174,7 @@ class SubAdminPermissionForm(BasePermissionForm):
             (PERMISSION_GROUPS.CLIENT_ADMIN, _("COMPANY ADMIN"))
         ]
     )
+
 
 class UploadCompanyImageForm(forms.Form):
     ''' form to upload file for company image '''
@@ -198,7 +203,7 @@ class MultiEmailField(forms.Field):
         for email in value:
             try:
                 validate_email(email)
-            except ValidationError as e:
+            except ValidationError:
                 invalid_emails.append(email)
 
         if invalid_emails:
@@ -209,9 +214,9 @@ class MultiEmailField(forms.Field):
 class ShareAccessKeyForm(forms.Form):
     access_key_link = forms.CharField(required=False, widget=forms.TextInput(attrs={'readonly': True}))
     recipients = MultiEmailField(required=True,
-        widget=forms.TextInput(attrs={'placeholder': _('Email(s) separated by commas')}))
+                                 widget=forms.TextInput(attrs={'placeholder': _('Email(s) separated by commas')}))
     message = forms.CharField(required=False,
-        widget=forms.Textarea(attrs={'placeholder': _('Message (optional)')}))
+                              widget=forms.Textarea(attrs={'placeholder': _('Message (optional)')}))
 
 
 class CreateCourseAccessKeyForm(forms.ModelForm):
@@ -286,6 +291,7 @@ class DashboardAdminQuickFilterForm(forms.ModelForm):
             group_work_project_id=data.get('group_work_project_id')
         )
 
+
 class BrandingSettingsForm(forms.ModelForm):
 
     class Meta:
@@ -312,6 +318,7 @@ class BrandingSettingsForm(forms.ModelForm):
             'discover_rule_color': forms.TextInput(attrs={'type': 'color'}),
             'top_bar_color': forms.TextInput(attrs={'type': 'color'})
         }
+
 
 class DiscoveryContentCreateForm(forms.ModelForm):
 
@@ -439,10 +446,11 @@ class CourseRunForm(forms.ModelForm):
     def clean_course_id(self):
         course_id = self.cleaned_data.get("course_id")
         try:
-            course = course_api.get_course_shallow(course_id)
-            return course_id
-        except:
+            course_api.get_course_v1(course_id)
+        except ValueError:
             raise forms.ValidationError(_("Course with this ID does not exist"))
+        else:
+            return course_id
 
     def clean_max_participants(self):
 
@@ -490,4 +498,3 @@ class MobileBrandingForm(forms.Form):
         max_length=9,
         required=False,
         validators=[RegexValidator(HEX_COLOR_VALIDATION_REGEX, message=HEX_COLOR_INVALID_MESSAGE)])
-

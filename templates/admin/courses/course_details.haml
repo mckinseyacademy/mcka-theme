@@ -8,13 +8,13 @@
 - block content
     #mainCourseDetailsWrapper
         .courseDetailsNavigationButton
-          - if companyCourseDeatilsPage
+          - if companyCourseDetailsPage
             %a{:href => '/admin/companies/#{companyId}', :target => '_self'}>
               < {% trans "Back to" %} #{companyName}
           - else
             %a{:href => '/admin/courses/', :target => '_self'}> <
               {% trans "Back to All Courses" %}
-        #courseDetailsDataWrapper{:data-id => '#{id}', :data-name => '#{name}', :admin-flag => '#{companyAdminFlag}', :company-page => '#{companyCourseDeatilsPage}', :company-id => '#{companyId}', :internal-flag => '#{internalAdminFlag}'}
+        #courseDetailsDataWrapper{:data-id => '#{id}', :data-name => '#{name}', :admin-flag => '#{companyAdminFlag}', :company-page => '#{companyCourseDetailsPage}', :company-id => '#{companyId}', :internal-flag => '#{internalAdminFlag}'}
             #courseDetailsTopContainer
                 .row.courseDetailsHeader
                     .courseDetailsNameAndId
@@ -42,6 +42,10 @@
                       %p {% trans "Passed:" %} #{passed}%
             #courseMainDetailsContainerView
               .courseDetailsMenuButtons.row
+                - if show_cohorts and not groupwork_enabled
+                  .courseCohortsButton.large-2.columns
+                    %a{href: "{% url 'cohorts_course_details' id %}"}
+                      {% trans "COHORTS" %}
                 .courseParticipantsButton.large-2.columns
                   %a{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                     {% trans "PARTICIPANTS" %}
@@ -103,7 +107,7 @@
                 #courseDetailsEngagementTopic.courseDetailsTopic
                   {% trans "Engagement Summary" %}
                 #coursesDownloadStatsButton
-                  - if companyCourseDeatilsPage
+                  - if companyCourseDetailsPage
                     %a.button.radius.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}>
                       {% trans "Export Stats" %}
                   - else
@@ -218,3 +222,6 @@
   :javascript
 
     var course_details_count_all_users = '{{count}}';
+    var course_details_show_cohorts = '{{show_cohorts}}';
+    var course_details_cohorts_enabled = '{{cohorts_enabled}}';
+    var course_details_groupwork_enabled = '{{groupwork_enabled}}';

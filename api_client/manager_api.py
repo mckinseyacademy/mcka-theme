@@ -40,15 +40,15 @@ def post_user_manager(user_id, manager_email):
 
 
 @api_error_protect
-def delete_user_manager(user_id, manager_email):
+def delete_user_manager(username, manager_email):
     '''
     delete specified user manager
-    user_id: it can be either username or email
+    username: it can be either username or email
     '''
     edx_oauth2_session = get_oauth2_session()
 
     url = '{}/{}/{}/{}?user={}'.format(
-            settings.API_SERVER_ADDRESS, USER_MANAGER_API, user_id, 'managers', manager_email
+            settings.API_SERVER_ADDRESS, USER_MANAGER_API, username, 'managers', manager_email
         )
 
     response = edx_oauth2_session.delete(url)

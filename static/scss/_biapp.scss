@@ -210,6 +210,10 @@ body{
   .help-line{
     padding: 15px 0;
     @include padding-left(50px);
+    .module-list,
+    .page-left{
+        @include left(0);
+    }
   }
 }
 

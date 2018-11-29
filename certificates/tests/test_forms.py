@@ -8,6 +8,7 @@ from accounts.tests.utils import ApplyPatchMixin
 
 from ..forms import CertificateTemplateAssetForm, CertificateTemplateForm
 
+
 class CertificateTemplateAssetFormTest(TestCase):
     """
     Test the Certificate Template Asset Form

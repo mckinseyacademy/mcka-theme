@@ -29,8 +29,10 @@ def privacy(request):
 def faq(request):
     return render(request, 'faq.haml')
 
+
 def error_403(request, exception):
     return render(request, '403.haml', status=403)
+
 
 def error_404(request, exception):
     return render(request, '404.haml', status=404)

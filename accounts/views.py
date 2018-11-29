@@ -22,7 +22,7 @@ from django.http import (HttpResponse, HttpResponseRedirect,
                          HttpResponseBadRequest, HttpResponseForbidden,
                          HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse)
 from django.contrib import auth, messages
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
@@ -37,7 +37,7 @@ from django.utils.dateformat import format
 from django.template.response import TemplateResponse
 
 from util.url_helpers import get_referer_from_request
-from api_client import user_api, course_api
+from api_client import user_api
 from api_client.api_error import ApiError
 from api_client import platform_api
 from mcka_apros.settings import COOKIES_YEARLY_EXPIRY_TIME, LANGUAGES
@@ -72,8 +72,9 @@ from rest_framework import status
 
 log = logging.getLogger(__name__)
 
-VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "password", "is_active", "title", "profile_image"]
-USERNAME_INVALID_CHARS_REGEX = re.compile("[^-\w]")
+VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "password",
+                     "is_active", "title", "profile_image"]
+USERNAME_INVALID_CHARS_REGEX = re.compile("[^-\w]")  # noqa: W605 TODO: handle invalid escape sequence
 
 LOGIN_MODE_COOKIE = 'login_mode'
 MOBILE_URL_SCHEME_COOKIE = 'mobile_url_scheme'
@@ -96,6 +97,7 @@ def _get_qs_value_from_url(value_name, url):
         return query_strings[value_name][0]
     return None
 
+
 def _validate_path(redirect_to):
     ''' prevent attacker controllable redirection to third-party applications '''
     if redirect_to is None:
@@ -110,6 +112,7 @@ def _validate_path(redirect_to):
         logger = logging.getLogger(__name__)
         logger.error('Invalid Redirect: {}'.format(redirect_to))
         raise
+
 
 def _get_stored_image_url(request, image_url):
     if image_url[:10] == '/accounts/':
@@ -280,9 +283,9 @@ def login(request):
     request.session['ddt'] = False  # Django Debug Tool session key init.
 
     # Redirect IE to home page, login not available
-    if request.META.has_key('HTTP_USER_AGENT'):
+    if 'HTTP_USER_AGENT' in request.META:
         ua = request.META['HTTP_USER_AGENT'].lower()
-        if re.search('msie [1-8]\.', ua):
+        if re.search('msie [1-8]\.', ua):  # noqa: W605 TODO: handle invalid escape sequence
             return HttpResponseRedirect('/')
 
     if request.method == 'POST':  # If the form has been submitted...
@@ -367,9 +370,13 @@ def login_post_view(request):
                     return response
 
                 # Otherwise check if the username / email is valid
-                username = get_username_for_login_id(form.cleaned_data['login_id'])
-                if username:
-                    return JsonResponse({"login_id": "valid"})
+                user = get_user_from_login_id(form.cleaned_data['login_id'])
+                # check if the user is active
+                if user:
+                    if user.username and user.is_active:
+                        return JsonResponse({"login_id": "valid"})
+                    elif not user.is_active:
+                        return JsonResponse({"user_active": user.is_active}, status=403)
             except ApiError as err:
                 return JsonResponse({"error": err.message}, status=401)
 
@@ -382,8 +389,8 @@ def login_post_view(request):
         try:
             login_id = form.cleaned_data['login_id']
             password = form.cleaned_data['password']
-            username = get_username_for_login_id(login_id)
-            user = auth.authenticate(username=username, password=password)
+            user = get_user_from_login_id(login_id)
+            user = auth.authenticate(username=user.username, password=password)
             if user:
                 response = _process_authenticated_user(request, user)
                 _append_login_mode_cookie(response, login_mode='normal')
@@ -430,13 +437,13 @@ def sso_launch(request):
     return response
 
 
-def get_username_for_login_id(login_id):
+def get_user_from_login_id(login_id):
     if '@' in login_id:
         user = user_api.get_users(email=login_id)
     else:
         user = user_api.get_users(username=login_id)
     if user:
-        return user[0].username
+        return user[0]
 
 
 def finalize_sso_mobile(request):
@@ -511,11 +518,11 @@ def activate(request, activation_code, registration=None):
         if user.is_active:
             raise
 
-        #get registration object to prepopulate/hide fields in form if user came from registration form
+        # get registration object to prepopulate/hide fields in form if user came from registration form
         if registration:
             try:
                 registration_request = PublicRegistrationRequest.objects.get(company_email=user.email)
-            except:
+            except Exception:
                 registration_request = None
 
         for field_name in VALID_USER_FIELDS:
@@ -530,7 +537,7 @@ def activate(request, activation_code, registration=None):
             company = companies[0]
             initial_data["company"] = company.display_name
 
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         return HttpResponseRedirect('/accounts/login/?account_activate_check=True')
 
     if request.method == 'POST' and error is None:  # If the form has been submitted...
@@ -589,6 +596,7 @@ def activate(request, activation_code, registration=None):
     }
     return render(request, 'accounts/activate.haml', data)
 
+
 def activate_v2(request, activation_code):
     ''' handles requests for activation form and their submission '''
     error = None
@@ -613,7 +621,7 @@ def activate_v2(request, activation_code):
             company = companies[0]
             initial_data["company"] = company.display_name
 
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         user_data = None
         error = _("Invalid Activation Code")
 
@@ -653,6 +661,7 @@ def activate_v2(request, activation_code):
         }
     return render(request, 'accounts/activate.haml', data)
 
+
 @csrf_exempt
 def sso_finalize(request):
     '''
@@ -685,7 +694,7 @@ def finalize_sso_registration(request):
         provider_data = json.loads(provider_data_str)
         hmac_digest = base64.b64decode(request.POST['sso_data_hmac'])
         expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
-    except Exception:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         log.exception("Error parsing/validating provider data (query parameter).")
         return HttpResponseBadRequest(_("No provider data found."))
     if hmac_digest != expected_digest:  # If we upgrade to Python 2.7.7+ use hmac.compare_digest instead
@@ -728,7 +737,7 @@ def _cleanup_username(username):
                     break  # We found an unused username
                 if append_number > 1000:
                     break  # Give up trying to find a number high enough.
-                append_number += 1 if append_number < 10 else random.randrange(1,100)
+                append_number += 1 if append_number < 10 else random.randrange(1, 100)
     except ApiError:
         log.exception("Error when checking username uniqueness.")
         pass
@@ -840,6 +849,7 @@ def sso_error(request):
     context = {'error_details': error_details}
     return render(request, 'accounts/sso_error.haml', context)
 
+
 @ajaxify_http_redirects
 def reset_confirm(request, uidb64=None, token=None,
                   template_name='registration/password_reset_confirm.haml',
@@ -849,7 +859,7 @@ def reset_confirm(request, uidb64=None, token=None,
     View that checks the hash in a password reset link and presents a
     form for entering a new password.
     """
-    assert uidb64 is not None and token is not None # checked by URLconf
+    assert uidb64 is not None and token is not None  # checked by URLconf
     if post_reset_redirect is None:
         post_reset_redirect = reverse('password_reset_complete')
     else:
@@ -892,6 +902,7 @@ def reset_confirm(request, uidb64=None, token=None,
     if extra_context is not None:
         context.update(extra_context)
     return TemplateResponse(request, template_name, context)
+
 
 @ajaxify_http_redirects
 def reset(request, is_admin_site=False,
@@ -938,18 +949,19 @@ def reset(request, is_admin_site=False,
         context.update(extra_context)
     return TemplateResponse(request, template_name, context)
 
+
 @ajaxify_http_redirects
 def reset_done(request,
                template_name='registration/password_reset_done.haml', extra_context=None):
     return password_reset_done(request=request,
-               template_name=template_name, extra_context=extra_context)
+                               template_name=template_name, extra_context=extra_context)
 
 
 @ajaxify_http_redirects
 def reset_complete(request,
                    template_name='registration/password_reset_complete.haml', extra_context=None):
     return password_reset_complete(request=request,
-                   template_name=template_name, extra_context=extra_context)
+                                   template_name=template_name, extra_context=extra_context)
 
 
 def home(request):
@@ -967,10 +979,14 @@ def home(request):
                 days = ''
                 if course and course.start is not None and course.start > datetime.datetime.today():
                     days = str(
-                        int(math.floor(((course.start - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                        int(math.floor((
+                                           (course.start - datetime.datetime.today()).total_seconds()
+                                       ) / 3600 / 24))) + ' day'
                 elif hasattr(program, 'start_date') and program.start_date > datetime.datetime.today():
                     days = str(
-                        int(math.floor(((program.start_date - datetime.datetime.today()).total_seconds()) / 3600 / 24))) + ' day'
+                        int(math.floor((
+                                           (program.start_date - datetime.datetime.today()).total_seconds()
+                                       ) / 3600 / 24))) + ' day'
                 if days is not '':
                     if days > 1:
                         days = days + 's'
@@ -1061,7 +1077,7 @@ def user_profile_image_edit(request):
         cropped_example.convert('RGB').save(avatar_image_io, format='JPEG')
         avatar_image_io.seek(0)
         avatar_file_data = {'file': ('avatar.jpg', avatar_image_io, 'image/jpeg')}
-        response = platform_api.update_user_profile_image(
+        platform_api.update_user_profile_image(
             request.user,
             avatar_file_data
         )
@@ -1115,6 +1131,7 @@ def load_profile_image(request, image_url):
                 image, content_type=mime_type[0]
             )
 
+
 @login_required
 def edit_fullname(request):
     ''' edit full name form '''
@@ -1134,11 +1151,12 @@ def edit_fullname(request):
 
     user_data = {
         'error': error,
-        'title':  _('Enter your full name'),
+        'title': _('Enter your full name'),
         'form': form,
         'submit_label': _('Save')
     }
     return render(request, 'accounts/edit_field.haml', user_data)
+
 
 @login_required
 def edit_title(request):
@@ -1184,7 +1202,7 @@ def access_key(request, code):
 
     try:
         customization = ClientCustomization.objects.get(client_id=key.client_id)
-    except ClientCustomization.DoesNotExist as err:
+    except ClientCustomization.DoesNotExist:
         return render(request, template, status=404)
 
     if not customization.identity_provider:
@@ -1239,11 +1257,12 @@ def demo_registration(request, course_run_name):
 
                 if OTHER_ROLE == registration_request.current_role:
                     registration_request.current_role = registration_request.current_role_other
-                    registration_request.current_role_other == None
+                    registration_request.current_role_other = None
 
-                registration_request.mcka_user = True if settings.MCKINSEY_EMAIL_DOMAIN in registration_request.company_email else False
+                registration_request.mcka_user = True \
+                    if settings.MCKINSEY_EMAIL_DOMAIN in registration_request.company_email else False
 
-                #todo check for better api approach
+                # todo check for better api approach
                 users = user_api.get_users(email=registration_request.company_email)
                 registration_request.new_user = True if len(users) < 1 else False
 
@@ -1257,7 +1276,7 @@ def demo_registration(request, course_run_name):
                     _process_course_run_closed(registration_request, course_run)
                     registration_status = _("Course Closed")
 
-                #if existing user, send user object
+                # if existing user, send user object
                 if registration_status == _("Initial"):
                     try:
                         if not registration_request.new_user:
@@ -1276,13 +1295,13 @@ def demo_registration(request, course_run_name):
             'course_run': course_run,
             'registration_status': registration_status,
             'home_url': reverse('home'),
-            'program': True # header css issue
+            'program': True  # header css issue
         }
 
         return render(request, 'accounts/public_registration.haml', data)
-
     else:
         return render(request, '404.haml')
+
 
 def switch_language_based_on_preference(request):
     try:

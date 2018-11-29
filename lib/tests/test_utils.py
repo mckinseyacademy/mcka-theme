@@ -53,11 +53,14 @@ class PriorIdsTest(TestCase):
         self._check_middleware_operation(prior_url, redirect_to_url)
 
     def test_middleware_course_and_module_path_convert(self):
-        prior_url = "/courses/slashes:C1+C1+C1/lessons/location:C1+C1+C1+chapter+7b5635e674e621502708dbde4594f825/module/location:C1+C1+C1+vertical+c65b10f90552e061807431380140b552"
-        redirect_to_url = "/courses/C1/C1/C1/lessons/i4x://C1/C1/chapter/7b5635e674e621502708dbde4594f825/module/i4x://C1/C1/vertical/c65b10f90552e061807431380140b552"
+        prior_url = "/courses/slashes:C1+C1+C1/lessons/location:C1+C1+C1+chapter+7b5635e674e621502708dbde4594f825/" \
+                    "module/location:C1+C1+C1+vertical+c65b10f90552e061807431380140b552"
+        redirect_to_url = "/courses/C1/C1/C1/lessons/i4x://C1/C1/chapter/7b5635e674e621502708dbde4594f825/module/" \
+                          "i4x://C1/C1/vertical/c65b10f90552e061807431380140b552"
         self._check_middleware_operation(prior_url, redirect_to_url)
 
     def test_middleware_course_and_module_path_not_convert(self):
-        prior_url = "/courses/C1/C1/C1/lessons/i4x://C1/C1/chapter/7b5635e674e621502708dbde4594f825/module/i4x://C1/C1/vertical/c65b10f90552e061807431380140b552"
+        prior_url = "/courses/C1/C1/C1/lessons/i4x://C1/C1/chapter/7b5635e674e621502708dbde4594f825/module/" \
+                    "i4x://C1/C1/vertical/c65b10f90552e061807431380140b552"
         redirect_to_url = prior_url
         self._check_middleware_operation(prior_url, redirect_to_url)

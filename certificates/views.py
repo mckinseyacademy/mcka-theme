@@ -78,7 +78,7 @@ def get_certificate_by_uuid(request, certificate_uuid):
         raise Http404
 
     user = user_api.get_user(certificate.user_id)
-    course = course_api.get_course(certificate.course_id)
+    course = course_api.get_course_v1(certificate.course_id)
     context = {
         'course_name': course.name,
         'user_full_name': user.full_name
@@ -217,7 +217,7 @@ def edit_certificate_template(request, template_id):
     })
 
 
-def load_template_asset(request, asset_id, asset_name): # pylint: disable=unused-argument
+def load_template_asset(request, asset_id, asset_name):  # pylint: disable=unused-argument
     """
     View to locate and return template asset file
     """

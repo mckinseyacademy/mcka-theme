@@ -1,5 +1,6 @@
 from django.utils import timezone
 from .models import LicenseGrant
+from django.utils.translation import ugettext as _
 
 
 class NoAvailableLicensesError(Exception):
@@ -100,7 +101,8 @@ def fetch_granted_licenses(grantee_id, grantor_id):
 class LicenseBroker(object):
 
     """
-    Useful class based for repeated operations for licenses. Perhaps not particularly useful because mostly not a problem, but easy and perhaps handy
+    Useful class based for repeated operations for licenses. Perhaps not particularly useful because mostly not a
+    problem, but easy and perhaps handy
     """
     granted_id = None
     grantor_id = None

@@ -25,7 +25,7 @@ class CourseTreeBuilder(object):
         self.current_lesson_id = None
         self.current_module_id = None
 
-        if request:
+        if request and request.resolver_match:
             self.current_lesson_id = request.resolver_match.kwargs.get('chapter_id', None)
             self.current_module_id = request.resolver_match.kwargs.get('page_id', None)
 
@@ -189,8 +189,7 @@ class CourseTreeBuilder(object):
             course_data_manager.set_cached_data(
                 property_name=COURSE_PROPERTIES.GRADED_ITEMS_COUNT,
                 data=graded_items_count,
-                expiry_time=settings.CACHE_TIMEOUTS
-                    .get('longterm_course_data', settings.DEFAULT_CACHE_TIMEOUT)
+                expiry_time=settings.CACHE_TIMEOUTS.get('longterm_course_data', settings.DEFAULT_CACHE_TIMEOUT)
             )
 
         return graded_items_count

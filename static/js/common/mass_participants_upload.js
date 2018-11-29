@@ -33,7 +33,7 @@ massParticipantsInit = function(){
         });
         _this.on('success', function(file, response) {
           var form = $('#participantsCsvUpload');
-          checkForStatus(response, form);
+          $('#import_participants_popup_message').foundation('reveal', 'open');
         });
         _this.on("addedfile", function(file) { 
           $('.upload_stats').empty();
@@ -87,7 +87,7 @@ massParticipantsInit = function(){
       dataType: 'text',
       cache: false,
       success:function( data ) {
-        checkForStatus(data, form);
+        $('#import_participants_popup_message').foundation('reveal', 'open');
       },
       error: function( data ){
             data = $.parseJSON(data);

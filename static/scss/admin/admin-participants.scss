@@ -49,6 +49,201 @@
 	}
 }
 
+#import-participants-progress {
+	max-width: 68.57143rem;
+	.scroll-container {
+		max-width: 68.57143rem;
+		overflow: auto;
+		table {
+			margin-bottom: 0;
+			th, td {
+				white-space: nowrap;
+			}
+			td {
+				position: relative;
+				color: lighten($pure-black, 15%);
+				a {
+					display: block;
+				}
+				[class*="file"] {
+					text-align: center;
+					font-size: 18px;
+					&.error-file {
+						color: $mckinsey-orange;
+					}
+					&.activation-file {
+						color: $mckinsey-academy-alt-blue;
+					}
+				}
+				&.status {
+					position: relative;
+					.import-pending {
+						.task-progress{
+							&:before {
+							content: "";
+							position: absolute;
+							left: 0;
+							width: inherit;
+							top: 0;
+							bottom: 0;
+							background-color: $mckinsey-dark-blue;
+						}
+						}
+						> div {
+							color: $mckinsey-bubble-gray;
+						}
+						.task-status{
+							position: relative;
+						}
+					}
+					> div {
+						&.import-success {
+							.fa {
+								color: $mckinsey-green;
+							}
+						}
+						&.import-warning {
+							.fa {
+								color: $mckinsey-orange;
+							}
+						}
+						.fa {
+							font-size: 10px;
+							position: relative;
+							top: -1px;
+						}
+					}
+				}
+				.in-progress {
+					color: $mckinsey-bubble-gray;
+				}
+			}
+		}
+	}
+	> a {
+		display: inline-block;
+		margin-bottom: 30px;
+	}
+	h1 {
+		color: lighten($pure-black, 15%);
+		font-size: 24px;
+		font-weight: 600;
+		margin-bottom: 20px;
+	}
+}
+
+
+
+// Import progress Modal
+#import_participants_popup_message{
+	text-align: center;
+	h2{
+		text-align: left;
+		font-size: 18px;
+		font-weight: bold;
+		color: lighten($pure-black, 15%);
+	}
+	p{
+		text-align: left;
+		color: lighten($pure-black, 15%);
+		font-size: 14px;
+		span{
+			font-weight: bold;
+			color: $mckinsey-academy-alt-blue;
+		}
+	}
+	.close-reveal-modal{
+		&.button{
+			position: relative;
+			padding: 10px 85px;
+			border-radius: 4px;
+			color: $ash-white;
+			font-size: 12px;
+			margin: 10px 0;
+		}
+	}
+}
+
+#import-participants-progress {
+	max-width: 68.57143rem;
+	.scroll-container {
+		max-width: 68.57143rem;
+		overflow: auto;
+		table {
+			margin-bottom: 0;
+			th, td {
+				white-space: nowrap;
+			}
+			td {
+				position: relative;
+				color: lighten($pure-black, 15%);
+				a {
+					display: block;
+				}
+				[class*="file"] {
+					text-align: center;
+					font-size: 18px;
+					&.error-file {
+						color: $mckinsey-orange;
+					}
+					&.activation-file {
+						color: $mckinsey-academy-alt-blue;
+					}
+				}
+				&.import-progress {
+					position: relative;
+					&.import-pending {
+						&:before {
+							content: "";
+							position: absolute;
+							left: 0;
+							right: 70px;
+							top: 0;
+							bottom: 0;
+							background-color: $mckinsey-dark-blue;
+						}
+						> div {
+							color: $mckinsey-bubble-gray;
+						}
+					}
+					> div {
+						position: relative;
+						&.import-success {
+							.fa {
+								color: $mckinsey-green;
+							}
+						}
+						&.import-warning {
+							.fa {
+								color: $mckinsey-orange;
+							}
+						}
+						.fa {
+							font-size: 10px;
+							position: relative;
+							top: -1px;
+						}
+					}
+				}
+				&.in-progress {
+					color: $mckinsey-bubble-gray;
+				}
+			}
+		}
+	}
+	> a {
+		display: inline-block;
+		margin-bottom: 30px;
+	}
+	h1 {
+		color: lighten($pure-black, 15%);
+		font-size: 24px;
+		font-weight: 600;
+		margin-bottom: 20px;
+	}
+}
+
+
 #participantsListViewGridBlock{ 
 	
 	width: auto;

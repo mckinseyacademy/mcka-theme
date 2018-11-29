@@ -58,7 +58,7 @@ class AdminFormsTests(TestCase):
         ''' Test MobileBrandingForm with valid data '''
 
         form_data_valid = {
-            'completed_course_tint' : '#111AAA',
+            'completed_course_tint': '#111AAA',
             'header_background_color': '#2aABCCDF',
             'lesson_navigation_color': '#aaaAAA',
             'navigation_text_color': '#1234BC12',
@@ -95,4 +95,3 @@ class MultiEmailFieldTest(TestCase):
                          ['test1@testorg.org', 'test2@testorg.org'])
         self.assertEqual(f.clean(' test1@testorg.org  ,  ,, test2@testorg.org,,'),
                          ['test1@testorg.org', 'test2@testorg.org'])
-

@@ -1,7 +1,6 @@
 from functools import wraps
 from django.conf import settings
 from django.contrib.auth import REDIRECT_FIELD_NAME
-from django.core.cache import cache
 from django.http import HttpResponseForbidden, HttpResponseRedirect
 from django.utils.decorators import available_attrs
 from django.template import loader
@@ -78,12 +77,10 @@ def permission_group_required_not_authenticated(request):
 
 def get_user_permissions(user):
     ''' Loads and caches group names and ids via the edX platform '''
-    permissions_data = {"global_permissions":[],"organization_permissions":[]}
+    permissions_data = {"global_permissions": [], "organization_permissions": []}
     permission_dict = permission_groups_map()
     current_permissions = [pg.name for pg in user_api.get_user_groups(user.id, group_api.PERMISSION_TYPE)]
     for perm in current_permissions:
         if perm not in (group_api.PERMISSION_GROUPS.MCKA_TA, group_api.PERMISSION_GROUPS.MCKA_OBSERVER):
             permissions_data["global_permissions"].append({perm: permission_dict[perm]})
-    
-    global_permissions = [{perm: permission_dict[perm]} for perm in current_permissions if perm not in (group_api.PERMISSION_GROUPS.MCKA_TA, group_api.PERMISSION_GROUPS.MCKA_OBSERVER)]
     return permissions_data

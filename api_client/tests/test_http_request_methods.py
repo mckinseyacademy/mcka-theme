@@ -4,6 +4,7 @@ from api_client.http_request_methods import _get_cookies
 from lib.utils import DottableDict
 from accounts.middleware.thread_local import _threadlocal
 
+
 class TestHttpRequestMethod(TestCase):
     """
     Tests for http request methods

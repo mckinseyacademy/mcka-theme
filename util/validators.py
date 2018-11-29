@@ -39,7 +39,8 @@ class RoleTitleValidator(RegexValidator):
     """Validates that given value is alphanumeric characters with hyphens,
     dots, underscore and spaces and parentheses """
     regex = r'^[a-zA-Z0-9\(\)-_\. ]+\Z'
-    message = _("Enter a valid value consisting of letters, numbers, underscores, dots, parentheses, hyphens or spaces.")
+    message = _("Enter a valid value consisting of letters, numbers, underscores, dots, parentheses, "
+                "hyphens or spaces.")
 
 
 class PhoneNumberValidator(RegexValidator):
@@ -97,5 +98,5 @@ alphanum_accented_validator = AlphanumericWithAccentedChars()
 
 
 def normalize_foreign_characters(value):
-    value = value.decode("utf-8")
+    value = value.decode("utf-8", errors='ignore')
     return unicodedata.normalize('NFD', value).encode('ascii', 'ignore').rstrip()

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-29 11:56+0000\n"
+"POT-Creation-Date: 2018-11-27 13:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:368
-#: static/js/views/admin/participantsinfo.js:120
+#: static/js/views/admin/participantsinfo.js:122
 msgid "Course"
 msgstr "الدورة"
 
@@ -70,13 +70,15 @@ msgid "Are you sure?"
 msgstr "هل أنت متأكد؟"
 
 #: static/js/admin_upload_students.js:8
-#: static/js/common/mass_participants_enroll.js:168
+#: static/js/common/mass_participants_enroll.js:169
 #: static/js/common/mass_participants_upload.js:115
 msgid "Show Errors"
 msgstr "إظهار الأخطاء"
 
 #: static/js/admin_upload_students.js:73
 #: static/js/common/mass_participants_enroll.js:147
+#: static/js/common/mass_participants_enroll.js:337
+#: static/js/common/mass_participants_enroll.js:474
 #: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
 msgid "Please select file first."
 msgstr "الرجاء تحديد الملف أولاً."
@@ -87,13 +89,25 @@ msgstr "دورتك لم تبدأ بعد"
 
 #: static/js/application.js:195
 msgid "Your course begins in %(days)s day."
-msgid_plural "Your course begins in %(days)d days."
-msgstr[0] "تبدأ دورتك في %(الأيام)"
-msgstr[1] "تبدأ دورتك في %(الأيام)"
+msgid_plural "Your course begins in %(days)s days."
+msgstr[0] "تبدأ دورتك في %(days)s"
+msgstr[1] "تبدأ دورتك في %(days)s"
+msgstr[2] "تبدأ دورتك في %(days)s"
+msgstr[3] "تبدأ دورتك في %(days)s"
+msgstr[4] "تبدأ دورتك في %(days)s"
+msgstr[5] "تبدأ دورتك في %(days)s"
 
 #: static/js/application.js:198
 msgid "Welcome to McKinsey Academy"
 msgstr "مرحبا بكم في McKinsey Academy"
+
+#: static/js/application.js:199
+msgid ""
+"%(courseStr)s Before the course begins, you can explore this site to learn "
+"more about what to expect."
+msgstr ""
+"%(courseStr)s قبل بدء الدورة، يمكنك استكشاف هذا الموقع لمعرفة المزيد حول ما "
+"يمكن توقعه."
 
 #: static/js/common/admin_bulk_actions.js:17
 msgid "Progress: %(value)s%"
@@ -121,6 +135,10 @@ msgstr "%(value)s%"
 
 #: static/js/common/mass_participants_enroll.js:57
 #: static/js/common/mass_participants_enroll.js:128
+#: static/js/common/mass_participants_enroll.js:311
+#: static/js/common/mass_participants_enroll.js:385
+#: static/js/common/mass_participants_enroll.js:447
+#: static/js/common/mass_participants_enroll.js:522
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
@@ -128,37 +146,65 @@ msgstr ""
 "ملف.csv يتضمن أكثر من %(limit)s: %(lines)s: يرجى تقسيم ذلك إلى مزيد من "
 "الملفات!"
 
-#: static/js/common/mass_participants_enroll.js:180
+#: static/js/common/mass_participants_enroll.js:181
 #: static/js/common/mass_participants_upload.js:127
 msgid "Errors:"
 msgstr "الأخطاء:"
 
-#: static/js/common/mass_participants_enroll.js:189
+#: static/js/common/mass_participants_enroll.js:190
 #: static/js/common/mass_participants_upload.js:136
 msgid "Total:"
 msgstr "المجموع:"
 
-#: static/js/common/mass_participants_enroll.js:191
+#: static/js/common/mass_participants_enroll.js:192
 #: static/js/common/mass_participants_upload.js:138
 msgid "Succeded:"
 msgstr "الناجحون:"
 
-#: static/js/common/mass_participants_enroll.js:193
+#: static/js/common/mass_participants_enroll.js:194
 #: static/js/common/mass_participants_upload.js:140
 msgid "Failed:"
 msgstr "الراسبون:"
 
-#: static/js/common/mass_participants_enroll.js:245
+#: static/js/common/mass_participants_enroll.js:246
 msgid "email"
 msgstr "البريد الإلكتروني"
 
-#: static/js/common/mass_participants_enroll.js:245
+#: static/js/common/mass_participants_enroll.js:246
 msgid "course id"
 msgstr "معرّف الدورة"
 
-#: static/js/common/mass_participants_enroll.js:245
+#: static/js/common/mass_participants_enroll.js:246
 msgid "status"
 msgstr "الحالة"
+
+#: static/js/common/mass_participants_enroll.js:260
+#: static/js/common/mass_participants_enroll.js:273
+msgid "Learner email"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:260
+msgid "Business Function"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:260
+msgid "Business Unit"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:260
+#, fuzzy
+#| msgid "Notification"
+msgid "location"
+msgstr "الإخطار"
+
+#: static/js/common/mass_participants_enroll.js:273
+msgid "Manager email"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:407
+#: static/js/common/mass_participants_enroll.js:544
+msgid "Report of bulk update will be sent to your email."
+msgstr ""
 
 #: static/js/common/mass_participants_upload.js:137
 #: static/js/common/mass_participants_upload.js:139
@@ -261,11 +307,11 @@ msgid "Participants:"
 msgstr "المشاركون:"
 
 #: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:23
+#: static/js/views/admin/participantsinfo.js:25
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
-#: static/js/router.js:380
+#: static/js/router.js:386
 msgid "Please select at least one course"
 msgstr "الرجاء اختيار دورة واحدة على الأقل"
 
@@ -364,7 +410,7 @@ msgstr[5] ""
 
 #: static/js/views/admin/companies_list.js:15
 #: static/js/views/admin/course_details.js:29
-#: static/js/views/admin/participantsinfo.js:22
+#: static/js/views/admin/participantsinfo.js:24
 msgid "Company"
 msgstr "الشركة"
 
@@ -384,7 +430,7 @@ msgstr "عدد الدورات التدريبية"
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:484
-#: static/js/views/admin/participantsinfo.js:370
+#: static/js/views/admin/participantsinfo.js:372
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "لا يمكن لاسم هذه الشركة أن تحتوي على رموز أحرف وأرقام!"
 
@@ -392,7 +438,7 @@ msgstr "لا يمكن لاسم هذه الشركة أن تحتوي على رمو
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:478
-#: static/js/views/admin/participantsinfo.js:364
+#: static/js/views/admin/participantsinfo.js:366
 msgid "This company name cannot have more than 30 characters!"
 msgstr "لا يمكن لاسم الشركة أن يتضمّن أكثر من 30 حرفاً!"
 
@@ -401,7 +447,7 @@ msgid "Couldn't create new company!"
 msgstr "تعذر إنشاء شركة جديدة!"
 
 #: static/js/views/admin/company_details.js:4
-#: static/js/views/admin/course_details.js:321
+#: static/js/views/admin/course_details.js:323
 #: static/js/views/admin/courses_list.js:16
 #: static/js/views/admin/participant_details_active_courses_view.js:54
 #: static/js/views/admin/participant_details_course_history_view.js:10
@@ -409,7 +455,7 @@ msgid "Course Name"
 msgstr "اسم الدورة التدريبية"
 
 #: static/js/views/admin/company_details.js:20
-#: static/js/views/admin/course_details.js:331
+#: static/js/views/admin/course_details.js:333
 #: static/js/views/admin/courses_list.js:26
 #: static/js/views/admin/participant_details_active_courses_view.js:72
 #: static/js/views/admin/participant_details_course_history_view.js:28
@@ -492,21 +538,22 @@ msgid "No App Display Name!"
 msgstr "لا يوجد اسم عرض للتطبيق!"
 
 #: static/js/views/admin/course_details.js:6
-#: static/js/views/admin/participantsinfo.js:12
+#: static/js/views/admin/participantsinfo.js:14
 msgid "Name"
 msgstr "الاسم"
 
 #: static/js/views/admin/course_details.js:30
 #: static/js/views/admin/course_details_bulk_actions.js:281
+#: static/js/views/admin/import_progress.js:11
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:372
-#: static/js/views/admin/participantsinfo.js:129
+#: static/js/views/admin/participantsinfo.js:131
 msgid "Status"
 msgstr "الحالة"
 
 #: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:40
+#: static/js/views/admin/participantsinfo.js:42
 msgid "Activated"
 msgstr "مفعّل"
 
@@ -548,43 +595,43 @@ msgstr "اسم المستخدم"
 msgid "Country"
 msgstr "البلد"
 
-#: static/js/views/admin/course_details.js:250
+#: static/js/views/admin/course_details.js:252
 msgid "Couldn't create new tag!"
 msgstr "تعذر إنشاء علامة جديدة!"
 
-#: static/js/views/admin/course_details.js:264
+#: static/js/views/admin/course_details.js:266
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
 msgstr "ليس لديك الإذن لإنشاء علامة جديدة، الرجاء تحديد واحدة من القائمة!"
 
-#: static/js/views/admin/course_details.js:294
+#: static/js/views/admin/course_details.js:296
 msgid "Couldn't delete tag!"
 msgstr "تعذر حذف العلامة!"
 
-#: static/js/views/admin/course_details.js:334
+#: static/js/views/admin/course_details.js:336
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
 msgstr[0] "%(count)s الدورات الموسومة مع %(tagDetails)s"
 msgstr[1] "% (العدد) الدورات ذات العلامة مع % (من تفاصيل العلامة)"
 
-#: static/js/views/admin/course_details.js:389
+#: static/js/views/admin/course_details.js:391
 msgid "Progress: %(progress)s %"
 msgstr "التقدم: %(progress)s %"
 
-#: static/js/views/admin/course_details.js:426
+#: static/js/views/admin/course_details.js:428
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr "دورات محددة: %(selected)s، نجاح: %(successful)s، فشل: %(failed)s"
 
-#: static/js/views/admin/course_details.js:477
+#: static/js/views/admin/course_details.js:479
 msgid "This tag name cannot have more than 30 characters!"
 msgstr "لا يمكن أن يحتوي اسم العلامة على أكثر من 30 حرفاً!"
 
-#: static/js/views/admin/course_details.js:484
+#: static/js/views/admin/course_details.js:486
 msgid "This tag name cannot contain non-alphanumeric characters!"
 msgstr "لا يمكن أن يحتوي اسم العلامة على رموز حرفية ورقمية!"
 
-#: static/js/views/admin/course_details.js:524
+#: static/js/views/admin/course_details.js:526
 msgid "Couldn't add tag to course!"
 msgstr "لا يمكن إضافة علامة للدورة!"
 
@@ -631,21 +678,21 @@ msgstr "تغيير حالة جميع المشاركين المختارين إل�
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:374
-#: static/js/views/admin/participantsinfo.js:133
+#: static/js/views/admin/participantsinfo.js:135
 msgid "Participant"
 msgstr "المشاركون"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:135
+#: static/js/views/admin/participantsinfo.js:137
 msgid "Observer"
 msgstr "المراقب"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:376
-#: static/js/views/admin/participantsinfo.js:134
+#: static/js/views/admin/participantsinfo.js:136
 msgid "TA"
 msgstr "مساعد مدرّس"
 
@@ -841,12 +888,65 @@ msgstr "لا شيء"
 msgid "Do you really want to delete: \n"
 msgstr "هل تريد حقاً الحذف: \n"
 
+#: static/js/views/admin/import_progress.js:4
+msgid "File name"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:5
+#, fuzzy
+#| msgid "Start"
+msgid "Start time"
+msgstr "البدء"
+
+#: static/js/views/admin/import_progress.js:6
+#, fuzzy
+#| msgid "End Date"
+msgid "End time"
+msgstr "تاريخ الانتهاء"
+
+#: static/js/views/admin/import_progress.js:14
+#: static/js/views/admin/import_progress.js:93
+msgid "Importing.."
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:19
+#: static/js/views/admin/import_progress.js:119
+msgid "Successful"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:22
+#: static/js/views/admin/import_progress.js:113
+#, fuzzy
+#| msgid "Show Errors"
+msgid "Contains Errors"
+msgstr "إظهار الأخطاء"
+
+#: static/js/views/admin/import_progress.js:30
+#, fuzzy
+#| msgid "Activation Link"
+msgid "Activation File"
+msgstr "رابط التفعيل"
+
+#: static/js/views/admin/import_progress.js:40
+msgid "Error File"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:49
+msgid "Initiated by"
+msgstr ""
+
+#: static/js/views/admin/import_progress.js:122
+msgid "Importing %(processed)s of %(total)s rows"
+msgstr ""
+
 #: static/js/views/admin/manager_dashboard.js:99
 #: static/js/views/courses/lesson_note.js:2
 msgid "Lesson"
 msgstr "الدرس"
 
 #: static/js/views/admin/manager_dashboard.js:99
+#, fuzzy
+#| msgid "Incomplete"
 msgid "complete"
 msgstr "غير مكتمل"
 
@@ -934,7 +1034,7 @@ msgid "User successfully enrolled in course"
 msgstr "تم تسجيل المستخدم بنجاح في الدورة التدريبية"
 
 #: static/js/views/admin/participant_details_edit_info.js:531
-#: static/js/views/admin/participantsinfo.js:100
+#: static/js/views/admin/participantsinfo.js:102
 msgid "Admin Company"
 msgstr "الشركة المشرفة"
 
@@ -943,20 +1043,20 @@ msgid "Try selecting your company from the type-ahead results."
 msgstr "حاول تحديد الشركة من النتائج المحددة مسبقًا."
 
 #: static/js/views/admin/participant_details_edit_info.js:541
-#: static/js/views/admin/participantsinfo.js:109
+#: static/js/views/admin/participantsinfo.js:111
 msgid "Admin Permissions"
 msgstr "أذونات المشرف"
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:112
+#: static/js/views/admin/participantsinfo.js:114
 msgid "Company Admin"
 msgstr "مشرف الشركة"
 
-#: static/js/views/admin/participantsinfo.js:24
+#: static/js/views/admin/participantsinfo.js:26
 msgid "Date Added"
 msgstr "التاريخ المضاف"
 
-#: static/js/views/admin/participantsinfo.js:34
+#: static/js/views/admin/participantsinfo.js:36
 msgid "Enrolled In"
 msgstr "مسجّل في"
 

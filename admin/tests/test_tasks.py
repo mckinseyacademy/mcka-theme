@@ -13,6 +13,7 @@ from admin.tasks import (
     participants_notifications_data_task,
     users_program_association_task
 )
+from api_client.course_models import CourseCohortSettings
 from api_client.user_models import UserResponse
 
 
@@ -27,7 +28,7 @@ class MockParticipantsStats(object):
             'groupworks': [{'label': 'xyz', 'percent': '98'}],
             'assessments': [{'label': 'xyz', 'percent': '95'}],
             'lesson_completions': {'lesson_number': 5, 'completion': 90},
-            'attributes':[]
+            'attributes': []
         },
         {
             'id': 'user_2',
@@ -95,7 +96,7 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
 
         user_api = self.apply_patch('admin.tasks.user_api')
         user_api.get_user.return_value = UserResponse(dictionary={
-            'username': 'user1', 'email': 'user@exmple.com', 'first_name': 'Test User'
+            "id": 1, 'username': 'user1', 'email': 'user@exmple.com', 'first_name': 'Test User', 'is_active': True
         })
 
     @override_settings(CELERY_ALWAYS_EAGER=True)
@@ -108,6 +109,10 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
         test_course_id = 'abc'
         file_name = '{}_user_stats'.format(test_course_id)
 
+        course_api = self.apply_patch('admin.tasks.course_api')
+        course_api.get_cohorts_settings.return_value = CourseCohortSettings(
+            dictionary={'is_cohorted': True, 'id': 1}
+        )
         result = course_participants_data_retrieval_task(
             course_id=test_course_id, company_id=None, base_url='http://url.xyz',
             task_id='xyz', user_id=123
@@ -177,7 +182,7 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
         Tests users and program association task
         """
         group_api = self.apply_patch('admin.tasks.group_api')
-        group_api.add_user_to_group.return_value = True
+        group_api.add_users_to_group.return_value = True
 
         user_ids = [1, 2, 3]
 

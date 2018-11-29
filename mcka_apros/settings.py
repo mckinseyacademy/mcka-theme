@@ -86,7 +86,8 @@ LOCAL_APPS = (
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
-
+# explicitly add 'debug_toolbar.middleware.DebugToolbarMiddleware',
+# otherwise this doesn't seem to appear on AWS environments
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -98,7 +99,7 @@ MIDDLEWARE_CLASSES = (
     'accounts.middleware.thread_local.ThreadLocal',
     'main.middleware.allow_embed_url.AllowEmbedUrlMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',      # explicitly add this, otherwise this doesn't seem to appear on AWS environments
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'courses.middleware.apros_platform_language.AprosPlatformLanguage',
     'accounts.middleware.ajax_redirect.AjaxRedirect',
     'lib.middleware.handle_prior_ids.PriorIdRequest',
@@ -112,7 +113,7 @@ ALLOW_EMBED_URL = ''
 WSGI_APPLICATION = 'mcka_apros.wsgi.application'
 
 AUTHENTICATION_BACKENDS = (
-    #'django.contrib.auth.backends.ModelBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
     'accounts.json_backend.JsonBackend',
 )
 
@@ -162,7 +163,7 @@ LOCALE_PATHS = (
 )
 
 USE_TZ = True
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'US/Eastern'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -180,7 +181,7 @@ STATICFILES_DIRS = (
 
 BASE_CERTIFICATE_TEMPLATE_ASSET_PATH = 'certificates/template_assets/'
 
-#Handle session is not Json Serializable
+# Handle session is not Json Serializable
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 # We want a different name for cookies than on the LMS to allow to set
@@ -216,8 +217,6 @@ CACHES = {
     }
 }
 
-
-
 # Api address
 # API_SERVER_ADDRESS = 'http://localhost:8000'
 API_SERVER_ADDRESS = 'http://openedxapi.apiary-mock.com'
@@ -252,7 +251,7 @@ EDX_SSO_DATA_HMAC_KEY = '1private_apros_key'
 # required for things like the map of students, but we don't get 'city' from the SSO provider.)
 SSO_AUTOPROVISION_CITY = "New York"
 
-########################### Mobile app settings ################################
+# Mobile app settings
 
 # OAuth2 Credentials for Mobile
 # * These are the values for client_id and client_secret defined in the LMS in
@@ -275,7 +274,7 @@ MOBILE_SSO_PATH = 'sso/'
 USE_SESSION_COURSEWARE_CACHING = False
 
 # Google Analytics Tracking ID
-GA_TRACKING_ID = None # should be UA-48573128-1 for McKA production
+GA_TRACKING_ID = None  # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
 TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
@@ -350,7 +349,9 @@ MOBILE_APP_API = '/'.join([API_SERVER_PREFIX, 'mobileapps'])
 MANAGER_API = '/'.join(['api', 'user_manager', 'v1'])
 COURSE_ENROLLMENT_API = '/'.join(['api', 'enrollment', 'v1', 'enrollments'])
 COURSE_COMPLETION_API = os.path.join('api', 'completion-aggregator', 'v1', 'course')
+COURSE_COURSE_API = os.path.join('api', 'courses', 'v1', 'courses')
 COURSE_BLOCK_API = os.path.join('api', 'courses', 'v1', 'blocks')
+COURSE_COHORTS_API = '/'.join(['api', 'cohorts', 'v1'])
 
 # set AWS querystring authentication to false
 AWS_QUERYSTRING_AUTH = False
@@ -413,10 +414,10 @@ MAILCHIMP_API = {
 
 # progress bar chart colours
 PROGRESS_BAR_COLORS = {
-    "normal": "#b1c2cc",# $mckinsey-academy-blue-gray
-    "dropped": "#e5ebee",# $mckinsey-academy-bright-gray
-    "group_work": "#66a5b5",# $mckinsey-academy-turquoise
-    "total": "#e37222",# $mckinsey-orange
+    "normal": "#b1c2cc",  # $mckinsey-academy-blue-gray
+    "dropped": "#e5ebee",  # $mckinsey-academy-bright-gray
+    "group_work": "#66a5b5",  # $mckinsey-academy-turquoise
+    "total": "#e37222",  # $mckinsey-orange
     "proforma": "none",
 }
 
@@ -436,20 +437,20 @@ TEMP_IMAGE_FOLDER = "profile_temp_images/"
 
 FEATURES = {
     'notes': False,
-    #ADMIN COURSES SECTION
+    # ADMIN COURSES SECTION
     'ADMIN_COURSES_TAB': False,
-    #ADMIN PARTICIPANTS SECTION
+    # ADMIN PARTICIPANTS SECTION
     'ADMIN_PARTICIPANTS_TAB': False,
-    #ADMIN COMPANIES SECTION
+    # ADMIN COMPANIES SECTION
     'ADMIN_COMPANIES_TAB': False,
 }
 
-#LEARNER DASHBOARD FEATURE ON/OFF SETTING
+# LEARNER DASHBOARD FEATURE ON/OFF SETTING
 LEARNER_DASHBOARD_ENABLED = False
 
 LOGIN_BUTTON_FOR_MOBILE_ENABLED = True
 
-#NOTIFICATION IN CASE THE NUMBER OF PARTICIPANTS IS CLOSE TO MAX
+# NOTIFICATION IN CASE THE NUMBER OF PARTICIPANTS IS CLOSE TO MAX
 COURSE_RUN_PARTICIPANTS_TRESHOLD = 4000
 DEDICATED_COURSE_RUN_PERSON = "staff@mckinseyacademy.com"
 
@@ -486,7 +487,7 @@ TEMPLATES = [
 ]
 
 try:
-    from local_settings import *
+    from local_settings import *  # noqa: F403, F401
 except ImportError:
     pass
 
@@ -522,13 +523,13 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'util.debug_toolbar.show_toolbar'   # override when the Django Debug Toolbar appears
 }
 
-################################### EDX-NOTIFICATIONS SUBSYSTEM ######################################
+# EDX-NOTIFICATIONS SUBSYSTEM
 
 INSTALLED_APPS += (
     'edx_notifications.server.web',
 )
 
-################################### CLIENT BRANDING DEFAULT SETTINGS ###################################
+# CLIENT BRANDING DEFAULT SETTINGS
 LEARNER_DASHBOARD_BACKGROUND_IMAGE = "images/learner_dashboard/branding/backgrounds/"
 LEARNER_DASHBOARD_LOGO_IMAGE = "images/learner_dashboard/branding/logos/"
 LEARNER_DASHBOARD_RULE_COLOR = "#000000"
@@ -539,11 +540,11 @@ DISCOVER_RULE_COLOR = "#000000"
 LEARNER_DASHBOARD_BACKGROUND_COLOR = "#D3D3D3"
 LEARNER_DASHBOARD_TOP_BAR_COLOR = "#ffffff"
 
-################################### LEARNER DASHBOARD DEFAULT SETTINGS ###################################
+#  LEARNER DASHBOARD DEFAULT SETTINGS
 LEARNER_DASHBOARD_TITLE_COLOR = "#FFFFFF"
 LEARNER_DASHBOARD_DESCRIPTION_COLOR = "#FFFFFF"
 
-################################### LEARNER DASHBOARD TILE DEFAULT SETTINGS ###################################
+#  LEARNER DASHBOARD TILE DEFAULT SETTINGS
 TILE_BACKGROUND_IMAGE = "images/learner_dashboard/tile_backgrounds/"
 TILE_LABEL_COLOR = "#000000"
 TILE_TITLE_COLOR = "#3384CA"
@@ -642,7 +643,7 @@ OOYALA_PLAYER_V4_SCRIPT_FILE = '//player.ooyala.com/core/10efd95b66124001b415aa2
 # storage directory fo stats/reports
 EXPORT_STATS_DIR = 'csv_exports'
 
-################################### Theme Settings###################################
+# Theme Settings
 
 XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'
 
@@ -650,9 +651,10 @@ XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'
 COURSE_KEY_PATTERN = r'(?P<course_key_string>[^/+]+(/|\+)[^/+]+(/|\+)[^/?]+)'
 
 # Foreign And Normal Characters Regex
-FOREIGN_AND_NORMAL_CHARACTERS_PATTERN = '[ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðñòóôõöùúûüýÿ+ \w ]+'
+FOREIGN_AND_NORMAL_CHARACTERS_PATTERN = \
+    '[ŠŽšžŸÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðñòóôõöùúûüýÿ+ \w ]+'  # noqa: W605
 
-#Cookies expiry time
+# Cookies expiry time
 COOKIES_YEARLY_EXPIRY_TIME = datetime.datetime.utcnow() + datetime.timedelta(days=365)
 
 MAX_IMPORT_JOB_THREAD_POOL_SIZE = 4

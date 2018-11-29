@@ -10,6 +10,7 @@ from boto.s3.connection import S3Connection
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
+
 def get_connection_settings():
     S3_BUCKET_NAME = settings.S3_BUCKET_NAME
     S3_BUCKET_URL = settings.S3_BUCKET_URL
@@ -23,17 +24,19 @@ def get_connection_settings():
         S3_AWS_SECRET_ACCESS_KEY = settings.S3_AWS_SECRET_ACCESS_KEY
 
     if S3_BUCKET_NAME and S3_BUCKET_URL:
-        return {"S3_BUCKET_NAME":S3_BUCKET_NAME,"S3_AWS_ACCESS_KEY_ID":S3_AWS_ACCESS_KEY_ID,
-        "S3_AWS_SECRET_ACCESS_KEY":S3_AWS_SECRET_ACCESS_KEY, "S3_BUCKET_PATH":S3_BUCKET_URL}
+        return {"S3_BUCKET_NAME": S3_BUCKET_NAME, "S3_AWS_ACCESS_KEY_ID": S3_AWS_ACCESS_KEY_ID,
+                "S3_AWS_SECRET_ACCESS_KEY": S3_AWS_SECRET_ACCESS_KEY, "S3_BUCKET_PATH": S3_BUCKET_URL}
     else:
         return None
+
 
 def push_file_to_s3(file, folder=None):
     conn_settings = get_connection_settings()
     if conn_settings:
 
-        if conn_settings.get("S3_AWS_ACCESS_KEY_ID",None) and conn_settings.get("S3_AWS_SECRET_ACCESS_KEY",None):
-            conn = boto.connect_s3(conn_settings.get("S3_AWS_ACCESS_KEY_ID",None),conn_settings.get("S3_AWS_SECRET_ACCESS_KEY",None))
+        if conn_settings.get("S3_AWS_ACCESS_KEY_ID", None) and conn_settings.get("S3_AWS_SECRET_ACCESS_KEY", None):
+            conn = boto.connect_s3(conn_settings.get("S3_AWS_ACCESS_KEY_ID", None),
+                                   conn_settings.get("S3_AWS_SECRET_ACCESS_KEY", None))
         else:
             conn = S3Connection(anon=True)
 
@@ -58,13 +61,15 @@ def push_file_to_s3(file, folder=None):
     else:
         return None
 
+
 def get_files_urls():
     conn_settings = get_connection_settings()
     if conn_settings:
         # connect to the bucket
 
-        if conn_settings.get("S3_AWS_ACCESS_KEY_ID",None) and conn_settings.get("S3_AWS_SECRET_ACCESS_KEY",None):
-            conn = boto.connect_s3(conn_settings.get("S3_AWS_ACCESS_KEY_ID",None),conn_settings.get("S3_AWS_SECRET_ACCESS_KEY",None))
+        if conn_settings.get("S3_AWS_ACCESS_KEY_ID", None) and conn_settings.get("S3_AWS_SECRET_ACCESS_KEY", None):
+            conn = boto.connect_s3(conn_settings.get("S3_AWS_ACCESS_KEY_ID", None),
+                                   conn_settings.get("S3_AWS_SECRET_ACCESS_KEY", None))
         else:
             conn = S3Connection(anon=True)
 
@@ -94,6 +99,7 @@ class s3file_api(APIView):
             if path:
                 list_of_uploaded.append(path)
         if len(request.files) == len(list_of_uploaded):
-            return Response({"status":"ok", "urls":list_of_uploaded})
+            return Response({"status": "ok", "urls": list_of_uploaded})
         else:
-            return Response({"status":"error", "message":_("Some of the files aren't uploaded, Please upload again!"), "urls":list_of_uploaded})
+            return Response({"status": "error", "message": _("Some of the files aren't uploaded, Please upload again!"),
+                             "urls": list_of_uploaded})

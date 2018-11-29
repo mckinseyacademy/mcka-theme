@@ -1,9 +1,7 @@
-import json
 import os
 import csv
 
 from django.core.management.base import BaseCommand
-from django.conf import settings
 
 from api_client import user_api
 from api_client.api_error import ApiError
@@ -29,8 +27,8 @@ class Command(BaseCommand):
                     print "Unenrolling uid: %d from course: %s" % (user_id, course_id)
                     user_api.unenroll_user_from_course(user_id, course_id)
                     successful_unenrolled_count += 1
-                except ApiError as e:
-                    unsuccessful_unenrolled_count +=1
+                except ApiError:
+                    unsuccessful_unenrolled_count += 1
                     print "User: %d not unenrolled" % (user_id)
 
         self.stdout.write(

@@ -2,6 +2,8 @@ from django.conf import settings
 from django.core import mail
 from django.core.mail import EmailMultiAlternatives, BadHeaderError
 from django.utils.translation import ugettext as _
+from util.email_helpers import send_html_email
+from urlparse import urljoin
 
 
 def sendMultipleEmails(messages):
@@ -123,3 +125,23 @@ def create_multiple_emails(from_email, to_email_list, subject, email_body):
     msg.content_subtype = "html"
     msg.attach_alternative(html_content, "text/html")
     return msg
+
+
+def email_user_activation_link(request, user_data, activation_link):
+
+    subject = _('Welcome to McKinsey Academy')
+    template = 'accounts/user_activation_email.haml'
+    mcka_logo = urljoin(
+        base=request.build_absolute_uri(),
+        url='/static/image/mcka_email_logo.png'
+    )
+
+    send_html_email(
+        subject=subject,
+        to_emails=[user_data.get('email')], template_name=template,
+        template_data={
+            'first_name': user_data.get('first_name'),
+            'activation_link': activation_link, 'support_email': settings.MCKA_SUPPORT_EMAIL,
+            'mcka_logo_url': mcka_logo,
+        }
+    )

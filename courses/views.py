@@ -25,14 +25,13 @@ from api_client.platform_api import update_course_mobile_available_status
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.workgroup_models import Submission
-from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
+from api_data_manager.course_data import CourseDataManager
 from lib.authorization import permission_group_required
 from lib.utils import DottableDict
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.query_manager import get_object_or_none
 from mobile_apps.controller import get_mobile_app_download_popup_data
 
-from .models import LessonNotesItem, FeatureFlags
+from .models import LessonNotesItem, FeatureFlags, CourseMetaData
 from .controller import (
     inject_gradebook_info,
     round_to_int,
@@ -54,6 +53,7 @@ from .controller import (
     _remove_duplicate_grader,
     get_user_social_metrics,
     fix_resource_page_video_scripts,
+    get_assessment_module_name_translation,
 )
 from .user_courses import (
     check_user_course_access, load_course_progress,
@@ -96,7 +96,7 @@ def course_landing_page(request, course_id):
     # if enhanced caching is enabled
     if feature_flags.enhanced_caching:
         # check if it's already in cache
-        course = course_data_manager.get_cached_data(COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT)
+        course = course_data_manager.get_prefetched_course_object(user=request.user)
 
         # if already cached then add-in just the dynamic part
         if course is not None:
@@ -152,7 +152,7 @@ def get_learner_dashboard(request, course_id):
                 request.session['client_display_name'] = organization.display_name
                 try:
                     learner_dashboard = LearnerDashboard.objects.get(course_id=course_id)
-                except:
+                except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                     pass
     return learner_dashboard
 
@@ -195,8 +195,8 @@ def course_news(request, course_id):
 @login_required
 @check_user_course_access
 def course_cohort(request, course_id):
-    feature_flags = get_object_or_none(FeatureFlags, course_id=course_id)
-    if feature_flags and not feature_flags.cohort_map:
+    feature_flags = CourseDataManager(course_id).get_feature_flags()
+    if not feature_flags.cohort_map:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     try:
@@ -209,7 +209,7 @@ def course_cohort(request, course_id):
     except ApiError:
         completions = proficiency = social_metrics = None
 
-    metrics = course_api.get_course_metrics(course_id)
+    metrics = course_api.get_course_metrics(course_id, user_id=request.user.id)
     workgroups = user_api.get_user_workgroups(request.user.id, course_id)
     metrics.group_enrolled = 0
 
@@ -230,7 +230,7 @@ def course_cohort(request, course_id):
         if workgroup.users > 0:
             user_ids = [str(student.id) for student in workgroup.users]
             additional_fields = ["city", "title", "full_name", "first_name", "last_name", "profile_image"]
-            user_dict = {u.id : u for u in user_api.get_users(ids=user_ids,fields=additional_fields)}
+            user_dict = {u.id: u for u in user_api.get_users(ids=user_ids, fields=additional_fields)}
             for student in workgroup.users:
                 user = user_dict[student.id]
                 if user.city and ta_user_id != user.id:
@@ -243,7 +243,7 @@ def course_cohort(request, course_id):
     metrics.groups_users = json.dumps(metrics.groups_users)
 
     metrics.cities = []
-    cities = course_api.get_course_metrics_by_city(course_id)
+    cities = course_api.get_course_metrics_by_city(course_id, user_id=request.user.id)
     for city in cities:
         if city.city != '':
             city_name = clean_xss_characters(city.city)
@@ -273,7 +273,7 @@ def _render_group_work(request, course, project_group, group_project, learner_da
         try:
             progress_update_handler(request, course)
             return HttpResponse(status=200)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return HttpResponse(status=204)
 
     seqid = request.GET.get("seqid", None)
@@ -324,17 +324,19 @@ def _render_group_work(request, course, project_group, group_project, learner_da
                 learner_dashboard_id = LearnerDashboard.objects.get(course_id=course.id).id
                 redirect_url = "/learnerdashboard/" + str(learner_dashboard_id) + request.get_full_path()
                 return HttpResponseRedirect(redirect_url)
-            except:
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 pass
 
     if learner_dashboard_id:
 
         try:
             learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return HttpResponse(status=404)
 
-        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
+        calendar_items = LearnerDashboardTile.objects.filter(
+            learner_dashboard=learner_dashboard_id, show_in_calendar=True
+        )
 
         data.update({
             "learner_dashboard": learner_dashboard,
@@ -346,7 +348,7 @@ def _render_group_work(request, course, project_group, group_project, learner_da
             if flag_branding:
                 try:
                     data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
-                except:
+                except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                     pass
 
         return render(request, 'courses/course_group_work_ld.haml', data)
@@ -384,7 +386,9 @@ def user_course_group_work_learner_dashboard(request, learner_dashboard_id, cour
     project_group, group_project = get_group_project_for_user_course(request.user.id, course)
     set_current_course_for_user(request, course_id)
 
-    return _render_group_work(request, course, project_group, group_project, learner_dashboard_id, feature_flags.branding)
+    return _render_group_work(
+        request, course, project_group, group_project, learner_dashboard_id, feature_flags.branding
+    )
 
 
 @login_required
@@ -405,7 +409,8 @@ def workgroup_course_group_work(request, course_id, workgroup_id, learner_dashbo
 
     return _render_group_work(request, course, project_group, group_project, learner_dashboard_id, branding_flag)
 
-def _course_discussion_data(request, course_id, discussion_id=None,thread_id=None):
+
+def _course_discussion_data(request, course_id, discussion_id=None, thread_id=None):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     if feature_flags and not feature_flags.discussions:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
@@ -442,14 +447,14 @@ def course_discussion_learner_dashboard(request, learner_dashboard_id, course_id
 
     try:
         learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         return HttpResponse(status=404)
 
     if learner_dashboard.course_id == course_id:
         if data['flag_branding']:
             try:
                 data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
-            except:
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 pass
 
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
@@ -489,15 +494,12 @@ def _course_progress_for_user(request, course_id, user_id):
 
     # add in all the grading information
     gradebook = inject_gradebook_info(user_id, course)
-
     graders = gradebook.grading_policy.GRADER
     for grader in graders:
         grader.weight = round_to_int(grader.weight*100)
 
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
     pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
-
-    workgroup_avg_sections = [section for section in gradebook.courseware_summary if section.display_name.startswith(settings.GROUP_PROJECT_IDENTIFIER)]
 
     project_group, group_project = get_group_project_for_user_course(user_id, course)
     if project_group and group_project:
@@ -516,7 +518,6 @@ def _course_progress_for_user(request, course_id, user_id):
                     activity.grades[i] = round_to_int(grade)
     else:
         group_activities = None
-        group_work_avg = None
 
     bar_chart = [{'pass_grade': pass_grade, 'key': 'Lesson Scores', 'values': []}]
 
@@ -619,7 +620,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     if course_run:
         try:
             course.course_run = json.loads(course_run.content)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             pass
 
     # add in all the grading information
@@ -642,8 +643,12 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         _remove_duplicate_grader(graders)
 
     cutoffs = gradebook.grading_policy.GRADE_CUTOFFS
-    pass_grade = round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)
-    completed_items_count = len([module for module in course.graded_items()["modules"] if getattr(module, 'is_complete', None)])
+    round_to_int(cutoffs.get(min(cutoffs, key=cutoffs.get)) * 100)  # TODO check if this function needed or not
+    completed_items_count = len([
+        module
+        for module in course.graded_items()["modules"]
+        if getattr(module, 'is_complete', None)
+    ])
 
     project_group, group_project = get_group_project_for_user_course(user_id, course)
     if project_group and group_project:
@@ -664,7 +669,6 @@ def _course_progress_for_user_v2(request, course_id, user_id):
                     activity.grades[i] = round_to_int(grade)
     else:
         group_activities = None
-        group_work_avg = None
 
     graded_items_count = sum(len(graded) for graded in course.graded_items().values())
     data = {
@@ -679,7 +683,9 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "graded_items_count": graded_items_count,
         "graded_items_rows": graded_items_count + 1,
         "group_activities": group_activities,
-        "graders": ', '.join("%s%% %s" % (grader.weight, grader.type_name) for grader in graders),
+        "graders": ', '.join("%s%% %s" %
+                             (grader.weight,
+                              get_assessment_module_name_translation(grader.type_name)) for grader in graders),
         "total_replies": social["metrics"].num_replies + social["metrics"].num_comments,
         "course_run": course_run,
         'feature_flags': feature_flags,
@@ -696,7 +702,12 @@ def _course_progress_for_user_v2(request, course_id, user_id):
 
 @login_required
 @check_company_admin_user_access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN,
+    PERMISSION_GROUPS.CLIENT_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def course_user_progress(request, user_id, course_id):
     return _course_progress_for_user(request, course_id, user_id)
 
@@ -709,7 +720,12 @@ def course_progress(request, course_id):
 
 @login_required
 @check_company_admin_user_access
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN,
+    PERMISSION_GROUPS.CLIENT_ADMIN,
+    PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def course_user_progress_v2(request, user_id, course_id):
     return _course_progress_for_user_v2(request, course_id, user_id)
 
@@ -747,7 +763,7 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
 
     try:
         learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         return HttpResponse(status=404)
 
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
@@ -767,7 +783,7 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
         if feature_flags.branding:
             try:
                 data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard_id)
-            except:
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 pass
 
     return render(request, 'courses/course_resources_learner_dashboard.haml', data)
@@ -775,7 +791,9 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
 
 @login_required
 @check_user_course_access
-def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type=None, tile_id=None, learner_dashboard_id=None):
+def navigate_to_lesson_module(
+        request, course_id, chapter_id, page_id, tile_type=None, tile_id=None, learner_dashboard_id=None
+):
     """
     go to given page within given chapter within given course
     """
@@ -805,7 +823,7 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
     try:
         course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=course_id)
         custom_lesson_label = course_meta_data.lesson_label
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         custom_lesson_label = None
 
     if not current_sequential.is_started:
@@ -814,7 +832,8 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
                 start_upon=current_sequential.start_upon)
         else:
             data["not_started_message"] = _("This {custom_lesson_label} does not start until {start_upon}").format(
-                custom_lesson_label=custom_lesson_label,start_upon=current_sequential.start_upon)
+                custom_lesson_label=custom_lesson_label, start_upon=current_sequential.start_upon
+            )
         return render(request, 'courses/course_future_lesson.haml', data)
 
     # Take note that the user has gone here
@@ -844,17 +863,19 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
         try:
             progress_update_handler(request, course, chapter_id, page_id)
             return HttpResponse(status=200)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return HttpResponse(status=204)
 
     if learner_dashboard_id:
 
         try:
             learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             return HttpResponse(status=404)
 
-        calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
+        calendar_items = LearnerDashboardTile.objects.filter(
+            learner_dashboard=learner_dashboard_id, show_in_calendar=True
+        )
 
         data.update({
             "learner_dashboard": learner_dashboard,
@@ -867,9 +888,9 @@ def navigate_to_lesson_module(request, course_id, chapter_id, page_id, tile_type
                 if feature_flags.branding:
                     try:
                         data['branding'] = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard)
-                    except:
+                    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                         pass
-            except:
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 pass
         else:
             return render(request, 'courses/course_lessons_ld_external.haml', data)
@@ -944,7 +965,7 @@ def infer_page_navigation(request, course_id, page_id):
 
                 if ta_grading_group:
                     redirect_url += "/{ta_grading_group}".format(ta_grading_group=ta_grading_group)
-            if group_project and not group_project.is_v2: # for group project v1
+            if group_project and not group_project.is_v2:  # for group project v1
                 redirect_url = "/courses/{}/group_work".format(course_id)
 
             if final_target_id not in (chapter_id, vertical_id):
@@ -991,14 +1012,17 @@ def contact_ta(request, course_id):
     html_content += "<p>{}</p>".format(email_message)
     text_content += email_message
     try:
-        email = EmailMultiAlternatives(email_subject, text_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+        email = EmailMultiAlternatives(
+            email_subject,
+            text_content,
+            email_from,
+            [email_to],
+            headers={'Reply-To': email_header_from}
+        )
         email.attach_alternative(html_content, "text/html")
         email.send(fail_silently=False)
-    except:
-        return HttpResponse(
-        json.dumps({"message": _("Message not sent.")}),
-        content_type='application/json'
-    )
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
+        return HttpResponse(json.dumps({"message": _("Message not sent.")}), content_type='application/json')
     return HttpResponse(
         json.dumps({"message": _("Message successfully sent.")}),
         content_type='application/json'
@@ -1022,17 +1046,17 @@ def contact_group(request, course_id, group_id):
     email_subject = _("Group Project Message - {course_name}").format(
         course_name=course.name)
     try:
-        email = EmailMessage(email_subject, email_content, email_from, email_to, headers = {'Reply-To': email_header_from})
+        email = EmailMessage(
+            email_subject,
+            email_content,
+            email_from,
+            email_to,
+            headers={'Reply-To': email_header_from}
+        )
         email.send(fail_silently=False)
-    except:
-        return HttpResponse(
-        json.dumps({"message": _("Message not sent.")}),
-        content_type='application/json'
-    )
-    return HttpResponse(
-        json.dumps({"message": _("Message successfully sent.")}),
-        content_type='application/json'
-    )
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
+        return HttpResponse(json.dumps({"message": _("Message not sent.")}), content_type='application/json')
+    return HttpResponse(json.dumps({"message": _("Message successfully sent.")}), content_type='application/json')
 
 
 @login_required
@@ -1048,7 +1072,7 @@ def contact_member(request, course_id, group_id):
     email_content = request.POST["member_message"]
     course = load_course(course_id)
     email_subject = _("Group Project Message - {course_name}").format(
-        course_name=course.name) #just for testing
+        course_name=course.name)  # just for testing
 
     group = WorkGroup.fetch_with_members(group_id)
     students = group.members
@@ -1056,22 +1080,23 @@ def contact_member(request, course_id, group_id):
 
     if email_to in group_emails:
         try:
-            email = EmailMessage(email_subject, email_content, email_from, [email_to], headers = {'Reply-To': email_header_from})
+            email = EmailMessage(
+                email_subject,
+                email_content,
+                email_from,
+                [email_to],
+                headers={'Reply-To': email_header_from}
+            )
             email.send(fail_silently=False)
-        except:
-            return HttpResponse(
-            json.dumps({"message": _("Message not sent.")}),
-            content_type='application/json'
-        )
-        return HttpResponse(
-            json.dumps({"message": _("Message successfully sent.")}),
-            content_type='application/json'
-        )
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
+            return HttpResponse(json.dumps({"message": _("Message not sent.")}), content_type='application/json')
+        return HttpResponse(json.dumps({"message": _("Message successfully sent.")}), content_type='application/json')
     else:
         return HttpResponse(
-            json.dumps({"message": _("Message not sent. Email is not valid")}), #replace with another message
+            json.dumps({"message": _("Message not sent. Email is not valid")}),  # replace with another message
             content_type='application/json'
         )
+
 
 @login_required
 @check_user_course_access
@@ -1100,7 +1125,7 @@ def notify_group_on_submission(request, course_id, group_id):
     try:
         email = EmailMessage(email_subject, email_content, email_from, email_to)
         email.send(fail_silently=False)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         return HttpResponseServerError(
             json.dumps({"message": _("There was a problem; message not sent.")}),
             content_type='application/json'
@@ -1110,11 +1135,12 @@ def notify_group_on_submission(request, course_id, group_id):
         content_type='application/json'
     )
 
+
 @login_required
 @check_user_course_access
 def course_export_notes(request, course_id):
     course = load_course(course_id).inject_basic_data()
-    notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
+    notes = LessonNotesItem.objects.filter(user_id=request.user.id, course_id=course_id)
 
     response = HttpResponse()
     response['Content-Disposition'] = 'attachment; filename="mcka_course_notes.csv"'
@@ -1131,7 +1157,7 @@ def course_export_notes(request, course_id):
 @check_user_course_access
 def course_notes(request, course_id):
     course = load_course(course_id).inject_basic_data()
-    notes = LessonNotesItem.objects.filter(user_id = request.user.id, course_id = course_id)
+    notes = LessonNotesItem.objects.filter(user_id=request.user.id, course_id=course_id)
     notes = [note.as_json(course) for note in notes]
     return HttpResponse(json.dumps(notes))
 
@@ -1143,11 +1169,11 @@ def add_lesson_note(request, course_id, chapter_id):
     course = load_course(course_id).inject_basic_data()
 
     note = LessonNotesItem(
-        body = request.POST['body'],
-        user_id = request.user.id,
-        course_id = course_id,
-        lesson_id = chapter_id,
-        module_id = request.POST['module_id'],
+        body=request.POST['body'],
+        user_id=request.user.id,
+        course_id=course_id,
+        lesson_id=chapter_id,
+        module_id=request.POST['module_id'],
     )
     note.save()
 
@@ -1194,7 +1220,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
 
     try:
         bookmark = TileBookmark.objects.get(user=request.user.id)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         bookmark = None
 
     feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
@@ -1214,7 +1240,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
         try:
             learner_dashboard_branding = LearnerDashboardBranding.objects.get(learner_dashboard=learner_dashboard.id)
             data['branding'] = learner_dashboard_branding
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             pass
     if 'username' in request.GET:
         mobile_popup_data = get_mobile_app_download_popup_data(request)
@@ -1225,8 +1251,10 @@ def course_learner_dashboard(request, learner_dashboard_id):
 
 @require_POST
 @login_required
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-#@checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN
+)
+# @checked_course_access  # note this decorator changes method signature by adding restrict_to_courses_ids parameter
 def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     AccessChecker.check_has_course_access(course_id, restrict_to_courses_ids)
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
@@ -1274,9 +1302,9 @@ def course_learner_dashboard_bookmark_tile(request, learner_dashboard_id):
             bookmark.lesson_link = None
             bookmark.save()
 
-        except:
+        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             bookmark = TileBookmark(
-                user = request.user.id,
+                user=request.user.id,
                 tile=tile,
                 learner_dashboard_id=learner_dashboard_id,
             )
@@ -1308,22 +1336,22 @@ def course_learner_dashboard_calendar(request, learner_dashboard_id):
 
     try:
         learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         learner_dashboard = None
 
     if learner_dashboard:
         trackedData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard,
-            show_in_calendar = True
+            show_in_calendar=True
         ).exclude(tile_type='1').exclude(tile_type='6')
 
         notTrackedData = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard,
-            show_in_calendar = True
-        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').exclude(tile_type='5').exclude(tile_type='7')
+            show_in_calendar=True
+        ).exclude(tile_type='2').exclude(tile_type='3').exclude(tile_type='4').exclude(tile_type='5')\
+            .exclude(tile_type='7')
     else:
         return HttpResponse(status=404)
-
 
     first = datetime.now().replace(day=1)
     now = datetime(first.year, first.month, first.day)
@@ -1362,12 +1390,14 @@ def course_learner_dashboard_calendar(request, learner_dashboard_id):
             "user_progress": content.percentage,
             "cohort_progress": 0,
             "fa_icon": content.milestone.fa_icon,
-            "publish_date": None if content.milestone.publish_date is None else int(content.milestone.publish_date.strftime("%s")) * 1000,
+            "publish_date": None if content.milestone.publish_date is None else int(
+                content.milestone.publish_date.strftime("%s")) * 1000,
             "track_progress": content.milestone.track_progress,
         }
 
         if check_tile_type(content):
-            milestoneDataJson[i]["link"] = content.milestone.link + str(content.milestone.id) + "/" + str(learner_dashboard_id)
+            milestoneDataJson[i]["link"] = content.milestone.link + str(content.milestone.id) + "/" + \
+                                           str(learner_dashboard_id)
 
         enum = i
 
@@ -1386,7 +1416,7 @@ def course_learner_dashboard_calendar(request, learner_dashboard_id):
             "track_progress": content.track_progress,
         }
 
-    data ={
+    data = {
         'dates': dates,
         'milestones': json.dumps(milestoneDataJson),
     }
@@ -1409,11 +1439,15 @@ def check_tile_type(element):
 
 @login_required
 def get_user_progress_json(request, course_id):
-    user_progress = course_api.get_course_metrics_completions(course_id=course_id, user_id = request.user.id, skipleaders = True)
+    user_progress = course_api.get_course_metrics_completions(
+        course_id=course_id,
+        user_id=request.user.id,
+        skipleaders=True
+    )
     if user_progress:
         data = {"user_progress": user_progress.completions}
     else:
-       data = {"user_progress": 0}
+        data = {"user_progress": 0}
 
     return HttpResponse(
         json.dumps(data),
@@ -1427,9 +1461,9 @@ def get_user_gradebook_json(request, course_id):
         course_id, user_id=request.user.id, skipleaders=True, grade_object_type=Proficiency
     )
     if proficiency:
-        data = {"proficiency": {"user_grade_value": proficiency.user_grade_value }}
+        data = {"proficiency": {"user_grade_value": proficiency.user_grade_value}}
     else:
-       data = {"proficiency": None}
+        data = {"proficiency": None}
 
     return HttpResponse(
         json.dumps(data),
@@ -1442,10 +1476,16 @@ def get_user_completion_json(request, course_id):
     grades = {grade.course_id: grade for grade in user_api.get_user_grades(request.user.id)}
     course_grade = grades.get(course_id, None)
     if course_grade:
-        data = {"grades": {"course_id":course_grade.course_id, "current_grade":course_grade.current_grade,
-        "proforma_grade":course_grade.proforma_grade, "complete_status":course_grade.complete_status}}
+        data = {
+            "grades": {
+                "course_id": course_grade.course_id,
+                "current_grade": course_grade.current_grade,
+                "proforma_grade": course_grade.proforma_grade,
+                "complete_status": course_grade.complete_status
+            }
+        }
     else:
-       data = {"grades": None}
+        data = {"grades": None}
 
     return HttpResponse(
         json.dumps(data),
@@ -1455,11 +1495,11 @@ def get_user_completion_json(request, course_id):
 
 @login_required
 def get_user_complete_gradebook_json(request, course_id):
-    user_grades = user_api.get_user_full_gradebook(user_id = request.user.id, course_id=course_id)
+    user_grades = user_api.get_user_full_gradebook(user_id=request.user.id, course_id=course_id)
     if user_grades:
         data = {"user_gradebook": user_grades}
     else:
-       data = {"user_gradebook": None}
+        data = {"user_gradebook": None}
 
     return HttpResponse(
         json.dumps(data),
@@ -1488,4 +1528,3 @@ def course_lessons_menu(request, course_id):
     course_tree_builder.include_progress_data(course)
 
     return render(request, 'courses/content_page/lesson_menu.haml', dict(course=course))
-

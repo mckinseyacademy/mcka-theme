@@ -1,5 +1,4 @@
 ''' Objects for users / authentication built from json responses from API '''
-import hashlib
 import json
 from urlparse import urljoin
 
@@ -16,7 +15,7 @@ from .json_object import JsonObject, JsonObjectWithImage
 class UserResponse(JsonObjectWithImage):
 
     ''' object representing a user from api json response '''
-    required_fields = ["email", "username"]
+    required_fields = ["id", "email", "first_name", "username", "is_active"]
     date_fields = ["created"]
 
     def _get_profile_image_absolute_url(self, size_name):
@@ -77,6 +76,13 @@ class UserResponse(JsonObjectWithImage):
         return user
 
 
+class SimpleUserResponse(UserResponse):
+    """
+    Class representing a simple user response from api json response
+    """
+    required_fields = ["email", "username"]
+
+
 class UserListResponse(JsonObject):
     object_map = {
         "results": UserResponse
@@ -100,7 +106,7 @@ class UserCourseStatus(JsonObject):
 
 class UserList(JsonObject):
     object_map = {
-        "users": UserResponse
+        "users": SimpleUserResponse
     }
 
 
