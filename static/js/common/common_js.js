@@ -894,11 +894,11 @@ function InitializeAverageCalculate() {
   // Set the Average progess and proficiency	// remove existing subgrid for manager team
   if(total) {
     $('.progress-average large').text(Math.round(totalProgress / total) + "%");
-    $('.proficiency-average large span').text(Math.round(totalProficiency / total)+ "%");
+    $('.proficiency-average large').text(Math.round(totalProficiency / total)+ "%");
   }
   else{
     $('.progress-average large').text("0%");
-    $('.proficiency-average large span').text("0%");
+    $('.proficiency-average large').text("0%");
   }
 }
 
