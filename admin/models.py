@@ -245,7 +245,7 @@ class WorkGroup(workgroup_models.Workgroup):
     def fetch_with_members(cls, workgroup_id):
         workgroup = cls.fetch(workgroup_id)
         workgroup.members = workgroup.fetch_students()
-        workgroup.teaching_assistant = user_models.UserResponse(dictionary={
+        workgroup.teaching_assistant = user_models.SimpleUserResponse(dictionary={
             "username": "ta",
             "full_name": "Your TA",
             "title": "Teaching Assistant",

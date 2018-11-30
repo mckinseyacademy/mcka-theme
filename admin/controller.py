@@ -1213,9 +1213,9 @@ def get_course_social_engagement(course_id, company_id):
     number_of_posts = 0
     number_of_participants_posting = 0
     if company_id:
-        course_metrics_social = course_api.get_course_social_metrics(course_id, company_id, expect_dict=True)
+        course_metrics_social = course_api.get_course_details_metrics_social(course_id, {'organization': company_id})
     else:
-        course_metrics_social = course_api.get_course_social_metrics(course_id, expect_dict=True)
+        course_metrics_social = course_api.get_course_details_metrics_social(course_id)
 
     for user in course_metrics_social['users']:
         if str(user) in course_users_ids:
@@ -2103,7 +2103,16 @@ class CourseParticipantStats(object):
         """
         Returns engagement score for all participants in the course.
         """
-        return course_api.get_course_social_metrics(self.course_id, scores=True)
+        course_social_metrics = course_api.get_course_social_metrics(self.course_id)
+        participants_engagement_lookup = {}
+        users_social_metrics = vars(course_social_metrics.users)
+        for u_id, user_metrics in users_social_metrics.iteritems():
+            engagement_score = 0
+            for metric, metric_points in settings.SOCIAL_METRIC_POINTS.iteritems():
+                engagement_score += getattr(user_metrics, metric, 0) * metric_points
+            participants_engagement_lookup[str(u_id)] = engagement_score
+
+        return participants_engagement_lookup
 
     def _get_course_completions(self, course_participants):
         """
