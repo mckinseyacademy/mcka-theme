@@ -226,6 +226,7 @@
         text-align: center;
         padding: 40px 15px;
         h1{
+            text-align: center;
             color: $mckinsey-academy-black;
             @include font-spec(28, 400);
             span{
