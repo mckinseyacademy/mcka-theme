@@ -1407,6 +1407,7 @@ def _enroll_participant_with_status(course_id, user_id, status):
 
 
 def unenroll_participant(course_id, user_id):
+    from courses.user_courses import CURRENT_COURSE_ID
     try:
         permissions = Permissions(user_id)
         permissions.remove_all_course_roles(course_id)
@@ -1414,6 +1415,12 @@ def unenroll_participant(course_id, user_id):
         for group in user_groups:
             workgroup_api.remove_user_from_workgroup(vars(group)['id'], user_id)
         user_api.unenroll_user_from_course(user_id, course_id)
+
+        # If this course is set as current course of user then remove it from user preference settings
+        user_preferences = user_api.get_user_preferences(user_id)
+        current_course_id = user_preferences.get(CURRENT_COURSE_ID, None)
+        if current_course_id == course_id:
+            user_api.delete_user_preference(user_id, CURRENT_COURSE_ID)
     except ApiError as e:
         return {'status': 'error', 'message': e.message}
     return {'status': 'success'}
