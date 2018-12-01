@@ -73,7 +73,7 @@ class TestGetRefererFromRequest(TestCase):
 
     @data(
         ('https://apros.mcka.local/terms', '/terms'),
-        ('https://apros.mcka.local', None),
+        ('https://apros.mcka.local', ''),
         ('http://www.mckisneyacademy.com/privacy', '/privacy')
     )
     @unpack

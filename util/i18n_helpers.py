@@ -1,21 +1,20 @@
 from django.utils import translation, six
 from django.utils.functional import lazy
 from django.utils.safestring import mark_safe
+from django.conf import settings
 
 from accounts.middleware.thread_local import get_current_request
-from mcka_apros.settings import LANGUAGE_CODE, LANGUAGES
 
 
-def set_language(language=LANGUAGE_CODE):
+def set_language(language=settings.LANGUAGE_CODE):
     """
     sets language for session
     """
-    language_supported = [lang for lang in LANGUAGES if lang[0] == language]
-    language = language if language_supported else LANGUAGE_CODE
+    language_supported = [lang for lang in settings.LANGUAGES if lang[0] == language]
+    language = language if language_supported else settings.LANGUAGE_CODE
     request = get_current_request()
-    if request.LANGUAGE_CODE != language:
-        translation.activate(language)
-        request.session[translation.LANGUAGE_SESSION_KEY] = language
+    translation.activate(language)
+    request.session[translation.LANGUAGE_SESSION_KEY] = language
 
 
 def _format_lazy(format_string, *args, **kwargs):
