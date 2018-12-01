@@ -27,6 +27,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_http_methods
+from django.views.decorators.clickjacking import xframe_options_exempt
 from django.forms.widgets import HiddenInput
 from django.views.decorators.cache import never_cache, cache_page
 from django.template.loader import render_to_string
@@ -744,8 +745,10 @@ def _cleanup_username(username):
     return username
 
 
+@xframe_options_exempt
 def sso_registration_form(request):
     ''' handles requests for activation form and their submission '''
+    # Do not remove authentication as x-frame-options is exempted on this view to work in an iframe
     if request.user.is_authenticated:
         # The user should not be logged in or even registered at this point.
         return HttpResponseRedirect(reverse('protected_home'))
