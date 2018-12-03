@@ -6007,8 +6007,6 @@ msgstr ""
 "encerrados."
 
 #: templates/courses/content_page/course_menu.haml:9
-#, fuzzy
-#| msgid "LESSONS"
 msgid "LESSONS:"
 msgstr "LIÇÕES:"
 
