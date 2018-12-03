@@ -104,7 +104,10 @@ class UserDataManager(DataManager):
             for course in courses:
                 if course.id == current_course_id:
                     current_course = course
-        else:
+
+        # if preferred course is not found in user courses
+        # then set any other course as current course
+        if not current_course:
             active_courses = [course for course in courses if course.is_active and course.started]
             if active_courses:
                 current_course = active_courses[0]
