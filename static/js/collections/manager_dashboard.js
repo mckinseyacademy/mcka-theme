@@ -16,6 +16,7 @@ Apros.collections.ManagerDashboard = Backbone.PageableCollection.extend({
     totalRecords: null,
     page_size: 100,
     additional_fields: 'grades,roles,organizations,progress,course_groups',
+    order_by: 'email',
     // Profile images take a long time to serialize, and we don't need them.
     exclude_fields: 'profile_image',
   },
