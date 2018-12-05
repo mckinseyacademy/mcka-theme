@@ -1,6 +1,8 @@
 from urlparse import urljoin
 
 from django.conf import settings
+from django.core.files.base import ContentFile
+from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
 
 from storages.backends.s3boto import S3BotoStorage
@@ -34,6 +36,35 @@ def exports_stats_check(user, path):
         course_id = course_id.replace('__', '/')
 
     return export_stats_permission_check(user, company_id, course_id)
+
+
+def get_storage(secure=False):
+    """
+    Returns secure storage if secure param is True
+    """
+    if settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage' and secure:
+        return PrivateMediaStorageThroughApros()
+
+    return default_storage
+
+
+def store_file(file_stream, storage_dir_name, file_name, secure=False):
+    """
+    Stores file in storage
+    """
+    storage_path = '{}/{}'.format(storage_dir_name, file_name)
+
+    storage = get_storage(secure)
+
+    try:
+        file_path = storage.save(storage_path, ContentFile(file_stream.read()))
+        file_url = storage.url(file_path)
+    except Exception:
+        raise
+    finally:
+        file_stream.close()
+
+    return file_url
 
 
 class PrivateMediaStorage(S3BotoStorage):
