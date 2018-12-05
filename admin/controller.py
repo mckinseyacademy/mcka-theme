@@ -1608,7 +1608,7 @@ def _process_line_register_participants_csv(user_line):
         validate_last_name(last_name)
         validate_email(email)
     except ValidationError as e:
-        user_info['error'] = e.message
+        user_info['error'] = str(e.message)
 
     return user_info
 

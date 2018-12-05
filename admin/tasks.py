@@ -484,7 +484,7 @@ def import_participants_task(user_id, base_url, file_stream, is_internal_admin, 
         if "error" in user_info:
             try:
                 user_data = json.dumps(user_info)
-            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
+            except (TypeError, ValueError):
                 user_data = json.dumps({})
 
             unclean_user_list.append(user_info)
@@ -617,7 +617,7 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
 
         try:
             user_data = json.loads(error.user_data)
-        except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
+        except (TypeError, ValueError):
             user_data = {}
 
         error_data.update(user_data)
