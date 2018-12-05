@@ -70,8 +70,8 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
 
     api_params = {
         'page': 1,
-        'per_page': 1000,
-        'page_size': 1000,
+        'per_page': settings.MAX_USERS_PER_PAGE,
+        'page_size': settings.MAX_USERS_PER_PAGE,
         'additional_fields': ",".join(additional_fields),
         # Profile images take a long time to serialize, and we don't need them.
         'exclude_fields': "profile_image",

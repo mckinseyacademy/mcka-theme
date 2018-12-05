@@ -486,6 +486,9 @@ TEMPLATES = [
     },
 ]
 
+# Data retrieval settings
+MAX_USERS_PER_PAGE = 250
+
 try:
     from local_settings import *  # noqa: F403, F401
 except ImportError:
