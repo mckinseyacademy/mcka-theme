@@ -489,6 +489,9 @@ TEMPLATES = [
 # Data retrieval settings
 MAX_USERS_PER_PAGE = 250
 
+# Heap Analytics Env ID
+HEAP_ENV_ID = ''
+
 try:
     from local_settings import *  # noqa: F403, F401
 except ImportError:
