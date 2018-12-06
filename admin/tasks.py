@@ -471,10 +471,17 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
 
     storage = get_storage(secure=True)
     try:
-        file_stream = storage.open(file_url)
+        file_path = resolve(file_url).kwargs.get('path')
+    except Resolver404:
+        file_path = file_url
+
+    try:
+        file_stream = storage.open(file_path)
     except Exception as e:
-        logger.error('{} - Failed to open file with url: {}'.format(task_log_msg, file_url))
+        logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
         raise
+    else:
+        logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
 
     user_list = build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
     clean_user_list, unclean_user_list, user_registration_errors = [], [], []
@@ -538,11 +545,11 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     )
 
     try:
-        storage.delete(file_url)
+        storage.delete(file_path)
     except Exception as e:
         logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
     else:
-        logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_url))
+        logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
 
 
 @task(name='admin.user_company_fields_update_task', queue='high_priority')
