@@ -6,9 +6,9 @@ import json
 import logging
 import random
 from datetime import datetime
+
 import re
 from bs4 import BeautifulSoup
-
 from django.conf import settings
 from django.utils.translation import ugettext as _
 
@@ -20,18 +20,19 @@ from admin.controller import load_course, is_group_activity, get_group_activity_
 from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress
 from api_client import course_api, user_api, workgroup_api, project_api
 from api_client.api_error import ApiError
+from api_client.course_api import tabs_post_process
+from api_client.course_models import CourseTabs
 from api_client.gradebook_models import CourseSummary, GradeSummary
 from api_client.group_api import get_users_in_group
 from api_client.json_object import JsonObject, DataOnly
+from api_client.json_object import JsonParser
 from api_client.project_models import Project
 from api_client.user_api import USER_ROLES, workgroup_models
-from lib.utils import PriorIdConvert
 from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
-from api_client.json_object import JsonParser
-from api_client.course_models import CourseTabs
-from api_client.course_api import tabs_post_process
+from lib.utils import PriorIdConvert
 
 log = logging.getLogger(__name__)
+
 
 # warnings associated with members generated from json response
 # pylint: disable=maybe-no-member
@@ -74,7 +75,6 @@ class UserGrade(JsonObject):
 
 
 class Proficiency(JsonObject):
-
     object_map = {
         "leaders": UserGrade,
     }
@@ -85,7 +85,7 @@ class Proficiency(JsonObject):
 
     @property
     def user_grade_display(self):
-        return round_to_int(100*self.user_grade_value)
+        return round_to_int(100 * self.user_grade_value)
 
     @property
     def course_average_value(self):
@@ -93,7 +93,7 @@ class Proficiency(JsonObject):
 
     @property
     def course_average_display(self):
-        return round_to_int_bump_zero(100*self.course_average_value)
+        return round_to_int_bump_zero(100 * self.course_average_value)
 
     @property
     def has_leaders(self):
@@ -122,7 +122,7 @@ class Proficiency(JsonObject):
         course_proficiency_sum = 0
         for user_grade in self.leaders:
             if str(user_grade.id) not in users_with_roles:
-                user_proficiency = float(user_grade.user_grade_value)*100
+                user_proficiency = float(user_grade.user_grade_value) * 100
                 course_proficiency_sum += user_proficiency
         return course_proficiency_sum
 
@@ -131,7 +131,7 @@ class Proficiency(JsonObject):
         for user_grade in self.leaders:
             if user_grade.id in company_ids:
                 if str(user_grade.id) not in users_with_roles:
-                    user_proficiency = float(user_grade.user_grade_value)*100
+                    user_proficiency = float(user_grade.user_grade_value) * 100
                     course_proficiency_sum += user_proficiency
         return course_proficiency_sum
 
@@ -196,11 +196,11 @@ class CourseMetricsLeaders(JsonObject):
 
 
 def build_page_info_for_course(
-    request,
-    course_id,
-    lesson_id,
-    module_id,
-    course_api_impl=course_api
+        request,
+        course_id,
+        lesson_id,
+        module_id,
+        course_api_impl=course_api
 ):
     '''
     Returns course structure and user's status within course
@@ -293,12 +293,12 @@ def get_chapter_and_target_by_location(request, course_id, location_id, course_a
 
 
 def locate_chapter_page(
-    request,
-    user_id,
-    course_id,
-    chapter_id,
-    user_api_impl=user_api,
-    course_api_impl=course_api
+        request,
+        user_id,
+        course_id,
+        chapter_id,
+        user_api_impl=user_api,
+        course_api_impl=course_api
 ):
     '''
     Returns current chapter and page for given course from user's status
@@ -501,7 +501,7 @@ def average_progress(course, user_id):
 
 def progress_percent(completion_count, module_count):
     if module_count > 0:
-        return round_to_int(100*completion_count/module_count)
+        return round_to_int(100 * completion_count / module_count)
     else:
         return 0
 
@@ -510,8 +510,9 @@ def group_project_reviews(user_id, course_id, project_workgroup, group_project):
     '''
     Returns group work reviews & average score for a project
     '''
+
     def mean(array_values):
-        return sum(array_values)/float(len(array_values)) if len(array_values) > 0 else None
+        return sum(array_values) / float(len(array_values)) if len(array_values) > 0 else None
 
     review_items = WorkGroup.get_workgroup_review_items(project_workgroup.id)
 
@@ -615,7 +616,15 @@ def get_user_social_metrics(user_id, course_id, include_stats=False):
         num_downvotes, num_upvotes, num_comments_generated
     :return: a dict having user's social metrics for given course
     """
-    data = {'points': 0, 'course_avg': 0, 'metrics': {}}
+    default_metrics = None
+    if include_stats:
+        default_metrics = JsonParser.from_dictionary({
+            key: 0
+            for key in ['num_threads', 'num_thread_followers', 'num_replies',
+                        'num_flagged', 'num_comments', 'num_threads_read',
+                        'num_downvotes', 'num_upvotes', 'num_comments_generated']
+        })
+    data = {'points': 0, 'course_avg': 0, 'metrics': default_metrics}
     try:
         metrics = user_api.get_course_social_metrics(user_id, course_id, include_stats)
         data = {
@@ -727,7 +736,7 @@ def inject_gradebook_info(user_id, course):
                     points = section.section_total[0]
                     max_points = section.section_total[1]
                     if max_points > 0:
-                        percent = round_to_int(100*points/max_points)
+                        percent = round_to_int(100 * points / max_points)
                     else:
                         percent = 0
                     assesments[section.url_name] = percent
@@ -869,7 +878,7 @@ def calculate_user_group_activity_progress(user, course, link):
             stage_ids = [stage.id for stage in activity_response.children if "peer-review" not in stage.id]
             if link in stage_ids:
                 matches = set(stage_ids).intersection(completed_ids)
-                return round_to_int(100 * len(matches)/len(stage_ids))
+                return round_to_int(100 * len(matches) / len(stage_ids))
     else:
         return 0
 
@@ -898,7 +907,6 @@ def set_user_course_progress(course, completions, chapter_id=None):
 
 
 def get_course_object(user_id, course_id):
-
     courses = user_api.get_user_courses(user_id)
     course = [c for c in courses if c.id == course_id]
     if course:
@@ -908,7 +916,6 @@ def get_course_object(user_id, course_id):
 
 
 def strip_tile_link(link):
-
     # TODO: Refactor!!!
 
     if link.startswith("/learnerdashboard/"):
@@ -969,7 +976,6 @@ def strip_tile_link(link):
 
 
 def createProgressObjects(progressData, tile_ids, user_id):
-
     progress_ids = [str(i.milestone.id) for i in progressData]
     tiles = list(set(tile_ids) - set(progress_ids))
 
@@ -986,7 +992,7 @@ def _remove_duplicate_grader(graders):
     Removes duplicate graders, used for private group work configuration.
     """
     for i in range(0, len(graders)):
-        for j in range(i+1, len(graders)):
+        for j in range(i + 1, len(graders)):
             if compare_graders(graders[i], graders[j]):
                 graders.pop(i)
                 break
