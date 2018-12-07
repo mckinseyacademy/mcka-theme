@@ -9,11 +9,8 @@ import codecs
 import cStringIO
 
 from django.http import HttpResponse
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-from django.conf import settings
 
-from util.s3_helpers import PrivateMediaStorageThroughApros
+from util.s3_helpers import store_file
 
 
 class CSVWriter(object):
@@ -126,23 +123,7 @@ def create_and_store_csv_file(fields, data, dir_name, file_name, logger, task_lo
         temp_csv_file.seek(0)
 
     logger.info('Created temp CSV file - {}'.format(task_log_msg))
-
-    storage_path = '{}/{}'.format(dir_name, file_name)
-
-    if settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage' and secure:
-        storage = PrivateMediaStorageThroughApros()
-    else:
-        storage = default_storage
-
-    try:
-        file_path = storage.save(storage_path, ContentFile(temp_csv_file.read()))
-        file_url = storage.url(file_path)
-    except Exception as e:
-        logger.error('Failed storing file to storage - {}'.format(e.message))
-        raise
-    finally:
-        temp_csv_file.close()
-
+    file_url = store_file(temp_csv_file, dir_name, file_name, secure)
     logger.info('File stored at path {} - {}'.format(file_url, task_log_msg))
 
     return file_url

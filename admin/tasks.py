@@ -26,7 +26,7 @@ from api_client import group_api
 from api_client import user_api
 from api_client.api_error import ApiError
 from util.csv_helpers import CSVWriter, create_and_store_csv_file
-from util.s3_helpers import PrivateMediaStorageThroughApros
+from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage
 from util.email_helpers import send_html_email
 
 from accounts.models import UserActivation
@@ -70,8 +70,8 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
 
     api_params = {
         'page': 1,
-        'per_page': 1000,
-        'page_size': 1000,
+        'per_page': settings.MAX_USERS_PER_PAGE,
+        'page_size': settings.MAX_USERS_PER_PAGE,
         'additional_fields': ",".join(additional_fields),
         # Profile images take a long time to serialize, and we don't need them.
         'exclude_fields': "profile_image",
@@ -460,26 +460,32 @@ def users_program_association_task(program_id, user_ids, task_id):
     return {'successful': added, 'total': total}
 
 
-@task(name='admin.import_participants_task', serializer='pickle', queue='high_priority')
-def import_participants_task(user_id, base_url, file_stream, is_internal_admin, registration_batch):
+@task(name='admin.import_participants_task', queue='high_priority')
+def import_participants_task(user_id, base_url, file_url, is_internal_admin, registration_batch_id):
     """
     Processes a CSV file of participants.
-
-    Note on pickle serialization:
-        This job requires pickle serialization because it takes in a CSV file object.
-        This isn't a security concern, because the input is not directly from the user,
-        but rather from Django. The user does input the file to the webserver which hands
-        it to Django, but Django validates and turns it into a safe Python data structure.
-        At that point, it isn't dangerous to un-pickle the object, as it's already been around
-        in our runtime without issue.
     """
     task_log_msg = "Import Participants task"
 
     logger.info('Started - {}'.format(task_log_msg))
 
+    storage = get_storage(secure=True)
+    try:
+        file_path = resolve(file_url).kwargs.get('path')
+    except Resolver404:
+        file_path = file_url
+
+    try:
+        file_stream = storage.open(file_path)
+    except Exception as e:
+        logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
+        raise
+    else:
+        logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
+
     user_list = build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
     clean_user_list, unclean_user_list, user_registration_errors = [], [], []
-
+    registration_batch = UserRegistrationBatch.objects.get(id=registration_batch_id)
     for user_info in user_list:
         if "error" in user_info:
             try:
@@ -529,7 +535,6 @@ def import_participants_task(user_id, base_url, file_stream, is_internal_admin, 
 
     logger.info('{} of {} users registered successfully - {}'
                 .format(registration_batch.succeded, total_clean_users, task_log_msg))
-
     logger.info('Completed - {}'.format(task_log_msg))
 
     generate_import_files_and_send_notification.delay(
@@ -538,6 +543,13 @@ def import_participants_task(user_id, base_url, file_stream, is_internal_admin, 
         base_url=base_url,
         user_file_name=file_stream.name,
     )
+
+    try:
+        storage.delete(file_path)
+    except Exception as e:
+        logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
+    else:
+        logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
 
 
 @task(name='admin.user_company_fields_update_task', queue='high_priority')

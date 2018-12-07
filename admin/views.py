@@ -77,6 +77,7 @@ from license import controller as license_controller
 from main.models import CuratedContentItem
 from util.csv_helpers import csv_file_response, UnicodeWriter
 from util.data_sanitizing import sanitize_data, clean_xss_characters
+from util.s3_helpers import store_file
 from util.validators import (
     AlphanumericValidator, alphanum_accented_validator)
 from .bulk_task_runner import BulkTaskRunner
@@ -117,7 +118,7 @@ from .models import (Client, Program, WorkGroup, WorkGroupActivityXBlock, Review
                      SelfRegistrationRoles, OTHER_ROLE)
 from .permissions import Permissions, PermissionSaveError
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
-from .tasks import import_participants_task
+from .tasks import import_participants_task, IMPORT_PARTICIPANTS_DIR
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 
 
@@ -2400,17 +2401,24 @@ def import_participants(request):
         # A form bound to the POST data and FILE data
         form = MassStudentListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
+            file_name = '_'.join(request.FILES['student_list'].name.split())
             reg_status = UserRegistrationBatch.create()
             reg_status.triggered_by = request.user.username
-            reg_status.uploaded_file_name = request.FILES['student_list'].name
+            reg_status.uploaded_file_name = file_name
             reg_status.save()
+            file_url = store_file(
+                request.FILES['student_list'],
+                IMPORT_PARTICIPANTS_DIR,
+                file_name,
+                secure=True
+            )
 
             import_participants_task.delay(
                 request.user.id,
                 request.build_absolute_uri(),
-                request.FILES['student_list'],
+                file_url,
                 request.user.is_internal_admin,
-                reg_status
+                reg_status.id
             )
             return HttpResponse(
                 json.dumps({"task_key": _(reg_status.task_key)}),
