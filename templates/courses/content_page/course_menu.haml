@@ -26,7 +26,7 @@
         %ul
           - for lesson in course.chapters
             %li{"class": "lesson-card {% if lesson.is_started %}active{% else %}future{% endif %}"}
-              %a.card-flip{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}{% endif %}"}
+              %a.card-flip{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
                 .front.background-white
                   - if not lesson.is_started
                     .bookmark
