@@ -42,7 +42,7 @@
                       %p {% trans "Passed:" %} #{passed}%
             #courseMainDetailsContainerView
               .courseDetailsMenuButtons.row
-                - if show_cohorts and not groupwork_enabled
+                - if cohorts_available
                   .courseCohortsButton.large-2.columns
                     %a{href: "{% url 'cohorts_course_details' id %}"}
                       {% trans "COHORTS" %}
@@ -222,6 +222,5 @@
   :javascript
 
     var course_details_count_all_users = '{{count}}';
-    var course_details_show_cohorts = '{{show_cohorts}}';
+    var course_details_cohorts_available = '{{cohorts_available}}';
     var course_details_cohorts_enabled = '{{cohorts_enabled}}';
-    var course_details_groupwork_enabled = '{{groupwork_enabled}}';
