@@ -13,8 +13,9 @@ def set_language(language=settings.LANGUAGE_CODE):
     language_supported = [lang for lang in settings.LANGUAGES if lang[0] == language]
     language = language if language_supported else settings.LANGUAGE_CODE
     request = get_current_request()
-    translation.activate(language)
-    request.session[translation.LANGUAGE_SESSION_KEY] = language
+    if request.LANGUAGE_CODE != language:
+        translation.activate(language)
+        request.session[translation.LANGUAGE_SESSION_KEY] = language
 
 
 def _format_lazy(format_string, *args, **kwargs):

@@ -29,7 +29,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_http_methods
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.forms.widgets import HiddenInput
-from django.views.decorators.cache import never_cache, cache_page
+from django.views.decorators.cache import never_cache
 from django.template.loader import render_to_string
 from requests import ConnectionError, HTTPError
 from django.shortcuts import resolve_url
@@ -1023,7 +1023,6 @@ def home(request):
     return render(request, 'home/landing.haml', data)
 
 
-@cache_page(60 * 60)
 def public_home(request):
     data = {
         'popup': {'title': '', 'description': ''},
