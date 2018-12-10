@@ -9,6 +9,7 @@
       var _options=options;
       _this.enroll_user_in_course_function();
       _this.setLocationTooltip();
+      _this.cohorts_available = participants_cohorts_available;
       $('#country_edit').countrySelect({
         defaultCountry: "null",  // set country empty by default on form initialization
         preferredCountries: ["null"]  // put empty country on top of list in drop down
@@ -354,6 +355,7 @@
     },
     enroll_user_in_course_function: function()
     {
+      var _this = this;
       $('#participantsDetailsDataWrapper').on('click','.participantEnrollInCourse',function()
       {
         if ($(this).hasClass('disabled'))
@@ -362,6 +364,7 @@
         var enroll_modal_id = '#participantEnrollMainModal';
         $(enroll_modal_id).find('.participantModalTitle').text(gettext('Select Course'));
         $(enroll_modal_id).find('.participantModalDescription').text(gettext('User will be enrolled in course selected below.'));
+        var moderatorOption = '<option value="Instructor">' + gettext('Moderator') + '</option></select>';
         $(enroll_modal_id).find('.participantModalContent').html(
           '<div class="row enrollParticipants">' +
           '<div class="large-6 columns enrollParticipantsCourse">' +
@@ -374,7 +377,7 @@
           '<option value="Active">'+gettext('Participant')+'</option>' +
           '<option value="Observer">' + gettext('Observer') + '</option>' +
           '<option value="TA">' + gettext('TA') + '</option>' +
-          '<option value="Instructor">' + gettext('Moderator') + '</option></select>' +
+          (_this.cohorts_available == 'True' ? moderatorOption : '') +
           '</div></div>'
         );
         var url = ApiUrls.participant_courses_get_api();

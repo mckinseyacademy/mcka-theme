@@ -389,17 +389,17 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
 
     @ddt.unpack
     @ddt.data(
-        (True, False, False, True),
-        (False, False, False, True),
-        (True, True, False, False),
-        (False, True, False, False),
+        (True, True, False, True),
+        (False, False, False, False),
+        (True, True, False, True),
+        (False, True, False, True),
         (True, False, True, False),
         (False, False, True, False),
         (True, True, True, False),
         (False, True, True, False),
     )
     @patch('accounts.models.RemoteUser.is_client_admin', lambda x: False)
-    def test_cohorts_groupwork(self, is_cohorted, is_groupwork, is_client_admin, show_tab):
+    def test_cohorts_groupwork(self, is_cohorted, is_available, is_client_admin, show_tab):
         """
         Make sure the cohort tab is correctly hidden or shown depending on
         groupwork and company admin or internal admin. Also makes sure the
@@ -408,10 +408,10 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
         def _get_course_context(t):
             return {
                 'cohorts_enabled': t[0],
-                'groupwork_enabled': t[1],
+                'cohorts_available': t[1],
             }
         course_api = self.apply_patch('admin.views.load_course')
-        course_api.return_value = (is_cohorted, is_groupwork)
+        course_api.return_value = (is_cohorted, is_available)
 
         url = reverse('course_details', kwargs={'course_id': unicode(self.course.course_id)})
         request = self.get_request(url, self.admin_user)
@@ -428,5 +428,5 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
                 self.assertEqual(show_tab, '/admin/cohorts/' in response.content)
                 # Make sure javascript variables are correctly set
                 self.assertTrue('var course_details_cohorts_enabled = \'%s\'' % is_cohorted in response.content)
-                self.assertTrue('var course_details_groupwork_enabled = \'%s\'' % is_groupwork in response.content)
-                self.assertTrue('var course_details_show_cohorts = \'%s\'' % (not is_client_admin) in response.content)
+                self.assertTrue('var course_details_cohorts_available = \'%s\'' % (
+                        is_available and not is_client_admin) in response.content)

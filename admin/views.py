@@ -11,6 +11,8 @@ import re
 
 from smtplib import SMTPException
 from urllib import quote as urlquote, urlencode
+
+import waffle
 from dateutil.parser import parse as parsedate
 
 from django.conf import settings
@@ -824,9 +826,14 @@ def course_details(request, course_id):
     context.update({
         'companyAdminFlag': False,
         'internalAdminFlag': request.user.is_internal_admin,
-        'show_cohorts': True,
     })
     return render(request, 'admin/courses/course_details.haml', context)
+
+
+def _cohort_flag():
+    namespace = 'course_groups'
+    switch_name = 'enable_apros_integration'
+    return waffle.switch_is_active('{}.{}'.format(namespace, switch_name))
 
 
 def _get_course_context(course):
@@ -867,8 +874,8 @@ def _get_course_context(course):
 
     # Update flags
     context['discussion_feature'] = course_features.discussions
-    context['groupwork_enabled'] = len(course.group_projects) > 0
-    context['cohorts_enabled'] = course_api.get_course_cohort_settings(course.id).is_cohorted
+    context['cohorts_available'] = _cohort_flag() and not course.group_projects
+    context['cohorts_enabled'] = _cohort_flag() and course_api.get_course_cohort_settings(course.id).is_cohorted
 
     return context
 
@@ -4092,6 +4099,7 @@ class participant_details_api(APIView):
                 companyAdminFlag = True
             selectedUser['companyAdminFlag'] = companyAdminFlag
             selectedUser['internalAdminFlag'] = request.user.is_internal_admin
+            selectedUser['cohorts_available'] = _cohort_flag()
             return render(request, 'admin/participants/participant_details.haml', selectedUser)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
@@ -4383,7 +4391,8 @@ class participant_details_course_edit_status_api(APIView):
             'user_id': user_id,
             'course_id': course_id,
             'current_roles': current_roles,
-            'status': ''
+            'status': '',
+            'cohorts_available': _cohort_flag(),
         }
         return HttpResponse(render(request, 'admin/participants/participant_edit_status.haml', data))
 
@@ -5687,7 +5696,7 @@ def company_course_details(request, company_id, course_id):
         'companyId': company_id,
         'companyName': organization_api.fetch_organization(company_id).display_name,
         'internalAdminFlag': request.user.is_internal_admin,
-        'show_cohorts': False,
+        'cohorts_available': False,
     })
     return render(request, 'admin/courses/course_details.haml', context)
 
@@ -6176,6 +6185,8 @@ class CohortUsers(APIView):
                            PERMISSION_GROUPS.MCKA_SUBADMIN)
 def cohorts_course_details(request, course_id):
     course = course_api.get_course_details(course_id)
+    if not _cohort_flag():
+        return render(request, '404.haml', status=status.HTTP_404_NOT_FOUND)
     return render(request, 'admin/cohorts/course_details.html', course)
 
 
