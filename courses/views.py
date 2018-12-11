@@ -797,6 +797,12 @@ def navigate_to_lesson_module(
     """
     go to given page within given chapter within given course
     """
+
+    # hack to support IE11-Win7 closed caption issue for Ooyala xblock Videos;
+    # see MCKIN-8790 for details
+    if page_id and page_id.endswith('bitmovinplayer.swf'):
+        return HttpResponseRedirect('static/ooyala/bitmovinplayer.swf')
+
     course_tree_builder = CourseTreeBuilder(course_id, request)
     course = load_course(course_id, request=request)
     course_tree_builder.include_progress_data(course)
