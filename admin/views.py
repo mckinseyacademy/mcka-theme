@@ -51,7 +51,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
     process_manager_email, parse_participant_profile_csv
-from admin.tasks import user_company_fields_update_task, bulk_user_manager_update_task
+from admin.tasks import user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api, \
     cohort_api
 from api_client.api_error import ApiError
@@ -69,7 +69,7 @@ from certificates.models import CertificateStatus
 from courses.controller import (
     Progress, Proficiency,
     return_course_progress, organization_course_progress_user_list,
-    social_total, round_to_int_bump_zero, round_to_int, create_tile_progress_data
+    social_total, round_to_int_bump_zero, round_to_int
 )
 from courses.models import FeatureFlags, CourseMetaData
 from courses.user_courses import load_course_progress
@@ -5513,11 +5513,11 @@ def course_learner_dashboard_tile(request, course_id, learner_dashboard_id, tile
 
             # filter digital content types
             if tile.tile_type == '2' or tile.tile_type == '3' or tile.tile_type == '4' or tile.tile_type == '5':
-                create_tile_progress_data(tile)
+                create_tile_progress_data.delay(tile.id)
 
             # creating progress data for groupwork activity links
             if tile.tile_type == '7' and "activate_block_id" in tile.link:
-                create_tile_progress_data(tile)
+                create_tile_progress_data.delay(tile.id)
 
             redirect_url = reverse(
                 'course_learner_dashboard',

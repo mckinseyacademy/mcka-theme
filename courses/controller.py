@@ -2,7 +2,6 @@
 # from urllib import quote_plus, unquote_plus
 
 import copy
-import json
 import logging
 import random
 from datetime import datetime
@@ -767,20 +766,6 @@ def add_months_to_date(new_date, months):
     year = int(new_date.year + month / 12)
     month = month % 12 + 1
     return datetime(year, month, 1)
-
-
-def create_tile_progress_data(tile):
-    '''
-    Triggered by admin creating the tile in learner dashboard CMS
-    '''
-    link = strip_tile_link(tile.link)
-    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=1000))
-    completions = course_api.get_course_completions(link['course_id'], page_size=1000)
-    for user in users:
-        course = get_course_object(user['id'], link['course_id'])
-        if course:
-            user_completions = completions[user['username']]
-            update_progress(tile, user, course, user_completions, link)
 
 
 def progress_update_handler(request, course, chapter_id=None, page_id=None):

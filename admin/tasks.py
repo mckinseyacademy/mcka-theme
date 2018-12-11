@@ -29,8 +29,10 @@ from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage
 from util.email_helpers import send_html_email
 
+from admin.models import LearnerDashboardTile
 from accounts.models import UserActivation
 from accounts.helpers import create_activation_url
+from courses.controller import strip_tile_link, get_course_object, update_progress
 
 from .controller import (
     _enroll_participants,
@@ -808,4 +810,26 @@ def purge_old_import_records_and_csv_files():
 
     logger.info('Completed - {}'.format(task_log_msg))
 
+    return True
+
+
+@task(name='admin.create_tile_progress_data', queue='high_priority')
+def create_tile_progress_data(tile_id):
+    """
+    Creates tile progress data, Triggered when a learner dashboard tile is saved
+    """
+    try:
+        tile = LearnerDashboardTile.objects.get(id=tile_id)
+    except LearnerDashboardTile.DoesNotExist:
+        logger.info('EXITING Tile Progress Data Creation - Failed retrieving LearnerDashboardTile object with id: {}'
+                    .format(tile_id))
+        return False
+    link = strip_tile_link(tile.link)
+    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=1000))
+    completions = course_api.get_course_completions(link['course_id'], page_size=1000)
+    for user in users:
+        course = get_course_object(user['id'], link['course_id'])
+        user_completions = completions.get(user['username'], None)
+        if course and user_completions:
+            update_progress(tile, user, course, user_completions, link)
     return True
