@@ -76,7 +76,7 @@ class StudentCourseProgressDetailsApi(APIView):
                                                edx_oauth2_session=edx_oauth2_session,
                                                )
         user_course_progress = []
-        course_details = get_course(course_id, depth=1)
+        course_details = get_course(course_id, user=request.user, depth=1)
         user_chapters = []
         if user_progress:
             user_chapters = user_progress.get(username)
