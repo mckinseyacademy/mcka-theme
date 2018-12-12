@@ -318,6 +318,10 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         # When coerced to an int, a mock returns 1, which messes up completions, so
         # instead return no completions at all to get the desired result.
         api_client.get_course_completions.return_value = {}
+        api_client.get_course_social_metrics.return_value = {
+            student.id: 0
+            for student in self.students
+        }
         return api_client
 
     def assert_expected_result(self, result, idx=0):

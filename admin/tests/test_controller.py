@@ -5,7 +5,7 @@ import ddt
 import os
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.test.client import RequestFactory
 from rest_framework import status
 
@@ -104,42 +104,7 @@ def mock_completion_score(*args, **kwargs):
     }
 
 
-def MockEngagementScore(object):
-    data = {
-        'users':
-            {
-                '1':
-                    {
-                        'num_threads': 1,
-                        'num_comments': 1,
-                        'num_replies': 1,
-                        'num_upvotes': 1,
-                        'num_thread_followers': 1,
-                        'num_comments_generated': 1,
-                    },
-                '2':
-                    {
-                        'num_threads': 2,
-                        'num_comments': 1,
-                        'num_replies': 0,
-                        'num_upvotes': 0,
-                        'num_thread_followers': 0,
-                        'num_comments_generated': 0,
-                    }
-            }
-    }
-    return JP.from_dictionary(data)
-
-
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
-    @override_settings(CELERY_ALWAYS_EAGER=True)
-    def test_get_engagement_scores(self):
-        self.apply_patch('api_client.course_api.get_course_social_metrics', new=MockEngagementScore)
-        test_object = CourseParticipantStats('1', 'base/url')
-        u_ids = ['1', '2']
-        engagement_scores = test_object._get_engagement_scores()
-        self.assertEqual(engagement_scores[u_ids[0]], 85)
-        self.assertEqual(engagement_scores[u_ids[1]], 35)
 
     def test__get_lesson_completions(self):
         test_username = u'test_user'

@@ -868,24 +868,6 @@ def get_course_details_metrics_grades(course_id, count):
 
 
 @api_error_protect
-def get_course_details_metrics_social(course_id, qs_params=''):
-    """
-    Fetch social metrics for course.
-    """
-    edx_oauth2_session = get_oauth2_session()
-
-    url = '{}/{}/{}/metrics/social/?{}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            urlencode(qs_params)
-        )
-
-    response = edx_oauth2_session.get(url)
-    return response.json()
-
-
-@api_error_protect
 def get_course_details_completions_leaders(course_id, organization_id='', **kwargs):
     qs_params = {"organizations": organization_id}
     qs_params.update(kwargs)
