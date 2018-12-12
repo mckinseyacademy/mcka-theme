@@ -104,33 +104,6 @@ def mock_completion_score(*args, **kwargs):
     }
 
 
-def MockEngagementScore(object):
-    data = {
-        'users':
-            {
-                '1':
-                    {
-                        'num_threads': 1,
-                        'num_comments': 1,
-                        'num_replies': 1,
-                        'num_upvotes': 1,
-                        'num_thread_followers': 1,
-                        'num_comments_generated': 1,
-                    },
-                '2':
-                    {
-                        'num_threads': 2,
-                        'num_comments': 1,
-                        'num_replies': 0,
-                        'num_upvotes': 0,
-                        'num_thread_followers': 0,
-                        'num_comments_generated': 0,
-                    }
-            }
-    }
-    return JP.from_dictionary(data)
-
-
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
 
     def test__get_lesson_completions(self):
