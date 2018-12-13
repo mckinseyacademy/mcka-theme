@@ -2947,7 +2947,7 @@ msgstr "パスワード再設定のEメールが送信されました"
 msgid ""
 "We have sent an email to <a href=\"mailto:{0}\">{0}</a> with a link to "
 "create an account for you."
-msgstr ""
+msgstr "アカウント作成用のリンクが記載されたメールを <a href=\"mailto:{0}\">{0}</a> に送信しました。"
 
 #: public_api/views.py:233
 msgid ""
@@ -3176,25 +3176,23 @@ msgstr "ログインできない場合は、ご連絡ください。"
 
 #: templates/accounts/login.haml:68
 msgid "Check your email inbox"
-msgstr ""
+msgstr "受信箱をご確認ください"
 
 #: templates/accounts/login.haml:75
 msgid "If you don't see the email in your inbox, check your spam folder or"
-msgstr ""
+msgstr "受信箱にメールが届いていない場合は、迷惑メールフォルダーをご確認頂くか"
 
 #: templates/accounts/login.haml:77
-#, fuzzy
-#| msgid "Send Email"
 msgid "resend email"
-msgstr "Eメールを送信する"
+msgstr "リンクをクリックしてメールを"
 
 #: templates/accounts/login.haml:79
 msgid " with the link."
-msgstr ""
+msgstr "再度送信してください。"
 
 #: templates/accounts/login.haml:82
 msgid "Return to Login"
-msgstr ""
+msgstr "ログイン画面に戻る"
 
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
@@ -3295,8 +3293,6 @@ msgid "No file selected."
 msgstr "ファイルが選択されていません。"
 
 #: templates/accounts/user_activation_email.haml:12
-#, fuzzy
-#| msgid "Welcome to McKinsey Academy"
 msgid "Welcome to McKinsey Academy!"
 msgstr "McKinsey Academyへようこそ"
 
@@ -3305,23 +3301,21 @@ msgid ""
 "We are excited for you to begin your learning journey. To get started, "
 "please click on the personalized link below to create a username and "
 "password for your account."
-msgstr ""
+msgstr "Eラーニングにようこそ。コースを開始する前に、下記のリンクをクリックして、ユーザー名とパスワードを作成してください。"
 
 #: templates/accounts/user_activation_email.haml:18
 msgid ""
 "After you've created your username and password, you can access your course "
 "at"
-msgstr ""
+msgstr "ユーザー名とパスワードを作成すると、コースにアクセスできるようになります"
 
 #: templates/accounts/user_activation_email.haml:21
 msgid " at anytime."
-msgstr ""
+msgstr " いつでも."
 
 #: templates/accounts/user_activation_email.haml:23
-#, fuzzy
-#| msgid "COURSE_STARTED"
 msgid "GET STARTED"
-msgstr "コース＿開始"
+msgstr "開始する"
 
 #: templates/accounts/user_activation_email.haml:26
 #: templates/admin/bulk_fields_update_report_email.haml:28
@@ -3329,7 +3323,7 @@ msgstr "コース＿開始"
 #: templates/admin/export_stats_failure_email_template.haml:23
 #: templates/admin/import_users_email_template.haml:35
 msgid "Best Regards,"
-msgstr "よろしくお願いいたします。"
+msgstr "宜しくお願いします。"
 
 #: templates/accounts/user_activation_email.haml:32
 #: templates/admin/admin_header.haml:62

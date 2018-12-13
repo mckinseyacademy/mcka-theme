@@ -2938,7 +2938,7 @@ msgstr "تم إرسال البريد الإلكتروني الخاص بإعاد�
 msgid ""
 "We have sent an email to <a href=\"mailto:{0}\">{0}</a> with a link to "
 "create an account for you."
-msgstr ""
+msgstr "لقد أرسلنا بريداً إلكترونياً للعنوان <a href=\"mailto:{0}\">{0}</a> به رابط لإنشاء حساب خاص بك."
 
 #: public_api/views.py:233
 msgid ""
@@ -3162,25 +3162,23 @@ msgstr "هل تواجهك مشكلة في تسجيل الدخول؟ اتصل ب�
 
 #: templates/accounts/login.haml:68
 msgid "Check your email inbox"
-msgstr ""
+msgstr "تفقد صندوق البريد الإلكتروني الخاص بك"
 
 #: templates/accounts/login.haml:75
 msgid "If you don't see the email in your inbox, check your spam folder or"
-msgstr ""
+msgstr "إذا كنت لا ترى البريد الإلكتروني في صندوق الوارد الخاص بك، تحقق من مجلد رسائل البريد العشوائي أو اختر"
 
 #: templates/accounts/login.haml:77
-#, fuzzy
-#| msgid "Send Email"
 msgid "resend email"
-msgstr "إرسال البريد الإلكتروني"
+msgstr "إعادة إرسال البريد الإلكتروني"
 
 #: templates/accounts/login.haml:79
 msgid " with the link."
-msgstr ""
+msgstr " الذي يحتوي على الرابط."
 
 #: templates/accounts/login.haml:82
 msgid "Return to Login"
-msgstr ""
+msgstr "العودة لتسجيل الدخول"
 
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
@@ -3283,33 +3281,29 @@ msgid "No file selected."
 msgstr "لم يتم تحديد ملف."
 
 #: templates/accounts/user_activation_email.haml:12
-#, fuzzy
-#| msgid "Welcome to McKinsey Academy"
 msgid "Welcome to McKinsey Academy!"
-msgstr "مرحبا بكم في أكاديمية ماكنزي"
+msgstr "مرحبا بكم في أكاديمية ماكنزي!"
 
 #: templates/accounts/user_activation_email.haml:14
 msgid ""
 "We are excited for you to begin your learning journey. To get started, "
 "please click on the personalized link below to create a username and "
 "password for your account."
-msgstr ""
+msgstr "يُسعدنا كثيراً أن تبدأ رحلتك التعليمية. لكي تبدأ، الرجاء الضغط على الرابط المخصص أدناه لإنشاء اسم مستخدم وكلمة مرور لحسابك."
 
 #: templates/accounts/user_activation_email.haml:18
 msgid ""
 "After you've created your username and password, you can access your course "
 "at"
-msgstr ""
+msgstr "بعد إنشاء اسم المستخدم وكلمة المرور، يمكنك الوصول إلى الدورة في"
 
 #: templates/accounts/user_activation_email.haml:21
 msgid " at anytime."
-msgstr ""
+msgstr "أي وقت"
 
 #: templates/accounts/user_activation_email.haml:23
-#, fuzzy
-#| msgid "COURSE_STARTED"
 msgid "GET STARTED"
-msgstr "بدأت الدورة"
+msgstr "للبدء"
 
 #: templates/accounts/user_activation_email.haml:26
 #: templates/admin/bulk_fields_update_report_email.haml:28
@@ -4721,8 +4715,6 @@ msgid "Try Again"
 msgstr "أعد المحاولة مرة أخرى"
 
 #: templates/admin/export_stats_failure_email_template.haml:32
-#, fuzzy
-#| msgid "if you have any questions"
 msgid "if you have any further issues"
 msgstr "إذا واجهتك أي مشاكل أخرى"
 

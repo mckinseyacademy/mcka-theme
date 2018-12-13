@@ -2969,7 +2969,7 @@ msgstr "E-mail de réinitialisation de mot de passe envoyé"
 msgid ""
 "We have sent an email to <a href=\"mailto:{0}\">{0}</a> with a link to "
 "create an account for you."
-msgstr ""
+msgstr "Nous avons envoyé un e-mail à <a href=\"mailto:{0}\">{0}</a> avec un lien pour créer un compte pour vous."
 
 #: public_api/views.py:233
 msgid ""
@@ -3209,25 +3209,23 @@ msgstr "Problème de connexion ? Contactez-nous."
 
 #: templates/accounts/login.haml:68
 msgid "Check your email inbox"
-msgstr ""
+msgstr "Vérifiez votre boîte mail"
 
 #: templates/accounts/login.haml:75
 msgid "If you don't see the email in your inbox, check your spam folder or"
-msgstr ""
+msgstr "Si vous ne voyez pas l'e-mail dans votre boîte de réception, vérifiez votre dossier de courrier indésirable ou"
 
 #: templates/accounts/login.haml:77
-#, fuzzy
-#| msgid "Send Email"
 msgid "resend email"
-msgstr "Envoyer un e-mail"
+msgstr "ré-envoyez l'email"
 
 #: templates/accounts/login.haml:79
 msgid " with the link."
-msgstr ""
+msgstr " avec le lien."
 
 #: templates/accounts/login.haml:82
 msgid "Return to Login"
-msgstr ""
+msgstr "Retour à la connexion"
 
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
@@ -3328,33 +3326,29 @@ msgid "No file selected."
 msgstr "Aucun fichier sélectionné."
 
 #: templates/accounts/user_activation_email.haml:12
-#, fuzzy
-#| msgid "Welcome to McKinsey Academy"
 msgid "Welcome to McKinsey Academy!"
-msgstr "Bienvenue à la McKinsey Academy"
+msgstr "Bienvenue à la McKinsey Academy!"
 
 #: templates/accounts/user_activation_email.haml:14
 msgid ""
 "We are excited for you to begin your learning journey. To get started, "
 "please click on the personalized link below to create a username and "
 "password for your account."
-msgstr ""
+msgstr "Nous attendons avec impatience le début de votre parcours d’apprentissage. Pour commencer, veuillez cliquer sur le lien personnalisé ci-dessous pour créer un nom d'utilisateur et un mot de passe pour votre compte."
 
 #: templates/accounts/user_activation_email.haml:18
 msgid ""
 "After you've created your username and password, you can access your course "
 "at"
-msgstr ""
+msgstr "Après avoir créé votre nom d'utilisateur et votre mot de passe, vous pouvez accéder à votre cours à l'adresse"
 
 #: templates/accounts/user_activation_email.haml:21
 msgid " at anytime."
-msgstr ""
+msgstr " À tout moment"
 
 #: templates/accounts/user_activation_email.haml:23
-#, fuzzy
-#| msgid "COURSE_STARTED"
 msgid "GET STARTED"
-msgstr "COURSE_STARTED"
+msgstr "Commencer"
 
 #: templates/accounts/user_activation_email.haml:26
 #: templates/admin/bulk_fields_update_report_email.haml:28
@@ -3362,7 +3356,7 @@ msgstr "COURSE_STARTED"
 #: templates/admin/export_stats_failure_email_template.haml:23
 #: templates/admin/import_users_email_template.haml:35
 msgid "Best Regards,"
-msgstr "Cordialement,"
+msgstr "Meilleures salutations,"
 
 #: templates/accounts/user_activation_email.haml:32
 #: templates/admin/admin_header.haml:62
@@ -3370,7 +3364,7 @@ msgstr "Cordialement,"
 #: templates/admin/export_stats_email_template.haml:29
 #: templates/admin/export_stats_failure_email_template.haml:29
 msgid "Contact"
-msgstr "Contact"
+msgstr "Contacter"
 
 #: templates/accounts/user_activation_email.haml:35
 #: templates/admin/bulk_fields_update_report_email.haml:37

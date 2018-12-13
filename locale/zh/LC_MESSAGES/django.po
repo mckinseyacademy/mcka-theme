@@ -2925,7 +2925,7 @@ msgstr "密码重置电子邮件已发送"
 msgid ""
 "We have sent an email to <a href=\"mailto:{0}\">{0}</a> with a link to "
 "create an account for you."
-msgstr ""
+msgstr "我们已将包含帐户创建链接的电子邮件发送到 <a href=\"mailto:{0}\">{0}</a>。"
 
 #: public_api/views.py:233
 msgid ""
@@ -3151,25 +3151,23 @@ msgstr "登录时遇到问题？请与我们联系。"
 
 #: templates/accounts/login.haml:68
 msgid "Check your email inbox"
-msgstr ""
+msgstr "请查看电子邮箱收件箱"
 
 #: templates/accounts/login.haml:75
 msgid "If you don't see the email in your inbox, check your spam folder or"
-msgstr ""
+msgstr "如果您的收件箱中没有这封邮件，请查看垃圾文件夹或"
 
 #: templates/accounts/login.haml:77
-#, fuzzy
-#| msgid "Send Email"
 msgid "resend email"
-msgstr "发送电子邮件"
+msgstr "重新发送"
 
 #: templates/accounts/login.haml:79
 msgid " with the link."
-msgstr ""
+msgstr " 包含链接的电子邮件。"
 
 #: templates/accounts/login.haml:82
 msgid "Return to Login"
-msgstr ""
+msgstr "返回登录"
 
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
@@ -3266,8 +3264,6 @@ msgid "No file selected."
 msgstr "未选择文件。"
 
 #: templates/accounts/user_activation_email.haml:12
-#, fuzzy
-#| msgid "Welcome to McKinsey Academy"
 msgid "Welcome to McKinsey Academy!"
 msgstr "欢迎来到麦肯锡学院"
 
@@ -3276,23 +3272,21 @@ msgid ""
 "We are excited for you to begin your learning journey. To get started, "
 "please click on the personalized link below to create a username and "
 "password for your account."
-msgstr ""
+msgstr "很高兴您已成功踏上学习之旅。若要立即开始，请单击以下个性化链接，为您的帐户创建用户名和密码。"
 
 #: templates/accounts/user_activation_email.haml:18
 msgid ""
 "After you've created your username and password, you can access your course "
 "at"
-msgstr ""
+msgstr "用户名和密码创建完成后，您可以访问课程"
 
 #: templates/accounts/user_activation_email.haml:21
 msgid " at anytime."
-msgstr ""
+msgstr "随时"
 
 #: templates/accounts/user_activation_email.haml:23
-#, fuzzy
-#| msgid "COURSE_STARTED"
 msgid "GET STARTED"
-msgstr "COURSE_STARTED"
+msgstr "立即开始"
 
 #: templates/accounts/user_activation_email.haml:26
 #: templates/admin/bulk_fields_update_report_email.haml:28
