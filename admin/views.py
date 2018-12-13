@@ -86,13 +86,13 @@ from .bulk_task_runner import BulkTaskRunner
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
     getStudentsWithCompanies, filter_groups_and_students, get_group_activity_xblock,
-    upload_student_list_threaded, mass_student_enroll_threaded, enroll_participants_threaded, generate_course_report,
+    upload_student_list_threaded, mass_student_enroll_threaded, generate_course_report,
     get_organizations_users_completion, get_course_analytics_progress_data, get_contacts_for_client, get_admin_users,
     get_program_data_for_report, MINIMAL_COURSE_DEPTH, generate_access_key, serialize_quick_link,
     get_course_details_progress_data,
     get_course_engagement_summary, get_course_social_engagement,
     get_user_courses_helper, change_user_status, unenroll_participant,
-    _send_activation_email_to_single_new_user, _send_multiple_emails, send_activation_emails_by_task_key,
+    _send_activation_email_to_single_new_user, _send_multiple_emails,
     get_company_active_courses,
     _enroll_participant_with_status, get_accessible_courses, get_ta_accessible_course_ids,
     validate_company_display_name, get_internal_courses_ids,
@@ -2277,7 +2277,6 @@ def upload_student_list_check(request, client_id, task_key):
     ''' checks on status of student list upload '''
 
     reg_status = UserRegistrationBatch.objects.filter(task_key=task_key)
-    UserRegistrationBatch.clean_old()
     if len(reg_status) > 0:
         reg_status = reg_status[0]
         if reg_status.attempted == (reg_status.failed + reg_status.succeded):
@@ -2404,6 +2403,7 @@ def update_manager_from_csv(request):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
                            PERMISSION_GROUPS.MCKA_SUBADMIN)
 def import_participants(request):
+    """Import new participants into a company and course."""
     if request.method == 'POST':  # If the form has been submitted...
         # A form bound to the POST data and FILE data
         form = MassStudentListForm(request.POST, request.FILES)
@@ -2425,7 +2425,8 @@ def import_participants(request):
                 request.build_absolute_uri(),
                 file_url,
                 request.user.is_internal_admin,
-                reg_status.id
+                reg_status.id,
+                register=True,
             )
             return HttpResponse(
                 json.dumps({"task_key": _(reg_status.task_key)}),
@@ -2436,16 +2437,31 @@ def import_participants(request):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
                            PERMISSION_GROUPS.MCKA_SUBADMIN)
 def enroll_participants_from_csv(request):
-
+    """Import existing participants into a course."""
     if request.method == 'POST':  # If the form has been submitted...
         # A form bound to the POST data and FILE data
         form = MassParticipantsEnrollListForm(request.POST, request.FILES)
         if form.is_valid():  # All validation rules pass
+            file_name = '_'.join(request.FILES['student_enroll_list'].name.split())
             reg_status = UserRegistrationBatch.create()
-            enroll_participants_threaded(
+            reg_status.triggered_by = request.user.username
+            reg_status.uploaded_file_name = request.FILES['student_enroll_list'].name
+            reg_status.save()
+
+            file_url = store_file(
                 request.FILES['student_enroll_list'],
-                request,
-                reg_status
+                IMPORT_PARTICIPANTS_DIR,
+                file_name,
+                secure=True
+            )
+
+            import_participants_task.delay(
+                request.user.id,
+                request.build_absolute_uri(),
+                file_url,
+                request.user.is_internal_admin,
+                reg_status.id,
+                register=False,
             )
             return HttpResponse(
                 json.dumps({"task_key": _(reg_status.task_key)}),
@@ -2499,54 +2515,10 @@ class ParticipantsImportProgress(APIView):
         return Response(imports_data)
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                           PERMISSION_GROUPS.MCKA_SUBADMIN)
-def import_participants_check(request, task_key):
-
-    if request.method == 'GET':
-        reg_status = UserRegistrationBatch.objects.filter(task_key=task_key)
-        UserRegistrationBatch.clean_old()
-        if len(reg_status) > 0:
-            reg_status = reg_status[0]
-            if (int(reg_status.attempted > 0)) and (reg_status.attempted == (reg_status.failed + reg_status.succeded)):
-                errors = UserRegistrationError.objects.filter(task_key=reg_status.task_key)
-                errors_as_json = serializers.serialize('json', errors)
-                message = _("Successfully Added {} Participants").format(
-                    reg_status.attempted - reg_status.failed
-                )
-                for error in errors:
-                    error.delete()
-                attempted = str(reg_status.attempted) or "0"
-                failed = str(reg_status.failed) or "0"
-                succeded = str(reg_status.succeded) or "0"
-                reg_status.delete()
-                emails = request.GET.get('emails', "")
-                if int(failed) == 0 and emails == 'true':
-                    send_activation_emails_by_task_key(request, task_key)
-                return HttpResponse(
-                    '{"done":"done","error":'+errors_as_json+',"message":"'+message+'","attempted":"'+attempted+'",'
-                    '"failed":"'+failed+'","succeded":"'+succeded+'","emails":"'+emails+'"}',
-                    content_type='application/json'
-                )
-            else:
-                return HttpResponse(
-                            json.dumps({'done': 'progress',
-                                        'attempted': reg_status.attempted,
-                                        'failed': reg_status.failed,
-                                        'succeded': reg_status.succeded}),
-                            content_type='application/json'
-                        )
-        return HttpResponse(
-                json.dumps({'done': 'failed',
-                            'attempted': '0',
-                            'failed': '0',
-                            'succeded': '0'}),
-                content_type='application/json'
-            )
-
-
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                           PERMISSION_GROUPS.MCKA_SUBADMIN)
+@permission_group_required(
+    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+    PERMISSION_GROUPS.MCKA_SUBADMIN
+)
 def download_activation_links_by_task_key(request):
 
     task_key = request.GET.get('task_key', None)
@@ -2655,7 +2627,6 @@ def mass_student_enroll_check(request, client_id, task_key):
     ''' checks on status of student list upload '''
 
     reg_status = UserRegistrationBatch.objects.filter(task_key=task_key)
-    UserRegistrationBatch.clean_old()
     if len(reg_status) > 0:
         reg_status = reg_status[0]
         if reg_status.attempted == (reg_status.failed + reg_status.succeded):
@@ -3861,6 +3832,17 @@ class ParticipantsListApi(APIView):
             )
         else:
             participants = user_api.get_filtered_participants_list(query_params)
+
+        # extend participants search to get course participants
+        if query_params.get('course_participants_search') == 'course_participants_search':
+            course_id = query_params.get('courses')
+            if course_id:
+                query_params['prefetched_participants'] = participants
+                course_participants_stats = CourseParticipantStats(course_id=course_id,
+                                                                   base_url=request.build_absolute_uri())
+
+                course_participants = course_participants_stats.get_participants_data(query_params)
+                return Response(course_participants)
 
         for participant in participants['results']:
             if len(participant['organizations']) == 0:

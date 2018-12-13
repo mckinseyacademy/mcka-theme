@@ -35,8 +35,9 @@ from accounts.helpers import create_activation_url
 from courses.controller import strip_tile_link, get_course_object, update_progress
 
 from .controller import (
-    _enroll_participants,
-    _process_line_register_participants_csv,
+    enroll_participants,
+    process_line_register_participants_csv,
+    process_line_enroll_participants_csv,
     build_student_list_from_file,
     create_update_delete_manager,
     validate_participant_and_manager_records,
@@ -463,9 +464,11 @@ def users_program_association_task(program_id, user_ids, task_id):
 
 
 @task(name='admin.import_participants_task', queue='high_priority')
-def import_participants_task(user_id, base_url, file_url, is_internal_admin, registration_batch_id):
+def import_participants_task(user_id, base_url, file_url, is_internal_admin, registration_batch_id, register):
     """
     Processes a CSV file of participants.
+
+    :param register: if `True`, new users will be created and enrolled, otherwise existing users will be enrolled
     """
     task_log_msg = "Import Participants task"
 
@@ -485,7 +488,9 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     else:
         logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
 
-    user_list = build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
+    parse_method = process_line_register_participants_csv if register else process_line_enroll_participants_csv
+
+    user_list = build_student_list_from_file(file_stream, parse_method=parse_method)
     clean_user_list, unclean_user_list, user_registration_errors = [], [], []
     registration_batch = UserRegistrationBatch.objects.get(id=registration_batch_id)
     for user_info in user_list:
@@ -524,12 +529,17 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     threads = []
     for index in xrange(0, total_clean_users, batch_size):
         batch = clean_user_list[index:min(index + batch_size, total_clean_users)]
-        threads.append(pool.apply_async(
-            _enroll_participants, args=(batch,
-                                        is_internal_admin,
-                                        registration_batch,
-                                        )
-        ))
+        threads.append(
+            pool.apply_async(
+                enroll_participants,
+                args=(
+                    batch,
+                    is_internal_admin,
+                    registration_batch,
+                    register,
+                )
+            )
+        )
 
     # Run queued up jobs.
     for thread in threads:
