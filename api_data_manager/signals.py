@@ -7,10 +7,12 @@ from courses.models import FeatureFlags, CourseMetaData
 from .user_data import UserDataManager
 from .group_data import GroupDataManager
 from .course_data import CourseDataManager, COURSE_PROPERTIES
+from .common_data import CommonDataManager
 
 user_data_updated = Signal(providing_args=['user_ids', 'data_type'])
 group_data_updated = Signal(providing_args=['group_ids', 'data_type'])
 course_data_updated = Signal(providing_args=['course_ids', 'data_type'])
+common_data_updated = Signal(providing_args=['data_type'])
 
 
 @receiver(user_data_updated)
@@ -41,6 +43,14 @@ def group_data_updated_handler(sender, *args, **kwargs):
     for group_id in group_ids:
         data_manager = GroupDataManager(group_id=group_id)
         data_manager.delete_cached_data(user_property)
+
+
+@receiver(common_data_updated)
+def common_data_updated_handler(sender, *args, **kwargs):
+    common_data_property = kwargs.get('data_type')
+
+    common_data_manager = CommonDataManager()
+    common_data_manager.delete_cached_data(common_data_property)
 
 
 @receiver([post_save, post_delete], sender=CuratedContentItem)
