@@ -99,6 +99,8 @@ class UserDataManager(DataManager):
                     current_program = Program(
                         dictionary={"id": program_data.get('id'), "name": program_data.get('name')}
                     )
+            else:
+                current_program = Program.fetch(current_program_id)
 
         if current_course_id:
             for course in courses:

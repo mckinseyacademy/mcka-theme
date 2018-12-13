@@ -35,3 +35,4 @@ refresh_assets.sh
 
 # Export artifacts
 csv_exports/
+import_participant_files/
