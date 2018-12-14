@@ -38,7 +38,10 @@
       %table.user-progress
         %thead
           %tr
-            %th # {% trans "Modules:" %}
+            - if modules_custom_label
+              %th # {{modules_custom_label}}
+            -else
+              %th # {% trans "Modules:" %}
             %th {% trans "Overall:" %}
         %tbody
           %tr

@@ -7,7 +7,12 @@ from lib.utils import DottableDict
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 from api_data_manager.group_data import GROUP_PROPERTIES
 from api_data_manager.user_data import USER_PROPERTIES
-from api_data_manager.signals import user_data_updated, group_data_updated
+from api_data_manager.common_data import COMMON_DATA_PROPERTIES
+from api_data_manager.signals import (
+    user_data_updated,
+    group_data_updated,
+    common_data_updated,
+)
 from api_data_manager.decorators import group_api_cache_wrapper
 
 from .json_object import JsonParser as JP
@@ -183,6 +188,12 @@ def add_course_to_group(course_id, group_id, group_object=JsonObject):
         data_type=GROUP_PROPERTIES.COURSES
     )
 
+    # trigger event as program-course-mapping is updated
+    common_data_updated.send(
+        sender=__name__,
+        data_type=COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING
+    )
+
     return JP.from_json(response.read(), group_object)
 
 
@@ -240,7 +251,7 @@ def remove_user_from_group(user_id, group_id):
         )
     )
 
-    return (response.code == 204)
+    return response.code == 204
 
 
 @api_error_protect
@@ -262,7 +273,13 @@ def remove_course_from_group(course_id, group_id, group_object=JsonObject):
         data_type=GROUP_PROPERTIES.COURSES
     )
 
-    return (response.code == 204)
+    # trigger event as program-course-mapping is updated
+    common_data_updated.send(
+        sender=__name__,
+        data_type=COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING
+    )
+
+    return response.code == 204
 
 
 @api_error_protect

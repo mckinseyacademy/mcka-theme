@@ -80,7 +80,10 @@
       { title: gettext('Username'), index: true, name: 'username' },
       { title: gettext('Country'), index: true, name: 'country'}
     ],
-    initialize: function(){
+    initialize: function(options){
+      if (typeof options['participantscollection'] !== "undefined") {
+        this.participantscollection = options['participantscollection'];
+      }
       InitializeTooltipOnPage();
       var _this = this;
       var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
@@ -124,7 +127,6 @@
       coursesListDetailsViewGrid = new bbGrid.View({
         container: this.$el,
         multiselect: multiSelectFlag,
-        enableSearch: true,
         collection: this.collection.fullCollection,
         onRowClick: function()
         {
@@ -171,8 +173,46 @@
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       this.coursesListDetailsViewGrid = coursesListDetailsViewGrid;
       this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);
+      var _pointer = this;
+      _pointer.course_participant_search_flag = true;
       $(document).on('onSearchEvent', { extra : this}, this.onSearchEvent);
       $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
+
+      $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').on('enter', 'input', function(){
+          if (_pointer.course_participant_search_flag) {
+              _pointer.course_participant_search_flag = false;
+              var querryDict = {};
+              var searchFlag = false;
+              var course_id = $('#courseDetailsDataWrapper').attr('data-id');
+              var value = $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').val().trim();
+              querryDict['search_query_string'] = value;
+              querryDict['courses'] = course_id;
+              querryDict['course_id'] = course_id;
+              querryDict['course_participants_search'] = 'course_participants_search';
+              if (value) {
+                  searchFlag = true
+              }
+              if (!jQuery.isEmptyObject(querryDict)) {
+                  _pointer.participantscollection.updateQuerryParams(querryDict);
+              }
+
+              if ((_pointer.participantscollection.length > 0) && (searchFlag)) {
+                  _pointer.participantscollection.getFirstPage();
+                  _pointer.participantscollection.fullCollection.reset();
+              }
+              if (searchFlag) {
+                  $.when(_pointer.participantscollection.fetch()).then(function() {
+                  _pointer.coursesListDetailsViewGrid.setCollection(_pointer.participantscollection.fullCollection);
+                  _pointer.coursesListDetailsViewGrid.collection.trigger('reset');
+                  _pointer.coursesListDetailsViewGrid.partial_collection = _pointer.participantscollection;
+                  _pointer.course_participant_search_flag = true;
+                  });
+              }
+              else{
+                _pointer.course_participant_search_flag = true;
+              }
+          }
+      });
 
       $('#mainCourseDetailsWrapper').on('click', '.courseTagsIcon', function()
       {
@@ -531,3 +571,14 @@
       });
     }
   });
+
+$(function() {
+    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').keyup(function(e){
+      if(e.keyCode == 13){
+        $(this).trigger('enter');
+      }
+    });
+
+    // update value
+    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').val('').change();
+});

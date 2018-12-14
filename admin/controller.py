@@ -23,7 +23,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
 from django.core.validators import validate_email, ValidationError
-from django.http import Http404, HttpResponse
+from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import ugettext as _
 from rest_framework import status
@@ -1213,9 +1213,9 @@ def get_course_social_engagement(course_id, company_id):
     number_of_posts = 0
     number_of_participants_posting = 0
     if company_id:
-        course_metrics_social = course_api.get_course_details_metrics_social(course_id, {'organization': company_id})
+        course_metrics_social = course_api.get_course_social_metrics(course_id, company_id, expect_dict=True)
     else:
-        course_metrics_social = course_api.get_course_details_metrics_social(course_id)
+        course_metrics_social = course_api.get_course_social_metrics(course_id, expect_dict=True)
 
     for user in course_metrics_social['users']:
         if str(user) in course_users_ids:
@@ -1550,31 +1550,8 @@ def update_company_field_threaded(student_list, request, reg_status):
     build_student_list_from_file(student_list)
 
 
-def enroll_participants_threaded(student_list, request, reg_status):
-    _thread = threading.Thread(target=_worker)  # one is enough; it's postponed after all
-    _thread.daemon = True  # so we can exit
-    _thread.start()
-    process_enroll_participants_list(student_list, request, reg_status)
-
-
-@postpone
-def process_enroll_participants_list(file_stream, request, reg_status=None):
-    # 1) Build user list
-    user_list = build_student_list_from_file(file_stream, parse_method=_process_line_enroll_participants_csv)
-    if reg_status is not None:
-        reg_status.attempted = len(user_list)
-        reg_status.save()
-    for user_info in user_list:
-        if "error" in user_info:
-            UserRegistrationError.objects.create(error=user_info["error"], task_key=reg_status.task_key)
-            reg_status.failed = reg_status.failed + 1
-            reg_status.save()
-    user_list = [user_info for user_info in user_list if "error" not in user_info]
-    # 2) enroll the users
-    _just_enroll_participants(user_list, request, reg_status)
-
-
-def _process_line_register_participants_csv(user_line):
+def process_line_register_participants_csv(user_line):
+    """Parse line with data of a new user who will be registered and enrolled."""
     fields = user_line.strip().split(',')
 
     if len(fields) < 6:
@@ -1608,16 +1585,17 @@ def _process_line_register_participants_csv(user_line):
         validate_last_name(last_name)
         validate_email(email)
     except ValidationError as e:
-        user_info['error'] = e.message
+        user_info['error'] = str(e.message)
 
     return user_info
 
 
-def _process_line_enroll_participants_csv(user_line):
+def process_line_enroll_participants_csv(user_line):
+    """Parse line with data of an existing user who will be enrolled."""
     try:
         fields = user_line.strip().split(',')
-        # format is Email, CourseID, Status
 
+        # format is Email, CourseID, Status
         user_info = {
             "email": fields[0],
             "course_id": fields[1],
@@ -1638,18 +1616,22 @@ def _add_errors(errors, error_message, user_email, user_data):
 
     try:
         user_data = json.dumps(user_data)
-    except:
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         user_data = json.dumps({})
 
     error = dict(error=error_message, user_email=user_email, user_data=user_data)
     errors.append(error)
 
 
-def _enroll_participants(participants, is_internal_admin, reg_status):
+def enroll_participants(participants, is_internal_admin, reg_status, register):
+    """
+    Enroll participants in a course.
+    :param register: if `True`, create participants, otherwise use existing ones.
+    """
     data = {
         'internal': is_internal_admin,
         'statuses': ['participant', 'observer', 'ta'],
-        'roles': {'ta': USER_ROLES.TA, 'observer': USER_ROLES.OBSERVER},
+        'roles': {'ta': USER_ROLES.TA, 'observer': USER_ROLES.OBSERVER, 'instructor': USER_ROLES.MODERATOR},
         'ignore_roles': settings.IGNORE_ROLES,
         'permissions': {USER_ROLES.TA: PERMISSION_GROUPS.MCKA_TA, USER_ROLES.OBSERVER: PERMISSION_GROUPS.MCKA_OBSERVER},
     }
@@ -1664,7 +1646,7 @@ def _enroll_participants(participants, is_internal_admin, reg_status):
                 'course_id': user_dict.get('course_id', ''),
                 'company_id': user_dict.get('company_id', ''),
             })
-            user_id, lms_errors = import_participant(data)
+            user_id, lms_errors = import_participant(data, new=register)
 
             if lms_errors:
                 _add_errors(
@@ -1697,100 +1679,6 @@ def _enroll_participants(participants, is_internal_admin, reg_status):
         else:
             reg_status.succeded += 1
         reg_status.save()
-
-
-def _just_enroll_participants(participants, request, reg_status):
-    permissons_map = {
-        'ta': USER_ROLES.TA,
-        'observer': USER_ROLES.OBSERVER,
-        'instructor': USER_ROLES.MODERATOR
-    }
-    internal_admin_flag = request.user.is_internal_admin
-    for user_dict in participants:
-
-        course_id = user_dict['course_id'].strip()
-        status = user_dict['status'].lower().strip()
-        status_check = ['participant', 'observer', 'ta']
-        check_errors = []
-        user_error = []
-        user_email = user_dict.get('email', '').strip()
-        email = user_dict.get('email', '').strip()
-        try:
-            # Check for empty fields
-            for key, value in user_dict.items():
-                if str(value).strip() == '':
-                    if key == 'email':
-                        email = _("No email")
-                    check_errors.append({'reason': _('Empty field: {}').format(key),
-                                         'activity': _('Processing Participant')})
-            # Check if email is valid
-            try:
-                validate_email(user_email)
-            except ValidationError:
-                check_errors.append({'reason': _('Valid e-mail is required: {email}').format(user_email),
-                                     'activity': _('Processing Participant')})
-            # Check if user already exist
-            user_data = user_api.get_user_by_email(user_email)
-            if user_data['count'] == 0:
-                check_errors.append({'reason': _("User doesn't exist"), 'activity': _('Processing Participant')})
-            # Check if course exist
-            try:
-                course_api.get_course_v1(course_id)
-            except Http404:
-                check_errors.append({'reason': _("Course doesn't exist"),
-                                     'activity': _('Enrolling Participant in Course')})
-            # For Internal Admin Check if Course Is Internal
-            if internal_admin_flag:
-                if not check_if_course_is_internal(course_id):
-                    check_errors.append({'reason': _("Course is not Internal"),
-                                         'activity': _('Enrolling Participant in Course')})
-            # Check if status exist
-            if status not in status_check:
-                check_errors.append({'reason': _("Status doesn't exist"),
-                                     'activity': _('Enrolling Participant in Course')})
-            # If errors exist add them, else continue
-            if check_errors:
-                for error in check_errors:
-                    user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
-                        error['reason'],
-                        error['activity'],
-                        email
-                    ))
-            else:
-                try:
-                    # Enroll Participant in Course
-                    try:
-                        user_api.enroll_user_in_course(user_data["results"][0]["id"], course_id)
-                    except ApiError as e:
-                        raise ValueError('{}'.format(e.message), _('Enrolling Participant in Course'))
-                    # Set Participant Status on Course
-                    try:
-                        permissions = Permissions(user_data["results"][0]["id"])
-                        if status != 'participant':
-                            permissions.add_course_role(course_id, permissons_map[status])
-                    except ApiError as e:
-                        raise ValueError('{}'.format(e.message), _("Setting Participant's Status"))
-                except ValueError as e:
-                    user_error.append(_("Reason: {}, Activity: {}, Participant: {}").format(
-                        e.args[0],
-                        e.args[1],
-                        email
-                    ))
-        except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
-            reason = e.message if e.message else _("Processing Data Error")
-            user_error.append(_("Error processing data: {} - {}").format(
-                reason,
-                email
-            ))
-
-        if user_error:
-            for user_e in user_error:
-                UserRegistrationError.objects.create(error=user_e, task_key=reg_status.task_key)
-            reg_status.failed = reg_status.failed + 1
-            reg_status.save()
-        else:
-            reg_status.succeded = reg_status.succeded + 1
-            reg_status.save()
 
 
 def _send_activation_email_to_single_new_user(activation_record, user, absolute_uri):
@@ -1870,14 +1758,6 @@ def _parse_email_text_template(text_body, optional_data=None):
                 temp_text = string_template.safe_substitute(constructed_vars)
                 parsed["proccessed_email_data"].append({"email_body": temp_text, "email": user["email"]})
         return parsed
-
-
-def send_activation_emails_by_task_key(request, task_key):
-    absolute_uri = request.build_absolute_uri('/accounts/activate')
-    activation_records = UserActivation.get_activations_by_task_key(task_key=task_key)
-
-    for record in activation_records:
-        _send_activation_email_to_single_new_user(record, record, absolute_uri)
 
 
 def get_company_active_courses(company_courses):
@@ -2073,7 +1953,10 @@ class CourseParticipantStats(object):
         """
         Calls course api to get the stats
         """
-        course_participants = course_api.get_course_details_users(self.course_id, self.request_params)
+        if self.request_params.get('prefetched_participants'):
+            course_participants = self.request_params.get('prefetched_participants')
+        else:
+            course_participants = course_api.get_course_details_users(self.course_id, self.request_params)
 
         if self.restrict_to_participants is not None:
             course_participants = filter_course_participants(course_participants, self.restrict_to_participants)
@@ -2081,11 +1964,27 @@ class CourseParticipantStats(object):
         organization_id = self.request_params.get('organizations', None)
         if organization_id:
             course_participants = self._associate_company_attributes(course_participants, organization_id)
-            course_participants = remove_specific_user_roles_of_other_companies(course_participants,
-                                                                                int(organization_id))
-        lesson_completions = self._get_lesson_completions(course_participants)
-        course_completions = self._get_course_completions(course_participants)
+            course_participants = remove_specific_user_roles_of_other_companies(
+                course_participants, int(organization_id)
+            )
+
+        lesson_completions = None
+        course_completions = {}
         self._prefetched_completions = None
+        if self.request_params.get('prefetched_participants'):
+            user_ids = ','.join([str(participant.get('id')) for participant in course_participants['results']])
+            if user_ids:
+                oauth2_session = oauth2_requests.get_oauth2_session()
+
+                course_completions = course_api.get_course_completions(
+                    self.course_id,
+                    edx_oauth2_session=oauth2_session,
+                    user_ids=user_ids
+                )
+        else:
+            lesson_completions = self._get_lesson_completions(course_participants)
+            course_completions = self._get_course_completions(course_participants)
+
         if self.participants_engagement_lookup is None:
             self.participants_engagement_lookup = self._get_engagement_scores()
 
@@ -2110,16 +2009,7 @@ class CourseParticipantStats(object):
         """
         Returns engagement score for all participants in the course.
         """
-        course_social_metrics = course_api.get_course_social_metrics(self.course_id)
-        participants_engagement_lookup = {}
-        users_social_metrics = vars(course_social_metrics.users)
-        for u_id, user_metrics in users_social_metrics.iteritems():
-            engagement_score = 0
-            for metric, metric_points in settings.SOCIAL_METRIC_POINTS.iteritems():
-                engagement_score += getattr(user_metrics, metric, 0) * metric_points
-            participants_engagement_lookup[str(u_id)] = engagement_score
-
-        return participants_engagement_lookup
+        return course_api.get_course_social_metrics(self.course_id, scores=True)
 
     def _get_course_completions(self, course_participants):
         """
@@ -2210,6 +2100,8 @@ class CourseParticipantStats(object):
 
         for course_participant in participants['results']:
             # add in user activation link
+            if course_participant.get('full_name'):
+                course_participant['custom_full_name'] = course_participant['full_name']
             course_participant['activation_link'] = participants_activation_links.get(course_participant['id'], '')
 
             # transform to complete country name

@@ -22,7 +22,7 @@ from accounts.controller import (AssignStudentToProgramResult, EnrollStudentInCo
 from accounts.models import UserActivation
 from accounts.tests.utils import (ApplyPatchMixin, make_company,
                                   make_course, make_program,
-                                  make_user, make_side_effect_raise_api_error, delete_files)
+                                  make_user, make_side_effect_raise_api_error, delete_files, AccessKeyTestBase)
 from admin.models import AccessKey, CourseRun, Client
 from api_client.api_error import ApiError
 from api_client.organization_models import Organization
@@ -32,23 +32,8 @@ from mcka_apros import settings
 from api_data_manager.tests.utils import mock_api_data_manager
 
 
-class TestProcessAccessKey(TestCase, ApplyPatchMixin):
+class TestProcessAccessKey(AccessKeyTestBase):
     """ Tests process_access_key method """
-    program = None
-
-    @classmethod
-    def setUpClass(cls):
-        super(TestProcessAccessKey, cls).setUpClass()
-        cls.program = make_program()
-
-    def setUp(self):
-        self.user_api = self.apply_patch('accounts.controller.user_api')
-        self.apply_patch(
-            'accounts.controller.assign_student_to_program',
-            return_value=AssignStudentToProgramResult(self.program, None)
-        )
-        self.patched_enroll_student_in_course = self.apply_patch('accounts.controller.enroll_student_in_course')
-        self.user_api.get_user_organizations = mock.Mock(return_value=[make_company(1)])
 
     def test_not_registered_with_company(self):
         user = make_user()
