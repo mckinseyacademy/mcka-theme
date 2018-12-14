@@ -539,19 +539,11 @@ def get_course_completions(
         # The API will return data for multiple courses, so group them by course
         return group_completions_by_course(get_and_unpaginate(url, edx_oauth2_session))
 
-    if user_ids:
-        response = edx_oauth2_session.get(url)
-        data = response.json()
-        completions = data['results']
-        return group_completions_by_user(
-            completions
-        )
-    else:
-        # Otherwise, group by users
-        return group_completions_by_user(
-            get_and_unpaginate(url, edx_oauth2_session),
-            username=username,
-        )
+    # Otherwise, group by users
+    return group_completions_by_user(
+        get_and_unpaginate(url, edx_oauth2_session),
+        username=username,
+    )
 
 
 @api_error_protect
