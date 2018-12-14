@@ -1965,25 +1965,13 @@ class CourseParticipantStats(object):
         if organization_id:
             course_participants = self._associate_company_attributes(course_participants, organization_id)
             course_participants = remove_specific_user_roles_of_other_companies(
-                course_participants, int(organization_id)
+                course_participants,
+                int(organization_id),
             )
 
-        lesson_completions = None
-        course_completions = {}
+        lesson_completions = self._get_lesson_completions(course_participants)
+        course_completions = self._get_course_completions(course_participants)
         self._prefetched_completions = None
-        if self.request_params.get('prefetched_participants'):
-            user_ids = ','.join([str(participant.get('id')) for participant in course_participants['results']])
-            if user_ids:
-                oauth2_session = oauth2_requests.get_oauth2_session()
-
-                course_completions = course_api.get_course_completions(
-                    self.course_id,
-                    edx_oauth2_session=oauth2_session,
-                    user_ids=user_ids
-                )
-        else:
-            lesson_completions = self._get_lesson_completions(course_participants)
-            course_completions = self._get_course_completions(course_participants)
 
         if self.participants_engagement_lookup is None:
             self.participants_engagement_lookup = self._get_engagement_scores()
