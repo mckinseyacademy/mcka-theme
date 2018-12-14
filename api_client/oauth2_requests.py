@@ -147,7 +147,7 @@ def get_and_unpaginate(url, edx_oauth2_session=None, max_page=None):
         data = response.json()
         result = data['results']
         results.extend(result)
-        next_page_val = data.get('next')
+        next_page_val = data.get('next') or data.get('pagination', {}).get('next')
         if isinstance(next_page_val, basestring) and next_page_val.startswith('http'):
             next_page = next_page_val
         else:
