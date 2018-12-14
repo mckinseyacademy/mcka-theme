@@ -673,11 +673,11 @@ def sso_finalize(request):
     # If a mobile_url_scheme is defined, this view is called as part of the
     # mobile SSO auth flow.
     scheme = _get_mobile_url_scheme(request)
-    if scheme is not None:
-        return finalize_sso_mobile(request)
-
     if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('protected_home'))
+        if scheme is not None:
+            return finalize_sso_mobile(request)
+        else:
+            return HttpResponseRedirect(reverse('protected_home'))
 
     return finalize_sso_registration(request)
 
@@ -1186,6 +1186,8 @@ def edit_title(request):
 
 def access_key(request, code):
     template = 'accounts/access.haml'
+    mobile_url_scheme = request.GET.get('mobile_url_scheme', None)
+
     # Try to find the unique code.
     try:
         key, client = _get_access_key(code)
@@ -1211,15 +1213,25 @@ def access_key(request, code):
         return render(request, template, status=404)
 
     request.session[SSO_ACCESS_KEY_SESSION_ENTRY] = key.code
-    # all SSO requests that might end up with user logged in must go through login view to allow session detection
-    # The rule of thumb: it should be either the `login` itself, or a view with `login_required` decorator
-    redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('login'))
+    if mobile_url_scheme is None:
+        # all SSO requests that might end up with user logged in must go through login view to allow session detection
+        # The rule of thumb: it should be either the `login` itself, or a view with `login_required` decorator
+        redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('login'))
 
-    data = {
-        'redirect_to': redirect_to
-    }
+        data = {
+            'redirect_to': redirect_to
+        }
 
-    return render(request, template, data)
+        return render(request, template, data)
+    else:
+        redirect_url = _build_sso_redirect_url(customization.identity_provider, reverse('sso_finalize'))
+        response = HttpResponseRedirect(redirect_url)
+
+        _append_login_mode_cookie(response, 'sso')
+        if mobile_url_scheme is not None:
+            _append_mobile_url_scheme_cookie(response, mobile_url_scheme)
+
+        return response
 
 
 def get_access_key(request, access_key_code):

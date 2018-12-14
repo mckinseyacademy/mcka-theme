@@ -1,8 +1,10 @@
 ''' Helper methods for accounts test
 '''
 from django.core.files.storage import default_storage
+from django.test import TestCase
 from mock import patch, mock
 
+from accounts.controller import AssignStudentToProgramResult
 from accounts.models import RemoteUser
 from admin.models import Program
 from api_client.api_error import ApiError
@@ -72,3 +74,22 @@ class TestUserObject(object):
         self.id = user_id
         self.email = email
         self.task_key = task_key
+
+
+class AccessKeyTestBase(TestCase, ApplyPatchMixin):
+    program = None
+
+    @classmethod
+    def setUpClass(cls):
+        super(AccessKeyTestBase, cls).setUpClass()
+        cls.program = make_program()
+
+    def setUp(self):
+        self.user_api = self.apply_patch('accounts.controller.user_api')
+        self.apply_patch(
+            'accounts.controller.assign_student_to_program',
+            return_value=AssignStudentToProgramResult(self.program, None)
+        )
+        self.company = make_company(1)
+        self.patched_enroll_student_in_course = self.apply_patch('accounts.controller.enroll_student_in_course')
+        self.user_api.get_user_organizations = mock.Mock(return_value=[self.company])
