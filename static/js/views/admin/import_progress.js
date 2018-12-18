@@ -118,6 +118,11 @@
                                       .addClass('import-success');
                                   status = gettext('Successful');
                               }
+                              if (!record.activation_file && !record.error_file) {
+                                  recordRow.find('.status div').removeClass('import-pending')
+                                      .addClass('import-success');
+                                  status = gettext('Successful');
+                              }
                           } else {
                               status = interpolate(gettext('Importing %(processed)s of %(total)s rows'),
                                   {'processed': record.processed, 'total': record.total}, true);
