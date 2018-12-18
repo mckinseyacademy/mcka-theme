@@ -25,6 +25,7 @@ from api_client import course_api
 from api_client import group_api
 from api_client import user_api
 from api_client.api_error import ApiError
+from api_client.cohort_api import add_cohort_for_course
 from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage
 from util.email_helpers import send_html_email
@@ -494,6 +495,12 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
 
     user_list = build_student_list_from_file(file_stream, parse_method=parse_method)
     clean_user_list, unclean_user_list, user_registration_errors = [], [], []
+
+    # We need to ensure that all courses have `CourseUserGroup`s created. Otherwise we will run into race conditions.
+    courses = {entry['course_id'] for entry in user_list}
+    for course in courses:
+        add_cohort_for_course(course, 'default_cohort', 'random')
+
     registration_batch = UserRegistrationBatch.objects.get(id=registration_batch_id)
     for user_info in user_list:
         if "error" in user_info:
