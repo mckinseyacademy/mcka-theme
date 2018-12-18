@@ -161,10 +161,12 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     # custom processing is needed for groupworks and assessments data
     # as csv column names are also dynamic for them
     for participant in participants_data:
-
-        for field in participant.get('attributes'):
-            attributes[field['key']] = field['label']
-            participant[field['key']] = field['value']
+        if company_id:
+            for field in participant.get('attributes'):
+                attribute_key = field.get('key')
+                if attribute_key:
+                    attributes[attribute_key] = field.get('label', '')
+                    participant[attribute_key] = field.get('value', '')
 
         for groupwork in participant.get('groupworks'):
             label = groupwork.get('label')
