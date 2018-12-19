@@ -1,8 +1,13 @@
-// Overrides for chat:
 @import '../base/variables';
 
+@mixin chat-mobile-only{
+  @media screen and (max-width: 767px){
+    @content;
+  }
+}
+
 // The image rotation in chat doesn't work correctly so have to overwrite the CSS
-.chat-block .image-overlay img {
+.chat-block .image-overlay img{
   position: absolute !important;
   max-width: 100% !important;
   max-height: calc(100% - 96px) !important;
@@ -11,4 +16,11 @@
   height: 1000px !important;
   top: calc(50% + 50px) !important;
   left: 50% !important;
+}
+@include chat-mobile-only{
+  //Removing offset of image from top as for mobile views, there is no topbar
+  .chat-block .image-overlay img{
+    max-height: 100% !important;
+    top: 50% !important;
+  }
 }
