@@ -72,8 +72,7 @@ massParticipantsEnrollInit = function(){
           _this.removeAllFiles(true);
         });
         _this.on('success', function(file, response) {
-          var form = $('#enroll_to_course_from_csv #participantsEnrollCsvUpload');
-          checkForEnrollStatus(response, form);
+          $('#import_participants_popup_message').foundation('reveal', 'open');
         });
         _this.on("addedfile", function(file) { 
           $('#enroll_to_course_from_csv .upload_stats').empty();
@@ -140,7 +139,7 @@ massParticipantsEnrollInit = function(){
         dataType: 'text',
         cache: false,
         success:function( data ) {
-          checkForEnrollStatus(data, form);
+          $('#import_participants_popup_message').foundation('reveal', 'open');
         },
         error: function( data ){
               data = $.parseJSON(data);
@@ -158,88 +157,6 @@ massParticipantsEnrollInit = function(){
   });
 
 };
-
-
-checkForEnrollStatus = function(data, form) {
-  var errorsBlockTemplate =
-  "<div class='message'><%= data %>" +
-    "<div id='user-enroll-reg-errors' class='errors'></div></div>";
-
-  var errorsTemplate =
-    "<a href='#' data-reveal-id='upload_enroll_error_list'>"+gettext('Show Errors')+"</a>" +
-    "<ul id='upload_enroll_error_list' class='reveal-modal' data-reveal='true'>" +
-      "<div class='close-reveal-modal'>" +
-        "<i class='fa fa-times-circle'></i>" +
-      "</div>" +
-      "<% _.each(data.error, function(errorObj, key){ %>" +
-        "<li><%= errorObj.fields.error %></li>" +
-      "<% }) %>" +
-    "</ul>";
-
-  var errorsTemplateNotModal =
-    "<br/>" +
-    "<p>"+gettext('Errors:')+"</p>" +
-    "<ul id='upload_enroll_error_list'>" +
-      "<% _.each(data.error, function(errorObj, key){ %>" +
-        "<li><%= errorObj.fields.error %></li>" +
-      "<% }) %>" +
-    "</ul>";
-
-  var uploadStatsTemplate =
-    "<br/>" +
-    "<span>"+gettext('Total:')+"</span>" +
-    "<span id='attempted-enroll'><%= data.attempted %></span><br/>" +
-    "<span>"+gettext('Succeded:')+"</span>" +
-    "<span id='succeded-enroll'><%= data.succeded %></span><br/>" +
-    "<span>"+gettext('Failed:')+"</span>" +
-    "<span id='failed-enroll'><%= data.failed %></span><br/>" +
-    "<br/>";
-
-  data = $.parseJSON(data);
-  var task_key = data.task_key;
-  var poolingInterval = setInterval(function(){
-    var url = form.attr('action') + '/check/' + data.task_key;
-    $.ajax({
-      url: url,
-      method: 'GET',
-      dataType: 'json',
-      processData: false,
-      cache: false,
-      beforeSend: function( xhr ) {
-        xhr.setRequestHeader("X-CSRFToken", $.cookie('apros_csrftoken'));
-      }
-    }).done(function(data){
-      if(data.done === 'done'){
-        $('#enroll_to_course_from_csv .button-wrapper i').hide();
-        clearInterval(poolingInterval);
-        $('#enroll_to_course_from_csv input[type=submit]').removeAttr('disabled');
-        if ($('#participantsEnrollCsvUpload').length) {
-          $('#enroll_to_course_from_csv .upload_stats').html(_.template(uploadStatsTemplate, {'data': data}));
-        }
-        $('#enroll-participants-error-list').html(_.template(errorsBlockTemplate, {'data': data.message}));
-        if(data.error.length > 0){
-          if ($('#participantsEnrollCsvUpload').length) {
-            $('#attempted-enroll').text(data.attempted);
-            $('#succeded-enroll').text(data.succeded);
-            $('#failed-enroll').text(data.failed);
-            $('#enroll-participants-error-list').find('#user-enroll-reg-errors').html(_.template(errorsTemplateNotModal, {'data': data}));
-          }
-        }
-      }
-      else if(data.done === 'failed-enroll'){
-        clearInterval(poolingInterval);
-        $('#enroll_to_course_from_csv input[type=submit]').removeAttr('disabled');
-      }
-      else if(data.done === 'progress'){
-        if ($('#participantsEnrollCsvUpload').length) {
-          $('#enroll_to_course_from_csv .upload_stats').html(_.template(uploadStatsTemplate, {'data': data}));
-        }
-      }
-      else{
-      }
-    })
-  }, 10000);
-}
 
 PopulateTemplateData = function()
 {

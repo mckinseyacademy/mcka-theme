@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-27 13:40+0000\n"
+"POT-Creation-Date: 2018-12-10 13:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -72,19 +72,19 @@ msgid "Other"
 msgstr "其它"
 
 #: accounts/forms.py:38
-#: templates/admin/participants/participant_details.haml:148
-#: templates/admin/participants/participant_details.haml:294
-#: templates/admin/participants/participant_details.haml:302
-#: templates/admin/participants/participant_details.haml:310
+#: templates/admin/participants/participant_details.haml:149
+#: templates/admin/participants/participant_details.haml:295
+#: templates/admin/participants/participant_details.haml:303
+#: templates/admin/participants/participant_details.haml:311
 #: templates/admin/participants/participants_list.haml:94
 msgid "Female"
 msgstr "女"
 
 #: accounts/forms.py:39
-#: templates/admin/participants/participant_details.haml:146
-#: templates/admin/participants/participant_details.haml:292
-#: templates/admin/participants/participant_details.haml:300
-#: templates/admin/participants/participant_details.haml:308
+#: templates/admin/participants/participant_details.haml:147
+#: templates/admin/participants/participant_details.haml:293
+#: templates/admin/participants/participant_details.haml:301
+#: templates/admin/participants/participant_details.haml:309
 #: templates/admin/participants/participants_list.haml:92
 msgid "Male"
 msgstr "男"
@@ -1120,11 +1120,11 @@ msgid "You must accept terms of service in order to continue"
 msgstr "您必须接受服务条款才能继续"
 
 #: accounts/forms.py:436 accounts/forms.py:494 accounts/forms.py:512
-#: accounts/forms.py:617 admin/controller.py:788 admin/views.py:2559
+#: accounts/forms.py:617 admin/controller.py:789 admin/views.py:2574
 #: marketing/forms.py:47 marketing/forms.py:93 marketing/forms.py:132
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
-#: templates/admin/participants/participant_details.haml:111
+#: templates/admin/participants/participant_details.haml:112
 #: templates/admin/participants/participants_list.haml:26
 #: templates/courses/course_discussion_ld.haml:78
 #: templates/courses/group_work/group_member.haml:11
@@ -1152,18 +1152,18 @@ msgstr ""
 "密码 {html_span_start} 必须至少包含 8 个字符，并且包含大写和小写字母以及数字"
 "或特殊字符。{html_span_end}"
 
-#: accounts/forms.py:461 admin/views.py:2559 marketing/forms.py:141
-#: templates/admin/participants/participant_details.haml:123
+#: accounts/forms.py:461 admin/views.py:2574 marketing/forms.py:141
+#: templates/admin/participants/participant_details.haml:124
 #: templates/admin/participants/participants_list.haml:20
 #: templates/admin/permissions/list.haml:36
 msgid "Company"
 msgstr "公司"
 
-#: accounts/forms.py:462 admin/controller.py:788
+#: accounts/forms.py:462 admin/controller.py:789
 msgid "Full Name"
 msgstr "全名"
 
-#: accounts/forms.py:463 admin/controller.py:788 marketing/forms.py:149
+#: accounts/forms.py:463 admin/controller.py:789 marketing/forms.py:149
 #: templates/accounts/user_profile.haml:24
 #: templates/admin/learner_dashboard/discovery_list.haml:12
 #: templates/admin/learner_dashboard/element_list.haml:13
@@ -1204,12 +1204,12 @@ msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "接受的格式：JPG、PNG 和 GIF"
 
 #: accounts/forms.py:597 templates/admin/course_run/view.haml:63
-#: templates/admin/participants/participant_details.haml:90
+#: templates/admin/participants/participant_details.haml:91
 msgid "First Name"
 msgstr "名字"
 
 #: accounts/forms.py:598
-#: templates/admin/participants/participant_details.haml:95
+#: templates/admin/participants/participant_details.haml:96
 msgid "Last Name"
 msgstr "姓氏"
 
@@ -1296,99 +1296,99 @@ msgstr "特殊字符无效。"
 msgid "Please enter a valid Role."
 msgstr "请输入有效的角色。"
 
-#: accounts/views.py:84
+#: accounts/views.py:85
 msgid ""
 "Your login did not match any known accounts, a registration key is required "
 "in order to create a new account."
 msgstr "您的登录信息与任何已知账户都不匹配，需要注册密钥才能创建新账户。"
 
-#: accounts/views.py:86
+#: accounts/views.py:87
 msgid ""
 "There was an error enrolling you in a course using the registration key you "
 "provided"
 msgstr "使用您提供的注册密钥注册课程时出错"
 
-#: accounts/views.py:329
+#: accounts/views.py:330
 msgid ""
 "Your account has already been activated. Please enter credentials to login"
 msgstr "您的账户已激活。请输入凭据登录"
 
-#: accounts/views.py:335
+#: accounts/views.py:336
 msgid "Log In"
 msgstr "登录"
 
-#: accounts/views.py:336
+#: accounts/views.py:337
 msgid "Trouble logging in"
 msgstr "登录时遇到问题"
 
-#: accounts/views.py:385 accounts/views.py:409
+#: accounts/views.py:386 accounts/views.py:410
 msgid "Username/email is not recognised. Try again."
 msgstr "无法识别用户名/电子邮件。请重试。"
 
-#: accounts/views.py:401
+#: accounts/views.py:402
 msgid "Password doesn't match our records. Try again."
 msgstr "密码与我们的记录不匹配。请重试。"
 
-#: accounts/views.py:575 accounts/views.py:648
+#: accounts/views.py:576 accounts/views.py:649
 msgid "Some required information was missing. Please check the fields below."
 msgstr "缺少一些必填信息。请检查下面的字段。"
 
-#: accounts/views.py:595 accounts/views.py:660
+#: accounts/views.py:596 accounts/views.py:661
 msgid "Create my McKinsey Academy account"
 msgstr "创建我的麦肯锡学院账户"
 
-#: accounts/views.py:626
+#: accounts/views.py:627
 msgid "Invalid Activation Code"
 msgstr "激活码无效"
 
-#: accounts/views.py:699
+#: accounts/views.py:700
 msgid "No provider data found."
 msgstr "找不到提供程序数据。"
 
-#: accounts/views.py:701
+#: accounts/views.py:702
 msgid "Provider data does not seem valid."
 msgstr "提供程序数据似乎无效。"
 
-#: accounts/views.py:755
+#: accounts/views.py:758
 msgid "Access Key missing."
 msgstr "缺少访问密钥。"
 
-#: accounts/views.py:772 accounts/views.py:779
+#: accounts/views.py:775 accounts/views.py:782
 #, fuzzy
 #| msgid "Access"
 msgid "Accept"
 msgstr "访问"
 
-#: accounts/views.py:826
+#: accounts/views.py:829
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "无法注册用户：{exception_message}"
 
-#: accounts/views.py:828
+#: accounts/views.py:831
 msgid "Some required information was missing."
 msgstr "缺少一些必要信息。"
 
-#: accounts/views.py:830
+#: accounts/views.py:833
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
 msgstr "缺少身份验证 cookie。您的会话可能已超时。请重新开始。"
 
-#: accounts/views.py:879
+#: accounts/views.py:882
 msgid "Enter new password"
 msgstr "输入新密码"
 
-#: accounts/views.py:896
+#: accounts/views.py:899
 msgid "Password reset unsuccessful"
 msgstr "密码重置不成功"
 
-#: accounts/views.py:994 lib/mail.py:132 templates/accounts/activate.haml:16
+#: accounts/views.py:997 lib/mail.py:132 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
-#: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:266
+#: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:270
 msgid "Welcome to McKinsey Academy"
 msgstr "欢迎来到麦肯锡学院"
 
-#: accounts/views.py:995
+#: accounts/views.py:998
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1397,7 +1397,7 @@ msgstr ""
 "您的计划将在 {days} 天后开始。在此期间，请浏览该网站了解更多有关此体验的信"
 "息。"
 
-#: accounts/views.py:999
+#: accounts/views.py:1002
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1406,12 +1406,12 @@ msgstr ""
 "您的课程将在 {days} 天后开始。在课程开始之前，您可以浏览本网站了解更多有关课"
 "程内容的信息。"
 
-#: accounts/views.py:1154
+#: accounts/views.py:1156
 msgid "Enter your full name"
 msgstr "输入您的全名"
 
-#: accounts/views.py:1156 accounts/views.py:1180 admin/views.py:1956
-#: admin/views.py:1990 admin/views.py:4544
+#: accounts/views.py:1158 accounts/views.py:1182 admin/views.py:1964
+#: admin/views.py:1998 admin/views.py:4561
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:189
 #: templates/admin/cohorts/course_details.html:38
@@ -1424,32 +1424,32 @@ msgstr "输入您的全名"
 #: templates/admin/course_run/form_modal.haml:118
 #: templates/admin/learner_dashboard/main.haml:155
 #: templates/admin/learner_dashboard/preview.haml:34
-#: templates/admin/participants/participant_edit_status.haml:34
+#: templates/admin/participants/participant_edit_status.haml:35
 #: templates/certificates/new_certificate_template.haml:21
 msgid "Save"
 msgstr "保存"
 
-#: accounts/views.py:1178
+#: accounts/views.py:1180
 msgid "Enter your title"
 msgstr "输入您的职位"
 
-#: accounts/views.py:1249 accounts/views.py:1280
+#: accounts/views.py:1251 accounts/views.py:1282
 msgid "Initial"
 msgstr "初始"
 
-#: accounts/views.py:1277
+#: accounts/views.py:1279
 msgid "Course Closed"
 msgstr "课程已结束"
 
-#: accounts/views.py:1286
+#: accounts/views.py:1288
 msgid "Registered"
 msgstr "已注册"
 
-#: accounts/views.py:1288
+#: accounts/views.py:1290
 msgid "Error"
 msgstr "错误"
 
-#: admin/controller.py:257
+#: admin/controller.py:258
 msgid ""
 "An administrator has created an account on McKinsey Academy for your use. To "
 "activate your account, please copy and paste this address into your web "
@@ -1458,345 +1458,351 @@ msgstr ""
 "管理员已在麦肯锡学院中创建了一个账户供您使用。要激活您的账户，请将此地址复制"
 "并粘贴到 Web 浏览器的地址栏中："
 
-#: admin/controller.py:303 admin/controller.py:351
+#: admin/controller.py:304 admin/controller.py:352
 #, python-brace-format
 msgid "Could not parse user info from {user_line}"
 msgstr "无法解析以下来源的用户信息：{user_line}"
 
-#: admin/controller.py:395 admin/controller.py:468
+#: admin/controller.py:396 admin/controller.py:469
 msgid "Unable to register user"
 msgstr "无法注册用户"
 
-#: admin/controller.py:405 admin/controller.py:479
+#: admin/controller.py:406 admin/controller.py:480
 msgid "User not associated with client"
 msgstr "用户未与客户端关联"
 
-#: admin/controller.py:409
+#: admin/controller.py:410
 msgid "{}: {} - {}"
 msgstr "{}: {} - {}"
 
-#: admin/controller.py:417 admin/controller.py:519
+#: admin/controller.py:418 admin/controller.py:520
 msgid "Data processing error"
 msgstr "数据处理错误"
 
-#: admin/controller.py:418
+#: admin/controller.py:419
 #, python-brace-format
 msgid "Error processing data: {reason}"
 msgstr "处理数据时出错：{reason}"
 
-#: admin/controller.py:497 admin/controller.py:505
+#: admin/controller.py:498 admin/controller.py:506
 #, python-brace-format
 msgid "{error}: {message} - {email}"
 msgstr "{error}: {message} - {email}"
 
-#: admin/controller.py:498
+#: admin/controller.py:499
 msgid "User program enrollment"
 msgstr "用户计划注册"
 
-#: admin/controller.py:506
+#: admin/controller.py:507
 msgid "User course enrollment"
 msgstr "用户课程注册"
 
-#: admin/controller.py:511
+#: admin/controller.py:512
 msgid "Enrolling student error"
 msgstr "注册学员时出错"
 
-#: admin/controller.py:512
+#: admin/controller.py:513
 #, python-brace-format
 msgid "Error enrolling student: {reason} - {email}"
 msgstr "注册学员时出错：{reason} - {email}"
 
-#: admin/controller.py:520
+#: admin/controller.py:521
 #, python-brace-format
 msgid "Error processing data: {reason} - {email}"
 msgstr "处理数据时出错：{reason} - {email}"
 
-#: admin/controller.py:634 admin/controller.py:1306
+#: admin/controller.py:635 admin/controller.py:1307
 msgid "Activated"
 msgstr "已激活"
 
-#: admin/controller.py:636
+#: admin/controller.py:637
 msgid "Could not fetch activation record"
 msgstr "无法提取激活记录"
 
-#: admin/controller.py:653
+#: admin/controller.py:654
 msgid "PROJECT"
 msgstr "项目"
 
-#: admin/controller.py:780
+#: admin/controller.py:781
 msgid "Client Name"
 msgstr "客户端名称"
 
-#: admin/controller.py:780 admin/views.py:4349 admin/views.py:4450
+#: admin/controller.py:781 admin/views.py:4365 admin/views.py:4467
 #: certificates/models.py:87 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "课程 ID"
 
-#: admin/controller.py:788
-#: templates/admin/participants/participant_details.haml:102
-#: templates/admin/participants/participant_details.haml:204
+#: admin/controller.py:789
+#: templates/admin/participants/participant_details.haml:103
+#: templates/admin/participants/participant_details.haml:205
 msgid "Username"
 msgstr "用户名"
 
-#: admin/controller.py:788
+#: admin/controller.py:789
 msgid "Progress %"
 msgstr "进度 %"
 
-#: admin/controller.py:788
+#: admin/controller.py:789
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:148
 msgid "Engagement"
 msgstr "参与度"
 
-#: admin/controller.py:789 admin/views.py:4349
+#: admin/controller.py:790 admin/views.py:4365
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:71
 msgid "Proficiency"
 msgstr "熟练程度"
 
-#: admin/controller.py:789
+#: admin/controller.py:790
 #: templates/admin/client-admin/course_participants.haml:50
 msgid "Course Completed"
 msgstr "课程已完成"
 
-#: admin/controller.py:810
+#: admin/controller.py:811
 msgid "0%"
 msgstr "0%"
 
-#: admin/controller.py:812 admin/views.py:1019 admin/views.py:1028
+#: admin/controller.py:813 admin/views.py:1027 admin/views.py:1036
 msgid "{}%"
 msgstr "{}%"
 
-#: admin/controller.py:1236
+#: admin/controller.py:1237
 msgid "# of posts"
 msgstr "发帖数"
 
-#: admin/controller.py:1237
+#: admin/controller.py:1238
 msgid "% participants posting"
 msgstr "参与者发帖 %"
 
-#: admin/controller.py:1238
+#: admin/controller.py:1239
 msgid "Avg posts per participant"
 msgstr "每位参与者平均发帖数"
 
-#: admin/controller.py:1304
+#: admin/controller.py:1305
 msgid "Total Cohort"
 msgstr "群组总计"
 
-#: admin/controller.py:1308
+#: admin/controller.py:1309
 msgid "Engaged"
 msgstr "已参与"
 
-#: admin/controller.py:1310
+#: admin/controller.py:1311
 msgid "Logged in over last 7 days"
 msgstr "过去 7 天内登录"
 
-#: admin/controller.py:1602 admin/controller.py:1621
+#: admin/controller.py:1582
+msgid ""
+"Required fields missing; format is: FirstName, LastName, Email, Company, "
+"CourseID, Status"
+msgstr ""
+
+#: admin/controller.py:1629
 msgid "Could not parse user info from {}"
 msgstr "无法解析以下来源的用户信息：{}"
 
-#: admin/controller.py:1665
+#: admin/controller.py:1681
 msgid "Activation record error"
 msgstr "激活记录错误"
 
-#: admin/controller.py:1667 admin/controller.py:1763
+#: admin/controller.py:1683 admin/controller.py:1780
 msgid "Processing Data Error"
 msgstr "处理数据时出错"
 
-#: admin/controller.py:1668
+#: admin/controller.py:1684
 #, fuzzy
 #| msgid "Error processing data: {} - {}"
 msgid "Error processing data: {} "
 msgstr "处理数据时出错：{} - {}"
 
-#: admin/controller.py:1706
+#: admin/controller.py:1723
 msgid "No email"
 msgstr "无电子邮件"
 
-#: admin/controller.py:1707
+#: admin/controller.py:1724
 msgid "Empty field: {}"
 msgstr "空字段：{}"
 
-#: admin/controller.py:1708 admin/controller.py:1714 admin/controller.py:1718
+#: admin/controller.py:1725 admin/controller.py:1731 admin/controller.py:1735
 msgid "Processing Participant"
 msgstr "处理参与者"
 
-#: admin/controller.py:1713
+#: admin/controller.py:1730
 #, python-brace-format
 msgid "Valid e-mail is required: {email}"
 msgstr "需要有效的电子邮件地址：{email}"
 
-#: admin/controller.py:1718
+#: admin/controller.py:1735
 msgid "User doesn't exist"
 msgstr "用户不存在"
 
-#: admin/controller.py:1723
+#: admin/controller.py:1740
 msgid "Course doesn't exist"
 msgstr "课程不存在"
 
-#: admin/controller.py:1724 admin/controller.py:1729 admin/controller.py:1733
-#: admin/controller.py:1748
+#: admin/controller.py:1741 admin/controller.py:1746 admin/controller.py:1750
+#: admin/controller.py:1765
 msgid "Enrolling Participant in Course"
 msgstr "为参与者注册课程"
 
-#: admin/controller.py:1728
+#: admin/controller.py:1745
 msgid "Course is not Internal"
 msgstr "非内部课程"
 
-#: admin/controller.py:1732
+#: admin/controller.py:1749
 msgid "Status doesn't exist"
 msgstr "状态不存在"
 
-#: admin/controller.py:1737 admin/controller.py:1757
+#: admin/controller.py:1754 admin/controller.py:1774
 msgid "Reason: {}, Activity: {}, Participant: {}"
 msgstr "原因：{}，活动：{}，参与者：{}"
 
-#: admin/controller.py:1755
+#: admin/controller.py:1772
 msgid "Setting Participant's Status"
 msgstr "设置参与者状态"
 
-#: admin/controller.py:1764
+#: admin/controller.py:1781
 msgid "Error processing data: {} - {}"
 msgstr "处理数据时出错：{} - {}"
 
-#: admin/controller.py:1881
+#: admin/controller.py:1898
 msgid "This company already exists!"
 msgstr "此公司已存在！"
 
-#: admin/controller.py:1883
+#: admin/controller.py:1900
 msgid "Company Validation Success!"
 msgstr "公司验证成功！"
 
-#: admin/controller.py:1950
+#: admin/controller.py:1967
 msgid "You have sent incorrect chunk number!"
 msgstr "您发送的区块编号不正确！"
 
-#: admin/controller.py:1952
+#: admin/controller.py:1969
 msgid "You have sent incorrect task key!"
 msgstr "您发送的任务密钥不正确！"
 
-#: admin/controller.py:1969
+#: admin/controller.py:1986
 msgid "There are no users in organization!"
 msgstr "组织中没有用户！"
 
-#: admin/controller.py:2194 admin/controller.py:2195 admin/views.py:3852
-#: admin/views.py:3853 admin/views.py:4025 admin/views.py:5919
+#: admin/controller.py:2220 admin/controller.py:2221 admin/views.py:3867
+#: admin/views.py:3868 admin/views.py:4040 admin/views.py:5936
 msgid "No company"
 msgstr "无公司"
 
-#: admin/controller.py:2212 admin/views.py:3857 admin/views.py:4409
-#: admin/views.py:4436 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2238 admin/views.py:3872 admin/views.py:4426
+#: admin/views.py:4453 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/mobile_apps/company_app_details.haml:46
 msgid "Yes"
 msgstr "是"
 
-#: admin/controller.py:2214 admin/views.py:3859 admin/views.py:4411
-#: admin/views.py:4415 admin/views.py:4438 admin/views.py:4442
+#: admin/controller.py:2240 admin/views.py:3874 admin/views.py:4428
+#: admin/views.py:4432 admin/views.py:4455 admin/views.py:4459
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
 msgstr "否"
 
-#: admin/controller.py:2234 admin/controller.py:2242
+#: admin/controller.py:2260 admin/controller.py:2268
 msgid "000"
 msgstr "000"
 
-#: admin/controller.py:2450 admin/controller.py:2472
+#: admin/controller.py:2476 admin/controller.py:2498
 msgid "Sorry, We can not process your request"
 msgstr "抱歉，我们无法处理您的请求"
 
-#: admin/controller.py:2457 admin/controller.py:2469
+#: admin/controller.py:2483 admin/controller.py:2495
 msgid "Operation Successful"
 msgstr "操作成功"
 
-#: admin/controller.py:2460
+#: admin/controller.py:2486
 msgid "Please enter role text"
 msgstr "请输入角色文本"
 
-#: admin/controller.py:2497 templates/admin/courses/course_details.haml:108
+#: admin/controller.py:2523 templates/admin/courses/course_details.haml:108
 msgid "Engagement Summary"
 msgstr "参与度摘要"
 
-#: admin/controller.py:2497
+#: admin/controller.py:2523
 msgid "# of people"
 msgstr "人数"
 
-#: admin/controller.py:2497
+#: admin/controller.py:2523
 msgid "% total cohort"
 msgstr "群组总计 %"
 
-#: admin/controller.py:2497
+#: admin/controller.py:2523
 msgid "Avg Progress"
 msgstr "平均进度"
 
-#: admin/controller.py:2504
+#: admin/controller.py:2530
 msgid "Participant Performance"
 msgstr "参与者表现"
 
-#: admin/controller.py:2504
+#: admin/controller.py:2530
 #, fuzzy, python-format
 #| msgid "% completion"
 msgid "% completion"
 msgstr "完成百分比"
 
-#: admin/controller.py:2504
+#: admin/controller.py:2530
 msgid "Score"
 msgstr "分数"
 
-#: admin/controller.py:2505
+#: admin/controller.py:2531
 msgid "Group work 1"
 msgstr "小组作业 1"
 
-#: admin/controller.py:2506
+#: admin/controller.py:2532
 msgid "Group work 2"
 msgstr "小组作业 2"
 
-#: admin/controller.py:2507
+#: admin/controller.py:2533
 msgid "Mid-course assessment"
 msgstr "期中评定"
 
-#: admin/controller.py:2508
+#: admin/controller.py:2534
 msgid "Final assessment"
 msgstr "期末评定"
 
-#: admin/controller.py:2515 templates/admin/courses/course_details.haml:121
+#: admin/controller.py:2541 templates/admin/courses/course_details.haml:121
 msgid "Social Engagement"
 msgstr "社交参与"
 
-#: admin/controller.py:2709
+#: admin/controller.py:2735
 #, fuzzy
 #| msgid "User Id is not passed"
 msgid "user {} is not updated"
 msgstr "用户 ID 未通过验证"
 
-#: admin/controller.py:2711
+#: admin/controller.py:2737
 #, fuzzy
 #| msgid "User doesn't exist"
 msgid "user {} doesn't exists"
 msgstr "用户不存在"
 
-#: admin/controller.py:2725
+#: admin/controller.py:2751
 msgid "Field {} does not match with organization fields"
 msgstr ""
 
-#: admin/controller.py:2745
+#: admin/controller.py:2771
 msgid ""
 "Participant with email {} and manager with email {} doesn't belong to a same "
 "organization"
 msgstr ""
 
-#: admin/controller.py:2761 admin/tasks.py:543
+#: admin/controller.py:2787 admin/tasks.py:566
 msgid ""
 "File is not formatted properly. Please format according to given template."
 msgstr ""
 
-#: admin/controller.py:2774 admin/controller.py:2776
+#: admin/controller.py:2800 admin/controller.py:2802
 #, fuzzy
 #| msgid "User doesn't exist"
 msgid "User with email {} doesn't exists"
 msgstr "用户不存在"
 
-#: admin/controller.py:2778
+#: admin/controller.py:2804
 msgid "User and manager email cannot be empty"
 msgstr ""
 
@@ -1808,12 +1814,12 @@ msgstr "十六进制代码应以 ＃ 开头，后跟 6 或 8 位十六进制数�
 msgid "Enter new email address"
 msgstr "输入新的电子邮件地址"
 
-#: admin/forms.py:131 admin/views.py:4580
+#: admin/forms.py:131 admin/views.py:4597
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "助教"
 
-#: admin/forms.py:132 admin/views.py:4581
+#: admin/forms.py:132 admin/views.py:4598
 msgid "OBSERVER"
 msgstr "观察员"
 
@@ -1821,19 +1827,19 @@ msgstr "观察员"
 msgid "MODERATOR"
 msgstr ""
 
-#: admin/forms.py:158 admin/views.py:4582
+#: admin/forms.py:158 admin/views.py:4599
 msgid "ADMIN"
 msgstr "管理员"
 
-#: admin/forms.py:159 admin/forms.py:172 admin/views.py:4585
+#: admin/forms.py:159 admin/forms.py:172 admin/views.py:4602
 msgid "COURSE OPS"
 msgstr "课程运营"
 
-#: admin/forms.py:160 admin/forms.py:173 admin/views.py:4584
+#: admin/forms.py:160 admin/forms.py:173 admin/views.py:4601
 msgid "INTERNAL ADMIN"
 msgstr "内部管理员"
 
-#: admin/forms.py:161 admin/forms.py:174 admin/views.py:4583
+#: admin/forms.py:161 admin/forms.py:174 admin/views.py:4600
 msgid "COMPANY ADMIN"
 msgstr "公司管理员"
 
@@ -1862,8 +1868,8 @@ msgstr "课程实例"
 msgid "Name {}"
 msgstr "名称 {}"
 
-#: admin/forms.py:244 admin/views.py:2104 admin/views.py:4349
-#: admin/views.py:4450 templates/admin/program/list.haml:25
+#: admin/forms.py:244 admin/views.py:2112 admin/views.py:4365
+#: admin/views.py:4467 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
 #: templates/header.haml:109
@@ -1882,102 +1888,102 @@ msgstr "不允许使用该数字"
 msgid "Number of participants is limited to 5000"
 msgstr "参与者人数限制为 5000 人"
 
-#: admin/models.py:433
+#: admin/models.py:434
 msgid "Executive Sponsor"
 msgstr "执行发起人"
 
-#: admin/models.py:434
+#: admin/models.py:435
 msgid "IT Security Contact"
 msgstr "IT 安全联系人"
 
-#: admin/models.py:435
+#: admin/models.py:436
 msgid "Senior HR/PD Professional"
 msgstr "高级 HR/PD 专员"
 
-#: admin/models.py:436
+#: admin/models.py:437
 msgid "Day-to-Day Coordinator"
 msgstr "日常协调员"
 
-#: admin/models.py:447
+#: admin/models.py:448
 msgid "Senior executive sponsoring McKinsey Academy program within company"
 msgstr "在公司内发起麦肯锡学院计划的高级主管"
 
-#: admin/models.py:448
+#: admin/models.py:449
 msgid ""
 "IT department contact to troubleshoot technical issues (e.g., corporate "
 "firewalls, whitelisting)"
 msgstr "帮助解决各种技术问题（例如，公司防火墙、白名单）的 IT 部门联系人"
 
-#: admin/models.py:449
+#: admin/models.py:450
 msgid "Overseeing/coordinating Academy program with broader people strategy"
 msgstr "采用更广泛的人才策略来监督/协调学院计划"
 
-#: admin/models.py:450
+#: admin/models.py:451
 msgid ""
 "Individual managing day-to-day operation of the program (e.g., missing "
 "participant information, engagement)"
 msgstr "管理计划日常运维（例如，缺少参与者信息、参与度）的人员"
 
-#: admin/models.py:595
+#: admin/models.py:596
 msgid "Article"
 msgstr "文章"
 
-#: admin/models.py:596 templates/admin/course_meta_content/item_list.haml:204
+#: admin/models.py:597 templates/admin/course_meta_content/item_list.haml:204
 #: templates/courses/content_page/lesson_menu.haml:12
 #: templates/courses/content_page/lesson_menu.haml:22
 #: templates/courses/content_page/lesson_pager.haml:13
-#: templates/courses/content_page/lesson_pager.haml:42
+#: templates/courses/content_page/lesson_pager.haml:41
 #: templates/courses/course_lessons.haml:14
 #: templates/courses/course_lessons_ld_external.haml:16
-#: templates/courses/course_progress_v2.haml:76
+#: templates/courses/course_progress_v2.haml:79
 msgid "Lesson"
 msgstr "课时"
 
-#: admin/models.py:597 templates/admin/course_meta_content/item_list.haml:262
+#: admin/models.py:598 templates/admin/course_meta_content/item_list.haml:262
 #: templates/courses/content_page/lesson_pager.haml:17
-#: templates/courses/content_page/lesson_pager.haml:46
+#: templates/courses/content_page/lesson_pager.haml:45
 #: templates/courses/content_page/lesson_pager_ld.haml:15
 #: templates/courses/content_page/lesson_pager_ld.haml:32
 #: templates/courses/course_lessons.haml:50
 #: templates/courses/course_lessons_ld.haml:53
 #: templates/courses/course_lessons_ld_external.haml:51
-#: templates/courses/course_progress_v2.haml:106
+#: templates/courses/course_progress_v2.haml:109
 msgid "Module"
 msgstr "模块"
 
-#: admin/models.py:598 admin/views.py:4349 admin/views.py:4450
+#: admin/models.py:599 admin/views.py:4365 admin/views.py:4467
 #: templates/admin/participants/participants_list.haml:22
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
 msgid "Course"
 msgstr "课程"
 
-#: admin/models.py:599
+#: admin/models.py:600
 msgid "In Person Session"
 msgstr "当面授课"
 
-#: admin/models.py:600
+#: admin/models.py:601
 msgid "Webinar"
 msgstr "网络研讨会"
 
-#: admin/models.py:601
+#: admin/models.py:602
 msgid "Group work"
 msgstr "小组作业"
 
-#: admin/models.py:689 templates/admin/client-admin/course_info.haml:85
+#: admin/models.py:690 templates/admin/client-admin/course_info.haml:85
 msgid "Not Started"
 msgstr "未开始"
 
-#: admin/models.py:690 admin/views.py:2458
+#: admin/models.py:691 admin/views.py:2473
 #: templates/courses/content_page/courses_menu_list.haml:12
 msgid "In Progress"
 msgstr "进行中"
 
-#: admin/models.py:691
+#: admin/models.py:692
 msgid "Complete"
 msgstr "完成"
 
-#: admin/models.py:692
+#: admin/models.py:693
 msgid "Incomplete"
 msgstr "未完成"
 
@@ -1990,129 +1996,129 @@ msgstr "以下项的任务小组：{wg_id}"
 msgid "Some of the files aren't uploaded, Please upload again!"
 msgstr "部分文件未上传，请重新上传！"
 
-#: admin/tasks.py:169
+#: admin/tasks.py:170
 #, python-brace-format
 msgid "Group Work: {label}"
 msgstr "小组作业：{label}"
 
-#: admin/tasks.py:176
+#: admin/tasks.py:177
 #, python-brace-format
 msgid "Assessment: {label}"
 msgstr "评定：{label}"
 
-#: admin/tasks.py:182
+#: admin/tasks.py:183
 #, python-brace-format
 msgid "Lesson {lesson_number} Progress"
 msgstr "课时{lesson_number}进度"
 
-#: admin/tasks.py:270
+#: admin/tasks.py:271
 msgid "Report for bulk update"
 msgstr ""
 
-#: admin/tasks.py:298
+#: admin/tasks.py:299
 msgid "Participant stats for {} is ready to download"
 msgstr "{} 的参与者统计数据准备就绪，可供下载"
 
-#: admin/tasks.py:301
+#: admin/tasks.py:302
 msgid "Participant stats for {} did not generate"
 msgstr "未生成 {} 的参与者统计数据"
 
-#: admin/tasks.py:577
+#: admin/tasks.py:600
 msgid "User with email {} and manager with email {} was unsuccessfull."
 msgstr ""
 
-#: admin/tasks.py:658
+#: admin/tasks.py:701
 msgid "Import File Processed"
 msgstr ""
 
-#: admin/views.py:610
+#: admin/views.py:613
 msgid "Edit Email"
 msgstr "编辑电子邮件"
 
-#: admin/views.py:649
+#: admin/views.py:652
 msgid "Un-enroll from this course"
 msgstr "取消注册此课程"
 
-#: admin/views.py:650
+#: admin/views.py:653
 msgid "Un-enroll from entire program "
 msgstr "取消注册整个计划 "
 
-#: admin/views.py:938
+#: admin/views.py:946
 msgid "% Progress"
 msgstr "进度 %"
 
-#: admin/views.py:939
+#: admin/views.py:947
 msgid "% Progress (Engaged)"
 msgstr "进度 %（已参与）"
 
-#: admin/views.py:1014
+#: admin/views.py:1022
 msgid "GW_{}"
 msgstr "GW_{}"
 
-#: admin/views.py:1017
+#: admin/views.py:1025
 msgid "Group Work: {}"
 msgstr "小组作业：{}"
 
-#: admin/views.py:1023
+#: admin/views.py:1031
 msgid "AS_{}"
 msgstr "AS_{}"
 
-#: admin/views.py:1026
+#: admin/views.py:1034
 msgid "Assessment: {}"
 msgstr "评定：{}"
 
-#: admin/views.py:1209
+#: admin/views.py:1217
 msgid "No such task!"
 msgstr "无此类任务！"
 
-#: admin/views.py:1302 admin/views.py:1341
+#: admin/views.py:1310 admin/views.py:1349
 msgid "please fix the problems indicated below."
 msgstr "请解决下面指出的问题。"
 
-#: admin/views.py:1391
+#: admin/views.py:1399
 msgid "Client"
 msgstr "客户端"
 
-#: admin/views.py:1392
+#: admin/views.py:1400
 msgid "Clients"
 msgstr "客户端"
 
-#: admin/views.py:1452 admin/views.py:1501
+#: admin/views.py:1460 admin/views.py:1509
 msgid "Save Client"
 msgstr "保存客户端"
 
-#: admin/views.py:1513
+#: admin/views.py:1521
 #, python-brace-format
 msgid "Successfully processed {processed} of {total} record"
 msgid_plural "Successfully processed {processed} of {total} records"
 msgstr[0] "已成功处理 {processed} 条记录（共 {total} 条）"
 msgstr[1] "已成功处理 {processed} 条记录（共 {total} 条）"
 
-#: admin/views.py:1696
+#: admin/views.py:1704
 msgid "Bad request, The Image type is not valid."
 msgstr "错误的请求，图像类型无效。"
 
-#: admin/views.py:1708
+#: admin/views.py:1716
 msgid "Could not delete the image, Please try later"
 msgstr "无法删除图像，请稍后重试"
 
-#: admin/views.py:1858
+#: admin/views.py:1866
 msgid "Contact has been removed."
 msgstr "联系人已删除。"
 
-#: admin/views.py:1874 admin/views.py:1880
+#: admin/views.py:1882 admin/views.py:1888
 msgid "Invalid Course Run"
 msgstr "课程安排无效"
 
-#: admin/views.py:1876
+#: admin/views.py:1884
 msgid "Invalid Program ID"
 msgstr "计划 ID 无效"
 
-#: admin/views.py:1880
+#: admin/views.py:1888
 msgid "Course: {}"
 msgstr "课程：{}"
 
-#: admin/views.py:1906
+#: admin/views.py:1914
 msgid ""
 "\n"
 "            If this client should use SSO: DevOps must configure and enable "
@@ -2131,110 +2137,110 @@ msgstr ""
 "            “Idp slug”值。如果此客户端不使用 SSO，请将此字段留空。\n"
 "        "
 
-#: admin/views.py:1949 admin/views.py:1950 admin/views.py:1984
+#: admin/views.py:1957 admin/views.py:1958 admin/views.py:1992
 msgid "- Select -"
 msgstr "- 选择 -"
 
-#: admin/views.py:2007
+#: admin/views.py:2015
 msgid "Access Key couldn't be created, please check course ID!"
 msgstr "无法创建访问密钥，请检查课程 ID！"
 
-#: admin/views.py:2015
+#: admin/views.py:2023
 msgid "Access Key created successfully!"
 msgstr "访问密钥已成功创建！"
 
-#: admin/views.py:2030
+#: admin/views.py:2038
 msgid "Access Key"
 msgstr "访问密钥"
 
-#: admin/views.py:2052
+#: admin/views.py:2060
 msgid "Send"
 msgstr "发送"
 
-#: admin/views.py:2077
+#: admin/views.py:2085
 msgid "This student hasn't been added to any programs yet."
 msgstr "此学员尚未加入任何计划。"
 
-#: admin/views.py:2088
+#: admin/views.py:2096
 msgid "fail"
 msgstr "失败"
 
-#: admin/views.py:2092
+#: admin/views.py:2100
 msgid "success"
 msgstr "成功"
 
-#: admin/views.py:2105 templates/admin/admin_header.haml:59
+#: admin/views.py:2113 templates/admin/admin_header.haml:59
 #: templates/marketing/programs.haml:237
 msgid "Programs"
 msgstr "计划"
 
-#: admin/views.py:2143 admin/views.py:2191
+#: admin/views.py:2151 admin/views.py:2199
 msgid "Save Program"
 msgstr "保存计划"
 
-#: admin/views.py:2499
+#: admin/views.py:2514
 msgid "Successfully Added {} Participants"
 msgstr "已成功添加 {} 名参与者"
 
-#: admin/views.py:2559 admin/views.py:6038
+#: admin/views.py:2574 admin/views.py:6055
 #: templates/admin/participants/activation_link_modal.haml:15
 msgid "First name"
 msgstr "名字"
 
-#: admin/views.py:2559 admin/views.py:6039
+#: admin/views.py:2574 admin/views.py:6056
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 msgid "Last name"
 msgstr "姓氏"
 
-#: admin/views.py:2559
+#: admin/views.py:2574
 #: templates/admin/participants/activation_link_modal.haml:4
 #: templates/admin/participants/activation_link_modal.haml:21
 msgid "Activation Link"
 msgstr "激活链接"
 
-#: admin/views.py:2678
+#: admin/views.py:2693
 msgid "Report is TBD"
 msgstr "报告待定"
 
-#: admin/views.py:2700 templates/courses/content_page/courses_menu_list.haml:17
+#: admin/views.py:2715 templates/courses/content_page/courses_menu_list.haml:17
 msgid "Coming Soon"
 msgstr "即将推出"
 
-#: admin/views.py:2702 templates/courses/content_page/courses_menu_list.haml:8
+#: admin/views.py:2717 templates/courses/content_page/courses_menu_list.haml:8
 msgid "Archived"
 msgstr "已归档"
 
-#: admin/views.py:2771
+#: admin/views.py:2786
 msgid "Successfully saved courses to {} program"
 msgstr "已成功将课程保存到 {} 计划中"
 
-#: admin/views.py:2786 admin/views.py:3187 admin/views.py:3221
-#: admin/views.py:3280
+#: admin/views.py:2801 admin/views.py:3202 admin/views.py:3236
+#: admin/views.py:3295
 msgid "Invalid program_id specified: {}"
 msgstr "指定的 program_id 无效：{}"
 
-#: admin/views.py:2795
+#: admin/views.py:2810
 msgid "Invalid student_id specified: {}"
 msgstr "指定的 student_id 无效：{}"
 
-#: admin/views.py:2801
+#: admin/views.py:2816
 msgid "Not enough places available for {} program - {} left"
 msgstr "{} 计划的名额不足 - 剩余 {} 个"
 
-#: admin/views.py:2829
+#: admin/views.py:2844
 msgid "Successfully associated students to {} program"
 msgstr "已成功将学员关联到 {} 计划"
 
-#: admin/views.py:2869
+#: admin/views.py:2884
 msgid "{} already enrolled in {}"
 msgstr "{} 已注册 {}"
 
-#: admin/views.py:2876
+#: admin/views.py:2891
 msgid "Successfully associated students to courses"
 msgstr "已成功将学员关联到课程"
 
-#: admin/views.py:2878
+#: admin/views.py:2893
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
@@ -2242,18 +2248,18 @@ msgstr ""
 "已成功将学员关联到课程，并显示 {} 条消息：\n"
 "\\t{}"
 
-#: admin/views.py:2996 admin/views.py:3003
+#: admin/views.py:3011 admin/views.py:3018
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
 msgstr "上传文件时出错。请确保使用的是接受的文件格式，然后重试。"
 
-#: admin/views.py:3447 admin/views.py:3514
+#: admin/views.py:3462 admin/views.py:3529
 msgid "No group projects available for this course"
 msgstr "此课程没有可用的小组项目"
 
-#: admin/views.py:3525 admin/views.py:3526 admin/views.py:3767
-#: admin/views.py:3768 templates/admin/admin_header.haml:37
+#: admin/views.py:3540 admin/views.py:3541 admin/views.py:3782
+#: admin/views.py:3783 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
@@ -2261,222 +2267,222 @@ msgstr "此课程没有可用的小组项目"
 msgid "Group Work"
 msgstr "小组作业"
 
-#: admin/views.py:3612
+#: admin/views.py:3627
 msgid "Group wasn't created - please select project"
 msgstr "未创建小组 - 请选择项目"
 
-#: admin/views.py:3623
+#: admin/views.py:3638
 msgid "Bad users {} for private project"
 msgstr "私人项目的用户 {} 错误"
 
-#: admin/views.py:3639
+#: admin/views.py:3654
 msgid "Group successfully created"
 msgstr "小组已成功创建"
 
-#: admin/views.py:3643
+#: admin/views.py:3658
 msgid "Group was not created"
 msgstr "未创建小组"
 
-#: admin/views.py:3689
+#: admin/views.py:3704
 msgid "Error creating project"
 msgstr "创建项目时出错"
 
-#: admin/views.py:3704
+#: admin/views.py:3719
 msgid "Project already exists"
 msgstr "项目已存在"
 
-#: admin/views.py:3709
+#: admin/views.py:3724
 msgid "Project successfully created"
 msgstr "项目已成功创建"
 
-#: admin/views.py:3743
+#: admin/views.py:3758
 msgid "Project deleted successfully."
 msgstr "项目已成功删除。"
 
-#: admin/views.py:3805
+#: admin/views.py:3820
 msgid "Password Reset Email successfully sent."
 msgstr "密码重置电子邮件已成功发送。"
 
-#: admin/views.py:3824
+#: admin/views.py:3839
 msgid "Activation email sent."
 msgstr "激活电子邮件已发送。"
 
-#: admin/views.py:3898 admin/views.py:4109
+#: admin/views.py:3913 admin/views.py:4125
 msgid "Company name can only contain alphanumeric characters"
 msgstr "公司名称只能包含字母数字字符"
 
-#: admin/views.py:3910 admin/views.py:3915
+#: admin/views.py:3925 admin/views.py:3930
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr "权限错误：您无权授予此角色"
 
-#: admin/views.py:3926
+#: admin/views.py:3941
 msgid "User with that email already exists!"
 msgstr "使用该电子邮件地址的用户已存在！"
 
-#: admin/views.py:3955 admin/views.py:4142
+#: admin/views.py:3970 admin/views.py:4158
 msgid "Couldn't create company!"
 msgstr "无法创建公司！"
 
-#: admin/views.py:3968
+#: admin/views.py:3983
 msgid "Couldn't add user to company!"
 msgstr "无法将用户添加到公司！"
 
-#: admin/views.py:3993 templates/admin/participants/participants_list.haml:239
+#: admin/views.py:4008 templates/admin/participants/participants_list.haml:239
 msgid "Successfully added new user!"
 msgstr "已成功添加新用户！"
 
-#: admin/views.py:4015 admin/views.py:4017 admin/views.py:4029
-#: admin/views.py:4035 admin/views.py:4041 admin/views.py:5912
-#: admin/views.py:5914 admin/views.py:5923 admin/views.py:5929
-#: admin/views.py:5935
-#: templates/admin/participants/participant_details.haml:296
-#: templates/admin/participants/participant_details.haml:304
-#: templates/admin/participants/participant_details.haml:312
+#: admin/views.py:4030 admin/views.py:4032 admin/views.py:4044
+#: admin/views.py:4050 admin/views.py:4056 admin/views.py:5929
+#: admin/views.py:5931 admin/views.py:5940 admin/views.py:5946
+#: admin/views.py:5952
+#: templates/admin/participants/participant_details.haml:297
+#: templates/admin/participants/participant_details.haml:305
+#: templates/admin/participants/participant_details.haml:313
 #: templates/admin/participants/participants_list.haml:90
 msgid "N/A"
 msgstr "不适用"
 
-#: admin/views.py:4129
+#: admin/views.py:4145
 msgid "User with that username or email already exists!"
 msgstr "使用该用户名或电子邮件地址的用户已存在！"
 
-#: admin/views.py:4202
+#: admin/views.py:4218
 msgid "Can't find user in database"
 msgstr "在数据库中找不到用户"
 
-#: admin/views.py:4291
+#: admin/views.py:4307
 msgid "There is a problem with selected user role on new course!"
 msgstr "新课程中选定的用户角色存在问题！"
 
-#: admin/views.py:4349 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4365 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
 msgid "Progress"
 msgstr "进度"
 
-#: admin/views.py:4349 admin/views.py:4451
+#: admin/views.py:4365 admin/views.py:4468
 msgid "Status"
 msgstr "状态"
 
-#: admin/views.py:4450 templates/admin/client-admin/course_info.haml:79
+#: admin/views.py:4467 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:46
 #: templates/courses/course_progress.haml:66
 msgid "Completed"
 msgstr "已完成"
 
-#: admin/views.py:4450
+#: admin/views.py:4467
 msgid "Grade"
 msgstr "评分"
 
-#: admin/views.py:4451
+#: admin/views.py:4468
 msgid "End Date"
 msgstr "结束日期"
 
-#: admin/views.py:4608
+#: admin/views.py:4625
 msgid "Problem generating activity review assignments"
 msgstr "生成活动评阅任务时发生问题"
 
-#: admin/views.py:4632
+#: admin/views.py:4649
 msgid "Project review assignments allocated"
 msgstr "分配的项目评阅任务"
 
-#: admin/views.py:4640
+#: admin/views.py:4657
 msgid "Not enough groups to meet review criteria"
 msgstr "小组数量不足，无法满足评阅标准"
 
-#: admin/views.py:4875
+#: admin/views.py:4892
 msgid "Successfully added new email template!"
 msgstr "已成功添加新的电子邮件模板！"
 
-#: admin/views.py:4879
+#: admin/views.py:4896
 msgid "Missing fields in email template!"
 msgstr "电子邮件模板中缺少字段！"
 
-#: admin/views.py:4890
+#: admin/views.py:4907
 msgid "Successfully got email template!"
 msgstr "已成功获取电子邮件模板！"
 
-#: admin/views.py:4894 admin/views.py:4908 admin/views.py:4933
+#: admin/views.py:4911 admin/views.py:4925 admin/views.py:4950
 msgid "Can't find email template key!"
 msgstr "找不到电子邮件模板密钥！"
 
-#: admin/views.py:4896 admin/views.py:4910 admin/views.py:4935
+#: admin/views.py:4913 admin/views.py:4927 admin/views.py:4952
 msgid "Missing email template key!"
 msgstr "缺少电子邮件模板密钥！"
 
-#: admin/views.py:4906
+#: admin/views.py:4923
 msgid "Successfully deleted email template!"
 msgstr "已成功删除电子邮件模板！"
 
-#: admin/views.py:4929
+#: admin/views.py:4946
 msgid "Successfully updated email template!"
 msgstr "已成功更新电子邮件模板！"
 
-#: admin/views.py:5060 admin/views.py:5697
+#: admin/views.py:5077 admin/views.py:5714
 msgid "No Company Display name!"
 msgstr "无公司显示名称！"
 
-#: admin/views.py:5262
+#: admin/views.py:5279
 msgid "App name only contains alphanumeric characters"
 msgstr "应用名称只能包含字母数字字符"
 
-#: admin/views.py:5380
+#: admin/views.py:5397
 msgid "Learner dashboard not found"
 msgstr "找不到学员仪表板"
 
-#: admin/views.py:5714
+#: admin/views.py:5731
 msgid "Company name successfully changed!"
 msgstr "公司名称已成功更改！"
 
-#: admin/views.py:5759
+#: admin/views.py:5776
 msgid "Tag with this name already exist's!"
 msgstr "具有此名称的标签已存在！"
 
-#: admin/views.py:5770
+#: admin/views.py:5787
 msgid "Tag created!"
 msgstr "标签已创建！"
 
-#: admin/views.py:5772
+#: admin/views.py:5789
 msgid "You need to select tag's name!"
 msgstr "您需要选择标签名称！"
 
-#: admin/views.py:5824
+#: admin/views.py:5841
 msgid "Tag added to Course!"
 msgstr "已向课程添加标签！"
 
-#: admin/views.py:5826 admin/views.py:5849
+#: admin/views.py:5843 admin/views.py:5866
 msgid "You need to select tag!"
 msgstr "您需要选择标签！"
 
-#: admin/views.py:5847
+#: admin/views.py:5864
 msgid "Tag removed from Course!"
 msgstr "已从课程删除标签！"
 
-#: admin/views.py:6040 templates/admin/course_run/view.haml:65
+#: admin/views.py:6057 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "公司名称"
 
-#: admin/views.py:6041 templates/admin/course_run/view.haml:66
+#: admin/views.py:6058 templates/admin/course_run/view.haml:66
 msgid "Company email"
 msgstr "公司电子邮件"
 
-#: admin/views.py:6042 templates/admin/course_run/view.haml:67
+#: admin/views.py:6059 templates/admin/course_run/view.haml:67
 msgid "Current role"
 msgstr "当前角色"
 
-#: admin/views.py:6043 templates/admin/course_run/view.haml:68
+#: admin/views.py:6060 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "新用户"
 
-#: admin/views.py:6044
+#: admin/views.py:6061
 msgid "McK user"
 msgstr "麦肯锡用户"
 
-#: admin/views.py:6045 templates/admin/course_run/view.haml:70
+#: admin/views.py:6062 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "已注册"
 
-#: admin/views.py:6046 templates/admin/course_run/view.haml:71
+#: admin/views.py:6063 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "激活"
@@ -2536,8 +2542,8 @@ msgstr "可用"
 #: api_client/course_models.py:146
 #: templates/courses/content_page/course_menu.haml:49
 #: templates/courses/course_learner_dashboard_calendar.haml:45
-#: templates/courses/course_progress_v2.haml:126
-#: templates/courses/course_progress_v2.haml:190
+#: templates/courses/course_progress_v2.haml:129
+#: templates/courses/course_progress_v2.haml:193
 msgid "complete"
 msgstr "完成"
 
@@ -2625,7 +2631,7 @@ msgstr "模板"
 msgid "Asset"
 msgstr "资产"
 
-#: courses/controller.py:1022
+#: courses/controller.py:1029
 msgid "Assessment"
 msgstr "评定"
 
@@ -2915,16 +2921,19 @@ msgid "Password reset email sent"
 msgstr "密码重置电子邮件已发送"
 
 #: public_api/views.py:229
-msgid "We have sent an email to {} with a link to create an account for you."
-msgstr ""
+#, python-brace-format
+msgid ""
+"We have sent an email to <a href=\"mailto:{0}\">{0}</a> with a link to "
+"create an account for you."
+msgstr "我们已将包含帐户创建链接的电子邮件发送到 <a href=\"mailto:{0}\">{0}</a>。"
 
-#: public_api/views.py:232
+#: public_api/views.py:233
 msgid ""
 "Sorry, Please try again later to receive an email with a link to create your "
 "account."
 msgstr ""
 
-#: public_api/views.py:235
+#: public_api/views.py:236
 #, fuzzy
 #| msgid "User doesn't exist"
 msgid "User does not exist"
@@ -3142,25 +3151,23 @@ msgstr "登录时遇到问题？请与我们联系。"
 
 #: templates/accounts/login.haml:68
 msgid "Check your email inbox"
-msgstr ""
+msgstr "请查看电子邮箱收件箱"
 
 #: templates/accounts/login.haml:75
 msgid "If you don't see the email in your inbox, check your spam folder or"
-msgstr ""
+msgstr "如果您的收件箱中没有这封邮件，请查看垃圾文件夹或"
 
 #: templates/accounts/login.haml:77
-#, fuzzy
-#| msgid "Send Email"
 msgid "resend email"
-msgstr "发送电子邮件"
+msgstr "重新发送"
 
 #: templates/accounts/login.haml:79
-msgid "with the link."
-msgstr ""
+msgid " with the link."
+msgstr " 包含链接的电子邮件。"
 
 #: templates/accounts/login.haml:82
 msgid "Return to Login"
-msgstr ""
+msgstr "返回登录"
 
 #: templates/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
@@ -3257,8 +3264,6 @@ msgid "No file selected."
 msgstr "未选择文件。"
 
 #: templates/accounts/user_activation_email.haml:12
-#, fuzzy
-#| msgid "Welcome to McKinsey Academy"
 msgid "Welcome to McKinsey Academy!"
 msgstr "欢迎来到麦肯锡学院"
 
@@ -3267,25 +3272,23 @@ msgid ""
 "We are excited for you to begin your learning journey. To get started, "
 "please click on the personalized link below to create a username and "
 "password for your account."
-msgstr ""
+msgstr "很高兴您已成功踏上学习之旅。若要立即开始，请单击以下个性化链接，为您的帐户创建用户名和密码。"
 
 #: templates/accounts/user_activation_email.haml:18
 msgid ""
 "After you've created your username and password, you can access your course "
 "at"
-msgstr ""
+msgstr "用户名和密码创建完成后，您可以访问课程"
 
 #: templates/accounts/user_activation_email.haml:21
 msgid " at anytime."
-msgstr ""
+msgstr "随时"
 
 #: templates/accounts/user_activation_email.haml:23
-#, fuzzy
-#| msgid "COURSE_STARTED"
 msgid "GET STARTED"
-msgstr "COURSE_STARTED"
+msgstr "立即开始"
 
-#: templates/accounts/user_activation_email.haml:27
+#: templates/accounts/user_activation_email.haml:26
 #: templates/admin/bulk_fields_update_report_email.haml:28
 #: templates/admin/export_stats_email_template.haml:23
 #: templates/admin/export_stats_failure_email_template.haml:23
@@ -3293,19 +3296,17 @@ msgstr "COURSE_STARTED"
 msgid "Best Regards,"
 msgstr "顺颂商祺！"
 
-#: templates/accounts/user_activation_email.haml:33
+#: templates/accounts/user_activation_email.haml:32
 #: templates/admin/admin_header.haml:62
 #: templates/admin/bulk_fields_update_report_email.haml:34
 #: templates/admin/export_stats_email_template.haml:29
 #: templates/admin/export_stats_failure_email_template.haml:29
-#: templates/admin/import_users_email_template.haml:41
 msgid "Contact"
 msgstr "联系方式"
 
-#: templates/accounts/user_activation_email.haml:36
+#: templates/accounts/user_activation_email.haml:35
 #: templates/admin/bulk_fields_update_report_email.haml:37
 #: templates/admin/export_stats_email_template.haml:32
-#: templates/admin/import_users_email_template.haml:44
 msgid "if you have any questions"
 msgstr "如果您有任何疑问"
 
@@ -3499,9 +3500,9 @@ msgstr "重置颜色"
 #: templates/admin/courses/course_details.haml:135
 #: templates/admin/courses/course_details.haml:207
 #: templates/admin/mobile_apps/company_app_details.haml:67
-#: templates/admin/participants/participant_details.haml:337
-#: templates/admin/participants/participant_details.haml:369
-#: templates/admin/participants/participant_details.haml:387
+#: templates/admin/participants/participant_details.haml:338
+#: templates/admin/participants/participant_details.haml:370
+#: templates/admin/participants/participant_details.haml:388
 #: templates/admin/participants/participants_list.haml:133
 #: templates/admin/participants/participants_list.haml:147
 #: templates/admin/participants/participants_list.haml:165
@@ -4163,7 +4164,7 @@ msgstr "类型"
 #: templates/admin/learner_dashboard/branding.haml:65
 #: templates/admin/learner_dashboard/discovery_list.haml:18
 #: templates/admin/learner_dashboard/element_list.haml:23
-#: templates/admin/participants/participant_details.haml:74
+#: templates/admin/participants/participant_details.haml:75
 #: templates/certificates/certificate_templates.haml:41
 msgid "Edit"
 msgstr "编辑"
@@ -4447,7 +4448,7 @@ msgid "Back to list"
 msgstr "返回列表"
 
 #: templates/admin/course_run/view.haml:12
-#: templates/courses/course_progress_v2.haml:52
+#: templates/courses/course_progress_v2.haml:55
 msgid "Course Run:"
 msgstr "课程安排："
 
@@ -4543,8 +4544,8 @@ msgstr "已生成证书"
 #: templates/admin/courses/course_details.haml:80
 #: templates/admin/courses/course_details.haml:112
 #: templates/admin/courses/course_details.haml:115
-#: templates/admin/participants/participant_details.haml:343
-#: templates/admin/participants/participant_details.haml:349
+#: templates/admin/participants/participant_details.haml:344
+#: templates/admin/participants/participant_details.haml:350
 msgid "Export Stats"
 msgstr "导出统计数据"
 
@@ -4574,8 +4575,8 @@ msgid "Download CSV For Notifications"
 msgstr "下载通知 CSV"
 
 #: templates/admin/courses/course_details.haml:133
-#: templates/admin/participants/participant_details.haml:335
-#: templates/admin/participants/participant_details.haml:385
+#: templates/admin/participants/participant_details.haml:336
+#: templates/admin/participants/participant_details.haml:386
 msgid "Save Changes"
 msgstr "保存更改"
 
@@ -4602,8 +4603,8 @@ msgstr "删除所选模板"
 #: templates/admin/courses/course_details.haml:163
 #: templates/admin/learner_dashboard/branding.haml:13
 #: templates/admin/learner_dashboard/branding.haml:62
-#: templates/admin/participants/participant_details.haml:239
-#: templates/admin/participants/participant_details.haml:242
+#: templates/admin/participants/participant_details.haml:240
+#: templates/admin/participants/participant_details.haml:243
 #: templates/admin/participants/participants_list.haml:101
 msgid "None"
 msgstr "无"
@@ -4892,11 +4893,6 @@ msgstr "进度"
 msgid "proficiency"
 msgstr "熟练程度"
 
-#: templates/admin/manager_dashboard/team_report.haml:39
-#: templates/courses/visualizations/course_engagement.haml:15
-msgid "points"
-msgstr "分"
-
 #: templates/admin/mobile_apps/company_app_details.haml:24
 msgid "Details"
 msgstr "详细信息"
@@ -4966,113 +4962,113 @@ msgstr "复制到剪贴板。"
 msgid "Copied to clipboard."
 msgstr "已复制到剪贴板。"
 
-#: templates/admin/participants/participant_details.haml:27
+#: templates/admin/participants/participant_details.haml:28
 msgid "Back"
 msgstr "返回"
 
-#: templates/admin/participants/participant_details.haml:31
+#: templates/admin/participants/participant_details.haml:32
 #: templates/admin/participants/participants_import_progress.haml:7
 msgid "Back to Participants"
 msgstr "返回参与者"
 
-#: templates/admin/participants/participant_details.haml:42
+#: templates/admin/participants/participant_details.haml:43
 msgid "Last logged in:"
 msgstr "上次登录："
 
-#: templates/admin/participants/participant_details.haml:47
+#: templates/admin/participants/participant_details.haml:48
 msgid "Enroll in a Course"
 msgstr "注册课程"
 
-#: templates/admin/participants/participant_details.haml:52
+#: templates/admin/participants/participant_details.haml:53
 msgid "PROFILE"
 msgstr "档案"
 
-#: templates/admin/participants/participant_details.haml:55
+#: templates/admin/participants/participant_details.haml:56
 msgid "ACTIVE COURSES"
 msgstr "激活课程"
 
-#: templates/admin/participants/participant_details.haml:58
+#: templates/admin/participants/participant_details.haml:59
 msgid "COURSE HISTORY"
 msgstr "课程历史记录"
 
-#: templates/admin/participants/participant_details.haml:61
+#: templates/admin/participants/participant_details.haml:62
 msgid "CERTIFICATES"
 msgstr "证书"
 
-#: templates/admin/participants/participant_details.haml:69
+#: templates/admin/participants/participant_details.haml:70
 msgid "Participant Details"
 msgstr "参与者详细信息"
 
-#: templates/admin/participants/participant_details.haml:82
+#: templates/admin/participants/participant_details.haml:83
 msgid "&ast; This user has not yet activated their account. "
 msgstr "&ast; 此用户尚未激活其账户。"
 
-#: templates/admin/participants/participant_details.haml:84
+#: templates/admin/participants/participant_details.haml:85
 msgid "Get Activation Link"
 msgstr "获取激活链接"
 
-#: templates/admin/participants/participant_details.haml:86
+#: templates/admin/participants/participant_details.haml:87
 msgid "Resend Activation Link"
 msgstr "重新发送激活链接"
 
-#: templates/admin/participants/participant_details.haml:116
-#: templates/admin/participants/participant_details.haml:217
+#: templates/admin/participants/participant_details.haml:117
+#: templates/admin/participants/participant_details.haml:218
 msgid "Send reset password email"
 msgstr "发送重置密码电子邮件"
 
-#: templates/admin/participants/participant_details.haml:134
-#: templates/admin/participants/participant_details.haml:267
+#: templates/admin/participants/participant_details.haml:135
+#: templates/admin/participants/participant_details.haml:268
 #, fuzzy
 #| msgid "Username or password invalid"
 msgid "Manager Email"
 msgstr "用户名或电子邮件："
 
-#: templates/admin/participants/participant_details.haml:142
-#: templates/admin/participants/participant_details.haml:287
+#: templates/admin/participants/participant_details.haml:143
+#: templates/admin/participants/participant_details.haml:288
 #: templates/admin/participants/participants_list.haml:86
 msgid "Gender"
 msgstr "性别"
 
-#: templates/admin/participants/participant_details.haml:154
+#: templates/admin/participants/participant_details.haml:155
 msgid "Location"
 msgstr "地点"
 
-#: templates/admin/participants/participant_details.haml:173
+#: templates/admin/participants/participant_details.haml:174
 msgid "Admin Permissions"
 msgstr "管理员权限"
 
-#: templates/admin/participants/participant_details.haml:185
+#: templates/admin/participants/participant_details.haml:186
 msgid "Archive Participant"
 msgstr "归档参与者"
 
-#: templates/admin/participants/participant_details.haml:193
+#: templates/admin/participants/participant_details.haml:194
 #: templates/admin/participants/participants_list.haml:46
 msgid " First Name<sup>*</sup> "
 msgstr " 名字<sup>*</sup>"
 
-#: templates/admin/participants/participant_details.haml:198
+#: templates/admin/participants/participant_details.haml:199
 msgid " Last Name<sup>*</sup> "
 msgstr " 姓氏<sup>*</sup>"
 
-#: templates/admin/participants/participant_details.haml:209
+#: templates/admin/participants/participant_details.haml:210
 msgid "That username is already taken"
 msgstr "该用户名已被使用"
 
-#: templates/admin/participants/participant_details.haml:213
+#: templates/admin/participants/participant_details.haml:214
 msgid "Email<sup>*</sup> "
 msgstr "电子邮件<sup>*</sup>"
 
-#: templates/admin/participants/participant_details.haml:221
-#: templates/admin/participants/participant_details.haml:272
+#: templates/admin/participants/participant_details.haml:222
+#: templates/admin/participants/participant_details.haml:273
 msgid "That email is already taken"
 msgstr "该电子邮件地址已被使用"
 
-#: templates/admin/participants/participant_details.haml:225
+#: templates/admin/participants/participant_details.haml:226
 #: templates/admin/participants/participants_list.haml:64
 msgid " Company<sup>*</sup> "
 msgstr " 公司<sup>*</sup>"
 
-#: templates/admin/participants/participant_details.haml:230
+#: templates/admin/participants/participant_details.haml:231
 #: templates/admin/participants/participants_list.haml:69
 msgid ""
 "Since this company does not yet exist, a new company will be created. If "
@@ -5081,53 +5077,53 @@ msgstr ""
 "由于此公司尚不存在，因此会创建一家新公司。如果有误，请尝试从预输入结果中选择"
 "您的公司。"
 
-#: templates/admin/participants/participant_details.haml:234
+#: templates/admin/participants/participant_details.haml:235
 #: templates/admin/participants/participants_list.haml:97
 msgid "Permissions"
 msgstr "权限"
 
-#: templates/admin/participants/participant_details.haml:246
-#: templates/admin/participants/participant_details.haml:249
+#: templates/admin/participants/participant_details.haml:247
+#: templates/admin/participants/participant_details.haml:250
 #: templates/admin/participants/participants_list.haml:104
 msgid "Uber admin"
 msgstr "超级管理员"
 
-#: templates/admin/participants/participant_details.haml:253
-#: templates/admin/participants/participant_details.haml:256
+#: templates/admin/participants/participant_details.haml:254
+#: templates/admin/participants/participant_details.haml:257
 #: templates/admin/participants/participants_list.haml:107
 msgid "Course ops admin"
 msgstr "课程运营管理员"
 
-#: templates/admin/participants/participant_details.haml:259
-#: templates/admin/participants/participant_details.haml:262
+#: templates/admin/participants/participant_details.haml:260
+#: templates/admin/participants/participant_details.haml:263
 #: templates/admin/participants/participants_list.haml:109
 #: templates/header.haml:83
 msgid "Internal Admin"
 msgstr "内部管理员"
 
-#: templates/admin/participants/participant_details.haml:275
+#: templates/admin/participants/participant_details.haml:276
 #: templates/admin/participants/participants_list.haml:74
 msgid "Country Abbreviation"
 msgstr "国家/地区缩写"
 
-#: templates/admin/participants/participant_details.haml:282
+#: templates/admin/participants/participant_details.haml:283
 #: templates/admin/participants/participants_list.haml:80
 msgid "City"
 msgstr "城市"
 
-#: templates/admin/participants/participant_details.haml:327
+#: templates/admin/participants/participant_details.haml:328
 msgid "Add another company"
 msgstr "添加其他公司"
 
-#: templates/admin/participants/participant_details.haml:330
+#: templates/admin/participants/participant_details.haml:331
 msgid "Refresh"
 msgstr "刷新"
 
-#: templates/admin/participants/participant_details.haml:362
+#: templates/admin/participants/participant_details.haml:363
 msgid "Are you sure you want to unenroll this user?"
 msgstr "是否确定要取消注册此用户？"
 
-#: templates/admin/participants/participant_details.haml:367
+#: templates/admin/participants/participant_details.haml:368
 #: templates/admin/workgroup/course_detail.haml:124
 msgid "Ok"
 msgstr "确定"
@@ -5144,7 +5140,7 @@ msgstr "参与者"
 msgid "Observer"
 msgstr "观察员"
 
-#: templates/admin/participants/participant_edit_status.haml:31
+#: templates/admin/participants/participant_edit_status.haml:32
 msgid "Moderator"
 msgstr ""
 
@@ -5256,7 +5252,7 @@ msgid "Email activation links now"
 msgstr "电子邮件激活链接"
 
 #: templates/admin/participants/participants_list.haml:179
-msgid "You CSV is Importing..."
+msgid "Your CSV is Importing..."
 msgstr ""
 
 #: templates/admin/participants/participants_list.haml:181
@@ -5616,8 +5612,8 @@ msgstr "在此添加一条消息来描述负责人名单"
 #: templates/admin/workgroup/workgroup_detail_report.haml:12
 #: templates/admin/workgroup/workgroup_report.haml:12
 #: templates/courses/course_progress.haml:103
-#: templates/courses/course_progress_v2.haml:169
-#: templates/courses/course_progress_v2.haml:182
+#: templates/courses/course_progress_v2.haml:172
+#: templates/courses/course_progress_v2.haml:185
 msgid "Group Work:"
 msgstr "小组作业："
 
@@ -5887,7 +5883,7 @@ msgstr "课时:"
 #: templates/courses/content_page/lesson_pager.haml:11
 #: templates/courses/content_page/lesson_pager.haml:39
 #: templates/courses/course_lessons.haml:12
-#: templates/courses/course_progress_v2.haml:74
+#: templates/courses/course_progress_v2.haml:77
 #, python-format
 msgid " %(lesson_custom_label)s %(lesson_index)s:"
 msgstr ""
@@ -5940,25 +5936,25 @@ msgid " %(lesson_custom_label)s %(lesson_index)s: #{lesson.name}"
 msgstr ""
 
 #: templates/courses/content_page/lesson_pager.haml:15
-#: templates/courses/content_page/lesson_pager.haml:44
+#: templates/courses/content_page/lesson_pager.haml:43
 #, python-format
 msgid " %(module_custom_label)s %(index)s of %(lesson_count)s"
 msgstr ""
 
 #: templates/courses/content_page/lesson_pager.haml:17
-#: templates/courses/content_page/lesson_pager.haml:46
+#: templates/courses/content_page/lesson_pager.haml:45
 msgid "of"
 msgstr "的"
 
 #: templates/courses/content_page/lesson_pager.haml:25
-#: templates/courses/content_page/lesson_pager.haml:54
+#: templates/courses/content_page/lesson_pager.haml:53
 #, fuzzy, python-format
 #| msgid "Lesson available on %(start_date)s"
 msgid "%(lesson_custom_label)s available on %(start_date)s"
 msgstr "课时上课时间 %(start_date)s"
 
 #: templates/courses/content_page/lesson_pager.haml:27
-#: templates/courses/content_page/lesson_pager.haml:56
+#: templates/courses/content_page/lesson_pager.haml:55
 #, python-format
 msgid "Lesson available on %(start_date)s"
 msgstr "课时上课时间 %(start_date)s"
@@ -6016,7 +6012,7 @@ msgstr ""
 
 #: templates/courses/course_cohort.haml:20
 #: templates/courses/course_discussion.haml:21
-#: templates/courses/course_navigation.haml:28
+#: templates/courses/course_navigation.haml:47
 #: templates/courses/course_news.haml:19
 #: templates/courses/course_overview.haml:22
 #: templates/courses/course_resources.haml:22
@@ -6431,7 +6427,7 @@ msgid "not available"
 msgstr "不可用"
 
 #: templates/courses/course_learner_dashboard_calendar.haml:39
-#: templates/courses/course_progress_v2.haml:124
+#: templates/courses/course_progress_v2.haml:127
 msgid "not started"
 msgstr "未开始"
 
@@ -6469,7 +6465,7 @@ msgstr "日历"
 #: templates/courses/course_lessons.haml:21
 #: templates/courses/course_lessons_ld.haml:26
 #: templates/courses/course_lessons_ld_external.haml:23
-#: templates/courses/course_progress_v2.haml:82
+#: templates/courses/course_progress_v2.haml:85
 #, fuzzy
 #| msgid "Modules:"
 msgid " Modules"
@@ -6478,7 +6474,7 @@ msgstr "模块："
 #: templates/courses/course_lessons.haml:24
 #: templates/courses/course_lessons_ld.haml:29
 #: templates/courses/course_lessons_ld_external.haml:26
-#: templates/courses/course_progress_v2.haml:85
+#: templates/courses/course_progress_v2.haml:88
 #, fuzzy
 #| msgid "Lesson"
 msgid "Lesson "
@@ -6487,7 +6483,7 @@ msgstr "课时"
 #: templates/courses/course_lessons.haml:27
 #: templates/courses/course_lessons_ld.haml:32
 #: templates/courses/course_lessons_ld_external.haml:29
-#: templates/courses/course_progress_v2.haml:88
+#: templates/courses/course_progress_v2.haml:91
 msgid "Lesson Modules"
 msgstr "课时模块"
 
@@ -6512,7 +6508,7 @@ msgstr "您已完成课时 %(lesson_index)s 的 %(course_current_progress)s%%：
 #: templates/courses/course_lessons.haml:47
 #: templates/courses/course_lessons_ld.haml:49
 #: templates/courses/course_lessons_ld_external.haml:48
-#: templates/courses/course_progress_v2.haml:103
+#: templates/courses/course_progress_v2.haml:106
 #, python-format
 msgid " %(module_custom_label)s %(module_index)s:"
 msgstr ""
@@ -6531,13 +6527,13 @@ msgstr ""
 msgid " | Courses | McKinsey Academy"
 msgstr " | 课程 | 麦肯锡学院"
 
-#: templates/courses/course_main.haml:41 templates/layout.haml:247
+#: templates/courses/course_main.haml:41 templates/layout.haml:251
 msgid ""
 "This is the McKinsey Academy Beta and we are happy to have you participate "
 "ahead of the official public launch!"
 msgstr "这是麦肯锡学院测试版，我们非常高兴您能在正式公开发布之前参与！"
 
-#: templates/courses/course_main.haml:42 templates/layout.haml:248
+#: templates/courses/course_main.haml:42 templates/layout.haml:252
 msgid ""
 "As a beta user, you will occasionally see pages and features like this one "
 "in early stages of development. Please feel free to explore, and we’ll "
@@ -6575,13 +6571,62 @@ msgstr ""
 "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> 与我们联系，我"
 "们将为您解决。"
 
-#: templates/courses/course_navigation.haml:21
+#: templates/courses/course_navigation.haml:22
+#, fuzzy, python-format
+#| msgid ""
+#| "See which modules you have completed and navigate directly to specific "
+#| "modules using the module navigation at the top of the page"
+msgid ""
+"See which %(modules_custom_label)s you have completed and navigate directly "
+"to specific %(modules_custom_label)s using the %(module_custom_label)s "
+"navigation at the top of the page"
+msgstr "查看您已完成哪些模块，并使用页面顶部的模块导航直接导航至特定模块"
+
+#: templates/courses/course_navigation.haml:24
 msgid ""
 "See which modules you have completed and navigate directly to specific "
 "modules using the module navigation at the top of the page"
 msgstr "查看您已完成哪些模块，并使用页面顶部的模块导航直接导航至特定模块"
 
-#: templates/courses/course_navigation.haml:25
+#: templates/courses/course_navigation.haml:29
+#, fuzzy, python-format
+#| msgid ""
+#| "Move from module to module using the left and right arrows. Hover over "
+#| "the arrows to see details of upcoming (or previous) modules"
+msgid ""
+"Move from %(module_custom_label)s to %(module_custom_label)s using the left "
+"and right arrows. Hover over the arrows to see details of upcoming (or "
+"previous) %(modules_custom_label)s"
+msgstr ""
+"使用左右箭头从一个模块移动到另一个模块。将鼠标悬停在箭头上即可查看即将推出"
+"（或先前）模块的详细信息"
+
+#: templates/courses/course_navigation.haml:31
+#, fuzzy, python-format
+#| msgid ""
+#| "Move from module to module using the left and right arrows. Hover over "
+#| "the arrows to see details of upcoming (or previous) modules"
+msgid ""
+"Move from %(module_custom_label)s to %(module_custom_label)s using the left "
+"and right arrows. Hover over the arrows to see details of upcoming (or "
+"previous) modules"
+msgstr ""
+"使用左右箭头从一个模块移动到另一个模块。将鼠标悬停在箭头上即可查看即将推出"
+"（或先前）模块的详细信息"
+
+#: templates/courses/course_navigation.haml:33
+#, fuzzy, python-format
+#| msgid ""
+#| "Move from module to module using the left and right arrows. Hover over "
+#| "the arrows to see details of upcoming (or previous) modules"
+msgid ""
+"Move from module to module using the left and right arrows. Hover over the "
+"arrows to see details of upcoming (or previous) %(modules_custom_label)s"
+msgstr ""
+"使用左右箭头从一个模块移动到另一个模块。将鼠标悬停在箭头上即可查看即将推出"
+"（或先前）模块的详细信息"
+
+#: templates/courses/course_navigation.haml:35
 msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
 "arrows to see details of upcoming (or previous) modules"
@@ -6589,7 +6634,21 @@ msgstr ""
 "使用左右箭头从一个模块移动到另一个模块。将鼠标悬停在箭头上即可查看即将推出"
 "（或先前）模块的详细信息"
 
-#: templates/courses/course_navigation.haml:26
+#: templates/courses/course_navigation.haml:39
+#, fuzzy, python-format
+#| msgid ""
+#| "Modules with inline discussions post to the larger discussion page. View "
+#| "the discussion page using the <i class=\"fa fa-comments-o\"></i> icon in "
+#| "the main navigation bar "
+msgid ""
+"%(modules_custom_label)s with inline discussions post to the larger "
+"discussion page. View the discussion page using the <i class=\"fa fa-"
+"comments-o\"></i> icon in the main navigation bar "
+msgstr ""
+"内嵌讨论的模块会发布到更大的讨论页面。使用主导航栏中的 <i class=\"fa fa-"
+"comments-o\"></i> 图标查看讨论页面"
+
+#: templates/courses/course_navigation.haml:41
 msgid ""
 "Modules with inline discussions post to the larger discussion page. View the "
 "discussion page using the <i class=\"fa fa-comments-o\"></i> icon in the "
@@ -6598,7 +6657,17 @@ msgstr ""
 "内嵌讨论的模块会发布到更大的讨论页面。使用主导航栏中的 <i class=\"fa fa-"
 "comments-o\"></i> 图标查看讨论页面"
 
-#: templates/courses/course_navigation.haml:27
+#: templates/courses/course_navigation.haml:44
+#, fuzzy, python-format
+#| msgid ""
+#| "Access individual lessons from the <i class=\"mk-icon-lessonsnav\"></i> "
+#| "icon in the main navigation bar"
+msgid ""
+"Access individual %(lessons_custom_label)s from the <i class=\"mk-icon-"
+"lessonsnav\"></i> icon in the main navigation bar"
+msgstr "通过主导航栏中的 <i class=\"mk-icon-lessonsnav\"></i> 图标访问各个课时"
+
+#: templates/courses/course_navigation.haml:46
 msgid ""
 "Access individual lessons from the <i class=\"mk-icon-lessonsnav\"></i> icon "
 "in the main navigation bar"
@@ -6947,7 +7016,7 @@ msgstr ""
 "的"
 
 #: templates/courses/course_progress.haml:131
-#: templates/courses/course_progress_v2.haml:234
+#: templates/courses/course_progress_v2.haml:237
 msgid "privacy policy."
 msgstr "信息。"
 
@@ -6970,13 +7039,13 @@ msgid ""
 "          "
 msgstr ""
 "\n"
-"          当前 %(lessons_custom_label)s%%  中 %(modules_custom_label)s。模块"
-"的完成进度为 %(user_course_progress)s。当前学员平均进度为 "
+"          当前 %(lessons_custom_label)s  中 %(modules_custom_label)s 模块的完"
+"成进度为 %(user_course_progress)s%%。当前学员平均进度为 "
 "%(user_average_progress)s%%。\n"
-"        "
+"          "
 
 #: templates/courses/course_progress_v2.haml:27
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "            You are %(user_course_progress)s%% of the way through the course "
@@ -6985,13 +7054,13 @@ msgid ""
 "          "
 msgstr ""
 "\n"
-"          当前 %(lessons_custom_label)s%%  中 %(modules_custom_label)s。模块"
-"的完成进度为 %(user_course_progress)s。当前学员平均进度为 "
-"%(user_average_progress)s%%。\n"
+"          当前“%(lessons_custom_label)s”  中各个模块的完成进度为 "
+"%(user_course_progress)s%%。当前学员平均进度为  %(user_average_progress)s"
+"%%。\n"
 "        "
 
 #: templates/courses/course_progress_v2.haml:31
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "            You are %(user_course_progress)s%% of the way through the course "
@@ -7000,13 +7069,13 @@ msgid ""
 "          "
 msgstr ""
 "\n"
-"          当前 %(lessons_custom_label)s%%  中%(modules_custom_label)s。模块的"
-"完成进度为 %(user_course_progress)s。当前学员平均进度为 "
-"%(user_average_progress)s%%。\n"
+"          当前各个课程中“%(modules_custom_label)s”模块的完成进度为 "
+"%(user_course_progress)s%%。当前学员平均进度为  %(user_average_progress)s"
+"%%。\n"
 "        "
 
 #: templates/courses/course_progress_v2.haml:35
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "\n"
 "            You are %(user_course_progress)s%% of the way through the course "
@@ -7015,42 +7084,41 @@ msgid ""
 "          "
 msgstr ""
 "\n"
-"          当前 %(lessons_custom_label)s%%  中%(modules_custom_label)s。模块的"
-"完成进度为 %(user_course_progress)s。当前学员平均进度为 "
-"%(user_average_progress)s%%。\n"
+"            当前各个课程中各个模块的完成进度为 %(user_course_progress)s%%。当"
+"前学员平均进度为  %(user_average_progress)s%%。\n"
 "        "
 
-#: templates/courses/course_progress_v2.haml:41
+#: templates/courses/course_progress_v2.haml:44
 msgid "Modules:"
 msgstr "模块："
 
-#: templates/courses/course_progress_v2.haml:42
-#: templates/courses/course_progress_v2.haml:144
-#: templates/courses/course_progress_v2.haml:206
+#: templates/courses/course_progress_v2.haml:45
+#: templates/courses/course_progress_v2.haml:147
+#: templates/courses/course_progress_v2.haml:209
 msgid "Overall:"
 msgstr "总体："
 
-#: templates/courses/course_progress_v2.haml:45
+#: templates/courses/course_progress_v2.haml:48
 msgid "in this course"
 msgstr "本课程内"
 
-#: templates/courses/course_progress_v2.haml:53
+#: templates/courses/course_progress_v2.haml:56
 msgid "Individual Learning:"
 msgstr "个人学习："
 
-#: templates/courses/course_progress_v2.haml:55
+#: templates/courses/course_progress_v2.haml:58
 msgid "Group Work (Due Date):"
 msgstr "小组作业（到期日期）："
 
-#: templates/courses/course_progress_v2.haml:63
+#: templates/courses/course_progress_v2.haml:66
 msgid "Week"
 msgstr "周"
 
-#: templates/courses/course_progress_v2.haml:67
+#: templates/courses/course_progress_v2.haml:70
 msgid "N/A (focus on Group Work)"
 msgstr "不适用（关注小组作业）"
 
-#: templates/courses/course_progress_v2.haml:92
+#: templates/courses/course_progress_v2.haml:95
 #, fuzzy, python-format
 #| msgid ""
 #| "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
@@ -7059,20 +7127,20 @@ msgid ""
 "%(lesson_index)s: "
 msgstr "您已完成课时 %(lesson_index)s 的 %(lesson_progress)s%%："
 
-#: templates/courses/course_progress_v2.haml:94
+#: templates/courses/course_progress_v2.haml:97
 #, python-format
 msgid "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
 msgstr "您已完成课时 %(lesson_index)s 的 %(lesson_progress)s%%："
 
-#: templates/courses/course_progress_v2.haml:125
+#: templates/courses/course_progress_v2.haml:128
 msgid "partially complete"
 msgstr "部分完成"
 
-#: templates/courses/course_progress_v2.haml:128
+#: templates/courses/course_progress_v2.haml:131
 msgid "Note: Group Work Deliverables need to be submitted by 11pm GMT."
 msgstr "注：小组作业交付文件需在格林威治标准时间晚上 11 点之前提交。"
 
-#: templates/courses/course_progress_v2.haml:131
+#: templates/courses/course_progress_v2.haml:134
 msgid ""
 "Note: \"weeks\" begin Tuesday and end the following Monday; Group Work "
 "Deliverables need to be submitted by 11pm GMT."
@@ -7080,15 +7148,15 @@ msgstr ""
 "注：“周”从周二开始并在下周一结束；小组作业交付文件需在格林威治标准时间晚上 "
 "11 点之前提交。"
 
-#: templates/courses/course_progress_v2.haml:133
+#: templates/courses/course_progress_v2.haml:136
 msgid "Note: \"weeks\" begin Tuesday and end the following Monday"
 msgstr "注：“周”从周二开始并在下周一结束"
 
-#: templates/courses/course_progress_v2.haml:136
+#: templates/courses/course_progress_v2.haml:139
 msgid "PROFICIENCY"
 msgstr "熟练程度"
 
-#: templates/courses/course_progress_v2.haml:138
+#: templates/courses/course_progress_v2.haml:141
 #, python-format
 msgid ""
 "\n"
@@ -7104,23 +7172,23 @@ msgstr ""
 "群组平均值是 %(cohort_proficiency_average)s%%。\n"
 "          "
 
-#: templates/courses/course_progress_v2.haml:145
+#: templates/courses/course_progress_v2.haml:148
 msgid "Graded Items:"
 msgstr "已评分项目："
 
-#: templates/courses/course_progress_v2.haml:146
+#: templates/courses/course_progress_v2.haml:149
 msgid "Grade:"
 msgstr "评分："
 
-#: templates/courses/course_progress_v2.haml:185
+#: templates/courses/course_progress_v2.haml:188
 msgid "Grading in progress"
 msgstr "评分正在进行中"
 
-#: templates/courses/course_progress_v2.haml:189
+#: templates/courses/course_progress_v2.haml:192
 msgid "not started / incomplete"
 msgstr "未开始/未完成"
 
-#: templates/courses/course_progress_v2.haml:192
+#: templates/courses/course_progress_v2.haml:195
 #, python-format
 msgid ""
 "\n"
@@ -7136,15 +7204,15 @@ msgstr ""
 "我们如何共享您的课程信息。\n"
 "          "
 
-#: templates/courses/course_progress_v2.haml:197
+#: templates/courses/course_progress_v2.haml:200
 msgid "ENGAGEMENT"
 msgstr "参与度"
 
-#: templates/courses/course_progress_v2.haml:199
+#: templates/courses/course_progress_v2.haml:202
 msgid "discussion"
 msgstr "讨论"
 
-#: templates/courses/course_progress_v2.haml:200
+#: templates/courses/course_progress_v2.haml:203
 #, fuzzy, python-format
 msgid ""
 "\n"
@@ -7160,35 +7228,35 @@ msgstr ""
 "参与度分数是 %(social_points)s。群组平均分是 %(social_course_avg)s。\n"
 "          "
 
-#: templates/courses/course_progress_v2.haml:207
+#: templates/courses/course_progress_v2.haml:210
 msgid "Measured Engagement:"
 msgstr "衡量出来的参与度："
 
-#: templates/courses/course_progress_v2.haml:208
+#: templates/courses/course_progress_v2.haml:211
 msgid "Stats:"
 msgstr "统计数据："
 
-#: templates/courses/course_progress_v2.haml:213
+#: templates/courses/course_progress_v2.haml:216
 msgid "Number of <span>New Posts</span> you created "
 msgstr "您创建的<span>新帖子</span>数量"
 
-#: templates/courses/course_progress_v2.haml:216
+#: templates/courses/course_progress_v2.haml:219
 msgid "Number of <span>Replies</span> you made to other posts "
 msgstr "您对其他帖子的<span>回复</span>数量"
 
-#: templates/courses/course_progress_v2.haml:219
+#: templates/courses/course_progress_v2.haml:222
 msgid " Number of <span>Comments Generated </span> by your posts "
 msgstr "您的帖子<span>产生的评论</span>数量"
 
-#: templates/courses/course_progress_v2.haml:222
+#: templates/courses/course_progress_v2.haml:225
 msgid " Number of <span>Upvotes</span> your posts have received "
 msgstr "您的帖子收到的<span>赞成票</span>数量"
 
-#: templates/courses/course_progress_v2.haml:225
+#: templates/courses/course_progress_v2.haml:228
 msgid " Number of your posts being <span>Followed</span> "
 msgstr "您正在<span>被关注</span>的帖子数量"
 
-#: templates/courses/course_progress_v2.haml:232
+#: templates/courses/course_progress_v2.haml:235
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -7228,6 +7296,10 @@ msgstr "输入课程笔记&hellip;"
 #: templates/courses/visualizations/course_engagement.haml:6
 msgid "Your social engagement will be displayed here."
 msgstr "您的社交参与情况将显示在此处。"
+
+#: templates/courses/visualizations/course_engagement.haml:15
+msgid "points"
+msgstr "分"
 
 #: templates/courses/visualizations/course_engagement.haml:21
 msgid ""
@@ -7915,11 +7987,11 @@ msgid ""
 "advantage"
 msgstr "麦肯锡学院通过加速组织的人才优势来帮助其蓬勃发展"
 
-#: templates/layout.haml:231
+#: templates/layout.haml:235
 msgid "Notice"
 msgstr "注意"
 
-#: templates/layout.haml:258
+#: templates/layout.haml:262
 msgid ""
 "We're sorry, McKinsey Academy is not compatible with your browser. Please "
 "update your browser to access course content. We recommend the latest "
@@ -7930,7 +8002,7 @@ msgstr ""
 "荐使用最新版本的 Google Chrome、Mozilla Firefox 和 Apple Safari 以获取最佳体"
 "验。"
 
-#: templates/layout.haml:267
+#: templates/layout.haml:271
 msgid ""
 "McKinsey Academy is a dynamic business education platform built to help "
 "organizations thrive by accelerating their talent advantage. This video will "
@@ -7939,7 +8011,7 @@ msgstr ""
 "麦肯锡学院是个充满活力的商业教育平台，旨在通过加速组织的人才优势来帮助其蓬勃"
 "发展。这段视频将指导您完成我们的学员体验。"
 
-#: templates/layout.haml:270
+#: templates/layout.haml:274
 msgid ""
 "\n"
 "              This product walkthrough can always be found in the page "

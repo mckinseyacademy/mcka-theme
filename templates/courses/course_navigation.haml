@@ -18,13 +18,32 @@
     .help-line
       .module-list
         %i.fa.fa-list-ul
-      {% trans "See which modules you have completed and navigate directly to specific modules using the module navigation at the top of the page" %}
+      -if  modules_custom_label
+        {% blocktrans %}See which {{modules_custom_label}} you have completed and navigate directly to specific {{modules_custom_label}} using the {{module_custom_label}} navigation at the top of the page{% endblocktrans %}
+      -else
+        {% trans "See which modules you have completed and navigate directly to specific modules using the module navigation at the top of the page" %}
     .help-line
       .page-left
         %i.fa.fa-chevron-left
-      {% trans "Move from module to module using the left and right arrows. Hover over the arrows to see details of upcoming (or previous) modules" %}
-    .help-line {% blocktrans %}Modules with inline discussions post to the larger discussion page. View the discussion page using the <i class="fa fa-comments-o"></i> icon in the main navigation bar {% endblocktrans %}
-    .help-line {% blocktrans %}Access individual lessons from the <i class="mk-icon-lessonsnav"></i> icon in the main navigation bar{% endblocktrans %}
+      - if  module_custom_label and modules_custom_label
+        {% blocktrans %}Move from {{module_custom_label}} to {{module_custom_label}} using the left and right arrows. Hover over the arrows to see details of upcoming (or previous) {{modules_custom_label}}{% endblocktrans %}
+      - elif module_custom_label
+        {% blocktrans %}Move from {{module_custom_label}} to {{module_custom_label}} using the left and right arrows. Hover over the arrows to see details of upcoming (or previous) modules{% endblocktrans %}
+      - elif modules_custom_label
+        {% blocktrans %}Move from module to module using the left and right arrows. Hover over the arrows to see details of upcoming (or previous) {{modules_custom_label}}{% endblocktrans %}
+      - else
+        {% trans "Move from module to module using the left and right arrows. Hover over the arrows to see details of upcoming (or previous) modules" %}
+
+    .help-line
+      -if modules_custom_label
+        {% blocktrans %}{{modules_custom_label}} with inline discussions post to the larger discussion page. View the discussion page using the <i class="fa fa-comments-o"></i> icon in the main navigation bar {% endblocktrans %}
+      -else
+        {% blocktrans %}Modules with inline discussions post to the larger discussion page. View the discussion page using the <i class="fa fa-comments-o"></i> icon in the main navigation bar {% endblocktrans %}
+    .help-line
+      -if lessons_custom_label
+        {% blocktrans %}Access individual {{lessons_custom_label}} from the <i class="mk-icon-lessonsnav"></i> icon in the main navigation bar{% endblocktrans %}
+      -else
+        {% blocktrans %}Access individual lessons from the <i class="mk-icon-lessonsnav"></i> icon in the main navigation bar{% endblocktrans %}
     .help-line {% trans "This video walks you through the learner experience:" %}
     #mk-help-video{'data-video-id': "xxeGhmcDoM9TuNW1LQil2luNyHUSokt2"}
 

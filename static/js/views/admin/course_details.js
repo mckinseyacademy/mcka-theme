@@ -80,7 +80,10 @@
       { title: gettext('Username'), index: true, name: 'username' },
       { title: gettext('Country'), index: true, name: 'country'}
     ],
-    initialize: function(){
+    initialize: function(options){
+      if (typeof options['participantscollection'] !== "undefined") {
+        this.participantscollection = options['participantscollection'];
+      }
       InitializeTooltipOnPage();
       var _this = this;
       var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
@@ -109,6 +112,13 @@
     },
     render: function(){
       var _this = this;
+      var company_id = $('#courseDetailsDataWrapper').attr('company-id');
+      if(company_id){
+        var enableSearchFlag = true;
+      }else {
+        var enableSearchFlag = false;
+        $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').toggle("slide");
+      }
       var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
       var courseId = $('#courseDetailsDataWrapper').attr('data-id');
       var multiSelectFlag = true;
@@ -124,8 +134,8 @@
       coursesListDetailsViewGrid = new bbGrid.View({
         container: this.$el,
         multiselect: multiSelectFlag,
-        enableSearch: true,
         collection: this.collection.fullCollection,
+        enableSearch: enableSearchFlag,
         onRowClick: function()
         {
           // for select-all bind export csv functionalities to a backend downloader
@@ -171,8 +181,57 @@
       coursesListDetailsViewGrid['partial_collection'] = this.collection;
       this.coursesListDetailsViewGrid = coursesListDetailsViewGrid;
       this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);
+      var _pointer = this;
+      _pointer.course_participant_search_flag = true;
+      _pointer.default_first_page = true;
       $(document).on('onSearchEvent', { extra : this}, this.onSearchEvent);
       $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
+
+      $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').on('enter', 'input', function(event, status){
+          if (_pointer.course_participant_search_flag) {
+              _pointer.course_participant_search_flag = false;
+              var querryDict = {};
+              var searchFlag = false;
+              var course_id = $('#courseDetailsDataWrapper').attr('data-id');
+              if (status.clearButton){
+                var value = '';
+              }else{
+                  var value = $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').val().trim();
+              }
+              querryDict['search_query_string'] = value;
+              querryDict['courses'] = course_id;
+              querryDict['course_id'] = course_id;
+              querryDict['course_participants_search'] = 'course_participants_search';
+              if (value) {
+                  searchFlag = true
+              }
+              if (!jQuery.isEmptyObject(querryDict)) {
+                  _pointer.participantscollection.updateQuerryParams(querryDict);
+              }
+              if ((_pointer.participantscollection.length > 0 && searchFlag) || (status.clearButton && !_pointer.default_first_page)) {
+                  _pointer.participantscollection.getFirstPage();
+                  _pointer.participantscollection.fullCollection.reset();
+                  $('i.fa-spinner').show();
+              }
+              if ((searchFlag) || (status.clearButton && !_pointer.default_first_page)) {
+                  $.when(_pointer.participantscollection.fetch()).then(function() {
+                  $('i.fa-spinner').hide();
+                  _pointer.coursesListDetailsViewGrid.setCollection(_pointer.participantscollection.fullCollection);
+                  _pointer.coursesListDetailsViewGrid.collection.trigger('reset');
+                  _pointer.coursesListDetailsViewGrid.partial_collection = _pointer.participantscollection;
+                  _pointer.course_participant_search_flag = true;
+                  if (searchFlag){
+                    _pointer.default_first_page = false;
+                  } else {
+                    _pointer.default_first_page = true;
+                  }
+                  });
+              }
+              else{
+                _pointer.course_participant_search_flag = true;
+              }
+          }
+      });
 
       $('#mainCourseDetailsWrapper').on('click', '.courseTagsIcon', function()
       {
@@ -413,7 +472,7 @@
       var interval_id = setInterval(function(){
         var options = {
             url: url,
-            contentType: "application/json; charset=utf-8",         
+            contentType: "application/json; charset=utf-8",
             data: JSON.stringify({'type': 'status_check', 'task_id':task_id}),
             processData: false,
             type: "POST",
@@ -531,3 +590,92 @@
       });
     }
   });
+
+$(function() {
+    $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').find('input').keyup(function(e){
+      if(e.keyCode == 13){
+        $(this).trigger('enter', [{ clearButton : false}]);
+      }
+    });
+
+    $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').find('input').courseParticipantsclearSearch({ callback: function() {
+          $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').find('input').trigger('enter', [{ clearButton : true}]);
+    } } );
+
+    // update value
+    $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').find('input').val('').change();
+});
+
+  (function ($) {
+    $.fn.courseParticipantsclearSearch = function (options) {
+      var settings = $.extend({
+        'clearClass': 'clear_input',
+        'focusAfterClear': true,
+        'linkText': '&times;'
+      }, options);
+      return this.each(function () {
+        var $this = $(this), btn,
+            divClass = settings.clearClass + '_div';
+
+        if (!$this.parent().hasClass(divClass)) {
+          $this.wrap('<div style="position: relative;" class="'
+              + divClass + '">' + $this.html() + '</div>');
+          $this.after('<a style="position: absolute; cursor: pointer;" class="'
+              + settings.clearClass + '">' + settings.linkText + '</a>');
+        }
+        btn = $this.next();
+
+        function clearField() {
+          $this.val('').change();
+          triggerBtn();
+          if (settings.focusAfterClear) {
+            $this.focus();
+          }
+          if (typeof (settings.callback) === "function") {
+            settings.callback();
+          }
+        }
+
+        function blankField() {
+          triggerBtn();
+          if (!hasText()) {
+            if ($this.liveSearchTimer) {
+              clearTimeout($this.liveSearchTimer);
+            }
+
+            $this.liveSearchTimer = setTimeout(function () {
+              if (typeof (settings.callback) === "function") {
+                settings.callback();
+              }
+            }, 1000)
+          }
+        }
+
+        function triggerBtn() {
+          if (hasText()) {
+            btn.show();
+          } else {
+            btn.hide();
+          }
+          update();
+        }
+
+        function hasText() {
+          return $this.val().length > 0;
+        }
+
+        function update() {
+          var width = $this.outerWidth(), height = $this
+              .outerHeight();
+          btn.css({
+            top: height / 2 - btn.height() / 2,
+            left: width - height / 2 - btn.height() / 2
+          });
+        }
+
+        btn.on('click', clearField);
+        $this.on('keyup', blankField);
+        triggerBtn();
+      });
+    };
+  })(jQuery);

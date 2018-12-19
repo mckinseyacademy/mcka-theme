@@ -37,7 +37,6 @@
           %p.style-4
             - if lesson_custom_label
               {% blocktrans with lesson_index=right_lesson_module_navigator.lesson_index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
-              #{lesson_custom_label} #{right_lesson_module_navigator.lesson_index}:
             - else
               {% trans "Lesson" %} #{right_lesson_module_navigator.lesson_index}:
             - if module_custom_label

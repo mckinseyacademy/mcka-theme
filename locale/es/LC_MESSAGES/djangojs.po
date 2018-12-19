@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-27 13:39+0000\n"
+"POT-Creation-Date: 2018-12-10 13:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
-#: static/js/views/admin/participant_details_edit_info.js:368
+#: static/js/views/admin/participant_details_edit_info.js:371
 #: static/js/views/admin/participantsinfo.js:122
 msgid "Course"
 msgstr "Curso"
@@ -429,7 +429,7 @@ msgstr "Cantidad de cursos"
 #: static/js/views/admin/companies_list.js:98
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
-#: static/js/views/admin/participant_details_edit_info.js:484
+#: static/js/views/admin/participant_details_edit_info.js:487
 #: static/js/views/admin/participantsinfo.js:372
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "El nombre de compañía no puede contener caracteres no alfanuméricos"
@@ -437,7 +437,7 @@ msgstr "El nombre de compañía no puede contener caracteres no alfanuméricos"
 #: static/js/views/admin/companies_list.js:105
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
-#: static/js/views/admin/participant_details_edit_info.js:478
+#: static/js/views/admin/participant_details_edit_info.js:481
 #: static/js/views/admin/participantsinfo.js:366
 msgid "This company name cannot have more than 30 characters!"
 msgstr "El nombre de compañía no puede tener más de 30 caracteres"
@@ -447,7 +447,7 @@ msgid "Couldn't create new company!"
 msgstr "No se pudo crear la nueva compañía"
 
 #: static/js/views/admin/company_details.js:4
-#: static/js/views/admin/course_details.js:323
+#: static/js/views/admin/course_details.js:322
 #: static/js/views/admin/courses_list.js:16
 #: static/js/views/admin/participant_details_active_courses_view.js:54
 #: static/js/views/admin/participant_details_course_history_view.js:10
@@ -455,7 +455,7 @@ msgid "Course Name"
 msgstr "Nombre del curso"
 
 #: static/js/views/admin/company_details.js:20
-#: static/js/views/admin/course_details.js:333
+#: static/js/views/admin/course_details.js:332
 #: static/js/views/admin/courses_list.js:26
 #: static/js/views/admin/participant_details_active_courses_view.js:72
 #: static/js/views/admin/participant_details_course_history_view.js:28
@@ -547,7 +547,7 @@ msgstr "Nombre"
 #: static/js/views/admin/import_progress.js:11
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
-#: static/js/views/admin/participant_details_edit_info.js:372
+#: static/js/views/admin/participant_details_edit_info.js:375
 #: static/js/views/admin/participantsinfo.js:131
 msgid "Status"
 msgstr "Estado"
@@ -595,45 +595,45 @@ msgstr "Nombre de usuario"
 msgid "Country"
 msgstr "País"
 
-#: static/js/views/admin/course_details.js:252
+#: static/js/views/admin/course_details.js:251
 msgid "Couldn't create new tag!"
 msgstr "No se pudo crear la nueva etiqueta"
 
-#: static/js/views/admin/course_details.js:266
+#: static/js/views/admin/course_details.js:265
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
 msgstr ""
 "No tiene permiso para crear una nueva etiqueta. Seleccione una de la lista"
 
-#: static/js/views/admin/course_details.js:296
+#: static/js/views/admin/course_details.js:295
 msgid "Couldn't delete tag!"
 msgstr "No se pudo eliminar la etiqueta"
 
-#: static/js/views/admin/course_details.js:336
+#: static/js/views/admin/course_details.js:335
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
 msgstr[0] "%(count)s curso etiquetado con %(tagDetails)s"
 msgstr[1] "%(count)s cursos etiquetados con %(tagDetails)s"
 
-#: static/js/views/admin/course_details.js:391
+#: static/js/views/admin/course_details.js:390
 msgid "Progress: %(progress)s %"
 msgstr "Avance: %(progress)s %"
 
-#: static/js/views/admin/course_details.js:428
+#: static/js/views/admin/course_details.js:427
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr ""
 "Seleccionados: %(selected)s; exitosos: %(successful)s; fallidos: %(failed)s"
 
-#: static/js/views/admin/course_details.js:479
+#: static/js/views/admin/course_details.js:478
 msgid "This tag name cannot have more than 30 characters!"
 msgstr "El nombre de etiqueta no puede tener más de 30 caracteres"
 
-#: static/js/views/admin/course_details.js:486
+#: static/js/views/admin/course_details.js:485
 msgid "This tag name cannot contain non-alphanumeric characters!"
 msgstr "El nombre de etiqueta no puede contener caracteres no alfanuméricos"
 
-#: static/js/views/admin/course_details.js:526
+#: static/js/views/admin/course_details.js:525
 msgid "Couldn't add tag to course!"
 msgstr "No se pudo agregar la etiqueta al curso"
 
@@ -683,21 +683,21 @@ msgstr "Cambiar el estado de todos los participantes seleccionados a:"
 
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
-#: static/js/views/admin/participant_details_edit_info.js:374
+#: static/js/views/admin/participant_details_edit_info.js:377
 #: static/js/views/admin/participantsinfo.js:135
 msgid "Participant"
 msgstr "Participante"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
-#: static/js/views/admin/participant_details_edit_info.js:375
+#: static/js/views/admin/participant_details_edit_info.js:378
 #: static/js/views/admin/participantsinfo.js:137
 msgid "Observer"
 msgstr "Observador"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
-#: static/js/views/admin/participant_details_edit_info.js:376
+#: static/js/views/admin/participant_details_edit_info.js:379
 #: static/js/views/admin/participantsinfo.js:136
 msgid "TA"
 msgstr "TA"
@@ -709,13 +709,13 @@ msgstr "Guardar cambios"
 #: static/js/views/admin/course_details_bulk_actions.js:224
 #: static/js/views/admin/course_details_bulk_actions.js:329
 #: static/js/views/admin/course_details_bulk_actions.js:335
-#: static/js/views/admin/participant_details_edit_info.js:410
-#: static/js/views/admin/participant_details_edit_info.js:416
+#: static/js/views/admin/participant_details_edit_info.js:413
+#: static/js/views/admin/participant_details_edit_info.js:419
 msgid "You need to select status!"
 msgstr "Debe seleccionar un estado"
 
 #: static/js/views/admin/course_details_bulk_actions.js:266
-#: static/js/views/admin/participant_details_edit_info.js:363
+#: static/js/views/admin/participant_details_edit_info.js:365
 msgid "Select Course"
 msgstr "Seleccionar curso"
 
@@ -736,8 +736,8 @@ msgstr "Inscribir participantes"
 
 #: static/js/views/admin/course_details_bulk_actions.js:340
 #: static/js/views/admin/course_details_bulk_actions.js:344
-#: static/js/views/admin/participant_details_edit_info.js:421
-#: static/js/views/admin/participant_details_edit_info.js:425
+#: static/js/views/admin/participant_details_edit_info.js:424
+#: static/js/views/admin/participant_details_edit_info.js:428
 msgid "You need to select course!"
 msgstr "Debe seleccionar un curso"
 
@@ -997,72 +997,72 @@ msgstr "Calificación"
 msgid "End Date"
 msgstr "Fecha de finalización"
 
-#: static/js/views/admin/participant_details_edit_info.js:113
+#: static/js/views/admin/participant_details_edit_info.js:114
 msgid "Username can't be empty! "
 msgstr "El nombre de usuario no puede quedar vacío"
 
-#: static/js/views/admin/participant_details_edit_info.js:118
+#: static/js/views/admin/participant_details_edit_info.js:119
 msgid "First name can't be empty! "
 msgstr "El nombre no puede quedar vacío"
 
-#: static/js/views/admin/participant_details_edit_info.js:123
+#: static/js/views/admin/participant_details_edit_info.js:124
 msgid "Last name can't be empty! "
 msgstr "El apellido no puede quedar vacío "
 
-#: static/js/views/admin/participant_details_edit_info.js:128
+#: static/js/views/admin/participant_details_edit_info.js:129
 msgid "Email can't be empty! "
 msgstr "El correo electrónico no puede quedar vacío"
 
-#: static/js/views/admin/participant_details_edit_info.js:152
+#: static/js/views/admin/participant_details_edit_info.js:153
 msgid "Company doesn't exist! "
 msgstr "La compañía no existe"
 
-#: static/js/views/admin/participant_details_edit_info.js:202
+#: static/js/views/admin/participant_details_edit_info.js:203
 msgid "Updated user data!"
 msgstr "Se actualizaron los datos del usuario"
 
-#: static/js/views/admin/participant_details_edit_info.js:254
-#: static/js/views/admin/participant_details_edit_info.js:295
+#: static/js/views/admin/participant_details_edit_info.js:255
+#: static/js/views/admin/participant_details_edit_info.js:296
 msgid "Male"
 msgstr "Masculino"
 
-#: static/js/views/admin/participant_details_edit_info.js:256
-#: static/js/views/admin/participant_details_edit_info.js:293
+#: static/js/views/admin/participant_details_edit_info.js:257
+#: static/js/views/admin/participant_details_edit_info.js:294
 msgid "Female"
 msgstr "Femenino"
 
-#: static/js/views/admin/participant_details_edit_info.js:364
+#: static/js/views/admin/participant_details_edit_info.js:366
 msgid "User will be enrolled in course selected below."
 msgstr "Se inscribirá al usuario en el curso seleccionado a continuación."
 
-#: static/js/views/admin/participant_details_edit_info.js:377
+#: static/js/views/admin/participant_details_edit_info.js:367
 msgid "Moderator"
 msgstr ""
 
-#: static/js/views/admin/participant_details_edit_info.js:387
+#: static/js/views/admin/participant_details_edit_info.js:390
 msgid "Enroll Participant"
 msgstr "Inscribir participante"
 
-#: static/js/views/admin/participant_details_edit_info.js:445
+#: static/js/views/admin/participant_details_edit_info.js:448
 msgid "User successfully enrolled in course"
 msgstr "Se inscribió correctamente al usuario en el curso"
 
-#: static/js/views/admin/participant_details_edit_info.js:531
+#: static/js/views/admin/participant_details_edit_info.js:534
 #: static/js/views/admin/participantsinfo.js:102
 msgid "Admin Company"
 msgstr "Compañía administradora"
 
-#: static/js/views/admin/participant_details_edit_info.js:535
+#: static/js/views/admin/participant_details_edit_info.js:538
 msgid "Try selecting your company from the type-ahead results."
 msgstr ""
 "Intente seleccionar su compañía en los resultados de escritura automática."
 
-#: static/js/views/admin/participant_details_edit_info.js:541
+#: static/js/views/admin/participant_details_edit_info.js:544
 #: static/js/views/admin/participantsinfo.js:111
 msgid "Admin Permissions"
 msgstr "Permisos de administrador"
 
-#: static/js/views/admin/participant_details_edit_info.js:544
+#: static/js/views/admin/participant_details_edit_info.js:547
 #: static/js/views/admin/participantsinfo.js:114
 msgid "Company Admin"
 msgstr "Administrador de la compañía"

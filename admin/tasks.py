@@ -25,16 +25,20 @@ from api_client import course_api
 from api_client import group_api
 from api_client import user_api
 from api_client.api_error import ApiError
+from api_client.cohort_api import add_cohort_for_course
 from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage
 from util.email_helpers import send_html_email
 
+from admin.models import LearnerDashboardTile
 from accounts.models import UserActivation
 from accounts.helpers import create_activation_url
+from courses.controller import strip_tile_link, get_course_object, update_progress
 
 from .controller import (
-    _enroll_participants,
-    _process_line_register_participants_csv,
+    enroll_participants,
+    process_line_register_participants_csv,
+    process_line_enroll_participants_csv,
     build_student_list_from_file,
     create_update_delete_manager,
     validate_participant_and_manager_records,
@@ -158,10 +162,12 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     # custom processing is needed for groupworks and assessments data
     # as csv column names are also dynamic for them
     for participant in participants_data:
-
-        for field in participant.get('attributes'):
-            attributes[field['key']] = field['label']
-            participant[field['key']] = field['value']
+        if company_id:
+            for field in participant.get('attributes'):
+                attribute_key = field.get('key')
+                if attribute_key:
+                    attributes[attribute_key] = field.get('label', '')
+                    participant[attribute_key] = field.get('value', '')
 
         for groupwork in participant.get('groupworks'):
             label = groupwork.get('label')
@@ -461,9 +467,11 @@ def users_program_association_task(program_id, user_ids, task_id):
 
 
 @task(name='admin.import_participants_task', queue='high_priority')
-def import_participants_task(user_id, base_url, file_url, is_internal_admin, registration_batch_id):
+def import_participants_task(user_id, base_url, file_url, is_internal_admin, registration_batch_id, register):
     """
     Processes a CSV file of participants.
+
+    :param register: if `True`, new users will be created and enrolled, otherwise existing users will be enrolled
     """
     task_log_msg = "Import Participants task"
 
@@ -483,14 +491,22 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     else:
         logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
 
-    user_list = build_student_list_from_file(file_stream, parse_method=_process_line_register_participants_csv)
+    parse_method = process_line_register_participants_csv if register else process_line_enroll_participants_csv
+
+    user_list = build_student_list_from_file(file_stream, parse_method=parse_method)
     clean_user_list, unclean_user_list, user_registration_errors = [], [], []
+
+    # We need to ensure that all courses have `CourseUserGroup`s created. Otherwise we will run into race conditions.
+    courses = {entry['course_id'] for entry in user_list}
+    for course in courses:
+        add_cohort_for_course(course, 'default_cohort', 'random')
+
     registration_batch = UserRegistrationBatch.objects.get(id=registration_batch_id)
     for user_info in user_list:
         if "error" in user_info:
             try:
                 user_data = json.dumps(user_info)
-            except:
+            except (TypeError, ValueError):
                 user_data = json.dumps({})
 
             unclean_user_list.append(user_info)
@@ -522,12 +538,17 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     threads = []
     for index in xrange(0, total_clean_users, batch_size):
         batch = clean_user_list[index:min(index + batch_size, total_clean_users)]
-        threads.append(pool.apply_async(
-            _enroll_participants, args=(batch,
-                                        is_internal_admin,
-                                        registration_batch,
-                                        )
-        ))
+        threads.append(
+            pool.apply_async(
+                enroll_participants,
+                args=(
+                    batch,
+                    is_internal_admin,
+                    registration_batch,
+                    register,
+                )
+            )
+        )
 
     # Run queued up jobs.
     for thread in threads:
@@ -629,7 +650,7 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
 
         try:
             user_data = json.loads(error.user_data)
-        except:
+        except (TypeError, ValueError):
             user_data = {}
 
         error_data.update(user_data)
@@ -764,8 +785,8 @@ def purge_old_import_records_and_csv_files():
     old_task_ids = []
     file_paths = []
 
-    for task in old_tasks:
-        task_id, error_file_url, success_file_url = task
+    for old_task in old_tasks:
+        task_id, error_file_url, success_file_url = old_task
         old_task_ids.append(task_id)
 
         for url in (error_file_url, success_file_url):
@@ -808,4 +829,26 @@ def purge_old_import_records_and_csv_files():
 
     logger.info('Completed - {}'.format(task_log_msg))
 
+    return True
+
+
+@task(name='admin.create_tile_progress_data', queue='high_priority')
+def create_tile_progress_data(tile_id):
+    """
+    Creates tile progress data, Triggered when a learner dashboard tile is saved
+    """
+    try:
+        tile = LearnerDashboardTile.objects.get(id=tile_id)
+    except LearnerDashboardTile.DoesNotExist:
+        logger.info('EXITING Tile Progress Data Creation - Failed retrieving LearnerDashboardTile object with id: {}'
+                    .format(tile_id))
+        return False
+    link = strip_tile_link(tile.link)
+    users = json.loads(course_api.get_user_list_json(link['course_id'], page_size=1000))
+    completions = course_api.get_course_completions(link['course_id'], page_size=1000)
+    for user in users:
+        course = get_course_object(user['id'], link['course_id'])
+        user_completions = completions.get(user['username'], None)
+        if course and user_completions:
+            update_progress(tile, user, course, user_completions, link)
     return True

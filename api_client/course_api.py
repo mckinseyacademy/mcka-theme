@@ -505,6 +505,8 @@ def get_course_completions(
         root_block=None,
 ):
     ''' fetch course module completion list '''
+    if not edx_oauth2_session:
+        edx_oauth2_session = get_oauth2_session()
     api_params = {
         'page_size': page_size,
     }
@@ -536,12 +538,12 @@ def get_course_completions(
     if course_id is None:
         # The API will return data for multiple courses, so group them by course
         return group_completions_by_course(get_and_unpaginate(url, edx_oauth2_session))
-    else:
-        # Otherwise, group by users
-        return group_completions_by_user(
-            get_and_unpaginate(url, edx_oauth2_session),
-            username=username,
-        )
+
+    # Otherwise, group by users
+    return group_completions_by_user(
+        get_and_unpaginate(url, edx_oauth2_session),
+        username=username,
+    )
 
 
 @api_error_protect
@@ -865,24 +867,6 @@ def get_course_details_metrics_grades(course_id, count):
     )
 
     return json.loads(response.read())
-
-
-@api_error_protect
-def get_course_details_metrics_social(course_id, qs_params=''):
-    """
-    Fetch social metrics for course.
-    """
-    edx_oauth2_session = get_oauth2_session()
-
-    url = '{}/{}/{}/metrics/social/?{}'.format(
-            settings.API_SERVER_ADDRESS,
-            COURSEWARE_API,
-            course_id,
-            urlencode(qs_params)
-        )
-
-    response = edx_oauth2_session.get(url)
-    return response.json()
 
 
 @api_error_protect

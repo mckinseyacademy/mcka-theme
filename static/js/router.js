@@ -257,7 +257,8 @@ var Router = Backbone.Router.extend({
     Apros.Router.linked_views['courseParticipants']['drawn'] = true;
     var courseId = $('#courseDetailsDataWrapper').attr('data-id');
     var courseDetails = new Apros.collections.CourseDetails([],{ path : courseId});
-    var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid'});
+    var participantsCollection = new Apros.collections.Participants();
+    var courses_details_view = new Apros.views.CourseDetailsView({collection: courseDetails, el: '#courseDetailsParticipantsGrid', participantscollection: participantsCollection});
     courses_details_view.render();
     var bulkActions = new Apros.views.CourseDetailsBulkActions({'courseId':courseId,'courses_details_view':courses_details_view, 'courseDetails':courseDetails});
     bulkActions.render();

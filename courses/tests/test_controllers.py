@@ -1,10 +1,15 @@
-from bs4 import BeautifulSoup
+import json
 
-from django.test import TestCase
+import ddt
+import httpretty
+from bs4 import BeautifulSoup
 from django.conf import settings
+from django.test import TestCase
 
 from api_client import course_api, course_models, user_models
+from api_client.user_api import USER_API
 from courses import controller
+from courses.controller import get_user_social_metrics
 
 
 class MockCourseAPI(object):
@@ -372,6 +377,7 @@ class OtherMockCourseAPI(MockCourseAPI):
         return OtherMockCourseAPI._get_course(course_id, course_id)
 
 
+@ddt.ddt
 class CoursesAPITest(TestCase):
     def setUp(self):
         pass
@@ -514,6 +520,72 @@ class CoursesAPITest(TestCase):
         self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-3'), 0)
         self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-4'), 0)
         self.assertEqual(get_completions(completions, 'chapter', 'i4x://a/b/chapter/chapter-5'), 0)
+
+    @staticmethod
+    def _setup_user_social_metrics_response(user_id, course_id, include_stats, throw_error):
+        response_data = {
+            'score': 11,
+            'course_avg': 8.7,
+        }
+        if include_stats:
+            response_data['stats'] = {
+                'num_threads': 4,
+                'num_thread_followers': 3,
+                'num_replies': 11,
+                'num_flagged': 0,
+                'num_comments': 22,
+                'num_threads_read': 131,
+                'num_downvotes': 2,
+                'num_upvotes': 6,
+                'num_comments_generated': 40
+            }
+        httpretty.register_uri(
+            httpretty.GET,
+            '{}/{}/{}/courses/{}/metrics/social/?{}'.format(
+                settings.API_SERVER_ADDRESS,
+                USER_API,
+                user_id,
+                course_id,
+                'include_stats=true' if include_stats else ''
+            ),
+            # match_querystring=False,
+            body=json.dumps(response_data),
+            status=444 if throw_error else 200,
+            content_type='application/json'
+        )
+
+    @ddt.data(
+        # Throw error, response metrics
+        (False, 11, 9, 4, 131),
+        (True, 0, 0, 0, 0),
+    )
+    @ddt.unpack
+    @httpretty.httprettified
+    def test_get_user_social_metrics_with_stats(self, throw_error, score, average, threads, threads_read):
+        user_id = 1
+        course_id = 'some/course/id'
+        self._setup_user_social_metrics_response(user_id, course_id, True, throw_error)
+        data = get_user_social_metrics(user_id, course_id, include_stats=True)
+        self.assertEqual(data['points'], score)
+        self.assertEqual(data['course_avg'], average)
+        self.assertEqual(data['metrics'].num_threads, threads)
+        self.assertEqual(data['metrics'].num_threads_read, threads_read)
+
+    @ddt.data(
+        # Throw error, response metrics
+        (False, 11, 9),
+        (True, 0, 0),
+    )
+    @ddt.unpack
+    @httpretty.httprettified
+    def test_get_user_social_metrics_without_stats(self, throw_error, score, average):
+        user_id = 1
+        course_id = 'some/course/id'
+        self._setup_user_social_metrics_response(user_id, course_id, False, throw_error)
+        data = get_user_social_metrics(user_id, course_id, include_stats=False)
+        self.assertEqual(data['points'], score)
+        self.assertEqual(data['course_avg'], average)
+        self.assertIsNone(data['metrics'])
 
 
 class ResourcePageScriptsFixTest(TestCase):

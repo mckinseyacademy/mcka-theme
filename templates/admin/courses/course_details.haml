@@ -102,6 +102,9 @@
                       %a.button.radius.small.submenuButtons.bulkExportNotifData.bulkButton.disabled{:href => "#"}
                         {% trans "Download CSV For Notifications" %}
                 #courseDetailsParticipantsGridWrapper
+                  .bbGrid-search-bar.clearableCourseParticipantsSearch{:style => 'display: none',:aria-hidden => "true"}
+                    .input-group
+                      %input{:placeholder => '{% trans "Keyword" %}', :type => 'text', :name => 'course_participants', :class => 'bbGrid-pager col-md-2 form-control'}
                   #courseDetailsParticipantsGrid.large-12.columns.spinnerContainer
               .row.courseStats.contentNavigationContainer
                 #courseDetailsEngagementTopic.courseDetailsTopic

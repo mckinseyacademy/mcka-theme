@@ -2,7 +2,6 @@ import urllib2
 import uuid
 from urllib import urlencode
 from urlparse import urlparse, parse_qs
-from lib.utils import DottableDict
 
 import ddt
 import mock
@@ -17,13 +16,14 @@ from mock import Mock, patch
 
 from accounts.controller import ProcessAccessKeyResult
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin, make_user
+from accounts.tests.utils import ApplyPatchMixin, make_user, AccessKeyTestBase
 from accounts.views import (MISSING_ACCESS_KEY_ERROR, MOBILE_URL_SCHEME_COOKIE, _build_mobile_redirect_response,
                             _cleanup_username as cleanup_username, access_key, finalize_sso_mobile, sso_error,
                             sso_finalize, sso_launch, switch_language_based_on_preference, get_user_from_login_id,
-                            fill_email_and_redirect)
+                            fill_email_and_redirect, _build_sso_redirect_url)
 from admin.models import AccessKey, ClientCustomization
 from api_client.api_error import ApiError
+from lib.utils import DottableDict
 from util.i18n_helpers import set_language
 
 
@@ -316,9 +316,9 @@ class GoogleAnalyticsTest(TestCase):
     )
     @ddt.unpack
     def test_google_analytics_on_homepage_with_different_origination(
-        self,
-        ip_address,
-        google_analytics_should_be_present
+            self,
+            ip_address,
+            google_analytics_should_be_present
     ):
         response = self.client.get('/', REMOTE_ADDR=ip_address, HTTP_X_FORWARDED_FOR=ip_address)
         rendered = response.content
@@ -475,13 +475,33 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         response = finalize_sso_mobile(request)
         self.assertIn('?access_token=some-token', response.content)
 
-    def test_sso_finalize_uses_mobile_route(self):
+    def test_sso_finalize_mobile_authenticated(self):
+        """
+        SSO Finalization should use the mobile path when a mobile scheme is defined,
+        and the user is authenticated.
+        """
         mock_finalize_sso_mobile = self.apply_patch('accounts.views.finalize_sso_mobile')
         request = self.factory.get('/accounts/finalize/')
-        self._setup_request(request)
+        mock_user = Mock()
+        mock_user.is_authenticated = True
+        self._setup_request(request, user=mock_user)
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
         sso_finalize(request)
         mock_finalize_sso_mobile.assert_called_with(request)
+
+    def test_sso_finalize_mobile_unauthenticated(self):
+        """
+        SSO Finalization should use the registration/TOS path when a mobile scheme is defined,
+        and the user is not authenticated.
+        """
+        mock_finalize_sso_registration = self.apply_patch('accounts.views.finalize_sso_registration')
+        request = self.factory.get('/accounts/finalize/')
+        mock_user = Mock()
+        mock_user.is_authenticated = False
+        self._setup_request(request, user=mock_user)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
+        sso_finalize(request)
+        mock_finalize_sso_registration.assert_called_with(request)
 
     def test_sso_finalize_uses_normal_route_authenticated(self):
         self.apply_patch('accounts.views.finalize_sso_registration')
@@ -720,30 +740,32 @@ class FillEmailRedirectViewTest(TestCase, ApplyPatchMixin):
         self.assertIn(urlencode({'email': request.user.email}), response.url)
 
 
-class AccessKeyAPITest(TestCase, ApplyPatchMixin):
+class AccessKeyTest(AccessKeyTestBase):
+    """ Tests for Access Key Views. """
 
     def setUp(self):
-        self.client_id = 12
-        self.code = 'A1B2'
+        super(AccessKeyTest, self).setUp()
+        self.client_id = self.company.id
+        self.code = uuid.uuid4()
         self.course_id = 'test-course'
+        AccessKey.objects.create(client_id=self.client_id, code=self.code, course_id=self.course_id)
+        self.apply_patch(
+            'api_client.organization_api.fetch_organization',
+            return_value=self.company
+        )
 
     def test_get_invalid_access_key(self):
         """ Test get_access_key with invalid access key """
-
         response = self.client.get(reverse('access_key_data_api_view', kwargs={'access_key_code': 'ABCDEF'}))
         self.assertEqual(response.status_code, 404)
 
     def test_missing_client_customization_get_access_key(self):
         """ Test missing ClientCustomization when making a get_access_key request """
-
-        AccessKey.objects.create(client_id=self.client_id, code=self.code, course_id=self.course_id)
         response = self.client.get(reverse('access_key_data_api_view', kwargs={'access_key_code': self.code}))
         self.assertEqual(response.status_code, 404)
 
     def test_get_valid_access_key(self):
         """ Test get_access_key with valid access key"""
-
-        AccessKey.objects.create(client_id=self.client_id, code=self.code, course_id=self.course_id)
         customization = ClientCustomization.objects.create(client_id=self.client_id, identity_provider='testshib')
 
         response = self.client.get(reverse('access_key_data_api_view', kwargs={'access_key_code': self.code}))
@@ -753,3 +775,16 @@ class AccessKeyAPITest(TestCase, ApplyPatchMixin):
         self.assertEqual(data['course_id'], self.course_id)
         self.assertEqual(data['organization_id'], self.client_id)
         self.assertEqual(data['provider_id'], customization.identity_provider)
+
+    def test_access_key_mobile_flow(self):
+        """ Test access key when a mobile scheme has been provided """
+        code = uuid.uuid4()
+        identity_provider = 'fake-provider'
+        AccessKey.objects.create(client_id=self.client_id, code=code, course_id=self.course_id)
+        ClientCustomization.objects.create(client_id=self.client_id, identity_provider=identity_provider)
+
+        url = '{}?mobile_url_scheme=test'.format(reverse('access_key', kwargs=dict(code=code)))
+
+        response = self.client.get(url)
+        sso_redirect_url = _build_sso_redirect_url(identity_provider, reverse('sso_finalize'))
+        self.assertRedirects(response, sso_redirect_url, fetch_redirect_response=False)
