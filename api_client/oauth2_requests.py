@@ -52,6 +52,7 @@ class AprosOAuth2Session(OAuth2Session):
             if response.status_code == 401:
                 _authorize(self)
                 response = session.request(headers=HTTP_HEADERS, *args, **kwargs)
+            response.raise_for_status()
         return response
     request.__doc__ = OAuth2Session.request.__doc__
 
