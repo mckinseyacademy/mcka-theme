@@ -2047,6 +2047,7 @@ class CourseParticipantStats(object):
             edx_oauth2_session=oauth2_session,
             page_size=200,
             user_ids=[user['id'] for user in course_participants['results']],
+            search_participants=True if self.request_params.get('prefetched_participants') else False,
         )
 
     def _get_lesson_mapping(self, user):
