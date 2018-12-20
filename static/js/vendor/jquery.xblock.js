@@ -189,11 +189,18 @@
                     var usageId = $(element).data('usage-id'),
                         courseId = $(element).data('course-id'),
                         lmsBaseURL = $this.getLmsBaseURL(options);
+                    var language_code = ($('html').attr('lang') ? $('html').attr('lang') : 'en');
+                    var language_code_mapped = Apros.config.EDX_LANGUAGES_CODE_MAP.get(language_code);
+                    if(language_code_mapped === undefined)
+                    {
+                        language_code_mapped = 'en';
+                    }
+
                     if (handlerName=="submit")
                         $this.dispatcher.trigger(handlerName, element);
 
                     return (lmsBaseURL + '/courses/' + courseId + '/xblock/' + usageId +
-                            '/handler/' + handlerName);
+                            '/handler/' + handlerName + '?course_lang='+language_code_mapped);
                 },
                 notify: function(name, data) {
                     $this.dispatcher.trigger(name, data);
