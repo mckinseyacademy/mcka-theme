@@ -563,6 +563,7 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
         user_id=user_id,
         base_url=base_url,
         user_file_name=file_stream.name,
+        import_type='register' if register else 'enroll',
     )
 
     try:
@@ -627,7 +628,7 @@ def bulk_user_manager_update_task(user_id, users_records, base_url):
     name='admin.generate_import_files_and_send_notification',
     max_retries=3
 )
-def generate_import_files_and_send_notification(batch_id, user_id, base_url, user_file_name):
+def generate_import_files_and_send_notification(batch_id, user_id, base_url, user_file_name, import_type):
     """
     Generates activation links and any error files of batch Import Participants
     process and send notification link
@@ -668,15 +669,25 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
     activations_links_file_url = ''
 
     if errors:
-        fields = OrderedDict([
-            ("First Name", ("first_name", '')),
-            ("Last Name", ("last_name", '')),
-            ("Email", ("email", '')),
-            ("Company ID", ("company_id", '')),
-            ("Course ID", ("course_id", '')),
-            ("Status", ("status", '')),
-            ("Errors", ("errors", '')),
-        ])
+        if import_type == 'register':
+            fields = OrderedDict([
+                ("First Name", ("first_name", '')),
+                ("Last Name", ("last_name", '')),
+                ("Email", ("email", '')),
+                ("Company ID", ("company_id", '')),
+                ("Course ID", ("course_id", '')),
+                ("Status", ("status", '')),
+                ("Errors", ("errors", '')),
+            ])
+        elif import_type == 'enroll':
+            fields = OrderedDict([
+                ("Email", ("email", '')),
+                ("Course ID", ("course_id", '')),
+                ("Status", ("status", '')),
+                ("Errors", ("errors", '')),
+            ])
+        else:
+            fields = OrderedDict([])
 
         file_name = '{}_import_errors.csv'.format(registration_batch.task_key)
 

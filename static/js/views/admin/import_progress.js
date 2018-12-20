@@ -1,7 +1,11 @@
   Apros.views.ImportProgress = Backbone.View.extend({
       pollingParams: {id: null, interval: 15000, url: ApiUrls.import_progress},
       gridColumns:[
-        { title: gettext('File name'), index: false, name: 'file_name'},
+        { title: gettext('File name'), index: false, name: 'file_name',
+            actions: function (id, attributes) {
+                return '<div class="' + 'csv-name' + '">' + attributes['file_name'] + '</div>';
+            }
+        },
         { title: gettext('Start time'), index: false, name: 'start_time'},
         { title: gettext('End time'), index: false, name: 'end_time',
             actions: function(id, attributes) {
