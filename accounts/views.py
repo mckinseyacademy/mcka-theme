@@ -453,6 +453,17 @@ def finalize_sso_mobile(request):
     url.
     '''
     error = request.GET.get('error', None)
+    if 'sessionid' in request.COOKIES:
+        # At this point a user should have a session ID from LMS,
+        # however if they are not registered this sessionid will not
+        # have an associated user, so redirect to the registration form
+        # in that case.
+        try:
+            user = auth.authenticate(remote_session_key=request.COOKIES['sessionid'])
+            if not user:
+                return finalize_sso_registration(request)
+        except ApiError as err:
+            error = err.message
 
     if error is not None:
         return _build_mobile_redirect_response(request, {'error': error})
@@ -673,11 +684,11 @@ def sso_finalize(request):
     # If a mobile_url_scheme is defined, this view is called as part of the
     # mobile SSO auth flow.
     scheme = _get_mobile_url_scheme(request)
+    if scheme is not None:
+        return finalize_sso_mobile(request)
+
     if request.user.is_authenticated:
-        if scheme is not None:
-            return finalize_sso_mobile(request)
-        else:
-            return HttpResponseRedirect(reverse('protected_home'))
+        return HttpResponseRedirect(reverse('protected_home'))
 
     return finalize_sso_registration(request)
 
