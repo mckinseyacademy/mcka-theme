@@ -7,9 +7,9 @@ from rest_framework.authentication import SessionAuthentication
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from admin.controller import CourseParticipantStats
+from admin.controller import CourseParticipantStats, load_course
 from api_client import user_api, course_api
-from api_client.course_api import get_course_enrollments, get_course_list, get_course_completions, get_course, \
+from api_client.course_api import get_course_enrollments, get_course_list, get_course_completions, \
     get_course_cohort_settings
 from api_client.group_api import PERMISSION_GROUPS
 from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
@@ -81,7 +81,7 @@ class StudentCourseProgressDetailsApi(APIView):
                                                edx_oauth2_session=edx_oauth2_session,
                                                )
         user_course_progress = []
-        course_details = get_course(course_id, user=request.user, depth=1)
+        course_details = load_course(course_id, request=request, depth=5)
         user_chapters = []
         if user_progress:
             user_chapters = user_progress.get(username)
