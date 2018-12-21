@@ -418,6 +418,19 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         sso_launch(request)
         mock__build_sso_redirect_url.assert_called_with('test', '/accounts/finalize/')
 
+    def test_finalize_sso_mobile_login(self):
+        """
+        Tests that the mobile sso finalization flow initiates an SSO registration
+        if initiated for a new user.
+        """
+        mock_finalize_sso_registration = self.apply_patch('accounts.views.finalize_sso_registration')
+        mock_authenticate = self.apply_patch('accounts.views.auth.authenticate')
+        mock_authenticate.return_value = None
+        request = self.factory.get('/accounts/finalize/')
+        request.COOKIES['sessionid'] = 'test-session-id'
+        finalize_sso_mobile(request)
+        mock_finalize_sso_registration.assert_called_with(request)
+
     def test_finalize_sso_mobile_error(self):
         request = self.factory.get('/accounts/finalize/', {'error': 'test-error'})
         self._setup_request(request)
@@ -475,33 +488,13 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         response = finalize_sso_mobile(request)
         self.assertIn('?access_token=some-token', response.content)
 
-    def test_sso_finalize_mobile_authenticated(self):
-        """
-        SSO Finalization should use the mobile path when a mobile scheme is defined,
-        and the user is authenticated.
-        """
+    def test_sso_finalize_uses_mobile_route(self):
         mock_finalize_sso_mobile = self.apply_patch('accounts.views.finalize_sso_mobile')
         request = self.factory.get('/accounts/finalize/')
-        mock_user = Mock()
-        mock_user.is_authenticated = True
-        self._setup_request(request, user=mock_user)
+        self._setup_request(request)
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
         sso_finalize(request)
         mock_finalize_sso_mobile.assert_called_with(request)
-
-    def test_sso_finalize_mobile_unauthenticated(self):
-        """
-        SSO Finalization should use the registration/TOS path when a mobile scheme is defined,
-        and the user is not authenticated.
-        """
-        mock_finalize_sso_registration = self.apply_patch('accounts.views.finalize_sso_registration')
-        request = self.factory.get('/accounts/finalize/')
-        mock_user = Mock()
-        mock_user.is_authenticated = False
-        self._setup_request(request, user=mock_user)
-        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
-        sso_finalize(request)
-        mock_finalize_sso_registration.assert_called_with(request)
 
     def test_sso_finalize_uses_normal_route_authenticated(self):
         self.apply_patch('accounts.views.finalize_sso_registration')

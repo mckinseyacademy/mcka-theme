@@ -503,6 +503,7 @@ def get_course_completions(
         edx_oauth2_session=None,
         user_ids=None,
         root_block=None,
+        search_participants=False,
 ):
     ''' fetch course module completion list '''
     if not edx_oauth2_session:
@@ -534,6 +535,16 @@ def get_course_completions(
         course_path=course_path,
         params=urlencode(api_params),
     )
+
+    if search_participants:
+        if not user_ids:
+            return {}
+        response = edx_oauth2_session.get(url)
+        data = response.json()
+        completions = data['results']
+        return group_completions_by_user(
+            completions
+        )
 
     if course_id is None:
         # The API will return data for multiple courses, so group them by course
