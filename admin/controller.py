@@ -2243,7 +2243,7 @@ def remove_specific_user_roles_of_other_companies(course_participants, organizat
     users = []
 
     for user in course_participants["results"]:
-        if user["organizations"][0]["id"] != organization_id:
+        if user["organizations"] and user["organizations"][0]["id"] != organization_id:
             for role in user["roles"]:
                 if role in remove_permissions:
                     users.append(user)
