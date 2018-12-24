@@ -265,11 +265,13 @@ var Router = Backbone.Router.extend({
   },
   manager_dashboard_report: function () {
     var course_index = $('a.hashPageButton.active').attr("data-course-index");
-     Apros.Router.linked_views['managerDashboardCourse'+course_index]['drawn'] = true;
-     var course_id = $('a.hashPageButton.active').attr("data-course");
-    var managerDashboardCollection = new Apros.collections.ManagerDashboard([],{ path : course_id});
-    var manager_dashboard_view = new Apros.views.ManagerDashboardView({collection: managerDashboardCollection, el: '#managerDashboardReportGrid'+course_index});
-    manager_dashboard_view.render();
+    if (course_index) {
+        Apros.Router.linked_views['managerDashboardCourse'+course_index]['drawn'] = true;
+        var course_id = $('a.hashPageButton.active').attr("data-course");
+        var managerDashboardCollection = new Apros.collections.ManagerDashboard([],{ path : course_id});
+        var manager_dashboard_view = new Apros.views.ManagerDashboardView({collection: managerDashboardCollection, el: '#managerDashboardReportGrid'+course_index});
+        manager_dashboard_view.render();
+    }
   },
   company_mobileapp_details: function(){
     var company_mobileapp_view = new Apros.views.CompanyMobileappDetails();
