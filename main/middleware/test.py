@@ -30,16 +30,16 @@ class AllowEmbedUrlTest(TestCase):
 
         self.assertEqual(middleware.is_scorm_shell, True)
         self.assertEqual(response['Content-Security-Policy'], 'frame-ancestors ' + ALLOW_EMBED_URL)
-        self.assertEqual(response['X-Frame-Options'], 'ALLOW-FROM ' + ALLOW_EMBED_URL)
+        self.assertEqual(response['X-Frame-Options'], 'ALLOW-FROM ' + 'https://example2.com')
 
     @override_settings(ALLOW_EMBED_URL=ALLOW_EMBED_URL)
     @ddt.data(
-        ('https://example.com/a/url/', True),
-        ('https://abc.com/a/url', False),
-        ('https://example2.com/a/url', True),
+        ('https://example.com/a/url/', True, 'ALLOW-FROM https://example.com'),
+        ('https://abc.com/a/url', False, 'SAMEORIGIN'),
+        ('https://example2.com/a/url', True, 'ALLOW-FROM https://example2.com'),
     )
     @ddt.unpack
-    def test_by_referrer_cookie(self, referrer_url, is_scorm_shell):
+    def test_by_referrer_cookie(self, referrer_url, is_scorm_shell, expected_x_frame_option):
         """
         tests middleware by referrer cookie
         """
@@ -59,19 +59,19 @@ class AllowEmbedUrlTest(TestCase):
 
         if is_scorm_shell:
             self.assertEqual(response['Content-Security-Policy'], 'frame-ancestors ' + ALLOW_EMBED_URL)
-            self.assertEqual(response['X-Frame-Options'], 'ALLOW-FROM ' + ALLOW_EMBED_URL)
+            self.assertEqual(response['X-Frame-Options'], expected_x_frame_option)
 
     @override_settings(ALLOW_EMBED_URL=ALLOW_EMBED_URL)
     @ddt.data(
-        ('https://example.com/a/url/', True),
+        ('https://example.com/a/url/', 'https://example.com'),
         ('https://abc.com/a/url', False),
-        ('https://example2.com/a/url', True),
+        ('https://example2.com/a/url', 'https://example2.com'),
     )
     @ddt.unpack
-    def test_in_allowed_embed_urls(self, referrer_url, expected):
+    def test_get_matched_allowed_embed_url(self, referrer_url, expected):
         """
         test helper method for checking allowed urls
         """
         middleware = AllowEmbedUrlMiddleware()
 
-        self.assertEqual(middleware.in_allowed_embed_urls(referrer_url), expected)
+        self.assertEqual(middleware.get_matched_allowed_embed_url(referrer_url), expected)
