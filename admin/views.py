@@ -5053,14 +5053,9 @@ class companies_list_api(APIView):
         clients = Client.list()
         for client in clients:
             company = {}
-            request_params = {}
-            request_params['organizations'] = vars(client)['id']
-            participants = user_api.get_filtered_users(request_params)
-            company_participants = user_count_without_specific_user_roles_of_other_companies(participants,
-                                                                                             vars(client)['id'])
             company['name'] = vars(client)['display_name']
             company['id'] = vars(client)['id']
-            company['numberParticipants'] = company_participants
+            company['numberParticipants'] = vars(client)['number_of_participants']
             company['numberCourses'] = vars(client)['number_of_courses']
             companies.append(company)
 
