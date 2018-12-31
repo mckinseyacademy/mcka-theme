@@ -92,11 +92,18 @@
         var companyId = $('#courseDetailsDataWrapper').attr('company-id');
         this.collection.updateCompanyQuerryParams(companyId);
       }
-      var count = course_details_count_all_users;
-      this.cohorts_enabled = course_details_cohorts_enabled;
-      this.cohorts_available = course_details_cohorts_available;
-      this.collection.updateCountQuerryParams(count);
-      this.collection.fetch();
+      try {
+        var count = course_details_count_all_users;
+        this.cohorts_enabled = course_details_cohorts_enabled;
+        this.cohorts_available = course_details_cohorts_available;
+      }
+      catch(error) {
+        var count = '0';
+      }
+      finally {
+        this.collection.updateCountQuerryParams(count);
+        this.collection.fetch();
+      }
     },
     removeFromGeneratedGridColumns: function(title){
       var _this = this;
