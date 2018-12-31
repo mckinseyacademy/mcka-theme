@@ -212,6 +212,9 @@
               }
               if (!jQuery.isEmptyObject(querryDict)) {
                   _pointer.participantscollection.updateQuerryParams(querryDict);
+                  if (!_pointer.participantscollection.queryParams['search_query_string']){
+                    _pointer.participantscollection.queryParams['search_query_string'] = value;
+                  }
               }
               if ((_pointer.participantscollection.length > 0 && searchFlag) || (status.clearButton && !_pointer.default_first_page)) {
                   _pointer.participantscollection.getFirstPage();
