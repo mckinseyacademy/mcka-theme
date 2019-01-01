@@ -3,6 +3,7 @@ import os
 from mock import mock
 
 from lib.utils import DottableDict
+from mcka_apros.settings import DELETION_FLAG_NAMESPACE, DELETION_FLAG_SWITCH_NAME
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -82,6 +83,10 @@ class MockReviewAssignmentGroupCollection(object):
             rag = MockReviewAssignmentGroup(wg, review_assignment_processor.xblock_id)
             for user_id in review_assignment_processor.workgroup_reviewers[wg.id]:
                 rag.add_user(user_id)
+
+
+def get_deletion_waffle_switch():
+    return '{}.{}'.format(DELETION_FLAG_NAMESPACE, DELETION_FLAG_SWITCH_NAME)
 
 
 def make_side_effect_raise_value_error():

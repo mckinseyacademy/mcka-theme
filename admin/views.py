@@ -23,6 +23,7 @@ from django.core.files.storage import default_storage
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core.urlresolvers import reverse
 from django.http import (
+    HttpResponseBadRequest,
     HttpResponseForbidden,
     HttpResponseRedirect,
     HttpResponse, Http404,
@@ -46,7 +47,7 @@ from celery import states as celery_states
 
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, \
     _set_number_of_enrolled_users
-from accounts.models import UserActivation, PublicRegistrationRequest
+from accounts.models import UserActivation, PublicRegistrationRequest, RemoteUser, UserPasswordReset
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
@@ -71,18 +72,20 @@ from api_client.project_models import Project
 from api_client.user_api import USER_ROLES
 from api_client.workgroup_models import Submission
 from certificates.controller import get_course_certificates_status
-from certificates.models import CertificateStatus
+from certificates.models import CertificateStatus, UserCourseCertificate
 from courses.controller import (
     Progress, Proficiency,
     return_course_progress, organization_course_progress_user_list,
     social_total, round_to_int_bump_zero, round_to_int
 )
-from courses.models import FeatureFlags, CourseMetaData
+from courses.models import FeatureFlags, CourseMetaData, LessonNotesItem
 from courses.user_courses import load_course_progress
 from lib.authorization import permission_group_required, permission_group_required_api
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from license import controller as license_controller
 from main.models import CuratedContentItem
+from mcka_apros.settings import COHORT_FLAG_NAMESPACE, COHORT_FLAG_SWITCH_NAME, DELETION_FLAG_NAMESPACE, \
+    DELETION_FLAG_SWITCH_NAME
 from util.csv_helpers import csv_file_response, UnicodeWriter
 from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.s3_helpers import store_file
@@ -838,10 +841,16 @@ def course_details(request, course_id):
     return render(request, 'admin/courses/course_details.haml', context)
 
 
-def _cohort_flag():
-    namespace = 'course_groups'
-    switch_name = 'enable_apros_integration'
+def _check_waffle_switch(namespace, switch_name):
     return waffle.switch_is_active('{}.{}'.format(namespace, switch_name))
+
+
+def _cohort_flag():
+    return _check_waffle_switch(COHORT_FLAG_NAMESPACE, COHORT_FLAG_SWITCH_NAME)
+
+
+def _deletion_flag():
+    return _check_waffle_switch(DELETION_FLAG_NAMESPACE, DELETION_FLAG_SWITCH_NAME)
 
 
 def _get_course_context(course, organization_id=''):
@@ -4211,6 +4220,36 @@ class participant_details_api(APIView):
                                  'company_permissions': request.data['company_permissions']})
         else:
             return Response({'status': 'error', 'type': 'validation_failed', 'message': form.errors})
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def delete(self, _request, user_id):
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        try:
+            user_data = user_api.get_user_dict(user_id)
+        except ApiError:
+            raise Http404
+
+        user_api.delete_users(ids=[user_id])
+
+        PublicRegistrationRequest.objects.filter(company_email=user_data.get('email')).delete()
+        UserRegistrationError.objects.filter(user_email=user_data.get('email')).delete()
+        UserActivation.objects.filter(email=user_data.get('email')).delete()
+        RemoteUser.objects.filter(username=user_data.get('username')).delete()
+
+        models_for_id_deletion = [
+            UserPasswordReset,
+            DashboardAdminQuickFilter,
+            BatchOperationErrors,
+            LessonNotesItem,
+            UserCourseCertificate,
+        ]
+        for model in models_for_id_deletion:
+            model.objects.filter(user_id=user_id).delete()
+
+        return HttpResponse(status=204)
 
 
 class manage_user_company_api(APIView):

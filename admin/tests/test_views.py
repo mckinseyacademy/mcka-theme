@@ -2,13 +2,17 @@ import json
 import ddt
 
 from mcka_apros.celery import app as test_app
-from django.core.urlresolvers import reverse
+
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.files.uploadedfile import File
+from django.core.urlresolvers import reverse
+from django.http import Http404, HttpResponseForbidden
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
 from mock import patch, Mock
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
+from waffle.testutils import override_switch
 
 from accounts.models import RemoteUser
 from accounts.tests.utils import ApplyPatchMixin, make_course
@@ -26,13 +30,13 @@ from admin.models import (
     DashboardAdminQuickFilter,
     AdminTask,
 )
+from admin.tests.utils import get_deletion_waffle_switch
 from admin.views import client_sso, CourseDetailsApi
 from api_client import user_api, group_api
 from api_client.api_error import ApiError
 from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map
 from .test_task_runner import mocked_task
-from admin.models import ClientCustomization
 
 
 def mock_task():
@@ -478,6 +482,67 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
                 self.assertIn('task_key', response.content)
             else:
                 self.assertEqual(response, None)
+
+
+class UserDeleteTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test user delete view.
+    """
+
+    def setUp(self):
+        super(UserDeleteTest, self).setUp()
+        self.patch_user_permissions()
+        self.mock_id = 0
+        delete_url = reverse('participant_details', kwargs={'user_id': self.mock_id})
+        self.request = self.factory.delete(delete_url)
+        self.request.user = self.admin_user
+        self.api = views.participant_details_api()
+
+    def test_delete_user_with_deletion_disabled(self):
+        """
+        Test deleting user without enabling `data_deletion.enable_data_deletion` waffle switch.
+        """
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(response.status_code, 400)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('lib.authorization.permission_group_required_not_in_group', lambda _: HttpResponseForbidden())
+    def test_delete_user_without_permissions(self):
+        """
+        Test deleting user as non-admin user.
+        """
+        self.request.user = self.students[0]
+        middleware = SessionMiddleware()
+        middleware.process_request(self.request)
+        self.request.session.save()
+
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(response.status_code, 403)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('api_client.user_api.get_user_dict', side_effect=Http404)
+    @patch('api_client.user_api.delete_users')
+    def test_delete_nonexistent_user(self, delete_users_mock, get_user_dict_mock):
+        """
+        Test deleting user that doesn't exist in LMS.
+        """
+        with self.assertRaises(Http404):
+            self.api.delete(self.request, self.mock_id)
+
+        get_user_dict_mock.assert_called_with(self.mock_id)
+        delete_users_mock.assert_not_called()
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('api_client.user_api.get_user_dict', return_value={})
+    @patch('api_client.user_api.delete_users')
+    def test_delete_user(self, *mocks):
+        """
+        Test deleting user as admin.
+        """
+        response = self.api.delete(self.request, self.mock_id)
+        for mock in mocks:
+            self.assertEqual(mock.call_count, 1)
+        self.assertEqual(response.status_code, 204)
 
 
 @ddt.ddt
