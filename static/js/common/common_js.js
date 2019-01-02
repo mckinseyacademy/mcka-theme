@@ -891,12 +891,18 @@ function InitializeAverageCalculate() {
     totalProficiency += parseInt(text.replace("%", ""));
   });
 
-  // Set the Average progess and proficiency	// remove existing subgrid for manager team
+  var courseAvg = getCourseAvgProgressProficiency();
+
+  // Set the Average progress and proficiency
   if(total) {
-    $('.progress-average large').text(Math.round(totalProgress / total) + "%");
-    $('.proficiency-average large').text(Math.round(totalProficiency / total)+ "%");
+    var teamAvgProgress = Math.round(totalProgress / total);
+    var teamAvgProficiency = Math.round(totalProficiency / total);
+    setManagerDashboardOrgMetrics(courseAvg, teamAvgProgress, teamAvgProficiency);
+    $('.progress-average large').text(teamAvgProgress + "%");
+    $('.proficiency-average large').text(teamAvgProficiency + "%");
   }
   else{
+    setManagerDashboardOrgMetrics(courseAvg, 0, 0);
     $('.progress-average large').text("0%");
     $('.proficiency-average large').text("0%");
   }
@@ -911,4 +917,72 @@ function RemoveExistingSubGird(element) {
     // its needed to close the any other opened subgrid
     $(element).parent().click();
   }
+}
+
+function getCourseAvgProgressProficiency() {
+    var courseId = $('a.hashPageButton.active').attr("data-course");
+    var courseAvg;
+    if (courseId)
+    {
+        $.ajax({
+            url: ApiUrls.manager_dashboard+'/'+courseId+'/average_scores',
+            method: 'GET',
+            async: false
+        }).done(function(data){
+           courseAvg = data;
+        });
+    }
+    return courseAvg;
+}
+
+function setManagerDashboardOrgMetrics(course_avg, teamProgress, teamProficiency)
+{
+    if(!course_avg)
+    {
+        return;
+    }
+    var progressMessage;
+    var proficiencyMessage;
+    switch (true)
+    {
+        case(course_avg.avg_progress > teamProgress):
+
+            var progressDiff = (course_avg.avg_progress - teamProgress);
+            progressMessage = gettext('<span class="red"> %(diff)s% </span> below your organization\'s average', progressDiff);
+            progressMessage = interpolate(progressMessage, {'diff': progressDiff}, true);
+            break;
+
+        case(course_avg.avg_progress < teamProgress):
+
+            var progressDiff = (teamProgress - course_avg.avg_progress);
+            progressMessage = gettext('<span class="green">%(diff)s% </span> above your organization\'s average', progressDiff);
+            progressMessage = interpolate(progressMessage, {'diff': progressDiff}, true);
+            break;
+
+        default:
+            progressMessage = gettext("same as your organization's average");
+            break;
+    }
+    switch (true)
+    {
+        case(course_avg.avg_proficiency > teamProficiency):
+
+            var proficiencyDiff = (course_avg.avg_proficiency - teamProficiency);
+            proficiencyMessage = ngettext('<span class="red"> %(diff)s point</span> below your organization\'s average','<span class="red"> %(diff)s points</span> below your organization\'s average', proficiencyDiff);
+            proficiencyMessage = interpolate(proficiencyMessage, {'diff': proficiencyDiff}, true);
+            break;
+
+        case(course_avg.avg_proficiency < teamProficiency):
+
+            var proficiencyDiff = (teamProficiency - course_avg.avg_proficiency);
+            proficiencyMessage = ngettext('<span class="red"> %(diff)s point</span> above your organization\'s average','<span class="red"> %(diff)s points</span> above your organization\'s average', proficiencyDiff);
+            proficiencyMessage = interpolate(proficiencyMessage, {'diff': proficiencyDiff}, true);
+            break;
+
+        default:
+            proficiencyMessage = gettext("same as your organization's average");
+            break;
+    }
+    $('.progress-average .avgProgress').html(progressMessage);
+    $('.proficiency-average .avgProgress').html(proficiencyMessage);
 }

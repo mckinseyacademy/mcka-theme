@@ -492,7 +492,3 @@ Apros.Router.HashPageChanger = function(element) {
   });
   updateHeader();
 };
-
-Apros.Router.calculateAverage = function(){
-  InitializeAverageCalculate();
-};

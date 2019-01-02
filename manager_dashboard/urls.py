@@ -3,6 +3,10 @@ from django.conf.urls import url
 import views
 
 urlpatterns = [
+
+    url(r'^courses/(?P<course_id>.*)/average_scores$',
+        views.get_average_progress_proficiency_course,
+        name='manager_course_average_progress_proficiency'),
     url(
         r'^courses/(?P<course_id>.+)$',
         views.ManagerReportsCourseDetailsApi.as_view(),

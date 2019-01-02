@@ -18,6 +18,7 @@ COURSE_PROPERTIES = DottableDict(
     TABS='tabs',
     TAB_CONTENT='tabs_content',
     COURSE_META_DATA='course_meta_data',
+    AVERAGE_SCORES='average_scores',
 )
 
 

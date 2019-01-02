@@ -1,3 +1,6 @@
+import json
+
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import permissions
 from rest_framework.authentication import SessionAuthentication
@@ -5,10 +8,12 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from admin.controller import CourseParticipantStats
-from api_client import user_api
+from api_client import user_api, course_api
 from api_client.course_api import get_course_enrollments, get_course_list, get_course_completions, get_course, \
     get_course_cohort_settings
 from api_client.group_api import PERMISSION_GROUPS
+from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
+from courses.controller import Proficiency, Progress
 from lib.authorization import permission_group_required
 from api_client.oauth2_requests import get_oauth2_session
 from controller import get_user_progress
@@ -83,3 +88,34 @@ class StudentCourseProgressDetailsApi(APIView):
         if course_details and user_chapters:
             user_course_progress = get_user_progress(course_details, user_chapters)
         return Response(user_course_progress)
+
+
+@permission_group_required(PERMISSION_GROUPS.MANAGER)
+def get_average_progress_proficiency_course(request, course_id):
+    """ Get course's overall proficiency and progress for manager dashboard"""
+
+    avg_course_scores = CourseDataManager(course_id).get_cached_data(property_name=COURSE_PROPERTIES.AVERAGE_SCORES)
+
+    if avg_course_scores is None:
+        proficiency = course_api.get_course_metrics_grades(
+            course_id,
+            user_id=request.user.id,
+            skipleaders=True,
+            grade_object_type=Proficiency
+        )
+
+        progress = course_api.get_course_metrics_completions(
+            course_id,
+            user_id=request.user.id,
+            skipleaders=True,
+            completions_object_type=Progress
+        )
+        avg_course_scores = {
+            'avg_progress': progress.course_average_display,
+            'avg_proficiency': proficiency.course_average_display
+        }
+        CourseDataManager(course_id).set_cached_data(
+            property_name=COURSE_PROPERTIES.AVERAGE_SCORES, data=avg_course_scores
+        )
+
+    return HttpResponse(json.dumps(avg_course_scores), content_type='application/json')
