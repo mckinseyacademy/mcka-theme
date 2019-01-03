@@ -127,7 +127,7 @@ def update_query_params(url, updater):
     return new_url
 
 
-def get_and_unpaginate(url, edx_oauth2_session=None, max_page=None):
+def get_and_unpaginate(url, edx_oauth2_session=None, max_page=None, use_post=False, post_body=None):
     """
     Return data combined from all pages, up to optional `max_page` starting at `url`.
     Args:
@@ -144,7 +144,10 @@ def get_and_unpaginate(url, edx_oauth2_session=None, max_page=None):
     next_page = url
     current_page = 0
     while next_page and current_page != max_page:
-        response = edx_oauth2_session.get(next_page)
+        if use_post:
+            response = edx_oauth2_session.post(next_page, json=post_body)
+        else:
+            response = edx_oauth2_session.get(next_page)
         data = response.json()
         result = data['results']
         results.extend(result)
