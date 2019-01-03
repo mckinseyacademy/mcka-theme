@@ -3809,9 +3809,16 @@ def participants_list(request):
     form_company_fields = MassCompanyFieldsUpdateForm()
     form_manager_update = MassManagerDataUpdateForm()
     internal_admin_flag = request.user.is_internal_admin
+    enable_data_deletion = _deletion_flag()
 
-    data = {'form': form, 'form_enroll': form_enroll, 'form_company_fields': form_company_fields,
-            'form_manager_update': form_manager_update, 'internalAdminFlag': internal_admin_flag}
+    data = {
+        'form': form,
+        'form_enroll': form_enroll,
+        'form_company_fields': form_company_fields,
+        'form_manager_update': form_manager_update,
+        'internalAdminFlag': internal_admin_flag,
+        'enableDataDeletion': enable_data_deletion,
+    }
     return render(request, 'admin/participants/participants_list.haml', data)
 
 

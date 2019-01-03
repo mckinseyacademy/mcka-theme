@@ -629,3 +629,40 @@
 		display: inline-block;
 	}
 }
+
+#delete_user_modal, #delete_user_success{
+	.titleContainer, .contentContainer
+	{
+		text-align: center;
+	}
+
+	.boldText
+	{
+		font-weight: bold;
+	}
+
+	.errorContainer
+	{
+		color:red;
+		text-align: center;
+		padding-top: 10px;
+		padding-bottom:10px;
+		max-height: 300px;
+		overflow: auto;
+	}
+
+  .cancelChanges
+	{
+		margin-left: 15px;
+	}
+
+	.button-wrapper
+	{
+		text-align: center;
+	}
+}
+
+.actionButtonIcon
+{
+	cursor: pointer;
+}

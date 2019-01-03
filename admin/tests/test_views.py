@@ -545,6 +545,26 @@ class UserDeleteTest(CourseParticipantsStatsMixin, TestCase):
         self.assertEqual(response.status_code, 204)
 
 
+class ParticipantsListViewTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test participants list view
+    """
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    def test_check_switch_on_view(self, *patch):
+        """
+        Test if waffle switch to enable deletion is correctly passed to the redered view
+        """
+        is_user_in_permission_group_lib = self.apply_patch("lib.authorization.is_user_in_permission_group")
+        is_user_in_permission_group_lib.return_value = True
+        is_user_in_permission_group_accounts = self.apply_patch("accounts.models.is_user_in_permission_group")
+        is_user_in_permission_group_accounts.return_value = True
+
+        request = self.get_request(reverse('participants_list'), self.admin_user)
+        response = views.participants_list(request)
+
+        self.assertIn("var enable_data_deletion = 'True';", response.content)
+
+
 @ddt.ddt
 class ClientCustomizationTests(TestCase, ApplyPatchMixin):
     """

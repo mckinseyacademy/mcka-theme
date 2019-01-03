@@ -27,6 +27,35 @@
 
     #participantsListViewGridBlock
 
+    - if enableDataDeletion
+      #delete_user_modal.reveal-modal.small{'data-reveal': ''}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        .titleContainer
+          %h2 {% trans "Delete User Data" %}
+        %hr
+        .contentContainer
+          {% trans "Please note that the data is deleted permanently and you will lose all the data about this user." %}
+          %br
+          %br
+          .boldText
+            {% trans "Are you sure you want to delete this user?" %}
+        .errorContainer
+        .button-wrapper
+          %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+            {% trans "Cancel" %}
+          %a.button.small.radius.menuButton.confirmButton{:type => "button"}
+            {% trans "Yes" %}
+
+      #delete_user_success.reveal-modal.small{'data-reveal': ''}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        .titleContainer
+          %h2 {% trans "Successfully deleted user!" %}
+        .button-wrapper.topPadding
+          %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"}
+            {% trans "I'm Done" %}
+
     #add_a_participant.reveal-modal.small{'data-reveal': ''}
       .close-reveal-modal
         %i.fa.fa-times-circle
@@ -305,3 +334,8 @@
     %p.mainText
     %a.close-reveal-modal#closeParticipantUpdateStatus{"aria-label": "Close"}
       &#215;
+
+
+- block js_snippets
+  :javascript
+    var enable_data_deletion = '{{enableDataDeletion}}';

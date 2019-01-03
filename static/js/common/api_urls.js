@@ -15,6 +15,7 @@ var ApiUrls = {
   },
   manager_dashboard: '/admin/manager/courses',
   participants_list: '/admin/api/participants',
+  participants_delete: '/admin/api/participants',
   companies_list: '/admin/api/companies',
   cache: '/admin/api/cache',
   participant_manage_courses: function(user_id, course_id) {
