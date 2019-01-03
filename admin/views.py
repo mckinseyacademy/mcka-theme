@@ -82,6 +82,7 @@ from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.s3_helpers import store_file
 from util.validators import (
     AlphanumericValidator, alphanum_accented_validator)
+from util.math_helpers import calculate_percentage
 from .bulk_task_runner import BulkTaskRunner
 from .controller import (
     get_student_list_as_file, get_group_list_as_file, fetch_clients_with_program, load_course,
@@ -1751,15 +1752,19 @@ def client_detail_customization(request, client_id):
                     default_storage.save(temp_url, ContentFile(temp_image.read()))
                     setattr(customization, upload, '/accounts/' + temp_url)
 
-        customization.client_background_css = request.POST['client_background_css']
-        customization.hex_notification = request.POST['hex_notification']
-        customization.hex_notification_text = request.POST['hex_notification_text']
-        customization.hex_background_bar = request.POST['hex_background_bar']
-        customization.hex_program_name = request.POST['hex_program_name']
-        customization.hex_navigation_icons = request.POST['hex_navigation_icons']
-        customization.hex_course_title = request.POST['hex_course_title']
-        customization.hex_page_background = request.POST['hex_page_background']
-        customization.hex_background_main_navigation = request.POST['hex_background_main_navigation']
+        customization.client_background_css = request.POST.get('client_background_css',
+                                                               customization.client_background_css)
+        customization.hex_notification = request.POST.get('hex_notification', customization.hex_notification)
+        customization.hex_notification_text = request.POST.get('hex_notification_text',
+                                                               customization.hex_notification_text)
+        customization.hex_background_bar = request.POST.get('hex_background_bar', customization.hex_background_bar)
+        customization.hex_program_name = request.POST.get('hex_program_name', customization.hex_program_name)
+        customization.hex_navigation_icons = request.POST.get('hex_navigation_icons',
+                                                              customization.hex_navigation_icons)
+        customization.hex_course_title = request.POST.get('hex_course_title', customization.hex_course_title)
+        customization.hex_page_background = request.POST.get('hex_page_background', customization.hex_page_background)
+        customization.hex_background_main_navigation = request.POST.get('hex_background_main_navigation',
+                                                                        customization.hex_background_main_navigation)
         customization.save()
 
         errors = update_mobile_client_detail_customization(request, client_id)
@@ -2494,7 +2499,7 @@ class ParticipantsImportProgress(APIView):
                 status = 'in_progress'
 
             processed = import_batch.succeded + import_batch.failed
-            percentage = (100.0 / (import_batch.attempted or 1)) * processed
+            percentage = calculate_percentage(part=processed, whole=import_batch.attempted)
 
             data = dict(
                 task_id=import_batch.task_key,

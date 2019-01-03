@@ -80,3 +80,9 @@
   %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
   %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
   %script{src: "{% static 'js/app_link_popup.js' %}"}
+
+- block heap_events
+  %script
+   heap.identify('{{user.id}}');
+   heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
+   heap.track('LEARNER_DASHBOARD_VISITED', {COURSE_ID: '{{course_id}}', LEARNER_DASHBOARD_NAME: '{{learner_dashboard.title}}', USER_ID: '{{user.id}}'});

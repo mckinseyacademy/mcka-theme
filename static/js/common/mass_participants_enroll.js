@@ -46,20 +46,6 @@ massParticipantsEnrollInit = function(){
             for(var i=0; i<fileList.length; i++){
               var reader = new FileReader();
               reader.onload = function(e) {
-                var limit = 5000;
-                var contents = e.target.result.split(/\n/g);
-                var lines = contents.length-1;
-                if (contents[lines]=="")
-                  lines--;
-
-                if (lines>limit){
-                  var values = {'limit': limit, 'lines': lines};
-                  var linesLimitString = gettext("The .csv file has more then %(limit)s  rows: %(lines)s , please split it to more files!");
-                  alert(interpolate(linesLimitString, values, true));
-                  $('#enroll_to_course_from_csv .admin-form').find('.button-wrapper i').hide();
-                  $('#enroll_to_course_from_csv #submitCSVEnroll').removeAttr('disabled');
-                  permission = permission & false;
-                }
                 checked_files+=1;
               };
               reader.readAsText(fileList[i]);
@@ -116,21 +102,6 @@ massParticipantsEnrollInit = function(){
     if (file_input.length > 0){
       var reader = new FileReader();
       reader.onload = function(e) {
-        var limit = 5000
-        var contents = e.target.result.split(/\n/g);
-        var lines = contents.length-1;
-        if (contents[lines]=="")
-          lines--;
-        var val_result = true;
-        if (lines>limit){
-          var values = {'limit': limit, 'lines': lines};
-          var linesLimitString = gettext("The .csv file has more then %(limit)s  rows: %(lines)s , please split it to more files!");
-          alert(interpolate(linesLimitString, values, true));
-          modal.find('.button-wrapper i').hide();
-          $(_this).removeAttr('disabled');
-          return;
-        }
-
         var options = {
         url     : form.attr('action'),
         type    : 'POST',

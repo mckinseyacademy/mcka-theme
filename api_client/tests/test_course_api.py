@@ -11,8 +11,10 @@ from accounts.helpers import TestUser
 from api_client.course_api import (
     COURSEWARE_API,
     COURSE_COHORTS_API,
+    COURSE_COMPLETION_API,
     get_course,
     get_course_cohort_settings,
+    get_course_completions,
     get_course_enrollments,
     get_course_list_for_manager_reports,
     get_manager_reports_in_course,
@@ -327,3 +329,76 @@ class TestCourseApi(TestCase):
         )
         cohort_settings = get_course_cohort_settings(self.COURSE_ID)
         self.assertEqual(cohort_settings.is_cohorted, is_cohorted)
+
+    @ddt.data(
+        {
+            'extra_fields': 'all',
+            'response': {'requested_fields': ['chapter', 'sequential', 'vertical']}
+        },
+        {
+            'extra_fields': 'chapter,vertical',
+            'response': {'requested_fields': ['chapter', 'vertical']}
+        },
+        {
+            'username': 'edx',
+            'response': {'username': 'edx'}
+        },
+        {
+            'root_block': 'root_block',
+            'response': {'root_block': 'root_block'}
+        },
+    )
+    @ddt.unpack
+    @patch('api_client.course_api.group_completions_by_course')
+    @patch('api_client.course_api.group_completions_by_user')
+    @httpretty.httprettified
+    def test_get_course_completions_filtering_ids(
+        self,
+        mock_group_completions_by_course,
+        mock_group_completions_by_user,
+        extra_fields=None,
+        username=None,
+        user_ids=None,
+        root_block=None,
+        response=None,
+    ):
+        """
+        Test if the course completions arguments are correctly passed by
+        """
+        course_id = 'course-v1:edX+DemoX+Demo_Course'
+
+        # Mock parsing of request response
+        mock_group_completions_by_course.return_value = 'course'
+        mock_group_completions_by_user.return_value = 'user'
+
+        def course_completions_response(request, _uri, headers, correct_response=response):
+            self.assertEqual(correct_response, json.loads(request.body))
+            return (200, headers, json.dumps({
+                'results': []
+            }))
+
+        httpretty.register_uri(
+            httpretty.POST,
+            '{api_base}/{course_completion_api}/{course_id}/?page_size=200'.format(
+                api_base=settings.API_SERVER_ADDRESS,
+                course_completion_api=COURSE_COMPLETION_API,
+                course_id=course_id,
+            ),
+            body=course_completions_response,
+            status=200,
+            content_type='application/json'
+        )
+
+        course_completions = get_course_completions(
+            course_id=course_id,
+            extra_fields=extra_fields,
+            username=username,
+            user_ids=user_ids,
+            root_block=root_block,
+        )
+
+        # Check if correct parsing function was called
+        if user_ids:
+            self.assertEqual(course_completions, 'user')
+        else:
+            self.assertEqual(course_completions, 'course')

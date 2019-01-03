@@ -75,6 +75,7 @@ def email_add_inactive_student(request, program, student):
         html_h2_end='</h2><p>',
         date=program.start_date.strftime(date_format),
         html_anchor_start='<a href = ' + str(request.build_absolute_uri(url)) + '>',
+        html_anchor_end='</a>',
         html_p_end='</p>'
     )
 

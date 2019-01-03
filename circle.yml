@@ -17,10 +17,9 @@ test:
     - python manage.py test --settings=mcka_apros.test_settings
     - coverage run --source='.' manage.py test --settings=mcka_apros.test_settings
     - coverage report
-    - coverage html
     - coverage xml
     - flake8 ./
 
   post:
-    - mkdir -p $CIRCLE_ARTIFACTS/codecoverage
-    - cp -r reports/cover_html $CIRCLE_ARTIFACTS/codecoverage/coverage_html/
+    - cp reports/coverage.xml .
+    - bash <(curl -s https://codecov.io/bash) -y codecov.yml

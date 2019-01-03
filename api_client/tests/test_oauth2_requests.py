@@ -91,6 +91,7 @@ class TestGetAndUnpaginate(TestCase):
 
         self.mock_session = mock.Mock()
         self.mock_session.get = lambda url: mock.Mock(json=lambda: self.data[url])
+        self.mock_session.post = lambda url, json: mock.Mock(json=lambda: self.data[url])
 
     def _assert_data(self, data, max_page):
         """
@@ -100,13 +101,17 @@ class TestGetAndUnpaginate(TestCase):
         self.assertTrue(data[-1]['name'].startswith('page-{}'.format(max_page)))
 
     @ddt.data(
-        (None, 10),  # No page limit should return all objects
-        (3, 6),
-        (8, 10),  # Page count over max should return all objects
+        (None, 10, False),  # No page limit should return all objects
+        (3, 6, False),
+        (8, 10, False),  # Page count over max should return all objects
+        # Same tests, but using a POST requests
+        (None, 10, True),  # No page limit should return all objects
+        (3, 6, True),
+        (8, 10, True),  # Page count over max should return all objects
     )
     @ddt.unpack
-    def test_get_and_unpaginate(self, max_page, count):
-        data = get_and_unpaginate(self.paginated_url, self.mock_session, max_page=max_page)
+    def test_get_and_unpaginate(self, max_page, count, use_post):
+        data = get_and_unpaginate(self.paginated_url, self.mock_session, max_page=max_page, use_post=use_post)
         self.assertEqual(len(data), count)
         self._assert_data(data, max_page)
 

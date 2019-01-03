@@ -1137,10 +1137,7 @@ msgid "Email"
 msgstr "E-mail"
 
 #: accounts/forms.py:442
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Public username {html_span_start} This cannot be changed later."
-#| "{html_span_end}"
+#, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later and cannot "
 "contain non-English characters.{html_span_end}"

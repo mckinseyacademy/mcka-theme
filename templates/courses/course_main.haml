@@ -50,3 +50,8 @@
 - block js_snippets
   %script{src: "{% static 'js/app_link_popup.js' %}"}
 
+- block heap_events
+  %script
+   heap.identify('{{user.id}}');
+   heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
+   heap.track('COURSE_VISITED', {COURSE_ID: '{{course.id}}', COURSE_NAME: '{{course.name}}', USER_ID: '{{user.id}}'});

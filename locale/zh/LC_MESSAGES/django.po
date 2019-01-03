@@ -1132,10 +1132,7 @@ msgid "Email"
 msgstr "电子邮件"
 
 #: accounts/forms.py:442
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Public username {html_span_start} This cannot be changed later."
-#| "{html_span_end}"
+#, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later and cannot "
 "contain non-English characters.{html_span_end}"
@@ -3070,10 +3067,6 @@ msgstr "查看我们的常见问题来获取相关解答"
 
 #: templates/accounts/activate.haml:48
 #: templates/accounts/sso_terms_of_service.haml:39
-#, fuzzy
-#| msgid ""
-#| " View our FAQ for answers to commonly asked questions\n"
-#| "            , or raise a question in course-specific discussion forums."
 msgid " , or raise a question in course-specific discussion forums."
 msgstr "或在课程特定的论坛中提问。"
 

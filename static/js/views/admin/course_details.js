@@ -92,11 +92,18 @@
         var companyId = $('#courseDetailsDataWrapper').attr('company-id');
         this.collection.updateCompanyQuerryParams(companyId);
       }
-      var count = course_details_count_all_users;
-      this.cohorts_enabled = course_details_cohorts_enabled;
-      this.cohorts_available = course_details_cohorts_available;
-      this.collection.updateCountQuerryParams(count);
-      this.collection.fetch();
+      try {
+        var count = course_details_count_all_users;
+        this.cohorts_enabled = course_details_cohorts_enabled;
+        this.cohorts_available = course_details_cohorts_available;
+      }
+      catch(error) {
+        var count = '0';
+      }
+      finally {
+        this.collection.updateCountQuerryParams(count);
+        this.collection.fetch();
+      }
     },
     removeFromGeneratedGridColumns: function(title){
       var _this = this;
@@ -112,13 +119,6 @@
     },
     render: function(){
       var _this = this;
-      var company_id = $('#courseDetailsDataWrapper').attr('company-id');
-      if(company_id){
-        var enableSearchFlag = true;
-      }else {
-        var enableSearchFlag = false;
-        $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').toggle("slide");
-      }
       var companyAdminFlag = $('#courseDetailsDataWrapper').attr('admin-flag');
       var courseId = $('#courseDetailsDataWrapper').attr('data-id');
       var multiSelectFlag = true;
@@ -135,7 +135,6 @@
         container: this.$el,
         multiselect: multiSelectFlag,
         collection: this.collection.fullCollection,
-        enableSearch: enableSearchFlag,
         onRowClick: function()
         {
           // for select-all bind export csv functionalities to a backend downloader
@@ -187,7 +186,7 @@
       $(document).on('onSearchEvent', { extra : this}, this.onSearchEvent);
       $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
 
-      $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').on('enter', 'input', function(event, status){
+      $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').on('enter', 'input', function(event, status){
           if (_pointer.course_participant_search_flag) {
               _pointer.course_participant_search_flag = false;
               var querryDict = {};
@@ -198,6 +197,12 @@
               }else{
                   var value = $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').val().trim();
               }
+              var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+              if (companyPageFlag == 'True')
+              {
+                var company_id = $('#courseDetailsDataWrapper').attr('company-id');
+                querryDict['organizations'] = company_id;
+              }
               querryDict['search_query_string'] = value;
               querryDict['courses'] = course_id;
               querryDict['course_id'] = course_id;
@@ -207,6 +212,9 @@
               }
               if (!jQuery.isEmptyObject(querryDict)) {
                   _pointer.participantscollection.updateQuerryParams(querryDict);
+                  if (!_pointer.participantscollection.queryParams['search_query_string']){
+                    _pointer.participantscollection.queryParams['search_query_string'] = value;
+                  }
               }
               if ((_pointer.participantscollection.length > 0 && searchFlag) || (status.clearButton && !_pointer.default_first_page)) {
                   _pointer.participantscollection.getFirstPage();
@@ -592,18 +600,18 @@
   });
 
 $(function() {
-    $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').find('input').keyup(function(e){
+    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').keyup(function(e){
       if(e.keyCode == 13){
         $(this).trigger('enter', [{ clearButton : false}]);
       }
     });
 
-    $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').find('input').courseParticipantsclearSearch({ callback: function() {
-          $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').find('input').trigger('enter', [{ clearButton : true}]);
+    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').courseParticipantsclearSearch({ callback: function() {
+          $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').trigger('enter', [{ clearButton : true}]);
     } } );
 
     // update value
-    $('#courseDetailsParticipantsGridWrapper .clearableCourseParticipantsSearch').find('input').val('').change();
+    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').val('').change();
 });
 
   (function ($) {

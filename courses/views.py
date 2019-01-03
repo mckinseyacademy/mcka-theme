@@ -126,6 +126,7 @@ def course_landing_page(request, course_id):
         "discover_flag": feature_flags.discover,
         "average_progress": average_progress(course, request.user.id),
         "graded_items_count": graded_items_count,
+        "client_id": request.COOKIES.get('user_organization_id', ''),
     }
 
     if feature_flags.discover:
@@ -1230,7 +1231,6 @@ def course_learner_dashboard(request, learner_dashboard_id):
         bookmark = None
 
     feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
-
     data = {
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
@@ -1239,7 +1239,8 @@ def course_learner_dashboard(request, learner_dashboard_id):
         'bookmark': bookmark,
         'calendar_enabled': True if calendar_items else False,
         'today': datetime.now(),
-        'course_id': learner_dashboard.course_id
+        'course_id': learner_dashboard.course_id,
+        'client_id': request.COOKIES.get('user_organization_id', ''),
     }
 
     if feature_flags and feature_flags.branding:

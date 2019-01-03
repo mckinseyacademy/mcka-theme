@@ -496,11 +496,6 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     user_list = build_student_list_from_file(file_stream, parse_method=parse_method)
     clean_user_list, unclean_user_list, user_registration_errors = [], [], []
 
-    # We need to ensure that all courses have `CourseUserGroup`s created. Otherwise we will run into race conditions.
-    courses = {entry['course_id'] for entry in user_list}
-    for course in courses:
-        add_cohort_for_course(course, 'default_cohort', 'random')
-
     registration_batch = UserRegistrationBatch.objects.get(id=registration_batch_id)
     for user_info in user_list:
         if "error" in user_info:
@@ -526,6 +521,18 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     registration_batch.failed += len(user_registration_errors)
     registration_batch.save()
     del user_list
+
+    # We need to ensure that all courses have `CourseUserGroup`s created. Otherwise we will run into race conditions.
+    logger.info('Creating cohorts for Courses - {}'.format(task_log_msg))
+    courses = {entry.get('course_id') for entry in clean_user_list}
+    for course in courses:
+        try:
+            add_cohort_for_course(course, 'default_cohort', 'random')
+        except ApiError:
+            logger.warning('Failed adding cohort for course {} - SKIPPING - {}'.format(course, task_log_msg))
+            # We can safely ignore already existing cohorts.
+            # We also want to ignore nonexistent courses at this point, because they will be logged later.
+            pass
 
     logger.info('Attempting to register {} Users - {}'.format(len(clean_user_list), task_log_msg))
 
@@ -562,7 +569,8 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
         batch_id=registration_batch.task_key,
         user_id=user_id,
         base_url=base_url,
-        user_file_name=file_stream.name,
+        user_file_name=registration_batch.uploaded_file_name,
+        import_type='register' if register else 'enroll',
     )
 
     try:
@@ -627,7 +635,7 @@ def bulk_user_manager_update_task(user_id, users_records, base_url):
     name='admin.generate_import_files_and_send_notification',
     max_retries=3
 )
-def generate_import_files_and_send_notification(batch_id, user_id, base_url, user_file_name):
+def generate_import_files_and_send_notification(batch_id, user_id, base_url, user_file_name, import_type):
     """
     Generates activation links and any error files of batch Import Participants
     process and send notification link
@@ -668,15 +676,25 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
     activations_links_file_url = ''
 
     if errors:
-        fields = OrderedDict([
-            ("First Name", ("first_name", '')),
-            ("Last Name", ("last_name", '')),
-            ("Email", ("email", '')),
-            ("Company ID", ("company_id", '')),
-            ("Course ID", ("course_id", '')),
-            ("Status", ("status", '')),
-            ("Errors", ("errors", '')),
-        ])
+        if import_type == 'register':
+            fields = OrderedDict([
+                ("First Name", ("first_name", '')),
+                ("Last Name", ("last_name", '')),
+                ("Email", ("email", '')),
+                ("Company ID", ("company_id", '')),
+                ("Course ID", ("course_id", '')),
+                ("Status", ("status", '')),
+                ("Errors", ("errors", '')),
+            ])
+        elif import_type == 'enroll':
+            fields = OrderedDict([
+                ("Email", ("email", '')),
+                ("Course ID", ("course_id", '')),
+                ("Status", ("status", '')),
+                ("Errors", ("errors", '')),
+            ])
+        else:
+            fields = OrderedDict([])
 
         file_name = '{}_import_errors.csv'.format(registration_batch.task_key)
 

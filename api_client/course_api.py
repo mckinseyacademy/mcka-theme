@@ -505,25 +505,36 @@ def get_course_completions(
         root_block=None,
         search_participants=False,
 ):
-    ''' fetch course module completion list '''
+    """
+    Fetch course module completion list
+
+    This uses a POST method with the filters in the body to avoid issues with
+    url size limitation. This is needed because we use Gunicorn to serve LMS
+    and it has a default request-line limit of 4096 bytes, which caused issues
+    when filtering for a large number of user ids.
+    More info:
+    http://docs.gunicorn.org/en/stable/settings.html#limit-request-line
+    """
     if not edx_oauth2_session:
         edx_oauth2_session = get_oauth2_session()
     api_params = {
         'page_size': page_size,
     }
 
+    request_data = {}
+
     if extra_fields == 'all':
-        api_params['requested_fields'] = 'chapter,sequential,vertical'
+        request_data['requested_fields'] = ['chapter', 'sequential', 'vertical']
     elif extra_fields is not None:
-        api_params['requested_fields'] = extra_fields
+        request_data['requested_fields'] = extra_fields.split(',')
 
     if username:
-        api_params['username'] = username
+        request_data['username'] = username
 
     if user_ids:
-        api_params['user_ids'] = ','.join([str(user_id) for user_id in user_ids])
+        request_data['user_ids'] = user_ids
     if root_block:
-        api_params['root_block'] = root_block
+        request_data['root_block'] = root_block
 
     course_path = ''
     if course_id is not None:
@@ -546,15 +557,19 @@ def get_course_completions(
             completions
         )
 
+    course_completion_list = get_and_unpaginate(
+        url,
+        edx_oauth2_session,
+        use_post=True,
+        post_body=request_data
+    )
+
     if course_id is None:
         # The API will return data for multiple courses, so group them by course
-        return group_completions_by_course(get_and_unpaginate(url, edx_oauth2_session))
+        return group_completions_by_course(course_completion_list)
 
     # Otherwise, group by users
-    return group_completions_by_user(
-        get_and_unpaginate(url, edx_oauth2_session),
-        username=username,
-    )
+    return group_completions_by_user(course_completion_list, username=username)
 
 
 @api_error_protect

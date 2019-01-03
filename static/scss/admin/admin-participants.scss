@@ -180,6 +180,11 @@
 				a {
 					display: block;
 				}
+				.csv-name{
+					max-width: 300px;
+					overflow: hidden;
+					text-overflow: ellipsis;
+				}
 				[class*="file"] {
 					text-align: center;
 					font-size: 18px;
