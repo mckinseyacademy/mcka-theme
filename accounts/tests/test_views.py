@@ -13,6 +13,7 @@ from django.http import HttpResponse, SimpleCookie
 from django.test import RequestFactory, TestCase
 from django.utils import translation
 from mock import Mock, patch
+from rest_framework import status
 
 from accounts.controller import ProcessAccessKeyResult
 from accounts.models import RemoteUser
@@ -797,3 +798,28 @@ class AccessKeyTest(AccessKeyTestBase):
         response = self.client.get(url)
         sso_redirect_url = _build_sso_redirect_url(identity_provider, reverse('sso_finalize'))
         self.assertRedirects(response, sso_redirect_url, fetch_redirect_response=False)
+
+
+@ddt.ddt
+class LogoutnViewTest(TestCase, ApplyPatchMixin):
+    """
+    Tests for the logout view
+    """
+
+    @patch('accounts.logout.user_api.delete_session')
+    @ddt.data(
+        (None,),
+        ('',),
+        ('u2uocmbcywqpkx7ats9zd8d4uv0u7ft9',)
+    )
+    @ddt.unpack
+    def test_logout(self, cookie, mock_delete_session):
+        mock_delete_session.return_value = []
+
+        self.client.cookies = SimpleCookie({'sessionid': cookie})
+        response = self.client.get(reverse('logout'))
+
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertEqual(response.url, '/')
+        self.assertEqual('to-delete', response.cookies['csrftoken'].value)
+        self.assertEqual('to-delete', response.cookies['sessionid'].value)
