@@ -533,12 +533,15 @@ def get_course_completions(
 
     if user_ids:
         request_data['user_ids'] = user_ids
+
     if root_block:
         request_data['root_block'] = root_block
 
     course_path = ''
     if course_id is not None:
         course_path = '{}/'.format(course_id)
+    else:
+        api_params.update(request_data)
 
     url = '{api_base}/{course_completion_api}/{course_path}?{params}'.format(
         api_base=settings.API_SERVER_ADDRESS,
@@ -557,18 +560,25 @@ def get_course_completions(
             completions
         )
 
+    if course_id is None:
+        # The API will return data for multiple courses, so group them by course
+        course_completion_list = get_and_unpaginate(
+            url,
+            edx_oauth2_session,
+            use_post=False,
+        )
+
+        return group_completions_by_course(course_completion_list)
+
+    # Otherwise, group by users
+
     course_completion_list = get_and_unpaginate(
         url,
         edx_oauth2_session,
         use_post=True,
-        post_body=request_data
+        post_body=request_data,
     )
 
-    if course_id is None:
-        # The API will return data for multiple courses, so group them by course
-        return group_completions_by_course(course_completion_list)
-
-    # Otherwise, group by users
     return group_completions_by_user(course_completion_list, username=username)
 
 
