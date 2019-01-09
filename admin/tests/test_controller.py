@@ -670,5 +670,5 @@ class TestSpecificUserRolesCountOfOtherCompanies(TestCase):
 
     def user_count_without_specific_user_roles_of_other_companies(self):
         course_participants_count = controller.user_count_without_specific_user_roles_of_other_companies(
-            self.course_participants, int(self.organization_id))
+            self.course_participants, int(self.organization_id), 4)
         self.assertEqual(course_participants_count, 2)

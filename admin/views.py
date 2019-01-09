@@ -50,8 +50,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
-    process_manager_email, parse_participant_profile_csv, user_count_without_specific_user_roles_of_other_companies, \
-    remove_specific_user_roles_of_other_companies
+    process_manager_email, parse_participant_profile_csv, user_count_without_specific_user_roles_of_other_companies
 from admin.tasks import user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api, \
     cohort_api
@@ -868,12 +867,13 @@ def _get_course_context(course, organization_id=''):
     context['proficiency'] = round_to_int_bump_zero(100 * course_metrics_active_users['avg_grade'])
     context['users_enrolled'] = course_metrics_active_users['users_enrolled']
     if organization_id:
-        request_params = {'additional_fields': 'roles,organizations'}
+        request_params = {'page_size': 0, 'additional_fields': 'roles,organizations'}
         request_params['organizations'] = organization_id
         course_participants = course_api.get_course_details_users(course.id, request_params)
-        course_participants = remove_specific_user_roles_of_other_companies(course_participants,
-                                                                            int(organization_id))
-        context['users_enrolled'] = len(course_participants["results"])
+        course_participants = user_count_without_specific_user_roles_of_other_companies(course_participants,
+                                                                                        int(organization_id),
+                                                                                        len(course_participants))
+        context['users_enrolled'] = course_participants
     if context['users_enrolled']:
         pass_users = course_metrics_active_users['users_passed']
         context['passed'] = round_to_int_bump_zero(100 * float(pass_users) / context['users_enrolled'])
@@ -5110,7 +5110,8 @@ def company_details(request, company_id):
     requestParams = {}
     requestParams['organizations'] = company_id
     participants = user_api.get_filtered_users(requestParams)
-    company_participants = user_count_without_specific_user_roles_of_other_companies(participants, company_id)
+    company_participants = user_count_without_specific_user_roles_of_other_companies(participants["results"],
+                                                                                     company_id, participants['count'])
     company['numberParticipants'] = company_participants
     company_courses = get_organization_active_courses(request, company_id)
     company['activeCourses'] = len(get_company_active_courses(company_courses))
@@ -5880,7 +5881,7 @@ def company_dashboard(request):
                     request_params['organizations'] = user_org.id
                     participants = user_api.get_filtered_users(request_params)
                     company_participants = user_count_without_specific_user_roles_of_other_companies(
-                        participants, vars(client)['id'])
+                        participants["results"], vars(client)['id'], participants['count'])
                     company['name'] = vars(client)['display_name']
                     company['id'] = vars(client)['id']
                     company['numberParticipants'] = company_participants

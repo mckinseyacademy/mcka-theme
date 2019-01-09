@@ -2693,16 +2693,14 @@ def validate_participant_manager_email(participant_email, manager_email):
     return None, None, errors
 
 
-def user_count_without_specific_user_roles_of_other_companies(participants, organization_id):
+def user_count_without_specific_user_roles_of_other_companies(participants, organization_id, users_count):
     """
-    Returns comapny_participants count with out users who are enrolled in other company course
-    as company admin and observer or company admin and assitant role.
+    Returns company_participants count with out users who are enrolled in other company course
+    as company admin and observer or company admin and assistant role.
     """
-    users = participants["results"]
-    users_count = participants['count']
 
     remove_permissions = ['assistant', 'observer']
-    for user in users:
+    for user in participants:
         if user["organizations"] and user["organizations"][0]["id"] != int(organization_id):
             for role in user["roles"]:
                 if role in remove_permissions:
