@@ -17,7 +17,7 @@ from rest_framework import status
 
 from accounts.controller import ProcessAccessKeyResult
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin, make_user, AccessKeyTestBase, make_side_effect_raise_api_error
+from accounts.tests.utils import ApplyPatchMixin, make_user, AccessKeyTestBase
 from accounts.views import (MISSING_ACCESS_KEY_ERROR, MOBILE_URL_SCHEME_COOKIE, _build_mobile_redirect_response,
                             _cleanup_username as cleanup_username, access_key, finalize_sso_mobile, sso_error,
                             sso_finalize, sso_launch, switch_language_based_on_preference, get_user_from_login_id,
@@ -683,9 +683,6 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     def test_login_normal_invalid_password(self, login_id, mock_authenticate, mock_get_username):
         mock_get_username.return_value = DottableDict({"username": "test", "is_active": True})
         mock_authenticate.return_value = None
-        self.apply_patch('api_client.user_api.authenticate', make_side_effect_raise_api_error(401))
-        user_lockout_status = self.apply_patch('accounts.controller.get_user_lock_out_status')
-        user_lockout_status.return_value = False
         response = self.client.post(reverse('login'), {'login_id': login_id, 'password': 'password'})
         self.assertIn('{"password": "Password doesn\'t match our records. Try again."}', response.content)
 
@@ -695,10 +692,8 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     def test_login_normal_user_lock_out(self, login_id, mock_authenticate,
                                         mock_get_username):
         mock_get_username.return_value = DottableDict({"username": "test", "is_active": True})
-        mock_authenticate.return_value = None
-        self.apply_patch('api_client.user_api.authenticate', make_side_effect_raise_api_error(403))
-        user_lockout_status = self.apply_patch('accounts.controller.get_user_lock_out_status')
-        user_lockout_status.return_value = True
+        http_error = urllib2.HTTPError("http://irrelevant", 403, None, None, None)
+        mock_authenticate.side_effect = ApiError(http_error, "authenticate", None)
         response = self.client.post(reverse('login'), {'login_id': login_id, 'password': 'password'})
         self.assertIn('{"lock_out": true}', response.content)
 

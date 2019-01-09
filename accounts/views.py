@@ -58,7 +58,7 @@ from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistr
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
-    send_warning_email_to_admin, append_user_mobile_app_id_cookie, get_user_lock_out_status
+    send_warning_email_to_admin, append_user_mobile_app_id_cookie
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
@@ -391,22 +391,21 @@ def login_post_view(request):
             login_id = form.cleaned_data['login_id']
             password = form.cleaned_data['password']
             user = get_user_from_login_id(login_id)
-            auth_user = auth.authenticate(username=user.username, password=password)
+            try:
+                auth_user = auth.authenticate(username=user.username, password=password)
+            except ApiError:
+                return JsonResponse({
+                    "lock_out": True
+                }, status=403)
             if auth_user:
                 response = _process_authenticated_user(request, auth_user)
                 _append_login_mode_cookie(response, login_mode='normal')
                 append_user_mobile_app_id_cookie(response, auth_user.id)
                 return response
             else:
-                lock_out = get_user_lock_out_status(user.username, password)
-                if lock_out:
-                    return JsonResponse({
-                        "lock_out": lock_out
-                    }, status=403)
-                else:
-                    return JsonResponse({
-                        "password": _("Password doesn't match our records. Try again.")
-                    }, status=403)
+                return JsonResponse({
+                    "password": _("Password doesn't match our records. Try again.")
+                }, status=403)
 
         except ApiError as err:
             return JsonResponse({"error": err.message}, status=500)

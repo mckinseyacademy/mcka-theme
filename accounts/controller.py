@@ -526,16 +526,3 @@ def get_mobile_apps_id(organization_id):
         'android_app_id': android_app_id,
         'user_org': user_org
     }
-
-
-def get_user_lock_out_status(username, password):
-    """
-    Returns lock_out to True if user has attempted max login attempts and his account is temporarily locked out.
-    """
-    lock_out = False
-    try:
-        user_api.authenticate(username, password, remote_session_key=None)
-    except ApiError as error:
-        if error.code == 403:
-            lock_out = True
-    return lock_out
