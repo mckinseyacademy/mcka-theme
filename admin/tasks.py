@@ -442,17 +442,23 @@ def users_program_association_task(program_id, user_ids, task_id):
     Returns:
         (dict): total and successfully added users
     """
+    task_log_msg = "User Program Association task for program: {}".format(program_id)
+
     total = len(user_ids)
     added = 0
     failed = 0
     batch_size = 100
 
+    logger.info('Attempting to associate {} users - {}'.format(total, task_log_msg))
+
     for i in xrange(0, total, batch_size):
         user_ids_batch = user_ids[i:i+batch_size]
+
         try:
             group_api.add_users_to_group(user_ids_batch, program_id)
             added += len(user_ids_batch)
-        except ApiError:
+        except ApiError as e:
+            logger.error('Failed adding users batch to group {} - {}'.format(e.message, task_log_msg))
             failed += len(user_ids_batch)
         finally:
             percentage = (100.0 / (total or 1)) * (added + failed)
@@ -462,6 +468,8 @@ def users_program_association_task(program_id, user_ids, task_id):
             users_program_association_task.update_state(
                 task_id=task_id, state='PROGRESS', meta={'percentage': int(percentage)}
             )
+
+    logger.info('Associated {} of {} users - {}'.format(added, total, task_log_msg))
 
     return {'successful': added, 'total': total}
 

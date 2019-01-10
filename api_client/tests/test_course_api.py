@@ -402,3 +402,38 @@ class TestCourseApi(TestCase):
             self.assertEqual(course_completions, 'user')
         else:
             self.assertEqual(course_completions, 'course')
+
+    @patch('api_client.course_api.group_completions_by_course')
+    @httpretty.httprettified
+    def test_get_course_completions_by_user(
+        self,
+        mock_group_completions_by_course,
+    ):
+        """
+        Test if the course completions arguments are correct
+        """
+
+        mock_group_completions_by_course.return_value = 'by_course'
+
+        def course_completions_response(_request, _uri, headers):
+            return (200, headers, json.dumps({
+                'results': []
+            }))
+
+        httpretty.register_uri(
+            httpretty.GET,
+            '{api_base}/{course_completion_api}/?{username}&page_size=200'.format(
+                api_base=settings.API_SERVER_ADDRESS,
+                course_completion_api=COURSE_COMPLETION_API,
+                username='edx',
+            ),
+            body=course_completions_response,
+            status=200,
+            content_type='application/json'
+        )
+
+        result = get_course_completions(
+            username='edx',
+            extra_fields=None
+        )
+        self.assertEqual(result, 'by_course')

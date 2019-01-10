@@ -231,6 +231,7 @@ urlpatterns += [
         views.workgroup_remove_project, name='workgroup_remove_project'),
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
 
+    url(r'^api/participants/(?P<user_id>[0-9]+)$', views.participant_details_api.as_view(), name='participant_details'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses/export_stats$',
         views.download_active_courses_stats, name='download_active_courses_stats'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/course_history/export_stats$',

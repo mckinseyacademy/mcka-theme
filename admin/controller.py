@@ -374,8 +374,15 @@ def build_student_list_from_file(file_stream, parse_method=_process_line):
 
         temp_file.seek(0)
 
-        # ignore first line
-        user_objects = [parse_method(user_line) for user_line in temp_file.read().splitlines()[1:]]
+        user_objects = []
+        for user_line in temp_file.read().splitlines()[1:]:  # ignore first line
+            try:
+                # don't add a faulty line
+                processed_line = parse_method(user_line)
+            except Exception:   # pylint: disable=bare-except
+                continue
+            else:
+                user_objects.append(processed_line)
 
     return user_objects
 
@@ -2258,7 +2265,7 @@ def participant_csv_line_id_extractor(user_line):
         try:
             user_id = int(fields[0])
         except ValueError:
-            pass
+            raise
         else:
             return user_id
 
