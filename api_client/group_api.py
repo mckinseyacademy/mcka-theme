@@ -191,7 +191,8 @@ def add_course_to_group(course_id, group_id, group_object=JsonObject):
     # trigger event as program-course-mapping is updated
     common_data_updated.send(
         sender=__name__,
-        data_type=COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING
+        data_type=COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING,
+        data_changed={'group_id': group_id}
     )
 
     return JP.from_json(response.read(), group_object)
@@ -276,7 +277,8 @@ def remove_course_from_group(course_id, group_id, group_object=JsonObject):
     # trigger event as program-course-mapping is updated
     common_data_updated.send(
         sender=__name__,
-        data_type=COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING
+        data_type=COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING,
+        data_changed={'group_id': group_id}
     )
 
     return response.code == 204
