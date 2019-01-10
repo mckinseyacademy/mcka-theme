@@ -1163,7 +1163,7 @@ class BulkTaskAPI(APIView):
         except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
             return Response({'errors': e.message}, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response({'data': data, 'task_id': task_id}, status=status.HTTP_201_CREATED)
+        return Response({'task_id': task_id}, status=status.HTTP_201_CREATED)
 
 
 class CourseDetailsApi(APIView):
