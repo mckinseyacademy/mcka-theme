@@ -5157,90 +5157,107 @@ class create_new_company_api(APIView):
             return Response({'status': 'error'})
 
 
-@permission_group_required(
-    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
-    PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN,
-)
-@company_admin_company_access
-def company_details(request, company_id):
-    client = Client.fetch(company_id)
-    company = {}
-    company['id'] = company_id
-    company['name'] = vars(client)['display_name']
-    requestParams = {}
-    requestParams['organizations'] = company_id
-    participants = user_api.get_filtered_users(requestParams)
-    company['numberParticipants'] = participants['count']
-    company_courses = get_organization_active_courses(request, company_id)
-    company['activeCourses'] = len(get_company_active_courses(company_courses))
+class CompanyDetailsView(APIView):
 
-    invoicing = {}
-    invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
-    if len(invoicingDetails) > 0:
-        invoicing['full_name'] = invoicingDetails[0].full_name
-        invoicing['title'] = invoicingDetails[0].title
-        invoicing['address1'] = invoicingDetails[0].address1
-        invoicing['address2'] = invoicingDetails[0].address2
-        invoicing['city'] = invoicingDetails[0].city
-        invoicing['state'] = invoicingDetails[0].state
-        invoicing['postal_code'] = invoicingDetails[0].postal_code
-        invoicing['country'] = invoicingDetails[0].country
-        invoicing['po'] = invoicingDetails[0].po
-        invoicing['identity_provider'] = invoicingDetails[0].identity_provider
-        for key, value in invoicing.items():
-            if invoicing[key].strip() == '':
-                invoicing[key] = '-'
-    else:
-        invoicing['full_name'] = '-'
-        invoicing['title'] = '-'
-        invoicing['address1'] = '-'
-        invoicing['address2'] = '-'
-        invoicing['city'] = '-'
-        invoicing['state'] = '-'
-        invoicing['postal_code'] = '-'
-        invoicing['country'] = '-'
-        invoicing['po'] = '-'
-        invoicing['identity_provider'] = '-'
+    @permission_group_required_api(
+        PERMISSION_GROUPS.MCKA_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN,
+        PERMISSION_GROUPS.CLIENT_ADMIN,
+        PERMISSION_GROUPS.COMPANY_ADMIN,
+    )
+    @method_decorator(company_admin_company_access)
+    def get(self, request, company_id):
+        client = Client.fetch(company_id)
+        company = {}
+        company['id'] = company_id
+        company['name'] = vars(client)['display_name']
+        requestParams = {}
+        requestParams['organizations'] = company_id
+        participants = user_api.get_filtered_users(requestParams)
+        company['numberParticipants'] = participants['count']
+        company_courses = get_organization_active_courses(request, company_id)
+        company['activeCourses'] = len(get_company_active_courses(company_courses))
 
-    contacts = []
-    companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
-    if len(companyContacts) > 0:
-        for companyContact in companyContacts:
-            contact = {}
-            contact_type = companyContact.contact_type
-            contact['type'] = CompanyContact.get_contact_type(int(contact_type))
-            contact['type_id'] = contact_type
-            contact['type_info'] = CompanyContact.get_type_description(contact_type)
-            contact['full_name'] = companyContact.full_name
-            contact['title'] = companyContact.title
-            contact['email'] = companyContact.email
-            contact['phone'] = companyContact.phone
-            for key, value in contact.items():
-                if contact[key].strip() == '':
-                    contact[key] = '-'
-            contacts.append(contact)
-    else:
-        for i in range(4):
-            contact_type = CompanyContact.get_contact_type(i)
-            type_description = CompanyContact.get_type_description(str(i))
-            contact = {}
-            contact['type'] = contact_type
-            contact['type_id'] = i
-            contact['type_info'] = type_description
-            contact['full_name'] = '-'
-            contact['title'] = '-'
-            contact['email'] = '-'
-            contact['phone'] = '-'
-            contacts.append(contact)
+        invoicing = {}
+        invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
+        if len(invoicingDetails) > 0:
+            invoicing['full_name'] = invoicingDetails[0].full_name
+            invoicing['title'] = invoicingDetails[0].title
+            invoicing['address1'] = invoicingDetails[0].address1
+            invoicing['address2'] = invoicingDetails[0].address2
+            invoicing['city'] = invoicingDetails[0].city
+            invoicing['state'] = invoicingDetails[0].state
+            invoicing['postal_code'] = invoicingDetails[0].postal_code
+            invoicing['country'] = invoicingDetails[0].country
+            invoicing['po'] = invoicingDetails[0].po
+            invoicing['identity_provider'] = invoicingDetails[0].identity_provider
+            for key, value in invoicing.items():
+                if invoicing[key].strip() == '':
+                    invoicing[key] = '-'
+        else:
+            invoicing['full_name'] = '-'
+            invoicing['title'] = '-'
+            invoicing['address1'] = '-'
+            invoicing['address2'] = '-'
+            invoicing['city'] = '-'
+            invoicing['state'] = '-'
+            invoicing['postal_code'] = '-'
+            invoicing['country'] = '-'
+            invoicing['po'] = '-'
+            invoicing['identity_provider'] = '-'
 
-    data = {
-        'company': company,
-        'contacts': contacts,
-        'invoicing': invoicing,
-        'companyAdminFlag': request.user.is_company_admin
-    }
+        contacts = []
+        companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
+        if len(companyContacts) > 0:
+            for companyContact in companyContacts:
+                contact = {}
+                contact_type = companyContact.contact_type
+                contact['type'] = CompanyContact.get_contact_type(int(contact_type))
+                contact['type_id'] = contact_type
+                contact['type_info'] = CompanyContact.get_type_description(contact_type)
+                contact['full_name'] = companyContact.full_name
+                contact['title'] = companyContact.title
+                contact['email'] = companyContact.email
+                contact['phone'] = companyContact.phone
+                for key, value in contact.items():
+                    if contact[key].strip() == '':
+                        contact[key] = '-'
+                contacts.append(contact)
+        else:
+            for i in range(4):
+                contact_type = CompanyContact.get_contact_type(i)
+                type_description = CompanyContact.get_type_description(str(i))
+                contact = {}
+                contact['type'] = contact_type
+                contact['type_id'] = i
+                contact['type_info'] = type_description
+                contact['full_name'] = '-'
+                contact['title'] = '-'
+                contact['email'] = '-'
+                contact['phone'] = '-'
+                contacts.append(contact)
 
-    return render(request, 'admin/companies/company_details.haml', data)
+        data = {
+            'company': company,
+            'contacts': contacts,
+            'invoicing': invoicing,
+            'companyAdminFlag': request.user.is_company_admin,
+            'enableDataDeletion': _deletion_flag(),
+        }
+
+        return render(request, 'admin/companies/company_details.haml', data)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def delete(self, _request, company_id):
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        try:
+            organization_api.delete_organization(company_id)
+        except ApiError:
+            raise Http404
+
+        return HttpResponse(status=204)
 
 
 class CompanyCustomFields(APIView):

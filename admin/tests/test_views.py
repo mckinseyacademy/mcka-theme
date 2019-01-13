@@ -607,6 +607,63 @@ class ClientCustomizationTests(TestCase, ApplyPatchMixin):
             self.assertFalse(client_customization.new_ui_enabled)
 
 
+class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test company details view.
+    """
+
+    def setUp(self):
+        super(CompanyDetailsViewTest, self).setUp()
+        self.patch_user_permissions()
+        self.mock_id = 0
+        delete_url = reverse('company_details', kwargs={'company_id': self.mock_id})
+        self.request = self.factory.delete(delete_url)
+        self.request.user = self.admin_user
+        self.api = views.CompanyDetailsView()
+
+    def test_delete_company_with_deletion_disabled(self):
+        """
+        Test deleting company without enabling `data_deletion.enable_data_deletion` waffle switch.
+        """
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(response.status_code, 400)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('lib.authorization.permission_group_required_not_in_group', lambda _: HttpResponseForbidden())
+    def test_delete_company_without_permissions(self):
+        """
+        Test deleting company as non-admin company.
+        """
+        self.request.user = self.students[0]
+        middleware = SessionMiddleware()
+        middleware.process_request(self.request)
+        self.request.session.save()
+
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(response.status_code, 403)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('api_client.organization_api.delete_organization', side_effect=Http404)
+    def test_delete_nonexistent_company(self, delete_company_mock):
+        """
+        Test deleting company that doesn't exist in LMS.
+        """
+        with self.assertRaises(Http404):
+            self.api.delete(self.request, self.mock_id)
+
+        delete_company_mock.assert_called_with(self.mock_id)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('api_client.organization_api.delete_organization')
+    def test_delete_company(self, mock):
+        """
+        Test deleting company as admin.
+        """
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(mock.call_count, 1)
+        self.assertEqual(response.status_code, 204)
+
+
 @ddt.ddt
 class ProblemResponseReportViewTest(TestCase):
     """

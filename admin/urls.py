@@ -293,7 +293,7 @@ urlpatterns += [
         views.company_course_details, name='company_course_details'),
     url(r'^companies/(?P<company_id>[0-9]+)/participants/(?P<user_id>[0-9]+)',
         views.company_participant_details_api.as_view(), name='company_participants_details'),
-    url(r'^companies/(?P<company_id>[0-9]+)', views.company_details, name='company_details'),
+    url(r'^companies/(?P<company_id>[0-9]+)', views.CompanyDetailsView.as_view(), name='company_details'),
     url(r'^companies', views.companies_list, name='companies_list'),
     url(r'^company_dashboard', views.company_dashboard, name='company_dashboard'),
 

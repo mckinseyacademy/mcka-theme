@@ -672,3 +672,40 @@
 		}
 	}
 }
+
+#deleteCompanyModal{
+	.titleContainer, .contentContainer
+	{
+		text-align: center;
+	}
+
+	.boldText
+	{
+		font-weight: bold;
+	}
+
+	.errorContainer
+	{
+		color:red;
+		text-align: center;
+		padding-top: 10px;
+		padding-bottom:10px;
+		max-height: 300px;
+		overflow: auto;
+	}
+
+  .cancelChanges
+	{
+		margin-left: 15px;
+	}
+
+	.button-wrapper
+	{
+		text-align: center;
+	}
+}
+
+.btn-danger{
+	background-color: #d9534f;
+    border-color: #d43f3a;
+}

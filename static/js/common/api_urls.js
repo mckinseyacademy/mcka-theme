@@ -46,6 +46,7 @@ var ApiUrls = {
   email_templates: '/admin/api/email-templates',
   email: '/admin/api/email',
   company: '/admin/api/companies/',
+  company_delete: '/admin/companies',
   tags: '/admin/api/tags',
   admin_bulk_task: '/admin/api/admin_bulk_task/',
   mobileapps: '/admin/api/mobileapps',
