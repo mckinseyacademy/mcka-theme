@@ -55,6 +55,25 @@
     %form{action: "/admin/clients/#{client.id}/customization", method: 'POST', enctype: "multipart/form-data"}
       - csrf_token
       %fieldset
+        - if request.user.is_mcka_admin
+          .ui-switch
+            %p
+              %i.fa.fa-exclamation-triangle
+              {% trans "New ui is available now!" %}
+              %span {% trans "Would you like to switch to new UI?" %}
+
+            %label.switch
+              - if customization.new_ui_enabled
+                %input.ui-checker{type: 'checkbox', name: 'new_ui_enabled', checked:'checked'}
+              - else
+                %input.ui-checker{type: 'checkbox', name: 'new_ui_enabled'}
+              %span.slider.round
+                %span.switch-text
+                  - if customization.new_ui_enabled
+                    {% trans "ON" %}
+                  - else
+                    {% trans "OFF" %}
+
         .sub-1 {% trans "Global Branding" %}
         {% trans "Enter hex#" as hex_text %}
         {% trans "Enter css" as css_text %}

@@ -10,7 +10,8 @@ from rest_framework import status
 import ddt
 
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin, make_course, make_user
+from accounts.tests.utils import ApplyPatchMixin, make_course
+from accounts.tests.utils import make_user, make_company
 from admin import views
 from admin.models import Client as ClientModel
 from admin.views import client_sso, CourseDetailsApi
@@ -20,6 +21,7 @@ from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map
 from lib.utils import DottableDict
 from .test_task_runner import mocked_task
+from admin.models import ClientCustomization
 
 _FAKE_USER_OBJ = DottableDict({
     "id": '1',
@@ -318,6 +320,10 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         # When coerced to an int, a mock returns 1, which messes up completions, so
         # instead return no completions at all to get the desired result.
         api_client.get_course_completions.return_value = {}
+        api_client.get_course_social_metrics.return_value = {
+            student.id: 0
+            for student in self.students
+        }
         return api_client
 
     def assert_expected_result(self, result, idx=0):
@@ -430,3 +436,44 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
                 self.assertTrue('var course_details_cohorts_enabled = \'%s\'' % is_cohorted in response.content)
                 self.assertTrue('var course_details_cohorts_available = \'%s\'' % (
                         is_available and not is_client_admin) in response.content)
+
+
+
+@ddt.ddt
+class ClientCustomizationTests(TestCase, ApplyPatchMixin):
+    """
+    Client Customization tests
+    to enable / disable new UI
+    """
+    def setUp(self):
+        super(ClientCustomizationTests, self).setUp()
+        is_user_in_permission_group_lib = self.apply_patch("lib.authorization.is_user_in_permission_group")
+        is_user_in_permission_group_lib.return_value = True
+        is_user_in_permission_group_accounts = self.apply_patch("accounts.models.is_user_in_permission_group")
+        is_user_in_permission_group_accounts.return_value = True
+
+        self.client = make_company(1)
+        self.admin_user = make_user(username="mcka_admin", email="mcka_admin@example.com")
+        self.factory = RequestFactory()
+        self.mock_session = Mock(session_key='', __contains__=lambda _a, _b: False)
+
+    @ddt.data(True, False)
+    def test_new_ui_flag_with_uber_admin(self, is_mcka_admin):
+        """
+        Test whether only uber admin can change the UI
+        """
+        client_customization = ClientCustomization.objects.create(client_id=self.client.id)
+        request = self.factory.post(
+            reverse('client_detail_navigation', kwargs={'client_id': self.client.id}),
+            {'new_ui_enabled': 'on'}
+        )
+        self.admin_user.is_mcka_admin = is_mcka_admin
+        request.user = self.admin_user
+        request.session = self.mock_session
+        response = views.client_detail_customization(request, self.client.id)
+        client_customization.refresh_from_db()
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        if is_mcka_admin:
+            self.assertTrue(client_customization.new_ui_enabled)
+        else:
+            self.assertFalse(client_customization.new_ui_enabled)

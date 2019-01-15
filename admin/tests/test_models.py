@@ -2,7 +2,7 @@ import datetime
 
 from django.test import TestCase
 
-from admin.models import Program
+from admin.models import Program, ClientCustomization
 
 
 class ProgramTests(TestCase):
@@ -19,3 +19,9 @@ class ProgramTests(TestCase):
         self.assertEqual(test_info.display_name, "Maggie")
         self.assertEqual(test_info.start_date, datetime.datetime(2014, 1, 1))
         self.assertEqual(test_info.end_date, datetime.datetime(2014, 12, 3))
+
+
+class AdminClientUITests(TestCase):
+    def test_new_ui_is_disabled_by_default(self):
+        client_customization = ClientCustomization.objects.create(client_id=100, identity_provider='')
+        self.assertFalse(client_customization.new_ui_enabled)
