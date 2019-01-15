@@ -172,8 +172,13 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cache')
 MEDIA_ROOT = ''
 ASSETS_ROOT = 'static/'
+ASSETS_ROOT_V2 = 'static_v2/'
 ASSETS_MANIFEST = False
 ASSETS_CACHE = False
+ASSETS_MODULES = [
+    'assets.assets',
+    'assets.assets_v2',
+]
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "static/gen"),
