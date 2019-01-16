@@ -434,6 +434,5 @@ class TestCourseApi(TestCase):
 
         result = get_course_completions(
             username='edx',
-            extra_fields=None
         )
         self.assertEqual(result, 'by_course')

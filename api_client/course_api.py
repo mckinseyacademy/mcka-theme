@@ -560,6 +560,8 @@ def get_course_completions(
         course_path = '{}/'.format(course_id)
     else:
         api_params.update(request_data)
+        if api_params.get('requested_fields'):
+            api_params['requested_fields'] = ','.join(api_params['requested_fields'])
 
     url = '{api_base}/{course_completion_api}/{course_path}?{params}'.format(
         api_base=settings.API_SERVER_ADDRESS,
@@ -571,7 +573,7 @@ def get_course_completions(
     if search_participants:
         if not user_ids:
             return {}
-        response = edx_oauth2_session.get(url)
+        response = edx_oauth2_session.post(url, json=request_data)
         data = response.json()
         completions = data['results']
         return group_completions_by_user(
