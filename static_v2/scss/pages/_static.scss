@@ -1,0 +1,39 @@
+.static-page{
+  color: $black;
+  .style-2{
+    font-size: 1rem;
+    font-weight: 600;
+    @extend .mt-4;
+    @extend .mb-2;
+  }
+  h1, h4 {
+    font-size: 1.7rem;
+    @extend .mb-4;
+  }
+  p{
+    @extend .mb-2;
+  }
+  .accordion{
+    a{
+      cursor: pointer;
+      display: block;
+      font-size: 1rem;
+      padding: 0;
+      color: $secondary;
+      @extend .mb-1;
+      &:hover{
+        color: $secondary;
+      }
+    }
+    .collapse{
+      @extend .mb-3;
+    }
+  }
+  &.FAQ {
+    .style-2{
+      text-transform: uppercase;
+      @extend .mb-3;
+      font-size: 0.75rem;
+    }
+  }
+}

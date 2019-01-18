@@ -1,0 +1,75 @@
+footer{
+  background-color: $bg-login-footer;
+  font-size: 0.75rem;
+  line-height: 60px;
+  min-height: 60px;
+  margin-top: 5rem;
+  .copyright{
+    color: $gray;
+  }
+  ul {
+    li {
+      a.nav-link {
+        color: $white;
+        display: inline-block;
+        padding: 0 0.6rem;
+        position: relative;
+        @media screen and (max-width: 992px) {
+          padding: 0 0.4rem;
+        }
+        &:before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 24px;
+          height: 10px;
+          width: 1px;
+          background-color: $white;
+        }
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+      &:first-child {
+        a {
+          &:before {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+
+  /* On screens that are 992px or less, set the background color to blue */
+  @media screen and (max-width: 992px) {
+    //.copyright,.justify-content-end {
+    //  text-align: center;
+    //  justify-content: center !important;
+    //}
+    [class*="col-"] {
+      padding: 0
+    }
+  }
+  @media screen and (max-width: 767px) {
+    [class*="col-"] {
+      padding:0  15px;
+      text-align: center;
+    }
+  }
+}
+
+@include media-breakpoint-up(xs){
+  footer{
+    line-height: 25px;
+    padding: 15px 0;
+    ul{
+      li{
+        a.nav-link{
+          &:before{
+            top: 8px;
+          }
+        }
+      }
+    }
+  }
+}

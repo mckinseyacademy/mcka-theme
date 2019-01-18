@@ -1,0 +1,60 @@
+.modal {
+  &.reset-password {
+    .form-group + .form-group{ margin-top: 18px !important;}
+    .form-group{
+      small{
+        font-size: 84.6% !important;
+        color: #9D9D9D;
+      }
+    }
+    .modal-dialog {
+      max-width: 600px;
+      margin: 10.35rem auto;
+    }
+    .col {
+      padding: 0;
+    }
+    input:not([type='checkbox']) {
+      max-width: 294px;
+    }
+    .modal-content {
+      padding: 50px;
+    }
+
+    .modal-header {
+      .modal-title {
+        margin: 0 0 25px;
+        color: $black;
+      }
+      p {
+        margin: 0 0 25px;
+        color: $black;
+      }
+      .close {
+        margin: -2.6rem -1.9rem -1rem auto;
+      }
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+      padding: 0;
+    }
+
+  }
+
+  &.noTopBorder {
+    .modal-dialog {
+      border-top: none;
+    }
+  }
+}
+
+.modal-dialog {
+  .modal-content {
+    border-radius: 0;
+    .modal-header {
+      border: 0;
+    }
+  }
+}

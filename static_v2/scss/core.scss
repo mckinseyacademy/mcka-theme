@@ -1,2 +1,6 @@
-@import 'bootstrap/bootstrap';
+// That is compiled all the sass (bootstrap & local) at once:
 
+//Import all Screens
+
+@import "bootstrap/bootstrap";
+@import 'custom-styles';

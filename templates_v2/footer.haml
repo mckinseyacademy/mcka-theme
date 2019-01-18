@@ -1,0 +1,19 @@
+- load i18n
+%footer
+  .container
+    .row
+      .col-md-6.copyright
+        {% trans "Copyright &#9400; 2019 McKinsey  Company. All Rights Reserved." %}
+      .col-md-6
+        %ul.nav.justify-content-end
+          %li.nav-item
+            %a.nav-link{:href => "https://www.mckinsey.com/"} McKinsey.com
+          %li.nav-item
+            %a.nav-link{:href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients"}
+              {% trans "About" %}
+          %li.nav-item
+            %a.nav-link{:href => "/terms"}
+              {% trans "Terms of Service" %}
+          %li.nav-item
+            %a.nav-link{:href => "/privacy"}
+              {% trans "Privacy Policy" %}

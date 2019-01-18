@@ -1,0 +1,47 @@
+.form-check-label{
+  input[type="checkbox"]{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    &:checked{
+      ~ .checkmark{
+        background-color: $black;
+        &:after{
+          display: block;
+        }
+      }
+    }
+  }
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 16px;
+    width: 16px;
+    border-radius: 3px;
+    border: 2px solid $black;
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 3px;
+      top: 0;
+      width: 5px;
+      height: 10px;
+      border: solid $white;
+      border-width: 0 1px 1px 0;
+      -webkit-transform: rotate(43deg);
+      -ms-transform: rotate(43deg);
+      transform: rotate(43deg);
+    }
+  }
+  &:hover{
+    input{
+      ~ .checkmark{
+        background-color: $light-gray;
+      }
+    }
+  }
+}

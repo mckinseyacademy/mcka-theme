@@ -1,0 +1,20 @@
+main{
+  min-height: calc(100vh - 200px);
+  margin-top: 30px;
+}
+
+@include media-breakpoint-up(lg){
+  .container{
+    max-width: 1244px;
+  }
+}
+
+.border-top-main{
+  border-top: 6px solid $primary;
+}
+
+@include media-breakpoint-down(xs){
+  main{
+    margin-top: 20px;
+  }
+}

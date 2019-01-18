@@ -13,7 +13,7 @@ USE_I18N = True
 
 ALLOWED_HOSTS = ['apros.mcka.local']
 
-TEMPLATE_TEST_DIR = os.path.join(BASE_DIR, 'templates')
-TEMPLATE_NEW_TEST_DIR = os.path.join(BASE_DIR, 'tests/templates_v2')
+TEMPLATE_TEST_DIR = os.path.join(BASE_DIR, 'templates')   # noqa: F405
+TEMPLATE_NEW_TEST_DIR = os.path.join(BASE_DIR, 'tests/templates_v2')  # noqa: F405
 
 TEMPLATE_NEW_DIRS = [TEMPLATE_NEW_TEST_DIR]

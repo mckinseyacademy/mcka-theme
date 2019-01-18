@@ -1,0 +1,20 @@
+.popover{
+  background-color: $dark-gray;
+  border: 0;
+  margin-top: 10px;
+  padding: 0 10px 8px;
+  border-radius: 2px;
+  color: $white;
+  position: relative;
+  &:before{
+    width: 12px;
+    height: 6px;
+    position: absolute;
+    content: "";
+    top: -5px;
+    left: calc(50% - 6px);
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid $dark-gray;
+  }
+}

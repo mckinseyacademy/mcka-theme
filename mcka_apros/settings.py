@@ -182,6 +182,7 @@ ASSETS_MODULES = [
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "static/gen"),
+    os.path.join(BASE_DIR, "static_v2"),
 )
 
 BASE_CERTIFICATE_TEMPLATE_ASSET_PATH = 'certificates/template_assets/'

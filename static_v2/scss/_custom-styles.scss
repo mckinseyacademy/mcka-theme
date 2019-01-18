@@ -1,0 +1,21 @@
+// That is compiled all the sass (bootstrap & local) at once:
+
+//Import all Screens
+
+@import "bootstrap/bootstrap-grid";
+@import "common/variables";
+@import "bootstrap/mixins";
+@import "common/type";
+@import "common/popover";
+@import "common/buttons";
+@import "common/form";
+@import "common/reset";
+@import "common/modal";
+@import "common/header";
+@import "common/layout";
+@import "common/footer";
+@import "common/checkbox";
+
+@import "pages/login";
+@import "pages/activation";
+@import "pages/static";

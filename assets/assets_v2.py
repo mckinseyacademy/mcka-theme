@@ -12,6 +12,14 @@ def get_assets_v2_path(relative_path):
     return str(os.path.join(V2_ROOT, relative_path))
 
 
+# Javascript squashing
+JS = Bundle(
+    get_assets_v2_path('js/custom.js'),
+    filters='jsmin',
+    output='gen/packed_v2.js'
+)
+register('js_all_v2', JS)
+
 # CSS compilation and squashing
 # Core CSS
 

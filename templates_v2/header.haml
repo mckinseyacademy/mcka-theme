@@ -1,0 +1,35 @@
+- load i18n
+- load cache
+- load template_helpers
+- get_current_language as LANGUAGE_CODE
+- get_available_languages as LANGUAGES
+
+%header
+  .container
+    .row
+      .col
+        .logo
+          %a.navbar-brand{:href => "/"}
+            - if request.path == "/"
+              %img{:src => "static/image/McKA-logo-white@2x.png", :width => "160"}
+            - else
+              %img{:src => "static/image/McKA-logo-blue@2x.png", :width => "160"}
+
+          - if use_i18n
+            .language-selector
+              %i.material-icons language
+              .dropdown
+                %button#dropdownMenuButton.dropdown-toggle.border-0{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
+                  {{ LANGUAGE_CODE }}
+                .dropdown-menu{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
+                  - for language_code, language_name in LANGUAGES
+                    - if LANGUAGE_CODE == language_code
+                      %a.dropdown-item.selected
+                        {{language_name}}
+                    - else
+                      %a.dropdown-item{href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                        -if language_code == 'en' or language_code == 'nl'
+                          - get_language_info for language_code as lang
+                          {{lang.name}}
+                        -else
+                          {{language_name}}
