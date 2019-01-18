@@ -470,6 +470,8 @@ class ClientCustomizationTests(TestCase, ApplyPatchMixin):
         self.admin_user.is_mcka_admin = is_mcka_admin
         request.user = self.admin_user
         request.session = self.mock_session
+        update_mobile_customization = self.apply_patch("admin.views.update_mobile_client_detail_customization")
+        update_mobile_customization.return_value = None
         response = views.client_detail_customization(request, self.client.id)
         client_customization.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
