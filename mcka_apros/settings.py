@@ -459,6 +459,8 @@ LOGIN_BUTTON_FOR_MOBILE_ENABLED = True
 COURSE_RUN_PARTICIPANTS_TRESHOLD = 4000
 DEDICATED_COURSE_RUN_PERSON = "staff@mckinseyacademy.com"
 
+TEMPLATE_NEW_DIRS = [os.path.join(BASE_DIR, 'templates_v2')]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -480,8 +482,8 @@ TEMPLATES = [
                 'lib.context_processors.set_mobile_app_id',
             ],
             'loaders': [
-                ('django.template.loaders.cached.Loader', [
-                    'hamlpy.template.loaders.HamlPyFilesystemLoader',
+                ('mcka_apros.templates_loaders.CachedLoader', [
+                    'mcka_apros.templates_loaders.CustomHamlPyFilesystemLoader',
                     'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
                     'django.template.loaders.filesystem.Loader',
                     'django.template.loaders.app_directories.Loader',
