@@ -50,7 +50,7 @@ from accounts.controller import is_future_start, save_new_client_image, send_pas
 from accounts.models import UserActivation, PublicRegistrationRequest, RemoteUser, UserPasswordReset
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
-    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
+    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_images, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
     process_manager_email, parse_participant_profile_csv
 from admin.models import AdminTask
@@ -86,6 +86,7 @@ from license import controller as license_controller
 from main.models import CuratedContentItem
 from mcka_apros.settings import COHORT_FLAG_NAMESPACE, COHORT_FLAG_SWITCH_NAME, DELETION_FLAG_NAMESPACE, \
     DELETION_FLAG_SWITCH_NAME
+from public_api.models import ApiToken
 from util.csv_helpers import csv_file_response, UnicodeWriter
 from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.s3_helpers import store_file
@@ -1749,7 +1750,7 @@ def remove_client_branding_image(request, client_id):
             response.status_code = 500
             return response
     else:
-        remove_desktop_branding_image(img_type, client_id)
+        remove_desktop_branding_images(img_type, client_id)
     return HttpResponse(json.dumps({'message': 'Successfully deleted'}), content_type='application/json')
 
 
@@ -5251,6 +5252,29 @@ class CompanyDetailsView(APIView):
     def delete(self, _request, company_id):
         if not _deletion_flag():
             return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        # We'd like to remove Apros data first to be sure that we don't have any leftovers if the company had been
+        # deleted via LMS directly. Then we can raise 404 without any further concerns.
+        remove_mobile_app_themes(company_id)
+
+        client_models = (
+            AccessKey,
+            ClientNavLinks,
+            ClientCustomization,
+            BrandingSettings,
+            LearnerDashboard,
+            ApiToken,
+        )
+        for model in client_models:
+            model.objects.filter(client_id=company_id).delete()
+
+        company_models = (
+            CompanyInvoicingDetails,
+            CompanyContact,
+            DashboardAdminQuickFilter,
+        )
+        for model in company_models:
+            model.objects.filter(company_id=company_id).delete()
 
         try:
             organization_api.delete_organization(company_id)

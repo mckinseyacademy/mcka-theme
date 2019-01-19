@@ -138,6 +138,23 @@ def update_mobile_app_theme(mobile_app_theme_id, data, mobile_image_upload=None)
 
 
 @api_error_protect
+def remove_mobile_app_theme(mobile_app_theme_id, remove=True):
+    """
+    Remove mobile app theme and remove its images.
+    Set `remove=false` to deactivate it instead of removing.
+    """
+    params = {'remove': remove}
+    url = '{}/{}/themes/{}?'.format(
+        settings.API_SERVER_ADDRESS,
+        MOBILE_APP_API,
+        mobile_app_theme_id,
+        urlencode(params),
+    )
+    response = get_oauth2_session().delete(url)
+    return response
+
+
+@api_error_protect
 def remove_mobile_app_theme_image(mobile_app_theme_id, image_type):
     """
     Removes mobile app theme images depending upon the type

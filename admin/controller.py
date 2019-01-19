@@ -50,7 +50,9 @@ from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.group_api import TAG_GROUPS
 from api_client.import_api import import_participant
-from api_client.mobileapp_api import create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme
+from api_client.mobileapp_api import (
+    create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme, remove_mobile_app_theme
+)
 from api_client.organization_api import get_organization_fields
 from api_client.project_models import Project
 from api_client.user_api import USER_ROLES, update_user_company_field_values, get_company_fields_value_for_user
@@ -2249,8 +2251,10 @@ def crop_image(request, img_name):
     return image_io
 
 
-def remove_desktop_branding_image(img_type, client_id):
-    '''Removes the global, desktop logo and Background image '''
+def remove_desktop_branding_images(img_type, client_id):
+    """
+    Remove the global, desktop logo and Background image.
+    """
     customization = ClientCustomization.objects.get(client_id=client_id)
     image_url = getattr(customization, img_type).replace('/accounts/', '')
     if image_url and default_storage.exists(image_url):
@@ -2304,6 +2308,19 @@ def update_mobile_client_detail_customization(request, client_id):
         errors = str(mobile_branding_form.errors)
         cleantext = BeautifulSoup(errors, "html").text
         return cleantext
+
+
+def remove_mobile_app_themes(client_id):
+    """
+    Remove all mobile clients theme images.
+    """
+    mobile_app_themes = get_mobile_app_themes(client_id)
+    for theme in mobile_app_themes:
+        try:
+            remove_mobile_app_theme(theme['id'])
+        except ApiError:
+            # Getting and removing theme is not atomic, so it is possible that it has already been deleted.
+            pass
 
 
 def create_roles_list(request):

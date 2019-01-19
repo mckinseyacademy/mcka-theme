@@ -15,19 +15,11 @@ from rest_framework.test import APIRequestFactory, force_authenticate
 from waffle.testutils import override_switch
 
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin, make_course
-from accounts.tests.utils import make_user, make_company
+from accounts.tests.utils import ApplyPatchMixin, make_company, make_course, make_user, make_side_effect_raise_api_error
 from admin import views
 from admin.models import (
     Client as ClientModel,
-    AccessKey,
-    ClientNavLinks,
     ClientCustomization,
-    BrandingSettings,
-    LearnerDashboard,
-    CompanyInvoicingDetails,
-    CompanyContact,
-    DashboardAdminQuickFilter,
     AdminTask,
 )
 from admin.tests.utils import get_deletion_waffle_switch
@@ -643,6 +635,7 @@ class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
         self.assertEqual(response.status_code, 403)
 
     @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('admin.controller.get_mobile_app_themes', lambda _: [])
     @patch('api_client.organization_api.delete_organization', side_effect=Http404)
     def test_delete_nonexistent_company(self, delete_company_mock):
         """
@@ -655,12 +648,53 @@ class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
 
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('api_client.organization_api.delete_organization')
-    def test_delete_company(self, mock):
+    @patch('admin.controller.remove_mobile_app_theme', side_effect=make_side_effect_raise_api_error(404))
+    @patch('admin.controller.get_mobile_app_themes')
+    def test_delete_company_race_condition(self, get_theme_mock, *mocks):
+        """
+        Test deleting company with the race condition during removing mobile app theme.
+        """
+        get_theme_mock.return_value = [{'id': self.mock_id}]
+
+        response = self.api.delete(self.request, self.mock_id)
+        for mock in mocks:
+            self.assertEqual(mock.call_count, 1)
+
+        self.assertEqual(response.status_code, 204)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('admin.controller.remove_mobile_app_theme')
+    @patch('api_client.organization_api.delete_organization')
+    @patch('admin.controller.get_mobile_app_themes')
+    def test_delete_company(self, get_theme_mock, *mocks):
         """
         Test deleting company as admin.
         """
+        get_theme_mock.return_value = [{'id': self.mock_id}]
+
         response = self.api.delete(self.request, self.mock_id)
-        self.assertEqual(mock.call_count, 1)
+        for mock in mocks:
+            self.assertEqual(mock.call_count, 1)
+
+        client_models = (
+            AccessKey,
+            ClientNavLinks,
+            ClientCustomization,
+            BrandingSettings,
+            LearnerDashboard,
+            ApiToken,
+        )
+        for model in client_models:
+            self.assertFalse(model.objects.filter(client_id=self.mock_id))
+
+        company_models = (
+            CompanyInvoicingDetails,
+            CompanyContact,
+            DashboardAdminQuickFilter,
+        )
+        for model in company_models:
+            self.assertFalse(model.objects.filter(company_id=self.mock_id))
+
         self.assertEqual(response.status_code, 204)
 
 
