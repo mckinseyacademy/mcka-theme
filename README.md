@@ -1,4 +1,6 @@
-mcka-apros
+
+
+mcka-apros   [![codecov](https://codecov.io/gh/mckinseyacademy/mcka_apros/branch/development/graph/badge.svg?token=bN22sHuE49)](https://codecov.io/gh/mckinseyacademy/mcka_apros)
 ==========
 
 Mckinsey Academy custom front end application
