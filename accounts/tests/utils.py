@@ -27,8 +27,8 @@ class ApplyPatchMixin(object):
         return mock
 
 
-def make_user(username='johndoe', email='john@doe.org', password='password'):
-    return RemoteUser.objects.create_user(username=username, email=email, password=password)
+def make_user(username='johndoe', email='john@doe.org', password='password', id=None):
+    return RemoteUser.objects.create_user(username=username, email=email, password=password, id=id)
 
 
 def make_company(org_id, display_name='company_name'):
