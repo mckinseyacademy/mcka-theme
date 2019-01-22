@@ -1929,8 +1929,7 @@ class CourseParticipantStats(object):
         self.participants_engagement_lookup = None
         self.restrict_to_participants = None
         self._prefetched_completions = None
-        if restrict_to_participants is not None:
-            self.restrict_to_participants = {participant.username for participant in restrict_to_participants}
+        self.restrict_to_participants = restrict_to_participants
 
     def get_participants_data(self, request_params):
         """
@@ -1960,13 +1959,24 @@ class CourseParticipantStats(object):
         """
         Calls course api to get the stats
         """
-        if self.request_params.get('prefetched_participants'):
-            course_participants = self.request_params.get('prefetched_participants')
-        else:
-            course_participants = course_api.get_course_details_users(self.course_id, self.request_params)
-
+        participants_params = self.request_params.copy()
         if self.restrict_to_participants is not None:
-            course_participants = filter_course_participants(course_participants, self.restrict_to_participants)
+            # TODO: This should be batched to query fixed-sized groups of users. If too many users
+            # are provided, the query would fail because the URL will be too long.  I think this
+            # happens around 1000-4000 characters. For now, we are ignoring the later users to
+            # prevent hard failures, but if a manager ever has > 100 reports, they will only see
+            # the first 100. (For now, this parameter seems to only be used in the manager
+            # dashboard).
+            participants_params['users'] = ','.join(str(user.id) for user in self.restrict_to_participants[:100])
+
+        if participants_params.get('prefetched_participants') and 'users' not in participants_params:
+            # This optimization cannot be combined with self.restrict_to_participants.
+            course_participants = self.request_params.get('prefetched_participants')
+        elif participants_params.get('users') == '':
+            # The API would return all results here.  Shortcut the network call and create an empty result.
+            course_participants = {'results': [], 'next': '', 'count': 0, 'page': 1}
+        else:
+            course_participants = course_api.get_course_details_users(self.course_id, participants_params)
 
         organization_id = self.request_params.get('organizations', None)
         if organization_id:
@@ -2218,19 +2228,6 @@ class CourseParticipantStats(object):
             'progress': '{}%'.format(participant_data.get('progress')),
             'custom_last_login': last_login
         })
-
-
-def filter_course_participants(course_participants, limit_participants):
-    """
-    Returns only those course participants also found in the limited list of participants.
-    """
-    updates = {
-        'results': [participant for participant in course_participants.get('results', [])
-                    if participant.get('username') in limit_participants
-                    ]
-    }
-    updates['count'] = len(updates['results'])
-    return dict(course_participants, **updates)
 
 
 def remove_specific_user_roles_of_other_companies(course_participants, organization_id):

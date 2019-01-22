@@ -267,7 +267,8 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         """
         super(CourseParticipantsStatsMixin, self).setUp()
         self.course = make_course(course_id='course_1', display_name='Course One')
-        self.students = [make_user(username="student{}".format(idx),
+        self.students = [make_user(id=idx,
+                                   username="student{}".format(idx),
                                    email="student{}@example.com".format(idx)) for idx in range(4)]
         self.admin_user = make_user(username="mcka_admin", email="mcka_admin@example.com")
         self.admin_user.is_internal_admin = True
@@ -297,7 +298,7 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         lib_auth = self.apply_patch("lib.authorization.is_user_in_permission_group")
         lib_auth.side_effect = admin_is_in_all_groups
 
-    def patch_course_users(self, students):
+    def patch_course_users(self, students, users=None):
         """
         Patch the given api method with course user data.
         """
@@ -312,6 +313,11 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
             ],
             'next': ''
         }
+        # Note: if you pass an empty list of users, this will return all users.  This
+        # matches the behavior of the real API, so apros has to work around this case
+        # by not making the api call if no users are requested.
+        if users:
+            api_data['results'] = [student for student in api_data['results'] if student['id'] in users]
         api_data['count'] = len(api_data['results'])
         api_client = self.apply_patch('admin.controller.course_api')
         api_client.get_course_details_users.return_value = api_data
@@ -326,7 +332,7 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         """
         expected_data = {
             'is_active': True,
-            'id': None,  # for some reason, these demo users don't have IDs
+            'id': idx,
             'email': self.students[idx].email,
             'username': self.students[idx].username,
             'activation_link': "",

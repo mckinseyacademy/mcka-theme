@@ -18,8 +18,6 @@ class ManagerReportsCourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase)
         Patch the required APIs
         """
         super(ManagerReportsCourseDetailsApiTest, self).setUp()
-        # Enroll only students 0-3, leaving student 4 unenrolled.
-        self.patch_course_users(self.students[0:3])
 
     def patch_manager_reports(self, direct_reports):
         """
@@ -46,6 +44,8 @@ class ManagerReportsCourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase)
         """
         Only the user's direct reports should be returned.
         """
+        # Enroll only students 0-3, leaving student 4 unenrolled.
+        self.patch_course_users(self.students[0:3], direct_reports)
         self.patch_manager_reports([self.students[idx] for idx in direct_reports])
         course_detail_url = reverse('manager_reports_course_details_api',
                                     kwargs={'course_id': unicode(self.course.course_id)})

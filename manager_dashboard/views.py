@@ -47,12 +47,13 @@ class ManagerReportsCourseDetailsApi(APIView):
         Perform the request, assuming the current user is the manager fetching the report.
         """
         direct_reports = user_api.get_reports_for_manager(request.user.email)
+        request_params = request.GET.copy()
         if course_id:
             course_participants_stats = CourseParticipantStats(
                 course_id=course_id,
                 restrict_to_participants=direct_reports,
                 base_url=request.build_absolute_uri())
-            course_participants = course_participants_stats.get_participants_data(request.GET)
+            course_participants = course_participants_stats.get_participants_data(request_params)
             return Response(course_participants)
         else:
             return direct_reports
@@ -74,7 +75,6 @@ class StudentCourseProgressDetailsApi(APIView):
         """
         # check if the logged in user is the manager of the given student
         # if so, proceed with the data
-
         edx_oauth2_session = get_oauth2_session()
         user_progress = get_course_completions(course_id, username,
                                                extra_fields='chapter',
