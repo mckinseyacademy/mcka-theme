@@ -1,0 +1,54 @@
+- extends "layout.haml"
+- load staticfiles
+- load i18n
+
+- block page_title
+  %title
+    = program.display_name
+    {% trans " | Courses | McKinsey Academy" %}
+
+- block content
+  - include "courses/content_page/course_statistics.haml"
+  %hr
+  - include "courses/content_page/course_menu.haml"
+  %hr
+  - if course.ended
+    - include "courses/content_page/course_final_grade.haml"
+  -else
+    - if discover_flag
+      - include "courses/content_page/course_discover.haml"
+      %hr
+      %article.course-quote
+        %blockquote
+          - if quote.body
+            = quote.body
+        .attribution
+          - if quote.thumbnail_url
+            %img{"src": "#{quote.thumbnail_url}"}
+          .person-name
+            - if quote.byline
+              = quote.byline
+          .person-title
+            - if quote.byline_title
+              = quote.byline_title
+
+  #beta_visualizations.reveal-modal.large{'data-reveal': ''}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %p {% trans "This is the McKinsey Academy Beta and we are happy to have you participate ahead of the official public launch!" %}
+    %p {% trans "As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks." %}
+    .screencap
+      %img{'src': '/static/image/McKA_home_progress_v12.png'}
+
+
+
+  - include "marketing/app_link_popup.haml"
+
+- block js_snippets
+  %script{src: "{% static 'js/app_link_popup.js' %}"}
+
+- block heap_events
+  %script
+   heap.identify('{{user.id}}');
+   heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
+   heap.track('COURSE_VISITED', {COURSE_ID: '{{course.id}}', COURSE_NAME: '{{course.name}}', USER_ID: '{{user.id}}'});

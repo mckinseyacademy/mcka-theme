@@ -672,3 +672,10 @@ FOREIGN_AND_NORMAL_CHARACTERS_PATTERN = \
 COOKIES_YEARLY_EXPIRY_TIME = datetime.datetime.utcnow() + datetime.timedelta(days=365)
 
 MAX_IMPORT_JOB_THREAD_POOL_SIZE = 4
+
+
+# Rendering svg static files while running Django development server
+import mimetypes  # noqa: E402
+
+mimetypes.add_type("image/svg+xml", ".svg", True)
+mimetypes.add_type("image/svg+xml", ".svgz", True)

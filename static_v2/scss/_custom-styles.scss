@@ -5,6 +5,7 @@
 @import "bootstrap/bootstrap-grid";
 @import "common/variables";
 @import "bootstrap/mixins";
+@import "common/mixins";
 @import "common/type";
 @import "common/popover";
 @import "common/buttons";
@@ -19,3 +20,4 @@
 @import "pages/login";
 @import "pages/activation";
 @import "pages/static";
+@import "pages/courses";

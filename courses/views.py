@@ -1515,6 +1515,16 @@ def get_user_complete_gradebook_json(request, course_id):
 
 
 @login_required
+def courses(request):
+    """
+    renders user courses menu on click from frontend
+    """
+    programs = get_program_menu_list(request)
+    data = dict(programs=programs)
+    return render(request, 'courses/courses.haml', data)
+
+
+@login_required
 def courses_menu(request):
     """
     renders user courses menu on click from frontend

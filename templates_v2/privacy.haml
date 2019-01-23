@@ -1,0 +1,135 @@
+- extends "layout.haml"
+- load i18n
+
+- block content
+  .container
+    .row.justify-content-center
+      .col-lg-8.col-md-12.border-top-main.bg-white.p-5.static-page
+        %h1 {% trans "Privacy Policy" %}
+        %p
+          {% trans "This Privacy Policy was last updated on November 13, 2017" %}
+        %p
+          {% blocktrans %}McKinsey & Company and its subsidiaries and affiliates (collectively, “McKinsey”, “us” or “we”) understands that your privacy is important to you. We may process your personal data and we are committed to respecting your privacy and protecting your personal data, which is any information that is capable of identifying you as an individual person, collected in connection with McKinsey Academy.{% endblocktrans %}
+        %p
+          {% blocktrans %}“McKinsey Academy” refers collectively to any website, including{% endblocktrans %}
+          %a{href: '/'}
+            http://www.mckinseyacademy.com
+          {% blocktrans %} (the “Sites”), and any mobile device or tablet application or similar software (each a “Mobile Offering”) that is provided by us and that links to this Privacy Policy, and any related courses, content, programs, services, materials or offerings provided by us either through or in connection with a Site, a Mobile Offering or directly to you. This Privacy Policy describes how we handle and protect your personal data in connection with McKinsey Academy. Please see our{% endblocktrans %}
+          %a{href: '/terms'}
+            {% trans "Terms of Use" %}
+          {% blocktrans %}(the “Terms”) for more information about our online terms and policies that apply to your use of McKinsey Academy.{% endblocktrans %}
+        %p.style-2 {% trans "Information we collect" %}
+        %p
+          {% trans "McKinsey collects personal data when you register, access or use McKinsey Academy or McKinsey Academy Content (as such term is defined in the Terms), whether through a Site or Mobile Offering or otherwise, including in connection with your use of course content, submission of User Content (as such term is defined in the Terms) and participation in user posting areas (such as bulletin boards, discussion forums and surveys)." %}
+        %p
+          {% trans "The personal data collected may consist of information that you provide, such as your name, e-mail address, and other User Account Information (as such term is defined in the Terms). In addition, McKinsey Academy may (a) receive personal data about you directly from your Sponsoring Organization (as such term is defined in the Terms) or third parties that you authorize to share with us; and (b) collect and/or create personal data related to your use of and participation in McKinsey Academy, including Participation Data (as such term is defined below)." %}
+        %p
+          {% trans "We may also automatically collect information about the devices you use to interact with McKinsey Academy. The information we automatically collect may include IP address, device identifier, web browser and browsing, viewing or other usage information or data connected to your use of McKinsey Academy such as click stream data, HTTP protocol elements, and the status of cookies placed on your computer (as described below). We may also automatically collect information about how you use McKinsey Academy, such as what you have searched for, viewed and use. The information automatically collected may be associated with your personal data, and in some instances may itself constitute personal data." %}
+        %p.style-2 {% trans "Use of information" %}
+        %p
+          {% trans "The personal data we collect may be used where McKinsey has a legitimate interest in or other legal basis for processing such information. In some situations, the collection or processing of personal data may be required for the operation of McKinsey Academy, including enabling you to access courses and McKinsey Academy Content. McKinsey uses your personal data to fulfill your requests for information, process your requests to participate in conferences and events, personalize content that you view or receive through McKinsey Academy, evaluate and improve our services, distribute newsletters and alerts to you, analyze McKinsey Academy performance and functioning, publish or process your User Content, prevent fraud, enforce the Terms, comply with all applicable laws and corporate reporting obligations, enforce and comply with McKinsey’s agreements, and accomplish other purposes you may initiate or request. We may keep any of your personal data on file and use it to contact you." %}
+        %p
+          {% trans "McKinsey may use first and third party cookies to manage our Sites and our services and collect analytics about how you use them. McKinsey Academy follows McKinsey’s" %}
+          %a{href: '/cookie-policy'}
+            {% trans "Cookie Policy" %}
+          {% blocktrans %}, but please note that references in the posted Cookie Policy to “our privacy policy” and “our terms of use” and our or the “Site” refer, respectively, to this Privacy Policy, the Terms, and McKinsey Academy.{% endblocktrans %}
+        %p
+          {% trans "We may also use your personal data (including your User Account Information and Participation Data), as well as your User Content, to (a) verify your identity and your eligibility to access McKinsey Academy Content or use or participate in McKinsey Academy; (b) communicate with you about McKinsey Academy, including your participation in any related courses or other services offered by us; (c) allow other users to communicate with you about McKinsey Academy, including your participation in any related courses or other services offered by us; (d) administer McKinsey Academy, including administering courses and services in which you participate, providing user support, course progress and assessment grading, and integrating McKinsey Academy, including the Sites and Mobile Offerings, with platforms, content and services provided by third parties as part of the McKinsey Academy experience; (e) provide information to your Sponsoring Organization about your participation in McKinsey Academy, as described in more detail below; and (f) develop and improve, and contact you about McKinsey Academy, including to solicit your feedback and to identify other courses, services or offerings provided by us that may be of interest to you. If you prefer not to receive non-essential communications from us about McKinsey Academy, including information about future courses, services or offerings, please contact us at the address listed below in the Contact Us section of this Privacy Policy." %}
+        %p
+          {% trans "Your personal data may also be used, both by us and by our authorized third party service providers, to collect, discover, and prepare aggregate statistical and volume information and analyses, and other similar data, including with respect to the number, characteristics, behavior, and performance of McKinsey Academy, users of and visitors to the Sites and Mobile Offerings or other components of McKinsey Academy, and users of McKinsey Academy Content (collectively, “Aggregate Information”). We may use, and permit our third party service providers to use, this Aggregate Information in order to administer McKinsey Academy, for research purposes and to further develop, improve and promote McKinsey Academy, or for any other purpose provided that such use would not be reasonably likely to result in your identification and is not prohibited by applicable law. We and/or our third party service providers may use persistent cookies and similar tools and technologies to help us collect and use such Aggregate Information, as well as to help us improve the visitor and user experience, and for any other purpose described in this Privacy Policy. We may retain all Aggregate Information, even if derived or developed from your User Account Information, User Content or personal data, indefinitely." %}
+        %p.style-2 {% trans "Sharing information with your Sponsoring Organization" %}
+        %p
+          {% trans "If you are participating in McKinsey Academy with the facilitation of a Sponsoring Organization (as such term is defined in the Terms), at the request of your Sponsoring Organization we may provide your Sponsoring Organization information about your activities and performance in connection with McKinsey Academy, which may include grades, evaluation, performance, critiques and other progress, usage and engagement data and metrics with respect to particular McKinsey Academy courses or services, some of which may constitute your personal data (collectively, “Participation Data”). McKinsey shall not be responsible or liable for the use of such information by your Sponsoring Organization, and such use shall be subject to your Sponsoring Organization’s policies (including privacy policies) applicable to you." %}
+        %p.style-2 {% trans "Data recipients and international data transfers" %}
+        %p
+          {% trans "Personal data collected or processed by McKinsey Academy may be transferred from time to time to McKinsey subsidiaries and affiliates and their personnel (including employees and contractors) across our global organization, as well as to third party service providers located throughout the world. Additionally, McKinsey Academy Content, as well as the Sites and Mobile Offerings, may be viewed, hosted and supported by McKinsey and its third party service providers anywhere in the world. Where required by law, we have put in place legal mechanisms designed to ensure adequate data protection of your personal data that is processed by McKinsey subsidiaries, affiliates, and third party service providers, including the transfer of your personal data to countries other than the one in which you reside. By using McKinsey Academy you voluntarily consent to such trans-border transfer and hosting of such information." %}
+        %p
+          {% trans "McKinsey shall not intentionally disclose or transfer (and shall take reasonable steps to prevent the unauthorized or accidental disclosure of) your personal data to third parties without your consent, whether for such third parties’ own marketing purposes or otherwise, except as described in this Privacy Policy. McKinsey may provide access to your personal data to third party service providers engaged by McKinsey to provide services related to McKinsey Academy; provided that such third party service providers will first agree to maintain the confidentiality of such information and provide an equivalent or greater level of data security as provided by McKinsey with respect to such personal data." %}
+        %p
+          {% trans "We also may share your personal data with third party service providers who perform services and functions on our behalf to support our interactions with you, including as described in this Privacy Policy and in Section 8 of the Terms. Except as otherwise described in this Privacy Policy and the Terms, these third party service providers are not permitted to use or disclose your personal data except as necessary to perform services on our behalf or to comply with legal requirements." %}
+        %p
+          {% trans "In addition, we may disclose information about you:" %}
+        %ul.info
+          %li
+            {% trans "If we are required to do so by law or legal process;" %}
+          %li
+            {% trans "To law enforcement authorities or other government officials;" %}
+          %li
+            {% blocktrans %}When we believe disclosure is necessary or appropriate to prevent physical harm
+            or financial loss or in connection with an investigation of suspected or actual illegal activity;{% endblocktrans %}
+          %li
+            {% trans "If disclosure is necessary to protect the vital interests of a person;" %}
+          %li
+            {% trans "To enforce our Terms;" %}
+          %li
+            {% trans "To protect our property, services and legal rights;" %}
+          %li
+            {% trans "To your Sponsoring Organization as described in this Privacy Policy;" %}
+          %li
+            {% blocktrans %}To prevent fraud against McKinsey, our subsidiaries and affiliates and business
+            partners;{% endblocktrans %}
+          %li
+            {% trans "To support auditing, compliance, and corporate governance functions; or" %}
+          %li
+            {% trans "To comply with any and all applicable laws." %}
+        %p
+          {% trans "We maintain processes designed to ensure that any processing of personal data by third party service providers is consistent with this Privacy Policy and protects the confidentiality, availability, and integrity of your personal data." %}
+        %p
+          {% trans "In addition, in the event of a re-organization, merger, sale, joint venture, assignment, or other transfer or disposition of all or any portion of our business, we may disclose or transfer your personal data." %}
+        %p.style-2 {% trans "Surveys" %}
+        %p
+          {% trans "If you participate in a survey in connection with McKinsey Academy, our research results may be reported as totals or in other aggregated form and no information about you as an individual respondent made public unless you otherwise agree in advance. However, we may be able to identify individual respondents by their email address, and may follow-up with individuals for additional information to improve the overall McKinsey Academy experience. If you prefer that we not follow up with you on your survey responses please contact us at the address listed below in the Contact Us section of this Privacy Policy." %}
+        %p.style-2 {% trans "User disclosure" %}
+        %p
+          {% trans "You should be aware that whenever you publicly disclose information, even to a limited group of recipients (for example, other users who are enrolled in the same McKinsey Academy course as you), that information could be collected and used by others. McKinsey is not responsible for any action or policies of any third parties, including other McKinsey Academy users, who collect information that users disclose to such third parties in connection with their use of McKinsey Academy." %}
+        %p.style-2 {% trans "Third-party websites and platforms" %}
+        %p
+          {% trans "McKinsey may provide links or directions to third party websites or information as a service to our users. If you use these links, you will leave McKinsey Academy. Such links do not constitute or imply an endorsement, sponsorship, or recommendation by McKinsey of the third party, the third party website, or the information contained therein, and McKinsey shall not be responsible or liable for your use thereof. Such use shall be subject to the terms of use and privacy policies applicable to those sites." %}
+        %p
+          {% trans "In addition, certain Mobile Offerings may be made available to you through a website, application or platform operated by a Mobile Platform Provider (as such term is defined in the Terms). By using such Mobile Offering you acknowledge and agree that the applicable Mobile Platform Provider(s), and third parties upon which they rely (for example your mobile communications provider), may receive or require access to certain of your personal data in order to enable you to access or use such websites, applications and/or platforms and the corresponding Mobile Offering. For instance, a Mobile Platform Provider may require you to share or to create user credentials, and as a result may be able to determine that you and/or your Sponsoring Organization are participating in McKinsey Academy and/or collect other usage or activity information about you. The use of such information by such Mobile Platform Provider(s) is subject to each Mobile Platform Provider’s own terms and privacy policies, which are not subject to our control and which we recommend you review carefully, and is not governed by our Terms or by this Privacy Policy." %}
+        %p
+          {% trans "In connection with our Mobile Offerings, McKinsey may use third party service providers to analyze non-personally identifiable user activity to fix errors, monitor usage, and improve the performance of the mobile applications. For example, McKinsey receives reports on some of our Mobile Offerings’ aggregate usage and browsing patterns, including information about the type of device used, content or features accessed, and other events occurring within the Mobile Offering. McKinsey also receives reports on certain errors occurring within Mobile Offerings. None of these third party service providers gathers information in a manner intended to identify any particular user personally." %}
+        %p.style-2 {% trans "Security" %}
+        %p
+          {% trans "McKinsey has implemented generally accepted standards of technology and operational security to protect personal data from loss, misuse, alteration, or destruction. Only authorized McKinsey personnel and third party service providers are provided access to personal data, and these personnel and service providers are required to treat this information as confidential. Despite these precautions, McKinsey, however, cannot guarantee that unauthorized persons will not obtain access to your personal data. If you become aware that any of your personal data provided in connection with McKinsey Academy (including your User Account Information) may have been compromised, please contact us immediately at the address listed below in the Contact Us section of this Privacy Policy." %}
+        %p.style-2 {% trans "Data retention policy" %}
+        %p
+          {% trans "McKinsey retains all personal data for the duration of the relevant business relationship or, where required, in accordance with our information management policies and schedules. If your request that we delete your personal data, McKinsey will make reasonable attempts to delete all instances of the information in their entirety. For requests for access, corrections, or deletion, please refer to the “YOUR RIGHTS” section of this Privacy Policy." %}
+        %p.style-2 {% trans "Children" %}
+        %p
+          {% trans "McKinsey Academy is not designed for or directed at children 13 years of age or younger, and McKinsey does not intentionally collect or maintain personal data about anyone under this age." %}
+        %p.style-2 {% trans "Your rights" %}
+        %p
+          {% trans "Where granted by local law, you may have the right to request access to the personal data that we have collected about you for the purposes of reviewing, modifying, or requesting deletion of the data. You may also have the right to request a copy of the personal data that we have collected about you. In certain circumstances, you may also request that we cease processing your personal data." %}
+        %p
+          {% trans "If you would like to make a request to access, review, or correct the personal data we have collected about you, or to discuss how we process your personal data, please contact us at" %}
+          %a{:href => 'mailto:support@mckinseyacademy.com'} support@mckinseyacademy.com.
+        %p
+          {% trans "To help protect your privacy and security, we will take reasonable steps to verify your identity, such as requiring you to provide or confirm your identity, including your User Account Information, before granting access to your personal data. We will make reasonable attempts to promptly investigate, comply with, or otherwise respond to your requests as may be required by applicable law. Different laws or circumstances may prevent us from providing access to your personal data or otherwise fully complying with your request depending upon the circumstances and the request; such as for example, where producing your information may reveal the identity of someone. Where you are participating in McKinsey Academy with the facilitation of your Sponsoring Organization, we may, including where required by applicable law or contract, notify your Sponsoring Organization of your request and coordinate with your Sponsoring Organization in responding to your request. We reserve the right to charge an appropriate fee for complying with your request where allowed by applicable law, and/or deny your requests where they may be manifestly unfounded, and/or excessive, or otherwise objectionable or unwarranted under applicable law." %}
+        %p
+          {% trans "In addition, and where granted by local law, you have the legal right to lodge a complaint with a competent data protection authority." %}
+        %p
+          {% trans "You may revoke your consent to the collection, processing and/or disclosure of your personal data at any time. To do so, please either follow the instructions on the relevant portion of McKinsey Academy where you have provided such personal data, if applicable, or contact us at the address provided at the bottom of this Privacy Policy. Please note that if you revoke your consent certain features of McKinsey Academy, including courses in which you are currently enrolled, may no longer be able to be made available to you as they rely on the collection, processing and/or disclosure of your personal data." %}
+        %p.style-2 {% trans "Your California privacy rights" %}
+        %p
+          {% blocktrans %}Pursuant to California Civil Code Section 1798.83(c)(2), McKinsey does not share your personal data with third parties for those third parties’ direct marketing use. {% endblocktrans %}
+        %p
+          {% trans "If you are a California resident under the age of 18, and a registered user of McKinsey Academy subject to this Privacy Policy, California Business and Professions Code Section 22581 permits you to request and obtain removal of content or information you have publicly posted. To make such a request, please send an email with a detailed description of the specific content or information to" %}
+          %a{:href => 'mailto:support@mckinseyacademy.com'} support@mckinseyacademy.com.
+          {% trans "Please be aware that such a request does not ensure complete or comprehensive removal of the content or information you have posted and that there may be circumstances in which the law does not require or allow removal even if requested." %}
+        %p.style-2 {% trans "Consent; changes to privacy policy" %}
+        %p
+          {% trans "By using McKinsey Academy, including the Site or any Mobile Offering, you consent to the collection, use, and storage of your information, including your personal data, by us in the manner described in this Privacy Policy, the Terms and as otherwise agreed with you. We reserve the right to make changes to this Privacy Policy from time to time. We will alert you to any such changes by updating this Privacy Policy as made available at" %}
+          %a{href: '/privacy'}
+            http://www.mckinseyacademy.com/privacy.
+          {% trans "If we make material changes to this Privacy Policy that increase our rights to use personal data that we have previously collected about you, we will obtain your consent either through an email to your registered email address or by prominently posting information about the changes in a manner accessible to McKinsey Academy users." %}
+        %p.style-2 {% trans "Contact our privacy department" %}
+        %p
+          {% trans "If you have any questions about our Privacy Policy or if you require any assistance in navigating or reading the Terms or this Privacy Policy, please contact us at:" %}
+        %ul.list-unstyled.address
+          %li {% trans "McKinsey Academy" %}
+          %li {% trans "c/o Marc Metakis" %}
+          %li {% trans "55 East 52nd Street" %}
+          %li {% trans "New York, NY 10022" %}
+          %li support@mckinseyacademy.com
+

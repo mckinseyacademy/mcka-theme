@@ -1,0 +1,129 @@
+- extends "layout.haml"
+- load i18n
+
+- block page_title
+  %title
+    {% trans "Demo registration | McKinsey Academy" %}
+
+  %meta{property: "og:title", content: "{% trans 'McKinsey Academy' %}" }
+
+- block header
+  - include 'accounts/login_header.haml'
+
+- load staticfiles
+- block content
+  #confirmation_registration.reveal-modal.small{'data-reveal': ''}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2 {% trans "Thank you for your request" %}
+    %p
+      {% trans "We will send you an email shortly." %}
+
+  #error_registration.reveal-modal.small{'data-reveal': ''}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2 {% trans "Registration Error!" %}
+    %p
+      {% blocktrans %}Sorry, there seems to be a problem with registering your account, please contact academy_info@mckinsey.com{% endblocktrans %}
+
+  #course_closed_registration.reveal-modal.small{'data-reveal': ''}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2 {% trans "Thank you for your request" %}
+    %p
+      {% trans "We will send you an email shortly." %}
+        %h4
+          {% trans "Create your McKinsey Academy Account" %}
+        %form.white
+          .form-group
+
+
+  .container.activation
+    .row.justify-content-center
+      .col-lg-7.col-md-12.form.border-top-main
+        - if request.is_IE8
+          %br
+          .outdated_browser
+            {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
+        - else
+          %h4 {% trans "Welcome to McKinsey Academy" %}
+          %form.white
+            .error
+              - if error
+                = error
+            - csrf_token
+            - for field in form
+              - if field.id_for_label != "id_current_role_other"
+                <label for="#{field.id_for_label}"> #{field.label}</label>
+              - if field.help_text and "options" in field.help_text
+                = field.help_text|safe
+              = field.errors
+              = field
+              - if field.help_text and "email" in field.help_text
+                = field.help_text|safe
+
+            %input.button.radius.small.registration_submit{type: "submit", value: "{% trans 'Register' %}", disabled: "True"}
+
+      .large-4.medium-4.columns{style:"border-left: none;"}
+        %h4 {% trans "WELCOME" %}
+        .sidebar
+          %p {% trans "Registering gives you access to course content and ensures that you receive updates and notifications from McKinsey Academy." %}
+          %br
+          %p {% trans "Following successful registration, you will receive an email granting access to the course." %}
+        %hr
+        %h4 {% trans "Need Help?" %}
+        .sidebar
+          %a{href: "/faq"}
+            {% trans "View our FAQ for answers to commonly asked questions." %}
+
+- block js_snippets
+  :javascript
+    $('form, select, input').on('keyup change', function(e) {
+      $('.registration_submit').attr('disabled',false);
+    });
+    var $current_role_other = $("#id_current_role_other");
+    $(window).on( "load", function() {
+      toggle_field();
+      show_popup_on_registration("{{registration_status}}");
+      adjust_messages();
+    });
+    $("#id_current_role").change(function(e){
+      toggle_field();
+    });
+    function toggle_field(){
+      if($.trim($('input[name=current_role]:checked').closest('label').text()) == 'Other (please describe below)') {
+          $current_role_other.prop('disabled', false);
+        } else {
+          $current_role_other.val("");
+          $current_role_other.prop('disabled', true);
+        }
+    }
+    function show_popup_on_registration(status_text){
+      if (status_text==="Registered")
+      {
+        $(document).on('close.fndtn.reveal', '#confirmation_registration', function(){
+          window.location.replace("{{home_url}}")
+        });
+        $("#confirmation_registration").foundation('reveal', 'open');
+      }
+      else if (status_text==="Error")
+      {
+        $(document).on('close.fndtn.reveal', '#error_registration', function(){
+          window.location.replace("{{home_url}}")
+        });
+        $("#error_registration").foundation('reveal', 'open');
+      }
+      else if (status_text==="Course Closed")
+      {
+        $(document).on('close.fndtn.reveal', '#course_closed_registration', function(){
+          window.location.replace("{{home_url}}")
+        });
+        $("#course_closed_registration").foundation('reveal', 'open');
+      }
+    }
+    function adjust_messages(){
+      if ($("#id_current_role + .errorlist")){
+        var error_message = $("#id_current_role + .errorlist").detach();
+        $("ul#id_current_role").before(error_message);
+      }
+    }

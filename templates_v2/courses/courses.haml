@@ -1,0 +1,7 @@
+- extends "courses/course_navigation.haml"
+- load i18n
+- block current_content
+
+  - for program in programs
+    - include 'courses/content_page/courses_menu_list.haml' with courses=program.1
+

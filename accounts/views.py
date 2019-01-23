@@ -37,6 +37,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.dateformat import format
 from django.template.response import TemplateResponse
 
+from api_data_manager.organization_data import OrgDataManager
 from util.url_helpers import get_referer_from_request
 from api_client import user_api
 from api_client.api_error import ApiError
@@ -149,6 +150,11 @@ def _build_sso_redirect_url(provider, next):
 
 def _get_redirect_to_current_course(request):
     user_data = UserDataManager(request.user.id).get_basic_user_data()
+    organization = user_data.get('organization')
+    if organization:
+        customization = OrgDataManager(str(organization.id)).get_branding_data().get('customization')
+        if customization and customization.new_ui_enabled:
+            return reverse('courses')
 
     current_course = user_data.current_course
     future_start_date = False
