@@ -52,7 +52,9 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       var companyId = $('#courseDetailsDataWrapper').attr('company-id');
       this.collection.updateCompanyQuerryParams(companyId);
     }
-    this.collection.fetch();
+    if(this.collection.course_id) {
+        this.collection.fetch();
+    }
   },
   render: function() {
     managerDashboardReportGridBlock = new bbGrid.View({

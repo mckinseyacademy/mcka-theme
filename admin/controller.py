@@ -29,7 +29,7 @@ from django.utils.translation import ugettext as _
 from rest_framework import status
 from rest_framework.response import Response
 
-from accounts.helpers import get_user_activation_links, get_complete_country_name
+from accounts.helpers import get_user_activation_links, get_complete_country_name, unmake_user_manager
 from accounts.models import UserActivation
 from admin.forms import MobileBrandingForm
 from admin.models import Program, SelfRegistrationRoles, ClientCustomization
@@ -2540,6 +2540,10 @@ def process_manager_email(manager_email, username, company_id):
         user_managers = _get_user_managers(username)
         if user_managers:
             manager_api.delete_user_manager(username, user_managers[0].get('email'))
+            direct_reports = user_api.get_reports_for_manager(user_managers[0].get('email'))
+            if not direct_reports:
+                manager = get_user_by_email(user_managers[0].get('email'))
+                unmake_user_manager(manager.get('id'))
         return
     manager = get_user_by_email(manager_email)
     if not manager:

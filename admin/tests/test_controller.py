@@ -611,6 +611,26 @@ class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
         self.post_user_manager = self.apply_patch('admin.controller.manager_api.post_user_manager')
         self.delete_user_manager = self.apply_patch('admin.controller.manager_api.delete_user_manager')
         self.create_update_delete_manager = self.apply_patch('admin.controller.create_update_delete_manager')
+        self.get_reports_for_manager = self.apply_patch('admin.controller.user_api.get_reports_for_manager')
+        self.remove_user_from_group = self.apply_patch('accounts.helpers.remove_user_from_group')
+        self.permission_groups_map = self.apply_patch('accounts.helpers.permission_groups_map')
+
+    def test_remove_manager(self):
+        self.get_user_manager.return_value = {'results': [{'username': 'sample', 'email': 'test@example.com'}]}
+        self.get_reports_for_manager.return_value = []
+        self.get_user_by_email.return_value = {
+            "id": 1,
+            "email": "sample",
+            "username": "sample"
+        }
+        controller.process_manager_email(
+            manager_email=None,
+            username=self.username,
+            company_id=self.company_id
+        )
+        self.get_user_manager.return_value = {'results': []}
+        user_managers = controller._get_user_managers(self.username)
+        self.assertEquals(user_managers, [])
 
     def test_user_not_exist(self):
         self.manager_email = "abc@example.com"
