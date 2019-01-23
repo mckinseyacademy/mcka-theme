@@ -23,6 +23,7 @@
               %a.hashPageButton{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
                 = course_name
 
+    - if manager_courses_list
       .manager-progress-cards
         %ul
           %li
@@ -36,10 +37,17 @@
               %span {% trans "proficiency" %}
               %large 0%
 
+    - if manager_courses_list
+      #managerDashboardContainer
+        - for index,course_id, course_name, cohorts_enabled in manager_courses
+          .contentNavigationContainer{class: "managerDashboardCourse#{index}"}
+            .large-12.columns.spinnerContainer{id: "managerDashboardReportGrid#{index}"}
 
-    #managerDashboardContainer
-      - for index,course_id, course_name, cohorts_enabled in manager_courses
-        .contentNavigationContainer{class: "managerDashboardCourse#{index}"}
-          .large-12.columns.spinnerContainer{id: "managerDashboardReportGrid#{index}"}
-    %h4.note
-      Note: Progress data is updated every hour
+      %h4.note
+        Note: Progress data is updated every hour
+    - else
+      #managerDashboardContainer
+        .contentNavigationContainer{class: "managerDashboardCourse"}
+          .large-12.columns.spinnerContainer{id: "managerDashboardReportGrid"}
+
+

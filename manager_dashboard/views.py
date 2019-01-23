@@ -19,8 +19,8 @@ def manager_team_reports(request):
     direct_reports = ManagerReportsCourseDetailsApi().get(request=request)
     reports_username = [report.username for report in direct_reports]
     enrollments = get_course_enrollments(usernames=reports_username)
-    course_ids = list(set([enrollment.course_id for enrollment in enrollments]))
-    manager_courses = get_course_list(course_ids)
+    course_ids = list(set([enrollment.course_id for enrollment in enrollments if enrollment.is_active]))
+    manager_courses = get_course_list(course_ids) if course_ids else []
     manager_courses_list = []
     for index, course in enumerate(manager_courses):
         cohorts_enabled = get_course_cohort_settings(course.id).is_cohorted
