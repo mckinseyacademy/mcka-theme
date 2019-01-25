@@ -23,23 +23,23 @@
               %a.hashPageButton{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
                 = course_name
 
-    - if manager_courses_list
-      .manager-progress-cards
-        %ul
-          %li
-            .progress-average
-              {% trans "Your team's average" %}
-              %span {% trans "progress" %}
-              %large 0%
-              .avgProgress
-          %li
-            .proficiency-average
-              {% trans "Your team's average" %}
-              %span {% trans "proficiency" %}
-              %large 0%
-              .avgProgress
+      - if manager_courses
+        .manager-progress-cards
+          %ul
+            %li
+              .progress-average
+                {% trans "Your team's average" %}
+                %span {% trans "progress" %}
+                %large 0%
+                .avgProgress
+            %li
+              .proficiency-average
+                {% trans "Your team's average" %}
+                %span {% trans "proficiency" %}
+                %large 0%
+                .avgProgress
 
-    - if manager_courses_list
+    - if manager_courses
       #managerDashboardContainer
         - for index,course_id, course_name, cohorts_enabled in manager_courses
           .contentNavigationContainer{class: "managerDashboardCourse#{index}"}
@@ -50,6 +50,6 @@
     - else
       #managerDashboardContainer
         .contentNavigationContainer{class: "managerDashboardCourse"}
+          %span.noDirectReport
+            {% trans "No course for your direct reports" %}
           .large-12.columns.spinnerContainer{id: "managerDashboardReportGrid"}
-
-
