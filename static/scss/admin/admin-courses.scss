@@ -639,3 +639,32 @@
 #courseDetailsEngagementViewGrid{
 	padding-right: 0;
 }
+
+#managerDashboardReportGrid
+{
+    opacity: 0.4;
+    margin-top: 50px;
+	height: 300px;
+}
+
+.noDirectReport
+{
+	font-style: italic;
+    color: #333;
+    font-weight: 600;
+    font-size: initial;
+    text-align: center;
+    display: block;
+    opacity: 1;
+    z-index: 5;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%);
+}
+
+.managerDashboardCourse
+{
+	overflow: hidden;
+	position: relative;
+}
