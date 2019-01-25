@@ -1,0 +1,13 @@
+- load i18n
+.course-proficiency.col-xs-4.widget
+  .holder
+    .progressArea
+      #proficiencyScore.pie-title-center{:data-percent => "{{proficiency}}"}
+        %span.pie-value
+    .contenrArea
+      .widgetTitle.clearfix
+        %span {% trans "Proficiency" %}
+    .title
+      %span {% trans "Your course knowledge" %}
+    .averageTitle
+      %span {% trans "Average:" %} : #{cohort_proficiency_average}%

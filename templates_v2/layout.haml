@@ -50,7 +50,7 @@
       %link{rel:"manifest", href: "/static/android_app_banner_manifest_files/manifest{{user_organization_id}}.json"}
     -# CSS
     - if not request.is_IE8
-      %link{href: '//cdn.jsdelivr.net/npm/npm-font-open-sans@1.1.0/open-sans.css?family=Open+Sans:400,600,700', rel: 'stylesheet', type: 'text/css'}
+      %link{href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,700', rel: 'stylesheet', type: 'text/css'}
 
     %link{:href => "https://fonts.googleapis.com/icon?family=Material+Icons", :rel => "stylesheet"}
 
@@ -193,3 +193,86 @@
       {% assets "js_all_v2" %}
         %script{src: "{{ ASSET_URL }}"}
       {% endassets %}
+
+    - block edit_full_name_modal
+      .modal.middleSize.noTopBorder.fade.editFullName{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              .col
+                %h4.modal-title
+                  {% trans "Enter your full name" %}
+              %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+                %span{:aria-hidden => "true"} ×
+            .modal-body
+              %form.white.clearfix
+                .form-group
+                  %label.form-label{:for => "exampleInputEmail1"}
+                    {% trans "First name" %}
+                  %input#exampleInputEmail1.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "email"}/
+                .form-group
+                  %label.form-label{:for => "exampleInputEmail1"}
+                    {% trans "Last name" %}
+                  %input#exampleInputEmail1.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "email"}/
+                %div
+                  %button.btn.btn-primary.mt-20{:type => "submit"}
+                    {% trans "Save" %}
+
+    - block edit_title_modal
+      .modal.middleSize.noTopBorder.fade.editRole{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              .col
+                %h4.modal-title
+                  {% trans "Enter your title" %}
+              %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+                %span{:aria-hidden => "true"} ×
+            .modal-body
+              %form.white.clearfix
+                .form-group
+                  %label.form-label{:for => "exampleInputEmail1"}
+                    {% trans "Title" %}
+                  %input#exampleInputEmail1.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "email"}/
+                %button.btn.btn-primary.mt-10{:type => "submit"}
+                  {% trans "Save" %}
+
+    - block edit_photo_modal
+      .modal.middleSize.noTopBorder.fade.editPhotoModal{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
+        .modal-dialog
+          .modal-content
+            .modal-header
+              .col
+                %h4.modal-title
+                  {% trans "Profile Photo" %}
+              %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+                %span{:aria-hidden => "true"} &#xD7;
+            .modal-body
+              .photoEditSteps
+                .step
+                  .head.clearfix
+                    %span.stepTitle
+                      {% trans "step 1:" %}
+                    %span.title
+                      {% trans "Select New Profile Image" %}
+                  .inputFileWrap.clearfix
+                    .file-upload
+                      .file-select
+                        .file-select-button{:id => ""}
+                          {% trans "browse" %}
+                        #noFile.file-select-name
+                          {% trans "No file selected" %}
+                        %input#chooseFile{:name => "Browe", :type => "file"}
+                      .error
+                        %i.material-icons error
+                        Error uploading the file. Please try again and be sure to use an accepted file format.
+                  .step
+                    .head.clearfix
+                      %span.stepTitle
+                        {% trans "step 2:" %}
+                      %span.title
+                        {% trans "Crop & Save" %}
+                    .imgCropWrap
+                    %div
+                      %button.btn.btn-primary{:type => "button"}
+                        {% trans "crop & save" %}

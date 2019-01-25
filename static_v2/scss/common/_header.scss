@@ -1,5 +1,20 @@
+body{
+  &.courselandingView{
+    header{
+      &.appHeader{
+        @media screen and (max-width: 767px) {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+
+
 
 header {
+  border-top: 5px solid $black;
   border-bottom: 1px solid lighten($gray, 35%);
   background-color: $white;
   .language-selector {
@@ -26,6 +41,191 @@ header {
     i {
       vertical-align: middle;
       font-size: 30px;
+    }
+  }
+
+  &.appHeader {
+    margin: 0 0 35px;
+    border-bottom-color: #ccc;
+    .dropdown-menu {
+      top: 12px !important;
+    }
+    .navbar-brand {
+      padding: 0;
+      max-width: 155px;
+      img {
+        width: 100%;
+      }
+    }
+    .topRightArea {
+      float: right;
+      width: auto;
+      margin: 19px 0 0;
+    }
+    .profileArea {
+      float: right;
+      width: 40px;
+      height: 40px;
+      margin: 0 0 0 37px;
+      > a {
+        display: block;
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        line-height: 30px;
+        padding: 5px;
+        overflow: hidden;
+        background: $secondary;
+        color: $white;
+        border-radius: 100%;
+        &:hover {
+          text-decoration: none;
+        }
+        &:after {
+          display: none;
+        }
+        span {
+          display: block;
+          text-align: center;
+        }
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+    }
+    .headerNav {
+      float: right;
+      width: auto;
+      margin: 20px 0 0;
+      .dropdown-menu {
+        margin: 0;
+      }
+    }
+  }
+}
+
+// User profile avatar dropDown Menu
+.profileDropdown {
+  .header {
+    .edit-link {
+      color: $secondary;
+      font-size: 12px;
+      line-height: 17px;
+      font-weight: 400;
+    }
+
+    .avatar-area,
+    .titles-area {
+      display: inline-block;
+      vertical-align: middle;
+      margin: -20px 0 0;
+    }
+
+    .avatar-area {
+      margin: 0 28px 0 0;
+    }
+
+    .titles-area {
+      .nameArea,
+      .roleArea {
+        > span, a {
+          display: inline-block;
+          vertical-align: middle;
+        }
+        .edit-link {
+          margin: 0 0 0 10px;
+        }
+      }
+      .nameArea {
+        color: $black;
+        font-size: 16px;
+        font-weight: 600;
+        line-height: 22px;
+      }
+      .roleArea {
+        color: #696969;
+        line-height: 19px;
+        font-weight: normal;
+        margin-top: 5px;
+      }
+    }
+  }
+  .content {
+    .title {
+      display: block;
+      color: $black;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 17px;
+      margin-top: 7px;
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+    .titleName{
+      font-size: 16px;
+      line-height: 22px;
+      font-weight: normal;
+      color: $black;
+    }
+    .userMail {
+      color: $secondary;
+      font-size: 16px;
+      line-height: 22px;
+
+    }
+    > .wrap {
+      border-bottom: 1px solid $light-gray;
+      padding: 0 0 15px;
+      margin: 0 0 15px;
+      &:first-child {
+        margin-top: 15px;
+        padding-top: 15px;
+        border-top: 1px solid $light-gray;
+      }
+    }
+  }
+}
+
+// Photo edit steps in modal
+.photoEditSteps {
+  .step {
+    margin-top: 28px;
+    &:first-child {
+      margin: 0;
+    }
+    .head {
+      border-bottom: 1.21px solid #F1F3F6;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      .stepTitle,
+      .title {
+        display: inline-block;
+        vertical-align: middle;
+        text-transform: capitalize;
+      }
+      .stepTitle {
+        height: 17px;
+        color: $gray;
+        font-size: 12px;
+        line-height: 17px;
+        margin: 0 10px 0 0;
+      }
+      .title {
+        color: $black;
+        font-family: "Open Sans";
+        font-size: 16px;
+        line-height: 22px;
+      }
+    }
+
+    .imgCropWrap {
+      height: 250px;
+      max-width: 500px;
+      background: $black;
+      margin-bottom: 20px;
     }
   }
 }
@@ -57,9 +257,239 @@ header {
   }
 }
 
-@include media-breakpoint-up(md){
-  header{
-    .container{
+//Course navigation wrraper
+.courseNavWrap {
+  @media screen and (max-width: 767px) {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  > ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .mainNav{
+    >ul{
+      >li{
+        >a{
+          padding-bottom:10px;
+        }
+      }
+    }
+  }
+}
+
+//Main (generic custom) navigation styles
+.mainNav {
+  > ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    > li {
+      display: inline-block;
+      vertical-align: middle;
+      margin: 0 0 0 31px;
+      position: relative;
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.9px;
+      line-height: 16px;
+      text-align: center;
+      &:hover {
+        a {
+          outline: none;
+          text-decoration: none;
+          color: #2E2D39;
+        }
+      }
+      > a {
+        color: #2042CB;
+        padding: 0 0 15px;
+
+        &:before {
+          position: absolute;
+          content: '';
+          width: 0;
+          height: 3px;
+          background: transparent;
+          bottom: -1px;
+          transition: all ease 0.3s;
+          left: 50%;
+          transform: translateX(-50%);
+        }
+      }
+      &.active {
+        a {
+          color: #2E2D39;
+          &:before {
+            width: 100%;
+            background: #2E2D39;
+          }
+        }
+      }
+      &:first-child {
+        margin: 0;
+      }
+    }
+  }
+}
+
+// Inner page's Header (Course navigation or Header)
+.courseMainHeader {
+  margin-bottom: 18px;
+
+  h1 {
+    color: $black;
+    font-family: "Open Sans";
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 57px;
+    margin: 0 0 15px;
+
+    .backBtn {
+      display: inline-block;
+      vertical-align: middle;
+      display: none;
+      i {
+        font-size: inherit;
+        margin-left: -4px;
+      }
+    }
+
+    @media screen and (max-width: 767px) {
+      font-size: 15px;
+      line-height: 24px;
+      border-bottom: 1px solid #d6d3d3;
+      padding: 0 0 15px;
+      font-weight: 400;
+      padding-left: 15px;
+      padding-right: 15px;
+    }
+
+  }
+
+  .pn-Advancer {
+    display: none;
+  }
+
+}
+
+// BreakPoints for small Screens
+
+@media screen and (max-width: 992px) {
+
+  .courseMainHeader {
+    padding: 0 30px;
+    h1 {
+      font-size: 32px;
+      line-height: 42px;
+    }
+
+    .pn-Advancer {
+      padding: 0 3px;
+      min-width: 10px;
+      text-align: center;
+      display: block;
+      top: -12px;
+      color: $black;
+      opacity: 1;
+      &:active,
+      &:hover {
+        color: $secondary;
+      }
+      .pn-Advancer_Icon {
+        fill: #ccc;
+        &:focus,
+        &:active,
+        &:visited {
+          fill: $secondary;
+        }
+      }
+    }
+  }
+
+  .pn-ProductNav {
+    margin: 0 30px;
+  }
+
+  .allCoursesList{
+    >.courseRow{
+      .description{ display: none;}
+    }
+  }
+
+}
+
+
+
+@media screen and (max-width: 767px) {
+
+  .appHeader{
+    .topRightArea{
+      .profileArea{
+        position: absolute;
+        right: 20px;
+        top: 15px;
+      }
+      .headerNav{
+        position: absolute;
+        left: 0;
+        top: 55px;
+        right: 0;
+        ul{
+          width: 100%;
+          text-align: center;
+          li{
+            margin-top: 9px;
+            a{
+              padding-bottom: 6px;
+            }
+          }
+        }
+      }
+    }
+
+  }
+  .courseMainHeader {
+    padding: 0 15px;
+    h1 {
+      font-size: 12px;
+      line-height: 17px;
+      font-weight:600;
+      text-transform: uppercase;
+      padding-left: 27px;
+    position: relative;
+
+      .backBtn{
+        position: absolute;
+        display: block;
+        content: '';
+        left: 0;
+        top: -2px;
+        font-size: 22px;
+      }
+    }
+  }
+
+  .pn-ProductNav {
+    margin: 0 10px;
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .courseNavWrap {
+    position: relative;
+    .courseNav {
+      display: block;
+      white-space: nowrap;
+    }
+  }
+}
+
+@include media-breakpoint-up(md) {
+  header {
+    .container {
       padding: 0;
     }
   }

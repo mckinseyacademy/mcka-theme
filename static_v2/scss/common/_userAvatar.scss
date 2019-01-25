@@ -1,0 +1,35 @@
+ // User Profile Avatar
+ .userAvatar {
+   text-align: center;
+   .edit-link{
+       margin-top: 6px;
+       display: inline-block;
+       vertical-align: top;
+     }
+   .holder {
+     height: 40px;
+     width: 40px;
+     line-height: 40px;
+     background: $secondary;
+     color: $white;
+     overflow: hidden;
+     text-align: center;
+     border-radius: 100%;
+     span {
+       display: block;
+     }
+     img {
+       width: 100%;
+       height: auto;
+     }
+
+   }
+   &.lg {
+     .holder {
+       width: 75px;
+       height: 75px;
+       line-height: 75px;
+       font-size: 26px;
+     }
+   }
+ }

@@ -2,10 +2,13 @@
   background-color: $dark-gray;
   border: 0;
   margin-top: 10px;
-  padding: 0 10px 8px;
+  padding: 0 5px;
   border-radius: 2px;
   color: $white;
   position: relative;
+  min-width: 110px;
+  text-align: center;
+  z-index: 9999;
   &:before{
     width: 12px;
     height: 6px;
@@ -17,4 +20,17 @@
     border-right: 5px solid transparent;
     border-bottom: 5px solid $dark-gray;
   }
+  .popover-title{ display: none;}
+  .popover-body,
+  .popover-content{
+    color: $white;
+    font-size: 11px;
+    padding: 0.5rem 0.75rem;
+  }
+}
+
+.bs-popover-bottom > .arrow::after, .bs-popover-auto[x-placement^="bottom"] > .arrow::after{
+  border-bottom-color: $dark-gray !important;
+  border-width: 0 0.4rem 0.4rem 0.4rem;
+  top: 3px;
 }

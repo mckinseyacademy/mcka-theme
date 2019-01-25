@@ -5,19 +5,27 @@
 @import "bootstrap/bootstrap-grid";
 @import "common/variables";
 @import "bootstrap/mixins";
+
 @import "common/mixins";
 @import "common/type";
 @import "common/popover";
 @import "common/buttons";
+@import "common/dropdown";
+@import "common/graphs";
 @import "common/form";
 @import "common/reset";
 @import "common/modal";
 @import "common/header";
 @import "common/layout";
 @import "common/footer";
+@import "common/userAvatar";
+@import "common/inputFile";
+@import "common/nav-animation";
 @import "common/checkbox";
+@import "common/dropdown";
 
 @import "pages/login";
 @import "pages/activation";
 @import "pages/static";
 @import "pages/courses";
+@import "pages/courseLanding";

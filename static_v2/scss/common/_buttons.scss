@@ -1,4 +1,5 @@
-button.btn {
+button.btn,
+a.btn{
   font-weight: 600;
   font-size: 12px;
   height: 40px;
@@ -57,6 +58,55 @@ button.btn {
       line-height: inherit;
       font-size: 1rem;
     }
+  }
+
+  /*============= Disable Button =====================*/
+
+  &:disabled {
+    background: $gray;
+    opacity: 1;
+    border-color: $gray;
+    cursor: not-allowed;
+    color: $white;
+
+    &:hover {
+      background: $gray;
+      opacity: 1;
+      border-color: $gray;
+      cursor: not-allowed;
+      color: $white;
+    }
+  }
+
+}
+
+
+
+
+
+
+
+
+
+
+a.btn{
+  font-weight: 600;
+  font-size: 12px;
+  height: 40px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  line-height: 1.83;
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding: 0 20px;
+  line-height: 40px;
+
+  /*============= Helping Classes =====================*/
+
+  &.btn-lg {
+    font-size: 1rem;
+    height: 50px;
+    line-height: 50px;
   }
 
   /*============= Disable Button =====================*/

@@ -114,7 +114,6 @@ def course_landing_page(request, course_id):
     social = get_user_social_metrics(request.user.id, course_id)
 
     graded_items_count = course_tree_builder.get_graded_items_count(course=course)
-
     data = {
         "user": request.user,
         "course": course,

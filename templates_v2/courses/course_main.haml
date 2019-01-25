@@ -8,47 +8,116 @@
     {% trans " | Courses | McKinsey Academy" %}
 
 - block content
-  - include "courses/content_page/course_statistics.haml"
-  %hr
-  - include "courses/content_page/course_menu.haml"
-  %hr
-  - if course.ended
-    - include "courses/content_page/course_final_grade.haml"
-  -else
-    - if discover_flag
-      - include "courses/content_page/course_discover.haml"
-      %hr
-      %article.course-quote
-        %blockquote
-          - if quote.body
-            = quote.body
-        .attribution
-          - if quote.thumbnail_url
-            %img{"src": "#{quote.thumbnail_url}"}
-          .person-name
-            - if quote.byline
-              = quote.byline
-          .person-title
-            - if quote.byline_title
-              = quote.byline_title
-
-  #beta_visualizations.reveal-modal.large{'data-reveal': ''}
-    .close-reveal-modal
-      %i.fa.fa-times-circle
-    %p {% trans "This is the McKinsey Academy Beta and we are happy to have you participate ahead of the official public launch!" %}
-    %p {% trans "As a beta user, you will occasionally see pages and features like this one in early stages of development. Please feel free to explore, and we’ll continue to add features and functionality in the coming weeks." %}
-    .screencap
-      %img{'src': '/static/image/McKA_home_progress_v12.png'}
-
-
-
-  - include "marketing/app_link_popup.haml"
-
-- block js_snippets
-  %script{src: "{% static 'js/app_link_popup.js' %}"}
-
-- block heap_events
   %script
-   heap.identify('{{user.id}}');
-   heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
-   heap.track('COURSE_VISITED', {COURSE_ID: '{{course.id}}', COURSE_NAME: '{{course.name}}', USER_ID: '{{user.id}}'});
+    $(document).ready(function () {
+      $('body').addClass("courselandingView");
+    });
+  .container.courseLanding
+    .row
+      .col
+        .courseMainHeader
+          %h1
+            = course.name
+            %a.backBtn
+              %i.material-icons
+                keyboard_arrow_left
+          .courseNavWrap.clearfix
+            .pn-ProductNav_Wrapper.clearfix
+              %nav#pnProductNav.pn-ProductNav.clearfix{:data-overflowing => "none"}
+                #pnProductNavContents.mainNav.pn-ProductNav_Contents
+                  %ul
+                    %li.active
+                      %a.nav-link.pn-ProductNav_Link{:aria-selected => "true", :href => "#"}
+                        {% trans "overview" %}
+                    %li
+                      %a.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
+                        {% trans "LESSONS" %}
+                      .dropdown-menu.allLessons.dropdown-menu-left
+                        %ul.allCoursesList
+                          - for lesson in course.chapters
+                            %li{"class": "courseRow {% if lesson.is_started %}active{% else %}locked{% endif %} {% if lesson.progress == 100 %}complete{% else %}{% endif %}"}
+                              .holder
+                                .data.serial
+                                  {% trans "Lesson" %}
+                                  %span {{lesson.index}}
+                                .data.title
+                                  %span= lesson.name
+                                    -if not lesson.is_started
+                                      %i.material-icons.locked{:data-container => "body", :data-content => "{% trans 'This lesson will be available on '%} {{lesson.start_upon}}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
+                                .data.status
+                                  %i.material-icons
+                                  - if lesson.progress == 100
+                                    %i.material-icons check_circle
+                                    {% trans "Complete" %}
+                                  - elif lesson.progress == 0
+                                    %i.material-icons panorama_fish_eye
+                                    {% trans "Not Started" %}
+                                  - else
+                                    %i.material-icons tonality
+                                    {% trans "In Progress" %}
+                              .description
+                                Tell me and I forget. Teach me and I
+                                remember. Involve me and I learn. - Benjamin Franklin
+                              - if lesson.bookmark
+                                %img.bookmark{:src => "static/image/bookmark.svg"}
+                    %li
+                      %a.nav-link.pn-ProductNav_Link{:aria-selected => "", :href => "#"}
+                        {% trans "Discussion" %}
+                    %li
+                      %a.nav-link.pn-ProductNav_Link{:aria-selected => "", :href => "#"}
+                        {% trans "Group work" %}
+                    %li
+                      %a.nav-link.pn-ProductNav_Link{:aria-selected => "", :href => "#"}
+                        {% trans "COHORT" %}
+                    %li
+                      %a.nav-link.pn-ProductNav_Link{:aria-selected => "", :href => "#"}
+                        {% trans "Progress" %}
+                    %li
+                      %a.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
+                        {% trans "Course Materials" %}
+                      .dropdown-menu.dropdown-menu-right
+                        %a.dropdown-item{:href => "#"}
+                          {% trans "Announcements" %}
+                        %a.dropdown-item{:href => "#"}
+                          {% trans "Course Overview" %}
+                        %a.dropdown-item{:href => "#"}
+                          {% trans "Resources" %}
+                    %li
+                      %a.nav-link.pn-ProductNav_Link{:aria-selected => "", :href => "#"}
+                        {% trans "Notifications" %}
+                  %span#pnIndicator.pn-ProductNav_Indicator{:style => "transform: translateX(0px) scaleX(0.672); background-color: rgb(46, 45, 57);"}
+              %button#pnAdvancerLeft.pn-Advancer.pn-Advancer_Left{"type": "button"}
+                %svg.pn-Advancer_Icon{:viewbox => "0 0 551 1024", :xmlns => "http://www.w3.org/2000/svg"}
+                  %path{:d => "M445.44 38.183L-2.53 512l447.97 473.817 85.857-81.173-409.6-433.23v81.172l409.6-433.23L445.44 38.18z"}
+              %button#pnAdvancerRight.pn-Advancer.pn-Advancer_Right{:type => "button"}
+                %svg.pn-Advancer_Icon{:viewbox => "0 0 551 1024", :xmlns => "http://www.w3.org/2000/svg"}
+                  %path{:d => "M105.56 985.817L553.53 512 105.56 38.183l-85.857 81.173 409.6 433.23v-81.172l-409.6 433.23 85.856 81.174z"}
+        .contentCard.progressWidgets.clearfix
+          #course-statistics
+            - include "courses/content_page/course_statistics.haml"
+
+        - include "courses/content_page/course_menu.haml"
+        - if course.ended
+          - include "courses/content_page/course_final_grade.haml"
+        -else
+          - if discover_flag
+            - include "courses/content_page/course_discover.haml"
+
+            %blockquote.courseLanding.text-center
+              %p
+                - if quote.body
+                  = quote.body
+              %span.author
+                - if quote.byline
+                  = quote.byline
+
+        - include "marketing/app_link_popup.haml"
+
+      - block js_snippets
+        %script{src: "{% static 'js/app_link_popup.js' %}"}
+
+      - block heap_events
+        %script
+          heap.identify('{{user.id}}');
+          heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
+          heap.track('COURSE_VISITED', {COURSE_ID: '{{course.id}}', COURSE_NAME: '{{course.name}}', USER_ID: '{{user.id}}'});

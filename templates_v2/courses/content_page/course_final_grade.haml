@@ -1,0 +1,6 @@
+- load i18n
+%article#course-final-grade
+  .final-grade {% trans "Your final grade is" %} #{proficiency}
+  %div #{course.name} {% trans "ended on" %} #{course.short_end_date}.
+  %div {% trans "This course is closed, but you can still access all course content and download materials." %}
+  %div {% trans "Your proficiency, progress, and engagement will not change in closed courses." %}

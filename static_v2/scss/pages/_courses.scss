@@ -31,8 +31,8 @@
       position: relative;
       h3{
         font-size: 1.5rem;
-        min-height: 3.5rem;
-        max-height: 3.5rem;
+        min-height: 3.7rem;
+        max-height: 3.7rem;
         overflow: hidden;
       }
       .course-detail{
@@ -88,7 +88,7 @@
       }
       img.bookmark{
         position: absolute;
-        left: -8px;
+        left: -4px;
         top: 0;
         height: 100%;
       }
@@ -107,6 +107,7 @@
   }
   a.d-block{
     &:hover{
+      text-decoration: none;
       .card{
         box-shadow: 0 0 30px lighten($gray, 30%);
         h3{
@@ -143,6 +144,9 @@
 
 @include media-breakpoint-down(sm){
   .my-courses{
+    h1{
+      display: none;
+    }
     [class*="col"]{
       padding: 0;
       h1{
@@ -150,13 +154,17 @@
       }
       .card{
         margin-bottom: 10px;
+        .card-img-top{
+          height: 120px;
+          object-fit: cover;
+        }
         .card-body{
-          padding: 20px 20px 10px 25px;
-          min-height: none;
+          padding: 10px 20px 5px 25px;
+          min-height: 0;
           h3{
-            font-size: 1rem;
-            min-height: 2.2rem;
-            max-height: 2.2rem;
+            font-size: 1.12rem;
+            min-height: 2.65rem;
+            max-height: 2.65rem;
           }
           span{
             &.course-progress{

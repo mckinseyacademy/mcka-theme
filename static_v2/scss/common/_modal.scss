@@ -1,46 +1,41 @@
 .modal {
   &.reset-password {
-    .form-group + .form-group{ margin-top: 18px !important;}
-    .form-group{
-      small{
-        font-size: 84.6% !important;
+    .form-group + .form-group {
+      margin-top: 18px !important;
+    }
+    .form-group {
+      small {
+        font-size: 87% !important;
         color: #9D9D9D;
       }
     }
     .modal-dialog {
-      max-width: 600px;
-      margin: 10.35rem auto;
+      //max-width: 600px;
+      //margin: 10.35rem auto;
     }
-    .col {
-      padding: 0;
-    }
-    input:not([type='checkbox']) {
-      max-width: 294px;
-    }
-    .modal-content {
-      padding: 50px;
-    }
+
+    //input:not([type='checkbox']) {
+    //  max-width: 294px;
+    //}
 
     .modal-header {
       .modal-title {
-        margin: 0 0 25px;
-        color: $black;
+        margin: 0 0 18px;
       }
       p {
-        margin: 0 0 25px;
+        margin: 0 0 22px;
         color: $black;
       }
-      .close {
-        margin: -2.6rem -1.9rem -1rem auto;
+    }
+
+    @media screen and (max-width: 767px) {
+      .modal-content {
+        padding: 50px 30px 30px;
+      }
+      input:not([type='checkbox']) {
+        max-width: 100%;
       }
     }
-
-    .modal-header,
-    .modal-body,
-    .modal-footer {
-      padding: 0;
-    }
-
   }
 
   &.noTopBorder {
@@ -48,6 +43,50 @@
       border-top: none;
     }
   }
+
+  .col {
+    padding: 0;
+  }
+  &.middleSize {
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+      padding: 0;
+    }
+
+    .modal-dialog {
+      max-width: 600px;
+      margin: 0 auto;
+      //@media screen and (max-width: 767px) {
+      //  margin: 2.35rem auto;
+      //}
+    }
+
+    .modal-header {
+      .modal-title {
+        color: #000000;
+        font-size: 24px;
+        line-height: 33px;
+        margin-bottom: 30px;
+      }
+      .close {
+        margin: -2.2rem -1.9rem -1rem auto;
+      }
+    }
+    .modal-content {
+      padding: 40px 50px 30px;
+      @media screen and (max-width: 767px) {
+        padding: 30px;
+      }
+    }
+  }
+
+  .modal-dialog{
+    margin: 0 auto;
+    top: 50%;
+    transform: translateY(-50%) !important;
+  }
+
 }
 
 .modal-dialog {

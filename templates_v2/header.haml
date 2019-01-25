@@ -4,7 +4,7 @@
 - get_current_language as LANGUAGE_CODE
 - get_available_languages as LANGUAGES
 
-%header
+%header.appHeader
   .container
     .row
       .col
@@ -12,21 +12,71 @@
           %a.navbar-brand{:href => "/"}
             %img{:src => "static/image/McKA-logo-blue@2x.png", :width => "160"}
 
-          - if use_i18n
-            .language-selector
-              %i.material-icons language
-              .dropdown
-                %button#dropdownMenuButton.dropdown-toggle.border-0{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
-                  {{ LANGUAGE_CODE }}
-                .dropdown-menu{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
-                  - for language_code, language_name in LANGUAGES
-                    - if LANGUAGE_CODE == language_code
-                      %a.dropdown-item.selected
-                        {{language_name}}
-                    - else
-                      %a.dropdown-item{href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
-                        -if language_code == 'en' or language_code == 'nl'
-                          - get_language_info for language_code as lang
-                          {{lang.name}}
-                        -else
+          - if request.user.is_authenticated
+            .topRightArea
+              .profileArea
+                %a.dropdown-toggle{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
+                  %span RA
+                  %img{:src => "static/img/McKA-logo-white@2x.png", :width => "160"}/
+                .dropdown-menu.profile-area.large-menu.dropdown-menu-right.profileDropdown
+                  .header
+                    .avatar-area
+                      .userAvatar.lg
+                        .holder
+                          %span RA
+                          %img{:alt => "", :src => ""}/
+                        %a.edit-link{:data-target => ".editPhotoModal", :data-toggle => "modal", :href => "#"}
+                          {% trans "edit photo" %}
+                    .titles-area
+                      .nameArea
+                        %span Rajal Ajai
+                        %a.edit-link{:data-target => ".editFullName", :data-toggle => "modal", :href => "#"}
+                          {% trans "edit" %}
+                      .roleArea
+                        %span UX Consultant
+                        %a.edit-link{:data-target => ".editRole", :data-toggle => "modal", :href => "#"}
+                          {% trans "edit" %}
+                  .content
+                    .wrap
+                      %strong.text-uppercase.title
+                        {% trans "username" %}
+                      %strong.titleName raajimk
+                    .wrap
+                      %strong.text-uppercase.title
+                        {% trans "email" %}
+                      %span.userMail rajal_ajai@external.mckinsey.com
+                  .footer
+                    %a.btn.btn-secondary{href: "/accounts/logout"}
+                      {% trans "log out" %}
+
+              %nav.nav.mainNav.headerNav
+                %ul
+                  %li
+                    %a.nav-link.dropdown-toggle{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
+                      {% trans "dashboard" %}
+                    .dropdown-menu.middle-menu.dropdown-menu-right.clearfix
+                      %a.dropdown-item{:href => "#"} Executive Leadership Program
+                      %a.dropdown-item{:href => "#"} Leadership Development Program
+                  %li.active
+                    %a.nav-link{:href => "/courses"}
+                      {% trans "my courses" %}
+
+          - else
+            - if use_i18n
+              .language-selector
+                %i.material-icons language
+                .dropdown
+                  %button#dropdownMenuButton.dropdown-toggle.border-0{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
+                    {{ LANGUAGE_CODE }}
+                  .dropdown-menu{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
+                    - for language_code, language_name in LANGUAGES
+                      - if LANGUAGE_CODE == language_code
+                        %a.dropdown-item.selected
                           {{language_name}}
+                      - else
+                        %a.dropdown-item{href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                          -if language_code == 'en' or language_code == 'nl'
+                            - get_language_info for language_code as lang
+                            {{lang.name}}
+                          -else
+                            {{language_name}}

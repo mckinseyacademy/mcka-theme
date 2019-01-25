@@ -1,33 +1,65 @@
 input:not([type='checkbox']) {
+  height: 50px;
   font-size: 1rem;
+  border-radius: 0;
+  border: 1px solid $gray;
+  box-shadow: none;
+  max-width: 292px;
+  &:disabled {
+    border: 0;
+    opacity: 0.9;
+  }
   &:focus {
-    outline: none;
+    outline: none !important;
     box-shadow: none !important;
+    border-color: inherit;
   }
 }
 
 form {
 
   .form-group {
-    .ico-state{
+    position: relative;
+    margin-bottom:1.5rem;
+    //& + .form-group {
+    //  margin-top: 30px;
+    //}
+    .ico-state {
       visibility: hidden;
       transition: all ease 0.3s;
       transform: scale(0);
     }
     .ico-state {
-        position: absolute;
-        right: 10px;
-        top: 13px;
-        content: '';
-      }
+      position: absolute;
+      right: 10px;
+      top: 13px;
+      content: '';
+    }
     #show-hide {
       visibility: visible;
       position: absolute;
       right: 10px;
       top: 14px;
     }
-
+    small {
+      font-size: 90%;
+      color: $gray;
+    }
   }
+
+  .form-label {
+    position: absolute;
+    transform: translate(15px, 15px);
+    z-index: 9;
+    transition: transform 150ms ease-out, font-size 150ms ease-out;
+  }
+  .focused .form-label {
+    transform: translate(0px, -18px);
+    font-size: .85em;
+    color: $secondary;
+  }
+
+  //
 
   .success,
   .error {
@@ -39,7 +71,9 @@ form {
       padding-right: 50px;
     }
 
-    #show-hide { visibility: hidden;}
+    #show-hide {
+      visibility: hidden;
+    }
 
   }
 
@@ -94,11 +128,15 @@ form {
         }
       }
     }
-    small{ color: $white;}
+    small {
+      color: $white;
+    }
     .focused .form-label {
       color: $white !important;
     }
-    .form-input { color: $white;}
+    .form-input {
+      color: $white;
+    }
   }
 
 }

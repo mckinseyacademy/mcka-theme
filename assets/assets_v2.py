@@ -14,7 +14,10 @@ def get_assets_v2_path(relative_path):
 
 # Javascript squashing
 JS = Bundle(
+    get_assets_v2_path('js/vendor/jquery.form.js'),
     get_assets_v2_path('js/custom.js'),
+    get_assets_v2_path('js/common.js'),
+    get_assets_v2_path('js/application.js'),
     filters='jsmin',
     output='gen/packed_v2.js'
 )
