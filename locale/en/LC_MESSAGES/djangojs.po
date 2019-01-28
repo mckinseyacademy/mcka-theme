@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-15 13:03+0000\n"
+"POT-Creation-Date: 2019-01-28 08:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,6 +77,7 @@ msgstr ""
 #: static/js/common/mass_participants_enroll.js:225
 #: static/js/common/mass_participants_enroll.js:362
 #: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
+#: static_v2/js/image_editor.js:77
 msgid "Please select file first."
 msgstr ""
 
@@ -271,17 +272,17 @@ msgstr ""
 msgid "Digital Content"
 msgstr ""
 
-#: static/js/image_editor.js:3
+#: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
 msgstr ""
 
-#: static/js/image_editor.js:45
+#: static/js/image_editor.js:45 static_v2/js/image_editor.js:45
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
 msgstr ""
 
-#: static/js/image_editor.js:52
+#: static/js/image_editor.js:52 static_v2/js/image_editor.js:52
 msgid "Please select file for upload."
 msgstr ""
 
@@ -294,7 +295,7 @@ msgstr ""
 msgid "Email"
 msgstr ""
 
-#: static/js/router.js:389
+#: static/js/router.js:395
 msgid "Please select at least one course"
 msgstr ""
 
@@ -882,24 +883,24 @@ msgstr ""
 msgid "Importing %(processed)s of %(total)s rows"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:99
+#: static/js/views/admin/manager_dashboard.js:101
 #: static/js/views/courses/lesson_note.js:2
 msgid "Lesson"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:99
+#: static/js/views/admin/manager_dashboard.js:101
 msgid "complete"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:104
+#: static/js/views/admin/manager_dashboard.js:106
 msgid "Error Occured!"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:107
+#: static/js/views/admin/manager_dashboard.js:109
 msgid "Hide Details"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:137
+#: static/js/views/admin/manager_dashboard.js:139
 msgid "View Details"
 msgstr ""
 

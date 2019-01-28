@@ -88,7 +88,10 @@
       {% trans "You've been locked out!" %}
     %p.mckinsey-red
       %i.fa.fa-exclamation-triangle
-      {% trans "Your account is locked for 15 minutes since your 5" %}
+      {% trans "Your account is locked for" %}
+      %b
+        {% trans "15 minutes " %}
+      {% trans "since your 5" %}
       %sup
         {% trans "th" %}
       {% trans " attempt." %}
@@ -98,7 +101,7 @@
       %a{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "/accounts/password/reset/"}
         {% trans "reset your password" %}
       %span
-        {% trans "or try to login again in 15 minutes" %}
+        {% trans "or try to login again in 15 minutes." %}
     %a.button{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "/accounts/password/reset/"}
       {% trans "Reset Password" %}
 

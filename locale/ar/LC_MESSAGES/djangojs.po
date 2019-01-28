@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-15 13:03+0000\n"
+"POT-Creation-Date: 2019-01-28 08:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,6 +78,7 @@ msgstr "إظهار الأخطاء"
 #: static/js/common/mass_participants_enroll.js:225
 #: static/js/common/mass_participants_enroll.js:362
 #: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
+#: static_v2/js/image_editor.js:77
 msgid "Please select file first."
 msgstr "الرجاء تحديد الملف أولاً."
 
@@ -294,11 +295,11 @@ msgstr "الدورات عبر الإنترنت (ويبينار)"
 msgid "Digital Content"
 msgstr "المحتوى الرقمي"
 
-#: static/js/image_editor.js:3
+#: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
 msgstr "لم يتم تحديد ملف"
 
-#: static/js/image_editor.js:45
+#: static/js/image_editor.js:45 static_v2/js/image_editor.js:45
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
@@ -306,7 +307,7 @@ msgstr ""
 "خطأ في تحميل الملف. الرجاء المحاولة مرة أخرى وتأكد من استخدام هيئة ملفات "
 "مقبولة."
 
-#: static/js/image_editor.js:52
+#: static/js/image_editor.js:52 static_v2/js/image_editor.js:52
 msgid "Please select file for upload."
 msgstr "الرجاء تحديد ملف للتحميل."
 
@@ -319,7 +320,7 @@ msgstr "المشاركون:"
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
-#: static/js/router.js:389
+#: static/js/router.js:395
 msgid "Please select at least one course"
 msgstr "الرجاء اختيار دورة واحدة على الأقل"
 
@@ -948,26 +949,26 @@ msgstr ""
 msgid "Importing %(processed)s of %(total)s rows"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:99
+#: static/js/views/admin/manager_dashboard.js:101
 #: static/js/views/courses/lesson_note.js:2
 msgid "Lesson"
 msgstr "الدرس"
 
-#: static/js/views/admin/manager_dashboard.js:99
+#: static/js/views/admin/manager_dashboard.js:101
 #, fuzzy
 #| msgid "Incomplete"
 msgid "complete"
 msgstr "غير مكتمل"
 
-#: static/js/views/admin/manager_dashboard.js:104
+#: static/js/views/admin/manager_dashboard.js:106
 msgid "Error Occured!"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:107
+#: static/js/views/admin/manager_dashboard.js:109
 msgid "Hide Details"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:137
+#: static/js/views/admin/manager_dashboard.js:139
 msgid "View Details"
 msgstr ""
 
