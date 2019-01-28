@@ -27,7 +27,7 @@ from django.http import (
     HttpResponseForbidden,
     HttpResponseRedirect,
     HttpResponse, Http404,
-    HttpResponseServerError
+    HttpResponseServerError,
 )
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
@@ -3857,6 +3857,44 @@ def participant_mail_activation_link(request, user_id):
     return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
 
 
+def _delete_participants(user_ids):
+    """
+    Deletes all data related to users from LMS and Apros.
+    """
+    if not _deletion_flag():
+        return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+    user_ids = [str(user_id) for user_id in user_ids]
+
+    users = user_api.get_users(ids=user_ids)
+    if not users:
+        raise Http404
+
+    user_ids = [user.id for user in users]
+    user_emails = [user.email for user in users]
+    user_usernames = [user.username for user in users]
+
+    for chunk in xrange(0, len(user_ids), settings.MAX_USERS_PER_PAGE):
+        user_api.delete_users(ids=user_ids[chunk:chunk + settings.MAX_USERS_PER_PAGE])
+
+    PublicRegistrationRequest.objects.filter(company_email__in=user_emails).delete()
+    UserRegistrationError.objects.filter(user_email__in=user_emails).delete()
+    UserActivation.objects.filter(email__in=user_emails).delete()
+    RemoteUser.objects.filter(username__in=user_usernames).delete()
+
+    models_for_id_deletion = [
+        UserPasswordReset,
+        DashboardAdminQuickFilter,
+        BatchOperationErrors,
+        LessonNotesItem,
+        UserCourseCertificate,
+    ]
+    for model in models_for_id_deletion:
+        model.objects.filter(user_id__in=user_ids).delete()
+
+    return HttpResponse(status=204)
+
+
 class ParticipantsListApi(APIView):
     @permission_group_required_api(
         PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
@@ -4232,32 +4270,7 @@ class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
                                    PERMISSION_GROUPS.MCKA_SUBADMIN)
     def delete(self, _request, user_id):
-        if not _deletion_flag():
-            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
-
-        try:
-            user_data = user_api.get_user_dict(user_id)
-        except ApiError:
-            raise Http404
-
-        user_api.delete_users(ids=[user_id])
-
-        PublicRegistrationRequest.objects.filter(company_email=user_data.get('email')).delete()
-        UserRegistrationError.objects.filter(user_email=user_data.get('email')).delete()
-        UserActivation.objects.filter(email=user_data.get('email')).delete()
-        RemoteUser.objects.filter(username=user_data.get('username')).delete()
-
-        models_for_id_deletion = [
-            UserPasswordReset,
-            DashboardAdminQuickFilter,
-            BatchOperationErrors,
-            LessonNotesItem,
-            UserCourseCertificate,
-        ]
-        for model in models_for_id_deletion:
-            model.objects.filter(user_id=user_id).delete()
-
-        return HttpResponse(status=204)
+        return _delete_participants([user_id])
 
 
 class manage_user_company_api(APIView):
@@ -5095,7 +5108,10 @@ class users_company_admin_get_post_put_delete_api(APIView):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN,)
 def companies_list(request):
-    return render(request, 'admin/companies/companies_list.haml')
+    data = {
+        'enableDataDeletion': _deletion_flag(),
+    }
+    return render(request, 'admin/companies/companies_list.haml', data)
 
 
 @permission_group_required(
@@ -5252,6 +5268,14 @@ class CompanyDetailsView(APIView):
     def delete(self, _request, company_id):
         if not _deletion_flag():
             return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        user_ids = organization_api.fetch_organization_user_ids(company_id)
+        try:
+            _delete_participants(user_ids)
+        except Http404:
+            # We can safely ignore not found users, because removing them is not atomic and any of them can be deleted
+            # between retrieval and deletion above.
+            pass
 
         # We'd like to remove Apros data first to be sure that we don't have any leftovers if the company had been
         # deleted via LMS directly. Then we can raise 404 without any further concerns.

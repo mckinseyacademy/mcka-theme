@@ -22,7 +22,7 @@ from admin.models import (
     ClientCustomization,
     AdminTask,
 )
-from admin.tests.utils import get_deletion_waffle_switch
+from admin.tests.utils import get_deletion_waffle_switch, MockUser
 from admin.views import client_sso, CourseDetailsApi
 from api_client import user_api, group_api
 from api_client.api_error import ApiError
@@ -512,20 +512,20 @@ class UserDeleteTest(CourseParticipantsStatsMixin, TestCase):
         self.assertEqual(response.status_code, 403)
 
     @override_switch(get_deletion_waffle_switch(), active=True)
-    @patch('api_client.user_api.get_user_dict', side_effect=Http404)
+    @patch('api_client.user_api.get_users', return_value=[])
     @patch('api_client.user_api.delete_users')
-    def test_delete_nonexistent_user(self, delete_users_mock, get_user_dict_mock):
+    def test_delete_nonexistent_user(self, delete_users_mock, get_users_mock):
         """
         Test deleting user that doesn't exist in LMS.
         """
         with self.assertRaises(Http404):
             self.api.delete(self.request, self.mock_id)
 
-        get_user_dict_mock.assert_called_with(self.mock_id)
+        get_users_mock.assert_called_with(ids=[str(self.mock_id)])
         delete_users_mock.assert_not_called()
 
     @override_switch(get_deletion_waffle_switch(), active=True)
-    @patch('api_client.user_api.get_user_dict', return_value={})
+    @patch('api_client.user_api.get_users', return_value=[MockUser(1), MockUser(2)])
     @patch('api_client.user_api.delete_users')
     def test_delete_user(self, *mocks):
         """
@@ -636,25 +636,30 @@ class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
 
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('admin.controller.get_mobile_app_themes', lambda _: [])
+    @patch('api_client.organization_api.fetch_organization_user_ids', return_value=[])
     @patch('api_client.organization_api.delete_organization', side_effect=Http404)
-    def test_delete_nonexistent_company(self, delete_company_mock):
+    def test_delete_nonexistent_company(self, *mocks):
         """
         Test deleting company that doesn't exist in LMS.
         """
         with self.assertRaises(Http404):
             self.api.delete(self.request, self.mock_id)
 
-        delete_company_mock.assert_called_with(self.mock_id)
+        for mock in mocks:
+            mock.assert_called_with(self.mock_id)
 
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('api_client.organization_api.delete_organization')
     @patch('admin.controller.remove_mobile_app_theme', side_effect=make_side_effect_raise_api_error(404))
+    @patch('admin.views._delete_participants')
+    @patch('api_client.organization_api.fetch_organization_user_ids')
     @patch('admin.controller.get_mobile_app_themes')
-    def test_delete_company_race_condition(self, get_theme_mock, *mocks):
+    def test_delete_company_race_condition(self, get_theme_mock, fetch_users_mock, *mocks):
         """
         Test deleting company with the race condition during removing mobile app theme.
         """
         get_theme_mock.return_value = [{'id': self.mock_id}]
+        fetch_users_mock.return_value = [self.mock_id]
 
         response = self.api.delete(self.request, self.mock_id)
         for mock in mocks:
@@ -665,12 +670,15 @@ class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('admin.controller.remove_mobile_app_theme')
     @patch('api_client.organization_api.delete_organization')
+    @patch('admin.views._delete_participants')
+    @patch('api_client.organization_api.fetch_organization_user_ids')
     @patch('admin.controller.get_mobile_app_themes')
-    def test_delete_company(self, get_theme_mock, *mocks):
+    def test_delete_company(self, get_theme_mock, fetch_users_mock, *mocks):
         """
         Test deleting company as admin.
         """
         get_theme_mock.return_value = [{'id': self.mock_id}]
+        fetch_users_mock.return_value = [self.mock_id]
 
         response = self.api.delete(self.request, self.mock_id)
         for mock in mocks:

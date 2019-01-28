@@ -1,7 +1,7 @@
 - extends "admin/admin_layout.haml"
 - load i18n
 
-- block content 
+- block content
   #mainCompaniesListDetailsContainer
     #companiesListTitle
       %p {% trans "Companies" %}
@@ -31,3 +31,36 @@
         {% trans "Cancel" %}
     %a.close-reveal-modal{"aria-label" : "Close"}
       &#215;
+
+  - if enableDataDeletion
+    #delete_data_modal.reveal-modal.small{'data-reveal': ''}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      .titleContainer
+        %h2 {% trans "Delete Data" %}
+      %hr
+      .contentContainer
+        {% trans "Please note that the data is deleted permanently and you will lose all the data." %}
+        %br
+        %br
+        .boldText
+          {% trans "Are you sure you want to delete the data?" %}
+      .errorContainer
+      .button-wrapper
+        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+          {% trans "Cancel" %}
+        %a.button.small.radius.menuButton.confirmButton{:type => "button"}
+          {% trans "Yes" %}
+
+    #delete_data_success.reveal-modal.small{'data-reveal': ''}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      .titleContainer
+        %h2 {% trans "Successfully deleted data!" %}
+      .button-wrapper.topPadding
+        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"}
+          {% trans "I'm Done" %}
+
+- block js_snippets
+  :javascript
+    var enable_data_deletion = '{{enableDataDeletion}}';

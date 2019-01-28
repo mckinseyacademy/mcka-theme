@@ -36,8 +36,10 @@ def test_set(num_users, workgroup_size):
 class MockUser(object):
     id = None
 
-    def __init__(self, user_id):
+    def __init__(self, user_id, email='test@example.com', username='test_user'):
         self.id = user_id
+        self.email = email
+        self.username = username
 
 
 class MockReviewAssignmentGroup(object):

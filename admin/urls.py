@@ -233,11 +233,11 @@ urlpatterns += [
         views.workgroup_remove_project, name='workgroup_remove_project'),
     url(r'^workgroup', views.workgroup_list, name='workgroup_list'),
 
-    url(r'^api/participants/(?P<user_id>[0-9]+)$', views.participant_details_api.as_view(), name='participant_details'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses/export_stats$',
         views.download_active_courses_stats, name='download_active_courses_stats'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/course_history/export_stats$',
         views.download_course_history_stats, name='download_course_history_stats'),
+    url(r'^api/participants/(?P<user_id>[0-9]+)$', views.participant_details_api.as_view(), name='participant_details'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/active_courses$',
         views.participant_details_active_courses_api.as_view(), name='participant_details_active_courses_api'),
     url(r'^api/participants/(?P<user_id>[0-9]+)/course_history$',

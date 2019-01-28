@@ -400,7 +400,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         mainContainer.find('.errorContainer').empty();
 
         confirmButton.off().on('click', function() {
-          var url = ApiUrls.participants_delete+'/'+id+'/';
+          var url = ApiUrls.participants_delete+'/'+id;
           var options = {
             url: url,
             type: "DELETE",
