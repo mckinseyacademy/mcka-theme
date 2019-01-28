@@ -54,13 +54,13 @@ header {
       padding: 0;
       max-width: 155px;
       img {
-        width: 100%;
+        max-width: 100%;
       }
     }
     .topRightArea {
       float: right;
       width: auto;
-      margin: 19px 0 0;
+      margin: 19px 15px 0 0;
     }
     .profileArea {
       float: right;

@@ -566,11 +566,11 @@ blockquote {
           margin: 0 0 0 -3px;
         }
         &.status {
-          width: 100px;
+          width: 130px;
           margin: 0 0 0 -3px;
         }
         &.progressBar{
-          width: 150px;
+          width: 200px;
         }
       }
     }
@@ -656,7 +656,6 @@ blockquote {
       display: block;
       margin: 20px 0 0;
       width: 100%;
-      text-align: center;
     }
 
     &:first-child{
@@ -704,7 +703,12 @@ blockquote {
         &.serial {
           width: 70px;
         }
-        .statusBar{ width: 103px;}
+        &.status{
+          width: 110px;
+        }
+        &.progressBar{
+          width: 180px;
+        }
         .figure{
           margin-right: 0;
         }
