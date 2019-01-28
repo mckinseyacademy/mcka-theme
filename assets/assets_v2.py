@@ -39,3 +39,33 @@ CSS_CORE_V2 = Bundle(
     output='gen/packed_core_v2.css'
 )
 register('css_core_v2', CSS_CORE_V2)
+
+SCSS_LTR_V2 = Bundle(
+    get_assets_v2_path('scss/ltr.scss'),
+    filters='libsass',
+    output='gen/ltr_v2.css',
+    depends=('scss/**/*.scss')
+)
+register('scss_ltr_v2', SCSS_LTR_V2)
+
+CSS_LTR_V2 = Bundle(
+    SCSS_LTR_V2,
+    filters='cssmin',
+    output='gen/packed_ltr_v2.css'
+)
+register('css_ltr_v2', CSS_LTR_V2)
+
+SCSS_RTL_V2 = Bundle(
+    get_assets_v2_path('scss/rtl.scss'),
+    filters='libsass',
+    output='gen/rtl_v2.css',
+    depends=('scss/**/*.scss')
+)
+register('scss_rtl_v2', SCSS_RTL_V2)
+
+CSS_RTL_V2 = Bundle(
+    SCSS_RTL_V2,
+    filters='cssmin',
+    output='gen/packed_rtl_v2.css'
+)
+register('css_rtl_v2', CSS_RTL_V2)
