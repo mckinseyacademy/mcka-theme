@@ -1,13 +1,14 @@
 import json
 from functools import wraps
+import ddt
 
 from django.core.urlresolvers import reverse
+from django.core.files.uploadedfile import File
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
 from django.utils.decorators import available_attrs
 from mock import patch, Mock
 from rest_framework import status
-import ddt
 
 from accounts.models import RemoteUser
 from accounts.tests.utils import ApplyPatchMixin, make_course
@@ -287,6 +288,17 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
             request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
         return request
 
+    def post_request(self, url,  user=None):
+        """
+        POST the given URL, for the optional user, and return the request.
+        """
+        self.patch_user_permissions()
+        request = self.factory.post(url)
+        if user:
+            request.user = user
+            request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
+        return request
+
     def patch_user_permissions(self):
         """
         Patch the authorization hit to say that the mcka_admin is in all groups.
@@ -443,6 +455,39 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
                 self.assertTrue('var course_details_cohorts_available = \'%s\'' % (
                         is_available and not is_client_admin) in response.content)
 
+
+@ddt.ddt
+class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test the enroll_participants_from_csv and import_participants views.
+    """
+    def setUp(self):
+        super(AdminCsvUploadViewsTest, self).setUp()
+
+    @ddt.unpack
+    @ddt.data(
+        (views.enroll_participants_from_csv, 'student_enroll_list',
+         "admin/test_data/enroll-existing-participants.csv", True),
+        (views.import_participants, 'student_list',
+         "admin/test_data/enroll-existing-participants.csv", True),
+
+        (views.enroll_participants_from_csv, '',
+         "admin/test_data/enroll-existing-participants.csv", False),
+        (views.import_participants, '',
+         "admin/test_data/enroll-existing-participants.csv", False),
+    )
+    def test_csv_upload_views(self, view, file_key, test_file_path, is_valid):
+        request = self.post_request('/dummy/',  self.admin_user)
+        with open(test_file_path, "rb") as test_file:
+            test_file = File(test_file)
+            request.FILES.update({file_key: test_file})
+            response = view(request)
+
+            if is_valid:
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertIn('task_key', response.content)
+            else:
+                self.assertEqual(response, None)
 
 
 @ddt.ddt
