@@ -1354,3 +1354,7 @@ def switch_language_based_on_preference(request):
             expires=COOKIES_YEARLY_EXPIRY_TIME
         )
     return response
+
+
+def refresh_user_session(request):
+    return HttpResponse('Session extended')

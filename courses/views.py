@@ -827,7 +827,9 @@ def navigate_to_lesson_module(
         "course": course,
         "right_lesson_module_navigator": right_lesson_module_navigator,
         "left_lesson_module_navigator": left_lesson_module_navigator,
+        "session_timeout_seconds": getattr(settings, "SESSION_TIMEOUT_SECONDS", 1800)
     }
+
     try:
         course_meta_data, created = CourseMetaData.objects.get_or_create(course_id=course_id)
         custom_lesson_label = course_meta_data.lesson_label

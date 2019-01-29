@@ -22,3 +22,11 @@ class SessionTimeout(object):
                 return
 
         request.session['last_touch'] = datetime.now()
+
+    def process_response(self, request, response):
+        response.set_cookie(
+            'last_touch',
+            request.session.get('last_touch'),
+            domain=settings.LMS_SESSION_COOKIE_DOMAIN,
+        )
+        return response
