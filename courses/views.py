@@ -262,6 +262,7 @@ def course_cohort(request, course_id):
         'ta_email': settings.TA_EMAIL_GROUP,
         'leaderboard_ranks': [1, 2, 3],
         'user_role': user_role,
+        'course_id': course_id,
     }
 
     return render(request, 'courses/course_cohort.haml', data)

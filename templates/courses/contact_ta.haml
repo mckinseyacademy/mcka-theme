@@ -5,7 +5,7 @@
   %h2 {% trans "Message your TA" %}
   %hr
   %div {% trans "Send any questions or messages to your TA , and they'll get back to you promptly." %}
-  %form#contact-ta-form{"action": "/courses/#{course.id}/teaching_assistant", "method": "POST"}
+  %form#contact-ta-form{"action": "/courses/#{course_id}/teaching_assistant", "method": "POST"}
     .error
       - if error
         = error
