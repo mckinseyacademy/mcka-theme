@@ -25,6 +25,12 @@ $mckinsey-academy-table-head: #f3f3f3;
 $mckinsey-DnD-gray: #e3e8f0;
 $mckinsey-royal-blue: #0000de;
 
+//new UI colours
+$mckinsey-disabled-button: #696969;
+$mckinsey-default-button: #2042cb;
+$mckinsey-hover-button: #0b0886;
+
+
 // McKinsey Academy Breakpoints
 $media-mcka-phone: 'only screen and (max-width: 540px)'; // Mobile phone; matches edx-platform '$bp-small' breakpoint
 $media-mcka-mobile: 'only screen and (max-width: 768px)'; // Phone or tablet; matches edx-platform '$bp-medium' breakpoint

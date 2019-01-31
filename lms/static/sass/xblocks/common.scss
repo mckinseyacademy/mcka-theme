@@ -3,16 +3,24 @@
 
 .lesson-content {
     .themed-xblock {
+
         input[type="button"],
-        .lesson-content button {
-            background-color: #2042CB;
+        button {
+            background-color: $mckinsey-default-button;
             border-radius: 2px;
             text-transform: uppercase;
             font-size: 16px;
             letter-spacing: 0.67px;
             font-weight: 600;
-            &:disabled{
-                background-color: #696969;
+            height: 40px;
+            padding: 0 10px;
+
+            &:hover {
+                background-color: $mckinsey-hover-button;
+            }
+
+            &:disabled {
+                background-color: $mckinsey-disabled-button;
                 color: #EEEEEE;
             }
         }
