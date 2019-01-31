@@ -58,15 +58,12 @@ header {
       }
     }
     .topRightArea {
-      float: right;
       width: auto;
-      margin: 19px 15px 0 0;
+      margin: 19px 15px 0 15px;
     }
     .profileArea {
-      float: right;
       width: 40px;
       height: 40px;
-      margin: 0 0 0 37px;
       > a {
         display: block;
         height: 100%;
@@ -96,7 +93,6 @@ header {
 
     }
     .headerNav {
-      float: right;
       width: auto;
       margin: 20px 0 0;
       .dropdown-menu {
@@ -123,19 +119,12 @@ header {
       margin: -20px 0 0;
     }
 
-    .avatar-area {
-      margin: 0 28px 0 0;
-    }
-
     .titles-area {
       .nameArea,
       .roleArea {
         > span, a {
           display: inline-block;
           vertical-align: middle;
-        }
-        .edit-link {
-          margin: 0 0 0 10px;
         }
       }
       .nameArea {
@@ -251,9 +240,6 @@ header {
   }
   .navbar-brand{
     padding: 0;
-    img{
-      margin-left: -5px;
-    }
   }
 }
 
@@ -288,7 +274,6 @@ header {
     > li {
       display: inline-block;
       vertical-align: middle;
-      margin: 0 0 0 31px;
       position: relative;
       text-transform: uppercase;
       font-size: 12px;
@@ -328,9 +313,6 @@ header {
           }
         }
       }
-      &:first-child {
-        margin: 0;
-      }
     }
   }
 }
@@ -341,19 +323,17 @@ header {
 
   h1 {
     color: $black;
-    font-family: "Open Sans";
+    font-family: "Open Sans", sans-serif;
     font-size: 42px;
     font-weight: 300;
     line-height: 57px;
     margin: 0 0 15px;
 
     .backBtn {
-      display: inline-block;
       vertical-align: middle;
       display: none;
       i {
         font-size: inherit;
-        margin-left: -4px;
       }
     }
 
@@ -429,7 +409,6 @@ header {
     .topRightArea{
       .profileArea{
         position: absolute;
-        right: 20px;
         top: 15px;
       }
       .headerNav{
@@ -458,14 +437,12 @@ header {
       line-height: 17px;
       font-weight:600;
       text-transform: uppercase;
-      padding-left: 27px;
-    position: relative;
+      position: relative;
 
       .backBtn{
         position: absolute;
         display: block;
         content: '';
-        left: 0;
         top: -2px;
         font-size: 22px;
       }

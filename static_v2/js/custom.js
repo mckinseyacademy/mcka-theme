@@ -116,6 +116,11 @@ $(document).ready(function () {
     $(function () {
         $('[data-toggle="popover"]').popover()
     });
+
+    if ( $('html').attr('dir') == 'rtl' ) {
+        $('.headerNav').find(".dropdown-menu").removeClass("dropdown-menu-right");
+        $('.headerNav').find(".dropdown-menu").addClass("dropdown-menu-left");
+    }
 });
 
 

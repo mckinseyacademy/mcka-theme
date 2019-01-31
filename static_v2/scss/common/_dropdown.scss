@@ -7,7 +7,6 @@
   font-size: 12px;
   line-height: 17px;
   min-width: 176px;
-  padding: 10px 30px;
   top: 6px !important;
   left: 20px !important;
 
@@ -55,9 +54,6 @@
           display: none;
         }
       }
-      .bookmark {
-        left: -30px;
-      }
 
       .holder {
         overflow-x: visible;
@@ -69,6 +65,9 @@
           }
           &.status {
             width: auto;
+          }
+          &.serial{
+            min-width: 65px;
           }
         }
         .description {
@@ -172,6 +171,13 @@
     &.allLessons {
       width: calc(100% - 40px);
       left: 20px !important;
+      .allCoursesList{
+        padding-right: 20px;
+        padding-left: 20px;
+      }
+    }
+    &.large-menu{
+      width: 88% !important;
     }
   }
 }

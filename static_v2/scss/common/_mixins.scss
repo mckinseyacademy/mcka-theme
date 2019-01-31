@@ -28,3 +28,14 @@
   width: $size;
   height: $size;
 }
+
+// Flip Horizontal
+
+@mixin flip-x-axis{
+  -moz-transform: scaleX(-1);
+  -o-transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+  transform: scaleX(-1);
+  filter: FlipH;
+  -ms-filter: "FlipH";
+}

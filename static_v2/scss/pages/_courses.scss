@@ -2,6 +2,7 @@
   h1{
     @include heading1;
     @extend .mb-4;
+    font-family: $body-font-family;
   }
   .card{
     margin-bottom: 30px;
@@ -52,17 +53,14 @@
           }
 
           &.course-progress{
-            float: right;
             margin-top: 3px;
             width: 39%;
-            text-align: right;
             .bar{
               border: 1px solid white;
               height: 13px;
               max-width: 100px;
               margin-top: 2px;
               position: relative;
-              float: right;
               width: 68%;
               display: inline-block;
               &:before{
@@ -71,11 +69,6 @@
                 position: absolute;
                 width: 20%;
                 background-color: $white;
-              }
-            }
-            > span{
-              &:first-child{
-                margin-right: 5px;
               }
             }
           }
@@ -88,7 +81,6 @@
       }
       img.bookmark{
         position: absolute;
-        left: -4px;
         top: 0;
         height: 100%;
       }
@@ -134,9 +126,6 @@
       padding: 0 10px;
       .card{
         margin-bottom: 20px;
-        .card-body{
-          padding: 20px 20px 15px 25px;
-        }
       }
     }
   }

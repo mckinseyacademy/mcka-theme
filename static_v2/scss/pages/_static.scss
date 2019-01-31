@@ -1,6 +1,10 @@
-.static-page{
+.static-page {
   color: $black;
-  .style-2{
+  font-family: 'Open Sans', sans-serif;
+  a {
+    color: $secondary !important;
+  }
+  .style-2 {
     font-size: 1rem;
     font-weight: 600;
     @extend .mt-4;
@@ -10,30 +14,42 @@
     font-size: 1.7rem;
     @extend .mb-4;
   }
-  p{
+  p {
     @extend .mb-2;
   }
-  .accordion{
-    a{
+  .accordion {
+    a {
       cursor: pointer;
       display: block;
       font-size: 1rem;
       padding: 0;
       color: $secondary;
-      @extend .mb-1;
-      &:hover{
+      margin-bottom: .25rem;
+      &:hover {
         color: $secondary;
       }
     }
-    .collapse{
+    .collapse {
       @extend .mb-3;
     }
   }
   &.FAQ {
-    .style-2{
+    .style-2 {
       text-transform: uppercase;
       @extend .mb-3;
       font-size: 0.75rem;
+    }
+  }
+}
+
+// Media Queries
+
+@include media-breakpoint-between(xs, sm) {
+  .static-page {
+    .accordion {
+      a {
+        margin-bottom: .5rem;
+      }
     }
   }
 }

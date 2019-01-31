@@ -1,2 +1,354 @@
 // Bi-App-Sass for APROS
 // Define SASS in LTR abd Bi-App-Sass will automatically write respective RTL
+@import "common/variables";
+@import "bootstrap/bootstrap-grid";
+@import "bootstrap/mixins";
+@import "common/mixins";
+
+// Header
+
+.appHeader {
+  .logo {
+    .navbar-brand {
+      @include float(left);
+      @include text-align(left);
+      img {
+        @include margin-left(-5px);
+      }
+    }
+    .topRightArea {
+      @include float(right);
+      .profileArea {
+        @include float(right);
+        @include margin-left(36px);
+        @include right(20px);
+      }
+    }
+    .headerNav {
+      @include float(right);
+      > ul {
+        > li {
+          @include margin-left(30px);
+        }
+      }
+    }
+  }
+}
+
+// Navbar
+
+.mainNav {
+  > ul {
+    > li {
+      @include margin-left(30px);
+      &:first-child {
+        @include margin-left(0);
+      }
+    }
+  }
+}
+
+.courseMainHeader {
+  h1 {
+    @include media-breakpoint-between(xs, sm) {
+      @include padding-left(27px);
+    }
+    .backBtn {
+      @include media-breakpoint-between(xs, sm) {
+        @include left(0);
+      }
+      i {
+        @include margin-left(-4px);
+      }
+    }
+  }
+}
+
+.courseNavWrap {
+  .pn-ProductNav_Contents {
+    @include float(left);
+  }
+}
+
+// Nav
+
+.dropdown-menu {
+  @include padding(10px, 30px, 10px, 30px);
+  .allCoursesList {
+    > .courseRow {
+      .holder {
+
+      }
+    }
+  }
+  &.allLessons {
+    .allCoursesList {
+      .bookmark {
+        @include left(-30px);
+        @include right(auto);
+        @include media-breakpoint-between(xs, sm) {
+          @include left(-22px);
+        }
+      }
+    }
+  }
+}
+
+.profileDropdown {
+  .header {
+    .titles-area {
+      @include margin-right(28px);
+    }
+    .nameArea,
+    .titlesArea {
+      .edit-link {
+        @include margin-left(10px);
+      }
+    }
+    .avatar-area {
+      @include margin-right(28px);
+    }
+  }
+}
+
+// Course List
+
+.my-courses {
+  .card {
+    .card-body {
+      @include padding-left(20px 20px 15px 25px);
+      .course-detail {
+        > span.course-progress {
+          @include float(right);
+          @include text-align(right);
+          .bar {
+            @include float(right);
+          }
+          > span {
+            &:first-child {
+              @include margin-right(5px);
+            }
+          }
+        }
+      }
+      img.bookmark {
+        @include left(-4px);
+      }
+    }
+  }
+}
+
+// Widgets
+
+#course-statistics {
+  .widget {
+    @include margin-left(-4px);
+    @include border-left(1px solid $hard-gray);
+    &:first-child {
+      @include padding-left(0);
+      @include border-left(0);
+    }
+    &:last-child {
+      @include padding-right(0);
+    }
+    .progressArea {
+      @include float(right);
+      @include media-breakpoint-between(xs, sm) {
+        float: none;
+      }
+    }
+    &.course-progress {
+      .progressArea {
+        @include float(none);
+        span {
+          @include margin-left(6px);
+        }
+      }
+    }
+  }
+}
+
+.socialWidgets {
+  .widget {
+    > .holder {
+      @include border-left(1px solid $hard-gray);
+    }
+    &:first-child {
+      > .holder {
+        @include border-left(0);
+      }
+    }
+  }
+  .head {
+    h5 {
+      @include margin-left(15px);
+    }
+  }
+  .contentCard {
+    [class*="col"] {
+      //h5 {
+      //  @include margin-left(30px);
+      //}
+      //&:first-child {
+      //  h5 {
+      //    @include margin-left(15px);
+      //  }
+      //}
+    }
+  }
+  .articlesArea {
+    .holder {
+      @include margin-right(30px);
+      h5 {
+        @include margin-left(15px);
+      }
+    }
+    ul {
+      li {
+        @include padding-right(24px);
+        @include padding-left(17px);
+      }
+    }
+  }
+  .socialArea {
+    .tweet {
+      > a {
+        @include float(left);
+        @include margin-right(20px);
+      }
+    }
+  }
+  .videoWidgets {
+    .videoWrap {
+      @include float(left);
+      @include margin-right(15px);
+    }
+  }
+}
+
+// Lesson List
+
+.allCoursesList {
+  > .courseRow {
+    .bookmark {
+      @include left(0);
+    }
+    .status {
+      @include margin-right(7px);
+    }
+    .progressBar {
+      .figure {
+        @include margin-right(12px);
+        @include media-breakpoint-between(xs, sm) {
+          @include margin-right(2px);
+        }
+      }
+    }
+  }
+  .holder {
+    .data {
+      .statusBar {
+        .progress-counter {
+          &:before {
+            @include left(0);
+            @include right(auto);
+          }
+        }
+      }
+    }
+  }
+}
+
+// Modal
+
+.modal.middleSize {
+  .modal-header {
+    .close {
+      @include margin-left(auto);
+      @include margin-right(-1.9rem);
+    }
+  }
+}
+
+// Footer
+
+footer {
+  ul {
+    li {
+      a.nav-link {
+        &:before {
+          @include left(0);
+        }
+      }
+    }
+  }
+}
+
+// CSS specific styles
+
+body.rtl {
+  .my-courses {
+    .card {
+      .card-body {
+        img.bookmark {
+          @include flip-x-axis;
+        }
+      }
+    }
+  }
+  #course-statistics {
+    .widget {
+      &.course-progress {
+        .progressArea {
+          span {
+            @include media-breakpoint-between(xs, sm) {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+  .allCoursesList {
+    > .courseRow {
+      .bookmark {
+        @include flip-x-axis;
+      }
+    }
+  }
+  .courseMainHeader {
+    h1 {
+      .backBtn {
+        i {
+          @include flip-x-axis;
+        }
+      }
+    }
+  }
+  .socialWidgets {
+    .videosWidget {
+      h5 {
+        margin-right: 0;
+      }
+    }
+  }
+  form {
+    .form-label {
+      transform: translate(-15px, 15px);
+    }
+    .focused {
+      .form-label {
+        transform: translate(0, -18px);
+      }
+    }
+  }
+  .dropdown-menu {
+    &.allLessons {
+      .allCoursesList {
+        .bookmark {
+          @include flip-x-axis;
+        }
+      }
+    }
+  }
+}
