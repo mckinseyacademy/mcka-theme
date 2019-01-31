@@ -63,14 +63,7 @@
       %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
     {% endassets %}
 
-    - if LANGUAGE_BIDI
-      {% assets "scss_rtl_v2" %}
-        %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
-      {% endassets %}
-    - else
-      {% assets "scss_ltr_v2" %}
-        %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
-      {% endassets %}
+
 
     - if '/admin' in request.path
       {% assets "css_admin" %}
