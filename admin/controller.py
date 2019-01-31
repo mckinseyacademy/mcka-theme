@@ -1250,76 +1250,37 @@ def get_course_social_engagement(course_id, company_id):
 
 
 def get_course_engagement_summary(course_id, company_id):
-    params = {
-        'page_size': 0,
-        'fields': 'id,is_active,last_login',
-    }
-    if company_id:
-        params.update({'organizations': company_id})
-    course_users_simple = course_api.get_course_details_users(course_id, params)
+    course_stats = course_api.get_course_engagement_summary(course_id, company_id)
+    for key, value in course_stats.iteritems():
+        course_stats[key] = round_to_int_bump_zero(value)
 
-    course_users_ids = [str(user['id']) for user in course_users_simple]
-    roles = course_api.get_users_filtered_by_role(course_id)
-    roles_ids = [str(user.id) for user in roles]
-    for role_id in roles_ids:
-        if role_id in course_users_ids:
-            course_users_ids.remove(role_id)
-
-    course_users = []
-    for user in course_users_simple:
-        if str(user['id']) in course_users_ids:
-            course_users.append(user)
-
-    if company_id:
-        course_metrics = course_api.get_course_details_completions_leaders(course_id, company_id)
-    else:
-        course_metrics = course_api.get_course_details_completions_leaders(course_id)
-
-    course_leaders_ids = [str(leader['id']) for leader in course_metrics['leaders']]
-
-    active_users = 0
-    login_users = 0
-    login_users_progress = 0
-    engaged_users = 0
-    engaged_progress_sum = 0
-    course_users_filtered_ids = [str(user['id']) for user in course_users]
-    for leader in course_metrics['leaders']:
-        if str(leader['id']) in course_users_filtered_ids:
-            engaged_progress_sum += leader['completions']
-    for course_user in course_users:
-        if course_user['is_active'] is True:
-            active_users += 1
-        if course_user['last_login'] and \
-                parsedate(course_user['last_login']) >= (timezone.now() - timezone.timedelta(days=7)):
-            login_users += 1
-            for leader in course_metrics['leaders']:
-                if leader['id'] == course_user['id']:
-                    login_users_progress += leader['completions']
-        if str(course_user['id']) in course_leaders_ids:
-            engaged_users += 1
-
-    course_progress = round_to_int_bump_zero(float(engaged_progress_sum) / len(course_users)) if len(
-        course_users) > 0 else 0
-    activated = round_to_int_bump_zero((float(active_users) / len(course_users)) * 100) if len(course_users) > 0 else 0
-    engaged = round_to_int_bump_zero((float(engaged_users) / len(course_users)) * 100) if len(course_users) > 0 else 0
-    active_progress = round_to_int_bump_zero(float(engaged_progress_sum) / active_users) if active_users > 0 else 0
-    engaged_progress = round_to_int_bump_zero(float(engaged_progress_sum) / engaged_users) if engaged_users > 0 else 0
-    logined_users = round_to_int_bump_zero((float(login_users) / len(course_users)) * 100) if len(
-        course_users) > 0 else 0
-    login_progress = round_to_int_bump_zero((float(login_users_progress) / login_users)) if login_users > 0 else 0
-
-    course_stats = [
-         {'name': _('Total Cohort'), 'people': len(course_users), 'invited': '-',
-          'progress': str(course_progress) + '%'},
-         {'name': _('Activated'), 'people': active_users, 'invited': str(activated) + '%',
-          'progress': str(active_progress) + '%'},
-         {'name': _('Engaged'), 'people': engaged_users, 'invited': str(engaged) + '%',
-          'progress': str(engaged_progress) + '%'},
-         {'name': _('Logged in over last 7 days'), 'people': login_users, 'invited': str(logined_users) + '%',
-          'progress': str(login_progress) + '%'}
+    data = [
+        {
+            'name': _('Total Cohort'),
+            'people': course_stats['total_users'],
+            'invited': '-',
+            'progress': str(course_stats['total_course_progress']) + '%'
+        },
+        {
+            'name': _('Activated'),
+            'people': course_stats['active_users'],
+            'invited': str(course_stats['active_users_percentage']) + '%',
+            'progress': str(course_stats['active_users_progress']) + '%'
+        },
+        {
+            'name': _('Engaged'),
+            'people': course_stats['engaged_users'],
+            'invited': str(course_stats['engaged_users_percentage']) + '%',
+            'progress': str(course_stats['engaged_users_progress']) + '%'
+        },
+        {
+            'name': _('Logged in over last 7 days'),
+            'people': course_stats['last_week_login_users'],
+            'invited': str(course_stats['last_week_login_users_percentage']) + '%',
+            'progress': str(course_stats['last_week_login_users_progress']) + '%'
+        }
     ]
-
-    return course_stats
+    return data
 
 
 def course_bulk_actions(course_id, data, batch_status, request):

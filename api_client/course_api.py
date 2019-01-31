@@ -879,6 +879,23 @@ def get_course_details_users(course_id, qs_params=''):
 
 
 @api_error_protect
+def get_course_engagement_summary(course_id, organization_id, **kwargs):
+    qs_params = {}
+    if organization_id:
+        qs_params["organizations"] = organization_id
+    qs_params.update(kwargs)
+
+    edx_oauth2_session = get_oauth2_session()
+    url = '{}/{}/{}/engagement_summary?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        urlencode(qs_params)
+    )
+    return edx_oauth2_session.get(url).json()
+
+
+@api_error_protect
 def get_course_details_groups(course_id):
 
     response = GET('{}/{}/{}/groups'.format(
