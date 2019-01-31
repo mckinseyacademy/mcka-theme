@@ -33,6 +33,7 @@ refresh_assets.sh
 ### pycharm helper folder
 .pycharm_helpers/
 
-# Export artifacts
+# Export/Import artifacts
 csv_exports/
 import_participant_files/
+certificates/template_assets/

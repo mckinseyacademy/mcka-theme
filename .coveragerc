@@ -30,12 +30,8 @@ exclude_lines =
     pragma: no cover
     raise NotImplementedError
 
-[html]
-title = mcka_apros Python Test Coverage Report
-directory = reports/cover_html
-
 [xml]
-output = reports/coverage.xml
+output = coverage.xml
 
 [paths]
 devstack_source =

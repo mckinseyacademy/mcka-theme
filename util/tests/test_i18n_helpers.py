@@ -31,3 +31,6 @@ class I18nHelperTest(TestCase, ApplyPatchMixin):
         set_language(language)
         self.assertEqual(language, translation.get_language())
         self.assertEqual(language, self.request.session[translation.LANGUAGE_SESSION_KEY])
+
+    def tearDown(self):
+        set_language('en-us')

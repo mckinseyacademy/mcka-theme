@@ -1,12 +1,10 @@
 import json
-from functools import wraps
 import ddt
 
 from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import File
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
-from django.utils.decorators import available_attrs
 from mock import patch, Mock
 from rest_framework import status
 
@@ -20,41 +18,9 @@ from api_client import user_api, group_api
 from api_client.api_error import ApiError
 from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map
-from lib.utils import DottableDict
+from public_api.models import ApiToken
 from .test_task_runner import mocked_task
 from admin.models import ClientCustomization
-
-_FAKE_USER_OBJ = DottableDict({
-    "id": '1',
-    "username": 'mcka_admin_test_user',
-    "first_name": 'mcka_admin',
-    "last_name": 'Tester',
-    "email": "mcka_admin_test_user@mckinseyacademy.com",
-    "password": "PassworD12!@",
-    'is_mcka_admin': True
-})
-
-
-def _fake_permission_group_required(*group_names):  # pylint: disable=unused-argument
-    """
-    Fake method for permission_group_required method
-    """
-
-    def decorator(view_fn):
-        def _wrapped_view(request, *args, **kwargs):
-            # faking request user
-            request.user = _FAKE_USER_OBJ
-            return view_fn(request, *args, **kwargs)
-
-        return wraps(view_fn, assigned=available_attrs(view_fn))(_wrapped_view)
-
-    return decorator
-
-
-permission_patcher = patch(
-    'lib.authorization.permission_group_required',
-    _fake_permission_group_required
-).start()
 
 
 def _create_user():

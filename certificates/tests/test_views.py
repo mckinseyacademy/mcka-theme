@@ -41,6 +41,7 @@ _FAKE_USER_OBJ = DottableDict({
     "username": "ecommerce_worker",
     "full_name": "Ecommerce worker",
     "is_internal_admin": False,
+    "is_authenticated": True,
 })
 
 
