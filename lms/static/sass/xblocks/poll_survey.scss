@@ -1,0 +1,12 @@
+//  Overrides for xblocks polls & surveys:
+@import '../base/variables';
+
+.lesson-content {
+    .themed-xblock {
+        .poll-container {
+            .poll-answer {
+                display: inline-table;
+            }
+        }
+    }
+}
