@@ -84,7 +84,6 @@ class MockReviewAssignmentGroupCollection(object):
                 rag.add_user(user_id)
 
 
-
 def make_side_effect_raise_value_error():
     thrown_error = mock.Mock()
     thrown_error.reason = "I have no idea, but luckily it is irrelevant for the test"
