@@ -18,6 +18,7 @@ from api_client import user_api, group_api
 from api_client.api_error import ApiError
 from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map
+from public_api.models import ApiToken
 from .test_task_runner import mocked_task
 from admin.models import ClientCustomization
 
