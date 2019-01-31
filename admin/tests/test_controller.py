@@ -132,14 +132,6 @@ def MockEngagementScore(object):
 
 
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
-    @override_settings(CELERY_ALWAYS_EAGER=True)
-    def test_get_engagement_scores(self):
-        self.apply_patch('api_client.course_api.get_course_social_metrics', new=MockEngagementScore)
-        test_object = CourseParticipantStats('1', 'base/url')
-        u_ids = ['1', '2']
-        engagement_scores = test_object._get_engagement_scores()
-        self.assertEqual(engagement_scores[u_ids[0]], 85)
-        self.assertEqual(engagement_scores[u_ids[1]], 35)
 
     def test__get_lesson_completions(self):
         test_username = u'test_user'
