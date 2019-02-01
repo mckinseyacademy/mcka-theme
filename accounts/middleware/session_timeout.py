@@ -7,8 +7,7 @@ from api_client.user_api import get_user_dict
 
 
 def expire_session(request):
-    if 'last_touch' in request.session:
-        del request.session['last_touch']
+    request.session.pop('last_touch', None)
     logout(request)
 
 
