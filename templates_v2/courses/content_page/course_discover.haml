@@ -3,7 +3,7 @@
 .contentCardWrap.socialWidgets
   .head
     %h5
-      {% trans "DISCOVER" %}
+      {% trans "Discover" %}
   .contentCard
     .row
       .widget.articlesArea.col-lg-4.col-md-12
@@ -41,9 +41,6 @@
                     @{{tweet.twitter_username}}
 
               .tweet-body.label-2= tweet.body|safe
-              %a{"href": "http://goo.gl/cllMQ7", 'target': '_blank'}
-                http://goo.gl/cllMQ7
-
 
           .videosWidget
             %h5
@@ -53,7 +50,7 @@
                 %li
                   .videoWrap
                     %a{"href":"#{video.url}"}
-                      %img.img-fluid{:src => "/static/image/vid-2.png"}
+                      %img.img-fluid{:src => "{{ video.thumbnail_url }}"}
                   .content
                     - if video.title
                       %a.title{"href": "#{video.url}"}= video.title

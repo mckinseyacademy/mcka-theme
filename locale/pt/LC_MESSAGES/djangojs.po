@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-28 08:09+0000\n"
+"POT-Creation-Date: 2019-01-31 11:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -295,6 +295,10 @@ msgstr "Webinário"
 msgid "Digital Content"
 msgstr "Conteúdo Digital"
 
+#: static/js/course_lesson.js:5
+msgid "It looks like you're not active. Click OK to keep working."
+msgstr ""
+
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
 msgstr "Nenhum arquivo selecionado"
@@ -417,25 +421,25 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
-#: static/js/views/admin/companies_list.js:15
+#: static/js/views/admin/companies_list.js:12
 #: static/js/views/admin/course_details.js:29
 #: static/js/views/admin/participantsinfo.js:24
 msgid "Company"
 msgstr "Empresa"
 
-#: static/js/views/admin/companies_list.js:23
+#: static/js/views/admin/companies_list.js:20
 msgid "Company ID"
 msgstr "ID da empresa"
 
-#: static/js/views/admin/companies_list.js:24
+#: static/js/views/admin/companies_list.js:21
 msgid "No. of Participants"
 msgstr "Nº de participantes"
 
-#: static/js/views/admin/companies_list.js:25
+#: static/js/views/admin/companies_list.js:22
 msgid "No. of Courses"
 msgstr "Nº de cursos"
 
-#: static/js/views/admin/companies_list.js:98
+#: static/js/views/admin/companies_list.js:107
 #: static/js/views/admin/company_details.js:192
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:487
@@ -443,7 +447,7 @@ msgstr "Nº de cursos"
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "O nome da empresa deve conter apenas caracteres alfanuméricos!"
 
-#: static/js/views/admin/companies_list.js:105
+#: static/js/views/admin/companies_list.js:114
 #: static/js/views/admin/company_details.js:187
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:481
@@ -451,7 +455,7 @@ msgstr "O nome da empresa deve conter apenas caracteres alfanuméricos!"
 msgid "This company name cannot have more than 30 characters!"
 msgstr "O nome da empresa deve ter, no máximo, 30 caracteres!"
 
-#: static/js/views/admin/companies_list.js:142
+#: static/js/views/admin/companies_list.js:151
 msgid "Couldn't create new company!"
 msgstr "Não foi possível criar nova empresa!"
 

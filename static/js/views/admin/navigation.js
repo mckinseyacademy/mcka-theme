@@ -41,7 +41,6 @@ function getCookie(name)
 
 $(document).ready(function () {
     $('.ui-checker').click(function () {
-        debugger;
         if($('.ui-checker').is(':checked')){
             $('.switch-text').text("ON");
         }
