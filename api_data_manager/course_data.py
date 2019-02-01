@@ -19,6 +19,8 @@ COURSE_PROPERTIES = DottableDict(
     TAB_CONTENT='tabs_content',
     COURSE_META_DATA='course_meta_data',
     AVERAGE_SCORES='average_scores',
+    TOTAL_LESSONS='total_lessons',
+    TOTAL_STAFF_TOOLS='total_staff_tools',
 )
 
 
@@ -29,6 +31,22 @@ class CourseDataManager(DataManager):
     def __init__(self, course_id):
         self.course_id = course_id
         self.cache_unique_identifier = self.course_id
+
+    @property
+    def total_lessons(self):
+        return self.get_cached_data(property_name=COURSE_PROPERTIES.TOTAL_LESSONS)
+
+    @total_lessons.setter
+    def total_lessons(self, total_lessons):
+        self.set_cached_data(COURSE_PROPERTIES.TOTAL_LESSONS, total_lessons)
+
+    @property
+    def total_staff_tools(self):
+        return self.get_cached_data(property_name=COURSE_PROPERTIES.TOTAL_STAFF_TOOLS)
+
+    @total_staff_tools.setter
+    def total_staff_tools(self, total_staff_tools):
+        self.set_cached_data(COURSE_PROPERTIES.TOTAL_STAFF_TOOLS, total_staff_tools)
 
     def get_curated_content_data(self):
         curated_content_data = self.get_cached_data(property_name=COURSE_PROPERTIES.CURATED_CONTENT)

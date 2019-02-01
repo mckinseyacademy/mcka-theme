@@ -1,37 +1,38 @@
 - load i18n
+- load staticfiles
 
-- for program_course in courses
+- for course in courses
   .col-sm-12.col-md-6.col-lg-4
-    %a.d-block{:href => "#{program_course.nav_url}"}
-      .card
+    %a.d-block{:href => "#{course.nav_url}"}
+      .card{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img
-          %img.card-img-top{:alt => "Card image cap", :src => "static/image/1.jpg"}
+          %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_url}}", :onerror=> 'this.src="{% static "image/1.jpg" %}"'}
         .card-body
-          - if program_course and current_course
-            - if program_course.id == current_course.id
+          - if course and current_course
+            - if course.id == current_course.id
               %img.bookmark{:src => "static/image/bookmark.svg"}
           %h3.card-title
-            = program_course.name
+            = course.name
           .course-detail
             %span.lesson-count
-              17 {% trans "Lessons" %}
+              = course.total_lessons
+              {% trans "Lessons" %}
             %span.course-status
-              - if program_course.ended
-                %i.material-icons panorama_fish_eye
+              - if course.ended
+                %i.material-icons archived
                 {% trans "Archived" %}
-              - elif program_course.started
+              - elif course.started
                 %i.material-icons tonality
                 {% trans "In Progress" %}
-              - elif not program_course.started
-                %i.material-icons
+              - elif not course.started
+                %i.material-icons panorama_fish_eye
                 {% trans "Not Started" %}
-              - elif program_course.percent_complete == 100
+              - elif course.percent_complete == 100
                 %i.material-icons check_circle
                 {% trans "Completed" %}
               - else
                 {% trans "Coming Soon" %}
             %span.course-progress
-              = program_course.percent_complete
-
-              %span%
+              {{course.percent_complete}}%
               %span.bar
+                %span{:style => "width: {{course.percent_complete}}%"}

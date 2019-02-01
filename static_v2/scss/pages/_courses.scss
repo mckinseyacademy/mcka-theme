@@ -9,6 +9,9 @@
     border: 0;
     .overlay-img{
       position: relative;
+      height: 190px;
+      max-height: 190px;
+      overflow: hidden;
       .card-img-top{
         @include border-top-radius(4px);
       }
@@ -54,28 +57,38 @@
 
           &.course-progress{
             margin-top: 3px;
-            width: 39%;
+            width: 42%;
             .bar{
               border: 1px solid white;
               height: 13px;
-              max-width: 100px;
+              width: 100px;
               margin-top: 2px;
+              float: right;
               position: relative;
               width: 68%;
               display: inline-block;
-              &:before{
-                @include absolute-100;
-                content: '';
-                position: absolute;
-                width: 20%;
-                background-color: $white;
-              }
+            }
+            > span{
+                span {
+                  position: relative;
+                  height: 11px;
+                  display: block;
+                  background-color: $white;
+                  &:before {
+                    @include absolute-100;
+                    right: auto;
+                    content: '';
+                    position: absolute;
+                    width: inherit;
+                  }
+                }
             }
           }
           .material-icons{
             font-size: 1rem;
             vertical-align: sub;
             margin-right: 2px;
+            max-width: 16px;
           }
         }
       }

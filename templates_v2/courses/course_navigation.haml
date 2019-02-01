@@ -15,5 +15,9 @@
   .container.my-courses
     %h1
       {% trans "My Courses" %}
+    %script
+      if (!window.window.location.href.endsWith('/courses/')){
+        $('.container.my-courses > h1').css("display", "none");
+      }
     .row
       - block current_content

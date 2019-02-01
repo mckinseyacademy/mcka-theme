@@ -14,13 +14,14 @@ from django.views.decorators.http import require_POST
 from django.core.exceptions import ObjectDoesNotExist
 from django.template import loader
 
-from admin.controller import load_course
+from admin.controller import load_course, _clean_course_content
 from admin.models import (
     WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery,
     TileBookmark, LearnerDashboardTileProgress, LearnerDashboardBranding
 )
 from admin.views import AccessChecker
 from api_client import course_api, user_api, workgroup_api
+from api_client.course_api import course_detail_processing, get_course_completions, get_courses_tree
 from api_client.platform_api import update_course_mobile_available_status
 from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
@@ -59,7 +60,7 @@ from .user_courses import (
     check_user_course_access, load_course_progress,
     check_company_admin_user_access,
     set_current_course_for_user, check_course_shell_access,
-    get_program_menu_list, UserDataManager,
+    get_program_menu_list, UserDataManager, get_course_menu_list
 )
 from .course_tree_builder import CourseTreeBuilder
 
@@ -1516,12 +1517,56 @@ def get_user_complete_gradebook_json(request, course_id):
 
 @login_required
 def courses(request):
+    def _is_staff_tool(chapter):
+        if chapter.category == 'pb-instructor-tool':
+            return True
+
+        return any([_is_staff_tool(c) for c in chapter.children])
+
     """
     renders user courses menu on click from frontend
     """
-    programs = get_program_menu_list(request)
-    data = dict(programs=programs)
-    return render(request, 'courses/courses.haml', data)
+    raw_courses = get_course_menu_list(request)
+    cids = [rc.id for rc in raw_courses]
+
+    # Get course ids with no total_lessons cached and only request tree for those courses.
+    cids = [cid for cid in cids if CourseDataManager(cid).total_lessons is None]
+
+    if cids:
+        courses_tree = get_courses_tree(cids)
+
+        for course_tree in courses_tree:
+            for raw_course in raw_courses:
+                if course_tree.id != raw_course.display_id:
+                    continue
+
+                course_tree = course_detail_processing(course_tree)
+                course_tree = _clean_course_content(course_tree, course_tree.id)
+
+                staff_tools = len([c for c in course_tree.chapters if _is_staff_tool(c)])
+
+                course = CourseDataManager(raw_course.display_id)
+                course.total_lessons = len(course_tree.chapters) - staff_tools
+                course.total_staff_tools = staff_tools
+
+    user = request.user
+    is_admin = any([user.is_mcka_admin, user.is_mcka_subadmin])
+    for raw_course in raw_courses:
+        roles = request.user.get_roles_on_course(raw_course.display_id)
+        roles = [role.role for role in roles]
+        is_staff = 'staff' in roles or 'instructor' in roles
+        course = CourseDataManager(raw_course.display_id)
+        if is_staff and is_admin:
+            raw_course.total_lessons = course.total_lessons + course.total_staff_tools
+        else:
+            raw_course.total_lessons = course.total_lessons
+
+    completions = get_course_completions(username=request.user.username, page_size=0, extra_fields=None)
+    for raw_course in raw_courses:
+        completion = completions.get(raw_course.display_id)
+        raw_course.percent_complete = round_to_int(completion.get('completion', {}).get('percent', 0) * 100)
+
+    return render(request, 'courses/courses.haml', dict(courses=raw_courses))
 
 
 @login_required

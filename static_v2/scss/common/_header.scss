@@ -53,9 +53,6 @@ header {
     .navbar-brand {
       padding: 0;
       max-width: 155px;
-      img {
-        max-width: 100%;
-      }
     }
     .topRightArea {
       width: auto;
@@ -298,7 +295,7 @@ header {
           width: 0;
           height: 3px;
           background: transparent;
-          bottom: -1px;
+          bottom: -3px;
           transition: all ease 0.3s;
           left: 50%;
           transform: translateX(-50%);

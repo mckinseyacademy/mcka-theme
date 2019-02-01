@@ -123,11 +123,7 @@
           @include text-align(right);
           .bar {
             @include float(right);
-          }
-          > span {
-            &:first-child {
-              @include margin-right(5px);
-            }
+            @include margin-left(5px);
           }
         }
       }

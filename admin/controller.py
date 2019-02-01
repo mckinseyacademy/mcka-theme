@@ -157,11 +157,7 @@ def _find_group_project_v2_blocks_in_chapter(chapter):
     )
 
 
-def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, user=None):
-    '''
-    Gets the course from the API, and performs any post-processing for Apros specific purposes
-    '''
-
+def _clean_course_content(course, course_id):
     def is_discussion_chapter(chapter):
         return chapter.name.startswith(settings.DISCUSSION_IDENTIFIER)
 
@@ -182,8 +178,6 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
         return (not is_discussion_chapter(chapter) and
                 not is_group_project_chapter(chapter) and
                 not is_group_project_v2_chapter(chapter))
-
-    course = course_api_impl.get_course(course_id, depth, user=user)
 
     # Find group projects
     course.group_projects = []
@@ -217,6 +211,15 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
     course.chapters = [chapter for chapter in course.chapters if is_normal_chapter(chapter)]
 
     return course
+
+
+def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_api, user=None):
+    '''
+    Gets the course from the API, and performs any post-processing for Apros specific purposes
+    '''
+
+    course = course_api_impl.get_course(course_id, depth, user=user)
+    return _clean_course_content(course, course_id)
 
 
 def load_course(

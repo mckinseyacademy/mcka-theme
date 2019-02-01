@@ -21,6 +21,7 @@ from .json_requests import GET, POST
 from .oauth2_requests import get_oauth2_session, get_and_unpaginate
 
 COURSEWARE_API = getattr(settings, 'COURSEWARE_API', 'api/server/courses')
+COURSES_TREE_API = getattr(settings, 'COURSES_TREE_API', 'api/server/courses/tree')
 COURSE_ENROLLMENT_API = getattr(settings, 'COURSE_ENROLLMENT_API', 'api/enrollment/v1/enrollments')
 COURSE_ENROLLMENT_API_MAX_PAGE = 3
 COURSE_COMPLETION_API = getattr(settings, 'COURSE_COMPLETION_API', 'api/completion-aggregator/v1/course')
@@ -271,6 +272,23 @@ def get_course_shallow(course_id):
     response = edx_oauth2_session.get(url)
 
     return response.json()
+
+
+@api_error_protect
+def get_courses_tree(course_ids):
+    '''
+    Retrieves course structure information from the API for specified course
+    '''
+    edx_oauth2_session = get_oauth2_session()
+    qs_params = {"course_ids": ",".join(course_ids)}
+    url = '{}/{}/?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSES_TREE_API,
+        urlencode(qs_params)
+    )
+    response = edx_oauth2_session.get(url)
+
+    return CJP.from_json(response.text)
 
 
 @api_error_protect

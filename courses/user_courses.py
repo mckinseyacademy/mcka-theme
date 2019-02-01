@@ -246,43 +246,12 @@ def standard_data(request):
 
 
 def get_program_menu_list(request):
-    common_data_manager = CommonDataManager()
-
-    user_data_manager = UserDataManager(user_id=request.user.id)
-    user_data = user_data_manager.get_basic_user_data()
-    current_course = user_data.current_course
-
-    program_courses_mapping = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING)
-    companion_app_course_ids = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.COMPANION_APP_COURSES)
-
-    user_programs = Program.user_program_list(request.user.id)
-    user_courses = user_api.get_user_courses(request.user.id)
-
-    if companion_app_course_ids is None:
-        companion_app = mobileapp_api.get_mobile_apps({"app_name": "LBG"})
-        companion_app_orgs = companion_app['results'][0]['organizations'] if companion_app.get('results') else []
-
-        companion_app_courses = []
-        # get all the courses of companion app
-        for org_id in companion_app_orgs:
-            org_companion_app_courses = organization_api.get_organizations_courses(org_id)
-            companion_app_courses.extend(org_companion_app_courses)
-
-        # get the mobile available courses of companion app
-        companion_app_course_ids = [course['id'] for course in companion_app_courses if course['mobile_available']]
-
-        common_data_manager.set_cached_data(
-            COMMON_DATA_PROPERTIES.COMPANION_APP_COURSES,
-            data=companion_app_course_ids
-        )
-
-    # remove the user courses that are part of companion app
-    user_courses = [course for course in user_courses if course.id not in companion_app_course_ids]
+    current_course, user_courses, common_data_manager = _get_user_courses(request)
 
     programs = []
-
     current_program = None
-
+    user_programs = Program.user_program_list(request.user.id)
+    program_courses_mapping = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.PROGRAM_COURSES_MAPPING)
     for program in user_programs:
         row = []
         program_courses = []
@@ -319,6 +288,46 @@ def get_program_menu_list(request):
                 move_course_to_first_place(program, current_course)
             programs.insert(0, programs.pop(i))
     return programs
+
+
+def get_course_menu_list(request):
+    current_course, user_courses, _ = _get_user_courses(request)
+    user_courses = [u for u in user_courses if not u.ended] + [u for u in user_courses if u.ended]
+    return user_courses
+
+
+def _get_user_courses(request):
+    common_data_manager = CommonDataManager()
+
+    user_data_manager = UserDataManager(user_id=request.user.id)
+    user_data = user_data_manager.get_basic_user_data()
+    current_course = user_data.current_course
+
+    companion_app_course_ids = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.COMPANION_APP_COURSES)
+
+    user_courses = user_data.courses
+
+    if companion_app_course_ids is None:
+        companion_app = mobileapp_api.get_mobile_apps({"app_name": "LBG"})
+        companion_app_orgs = companion_app['results'][0]['organizations'] if companion_app.get('results') else []
+
+        companion_app_courses = []
+        # get all the courses of companion app
+        for org_id in companion_app_orgs:
+            org_companion_app_courses = organization_api.get_organizations_courses(org_id)
+            companion_app_courses.extend(org_companion_app_courses)
+
+        # get the mobile available courses of companion app
+        companion_app_course_ids = [course['id'] for course in companion_app_courses if course['mobile_available']]
+
+        common_data_manager.set_cached_data(
+            COMMON_DATA_PROPERTIES.COMPANION_APP_COURSES,
+            data=companion_app_course_ids
+        )
+
+    # remove the user courses that are part of companion app
+    user_courses = [course for course in user_courses if course.id not in companion_app_course_ids]
+    return current_course, user_courses, common_data_manager
 
 
 def move_course_to_first_place(program, current_course):
