@@ -1,0 +1,266 @@
+// Resources
+
+.contentCard {
+  &.courseResourse {
+    padding: 30px;
+  }
+}
+
+// For The old UI Structure support
+#course-resources {
+  h1 {
+    @include heading2();
+    line-height: 43px;
+    text-transform: capitalize;
+    margin-bottom: 18px;
+  }
+
+  i.fa.fa-fw {
+    display: none;
+  }
+
+  i.fa::before {
+    @extend .d-block;
+    min-width: 12px;
+    text-align: right;
+    margin-right: 3px;
+  }
+
+  .fa-li{
+    left: 0;
+    position: relative;
+  }
+
+  table {
+    background: #fff;
+    width: 100%;
+    border: none;
+    tr {
+      td {
+        padding: .64286rem .71429rem;
+      }
+    }
+    h2 {
+      line-height: 22px;
+      margin: 4px 0 0;
+      font-weight: normal;
+      a {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 7px 0 0;
+        position: relative;
+        font-size: 16px;
+        line-height: 22px;
+        padding-left: 1.742857rem;
+        &:hover {
+          i {
+            color: $dark-blue
+          }
+          color: $dark-blue;
+        }
+        i {
+          font-size: 18px;
+          line-height: 22px;
+          color: $secondary;
+          position: absolute;
+          top: 0.14285714em;
+          text-align: center;
+          left: 0;
+          width: auto;
+        }
+      }
+    }
+  }
+
+  hr {
+    margin-top: 25px;
+    margin-bottom: 25px;
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid $gray-border;
+    padding: 0;
+
+  }
+  .sub-1 {
+    text-transform: uppercase;
+    color: $black;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 17px;
+    margin-bottom: 12px;
+  }
+
+  ul.fa-ul {
+    margin: 0 0 20px;
+    > li {
+      position: relative;
+      margin-top: 4px;
+      color: $gray;
+      font-size: 12px;
+      line-height: 22px;
+
+      a {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 7px 0 0;
+        position: relative;
+        font-size: 16px;
+        line-height: 22px;
+        padding-left: 1.742857rem;
+        &:hover {
+          i {
+            color: $dark-blue
+          }
+          color: $dark-blue;
+        }
+        i {
+          font-size: 18px;
+          line-height: 22px;
+          color: $secondary;
+          position: absolute;
+          top: 0.14285714em;
+          text-align: center;
+          left: 0;
+          width: auto;
+        }
+      }
+
+    }
+  }
+  p {
+    margin: 0;
+    > a {
+      margin-bottom: 4px;
+      display: inline-block;
+    }
+    > b {
+      display: block;
+      font-size: 14px;
+      line-height: 19px;
+      text-transform: capitalize;
+      margin: 20px 0 7px;
+      font-weight: normal;
+      color: $black;
+    }
+  }
+  .label-5 {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  // For New UI Structure support If needed
+  &.courseResourse, &#course-resources {
+    h2 {
+      font-size: 1rem;
+      text-transform: capitalize;
+    }
+    i.fa-level-down {
+      transform: rotate(-135deg) scaleX(-1);
+      left: 8px;
+      top: 0;
+    }
+  }
+
+  .contentSection {
+    border-top: 1px solid $gray-border;
+    padding-top: 36px;
+    margin-top: 25px;
+    &.sectionLinks {
+      ul {
+        li {
+          margin: 3px 0 0;
+
+          &:first-child {
+            margin: 0;
+          }
+          i {
+            transform: rotate(-45deg);
+          }
+        }
+      }
+    }
+    &:first-child {
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sectionTitle {
+      text-transform: uppercase;
+      color: $black;
+      font-size: 12px;
+      font-weight: 600;
+      line-height: 17px;
+      margin-bottom: 12px;
+    }
+
+    ul {
+      margin: 0;
+      li {
+        position: relative;
+        margin-top: 4px;
+        color: $gray;
+        font-size: 12px;
+        line-height: 22px;
+        u {
+          text-decoration: none;
+        }
+
+        i {
+          color: $gray;
+          font-style: normal;
+          font-size: 12px;
+          line-height: 17px;
+        }
+        .title {
+          font-size: 14px;
+          line-height: 19px;
+          text-transform: capitalize;
+          margin-bottom: 7px;
+          font-weight: normal;
+          color: $black;
+        }
+
+        a {
+          display: inline-block;
+          vertical-align: middle;
+          margin: 0 7px 0 0;
+          position: relative;
+          font-size: 16px;
+          line-height: 22px;
+          padding-left: 1.742857rem;
+          &:hover {
+            i {
+              color: $dark-blue
+            }
+            color: $dark-blue;
+          }
+          i {
+            font-size: 18px;
+            line-height: 22px;
+            color: $secondary;
+            position: absolute;
+            top: 0.042857em;
+            text-align: center;
+            left: 0;
+            width: auto;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Media Queries
+
+@include media-breakpoint-between(xs, sm) {
+  table {
+  }
+  tr {
+    td {
+      display: block;
+      width: 100%;
+    }
+  }
+}
