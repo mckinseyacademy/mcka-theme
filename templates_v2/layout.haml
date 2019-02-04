@@ -188,6 +188,9 @@
     - block bootstrap_js
       %script{src: "{% static 'js/bootstrap.bundle.min.js' %}"}
 
+    -# JS - custom snippets
+    - block js_snippets
+
     -# Ooyala Player JS
     - block ooyala_player
       - if not do_not_load_ooyala

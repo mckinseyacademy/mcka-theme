@@ -222,6 +222,24 @@
   }
 }
 
+// Course cohort
+
+#course-cohort{
+  .leaderboards{
+    ul{
+      li{
+        @include border-left(1px solid $hard-gray);
+        .user{
+          @include margin-left(5px);
+        }
+        &:first-child{
+          border: 0;
+        }
+      }
+    }
+  }
+}
+
 // Lesson List
 
 .allCoursesList {
@@ -346,5 +364,9 @@ body.rtl {
         }
       }
     }
+  }
+  .mapboxgl-ctrl-top-left{
+    left: auto;
+    right: 10px;
   }
 }

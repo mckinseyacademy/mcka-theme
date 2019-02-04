@@ -1,5 +1,7 @@
 $(document).ready(function () {
-
+    if ($(window).width() < 768 && $('.leaderboards-list .col').length === 3) {
+        $('.leaderboards-list .col').removeClass('col').addClass('col-12');
+    }
 
     $('#pnProductNavContents>ul> li').click(function () {
         $('#pnProductNavContents>ul> li.active').removeClass('active');
@@ -60,7 +62,6 @@ $(document).ready(function () {
             $('#password-visibility').attr('type', 'password');
         }
     });
-
 //Input Placeholder become label
 
     $('input').focus(function () {
@@ -151,7 +152,7 @@ function smoothNavLinks() {
     var pnProductNav = document.getElementById("pnProductNav");
     var pnProductNavContents = document.getElementById("pnProductNavContents");
 
-    pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
+    // pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
 
 // Set the indicator
     moveIndicator(pnProductNav.querySelector("[aria-selected=\"true\"]"), activeColours);

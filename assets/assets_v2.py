@@ -14,10 +14,20 @@ def get_assets_v2_path(relative_path):
 
 # Javascript squashing
 JS = Bundle(
+    'js/vendor/backbone.js',
+    'js/vendor/backbone.paginator.js',
     get_assets_v2_path('js/vendor/jquery.form.js'),
     get_assets_v2_path('js/custom.js'),
     get_assets_v2_path('js/common.js'),
     get_assets_v2_path('js/application.js'),
+    'js/models/city.js',
+    'js/models/cohortMap.js',
+    'js/models/cohorts.js',
+    'js/models/cohorts.js',
+    'js/models/participant.js',
+    'js/collections/cohort_cities.js',
+    'js/collections/cohorts.js',
+    'js/views/courses/cohort.js',
     filters='jsmin',
     output='gen/packed_v2.js'
 )

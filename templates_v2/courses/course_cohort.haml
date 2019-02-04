@@ -1,0 +1,257 @@
+- extends "courses/course_navigation.haml"
+- load staticfiles
+- load i18n
+
+- block page_title
+
+- block current_content
+  #course-cohort
+    .student-data
+      .students
+        #{metrics.users_enrolled} {% trans "in your cohort" %}, #{metrics.group_enrolled} {% trans "group work team members" %}
+      #map-cohort
+    .leaderboard-header
+      %h5 {% trans "Leaderboards" %}
+    .leaderboards
+      %ul.leaderboards-list.row
+        %li.col
+          .header
+            .heading {% trans "Progress" %}
+            .status {% trans "Your course completion status:" %} {{completions.user_progress_display}}%
+            .data {% trans "Average:" %} {{completions.course_average_display}}%
+            - if user_role
+              .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the progress leaderboard {% endblocktrans %}
+            - elif completions.position and completions.user_progress_value
+              .rank=completions.position
+                %span {% trans "Your progress position" %}
+            - else
+              .rank.default {% trans "your progress position will be displayed here" %}
+
+          .top-ranking
+            %i.material-icons
+              stars
+            {% trans "Top 3 on progress" %}
+          - if completions.has_leaders and completions.leaders.0
+            .user
+              .rank-number ##{completions.leaders.0.rank}
+              .person-avatar
+                %img{'src': '#{completions.leaders.0.profile_image.image_url_small}', 'title': '#{completions.leaders.0.username}'}
+              .person-name
+                %span=completions.leaders.0.username
+                - if completions.leaders.0.title
+                  %span.person-designation=completions.leaders.0.title
+              .person-rank {{completions.leaders.0.user_progress_display}}%
+          - else
+            .user.dummy
+              .rank-number #1
+              .person-avatar
+                %img{'src': '/static/image/empty_avatar.png'}
+              .person-name
+                %span {% trans "username" %}
+                %span.person-designation {% trans "title" %}
+              .person-rank 100%
+          - if completions.has_leaders and completions.leaders.1
+            .user
+              .rank-number ##{completions.leaders.1.rank}
+              .person-avatar
+                %img{'src': '#{completions.leaders.1.profile_image.image_url_small}', 'title': '#{completions.leaders.1.username}'}
+              .person-name
+                %span=completions.leaders.1.username
+                - if completions.leaders.1.title
+                  %span.person-designation=completions.leaders.1.title
+              .person-rank {{completions.leaders.1.user_progress_display}}%
+          - else
+            .user.dummy
+              .rank-number #2
+              .person-avatar
+                %img{'src': '/static/image/empty_avatar.png'}
+              .person-name
+                %span {% trans "username" %}
+                %span.person-designation {% trans "title" %}
+              .person-rank 100%
+          - if completions.has_leaders and completions.leaders.2
+            .user
+              .rank-number ##{completions.leaders.2.rank}
+              .person-avatar
+                %img{'src': '#{completions.leaders.2.profile_image.image_url_small}', 'title': '#{completions.leaders.2.username}'}
+              .person-name
+                %span=completions.leaders.2.username
+                - if completions.leaders.2.title
+                  %span.person-designation=completions.leaders.2.title
+              .person-rank {{completions.leaders.2.user_progress_display}}%
+          - else
+            .user.dummy
+              .rank-number #3
+              .person-avatar
+                %img{'src': '/static/image/empty_avatar.png'}
+              .person-name
+                %span {% trans "username" %}
+                %span.person-designation {% trans "title" %}
+              .person-rank 100%
+        - if social
+          %li.col
+            .header
+              .heading {% trans "Engagement:" %}
+              .status {% trans "Your discussion activity points:" %} {{social.score}}
+              .data {% blocktrans with score=social.score %} Average: {{score}} points{% endblocktrans %}
+              - if user_role
+               .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the engagement leaderboard {% endblocktrans %}
+              - elif social.position
+                .rank {{social.position}}
+                  %span {% trans "Your engagement position"}
+              - else
+                .rank.default {% trans "Your engagement position will be displayed here" %}
+            .top-ranking
+              %i.material-icons
+                stars
+              {% trans "Top 3 on engagement" %}
+
+            - if social.leaders and social.leaders.0
+              .user
+                .rank-number #1
+                .person-avatar
+                  %img{'src': '#{social.leaders.0.profile_image.image_url_small}', 'title': '#{social.leaders.0.username}'}
+                .person-name
+                  %span=social.leaders.0.username
+                  - if social.leaders.0.title
+                    %span.person-designation=social.leaders.0.title
+                .person-rank=social.leaders.0.rank
+            - else
+              .user.dummy
+                .rank-number #1
+                .person-avatar
+                  %img{'src': '/static/image/empty_avatar.png'}
+                .person-name
+                  %span {% trans "username" %}
+                  %span.person-designation {% trans "title" %}
+                .person-rank 100
+
+            - if social.leaders and social.leaders.1
+              .user
+                .rank-number #2
+                .person-avatar
+                  %img{'src': '#{social.leaders.1.profile_image.image_url_small}', 'title': '#{social.leaders.1.username}'}
+                .person-name
+                  %span=social.leaders.1.username
+                  - if social.leaders.1.title
+                    %span.person-designation=social.leaders.1.title
+                .person-rank=social.leaders.1.rank
+            - else
+              .user.dummy
+                .rank-number #2
+                .person-avatar
+                  %img{'src': '/static/image/empty_avatar.png'}
+                .person-name
+                  %span {% trans "username" %}
+                  %span.person-designation {% trans "title" %}
+                .person-rank 100
+
+            - if social.leaders and social.leaders.2
+              .user
+                .rank-number #2
+                .person-avatar
+                  %img{'src': '#{social.leaders.2.profile_image.image_url_small}', 'title': '#{social.leaders.2.username}'}
+                .person-name
+                  %span=social.leaders.2.username
+                  - if social.leaders.2.title
+                    %span.person-designation=social.leaders.2.title
+                .person-rank=social.leaders.2.rank
+            - else
+              .user.dummy
+                .rank-number #2
+                .person-avatar
+                  %img{'src': '/static/image/empty_avatar.png'}
+                .person-name
+                  %span {% trans "username" %}
+                  %span.person-designation {% trans "title" %}
+                .person-rank 100
+        -if proficiency
+          %li.col
+            .header
+              .heading {%trans "Proficiency" %}
+              .status {% trans "Your course knowledge:" %} {{proficiency.user_grade_display}}%
+              .data {% trans "Average:" %} {{proficiency.course_average_display}}%
+              - if user_role
+               .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the proficiency leaderboard {% endblocktrans %}
+              - elif proficiency.user_position and proficiency.user_grade_value
+                .rank {{proficiency.user_position}}
+                  %span {% trans "Your proficiency position" %}
+              - else
+                .rank.default {% trans "Your proficiency position will be displayed here" %}
+            .top-ranking
+              %i.material-icons
+                stars
+              {% trans "Top 3 on Proficiency" %}
+
+
+            - if proficiency.has_leaders and  proficiency.leaders.0
+              .user
+                .rank-number #1
+                .person-avatar
+                  %img{'src': '#{proficiency.leaders.0.profile_image.image_url_small}', 'title': '#{proficiency.leaders.0.username}'}
+                .person-name
+                  %span=proficiency.leaders.0.username
+                  - if proficiency.leaders.0.title
+                    %span.person-designation=proficiency.leaders.0.title
+                .person-rank {{proficiency.leaders.0.grade_display_value}}%
+            - else
+              .user.dummy
+                .rank-number #1
+                .person-avatar
+                  %img{'src': '/static/image/empty_avatar.png'}
+                .person-name
+                  %span {% trans "username" %}
+                  %span.person-designation {% trans "title" %}
+                .person-rank 100%
+
+            - if proficiency.has_leaders and  proficiency.leaders.1
+              .user
+                .rank-number #2
+                .person-avatar
+                  %img{'src': '#{proficiency.leaders.1.profile_image.image_url_small}', 'title': '#{proficiency.leaders.1.username}'}
+                .person-name
+                  %span=proficiency.leaders.1.username
+                  - if proficiency.leaders.1.title
+                    %span.person-designation=proficiency.leaders.1.title
+                .person-rank {{proficiency.leaders.1.grade_display_value}}%
+            - else
+              .user.dummy
+                .rank-number #2
+                .person-avatar
+                  %img{'src': '/static/image/empty_avatar.png'}
+                .person-name
+                  %span {% trans "username" %}
+                  %span.person-designation {% trans "title" %}
+                .person-rank 100%
+
+            - if proficiency.has_leaders and  proficiency.leaders.2
+              .user
+                .rank-number #3
+                .person-avatar
+                  %img{'src': '#{proficiency.leaders.2.profile_image.image_url_small}', 'title': '#{proficiency.leaders.2.username}'}
+                .person-name
+                  %span=proficiency.leaders.2.username
+                  - if proficiency.leaders.2.title
+                    %span.person-designation=proficiency.leaders.2.title
+                .person-rank {{proficiency.leaders.2.grade_display_value}}%
+            - else
+              .user.dummy
+                .rank-number #3
+                .person-avatar
+                  %img{'src': '/static/image/empty_avatar.png'}
+                .person-name
+                  %span {% trans "username" %}
+                  %span.person-designation {% trans "title" %}
+                .person-rank 100%
+
+- block js_snippets
+  %script{src: 'https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'}
+  %script{src: 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.9.2/mapbox-gl-language.js'}
+  %link{href:'https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css', rel:'stylesheet'}
+  %script
+    var CohortMapUsers = {{metrics.groups_users|safe}};
+    var CohortMapCities = {{metrics.cities|safe}};
+    - if not course.ended
+      var TAUser = {{ta_user|safe}};
+    var mapbox_map_id = "{{mapbox_map_id}}";
+    var mapbox_access_token = "{{mapbox_token}}";
