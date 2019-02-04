@@ -1,6 +1,8 @@
 """
 Common mocked objects and methods for writing unit tests in Apros
 """
+from django.test import RequestFactory
+
 from api_client.group_api import PERMISSION_GROUPS
 
 
@@ -48,3 +50,16 @@ def mock_storage_save(storage_obj, name, content, max_length=None):
     does not write any actual file
     """
     return name
+
+
+def mock_request_object(path, user=None, **attrs):
+    """
+    Mocking the actual request to use in test cases
+    """
+    request = RequestFactory().get(path)
+
+    for attr, val in attrs.iteritems():
+        setattr(request, attr, val)
+
+    request.user = user or TestUser(user_id=1, email='user@example.com', username='mcka_admin_user')
+    return request
