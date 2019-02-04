@@ -77,7 +77,12 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
         });
      }
     });
-    $('.bbGrid-container').append('<i class="fa fa-spinner fa-spin"></i>');
+    if ($('.bbGrid-container').children('.fa-spinner').length > 0){
+      $('.bbGrid-container').children('.fa-spinner').remove();
+    }
+    if (this.$el.selector != '#managerDashboardReportGrid'){
+      this.$el.find('.bbGrid-container').append('<i class="fa fa-spinner fa-spin"></i>');
+    }
     managerDashboardReportGridBlock['partial_collection'] = this.collection;
     this.managerDashboardReportGridBlock = managerDashboardReportGridBlock;
     this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);

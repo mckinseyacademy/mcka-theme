@@ -887,7 +887,6 @@ function InitializeAverageCalculate() {
   });
    $('.'+dataTarget+' td.proficiency').each(function () {
     var text = $(this).text();
-    $(this).css("width" , text);
     totalProficiency += parseInt(text.replace("%", ""));
   });
 
@@ -975,7 +974,7 @@ function setManagerDashboardOrgMetrics(course_avg, teamProgress, teamProficiency
         case(course_avg.avg_proficiency < teamProficiency):
 
             var proficiencyDiff = (teamProficiency - course_avg.avg_proficiency);
-            proficiencyMessage = ngettext('<span class="red"> %(diff)s point</span> above your organization\'s average','<span class="red"> %(diff)s points</span> above your organization\'s average', proficiencyDiff);
+            proficiencyMessage = ngettext('<span class="green"> %(diff)s point</span> above your organization\'s average','<span class="green"> %(diff)s points</span> above your organization\'s average', proficiencyDiff);
             proficiencyMessage = interpolate(proficiencyMessage, {'diff': proficiencyDiff}, true);
             break;
 
