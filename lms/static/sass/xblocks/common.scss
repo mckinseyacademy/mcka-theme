@@ -1,6 +1,17 @@
 // Common overrides for xblocks:
 @import '../base/variables';
 
+.discussion-content,
+.lesson-content {
+    font-family: "Open Sans" !important;
+    * {
+        outline: none !important;
+        &:focus, &:active{
+            outline: none !important;
+        }
+    }
+}
+
 .lesson-content {
     .themed-xblock {
 
