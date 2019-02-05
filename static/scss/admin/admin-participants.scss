@@ -429,7 +429,7 @@
 			position:relative;
 		}
 
-		.newCompanyCreationPopup 
+		.newCompanyCreationPopup
 		{
 			display: none;
 			position: absolute;
@@ -641,6 +641,11 @@
 		font-weight: bold;
 	}
 
+	.deletionWarning {
+	    color: red;
+			font-weight: bold;
+	}
+
 	.errorContainer
 	{
 		color:red;
@@ -651,14 +656,24 @@
 		overflow: auto;
 	}
 
-  .cancelChanges
-	{
-		margin-left: 15px;
+	.menuButton{
+		border-radius: 4px;
+		font-size: 14px;
+		margin: 10px 0;
 	}
 
 	.button-wrapper
 	{
 		text-align: center;
+	}
+
+	.confirm-deletion-box
+	{
+		margin-bottom: 15px;
+
+		input[type="checkbox"] {
+		  margin:0;
+		}
 	}
 }
 

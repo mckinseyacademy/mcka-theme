@@ -13,12 +13,15 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           {
             title: gettext('Name'), index: true, name: 'full_name',
             actions: function(id, attributes){
-                var custom_name = attributes['full_name'];
-                if (custom_name === "")
-                  custom_name=attributes['first_name']+" " +attributes['last_name'];
-                if (custom_name === " ")
-                  custom_name=attributes['username'];
-                return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + custom_name + '</a>';
+                var participant_name = _this.getParticipantName(attributes)
+                return `
+                  <a
+                    href="/admin/participants/${attributes['id']}"
+                    target="_self"
+                  >
+                    ${participant_name}
+                  </a>
+                `;
             }
           },
           { title: gettext('Company'), index: true, name: 'organizations_custom_name' },
@@ -46,7 +49,10 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           table_columns.unshift({
             title: " ", name: 'action_buttons',
             actions: function(id, attributes){
-                return _this.userDeletionModalManager(id, attributes);
+              return _this.userDeletionModalManager(
+                id,
+                _this.getParticipantName(attributes)
+              );
             }
           });
         };
@@ -390,17 +396,35 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
             $(input).parent().find('.newCompanyCreationPopup').hide();
         }
     },
-    userDeletionModalManager: function(id, attributes)
+    userDeletionModalManager: function(id, participant_name)
     {
       $(document).on('click', '#button-delete-user-' + id, function(ev){
         var mainContainer = $('#delete_user_modal');
+        // Find components on delete modal
         let confirmButton = mainContainer.find('.confirmButton')
+        let deletionConfirmationCheckboxes = mainContainer.find('.deletionConfirmationCheckbox');
+        // Get row of participant to be deleted
         let row = $(this).closest('tr');
-
+        // Set dialog data
         mainContainer.find('.errorContainer').empty();
+        mainContainer.find('#participantNameContainer').text(participant_name);
+        // Uncheck checkboxes and disable button
+        deletionConfirmationCheckboxes.removeAttr('checked');
+        confirmButton.addClass("disabled");
+
+        deletionConfirmationCheckboxes.off().on('click', function() {
+          if (deletionConfirmationCheckboxes.not(':checked').length == 0){
+            confirmButton.removeClass('disabled');
+          } else {
+            confirmButton.addClass("disabled");
+          }
+        });
 
         confirmButton.off().on('click', function() {
-          var url = ApiUrls.participants_delete+'/'+id;
+          if (confirmButton.hasClass("disabled")) {
+            return;
+          }
+          var url = ApiUrls.participants_detail(id);
           var options = {
             url: url,
             type: "DELETE",
@@ -419,6 +443,22 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         });
       })
 
-      return '<i class="fa fa-trash fa-lg actionButtonIcon" data-reveal-id="delete_user_modal" id="button-delete-user-' + id + '"></i>';
+      return `
+        <i
+          class="fa fa-trash fa-lg actionButtonIcon"
+          data-reveal-id="delete_user_modal"
+          id="button-delete-user-${id}"
+        />
+      `;
     },
+    getParticipantName: function(attributes)
+    {
+      var custom_name = attributes['full_name'];
+      if (custom_name === "")
+        custom_name=attributes['first_name']+" " +attributes['last_name'];
+      if (custom_name === " ")
+        custom_name=attributes['username'];
+
+      return custom_name;
+    }
 });
