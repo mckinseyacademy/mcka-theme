@@ -1,0 +1,70 @@
+#course-news {
+  h1 {
+    color: $black;
+    font-size: 32px;
+    font-weight: 300;
+    line-height: 43px;
+    margin-bottom: 18px;
+  }
+
+  .sub-1 {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 17px;
+  }
+
+  p {
+    color: $black;
+    font-size: 16px;
+    line-height: 22px;
+    margin: 25px 0 0;
+  }
+
+  ol, ul {
+    margin: 25px 0 0;
+    padding-left: 15px;
+    font-size: 1rem;
+    > ol, ul {
+      margin-top: 10px;
+      padding: 0;
+    }
+    li {
+      > ol, ul {
+        padding-left: 30px;
+      }
+    }
+  }
+
+  h2 {
+    color: $black !important;
+    margin: 30px 0 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+
+  img {
+    display: block;
+    margin-top: 30px;
+    text-align: left;
+    float: none;
+    width: auto;
+  }
+
+  table {
+    tr {
+      ol {
+        margin: 10px 0 0;
+      }
+    }
+  }
+}
+
+
+@media screen and (max-width: 767px){
+  #course-news {
+    img{
+      width: 100%;
+    }
+  }
+}

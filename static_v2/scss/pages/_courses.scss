@@ -1,7 +1,9 @@
 .my-courses{
   h1{
-    @include heading2;
-    @extend .mb-4;
+    font-size: 32px;
+    line-height: 1.2;
+    margin-bottom:24px;
+    font-weight: 300;
     font-family: $body-font-family;
   }
   .card{
