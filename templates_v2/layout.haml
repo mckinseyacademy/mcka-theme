@@ -170,6 +170,7 @@
 
     -# Main content goes here
     %main{role: "main"}
+      - block navigation_content
       - block content
 
     -# Footer
@@ -188,9 +189,6 @@
     - block bootstrap_js
       %script{src: "{% static 'js/bootstrap.bundle.min.js' %}"}
 
-    -# JS - custom snippets
-    - block js_snippets
-
     -# Ooyala Player JS
     - block ooyala_player
       - if not do_not_load_ooyala
@@ -205,6 +203,9 @@
       {% assets "js_all_v2" %}
         %script{src: "{{ ASSET_URL }}"}
       {% endassets %}
+
+    -# JS - custom snippets
+    - block js_snippets
 
     - block edit_full_name_modal
       .modal.middleSize.noTopBorder.fade.editFullName{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}

@@ -1,43 +1,51 @@
 import os
-
-from django.conf import settings
-
 from django_assets import Bundle, register
+
+from .utils import _build_file_list, get_assets_path
 
 os.environ['SASS_USE_SCSS'] = 'false'
 
 
-def get_assets_v2_path(relative_path):
-    V2_ROOT = str(os.path.join(settings.BASE_DIR, settings.ASSETS_ROOT_V2))
-    return str(os.path.join(V2_ROOT, relative_path))
+js_files = []
 
+js_files.extend(_build_file_list("js/plugins", ".js"))
+
+js_files.extend([
+    get_assets_path('js/vendor/jquery.form.js', v2=False),
+    get_assets_path('js/vendor/jquery.touchwipe.min.js', v2=False),
+    get_assets_path('js/vendor/backbone.js', v2=False),
+    get_assets_path('js/vendor/backbone.paginator.js', v2=False),
+    get_assets_path('js/vendor/jquery.clearsearch.js', v2=False),
+    get_assets_path('js/vendor/bbGrid.js', v2=False),
+
+    get_assets_path('js/custom.js', v2=True),
+    get_assets_path('js/common.js', v2=True),
+    get_assets_path('js/application.js', v2=True),
+
+    get_assets_path('js/router.js', v2=False),
+    get_assets_path('js/config.js', v2=False),
+    get_assets_path('js/utils.js', v2=False),
+])
+
+js_files.extend(_build_file_list("js/common", ".js", v2=False))
+js_files.extend(_build_file_list("js/models", ".js", v2=False))
+js_files.extend(_build_file_list("js/collections", ".js", v2=False))
+js_files.extend(_build_file_list("js/views", ".js", v2=False))
 
 # Javascript squashing
 JS = Bundle(
-    'js/vendor/backbone.js',
-    'js/vendor/backbone.paginator.js',
-    get_assets_v2_path('js/vendor/jquery.form.js'),
-    get_assets_v2_path('js/custom.js'),
-    get_assets_v2_path('js/common.js'),
-    get_assets_v2_path('js/application.js'),
-    'js/models/city.js',
-    'js/models/cohortMap.js',
-    'js/models/cohorts.js',
-    'js/models/cohorts.js',
-    'js/models/participant.js',
-    'js/collections/cohort_cities.js',
-    'js/collections/cohorts.js',
-    'js/views/courses/cohort.js',
+    *js_files,
     filters='jsmin',
     output='gen/packed_v2.js'
 )
+
 register('js_all_v2', JS)
 
 # CSS compilation and squashing
 # Core CSS
 
 SCSS_CORE_V2 = Bundle(
-    get_assets_v2_path('scss/core.scss'),
+    get_assets_path('scss/core.scss', v2=True),
     filters='libsass',
     output='gen/core_v2.css',
 )
@@ -51,7 +59,7 @@ CSS_CORE_V2 = Bundle(
 register('css_core_v2', CSS_CORE_V2)
 
 SCSS_LTR_V2 = Bundle(
-    get_assets_v2_path('scss/ltr.scss'),
+    get_assets_path('scss/ltr.scss', v2=True),
     filters='libsass',
     output='gen/ltr_v2.css',
     depends=('scss/**/*.scss')
@@ -66,7 +74,7 @@ CSS_LTR_V2 = Bundle(
 register('css_ltr_v2', CSS_LTR_V2)
 
 SCSS_RTL_V2 = Bundle(
-    get_assets_v2_path('scss/rtl.scss'),
+    get_assets_path('scss/rtl.scss', v2=True),
     filters='libsass',
     output='gen/rtl_v2.css',
     depends=('scss/**/*.scss')

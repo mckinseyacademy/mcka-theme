@@ -1,0 +1,306 @@
+// Lesson Overview or Details page styling
+.lessonOverview {
+  position: relative;
+  .contentCard {
+    padding: 30px;
+  }
+  .headerArea {
+    margin-bottom: 30px;
+    position: relative;
+    .zoomWrap {
+      position: absolute;
+      content: '';
+      display: block;
+      top: 0;
+      width: 25px;
+      height: 25px;
+      > a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        &.zoomIn {
+          display: none;
+        }
+      }
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+    h5 {
+      color: $gray;
+      font-size: 12px;
+      line-height: 17px;
+      margin-bottom: 4px;
+    }
+    h2 {
+      color: $secondary;
+      font-size: 32px;
+      font-weight: 300;
+      line-height: 43px;
+      margin: 0;
+      > a {
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+    p {
+      font-size: 16px;
+      line-height: 22px;
+      margin: 20px 0 0;
+      font-weight: 600;
+    }
+    .dropdown-toggle {
+      &:after {
+        font-size: inherit;
+      }
+    }
+  }
+  .lessonContentWrap {
+    .videoArea {
+      min-height: 480px;
+      background: #ececec;
+    }
+  }
+  .nextPreviousWrap {
+    position: relative;
+    z-index: 9999;
+  }
+  .arrowPin {
+    position: fixed;
+    content: '';
+    display: block;
+    width: 164px;
+    height: 164px;
+    overflow: hidden;
+    border-radius: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: $white;
+    background-color: rgba(32, 66, 203, 0.3);
+    transition: all ease 0.3s;
+    &.disable {
+      &:hover {
+        background: $gray;
+      }
+    }
+    &.left {
+      left: -111px;
+      right: auto;
+      > span {
+        i {
+          left: 62px;
+        }
+      }
+      &:hover {
+        left: -82px
+      }
+    }
+    &.right {
+      right: -111px;
+      left: auto;
+      > span {
+        i {
+          right: 62px;
+        }
+      }
+      &:hover {
+        right: -82px
+      }
+    }
+    > span {
+      display: block;
+      height: 100%;
+      width: 100%;
+      position: relative;
+      opacity: 0;
+      visibility: hidden;
+      transition: all ease 0.2s;
+      i {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 100px;
+      }
+    }
+    &:hover {
+      background: $secondary;
+      > span {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+    .popover {
+      max-width: 305px;
+    }
+  }
+  .lesson-content {
+    .unit-title {
+      display: none;
+    }
+  }
+  .xblock{
+    img{ max-width: 100%;}
+  }
+}
+
+// full Screen View
+footer, main, header, body {
+  transition: all ease 0.5s;
+}
+
+body.zoomIn {
+  background: $white;
+  main {
+    margin: 0;
+  }
+  .contentCard {
+    box-shadow: none;
+  }
+  header,
+  footer,
+  .courseMainHeader {
+    display: none !important;
+    transition: all ease 0.5s;
+
+  }
+  .lessonOverview {
+    .headerArea {
+      .zoomWrap {
+        > a {
+          display: block;
+          &.zoomIn {
+            display: block;
+          }
+          &.zoomout {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .lessonOverview {
+    margin-bottom:100px;
+    background: $white;
+    .headerArea {
+      padding: 0;
+      .zoomWrap {
+        display: none;
+      }
+    }
+    .nextPreviousWrap {
+      position: fixed;
+      bottom: 0;
+      background: $white;
+      left: 0;
+      z-index: 9999;
+      width: 100%;
+      > .holder {
+        border-top: 1px solid $border-color;
+        position: relative;
+        padding: 11px 30px;
+        overflow: hidden;
+      }
+      .arrowPin {
+        position: relative;
+        content: '';
+        display: block;
+        width: 38px;
+        height: 38px;
+        overflow: hidden;
+        border-radius: 100%;
+        top: auto;
+        transform: translateY(0);
+        color: $white;
+        background-color: $secondary;
+        transition: all ease 0.3s;
+        > span {
+          display: block;
+          height: 100%;
+          width: 100%;
+          position: relative;
+          transition: all ease 0.2s;
+          opacity: 1;
+          visibility: visible;
+          i {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px;
+          }
+        }
+        &.left {
+          left: auto;
+          right: auto;
+          float: left;
+          > span {
+            i {
+              //left: 50%
+            }
+          }
+          &:hover {
+            left: inherit;
+          }
+        }
+        &.right {
+          float: right;
+          left: auto;
+          right: auto;
+          > span {
+            right: auto;
+            i {
+              right: auto;
+            }
+          }
+          &:hover {
+            right: inherit;
+          }
+        }
+      }
+    }
+    .contentCard {
+      box-shadow: none;
+      padding: 30px 0;
+    }
+  }
+  body {
+    &.lessonPageBody {
+      footer {
+        display: none !important;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .lessonOverview {
+    .nextPreviousWrap {
+      position: fixed;
+      bottom: 0;
+      background: $white;
+      left: 0;
+      z-index: 999;
+      width: 100%;
+      > .holder {
+        padding: 12px 30px;
+      }
+    }
+  }
+  .contentCard {
+    &.lessonOverview {
+      margin: 0 -15px 80px;
+    }
+  }
+
+  body.zoomIn {
+    .lessonOverview {
+      padding-bottom: 120px;
+    }
+  }
+
+}

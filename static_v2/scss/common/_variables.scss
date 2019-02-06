@@ -19,8 +19,6 @@ $container-max-widths: map-merge(
 );
 @include _assert-ascending($container-max-widths, "$container-max-widths");
 
-
-
 // Modals
 $modal-xl:                          1244px !default;
 $modal-lg:                          800px !default;
@@ -31,21 +29,18 @@ $modal-fade-transform:              translate(0, -50px) !default;
 $modal-show-transform:              none !default;
 $modal-transition:                  transform .3s ease-out !default;
 
-
-
 /* ========= Custom Defined Variables ================*/
 
 // Brand colors
-
 $primary           :   #002960;
 $secondary         :   #2042cb;
 $tertiary          :   #0093d3;
 
 // Type colors
-
 $black             :   #000000;
 $lighter-gray      :   #6F6F6F;
 $gray              :   #696969;
+$gray-border       :   #ebebeb;
 $hard-gray         :   #979797;
 $white             :   #ffffff;
 $link-blue         :   $secondary;
@@ -56,14 +51,12 @@ $bg-black-green    :   #00d400;
 $sharp-green       :   #00F121;
 
 // Navigation colors
-
 $blue              :   $secondary;
 $dark-blue         :   #0b0886;
 $smoke-gray        :   #232d39;
 $gray-border       :   #EBEBEB;
 
 // Background colors
-
 $ash-white         :   #f3f4f6;
 $ash-hard          :   #f5f5f5;
 $dark-gray         :   #4a4a4a;
@@ -72,21 +65,7 @@ $blue-sharp        :   #2A3EC6;
 $light-gray        :   #eeeeee;
 $bg-login-footer   :   #251F2E;
 
-// Overlay colors
-
-
-// Buttons + Forms
-//
-// Shared variables that are reassigned to `$input-` and `$btn-` specific variables.
-//$font-size-base:              1rem !default; // Assumes the browser default, typically `16px`
-//$line-height-base:            1.5 !default;
-//$input-btn-padding-y:         .375rem !default;
-//$input-btn-padding-x:         30px !default;
-//$input-btn-font-size:         $font-size-base !default;
-//$input-btn-line-height:       $line-height-base !default;
-
-
-
 // Typography
 $body-font-family   : 'Open Sans', sans-serif;
 $body-font          : 14px;
+

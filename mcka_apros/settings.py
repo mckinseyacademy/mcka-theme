@@ -33,6 +33,7 @@ SECRET_KEY = '1x@epyq-))w6z8a@_9f+c8%g#n8o75jeh8c8d4_&y+f@2_(des'
 DEBUG = True
 
 ASSETS_SOURCE_ROOT = 'static'
+ASSETS_SOURCE_ROOT_V2 = 'static_v2'
 
 LOGGING = get_logger_config(BASE_DIR,
                             logging_env="dev",

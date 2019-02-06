@@ -1,4 +1,9 @@
-- extends "courses/course_navigation.haml"
+- extends "layout.haml"
 - load i18n
-- block current_content
-  - include 'courses/content_page/courses_menu_list.haml' with courses=courses
+
+- block content
+ .container.my-courses
+   %h1
+    {% trans "My Courses" %}
+  .row
+    - include 'courses/content_page/courses_menu_list.haml' with courses=courses

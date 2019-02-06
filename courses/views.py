@@ -264,6 +264,7 @@ def course_cohort(request, course_id):
         'leaderboard_ranks': [1, 2, 3],
         'user_role': user_role,
         'course_id': course_id,
+        'course': load_course(course_id, request=request)
     }
 
     return render(request, 'courses/course_cohort.haml', data)

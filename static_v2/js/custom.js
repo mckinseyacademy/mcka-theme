@@ -117,11 +117,26 @@ $(document).ready(function () {
     $(function () {
         $('[data-toggle="popover"]').popover()
     });
+    //    Add and Remove Class on body for Lesson Overview page
+    var removeClass = true;
+    // when clicking the button : toggle the class, tell the background to leave it as is
+    $(".zoomWrap").click(function () {
+        $("body").toggleClass('zoomIn');
+        removeClass = false;
+    });
+    // when clicking the div : never remove the class
+    $(".zoomWrap").click(function () {
+        removeClass = false;
+    });
+    // when click event reaches "html" : remove class if needed, and reset flag
+    $("html").click(function () {
+        if (removeClass) {
+            $(".toggletag").removeClass('zoomIn');
+        }
+        removeClass = true;
+    });
+//    End Add and Remove Class on body for Lesson Overview page
 
-    if ( $('html').attr('dir') == 'rtl' ) {
-        $('.headerNav').find(".dropdown-menu").removeClass("dropdown-menu-right");
-        $('.headerNav').find(".dropdown-menu").addClass("dropdown-menu-left");
-    }
 });
 
 

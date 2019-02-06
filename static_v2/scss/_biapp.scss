@@ -4,6 +4,9 @@
 @import "bootstrap/bootstrap-grid";
 @import "bootstrap/mixins";
 @import "common/mixins";
+@import "common/popover";
+@import "common/dropdown";
+@import "common/header";
 
 // Header
 
@@ -281,6 +284,17 @@
   }
 }
 
+// Lesson Page
+
+.lessonOverview {
+  .headerArea {
+    @include padding-right(35px);
+    .zoomWrap{
+      @include right(0);
+    }
+  }
+}
+
 // Modal
 
 .modal.middleSize {
@@ -309,6 +323,7 @@ footer {
 // CSS specific styles
 
 body.rtl {
+  text-align: right;
   .my-courses {
     .card {
       .card-body {

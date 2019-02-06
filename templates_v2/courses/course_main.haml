@@ -1,4 +1,4 @@
-- extends "layout.haml"
+- extends "courses/course_base.haml"
 - load staticfiles
 - load i18n
 
@@ -10,18 +10,11 @@
 - block content
   %script
     $(document).ready(function () {
-      $('body').addClass("courselandingView");
+      $('body').addClass("noAppHeader");
     });
   .container.courseLanding
     .row
       .col
-        .courseMainHeader
-          %h1
-            = course.name
-            %a.backBtn
-              %i.material-icons
-                keyboard_arrow_left
-          - include "courses/content_page/course_tabs.haml"
         - if feature_flags.proficiency or feature_flags.progress or feature_flags.discussions
           .contentCard.progressWidgets.clearfix
             #course-statistics
@@ -33,13 +26,14 @@
           - if discover_flag
             - include "courses/content_page/course_discover.haml"
 
-            %blockquote.courseLanding.text-center
-              %p
-                - if quote.body
-                  = quote.body
-              %span.author
-                - if quote.byline
-                  = quote.byline
+        - if quote.body
+          %blockquote.courseLanding.text-center
+            %p
+              - if quote.body
+                = quote.body
+            %span.author
+              - if quote.byline
+                = quote.byline
 
         - include "marketing/app_link_popup.haml"
 

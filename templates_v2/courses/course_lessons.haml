@@ -1,0 +1,117 @@
+- extends "courses/course_base.haml"
+- load i18n
+
+- block content
+  %script
+    $(document).ready(function () {
+      $('body').addClass("lessonPageBody noAppHeader");
+    });
+  #course-lessons{'data-current-progress': '#{user_progress}'}
+    .lessonOverview
+      .container
+        .row
+          .col
+            .contentCard
+              .headerArea.lesson-title
+                %h5
+                  -if lesson_custom_label
+                    {% blocktrans with lesson_index=course.current_lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
+                  -else
+                    {% trans "Lesson" %} #{course.current_lesson.index}:
+                  = course.current_lesson.name
+
+                %h2
+                  - if lesson_custom_label and modules_custom_label
+                    %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                      = course.current_module.name
+                  - elif lesson_custom_label
+                    %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+                      = course.current_module.name
+                  - elif modules_custom_label
+                    %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+                      = course.current_module.name
+                  - else
+                    %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
+                      = course.current_module.name
+
+                  .dropdown-menu.allLessons.dropdown-menu-right
+                    %ul.allCoursesList
+                      - for module in course.current_lesson.modules
+                        %li{"class": "courseRow {% if module.is_started %}active{% else %}locked{% endif %} {% if module.progress == 100 %}complete{% else %}{% endif %}"}
+                          %a{:href => "#{module.navigation_url}"}
+                            .holder
+                              .data.serial
+                                {% trans "Module" %}
+                                %span {{module.index}}
+                              .data.title
+                                %span= module.name
+                                  -if not module.is_started
+                                    %i.material-icons.locked{:data-container => "body", :data-content => "{% trans 'This module will be available on '%} {{lesson.start_upon}}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
+                              .data.status
+                                %i.material-icons
+                                - if module.progress == 100
+                                  %i.material-icons check_circle
+                                  {% trans "Complete" %}
+                                - elif module.progress == 0
+                                  %i.material-icons panorama_fish_eye
+                                  {% trans "Not Started" %}
+                                - else
+                                  %i.material-icons tonality
+                                  {% trans "In Progress" %}
+                            .description
+                              Tell me and I forget. Teach me and I
+                              remember. Involve me and I learn. - Benjamin Franklin
+                          - if lesson.bookmark
+                            %img.bookmark{:src => "static/image/bookmark.svg"}
+
+                .zoomWrap
+                  %a.zoomout{:data-container => "body", :data-content => "Show fullscreen", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :href => "#", :title => ""}
+                    %img{:alt => "", :src => "/static/image/zoom_out_map@2x.png"}/
+                  %a.zoomIn{:data-container => "body", :data-content => "Exit fullscreen", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :href => "#", :title => ""}
+                    %img{:alt => "", :src => "/static/image/zoom_in_map@2x.png"}/
+              - block lesson_content
+                .lesson-content
+                .lesson-discussion
+                - include "courses/content_page/lesson_pager.haml"
+
+- block js_snippets
+  %script{src: '/static/js/course_learner_dashboard/tile_progress_update.js'}
+  %script{src: '/static/js/course_lesson.js'}
+  :javascript
+    $(function(){
+      var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
+      var lesson_data = {
+        courseId: '{{ legacy_course_id }}',
+        usageId: '{{ course.current_module.vertical_id }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        lmsPort: '{{ lms_port }}',
+        // jumpLinkRewriter: Apros.jumpLinkRewriter,
+        data: {
+            // activate_block_id: Apros.getParameterByName('activate_block_id'),
+        },
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      };
+      // Temporary hack to prevent xblock-ooyala from loading the ooyala player library.
+      // Ooyala player is always loaded in apros, so no need to load it again for the xblock.
+      // The hash corresponds to the ooyala player JS library script.
+      lesson_content.data('loaded_resource_hashes', ['207f215b40019e34c7c46cb5b46b140e']);
+      lesson_content.xblock(lesson_data);
+      // we need this to add some browser specific CSS rules
+      lesson_content.attr( "data-useragent", navigator.userAgent);
+
+      $('#course-group-work .lesson-module-status').on('click', function(){
+        $('#' + $(this).data('activate')).click();
+      });
+    });
+
+    $(window).on('beforeunload', saveScormDataClosePopup);
+
+    $(function(){
+        SESSION_TIMEOUT_SECONDS = {{session_timeout_seconds}};
+        launchAlertTimer();
+        launchPopupCloseTimer();
+    });

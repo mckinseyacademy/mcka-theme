@@ -77,7 +77,7 @@
   }
 
   > a {
-    color: #2042CB;
+    color: $secondary;
     font-size: 12px;
     line-height: 17px;
     background: inherit;
@@ -119,6 +119,10 @@
 
 // Add carrot icon for Dropdown
 .dropdown-toggle {
+  color: $secondary;
+  &:hover{
+    color: $dark-blue;
+  }
   &:after {
 
     font-family: 'Material Icons';
@@ -127,6 +131,11 @@
     font-size: 16px;
     margin: 0 0 0 1px;
     vertical-align: middle;
+  }
+}
+.show{
+  .dropdown-toggle{
+    color: $dark-blue;
   }
 }
 
