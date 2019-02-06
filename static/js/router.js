@@ -276,12 +276,7 @@ var Router = Backbone.Router.extend({
       var collection = new Apros.collections.ManagerDashboard([],{ path : []});
       var participant_list_view = new Apros.views.ManagerDashboardView({collection: collection, el: '#managerDashboardReportGrid'});
       participant_list_view.render();
-    }
-    else {
-       var collection = new Apros.collections.ManagerDashboard([],{ path : []});
-    var participant_list_view = new Apros.views.ManagerDashboardView({collection: collection, el: '#managerDashboardReportGrid'});
-    participant_list_view.render();
-    $('i.fa-spinner').hide();
+      $('i.fa-spinner').hide();
     }
   },
   company_mobileapp_details: function(){
