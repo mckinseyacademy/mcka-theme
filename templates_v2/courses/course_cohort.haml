@@ -96,12 +96,12 @@
                   .header
                     .heading {% trans "Engagement:" %}
                     .status {% trans "Your discussion activity points:" %} {{social.score}}
-                    .data {% blocktrans with score=social.score %} Average: {{score}} points{% endblocktrans %}
+                    .data {% blocktrans with score=social.course_average_display %} Average: {{score}} points{% endblocktrans %}
                     - if user_role
                      .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the engagement leaderboard {% endblocktrans %}
                     - elif social.position
                       .rank {{social.position}}
-                        %span {% trans "Your engagement position"}
+                        %span {% trans "Your engagement position" %}
                     - else
                       .rank.default {% trans "Your engagement position will be displayed here" %}
                   .top-ranking
@@ -118,7 +118,7 @@
                         %span=social.leaders.0.username
                         - if social.leaders.0.title
                           %span.person-designation=social.leaders.0.title
-                      .person-rank=social.leaders.0.rank
+                      .person-rank=social.leaders.0.score
                   - else
                     .user.dummy
                       .rank-number #1
@@ -138,7 +138,7 @@
                         %span=social.leaders.1.username
                         - if social.leaders.1.title
                           %span.person-designation=social.leaders.1.title
-                      .person-rank=social.leaders.1.rank
+                      .person-rank=social.leaders.1.score
                   - else
                     .user.dummy
                       .rank-number #2
@@ -158,7 +158,7 @@
                         %span=social.leaders.2.username
                         - if social.leaders.2.title
                           %span.person-designation=social.leaders.2.title
-                      .person-rank=social.leaders.2.rank
+                      .person-rank=social.leaders.2.score
                   - else
                     .user.dummy
                       .rank-number #2
