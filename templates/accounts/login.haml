@@ -81,6 +81,29 @@
     %a.close-reveal-modal.button
       {% trans "Return to Login" %}
 
+  #user_lock_out_notification.reveal-modal.tiny{'data-reveal': 'true'}
+    .close-reveal-modal
+      %i.fa.fa-times-circle
+    %h2.upload_message
+      {% trans "You've been locked out!" %}
+    %p.mckinsey-red
+      %i.fa.fa-exclamation-triangle
+      {% trans "Your account is locked for" %}
+      %b
+        {% trans "15 minutes " %}
+      {% trans "since your 5" %}
+      %sup
+        {% trans "th" %}
+      {% trans " attempt." %}
+    %p
+      %span
+        {% trans "Your account has been disabled for security reasons. To access your account," %}
+      %a{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "/accounts/password/reset/"}
+        {% trans "reset your password" %}
+      %span
+        {% trans "or try to login again in 15 minutes." %}
+    %a.button{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "/accounts/password/reset/"}
+      {% trans "Reset Password" %}
 
   - block general_modal
     %a.reveal-general-modal{'href': "#", 'data-reveal-id': "generalModal"}

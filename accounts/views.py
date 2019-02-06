@@ -37,6 +37,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.dateformat import format
 from django.template.response import TemplateResponse
 
+from api_data_manager.organization_data import OrgDataManager
 from util.url_helpers import get_referer_from_request
 from api_client import user_api
 from api_client.api_error import ApiError
@@ -149,6 +150,11 @@ def _build_sso_redirect_url(provider, next):
 
 def _get_redirect_to_current_course(request):
     user_data = UserDataManager(request.user.id).get_basic_user_data()
+    organization = user_data.get('organization')
+    if organization:
+        customization = OrgDataManager(str(organization.id)).get_branding_data().get('customization')
+        if customization and customization.new_ui_enabled:
+            return reverse('courses')
 
     current_course = user_data.current_course
     future_start_date = False
@@ -391,11 +397,16 @@ def login_post_view(request):
             login_id = form.cleaned_data['login_id']
             password = form.cleaned_data['password']
             user = get_user_from_login_id(login_id)
-            user = auth.authenticate(username=user.username, password=password)
-            if user:
-                response = _process_authenticated_user(request, user)
+            try:
+                auth_user = auth.authenticate(username=user.username, password=password)
+            except ApiError:
+                return JsonResponse({
+                    "lock_out": True
+                }, status=403)
+            if auth_user:
+                response = _process_authenticated_user(request, auth_user)
                 _append_login_mode_cookie(response, login_mode='normal')
-                append_user_mobile_app_id_cookie(response, user.id)
+                append_user_mobile_app_id_cookie(response, auth_user.id)
                 return response
             else:
                 return JsonResponse({

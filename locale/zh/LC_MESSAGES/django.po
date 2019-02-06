@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-02 08:19+0000\n"
+"POT-Creation-Date: 2019-01-28 08:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -76,7 +76,7 @@ msgstr "其它"
 #: templates/admin/participants/participant_details.haml:295
 #: templates/admin/participants/participant_details.haml:303
 #: templates/admin/participants/participant_details.haml:311
-#: templates/admin/participants/participants_list.haml:94
+#: templates/admin/participants/participants_list.haml:123
 msgid "Female"
 msgstr "女"
 
@@ -85,7 +85,7 @@ msgstr "女"
 #: templates/admin/participants/participant_details.haml:293
 #: templates/admin/participants/participant_details.haml:301
 #: templates/admin/participants/participant_details.haml:309
-#: templates/admin/participants/participants_list.haml:92
+#: templates/admin/participants/participants_list.haml:121
 msgid "Male"
 msgstr "男"
 
@@ -1120,7 +1120,7 @@ msgid "You must accept terms of service in order to continue"
 msgstr "您必须接受服务条款才能继续"
 
 #: accounts/forms.py:436 accounts/forms.py:494 accounts/forms.py:512
-#: accounts/forms.py:617 admin/controller.py:789 admin/views.py:2559
+#: accounts/forms.py:617 admin/controller.py:798 admin/views.py:2572
 #: marketing/forms.py:47 marketing/forms.py:93 marketing/forms.py:132
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1149,21 +1149,22 @@ msgstr ""
 "密码 {html_span_start} 必须至少包含 8 个字符，并且包含大写和小写字母以及数字"
 "或特殊字符。{html_span_end}"
 
-#: accounts/forms.py:461 admin/views.py:2559 marketing/forms.py:141
+#: accounts/forms.py:461 admin/views.py:2572 marketing/forms.py:141
 #: templates/admin/participants/participant_details.haml:124
 #: templates/admin/participants/participants_list.haml:20
 #: templates/admin/permissions/list.haml:36
 msgid "Company"
 msgstr "公司"
 
-#: accounts/forms.py:462 admin/controller.py:789
+#: accounts/forms.py:462 admin/controller.py:798
 msgid "Full Name"
 msgstr "全名"
 
-#: accounts/forms.py:463 admin/controller.py:789 marketing/forms.py:149
+#: accounts/forms.py:463 admin/controller.py:798 marketing/forms.py:149
 #: templates/accounts/user_profile.haml:24
 #: templates/admin/learner_dashboard/discovery_list.haml:12
 #: templates/admin/learner_dashboard/element_list.haml:13
+#: templates_v2/layout.haml:235
 msgid "Title"
 msgstr "标题"
 
@@ -1293,99 +1294,100 @@ msgstr "特殊字符无效。"
 msgid "Please enter a valid Role."
 msgstr "请输入有效的角色。"
 
-#: accounts/views.py:85
+#: accounts/views.py:86
 msgid ""
 "Your login did not match any known accounts, a registration key is required "
 "in order to create a new account."
 msgstr "您的登录信息与任何已知账户都不匹配，需要注册密钥才能创建新账户。"
 
-#: accounts/views.py:87
+#: accounts/views.py:88
 msgid ""
 "There was an error enrolling you in a course using the registration key you "
 "provided"
 msgstr "使用您提供的注册密钥注册课程时出错"
 
-#: accounts/views.py:330
+#: accounts/views.py:336
 msgid ""
 "Your account has already been activated. Please enter credentials to login"
 msgstr "您的账户已激活。请输入凭据登录"
 
-#: accounts/views.py:336
+#: accounts/views.py:342
 msgid "Log In"
 msgstr "登录"
 
-#: accounts/views.py:337
+#: accounts/views.py:343
 msgid "Trouble logging in"
 msgstr "登录时遇到问题"
 
-#: accounts/views.py:386 accounts/views.py:410
+#: accounts/views.py:392 accounts/views.py:421
 msgid "Username/email is not recognised. Try again."
 msgstr "无法识别用户名/电子邮件。请重试。"
 
-#: accounts/views.py:402
+#: accounts/views.py:413
 msgid "Password doesn't match our records. Try again."
 msgstr "密码与我们的记录不匹配。请重试。"
 
-#: accounts/views.py:587 accounts/views.py:660
+#: accounts/views.py:598 accounts/views.py:671
 msgid "Some required information was missing. Please check the fields below."
 msgstr "缺少一些必填信息。请检查下面的字段。"
 
-#: accounts/views.py:607 accounts/views.py:672
+#: accounts/views.py:618 accounts/views.py:683
 msgid "Create my McKinsey Academy account"
 msgstr "创建我的麦肯锡学院账户"
 
-#: accounts/views.py:638
+#: accounts/views.py:649
 msgid "Invalid Activation Code"
 msgstr "激活码无效"
 
-#: accounts/views.py:711
+#: accounts/views.py:722
 msgid "No provider data found."
 msgstr "找不到提供程序数据。"
 
-#: accounts/views.py:713
+#: accounts/views.py:724
 msgid "Provider data does not seem valid."
 msgstr "提供程序数据似乎无效。"
 
-#: accounts/views.py:769
+#: accounts/views.py:780
 msgid "Access Key missing."
 msgstr "缺少访问密钥。"
 
-#: accounts/views.py:786 accounts/views.py:793
+#: accounts/views.py:797 accounts/views.py:804
 #, fuzzy
 #| msgid "Access"
 msgid "Accept"
 msgstr "访问"
 
-#: accounts/views.py:840
+#: accounts/views.py:851
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "无法注册用户：{exception_message}"
 
-#: accounts/views.py:842
+#: accounts/views.py:853
 msgid "Some required information was missing."
 msgstr "缺少一些必要信息。"
 
-#: accounts/views.py:844
+#: accounts/views.py:855
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
 msgstr "缺少身份验证 cookie。您的会话可能已超时。请重新开始。"
 
-#: accounts/views.py:893
+#: accounts/views.py:904
 msgid "Enter new password"
 msgstr "输入新密码"
 
-#: accounts/views.py:910
+#: accounts/views.py:921
 msgid "Password reset unsuccessful"
 msgstr "密码重置不成功"
 
-#: accounts/views.py:1008 lib/mail.py:133 templates/accounts/activate.haml:16
+#: accounts/views.py:1019 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:270
+#: templates_v2/accounts/public_registration.haml:49
 msgid "Welcome to McKinsey Academy"
 msgstr "欢迎来到麦肯锡学院"
 
-#: accounts/views.py:1009
+#: accounts/views.py:1020
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1394,7 +1396,7 @@ msgstr ""
 "您的计划将在 {days} 天后开始。在此期间，请浏览该网站了解更多有关此体验的信"
 "息。"
 
-#: accounts/views.py:1013
+#: accounts/views.py:1024
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1403,14 +1405,14 @@ msgstr ""
 "您的课程将在 {days} 天后开始。在课程开始之前，您可以浏览本网站了解更多有关课"
 "程内容的信息。"
 
-#: accounts/views.py:1167
+#: accounts/views.py:1178 templates_v2/layout.haml:204
 msgid "Enter your full name"
 msgstr "输入您的全名"
 
-#: accounts/views.py:1169 accounts/views.py:1193 admin/views.py:1977
-#: admin/views.py:2011 admin/views.py:4556
+#: accounts/views.py:1180 accounts/views.py:1204 admin/views.py:1990
+#: admin/views.py:2024 admin/views.py:4606
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
-#: templates/admin/client/navigation.haml:189
+#: templates/admin/client/navigation.haml:208
 #: templates/admin/cohorts/course_details.html:38
 #: templates/admin/cohorts/course_details.html:189
 #: templates/admin/course_meta_content/item_detail.haml:16
@@ -1423,30 +1425,31 @@ msgstr "输入您的全名"
 #: templates/admin/learner_dashboard/preview.haml:34
 #: templates/admin/participants/participant_edit_status.haml:35
 #: templates/certificates/new_certificate_template.haml:21
+#: templates_v2/layout.haml:219 templates_v2/layout.haml:238
 msgid "Save"
 msgstr "保存"
 
-#: accounts/views.py:1191
+#: accounts/views.py:1202 templates_v2/layout.haml:228
 msgid "Enter your title"
 msgstr "输入您的职位"
 
-#: accounts/views.py:1274 accounts/views.py:1305
+#: accounts/views.py:1285 accounts/views.py:1316
 msgid "Initial"
 msgstr "初始"
 
-#: accounts/views.py:1302
+#: accounts/views.py:1313
 msgid "Course Closed"
 msgstr "课程已结束"
 
-#: accounts/views.py:1311
+#: accounts/views.py:1322
 msgid "Registered"
 msgstr "已注册"
 
-#: accounts/views.py:1313
+#: accounts/views.py:1324
 msgid "Error"
 msgstr "错误"
 
-#: admin/controller.py:258
+#: admin/controller.py:260
 msgid ""
 "An administrator has created an account on McKinsey Academy for your use. To "
 "activate your account, please copy and paste this address into your web "
@@ -1455,301 +1458,305 @@ msgstr ""
 "管理员已在麦肯锡学院中创建了一个账户供您使用。要激活您的账户，请将此地址复制"
 "并粘贴到 Web 浏览器的地址栏中："
 
-#: admin/controller.py:304 admin/controller.py:352
+#: admin/controller.py:306 admin/controller.py:354
 #, python-brace-format
 msgid "Could not parse user info from {user_line}"
 msgstr "无法解析以下来源的用户信息：{user_line}"
 
-#: admin/controller.py:396 admin/controller.py:469
+#: admin/controller.py:405 admin/controller.py:478
 msgid "Unable to register user"
 msgstr "无法注册用户"
 
-#: admin/controller.py:406 admin/controller.py:480
+#: admin/controller.py:415 admin/controller.py:489
 msgid "User not associated with client"
 msgstr "用户未与客户端关联"
 
-#: admin/controller.py:410
+#: admin/controller.py:419
 msgid "{}: {} - {}"
 msgstr "{}: {} - {}"
 
-#: admin/controller.py:418 admin/controller.py:520
+#: admin/controller.py:427 admin/controller.py:529
 msgid "Data processing error"
 msgstr "数据处理错误"
 
-#: admin/controller.py:419
+#: admin/controller.py:428
 #, python-brace-format
 msgid "Error processing data: {reason}"
 msgstr "处理数据时出错：{reason}"
 
-#: admin/controller.py:498 admin/controller.py:506
+#: admin/controller.py:507 admin/controller.py:515
 #, python-brace-format
 msgid "{error}: {message} - {email}"
 msgstr "{error}: {message} - {email}"
 
-#: admin/controller.py:499
+#: admin/controller.py:508
 msgid "User program enrollment"
 msgstr "用户计划注册"
 
-#: admin/controller.py:507
+#: admin/controller.py:516
 msgid "User course enrollment"
 msgstr "用户课程注册"
 
-#: admin/controller.py:512
+#: admin/controller.py:521
 msgid "Enrolling student error"
 msgstr "注册学员时出错"
 
-#: admin/controller.py:513
+#: admin/controller.py:522
 #, python-brace-format
 msgid "Error enrolling student: {reason} - {email}"
 msgstr "注册学员时出错：{reason} - {email}"
 
-#: admin/controller.py:521
+#: admin/controller.py:530
 #, python-brace-format
 msgid "Error processing data: {reason} - {email}"
 msgstr "处理数据时出错：{reason} - {email}"
 
-#: admin/controller.py:635 admin/controller.py:1307
+#: admin/controller.py:644 admin/controller.py:1316
 msgid "Activated"
 msgstr "已激活"
 
-#: admin/controller.py:637
+#: admin/controller.py:646
 msgid "Could not fetch activation record"
 msgstr "无法提取激活记录"
 
-#: admin/controller.py:654
+#: admin/controller.py:663
 msgid "PROJECT"
 msgstr "项目"
 
-#: admin/controller.py:781
+#: admin/controller.py:790
 msgid "Client Name"
 msgstr "客户端名称"
 
-#: admin/controller.py:781 admin/views.py:4360 admin/views.py:4462
+#: admin/controller.py:790 admin/views.py:4410 admin/views.py:4512
 #: certificates/models.py:87 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "课程 ID"
 
-#: admin/controller.py:789
+#: admin/controller.py:798
 #: templates/admin/participants/participant_details.haml:103
 #: templates/admin/participants/participant_details.haml:205
 msgid "Username"
 msgstr "用户名"
 
-#: admin/controller.py:789
+#: admin/controller.py:798
 msgid "Progress %"
 msgstr "进度 %"
 
-#: admin/controller.py:789
+#: admin/controller.py:798
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:148
+#: templates_v2/courses/visualizations/course_engagement.haml:12
 msgid "Engagement"
 msgstr "参与度"
 
-#: admin/controller.py:790 admin/views.py:4360
+#: admin/controller.py:799 admin/views.py:4410
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:71
+#: templates_v2/courses/visualizations/course_proficiency.haml:9
 msgid "Proficiency"
 msgstr "熟练程度"
 
-#: admin/controller.py:790
+#: admin/controller.py:799
 #: templates/admin/client-admin/course_participants.haml:50
 msgid "Course Completed"
 msgstr "课程已完成"
 
-#: admin/controller.py:811
+#: admin/controller.py:820
 msgid "0%"
 msgstr "0%"
 
-#: admin/controller.py:813 admin/views.py:1036 admin/views.py:1045
+#: admin/controller.py:822 admin/views.py:1047 admin/views.py:1056
 msgid "{}%"
 msgstr "{}%"
 
-#: admin/controller.py:1237
+#: admin/controller.py:1246
 msgid "# of posts"
 msgstr "发帖数"
 
-#: admin/controller.py:1238
+#: admin/controller.py:1247
 msgid "% participants posting"
 msgstr "参与者发帖 %"
 
-#: admin/controller.py:1239
+#: admin/controller.py:1248
 msgid "Avg posts per participant"
 msgstr "每位参与者平均发帖数"
 
-#: admin/controller.py:1305
+#: admin/controller.py:1314
 msgid "Total Cohort"
 msgstr "群组总计"
 
-#: admin/controller.py:1309
+#: admin/controller.py:1318
 msgid "Engaged"
 msgstr "已参与"
 
-#: admin/controller.py:1311
+#: admin/controller.py:1320
 msgid "Logged in over last 7 days"
 msgstr "过去 7 天内登录"
 
-#: admin/controller.py:1559
+#: admin/controller.py:1568
 msgid ""
 "Required fields missing; format is: FirstName, LastName, Email, Company, "
 "CourseID, Status"
 msgstr ""
 
-#: admin/controller.py:1607
+#: admin/controller.py:1616
 msgid "Could not parse user info from {}"
 msgstr "无法解析以下来源的用户信息：{}"
 
-#: admin/controller.py:1663
+#: admin/controller.py:1672
 msgid "Activation record error"
 msgstr "激活记录错误"
 
-#: admin/controller.py:1665
+#: admin/controller.py:1674
 msgid "Processing Data Error"
 msgstr "处理数据时出错"
 
-#: admin/controller.py:1666
+#: admin/controller.py:1675
 #, fuzzy
 #| msgid "Error processing data: {} - {}"
 msgid "Error processing data: {} "
 msgstr "处理数据时出错：{} - {}"
 
-#: admin/controller.py:1778
+#: admin/controller.py:1787
 msgid "This company already exists!"
 msgstr "此公司已存在！"
 
-#: admin/controller.py:1780
+#: admin/controller.py:1789
 msgid "Company Validation Success!"
 msgstr "公司验证成功！"
 
-#: admin/controller.py:1847
+#: admin/controller.py:1856
 msgid "You have sent incorrect chunk number!"
 msgstr "您发送的区块编号不正确！"
 
-#: admin/controller.py:1849
+#: admin/controller.py:1858
 msgid "You have sent incorrect task key!"
 msgstr "您发送的任务密钥不正确！"
 
-#: admin/controller.py:1866
+#: admin/controller.py:1875
 msgid "There are no users in organization!"
 msgstr "组织中没有用户！"
 
-#: admin/controller.py:2101 admin/controller.py:2102 admin/views.py:3862
-#: admin/views.py:3863 admin/views.py:4035 admin/views.py:5940
+#: admin/controller.py:2120 admin/controller.py:2121 admin/views.py:3882
+#: admin/views.py:3883 admin/views.py:4055 admin/views.py:6027
 msgid "No company"
 msgstr "无公司"
 
-#: admin/controller.py:2119 admin/views.py:3867 admin/views.py:4421
-#: admin/views.py:4448 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2138 admin/views.py:3887 admin/views.py:4471
+#: admin/views.py:4498 templates/admin/client-admin/course_participants.haml:73
+#: templates/admin/companies/company_details.haml:133
 #: templates/admin/mobile_apps/company_app_details.haml:46
+#: templates/admin/participants/participants_list.haml:48
 msgid "Yes"
 msgstr "是"
 
-#: admin/controller.py:2121 admin/views.py:3869 admin/views.py:4423
-#: admin/views.py:4427 admin/views.py:4450 admin/views.py:4454
+#: admin/controller.py:2140 admin/views.py:3889 admin/views.py:4473
+#: admin/views.py:4477 admin/views.py:4500 admin/views.py:4504
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
 msgstr "否"
 
-#: admin/controller.py:2141 admin/controller.py:2149
+#: admin/controller.py:2160 admin/controller.py:2168
 msgid "000"
 msgstr "000"
 
-#: admin/controller.py:2357 admin/controller.py:2379
+#: admin/controller.py:2378 admin/controller.py:2400
 msgid "Sorry, We can not process your request"
 msgstr "抱歉，我们无法处理您的请求"
 
-#: admin/controller.py:2364 admin/controller.py:2376
+#: admin/controller.py:2385 admin/controller.py:2397
 msgid "Operation Successful"
 msgstr "操作成功"
 
-#: admin/controller.py:2367
+#: admin/controller.py:2388
 msgid "Please enter role text"
 msgstr "请输入角色文本"
 
-#: admin/controller.py:2404 templates/admin/courses/course_details.haml:111
+#: admin/controller.py:2425 templates/admin/courses/course_details.haml:111
 msgid "Engagement Summary"
 msgstr "参与度摘要"
 
-#: admin/controller.py:2404
+#: admin/controller.py:2425
 msgid "# of people"
 msgstr "人数"
 
-#: admin/controller.py:2404
+#: admin/controller.py:2425
 msgid "% total cohort"
 msgstr "群组总计 %"
 
-#: admin/controller.py:2404
+#: admin/controller.py:2425
 msgid "Avg Progress"
 msgstr "平均进度"
 
-#: admin/controller.py:2411
+#: admin/controller.py:2432
 msgid "Participant Performance"
 msgstr "参与者表现"
 
-#: admin/controller.py:2411
+#: admin/controller.py:2432
 #, fuzzy, python-format
 #| msgid "% completion"
 msgid "% completion"
 msgstr "完成百分比"
 
-#: admin/controller.py:2411
+#: admin/controller.py:2432
 msgid "Score"
 msgstr "分数"
 
-#: admin/controller.py:2412
+#: admin/controller.py:2433
 msgid "Group work 1"
 msgstr "小组作业 1"
 
-#: admin/controller.py:2413
+#: admin/controller.py:2434
 msgid "Group work 2"
 msgstr "小组作业 2"
 
-#: admin/controller.py:2414
+#: admin/controller.py:2435
 msgid "Mid-course assessment"
 msgstr "期中评定"
 
-#: admin/controller.py:2415
+#: admin/controller.py:2436
 msgid "Final assessment"
 msgstr "期末评定"
 
-#: admin/controller.py:2422 templates/admin/courses/course_details.haml:124
+#: admin/controller.py:2443 templates/admin/courses/course_details.haml:124
 msgid "Social Engagement"
 msgstr "社交参与"
 
-#: admin/controller.py:2616
+#: admin/controller.py:2641
 #, fuzzy
 #| msgid "User Id is not passed"
 msgid "user {} is not updated"
 msgstr "用户 ID 未通过验证"
 
-#: admin/controller.py:2618
+#: admin/controller.py:2643
 #, fuzzy
 #| msgid "User doesn't exist"
 msgid "user {} doesn't exists"
 msgstr "用户不存在"
 
-#: admin/controller.py:2632
+#: admin/controller.py:2657
 msgid "Field {} does not match with organization fields"
 msgstr ""
 
-#: admin/controller.py:2652
+#: admin/controller.py:2677
 msgid ""
 "Participant with email {} and manager with email {} doesn't belong to a same "
 "organization"
 msgstr ""
 
-#: admin/controller.py:2668 admin/tasks.py:595
+#: admin/controller.py:2693 admin/tasks.py:603
 msgid ""
 "File is not formatted properly. Please format according to given template."
 msgstr ""
 
-#: admin/controller.py:2681 admin/controller.py:2683
+#: admin/controller.py:2706 admin/controller.py:2708
 #, fuzzy
 #| msgid "User doesn't exist"
 msgid "User with email {} doesn't exists"
 msgstr "用户不存在"
 
-#: admin/controller.py:2685
+#: admin/controller.py:2710
 msgid "User and manager email cannot be empty"
 msgstr ""
 
@@ -1761,12 +1768,12 @@ msgstr "十六进制代码应以 ＃ 开头，后跟 6 或 8 位十六进制数�
 msgid "Enter new email address"
 msgstr "输入新的电子邮件地址"
 
-#: admin/forms.py:131 admin/views.py:4592
+#: admin/forms.py:131 admin/views.py:4642
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "助教"
 
-#: admin/forms.py:132 admin/views.py:4593
+#: admin/forms.py:132 admin/views.py:4643
 msgid "OBSERVER"
 msgstr "观察员"
 
@@ -1774,19 +1781,19 @@ msgstr "观察员"
 msgid "MODERATOR"
 msgstr ""
 
-#: admin/forms.py:158 admin/views.py:4594
+#: admin/forms.py:158 admin/views.py:4644
 msgid "ADMIN"
 msgstr "管理员"
 
-#: admin/forms.py:159 admin/forms.py:172 admin/views.py:4597
+#: admin/forms.py:159 admin/forms.py:172 admin/views.py:4647
 msgid "COURSE OPS"
 msgstr "课程运营"
 
-#: admin/forms.py:160 admin/forms.py:173 admin/views.py:4596
+#: admin/forms.py:160 admin/forms.py:173 admin/views.py:4646
 msgid "INTERNAL ADMIN"
 msgstr "内部管理员"
 
-#: admin/forms.py:161 admin/forms.py:174 admin/views.py:4595
+#: admin/forms.py:161 admin/forms.py:174 admin/views.py:4645
 msgid "COMPANY ADMIN"
 msgstr "公司管理员"
 
@@ -1815,8 +1822,8 @@ msgstr "课程实例"
 msgid "Name {}"
 msgstr "名称 {}"
 
-#: admin/forms.py:244 admin/views.py:2125 admin/views.py:4360
-#: admin/views.py:4462 templates/admin/program/list.haml:25
+#: admin/forms.py:244 admin/views.py:2138 admin/views.py:4410
+#: admin/views.py:4512 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
 #: templates/header.haml:109
@@ -1835,47 +1842,47 @@ msgstr "不允许使用该数字"
 msgid "Number of participants is limited to 5000"
 msgstr "参与者人数限制为 5000 人"
 
-#: admin/models.py:424
+#: admin/models.py:438
 msgid "Executive Sponsor"
 msgstr "执行发起人"
 
-#: admin/models.py:425
+#: admin/models.py:439
 msgid "IT Security Contact"
 msgstr "IT 安全联系人"
 
-#: admin/models.py:426
+#: admin/models.py:440
 msgid "Senior HR/PD Professional"
 msgstr "高级 HR/PD 专员"
 
-#: admin/models.py:427
+#: admin/models.py:441
 msgid "Day-to-Day Coordinator"
 msgstr "日常协调员"
 
-#: admin/models.py:438
+#: admin/models.py:452
 msgid "Senior executive sponsoring McKinsey Academy program within company"
 msgstr "在公司内发起麦肯锡学院计划的高级主管"
 
-#: admin/models.py:439
+#: admin/models.py:453
 msgid ""
 "IT department contact to troubleshoot technical issues (e.g., corporate "
 "firewalls, whitelisting)"
 msgstr "帮助解决各种技术问题（例如，公司防火墙、白名单）的 IT 部门联系人"
 
-#: admin/models.py:440
+#: admin/models.py:454
 msgid "Overseeing/coordinating Academy program with broader people strategy"
 msgstr "采用更广泛的人才策略来监督/协调学院计划"
 
-#: admin/models.py:441
+#: admin/models.py:455
 msgid ""
 "Individual managing day-to-day operation of the program (e.g., missing "
 "participant information, engagement)"
 msgstr "管理计划日常运维（例如，缺少参与者信息、参与度）的人员"
 
-#: admin/models.py:586
+#: admin/models.py:600
 msgid "Article"
 msgstr "文章"
 
-#: admin/models.py:587 templates/admin/course_meta_content/item_list.haml:204
+#: admin/models.py:601 templates/admin/course_meta_content/item_list.haml:204
 #: templates/courses/content_page/lesson_menu.haml:12
 #: templates/courses/content_page/lesson_menu.haml:22
 #: templates/courses/content_page/lesson_pager.haml:13
@@ -1883,10 +1890,12 @@ msgstr "文章"
 #: templates/courses/course_lessons.haml:14
 #: templates/courses/course_lessons_ld_external.haml:16
 #: templates/courses/course_progress_v2.haml:79
+#: templates_v2/courses/content_page/course_menu.haml:20
+#: templates_v2/courses/course_main.haml:41
 msgid "Lesson"
 msgstr "课时"
 
-#: admin/models.py:588 templates/admin/course_meta_content/item_list.haml:262
+#: admin/models.py:602 templates/admin/course_meta_content/item_list.haml:262
 #: templates/courses/content_page/lesson_pager.haml:17
 #: templates/courses/content_page/lesson_pager.haml:45
 #: templates/courses/content_page/lesson_pager_ld.haml:15
@@ -1898,39 +1907,46 @@ msgstr "课时"
 msgid "Module"
 msgstr "模块"
 
-#: admin/models.py:589 admin/views.py:4360 admin/views.py:4462
+#: admin/models.py:603 admin/views.py:4410 admin/views.py:4512
 #: templates/admin/participants/participants_list.haml:22
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
 msgid "Course"
 msgstr "课程"
 
-#: admin/models.py:590
+#: admin/models.py:604
 msgid "In Person Session"
 msgstr "当面授课"
 
-#: admin/models.py:591
+#: admin/models.py:605
 msgid "Webinar"
 msgstr "网络研讨会"
 
-#: admin/models.py:592
+#: admin/models.py:606 templates_v2/courses/course_main.haml:68
 msgid "Group work"
 msgstr "小组作业"
 
-#: admin/models.py:680 templates/admin/client-admin/course_info.haml:85
+#: admin/models.py:694 templates/admin/client-admin/course_info.haml:85
+#: templates_v2/courses/content_page/course_menu.haml:38
+#: templates_v2/courses/content_page/courses_menu_list.haml:27
+#: templates_v2/courses/course_main.haml:54
 msgid "Not Started"
 msgstr "未开始"
 
-#: admin/models.py:681 admin/views.py:2502
+#: admin/models.py:695 admin/views.py:2515
 #: templates/courses/content_page/courses_menu_list.haml:12
+#: templates_v2/courses/content_page/course_menu.haml:41
+#: templates_v2/courses/content_page/courses_menu_list.haml:24
+#: templates_v2/courses/course_main.haml:57
 msgid "In Progress"
 msgstr "进行中"
 
-#: admin/models.py:682
+#: admin/models.py:696 templates_v2/courses/content_page/course_menu.haml:35
+#: templates_v2/courses/course_main.haml:51
 msgid "Complete"
 msgstr "完成"
 
-#: admin/models.py:683
+#: admin/models.py:697
 msgid "Incomplete"
 msgstr "未完成"
 
@@ -1970,102 +1986,102 @@ msgstr "{} 的参与者统计数据准备就绪，可供下载"
 msgid "Participant stats for {} did not generate"
 msgstr "未生成 {} 的参与者统计数据"
 
-#: admin/tasks.py:629
+#: admin/tasks.py:637
 msgid "User with email {} and manager with email {} was unsuccessfull."
 msgstr ""
 
-#: admin/tasks.py:740
+#: admin/tasks.py:748
 msgid "Import File Processed"
 msgstr ""
 
-#: admin/views.py:615
+#: admin/views.py:619
 msgid "Edit Email"
 msgstr "编辑电子邮件"
 
-#: admin/views.py:654
+#: admin/views.py:658
 msgid "Un-enroll from this course"
 msgstr "取消注册此课程"
 
-#: admin/views.py:655
+#: admin/views.py:659
 msgid "Un-enroll from entire program "
 msgstr "取消注册整个计划 "
 
-#: admin/views.py:955
+#: admin/views.py:966
 msgid "% Progress"
 msgstr "进度 %"
 
-#: admin/views.py:956
+#: admin/views.py:967
 msgid "% Progress (Engaged)"
 msgstr "进度 %（已参与）"
 
-#: admin/views.py:1031
+#: admin/views.py:1042
 msgid "GW_{}"
 msgstr "GW_{}"
 
-#: admin/views.py:1034
+#: admin/views.py:1045
 msgid "Group Work: {}"
 msgstr "小组作业：{}"
 
-#: admin/views.py:1040
+#: admin/views.py:1051
 msgid "AS_{}"
 msgstr "AS_{}"
 
-#: admin/views.py:1043
+#: admin/views.py:1054
 msgid "Assessment: {}"
 msgstr "评定：{}"
 
-#: admin/views.py:1226
+#: admin/views.py:1237
 msgid "No such task!"
 msgstr "无此类任务！"
 
-#: admin/views.py:1319 admin/views.py:1358
+#: admin/views.py:1330 admin/views.py:1369
 msgid "please fix the problems indicated below."
 msgstr "请解决下面指出的问题。"
 
-#: admin/views.py:1408
+#: admin/views.py:1419
 msgid "Client"
 msgstr "客户端"
 
-#: admin/views.py:1409
+#: admin/views.py:1420
 msgid "Clients"
 msgstr "客户端"
 
-#: admin/views.py:1469 admin/views.py:1518
+#: admin/views.py:1480 admin/views.py:1529
 msgid "Save Client"
 msgstr "保存客户端"
 
-#: admin/views.py:1530
+#: admin/views.py:1541
 #, python-brace-format
 msgid "Successfully processed {processed} of {total} record"
 msgid_plural "Successfully processed {processed} of {total} records"
 msgstr[0] "已成功处理 {processed} 条记录（共 {total} 条）"
 msgstr[1] "已成功处理 {processed} 条记录（共 {total} 条）"
 
-#: admin/views.py:1713
+#: admin/views.py:1724
 msgid "Bad request, The Image type is not valid."
 msgstr "错误的请求，图像类型无效。"
 
-#: admin/views.py:1725
+#: admin/views.py:1736
 msgid "Could not delete the image, Please try later"
 msgstr "无法删除图像，请稍后重试"
 
-#: admin/views.py:1879
+#: admin/views.py:1892
 msgid "Contact has been removed."
 msgstr "联系人已删除。"
 
-#: admin/views.py:1895 admin/views.py:1901
+#: admin/views.py:1908 admin/views.py:1914
 msgid "Invalid Course Run"
 msgstr "课程安排无效"
 
-#: admin/views.py:1897
+#: admin/views.py:1910
 msgid "Invalid Program ID"
 msgstr "计划 ID 无效"
 
-#: admin/views.py:1901
+#: admin/views.py:1914
 msgid "Course: {}"
 msgstr "课程：{}"
 
-#: admin/views.py:1927
+#: admin/views.py:1940
 msgid ""
 "\n"
 "            If this client should use SSO: DevOps must configure and enable "
@@ -2084,106 +2100,110 @@ msgstr ""
 "            “Idp slug”值。如果此客户端不使用 SSO，请将此字段留空。\n"
 "        "
 
-#: admin/views.py:1970 admin/views.py:1971 admin/views.py:2005
+#: admin/views.py:1983 admin/views.py:1984 admin/views.py:2018
 msgid "- Select -"
 msgstr "- 选择 -"
 
-#: admin/views.py:2028
+#: admin/views.py:2041
 msgid "Access Key couldn't be created, please check course ID!"
 msgstr "无法创建访问密钥，请检查课程 ID！"
 
-#: admin/views.py:2036
+#: admin/views.py:2049
 msgid "Access Key created successfully!"
 msgstr "访问密钥已成功创建！"
 
-#: admin/views.py:2051
+#: admin/views.py:2064
 msgid "Access Key"
 msgstr "访问密钥"
 
-#: admin/views.py:2073
+#: admin/views.py:2086
 msgid "Send"
 msgstr "发送"
 
-#: admin/views.py:2098
+#: admin/views.py:2111
 msgid "This student hasn't been added to any programs yet."
 msgstr "此学员尚未加入任何计划。"
 
-#: admin/views.py:2109
+#: admin/views.py:2122
 msgid "fail"
 msgstr "失败"
 
-#: admin/views.py:2113
+#: admin/views.py:2126
 msgid "success"
 msgstr "成功"
 
-#: admin/views.py:2126 templates/admin/admin_header.haml:59
+#: admin/views.py:2139 templates/admin/admin_header.haml:59
 #: templates/marketing/programs.haml:237
 msgid "Programs"
 msgstr "计划"
 
-#: admin/views.py:2164 admin/views.py:2212
+#: admin/views.py:2177 admin/views.py:2225
 msgid "Save Program"
 msgstr "保存计划"
 
-#: admin/views.py:2559 admin/views.py:6059
+#: admin/views.py:2572 admin/views.py:6146
 #: templates/admin/participants/activation_link_modal.haml:15
+#: templates_v2/layout.haml:211
 msgid "First name"
 msgstr "名字"
 
-#: admin/views.py:2559 admin/views.py:6060
+#: admin/views.py:2572 admin/views.py:6147
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
+#: templates_v2/layout.haml:215
 msgid "Last name"
 msgstr "姓氏"
 
-#: admin/views.py:2559
+#: admin/views.py:2572
 #: templates/admin/participants/activation_link_modal.haml:4
 #: templates/admin/participants/activation_link_modal.haml:21
 msgid "Activation Link"
 msgstr "激活链接"
 
-#: admin/views.py:2677
+#: admin/views.py:2690
 msgid "Report is TBD"
 msgstr "报告待定"
 
-#: admin/views.py:2699 templates/courses/content_page/courses_menu_list.haml:17
+#: admin/views.py:2712 templates/courses/content_page/courses_menu_list.haml:17
+#: templates_v2/courses/content_page/courses_menu_list.haml:32
 msgid "Coming Soon"
 msgstr "即将推出"
 
-#: admin/views.py:2701 templates/courses/content_page/courses_menu_list.haml:8
+#: admin/views.py:2714 templates/courses/content_page/courses_menu_list.haml:8
+#: templates_v2/courses/content_page/courses_menu_list.haml:21
 msgid "Archived"
 msgstr "已归档"
 
-#: admin/views.py:2770
+#: admin/views.py:2783
 msgid "Successfully saved courses to {} program"
 msgstr "已成功将课程保存到 {} 计划中"
 
-#: admin/views.py:2785 admin/views.py:3186 admin/views.py:3220
-#: admin/views.py:3279
+#: admin/views.py:2798 admin/views.py:3199 admin/views.py:3233
+#: admin/views.py:3292
 msgid "Invalid program_id specified: {}"
 msgstr "指定的 program_id 无效：{}"
 
-#: admin/views.py:2794
+#: admin/views.py:2807
 msgid "Invalid student_id specified: {}"
 msgstr "指定的 student_id 无效：{}"
 
-#: admin/views.py:2800
+#: admin/views.py:2813
 msgid "Not enough places available for {} program - {} left"
 msgstr "{} 计划的名额不足 - 剩余 {} 个"
 
-#: admin/views.py:2828
+#: admin/views.py:2841
 msgid "Successfully associated students to {} program"
 msgstr "已成功将学员关联到 {} 计划"
 
-#: admin/views.py:2868
+#: admin/views.py:2881
 msgid "{} already enrolled in {}"
 msgstr "{} 已注册 {}"
 
-#: admin/views.py:2875
+#: admin/views.py:2888
 msgid "Successfully associated students to courses"
 msgstr "已成功将学员关联到课程"
 
-#: admin/views.py:2877
+#: admin/views.py:2890
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
@@ -2191,18 +2211,18 @@ msgstr ""
 "已成功将学员关联到课程，并显示 {} 条消息：\n"
 "\\t{}"
 
-#: admin/views.py:2995 admin/views.py:3002
+#: admin/views.py:3008 admin/views.py:3015
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
 msgstr "上传文件时出错。请确保使用的是接受的文件格式，然后重试。"
 
-#: admin/views.py:3446 admin/views.py:3513
+#: admin/views.py:3459 admin/views.py:3526
 msgid "No group projects available for this course"
 msgstr "此课程没有可用的小组项目"
 
-#: admin/views.py:3524 admin/views.py:3525 admin/views.py:3766
-#: admin/views.py:3767 templates/admin/admin_header.haml:37
+#: admin/views.py:3537 admin/views.py:3538 admin/views.py:3779
+#: admin/views.py:3780 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
@@ -2210,222 +2230,229 @@ msgstr "此课程没有可用的小组项目"
 msgid "Group Work"
 msgstr "小组作业"
 
-#: admin/views.py:3611
+#: admin/views.py:3624
 msgid "Group wasn't created - please select project"
 msgstr "未创建小组 - 请选择项目"
 
-#: admin/views.py:3622
+#: admin/views.py:3635
 msgid "Bad users {} for private project"
 msgstr "私人项目的用户 {} 错误"
 
-#: admin/views.py:3638
+#: admin/views.py:3651
 msgid "Group successfully created"
 msgstr "小组已成功创建"
 
-#: admin/views.py:3642
+#: admin/views.py:3655
 msgid "Group was not created"
 msgstr "未创建小组"
 
-#: admin/views.py:3688
+#: admin/views.py:3701
 msgid "Error creating project"
 msgstr "创建项目时出错"
 
-#: admin/views.py:3703
+#: admin/views.py:3716
 msgid "Project already exists"
 msgstr "项目已存在"
 
-#: admin/views.py:3708
+#: admin/views.py:3721
 msgid "Project successfully created"
 msgstr "项目已成功创建"
 
-#: admin/views.py:3742
+#: admin/views.py:3755
 msgid "Project deleted successfully."
 msgstr "项目已成功删除。"
 
-#: admin/views.py:3804
+#: admin/views.py:3824
 msgid "Password Reset Email successfully sent."
 msgstr "密码重置电子邮件已成功发送。"
 
-#: admin/views.py:3823
+#: admin/views.py:3843
 msgid "Activation email sent."
 msgstr "激活电子邮件已发送。"
 
-#: admin/views.py:3908 admin/views.py:4120
+#: admin/views.py:3928 admin/views.py:4140
 msgid "Company name can only contain alphanumeric characters"
 msgstr "公司名称只能包含字母数字字符"
 
-#: admin/views.py:3920 admin/views.py:3925
+#: admin/views.py:3940 admin/views.py:3945
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr "权限错误：您无权授予此角色"
 
-#: admin/views.py:3936
+#: admin/views.py:3956
 msgid "User with that email already exists!"
 msgstr "使用该电子邮件地址的用户已存在！"
 
-#: admin/views.py:3965 admin/views.py:4153
+#: admin/views.py:3985 admin/views.py:4173
 msgid "Couldn't create company!"
 msgstr "无法创建公司！"
 
-#: admin/views.py:3978
+#: admin/views.py:3998
 msgid "Couldn't add user to company!"
 msgstr "无法将用户添加到公司！"
 
-#: admin/views.py:4003 templates/admin/participants/participants_list.haml:239
+#: admin/views.py:4023 templates/admin/participants/participants_list.haml:268
 msgid "Successfully added new user!"
 msgstr "已成功添加新用户！"
 
-#: admin/views.py:4025 admin/views.py:4027 admin/views.py:4039
-#: admin/views.py:4045 admin/views.py:4051 admin/views.py:5933
-#: admin/views.py:5935 admin/views.py:5944 admin/views.py:5950
-#: admin/views.py:5956
+#: admin/views.py:4045 admin/views.py:4047 admin/views.py:4059
+#: admin/views.py:4065 admin/views.py:4071 admin/views.py:6020
+#: admin/views.py:6022 admin/views.py:6031 admin/views.py:6037
+#: admin/views.py:6043
 #: templates/admin/participants/participant_details.haml:297
 #: templates/admin/participants/participant_details.haml:305
 #: templates/admin/participants/participant_details.haml:313
-#: templates/admin/participants/participants_list.haml:90
+#: templates/admin/participants/participants_list.haml:119
 msgid "N/A"
 msgstr "不适用"
 
-#: admin/views.py:4140
+#: admin/views.py:4160
 msgid "User with that username or email already exists!"
 msgstr "使用该用户名或电子邮件地址的用户已存在！"
 
-#: admin/views.py:4213
+#: admin/views.py:4225 admin/views.py:5246
+msgid "`data_deletion` flag is not enabled."
+msgstr ""
+
+#: admin/views.py:4263
 msgid "Can't find user in database"
 msgstr "在数据库中找不到用户"
 
-#: admin/views.py:4302
+#: admin/views.py:4352
 msgid "There is a problem with selected user role on new course!"
 msgstr "新课程中选定的用户角色存在问题！"
 
-#: admin/views.py:4360 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4410 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
+#: templates_v2/courses/course_main.haml:74
+#: templates_v2/courses/visualizations/course_progress.haml:10
 msgid "Progress"
 msgstr "进度"
 
-#: admin/views.py:4360 admin/views.py:4463
+#: admin/views.py:4410 admin/views.py:4513
 msgid "Status"
 msgstr "状态"
 
-#: admin/views.py:4462 templates/admin/client-admin/course_info.haml:79
+#: admin/views.py:4512 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:46
 #: templates/courses/course_progress.haml:66
+#: templates_v2/courses/content_page/courses_menu_list.haml:30
 msgid "Completed"
 msgstr "已完成"
 
-#: admin/views.py:4462
+#: admin/views.py:4512
 msgid "Grade"
 msgstr "评分"
 
-#: admin/views.py:4463
+#: admin/views.py:4513
 msgid "End Date"
 msgstr "结束日期"
 
-#: admin/views.py:4620
+#: admin/views.py:4670
 msgid "Problem generating activity review assignments"
 msgstr "生成活动评阅任务时发生问题"
 
-#: admin/views.py:4644
+#: admin/views.py:4694
 msgid "Project review assignments allocated"
 msgstr "分配的项目评阅任务"
 
-#: admin/views.py:4652
+#: admin/views.py:4702
 msgid "Not enough groups to meet review criteria"
 msgstr "小组数量不足，无法满足评阅标准"
 
-#: admin/views.py:4887
+#: admin/views.py:4937
 msgid "Successfully added new email template!"
 msgstr "已成功添加新的电子邮件模板！"
 
-#: admin/views.py:4891
+#: admin/views.py:4941
 msgid "Missing fields in email template!"
 msgstr "电子邮件模板中缺少字段！"
 
-#: admin/views.py:4902
+#: admin/views.py:4952
 msgid "Successfully got email template!"
 msgstr "已成功获取电子邮件模板！"
 
-#: admin/views.py:4906 admin/views.py:4920 admin/views.py:4945
+#: admin/views.py:4956 admin/views.py:4970 admin/views.py:4995
 msgid "Can't find email template key!"
 msgstr "找不到电子邮件模板密钥！"
 
-#: admin/views.py:4908 admin/views.py:4922 admin/views.py:4947
+#: admin/views.py:4958 admin/views.py:4972 admin/views.py:4997
 msgid "Missing email template key!"
 msgstr "缺少电子邮件模板密钥！"
 
-#: admin/views.py:4918
+#: admin/views.py:4968
 msgid "Successfully deleted email template!"
 msgstr "已成功删除电子邮件模板！"
 
-#: admin/views.py:4941
+#: admin/views.py:4991
 msgid "Successfully updated email template!"
 msgstr "已成功更新电子邮件模板！"
 
-#: admin/views.py:5077 admin/views.py:5714
+#: admin/views.py:5122 admin/views.py:5801
 msgid "No Company Display name!"
 msgstr "无公司显示名称！"
 
-#: admin/views.py:5279
+#: admin/views.py:5366
 msgid "App name only contains alphanumeric characters"
 msgstr "应用名称只能包含字母数字字符"
 
-#: admin/views.py:5397
+#: admin/views.py:5484
 msgid "Learner dashboard not found"
 msgstr "找不到学员仪表板"
 
-#: admin/views.py:5731
+#: admin/views.py:5818
 msgid "Company name successfully changed!"
 msgstr "公司名称已成功更改！"
 
-#: admin/views.py:5776
+#: admin/views.py:5863
 msgid "Tag with this name already exist's!"
 msgstr "具有此名称的标签已存在！"
 
-#: admin/views.py:5787
+#: admin/views.py:5874
 msgid "Tag created!"
 msgstr "标签已创建！"
 
-#: admin/views.py:5789
+#: admin/views.py:5876
 msgid "You need to select tag's name!"
 msgstr "您需要选择标签名称！"
 
-#: admin/views.py:5841
+#: admin/views.py:5928
 msgid "Tag added to Course!"
 msgstr "已向课程添加标签！"
 
-#: admin/views.py:5843 admin/views.py:5866
+#: admin/views.py:5930 admin/views.py:5953
 msgid "You need to select tag!"
 msgstr "您需要选择标签！"
 
-#: admin/views.py:5864
+#: admin/views.py:5951
 msgid "Tag removed from Course!"
 msgstr "已从课程删除标签！"
 
-#: admin/views.py:6061 templates/admin/course_run/view.haml:65
+#: admin/views.py:6148 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "公司名称"
 
-#: admin/views.py:6062 templates/admin/course_run/view.haml:66
+#: admin/views.py:6149 templates/admin/course_run/view.haml:66
 msgid "Company email"
 msgstr "公司电子邮件"
 
-#: admin/views.py:6063 templates/admin/course_run/view.haml:67
+#: admin/views.py:6150 templates/admin/course_run/view.haml:67
 msgid "Current role"
 msgstr "当前角色"
 
-#: admin/views.py:6064 templates/admin/course_run/view.haml:68
+#: admin/views.py:6151 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "新用户"
 
-#: admin/views.py:6065
+#: admin/views.py:6152
 msgid "McK user"
 msgstr "麦肯锡用户"
 
-#: admin/views.py:6066 templates/admin/course_run/view.haml:70
+#: admin/views.py:6153 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "已注册"
 
-#: admin/views.py:6067 templates/admin/course_run/view.haml:71
+#: admin/views.py:6154 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "激活"
@@ -2507,12 +2534,12 @@ msgstr "COURSE_UNAVAILABLE"
 msgid "group {group_id} in course {course_id}"
 msgstr "课程 {course_id} 中的小组 {group_id}"
 
-#: api_client/group_api.py:350 api_client/group_api.py:354
+#: api_client/group_api.py:352 api_client/group_api.py:356
 #: api_client/organization_api.py:371 api_client/organization_api.py:375
 msgid "Permission Denied"
 msgstr "权限被拒"
 
-#: api_client/group_api.py:351 api_client/group_api.py:355
+#: api_client/group_api.py:353 api_client/group_api.py:357
 #: api_client/organization_api.py:372 api_client/organization_api.py:376
 msgid "Invalid data"
 msgstr "数据无效"
@@ -2527,15 +2554,15 @@ msgstr "{date_field}_{component_value}"
 msgid "Missing required field '{value}'"
 msgstr "缺少必填字段 '{value}'"
 
-#: api_client/user_api.py:722
+#: api_client/user_api.py:744
 msgid "User account not activated"
 msgstr "用户账户未激活"
 
-#: api_client/user_api.py:723 api_client/user_api.py:724
+#: api_client/user_api.py:745 api_client/user_api.py:746
 msgid "Username or password invalid"
 msgstr "用户名或密码无效"
 
-#: api_client/user_api.py:727
+#: api_client/user_api.py:749
 msgid "Username or email already registered"
 msgstr "用户名或电子邮件已注册"
 
@@ -2588,48 +2615,48 @@ msgstr "用户 {user_id} 访问课程 '{course_id}' 被拒"
 msgid "Access denied to user {admin_user_id} for data belonging to {user_id}"
 msgstr "用户 {admin_user_id} 访问属于 {user_id} 的数据遭拒"
 
-#: courses/views.py:572
+#: courses/views.py:571
 msgid "TOTAL"
 msgstr "总计"
 
-#: courses/views.py:838
+#: courses/views.py:837
 #, python-brace-format
 msgid "This lesson does not start until {start_upon}"
 msgstr "本课时的开始时间是 {start_upon}"
 
-#: courses/views.py:841
+#: courses/views.py:840
 #, fuzzy, python-brace-format
 #| msgid "This lesson does not start until {start_upon}"
 msgid "This {custom_lesson_label} does not start until {start_upon}"
 msgstr "本课时的开始时间是 {start_upon}"
 
-#: courses/views.py:1032 courses/views.py:1065 courses/views.py:1099
+#: courses/views.py:1031 courses/views.py:1064 courses/views.py:1098
 msgid "Message not sent."
 msgstr "消息未发送。"
 
-#: courses/views.py:1034 courses/views.py:1066 courses/views.py:1100
-#: courses/views.py:1141
+#: courses/views.py:1033 courses/views.py:1065 courses/views.py:1099
+#: courses/views.py:1140
 msgid "Message successfully sent."
 msgstr "消息已成功发送。"
 
-#: courses/views.py:1053 courses/views.py:1081
+#: courses/views.py:1052 courses/views.py:1080
 #, python-brace-format
 msgid "Group Project Message - {course_name}"
 msgstr "小组项目消息 - {course_name}"
 
-#: courses/views.py:1103
+#: courses/views.py:1102
 msgid "Message not sent. Email is not valid"
 msgstr "消息未发送。电子邮件地址无效"
 
-#: courses/views.py:1118
+#: courses/views.py:1117
 msgid "Submission not found."
 msgstr "找不到提交内容。"
 
-#: courses/views.py:1124
+#: courses/views.py:1123
 msgid "We've received your submission!"
 msgstr "我们已收到您提交的内容！"
 
-#: courses/views.py:1125
+#: courses/views.py:1124
 #, python-brace-format
 msgid ""
 "Thank you for your group work submission. We received {file_name} uploaded "
@@ -2639,27 +2666,27 @@ msgstr ""
 "感谢您提交小组作业。我们已收到 {user_full_name} 在 {submission_dt} 上传的 "
 "{file_name}。您可以在小组作业截止日期前随时更换此文件。"
 
-#: courses/views.py:1137
+#: courses/views.py:1136
 msgid "There was a problem; message not sent."
 msgstr "发生问题；消息未发送。"
 
-#: courses/views.py:1155
+#: courses/views.py:1154
 msgid "Created At"
 msgstr "创建时间"
 
-#: courses/views.py:1155
+#: courses/views.py:1154
 msgid "Course Name"
 msgstr "课程名称"
 
-#: courses/views.py:1155
+#: courses/views.py:1154
 msgid "Lesson Name"
 msgstr "课时名称"
 
-#: courses/views.py:1155
+#: courses/views.py:1154
 msgid "Module Name"
 msgstr "模块名称"
 
-#: courses/views.py:1155
+#: courses/views.py:1154
 msgid "Note"
 msgstr "注意"
 
@@ -2823,11 +2850,11 @@ msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr "感谢您对麦肯锡学院的关注。我们将及时告知您最新消息。"
 
-#: mcka_apros/settings.py:207 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:213 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr "麦肯锡管理计划"
 
-#: mcka_apros/settings.py:298
+#: mcka_apros/settings.py:304
 msgid "Congratulations! Your certificate has been generated"
 msgstr "恭喜！您的证书已生成"
 
@@ -2996,6 +3023,7 @@ msgstr "欢迎"
 #: templates/accounts/activate.haml:42
 #: templates/accounts/public_registration.haml:74
 #: templates/accounts/sso_terms_of_service.haml:33
+#: templates_v2/accounts/public_registration.haml:70
 msgid ""
 "Registering gives you access to course content and ensures that you receive "
 "updates and notifications from McKinsey Academy."
@@ -3004,6 +3032,7 @@ msgstr "注册后，您可以访问课程内容，并会收到麦肯锡学院的
 #: templates/accounts/activate.haml:44 templates/accounts/login.haml:52
 #: templates/accounts/public_registration.haml:78
 #: templates/accounts/sso_terms_of_service.haml:35
+#: templates_v2/accounts/public_registration.haml:74
 msgid "Need Help?"
 msgstr "需要帮助？"
 
@@ -3039,6 +3068,7 @@ msgstr "拖动并调整裁剪工具以编辑您的头像。"
 
 #: templates/accounts/edit_profile_image.haml:23
 #: templates/admin/client/edit_mobile_app_image.haml:48
+#: templates_v2/layout.haml:274
 msgid "Crop & Save"
 msgstr "裁剪并保存"
 
@@ -3052,6 +3082,7 @@ msgstr "< 返回"
 
 #: templates/accounts/login.haml:21
 #: templates/accounts/public_registration.haml:41
+#: templates_v2/accounts/public_registration.haml:47
 msgid ""
 "We're sorry, McKinsey Academy is not compatible with your browser. You will "
 "not be able to access course content without updating your browser. We "
@@ -3082,6 +3113,7 @@ msgstr "忘记密码？"
 
 #: templates/accounts/login.haml:57
 #: templates/accounts/public_registration.haml:81
+#: templates_v2/accounts/public_registration.haml:77
 msgid "View our FAQ for answers to commonly asked questions."
 msgstr "查看我们的常见问题以获取相关解答。"
 
@@ -3109,7 +3141,57 @@ msgstr " 包含链接的电子邮件。"
 msgid "Return to Login"
 msgstr "返回登录"
 
+#: templates/accounts/login.haml:88
+msgid "You've been locked out!"
+msgstr ""
+
+#: templates/accounts/login.haml:91
+msgid "Your account is locked for"
+msgstr ""
+
+#: templates/accounts/login.haml:93
+msgid "15 minutes "
+msgstr ""
+
+#: templates/accounts/login.haml:94
+#, fuzzy
+#| msgid "in your cohort"
+msgid "since your 5"
+msgstr "您的群组中"
+
+#: templates/accounts/login.haml:96
+#, fuzzy
+#| msgid "Path"
+msgid "th"
+msgstr "路径"
+
+#: templates/accounts/login.haml:97
+msgid " attempt."
+msgstr ""
+
+#: templates/accounts/login.haml:100
+msgid ""
+"Your account has been disabled for security reasons. To access your account,"
+msgstr ""
+
+#: templates/accounts/login.haml:102
+#, fuzzy
+#| msgid "Reset Your Password"
+msgid "reset your password"
+msgstr "重置您的密码"
+
+#: templates/accounts/login.haml:104
+msgid "or try to login again in 15 minutes."
+msgstr ""
+
+#: templates/accounts/login.haml:106
+#, fuzzy
+#| msgid "Reset My Password"
+msgid "Reset Password"
+msgstr "重置我的密码"
+
 #: templates/accounts/public_registration.haml:6
+#: templates_v2/accounts/public_registration.haml:6
 msgid "Demo registration | McKinsey Academy"
 msgstr "注册演示视频 | 麦肯锡学院"
 
@@ -3117,24 +3199,32 @@ msgstr "注册演示视频 | 麦肯锡学院"
 #: templates/certificates/course_certificate_notification_email.haml:13
 #: templates/layout.haml:26 templates/privacy.haml:130
 #: templates/terms_of_service.haml:113
+#: templates_v2/accounts/public_registration.haml:8 templates_v2/layout.haml:26
+#: templates_v2/privacy.haml:130 templates_v2/terms_of_service.haml:113
 msgid "McKinsey Academy"
 msgstr "麦肯锡学院"
 
 #: templates/accounts/public_registration.haml:18
 #: templates/accounts/public_registration.haml:32
+#: templates_v2/accounts/public_registration.haml:18
+#: templates_v2/accounts/public_registration.haml:32
 msgid "Thank you for your request"
 msgstr "感谢您提出请求"
 
 #: templates/accounts/public_registration.haml:20
 #: templates/accounts/public_registration.haml:34
+#: templates_v2/accounts/public_registration.haml:20
+#: templates_v2/accounts/public_registration.haml:34
 msgid "We will send you an email shortly."
 msgstr "我们将尽快给您发送电子邮件。"
 
 #: templates/accounts/public_registration.haml:25
+#: templates_v2/accounts/public_registration.haml:25
 msgid "Registration Error!"
 msgstr "注册错误！"
 
 #: templates/accounts/public_registration.haml:27
+#: templates_v2/accounts/public_registration.haml:27
 #, fuzzy
 #| msgid ""
 #| "Sorry, there seems to be a problem with registering your account, please "
@@ -3149,14 +3239,17 @@ msgid "Complete the fields below. Required fields are noted by an asterisk"
 msgstr "填写以下字段。必填字段带星号标记"
 
 #: templates/accounts/public_registration.haml:69
+#: templates_v2/accounts/public_registration.haml:65
 msgid "Register"
 msgstr "注册"
 
 #: templates/accounts/public_registration.haml:72
+#: templates_v2/accounts/public_registration.haml:68
 msgid "WELCOME"
 msgstr "欢迎"
 
 #: templates/accounts/public_registration.haml:76
+#: templates_v2/accounts/public_registration.haml:72
 msgid ""
 "Following successful registration, you will receive an email granting access "
 "to the course."
@@ -3258,10 +3351,14 @@ msgstr "更换照片"
 
 #: templates/accounts/user_profile.haml:17
 #: templates/accounts/user_profile.haml:26
+#: templates_v2/accounts/user_profile.haml:20
+#: templates_v2/accounts/user_profile.haml:26 templates_v2/header.haml:34
+#: templates_v2/header.haml:38
 msgid "edit"
 msgstr "编辑"
 
 #: templates/accounts/user_profile.haml:43
+#: templates_v2/accounts/user_profile.haml:40
 msgid "Log out"
 msgstr "注销"
 
@@ -3429,11 +3526,12 @@ msgstr "重置颜色"
 
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:99
 #: templates/admin/client/navigation.haml:50
-#: templates/admin/client/navigation.haml:186
+#: templates/admin/client/navigation.haml:205
 #: templates/admin/cohorts/course_details.html:41
 #: templates/admin/companies/companies_list.haml:31
-#: templates/admin/companies/company_details.haml:101
-#: templates/admin/companies/company_details.haml:113
+#: templates/admin/companies/company_details.haml:104
+#: templates/admin/companies/company_details.haml:116
+#: templates/admin/companies/company_details.haml:131
 #: templates/admin/course_meta_content/item_detail.haml:18
 #: templates/admin/course_meta_content/item_list.haml:220
 #: templates/admin/course_meta_content/item_list.haml:249
@@ -3445,12 +3543,13 @@ msgstr "重置颜色"
 #: templates/admin/participants/participant_details.haml:338
 #: templates/admin/participants/participant_details.haml:370
 #: templates/admin/participants/participant_details.haml:388
-#: templates/admin/participants/participants_list.haml:133
-#: templates/admin/participants/participants_list.haml:147
-#: templates/admin/participants/participants_list.haml:165
-#: templates/admin/participants/participants_list.haml:209
-#: templates/admin/participants/participants_list.haml:276
-#: templates/admin/participants/participants_list.haml:301
+#: templates/admin/participants/participants_list.haml:46
+#: templates/admin/participants/participants_list.haml:162
+#: templates/admin/participants/participants_list.haml:176
+#: templates/admin/participants/participants_list.haml:194
+#: templates/admin/participants/participants_list.haml:238
+#: templates/admin/participants/participants_list.haml:305
+#: templates/admin/participants/participants_list.haml:330
 #: templates/admin/workgroup/course_detail.haml:126
 msgid "Cancel"
 msgstr "取消"
@@ -3655,111 +3754,127 @@ msgstr "输入链接"
 msgid "Save Links"
 msgstr "保存链接"
 
-#: templates/admin/client/navigation.haml:58
+#: templates/admin/client/navigation.haml:62
+msgid "New ui is available now!"
+msgstr ""
+
+#: templates/admin/client/navigation.haml:63
+msgid "Would you like to switch to new UI?"
+msgstr ""
+
+#: templates/admin/client/navigation.haml:73
+msgid "ON"
+msgstr ""
+
+#: templates/admin/client/navigation.haml:75
+msgid "OFF"
+msgstr ""
+
+#: templates/admin/client/navigation.haml:77
 msgid "Global Branding"
 msgstr "全球品牌"
 
-#: templates/admin/client/navigation.haml:59
+#: templates/admin/client/navigation.haml:78
 msgid "Enter hex#"
 msgstr "输入十六进制数"
 
-#: templates/admin/client/navigation.haml:60
+#: templates/admin/client/navigation.haml:79
 msgid "Enter css"
 msgstr "输入 CSS"
 
-#: templates/admin/client/navigation.haml:63
+#: templates/admin/client/navigation.haml:82
 msgid "Upload Global Logo:"
 msgstr "上传全球徽标："
 
-#: templates/admin/client/navigation.haml:64
-#: templates/admin/client/navigation.haml:81
-#: templates/admin/client/navigation.haml:137
+#: templates/admin/client/navigation.haml:83
+#: templates/admin/client/navigation.haml:100
+#: templates/admin/client/navigation.haml:156
 msgid "Upload Logo"
 msgstr "上传徽标"
 
-#: templates/admin/client/navigation.haml:74
+#: templates/admin/client/navigation.haml:93
 msgid "Top Navigation Background:"
 msgstr "热门导航背景："
 
-#: templates/admin/client/navigation.haml:77
+#: templates/admin/client/navigation.haml:96
 msgid "Desktop, Tablet and Mobile Web"
 msgstr "台式电脑、平板电脑和移动 Web"
 
-#: templates/admin/client/navigation.haml:80
+#: templates/admin/client/navigation.haml:99
 msgid "Upload Logo:"
 msgstr "上传徽标："
 
-#: templates/admin/client/navigation.haml:90
+#: templates/admin/client/navigation.haml:109
 msgid "Notification Circle Color:"
 msgstr "通知圆圈颜色："
 
-#: templates/admin/client/navigation.haml:93
+#: templates/admin/client/navigation.haml:112
 msgid "Second Navigation Background:"
 msgstr "二级导航背景："
 
-#: templates/admin/client/navigation.haml:96
+#: templates/admin/client/navigation.haml:115
 msgid "Notification Text Color:"
 msgstr "通知文本颜色："
 
-#: templates/admin/client/navigation.haml:99
+#: templates/admin/client/navigation.haml:118
 msgid "Program Name Text Color:"
 msgstr "计划名称文本颜色："
 
-#: templates/admin/client/navigation.haml:102
+#: templates/admin/client/navigation.haml:121
 msgid "Page Background Color:"
 msgstr "页面背景颜色："
 
-#: templates/admin/client/navigation.haml:105
+#: templates/admin/client/navigation.haml:124
 msgid "Course Title Text Color:"
 msgstr "课程标题文本颜色："
 
-#: templates/admin/client/navigation.haml:108
+#: templates/admin/client/navigation.haml:127
 msgid "Page Background Image:"
 msgstr "页面背景图像："
 
-#: templates/admin/client/navigation.haml:109
-#: templates/admin/client/navigation.haml:159
+#: templates/admin/client/navigation.haml:128
+#: templates/admin/client/navigation.haml:178
 msgid "Upload Image"
 msgstr "上传图像"
 
-#: templates/admin/client/navigation.haml:119
-#: templates/admin/client/navigation.haml:174
+#: templates/admin/client/navigation.haml:138
+#: templates/admin/client/navigation.haml:193
 msgid "Navigation Icon Color:"
 msgstr "导航图标颜色："
 
-#: templates/admin/client/navigation.haml:122
+#: templates/admin/client/navigation.haml:141
 msgid "Page Background CSS:"
 msgstr "页面背景 CSS："
 
-#: templates/admin/client/navigation.haml:127
+#: templates/admin/client/navigation.haml:146
 msgid "Native Mobile & Tablet Apps"
 msgstr "手机和平板电脑原生应用"
 
-#: templates/admin/client/navigation.haml:135
+#: templates/admin/client/navigation.haml:154
 msgid "Upload Mobile Logo:"
 msgstr "上传移动徽标："
 
-#: templates/admin/client/navigation.haml:147
+#: templates/admin/client/navigation.haml:166
 msgid "Completed Course Tint:"
 msgstr "已完成课程色彩："
 
-#: templates/admin/client/navigation.haml:150
+#: templates/admin/client/navigation.haml:169
 msgid "Header Background Color:"
 msgstr "标题背景颜色："
 
-#: templates/admin/client/navigation.haml:153
+#: templates/admin/client/navigation.haml:172
 msgid "Lesson Navigation Color:"
 msgstr "课时导航颜色："
 
-#: templates/admin/client/navigation.haml:157
+#: templates/admin/client/navigation.haml:176
 msgid "Header Background Image:"
 msgstr "标题背景图像："
 
-#: templates/admin/client/navigation.haml:170
+#: templates/admin/client/navigation.haml:189
 msgid "Navigation Text Color:"
 msgstr "导航文本颜色："
 
-#: templates/admin/client/navigation.haml:182
+#: templates/admin/client/navigation.haml:201
 msgid "Close"
 msgstr "关闭"
 
@@ -4004,63 +4119,83 @@ msgid "Access"
 msgstr "访问"
 
 #: templates/admin/companies/company_details.haml:43
+#: templates/admin/course_meta_content/item_list.haml:33
+#: templates/admin/learner_dashboard/discovery_list.haml:20
+#: templates/admin/learner_dashboard/element_list.haml:25
+#: templates/admin/workgroup/course_detail.haml:86
+msgid "Delete"
+msgstr "删除"
+
+#: templates/admin/companies/company_details.haml:46
 msgid "Link Apps"
 msgstr "链接应用"
 
-#: templates/admin/companies/company_details.haml:49
+#: templates/admin/companies/company_details.haml:52
 msgid "COURSES"
 msgstr "课程"
 
-#: templates/admin/companies/company_details.haml:54
+#: templates/admin/companies/company_details.haml:57
 msgid "LINKED APPS"
 msgstr "链接的应用"
 
-#: templates/admin/companies/company_details.haml:59
+#: templates/admin/companies/company_details.haml:62
 #, fuzzy
 #| msgid "COMPANY INFO"
 msgid "COMPANY FIELDS"
 msgstr "公司信息"
 
-#: templates/admin/companies/company_details.haml:79
+#: templates/admin/companies/company_details.haml:82
 #, fuzzy
 #| msgid "Add a new "
 msgid "Add new field "
 msgstr "新增 "
 
-#: templates/admin/companies/company_details.haml:90
+#: templates/admin/companies/company_details.haml:93
 #, fuzzy
 #| msgid "Add New Role"
 msgid "Add New Fields"
 msgstr "添加新角色"
 
-#: templates/admin/companies/company_details.haml:91
+#: templates/admin/companies/company_details.haml:94
 msgid "Create upto 4 new fields of new additional data"
 msgstr ""
 
-#: templates/admin/companies/company_details.haml:99
+#: templates/admin/companies/company_details.haml:102
 #, fuzzy
 #| msgid "Create New Company"
 msgid "+ New Company Fields  "
 msgstr "创建新公司"
 
-#: templates/admin/companies/company_details.haml:106
+#: templates/admin/companies/company_details.haml:109
 msgid "Link mobile app"
 msgstr "链接移动应用"
 
-#: templates/admin/companies/company_details.haml:107
+#: templates/admin/companies/company_details.haml:110
 msgid ""
 " Type in the name of the mobile app that you want to link with \"Company Name"
 "\" "
 msgstr " 输入您想要与“公司名称”链接的移动应用的名称 "
 
-#: templates/admin/companies/company_details.haml:108
-#: templates/admin/companies/company_details.haml:109
+#: templates/admin/companies/company_details.haml:111
+#: templates/admin/companies/company_details.haml:112
 msgid "App Name"
 msgstr "应用名称"
 
-#: templates/admin/companies/company_details.haml:112
+#: templates/admin/companies/company_details.haml:115
 msgid "Link App"
 msgstr "链接应用"
+
+#: templates/admin/companies/company_details.haml:124
+#, fuzzy
+#| msgid "Select Company"
+msgid "Delete Company"
+msgstr "选择公司"
+
+#: templates/admin/companies/company_details.haml:127
+#, fuzzy
+#| msgid "Are you sure you want to delete"
+msgid "Are you sure you want to delete this company?"
+msgstr "是否确定要删除"
 
 #: templates/admin/course_meta_content/course_list.haml:6
 msgid ""
@@ -4110,13 +4245,6 @@ msgstr "类型"
 #: templates/certificates/certificate_templates.haml:41
 msgid "Edit"
 msgstr "编辑"
-
-#: templates/admin/course_meta_content/item_list.haml:33
-#: templates/admin/learner_dashboard/discovery_list.haml:20
-#: templates/admin/learner_dashboard/element_list.haml:25
-#: templates/admin/workgroup/course_detail.haml:86
-msgid "Delete"
-msgstr "删除"
 
 #: templates/admin/course_meta_content/item_list.haml:36
 msgid "Create New Item"
@@ -4177,6 +4305,7 @@ msgstr "注：如果您禁用“进度页面”，则会隐藏二级导航中的
 
 #: templates/admin/course_meta_content/item_list.haml:97
 #: templates/courses/content_page/course_tabs.haml:45
+#: templates_v2/courses/course_main.haml:87
 msgid "Notifications"
 msgstr "通知"
 
@@ -4190,6 +4319,7 @@ msgstr "学习者仪表板"
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_learner_dashboard_header.haml:33
 #: templates/courses/course_resources.haml:27
+#: templates_v2/courses/course_main.haml:84
 msgid "Resources"
 msgstr "资源"
 
@@ -4285,6 +4415,7 @@ msgstr "添加 "
 
 #: templates/admin/course_meta_content/item_list.haml:233
 #: templates/courses/content_page/course_tabs.haml:12
+#: templates_v2/courses/content_page/courses_menu_list.haml:17
 msgid "Lessons"
 msgstr "课时"
 
@@ -4551,7 +4682,7 @@ msgstr "删除所选模板"
 #: templates/admin/learner_dashboard/branding.haml:62
 #: templates/admin/participants/participant_details.haml:240
 #: templates/admin/participants/participant_details.haml:243
-#: templates/admin/participants/participants_list.haml:101
+#: templates/admin/participants/participants_list.haml:130
 msgid "None"
 msgstr "无"
 
@@ -4820,24 +4951,28 @@ msgstr "添加 "
 msgid "Back to Course"
 msgstr "返回到课程"
 
-#: templates/admin/manager_dashboard/team_report.haml:30
-#: templates/admin/manager_dashboard/team_report.haml:36
+#: templates/admin/manager_dashboard/team_report.haml:31
+#: templates/admin/manager_dashboard/team_report.haml:37
 #, fuzzy
 #| msgid "cohort average"
 msgid "Your team's average"
 msgstr "群组平均"
 
-#: templates/admin/manager_dashboard/team_report.haml:31
+#: templates/admin/manager_dashboard/team_report.haml:32
 #, fuzzy
 #| msgid "Progress"
 msgid "progress"
 msgstr "进度"
 
-#: templates/admin/manager_dashboard/team_report.haml:37
+#: templates/admin/manager_dashboard/team_report.haml:38
 #, fuzzy
 #| msgid "Proficiency"
 msgid "proficiency"
 msgstr "熟练程度"
+
+#: templates/admin/manager_dashboard/team_report.haml:54
+msgid "No course for your direct reports"
+msgstr ""
 
 #: templates/admin/mobile_apps/company_app_details.haml:24
 msgid "Details"
@@ -4971,7 +5106,7 @@ msgstr "用户名或电子邮件："
 
 #: templates/admin/participants/participant_details.haml:143
 #: templates/admin/participants/participant_details.haml:288
-#: templates/admin/participants/participants_list.haml:86
+#: templates/admin/participants/participants_list.haml:115
 msgid "Gender"
 msgstr "性别"
 
@@ -4988,7 +5123,7 @@ msgid "Archive Participant"
 msgstr "归档参与者"
 
 #: templates/admin/participants/participant_details.haml:194
-#: templates/admin/participants/participants_list.haml:46
+#: templates/admin/participants/participants_list.haml:75
 msgid " First Name<sup>*</sup> "
 msgstr " 名字<sup>*</sup>"
 
@@ -5010,12 +5145,12 @@ msgid "That email is already taken"
 msgstr "该电子邮件地址已被使用"
 
 #: templates/admin/participants/participant_details.haml:226
-#: templates/admin/participants/participants_list.haml:64
+#: templates/admin/participants/participants_list.haml:93
 msgid " Company<sup>*</sup> "
 msgstr " 公司<sup>*</sup>"
 
 #: templates/admin/participants/participant_details.haml:231
-#: templates/admin/participants/participants_list.haml:69
+#: templates/admin/participants/participants_list.haml:98
 msgid ""
 "Since this company does not yet exist, a new company will be created. If "
 "this is an error, try selecting your company from the type-ahead results."
@@ -5024,36 +5159,36 @@ msgstr ""
 "您的公司。"
 
 #: templates/admin/participants/participant_details.haml:235
-#: templates/admin/participants/participants_list.haml:97
+#: templates/admin/participants/participants_list.haml:126
 msgid "Permissions"
 msgstr "权限"
 
 #: templates/admin/participants/participant_details.haml:247
 #: templates/admin/participants/participant_details.haml:250
-#: templates/admin/participants/participants_list.haml:104
+#: templates/admin/participants/participants_list.haml:133
 msgid "Uber admin"
 msgstr "超级管理员"
 
 #: templates/admin/participants/participant_details.haml:254
 #: templates/admin/participants/participant_details.haml:257
-#: templates/admin/participants/participants_list.haml:107
+#: templates/admin/participants/participants_list.haml:136
 msgid "Course ops admin"
 msgstr "课程运营管理员"
 
 #: templates/admin/participants/participant_details.haml:260
 #: templates/admin/participants/participant_details.haml:263
-#: templates/admin/participants/participants_list.haml:109
+#: templates/admin/participants/participants_list.haml:138
 #: templates/header.haml:83
 msgid "Internal Admin"
 msgstr "内部管理员"
 
 #: templates/admin/participants/participant_details.haml:276
-#: templates/admin/participants/participants_list.haml:74
+#: templates/admin/participants/participants_list.haml:103
 msgid "Country Abbreviation"
 msgstr "国家/地区缩写"
 
 #: templates/admin/participants/participant_details.haml:283
-#: templates/admin/participants/participants_list.haml:80
+#: templates/admin/participants/participants_list.haml:109
 msgid "City"
 msgstr "城市"
 
@@ -5120,88 +5255,118 @@ msgid "Update manager data"
 msgstr "数据管理器应用"
 
 #: templates/admin/participants/participants_list.haml:15
-#: templates/admin/participants/participants_list.haml:196
-#: templates/admin/participants/participants_list.haml:262
-#: templates/admin/participants/participants_list.haml:287
+#: templates/admin/participants/participants_list.haml:225
+#: templates/admin/participants/participants_list.haml:291
+#: templates/admin/participants/participants_list.haml:316
 msgid "CSV Template"
 msgstr "CSV 模板"
 
-#: templates/admin/participants/participants_list.haml:33
+#: templates/admin/participants/participants_list.haml:35
+#, fuzzy
+#| msgid "Deleted - "
+msgid "Delete User Data"
+msgstr "已删除 - "
+
+#: templates/admin/participants/participants_list.haml:38
+msgid ""
+"Please note that the data is deleted permanently and you will lose all the "
+"data about this user."
+msgstr ""
+
+#: templates/admin/participants/participants_list.haml:42
+#, fuzzy
+#| msgid "Are you sure you want to unenroll this user?"
+msgid "Are you sure you want to delete this user?"
+msgstr "是否确定要取消注册此用户？"
+
+#: templates/admin/participants/participants_list.haml:54
+#, fuzzy
+#| msgid "Successfully added new user!"
+msgid "Successfully deleted user!"
+msgstr "已成功添加新用户！"
+
+#: templates/admin/participants/participants_list.haml:57
+#: templates/admin/participants/participants_list.haml:262
+#: templates/admin/participants/participants_list.haml:282
+msgid "I'm Done"
+msgstr "已完成"
+
+#: templates/admin/participants/participants_list.haml:62
 msgid "Add a Participant"
 msgstr "添加参与者"
 
-#: templates/admin/participants/participants_list.haml:35
+#: templates/admin/participants/participants_list.haml:64
 msgid "Want to add more than one participant at a time?"
 msgstr "想要一次添加多个参与者？"
 
-#: templates/admin/participants/participants_list.haml:37
+#: templates/admin/participants/participants_list.haml:66
 msgid "Import a list"
 msgstr "导入列表"
 
-#: templates/admin/participants/participants_list.haml:51
+#: templates/admin/participants/participants_list.haml:80
 msgid "Last Name<sup>*</sup> "
 msgstr "姓氏<sup>*</sup>"
 
-#: templates/admin/participants/participants_list.haml:58
+#: templates/admin/participants/participants_list.haml:87
 msgid " Email<sup>*</sup> "
 msgstr " 电子邮件<sup>*</sup>"
 
-#: templates/admin/participants/participants_list.haml:115
+#: templates/admin/participants/participants_list.haml:144
 msgid "Add company admin privileges"
 msgstr "添加公司管理员权限"
 
-#: templates/admin/participants/participants_list.haml:121
+#: templates/admin/participants/participants_list.haml:150
 msgid "Add course"
 msgstr "添加课程"
 
-#: templates/admin/participants/participants_list.haml:128
+#: templates/admin/participants/participants_list.haml:157
 msgid "Email activation link now"
 msgstr "电子邮件激活链接"
 
-#: templates/admin/participants/participants_list.haml:131
+#: templates/admin/participants/participants_list.haml:160
 msgid "Add Participant"
 msgstr "添加参与者"
 
-#: templates/admin/participants/participants_list.haml:138
+#: templates/admin/participants/participants_list.haml:167
 msgid "CSV Template and Formatting"
 msgstr "CSV 模板和格式"
 
-#: templates/admin/participants/participants_list.haml:140
+#: templates/admin/participants/participants_list.haml:169
 msgid "Download the CSV template below to import users."
 msgstr "下载下面的 CSV 模板以导入用户。"
 
-#: templates/admin/participants/participants_list.haml:141
+#: templates/admin/participants/participants_list.haml:170
 msgid "All fields in the template are required."
 msgstr "模板中的所有字段均必填。"
 
-#: templates/admin/participants/participants_list.haml:142
+#: templates/admin/participants/participants_list.haml:171
 msgid "Note that you must add users to preexisting companies and courses."
 msgstr "请注意，您必须将用户添加到现有的公司和课程中。"
 
-#: templates/admin/participants/participants_list.haml:145
+#: templates/admin/participants/participants_list.haml:174
 msgid "Download Template"
 msgstr "下载模板"
 
-#: templates/admin/participants/participants_list.haml:152
+#: templates/admin/participants/participants_list.haml:181
 msgid "Import Participants from CSV"
 msgstr "从 CSV 导入参与者"
 
-#: templates/admin/participants/participants_list.haml:163
-#: templates/admin/participants/participants_list.haml:207
-#: templates/admin/participants/participants_list.haml:274
-#: templates/admin/participants/participants_list.haml:299
+#: templates/admin/participants/participants_list.haml:192
+#: templates/admin/participants/participants_list.haml:236
+#: templates/admin/participants/participants_list.haml:303
+#: templates/admin/participants/participants_list.haml:328
 msgid "Add Participants"
 msgstr "添加参与者"
 
-#: templates/admin/participants/participants_list.haml:176
+#: templates/admin/participants/participants_list.haml:205
 msgid "Email activation links now"
 msgstr "电子邮件激活链接"
 
-#: templates/admin/participants/participants_list.haml:179
+#: templates/admin/participants/participants_list.haml:208
 msgid "Your CSV is Importing..."
 msgstr ""
 
-#: templates/admin/participants/participants_list.haml:181
+#: templates/admin/participants/participants_list.haml:210
 #, python-format
 msgid ""
 " Import will run in the background. You may access the status from the\n"
@@ -5211,54 +5376,49 @@ msgid ""
 "        "
 msgstr ""
 
-#: templates/admin/participants/participants_list.haml:186
+#: templates/admin/participants/participants_list.haml:215
 msgid "Okay"
 msgstr ""
 
-#: templates/admin/participants/participants_list.haml:192
+#: templates/admin/participants/participants_list.haml:221
 msgid "Enroll Participants to courses from CSV"
 msgstr "通过 CSV 将参与者注册到课程"
 
-#: templates/admin/participants/participants_list.haml:223
+#: templates/admin/participants/participants_list.haml:252
 msgid ""
 "You can download the activation links now, or from the participant profiles "
 "at any time."
 msgstr "您可以立即下载激活链接，也可以随时从参与者档案中下载激活链接。"
 
-#: templates/admin/participants/participants_list.haml:226
+#: templates/admin/participants/participants_list.haml:255
 msgid "Download Activation Links"
 msgstr "下载激活链接"
 
-#: templates/admin/participants/participants_list.haml:229
+#: templates/admin/participants/participants_list.haml:258
 msgid "An activation link has been emailed to each student."
 msgstr "激活链接已通过电子邮件发送给每位学员。"
 
-#: templates/admin/participants/participants_list.haml:233
-#: templates/admin/participants/participants_list.haml:253
-msgid "I'm Done"
-msgstr "已完成"
-
-#: templates/admin/participants/participants_list.haml:242
+#: templates/admin/participants/participants_list.haml:271
 msgid ""
 "You can download the activation link now, or from the participant profiles "
 "at any time."
 msgstr "您可以立即下载激活链接，也可以随时从参与者档案中下载激活链接。"
 
-#: templates/admin/participants/participants_list.haml:246
+#: templates/admin/participants/participants_list.haml:275
 msgid "Download Activation Link"
 msgstr "下载激活链接"
 
-#: templates/admin/participants/participants_list.haml:249
+#: templates/admin/participants/participants_list.haml:278
 msgid "Go To User Profile"
 msgstr "转到用户档案"
 
-#: templates/admin/participants/participants_list.haml:258
+#: templates/admin/participants/participants_list.haml:287
 #, fuzzy
 #| msgid "Import Participants from CSV"
 msgid "Update manager info of participants from CSV"
 msgstr "从 CSV 导入参与者"
 
-#: templates/admin/participants/participants_list.haml:283
+#: templates/admin/participants/participants_list.haml:312
 #, fuzzy
 #| msgid "Import Participants from CSV"
 msgid "Update organization fields of participants from CSV"
@@ -5786,36 +5946,44 @@ msgid "DISCOVER:"
 msgstr "探索："
 
 #: templates/courses/content_page/course_discover.haml:6
+#: templates_v2/courses/content_page/course_discover.haml:11
 msgid "ARTICLES"
 msgstr "文章"
 
 #: templates/courses/content_page/course_discover.haml:25
+#: templates_v2/courses/content_page/course_discover.haml:24
 msgid "INFOGRAPHIC"
 msgstr "信息图"
 
 #: templates/courses/content_page/course_discover.haml:30
+#: templates_v2/courses/content_page/course_discover.haml:30
 msgid "ON TWITTER"
 msgstr "在 TWITTER 上"
 
 #: templates/courses/content_page/course_discover.haml:46
+#: templates_v2/courses/content_page/course_discover.haml:50
 msgid "VIDEOS"
 msgstr "视频"
 
 #: templates/courses/content_page/course_final_grade.haml:3
+#: templates_v2/courses/content_page/course_final_grade.haml:3
 msgid "Your final grade is"
 msgstr "您的最终评分是"
 
 #: templates/courses/content_page/course_final_grade.haml:4
+#: templates_v2/courses/content_page/course_final_grade.haml:4
 msgid "ended on"
 msgstr "结束日期"
 
 #: templates/courses/content_page/course_final_grade.haml:5
+#: templates_v2/courses/content_page/course_final_grade.haml:5
 msgid ""
 "This course is closed, but you can still access all course content and "
 "download materials."
 msgstr "本课程已结束，但您仍然可以访问所有课程内容和下载材料。"
 
 #: templates/courses/content_page/course_final_grade.haml:6
+#: templates_v2/courses/content_page/course_final_grade.haml:6
 msgid ""
 "Your proficiency, progress, and engagement will not change in closed courses."
 msgstr "在已结束课程中，您的熟练程度、进度和参与度不会更改。"
@@ -5839,12 +6007,14 @@ msgid "LESSON"
 msgstr "课时"
 
 #: templates/courses/content_page/course_menu.haml:55
+#: templates_v2/courses/content_page/course_menu.haml:51
 #, fuzzy, python-format
 #| msgid " This lesson will be available on %(start_date)s "
 msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
 msgstr " 本课时的上课时间是 %(start_date)s"
 
 #: templates/courses/content_page/course_menu.haml:57
+#: templates_v2/courses/content_page/course_menu.haml:53
 #, python-format
 msgid " This lesson will be available on %(start_date)s "
 msgstr " 本课时的上课时间是 %(start_date)s"
@@ -5853,6 +6023,7 @@ msgstr " 本课时的上课时间是 %(start_date)s"
 #: templates/courses/course_discussion.haml:14
 #: templates/courses/course_learner_dashboard_header.haml:46
 #: templates/courses/course_learner_dashboard_header.haml:49
+#: templates_v2/courses/course_main.haml:65
 msgid "Discussion"
 msgstr "讨论"
 
@@ -5863,16 +6034,19 @@ msgid "Cohort"
 msgstr "群组"
 
 #: templates/courses/content_page/course_tabs.haml:33
+#: templates_v2/courses/course_main.haml:77
 msgid "Course Materials"
 msgstr "课程材料"
 
 #: templates/courses/content_page/course_tabs.haml:37
 #: templates/courses/course_news.haml:24
+#: templates_v2/courses/course_main.haml:80
 msgid "Announcements"
 msgstr "公告"
 
 #: templates/courses/content_page/course_tabs.haml:39
 #: templates/courses/course_overview.haml:53
+#: templates_v2/courses/course_main.haml:82
 msgid "Course Overview"
 msgstr "课程概述"
 
@@ -6022,6 +6196,7 @@ msgstr "您的熟练程度排名 <br> 将显示在此处"
 #: templates/courses/course_cohort.haml:200
 #: templates/courses/course_cohort.haml:217
 #: templates/courses/course_cohort.haml:234
+#: templates_v2/accounts/user_profile.haml:30 templates_v2/header.haml:42
 msgid "username"
 msgstr "用户名"
 
@@ -6469,7 +6644,7 @@ msgstr " 您已完成 %(lesson_name)s 的 %(course_current_progress)s%%"
 msgid " #{lesson_custom_label} %(current_lesson_index)s:"
 msgstr ""
 
-#: templates/courses/course_main.haml:8
+#: templates/courses/course_main.haml:8 templates_v2/courses/course_main.haml:8
 msgid " | Courses | McKinsey Academy"
 msgstr " | 课程 | 麦肯锡学院"
 
@@ -6489,18 +6664,21 @@ msgstr ""
 "将在未来几周继续添加功能。"
 
 #: templates/courses/course_navigation.haml:8
+#: templates_v2/courses/course_navigation.haml:8
 #, fuzzy
 #| msgid " - "
 msgid " | "
 msgstr " - "
 
 #: templates/courses/course_navigation.haml:8
+#: templates_v2/courses/course_navigation.haml:8
 #, fuzzy
 #| msgid " | McKinsey Academy | "
 msgid " | McKinsey Academy"
 msgstr " | 麦肯锡学院 | "
 
 #: templates/courses/course_navigation.haml:10
+#: templates_v2/courses/course_navigation.haml:10
 msgid " | Lessons | McKinsey Academy"
 msgstr " | 课时 | 麦肯锡学院"
 
@@ -7244,6 +7422,7 @@ msgid "Your social engagement will be displayed here."
 msgstr "您的社交参与情况将显示在此处。"
 
 #: templates/courses/visualizations/course_engagement.haml:15
+#: templates_v2/courses/visualizations/course_engagement.haml:18
 msgid "points"
 msgstr "分"
 
@@ -7854,15 +8033,18 @@ msgstr ""
 "请<a href=\"mailto:info@mckinseyacademy.com\">联系我们！</a>我们会尽力帮忙解"
 "决。"
 
-#: templates/footer.haml:11
+#: templates/footer.haml:11 templates_v2/footer.haml:16
+#: tests/templates_v2/footer.haml:11
 msgid "Terms of Service"
 msgstr "服务条款"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
+#: templates_v2/footer.haml:19 templates_v2/privacy.haml:8
+#: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "隐私政策"
 
-#: templates/footer.haml:17
+#: templates/footer.haml:17 tests/templates_v2/footer.haml:17
 msgid "FAQ"
 msgstr "常见问题"
 
@@ -7928,6 +8110,7 @@ msgid ""
 msgstr "如果您是已注册的参与者，请在下方登录，开始您的麦肯锡学院学习体验"
 
 #: templates/layout.haml:22 templates/layout.haml:23
+#: templates_v2/layout.haml:22 templates_v2/layout.haml:23
 msgid ""
 "McKinsey Academy helps organizations thrive by accelerating their talent "
 "advantage"
@@ -9302,11 +9485,11 @@ msgstr "重置"
 msgid "Please refresh the page to see the changes applied."
 msgstr "请刷新页面以查看所应用的更改。"
 
-#: templates/privacy.haml:10
+#: templates/privacy.haml:10 templates_v2/privacy.haml:10
 msgid "This Privacy Policy was last updated on November 13, 2017"
 msgstr "本隐私政策的最近更新日期为 2017 年 11 月 13 日"
 
-#: templates/privacy.haml:12
+#: templates/privacy.haml:12 templates_v2/privacy.haml:12
 msgid ""
 "McKinsey & Company and its subsidiaries and affiliates (collectively, "
 "“McKinsey”, “us” or “we”) understands that your privacy is important to you. "
@@ -9319,11 +9502,11 @@ msgstr ""
 "说很重要。我们可能会处理您的个人数据，并且我们承诺尊重您的隐私并保护您的个人"
 "数据，即在您使用麦肯锡学院时收集的可以识别您个人身份的任何信息。"
 
-#: templates/privacy.haml:14
+#: templates/privacy.haml:14 templates_v2/privacy.haml:14
 msgid "“McKinsey Academy” refers collectively to any website, including"
 msgstr "“麦肯锡学院”是以下所有有网站的统称，包括："
 
-#: templates/privacy.haml:17
+#: templates/privacy.haml:17 templates_v2/privacy.haml:17
 msgid ""
 " (the “Sites”), and any mobile device or tablet application or similar "
 "software (each a “Mobile Offering”) that is provided by us and that links to "
@@ -9340,20 +9523,21 @@ msgstr ""
 "请参阅我们的"
 
 #: templates/privacy.haml:19 templates/terms_of_service.haml:3
+#: templates_v2/privacy.haml:19 templates_v2/terms_of_service.haml:3
 msgid "Terms of Use"
 msgstr "使用条款"
 
-#: templates/privacy.haml:20
+#: templates/privacy.haml:20 templates_v2/privacy.haml:20
 msgid ""
 "(the “Terms”) for more information about our online terms and policies that "
 "apply to your use of McKinsey Academy."
 msgstr "（以下简称“条款”），详细了解您使用麦肯锡学院时所适用的在线条款和政策。"
 
-#: templates/privacy.haml:21
+#: templates/privacy.haml:21 templates_v2/privacy.haml:21
 msgid "Information we collect"
 msgstr "我们收集的信息"
 
-#: templates/privacy.haml:23
+#: templates/privacy.haml:23 templates_v2/privacy.haml:23
 msgid ""
 "McKinsey collects personal data when you register, access or use McKinsey "
 "Academy or McKinsey Academy Content (as such term is defined in the Terms), "
@@ -9366,7 +9550,7 @@ msgstr ""
 "义见条款），可通过网站、移动产品或其他方式，包括与您使用课程内容、提交“用户内"
 "容”（定义见“条款”）和参与用户发布区（如公告栏、讨论论坛和调查）有关的方式。"
 
-#: templates/privacy.haml:25
+#: templates/privacy.haml:25 templates_v2/privacy.haml:25
 msgid ""
 "The personal data collected may consist of information that you provide, "
 "such as your name, e-mail address, and other User Account Information (as "
@@ -9383,7 +9567,7 @@ msgstr ""
 "收集并/或创建有关您对麦肯锡学院的使用和参与的个人数据，包括“参与数据”（定义见"
 "下文）。"
 
-#: templates/privacy.haml:27
+#: templates/privacy.haml:27 templates_v2/privacy.haml:27
 msgid ""
 "We may also automatically collect information about the devices you use to "
 "interact with McKinsey Academy. The information we automatically collect may "
@@ -9403,11 +9587,11 @@ msgstr ""
 "学院的信息，例如您搜索、查看和使用的内容。自动收集的信息可能与您的个人数据相"
 "关联，并且在某些情况下本身即可构成个人数据。"
 
-#: templates/privacy.haml:28
+#: templates/privacy.haml:28 templates_v2/privacy.haml:28
 msgid "Use of information"
 msgstr "信息的使用"
 
-#: templates/privacy.haml:30
+#: templates/privacy.haml:30 templates_v2/privacy.haml:30
 msgid ""
 "The personal data we collect may be used where McKinsey has a legitimate "
 "interest in or other legal basis for processing such information. In some "
@@ -9433,7 +9617,7 @@ msgstr ""
 "告义务；执行麦肯锡协议；以及完成您可能提出或要求的其他目的。我们可能会存档您"
 "的任何个人信息，并使用此类信息与您联系。"
 
-#: templates/privacy.haml:32
+#: templates/privacy.haml:32 templates_v2/privacy.haml:32
 msgid ""
 "McKinsey may use first and third party cookies to manage our Sites and our "
 "services and collect analytics about how you use them. McKinsey Academy "
@@ -9442,11 +9626,11 @@ msgstr ""
 "麦肯锡可能会使用第一方和第三方 cookie 来管理我们的网站和服务，并收集您如何使"
 "用我们网站和服务的相关分析。麦肯锡学院遵循麦肯锡的"
 
-#: templates/privacy.haml:34
+#: templates/privacy.haml:34 templates_v2/privacy.haml:34
 msgid "Cookie Policy"
 msgstr "Cookie 政策"
 
-#: templates/privacy.haml:35
+#: templates/privacy.haml:35 templates_v2/privacy.haml:35
 msgid ""
 ", but please note that references in the posted Cookie Policy to “our "
 "privacy policy” and “our terms of use” and our or the “Site” refer, "
@@ -9455,7 +9639,7 @@ msgstr ""
 "，但请注意，已发布的 Cookie 政策中提及的“我们的隐私政策”、“我们的使用条款”以"
 "及我们或“网站”分别指的是本隐私政策、条款和麦肯锡学院。"
 
-#: templates/privacy.haml:37
+#: templates/privacy.haml:37 templates_v2/privacy.haml:37
 msgid ""
 "We may also use your personal data (including your User Account Information "
 "and Participation Data), as well as your User Content, to (a) verify your "
@@ -9492,7 +9676,7 @@ msgstr ""
 "信（包括有关未来课程、服务或产品的信息），请通过下方本隐私政策“联系我们”部分"
 "中列出的地址与我们联系。"
 
-#: templates/privacy.haml:39
+#: templates/privacy.haml:39 templates_v2/privacy.haml:39
 msgid ""
 "Your personal data may also be used, both by us and by our authorized third "
 "party service providers, to collect, discover, and prepare aggregate "
@@ -9524,11 +9708,11 @@ msgstr ""
 "本隐私政策中所述的任何其他目的。我们可能会无限期地保留所有汇总信息，即使其从"
 "您的用户账户信息、用户内容或个人数据衍生或开发而来。"
 
-#: templates/privacy.haml:40
+#: templates/privacy.haml:40 templates_v2/privacy.haml:40
 msgid "Sharing information with your Sponsoring Organization"
 msgstr "与您的赞助组织共享信息"
 
-#: templates/privacy.haml:42
+#: templates/privacy.haml:42 templates_v2/privacy.haml:42
 msgid ""
 "If you are participating in McKinsey Academy with the facilitation of a "
 "Sponsoring Organization (as such term is defined in the Terms), at the "
@@ -9550,11 +9734,11 @@ msgstr ""
 "您的赞助组织对此类信息的使用概不负责或承担任何法律责任，而且上述使用应受您的"
 "赞助组织适用于您的政策（包括隐私政策）的约束。"
 
-#: templates/privacy.haml:43
+#: templates/privacy.haml:43 templates_v2/privacy.haml:43
 msgid "Data recipients and international data transfers"
 msgstr "数据接收者和国际数据传输"
 
-#: templates/privacy.haml:45
+#: templates/privacy.haml:45 templates_v2/privacy.haml:45
 msgid ""
 "Personal data collected or processed by McKinsey Academy may be transferred "
 "from time to time to McKinsey subsidiaries and affiliates and their "
@@ -9578,7 +9762,7 @@ msgstr ""
 "机制，包括将您的个人信息转移至您所居住国家/地区以外的国家/地区。使用麦肯锡学"
 "院即表示您自愿同意跨境传输和托管此类信息。"
 
-#: templates/privacy.haml:47
+#: templates/privacy.haml:47 templates_v2/privacy.haml:47
 msgid ""
 "McKinsey shall not intentionally disclose or transfer (and shall take "
 "reasonable steps to prevent the unauthorized or accidental disclosure of) "
@@ -9598,7 +9782,7 @@ msgstr ""
 "供商首先要同意对此类信息保密，并为此类个人数据提供与麦肯锡提供的相当或更高级"
 "别的数据安全保护。"
 
-#: templates/privacy.haml:49
+#: templates/privacy.haml:49 templates_v2/privacy.haml:49
 msgid ""
 "We also may share your personal data with third party service providers who "
 "perform services and functions on our behalf to support our interactions "
@@ -9613,19 +9797,19 @@ msgstr ""
 "非本隐私政策和条款另有规定，并且这些第三方服务提供商必须代表我们提供服务或者"
 "为了遵循法律规定，否则这些第三方服务提供商不得使用或者披露您的个人数据。"
 
-#: templates/privacy.haml:51
+#: templates/privacy.haml:51 templates_v2/privacy.haml:51
 msgid "In addition, we may disclose information about you:"
 msgstr "此外，我们可能会因以下情况披露您的信息："
 
-#: templates/privacy.haml:54
+#: templates/privacy.haml:54 templates_v2/privacy.haml:54
 msgid "If we are required to do so by law or legal process;"
 msgstr "需履行相关法律或法律程序义务；"
 
-#: templates/privacy.haml:56
+#: templates/privacy.haml:56 templates_v2/privacy.haml:56
 msgid "To law enforcement authorities or other government officials;"
 msgstr "需向执法机构或者其他政府官员披露信息；"
 
-#: templates/privacy.haml:58
+#: templates/privacy.haml:58 templates_v2/privacy.haml:58
 msgid ""
 "When we believe disclosure is necessary or appropriate to prevent physical "
 "harm\n"
@@ -9635,23 +9819,23 @@ msgstr ""
 "我们认为必须或者适当披露信息才能避免人身伤害\n"
 "或经济损失，或者协助调查可疑或实际非法活动；"
 
-#: templates/privacy.haml:61
+#: templates/privacy.haml:61 templates_v2/privacy.haml:61
 msgid "If disclosure is necessary to protect the vital interests of a person;"
 msgstr "必须披露信息才能保护某个人的重要利益；"
 
-#: templates/privacy.haml:63
+#: templates/privacy.haml:63 templates_v2/privacy.haml:63
 msgid "To enforce our Terms;"
 msgstr "为达到执行我们的条款之目的；"
 
-#: templates/privacy.haml:65
+#: templates/privacy.haml:65 templates_v2/privacy.haml:65
 msgid "To protect our property, services and legal rights;"
 msgstr "为保护我们的财产、服务和合法权利；"
 
-#: templates/privacy.haml:67
+#: templates/privacy.haml:67 templates_v2/privacy.haml:67
 msgid "To your Sponsoring Organization as described in this Privacy Policy;"
 msgstr "按照本隐私政策所述，向您的赞助组织披露您的相关信息；"
 
-#: templates/privacy.haml:69
+#: templates/privacy.haml:69 templates_v2/privacy.haml:69
 msgid ""
 "To prevent fraud against McKinsey, our subsidiaries and affiliates and "
 "business\n"
@@ -9660,15 +9844,15 @@ msgstr ""
 "为了避免麦肯锡、我们的子公司、关联企业和商业\n"
 "合作伙伴受到欺诈；"
 
-#: templates/privacy.haml:72
+#: templates/privacy.haml:72 templates_v2/privacy.haml:72
 msgid "To support auditing, compliance, and corporate governance functions; or"
 msgstr "为了支持审计、合规性和公司治理功能；或者"
 
-#: templates/privacy.haml:74
+#: templates/privacy.haml:74 templates_v2/privacy.haml:74
 msgid "To comply with any and all applicable laws."
 msgstr "为了遵守任何和所有适用法律的相关规定。"
 
-#: templates/privacy.haml:76
+#: templates/privacy.haml:76 templates_v2/privacy.haml:76
 msgid ""
 "We maintain processes designed to ensure that any processing of personal "
 "data by third party service providers is consistent with this Privacy Policy "
@@ -9678,7 +9862,7 @@ msgstr ""
 "我们采用相应的流程来确保第三方服务提供商对个人信息的任何处理符合本隐私政策之"
 "规定，并保护您个人信息的机密性、可获得性和完整性。"
 
-#: templates/privacy.haml:78
+#: templates/privacy.haml:78 templates_v2/privacy.haml:78
 msgid ""
 "In addition, in the event of a re-organization, merger, sale, joint venture, "
 "assignment, or other transfer or disposition of all or any portion of our "
@@ -9687,11 +9871,11 @@ msgstr ""
 "此外，在重组、合并、出售、组建合资企业、转让或以其他方式转移或处置我们全部或"
 "部分业务时，我们可以披露或传输您的个人信息。"
 
-#: templates/privacy.haml:79
+#: templates/privacy.haml:79 templates_v2/privacy.haml:79
 msgid "Surveys"
 msgstr "问卷调查"
 
-#: templates/privacy.haml:81
+#: templates/privacy.haml:81 templates_v2/privacy.haml:81
 msgid ""
 "If you participate in a survey in connection with McKinsey Academy, our "
 "research results may be reported as totals or in other aggregated form and "
@@ -9709,11 +9893,11 @@ msgstr ""
 "获取更多信息，从而改善麦肯锡学院的总体体验。如果您不希望我们继续跟进您的调查"
 "回答，请通过下方本隐私政策“联系我们”部分中列出的地址与我们联系。"
 
-#: templates/privacy.haml:82
+#: templates/privacy.haml:82 templates_v2/privacy.haml:82
 msgid "User disclosure"
 msgstr "用户披露"
 
-#: templates/privacy.haml:84
+#: templates/privacy.haml:84 templates_v2/privacy.haml:84
 msgid ""
 "You should be aware that whenever you publicly disclose information, even to "
 "a limited group of recipients (for example, other users who are enrolled in "
@@ -9728,11 +9912,11 @@ msgstr ""
 "锡不对任何第三方的任何行为或政策负责，这些第三方包括收集用户披露给上述第三方"
 "的麦肯锡学院使用情况相关信息的其他麦肯锡学院用户。"
 
-#: templates/privacy.haml:85
+#: templates/privacy.haml:85 templates_v2/privacy.haml:85
 msgid "Third-party websites and platforms"
 msgstr "第三方网站和平台"
 
-#: templates/privacy.haml:87
+#: templates/privacy.haml:87 templates_v2/privacy.haml:87
 msgid ""
 "McKinsey may provide links or directions to third party websites or "
 "information as a service to our users. If you use these links, you will "
@@ -9747,7 +9931,7 @@ msgstr ""
 "中包含信息的认可、赞助或者建议，且麦肯锡对您使用上述站点概不负责或承担法律责"
 "任。此类使用需遵守适用于这些站点的使用条款和隐私政策。"
 
-#: templates/privacy.haml:89
+#: templates/privacy.haml:89 templates_v2/privacy.haml:89
 msgid ""
 "In addition, certain Mobile Offerings may be made available to you through a "
 "website, application or platform operated by a Mobile Platform Provider (as "
@@ -9776,7 +9960,7 @@ msgstr ""
 "条款和隐私政策不受我们控制，也不受我们的条款或本隐私政策管辖，建议您仔细阅"
 "读。"
 
-#: templates/privacy.haml:91
+#: templates/privacy.haml:91 templates_v2/privacy.haml:91
 msgid ""
 "In connection with our Mobile Offerings, McKinsey may use third party "
 "service providers to analyze non-personally identifiable user activity to "
@@ -9796,11 +9980,11 @@ msgstr ""
 "错误的相关报告。任何第三方服务提供商不得试图以识别任何特定用户的方式收集信"
 "息。"
 
-#: templates/privacy.haml:92
+#: templates/privacy.haml:92 templates_v2/privacy.haml:92
 msgid "Security"
 msgstr "安全"
 
-#: templates/privacy.haml:94
+#: templates/privacy.haml:94 templates_v2/privacy.haml:94
 msgid ""
 "McKinsey has implemented generally accepted standards of technology and "
 "operational security to protect personal data from loss, misuse, alteration, "
@@ -9821,11 +10005,11 @@ msgstr ""
 "提供的任何相关个人数据（包括您的用户账户信息）可能已被泄露，请立即通过下方本"
 "隐私政策“联系我们”部分中列出的地址与我们联系。"
 
-#: templates/privacy.haml:95
+#: templates/privacy.haml:95 templates_v2/privacy.haml:95
 msgid "Data retention policy"
 msgstr "信息保留政策"
 
-#: templates/privacy.haml:97
+#: templates/privacy.haml:97 templates_v2/privacy.haml:97
 msgid ""
 "McKinsey retains all personal data for the duration of the relevant business "
 "relationship or, where required, in accordance with our information "
@@ -9840,11 +10024,11 @@ msgstr ""
 "以全部删除保留信息的所有实例。如需要求访问、更改或删除保留信息，请参阅本隐私"
 "政策的“您的权利”部分。"
 
-#: templates/privacy.haml:98
+#: templates/privacy.haml:98 templates_v2/privacy.haml:98
 msgid "Children"
 msgstr "儿童"
 
-#: templates/privacy.haml:100
+#: templates/privacy.haml:100 templates_v2/privacy.haml:100
 msgid ""
 "McKinsey Academy is not designed for or directed at children 13 years of age "
 "or younger, and McKinsey does not intentionally collect or maintain personal "
@@ -9853,11 +10037,11 @@ msgstr ""
 "由于麦肯锡学院并非专为 13 岁及以下儿童设计，因此麦肯锡不会有意收集或保留 13 "
 "岁以下儿童的个人信息。"
 
-#: templates/privacy.haml:101
+#: templates/privacy.haml:101 templates_v2/privacy.haml:101
 msgid "Your rights"
 msgstr "您的权利"
 
-#: templates/privacy.haml:103
+#: templates/privacy.haml:103 templates_v2/privacy.haml:103
 msgid ""
 "Where granted by local law, you may have the right to request access to the "
 "personal data that we have collected about you for the purposes of "
@@ -9870,7 +10054,7 @@ msgstr ""
 "的、与您有关的个人信息。您还有权要求获得一份我们已经收集的、与您有关的个人信"
 "息。在某些情况下，您也可以要求我们停止处理您的个人信息。"
 
-#: templates/privacy.haml:105
+#: templates/privacy.haml:105 templates_v2/privacy.haml:105
 msgid ""
 "If you would like to make a request to access, review, or correct the "
 "personal data we have collected about you, or to discuss how we process your "
@@ -9879,7 +10063,7 @@ msgstr ""
 "如果您想要请求访问、查看或更正我们已经收集的、与您有关的个人信息或者讨论我们"
 "如何处理您的个人信息，请通过以下方式联系我们："
 
-#: templates/privacy.haml:108
+#: templates/privacy.haml:108 templates_v2/privacy.haml:108
 msgid ""
 "To help protect your privacy and security, we will take reasonable steps to "
 "verify your identity, such as requiring you to provide or confirm your "
@@ -9910,7 +10094,7 @@ msgstr ""
 "和/或在您的请求明显无根据和/或过分，或者根据适用法律另有不可接受或不正当原因"
 "的情况下，拒绝您请求的权利。"
 
-#: templates/privacy.haml:110
+#: templates/privacy.haml:110 templates_v2/privacy.haml:110
 msgid ""
 "In addition, and where granted by local law, you have the legal right to "
 "lodge a complaint with a competent data protection authority."
@@ -9918,7 +10102,7 @@ msgstr ""
 "此外，在当地法律允许的情况下，您具有向有资质的数据保护机关提出投诉的合法权"
 "利。"
 
-#: templates/privacy.haml:112
+#: templates/privacy.haml:112 templates_v2/privacy.haml:112
 msgid ""
 "You may revoke your consent to the collection, processing and/or disclosure "
 "of your personal data at any time. To do so, please either follow the "
@@ -9936,11 +10120,11 @@ msgstr ""
 "的某些功能（包括您当前注册参加的课程），因为它们都依赖于收集、处理和/或披露您"
 "的个人数据。"
 
-#: templates/privacy.haml:113
+#: templates/privacy.haml:113 templates_v2/privacy.haml:113
 msgid "Your California privacy rights"
 msgstr "您在加利福尼亚州的隐私权利"
 
-#: templates/privacy.haml:115
+#: templates/privacy.haml:115 templates_v2/privacy.haml:115
 msgid ""
 "Pursuant to California Civil Code Section 1798.83(c)(2), McKinsey does not "
 "share your personal data with third parties for those third parties’ direct "
@@ -9949,7 +10133,7 @@ msgstr ""
 "根据《加利福尼亚州民法》第 1798.83(c)(2) 条的相关规定，麦肯锡不得与第三方分享"
 "您的个人信息以作第三方直接营销之用。"
 
-#: templates/privacy.haml:117
+#: templates/privacy.haml:117 templates_v2/privacy.haml:117
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -9963,7 +10147,7 @@ msgstr ""
 "公开发布的内容或信息。如需提出上述申请，请在电子邮件中详细描述具体内容或信"
 "息，并发送至"
 
-#: templates/privacy.haml:119
+#: templates/privacy.haml:119 templates_v2/privacy.haml:119
 msgid ""
 "Please be aware that such a request does not ensure complete or "
 "comprehensive removal of the content or information you have posted and that "
@@ -9973,11 +10157,11 @@ msgstr ""
 "请注意，上述申请无法确保完全或全部移除您已发布的内容或信息，而且某些情况下，"
 "即使提出申请，法律亦不要求或者允许移除上述信息。"
 
-#: templates/privacy.haml:120
+#: templates/privacy.haml:120 templates_v2/privacy.haml:120
 msgid "Consent; changes to privacy policy"
 msgstr "同意和更改本隐私政策"
 
-#: templates/privacy.haml:122
+#: templates/privacy.haml:122 templates_v2/privacy.haml:122
 msgid ""
 "By using McKinsey Academy, including the Site or any Mobile Offering, you "
 "consent to the collection, use, and storage of your information, including "
@@ -9991,7 +10175,7 @@ msgstr ""
 "据）。我们保留随时更改本隐私政策的权利。我们将通过更新本隐私政策告知您任何此"
 "类更改，本隐私政策可在以下地址找到"
 
-#: templates/privacy.haml:125
+#: templates/privacy.haml:125 templates_v2/privacy.haml:125
 msgid ""
 "If we make material changes to this Privacy Policy that increase our rights "
 "to use personal data that we have previously collected about you, we will "
@@ -10003,11 +10187,11 @@ msgstr ""
 "权利，我们将通过发送电子邮件至您已注册电子邮件地址以征得您的同意，或者以麦肯"
 "锡学院用户可访问的方式突出显示变更内容的相关信息。"
 
-#: templates/privacy.haml:126
+#: templates/privacy.haml:126 templates_v2/privacy.haml:126
 msgid "Contact our privacy department"
 msgstr "联系我们的隐私部门"
 
-#: templates/privacy.haml:128
+#: templates/privacy.haml:128 templates_v2/privacy.haml:128
 msgid ""
 "If you have any questions about our Privacy Policy or if you require any "
 "assistance in navigating or reading the Terms or this Privacy Policy, please "
@@ -10017,14 +10201,17 @@ msgstr ""
 "通过以下方式联系我们："
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
+#: templates_v2/privacy.haml:131 templates_v2/terms_of_service.haml:114
 msgid "c/o Marc Metakis"
 msgstr "c/o Marc Metakis"
 
 #: templates/privacy.haml:132 templates/terms_of_service.haml:115
+#: templates_v2/privacy.haml:132 templates_v2/terms_of_service.haml:115
 msgid "55 East 52nd Street"
 msgstr "55 East 52nd Street"
 
 #: templates/privacy.haml:133 templates/terms_of_service.haml:116
+#: templates_v2/privacy.haml:133 templates_v2/terms_of_service.haml:116
 msgid "New York, NY 10022"
 msgstr "New York, NY 10022"
 
@@ -10137,7 +10324,7 @@ msgstr "重置我的密码"
 msgid "Password Reset Requested"
 msgstr "已请求重置密码"
 
-#: templates/terms_of_service.haml:5
+#: templates/terms_of_service.haml:5 templates_v2/terms_of_service.haml:5
 msgid ""
 "McKinsey & Company and its subsidiaries and affiliates (collectively, "
 "“McKinsey”, “us” or “we”) is excited to welcome you to participate in "
@@ -10147,7 +10334,7 @@ msgstr ""
 "麦肯锡公司及其子公司和关联企业（以下统称“麦肯锡”或“我们”）很高兴欢迎您参与麦"
 "肯锡学院。“麦肯锡学院”是以下各项的统称："
 
-#: templates/terms_of_service.haml:8
+#: templates/terms_of_service.haml:8 templates_v2/terms_of_service.haml:8
 msgid ""
 "(the “Sites”), and any mobile device or tablet application or similar "
 "software (the “Mobile Offering”) that is provided by us and that links to "
@@ -10161,7 +10348,7 @@ msgstr ""
 "方式或直接提供给您的任何相关课程、内容、课程计划、服务、材料或产品。您使用麦"
 "肯锡学院应遵守以下条款和条件（以下简称“条款”）。"
 
-#: templates/terms_of_service.haml:10
+#: templates/terms_of_service.haml:10 templates_v2/terms_of_service.haml:10
 msgid ""
 "By accessing and using McKinsey Academy, you agree to these Terms. If you do "
 "not agree to these Terms, or are legally unable to agree to these Terms, you "
@@ -10170,11 +10357,11 @@ msgstr ""
 "访问并使用麦肯锡学院即表示您同意这些条款。如果您不同意这些条款，或者在法律上"
 "无法同意这些条款，则不得使用麦肯锡学院。"
 
-#: templates/terms_of_service.haml:12
+#: templates/terms_of_service.haml:12 templates_v2/terms_of_service.haml:12
 msgid "We may periodically change the Terms, which are available at"
 msgstr "我们可能会定期更改条款（可在"
 
-#: templates/terms_of_service.haml:15
+#: templates/terms_of_service.haml:15 templates_v2/terms_of_service.haml:15
 msgid ""
 ", so please check back from time to time. By accessing and using McKinsey "
 "Academy after any changes to these Terms have been made, you agree to be "
@@ -10184,7 +10371,7 @@ msgstr ""
 " 找到），请随时回来查看。在这些条款进行任何更改后访问并使用麦肯锡学院，即表示"
 "您同意受上述修订条款的约束。这些条款的最近更新日期为 2018 年 1 月 22 日。"
 
-#: templates/terms_of_service.haml:17
+#: templates/terms_of_service.haml:17 templates_v2/terms_of_service.haml:17
 msgid ""
 "For an explanation of our practices and policies related to the collection, "
 "use and storage of your information, please refer to Section 10 of these "
@@ -10193,11 +10380,11 @@ msgstr ""
 "如想获得有关我们收集、使用和存储您的信息的做法和政策的说明，请参阅这些条款的"
 "第 10 节以及我们的隐私政策（可在以下地址找到："
 
-#: templates/terms_of_service.haml:21
+#: templates/terms_of_service.haml:21 templates_v2/terms_of_service.haml:21
 msgid "1. Copyrights and McKinsey Academy Content"
 msgstr "1. 版权和 McKinsey Academy 内容"
 
-#: templates/terms_of_service.haml:23
+#: templates/terms_of_service.haml:23 templates_v2/terms_of_service.haml:23
 msgid ""
 "Except where indicated otherwise, all content and functionality of McKinsey "
 "Academy (except for User Content defined in Section 5 below), including "
@@ -10226,11 +10413,11 @@ msgstr ""
 "会在使用或提供的关于麦肯锡学院的任何专利、版权、商标、商业机密信息或其他专有"
 "权利方面向您授予任何明示或暗示的权利。"
 
-#: templates/terms_of_service.haml:25
+#: templates/terms_of_service.haml:25 templates_v2/terms_of_service.haml:25
 msgid "2. Trademarks"
 msgstr "2. 商标"
 
-#: templates/terms_of_service.haml:27
+#: templates/terms_of_service.haml:27 templates_v2/terms_of_service.haml:27
 msgid ""
 "The trademarks, service marks, designs, and logos (collectively, the "
 "“Trademarks”) displayed in connection with McKinsey Academy are the "
@@ -10250,13 +10437,13 @@ msgstr ""
 "们的许可方；(ii) 使用或复制我们或我们许可方的任何商标，暗示我们或我们许可方的"
 "任何认可或者暗示与我们或我们许可方之间存在任何关系。"
 
-#: templates/terms_of_service.haml:29
+#: templates/terms_of_service.haml:29 templates_v2/terms_of_service.haml:29
 #, fuzzy
 #| msgid "McKinsey Academy Contact"
 msgid "3. Use of McKinsey Academy Content"
 msgstr "3. 麦肯锡学院内容的使用"
 
-#: templates/terms_of_service.haml:31
+#: templates/terms_of_service.haml:31 templates_v2/terms_of_service.haml:31
 msgid ""
 "We hereby grant you a limited, non-exclusive, non-transferable license, for "
 "the term hereof, to access, download, and display the McKinsey Academy "
@@ -10283,7 +10470,7 @@ msgstr ""
 "使用、或披露任何麦肯锡学院内容、删除任何麦肯锡学院内容、或者禁用任何安全或技"
 "术保护措施，包括数字保护机制、元数据、水印或免责声明。"
 
-#: templates/terms_of_service.haml:33
+#: templates/terms_of_service.haml:33 templates_v2/terms_of_service.haml:33
 msgid ""
 "In no event may you attempt to gain access to any location, portion or "
 "feature of McKinsey Academy, any McKinsey Academy Content, any User Account "
@@ -10301,11 +10488,11 @@ msgstr ""
 "不使用机器人程序、蜘蛛程序、脚本、数据收集软件或应用程序或者网络擦除工具，来"
 "擦除或以其他方式下载或收集（包括批量）任何麦肯锡学院内容（包括用户内容）。"
 
-#: templates/terms_of_service.haml:35
+#: templates/terms_of_service.haml:35 templates_v2/terms_of_service.haml:35
 msgid "4. User Registration"
 msgstr "4. 用户注册"
 
-#: templates/terms_of_service.haml:37
+#: templates/terms_of_service.haml:37 templates_v2/terms_of_service.haml:37
 msgid ""
 "In order to participate in certain aspects of McKinsey Academy you, or your "
 "sponsoring organization (e.g., your employer or other organization or "
@@ -10333,7 +10520,7 @@ msgstr ""
 "示您和/或您的赞助组织提供有关您本人的其他可选信息，包括生平、人口统计学特征、"
 "就业和/或其他信息。所有这些信息构成了您的“用户账户信息”。"
 
-#: templates/terms_of_service.haml:39
+#: templates/terms_of_service.haml:39 templates_v2/terms_of_service.haml:39
 msgid ""
 "You agree that you and your Sponsoring Organization will provide us only "
 "with accurate User Account Information and notify us promptly if any such "
@@ -10351,7 +10538,7 @@ msgstr ""
 "户账户访问权。如果您认为自己用户账户的隐私或安全已被破坏，必须立即通知我们。"
 "我们对您的用户账户信息的访问将遵循我们的隐私政策和条款。"
 
-#: templates/terms_of_service.haml:41
+#: templates/terms_of_service.haml:41 templates_v2/terms_of_service.haml:41
 msgid ""
 "You represent that you are not located in a country that is subject to a U."
 "S. Government embargo, or that has been designated by the U.S. Government as "
@@ -10363,7 +10550,7 @@ msgstr ""
 "主义”的国家/地区，而且您和您的赞助组织（如适用）均未被列入美国政府的任何禁止"
 "或限制方名单。"
 
-#: templates/terms_of_service.haml:43
+#: templates/terms_of_service.haml:43 templates_v2/terms_of_service.haml:43
 msgid ""
 "We may retain User Account Information indefinitely in order to use it for "
 "ensuring compliance with these terms and any applicable legal requirements, "
@@ -10375,11 +10562,11 @@ msgstr ""
 "及任何适用法律要求；修改和改进麦肯锡学院和我们的相关服务产品；以及上述条款或"
 "我们的隐私政策授权的任何其他目的。"
 
-#: templates/terms_of_service.haml:45
+#: templates/terms_of_service.haml:45 templates_v2/terms_of_service.haml:45
 msgid "User Content"
 msgstr "用户内容"
 
-#: templates/terms_of_service.haml:47
+#: templates/terms_of_service.haml:47 templates_v2/terms_of_service.haml:47
 msgid ""
 "In connection with your use of McKinsey Academy, you may have the "
 "opportunity to submit, post, publish, distribute, or otherwise share "
@@ -10421,7 +10608,7 @@ msgstr ""
 "权、道德权利或归属权，您特此放弃就任何涉嫌或实际侵犯行为向我们进行任何索赔的"
 "权利。"
 
-#: templates/terms_of_service.haml:49
+#: templates/terms_of_service.haml:49 templates_v2/terms_of_service.haml:49
 msgid ""
 "You covenant that you shall not submit or upload to, or otherwise publish or "
 "make available through, McKinsey Academy, or otherwise provide to us, any "
@@ -10449,7 +10636,7 @@ msgstr ""
 "将干扰我们提供麦肯锡学院以及其他用户合理使用和享受麦肯锡学院；或者 (h) 违反您"
 "赞助组织的任何适用政策或要求的内容。"
 
-#: templates/terms_of_service.haml:51
+#: templates/terms_of_service.haml:51 templates_v2/terms_of_service.haml:51
 msgid ""
 "We do not and cannot review all User Content, and we are not responsible to "
 "you or any other party with respect to, and do not endorse or make any "
@@ -10464,11 +10651,11 @@ msgstr ""
 "们有权出于任何理由或无任何理由地拒绝接受或发布任何用户内容，并全部或部分删除"
 "之前已接受或发布的任何用户内容。"
 
-#: templates/terms_of_service.haml:53
+#: templates/terms_of_service.haml:53 templates_v2/terms_of_service.haml:53
 msgid "6. Notices of Infringement and Takedown"
 msgstr "6. 侵权和移除通知"
 
-#: templates/terms_of_service.haml:55
+#: templates/terms_of_service.haml:55 templates_v2/terms_of_service.haml:55
 msgid ""
 "In addition to the limitations on User Content set forth in Section 5, we "
 "prohibit the posting of any information in connection with McKinsey Academy "
@@ -10513,11 +10700,11 @@ msgstr ""
 "复提交侵权材料或没有法律效力材料者，将被禁止作进一步提交。根据本文第 6 节提交"
 "通知的联系方式已在条款的“联系我们”部分中列出。"
 
-#: templates/terms_of_service.haml:57
+#: templates/terms_of_service.haml:57 templates_v2/terms_of_service.haml:57
 msgid "7. Disclaimers"
 msgstr "7. 免责声明"
 
-#: templates/terms_of_service.haml:59
+#: templates/terms_of_service.haml:59 templates_v2/terms_of_service.haml:59
 msgid ""
 "THE CONTENT AND FUNCTIONALITY OF MCKINSEY ACADEMY IS PROVIDED “AS IS”, "
 "WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING, WITHOUT "
@@ -10555,7 +10742,7 @@ msgstr ""
 "内容中包含的，或由第三方（包括适用的移动平台提供商，定义见隐私政策）提供的任"
 "何信息、材料、内容或服务承担任何责任或义务。"
 
-#: templates/terms_of_service.haml:61
+#: templates/terms_of_service.haml:61 templates_v2/terms_of_service.haml:61
 msgid ""
 "EXCEPT AS PROHIBITED BY LAW, NEITHER WE NOR OUR THIRD PARTY LICENSORS AND "
 "CONTENT PROVIDERS, INCLUDING APPLICABLE MOBILE PLATFORM PROVIDERS, SHALL BE "
@@ -10574,7 +10761,7 @@ msgstr ""
 "关责任理论的论述，我们或我们的第三方许可方和内容提供商（包括适用的移动平台提"
 "供商）概不承担任何责任。"
 
-#: templates/terms_of_service.haml:63
+#: templates/terms_of_service.haml:63 templates_v2/terms_of_service.haml:63
 msgid ""
 "IN NO EVENT SHALL OUR AGGREGATE LIABILITY WITH RESPECT TO ALL CLAIMS, "
 "ACTIONS AND EVENTS ARISING OUT OF OUR PROVISION TO YOU OF MCKINSEY ACADEMY "
@@ -10586,11 +10773,11 @@ msgstr ""
 "任总额都不超过麦肯锡从您那里收到的与您在之前十二个月内使用麦肯锡学院相关的累"
 "积费用（如果有）。"
 
-#: templates/terms_of_service.haml:65
+#: templates/terms_of_service.haml:65 templates_v2/terms_of_service.haml:65
 msgid "8. Third Party Websites &amp; Providers"
 msgstr "8. 第三方网站&amp;提供商"
 
-#: templates/terms_of_service.haml:67
+#: templates/terms_of_service.haml:67 templates_v2/terms_of_service.haml:67
 msgid ""
 "McKinsey Academy, including certain Sites and Mobile Offerings, McKinsey "
 "Academy Content, and related features and services such as support services, "
@@ -10606,7 +10793,7 @@ msgstr ""
 "认并同意我们允许任何第三方访问麦肯锡学院、网站和移动产品，以及您在遵守以下条"
 "款和我们的隐私政策情况下以任何方式因任何用途而提供的任何用户内容。"
 
-#: templates/terms_of_service.haml:69
+#: templates/terms_of_service.haml:69 templates_v2/terms_of_service.haml:69
 msgid ""
 "Without limiting anything in this Section, we are collaborating with edX "
 "Inc. (“edX”), a not-for-profit corporation founded by leading academic "
@@ -10632,7 +10819,7 @@ msgstr ""
 "信息以及您使用麦肯锡学院相关的信息保密，edX 可以在提供上述服务和支持时访问该"
 "信息。"
 
-#: templates/terms_of_service.haml:71
+#: templates/terms_of_service.haml:71 templates_v2/terms_of_service.haml:71
 msgid ""
 "In addition, certain Mobile Offerings may be made available to you through "
 "third party websites, applications or platforms operated by a third party (a "
@@ -10661,11 +10848,11 @@ msgstr ""
 "束。根据我们与此类移动平台提供商达成的协议，此类移动平台提供商是本条款第三方"
 "受益人，并可能对您执行这些条款作为其第三方受益人。"
 
-#: templates/terms_of_service.haml:73
+#: templates/terms_of_service.haml:73 templates_v2/terms_of_service.haml:73
 msgid "9. Certificates"
 msgstr "9. 证书"
 
-#: templates/terms_of_service.haml:75
+#: templates/terms_of_service.haml:75 templates_v2/terms_of_service.haml:75
 msgid ""
 "In our sole discretion we may choose to offer a certificate, statement or "
 "other acknowledgement or documentation to you and/or your Sponsoring "
@@ -10690,11 +10877,11 @@ msgstr ""
 "都不代表任何学分或学术水平。您同意您不会通过任何虚假、误导或非法手段获取证"
 "书，或向公众或任何第三方歪曲发放此类证书的性质、内容或条款。"
 
-#: templates/terms_of_service.haml:77
+#: templates/terms_of_service.haml:77 templates_v2/terms_of_service.haml:77
 msgid "10. Privacy"
 msgstr "10. 隐私"
 
-#: templates/terms_of_service.haml:79
+#: templates/terms_of_service.haml:79 templates_v2/terms_of_service.haml:79
 msgid ""
 "We understand that your privacy is important to you and we are committed to "
 "respecting your privacy and to protecting your personally-identifiable "
@@ -10704,7 +10891,7 @@ msgstr ""
 "我们了解您的隐私对您非常重要，我们承诺尊重您的隐私并保护您的个人身份信息（在"
 "某些情况下以及某些适用法律中也将其称为您的个人信息）。我们的隐私政策（可在"
 
-#: templates/terms_of_service.haml:82
+#: templates/terms_of_service.haml:82 templates_v2/terms_of_service.haml:82
 msgid ""
 ") describes how we use and protect your personally-identifiable information, "
 "as well as how and with whom we may share that information (including, for "
@@ -10713,7 +10900,7 @@ msgstr ""
 "获得）说明了我们如何使用和保护您的个人身份信息，以及我们如何以及与谁共享该信"
 "息（包括对某些用户而言，与赞助组织共享信息）。"
 
-#: templates/terms_of_service.haml:84
+#: templates/terms_of_service.haml:84 templates_v2/terms_of_service.haml:84
 msgid ""
 "Your use of McKinsey Academy is subject to and governed by these Terms and "
 "our Privacy Policy, and by using any Site or Mobile Offering, or by "
@@ -10723,7 +10910,7 @@ msgstr ""
 "您使用麦肯锡学院将受这些条款和我们的隐私政策的约束，并且使用任何网站或移动产"
 "品，或以其他方式使用或参与麦肯锡学院，即表示您同意并了解我们的隐私政策。"
 
-#: templates/terms_of_service.haml:86
+#: templates/terms_of_service.haml:86 templates_v2/terms_of_service.haml:86
 msgid ""
 "YOU ARE ENCOURAGED TO PRINT AND TO READ THE PRIVACY POLICY CAREFULLY AND TO "
 "CONTACT US BEFORE COMMENCING YOUR USE OF MCKINSEY ACADEMY IF YOU HAVE ANY "
@@ -10732,17 +10919,17 @@ msgstr ""
 "如果您对我们的隐私政策或这些条款有任何疑问，请在开始使用麦肯锡学院之前仔细阅"
 "读隐私政策并与我们联系。"
 
-#: templates/terms_of_service.haml:88
+#: templates/terms_of_service.haml:88 templates_v2/terms_of_service.haml:88
 msgid ""
 "IN THE EVENT OF ANY CONFLICT BETWEEN THESE TERMS AND OUR PRIVACY POLICY, "
 "THESE TERMS SHALL CONTROL."
 msgstr "如果这些条款与我们的隐私政策之间出现任何冲突，以这些条款为准。"
 
-#: templates/terms_of_service.haml:90
+#: templates/terms_of_service.haml:90 templates_v2/terms_of_service.haml:90
 msgid "11. Termination; Discontinuation"
 msgstr "11. 终止；废止"
 
-#: templates/terms_of_service.haml:92
+#: templates/terms_of_service.haml:92 templates_v2/terms_of_service.haml:92
 msgid ""
 "You agree that we, in our sole discretion, may terminate your use of and "
 "participation in McKinsey Academy for any reason or no reason, upon notice "
@@ -10780,21 +10967,21 @@ msgstr ""
 "何许可以及为执行或行使您或我们的权利或义务所必需的这些条款或隐私政策的任何规"
 "定应在本条款终止后继续有效。"
 
-#: templates/terms_of_service.haml:94
+#: templates/terms_of_service.haml:94 templates_v2/terms_of_service.haml:94
 msgid "12. Governing Law; Jurisdiction"
 msgstr "12. 适用法律；管辖权"
 
-#: templates/terms_of_service.haml:96
+#: templates/terms_of_service.haml:96 templates_v2/terms_of_service.haml:96
 msgid ""
 "These Terms are governed by the laws of the State of New York without "
 "reference to the principles of conflicts of laws thereof."
 msgstr "这些条款受纽约州法律管辖，但未提及其法律冲突原则。"
 
-#: templates/terms_of_service.haml:98
+#: templates/terms_of_service.haml:98 templates_v2/terms_of_service.haml:98
 msgid "13. Children"
 msgstr "13. 儿童"
 
-#: templates/terms_of_service.haml:100
+#: templates/terms_of_service.haml:100 templates_v2/terms_of_service.haml:100
 msgid ""
 "We understand the importance of protecting children's privacy, especially in "
 "an on-line environment. McKinsey Academy is not designed for or directed at "
@@ -10804,11 +10991,11 @@ msgstr ""
 "我们了解保护儿童隐私的重要性，特别是在线环境中。由于麦肯锡学院并非专为 13 岁"
 "及以下儿童设计，因此我们不会有意收集或保留有关 13 岁以下儿童的个人信息。"
 
-#: templates/terms_of_service.haml:102
+#: templates/terms_of_service.haml:102 templates_v2/terms_of_service.haml:102
 msgid "14. Miscellaneous"
 msgstr "14. 杂项"
 
-#: templates/terms_of_service.haml:104
+#: templates/terms_of_service.haml:104 templates_v2/terms_of_service.haml:104
 msgid ""
 "Use of McKinsey Academy is unauthorized in any jurisdiction that does not "
 "give effect to all provisions of these Terms, including without limitation "
@@ -10825,7 +11012,7 @@ msgstr ""
 "执行条款所取代，并且本条款的其余部分应继续具有完全效力。在此未明确授予的任何"
 "权利均予以保留。"
 
-#: templates/terms_of_service.haml:106
+#: templates/terms_of_service.haml:106 templates_v2/terms_of_service.haml:106
 msgid ""
 "These Terms of Use are intended to supplement any other agreement or terms "
 "between us that may otherwise be applicable to McKinsey Academy and McKinsey "
@@ -10840,11 +11027,11 @@ msgstr ""
 "使用条款将优先于其他与麦肯锡学院和麦肯锡学院内容有关的其他相冲突或不一致的条"
 "款或协议。"
 
-#: templates/terms_of_service.haml:108
+#: templates/terms_of_service.haml:108 templates_v2/terms_of_service.haml:108
 msgid "15. Contact Us"
 msgstr "15. 联系我们"
 
-#: templates/terms_of_service.haml:110
+#: templates/terms_of_service.haml:110 templates_v2/terms_of_service.haml:110
 msgid ""
 "If you have any questions about these Terms, our Privacy Policy, or if you "
 "require any assistance in navigating McKinsey Academy, these Terms, or our "
@@ -10852,6 +11039,157 @@ msgid ""
 msgstr ""
 "如果您对这些条款、我们的隐私政策有任何疑问，或者您需要任何帮助来浏览麦肯锡学"
 "院、这些条款或我们的隐私政策，请通过以下方式与我们联系："
+
+#: templates_v2/accounts/public_registration.haml:36
+#, fuzzy
+#| msgid "Create your McKinsey Academy account"
+msgid "Create your McKinsey Academy Account"
+msgstr "创建您的麦肯锡学院账户"
+
+#: templates_v2/accounts/user_profile.haml:13 templates_v2/header.haml:29
+#, fuzzy
+#| msgid "change photo"
+msgid "edit photo"
+msgstr "更换照片"
+
+#: templates_v2/accounts/user_profile.haml:34 templates_v2/header.haml:46
+#, fuzzy
+#| msgid "Email"
+msgid "email"
+msgstr "电子邮件"
+
+#: templates_v2/courses/content_page/course_discover.haml:6
+#, fuzzy
+#| msgid "DISCOVER:"
+msgid "DISCOVER"
+msgstr "探索："
+
+#: templates_v2/courses/content_page/course_menu.haml:13
+#: templates_v2/courses/course_main.haml:34
+#, fuzzy
+#| msgid "LESSONS:"
+msgid "LESSONS"
+msgstr "课时:"
+
+#: templates_v2/courses/content_page/course_menu.haml:25
+#: templates_v2/courses/course_main.haml:46
+#, fuzzy
+#| msgid " This lesson will be available on %(start_date)s "
+msgid "This lesson will be available on "
+msgstr " 本课时的上课时间是 %(start_date)s"
+
+#: templates_v2/courses/course_main.haml:31
+#, fuzzy
+#| msgid "Overview"
+msgid "overview"
+msgstr "概述"
+
+#: templates_v2/courses/course_main.haml:71
+msgid "COHORT"
+msgstr ""
+
+#: templates_v2/courses/course_navigation.haml:17
+#, fuzzy
+#| msgid "Courses"
+msgid "My Courses"
+msgstr "课程"
+
+#: templates_v2/courses/visualizations/course_engagement.haml:15
+msgid "Your discussion activity points"
+msgstr ""
+
+#: templates_v2/courses/visualizations/course_engagement.haml:18
+#, fuzzy
+#| msgid "Cohort Average"
+msgid "Average"
+msgstr "群组平均值"
+
+#: templates_v2/courses/visualizations/course_proficiency.haml:11
+#, fuzzy
+#| msgid "User course enrollment"
+msgid "Your course knowledge"
+msgstr "用户课程注册"
+
+#: templates_v2/courses/visualizations/course_proficiency.haml:13
+#: templates_v2/courses/visualizations/course_progress.haml:15
+#, fuzzy
+#| msgid "Cohort Average"
+msgid "Average:"
+msgstr "群组平均值"
+
+#: templates_v2/courses/visualizations/course_progress.haml:12
+msgid "Your course completion status"
+msgstr ""
+
+#: templates_v2/faq.haml:9
+#, fuzzy
+#| msgid "Participant FAQ"
+msgid "Participant FAQs"
+msgstr "参与者常见问题"
+
+#: templates_v2/footer.haml:6
+msgid "Copyright &#9400; 2019 McKinsey  Company. All Rights Reserved."
+msgstr ""
+
+#: templates_v2/footer.haml:13
+#, fuzzy
+#| msgid "Djibouti"
+msgid "About"
+msgstr "吉布提"
+
+#: templates_v2/header.haml:50
+#, fuzzy
+#| msgid "Log out"
+msgid "log out"
+msgstr "注销"
+
+#: templates_v2/header.haml:56
+#, fuzzy
+#| msgid "Copy dashboard"
+msgid "dashboard"
+msgstr "复制仪表板"
+
+#: templates_v2/header.haml:62
+#, fuzzy
+#| msgid "Courses"
+msgid "my courses"
+msgstr "课程"
+
+#: templates_v2/layout.haml:247
+#, fuzzy
+#| msgid "Profile photo"
+msgid "Profile Photo"
+msgstr "头像"
+
+#: templates_v2/layout.haml:255
+msgid "step 1:"
+msgstr ""
+
+#: templates_v2/layout.haml:257
+msgid "Select New Profile Image"
+msgstr ""
+
+#: templates_v2/layout.haml:262
+#, fuzzy
+#| msgid "Browse"
+msgid "browse"
+msgstr "浏览"
+
+#: templates_v2/layout.haml:264
+#, fuzzy
+#| msgid "No file selected."
+msgid "No file selected"
+msgstr "未选择文件。"
+
+#: templates_v2/layout.haml:272
+msgid "step 2:"
+msgstr ""
+
+#: templates_v2/layout.haml:278
+#, fuzzy
+#| msgid "Crop & Save"
+msgid "crop & save"
+msgstr "裁剪并保存"
 
 #: util/validators.py:17
 msgid ""

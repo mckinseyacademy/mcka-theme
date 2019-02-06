@@ -1,5 +1,6 @@
 import math
 import os
+from mock import mock
 
 from lib.utils import DottableDict
 
@@ -81,3 +82,13 @@ class MockReviewAssignmentGroupCollection(object):
             rag = MockReviewAssignmentGroup(wg, review_assignment_processor.xblock_id)
             for user_id in review_assignment_processor.workgroup_reviewers[wg.id]:
                 rag.add_user(user_id)
+
+
+def make_side_effect_raise_value_error():
+    thrown_error = mock.Mock()
+    thrown_error.reason = "I have no idea, but luckily it is irrelevant for the test"
+
+    def _raise(*args, **kwargs):
+        raise ValueError(thrown_error)
+
+    return _raise

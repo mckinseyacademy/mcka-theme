@@ -37,6 +37,10 @@ $(function () {
                 .val("")
                 .get(0)
                 .setCustomValidity(error["password"]);
+        } else if (error.lock_out) {
+            $('#user_lock_out_notification').foundation('reveal', 'open');
+        } else if (error.user_active == false) {
+            sendUserActivationEmail();
         } else {
             $(".error-msg").text(error["error"]);
         }
@@ -156,15 +160,10 @@ $(function () {
                     }
                 },
                 error: function (error) {
-                    if (error.responseJSON["user_active"] == false) {
-                        sendUserActivationEmail();
-                    }
-                    else {
                     ga('send', 'event', 'Login', 'validate', 'failure', {
                         dimension4: hashed_id,
                     });
                     setError(error.responseJSON);
-                    }
                 }
             });
         }

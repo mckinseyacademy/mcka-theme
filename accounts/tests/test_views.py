@@ -13,6 +13,7 @@ from django.http import HttpResponse, SimpleCookie
 from django.test import RequestFactory, TestCase
 from django.utils import translation
 from mock import Mock, patch
+from rest_framework import status
 
 from accounts.controller import ProcessAccessKeyResult
 from accounts.models import RemoteUser
@@ -685,6 +686,17 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         response = self.client.post(reverse('login'), {'login_id': login_id, 'password': 'password'})
         self.assertIn('{"password": "Password doesn\'t match our records. Try again."}', response.content)
 
+    @patch('accounts.views.get_user_from_login_id')
+    @patch('accounts.views.auth.authenticate')
+    @ddt.data('johndoe', 'john@doe.org')
+    def test_login_normal_user_lock_out(self, login_id, mock_authenticate,
+                                        mock_get_username):
+        mock_get_username.return_value = DottableDict({"username": "test", "is_active": True})
+        http_error = urllib2.HTTPError("http://irrelevant", 403, None, None, None)
+        mock_authenticate.side_effect = ApiError(http_error, "authenticate", None)
+        response = self.client.post(reverse('login'), {'login_id': login_id, 'password': 'password'})
+        self.assertIn('{"lock_out": true}', response.content)
+
     @patch('accounts.views._process_authenticated_user')
     @patch('accounts.views.get_user_from_login_id')
     @patch('accounts.views.auth.authenticate')
@@ -781,3 +793,28 @@ class AccessKeyTest(AccessKeyTestBase):
         response = self.client.get(url)
         sso_redirect_url = _build_sso_redirect_url(identity_provider, reverse('sso_finalize'))
         self.assertRedirects(response, sso_redirect_url, fetch_redirect_response=False)
+
+
+@ddt.ddt
+class LogoutnViewTest(TestCase, ApplyPatchMixin):
+    """
+    Tests for the logout view
+    """
+
+    @patch('accounts.logout.user_api.delete_session')
+    @ddt.data(
+        (None,),
+        ('',),
+        ('u2uocmbcywqpkx7ats9zd8d4uv0u7ft9',)
+    )
+    @ddt.unpack
+    def test_logout(self, cookie, mock_delete_session):
+        mock_delete_session.return_value = []
+
+        self.client.cookies = SimpleCookie({'sessionid': cookie})
+        response = self.client.get(reverse('logout'))
+
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertEqual(response.url, '/')
+        self.assertEqual('to-delete', response.cookies['csrftoken'].value)
+        self.assertEqual('to-delete', response.cookies['sessionid'].value)

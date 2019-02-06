@@ -1,0 +1,142 @@
+input:not([type='checkbox']) {
+  height: 50px;
+  font-size: 1rem;
+  border-radius: 0;
+  border: 1px solid $gray;
+  box-shadow: none;
+  max-width: 292px;
+  &:disabled {
+    border: 0;
+    opacity: 0.9;
+  }
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+    border-color: inherit;
+  }
+}
+
+form {
+
+  .form-group {
+    position: relative;
+    margin-bottom:1.5rem;
+    //& + .form-group {
+    //  margin-top: 30px;
+    //}
+    .ico-state {
+      visibility: hidden;
+      transition: all ease 0.3s;
+      transform: scale(0);
+    }
+    .ico-state {
+      position: absolute;
+      right: 10px;
+      top: 13px;
+      content: '';
+    }
+    #show-hide {
+      visibility: visible;
+      position: absolute;
+      right: 10px;
+      top: 14px;
+    }
+    small {
+      font-size: 90%;
+      color: $gray;
+    }
+  }
+
+  .form-label {
+    position: absolute;
+    transform: translate(15px, 15px);
+    z-index: 9;
+    transition: transform 150ms ease-out, font-size 150ms ease-out;
+  }
+  .focused .form-label {
+    transform: translate(0px, -18px);
+    font-size: .85em;
+    color: $secondary;
+  }
+
+  //
+
+  .success,
+  .error {
+    .ico-state {
+      visibility: visible;
+      transform: scale(1);
+    }
+    input:not([type='checkbox']) {
+      padding-right: 50px;
+    }
+
+    #show-hide {
+      visibility: hidden;
+    }
+
+  }
+
+  &.white {
+    .form-group {
+      &.success {
+        input:not([type='checkbox']) {
+          border-color: $bg-white-green;
+          color: $bg-white-green;
+        }
+        .ico-state {
+          color: $bg-white-green !important;
+          visibility: visible;
+        }
+        label {
+          visibility: hidden;
+        }
+      }
+      &.error {
+        input:not([type='checkbox']) {
+          border-color: $bg-white-red;
+          color: $bg-white-red;
+        }
+        .ico-state {
+          color: $bg-white-red !important;
+        }
+      }
+    }
+  }
+
+  &.black {
+    .form-group {
+      &.success {
+        input:not([type='checkbox']) {
+          border-color: $bg-black-green !important;
+          color: $bg-black-green !important;
+        }
+        .ico-state {
+          color: $bg-black-green !important;
+        }
+        label {
+          visibility: hidden;
+        }
+      }
+      &.error {
+        input:not([type='checkbox']) {
+          border-color: $bg-black-red !important;
+          color: $bg-black-red !important;
+        }
+        .ico-state {
+          color: $bg-black-red !important;
+        }
+      }
+    }
+    small {
+      color: $white;
+    }
+    .focused .form-label {
+      color: $white !important;
+    }
+    .form-input {
+      color: $white;
+    }
+  }
+
+}

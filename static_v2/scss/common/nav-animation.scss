@@ -1,0 +1,123 @@
+* {
+  box-sizing: inherit;
+}
+
+.pn-ProductNav {
+  /* For WebKit implementations, provide inertia scrolling */
+  -webkit-overflow-scrolling: touch;
+  /* We don't want internal inline elements to wrap */
+  white-space: nowrap;
+  /* If JS present, let's hide the default scrollbar */
+
+  @media screen and (max-width: 992px) {
+    /* Make this scrollable when needed */
+    overflow-x: auto;
+    /* We don't want vertical scrolling */
+    overflow-y: hidden;
+  }
+  .js & {
+    /* Make an auto-hiding scroller for the 3 people using a IE */
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    /* Remove the default scrollbar for WebKit implementations */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  /* positioning context for advancers */
+  position: relative;
+  // Crush the whitespace here
+  font-size: 0;
+
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.pn-ProductNav_Contents {
+  float: left;
+  transition: transform .2s ease-in-out;
+  position: relative;
+}
+
+.pn-ProductNav_Contents-no-transition {
+  transition: none;
+}
+
+.pn-ProductNav_Link {
+  //text-decoration: none;
+  //color: #888;
+  //// Reset the font size
+  //font-size: 1.2rem;
+  //font-family: -apple-system, sans-serif;
+  //display: inline-flex;
+  //align-items: center;
+  //min-height: 44px;
+  //border: 1px solid transparent;
+  //padding: 0 11px;
+  & + & {
+    //border-left-color: #eee;
+  }
+  &[aria-selected="true"] {
+    color: #2E2D39;
+  }
+}
+
+.pn-Advancer {
+  /* Reset the button */
+  appearance: none;
+  background: transparent;
+  padding: 0;
+  border: 0;
+  padding: 0 10px;
+  background: #f3f4f6;
+  &:focus {
+    outline: 0;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+  /* Now style it as needed */
+  position: absolute;
+  top: -1px;
+  bottom: 0;
+  /* Set the buttons invisible by default */
+  opacity: 0;
+  transition: opacity .3s;
+}
+
+.pn-Advancer_Left {
+  left: 0;
+  [data-overflowing="both"] ~ &,
+  [data-overflowing="left"] ~ & {
+    opacity: 1;
+  }
+}
+
+.pn-Advancer_Right {
+  right: 0;
+  [data-overflowing="both"] ~ &,
+  [data-overflowing="right"] ~ & {
+    opacity: 1;
+  }
+}
+
+.pn-Advancer_Icon {
+  width: 7px;
+  height: 25px;
+  fill: $secondary;
+}
+
+.pn-ProductNav_Indicator {
+
+  display: none;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 100px;
+  background-color: transparent;
+  transform-origin: 0 0;
+  transition: transform .2s ease-in-out, background-color .2s ease-in-out;
+}

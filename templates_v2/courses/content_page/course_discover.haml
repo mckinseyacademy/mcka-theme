@@ -1,0 +1,61 @@
+- load i18n
+
+.contentCardWrap.socialWidgets
+  .head
+    %h5
+      {% trans "DISCOVER" %}
+  .contentCard
+    .row
+      .widget.articlesArea.col-lg-4.col-md-12
+        %h5
+          {% trans "ARTICLES" %}
+        .holder
+          %ul
+            - for article in articles
+              %li
+                %a.articleTitle{"href": "#{article.url}", 'target': '_blank'}
+                  - if article.title
+                    = article.title
+                - if article.byline
+                  .label= article.byline
+
+      .widget.infographicArea.col-lg-4.col-md-12
+        %h5
+          {% trans "INFOGRAPHIC" %}
+        .holder
+          %img.img-fluid{"src": "#{infographic.thumbnail_url}", "alt": "#{infographic.title}"}
+
+      .widget.socialArea.col-lg-4.col-md-12
+        %h5
+          {% trans "ON TWITTER" %}
+        .holder
+          .tweet
+            %a{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}
+              - if tweet.thumbnail_url
+                %img{"src": "#{tweet.thumbnail_url}"}
+            .content
+              .head
+                - if tweet.twitter_username
+                  %span.name= tweet.twitter_username
+                  %a{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}
+                    @{{tweet.twitter_username}}
+
+              .tweet-body.label-2= tweet.body|safe
+              %a{"href": "http://goo.gl/cllMQ7", 'target': '_blank'}
+                http://goo.gl/cllMQ7
+
+
+          .videosWidget
+            %h5
+              {% trans "VIDEOS" %}
+            %ul.list-unstyled
+              - for video in videos
+                %li
+                  .videoWrap
+                    %a{"href":"#{video.url}"}
+                      %img.img-fluid{:src => "/static/image/vid-2.png"}
+                  .content
+                    - if video.title
+                      %a.title{"href": "#{video.url}"}= video.title
+                    - if video.byline
+                      .name= video.byline

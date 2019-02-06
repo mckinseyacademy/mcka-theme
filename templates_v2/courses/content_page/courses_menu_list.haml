@@ -1,0 +1,37 @@
+- load i18n
+
+- for program_course in courses
+  .col-sm-12.col-md-6.col-lg-4
+    %a.d-block{:href => "#{program_course.nav_url}"}
+      .card
+        .overlay-img
+          %img.card-img-top{:alt => "Card image cap", :src => "static/image/1.jpg"}
+        .card-body
+          - if program_course and current_course
+            - if program_course.id == current_course.id
+              %img.bookmark{:src => "static/image/bookmark.svg"}
+          %h3.card-title
+            = program_course.name
+          .course-detail
+            %span.lesson-count
+              17 {% trans "Lessons" %}
+            %span.course-status
+              - if program_course.ended
+                %i.material-icons panorama_fish_eye
+                {% trans "Archived" %}
+              - elif program_course.started
+                %i.material-icons tonality
+                {% trans "In Progress" %}
+              - elif not program_course.started
+                %i.material-icons
+                {% trans "Not Started" %}
+              - elif program_course.percent_complete == 100
+                %i.material-icons check_circle
+                {% trans "Completed" %}
+              - else
+                {% trans "Coming Soon" %}
+            %span.course-progress
+              = program_course.percent_complete
+
+              %span%
+              %span.bar

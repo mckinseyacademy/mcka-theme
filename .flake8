@@ -2,4 +2,4 @@
 [flake8]
 count = True
 max-line-length = 120
-exclude=*/migrations, */docs, .git
+exclude=*/migrations, */docs, .git, */edx-notifications, */.pycharm_helpers

@@ -400,6 +400,7 @@ class ClientCustomization(db_models.Model):
     client_background_css = db_models.CharField(max_length=200)
     global_client_logo = db_models.CharField(max_length=200, blank=True)
     hex_background_main_navigation = db_models.CharField(max_length=7, blank=True)
+    new_ui_enabled = db_models.BooleanField(default=False)
 
 
 class CompanyInvoicingDetails(db_models.Model):

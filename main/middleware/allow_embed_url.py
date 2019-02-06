@@ -11,35 +11,32 @@ class AllowEmbedUrlMiddleware(object):
 
         if 'HTTP_REFERER' in request.META:
             referrer_url = request.META['HTTP_REFERER']
-            self.is_scorm_shell = self.in_allowed_embed_urls(referrer_url)
+            self.is_scorm_shell = bool(self.get_matched_allowed_embed_url(referrer_url))
 
     def process_response(self, request, response):
-        referrer_url = request.COOKIES.get('referrer_url')
+        allowed_embed_url = None
+        referrer_url = request.COOKIES.get('referrer_url') or request.META.get('HTTP_REFERER')
 
         if referrer_url:
-            self.is_scorm_shell = self.in_allowed_embed_urls(referrer_url)
+            allowed_embed_url = self.get_matched_allowed_embed_url(referrer_url)
+            self.is_scorm_shell = bool(allowed_embed_url)
 
         if self.is_scorm_shell:
             response['Content-Security-Policy'] = 'frame-ancestors ' + settings.ALLOW_EMBED_URL
-            response['X-Frame-Options'] = 'ALLOW-FROM ' + settings.ALLOW_EMBED_URL
+            if allowed_embed_url:
+                response['X-Frame-Options'] = 'ALLOW-FROM ' + allowed_embed_url
 
         response.delete_cookie('referrer_url')
 
         return response
 
-    def in_allowed_embed_urls(self, referrer_url):
+    def get_matched_allowed_embed_url(self, referrer_url):
         """
-        checks if a domain is allowed to embed Apros in an iframe
+        returns allowed_embed_url if a domain is allowed to embed Apros in an iframe
         """
-        # build list of allowed hosts from allowed URLs,
+        # build map of allowed hosts and allowed_urls from allowed URLs,
         # remove *'s for easy matching
-        allowed_hosts = map(
-            lambda url: urlparse(url).hostname.replace('*', ''),
-            settings.ALLOW_EMBED_URL.split()
-        )
-
-        for allowed_host in allowed_hosts:
-            if referrer_url.find(allowed_host) != -1:
-                return True
-
-        return False
+        allowed_urls = settings.ALLOW_EMBED_URL.split()
+        allowed_hosts = {urlparse(url).hostname.replace('*', ''): url for url in allowed_urls}
+        matched_urls = [allowed_hosts[host] for host in allowed_hosts if host in referrer_url]
+        return matched_urls[0] if matched_urls else False

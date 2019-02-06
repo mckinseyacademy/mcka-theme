@@ -1,16 +1,16 @@
 import json
-from functools import wraps
-
-from django.core.urlresolvers import reverse
-from django.test import TestCase, override_settings
-from django.test.client import RequestFactory
-from django.utils.decorators import available_attrs
-from mock import patch, Mock
-from rest_framework import status
 import ddt
 
+from django.core.urlresolvers import reverse
+from django.core.files.uploadedfile import File
+from django.test import TestCase, override_settings
+from django.test.client import RequestFactory
+from mock import patch, Mock
+from rest_framework import status
+
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin, make_course, make_user
+from accounts.tests.utils import ApplyPatchMixin, make_course
+from accounts.tests.utils import make_user, make_company
 from admin import views
 from admin.models import Client as ClientModel
 from admin.views import client_sso, CourseDetailsApi
@@ -18,40 +18,8 @@ from api_client import user_api, group_api
 from api_client.api_error import ApiError
 from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map
-from lib.utils import DottableDict
 from .test_task_runner import mocked_task
-
-_FAKE_USER_OBJ = DottableDict({
-    "id": '1',
-    "username": 'mcka_admin_test_user',
-    "first_name": 'mcka_admin',
-    "last_name": 'Tester',
-    "email": "mcka_admin_test_user@mckinseyacademy.com",
-    "password": "PassworD12!@",
-    'is_mcka_admin': True
-})
-
-
-def _fake_permission_group_required(*group_names):  # pylint: disable=unused-argument
-    """
-    Fake method for permission_group_required method
-    """
-
-    def decorator(view_fn):
-        def _wrapped_view(request, *args, **kwargs):
-            # faking request user
-            request.user = _FAKE_USER_OBJ
-            return view_fn(request, *args, **kwargs)
-
-        return wraps(view_fn, assigned=available_attrs(view_fn))(_wrapped_view)
-
-    return decorator
-
-
-permission_patcher = patch(
-    'lib.authorization.permission_group_required',
-    _fake_permission_group_required
-).start()
+from admin.models import ClientCustomization
 
 
 def _create_user():
@@ -285,6 +253,17 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
             request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
         return request
 
+    def post_request(self, url,  user=None):
+        """
+        POST the given URL, for the optional user, and return the request.
+        """
+        self.patch_user_permissions()
+        request = self.factory.post(url)
+        if user:
+            request.user = user
+            request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
+        return request
+
     def patch_user_permissions(self):
         """
         Patch the authorization hit to say that the mcka_admin is in all groups.
@@ -324,6 +303,10 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         # When coerced to an int, a mock returns 1, which messes up completions, so
         # instead return no completions at all to get the desired result.
         api_client.get_course_completions.return_value = {}
+        api_client.get_course_social_metrics.return_value = {
+            student.id: 0
+            for student in self.students
+        }
         return api_client
 
     def assert_expected_result(self, result, idx=0):
@@ -411,7 +394,7 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
         groupwork and company admin or internal admin. Also makes sure the
         correct javascript variables are set for the client side.
         """
-        def _get_course_context(t):
+        def _get_course_context(t, organization_id=""):
             return {
                 'cohorts_enabled': t[0],
                 'cohorts_available': t[1],
@@ -436,3 +419,79 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
                 self.assertTrue('var course_details_cohorts_enabled = \'%s\'' % is_cohorted in response.content)
                 self.assertTrue('var course_details_cohorts_available = \'%s\'' % (
                         is_available and not is_client_admin) in response.content)
+
+
+@ddt.ddt
+class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test the enroll_participants_from_csv and import_participants views.
+    """
+    def setUp(self):
+        super(AdminCsvUploadViewsTest, self).setUp()
+
+    @ddt.unpack
+    @ddt.data(
+        (views.enroll_participants_from_csv, 'student_enroll_list',
+         "admin/test_data/enroll-existing-participants.csv", True),
+        (views.import_participants, 'student_list',
+         "admin/test_data/enroll-existing-participants.csv", True),
+
+        (views.enroll_participants_from_csv, '',
+         "admin/test_data/enroll-existing-participants.csv", False),
+        (views.import_participants, '',
+         "admin/test_data/enroll-existing-participants.csv", False),
+    )
+    def test_csv_upload_views(self, view, file_key, test_file_path, is_valid):
+        request = self.post_request('/dummy/',  self.admin_user)
+        with open(test_file_path, "rb") as test_file:
+            test_file = File(test_file)
+            request.FILES.update({file_key: test_file})
+            response = view(request)
+
+            if is_valid:
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertIn('task_key', response.content)
+            else:
+                self.assertEqual(response, None)
+
+
+@ddt.ddt
+class ClientCustomizationTests(TestCase, ApplyPatchMixin):
+    """
+    Client Customization tests
+    to enable / disable new UI
+    """
+    def setUp(self):
+        super(ClientCustomizationTests, self).setUp()
+        is_user_in_permission_group_lib = self.apply_patch("lib.authorization.is_user_in_permission_group")
+        is_user_in_permission_group_lib.return_value = True
+        is_user_in_permission_group_accounts = self.apply_patch("accounts.models.is_user_in_permission_group")
+        is_user_in_permission_group_accounts.return_value = True
+
+        self.client = make_company(1)
+        self.admin_user = make_user(username="mcka_admin", email="mcka_admin@example.com")
+        self.factory = RequestFactory()
+        self.mock_session = Mock(session_key='', __contains__=lambda _a, _b: False)
+
+    @ddt.data(True, False)
+    def test_new_ui_flag_with_uber_admin(self, is_mcka_admin):
+        """
+        Test whether only uber admin can change the UI
+        """
+        client_customization = ClientCustomization.objects.create(client_id=self.client.id)
+        request = self.factory.post(
+            reverse('client_detail_navigation', kwargs={'client_id': self.client.id}),
+            {'new_ui_enabled': 'on'}
+        )
+        self.admin_user.is_mcka_admin = is_mcka_admin
+        request.user = self.admin_user
+        request.session = self.mock_session
+        update_mobile_customization = self.apply_patch("admin.views.update_mobile_client_detail_customization")
+        update_mobile_customization.return_value = None
+        response = views.client_detail_customization(request, self.client.id)
+        client_customization.refresh_from_db()
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        if is_mcka_admin:
+            self.assertTrue(client_customization.new_ui_enabled)
+        else:
+            self.assertFalse(client_customization.new_ui_enabled)

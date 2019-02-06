@@ -1,0 +1,33 @@
+body, html{
+  position: relative;
+  min-height: 100%;
+  min-width: 320px;
+}
+
+
+.row{
+  >.col{
+    //padding: 0;
+
+    //@media screen and (max-width: 767px) {
+    //  padding: 0 15px;
+    //}
+  }
+}
+
+//Add max-width of container for large screens
+@include media-breakpoint-up(lg){
+  .container{ max-width: 1244px;}
+}
+
+
+
+// Browser select text color
+//*::selection {
+//  background: $primary;
+//  color: $white;
+//}
+//*::-moz-selection {
+//  background: $primary;
+//  color: $white;
+//}

@@ -172,11 +172,17 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_cache')
 MEDIA_ROOT = ''
 ASSETS_ROOT = 'static/'
+ASSETS_ROOT_V2 = 'static_v2/'
 ASSETS_MANIFEST = False
 ASSETS_CACHE = False
+ASSETS_MODULES = [
+    'assets.assets',
+    'assets.assets_v2',
+]
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "static/gen"),
+    os.path.join(BASE_DIR, "static_v2"),
 )
 
 BASE_CERTIFICATE_TEMPLATE_ASSET_PATH = 'certificates/template_assets/'
@@ -454,6 +460,8 @@ LOGIN_BUTTON_FOR_MOBILE_ENABLED = True
 COURSE_RUN_PARTICIPANTS_TRESHOLD = 4000
 DEDICATED_COURSE_RUN_PERSON = "staff@mckinseyacademy.com"
 
+TEMPLATE_NEW_DIRS = [os.path.join(BASE_DIR, 'templates_v2')]
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -475,8 +483,8 @@ TEMPLATES = [
                 'lib.context_processors.set_mobile_app_id',
             ],
             'loaders': [
-                ('django.template.loaders.cached.Loader', [
-                    'hamlpy.template.loaders.HamlPyFilesystemLoader',
+                ('mcka_apros.templates_loaders.CachedLoader', [
+                    'mcka_apros.templates_loaders.CustomHamlPyFilesystemLoader',
                     'hamlpy.template.loaders.HamlPyAppDirectoriesLoader',
                     'django.template.loaders.filesystem.Loader',
                     'django.template.loaders.app_directories.Loader',
@@ -664,3 +672,10 @@ FOREIGN_AND_NORMAL_CHARACTERS_PATTERN = \
 COOKIES_YEARLY_EXPIRY_TIME = datetime.datetime.utcnow() + datetime.timedelta(days=365)
 
 MAX_IMPORT_JOB_THREAD_POOL_SIZE = 4
+
+
+# Rendering svg static files while running Django development server
+import mimetypes  # noqa: E402
+
+mimetypes.add_type("image/svg+xml", ".svg", True)
+mimetypes.add_type("image/svg+xml", ".svgz", True)

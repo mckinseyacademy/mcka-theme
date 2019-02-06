@@ -22,7 +22,7 @@ $('.remove_image').click(function (e)
 
     });
   }
-  
+
 });
 
 $('.closeModal').click(function ()
@@ -37,3 +37,16 @@ function getCookie(name)
     var value = re.exec(document.cookie);
     return (value != null) ? value[1] : null;
 }
+
+
+$(document).ready(function () {
+    $('.ui-checker').click(function () {
+        debugger;
+        if($('.ui-checker').is(':checked')){
+            $('.switch-text').text("ON");
+        }
+        else {
+            $('.switch-text').text("OFF");
+        }
+    });
+});

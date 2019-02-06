@@ -1,0 +1,18 @@
+- load i18n
+.course-engagement.widget.col-xs-4
+  .holder
+
+  .progressArea
+    .visualization
+      .band-1{"class": "{% if social.points >= 60 %}filled{% endif %}"}
+      .band-2{"class": "{% if social.points >= 90 %}filled{% endif %}"}
+      .total{"class": "{% if social.points >= 30 %}filled{% endif %}"}= social.points
+  .contenrArea
+    .widgetTitle.clearfix
+      %span {% trans "Engagement" %}
+    .title
+      %span
+        {% trans "Your discussion activity points" %}
+    .averageTitle
+      %span
+        {% trans "Average" %}: #{social.course_avg} {% trans "points" %}

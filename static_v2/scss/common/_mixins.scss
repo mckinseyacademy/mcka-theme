@@ -1,0 +1,30 @@
+@mixin absolute-100{
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+}
+
+@mixin clearfix{
+  &:before, &:after { content: " "; display: table; }
+  &:after { clear: both; }
+}
+
+@mixin font-spec(
+  $size: 10,
+  $weight: normal,
+  $line-spacing: $size){
+  // first value to fall-back for browsers that don't support rems
+  // second value for browsers that do support rems
+  font-size: $size + px;
+  font-size: rem-calc($size);
+  font-weight: boldness($weight);
+  line-height: $line-spacing + px;
+  line-height: rem-calc($line-spacing);
+}
+
+@mixin square-size(
+  $size: 40px){
+  width: $size;
+  height: $size;
+}

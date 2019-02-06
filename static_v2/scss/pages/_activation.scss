@@ -1,0 +1,118 @@
+// Notes on the classes:
+
+.activation{
+  .form{
+    background-color: $white;
+    padding: 30px 50px;
+    h4{
+      margin: 20px 0 20px;
+    }
+    .form-group{
+      margin-bottom: 10px;
+      input:not([type='checkbox']){
+        max-width: 293px;
+        height: 50px;
+        border-radius: 0;
+        border: 1px solid $gray;
+        &:disabled{
+          border: 0;
+          opacity: 0.9;
+        }
+      }
+      small{
+        font-size: 90%;
+        color: $gray;
+      }
+      &.agreement{
+        label{
+          font-size: 0.9rem;
+          color: $black;
+          margin-left: 3px;
+        }
+      }
+      .password{
+        position: relative;
+        display: inline-block;
+        width: 100%;
+        max-width: 293px;
+        .material-icons{
+          position: absolute;
+          right: 10px;
+          top: 14px;
+          color: $gray;
+          cursor: pointer;
+          &:hover{
+            color: $dark-blue;
+          }
+        }
+      }
+      .checkmark{
+        top: 2px;
+      }
+      .label-animate{
+        position: absolute;
+        font-size: 1rem;
+        top: 15px;
+        left: 10px;
+        color: $gray;
+        transition: all .2s;
+        &.active{
+          font-size: 0.8rem;
+          color: $secondary;
+          top: -20px;
+          left: 0;
+        }
+      }
+      &.mt-30{
+        margin-top: 1.9rem;
+      }
+    }
+  }
+  .form-footer{
+    position: absolute;
+    bottom: -40px;
+    li{
+      font-size: 0.88rem;
+      color: $black;
+      padding: 0.5rem 0.94rem;
+      font-weight: bold;
+      a{
+        font-weight: 400;
+        padding: 0;
+        font-size: 0.88rem;
+      }
+      &:first-child{
+        padding-left: 0;
+      }
+    }
+  }
+  .modal-dialog{
+    .modal-content{
+      padding: 20px;
+    }
+  }
+}
+
+//Tablet
+@include media-breakpoint-up(md) {
+
+}
+
+//Mobile
+@include media-breakpoint-down(xs) {
+  .activation{
+    .form{
+      padding: 10px 20px 30px;
+      h4{
+        margin-top: 10px;
+        font-size: 1.1rem;
+      }
+      .form-group{
+        input:not([type='checkbox']){
+          max-width: 288px;
+        }
+      }
+    }
+  }
+}
+

@@ -43,6 +43,31 @@
   }
 }
 
+// User lock out notification
+#user_lock_out_notification{
+  h2{
+    font-size: 1.95rem;
+    font-weight: 400;
+  }
+  p{
+    margin: 20px 0;
+    &.mckinsey-red{
+      color: $mckinsey-red;;
+    }
+  }
+  .button{
+    font-size: 16px;
+    font-weight: normal;
+    color: $pure-white;
+    border-radius: 4px;
+    margin: 15px 0 0px;
+    padding: 12px 25px;
+  }
+  sup{
+    left: -0.3em;
+  }
+}
+
 .back-link {
   margin-top: rem-calc(72);
   button#go-back {

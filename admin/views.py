@@ -50,7 +50,7 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
-    process_manager_email, parse_participant_profile_csv
+    process_manager_email, parse_participant_profile_csv, user_count_without_specific_user_roles_of_other_companies
 from admin.tasks import user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api, \
     cohort_api
@@ -837,7 +837,7 @@ def _cohort_flag():
     return waffle.switch_is_active('{}.{}'.format(namespace, switch_name))
 
 
-def _get_course_context(course):
+def _get_course_context(course, organization_id=''):
     """
     Builds a context for rendering course details
     :param course: api_client.course_models.Course
@@ -862,10 +862,18 @@ def _get_course_context(course):
         context['certificates_statuses'] = CertificateStatus()
 
     # Update metrics
-    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course.id)
+    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course.id, organization_id)
     context['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
     context['proficiency'] = round_to_int_bump_zero(100 * course_metrics_active_users['avg_grade'])
     context['users_enrolled'] = course_metrics_active_users['users_enrolled']
+    if organization_id:
+        request_params = {'page_size': 0, 'additional_fields': 'roles,organizations'}
+        request_params['organizations'] = organization_id
+        course_participants = course_api.get_course_details_users(course.id, request_params)
+        course_participants = user_count_without_specific_user_roles_of_other_companies(course_participants,
+                                                                                        int(organization_id),
+                                                                                        len(course_participants))
+        context['users_enrolled'] = course_participants
     if context['users_enrolled']:
         pass_users = course_metrics_active_users['users_passed']
         context['passed'] = round_to_int_bump_zero(100 * float(pass_users) / context['users_enrolled'])
@@ -1765,6 +1773,8 @@ def client_detail_customization(request, client_id):
         customization.hex_page_background = request.POST.get('hex_page_background', customization.hex_page_background)
         customization.hex_background_main_navigation = request.POST.get('hex_background_main_navigation',
                                                                         customization.hex_background_main_navigation)
+        if request.user.is_mcka_admin:
+            customization.new_ui_enabled = True if 'new_ui_enabled' in request.POST else False
         customization.save()
 
         errors = update_mobile_client_detail_customization(request, client_id)
@@ -5102,8 +5112,9 @@ def company_details(request, company_id):
     requestParams = {}
     requestParams['organizations'] = company_id
     participants = user_api.get_filtered_users(requestParams)
-    company['numberParticipants'] = participants['count']
-
+    company_participants = user_count_without_specific_user_roles_of_other_companies(participants["results"],
+                                                                                     company_id, participants['count'])
+    company['numberParticipants'] = company_participants
     company_courses = get_organization_active_courses(request, company_id)
     company['activeCourses'] = len(get_company_active_courses(company_courses))
 
@@ -5676,7 +5687,7 @@ def course_learner_dashboard_branding_reset(request, course_id, learner_dashboar
 )
 @company_admin_company_access
 def company_course_details(request, company_id, course_id):
-    context = _get_course_context(load_course(course_id))
+    context = _get_course_context(load_course(course_id), company_id)
     context.update({
         'companyAdminFlag': request.user.is_company_admin,
         'companyCourseDetailsPage': True,
@@ -5856,7 +5867,6 @@ class course_details_tags_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
                            PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
 def company_dashboard(request):
-
     companies = []
     user_organizations = None
     clients = Client.list()
@@ -5869,9 +5879,14 @@ def company_dashboard(request):
             for user_org in user_organizations:
                 if client.id == user_org.id:
                     company = {}
+                    request_params = {}
+                    request_params['organizations'] = user_org.id
+                    participants = user_api.get_filtered_users(request_params)
+                    company_participants = user_count_without_specific_user_roles_of_other_companies(
+                        participants["results"], vars(client)['id'], participants['count'])
                     company['name'] = vars(client)['display_name']
                     company['id'] = vars(client)['id']
-                    company['numberParticipants'] = vars(client)['number_of_participants']
+                    company['numberParticipants'] = company_participants
                     company['numberCourses'] = vars(client)['number_of_courses']
                     company_courses = get_organization_active_courses(request, company['id'])
                     company['activeCourses'] = len(get_company_active_courses(company_courses))

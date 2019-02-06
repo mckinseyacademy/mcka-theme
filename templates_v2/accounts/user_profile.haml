@@ -1,0 +1,47 @@
+- load i18n
+- load staticfiles
+
+#profileDropdown.dropdown-menu.profile-area.large-menu.dropdown-menu-right.profileDropdown
+  .header.user-profile
+    .avatar-area
+      .userAvatar.lg
+        .holder.user-image
+          %span RA
+          %img{src: "#{user_image_url}"}
+
+        %a.edit-link{:data-target => ".editPhotoModal", :data-toggle => "modal", :href => "#"}
+          {% trans "edit photo" %}
+
+    .titles-area
+      .nameArea
+        %span
+          = user.formatted_name
+        %a.edit-link{:data-target => ".editFullName", :data-toggle => "modal", :href => "#"}
+          {% trans "edit" %}
+
+      .roleArea
+        %span
+          = user.title
+        %a.edit-link{:data-target => ".editRole", :data-toggle => "modal", :href => "#"}
+          {% trans "edit" %}
+
+  .content
+    .wrap
+      %strong.text-uppercase.title {% trans "username" %}
+      %strong.title
+        = user.username
+    .wrap
+      %strong.text-uppercase.title {% trans "email" %}
+      %span.userMail
+        = user.email
+
+  .footer
+    %a.btn.btn-secondary{href: "/accounts/logout"}
+      {% trans "Log out" %}
+
+-# Jquery Cropper
+- block cropper_jquery
+  %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
+  %script{src: "{% static 'js/vendor/jquery.form.js' %}"}
+  %script{src: "{% static 'js/image_editor.js' %}"}
+  %script{src: "{% static 'js/user_profile_edit.js' %}"}

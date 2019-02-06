@@ -5,7 +5,7 @@ import ddt
 import os
 from django.core.exceptions import ValidationError
 from django.http import HttpResponse
-from django.test import TestCase, override_settings
+from django.test import TestCase
 from django.test.client import RequestFactory
 from rest_framework import status
 
@@ -104,42 +104,7 @@ def mock_completion_score(*args, **kwargs):
     }
 
 
-def MockEngagementScore(object):
-    data = {
-        'users':
-            {
-                '1':
-                    {
-                        'num_threads': 1,
-                        'num_comments': 1,
-                        'num_replies': 1,
-                        'num_upvotes': 1,
-                        'num_thread_followers': 1,
-                        'num_comments_generated': 1,
-                    },
-                '2':
-                    {
-                        'num_threads': 2,
-                        'num_comments': 1,
-                        'num_replies': 0,
-                        'num_upvotes': 0,
-                        'num_thread_followers': 0,
-                        'num_comments_generated': 0,
-                    }
-            }
-    }
-    return JP.from_dictionary(data)
-
-
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
-    @override_settings(CELERY_ALWAYS_EAGER=True)
-    def test_get_engagement_scores(self):
-        self.apply_patch('api_client.course_api.get_course_social_metrics', new=MockEngagementScore)
-        test_object = CourseParticipantStats('1', 'base/url')
-        u_ids = ['1', '2']
-        engagement_scores = test_object._get_engagement_scores()
-        self.assertEqual(engagement_scores[u_ids[0]], 85)
-        self.assertEqual(engagement_scores[u_ids[1]], 35)
 
     def test__get_lesson_completions(self):
         test_username = u'test_user'
@@ -669,3 +634,26 @@ class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
         expected_output = None
         output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
         self.assertEqual(output, expected_output)
+
+
+class TestSpecificUserRolesCountOfOtherCompanies(TestCase):
+    def setUp(self):
+        self.organization_id = '7'
+        self.course_participants = {u'count': 4, u'previous': None, u'num_pages': 1, u'results': [
+            {'username': 'UAdmin_user', 'roles': ['observer'], 'organizations': [{'display_name': 'CompanyA', 'id': 6},
+                                                                                 {'display_name': 'CompanyB',
+                                                                                  'id': 7}]},
+            {'username': 'Cadmin', 'roles': [],
+             'organizations': [{'display_name': 'CompanyB', 'id': 7}]},
+            {'username': 'companyB_TA', 'roles': ['observer'],
+             'organizations': [{'display_name': 'CompanyB', u'id': 7}]},
+            {'username': 'uberadmin2', 'roles': ['assistant'],
+             'organizations': [{'id': 6}, ]}, {'username': 'uberadmin3',
+                                               'roles': ['participant'],
+                                               'organizations': [{'id': 6}, ]}
+        ], 'next': None}
+
+    def user_count_without_specific_user_roles_of_other_companies(self):
+        course_participants_count = controller.user_count_without_specific_user_roles_of_other_companies(
+            self.course_participants, int(self.organization_id), 4)
+        self.assertEqual(course_participants_count, 2)

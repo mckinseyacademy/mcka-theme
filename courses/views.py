@@ -114,7 +114,6 @@ def course_landing_page(request, course_id):
     social = get_user_social_metrics(request.user.id, course_id)
 
     graded_items_count = course_tree_builder.get_graded_items_count(course=course)
-
     data = {
         "user": request.user,
         "course": course,
@@ -1512,6 +1511,16 @@ def get_user_complete_gradebook_json(request, course_id):
         json.dumps(data),
         content_type='application/json'
     )
+
+
+@login_required
+def courses(request):
+    """
+    renders user courses menu on click from frontend
+    """
+    programs = get_program_menu_list(request)
+    data = dict(programs=programs)
+    return render(request, 'courses/courses.haml', data)
 
 
 @login_required

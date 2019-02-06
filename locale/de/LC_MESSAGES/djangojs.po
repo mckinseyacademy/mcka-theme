@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-02 08:19+0000\n"
+"POT-Creation-Date: 2019-01-28 08:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:371
-#: static/js/views/admin/participantsinfo.js:122
+#: static/js/views/admin/participantsinfo.js:135
 msgid "Course"
 msgstr "Kurs"
 
@@ -77,6 +77,7 @@ msgstr "Fehler anzeigen"
 #: static/js/common/mass_participants_enroll.js:225
 #: static/js/common/mass_participants_enroll.js:362
 #: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
+#: static_v2/js/image_editor.js:77
 msgid "Please select file first."
 msgstr "Bitte wählen Sie zuerst eine Datei aus."
 
@@ -282,11 +283,11 @@ msgstr "Webinar"
 msgid "Digital Content"
 msgstr "Digitaler Inhalt"
 
-#: static/js/image_editor.js:3
+#: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
 msgstr "Keine Datei ausgewählt"
 
-#: static/js/image_editor.js:45
+#: static/js/image_editor.js:45 static_v2/js/image_editor.js:45
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
@@ -295,7 +296,7 @@ msgstr ""
 "Stellen Sie dabei sicher, dass es sich um ein unterstütztes Dateiformat "
 "handelt."
 
-#: static/js/image_editor.js:52
+#: static/js/image_editor.js:52 static_v2/js/image_editor.js:52
 msgid "Please select file for upload."
 msgstr "Wählen Sie eine Datei zum Hochladen aus."
 
@@ -308,7 +309,7 @@ msgstr "Teilnehmer:"
 msgid "Email"
 msgstr "E-Mail"
 
-#: static/js/router.js:389
+#: static/js/router.js:395
 msgid "Please select at least one course"
 msgstr "Wählen Sie mindestens einen Kurs aus"
 
@@ -396,18 +397,18 @@ msgid "No. of Courses"
 msgstr "Anzahl der Kurse"
 
 #: static/js/views/admin/companies_list.js:98
-#: static/js/views/admin/company_details.js:189
+#: static/js/views/admin/company_details.js:192
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:487
-#: static/js/views/admin/participantsinfo.js:372
+#: static/js/views/admin/participantsinfo.js:385
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "Dieser Firmenname darf nur alphanumerische Zeichen beinhalten!"
 
 #: static/js/views/admin/companies_list.js:105
-#: static/js/views/admin/company_details.js:184
+#: static/js/views/admin/company_details.js:187
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:481
-#: static/js/views/admin/participantsinfo.js:366
+#: static/js/views/admin/participantsinfo.js:379
 msgid "This company name cannot have more than 30 characters!"
 msgstr "Dieser Firmenname darf nicht mehr als 30 Zeichen beinhalten!"
 
@@ -416,7 +417,7 @@ msgid "Couldn't create new company!"
 msgstr "Eine neue Firma konnte nicht angelegt werden!"
 
 #: static/js/views/admin/company_details.js:4
-#: static/js/views/admin/course_details.js:379
+#: static/js/views/admin/course_details.js:389
 #: static/js/views/admin/courses_list.js:16
 #: static/js/views/admin/participant_details_active_courses_view.js:54
 #: static/js/views/admin/participant_details_course_history_view.js:10
@@ -424,7 +425,7 @@ msgid "Course Name"
 msgstr "Kursname"
 
 #: static/js/views/admin/company_details.js:20
-#: static/js/views/admin/course_details.js:389
+#: static/js/views/admin/course_details.js:399
 #: static/js/views/admin/courses_list.js:26
 #: static/js/views/admin/participant_details_active_courses_view.js:72
 #: static/js/views/admin/participant_details_course_history_view.js:28
@@ -449,7 +450,7 @@ msgstr "Ende"
 msgid "Cohort Comp."
 msgstr "Jahrgang Firma"
 
-#: static/js/views/admin/company_details.js:194
+#: static/js/views/admin/company_details.js:197
 #: static/js/views/admin/company_learner_dashboard_list.js:143
 msgid "No Company Display Name!"
 msgstr "Kein Firmenname wird angezeigt!"
@@ -517,12 +518,12 @@ msgstr "Name"
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:131
+#: static/js/views/admin/participantsinfo.js:144
 msgid "Status"
 msgstr "Status"
 
 #: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:42
+#: static/js/views/admin/participantsinfo.js:43
 msgid "Activated"
 msgstr "Aktiviert"
 
@@ -564,11 +565,11 @@ msgstr "Nutzername"
 msgid "Country"
 msgstr "Land"
 
-#: static/js/views/admin/course_details.js:308
+#: static/js/views/admin/course_details.js:318
 msgid "Couldn't create new tag!"
 msgstr "Eine neue Markierung konnte nicht erstellt werden!"
 
-#: static/js/views/admin/course_details.js:322
+#: static/js/views/admin/course_details.js:332
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
@@ -576,35 +577,35 @@ msgstr ""
 "Sie verfügen nicht über die Berechtigungen, um eine neue Markierung zu "
 "kreieren. Bitte wählen Sie daher eine von der Liste!"
 
-#: static/js/views/admin/course_details.js:352
+#: static/js/views/admin/course_details.js:362
 msgid "Couldn't delete tag!"
 msgstr "Die Markierung konnte nicht gelöscht werden!"
 
-#: static/js/views/admin/course_details.js:392
+#: static/js/views/admin/course_details.js:402
 msgid "%(count)s Course Tagged with %(tagDetails)s"
 msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
 msgstr[0] "%(count)s Der Kurs wurde mit %(tagDetails)s markiert"
 msgstr[1] "%(Zahl)s Die Kurse wurden mit %(tagDetails)s markiert"
 
-#: static/js/views/admin/course_details.js:447
+#: static/js/views/admin/course_details.js:457
 msgid "Progress: %(progress)s %"
 msgstr "Fortschritt: %(progress)s %"
 
-#: static/js/views/admin/course_details.js:484
+#: static/js/views/admin/course_details.js:494
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
 msgstr ""
 "Ausgewählt: %(selected)s, Bestanden: %(successful)s, Nicht bestanden: %/"
 "(failed)s"
 
-#: static/js/views/admin/course_details.js:535
+#: static/js/views/admin/course_details.js:545
 msgid "This tag name cannot have more than 30 characters!"
 msgstr "Dieser Markierungsname darf nicht mehr als 30 Zeichen beinhalten!"
 
-#: static/js/views/admin/course_details.js:542
+#: static/js/views/admin/course_details.js:552
 msgid "This tag name cannot contain non-alphanumeric characters!"
 msgstr "Dieser Markierungsname darf nur alphanumerische Zeichen beinhalten!"
 
-#: static/js/views/admin/course_details.js:582
+#: static/js/views/admin/course_details.js:592
 msgid "Couldn't add tag to course!"
 msgstr "Dieser Kurs konnte nicht markiert werden!"
 
@@ -653,21 +654,21 @@ msgstr "Den Status aller ausgewählten Teilnehmer ändern zu:"
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:377
-#: static/js/views/admin/participantsinfo.js:135
+#: static/js/views/admin/participantsinfo.js:148
 msgid "Participant"
 msgstr "Teilnehmer"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:378
-#: static/js/views/admin/participantsinfo.js:137
+#: static/js/views/admin/participantsinfo.js:150
 msgid "Observer"
 msgstr "Beobachter"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:379
-#: static/js/views/admin/participantsinfo.js:136
+#: static/js/views/admin/participantsinfo.js:149
 msgid "TA"
 msgstr "TA"
 
@@ -926,24 +927,24 @@ msgstr ""
 msgid "Importing %(processed)s of %(total)s rows"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:99
+#: static/js/views/admin/manager_dashboard.js:101
 #: static/js/views/courses/lesson_note.js:2
 msgid "Lesson"
 msgstr "Lektion"
 
-#: static/js/views/admin/manager_dashboard.js:99
+#: static/js/views/admin/manager_dashboard.js:101
 msgid "complete"
 msgstr "unvollständig"
 
-#: static/js/views/admin/manager_dashboard.js:104
+#: static/js/views/admin/manager_dashboard.js:106
 msgid "Error Occured!"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:107
+#: static/js/views/admin/manager_dashboard.js:109
 msgid "Hide Details"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:137
+#: static/js/views/admin/manager_dashboard.js:139
 msgid "View Details"
 msgstr ""
 
@@ -1019,7 +1020,7 @@ msgid "User successfully enrolled in course"
 msgstr "Nutzer wurde erfolgreich bei dem Kurs angemeldet"
 
 #: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:102
+#: static/js/views/admin/participantsinfo.js:115
 msgid "Admin Company"
 msgstr "Admin Firma"
 
@@ -1028,20 +1029,20 @@ msgid "Try selecting your company from the type-ahead results."
 msgstr "Bitte wählen Sie Ihre Firma anhand der vorgeschlagenen Ergebnisse aus."
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:111
+#: static/js/views/admin/participantsinfo.js:124
 msgid "Admin Permissions"
 msgstr "Admin-Berechtigungen"
 
 #: static/js/views/admin/participant_details_edit_info.js:547
-#: static/js/views/admin/participantsinfo.js:114
+#: static/js/views/admin/participantsinfo.js:127
 msgid "Company Admin"
 msgstr "Firmen-Admin"
 
-#: static/js/views/admin/participantsinfo.js:26
+#: static/js/views/admin/participantsinfo.js:27
 msgid "Date Added"
 msgstr "Datum hinzugefügt"
 
-#: static/js/views/admin/participantsinfo.js:36
+#: static/js/views/admin/participantsinfo.js:37
 msgid "Enrolled In"
 msgstr "Angemeldet bei"
 

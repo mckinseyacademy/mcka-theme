@@ -70,3 +70,9 @@ class UrlsTest(TestCase):
 
         resolver = resolve('/admin/programs')
         self.assertEqual(resolver.view_name, 'program_list')
+
+        resolver = resolve('/admin/api/participants/enroll_participants_from_csv')
+        self.assertEqual(resolver.view_name, 'enroll_participants_from_csv')
+
+        resolver = resolve('/admin/api/participants/import_participants')
+        self.assertEqual(resolver.view_name, 'import_participants')
