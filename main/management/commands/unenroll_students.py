@@ -3,7 +3,7 @@ import csv
 
 from django.core.management.base import BaseCommand
 
-from api_client import user_api
+from admin.controller import unenroll_participant
 from api_client.api_error import ApiError
 from mcka_apros.settings import BASE_DIR
 
@@ -25,7 +25,7 @@ class Command(BaseCommand):
                 course_id = row['Course_ID']
                 try:
                     print "Unenrolling uid: %d from course: %s" % (user_id, course_id)
-                    user_api.unenroll_user_from_course(user_id, course_id)
+                    unenroll_participant(course_id, user_id)
                     successful_unenrolled_count += 1
                 except ApiError:
                     unsuccessful_unenrolled_count += 1
