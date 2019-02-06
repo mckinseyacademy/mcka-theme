@@ -23,7 +23,8 @@
         %h5
           {% trans "INFOGRAPHIC" %}
         .holder
-          %img.img-fluid{"src": "#{infographic.thumbnail_url}", "alt": "#{infographic.title}"}
+          %a{"href": "#{infographic.url}", 'target': '_blank'}
+            %img.img-fluid{"src": "#{infographic.thumbnail_url}", "alt": "#{infographic.title}"}
 
       .widget.socialArea.col-lg-4.col-md-12
         %h5

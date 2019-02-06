@@ -1,20 +1,17 @@
 .my-courses{
   h1{
-    @include heading1;
+    @include heading2;
     @extend .mb-4;
     font-family: $body-font-family;
   }
   .card{
     margin-bottom: 30px;
     border: 0;
+    overflow: hidden;
     .overlay-img{
       position: relative;
       height: 190px;
-      max-height: 190px;
       overflow: hidden;
-      .card-img-top{
-        @include border-top-radius(4px);
-      }
       &:after{
         position: absolute;
         content: "";
@@ -35,9 +32,9 @@
       position: relative;
       h3{
         font-size: 1.5rem;
-        min-height: 3.7rem;
-        max-height: 3.7rem;
+        height: 3.7rem;
         overflow: hidden;
+        font-weight: 300;
       }
       .course-detail{
         display: table;
@@ -61,9 +58,7 @@
             .bar{
               border: 1px solid white;
               height: 13px;
-              width: 100px;
               margin-top: 2px;
-              float: right;
               position: relative;
               width: 68%;
               display: inline-block;
@@ -177,6 +172,9 @@
                 float: none;
               }
             }
+          }
+          .course-status{
+            display: none;
           }
         }
       }

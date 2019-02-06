@@ -9,7 +9,7 @@
   min-width: 176px;
   top: 6px !important;
   left: 20px !important;
-
+  padding: 10px 30px !important;
   &:after {
     position: absolute;
     top: -9px;
@@ -171,6 +171,12 @@
     &.allLessons {
       width: calc(100% - 40px);
       left: 20px !important;
+      max-width: 350px;
+      min-width: 0;
+      margin-left: -30px;
+      &:after{
+        right: 163px !important;
+      }
       .allCoursesList{
         padding-right: 20px;
         padding-left: 20px;

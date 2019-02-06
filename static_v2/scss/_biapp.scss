@@ -73,7 +73,6 @@
 // Nav
 
 .dropdown-menu {
-  @include padding(10px, 30px, 10px, 30px);
   .allCoursesList {
     > .courseRow {
       .holder {
@@ -116,7 +115,7 @@
 .my-courses {
   .card {
     .card-body {
-      @include padding-left(20px 20px 15px 25px);
+      @include padding-left(25px);
       .course-detail {
         > span.course-progress {
           @include float(right);
@@ -173,11 +172,20 @@
       > .holder {
         @include border-left(0);
       }
+      > h5{
+        @include margin-left(15px);
+      }
+    }
+    > h5{
+      @include margin-left(30px);
     }
   }
   .head {
     h5 {
       @include margin-left(15px);
+      @include media-breakpoint-between(xs, sm) {
+        @include margin-left(5px);
+      }
     }
   }
   .contentCard {
@@ -358,11 +366,26 @@ body.rtl {
   }
   .dropdown-menu {
     &.allLessons {
+      &:after{
+        right: 76px;
+      }
       .allCoursesList {
         .bookmark {
           @include flip-x-axis;
         }
       }
+    }
+    &.course-materials{
+      &:after{
+        left: 11px;
+        right: auto;
+      }
+    }
+    &.dashboard-menu{
+      margin-left: -50px;
+    }
+    &.profileDropdown{
+      margin-left: -42px;
     }
   }
   .mapboxgl-ctrl-top-left{

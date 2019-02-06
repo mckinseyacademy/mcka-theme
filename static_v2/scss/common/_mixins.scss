@@ -39,3 +39,10 @@
   filter: FlipH;
   -ms-filter: "FlipH";
 }
+
+// PaddingLR
+
+@mixin paddinLR($value){
+  padding-left: $value;
+  padding-right: $value;
+}
