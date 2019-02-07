@@ -4,7 +4,8 @@
 .contentCard {
   background-color: $white;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
-  padding: 15px 30px 20px;
+  padding: 30px;
+  width: 100%;
 }
 
 .contentCardWrap {
@@ -291,7 +292,7 @@
         color: $secondary;
         font-size: 16px;
         line-height: 22px;
-        width: 50%;
+        width: 40%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;

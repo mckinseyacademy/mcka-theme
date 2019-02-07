@@ -1,0 +1,58 @@
+- extends "courses/course_base.haml"
+- load i18n
+
+- block page_title
+  %title
+    = program.display_name
+    {% trans " | Overview | Courses | McKinsey Academy" %}
+
+- block content
+  .container
+    #course-overview.contentCard
+      %ul.meta-info.hidden
+        %li.label-4 {% trans "Details:" %}
+        %li.label-3 {% trans "10 lessons" %}
+        %li.label-3 {% trans "32 videos" %}
+        %li.label-3 {% trans "9 assessments" %}
+        %li.label-3 {% trans "72 exercises" %}
+        %li.label-3 {% trans "1 group project" %}
+        %li.label-3 {% trans "15 readings" %}
+      %h1= course.name
+      .overview
+        .sub-1 {% trans "Overview" %}
+        - autoescape off
+          %p= overview.about
+      %hr
+      .row
+        .medium-7.columns.col-left
+          .video-preview
+            #mk_overview_player.thumb
+              - if overview.video
+                #mk-player{'data-video-id': "#{overview.course_video}"}
+              - elif overview.course_image_url
+                %img{'src': '#{overview.course_image_url}'}
+            .video-overview.hidden
+              %i.fa.fa-play-circle
+              %span {% trans "Course Overview" %}
+              %time.label-2 2:08
+        .medium-5.columns.col-right
+          .sub-1 {% trans "WHAT YOU WILL LEARN" %}
+          - autoescape off
+            %p= overview.what_you_will_learn
+        .medium-7
+          %hr
+          .faculty
+            .sub-1 {% trans "Faculty" %}
+            - for teacher in overview.faculty
+              - if teacher.idx == 0
+                %input{"id": "faculty_#{teacher.idx}", 'type': 'radio', 'name': 'faculty_tabs', 'checked': 'checked'}
+              - else
+                %input{"id": "faculty_#{teacher.idx}", 'type': 'radio', 'name': 'faculty_tabs'}
+              %label{"for": "faculty_#{teacher.idx}"}
+                %img{"src": "#{teacher.image_src}"}
+            - for teacher in overview.faculty
+              %div.teacher{"id": "teacher_#{teacher.idx}"}
+                %h2= teacher.name
+                %p.style-3
+                  - autoescape off
+                    = teacher.bio
