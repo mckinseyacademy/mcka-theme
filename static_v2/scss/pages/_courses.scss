@@ -1,22 +1,19 @@
-.my-courses{
-  h1{
+.my-courses {
+  h1 {
     font-size: 32px;
     line-height: 1.2;
     margin-bottom: 24px;
     font-weight: 300;
     font-family: $body-font-family;
   }
-
   .card {
     margin-bottom: 30px;
     border: 0;
     overflow: hidden;
-
     .overlay-img {
       position: relative;
       height: 190px;
       overflow: hidden;
-
       &:after {
         position: absolute;
         content: "";
@@ -38,7 +35,6 @@
         }
       }
     }
-
     .card-body {
       min-height: 125px;
       overflow: hidden;
@@ -47,28 +43,23 @@
       background-color:  var(--primary);
       color: $white;
       position: relative;
-
       h3 {
         font-size: 1.5rem;
         height: 3.7rem;
         overflow: hidden;
         font-weight: 300;
       }
-
       .course-detail {
         display: table;
         width: 100%;
-
-        >span {
+        > span {
           font-size: 0.75rem;
           display: inline-block;
           vertical-align: middle;
-
           &.lesson-count {
             width: 75px;
             max-width: 80px;
           }
-
           &.course-status {
             width: 33%;
             max-width: 100px;
@@ -86,14 +77,12 @@
               vertical-align: top;
               display: inline-block;
             }
-
-            >span {
+            > span {
               span {
                 position: relative;
                 height: 11px;
                 display: block;
                 background-color: $white;
-
                 &:before {
                   @include absolute-100;
                   right: auto;
@@ -104,7 +93,6 @@
               }
             }
           }
-
           .material-icons {
             font-size: 1rem;
             vertical-align: sub;
@@ -114,7 +102,6 @@
         }
       }
     }
-
     &.archived {
       .overlay-img {
         &:after {
@@ -122,25 +109,20 @@
           box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 3px 0 rgba(0, 0, 0, 0.5);
         }
       }
-
       .card-body {
         background-color: $dark-gray;
       }
     }
   }
-
   a.d-block {
     &:hover {
       text-decoration: none;
-
       .card {
         box-shadow: 0 0 30px lighten($gray, 30%);
-
         h3 {
           text-decoration: underline;
         }
       }
-
       .archived {
         .card-body {
           background-color: $dark-gray;
@@ -160,7 +142,6 @@
   .my-courses {
     [class*="col"] {
       padding: 0 10px;
-
       .card {
         margin-bottom: 20px;
       }
@@ -173,14 +154,11 @@
     h1 {
       display: none;
     }
-
     [class*="col"] {
       padding: 0;
-
       h1 {
         display: none;
       }
-
       .card {
         margin-bottom: 10px;
         .overlay-img{
@@ -190,28 +168,23 @@
             object-fit: cover;
           }
         }
-
         .card-body {
           padding: 10px 20px 8px 25px;
           min-height: 0;
-
           h3 {
             font-size: 1.12rem;
             height: 2.65rem;
             overflow: hidden;
           }
-
           span {
             &.course-progress {
               float: none;
               text-align: left;
-
               .bar {
                 float: none;
               }
             }
           }
-
           .course-status {
             display: none;
           }
