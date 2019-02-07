@@ -50,10 +50,10 @@
               - for video in videos
                 %li
                   .videoWrap
-                    %a{"href":"#{video.url}"}
+                    %a{"href":"#{video.url}", :target => "_blank"}
                       %img.img-fluid{:src => "{{ video.thumbnail_url }}"}
                   .content
                     - if video.title
-                      %a.title{"href": "#{video.url}"}= video.title
+                      %a.title{"href": "#{video.url}", :target => "_blank"}= video.title
                     - if video.byline
                       .name= video.byline

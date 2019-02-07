@@ -1,6 +1,10 @@
 // ======= Style are Supporting the Old User Overview Page's Content =======
 #course-overview {
 
+  img{
+    max-width: 100%;
+  }
+
   .hidden {
     display: none;
     visibility: hidden;
