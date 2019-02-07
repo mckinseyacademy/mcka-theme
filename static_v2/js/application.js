@@ -112,6 +112,10 @@ $(function(){
     }
   });
 
+  $('.card-img-top').on('error', function(e){
+    $(e.target).attr('src', '/static/image/default-course-image.png');
+  });
+
   $(document).on('close.fndtn.reveal', '[data-reveal]', function () {
     var modal   = $(this),
         ooyala  = modal.data('ooyala');
@@ -255,22 +259,6 @@ $(function(){
             if(xhr.status == 200){
               $('body, .program-menu').css('cursor', 'inherit');
               $('#program-menu-content').html(data);
-            }
-      });
-    }
-  });
-
-  $("#lessons-content").on('opened.fndtn.dropdown', function(e) {
-    if($(e.target).hasClass('load-course-lessons')) {
-      var course_id = $(e.target).data('course-id');
-      $.ajax({
-            url: '/courses/'+course_id+'/course_lessons_menu',
-            method: 'GET',
-            contentType: 'text/html'
-          }).done(function(data, status, xhr) {
-            if(xhr.status == 200){
-              $(e.target).html(data);
-              $(e.target).removeClass('load-course-lessons');
             }
       });
     }

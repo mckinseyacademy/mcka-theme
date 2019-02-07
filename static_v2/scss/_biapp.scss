@@ -132,11 +132,7 @@
 
       .course-detail {
         >span.course-progress {
-          @include float(right);
-          @include text-align(right);
-
           .bar {
-            @include float(right);
             @include margin-left(5px);
           }
         }

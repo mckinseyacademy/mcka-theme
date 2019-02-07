@@ -51,7 +51,7 @@
                 {{lesson.progress}}%
               .statusBar
                 .progress-counter{:style => "width:{{lesson.progress}}%"}
-          %a.description{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
+          %a.description{:class => "{% if not lesson.description%}no-data{% endif %}", "href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
             - autoescape off
               - if not lesson.is_started
                 - if lesson_custom_label

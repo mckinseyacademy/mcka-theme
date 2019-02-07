@@ -12,6 +12,24 @@ $(document).ready(function () {
         $('.headerNav>ul>li.active').removeClass('active');
         $(this).addClass('active');
     });
+
+    $("#lessons-content").on('click', function(e) {
+        if($(e.target).hasClass('load-course-lessons')) {
+          var course_id = $(e.target).data('course-id');
+          $.ajax({
+                url: '/courses/'+course_id+'/course_lessons_menu',
+                method: 'GET',
+                contentType: 'text/html'
+              }).done(function(data, status, xhr) {
+                if(xhr.status == 200){
+                  $('.allLessons').html(data);
+                  $(e.target).removeClass('load-course-lessons');
+                  $(e.target).attr("data-toggle", "dropdown");
+                  $(e.target).dropdown('toggle');
+                }
+          });
+        }
+    });
     var dropdownMenu;
 
 
@@ -169,8 +187,6 @@ function smoothNavLinks() {
 
     // pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
 
-// Set the indicator
-    moveIndicator(pnProductNav.querySelector("[aria-selected=\"true\"]"), activeColours);
 
 // Handle the scroll of the horizontal container
     var last_known_scroll_position = 0;

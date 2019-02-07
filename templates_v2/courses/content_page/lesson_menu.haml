@@ -1,32 +1,26 @@
 - load i18n
 
-%a.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
-  {% trans "LESSONS" %}
-.dropdown-menu.allLessons.dropdown-menu-left
-  %ul.allCoursesList
-    - for lesson in course.chapters
-      %li{"class": "courseRow {% if lesson.is_started %}active{% else %}locked{% endif %} {% if lesson.progress == 100 %}complete{% else %}{% endif %}"}
-        %a.holder{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
-          .data.serial
-            {% trans "Lesson" %}
-            %span {{lesson.index}}
-          .data.title
-            %span= lesson.name
-              -if not lesson.is_started
-                %i.material-icons.locked{:data-container => "body", :data-content => "{% trans 'This lesson will be available on '%} {{lesson.start_upon}}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
-          .data.status
-            %i.material-icons
-            - if lesson.progress == 100
-              %i.material-icons check_circle
-              {% trans "Complete" %}
-            - elif lesson.progress == 0
-              %i.material-icons panorama_fish_eye
-              {% trans "Not Started" %}
-            - else
-              %i.material-icons tonality
-              {% trans "In Progress" %}
-        .description
-          Tell me and I forget. Teach me and I
-          remember. Involve me and I learn. - Benjamin Franklin
-        - if lesson.bookmark
-          %img.bookmark{:src => "static/image/bookmark.svg"}
+%ul.allCoursesList
+  - for lesson in course.chapters
+    %li{"class": "courseRow {% if lesson.is_started %}active{% else %}locked{% endif %} {% if lesson.progress == 100 %}complete{% else %}{% endif %}"}
+      %a.holder{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
+        .data.serial
+          {% trans "Lesson" %}
+          %span {{lesson.index}}
+        .data.title
+          %span= lesson.name
+            -if not lesson.is_started
+              %i.material-icons.locked{:data-container => "body", :data-content => "{% trans 'This lesson will be available on '%} {{lesson.start_upon}}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
+        .data.status
+          %i.material-icons
+          - if lesson.progress == 100
+            %i.material-icons check_circle
+            {% trans "Complete" %}
+          - elif lesson.progress == 0
+            %i.material-icons panorama_fish_eye
+            {% trans "Not Started" %}
+          - else
+            %i.material-icons tonality
+            {% trans "In Progress" %}
+      - if lesson.bookmark
+        %img.bookmark{:src => "static/image/bookmark.svg"}

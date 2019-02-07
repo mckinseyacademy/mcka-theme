@@ -6,7 +6,7 @@
     %a.d-block{:href => "#{course.nav_url}"}
       .card{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img
-          %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_url}}", :onerror=> 'this.src="{% static "image/1.jpg" %}"'}
+          %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_url}}"}
         .card-body
           - if course and current_course
             - if course.id == current_course.id
@@ -17,21 +17,6 @@
             %span.lesson-count
               = course.total_lessons
               {% trans "Lessons" %}
-            %span.course-status
-              - if course.ended
-                %i.material-icons archived
-                {% trans "Archived" %}
-              - elif course.started
-                %i.material-icons tonality
-                {% trans "In Progress" %}
-              - elif not course.started
-                %i.material-icons panorama_fish_eye
-                {% trans "Not Started" %}
-              - elif course.percent_complete == 100
-                %i.material-icons check_circle
-                {% trans "Completed" %}
-              - else
-                {% trans "Coming Soon" %}
             %span.course-progress
               {{course.percent_complete}}%
               %span.bar
