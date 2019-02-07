@@ -118,8 +118,9 @@ class Permissions(object):
         self.save(new_perms, per_course_roles)
 
     def update_courses_roles_list(self, courses_roles_list):
+        course_list = [course_role['course_id'] for course_role in courses_roles_list]
         per_course_roles = [{"course_id": p.course_id, "role": p.role}
-                            for p in self.user_roles if p.course_id != course_id]  # noqa: F821 TODO course_id undefined
+                            for p in self.user_roles if p.course_id not in course_list]
 
         for course_role in courses_roles_list:
             per_course_roles.append({
@@ -264,8 +265,6 @@ class Permissions(object):
             for company_admin in company_admin_list:
                 if int(company_admin["id"]) == int(self.user_id):
                     return True
-            return False
-        else:
             return False
 
     def get_all_user_organizations_with_permissions(self):
