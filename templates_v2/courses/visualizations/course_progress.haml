@@ -1,10 +1,6 @@
 - load i18n
-.course-progress.col-xs-4.widget
+.course-progress.col.widget
   .holder
-    .progressArea.bar
-      #{course.user_progress}%
-      %span
-        .filler{"class": "{% if course.user_progress < average_progress %}trailing{% endif %}", "style": "width:#{course.user_progress}%;"}
     .contenrArea
       .widgetTitle.clearfix
         %span {% trans "Progress" %}
@@ -15,3 +11,7 @@
           {% trans "Average:" %}
           %span
             #{average_progress}%
+    .progressArea.bar
+      #{course.user_progress}%
+      %span
+        .filler{"class": "{% if course.user_progress < average_progress %}trailing{% endif %}", "style": "width:#{course.user_progress}%;"}

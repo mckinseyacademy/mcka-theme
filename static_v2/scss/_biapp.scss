@@ -15,22 +15,27 @@
     .navbar-brand {
       @include float(left);
       @include text-align(left);
+
       img {
         @include margin-left(-5px);
       }
     }
+
     .topRightArea {
       @include float(right);
+
       .profileArea {
         @include float(right);
         @include margin-left(36px);
         @include right(20px);
       }
     }
+
     .headerNav {
       @include float(right);
-      > ul {
-        > li {
+
+      >ul {
+        >li {
           @include margin-left(30px);
         }
       }
@@ -41,9 +46,10 @@
 // Navbar
 
 .mainNav {
-  > ul {
-    > li {
+  >ul {
+    >li {
       @include margin-left(30px);
+
       &:first-child {
         @include margin-left(0);
       }
@@ -56,10 +62,12 @@
     @include media-breakpoint-between(xs, sm) {
       @include padding-left(27px);
     }
+
     .backBtn {
       @include media-breakpoint-between(xs, sm) {
         @include left(0);
       }
+
       i {
         @include margin-left(-4px);
       }
@@ -77,17 +85,17 @@
 
 .dropdown-menu {
   .allCoursesList {
-    > .courseRow {
-      .holder {
-
-      }
+    >.courseRow {
+      .holder {}
     }
   }
+
   &.allLessons {
     .allCoursesList {
       .bookmark {
         @include left(-30px);
         @include right(auto);
+
         @include media-breakpoint-between(xs, sm) {
           @include left(-22px);
         }
@@ -101,12 +109,14 @@
     .titles-area {
       @include margin-right(28px);
     }
+
     .nameArea,
     .titlesArea {
       .edit-link {
         @include margin-left(10px);
       }
     }
+
     .avatar-area {
       @include margin-right(28px);
     }
@@ -119,16 +129,19 @@
   .card {
     .card-body {
       @include padding-left(25px);
+
       .course-detail {
-        > span.course-progress {
+        >span.course-progress {
           @include float(right);
           @include text-align(right);
+
           .bar {
             @include float(right);
             @include margin-left(5px);
           }
         }
       }
+
       img.bookmark {
         @include left(-4px);
       }
@@ -140,24 +153,29 @@
 
 #course-statistics {
   .widget {
-    @include margin-left(-4px);
     @include border-left(1px solid $hard-gray);
+
     &:first-child {
       @include padding-left(0);
       @include border-left(0);
     }
+
     &:last-child {
       @include padding-right(0);
     }
+
     .progressArea {
       @include float(right);
+
       @include media-breakpoint-between(xs, sm) {
         float: none;
       }
     }
+
     &.course-progress {
       .progressArea {
         @include float(none);
+
         span {
           @include margin-left(6px);
         }
@@ -168,29 +186,35 @@
 
 .socialWidgets {
   .widget {
-    > .holder {
+    >.holder {
       @include border-left(1px solid $hard-gray);
     }
+
     &:first-child {
-      > .holder {
+      >.holder {
         @include border-left(0);
       }
-      > h5{
+
+      >h5 {
         @include margin-left(15px);
       }
     }
-    > h5{
+
+    >h5 {
       @include margin-left(30px);
     }
   }
+
   .head {
     h5 {
       @include margin-left(15px);
+
       @include media-breakpoint-between(xs, sm) {
         @include margin-left(5px);
       }
     }
   }
+
   .contentCard {
     [class*="col"] {
       //h5 {
@@ -203,13 +227,16 @@
       //}
     }
   }
+
   .articlesArea {
     .holder {
       @include margin-right(30px);
+
       h5 {
         @include margin-left(15px);
       }
     }
+
     ul {
       li {
         @include padding-right(24px);
@@ -217,14 +244,16 @@
       }
     }
   }
+
   .socialArea {
     .tweet {
-      > a {
+      >a {
         @include float(left);
         @include margin-right(20px);
       }
     }
   }
+
   .videoWidgets {
     .videoWrap {
       @include float(left);
@@ -235,15 +264,17 @@
 
 // Course cohort
 
-#course-cohort{
-  .leaderboards{
-    ul{
-      li{
+#course-cohort {
+  .leaderboards {
+    ul {
+      li {
         @include border-left(1px solid $hard-gray);
-        .user{
+
+        .user {
           @include margin-left(5px);
         }
-        &:first-child{
+
+        &:first-child {
           border: 0;
         }
       }
@@ -254,22 +285,26 @@
 // Lesson List
 
 .allCoursesList {
-  > .courseRow {
+  >.courseRow {
     .bookmark {
       @include left(0);
     }
+
     .status {
       @include margin-right(7px);
     }
+
     .progressBar {
       .figure {
         @include margin-right(12px);
+
         @include media-breakpoint-between(xs, sm) {
           @include margin-right(2px);
         }
       }
     }
   }
+
   .holder {
     .data {
       .statusBar {
@@ -289,7 +324,8 @@
 .lessonOverview {
   .headerArea {
     @include padding-right(35px);
-    .zoomWrap{
+
+    .zoomWrap {
       @include right(0);
     }
   }
@@ -324,6 +360,7 @@ footer {
 
 body.rtl {
   text-align: right;
+
   .my-courses {
     .card {
       .card-body {
@@ -333,6 +370,7 @@ body.rtl {
       }
     }
   }
+
   #course-statistics {
     .widget {
       &.course-progress {
@@ -346,13 +384,15 @@ body.rtl {
       }
     }
   }
+
   .allCoursesList {
-    > .courseRow {
+    >.courseRow {
       .bookmark {
         @include flip-x-axis;
       }
     }
   }
+
   .courseMainHeader {
     h1 {
       .backBtn {
@@ -362,6 +402,7 @@ body.rtl {
       }
     }
   }
+
   .socialWidgets {
     .videosWidget {
       h5 {
@@ -369,41 +410,49 @@ body.rtl {
       }
     }
   }
+
   form {
     .form-label {
       transform: translate(-15px, 15px);
     }
+
     .focused {
       .form-label {
         transform: translate(0, -18px);
       }
     }
   }
+
   .dropdown-menu {
     &.allLessons {
-      &:after{
+      &:after {
         right: 76px;
       }
+
       .allCoursesList {
         .bookmark {
           @include flip-x-axis;
         }
       }
     }
-    &.course-materials{
-      &:after{
+
+    &.course-materials {
+      &:after {
         left: 11px;
         right: auto;
       }
     }
-    &.dashboard-menu{
+
+    &.dashboard-menu {
       margin-left: -50px;
     }
-    &.profileDropdown{
+
+    &.profileDropdown {
       margin-left: -42px;
     }
   }
-  .mapboxgl-ctrl-top-left{
+
+  .mapboxgl-ctrl-top-left {
     left: auto;
     right: 10px;
   }

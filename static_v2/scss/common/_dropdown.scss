@@ -10,6 +10,7 @@
   top: 6px !important;
   left: 20px !important;
   padding: 10px 30px !important;
+
   &:after {
     position: absolute;
     top: -9px;
@@ -22,6 +23,7 @@
   }
 
   &.profile-area {
+
     &:after,
     &:before {
       right: 30px;
@@ -30,14 +32,18 @@
 
   &.dropdown-menu-left {
     left: 20px !important;
-    &:after, &:before {
+
+    &:after,
+    &:before {
       right: auto;
       left: 9%;
     }
   }
+
   &.allLessons {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+
     .allCoursesList {
       max-height: 370px;
       overflow-y: auto;
@@ -45,11 +51,12 @@
       padding-left: 30px;
       overflow-x: visible;
 
-      > .courseRow {
+      >.courseRow {
         cursor: pointer;
         padding: 0;
         margin: 0;
         overflow: initial;
+
         .description {
           display: none;
         }
@@ -57,40 +64,45 @@
 
       .holder {
         overflow-x: visible;
+
         .data {
           padding: 7px 3px;
+
           &.title {
             width: 164px;
             font-size: 12px;
           }
+
           &.status {
             width: auto;
           }
-          &.serial{
+
+          &.serial {
             min-width: 65px;
           }
-        }
-        .description {
         }
       }
     }
   }
 
-  > a {
+  >a {
     color: $secondary;
     font-size: 12px;
     line-height: 17px;
     background: inherit;
-    border-top: 1px solid #ebebeb;
+    border-top: 1px solid $gray-border;
     padding: 12px 0;
+
     &:hover {
       color: $dark-blue;
       background: inherit;
     }
+
     &:active {
       background: inherit;
       color: inherit;
     }
+
     &:first-child {
       border: none;
       //padding-top: 0;
@@ -100,11 +112,13 @@
       content: "";
     }
   }
+
   //profile dropdown on main Header
   &.large-menu {
     width: 376px !important;
-    padding: 30px;
+    padding: 30px !important;
     top: 20px !important;
+
     .footer {
 
       a.btn {
@@ -112,6 +126,7 @@
       }
     }
   }
+
   &.middle-menu {
     min-width: 337px !important;
   }
@@ -120,9 +135,11 @@
 // Add carrot icon for Dropdown
 .dropdown-toggle {
   color: $secondary;
-  &:hover{
+
+  &:hover {
     color: $dark-blue;
   }
+
   &:after {
 
     font-family: 'Material Icons';
@@ -133,8 +150,9 @@
     vertical-align: middle;
   }
 }
-.show{
-  .dropdown-toggle{
+
+.show {
+  .dropdown-toggle {
     color: $dark-blue;
   }
 }
@@ -168,6 +186,7 @@
 @media screen and (max-width: 767px) {
   .dropdown-menu {
     &.dropdown-menu-left {
+
       &:after,
       &:after {
         left: 50%;
@@ -183,15 +202,18 @@
       max-width: 350px;
       min-width: 0;
       margin-left: -30px;
-      &:after{
+
+      &:after {
         right: 163px !important;
       }
-      .allCoursesList{
+
+      .allCoursesList {
         padding-right: 20px;
         padding-left: 20px;
       }
     }
-    &.large-menu{
+
+    &.large-menu {
       width: 88% !important;
     }
   }

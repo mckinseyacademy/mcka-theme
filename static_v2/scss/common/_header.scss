@@ -15,6 +15,7 @@ header {
   border-top: 5px solid $black;
   border-bottom: 1px solid lighten($gray, 35%);
   background-color: $white;
+
   .language-selector {
     float: right;
     padding-left: 5px;
@@ -23,19 +24,23 @@ header {
     line-height: 70px;
     color: $primary;
     border-left: 1px solid $light-gray;
+
     .dropdown {
       display: inline-block;
+
       button {
         background-color: transparent;
         color: #002960;
         text-transform: uppercase;
         font-size: 0.814rem;
         padding: 0;
+
         &:focus {
           outline: none;
         }
       }
     }
+
     i {
       vertical-align: middle;
       font-size: 30px;
@@ -45,21 +50,26 @@ header {
   &.appHeader {
     margin: 0 0 35px;
     border-bottom-color: #ccc;
+
     .dropdown-menu {
       top: 12px !important;
     }
+
     .navbar-brand {
       padding: 0;
       max-width: 155px;
     }
+
     .topRightArea {
       width: auto;
       margin: 19px 15px 0 15px;
     }
+
     .profileArea {
       width: 40px;
       height: 40px;
-      > a {
+
+      >a {
         display: block;
         height: 100%;
         width: 100%;
@@ -70,16 +80,20 @@ header {
         background: $secondary;
         color: $white;
         border-radius: 100%;
+
         &:hover {
           text-decoration: none;
         }
+
         &:after {
           display: none;
         }
+
         span {
           display: block;
           text-align: center;
         }
+
         img {
           width: 100%;
           height: auto;
@@ -87,9 +101,11 @@ header {
       }
 
     }
+
     .headerNav {
       width: auto;
       margin: 17px 0 0;
+
       .dropdown-menu {
         margin: 0;
       }
@@ -111,23 +127,27 @@ header {
     .titles-area {
       display: inline-block;
       vertical-align: middle;
-      margin: -20px 0 0;
     }
 
     .titles-area {
+
       .nameArea,
       .roleArea {
-        > span, a {
+
+        >span,
+        a {
           display: inline-block;
           vertical-align: middle;
         }
       }
+
       .nameArea {
         color: $black;
         font-size: 16px;
         font-weight: 600;
         line-height: 22px;
       }
+
       .roleArea {
         color: #696969;
         line-height: 19px;
@@ -136,6 +156,7 @@ header {
       }
     }
   }
+
   .content {
     .title {
       display: block;
@@ -144,26 +165,31 @@ header {
       font-weight: 600;
       line-height: 17px;
       margin-top: 7px;
+
       &:first-child {
         margin-top: 0;
       }
     }
+
     .titleName {
       font-size: 16px;
       line-height: 22px;
       font-weight: normal;
       color: $black;
     }
+
     .userMail {
       color: $secondary;
       font-size: 16px;
       line-height: 22px;
 
     }
-    > .wrap {
+
+    >.wrap {
       border-bottom: 1px solid $light-gray;
       padding: 0 0 15px;
       margin: 0 0 15px;
+
       &:first-child {
         margin-top: 15px;
         padding-top: 15px;
@@ -177,19 +203,23 @@ header {
 .photoEditSteps {
   .step {
     margin-top: 28px;
+
     &:first-child {
       margin: 0;
     }
+
     .head {
       border-bottom: 1.21px solid #F1F3F6;
       padding-bottom: 10px;
       margin-bottom: 20px;
+
       .stepTitle,
       .title {
         display: inline-block;
         vertical-align: middle;
         text-transform: capitalize;
       }
+
       .stepTitle {
         height: 17px;
         color: $gray;
@@ -197,6 +227,7 @@ header {
         line-height: 17px;
         margin: 0 10px 0 0;
       }
+
       .title {
         color: $black;
         font-family: "Open Sans";
@@ -204,6 +235,7 @@ header {
         line-height: 22px;
       }
     }
+
     .imgCropWrap {
       height: 250px;
       max-width: 500px;
@@ -218,8 +250,10 @@ header {
     header {
       background: transparent;
       border: none;
+
       .language-selector {
         border: 0;
+
         .dropdown {
           button {
             background: transparent;
@@ -227,11 +261,13 @@ header {
           }
         }
       }
+
       i {
         color: $white;
       }
     }
   }
+
   .navbar-brand {
     padding: 0;
   }
@@ -239,15 +275,16 @@ header {
 
 //Course navigation wrraper
 .courseNavWrap {
-  > ul {
+  >ul {
     padding: 0;
     margin: 0;
     list-style: none;
   }
+
   .mainNav {
-    > ul {
-      > li {
-        > a {
+    >ul {
+      >li {
+        >a {
           padding: 0 0 10px;
         }
       }
@@ -257,11 +294,12 @@ header {
 
 //Main (generic custom) navigation styles
 .mainNav {
-  > ul {
+  >ul {
     margin: 0;
     padding: 0;
     list-style: none;
-    > li {
+
+    >li {
       display: inline-block;
       vertical-align: middle;
       position: relative;
@@ -271,6 +309,7 @@ header {
       letter-spacing: 0.9px;
       line-height: 16px;
       text-align: center;
+
       &:hover {
         a {
           outline: none;
@@ -278,7 +317,8 @@ header {
           color: #2E2D39;
         }
       }
-      > a {
+
+      >a {
         color: #2042CB;
         padding: 0 0 18px;
 
@@ -294,9 +334,11 @@ header {
           transform: translateX(-50%);
         }
       }
+
       &.active {
         a {
           color: #2E2D39;
+
           &:before {
             width: 100%;
             background: #2E2D39;
@@ -310,17 +352,19 @@ header {
 // Inner page's Header (Course navigation or Header)
 .courseMainHeader {
   margin: 0 0 18px;
+
   h1 {
     color: $black;
     font-family: "Open Sans", sans-serif;
-    font-size: 42px;
+    font-size: 2rem;
     font-weight: 300;
-    line-height: 57px;
+    line-height: 40px;
     margin: 0 0 15px;
 
     .backBtn {
       vertical-align: middle;
       display: none;
+
       i {
         font-size: inherit;
       }
@@ -337,9 +381,11 @@ header {
     }
 
   }
+
   .pn-Advancer {
     display: none;
   }
+
   .pn-ProductNav_Wrapper {
     position: relative;
   }
@@ -350,6 +396,7 @@ header {
 @media screen and (max-width: 992px) {
   .courseMainHeader {
     padding: 0;
+
     h1 {
       font-size: 32px;
       line-height: 42px;
@@ -363,12 +410,15 @@ header {
       top: -9px;
       color: $black;
       opacity: 1;
+
       &:active,
       &:hover {
         color: $secondary;
       }
+
       .pn-Advancer_Icon {
         fill: #ccc;
+
         &:focus,
         &:active,
         &:visited {
@@ -383,7 +433,7 @@ header {
   }
 
   .allCoursesList {
-    > .courseRow {
+    >.courseRow {
       .description {
         display: none;
       }
@@ -402,16 +452,20 @@ header {
         position: absolute;
         top: 15px;
       }
+
       .headerNav {
         position: absolute;
         left: 0;
         top: 55px;
         right: 0;
+
         ul {
           width: 100%;
           text-align: center;
+
           li {
             margin-top: 9px;
+
             a {
               padding-bottom: 6px;
             }
@@ -420,7 +474,9 @@ header {
       }
     }
   }
+
   .courseMainHeader {
+
     //padding: 0 15px;
     h1 {
       font-size: 12px;
@@ -443,6 +499,7 @@ header {
 @include media-breakpoint-down(lg) {
   .courseNavWrap {
     position: relative;
+
     .courseNav {
       display: block;
       white-space: nowrap;

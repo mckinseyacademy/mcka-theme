@@ -1,4 +1,4 @@
-%article#course-statistics{"class": "{% if not feature_flags.discussions and graded_items_count > 0 %}no-social{% endif %}"}
+%article#course-statistics.row{"class": "{% if not feature_flags.discussions and graded_items_count > 0 %}no-social{% endif %}"}
   - if feature_flags.progress
     - include "courses/visualizations/course_progress.haml"
   - if feature_flags.discussions

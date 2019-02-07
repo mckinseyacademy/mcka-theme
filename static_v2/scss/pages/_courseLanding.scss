@@ -9,16 +9,19 @@
 
 .contentCardWrap {
   margin-top: 36px;
-  > .head {
+
+  >.head {
     margin-bottom: 5px;
     padding: 0 15px;
   }
+
   h5 {
     text-transform: uppercase;
     font-size: 12px;
     font-weight: 600;
     line-height: 17px;
     margin-top: 15px;
+
     @media screen and (max-width: 767px) {
       margin-left: 0;
     }
@@ -27,27 +30,19 @@
 
 .progressWidgets {
   padding: 30px 40px;
+
   .widget {
     display: inline-block;
     vertical-align: middle;
-    width: 33%;
     padding: 0 28px;
+    max-width: 70%;
     min-height: 112px;
+
     &:first-child {
-      > .holder {
+      >.holder {
         display: table;
         width: 100%;
-        .contenrArea {
-          display: table-header-group;
-        }
-        .progressArea {
-          display: table-footer-group;
-        }
       }
-    }
-
-    .contenrArea {
-      //width: 236px;
     }
 
     .widgetTitle {
@@ -65,6 +60,7 @@
       line-height: 22px;
       margin-bottom: 3px;
     }
+
     .averageTitle {
       color: $gray;
       font-family: "Open Sans", sans-serif;
@@ -80,15 +76,17 @@
       border-radius: 100%;
       position: relative;
       margin-top: 10px;
+
       &.bar {
         display: block;
         float: none;
         width: 100%;
         height: 16px;
         clear: both;
-        margin-top: 15px;
+        margin-top: 5px;
         border-radius: inherit;
       }
+
       span {
         width: calc(100% - 50px);
         display: inline-block;
@@ -96,8 +94,10 @@
         background-color: #ededed;
         position: relative;
         vertical-align: sub;
+
         .filler {
           height: 100%;
+
           &:before {
             content: "";
             position: absolute;
@@ -115,6 +115,12 @@
       overflow: hidden;
     }
   }
+
+  .course-engagement {
+    .progressArea {
+      width: 88px;
+    }
+  }
 }
 
 // List of All Courses
@@ -122,28 +128,35 @@
   padding: 0;
   margin: 0;
   list-style: none;
-  > .courseRow {
+
+  >.courseRow {
+    position: relative;
+    z-index: 1;
     padding: 0 30px;
     margin: 0 -30px;
     position: relative;
     overflow: hidden;
 
-    > .holder {
+    >.holder {
       display: block;
       overflow: hidden;
       border-top: 1px solid #F1F3F6;
       clear: both;
+      position: relative;
+      z-index: 1;
     }
-    >a{
-      &:hover{
+
+    >a {
+      &:hover {
         text-decoration: none;
       }
     }
+
     .description {
       transition: all ease 0.3s;
       position: absolute;
       content: '';
-      z-index: 9;
+      z-index: 1;
       width: 100%;
       max-width: calc(100% - 60px);
       text-decoration: none;
@@ -160,6 +173,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       cursor: pointer;
+
       p {
         max-width: 100%;
         overflow: hidden;
@@ -167,24 +181,32 @@
         text-overflow: ellipsis;
       }
     }
+
     .bookmark {
       position: absolute;
       top: 0;
       height: 100%;
       width: 20px;
     }
+
     &:last-child {
       .holder {
         border-bottom: 1px solid #F1F3F6;
       }
     }
+
     &:hover {
       .description {
         top: 0;
         opacity: 1;
         visibility: visible;
+
+        &.no-data {
+          z-index: 0;
+        }
       }
     }
+
     &.complete {
       .data {
         &.status {
@@ -192,20 +214,24 @@
         }
       }
     }
+
     &.locked {
       &:hover {
         cursor: pointer;
       }
+
       .description {
         display: none;
       }
+
       .title {
-        > span {
+        >span {
           padding: 0 25px 0 0;
           position: relative;
           display: inline-block;
           vertical-align: middle;
           color: $gray;
+
           .locked {
             position: absolute;
             width: 18px;
@@ -219,6 +245,7 @@
             color: $secondary;
           }
         }
+
         i {
           font-size: 18px;
           vertical-align: middle;
@@ -226,47 +253,66 @@
       }
     }
   }
+
   .holder {
     justify-content: space-between;
+
     .data {
       display: inline-block;
       vertical-align: middle;
       padding: 17px 10px;
+
       &:first-child {
         padding-left: 0;
       }
+
       &:last-child {
         padding-right: 0;
       }
-      &.serial, &.title, &.status {
+
+      &.serial,
+      &.title,
+      &.status {
         text-transform: capitalize;
       }
+
       &.serial {
         color: $dark-gray;
         font-size: 12px;
         line-height: 17px;
-        width: 7%;
+        width: auto;
+        max-width: 250px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
       }
+
       &.title {
         color: $secondary;
         font-size: 16px;
         line-height: 22px;
-        width: 38%;
+        width: 50%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      &.time,
-      &.status {
+
+      &.time {
         color: $dark-gray;
         font-size: 12px;
         line-height: 17px;
-        width: 14%;
+        width: 150px;
+
         i {
           font-size: 18px;
           display: inline-block;
-          vertical-align: top;
+          vertical-align: middle;
+          margin: 0 4px;
         }
+      }
+
+      &.status {
+        display: none !important;
       }
 
       .figure {
@@ -274,18 +320,22 @@
         color: $dark-gray;
         width: 35px;
       }
+
       .figure,
       .statusBar {
         display: inline-block;
         vertical-align: middle;
       }
+
       .statusBar {
         position: relative;
         height: 12px;
         width: 70%;
         background: #ededed;
+
         .progress-counter {
           width: auto;
+
           &:before {
             content: '';
             position: absolute;
@@ -309,23 +359,28 @@
 .socialWidgets {
   .widget {
     padding: 0;
-    > .holder {
+
+    >.holder {
       padding: 15px 30px;
-      > img {
+
+      >img {
         width: 100%;
       }
     }
   }
+
   .articlesArea {
     .holder {
       max-height: 400px;
       overflow-y: auto;
       padding: 15px;
     }
+
     ul {
       margin: 0;
       padding: 0;
       list-style: none;
+
       li {
         margin: 10px 0 0;
         padding: 15px 0;
@@ -334,17 +389,20 @@
         border-radius: 5px;
         background-color: $white;
         box-shadow: 0 2px 9px 0 rgba(0, 0, 0, 0.03);
+
         &:first-child {
           margin: 0;
         }
       }
     }
+
     .articleTitle {
       color: $secondary;
       font-family: "Open Sans", sans-serif;
       font-size: 16px;
       line-height: 22px;
     }
+
     .label {
       display: block;
       margin: 10px 0 0;
@@ -357,30 +415,31 @@
   }
 
   .socialArea {
-    //.holder {
-    //  height: 420px;
-    //  overflow-y: auto;
-    //}
     .tweet {
-      > a {
+      >a {
         width: 38px;
         height: 38px;
         overflow: hidden;
         border-radius: 100%;
+
         img {
           width: 100%;
           height: auto;
         }
       }
-      > .content {
+
+      >.content {
         overflow: hidden;
+
         .head {
           margin: 0 0 5px;
+
           span,
           a {
             display: inline-block;
             vertical-align: middle;
           }
+
           .name {
             color: $black;
             font-size: 14px;
@@ -388,6 +447,7 @@
             line-height: 19px;
             margin: 0 6px 0 0;
           }
+
           .name-link {
             color: $secondary;
             font-family: "Open Sans", sans-serif;
@@ -401,7 +461,8 @@
           color: $black;
           font-size: 16px;
           line-height: 22px;
-          > a {
+
+          >a {
             color: $secondary;
           }
         }
@@ -414,30 +475,38 @@
   h5 {
     margin-left: 0 !important;
   }
+
   margin-top: 16px;
+
   ul {
     max-height: 200px;
     overflow-y: auto;
     margin: 0;
+
     li {
       overflow: hidden;
       margin: 20px 0 0;
+
       &:first-child {
         margin: 0;
       }
     }
   }
+
   .videoWrap {
     width: 115px;
     height: auto;
-    > a {
+
+    >a {
       width: 100%;
       height: 100%;
       display: block;
     }
   }
+
   .content {
     overflow: hidden;
+
     .title {
       color: $secondary;
       font-family: "Open Sans", sans-serif;
@@ -447,6 +516,7 @@
       margin-bottom: 16px;
 
     }
+
     .name {
       color: $gray;
       font-size: 12px;
@@ -462,6 +532,7 @@ blockquote {
   &.courseLanding {
     text-align: center;
     padding: 53px 90px 0;
+
     p {
       color: $gray;
       font-size: 24px;
@@ -471,6 +542,7 @@ blockquote {
       margin: 0 0 8px;
       text-align: center;
     }
+
     .author {
       color: $black;
       font-size: 18px;
@@ -489,6 +561,7 @@ blockquote {
   .container {
     &.courseLanding {
       max-width: 100%;
+
       .row {
         .col {
           padding: 0;
@@ -499,15 +572,19 @@ blockquote {
 
   .progressWidgets {
     .widget {
-      padding: 0 15px;
+      padding: 10px !important;
+
       .contenrArea {
         width: auto;
       }
+
       .title {
         display: none;
       }
+
       .progressArea {
         float: right;
+
         &.bar {
           margin-top: 30px;
         }
@@ -519,22 +596,28 @@ blockquote {
     .holder {
       //padding: 16px 0;
       display: block;
+
       .data {
         padding: 4px 3px;
+
         &.serial {
           width: 70px;
         }
+
         &.title {
           width: calc(100% - 96px);
         }
+
         &.time {
-          width: 80px;
+          width: 140px;
           margin: 0 0 0 -3px;
         }
+
         &.status {
           width: 130px;
           margin: 0 0 0 -3px;
         }
+
         &.progressBar {
           width: 200px;
         }
@@ -543,7 +626,7 @@ blockquote {
   }
 
   .contentCard {
-    > .row {
+    >.row {
       margin: 0;
     }
   }
@@ -553,23 +636,26 @@ blockquote {
       margin-top: 30px;
       border-top: 1px solid #ccc;
       padding: 30px 0 0;
+
       &:first-child {
         margin-top: 0;
         padding: 0;
         border: 0;
       }
 
-      > .holder {
+      >.holder {
         border: 0 !important;
         padding: 0;
       }
     }
+
     .contentCard {
       [class*="col"] {
         h5 {
           margin-left: 0;
           margin-bottom: 20px;
         }
+
         &:first-child {
           h5 {
             margin-left: 0;
@@ -586,8 +672,9 @@ blockquote {
   }
 
   .allCoursesList {
-    > .courseRow:hover {
+    >.courseRow:hover {
       text-decoration: none;
+
       .description {
         opacity: 0;
       }
@@ -600,8 +687,8 @@ blockquote {
 
   .progressWidgets {
     .widget {
-      padding: 0 4px;
-      border-left: 0;
+      padding: 20px !important;
+      border: 0 !important;
       vertical-align: bottom;
       min-height: inherit;
 
@@ -610,6 +697,7 @@ blockquote {
         display: block;
         position: relative;
         margin: 0 auto;
+
         span {
           width: 100%;
           margin-left: 0 !important;
@@ -624,8 +712,9 @@ blockquote {
       }
 
       &:first-child {
-        > .holder {
+        >.holder {
           display: block;
+
           .progressArea {
             float: none;
             display: block;
@@ -639,6 +728,21 @@ blockquote {
             margin-top: 40px;
           }
 
+        }
+      }
+    }
+
+    .course-progress {
+      .holder {
+        position: relative;
+
+        .contenrArea {
+          margin-top: 108px !important;
+        }
+
+        .bar {
+          position: absolute !important;
+          bottom: 105px;
         }
       }
     }
@@ -660,22 +764,27 @@ blockquote {
     .courseRow {
       padding: 0 20px;
       margin: 0 -20px;
+
       .description {
         left: 0;
       }
     }
+
     .holder {
       .data {
         &.serial {
           width: 70px;
         }
+
         &.status {
           width: 110px;
           display: none;
         }
+
         &.progressBar {
           width: 140px;
         }
+
         .figure {
           margin-right: 0;
         }
@@ -693,6 +802,7 @@ blockquote {
   background: #ccc;
   width: 300px;
   right: 0;
+
   #profileDropdown.block-view {
     display: block !important;
   }
