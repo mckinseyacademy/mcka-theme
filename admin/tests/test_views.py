@@ -394,7 +394,7 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
         groupwork and company admin or internal admin. Also makes sure the
         correct javascript variables are set for the client side.
         """
-        def _get_course_context(t, organization_id=""):
+        def _get_course_context(t):
             return {
                 'cohorts_enabled': t[0],
                 'cohorts_available': t[1],

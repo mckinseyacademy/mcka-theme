@@ -2653,18 +2653,3 @@ def validate_participant_manager_email(participant_email, manager_email):
     else:
         errors.append(_("User and manager email cannot be empty"))
     return None, None, errors
-
-
-def user_count_without_specific_user_roles_of_other_companies(participants, organization_id, users_count):
-    """
-    Returns company_participants count with out users who are enrolled in other company course
-    as company admin and observer or company admin and assistant role.
-    """
-
-    remove_permissions = ['assistant', 'observer']
-    for user in participants:
-        if user["organizations"] and user["organizations"][0]["id"] != int(organization_id):
-            for role in user["roles"]:
-                if role in remove_permissions:
-                    users_count -= 1
-    return users_count

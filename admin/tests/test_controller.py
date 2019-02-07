@@ -634,26 +634,3 @@ class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
         expected_output = None
         output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
         self.assertEqual(output, expected_output)
-
-
-class TestSpecificUserRolesCountOfOtherCompanies(TestCase):
-    def setUp(self):
-        self.organization_id = '7'
-        self.course_participants = {u'count': 4, u'previous': None, u'num_pages': 1, u'results': [
-            {'username': 'UAdmin_user', 'roles': ['observer'], 'organizations': [{'display_name': 'CompanyA', 'id': 6},
-                                                                                 {'display_name': 'CompanyB',
-                                                                                  'id': 7}]},
-            {'username': 'Cadmin', 'roles': [],
-             'organizations': [{'display_name': 'CompanyB', 'id': 7}]},
-            {'username': 'companyB_TA', 'roles': ['observer'],
-             'organizations': [{'display_name': 'CompanyB', u'id': 7}]},
-            {'username': 'uberadmin2', 'roles': ['assistant'],
-             'organizations': [{'id': 6}, ]}, {'username': 'uberadmin3',
-                                               'roles': ['participant'],
-                                               'organizations': [{'id': 6}, ]}
-        ], 'next': None}
-
-    def user_count_without_specific_user_roles_of_other_companies(self):
-        course_participants_count = controller.user_count_without_specific_user_roles_of_other_companies(
-            self.course_participants, int(self.organization_id), 4)
-        self.assertEqual(course_participants_count, 2)
