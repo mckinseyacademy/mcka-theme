@@ -280,7 +280,7 @@ header {
       }
       > a {
         color: #2042CB;
-        padding: 0 0 15px;
+        padding: 0 0 18px;
 
         &:before {
           position: absolute;
@@ -392,7 +392,10 @@ header {
 }
 
 @media screen and (max-width: 767px) {
-
+  .courseMainHeader{
+    padding: 0 15px;
+    margin: 0 0 15px;
+  }
   .appHeader {
     .topRightArea {
       .profileArea {
