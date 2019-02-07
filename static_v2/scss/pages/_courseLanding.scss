@@ -312,7 +312,16 @@
       }
 
       &.status {
-        display: none !important;
+        color: $dark-gray;
+        font-size: 12px;
+        line-height: 17px;
+        width: 14%;
+
+        i {
+          vertical-align: middle;
+          display: inline-block;
+          font-size: 1.125rem
+        }
       }
 
       .figure {
