@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    if ($(window).width() < 768 && $('.leaderboards-list .col').length === 3) {
+    if ($(window).width() < 992 && $('.leaderboards-list .col').length === 3) {
         $('.leaderboards-list .col').removeClass('col').addClass('col-12');
     }
 

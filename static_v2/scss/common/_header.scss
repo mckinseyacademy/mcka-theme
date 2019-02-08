@@ -314,7 +314,7 @@ header {
         a {
           outline: none;
           text-decoration: none;
-          color: #2E2D39;
+          color: $dark-blue;
         }
       }
 
@@ -359,7 +359,7 @@ header {
     font-size: 2rem;
     font-weight: 300;
     line-height: 40px;
-    margin: 0 9px;
+    margin: 0;
     padding: 0 0 10px;
 
     .backBtn {

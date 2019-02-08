@@ -250,7 +250,6 @@
     ul {
       li {
         @include border-left(1px solid $hard-gray);
-
         &:first-child {
           border: 0;
         }
@@ -273,7 +272,7 @@
 
     .progressBar {
       .figure {
-        @include margin-right(12px);
+        @include margin-right(5px);
 
         @include media-breakpoint-between(xs, sm) {
           @include margin-right(2px);
@@ -293,7 +292,7 @@
         }
       }
       &.serial{
-        padding-right: 25px;
+        @include padding-right(25px);
         span{
           @include right(0);
         }
@@ -304,18 +303,16 @@
 
 //popover
 
-.popover{
-  &.bs-popover-left {
-    @include margin-right(40px !important);
-    @include media-breakpoint-between(md, lg){
-      @include margin-right(0 !important);
-    }
+.bs-popover-left {
+  @include margin-left(40px !important);
+  @include media-breakpoint-between(md, lg){
+    @include margin-left(0 !important);
   }
-  &.bs-popover-right {
-    @include margin-left(40px !important);
-    @include media-breakpoint-between(md, lg) {
-      @include margin-left(0 !important);
-    }
+}
+.bs-popover-right {
+  @include margin-right(40px !important);
+  @include media-breakpoint-between(md, lg) {
+    @include margin-right(0 !important);
   }
 }
 

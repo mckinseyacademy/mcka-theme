@@ -329,7 +329,6 @@
       .figure {
         font-size: 12px;
         color: $dark-gray;
-        width: 35px;
       }
 
       .figure,
@@ -611,10 +610,6 @@ blockquote {
       .data {
         padding: 4px 3px;
 
-        &.serial {
-          width: 70px;
-        }
-
         &.title {
           width: calc(100% - 96px);
         }
@@ -683,13 +678,17 @@ blockquote {
   }
 
   .allCoursesList {
-    >.courseRow:hover {
-      text-decoration: none;
+    >.courseRow{
+      padding: 10px;
 
-      .description {
-        opacity: 0;
+      &:hover {
+        text-decoration: none;
+
+        .description {
+          opacity: 0;
+        }
       }
-    }
+   }
   }
 }
 
@@ -783,9 +782,6 @@ blockquote {
 
     .holder {
       .data {
-        &.serial {
-          width: 70px;
-        }
 
         &.status {
           width: 110px;

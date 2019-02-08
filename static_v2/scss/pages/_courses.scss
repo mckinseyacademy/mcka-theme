@@ -183,10 +183,8 @@
 
       .card {
         margin-bottom: 10px;
-
-        .overlay-img {
-          height: 120px;
-
+        .overlay-img{
+          height: auto;
           .card-img-top {
             height: 120px;
             object-fit: cover;
@@ -194,7 +192,7 @@
         }
 
         .card-body {
-          padding: 10px 20px 5px 25px;
+          padding: 10px 20px 8px 25px;
           min-height: 0;
 
           h3 {
