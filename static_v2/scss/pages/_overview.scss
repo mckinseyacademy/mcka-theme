@@ -1,79 +1,50 @@
 // ======= Style are Supporting the Old User Overview Page's Content =======
 #course-overview {
-
-  img{
+  p:empty {
+    display: none;
+  }
+  img {
     max-width: 100%;
   }
-
   .hidden {
     display: none;
     visibility: hidden;
   }
-
   [class*="medium-"],
   [class*="columns"] {
     padding: 0 15px;
   }
-
   h1 {
-    font-size: 32px;
+    font-size: 2rem;
     font-weight: 300;
     line-height: 43px;
     color: $black;
     margin-bottom: 20px;
   }
-
   .sub-1 {
-    font-size: 12px;
+    font-size: 0.75rem;
     line-height: 17px;
     font-weight: 600;
     text-transform: uppercase;
     margin-bottom: 17px;
   }
-
   hr {
-    margin: 35px 0;
+    margin: 30px 0;
     border: 0;
     border-top: 1px solid $border-color;
   }
-
   p:empty {
     display: none;
   }
-
-  p {
-    font-size: 1rem;
-    line-height: 22px;
-    margin: 20px 0 0;
-
-    &:first-child {
-      margin: 0;
-    }
-
-    br {
-      margin: 0;
-    }
-  }
-
   .medium-7.columns {
     float: left;
     overflow: hidden;
     width: 50%;
-
     img {
       width: 100%;
     }
   }
-
-  .medium-5 {
-    &.columns {
-      &.col-right {
-        overflow: hidden;
-      }
-    }
-  }
-
-  //  Faculty
+  //  Faculty Members
   .faculty {
     position: relative;
 
@@ -84,15 +55,13 @@
       margin-bottom: 6px;
       text-transform: none;
     }
-
     .sub-1 {
       margin-bottom: 10px;
     }
-
     input[type=radio] {
       display: none;
 
-      +label {
+      + label {
 
         width: 180px;
         height: 200px;
@@ -100,12 +69,14 @@
         vertical-align: top;
         position: relative;
         overflow: hidden;
-
+        margin-right: 20px;
+        cursor: pointer;
         &:after {
           position: absolute;
           display: block;
-          top: 10px;
-          left: 0;
+          content: '';
+          top: 20px;
+          left: -40px;
           right: auto;
           width: 40px;
           height: 40px;
@@ -121,11 +92,12 @@
         }
       }
 
-      &:checked+label {
+      &:checked + label {
         &:after {
           content: "";
           left: 0;
           right: auto;
+          transition: all 0.3s ease
         }
 
         img {
@@ -133,50 +105,50 @@
         }
       }
 
-      &#faculty_0:checked~#teacher_0 {
+      &#faculty_0:checked ~ #teacher_0 {
         display: block;
       }
 
-      &#faculty_1:checked~#teacher_1 {
+      &#faculty_1:checked ~ #teacher_1 {
         display: block;
       }
 
-      &#faculty_2:checked~#teacher_2 {
+      &#faculty_2:checked ~ #teacher_2 {
         display: block;
       }
 
-      &#faculty_3:checked~#teacher_3 {
+      &#faculty_3:checked ~ #teacher_3 {
         display: block;
       }
 
-      &#faculty_4:checked~#teacher_4 {
+      &#faculty_4:checked ~ #teacher_4 {
         display: block;
       }
 
-      &#faculty_5:checked~#teacher_5 {
+      &#faculty_5:checked ~ #teacher_5 {
         display: block;
       }
 
-      &#faculty_6:checked~#teacher_6 {
+      &#faculty_6:checked ~ #teacher_6 {
         display: block;
       }
 
-      &#faculty_7:checked~#teacher_7 {
+      &#faculty_7:checked ~ #teacher_7 {
         display: block;
       }
 
-      &#faculty_8:checked~#teacher_8 {
+      &#faculty_8:checked ~ #teacher_8 {
         display: block;
       }
 
-      &#faculty_9:checked~#teacher_9 {
+      &#faculty_9:checked ~ #teacher_9 {
         display: block;
       }
     }
 
     .teacher {
       display: none;
-      margin-top: 20px;
+      margin-top: 10px;
 
       p {
         font-size: 0.88rem;
@@ -184,91 +156,32 @@
       }
     }
   }
-
 }
-
-
-@media screen and (max-width: 992px) {
-  #course-overview {
-    .medium-7.columns {
-      float: left;
-      overflow: hidden;
-      width: 45%;
-      margin-right: 10px;
-    }
-
-    .faculty {
-      margin-left: -2.2%;
-
-      input[type=radio] {
-        +label {
-          width: 22%;
-          height: 141px;
-          margin-left: 2.2%;
-          margin-bottom: 2.2%;
-
-          &:first-child {
-            margin: 0;
-          }
-        }
-
-        &:checked+label:after {
-          background-size: 22px 40px;
-        }
-      }
-    }
-
-  }
-
-}
-
-@media screen and (max-width: 767px) {
-  #course-overview {
-    .medium-7.columns {
-      float: none;
-      overflow: hidden;
-      width: 100%;
-      margin: 0 0 20px;
-    }
-  }
-
-  #course-overview {
-    .faculty {
-      margin-left: -4%;
-
-      input[type=radio] {
-        +label {
-          width: 20%;
-          height: 65px;
-          margin-left: 4%;
-          margin-bottom: 4%;
-
-          &:first-child {
-            margin: 0;
-          }
-
-          img {
-            height: auto;
-          }
-        }
-
-        &:checked+label:after {
-          background-size: 12px 18px;
-        }
-      }
-
-      .sub-1,
-      .teacher {
-        margin-left: 4%;
-      }
-    }
-  }
-}
-
-// END of Style are Supporting the Old User Overview Page's Content
 
 // ======== This Style's Support New Structure ========
 .courseOverview {
+  p {
+    font-size: 1rem;
+    line-height: 22px;
+    margin: 20px 0 0;
+
+    &:first-child {
+      margin: 0;
+    }
+
+    br {
+      margin: 0;
+    }
+  }
+  ul {
+    margin: 15px 0 0;
+    padding-left: 10px;
+    font-size: 1rem;
+    line-height: 22px;
+    li {
+      margin: 2px 0 0 0;
+    }
+  }
   .descriptionWrap {
     margin-bottom: 25px;
 
@@ -283,14 +196,13 @@
       }
 
       .title {
-        font-size: 12px;
+        font-size: 0.75rem;
         line-height: 17px;
         color: $black;
         font-weight: 600;
         text-transform: uppercase;
       }
     }
-
     p {
       font-size: 1rem;
       line-height: 22px;
@@ -305,28 +217,26 @@
   .sectionsWrap {
     .section {
       margin-top: 30px;
-      padding-top: 36px;
+      padding-top: 30px;
       border-top: 1px solid $border-color;
 
       &:first-child {
         margin-top: 0;
       }
-
-      h5 {
-        font-size: 12px;
-        line-height: 17px;
-        font-weight: 600;
-        text-transform: uppercase;
-        margin-bottom: 17px;
-      }
     }
+  }
+  h5 {
+    font-size: 0.75rem;
+    line-height: 17px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 17px;
   }
 
   .textImageWrap {
     overflow: hidden;
 
     .imgWrap {
-      float: left;
       overflow: hidden;
       width: 28.5%;
       margin-right: 25px;
@@ -343,9 +253,13 @@
       font-weight: normal;
       padding: 5px 0;
 
+      ul {
+        padding-left: 20px;
+        margin: 10px 0 20px;
+      }
+
       .head {
         margin-bottom: 30px;
-
         p,
         div,
         strong,
@@ -363,40 +277,31 @@
         }
       }
     }
-
     ul {
       margin: 10px 0;
       list-style: none;
       padding: 0 0 0 19px;
       list-style: disc;
-
       li {
-        margin-top: 5px;
-        margin-bottom: 5px;
-
         &:first-child {
           margin: 0;
         }
-
         b,
         strong {
           font-weight: 600;
         }
       }
-
-      +ul {
+      + ul {
         padding: 0;
         margin: 0;
       }
     }
   }
-
   .facultyWrap {
     .faculty {
       margin: 0 0 15px;
       padding: 0;
       list-style: none;
-
       li {
         width: 180px;
         height: auto;
@@ -404,11 +309,9 @@
         display: inline-block;
         vertical-align: top;
         position: relative;
-
         &:hover {
           cursor: pointer;
         }
-
         &.active {
           &:before {
             position: absolute;
@@ -420,25 +323,20 @@
             content: '';
             background: url("../img/bookmark.svg") no-repeat;
             background-size: contain;
-
           }
         }
-
         &:first-child {
           margin-left: 0;
         }
-
         img {
           width: 100%;
           height: auto;
         }
       }
     }
-
     .facultyInfo {
       font-size: 1rem;
       line-height: 22px;
-
       h5,
       .title {
         font-size: 1rem;
@@ -446,6 +344,79 @@
         font-weight: 600;
         margin-bottom: 6px;
         text-transform: none;
+      }
+    }
+    p {
+      margin-top: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  #course-overview {
+    .faculty {
+      input[type=radio] {
+        + label {
+          width: 22%;
+          height: 141px;
+          margin-bottom: 2.2%;
+          &:first-child {
+            margin: 0;
+          }
+        }
+        &:checked + label:after {
+          background-size: 22px 40px;
+        }
+      }
+    }
+  }
+
+  .courseOverview {
+    .textImageWrap {
+      .imgWrap {
+        width: 45%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #course-overview {
+    .faculty {
+      input[type=radio] {
+        + label {
+          width: 20%;
+          height: 94px;
+          margin-left: 5px;
+          margin-bottom: 5px;
+          margin-right: 0;
+          &:first-child {
+            margin: 0;
+          }
+          img {
+            height: auto;
+          }
+        }
+        &:checked + label:after {
+          background-size: 12px 18px;
+        }
+      }
+      .sub-1,
+      .teacher {
+        margin-left: 4%;
+      }
+    }
+  }
+  .courseOverview {
+    .textImageWrap {
+      .imgWrap {
+        float: none;
+        width: 100%;
+        display: block;
+        margin: 0 0 20px;
+      }
+      .textWrap {
+        width: 100%;
       }
     }
   }

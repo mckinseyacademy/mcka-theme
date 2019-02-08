@@ -95,7 +95,6 @@
       .bookmark {
         @include left(-30px);
         @include right(auto);
-
         @include media-breakpoint-between(xs, sm) {
           @include left(-22px);
         }
@@ -462,5 +461,18 @@ body.rtl {
   .mapboxgl-ctrl-top-left {
     left: auto;
     right: 10px;
+  }
+}
+
+
+//Course Overview
+.courseOverview {
+  .textImageWrap {
+    .imgWrap{
+      @include float(left);
+      @media screen and (max-width: 767px) {
+        float: none;
+      }
+    }
   }
 }
