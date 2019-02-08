@@ -37,23 +37,15 @@ jobs:
             command: dockerize -wait tcp://127.0.0.1:3306 -timeout 120s
 
         - run:
-            name: Run Tests
-            command: |
-                source ~/virtualenvs/venv/bin/activate
-                python manage.py test --settings=mcka_apros.test_settings
-
-        - run:
-            name: Run Coverage
+            name: Run Coverage and Upload Codecov
             command: |
                 source ~/virtualenvs/venv/bin/activate
                 coverage run --source='.' manage.py test --settings=mcka_apros.test_settings
                 coverage xml
+                bash <(curl -s https://codecov.io/bash) -y codecov.yml
         
         - run:
             name: Check flake8 quality violations
             command: |
                 source ~/virtualenvs/venv/bin/activate
                 flake8 ./
-        - run:
-            name: Upload Coverage to codecov
-            command: bash <(curl -s https://codecov.io/bash) -y codecov.yml
