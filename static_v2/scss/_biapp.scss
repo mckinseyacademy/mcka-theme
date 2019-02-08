@@ -301,21 +301,6 @@
   }
 }
 
-//popover
-
-.bs-popover-left {
-  @include margin-left(40px !important);
-  @include media-breakpoint-between(md, lg){
-    @include margin-left(0 !important);
-  }
-}
-.bs-popover-right {
-  @include margin-right(40px !important);
-  @include media-breakpoint-between(md, lg) {
-    @include margin-right(0 !important);
-  }
-}
-
 // Lesson Page
 
 .lessonOverview {

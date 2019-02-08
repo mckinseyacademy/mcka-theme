@@ -22,6 +22,14 @@
   &.bs-popover-bottom{
     margin-top: 10px;
   }
+  
+  &.bs-popover-left,
+  &.bs-popover-right{
+    margin: 0 40px;
+    @include media-breakpoint-between(xs,md){
+      margin: 20px !important;
+    }
+  }
 }
 
 .bs-popover-left > .arrow,
