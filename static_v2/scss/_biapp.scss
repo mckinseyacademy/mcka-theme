@@ -189,10 +189,6 @@
       >.holder {
         @include border-left(0);
       }
-
-      >h5 {
-        @include margin-left(15px);
-      }
     }
 
     >h5 {

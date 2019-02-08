@@ -69,7 +69,7 @@ header {
       width: 40px;
       height: 40px;
 
-      >a {
+      > a {
         display: block;
         height: 100%;
         width: 100%;
@@ -105,7 +105,13 @@ header {
     .headerNav {
       width: auto;
       margin: 17px 0 0;
-
+      ul {
+        li {
+          &:first-child {
+            margin-left: 0;
+          }
+        }
+      }
       .dropdown-menu {
         margin: 0;
       }
@@ -134,7 +140,7 @@ header {
       .nameArea,
       .roleArea {
 
-        >span,
+        > span,
         a {
           display: inline-block;
           vertical-align: middle;
@@ -185,7 +191,7 @@ header {
 
     }
 
-    >.wrap {
+    > .wrap {
       border-bottom: 1px solid $light-gray;
       padding: 0 0 15px;
       margin: 0 0 15px;
@@ -275,16 +281,16 @@ header {
 
 //Course navigation wrraper
 .courseNavWrap {
-  >ul {
+  > ul {
     padding: 0;
     margin: 0;
     list-style: none;
   }
 
   .mainNav {
-    >ul {
-      >li {
-        >a {
+    > ul {
+      > li {
+        > a {
           padding: 0 0 10px;
         }
       }
@@ -294,12 +300,12 @@ header {
 
 //Main (generic custom) navigation styles
 .mainNav {
-  >ul {
+  > ul {
     margin: 0;
     padding: 0;
     list-style: none;
 
-    >li {
+    > li {
       display: inline-block;
       vertical-align: middle;
       position: relative;
@@ -318,7 +324,7 @@ header {
         }
       }
 
-      >a {
+      > a {
         color: #2042CB;
         padding: 0 0 18px;
 
@@ -355,7 +361,6 @@ header {
 
   h1 {
     color: $black;
-    font-family: "Open Sans", sans-serif;
     font-size: 2rem;
     font-weight: 300;
     line-height: 40px;
@@ -409,24 +414,29 @@ header {
       top: -9px;
       color: #ccc;
       opacity: 1;
-      i{
+      i {
         color: #ccc;
       }
 
-      &.active{
-        i{
-         color: $black;
+      &.active {
+        i {
+          color: $black;
         }
       }
     }
   }
 
+  .courseNavWrap {
+    margin: 0 -15px;
+  }
+
   .pn-ProductNav {
     margin: 0 30px;
+    padding: 0 0 2px;
   }
 
   .allCoursesList {
-    >.courseRow {
+    > .courseRow {
       .description {
         display: none;
       }
@@ -436,19 +446,19 @@ header {
 
 @media screen and (max-width: 767px) {
 
-
-  .courseNavWrap{
+  .courseNavWrap {
     border-top: 1px solid #d6d3d3;
-      padding: 15px 0 0;
+    padding: 15px 0 0;
+    margin: 0;
   }
 
-
-
-  .courseMainHeader{
-    padding: 0 ;
+  .courseMainHeader {
+    padding: 0;
     margin: 0 0 15px;
-    h1{
+    h1 {
       padding-left: 22px !important;
+      margin-left: 9px;
+      margin-right: 9px;
     }
   }
   .appHeader {
@@ -481,8 +491,6 @@ header {
   }
 
   .courseMainHeader {
-
-    //padding: 0 15px;
     h1 {
       font-size: 12px;
       line-height: 17px;

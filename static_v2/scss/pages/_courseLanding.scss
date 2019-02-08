@@ -3,7 +3,7 @@
 //generic card
 .contentCard {
   background-color: $white;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.04);
   padding: 30px;
   width: 100%;
 }
@@ -14,6 +14,9 @@
   >.head {
     margin-bottom: 5px;
     padding: 0 15px;
+    h5{
+      margin: 15px;
+    }
   }
 
   h5 {
@@ -31,6 +34,7 @@
 
 .progressWidgets {
   padding: 30px 40px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 
   .widget {
     display: inline-block;

@@ -1,6 +1,8 @@
 // Lesson Overview or Details page styling
 .lessonOverview {
   position: relative;
+
+  .bookmark-button { display: none;}
   .contentCard {
     padding: 30px;
   }
@@ -65,7 +67,7 @@
   }
   .nextPreviousWrap {
     position: relative;
-    z-index: 9999;
+    z-index: 99999;
   }
   .arrowPin {
     position: fixed;
@@ -197,7 +199,7 @@ body.zoomIn {
       bottom: 0;
       background: $white;
       left: 0;
-      z-index: 9999;
+      z-index: 99999;
       width: 100%;
       > .holder {
         border-top: 1px solid $border-color;
@@ -291,7 +293,7 @@ body.zoomIn {
       bottom: 0;
       background: $white;
       left: 0;
-      z-index: 999;
+      z-index: 99999;
       width: 100%;
       > .holder {
         padding: 12px 30px;

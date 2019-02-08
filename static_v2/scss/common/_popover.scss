@@ -1,4 +1,4 @@
-.popover{
+.popover {
   background-color: $dark-gray;
   border: 0;
   margin-top: 10px;
@@ -10,46 +10,56 @@
   max-width: 220px;
   text-align: center;
   z-index: 9999;
-  .popover-title{ display: none;}
+  .popover-title {
+    display: none;
+  }
   .popover-body,
-  .popover-content{
+  .popover-content {
     color: $white;
     font-size: 12px;
     padding: 0.5rem 0.75rem;
   }
   &.bs-popover-left,
-  &.bs-popover-right{ margin-top: 5px;}
-  &.bs-popover-bottom{
+  &.bs-popover-right {
+    margin-top: 5px;
+  }
+  &.bs-popover-bottom {
     margin-top: 10px;
   }
-  
+
   &.bs-popover-left,
-  &.bs-popover-right{
+  &.bs-popover-right {
     margin: 0 40px;
-    @include media-breakpoint-between(xs,md){
+    @include media-breakpoint-between(xs, md) {
       margin: 20px !important;
     }
+  }
+
+  &.bs-popover-left {
+    text-align: left;
+  }
+
+  &.bs-popover-right {
+    text-align: right;
   }
 }
 
 .bs-popover-left > .arrow,
-.bs-popover-right > .arrow{
+.bs-popover-right > .arrow {
   top: 50% !important;
   transform: translateY(-50%) !important;
   margin: 0;
 }
 
-
-
-
-.bs-popover-left > .arrow::after, .bs-popover-auto[x-placement^="left"] > .arrow::after{
+.bs-popover-left > .arrow::after, .bs-popover-auto[x-placement^="left"] > .arrow::after {
   border-left-color: #4b4b4b;
 }
-.bs-popover-right > .arrow::after, .bs-popover-auto[x-placement^="right"] > .arrow::after{
+
+.bs-popover-right > .arrow::after, .bs-popover-auto[x-placement^="right"] > .arrow::after {
   border-right-color: #4b4b4b;
 }
 
 .bs-popover-bottom > .arrow::after, .bs-popover-auto[x-placement^="bottom"] > .arrow::after {
-    top: 1px;
-    border-bottom-color: #4b4b4b;
+  top: 1px;
+  border-bottom-color: #4b4b4b;
 }
