@@ -8,10 +8,78 @@
 
 // For The old UI Structure support
 #course-resources {
-  table{
-    a{
-      font-size: 16px;
+  i {
+    &.fa {
+      font-size: 1.125rem;
+      width: 1.8rem;
+      &:before {
+        text-align: left;
+      }
+    }
+  }
+
+  table {
+    a {
+      font-size: 1rem;
       line-height: 22px;
+    }
+    background: #fff;
+    width: 100%;
+    border: none;
+    tr {
+      &:last-child {
+        td {
+          &:first-child {
+            margin-bottom: 0;
+          }
+        }
+      }
+      td {
+        &:first-child {
+          width: 200px;
+          padding: 0 30px 30px 0;
+          overflow: hidden;
+        }
+        padding: 0;
+        .oo-player-container {
+          width: 100% !important;
+        }
+        p {
+          > a {
+            padding-left: 0.6rem;
+          }
+        }
+      }
+    }
+    h2 {
+      line-height: 22px;
+      margin: 4px 0 0;
+      font-weight: normal;
+      a {
+        display: inline-block;
+        vertical-align: middle;
+        margin: 0 7px 0 0;
+        position: relative;
+        font-size: 1rem;
+        line-height: 22px;
+        padding-left: 1.742857rem;
+        &:hover {
+          i {
+            color: $dark-blue
+          }
+          color: $dark-blue;
+        }
+        i {
+          font-size: 1.125rem;
+          line-height: 22px;
+          color: $secondary;
+          position: absolute;
+          top: 0.042857em;
+          text-align: center;
+          left: 0;
+          width: auto;
+        }
+      }
     }
   }
   h1 {
@@ -27,55 +95,13 @@
 
   i.fa::before {
     @extend .d-block;
-    min-width: 12px;
-    text-align: right;
+    text-align: left;
     margin-right: 3px;
   }
 
-  .fa-li{
+  .fa-li {
     left: 0;
     position: relative;
-  }
-
-  table {
-    background: #fff;
-    width: 100%;
-    border: none;
-    tr {
-      td {
-        padding: .64286rem .71429rem;
-      }
-    }
-    h2 {
-      line-height: 22px;
-      margin: 4px 0 0;
-      font-weight: normal;
-      a {
-        display: inline-block;
-        vertical-align: middle;
-        margin: 0 7px 0 0;
-        position: relative;
-        font-size: 16px;
-        line-height: 22px;
-        padding-left: 1.742857rem;
-        &:hover {
-          i {
-            color: $dark-blue
-          }
-          color: $dark-blue;
-        }
-        i {
-          font-size: 18px;
-          line-height: 22px;
-          color: $secondary;
-          position: absolute;
-          top: 0.14285714em;
-          text-align: center;
-          left: 0;
-          width: auto;
-        }
-      }
-    }
   }
 
   hr {
@@ -86,15 +112,17 @@
     border: 0;
     border-top: 1px solid $gray-border;
     padding: 0;
+    margin-bottom: 0;
 
   }
   .sub-1 {
     text-transform: uppercase;
     color: $black;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     line-height: 17px;
     margin-bottom: 12px;
+    padding-top: 30px;
   }
 
   ul.fa-ul {
@@ -103,35 +131,38 @@
       position: relative;
       margin-top: 4px;
       color: $gray;
-      font-size: 12px;
+      font-size: 0.75rem;
       line-height: 22px;
-
-      a {
-        display: inline-block;
-        vertical-align: middle;
-        margin: 0 7px 0 0;
-        position: relative;
-        font-size: 16px;
-        line-height: 22px;
-        padding-left: 1.742857rem;
-        &:hover {
-          i {
-            color: $dark-blue
-          }
-          color: $dark-blue;
-        }
-        i {
-          font-size: 18px;
-          line-height: 22px;
-          color: $secondary;
-          position: absolute;
-          top: 0.14285714em;
-          text-align: center;
-          left: 0;
-          width: auto;
-        }
+    }
+    a {
+      display: inline-block;
+      vertical-align: middle;
+      margin: -4px 0 0 0;
+      position: relative;
+      font-size: 1rem;
+      line-height: 22px;
+      padding-left: 1.742857rem;
+      & + a {
+        padding-left: 0;
+        margin: 0;
+        font-size: inherit;
       }
-
+      &:hover {
+        i {
+          color: $dark-blue
+        }
+        color: $dark-blue;
+      }
+      i {
+        font-size: 1.125rem;
+        line-height: 22px;
+        color: $secondary;
+        position: absolute;
+        top: 0.042857em;
+        text-align: center;
+        left: 0;
+        width: auto;
+      }
     }
   }
   p {
@@ -139,13 +170,28 @@
     > a {
       margin-bottom: 4px;
       display: inline-block;
+      padding-left: 1.742857rem;
+      position: relative;
+      font-size: 1rem;
+      line-height: 22px;
+      i {
+        font-size: 1.125rem;
+        line-height: 22px;
+        color: #2042cb;
+        position: absolute;
+        top: 0.042857em;
+        text-align: center;
+        left: 0;
+        width: auto;
+        line-height: initial;
+      }
     }
     > b {
       display: block;
-      font-size: 14px;
+      font-size: 0.875rem;
       line-height: 19px;
       text-transform: capitalize;
-      margin: 20px 0 7px;
+      margin: 20px 0 10px;
       font-weight: normal;
       color: $black;
     }
@@ -163,8 +209,8 @@
     }
     i.fa-level-down {
       transform: rotate(-135deg) scaleX(-1);
-      left: 8px;
-      top: 0;
+      left: 0;
+      top: 6px;
     }
   }
 
@@ -195,7 +241,7 @@
     .sectionTitle {
       text-transform: uppercase;
       color: $black;
-      font-size: 12px;
+      font-size: 0.75rem;
       font-weight: 600;
       line-height: 17px;
       margin-bottom: 12px;
@@ -207,7 +253,7 @@
         position: relative;
         margin-top: 4px;
         color: $gray;
-        font-size: 12px;
+        font-size: 0.75rem;
         line-height: 22px;
         u {
           text-decoration: none;
@@ -216,11 +262,11 @@
         i {
           color: $gray;
           font-style: normal;
-          font-size: 12px;
+          font-size: 0.75rem;
           line-height: 17px;
         }
         .title {
-          font-size: 14px;
+          font-size: 0.875rem;
           line-height: 19px;
           text-transform: capitalize;
           margin-bottom: 7px;
@@ -231,9 +277,9 @@
         a {
           display: inline-block;
           vertical-align: middle;
-          margin: 0 7px 0 0;
+          margin: 0;
           position: relative;
-          font-size: 16px;
+          font-size: 1rem;
           line-height: 22px;
           padding-left: 1.742857rem;
           &:hover {
@@ -243,7 +289,7 @@
             color: $dark-blue;
           }
           i {
-            font-size: 18px;
+            font-size: 1.125rem;
             line-height: 22px;
             color: $secondary;
             position: absolute;
@@ -261,6 +307,23 @@
 // Media Queries
 
 @include media-breakpoint-between(xs, sm) {
+  #course-resources {
+    table {
+      tr {
+        td {
+          padding: 0 0 30px;
+          width: 100%;
+          &:first-child {
+            width: 100%;
+            padding: 0 0 10px;
+          }
+          .oo-player-container{
+            height: auto !important;
+          }
+        }
+      }
+    }
+  }
   table {
   }
   tr {
