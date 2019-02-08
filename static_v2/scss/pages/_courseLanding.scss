@@ -102,7 +102,6 @@
           &:before {
             content: "";
             position: absolute;
-            left: 0;
             bottom: 0;
             top: 0;
             background-color: $tertiary;
@@ -283,9 +282,13 @@
         line-height: 17px;
         width: auto;
         max-width: 250px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+        position: relative;
+        @include text-ellipsis;
+        span{
+          position: absolute;
+          width: 20px;
+          line-height: 1.55;
+        }
       }
 
       &.title {
@@ -293,9 +296,7 @@
         font-size: 16px;
         line-height: 22px;
         width: 40%;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        @include text-ellipsis;
       }
 
       &.time {

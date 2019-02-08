@@ -211,19 +211,6 @@
     }
   }
 
-  .contentCard {
-    [class*="col"] {
-      //h5 {
-      //  @include margin-left(30px);
-      //}
-      //&:first-child {
-      //  h5 {
-      //    @include margin-left(15px);
-      //  }
-      //}
-    }
-  }
-
   .articlesArea {
     .holder {
       @include margin-right(30px);
@@ -266,10 +253,6 @@
       li {
         @include border-left(1px solid $hard-gray);
 
-        .user {
-          @include margin-left(5px);
-        }
-
         &:first-child {
           border: 0;
         }
@@ -311,6 +294,29 @@
           }
         }
       }
+      &.serial{
+        padding-right: 25px;
+        span{
+          @include right(0);
+        }
+      }
+    }
+  }
+}
+
+//popover
+
+.popover{
+  &.bs-popover-left {
+    @include margin-right(40px !important);
+    @include media-breakpoint-between(md, lg){
+      @include margin-right(0 !important);
+    }
+  }
+  &.bs-popover-right {
+    @include margin-left(40px !important);
+    @include media-breakpoint-between(md, lg) {
+      @include margin-left(0 !important);
     }
   }
 }
@@ -375,6 +381,11 @@ body.rtl {
             @include media-breakpoint-between(xs, sm) {
               margin: 0;
             }
+            .filler{
+              &:before{
+                @include left(0);
+              }
+            }
           }
         }
       }
@@ -422,7 +433,7 @@ body.rtl {
   .dropdown-menu {
     &.allLessons {
       &:after {
-        right: 76px;
+        right: 65px;
       }
 
       .allCoursesList {
@@ -433,6 +444,7 @@ body.rtl {
     }
 
     &.course-materials {
+      margin-left: -37px;
       &:after {
         left: 11px;
         right: auto;

@@ -46,3 +46,11 @@
   padding-left: $value;
   padding-right: $value;
 }
+
+// Text overflow ellipsis
+
+@mixin text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

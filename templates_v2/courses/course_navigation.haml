@@ -1,7 +1,7 @@
 - load i18n
 
 %script
-    $('body').addClass("noAppHeader");
+  $('body').addClass("noAppHeader");
 
 .container
   .row
@@ -57,8 +57,9 @@
                       {% trans "Notifications" %}
                 %span#pnIndicator.pn-ProductNav_Indicator{:style => "transform: translateX(0px) scaleX(0.672); background-color: rgb(46, 45, 57);"}
             %button#pnAdvancerLeft.pn-Advancer.pn-Advancer_Left{"type": "button"}
-              %svg.pn-Advancer_Icon{:viewbox => "0 0 551 1024", :xmlns => "http://www.w3.org/2000/svg"}
-                %path{:d => "M445.44 38.183L-2.53 512l447.97 473.817 85.857-81.173-409.6-433.23v81.172l409.6-433.23L445.44 38.18z"}
-            %button#pnAdvancerRight.pn-Advancer.pn-Advancer_Right{:type => "button"}
-              %svg.pn-Advancer_Icon{:viewbox => "0 0 551 1024", :xmlns => "http://www.w3.org/2000/svg"}
-                %path{:d => "M105.56 985.817L553.53 512 105.56 38.183l-85.857 81.173 409.6 433.23v-81.172l-409.6 433.23 85.856 81.174z"}
+              %i.material-icons
+                keyboard_arrow_left
+
+            %button#pnAdvancerRight.pn-Advancer.pn-Advancer_Right.active{:type => "button"}
+              %i.material-icons
+                keyboard_arrow_right

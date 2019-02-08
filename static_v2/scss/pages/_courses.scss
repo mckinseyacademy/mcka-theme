@@ -59,7 +59,7 @@
           vertical-align: middle;
 
           &.lesson-count {
-            width: 25%;
+            width: 75px;
             max-width: 80px;
           }
 
@@ -70,8 +70,7 @@
 
           &.course-progress {
             margin-top: 3px;
-            width: 42%;
-
+            width: 142px;
             .bar {
               border: 1px solid white;
               height: 13px;
@@ -206,7 +205,6 @@
 
           span {
             &.course-progress {
-              min-width: calc(100% - 190px);
               float: none;
               text-align: left;
 

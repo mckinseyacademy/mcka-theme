@@ -169,7 +169,7 @@ function smoothNavLinks() {
         navBarTravelling: false,
         navBarTravelDirection: "",
         navBarTravelDistance: 150
-    }
+    };
 
     var activeColours = "#2E2D39";
 
@@ -205,7 +205,6 @@ function smoothNavLinks() {
             });
         }
         ticking = true;
-        $
     });
 
 
@@ -222,7 +221,11 @@ function smoothNavLinks() {
             // otherwise, move by the amount in the settings
             if (availableScrollLeft < SETTINGS.navBarTravelDistance * 2) {
                 pnProductNavContents.style.transform = "translateX(" + availableScrollLeft + "px)";
+                pnAdvancerLeft.classList.remove('active');
+                pnAdvancerRight.classList.add('active');
             } else {
+                pnAdvancerLeft.classList.add('active');
+                pnAdvancerRight.classList.add('active');
                 pnProductNavContents.style.transform = "translateX(" + SETTINGS.navBarTravelDistance + "px)";
             }
             // We do want a transition (this is set in CSS) when moving so remove the class that would prevent that
@@ -245,13 +248,18 @@ function smoothNavLinks() {
             // Get the right edge of the container and content
             var navBarRightEdge = pnProductNavContents.getBoundingClientRect().right;
             var navBarScrollerRightEdge = pnProductNav.getBoundingClientRect().right;
-            // Now we know how much space we have available to scroll
+            // Now we know how much space we have available to scrollq
             var availableScrollRight = Math.floor(navBarRightEdge - navBarScrollerRightEdge);
             // If the space available is less than two lots of our desired distance, just move the whole amount
             // otherwise, move by the amount in the settings
             if (availableScrollRight < SETTINGS.navBarTravelDistance * 2) {
                 pnProductNavContents.style.transform = "translateX(-" + availableScrollRight + "px)";
+                pnAdvancerRight.classList.remove('active');
+                pnAdvancerLeft.classList.add('active');
+
             } else {
+                pnAdvancerLeft.classList.add('active');
+                pnAdvancerRight.classList.add('active');
                 pnProductNavContents.style.transform = "translateX(-" + SETTINGS.navBarTravelDistance + "px)";
             }
             // We do want a transition (this is set in CSS) when moving so remove the class that would prevent that
@@ -431,3 +439,4 @@ function smoothNavLinks() {
     }));
 
 }
+

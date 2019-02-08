@@ -359,7 +359,8 @@ header {
     font-size: 2rem;
     font-weight: 300;
     line-height: 40px;
-    margin: 0 0 20px;
+    margin: 0 9px;
+    padding: 0 0 10px;
 
     .backBtn {
       vertical-align: middle;
@@ -373,8 +374,6 @@ header {
     @media screen and (max-width: 767px) {
       font-size: 15px;
       line-height: 24px;
-      border-bottom: 1px solid #d6d3d3;
-      padding: 0 0 15px;
       font-weight: 400;
       padding-left: 15px;
       padding-right: 15px;
@@ -408,21 +407,15 @@ header {
       text-align: center;
       display: block;
       top: -9px;
-      color: $black;
+      color: #ccc;
       opacity: 1;
-
-      &:active,
-      &:hover {
-        color: $secondary;
+      i{
+        color: #ccc;
       }
 
-      .pn-Advancer_Icon {
-        fill: #ccc;
-
-        &:focus,
-        &:active,
-        &:visited {
-          fill: $secondary;
+      &.active{
+        i{
+         color: $black;
         }
       }
     }
@@ -442,9 +435,21 @@ header {
 }
 
 @media screen and (max-width: 767px) {
+
+
+  .courseNavWrap{
+    border-top: 1px solid #d6d3d3;
+      padding: 15px 0 0;
+  }
+
+
+
   .courseMainHeader{
-    padding: 0 15px;
+    padding: 0 ;
     margin: 0 0 15px;
+    h1{
+      padding-left: 22px !important;
+    }
   }
   .appHeader {
     .topRightArea {
