@@ -126,10 +126,6 @@ $(function () {
     }
   });
 
-  $('.card-img-top').on('error', function (e) {
-    $(e.target).attr('src', '/static/image/default-course-image.png');
-  });
-
   $(document).on('close.fndtn.reveal', '[data-reveal]', function () {
     var modal = $(this),
       ooyala = modal.data('ooyala');
