@@ -837,7 +837,7 @@ def _cohort_flag():
     return waffle.switch_is_active('{}.{}'.format(namespace, switch_name))
 
 
-def _get_course_context(course):
+def _get_course_context(course, organization_id=''):
     """
     Builds a context for rendering course details
     :param course: api_client.course_models.Course
@@ -862,7 +862,7 @@ def _get_course_context(course):
         context['certificates_statuses'] = CertificateStatus()
 
     # Update metrics
-    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course.id)
+    course_metrics_active_users = course_api.get_course_details_metrics_all_users(course.id, organization_id)
     context['average_progress'] = round_to_int_bump_zero(course_metrics_active_users['avg_progress'])
     context['proficiency'] = round_to_int_bump_zero(100 * course_metrics_active_users['avg_grade'])
     context['users_enrolled'] = course_metrics_active_users['users_enrolled']
@@ -5677,7 +5677,7 @@ def course_learner_dashboard_branding_reset(request, course_id, learner_dashboar
 )
 @company_admin_company_access
 def company_course_details(request, company_id, course_id):
-    context = _get_course_context(load_course(course_id))
+    context = _get_course_context(load_course(course_id), company_id)
     context.update({
         'companyAdminFlag': request.user.is_company_admin,
         'companyCourseDetailsPage': True,
