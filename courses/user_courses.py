@@ -22,15 +22,15 @@ CURRENT_PROGRAM_ID = "current_program_id"
 CURRENT_PROGRAM = "current_program"
 
 
-def set_current_course_for_user(request, course_id):
+def set_current_course_for_user(request, course_id, course_landing_page_flag=False):
     """
     Sets current course and program for the user in backend
     """
-    user_data = UserDataManager(request.user.id).get_basic_user_data()
+    if not course_landing_page_flag:
+        user_data = UserDataManager(request.user.id).get_basic_user_data()
+        if user_data.current_course.id == course_id:
+            return
     common_data_manager = CommonDataManager()
-
-    if user_data.current_course.id == course_id:
-        return
 
     # get program for this course
     user_programs = Program.user_program_list(request.user.id)

@@ -81,7 +81,7 @@ class UserDataManager(DataManager):
         from courses.user_courses import CURRENT_COURSE_ID, CURRENT_PROGRAM_ID
 
         current_course = None
-        current_program = Program.no_program()
+        current_program = None
         courses = user_api.get_user_courses(self.user_id)
         organizations = user_api.get_user_organizations(self.user_id)
         user_preferences = user_api.get_user_preferences(self.user_id)
@@ -125,6 +125,6 @@ class UserDataManager(DataManager):
         return DottableDict(
             courses=courses,
             current_course=current_course,
-            current_program=current_program,
+            current_program=current_program if current_program else Program.no_program(),
             organization=organizations[0] if organizations else None,
         )

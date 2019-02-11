@@ -83,7 +83,7 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     """
-    set_current_course_for_user(request, course_id)
+    set_current_course_for_user(request, course_id, course_landing_page_flag=True)
     feature_flags = CourseDataManager(course_id).get_feature_flags()
     course_data_manager = CourseDataManager(course_id=course_id)
 
