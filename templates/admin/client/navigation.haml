@@ -54,7 +54,6 @@
   #custom-branding
     %form{action: "/admin/clients/#{client.id}/customization", method: 'POST', enctype: "multipart/form-data"}
       - csrf_token
-      %fieldset
         - if request.user.is_mcka_admin
           .ui-switch
             %p
@@ -73,13 +72,15 @@
                     {% trans "ON" %}
                   - else
                     {% trans "OFF" %}
-
-        .sub-1 {% trans "Global Branding" %}
+      %fieldset
+        .sub-1.oldui {% trans "Global Branding" %}
+        .sub-1.newui {% trans "Platform Branding" %}
         {% trans "Enter hex#" as hex_text %}
         {% trans "Enter css" as css_text %}
         %ul
           %li
-            %label.nav2.selected {% trans "Upload Global Logo:" %}
+            %label.nav2.selected.oldui {% trans "Upload Global Logo:" %}
+            %label.nav2.selected.newui {% trans "Platform Logo:" %}
             %a.button.radius.tiny.upload_logo {% trans "Upload Logo" %}
             %input{type: 'file', name: 'global_client_logo'}
             - if customization.global_client_logo
@@ -89,14 +90,16 @@
                 .global_client_logo
                   %img{src: "#{customization.global_client_logo}", height:'100px', width:'100px'}
 
-          %li
+          %li.oldui
             %label.nav2.selected {% trans "Top Navigation Background:" %}
             %input{type: 'text', name: 'hex_background_main_navigation', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_background_main_navigation}"}
         %br
-        .sub-1 {% trans "Desktop, Tablet and Mobile Web" %}
+        .sub-1.oldui {% trans "Desktop, Tablet and Mobile Web" %}
+        .sub-1.newui {% trans "Company Branding" %}
         %ul
           %li
-            %label.nav2.selected {% trans "Upload Logo:" %}
+            %label.nav2.selected.oldui {% trans "Upload Logo:" %}
+            %label.nav2.selected.newui {% trans "Company Logo:" %}
             %a.button.radius.tiny.upload_logo {% trans "Upload Logo" %}
             %input{type: 'file', name: 'client_logo'}
             - if customization.client_logo
@@ -105,25 +108,31 @@
                   %i.fa.fa-times-circle
                 .client_logo
                   %img{src: "#{customization.client_logo}", height:'100px', width:'100px'}
-          %li
+          %li.oldui
             %label.nav2.selected {% trans "Notification Circle Color:" %}
             %input{type: 'text', name: 'hex_notification', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_notification}"}
+
           %li
-            %label.nav2.selected {% trans "Second Navigation Background:" %}
-            %input{type: 'text', name: 'hex_background_bar', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_background_bar}"}
-          %li
+            %label.nav2.selected.oldui {% trans "Course Title Text Color:" %}
+            %label.nav2.selected.newui {% trans "Primary Color:" %}
+            %input{type: 'text', name: 'hex_course_title', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_course_title}"}
+
+          %li.oldui
             %label.nav2.selected {% trans "Notification Text Color:" %}
             %input{type: 'text', name: 'hex_notification_text', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_notification_text}"}
-          %li
+          %li.oldui
             %label.nav2.selected {% trans "Program Name Text Color:" %}
             %input{type: 'text', name: 'hex_program_name', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_program_name}"}
-          %li
+          %li.oldui
             %label.nav2.selected {% trans "Page Background Color:" %}
             %input{type: 'text', name: 'hex_page_background', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_page_background}"}
+
           %li
-            %label.nav2.selected {% trans "Course Title Text Color:" %}
-            %input{type: 'text', name: 'hex_course_title', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_course_title}"}
-          %li
+            %label.nav2.selected.oldui {% trans "Second Navigation Background:" %}
+            %label.nav2.selected.newui {% trans "Secondary Color:" %}
+            %input{type: 'text', name: 'hex_background_bar', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_background_bar}"}
+
+          %li.oldui
             %label.nav2.selected {% trans "Page Background Image:" %}
             %a.button.radius.tiny.upload_logo {% trans "Upload Image" %}
             %input{type: 'file', name: 'client_background'}
@@ -134,17 +143,17 @@
                 .client_background
                   %img{src: "#{customization.client_background}", height:'100px', width:'100px'}
 
-          %li
+          %li.oldui
             %label.nav2.selected {% trans "Navigation Icon Color:" %}
             %input{type: 'text', name: 'hex_navigation_icons', placeholder: "#{hex_text}", maxlength: "7", value: "#{customization.hex_navigation_icons}"}
-          %li
+          %li.oldui
             %label.nav2.selected {% trans "Page Background CSS:" %}
             %input{type: 'text', name: 'client_background_css', placeholder: "#{css_text}", maxlength: "200", value: "#{customization.client_background_css}"}
 
 
         %br
-        .sub-1 {% trans "Native Mobile & Tablet Apps" %}
-        %ul
+        .sub-1.oldui {% trans "Native Mobile & Tablet Apps" %}
+        %ul.oldui
           - if errors
             %font{color: 'red'}
               = errors
@@ -209,3 +218,11 @@
         %input.button.radius.tiny{type: 'submit', value: "#{save_text}"}
 
   #edit-client-mobile-logo-modal.reveal-modal.medium{'data-reveal': 'true'}
+
+  - if customization.new_ui_enabled
+    :javascript
+      $('.oldui').hide();
+      $('#custom-branding').addClass('new-ui-branding');
+  - else
+    :javascript
+      $('.newui').hide();

@@ -1,3 +1,15 @@
+$('.ui-checker').on('change', function() {
+    if (this.checked) {
+        $('#custom-branding').addClass('new-ui-branding');
+        $('.oldui').hide();
+        $('.newui').show();
+    } else {
+        $('#custom-branding').removeClass('new-ui-branding');
+        $('.newui').hide();
+        $('.oldui').show();
+    }
+});
+
 $('.remove_image').click(function (e)
 {
   var client_id = $(this).attr('client_id');

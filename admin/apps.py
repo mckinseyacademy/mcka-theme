@@ -10,3 +10,4 @@ class AdminAprosConfig(AppConfig):
         Initialize admin app and import celery tasks
         """
         import admin.tasks  # noqa: F401 pylint: disable=unused-variable
+        import admin.signals  # noqa: F401
