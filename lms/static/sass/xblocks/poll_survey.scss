@@ -1,37 +1,39 @@
 //  Overrides for xblocks polls & surveys:
 
-.lesson-content {
-    .themed-xblock {
-        .poll-header {
-            font-size: 12px;
-            color: #000;
-        }
-
-        .poll-container {
-            .poll-question {
-                p {
-                    font-size: 16px;
-                    color: #000;
-                }
+body.new-theme {
+    .lesson-content {
+        .themed-xblock {
+            .poll-header {
+                font-size: 12px;
+                color: #000;
             }
 
-            .poll-answer {
-                display: inline-table;
-
-                .poll-answer-text {
+            .poll-container {
+                .poll-question {
                     p {
                         font-size: 16px;
                         color: #000;
                     }
                 }
-            }
-        }
 
-        .survey-table {
-            .survey-question {
-                p{
-                    font-size: 16px;
-                    color: #000;
+                .poll-answer {
+                    display: inline-table;
+
+                    .poll-answer-text {
+                        p {
+                            font-size: 16px;
+                            color: #000;
+                        }
+                    }
+                }
+            }
+
+            .survey-table {
+                .survey-question {
+                    p {
+                        font-size: 16px;
+                        color: #000;
+                    }
                 }
             }
         }
