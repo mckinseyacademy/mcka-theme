@@ -19,10 +19,8 @@
           %a.holder{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
             .data.serial
               - if lesson_custom_label
-                {% blocktrans with lesson_index=lesson.index %}
-                  {{lesson_custom_label}}
-                  %span {{lesson_index}}:
-                {% endblocktrans %}
+                {{lesson_custom_label}}
+                %span {{lesson_index}}:
               - else
                 {% trans "Lesson" %}
                 %span {{lesson.index}}

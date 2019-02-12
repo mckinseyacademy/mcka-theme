@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-31 11:59+0000\n"
+"POT-Creation-Date: 2019-02-12 15:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:371
-#: static/js/views/admin/participantsinfo.js:135
+#: static/js/views/admin/participantsinfo.js:141
 msgid "Course"
 msgstr "コース"
 
@@ -81,21 +81,21 @@ msgstr "エラーを表示する"
 msgid "Please select file first."
 msgstr "まずファイルをクリックしてください。"
 
-#: static/js/application.js:192
+#: static/js/application.js:192 static_v2/js/application.js:205
 msgid "Your course hasn't begun yet. "
 msgstr "あなたのコースはまだ始まっていません。"
 
-#: static/js/application.js:195
+#: static/js/application.js:195 static_v2/js/application.js:207
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)s days."
 msgstr[0] "あなたのコースは、%(days)s日後に始まります。"
 msgstr[1] "あなたのコースは、%(days)s日後に始まります。"
 
-#: static/js/application.js:198
+#: static/js/application.js:198 static_v2/js/application.js:212
 msgid "Welcome to McKinsey Academy"
 msgstr "McKinsey Academyへようこそ"
 
-#: static/js/application.js:199
+#: static/js/application.js:199 static_v2/js/application.js:213
 msgid ""
 "%(courseStr)s Before the course begins, you can explore this site to learn "
 "more about what to expect."
@@ -127,21 +127,21 @@ msgstr "ファイル: %(filename)sのデータを取り込み中"
 msgid "%(value)s%"
 msgstr "%(value)s%"
 
-#: static/js/common/common_js.js:951
+#: static/js/common/common_js.js:950
 msgid ""
 "<span class=\"red\"> %(diff)s% </span> below your organization's average"
 msgstr ""
 
-#: static/js/common/common_js.js:958
+#: static/js/common/common_js.js:957
 msgid ""
 "<span class=\"green\">%(diff)s% </span> above your organization's average"
 msgstr ""
 
-#: static/js/common/common_js.js:963 static/js/common/common_js.js:983
+#: static/js/common/common_js.js:962 static/js/common/common_js.js:982
 msgid "same as your organization's average"
 msgstr ""
 
-#: static/js/common/common_js.js:971
+#: static/js/common/common_js.js:970
 msgid ""
 "<span class=\"red\"> %(diff)s point</span> below your organization's average"
 msgid_plural ""
@@ -149,11 +149,13 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: static/js/common/common_js.js:978
+#: static/js/common/common_js.js:977
 msgid ""
-"<span class=\"red\"> %(diff)s point</span> above your organization's average"
+"<span class=\"green\"> %(diff)s point</span> above your organization's "
+"average"
 msgid_plural ""
-"<span class=\"red\"> %(diff)s points</span> above your organization's average"
+"<span class=\"green\"> %(diff)s points</span> above your organization's "
+"average"
 msgstr[0] ""
 msgstr[1] ""
 
@@ -307,11 +309,10 @@ msgid "Participants:"
 msgstr "参加者:"
 
 #: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:25
 msgid "Email"
 msgstr "Eメール"
 
-#: static/js/router.js:395
+#: static/js/router.js:394
 msgid "Please select at least one course"
 msgstr "コースを最低1個選択してください"
 
@@ -382,7 +383,6 @@ msgstr[1] ""
 
 #: static/js/views/admin/companies_list.js:12
 #: static/js/views/admin/course_details.js:29
-#: static/js/views/admin/participantsinfo.js:24
 msgid "Company"
 msgstr "会社"
 
@@ -402,7 +402,7 @@ msgstr "コース数:"
 #: static/js/views/admin/company_details.js:192
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:487
-#: static/js/views/admin/participantsinfo.js:385
+#: static/js/views/admin/participantsinfo.js:391
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "会社名には英数字しか使用できません。"
 
@@ -410,7 +410,7 @@ msgstr "会社名には英数字しか使用できません。"
 #: static/js/views/admin/company_details.js:187
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:481
-#: static/js/views/admin/participantsinfo.js:379
+#: static/js/views/admin/participantsinfo.js:385
 msgid "This company name cannot have more than 30 characters!"
 msgstr "会社名は30文字以下にしてください。"
 
@@ -520,12 +520,12 @@ msgstr "名前"
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:144
+#: static/js/views/admin/participantsinfo.js:150
 msgid "Status"
 msgstr "ステータス"
 
 #: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:43
+#: static/js/views/admin/participantsinfo.js:46
 msgid "Activated"
 msgstr "有効化済み"
 
@@ -650,21 +650,21 @@ msgstr "すべての選択した参加者を次のステータスに変更する
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:377
-#: static/js/views/admin/participantsinfo.js:148
+#: static/js/views/admin/participantsinfo.js:154
 msgid "Participant"
 msgstr "参加者"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:378
-#: static/js/views/admin/participantsinfo.js:150
+#: static/js/views/admin/participantsinfo.js:156
 msgid "Observer"
 msgstr "監視者"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:379
-#: static/js/views/admin/participantsinfo.js:149
+#: static/js/views/admin/participantsinfo.js:155
 msgid "TA"
 msgstr "TA"
 
@@ -913,28 +913,28 @@ msgstr ""
 msgid "Importing %(processed)s of %(total)s rows"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:101
+#: static/js/views/admin/manager_dashboard.js:106
 #: static/js/views/courses/lesson_note.js:2
 msgid "Lesson"
 msgstr "レッスン"
 
-#: static/js/views/admin/manager_dashboard.js:101
+#: static/js/views/admin/manager_dashboard.js:106
 msgid "complete"
 msgstr "未完了"
 
-#: static/js/views/admin/manager_dashboard.js:106
+#: static/js/views/admin/manager_dashboard.js:111
 msgid "Error Occured!"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:109
+#: static/js/views/admin/manager_dashboard.js:114
 msgid "Hide Details"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:139
+#: static/js/views/admin/manager_dashboard.js:144
 msgid "View Details"
 msgstr ""
 
-#: static/js/views/admin/navigation.js:6
+#: static/js/views/admin/navigation.js:18
 msgid "Are you sure you want to remove this ?"
 msgstr "本当にこれを消去しますか?"
 
@@ -1006,7 +1006,7 @@ msgid "User successfully enrolled in course"
 msgstr "ユーザーのコースへの登録が完了しました"
 
 #: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:115
+#: static/js/views/admin/participantsinfo.js:121
 msgid "Admin Company"
 msgstr "管理会社"
 
@@ -1015,26 +1015,25 @@ msgid "Try selecting your company from the type-ahead results."
 msgstr "先行入力結果からあなたの会社を選択してみてください。"
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:124
+#: static/js/views/admin/participantsinfo.js:130
 msgid "Admin Permissions"
 msgstr "管理者の許可"
 
 #: static/js/views/admin/participant_details_edit_info.js:547
-#: static/js/views/admin/participantsinfo.js:127
+#: static/js/views/admin/participantsinfo.js:133
 msgid "Company Admin"
 msgstr "会社の管理者"
 
-#: static/js/views/admin/participantsinfo.js:27
-msgid "Date Added"
-msgstr "データが追加されました"
-
-#: static/js/views/admin/participantsinfo.js:37
+#: static/js/views/admin/participantsinfo.js:40
 msgid "Enrolled In"
 msgstr "登録済み"
 
 #: static/js/views/courses/lesson_note.js:3
 msgid "Module"
 msgstr "モジュール"
+
+#~ msgid "Date Added"
+#~ msgstr "データが追加されました"
 
 #~ msgid "Errors:"
 #~ msgstr "エラー:"

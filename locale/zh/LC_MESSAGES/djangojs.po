@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-01-31 12:00+0000\n"
+"POT-Creation-Date: 2019-02-12 15:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:371
-#: static/js/views/admin/participantsinfo.js:135
+#: static/js/views/admin/participantsinfo.js:141
 msgid "Course"
 msgstr "课程"
 
@@ -82,11 +82,11 @@ msgstr "显示错误"
 msgid "Please select file first."
 msgstr "请先选择文件。"
 
-#: static/js/application.js:192
+#: static/js/application.js:192 static_v2/js/application.js:205
 msgid "Your course hasn't begun yet. "
 msgstr "您的课程尚未开始。"
 
-#: static/js/application.js:195
+#: static/js/application.js:195 static_v2/js/application.js:207
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)s days."
 msgstr[0] "您的课程于 %(days)s 天后开始。"
@@ -96,11 +96,11 @@ msgstr[3] "您的课程于 %(days)s 天后开始。"
 msgstr[4] "您的课程于 %(days)s 天后开始。"
 msgstr[5] "您的课程于 %(days)s 天后开始。"
 
-#: static/js/application.js:198
+#: static/js/application.js:198 static_v2/js/application.js:212
 msgid "Welcome to McKinsey Academy"
 msgstr "欢迎来到麦肯锡学院"
 
-#: static/js/application.js:199
+#: static/js/application.js:199 static_v2/js/application.js:213
 msgid ""
 "%(courseStr)s Before the course begins, you can explore this site to learn "
 "more about what to expect."
@@ -131,21 +131,21 @@ msgstr "正在提取文件数据: %(filename)s"
 msgid "%(value)s%"
 msgstr "%(value)s%"
 
-#: static/js/common/common_js.js:951
+#: static/js/common/common_js.js:950
 msgid ""
 "<span class=\"red\"> %(diff)s% </span> below your organization's average"
 msgstr ""
 
-#: static/js/common/common_js.js:958
+#: static/js/common/common_js.js:957
 msgid ""
 "<span class=\"green\">%(diff)s% </span> above your organization's average"
 msgstr ""
 
-#: static/js/common/common_js.js:963 static/js/common/common_js.js:983
+#: static/js/common/common_js.js:962 static/js/common/common_js.js:982
 msgid "same as your organization's average"
 msgstr ""
 
-#: static/js/common/common_js.js:971
+#: static/js/common/common_js.js:970
 msgid ""
 "<span class=\"red\"> %(diff)s point</span> below your organization's average"
 msgid_plural ""
@@ -157,11 +157,13 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
-#: static/js/common/common_js.js:978
+#: static/js/common/common_js.js:977
 msgid ""
-"<span class=\"red\"> %(diff)s point</span> above your organization's average"
+"<span class=\"green\"> %(diff)s point</span> above your organization's "
+"average"
 msgid_plural ""
-"<span class=\"red\"> %(diff)s points</span> above your organization's average"
+"<span class=\"green\"> %(diff)s points</span> above your organization's "
+"average"
 msgstr[0] ""
 msgstr[1] ""
 msgstr[2] ""
@@ -311,11 +313,10 @@ msgid "Participants:"
 msgstr "参与者:"
 
 #: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:25
 msgid "Email"
 msgstr "电子邮件"
 
-#: static/js/router.js:395
+#: static/js/router.js:394
 msgid "Please select at least one course"
 msgstr "请至少选择一门课程"
 
@@ -414,7 +415,6 @@ msgstr[5] ""
 
 #: static/js/views/admin/companies_list.js:12
 #: static/js/views/admin/course_details.js:29
-#: static/js/views/admin/participantsinfo.js:24
 msgid "Company"
 msgstr "公司"
 
@@ -434,7 +434,7 @@ msgstr "课程数量"
 #: static/js/views/admin/company_details.js:192
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:487
-#: static/js/views/admin/participantsinfo.js:385
+#: static/js/views/admin/participantsinfo.js:391
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "公司名称不能包含非字母数字字符！"
 
@@ -442,7 +442,7 @@ msgstr "公司名称不能包含非字母数字字符！"
 #: static/js/views/admin/company_details.js:187
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:481
-#: static/js/views/admin/participantsinfo.js:379
+#: static/js/views/admin/participantsinfo.js:385
 msgid "This company name cannot have more than 30 characters!"
 msgstr "公司名称不得超过 30 个字符！"
 
@@ -552,12 +552,12 @@ msgstr "名称"
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:144
+#: static/js/views/admin/participantsinfo.js:150
 msgid "Status"
 msgstr "状态"
 
 #: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:43
+#: static/js/views/admin/participantsinfo.js:46
 msgid "Activated"
 msgstr "已激活"
 
@@ -682,21 +682,21 @@ msgstr "将所有选定参与者的状态更改为:"
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:377
-#: static/js/views/admin/participantsinfo.js:148
+#: static/js/views/admin/participantsinfo.js:154
 msgid "Participant"
 msgstr "参与者"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:378
-#: static/js/views/admin/participantsinfo.js:150
+#: static/js/views/admin/participantsinfo.js:156
 msgid "Observer"
 msgstr "观察员"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:379
-#: static/js/views/admin/participantsinfo.js:149
+#: static/js/views/admin/participantsinfo.js:155
 msgid "TA"
 msgstr "助教"
 
@@ -943,30 +943,30 @@ msgstr ""
 msgid "Importing %(processed)s of %(total)s rows"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:101
+#: static/js/views/admin/manager_dashboard.js:106
 #: static/js/views/courses/lesson_note.js:2
 msgid "Lesson"
 msgstr "课程"
 
-#: static/js/views/admin/manager_dashboard.js:101
+#: static/js/views/admin/manager_dashboard.js:106
 #, fuzzy
 #| msgid "Incomplete"
 msgid "complete"
 msgstr "未完成"
 
-#: static/js/views/admin/manager_dashboard.js:106
+#: static/js/views/admin/manager_dashboard.js:111
 msgid "Error Occured!"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:109
+#: static/js/views/admin/manager_dashboard.js:114
 msgid "Hide Details"
 msgstr ""
 
-#: static/js/views/admin/manager_dashboard.js:139
+#: static/js/views/admin/manager_dashboard.js:144
 msgid "View Details"
 msgstr ""
 
-#: static/js/views/admin/navigation.js:6
+#: static/js/views/admin/navigation.js:18
 msgid "Are you sure you want to remove this ?"
 msgstr "确定要删除？"
 
@@ -1038,7 +1038,7 @@ msgid "User successfully enrolled in course"
 msgstr "用户成功注册了课程"
 
 #: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:115
+#: static/js/views/admin/participantsinfo.js:121
 msgid "Admin Company"
 msgstr "管理公司"
 
@@ -1047,26 +1047,25 @@ msgid "Try selecting your company from the type-ahead results."
 msgstr "尝试从预输入结果中选择您的公司。"
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:124
+#: static/js/views/admin/participantsinfo.js:130
 msgid "Admin Permissions"
 msgstr "管理权限"
 
 #: static/js/views/admin/participant_details_edit_info.js:547
-#: static/js/views/admin/participantsinfo.js:127
+#: static/js/views/admin/participantsinfo.js:133
 msgid "Company Admin"
 msgstr "公司管理员"
 
-#: static/js/views/admin/participantsinfo.js:27
-msgid "Date Added"
-msgstr "添加日期"
-
-#: static/js/views/admin/participantsinfo.js:37
+#: static/js/views/admin/participantsinfo.js:40
 msgid "Enrolled In"
 msgstr "已报名"
 
 #: static/js/views/courses/lesson_note.js:3
 msgid "Module"
 msgstr "模块"
+
+#~ msgid "Date Added"
+#~ msgstr "添加日期"
 
 #~ msgid "Errors:"
 #~ msgstr "错误:"
