@@ -1,81 +1,7 @@
 @import 'lms/static/sass/discussion/lms-discussion-main';
 @import '../base/variables';
+@import '../base/buttons';
 
-@mixin primary-button ($isImportant:null) {
-  color: #FFF $isImportant;
-  font-size: 12px $isImportant;
-  text-transform: uppercase $isImportant;
-  border-radius: 2px $isImportant;
-  padding: 3px 15px $isImportant;
-  font-weight: normal $isImportant;
-  background-color: #2042cb $isImportant;
-  height: 40px !important;
-}
-
-@mixin primary-button-hover ($isImportant:null) {
-  color: #FFF $isImportant;
-  font-size: 12px $isImportant;
-  text-transform: uppercase $isImportant;
-  border-radius: 2px $isImportant;
-  padding: 3px 15px $isImportant;
-  font-weight: normal $isImportant;
-  background-color: #0b0886 !important;
-  height: 40px !important;
-
-}
-
-@mixin primary-button-large ($isImportant:null) {
-  @include primary-button($isImportant);
-  height: 50px !important;
-  font-size: 16px $isImportant;
-  padding: 3px 30px $isImportant;
-
-}
-
-@mixin primary-button-hover-large ($isImportant:null) {
-  @include primary-button-hover($isImportant);
-  height: 50px !important;
-  padding: 3px 30px $isImportant;
-  font-size: 16px $isImportant;
-}
-
-@mixin secondary-button ($isImportant:null) {
-  font-size: 12px $isImportant;
-  text-transform: uppercase $isImportant;
-  border-radius: 2px $isImportant;
-  padding: 3px 15px $isImportant;
-  font-weight: normal $isImportant;
-  border: solid 1px #2042cb $isImportant;
-  background-color: #fff $isImportant;
-  color: #2042cb $isImportant;
-  height: 40px !important;
-}
-
-@mixin secondary-button-hover ($isImportant:null) {
-  color: #0b0886 !important;
-  font-size: 12px $isImportant;
-  text-transform: uppercase $isImportant;
-  border: solid 1px #0b0886;
-  border-radius: 2px $isImportant;
-  padding: 3px 15px $isImportant;
-  font-weight: normal $isImportant;
-  background-color: #FFF !important;
-  height: 40px !important;
-}
-
-@mixin secondary-button-large ($isImportant:null) {
-  @include secondary-button($isImportant);
-  height: 50px !important;
-  padding: 3px 30px $isImportant;
-  font-size: 16px $isImportant;
-}
-
-@mixin secondary-button-hover-large ($isImportant:null) {
-  @include secondary-button-hover($isImportant);
-  height: 50px !important;
-  padding: 3px 30px $isImportant;
-  font-size: 16px $isImportant;
-}
 
 
 body {
@@ -187,14 +113,14 @@ footer[role=contentinfo] {
         .edit-post-form {
           .post-field {
             .field-label-text {
-              color: #696969;
+              color: $mckinsey-gray-text;
               font-size: 12px;
             }
 
             .post-topic {
               width: 100% !important;
               font-size: 12px;
-              color: #696969;
+              color: $mckinsey-gray-text;
             }
 
             .js-post-title {
@@ -202,7 +128,7 @@ footer[role=contentinfo] {
               width: 100% !important;
               border-left: 0;
               border-right: 0;
-              color: #696969;
+              color: $mckinsey-gray-text;
             }
 
             .field-input-label {
@@ -211,7 +137,7 @@ footer[role=contentinfo] {
           }
 
           .field-label-text {
-            color: #696969;
+            color: $mckinsey-gray-text;
             font-size: 12px;
           }
 
@@ -281,13 +207,14 @@ footer[role=contentinfo] {
               position: relative;
 
               .field-label-text {
-                color: #696969;
+                color: $mckinsey-gray-text;
                 font-size: 12px;
                 position: absolute;
                 top: 15px;
                 margin: 0;
                 left: 2px;
               }
+
               .field-help {
                 display: none;
               }
@@ -297,7 +224,7 @@ footer[role=contentinfo] {
                 width: 100% !important;
                 border-left: 0;
                 border-right: 0;
-                color: #696969;
+                color: $mckinsey-gray-text;
               }
             }
 
@@ -322,7 +249,7 @@ footer[role=contentinfo] {
 
             .posted-details {
               font-size: 12px;
-              color: #696969;
+              color: $mckinsey-gray-text;
               margin: 0;
 
               .username {
@@ -337,7 +264,7 @@ footer[role=contentinfo] {
 
                 &:before {
                   color: #FFFFFF;
-                  background: #696969;
+                  background: $mckinsey-gray-text;
                   font-size: 10px;
                   padding: 0px 2px;
                   line-height: normal;
@@ -389,14 +316,14 @@ footer[role=contentinfo] {
     }
 
     .page-content {
-      padding-top: 20px;
+      padding-top: 40px;
     }
 
     .post-label {
-      color: #696969;
+      color: $mckinsey-gray-text;
 
       &.post-label-pinned {
-        color: #696969;
+        color: $mckinsey-gray-text;
       }
     }
 
@@ -430,7 +357,7 @@ footer[role=contentinfo] {
 
           &:before {
             font-size: 18px;
-            color: #696969;
+            color: $mckinsey-gray-text;
             font-family: "Material Icons";
           }
         }
@@ -443,12 +370,12 @@ footer[role=contentinfo] {
         }
 
         .icon {
-          color: #696969;
+          color: $mckinsey-gray-text;
         }
 
         &.is-checked {
           .icon {
-            color: #2042CB;
+            color: $mckinsey-default-link;
           }
         }
       }
@@ -473,7 +400,7 @@ footer[role=contentinfo] {
     .icon {
       font-family: "Material Icons";
       font-size: 18px;
-      color: #2042CB;
+      color: $mckinsey-default-link;
 
       &.fa-plus {
         &:before {
@@ -503,7 +430,7 @@ footer[role=contentinfo] {
       &.fa-filter {
         &:before {
           content: "\e8b6";
-          color: #696969;
+          color: $mckinsey-gray-text;
         }
       }
 
@@ -599,11 +526,11 @@ footer[role=contentinfo] {
       .btn-link {
         background: none;
         font-size: 12px;
-        color: #696969;
+        color: $mckinsey-gray-text;
         font-weight: normal;
 
         &:hover {
-          color: #696969;
+          color: $mckinsey-gray-text;
           text-decoration: none;
         }
       }
@@ -611,7 +538,7 @@ footer[role=contentinfo] {
       .nav-item {
         font-size: 12px;
         font-weight: normal;
-        color: #696969;
+        color: $mckinsey-gray-text;
       }
 
       .fa-bars {
@@ -628,7 +555,7 @@ footer[role=contentinfo] {
     .page-header {
       .page-header-main {
         position: absolute;
-        top: 50px;
+        top: 70px;
         width: 100%;
       }
 
@@ -672,7 +599,7 @@ footer[role=contentinfo] {
             top: 27px;
             right: 20px;
             content: "\e8b6";
-            color: #696969;
+            color: $mckinsey-gray-text;
             font-size: 20px;
           }
         }
@@ -703,7 +630,7 @@ footer[role=contentinfo] {
             padding-top: 8px;
 
             .email-member {
-              color: #2042CB;
+              color: $mckinsey-default-link;
               text-transform: lowercase;
               font-size: 12px;
             }
@@ -723,7 +650,7 @@ footer[role=contentinfo] {
           }
 
           #forum-nav-browse-filter-input {
-            color: #696969;
+            color: $mckinsey-gray-text;
             font-size: 16px !important;
             padding: 10px 10px;
             text-transform: capitalize;
@@ -744,13 +671,13 @@ footer[role=contentinfo] {
 
             .forum-nav-browse-title {
               font-size: 16px;
-              color: #2042CB;
+              color: $mckinsey-default-link;
             }
 
             .forum-nav-browse-submenu {
               .forum-nav-browse-title {
                 font-size: 12px;
-                color: #696969;
+                color: $mckinsey-gray-text;
                 padding: 10px;
               }
             }
@@ -797,10 +724,11 @@ footer[role=contentinfo] {
         .post-field {
           .post-type-label {
             margin-right: 10px;
+
             .field-input-label {
               background-color: #fff;
-              border: solid 1px #2042cb;
-              color: #2042cb !important;
+              border: solid 1px $mckinsey-default-link;
+              color: $mckinsey-default-link !important;
               padding: 6px 20px 12px;
 
               &:hover {
@@ -811,7 +739,7 @@ footer[role=contentinfo] {
             }
 
             .input-radio:checked+.field-input-label {
-              background-color: #2042cb;
+              background-color: $mckinsey-default-link;
               color: #fff !important;
 
               .icon {
@@ -826,7 +754,7 @@ footer[role=contentinfo] {
           }
 
           .field-help {
-            color: #696969;
+            color: $mckinsey-gray-text;
             font-size: 12px;
           }
 
@@ -835,12 +763,13 @@ footer[role=contentinfo] {
 
             .post-topic {
               width: 55% !important;
-              background-image: url(/images/McKAlogo.png);
+              background-image: url(../../images/expand-button.svg);
               -webkit-appearance: none !important;
               padding: 0 10px;
               border: 1px solid #999999 !important;
               background-repeat: no-repeat;
-              background-position: right;
+              background-position: 95%;
+              background-size: 12px;
             }
           }
 
@@ -894,8 +823,16 @@ footer[role=contentinfo] {
         border: 0;
 
         select {
-          color: #696969;
+          color: $mckinsey-gray-text;
           border: 0;
+          width: 100%;
+          background-image: url(../../images/expand-button.svg);
+          padding: 0 10px;
+          background-repeat: no-repeat;
+          background-position: 90%;
+          background-size: 8px;
+          width: 100%;
+          padding: 7px 0 7px 10px;
 
           &.forum-nav-sort-control {
             &:after {
@@ -903,8 +840,8 @@ footer[role=contentinfo] {
               height: 0;
               border-left: 20px solid transparent;
               border-right: 20px solid transparent;
-
               border-top: 20px solid #f00;
+              padding: 0 10px;
             }
           }
         }
@@ -912,7 +849,7 @@ footer[role=contentinfo] {
         label {
           background: #FFF;
           border: 1px solid #999999;
-          padding: 7px 10px;
+          padding: 0;
 
           &.forum-nav-filter-main {
             border: 1px solid #999999;
@@ -960,7 +897,7 @@ footer[role=contentinfo] {
             }
 
             .forum-nav-thread-comments-count {
-              background-color: #696969;
+              background-color: $mckinsey-gray-text;
               color: #FFFFFF;
               font-size: 10px;
               padding: 0px 0px;
@@ -971,7 +908,7 @@ footer[role=contentinfo] {
                 left: 0px;
                 border-top: 0px solid transparent;
                 border-bottom: 5px solid transparent;
-                border-left: 5px solid #696969;
+                border-left: 5px solid $mckinsey-gray-text;
               }
             }
           }
@@ -979,11 +916,11 @@ footer[role=contentinfo] {
           &.never-read {
             .forum-nav-thread-link {
               border-left: 0;
-              color: #2042CB;
+              color: $mckinsey-default-link;
               background-color: transparent;
 
               .icon {
-                color: #2042CB;
+                color: $mckinsey-default-link;
               }
             }
           }
@@ -1020,7 +957,7 @@ footer[role=contentinfo] {
 
               .posted-details {
                 font-size: 12px;
-                color: #696969;
+                color: $mckinsey-gray-text;
                 margin: 0;
 
                 .username {
@@ -1036,7 +973,7 @@ footer[role=contentinfo] {
 
                   &:before {
                     color: #FFFFFF;
-                    background: #696969;
+                    background: $mckinsey-gray-text;
                     font-size: 9px;
                     padding: 0px 2px;
                     width: auto;
@@ -1055,18 +992,18 @@ footer[role=contentinfo] {
 
                   .btn-link {
                     .icon {
-                      color: #696969;
+                      color: $mckinsey-gray-text;
                     }
 
                     &.is-checked {
                       &.action-pin {
-                        color: #2042CB;
+                        color: $mckinsey-default-link;
                       }
                     }
 
                     &:hover {
                       .icon {
-                        color: #2042CB;
+                        color: $mckinsey-default-link;
                       }
                     }
                   }
@@ -1084,7 +1021,7 @@ footer[role=contentinfo] {
 
             .post-context {
               .group-visibility-label {
-                color: #696969;
+                color: $mckinsey-gray-text;
                 font-size: 12px;
               }
             }
@@ -1107,7 +1044,7 @@ footer[role=contentinfo] {
 
                 .response-header-content {
                   .username {
-                    color: #2042CB;
+                    color: $mckinsey-default-link;
                   }
 
                   .user-label-staff {
@@ -1116,7 +1053,7 @@ footer[role=contentinfo] {
 
                     &:before {
                       color: #FFFFFF;
-                      background: #696969;
+                      background: $mckinsey-gray-text;
                       font-size: 10px;
                       padding: 1px 2px;
                       width: auto;
@@ -1185,7 +1122,7 @@ footer[role=contentinfo] {
 
                 .posted-details {
                   font-size: 12px;
-                  color: #696969;
+                  color: $mckinsey-gray-text;
                   margin: 0;
 
                   .username {
@@ -1200,7 +1137,7 @@ footer[role=contentinfo] {
 
                     &:before {
                       color: #FFFFFF;
-                      background: #696969;
+                      background: $mckinsey-gray-text;
                       font-size: 10px;
                       padding: 0px 2px;
                       line-height: normal;
