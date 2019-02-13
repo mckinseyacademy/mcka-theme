@@ -521,6 +521,13 @@ body {
         }
       }
     }
+    &.locked{
+      .title{
+        > span{
+          @include padding-right(20px);
+        }
+      }
+    }
   }
 
   .holder {
@@ -547,6 +554,13 @@ body {
         }
         i {
           @include media-breakpoint-between(xs, sm) {
+            @include margin-left(0);
+          }
+        }
+      }
+      &.time{
+        i{
+          @include media-breakpoint-between(xs, sm){
             @include margin-left(0);
           }
         }
@@ -655,14 +669,15 @@ footer {
   }
 }
 
+// Misc
+
+.bookmark {
+  @include left(0);
+}
+
 // CSS specific styles
 body.rtl {
   text-align: right;
-  .my-courses{
-    .bookmark{
-      background-position-x: left;
-    }
-  }
   .bookmark {
     @include flip-x-axis;
   }
