@@ -21,7 +21,7 @@
 
   h5 {
     text-transform: uppercase;
-    font-size: 12px;
+    font-size: 0.75rem;
     font-weight: 600;
     line-height: 17px;
     margin-top: 15px;
@@ -53,7 +53,7 @@
     .widgetTitle {
       text-transform: uppercase;
       color: $black;
-      font-size: 12px;
+      font-size: 0.75rem;
       line-height: 17px;
       font-weight: 600;
       margin-bottom: 12px;
@@ -69,7 +69,7 @@
     .averageTitle {
       color: $gray;
       font-family: "Open Sans", sans-serif;
-      font-size: 12px;
+      font-size: 0.75rem;
       line-height: 17px;
       margin-bottom: 15px;
     }
@@ -139,12 +139,11 @@
     padding: 0 30px;
     margin: 0 -30px;
     position: relative;
-    overflow: hidden;
+    border-top: 1px solid #F1F3F6;
 
     >.holder {
       display: block;
       overflow: hidden;
-      border-top: 1px solid #F1F3F6;
       clear: both;
       position: relative;
       z-index: 1;
@@ -186,17 +185,8 @@
       }
     }
 
-    .bookmark {
-      position: absolute;
-      top: 0;
-      height: 100%;
-      width: 20px;
-    }
-
     &:last-child {
-      .holder {
-        border-bottom: 1px solid #F1F3F6;
-      }
+      border-bottom: 1px solid #F1F3F6;
     }
 
     &:hover {
@@ -230,7 +220,6 @@
 
       .title {
         >span {
-          padding: 0 25px 0 0;
           position: relative;
           display: inline-block;
           vertical-align: middle;
@@ -245,13 +234,13 @@
             top: 50%;
             transform: translateY(-50%);
             z-index: 999;
-            font-size: 18px;
+            font-size: 1.125rem;
             color: $secondary;
           }
         }
 
         i {
-          font-size: 18px;
+          font-size: 1.125rem;
           vertical-align: middle;
         }
       }
@@ -282,7 +271,7 @@
 
       &.serial {
         color: $dark-gray;
-        font-size: 12px;
+        font-size: 0.75rem;
         line-height: 17px;
         width: auto;
         max-width: 250px;
@@ -297,20 +286,20 @@
 
       &.title {
         color: $secondary;
-        font-size: 16px;
+        font-size: 1rem;
         line-height: 22px;
-        width: 40%;
+        width: 50%;
         @include text-ellipsis;
       }
 
       &.time {
         color: $dark-gray;
-        font-size: 12px;
+        font-size: 0.75rem;
         line-height: 17px;
         width: 180px;
 
         i {
-          font-size: 18px;
+          font-size: 1.125rem;
           display: inline-block;
           vertical-align: middle;
           margin: 0 4px;
@@ -319,7 +308,7 @@
 
       &.status {
         color: $dark-gray;
-        font-size: 12px;
+        font-size: 0.75rem;
         line-height: 17px;
         width: 14%;
 
@@ -331,7 +320,7 @@
       }
 
       .figure {
-        font-size: 12px;
+        font-size: 0.75rem;
         color: $dark-gray;
       }
 
@@ -413,7 +402,7 @@
     .articleTitle {
       color: $secondary;
       font-family: "Open Sans", sans-serif;
-      font-size: 16px;
+      font-size: 1rem;
       line-height: 22px;
     }
 
@@ -422,7 +411,7 @@
       margin: 10px 0 0;
       color: #696969;
       font-family: "Open Sans", sans-serif;
-      font-size: 12px;
+      font-size: 0.75rem;
       line-height: 17px;
 
     }
@@ -456,7 +445,7 @@
 
           .name {
             color: $black;
-            font-size: 14px;
+            font-size: 0.875rem;
             font-weight: 600;
             line-height: 19px;
             margin: 0 6px 0 0;
@@ -465,7 +454,7 @@
           .name-link {
             color: $secondary;
             font-family: "Open Sans", sans-serif;
-            font-size: 14px;
+            font-size: 0.875rem;
             line-height: 19px;
 
           }
@@ -473,7 +462,7 @@
 
         .tweet-body {
           color: $black;
-          font-size: 16px;
+          font-size: 1rem;
           line-height: 22px;
 
           >a {
@@ -524,7 +513,7 @@
     .title {
       color: $secondary;
       font-family: "Open Sans", sans-serif;
-      font-size: 16px;
+      font-size: 1rem;
       line-height: 22px;
       display: block;
       margin-bottom: 16px;
@@ -533,7 +522,7 @@
 
     .name {
       color: $gray;
-      font-size: 12px;
+      font-size: 0.75rem;
       line-height: 17px;
 
     }
@@ -549,7 +538,7 @@ blockquote {
 
     p {
       color: $gray;
-      font-size: 24px;
+      font-size: 1.5rem;
       font-style: italic;
       font-weight: 300;
       line-height: 33px;
@@ -559,7 +548,7 @@ blockquote {
 
     .author {
       color: $black;
-      font-size: 18px;
+      font-size: 1.125rem;
       line-height: 24px;
       font-weight: 600;
 
@@ -615,7 +604,7 @@ blockquote {
         padding: 4px 3px;
 
         &.title {
-          width: calc(100% - 96px);
+          width: 35%;
         }
 
         &.time {
@@ -683,7 +672,8 @@ blockquote {
 
   .allCoursesList {
     >.courseRow{
-      padding: 10px;
+      padding-top: 15px;
+      padding-bottom: 10px;
 
       &:hover {
         text-decoration: none;
@@ -701,7 +691,6 @@ blockquote {
 
   .progressWidgets {
     .widget {
-      padding: 20px !important;
       border: 0 !important;
       vertical-align: bottom;
       min-height: inherit;
@@ -785,6 +774,7 @@ blockquote {
     }
 
     .holder {
+      padding: 10px 0 10px;
       .data {
 
         &.status {

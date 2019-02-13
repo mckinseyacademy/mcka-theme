@@ -17,3 +17,9 @@ body, html{
 @include media-breakpoint-up(lg){
   .container{ max-width: 1244px;}
 }
+
+// Letter spacing for IE11
+
+*{
+  letter-spacing: 0;
+}

@@ -10,7 +10,7 @@
         .card-body
           - if course and current_course
             - if course.id == current_course.id
-              %img.bookmark{:src => "static/image/bookmark.svg"}
+              %span.bookmark
           %h3.card-title
             = course.name
           .course-detail

@@ -137,7 +137,7 @@
         }
       }
 
-      img.bookmark {
+      .bookmark {
         @include left(-4px);
       }
     }
@@ -258,9 +258,6 @@
 
 .allCoursesList {
   >.courseRow {
-    .bookmark {
-      @include left(0);
-    }
 
     .status {
       @include margin-right(7px);
@@ -272,6 +269,13 @@
 
         @include media-breakpoint-between(xs, sm) {
           @include margin-right(2px);
+        }
+      }
+    }
+    &.locked{
+      .title{
+        > span{
+          @include padding-right(20px);
         }
       }
     }
@@ -291,6 +295,13 @@
         @include padding-right(25px);
         span{
           @include right(0);
+        }
+      }
+      &.time{
+        i{
+          @include media-breakpoint-between(xs, sm){
+            @include margin-left(0);
+          }
         }
       }
     }
@@ -334,19 +345,18 @@ footer {
   }
 }
 
+// Misc
+
+.bookmark {
+  @include left(0);
+}
+
 // CSS specific styles
 
 body.rtl {
   text-align: right;
-
-  .my-courses {
-    .card {
-      .card-body {
-        img.bookmark {
-          @include flip-x-axis;
-        }
-      }
-    }
+  .bookmark{
+    @include flip-x-axis;
   }
 
   #course-statistics {
@@ -364,14 +374,6 @@ body.rtl {
             }
           }
         }
-      }
-    }
-  }
-
-  .allCoursesList {
-    >.courseRow {
-      .bookmark {
-        @include flip-x-axis;
       }
     }
   }
@@ -410,12 +412,6 @@ body.rtl {
     &.allLessons {
       &:after {
         right: 65px;
-      }
-
-      .allCoursesList {
-        .bookmark {
-          @include flip-x-axis;
-        }
       }
     }
 

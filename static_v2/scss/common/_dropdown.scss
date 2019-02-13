@@ -1,10 +1,10 @@
 // Custom dropdown styling
 .dropdown-menu {
-  border: 0.5px solid #EBEBEB;
-  background-color: #FFFFFF;
+  border: 0.5px solid $gray-border;
+  background-color: $white;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.4);
   border-radius: 0;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 17px;
   min-width: 176px;
   top: 6px !important;
@@ -46,16 +46,13 @@
 
     .allCoursesList {
       max-height: 370px;
-      overflow-y: auto;
       padding-right: 30px;
       padding-left: 30px;
-      overflow-x: visible;
 
       >.courseRow {
         cursor: pointer;
         padding: 0;
         margin: 0;
-        overflow: initial;
 
         .description {
           display: none;
@@ -63,14 +60,13 @@
       }
 
       .holder {
-        overflow-x: visible;
 
         .data {
           padding: 7px 3px;
 
           &.title {
-            width: 164px;
-            font-size: 12px;
+            width: 165px;
+            font-size: 0.75rem;
           }
 
           &.status {
@@ -79,18 +75,20 @@
 
           &.serial {
             min-width: 65px;
+            font-weight: 400;
+            letter-spacing: 0;
           }
         }
       }
     }
     &:after{
-      left: 11% !important;
+      left: 9% !important;
     }
   }
 
   >a {
     color: $secondary;
-    font-size: 12px;
+    font-size: 0.75rem;
     line-height: 17px;
     background: inherit;
     border-top: 1px solid $gray-border;
@@ -148,7 +146,7 @@
     font-family: 'Material Icons';
     content: "\e313";
     border: 0;
-    font-size: 16px;
+    font-size: 1rem;
     margin: 0 0 0 1px;
     vertical-align: middle;
   }

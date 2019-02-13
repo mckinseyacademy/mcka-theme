@@ -54,7 +54,7 @@
                         - else
                           = lesson.description
                     - if lesson.bookmark
-                      %img.bookmark{:src => "{% static 'image/bookmark.svg' %}"}
+                      %span.bookmark
           - if feature_flags.discussions
             %li
               %a.nav-link.pn-ProductNav_Link{:aria-selected => "", "class": "{% ifequal request.resolver_match.url_name 'course_discussion' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/discussion", "data-tooltip": '{% trans "Discussion" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
