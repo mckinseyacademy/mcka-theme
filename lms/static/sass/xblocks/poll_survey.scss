@@ -4,14 +4,14 @@ body.new-theme {
     .lesson-content {
         .themed-xblock {
             .poll-header {
-                font-size: 12px;
+                font-size: 0.75rem;
                 color: #000;
             }
 
             .poll-container {
                 .poll-question {
                     p {
-                        font-size: 16px;
+                        font-size: 1rem;
                         color: #000;
                     }
                 }
@@ -21,7 +21,7 @@ body.new-theme {
 
                     .poll-answer-text {
                         p {
-                            font-size: 16px;
+                            font-size: 1rem;
                             color: #000;
                         }
                     }
@@ -31,7 +31,7 @@ body.new-theme {
             .survey-table {
                 .survey-question {
                     p {
-                        font-size: 16px;
+                        font-size: 1rem;
                         color: #000;
                     }
                 }

@@ -67,7 +67,7 @@ body.new-theme {
                   position: relative;
 
                   &:before {
-                    font-size: 30px;
+                    font-size: 1.875rem;
                     color: #FFF;
                     font-family: "Material Icons";
                     content: "\e145";
@@ -116,12 +116,12 @@ body.new-theme {
             .post-field {
               .field-label-text {
                 color: $mckinsey-gray-text;
-                font-size: 12px;
+                font-size: 0.75rem;
               }
 
               .post-topic {
                 width: 100% !important;
-                font-size: 12px;
+                font-size: 0.75rem;
                 color: $mckinsey-gray-text;
               }
 
@@ -140,7 +140,7 @@ body.new-theme {
 
             .field-label-text {
               color: $mckinsey-gray-text;
-              font-size: 12px;
+              font-size: 0.75rem;
             }
 
             button.btn-brand {
@@ -210,7 +210,7 @@ body.new-theme {
 
                 .field-label-text {
                   color: $mckinsey-gray-text;
-                  font-size: 12px;
+                  font-size: 0.75rem;
                   position: absolute;
                   top: 15px;
                   margin: 0;
@@ -250,14 +250,14 @@ body.new-theme {
 
 
               .posted-details {
-                font-size: 12px;
+                font-size: 0.75rem;
                 color: $mckinsey-gray-text;
                 margin: 0;
 
                 .username {
                   color: #000 !important;
                   font-weight: 600;
-                  font-size: 12px;
+                  font-size: 0.75rem;
                 }
 
                 .user-label-staff {
@@ -267,7 +267,7 @@ body.new-theme {
                   &:before {
                     color: #FFFFFF;
                     background: $mckinsey-gray-text;
-                    font-size: 10px;
+                    font-size: 0.625rem;
                     padding: 0px 2px;
                     line-height: normal;
                     width: auto;
@@ -358,7 +358,7 @@ body.new-theme {
             }
 
             &:before {
-              font-size: 18px;
+              font-size: 1.125rem;
               color: $mckinsey-gray-text;
               font-family: "Material Icons";
             }
@@ -401,7 +401,7 @@ body.new-theme {
 
       .icon {
         font-family: "Material Icons";
-        font-size: 18px;
+        font-size: 1.125rem;
         color: $mckinsey-default-link;
 
         &.fa-plus {
@@ -527,7 +527,7 @@ body.new-theme {
       .breadcrumbs {
         .btn-link {
           background: none;
-          font-size: 12px;
+          font-size: 0.75rem;
           color: $mckinsey-gray-text;
           font-weight: normal;
 
@@ -538,7 +538,7 @@ body.new-theme {
         }
 
         .nav-item {
-          font-size: 12px;
+          font-size: 0.75rem;
           font-weight: normal;
           color: $mckinsey-gray-text;
         }
@@ -602,7 +602,7 @@ body.new-theme {
               right: 20px;
               content: "\e8b6";
               color: $mckinsey-gray-text;
-              font-size: 20px;
+              font-size:1.25rem;
             }
           }
         }
@@ -634,7 +634,7 @@ body.new-theme {
               .email-member {
                 color: $mckinsey-default-link;
                 text-transform: lowercase;
-                font-size: 12px;
+                font-size: 0.75rem;
               }
             }
           }
@@ -653,7 +653,7 @@ body.new-theme {
 
             #forum-nav-browse-filter-input {
               color: $mckinsey-gray-text;
-              font-size: 16px !important;
+              font-size: 1rem !important;
               padding: 10px 10px;
               text-transform: capitalize;
             }
@@ -672,13 +672,13 @@ body.new-theme {
               }
 
               .forum-nav-browse-title {
-                font-size: 16px;
+                font-size: 1rem;
                 color: $mckinsey-default-link;
               }
 
               .forum-nav-browse-submenu {
                 .forum-nav-browse-title {
-                  font-size: 12px;
+                  font-size: 0.75rem;
                   color: $mckinsey-gray-text;
                   padding: 10px;
                 }
@@ -693,7 +693,7 @@ body.new-theme {
         min-width: 425px;
 
         .thread-title {
-          font-size: 24px;
+          font-size: 1.5rem;
           font-weight: 400;
         }
 
@@ -716,7 +716,7 @@ body.new-theme {
         }
 
         .field-label-text {
-          font-size: 16px;
+          font-size: 1rem;
           font-weight: normal !important;
           color: #000;
         }
@@ -757,7 +757,7 @@ body.new-theme {
 
             .field-help {
               color: $mckinsey-gray-text;
-              font-size: 12px;
+              font-size: 0.75rem;
             }
 
             .field-input {
@@ -786,7 +786,7 @@ body.new-theme {
 
         .wmd-preview-container {
           .wmd-preview-label {
-            font-size: 16px;
+            font-size: 1rem;
             padding: 10px 3px 0 8px;
           }
 
@@ -892,7 +892,7 @@ body.new-theme {
               }
 
               .forum-nav-thread-title {
-                font-size: 16px;
+                font-size: 1rem;
                 color: #000;
                 line-height: 22px;
                 font-weight: 400;
@@ -901,7 +901,7 @@ body.new-theme {
               .forum-nav-thread-comments-count {
                 background-color: $mckinsey-gray-text;
                 color: #FFFFFF;
-                font-size: 10px;
+                font-size: 0.625rem;
                 padding: 0px 0px;
 
                 &:after {
@@ -936,7 +936,7 @@ body.new-theme {
             &:before {
               color: #000;
               font-weight: normal;
-              font-size: 24px;
+              font-size: 1.5rem;
             }
           }
         }
@@ -953,19 +953,19 @@ body.new-theme {
 
                 .post-title {
                   color: #000000;
-                  font-size: 24px;
+                  font-size: 1.5rem;
                   font-weight: normal;
                 }
 
                 .posted-details {
-                  font-size: 12px;
+                  font-size: 0.75rem;
                   color: $mckinsey-gray-text;
                   margin: 0;
 
                   .username {
                     color: #000;
                     font-weight: 600;
-                    font-size: 12px;
+                    font-size: 0.75rem;
                   }
 
                   .user-label-staff {
@@ -976,7 +976,7 @@ body.new-theme {
                     &:before {
                       color: #FFFFFF;
                       background: $mckinsey-gray-text;
-                      font-size: 9px;
+                      font-size: 0.5625rem;
                       padding: 0px 2px;
                       width: auto;
                     }
@@ -1016,7 +1016,7 @@ body.new-theme {
 
               .post-body {
                 p {
-                  font-size: 16px;
+                  font-size: 1rem;
                   color: #000000;
                 }
               }
@@ -1024,7 +1024,7 @@ body.new-theme {
               .post-context {
                 .group-visibility-label {
                   color: $mckinsey-gray-text;
-                  font-size: 12px;
+                  font-size: 0.75rem;
                 }
               }
             }
@@ -1056,7 +1056,7 @@ body.new-theme {
                       &:before {
                         color: #FFFFFF;
                         background: $mckinsey-gray-text;
-                        font-size: 10px;
+                        font-size: 0.625rem;
                         padding: 1px 2px;
                         width: auto;
                       }
@@ -1099,7 +1099,7 @@ body.new-theme {
                   forum-new-post-form .edit-post-form,
                   .new-comment {
                     .wmd-preview-label {
-                      font-size: 16px;
+                      font-size: 1rem;
                       padding: 10px 3px 0 8px;
                     }
 
@@ -1123,14 +1123,14 @@ body.new-theme {
                   }
 
                   .posted-details {
-                    font-size: 12px;
+                    font-size: 0.75rem;
                     color: $mckinsey-gray-text;
                     margin: 0;
 
                     .username {
                       color: #000;
                       font-weight: 600;
-                      font-size: 12px;
+                      font-size: 0.75rem;
                     }
 
                     .user-label-staff {
@@ -1140,7 +1140,7 @@ body.new-theme {
                       &:before {
                         color: #FFFFFF;
                         background: $mckinsey-gray-text;
-                        font-size: 10px;
+                        font-size: 0.625rem;
                         padding: 0px 2px;
                         line-height: normal;
                         width: auto;
@@ -1160,7 +1160,7 @@ body.new-theme {
               .reply-body {
                 .wmd-preview-container {
                   .wmd-preview-label {
-                    font-size: 16px;
+                    font-size: 1rem;
                     padding: 10px 3px 0 8px;
                   }
                 }
