@@ -3,27 +3,27 @@ Tests for certificates django views
 """
 import uuid
 import datetime
-from functools import wraps
 import ddt
-
-from lib.utils import DottableDict
-from mock import patch
+import httpretty
 
 from django.test import TestCase
-from django.test.client import Client
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.core.urlresolvers import reverse
-from django.conf import settings  # noqa: F401
-from django.utils.decorators import available_attrs
+from django.contrib import auth
+
 from courses.models import FeatureFlags
 from accounts.tests.utils import ApplyPatchMixin
 from courses.tests.test_controllers import MockCourseAPI
+from util.unit_test_helpers import AprosTestingClient
+from api_client.group_api import PERMISSION_GROUPS
+from api_data_manager.tests.utils import APIDataManagerMockMixin
+from util.unit_test_helpers.test_api_responses import course as test_course_data
+from util.unit_test_helpers.test_api_responses import user as test_user_data
 
 from ..models import (  # noqa: F401
     UserCourseCertificate,
     CertificateStatus,
     CourseCertificateStatus,
-    CertificateTemplateAsset,
     CertificateTemplate
 )
 from ..forms import CertificateTemplateAssetForm, CertificateTemplateForm  # noqa: F401
@@ -34,15 +34,6 @@ GENERATE_CERTIFICATES_TASK_DATA = [
     (False, datetime.datetime.now() + datetime.timedelta(days=4)),
     (True, datetime.datetime.now() - datetime.timedelta(days=4)),
 ]
-
-_FAKE_USER_OBJ = DottableDict({
-    "id": 2,
-    "email": "ecommerce_worker@fake.email",
-    "username": "ecommerce_worker",
-    "full_name": "Ecommerce worker",
-    "is_internal_admin": False,
-    "is_authenticated": True,
-})
 
 
 def _get_course_certificate_status(course_id):
@@ -60,51 +51,28 @@ def _get_course_certificate_status(course_id):
     return course_certificate_status
 
 
-def _fake_permission_group_required(*group_names):  # pylint: disable=unused-argument
-    """
-    Fake method for permission_group_required method
-    """
-
-    def decorator(view_fn):
-        def _wrapped_view(request, *args, **kwargs):
-            # faking request user
-            request.user = _FAKE_USER_OBJ
-            return view_fn(request, *args, **kwargs)
-
-        return wraps(view_fn, assigned=available_attrs(view_fn))(_wrapped_view)
-
-    return decorator
-
-
-permission_patcher = patch(  # pylint: disable=invalid-name
-    'lib.authorization.permission_group_required',
-    _fake_permission_group_required
-).start()
-
-
 @ddt.ddt
-class CertificateViewTest(TestCase, ApplyPatchMixin):
+class CertificateViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
     """
     Test the Course Certificate Views.
     """
+    client_class = AprosTestingClient
 
     def setUp(self):
         """
         Setup course certificate model test
         """
         super(CertificateViewTest, self).setUp()
-        self.client = Client()
 
-        # TODO: 504 issue fix - uncomment this when original commit is included in release
-        # self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
-        # self.user = auth.get_user(self.client)
-        #
-        # self.mock_user_api_data_manager(
-        #     module_paths=[
-        #         'accounts.middleware.thread_local.UserDataManager',
-        #     ],
-        #     data={'courses': [], 'current_course': None}
-        # )
+        self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
+        self.user = auth.get_user(self.client)
+
+        self.mock_user_api_data_manager(
+            module_paths=[
+                'accounts.middleware.thread_local.UserDataManager',
+            ],
+            data={'courses': [], 'current_course': None}
+        )
 
         self.courses = [
             ('abc/123/test', 'Abc Course'),
@@ -112,12 +80,6 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
             ('ggg/667/dummy', 'GGG Course')
         ]
         self.course = MockCourseAPI.get_course(self.courses[0][0])
-        self.user = DottableDict({
-            "id": 2,
-            "email": "ecommerce_worker@fake.email",
-            "username": "ecommerce_worker",
-            "full_name": "Ecommerce worker"
-        })
         self.user_course_certificate = UserCourseCertificate.objects.create(
             course_id=self.courses[0][0],
             user_id=self.user.id
@@ -154,15 +116,6 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
 
             )
 
-    def _apply_patch(self):
-        """
-        Helper method to patch user and course api
-        """
-        user_api = self.apply_patch('certificates.views.user_api')
-        user_api.get_user.return_value = self.user
-        course_api = self.apply_patch('certificates.views.course_api')
-        course_api.get_user.return_value = self.course
-
     def _apply_get_courses_choice_list_patch(self):
         """
         Helper method to patch get_courses_choice_list_patch method
@@ -177,7 +130,6 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         """
         Test get certificate by uuid view with invalid uuid
         """
-        self._apply_patch()
         invalid_certificate_url = reverse(
             'get_certificate_by_uuid',
             kwargs={'certificate_uuid': uuid.uuid4().hex}
@@ -185,11 +137,14 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         response = self.client.get(invalid_certificate_url)
         self.assertEqual(response.status_code, 404)
 
+    @httpretty.activate
     def test_get_certificate_by_uuid_valid_uuid(self):
         """
         Test get certificate by uuid view with valid uuid
         """
-        self._apply_patch()
+        test_user_data.setup_user_profile_response(self.user.id)
+        test_course_data.setup_course_v1_response(self.courses[0][0])
+
         valid_certificate_url = reverse(
             'get_certificate_by_uuid',
             kwargs={'certificate_uuid': self.user_course_certificate.uuid}
@@ -197,6 +152,7 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         response = self.client.get(valid_certificate_url)
         self.assertEqual(response.status_code, 200)
 
+    @httpretty.activate
     @ddt.data(*GENERATE_CERTIFICATES_TASK_DATA)
     @ddt.unpack
     def test_generate_course_certificates(
@@ -205,6 +161,11 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         """
         Test generate course certificates view
         """
+        test_course_data.setup_course_response(self.courses[0][0], username=self.user.username)
+
+        mock_course_context = self.apply_patch('admin.views._get_course_context')
+        mock_course_context.return_value = {}
+
         generate_certificate_url = reverse(
             'generate_course_certificates',
             args=(self.courses[0][0],)
@@ -221,12 +182,9 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
 
         response = self.client.post(generate_certificate_url, data)
 
-        self.assertRedirects(
-            response,
-            expected_url=expected_url,
-            status_code=302,
-            target_status_code=302
-        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, expected_url)
+
         course_certificate_status = _get_course_certificate_status(
             self.courses[0][0]
         )
@@ -240,160 +198,159 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         else:
             self.assertIsNone(course_certificate_status)
 
-    # TODO: mock API to fix test and uncomment
-    # def test_certificate_template_assets_get(self):
-    #     """
-    #     Test get certificate template assets view
-    #     """
-    #     response = self.client.get(reverse('certificate_template_assets'))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIsInstance(
-    #         response.context['form'],
-    #         CertificateTemplateAssetForm
-    #     )
-    #     self.assertEqual(
-    #         len(response.context['certificate_template_assets']),
-    #         len(self.template_assets)
-    #    )
+    def test_certificate_template_assets_get(self):
+        """
+        Test get certificate template assets view
+        """
+        response = self.client.get(reverse('certificate_template_assets'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(
+            response.context['form'],
+            CertificateTemplateAssetForm
+        )
+        self.assertEqual(
+            len(response.context['certificate_template_assets']),
+            len(self.template_assets)
+        )
 
-    # TODO: mock API to fix test and uncomment
-    # def test_template_assets_post_invalid(self):
-    #     """
-    #     Test post certificate template assets view with invalid data
-    #     """
-    #     response = self.client.post(
-    #         reverse('certificate_template_assets'),
-    #         self.template_asset_post_data
-    #     )
-    #
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIsInstance(
-    #         response.context['form'],
-    #         CertificateTemplateAssetForm
-    #     )
-    #     self.assertEqual(
-    #         len(response.context['certificate_template_assets']),
-    #         len(self.template_assets)
-    #     )
-    #     self.assertTrue(response.context['form'].errors)
+    def test_template_assets_post_invalid(self):
+        """
+        Test post certificate template assets view with invalid data
+        """
+        response = self.client.post(
+            reverse('certificate_template_assets'),
+            self.template_asset_post_data
+        )
 
-    # TODO: mock API to fix test and uncomment
-    # def test_certificate_templates(self):
-    #     """
-    #     Test get certificate templates view
-    #     """
-    #     response = self.client.get(reverse('certificate_templates'))
-    #
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertEqual(
-    #         len(response.context['certificate_templates']),
-    #         len(self.templates)
-    #     )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(
+            response.context['form'],
+            CertificateTemplateAssetForm
+        )
+        self.assertEqual(
+            len(response.context['certificate_template_assets']),
+            len(self.template_assets)
+        )
+        self.assertTrue(response.context['form'].errors)
 
-    # TODO: mock API to fix test and uncomment
-    # def test_new_certificate_template_get(self):
-    #     """
-    #     Test get new certificate template view
-    #     """
-    #     response = self.client.get(reverse('new_certificate_template'))
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIsInstance(response.context['form'], CertificateTemplateForm)
+    def test_certificate_templates(self):
+        """
+        Test get certificate templates view
+        """
+        response = self.client.get(reverse('certificate_templates'))
 
-    # TODO: mock API to fix test and uncomment
-    # def test_new_certificate_template_post_valid(self):
-    #     """
-    #     Test post new certificate template view with valid data
-    #     """
-    #     self._apply_get_courses_choice_list_patch()
-    #     response = self.client.post(
-    #         reverse('new_certificate_template'),
-    #         self.template_post_data
-    #     )
-    #
-    #     self.assertRedirects(
-    #         response,
-    #         expected_url=reverse('certificate_templates'),
-    #         status_code=302,
-    #         target_status_code=200
-    #     )
-    #     certificate_templates = CertificateTemplate.objects.all()
-    #     self.assertEqual(len(certificate_templates), len(self.templates) + 1)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            len(response.context['certificate_templates']),
+            len(self.templates)
+        )
 
-    # TODO: mock API to fix test and uncomment
-    # def test_new_template_post_invalid(self):
-    #     """
-    #     Test post new certificate template view with invalid data
-    #     """
-    #     response = self.client.post(
-    #         reverse('new_certificate_template'),
-    #         self.template_post_data
-    #     )
-    #     self.assertEqual(response.status_code, 200)
-    #     certificate_templates = CertificateTemplate.objects.all()
-    #     self.assertEqual(len(certificate_templates), len(self.templates))
-    #     self.assertIsInstance(response.context['form'], CertificateTemplateForm)
+    @httpretty.activate
+    def test_new_certificate_template_get(self):
+        """
+        Test get new certificate template view
+        """
+        test_course_data.setup_course_list_response()
+        response = self.client.get(reverse('new_certificate_template'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context['form'], CertificateTemplateForm)
 
-    # TODO: mock API to fix test and uncomment
-    # def test_edit_certificate_template_get(self):
-    #     """
-    #     Test get edit certificate template view
-    #     """
-    #     response = self.client.get(
-    #         reverse(
-    #             'edit_certificate_template',
-    #             kwargs={'template_id': self.templates[0].id}
-    #         )
-    #     )
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIsInstance(response.context['form'], CertificateTemplateForm)
-    #     self.assertEqual(
-    #         response.context['form'].initial['course_id'],
-    #         self.templates[0].course_id
-    #     )
+    def test_new_certificate_template_post_valid(self):
+        """
+        Test post new certificate template view with valid data
+        """
+        self._apply_get_courses_choice_list_patch()
+        response = self.client.post(
+            reverse('new_certificate_template'),
+            self.template_post_data
+        )
 
-    # TODO: mock API to fix test and uncomment
-    # def test_edit_certificate_template_post_valid(self):
-    #     """
-    #     Test post edit certificate template view with valid data
-    #     """
-    #     self._apply_get_courses_choice_list_patch()
-    #     new_template_description = 'updated description'
-    #     self.template_post_data['description'] = new_template_description
-    #     response = self.client.post(
-    #         reverse(
-    #             'edit_certificate_template',
-    #             kwargs={'template_id': self.templates[0].id}
-    #         ),
-    #         self.template_post_data
-    #     )
-    #
-    #     self.assertRedirects(
-    #         response,
-    #         expected_url=reverse('certificate_templates'),
-    #         status_code=302,
-    #         target_status_code=200
-    #     )
-    #     certificate_template = CertificateTemplate.objects.get(
-    #         id=self.templates[0].id
-    #     )
-    #     self.assertEqual(
-    #         certificate_template.description, new_template_description
-    #     )
+        self.assertRedirects(
+            response,
+            expected_url=reverse('certificate_templates'),
+            status_code=302,
+            target_status_code=200
+        )
+        certificate_templates = CertificateTemplate.objects.all()
+        self.assertEqual(len(certificate_templates), len(self.templates) + 1)
 
-    # TODO: mock API to fix test and uncomment
-    # def test_edit_template_post_invalid(self):
-    #     """
-    #     Test post edit certificate template view with invalid data
-    #     """
-    #     response = self.client.post(
-    #         reverse(
-    #             'edit_certificate_template',
-    #             kwargs={'template_id': self.templates[0].id}
-    #         ),
-    #         self.template_asset_post_data
-    #     )
-    #     self.assertEqual(response.status_code, 200)
-    #     self.assertIsInstance(response.context['form'], CertificateTemplateForm)
+    @httpretty.activate
+    def test_new_template_post_invalid(self):
+        """
+        Test post new certificate template view with invalid data
+        """
+        test_course_data.setup_course_list_response()
+        response = self.client.post(
+            reverse('new_certificate_template'),
+            self.template_post_data
+        )
+        self.assertEqual(response.status_code, 200)
+        certificate_templates = CertificateTemplate.objects.all()
+        self.assertEqual(len(certificate_templates), len(self.templates))
+        self.assertIsInstance(response.context['form'], CertificateTemplateForm)
+
+    @httpretty.activate
+    def test_edit_certificate_template_get(self):
+        """
+        Test get edit certificate template view
+        """
+        test_course_data.setup_course_list_response()
+        response = self.client.get(
+            reverse(
+                'edit_certificate_template',
+                kwargs={'template_id': self.templates[0].id}
+            )
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context['form'], CertificateTemplateForm)
+        self.assertEqual(
+            response.context['form'].initial['course_id'],
+            self.templates[0].course_id
+        )
+
+    def test_edit_certificate_template_post_valid(self):
+        """
+        Test post edit certificate template view with valid data
+        """
+        self._apply_get_courses_choice_list_patch()
+        new_template_description = 'updated description'
+        self.template_post_data['description'] = new_template_description
+        response = self.client.post(
+            reverse(
+                'edit_certificate_template',
+                kwargs={'template_id': self.templates[0].id}
+            ),
+            self.template_post_data
+        )
+
+        self.assertRedirects(
+            response,
+            expected_url=reverse('certificate_templates'),
+            status_code=302,
+            target_status_code=200
+        )
+        certificate_template = CertificateTemplate.objects.get(
+            id=self.templates[0].id
+        )
+        self.assertEqual(
+            certificate_template.description, new_template_description
+        )
+
+    @httpretty.activate
+    def test_edit_template_post_invalid(self):
+        """
+        Test post edit certificate template view with invalid data
+        """
+        test_course_data.setup_course_list_response()
+        response = self.client.post(
+            reverse(
+                'edit_certificate_template',
+                kwargs={'template_id': self.templates[0].id}
+            ),
+            self.template_asset_post_data
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIsInstance(response.context['form'], CertificateTemplateForm)
 
     def test_load_template_asset(self):
         """

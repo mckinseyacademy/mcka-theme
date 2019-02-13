@@ -1,10 +1,13 @@
 """
 Tests for certificates django forms
 """
+import httpretty
+
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 
 from accounts.tests.utils import ApplyPatchMixin
+from util.unit_test_helpers.test_api_responses import course as test_course_data
 
 from ..forms import CertificateTemplateAssetForm, CertificateTemplateForm
 
@@ -33,21 +36,24 @@ class CertificateTemplateAssetFormTest(TestCase):
         form = CertificateTemplateAssetForm(self.post_data, self.file_data)
         self.assertTrue(form.is_valid())
 
+    @httpretty.activate
     def test_template_asset_form_invalid(self):
         """
         Test certificate template asset form with invalid data
         """
+        test_course_data.setup_course_list_response()
         form = CertificateTemplateAssetForm(self.post_data)
         self.assertFalse(form.is_valid())
 
-    # TODO: mock API to fix test and uncomment
-    # def test_template_asset_form_penetration(self):
-    #     """
-    #     Test certificate template asset form with  pen test invalid data
-    #     """
-    #     self.post_data['name'] = 'dummy <p>'
-    #     form = CertificateTemplateForm(self.post_data)
-    #     self.assertFalse(form.is_valid())
+    @httpretty.activate
+    def test_template_asset_form_penetration(self):
+        """
+        Test certificate template asset form with  pen test invalid data
+        """
+        test_course_data.setup_course_list_response()
+        self.post_data['name'] = 'dummy <p>'
+        form = CertificateTemplateForm(self.post_data)
+        self.assertFalse(form.is_valid())
 
 
 class CertificateTemplateFormTest(TestCase, ApplyPatchMixin):
@@ -86,19 +92,20 @@ class CertificateTemplateFormTest(TestCase, ApplyPatchMixin):
         form = CertificateTemplateForm(self.post_data)
         self.assertTrue(form.is_valid())
 
-    # TODO: mock API to fix test and uncomment
-    # def test_template_form_invalid(self):
-    #     """
-    #     Test certificate template form with invalid data
-    #     """
-    #     form = CertificateTemplateForm(self.post_data)
-    #     self.assertFalse(form.is_valid())
+    def test_template_form_invalid(self):
+        """
+        Test certificate template form with invalid data
+        """
+        self._apply_courses_choice_list_patch()
+        self.post_data['name'] = ''
+        form = CertificateTemplateForm(self.post_data)
+        self.assertFalse(form.is_valid())
 
-    # TODO: mock API to fix test and uncomment
-    # def test_template_form_penetration(self):
-    #     """
-    #     Test certificate template form with  pen test invalid data
-    #     """
-    #     self.post_data['name'] = 'dummy <p>'
-    #     form = CertificateTemplateForm(self.post_data)
-    #     self.assertFalse(form.is_valid())
+    def test_template_form_penetration(self):
+        """
+        Test certificate template form with  pen test invalid data
+        """
+        self._apply_courses_choice_list_patch()
+        self.post_data['name'] = 'dummy <p>'
+        form = CertificateTemplateForm(self.post_data)
+        self.assertFalse(form.is_valid())

@@ -29,6 +29,9 @@ from api_client.api_error import ApiError
 from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map
 from .test_task_runner import mocked_task
+from util.unit_test_helpers import AprosTestingClient
+from api_client.group_api import PERMISSION_GROUPS
+from api_data_manager.tests.utils import APIDataManagerMockMixin
 
 
 def mock_task():
@@ -75,123 +78,121 @@ def mocked_execute_task(task_runner):
 
     return task_id
 
-# TODO: 504 issue fix - uncomment this when actual commit is included in release
-# class AdminViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
-#     """ Tests related to admin.views """
-#     client_class = AprosTestingClient
-#
-#     def setUp(self):
-#         """ Setup admin views test """
-#         super(AdminViewTest, self).setUp()
-#         self.url_name = 'edit_client_mobile_image'
-#         self.parameters = {
-#             'client_id': 1,
-#         }
-#         mobile_api = self.apply_patch('admin.views.mobileapp_api')
-#         mobile_api.get_mobile_app_themes.return_value = []
-#
-#         self.mock_user_api_data_manager(
-#             module_paths=[
-#                 'accounts.middleware.thread_local.UserDataManager',
-#             ],
-#             data={'courses': [], 'current_course': None}
-#         )
-#
-#         # Mock checking if user exists in middleware
-#         self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
-#
-#         # login as an uber admin
-#         self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
-#
-#     def test_edit_client_mobile_image_logo(self):
-#         """ test edit mobile logo page """
-#
-#         self.parameters['img_type'] = 'logo'
-#         edit_client_mobile_image_url_logo = reverse(self.url_name, kwargs=self.parameters)
-#         respose = self.client.get(edit_client_mobile_image_url_logo)
-#         self.assertEqual(respose.status_code, status.HTTP_200_OK)
-#
-#     def test_edit_client_mobile_image_header(self):
-#         """ test edit mobile header page """
-#
-#         self.parameters['img_type'] = 'header'
-#         edit_client_mobile_image_url_header = reverse(self.url_name, kwargs=self.parameters)
-#         respose = self.client.get(edit_client_mobile_image_url_header)
-#         self.assertEqual(respose.status_code, status.HTTP_200_OK)
-#
-#     def test_edit_client_mobile_image_invalid(self):
-#         """ test edit mobile logo/header page for invalid request """
-#
-#         self.parameters['img_type'] = 'invalid'
-#         edit_client_mobile_image_url_invalid = reverse(self.url_name, kwargs=self.parameters)
-#         respose = self.client.get(edit_client_mobile_image_url_invalid)
-#         self.assertEqual(respose.status_code, status.HTTP_404_NOT_FOUND)
+
+class AdminViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
+    """ Tests related to admin.views """
+    client_class = AprosTestingClient
+
+    def setUp(self):
+        """ Setup admin views test """
+        super(AdminViewTest, self).setUp()
+        self.url_name = 'edit_client_mobile_image'
+        self.parameters = {
+            'client_id': 1,
+        }
+        mobile_api = self.apply_patch('admin.views.mobileapp_api')
+        mobile_api.get_mobile_app_themes.return_value = []
+
+        self.mock_user_api_data_manager(
+            module_paths=[
+                'accounts.middleware.thread_local.UserDataManager',
+            ],
+            data={'courses': [], 'current_course': None}
+        )
+
+        # Mock checking if user exists in middleware
+        self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
+
+        # login as an uber admin
+        self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
+
+    def test_edit_client_mobile_image_logo(self):
+        """ test edit mobile logo page """
+
+        self.parameters['img_type'] = 'logo'
+        edit_client_mobile_image_url_logo = reverse(self.url_name, kwargs=self.parameters)
+        respose = self.client.get(edit_client_mobile_image_url_logo)
+        self.assertEqual(respose.status_code, status.HTTP_200_OK)
+
+    def test_edit_client_mobile_image_header(self):
+        """ test edit mobile header page """
+
+        self.parameters['img_type'] = 'header'
+        edit_client_mobile_image_url_header = reverse(self.url_name, kwargs=self.parameters)
+        respose = self.client.get(edit_client_mobile_image_url_header)
+        self.assertEqual(respose.status_code, status.HTTP_200_OK)
+
+    def test_edit_client_mobile_image_invalid(self):
+        """ test edit mobile logo/header page for invalid request """
+
+        self.parameters['img_type'] = 'invalid'
+        edit_client_mobile_image_url_invalid = reverse(self.url_name, kwargs=self.parameters)
+        respose = self.client.get(edit_client_mobile_image_url_invalid)
+        self.assertEqual(respose.status_code, status.HTTP_404_NOT_FOUND)
 
 
-# TODO: mock API to fix test and uncomment
-# @ddt
-# class TestBulkTaskAPI(TestCase, ApplyPatchMixin):
-#     """
-#     Tests bulk task API endpoints
-#     """
-#
-#     def setUp(self):
-#         super(TestBulkTaskAPI, self).setUp()
-#
-#         self.apply_patch(
-#             'admin.views.BulkTaskRunner.execute_task',
-#             new=mocked_execute_task
-#         )
-#         _create_user()
-#         self.client = Client()
-#         self.client.login(username='mcka_admin_test_user', password='PassworD12!@')
-#         self.api_url = reverse('bulk_task_api')
-#
-#     def test_post_method(self):
-#         """
-#         Tests post method of API which creates a background task
-#         """
-#         response = self.client.post(path=self.api_url, data={
-#             'task_name': 'test_task'
-#         })
-#
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#         self.assertIsNotNone(response.data.get('task_id'))
-#
-#     @override_settings(CELERY_ALWAYS_EAGER=True)
-#     @data(
-#         ('PROGRESS', {'percentage': 50}),
-#         ('SUCCESS', {}),
-#     )
-#     def test_get_method(self, task_state):
-#         """
-#         Tests get method of API which returns a task status
-#         """
-#         task_id = mocked_task.delay().task_id
-#
-#         state, result = task_state
-#
-#         runner = self.apply_patch('admin.views.BulkTaskRunner')
-#         runner.get_task_state.return_value = state, result
-#
-#         response = self.client.get(path=self.api_url, data={
-#             'task_id': task_id
-#         })
-#
-#         response_data = response.data
-#
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#
-#         # test task progress is returned
-#         if state == 'PROGRESS':
-#             self.assertEqual(
-#                 response_data.get('values', {}).get('progress'),
-#                 result.get('percentage')
-#             )
-#
-#         # test response for success case
-#         if state == 'SUCCESS':
-#             self.assertEqual(response_data.get('values', {}).get('progress'), '100')
+@ddt.ddt
+class TestBulkTaskAPI(TestCase, ApplyPatchMixin):
+    """
+    Tests bulk task API endpoints
+    """
+    client_class = AprosTestingClient
+
+    def setUp(self):
+        super(TestBulkTaskAPI, self).setUp()
+
+        self.apply_patch(
+            'admin.views.BulkTaskRunner.execute_task',
+            new=mocked_execute_task
+        )
+        self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
+        self.api_url = reverse('bulk_task_api')
+
+    def test_post_method(self):
+        """
+        Tests post method of API which creates a background task
+        """
+        response = self.client.post(path=self.api_url, data={
+            'task_name': 'test_task'
+        })
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIsNotNone(response.data.get('task_id'))
+
+    @override_settings(CELERY_ALWAYS_EAGER=True)
+    @ddt.data(
+        ('PROGRESS', {'percentage': 50}),
+        ('SUCCESS', {}),
+    )
+    def test_get_method(self, task_state):
+        """
+        Tests get method of API which returns a task status
+        """
+        task_id = mocked_task.delay().task_id
+
+        state, result = task_state
+
+        runner = self.apply_patch('admin.views.BulkTaskRunner')
+        runner.get_task_state.return_value = state, result
+
+        response = self.client.get(path=self.api_url, data={
+            'task_id': task_id
+        })
+
+        response_data = response.data
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # test task progress is returned
+        if state == 'PROGRESS':
+            self.assertEqual(
+                response_data.get('values', {}).get('progress'),
+                result.get('percentage')
+            )
+
+        # test response for success case
+        if state == 'SUCCESS':
+            self.assertEqual(response_data.get('values', {}).get('progress'), '100')
 
 
 class AdminClientSSOTest(TestCase, ApplyPatchMixin):

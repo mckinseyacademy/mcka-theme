@@ -21,3 +21,20 @@ def mock_api_data_manager(module_path, data={}):
 
     for key, value in data.iteritems():
         setattr(MockedUserDataManager, key, value)
+
+
+class APIDataManagerMockMixin(object):
+    """
+    Mixes helper methods in unit tests for mocking API Data Managers
+    """
+    def mock_user_api_data_manager(self, module_paths, data=None):
+        data = data or {}
+
+        for module_path in module_paths:
+            patcher = patch(module_path, new=MockedUserDataManager)
+
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+            for key, value in data.iteritems():
+                setattr(MockedUserDataManager, key, value)
