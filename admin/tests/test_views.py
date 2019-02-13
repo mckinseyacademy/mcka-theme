@@ -551,6 +551,8 @@ class ParticipantsListViewTest(CourseParticipantsStatsMixin, TestCase):
         is_user_in_permission_group_lib.return_value = True
         is_user_in_permission_group_accounts = self.apply_patch("accounts.models.is_user_in_permission_group")
         is_user_in_permission_group_accounts.return_value = True
+        is_user_in_permission_group_admin = self.apply_patch("admin.views.is_user_in_permission_group")
+        is_user_in_permission_group_admin.return_value = True
 
         request = self.get_request(reverse('participants_list'), self.admin_user)
         response = views.participants_list(request)

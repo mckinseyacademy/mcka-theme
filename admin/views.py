@@ -80,7 +80,7 @@ from courses.controller import (
 )
 from courses.models import FeatureFlags, CourseMetaData, LessonNotesItem
 from courses.user_courses import load_course_progress
-from lib.authorization import permission_group_required, permission_group_required_api
+from lib.authorization import permission_group_required, permission_group_required_api, is_user_in_permission_group
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from license import controller as license_controller
 from main.models import CuratedContentItem
@@ -3810,7 +3810,7 @@ def participants_list(request):
     form_company_fields = MassCompanyFieldsUpdateForm()
     form_manager_update = MassManagerDataUpdateForm()
     internal_admin_flag = request.user.is_internal_admin
-    enable_data_deletion = _deletion_flag()
+    enable_data_deletion = _deletion_flag() and is_user_in_permission_group(request.user, PERMISSION_GROUPS.MCKA_ADMIN)
 
     data = {
         'form': form,

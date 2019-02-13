@@ -20,6 +20,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
                     target="_self"
                   >
                     ${participant_name}
+                    ${enable_data_deletion == "True" ? _this.userDeletionModalManager(_this, id, attributes) : ''}
                   </a>
                 `;
             }
@@ -49,10 +50,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           table_columns.unshift({
             title: " ", name: 'action_buttons',
             actions: function(id, attributes){
-              return _this.userDeletionModalManager(
-                id,
-                _this.getParticipantName(attributes)
-              );
+              return _this.userDeletionSelector(id);
             }
           });
         };
@@ -396,7 +394,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
             $(input).parent().find('.newCompanyCreationPopup').hide();
         }
     },
-    userDeletionModalManager: function(id, participant_name)
+    userDeletionModalManager: function(_this, id, attributes)
     {
       $(document).on('click', '#button-delete-user-' + id, function(ev){
         var mainContainer = $('#delete_user_modal');
@@ -407,10 +405,21 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         let row = $(this).closest('tr');
         // Set dialog data
         mainContainer.find('.errorContainer').empty();
-        mainContainer.find('#participantNameContainer').text(participant_name);
-        // Uncheck checkboxes and disable button
-        deletionConfirmationCheckboxes.removeAttr('checked');
-        confirmButton.addClass("disabled");
+        mainContainer.find('.errorContainer').hide();
+        mainContainer.find('#participantInfoContainer').html(
+          `<table>
+            <tr>
+              <th>Name</td>
+              <th>Company</td>
+              <th>Email</td>
+            </tr>
+            <tr>
+              <td>${_this.getParticipantName(attributes)}</td>
+              <td>${attributes.organizations_custom_name}</td>
+              <td>${attributes.email}</td>
+            </tr>
+          </table>`
+        );
 
         deletionConfirmationCheckboxes.off().on('click', function() {
           if (deletionConfirmationCheckboxes.not(':checked').length == 0){
@@ -437,6 +446,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
             confirmationScreen.foundation('reveal', 'open');
             row.remove();
           }).fail(function(data) {
+              mainContainer.find('.errorContainer').show();
               mainContainer.find('.errorContainer').html("Error deleting user. Try again later...");
             }
           );
@@ -444,12 +454,39 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
       })
 
       return `
-        <i
-          class="fa fa-trash fa-lg actionButtonIcon"
+        <a
+          type="button"
           data-reveal-id="delete_user_modal"
+          class="button small radius menuButton deleteButton"
           id="button-delete-user-${id}"
-        />
+          style="visibility: hidden"
+        >
+          <i class="fa fa-trash fa-lg actionButtonIcon"/>
+        </a>
       `;
+    },
+    userDeletionSelector: function(id)
+    {
+      $(document).on('click', '#radio-show-delete-user-' + id, function(ev){
+        let radioButton = ev.target;
+        var allDeleteUserButtons = $('.deleteButton');
+        var deleteUserButton = $(`#button-delete-user-${id}`);
+
+        if (radioButton.checked) {
+          //allDeleteUserButtons.hide();
+          allDeleteUserButtons.css('visibility','hidden')
+          //deleteUserButton.show();
+          deleteUserButton.css('visibility','visible')
+        }
+      })
+
+      return `
+        <input
+          type="radio"
+          name="user-deletion"
+          id='radio-show-delete-user-${id}'
+          style="margin: 0;"
+        />`;
     },
     getParticipantName: function(attributes)
     {
