@@ -21,27 +21,30 @@
                     %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}"}
                       {% trans "Overview" %}
                     %li#lessons-content{"data-dropdown-content": "true"}
-                      - if course.chapters
-                        %a.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
-                          {% trans "Lessons" %}
-                      -else
-                        %a.nav-link.pn-ProductNav_Link.dropdown-toggle.load-course-lessons{"data-course-id": "#{current_course.id}", :href => "#"}
+                      %a.nav-link.pn-ProductNav_Link.dropdown-toggle{:class => "{% if course.chapters %}{% else %}load-course-lessons{% endif %}", :data-toggle => "{% if course.chapters %}dropdown{% endif %}", "data-course-id": "{% if course.chapters %}{% else %}#{current_course.id}{% endif %}", :href => "#"}
+                        - if lessons_custom_label
+                          = lessons_custom_label
+                        - else
                           {% trans "Lessons" %}
                       .dropdown-menu.allLessons{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
                         - include "courses/content_page/lesson_menu.haml"
 
-                  %li{"class": "{% ifequal request.resolver_match.url_name 'course_discussion' %}active{% endifequal %}"}
-                    %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/discussion"}
-                      {% trans "Discussion" %}
-                  %li{"class": "{% ifequal request.resolver_match.url_name 'course_group_work' %}active{% endifequal %}"}
-                    %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/group_work"}
-                      {% trans "Group work" %}
-                  %li{"class": "{% ifequal request.resolver_match.url_name 'course_cohort' %}active{% endifequal %}"}
-                    %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/cohort"}
-                      {% trans "Cohort" %}
-                  %li{"class": "{% ifequal request.resolver_match.url_name 'course_progress' %}active{% endifequal %}"}
-                    %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/progress"}
-                      {% trans "Progress" %}
+                  - if feature_flags.discussions
+                    %li{"class": "{% ifequal request.resolver_match.url_name 'course_discussion' %}active{% endifequal %}"}
+                      %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/discussion"}
+                        {% trans "Discussion" %}
+                  - if feature_flags.group_work
+                    %li{"class": "{% ifequal request.resolver_match.url_name 'course_group_work' %}active{% endifequal %}"}
+                      %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/group_work"}
+                        {% trans "Group work" %}
+                  - if feature_flags.cohort_map
+                    %li{"class": "{% ifequal request.resolver_match.url_name 'course_cohort' %}active{% endifequal %}"}
+                      %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/cohort"}
+                        {% trans "Cohort" %}
+                  - if feature_flags.progress_page
+                    %li{"class": "{% ifequal request.resolver_match.url_name 'course_progress' %}active{% endifequal %}"}
+                      %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/progress"}
+                        {% trans "Progress" %}
                   %li{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_nannouncements' %}active{% endif %}"}
                     %a.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
                       {% trans "Course Materials" %}
@@ -50,11 +53,13 @@
                         {% trans "Announcements" %}
                       %a.dropdown-item{:href => "/courses/#{current_course.id}/overview"}
                         {% trans "Course Overview" %}
-                      %a.dropdown-item{:href => "/courses/#{current_course.id}/resources"}
-                        {% trans "Resources" %}
-                  %li
-                    %a.nav-link.pn-ProductNav_Link{:aria-selected => "", :href => "#"}
-                      {% trans "Notifications" %}
+                      - if feature_flags.resources
+                        %a.dropdown-item{:href => "/courses/#{current_course.id}/resources"}
+                          {% trans "Resources" %}
+                  - if feature_flags.notifications
+                    %li
+                      %a.nav-link.pn-ProductNav_Link{:aria-selected => "", :href => "#"}
+                        {% trans "Notifications" %}
                 %span#pnIndicator.pn-ProductNav_Indicator{:style => "transform: translateX(0px) scaleX(0.672); background-color: rgb(46, 45, 57);"}
             %button#pnAdvancerLeft.pn-Advancer.pn-Advancer_Left{"type": "button"}
               %i.material-icons

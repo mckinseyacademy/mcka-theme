@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-12 15:11+0000\n"
+"POT-Creation-Date: 2019-02-13 11:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1893,7 +1893,8 @@ msgstr "文章"
 #: templates/courses/course_lessons_ld_external.haml:16
 #: templates/courses/course_progress_v2.haml:79
 #: templates_v2/courses/content_page/course_menu.haml:25
-#: templates_v2/courses/content_page/lesson_menu.haml:8
+#: templates_v2/courses/content_page/course_tabs.haml:30
+#: templates_v2/courses/content_page/lesson_menu.haml:11
 #: templates_v2/courses/content_page/lesson_pager.haml:8
 #: templates_v2/courses/content_page/lesson_pager.haml:22
 #: templates_v2/courses/course_lessons.haml:20
@@ -1911,7 +1912,7 @@ msgstr "课时"
 #: templates/courses/course_progress_v2.haml:109
 #: templates_v2/courses/content_page/lesson_pager.haml:8
 #: templates_v2/courses/content_page/lesson_pager.haml:22
-#: templates_v2/courses/course_lessons.haml:46
+#: templates_v2/courses/course_lessons.haml:57
 msgid "Module"
 msgstr "模块"
 
@@ -1930,28 +1931,28 @@ msgstr "当面授课"
 msgid "Webinar"
 msgstr "网络研讨会"
 
-#: admin/models.py:606 templates_v2/courses/course_navigation.haml:38
+#: admin/models.py:606 templates_v2/courses/course_navigation.haml:39
 msgid "Group work"
 msgstr "小组作业"
 
 #: admin/models.py:694 templates/admin/client-admin/course_info.haml:85
-#: templates_v2/courses/content_page/course_menu.haml:43
-#: templates_v2/courses/content_page/lesson_menu.haml:21
-#: templates_v2/courses/course_lessons.haml:59
+#: templates_v2/courses/content_page/course_tabs.haml:43
+#: templates_v2/courses/content_page/lesson_menu.haml:24
+#: templates_v2/courses/course_lessons.haml:70
 msgid "Not Started"
 msgstr "未开始"
 
 #: admin/models.py:695 admin/views.py:2506
 #: templates/courses/content_page/courses_menu_list.haml:12
-#: templates_v2/courses/content_page/course_menu.haml:46
-#: templates_v2/courses/content_page/lesson_menu.haml:24
-#: templates_v2/courses/course_lessons.haml:62
+#: templates_v2/courses/content_page/course_tabs.haml:46
+#: templates_v2/courses/content_page/lesson_menu.haml:27
+#: templates_v2/courses/course_lessons.haml:73
 msgid "In Progress"
 msgstr "进行中"
 
-#: admin/models.py:696 templates_v2/courses/content_page/course_menu.haml:40
-#: templates_v2/courses/content_page/lesson_menu.haml:18
-#: templates_v2/courses/course_lessons.haml:56
+#: admin/models.py:696 templates_v2/courses/content_page/course_tabs.haml:40
+#: templates_v2/courses/content_page/lesson_menu.haml:21
+#: templates_v2/courses/course_lessons.haml:67
 msgid "Complete"
 msgstr "完成"
 
@@ -2234,6 +2235,8 @@ msgstr "此课程没有可用的小组项目"
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
 #: templates/courses/course_progress.haml:70 templates/faq.haml:39
+#: templates_v2/courses/content_page/course_tabs.haml:64
+#: templates_v2/courses/content_page/course_tabs.haml:65
 #: templates_v2/faq.haml:84
 msgid "Group Work"
 msgstr "小组作业"
@@ -2332,8 +2335,10 @@ msgstr "新课程中选定的用户角色存在问题！"
 #: admin/views.py:4414 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
+#: templates_v2/courses/content_page/course_tabs.haml:72
+#: templates_v2/courses/content_page/course_tabs.haml:73
 #: templates_v2/courses/course_cohort.haml:22
-#: templates_v2/courses/course_navigation.haml:44
+#: templates_v2/courses/course_navigation.haml:47
 #: templates_v2/courses/visualizations/course_progress.haml:6
 msgid "Progress"
 msgstr "进度"
@@ -4380,7 +4385,9 @@ msgstr "注：如果您禁用“进度页面”，则会隐藏二级导航中的
 
 #: templates/admin/course_meta_content/item_list.haml:97
 #: templates/courses/content_page/course_tabs.haml:45
-#: templates_v2/courses/course_navigation.haml:57
+#: templates_v2/courses/content_page/course_tabs.haml:87
+#: templates_v2/courses/content_page/course_tabs.haml:88
+#: templates_v2/courses/course_navigation.haml:62
 msgid "Notifications"
 msgstr "通知"
 
@@ -4394,7 +4401,8 @@ msgstr "学习者仪表板"
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_learner_dashboard_header.haml:33
 #: templates/courses/course_resources.haml:27
-#: templates_v2/courses/course_navigation.haml:54
+#: templates_v2/courses/content_page/course_tabs.haml:84
+#: templates_v2/courses/course_navigation.haml:58
 #: templates_v2/courses/course_resources.haml:14
 msgid "Resources"
 msgstr "资源"
@@ -4494,9 +4502,9 @@ msgstr "添加 "
 #: templates/admin/course_meta_content/item_list.haml:233
 #: templates/courses/content_page/course_tabs.haml:12
 #: templates_v2/courses/content_page/course_menu.haml:14
+#: templates_v2/courses/content_page/course_tabs.haml:17
 #: templates_v2/courses/content_page/courses_menu_list.haml:19
-#: templates_v2/courses/course_navigation.haml:26
-#: templates_v2/courses/course_navigation.haml:29
+#: templates_v2/courses/course_navigation.haml:28
 msgid "Lessons"
 msgstr "课时"
 
@@ -5554,6 +5562,7 @@ msgstr "课程数量："
 #: templates/admin/program/detail_header.haml:10
 #: templates/admin/workgroup/list_layout.haml:9
 #: templates/courses/course_overview.haml:39
+#: templates_v2/courses/content_page/course_tabs.haml:11
 #: templates_v2/courses/course_navigation.haml:22
 #: templates_v2/courses/course_overview.haml:25
 msgid "Overview"
@@ -6098,14 +6107,16 @@ msgid "LESSON"
 msgstr "课时"
 
 #: templates/courses/content_page/course_menu.haml:55
-#: templates_v2/courses/content_page/course_menu.haml:56
+#: templates_v2/courses/content_page/course_menu.haml:45
+#: templates_v2/courses/content_page/course_tabs.haml:51
 #, fuzzy, python-format
 #| msgid " This lesson will be available on %(start_date)s "
 msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
 msgstr " 本课时的上课时间是 %(start_date)s"
 
 #: templates/courses/content_page/course_menu.haml:57
-#: templates_v2/courses/content_page/course_menu.haml:58
+#: templates_v2/courses/content_page/course_menu.haml:47
+#: templates_v2/courses/content_page/course_tabs.haml:53
 #, python-format
 msgid " This lesson will be available on %(start_date)s "
 msgstr " 本课时的上课时间是 %(start_date)s"
@@ -6114,6 +6125,8 @@ msgstr " 本课时的上课时间是 %(start_date)s"
 #: templates/courses/course_discussion.haml:14
 #: templates/courses/course_learner_dashboard_header.haml:46
 #: templates/courses/course_learner_dashboard_header.haml:49
+#: templates_v2/courses/content_page/course_tabs.haml:60
+#: templates_v2/courses/content_page/course_tabs.haml:61
 #: templates_v2/courses/course_navigation.haml:35
 msgid "Discussion"
 msgstr "讨论"
@@ -6121,25 +6134,31 @@ msgstr "讨论"
 #: templates/courses/content_page/course_tabs.haml:26
 #: templates/courses/course_cohort.haml:14
 #: templates/courses/course_cohort.haml:25
-#: templates_v2/courses/course_navigation.haml:41
+#: templates_v2/courses/content_page/course_tabs.haml:68
+#: templates_v2/courses/content_page/course_tabs.haml:69
+#: templates_v2/courses/course_navigation.haml:43
 msgid "Cohort"
 msgstr "群组"
 
 #: templates/courses/content_page/course_tabs.haml:33
-#: templates_v2/courses/course_navigation.haml:47
+#: templates_v2/courses/content_page/course_tabs.haml:75
+#: templates_v2/courses/content_page/course_tabs.haml:76
+#: templates_v2/courses/course_navigation.haml:50
 msgid "Course Materials"
 msgstr "课程材料"
 
 #: templates/courses/content_page/course_tabs.haml:37
 #: templates/courses/course_news.haml:24
-#: templates_v2/courses/course_navigation.haml:50
+#: templates_v2/courses/content_page/course_tabs.haml:79
+#: templates_v2/courses/course_navigation.haml:53
 #: templates_v2/courses/course_news.haml:15
 msgid "Announcements"
 msgstr "公告"
 
 #: templates/courses/content_page/course_tabs.haml:39
 #: templates/courses/course_overview.haml:53
-#: templates_v2/courses/course_navigation.haml:52
+#: templates_v2/courses/content_page/course_tabs.haml:81
+#: templates_v2/courses/course_navigation.haml:55
 #: templates_v2/courses/course_overview.haml:41
 msgid "Course Overview"
 msgstr "课程概述"
@@ -11207,11 +11226,21 @@ msgid "email"
 msgstr "电子邮件"
 
 #: templates_v2/courses/content_page/course_menu.haml:30
-#: templates_v2/courses/content_page/lesson_menu.haml:13
+#: templates_v2/courses/content_page/course_tabs.haml:35
+#: templates_v2/courses/content_page/lesson_menu.haml:16
 #, fuzzy
 #| msgid " This lesson will be available on %(start_date)s "
 msgid "This lesson will be available on "
 msgstr " 本课时的上课时间是 %(start_date)s"
+
+#: templates_v2/courses/content_page/course_tabs.haml:25
+#, python-format
+msgid ""
+"\n"
+"                            %(lesson_custom_label)s\n"
+"                            %%span %(lesson_index)s:\n"
+"                          "
+msgstr ""
 
 #: templates_v2/courses/content_page/lesson_pager.haml:8
 #: templates_v2/courses/content_page/lesson_pager.haml:22
@@ -11303,18 +11332,47 @@ msgstr "您的熟练程度排名 <br> 将显示在此处"
 msgid "Top 3 on Proficiency"
 msgstr "熟练程度"
 
-#: templates_v2/courses/course_lessons.haml:40
+#: templates_v2/courses/course_lessons.haml:41
 #, fuzzy, python-format
 #| msgid ""
-#| "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
-msgid " You have completed %(progress)s%% of Lesson  %(index)s "
-msgstr "您已完成课时 %(lesson_index)s 的 %(lesson_progress)s%%："
+#| "You have completed %(course_current_progress)s%% of Lesson "
+#| "%(lesson_index)s: "
+msgid ""
+"You have completed %(course_current_progress)s%% of %(lesson_custom_label)s "
+"%(lesson_index)s "
+msgstr "您已完成课时 %(lesson_index)s 的 %(course_current_progress)s%%："
 
-#: templates_v2/courses/course_lessons.haml:51
+#: templates_v2/courses/course_lessons.haml:43
+#, fuzzy, python-format
+#| msgid ""
+#| "You have completed %(course_current_progress)s%% of Lesson "
+#| "%(lesson_index)s: "
+msgid ""
+"You have completed %(course_current_progress)s%% of Lesson %(lesson_index)s "
+msgstr "您已完成课时 %(lesson_index)s 的 %(course_current_progress)s%%："
+
+#: templates_v2/courses/course_lessons.haml:52
+#, python-format
+msgid ""
+"\n"
+"                                    %(module_custom_label)s\n"
+"                                    %%span %(module_index)s\n"
+"                                  "
+msgstr ""
+
+#: templates_v2/courses/course_lessons.haml:62
 #, fuzzy
 #| msgid " This lesson will be available on %(start_date)s "
 msgid "This module will be available on "
 msgstr " 本课时的上课时间是 %(start_date)s"
+
+#: templates_v2/courses/course_lessons.haml:81
+msgid "Show fullscreen"
+msgstr ""
+
+#: templates_v2/courses/course_lessons.haml:83
+msgid "Exit fullscreen"
+msgstr ""
 
 #: templates_v2/courses/courses.haml:11
 #, fuzzy
@@ -11627,6 +11685,12 @@ msgstr "名字：{}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "姓氏：{}"
+
+#, fuzzy
+#~| msgid ""
+#~| "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
+#~ msgid " You have completed %(progress)s%% of Lesson  %(index)s "
+#~ msgstr "您已完成课时 %(lesson_index)s 的 %(lesson_progress)s%%："
 
 #, fuzzy
 #~| msgid "Deleted - "

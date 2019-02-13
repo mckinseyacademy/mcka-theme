@@ -5,8 +5,12 @@
     %li{"class": "courseRow {% if lesson.is_started %}active{% else %}locked{% endif %} {% if lesson.progress == 100 %}complete{% else %}{% endif %}"}
       %a.holder{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
         .data.serial
-          {% trans "Lesson" %}
-          %span {{lesson.index}}
+          - if lesson_custom_label
+            = lesson_custom_label
+            %span {{lesson_index}}
+          - else
+            {% trans "Lesson" %}
+            %span {{lesson.index}}
         .data.title
           %span= lesson.name
             -if not lesson.is_started

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-02-12 15:09+0000\n"
+"POT-Creation-Date: 2019-02-13 11:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1926,7 +1926,8 @@ msgstr "Artikel"
 #: templates/courses/course_lessons_ld_external.haml:16
 #: templates/courses/course_progress_v2.haml:79
 #: templates_v2/courses/content_page/course_menu.haml:25
-#: templates_v2/courses/content_page/lesson_menu.haml:8
+#: templates_v2/courses/content_page/course_tabs.haml:30
+#: templates_v2/courses/content_page/lesson_menu.haml:11
 #: templates_v2/courses/content_page/lesson_pager.haml:8
 #: templates_v2/courses/content_page/lesson_pager.haml:22
 #: templates_v2/courses/course_lessons.haml:20
@@ -1944,7 +1945,7 @@ msgstr "Lektion"
 #: templates/courses/course_progress_v2.haml:109
 #: templates_v2/courses/content_page/lesson_pager.haml:8
 #: templates_v2/courses/content_page/lesson_pager.haml:22
-#: templates_v2/courses/course_lessons.haml:46
+#: templates_v2/courses/course_lessons.haml:57
 msgid "Module"
 msgstr "Modul"
 
@@ -1963,28 +1964,28 @@ msgstr "Persönlicher Unterrichtsabschnitt"
 msgid "Webinar"
 msgstr "Webinar"
 
-#: admin/models.py:606 templates_v2/courses/course_navigation.haml:38
+#: admin/models.py:606 templates_v2/courses/course_navigation.haml:39
 msgid "Group work"
 msgstr "Gruppenarbeit"
 
 #: admin/models.py:694 templates/admin/client-admin/course_info.haml:85
-#: templates_v2/courses/content_page/course_menu.haml:43
-#: templates_v2/courses/content_page/lesson_menu.haml:21
-#: templates_v2/courses/course_lessons.haml:59
+#: templates_v2/courses/content_page/course_tabs.haml:43
+#: templates_v2/courses/content_page/lesson_menu.haml:24
+#: templates_v2/courses/course_lessons.haml:70
 msgid "Not Started"
 msgstr "Nicht begonnen"
 
 #: admin/models.py:695 admin/views.py:2506
 #: templates/courses/content_page/courses_menu_list.haml:12
-#: templates_v2/courses/content_page/course_menu.haml:46
-#: templates_v2/courses/content_page/lesson_menu.haml:24
-#: templates_v2/courses/course_lessons.haml:62
+#: templates_v2/courses/content_page/course_tabs.haml:46
+#: templates_v2/courses/content_page/lesson_menu.haml:27
+#: templates_v2/courses/course_lessons.haml:73
 msgid "In Progress"
 msgstr "In Bearbeitung"
 
-#: admin/models.py:696 templates_v2/courses/content_page/course_menu.haml:40
-#: templates_v2/courses/content_page/lesson_menu.haml:18
-#: templates_v2/courses/course_lessons.haml:56
+#: admin/models.py:696 templates_v2/courses/content_page/course_tabs.haml:40
+#: templates_v2/courses/content_page/lesson_menu.haml:21
+#: templates_v2/courses/course_lessons.haml:67
 msgid "Complete"
 msgstr "Vollständig"
 
@@ -2274,6 +2275,8 @@ msgstr "Keine Gruppenprojekte für diesen Kurs verfügbar"
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
 #: templates/courses/course_progress.haml:70 templates/faq.haml:39
+#: templates_v2/courses/content_page/course_tabs.haml:64
+#: templates_v2/courses/content_page/course_tabs.haml:65
 #: templates_v2/faq.haml:84
 msgid "Group Work"
 msgstr "Gruppenarbeit"
@@ -2375,8 +2378,10 @@ msgstr "Es besteht ein Problem mit der ausgewählten Nutzerrolle im neuen Kurs!"
 #: admin/views.py:4414 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
+#: templates_v2/courses/content_page/course_tabs.haml:72
+#: templates_v2/courses/content_page/course_tabs.haml:73
 #: templates_v2/courses/course_cohort.haml:22
-#: templates_v2/courses/course_navigation.haml:44
+#: templates_v2/courses/course_navigation.haml:47
 #: templates_v2/courses/visualizations/course_progress.haml:6
 msgid "Progress"
 msgstr "Fortschritt"
@@ -4496,7 +4501,9 @@ msgstr ""
 
 #: templates/admin/course_meta_content/item_list.haml:97
 #: templates/courses/content_page/course_tabs.haml:45
-#: templates_v2/courses/course_navigation.haml:57
+#: templates_v2/courses/content_page/course_tabs.haml:87
+#: templates_v2/courses/content_page/course_tabs.haml:88
+#: templates_v2/courses/course_navigation.haml:62
 msgid "Notifications"
 msgstr "Benachrichtigungen"
 
@@ -4510,7 +4517,8 @@ msgstr "Learner Dashboard"
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_learner_dashboard_header.haml:33
 #: templates/courses/course_resources.haml:27
-#: templates_v2/courses/course_navigation.haml:54
+#: templates_v2/courses/content_page/course_tabs.haml:84
+#: templates_v2/courses/course_navigation.haml:58
 #: templates_v2/courses/course_resources.haml:14
 msgid "Resources"
 msgstr "Ressourcen"
@@ -4620,9 +4628,9 @@ msgstr "Hinzufügen "
 #: templates/admin/course_meta_content/item_list.haml:233
 #: templates/courses/content_page/course_tabs.haml:12
 #: templates_v2/courses/content_page/course_menu.haml:14
+#: templates_v2/courses/content_page/course_tabs.haml:17
 #: templates_v2/courses/content_page/courses_menu_list.haml:19
-#: templates_v2/courses/course_navigation.haml:26
-#: templates_v2/courses/course_navigation.haml:29
+#: templates_v2/courses/course_navigation.haml:28
 msgid "Lessons"
 msgstr "Lektionen"
 
@@ -5698,6 +5706,7 @@ msgstr "Anzahl der Kurse:"
 #: templates/admin/program/detail_header.haml:10
 #: templates/admin/workgroup/list_layout.haml:9
 #: templates/courses/course_overview.haml:39
+#: templates_v2/courses/content_page/course_tabs.haml:11
 #: templates_v2/courses/course_navigation.haml:22
 #: templates_v2/courses/course_overview.haml:25
 msgid "Overview"
@@ -6269,14 +6278,16 @@ msgid "LESSON"
 msgstr "LEKTION"
 
 #: templates/courses/content_page/course_menu.haml:55
-#: templates_v2/courses/content_page/course_menu.haml:56
+#: templates_v2/courses/content_page/course_menu.haml:45
+#: templates_v2/courses/content_page/course_tabs.haml:51
 #, fuzzy, python-format
 #| msgid " This lesson will be available on %(start_date)s "
 msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
 msgstr " Diese Lektion wird verfügbar sein unter %(start_date)s "
 
 #: templates/courses/content_page/course_menu.haml:57
-#: templates_v2/courses/content_page/course_menu.haml:58
+#: templates_v2/courses/content_page/course_menu.haml:47
+#: templates_v2/courses/content_page/course_tabs.haml:53
 #, python-format
 msgid " This lesson will be available on %(start_date)s "
 msgstr " Diese Lektion wird verfügbar sein unter %(start_date)s "
@@ -6285,6 +6296,8 @@ msgstr " Diese Lektion wird verfügbar sein unter %(start_date)s "
 #: templates/courses/course_discussion.haml:14
 #: templates/courses/course_learner_dashboard_header.haml:46
 #: templates/courses/course_learner_dashboard_header.haml:49
+#: templates_v2/courses/content_page/course_tabs.haml:60
+#: templates_v2/courses/content_page/course_tabs.haml:61
 #: templates_v2/courses/course_navigation.haml:35
 msgid "Discussion"
 msgstr "Diskussion"
@@ -6292,25 +6305,31 @@ msgstr "Diskussion"
 #: templates/courses/content_page/course_tabs.haml:26
 #: templates/courses/course_cohort.haml:14
 #: templates/courses/course_cohort.haml:25
-#: templates_v2/courses/course_navigation.haml:41
+#: templates_v2/courses/content_page/course_tabs.haml:68
+#: templates_v2/courses/content_page/course_tabs.haml:69
+#: templates_v2/courses/course_navigation.haml:43
 msgid "Cohort"
 msgstr "Jahrgang"
 
 #: templates/courses/content_page/course_tabs.haml:33
-#: templates_v2/courses/course_navigation.haml:47
+#: templates_v2/courses/content_page/course_tabs.haml:75
+#: templates_v2/courses/content_page/course_tabs.haml:76
+#: templates_v2/courses/course_navigation.haml:50
 msgid "Course Materials"
 msgstr "Kursmaterialien"
 
 #: templates/courses/content_page/course_tabs.haml:37
 #: templates/courses/course_news.haml:24
-#: templates_v2/courses/course_navigation.haml:50
+#: templates_v2/courses/content_page/course_tabs.haml:79
+#: templates_v2/courses/course_navigation.haml:53
 #: templates_v2/courses/course_news.haml:15
 msgid "Announcements"
 msgstr "Ankündigungen"
 
 #: templates/courses/content_page/course_tabs.haml:39
 #: templates/courses/course_overview.haml:53
-#: templates_v2/courses/course_navigation.haml:52
+#: templates_v2/courses/content_page/course_tabs.haml:81
+#: templates_v2/courses/course_navigation.haml:55
 #: templates_v2/courses/course_overview.haml:41
 msgid "Course Overview"
 msgstr "Kursüberblick"
@@ -12234,11 +12253,21 @@ msgid "email"
 msgstr "E-Mail-Adresse"
 
 #: templates_v2/courses/content_page/course_menu.haml:30
-#: templates_v2/courses/content_page/lesson_menu.haml:13
+#: templates_v2/courses/content_page/course_tabs.haml:35
+#: templates_v2/courses/content_page/lesson_menu.haml:16
 #, fuzzy
 #| msgid " This lesson will be available on %(start_date)s "
 msgid "This lesson will be available on "
 msgstr " Diese Lektion wird verfügbar sein unter %(start_date)s "
+
+#: templates_v2/courses/content_page/course_tabs.haml:25
+#, python-format
+msgid ""
+"\n"
+"                            %(lesson_custom_label)s\n"
+"                            %%span %(lesson_index)s:\n"
+"                          "
+msgstr ""
 
 #: templates_v2/courses/content_page/lesson_pager.haml:8
 #: templates_v2/courses/content_page/lesson_pager.haml:22
@@ -12330,19 +12359,51 @@ msgstr "Ihr Kompetenzrang <br> wird hier angezeigt"
 msgid "Top 3 on Proficiency"
 msgstr "Kompetenzen"
 
-#: templates_v2/courses/course_lessons.haml:40
+#: templates_v2/courses/course_lessons.haml:41
 #, fuzzy, python-format
 #| msgid ""
-#| "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
-msgid " You have completed %(progress)s%% of Lesson  %(index)s "
+#| "You have completed %(course_current_progress)s%% of Lesson "
+#| "%(lesson_index)s: "
+msgid ""
+"You have completed %(course_current_progress)s%% of %(lesson_custom_label)s "
+"%(lesson_index)s "
 msgstr ""
-"Sie haben %(lesson_progress)s%% der Lektion %(lesson_index)s abgeschlossen: "
+"Sie haben %(course_current_progress)s%% der Lektion %(lesson_index)s "
+"abgeschlossen: "
 
-#: templates_v2/courses/course_lessons.haml:51
+#: templates_v2/courses/course_lessons.haml:43
+#, fuzzy, python-format
+#| msgid ""
+#| "You have completed %(course_current_progress)s%% of Lesson "
+#| "%(lesson_index)s: "
+msgid ""
+"You have completed %(course_current_progress)s%% of Lesson %(lesson_index)s "
+msgstr ""
+"Sie haben %(course_current_progress)s%% der Lektion %(lesson_index)s "
+"abgeschlossen: "
+
+#: templates_v2/courses/course_lessons.haml:52
+#, python-format
+msgid ""
+"\n"
+"                                    %(module_custom_label)s\n"
+"                                    %%span %(module_index)s\n"
+"                                  "
+msgstr ""
+
+#: templates_v2/courses/course_lessons.haml:62
 #, fuzzy
 #| msgid " This lesson will be available on %(start_date)s "
 msgid "This module will be available on "
 msgstr " Diese Lektion wird verfügbar sein unter %(start_date)s "
+
+#: templates_v2/courses/course_lessons.haml:81
+msgid "Show fullscreen"
+msgstr ""
+
+#: templates_v2/courses/course_lessons.haml:83
+msgid "Exit fullscreen"
+msgstr ""
 
 #: templates_v2/courses/courses.haml:11
 #, fuzzy
@@ -12673,6 +12734,14 @@ msgstr "Vorname: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nachname: {}"
+
+#, fuzzy
+#~| msgid ""
+#~| "You have completed %(lesson_progress)s%% of Lesson %(lesson_index)s: "
+#~ msgid " You have completed %(progress)s%% of Lesson  %(index)s "
+#~ msgstr ""
+#~ "Sie haben %(lesson_progress)s%% der Lektion %(lesson_index)s "
+#~ "abgeschlossen: "
 
 #, fuzzy
 #~| msgid "Deleted - "

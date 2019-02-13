@@ -14,9 +14,9 @@
             .contentCard
               .headerArea.lesson-title
                 %h5
-                  -if lesson_custom_label
+                  - if lesson_custom_label
                     {% blocktrans with lesson_index=course.current_lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
-                  -else
+                  - else
                     {% trans "Lesson" %} #{course.current_lesson.index}:
                   = course.current_lesson.name
 
@@ -37,14 +37,25 @@
                   .dropdown-menu.allLessons{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
                     %ul.allCoursesList
                       %b
-                        {% blocktrans with progress=course.current_lesson.progress index=course.current_lesson.index %} You have completed {{progress}}% of Lesson  {{ index }} {% endblocktrans %}
+                        - if lesson_custom_label
+                          {% blocktrans with course_current_progress=course.current_lesson.progress lesson_index=course.current_lesson.index %}You have completed {{course_current_progress}}% of {{lesson_custom_label}} {{lesson_index}} {% endblocktrans %}
+                        - else
+                          {% blocktrans with course_current_progress=course.current_lesson.progress lesson_index=course.current_lesson.index %}You have completed {{course_current_progress}}% of Lesson {{lesson_index}} {% endblocktrans %}
+
+
                       - for module in course.current_lesson.modules
                         %li{"class": "courseRow {% if module.is_started %}active{% else %}locked{% endif %} {% if module.progress == 100 %}complete{% else %}{% endif %}"}
                           %a{:href => "#{module.navigation_url}"}
                             .holder
                               .data.serial
-                                {% trans "Module" %}
-                                %span {{module.index}}
+                                - if module_custom_label
+                                  {% blocktrans with module_index=module.index %}
+                                    {{module_custom_label}}
+                                    %span {{module_index}}
+                                  {% endblocktrans %}
+                                - else
+                                  {% trans "Module" %}
+                                  %span {{module.index}}
                               .data.title
                                 %span= module.name
                                   -if not module.is_started
@@ -67,9 +78,9 @@
                             %span.bookmark
 
                 .zoomWrap
-                  %a.zoomout{:data-container => "body", :data-content => "Show fullscreen", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :href => "#", :title => ""}
+                  %a.zoomout{:data-container => "body", :data-content => "{% trans 'Show fullscreen' %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :href => "#", :title => ""}
                     %img{:alt => "", :src => "/static/image/zoom_out_map@2x.png"}/
-                  %a.zoomIn{:data-container => "body", :data-content => "Exit fullscreen", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :href => "#", :title => ""}
+                  %a.zoomIn{:data-container => "body", :data-content => "{% trans 'Exit fullscreen' %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :href => "#", :title => ""}
                     %img{:alt => "", :src => "/static/image/zoom_in_map@2x.png"}/
               - block lesson_content
                 .lesson-content
