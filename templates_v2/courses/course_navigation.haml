@@ -51,15 +51,20 @@
                     .dropdown-menu{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-left{% else %}dropdown-menu-right{% endif %}"}
                       %a.dropdown-item{:href => "/courses/#{current_course.id}/announcements"}
                         {% trans "Announcements" %}
+
                       %a.dropdown-item{:href => "/courses/#{current_course.id}/overview"}
                         {% trans "Course Overview" %}
-                      - if feature_flags.resources
-                        %a.dropdown-item{:href => "/courses/#{current_course.id}/resources"}
-                          {% trans "Resources" %}
+                    - if feature_flags.resources
+                      %a.dropdown-item{:href => "/courses/#{current_course.id}/resources"}
+                        {% trans "Resources" %}
                   - if feature_flags.notifications
-                    %li
-                      %a.nav-link.pn-ProductNav_Link{:aria-selected => "", :href => "#"}
+                    %li.notifications
+                      %a.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
                         {% trans "Notifications" %}
+                        %span.xns-counter
+                      %a.xns-icon
+                      .dropdown-menu.xns-pane.notification{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
+                        - include "django/notifications_widget.html"
                 %span#pnIndicator.pn-ProductNav_Indicator{:style => "transform: translateX(0px) scaleX(0.672); background-color: rgb(46, 45, 57);"}
             %button#pnAdvancerLeft.pn-Advancer.pn-Advancer_Left{"type": "button"}
               %i.material-icons

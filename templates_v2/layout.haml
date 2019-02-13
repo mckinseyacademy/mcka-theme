@@ -133,6 +133,11 @@
     - block jquery
       %script{src: "{% static 'js/jquery-1.11.2.min.js' %}"}
 
+    -# edx-notifications script dependencies
+    - block edx_notifications
+      %script{src: "/static/js/vendor/underscore.js"}
+      %script{src: "/static/js/vendor/backbone.js"}
+      %script{src: "/static/js/vendor/date.js"}
     -# custom js libs
     - block custom_js
 

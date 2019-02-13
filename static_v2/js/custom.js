@@ -35,8 +35,9 @@ $(document).ready(function () {
 
     // ================   Dropdown Append From bobdy ==================
     $(window).on('show.bs.dropdown', function (e) {
-        $(e.target).siblings('.active').removeClass('active');
-        $(e.target).addClass('active');
+        if ($(e.target).hasClass('notifications')){
+            $('.xns-icon').trigger('click');
+        }
 
         // grab the menu
         dropdownMenu = $(e.target).find('.dropdown-menu');

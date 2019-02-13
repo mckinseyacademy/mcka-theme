@@ -352,6 +352,19 @@ header {
           }
         }
       }
+
+      &.notifications{
+        .dropdown-toggle{
+          &:after{
+            display: none;
+          }
+        }
+        .dropdown-menu{
+          &.dropdown-menu-left{
+            left: -20px !important;
+          }
+        }
+      }
     }
   }
 }

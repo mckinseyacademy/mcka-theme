@@ -1,6 +1,5 @@
 // Custom dropdown styling
 .dropdown-menu {
-  border: 0.5px solid $gray-border;
   background-color: $white;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.4);
   border-radius: 0;
@@ -13,7 +12,7 @@
 
   &:after {
     position: absolute;
-    top: -8px;
+    top: -9px;
     right: 17px;
     content: "";
     width: 20px;
@@ -21,7 +20,6 @@
     background: url("../image/dropdown-arrow.png") no-repeat;
     display: block;
   }
-
   &.profile-area {
 
     &:after,
@@ -29,17 +27,19 @@
       right: 30px;
     }
   }
-
   &.dropdown-menu-left {
     left: 20px !important;
-
     &:after,
     &:before {
       right: auto;
       left: 17px;
     }
+    &.notification {
+      left: -20px !important;
+      padding: 30px !important;
+      min-width: 370px;
+    }
   }
-
   &.allLessons {
     padding-left: 0 !important;
     padding-right: 0 !important;
@@ -49,7 +49,7 @@
       padding-right: 30px;
       padding-left: 30px;
 
-      >.courseRow {
+      > .courseRow {
         cursor: pointer;
         padding: 0;
         margin: 0;
@@ -85,8 +85,7 @@
       left: 9% !important;
     }
   }
-
-  >a {
+  > a {
     color: $secondary;
     font-size: 0.75rem;
     line-height: 17px;
@@ -113,7 +112,6 @@
       content: "";
     }
   }
-
   //profile dropdown on main Header
   &.large-menu {
     width: 376px !important;
@@ -127,7 +125,6 @@
       }
     }
   }
-
   &.middle-menu {
     min-width: 337px !important;
   }
@@ -136,13 +133,10 @@
 // Add carrot icon for Dropdown
 .dropdown-toggle {
   color: $secondary;
-
   &:hover {
     color: $dark-blue;
   }
-
   &:after {
-
     font-family: 'Material Icons';
     content: "\e313";
     border: 0;
@@ -166,18 +160,19 @@
       }
     }
   }
-
   .dropdown-menu {
     top: 24px !important;
   }
 }
 
 @media screen and (max-width: 992px) {
-  .dropdown-menu.allLessons {
-    .allCoursesList {
-      .holder {
-        .data.title {
-          width: 108px;
+  .dropdown-menu {
+    &.allLessons {
+      .allCoursesList {
+        .holder {
+          .data.title {
+            width: 108px;
+          }
         }
       }
     }
@@ -187,11 +182,13 @@
 @media screen and (max-width: 767px) {
   .dropdown-menu {
     &.dropdown-menu-left {
-
       &:after,
       &:after {
         left: 50%;
         margin: 0 0 0 -10px;
+      }
+      &.notification {
+        min-width: auto;
       }
     }
   }

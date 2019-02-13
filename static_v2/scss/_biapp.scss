@@ -34,8 +34,8 @@
     .headerNav {
       @include float(right);
 
-      >ul {
-        >li {
+      > ul {
+        > li {
           @include margin-left(30px);
         }
       }
@@ -46,8 +46,8 @@
 // Navbar
 
 .mainNav {
-  >ul {
-    >li {
+  > ul {
+    > li {
       @include margin-left(30px);
 
       &:first-child {
@@ -85,8 +85,9 @@
 
 .dropdown-menu {
   .allCoursesList {
-    >.courseRow {
-      .holder {}
+    > .courseRow {
+      .holder {
+      }
     }
   }
 
@@ -130,7 +131,7 @@
       @include padding-left(25px);
 
       .course-detail {
-        >span.course-progress {
+        > span.course-progress {
           .bar {
             @include margin-left(5px);
           }
@@ -181,17 +182,17 @@
 
 .socialWidgets {
   .widget {
-    >.holder {
+    > .holder {
       @include border-left(1px solid $hard-gray);
     }
 
     &:first-child {
-      >.holder {
+      > .holder {
         @include border-left(0);
       }
     }
 
-    >h5 {
+    > h5 {
       @include margin-left(30px);
     }
   }
@@ -225,7 +226,7 @@
 
   .socialArea {
     .tweet {
-      >a {
+      > a {
         @include float(left);
         @include margin-right(20px);
       }
@@ -291,9 +292,9 @@
           }
         }
       }
-      &.serial{
+      &.serial {
         @include padding-right(25px);
-        span{
+        span {
           @include right(0);
         }
       }
@@ -367,8 +368,8 @@ body.rtl {
             @include media-breakpoint-between(xs, sm) {
               margin: 0;
             }
-            .filler{
-              &:before{
+            .filler {
+              &:before {
                 @include left(0);
               }
             }
@@ -438,14 +439,44 @@ body.rtl {
   }
 }
 
-
 //Course Overview
 .courseOverview {
   .textImageWrap {
-    .imgWrap{
+    .imgWrap {
       @include float(left);
       @media screen and (max-width: 767px) {
         float: none;
+      }
+    }
+  }
+}
+
+// Notification popup
+.xns-counter {
+  @include right(-15px);
+}
+
+.xns-actions {
+  ul {
+    li {
+      @include border-left(1px solid $light-gray);
+      &:first-child {
+        @include padding-left(0);
+        @include border-left(0);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .dropdown-menu {
+    &.dropdown-menu-left {
+      &.notification {
+        @include left(0 !important);
+        &:after {
+          @include right(17px !important);
+          @include left(auto !important);
+        }
       }
     }
   }
