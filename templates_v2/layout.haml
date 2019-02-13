@@ -141,6 +141,19 @@
     -# custom css scripts
     - block custom_css
 
+    -if client_customization.hex_course_title
+      :css
+        :root{
+          --primary: {{client_customization.hex_course_title}};
+          --secondary: {{client_customization.hex_course_title}};
+        }
+
+    -if client_customization.hex_background_bar
+      :css
+        :root{
+          --secondary: {{client_customization.hex_background_bar}};
+        }
+
 
     %script
       $(document).ready(function() {
