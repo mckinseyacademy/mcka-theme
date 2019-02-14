@@ -20,7 +20,10 @@
             .data.serial
               - if lesson_custom_label
                 {{lesson_custom_label}}
-                %span {{lesson_index}}:
+                - if lesson_index
+                  %span {{lesson_index}}
+                - else
+                  %span {{lesson.index}}
               - else
                 {% trans "Lesson" %}
                 %span {{lesson.index}}
