@@ -32,7 +32,7 @@ Further, to make integration with McKinsey Academy easier and faster, your IdP *
 
 4. Have a publicly accessible IdP metadata XML URL that uses HTTPS.  E.g.,
 
-        https://www.testshib.org/metadata/testshib-providers.xml
+        https://samltest.id/saml/providers
 
 5. Have a separate staging IdP and production IdP, with test user accounts on the staging IdP that can be provided to
    McKinsey Academy staff for the purposes of debugging SAML integration issues.

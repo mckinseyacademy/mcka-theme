@@ -1,8 +1,6 @@
 # Using saml-idp for local SAML testing
 
-While TestShib is a great service to use as a test IdP, it has a number of limitations, major among them being the limited selection of just three users.
-
-An alternative to using Testshib for testing SAML is to run your own local IdP server that can be inspected and configured with greater ease.
+It is possible to run your own local IdP server that can be inspected and configured with greater ease.
 
 One such simple solution is [saml-idp](https://github.com/mcguinness/saml-idp), an open source Node-based IdP server that is designed for testing. It has no concept of users accounts. Instead, you can fill in whatever details you'd like for parameters like "First Name", "Last Name", "Display Name", "E-Mail Address" etc. You can even add custom parameters, or remove existing parameters via a config file and GUI.
 

@@ -6,7 +6,7 @@ How to enable SSO on a McKinsey/solutions devstack:
 ## Prerequisites
 
 * Cypress devstack or newer
-* Working SAML Identity provider (e.g. testshib.org - more on it later)
+* Working SAML Identity provider (e.g. samltest.id, samling, stubidp - more on it later)
 
 ## Step 0: Nginx forwarding rules
 
@@ -58,7 +58,8 @@ on enabling third party auth. Caveats:
 * If running on solutions fork, make sure [notifications feature conflict][notifications-conflict] is resolved.
   Otherwise, disable the notifications feature in lms.env.json -> FEATURES -> `'ENABLE_NOTIFICATIONS': false`.
 * [Exchange Metadata][metadata-exchange] section speaks about exchanging metadata with identity provider: in
-  development you might want to use testshib - see the [Testshib Configuration][testshib-configuration] section.
+  development you might want to use any of the suggested test identity providers -
+  see the [Test Identity Providers][test-identity-providers] section.
 * Identity Provider might not provide a URL LMS can use to fetch metadata, but allows exporting metadata. If that's
   the case, leave "Metadata Source" field empty (if fails validation - set any value). In such case, it is possible to
   set up provider data manually:
@@ -75,28 +76,60 @@ on enabling third party auth. Caveats:
 [tpa-docs]: http://edx.readthedocs.org/projects/edx-installing-configuring-and-running/en/latest/configuration/tpa/index.html
 [notifications-conflict]: https://openedx.atlassian.net/browse/YONK-148
 [metadata-exchange]: http://edx.readthedocs.org/projects/edx-installing-configuring-and-running/en/latest/configuration/tpa/tpa_SAML_IdP.html#exchange-metadata
-[testshib-configuration]: #testshib-configuration
+[test-identity-providers]: #test-identity-providers
 
-### Testshib integration
+### Test Identity Providers
 
-To use testshib as an identity provider, do the following:
+To use SSO we need to use a service which will respond with authentication assertions when a user tries to login.
+It is not trivial to run these types of services, lucky for us there are a few test services we can use for free:
+
+#### SAMLTEST.ID
+
+To use SAMLTEST.ID we need to tell the service about our service provider (running in devstack) and we need to
+load SAMLTEST.ID's metadata into our service provider. To do this follow these steps:
 
 1. [Configure LMS as Service Provider][lms-configure-sp].
 2. Export LMS metadata to a file with a unique name (go to `lms_address/auth/saml/metadata.xml`, save as file)
-3. Register the exported metadata with testshib at [Testshib Register page][testshib-register]
-4. [Add LMS Identity Provider][lms-add-idp], using testshib [metadata URL][testshib-metadata] as Metadata Source.
+3. Upload the exported metadata with SAMLTEST.ID at [SAMLTEST.ID upload page][samltest-upload]
+4. [Add LMS Identity Provider][lms-add-idp], using SAMLTEST.ID providers [metadata url][samltest-providers] as Metadata Source.
 5. Set `Email Attribute` to `urn:oid:1.3.6.1.4.1.5923.1.1.1.6`
 
-### `saml-idp` Integration
+#### SAMLING
 
-An alternative to using Testshib is `saml-idp` which is a node-based IdP server that runs locally on your computer.
+In case that manually crafting a response from an identifier provider is needed
+(e.g. To simulate an error resopnse), SAMLING is a simple web application
+which can post a custom answer to any SAML service provider. To use this service there is no need to upload
+any metadata.
+
+1. [Configure LMS as Service Provider][lms-configure-sp].
+2. [Add LMS Identity Provider][lms-add-idp], using SAMLing [url][samling-site] as Metadata Source.
+3. Go to [SAMLING][samling-site] site.
+4. Fill the response form and click con "Next >" at the top right.
+5. Post the response.
+
+#### StubIDP
+
+StubIDP is another free service which can send manually crafted response to a SAML service provider and
+will also offer a unique identity provider server for testing.
+
+You can create a custom response using the [SAML2 response][stubidp-response-form] form.
+Use the [SubIDP metadata][stubidp-metadata-url] as Metadata Source.
+If need be a new identifier provider can be created by clicking on "Tenant" then "Create New" on the top menu.
+The necessary information to configure the new identifier provider can be found on the same page.
+
+#### `saml-idp` Integration
+
+An alternative to using the above test identity providers is `saml-idp` which is a node-based IdP server that runs locally on your computer.
 
 To use `saml-idp` first [configure the LMS as a Service Provider][lms-configure-sp], and then follow the instructions [here](./saml-idp_Setup.md).
 
-[testshib-register]: https://www.testshib.org/register.html
+[stubidp-metdata-url]: https://stubidp.sustainsys.com/Metadata/BrowserFriendly
+[subidp-response-form]: https://stubidp.sustainsys.com/
+[samling-site]: https://capriza.github.io/samling/samling.html
+[samltest-upload]: https://samltest.id/upload.php
+[samltest-providers]: https://samltest.id/saml/providers
 [lms-add-idp]: https://edx.readthedocs.io/projects/edx-installing-configuring-and-running/en/latest/configuration/tpa/tpa_integrate_open/tpa_SAML_IdP.html#add-and-enable-a-saml-identity-provider
 [lms-configure-sp]: http://edx.readthedocs.io/projects/edx-installing-configuring-and-running/en/latest/configuration/tpa/tpa_SAML_SP.html
-[testshib-metadata]: https://www.testshib.org/metadata/testshib-providers.xml
 
 ## Step 2: Enable sharing cookies between LMS and Apros
 
@@ -168,7 +201,7 @@ Root cause: Apros session was not set properly.
 Solution: make sure 3rd party cookies are allowed for Apros, Identity Provider and LMS
 
 
-### Logging in via TestShib fails with "Something horrible happened - check the IdP error log".
+### Logging fails with "Something horrible happened - check the IdP error log".
 
 If the error log says
 
@@ -179,12 +212,13 @@ no endpoint, with that URL and using a supported binding,  can be found in the r
 then the problem is that you downloaded the metadata from some domain like `localhost:8000` but you are testing SSO using the domain `lms.mcka.local`.
 
 To fix this, download the metadata from `http://apros.mcka.local/auth/saml/metadata.xml` (not any other URL),
-and upload that to TestShib, then use the access key or Apros login form to try again.
+and upload that to the corresponding Identity Provider, if needed, then use the access key or Apros login form to try again.
 
 ### Error at /auth/complete/tpa-saml/: failed to decrypt
 
 Something is wrong with the public/private key pair you created for the LMS. Generate a new one and install it,
-then re-generate the metadata XML and re-upload it to TestShib (but use the same .xml file name).
+then re-generate the metadata XML and re-upload it to the corresponding Identity Provider, if needed,
+(but use the same .xml file name).
 
 ### SAML login failed: ['invalid_response'] (The response was received at `http://apros.mcka.local:8000/auth/complete/tpa-saml/` instead of `http://apros.mcka.local/auth/complete/tpa-saml/`)
 
