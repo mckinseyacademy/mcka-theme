@@ -116,6 +116,9 @@ class CertificateViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
 
             )
 
+        # Mock checking if user exists in middleware
+        self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
+
     def _apply_get_courses_choice_list_patch(self):
         """
         Helper method to patch get_courses_choice_list_patch method

@@ -154,6 +154,9 @@ class CourseOverviewPageTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin)
     def setUp(self):
         self.url = reverse('course_overview', kwargs={'course_id': self.course_id})
 
+        # Mock checking if user exists in middleware
+        self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
+
     def test_non_logged_in(self):
         response = self.client.get(path=self.url)
 

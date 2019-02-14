@@ -148,6 +148,9 @@ class TestBulkTaskAPI(TestCase, ApplyPatchMixin):
         self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
         self.api_url = reverse('bulk_task_api')
 
+        # Mock checking if user exists in middleware
+        self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
+
     def test_post_method(self):
         """
         Tests post method of API which creates a background task
