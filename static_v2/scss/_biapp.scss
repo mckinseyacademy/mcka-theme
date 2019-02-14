@@ -453,7 +453,8 @@ body.rtl {
 
 // Notification popup
 .xns-counter {
-  @include right(-15px);
+  @include left(100%);
+  @include right(auto);
 }
 
 .xns-actions {
