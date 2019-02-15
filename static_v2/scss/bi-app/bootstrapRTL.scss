@@ -18,8 +18,6 @@
   --white: #fff;
   --gray: #6c757d;
   --gray-dark: #343a40;
-  --primary: #007bff;
-  --secondary: #6c757d;
   --success: #28a745;
   --info: #17a2b8;
   --warning: #ffc107;
@@ -3088,7 +3086,7 @@ tbody.collapse.show {
 }
 
 .dropdown-item:focus, .dropdown-item:hover {
-  color: #16181b;
+  //color: #16181b;
   text-decoration: none;
   background-color: #f8f9fa
 }

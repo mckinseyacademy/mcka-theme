@@ -10,7 +10,7 @@ main{
 }
 
 .border-top-main{
-  border-top: 6px solid $primary;
+  border-top: 6px solid  var(--secondary);
 }
 
 @include media-breakpoint-down(xs){

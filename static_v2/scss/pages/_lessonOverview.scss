@@ -36,8 +36,8 @@
       margin-bottom: 4px;
     }
     h2 {
-      color: $secondary;
-      font-size: 1.75rem;
+      color:  var(--primary);
+      font-size: 1.8rem;
       font-weight: 300;
       line-height: 34px;
       margin: 0;
@@ -80,11 +80,13 @@
     top: 50%;
     transform: translateY(-50%);
     color: $white;
-    background-color: rgba(32, 66, 203, 0.3);
+    background-color: var(--primary);
     transition: all ease 0.3s;
+    opacity: 0.5;
     &.disable {
+      background: $gray;
       &:hover {
-        background: $gray;
+        opacity: 1;
       }
     }
     &.left {
@@ -96,6 +98,7 @@
         }
       }
       &:hover {
+        opacity: 1;
         left: -82px
       }
     }
@@ -108,6 +111,7 @@
         }
       }
       &:hover {
+        opacity: 1;
         right: -82px
       }
     }
@@ -127,7 +131,7 @@
       }
     }
     &:hover {
-      background: $secondary;
+      //background:  var(--primary);
       > span {
         opacity: 1;
         visibility: visible;
@@ -226,7 +230,7 @@ body.zoomIn {
         top: auto;
         transform: translateY(0);
         color: $white;
-        background-color: $secondary;
+        background-color:  var(--primary);
         transition: all ease 0.3s;
         > span {
           display: block;

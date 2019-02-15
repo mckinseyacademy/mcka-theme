@@ -150,15 +150,16 @@
       :css
         :root{
           --primary: {{client_customization.hex_course_title}};
+          --header-top: {{client_customization.hex_course_title}};
           --secondary: {{client_customization.hex_course_title}};
         }
 
     -if client_customization.hex_background_bar
       :css
         :root{
+          --header-top: {{client_customization.hex_background_bar}};
           --secondary: {{client_customization.hex_background_bar}};
         }
-
 
     %script
       $(document).ready(function() {
@@ -194,6 +195,8 @@
     -# Footer
     - block footer
       - include 'footer.haml'
+
+    %script{src: "{% static 'js/shader.js' %}"}
 
     -# i18n JS Catalog
     - block i18n

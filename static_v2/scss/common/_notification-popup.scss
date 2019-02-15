@@ -56,7 +56,7 @@
     }
   }
   h2 {
-    color: #3384CA;
+    color: var(--secondary);
   }
   .xns-list-header {
     h2 {
@@ -86,7 +86,7 @@
           cursor: default;
         }
         a {
-          color: $secondary;
+          color: var(--secondary);
           font-weight: normal;
         }
       }
@@ -126,7 +126,7 @@
     opacity: 1;
   }
   .xns-title {
-    color: $secondary;
+    color: var(--secondary);
   }
   .xns-alert {
   }

@@ -1,8 +1,9 @@
 // Bi-App-Sass for APROS
 // Define SASS in LTR abd Bi-App-Sass will automatically write respective RTL
-@import "common/variables";
 @import "bootstrap/bootstrap-grid";
 @import "bootstrap/mixins";
+
+@import "common/variables";
 @import "common/mixins";
 @import "common/popover";
 @import "common/dropdown";
@@ -12,15 +13,9 @@
 
 .appHeader {
   .logo {
-    .navbar-brand {
+    .all-logos{
       @include float(left);
-      @include text-align(left);
-
-      img {
-        @include margin-left(-5px);
-      }
     }
-
     .topRightArea {
       @include float(right);
 
@@ -38,6 +33,22 @@
         > li {
           @include margin-left(30px);
         }
+      }
+    }
+  }
+}
+
+.appHeader {
+  .all-logos {
+    .navbar-brand {
+      @include margin-left(10px);
+      @include padding-left(10px);
+      @include border-left(1px solid $border-color);
+      &:first-child {
+        @include margin-left(0);
+        @include margin-right(0);
+        @include padding-left(0);
+        @include border-left(0);
       }
     }
   }

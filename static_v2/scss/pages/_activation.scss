@@ -58,7 +58,7 @@
         transition: all .2s;
         &.active{
           font-size: 0.8rem;
-          color: $secondary;
+          color:  var(--primary);
           top: -20px;
           left: 0;
         }

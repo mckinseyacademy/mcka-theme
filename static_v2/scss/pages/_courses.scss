@@ -23,7 +23,7 @@
         opacity: 0.3;
         @include absolute-100;
         @include border-top-radius(4px);
-        background: linear-gradient(180deg, $secondary 0%, $black 100%);
+        background: linear-gradient(180deg,  var(--primary) 0%, $black 100%);
         box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 3px 0 rgba(0, 0, 0, 0.5);
       }
 
@@ -38,7 +38,7 @@
       overflow: hidden;
       @include border-bottom-radius(4px);
       padding: 20px 30px 16px;
-      background-color: $secondary;
+      background-color:  var(--primary);
       color: $white;
       position: relative;
 
@@ -133,10 +133,6 @@
         h3 {
           text-decoration: underline;
         }
-
-        .card-body {
-          background-color: $dark-blue;
-        }
       }
 
       .archived {
@@ -149,7 +145,6 @@
 }
 
 // Media Queries
-
 @include media-breakpoint-between(md, lg) {
   .my-courses {
     [class*="col"] {
@@ -210,6 +205,13 @@
             display: none;
           }
         }
+      }
+    }
+  }
+  body {
+    &.myCourses {
+      .appHeader {
+        margin-bottom: 40px;
       }
     }
   }

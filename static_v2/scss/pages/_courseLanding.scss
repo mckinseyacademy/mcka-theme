@@ -125,7 +125,7 @@
             position: absolute;
             bottom: 0;
             top: 0;
-            background-color: $tertiary;
+            background-color: var(--secondary);
             width: inherit;
           }
         }
@@ -251,7 +251,7 @@
             transform: translateY(-50%);
             z-index: 999;
             font-size: 1.125rem;
-            color: $secondary;
+            color:  inherit;
           }
         }
 
@@ -301,7 +301,7 @@
       }
 
       &.title {
-        color: $secondary;
+        color:  var(--primary);
         font-size: 1rem;
         line-height: 22px;
         width: 47%;
@@ -361,7 +361,7 @@
             position: absolute;
             top: 0;
             bottom: 0;
-            background-color: $tertiary;
+            background-color: var(--secondary);
             width: inherit;
           }
         }
@@ -417,7 +417,7 @@
     }
 
     .articleTitle {
-      color: $secondary;
+      color:  var(--primary);
       font-family: "Open Sans", sans-serif;
       font-size: 1rem;
       line-height: 22px;
@@ -469,7 +469,7 @@
           }
 
           .name-link {
-            color: $secondary;
+            color:  var(--primary);
             font-family: "Open Sans", sans-serif;
             font-size: 0.875rem;
             line-height: 19px;
@@ -483,7 +483,7 @@
           line-height: 22px;
 
           >a {
-            color: $secondary;
+            color:  var(--primary);
           }
         }
       }
@@ -528,7 +528,7 @@
     overflow: hidden;
 
     .title {
-      color: $secondary;
+      color:  var(--primary);
       font-family: "Open Sans", sans-serif;
       font-size: 1rem;
       line-height: 22px;

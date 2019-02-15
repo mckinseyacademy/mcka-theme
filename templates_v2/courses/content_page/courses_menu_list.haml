@@ -4,10 +4,10 @@
 - for course in courses
   .col-sm-12.col-md-6.col-lg-4
     %a.d-block{:href => "#{course.nav_url}"}
-      .card{"class": "{% if course.ended %}archived{% endif %}"}
+      .card{"class": "{% if course.ended %}archived{% else %}ome{% endif %}"}
         .overlay-img
           %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_url}}"}
-        .card-body
+        .card-body.dome-bc
           - if course and current_course
             - if course.id == current_course.id
               %span.bookmark

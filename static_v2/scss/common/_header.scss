@@ -11,10 +11,23 @@ body {
   }
 }
 
+.appHeader {
+  .all-logos {
+    padding: 8px 0;
+    .navbar-brand {
+      display: inline-block;
+      vertical-align: middle;
+      img {
+        height: 56px;
+        width: auto;
+      }
+    }
+  }
+}
 
 header {
-  border-top: 5px solid $black;
-  border-bottom: 1px solid lighten($gray, 35%);
+  border-top: 5px solid var(--header-top);
+  border-bottom: 1px solid $gray;
   background-color: $white;
 
   .language-selector {
@@ -23,7 +36,7 @@ header {
     height: 70px;
     width: 80px;
     line-height: 70px;
-    color: $primary;
+    color: var(--secondary);
     border-left: 1px solid $light-gray;
 
     .dropdown {
@@ -31,7 +44,7 @@ header {
 
       button {
         background-color: transparent;
-        color: #002960;
+        color: $dark-blue;
         text-transform: uppercase;
         font-size: 0.814rem;
         padding: 0;
@@ -56,11 +69,6 @@ header {
       top: 12px !important;
     }
 
-    .navbar-brand {
-      padding: 0;
-      max-width: 155px;
-    }
-
     .topRightArea {
       width: auto;
       margin: 19px 15px 0 15px;
@@ -78,7 +86,7 @@ header {
         line-height: 30px;
         padding: 5px;
         overflow: hidden;
-        background: $secondary;
+        background: var(--primary);
         color: $white;
         border-radius: 100%;
 
@@ -124,7 +132,7 @@ header {
 .profileDropdown {
   .header {
     .edit-link {
-      color: $secondary;
+      color: var(--primary);
       font-size: 12px;
       line-height: 17px;
       font-weight: 400;
@@ -140,7 +148,6 @@ header {
 
       .nameArea,
       .roleArea {
-
         > span,
         a {
           display: inline-block;
@@ -186,7 +193,7 @@ header {
     }
 
     .userMail {
-      color: $secondary;
+      color: var(--primary);
       font-size: 16px;
       line-height: 22px;
 
@@ -316,17 +323,8 @@ header {
       letter-spacing: 0.9px;
       line-height: 16px;
       text-align: center;
-
-      &:hover {
-        a {
-          outline: none;
-          text-decoration: none;
-          color: $dark-blue;
-        }
-      }
-
       > a {
-        color: #2042CB;
+        color: var(--primary);
         padding: 0 0 18px;
 
         &:before {
@@ -339,6 +337,12 @@ header {
           transition: all ease 0.3s;
           left: 50%;
           transform: translateX(-50%);
+        }
+      }
+      &:hover {
+        a {
+          outline: none;
+          text-decoration: none;
         }
       }
 

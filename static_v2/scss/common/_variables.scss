@@ -32,9 +32,9 @@ $modal-transition:                  transform .3s ease-out !default;
 /* ========= Custom Defined Variables ================*/
 
 // Brand colors
-$primary           :   #002960;
-$secondary         :   #2042cb;
-$tertiary          :   #0093d3;
+$primary          :   #2042cb;
+$secondary        :   #0093d3;
+$header-top       :   #002960;
 
 // Type colors
 $black             :   #000000;
@@ -43,7 +43,6 @@ $gray              :   #696969;
 $gray-border       :   #ebebeb;
 $hard-gray         :   #979797;
 $white             :   #ffffff;
-$link-blue         :   $secondary;
 $bg-white-red      :   #d50000;
 $bg-black-red      :   #f00000;
 $bg-white-green    :   #008000;
@@ -51,7 +50,6 @@ $bg-black-green    :   #00d400;
 $sharp-green       :   #00F121;
 
 // Navigation colors
-$blue              :   $secondary;
 $dark-blue         :   #0b0886;
 $smoke-gray        :   #232d39;
 $gray-border       :   #EBEBEB;
@@ -68,4 +66,3 @@ $bg-login-footer   :   #251F2E;
 // Typography
 $body-font-family   : 'Open Sans', sans-serif;
 $body-font          : 14px;
-

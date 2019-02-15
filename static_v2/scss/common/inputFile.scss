@@ -116,14 +116,14 @@
 .file-upload.active {
   .file-select {
     //border-color: $bg-white-green;
-    border-color: $secondary;
+    border-color:  var(--primary);
     transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     -webkit-transition: all .2s ease-in-out;
     -o-transition: all .2s ease-in-out;
     .file-select-button {
       //background: $bg-white-green;
-      background: $secondary;
+      background:  var(--primary);
       color: #FFFFFF;
       transition: all .2s ease-in-out;
       -moz-transition: all .2s ease-in-out;

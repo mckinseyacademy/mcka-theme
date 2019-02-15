@@ -5,7 +5,7 @@
     height: 100%;
 
     &.filled {
-      background: $primary;
+      background:  var(--secondary);
     }
 
     &.no-progress .total {
@@ -26,10 +26,6 @@
       margin: -30px 0 0 -30px;
       z-index: 8;
       @include square-size(60px);
-
-      &.filled {
-        background-color: #0094d9;
-      }
     }
 
     .band-2 {
@@ -37,10 +33,6 @@
       margin: -39px 0 0 -39px;
       z-index: 5;
       @include square-size(78px);
-
-      &.filled {
-        background-color: #98cbed;
-      }
     }
 
     .total {
@@ -57,7 +49,7 @@
       @include font-spec(15, bold, 35);
 
       &.filled {
-        background-color: #002864;
+        background-color: var(--secondary);
       }
     }
   }
@@ -72,7 +64,6 @@
     }
   }
 }
-
 
 .progressWidgets {
   #proficiencyScore span {

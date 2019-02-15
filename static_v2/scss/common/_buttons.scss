@@ -12,8 +12,8 @@ a.btn{
 
   //Secondary button .btn-primary
   &.btn-primary {
-    background-color: $secondary;
-    border-color: $secondary;
+    background-color:  var(--primary);
+    border-color:  var(--primary);
     &:hover {
       background-color: $dark-blue;
       border-color: $dark-blue;
@@ -23,8 +23,8 @@ a.btn{
   //Secondary button .btn-secondary
   &.btn-secondary {
     background: $white;
-    border: 1px solid $secondary;
-    color: $secondary;
+    border: 1px solid  var(--primary);
+    color:  var(--primary);
     &:hover {
       color: $dark-blue;
     }
@@ -34,7 +34,7 @@ a.btn{
   &.btn-tertiary {
     background: transparent;
     border: 1px solid transparent;
-    color: $secondary;
+    color:  var(--primary);
     &:hover {
       background-color: $ash-hard;
       color: $dark-blue;
@@ -80,15 +80,6 @@ a.btn{
 
 }
 
-
-
-
-
-
-
-
-
-
 a.btn{
   font-weight: 600;
   font-size: 12px;
@@ -126,7 +117,6 @@ a.btn{
       color: $white;
     }
   }
-
 }
 
 .btn-primary:not(:disabled):not(.disabled):active,

@@ -83,13 +83,18 @@
           }
         }
       }
+
+      .bookmark{
+        background-size: 20px 100%;
+      }
     }
     &:after{
       left: 9% !important;
     }
   }
-  > a {
-    color: $secondary;
+
+  >a {
+    color:  var(--primary);
     font-size: 0.75rem;
     line-height: 17px;
     background: inherit;
@@ -97,7 +102,6 @@
     padding: 12px 0;
 
     &:hover {
-      color: $dark-blue;
       background: inherit;
     }
 
@@ -108,7 +112,6 @@
 
     &:first-child {
       border: none;
-      //padding-top: 0;
     }
 
     &:after {
@@ -135,10 +138,8 @@
 
 // Add carrot icon for Dropdown
 .dropdown-toggle {
-  color: $secondary;
-  &:hover {
-    color: $dark-blue;
-  }
+  color:  var(--primary);
+
   &:after {
     font-family: 'Material Icons';
     content: "\e313";

@@ -5,9 +5,9 @@ body{
   font-family: $body-font-family;
 }
 a{
-  color: $link-blue;
+  color: var(--primary);
   &:hover{
-    color: $link-blue;
+    color: var(--primary);
     text-decoration: underline;
   }
 }

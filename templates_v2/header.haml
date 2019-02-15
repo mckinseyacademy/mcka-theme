@@ -8,9 +8,17 @@
   .container
     .row
       .col
-        .logo
-          %a.navbar-brand{:href => "/"}
-            %img{:src => "static/image/McKA-logo-blue@2x.png", :width => "160"}
+        .logo.clearfix
+          %div.all-logos
+            - if client_customization.global_client_logo
+              %a.navbar-brand{:href => "/"}
+                %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
+            - else
+              %a.navbar-brand{:href => "/"}
+                %img{:src => "static/image/McKA-logo-blue@2x.png", :width => "160"}
+            - if client_customization.client_logo
+              %a.navbar-brand{:href => "/"}
+                %img{:src => "{{client_customization.client_logo}}", :width => "160"}
 
           - if request.user.is_authenticated
             .topRightArea
@@ -19,36 +27,36 @@
                   %span RA
                   %img{:src => "static/image/McKA-logo-white@2x.png", :width => "160"}/
                 - if LANGUAGE_BIDI
-                    %div{'class' : 'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
-                      .header
-                        .avatar-area
-                          .userAvatar.lg
-                            .holder
-                              %span RA
-                              %img{:alt => "", :src => ""}/
-                            %a.edit-link{:data-target => ".editPhotoModal", :data-toggle => "modal", :href => "#"}
-                              {% trans "edit photo" %}
-                        .titles-area
-                          .nameArea
-                            %span Rajal Ajai
-                            %a.edit-link{:data-target => ".editFullName", :data-toggle => "modal", :href => "#"}
-                              {% trans "edit" %}
-                          .roleArea
-                            %span UX Consultant
-                            %a.edit-link{:data-target => ".editRole", :data-toggle => "modal", :href => "#"}
-                              {% trans "edit" %}
-                      .content
-                        .wrap
-                          %strong.text-uppercase.title
-                            {% trans "username" %}
-                          %strong.titleName raajimk
-                        .wrap
-                          %strong.text-uppercase.title
-                            {% trans "email" %}
-                          %span.userMail rajal_ajai@external.mckinsey.com
-                      .footer
-                        %a.btn.btn-secondary{href: "/accounts/logout"}
-                          {% trans "log out" %}
+                  %div{'class' : 'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
+                    .header
+                      .avatar-area
+                        .userAvatar.lg
+                          .holder
+                            %span RA
+                            %img{:alt => "", :src => ""}/
+                          %a.edit-link{:data-target => ".editPhotoModal", :data-toggle => "modal", :href => "#"}
+                            {% trans "edit photo" %}
+                      .titles-area
+                        .nameArea
+                          %span Rajal Ajai
+                          %a.edit-link{:data-target => ".editFullName", :data-toggle => "modal", :href => "#"}
+                            {% trans "edit" %}
+                        .roleArea
+                          %span UX Consultant
+                          %a.edit-link{:data-target => ".editRole", :data-toggle => "modal", :href => "#"}
+                            {% trans "edit" %}
+                    .content
+                      .wrap
+                        %strong.text-uppercase.title
+                          {% trans "username" %}
+                        %strong.titleName raajimk
+                      .wrap
+                        %strong.text-uppercase.title
+                          {% trans "email" %}
+                        %span.userMail rajal_ajai@external.mckinsey.com
+                    .footer.ome
+                      %a.btn.btn-secondary.dome-c{href: "/accounts/logout"}
+                        {% trans "log out" %}
                 - else
                   %div{'class' : 'dropdown-menu profile-area large-menu dropdown-menu-right profileDropdown'}
                     .header
@@ -77,25 +85,25 @@
                         %strong.text-uppercase.title
                           {% trans "email" %}
                         %span.userMail rajal_ajai@external.mckinsey.com
-                    .footer
-                      %a.btn.btn-secondary{href: "/accounts/logout"}
+                    .footer.ome
+                      %a.btn.btn-secondary.dome-c{href: "/accounts/logout"}
                         {% trans "log out" %}
 
               %nav.nav.mainNav.headerNav
                 %ul
                   %li
-                    %a.nav-link.dropdown-toggle{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
+                    %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
                       {% trans "dashboard" %}
                     - if LANGUAGE_BIDI
                       %div{'class' : 'dropdown-menu-left dropdown-menu middle-menu clearfix dashboard-menu'}
-                        %a.dropdown-item{:href => "#"} Executive Leadership Program
-                        %a.dropdown-item{:href => "#"} Leadership Development Program
+                        %a.dropdown-item.ome.dome-c{:href => "#"} Executive Leadership Program
+                        %a.dropdown-item.ome.dome-c{:href => "#"} Leadership Development Program
                     - else
                       %div{'class' : 'dropdown-menu-right dropdown-menu middle-menu clearfix'}
-                        %a.dropdown-item{:href => "#"} Executive Leadership Program
-                        %a.dropdown-item{:href => "#"} Leadership Development Program
+                        %a.dropdown-item.ome.dome-c{:href => "#"} Executive Leadership Program
+                        %a.dropdown-item.ome.dome-c{:href => "#"} Leadership Development Program
                   %li.active
-                    %a.nav-link{:href => "/courses"}
+                    %a.nav-link.ome.dome-c{:href => "/courses"}
                       {% trans "my courses" %}
 
           - else

@@ -56,7 +56,7 @@ form {
   .focused .form-label {
     transform: translate(0px, -18px);
     font-size: .85em;
-    color: $secondary;
+    color:  var(--primary);
   }
 
   //
