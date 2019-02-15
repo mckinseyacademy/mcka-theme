@@ -3,12 +3,13 @@ from urllib2 import HTTPError
 import ddt
 import mock
 
-from django.test import TestCase
+from django.test import TestCase, override_settings
 
 from accounts.json_backend import JsonBackend
 from accounts.tests.utils import ApplyPatchMixin, make_user
 from api_client.api_error import ApiError
 from api_client.user_models import AuthenticationResponse, UserResponse
+from util.unit_test_helpers.common_mocked_objects import make_side_effect_raise_api_error
 
 
 @ddt.ddt
@@ -121,3 +122,25 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
         self.backend.authenticate(remote_session_key=None)
         self.user_api.authenticate.assert_called_once_with(None, None, remote_session_key=None)
         self.user_api.get_session.assert_not_called()
+
+    @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}})
+    def test_get_user(self):
+        existing_user = make_user()
+        self.user_api.get_user.return_value = self._make_user_response(existing_user)
+
+        user = self.backend.get_user(user_id=existing_user.id)
+
+        self.assertEqual(user.username, existing_user.username)
+        self.user_api.get_user.side_effect = make_side_effect_raise_api_error(404)
+
+        user = self.backend.get_user(user_id='invalid_id')
+        self.assertIsNone(user)
+
+    def test_load_user(self):
+        existing_user = self._make_user_response(make_user())
+
+        user = self.backend._load_user(existing_user)
+
+        # check if load_user has correctly loaded the user attributes
+        for attr in ['username', 'email', 'password', 'image_url_full']:
+            self.assertTrue(hasattr(user, attr))

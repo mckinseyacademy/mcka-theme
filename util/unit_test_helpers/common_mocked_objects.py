@@ -4,6 +4,8 @@ Common mocked objects and methods for writing unit tests in Apros
 from django.test import RequestFactory
 
 from api_client.group_api import PERMISSION_GROUPS
+from accounts.models import RemoteUser
+from api_client.api_error import ApiError
 
 
 class TestUser(object):
@@ -63,3 +65,60 @@ def mock_request_object(path, user=None, **attrs):
 
     request.user = user or TestUser(user_id=1, email='user@example.com', username='mcka_admin_user')
     return request
+
+
+def make_side_effect_raise_api_error(api_error_code):
+    """
+    Add this as side-effect to simulate APiError
+    """
+    thrown_error = mock.Mock()
+    thrown_error.code = api_error_code
+    thrown_error.reason = "I have no idea, but luckily it is irrelevant for the test"
+
+    def _raise(*args, **kwargs):
+        raise ApiError(thrown_error=thrown_error, function_name='irrelevant')
+
+    return _raise
+
+
+class AprosTestingClient(Client):
+    """
+    Replacement of default client for Apros tests
+    provides fake login and role features
+    """
+    @mock.patch('accounts.json_backend.JsonBackend.authenticate')
+    def login(self, mock_auth, user_role=None, **credentials):
+        """
+        Fakes Apros login with passed user and role
+        """
+        user = RemoteUser.objects.create_user(
+            id=credentials.get('id') or 1,
+            username=credentials.get('username') or 'mcka_admin_user',
+            email=credentials.get('email') or 'user@example.com'
+        )
+
+        role_to_methods = {
+            PERMISSION_GROUPS.MCKA_ADMIN: 'is_mcka_admin',
+            PERMISSION_GROUPS.MCKA_SUBADMIN: 'is_mcka_subadmin',
+            PERMISSION_GROUPS.CLIENT_ADMIN: 'is_client_admin',
+            PERMISSION_GROUPS.COMPANY_ADMIN: 'is_company_admin',
+            PERMISSION_GROUPS.CLIENT_SUBADMIN: 'is_client_subadmin',
+            PERMISSION_GROUPS.MCKA_TA: 'is_mcka_ta',
+            PERMISSION_GROUPS.CLIENT_TA: 'is_client_ta',
+            PERMISSION_GROUPS.INTERNAL_ADMIN: 'is_internal_admin',
+            PERMISSION_GROUPS.MANAGER: 'is_manager',
+        }
+
+        for role, prop in role_to_methods.items():
+            setattr(user, prop, user_role == role)
+
+        def is_user_in_group(user, *group_names):
+            return user_role in group_names
+
+        mock_perm = mock.patch('lib.authorization.is_user_in_permission_group').start()
+        mock_perm.side_effect = is_user_in_group
+
+        mock_auth.return_value = user
+        self.force_login(user)
+
+        return True
