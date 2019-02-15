@@ -1,0 +1,45 @@
+// Common overrides for xblocks:
+@import '../base/variables';
+
+body.new-theme {
+
+    .discussion-content,
+    .lesson-content {
+        font-family: "Open Sans", sans-serif !important;
+
+        * {
+            outline: none !important;
+
+            &:focus,
+            &:active {
+                outline: none !important;
+            }
+        }
+    }
+
+    .lesson-content {
+        .themed-xblock {
+
+            input[type="button"],
+            button {
+                background-color: $mckinsey-primary-default-button;
+                border-radius: 2px;
+                text-transform: uppercase;
+                font-size: 12px;
+                letter-spacing: 0.5px;
+                font-weight: 600;
+                height: 40px;
+                padding: 0 20px;
+
+                &:hover {
+                    background-color: $mckinsey-primary-hover-button;
+                }
+
+                &:disabled {
+                    background-color: $mckinsey-primary-disabled-button;
+                    color: #EEEEEE;
+                }
+            }
+        }
+    }
+}
