@@ -47,7 +47,7 @@ $(function () {
     }
 
     function redirectAfterLogin(xhr) {
-        function redirect(){
+        function redirect() {
             window.location.href = xhr.getResponseHeader("Location");
         }
         // Wait for analytics events to submit before redirecting
@@ -77,14 +77,14 @@ $(function () {
         sendUserActivationEmail()
     });
 
-    function sendUserActivationEmail(){
+    function sendUserActivationEmail() {
         const headers = {
             'X-CSRFToken': $.cookie('apros_csrftoken')
         };
         $.ajax({
             headers: headers,
             type: 'GET',
-            url: '/mcka-api/v1/send_activation_link/'+$("input[name=login_id]").val(),
+            url: '/mcka-api/v1/send_activation_link/' + $("input[name=login_id]").val(),
             success: function (_1, _2, xhr) {
                 openModalWithActivationMessage(xhr)
             },
@@ -94,14 +94,13 @@ $(function () {
         });
     }
 
-    function openModalWithActivationMessage(xhr){
+    function openModalWithActivationMessage(xhr) {
         $('.headline_message').html("")
         $('.activation_success_message').hide()
-        if (xhr.status === 200){
+        if (xhr.status === 200) {
             $('.headline_message').append(xhr.responseJSON["message"]);
             $('.activation_success_message').show()
-        }
-        else {
+        } else {
             $('.headline_message').append(xhr.responseJSON["error"]);
         }
         $('#user_activation_notification').foundation('reveal', 'open');
@@ -125,7 +124,10 @@ $(function () {
             });
             $.ajax({
                 headers: headers,
-                data: {login_id: login_id, password: password},
+                data: {
+                    login_id: login_id,
+                    password: password
+                },
                 type: 'POST',
                 url: '/accounts/login/',
                 success: function (_1, _2, xhr) {
@@ -144,7 +146,10 @@ $(function () {
         } else {
             $.ajax({
                 headers: headers,
-                data: {login_id: login_id, validate_login_id: true},
+                data: {
+                    login_id: login_id,
+                    validate_login_id: true
+                },
                 type: 'POST',
                 success: function (_1, _2, xhr) {
                     ga('send', 'event', 'Login', 'validate', 'success', {
@@ -169,7 +174,7 @@ $(function () {
         }
     }
 
-    $('a[data-reveal-id="reset-password"]').click(function() {
+    $('a[data-reveal-id="reset-password"]').click(function () {
         ga('send', 'event', 'Login', 'forgot_password', {
             dimension4: getHashedId(),
         });
@@ -190,8 +195,7 @@ $(function () {
         if (hash.indexOf('forgot-password-modal') > -1) {
             $('a[data-reveal-id="reset-password"]').click();
             window.location.hash = hash.replace('forgot-password-modal', '');
-        }
-        else {
+        } else {
             var next_with_hash = $.query.get('next') + window.location.hash,
                 query_with_hash = $.query.set('next', next_with_hash).toString();
             window.history.replaceState({}, '', query_with_hash);
@@ -199,5 +203,3 @@ $(function () {
     }
     ajaxify_overlay_form('#reset-password', 'form');
 });
-
-

@@ -84,13 +84,6 @@
 // Nav
 
 .dropdown-menu {
-  .allCoursesList {
-    > .courseRow {
-      .holder {
-      }
-    }
-  }
-
   &.allLessons {
     .allCoursesList {
       .bookmark {
@@ -136,10 +129,6 @@
             @include margin-left(5px);
           }
         }
-      }
-
-      .bookmark {
-        @include left(-4px);
       }
     }
   }
@@ -275,9 +264,7 @@
     }
     &.locked{
       .title{
-        > span{
-          @include padding-right(20px);
-        }
+        @include padding-right(20px);
       }
     }
   }
@@ -294,8 +281,8 @@
       }
       &.serial {
         @include padding-right(25px);
-        span {
-          @include right(0);
+        span{
+          @include margin-left(4px);
         }
       }
       &.time{
@@ -306,6 +293,12 @@
         }
       }
     }
+  }
+}
+
+.allLessons {
+  .bookmark {
+    @include left(-33px);
   }
 }
 
@@ -350,6 +343,9 @@ footer {
 
 .bookmark {
   @include left(0);
+      @include media-breakpoint-between(xs, sm) {
+        @include left(-4px);
+      }
 }
 
 // CSS specific styles
@@ -410,26 +406,29 @@ body.rtl {
   }
 
   .dropdown-menu {
-    &.allLessons {
-      &:after {
-        right: 65px;
-      }
-    }
-
-    &.course-materials {
-      margin-left: -37px;
-      &:after {
-        left: 11px;
-        right: auto;
-      }
-    }
 
     &.dashboard-menu {
-      margin-left: -50px;
+      margin-left: -36px;
+      margin-top: -10px;
     }
 
     &.profileDropdown {
-      margin-left: -42px;
+      margin-left: -36px;
+      @include media-breakpoint-between(xs, md){
+        margin-left: -35px;
+      }
+      &::after{
+        left: 7%;
+      }
+    }
+
+    &.course-materials{
+      margin-left: -36px
+    }
+
+    &.allLessons{
+      margin-left: -40px;
+      margin-right: 41px;
     }
   }
 

@@ -91,7 +91,7 @@
 
           .top-ranking {
             @extend .type-cohort;
-            margin: 35px 0 25px;
+            margin: 25px 0 0;
 
             i {
               font-size: 1.125rem;
@@ -162,17 +162,44 @@
 
             &.dummy {
               opacity: 0.5;
-              -webkit-filter: grayscale(1);
-              filter: grayscale(1);
+              -webkit-filter: grayscale(100%);
+              filter: grayscale(100%);
+              * {
+                color: $lighter-gray !important;
+              }
             }
           }
           &.col-12 {
-            border: 0 !important;
+            border-width: 0 0 1px 0 !important;
+            border-bottom-color: $hard-gray;
+            border-style: solid !important;
+            padding-bottom: 30px !important;
             border-bottom: 1px solid $gray;
             .rank,
             .default{
               margin-bottom: 0 !important;
               min-height: 0 !important;
+            }
+            .header{
+              margin-top: 45px !important;
+            }
+            .status{
+              min-height: 0;
+            }
+            .user{
+              &:last-child{
+                border: 0 !important;
+              }
+            }
+            &:last-child{
+              border: 0 !important;
+              margin-bottom: 0 !important;
+              padding-bottom: 0 !important;
+            }
+            &:first-child{
+              .header{
+                margin-top: 0 !important;
+              }
             }
           }
         }

@@ -9,7 +9,7 @@
       .courseMainHeader
         %h1
           = course_name
-          %a.backBtn
+          %a.backBtn{:onclick => "javascript:history.go(-1);"}
             %i.material-icons
               keyboard_arrow_left
         .courseNavWrap.clearfix
@@ -47,7 +47,7 @@
                   %li{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_nannouncements' %}active{% endif %}"}
                     %a.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
                       {% trans "Course Materials" %}
-                    .dropdown-menu{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-left{% else %}dropdown-menu-right{% endif %}"}
+                    .dropdown-menu.course-materials{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-left{% else %}dropdown-menu-right{% endif %}"}
                       %a.dropdown-item{:href => "/courses/#{current_course.id}/announcements"}
                         {% trans "Announcements" %}
                       %a.dropdown-item{:href => "/courses/#{current_course.id}/overview"}

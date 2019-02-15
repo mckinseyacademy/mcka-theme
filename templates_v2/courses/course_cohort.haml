@@ -38,7 +38,7 @@
                   .user
                     .rank-number ##{completions.leaders.0.rank}
                     .person-avatar
-                      %img{'src': '#{completions.leaders.0.profile_image.image_url_small}', 'title': '#{completions.leaders.0.username}'}
+                      %img{'src': '#{completions.leaders.0.profile_image.image_url_small}'}
                     .person-name
                       %span=completions.leaders.0.username
                       - if completions.leaders.0.title

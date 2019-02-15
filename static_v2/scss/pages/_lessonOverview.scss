@@ -37,9 +37,9 @@
     }
     h2 {
       color: $secondary;
-      font-size: 1.8rem;
+      font-size: 1.75rem;
       font-weight: 300;
-      line-height: 43px;
+      line-height: 34px;
       margin: 0;
       > a {
         &:hover {
@@ -138,12 +138,20 @@
     }
   }
   .lesson-content {
+    @include font-spec(1rem, 300, normal);
     .unit-title {
       display: none;
     }
   }
   .xblock{
     img{ max-width: 100%;}
+  }
+}
+
+.allModules {
+  &::after {
+    display: none;
+    visibility: hidden;
   }
 }
 

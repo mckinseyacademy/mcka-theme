@@ -220,7 +220,6 @@
 
       .title {
         >span {
-          position: relative;
           display: inline-block;
           vertical-align: middle;
           color: $gray;
@@ -230,7 +229,6 @@
             width: 18px;
             height: 18px;
             content: '';
-            right: 0;
             top: 50%;
             transform: translateY(-50%);
             z-index: 999;
@@ -278,8 +276,8 @@
         position: relative;
         @include text-ellipsis;
         span{
-          position: absolute;
           width: 20px;
+          display: inline-block;
           line-height: 1.55;
         }
       }
@@ -288,7 +286,7 @@
         color: $secondary;
         font-size: 1rem;
         line-height: 22px;
-        width: 50%;
+        width: 47%;
         @include text-ellipsis;
       }
 
@@ -322,6 +320,7 @@
       .figure {
         font-size: 0.75rem;
         color: $dark-gray;
+        min-width: 35px;
       }
 
       .figure,
@@ -779,7 +778,6 @@ blockquote {
 
         &.status {
           width: 110px;
-          display: none;
         }
 
         &.progressBar {
@@ -788,6 +786,10 @@ blockquote {
 
         .figure {
           margin-right: 0;
+        }
+
+        &.title {
+          width: 80%;
         }
       }
     }
