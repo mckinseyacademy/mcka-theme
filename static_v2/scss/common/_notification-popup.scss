@@ -17,6 +17,11 @@
     cursor: pointer;
     letter-spacing: normal;
   }
+  .xns-list-body{
+    max-height: 290px;
+    overflow-y: auto;
+    margin: -10px 0 0;
+  }
 
   h3.xns-group {
     text-transform: uppercase;

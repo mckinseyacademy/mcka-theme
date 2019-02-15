@@ -38,6 +38,7 @@
       left: -20px !important;
       padding: 30px !important;
       min-width: 370px;
+      max-width: 400px;
     }
   }
   &.allLessons {
@@ -189,6 +190,7 @@
       }
       &.notification {
         min-width: auto;
+        max-width: 320px;
       }
     }
   }
