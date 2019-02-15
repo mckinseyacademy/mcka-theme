@@ -8,6 +8,23 @@
   width: 100%;
 }
 
+.courseLanding{
+  #course-final-grade{
+    @extend .mb-4;
+    text-align: center;
+    font-size: 1rem;
+    > div{
+      color: $gray;
+      line-height: 28px;
+    }
+    .final-grade{
+      color: $black;
+      @include font-spec(24, 400, 32px);
+      margin-bottom: 8px;
+    }
+  }
+}
+
 .contentCardWrap {
   margin-top: 36px;
 
