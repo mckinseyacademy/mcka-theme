@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError
-from django.views.decorators.cache import cache_page
 from django.shortcuts import render
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
@@ -740,7 +739,6 @@ def course_progress_v2(request, course_id):
 
 @login_required
 @check_user_course_access
-@cache_page(60 * 10)
 def course_resources(request, course_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     if feature_flags and not feature_flags.resources:
@@ -757,7 +755,6 @@ def course_resources(request, course_id):
 
 
 @login_required
-@cache_page(60 * 10)
 def course_resources_learner_dashboard(request, learner_dashboard_id, course_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     if feature_flags and not feature_flags.resources:
