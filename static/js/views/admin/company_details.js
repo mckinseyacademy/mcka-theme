@@ -86,9 +86,6 @@
         $('#additionalCompanyButtons a').show();
         $('#addAppPopupLink').hide();
       });
-      if (enable_data_deletion === "True") {
-        _this.companyDeletionModal(company_id);
-      }
     },
     onClearSearchEvent: function(){
       companyDetailsCoursesViewGrid.searchBar.onSearch({target: '#companyDetailsDataWrapper .bbGrid-pager'});
@@ -228,26 +225,5 @@
       {
         $(document).trigger('email_finished', [data]);
       })
-    },
-    companyDeletionModal: function(id) {
-      $(document).on('click', '#deleteCompanyButton', function () {
-        let mainContainer = $('#deleteCompanyModal');
-        let url = ApiUrls.company_details + '/' + id;
-        let options = {
-          url: url,
-          type: "DELETE",
-          headers: {'X-CSRFToken': $.cookie('apros_csrftoken')},
-        };
-
-
-        $.ajax(options)
-            .done(function () {
-              window.location.replace(ApiUrls.company_details);
-              })
-            .fail(function () {
-              mainContainer.find('.errorContainer').html("Error deleting company. Please try again later...");
-            }
-          );
-      });
     },
   });

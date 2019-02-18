@@ -42,14 +42,27 @@
       .contentContainer
         {% trans "Please note that the data is deleted permanently and you will lose all the data." %}
         %br
-        %br
-        .boldText
-          {% trans "Are you sure you want to delete the data?" %}
+        #infoContainer
+          User Name
+        .deletionWarning
+          %i.fa.fa-warning
+          {% trans "Warning: Deletion cannot be undone!" %}
+        #confirmDeletionContainer
+          .confirm-deletion-box
+            %input{type: "checkbox", id: "checkbox_confirm_user_deletion_1", class: "deletionConfirmationCheckbox"}
+            %label
+              .title
+                {% trans "Users will not be able to access the platform" %}
+            %br
+            %input{type: "checkbox", id: "checkbox_confirm_user_deletion_2", class: "deletionConfirmationCheckbox"}
+            %label
+              .title
+                {% trans "User data will no longer be available in the platform" %}
       .errorContainer
       .button-wrapper
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
           {% trans "Cancel" %}
-        %a.button.small.radius.menuButton.confirmButton{:type => "button"}
+        %a.button.small.radius.menuButton.confirmButton.disabled{:type => "button"}
           {% trans "Yes" %}
 
     #delete_data_success.reveal-modal.small{'data-reveal': ''}

@@ -673,44 +673,14 @@
 	}
 }
 
-#deleteCompanyModal{
-	.titleContainer, .contentContainer
-	{
-		text-align: center;
-	}
-
-	.boldText
-	{
-		font-weight: bold;
-	}
-
-	.errorContainer
-	{
-		color:red;
-		text-align: center;
-		padding-top: 10px;
-		padding-bottom:10px;
-		max-height: 300px;
-		overflow: auto;
-	}
-
-  .cancelChanges
-	{
-		margin-left: 15px;
-	}
-
-	.button-wrapper
-	{
-		text-align: center;
-	}
-}
-
 .btn-danger{
 	background-color: #d9534f;
     border-color: #d43f3a;
 }
 
 #delete_data_modal, #delete_data_success{
+	padding: 10px 10px 10px 10px;
+
 	.titleContainer, .contentContainer
 	{
 		text-align: center;
@@ -719,6 +689,25 @@
 	.boldText
 	{
 		font-weight: bold;
+	}
+
+	#infoContainer {
+		margin: 5px 0 5px 0;
+		font-weight: bold;
+	}
+
+	.deletionWarning {
+	    color: red;
+			margin-top: 5px;
+	}
+
+	table {
+		// table-layout:fixed;
+		width: 100%;
+	}
+
+	td {
+		word-wrap:break-word;
 	}
 
 	.errorContainer
@@ -731,13 +720,41 @@
 		overflow: auto;
 	}
 
-  .cancelChanges
-	{
-		margin-left: 15px;
+	.menuButton{
+		border-radius: 4px;
+		font-size: 14px;
+		margin: 10px 0;
 	}
 
 	.button-wrapper
 	{
 		text-align: center;
 	}
+
+	#confirmDeletionContainer {
+		text-align: center;
+	}
+
+	.confirm-deletion-box
+	{
+		text-align: left;
+    width: fit-content;
+    display: inline-block;
+		padding: 10px 0px  10px 0px;
+
+		input[type="checkbox"] {
+		  margin:0;
+		}
+	}
+}
+
+td.action_buttons {
+	text-align: center;
+	width: 40px;
+}
+
+a.deleteButton {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	width: 40px;
 }

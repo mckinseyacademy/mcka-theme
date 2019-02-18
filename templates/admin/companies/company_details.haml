@@ -38,10 +38,7 @@
               {% trans "Navigation" %}
             %a.button.small.radius.accessLink{:href => "{% url 'client_sso' client_id=company.id %}"}
               {% trans "Access" %}
-            - if enableDataDeletion
-              %a.button.btn-danger.small.radius{href: "#", "data-reveal-id": "deleteCompanyModal"}
-                {% trans "Delete" %}
-            - if user.is_mcka_admin
+            - if user.is_mcka_subadmin or user.is_mcka_admin
               %a#addAppPopupLink.companyLinkedApps.button.small.radius{"data-reveal-id" : "linkApp", :href => "#"}
                 {% trans "Link Apps" %}
 
@@ -115,22 +112,6 @@
           {% trans "Link App" %}
         %input.button.small.radius.close-reveal-modal{:value => "{% trans 'Cancel' %}", :type => "button"}/
         %a.close-reveal-modal{"aria-label" : "Close"} ×
-
-  - if enableDataDeletion
-    #deleteCompanyModal.reveal-modal.small{"data-reveal": "true"}
-      .close-reveal-modal
-        %i.fa.fa-times-circle
-      .titleContainer
-        %h2 {% trans "Delete Company" %}
-        %hr
-      .contentContainer
-        {% trans "Are you sure you want to delete this company?" %}
-      .errorContainer
-      .button-wrapper
-        %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
-          {% trans "Cancel" %}
-        %a#deleteCompanyButton.button.small.radius.menuButton.confirmButton.btn-danger{:type => "button"}
-          {% trans "Yes" %}
 
   %script{src: "{% static 'js/company_fields.js' %}"}
 

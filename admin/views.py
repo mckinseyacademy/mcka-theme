@@ -5109,7 +5109,10 @@ class users_company_admin_get_post_put_delete_api(APIView):
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN,)
 def companies_list(request):
     data = {
-        'enableDataDeletion': _deletion_flag(),
+        'enableDataDeletion': _deletion_flag() and is_user_in_permission_group(
+            request.user,
+            PERMISSION_GROUPS.MCKA_ADMIN
+        ),
     }
     return render(request, 'admin/companies/companies_list.haml', data)
 

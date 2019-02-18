@@ -13,16 +13,9 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           {
             title: gettext('Name'), index: true, name: 'full_name',
             actions: function(id, attributes){
-                var participant_name = _this.getParticipantName(attributes)
-                return `
-                  <a
-                    href="/admin/participants/${attributes['id']}"
-                    target="_self"
-                  >
-                    ${participant_name}
-                    ${enable_data_deletion == "True" ? _this.userDeletionModalManager(_this, id, attributes) : ''}
-                  </a>
-                `;
+                let participant_name = _this.getParticipantName(attributes)
+                return '<a href="/admin/participants/' + attributes['id'] +
+                       '" target="_self">' + participant_name + '</a>';
             }
           },
           { title: gettext('Company'), index: true, name: 'organizations_custom_name' },
@@ -47,10 +40,10 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           { title: gettext('Activated'), index: true, name: 'active_custom_text' }
         ];
         if (enable_data_deletion == "True"){
-          table_columns.unshift({
+          table_columns.push({
             title: " ", name: 'action_buttons',
             actions: function(id, attributes){
-              return _this.userDeletionSelector(id);
+              return _this.userDeletionModalManager(_this, id, attributes)
             }
           });
         };
@@ -407,19 +400,23 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         mainContainer.find('.errorContainer').empty();
         mainContainer.find('.errorContainer').hide();
         mainContainer.find('#participantInfoContainer').html(
-          `<table>
-            <tr>
-              <th>Name</td>
-              <th>Company</td>
-              <th>Email</td>
-            </tr>
-            <tr>
-              <td>${_this.getParticipantName(attributes)}</td>
-              <td>${attributes.organizations_custom_name}</td>
-              <td>${attributes.email}</td>
-            </tr>
-          </table>`
+          '<table>' +
+            '<tr>' +
+              '<th>Name</td>' +
+              '<th>Company</td>' +
+              '<th>Email</td>' +
+            '</tr>' +
+            '<tr>' +
+              '<td>' + _this.getParticipantName(attributes) + '</td>' +
+              '<td>' + attributes.organizations_custom_name + '</td>' +
+              '<td>' + attributes.email + '</td>' +
+            '</tr>' +
+          '</table>'
         );
+
+        // Uncheck checkboxes and disable delete button
+        deletionConfirmationCheckboxes.removeAttr('checked');
+        confirmButton.addClass("disabled");
 
         deletionConfirmationCheckboxes.off().on('click', function() {
           if (deletionConfirmationCheckboxes.not(':checked').length == 0){
@@ -453,40 +450,10 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         });
       })
 
-      return `
-        <a
-          type="button"
-          data-reveal-id="delete_user_modal"
-          class="button small radius menuButton deleteButton"
-          id="button-delete-user-${id}"
-          style="visibility: hidden"
-        >
-          <i class="fa fa-trash fa-lg actionButtonIcon"/>
-        </a>
-      `;
-    },
-    userDeletionSelector: function(id)
-    {
-      $(document).on('click', '#radio-show-delete-user-' + id, function(ev){
-        let radioButton = ev.target;
-        var allDeleteUserButtons = $('.deleteButton');
-        var deleteUserButton = $(`#button-delete-user-${id}`);
-
-        if (radioButton.checked) {
-          //allDeleteUserButtons.hide();
-          allDeleteUserButtons.css('visibility','hidden')
-          //deleteUserButton.show();
-          deleteUserButton.css('visibility','visible')
-        }
-      })
-
-      return `
-        <input
-          type="radio"
-          name="user-deletion"
-          id='radio-show-delete-user-${id}'
-          style="margin: 0;"
-        />`;
+      return '<a type="button" data-reveal-id="delete_user_modal" ' +
+             'class="button small radius deleteButton"' +
+             'id="button-delete-user-' + id + '">' +
+             '<i class="fa fa-trash fa-lg actionButtonIcon"/></a>';
     },
     getParticipantName: function(attributes)
     {

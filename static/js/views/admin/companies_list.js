@@ -22,12 +22,12 @@
         { title: gettext('No. of Courses'), index: true, name: 'numberCourses', sorttype: 'number' }
       ];
       if (enable_data_deletion === "True"){
-          table_columns.unshift({
+        table_columns.push({
             title: " ", name: 'action_buttons',
             actions: function(id, attributes){
-                return _this.dataDeletionModalManager(id, attributes);
+              return _this.dataDeletionModalManager(id, attributes)
             }
-          });
+        });
       }
       const companiesListViewGrid = new bbGrid.View({
         container: this.$el,
@@ -165,17 +165,35 @@
     },
     dataDeletionModalManager: function(id, attributes)
     {
-      const mainContainer = $('#delete_data_modal');
-      mainContainer.off().on('close.fndtn.reveal', function () {
-        window.location = ApiUrls.company_details + '/' + id;
-      });
-      $(document).on('click', '#button-delete-data-' + id, function(ev) {
-        let confirmButton = mainContainer.find('.confirmButton');
-        let row = $(this).closest('tr');
+      $(document).on('click', '#button-delete-company-' + id, function(ev){
+        var mainContainer = $('#delete_data_modal');
 
+        // Find components on delete modal
+        let confirmButton = mainContainer.find('.confirmButton')
+        let deletionConfirmationCheckboxes = mainContainer.find('.deletionConfirmationCheckbox');
+        // Get row of participant to be deleted
+        let row = $(this).closest('tr');
+        // Set dialog data
         mainContainer.find('.errorContainer').empty();
+        mainContainer.find('.errorContainer').hide();
+        mainContainer.find('#infoContainer').html(attributes.name);
+
+        // Uncheck checkboxes and disable delete button
+        deletionConfirmationCheckboxes.removeAttr('checked');
+        confirmButton.addClass("disabled");
+
+        deletionConfirmationCheckboxes.off().on('click', function() {
+          if (deletionConfirmationCheckboxes.not(':checked').length == 0){
+            confirmButton.removeClass('disabled');
+          } else {
+            confirmButton.addClass("disabled");
+          }
+        });
 
         confirmButton.off().on('click', function() {
+          if (confirmButton.hasClass("disabled")) {
+            return;
+          }
           var url = ApiUrls.company_details + '/' + id;
           var options = {
             url: url,
@@ -193,7 +211,11 @@
             }
           );
         });
-      });
-      return '<i class="fa fa-trash fa-lg actionButtonIcon" data-reveal-id="delete_data_modal" id="button-delete-data-' + id + '"></i>';
-    },
+      })
+
+      return '<a type="button" data-reveal-id="delete_data_modal" ' +
+             'class="button small radius deleteButton"' +
+             'id="button-delete-company-' + id + '"' + '>' +
+             '<i class="fa fa-trash fa-lg actionButtonIcon"/></a>';
+    }
   });
