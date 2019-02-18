@@ -22,6 +22,48 @@
       %meta{name: "description", content: "{% trans 'McKinsey Academy helps organizations thrive by accelerating their talent advantage' %}"}
       %meta{property: "og:description", content: "{% trans 'McKinsey Academy helps organizations thrive by accelerating their talent advantage' %}"}
 
+    %script{src: "{% static 'js/css-vars-ponyfill.js' %}"}
+
+    {% assets "css_core_v2" %}
+      %link.pony{rel: "stylesheet", href: "{{ ASSET_URL }}"}
+    {% endassets %}
+
+
+    -if client_customization.hex_course_title
+      :css
+        :root{
+          --primary: {{client_customization.hex_course_title}};
+          --header-top: {{client_customization.hex_course_title}};
+          --secondary: {{client_customization.hex_course_title}};
+        }
+      %script
+        var primary = "{{client_customization.hex_course_title}}";
+        var secondary = "{{client_customization.hex_course_title}}";
+        var header_top = "{{client_customization.hex_course_title}}";
+
+    -if client_customization.hex_background_bar
+      :css
+        :root{
+          --header-top: {{client_customization.hex_background_bar}};
+          --secondary: {{client_customization.hex_background_bar}};
+        }
+
+      %script
+        var secondary = "{{client_customization.hex_background_bar}}";
+        var header_top = "{{client_customization.hex_background_bar}}";
+
+
+    %script
+      cssVars({
+        onlyVars: true,
+        include: 'link.pony',
+        variables: {
+          '--primary': primary,
+          '--secondary': secondary,
+          '--header-top': header_top
+        }
+      });
+
     - block open_graph
       %meta{property: "og:site_name", content: "{% trans 'McKinsey Academy' %}"}
       %meta{property: "og:image", content: "/static/image/McKA_OG.png"}
@@ -59,9 +101,6 @@
     - if xblock_theme_css_path
       %link{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
 
-    {% assets "css_core_v2" %}
-      %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
-    {% endassets %}
 
     - if LANGUAGE_BIDI
       {% assets "scss_rtl_v2" %}
@@ -146,21 +185,6 @@
     -# custom css scripts
     - block custom_css
 
-    -if client_customization.hex_course_title
-      :css
-        :root{
-          --primary: {{client_customization.hex_course_title}};
-          --header-top: {{client_customization.hex_course_title}};
-          --secondary: {{client_customization.hex_course_title}};
-        }
-
-    -if client_customization.hex_background_bar
-      :css
-        :root{
-          --header-top: {{client_customization.hex_background_bar}};
-          --secondary: {{client_customization.hex_background_bar}};
-        }
-
     %script
       $(document).ready(function() {
         /* Disable Log in button on mobile */
@@ -200,11 +224,16 @@
     - block i18n
       %script{type: "text/javascript", src: "{% url 'javascript-catalog' %}"}
 
-
+    -# jQuery-xblock
+    - block jquery_xblock
+      %script{src: "{% static 'js/vendor/jquery.xblock.js' %}"}
 
     -# Bootstrap JS
     - block bootstrap_js
       %script{src: "{% static 'js/bootstrap.bundle.min.js' %}"}
+
+    -# JS - custom snippets
+    - block js_snippets
 
     - block edit_full_name_modal
       .modal.middleSize.noTopBorder.fade.editFullName{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
@@ -291,10 +320,6 @@
 
     %script{src: "{% static 'js/shader.js' %}"}
 
-    -# jQuery-xblock
-    - block jquery_xblock
-      %script{src: "{% static 'js/vendor/jquery.xblock.js' %}"}
-
     -# Ooyala Player JS
     - block ooyala_player
       - if not do_not_load_ooyala
@@ -309,7 +334,3 @@
       {% assets "js_all_v2" %}
         %script{src: "{{ ASSET_URL }}"}
       {% endassets %}
-
-    -# JS - custom snippets
-    - block js_snippets
-
