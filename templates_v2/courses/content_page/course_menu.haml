@@ -13,7 +13,7 @@
         = course.chapters|length
         {% trans "Lessons" %}
   .contentCard
-    %ul.allCoursesList
+    %ul.allCoursesList.onPage
       - for lesson in course.chapters
         %li{"class": "courseRow clearfix {% if lesson.is_started %}active{% else %}locked{% endif %}  {% if lesson.progress == 100 %}complete{% else %}{% endif %}"}
           %a.holder{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
