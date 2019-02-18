@@ -1,7 +1,9 @@
 """
 Common mocked objects and methods for writing unit tests in Apros
 """
-from django.test import RequestFactory
+from mock import patch, Mock
+
+from django.test import RequestFactory, Client
 
 from api_client.group_api import PERMISSION_GROUPS
 from accounts.models import RemoteUser
@@ -71,7 +73,7 @@ def make_side_effect_raise_api_error(api_error_code):
     """
     Add this as side-effect to simulate APiError
     """
-    thrown_error = mock.Mock()
+    thrown_error = Mock()
     thrown_error.code = api_error_code
     thrown_error.reason = "I have no idea, but luckily it is irrelevant for the test"
 
@@ -81,12 +83,27 @@ def make_side_effect_raise_api_error(api_error_code):
     return _raise
 
 
+class ApplyPatchMixin(object):
+    """
+    Mixin with patch helper method
+    """
+
+    def apply_patch(self, *args, **kwargs):
+        """
+        Applies patch and registers a callback to stop the patch in TearDown method
+        """
+        patcher = patch(*args, **kwargs)
+        mock = patcher.start()
+        self.addCleanup(patcher.stop)
+        return mock
+
+
 class AprosTestingClient(Client):
     """
     Replacement of default client for Apros tests
     provides fake login and role features
     """
-    @mock.patch('accounts.json_backend.JsonBackend.authenticate')
+    @patch('accounts.json_backend.JsonBackend.authenticate')
     def login(self, mock_auth, user_role=None, **credentials):
         """
         Fakes Apros login with passed user and role
@@ -115,7 +132,7 @@ class AprosTestingClient(Client):
         def is_user_in_group(user, *group_names):
             return user_role in group_names
 
-        mock_perm = mock.patch('lib.authorization.is_user_in_permission_group').start()
+        mock_perm = patch('lib.authorization.is_user_in_permission_group').start()
         mock_perm.side_effect = is_user_in_group
 
         mock_auth.return_value = user
