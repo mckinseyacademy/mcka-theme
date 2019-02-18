@@ -24,9 +24,13 @@
           display: none;
         }
       }
-      img {
-        width: 100%;
-        height: auto;
+      svg{
+        background: transparent;
+        color: var(--primary);
+        fill: var(--primary);
+        g{
+          fill: var(--primary);
+        }
       }
     }
     h5 {
@@ -252,11 +256,6 @@ body.zoomIn {
           left: auto;
           right: auto;
           float: left;
-          > span {
-            i {
-              //left: 50%
-            }
-          }
           &:hover {
             left: inherit;
           }
@@ -323,5 +322,4 @@ body.zoomIn {
       padding-bottom: 120px;
     }
   }
-
 }

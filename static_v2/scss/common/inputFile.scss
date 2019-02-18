@@ -15,6 +15,8 @@
 
 .file-upload {
   .file-select {
+    display: inline-block;
+    vertical-align: middle;
     .file-select-button {
       font-weight: 600;
       font-size: 12px;
@@ -27,17 +29,12 @@
       padding: 0 20px;
       display: inline-block;
       vertical-align: middle;
-      background-color: #2042cb;
-      border-color: #2042cb;
+      background-color: var(--primary);
+      border-color: var(--primary);
       color: $white;
       line-height: 40px;
       cursor: pointer;
       position: relative;
-      //z-index: 99;
-      &:hover {
-        background-color: $dark-blue;
-        border-color: $dark-blue;
-      }
     }
     .file-select-name {
       color: $gray;
@@ -47,10 +44,6 @@
       display: inline-block;
       vertical-align: middle;
 
-    }
-    &:hover {
-      .file-select-button {
-      }
     }
     input[type=file] {
       cursor: pointer;
@@ -62,12 +55,6 @@
       left: 0;
       opacity: 0;z-index: 99;
       filter: alpha(opacity=0);
-      &:hover{
-        & + .file-select-button{
-           background-color: $dark-blue;
-        border-color: $dark-blue;
-        }
-      }
     }
   }
   .file-select.file-select-disabled {
@@ -96,13 +83,6 @@
         text-align: center;
         padding: 0 20px;
         display: inline-block;
-
-        //background: #dce4ec;
-        //color: #666666;
-        //padding: 0 10px;
-        //display: inline-block;
-        //height: 40px;
-        //line-height: 40px;
       }
       .file-select-name {
         line-height: 40px;
@@ -132,5 +112,3 @@
     }
   }
 }
-
-//}

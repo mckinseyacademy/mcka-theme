@@ -14,10 +14,6 @@ a.btn{
   &.btn-primary {
     background-color:  var(--primary);
     border-color:  var(--primary);
-    &:hover {
-      background-color: $dark-blue;
-      border-color: $dark-blue;
-    }
   }
 
   //Secondary button .btn-secondary
