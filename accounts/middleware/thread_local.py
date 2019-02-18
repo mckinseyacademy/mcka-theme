@@ -41,18 +41,3 @@ def set_user_permissions_context(permissions=None):
 
 def get_user_permissions_context():
     return getattr(_threadlocal, 'user_permissions', None)
-
-
-def get_user_permissions(user):
-    ''' Loads and caches group names and ids via the edX platform '''
-    from api_client import user_api, group_api
-    from api_client.group_api import PERMISSION_GROUPS, PERMISSION_TYPE
-    permissions_data = {"global_permissions": [], "organization_permissions": []}
-    permission_groups = group_api.get_groups_of_type(PERMISSION_TYPE)
-    permission_dict = {permission_group.name: permission_group.id for permission_group in permission_groups}
-    current_permissions = [pg.name for pg in user_api.get_user_groups(user.id, PERMISSION_TYPE)]
-    for perm in current_permissions:
-        if perm not in (PERMISSION_GROUPS.MCKA_TA, PERMISSION_GROUPS.MCKA_OBSERVER):
-            permissions_data["global_permissions"].append({perm: permission_dict[perm]})
-
-    return permissions_data
