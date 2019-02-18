@@ -183,12 +183,17 @@
 .socialWidgets {
   .widget {
     > .holder {
-      @include border-left(1px solid $hard-gray);
+      &::after{
+        @include right(0);
+        @include media-breakpoint-between(xs, md){
+          display: none;
+        }
+      }
     }
 
     &:first-child {
-      > .holder {
-        @include border-left(0);
+      h5{
+        @include margin-left(15px);
       }
     }
 

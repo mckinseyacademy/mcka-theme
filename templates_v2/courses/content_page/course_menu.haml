@@ -31,8 +31,8 @@
               %span= lesson.name
                 - if not lesson.is_started
                   %i.material-icons.locked{:data-container => "body", :data-content => "{% trans 'This lesson will be available on '%} {{lesson.start_upon}}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
-            - if lesson.estimated_time
-              .data.time
+            .data.time
+              - if lesson.estimated_time
                 %i.material-icons
                   access_time
                 = lesson.estimated_time

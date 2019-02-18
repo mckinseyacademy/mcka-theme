@@ -247,11 +247,10 @@
             width: 18px;
             height: 18px;
             content: '';
-            top: 50%;
-            transform: translateY(-50%);
             z-index: 999;
             font-size: 1.125rem;
             color:  inherit;
+            margin: 0 4px;
           }
         }
 
@@ -304,7 +303,7 @@
         color:  var(--primary);
         font-size: 1rem;
         line-height: 22px;
-        width: 47%;
+        width: 44%;
         @include text-ellipsis;
       }
 
@@ -379,12 +378,28 @@
 .socialWidgets {
   .widget {
     padding: 0;
+    position: relative;
 
     >.holder {
       padding: 15px 30px;
 
       >img {
         width: 100%;
+      }
+      &::after{
+        content: "";
+        position: absolute;
+        width: 1px;
+        top: 40px;
+        bottom: 0;
+        background-color: $hard-gray;
+      }
+    }
+    &:last-child{
+      >.holder {
+        &::after {
+          display: none;
+        }
       }
     }
   }
@@ -607,6 +622,11 @@ blockquote {
 
         &.bar {
           margin-top: 30px;
+        }
+      }
+      >.holder{
+        &::after{
+          display: none;
         }
       }
     }
