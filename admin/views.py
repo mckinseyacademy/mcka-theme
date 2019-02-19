@@ -4411,7 +4411,7 @@ class participant_details_course_history_api(APIView):
         for grade in user_grades:
             for user_course in course_history:
                 if vars(grade)['course_id'] == user_course['id']:
-                    if vars(grade)['complete_status'] == 'true':
+                    if vars(grade)['complete_status']:
                         user_course['completed'] = _('Yes')
                     else:
                         user_course['completed'] = _('No')
