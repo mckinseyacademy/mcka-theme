@@ -1,0 +1,11 @@
+@include media-breakpoint-down(lg) {
+
+    .container {
+        max-width: 100%;
+
+        &.full {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+}

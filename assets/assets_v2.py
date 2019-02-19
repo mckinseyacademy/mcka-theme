@@ -21,6 +21,7 @@ js_files.extend([
     get_assets_path('js/custom.js', v2=True),
     get_assets_path('js/common.js', v2=True),
     get_assets_path('js/application.js', v2=True),
+    get_assets_path('js/jquery.mCustomScrollbar.concat.min.js', v2=True),
 
     get_assets_path('js/router.js', v2=False),
     get_assets_path('js/config.js', v2=False),

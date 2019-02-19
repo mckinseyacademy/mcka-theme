@@ -497,3 +497,27 @@ body.rtl {
     }
   }
 }
+
+
+// Learner Dashboard RTL
+
+#learner-dashboard
+{
+  .gallery-card
+  {
+    .gallery
+    {
+      .card
+      {
+        .content
+        {
+          .tag, .title, .date
+          {
+            @include left(15px);
+          }
+        }
+      }
+    }
+  }
+
+}

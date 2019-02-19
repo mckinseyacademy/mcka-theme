@@ -1,0 +1,65 @@
+.nav
+{
+    margin:0;
+    padding:0;
+    list-style: none;
+    li
+    {
+        a
+        {
+            font-weight: 600;
+            @include font-size(12);
+            text-transform: uppercase;
+            letter-spacing: 0.9px;
+            color:$secondary;
+            @include transition();
+
+            &:hover
+            {
+                color:$dark-blue;
+            }
+            &.active 
+            {
+                color:$smoke-gray;
+            }
+        }
+
+    &.tertiary
+    {
+        li
+        {
+            a
+            {
+                text-decoration: none;
+            }
+        }
+    }
+}
+}
+
+
+.dropdown-menu
+{
+    .sub-nav
+    {
+        list-style: none;
+        padding:0;
+        margin:0;
+
+        li
+        {
+            a
+            {
+                color: #2042cb;
+                font-size: 0.75rem;
+                line-height: 17px;
+                background: inherit;
+                border-top: 1px solid #EBEBEB;
+                padding: 12px 0 12px 30px;
+                display:block;
+    
+            }
+        }
+    }
+}
+

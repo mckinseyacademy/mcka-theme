@@ -100,8 +100,16 @@
                         %a.dropdown-item.ome.dome-c{:href => "#"} Leadership Development Program
                     - else
                       %div{'class' : 'dropdown-menu-right dropdown-menu middle-menu clearfix'}
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Executive Leadership Program
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Leadership Development Program
+                        %a.dropdown-item{:href => "#"} Executive Leadership Program
+                        %ul.sub-nav.d-block.d-sm-none
+                          %li
+                            %a.active{:href => "#"} Calender
+                          %li
+                            %a{:href => "#"} Discussions
+                          %li
+                            %a{:href => "#"} Resources
+
+                        %a.dropdown-item{:href => "#"} Leadership Development Program
                   %li.active
                     %a.nav-link.ome.dome-c{:href => "/courses"}
                       {% trans "my courses" %}
