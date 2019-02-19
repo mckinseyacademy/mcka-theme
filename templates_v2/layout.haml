@@ -29,6 +29,9 @@
     {% endassets %}
 
 
+    %script
+      var primary = null;
+
     -if client_customization.hex_course_title
       :css
         :root{
@@ -54,15 +57,20 @@
 
 
     %script
-      cssVars({
-        onlyVars: true,
-        include: 'link.pony',
-        variables: {
+      var variables = {}
+      if (primary !== null){
+        variables = {
           '--primary': primary,
           '--secondary': secondary,
           '--header-top': header_top
-        }
+          };
+      }
+      cssVars({
+        onlyVars: true,
+        include: 'link.pony',
+        variables: variables
       });
+
 
     - block open_graph
       %meta{property: "og:site_name", content: "{% trans 'McKinsey Academy' %}"}
