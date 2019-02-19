@@ -245,16 +245,21 @@
           display: inline-block;
           vertical-align: middle;
           color: $gray;
+          @include text-ellipsis;
+          position: relative;
+          max-width: calc(100% - 18px);
+          box-sizing: border-box;
+          padding-right: 20px;
 
           .locked {
             position: absolute;
-            width: 18px;
-            height: 18px;
             content: '';
             z-index: 999;
-            font-size: 1.125rem;
-            color:  inherit;
+            font-size: 1rem;
+            color: inherit;
             margin: 0 4px;
+            left: calc(100% - 20px);
+            line-height: 1.5;
           }
         }
 
@@ -308,7 +313,6 @@
         font-size: 1rem;
         line-height: 22px;
         width: 44%;
-        @include text-ellipsis;
       }
 
       &.time {
