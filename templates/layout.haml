@@ -317,6 +317,7 @@
         {% assets "js_all" %}
           %script{src: "{{ ASSET_URL }}"}
         {% endassets %}
+
     -# JS - custom snippets
     - block js_snippets
 
@@ -326,3 +327,8 @@
 
     -# Heap - Custom Events
     - block heap_events
+
+    -# Session Timeout
+    %script
+      var apros_session_timeout_seconds = {{apros_session_timeout_seconds}};
+    %script{src:"static/js/session_timeout_timer.js"}
