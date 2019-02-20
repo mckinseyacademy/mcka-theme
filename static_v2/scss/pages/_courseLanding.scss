@@ -242,15 +242,6 @@
 
       .title {
         >span {
-          display: inline-block;
-          vertical-align: middle;
-          color: $gray;
-          @include text-ellipsis;
-          position: relative;
-          max-width: calc(100% - 18px);
-          box-sizing: border-box;
-          padding-right: 20px;
-
           .locked {
             position: absolute;
             content: '';
@@ -313,6 +304,17 @@
         font-size: 1rem;
         line-height: 22px;
         width: 44%;
+
+        >span
+        {
+          display: inline-block;
+          vertical-align: middle;
+          color: $gray;
+          @include text-ellipsis;
+          position: relative;
+          max-width: calc(100% - 18px);
+          box-sizing: border-box;
+        }
       }
 
       &.time {
@@ -642,7 +644,6 @@ blockquote {
 
   .allCoursesList {
     .holder {
-      //padding: 16px 0;
       display: block;
 
       .data {

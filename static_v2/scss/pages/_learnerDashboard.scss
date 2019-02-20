@@ -1,6 +1,6 @@
 #learner-dashboard {
-    background: url(../images/bg.jpg);
-    margin-top: -30px;
+    background: url(../image/bg.jpg);
+    margin: -30px auto -96px;
     padding-bottom: 30px;
 
     // Learner Nav
@@ -96,13 +96,12 @@
 
                         .tag {
                             @include font-size(16);
-                            
                             top: 15px;
                             text-transform: uppercase;
                         }
 
                         .title {
-                            @include font-size(22);
+                            @include font-size(24);
                             top: 55px;
                             font-weight: 300;
                             max-width: 85%;
@@ -169,6 +168,10 @@
                 text-transform: capitalize;
                 line-height: 28px;
                 margin-bottom: 5px;
+                a
+                {
+                    color:white;
+                }
             }
             .review-by
             {
@@ -182,7 +185,6 @@
         }
     }
     @include media-breakpoint-down(md) {
-        margin-top:0;
         position: relative;
         top:6px;
     }

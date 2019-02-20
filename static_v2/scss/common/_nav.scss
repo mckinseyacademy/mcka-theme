@@ -11,7 +11,7 @@
             @include font-size(12);
             text-transform: uppercase;
             letter-spacing: 0.9px;
-            color:$secondary;
+            color:$primary;
             @include transition();
 
             &:hover
@@ -50,7 +50,7 @@
         {
             a
             {
-                color: #2042cb;
+                color: $primary;
                 font-size: 0.75rem;
                 line-height: 17px;
                 background: inherit;
