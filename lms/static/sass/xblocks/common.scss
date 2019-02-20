@@ -5,7 +5,7 @@ body.new-theme {
 
     .discussion-content,
     .lesson-content {
-        font-family: "Open Sans" !important;
+        font-family: "Open Sans", sans-serif !important;
 
         * {
             outline: none !important;
@@ -30,7 +30,7 @@ body.new-theme {
                 font-weight: 600;
                 height: 40px;
                 padding: 0 20px;
-
+                color: #FFF;
                 &:hover {
                     background-color: $mckinsey-primary-hover-button;
                 }
@@ -41,5 +41,20 @@ body.new-theme {
                 }
             }
         }
+    }
+}
+
+//to be deleted//for testing purpose only
+.row {
+    max-width: 100% !important;
+}
+.controls{
+    .page-to.previous{
+        left: 5% !important;
+        margin-left: 0 !important;
+    }
+    .page-to.next{
+        right: 5% !important;
+        margin-right: 0 !important;
     }
 }
