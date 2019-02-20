@@ -15,7 +15,7 @@
                 %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
             - else
               %a.navbar-brand{:href => "/"}
-                %img{:src => "static/image/McKA-logo-blue@2x.png", :width => "160"}
+                %img{:src => "static/image/McKA-logo-blue.svg", :width => "160"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.client_logo}}", :width => "160"}
@@ -25,7 +25,7 @@
               .profileArea
                 %a.dropdown-toggle{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
                   %span RA
-                  %img{:src => "static/image/McKA-logo-white@2x.png", :width => "160"}/
+                  %img{:src => "static/image/McKA-logo-white.svg", :width => "160"}/
                 - if LANGUAGE_BIDI
                   %div{'class' : 'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
                     .header
