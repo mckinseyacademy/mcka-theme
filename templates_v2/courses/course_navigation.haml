@@ -67,6 +67,23 @@
             %button#pnAdvancerLeft.pn-Advancer.pn-Advancer_Left{"type": "button"}
               %i.material-icons
                 keyboard_arrow_left
-            %button#pnAdvancerRight.pn-Advancer.pn-Advancer_Right.active{:type => "button"}
+            %button#pnAdvancerRight.pn-Advancer.pn-Advancer_Right{:type => "button"}
               %i.material-icons
                 keyboard_arrow_right
+
+  %script
+    var element = $("div.mainNav li.active a.nav-link");
+    $(element).on("click", function(){
+      if($(window).width() < 992)
+        this.scrollIntoView();
+    });
+
+    var language_dir = $('html').attr('dir');
+    if(language_dir == 'rtl'){
+      $("button#pnAdvancerLeft").addClass("active");
+      $("button#pnAdvancerRight").removeClass("active");
+    }
+    else{
+      $("button#pnAdvancerRight").addClass("active");
+      $("button#pnAdvancerLeft").removeClass("active");
+    }

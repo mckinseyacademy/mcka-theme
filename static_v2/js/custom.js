@@ -231,7 +231,20 @@ function smoothNavLinks() {
     var ticking = false;
 
     function doSomething(scroll_pos) {
-        pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
+        overflow_value = determineOverflow(pnProductNavContents, pnProductNav);
+        pnProductNav.setAttribute("data-overflowing", overflow_value);
+        if(overflow_value == 'both') {
+            pnAdvancerLeft.classList.add('active');
+            pnAdvancerRight.classList.add('active');
+        }
+        else if(overflow_value == "right") {
+            pnAdvancerRight.classList.add('active');
+            pnAdvancerLeft.classList.remove('active');
+        }
+        else {
+            pnAdvancerRight.classList.remove('active');
+            pnAdvancerLeft.classList.add('active');
+        }
     }
 
     pnProductNav && pnProductNav.addEventListener("scroll", function() {
@@ -335,8 +348,7 @@ function smoothNavLinks() {
     pnProductNavContents && pnProductNavContents.addEventListener("click", function(e) {
 
         var links = [].slice.call(document.querySelectorAll(".pn-ProductNav_Link"));
-        console.log('links ', links);
-        links.forEach(function(item) {
+        links.forEach(function (item) {
             item.setAttribute("aria-selected", "false");
         })
         e.target.setAttribute("aria-selected", "true");
@@ -371,6 +383,9 @@ function smoothNavLinks() {
         var contentMetrics = content.getBoundingClientRect();
         var contentMetricsRight = Math.floor(contentMetrics.right);
         var contentMetricsLeft = Math.floor(contentMetrics.left);
+        var language_dir = $('html').attr('dir');
+        if(language_dir == 'rtl')
+            contentMetricsLeft += 1
         if (containerMetricsLeft > contentMetricsLeft && containerMetricsRight < contentMetricsRight) {
             return "both";
         } else if (contentMetricsLeft < containerMetricsLeft) {
@@ -468,6 +483,19 @@ function smoothNavLinks() {
 
 
         if (_document.readyState == 'complete') {
+            element = document.querySelector("div.mainNav li.active a.nav-link");
+            if(element) {
+                var links = [].slice.call(document.querySelectorAll(".pn-ProductNav_Link"));
+                overflow_value = determineOverflow(element, pnProductNav);
+                if (overflow_value == 'right')
+                    $('#pnProductNav').animate({
+                        scrollLeft: $(element).offset().left - 40
+                    });
+                else if (overflow_value == 'left')
+                    $('#pnProductNav').animate({
+                        scrollLeft: $(element).offset().top + 95
+                    });
+            }
             reset();
         } else {
             _window[addEventListener]('load', reset, 0);
@@ -477,3 +505,5 @@ function smoothNavLinks() {
     }));
 
 }
+
+smoothNavLinks();

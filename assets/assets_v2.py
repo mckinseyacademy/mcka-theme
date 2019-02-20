@@ -18,6 +18,9 @@ js_files.extend([
     get_assets_path('js/vendor/backbone.paginator.js', v2=False),
     get_assets_path('js/vendor/jquery.clearsearch.js', v2=False),
     get_assets_path('js/vendor/bbGrid.js', v2=False),
+    get_assets_path('js/vendor/moment-with-locales.min.js', v2=False),
+    get_assets_path('js/vendor/moment-timezone.js', v2=False),
+    get_assets_path('js/vendor/moment-timezone-with-data.js', v2=False),
 
     get_assets_path('js/custom.js', v2=True),
     get_assets_path('js/common.js', v2=True),
