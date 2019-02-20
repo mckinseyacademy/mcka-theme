@@ -3823,7 +3823,7 @@ def participant_mail_activation_link(request, user_id):
 class ParticipantsListApi(APIView):
     @permission_group_required_api(
         PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-        PERMISSION_GROUPS.MCKA_SUBADMIN
+        PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
     )
     def get(self, request, format=None):
         query_params = request.GET.dict()
