@@ -13,6 +13,7 @@ js_files.extend(_build_file_list("js/plugins", ".js"))
 js_files.extend([
     get_assets_path('js/vendor/jquery.form.js', v2=False),
     get_assets_path('js/vendor/jquery.touchwipe.min.js', v2=False),
+    get_assets_path('js/vendor/jquery.md5.js', v2=False),
     get_assets_path('js/vendor/backbone.js', v2=False),
     get_assets_path('js/vendor/backbone.paginator.js', v2=False),
     get_assets_path('js/vendor/jquery.clearsearch.js', v2=False),

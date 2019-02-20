@@ -1,41 +1,41 @@
-$(document).ready(function () {
+$(document).ready(function() {
     if ($(window).width() < 992 && $('.leaderboards-list .col').length === 3) {
         $('.leaderboards-list .col').removeClass('col').addClass('col-12');
     }
 
-    $('#pnProductNavContents>ul> li').click(function () {
+    $('#pnProductNavContents>ul> li').click(function() {
         $('#pnProductNavContents>ul> li.active').removeClass('active');
         $(this).addClass('active');
     });
 
-    $('.headerNav>ul>li').click(function () {
+    $('.headerNav>ul>li').click(function() {
         $('.headerNav>ul>li.active').removeClass('active');
         $(this).addClass('active');
     });
 
     $("#lessons-content").on('click', function(e) {
-        if($(e.target).hasClass('load-course-lessons')) {
-          var course_id = $(e.target).data('course-id');
-          $.ajax({
-                url: '/courses/'+course_id+'/course_lessons_menu',
+        if ($(e.target).hasClass('load-course-lessons')) {
+            var course_id = $(e.target).data('course-id');
+            $.ajax({
+                url: '/courses/' + course_id + '/course_lessons_menu',
                 method: 'GET',
                 contentType: 'text/html'
-              }).done(function(data, status, xhr) {
-                if(xhr.status == 200){
-                  $('.allLessons').html(data);
-                  $(e.target).removeClass('load-course-lessons');
-                  $(e.target).attr("data-toggle", "dropdown");
-                  $(e.target).dropdown('toggle');
+            }).done(function(data, status, xhr) {
+                if (xhr.status == 200) {
+                    $('.allLessons').html(data);
+                    $(e.target).removeClass('load-course-lessons');
+                    $(e.target).attr("data-toggle", "dropdown");
+                    $(e.target).dropdown('toggle');
                 }
-          });
+            });
         }
     });
     var dropdownMenu;
 
 
     // ================   Dropdown Append From bobdy ==================
-    $(window).on('show.bs.dropdown', function (e) {
-        if ($(e.target).hasClass('notifications')){
+    $(window).on('show.bs.dropdown', function(e) {
+        if ($(e.target).hasClass('notifications')) {
             $('.xns-icon').trigger('click');
         }
 
@@ -57,7 +57,7 @@ $(document).ready(function () {
     });
     //  ================  Emd Dropdown Append From bobdy ===============
     // and when you hide it, reattach the drop down, and hide it normally
-    $(window).on('hide.bs.dropdown', function (e) {
+    $(window).on('hide.bs.dropdown', function(e) {
         $(e.target).append(dropdownMenu.detach());
         dropdownMenu.hide();
     });
@@ -65,29 +65,28 @@ $(document).ready(function () {
     $('#user').addClass('active');
 
 
-    $('#password ~ input').focus(function () {
+    $('#password ~ input').focus(function() {
         $('#password').addClass('active');
     });
 
 
-    $('#show-hide').click(function () {
+    $('#show-hide').click(function() {
         var text = $('#show-hide').text();
         if (text == 'visibility_off') {
             $('#show-hide').text('visibility')
             $('#password-visibility').attr('type', 'text');
-        }
-        else {
+        } else {
             $('#show-hide').text('visibility_off');
             $('#password-visibility').attr('type', 'password');
         }
     });
-//Input Placeholder become label
+    //Input Placeholder become label
 
-    $('input').focus(function () {
+    $('input').focus(function() {
         $(this).parents('.form-group').addClass('focused');
     });
 
-    $('input').blur(function () {
+    $('input').blur(function() {
         var inputValue = $(this).val();
         if (inputValue == "") {
             $(this).removeClass('filled');
@@ -97,16 +96,16 @@ $(document).ready(function () {
         }
     });
 
-//End Input Placeholder become label
+    //End Input Placeholder become label
 
-//Form label animation
-    $('#user ~ input').focus(function () {
+    //Form label animation
+    $('#user ~ input').focus(function() {
         $('#user').addClass('active');
     });
 
 
-//    Add/Remove class on Need Help link on mobile
-    $(".login .helpLink").click(function () {
+    //    Add/Remove class on Need Help link on mobile
+    $(".login .helpLink").click(function() {
         var self = $(this).parent();
         self.toggleClass("show-links");
 
@@ -117,91 +116,89 @@ $(document).ready(function () {
     });
 
 
-// Custom style for Input File ======================
-    $('#chooseFile').bind('change', function () {
+    // Custom style for Input File ======================
+    $('#chooseFile').bind('change', function() {
         var filename = $("#chooseFile").val();
         if (/^\s*$/.test(filename)) {
             $(".file-upload").removeClass('active');
             $("#noFile").text("No file selected");
-        }
-        else {
+        } else {
             $(".file-upload").addClass('active');
             $("#noFile").text(filename.replace("C:\\fakepath\\", ""));
         }
     });
 
-// End of Custom style for Input File ===============
+    // End of Custom style for Input File ===============
 
 
-    $(function () {
+    $(function() {
         $('[data-toggle="popover"]').popover()
     });
     //    Add and Remove Class on body for Lesson Overview page
     var removeClass = true;
     // when clicking the button : toggle the class, tell the background to leave it as is
-    $(".zoomWrap").click(function () {
+    $(".zoomWrap").click(function() {
         $("body").toggleClass('zoomIn');
         removeClass = false;
     });
     // when clicking the div : never remove the class
-    $(".zoomWrap").click(function () {
+    $(".zoomWrap").click(function() {
         removeClass = false;
     });
     // when click event reaches "html" : remove class if needed, and reset flag
-    $("html").click(function () {
+    $("html").click(function() {
         if (removeClass) {
             $(".toggletag").removeClass('zoomIn');
         }
         removeClass = true;
     });
-//    End Add and Remove Class on body for Lesson Overview page
+    //    End Add and Remove Class on body for Lesson Overview page
 
 
-// ============= Adding Smooth Scrolling to Sections =================
-// ====https://css-tricks.com/snippets/jquery/smooth-scrolling/====
+    // ============= Adding Smooth Scrolling to Sections =================
+    // ====https://css-tricks.com/snippets/jquery/smooth-scrolling/====
     // Select all links with hashes
-$('a[href*="#"]')
-  // Remove links that don't actually link to anything
-  .not('[href="#"]')
-  .not('[href="#0"]')
-  .click(function(event) {
-    // On-page links
-    if (
-      location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '')
-      &&
-      location.hostname == this.hostname
-    ) {
-      // Figure out element to scroll to
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-      // Does a scroll target exist?
-      if (target.length) {
-        // Only prevent default if animation is actually gonna happen
-        event.preventDefault();
-        $('html, body').animate({
-          scrollTop: target.offset().top
-        }, 1000, function() {
-          // Callback after animation
-          // Must change focus!
-          var $target = $(target);
-          $target.focus();
-          if ($target.is(":focus")) { // Checking if the target was focused
-            return false;
-          } else {
-            $target.attr('tabindex','-1'); // Adding tabindex for elements not focusable
-            $target.focus(); // Set focus again
-          };
+    $('a[href*="#"]')
+        // Remove links that don't actually link to anything
+        .not('[href="#"]')
+        .not('[href="#0"]')
+        .click(function(event) {
+            // On-page links
+            if (
+                location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') &&
+                location.hostname == this.hostname
+            ) {
+                // Figure out element to scroll to
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                // Does a scroll target exist?
+                if (target.length) {
+                    // Only prevent default if animation is actually gonna happen
+                    event.preventDefault();
+                    $('html, body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000, function() {
+                        // Callback after animation
+                        // Must change focus!
+                        var $target = $(target);
+                        $target.focus();
+                        if ($target.is(":focus")) { // Checking if the target was focused
+                            return false;
+                        } else {
+                            $target.attr('tabindex', '-1'); // Adding tabindex for elements not focusable
+                            $target.focus(); // Set focus again
+                        };
+                    });
+                }
+            }
         });
-      }
-    }
-  });
 
 });
 
 
 //Main Navigation animation Js ===== https://codepen.io/benfrain/pen/zZZLaP =====
 
-$(window).on('resize load', function () {
+$(window).on('resize load', function() {
     smoothNavLinks();
 });
 
@@ -217,10 +214,10 @@ function smoothNavLinks() {
     document.documentElement.classList.remove("no-js");
     document.documentElement.classList.add("js");
 
-// Out advancer buttons
+    // Out advancer buttons
     var pnAdvancerLeft = document.getElementById("pnAdvancerLeft");
     var pnAdvancerRight = document.getElementById("pnAdvancerRight");
-// the indicator
+    // the indicator
     var pnIndicator = document.getElementById("pnIndicator");
 
     var pnProductNav = document.getElementById("pnProductNav");
@@ -229,7 +226,7 @@ function smoothNavLinks() {
     // pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
 
 
-// Handle the scroll of the horizontal container
+    // Handle the scroll of the horizontal container
     var last_known_scroll_position = 0;
     var ticking = false;
 
@@ -237,10 +234,10 @@ function smoothNavLinks() {
         pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
     }
 
-    pnProductNav.addEventListener("scroll", function () {
+    pnProductNav && pnProductNav.addEventListener("scroll", function() {
         last_known_scroll_position = window.scrollY;
         if (!ticking) {
-            window.requestAnimationFrame(function () {
+            window.requestAnimationFrame(function() {
                 doSomething(last_known_scroll_position);
                 ticking = false;
             });
@@ -249,7 +246,7 @@ function smoothNavLinks() {
     });
 
 
-    pnAdvancerLeft.addEventListener("click", function () {
+    pnAdvancerLeft && pnAdvancerLeft.addEventListener("click", function() {
         // If in the middle of a move return
         if (SETTINGS.navBarTravelling === true) {
             return;
@@ -279,7 +276,7 @@ function smoothNavLinks() {
         pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
     });
 
-    pnAdvancerRight.addEventListener("click", function () {
+    pnAdvancerRight && pnAdvancerRight.addEventListener("click", function() {
         // If in the middle of a move return
         if (SETTINGS.navBarTravelling === true) {
             return;
@@ -313,9 +310,9 @@ function smoothNavLinks() {
         pnProductNav.setAttribute("data-overflowing", determineOverflow(pnProductNavContents, pnProductNav));
     });
 
-    pnProductNavContents.addEventListener(
+    pnProductNavContents && pnProductNavContents.addEventListener(
         "transitionend",
-        function () {
+        function() {
             // get the value of the transform, apply that to the current scroll position (so get the scroll pos first) and then remove the transform
             var styleOfTransform = window.getComputedStyle(pnProductNavContents, null);
             var tr = styleOfTransform.getPropertyValue("-webkit-transform") || styleOfTransform.getPropertyValue("transform");
@@ -334,12 +331,12 @@ function smoothNavLinks() {
         false
     );
 
-// Handle setting the currently active link
-    pnProductNavContents.addEventListener("click", function (e) {
+    // Handle setting the currently active link
+    pnProductNavContents && pnProductNavContents.addEventListener("click", function(e) {
 
         var links = [].slice.call(document.querySelectorAll(".pn-ProductNav_Link"));
         console.log('links ', links);
-        links.forEach(function (item) {
+        links.forEach(function(item) {
             item.setAttribute("aria-selected", "false");
         })
         e.target.setAttribute("aria-selected", "true");
@@ -347,7 +344,7 @@ function smoothNavLinks() {
         moveIndicator(e.target, activeColours[links.indexOf(e.target)]);
     });
 
-// var count = 0;
+    // var count = 0;
     function moveIndicator(item, color) {
         // console.log('item ', item.nodeName);
         if (item.nodeName !== 'A') {
@@ -394,7 +391,7 @@ function smoothNavLinks() {
      */
 
 
-    (function (root, factory) {
+    (function(root, factory) {
         if (typeof define === 'function' && define.amd) {
             define(['exports'], factory);
         } else if (typeof exports !== 'undefined') {
@@ -402,7 +399,7 @@ function smoothNavLinks() {
         } else {
             factory((root.dragscroll = {}));
         }
-    }(this, function (exports) {
+    }(this, function(exports) {
         var _window = window;
         var _document = document;
         var mousemove = 'mousemove';
@@ -414,7 +411,7 @@ function smoothNavLinks() {
         var newScrollX, newScrollY;
 
         var dragged = [];
-        var reset = function (i, el) {
+        var reset = function(i, el) {
             for (i = 0; i < dragged.length;) {
                 el = dragged[i++];
                 el = el.container || el;
@@ -426,10 +423,10 @@ function smoothNavLinks() {
             // cloning into array since HTMLCollection is updated dynamically
             dragged = [].slice.call(_document.getElementsByClassName('dragscroll'));
             for (i = 0; i < dragged.length;) {
-                (function (el, lastClientX, lastClientY, pushed, scroller, cont) {
+                (function(el, lastClientX, lastClientY, pushed, scroller, cont) {
                     (cont = el.container || el)[addEventListener](
                         mousedown,
-                        cont.md = function (e) {
+                        cont.md = function(e) {
                             if (!el.hasAttribute('nochilddrag') ||
                                 _document.elementFromPoint(
                                     e.pageX, e.pageY
@@ -445,14 +442,14 @@ function smoothNavLinks() {
                     );
 
                     _window[addEventListener](
-                        mouseup, cont.mu = function () {
+                        mouseup, cont.mu = function() {
                             pushed = 0;
                         }, 0
                     );
 
                     _window[addEventListener](
                         mousemove,
-                        cont.mm = function (e) {
+                        cont.mm = function(e) {
                             if (pushed) {
                                 (scroller = el.scroller || el).scrollLeft -=
                                     newScrollX = (-lastClientX + (lastClientX = e.clientX));
@@ -480,4 +477,3 @@ function smoothNavLinks() {
     }));
 
 }
-
