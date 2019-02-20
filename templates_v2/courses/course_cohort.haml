@@ -94,7 +94,7 @@
               - if social
                 %li.col
                   .header
-                    .heading {% trans "Engagement:" %}
+                    .heading {% trans "Engagement" %}
                     .status {% trans "Your discussion activity points:" %} {{social.score}}
                     .data {% blocktrans with score=social.course_average_display %} Average: {{score}} points{% endblocktrans %}
                     - if user_role
@@ -151,7 +151,7 @@
 
                   - if social.leaders and social.leaders.2
                     .user
-                      .rank-number #2
+                      .rank-number #3
                       .person-avatar
                         %img{'src': '#{social.leaders.2.profile_image.image_url_small}', 'title': '#{social.leaders.2.username}'}
                       .person-name
@@ -161,7 +161,7 @@
                       .person-rank=social.leaders.2.score
                   - else
                     .user.dummy
-                      .rank-number #2
+                      .rank-number #3
                       .person-avatar
                         %i.material-icons account_circle
                       .person-name
