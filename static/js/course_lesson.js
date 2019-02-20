@@ -126,7 +126,7 @@ function isTimeOutValid(delta) {
 
         // Delta represents 'Show alert delta seconds before session time out'
         // Add 'session_time_out_seconds' to 'last_user_interaction'
-        var session_timeout_delta = new Date(last_user_interaction);
+        var session_timeout_delta = moment(last_user_interaction, 'YYYY-MM-DD HH:mm:ss').toDate();
         var session_time_out_seconds_delta = SESSION_TIMEOUT_SECONDS - delta;
         session_timeout_delta.setSeconds(session_timeout_delta.getSeconds() + session_time_out_seconds_delta);
 
@@ -142,13 +142,13 @@ function isTimeOutValid(delta) {
 // Util tasks
 function getCookieValue(query) {
     var results = document.cookie.match('(^|;)\\s*' + query + '\\s*=\\s*([^;]+)');
-    return results ? results.pop() : '';
+    return results ? results.pop().replace(/\"/g, "") : '';
 }
 
 function getTimeoutSeconds(){
     // Get seconds to set the next timeout respective of last user touch
     // Get fresh last_user_interaction from cookies
-    var last_user_interaction = new Date(getCookieValue('last_touch'));
+    var last_user_interaction = moment(getCookieValue('last_touch'), 'YYYY-MM-DD HH:mm:ss').toDate();
     let expected_session_timeout = new Date(last_user_interaction.setSeconds(last_user_interaction.getSeconds() + SESSION_TIMEOUT_SECONDS));
     let now = convertToEST(new Date());
     // Subtraction in dates returns in milliseconds, hence dividing by 1000

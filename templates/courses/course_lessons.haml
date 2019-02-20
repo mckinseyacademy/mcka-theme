@@ -55,6 +55,7 @@
 - block js_snippets
   %script{src: '/static/js/course_learner_dashboard/tile_progress_update.js'}
   %script{src: '/static/js/course_lesson.js'}
+  - include 'courses/course_lessons_scorm.haml'
   :javascript
     $(function(){
       var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
@@ -84,12 +85,4 @@
       $('#course-group-work .lesson-module-status').on('click', function(){
         $('#' + $(this).data('activate')).click();
       });
-    });
-
-    $(window).on('beforeunload', saveScormDataClosePopup);
-
-    $(function(){
-        SESSION_TIMEOUT_SECONDS = {{session_timeout_seconds}};
-        launchAlertTimer();
-        launchPopupCloseTimer();
     });

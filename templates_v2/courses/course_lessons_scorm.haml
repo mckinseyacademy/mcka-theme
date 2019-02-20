@@ -1,0 +1,8 @@
+:javascript
+  $(window).on('beforeunload', saveScormDataClosePopup);
+
+  $(function(){
+      SESSION_TIMEOUT_SECONDS = {{session_timeout_seconds}};
+      launchAlertTimer();
+      launchPopupCloseTimer();
+  });
