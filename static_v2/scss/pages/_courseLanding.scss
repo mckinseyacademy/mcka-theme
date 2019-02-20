@@ -244,6 +244,7 @@
 
       .title {
         >span {
+          color: $gray;
           .locked {
             position: absolute;
             content: '';
@@ -310,7 +311,6 @@
         {
           display: inline-block;
           vertical-align: middle;
-          color: $gray;
           @include text-ellipsis;
           position: relative;
           max-width: calc(100% - 18px);
