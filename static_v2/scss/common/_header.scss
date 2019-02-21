@@ -408,6 +408,12 @@ header {
 .courseMainHeader {
   margin: 0 0 18px;
 
+  ul{
+    li{
+      padding: 0;
+    }
+  }
+
   h1 {
     color: $black;
     font-size: 2rem;

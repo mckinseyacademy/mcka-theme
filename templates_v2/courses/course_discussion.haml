@@ -1,0 +1,64 @@
+- extends "courses/course_base.haml"
+- load staticfiles
+- load i18n
+
+- block page_title
+  %title
+    = program.display_name
+    {% trans " | Discussion | Courses | McKinsey Academy" %}
+
+- block custom_css
+  -# lms-discussion-main.css is spiltted to two files for IE9 or below
+  /[if lte IE 9]
+    %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.0.min.css' %}"}
+    %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.1.min.css' %}"}
+
+- block content
+  .container#course-discussion
+    .row
+      .col
+        .discussion-content
+- block js_snippets
+  :javascript
+    window.onload = (function(){
+      var discussion_content = $('#course-discussion .discussion-content');
+      var discussion_data = {
+        courseId: '{{ course_id }}',
+        viewUrl: '{{ view_url }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        lmsPort: '{{ lms_port }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      };
+      $.when.apply($, discussion_content.xblock(discussion_data)).
+        done(function() {
+          $.getScript('/static/js/foundation.min.js', function() {
+          window.Foundation.init();
+           $(document).foundation();
+           });
+          if ($('#discussion-ta-template').length > 0) {
+            $('.discussion-body').prepend($("#discussion-ta-template").html());
+          }
+          $('.ask-ta').prependTo('.forum-nav');
+      });
+      // we need this to add some browser specific CSS rules
+      $('#course-discussion').attr( "data-useragent", navigator.userAgent);
+    })
+  - if mcka_ta and not course.ended
+    %script#discussion-ta-template{type: "text/template"}
+      .ask-ta
+        .group-member
+          %img.avatar{:src => "#{mcka_ta.image_url_medium}" }
+            .person-info
+              .person-username= mcka_ta.username
+              .person-fullname= mcka_ta.formatted_name
+              - if mcka_ta.title
+                .person-title{:title => "#{mcka_ta.title}"}
+                  = mcka_ta.title
+              .email
+                %a.email-member{'data-member-email': '', 'data-reveal-id': 'contact-ta'}
+                  Email
