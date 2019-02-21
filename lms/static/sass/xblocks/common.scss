@@ -30,6 +30,8 @@ body.new-theme {
                 font-weight: 600;
                 height: 40px;
                 padding: 0 20px;
+                color: #FFF;
+                cursor: pointer;
 
                 &:hover {
                     background-color: $mckinsey-primary-hover-button;
@@ -38,6 +40,7 @@ body.new-theme {
                 &:disabled {
                     background-color: $mckinsey-primary-disabled-button;
                     color: #EEEEEE;
+                    cursor: default;
                 }
             }
         }
