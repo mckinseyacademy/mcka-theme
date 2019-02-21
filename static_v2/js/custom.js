@@ -33,33 +33,11 @@ $(document).ready(function() {
     var dropdownMenu;
 
 
-    // ================   Dropdown Append From bobdy ==================
-    $(window).on('show.bs.dropdown', function(e) {
-        if ($(e.target).hasClass('notifications')) {
+    // ================   Trigger for the Notification dropdown content   ==================
+    $(window).on('show.bs.dropdown', function (e) {
+        if ($(e.target).hasClass('notifications')){
             $('.xns-icon').trigger('click');
         }
-
-        // grab the menu
-        dropdownMenu = $(e.target).find('.dropdown-menu');
-
-        // detach it and append it to the body
-        $('body').append(dropdownMenu.detach());
-
-        // grab the new offset position
-        var eOffset = $(e.target).offset();
-
-        // make sure to place it where it would normally go (this could be improved)
-        dropdownMenu.css({
-            'display': 'block',
-            'top': eOffset.top + $(e.target).outerHeight(),
-            'left': eOffset.left
-        });
-    });
-    //  ================  Emd Dropdown Append From bobdy ===============
-    // and when you hide it, reattach the drop down, and hide it normally
-    $(window).on('hide.bs.dropdown', function(e) {
-        $(e.target).append(dropdownMenu.detach());
-        dropdownMenu.hide();
     });
 
     $('#user').addClass('active');

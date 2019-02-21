@@ -2,7 +2,6 @@
 // Define SASS in LTR abd Bi-App-Sass will automatically write respective RTL
 @import "bootstrap/bootstrap-grid";
 @import "bootstrap/mixins";
-
 @import "common/variables";
 @import "common/mixins";
 @import "common/popover";
@@ -10,10 +9,9 @@
 @import "common/header";
 
 // Header
-
 .appHeader {
   .logo {
-    .all-logos{
+    .all-logos {
       @include float(left);
     }
     .topRightArea {
@@ -36,9 +34,6 @@
       }
     }
   }
-}
-
-.appHeader {
   .all-logos {
     .navbar-brand {
       @include margin-left(10px);
@@ -52,10 +47,23 @@
       }
     }
   }
+  .dropdown-menu {
+    @include right(-20px !important);
+    @include left(auto !important);
+  }
+  .profileArea {
+    .dropdown-menu {
+      @include right(-22px !important);
+      @include left(auto !important);
+    }
+    &:after,
+    &:before {
+      @include right (30px);
+    }
+  }
 }
 
 // Navbar
-
 .mainNav {
   > ul {
     > li {
@@ -63,6 +71,9 @@
 
       &:first-child {
         @include margin-left(0);
+      }
+      &:last-child {
+        @include margin-right(30px);
       }
     }
   }
@@ -92,10 +103,19 @@
   }
 }
 
-// Nav
-
+// Nav Dropdowns
 .dropdown-menu {
+  &.profileDropdown {
+    &::after {
+      @include right(7%);
+    }
+  }
   &.allLessons {
+    @include left(calc(100% - 40px) !important);
+    @include right(auto !important);
+    &:after {
+      @include left(23px !important);
+    }
     .allCoursesList {
       .bookmark {
         @include left(-30px);
@@ -106,7 +126,34 @@
       }
     }
   }
+  &.course-materials {
+    @include right(-22px !important);
+    @include left(auto !important);
+  }
+  &.notification {
+    @include left(-23px !important);
+    @include right(auto !important);
+    &:after {
+      @include left(20px !important);
+      @include right(auto !important);
+    }
+
+    @media screen and (max-width: 1024px) {
+      @include right(2px !important);
+      @include left(auto !important);
+      &:after {
+        @include right(20px !important);
+        @include left(auto !important);
+      }
+    }
+  }
+  &:after {
+    @include right(17px);
+    @include left(auto);
+  }
 }
+
+//End of Dropdowns
 
 .profileDropdown {
   .header {
@@ -128,7 +175,6 @@
 }
 
 // Course List
-
 .my-courses {
   .card {
     .card-body {
@@ -146,7 +192,6 @@
 }
 
 // Widgets
-
 #course-statistics {
   .widget {
     @include border-left(1px solid $hard-gray);
@@ -183,16 +228,16 @@
 .socialWidgets {
   .widget {
     > .holder {
-      &::after{
+      &::after {
         @include right(0);
-        @include media-breakpoint-between(xs, md){
+        @include media-breakpoint-between(xs, md) {
           display: none;
         }
       }
     }
 
     &:first-child {
-      h5{
+      h5 {
         @include margin-left(15px);
       }
     }
@@ -261,7 +306,6 @@
 }
 
 // Lesson List
-
 .allCoursesList {
   >.courseRow {
     .title{
@@ -285,11 +329,6 @@
         }
       }
     }
-    &.locked{
-      .title{
-      
-      }
-    }
   }
 
   .holder {
@@ -304,13 +343,13 @@
       }
       &.serial {
         @include padding-right(25px);
-        span{
+        span {
           @include margin-left(4px);
         }
       }
-      &.time{
-        i{
-          @include media-breakpoint-between(xs, sm){
+      &.time {
+        i {
+          @include media-breakpoint-between(xs, sm) {
             @include margin-left(0);
           }
         }
@@ -326,7 +365,6 @@
 }
 
 // Lesson Page
-
 .lessonOverview {
   .headerArea {
     @include padding-right(35px);
@@ -338,7 +376,6 @@
 }
 
 // Modal
-
 .modal.middleSize {
   .modal-header {
     .close {
@@ -349,7 +386,6 @@
 }
 
 // Footer
-
 footer {
   ul {
     li {
@@ -363,19 +399,17 @@ footer {
 }
 
 // Misc
-
 .bookmark {
   @include left(0);
-      @include media-breakpoint-between(xs, sm) {
-        @include left(-4px);
-      }
+  @include media-breakpoint-between(xs, sm) {
+    @include left(-4px);
+  }
 }
 
 // CSS specific styles
-
 body.rtl {
   text-align: right;
-  .bookmark{
+  .bookmark {
     @include flip-x-axis;
   }
 
@@ -430,28 +464,17 @@ body.rtl {
 
   .dropdown-menu {
 
-    &.dashboard-menu {
-      margin-left: -36px;
-      margin-top: -10px;
-    }
-
     &.profileDropdown {
-      margin-left: -36px;
-      @include media-breakpoint-between(xs, md){
-        margin-left: -35px;
-      }
-      &::after{
-        left: 7%;
-      }
+      left: -18px !important;
+      right: auto !important;
     }
 
-    &.course-materials{
-      margin-left: -36px
+    &.course-materials {
+      left: -18px !important;
+      right: auto !important;
     }
-
     &.allLessons{
-      margin-left: -40px;
-      margin-right: 41px;
+      right: calc(100% - 44px) !important;
     }
   }
 
@@ -459,6 +482,7 @@ body.rtl {
     left: auto;
     right: 10px;
   }
+
 }
 
 //Course Overview
@@ -491,40 +515,17 @@ body.rtl {
   }
 }
 
-@media screen and (max-width: 992px) {
-  .dropdown-menu {
-    &.dropdown-menu-left {
-      &.notification {
-        @include left(0 !important);
-        &:after {
-          @include right(17px !important);
-          @include left(auto !important);
-        }
-      }
-    }
-  }
-}
-
-
 // Learner Dashboard RTL
-
-#learner-dashboard
-{
-  .gallery-card
-  {
-    .gallery
-    {
-      .card
-      {
-        .content
-        {
-          .tag, .title, .date
-          {
+#learner-dashboard {
+  .gallery-card {
+    .gallery {
+      .card {
+        .content {
+          .tag, .title, .date {
             @include left(15px);
           }
         }
       }
     }
   }
-
 }

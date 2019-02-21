@@ -18,7 +18,7 @@
     letter-spacing: normal;
   }
   .xns-list-body{
-    max-height: 290px;
+    max-height: 312px;
     overflow-y: auto;
     margin: -10px 0 0;
   }
@@ -36,7 +36,7 @@
   }
   ul.xns-items {
     padding: 0;
-    margin: 0;
+    margin: -10px 0 0;
     list-style: none;
     text-transform: none;
     font-size: 0.75rem;
@@ -130,12 +130,6 @@
   }
 }
 
-// New styles for notifications
-.xns-pane {
-  left: -20px !important;
-  padding: 30px !important;
-}
-
 .xns-counter {
   position: absolute;
   content: '';
@@ -153,6 +147,11 @@
   font-size: 0.625rem;
 }
 
+span.xns-alert{
+  color: $bg-white-red;
+  font-weight: 600;
+}
+
 span {
   &.xns-discussions {
     display: table;
@@ -167,5 +166,6 @@ span {
     vertical-align: middle;
     margin-left: 2px;
     margin-right: 2px;
+    margin-top: -2px;
   }
 }

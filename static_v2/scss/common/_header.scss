@@ -66,17 +66,48 @@ header {
     border-bottom-color: #ccc;
 
     .dropdown-menu {
-      top: 12px !important;
+      top: 44px !important;
+    }
+    > a {
+      display: block;
+      height: 100%;
+      width: 100%;
+      text-align: center;
+      line-height: 30px;
+      padding: 5px;
+      overflow: hidden;
+      background: var(--primary);
+      color: $white;
+      border-radius: 100%;
+
+      &:hover {
+        text-decoration: none;
+      }
+
+      &:after {
+        display: none;
+      }
+
+      span {
+        display: block;
+        text-align: center;
+      }
+
+      img {
+        width: 100%;
+        height: auto;
+      }
     }
 
     .topRightArea {
       width: auto;
-      margin: 19px 15px 0 15px;
+      margin-top: 19px;
     }
 
     .profileArea {
       width: 40px;
       height: 40px;
+      position: relative;
 
       > a {
         display: block;
@@ -108,7 +139,10 @@ header {
           height: auto;
         }
       }
-
+      .dropdown-menu {
+        transform: translate(0) !important;
+        top: 59px !important;
+      }
     }
 
     .headerNav {
@@ -120,9 +154,6 @@ header {
             margin-left: 0;
           }
         }
-      }
-      .dropdown-menu {
-        margin: 0;
       }
     }
   }
@@ -289,7 +320,7 @@ header {
 
 //Course navigation wrraper
 .courseNavWrap {
-  > ul {
+  ul {
     padding: 0;
     margin: 0;
     list-style: none;
@@ -357,16 +388,16 @@ header {
         }
       }
 
-      &.notifications{
-        .dropdown-toggle{
-          &:after{
+      &.notifications {
+        .dropdown-toggle {
+          &:after {
             display: none;
           }
         }
-        .dropdown-menu{
-          &.dropdown-menu-left{
-            left: -20px !important;
-          }
+      }
+      .dropdown-menu {
+        > a {
+          color: var(--primary);
         }
       }
     }
@@ -412,6 +443,34 @@ header {
   .pn-ProductNav_Wrapper {
     position: relative;
   }
+  .dropdown-menu {
+    top: 35px !important;
+  }
+
+}
+
+.courseMainHeader,
+.mainNav {
+  .dropdown-menu {
+    > a {
+      color: var(--primary);
+      font-size: 0.75rem;
+      font-weight: normal;
+      line-height: 17px;
+      background: inherit;
+      border-top: 1px solid $gray-border;
+      padding: 12px 0;
+      text-transform: capitalize;
+
+      &:first-child {
+        border: none;
+      }
+
+      &:after {
+        content: "";
+      }
+    }
+  }
 }
 
 // BreakPoints for small Screens
@@ -433,6 +492,8 @@ header {
       top: -9px;
       color: #ccc;
       opacity: 1;
+      height: 38px;
+      z-index: 999;
       i {
         color: #ccc;
       }
@@ -461,9 +522,43 @@ header {
       }
     }
   }
+
+  .mainTopHeader {
+    max-width: 100%;
+    padding: 0 40px;
+    .row {
+      .col {
+        padding: 0;
+      }
+    }
+
+  }
+
+  header {
+    &.appHeader {
+      .container {
+        max-width: 100%;
+        padding: 0 30px;
+        .row {
+          .col {
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
 }
 
 @media screen and (max-width: 767px) {
+
+  .pn-ProductNav {
+    margin: 0;
+    padding: 0 30px 2px;
+  }
+
+  .mainTopHeader {
+    padding: 0 25px;
+  }
 
   .courseNavWrap {
     border-top: 1px solid #d6d3d3;
