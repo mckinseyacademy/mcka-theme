@@ -14,7 +14,7 @@ function addLight(color, amount) {
 function lighten(color, amount) {
     color = (color.indexOf("#") >= 0) ? color.substring(1, color.length) : color;
     amount = parseInt((255 * amount) / 100);
-    return color = "" + addLight(color.substring(0, 2), amount) + addLight(color.substring(2, 4), amount) + addLight(color.substring(4, 6), amount);
+    return color = "#" + addLight(color.substring(0, 2), amount) + addLight(color.substring(2, 4), amount) + addLight(color.substring(4, 6), amount);
 }
 
 /* Resta el porcentaje indicado a un color (RR, GG o BB) hexadecimal para oscurecerlo */

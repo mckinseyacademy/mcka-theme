@@ -41,6 +41,11 @@ $(document).ready(function() {
             $('.notifications .dropdown-menu').hide()
         }
     });
+    $(window).on('hide.bs.dropdown', function (e) {
+        if ($(e.target).hasClass('notifications')){
+            $('.notifications .dropdown-menu').hide();
+        }
+    });
     $('#user').addClass('active');
 
 

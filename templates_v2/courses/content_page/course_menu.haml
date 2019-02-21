@@ -6,8 +6,9 @@
 .contentCardWrap
   .head
     - if lessons_custom_label
-      = course.chapters|length
-      = lessons_custom_label
+      %h5
+        = course.chapters|length
+        = lessons_custom_label
     - else
       %h5
         = course.chapters|length
