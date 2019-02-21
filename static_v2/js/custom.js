@@ -3,7 +3,7 @@ $(document).ready(function() {
         $('.leaderboards-list .col').removeClass('col').addClass('col-12');
     }
 
-    $('#pnProductNavContents>ul> li').click(function() {
+    $('#pnProductNavContents>ul> li').not(":has(.dropdown-menu)").click(function() {
         $('#pnProductNavContents>ul> li.active').removeClass('active');
         $(this).addClass('active');
     });
@@ -30,7 +30,6 @@ $(document).ready(function() {
             });
         }
     });
-    var dropdownMenu;
 
 
     // ================   Trigger for the Notification dropdown content   ==================
@@ -38,8 +37,10 @@ $(document).ready(function() {
         if ($(e.target).hasClass('notifications')){
             $('.xns-icon').trigger('click');
         }
+        else{
+            $('.notifications .dropdown-menu').hide()
+        }
     });
-
     $('#user').addClass('active');
 
 
