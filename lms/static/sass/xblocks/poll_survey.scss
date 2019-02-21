@@ -19,6 +19,8 @@ body.new-theme {
                 .poll-answer {
 
                     .poll-answer-text {
+                        padding-bottom: 3px;
+
                         p {
                             font-size: 1rem;
                             color: #000;
@@ -47,6 +49,15 @@ body.new-theme {
                     }
                 }
             }
+        }
+    }
+}
+
+/* mobile */
+@media (max-width: 767px) {
+    .poll-answer {
+        .poll-answer-text {
+            padding-bottom: 6px;
         }
     }
 }
