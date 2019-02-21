@@ -27,6 +27,7 @@
   }
   /* positioning context for advancers */
   position: relative;
+  z-index: 9999;
   // Crush the whitespace here
   font-size: 0;
 }
