@@ -3,6 +3,7 @@
 body.new-theme {
     .lesson-content {
         .themed-xblock {
+            margin-bottom: 20px;
             .poll-header {
                 font-size: 12px;
                 color: #000;
@@ -17,12 +18,16 @@ body.new-theme {
                 }
 
                 .poll-answer {
-                    display: inline-table;
-
+                    input[type="radio"] {
+                        height: auto;
+                    }
                     .poll-answer-text {
+                        padding-bottom: 3px;
+
                         p {
                             font-size: 1rem;
                             color: #000;
+                            font-weight: normal;
                         }
                     }
                 }
@@ -35,7 +40,27 @@ body.new-theme {
                         color: #000;
                     }
                 }
+
+                .survey-option {
+                    input[type="radio"] {
+                        height: auto;
+                    }
+
+                    .visible-mobile-only {
+                        padding-left: 5px;
+                        font-size: 1rem;
+                    }
+                }
             }
+        }
+    }
+}
+
+/* mobile */
+@media (max-width: 767px) {
+    .poll-answer {
+        .poll-answer-text {
+            padding-bottom: 6px;
         }
     }
 }
