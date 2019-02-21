@@ -2,6 +2,29 @@
   box-sizing: inherit;
 }
 
+.courseNavWrap{
+  pointer-events: none;
+
+  &.nav-active{
+    z-index: 9999 !important;
+  }
+
+  * {
+    pointer-events: none;
+
+    .pn-ProductNav,
+    .dropdown-menu,
+    .pn-Advancer,
+    .mainNav{
+      pointer-events: all;
+
+      * {
+        pointer-events: all;
+      }
+    }
+  }
+}
+
 .pn-ProductNav {
   /* For WebKit implementations, provide inertia scrolling */
   -webkit-overflow-scrolling: touch;
@@ -27,9 +50,13 @@
   }
   /* positioning context for advancers */
   position: relative;
-  z-index: 9999;
   // Crush the whitespace here
   font-size: 0;
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
+  overflow: -moz-scrollbars-none;
+  -ms-overflow-style: none;
 }
 
 .pn-ProductNav_Contents {
@@ -69,6 +96,11 @@
   transition: opacity .3s;
 }
 
+.pn-Advancer_Left,
+.pn-Advancer_Right{
+  z-index:999;
+}
+
 .pn-Advancer_Left {
   left: 0;
   [data-overflowing="both"] ~ &,
@@ -84,6 +116,8 @@
     opacity: 1;
   }
 }
+
+
 
 .pn-Advancer_Icon {
   width: 7px;

@@ -147,6 +147,15 @@
       }
     }
   }
+  &.allModules{
+    @include left(0 !important);
+    @include right(auto !important);
+    &::after {
+      display: none;
+      @include right(23px !important);
+      @include left( auto !important);
+    }
+  }
   &:after {
     @include right(17px);
     @include left(auto);
@@ -501,6 +510,13 @@ body.rtl {
 .xns-counter {
   @include left(100%);
   @include right(auto);
+}
+
+
+.xns-container {
+  .xns-list-body{
+    @include padding-right(10px);
+  }
 }
 
 .xns-actions {

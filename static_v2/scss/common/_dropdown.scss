@@ -10,6 +10,8 @@
   left: 20px;
   padding: 10px 30px !important;
   transform: translate(0) !important;
+  z-index: 99999 !important;
+
   > a {
     color: var(--primary);
     font-size: 0.75rem;
@@ -18,8 +20,8 @@
     border-top: 1px solid $gray-border;
     padding: 12px 0;
     text-transform: capitalize;
-    li{
-      >a{
+    li {
+      > a {
         text-transform: capitalize;
         color: var(--primary);
       }
@@ -110,6 +112,10 @@
   &.middle-menu {
     min-width: 337px !important;
   }
+  &.allModules {
+    top: calc(100% + 10px) !important;
+    min-width: 420px;
+  }
 }
 
 // Add carrot icon for Dropdown
@@ -151,6 +157,9 @@
         }
       }
     }
+    &.allModules {
+      min-width: 335px;
+    }
   }
 }
 
@@ -171,6 +180,9 @@
     }
     &.large-menu {
       width: 88% !important;
+    }
+    &.allModules {
+      min-width: 290px;
     }
   }
 }

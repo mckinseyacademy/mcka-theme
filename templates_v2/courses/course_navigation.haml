@@ -15,55 +15,56 @@
         .courseNavWrap.clearfix
           .pn-ProductNav_Wrapper.clearfix
             %nav#pnProductNav.pn-ProductNav.clearfix{:data-overflowing => "none"}
-              #pnProductNavContents.mainNav.pn-ProductNav_Contents
-                %ul
-                  %li{"class": "{% ifequal request.resolver_match.url_name 'course_landing_page' %}active{% endifequal %}"}
-                    %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}"}
-                      {% trans "Overview" %}
-                    %li#lessons-content{"data-dropdown-content": "true"}
-                      %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:class => "{% if course.chapters %}{% else %}load-course-lessons{% endif %}", :data-toggle => "{% if course.chapters %}dropdown{% endif %}", "data-course-id": "{% if course.chapters %}{% else %}#{current_course.id}{% endif %}", :href => "#"}
-                        - if lessons_custom_label
-                          = lessons_custom_label
-                        - else
-                          {% trans "Lessons" %}
-                      .dropdown-menu.allLessons{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
-                        - include "courses/content_page/lesson_menu.haml"
-                  - if feature_flags.discussions
-                    %li{"class": "{% ifequal request.resolver_match.url_name 'course_discussion' %}active{% endifequal %}"}
-                      %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/discussion"}
-                        {% trans "Discussion" %}
-                  - if feature_flags.group_work
-                    %li{"class": "{% ifequal request.resolver_match.url_name 'course_group_work' %}active{% endifequal %}"}
-                      %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/group_work"}
-                        {% trans "Group work" %}
-                  - if feature_flags.cohort_map
-                    %li{"class": "{% ifequal request.resolver_match.url_name 'course_cohort' %}active{% endifequal %}"}
-                      %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/cohort"}
-                        {% trans "Cohort" %}
-                  - if feature_flags.progress_page
-                    %li{"class": "{% ifequal request.resolver_match.url_name 'course_progress' %}active{% endifequal %}"}
-                      %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/progress"}
-                        {% trans "Progress" %}
-                  %li{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_nannouncements' %}active{% endif %}"}
-                    %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
-                      {% trans "Course Materials" %}
-                    .dropdown-menu.course-materials{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-left{% else %}dropdown-menu-right{% endif %}"}
-                      %a.ome.dome-c.dropdown-item{:href => "/courses/#{current_course.id}/announcements"}
-                        {% trans "Announcements" %}
-                      %a.ome.dome-c.dropdown-item{:href => "/courses/#{current_course.id}/overview"}
-                        {% trans "Course Overview" %}
-                      - if feature_flags.resources
-                        %a.ome.dome-c.dropdown-item{:href => "/courses/#{current_course.id}/resources"}
-                          {% trans "Resources" %}
-                  - if feature_flags.notifications
-                    %li.notifications
+              .navWrapper
+                #pnProductNavContents.mainNav.pn-ProductNav_Contents
+                  %ul
+                    %li{"class": "{% ifequal request.resolver_match.url_name 'course_landing_page' %}active{% endifequal %}"}
+                      %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}"}
+                        {% trans "Overview" %}
+                      %li#lessons-content{"data-dropdown-content": "true"}
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:class => "{% if course.chapters %}{% else %}load-course-lessons{% endif %}", :data-toggle => "{% if course.chapters %}dropdown{% endif %}", "data-course-id": "{% if course.chapters %}{% else %}#{current_course.id}{% endif %}", :href => "#"}
+                          - if lessons_custom_label
+                            = lessons_custom_label
+                          - else
+                            {% trans "Lessons" %}
+                        .dropdown-menu.allLessons{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
+                          - include "courses/content_page/lesson_menu.haml"
+                    - if feature_flags.discussions
+                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_discussion' %}active{% endifequal %}"}
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/discussion"}
+                          {% trans "Discussion" %}
+                    - if feature_flags.group_work
+                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_group_work' %}active{% endifequal %}"}
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/group_work"}
+                          {% trans "Group work" %}
+                    - if feature_flags.cohort_map
+                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_cohort' %}active{% endifequal %}"}
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/cohort"}
+                          {% trans "Cohort" %}
+                    - if feature_flags.progress_page
+                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_progress' %}active{% endifequal %}"}
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{current_course.id}/progress"}
+                          {% trans "Progress" %}
+                    %li{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_nannouncements' %}active{% endif %}"}
                       %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
-                        {% trans "Notifications" %}
-                        %span.xns-counter
-                      %a.xns-icon
-                      .dropdown-menu.xns-pane.notification{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
-                        - include "django/notifications_widget.html"
-                %span#pnIndicator.pn-ProductNav_Indicator{:style => "transform: translateX(0px) scaleX(0.672); background-color: rgb(46, 45, 57);"}
+                        {% trans "Course Materials" %}
+                      .dropdown-menu.course-materials{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-left{% else %}dropdown-menu-right{% endif %}"}
+                        %a.ome.dome-c.dropdown-item{:href => "/courses/#{current_course.id}/announcements"}
+                          {% trans "Announcements" %}
+                        %a.ome.dome-c.dropdown-item{:href => "/courses/#{current_course.id}/overview"}
+                          {% trans "Course Overview" %}
+                        - if feature_flags.resources
+                          %a.ome.dome-c.dropdown-item{:href => "/courses/#{current_course.id}/resources"}
+                            {% trans "Resources" %}
+                    - if feature_flags.notifications
+                      %li.notifications
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
+                          {% trans "Notifications" %}
+                          %span.xns-counter
+                        %a.xns-icon
+                        .dropdown-menu.xns-pane.notification{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
+                          - include "django/notifications_widget.html"
+                  %span#pnIndicator.pn-ProductNav_Indicator{:style => "transform: translateX(0px) scaleX(0.672); background-color: rgb(46, 45, 57);"}
             %button#pnAdvancerLeft.pn-Advancer.pn-Advancer_Left{"type": "button"}
               %i.material-icons
                 keyboard_arrow_left

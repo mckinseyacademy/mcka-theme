@@ -38,13 +38,15 @@ $(document).ready(function() {
             $('.xns-icon').trigger('click');
         }
         else{
-            $('.notifications .dropdown-menu').hide()
+            $('.notifications .dropdown-menu').hide();
         }
+        $(e.target).parents('.courseNavWrap').addClass('nav-active');
     });
     $(window).on('hide.bs.dropdown', function (e) {
         if ($(e.target).hasClass('notifications')){
             $('.notifications .dropdown-menu').hide();
         }
+        $(e.target).parents('.courseNavWrap').removeClass('nav-active');
     });
     $('#user').addClass('active');
 

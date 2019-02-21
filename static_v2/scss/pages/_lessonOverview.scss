@@ -2,7 +2,9 @@
 .lessonOverview {
   position: relative;
 
-  .bookmark-button { display: none;}
+  .bookmark-button {
+    display: none;
+  }
   .contentCard {
     padding: 30px;
   }
@@ -24,11 +26,11 @@
           display: none;
         }
       }
-      svg{
+      svg {
         background: transparent;
         color: var(--primary);
         fill: var(--primary);
-        g{
+        g {
           fill: var(--primary);
         }
       }
@@ -40,11 +42,14 @@
       margin-bottom: 4px;
     }
     h2 {
-      color:  var(--primary);
+      color: var(--primary);
       font-size: 1.8rem;
       font-weight: 300;
       line-height: 34px;
       margin: 0;
+      display: inline-block;
+      vertical-align: top;
+      position: relative;
       > a {
         &:hover {
           text-decoration: none;
@@ -151,15 +156,10 @@
       display: none;
     }
   }
-  .xblock{
-    img{ max-width: 100%;}
-  }
-}
-
-.allModules {
-  &::after {
-    display: none;
-    visibility: hidden;
+  .xblock {
+    img {
+      max-width: 100%;
+    }
   }
 }
 
@@ -202,10 +202,11 @@ body.zoomIn {
 
 @media screen and (max-width: 992px) {
   .lessonOverview {
-    margin-bottom:100px;
+    margin-bottom: 100px;
     background: $white;
     .headerArea {
-      padding: 0;
+      padding-right: 0 !important;
+      padding-left: 0 !important;
       .zoomWrap {
         display: none;
       }
@@ -234,7 +235,7 @@ body.zoomIn {
         top: auto;
         transform: translateY(0);
         color: $white;
-        background-color:  var(--primary);
+        background-color: var(--primary);
         transition: all ease 0.3s;
         > span {
           display: block;
@@ -292,9 +293,9 @@ body.zoomIn {
 
 @media screen and (max-width: 767px) {
   .lessonOverview {
-    .container{
-      .row{
-        > .col{
+    .container {
+      .row {
+        > .col {
           padding: 0 15px;
         }
       }
