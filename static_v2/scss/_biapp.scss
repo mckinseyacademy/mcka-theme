@@ -485,6 +485,10 @@ body.rtl {
     &.allLessons{
       right: calc(100% - 44px) !important;
     }
+    &.allModules{
+      right: 0 !important;
+      left: auto;
+    }
   }
 
   .mapboxgl-ctrl-top-left {
