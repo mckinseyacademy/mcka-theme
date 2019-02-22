@@ -16,5 +16,9 @@
             = resources_content
 
   %script
+    if ($('.courseResourse table:first td:first').find('img').length > 0){
+      $('.courseResourse table:first td:first').remove();
+    }
+
     $('#course-resources a').addClass('ome').addClass('dome-c');
     $('#course-resources a i').addClass('ome').addClass('dome-c');

@@ -19,7 +19,7 @@
             #course-statistics
               - include "courses/content_page/course_statistics.haml"
         - include "courses/content_page/course_menu.haml"
-        
+
         - if discover_flag
           - include "courses/content_page/course_discover.haml"
 
@@ -40,11 +40,11 @@
       - block heap_events
         %script
           if ('{{user.id}}') {
-              heap.identify('{{user.id}}');
+            heap.identify('{{user.id}}');
           }
           if ('{{client_id}}') {
-               heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
+            heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
           }
           if ('{{course.id}}' && '{{course.name}}') {
-           heap.track('COURSE_VISITED', {COURSE_ID: '{{course.id}}', COURSE_NAME: '{{course.name}}', USER_ID: '{{user.id}}'});
+            heap.track('COURSE_VISITED', {COURSE_ID: '{{course.id}}', COURSE_NAME: '{{course.name}}', USER_ID: '{{user.id}}'});
           }

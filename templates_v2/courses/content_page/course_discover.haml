@@ -30,18 +30,19 @@
         %h5
           {% trans "ON TWITTER" %}
         .holder
-          .tweet
-            %a{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}
-              - if tweet.thumbnail_url
-                %img{"src": "#{tweet.thumbnail_url}"}
-            .content
-              .head
-                - if tweet.twitter_username
-                  %span.name= tweet.twitter_username
-                  %a{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}
-                    @{{tweet.twitter_username}}
+          - if tweet.body
+            .tweet
+              %a{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}
+                - if tweet.thumbnail_url
+                  %img{"src": "#{tweet.thumbnail_url}"}
+              .content
+                .head
+                  - if tweet.twitter_username
+                    %span.name= tweet.twitter_username
+                    %a{"href": "https://twitter.com/#{tweet.twitter_username}", 'target': '_blank'}
+                      @{{tweet.twitter_username}}
 
-              .tweet-body.label-2= tweet.body|safe
+                .tweet-body.label-2= tweet.body|safe
 
           .videosWidget
             %h5
@@ -49,9 +50,10 @@
             %ul.list-unstyled
               - for video in videos
                 %li
-                  .videoWrap
-                    %a{"href":"#{video.url}", :target => "_blank"}
-                      %img.img-fluid{:src => "{{ video.thumbnail_url }}"}
+                  - if video.thumbnail_url
+                    .videoWrap
+                      %a{"href":"#{video.url}", :target => "_blank"}
+                        %img.img-fluid{:src => "{{ video.thumbnail_url }}"}
                   .content
                     - if video.title
                       %a.title{"href": "#{video.url}", :target => "_blank"}= video.title
