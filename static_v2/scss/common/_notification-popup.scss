@@ -16,6 +16,10 @@
     font-weight: normal;
     cursor: pointer;
     letter-spacing: normal;
+
+    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+      width: 95% !important;
+    }
   }
   .xns-list-body{
     max-height: 315px;

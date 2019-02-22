@@ -512,6 +512,7 @@ body {
 
     .progressBar {
       .figure {
+        @include text-align(right);
         @include margin-right(5px);
 
         @include media-breakpoint-between(xs, sm) {
