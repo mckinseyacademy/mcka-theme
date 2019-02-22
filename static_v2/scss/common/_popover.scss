@@ -18,6 +18,15 @@
     color: $white;
     font-size: 12px;
     padding: 0.5rem 0.75rem;
+    span{
+      font-size: .875rem;
+    }
+    .material-icons{
+      &[locked]{
+        position: absolute;
+        font-size: 1rem;
+      }
+    }
   }
   &.bs-popover-left,
   &.bs-popover-right {
@@ -41,6 +50,25 @@
 
   &.bs-popover-right {
     text-align: right;
+  }
+}
+
+@include media-breakpoint-between(xs, md){
+  .lessonPageBody {
+    [x-placement="left"],
+    [x-placement="right"] {
+      transform: none !important;
+      top: auto !important;
+      height: auto;
+      bottom: -16px;
+      position: fixed !important;
+
+      .arrow {
+        transform: none !important;
+        top: auto !important;
+        bottom: 20px !important;
+      }
+    }
   }
 }
 
