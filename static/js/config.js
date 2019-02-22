@@ -51,14 +51,14 @@ Apros.config.CSV_CHARACTER_BLACKLIST = [
 
 // 2-digit to 2-4 digit language code mapping for xblock translations according to edx platform
 // Note: Future languages must be mentioned here to work for xblocks
-Apros.config.EDX_LANGUAGES_CODE_MAP = new Map([
-    ['ar', 'ar'],
-    ['de', 'de-de'],
-    ['en', 'en'],
-    ['es', 'es-419'],
-    ['fr', 'fr'],
-    ['ja', 'ja-jp'],
-    ['nl', 'nl-nl'],
-    ['pt', 'pt-br'],
-    ['zh', 'zh-cn']
-]);
+Apros.config.EDX_LANGUAGES_CODE_MAP = {
+    'ar': 'ar',
+    'de': 'de-de',
+    'en': 'en',
+    'es': 'es-419',
+    'fr': 'fr',
+    'ja': 'ja-jp',
+    'nl': 'nl-nl',
+    'pt': 'pt-br',
+    'zh': 'zh-cn'
+};

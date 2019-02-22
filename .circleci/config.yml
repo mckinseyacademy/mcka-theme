@@ -13,12 +13,12 @@ jobs:
     steps:
         - checkout
 
+        - restore_cache:
+            key: dependency-cache-{{ checksum "requirements.txt" }}-{{ checksum "test-requirements.txt" }}
+
         - run:
             name: Creating virtual environment
             command: virtualenv ~/virtualenvs/venv && source ~/virtualenvs/venv/bin/activate
-
-        - restore_cache:
-            key: dependency-cache-{{ checksum "requirements.txt" }}-{{ checksum "test-requirements.txt" }}
 
         - run:
             name: Installing requirements

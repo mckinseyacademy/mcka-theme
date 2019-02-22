@@ -190,7 +190,7 @@
                         courseId = $(element).data('course-id'),
                         lmsBaseURL = $this.getLmsBaseURL(options);
                     var language_code = ($('html').attr('lang') ? $('html').attr('lang') : 'en');
-                    var language_code_mapped = Apros.config.EDX_LANGUAGES_CODE_MAP.get(language_code);
+                    var language_code_mapped = Apros.config.EDX_LANGUAGES_CODE_MAP[language_code];
                     if(language_code_mapped === undefined)
                     {
                         language_code_mapped = 'en';
@@ -329,7 +329,7 @@
 
         getViewUrl: function(viewName, options) {
             var language_code = ($('html').attr('lang') ? $('html').attr('lang') : 'en');
-            var language_code_mapped = Apros.config.EDX_LANGUAGES_CODE_MAP.get(language_code);
+            var language_code_mapped = Apros.config.EDX_LANGUAGES_CODE_MAP[language_code];
             if(language_code_mapped === undefined)
             {
                 language_code_mapped = 'en';
