@@ -1,18 +1,31 @@
 import json
 import ddt
 
+from mcka_apros.celery import app as test_app
 from django.core.urlresolvers import reverse
 from django.core.files.uploadedfile import File
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
 from mock import patch, Mock
 from rest_framework import status
+from rest_framework.test import APIRequestFactory, force_authenticate
 
 from accounts.models import RemoteUser
 from accounts.tests.utils import ApplyPatchMixin, make_course
 from accounts.tests.utils import make_user, make_company
 from admin import views
-from admin.models import Client as ClientModel
+from admin.models import (
+    Client as ClientModel,
+    AccessKey,
+    ClientNavLinks,
+    ClientCustomization,
+    BrandingSettings,
+    LearnerDashboard,
+    CompanyInvoicingDetails,
+    CompanyContact,
+    DashboardAdminQuickFilter,
+    AdminTask,
+)
 from admin.views import client_sso, CourseDetailsApi
 from api_client import user_api, group_api
 from api_client.api_error import ApiError
@@ -20,6 +33,14 @@ from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map
 from .test_task_runner import mocked_task
 from admin.models import ClientCustomization
+
+
+def mock_task():
+    @test_app.task(bind=True)
+    def test_task(self, *args, **kwargs):
+        """Test task."""
+        pass
+    return test_task
 
 
 def _create_user():
@@ -495,3 +516,138 @@ class ClientCustomizationTests(TestCase, ApplyPatchMixin):
             self.assertTrue(client_customization.new_ui_enabled)
         else:
             self.assertFalse(client_customization.new_ui_enabled)
+
+
+@ddt.ddt
+class ProblemResponseReportViewTest(TestCase):
+    """
+    Test company details view.
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        super(ProblemResponseReportViewTest, cls).setUpClass()
+        AdminTask.objects.create(
+            task_id='task_id1',
+            course_id='course_id',
+            parameters='{"problem_location": "problem_location"}',
+            task_type='problem_response_report',
+            output='',
+            status='PROGRESS',
+            username='username'
+        )
+        AdminTask.objects.create(
+            task_id='task_id2',
+            course_id='course_id1',
+            parameters='{"problem_location": "problem_location"}',
+            task_type='problem_response_report',
+            output='',
+            status='RETRYING',
+            username='username'
+        )
+        AdminTask.objects.create(
+            task_id='task_id3',
+            course_id='course_id1',
+            parameters='{"problem_location": "problem_location1"}',
+            task_type='problem_response_report',
+            output='{"url": "url", "name": "name"}',
+            status='DONE',
+            username='username'
+        )
+        AdminTask.objects.create(
+            task_id='task_id4',
+            course_id='course_id',
+            parameters='{"problem_location": "problem_location"}',
+            task_type='problem_response_report',
+            output='{"url": "url", "name": "name"}',
+            status='DONE',
+            username='username'
+        )
+
+    def setUp(self):
+        super(ProblemResponseReportViewTest, self).setUp()
+        self.course_url = reverse(
+            'course-reports',
+            kwargs={'course_id': 'course_id'}
+        )
+        self.course_1_url = reverse(
+            'course-reports',
+            kwargs={'course_id': 'course_id1'}
+        )
+        self.course_2_url = reverse(
+            'course-reports',
+            kwargs={'course_id': 'course_id2'}
+        )
+        self.factory = APIRequestFactory()
+        self.admin_user = make_user(username="mcka_admin", email="mcka_admin@example.com")
+        self.admin_user.is_internal_admin = True
+        self.admin_user.is_company_admin = False
+        self.api = views.ProblemResponseReportView.as_view()
+        self.in_progress_admin_task = Mock(spec=AdminTask)
+        self.mock_session = Mock(session_key='', __contains__=lambda _a, _b: False)
+
+    @classmethod
+    def tearDownClass(cls):
+        super(ProblemResponseReportViewTest, cls).tearDownClass()
+        AdminTask.objects.all().delete()
+
+    @override_settings(CELERY_ALWAYS_EAGER=True)
+    @ddt.data(True, False)
+    @patch('admin.views.create_problem_response_report', new_callable=mock_task)
+    @patch('admin.views.monitor_problem_response_report', new_callable=mock_task)
+    @patch('admin.views.post_process_problem_response_report', new_callable=mock_task)
+    @patch('admin.views.send_problem_response_report_success_email', new_callable=mock_task)
+    def test_create_report_new(self, task_admin_create, *tasks):
+        """Test create a new report."""
+        if task_admin_create:
+            count = AdminTask.objects.count() + 1
+            request = self.factory.post(self.course_2_url, {'problem_location': 'problem_location'})
+        else:
+            count = AdminTask.objects.count()
+            request = self.factory.post(self.course_1_url, {'problem_location': 'problem_location'})
+
+        request.user = self.admin_user
+        request.session = self.mock_session
+        force_authenticate(request, user=self.admin_user)
+        if task_admin_create:
+            response = self.api(request, 'course_id2')
+        else:
+            response = self.api(request, 'course_id1')
+        self.assertEqual(response.data['status'], 'OK')
+        self.assertTrue(response.data['task_id'])
+        self.assertEqual(AdminTask.objects.count(), count)
+
+    @override_settings(CELERY_ALWAYS_EAGER=True)
+    @ddt.data(True, False)
+    @patch('admin.views.create_problem_response_report', new_callable=mock_task)
+    @patch('admin.views.monitor_problem_response_report', new_callable=mock_task)
+    @patch('admin.views.post_process_problem_response_report', new_callable=mock_task)
+    @patch('admin.views.send_problem_response_report_success_email', new_callable=mock_task)
+    def test_post_running_report(self, task_admin_running, *tasks):
+        """Test should not create new report and only return a running report."""
+        count = AdminTask.objects.count()
+        if task_admin_running:
+            request = self.factory.post(self.course_url, {'problem_location': 'problem_location'})
+        else:
+            request = self.factory.post(self.course_1_url, {'problem_location': 'problem_location'})
+
+        request.user = self.admin_user
+        request.session = self.mock_session
+        force_authenticate(request, user=self.admin_user)
+        if task_admin_running:
+            response = self.api(request, 'course_id')
+        else:
+            response = self.api(request, 'course_id1')
+
+        self.assertEqual(response.data['status'], 'OK')
+        self.assertTrue(response.data['task_id'])
+        self.assertEqual(AdminTask.objects.count(), count)
+
+    def test_fetch_reports(self):
+        """Fetch list of reports for a course"""
+        request = self.factory.get(self.course_url)
+        request.user = self.admin_user
+        request.session = self.mock_session
+        force_authenticate(request, user=self.admin_user)
+        response = self.api(request, 'course_id')
+        self.assertEqual(len(response.data['reports']), 2)

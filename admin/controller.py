@@ -8,6 +8,7 @@ import string
 import tempfile
 import threading
 import urllib
+import requests
 import uuid
 from datetime import datetime
 from copy import deepcopy
@@ -2656,3 +2657,135 @@ def validate_participant_manager_email(participant_email, manager_email):
     else:
         errors.append(_("User and manager email cannot be empty"))
     return None, None, errors
+
+
+class ProblemReportPostProcessor(object):
+    """Problem report post processor."""
+    BLOCK_KEY_NAME = 'block_key'
+    USERNAME_KEY_NAME = 'username'
+
+    def __init__(self, course_id, report_name, report_uri):
+        """Init.
+
+        Args:
+            param1 (str): Report name
+            param2 (str): Report URI
+        """
+        self.report_name = report_name
+        if report_uri.startswith('http'):
+            self.report_uri = report_uri
+        else:
+            self.report_uri = '/'.join([
+                'http:/',
+                '.'.join([settings.LMS_SUB_DOMAIN, settings.LMS_BASE_DOMAIN]),
+                report_uri.strip('/')
+            ])
+        self.course_id = course_id
+        self._course_blocks = None
+        self.users_dict = None
+        self.indices_to_remove = []
+
+    def module_lesson_number(self, problem_location):
+        """Retrieves Module and lesson number.
+
+        Args:
+            problem_location (str): Problem Location.
+
+        Returns:
+            tuple: Module and lesson number in a tuple.
+        """
+        if self._course_blocks is None:
+            blocks = course_api.get_course_block_of_types(
+                self.course_id,
+                block_types=['poll', 'survey']
+            )
+            self._course_blocks = {
+                block['id']: block
+                for block in blocks
+            }
+        block = self._course_blocks.get(problem_location, {})
+        lesson_number = block.get('lesson', '')
+        module_number = block.get('module', '')
+        return (module_number, lesson_number)
+
+    def _delete_fields(self, row, fields_to_remove):
+        """Delete fields.
+
+        Args:
+            row (list) row: Row.
+            fields_to_remove (list): List of strings with field names to remove
+        Return:
+            list: list of data
+        """
+        processed_row = {}
+        for key in row:
+            if key not in fields_to_remove:
+                processed_row[key] = row[key]
+        return processed_row
+
+    def _get_course_user_email(self, username):
+        """Add fields.
+
+        Args:
+            username (str): Username.
+        Return:
+            list: list of data
+        """
+        if self.users_dict is None:
+            users_data = course_api.get_user_list_json(course_id=self.course_id)
+            self.users_dict = {user['username']: user for user in users_data}
+        user = self.users_dict.get(username, {})
+        return user.get('email', '')
+
+    def _add_user_email(self, row):
+        """Add course use email to row.
+
+        Args:
+            row (list): List of data.
+        Return:
+            row
+        """
+        username = row[self.USERNAME_KEY_NAME]
+        email = self._get_course_user_email(username)
+        row['Email'] = email
+        return row
+
+    def _add_module_lesson_number(self, row):
+        """Add module and lesson number to row.
+
+        Args:
+            row (list): List of data.
+        Returns:
+            row
+        """
+        problem_location = row[self.BLOCK_KEY_NAME]
+        module_number, lesson_number = self.module_lesson_number(problem_location)
+        row['Module Number'] = module_number
+        row['Lesson Number'] = lesson_number
+        return row
+
+    def post_process(self, fields_to_remove):
+        """Post process report.
+
+        This method will remove the fields given in ``fields_to_remove`` and add necessary data.
+
+        Args:
+            param1 (list) fields_to_remove: List of strings. Title names to remove on every row.
+            param2 (list) daat_to_add: Array of data to append to every row.
+
+        Return:
+            list: list of data (rows).
+        """
+        rows = []
+        with requests.get(self.report_uri, stream=True) as csv_report:
+            csv_report.raise_for_status()
+            report_reader = csv.DictReader(csv_report.iter_lines())
+
+            # Process every row and yield
+            for row in report_reader:
+                processed_row = self._add_module_lesson_number(row)
+                processed_row = self._add_user_email(processed_row)
+                processed_row = self._delete_fields(processed_row, fields_to_remove)
+                rows.append(processed_row)
+
+        return rows

@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.test import TestCase
 from django.test.client import RequestFactory
 from rest_framework import status
+from mock import patch
 
 import admin.controller as controller
 from accounts.tests.utils import ApplyPatchMixin
@@ -17,7 +18,8 @@ from admin.controller import (
     write_participant_performance_on_csv,
     write_engagement_summary_on_csv,
     write_social_engagement_report_on_csv,
-    get_course_stats_report
+    get_course_stats_report,
+    ProblemReportPostProcessor,
 )
 from admin.models import SelfRegistrationRoles, CourseRun
 from admin.tests.utils import BASE_DIR
@@ -634,3 +636,79 @@ class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
         expected_output = None
         output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
         self.assertEqual(output, expected_output)
+
+
+class ProblemReportPostProcessorTest(TestCase):
+    """Test cases for ProblemReportPostProcessor."""
+
+    def setUp(self):
+        """Setup"""
+        self.processor = ProblemReportPostProcessor('course_id', 'report_name', 'report_uri')
+
+    @patch(
+        'admin.controller.course_api.get_course_block_of_types',
+        return_value=[
+            {'lesson': 'lesson',
+             'question': 'question?',
+             'id': 'block_id',
+             'module': 'module'},
+            {'lesson': 'lesson 1',
+             'question': '',
+             'id': 'block_id 1',
+             'module': 'module 1'}
+        ]
+    )
+    def test_module_lesson_number(self, mock_get_course_block_of_types):
+        """Test PostProcessor.module_lesson_number"""
+        module, lesson = self.processor.module_lesson_number('block_id')
+        self.assertEqual(module, 'module')
+        self.assertEqual(lesson, 'lesson')
+
+    @patch('admin.controller.requests.get')
+    @patch(
+        'admin.controller.course_api.get_course_block_of_types',
+        return_value=[
+            {'lesson': 'lesson number',
+             'question': 'question?',
+             'id': 'some_block_key',
+             'module': 'module number'},
+            {'lesson': 'lesson 1',
+             'question': '',
+             'id': 'some_block_key 1',
+             'module': 'module 1'}
+        ]
+    )
+    @patch('admin.controller.csv.DictReader', return_value=iter([
+        {'username': 'username3', 'title': 'Poll Title', 'location': 'Poll Location', 'Answer': 'some answer',
+         'Question': 'some question?', 'Submission count': '1', 'block_key': 'some_block_key', 'state': 'some state'},
+        {'username': 'username4', 'title': 'Poll Title', 'location': 'Poll Location', 'Answer': 'some answer 1',
+         'Question': 'some question?', 'Submission count': '1', 'block_key': 'some_block_key 1',
+         'state': 'some state'},
+    ]))
+    @patch(
+        'admin.controller.course_api.get_user_list_json',
+        return_value=[
+            {
+                'username': 'username3',
+                'email': 'username3@example.com',
+            },
+            {
+                'username': 'username4',
+                'email': 'username4@example.com',
+            }
+        ]
+    )
+    def test_post_process(self, mock_get_user, mock_reader, mock_get_course_blocks, mock_requests_get):
+        """Test post process."""
+        self.processor.file_path = 'file_path'
+        rows = self.processor.post_process(['state', 'location', 'block_key'])
+        self.assertTrue(len(rows), 3)
+        self.assertEqual(
+            rows,
+            [{'username': 'username3', 'title': 'Poll Title', 'Answer': 'some answer', 'Question': 'some question?',
+              'Submission count': '1', 'Module Number': 'module number', 'Lesson Number': 'lesson number',
+              'Email': 'username3@example.com'},
+             {'username': 'username4', 'title': 'Poll Title', 'Answer': 'some answer 1', 'Question': 'some question?',
+              'Submission count': '1', 'Module Number': 'module 1', 'Lesson Number': 'lesson 1',
+              'Email': 'username4@example.com'}]
+        )

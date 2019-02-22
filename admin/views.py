@@ -42,6 +42,7 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from celery import states as celery_states
 
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, \
     _set_number_of_enrolled_users
@@ -51,7 +52,12 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
     process_manager_email, parse_participant_profile_csv
-from admin.tasks import user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data
+from admin.models import AdminTask
+from admin.tasks import (
+	    user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data,
+	    create_problem_response_report, monitor_problem_response_report, post_process_problem_response_report,
+	    handle_admin_task_error, send_problem_response_report_success_email
+	)
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api, \
     cohort_api
 from api_client.api_error import ApiError
@@ -6189,3 +6195,107 @@ class CohortImport(APIView):
             return Response(response)
         else:
             return Response({'status': 'OK'})
+
+
+class ProblemResponseReportView(APIView):
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request, course_id):
+        """POST.
+
+        Used to kickstart report creation. The task chain will:
+            1. Call the edx-platform API to create a report.
+            2. Download report.
+            3. Post process report.
+            4. Save in the database report details for download.
+
+        When using this endpoint a celery chain is created. The result of calling this endpoint
+        will return a ``task_id``. The ``task_id`` returned can be used to keep track on the
+        report processing workflow. The ``api/admin_bulk_task`` endpoint can be used to
+        check on the celery chain progress. Once the chain is done issuing a GET request
+        on this endpoint will retrieve the information needed to download the report.
+
+        Args:
+            request (obj): Django request object.
+            course_id (str): Course Id
+            problem_location (str, optional): Problem location. Sent in the POST body.
+
+        Return:
+            Response with two keys:
+            - status: "OK" if everything went ok.
+            - task_id: Task id.
+
+            400 Bad Request if problem could not be located.
+        """
+        problem_location = request.data.get('problem_location')
+        if not problem_location:
+            return HttpResponseBadRequest('Problem location must be provided.')
+
+        problem_locations = problem_location.split(',')
+        reports = AdminTask.objects.filter(
+            course_id=course_id,
+            task_type='problem_response_report',
+            parameters__contains=problem_location
+        )
+        running_reports = reports.filter(status__in=['PROGRESS', 'RETRYING'])
+        if not reports or not running_reports:
+            report = AdminTask.objects.create(
+                course_id=course_id,
+                task_type='problem_response_report',
+            )
+            created = True
+        elif running_reports:
+            report = running_reports.latest('id')
+            created = False
+        else:
+            report = reports.latest('id')
+            created = False
+        # If a report has been created, start a new one or if it's a new report.
+        if (created or report.status in celery_states.READY_STATES or
+                (report.status not in ['PROGRESS', 'RETRYING'])):
+            chain = (
+                create_problem_response_report.s(
+                    course_id=course_id,
+                    problem_locations=problem_locations,
+                ) |
+                monitor_problem_response_report.s(
+                    course_id=course_id
+                ) |
+                post_process_problem_response_report.s(
+                    course_id=course_id,
+                    problem_locations=problem_locations
+                ) |
+                send_problem_response_report_success_email.s()
+            )
+            chain.freeze()
+            chain.tasks[0].freeze()
+            report.task_id = chain.tasks[0].id
+            report.status = 'PROGRESS'
+            report.username = request.user.username
+            report.parameters = json.dumps({'problem_location': problem_location})
+            report.save()
+            chain.link_error(handle_admin_task_error.s(res_id=report.task_id))
+            try:
+                chain.apply_async()
+            except Exception:
+                handle_admin_task_error(error_task_id='', res_id=report.task_id)
+        return Response({'status': 'OK', 'task_id': report.task_id})
+
+    def get(self, request, course_id):
+        """GET.
+
+        Return a list of available and in-progress reports.
+        """
+        reports = AdminTask.objects.filter(course_id=course_id, task_type='problem_response_report')
+
+        resp = [
+            {'task_id': rep.task_id,
+             'course_id': rep.course_id,
+             'parameters': rep.task_parameters,
+             'task_type': rep.task_type,
+             'url': rep.task_output.get('url'),
+             'name': rep.task_output.get('name'),
+             'requested_datetime': rep.requested_datetime.isoformat(),
+             'status': rep.status} for rep in reports
+        ]
+        return Response({'reports': resp})
