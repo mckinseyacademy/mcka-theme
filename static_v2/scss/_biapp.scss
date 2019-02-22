@@ -658,6 +658,11 @@ footer {
 // CSS specific styles
 body.rtl {
   text-align: right;
+  .my-courses{
+    .bookmark{
+      background-position-x: left;
+    }
+  }
   .bookmark {
     @include flip-x-axis;
   }
