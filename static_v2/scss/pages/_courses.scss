@@ -30,6 +30,12 @@
       .card-img-top {
         object-fit: cover;
         height: 100%;
+        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+          height: auto;
+          position: relative;
+          top:50%;
+          transform:translateY(-50%);
+        }
       }
     }
 
@@ -141,6 +147,11 @@
         }
       }
     }
+  }
+  .bookmark{
+    background-size: cover;
+    width: 20px;
+    background-position-x: right;
   }
 }
 

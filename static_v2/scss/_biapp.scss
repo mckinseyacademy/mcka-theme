@@ -11,6 +11,7 @@
 // Header
 .appHeader {
   .logo {
+    @include padding-left(15px);
     .all-logos {
       @include float(left);
     }
@@ -418,6 +419,11 @@ footer {
 // CSS specific styles
 body.rtl {
   text-align: right;
+  .my-courses{
+    .bookmark{
+      background-position-x: left;
+    }
+  }
   .bookmark {
     @include flip-x-axis;
   }

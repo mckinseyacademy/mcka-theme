@@ -382,12 +382,12 @@ $(function () {
   Apros.executeModalChain();
 
 
-  // To remove resourse image and it's <td>
+  // // To remove resourse image and it's <td>
 
-  var r = document.evaluate('//*[contains(@class, "courseResourse")]//table[1]//td[1][.//img]', document, null,
-    XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
-  if (r !== null) {
-    r.remove();
-  }
+  // var r = document.evaluate('//*[contains(@class, "courseResourse")]//table[1]//td[1][.//img]', document, null,
+  //   XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue
+  // if (r !== null) {
+  //   r.remove();
+  // }
 
 });
