@@ -96,6 +96,19 @@
       }
     }
   }
+  .mainNav {
+    > ul {
+      > li {
+        @include margin-left(30px);
+        &:first-child {
+          @include margin-left(0);
+        }
+        &.notifications{
+          @include margin-right(30px !important);
+        }
+      }
+    }
+  }
 }
 
 .courseNavWrap {
