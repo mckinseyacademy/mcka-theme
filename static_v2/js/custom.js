@@ -126,6 +126,7 @@ $(document).ready(function() {
     $(".zoomWrap").click(function() {
         $("body").toggleClass('zoomIn');
         removeClass = false;
+        $.cookie(cookie_key, $("body").hasClass('zoomIn'), { path: '/' });
     });
     // when clicking the div : never remove the class
     $(".zoomWrap").click(function() {
