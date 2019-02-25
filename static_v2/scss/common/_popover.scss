@@ -79,3 +79,47 @@
 .bs-popover-bottom > .arrow::after, .bs-popover-auto[x-placement^="bottom"] > .arrow::after {
   border-bottom-color: #4b4b4b;
 }
+
+@include media-breakpoint-between(xs, sm) {
+  .popover{
+    &.bs-popover-bottom {
+      margin-top: -15px;
+    }
+  }
+  .lessonPageBody{
+    [x-placement="left"],
+    [x-placement="right"] {
+      margin-left: 3px !important;
+      margin-right: 3px !important;
+    }
+  }
+}
+
+@include media-breakpoint-between(sm, md){
+  .lessonPageBody{
+    [x-placement="left"],
+    [x-placement="right"]{
+      margin-left: 18px !important;
+      margin-right: 18px !important;
+    }
+  }
+}
+  @include media-breakpoint-between(xs, md) {
+  .lessonPageBody {
+
+    [x-placement="left"],
+    [x-placement="right"] {
+      transform: none !important;
+      top: auto !important;
+      height: auto;
+      bottom: -16px;
+      position: fixed !important;
+
+      .arrow {
+        transform: none !important;
+        top: auto !important;
+        bottom: 20px !important;
+      }
+    }
+  }
+}
