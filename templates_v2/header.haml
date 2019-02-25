@@ -91,6 +91,10 @@
 
               %nav.nav.mainNav.headerNav
                 %ul
+                  - if request.user.is_manager
+                    %li
+                      %a.nav-link.ome.dome-c{:href => "/admin/manager/team_report"}
+                        {% trans "TEAM REPORTS" %}
                   %li
                     %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
                       {% trans "dashboard" %}
