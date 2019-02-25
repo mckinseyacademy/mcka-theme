@@ -127,6 +127,7 @@ from .models import (Client, Program, WorkGroup, WorkGroupActivityXBlock, Review
                      SelfRegistrationRoles, OTHER_ROLE)
 from .permissions import Permissions, PermissionSaveError
 from .review_assignments import ReviewAssignmentProcessor, ReviewAssignmentUnattainableError
+from .serializers import AdminTaskSerializer
 from .tasks import import_participants_task, IMPORT_PARTICIPANTS_DIR
 from .workgroup_reports import generate_workgroup_csv_report, WorkgroupCompletionData
 
@@ -899,6 +900,19 @@ class course_details_stats_api(APIView):
 
         course_stats = get_course_social_engagement(course_id, company_id)
         return Response(course_stats)
+
+
+class CourseDetailsBlocksAPI(APIView):
+    permission_classes = (InternalAdminCoursePermission, CompanyAdminCoursePermission, )
+
+    @permission_group_required_api(
+        PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
+    )
+    def get(self, request, course_id):
+        blocks = course_api.get_course_block_of_types(course_id, ['poll', 'survey'])
+
+        return Response(blocks)
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
@@ -6287,15 +6301,8 @@ class ProblemResponseReportView(APIView):
         Return a list of available and in-progress reports.
         """
         reports = AdminTask.objects.filter(course_id=course_id, task_type='problem_response_report')
+        reports = reports.order_by('-requested_datetime')
 
-        resp = [
-            {'task_id': rep.task_id,
-             'course_id': rep.course_id,
-             'parameters': rep.task_parameters,
-             'task_type': rep.task_type,
-             'url': rep.task_output.get('url'),
-             'name': rep.task_output.get('name'),
-             'requested_datetime': rep.requested_datetime.isoformat(),
-             'status': rep.status} for rep in reports
-        ]
-        return Response({'reports': resp})
+        serializer = AdminTaskSerializer(reports, many=True)
+
+        return Response({'reports': serializer.data})

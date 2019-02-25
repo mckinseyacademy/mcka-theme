@@ -789,6 +789,23 @@ def build_block_tree(blocks):
     return block_tree(blocks['root'], None)
 
 
+BLOCK_QUESTION_EXTRACTOR = {
+    'poll': lambda data: data['question'],
+    'survey': lambda data: ', '.join(item[1]['label'] for item in data['questions'])
+}
+
+
+def get_question_from_block(block):
+    """
+    Extracts the question data from a block data that includes student_view_data.
+    """
+    extractor = BLOCK_QUESTION_EXTRACTOR.get(block['type'])
+    if extractor is not None:
+        data = block.get('student_view_data')
+        if data is not None:
+            return extractor(data)
+
+
 @api_error_protect
 def get_course_block_of_types(course_id, block_types):
     """Fetch polls for course.
@@ -796,7 +813,6 @@ def get_course_block_of_types(course_id, block_types):
     Args:
         course_id (str): Course Id.
         block_types (list): List of strings for all block types wanted.
-        block_types_filter (list): List of strings for block filters.
     """
     edx_oauth2_session = get_oauth2_session()
 
@@ -832,7 +848,7 @@ def get_course_block_of_types(course_id, block_types):
             response.append(
                 {
                     'id': block['id'],
-                    'student_view_data': block.get('student_view_data', ''),
+                    'question': get_question_from_block(block),
                     'module': 'M{} - {}'.format(*module),
                     'lesson': 'L{} - {}'.format(*lesson),
                 }
@@ -840,7 +856,8 @@ def get_course_block_of_types(course_id, block_types):
         for child in block.get('children', []):
             walk_tree(child, lesson, module)
 
-    walk_tree(tree)
+    if tree:
+        walk_tree(tree)
     return response
 
 

@@ -52,6 +52,10 @@
                 .courseStatsButton.large-2.columns
                   %a{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                     {% trans "STATS" %}
+                - if user.is_mcka_subadmin or user.is_mcka_admin
+                  .courseResponsesButton.large-2.columns
+                    %a{:href => '#', :target => '_self', :data-target => 'courseBlocks', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                      {% trans "RESPONSES" %}
                 - if request.resolver_match.url_name == 'course_details'
                   .courseStatsButton.large-4.columns
                     %a{:href => 'learner_dashboard'}>
@@ -123,6 +127,17 @@
                   #courseDetailsStatsTopic.courseDetailsTopic
                     {% trans "Social Engagement" %}
                   #courseDetailsStatsViewGrid.courseDetailsViewGrid.large-12.columns
+              .row.courseBlocks.contentNavigationContainer
+                #courseBlocksButtonsContainer.blockButtonsContainer
+                  .blockButtonWrapper
+                    %a#downloadResponses.button.radius.small.disabled{:href => "#"}
+                      {% trans "Download Responses" %}
+                    %a#downloadReportsHistory.button.radius.small{:href => "#"}
+                      {% trans "View Download History" %}
+                #courseBlocksGridWrapper
+                  .errorMessage
+                  #courseBlocksGrid.large-12.columns.spinnerContainer.gridContainer
+                  #courseProblemResponseReportsGrid.large-12.columns.spinnerContainer.gridContainer
 
   #courseDetailsMainModal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
     %h2.courseModalTitle

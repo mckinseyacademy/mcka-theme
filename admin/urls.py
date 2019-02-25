@@ -96,6 +96,8 @@ urlpatterns += [
 
     url(r'^api/courses/(?P<course_id>.*)/edit_course_meta_data/$', views.CourseMetaDataApiView.as_view(),
         name='course_meta_data_api_view'),
+    url(r'^api/courses/(?P<course_id>.*)/blocks/$',
+        views.CourseDetailsBlocksAPI.as_view(), name='course_details_blocks_api'),
     url(r'^api/courses/(?P<course_id>.*)/stats/$',
         views.course_details_stats_api.as_view(), name='course_details_stats_api'),
     url(r'^api/courses/(?P<course_id>.*)/engagement/$',

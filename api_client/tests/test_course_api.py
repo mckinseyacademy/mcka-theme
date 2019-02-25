@@ -10,6 +10,7 @@ from mock import patch
 from accounts.helpers import TestUser
 from api_client.course_api import (
     COURSEWARE_API,
+    COURSE_BLOCK_API,
     COURSE_COHORTS_API,
     COURSE_COMPLETION_API,
     get_course,
@@ -17,6 +18,7 @@ from api_client.course_api import (
     get_course_completions,
     get_course_enrollments,
     get_course_list_for_manager_reports,
+    get_course_block_of_types,
     get_manager_reports_in_course,
 )
 from api_client.json_object import JsonParser
@@ -436,3 +438,170 @@ class TestCourseApi(TestCase):
             username='edx',
         )
         self.assertEqual(result, 'by_course')
+
+    @httpretty.httprettified
+    def test_get_course_blocks_responses(self):
+        """
+        Test the get_course_block_of_types API
+        """
+        course_id = 'edX+DemoX+Demo_Course'
+
+        child_block_types = {
+            'course': 'chapter',
+            'chapter': 'sequential',
+            'sequential': 'vertical',
+            'vertical': 'poll',
+        }
+
+        def course_block(block_id, block_type, children=None, student_view_data=None):
+            full_id = 'block-v1:{course_id}+type@{block_type}+block@{block_id}'.format(
+                course_id=course_id, block_type=block_type, block_id=block_id
+            )
+            block = {
+                'block_id': block_id,
+                'id': full_id,
+                'display_name': 'Block {block_id} of type {block_type}'.format(
+                    block_id=block_id, block_type=block_type
+                ),
+                'lms_web_url': '{lms_base_url}/courses/{course_id}/jump_to/{full_id}'.format(
+                    lms_base_url=settings.API_SERVER_ADDRESS,
+                    course_id=course_id, full_id=full_id,
+                ),
+                'student_view_url': '{lms_base_url}/xblock/{full_id}'.format(
+                    lms_base_url=settings.API_SERVER_ADDRESS, full_id=full_id,
+                ),
+                'type': block_type,
+            }
+            if children:
+                block['children'] = [
+                    'block-v1:{course_id}+type@{block_type}+block@{block_id}'.format(
+                        course_id=course_id,
+                        block_type=child_block_types[block_type],
+                        block_id=child_id
+                    ) for child_id in children
+                ]
+            if student_view_data:
+                block['student_view_data'] = {
+                    'private_results': False,
+                    'max_submissions': 1,
+                    'question': 'Question {}'.format(student_view_data),
+                    'feedback': '',
+                    'answers': [
+                        ["R", {"img": '', "img_alt": '', "label": "Red"}],
+                        ["B", {"img": '', "img_alt": '', "label": "Blue"}],
+                        ["G", {"img": '', "img_alt": '', "label": "Green"}],
+                        ["O", {"img": '', "img_alt": '', "label": "Other"}]
+                    ]
+                }
+            return full_id, block
+
+        response = {
+            'root': 'block-v1:{course_id}+type@course+block@course'.format(
+                course_id=course_id),
+            'blocks': dict([
+                course_block(*args, **kwargs) for (args, kwargs) in (
+                    (
+                        ('course', 'course'),
+                        {'children': ['chapter_block_1', 'chapter_block_2']}
+                    ),
+                    (
+                        ('chapter_block_1', 'chapter'),
+                        {'children': ['sequential_block_1_1']}
+                    ),
+                    (
+                        ('chapter_block_2', 'chapter'),
+                        {'children': ['sequential_block_2_1']}
+                    ),
+                    (
+                        ('sequential_block_1_1', 'sequential'),
+                        {'children': ['vertical_block_1_1_1', 'vertical_block_1_1_2']}
+                    ),
+                    (
+                        ('sequential_block_2_1', 'sequential'),
+                        {'children': ['vertical_block_2_1_1']}
+                    ),
+                    (
+                        ('vertical_block_1_1_1', 'vertical'),
+                        {'children': ['poll_block_1_1_1_1', 'poll_block_1_1_1_2']}
+                    ),
+                    (
+                        ('vertical_block_1_1_2', 'vertical'),
+                        {'children': ['poll_block_1_1_2_1']}
+                    ),
+                    (
+                        ('vertical_block_2_1_1', 'vertical'),
+                        {'children': ['poll_block_2_1_1_1']}
+                    ),
+                    (
+                        ('poll_block_1_1_1_1', 'poll'),
+                        {'student_view_data': '1.1.1.1'}
+                    ),
+                    (
+                        ('poll_block_1_1_1_2', 'poll'),
+                        {'student_view_data': '1.1.1.2'}
+                    ),
+                    (
+                        ('poll_block_1_1_2_1', 'poll'),
+                        {'student_view_data': '1.1.2.1'}
+                    ),
+                    (
+                        ('poll_block_1_2_1_1', 'poll'),
+                        {'student_view_data': '1.2.1.1'}
+                    ),
+                    (
+                        ('poll_block_2_1_1_1', 'poll'),
+                        {'student_view_data': '2.1.1.1'}
+                    ),
+                )
+            ])
+        }
+
+        def course_poll_responses_response(request, uri, headers):
+            return 200, headers, json.dumps(response)
+
+        httpretty.register_uri(
+            httpretty.GET,
+            '{api_base}/{course_block_api}/?course_id={course_id}'
+            '&all_blocks=true&depth=all'
+            '&block_types_filter=course%2Cpoll%2Cchapter%2Csequential%2Cvertical%2Csurvey'
+            '&student_view_data=poll,survey&requested_fields=children'
+            '&return_type=dict'.format(
+                api_base=settings.API_SERVER_ADDRESS,
+                course_block_api=COURSE_BLOCK_API,
+                course_id=course_id,
+            ),
+            body=course_poll_responses_response,
+            status=200,
+            content_type='application/json',
+            match_querystring=True,
+        )
+
+        expected = [
+            {
+                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_1',
+                'question': 'Question 1.1.1.1',
+                'lesson': 'L1 - Block chapter_block_1 of type chapter',
+                'module': 'M1 - Block vertical_block_1_1_1 of type vertical'
+            },
+            {
+                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_2',
+                'question': 'Question 1.1.1.2',
+                'lesson': 'L1 - Block chapter_block_1 of type chapter',
+                'module': 'M1 - Block vertical_block_1_1_1 of type vertical'
+            },
+            {
+                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_2_1',
+                'question': 'Question 1.1.2.1',
+                'lesson': 'L1 - Block chapter_block_1 of type chapter',
+                'module': 'M2 - Block vertical_block_1_1_2 of type vertical'
+            },
+            {
+                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_2_1_1_1',
+                'question': 'Question 2.1.1.1',
+                'lesson': 'L2 - Block chapter_block_2 of type chapter',
+                'module': 'M1 - Block vertical_block_2_1_1 of type vertical'
+            },
+        ]
+
+        result = get_course_block_of_types(course_id, block_types=['poll', 'survey'])
+        self.assertEqual(result, expected)

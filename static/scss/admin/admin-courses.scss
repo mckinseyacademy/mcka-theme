@@ -399,6 +399,30 @@
 }
 
 
+#courseBlocksGridWrapper {
+	#courseBlocksGrid, #courseProblemResponseReportsGrid {
+		padding: 0;
+		margin-bottom: 100px;
+
+		.bbGrid-grid.table {
+			min-width: 100%;
+			th, td {
+				word-break: normal;
+				text-align: left;
+				max-width: 600px;
+				overflow-x: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			tr.report-pending {
+				background-color:#c4e3f3;
+			}
+			tr.report-error {
+				background-color:#ebcccc;
+			}
+		}
+	}
+}
 
 #courseDetailsParticipantsGridWrapper{
 	margin-left: auto;
@@ -433,6 +457,7 @@
 		}
 	}
 }
+
 #courseDetailsMainContainer{
 
 	.courseParticipants
@@ -511,6 +536,26 @@
 	}
 }
 
+#courseBlocksButtonsContainer{
+
+	&.blockButtonsContainer
+	{
+		float: right;
+		z-index: 1000;
+		position: relative;
+	}
+
+	.blockButtonWrapper{
+		position: relative;
+
+		.hiddenButtonSplitModifier{
+			position: absolute;
+			z-index: 2;
+			width: 100%;
+			height: 100%;
+		}
+    }
+}
 
 #courseDetailsMainModal{
 	.courseModalTitle{
@@ -554,7 +599,7 @@
 	.templateNameLabel{
 		display: inline-block;
 	}
-	
+
 	.templateControlButtons{
 		float: right;
 
@@ -599,7 +644,7 @@
 		color: red;
 		padding-bottom: 10px;
 	}
-	
+
 	.newTagCreationPopup {
 		display: none;
 		position: absolute;
