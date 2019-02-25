@@ -9,6 +9,18 @@ from api_data_manager.organization_data import OrgDataManager
 from api_data_manager.user_data import UserDataManager
 
 
+NEW_UI_ADMIN_VIEWS = [
+    'company_dashboard',
+    'company_details',
+    'company_course_details',
+    'manager_dashboard',
+]
+
+
+def old_ui_for_admin_page(request):
+    return '/admin' in request.path and request.resolver_match.view_name not in NEW_UI_ADMIN_VIEWS
+
+
 def get_customization(request):
     organization = UserDataManager(str(request.user.id)).get_basic_user_data().get('organization')
     if not organization:
@@ -21,7 +33,7 @@ class CustomLoader:
         dirs = getattr(self, 'dirs', None) or self.engine.dirs
         request = thread_local.get_current_request()
 
-        if not hasattr(request, 'user') or not request.user.is_authenticated or '/admin' in request.path:
+        if not hasattr(request, 'user') or not request.user.is_authenticated or old_ui_for_admin_page(request):
             return dirs
 
         client_customizations = get_customization(request)
