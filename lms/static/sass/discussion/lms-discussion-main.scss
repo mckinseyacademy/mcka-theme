@@ -92,7 +92,8 @@ body.new-theme {
             min-width: 400px;
           }
 
-          &.js-post-title {
+          &.js-post-title,
+          &.edit-post-title {
             min-width: 400px;
           }
         }
@@ -229,7 +230,11 @@ body.new-theme {
             padding: 30px 0 30px;
 
 
-            .thread-title,
+            .thread-title {
+              display: block;
+              font-size: 20px;
+            }
+
             .field-help,
             .forum-new-post-form-wrapper>.post-field .field-label-text {
               display: none;
@@ -315,10 +320,6 @@ body.new-theme {
 
           .edit-post-form {
             min-width: auto !important;
-
-            .thread-title {
-              display: none;
-            }
 
             .forum-edit-post-form-wrapper {
               .post-field {

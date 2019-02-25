@@ -1,8 +1,10 @@
 // Overrides for Drag and Drop v2:
 @import '../base/variables';
+@import '../base/buttons';
 
 @mixin dnd-mobile-only {
-    @media screen and (max-width: 480px) { // Match the breakpoint used in the drag and drop XBlock's own CSS
+    @media screen and (max-width: 480px) {
+        // Match the breakpoint used in the drag and drop XBlock's own CSS
         @content;
     }
 }
@@ -11,7 +13,10 @@
 // Overrides that we want on Apros (desktop + mobile web) and native apps (webviews):
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .themed-xblock.xblock--drag-and-drop {
-    .drag-container, .target-img-wrapper, .actions-toolbar {
+
+    .drag-container,
+    .target-img-wrapper,
+    .actions-toolbar {
         /* Disallow selection on mobile, which causes problematic menu popups during drag and drop*/
         -webkit-touch-callout: none;
         -webkit-user-select: none;
@@ -23,14 +28,17 @@
 }
 
 .themed-xblock.xblock--drag-and-drop {
+
     // Hide the text at the top that says e.g. "1 point possible (ungraded)" (MCKIN-6169)
     .problem-progress {
         display: none;
     }
+
     // Don't display a border around the feedback text that appears below the drag and drop exercise (MCKIN-6169)
     .feedback p {
         border: none;
     }
+
     // Remove the grey background from disabled "reset" button
     .sidebar-buttons button:disabled {
         background-color: transparent;
@@ -53,6 +61,7 @@
     padding-right: -5px;
     padding-top: 5px;
 }
+
 .rtl .themed-xblock.xblock--drag-and-drop .actions-toolbar .action-toolbar-item.sidebar-buttons {
     float: left;
     padding-left: -5px;
@@ -60,12 +69,21 @@
 
 // Default of this series of tags is set to text-align left in LMS
 .rtl {
-    h1, h2, h3, h4, h5, h6, p, label {
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    label {
         text-align: right;
     }
 }
 
 @include dnd-mobile-only {
+
     /* Don't display "Keyboard Help" on mobile devices that don't have keyboards anyways */
     .themed-xblock.xblock--drag-and-drop .keyboard-help-button {
         display: none;
@@ -76,9 +94,12 @@
 // Overrides that we want on Apros (desktop + mobile web) only:
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 .lesson-content .themed-xblock.xblock--drag-and-drop // .lesson-content is specific to Apros
-{
+
+    {
+
     // In Apros, the popups should always have a turquiose color, whether they're right or wrong (MCKIN-6169)
-    .popup, .popup.popup-incorrect {
+    .popup,
+    .popup.popup-incorrect {
         background-color: $mckinsey-academy-turquoise;
     }
 
@@ -88,6 +109,7 @@
 
     // Apros mobile web overrides:
     @include dnd-mobile-only {
+
         // Fix positioning of feedback popups in Apros mobile web (https://github.com/mckinseyacademy/mcka_apros/pull/1715):
         // Without this fix, they overlap with the apros header
         .popup {
@@ -95,8 +117,10 @@
             top: 150px;
             transform: translateX(-50%);
         }
+
         // Feedback popups should always be white on mobile web:
-        .popup, .popup.popup-incorrect {
+        .popup,
+        .popup.popup-incorrect {
             background-color: #fff;
         }
     }
@@ -105,72 +129,252 @@
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Overrides that we want in the native mobile apps (webviews) only:
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-@include dnd-mobile-only { .course-wrapper.chromeless .themed-xblock.xblock--drag-and-drop {
-    // For the native mobile apps, there are some style overrides:
-    // TBD - what MCKIN ticket were these for?
-    .drag-container {
-        background-color: #f7f7f7;
-        padding: 15px;
-    }
+@include dnd-mobile-only {
+    .course-wrapper.chromeless .themed-xblock.xblock--drag-and-drop {
 
-    .drag-container .item-bank {
-        border: 0;
-    }
+        // For the native mobile apps, there are some style overrides:
+        // TBD - what MCKIN ticket were these for?
+        .drag-container {
+            background-color: #f7f7f7;
+            padding: 15px;
+        }
 
-    // Give the draggables a white background and blue text:
-    .option {
-        margin: 5px 7px 5px 0;
-        background-color: #fff;
-        font-weight: 600;
-        color: #193c56
-    }
+        .drag-container .item-bank {
+            border: 0;
+        }
 
-    .popup .popup-header-icon {
-        height: 32px;
-        position: relative;
-        margin-top: 10px;
-    }
+        // Give the draggables a white background and blue text:
+        .option {
+            margin: 5px 7px 5px 0;
+            background-color: #fff;
+            font-weight: 600;
+            color: #193c56
+        }
 
-    .popup .popup-header-icon span:before {
-        content: "\f058";
-        position: absolute;
-        left: 50%;
-        top: 7px;
-        transform: translateX(-50%);
-        width: 26px;
-        height: 26px;
-        color: #629a2c;
-        font-family: 'FontAwesome';
-    }
+        .popup .popup-header-icon {
+            height: 32px;
+            position: relative;
+            margin-top: 10px;
+        }
 
-    .popup .popup-content p {
-        color: #629a2c;
-    }
+        .popup .popup-header-icon span:before {
+            content: "\f058";
+            position: absolute;
+            left: 50%;
+            top: 7px;
+            transform: translateX(-50%);
+            width: 26px;
+            height: 26px;
+            color: #629a2c;
+            font-family: 'FontAwesome';
+        }
 
-    .popup .popup-content.popup-content-incorrect p {
-        color: #ff143e;
-    }
+        .popup .popup-content p {
+            color: #629a2c;
+        }
 
-    .popup button[class*="close"] span {
-        font-size: 16px;
-        font-weight: bold;
-    }
+        .popup .popup-content.popup-content-incorrect p {
+            color: #ff143e;
+        }
 
-    .popup .popup-header-icon-incorrect span:before {
-        content: "\f06a";
-        color: #ff143d;
-    }
+        .popup button[class*="close"] span {
+            font-size: 16px;
+            font-weight: bold;
+        }
 
-    //Drag & Drop list indentation
-    ul{
-        margin-left: 20px;
-        padding: 0;
-    }
+        .popup .popup-header-icon-incorrect span:before {
+            content: "\f06a";
+            color: #ff143d;
+        }
 
-    //To normalize extra indentation of nested list as it is being in use at number of places and a bit difficult
-    //task to relocate all the <ul><ul></ul></ul> structure to make it a valid markup. Issue # MCKIN-6959
-    ul > ul{
-        margin-left: 0;
-        padding: 0;
+        //Drag & Drop list indentation
+        ul {
+            margin-left: 20px;
+            padding: 0;
+        }
+
+        //To normalize extra indentation of nested list as it is being in use at number of places and a bit difficult
+        //task to relocate all the <ul><ul></ul></ul> structure to make it a valid markup. Issue # MCKIN-6959
+        ul>ul {
+            margin-left: 0;
+            padding: 0;
+        }
     }
-}}
+}
+
+body.new-theme {
+
+    #course-lessons {
+        font-family: "Open Sans", sans-serif !important;
+        margin-bottom: 15px;
+
+        .lesson-title {
+
+            .lesson-index,
+            .lesson-name {
+                color: #696969;
+                font-weight: normal;
+                font-size: 16px;
+            }
+        }
+
+        h1 {
+            color: $mckinsey-default-link;
+            font-size: 24px;
+            margin-top: 15px;
+
+            a {
+
+
+                i {
+                    display: none;
+                }
+            }
+        }
+
+        .lesson-content {
+            .themed-xblock {
+                &.xblock--drag-and-drop {
+                    max-width: 100%;
+                }
+
+                .problem-title {
+                    display: none;
+                }
+
+                .problem {
+                    .title1 {
+                        font-weight: normal;
+                        color: #000;
+                    }
+
+                    p {
+                        color: #000;
+                    }
+                }
+
+                .drag-container {
+                    background: #FFF;
+                    border: 1px solid #EEEEEE;
+
+                    .item-bank {
+                        background: #F5F5F5;
+                        border-radius: 0;
+                        border: 0;
+                        padding: 5px 0;
+
+                        .option {
+                            font-size: 14px;
+                            border-radius: 2px;
+                            font-weight: normal;
+                            background-color: #2042cb;
+                            padding: 12px 15px;
+                            cursor: grab;
+
+                            &:hover,
+                            &:focus {
+                                background-color: #0b0886;
+                                box-shadow: none;
+                            }
+                        }
+                    }
+
+                    @media (max-width: 767px) {
+                        .target {
+                            max-height: 300px;
+                            overflow: scroll;
+
+                            .target-img-wrapper {
+                                img {
+                                    max-height: 300px;
+                                    overflow: scroll;
+                                }
+                            }
+                        }
+                    }
+
+                    .target {
+                        margin: 1% auto;
+                        border: 1px solid #EEEEEE;
+
+                        .item-feedback-popup {
+                            .close-feedback-popup-button {
+                                background: none;
+
+                                &:hover {
+                                    background: none;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .actions-toolbar {
+                    margin: 10px 0;
+
+                    .action-toolbar-item {
+                        button {
+                            .fa {
+                                display: none;
+                            }
+
+                            opacity: 1;
+
+                            &.show-answer-button:not(:disabled) {
+                                @include secondary-button;
+
+                                &:active,
+                                &:hover {
+                                    @include secondary-button-hover;
+                                }
+                            }
+                        }
+
+                        button[disabled] {
+                            background-color: #696969 !important;
+                            color: #EEEEEE;
+                            opacity: 1;
+                        }
+                    }
+                }
+
+                .feedback {
+                    .feedback-content {
+                        .title1 {
+                            color: #000;
+                            font-weight: 600;
+                        }
+
+                        .messages {
+                            .message {
+                                border: 0 !important;
+
+                                &.correct {
+                                    color: #008000;
+                                    &:before {
+                                        font-family: "Material Icons";
+                                        content: "\e145";
+                                    }
+                                }
+                                &.incorrect {
+                                    color: #D50000;
+                                    &:before {
+                                        font-family: "Material Icons";
+                                        content: "\e145";
+                                    }
+                                }
+                                &.partial {
+                                    color: #000;
+                                    &:before {
+                                        font-family: "Material Icons";
+                                        content: "\e145";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
