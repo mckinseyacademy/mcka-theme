@@ -1,0 +1,54 @@
+.choice-selector
+{
+  position:relative;
+  overflow:hidden;
+  width:16px;
+  height:16px;
+  border-radius:3px;
+  
+  [type="checkbox"]
+  {
+    opacity:0;
+  }
+  &:before
+  {
+    content:'';
+    box-sizing:border-box;
+    width:16px;
+    height:16px;
+    background:#E4E4E5;
+    border-radius:3px;
+    position:absolute;
+    border:2px solid $black;
+    display:inline-block;
+    
+  }
+  
+  &:after
+  {
+    content: "";
+      position: absolute;
+      display: none;
+      left: 5px;
+      top: 2px;
+      width: 4px;
+      height: 9px;
+      border: solid $white;
+      border-width: 0 1px 1px 0;
+      -webkit-transform: rotate(43deg);
+      -ms-transform: rotate(43deg);
+      transform: rotate(43deg);
+  }
+  
+  &.selected
+  {
+   
+      &:after{
+          display: block;
+        }
+    
+    &:before{
+      background:$black;
+    }
+  }
+}

@@ -1,5 +1,10 @@
 // Overrides for Problem Builder
 // from https://github.com/open-craft/problem-builder/blob/7e76920/problem_builder/public/themes/apros.css
+
+@import "vars/variables";
+@import "form/checkbox";
+@import "mixins/mixins";
+
 .themed-xblock.mentoring {
     .choices-list .choice-selector {
         padding: 4px 3px 0 3px;
