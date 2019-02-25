@@ -12,7 +12,7 @@ body.new-theme {
                     .language-tracks {
                         ul {
                             li {
-                                font-size: 14px;
+                                font-size: 0.875rem;
                             }
                         }
                     }
@@ -106,7 +106,7 @@ body.new-theme {
             .p3sdk-interactive-transcript-collapse-visible {
                 a {
                     .transcript-toggle {
-                        color: #2042cb;
+                        color: $mckinsey-default-link;
                         padding-right: 5px;
                     }
 
@@ -114,7 +114,7 @@ body.new-theme {
                         font-family: "Material Icons";
                         font-size: 1.125rem;
                         color: $mckinsey-default-link;
-                        font-size: 40px;
+                        font-size: 2.5rem;
                         vertical-align: middle;
 
                         &.fa-sort-desc {
@@ -146,8 +146,8 @@ body.new-theme {
                 .language-tracks {
                     ul {
                         li {
-                            color: #2042cb !important;
-                            font-size: 16px;
+                            color: $mckinsey-default-link !important;
+                            font-size: 1rem;
                             font-weight: 400;
 
                             &.selected {
