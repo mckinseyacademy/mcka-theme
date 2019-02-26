@@ -9,25 +9,15 @@
     = program.display_name
     {% trans " | McKinsey Academy | Learner Dashboard" %}
 - block content
+  - include 'courses/course_learner_dashboard_branding.haml'
   #learner-dashboard
-    .learner-nav
-      .container
-        %ul.nav.tertiary.d-none.d-sm-block
-          - if calendar_enabled
-            %li
-              %a.active{:href => "#"} Calender
-          - if feature_flags.discussions
-            %li
-              %a{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/discussion"} Discussions
-          - if feature_flags.resources
-            %li
-              %a{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources"} Resources
+    - include 'courses/course_learner_dashboard_header.haml'
     .container.full
       .row
         .col-lg-8
           .gallery-card
-            .gallery-title= learner_dashboard.title
-            .gallery-content
+            .gallery-title{"style": "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
+            .gallery-content{"style": "color:#{learner_dashboard.description_color}"}
               %p= learner_dashboard.description
             .gallery
               .row
@@ -37,22 +27,25 @@
                       .image-holder
                         %img{:alt => "images", :src => "/company_images/#{tile.background_image}"}
                       .content
-                        .tag
+                        .tag{"style": "color: #{tile.label_color};"}
                           -if tile.label
                             = tile.label
                           -else
                             = tile.get_tile_type_display
-                        .title= tile.title
-                        .date= tile.note
+                        .title{'style': "color: #{tile.title_color};"}= tile.title
+                        .date{'style': "color: #{tile.note_color};"}= tile.note
 
         .col-lg-4
-          .side-content
-            .tag {% trans "for discovery" %}
+          .side-content{"style": "{% if branding and branding.discover_rule_color %} border-color:#{branding.discover_rule_color}{% endif %}"}
+            .tag{"style": "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"} {% trans "for discovery" %}
             -for item in discovery_items
               .review-holder
                 %h3.review
-                  %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')"}= item.title
-                .review-by= item.author
+                  %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}
+                    = item.title
+                .review-by
+                  %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", "style": "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}
+                    = item.author
 
 - block js_snippets
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
@@ -63,17 +56,17 @@
 
   %script
     $(".gallery").mCustomScrollbar({
-        theme:"inset-2-dark"
+      theme:"inset-2-dark"
     });
 
 - block heap_events
   %script
     if ('{{user.id}}') {
-        heap.identify('{{user.id}}');
+      heap.identify('{{user.id}}');
     }
     if ('{{client_id}}') {
-         heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
+      heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
     }
     if ('{{course.id}}' && '{{learner_dashboard.title}}') {
-     heap.track('LEARNER_DASHBOARD_VISITED', {COURSE_ID: '{{course_id}}', LEARNER_DASHBOARD_NAME: '{{learner_dashboard.title}}', USER_ID: '{{user.id}}'});
+      heap.track('LEARNER_DASHBOARD_VISITED', {COURSE_ID: '{{course_id}}', LEARNER_DASHBOARD_NAME: '{{learner_dashboard.title}}', USER_ID: '{{user.id}}'});
     }

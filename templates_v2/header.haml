@@ -4,21 +4,26 @@
 - get_current_language as LANGUAGE_CODE
 - get_available_languages as LANGUAGES
 
-%header.appHeader
+%header.appHeader{"style": "{% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
   .container
     .row
       .col
         .logo.clearfix
           %div.all-logos
-            - if client_customization.global_client_logo
+            - if branding.logo_image
               %a.navbar-brand{:href => "/"}
-                %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
+                %img{:src => "/company_images/#{branding.logo_image}", :width => "160"}
             - else
-              %a.navbar-brand{:href => "/"}
-                %img{:src => "static/image/McKA-logo-blue.svg", :width => "160"}
-            - if client_customization.client_logo
-              %a.navbar-brand{:href => "/"}
-                %img{:src => "{{client_customization.client_logo}}", :width => "160"}
+              - if client_customization.global_client_logo
+                %a.navbar-brand{:href => "/"}
+                  %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
+              - else
+                %a.navbar-brand{:href => "/"}
+                  %img{:src => "static/image/McKA-logo-blue.svg", :width => "160"}
+              - if client_customization.client_logo
+                %a.navbar-brand{:href => "/"}
+                  %img{:src => "{{client_customization.client_logo}}", :width => "160"}
+
 
           - if request.user.is_authenticated
             .topRightArea

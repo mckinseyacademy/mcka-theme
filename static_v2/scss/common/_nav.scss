@@ -11,14 +11,9 @@
             @include font-size(12);
             text-transform: uppercase;
             letter-spacing: 0.9px;
-            color:$primary;
+            color: var(--primary);
             @include transition();
-
-            &:hover
-            {
-                color:$dark-blue;
-            }
-            &.active 
+            &.active
             {
                 color:$smoke-gray;
             }
@@ -57,7 +52,7 @@
                 border-top: 1px solid #EBEBEB;
                 padding: 12px 0 12px 30px;
                 display:block;
-    
+
             }
         }
     }
