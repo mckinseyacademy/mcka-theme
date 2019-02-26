@@ -8,6 +8,7 @@
     font-weight: normal $isImportant;
     background-color: $mckinsey-primary-default-button $isImportant;
     height: 40px !important;
+    box-shadow: none;
 }
 
 @mixin primary-button-hover ($isImportant:null) {
@@ -19,22 +20,25 @@
     font-weight: normal $isImportant;
     background-color: #0b0886 !important;
     height: 40px !important;
+    box-shadow: none;
 
 }
 
 @mixin primary-button-large ($isImportant:null) {
     @include primary-button($isImportant);
     height: 50px !important;
-    font-size: 1rem $isImportant;
-    padding: 3px 30px $isImportant;
+    font-size: 1rem !important;
+    padding: 3px 30px !important;
+    box-shadow: none;
 
 }
 
 @mixin primary-button-hover-large ($isImportant:null) {
     @include primary-button-hover($isImportant);
     height: 50px !important;
-    padding: 3px 30px $isImportant;
-    font-size: 1rem $isImportant;
+    padding: 3px 30px !important;
+    font-size: 1rem !important;
+    box-shadow: none;
 }
 
 @mixin secondary-button ($isImportant:null) {
