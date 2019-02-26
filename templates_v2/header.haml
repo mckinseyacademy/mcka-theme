@@ -92,9 +92,20 @@
               %nav.nav.mainNav.headerNav
                 %ul
                   - if request.user.is_manager
-                    %li
-                      %a.nav-link.ome.dome-c{:href => "/admin/manager/team_report"}
-                        {% trans "TEAM REPORTS" %}
+                    {% url 'manager_dashboard' as manager_dashboard_url %}
+                    %li{class: "{% if request.path == manager_dashboard_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{manager_dashboard_url}}"}
+                        {% trans "team reports" %}
+                  - if request.user.is_mcka_admin or request.user.is_internal_admin or request.user.is_mcka_subadmin
+                    {% url 'admin_home' as admin_home_url %}
+                    %li{class: "{% if request.path == admin_home_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{admin_home_url}}"}
+                        {% trans "admin" %}
+                  - elif request.user.is_company_admin
+                    {% url 'company_dashboard' as company_dashboard_url %}
+                    %li{class: "{% if request.path == company_dashboard_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{company_dashboard_url}}"}
+                        {% trans "company admin" %}
                   %li
                     %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
                       {% trans "dashboard" %}
@@ -114,8 +125,9 @@
                             %a{:href => "#"} Resources
 
                         %a.dropdown-item.ome.dome-c{:href => "#"} Leadership Development Program
-                  %li.active
-                    %a.nav-link.ome.dome-c{:href => "/courses"}
+                  {% url 'courses' as courses_url %}
+                  %li{class: "{% if request.path == courses_url %}active{% endif %}"}
+                    %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
                       {% trans "my courses" %}
 
           - else
