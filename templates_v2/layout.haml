@@ -119,11 +119,6 @@
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
 
-    - if '/admin' in request.path
-      {% assets "css_admin" %}
-        %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
-      {% endassets %}
-
     -# Custom head JS
     - block head_js
 

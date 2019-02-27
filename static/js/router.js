@@ -296,6 +296,7 @@ var Router = Backbone.Router.extend({
   },
   manager_dashboard_report: function () {
     var course_index = $('a.hashPageButton.active').attr("data-course-index");
+
     if (course_index) {
       Apros.Router.linked_views['managerDashboardCourse'+course_index]['drawn'] = true;
       var course_id = $('a.hashPageButton.active').attr("data-course");

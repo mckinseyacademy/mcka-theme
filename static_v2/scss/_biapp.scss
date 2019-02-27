@@ -214,20 +214,24 @@
   }
 }
 
-// Widgets
-#course-statistics {
-  .widget {
-    @include border-left(1px solid $hard-gray);
 
+// Progress widgets
+.progressWidgets{
+  .widget{
+    @include border-left(1px solid $hard-gray);
     &:first-child {
       @include padding-left(0);
       @include border-left(0);
     }
-
     &:last-child {
       @include padding-right(0);
     }
+  }
+}
 
+// Course Landing Page
+#course-statistics {
+  .widget {
     .progressArea {
       @include float(right);
 
@@ -235,7 +239,6 @@
         float: none;
       }
     }
-
     &.course-progress {
       .progressArea {
         @include float(none);
@@ -388,7 +391,7 @@
 }
 
 // Lesson Page
-.lessonOverview {
+.contentCard {
   .headerArea {
     @include padding-right(35px);
 
@@ -508,6 +511,13 @@ body.rtl {
       right: 0 !important;
       left: auto;
     }
+    &.adminModules{
+       @include left(0 !important);
+        @include right(auto !important);
+      &:after{
+        display: none;
+      }
+    }
   }
 
   .mapboxgl-ctrl-top-left {
@@ -595,6 +605,8 @@ body.rtl {
     }
   }
 }
+
+
 
 @media screen and (max-width: 992px) {
   .appHeader {

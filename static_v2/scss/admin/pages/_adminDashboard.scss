@@ -1,0 +1,121 @@
+// Admin Dashboard Styles
+
+#admin-body {
+  .contentCard {
+    .headerArea {
+      margin-bottom: 20px;
+    }
+  }
+}
+#managerDashboardWrapper {
+  margin: 0 auto;
+  .navigation {
+    ul {
+      li {
+        .hashPageButton {
+          display: block;
+          margin-top: 10px;
+          margin-right: 20px;
+          text-transform: uppercase;
+          border-bottom: 3px solid transparent;
+          &.active {
+            border-bottom: 3px solid $mckinsey-light-blue;
+            font-weight: bold;
+          }
+        }
+        >a{
+          display: none;
+          font-weight: normal;
+          &.active{
+            font-weight: normal !important;
+          }
+        }
+      }
+    }
+  }
+  .bbGrid-search-bar {
+    padding: 0 1.07143rem;
+    margin-top: 15px;
+    input {
+      float: left !important;
+    }
+  }
+  table {
+    min-width: 68.57143rem;
+    th {
+      color: $black;
+    }
+    td, th {
+      white-space: nowrap;
+    }
+    td {
+      position: relative;
+      z-index: 0;
+      color: $gray;
+      &.progress {
+        background: transparent;
+        color: $mckinsey-dark-grey;
+        text-align: left;
+        border-radius: 0 !important;
+        span {
+          vertical-align: middle;
+          &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            background-color: $manager-progress-green;
+            z-index: -1;
+            width: inherit;
+          }
+        }
+      }
+      &.status {
+        position: relative;
+        &:before {
+          content: '';
+          position: absolute;
+          left: 10px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 10px;
+          height: 10px;
+          border-radius: 100%;
+        }
+      }
+      &:first-child {
+        color: $black;
+      }
+    }
+  }
+
+  #managerDashboardContainer {
+    .bbGrid-container {
+      table {
+        min-width: 100%;
+        tr {
+          td {
+            &:last-child {
+              width: 134px;
+              position: relative;
+              display: table-cell;
+            }
+            .toggle-subgrid {
+              color: var(--primary);
+            }
+          }
+          &[class*="subgrid"] {
+            td {
+              &:last-child {
+                width: auto;
+                position: relative;
+                display: table-cell;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
