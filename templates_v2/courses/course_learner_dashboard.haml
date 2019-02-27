@@ -1,17 +1,9 @@
-- extends "layout.haml"
+- extends "courses/course_base_ld.haml"
 - load staticfiles
 - load i18n
 
-- block page_title
-  %title
-    = request.session.client_display_name
-    = " | "
-    = program.display_name
-    {% trans " | McKinsey Academy | Learner Dashboard" %}
 - block content
-  - include 'courses/course_learner_dashboard_branding.haml'
   #learner-dashboard
-    - include 'courses/course_learner_dashboard_header.haml'
     .container.full
       .row
         .col-lg-8
@@ -40,12 +32,20 @@
             .tag{"style": "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"} {% trans "for discovery" %}
             -for item in discovery_items
               .review-holder
-                %h3.review
-                  %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}
-                    = item.title
-                .review-by
-                  %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", "style": "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}
-                    = item.author
+                - if item.link
+                  %h3.review
+                    %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}
+                      = item.title
+                  .review-by
+                    %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", "style": "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}
+                      = item.author
+                - else
+                  %h3.review
+                    %a{target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}
+                      = item.title
+                  .review-by
+                    %a{target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", "style": "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}
+                      = item.author
 
 - block js_snippets
   %script{src: "{% static 'js/course_contact_modal.js' %}"}

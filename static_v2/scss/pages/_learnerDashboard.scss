@@ -1,24 +1,26 @@
+// Learner Nav
+
+.learner-nav {
+    margin-top: -36px;
+    background: #f3f4f6;
+    border-bottom: 5px solid #dfb836;
+    line-height: 37px;
+
+    ul {
+        margin: 0;
+        list-style: none;
+
+        li {
+            display: inline-block;
+            margin-right: 10px;
+        }
+    }
+}
+
+
 #learner-dashboard {
     margin: -36px auto -96px;
     padding-bottom: 30px;
-
-    // Learner Nav
-
-    .learner-nav {
-        background: #f3f4f6;
-        border-bottom: 5px solid #dfb836;
-        line-height: 37px;
-
-        ul {
-            margin: 0;
-            list-style: none;
-
-            li {
-                display: inline-block;
-                margin-right: 10px;
-            }
-        }
-    }
 
     // Learner Content
 
@@ -146,7 +148,7 @@
     {
         border-top:1px solid #f3f4f6;
         border-bottom:1px solid #f3f4f6;
-        color: #868685;
+        color: var(--secondary);
         margin-top: 88px;
         padding:10px 0;
 
@@ -169,16 +171,16 @@
                 margin-bottom: 5px;
                 a
                 {
-                    color: $primary;
+                    color: var(--primary);
                 }
             }
             .review-by
             {
                 @include font-size(14);
-                color: $primary;
+                color: var(--primary);
                 a
                 {
-                    color: $primary;
+                    color: inherit;
                 }
             }
         }

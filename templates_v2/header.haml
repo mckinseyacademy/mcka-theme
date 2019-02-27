@@ -4,7 +4,7 @@
 - get_current_language as LANGUAGE_CODE
 - get_available_languages as LANGUAGES
 
-%header.appHeader{"style": "{% if branding and branding.top_bar_color %} background-color: #{branding.top_bar_color};{% endif %}"}
+%header.appHeader
   .container
     .row
       .col
@@ -111,6 +111,12 @@
                     %li{class: "{% if request.path == company_dashboard_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{company_dashboard_url}}"}
                         {% trans "company admin" %}
+                  - elif request.user.is_mcka_ta
+                    {% url 'workgroup_list' as workgroup_list_url %}
+                    %li{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
+                        {% trans "Admin" %}
+
                   %li
                     %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
                       {% trans "dashboard" %}
