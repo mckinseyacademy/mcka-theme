@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import json
 from urlparse import urlparse, parse_qs
 
@@ -502,23 +504,24 @@ class TestCourseApi(TestCase):
                 course_block(*args, **kwargs) for (args, kwargs) in (
                     (
                         ('course', 'course'),
-                        {'children': ['chapter_block_1', 'chapter_block_2']}
+                        {'children': ['chapter_block_1', 'الفصل_block_2']}
                     ),
                     (
                         ('chapter_block_1', 'chapter'),
                         {'children': ['sequential_block_1_1']}
                     ),
                     (
-                        ('chapter_block_2', 'chapter'),
-                        {'children': ['sequential_block_2_1']}
+                        # Added this chapter and its descendents to test unicode errors
+                        ('الفصل_block_2', 'chapter'),
+                        {'children': ['تسلسلي_block_2_1']}
                     ),
                     (
                         ('sequential_block_1_1', 'sequential'),
                         {'children': ['vertical_block_1_1_1', 'vertical_block_1_1_2']}
                     ),
                     (
-                        ('sequential_block_2_1', 'sequential'),
-                        {'children': ['vertical_block_2_1_1']}
+                        ('تسلسلي_block_2_1', 'sequential'),
+                        {'children': ['عمودي_block_2_1_1']}
                     ),
                     (
                         ('vertical_block_1_1_1', 'vertical'),
@@ -529,7 +532,7 @@ class TestCourseApi(TestCase):
                         {'children': ['poll_block_1_1_2_1']}
                     ),
                     (
-                        ('vertical_block_2_1_1', 'vertical'),
+                        ('عمودي_block_2_1_1', 'vertical'),
                         {'children': ['poll_block_2_1_1_1']}
                     ),
                     (
@@ -550,7 +553,7 @@ class TestCourseApi(TestCase):
                     ),
                     (
                         ('poll_block_2_1_1_1', 'poll'),
-                        {'student_view_data': '2.1.1.1'}
+                        {'student_view_data': '二.1.1.1'}
                     ),
                 )
             ])
@@ -597,9 +600,9 @@ class TestCourseApi(TestCase):
             },
             {
                 'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_2_1_1_1',
-                'question': 'Question 2.1.1.1',
-                'lesson': 'L2 - Block chapter_block_2 of type chapter',
-                'module': 'M1 - Block vertical_block_2_1_1 of type vertical'
+                'question': 'Question 二.1.1.1',
+                'lesson': 'L2 - Block الفصل_block_2 of type chapter',
+                'module': 'M1 - Block عمودي_block_2_1_1 of type vertical'
             },
         ]
 

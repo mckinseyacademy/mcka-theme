@@ -791,7 +791,7 @@ def build_block_tree(blocks):
 
 BLOCK_QUESTION_EXTRACTOR = {
     'poll': lambda data: data['question'],
-    'survey': lambda data: ', '.join(item[1]['label'] for item in data['questions'])
+    'survey': lambda data: u', '.join(item[1]['label'] for item in data['questions'])
 }
 
 
@@ -849,8 +849,8 @@ def get_course_block_of_types(course_id, block_types):
                 {
                     'id': block['id'],
                     'question': get_question_from_block(block),
-                    'module': 'M{} - {}'.format(*module),
-                    'lesson': 'L{} - {}'.format(*lesson),
+                    'module': u'M{} - {}'.format(*module),
+                    'lesson': u'L{} - {}'.format(*lesson),
                 }
             )
         for child in block.get('children', []):
