@@ -105,13 +105,13 @@
                     {% url 'admin_home' as admin_home_url %}
                     %li{class: "{% if request.path == admin_home_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{admin_home_url}}"}
-                        {% trans "admin" %}
+                        {% trans "company admin" %}
                   - elif request.user.is_company_admin
                     {% url 'company_dashboard' as company_dashboard_url %}
                     %li{class: "{% if request.path == company_dashboard_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{company_dashboard_url}}"}
                         {% trans "company admin" %}
-                  - elif request.user.is_mcka_ta
+                  - if request.user.is_mcka_ta
                     {% url 'workgroup_list' as workgroup_list_url %}
                     %li{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}

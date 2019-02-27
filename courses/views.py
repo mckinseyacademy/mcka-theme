@@ -485,6 +485,10 @@ def course_discussion_userprofile(request, course_id, user_id):
     return render(request, 'courses/course_discussion_userprofile.haml', data)
 
 
+def _course_modules_count(course):
+    return sum(len(m.children) for c in course.chapters for m in c.children)
+
+
 def _course_progress_for_user(request, course_id, user_id):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     if feature_flags and not feature_flags.progress_page:
@@ -691,6 +695,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "course_run": course_run,
         'feature_flags': feature_flags,
         'course': course,
+        'total_modules': _course_modules_count(course)
     }
 
     if progress_user.id != request.user.id:

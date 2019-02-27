@@ -11,6 +11,7 @@ from api_data_manager.organization_data import OrgDataManager
 from api_data_manager.common_data import CommonDataManager, COMMON_DATA_PROPERTIES
 from api_data_manager.course_data import CourseDataManager
 from admin.models import Program
+from admin.controller import load_course
 from api_client import user_api, course_api, mobileapp_api, organization_api
 from .controller import (
     load_static_tabs, get_completion_percentage_from_id,
@@ -176,9 +177,9 @@ def load_course_progress(course, user_id=None, username=None):
 
 def standard_data(request):
     """
-    Makes course, program and client info available to all templates
+    Makes current_course, program and client info available to all templates
     """
-    course = None
+    current_course = None
     program = None
     client_nav_links = None
     client_customization = None
@@ -189,26 +190,30 @@ def standard_data(request):
     lessons_custom_label = None
     module_custom_label = None
     modules_custom_label = None
+    course = None
 
     if request.user and request.user.id:
+        course_id = request.resolver_match.kwargs.get('course_id')
+        if course_id:
+            course = load_course(course_id, request=request, depth=0)
         user_data_manager = UserDataManager(user_id=request.user.id)
 
         user_data = user_data_manager.get_basic_user_data()
 
         program = user_data.current_program
-        course = user_data.current_course
+        current_course = user_data.current_course
         organization = user_data.organization
 
-        if course:
-            feature_flags = CourseDataManager(course.id).get_feature_flags()
-            course_meta_data = CourseDataManager(course.id).get_course_meta_data()
+        if current_course:
+            feature_flags = CourseDataManager(current_course.id).get_feature_flags()
+            course_meta_data = CourseDataManager(current_course.id).get_course_meta_data()
 
-            if course.ended:
-                if len(course.name) > 37:
-                    course.name = course.name[:37] + '...'
+            if current_course.ended:
+                if len(current_course.name) > 37:
+                    current_course.name = current_course.name[:37] + '...'
             else:
-                if len(course.name) > 57:
-                    course.name = course.name[:57] + '...'
+                if len(current_course.name) > 57:
+                    current_course.name = current_course.name[:57] + '...'
 
             if course_meta_data:
                 lesson_custom_label = course_meta_data.lesson_label
@@ -227,11 +232,11 @@ def standard_data(request):
                 branding = client_data.branding
 
     data = {
-        "current_course": course,
+        "current_course": current_course,
         "program": program,
         'feature_flags': feature_flags,
-        'namespace': course.id if course else None,
-        'course_name': course.name if course else None,
+        'namespace': current_course.id if current_course else None,
+        'course_name': current_course.name if current_course else None,
         "client_customization": client_customization,
         "client_nav_links": client_nav_links,
         "branding": branding,
@@ -240,6 +245,7 @@ def standard_data(request):
         "module_custom_label": module_custom_label,
         "lessons_custom_label": lessons_custom_label,
         "modules_custom_label": modules_custom_label,
+        "active_course": course
     }
 
     return data

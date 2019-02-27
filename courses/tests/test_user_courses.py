@@ -137,6 +137,7 @@ class TestStandardData(TestCase, ApplyPatchMixin):
     def setUp(self):
         self.request = mock.Mock()
         self.request.user.id = 1
+        self.request.resolver_match.kwargs.get = lambda _: None
 
         self.course_name = "MckinseyMckinseyMckinseyMckinseyMckinseyMckinseyMckinseyMckinsey"
         course = {
