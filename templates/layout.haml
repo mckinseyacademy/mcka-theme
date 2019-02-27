@@ -187,7 +187,10 @@
 
         /* if in an iframe, set referrer url into a cookie */
         if(parent !== window){
-          $.cookie('referrer_url', document.referrer);
+          // Set cookie first time when document.referrer is window.parent.location.href
+          if (typeof $.cookie('referrer_url') === 'undefined'){
+            $.cookie('referrer_url', document.referrer);
+          }
         }
       });
 
