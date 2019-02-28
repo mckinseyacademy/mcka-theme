@@ -117,30 +117,35 @@
                       %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
                         {% trans "Admin" %}
 
-                  %li
-                    %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
-                      {% trans "dashboard" %}
-                    - if LANGUAGE_BIDI
-                      %div{'class' : 'dropdown-menu-left dropdown-menu middle-menu clearfix dashboard-menu'}
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Executive Leadership Program
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Leadership Development Program
-                    - else
-                      %div{'class' : 'dropdown-menu-right dropdown-menu middle-menu clearfix'}
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Executive Leadership Program
-                        %ul.sub-nav.d-block.d-sm-none
-                          %li
-                            %a.active{:href => "#"} Calender
-                          %li
-                            %a{:href => "#"} Discussions
-                          %li
-                            %a{:href => "#"} Resources
+                  - if learner_dashboards|length > 1
+                    %li
+                      %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
+                        {% trans "dashboard" %}
 
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Leadership Development Program
+                      %div{'class' : 'dropdown-menu-left dropdown-menu middle-menu clearfix dashboard-menu'}
+                        %ul.sub-nav
+                          - for dashboard in learner_dashboards
+                            %li
+                              %a.dropdown-item.ome.dome-c{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
+                                - if request.session.last_visited_course and dashboard.course_id == request.session.last_visited_course
+                                  %span.bookmark
+
+                  - elif learner_dashboards|length == 1
+                    %li
+                      %a.nav-link.ome.dome-c{:href => "/courses/{{learner_dashboards.0.course_id}}"}
+                        {% trans "dashboard" %}
+                  %ul.sub-nav.d-block.d-sm-none
+                    %li
+                      %a.active{:href => "#"} {% trans "Calender" %}
+                    %li
+                      %a{:href => "#"} {% trans "Discussions" %}
+                    %li
+                      %a{:href => "#"} {% trans "Resources" %}
+
                   {% url 'courses' as courses_url %}
                   %li{class: "{% if request.path == courses_url %}active{% endif %}"}
                     %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
                       {% trans "my courses" %}
-
           - else
             - if use_i18n
               .language-selector

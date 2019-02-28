@@ -43,6 +43,7 @@
 
         li
         {
+            position: relative;
             a
             {
                 color: $primary;
@@ -52,7 +53,6 @@
                 border-top: 1px solid #EBEBEB;
                 padding: 12px 0 12px 30px;
                 display:block;
-
             }
         }
     }

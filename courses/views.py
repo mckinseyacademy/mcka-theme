@@ -53,7 +53,7 @@ from .controller import (
     get_user_social_metrics,
     fix_resource_page_video_scripts,
     get_assessment_module_name_translation,
-)
+    get_learner_dashboard)
 from .course_tree_builder import CourseTreeBuilder
 from .models import LessonNotesItem, FeatureFlags, CourseMetaData
 from .user_courses import (
@@ -137,24 +137,6 @@ def course_landing_page(request, course_id):
         data.update(mobile_popup_data)
 
     return render(request, 'courses/course_main.haml', data)
-
-
-def get_learner_dashboard(request, course_id):
-
-    learner_dashboard = None
-
-    if settings.LEARNER_DASHBOARD_ENABLED:
-        feature_flags = CourseDataManager(course_id).get_feature_flags()
-        if feature_flags.learner_dashboard:
-            organizations = user_api.get_user_organizations(request.user.id)
-            if len(organizations) > 0:
-                organization = organizations[0]
-                request.session['client_display_name'] = organization.display_name
-                try:
-                    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id)
-                except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
-                    pass
-    return learner_dashboard
 
 
 @login_required

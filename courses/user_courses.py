@@ -16,7 +16,7 @@ from api_client import user_api, course_api, mobileapp_api, organization_api
 from .controller import (
     load_static_tabs, get_completion_percentage_from_id,
     set_user_course_progress,
-)
+    user_learner_dashboards)
 
 CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
@@ -191,6 +191,7 @@ def standard_data(request):
     module_custom_label = None
     modules_custom_label = None
     course = None
+    learner_dashboards = None
 
     if request.user and request.user.id:
         course_id = request.resolver_match.kwargs.get('course_id')
@@ -203,6 +204,7 @@ def standard_data(request):
         program = user_data.current_program
         current_course = user_data.current_course
         organization = user_data.organization
+        learner_dashboards = user_learner_dashboards(request, user_data.courses)
 
         if current_course:
             feature_flags = CourseDataManager(current_course.id).get_feature_flags()
@@ -245,7 +247,8 @@ def standard_data(request):
         "module_custom_label": module_custom_label,
         "lessons_custom_label": lessons_custom_label,
         "modules_custom_label": modules_custom_label,
-        "active_course": course
+        "active_course": course,
+        "learner_dashboards": learner_dashboards,
     }
 
     return data

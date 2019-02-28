@@ -16,7 +16,8 @@ from accounts.middleware.thread_local import (
     get_static_tab_context,
 )
 from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
-from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress
+from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress, \
+    LearnerDashboard
 from api_client import course_api, user_api, workgroup_api, project_api
 from api_client.api_error import ApiError
 from api_client.course_api import tabs_post_process
@@ -28,6 +29,7 @@ from api_client.json_object import JsonParser
 from api_client.project_models import Project
 from api_client.user_api import USER_ROLES, workgroup_models
 from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
+from api_data_manager.user_data import UserDataManager
 from lib.utils import PriorIdConvert
 
 log = logging.getLogger(__name__)
@@ -1030,3 +1032,30 @@ def get_non_staff_user(course_id):
             break
 
     return non_staff_user
+
+
+def get_learner_dashboard(request, course_id):
+
+    learner_dashboard = None
+
+    if settings.LEARNER_DASHBOARD_ENABLED:
+        feature_flags = CourseDataManager(course_id).get_feature_flags()
+        if feature_flags.learner_dashboard:
+            organization = UserDataManager(request.user.id).get_basic_user_data().organization
+            if organization:
+                request.session['client_display_name'] = organization.display_name
+                try:
+                    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id)
+                except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
+                    pass
+    return learner_dashboard
+
+
+def user_learner_dashboards(request, user_courses):
+    learner_dashboards = []
+
+    for course in user_courses:
+        dashboard = get_learner_dashboard(request, course_id=course.id)
+        if dashboard:
+            learner_dashboards.append(dashboard)
+    return learner_dashboards

@@ -643,3 +643,19 @@ body.rtl {
     }
   }
 }
+
+.sub-nav
+    {
+
+        li
+        {
+            a
+            {
+                .bookmark
+                {
+                    @include left(-30px);
+                }
+
+            }
+        }
+    }
