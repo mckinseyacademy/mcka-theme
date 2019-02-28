@@ -10,20 +10,15 @@
       .col
         .logo.clearfix
           %div.all-logos
-            - if branding.logo_image
+            - if client_customization.global_client_logo
               %a.navbar-brand{:href => "/"}
-                %img{:src => "/company_images/#{branding.logo_image}", :width => "160"}
+                %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
             - else
-              - if client_customization.global_client_logo
-                %a.navbar-brand{:href => "/"}
-                  %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
-              - else
-                %a.navbar-brand{:href => "/"}
-                  %img{:src => "static/image/McKA-logo-blue.svg", :width => "160"}
-              - if client_customization.client_logo
-                %a.navbar-brand{:href => "/"}
-                  %img{:src => "{{client_customization.client_logo}}", :width => "160"}
-
+              %a.navbar-brand{:href => "/"}
+                %img{:src => "static/image/McKA-logo-blue.svg", :width => "160"}
+            - if client_customization.client_logo
+              %a.navbar-brand{:href => "/"}
+                %img{:src => "{{client_customization.client_logo}}", :width => "160"}
 
           - if request.user.is_authenticated
             .topRightArea
@@ -105,8 +100,8 @@
                     {% url 'admin_home' as admin_home_url %}
                     %li{class: "{% if request.path == admin_home_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{admin_home_url}}"}
-                        {% trans "company admin" %}
-                  - elif request.user.is_company_admin
+                        {% trans "admin" %}
+                  - if request.user.is_company_admin
                     {% url 'company_dashboard' as company_dashboard_url %}
                     %li{class: "{% if request.path == company_dashboard_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{company_dashboard_url}}"}
@@ -115,7 +110,7 @@
                     {% url 'workgroup_list' as workgroup_list_url %}
                     %li{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
-                        {% trans "Admin" %}
+                        {% trans "admin" %}
 
                   - if learner_dashboards|length > 1
                     %li
