@@ -3,6 +3,8 @@
 body.new-theme {
     .lesson-content {
         .themed-xblock {
+            margin-bottom: 20px;
+
             .poll-header {
                 font-size: 12px;
                 color: #000;
@@ -17,25 +19,104 @@ body.new-theme {
                 }
 
                 .poll-answer {
-                    display: inline-table;
+                    input[type="radio"] {
+                        height: auto;
+                    }
 
                     .poll-answer-text {
+                        padding-bottom: 3px;
+
                         p {
                             font-size: 1rem;
                             color: #000;
+                            font-weight: normal;
                         }
                     }
                 }
             }
 
+            .poll-results {
+                padding-left: 1em;
+
+                poll-top-choice {
+                    color: #2042CB;
+                }
+
+                .percentage-gauge-container {
+                    .percentage-gauge {
+                        background-color: #EEEEEE;
+                    }
+                }
+            }
+
             .survey-table {
+
+                margin-bottom: 20px;
+
                 .survey-question {
                     p {
                         font-size: 1rem;
                         color: #000;
+                        font-weight: normal;
+                    }
+                }
+
+                .survey-option {
+                    input[type="radio"] {
+                        height: auto;
+                    }
+
+                    .visible-mobile-only {
+                        padding-left: 5px;
+                        font-size: 1rem;
+                    }
+                }
+
+                &.poll-results {
+                    .survey-row {
+                        th {
+                            font-size: 0.9375rem;
+                        }
+
+                        td {
+                            font-size: 0.9375rem;
+
+                            &.poll-top-choice {
+                                color: #2042CB;
+                                background-color: #EEEEEE;
+                            }
+                        }
                     }
                 }
             }
+
+        }
+    }
+}
+
+
+/* desktop */
+@media (min-width: 1024px) {
+    body.new-theme {
+        .lesson-content {
+            .themed-xblock {
+                .poll-container {
+                    .poll-answer {
+                        .poll-answer-text {
+                            padding-bottom: 3px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+/* mobile */
+@media (max-width: 767px) {
+    .poll-answer {
+        .poll-answer-text {
+            padding-bottom: 6px;
         }
     }
 }

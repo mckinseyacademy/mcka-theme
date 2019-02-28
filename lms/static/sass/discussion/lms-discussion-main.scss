@@ -21,9 +21,55 @@ footer[role=contentinfo] {
 }
 
 body.new-theme {
+  @-webkit-keyframes fa-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(359deg);
+      transform: rotate(359deg);
+    }
+  }
+
+  @keyframes fa-spin {
+    0% {
+      -webkit-transform: rotate(0deg);
+      transform: rotate(0deg);
+    }
+
+    100% {
+      -webkit-transform: rotate(359deg);
+      transform: rotate(359deg);
+    }
+  }
+
+  .wmd-panel {
+    .wmd-button {
+      span {
+        background-image: url(/static/image/lesson-content/discussion/wmd-buttons-transparent.png);
+      }
+    }
+
+    .wmd-preview-container {
+      margin-top: -6px;
+
+      .wmd-preview-label {
+        font-size: 1rem;
+        padding: 10px 3px 0 8px;
+      }
+
+      .wmd-preview {
+        padding: 0px 20px;
+      }
+    }
+  }
 
   /* desktop only  */
   @media (min-width: 767px) {
+
+
     .forum-nav {
       width: 34% !important;
       margin-right: 3% !important;
@@ -37,22 +83,70 @@ body.new-theme {
     .thread-main-wrapper {
       border-bottom: 1.21px solid #EBEBEB;
     }
+
+    .forum-new-post-form,
+    .edit-post-form {
+      .post-field {
+        .field-input {
+          .post-topic {
+            min-width: 400px;
+          }
+
+          &.js-post-title,
+          &.edit-post-title {
+            min-width: 400px;
+          }
+        }
+
+      }
+
+      .edit-comment-body {
+        width: 100%;
+      }
+    }
   }
 
   /* mobile */
   @media (max-width: 767px) {
     #course-discussion {
+      .wmd-panel {
+
+        .wmd-preview-container {
+
+          .wmd-preview-label {
+            font-size: 12px !important;
+          }
+
+          .wmd-preview {
+            padding: 0px 20px;
+            font-size: 12px;
+          }
+        }
+      }
+
+      .post-cancel {
+        margin-top: 10px !important;
+      }
+
       .discussion-content {
         #discussion-container {
+
+          #main.discussion-column .discussion-article.view-discussion-home,
+          .ask-ta {
+            display: none !important;
+          }
+
           .page-header {
             .page-header-main {
+
+              left: 0px;
               top: 0px;
             }
 
             .page-header-secondary {
               width: 100%;
               position: relative;
-              top: 25px;
+              top: 35px;
 
               .form-actions {
                 width: 20%;
@@ -73,26 +167,29 @@ body.new-theme {
                     content: "\e145";
                     position: absolute;
                     left: 32%;
+                    top: -9px
                   }
                 }
               }
 
               .forum-search {
                 width: 78% !important;
-                margin-top: 3px;
+                margin-top: 1px;
                 max-width: unset;
                 margin-left: 2px;
 
                 .search-button {
                   &:after {
-                    top: 13px;
+                    top: 4px;
                     right: 0px;
                   }
                 }
 
                 .search-input {
-                  width: 100% !important;
-                  height: 40px !important;
+                  font-size: 12px;
+                  padding: 0px 1% 0px 3%;
+                  height: 38px !important;
+                  width: 96% !important;
                 }
 
                 &:after {
@@ -103,7 +200,19 @@ body.new-theme {
             }
           }
 
+          .forum-nav {
+            margin-bottom: 10px;
+            height: auto !important;
+            max-height: none !important;
+
+            .forum-nav-thread-list {
+              height: auto !important;
+            }
+          }
+
           .forum-nav-browse-menu {
+            height: auto !important;
+
             .forum-nav-browse-menu-item {
               .forum-nav-browse-title {
                 font-weight: normal;
@@ -111,12 +220,40 @@ body.new-theme {
             }
           }
 
+          .edit-post-form {
+            padding-top: 0 !important;
+          }
+
           .forum-new-post-form,
           .edit-post-form {
+            min-width: auto;
+            padding: 30px 0 30px;
+
+
+            .thread-title {
+              display: block;
+              font-size: 1.25rem;
+            }
+
+            .field-help,
+            .forum-new-post-form-wrapper>.post-field .field-label-text {
+              display: none;
+            }
+
             .post-field {
+              margin-bottom: 10px;
+
+              .field-label {
+                margin-bottom: 15px;
+              }
+
               .field-label-text {
                 color: $mckinsey-gray-text;
                 font-size: 12px;
+                position: absolute;
+                top: 15px;
+                margin: 0;
+                left: 2px;
               }
 
               .post-topic {
@@ -126,21 +263,27 @@ body.new-theme {
               }
 
               .js-post-title {
-                padding: 0px 5px 0 40px !important;
+                padding: 4px 5px 0 40px !important;
                 width: 100% !important;
                 border-left: 0;
                 border-right: 0;
                 color: $mckinsey-gray-text;
+                font-size: 12px;
               }
 
               .field-input-label {
                 padding: 10px !important;
+                font-size: 0.875rem;
               }
             }
 
             .field-label-text {
               color: $mckinsey-gray-text;
               font-size: 12px;
+
+              &:before {
+                font-size: 13px;
+              }
             }
 
             button.btn-brand {
@@ -178,10 +321,6 @@ body.new-theme {
           .edit-post-form {
             min-width: auto !important;
 
-            .thread-title {
-              display: none;
-            }
-
             .forum-edit-post-form-wrapper {
               .post-field {
                 margin-bottom: 20px;
@@ -207,6 +346,7 @@ body.new-theme {
             .post-field {
               .field-label {
                 position: relative;
+                margin-bottom: 10px;
 
                 .field-label-text {
                   color: $mckinsey-gray-text;
@@ -255,7 +395,7 @@ body.new-theme {
                 margin: 0;
 
                 .username {
-                  color: #000 !important;
+                  color: $mckinsey-default-link !important;
                   font-weight: 600;
                   font-size: 12px;
                 }
@@ -279,6 +419,20 @@ body.new-theme {
           }
 
           .forum-content {
+            padding-top: 0px;
+
+            .post-extended-content {
+              padding: 0;
+            }
+
+            .discussion-article {
+              padding: 0 0px;
+
+              &.view-discussion-home {
+                display: none;
+              }
+            }
+
             .forum-response {
               .comments {
                 .btn-brand {
@@ -308,17 +462,32 @@ body.new-theme {
     }
   }
 
-  /* desktop */
+  /* desktop && mobile */
   #course-discussion {
+    background: #FFF;
+    position: relative;
+    z-index: 9999;
+    padding-top: 30px;
 
+    .edit-post-form .post-cancel,
+    .edit-post-form .post-update {
+      margin-top: 10px !important;
+      margin-left: 0 !important;
+    }
 
     .discussion-content {
+
+      .discussion,
+      .col {
+        padding: 0;
+      }
+
       .discussion-body {
         overflow: hidden;
       }
 
       .page-content {
-        padding-top: 40px;
+        padding-top: 50px;
       }
 
       .post-label {
@@ -341,6 +510,11 @@ body.new-theme {
       button.btn,
       button.btn-brand {
         @include primary-button;
+
+        &:hover,
+        &:active {
+          @include primary-button-hover( !important);
+        }
       }
 
       button {
@@ -403,6 +577,14 @@ body.new-theme {
         font-family: "Material Icons";
         font-size: 1.125rem;
         color: $mckinsey-default-link;
+
+        &.fa-spinner {
+          &:before {
+            content: '\e5d5';
+            -webkit-animation: fa-spin 2s infinite linear;
+            animation: fa-spin 2s infinite linear;
+          }
+        }
 
         &.fa-plus {
           &:before {
@@ -555,17 +737,24 @@ body.new-theme {
       }
 
       .page-header {
+        width: 100%;
+        text-align: right;
+        border: 0;
+
         .page-header-main {
           position: absolute;
-          top: 70px;
+          top: 50px;
           width: 100%;
+          left: 10px;
+          text-align: left;
         }
+
 
         .page-header-secondary {
           width: 76%;
 
           .new-post-btn {
-            margin-top: 3px;
+            margin-top: 0px;
             @include primary-button-large;
 
             &:hover {
@@ -580,8 +769,10 @@ body.new-theme {
 
           .search-input {
             width: 96%;
-            padding: 15px 5px 14px;
+            padding: 13px 5px 13px;
             position: relative;
+            max-width: none;
+            height: auto;
           }
 
           .search-button {
@@ -598,11 +789,11 @@ body.new-theme {
             &:after {
               font-family: "Material Icons";
               position: absolute;
-              top: 27px;
-              right: 20px;
+              top: 5px;
+              right: 10px;
               content: "\e8b6";
               color: $mckinsey-gray-text;
-              font-size:1.25rem;
+              font-size: 1.25rem;
             }
           }
         }
@@ -613,23 +804,34 @@ body.new-theme {
         border: 0;
         background: #F7F7F7;
         padding: 0;
+        margin-bottom: 20px;
+        height: auto !important;
+
 
         .ask-ta {
           background: none !important;
-          padding-top: 20px;
+          padding: 20px 20px 0;
+
 
           .group-member {
-            padding-bottom: 20px;
+            padding: 0 10px 20px 0;
             border-bottom: 1px solid #ded6d6;
+            margin-bottom: 10px;
 
             .avatar {
               border-radius: 30px;
               width: 60px !important;
               height: 60px !important;
+              float: left;
+              margin: 0px 13px 0 0px;
             }
 
             .person-info {
-              padding-top: 8px;
+              margin-left: 20px;
+
+              .person-username {
+                font-weight: bold;
+              }
 
               .email-member {
                 color: $mckinsey-default-link;
@@ -647,25 +849,34 @@ body.new-theme {
           .forum-nav-browse-filter {
             border-bottom: 0;
 
+
+
             .icon {
               margin-top: -9px;
             }
 
-            #forum-nav-browse-filter-input {
-              color: $mckinsey-gray-text;
-              font-size: 1rem !important;
-              padding: 10px 10px;
-              text-transform: capitalize;
+            label {
+              width: 100%;
+
+              #forum-nav-browse-filter-input {
+                color: $mckinsey-gray-text;
+                font-size: 1rem !important;
+                padding: 10px 10px;
+                text-transform: capitalize;
+                width: 100%;
+                max-width: none;
+              }
             }
           }
 
           .forum-nav-browse-menu {
             .icon {
               top: 13px !important;
+              color: $mckinsey-default-link;
             }
 
             .forum-nav-browse-menu-item {
-              border: 1.21px solid #F1F3F6;
+              border-bottom: 1.21px solid #F1F3F6;
 
               .icon {
                 top: 16px;
@@ -674,6 +885,12 @@ body.new-theme {
               .forum-nav-browse-title {
                 font-size: 1rem;
                 color: $mckinsey-default-link;
+                border-bottom: 0;
+
+                &:active,
+                &:hover {
+                  background: none !important;
+                }
               }
 
               .forum-nav-browse-submenu {
@@ -690,11 +907,21 @@ body.new-theme {
 
       .forum-new-post-form,
       .edit-post-form {
+        padding: 31px;
         min-width: 425px;
 
+        .edit-post-body {
+          width: 100%
+        }
+
+
+
         .thread-title {
+
           font-size: 1.5rem;
           font-weight: 400;
+
+          color: #000;
         }
 
         button.btn-brand {
@@ -721,79 +948,147 @@ body.new-theme {
           color: #000;
         }
 
-        .forum-new-post-form-wrapper,
-        .forum-edit-post-form-wrapper {
-          .post-field {
-            .post-type-label {
-              margin-right: 10px;
 
-              .field-input-label {
-                background-color: #fff;
-                border: solid 1px $mckinsey-default-link;
-                color: $mckinsey-default-link !important;
-                padding: 6px 20px 12px;
+        .post-field {
+          .post-type-label {
+            margin-right: 10px;
+            width: 100%;
 
-                &:hover {
-                  border: solid 1px #0b0886;
-                  color: #0b0886;
-                  background-color: #fff;
+            input[type='radio'] {
+              width: auto;
+              height: auto;
+              margin-top: 5px;
+
+            }
+
+            .field-input-label {
+              color: $mckinsey-default-link !important;
+
+              &:hover {
+                color: $mckinsey-primary-hover-button;
+              }
+
+              .icon {
+                &:before {
+                  color: $mckinsey-primary-hover-button !important
                 }
               }
 
-              .input-radio:checked+.field-input-label {
-                background-color: $mckinsey-default-link;
-                color: #fff !important;
+            }
 
-                .icon {
-                  color: #FFF;
-                }
+            .input-radio:checked+.field-input-label {
 
-                &:hover {
-                  background-color: #0b0886;
-                  color: #fff
+              .icon:hover {
+                &:before {
+                  color: #000 !important
                 }
+              }
+
+              &:hover {
+                color: #000
+              }
+            }
+          }
+
+          .field-label {
+            position: relative;
+            margin-bottom: 34px;
+
+            .field-label-text {
+              margin-bottom: 8px;
+            }
+          }
+
+          .field-help {
+            color: transparent;
+
+            &#field_help_topic_area {
+
+              position: absolute;
+              bottom: -27px;
+
+              &:before {
+                content: 'Add your post to a relevant topic to help others find it.';
+                font-size: 12px;
+                position: absolute;
+                display: block;
+                color: $mckinsey-gray-text;
+                font-size: 12px;
               }
             }
 
-            .field-help {
+            &#field_help_title {
+
+              position: absolute;
+              bottom: -27px;
+
+              &:before {
+                content: 'Add a clear and descriptive title to encourage participation.';
+                font-size: 12px;
+                position: absolute;
+                display: block;
+                color: $mckinsey-gray-text;
+                font-size: 12px;
+              }
+            }
+          }
+
+
+
+          .field-input {
+            width: 100%;
+
+            .post-topic {
+              width: 55% !important;
+              background-image: url(../../images/expand-button.svg);
+              -webkit-appearance: none !important;
+              padding: 0 10px;
+              border: 1px solid #999999 !important;
+              background-repeat: no-repeat;
+              background-position: 95%;
+              background-size: 12px;
               color: $mckinsey-gray-text;
+            }
+          }
+
+          #field_help_post_type {
+            color: transparent;
+
+            &:before {
+              content: 'Questions raise issues that need answers. Discussions share ideas and start conversations.';
               font-size: 12px;
+              color: $mckinsey-gray-text;
+              position: absolute;
+              display: block;
             }
-
-            .field-input {
-              width: 100%;
-
-              .post-topic {
-                width: 55% !important;
-                background-image: url(../../images/expand-button.svg);
-                -webkit-appearance: none !important;
-                padding: 0 10px;
-                border: 1px solid #999999 !important;
-                background-repeat: no-repeat;
-                background-position: 95%;
-                background-size: 12px;
-              }
-            }
-
           }
 
         }
+
+        #new-post-editor-description {
+          margin-top: 15px;
+          display: inline-block;
+          color: transparent !important;
+
+          &:before {
+            content: 'Your question or idea';
+            font-size: 1rem;
+            position: absolute;
+            display: block;
+            color: #000;
+          }
+        }
+
+
 
         .js-post-title,
         .edit-post-title {
+          max-width: none;
           width: 55% !important;
+          color: $mckinsey-gray-text;
         }
 
-        .wmd-preview-container {
-          .wmd-preview-label {
-            font-size: 1rem;
-            padding: 10px 3px 0 8px;
-          }
 
-          .wmd-preview {
-            padding: 0px 20px;
-          }
-        }
 
         button {
           &.submit {
@@ -802,7 +1097,6 @@ body.new-theme {
 
             &:hover {
               float: left;
-              margin: 0 10px 0 0;
             }
           }
 
@@ -815,14 +1109,43 @@ body.new-theme {
           }
         }
 
+        .post-options {
+          .field-label {
+            .field-input-label {
+              font-size: 0.875rem;
 
+              .icon {
+                &::before {
+                  color: #000;
+                }
+              }
+            }
+
+
+            width: 100%;
+            color: #000000;
+            text-transform: capitalize;
+
+            .field-input:checked+.field-input-label {
+              color: $mckinsey-default-link;
+
+              .icon {
+                &::before {
+                  color: $mckinsey-default-link;
+                }
+              }
+            }
+          }
+        }
       }
 
       .discussion-thread-list-container {
         .forum-nav-refine-bar {
           background: none;
-          margin: 0 0 15px;
+          margin: 0 auto 15px;
+          padding-top: 15px;
           border: 0;
+          width: 95%;
 
           select {
             color: $mckinsey-gray-text;
@@ -849,6 +1172,7 @@ body.new-theme {
           }
 
           label {
+            width: 49%;
             background: #FFF;
             border: 1px solid #999999;
             padding: 0;
@@ -899,6 +1223,7 @@ body.new-theme {
               }
 
               .forum-nav-thread-comments-count {
+                display: inline-block !important;
                 background-color: $mckinsey-gray-text;
                 color: #FFFFFF;
                 font-size: 0.625rem;
@@ -912,6 +1237,13 @@ body.new-theme {
                   border-bottom: 5px solid transparent;
                   border-left: 5px solid $mckinsey-gray-text;
                 }
+              }
+
+              .posted-details,
+              .thread-preview-body,
+              .post-context,
+              .forum-nav-thread-votes-count {
+                display: none !important;
               }
             }
 
@@ -931,13 +1263,101 @@ body.new-theme {
       }
 
       .forum-content {
+        padding-top: 20px;
+
+
+        .discussion-article {
+          padding: 0 20px;
+        }
+
         .home-header {
+          border: 0;
+
           .label {
+            color: transparent;
+
             &:before {
               color: #000;
               font-weight: normal;
               font-size: 1.5rem;
+              content: 'Discussion';
+              position: absolute;
+              display: block;
             }
+
+
+          }
+
+          .home-title {
+            display: none;
+          }
+        }
+
+        .label {
+          &.label-settings {
+            color: transparent;
+
+            &:before {
+              content: 'How to use discussions:';
+              font-size: 0.875rem;
+              color: black;
+              position: absolute;
+              display: block;
+            }
+
+          }
+        }
+
+        .home-helpgrid {
+          box-shadow: none;
+          border: 1px solid $mckinsey-light-border;
+
+          .helpgrid-row {
+            border-bottom: 1px solid $mckinsey-light-border;
+
+            .row-title {
+              background-color: transparent;
+              font-size: 0.875rem;
+              font-weight: bold;
+            }
+
+            .row-item {
+              border: 1px solid $mckinsey-light-border;
+
+              .icon {
+                width: 100%;
+                text-align: center;
+                display: inline-block;
+                padding: 0;
+              }
+
+              .row-description {
+                display: block;
+                text-transform: lowercase;
+                text-align: center;
+                padding-top: 10px;
+              }
+            }
+
+            &.helpgrid-row-participation {
+              background: #f9f9f9;
+            }
+          }
+
+          .helpgrid-row-notification {
+            .row-item-full {
+              border: 1px solid #eee;
+
+              &:before {
+                content: "You can enable daily\0020(or weekly) notification digests which show discussion activity by accessing your profile dropdown.";
+              }
+
+              label,
+              .row-description {
+                display: none;
+              }
+            }
+
           }
         }
 
@@ -950,6 +1370,7 @@ body.new-theme {
               padding: 0;
 
               .post-header {
+                border: 0;
 
                 .post-title {
                   color: #000000;
@@ -963,7 +1384,7 @@ body.new-theme {
                   margin: 0;
 
                   .username {
-                    color: #000;
+                    color: $mckinsey-default-link;
                     font-weight: 600;
                     font-size: 12px;
                   }
@@ -1022,9 +1443,14 @@ body.new-theme {
               }
 
               .post-context {
+                .related-to-label {
+                  display: none;
+                }
+
                 .group-visibility-label {
                   color: $mckinsey-gray-text;
                   font-size: 12px;
+                  font-style: italic;
                 }
               }
             }
@@ -1043,6 +1469,20 @@ body.new-theme {
                 margin-top: 20px;
 
                 .discussion-response {
+                  .form-row {
+                    margin-bottom: 20px;
+                  }
+
+                  button[type="submit"] {
+                    margin-right: 10px !important;
+                  }
+
+                  background-color: #f9f9f9;
+
+                  .response-header {
+                    background: none;
+                    border: 0;
+                  }
 
                   .response-header-content {
                     .username {
@@ -1094,13 +1534,20 @@ body.new-theme {
                 }
 
                 .comments {
+                  background-color: #f9f9f9;
                   box-shadow: none;
 
                   forum-new-post-form .edit-post-form,
                   .new-comment {
+                    border-top: 1.21px solid #EBEBEB;
+
                     .wmd-preview-label {
                       font-size: 1rem;
                       padding: 10px 3px 0 8px;
+                    }
+
+                    .wmd-input {
+                      min-height: 80px;
                     }
 
                     .btn-brand {
@@ -1128,7 +1575,7 @@ body.new-theme {
                     margin: 0;
 
                     .username {
-                      color: #000;
+                      color: $mckinsey-default-link;
                       font-weight: 600;
                       font-size: 12px;
                     }
@@ -1167,6 +1614,8 @@ body.new-theme {
               }
 
               .reply-post-control {
+                margin-top: 15px;
+
                 button {
                   &.btn {
                     float: left;

@@ -15,6 +15,20 @@ body.new-theme {
                 outline: none !important;
             }
         }
+
+        .icon {
+            display: inline-block;
+            color: currentColor;
+            height: auto;
+            width: auto;
+            speak: none;
+            font-style: normal;
+            font-weight: normal;
+            font-variant: normal;
+            text-transform: none;
+            line-height: 1;
+            -webkit-font-smoothing: antialiased;
+        }
     }
 
     .lesson-content {
@@ -30,6 +44,8 @@ body.new-theme {
                 font-weight: 600;
                 height: 40px;
                 padding: 0 20px;
+                color: #FFF;
+                cursor: pointer;
 
                 &:hover {
                     background-color: $mckinsey-primary-hover-button;
@@ -38,8 +54,20 @@ body.new-theme {
                 &:disabled {
                     background-color: $mckinsey-primary-disabled-button;
                     color: #EEEEEE;
+                    cursor: default;
                 }
             }
         }
+    }
+}
+
+.controls{
+    .page-to.previous{
+        left: 5% !important;
+        margin-left: 0 !important;
+    }
+    .page-to.next{
+        right: 5% !important;
+        margin-right: 0 !important;
     }
 }

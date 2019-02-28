@@ -1,0 +1,180 @@
+// Overrides for ooyala videos and supplymentary videos xblocks:
+@import '../base/variables';
+
+body.new-theme {
+
+
+    /* mobile only  */
+    @media (max-width: 767px) {
+        .ooyala-player-xblock-wrapper {
+            .p3sdk-container {
+                .transcript-header {
+                    .language-tracks {
+                        ul {
+                            li {
+                                font-size: 0.875rem;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .ooyala-player-xblock-wrapper {
+        .ooyala-player-container {
+            .ooyalaplayer {
+                &.oo-player-container {
+                    margin: 0 0 30px 0;
+                    .oo-control-bar-items-wrapper {
+                        .oo-playback-speed-container {
+                            background-color: $mckinsey-primary-default-button !important;
+                            border-radius: 2px !important;
+
+                            &:hover,
+                            &:active {
+                                background-color: $mckinsey-primary-hover-button !important;
+                            }
+                        }
+
+                        .oo-popover-button-container {
+                            background-color: $mckinsey-primary-default-button !important;
+                            border-radius: 2px !important;
+
+                            &:hover,
+                            &:active {
+                                background-color: $mckinsey-primary-hover-button !important;
+                            }
+                        }
+                    }
+
+                    .oo-icon {
+
+                        &.oo-icon-play-slick {
+                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                            background-position: -10px -9px;
+                            &:hover{
+                                background-position: -410px -9px;
+                            }
+                        }
+
+                        &.oo-icon-pause-slick {
+                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                            background-position: -60px -9px;
+                            &:hover{
+                                background-position: -460px -9px;
+                            }
+                        }
+
+                        &.oo-icon-volume {
+                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                            background-position: -208px -10px;
+                            &:hover{
+                                background-position: -608px -10px;
+                            }
+                        }
+
+                        &.oo-icon-volumeOff {
+                            background-position: -258px -10px;
+                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                            &:hover{
+                                background-position: -658px -10px;
+                            }
+                        }
+
+                        &.oo-icon-compress-slick {
+                            background-position: -155px -9px;
+                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                            &:hover{
+                                background-position: -555px -9px;
+                            }
+                        }
+
+                        &.oo-icon-expand-slick {
+                            background-position: -104px -9px;
+                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                            &:hover{
+                                background-position: -504px -9px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .p3sdk-container {
+            .p3sdk-interactive-transcript-collapse-visible {
+                a {
+                    .transcript-toggle {
+                        color: $mckinsey-default-link;
+                        padding-right: 5px;
+                    }
+
+                    .fa {
+                        font-family: "Material Icons";
+                        font-size: 1.125rem;
+                        color: $mckinsey-default-link;
+                        font-size: 2.5rem;
+                        vertical-align: middle;
+
+                        &.fa-sort-desc {
+                            &:before {
+                                content: '\e5c5';
+                            }
+                        }
+
+                        &.fa-sort-asc {
+                            &:before {
+                                content: '\e5c7';
+                            }
+                        }
+
+                        &.transcript-show,
+                        &.transcript-hide {
+                            vertical-align: middle;
+                        }
+
+                    }
+
+                    &:hover {
+                        text-decoration: none;
+                    }
+                }
+            }
+
+            .transcript-header {
+                .language-tracks {
+                    ul {
+                        li {
+                            color: $mckinsey-default-link !important;
+                            font-size: 1rem;
+                            font-weight: 400;
+
+                            &.selected {
+                                color: #2E2D39 !important;
+                            }
+
+                            .print-transcript-btn {
+                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                                background-position: -356px -11px;
+                                width: 28px;
+                                height: 24px;
+                            }
+
+                            .transcript-download-btn {
+                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                                background-position: -306px -11px;
+                                width: 28px;
+                                height: 24px;
+                            }
+                        }
+                    }
+                }
+            }
+
+            .transcript-content {
+                padding-top: 20px;
+            }
+        }
+    }
+}
