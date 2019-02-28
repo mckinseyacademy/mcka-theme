@@ -38,9 +38,12 @@
                   .user
                     .rank-number ##{completions.leaders.0.rank}
                     .person-avatar
-                      %img{'src': '#{completions.leaders.0.profile_image.image_url_small}'}
+                      - if completions.leaders.0.profile_image.has_image
+                        %img{'src': '#{completions.leaders.0.profile_image.image_url_small}', 'title': '#{completions.leaders.0.full_name}'}
+                      - else
+                        %span= completions.leaders.0.name_initials
                     .person-name
-                      %span=completions.leaders.0.username
+                      %span=completions.leaders.0.full_name
                       - if completions.leaders.0.title
                         %span.person-designation=completions.leaders.0.title
                     .person-rank {{completions.leaders.0.user_progress_display}}%
@@ -57,9 +60,12 @@
                   .user
                     .rank-number ##{completions.leaders.1.rank}
                     .person-avatar
-                      %img{'src': '#{completions.leaders.1.profile_image.image_url_small}', 'title': '#{completions.leaders.1.username}'}
+                      - if completions.leaders.1.profile_image.has_image
+                        %img{'src': '#{completions.leaders.1.profile_image.image_url_small}', 'title': '#{completions.leaders.1.full_name}'}
+                      - else
+                        %span= completions.leaders.1.name_initials
                     .person-name
-                      %span=completions.leaders.1.username
+                      %span=completions.leaders.1.full_name
                       - if completions.leaders.1.title
                         %span.person-designation=completions.leaders.1.title
                     .person-rank {{completions.leaders.1.user_progress_display}}%
@@ -76,9 +82,12 @@
                   .user
                     .rank-number ##{completions.leaders.2.rank}
                     .person-avatar
-                      %img{'src': '#{completions.leaders.2.profile_image.image_url_small}', 'title': '#{completions.leaders.2.username}'}
+                      - if completions.leaders.2.profile_image.has_image
+                        %img{'src': '#{completions.leaders.2.profile_image.image_url_small}', 'title': '#{completions.leaders.2.full_name}'}
+                      - else
+                        %span= completions.leaders.2.name_initials
                     .person-name
-                      %span=completions.leaders.2.username
+                      %span=completions.leaders.2.full_name
                       - if completions.leaders.2.title
                         %span.person-designation=completions.leaders.2.title
                     .person-rank {{completions.leaders.2.user_progress_display}}%
@@ -98,7 +107,7 @@
                     .status {% trans "Your discussion activity points:" %} {{social.score}}
                     .data {% blocktrans with score=social.course_average_display %} Average: {{score}} points{% endblocktrans %}
                     - if user_role
-                     .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the engagement leaderboard {% endblocktrans %}
+                      .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the engagement leaderboard {% endblocktrans %}
                     - elif social.position
                       .rank {{social.position}}
                         %span {% trans "Your engagement position" %}
@@ -113,9 +122,12 @@
                     .user
                       .rank-number #1
                       .person-avatar
-                        %img{'src': '#{social.leaders.0.profile_image.image_url_small}', 'title': '#{social.leaders.0.username}'}
+                        - if social.leaders.0.profile_image.has_image
+                          %img{'src': '#{social.leaders.0.profile_image.image_url_small}', 'title': '#{social.leaders.0.full_name}'}
+                        - else
+                          %span= social.leaders.0.name_initials
                       .person-name
-                        %span=social.leaders.0.username
+                        %span=social.leaders.0.full_name
                         - if social.leaders.0.title
                           %span.person-designation=social.leaders.0.title
                       .person-rank=social.leaders.0.score
@@ -133,9 +145,12 @@
                     .user
                       .rank-number #2
                       .person-avatar
-                        %img{'src': '#{social.leaders.1.profile_image.image_url_small}', 'title': '#{social.leaders.1.username}'}
+                        - if social.leaders.1.profile_image.has_image
+                          %img{'src': '#{social.leaders.1.profile_image.image_url_small}', 'title': '#{social.leaders.1.full_name}'}
+                        - else
+                          %span= social.leaders.1.name_initials
                       .person-name
-                        %span=social.leaders.1.username
+                        %span=social.leaders.1.full_name
                         - if social.leaders.1.title
                           %span.person-designation=social.leaders.1.title
                       .person-rank=social.leaders.1.score
@@ -153,9 +168,12 @@
                     .user
                       .rank-number #3
                       .person-avatar
-                        %img{'src': '#{social.leaders.2.profile_image.image_url_small}', 'title': '#{social.leaders.2.username}'}
+                        - if social.leaders.2.profile_image.has_image
+                          %img{'src': '#{social.leaders.2.profile_image.image_url_small}', 'title': '#{social.leaders.2.full_name}'}
+                        - else
+                          %span= social.leaders.2.name_initials
                       .person-name
-                        %span=social.leaders.2.username
+                        %span=social.leaders.2.full_name
                         - if social.leaders.2.title
                           %span.person-designation=social.leaders.2.title
                       .person-rank=social.leaders.2.score
@@ -175,7 +193,7 @@
                     .status {% trans "Your course knowledge:" %} {{proficiency.user_grade_display}}%
                     .data {% trans "Average:" %} {{proficiency.course_average_display}}%
                     - if user_role
-                     .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the proficiency leaderboard {% endblocktrans %}
+                      .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the proficiency leaderboard {% endblocktrans %}
                     - elif proficiency.user_position and proficiency.user_grade_value
                       .rank {{proficiency.user_position}}
                         %span {% trans "Your proficiency position" %}
@@ -191,9 +209,12 @@
                     .user
                       .rank-number #1
                       .person-avatar
-                        %img{'src': '#{proficiency.leaders.0.profile_image.image_url_small}', 'title': '#{proficiency.leaders.0.username}'}
+                        - if proficiency.leaders.0.profile_image.has_image
+                          %img{'src': '#{proficiency.leaders.0.profile_image.image_url_small}', 'title': '#{proficiency.leaders.0.full_name}'}
+                        - else
+                          %span= proficiency.leaders.0.name_initials
                       .person-name
-                        %span=proficiency.leaders.0.username
+                        %span=proficiency.leaders.0.full_name
                         - if proficiency.leaders.0.title
                           %span.person-designation=proficiency.leaders.0.title
                       .person-rank {{proficiency.leaders.0.grade_display_value}}%
@@ -211,9 +232,12 @@
                     .user
                       .rank-number #2
                       .person-avatar
-                        %img{'src': '#{proficiency.leaders.1.profile_image.image_url_small}', 'title': '#{proficiency.leaders.1.username}'}
+                        - if proficiency.leaders.1.profile_image.has_image
+                          %img{'src': '#{proficiency.leaders.1.profile_image.image_url_small}', 'title': '#{proficiency.leaders.1.full_name}'}
+                        - else
+                          %span= proficiency.leaders.1.name_initials
                       .person-name
-                        %span=proficiency.leaders.1.username
+                        %span=proficiency.leaders.1.full_name
                         - if proficiency.leaders.1.title
                           %span.person-designation=proficiency.leaders.1.title
                       .person-rank {{proficiency.leaders.1.grade_display_value}}%
@@ -231,9 +255,12 @@
                     .user
                       .rank-number #3
                       .person-avatar
-                        %img{'src': '#{proficiency.leaders.2.profile_image.image_url_small}', 'title': '#{proficiency.leaders.2.username}'}
+                        - if proficiency.leaders.2.profile_image.has_image
+                          %img{'src': '#{proficiency.leaders.2.profile_image.image_url_small}', 'title': '#{proficiency.leaders.2.full_name}'}
+                        - else
+                          %span= proficiency.leaders.2.name_initials
                       .person-name
-                        %span=proficiency.leaders.2.username
+                        %span=proficiency.leaders.2.full_name
                         - if proficiency.leaders.2.title
                           %span.person-designation=proficiency.leaders.2.title
                       .person-rank {{proficiency.leaders.2.grade_display_value}}%
