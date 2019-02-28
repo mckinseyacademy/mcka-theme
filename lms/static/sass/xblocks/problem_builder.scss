@@ -5,19 +5,24 @@
         padding: 4px 3px 0 3px;
         font-size: 16px;
     }
+
     .sb-review-score {
         margin-left: 40px;
         margin-top: 15px;
     }
+
     .review-tips-list li {
         margin-left: 1.8em;
         padding-left: 0;
     }
+
     .copyright {
         // Hide the copyright message
         display: none;
     }
+
     .questionnaire {
+
         .choice-tips,
         .feedback {
             // Avoid a global reset to border-box found on Apros
@@ -26,9 +31,11 @@
             background: none repeat scroll 0 0 #66A5B5;
             opacity: 0.9;
             padding: 22px 10px 10px 10px;
+
             p {
                 color: #fff;
             }
+
             .close {
                 display: block;
             }
@@ -51,30 +58,72 @@
             border-spacing: 0 2px;
         }
     }
+
     .checkmark-incorrect {
         color: #ff0000;
+
         &::before {
             content: "\f12a";
         }
     }
+
     .checkmark-correct::before {
         content: "\f00c";
     }
+
     .choice {
         .choice-tips-container {
             &.with-tips {
                 border: none;
             }
+
             .choice-tips {
                 position: absolute;
             }
         }
     }
+
     .title h3 {
         // Same as h2.main in Apros, amended to h3
         color: #66a5b5;
     }
+
     h4 {
         text-transform: uppercase;
+    }
+}
+
+body.new-theme {
+    .themed-xblock.mentoring {
+        .title h3 {
+            color: #000;
+            font-size: 1.5rem;
+        }
+
+        .xblock-answer {
+            .question-title {
+                font-size: 1rem;
+            }
+
+            label {
+                width: 100%;
+            }
+        }
+
+        .answer-checkmark {
+            font-family: "Material Icons";
+
+            &.checkmark-correct {
+                &:before {
+                    content: '\e5ca';
+                }
+            }
+
+            &.checkmark-incorrect {
+                &:before {
+                    content: '\e000';
+                }
+            }
+        }
     }
 }
