@@ -57,7 +57,8 @@ body.new-theme {
 
       .wmd-preview-label {
         font-size: 1rem;
-        padding: 10px 3px 0 8px;
+        padding: 7px 10px;
+        color: #000;
       }
 
       .wmd-preview {
@@ -469,10 +470,15 @@ body.new-theme {
     z-index: 9999;
     padding-top: 30px;
 
-    .edit-post-form .post-cancel,
-    .edit-post-form .post-update {
-      margin-top: 10px !important;
-      margin-left: 0 !important;
+    .edit-post-form {
+      .post-cancel,
+      .post-update {
+        margin-top: 10px !important;
+        margin-left: 0 !important;
+      }
+      .loading-animation{
+        display: none;
+      }
     }
 
     .discussion-content {
@@ -484,6 +490,7 @@ body.new-theme {
 
       .discussion-body {
         overflow: hidden;
+        max-width: 100%;
       }
 
       .page-content {
@@ -723,6 +730,12 @@ body.new-theme {
           font-size: 12px;
           font-weight: normal;
           color: $mckinsey-gray-text;
+
+          &:not(:only-child):first-child {
+            .btn-link {
+              color: $mckinsey-default-link
+            }
+          }
         }
 
         .fa-bars {
@@ -1020,7 +1033,7 @@ body.new-theme {
             &#field_help_title {
 
               position: absolute;
-              bottom: -27px;
+              top: 64px;
 
               &:before {
                 content: 'Add a clear and descriptive title to encourage participation.';
@@ -1181,6 +1194,7 @@ body.new-theme {
               border: 1px solid #999999;
               width: 49%;
               margin-left: 1%;
+              float: right;
             }
           }
         }
@@ -1630,6 +1644,35 @@ body.new-theme {
               }
             }
           }
+        }
+      }
+    }
+  }
+
+  .wmd-prompt-background {
+    z-index: 9999 !important;
+  }
+
+  .wmd-prompt-dialog {
+    z-index: 9999 !important;
+
+    .form-actions {
+      #new-link-image-ok {
+        @include primary-button;
+
+        &:hover,
+        &:active {
+          @include primary-button-hover();
+        }
+
+      }
+
+      #new-link-image-cancel {
+        @include secondary-button;
+
+        &:hover,
+        &:active {
+          @include secondary-button-hover();
         }
       }
     }
