@@ -1,0 +1,68 @@
+[data-block-type="pb-mcq"], [data-block-type="poll"]{
+.choice-selector, .poll-input-container, .poll-result-input-container
+{
+  position:relative;
+  overflow:hidden;
+  width:18px;
+  height:18px;
+  border-radius:16px;
+  
+  [type="radio"]
+  {
+    opacity:0;
+    position:absolute;
+    z-index:99999;
+    width:18px;
+    height:18px;
+    display:inline-block;
+  }
+  &:before
+  {
+    content:'';
+    box-sizing:border-box;
+    width:18px;
+    height:18px;
+    background:$white;
+    border-radius:16px;
+    position:absolute;
+    border:2px solid $black;
+    display:inline-block;
+    
+  }
+  
+  &:after
+  {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 2px;
+    top: 2px;
+    width: 14px;
+    height: 14px;
+    background:$black;
+    border-radius:9px;
+    border:2px solid $white;
+  }
+  
+  &.selected
+  {
+   
+      &:after{
+          display: block;
+        }
+    
+    &:before{
+      background:black !important;
+        }
+    
+    
+  }
+  &:hover
+  {
+    &:before
+    {
+      background:#E4E4E5;
+    }
+  }
+}
+}
