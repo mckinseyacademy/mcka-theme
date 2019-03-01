@@ -834,9 +834,11 @@ def get_course_block_of_types(course_id, block_types):
 
     response = []
 
-    def walk_tree(block, lesson=None, module=None, parents=None):
-        lesson = lesson or [0, None]
-        module = module or [0, None]
+    lesson = [0, None]
+    module = [0, None]
+
+    def walk_tree(block):
+
         if block['type'] == 'chapter':
             lesson[0] += 1
             lesson[1] = block['display_name']
@@ -848,13 +850,16 @@ def get_course_block_of_types(course_id, block_types):
             response.append(
                 {
                     'id': block['id'],
+                    'type': block['type'],
                     'question': get_question_from_block(block),
+                    'module_number': module[0],
                     'module': u'M{} - {}'.format(*module),
+                    'lesson_number': lesson[0],
                     'lesson': u'L{} - {}'.format(*lesson),
                 }
             )
         for child in block.get('children', []):
-            walk_tree(child, lesson, module)
+            walk_tree(child)
 
     if tree:
         walk_tree(tree)

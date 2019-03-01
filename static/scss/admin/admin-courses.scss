@@ -405,11 +405,11 @@
 		margin-bottom: 100px;
 
 		.bbGrid-grid.table {
-			min-width: 100%;
+			width: 100%;
+			table-layout: fixed;
 			th, td {
 				word-break: normal;
 				text-align: left;
-				max-width: 600px;
 				overflow-x: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
@@ -420,6 +420,21 @@
 			tr.report-error {
 				background-color:#ebcccc;
 			}
+		}
+	}
+	#courseBlocksGrid .bbGrid-grid.table {
+		// Lesson column
+		th:nth-child(2), td:nth-child(2) {
+			width: 200px;
+		}
+		// Lesson column
+		th:nth-child(3), td:nth-child(3) {
+			width: 200px;
+		}
+	}
+	#courseProblemResponseReportsGrid .bbGrid-grid.table {
+		th:first-child, td:first-child {
+			width: 750px;
 		}
 	}
 }

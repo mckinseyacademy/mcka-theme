@@ -939,16 +939,16 @@ def post_process_problem_response_report(self, parent_task, course_id, problem_l
     )
 
     # Post process rows.
-    rows = processor.post_process(fields_to_remove=['state'])
+    rows, keys = processor.post_process()
     # We don't know the total number of rows since we're reading the file line by line.
     # And, it's not worth it to read the file twice.
     self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 90})
-    # Write csv to a temporary file.
-    fields = OrderedDict([(key, (key, '')) for key in rows[0].keys()])
 
+    # Write csv to a temporary file.
+    fields = OrderedDict([(key, (key, '')) for key in keys])
     # Create remote path to report.
     hashed_course_id = hashlib.sha1(course_id).hexdigest()
-    location_escaped = re.sub(r'[:/]', '_', ','.join(problem_locations[:200]))
+    location_escaped = re.sub(r'[:/]', '_', '_'.join(problem_locations[:200]))
 
     file_name = 'student_state_from_{}'.format(location_escaped)
     timestamp = datetime.now(UTC)
@@ -960,7 +960,8 @@ def post_process_problem_response_report(self, parent_task, course_id, problem_l
     # Store file
     dir_name = os.path.join('reports', hashed_course_id)
     task_log_msg = 'post processing problem response report'
-    file_url = create_and_store_csv_file(fields, rows, dir_name, csv_name, logger, task_log_msg)
+    file_path = create_and_store_csv_file(fields, rows, dir_name, csv_name, logger, task_log_msg)
+    file_url = reverse('private_storage', kwargs={'path': file_path})
     self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 100})
 
     # Update Database

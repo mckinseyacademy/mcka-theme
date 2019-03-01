@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 import json
 from urlparse import urlparse, parse_qs
 
@@ -581,30 +580,41 @@ class TestCourseApi(TestCase):
 
         expected = [
             {
-                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_1',
-                'question': 'Question 1.1.1.1',
-                'lesson': 'L1 - Block chapter_block_1 of type chapter',
-                'module': 'M1 - Block vertical_block_1_1_1 of type vertical'
+                'id': u'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_1',
+                'question': u'Question 1.1.1.1',
+                'lesson': u'L1 - Block chapter_block_1 of type chapter',
+                'lesson_number': 1,
+                'module': u'M1 - Block vertical_block_1_1_1 of type vertical',
+                'module_number': 1,
+                'type': u'poll',
             },
             {
-                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_2',
-                'question': 'Question 1.1.1.2',
-                'lesson': 'L1 - Block chapter_block_1 of type chapter',
-                'module': 'M1 - Block vertical_block_1_1_1 of type vertical'
+                'id': u'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_2',
+                'question': u'Question 1.1.1.2',
+                'lesson': u'L1 - Block chapter_block_1 of type chapter',
+                'lesson_number': 1,
+                'module': u'M1 - Block vertical_block_1_1_1 of type vertical',
+                'module_number': 1,
+                'type': u'poll',
             },
             {
-                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_2_1',
-                'question': 'Question 1.1.2.1',
-                'lesson': 'L1 - Block chapter_block_1 of type chapter',
-                'module': 'M2 - Block vertical_block_1_1_2 of type vertical'
+                'id': u'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_2_1',
+                'question': u'Question 1.1.2.1',
+                'lesson': u'L1 - Block chapter_block_1 of type chapter',
+                'lesson_number': 1,
+                'module': u'M2 - Block vertical_block_1_1_2 of type vertical',
+                'module_number': 2,
+                'type': u'poll',
             },
             {
-                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_2_1_1_1',
-                'question': 'Question 二.1.1.1',
-                'lesson': 'L2 - Block الفصل_block_2 of type chapter',
-                'module': 'M1 - Block عمودي_block_2_1_1 of type vertical'
+                'id': u'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_2_1_1_1',
+                'question': u'Question 二.1.1.1',
+                'lesson': u'L2 - Block الفصل_block_2 of type chapter',
+                'lesson_number': 2,
+                'module': u'M1 - Block عمودي_block_2_1_1 of type vertical',
+                'module_number': 1,
+                'type': u'poll',
             },
         ]
-
         result = get_course_block_of_types(course_id, block_types=['poll', 'survey'])
         self.assertEqual(result, expected)

@@ -251,7 +251,7 @@ class ProblemResponseTasksTest(TestCase):
 
     @patch('admin.tasks.AdminTask.objects.get', return_value=Mock())
     @patch('admin.tasks.create_and_store_csv_file', return_value='file_url')
-    @patch('admin.tasks.ProblemReportPostProcessor', return_value=Mock())
+    @patch('admin.tasks.ProblemReportPostProcessor')
     @patch(
         'admin.tasks.instructor_api.get_report_downloads',
         return_value=[{'url': 'url', 'name': 'name'}]
@@ -264,7 +264,7 @@ class ProblemResponseTasksTest(TestCase):
         mock_admin_task_get
     ):
         """Test process problem response report."""
-        mock_processor().post_process.return_value = [{'key1': 'val1', 'key2': 'val2'}]
+        mock_processor().post_process.return_value = [{'key1': 'val1', 'key2': 'val2'}], ['key1', 'key2']
         mock_processor().module_lesson_number.return_value = ('module number', 'lesson number')
         post_process_problem_response_report(
             {'id': 'task_id', 'report_name': 'report_name'},

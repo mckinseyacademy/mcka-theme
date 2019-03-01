@@ -2661,15 +2661,13 @@ def validate_participant_manager_email(participant_email, manager_email):
 
 class ProblemReportPostProcessor(object):
     """Problem report post processor."""
-    BLOCK_KEY_NAME = 'block_key'
-    USERNAME_KEY_NAME = 'username'
 
     def __init__(self, course_id, report_name, report_uri):
-        """Init.
-
+        """
         Args:
-            param1 (str): Report name
-            param2 (str): Report URI
+            course_id (str): Course id as string
+            course_name (str): Report name
+            report_uri (str): LMS report location to process
         """
         self.report_name = report_name
         if report_uri.startswith('http'):
@@ -2681,111 +2679,65 @@ class ProblemReportPostProcessor(object):
                 report_uri.strip('/')
             ])
         self.course_id = course_id
-        self._course_blocks = None
-        self.users_dict = None
-        self.indices_to_remove = []
+        self._course_blocks = self._fetch_course_blocks()
+        self._users_dict = self._fetch_user_data()
+        self._cols = {}
 
-    def module_lesson_number(self, problem_location):
-        """Retrieves Module and lesson number.
-
-        Args:
-            problem_location (str): Problem Location.
-
-        Returns:
-            tuple: Module and lesson number in a tuple.
-        """
-        if self._course_blocks is None:
-            blocks = course_api.get_course_block_of_types(
+    def _fetch_course_blocks(self):
+        """Fetch course blocks of supported types from the course blocks API."""
+        blocks = course_api.get_course_block_of_types(
                 self.course_id,
                 block_types=['poll', 'survey']
-            )
-            self._course_blocks = {
-                block['id']: block
-                for block in blocks
-            }
-        block = self._course_blocks.get(problem_location, {})
-        lesson_number = block.get('lesson', '')
-        module_number = block.get('module', '')
-        return (module_number, lesson_number)
+        )
+        return {block['id']: block for block in blocks}
 
-    def _delete_fields(self, row, fields_to_remove):
-        """Delete fields.
-
-        Args:
-            row (list) row: Row.
-            fields_to_remove (list): List of strings with field names to remove
-        Return:
-            list: list of data
+    def _fetch_user_data(self):
         """
-        processed_row = {}
-        for key in row:
-            if key not in fields_to_remove:
-                processed_row[key] = row[key]
-        return processed_row
-
-    def _get_course_user_email(self, username):
-        """Add fields.
-
-        Args:
-            username (str): Username.
-        Return:
-            list: list of data
+        Fetch user data for users in the selected course, and return a username-email mapping
         """
-        if self.users_dict is None:
-            users_data = course_api.get_user_list_json(course_id=self.course_id)
-            self.users_dict = {user['username']: user for user in users_data}
-        user = self.users_dict.get(username, {})
-        return user.get('email', '')
+        users_data = course_api.get_user_list_json(course_id=self.course_id)
+        return {user['username']: user.get('email') for user in users_data}
 
-    def _add_user_email(self, row):
-        """Add course use email to row.
-
-        Args:
-            row (list): List of data.
-        Return:
-            row
+    def _get_column_name(self, row):
         """
-        username = row[self.USERNAME_KEY_NAME]
-        email = self._get_course_user_email(username)
-        row['Email'] = email
-        return row
-
-    def _add_module_lesson_number(self, row):
-        """Add module and lesson number to row.
+        Get the generated column name for provided row
 
         Args:
-            row (list): List of data.
+            row (list): row from problem response report
         Returns:
-            row
+            str: column name for the row
         """
-        problem_location = row[self.BLOCK_KEY_NAME]
-        module_number, lesson_number = self.module_lesson_number(problem_location)
-        row['Module Number'] = module_number
-        row['Lesson Number'] = lesson_number
-        return row
+        problem_location = row['block_key']
+        question = row['Question'].decode('utf-8')
+        column_key = (problem_location, question)
+        if column_key not in self._cols:
+            data = self._course_blocks.get(problem_location, {})
+            location = u'L{lesson_number}M{module_number}'.format(**data)
+            self._cols[column_key] = u'{} - {}'.format(location, question)
+        return self._cols[column_key]
 
-    def post_process(self, fields_to_remove):
-        """Post process report.
-
-        This method will remove the fields given in ``fields_to_remove`` and add necessary data.
-
-        Args:
-            param1 (list) fields_to_remove: List of strings. Title names to remove on every row.
-            param2 (list) daat_to_add: Array of data to append to every row.
+    def post_process(self):
+        """
+        Post process report.
 
         Return:
-            list: list of data (rows).
+            (list, list): tuple containing the output report data and the fields
+                          in the report
         """
-        rows = []
         with requests.get(self.report_uri, stream=True) as csv_report:
             csv_report.raise_for_status()
             report_reader = csv.DictReader(csv_report.iter_lines())
 
+            output = {}
+
             # Process every row and yield
             for row in report_reader:
-                processed_row = self._add_module_lesson_number(row)
-                processed_row = self._add_user_email(processed_row)
-                processed_row = self._delete_fields(processed_row, fields_to_remove)
-                rows.append(processed_row)
+                column_name = self._get_column_name(row)
+                user_email = self._users_dict.get(row['username'])
+                output.setdefault(
+                    user_email, {'email': user_email}
+                ).update({
+                    column_name: row['Answer']
+                })
 
-        return rows
+        return output.values(), ['email'] + sorted(self._cols.values())

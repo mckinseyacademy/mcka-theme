@@ -20,12 +20,6 @@ Apros.views.CourseDetailsProblemResponseView = Backbone.View.extend({
         },
         colModel: [
           {
-            title: gettext('Poll/Survey Question'),
-            index: true,
-            name: 'question',
-            sortType: 'string'
-          },
-          {
             title: gettext('Lesson'),
             index: true,
             filter: true,
@@ -37,6 +31,12 @@ Apros.views.CourseDetailsProblemResponseView = Backbone.View.extend({
             index: true,
             filter: true,
             name: 'module',
+            sortType: 'string'
+          },
+          {
+            title: gettext('Poll/Survey Question'),
+            index: true,
+            name: 'question',
             sortType: 'string'
           }
         ]

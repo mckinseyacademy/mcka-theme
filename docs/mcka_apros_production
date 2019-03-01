@@ -105,6 +105,11 @@ server {
     try_files $uri @proxy_to_lms_app;
   }
 
+  # Needed for mobile SSO-based auth to work
+  location /instructor_task_status {
+    try_files $uri @proxy_to_lms_app;
+  }
+
   location @proxy_to_lms_nginx {
     proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
     proxy_set_header X-Forwarded-Port $http_x_forwarded_port;
