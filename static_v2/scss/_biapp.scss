@@ -555,3 +555,68 @@ body.rtl {
     }
   }
 }
+
+// Admin site Biapp styles
+#managerDashboardWrapper {
+  table {
+    td {
+      &.progress {
+        >span {
+          @include margin-right(20px);
+        }
+      }
+    }
+  }
+
+  .bbGrid-container{
+    table {
+      tr[class*="subgrid"] {
+        td{
+          &:last-child{
+            >span{
+              @include margin-right(2px);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .appHeader {
+    .topRightArea {
+      .profileArea {
+        .dropdown-menu {
+          @include right(-10px !important);
+          &:after {
+            @include right(17px !important);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .dropdown-menu {
+    &.dashboard-menu {
+      @include left(-55px !important);
+      @include right(0 !important);
+      &:after {
+        @include left(140px !important);
+        @include right(auto !important);
+      }
+    }
+  }
+  .appHeader {
+    .topRightArea {
+      .profileArea {
+        @include margin-left(15px);
+        .dropdown-menu {
+          @include right(-14px !important);
+        }
+      }
+    }
+  }
+}
