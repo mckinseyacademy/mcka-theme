@@ -34,7 +34,7 @@
     transition: all ease 0.3s;
     opacity: 0.5;
     &.disable {
-      background: $gray;
+      background: $gray !important;
       &:hover {
         opacity: 1;
       }
