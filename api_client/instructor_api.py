@@ -10,9 +10,12 @@ from api_client.oauth2_requests import get_oauth2_session
 BASE_URI = getattr(settings, 'INSTRUCTOR_API', 'api/instructor/v1')
 COURSE_INSTRUCTOR_URI = '{server_address}/{base_uri}/course'.format(
     server_address=settings.API_SERVER_ADDRESS,
-    base_uri=BASE_URI
+    base_uri=BASE_URI,
 )
-INSTRUCTOR_TASKS_URI = '{server_address}/instructor_task_status'.format(server_address=settings.API_SERVER_ADDRESS)
+INSTRUCTOR_TASKS_URI = '{server_address}/{base_uri}/tasks'.format(
+    server_address=settings.API_SERVER_ADDRESS,
+    base_uri=BASE_URI,
+)
 
 
 @api_error_protect
