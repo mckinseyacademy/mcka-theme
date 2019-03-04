@@ -68,7 +68,7 @@ function saveScormDataClosePopup() {
     }
 }
 
-function getScormPopupReference(shouldRemoveIframe = false) {
+function getScormPopupReference() {
     //If a popup is open
     if (isScormPopupLaunchedBefore()) {
         // Get a reference to the popup
