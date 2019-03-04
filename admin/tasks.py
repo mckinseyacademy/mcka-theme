@@ -917,7 +917,7 @@ def post_process_problem_response_report(self, parent_task, course_id, problem_l
     """
     # If we're running with CELERY_ALWAYS_EAGER the result of the last
     # task is not passed correctly always, because of the self.retry()
-    if settings.CELERY_ALWAYS_EAGER and parent_task is None:
+    if getattr(settings, 'CELERY_ALWAYS_EAGER', False) and parent_task is None:
         admin_tasks = AdminTask.objects.filter(course_id=course_id, status='PROGRESS')
         parent_task = {'id': admin_tasks[0].task_id, 'report_name': None}
     # Get list of downloads
@@ -989,7 +989,8 @@ def send_problem_response_report_success_email(parent_task):
 
 @task(bind=True)
 def handle_admin_task_error(self, error_task_id, res_id):
-    """Handle Admin Task error.
+    """
+    Handle Admin Task error.
 
     Args:
         error_task_uuid (str): Uuid of the task that raised the error.
@@ -1004,7 +1005,9 @@ def handle_admin_task_error(self, error_task_id, res_id):
         subject=_('Problem Response Report'),
         to_emails=[user_detail[0].email],
         template_name='admin/problem_response_report_email.haml',
-        template_data={'success': False,
-                       'first_name': user_detail[0].first_name,
-                       'output': admin_task.output}
+        template_data={
+            'success': False,
+            'first_name': user_detail[0].first_name,
+        },
     )
+    logger.error('Admin Task failed with the following output: {}'.format(admin_task.output))
