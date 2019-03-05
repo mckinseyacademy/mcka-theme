@@ -246,7 +246,45 @@
       width: 88% !important;
     }
     &.allModules {
-      min-width: 290px;
+      min-width: 93vw;
+    }
+    &.dashboard-menu {
+      min-width: 300px !important;
+      >.sub-nav {
+            max-height: 373px;
+            overflow: auto;
+            margin: 0 -30px;
+            padding: 0 30px;
+        >li {
+          > a.dropdown-item {
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+            &:after {
+                  font-family: 'Material Icons';
+                  content: "\e313";
+                  border: 0;
+                  font-size: inherit;
+                  margin: 0 0 0 1px;
+                  vertical-align: middle;
+                  display: inline-block;
+            }
+          }
+          &.drop-open-dashboard {
+            ul {
+              max-height: 700px;
+            }
+          }
+          ul {
+            max-height: 0;
+            overflow: hidden;
+            transition: all .3s ease;
+          }
+        }
+      }
+
+    }
+    &.profileDropdown{
+      width: 310px !important;
     }
   }
 }

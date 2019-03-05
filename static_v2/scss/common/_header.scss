@@ -10,7 +10,9 @@ body {
     }
   }
 }
-
+.dropdown-item {
+  white-space: normal !important;
+}
 .appHeader {
   .all-logos {
     padding: 15px 0;
@@ -588,11 +590,11 @@ header {
         top: 60px;
         right: 0;
 
-        ul {
+        >ul {
           width: 100%;
           text-align: center;
 
-          li {
+          >li {
             margin-top: 9px;
 
             a {

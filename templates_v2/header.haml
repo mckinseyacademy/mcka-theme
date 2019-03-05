@@ -112,7 +112,7 @@
                       %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
                         {% trans "admin" %}
 
-                  - if learner_dashboards|length > 1
+                  - if learner_dashboards|length > 0
                     %li
                       %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
                         {% trans "dashboard" %}
@@ -121,21 +121,22 @@
                         %ul.sub-nav
                           - for dashboard in learner_dashboards
                             %li
-                              %a.dropdown-item.ome.dome-c{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
+                              %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
                                 - if request.session.last_visited_course and dashboard.course_id == request.session.last_visited_course
                                   %span.bookmark
+                              %ul.sub-nav.d-block.d-sm-none
+                                %li
+                                  %a.active{:href => "/courses/{{dashboard.course_id}}"} {% trans "Overview" %}
+                                - if dashboard.calendar_enabled
+                                  %li
+                                    %a{:href => "#"} {% trans "Calendar" %}
+                                - if feature_flags.discussions
+                                  %li
+                                    %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/discussion"} {% trans "Discussions" %}
+                                - if feature_flags.resources
+                                  %li
+                                    %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/resources"} {% trans "Resources" %}
 
-                  - elif learner_dashboards|length == 1
-                    %li
-                      %a.nav-link.ome.dome-c{:href => "/courses/{{learner_dashboards.0.course_id}}"}
-                        {% trans "dashboard" %}
-                  %ul.sub-nav.d-block.d-sm-none
-                    %li
-                      %a.active{:href => "#"} {% trans "Calender" %}
-                    %li
-                      %a{:href => "#"} {% trans "Discussions" %}
-                    %li
-                      %a{:href => "#"} {% trans "Resources" %}
 
                   {% url 'courses' as courses_url %}
                   %li{class: "{% if request.path == courses_url %}active{% endif %}"}

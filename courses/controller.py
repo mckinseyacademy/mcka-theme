@@ -1057,5 +1057,9 @@ def user_learner_dashboards(request, user_courses):
     for course in user_courses:
         dashboard = get_learner_dashboard(request, course_id=course.id)
         if dashboard:
+            calendar_items = LearnerDashboardTile.objects.filter(
+                learner_dashboard=dashboard.id, show_in_calendar=True
+            )
+            dashboard.calendar_enabled = True if calendar_items else False
             learner_dashboards.append(dashboard)
     return learner_dashboards
