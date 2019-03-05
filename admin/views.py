@@ -3949,15 +3949,10 @@ class ParticipantsListApi(APIView):
 
         # restrict participants search to internal courses
         if request.user.is_internal_admin:
-            internal_course_ids = get_internal_courses_ids()
-            query_params['courses'] = query_params.get('courses') or ','.join(internal_course_ids)
-            participants = user_api.get_filtered_participants_list(query_params)
-            participants['results'] = filter(
-                lambda participant: set(participant.get('courses_enrolled', [])).intersection(internal_course_ids),
-                participants['results']
-            )
-        else:
-            participants = user_api.get_filtered_participants_list(query_params)
+            query_params['internal_admin_flag'] = True
+            query_params['type'] = TAG_GROUPS.INTERNAL
+
+        participants = user_api.get_filtered_participants_list(query_params)
 
         # extend participants search to get course participants
         if query_params.get('course_participants_search') == 'course_participants_search':
