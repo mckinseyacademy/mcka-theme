@@ -1,0 +1,20 @@
+- extends "courses/course_base_ld.haml"
+- load staticfiles
+- load i18n
+
+- block content
+  %script{"src": "{% static 'js/highcharts/highcharts.js' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
+
+  #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
+  #course-resources
+    .container.full
+      .row
+        .medium-10.medium-centered.columns.course-page
+          %h1 Resources
+          - autoescape off
+            = resources_content
+
+- block js_snippets
+  %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
+  %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}

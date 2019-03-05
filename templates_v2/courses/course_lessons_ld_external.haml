@@ -1,0 +1,92 @@
+- extends "courses/course_base_ld.haml"
+- load i18n
+- load staticfiles
+
+- block content
+  %link{'rel': 'stylesheet', "href": "{% static 'css/jquery-ui.min.css' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts.js' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
+  .container.full
+    .row
+      #course-lessons{'data-course-url': '/learnerdashboard#{course.current_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}', 'data-tile-id': '#{tile_id}', 'data-current-progress': '#{user_progress}'}
+        - if apros_features.notes
+          - include 'courses/lesson_notes.haml'
+        .lesson-title
+          - if lesson_custom_label
+            %span.label-4.lesson-index {% blocktrans with current_lesson_index=course.current_lesson.index %} #{lesson_custom_label} {{current_lesson_index}}:{% endblocktrans %}
+          - else
+            %span.label-4.lesson-index {% trans "Lesson" %} #{course.current_lesson.index}:
+          %span.label-3.lesson-name= course.current_lesson.name
+        %h1
+          - if lesson_custom_label and modules_custom_label
+            %a{'data-reveal-id': 'module_list', "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+              %i.fa.fa-list-ul
+          - elif lesson_custom_label
+            %a{'data-reveal-id': 'module_list', "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+              %i.fa.fa-list-ul
+          - elif modules_custom_label
+            %a{'data-reveal-id': 'module_list', "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+              %i.fa.fa-list-ul
+          - else
+            %a{'data-reveal-id': 'module_list', "data-tooltip": "{% trans 'Lesson Modules' %}"}
+              %i.fa.fa-list-ul
+          = course.current_module.name
+        - block lesson_content
+          .lesson-content
+          .lesson-discussion
+        - include "courses/content_page/lesson_pager.haml"
+      #module_list.reveal-modal.tiny.lesson-modules-modal{'data-reveal': True}
+        - if lesson_custom_label
+          %p.style-2 {% blocktrans with course_current_progress=course.current_lesson.progress lesson_index=course.current_lesson.index %}You have completed {{ course_current_progress }}% of {{lesson_custom_label}} {{ lesson_index }}: {% endblocktrans %}
+        - else
+          %p.style-2 {% blocktrans with course_current_progress=course.current_lesson.progress lesson_index=course.current_lesson.index %}You have completed {{ course_current_progress }}% of Lesson {{ lesson_index }}: {% endblocktrans %}
+        %ul
+          - for module in course.current_lesson.modules
+            %li.lesson-row-item
+              %i.status.fa{"class": "{% if module.progress == 100 %}fa-check-circle complete{% elif module.progress > 0 %}fa-circle partial{% else %}fa-circle{% endif %}"}
+              .lesson-item-name
+                - if module_custom_label
+                  %a{"href": "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}", "class": "{% if module.is_current %}current{% endif %}"}
+                    {% blocktrans with module_index=module.index %} {{module_custom_label}} {{module_index}}:{% endblocktrans %}
+                - else
+                  %a{"href": "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}", "class": "{% if module.is_current %}current{% endif %}"}
+                    {% trans "Module" %} #{module.index}:
+                %span= module.name
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+
+- block js_snippets
+  %script{src: '/static/js/course_learner_dashboard/tile_progress_update.js'}
+  %script{src: '/static/js/course_learner_dashboard/lesson_url_to_view.js'}
+  %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
+  %script{src: '/static/js/course_lesson.js'}
+  - include 'courses/course_lessons_scorm.haml'
+  :javascript
+    $(function(){
+      var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
+      var lesson_data = {
+        courseId: '{{ legacy_course_id }}',
+        usageId: '{{ course.current_module.vertical_id }}',
+        sessionId: '{{ remote_session_key }}',
+        baseDomain: '{{ lms_base_domain }}',
+        lmsSubDomain: '{{ lms_sub_domain }}',
+        lmsPort: '{{ lms_port }}',
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
+        data: {
+            activate_block_id: Apros.getParameterByName('activate_block_id'),
+        },
+        {% if use_current_host %}
+        useCurrentHost: true,
+        {% endif %}
+      };
+      // Temporary hack to prevent xblock-ooyala from loading the ooyala player library.
+      // Ooyala player is always loaded in apros, so no need to load it again for the xblock.
+      // The hash corresponds to the ooyala player JS library script.
+      lesson_content.data('loaded_resource_hashes', ['207f215b40019e34c7c46cb5b46b140e']);
+      lesson_content.xblock(lesson_data);
+      // we need this to add some browser specific CSS rules
+      lesson_content.attr( "data-useragent", navigator.userAgent);
+      $('#course-group-work .lesson-module-status').on('click', function(){
+        $('#' + $(this).data('activate')).click();
+      });
+    });

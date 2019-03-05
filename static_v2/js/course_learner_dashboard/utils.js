@@ -1,6 +1,7 @@
 $(function(){
 
    if ($(window).width() < 576) {
+       $('.gallery.mCustomScrollbar._mCS_1').removeClass('mCustomScrollbar _mCS_1');
        $('.dropdown-menu').click(function(e) {
             e.stopPropagation();
         });
