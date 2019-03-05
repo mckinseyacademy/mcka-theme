@@ -130,9 +130,14 @@
                                 - if dashboard.calendar_enabled
                                   %li
                                     %a{:href => "#"} {% trans "Calendar" %}
+                                %li
+                                  %a.ome.dome-c{:href => "/learnerdashboard/#{dashboard.id}"} {% trans "Portal Home" %}
                                 - if feature_flags.discussions
                                   %li
                                     %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/discussion"} {% trans "Discussions" %}
+                                - if feature_flags.group_work
+                                  %li
+                                    %a.ome.dome-c{:href => "/learnerdashboard/#{dashboard.id}/courses/#{course_id}/group_work"} {% trans 'Miniboard' %}
                                 - if feature_flags.resources
                                   %li
                                     %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/resources"} {% trans "Resources" %}
