@@ -630,7 +630,7 @@
 	}
 }
 
-#delete_user_modal, #delete_user_success{
+#delete_user_modal, #delete_user_success, #advanced_delete_modal, #delete_participants_confirm_message, #delete_participants_success {
 	padding: 10px 10px 10px 10px;
 
 	.titleContainer, .contentContainer
@@ -694,6 +694,10 @@
 		  margin:0;
 		}
 	}
+
+    .send_email {
+        font-weight: bold;
+    }
 }
 
 .actionButtonIcon

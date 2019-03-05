@@ -1,6 +1,7 @@
 Apros.views.ParticipantsInfo = Backbone.View.extend({
     initialize: function(){
       massParticipantsInit();
+      massParticipantsDeleteInit();
       massParticipantsEnrollInit();
       massParticipantsProfileUpdateInit();
       massParticipantsManagerUpdateInit();
@@ -96,6 +97,17 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
               _this.collection.fetch();
             }
           }, 1000)
+        });
+        $('#companiesAdvancedDeleteButton').on('click','.advancedDeleteOpenModal',function()
+        {
+          var advanced_delete_modal = '#advanced_delete_modal';
+          var errorContainer = $(advanced_delete_modal).find('.errorMessage');
+          $(errorContainer).empty();
+          $(advanced_delete_modal).find('.closeModal').off().on('click', function()
+          {
+            $(advanced_delete_modal).find('a.close-reveal-modal').trigger('click');
+          });
+          $(advanced_delete_modal).foundation('reveal', 'open');
         });
     },
     fetchPages: function(){

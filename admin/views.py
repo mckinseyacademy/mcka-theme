@@ -2553,8 +2553,8 @@ class DeleteParticipantsFromCsv(APIView):
 
         form = MassParticipantsDeleteConfirmationForm(request.data, request.data)
         if form.is_valid():
-            file_url = request.data['file_url']
-            send_email = request.data['send_email']
+            file_url = form.cleaned_data['file_url']
+            send_email = form.cleaned_data['send_email']
 
             delete_participants_task.delay(
                 file_url,
