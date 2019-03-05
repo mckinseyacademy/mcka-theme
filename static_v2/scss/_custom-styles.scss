@@ -1,13 +1,13 @@
 // That is compiled all the sass (bootstrap & local) at once:
 
-//Import all Screens
-
+//=== Import all relevent styles === //
 @import "bootstrap/bootstrap-grid";
 @import "layout/layout";
 @import "vendor/scrollbar";
 @import "common/variables";
 @import "bootstrap/mixins";
 
+// ===== Commonly used styles ===== //
 @import "common/variables";
 @import "common/mixins";
 @import "common/type";
@@ -31,8 +31,7 @@
 @import "common/nav";
 @import "common/scrollbar";
 
-// ======== Pages =========== //
-
+//========= Page's styles ========= //
 @import "pages/login";
 @import "pages/activation";
 @import "pages/static";
@@ -46,8 +45,10 @@
 @import "pages/learnerDashboard";
 @import "pages/progressPage";
 
-// ======== Admin Styles =========== //
+// ======== Admin Styles ========== //
 @import "admin/common/bbGrid";
 @import "admin/common/bbGridExtend";
 @import "admin/common/progressWidgets";
-@import "admin/pages/adminDashboard";
+//Pages
+@import "admin/pages/managerDashboard";
+@import "admin/pages/companyDashboard";

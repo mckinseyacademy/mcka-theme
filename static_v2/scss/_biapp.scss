@@ -31,6 +31,10 @@
       > ul {
         > li {
           @include margin-left(30px);
+          @include margin-right(0);
+          &:first-child {
+            @include margin-left(0);
+          }
         }
       }
     }
@@ -105,6 +109,12 @@
         }
         &.notifications{
           @include margin-right(30px !important);
+          .notification {
+            @media screen and (-ms-high-contrast: active),
+            (-ms-high-contrast: none) {
+              @include padding-right(0 !important);
+            }
+          }
         }
       }
     }
@@ -214,10 +224,9 @@
   }
 }
 
-
 // Progress widgets
-.progressWidgets{
-  .widget{
+.progressWidgets {
+  .widget {
     @include border-left(1px solid $hard-gray);
     &:first-child {
       @include padding-left(0);
@@ -454,12 +463,31 @@
 }
 
 // Lesson Page
-.contentCard {
-  .headerArea {
-    @include padding-right(35px);
+.lessonPageBody {
+  .popover {
+    &[x-placement="right"] {
+      @include media-breakpoint-between(xs, md) {
+        @include left(60px !important);
+        @include right(auto !important);
+      }
+    }
+    &[x-placement="left"] {
+      @include media-breakpoint-between(xs, md) {
+        @include right(60px !important);
+        @include left(auto !important);
+      }
+    }
+  }
+}
 
-    .zoomWrap {
-      @include right(0);
+.lessonOverview {
+  .contentCard {
+    .headerArea {
+      @include padding-right(35px);
+
+      .zoomWrap {
+        @include right(0);
+      }
     }
   }
 }
@@ -569,10 +597,10 @@ body.rtl {
       right: 0 !important;
       left: auto;
     }
-    &.adminModules{
-       @include left(0 !important);
-        @include right(auto !important);
-      &:after{
+    &.adminModules {
+      @include left(0 !important);
+      @include right(auto !important);
+      &:after {
         display: none;
       }
     }
@@ -638,28 +666,99 @@ body.rtl {
 }
 
 // Admin site Biapp styles
+.tableCardWrap {
+  table {
+    td {
+      @include border-left(1px solid $smooth-gray);
+      @include border-right(1px solid $smooth-gray);
+      &:first-child {
+        @include border-left(0);
+      }
+    }
+  }
+}
+
 #managerDashboardWrapper {
   table {
     td {
       &.progress {
-        >span {
+        > span {
           @include margin-right(20px);
         }
       }
     }
   }
 
-  .bbGrid-container{
+  .bbGrid-container {
     table {
       tr[class*="subgrid"] {
-        td{
-          &:last-child{
-            >span{
+        td {
+          &:last-child {
+            > span {
               @include margin-right(2px);
             }
           }
         }
       }
+    }
+  }
+}
+
+// Companies Admin styles
+.tableHeaderArea {
+  .sidePanel {
+    @include float(right);
+  }
+}
+
+.companiesStats {
+  > li {
+    @include margin-right(30px);
+    &:last-child {
+      @include margin-left(0px);
+    }
+    span {
+      @include margin-left(10px);
+      &:first-child {
+        @include margin-left(0px);
+      }
+    }
+  }
+}
+
+#courseMainDetailsContainerView {
+  .courseParticipantsButton,
+  .courseStatsButton {
+    @include margin-left(30px);
+    &:first-child {
+      @include margin-left(0)
+    }
+  }
+}
+
+#companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
+  .bbGrid-search-bar {
+    .input-group {
+      @include float(right);
+      input:not([type='checkbox']) {
+        @include padding-right(40px);
+      }
+    }
+    .bbGrid-pager {
+    }
+  }
+}
+
+#courseMainDetailsContainerView {
+  .bbGrid-search-bar{
+    @include right(30px);
+    .input-group{
+      @include float(right);
+      @include margin-left(20px);
+    }
+    #coursesDownloadStatsButton,
+    .bulkActionsButtonContainer{
+      @include float(right);
     }
   }
 }
@@ -691,13 +790,15 @@ body.rtl {
     }
   }
   .appHeader {
-    .topRightArea {
+    .logo{
+      .topRightArea {
       .profileArea {
         @include margin-left(15px);
         .dropdown-menu {
           @include right(-14px !important);
         }
       }
+    }
     }
   }
 }

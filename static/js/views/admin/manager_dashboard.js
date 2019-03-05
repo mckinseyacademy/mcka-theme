@@ -83,6 +83,7 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
     if (this.$el.selector != '#managerDashboardReportGrid'){
       this.$el.find('.bbGrid-container').append('<i class="fa fa-spinner fa-spin"></i>');
     }
+
     managerDashboardReportGridBlock['partial_collection'] = this.collection;
     this.managerDashboardReportGridBlock = managerDashboardReportGridBlock;
     this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);

@@ -1,0 +1,61 @@
+- extends "admin/admin_layout.haml"
+- load i18n
+
+- block content
+
+  #mainCompanyDashboardContainer
+    .container.mainTopHeader
+      .row
+        .col
+          .courseMainHeader
+            %h1#companyDashboardTitle
+              {% trans "Companies" %}
+
+    .container.tableContainer
+      .row
+        .col
+          #companyDashboardText
+            %p {% trans "Click on any of the below courses to view individual participant progress and performance data as well as overall course stats. If the course you are looking for is not visible, click on the " %}
+              %strong  {% trans "View All Courses button." %}
+
+          #companyDashboardCompaniesWrapper
+            - for company in companies
+              .companyTableWrap.tableCardWrap
+                .tableHeaderArea.stats
+                  %ul.companiesStats
+                    %li
+                      =company.name
+                    %li
+                      %span.title
+                        {% trans "Total Participants:" %}
+                      %span
+                        #{company.numberParticipants}
+                    %li
+                      %span.title
+                        {% trans "Active Courses:" %}
+                      %span
+                        #{company.activeCourses}
+                  .sidePanel
+                    .companyDashboardCompanyDown
+                    - if not user.is_company_admin
+                      .companyDashboardCompanyInfo
+                        %a.btn.btn-primary.ome.dome-bc{:href => '/admin/companies/#{company.id}', :target => '_self'} Edit Company Info
+                    .companyDashboardCompanyAllCourses
+                      %a.btn.btn-primary.ome.dome-bc{:href => "/admin/companies/#{company.id}", :target => '_self'}
+                        {% trans "View All Courses" %}
+                .tableHscrollWrap
+                  %table.bbGrid-grid.table-curved
+                    - for course in company.courses
+                      %tr.companyDashboardCompanyCourse
+                        %td
+                          %a.ome.dome-c{:href => "/admin/companies/#{company.id}/courses/#{course.id}", :target => '_self'}
+                            = course.name
+                        %td= course.id
+                        %td
+                          - if course.end == '-'
+                            -#{% trans "Evergreen" %}
+                            #{course.start}
+                          - else
+                            #{course.start}
+                        %td
+                          #{course.end}

@@ -320,7 +320,7 @@ header {
   }
 }
 
-//Course navigation wrraper
+//Course navigation wrapper
 .courseNavWrap {
   ul {
     padding: 0;
@@ -482,10 +482,9 @@ header {
 }
 
 // BreakPoints for small Screens
-
 @media screen and (max-width: 992px) {
   .courseMainHeader {
-    padding: 0;
+    padding: 0 15px;
 
     h1 {
       font-size: 32px;
@@ -532,24 +531,23 @@ header {
 
   .mainTopHeader {
     max-width: 100%;
-    padding: 0 40px;
-    .row {
-      .col {
-        padding: 0;
-      }
-    }
-
+    padding: 0 15px;
   }
 
   header {
     &.appHeader {
       .container {
         max-width: 100%;
-        padding: 0 30px;
-        .row {
-          .col {
-            padding: 0;
-          }
+        padding: 0 15px;
+      }
+    }
+  }
+
+  .contentCard{
+    &.progressWidgets{
+      #course-statistics{
+        >.row{
+          margin: 0 -10px;
         }
       }
     }
@@ -561,6 +559,15 @@ header {
   .pn-ProductNav {
     margin: 0;
     padding: 0 30px 2px;
+  }
+
+  header {
+    &.appHeader {
+      padding: 0 15px;
+      .topRightArea {
+        margin-top: 10px;
+      }
+    }
   }
 
   .mainTopHeader {
@@ -620,6 +627,16 @@ header {
         content: '';
         top: -2px;
         font-size: 22px;
+      }
+    }
+  }
+
+  .contentCard{
+    &.progressWidgets{
+      #course-statistics{
+        >.row{
+          margin: 0 -15px;
+        }
       }
     }
   }

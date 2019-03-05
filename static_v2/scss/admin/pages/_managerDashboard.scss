@@ -1,4 +1,4 @@
-// Admin Dashboard Styles
+// Manager Admin Dashboard Styles
 
 #admin-body {
   .contentCard {
@@ -6,42 +6,9 @@
       margin-bottom: 20px;
     }
   }
-}
-#managerDashboardWrapper {
-  margin: 0 auto;
-  .navigation {
-    ul {
-      li {
-        .hashPageButton {
-          display: block;
-          margin-top: 10px;
-          margin-right: 20px;
-          text-transform: uppercase;
-          border-bottom: 3px solid transparent;
-          &.active {
-            border-bottom: 3px solid $mckinsey-light-blue;
-            font-weight: bold;
-          }
-        }
-        >a{
-          display: none;
-          font-weight: normal;
-          &.active{
-            font-weight: normal !important;
-          }
-        }
-      }
-    }
-  }
-  .bbGrid-search-bar {
-    padding: 0 1.07143rem;
-    margin-top: 15px;
-    input {
-      float: left !important;
-    }
-  }
   table {
-    min-width: 68.57143rem;
+    min-width: 100%;
+    border-collapse: collapse;
     th {
       color: $black;
     }
@@ -89,7 +56,41 @@
       }
     }
   }
-
+}
+#managerDashboardWrapper,
+.companyDashboardCompanyContainerTable{
+  margin: 0 auto;
+  .navigation {
+    ul {
+      li {
+        .hashPageButton {
+          display: block;
+          margin-top: 10px;
+          margin-right: 20px;
+          text-transform: uppercase;
+          border-bottom: 3px solid transparent;
+          &.active {
+            border-bottom: 3px solid $mckinsey-light-blue;
+            font-weight: bold;
+          }
+        }
+        >a{
+          display: none;
+          font-weight: normal;
+          &.active{
+            font-weight: normal !important;
+          }
+        }
+      }
+    }
+  }
+  .bbGrid-search-bar {
+    padding: 0 1.07143rem;
+    margin-top: 15px;
+    input {
+      float: left !important;
+    }
+  }
   #managerDashboardContainer {
     .bbGrid-container {
       table {

@@ -19,16 +19,16 @@
   tr {
     height: 2.4em;
   }
-  td,th{
+  td, th {
     padding: 16px;
-    @media screen and (max-width: 992px){
+    vertical-align: middle;
+    @include media-breakpoint-down(lg) {
       display: table-cell !important;
     }
   }
   .bbGrid-grid-head {
     font-size: 12px;
     cursor: pointer;
-    background-color: $background_color_1;
     th {
       box-sizing: content-box;
       overflow: hidden;
@@ -97,6 +97,10 @@
   }
 }
 
+.bbGrid-grid-head-holder {
+  height: initial !important;
+}
+
 .bbGrid-row {
   .bbGrid-subgrid-control {
     padding: 5px;
@@ -106,7 +110,7 @@
 
 .bbGrid-container {
   width: auto;
-  @media screen and (max-width: 992px) {
+  @include media-breakpoint-down(lg) {
     width: 100%;
     overflow-x: auto;
   }
@@ -123,7 +127,7 @@
     border-collapse: collapse;
     table-layout: auto;
     width: 100%;
-    @media (max-width: 767.98px){
+    @media (max-width: 767.98px) {
       display: table-cell;
     }
   }
@@ -246,13 +250,41 @@
 }
 
 .bbGrid-search-bar {
-  padding: 2px;
-  max-width: 310px;
-  input {
-    padding: 1px 6px;
-    float: right !important;
-    font-size: 12px;
+
+  .input-group {
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+    height: 40px;
+    border: 1px solid #999;
+    color: $gray;
+    padding: 0 35px 0 0;
+    position: relative;
+
+    &:after {
+      font-family: 'Material Icons';
+      font-size: 1.225rem;
+      border: none;
+      background: none;
+      padding: 0;
+      position: absolute;
+      right: 8px;
+      top: 6px;
+      content: '\e8b6';
+      color: $gray;
+    }
+
+    input:not([type='checkbox']) {
+      border: none;
+      background: no-repeat;
+      width: 100%;
+      height: 38px;
+      font-size: 12px;
+      line-height: 18px;
+      padding: 10px;
+    }
   }
+
   button {
     padding: 1px 6px;
     float: right !important;

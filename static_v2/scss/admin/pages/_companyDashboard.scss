@@ -1,0 +1,884 @@
+// Company admin Dashboard Styles
+
+#admin-body {
+  .courseMainHeader {
+    h1 {
+      padding-bottom: 0;
+    }
+  }
+}
+
+#companyDashboardText {
+  font-size: 1rem;
+  line-height: 22px;
+}
+
+.tableHscrollWrap {
+  max-width: 100%;
+  overflow: hidden;
+  overflow-x: auto;
+}
+
+.companiesStats {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 4px 0 0;
+  margin: 0;
+  > li {
+    display: inline-block;
+    vertical-align: bottom;
+    font-size: 1.2rem;
+    .title {
+      font-size: 0.75rem;
+      font-weight: normal;
+    }
+    &.comName {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    &:first-child {
+      font-size: 1.2rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    span {
+      display: inline-block;
+      vertical-align: middle;
+      font-weight: 600;
+      &:first-child {
+        padding-top: 3px;
+        font-weight: normal;
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+// ==============================================
+
+#mainCompaniesListDetailsContainer {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 68.57143rem;
+  padding: 0 10px;
+}
+
+#mainCompaniesListGridContainer {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  display: table;
+  max-width: 68.57143rem;
+  padding: 0 10px;
+}
+
+#companyDashboardCompaniesWrapper {
+  margin-top: 30px;
+  .companyTableWrap {
+    margin-top: 30px;
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+}
+
+#companiesListTitle {
+  float: left;
+  p {
+    font-size: xx-large;
+    margin-bottom: 20px;
+  }
+}
+
+#companiesCreateNewCompanyButton {
+  float: right;
+}
+
+#companiesListText {
+  clear: both;
+}
+
+#createNewCompanyModal {
+  .errorMessage {
+    color: red;
+    padding-bottom: 10px;
+  }
+}
+
+#mainCompaniesListGridWrapper {
+  margin-left: auto;
+  margin-right: auto;
+
+  .bbGrid-search-bar {
+
+    .bbGrid-pager {
+      float: left !important;
+    }
+  }
+}
+
+#companiesListViewGridBlock {
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 100px;
+  min-width: 60%;
+  display: table;
+  position: relative;
+  width: 100%;
+
+  .bbGrid-container {
+    max-height: 28.8em;
+    overflow-y: auto;
+    min-width: 100%;
+  }
+
+  .bbGrid-grid {
+    &.table {
+      margin-left: auto;
+      margin-right: auto;
+      min-width: 100%;
+    }
+  }
+}
+
+#mainCompanyDetailsContainer {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  padding: 0 10px;
+  .appDetailsAppName {
+    padding: 0 15px;
+    h4, .fa {
+      display: inline-block;
+    }
+  }
+  .fa-check {
+    color: $bg-white-green;
+  }
+  .fa-close {
+    color: $bg-white-red;
+  }
+}
+
+#companyDetailsNavigation {
+  margin-left: auto;
+  margin-right: auto;
+  display: none;
+}
+
+#mainCompanyDetailsDataContainer {
+  position: relative;
+
+  .errorMessage {
+    color: red;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-size: small;
+  }
+
+  #additionalCompanyButtons {
+    position: absolute;
+    right: 0px;
+    top: 20px;
+  }
+}
+
+#companyDetailsTopDataWrapper {
+
+  .editCompanyNameIcon {
+    font-size: initial;
+    color: #3384ca;
+  }
+
+  .companyDetailsTextName, .editCompanyNameIcon {
+    display: inline-block;
+  }
+
+  .companyDetailsInputName {
+    display: inline-block;
+  }
+
+  > .row {
+    margin-left: 0;
+    margin-right: 0;
+    padding-right: 10px;
+    border-right: 1px solid #999;
+    padding-left: 10px;
+    display: inline-block;
+
+    &:last-child {
+      border-right: 0;
+    }
+
+    &:nth-child(1), &:nth-child(2) {
+      padding-left: 0;
+    }
+    &:nth-child(1) {
+      border-right: 0;
+    }
+  }
+}
+
+// Admin Site Breadcrum Styles
+
+.breadcurm {
+  margin: -10px 0 15px;
+  padding: 0;
+  list-style: none;
+  letter-spacing: -.32em;
+  li {
+    letter-spacing: normal;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 0.75rem;
+    line-height: 17px;
+    margin: 0;
+    color: $gray;
+    &:before {
+      content: "/";
+      padding: 0 5px;
+    }
+    &:first-child {
+      &:before {
+        display: none;
+      }
+    }
+  }
+  a {
+    color: var(--primary);
+    text-decoration: none;
+  }
+}
+
+.search-area {
+  &.custom {
+    display: none;
+  }
+  float: right;
+  letter-spacing: -.32em;
+  .btn {
+    margin: 0 20px;
+  }
+  * {
+    letter-spacing: normal;
+  }
+  .search-form {
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+    height: 40px;
+    border: 1px solid #999;
+    color: $gray;
+    padding: 0 35px 0 0;
+    position: relative;
+    input[type="search"] {
+      border: none;
+      background: no-repeat;
+      width: 100%;
+      height: 38px;
+      font-size: 12px;
+      line-height: 18px;
+      padding: 10px;
+    }
+    .search-btn {
+      border: none;
+      background: none;
+      padding: 0;
+      position: absolute;
+      right: 8px;
+      top: 8px;
+      i {
+        font-size: 20px;
+        line-height: 20px;
+        display: block;
+        color: $gray;
+      }
+    }
+  }
+  .btn {
+    background: var(--primary);
+    color: $white;
+  }
+  .btn.disabled {
+    background: $gray !important;
+    border-color: $gray !important;
+    cursor: disabled;
+  }
+}
+
+.custom-checkbox {
+  border: 1px solid #696969;
+  width: 15px;
+  height: 15px;
+  display: inline-block;
+  vertical-align: top;
+  position: relative;
+  input[type="checkbox"] {
+    position: fixed;
+    left: -9999px;
+  }
+  .fake-input {
+    width: 13px;
+    height: 13px;
+    background: black;
+    display: none;
+    color: $white;
+    text-align: center;
+    i {
+      display: block;
+      font-size: 13px;
+      line-height: 13px;
+    }
+  }
+  input[type="checkbox"]:checked + .fake-input {
+    display: block;
+  }
+}
+
+// ====================================
+
+#companyDetailsNavigationButtonsContainer {
+  padding: 30px;
+  margin: 30px 0;
+  .hashPageButton {
+    padding-bottom: 6px;
+    &.active {
+      border-bottom: 3px solid $mckinsey-academy-alt-blue;
+    }
+  }
+}
+
+#companyfields {
+  h4 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  #customFieldsTable {
+    .additional-field {
+      position: relative;
+      .fa-plus,
+      .fa-minus {
+        position: absolute;
+        cursor: pointer;
+        right: -10px;
+        top: 10px;
+        width: 25px;
+        height: 25px;
+        font-size: 1rem;
+        line-height: 1.5;
+        text-align: center;
+        border-radius: 50%;
+        color: $mckinsey-academy-alt-blue;
+        border: 1px solid $mckinsey-academy-alt-blue;
+      }
+      .fa-minus {
+        color: lighten($mckinsey-dark-grey, 30%);
+        border: 1px solid lighten($mckinsey-dark-grey, 30%);
+      }
+    }
+  }
+  .button {
+    border-radius: 2px;
+    width: 46%;
+    border: 1px solid $mckinsey-academy-alt-blue;
+    &#closeCompanyField {
+      border: 1px solid $mckinsey-academy-alt-blue;
+      background-color: transparent;
+      color: $mckinsey-academy-alt-blue;
+      margin-left: 12px;
+    }
+  }
+  .error {
+    margin: 15px 0;
+    font-size: 13px;
+    color: $bg-white-red;
+  }
+}
+
+#companyDetailsDataWrapper {
+  width: 100%;
+  .table {
+    width: 100%;
+  }
+  .manager-info {
+    line-height: 45px;
+    input[type="checkbox"] {
+      margin-right: 5px;
+      margin-bottom: 0;
+      vertical-align: middle;
+    }
+    .button {
+      float: right;
+    }
+  }
+  #companyCustomFieldsGridBlockDisplay {
+    table {
+      th {
+        padding: 15px 10px;
+        &:first-child {
+          width: 90%;
+        }
+        &:last-child {
+          text-align: center;
+        }
+      }
+      td {
+        padding: 12px 10px;
+        &:last-child {
+          .fa {
+            color: $mckinsey-academy-alt-blue;
+            font-size: 16px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.displayNoneArea {
+  display: none;
+}
+
+.courseDetailsNavigationButton {
+  display: none;
+}
+
+.bulkButtonWrapper {
+  > a {
+    &.disabled {
+      background: $gray !important;
+      color: $white !important;
+      border: none;
+    }
+  }
+}
+
+// Export button
+.bulkActionsButtonContainer {
+  width: auto;
+  float: right;
+}
+.courseDetailsMenuButtons{
+  margin-bottom: 20px;
+}
+#courseMainDetailsContainerView {
+
+  .courseParticipantsButton,
+  .courseStatsButton {
+    padding: 0 0 7px;
+    a {
+      color: var(--primary);
+      &:hover {
+        text-decoration: none;
+      }
+      &.active {
+        &:before {
+          width: 100%;
+          background: #2E2D39;
+        }
+      }
+      &:before {
+        position: absolute;
+        content: '';
+        width: 0;
+        height: 3px;
+        background: transparent;
+        bottom: -3px;
+        transition: all ease 0.3s;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    text-transform: uppercase;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.9px;
+    line-height: 16px;
+    text-align: center;
+  }
+  .bbGrid-search-bar{
+    #coursesDownloadStatsButton,
+    .bulkActionsButtonContainer{
+      width: auto;
+    }
+    #coursesDownloadStatsButton{
+      display: none !important;
+    }
+  }
+}
+
+.contentNavigationContainer {
+  .courseDetailsViewGrid {
+    margin: 0 0 30px;
+  }
+}
+
+.bbGrid-search-bar {
+  float: none !important;
+  clear: both;
+  overflow: hidden;
+  margin-bottom: 30px;
+}
+
+#companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
+  margin-left: auto;
+  margin-right: auto;
+
+  #companyDetailsCoursesViewGridBlock, #companyLearnerDashboardsViewGridBlock {
+    width: 100%;
+    display: table;
+    position: relative;
+
+    .bbGrid-container {
+      max-height: 28.8em;
+      overflow-y: auto;
+
+      .bbGrid-grid-nav {
+        max-width: 100% !important;
+      }
+
+      .bbGrid-grid {
+        &.table {
+          min-width: 100%;
+        }
+      }
+    }
+  }
+}
+
+.spinnerContainer {
+  position: relative;
+  overflow-x: auto;
+  width: 100%;
+  .fa-spinner {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    top: 62%;
+    font-size: 25px;
+  }
+}
+
+.companyCompanyInfo {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#companyInfoInvoicingDetails, #companyInfoContacts {
+  min-width: 760px;
+  max-width: 100%;
+  padding: 50px 70px 30px 70px;
+  border: 1px solid #CCCCCC;
+  background-color: #F2F9FC;
+  margin-bottom: 10px;
+}
+
+.companyInvoicingDetailsHead, .companyContactsHead {
+  font-size: x-large;
+  float: left;
+}
+
+#companyInfoInvoicingDetailsEdit {
+  .country-select.inside {
+    width: 100%;
+  }
+
+  #country_edit {
+    background-color: white !important;
+  }
+}
+
+.companyInvoicingDetailsEditButton, .companyContactsEditButton {
+  float: right;
+}
+
+.companyCompanyInfo {
+  min-width: 760px;
+
+  .row {
+    margin-bottom: 20px !important;
+  }
+
+  label {
+    margin-bottom: 5px !important;
+    color: grey !important;
+    cursor: none !important;
+  }
+
+  .invoicingDetailsCancelEdit, .contactsCancelEdit {
+    padding-left: 20px !important;
+  }
+}
+
+.contactTypeRow {
+  width: 100%;
+  background-color: #FFFFFF;
+  padding: 10px;
+
+  p, .fa {
+    font-size: large !important;
+    float: left !important;
+    padding-left: 10px !important;
+  }
+}
+
+#companyInfoContacts {
+  .columns {
+    padding-left: 20px !important;
+  }
+}
+
+.companyInfoTopic {
+  margin-top: 20px !important;
+  display: none;
+}
+
+.tableCardWrap {
+  background: $white;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+}
+
+#mainCompanyDashboardContainer {
+
+  #companyDashboardTitle {
+    p {
+      font-size: xx-large;
+      margin-bottom: 20px;
+    }
+  }
+
+  #companyDashboardText {
+    clear: both;
+  }
+
+  .tableHeaderArea {
+    //background: #FDFFE4;
+    padding: 10px 16px;
+    overflow: hidden;
+  }
+  .companyTableWrap {
+    .companyDashboardCompanyContainerTable {
+      width: 100%;
+      background: $white;
+
+      .companyDashboardCompanyDataContainer {
+        background-color: #E0E0E0;
+        vertical-align: middle;
+        width: 25%;
+
+        .companyDashboardCompanyName {
+          p {
+            font-weight: bold;
+            font-size: large;
+          }
+        }
+      }
+
+      .companyDashboardCompanyCoursesContainer {
+        padding: 0px;
+
+        .companyDashboardCompanyCoursesTable {
+          width: 100%;
+          border: none !important;
+          margin-bottom: 0px;
+
+          .companyDashboardCompanyCourse {
+            width: 100%;
+          }
+        }
+      }
+    }
+
+    .companyDashboardCompanyInfo {
+      text-decoration: underline;
+    }
+  }
+}
+
+.mobileAppLink {
+  .backLink {
+    margin-bottom: 30px;
+    display: block;
+  }
+  h4 {
+    font-weight: bold;
+    font-size: 1.2rem;
+    margin: 10px 0 30px;
+    &.appName {
+      display: inline-block;
+    }
+  }
+  .fa {
+    display: inline-block;
+    font-size: 16px;
+    color: $mckinsey-academy-alt-blue;
+  }
+  .appDetails {
+    background-color: $white;
+    label {
+      font-weight: 600;
+      color: black;
+    }
+    p {
+      word-break: break-word;
+    }
+    .row {
+      margin-bottom: 20px;
+    }
+    h4 {
+      margin: 5px 0 20px;
+      font-size: 1.1rem;
+    }
+  }
+
+  .bordered {
+    margin-left: 10px;
+  }
+}
+
+[id*="linkApp"] {
+  h4 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+    text-transform: capitalize;
+  }
+  p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    color: $mckinsey-dark-grey;
+    &.focused {
+      background-color: $mckinsey-academy-bright-gray;
+      padding: 7px 10px;
+      font-weight: 600;
+      margin-bottom: 15px;
+
+    }
+  }
+  b {
+    margin-bottom: 10px;
+    display: block;
+  }
+  .blank {
+    &:hover {
+      background-color: white;
+    }
+  }
+  .button {
+    &.close-reveal-modal {
+      position: relative;
+      top: auto;
+      left: auto;
+      font-size: .92857rem;
+      right: auto;
+      font-weight: 600;
+      line-height: normal;
+      background-color: transparent;
+      box-shadow: none;
+      color: $mckinsey-academy-alt-blue;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+}
+
+.bbGrid-grid {
+  td {
+    white-space: normal;
+    word-wrap: break-word;
+  }
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  border-color: #d43f3a;
+}
+
+#delete_data_modal, #delete_data_success {
+  padding: 10px 10px 10px 10px;
+
+  .boldText {
+    font-weight: bold;
+  }
+
+  #infoContainer {
+    margin: 5px 0 5px 0;
+    font-weight: bold;
+  }
+
+  .deletionWarning {
+    color: $bg-white-red;
+    margin-top: 5px;
+  }
+
+  table {
+    width: 100%;
+  }
+
+  td {
+    word-wrap: break-word;
+  }
+
+  .errorContainer {
+    color: $bg-white-red;
+    text-align: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    max-height: 300px;
+    overflow: auto;
+  }
+
+  .menuButton {
+    border-radius: 4px;
+    font-size: 14px;
+    margin: 10px 0;
+  }
+
+  .button-wrapper {
+  }
+
+  #confirmDeletionContainer {
+  }
+
+  .confirm-deletion-box {
+    width: fit-content;
+    display: inline-block;
+    padding: 10px 0px 10px 0px;
+
+    input[type="checkbox"] {
+      margin: 0;
+    }
+  }
+}
+
+td.action_buttons {
+  width: 40px;
+}
+
+// Stats Download button
+.coursesDownloadStatsButton{}
+
+// Media SCreens
+@include media-breakpoint-down(lg) {
+  .tableHeaderArea {
+    .companiesStats {
+      display: block;
+      margin-bottom: 15px;
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  #admin-body {
+    main {
+      .row > .col {
+        padding: 0 15px;
+      }
+    }
+  }
+}

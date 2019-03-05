@@ -28,10 +28,5 @@
 	}
 }
 .clonedHeaderContainer {
-	position: absolute;
-	width: 100%;
-	height: auto;
-	overflow-x: auto;
-	overflow-y: hidden;
-	z-index: 1;
+	display: none;
 }
