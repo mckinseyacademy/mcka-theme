@@ -89,6 +89,17 @@ class MassParticipantsEnrollListForm(forms.Form):
     student_enroll_list = forms.FileField(help_text="ParticipantsCourseList.csv")
 
 
+class MassParticipantsDeleteListForm(forms.Form):
+    """Form to upload file with students to be deleted."""
+    student_delete_list = forms.FileField(help_text="ClientStudentList.csv")
+
+
+class MassParticipantsDeleteConfirmationForm(forms.Form):
+    """Form to upload file with students to be deleted."""
+    file_url = forms.CharField()
+    send_email = forms.BooleanField(initial=False, required=False)
+
+
 class MassCompanyFieldsUpdateForm(forms.Form):
     """ form to upload file for student list for updating company fields """
     student_field_list = forms.FileField()

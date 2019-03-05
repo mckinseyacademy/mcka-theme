@@ -52,12 +52,12 @@ from admin.controller import get_accessible_programs, get_accessible_courses_fro
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_images, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
-    process_manager_email, parse_participant_profile_csv
+    process_manager_email, parse_participant_profile_csv, get_users_for_deletion
 from admin.models import AdminTask
 from admin.tasks import (
 	    user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data,
 	    create_problem_response_report, monitor_problem_response_report, post_process_problem_response_report,
-	    handle_admin_task_error, send_problem_response_report_success_email
+	    handle_admin_task_error, send_problem_response_report_success_email, delete_participants_task
 	)
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api, \
     cohort_api
@@ -89,7 +89,7 @@ from mcka_apros.settings import COHORT_FLAG_NAMESPACE, COHORT_FLAG_SWITCH_NAME, 
 from public_api.models import ApiToken
 from util.csv_helpers import csv_file_response, UnicodeWriter
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.s3_helpers import store_file
+from util.s3_helpers import store_file, get_path
 from util.validators import (
     AlphanumericValidator, alphanum_accented_validator)
 from util.math_helpers import calculate_percentage
@@ -116,7 +116,8 @@ from .forms import (ClientForm, ProgramForm, UploadStudentListForm, ProgramAssoc
                     MassStudentListForm, MassParticipantsEnrollListForm, EditExistingUserForm,
                     DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm,
                     LearnerDashboardTileForm, CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm,
-                    MassCompanyFieldsUpdateForm, MassManagerDataUpdateForm)
+                    MassCompanyFieldsUpdateForm, MassManagerDataUpdateForm, MassParticipantsDeleteListForm,
+                    MassParticipantsDeleteConfirmationForm)
 from .helpers.permissions_helpers import (AccessChecker, InternalAdminCoursePermission, InternalAdminUserPermission,
                                           CompanyAdminCompanyPermission, CompanyAdminUserPermission,
                                           CompanyAdminCoursePermission, checked_user_access, checked_course_access,
@@ -2506,6 +2507,66 @@ def enroll_participants_from_csv(request):
             )
 
 
+class DeleteParticipantsFromCsv(APIView):
+    """
+    Allows bulk deletion of users.
+
+    `/api/participants/delete_participants_from_csv`
+    """
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request):
+        """
+        Saves one-column CSV file and returns its URL nad number of users that will be deleted.
+        """
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        form = MassParticipantsDeleteListForm(request.data, request.data)
+        if form.is_valid():
+            file_name = '_'.join(request.data['student_delete_list'].name.split())
+            file_url = store_file(
+                request.data['student_delete_list'],
+                IMPORT_PARTICIPANTS_DIR,
+                file_name,
+                secure=True
+            )
+
+            users_count = len(get_users_for_deletion(get_path(file_url)))
+            data = {
+                'user_count': users_count,
+                'file_url': file_url,
+            }
+
+            return Response(data)
+
+        return HttpResponseBadRequest(json.dumps(form.errors))
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def delete(self, request):
+        """
+        Performs the actual bulk user deletion.
+        """
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        form = MassParticipantsDeleteConfirmationForm(request.data, request.data)
+        if form.is_valid():
+            file_url = request.data['file_url']
+            send_email = request.data['send_email']
+
+            delete_participants_task.delay(
+                file_url,
+                send_email,
+                owner=user_api.get_user(user_id=request.user.id).to_dict(),
+                base_url=request.build_absolute_uri()
+            )
+            return Response(None, status=204)
+
+        return HttpResponseBadRequest(json.dumps(form.errors))
+
+
 class ParticipantsImportProgress(APIView):
     def get(self, request):
         week_older = timezone.now().date() - timedelta(days=7)
@@ -3806,6 +3867,8 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 )
 def participants_list(request):
     form = MassStudentListForm()
+    form_delete = MassParticipantsDeleteListForm()
+    form_delete_confirm = MassParticipantsDeleteConfirmationForm()
     form_enroll = MassParticipantsEnrollListForm()
     form_company_fields = MassCompanyFieldsUpdateForm()
     form_manager_update = MassManagerDataUpdateForm()
@@ -3814,6 +3877,8 @@ def participants_list(request):
 
     data = {
         'form': form,
+        'form_delete': form_delete,
+        'form_delete_confirm': form_delete_confirm,
         'form_enroll': form_enroll,
         'form_company_fields': form_company_fields,
         'form_manager_update': form_manager_update,
@@ -3857,18 +3922,26 @@ def participant_mail_activation_link(request, user_id):
     return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
 
 
-def _delete_participants(user_ids):
+def _get_users_by_ids(user_ids):
+    """Retrieves users from external API by their IDs."""
+    user_ids = [str(user_id) for user_id in user_ids]
+
+    users = user_api.get_users(ids=user_ids)
+    if not users:
+        raise Http404
+
+    return users
+
+
+def delete_participants(user_ids, users=None):
     """
     Deletes all data related to users from LMS and Apros.
     """
     if not _deletion_flag():
         return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
 
-    user_ids = [str(user_id) for user_id in user_ids]
-
-    users = user_api.get_users(ids=user_ids)
-    if not users:
-        raise Http404
+    if users is None:
+        users = _get_users_by_ids(user_ids)
 
     user_ids = [user.id for user in users]
     user_emails = [user.email for user in users]
@@ -4270,7 +4343,7 @@ class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
                                    PERMISSION_GROUPS.MCKA_SUBADMIN)
     def delete(self, _request, user_id):
-        return _delete_participants([user_id])
+        return delete_participants([user_id])
 
 
 class manage_user_company_api(APIView):
@@ -5274,7 +5347,7 @@ class CompanyDetailsView(APIView):
 
         user_ids = organization_api.fetch_organization_user_ids(company_id)
         try:
-            _delete_participants(user_ids)
+            delete_participants(user_ids)
         except Http404:
             # We can safely ignore not found users, because removing them is not atomic and any of them can be deleted
             # between retrieval and deletion above.

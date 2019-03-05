@@ -14,7 +14,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.utils.translation import ugettext as _
 from django.conf import settings
-from django.urls import reverse, resolve, Resolver404
+from django.urls import reverse
 from django.utils import timezone
 
 from celery.decorators import task
@@ -30,7 +30,7 @@ from api_client import user_api
 from api_client.api_error import ApiError
 from api_client.cohort_api import add_cohort_for_course
 from util.csv_helpers import CSVWriter, create_and_store_csv_file
-from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage
+from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage, get_path
 from util.email_helpers import send_html_email
 
 from admin.models import LearnerDashboardTile, AdminTask
@@ -49,6 +49,7 @@ from .controller import (
     update_company_field_for_users,
     CourseParticipantStats,
     ProblemReportPostProcessor,
+    get_users_for_deletion,
 )
 from .models import UserRegistrationError, UserRegistrationBatch
 
@@ -325,6 +326,27 @@ def send_export_stats_status_email(
     )
 
 
+@task(name='admin.send_email')
+def send_email(subject, email_template, template_data, user_emails, task_log_msg):
+    """
+    Sends email and logs it.
+    :param user_emails: `list` of users to whom the message will be sent.
+    """
+    logger.info('Sending notification email - {}'.format(task_log_msg))
+
+    try:
+        send_html_email(
+            subject=subject,
+            to_emails=user_emails, template_name=email_template,
+            template_data=template_data,
+        )
+    except Exception as e:
+        logger.error('Failed sending notification email to Admin {} - {}'.format(e.message, task_log_msg))
+        raise
+
+    logger.info('Email successfully sent - {}'.format(task_log_msg))
+
+
 @task(name='admin.export_stats_notification_email', max_retries=5)
 def export_stats_status_email_task(
         user_id, course_id, report_name,
@@ -491,10 +513,7 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     logger.info('Started - {}'.format(task_log_msg))
 
     storage = get_storage(secure=True)
-    try:
-        file_path = resolve(file_url).kwargs.get('path')
-    except Resolver404:
-        file_path = file_url
+    file_path = get_path(file_url)
 
     try:
         file_stream = storage.open(file_path)
@@ -592,6 +611,54 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
         logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
     else:
         logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
+
+
+@task(name='admin.delete_participants_task', queue='high_priority')
+def delete_participants_task(file_url, send_confirmation_email, owner, base_url):
+    """
+    Extract users from CSV, delete them and (optionally) send an email to the `owner` - user that initiated deletion.
+    """
+    task_log_msg = "Delete Participants task"
+
+    logger.info('Started - {}'.format(task_log_msg))
+
+    file_path = get_path(file_url)
+
+    try:
+        users = get_users_for_deletion(file_path)
+    except Exception:
+        logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
+        raise
+    else:
+        logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
+
+    from admin.views import delete_participants  # We want to avoid circular imports here.
+    delete_participants(None, users=users)
+
+    logger.info('Completed - {}'.format(task_log_msg))
+
+    try:
+        storage = get_storage(secure=True)
+        storage.delete(file_path)
+    except Exception as e:
+        logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
+    else:
+        logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
+
+    if send_confirmation_email:
+        subject = _('Advanced Deletion Completed')
+        email_template = 'admin/delete_users_email_template.haml'
+        mcka_logo = urljoin(
+            base=base_url,
+            url='/static/image/mcka_email_logo.png'
+        )
+        template_data = {
+            'first_name': owner.get('first_name'),
+            'file_name': file_path,
+            'mcka_logo_url': mcka_logo,
+        }
+
+        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
 
 
 @task(name='admin.user_company_fields_update_task', queue='high_priority')
@@ -756,8 +823,23 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         base=base_url,
         url='/static/image/mcka_email_logo.png'
     )
-
-    logger.info('Sending notification email - {}'.format(task_log_msg))
+    template_data = {
+        'first_name': user_data.get('first_name'),
+        'file_name': user_file_name,
+        'completion_time': completion_time,
+        'total': registration_batch.attempted,
+        'successful': registration_batch.succeded,
+        'error_file_url': urljoin(
+            base=base_url,
+            url=error_file_url
+        ) if error_file_url else '',
+        'activation_links_url': urljoin(
+            base=base_url,
+            url=activations_links_file_url
+        ) if activations_links_file_url else '',
+        'support_email': settings.MCKA_SUPPORT_EMAIL,
+        'mcka_logo_url': mcka_logo,
+    }
 
     try:
         user_data = user_api.get_user(user_id).to_dict()
@@ -768,32 +850,10 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         raise generate_import_files_and_send_notification.retry(exc=e)
     else:
         try:
-            send_html_email(
-                subject=subject,
-                to_emails=[user_data.get('email')], template_name=email_template,
-                template_data={
-                    'first_name': user_data.get('first_name'),
-                    'file_name': user_file_name,
-                    'completion_time': completion_time,
-                    'total': registration_batch.attempted,
-                    'successful': registration_batch.succeded,
-                    'error_file_url': urljoin(
-                        base=base_url,
-                        url=error_file_url
-                    ) if error_file_url else '',
-                    'activation_links_url': urljoin(
-                        base=base_url,
-                        url=activations_links_file_url
-                    ) if activations_links_file_url else '',
-                    'support_email': settings.MCKA_SUPPORT_EMAIL,
-                    'mcka_logo_url': mcka_logo,
-                }
-            )
+            result = send_email.delay(subject, email_template, template_data, [user_data.get('email')], task_log_msg)
+            result.get()  # Catch the exception thrown by the called task
         except Exception as e:
-            logger.error('Failed sending notification email to Admin {} - {}'.format(e.message, task_log_msg))
             raise generate_import_files_and_send_notification.retry(exc=e)
-
-    logger.info('Email successfully sent - {}'.format(task_log_msg))
 
     return True
 
@@ -824,10 +884,7 @@ def purge_old_import_records_and_csv_files():
             if not url:
                 continue
 
-            try:
-                file_path = resolve(url).kwargs.get('path')
-            except Resolver404:
-                file_path = url
+            file_path = get_path(url)
 
             if file_path:
                 file_paths.append(file_path)

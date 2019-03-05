@@ -1,5 +1,6 @@
 import json
 import ddt
+from tempfile import NamedTemporaryFile
 
 from mcka_apros.celery import app as test_app
 
@@ -22,7 +23,7 @@ from admin.models import (
     ClientCustomization,
     AdminTask,
 )
-from admin.tests.utils import get_deletion_waffle_switch, MockUser
+from admin.tests.utils import get_deletion_waffle_switch, MockUser, Dummy
 from admin.views import client_sso, CourseDetailsApi
 from api_client import user_api, group_api
 from api_client.api_error import ApiError
@@ -359,6 +360,15 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         }
         self.assertEqual(expected_data, result)
 
+    def create_mock_csv_file(self):
+        """Creates file with test users' emails and one invalid email."""
+        temp_csv_file = NamedTemporaryFile(dir='')
+        temp_csv_file.write("email\n")
+        temp_csv_file.write("\n".join((student.email for student in self.students)))
+        temp_csv_file.write("\ninvalid")
+        temp_csv_file.seek(0)
+        return File(temp_csv_file)
+
 
 class CourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
     """
@@ -478,6 +488,101 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
                 self.assertIn('task_key', response.content)
             else:
                 self.assertEqual(response, None)
+
+
+class DeleteParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
+    """Tests views required for bulk user deletion."""
+
+    def setUp(self):
+        super(DeleteParticipantsFromCsvTest, self).setUp()
+        self.patch_user_permissions()
+        delete_url = reverse('delete_participants_from_csv')
+        self.request = self.factory.delete(delete_url)
+        self.request.user = self.admin_user
+        self.api = views.DeleteParticipantsFromCsv()
+
+    def test_upload_csv_with_deletion_disabled(self):
+        """Test uploading CSV without enabling `data_deletion.enable_data_deletion` waffle switch. """
+        response = self.api.post(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, "`data_deletion` flag is not enabled.")
+
+    def test_delete_users_with_deletion_disabled(self):
+        """Test deleting user jswithout enabling `data_deletion.enable_data_deletion` waffle switch."""
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, "`data_deletion` flag is not enabled.")
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('lib.authorization.permission_group_required_not_in_group', lambda _: HttpResponseForbidden())
+    def test_upload_csv_without_permissions(self):
+        """Test uploading file as non-admin user."""
+        self.request.user = self.students[0]
+        middleware = SessionMiddleware()
+        middleware.process_request(self.request)
+        self.request.session.save()
+
+        response = self.api.post(self.request)
+        self.assertEqual(response.status_code, 403)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    def test_upload_without_file(self):
+        """Test upload endpoint without providing a file."""
+        self.request.data = {}
+        response = self.api.post(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, '{"student_delete_list": ["This field is required."]}')
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    def test_delete_without_file(self):
+        """Test deletion endpoint without providing a filename."""
+        self.request.data = {}
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, '{"file_url": ["This field is required."]}')
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('admin.views.store_file')
+    @patch('admin.controller.get_users')
+    def test_upload_csv(self, get_users_mock, store_file_mock):
+        """Test uploading CSV with users to delete."""
+        store_file_mock.side_effect = lambda _request, _dir, file_name, **_kwargs: file_name
+        get_users_mock.side_effect = lambda *_args, **_kwargs: self.students
+
+        csv_file = self.create_mock_csv_file()
+        expected_data = {
+            'file_url': csv_file.name,
+            'user_count': len(self.students),
+        }
+        self.request.data = {'student_delete_list': csv_file}
+        self.request.content_type = 'multipart/form-data'
+
+        response = self.api.post(self.request)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, expected_data)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('admin.views.delete_participants_task.delay')
+    @patch('admin.views.store_file')
+    @patch('admin.controller.get_users')
+    @patch('admin.views.user_api.get_user')
+    def test_delete_users(self, get_user_mock, get_users_mock, store_file_mock, participants_task_mock):
+        """Test bulk user deletion view. Deletion is invoked in a Celery task, so it's tested separately."""
+        store_file_mock.side_effect = lambda _request, _dir, file_name, **kwargs: file_name
+        get_users_mock.side_effect = lambda *args, **kwargs: self.students
+        dummy_serializable_object = Dummy()
+        dummy_serializable_object.to_dict = lambda *args, **kwargs: {}
+        get_user_mock.side_effect = lambda *args, **kwargs: dummy_serializable_object
+
+        csv_file = self.create_mock_csv_file()
+        self.request.data = {
+            'file_url': csv_file.name,
+            'send_email': False,
+        }
+
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(participants_task_mock.call_count, 1)
 
 
 class UserDeleteTest(CourseParticipantsStatsMixin, TestCase):
@@ -679,7 +784,7 @@ class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('api_client.organization_api.delete_organization')
     @patch('admin.controller.remove_mobile_app_theme', side_effect=make_side_effect_raise_api_error(404))
-    @patch('admin.views._delete_participants')
+    @patch('admin.views.delete_participants')
     @patch('api_client.organization_api.fetch_organization_user_ids')
     @patch('admin.controller.get_mobile_app_themes')
     def test_delete_company_race_condition(self, get_theme_mock, fetch_users_mock, *mocks):
@@ -698,7 +803,7 @@ class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('admin.controller.remove_mobile_app_theme')
     @patch('api_client.organization_api.delete_organization')
-    @patch('admin.views._delete_participants')
+    @patch('admin.views.delete_participants')
     @patch('api_client.organization_api.fetch_organization_user_ids')
     @patch('admin.controller.get_mobile_app_themes')
     def test_delete_company(self, get_theme_mock, fetch_users_mock, *mocks):

@@ -15,6 +15,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # pylint: disable=no-member,line-too-long,too-few-public-methods,missing-docstring,too-many-public-methods,
 # pointless-statement,unused-argument,protected-access,maybe-no-member,invalid-name
 
+class Dummy(object):
+    pass
+
+
 def test_user(id):
     return DottableDict({"id": id, "name": "test_user_{}".format(id)})
 

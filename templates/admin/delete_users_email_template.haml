@@ -1,0 +1,18 @@
+- extends "base_email_template.haml"
+- load i18n
+
+- block greetings
+  #{first_name},
+
+- block body
+  %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
+    {% blocktrans with file_name=file_name %} The deletion of users included in file "{{file_name}}" has been processed. {% endblocktrans %}
+
+- block closing
+  %p{:style => "line-height: 22px;color: #333333;"}
+    {% trans "Best Regards," %}
+    %br
+    McKinsey Academy Team
+
+- block footer
+  %p{:style => "line-height: 22px;margin-bottom: 0;color: #333333;"}

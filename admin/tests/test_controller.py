@@ -22,15 +22,12 @@ from admin.controller import (
     ProblemReportPostProcessor,
 )
 from admin.models import SelfRegistrationRoles, CourseRun
-from admin.tests.utils import BASE_DIR
+from admin.tests.test_views import CourseParticipantsStatsMixin
+from admin.tests.utils import BASE_DIR, Dummy
 from api_client import user_models
 from api_client.json_object import JsonObject, JsonParser as JP
 from courses.models import CourseMetaData
 from courses.models import FeatureFlags
-
-
-class Dummy(object):
-    pass
 
 
 class AdminControllerTests(TestCase):
@@ -691,3 +688,18 @@ class ProblemReportPostProcessorTest(TestCase):
              {u'L2M2 - question two?': u'another answer', 'email': 'username4@example.com'}]
         )
         self.assertEqual(keys, [u'email', u'L1M1 - question one?', u'L2M2 - question two?'])
+
+
+class GetUsersForDeletionTest(CourseParticipantsStatsMixin, TestCase):
+    """Tests controllers required for bulk user deletion."""
+
+    @patch('util.s3_helpers.get_storage')
+    @patch('admin.controller.get_users')
+    def test_get_users_for_deletion(self, get_users_mock, get_storage_mock):
+        """Tests extracting users for deletion from CSV file."""
+        dummy_storage = Dummy()
+        dummy_storage.open = lambda *args, **kwargs: self.create_mock_csv_file()
+        get_storage_mock.side_effect = lambda *args, **kwargs: dummy_storage
+        get_users_mock.side_effect = lambda *args, **kwargs: self.students
+
+        self.assertEqual(controller.get_users_for_deletion('stub file'), self.students)

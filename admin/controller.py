@@ -55,7 +55,9 @@ from api_client.mobileapp_api import (
 )
 from api_client.organization_api import get_organization_fields
 from api_client.project_models import Project
-from api_client.user_api import USER_ROLES, update_user_company_field_values, get_company_fields_value_for_user
+from api_client.user_api import (
+    USER_ROLES, update_user_company_field_values, get_company_fields_value_for_user, get_users
+)
 from courses.models import FeatureFlags, CourseMetaData
 from lib.mail import (
     sendMultipleEmails, email_add_single_new_user, create_multiple_emails
@@ -79,7 +81,7 @@ MINIMAL_COURSE_DEPTH = 5
 # need to load one level more deep to get Group Project V2 stages as their close dates are needed for report
 GROUP_WORK_REPORT_DEPTH = 6
 
-_logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class GroupProject(object):
@@ -2758,3 +2760,16 @@ class ProblemReportPostProcessor(object):
                 })
 
         return output.values(), ['email'] + sorted(self._cols.values())
+
+
+def get_users_for_deletion(file_path):
+    """Retrieves user from single-column CSV. The header is treated as a filter for querying users."""
+    from util.s3_helpers import get_storage
+    storage = get_storage(secure=True)
+    file_stream = storage.open(file_path)
+
+    data = ''.join(file_stream.chunks()).splitlines()
+    param_type = data.pop(0)
+
+    users = get_users(**{param_type: data})
+    return users

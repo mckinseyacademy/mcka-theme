@@ -260,6 +260,8 @@ urlpatterns += [
         views.enroll_participants_from_csv, name='enroll_participants_from_csv'),
     url(r'^api/participants/update_company_fields_from_csv',
         views.update_company_field_from_csv, name='update_company_fields_from_csv$'),
+    url(r'^api/participants/delete_participants_from_csv$',
+        views.DeleteParticipantsFromCsv.as_view(), name='delete_participants_from_csv'),
     url(r'^api/participants/update_manager_from_csv', views.update_manager_from_csv,
         name='update_manager_from_csv$'),
     url(r'^api/participants/import_progress', views.ParticipantsImportProgress.as_view(),

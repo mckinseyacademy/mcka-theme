@@ -5,6 +5,7 @@ from mock import patch, Mock
 from django.core import mail
 from django.test import TestCase, override_settings
 
+from admin.tests.test_views import CourseParticipantsStatsMixin
 from util.unit_test_helpers import ApplyPatchMixin
 from util.unit_test_helpers.common_mocked_objects import mock_storage_save
 from admin.tasks import (
@@ -16,7 +17,7 @@ from admin.tasks import (
     create_problem_response_report,
     monitor_problem_response_report,
     post_process_problem_response_report,
-)
+    delete_participants_task)
 from celery.exceptions import Retry
 from api_client.course_models import CourseCohortSettings
 from api_client.user_models import UserResponse
@@ -276,3 +277,17 @@ class ProblemResponseTasksTest(TestCase):
         self.assertEqual(len(mock_processor().post_process.mock_calls), 1)
         self.assertEqual(len(mock_store_file.mock_calls), 1)
         self.assertEqual(len(mock_admin_task_get().save.mock_calls), 1)
+
+
+class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
+    """Tests tasks required for bulk user deletion."""
+
+    @patch('admin.tasks.get_path', lambda x: x)
+    @patch('admin.tasks.get_users_for_deletion')
+    @patch('admin.views.delete_participants')
+    def test_delete_participants_task(self, delete_participants_mock, get_users_for_deletion_mock):
+        """Test bulk user deletion task."""
+        get_users_for_deletion_mock.side_effect = lambda _: self.students
+
+        delete_participants_task('stub_file', False, None, None)
+        delete_participants_mock.assert_called_with(None, users=self.students)
