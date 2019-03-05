@@ -279,6 +279,13 @@ body.new-theme {
                         }
                     }
 
+                    .dragged-items {
+                        .option {
+                            background-color: #666666;
+                            box-shadow: none;
+                        }
+                    }
+
                     @media (max-width: 767px) {
                         .target {
                             max-height: 300px;
@@ -291,20 +298,52 @@ body.new-theme {
                                 }
                             }
                         }
+
+                        .option {
+                            padding: 2px;
+                            font-size: 12px;
+                        }
+
+                        .popup {
+                            background: inherit;
+
+                            &.popup-incorrect {
+                                background: inherit;
+                            }
+                        }
+                    }
+
+                    @media (min-width: 767px) {
+                        .target {
+                            .item-feedback-popup {
+                                .close-feedback-popup-button {
+                                    background: none;
+
+                                    &:hover {
+                                        background: none;
+                                    }
+                                }
+                            }
+                            .popup {
+                                background: #008000;
+    
+                                &.popup-incorrect {
+                                    background: #D50000;
+                                }
+                            }
+                        }
                     }
 
                     .target {
                         margin: 1% auto;
                         border: 1px solid #EEEEEE;
 
-                        .item-feedback-popup {
-                            .close-feedback-popup-button {
-                                background: none;
+                        .option {
+                            background-color: #666666;
+                        }
 
-                                &:hover {
-                                    background: none;
-                                }
-                            }
+                        .option[draggable='true'][aria-grabbed='true'] {
+                            box-shadow: none;
                         }
                     }
                 }
@@ -351,20 +390,25 @@ body.new-theme {
 
                                 &.correct {
                                     color: #008000;
+
                                     &:before {
                                         font-family: "Material Icons";
                                         content: "\e145";
                                     }
                                 }
+
                                 &.incorrect {
                                     color: #D50000;
+
                                     &:before {
                                         font-family: "Material Icons";
                                         content: "\e145";
                                     }
                                 }
+
                                 &.partial {
                                     color: #000;
+
                                     &:before {
                                         font-family: "Material Icons";
                                         content: "\e145";
