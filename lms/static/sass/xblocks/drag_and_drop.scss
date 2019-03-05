@@ -297,12 +297,37 @@ body.new-theme {
                                     overflow: scroll;
                                 }
                             }
+
+                            .item-feedback-popup {
+                                border-radius: 2px;
+
+                                .popup-header-icon {
+                                    .fa-exclamation-circle {
+                                        &::before {
+                                            font-family: "Material Icons";
+                                            content: "\e5c9";
+                                        }
+                                    }
+
+                                    .fa-check-circle {
+                                        &::before {
+                                            font-family: "Material Icons";
+                                            content: "\e86c";
+                                        }
+                                    }
+                                }
+
+                                .popup-header-text {
+                                    font-weight: normal;
+                                }
+                            }
+
+                            .option {
+                                padding: 5px 5px;
+                                font-size: 11px;
+                            }
                         }
 
-                        .option {
-                            padding: 2px;
-                            font-size: 12px;
-                        }
 
                         .popup {
                             background: inherit;
@@ -318,17 +343,26 @@ body.new-theme {
                             .item-feedback-popup {
                                 .close-feedback-popup-button {
                                     background: none;
+                                    height: 20px;
+                                    width: 20px;
 
                                     &:hover {
                                         background: none;
                                     }
                                 }
                             }
+
                             .popup {
                                 background: #008000;
-    
+
                                 &.popup-incorrect {
                                     background: #D50000;
+                                }
+                            }
+                            .fa-times-circle {
+                                &::before {
+                                    font-family: "Material Icons";
+                                    content: "\e14c";
                                 }
                             }
                         }
