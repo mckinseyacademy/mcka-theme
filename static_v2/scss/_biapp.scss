@@ -331,6 +331,69 @@
   }
 }
 
+// progress
+
+#course-progress-new{
+  .visual{
+    @include border-right(1px solid $gray);
+    @include padding-left(20px);
+
+    @include media-breakpoint-between(xs, sm) {
+      @include border-right(0);
+      @include padding-left(15px);
+    }
+  }
+  .modules{
+    @include padding-left(30px);
+
+    @include media-breakpoint-between(xs, sm) {
+      @include padding-left(0);
+    }
+
+    @include media-breakpoint-between(md, lg) {
+      @include padding-left(15px);
+    }
+  }
+  table{
+    td{
+      &:first-child {
+        @include border-left(0);
+      }
+      &:last-child {
+        @include border-right(0);
+      }
+      &.week{
+        span{
+          color: $black;
+          @include margin-right(20px);
+        }
+      }
+      .lesson-with-list {
+        .lesson-item-name {
+          .lesson-label {
+            @include margin-left(5px);
+            @include margin-right(25px);
+          }
+        }
+      }
+    }
+  }
+  .legend-status {
+    span{
+      @include margin-right(15px);
+      i{
+        @include margin-right(5px);
+      }
+    }
+  }
+
+  .proficiency-data{
+    .progressWidgets{
+      @include border-right(1px solid $gray);
+    }
+  }
+}
+
 // Lesson List
 .allCoursesList {
   >.courseRow {
@@ -435,11 +498,6 @@ footer {
 // CSS specific styles
 body.rtl {
   text-align: right;
-  .my-courses{
-    .bookmark{
-      background-position-x: left;
-    }
-  }
   .bookmark {
     @include flip-x-axis;
   }

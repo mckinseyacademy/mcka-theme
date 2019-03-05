@@ -3,6 +3,7 @@ body{
   font-size: $body-font;
   background-color: $ash-white;
   font-family: $body-font-family;
+  -webkit-font-smoothing: auto;
 }
 a{
   color: var(--primary);

@@ -31,6 +31,8 @@
 @import "common/nav";
 @import "common/scrollbar";
 
+// ======== Pages =========== //
+
 @import "pages/login";
 @import "pages/activation";
 @import "pages/static";
@@ -42,7 +44,7 @@
 @import "pages/cohort";
 @import "pages/announcements";
 @import "pages/learnerDashboard";
-
+@import "pages/progressPage";
 
 // ======== Admin Styles =========== //
 @import "admin/common/bbGrid";

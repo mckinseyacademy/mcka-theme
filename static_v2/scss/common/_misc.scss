@@ -12,3 +12,20 @@
         background-color: $white;
     }
 }
+
+// Bootstrap overrides
+
+.text-success {
+    color: $bg-white-green !important;
+}
+.text-danger {
+    color: $bg-white-red !important;
+}
+
+.bg-success {
+    background-color: $bg-white-green !important;
+}
+
+.bg-danger {
+    background-color: $bg-white-red !important;
+}
