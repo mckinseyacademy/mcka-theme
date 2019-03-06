@@ -129,6 +129,14 @@ body.new-theme {
                     content: '\e5ca';
                 }
             }
+            &.checkmark-incorrect {
+                &:before {
+                    content: '\e000';
+                }
+            }
+        }
+    }
+}
 
 .new-theme{
     @include font-size(14);
