@@ -12,8 +12,6 @@
         .col
           .contentCard
             #course-lessons{'data-course-url': '/learnerdashboard#{course.current_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}', 'data-tile-id': '#{tile_id}', 'data-current-progress': '#{user_progress}'}
-              - if apros_features.notes
-                - include 'courses/lesson_notes.haml'
 
               .headerArea.lesson-title
                 %h5

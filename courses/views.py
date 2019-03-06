@@ -1283,7 +1283,6 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
 
 
 def course_learner_dashboard_bookmark_tile(request, learner_dashboard_id):
-
     if 'tile_id' in request.POST:
         try:
             tile = LearnerDashboardTile.objects.get(id=int(request.POST['tile_id']))

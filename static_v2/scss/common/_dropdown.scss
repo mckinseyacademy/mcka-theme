@@ -227,7 +227,7 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .dropdown-menu {
 
     &.notification {
@@ -259,25 +259,34 @@
           > a.dropdown-item {
             padding-right: 0 !important;
             padding-left: 0 !important;
+            color: var(--primary);
             &:after {
-                  font-family: 'Material Icons';
-                  content: "\e313";
-                  border: 0;
-                  font-size: inherit;
-                  margin: 0 0 0 1px;
-                  vertical-align: middle;
-                  display: inline-block;
+              font-family: 'Material Icons';
+              content: "\e313";
+              border: 0;
+              font-size: inherit;
+              margin: 0 0 0 1px;
+              vertical-align: middle;
+              display: inline-block;
             }
           }
           &.drop-open-dashboard {
             ul {
               max-height: 700px;
+              >li{
+                >a{
+                  //color: $black;
+                }
+              }
             }
           }
           ul {
             max-height: 0;
             overflow: hidden;
             transition: all .3s ease;
+            &.d-sm-none {
+              display: block !important;
+            }
           }
         }
       }

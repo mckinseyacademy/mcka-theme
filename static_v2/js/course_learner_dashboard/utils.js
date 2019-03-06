@@ -1,7 +1,12 @@
 $(function(){
 
-   if ($(window).width() < 576) {
-       $('.gallery.mCustomScrollbar._mCS_1').removeClass('mCustomScrollbar _mCS_1');
+   if ($(window).width() < 1025) {
+           $('.gallery.mCustomScrollbar._mCS_1').removeClass('mCustomScrollbar _mCS_1');
+
+   }
+
+
+   if ($(window).width() < 768) {
        $('.dropdown-menu').click(function(e) {
             e.stopPropagation();
         });

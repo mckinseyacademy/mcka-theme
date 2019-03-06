@@ -380,7 +380,7 @@ header {
       }
 
       &.active {
-        a {
+        >a {
           color: #2E2D39;
 
           &:before {
@@ -554,7 +554,7 @@ header {
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
 
   .pn-ProductNav {
     margin: 0;

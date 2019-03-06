@@ -6,7 +6,7 @@
         %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}"} {% trans "Home" %}
       - if calendar_enabled
         %li
-          %a.active.ome.dome-c{:href => ""} {% trans "Calendar" %}
+          %a.ome.dome-c{:href => ""} {% trans "Calendar" %}
       - if feature_flags.discussions
         %li
           %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/discussion"} {% trans "Discussions" %}

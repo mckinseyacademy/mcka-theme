@@ -112,7 +112,7 @@
                       %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
                         {% trans "admin" %}
 
-                  - if learner_dashboards|length > 0
+                  - if learner_dashboards|length > 1
                     %li
                       %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
                         {% trans "dashboard" %}
@@ -126,10 +126,10 @@
                                   %span.bookmark
                               %ul.sub-nav.d-block.d-sm-none
                                 %li
-                                  %a.active{:href => "/courses/{{dashboard.course_id}}"} {% trans "Home" %}
+                                  %a.ome.dome-c{:href => "/courses/{{dashboard.course_id}}"} {% trans "Home" %}
                                 - if dashboard.calendar_enabled
                                   %li
-                                    %a{:href => "#"} {% trans "Calendar" %}
+                                    %a.ome.dome-c{:href => "#"} {% trans "Calendar" %}
                                 - if feature_flags.discussions
                                   %li
                                     %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/discussion"} {% trans "Discussions" %}
@@ -139,6 +139,36 @@
                                 - if feature_flags.resources
                                   %li
                                     %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/resources"} {% trans "Resources" %}
+
+                  - elif learner_dashboards|length == 1
+                    %li
+                      %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
+                        {% trans "dashboard" %}
+
+                      %div{'class' : 'dropdown-menu-left dropdown-menu middle-menu clearfix dashboard-menu'}
+                        %ul.sub-nav
+                          - for dashboard in learner_dashboards
+                            %li.drop-open-dashboard
+                              %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
+                                - if request.session.last_visited_course and dashboard.course_id == request.session.last_visited_course
+                                  %span.bookmark
+                              %ul.sub-nav.d-block.d-sm-none
+                                %li
+                                  %a.ome.dome-c{:href => "/courses/{{dashboard.course_id}}"} {% trans "Home" %}
+                                - if dashboard.calendar_enabled
+                                  %li
+                                    %a.ome.dome-c{:href => "#"} {% trans "Calendar" %}
+                                - if feature_flags.discussions
+                                  %li
+                                    %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/discussion"} {% trans "Discussions" %}
+                                - if feature_flags.group_work
+                                  %li
+                                    %a.ome.dome-c{:href => "/learnerdashboard/#{dashboard.id}/courses/#{course_id}/group_work"} {% trans 'Miniboard' %}
+                                - if feature_flags.resources
+                                  %li
+                                    %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/resources"} {% trans "Resources" %}
+
+
 
 
                   {% url 'courses' as courses_url %}
