@@ -344,3 +344,6 @@
       {% assets "js_all_v2" %}
         %script{src: "{{ ASSET_URL }}"}
       {% endassets %}
+
+    - if xblock_theme_js_path
+      %script{src: "{% static xblock_theme_js_path %}"}

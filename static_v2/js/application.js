@@ -368,6 +368,8 @@ $(function () {
         SendCompletionToScormShell();
       }, 300);
     }
+    $(".new-theme [data-block-type='pb-mrq'] input[type=checkbox]:checked").parent().addClass('selected');
+    $(".new-theme [data-block-type='pb-mcq'] input[type=radio]:checked").parent().addClass('selected');
   });
 
   var msg_modal_selector = '#messagesModal';
