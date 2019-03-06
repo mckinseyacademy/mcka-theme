@@ -18,19 +18,19 @@
             %p
               - if lessons_custom_label and modules_custom_label
                 {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
-                  You are  {{user_course_progress}}% of the way through the course based on completion of {{modules_custom_label}} within {{lessons_custom_label}}. The cohort average is {{user_average_progress}}%.
+                  You are  <b>{{user_course_progress}}%</b> of the way through the course based on completion of {{modules_custom_label}} within {{lessons_custom_label}}. The cohort average is <b>{{user_average_progress}}%</b>.
                 {% endblocktrans %}
               - elif lesson_custom_label
                 {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
-                  You are {{user_course_progress}}% of the way through the course based on completion of modules within {{lessons_custom_label}}. The cohort average is {{user_average_progress}}%.
+                  You are <b>{{user_course_progress}}%</b> of the way through the course based on completion of modules within {{lessons_custom_label}}. The cohort average is <b>{{user_average_progress}}%</b>.
                 {% endblocktrans %}
               - elif module_custom_label
                 {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
-                  You are {{user_course_progress}}% of the way through the course based on completion of {{modules_custom_label}} within lessons. The cohort average is {{user_average_progress}}%.
+                  You are <b>{{user_course_progress}}%</b> of the way through the course based on completion of {{modules_custom_label}} within lessons. The cohort average is <b>{{user_average_progress}}%</b>.
                 {% endblocktrans %}
               -else
                 {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
-                  You are {{user_course_progress}}% of the way through the course based on completion of modules within lessons. The cohort average is {{user_average_progress}}%.
+                  You are <b>{{user_course_progress}}%</b> of the way through the course based on completion of modules within lessons. The cohort average is <b>{{user_average_progress}}%</b>.
                 {% endblocktrans %}
             %hr
             .user-progress
@@ -44,13 +44,16 @@
                   -else
                     %h5 # {% trans "Modules" %}
                   %big {{ course.module_count }}
+
                   - if lessons_custom_label
                     %span #{course.chapters|length} {{lessons_custom_label}} {% trans " in this course" %}
                   - else
                     %span #{course.chapters|length} {{lessons_custom_label}} {% trans "Lessons in this course" %}
             %hr
-            %table
-              %thead{"class": "three-columns {% if course.is_evergreen %}col-2{% endif %} {% if not feature_flags.group_work %}no-group-work{% endif %}"}
+
+            %table.progress-data
+              %thead{"class": "{% if course.is_evergreen %}col-2{% endif %} {% if not feature_flags.group_work %}no-group-work{% endif %}"}
+
                 %tr
                   - if not course.is_evergreen
                     %th {% trans "Course Run:" %}
@@ -145,8 +148,7 @@
                                   check_circle
                               - else
                                 %i.material-icons
-                                  fiber_manual_record
-
+                                  panorama_fish_eye
                                   
                               .lesson-item-name
                                 %a.gw-links{"href": "#{activity.link}"}
@@ -175,14 +177,15 @@
               - else
                 %p.note-progress {% trans 'Note: "weeks" begin Tuesday and end the following Monday' %}
           - if feature_flags.proficiency and graded_items_count > 0
-            .contentCard.course-page
+            .contentCard.course-page.proficiency-data
+
               %h5 {% trans "PROFICIENCY" %}
               %p
                 {% blocktrans %}
-                  Your current proficiency score is {{proficiency}}% following completion of {{completed_items_count}} of {{graded_items_count}} graded items in this course. The cohort average is {{cohort_proficiency_average}}%.
+                  Your current proficiency score is <b>{{proficiency}}%</b> following completion of {{completed_items_count}} of {{graded_items_count}} graded items in this course. The cohort average is <b>{{cohort_proficiency_average}}%</b>.
                 {% endblocktrans %}
               %hr
-              %table.proficiency-data
+              %table
                 %thead
                   %tr
                     %th {% trans "Overall" %}
@@ -252,7 +255,7 @@
               %p
                 {% trans "discussion" as discussion_text %}
                 {% blocktrans with social_points=social.points social_course_avg=social.course_avg course_nav_url=course.nav_url %}
-                  Your current engagement score is {{social_points}} based on your social interactions with other participants in your cohort in the <a href="{{course_nav_url}}/discussion">{{discussion_text}}</a> forums. The cohort average is {{social_course_avg}}.
+                  Your current engagement score is <b>{{social_points}}</b> based on your social interactions with other participants in your cohort in the <a href="{{course_nav_url}}/discussion">{{discussion_text}}</a> forums. The cohort average is <b>{{social_course_avg}}</b>.
                 {% endblocktrans %}
               %table
                 %thead
@@ -262,8 +265,9 @@
                     %th {% trans "Stats:" %}
                 %tbody
                   %tr
-                    %td.visual.progressWidgets{"rowspan": "5"}
+                    %td.visual.progressWidgets{"rowspan": "6"}
                       - include "courses/visualizations/course_engagement.haml"
+                  %tr
                     %td {% blocktrans %}Number of <span>New Posts</span> you created {% endblocktrans %}
                     %td.number{"class": "{% if social.metrics.num_threads == 0 %}zero{% endif %}"}= social.metrics.num_threads
                   %tr
