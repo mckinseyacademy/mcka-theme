@@ -6,6 +6,7 @@ from django.core.cache import cache
 from lib.utils import DottableDict
 
 from .common import DataManager
+from .course_data import CourseDataManager
 from .common_data import CommonDataManager, COMMON_DATA_PROPERTIES
 
 USER_PROPERTIES = DottableDict(
@@ -85,6 +86,10 @@ class UserDataManager(DataManager):
         courses = user_api.get_user_courses(self.user_id)
         organizations = user_api.get_user_organizations(self.user_id)
         user_preferences = user_api.get_user_preferences(self.user_id)
+
+        for course in courses:
+            feature_flags = CourseDataManager(course.id).get_feature_flags()
+            setattr(course, 'learner_dashboard', feature_flags.learner_dashboard)
 
         current_course_id = user_preferences.get(CURRENT_COURSE_ID, None)
         current_program_id = user_preferences.get(CURRENT_PROGRAM_ID, None)

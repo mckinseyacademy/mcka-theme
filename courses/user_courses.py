@@ -192,6 +192,7 @@ def standard_data(request):
     modules_custom_label = None
     course = None
     learner_dashboards = None
+    show_my_courses = None
 
     if request.user and request.user.id:
         course_id = request.resolver_match.kwargs.get('course_id')
@@ -205,6 +206,7 @@ def standard_data(request):
         current_course = user_data.current_course
         organization = user_data.organization
         learner_dashboards = user_learner_dashboards(request, user_data.courses)
+        show_my_courses = any(course for course in user_data.courses if not course.learner_dashboard)
 
         if current_course:
             feature_flags = CourseDataManager(current_course.id).get_feature_flags()
@@ -249,6 +251,7 @@ def standard_data(request):
         "modules_custom_label": modules_custom_label,
         "active_course": course,
         "learner_dashboards": learner_dashboards,
+        "show_my_courses": show_my_courses,
     }
 
     return data
@@ -315,6 +318,8 @@ def _get_user_courses(request):
     companion_app_course_ids = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.COMPANION_APP_COURSES)
 
     user_courses = user_data.courses
+    # remove the user courses for which learner dashboard is enabled
+    user_courses = [course for course in user_courses if not course.learner_dashboard]
 
     if companion_app_course_ids is None:
         companion_app = mobileapp_api.get_mobile_apps({"app_name": "LBG"})

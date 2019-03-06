@@ -168,13 +168,11 @@
                                   %li
                                     %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/resources"} {% trans "Resources" %}
 
-
-
-
-                  {% url 'courses' as courses_url %}
-                  %li{class: "{% if request.path == courses_url %}active{% endif %}"}
-                    %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
-                      {% trans "my courses" %}
+                  - if show_my_courses
+                    {% url 'courses' as courses_url %}
+                    %li{class: "{% if request.path == courses_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
+                        {% trans "my courses" %}
           - else
             - if use_i18n
               .language-selector

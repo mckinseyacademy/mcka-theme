@@ -55,3 +55,26 @@ user_profile = '''{
     ],
     "level_of_education": ""
 }'''
+
+user_courses = '''[
+    {
+        "end": "2021-01-01T00:00:00Z",
+        "name": "Marketing & Sales Fundamentals",
+        "learner_dashboard": false,
+        "is_active": true,
+        "uri": "http://lms.mcka.local/api/server/users/1/courses//IssueORG/Issue101/2018_T2",
+        "start": "2016-08-31T00:00:00Z",
+        "id": "CS101/ORG101/2018",
+        "course_image_url": "/c4x/'CS101/ORG101/asset/MS_Course-Overview.png"
+    },
+    {
+        "end": "2017-02-09T23:00:00Z",
+        "name": "[Test] Business Strategy Jan 2016",
+        "learner_dashboard": false,
+        "is_active": true,
+        "uri": "http://lms.mcka.local/api/server/users/1/courses//org105/ABC101/2018_T1",
+        "start": "2015-10-29T01:00:00Z",
+        "id": "org105/ABC101/2018_T1",
+        "course_image_url": "/c4x/org105/ABC101/asset/McKA_course_tile_BusStrat.png"
+    }
+]'''

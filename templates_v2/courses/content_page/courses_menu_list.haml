@@ -21,7 +21,10 @@
               {{course.percent_complete}}%
               %span.bar
                 %span{:style => "width: {{course.percent_complete}}%"}
-
+- empty
+  .col
+    #courses.contentCard.text-center
+      {% trans "You aren't enrolled in any courses." %}
 
 %script
   $('.card-img-top').on('error', function(e){
