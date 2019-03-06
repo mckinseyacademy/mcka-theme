@@ -98,7 +98,7 @@
                 %input.emailCompletionCheckbox{:type => 'checkbox', :disabled => 'disabled', :id => 'emailCompletionCheckboxId'}
                 %label.emailCompletion{:for => 'emailCompletionCheckboxId' }
                   {% trans "Email me once delete is complete" %}
-          .button-wrapper.topPadding
+          .button-wrapper
             %input.button.radius.small{type: "submit", value: "{% trans 'Delete Participants' %}", disabled: "disabled", id: 'submitCSVDelete'}
             %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
               {% trans "Close" %}
