@@ -71,16 +71,16 @@
     }
 
     .checkmark-incorrect {
-        
+
 
         &::before {
-            
+
             @include font-size(24)
         }
     }
 
     .checkmark-correct::before {
-     
+
         @include font-size(24)
     }
 
@@ -137,14 +137,14 @@ body.new-theme {
 
             .checkmark-incorrect {
                 color: $bg-white-red;
-        
+
                 &::before {
                     font-family: 'Material Icons';
                     content: '\e5c9';
                     @include font-size(24)
                 }
             }
-        
+
             .checkmark-correct::before {
                 color: $bg-white-green;
                 font-family: 'Material Icons';
@@ -203,12 +203,14 @@ body.new-theme {
 
     .questionnaire {
         .field-group-hd {
-            p {
+           p
+           {
                 @include font-size(14);
                 font-weight: 400;
                 margin: 0;
 
-                i {
+                i
+                {
                     @include font-size(14);
                     font-style: italic;
                     font-weight: 300;
