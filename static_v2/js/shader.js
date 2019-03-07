@@ -125,6 +125,6 @@ if (color !== undefined && color !== 'rgba(0, 0, 0, 0)') {
     $('.visualization .filled.band-2').css('background-color', lighten(rgb2hex(color), 30));
 }
 
-if (typeof lighten !== "undefined") {
+if (typeof lighten !== "undefined" && primary != null) {
     $('.bbGrid-container thead, .primaryBgLighten').css('background-color', lighten(primary, 60));
 }
