@@ -14,9 +14,15 @@
           %h3.card-title
             = course.name
           .course-detail
-            %span.lesson-count
-              = course.total_lessons
-              {% trans "Lessons" %}
+            - if course.effort
+              %span.course-effort
+                %i.material-icons
+                  access_time
+                {% trans "est. time" %} {{course.effort}}
+            - else
+              %span.lesson-count
+                = course.total_lessons
+                {% trans "Lessons" %}
             %span.course-progress
               {{course.percent_complete}}%
               %span.bar
