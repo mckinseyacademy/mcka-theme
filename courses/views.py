@@ -1218,6 +1218,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
         bookmark = None
 
     feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
+    learner_dashboard.features = feature_flags
     data = {
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,

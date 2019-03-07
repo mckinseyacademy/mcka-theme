@@ -30,6 +30,7 @@ from api_client.project_models import Project
 from api_client.user_api import USER_ROLES, workgroup_models
 from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
 from api_data_manager.user_data import UserDataManager
+from courses.models import FeatureFlags
 from lib.utils import PriorIdConvert
 
 log = logging.getLogger(__name__)
@@ -1061,5 +1062,6 @@ def user_learner_dashboards(request, user_courses):
                 learner_dashboard=dashboard.id, show_in_calendar=True
             )
             dashboard.calendar_enabled = True if calendar_items else False
+            dashboard.features, created = FeatureFlags.objects.get_or_create(course_id=course.id)
             learner_dashboards.append(dashboard)
     return learner_dashboards
