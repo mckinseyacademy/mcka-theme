@@ -151,7 +151,9 @@ body.new-theme {
               width: 100%;
               position: relative;
               top: 35px;
-
+              h1{
+                display: none;
+              }
               .form-actions {
                 width: 20%;
 
@@ -776,6 +778,14 @@ body.new-theme {
 
         .page-header-secondary {
           width: 76%;
+          h1{
+            position: absolute;
+            left: 16px;
+            top: 0px;
+            font-size: 1.75rem;
+            font-weight: 300;
+            color: $black;
+          }
 
           .new-post-btn {
             margin-top: 0px;
