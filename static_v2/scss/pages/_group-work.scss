@@ -1,0 +1,650 @@
+.new-theme
+{
+    #course-group-work
+    {
+        max-width: 1214px !important;
+
+        .mckinsey_help
+        {
+            display:none;
+        }
+
+
+        // layout
+
+        .group-project-navigator
+        {
+            width:363px;
+            margin-top: -16px;
+        }
+
+        .group-project-content
+        {
+            width: calc(100% - 363px);
+            display: inline-block;
+            padding-right: 15px;
+        }
+
+        // Media Query
+        @include media-breakpoint-down(sm) 
+        { 
+            .group-project-navigator
+            {
+                width:100%;
+                margin:10px 0 0;
+                max-height: 50px;
+                overflow: hidden;
+                position: relative;
+                transition: .35s;
+
+                &:before {
+                    font-family: 'Material Icons';
+                    content: '\e313';
+                    position: absolute;
+                    top: 10px;
+                    right: 15px;
+                    color: white;
+                    @include font-size(24);
+                    
+                  }
+                  &.open
+                  {
+                      max-height: 1000px;
+                  }
+            }
+
+            .group-project-content
+            {
+                width: 100%;
+                padding: 0 15px;
+               
+            }
+        }
+
+// Contents
+
+        .lesson-title
+        {
+            @include font-size(12);
+            color:$gray;
+        }
+
+
+
+        .group-project-content
+        {
+    
+            h1
+            {
+                margin-bottom:20px;
+                .stage_title
+                {
+                    @include font-size(28);
+                    font-weight: 300;
+                }
+            }
+    
+            p
+            {
+                @include font-size(16);
+    
+                > b
+                {
+                    &:only-child
+                    {
+                        @include font-size(12);
+                        font-weight: 600;
+                    }
+                }
+            } 
+    
+            ul
+            {
+                margin: 0;
+                padding: 10px 0;
+                list-style-position: inside;
+            }
+    
+            .fa
+            {
+                color:$primary;
+            }
+        }
+        
+    }
+
+// Navigator side navigation
+
+    .group-project-navigator-wrapper
+    {
+        width:100%;
+        float: right;
+       
+ 
+        .group-project-navigator-header
+        {
+            height:50px;
+            line-height: 50px;
+            box-sizing: border-box;
+            color:$white;
+            background:$black;
+            font-weight: 300;
+            letter-spacing: 1px;
+            @include font-size(16);
+            padding:0 20px;
+        }
+        .group-project-activity-header
+        {
+            background: $ash-white;
+            padding:6px 10px 6px 20px;
+            color:$black;
+        }
+        .group-project-navigator-views
+        {
+            height:auto;
+        }
+        .group-project-activity-stages 
+        {
+            padding: 0;
+            li
+            {
+                position: relative;
+                padding-left:20px;
+                border-bottom:none;
+
+
+                .group-project-stage
+                {
+                    color: $primary;
+                    font-size: 0.75rem;
+                    line-height: 17px;
+                    background: inherit;
+                    border-top: 1px solid #EBEBEB;
+                    padding: 12px 0;
+                    display:block;
+                    margin: 0;
+                    position: relative;
+                   
+                    .group-project-stage-state
+                    {
+                        float:right;
+                        width: 16px;
+                        height: 16px;
+                        box-sizing: border-box;
+                        text-align: center;
+                        border-radius: 16px;
+                        margin:0 10px 0 0;
+                        padding: 0;
+                        @include font-size(18);
+
+                        &::before
+                        {
+                            font-family: 'Material Icons';
+                            content: '\e836';
+                            color:$gray;
+                        }
+
+
+
+                        &.completed
+                        {
+                            &::before
+                            {
+                                font-family: 'Material Icons';
+                                content: '\e86c';
+                                color:#0A8100;
+                            }
+                        }
+                    }
+
+                    .group-project-stage-dates
+                    {
+                        display: block;
+                        font-weight: 300;
+                        @include font-size(12);
+                        color:$bg-white-red;
+
+                    }
+
+                    a
+                    {
+                        @include font-size(16);
+                        font-weight: 300;
+                    }
+                    &.current
+                    {
+                        &::before
+                        {
+                            content:"";
+                            position: absolute;
+                            top: 0;
+                            height: 100%;
+                            background: url("/static/image/bookmark.svg") no-repeat;
+                            background-size: 20px 100%;
+                            width: 100%;
+                            bottom: 0;
+                            left:-30px;
+                        }
+                    }   
+                }
+                &:first-child
+                {
+                    .group-project-stage
+                    {
+                        
+                        border-top:none;
+                    }
+                }
+            }
+        }
+
+       
+
+        // footer
+
+        .group-project-navigator-view-selector
+        {
+            padding:0;
+            margin:0;
+            background: $ash-white;
+            height:80px;
+            line-height: 80px;
+
+            li
+            {
+                vertical-align: middle;
+                width:auto;
+                height:auto;
+                margin-right:6px;
+
+                .view-selector-item
+                {
+                    background:$primary;
+                    width:48px;
+                    height:40px;
+                    padding:0;
+                    box-sizing: border-box;
+                    color:white !important;
+                    line-height: 40px;
+
+                    &::before
+                    {
+                        font-family: 'Material Icons';
+                        @include font-size(18);
+                    }
+
+                    &.fa-upload
+                    {
+                        &::before
+                        {
+                            content: '\e2c6';
+                        }
+                    }
+
+                    &.fa-files-o
+                    {
+                        &::before
+                        {
+                            content: '\e14d';
+                            font-weight: normal;
+                        }
+                    }
+
+                    &.fa-comment
+                    {
+                        &::before
+                        {
+                            content: '\e0ca';
+                        }
+                    }
+                    
+                    &.active
+                    {
+                        background: $smoke-gray;
+                    }
+                   
+
+                }
+            }
+        }
+    }
+
+
+    // Team Page
+
+    .group-project-team-wrapper
+    {
+
+        .group-project-team-email-group
+        {
+            font-weight: normal;
+            @include font-size(14);
+        }
+        .group-project-team-member
+        {
+            border-top:1px solid $gray-border;
+            //Avatar
+            .group-project-team-member-avatar
+            {
+                width:40px;
+                height:40px;
+                overflow: hidden;
+                border-radius: 40px;
+                img
+                {
+                    width:40px;
+                    height:40px;
+                    margin:0;
+                }
+            }
+
+            // Member Data
+
+            .group-project-team-member-data
+            {
+                .group-project-team-member-info
+                {
+                    height: auto;
+                    .group-project-team-member-name
+                    {
+                        font-weight: 300;
+                        margin-bottom: 0;
+                        @include font-size(16);
+                    }
+                    .group-project-team-member-organization
+                    {
+                        font-weight: normal;
+                        @include font-size(12);
+                    }
+                }
+
+                .group-project-team-member-email
+                    {
+                        margin-top: 20px;
+                        a
+                        {
+                            font-weight: normal;
+                            @include font-size(12);
+                        }
+                    }
+            }
+
+        }
+    }
+
+
+
+    // Static Content Block
+
+    .group-project-static-content-block
+    {
+        color:$bg-white-red !important;
+        font-weight: normal;
+        @include font-size(12);
+    }
+
+
+    // Upload Tab
+
+
+    .group-project-navigator-view-header
+    {
+        padding: 11px 10px;
+
+        .group-project-navigator-view-title
+        {
+            color:$black;
+            @include font-size(24);
+        }  
+        
+        .group-project-navigator-view-close
+        {
+            margin-top: 12px;
+            &.fa-times
+            {
+                &::before
+                {
+                    font-family: 'Material Icons';
+                    content: '\e5cd';
+                    color:$gray;
+
+                }
+            }
+        }
+    }
+
+    
+
+    .group-project-activity-content
+    {
+        padding: 10px;
+        margin:0;
+        li
+        {
+            .uploader
+            {
+                .upload_title
+                {
+                    @include font-size(12);
+                }
+                .upload_item_wrapper
+                {
+                    width:265px;
+                    input[type=text]
+                    {
+                        height: 50px;
+                        padding: 10px;
+                    }
+                }
+               
+                .button
+                {
+                    width:50px;
+                    height:50px;
+                    background: $primary;
+                    border-radius: 2px;
+                    color:white;
+                    text-align: center;
+                    line-height: 48px;
+                    &::before
+                    {
+                        content: '\e2bc';
+                        font-family: 'Material Icons';
+                        font-size: 24px;
+                        font-weight: normal
+                    }
+                }
+                label
+                {
+                    width: 50px;
+                    margin-right: -35px;
+                    display: inline-block;
+                    text-align: right;
+                    vertical-align: top;
+                    float: right;
+                }
+            }
+        }
+    }
+
+    // FAQ's Page
+
+    .stage_content
+    {
+        p{
+            @include font-size(14);
+            i
+            {
+                display: block;
+                margin-bottom: -15px;
+                font-style: normal;
+                @include font-size(16);
+            }
+        }
+    }
+
+
+    // Email Modal Window
+
+    .group-project-xblock-wrapper
+    {
+        .xblock-reveal
+        {
+            &.reveal-modal
+            {
+                background:white;
+                z-index: 999;
+                padding:30px 50px !important;
+
+                .close-box
+                {
+                    margin-top: 15px;
+                    color:$gray;
+                    @include font-size(18);
+                    
+                    .fa-times-circle
+                    {
+                        &::before
+                        {
+                            font-family: 'Material Icons';
+                            content: '\e5cd'
+                        }
+                    }
+                }
+
+                .group-project-team-email-modal-title
+                {
+                    font-weight: 300;
+                    margin-bottom: 0;
+                    @include font-size(24);
+                }
+
+                .group-project-team-email-modal-subtitle
+                {
+                    color:$gray;
+                    @include font-size(12);
+                }
+                hr
+                {
+                    display: none;
+                }
+
+                .email-member-form
+                {
+                    textarea
+                    {
+                        width: 100%;
+                        border:1px solid $gray;
+                        padding:5px;
+                    }
+                }
+            }
+        }
+    }
+
+
+    // Peer Feedback
+
+    .review
+    {
+        .group_selector
+        {
+            color:$gray;
+            @include font-size(12);
+
+            .review_selector_header
+            {
+                margin-top: 0;
+                margin-bottom: 10px;
+            }
+        }
+
+        .question
+        {
+            font-weight: normal;
+        }
+
+        textarea
+        {
+            &.answer
+            {
+                width:100%;
+                min-height: 125px;
+                padding: 5px;
+            }
+        }
+    }
+
+    //Grade Display
+
+    .group_assessment
+    {
+        .group-project-assessment
+        {
+            .group-project-question-title
+            {
+                font-weight: normal;
+                margin-bottom: 20px;
+                @include font-size(16);
+            }
+
+            .group-project-assessment-answers
+            {
+                .group-project-answer-mean
+                {
+                    color:$bg-white-red!important;
+                    font-weight: normal;
+                }
+            }
+        }
+    }
+
+
+    //TA View
+
+    .group-project-ask-ta-view
+    {
+        .group-project-ask-ta-label
+        {
+            img
+            {
+                width:100%;
+                height: auto;
+                margin: 0 0 20px;
+            }
+        }
+
+        .contact-ta-form
+        {
+            textarea
+            {
+                width: 100%;
+                margin-top: 20px;
+                padding: 10px;
+                border:1px solid $gray;
+            }
+        }
+    }
+
+
+    // Resources View
+
+    .group-project-resources
+    {
+        padding: 0 !important;
+        margin: 20px 10px !important;
+        
+        li
+        {
+            list-style: none !important;
+            .resource_link
+            {
+                @include font-size(14);
+                font-weight: normal;
+            }
+        }
+    }
+
+
+
+}

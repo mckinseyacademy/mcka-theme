@@ -1,0 +1,113 @@
+- load staticfiles
+
+%script{src: "{% static 'js/course_contact_modal.js' %}"}
+:javascript
+  $(function(){
+    $(document).on("click", ".group-project-navigator-header", function(){
+      $(".group-project-navigator").toggleClass("open");
+    });
+
+    var adjust_discussion_height = function(){
+      $('.discussion-module').css('visibility', 'hidden');
+      _.defer(function(){
+        $('.discussion-module').css('margin-top', 'auto');
+
+        var height_left = $('.group-project-xblock-wrapper').height();
+        var height_right = $('#group-project-users').height();
+
+        if (height_right > height_left){
+          $('.discussion-module').css('margin-top', (height_right - height_left).toString()+'px');
+        }
+        $('.discussion-module').css('visibility', 'visible');
+      });
+    };
+
+    var group_activity_step_map = {};
+    $(document).on('steps_available', function(target, step_map){
+      group_activity_step_map = step_map;
+      var activity_dots = $('.activity_dots');
+      var ordered_list = group_activity_step_map.ordered_list;
+      for(var i=0; i<ordered_list.length; ++i){
+        var step = group_activity_step_map[ordered_list[i]];
+        var dot = $('<a>')
+          .addClass('lesson-module-status')
+          .attr('href', '#')
+          .attr('title', step.name)
+          .attr('data-activate', ordered_list[i]);
+        activity_dots.append(dot);
+      }
+    });
+
+    $(document).on('select_stage', function(target, activate_id){
+      if (!group_activity_step_map.ordered_list) {
+        return;
+      }
+      var ordered_list = group_activity_step_map.ordered_list;
+      var add_class = "complete";
+      $('.activity_dots .lesson-module-status').removeClass('complete current');
+      for(var i=0; i<ordered_list.length; ++i){
+        if(ordered_list[i] == activate_id){
+          $('.activity_dots .lesson-module-status[data-activate="'+activate_id+'"]')
+            .addClass('current');
+          add_class = null;
+        }
+        else if(add_class){
+          $('.activity_dots .lesson-module-status[data-activate="'+ordered_list[i]+'"]')
+            .addClass(add_class);
+        }
+      }
+    });
+
+    // Notify group members about new file submission.
+    $(document).on('group_project_v2.submission.upload_complete', function(evt, xhr) {
+      var submissions = xhr.responseJSON.submissions;
+      for (submission_id in submissions) {
+        if (submissions.hasOwnProperty(submission_id)) {
+          $.ajax({
+            method: 'POST',
+            url: '{{ notify_group_on_submission_url }}',
+            dataType: 'json',
+            data: {
+              submission_id: submission_id,
+              csrfmiddlewaretoken: $.cookie('apros_csrftoken')
+            }
+          });
+        }
+      }
+    });
+
+    $('#course-group-work').on('click', '.lesson-module-status', function(){
+      $(document).trigger('select_stage', $(this).data('activate'));
+    });
+
+    // height may have changed whenever we load new data into the xblock... need to re-check height at this point
+    $(document).on('select_stage', adjust_discussion_height);
+    $(document).on('data_loaded', adjust_discussion_height);
+
+    var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');
+    var lesson_data = {
+      courseId: '{{ legacy_course_id }}',
+      usageId: '{{ vertical_usage_id }}',
+      sessionId: '{{ remote_session_key }}',
+      baseDomain: '{{ lms_base_domain }}',
+      lmsSubDomain: '{{ lms_sub_domain }}',
+      lmsPort: '{{ lms_port }}',
+      jumpLinkRewriter: Apros.jumpLinkRewriter,
+      data: {
+          activate_block_id: Apros.getParameterByName('activate_block_id'),
+      },
+      {% if use_current_host %}
+      useCurrentHost: true,
+      {% endif %}
+    };
+
+    lesson_content.xblock(lesson_data);
+    // we need this to add some browser specific CSS rules
+    lesson_content.attr( "data-useragent", navigator.userAgent);
+
+    {% if select_stage %}
+    $(document).on('activity_initialized', function() {
+      $(document).trigger('select_stage', '{{ select_stage }}');
+    });
+    {% endif %}
+  });
