@@ -23,6 +23,7 @@ footer[role=contentinfo] {
 }
 
 body.new-theme {
+  background-color: $ash-white;
   @-webkit-keyframes fa-spin {
     0% {
       -webkit-transform: rotate(0deg);
