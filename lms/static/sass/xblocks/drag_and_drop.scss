@@ -121,7 +121,7 @@
         // Feedback popups should always be white on mobile web:
         .popup,
         .popup.popup-incorrect {
-            background-color: #fff;
+            background-color: $white;
         }
     }
 }
@@ -146,7 +146,7 @@
         // Give the draggables a white background and blue text:
         .option {
             margin: 5px 7px 5px 0;
-            background-color: #fff;
+            background-color: $white;
             font-weight: 600;
             color: #193c56
         }
@@ -212,7 +212,7 @@ body.new-theme {
 
             .lesson-index,
             .lesson-name {
-                color: #696969;
+                color: $gray;
                 font-weight: normal;
                 font-size: 1rem;
             }
@@ -245,21 +245,21 @@ body.new-theme {
                 .problem {
                     .title1 {
                         font-weight: normal;
-                        color: #000;
+                        color: $black;
                         font-size: 1.125rem;
                     }
 
                     p {
-                        color: #000;
+                        color: $black;
                     }
                 }
 
                 .drag-container {
-                    background: #FFF;
-                    border: 1px solid #EEEEEE;
+                    background: $white;
+                    border: 1px solid $light-gray;
 
                     .item-bank {
-                        background: #F5F5F5;
+                        background: $ash-hard;
                         border-radius: 0;
                         border: 0;
                         padding: 5px 0;
@@ -268,13 +268,13 @@ body.new-theme {
                             font-size: 0.875rem;
                             border-radius: 2px;
                             font-weight: normal;
-                            background-color: #2042cb;
+                            background-color: var(--primary);
                             padding: 12px 15px;
                             cursor: grab;
 
                             &:hover,
                             &:focus {
-                                background-color: #0b0886;
+                                background-color: $dark-blue;
                                 box-shadow: none;
                             }
                         }
@@ -282,7 +282,7 @@ body.new-theme {
 
                     .dragged-items {
                         .option {
-                            background-color: #666666;
+                            background-color: $gray;
                             box-shadow: none;
                         }
                     }
@@ -314,13 +314,13 @@ body.new-theme {
 
                     .target {
                         margin: 1% auto;
-                        border: 1px solid #EEEEEE;
+                        border: 1px solid $light-gray;
 
                         .item-feedback-popup {
                             border-radius: 2px;
 
                             &.popup {
-                                background: #FFF;
+                                background: $white;
                                 box-shadow: 0 0 100px rgba(0, 0, 0, 0.4);
                                 padding: 10px 0 0;
                                 text-align: center;
@@ -328,7 +328,7 @@ body.new-theme {
                                 .close-feedback-popup-desktop-button {
                                     display: inline-block;
                                     background: none;
-                                    color: #000;
+                                    color: $black;
                                     width: 20px;
                                     height: 20px;
                                     position: absolute;
@@ -346,14 +346,14 @@ body.new-theme {
                                 }
 
                                 .popup-header-icon {
-                                    color: #008000;
+                                    color: $bg-white-green;
                                     display: block;
                                 }
 
                                 .popup-content {
                                     font-size: 0.875rem;
-                                    background: #CCE6CC;
-                                    color: #000;
+                                    background: $light-green;
+                                    color: $black;
                                     padding: 20px 0 5px;
                                     margin: 10px 0 10px;
                                 }
@@ -377,19 +377,19 @@ body.new-theme {
                                 }
 
                                 &.popup-incorrect {
-                                    background: #FFF;
+                                    background: $white;
 
                                     .popup-header-icon-incorrect {
-                                        color: #D50000;
+                                        color: $bg-white-red;
                                     }
 
                                     .popup-header-text {
-                                        color: #D50000;
+                                        color: $bg-white-red;
                                     }
 
                                     .popup-content-incorrect {
-                                        background: #F7CCCC;
-                                        color: #000;
+                                        background: $light-red;
+                                        color: $black;
                                         padding: 20px 0 5px;
                                     }
                                 }
@@ -404,7 +404,7 @@ body.new-theme {
                         }
 
                         .option {
-                            background-color: #666666;
+                            background-color: $gray;
                         }
 
                         .option[draggable='true'][aria-grabbed='true'] {
@@ -450,8 +450,8 @@ body.new-theme {
                         }
 
                         button[disabled] {
-                            background-color: #696969 !important;
-                            color: #EEEEEE;
+                            background-color: $gray !important;
+                            color: $light-gray;
                             opacity: 1;
                         }
 
@@ -483,7 +483,7 @@ body.new-theme {
                 .feedback {
                     .feedback-content {
                         .title1 {
-                            color: #000;
+                            color: $black;
                             font-weight: normal;
                             font-size: 12px;
                         }
@@ -493,7 +493,7 @@ body.new-theme {
                                 border: 0 !important;
 
                                 &.correct {
-                                    color: #008000;
+                                    color: $bg-white-green;
 
                                     &:before {
                                         font-family: "Material Icons";
@@ -502,7 +502,7 @@ body.new-theme {
                                 }
 
                                 &.incorrect {
-                                    color: #D50000;
+                                    color: $bg-white-red;
 
                                     &:before {
                                         font-family: "Material Icons";
@@ -511,7 +511,7 @@ body.new-theme {
                                 }
 
                                 &.partial {
-                                    color: #000;
+                                    color: $black;
 
                                     &:before {
                                         font-family: "Material Icons";

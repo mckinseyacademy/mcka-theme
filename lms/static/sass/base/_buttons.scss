@@ -1,24 +1,24 @@
 
 @mixin primary-button ($isImportant:null) {
-    color: #FFF $isImportant;
+    color: $white $isImportant;
     font-size: 12px $isImportant;
     text-transform: uppercase $isImportant;
     border-radius: 2px $isImportant;
     padding: 3px 15px $isImportant;
     font-weight: normal $isImportant;
-    background-color: $mckinsey-primary-default-button $isImportant;
+    background-color: var(--primary) $isImportant;
     height: 40px !important;
     box-shadow: none;
 }
 
 @mixin primary-button-hover ($isImportant:null) {
-    color: #FFF $isImportant;
+    color: $white $isImportant;
     font-size: 12px $isImportant;
     text-transform: uppercase $isImportant;
     border-radius: 2px $isImportant;
     padding: 3px 15px $isImportant;
     font-weight: normal $isImportant;
-    background-color: #0b0886 !important;
+    background-color: $dark-blue !important;
     height: 40px !important;
     box-shadow: none;
 
@@ -47,21 +47,21 @@
     border-radius: 2px $isImportant;
     padding: 3px 15px $isImportant;
     font-weight: normal $isImportant;
-    border: solid 1px $mckinsey-default-link $isImportant;
-    background-color: #fff $isImportant;
-    color: $mckinsey-default-link $isImportant;
+    border: solid 1px var(--primary) $isImportant;
+    background-color: $white $isImportant;
+    color: var(--primary) $isImportant;
     height: 40px !important;
 }
 
 @mixin secondary-button-hover ($isImportant:null) {
-    color: #0b0886 !important;
+    color: $dark-blue !important;
     font-size: 12px $isImportant;
     text-transform: uppercase $isImportant;
-    border: solid 1px #0b0886;
+    border: solid 1px $dark-blue;
     border-radius: 2px $isImportant;
     padding: 3px 15px $isImportant;
     font-weight: normal $isImportant;
-    background-color: #FFF !important;
+    background-color: $white !important;
     height: 40px !important;
 }
 
