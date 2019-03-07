@@ -162,13 +162,13 @@ body.new-theme {
         {
            p
            {
-                @include font-size(24);
+                @include font-size(14);
                 font-weight: 400;
                 margin: 0;
 
                 i
                 {
-                    @include font-size(24);
+                    @include font-size(14);
                     font-style: italic;
                     font-weight: 300;
                 }
