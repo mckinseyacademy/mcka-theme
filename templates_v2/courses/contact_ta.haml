@@ -1,42 +1,58 @@
 - load i18n
-#contact-ta.reveal-modal.small{"data-reveal": True}
-  .close-reveal-modal
-    %i.fa.fa-times-circle
-  %h2 {% trans "Message your TA" %}
-  %hr
-  %div {% trans "Send any questions or messages to your TA , and they'll get back to you promptly." %}
-  %form#contact-ta-form{"action": "/courses/#{course_id}/teaching_assistant", "method": "POST"}
-    .error
-      - if error
-        = error
-    - csrf_token
-    %textarea{"placeholder": "{% trans 'Enter your message for the TA here' %}", "name": "ta_message"}
-    %input#contact-from{'type': 'hidden', 'name': 'contact-from', 'value': '#{contact_from}'}
-    %input.button.radius.small{"type": "submit", "value": "{% trans 'Submit' %}", 'disabled': 'disabled'}
-#email-team.reveal-modal.small{"data-reveal": True}
-  .close-reveal-modal
-    %i.fa.fa-times-circle
-  %h2 {% trans "Message your group" %}
-  %hr
-  %div {% trans "Send any questions or messages to your group." %}
-  %form#email-team-form{"action": "/courses/#{course.id}/group_email/#{project_group.id}", "method": "POST"}
-    .error
-      - if error
-        = error
-    - csrf_token
-    %textarea{"placeholder": "{% trans 'Enter your message for the group here' %}", "name": "group_message"}
-    %input.button.radius.small{"type": "submit", "value": "{% trans 'Submit' %}", 'disabled': 'disabled'}
-#email-member.reveal-modal.small{"data-reveal": True}
-  .close-reveal-modal
-    %i.fa.fa-times-circle
-  %h2 {% trans "Message your group member" %}
-  %hr
-  %div {% trans "Send any questions or messages to your group member." %}
-  %form#email-member-form{"action": "/courses/#{course.id}/group_member_email/#{project_group.id}", "method": "POST"}
-    .error
-      - if error
-        = error
-    - csrf_token
-    %textarea{"placeholder": "{% trans 'Enter your message here' %}", "name": "member_message"}
-    %input#member-email{'type': 'hidden', 'name': 'member-email'}
-    %input.button.radius.small{"type": "submit", "value": "{% trans 'Submit' %}", 'disabled': 'disabled'}
+
+#contact-ta.modal.fade{:role => "dialog"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{:data-dismiss => "modal", :type => "button"} ×
+        %h4.modal-title {% trans "Message your TA" %}
+      .modal-body
+        %div {% trans "Send any questions or messages to your TA , and they'll get back to you promptly." %}
+        %form#contact-ta-form{"action": "/courses/#{course_id}/teaching_assistant", "method": "POST"}
+          .error
+            - if error
+              = error
+          - csrf_token
+          %textarea{"placeholder": "{% trans 'Enter your message for the TA here' %}", "name": "ta_message"}
+          %input#contact-from{'type': 'hidden', 'name': 'contact-from', 'value': '#{contact_from}'}
+          %input.button.radius.small{"type": "submit", "value": "{% trans 'Submit' %}", 'disabled': 'disabled'}
+
+      .modal-footer
+        %button.btn.btn-default{:data-dismiss => "modal", :type => "button"} Close
+
+#email-team.modal.fade{:role => "dialog"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{:data-dismiss => "modal", :type => "button"} ×
+        %h4.modal-title {% trans "Message your group" %}
+      .modal-body
+        %div {% trans "Send any questions or messages to your group." %}
+        %form#email-team-form{"action": "/courses/#{course.id}/group_email/#{project_group.id}", "method": "POST"}
+          .error
+            - if error
+              = error
+          - csrf_token
+          %textarea{"placeholder": "{% trans 'Enter your message for the group here' %}", "name": "group_message"}
+          %input.button.radius.small{"type": "submit", "value": "{% trans 'Submit' %}", 'disabled': 'disabled'}
+      .modal-footer
+        %button.btn.btn-default{:data-dismiss => "modal", :type => "button"} Close
+
+#email-member.modal.fade{:role => "dialog"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        %button.close{:data-dismiss => "modal", :type => "button"} ×
+        %h4.modal-title {% trans "Message your group member" %}
+      .modal-body
+        %div {% trans "Send any questions or messages to your group member." %}
+        %form#email-member-form{"action": "/courses/#{course.id}/group_member_email/#{project_group.id}", "method": "POST"}
+          .error
+            - if error
+              = error
+          - csrf_token
+          %textarea{"placeholder": "{% trans 'Enter your message here' %}", "name": "member_message"}
+          %input#member-email{'type': 'hidden', 'name': 'member-email'}
+          %input.button.radius.small{"type": "submit", "value": "{% trans 'Submit' %}", 'disabled': 'disabled'}
+      .modal-footer
+        %button.btn.btn-default{:data-dismiss => "modal", :type => "button"} Close

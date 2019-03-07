@@ -238,7 +238,8 @@
     -# Bootstrap JS
     - block bootstrap_js
       %script{src: "{% static 'js/bootstrap.bundle.min.js' %}"}
-    
+      %script{src: "{% static 'js/bootstrap.min.js' %}"}
+
     - block %jquery_validation
       %script{src: "{% static 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.8.1/jquery.validate.js' %}"}
 
@@ -327,6 +328,17 @@
                     %div
                       %button.btn.btn-primary.ome.dome-bc{:type => "button"}
                         {% trans "crop & save" %}
+
+    #generalModal.modal.fade{:role => "dialog"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{:data-dismiss => "modal", :type => "button"} ×
+            %h4.modal-title Modal Header
+          .modal-body
+            %p Some text in the modal.
+          .modal-footer
+            %button.btn.btn-default{:data-dismiss => "modal", :type => "button"} Close
 
     %script{src: "{% static 'js/shader.js' %}"}
 
