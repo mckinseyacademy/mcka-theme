@@ -131,6 +131,10 @@
     top: calc(100% + 10px) !important;
     min-width: 420px;
   }
+  &.dashboard-menu{
+    max-height: 434px;
+    overflow-y: auto;
+  }
 
   //Admin Site Dropdown
   &.adminModules{
@@ -271,6 +275,7 @@
             }
           }
           &.drop-open-dashboard {
+            //>a{ color: $black;}
             ul {
               max-height: 700px;
               >li{
@@ -290,7 +295,6 @@
           }
         }
       }
-
     }
     &.profileDropdown{
       width: 310px !important;

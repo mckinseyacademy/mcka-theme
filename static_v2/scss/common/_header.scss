@@ -150,12 +150,8 @@ header {
     .headerNav {
       width: auto;
       margin: 17px 0 0;
-      ul {
-        li {
-          &:first-child {
-            margin-left: 0;
-          }
-        }
+      > ul {
+        > li { margin-bottom: 0;}
       }
     }
   }
@@ -554,7 +550,7 @@ header {
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
 
   .pn-ProductNav {
     margin: 0;

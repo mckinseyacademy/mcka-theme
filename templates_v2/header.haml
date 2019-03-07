@@ -168,6 +168,7 @@
                                   %li
                                     %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/resources"} {% trans "Resources" %}
 
+
                   - if show_my_courses
                     {% url 'courses' as courses_url %}
                     %li{class: "{% if request.path == courses_url %}active{% endif %}"}
