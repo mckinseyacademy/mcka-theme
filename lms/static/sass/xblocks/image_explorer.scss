@@ -1,6 +1,11 @@
 // Overrides for Image Explorer V2:
 @import '../base/variables';
 
+@import "vars/variables";
+@import "form/checkbox";
+@import "form/radiobutton";
+@import "mixins/mixins";
+@import "common/buttons";
 
 // New design of Image Explorer has different Blue & Magenta shades
 // so we need to apply that colors in MCKA theme
@@ -23,7 +28,6 @@
   }
 }
 
-
 body.new-theme {
 
   .lesson-content {
@@ -31,7 +35,7 @@ body.new-theme {
       margin-bottom: 20px;
 
       h2 {
-        color: #000;
+        color: $black;
         font-size: 1.5rem;
       }
 
@@ -64,7 +68,7 @@ body.new-theme {
           }
 
           .image-explorer-hotspot-reveal {
-            background: #4A4A4A;
+            background: $dark-gray;
             border-radius: 2px;
 
             .image-explorer-close-reveal {
@@ -75,8 +79,8 @@ body.new-theme {
               &:after {
                 font-family: "Material Icons";
                 content: "\e14c";
-                color: #FFF;
-                font-size: 20px;
+                color: $white;
+                font-size: 1.125rem;
               }
             }
 
