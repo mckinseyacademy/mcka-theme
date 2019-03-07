@@ -6,17 +6,138 @@
 // so we need to apply that colors in MCKA theme
 
 .tutorial-wrapper {
-  .tutorial-container{
-    h3{
+  .tutorial-container {
+    h3 {
       color: $mckinsey-royal-blue !important;
       margin-bottom: 20px;
     }
-    a{
+
+    a {
       color: $mckinsey-royal-blue !important;
       padding: 25px 0 10px !important;
     }
   }
-  .tutorial-video{
+
+  .tutorial-video {
     background-image: url("../images/IE_Instruction_Anim.gif") !important;
+  }
+}
+
+
+body.new-theme {
+
+  .lesson-content {
+    .image-explorer-xblock-wrapper {
+      margin-bottom: 20px;
+
+      h2 {
+        color: #000;
+        font-size: 1.5rem;
+      }
+
+      .image-explorer-description {
+        font-size: 0.875rem;
+
+        .hint {
+          font-style: italic;
+        }
+      }
+
+      .image-explorer-wrapper {
+        text-align: center;
+        width: 100%;
+
+        .image-explorer-hotspot {
+          text-align: left;
+          background-image: url(../../mcka-theme/images/hotspot-sprite.png);
+
+          &:hover {
+            background-position: 0 -41px;
+          }
+
+          &.visited {
+            background-position: 0 -82px;
+
+            &:hover {
+              background-position: 0 -82px;
+            }
+          }
+
+          .image-explorer-hotspot-reveal {
+            background: #4A4A4A;
+            border-radius: 2px;
+
+            .image-explorer-close-reveal {
+              color: transparent;
+              margin-right: 8px;
+              margin-top: 0px;
+
+              &:after {
+                font-family: "Material Icons";
+                content: "\e14c";
+                color: #FFF;
+                font-size: 20px;
+              }
+            }
+
+            .image-explorer-hotspot-content-wrapper {
+              margin-top: 40px;
+
+              .image-explorer-hotspot-reveal-header {
+                font-size: 0.875rem;
+
+                p {
+                  margin: 0;
+                  line-height: initial;
+                }
+              }
+
+              .image-explorer-hotspot-reveal-body {
+                font-size: 12px;
+
+                ul {
+                  padding-left: 5px;
+
+                  li {
+                    margin: 0 0 7px 17px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  body.new-theme {
+    .lesson-content {
+      .image-explorer-xblock-wrapper {
+        .image-explorer-wrapper {
+          .image-explorer-hotspot {
+            &:hover {
+              background-position: 0 -16px;
+            }
+
+            &.visited {
+              background-position: 0 -33px;
+
+              &:hover {
+                background-position: 0 -33px;
+              }
+            }
+
+            .image-explorer-hotspot-reveal {
+              width: 90% !important;
+              height: 74% !important;
+              top: 13%;
+              margin: 0 auto;
+            }
+          }
+        }
+      }
+    }
   }
 }

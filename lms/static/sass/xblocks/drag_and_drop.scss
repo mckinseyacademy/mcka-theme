@@ -214,13 +214,13 @@ body.new-theme {
             .lesson-name {
                 color: #696969;
                 font-weight: normal;
-                font-size: 16px;
+                font-size: 1rem;
             }
         }
 
         h1 {
             color: $mckinsey-default-link;
-            font-size: 24px;
+            font-size: 1.125rem;
             margin-top: 15px;
 
             a {
@@ -246,6 +246,7 @@ body.new-theme {
                     .title1 {
                         font-weight: normal;
                         color: #000;
+                        font-size: 1.125rem;
                     }
 
                     p {
@@ -264,7 +265,7 @@ body.new-theme {
                         padding: 5px 0;
 
                         .option {
-                            font-size: 14px;
+                            font-size: 0.875rem;
                             border-radius: 2px;
                             font-weight: normal;
                             background-color: #2042cb;
@@ -299,9 +300,67 @@ body.new-theme {
                             }
 
                             .item-feedback-popup {
-                                border-radius: 2px;
+                                .popup-header-text {
+                                    font-weight: normal;
+                                }
+                            }
+
+                            .option {
+                                padding: 5px 5px;
+                                font-size: 11px;
+                            }
+                        }
+                    }
+
+                    .target {
+                        margin: 1% auto;
+                        border: 1px solid #EEEEEE;
+
+                        .item-feedback-popup {
+                            border-radius: 2px;
+
+                            &.popup {
+                                background: #FFF;
+                                box-shadow: 0 0 100px rgba(0, 0, 0, 0.4);
+                                padding: 10px 0 0;
+                                text-align: center;
+
+                                .close-feedback-popup-desktop-button {
+                                    display: inline-block;
+                                    background: none;
+                                    color: #000;
+                                    width: 20px;
+                                    height: 20px;
+                                    position: absolute;
+                                    right: 0px;
+                                    top:0px;
+                                }
+
+                                .close-feedback-popup-mobile-button {
+                                    display: none;
+                                }
+
+                                .popup-header-text {
+                                    display: inline-block;
+                                    font-size: 12px;
+                                }
 
                                 .popup-header-icon {
+                                    color: #008000;
+                                    display: block;
+                                }
+
+                                .popup-content {
+                                    font-size: 0.875rem;
+                                    background: #CCE6CC;
+                                    color: #000;
+                                    padding: 20px 0 5px;
+                                    margin: 10px 0 10px;
+                                }
+
+                                .popup-header-icon {
+                                    font-size: 1.125rem;
+
                                     .fa-exclamation-circle {
                                         &::before {
                                             font-family: "Material Icons";
@@ -317,48 +376,25 @@ body.new-theme {
                                     }
                                 }
 
-                                .popup-header-text {
-                                    font-weight: normal;
-                                }
-                            }
+                                &.popup-incorrect {
+                                    background: #FFF;
 
-                            .option {
-                                padding: 5px 5px;
-                                font-size: 11px;
-                            }
-                        }
+                                    .popup-header-icon-incorrect {
+                                        color: #D50000;
+                                    }
 
+                                    .popup-header-text {
+                                        color: #D50000;
+                                    }
 
-                        .popup {
-                            background: inherit;
-
-                            &.popup-incorrect {
-                                background: inherit;
-                            }
-                        }
-                    }
-
-                    @media (min-width: 767px) {
-                        .target {
-                            .item-feedback-popup {
-                                .close-feedback-popup-button {
-                                    background: none;
-                                    height: 20px;
-                                    width: 20px;
-
-                                    &:hover {
-                                        background: none;
+                                    .popup-content-incorrect {
+                                        background: #F7CCCC;
+                                        color: #000;
+                                        padding: 20px 0 5px;
                                     }
                                 }
                             }
 
-                            .popup {
-                                background: #008000;
-
-                                &.popup-incorrect {
-                                    background: #D50000;
-                                }
-                            }
                             .fa-times-circle {
                                 &::before {
                                     font-family: "Material Icons";
@@ -366,11 +402,6 @@ body.new-theme {
                                 }
                             }
                         }
-                    }
-
-                    .target {
-                        margin: 1% auto;
-                        border: 1px solid #EEEEEE;
 
                         .option {
                             background-color: #666666;
@@ -384,6 +415,12 @@ body.new-theme {
 
                 .actions-toolbar {
                     margin: 10px 0;
+                    position: relative;
+                    padding-bottom: 30px;
+                    display: flex;
+                    flex-direction: row;
+                    flex-wrap: nowrap;
+                    justify-content: space-between;
 
                     .action-toolbar-item {
                         button {
@@ -392,6 +429,15 @@ body.new-theme {
                             }
 
                             opacity: 1;
+
+                            &.reset-button {
+                                @include secondary-button;
+
+                                &:active,
+                                &:hover {
+                                    @include secondary-button-hover;
+                                }
+                            }
 
                             &.show-answer-button:not(:disabled) {
                                 @include secondary-button;
@@ -408,6 +454,29 @@ body.new-theme {
                             color: #EEEEEE;
                             opacity: 1;
                         }
+
+                        &.submit-answer {
+                            .attempts-used {
+                                position: absolute;
+                                top: 65px;
+                                left: -6px;
+                            }
+                        }
+
+                        &.sidebar-buttons {
+                            width: 100%;
+                            margin-top: 5px;
+
+                            .sidebar-button-wrapper {
+                                border: 0;
+                                &:nth-child(2){
+                                    float: right;
+                                }
+                                &:nth-child(3) {
+                                    float: left;
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -415,7 +484,8 @@ body.new-theme {
                     .feedback-content {
                         .title1 {
                             color: #000;
-                            font-weight: 600;
+                            font-weight: normal;
+                            font-size: 12px;
                         }
 
                         .messages {
