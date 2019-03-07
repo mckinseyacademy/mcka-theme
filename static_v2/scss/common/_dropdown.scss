@@ -131,11 +131,14 @@
     top: calc(100% + 10px) !important;
     min-width: 420px;
   }
-  &.dashboard-menu{
-    max-height: 434px;
-    overflow-y: auto;
+  &.dashboard-menu {
+    > .sub-nav {
+      max-height: 434px;
+      overflow: auto;
+      margin: 0 -30px;
+      padding: 0 30px;
+    }
   }
-
   //Admin Site Dropdown
   &.adminModules{
     min-width: 300px;
@@ -231,7 +234,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 767px) {
   .dropdown-menu {
 
     &.notification {
@@ -255,10 +258,6 @@
     &.dashboard-menu {
       min-width: 300px !important;
       >.sub-nav {
-            max-height: 373px;
-            overflow: auto;
-            margin: 0 -30px;
-            padding: 0 30px;
         >li {
           > a.dropdown-item {
             padding-right: 0 !important;
@@ -275,14 +274,8 @@
             }
           }
           &.drop-open-dashboard {
-            //>a{ color: $black;}
             ul {
               max-height: 700px;
-              >li{
-                >a{
-                  //color: $black;
-                }
-              }
             }
           }
           ul {
