@@ -1,4 +1,11 @@
+@import "vars/variables";
+@import "form/checkbox";
+@import "form/radiobutton";
+@import "mixins/mixins";
+@import "common/buttons";
+
 //  Overrides for xblocks polls & surveys:
+
 
 body.new-theme {
     .lesson-content {
@@ -119,4 +126,109 @@ body.new-theme {
             padding-bottom: 6px;
         }
     }
+}
+
+.new-theme
+{
+    @include font-size(14);
+    [data-block-type="poll"]
+    {
+        .poll-container
+        {
+            .poll-answers
+            {
+                margin-bottom: 32px;
+                padding:0;
+                .poll-answer
+                {
+                    display: table-row !important;
+                    .poll-input-container
+                    {
+                        padding-right: 24px;
+                        line-height: normal;
+                        padding-left:5px;
+                        &:before
+                        {
+                            left:2px;
+                            top:2px;
+                        }
+                        &:after
+                        {
+                            left:4px;
+                            top:4px;
+                        }
+
+                        [type="radio"]
+                        {
+                            left:2px;
+                            top:2px;
+                        }
+
+
+                    }
+                    .poll-answer-text
+                    {
+                        font-weight: normal;
+                        padding-bottom:5px;
+                        p
+                        {
+                            margin:0;
+                            font-size: 0.875rem!important;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Poll Result
+
+        .poll-results-wrapper
+        {
+            .poll-answers-results
+            {
+                padding:0;
+                max-width: none;
+                .poll-result
+                {
+                    .poll-result-input-container
+                    {
+                        padding: 10px 0;
+                        width:28px;
+
+                        [type="radio"]
+                        {
+                            height: auto;
+                            top:2px;
+                        }
+                        &:before
+                        {
+                            
+                            top:2px;
+                        }
+                        &:after
+                        {
+                            left:2px;
+                            top:4px;
+                        }
+                    }
+
+                    .percentage-gauge-container
+                    {
+                        .poll-answer-label
+                        {
+                            font-weight: normal;
+                        }
+                    }
+                    .poll-percent-container
+                        {
+                            .poll-percent-display
+                            {
+                                font-weight: normal;
+                            }
+                        }
+                }
+            }
+        }
+    }
+
 }

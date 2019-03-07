@@ -1,0 +1,70 @@
+[data-block-type="pb-mrq"]{
+  .choice-selector
+  {
+    position:relative;
+    overflow:hidden;
+    width:16px;
+    height:16px;
+    border-radius:3px;
+    
+    [type="checkbox"]
+    {
+      opacity:0;
+      width:16px;
+      height:16px;
+      position: absolute;
+      left: 0px;
+      top: 2px;
+    }
+    &:before
+    {
+      content:'';
+      box-sizing:border-box;
+      width:16px;
+      height:16px;
+      background:white;
+      border-radius:3px;
+      position:absolute;
+      border:2px solid $black;
+      display:inline-block;
+      left: 0;
+      top: 2px;
+      
+    }
+    
+    &:after
+    {
+      content: "";
+        position: absolute;
+        display: none;
+        left: 6px;
+        top: 3px;
+        width: 5px;
+        height: 11px;
+        border: solid #fff;
+        border-width: 0 1px 1px 0;
+        -webkit-transform: rotate(43deg);
+        -ms-transform: rotate(43deg);
+        transform: rotate(43deg);
+    }
+    
+    &.selected
+    {
+     
+        &:after{
+            display: block;
+          }
+      
+      &:before{
+        background:$black!important;
+      }
+    }
+    &:hover
+    {
+      &:before
+      {
+        background:#E4E4E5;
+      }
+    }
+  }
+}
