@@ -89,6 +89,22 @@
     }
 
     .progress-data {
+        &.table-col-2 {
+            thead {
+                th {
+                    @media screen and (max-width: 767px) {
+                        width: 100% !important;
+                    }
+                    &:first-child {
+                        width: 66.66% !important;
+                        @media screen and (max-width: 767px) {
+                            width: 100% !important;
+                        }
+                    }
+
+                }
+            }
+        }
         tr {
             th {
                 &:first-child {
@@ -156,6 +172,9 @@
 
                         .lesson-item-name {
                             display: inline-block;
+                            @media screen and (max-width: 767px) {
+                                display: block;
+                            }
 
                             >.material-icons {
                                 vertical-align: sub;
@@ -242,11 +261,13 @@
             .material-icons {
                 position: absolute;
                 line-height: 1.4;
+                left: 0;
             }
 
             a {
                 @include font-size(16);
                 padding: 0 22px;
+                display: inline-block;
             }
         }
 
@@ -267,6 +288,9 @@
 
                 .progressArea {
                     margin: auto;
+                    @media screen and (max-width: 767px) {
+                        text-align: center;
+                    }
                 }
             }
         }
@@ -391,9 +415,8 @@
                     border-bottom: 0;
 
                     th {
-                        width: 112% !important;
+                        width: 103% !important;
                         display: block;
-                        margin: 0 -20px;
 
                         &:first-child {
                             display: none;

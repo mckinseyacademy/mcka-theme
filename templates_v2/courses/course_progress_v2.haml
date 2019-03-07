@@ -64,12 +64,12 @@
                 - for week in course.lessons_by_week
                   %tr
                     - if not course.is_evergreen
-                      %td.week
+                      %td.week.progress_data_col
                         - if week.start
                           %span
                             {% trans 'Week' %} #{week.index}:
                           #{week.start}-#{week.end}
-                    %td
+                    %td.progress_data_col
                       - if feature_flags.group_work and week.group_only
                         %div {% trans "N/A (focus on Group Work)" %}
                       - for lesson in week.lessons
@@ -140,7 +140,7 @@
 
                     - if feature_flags.group_work
                       - if week.has_group
-                        %td
+                        %td.progress_data_col
                           - for activity in week.group_activities
                             .lesson-with-list.lesson-row-item.gr-data
                               - if activity.score 

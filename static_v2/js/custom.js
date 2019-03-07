@@ -179,6 +179,22 @@ $(document).ready(function() {
                 }
             }
         });
+
+
+    switch ($('table.progress-data td.progress_data_col').length) {
+
+        case 1:
+            $('table.progress-data').addClass('table-col-1');
+            break;
+
+        case 2:
+            $('table.progress-data').addClass('table-col-2');
+            break;
+
+        case 3:
+            $('table.progress-data').addClass('table-col-3');
+            break;
+    }
 });
 
 
