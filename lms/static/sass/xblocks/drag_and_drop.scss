@@ -324,6 +324,7 @@ body.new-theme {
 
                         .item-feedback-popup {
                             border-radius: 2px;
+                            border: 1px solid $popup-border;
 
                             &.popup {
                                 background: $white;
@@ -402,6 +403,7 @@ body.new-theme {
                             }
 
                             .fa-times-circle {
+                                color: var(--primary);
                                 &::before {
                                     font-family: "Material Icons";
                                     content: "\e14c";
