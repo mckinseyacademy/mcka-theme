@@ -7,12 +7,12 @@
       - if calendar_enabled
         %li
           %a.ome.dome-c{:href => ""} {% trans "Calendar" %}
-      - if learner_dashboard.features.discussions
+      - if feature_flags.discussions
         %li
           %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/discussion"} {% trans "Discussions" %}
-      - if learner_dashboard.features.group_work
+      - if feature_flags.group_work
         %li
           %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work"} {% trans "Miniboard" %}
-      - if learner_dashboard.features.resources
+      - if feature_flags.resources
         %li
           %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/resources"} {% trans "Resources" %}
