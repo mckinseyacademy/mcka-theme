@@ -7,8 +7,8 @@ $(function () {
   });
 
   $(document).on('change', '.new-theme [data-block-type="pb-mrq"] input[type="checkbox"], .new-theme .post-options input[type="checkbox"]', function (e) {
-    if (event.target.checked) {
-      $(event.target).parent().addClass("selected");
+    if (e.target.checked) {
+      $(e.target).parent().addClass("selected");
     } else {
       $(e.target).parent().removeClass("selected");
     }
@@ -23,7 +23,7 @@ $(function () {
   $(document).on('change', '.new-theme input[type=radio]', function (e) {
     var parent = $(e.target).parents('.field-label');
     $(parent).find(".selected").removeClass("selected");
-    $(event.target).parent().addClass("selected");
+    $(e.target).parent().addClass("selected");
   });
 
   // Add selected class to selected poll results when appended to DOM
