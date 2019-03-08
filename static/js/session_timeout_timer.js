@@ -15,7 +15,7 @@ $(function(){
 
   function handleAprosSessionTimeout() {
     // When timer expires, check its validity
-    if (isTimeoutValid()) {
+    if (isTimeOutValid(0)) {
       window.alert(gettext('You were logged out due to inactivity. Please log back in to continue.'));
       window.location = '/accounts/login/';
     }
@@ -23,43 +23,56 @@ $(function(){
       launchSessionTimeoutTimer();
     }
   }
+})
 
-  function getTimeoutSeconds() { //** Moment changes
-    // At any instance, get seconds to set the next timeout respective of last user touch
+// Util tasks
+// In global scope as being used in other files as well (course_lesson.js)
+function getCookieValue(query) {
+    var results = document.cookie.match('(^|;)\\s*' + query + '\\s*=\\s*([^;]+)');
+    return results ? results.pop().replace(/\"/g, "") : '';
+}
+
+function getTimeoutSeconds(){
+    // Get seconds to set the next timeout respective of last user touch
     // Get fresh last_user_interaction from cookies
-    var last_user_interaction = new Date(getCookieValue('last_touch'));
-    // Extra 5 seconds added to keep timer sage from client side js thread lags, timing inconsistencies
-    let expected_session_timeout = new Date(last_user_interaction.setSeconds(last_user_interaction.getSeconds() + apros_session_timeout_seconds + 5));
-    let now = new Date(moment.tz('EST').format('YYYY-MM-DD HH:mm:ss'));
+    var last_user_interaction = moment(getCookieValue('last_touch'), 'YYYY-MM-DD HH:mm:ss').toDate();
+    // 3 seconds offset added to address time inconsistencies/jerks
+    var offset = 3
+    let expected_session_timeout = new Date(last_user_interaction.setSeconds(last_user_interaction.getSeconds() + apros_session_timeout_seconds + offset));
+    let now = moment(moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss.ssss'), 'YYYY-MM-DD HH:mm:ss').toDate();
     // Subtraction in dates returns in milliseconds, hence dividing by 1000
     let timeOutSeconds = (expected_session_timeout - now)/1000;
     return (timeOutSeconds >= 0) ? timeOutSeconds : 0;
-    }
+}
 
-    function isTimeoutValid() {
-    // The timer is valid if current time is 'apros_session_timeout_seconds' more than the 'last_touch'
-    var last_user_interaction = getCookieValue('last_touch');
+function isTimeOutValid(delta) {
+    // Algorithm:
+    // *** last_user_interaction
+    // .
+    // .    (Session active in this interval)
+    // .
+    // *** last_user_interaction + (session time out seconds - delta)
+    // .
+    // .    (Session not active in this interval)
+    // .
+
+    // Get fres last_user_interaction
+    var last_user_interaction = getCookieValue('last_touch')
     if (apros_session_timeout_seconds && last_user_interaction) {
-      // Get EST time using moment.js
-      let current_time = new Date(moment.tz('EST').format('YYYY-MM-DD HH:mm:ss'));
-      // Add 'session_time_out_seconds' to 'last_user_interaction'
-      var session_timeout_delta = new Date(last_user_interaction);
-      var session_time_out_seconds_delta = apros_session_timeout_seconds; // **Remove this
-      session_timeout_delta.setSeconds(session_timeout_delta.getSeconds() + apros_session_timeout_seconds);
-      // last_user_interaction is deleted from cookies when one tab redirects to login page
-      // The second condition is for more than one tabs
-      if (current_time > session_timeout_delta || last_user_interaction == "None") {
-          // Timer is valid
-          return true;
-      }
+        let current_time = moment(moment.tz('UTC').format('YYYY-MM-DD HH:mm:ss'), 'YYYY-MM-DD HH:mm:ss').toDate();
+
+
+        // Delta represents 'Show alert delta seconds before session time out'
+        // Add 'session_time_out_seconds' to 'last_user_interaction'
+        var session_timeout_delta = moment(last_user_interaction, 'YYYY-MM-DD HH:mm:ss').toDate();
+        var session_time_out_seconds_delta = apros_session_timeout_seconds - delta;
+        session_timeout_delta.setSeconds(session_timeout_delta.getSeconds() + session_time_out_seconds_delta);
+
+        if (current_time > session_timeout_delta) {
+            // Timer is valid
+            return true;
+        }
         // Else timer is invalid. Return false
     }
     return false;
-  }
-
-  function getCookieValue(query) {
-    var results = document.cookie.match('(^|;)\\s*' + query + '\\s*=\\s*([^;]+)');
-    return results ? results.pop() : '';
-  }
-
-})
+}

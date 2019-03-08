@@ -15,13 +15,13 @@ class SessionTimeout(object):
         last_touch = request.session.get('last_touch')
 
         if timeout and last_touch:
-            time = datetime.now() - last_touch
+            time = datetime.utcnow() - last_touch
             if time > timedelta(seconds=settings.SESSION_TIMEOUT_SECONDS):
                 del request.session['last_touch']
                 logout(request)
                 return
 
-        request.session['last_touch'] = datetime.now()
+        request.session['last_touch'] = datetime.utcnow()
 
     def process_response(self, request, response):
         response.set_cookie(

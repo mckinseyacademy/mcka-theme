@@ -810,7 +810,6 @@ def navigate_to_lesson_module(
         "course": course,
         "right_lesson_module_navigator": right_lesson_module_navigator,
         "left_lesson_module_navigator": left_lesson_module_navigator,
-        "session_timeout_seconds": getattr(settings, "SESSION_TIMEOUT_SECONDS", 1800),
         "is_full_screen": is_full_screen == 'true',
         "cookie_key": cookie_key
     }
