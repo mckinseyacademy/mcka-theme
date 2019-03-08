@@ -2,7 +2,6 @@
 {
     #course-group-work
     {
-        max-width: 1214px !important;
 
         .mckinsey_help
         {
@@ -36,13 +35,20 @@
                 overflow: hidden;
                 position: relative;
                 transition: .35s;
+                
+
+                .group-project-navigator-header
+                {
+                    background: $primary !important;
+                    transition: .35s;
+                }
 
                 &:before {
                     font-family: 'Material Icons';
-                    content: '\e313';
+                    content: '\e315';
                     position: absolute;
-                    top: 10px;
-                    right: 15px;
+                    top: 7px;
+                    right: 10px;
                     color: white;
                     @include font-size(24);
                     
@@ -50,13 +56,29 @@
                   &.open
                   {
                       max-height: 1000px;
+
+                      .group-project-navigator-header
+                      {
+                          background:$smoke-gray !important;
+                      }
+
+                      &:before {
+                       
+                        content: '\e313';
+                      }
                   }
+
+
+                  
             }
 
             .group-project-content
             {
                 width: 100%;
-                padding: 0 15px;
+                p
+                {
+                   font-size: .875rem !important;
+                }
                
             }
         }
@@ -278,6 +300,7 @@
                         &::before
                         {
                             content: '\e2c6';
+                            color:$white;
                         }
                     }
 
@@ -287,6 +310,7 @@
                         {
                             content: '\e14d';
                             font-weight: normal;
+                            color:$white;
                         }
                     }
 
@@ -295,6 +319,7 @@
                         &::before
                         {
                             content: '\e0ca';
+                            color:$white;
                         }
                     }
                     
@@ -471,16 +496,16 @@
 
     .stage_content
     {
-        p{
-            @include font-size(14);
-            i
-            {
-                display: block;
-                margin-bottom: -15px;
-                font-style: normal;
-                @include font-size(16);
-            }
-        }
+        // p{
+        //     @include font-size(14);
+        //     i
+        //     {
+        //         display: block;
+        //         margin-bottom: -15px;
+        //         font-style: normal;
+        //         @include font-size(16);
+        //     }
+        // }
     }
 
 
@@ -644,6 +669,59 @@
             }
         }
     }
+
+    .error
+    {
+        padding-top:50px !important;
+        h3
+        {
+            font-weight: 300;
+            @include font-size(24);
+        }
+        p
+        {
+            color:$gray;
+        }
+    }
+
+
+
+    // Change Icons in content.
+
+    .fa
+    {
+        &.fa-upload
+        {
+            &::before
+            {
+                font-family: 'Material Icons';
+                content: '\e2c6';
+                color: $primary;
+            }
+        }
+
+        &.fa-files-o
+        {
+            &::before
+            {
+                content: '\e14d';
+                font-weight: normal;
+                font-family: 'Material Icons';
+                color: $primary;
+            }
+        }
+
+        &.fa-comment
+        {
+            &::before
+            {
+                content: '\e0ca';
+                font-family: 'Material Icons';
+                color: $primary;
+            }
+        }
+    }
+
 
 
 
