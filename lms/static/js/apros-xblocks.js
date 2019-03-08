@@ -1,4 +1,5 @@
 $(function () {
+  var isSurveyTableFilled = false;
   $(document).on('change', '.new-theme input[type=radio]', function(e) {
     var parent = $(e.target).parents('[data-block-type="pb-mcq"]');
     $(parent).find(".choice-selector").removeClass("selected");
@@ -32,4 +33,19 @@ $(function () {
   $(document).on('DOMNodeInserted', '.forum-new-post-form', function(){
     $(".new-theme input[type=checkbox]:checked").parent().addClass('selected');
   });
+  $(document).on('DOMNodeInserted', '.lesson-content', function(){
+    if(!isSurveyTableFilled) {
+      isSurveyTableFilled = true;
+      setTimeout(function(){
+        surveyTableLabelPositionsForMobile();
+      }, 3000);
+    }
+  });
 });
+function surveyTableLabelPositionsForMobile(){
+  $('.survey-table .survey-option').each(function(index, element){
+    var span = $(element).find('.visible-mobile-only').prop('outerHTML');
+    $(element).find('.visible-mobile-only').remove();
+    $(element).append(span);
+  });
+}
