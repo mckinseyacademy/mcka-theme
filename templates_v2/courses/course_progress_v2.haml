@@ -79,9 +79,12 @@
                               {% if lesson.progress == 100 %}check_circle {% elif lesson.progress == 0 %}panorama_fish_eye{% else %}tonality{% endif %}
                             %span.lesson-label
                               - if lesson_custom_label
-                                {% blocktrans with lesson_index=lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
+                                {% blocktrans with lesson_index=lesson.index %} {{lesson_custom_label}} 
+                                  %span {{lesson_index}}:
+                                {% endblocktrans %}
                               -else
-                                {% trans "Lesson" %} #{lesson.index}:
+                                {% trans "Lesson" %} 
+                                  %span #{lesson.index}:
 
                           - if lesson_custom_label and modules_custom_label
                             %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}

@@ -390,6 +390,9 @@
   .legend-status {
     span{
       @include margin-right(15px);
+      @include media-breakpoint-between(xs, sm) {
+        @include margin-right(7px);
+      }
       i{
         @include margin-right(5px);
       }
@@ -459,24 +462,6 @@
 .allLessons {
   .bookmark {
     @include left(-33px);
-  }
-}
-
-// Lesson Page
-.lessonPageBody {
-  .popover {
-    &[x-placement="right"] {
-      @include media-breakpoint-between(xs, md) {
-        @include left(60px !important);
-        @include right(auto !important);
-      }
-    }
-    &[x-placement="left"] {
-      @include media-breakpoint-between(xs, md) {
-        @include right(60px !important);
-        @include left(auto !important);
-      }
-    }
   }
 }
 
@@ -743,7 +728,11 @@ body.rtl {
     }
   }
 }
-
+#course-progress-new table td .dropdown-toggle {
+  @include media-breakpoint-between(xs, sm) {
+     @include margin-left(25px);
+  }
+}
 #companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
   .bbGrid-search-bar {
     .input-group {
@@ -813,6 +802,10 @@ body.rtl {
       }
     }
     }
+  }
+  #course-progress-new .course-page table thead tr {
+    display: block;
+    @include margin-right(-20px);
   }
 }
 
