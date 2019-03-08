@@ -108,16 +108,19 @@ body.new-theme {
     .themed-xblock.mentoring {
         .title h3 {
             color: #000;
-            font-size: 1.5rem;
+            font-size: 1.125rem;
         }
 
         .xblock-answer {
             .question-title {
-                font-size: 1rem;
+                font-size: 12px;
             }
 
             label {
                 width: 100%;
+                p{
+                    font-size: 1rem;
+                }
             }
         }
 

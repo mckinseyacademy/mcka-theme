@@ -5,6 +5,7 @@
 @import "common/buttons";
 
 //  Overrides for xblocks polls & surveys:
+@import '../base/variables';
 
 
 body.new-theme {
@@ -14,14 +15,14 @@ body.new-theme {
 
             .poll-header {
                 font-size: 12px;
-                color: #000;
+                color: $black;
             }
 
             .poll-container {
                 .poll-question {
                     p {
                         font-size: 1rem;
-                        color: #000;
+                        color: $black;
                     }
                 }
 
@@ -35,7 +36,7 @@ body.new-theme {
 
                         p {
                             font-size: 1rem;
-                            color: #000;
+                            color: $black;
                             font-weight: normal;
                         }
                     }
@@ -46,12 +47,12 @@ body.new-theme {
                 padding-left: 1em;
 
                 poll-top-choice {
-                    color: #2042CB;
+                    color: var(--primary);
                 }
 
                 .percentage-gauge-container {
                     .percentage-gauge {
-                        background-color: #EEEEEE;
+                        background-color: $light-gray;
                     }
                 }
             }
@@ -63,7 +64,7 @@ body.new-theme {
                 .survey-question {
                     p {
                         font-size: 1rem;
-                        color: #000;
+                        color: $black;
                         font-weight: normal;
                     }
                 }
@@ -89,8 +90,8 @@ body.new-theme {
                             font-size: 0.9375rem;
 
                             &.poll-top-choice {
-                                color: #2042CB;
-                                background-color: #EEEEEE;
+                                color: var(--primary);
+                                background-color: $light-gray;
                             }
                         }
                     }
