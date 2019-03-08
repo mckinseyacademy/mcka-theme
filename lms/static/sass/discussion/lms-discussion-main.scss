@@ -24,6 +24,7 @@ footer[role=contentinfo] {
 
 body.new-theme {
   background-color: $ash-white;
+
   @-webkit-keyframes fa-spin {
     0% {
       -webkit-transform: rotate(0deg);
@@ -151,9 +152,11 @@ body.new-theme {
               width: 100%;
               position: relative;
               top: 35px;
-              h1{
+
+              h1 {
                 display: none;
               }
+
               .form-actions {
                 width: 20%;
 
@@ -475,6 +478,69 @@ body.new-theme {
     z-index: 9999;
     padding-top: 30px;
 
+    #contact-ta {
+      .modal-dialog {
+        .modal-content {
+          padding: 20px;
+
+          .modal-header {
+            border: 0 !important;
+            padding-bottom: 0;
+            padding-left: 8px;
+
+            .close {
+              font-weight: normal;
+              outline: none;
+            }
+
+            .modal-title {
+              color: $black;
+              font-size: 1.5rem;
+            }
+          }
+
+          .modal-body {
+            padding: 3px 10px 10px;
+
+            div:first-child {
+              color: $gray;
+              font-size: 12px;
+              padding-bottom: 20px;
+            }
+
+            form {
+              textarea {
+                border: 1px solid $hard-gray;
+                width: 100%;
+                margin-bottom: 15px;
+                padding: 10px;
+                font-size: 0.875rem;
+                outline: none;
+              }
+
+              .button {
+                @include primary-button;
+
+                &:hover,
+                &:active {
+                  @include primary-button-hover;
+                }
+
+                &:disabled {
+                  background-color: $gray;
+                  color: $light-gray;
+                  cursor: default;
+                }
+              }
+            }
+          }
+          .modal-footer{
+            display: none;
+          }
+        }
+      }
+    }
+
     .edit-post-form {
 
       .post-cancel,
@@ -778,7 +844,8 @@ body.new-theme {
 
         .page-header-secondary {
           width: 76%;
-          h1{
+
+          h1 {
             position: absolute;
             left: 16px;
             top: 0px;
@@ -871,6 +938,9 @@ body.new-theme {
                 color: var(--primary);
                 text-transform: lowercase;
                 font-size: 12px;
+                background: none;
+                border: 0;
+                padding: 0;
               }
             }
           }
