@@ -358,3 +358,7 @@
 
     - if xblock_theme_js_path
       %script{src: "{% static xblock_theme_js_path %}"}
+    -# Session Timeout
+    %script
+      var apros_session_timeout_seconds = {{apros_session_timeout_seconds}};
+    %script{src:"static/js/session_timeout_timer.js"}

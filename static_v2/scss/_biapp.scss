@@ -661,9 +661,17 @@ body.rtl {
           }
         }
       }
+      [class*="col-"] {
+        @include padding-left(0);
+      }
     }
   }
 }
+
+.mCSB_inside>.mCSB_container {
+  @include margin-right(15px);
+}
+
 
 // Admin site Biapp styles
 .tableCardWrap {
@@ -776,6 +784,11 @@ body.rtl {
       }
     }
   }
+  #mCSB_1_container{
+  >.row{
+    @include margin-right(-15px);
+  }
+}
 }
 
 @media screen and (max-width: 767px) {

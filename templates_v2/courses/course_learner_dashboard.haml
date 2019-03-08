@@ -13,7 +13,7 @@
             .gallery-title{"style": "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
             .gallery-content{"style": "color:#{learner_dashboard.description_color}"}
               %p= learner_dashboard.description
-            .gallery
+            .gallery.noScrollAppears#learnerDashboardGallery
               .row
                 -for tile in learner_dashboard_tiles
                   .col-md-4
