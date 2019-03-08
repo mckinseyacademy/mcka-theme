@@ -271,6 +271,9 @@ body.new-theme {
                             background-color: var(--primary);
                             padding: 12px 15px;
                             cursor: grab;
+                            &.option-with-image{
+                                padding:0;
+                            }
 
                             &:hover,
                             &:focus {
@@ -308,6 +311,9 @@ body.new-theme {
                             .option {
                                 padding: 5px 5px;
                                 font-size: 11px;
+                                &.option-with-image{
+                                    padding:0;
+                                }
                             }
                         }
                     }
@@ -318,6 +324,7 @@ body.new-theme {
 
                         .item-feedback-popup {
                             border-radius: 2px;
+                            border: 1px solid $popup-border;
 
                             &.popup {
                                 background: $white;
@@ -396,6 +403,7 @@ body.new-theme {
                             }
 
                             .fa-times-circle {
+                                color: var(--primary);
                                 &::before {
                                     font-family: "Material Icons";
                                     content: "\e14c";
@@ -405,6 +413,9 @@ body.new-theme {
 
                         .option {
                             background-color: $gray;
+                            &.option-with-image{
+                                padding:0;
+                            }
                         }
 
                         .option[draggable='true'][aria-grabbed='true'] {

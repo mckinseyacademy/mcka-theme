@@ -109,6 +109,7 @@ body.new-theme {
         .title h3 {
             color: #000;
             font-size: 1.125rem;
+            margin-bottom: 30px;
         }
 
         .xblock-answer {
@@ -118,6 +119,9 @@ body.new-theme {
 
             label {
                 width: 100%;
+                .answer{
+                    margin-bottom: 0;
+                }
                 p{
                     font-size: 1rem;
                 }
@@ -126,16 +130,26 @@ body.new-theme {
 
         .answer-checkmark {
             font-family: "Material Icons";
-
+            margin-bottom: 20px;
             &.checkmark-correct {
+                color: $bg-white-green;
                 &:before {
-                    content: '\e5ca';
+                    content: '\e86c';
                 }
             }
             &.checkmark-incorrect {
+                color: $bg-white-red;
                 &:before {
                     content: '\e000';
                 }
+            }
+        }
+        .submit{
+            margin: 0px 0 30px;
+        }
+        .messages{
+            .title1{
+                padding: 0 0 5px 0;
             }
         }
     }

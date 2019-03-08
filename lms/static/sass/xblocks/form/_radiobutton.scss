@@ -1,5 +1,5 @@
-[data-block-type="pb-mcq"], [data-block-type="poll"]{
-.choice-selector, .poll-input-container, .poll-result-input-container
+[data-block-type="pb-mcq"], [data-block-type="poll"],  [data-block-type="survey"], .discussion-body .field-input{
+.choice-selector, .poll-input-container, .poll-result-input-container,.post-type-label, .survey-option label
 {
   position:relative;
   overflow:hidden;

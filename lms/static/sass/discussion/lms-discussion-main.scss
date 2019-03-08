@@ -23,6 +23,8 @@ footer[role=contentinfo] {
 }
 
 body.new-theme {
+  background-color: $ash-white;
+
   @-webkit-keyframes fa-spin {
     0% {
       -webkit-transform: rotate(0deg);
@@ -151,6 +153,10 @@ body.new-theme {
               position: relative;
               top: 35px;
 
+              h1 {
+                display: none;
+              }
+
               .form-actions {
                 width: 20%;
 
@@ -225,6 +231,9 @@ body.new-theme {
 
           .edit-post-form {
             padding-top: 0 !important;
+            .field-input-label {
+              top:0 !important;
+            }
           }
 
           .forum-new-post-form,
@@ -275,7 +284,7 @@ body.new-theme {
               }
 
               .field-input-label {
-                padding: 10px !important;
+                padding: 0px !important;
                 font-size: 0.875rem;
               }
             }
@@ -302,7 +311,7 @@ body.new-theme {
               margin-bottom: 15px !important;
 
               label {
-                margin-bottom: 10px;
+                margin-bottom: 5px;
 
                 .input-checkbox {
                   width: 20px !important;
@@ -471,6 +480,70 @@ body.new-theme {
     position: relative;
     z-index: 9999;
     padding-top: 30px;
+
+    #contact-ta {
+      .modal-dialog {
+        .modal-content {
+          padding: 20px;
+
+          .modal-header {
+            border: 0 !important;
+            padding-bottom: 0;
+            padding-left: 8px;
+
+            .close {
+              font-weight: normal;
+              outline: none;
+              color: var(--primary);
+            }
+
+            .modal-title {
+              color: $black;
+              font-size: 1.5rem;
+            }
+          }
+
+          .modal-body {
+            padding: 3px 10px 10px;
+
+            div:first-child {
+              color: $gray;
+              font-size: 12px;
+              padding-bottom: 20px;
+            }
+
+            form {
+              textarea {
+                border: 1px solid $hard-gray;
+                width: 100%;
+                margin-bottom: 15px;
+                padding: 10px;
+                font-size: 0.875rem;
+                outline: none;
+              }
+
+              .button {
+                @include primary-button;
+
+                &:hover,
+                &:active {
+                  @include primary-button-hover;
+                }
+
+                &:disabled {
+                  background-color: $gray;
+                  color: $light-gray;
+                  cursor: default;
+                }
+              }
+            }
+          }
+          .modal-footer{
+            display: none;
+          }
+        }
+      }
+    }
 
     .edit-post-form {
 
@@ -776,6 +849,15 @@ body.new-theme {
         .page-header-secondary {
           width: 76%;
 
+          h1 {
+            position: absolute;
+            left: 16px;
+            top: 0px;
+            font-size: 1.75rem;
+            font-weight: 300;
+            color: $black;
+          }
+
           .new-post-btn {
             margin-top: 0px;
             @include primary-button-large;
@@ -860,6 +942,9 @@ body.new-theme {
                 color: var(--primary);
                 text-transform: lowercase;
                 font-size: 12px;
+                background: none;
+                border: 0;
+                padding: 0;
               }
             }
           }
@@ -986,7 +1071,9 @@ body.new-theme {
 
             .field-input-label {
               color: var(--primary) !important;
-
+              position: absolute;
+              top: -3px;
+              left: 30px;
               &:hover {
                 color: $mckinsey-primary-hover-button;
               }
@@ -1134,8 +1221,15 @@ body.new-theme {
 
         .post-options {
           .field-label {
+            &:last-child{
+              .field-input-label {
+                top:2px;
+              }
+            }
             .field-input-label {
               font-size: 0.875rem;
+              position: absolute;
+              top: -4px;
 
               .icon {
                 &::before {
@@ -1148,6 +1242,8 @@ body.new-theme {
             width: 100%;
             color: $black;
             text-transform: capitalize;
+            padding-left: 30px;
+            height: 18px;
 
             .field-input:checked+.field-input-label {
               color: var(--primary);

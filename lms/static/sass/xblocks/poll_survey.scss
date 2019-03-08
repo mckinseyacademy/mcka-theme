@@ -70,6 +70,19 @@ body.new-theme {
                 }
 
                 .survey-option {
+                    position: relative;
+
+                    label {
+                        display: inline-grid;
+                        margin-top: 7px;
+                    }
+
+                    .visible-mobile-only {
+                        position: absolute;
+                        left: 35px;
+                        top: 10px;
+                    }
+
                     input[type="radio"] {
                         height: auto;
                     }
@@ -92,6 +105,9 @@ body.new-theme {
                             &.poll-top-choice {
                                 color: var(--primary);
                                 background-color: $light-gray;
+                            }
+                            &.survey-option .visible-mobile-only {
+                                position: initial;
                             }
                         }
                     }
@@ -129,52 +145,48 @@ body.new-theme {
     }
 }
 
-.new-theme
-{
+.new-theme {
     @include font-size(14);
-    [data-block-type="poll"]
-    {
-        .poll-container
-        {
-            .poll-answers
-            {
+
+    [data-block-type="poll"] {
+        .poll-container {
+            .poll-answers {
                 margin-bottom: 32px;
-                padding:0;
-                .poll-answer
-                {
+                padding: 0;
+
+                .poll-answer {
                     display: table-row !important;
-                    .poll-input-container
-                    {
+
+                    .poll-input-container {
                         padding-right: 24px;
                         line-height: normal;
-                        padding-left:5px;
-                        &:before
-                        {
-                            left:2px;
-                            top:2px;
-                        }
-                        &:after
-                        {
-                            left:4px;
-                            top:4px;
+                        padding-left: 5px;
+
+                        &:before {
+                            left: 2px;
+                            top: 2px;
                         }
 
-                        [type="radio"]
-                        {
-                            left:2px;
-                            top:2px;
+                        &:after {
+                            left: 4px;
+                            top: 4px;
+                        }
+
+                        [type="radio"] {
+                            left: 2px;
+                            top: 2px;
                         }
 
 
                     }
-                    .poll-answer-text
-                    {
+
+                    .poll-answer-text {
                         font-weight: normal;
-                        padding-bottom:5px;
-                        p
-                        {
-                            margin:0;
-                            font-size: 0.875rem!important;
+                        padding-bottom: 5px;
+
+                        p {
+                            margin: 0;
+                            font-size: 0.875rem !important;
                         }
                     }
                 }
@@ -183,50 +195,43 @@ body.new-theme {
 
         // Poll Result
 
-        .poll-results-wrapper
-        {
-            .poll-answers-results
-            {
-                padding:0;
+        .poll-results-wrapper {
+            .poll-answers-results {
+                padding: 0;
                 max-width: none;
-                .poll-result
-                {
-                    .poll-result-input-container
-                    {
-                        padding: 10px 0;
-                        width:28px;
 
-                        [type="radio"]
-                        {
+                .poll-result {
+                    .poll-result-input-container {
+                        padding: 10px 0;
+                        width: 28px;
+
+                        [type="radio"] {
                             height: auto;
-                            top:2px;
+                            top: 2px;
                         }
-                        &:before
-                        {
-                            
-                            top:2px;
+
+                        &:before {
+
+                            top: 2px;
                         }
-                        &:after
-                        {
-                            left:2px;
-                            top:4px;
+
+                        &:after {
+                            left: 2px;
+                            top: 4px;
                         }
                     }
 
-                    .percentage-gauge-container
-                    {
-                        .poll-answer-label
-                        {
+                    .percentage-gauge-container {
+                        .poll-answer-label {
                             font-weight: normal;
                         }
                     }
-                    .poll-percent-container
-                        {
-                            .poll-percent-display
-                            {
-                                font-weight: normal;
-                            }
+
+                    .poll-percent-container {
+                        .poll-percent-display {
+                            font-weight: normal;
                         }
+                    }
                 }
             }
         }
