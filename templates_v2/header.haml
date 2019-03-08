@@ -110,7 +110,7 @@
                     {% url 'workgroup_list' as workgroup_list_url %}
                     %li{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
-                        {% trans "admin" %}
+                        {% trans "ta" %}
 
                   - if learner_dashboards|length > 1
                     %li

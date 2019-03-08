@@ -44,8 +44,6 @@
                         %span= completions.leaders.0.name_initials
                     .person-name
                       %span=completions.leaders.0.full_name
-                      - if completions.leaders.0.title
-                        %span.person-designation=completions.leaders.0.title
                     .person-rank {{completions.leaders.0.user_progress_display}}%
                 - else
                   .user.dummy
@@ -53,8 +51,7 @@
                     .person-avatar
                       %i.material-icons account_circle
                     .person-name
-                      %span {% trans "username" %}
-                      %span.person-designation {% trans "title" %}
+                      %span {% trans "User Name" %}
                     .person-rank 100%
                 - if completions.has_leaders and completions.leaders.1
                   .user
@@ -66,8 +63,6 @@
                         %span= completions.leaders.1.name_initials
                     .person-name
                       %span=completions.leaders.1.full_name
-                      - if completions.leaders.1.title
-                        %span.person-designation=completions.leaders.1.title
                     .person-rank {{completions.leaders.1.user_progress_display}}%
                 - else
                   .user.dummy
@@ -75,8 +70,7 @@
                     .person-avatar
                       %i.material-icons account_circle
                     .person-name
-                      %span {% trans "username" %}
-                      %span.person-designation {% trans "title" %}
+                      %span {% trans "User Name" %}
                     .person-rank 100%
                 - if completions.has_leaders and completions.leaders.2
                   .user
@@ -88,8 +82,6 @@
                         %span= completions.leaders.2.name_initials
                     .person-name
                       %span=completions.leaders.2.full_name
-                      - if completions.leaders.2.title
-                        %span.person-designation=completions.leaders.2.title
                     .person-rank {{completions.leaders.2.user_progress_display}}%
                 - else
                   .user.dummy
@@ -97,8 +89,7 @@
                     .person-avatar
                       %i.material-icons account_circle
                     .person-name
-                      %span {% trans "username" %}
-                      %span.person-designation {% trans "title" %}
+                      %span {% trans "User Name" %}
                     .person-rank 100%
               - if social
                 %li.col
@@ -128,8 +119,6 @@
                           %span= social.leaders.0.name_initials
                       .person-name
                         %span=social.leaders.0.full_name
-                        - if social.leaders.0.title
-                          %span.person-designation=social.leaders.0.title
                       .person-rank=social.leaders.0.score
                   - else
                     .user.dummy
@@ -137,8 +126,7 @@
                       .person-avatar
                         %i.material-icons account_circle
                       .person-name
-                        %span {% trans "username" %}
-                        %span.person-designation {% trans "title" %}
+                        %span {% trans "User Name" %}
                       .person-rank 100
 
                   - if social.leaders and social.leaders.1
@@ -151,8 +139,6 @@
                           %span= social.leaders.1.name_initials
                       .person-name
                         %span=social.leaders.1.full_name
-                        - if social.leaders.1.title
-                          %span.person-designation=social.leaders.1.title
                       .person-rank=social.leaders.1.score
                   - else
                     .user.dummy
@@ -160,8 +146,7 @@
                       .person-avatar
                         %i.material-icons account_circle
                       .person-name
-                        %span {% trans "username" %}
-                        %span.person-designation {% trans "title" %}
+                        %span {% trans "User Name" %}
                       .person-rank 100
 
                   - if social.leaders and social.leaders.2
@@ -174,8 +159,6 @@
                           %span= social.leaders.2.name_initials
                       .person-name
                         %span=social.leaders.2.full_name
-                        - if social.leaders.2.title
-                          %span.person-designation=social.leaders.2.title
                       .person-rank=social.leaders.2.score
                   - else
                     .user.dummy
@@ -183,8 +166,7 @@
                       .person-avatar
                         %i.material-icons account_circle
                       .person-name
-                        %span {% trans "username" %}
-                        %span.person-designation {% trans "title" %}
+                        %span {% trans "User Name" %}
                       .person-rank 100
               -if proficiency
                 %li.col
@@ -215,8 +197,6 @@
                           %span= proficiency.leaders.0.name_initials
                       .person-name
                         %span=proficiency.leaders.0.full_name
-                        - if proficiency.leaders.0.title
-                          %span.person-designation=proficiency.leaders.0.title
                       .person-rank {{proficiency.leaders.0.grade_display_value}}%
                   - else
                     .user.dummy
@@ -224,8 +204,7 @@
                       .person-avatar
                         %i.material-icons account_circle
                       .person-name
-                        %span {% trans "username" %}
-                        %span.person-designation {% trans "title" %}
+                        %span {% trans "User Name" %}
                       .person-rank 100%
 
                   - if proficiency.has_leaders and  proficiency.leaders.1
@@ -238,8 +217,6 @@
                           %span= proficiency.leaders.1.name_initials
                       .person-name
                         %span=proficiency.leaders.1.full_name
-                        - if proficiency.leaders.1.title
-                          %span.person-designation=proficiency.leaders.1.title
                       .person-rank {{proficiency.leaders.1.grade_display_value}}%
                   - else
                     .user.dummy
@@ -247,8 +224,7 @@
                       .person-avatar
                         %i.material-icons account_circle
                       .person-name
-                        %span {% trans "username" %}
-                        %span.person-designation {% trans "title" %}
+                        %span {% trans "User Name" %}
                       .person-rank 100%
 
                   - if proficiency.has_leaders and  proficiency.leaders.2
@@ -261,8 +237,6 @@
                           %span= proficiency.leaders.2.name_initials
                       .person-name
                         %span=proficiency.leaders.2.full_name
-                        - if proficiency.leaders.2.title
-                          %span.person-designation=proficiency.leaders.2.title
                       .person-rank {{proficiency.leaders.2.grade_display_value}}%
                   - else
                     .user.dummy
@@ -270,8 +244,7 @@
                       .person-avatar
                         %i.material-icons account_circle
                       .person-name
-                        %span {% trans "username" %}
-                        %span.person-designation {% trans "title" %}
+                        %span {% trans "User Name" %}
                       .person-rank 100%
 
 - block js_snippets
