@@ -71,15 +71,20 @@
     }
 
     .checkmark-incorrect {
-        color: #ff0000;
+        color: $bg-white-red;
 
         &::before {
-            content: "\f12a";
+            font-family: 'Material Icons';
+            content: '\e5c9';
+            @include font-size(24)
         }
     }
 
     .checkmark-correct::before {
-        content: "\f00c";
+        color:$bg-white-green;
+        font-family: 'Material Icons';
+        content: '\e86c';
+        @include font-size(24)
     }
 
     .choice {
@@ -165,13 +170,13 @@ body.new-theme {
         {
            p
            {
-                @include font-size(24);
+                @include font-size(14);
                 font-weight: 400;
                 margin: 0;
 
                 i
                 {
-                    @include font-size(24);
+                    @include font-size(14);
                     font-style: italic;
                     font-weight: 300;
                 }
@@ -211,16 +216,19 @@ body.new-theme {
             {
                 .choice-tips
                 {
-                    background: $dark-gray;
-                    opacity: 1;
-                    border-radius: 3px;
                     box-shadow: 0 0 3px rgba(0,0,0,0.3);
-                    padding: 15px 40px 15px 15px;
+                    background: white;
+                    opacity: 1;
+                    color: black;
+                    border-radius: 5px;
+                    box-shadow: 0px 0px 35px rgba(0,0,0,0.3);
+                    padding:15px;
 
                     p
                     {
                         line-height: 22px;
                         font-weight: 300;
+                        color: black;
                         &:last-child
                         {
                             margin-bottom: 0;
@@ -230,21 +238,72 @@ body.new-theme {
 
                 .close
                 {
-                    color:white;
+                    color:$primary;
                     opacity: 1;
                     right:10px;
+                    top:10px;
 
                     &::before
                     {
                         font-family: 'Material Icons';
                         content: '\e5cd';
-                        color:white;
-                        font-size:24px;
+                        color:$primary;
+                        @include font-size(20);
                     }
                 }
             }
         }
     }
+
+
+
+    // MRQ
+
+    [data-block-type="pb-mrq"]
+    {
+        // tip popup
+        .choice-tips-container
+        {
+            .choice-tips
+            {
+                box-shadow: 0 0 3px rgba(0,0,0,0.3);
+                background: white;
+                opacity: 1;
+                color: black;
+                border-radius: 5px;
+                box-shadow: 0px 0px 35px rgba(0,0,0,0.3);
+                padding:15px;
+
+                p
+                {
+                    line-height: 22px;
+                    font-weight: 300;
+                    color: black;
+                    &:last-child
+                    {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+
+            .close
+            {
+                color:$primary;
+                opacity: 1;
+                right:10px;
+                top:10px;
+
+                &::before
+                {
+                    font-family: 'Material Icons';
+                    content: '\e5cd';
+                    color:$primary;
+                    @include font-size(20);
+                }
+            }
+        }
+    }
+
 
     // Poll
 
