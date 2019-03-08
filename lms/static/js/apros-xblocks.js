@@ -3,21 +3,21 @@ $(function () {
   $(document).on('change', '.new-theme input[type=radio]', function(e) {
     var parent = $(e.target).parents('[data-block-type="pb-mcq"]');
     $(parent).find(".choice-selector").removeClass("selected");
-    $(event.target).parent().addClass("selected");
+    $(e.target).parent().addClass("selected");
   });
 
-  $(document).on('change', '.new-theme [data-block-type="pb-mrq"] input[type="checkbox"], .new-theme .post-options input[type="checkbox"]', function (event) {
+  $(document).on('change', '.new-theme [data-block-type="pb-mrq"] input[type="checkbox"], .new-theme .post-options input[type="checkbox"]', function (e) {
     if (event.target.checked) {
       $(event.target).parent().addClass("selected");
     } else {
-      $(event.target).parent().removeClass("selected");
+      $(e.target).parent().removeClass("selected");
     }
   });
 
   $(document).on('change', '.new-theme input[type=radio]', function (e) {
     var parent = $(e.target).parents('[data-block-type="poll"]');
     $(parent).find(".poll-input-container").removeClass("selected");
-    $(event.target).parent().addClass("selected");
+    $(e.target).parent().addClass("selected");
   });
 
   $(document).on('change', '.new-theme input[type=radio]', function (e) {
