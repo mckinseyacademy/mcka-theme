@@ -118,11 +118,10 @@ $(".ome").mouseenter(function (e) {
 });
 
 
-let color = $('.visualization .filled.total').css('background-color');
+let color = $('.visualization .filled.band-1').css('background-color');
 if (color !== undefined && color !== 'rgba(0, 0, 0, 0)') {
 
-    $('.visualization .filled.band-1').css('background-color', lighten(rgb2hex(color), 15));
-    $('.visualization .filled.band-2').css('background-color', lighten(rgb2hex(color), 30));
+    $('.visualization .filled.band-2').css('background-color', lighten(rgb2hex(color), 15));
 }
 
 if (typeof lighten !== "undefined" && primary != null) {
