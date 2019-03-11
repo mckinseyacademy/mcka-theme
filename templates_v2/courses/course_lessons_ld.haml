@@ -22,12 +22,7 @@
                   %h2= course.current_module.name
                 - else
                   %h5
-                    - if lesson_custom_label
-                      {% blocktrans with lesson_index=course.current_lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
-                    - else
-                      {% trans "Lesson" %} #{course.current_lesson.index}:
                     = course.current_lesson.name
-                  //%h2= course.current_lesson.name
                   %h2
                     - if lesson_custom_label and modules_custom_label
                       %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
@@ -98,7 +93,7 @@
                 .lesson-content
                 .lesson-discussion
               -if tile_type != 'module'
-                - include "courses/content_page/lesson_pager.haml"
+                - include "courses/content_page/lesson_pager_ld.haml"
 
 
 
