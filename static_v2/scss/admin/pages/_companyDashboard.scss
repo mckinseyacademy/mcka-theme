@@ -307,8 +307,9 @@
   }
 }
 
+
 .custom-checkbox {
-  border: 1px solid #696969;
+  border: 1px solid $gray;
   width: 15px;
   height: 15px;
   display: inline-block;
@@ -321,7 +322,7 @@
   .fake-input {
     width: 13px;
     height: 13px;
-    background: black;
+    background: $black;
     display: none;
     color: $white;
     text-align: center;
@@ -512,6 +513,14 @@
     }
   }
 }
+#companyDashboardCompaniesWrapper{
+  table{
+    table-layout:fixed;
+    td{
+      width: 25%;
+    }
+  }
+}
 
 .contentNavigationContainer {
   .courseDetailsViewGrid {
@@ -519,6 +528,17 @@
     &.half-table{
       width: 50%;
     }
+  }
+  #courseDetailsParticipantsGridWrapper{
+    table{
+      table-layout: auto !important;
+    }
+  }
+  #courseDetailsEngagementViewGrid,
+  .half-table{
+    table{
+    table-layout: fixed !important;
+  }
   }
 }
 

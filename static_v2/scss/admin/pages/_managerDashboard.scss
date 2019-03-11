@@ -9,7 +9,6 @@
   table {
     min-width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
     th {
       color: $black;
     }
@@ -96,7 +95,7 @@
   #managerDashboardContainer {
     .bbGrid-container {
       table {
-        min-width: 100%;
+        width: 100%;
         tr {
           td {
             &:last-child {
