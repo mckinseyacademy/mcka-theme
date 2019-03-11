@@ -114,6 +114,7 @@ body.new-theme {
   /* mobile */
   @media (max-width: 767px) {
     #course-discussion {
+      padding: 0px;
       .wmd-panel {
 
         .wmd-preview-container {
@@ -134,6 +135,7 @@ body.new-theme {
       }
 
       .discussion-content {
+        padding: 24px 12px 10px 7px;
         #discussion-container {
 
           #main.discussion-column .discussion-article.view-discussion-home,
@@ -213,7 +215,9 @@ body.new-theme {
             margin-bottom: 10px;
             height: auto !important;
             max-height: none !important;
-
+            .forum-nav-browse-menu-wrapper{
+              border: 0;
+            }
             .forum-nav-thread-list {
               height: auto !important;
             }
@@ -479,7 +483,7 @@ body.new-theme {
     background: $white;
     position: relative;
     z-index: 9999;
-    padding-top: 30px;
+    padding-top: 0px;
 
     #contact-ta {
       .modal-dialog {
@@ -494,7 +498,9 @@ body.new-theme {
             .close {
               font-weight: normal;
               outline: none;
-              color: var(--primary);
+              &:hover{
+                color: currentColor;
+              }
             }
 
             .modal-title {
@@ -559,10 +565,11 @@ body.new-theme {
     }
 
     .discussion-content {
-
+      padding: 24px 29px 10px 12px;
       .discussion,
       .col {
         padding: 0;
+        position: relative;
       }
 
       .discussion-body {
@@ -953,6 +960,7 @@ body.new-theme {
         .forum-nav-browse-menu-wrapper {
           padding: 15px 10px;
           background: none;
+          border: 0;
 
           .forum-nav-browse-filter {
             border-bottom: 0;
@@ -1221,7 +1229,7 @@ body.new-theme {
 
         .post-options {
           .field-label {
-            &:last-child{
+            &:nth-child(2){
               .field-input-label {
                 top:2px;
               }
