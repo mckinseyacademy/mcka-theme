@@ -9,6 +9,7 @@
   table {
     min-width: 100%;
     border-collapse: collapse;
+    table-layout: fixed;
     th {
       color: $black;
     }
@@ -24,6 +25,7 @@
         color: $mckinsey-dark-grey;
         text-align: left;
         border-radius: 0 !important;
+        display: table-cell;
         span {
           vertical-align: middle;
           &:before {

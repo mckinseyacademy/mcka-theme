@@ -474,9 +474,10 @@
         text-decoration: none;
       }
       &.active {
+        color: $black !important;
         &:before {
           width: 100%;
-          background: #2E2D39;
+          background: $black;
         }
       }
       &:before {
@@ -515,6 +516,9 @@
 .contentNavigationContainer {
   .courseDetailsViewGrid {
     margin: 0 0 30px;
+    &.half-table{
+      width: 50%;
+    }
   }
 }
 
