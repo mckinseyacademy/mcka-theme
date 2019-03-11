@@ -360,10 +360,10 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         }
         self.assertEqual(expected_data, result)
 
-    def create_mock_csv_file(self):
+    def create_mock_csv_file(self, header='email'):
         """Creates file with test users' emails and one invalid email."""
         temp_csv_file = NamedTemporaryFile(dir='')
-        temp_csv_file.write("email\n")
+        temp_csv_file.write("{}\n".format(header))
         temp_csv_file.write("\n".join((student.email for student in self.students)))
         temp_csv_file.write("\ninvalid")
         temp_csv_file.seek(0)

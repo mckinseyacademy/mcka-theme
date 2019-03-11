@@ -2532,7 +2532,11 @@ class DeleteParticipantsFromCsv(APIView):
                 secure=True
             )
 
-            users_count = len(get_users_for_deletion(get_path(file_url)))
+            try:
+                users_count = len(get_users_for_deletion(get_path(file_url)))
+            except ValueError:
+                return HttpResponseBadRequest(_("The CSV file has to contain 'email' header."))
+
             data = {
                 'user_count': users_count,
                 'file_url': file_url,

@@ -694,6 +694,16 @@ class GetUsersForDeletionTest(CourseParticipantsStatsMixin, TestCase):
     """Tests controllers required for bulk user deletion."""
 
     @patch('util.s3_helpers.get_storage')
+    def test_get_users_for_deletion_invalid_header(self, get_storage_mock):
+        """Tests extracting users for deletion from CSV file with header other than email."""
+        dummy_storage = Dummy()
+        dummy_storage.open = lambda *args, **kwargs: self.create_mock_csv_file(header='username')
+        get_storage_mock.side_effect = lambda *args, **kwargs: dummy_storage
+
+        with self.assertRaisesRegex(ValueError, "The CSV file has to contain 'email' header."):
+            controller.get_users_for_deletion('stub file')
+
+    @patch('util.s3_helpers.get_storage')
     @patch('admin.controller.get_users')
     def test_get_users_for_deletion(self, get_users_mock, get_storage_mock):
         """Tests extracting users for deletion from CSV file."""

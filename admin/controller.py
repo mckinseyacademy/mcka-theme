@@ -2770,6 +2770,8 @@ def get_users_for_deletion(file_path):
 
     data = ''.join(file_stream.chunks()).splitlines()
     param_type = data.pop(0)
+    if param_type != 'email':
+        raise ValueError(_("The CSV file has to contain 'email' header."))
 
     users = get_users(**{param_type: data})
     return users
