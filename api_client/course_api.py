@@ -495,13 +495,13 @@ def get_course_content_groups(course_id, content_id):
 @api_error_protect
 def get_course_blocks(
     course_id,
-    requested_fields,
+    requested_fields=None,
     username=None,
     all_blocks=False,
     student_view_data=None,
     block_counts=None,
     depth=0,
-    return_type='dict',
+    return_type=None,
     block_types_filter=None,
     page_size=100,
     edx_oauth2_session=None
@@ -548,6 +548,15 @@ def get_course_blocks(
     )
     response = edx_oauth2_session.get(url)
     return response.json()
+
+
+@api_error_protect
+def get_course_root_key(course_id, edx_oauth2_session=None):
+    """
+    Return root block key for course
+    """
+    data = get_course_blocks(course_id, all_blocks=True, edx_oauth2_session=None)
+    return data['root']
 
 
 @api_error_protect

@@ -19,23 +19,30 @@ INSTRUCTOR_TASKS_URI = '{server_address}/{base_uri}/tasks'.format(
 
 
 @api_error_protect
-def generate_problem_responses_report(course_id, problem_locations):
+def generate_problem_responses_report(
+    course_id,
+    problem_locations,
+    problem_types_filter=None,
+):
     """Create answer report for a specific course.
 
     Args:
 
         course_id (str): Course Id.
         problem_locations (list): List of strings for one or more problem_locations.
+        problem_types_filter (List[str]): List of block types to filter
 
     Returns:
         :str: Celery task id.
     """
     edx_oauth2_session = get_oauth2_session()
     url = '{base_uri}/{course_id}/reports/problem_responses'.format(
-            base_uri=COURSE_INSTRUCTOR_URI,
-            course_id=course_id
+        base_uri=COURSE_INSTRUCTOR_URI,
+        course_id=course_id,
     )
     params = {'problem_location': ','.join(problem_locations)}
+    if problem_types_filter is not None:
+        params.update({'problem_types_filter': ','.join(problem_types_filter)})
     response = edx_oauth2_session.post(url, data=params)
     return response.json()
 

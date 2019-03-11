@@ -2,15 +2,13 @@
 Celery tasks related to admin app
 """
 import os
-import re
 import json
 import hashlib
 from collections import OrderedDict
 from multiprocessing.pool import ThreadPool
 from tempfile import TemporaryFile
-from datetime import timedelta, datetime
+from datetime import timedelta
 from urlparse import urljoin
-from pytz import UTC
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -888,11 +886,13 @@ def create_tile_progress_data(tile_id):
 
 
 @task(name='admin.create_problem_response_report', bind=True)
-def create_problem_response_report(self, course_id, problem_locations):
+def create_problem_response_report(
+    self, course_id, problem_locations, problem_types_filter=None
+):
     """
     Create a problem response report pertaining to a specific course.
     """
-    resp = instructor_api.generate_problem_responses_report(course_id, problem_locations)
+    resp = instructor_api.generate_problem_responses_report(course_id, problem_locations, problem_types_filter)
 
     self.update_state(task_id=self.request.id, state='PROGRESS', meta={'percentage': 10})
     return {'id': self.request.id, 'remote_task_id': resp['task_id']}
@@ -918,8 +918,10 @@ def post_process_problem_response_report(self, parent_task, course_id, problem_l
     # If we're running with CELERY_ALWAYS_EAGER the result of the last
     # task is not passed correctly always, because of the self.retry()
     if getattr(settings, 'CELERY_ALWAYS_EAGER', False) and parent_task is None:
-        admin_tasks = AdminTask.objects.filter(course_id=course_id, status='PROGRESS')
-        parent_task = {'id': admin_tasks[0].task_id, 'report_name': None}
+        report_task = AdminTask.objects.filter(course_id=course_id, status='PROGRESS').first()
+        parent_task = {'id': report_task.task_id, 'report_name': None}
+    else:
+        report_task = AdminTask.objects.get(task_id=parent_task['id'])
     # Get list of downloads
     downloads = instructor_api.get_report_downloads(course_id, parent_task['report_name'])
 
@@ -947,27 +949,23 @@ def post_process_problem_response_report(self, parent_task, course_id, problem_l
     # Write csv to a temporary file.
     fields = OrderedDict([(key, (key, '')) for key in keys])
     # Create remote path to report.
-    hashed_course_id = hashlib.sha1(course_id).hexdigest()
-    location_escaped = re.sub(r'[:/]', '_', '_'.join(problem_locations[:200]))
-
-    file_name = 'student_state_from_{}'.format(location_escaped)
-    timestamp = datetime.now(UTC)
-    csv_name = u"{course_prefix}_{file_name}_{timestamp}.csv".format(
-            course_prefix=course_id,
-            file_name=file_name,
-            timestamp=timestamp.strftime("%Y-%m-%d-%H%M")
-        )
+    csv_name = u"{course_prefix}_{timestamp}.csv".format(
+        course_prefix=course_id.replace('/', '_'),
+        timestamp=report_task.requested_datetime.strftime("%Y-%m-%d-%H%M")
+    )
     # Store file
+    hashed_course_id = hashlib.sha1(course_id).hexdigest()
     dir_name = os.path.join('reports', hashed_course_id)
     task_log_msg = 'post processing problem response report'
     file_path = create_and_store_csv_file(fields, rows, dir_name, csv_name, logger, task_log_msg)
-    file_url = reverse('private_storage', kwargs={'path': file_path})
+
+    if file_path.startswith('http'):
+        file_url = file_path
+    else:
+        file_url = reverse('private_storage', kwargs={'path': file_path})
     self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 100})
 
     # Update Database
-    report_task = AdminTask.objects.get(
-        task_id=parent_task['id']
-    )
     report_task.output = json.dumps({'url': file_url, 'name': csv_name})
     report_task.status = 'DONE'
     report_task.save()

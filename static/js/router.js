@@ -277,7 +277,10 @@ var Router = Backbone.Router.extend({
     let courseId = $('#courseDetailsDataWrapper').attr('data-id');
     ApiUrls.currentCourseId = courseId;
     let blocks = new Apros.collections.CourseDetailsBlocks(null, {courseId: courseId});
-    let reports = new Apros.collections.CourseDetailsProblemResponseReports(null, {courseId: courseId});
+    let reports = new Apros.collections.CourseDetailsProblemResponseReports(
+      null,
+      {courseId: courseId}
+    );
     let blocksView = new Apros.views.CourseDetailsProblemResponseView({
       el: '#courseBlocksGrid',
       collection: blocks

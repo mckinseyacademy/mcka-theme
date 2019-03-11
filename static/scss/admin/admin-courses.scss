@@ -398,6 +398,12 @@
 	}
 }
 
+#courseBlocksButtonsContainer {
+	#viewBlocksListButton {
+		// Initially hide the button
+		display: none;
+	}
+}
 
 #courseBlocksGridWrapper {
 	#courseBlocksGrid, #courseProblemResponseReportsGrid {
@@ -413,6 +419,9 @@
 				overflow-x: hidden;
 				white-space: nowrap;
 				text-overflow: ellipsis;
+			}
+			th input {
+				margin: 0;
 			}
 			tr.report-pending {
 				background-color:#c4e3f3;
@@ -551,25 +560,17 @@
 	}
 }
 
-#courseBlocksButtonsContainer{
+#courseBlocksButtonsContainer {
 
-	&.blockButtonsContainer
-	{
+	&.blockButtonsContainer	{
 		float: right;
 		z-index: 1000;
 		position: relative;
 	}
 
-	.blockButtonWrapper{
+	.blockButtonWrapper {
 		position: relative;
-
-		.hiddenButtonSplitModifier{
-			position: absolute;
-			z-index: 2;
-			width: 100%;
-			height: 100%;
-		}
-    }
+	}
 }
 
 #courseDetailsMainModal{

@@ -1,7 +1,8 @@
 Apros.views.AdminCourseDetailsProblemResponsesBulk = Backbone.View.extend({
   events: {
-    'click #downloadResponses': 'requestReport',
-    'click #downloadReportsHistory': 'toggleReportsGrid'
+    'click #downloadResponsesButton': 'requestReport',
+    'click #viewBlocksListButton': 'viewBlocksGrid',
+    'click #downloadReportsHistoryButton': 'viewReportsGrid'
   },
   initialize: function (options) {
     this.courseId = options.courseId;
@@ -9,11 +10,12 @@ Apros.views.AdminCourseDetailsProblemResponsesBulk = Backbone.View.extend({
     this.reportsView = options.reportsView;
   },
   requestReport: function () {
-    if ($('#downloadResponses').hasClass('disabled'))
+    if ($('#downloadResponsesButton').hasClass('disabled'))
       return;
     let _this = this;
     let selectedRows = this.blocksView.courseBlocksListViewGrid.selectedRows;
-    let problem_location = selectedRows.join(',');
+    let selectAll = this.blocksView.allBlocksSelected();
+    let problem_location = selectAll ? 'course' : selectedRows.join(',');
     let url = ApiUrls.course_reports(this.courseId);
     let data = {'problem_location': problem_location};
     let options = {
@@ -35,25 +37,25 @@ Apros.views.AdminCourseDetailsProblemResponsesBulk = Backbone.View.extend({
       .fail(function (data) {
         $('#courseBlocksGridWrapper .errorMessage').text('Failed to submit report request');
       });
-    $('#downloadReportsHistory').trigger('click');
+    $('#reponseGenerateEmailModal').foundation('reveal', 'open');
   },
-  toggleReportsGrid: function () {
-    btn = $('#downloadReportsHistory');
-    if (btn.hasClass('secondary')) {
-      this.reportsView.collection.cancelRefresh();
-      btn.removeClass('secondary');
-      $('#courseProblemResponseReportsGrid').hide();
-      $('#courseBlocksGrid').show();
-    } else {
-      this.reportsView.render();
-      this.reportsView.collection.fetch({
-        success: function () {
-          $('i.fa-spinner').hide();
-        }
-      });
-      btn.addClass('secondary');
-      $('#courseBlocksGrid').hide();
-      $('#courseProblemResponseReportsGrid').show();
-    }
+  viewReportsGrid: function() {
+    this.reportsView.render();
+    this.reportsView.collection.fetch({
+      success: function () {
+        $('i.fa-spinner').hide();
+      }
+    });
+    $('#downloadResponsesButton, #courseBlocksGrid, #downloadReportsHistoryButton').hide();
+    $('#courseProblemResponseReportsGrid').show();
+    // Use inline-block for consistency
+    $('#viewBlocksListButton').css('display', 'inline-block');
+  },
+  viewBlocksGrid: function(){
+    this.reportsView.collection.cancelRefresh();
+    $('#viewBlocksListButton, #courseProblemResponseReportsGrid').hide();
+    $('#courseBlocksGrid').show();
+    // Use inline-block for consistency
+    $('#downloadResponsesButton, #downloadReportsHistoryButton').css('display', 'inline-block');
   }
 });

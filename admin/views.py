@@ -6242,6 +6242,11 @@ class ProblemResponseReportView(APIView):
             400 Bad Request if problem could not be located.
         """
         problem_location = request.data.get('problem_location')
+        # Allow 'course' to be a shorthand for the course rook key/course_id
+        problem_types_filter = None
+        if problem_location == 'course':
+            problem_location = course_api.get_course_root_key(course_id)
+            problem_types_filter = ['poll', 'survey']
         if not problem_location:
             return HttpResponseBadRequest('Problem location must be provided.')
 
@@ -6271,6 +6276,7 @@ class ProblemResponseReportView(APIView):
                 create_problem_response_report.s(
                     course_id=course_id,
                     problem_locations=problem_locations,
+                    problem_types_filter=problem_types_filter,
                 ) |
                 monitor_problem_response_report.s(
                     course_id=course_id
@@ -6286,7 +6292,10 @@ class ProblemResponseReportView(APIView):
             report.task_id = chain.tasks[0].id
             report.status = 'PROGRESS'
             report.username = request.user.username
-            report.parameters = json.dumps({'problem_location': problem_location})
+            report.parameters = json.dumps({
+                'problem_location': problem_location,
+                'problem_types_filter': problem_types_filter,
+            })
             report.save()
             chain.link_error(handle_admin_task_error.s(res_id=report.task_id))
             try:

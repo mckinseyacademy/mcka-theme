@@ -8,7 +8,11 @@ Apros.views.CourseDetailsProblemResponseView = Backbone.View.extend({
       }
     });
   },
+  allBlocksSelected: function() {
+    return $('#courseBlocksGrid .bbGrid-grid-head-holder input').is(':checked');
+  },
   render: function () {
+    let _this = this;
     if (this.collection.length > 0) {
       courseDetailsBlocksViewGrid = new bbGrid.View({
         container: this.$el,
@@ -16,7 +20,14 @@ Apros.views.CourseDetailsProblemResponseView = Backbone.View.extend({
         collection: this.collection,
         enableSearch: true,
         onRowClick: function () {
-          $('#downloadResponses').toggleClass('disabled', !this.selectedRows.length);
+          let selectAllChecked = _this.allBlocksSelected();
+          $('#downloadResponsesButton').toggleClass('disabled', !this.selectedRows.length);
+          $('#courseBlocksGrid .bbGrid-multiselect-control input').attr('disabled', selectAllChecked);
+          if (!selectAllChecked) {
+            let unchecked = $('#courseBlocksGrid .bbGrid-multiselect-control input:not(:checked)');
+            // If three rows are already checked, disable the rest of the checkboxes
+            unchecked.attr('disabled', this.selectedRows.length >= 3);
+          }
         },
         colModel: [
           {

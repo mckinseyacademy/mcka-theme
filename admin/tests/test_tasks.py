@@ -215,7 +215,7 @@ class ProblemResponseTasksTest(TestCase):
     ):
         """Test create problem response report task."""
         create_problem_response_report.apply(args=('course_id', 'problem_location'))
-        mock_generate_problem_responses_report.assert_called_with('course_id', 'problem_location')
+        mock_generate_problem_responses_report.assert_called_with('course_id', 'problem_location', None)
 
     @ddt.data(
         {'task_id': 'remote_task_id', 'task_state': 'SUCCESS',

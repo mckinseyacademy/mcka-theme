@@ -130,13 +130,21 @@
               .row.courseBlocks.contentNavigationContainer
                 #courseBlocksButtonsContainer.blockButtonsContainer
                   .blockButtonWrapper
-                    %a#downloadResponses.button.radius.small.disabled{:href => "#"}
-                      {% trans "Download Responses" %}
-                    %a#downloadReportsHistory.button.radius.small{:href => "#"}
+                    %a#downloadResponsesButton.button.radius.small.disabled{:href => "#"}
+                      {% trans "Generate report" %}
+                    %a#viewBlocksListButton.button.radius.small{:href => "#"}
+                      {% trans "View Polls/Surveys" %}
+                    %a#downloadReportsHistoryButton.button.radius.small{:href => "#"}
                       {% trans "View Download History" %}
                 #courseBlocksGridWrapper
                   .errorMessage
                   #courseBlocksGrid.large-12.columns.spinnerContainer.gridContainer
+                    %p {% trans "Select up to 3 polls/survey questions below to quickly generate a micro-report." %}
+                    %p {% blocktrans %}
+                      Select "all" to generate a full report.
+                      Note: this may take up to an hour to compile.
+                      Your compiled report will be emailed to you.
+                      {% endblocktrans %}
                   #courseProblemResponseReportsGrid.large-12.columns.spinnerContainer.gridContainer
 
   #courseDetailsMainModal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
@@ -234,6 +242,14 @@
       #tagCoursesListBlock
     %a.close-reveal-modal{"aria-label": "Close"}
       &#215;
+
+  #reponseGenerateEmailModal.reveal-modal.tiny{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
+    .close-reveal-modal{"aria-label": "Close"}
+      %i.fa.fa-times-circle
+    %h2
+      {% trans "Exporting data for selected questions" %}
+    %hr
+    %p {% trans "We'll e-mail you when your report is ready to download." %}
 
   - include "admin/fragments/hidden_image_upload_form.haml"
 - block js_snippets
