@@ -1,0 +1,99 @@
+@import 'vars/variables';
+@import 'mixins/mixins';
+@import 'form/checkbox';
+@import 'form/radiobutton';
+@import 'common/buttons';
+
+
+.new-theme
+{
+    [data-block-type="step-builder"]
+    {
+
+        // Title
+
+        .question-title
+        {
+            @include font-size(24);
+            font-weight: 300;
+            margin-bottom: 25px;
+        }
+
+      
+
+        // UL Generic Styling
+        ul
+        {
+           
+            padding: 0;
+            margin: 20px 0 20px 25px;
+            line-height: 26px;
+            @include font-size(14);
+
+            ul
+            {
+                padding:0;
+                margin:0;
+            }
+
+            &.review-list
+            {
+                margin: 5px 0 10px;
+            }
+
+        }
+
+         // Set button right margin incase of 2 buttons
+
+        input[type="button"]
+        {
+            margin-right:11px;
+            display:inline-block;
+        }
+
+
+        // Add vertical Spacing for image in assessment block.
+
+        img
+        {
+            margin:20px 0;
+        }
+
+        // Grade Display
+
+        .sb-review-score
+        {
+            margin-left:0;
+            margin-top: 25px;
+        }
+
+        .checkmark-partially-correct
+        {
+            &::before
+            {
+                font-family: 'Material Icons';
+                content: '\e002';
+                @include font-size(24);
+            }
+        }
+        
+        .grade-result
+        {
+            h4
+            {
+                @include font-size(24);
+                font-weight: 300;
+                margin-bottom: 25px;
+            }
+        }
+
+
+    }
+
+    .review-link
+    {
+        display:block;
+        text-align: right;
+        margin-top: 15px;
+    }
+}
