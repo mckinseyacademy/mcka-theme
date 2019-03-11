@@ -285,9 +285,17 @@ class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
     @patch('admin.tasks.get_path', lambda x: x)
     @patch('admin.tasks.get_users_for_deletion')
     @patch('admin.views.delete_participants')
-    def test_delete_participants_task(self, delete_participants_mock, get_users_for_deletion_mock):
-        """Test bulk user deletion task."""
+    def test_delete_participants_task_with_file(self, delete_participants_mock, get_users_for_deletion_mock):
+        """Test bulk user deletion task with users provided in CSV file."""
         get_users_for_deletion_mock.side_effect = lambda _: self.students
 
         delete_participants_task('stub_file', False, None, None)
         delete_participants_mock.assert_called_with(None, users=self.students)
+
+    @patch('admin.views.delete_participants')
+    def test_delete_participants_task_with_ids(self, delete_participants_mock):
+        """Test bulk user deletion task with users' IDs provided directly."""
+        student_ids = [student.id for student in self.students]
+
+        delete_participants_task(student_ids, False, None, None)
+        delete_participants_mock.assert_called_with(student_ids)

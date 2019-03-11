@@ -3951,8 +3951,8 @@ def delete_participants(user_ids, users=None):
     user_emails = [user.email for user in users]
     user_usernames = [user.username for user in users]
 
-    for chunk in xrange(0, len(user_ids), settings.MAX_USERS_PER_PAGE):
-        user_api.delete_users(ids=user_ids[chunk:chunk + settings.MAX_USERS_PER_PAGE])
+    for chunk in xrange(0, len(user_ids), settings.DELETION_SYNCHRONOUS_MAX_USERS):
+        user_api.delete_users(ids=user_ids[chunk:chunk + settings.DELETION_SYNCHRONOUS_MAX_USERS])
 
     PublicRegistrationRequest.objects.filter(company_email__in=user_emails).delete()
     UserRegistrationError.objects.filter(user_email__in=user_emails).delete()
@@ -5345,17 +5345,29 @@ class CompanyDetailsView(APIView):
         return render(request, 'admin/companies/company_details.haml', data)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-    def delete(self, _request, company_id):
+    def delete(self, request, company_id):
         if not _deletion_flag():
             return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
 
         user_ids = organization_api.fetch_organization_user_ids(company_id)
-        try:
-            delete_participants(user_ids)
-        except Http404:
-            # We can safely ignore not found users, because removing them is not atomic and any of them can be deleted
-            # between retrieval and deletion above.
-            pass
+        if len(user_ids) <= settings.DELETION_SYNCHRONOUS_MAX_USERS:
+            # We want to delete smaller number of users synchronously.
+            try:
+                delete_participants(user_ids)
+            except Http404:
+                # We can safely ignore not found users, because removing them is not atomic
+                # and any of them can be deleted between retrieval and deletion above.
+                pass
+
+        else:
+            # If number of users in a company exceeds `DELETION_SYNCHRONOUS_MAX_USERS`, we want to invoke Celery task
+            # to avoid timeouts and notify user with an email after it completes.
+            delete_participants_task.delay(
+                user_ids,
+                send_confirmation_email=True,
+                owner=user_api.get_user(user_id=request.user.id).to_dict(),
+                base_url=request.build_absolute_uri()
+            )
 
         # We'd like to remove Apros data first to be sure that we don't have any leftovers if the company had been
         # deleted via LMS directly. Then we can raise 404 without any further concerns.

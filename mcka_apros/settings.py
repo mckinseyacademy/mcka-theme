@@ -508,6 +508,8 @@ COHORT_FLAG_SWITCH_NAME = 'enable_apros_integration'
 DELETION_FLAG_NAMESPACE = 'data_deletion'
 DELETION_FLAG_SWITCH_NAME = 'enable_data_deletion'
 
+DELETION_SYNCHRONOUS_MAX_USERS = 250
+
 try:
     from local_settings import *  # noqa: F403, F401
 except ImportError:

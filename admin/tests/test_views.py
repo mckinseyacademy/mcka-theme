@@ -838,6 +838,55 @@ class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
 
         self.assertEqual(response.status_code, 204)
 
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @override_settings(DELETION_SYNCHRONOUS_MAX_USERS=0)
+    @patch('admin.controller.remove_mobile_app_theme')
+    @patch('api_client.organization_api.delete_organization')
+    @patch('api_client.organization_api.fetch_organization_user_ids')
+    @patch('admin.controller.get_mobile_app_themes')
+    @patch('admin.views.delete_participants_task.delay')
+    @patch('admin.views.user_api.get_user')
+    def test_delete_company_with_celery(
+            self, get_user_mock, delete_participants_task_mock, get_theme_mock, fetch_users_mock, *mocks
+    ):
+        """
+        Test deleting company as admin when number of users in a company requires deletion to be invoked
+        with a Celry task to avoid timeouts.
+        """
+        dummy_serializable_object = Dummy()
+        dummy_serializable_object.to_dict = lambda *args, **kwargs: {}
+        get_user_mock.side_effect = lambda *args, **kwargs: dummy_serializable_object
+        get_theme_mock.return_value = [{'id': self.mock_id}]
+        fetch_users_mock.return_value = [self.mock_id]
+
+        response = self.api.delete(self.request, self.mock_id)
+
+        self.assertEqual(delete_participants_task_mock.call_count, 1)
+
+        for mock in mocks:
+            self.assertEqual(mock.call_count, 1)
+
+        client_models = (
+            AccessKey,
+            ClientNavLinks,
+            ClientCustomization,
+            BrandingSettings,
+            LearnerDashboard,
+            ApiToken,
+        )
+        for model in client_models:
+            self.assertFalse(model.objects.filter(client_id=self.mock_id))
+
+        company_models = (
+            CompanyInvoicingDetails,
+            CompanyContact,
+            DashboardAdminQuickFilter,
+        )
+        for model in company_models:
+            self.assertFalse(model.objects.filter(company_id=self.mock_id))
+
+        self.assertEqual(response.status_code, 204)
+
 
 @ddt.ddt
 class ProblemResponseReportViewTest(TestCase):

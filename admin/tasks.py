@@ -4,6 +4,7 @@ Celery tasks related to admin app
 import os
 import json
 import hashlib
+import six
 from collections import OrderedDict
 from multiprocessing.pool import ThreadPool
 from tempfile import TemporaryFile
@@ -614,36 +615,46 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
 
 
 @task(name='admin.delete_participants_task', queue='high_priority')
-def delete_participants_task(file_url, send_confirmation_email, owner, base_url):
+def delete_participants_task(users_to_delete, send_confirmation_email, owner, base_url):
     """
     Extract users from CSV, delete them and (optionally) send an email to the `owner` - user that initiated deletion.
+    :param users_to_delete: you need to provide either:
+        - `str` being an URL to a CSV file containing users who should be deleted,
+        - `list` or `set` containing users' IDs.
     """
+    from admin.views import delete_participants  # We want to avoid circular imports here.
     task_log_msg = "Delete Participants task"
+    file_path = ''
 
     logger.info('Started - {}'.format(task_log_msg))
 
-    file_path = get_path(file_url)
+    if isinstance(users_to_delete, six.string_types):
+        # The users for deletion are specified in a CSV file.
+        file_path = get_path(users_to_delete)
 
-    try:
-        users = get_users_for_deletion(file_path)
-    except Exception:
-        logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
-        raise
+        try:
+            users = get_users_for_deletion(file_path)
+        except Exception:
+            logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
+            raise
+        else:
+            logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
+
+        delete_participants(None, users=users)
+
+        try:
+            storage = get_storage(secure=True)
+            storage.delete(file_path)
+        except Exception as e:
+            logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
+        else:
+            logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
+
     else:
-        logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
-
-    from admin.views import delete_participants  # We want to avoid circular imports here.
-    delete_participants(None, users=users)
+        # We have users' IDs.
+        delete_participants(users_to_delete)
 
     logger.info('Completed - {}'.format(task_log_msg))
-
-    try:
-        storage = get_storage(secure=True)
-        storage.delete(file_path)
-    except Exception as e:
-        logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
-    else:
-        logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
 
     if send_confirmation_email:
         subject = _('Advanced Deletion Completed')
