@@ -375,6 +375,9 @@
         span{
           color: $black;
           @include margin-right(20px);
+          @include media-breakpoint-between(xs, md) {
+            @include margin-right(5px);
+          }
         }
       }
       .lesson-with-list {
@@ -382,6 +385,9 @@
           .lesson-label {
             @include margin-left(5px);
             @include margin-right(25px);
+            @include media-breakpoint-between(xs, md){
+              @include margin-right(5px);
+            }
           }
         }
       }

@@ -52,14 +52,14 @@
             %hr
 
             %table.progress-data
-              %thead{"class": "{% if course.is_evergreen %}col-2{% endif %} {% if not feature_flags.group_work %}no-group-work{% endif %}"}
+              %thead{"class": "{% if not feature_flags.group_work %}no-group-work{% endif %}"}
 
                 %tr
                   - if not course.is_evergreen
-                    %th {% trans "Course Run:" %}
-                  %th {% trans "Individual Learning:" %}
+                    %th{:class => "{% if not course.is_evergreen %}course-run{% endif %}"} {% trans "Course Run" %}
+                  %th {% trans "Individual Learning" %}
                   - if feature_flags.group_work and course.has_group_work
-                    %th {% trans "Group Work (Due Date):" %}
+                    %th {% trans "Group Work (Due Date)" %}
               %tbody
                 - for week in course.lessons_by_week
                   %tr
@@ -144,6 +144,8 @@
                     - if feature_flags.group_work
                       - if week.has_group
                         %td.progress_data_col
+                          .show-mobile
+                            {% trans "Group Work" %}
                           - for activity in week.group_activities
                             .lesson-with-list.lesson-row-item.gr-data
                               - if activity.score 
@@ -218,7 +220,7 @@
                                 %i.status.complete.material-icons
                                   check_circle    
                                 %a{"href": "#{activity.link}"}
-                                  {% trans "Group Work:" %}
+                                  {% trans "Group Work" %}
                                 =activity.name
                           - ifequal activity.score None
                             %td.number.zero 0
@@ -232,7 +234,7 @@
                                 %i.status.complete.material-icons
                                   check_circle
                                 %a{"href": "#{activity.link}"}
-                                  {% trans "Group Work:" %}
+                                  {% trans "Group Work" %}
                                 =activity.name
                           - if activity.is_pending
                             %td {% trans "Grading in progress" %}
@@ -263,9 +265,9 @@
               %table
                 %thead
                   %tr
-                    %th {% trans "Overall:" %}
-                    %th {% trans "Measured Engagement:" %}
-                    %th {% trans "Stats:" %}
+                    %th {% trans "Overall" %}
+                    %th {% trans "Measured Engagement" %}
+                    %th {% trans "Stats" %}
                 %tbody
                   %tr
                     %td.visual.progressWidgets{"rowspan": "6"}

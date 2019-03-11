@@ -1,4 +1,5 @@
 #course-progress-new {
+    
     .contentCard {
         margin-bottom: 3.5%;
         z-index: unset;
@@ -35,7 +36,6 @@
 
     i.material-icons {
         @include font-size(16);
-        color: $smoke-gray;
 
         &.complete {
             color: $bg-white-green;
@@ -85,6 +85,14 @@
             border: 0;
             min-height: 0;
             max-width: none;
+            .title {
+                display: block;
+            }
+            .progressArea {
+                &.bar {
+                    margin-top: 0;
+                }
+            }
         }
     }
 
@@ -154,7 +162,7 @@
 
             th {
                 padding: 10px 20px;
-                background-color: $light-gray;
+                background-color: $ash-white;
                 font-weight: 600;
                 text-transform: uppercase;
             }
@@ -221,10 +229,17 @@
 
                         .dropdown-menu {
                             top: 100% !important;
+                            min-width: 360px !important;
+                            .material-icons {
+                                vertical-align: sub;
+                            }
                         }
 
                         .dropdown-toggle {
                             @include font-size(16);
+                            &::after {
+                                position: absolute;
+                            }
                         }
 
                         &.gr-data {
@@ -418,6 +433,9 @@
                         }
                     }
                 }
+                .title {
+                    display: none;
+                }
             }
         }
 
@@ -442,10 +460,10 @@
                     border-bottom: 0;
 
                     th {
-                        width: 100% !important;
+                        margin: 0 -20px;
                         display: block;
 
-                        &:first-child {
+                        &.course-run {
                             display: none;
                         }
 
@@ -479,6 +497,13 @@
             }
 
             table {
+                thead {
+                    th {
+                        &:first-child {
+                            display: none;
+                        }
+                    }
+                }
                 tbody {
                     tr {
                         &:first-child {
