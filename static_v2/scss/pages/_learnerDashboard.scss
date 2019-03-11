@@ -2,7 +2,7 @@
 
 .learner-nav {
   margin-top: -36px;
-  background: #f3f4f6;
+  background: $ash-white;
   border-bottom: 5px solid #dfb836;
   line-height: 37px;
   @include media-breakpoint-down(sm) {
@@ -35,6 +35,11 @@
 #learner-dashboard {
   margin: -36px auto -96px;
   padding-bottom: 30px;
+  .side-content{
+    >.tag{
+      color: var(--secondary) ;
+    }
+  }
 
 
   @include media-breakpoint-down(md) {
