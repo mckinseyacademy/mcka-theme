@@ -448,49 +448,60 @@
         {
             .uploader
             {
-                .upload_title
+                .uploader-upload-controls-wrapper
                 {
-                    @include font-size(12);
-                }
-                .upload_item_wrapper
-                {
-                    width:265px;
-                    input[type=text]
+                    min-width: auto;
+                    padding:0;
+
+
+
+                    .upload_title
                     {
-                        height: 50px;
-                        padding: 10px;
+                        @include font-size(12);
                     }
-                }
-               
-                .button
-                {
-                    width:50px;
-                    height:50px;
-                    background: $primary;
-                    border-radius: 2px;
-                    color:white;
-                    text-align: center;
-                    line-height: 48px;
-                    &::before
+                    .upload_item_wrapper
                     {
-                        content: '\e2bc';
-                        font-family: 'Material Icons';
-                        font-size: 24px;
-                        font-weight: normal
+                        width: calc(100% - 60px);
+                        input[type=text]
+                        {
+                            height: 50px;
+                            padding: 10px;
+                            max-width: none;
+                        }
                     }
+
+                    label
+                    {
+                        width: 50px;
+                        float: right;
+                        margin-right:0;
+
+                        .button
+                        {
+                            width:50px;
+                            height:50px;
+                            background: $primary;
+                            border-radius: 2px;
+                            color:white;
+                            text-align: center;
+                            line-height: 48px;
+                            &::before
+                            {
+                                content: '\e2bc';
+                                font-family: 'Material Icons';
+                                font-size: 24px;
+                                font-weight: normal
+                            }
+                        }
+                    }
+
                 }
-                label
-                {
-                    width: 50px;
-                    margin-right: -35px;
-                    display: inline-block;
-                    text-align: right;
-                    vertical-align: top;
-                    float: right;
-                }
+
+
             }
         }
     }
+
 
 
     // Email Modal Window
@@ -504,6 +515,12 @@
                 background:white;
                 z-index: 999;
                 padding:30px 50px !important;
+
+                &.open
+                {
+                    width:100%;
+                    max-width:600px;
+                }
 
                 .close-box
                 {
@@ -623,6 +640,11 @@
             }
         }
 
+        .error
+        {
+            padding:0;
+        }
+
         .contact-ta-form
         {
             textarea
@@ -656,7 +678,7 @@
 
     .error
     {
-        padding-top:50px !important;
+        // padding-top:50px !important;
         h3
         {
             font-weight: 300;
