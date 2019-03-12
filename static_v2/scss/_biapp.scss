@@ -835,14 +835,38 @@ body.rtl {
 }
 
 .sub-nav
+{
+
+    li
     {
+          .bookmark
+          {
+              @include left(-30px);
+          }
 
-        li
-        {
-              .bookmark
-              {
-                  @include left(-30px);
-              }
-
-        }
     }
+}
+
+// Calendar
+
+#over-full-calendar {
+  .over-calendar {
+    @include left(-40px);
+    @include right(auto);
+  }
+  #over-calendar-right {
+    @include right(-40px);
+    @include left(auto);
+  }
+  #row-full-calendar {
+    #under-calendar {
+      @include padding-left(1rem);
+      #close-calendar {
+        @include right(-68px);
+      }
+      .tab-month {
+        @include padding-left(0);
+      }
+    }
+  }
+}

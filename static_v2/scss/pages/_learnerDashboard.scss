@@ -256,3 +256,192 @@
     }
   }
 }
+
+#background-full-calendar{
+    width: 100%;
+    height: 120%;
+    position: absolute;
+    z-index: 3;
+    background-color: rgba(0,0,0,0.4);
+}
+
+#over-full-calendar{
+    width: 100%;
+    height: 290px;
+    position: absolute;
+    z-index: 4;
+
+    .over-calendar{
+        width: 80px;
+        position: absolute;
+        z-index:221;
+        height: auto !important;
+        top: 50%;
+        transform: translateY(-50%);
+
+            .arrow-calendar {
+                font-size: 50px;
+                color: $white;
+                background-color: var(--primary);
+                border-radius: 50%;
+                margin-top: 0 !important;
+            }
+    }
+
+    #row-full-calendar {
+        height: auto !important;
+        min-height: 340px;
+        background: white;
+        overflow: hidden;
+
+        svg {
+            font-family: $body-font-family;
+            color: $gray;
+            text {
+                font-family: FontAwesome;
+                font-weight: normal !important;
+                transform: translateX(-5px);
+            }
+        }
+        .container, .row, .col {
+            min-height: 340px;
+        }
+
+        #under-calendar{
+            width: 91%;
+            height: 340px;
+            position: absolute;
+            background-color: white;
+            padding-top: 25px;
+
+            #close-calendar {
+                color: #868685;
+                font-size: 20px;
+                font-weight: bold;
+                position: absolute;
+            }
+
+            #close-calendar:hover {
+                opacity: 0.6;
+                filter: alpha(opacity=60); /* internet explorer */
+                cursor: pointer;
+            }
+
+            .tab-month {
+                width: 24.5%;
+                display: inline-block;
+                list-style: none;
+
+                li {
+                    height: 52px;
+                }
+
+                .head-month {
+                    display: table;
+                    width: 100%;
+                    height: 25px;
+                    background-color: #f2f1f1;
+
+                    span {
+                        text-transform: uppercase;
+                        font-family: "Open Sans", sans-serif;
+                        font-weight: bold;
+                        display: table-cell;
+                        vertical-align: middle;
+                        text-align: center;
+                        border: 1px solid silver;
+                        border-style: dotted;
+                        font-size: 12px;
+                    }
+                }
+
+                .active {
+                    background-color: #e37222;
+                    color: white;
+                }
+
+                .first , .second {
+                    border: 1px solid gainsboro;
+                    border-top: 0;
+                }
+            }
+
+            .legend-list {
+                float: left;
+                margin: 10px 15px 0 0;
+                font-size: 10px;
+
+                li {
+                    font-family: 'Open Sans';
+                    font-style: italic;
+                    color: #cccccc;
+                    display: inline;
+                    margin-right: 15px;
+
+                    .circle {
+                        border-radius: 50%;
+                        display: inline-block;
+                        width: 10px;
+                        height: 10px;
+                    }
+                }
+
+                .light-gray-legend {
+                    i{
+                        color: #e0e0e0;
+                    }
+                }
+
+                .gray-legend {
+                    i{
+                        color: #cccccc;
+                    }
+                }
+
+                .light-green-legend {
+                    i{
+                        color: #b6d332;
+                    }
+                }
+
+                .green-legend {
+                    i{
+                        color: #629b2b;
+                    }
+                }
+
+                .red-legend {
+                    i{
+                        color: #cd202c;
+                    }
+                }
+
+                .teal-legend {
+                    i{
+                        color: #66a5b5;
+                    }
+                }
+            }
+        }
+    }
+}
+
+#highcharts-container {
+    position: absolute;
+    z-index: 200;
+    margin-top: 40px;
+    height: 283px;
+
+    .highcharts-tooltip {
+
+        span {
+            font-family: "Open Sans", sans-serif !important;
+            width: 120px;
+            height: 135px;
+            background-color: white;
+            overflow:auto;
+            white-space: normal !important;
+            z-index: 1;
+        }
+    }
+}

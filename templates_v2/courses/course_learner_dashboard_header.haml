@@ -4,9 +4,9 @@
     %ul.nav.tertiary.d-none.d-sm-block
       %li
         %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}"} {% trans "Home" %}
-      - if calendar_enabled
+      - if calendar_enabled and not mobile_device
         %li
-          %a.ome.dome-c{:href => ""} {% trans "Calendar" %}
+          %a.ome.dome-c#open-calendar{:href => "#"} {% trans "Calendar" %}
       - if feature_flags.discussions
         %li
           %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/discussion"} {% trans "Discussions" %}

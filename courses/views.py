@@ -31,6 +31,7 @@ from lib.authorization import permission_group_required
 from lib.utils import DottableDict
 from mobile_apps.controller import get_mobile_app_download_popup_data
 from util.data_sanitizing import sanitize_data, clean_xss_characters
+from util.user_agent_helpers import is_mobile_user_agent, is_tablet_user_agent
 from .controller import (
     inject_gradebook_info,
     round_to_int,
@@ -1218,6 +1219,10 @@ def course_learner_dashboard(request, learner_dashboard_id):
 
     feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
     learner_dashboard.features = feature_flags
+    mobile_device = False
+    if is_mobile_user_agent(request) or is_tablet_user_agent(request):
+        mobile_device = True
+
     data = {
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
@@ -1228,6 +1233,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
         'today': datetime.now(),
         'course_id': learner_dashboard.course_id,
         'client_id': request.COOKIES.get('user_organization_id', ''),
+        'mobile_device': mobile_device,
     }
 
     if feature_flags and feature_flags.branding:
