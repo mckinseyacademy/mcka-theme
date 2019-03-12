@@ -55,9 +55,10 @@
         &:after {
           display: block;
         }
-
-        &:before {
-          background: black !important;
+    
+    &:before {
+      background: black !important;
+      top: 0;
         }
 
 
@@ -71,4 +72,3 @@
     }
   }
 }
-  
