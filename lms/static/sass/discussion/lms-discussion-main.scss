@@ -4,8 +4,6 @@
 
 
 
-
-
 body {
   background-color: $mckinsey-academy-bright-gray;
 }
@@ -59,8 +57,7 @@ body.new-theme {
 
       .wmd-preview-label {
         font-size: 1rem;
-        padding: 7px 10px;
-        color: #000;
+        padding: 10px 3px 0 8px;
       }
 
       .wmd-preview {
@@ -472,17 +469,10 @@ body.new-theme {
     z-index: 9999;
     padding-top: 30px;
 
-    .edit-post-form {
-
-      .post-cancel,
-      .post-update {
-        margin-top: 10px !important;
-        margin-left: 0 !important;
-      }
-
-      .loading-animation {
-        display: none;
-      }
+    .edit-post-form .post-cancel,
+    .edit-post-form .post-update {
+      margin-top: 10px !important;
+      margin-left: 0 !important;
     }
 
     .discussion-content {
@@ -494,7 +484,6 @@ body.new-theme {
 
       .discussion-body {
         overflow: hidden;
-        max-width: 100%;
       }
 
       .page-content {
@@ -673,7 +662,7 @@ body.new-theme {
 
         &.fa-pencil {
           &:before {
-            content: "\e3c9";
+            content: "\e7fd";
           }
         }
 
@@ -698,12 +687,6 @@ body.new-theme {
         &.fa-check {
           &:before {
             content: "\e5ca";
-          }
-        }
-
-        &.fa-check-square-o {
-          :before {
-            content: "\e834";
           }
         }
       }
@@ -740,12 +723,6 @@ body.new-theme {
           font-size: 12px;
           font-weight: normal;
           color: $mckinsey-gray-text;
-
-          &:not(:only-child):first-child {
-            .btn-link {
-              color: $mckinsey-default-link
-            }
-          }
         }
 
         .fa-bars {
@@ -1043,7 +1020,7 @@ body.new-theme {
             &#field_help_title {
 
               position: absolute;
-              top: 64px;
+              bottom: -27px;
 
               &:before {
                 content: 'Add a clear and descriptive title to encourage participation.';
@@ -1204,7 +1181,6 @@ body.new-theme {
               border: 1px solid #999999;
               width: 49%;
               margin-left: 1%;
-              float: right;
             }
           }
         }
@@ -1434,14 +1410,6 @@ body.new-theme {
                     float: left;
                   }
 
-                  .actions-item:last-child {
-                    .more-wrapper {
-                      button.btn-link .icon {
-                        color: $mckinsey-default-link;
-                      }
-                    }
-                  }
-
                   .actions-dropdown-list {
                     display: grid;
 
@@ -1490,10 +1458,6 @@ body.new-theme {
 
           .post-extended-content {
             .response-btn-count-wrapper {
-              display: none;
-            }
-
-            .response-pagination {
               display: none;
             }
 
@@ -1547,14 +1511,6 @@ body.new-theme {
                     .actions-item {
                       margin: 0 5px 0;
                       float: left;
-
-                      &:last-child {
-                        .more-wrapper {
-                          button.btn-link .icon {
-                            color: $mckinsey-default-link;
-                          }
-                        }
-                      }
                     }
                   }
 
@@ -1587,7 +1543,7 @@ body.new-theme {
 
                     .wmd-preview-label {
                       font-size: 1rem;
-                      padding: 7px 10px;
+                      padding: 10px 3px 0 8px;
                     }
 
                     .wmd-input {
@@ -1652,7 +1608,7 @@ body.new-theme {
                 .wmd-preview-container {
                   .wmd-preview-label {
                     font-size: 1rem;
-                    padding: 7px 10px;
+                    padding: 10px 3px 0 8px;
                   }
                 }
               }
@@ -1674,35 +1630,6 @@ body.new-theme {
               }
             }
           }
-        }
-      }
-    }
-  }
-
-  .wmd-prompt-background {
-    z-index: 9999 !important;
-  }
-
-  .wmd-prompt-dialog {
-    z-index: 9999 !important;
-
-    .form-actions {
-      #new-link-image-ok {
-        @include primary-button;
-
-        &:hover,
-        &:active {
-          @include primary-button-hover();
-        }
-
-      }
-
-      #new-link-image-cancel {
-        @include secondary-button;
-
-        &:hover,
-        &:active {
-          @include secondary-button-hover();
         }
       }
     }

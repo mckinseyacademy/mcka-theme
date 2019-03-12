@@ -1,35 +1,23 @@
 // Overrides for Problem Builder
 // from https://github.com/open-craft/problem-builder/blob/7e76920/problem_builder/public/themes/apros.css
-
-@import "vars/variables";
-@import "form/checkbox";
-@import "form/radiobutton";
-@import "mixins/mixins";
-@import "common/buttons";
-
 .themed-xblock.mentoring {
     .choices-list .choice-selector {
         padding: 4px 3px 0 3px;
         font-size: 16px;
     }
-
     .sb-review-score {
         margin-left: 40px;
         margin-top: 15px;
     }
-
     .review-tips-list li {
         margin-left: 1.8em;
         padding-left: 0;
     }
-
     .copyright {
         // Hide the copyright message
         display: none;
     }
-
     .questionnaire {
-
         .choice-tips,
         .feedback {
             // Avoid a global reset to border-box found on Apros
@@ -38,11 +26,9 @@
             background: none repeat scroll 0 0 #66A5B5;
             opacity: 0.9;
             padding: 22px 10px 10px 10px;
-
             p {
                 color: #fff;
             }
-
             .close {
                 display: block;
             }
@@ -63,418 +49,32 @@
 
         .choices-list {
             border-spacing: 0 2px;
-            .choice-label-text
-            {
-                vertical-align: top;
-            }
         }
     }
-
     .checkmark-incorrect {
         color: #ff0000;
-
         &::before {
             content: "\f12a";
         }
     }
-
     .checkmark-correct::before {
         content: "\f00c";
     }
-
     .choice {
         .choice-tips-container {
             &.with-tips {
                 border: none;
             }
-
             .choice-tips {
                 position: absolute;
             }
         }
     }
-
     .title h3 {
         // Same as h2.main in Apros, amended to h3
         color: #66a5b5;
     }
-
     h4 {
         text-transform: uppercase;
-    }
-}
-
-body.new-theme {
-    .themed-xblock.mentoring {
-        .title h3 {
-            color: #000;
-            font-size: 1.5rem;
-        }
-
-        .xblock-answer {
-            .question-title {
-                font-size: 1rem;
-            }
-
-            label {
-                width: 100%;
-            }
-        }
-
-        .answer-checkmark {
-            font-family: "Material Icons";
-
-            &.checkmark-correct {
-                &:before {
-                    content: '\e5ca';
-                }
-            }
-            &.checkmark-incorrect {
-                &:before {
-                    content: '\e000';
-                }
-            }
-        }
-    }
-}
-
-.new-theme{
-    @include font-size(14);
-
-    .vert
-    {
-        margin-top: 30px;
-        padding-bottom: 30px;
-        border-bottom:1px solid $gray-border;
-       
-        &:first-child
-        {
-            margin-top: 0;
-        }
-        &:last-child
-        {
-            border-bottom:0;
-        }
-    }
-    .questionnaire
-    {
-        .field-group-hd
-        {
-           p
-           {
-                @include font-size(14);
-                font-weight: 400;
-                margin: 0;
-
-                i
-                {
-                    @include font-size(14);
-                    font-style: italic;
-                    font-weight: 300;
-                }
-           }
-        }
-    }
-    
-
-
-
-
-
-    // Button
-
-    input[type="button"]
-    {
-        color:white;
-        cursor: pointer;
-    }
-
-
-    // MCQ
-
-    [data-block-type="pb-mcq"]
-    {
-        .questionnaire
-        {
-            .choice-selector
-            {
-                padding:0;
-                @include font-size(14);
-
-            }
-
-            // tip popup
-            .choice-tips-container
-            {
-                .choice-tips
-                {
-                    background: $dark-gray;
-                    opacity: 1;
-                    border-radius: 3px;
-                    box-shadow: 0 0 3px rgba(0,0,0,0.3);
-                    padding: 15px 40px 15px 15px;
-
-                    p
-                    {
-                        line-height: 22px;
-                        font-weight: 300;
-                        &:last-child
-                        {
-                            margin-bottom: 0;
-                        }
-                    }
-                }
-
-                .close
-                {
-                    color:white;
-                    opacity: 1;
-                    right:10px;
-
-                    &::before
-                    {
-                        font-family: 'Material Icons';
-                        content: '\e5cd';
-                        color:white;
-                        font-size:24px;
-                    }
-                }
-            }
-        }
-    }
-
-    // Poll
-
-
-    [data-block-type="poll"]
-    {
-        .poll-container
-        {
-            .poll-answers
-            {
-                margin-bottom: 32px;
-                padding:0;
-                .poll-answer
-                {
-                    display: table-row !important;
-                    .poll-input-container
-                    {
-                        padding-right: 24px;
-                        line-height: normal;
-                        padding-left:5px;
-                        &:before
-                        {
-                            left:2px;
-                            top:2px;
-                        }
-                        &:after
-                        {
-                            left:4px;
-                            top:4px;
-                        }
-
-                        [type="radio"]
-                        {
-                            left:2px;
-                            top:2px;
-                        }
-
-
-                    }
-                    .poll-answer-text
-                    {
-                        font-weight: normal;
-                        padding-bottom:5px;
-                        p
-                        {
-                            margin:0;
-                            font-size: 0.875rem!important;
-                        }
-                    }
-                }
-            }
-        }
-
-        // Poll Result
-
-        .poll-results-wrapper
-        {
-            .poll-answers-results
-            {
-                padding:0;
-                max-width: none;
-                .poll-result
-                {
-                    .poll-result-input-container
-                    {
-                        padding: 10px 0;
-                        width:28px;
-
-                        [type="radio"]
-                        {
-                            height: auto;
-                            top:2px;
-                        }
-                        &:before
-                        {
-                            
-                            top:2px;
-                        }
-                        &:after
-                        {
-                            left:2px;
-                            top:4px;
-                        }
-                    }
-
-                    .percentage-gauge-container
-                    {
-                        .poll-answer-label
-                        {
-                            font-weight: normal;
-                        }
-                    }
-                    .poll-percent-container
-                        {
-                            .poll-percent-display
-                            {
-                                font-weight: normal;
-                            }
-                        }
-                }
-            }
-        }
-    }
-
-// Image Explorer
-
-    [data-block-type="image-explorer"]
-    {
-        .image-explorer-wrapper
-        {
-            width:100%;
-            img
-            {
-                max-width: none;
-                width:100%;
-                height:auto;
-            }
-            .image-explorer-hotspot-reveal
-            {
-                background: white;
-                opacity: 1;
-                color: black;
-                border-radius: 10px;
-                box-shadow: 0px 0px 35px rgba(0,0,0,0.3);
-
-                .image-explorer-hotspot-content-wrapper
-                {
-                    color: black;
-                    margin: 15px;
-                }
-
-                .image-explorer-close-reveal
-                {
-                    color:$primary;
-                    position: relative;
-                    font-size: 0;
-                    &::before
-                    {
-                        font-family: 'Material Icons';
-                        content: '\e5cd';
-
-                        font-size:24px;
-                    }
-                }
-
-            }
-        }
-    }
-
-    // HTML Module
-
-    [data-type="HTMLModule"]
-    {
-        table
-        {
-            tr
-            {
-                td
-                {
-                    padding:10px;
-                    &:first-child
-                    {
-                        padding-left:0;
-                    }
-                    &:last-child
-                    {
-                        padding-right:0;
-                    }
-                }
-            }
-        }
-    }
-
-    // Problem Builder Answer
-
-    [data-block-type="pb-answer"]
-    {
-        textarea
-        {
-            border:1px solid $input-border;
-        }
-    }
-
-}
-
-
-// RTL Styling
-
-.rtl
-{
-    &.new-theme
-    {
-        [data-block-type="pb-answer"]
-        {
-            .xblock-answer
-            {
-                label
-                {
-                    width:100%;
-                }
-            }
-        }
-
-
-        [data-block-type="pb-answer-recap"]
-        {
-            .xblock-answer
-            {
-                .read_only
-                {
-                    border-right: 10px solid $gray-border;
-                    border-left: 0;
-                }
-            }
-        }
-
-
-        [data-block-type="pb-mcq"]
-        { 
-            .questionnaire
-            { 
-                .choice-tips-container 
-                {
-                    .choice-tips
-                    {
-                        padding: 15px 15px 15px 40px;
-                        .close
-                        {
-                            left:10px;
-                        }
-                    }
-                }
-            }
-        }
     }
 }
