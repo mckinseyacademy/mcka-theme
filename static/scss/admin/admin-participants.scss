@@ -8,7 +8,7 @@
 #mainParticipantsWrapper
 {
 	width: 100%;
-	max-width: 68.57143rem;
+	max-width: 80rem;
 }
 
 #mainParticipantsDetailsWrapper
@@ -17,6 +17,7 @@
 }
 #participantsAddWrapper{
   text-align: center;
+	float: right;
 }
 #participantsSearchWrapper{
 	.columns{
@@ -45,7 +46,7 @@
 		padding: 8px 10px;
 		font-size: 12px;
 		font-weight: 600;
-		margin-bottom: 5px;
+    margin: 0 0.2rem 5px 0;
 	}
 }
 
@@ -315,6 +316,38 @@
 		}
 	}
 }
+
+#participantsTitleContainer
+{
+	float: left;
+
+	p
+	{
+		font-size: x-large;
+		margin-top: 10px;
+	}
+}
+
+.dropdownMenu {
+	background: #fff;
+	padding: 15px 15px 0px 15px;
+	box-shadow: 2px 2px 2px #a7a7a7;
+	text-align: left;
+  z-index: 99;
+	position: absolute;
+	left: -99999px;
+
+	.dropdownItem {
+		padding: 5px;
+		color: $link-color;
+	}
+	.dropdownItem:hover {
+		cursor: pointer;
+		color: darken($link-color, 15%);
+		text-decoration: underline;
+	}
+}
+
 #participantDetailsWrapper{
 
 	.participantDetailsContent{
@@ -672,6 +705,7 @@
 		border-radius: 4px;
 		font-size: 14px;
 		margin: 10px 0;
+    color: white;
 	}
 
 	.button-wrapper
@@ -703,4 +737,35 @@
 .actionButtonIcon
 {
 	cursor: pointer;
+}
+
+.buttonIcon {
+    display: inline-block;
+    margin-left: 7px;
+    vertical-align: text-top;
+}
+
+#searchBar {
+	white-space: nowrap;
+	width: 25rem;
+	font-size: 0;
+  display: inline-flex;
+	vertical-align: middle;
+  padding-left: 0.2rem;
+
+	#searchSelectorField {
+    width: 50%;
+		margin-bottom: 0;
+	}
+	#searchQueryField {
+		border-left: 0;
+		margin-bottom: 0;
+		display: inline;
+		white-space:nowrap;
+	}
+	#searchButton{
+		padding: 10px;
+		margin-left: -30px;
+	}
+
 }

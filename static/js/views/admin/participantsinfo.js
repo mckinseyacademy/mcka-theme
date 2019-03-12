@@ -67,37 +67,9 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           $('#import_from_csv input[type=checkbox]').attr('disabled', 'disabled');
           $('#import_from_csv input[type=checkbox]').attr('checked', false);
         });
-        $('#participantsSearchWrapper').on('keyup', 'input', function(){
-          if (_this.liveSearchTimer) {
-            clearTimeout(_this.liveSearchTimer);
-          }
-          _this.liveSearchTimer = setTimeout(function() {
-            var querryDict = {}
-            var searchFlag = false
-            $('#participantsSearchWrapper').find('input').each(function(index, value){
-              val = $(value);
-              name = val.context.name;
-              value = val.context.value.trim();
-              querryDict[name] = value;
-              if (value){
-                searchFlag = true
-              }
-            });
-            if (!jQuery.isEmptyObject(querryDict))
-            {
-              _this.collection.updateQuerryParams(querryDict);
-            }
-
-            if(_this.collection.length > 0){
-              _this.collection.getFirstPage();
-              _this.collection.fullCollection.reset();
-            }
-            if (searchFlag)
-            {
-              _this.collection.fetch();
-            }
-          }, 1000)
-        });
+        $('#searchBar').on('keyup', function(){_this.runSearch(_this)});
+        $('#searchSelectorField').on('change', function(){_this.runSearch(_this)});
+        $('#searchButton').on('click', function(){_this.runSearch(_this, timeout=100)});
         $('#companiesAdvancedDeleteButton').on('click','.advancedDeleteOpenModal',function()
         {
           var advanced_delete_modal = '#advanced_delete_modal';
@@ -476,5 +448,40 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         custom_name=attributes['username'];
 
       return custom_name;
+    },
+    runSearch: function(_this, timeout=1000){
+      if (_this.liveSearchTimer) {
+        clearTimeout(_this.liveSearchTimer);
+      }
+      _this.liveSearchTimer = setTimeout(function() {
+        let searchFlag = false
+        let querryDict = {
+          "organization_display_name": "",
+          "courses": "",
+          "name": "",
+          "email": "",
+        }
+
+        let field_name = $('#searchSelectorField').val();
+        let query_value = $('#searchQueryField').val();
+        if (field_name && query_value){
+          querryDict[field_name] = query_value;
+          searchFlag = true;
+        }
+
+        if (!jQuery.isEmptyObject(querryDict))
+        {
+          _this.collection.updateQuerryParams(querryDict);
+        }
+
+        if(_this.collection.length > 0){
+          _this.collection.getFirstPage();
+          _this.collection.fullCollection.reset();
+        }
+        if (searchFlag)
+        {
+          _this.collection.fetch();
+        }
+      }, 1000)
     }
 });

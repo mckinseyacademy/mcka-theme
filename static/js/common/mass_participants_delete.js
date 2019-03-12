@@ -143,10 +143,10 @@ massParticipantsDeleteInit = function() {
 PopulateDeleteTemplateData = function()
 {
   var data = [
-    ['username'],
-    ["persononeexamplecom"],
-    ["persontwoexamplecom"],
-    ["personthreeexamplecom"]
+    ['email'],
+    ["personone@example.com"],
+    ["persontwo@example.com"],
+    ["personthree@example.com"]
   ];
   var csvContent = "data:text/csv;charset=utf-8,";
   data.forEach(function(infoArray, index){

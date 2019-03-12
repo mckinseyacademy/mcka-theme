@@ -4,28 +4,46 @@
 - block content
   #mainParticipantsWrapper
     #participantsListTopContainer{:internal-flag => '#{internalAdminFlag}'}
+      #participantsTitleContainer
+        %p {% trans "Participants" %}
       #participantsAddWrapper
+        %a.button.small.radius.menuButton{:type => "button", "data-dropdown": "csvImportContainer", "aria-controls": "csvImportContainer", "aria-expanded": "false"}
+          {% trans 'Import .CSV' %}
+          %i.fa.fa-sort-desc.buttonIcon
+        .f-dropdown.dropdownMenu#csvImportContainer{"data-dropdown-content": "true", "aria-hidden": "true"}
+          .dropdownItem{'data-reveal-id': 'import_from_csv'}
+            {% trans 'Import New Participants' %}
+          %br
+          .dropdownItem{'data-reveal-id': 'enroll_to_course_from_csv'}
+            {% trans 'Enroll Existing Participants' %}
+          %br
+          .dropdownItem{'data-reveal-id': 'update_profile_data'}
+            {% trans 'Update profile data' %}
+          %br
+          .dropdownItem{'data-reveal-id': 'update_manager_data'}
+            {% trans 'Update manager data' %}
+          %br
         %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "{% trans 'Add New Participant' %}"}
-        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Enroll Existing Participants' %}", 'data-reveal-id': 'enroll_to_course_from_csv'}
-        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Import from CSV' %}", 'data-reveal-id': 'import_from_csv'}
-        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update profile data' %}", 'data-reveal-id': 'update_profile_data'}
-        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update manager data' %}", 'data-reveal-id': 'update_manager_data'}
-        %a.button.small.radius.menuButton{:href => "{% url 'participants_import_progress' %}"}
-          {% trans "Import Progress" %}
         - if enableDataDeletion
-          %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Advanced Delete' %}", 'data-reveal-id': 'advanced_delete_modal'}
-        %input.button.small.radius.secondary.menuButton{:type => "button", :value => "{% trans 'CSV Template' %}", 'data-reveal-id': 'download_csv_template'}
+          %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Bulk Delete' %}", 'data-reveal-id': 'advanced_delete_modal'}
+        %a.button.small.radius.menuButton{:href => "{% url 'participants_import_progress' %}"}
+          {% trans "View Import Progress" %}
+        #searchBar
+          %select#searchSelectorField{"required": "true"}
+            %option{"disabled": true, "selected": "true"}
+              Search by
+            %option{"value": "organization_display_name"}
+              Company
+            %option{"value": "courses"}
+              Course
+            %option{"value": "name"}
+              Name
+            %option{"value": "email"}
+              Email
+          %input#searchQueryField{:placeholder => '{% trans "Search" %}', :type => 'text'}
+          %a#searchButton
+            %i.fa.fa-search.fa-flip-horizontal
       %hr
-      #participantsSearchWrapper
-        .row
-          .large-3.columns
-            %input{:placeholder => '{% trans "Company" %}', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
-          .large-3.columns
-            %input{:placeholder => '{% trans "Course" %}', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
-          .large-3.columns
-            %input{:placeholder => '{% trans "Name" %}', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
-          .large-3.columns
-            %input{:placeholder => '{% trans "Email" %}', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
 
     #participantsListViewGridBlock
 
