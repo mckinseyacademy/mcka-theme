@@ -30,9 +30,27 @@ $(function () {
   $(document).on('DOMNodeInserted', '.poll-results-wrapper, .forum-new-post-form, .edit-post-form', function(){
     $(".new-theme .poll-results input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
   });
+
+// assessment block choice
+  $(document).on('DOMNodeInserted', '.choices-list, .choice, .choice-selector', function(){
+    $(".new-theme .choices-list input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
+  });
+
+// Assessment block checkbox
+
+$(document).on('DOMNodeInserted', '.choices-list, .choice-selector', function(){
+  $(".new-theme .choice-selector input[type=checkbox]:checked").parent().addClass('selected');
+});
+
+
+
+
   $(document).on('DOMNodeInserted', '.forum-new-post-form', function(){
     $(".new-theme input[type=checkbox]:checked").parent().addClass('selected');
   });
+
+
+
   $(document).on('DOMNodeInserted', '.lesson-content', function(){
     if(!isSurveyTableFilled) {
       isSurveyTableFilled = true;

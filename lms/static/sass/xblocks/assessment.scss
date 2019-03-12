@@ -1,8 +1,11 @@
 @import 'vars/variables';
 @import 'mixins/mixins';
+@import 'core/reset';
+@import 'core/core';
 @import 'form/checkbox';
 @import 'form/radiobutton';
 @import 'common/buttons';
+
 
 
 .new-theme
@@ -83,7 +86,7 @@
             {
                 @include font-size(24);
                 font-weight: 300;
-                margin-bottom: 25px;
+                margin-bottom: 15px;
             }
         }
 
@@ -96,4 +99,6 @@
         text-align: right;
         margin-top: 15px;
     }
+
+   
 }
