@@ -153,7 +153,7 @@ LANGUAGES = (
     ('zh', u'中文(简体)'),
     ('fr', u'Français'),
     ('ja', u'日本人'),
-    ('de', u'Deutsche'),
+    ('de', u'Deutsch'),
 )
 
 
