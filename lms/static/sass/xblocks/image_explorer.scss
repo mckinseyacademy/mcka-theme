@@ -121,15 +121,17 @@ body.new-theme {
       .image-explorer-xblock-wrapper {
         .image-explorer-wrapper {
           .image-explorer-hotspot {
+            width: 25px;
+            height: 25px;        
             &:hover {
-              background-position: 0 -16px;
+              background-position: 0 -25px;
             }
 
             &.visited {
-              background-position: 0 -33px;
+              background-position: 0 -50px;
 
               &:hover {
-                background-position: 0 -33px;
+                background-position: 0 -50px;
               }
             }
 
