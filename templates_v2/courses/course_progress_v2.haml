@@ -182,7 +182,7 @@
               - else
                 %p.note-progress {% trans 'Note: "weeks" begin Tuesday and end the following Monday' %}
           - if feature_flags.proficiency and graded_items_count > 0
-            .contentCard.course-page.proficiency-data
+            .contentCard.course-page.proficiency-data#proficiency-block
 
               %h5 {% trans "PROFICIENCY" %}
               %p
@@ -255,7 +255,7 @@
                   You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: {{graders}}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
                 {% endblocktrans %}
           - if feature_flags.discussions
-            .contentCard.course-page.engagement-data
+            .contentCard.course-page.engagement-data#engagement-block
               %h5 {% trans "ENGAGEMENT" %}
               %p
                 {% trans "discussion" as discussion_text %}

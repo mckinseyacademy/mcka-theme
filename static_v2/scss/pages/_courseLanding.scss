@@ -176,6 +176,9 @@
       position: relative;
       z-index: 1;
     }
+    .bookmark {
+      z-index: 2;
+    } 
 
     >a {
       &:hover {
@@ -189,14 +192,13 @@
       content: '';
       z-index: 1;
       width: 100%;
-      max-width: calc(100% - 60px);
       text-decoration: none;
-      padding: 18px 92px;
+      padding: 18px 30px;
       top: 100%;
       bottom: auto;
       height: 100%;
       text-align: left;
-      background: #DFEEF7;
+      background-color: lighten($secondary, 50);
       font-style: italic;
       color: #191561;
       opacity: 0;
@@ -204,6 +206,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       cursor: pointer;
+      left: 0;
 
       p {
         max-width: 100%;
