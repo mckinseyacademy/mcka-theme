@@ -15,4 +15,6 @@
       #{course.user_progress}%
       %span
         .filler{"class": "{% if course.user_progress < average_progress %}trailing{% endif %}", "style": "width:#{course.user_progress}%;"}
-    
+  %span.viewDetailCourse   
+    %a.ome.dome-c{:href => "/courses/#{active_course.id}/progress#course-progress-new"} 
+      {% trans "View Details" %}

@@ -520,7 +520,15 @@ body.rtl {
   .bookmark {
     @include flip-x-axis;
   }
-
+  .courseLanding {
+    .viewDetailCourse {
+      a {
+        &:after {
+          content: "\e408";
+        }
+      }
+    }
+  }
   #course-statistics {
     .widget {
       &.course-progress {

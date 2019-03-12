@@ -9,9 +9,11 @@
   position: relative;
   z-index: 99;
 }
-
-.courseLanding{
-  #course-final-grade{
+.viewDetailCourse {
+  display: none;
+}
+.courseLanding {
+  #course-final-grade {
     @extend .mb-4;
     text-align: center;
     font-size: 1rem;
@@ -23,6 +25,33 @@
       color: $black;
       @include font-spec(24, 400, 32px);
       margin-bottom: 8px;
+    }
+  }
+  .widget {
+    .holder {
+      min-height: 140px;
+      overflow: hidden;
+    }
+  }
+  .viewDetailCourse {
+    display: block;
+    text-align: center;
+    margin: 0 0 -15px;
+    a {
+      display: inline-block;
+      vertical-align: top;
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 12px;
+      &:after {
+        font-family: 'Material Icons';
+        content: "\e409";
+        border: 0;
+        font-size: 15px;
+        margin: 0 0 0 1px;
+        vertical-align: top;
+        line-height: 17px;
+      }
     }
   }
 }

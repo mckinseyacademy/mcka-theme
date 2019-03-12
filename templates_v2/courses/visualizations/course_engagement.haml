@@ -15,3 +15,6 @@
       .averageTitle
         %span
           {% trans "Average" %}: #{social.course_avg} {% trans "points" %}
+  %span.viewDetailCourse   
+    %a.ome.dome-c{:href => "/courses/#{active_course.id}/progress#engagement-block"} 
+      {% trans "View Details" %}
