@@ -1,11 +1,6 @@
 // Overrides for Image Explorer V2:
 @import '../base/variables';
 
-@import "vars/variables";
-@import "form/checkbox";
-@import "form/radiobutton";
-@import "mixins/mixins";
-@import "common/buttons";
 
 // New design of Image Explorer has different Blue & Magenta shades
 // so we need to apply that colors in MCKA theme
@@ -24,53 +19,4 @@
   .tutorial-video{
     background-image: url("../images/IE_Instruction_Anim.gif") !important;
   }
-}
-
-// Image Explorer
-
-.new-theme{
-  @include font-size(14);
-
-  [data-block-type="image-explorer"]
-  {
-      .image-explorer-wrapper
-      {
-          width:100%;
-          img
-          {
-              max-width: none;
-              width:100%;
-              height:auto;
-          }
-          .image-explorer-hotspot-reveal
-          {
-              background: white;
-              opacity: 1;
-              color: black;
-              border-radius: 10px;
-              box-shadow: 0px 0px 35px rgba(0,0,0,0.3);
-
-              .image-explorer-hotspot-content-wrapper
-              {
-                  color: black;
-                  margin: 15px;
-              }
-
-              .image-explorer-close-reveal
-              {
-                  color:$primary;
-                  position: relative;
-                  font-size: 0;
-                  &::before
-                  {
-                      font-family: 'Material Icons';
-                      content: '\e5cd';
-                      font-size:24px;
-                  }
-              }
-
-          }
-      }
-  }
-
 }
