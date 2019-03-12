@@ -1,0 +1,42 @@
+
+// paragraph setting across theme
+
+.new-theme
+{
+    p
+    {
+        @include font-size(16);
+        line-height: 26px;
+    }
+
+    .lesson-content
+    {
+        ul
+        {
+            padding: 0;
+            margin: 20px 0 20px 25px;
+            line-height: 26px;
+            @include font-size(16);
+
+            ul
+            {
+                padding:0;
+                margin:0;
+            }
+
+            &.review-list
+            {
+                margin: 5px 0 10px;
+            }
+        }
+    }
+
+    // Media Query for Mobile
+
+    @media (max-width: 767.98px) { 
+        p, ul
+        {
+            @include font-size(14);
+        }
+    }
+}
