@@ -405,9 +405,29 @@
     }
   }
 
-  .proficiency-data{
+  .proficiency-data,
+  .engagement-data{
     .progressWidgets{
       @include border-right(1px solid $gray);
+    }
+  }
+  .dropdown-toggle {
+    &:after {
+      @include right(-20px);
+    }
+  }
+  .proficiency-data,
+  .engagement-data {
+    table {
+      tr {
+        td {
+          &:nth-child(2) {
+            @include media-breakpoint-between(xs, sm) {
+              @include text-align(right);
+            }
+          }
+        }
+      }
     }
   }
 }

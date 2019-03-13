@@ -237,8 +237,10 @@
 
                         .dropdown-toggle {
                             @include font-size(16);
+                            position: relative;
                             &::after {
                                 position: absolute;
+                                top: 0;
                             }
                         }
 
@@ -267,6 +269,9 @@
 
                     &:first-child {
                         vertical-align: middle;
+                    }
+                    &.number {
+                        color: var(--secondary);
                     }
                 }
             }
@@ -342,7 +347,6 @@
         .progressWidgets {
             box-shadow: none;
             border-left: 0;
-            border-right: 1px solid $gray;
             margin-top: 25px;
 
             .progressArea {
@@ -413,6 +417,16 @@
         h2 {
             @include font-size(24);
             font-weight: 400;
+        }
+
+        .progress-data {
+            tr {
+                th {
+                    &:first-child {
+                        width: auto;
+                    }
+                }
+            }
         }
 
         .progressWidgets {

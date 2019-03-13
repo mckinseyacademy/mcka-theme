@@ -144,8 +144,6 @@
                     - if feature_flags.group_work
                       - if week.has_group
                         %td.progress_data_col
-                          .show-mobile
-                            {% trans "Group Work" %}
                           - for activity in week.group_activities
                             .lesson-with-list.lesson-row-item.gr-data
                               - if activity.score 
@@ -207,7 +205,7 @@
                           .lesson-item-name
                             %i{:class => "status material-icons{% if lesson.progress == 100 %} complete{% endif %}"}
                               {% if lesson.progress == 100 %}check_circle {% elif lesson.progress == 0 %}panorama_fish_eye{% else %}tonality{% endif %}
-                            %a{"href": "#{module.navigation_url}"}
+                            %a.ome-dome-c{"href": "#{module.navigation_url}"}
                               #{module.lesson_name}: {{ module.name|translate_assessment_if_needed }}
                       %td.number{"class": "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
                   - if feature_flags.group_work
@@ -219,7 +217,7 @@
                               .lesson-item-name
                                 %i.status.complete.material-icons
                                   check_circle    
-                                %a{"href": "#{activity.link}"}
+                                %a.ome-dome-c{"href": "#{activity.link}"}
                                   {% trans "Group Work" %}
                                 =activity.name
                           - ifequal activity.score None
@@ -233,7 +231,7 @@
                               .lesson-item-name
                                 %i.status.complete.material-icons
                                   check_circle
-                                %a{"href": "#{activity.link}"}
+                                %a.ome-dome-c{"href": "#{activity.link}"}
                                   {% trans "Group Work" %}
                                 =activity.name
                           - if activity.is_pending
