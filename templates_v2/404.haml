@@ -1,0 +1,28 @@
+- extends "layout.haml"
+- load i18n
+
+- block content
+  #error_404.error-page
+    .container
+      .row
+        .col
+          .contentCard.progressWidgets.text-center
+            .errorContWrap
+              .icon
+                %i.material-icons
+                  find_in_page
+              .errorText
+                %h4
+                  {% trans "Page not found." %}
+              .content
+                %p
+                  {% blocktrans %}
+                  The page you’re looking for may have been moved or renamed.
+                  {% endblocktrans %}
+                %p
+                  {% blocktrans %}
+                  If you continue to have issues, please visit our
+                  %a{:href => "/faq"} FAQ page
+                  or
+                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support
+                  {% endblocktrans %}

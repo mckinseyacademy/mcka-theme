@@ -1,0 +1,28 @@
+- extends "layout.haml"
+- load i18n
+
+- block content
+  #error_500.error-page
+    .container
+      .row
+        .col
+          .contentCard.progressWidgets.text-center
+            .errorContWrap
+              .icon
+                %i.material-icons
+                  warning
+              .errorText
+                %h4
+                  {% trans "Sorry!" %}
+              .content
+                %p
+                  {% blocktrans %}
+                  Something has gone wrong. Our team has been alerted to the issue and is looking into it.
+                  {% endblocktrans %}
+                %p
+                  {% blocktrans %}
+                  Please go back to
+                  %a{:href => "https://www.mckinseyacademy.com/"} https://www.mckinseyacademy.com
+                  or
+                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support.
+                  {% endblocktrans %}

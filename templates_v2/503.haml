@@ -1,0 +1,21 @@
+- extends "layout.haml"
+- load i18n
+
+- block content
+  #error_503.error-page
+    .container
+      .row
+        .col
+          .contentCard.progressWidgets.text-center
+            .errorContWrap
+              .icon
+                %i.material-icons
+                  warning
+              .errorText
+                %h4
+                  {% trans "Sorry!." %}
+              .content
+                %p
+                  {% blocktrans %}
+                  McKinsey Academy is currently undergoing scheduled maintenance. Sorry for any inconvenience.
+                  {% endblocktrans %}

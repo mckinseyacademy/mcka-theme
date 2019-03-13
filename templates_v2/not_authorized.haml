@@ -1,0 +1,23 @@
+- extends "layout.haml"
+- load i18n
+
+- block content
+  .container
+    .row
+      .col
+        .contentCard.progressWidgets.text-center
+          .errorContWrap
+            .icon
+              %i.material-icons
+                visibility_off
+            .errorText
+              %h4
+                {% trans "You are not authorized to view this page." %}
+            .content
+              %p
+                {% blocktrans %}
+                If you believe you are seeing this message in error, please visit our
+                %a{:href => "/faq"} FAQ page
+                or
+                %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support.
+                {% endblocktrans %}

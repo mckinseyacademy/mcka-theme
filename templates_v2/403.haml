@@ -1,0 +1,29 @@
+- extends "layout.haml"
+- load i18n
+
+- block content
+  #error_403.error-page
+    .container
+      .row
+        .col
+          .contentCard.progressWidgets.text-center
+            .errorContWrap
+              .icon
+                %i.material-icons
+                  warning
+              .errorText
+                %h4
+                  {% trans "Sorry!." %}
+              .content
+                %p
+                  {% blocktrans %}
+                  You don't have permission to access the resource you requested.
+                  {% endblocktrans %}
+                %p
+                  {% blocktrans %}
+                  Please go back to
+                  %a{:href => "https://www.mckinseyacademy.com/"} https://www.mckinseyacademy.com
+                  or
+                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} contact us
+                  for support.
+                  {% endblocktrans %}
