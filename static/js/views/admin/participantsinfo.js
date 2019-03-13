@@ -428,7 +428,7 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
             row.remove();
           }).fail(function(data) {
               mainContainer.find('.errorContainer').show();
-              mainContainer.find('.errorContainer').html("Error deleting user. Try again later...");
+              mainContainer.find('.errorContainer').html("Error encountered - " + data.responseJSON.detail);
             }
           );
         });
