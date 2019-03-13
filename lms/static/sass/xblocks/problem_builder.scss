@@ -484,6 +484,78 @@ body.new-theme {
         textarea {
             border: 1px solid $input-border;
         }
+        input[type="text"]
+        {
+            border:1px solid $input-border;
+        }
+    }
+    //Proper builder recap long answer
+    [data-block-type="pb-answer-recap"]
+    {
+        .xblock-answer{
+            .answer {
+                font-size: 1.5rem;
+                background: $ash-hard;
+                color: $gray;
+                padding: 15px 10px;
+                font-weight: 200;
+                &::before{
+                    vertical-align: 0px;
+                    font-family: 'Material Icons';
+                    color: $mid-gray;
+                    content: "\e244";
+                    font-size: 2.25rem;
+                }
+            }
+        }
+    }
+    //Proper builder recap long answer
+    [data-block-type="pb-table"] {
+        .share-panel-container {
+            .mentoring-share-panel {
+                .mentoring-share-button {
+                    position: relative;
+                    padding: 0 20px 0 40px;
+
+                    i {
+                        position: absolute;
+                        top: 8px;
+                        left: 12px;
+
+                        &::before {
+                            content: "\e80d";
+                            font-family: 'Material Icons';
+                            font-size: 1.25rem;
+                        }
+                    }
+                }
+
+                .mentoring-share-with {
+                    border: 1px solid $popup-border;
+                    padding: 50px 30px;
+                    box-shadow: 0 0 100px rgba(0, 0, 0, 0.4);
+
+                    .share-with-instructions {
+                        width: 100%;
+                    }
+
+                    .new-share-container {
+                        .add-share-username {
+                            padding: 0 5px;
+                            border:1px solid $input-border;
+                        }
+
+                        .add-share-field {
+                            background: none;
+                            border: 0;
+                            color: var(--primary);
+                            font-size: 1.5rem;
+                            padding: 0;
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -519,6 +591,21 @@ body.new-theme {
                         .close {
                             left: 10px;
                         }
+                    }
+                }
+            }
+        }
+    }
+}
+
+//mobile only
+@media screen and (max-width: 480px) {
+    body.new-theme {
+        [data-block-type="pb-table"] {
+            .share-panel-container {
+                .mentoring-share-panel {
+                    .mentoring-share-with {
+                        padding: 10px 20px;
                     }
                 }
             }
