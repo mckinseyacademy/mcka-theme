@@ -207,6 +207,7 @@
     }
     .bookmark {
       z-index: 2;
+      pointer-events: none;
     } 
 
     >a {
