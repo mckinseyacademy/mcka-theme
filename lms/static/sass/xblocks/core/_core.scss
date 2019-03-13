@@ -31,6 +31,14 @@
         }
     }
 
+    .vert
+    {
+        &:last-child
+        {
+            padding-bottom: 0;
+        }
+    }
+
     // Media Query for Mobile
 
     @media (max-width: 767.98px) { 
