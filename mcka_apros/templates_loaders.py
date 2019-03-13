@@ -18,7 +18,10 @@ NEW_UI_ADMIN_VIEWS = [
 
 
 def old_ui_for_admin_page(request):
-    return '/admin' in request.path and request.resolver_match.view_name not in NEW_UI_ADMIN_VIEWS
+    if '/admin' in request.path:
+        if request.user.is_mcka_admin or request.user.is_internal_admin or request.user.is_mcka_subadmin:
+            return True
+        return request.resolver_match.view_name not in NEW_UI_ADMIN_VIEWS
 
 
 def get_customization(request):
@@ -32,12 +35,13 @@ class CustomLoader:
     def get_dirs(self):
         dirs = getattr(self, 'dirs', None) or self.engine.dirs
         request = thread_local.get_current_request()
-
-        if not hasattr(request, 'user') or not request.user.is_authenticated or old_ui_for_admin_page(request):
+        if not hasattr(request, 'user') or not request.user.is_authenticated:
             return dirs
 
         client_customizations = get_customization(request)
         if client_customizations and client_customizations.new_ui_enabled:
+            if old_ui_for_admin_page(request):
+                return dirs
             return settings.TEMPLATE_NEW_DIRS + dirs
         return dirs
 

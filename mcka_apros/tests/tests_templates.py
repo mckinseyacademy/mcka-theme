@@ -15,34 +15,43 @@ class AprosTemplateLoaderTests(TestCase, ApplyPatchMixin):
     def setUp(self):
         self.factory = RequestFactory()
 
-    def mock_request(self, is_authenticated, url, view_name):
+    def mock_request(self, is_authenticated, url, view_name, is_admin):
         request = self.factory.get(url)
-        request.user = Mock(is_authenticated=is_authenticated)
-        request.resolver_match = Mock(view_name=view_name)
+        request.user = Mock()
+        request.resolver_match = Mock()
+        request.user.is_authenticated = is_authenticated
+        request.user.is_mcka_admin = is_admin
+        request.user.is_internal_admin = is_admin
+        request.user.is_mcka_subadmin = is_admin
+        request.resolver_match.view_name = view_name
         return request
 
     @patch('mcka_apros.templates_loaders.get_customization')
     @patch('accounts.middleware.thread_local.get_current_request')
     @ddt.data(
         # For Admin urls it should always load old templates
-        ('footer.haml', settings.TEMPLATE_TEST_DIR, '/admin/', 'dummy', True, True),
-        # For Company Admin urls it should load new template
-        ('footer.haml', settings.TEMPLATE_NEW_TEST_DIR, '/admin/company_dashboard', 'company_dashboard', True, True),
+        ('footer.haml', settings.TEMPLATE_TEST_DIR, '/admin/', 'dummy', True, True, True),
+        # For Company Admin urls it should load old template if user is uber admin
+        ('footer.haml', settings.TEMPLATE_TEST_DIR, '/admin/company_dashboard', 'company_dashboard',
+            True, True, True),
+        # For Company Admin urls it should load new template if user is not uber admin
+        ('footer.haml', settings.TEMPLATE_NEW_TEST_DIR, '/admin/company_dashboard', 'company_dashboard',
+            True, True, False),
         # When new_ui_enabled=False it should load old template
-        ('footer.haml', settings.TEMPLATE_TEST_DIR, '/test/', 'dummy', True, False),
+        ('footer.haml', settings.TEMPLATE_TEST_DIR, '/test/', 'dummy', True, False, True),
         # When new_ui_enabled=True it should load new template
-        ('footer.haml', settings.TEMPLATE_NEW_TEST_DIR, '/test/', 'dummy', True, True),
+        ('footer.haml', settings.TEMPLATE_NEW_TEST_DIR, '/test/', 'dummy', True, True, True),
         # When new_ui_enabled=True but template doesn't exists in new dir
         # It should fall back to old templates
-        ('header.haml', settings.TEMPLATE_TEST_DIR, '/test/', 'dummy', True, True),
+        ('header.haml', settings.TEMPLATE_TEST_DIR, '/test/', 'dummy', True, True, True),
         # When user is not logged in it should load old template
-        ('footer.haml', settings.TEMPLATE_TEST_DIR, '/test/', 'dummy', False, True),
+        ('footer.haml', settings.TEMPLATE_TEST_DIR, '/test/', 'dummy', False, True, True),
     )
     @ddt.unpack
-    def test_template_exists(self, template_name, template_path, url, view_name, is_authenticated, new_ui_enabled,
-                             get_current_request, get_customizations):
+    def test_template_exists(self, template_name, template_path, url, view_name, is_authenticated,
+                             new_ui_enabled, is_admin, get_current_request, get_customizations):
         get_current_request.return_value = self.mock_request(
-            is_authenticated=is_authenticated, url=url, view_name=view_name
+            is_authenticated=is_authenticated, url=url, view_name=view_name, is_admin=is_admin
         )
         get_customizations.return_value = Mock(new_ui_enabled=new_ui_enabled)
 
@@ -52,7 +61,10 @@ class AprosTemplateLoaderTests(TestCase, ApplyPatchMixin):
     @patch('mcka_apros.templates_loaders.get_customization')
     @patch('accounts.middleware.thread_local.get_current_request')
     def test_template_not_exists(self, get_current_request, get_customizations):
-        get_current_request.return_value = self.mock_request(is_authenticated=True, url='/', view_name='dummy')
+        get_current_request.return_value = self.mock_request(
+            is_authenticated=True, url='/',
+            view_name='dummy', is_admin=False
+        )
         get_customizations.return_value = Mock(new_ui_enabled=False)
 
         with self.assertRaises(TemplateDoesNotExist):
