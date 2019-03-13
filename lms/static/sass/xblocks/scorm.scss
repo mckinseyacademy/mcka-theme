@@ -23,6 +23,7 @@
                 padding: 0;
                 background: none;
                 @include font-size(16);
+
                 @media (max-width: 767.98px) {
                     @include font-size(14);
                 }
@@ -48,6 +49,22 @@
                     &:hover {
                         background: $dark-blue;
                         color: $white;
+                    }
+
+                    &:disabled {
+                        background: $gray;
+                        opacity: 1;
+                        border-color: $gray;
+                        cursor: not-allowed;
+                        color: $white;
+
+                        &:hover {
+                            background: $gray;
+                            opacity: 1;
+                            border-color: $gray;
+                            cursor: not-allowed;
+                            color: $white;
+                        }
                     }
                 }
             }
