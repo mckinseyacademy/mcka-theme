@@ -20,16 +20,18 @@
     width: 20px;
   }
   &.primary {
+    background: none;
     svg {
       path {
-        fill: red;
+        fill: var(--primary);
       }
     }
   }
   &.secondary {
+    background: none;
     svg {
       path {
-        fill: red;
+        fill: var(--secondary);
       }
     }
   }
@@ -230,6 +232,7 @@
     }
     .bookmark {
       z-index: 2;
+      width: 20px;
       pointer-events: none;
     }
 

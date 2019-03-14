@@ -10,7 +10,8 @@
         .card-body.dome-bc
           - if course and current_course
             - if course.id == current_course.id
-              %span.bookmark
+              %span.current-bookmark-text
+                {% trans "resume course" %}
           %h3.card-title
             = course.name
           .course-detail

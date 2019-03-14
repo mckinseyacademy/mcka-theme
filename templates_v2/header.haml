@@ -123,7 +123,9 @@
                             %li
                               %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
                                 - if request.session.last_visited_course and dashboard.course_id == request.session.last_visited_course
-                                  %span.bookmark
+                                  %span.bookmark.primary
+                                    %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
+                                      %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
                               %ul.sub-nav.d-block.d-sm-none
                                 %li
                                   %a.ome.dome-c{:href => "/courses/{{dashboard.course_id}}"} {% trans "Home" %}

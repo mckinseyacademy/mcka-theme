@@ -42,7 +42,21 @@
       padding: 20px 30px 16px;
       background-color: var(--primary);
       color: $white;
-      position: relative;
+      .current-bookmark-text {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 8px 10px;
+        color: $white;
+        background-color: var(--primary);
+        text-align: center;
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 1rem;
+        line-height: 1.5rem;
+        letter-spacing: 1px;
+      }
       h3 {
         font-size: 1.5rem;
         height: 3.7rem;
