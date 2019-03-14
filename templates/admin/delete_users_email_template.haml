@@ -6,10 +6,16 @@
 
 - block body
   %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
-    - if file_name
-      {% blocktrans with file_name=file_name %} The deletion of users included in file "{{file_name}}" has been processed. {% endblocktrans %}
-    - else
-      {% blocktrans %} The bulk deletion of users has been processed. {% endblocktrans %}
+    {% blocktrans with file_name=file_name %} The bulk delete file "{{file_name}}" has been processed. {% endblocktrans %}
+    %li
+      Completion time: {{minutes_taken}} min
+    %li
+      No. of. participants successfully deleted: {{successful}}/{{total}}
+    - if failed_url
+      %li
+        {% blocktrans %} Error file:
+        %a{:href => "{{failed_url}}"} here
+        {% endblocktrans %}
 
 - block closing
   %p{:style => "line-height: 22px;color: #333333;"}

@@ -189,7 +189,7 @@ def delete_users(ids=None, username=None):
     else:
         raise ValueError('either ids or username are required')
 
-    DELETE(
+    return DELETE(
         '{}/{}?{}'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,

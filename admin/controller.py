@@ -2762,7 +2762,7 @@ class ProblemReportPostProcessor(object):
         return output.values(), ['email'] + sorted(self._cols.values())
 
 
-def get_users_for_deletion(file_path):
+def get_emails_from_csv(file_path):
     """Retrieves user from single-column CSV. The header is treated as a filter for querying users."""
     from util.s3_helpers import get_storage
     storage = get_storage(secure=True)
@@ -2772,6 +2772,11 @@ def get_users_for_deletion(file_path):
     param_type = data.pop(0)
     if param_type != 'email':
         raise ValueError(_("The CSV file has to contain 'email' header."))
+    return param_type, data
 
+
+def get_users_for_deletion(file_path):
+    """Retrieves user from single-column CSV. The header is treated as a filter for querying users."""
+    param_type, data = get_emails_from_csv(file_path)
     users = get_users(**{param_type: data})
     return users

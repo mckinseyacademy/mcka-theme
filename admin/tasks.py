@@ -1,9 +1,12 @@
 """
 Celery tasks related to admin app
 """
+import math
 import os
 import json
 import hashlib
+import time
+
 import six
 from collections import OrderedDict
 from multiprocessing.pool import ThreadPool
@@ -30,6 +33,7 @@ from api_client import instructor_api
 from api_client import user_api
 from api_client.api_error import ApiError
 from api_client.cohort_api import add_cohort_for_course
+from api_client.user_api import get_users
 from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage, get_path
 from util.email_helpers import send_html_email
@@ -50,12 +54,12 @@ from .controller import (
     update_company_field_for_users,
     CourseParticipantStats,
     ProblemReportPostProcessor,
-    get_users_for_deletion,
-)
+    get_emails_from_csv)
 from .models import UserRegistrationError, UserRegistrationBatch
 
 
 logger = get_task_logger(__name__)
+DELETE_PARTICIPANTS_DIR = 'delete_participant_files'
 IMPORT_PARTICIPANTS_DIR = 'import_participant_files'
 
 
@@ -628,19 +632,27 @@ def delete_participants_task(users_to_delete, send_confirmation_email, owner, ba
 
     logger.info('Started - {}'.format(task_log_msg))
 
+    failed = {}
+    started = time.time()
+
     if isinstance(users_to_delete, six.string_types):
         # The users for deletion are specified in a CSV file.
         file_path = get_path(users_to_delete)
 
         try:
-            users = get_users_for_deletion(file_path)
+            field, emails = get_emails_from_csv(file_path)
+            total = len(emails)
+            users = get_users(**{field: emails})
         except Exception:
             logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
             raise
         else:
             logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
 
-        delete_participants(None, users=users)
+        present_emails = set(user.email for user in users)
+        failed.update({email: 'User not found' for email in emails if email not in present_emails})
+
+        failed.update(delete_participants(None, users=users))
 
         try:
             storage = get_storage(secure=True)
@@ -652,9 +664,31 @@ def delete_participants_task(users_to_delete, send_confirmation_email, owner, ba
 
     else:
         # We have users' IDs.
-        delete_participants(users_to_delete)
+        total = len(users_to_delete)
+        failed.update(delete_participants(users_to_delete))
 
     logger.info('Completed - {}'.format(task_log_msg))
+
+    failed_url = None
+    if failed:
+        fields = OrderedDict([
+            ('email', ('email', '')),
+            ('reason', ('reason', '')),
+        ])
+        file_name = 'deletion_errors.csv'
+        errors = [{'email': k, 'reason': v} for k, v in failed.items()]
+        try:
+            failed_url = create_and_store_csv_file(
+                fields, errors, DELETE_PARTICIPANTS_DIR,
+                file_name, logger, task_log_msg, secure=True
+            )
+        except Exception as e:
+            logger.error('Failed to generate CSV - {} - {}'.format(e.message, task_log_msg))
+
+        failed_url = urljoin(
+            base=base_url,
+            url=failed_url
+        )
 
     if send_confirmation_email:
         subject = _('Advanced Deletion Completed')
@@ -665,8 +699,12 @@ def delete_participants_task(users_to_delete, send_confirmation_email, owner, ba
         )
         template_data = {
             'first_name': owner.get('first_name'),
-            'file_name': file_path,
+            'file_name': file_path.split('/')[-1],
             'mcka_logo_url': mcka_logo,
+            'minutes_taken': math.ceil((time.time() - started) / 60),
+            'failed_url': failed_url,
+            'successful': total - len(failed),
+            'total': total,
         }
 
         send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)

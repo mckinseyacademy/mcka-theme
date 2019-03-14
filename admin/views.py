@@ -3947,29 +3947,39 @@ def delete_participants(user_ids, users=None):
     if users is None:
         users = _get_users_by_ids(user_ids)
 
-    user_ids = [user.id for user in users]
-    user_emails = [user.email for user in users]
-    user_usernames = [user.username for user in users]
+    failed = {}
 
-    for chunk in xrange(0, len(user_ids), settings.DELETION_SYNCHRONOUS_MAX_USERS):
-        user_api.delete_users(ids=user_ids[chunk:chunk + settings.DELETION_SYNCHRONOUS_MAX_USERS])
+    for chunk in xrange(0, len(users), settings.DELETION_SYNCHRONOUS_MAX_USERS):
+        # Get batch of users and ids
+        batch_users = list(users)[chunk:chunk + settings.DELETION_SYNCHRONOUS_MAX_USERS]
+        ids = [user.id for user in batch_users]
 
-    PublicRegistrationRequest.objects.filter(company_email__in=user_emails).delete()
-    UserRegistrationError.objects.filter(user_email__in=user_emails).delete()
-    UserActivation.objects.filter(email__in=user_emails).delete()
-    RemoteUser.objects.filter(username__in=user_usernames).delete()
+        # Delete from edxapp and update failed
+        failed_batch = user_api.delete_users(ids=ids)
+        failed.update(failed_batch)
 
-    models_for_id_deletion = [
-        UserPasswordReset,
-        DashboardAdminQuickFilter,
-        BatchOperationErrors,
-        LessonNotesItem,
-        UserCourseCertificate,
-    ]
-    for model in models_for_id_deletion:
-        model.objects.filter(user_id__in=user_ids).delete()
+        # Remove failed users
+        ids = [user.id for user in batch_users if user.email not in failed_batch]
+        user_emails = [user.email for user in batch_users if user.email not in failed_batch]
+        user_usernames = [user.username for user in batch_users if user.email not in failed_batch]
 
-    return HttpResponse(status=204)
+        # Delete successful users from Apros
+        PublicRegistrationRequest.objects.filter(company_email__in=user_emails).delete()
+        UserRegistrationError.objects.filter(user_email__in=user_emails).delete()
+        UserActivation.objects.filter(email__in=user_emails).delete()
+        RemoteUser.objects.filter(username__in=user_usernames).delete()
+
+        models_for_id_deletion = [
+            UserPasswordReset,
+            DashboardAdminQuickFilter,
+            BatchOperationErrors,
+            LessonNotesItem,
+            UserCourseCertificate,
+        ]
+        for model in models_for_id_deletion:
+            model.objects.filter(user_id__in=ids).delete()
+
+    return failed
 
 
 class ParticipantsListApi(APIView):
@@ -4347,7 +4357,8 @@ class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
                                    PERMISSION_GROUPS.MCKA_SUBADMIN)
     def delete(self, _request, user_id):
-        return delete_participants([user_id])
+        delete_participants([user_id])
+        return HttpResponse(status=204)
 
 
 class manage_user_company_api(APIView):
