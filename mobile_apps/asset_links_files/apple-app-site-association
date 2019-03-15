@@ -155,6 +155,15 @@
                "NOT /oauth2/*",
                "*"
             ]
+         },
+         {
+            "appID": "ZW896J6KK3.com.mcka.shellapp",
+            "paths": [
+               "NOT /auth/*",
+               "NOT /accounts/*",
+               "NOT /oauth2/*",
+               "*"
+            ]
          }
       ]
    }
