@@ -286,7 +286,10 @@ class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
     @patch('admin.tasks.get_users')
     @patch('admin.tasks.get_emails_from_csv')
     @patch('admin.views.delete_participants')
-    def test_delete_participants_task_with_file(self, delete_participants_mock, get_emails_from_csv_mock, get_users_mock):
+    def test_delete_participants_task_with_file(self,
+                                                delete_participants_mock,
+                                                get_emails_from_csv_mock,
+                                                get_users_mock):
         """Test bulk user deletion task with users provided in CSV file."""
         stub_file = 'stub_file'
         emails = [user.email for user in self.students]
