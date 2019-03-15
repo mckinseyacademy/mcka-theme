@@ -3941,9 +3941,6 @@ def delete_participants(user_ids, users=None):
     """
     Deletes all data related to users from LMS and Apros.
     """
-    if not _deletion_flag():
-        return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
-
     if users is None:
         users = _get_users_by_ids(user_ids)
 
@@ -4357,6 +4354,9 @@ class participant_details_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
                                    PERMISSION_GROUPS.MCKA_SUBADMIN)
     def delete(self, _request, user_id):
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
         delete_participants([user_id])
         return HttpResponse(status=204)
 
