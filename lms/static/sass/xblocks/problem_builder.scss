@@ -221,10 +221,6 @@ body.new-theme {
     }
 
 
-
-
-
-
     // Button
 
     input[type="button"] {
@@ -243,6 +239,45 @@ body.new-theme {
 
             }
 
+            // marks
+
+            .choices-list
+            {
+                .choice
+                {
+                    .choice-result
+                    {
+
+                        // Incorrect
+
+                        &.checkmark-incorrect
+                        {
+                            &::before {
+                                color: $bg-white-red;
+                                font-family: 'Material Icons';
+                                content: '\e5c9';
+                                @include font-size(24)
+                            }
+                        }
+
+
+                        //correct
+
+                        &.checkmark-correct
+                        {
+                            &::before
+                            {
+                                color: $bg-white-green;
+                                font-family: 'Material Icons';
+                                content: '\e86c';
+                                @include font-size(24)
+                            }
+
+                        }
+                    }
+                }
+            }
+
             // tip popup
             .choice-tips-container {
                 .choice-tips {
@@ -258,6 +293,7 @@ body.new-theme {
                         line-height: 22px;
                         font-weight: 300;
                         color: black;
+                        @include font-size(14);
 
                         &:last-child {
                             margin-bottom: 0;
@@ -266,15 +302,15 @@ body.new-theme {
                 }
 
                 .close {
-                    color: $primary;
+                    
                     opacity: 1;
-                    right: 10px;
-                    top: 10px;
+                    right: 10px !important;
+                    top: 10px !important;
 
                     &::before {
                         font-family: 'Material Icons';
                         content: '\e5cd';
-                        color: $primary;
+                        color: $gray;
                         @include font-size(20);
                     }
                 }
@@ -287,6 +323,45 @@ body.new-theme {
     // MRQ
 
     [data-block-type="pb-mrq"] {
+
+
+        // Marks
+        .choices-list
+            {
+                .choice
+                {
+                    .choice-result
+                    {
+
+                        // Incorrect
+
+                        &.checkmark-incorrect
+                        {
+                            &::before {
+                                color: $bg-white-red;
+                                font-family: 'Material Icons';
+                                content: '\e5c9';
+                                @include font-size(24)
+                            }
+                        }
+
+
+                        //correct
+
+                        &.checkmark-correct
+                        {
+                            &::before
+                            {
+                                color: $bg-white-green;
+                                font-family: 'Material Icons';
+                                content: '\e86c';
+                                @include font-size(24)
+                            }
+
+                        }
+                    }
+                }
+            }
 
         // tip popup
         .choice-tips-container {
@@ -303,6 +378,7 @@ body.new-theme {
                     line-height: 22px;
                     font-weight: 300;
                     color: black;
+                    @include font-size(14);
 
                     &:last-child {
                         margin-bottom: 0;
@@ -311,15 +387,15 @@ body.new-theme {
             }
 
             .close {
-                color: $primary;
+                
                 opacity: 1;
-                right: 10px;
-                top: 10px;
+                right: 10px !important;
+                top: 10px !important;
 
                 &::before {
                     font-family: 'Material Icons';
                     content: '\e5cd';
-                    color: $primary;
+                    color: $gray;
                     @include font-size(20);
                 }
             }
