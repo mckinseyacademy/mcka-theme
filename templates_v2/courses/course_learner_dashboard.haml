@@ -11,7 +11,7 @@
     #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
     .container
       .row
-        .col-md-8
+        .col-lg-8
           .gallery-card
             .gallery-title{"style": "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
             .gallery-content{"style": "color:#{learner_dashboard.description_color}"}
@@ -72,7 +72,7 @@
 
 
 
-        .col-md-4
+        .col-lg-4
           .side-content{"style": "{% if branding and branding.discover_rule_color %} border-color:#{branding.discover_rule_color}{% endif %}"}
             .tag{"style": "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"} {% trans "for discovery" %}
             -for item in discovery_items
