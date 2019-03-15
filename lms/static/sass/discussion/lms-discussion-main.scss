@@ -4,6 +4,8 @@
 
 
 
+
+
 body {
   background-color: $mckinsey-academy-bright-gray;
 }
@@ -21,6 +23,16 @@ footer[role=contentinfo] {
 }
 
 body.new-theme {
+  background-color: $ash-white;
+  //sync row with UI Refresh.
+  .row{
+    margin-right: -15px;
+    margin-left: -15px;
+    max-width: none;
+    width: unset;
+  }
+  
+
   @-webkit-keyframes fa-spin {
     0% {
       -webkit-transform: rotate(0deg);
@@ -57,7 +69,8 @@ body.new-theme {
 
       .wmd-preview-label {
         font-size: 1rem;
-        padding: 10px 3px 0 8px;
+        padding: 7px 10px;
+        color: $black;
       }
 
       .wmd-preview {
@@ -89,12 +102,12 @@ body.new-theme {
       .post-field {
         .field-input {
           .post-topic {
-            min-width: 400px;
+            min-width: 370px;
           }
 
           &.js-post-title,
           &.edit-post-title {
-            min-width: 400px;
+            min-width: 370px;
           }
         }
 
@@ -109,6 +122,8 @@ body.new-theme {
   /* mobile */
   @media (max-width: 767px) {
     #course-discussion {
+      padding: 10px;
+
       .wmd-panel {
 
         .wmd-preview-container {
@@ -129,11 +144,12 @@ body.new-theme {
       }
 
       .discussion-content {
+
         #discussion-container {
 
           #main.discussion-column .discussion-article.view-discussion-home,
           .ask-ta {
-            display: none !important;
+            padding-left: 0;
           }
 
           .page-header {
@@ -147,6 +163,10 @@ body.new-theme {
               width: 100%;
               position: relative;
               top: 35px;
+
+              h1 {
+                display: none;
+              }
 
               .form-actions {
                 width: 20%;
@@ -162,7 +182,7 @@ body.new-theme {
 
                   &:before {
                     font-size: 1.875rem;
-                    color: #FFF;
+                    color: $white;
                     font-family: "Material Icons";
                     content: "\e145";
                     position: absolute;
@@ -205,6 +225,11 @@ body.new-theme {
             height: auto !important;
             max-height: none !important;
 
+            .forum-nav-browse-menu-wrapper {
+              border: 0;
+              padding: 0;
+            }
+
             .forum-nav-thread-list {
               height: auto !important;
             }
@@ -222,6 +247,10 @@ body.new-theme {
 
           .edit-post-form {
             padding-top: 0 !important;
+
+            .field-input-label {
+              top: 0 !important;
+            }
           }
 
           .forum-new-post-form,
@@ -248,7 +277,7 @@ body.new-theme {
               }
 
               .field-label-text {
-                color: $mckinsey-gray-text;
+                color: $gray;
                 font-size: 12px;
                 position: absolute;
                 top: 15px;
@@ -259,7 +288,7 @@ body.new-theme {
               .post-topic {
                 width: 100% !important;
                 font-size: 12px;
-                color: $mckinsey-gray-text;
+                color: $gray;
               }
 
               .js-post-title {
@@ -267,18 +296,18 @@ body.new-theme {
                 width: 100% !important;
                 border-left: 0;
                 border-right: 0;
-                color: $mckinsey-gray-text;
+                color: $gray;
                 font-size: 12px;
               }
 
               .field-input-label {
-                padding: 10px !important;
+                padding: 0px !important;
                 font-size: 0.875rem;
               }
             }
 
             .field-label-text {
-              color: $mckinsey-gray-text;
+              color: $gray;
               font-size: 12px;
 
               &:before {
@@ -299,7 +328,7 @@ body.new-theme {
               margin-bottom: 15px !important;
 
               label {
-                margin-bottom: 10px;
+                margin-bottom: 5px;
 
                 .input-checkbox {
                   width: 20px !important;
@@ -349,7 +378,7 @@ body.new-theme {
                 margin-bottom: 10px;
 
                 .field-label-text {
-                  color: $mckinsey-gray-text;
+                  color: $gray;
                   font-size: 12px;
                   position: absolute;
                   top: 15px;
@@ -366,7 +395,7 @@ body.new-theme {
                   width: 100% !important;
                   border-left: 0;
                   border-right: 0;
-                  color: $mckinsey-gray-text;
+                  color: $gray;
                 }
               }
 
@@ -391,11 +420,11 @@ body.new-theme {
 
               .posted-details {
                 font-size: 12px;
-                color: $mckinsey-gray-text;
+                color: $gray;
                 margin: 0;
 
                 .username {
-                  color: $mckinsey-default-link !important;
+                  color: var(--primary) !important;
                   font-weight: 600;
                   font-size: 12px;
                 }
@@ -405,8 +434,8 @@ body.new-theme {
                   font-weight: normal;
 
                   &:before {
-                    color: #FFFFFF;
-                    background: $mckinsey-gray-text;
+                    color: $white;
+                    background: $gray;
                     font-size: 0.625rem;
                     padding: 0px 2px;
                     line-height: normal;
@@ -464,26 +493,104 @@ body.new-theme {
 
   /* desktop && mobile */
   #course-discussion {
-    background: #FFF;
+    background: $white;
     position: relative;
     z-index: 9999;
-    padding-top: 30px;
+    padding-top: 0px;
 
-    .edit-post-form .post-cancel,
-    .edit-post-form .post-update {
-      margin-top: 10px !important;
-      margin-left: 0 !important;
+    #contact-ta {
+      .modal-dialog {
+        .modal-content {
+          padding: 20px;
+
+          .modal-header {
+            border: 0 !important;
+            padding-bottom: 0;
+            padding-left: 8px;
+
+            .close {
+              font-weight: normal;
+              outline: none;
+
+              &:hover {
+                color: currentColor;
+              }
+            }
+
+            .modal-title {
+              color: $black;
+              font-size: 1.5rem;
+            }
+          }
+
+          .modal-body {
+            padding: 3px 10px 10px;
+
+            div:first-child {
+              color: $gray;
+              font-size: 12px;
+              padding-bottom: 20px;
+            }
+
+            form {
+              textarea {
+                border: 1px solid $hard-gray;
+                width: 100%;
+                margin-bottom: 15px;
+                padding: 10px;
+                font-size: 0.875rem;
+                outline: none;
+              }
+
+              .button {
+                @include primary-button;
+
+                &:hover,
+                &:active {
+                  @include primary-button-hover;
+                }
+
+                &:disabled {
+                  background-color: $gray;
+                  color: $light-gray;
+                  cursor: default;
+                }
+              }
+            }
+          }
+
+          .modal-footer {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .edit-post-form {
+
+      .post-cancel,
+      .post-update {
+        margin-top: 10px !important;
+        margin-left: 0 !important;
+      }
+
+      .loading-animation {
+        display: none;
+      }
     }
 
     .discussion-content {
+      padding: 24px 20px 10px;
 
       .discussion,
       .col {
         padding: 0;
+        position: relative;
       }
 
       .discussion-body {
-        overflow: hidden;
+        padding-bottom: 50px;
+        max-width: 100%;
       }
 
       .page-content {
@@ -491,10 +598,10 @@ body.new-theme {
       }
 
       .post-label {
-        color: $mckinsey-gray-text;
+        color: $gray;
 
         &.post-label-pinned {
-          color: $mckinsey-gray-text;
+          color: $gray;
         }
       }
 
@@ -504,7 +611,7 @@ body.new-theme {
         border-radius: 0px !important;
         -webkit-appearance: none !important;
         box-shadow: none;
-        border: 1px solid #999999;
+        border: 1px solid $hard-gray;
       }
 
       button.btn,
@@ -521,6 +628,7 @@ body.new-theme {
         &.btn-link {
           .action-label {
             padding: 3px 5px 0;
+            color: $black;
           }
 
           .action-icon {
@@ -533,7 +641,7 @@ body.new-theme {
 
             &:before {
               font-size: 1.125rem;
-              color: $mckinsey-gray-text;
+              color: $gray;
               font-family: "Material Icons";
             }
           }
@@ -546,12 +654,15 @@ body.new-theme {
           }
 
           .icon {
-            color: $mckinsey-gray-text;
+            color: $gray;
           }
-
+          
           &.is-checked {
             .icon {
-              color: $mckinsey-default-link;
+              color: var(--primary);
+            }
+            .label-checked{
+              color: var(--primary);
             }
           }
         }
@@ -576,13 +687,23 @@ body.new-theme {
       .icon {
         font-family: "Material Icons";
         font-size: 1.125rem;
-        color: $mckinsey-default-link;
+        color: var(--primary);
 
         &.fa-spinner {
           &:before {
             content: '\e5d5';
             -webkit-animation: fa-spin 2s infinite linear;
             animation: fa-spin 2s infinite linear;
+          }
+        }
+        &.fa-check-square-o {
+          &:before {
+            content: "\e834";
+          }
+        }
+        &.fa-caret-down {
+          &:before {
+            content: "\e313";
           }
         }
 
@@ -614,7 +735,7 @@ body.new-theme {
         &.fa-filter {
           &:before {
             content: "\e8b6";
-            color: $mckinsey-gray-text;
+            color: $gray;
           }
         }
 
@@ -662,7 +783,7 @@ body.new-theme {
 
         &.fa-pencil {
           &:before {
-            content: "\e7fd";
+            content: "\e3c9";
           }
         }
 
@@ -689,6 +810,12 @@ body.new-theme {
             content: "\e5ca";
           }
         }
+
+        &.fa-check-square-o {
+          :before {
+            content: "\e834";
+          }
+        }
       }
 
       .forum-nav-browse-menu,
@@ -710,11 +837,11 @@ body.new-theme {
         .btn-link {
           background: none;
           font-size: 12px;
-          color: $mckinsey-gray-text;
+          color: $gray;
           font-weight: normal;
 
           &:hover {
-            color: $mckinsey-gray-text;
+            color: $gray;
             text-decoration: none;
           }
         }
@@ -722,7 +849,13 @@ body.new-theme {
         .nav-item {
           font-size: 12px;
           font-weight: normal;
-          color: $mckinsey-gray-text;
+          color: $gray;
+          margin-left: 0;
+          &:not(:only-child):first-child {
+            .btn-link {
+              color: var(--primary)
+            }
+          }
         }
 
         .fa-bars {
@@ -745,13 +878,22 @@ body.new-theme {
           position: absolute;
           top: 50px;
           width: 100%;
-          left: 10px;
+          left: 0;
           text-align: left;
         }
 
 
         .page-header-secondary {
           width: 76%;
+
+          h1 {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 1.75rem;
+            font-weight: 300;
+            color: $black;
+          }
 
           .new-post-btn {
             margin-top: 0px;
@@ -792,7 +934,7 @@ body.new-theme {
               top: 5px;
               right: 10px;
               content: "\e8b6";
-              color: $mckinsey-gray-text;
+              color: $gray;
               font-size: 1.25rem;
             }
           }
@@ -802,20 +944,20 @@ body.new-theme {
       .forum-nav {
         margin: 0;
         border: 0;
-        background: #F7F7F7;
+        background: $white;
         padding: 0;
         margin-bottom: 20px;
-        height: auto !important;
+        position: relative!important;
 
 
         .ask-ta {
           background: none !important;
-          padding: 20px 20px 0;
+          padding: 20px 20px 0 0;
 
 
           .group-member {
             padding: 0 10px 20px 0;
-            border-bottom: 1px solid #ded6d6;
+            border-bottom: 1px solid $gray-border;
             margin-bottom: 10px;
 
             .avatar {
@@ -834,17 +976,21 @@ body.new-theme {
               }
 
               .email-member {
-                color: $mckinsey-default-link;
+                color: var(--primary);
                 text-transform: lowercase;
                 font-size: 12px;
+                background: none;
+                border: 0;
+                padding: 0;
               }
             }
           }
         }
 
         .forum-nav-browse-menu-wrapper {
-          padding: 15px 10px;
+          padding: 15px 10px 15px 0;
           background: none;
+          border: 0;
 
           .forum-nav-browse-filter {
             border-bottom: 0;
@@ -859,7 +1005,7 @@ body.new-theme {
               width: 100%;
 
               #forum-nav-browse-filter-input {
-                color: $mckinsey-gray-text;
+                color: $gray;
                 font-size: 1rem !important;
                 padding: 10px 10px;
                 text-transform: capitalize;
@@ -872,11 +1018,11 @@ body.new-theme {
           .forum-nav-browse-menu {
             .icon {
               top: 13px !important;
-              color: $mckinsey-default-link;
+              color: var(--primary);
             }
 
             .forum-nav-browse-menu-item {
-              border-bottom: 1.21px solid #F1F3F6;
+              border-bottom: 1.21px solid $gray-border;
 
               .icon {
                 top: 16px;
@@ -884,7 +1030,7 @@ body.new-theme {
 
               .forum-nav-browse-title {
                 font-size: 1rem;
-                color: $mckinsey-default-link;
+                color: var(--primary);
                 border-bottom: 0;
 
                 &:active,
@@ -896,7 +1042,7 @@ body.new-theme {
               .forum-nav-browse-submenu {
                 .forum-nav-browse-title {
                   font-size: 12px;
-                  color: $mckinsey-gray-text;
+                  color: $gray;
                   padding: 10px;
                 }
               }
@@ -921,7 +1067,7 @@ body.new-theme {
           font-size: 1.5rem;
           font-weight: 400;
 
-          color: #000;
+          color: $black;
         }
 
         button.btn-brand {
@@ -945,7 +1091,7 @@ body.new-theme {
         .field-label-text {
           font-size: 1rem;
           font-weight: normal !important;
-          color: #000;
+          color: $black;
         }
 
 
@@ -962,7 +1108,10 @@ body.new-theme {
             }
 
             .field-input-label {
-              color: $mckinsey-default-link !important;
+              color: var(--primary) !important;
+              position: absolute;
+              top: -3px;
+              left: 30px;
 
               &:hover {
                 color: $mckinsey-primary-hover-button;
@@ -980,12 +1129,12 @@ body.new-theme {
 
               .icon:hover {
                 &:before {
-                  color: #000 !important
+                  color: $black !important
                 }
               }
 
               &:hover {
-                color: #000
+                color: $black
               }
             }
           }
@@ -1005,14 +1154,14 @@ body.new-theme {
             &#field_help_topic_area {
 
               position: absolute;
-              bottom: -27px;
+              top: 64px;
 
               &:before {
                 content: 'Add your post to a relevant topic to help others find it.';
                 font-size: 12px;
                 position: absolute;
                 display: block;
-                color: $mckinsey-gray-text;
+                color: $gray;
                 font-size: 12px;
               }
             }
@@ -1020,14 +1169,14 @@ body.new-theme {
             &#field_help_title {
 
               position: absolute;
-              bottom: -27px;
+              top: 64px;
 
               &:before {
                 content: 'Add a clear and descriptive title to encourage participation.';
                 font-size: 12px;
                 position: absolute;
                 display: block;
-                color: $mckinsey-gray-text;
+                color: $gray;
                 font-size: 12px;
               }
             }
@@ -1043,11 +1192,11 @@ body.new-theme {
               background-image: url(../../images/expand-button.svg);
               -webkit-appearance: none !important;
               padding: 0 10px;
-              border: 1px solid #999999 !important;
+              border: 1px solid $hard-gray !important;
               background-repeat: no-repeat;
               background-position: 95%;
               background-size: 12px;
-              color: $mckinsey-gray-text;
+              color: $gray;
             }
           }
 
@@ -1057,7 +1206,7 @@ body.new-theme {
             &:before {
               content: 'Questions raise issues that need answers. Discussions share ideas and start conversations.';
               font-size: 12px;
-              color: $mckinsey-gray-text;
+              color: $gray;
               position: absolute;
               display: block;
             }
@@ -1075,7 +1224,7 @@ body.new-theme {
             font-size: 1rem;
             position: absolute;
             display: block;
-            color: #000;
+            color: $black;
           }
         }
 
@@ -1085,7 +1234,7 @@ body.new-theme {
         .edit-post-title {
           max-width: none;
           width: 55% !important;
-          color: $mckinsey-gray-text;
+          color: $gray;
         }
 
 
@@ -1111,27 +1260,37 @@ body.new-theme {
 
         .post-options {
           .field-label {
+            &:nth-child(2) {
+              .field-input-label {
+                top: 2px;
+              }
+            }
+
             .field-input-label {
               font-size: 0.875rem;
+              position: absolute;
+              top: -4px;
 
               .icon {
                 &::before {
-                  color: #000;
+                  color: $black;
                 }
               }
             }
 
 
             width: 100%;
-            color: #000000;
+            color: $black;
             text-transform: capitalize;
+            padding-left: 30px;
+            height: 18px;
 
             .field-input:checked+.field-input-label {
-              color: $mckinsey-default-link;
+              color: var(--primary);
 
               .icon {
                 &::before {
-                  color: $mckinsey-default-link;
+                  color: var(--primary);
                 }
               }
             }
@@ -1143,12 +1302,12 @@ body.new-theme {
         .forum-nav-refine-bar {
           background: none;
           margin: 0 auto 15px;
-          padding-top: 15px;
+          padding: 15px 0 0;
           border: 0;
           width: 95%;
 
           select {
-            color: $mckinsey-gray-text;
+            color: $gray;
             border: 0;
             width: 100%;
             background-image: url(../../images/expand-button.svg);
@@ -1157,37 +1316,27 @@ body.new-theme {
             background-position: 90%;
             background-size: 8px;
             width: 100%;
-            padding: 7px 0 7px 10px;
-
-            &.forum-nav-sort-control {
-              &:after {
-                width: 0;
-                height: 0;
-                border-left: 20px solid transparent;
-                border-right: 20px solid transparent;
-                border-top: 20px solid #f00;
-                padding: 0 10px;
-              }
-            }
+            padding: 7px 25px 7px 10px;
           }
 
           label {
-            width: 49%;
-            background: #FFF;
-            border: 1px solid #999999;
+            width: 50%;
+            background: $white;
+            border: 1px solid $hard-gray;
             padding: 0;
 
             &.forum-nav-filter-main {
-              border: 1px solid #999999;
+              border: 1px solid $hard-gray;
               width: 49%;
               margin-left: 1%;
+              float: right;
             }
           }
         }
 
         .forum-nav-thread-list {
-          background: #FFF;
-          border: 1px solid #D8D8D8;
+          background: $white;
+          border: 1px solid $border_color_1;
 
           .forum-nav-thread {
             border: 0;
@@ -1198,34 +1347,34 @@ body.new-theme {
 
             .forum-nav-thread-link {
               border-left: 0;
-              background-color: #F3F4F6;
-              border-bottom: 1.21px solid #F1F3F6;
+              background-color: $ash-white;
+              border-bottom: 1.21px solid $ash-white;
               padding: 14px 10px !important;
 
               .icon {
-                color: #000000;
+                color: $black;
               }
 
               &.is-active {
-                background-color: #E2EFF7 !important;
+                background-color: $sky-blue !important;
 
                 .forum-nav-thread-title,
                 .icon {
-                  color: #0B0886;
+                  color: $dark-blue;
                 }
               }
 
               .forum-nav-thread-title {
                 font-size: 1rem;
-                color: #000;
+                color: $black;
                 line-height: 22px;
                 font-weight: 400;
               }
 
               .forum-nav-thread-comments-count {
                 display: inline-block !important;
-                background-color: $mckinsey-gray-text;
-                color: #FFFFFF;
+                background-color: $gray;
+                color: $white;
                 font-size: 0.625rem;
                 padding: 0px 0px;
 
@@ -1235,7 +1384,7 @@ body.new-theme {
                   left: 0px;
                   border-top: 0px solid transparent;
                   border-bottom: 5px solid transparent;
-                  border-left: 5px solid $mckinsey-gray-text;
+                  border-left: 5px solid $gray;
                 }
               }
 
@@ -1250,11 +1399,11 @@ body.new-theme {
             &.never-read {
               .forum-nav-thread-link {
                 border-left: 0;
-                color: $mckinsey-default-link;
+                color: var(--primary);
                 background-color: transparent;
 
                 .icon {
-                  color: $mckinsey-default-link;
+                  color: var(--primary);
                 }
               }
             }
@@ -1277,7 +1426,7 @@ body.new-theme {
             color: transparent;
 
             &:before {
-              color: #000;
+              color: $black;
               font-weight: normal;
               font-size: 1.5rem;
               content: 'Discussion';
@@ -1310,10 +1459,10 @@ body.new-theme {
 
         .home-helpgrid {
           box-shadow: none;
-          border: 1px solid $mckinsey-light-border;
+          border: 1px solid $light-gray;
 
           .helpgrid-row {
-            border-bottom: 1px solid $mckinsey-light-border;
+            border-bottom: 1px solid $light-gray;
 
             .row-title {
               background-color: transparent;
@@ -1322,7 +1471,7 @@ body.new-theme {
             }
 
             .row-item {
-              border: 1px solid $mckinsey-light-border;
+              border: 1px solid $light-gray;
 
               .icon {
                 width: 100%;
@@ -1373,18 +1522,18 @@ body.new-theme {
                 border: 0;
 
                 .post-title {
-                  color: #000000;
+                  color: $black;
                   font-size: 1.5rem;
                   font-weight: normal;
                 }
 
                 .posted-details {
                   font-size: 12px;
-                  color: $mckinsey-gray-text;
+                  color: $gray;
                   margin: 0;
 
                   .username {
-                    color: $mckinsey-default-link;
+                    color: var(--primary);
                     font-weight: 600;
                     font-size: 12px;
                   }
@@ -1395,8 +1544,8 @@ body.new-theme {
                     line-height: normal;
 
                     &:before {
-                      color: #FFFFFF;
-                      background: $mckinsey-gray-text;
+                      color: $white;
+                      background: $gray;
                       font-size: 0.5625rem;
                       padding: 0px 2px;
                       width: auto;
@@ -1410,23 +1559,31 @@ body.new-theme {
                     float: left;
                   }
 
+                  .actions-item:last-child {
+                    .more-wrapper {
+                      button.btn-link .icon {
+                        color: var(--primary);
+                      }
+                    }
+                  }
+
                   .actions-dropdown-list {
                     display: grid;
 
                     .btn-link {
                       .icon {
-                        color: $mckinsey-gray-text;
+                        color: $gray;
                       }
 
                       &.is-checked {
                         &.action-pin {
-                          color: $mckinsey-default-link;
+                          color: var(--primary);
                         }
                       }
 
                       &:hover {
                         .icon {
-                          color: $mckinsey-default-link;
+                          color: var(--primary);
                         }
                       }
                     }
@@ -1438,7 +1595,7 @@ body.new-theme {
               .post-body {
                 p {
                   font-size: 1rem;
-                  color: #000000;
+                  color: $black;
                 }
               }
 
@@ -1448,7 +1605,7 @@ body.new-theme {
                 }
 
                 .group-visibility-label {
-                  color: $mckinsey-gray-text;
+                  color: $gray;
                   font-size: 12px;
                   font-style: italic;
                 }
@@ -1458,10 +1615,36 @@ body.new-theme {
 
           .post-extended-content {
             .response-btn-count-wrapper {
+              .add-response {
+                display: inline-block !important;
+                .btn {
+                  background: none;
+                  color: $black;
+                  border: 0;
+                  font-size: 1rem;
+                  padding: 0;
+                  text-transform: initial;
+                  height: auto !important;
+                  &:hover{
+                    background: none !important;
+                    color: $black !important;
+                    font-size: 1rem !important;
+                    text-transform: initial !important;
+                    padding: 0 !important;
+                  }
+                }
+              }
+
+              .response-count {
+                display: none;
+              }
+            }
+
+            .response-pagination {
               display: none;
             }
 
-            .js-response-list {
+            .js-response-list, .js-marked-answer-list {
               padding: 0;
 
               .forum-response {
@@ -1486,7 +1669,9 @@ body.new-theme {
 
                   .response-header-content {
                     .username {
-                      color: $mckinsey-default-link;
+                      color: var(--primary);
+                      font-weight: 600;
+                      font-size: 12px;
                     }
 
                     .user-label-staff {
@@ -1494,8 +1679,8 @@ body.new-theme {
                       font-weight: normal;
 
                       &:before {
-                        color: #FFFFFF;
-                        background: $mckinsey-gray-text;
+                        color: $white;
+                        background: $gray;
                         font-size: 0.625rem;
                         padding: 1px 2px;
                         width: auto;
@@ -1511,6 +1696,14 @@ body.new-theme {
                     .actions-item {
                       margin: 0 5px 0;
                       float: left;
+
+                      &:last-child {
+                        .more-wrapper {
+                          button.btn-link .icon {
+                            color: var(--primary);
+                          }
+                        }
+                      }
                     }
                   }
 
@@ -1532,6 +1725,17 @@ body.new-theme {
                     }
                   }
                 }
+                .action-show-comments{
+                  color: var(--primary);
+                  text-decoration: none;
+                  font-size: 0.875rem;
+                  font-weight: normal;
+                  .fa-caret-down::before{
+                    color: var(--primary);
+                    font-size: 1.25rem;
+                    vertical-align: text-top;
+                  }
+                }
 
                 .comments {
                   background-color: #f9f9f9;
@@ -1543,7 +1747,7 @@ body.new-theme {
 
                     .wmd-preview-label {
                       font-size: 1rem;
-                      padding: 10px 3px 0 8px;
+                      padding: 7px 10px;
                     }
 
                     .wmd-input {
@@ -1571,11 +1775,11 @@ body.new-theme {
 
                   .posted-details {
                     font-size: 12px;
-                    color: $mckinsey-gray-text;
+                    color: $gray;
                     margin: 0;
 
                     .username {
-                      color: $mckinsey-default-link;
+                      color: var(--primary);
                       font-weight: 600;
                       font-size: 12px;
                     }
@@ -1585,8 +1789,8 @@ body.new-theme {
                       font-weight: normal;
 
                       &:before {
-                        color: #FFFFFF;
-                        background: $mckinsey-gray-text;
+                        color: $white;
+                        background: $gray;
                         font-size: 0.625rem;
                         padding: 0px 2px;
                         line-height: normal;
@@ -1608,7 +1812,7 @@ body.new-theme {
                 .wmd-preview-container {
                   .wmd-preview-label {
                     font-size: 1rem;
-                    padding: 10px 3px 0 8px;
+                    padding: 7px 10px;
                   }
                 }
               }
@@ -1630,6 +1834,35 @@ body.new-theme {
               }
             }
           }
+        }
+      }
+    }
+  }
+
+  .wmd-prompt-background {
+    z-index: 9999 !important;
+  }
+
+  .wmd-prompt-dialog {
+    z-index: 9999 !important;
+
+    .form-actions {
+      #new-link-image-ok {
+        @include primary-button;
+
+        &:hover,
+        &:active {
+          @include primary-button-hover();
+        }
+
+      }
+
+      #new-link-image-cancel {
+        @include secondary-button;
+
+        &:hover,
+        &:active {
+          @include secondary-button-hover();
         }
       }
     }

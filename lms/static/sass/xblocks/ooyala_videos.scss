@@ -51,6 +51,7 @@ body.new-theme {
                     .oo-icon {
 
                         &.oo-icon-play-slick {
+                            color: transparent !important;
                             background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
                             background-position: -10px -9px;
                             &:hover{

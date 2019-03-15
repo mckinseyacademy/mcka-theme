@@ -1,0 +1,73 @@
+// Imports
+@import 'vars/variables';
+@import 'mixins/mixins';
+@import 'core/reset';
+@import 'core/core';
+@import 'form/checkbox';
+@import 'form/radiobutton';
+@import 'common/buttons';
+
+// Styling
+
+.new-theme {
+    [data-block-type="scormxblock"] {
+        .scormxblock_block {
+            .scorm_name {
+                @include font-size(24);
+                font-weight: 300;
+                margin-bottom: 15px;
+            }
+
+            .scorm_description {
+                margin: 0 0 25px;
+                padding: 0;
+                background: none;
+                @include font-size(16);
+
+                @media (max-width: 767.98px) {
+                    @include font-size(14);
+                }
+
+            }
+
+            .scorm_launch {
+                button {
+                    font-weight: 600;
+                    font-size: 12px;
+                    height: 40px;
+                    border-radius: 2px;
+                    text-transform: uppercase;
+                    line-height: 1.83;
+                    letter-spacing: 0.5px;
+                    text-align: center;
+                    padding: 0 20px;
+                    background-color: var(--primary);
+                    border-color: var(--primary);
+                    transition: .35s;
+                    color: $white;
+
+                    &:hover {
+                        background: $dark-blue;
+                        color: $white;
+                    }
+
+                    &:disabled {
+                        background: $gray;
+                        opacity: 1;
+                        border-color: $gray;
+                        cursor: not-allowed;
+                        color: $white;
+
+                        &:hover {
+                            background: $gray;
+                            opacity: 1;
+                            border-color: $gray;
+                            cursor: not-allowed;
+                            color: $white;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

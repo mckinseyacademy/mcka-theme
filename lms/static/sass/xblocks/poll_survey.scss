@@ -1,4 +1,12 @@
+@import "vars/variables";
+@import "form/checkbox";
+@import "form/radiobutton";
+@import "mixins/mixins";
+@import "common/buttons";
+
 //  Overrides for xblocks polls & surveys:
+@import '../base/variables';
+
 
 body.new-theme {
     .lesson-content {
@@ -7,14 +15,14 @@ body.new-theme {
 
             .poll-header {
                 font-size: 12px;
-                color: #000;
+                color: $black;
             }
 
             .poll-container {
                 .poll-question {
                     p {
                         font-size: 1rem;
-                        color: #000;
+                        color: $black;
                     }
                 }
 
@@ -28,7 +36,7 @@ body.new-theme {
 
                         p {
                             font-size: 1rem;
-                            color: #000;
+                            color: $black;
                             font-weight: normal;
                         }
                     }
@@ -39,12 +47,12 @@ body.new-theme {
                 padding-left: 1em;
 
                 poll-top-choice {
-                    color: #2042CB;
+                    color: var(--primary);
                 }
 
                 .percentage-gauge-container {
                     .percentage-gauge {
-                        background-color: #EEEEEE;
+                        background-color: $light-gray;
                     }
                 }
             }
@@ -56,12 +64,25 @@ body.new-theme {
                 .survey-question {
                     p {
                         font-size: 1rem;
-                        color: #000;
+                        color: $black;
                         font-weight: normal;
                     }
                 }
 
                 .survey-option {
+                    position: relative;
+
+                    label {
+                        display: inline-grid;
+                        margin-top: 7px;
+                    }
+
+                    .visible-mobile-only {
+                        position: absolute;
+                        left: 35px;
+                        top: 10px;
+                    }
+
                     input[type="radio"] {
                         height: auto;
                     }
@@ -82,8 +103,11 @@ body.new-theme {
                             font-size: 0.9375rem;
 
                             &.poll-top-choice {
-                                color: #2042CB;
-                                background-color: #EEEEEE;
+                                color: var(--primary);
+                                background-color: $light-gray;
+                            }
+                            &.survey-option .visible-mobile-only {
+                                position: initial;
                             }
                         }
                     }
@@ -119,4 +143,98 @@ body.new-theme {
             padding-bottom: 6px;
         }
     }
+}
+
+.new-theme {
+    @include font-size(14);
+
+    [data-block-type="poll"] {
+        .poll-container {
+            .poll-answers {
+                margin-bottom: 32px;
+                padding: 0;
+
+                .poll-answer {
+                    display: table-row !important;
+
+                    .poll-input-container {
+                        padding-right: 24px;
+                        line-height: normal;
+                        padding-left: 5px;
+
+                        &:before {
+                            left: 2px;
+                            top: 2px;
+                        }
+
+                        &:after {
+                            left: 4px;
+                            top: 4px;
+                        }
+
+                        [type="radio"] {
+                            left: 2px;
+                            top: 2px;
+                        }
+
+
+                    }
+
+                    .poll-answer-text {
+                        font-weight: normal;
+                        padding-bottom: 5px;
+
+                        p {
+                            margin: 0;
+                            font-size: 0.875rem !important;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Poll Result
+
+        .poll-results-wrapper {
+            .poll-answers-results {
+                padding: 0;
+                max-width: none;
+
+                .poll-result {
+                    .poll-result-input-container {
+                        padding: 10px 0;
+                        width: 28px;
+
+                        [type="radio"] {
+                            height: auto;
+                            top: 2px;
+                        }
+
+                        &:before {
+
+                            top: 2px;
+                        }
+
+                        &:after {
+                            left: 2px;
+                            top: 4px;
+                        }
+                    }
+
+                    .percentage-gauge-container {
+                        .poll-answer-label {
+                            font-weight: normal;
+                        }
+                    }
+
+                    .poll-percent-container {
+                        .poll-percent-display {
+                            font-weight: normal;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }

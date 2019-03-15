@@ -37,6 +37,8 @@ $mckinsey-light-border: #EEEEEE;
 $mckinsey-gray-text: #696969;
 
 
+
+
 // McKinsey Academy Breakpoints
 $media-mcka-phone: 'only screen and (max-width: 540px)'; // Mobile phone; matches edx-platform '$bp-small' breakpoint
 $media-mcka-mobile: 'only screen and (max-width: 768px)'; // Phone or tablet; matches edx-platform '$bp-medium' breakpoint
@@ -49,3 +51,66 @@ $media-mcka-mobile: 'only screen and (max-width: 768px)'; // Phone or tablet; ma
 
 // This is where to override standard Open edX LMS variables like $action-primary-bg and $link-color:
 
+/* syncing color codes of mcka  start*/
+$black: #000000;
+$lighter-gray: #6F6F6F;
+$gray: #696969;
+$gray-border: #ebebeb;
+$hard-gray: #979797;
+$white: #ffffff;
+$bg-white-red: #d50000;
+$bg-black-red: #f00000;
+$bg-white-green: #008000;
+$bg-black-green: #00d400;
+$sharp-green: #00F121;
+
+// Navigation colors
+$dark-blue: #0b0886;
+$smoke-gray: #232d39;
+$gray-border: #EBEBEB;
+
+// Background colors
+$ash-white: #f3f4f6;
+$ash-hard: #f5f5f5;
+$dark-gray: #4a4a4a;
+$sky-blue: #e2eff7;
+$blue-sharp: #2A3EC6;
+$light-gray: #eeeeee;
+$bg-login-footer: #251F2E;
+
+// Admin Site Variables
+$mckinsey-light-blue: #2a90ee;
+$mckinsey-dark-grey: #868685;
+$manager-progress-green: #00d8a0;
+$manager-green: #008b02;
+$manager-progress-green: #FBEDEB;
+$color_1: #222;
+$background_color_1: #f8f8f8;
+
+$color_1: #333333;
+$color_2: #000;
+$mid-gray : #cccccc;
+$mckinsey-academy-alt-blue: #3384CA;
+$mckinsey-academy-blue-gray: #B1C2CC;
+$mckinsey-academy-discussion-icon-gray: #b2b2b2;
+$mckinsey-academy-bright-gray: #E5EBEE;
+
+$background_color_1: #FFF3E7;
+$background_color_2: transparent;
+$background_color_3: #FAF2CC;
+$background_color_4: #d0e9c6;
+$background_color_5: #ebcccc;
+$background_color_6: #faf2cc;
+$background_color_7: #c4e3f3;
+$border_color_1: #d8d8d8;
+$smooth-gray: #D7D7D7;
+
+// Typography
+$body-font-family: 'Open Sans', sans-serif;
+$body-font: 0.875rem;
+/* syncing color codes of mcka  ends*/
+
+//extra colours
+$light-green: #CCE6CC;
+$light-red: #F7CCCC;
+$popup-border: #d8d8d8;

@@ -1,0 +1,144 @@
+// Imports
+
+@import 'vars/variables';
+@import 'mixins/mixins';
+@import 'core/reset';
+@import 'core/core';
+@import 'form/checkbox';
+@import 'form/radiobutton';
+@import 'common/buttons';
+
+// Styling
+
+.new-theme {
+    [data-block-type="chat"] {
+        .chat-wrapper {
+            .chat-block {
+                .main-area {
+
+                    // Messages
+                    .messages {
+                        .message {
+
+                            &.bot,
+                            &.user {
+
+                                .avatar {
+                                    img {
+                                        border-color: $mid-gray;
+                                        border-width: 1px;
+                                    }
+                                }
+
+                                .message-body {
+                                    p {
+                                        @include font-size(14);
+                                        font-family: "Open Sans", sans-serif !important;
+                                        border-radius: 2px;
+                                        padding: 10px 16px;
+                                    }
+                                }
+                            }
+
+                            &.user {
+                                .message-body {
+                                    p {
+                                        background: $user-message-bg;
+                                        color: $black;
+                                    }
+
+                                    &::after {
+                                        border-color: transparent $user-message-bg;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // buttons
+                    .buttons {
+                        .response-button {
+                            button {
+                                font-weight: 600;
+                                font-size: 12px;
+                                height: 40px;
+                                border-radius: 2px;
+                                text-transform: uppercase;
+                                line-height: 1.83;
+                                letter-spacing: 0.5px;
+                                text-align: center;
+                                padding: 0 20px;
+                                border: 1px solid var(--primary);
+                                transition: .35s;
+                                color: $primary;
+                                cursor: pointer;
+                                font-family: "Open Sans",sans-serif !important;
+                                background:transparent;
+
+                                &:hover {
+                                    color: $dark-blue;
+                                    border-color: $dark-blue;
+                                }
+
+                                &:disabled {
+                                    background: $gray;
+                                    opacity: 1;
+                                    border-color: $gray;
+                                    cursor: not-allowed;
+                                    color: $white;
+
+                                    &:hover {
+                                        background: $gray;
+                                        opacity: 1;
+                                        border-color: $gray;
+                                        cursor: not-allowed;
+                                        color: $white;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .actions {
+                    .restart-button {
+
+                        font-weight: 600;
+                        font-size: 12px;
+                        height: 40px;
+                        font-family: "Open Sans",sans-serif !important;
+                        text-transform: uppercase;
+                        line-height: 1.83;
+                        letter-spacing: 0.5px;
+                        text-align: center;
+                        padding: 0 20px;
+                        transition: .35s;
+                        color: $primary;
+                        cursor: pointer;
+
+                        &:hover {
+                            background: $ash-hard;
+                            color: $dark-blue;
+                            &::before {
+                                color: $dark-blue;
+                            }
+                        }
+
+
+                        &::before {
+                            font-family: 'Material Icons';
+                            content: '\e863';
+                            color: $primary;
+                            margin-right: 6px;
+                            position: relative;
+                            top: 3px;
+                            padding-right: 0;
+                            @include font-size(16);
+
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

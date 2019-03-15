@@ -1,0 +1,130 @@
+.new-theme{
+  button.btn,
+  a.btn {
+    font-weight: 600;
+    font-size: 12px;
+    height: 40px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    line-height: 1.83;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 0 20px;
+
+    //Secondary button .btn-primary
+    &.btn-primary {
+      color: $white;
+      background-color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    //Secondary button .btn-secondary
+    &.btn-secondary {
+      background: $white;
+      border: 1px solid var(--primary);
+      color: var(--primary);
+
+      &:hover {
+        color: $dark-blue;
+      }
+    }
+
+    //tertiary button .btn-tertiary
+    &.btn-tertiary {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--primary);
+
+      &:hover {
+        background-color: $ash-hard;
+        color: $dark-blue;
+      }
+    }
+
+    /*============= Helping Classes =====================*/
+
+    i {
+      font-size: inherit;
+      vertical-align: middle;
+      margin: -3px 10px 0 0;
+      line-height: inherit;
+    }
+
+    &.btn-lg {
+      font-size: 1rem;
+      height: 50px;
+      padding: 0 30px;
+
+      i {
+        line-height: inherit;
+        font-size: 1rem;
+      }
+    }
+
+    /*============= Disable Button =====================*/
+
+    &:disabled {
+      background: $gray;
+      opacity: 1;
+      border-color: $gray;
+      cursor: not-allowed;
+      color: $white;
+
+      &:hover {
+        background: $gray;
+        opacity: 1;
+        border-color: $gray;
+        cursor: not-allowed;
+        color: $white;
+      }
+    }
+
+  }
+
+  a.btn {
+    font-weight: 600;
+    font-size: 12px;
+    height: 40px;
+    border-radius: 2px;
+    text-transform: uppercase;
+    line-height: 1.83;
+    letter-spacing: 0.5px;
+    text-align: center;
+    padding: 0 20px;
+    line-height: 40px;
+
+    /*============= Helping Classes =====================*/
+
+    &.btn-lg {
+      font-size: 1rem;
+      height: 50px;
+      line-height: 50px;
+    }
+
+    /*============= Disable Button =====================*/
+
+    &:disabled {
+      background: $gray;
+      opacity: 1;
+      border-color: $gray;
+      cursor: not-allowed;
+      color: $white;
+
+      &:hover {
+        background: $gray;
+        opacity: 1;
+        border-color: $gray;
+        cursor: not-allowed;
+        color: $white;
+      }
+    }
+  }
+
+  .btn-primary:not(:disabled):not(.disabled):active,
+  .btn-primary:not(:disabled):not(.disabled).active,
+  .show>.btn-primary.dropdown-toggle {
+    color: unset;
+    background-color: unset;
+    border-color: unset;
+  }
+}
