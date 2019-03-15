@@ -189,13 +189,15 @@ def delete_users(ids=None, username=None):
     else:
         raise ValueError('either ids or username are required')
 
-    return DELETE(
+    response = DELETE(
         '{}/{}?{}'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,
             urlencode(qs_params)
         )
     )
+
+    return json.loads(response.read())
 
 
 @api_error_protect
