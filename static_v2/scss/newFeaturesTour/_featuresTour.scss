@@ -1,0 +1,205 @@
+// New Feature's Tour Styles
+.newFeatureTour {
+  .btn-skip {
+    position: absolute;
+    top: 20px;
+    z-index: 9999;
+    font-size: 12px;
+    line-height: 17px;
+    color: var(--primary);
+    font-weight: normal;
+    opacity: 1;
+  }
+  .featureImage {
+    width: 57%;
+    > .holder {
+      img {
+        width: 100%;
+        vertical-align: top;
+      }
+    }
+  }
+  .featureContent {
+    overflow: hidden;
+    .head {
+      margin-bottom: 10px;
+      h2 {
+        margin: 0;
+        color: var(--primary);
+        font-size: 2rem;
+        font-weight: 300;
+        line-height: 43px;
+      }
+    }
+    .contentHolder {
+      font-size: 1.5rem;
+      font-weight: 300;
+      line-height: 33px;
+      p {
+        margin: 15px 0 0;
+        &:first-child {
+          margin: 0;
+        }
+      }
+    }
+  }
+
+  //  Slider Wrapper
+  .sliderWraper {
+    position: relative;
+  }
+
+  //Modal
+  .modal-dialog {
+    max-width: 1200px;
+    top: 100px !important;
+    transform: translateY(0) !important;
+
+    .modal-body {
+      padding: 80px;
+    }
+    .modal-content {
+      border-radius: 9px;
+    }
+  }
+
+  .controlsWrap {
+    overflow: hidden;
+    position: static;
+    position: relative;
+    margin: 40px 0 -35px;
+    background: white;
+    .carousel-control-next,
+    .carousel-control-prev {
+      position: static;
+      top: auto;
+      bottom: auto;
+      z-index: 1;
+      display: block;
+      align-items: inherit;
+      justify-content: inherit;
+      width: auto;
+      background: var(--primary);
+      color: $white;
+      text-align: center;
+      opacity: 1;
+      padding: 4px 0;
+      transition: opacity .15s ease;
+      width: 38px;
+      height: 38px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 100%;
+      > span {
+        display: block;
+        background-image: none;
+        width: 28px;
+        height: 20px;
+        text-align: center;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        i {
+          font-size: 1.875rem;
+          line-height: 20px;
+        }
+      }
+    }
+  }
+  .carousel-item {
+    min-height: 345px;
+  }
+  .carousel-indicators {
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0;
+    margin-bottom: 0;
+    li {
+      box-sizing: content-box;
+      flex: none;
+      display: inline-block;
+      vertical-align: middle;
+      width: 10px;
+      height: 10px;
+      margin-right: 5px;
+      margin-left: 5px;
+      cursor: pointer;
+      background-color: transparent;
+      background-clip: padding-box;
+      opacity: 1;
+      position: relative;
+      &:after {
+        position: absolute;
+        content: '';
+        top: 50%;
+        left: 50%;
+        width: 9px;
+        height: 9px;
+        border-radius: 100%;
+        overflow: hidden;
+        border: 1px solid $mid-gray;
+        transition: all 0.3s ease;
+        transform: translate(-50%, -50%);
+      }
+      &.active {
+        &:after {
+          width: 15px;
+          height: 15px;
+          border-color: var(--primary);
+        }
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .newFeatureTour {
+    .featureImage {
+      width: 100%;
+      float: none;
+      margin: 0 0 40px;
+    }
+    .featureContent {
+      overflow: hidden;
+      clear: both;
+      text-align: center;
+      padding: 0 40px;
+    }
+    .carousel-item {
+      min-height: auto;
+    }
+    .modal-dialog {
+      max-width: 745px;
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .newFeatureTour {
+    .featureImage {
+      margin: 0 0 20px;
+    }
+    .featureContent{
+      padding:0;
+      .contentHolder{
+        font-size: 1.1rem;
+        line-height: 25px;
+      }
+      .head {
+      h2 {
+        font-size: 1.6rem;
+        line-height: 30px;
+      }
+    }
+    }
+    .controlsWrap{
+      margin: 30px -10px -35px;
+    }
+    .modal-dialog {
+      top: 15px !important;
+      max-width: calc(100% - 15px);
+      .modal-body {
+        padding: 80px 30px 55px;
+      }
+    }
+  }
+}
