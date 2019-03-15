@@ -94,12 +94,12 @@ body.new-theme {
       .post-field {
         .field-input {
           .post-topic {
-            min-width: 400px;
+            min-width: 370px;
           }
 
           &.js-post-title,
           &.edit-post-title {
-            min-width: 400px;
+            min-width: 370px;
           }
         }
 
@@ -115,6 +115,7 @@ body.new-theme {
   @media (max-width: 767px) {
     #course-discussion {
       padding: 0px;
+
       .wmd-panel {
 
         .wmd-preview-container {
@@ -136,11 +137,12 @@ body.new-theme {
 
       .discussion-content {
         padding: 24px 12px 10px 7px;
+
         #discussion-container {
 
           #main.discussion-column .discussion-article.view-discussion-home,
           .ask-ta {
-            display: none !important;
+            padding-left: 0;
           }
 
           .page-header {
@@ -215,9 +217,12 @@ body.new-theme {
             margin-bottom: 10px;
             height: auto !important;
             max-height: none !important;
-            .forum-nav-browse-menu-wrapper{
+
+            .forum-nav-browse-menu-wrapper {
               border: 0;
+              padding: 0;
             }
+
             .forum-nav-thread-list {
               height: auto !important;
             }
@@ -235,8 +240,9 @@ body.new-theme {
 
           .edit-post-form {
             padding-top: 0 !important;
+
             .field-input-label {
-              top:0 !important;
+              top: 0 !important;
             }
           }
 
@@ -498,7 +504,8 @@ body.new-theme {
             .close {
               font-weight: normal;
               outline: none;
-              &:hover{
+
+              &:hover {
                 color: currentColor;
               }
             }
@@ -544,7 +551,8 @@ body.new-theme {
               }
             }
           }
-          .modal-footer{
+
+          .modal-footer {
             display: none;
           }
         }
@@ -566,6 +574,7 @@ body.new-theme {
 
     .discussion-content {
       padding: 24px 29px 10px 12px;
+
       .discussion,
       .col {
         padding: 0;
@@ -573,7 +582,7 @@ body.new-theme {
       }
 
       .discussion-body {
-        overflow: hidden;
+        padding-bottom: 50px;
         max-width: 100%;
       }
 
@@ -674,6 +683,16 @@ body.new-theme {
             content: '\e5d5';
             -webkit-animation: fa-spin 2s infinite linear;
             animation: fa-spin 2s infinite linear;
+          }
+        }
+        &.fa-check-square-o {
+          &:before {
+            content: "\e834";
+          }
+        }
+        &.fa-caret-down {
+          &:before {
+            content: "\e313";
           }
         }
 
@@ -917,7 +936,7 @@ body.new-theme {
         background: $white;
         padding: 0;
         margin-bottom: 20px;
-        height: auto !important;
+        position: relative!important;
 
 
         .ask-ta {
@@ -1082,6 +1101,7 @@ body.new-theme {
               position: absolute;
               top: -3px;
               left: 30px;
+
               &:hover {
                 color: $mckinsey-primary-hover-button;
               }
@@ -1123,7 +1143,7 @@ body.new-theme {
             &#field_help_topic_area {
 
               position: absolute;
-              bottom: -27px;
+              top: 64px;
 
               &:before {
                 content: 'Add your post to a relevant topic to help others find it.';
@@ -1229,11 +1249,12 @@ body.new-theme {
 
         .post-options {
           .field-label {
-            &:nth-child(2){
+            &:nth-child(2) {
               .field-input-label {
-                top:2px;
+                top: 2px;
               }
             }
+
             .field-input-label {
               font-size: 0.875rem;
               position: absolute;
@@ -1270,7 +1291,7 @@ body.new-theme {
         .forum-nav-refine-bar {
           background: none;
           margin: 0 auto 15px;
-          padding-top: 15px;
+          padding: 15px 0 0;
           border: 0;
           width: 95%;
 
@@ -1284,11 +1305,11 @@ body.new-theme {
             background-position: 90%;
             background-size: 8px;
             width: 100%;
-            padding: 7px 0 7px 10px;
+            padding: 7px 25px 7px 10px;
           }
 
           label {
-            width: 49%;
+            width: 50%;
             background: $white;
             border: 1px solid $hard-gray;
             padding: 0;
@@ -1583,14 +1604,36 @@ body.new-theme {
 
           .post-extended-content {
             .response-btn-count-wrapper {
-              display: none;
+              .add-response {
+                display: inline-block !important;
+                .btn {
+                  background: none;
+                  color: $black;
+                  border: 0;
+                  font-size: 1rem;
+                  padding: 0;
+                  text-transform: initial;
+                  height: auto !important;
+                  &:hover{
+                    background: none !important;
+                    color: $black !important;
+                    font-size: 1rem !important;
+                    text-transform: initial !important;
+                    padding: 0 !important;
+                  }
+                }
+              }
+
+              .response-count {
+                display: none;
+              }
             }
 
             .response-pagination {
               display: none;
             }
 
-            .js-response-list {
+            .js-response-list, .js-marked-answer-list {
               padding: 0;
 
               .forum-response {
@@ -1616,6 +1659,8 @@ body.new-theme {
                   .response-header-content {
                     .username {
                       color: var(--primary);
+                      font-weight: 600;
+                      font-size: 12px;
                     }
 
                     .user-label-staff {
@@ -1667,6 +1712,17 @@ body.new-theme {
                     &:active {
                       @include secondary-button-hover;
                     }
+                  }
+                }
+                .action-show-comments{
+                  color: var(--primary);
+                  text-decoration: none;
+                  font-size: 0.875rem;
+                  font-weight: normal;
+                  .fa-caret-down::before{
+                    color: var(--primary);
+                    font-size: 1.25rem;
+                    vertical-align: text-top;
                   }
                 }
 
