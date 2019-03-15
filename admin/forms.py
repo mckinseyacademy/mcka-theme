@@ -97,7 +97,6 @@ class MassParticipantsDeleteListForm(forms.Form):
 class MassParticipantsDeleteConfirmationForm(forms.Form):
     """Form to upload file with students to be deleted."""
     file_url = forms.CharField(widget=forms.HiddenInput)
-    send_email = forms.BooleanField(initial=False, required=False, widget=forms.HiddenInput)
 
 
 class MassCompanyFieldsUpdateForm(forms.Form):
