@@ -1,0 +1,71 @@
+- extends "layout.haml"
+- load i18n
+
+- load staticfiles
+- block custom_js
+  %script{src: "{% static 'js/vendor/tinymce/tinymce.min.js' %}"}
+
+- block content
+  #managerDashboardWrapper
+    .container.mainTopHeader
+      .row
+        .col
+          .courseMainHeader
+            %h1.dropdown
+              %a.dropdown-toggle#managerCurrentCourse{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                -#= course.current_module.name
+              .dropdown-menu#managerDashboardWrapper.allLessons.allModules.adminModules
+                %ul.navigation.allCoursesList
+                  %strong.totalNumber {{manager_courses|length}} Courses
+                  - for index,course_id, course_name, cohorts_enabled in manager_courses
+                    %li.courseRow
+                      - if index == 0
+                        %a.hashPageButton.holder.active{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
+                          = course_name
+                          %span.bookmark
+                      - else
+                        %a.hashPageButton.holder{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
+                          = course_name
+    .container.adminStats.clearfix
+      .row
+        .col
+          - if manager_courses
+            .contentCard.progressWidgets.admin.clearfix
+              .row
+                %div.col.widget.progress-average
+                  .holder
+                    .contenrArea
+                      .widgetTitle.clearfix
+                        %span {% trans "Your team's average progress" %}
+                    .averageTitle
+                      %large 0%
+
+                %div.col.widget.proficiency-average
+                  .holder
+                    .contenrArea
+                      .widgetTitle.clearfix
+                        %span {% trans "Your team's average proficiency" %}
+                    .averageTitle
+                      %large 0%
+                  -#.avgProgress
+            .contentCardWrap
+              .contentCard
+                .headerArea.lesson-title
+                  %h2
+                    Team Participant
+                #managerDashboardContainer
+                  - for index,course_id, course_name, cohorts_enabled in manager_courses
+                    .contentNavigationContainer{class: "managerDashboardCourse#{index}"}
+                      .large-12.columns.spinnerContainer{id: "managerDashboardReportGrid#{index}"}
+                %h5.note
+                  %strong Note:
+                  Progress data is updated every hour
+          - else
+            #managerDashboardContainer
+              .contentNavigationContainer{class: "managerDashboardCourse"}
+                %span.noDirectReport
+                  {% trans "No course for your direct reports" %}
+                .large-12.columns.spinnerContainer{id: "managerDashboardReportGrid"}
+
+  -# This code is used by JS
+  #manager_courses{'course-length': '{{manager_courses|length}}'}

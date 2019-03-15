@@ -1,7 +1,9 @@
 """
 Celery tasks related to admin app
 """
+import os
 import json
+import hashlib
 from collections import OrderedDict
 from multiprocessing.pool import ThreadPool
 from tempfile import TemporaryFile
@@ -23,6 +25,7 @@ from celery.exceptions import Ignore, MaxRetriesExceededError, Reject
 from accounts.helpers import get_organization_by_user_email
 from api_client import course_api
 from api_client import group_api
+from api_client import instructor_api
 from api_client import user_api
 from api_client.api_error import ApiError
 from api_client.cohort_api import add_cohort_for_course
@@ -30,7 +33,7 @@ from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage
 from util.email_helpers import send_html_email
 
-from admin.models import LearnerDashboardTile
+from admin.models import LearnerDashboardTile, AdminTask
 from accounts.models import UserActivation
 from accounts.helpers import create_activation_url
 from courses.controller import strip_tile_link, get_course_object, update_progress
@@ -45,8 +48,10 @@ from .controller import (
     validate_company_field,
     update_company_field_for_users,
     CourseParticipantStats,
+    ProblemReportPostProcessor,
 )
 from .models import UserRegistrationError, UserRegistrationBatch
+
 
 logger = get_task_logger(__name__)
 IMPORT_PARTICIPANTS_DIR = 'import_participant_files'
@@ -878,3 +883,129 @@ def create_tile_progress_data(tile_id):
         if course and user_completions:
             update_progress(tile, user, course, user_completions, link)
     return True
+
+
+@task(name='admin.create_problem_response_report', bind=True)
+def create_problem_response_report(
+    self, course_id, problem_locations, problem_types_filter=None
+):
+    """
+    Create a problem response report pertaining to a specific course.
+    """
+    resp = instructor_api.generate_problem_responses_report(course_id, problem_locations, problem_types_filter)
+
+    self.update_state(task_id=self.request.id, state='PROGRESS', meta={'percentage': 10})
+    return {'id': self.request.id, 'remote_task_id': resp['task_id']}
+
+
+@task(bind=True, name='admin.monitor_problem_response_report', max_retries=30)
+def monitor_problem_response_report(self, parent_task, course_id):
+    """
+    Monitors problem response report task. This task will long-poll for one hour before bailing.
+    """
+    task = instructor_api.get_task_status(parent_task['remote_task_id'])
+    if (task and task['in_progress']):
+        raise self.retry(countdown=60 * 2)  # Retry in 2 minutes
+    self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 15})
+    return {'id': parent_task['id'], 'report_name': task['task_progress']['report_name']}
+
+
+@task(bind=True, name='admin.post_process_problem_response_report', max_retries=3)
+def post_process_problem_response_report(self, parent_task, course_id, problem_locations):
+    """
+    Post process report to add extra data.
+    """
+    # If we're running with CELERY_ALWAYS_EAGER the result of the last
+    # task is not passed correctly always, because of the self.retry()
+    if getattr(settings, 'CELERY_ALWAYS_EAGER', False) and parent_task is None:
+        report_task = AdminTask.objects.filter(course_id=course_id, status='PROGRESS').first()
+        parent_task = {'id': report_task.task_id, 'report_name': None}
+    else:
+        report_task = AdminTask.objects.get(task_id=parent_task['id'])
+    # Get list of downloads
+    downloads = instructor_api.get_report_downloads(course_id, parent_task['report_name'])
+
+    if downloads:
+        download = downloads[0]
+    else:
+        self.update_state(task_id=self.request.id, state='ERROR')
+        raise Exception('No Downloads found.')
+
+    self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 20})
+
+    # Initialize processor class.
+    processor = ProblemReportPostProcessor(
+        course_id=course_id,
+        report_name=download['name'],
+        report_uri=download['url']
+    )
+
+    # Post process rows.
+    rows, keys = processor.post_process()
+    # We don't know the total number of rows since we're reading the file line by line.
+    # And, it's not worth it to read the file twice.
+    self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 90})
+
+    # Write csv to a temporary file.
+    fields = OrderedDict([(key, (key, '')) for key in keys])
+    # Create remote path to report.
+    csv_name = u"{course_prefix}_{timestamp}.csv".format(
+        course_prefix=course_id.replace('/', '_'),
+        timestamp=report_task.requested_datetime.strftime("%Y-%m-%d-%H%M")
+    )
+    # Store file
+    hashed_course_id = hashlib.sha1(course_id).hexdigest()
+    dir_name = os.path.join('reports', hashed_course_id)
+    task_log_msg = 'post processing problem response report'
+    file_path = create_and_store_csv_file(fields, rows, dir_name, csv_name, logger, task_log_msg)
+
+    if file_path.startswith('http'):
+        file_url = file_path
+    else:
+        file_url = reverse('private_storage', kwargs={'path': file_path})
+    self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 100})
+
+    # Update Database
+    report_task.output = json.dumps({'url': file_url, 'name': csv_name})
+    report_task.status = 'DONE'
+    report_task.save()
+    return {'file_url': file_url, 'username': report_task.username}
+
+
+@task(name='admin.send_problem_response_report_success_email', max_retries=3)
+def send_problem_response_report_success_email(parent_task):
+    user_detail = user_api.get_users(username=parent_task['username'])
+    send_html_email(
+        subject=_('Problem Response Report'),
+        to_emails=[user_detail[0].email],
+        template_name='admin/problem_response_report_email.haml',
+        template_data={'success': True,
+                       'first_name': user_detail[0].first_name,
+                       'file_url': parent_task['file_url']}
+    )
+
+
+@task(bind=True)
+def handle_admin_task_error(self, error_task_id, res_id):
+    """
+    Handle Admin Task error.
+
+    Args:
+        error_task_uuid (str): Uuid of the task that raised the error.
+    """
+    async_res = self.AsyncResult(task_id=error_task_id)
+    admin_task = AdminTask.objects.get(task_id=res_id)
+    admin_task.status = 'ERROR'
+    admin_task.output = async_res.result
+    admin_task.save()
+    user_detail = user_api.get_users(username=admin_task.username)
+    send_html_email(
+        subject=_('Problem Response Report'),
+        to_emails=[user_detail[0].email],
+        template_name='admin/problem_response_report_email.haml',
+        template_data={
+            'success': False,
+            'first_name': user_detail[0].first_name,
+        },
+    )
+    logger.error('Admin Task failed with the following output: {}'.format(admin_task.output))

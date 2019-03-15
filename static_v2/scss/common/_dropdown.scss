@@ -1,4 +1,19 @@
 // Custom dropdown styling
+.dropdown{
+  position: relative;
+  display: inline-block;
+}
+
+
+.courseMainHeader{
+  .dropdown-menu{
+    &.allModules{
+      top: calc(100% + 0px) !important;
+      padding-top: 20px !important;
+      padding-bottom: 20px !important;
+    }
+  }
+}
 .dropdown-menu {
   background-color: $white;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.4);
@@ -72,7 +87,7 @@
       }
 
       .holder {
-
+        overflow: inherit;
         .data {
           padding: 7px 3px;
 
@@ -116,25 +131,81 @@
     top: calc(100% + 10px) !important;
     min-width: 420px;
   }
+  &.dashboard-menu {
+    > .sub-nav {
+      max-height: 434px;
+      overflow: auto;
+      margin: 0 -30px;
+      padding: 0 30px;
+    }
+  }
+  //Admin Site Dropdown
+  &.adminModules{
+    min-width: 300px;
+    top: 52px !important;
+
+    .totalNumber{
+      display: block;
+      font-size: 0.75rem;
+      line-height: 17px;
+      color: $black;
+      font-weight: 600;
+      padding-bottom: 5px;
+      text-transform: uppercase;
+    }
+    ul{
+      padding: 0;
+      margin: 0;
+      list-style: none;
+       li {
+        > a {
+          display: block;
+          color: var(--primary);
+          font-size: 0.75rem;
+          font-weight: normal;
+          line-height: 17px;
+          background: inherit;
+          border-top: 1px solid #EBEBEB;
+          padding: 12px 0;
+          text-transform: capitalize;
+          &.active{
+            font-weight: normal !important;
+          }
+        }
+        &:first-child{
+          >a{
+            border-top: 0;
+          }
+        }
+      }
+    }
+  }
 }
 
 // Add carrot icon for Dropdown
 .dropdown-toggle {
   color: var(--primary);
 
+  &:hover{ text-decoration: none;}
   &:after {
     font-family: 'Material Icons';
     content: "\e313";
     border: 0;
-    font-size: 1rem;
+    font-size: inherit;
     margin: 0 0 0 1px;
     vertical-align: middle;
+  }
+  &:focus {
+    color: var(--primary);
   }
 }
 
 .show {
   .dropdown-toggle {
-    color: $dark-blue;
+    color: var(--primary);
+    &:focus{
+      color: var(--primary);
+    }
   }
 }
 
@@ -182,7 +253,44 @@
       width: 88% !important;
     }
     &.allModules {
-      min-width: 290px;
+      min-width: 93vw;
+    }
+    &.dashboard-menu {
+      min-width: 300px !important;
+      >.sub-nav {
+        >li {
+          > a.dropdown-item {
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+            color: var(--primary);
+            &:after {
+              font-family: 'Material Icons';
+              content: "\e313";
+              border: 0;
+              font-size: inherit;
+              margin: 0 0 0 1px;
+              vertical-align: middle;
+              display: inline-block;
+            }
+          }
+          &.drop-open-dashboard {
+            ul {
+              max-height: 700px;
+            }
+          }
+          ul {
+            max-height: 0;
+            overflow: hidden;
+            transition: all .3s ease;
+            &.d-sm-none {
+              display: block !important;
+            }
+          }
+        }
+      }
+    }
+    &.profileDropdown{
+      width: 310px !important;
     }
   }
 }

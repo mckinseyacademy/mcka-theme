@@ -125,6 +125,17 @@
                 height: 38px;
                 border-radius: 50%;
               }
+              span {
+                width: 38px;
+                height: 38px;
+                display: inline-block;
+                border-radius: 50px;
+                text-align: center;
+                line-height: 38px;
+                background: $gray;
+                color: white;
+                text-transform: uppercase;
+              }
 
               i {
                 font-size: 2.5rem;

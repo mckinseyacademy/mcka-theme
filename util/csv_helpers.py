@@ -51,6 +51,24 @@ class CSVWriter(object):
 
         return self.csv_file
 
+    def write_csv_rows(self):
+        """Write rows to a CSV file.
+
+        Write csv ready rows to a file. 'Csv ready' rows mean a lit of data.
+        Rows will not be inspected or analyzed and will be written to the file as they are,
+        As opposed ``:meth:write_csv`` that expects a list of dictionaries and extracts
+        the actual data from each dictionary.
+        Note:
+            ``self.data`` should be a list of rows.
+
+        Return:
+            file: csv file.
+        """
+        writer = unicodecsv.writer(self.csv_file)
+        for row in self.data:
+            writer.writerow(row)
+        return self.csv_file
+
 
 def csv_file_response(file_name, fields={}, data=[], header=True):
     """

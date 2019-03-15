@@ -1,0 +1,378 @@
+/*!  bbGrid.css 0.9.1
+*
+*     (c) 2012-2013 Minin Alexey, direct-fuel-injection.
+*     bbGrid may be freely distributed under the MIT license.
+*     For all details and documentation:
+*     http://direct-fuel-injection.github.com/bbGrid/
+ */
+.bbGrid-grid {
+  table-layout: fixed;
+  font-size: 0.875rem;
+  line-height: 19px;
+  td {
+    cursor: default;
+    overflow: hidden;
+    white-space: nowrap;
+    line-height: 1;
+    vertical-align: middle;
+  }
+  tr {
+    height: 2.4em;
+  }
+  td, th {
+    padding: 16px;
+    vertical-align: middle;
+    @include media-breakpoint-down(lg) {
+      display: table-cell !important;
+    }
+  }
+  .bbGrid-grid-head {
+    font-size: 12px;
+    cursor: pointer;
+    th {
+      box-sizing: content-box;
+      overflow: hidden;
+      white-space: normal;
+      border-bottom: 0px;
+      font-size: 1rem;
+      font-weight: 600;
+      background: transparent;
+      color: $black;
+      white-space: nowrap;
+    }
+    td {
+      box-sizing: content-box;
+      overflow: hidden;
+      white-space: normal;
+      border-bottom: 0px;
+      background-color: $background_color_1;
+    }
+    i {
+      float: right;
+    }
+    .bbGrid-filter-bar {
+      input {
+        display: block;
+        padding: 1px 6px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        margin: 0px;
+        font-size: 12px;
+        width: 100%;
+        height: 24px;
+      }
+      select {
+        display: block;
+        padding: 1px 6px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        -webkit-box-sizing: border-box;
+        margin: 0px;
+        font-size: 12px;
+        width: 100%;
+        height: 24px;
+        height: 24px;
+        padding: 2px 2px;
+      }
+    }
+  }
+  .bbGrid-actions-cell {
+    padding: 2px 5px;
+    text-align: center;
+  }
+  .bbGrid-subgrid-control {
+    padding: 2px 5px;
+    text-align: center;
+  }
+  .bbGrid-multiselect-control {
+    input {
+      margin: 0;
+    }
+  }
+  caption {
+    font-size: 1.4em;
+    font-weight: bold;
+    line-height: 2em;
+  }
+}
+
+.bbGrid-grid-head-holder {
+  height: initial !important;
+}
+
+.bbGrid-row {
+  .bbGrid-subgrid-control {
+    padding: 5px;
+    font-size: 12px;
+  }
+}
+
+.bbGrid-container {
+  width: auto;
+  @include media-breakpoint-down(lg) {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .bbGrid-loading {
+    margin: 3px 0 2px 40%;
+    width: 20%;
+    .bbGrid-loading-progress {
+      width: 100%;
+      line-height: 20px;
+    }
+  }
+  .table {
+    margin: 0;
+    border-collapse: collapse;
+    table-layout: auto;
+    width: 100%;
+    @media (max-width: 767.98px) {
+      display: table-cell;
+    }
+  }
+  .bbGrid-pager-container {
+    height: 26px;
+    width: 410px;
+    left: 50%;
+    margin-left: -190px;
+    margin-top: 2px;
+    position: absolute;
+  }
+  .bbGrid-pager-container-norowslist {
+    width: 205px;
+    margin-left: -100px;
+  }
+  .bbGrid-grid-nav {
+    margin: 0;
+    background-color: $background_color_1;
+    background-repeat: repeat-x;
+    border-color: $border_color_1;
+    border-image: none;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: $color_1;
+    padding: 0 0 1px 1px;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+    position: relative;
+    height: 30px;
+    .bbGrid-page-input {
+      float: left;
+      padding: 1px;
+      margin: 0 0 0 1px;
+      width: 30px;
+      font-size: 11px;
+      text-align: center;
+      height: 24px;
+    }
+    .bbGrid-pager-rowlist {
+      width: 56px;
+      margin-left: 2px;
+      padding: 3px 2px;
+      height: 24px;
+      font-size: 11px;
+    }
+  }
+  .bbGrid-pager {
+    width: 220px;
+    margin: 0;
+    height: 24px;
+    .nav {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      width: 220px;
+    }
+    i {
+      margin: 0;
+      top: -1px;
+    }
+    a {
+      margin: 0 1px;
+      padding: 4px;
+      border: 1px solid #CCCCCC;
+      height: 24px;
+      cursor: pointer;
+      color: $color_2;
+      &:active {
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+    }
+    li.active {
+      a {
+        background-color: $background_color_1;
+        &:active {
+          box-shadow: none;
+        }
+      }
+    }
+  }
+  .bbGrid-page-counter {
+    font-size: 11px;
+    padding: 4px 0px 0px 4px;
+  }
+  .bbGrid-page-counter-right {
+    font-size: 11px;
+    padding: 4px 2px 0px 4px;
+  }
+  .bbGrid-pager-rowlist-label {
+    line-height: 20px;
+    font-size: 11px;
+    margin-top: 2px;
+    padding: 0px;
+  }
+}
+
+.bbGrid-grid-nav {
+  .bbGrid-navBar-buttonsContainer {
+    margin: 3px 0px 0;
+    padding-left: 2px;
+  }
+}
+
+.bbGrid-navBar-buttonsContainer {
+  button {
+    margin-right: 1px;
+  }
+}
+
+.bbGrid-pager-container {
+  .bbGrid-pager {
+    ul {
+      li {
+        list-style: none;
+        padding-left: 0;
+      }
+    }
+  }
+}
+
+.bbGrid-search-bar {
+
+  .input-group {
+    display: inline-block;
+    vertical-align: top;
+    width: 300px;
+    height: 40px;
+    border: 1px solid #999;
+    color: $gray;
+    padding: 0 35px 0 0;
+    position: relative;
+
+    &:after {
+      font-family: 'Material Icons';
+      font-size: 1.225rem;
+      border: none;
+      background: none;
+      padding: 0;
+      position: absolute;
+      right: 8px;
+      top: 6px;
+      content: '\e8b6';
+      color: $gray;
+    }
+
+    input:not([type='checkbox']) {
+      border: none;
+      background: no-repeat;
+      width: 100%;
+      height: 38px;
+      font-size: 12px;
+      line-height: 18px;
+      padding: 10px;
+    }
+  }
+
+  button {
+    padding: 1px 6px;
+    float: right !important;
+    overflow: hidden;
+    max-width: 80px;
+  }
+  li {
+    > a {
+      font-size: 12px;
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+  }
+}
+
+.bbGrid-rshandle-container {
+  position: relative;
+}
+
+.bbGrid-rshandle {
+  position: absolute;
+  width: 7px;
+  cursor: ew-resize;
+  margin-left: -3px;
+  z-index: 2;
+}
+
+.bbGrid-table-resizing {
+  cursor: ew-resize;
+  thead {
+    cursor: ew-resize;
+    > th {
+      cursor: ew-resize;
+      > a {
+        cursor: ew-resize;
+      }
+    }
+  }
+}
+
+.table-curved {
+  border-collapse: separate;
+  border: solid #ccc 1px;
+  border-radius: 4px;
+  border-left: 0px;
+  th {
+    border-left: 1px solid $border_color_1;
+    border-right: 1px solid $border_color_1;
+    border-top: 1px solid $border_color_1;
+    border-top: none;
+    &:first-child {
+      border-radius: 4px 0 0 0;
+    }
+    &:last-child {
+      border-radius: 0 4px 0 0;
+    }
+    &:only-child {
+      border-radius: 4px 4px 0 0;
+    }
+  }
+  td {
+    border-left: 1px solid $border_color_1;
+    border-right: 1px solid $border_color_1;
+    border-top: 1px solid $border_color_1;
+  }
+  tr {
+    &:last-child {
+      td {
+        color: $gray;
+        &:first-child {
+          border-radius: 0 0 0 4px;
+          color: $black;
+        }
+        &:last-child {
+          border-radius: 0;
+        }
+      }
+    }
+  }
+  thead {
+    tr {
+      &:last-child {
+        td {
+          &:first-child {
+            border-radius: 0;
+          }
+        }
+      }
+    }
+  }
+}

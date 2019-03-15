@@ -1,0 +1,18 @@
+- load i18n
+.learner-nav{"style": "{% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %} {% if branding and branding.top_bar_color %} {% endif %}"}
+  .container
+    %ul.nav.tertiary.d-none.d-sm-block
+      %li
+        %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}"} {% trans "Home" %}
+      - if calendar_enabled and not mobile_device
+        %li
+          %a.ome.dome-c#open-calendar{:href => "#"} {% trans "Calendar" %}
+      - if feature_flags.discussions
+        %li
+          %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/discussion"} {% trans "Discussions" %}
+      - if feature_flags.group_work
+        %li
+          %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work"} {% trans "Miniboard" %}
+      - if feature_flags.resources
+        %li
+          %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/resources"} {% trans "Resources" %}

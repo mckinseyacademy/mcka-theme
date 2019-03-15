@@ -71,7 +71,9 @@ def settings_data(request):
         "mapbox_map_id": settings.MAPBOX_API['map_id'],
         "apros_features": settings.FEATURES,
         "xblock_theme_css_path": settings.XBLOCK_THEME_CSS_PATH,
+        "xblock_theme_js_path": settings.XBLOCK_THEME_JS_PATH,
         "heap_app_id": settings.HEAP_ENV_ID,
+        "apros_session_timeout_seconds": getattr(settings, "SESSION_TIMEOUT_SECONDS", 1800),
     }
 
     return data

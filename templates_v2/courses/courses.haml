@@ -2,6 +2,10 @@
 - load i18n
 
 - block content
+  %script
+    $(document).ready(function () {
+      $('body').addClass("myCourses");
+    });
  .container.my-courses
    %h1
     {% trans "My Courses" %}

@@ -1,0 +1,12 @@
+%ul.lesson-menu
+  - for activity in group_project.activities
+    %li
+      - if activity.id != current_activity.id
+        %a{"href": "#{group_work_url}?seqid=#{activity.id}"}
+          = activity.name
+      - else
+        %a.selected{"href": "#{group_work_url}?seqid=#{activity.id}"}
+          = activity.name
+        - if activity.is_group_activity
+          %span.activity_dots
+

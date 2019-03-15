@@ -95,6 +95,7 @@
   }
 }
 
+
 @include media-breakpoint-between(sm, md){
   .lessonPageBody{
     [x-placement="left"],
@@ -119,6 +120,18 @@
         transform: none !important;
         top: auto !important;
         bottom: 20px !important;
+      }
+    }
+
+    .popover {
+      &[x-placement="right"] {
+        left: 60px !important;
+        right: auto !important;
+      }
+
+      &[x-placement="left"] {
+        right: 60px !important;
+        left: auto !important;
       }
     }
   }

@@ -126,6 +126,7 @@ $(document).ready(function() {
     $(".zoomWrap").click(function() {
         $("body").toggleClass('zoomIn');
         removeClass = false;
+        $.cookie(cookie_key, $("body").hasClass('zoomIn'), { path: '/' });
     });
     // when clicking the div : never remove the class
     $(".zoomWrap").click(function() {
@@ -179,6 +180,21 @@ $(document).ready(function() {
             }
         });
 
+
+    switch ($('table.progress-data td.progress_data_col').length) {
+
+        case 1:
+            $('table.progress-data').addClass('table-col-1');
+            break;
+
+        case 2:
+            $('table.progress-data').addClass('table-col-2');
+            break;
+
+        case 3:
+            $('table.progress-data').addClass('table-col-3');
+            break;
+    }
 });
 
 

@@ -35,7 +35,7 @@ class TestContextProcessors(TestCase):
             'use_i18n', 'ga_tracking_id', 'ta_email_group',
             'ie_favicon_prefix', 'session_id', 'mapbox_token',
             'mapbox_map_id', 'apros_features', 'xblock_theme_css_path',
-            'heap_app_id'
+            'heap_app_id', 'xblock_theme_js_path'
         ]
 
         for context_variable in settings_context_variables:

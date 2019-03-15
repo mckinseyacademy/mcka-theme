@@ -96,6 +96,8 @@ urlpatterns += [
 
     url(r'^api/courses/(?P<course_id>.*)/edit_course_meta_data/$', views.CourseMetaDataApiView.as_view(),
         name='course_meta_data_api_view'),
+    url(r'^api/courses/(?P<course_id>.*)/blocks/$',
+        views.CourseDetailsBlocksAPI.as_view(), name='course_details_blocks_api'),
     url(r'^api/courses/(?P<course_id>.*)/stats/$',
         views.course_details_stats_api.as_view(), name='course_details_stats_api'),
     url(r'^api/courses/(?P<course_id>.*)/engagement/$',
@@ -341,4 +343,8 @@ urlpatterns += [
     url(r'^api/cohorts/courses/(?P<course_id>.+)/cohorts/$', views.CohortList.as_view(), name='cohort_list_api'),
     url(r'^api/cohorts/courses/(?P<course_id>.+)/users$', views.CohortImport.as_view(), name='cohort_import_api'),
     url(r'^cohorts/(?P<course_id>.*)/$', views.cohorts_course_details, name='cohorts_course_details'),
+
+    # Problem Response Reports
+    url(r'^api/problem_response_reports/course/(?P<course_id>.+)/$',
+        views.ProblemResponseReportView.as_view(), name='course-reports'),
 ]

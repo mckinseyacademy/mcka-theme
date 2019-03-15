@@ -10,15 +10,17 @@ body {
     }
   }
 }
-
+.dropdown-item {
+  white-space: normal !important;
+}
 .appHeader {
   .all-logos {
-    padding: 8px 0;
+    padding: 15px 0;
     .navbar-brand {
       display: inline-block;
       vertical-align: middle;
       img {
-        height: 56px;
+        height: 40px;
         width: auto;
       }
     }
@@ -148,12 +150,8 @@ header {
     .headerNav {
       width: auto;
       margin: 17px 0 0;
-      ul {
-        li {
-          &:first-child {
-            margin-left: 0;
-          }
-        }
+      > ul {
+        > li { margin-bottom: 0;}
       }
     }
   }
@@ -318,7 +316,7 @@ header {
   }
 }
 
-//Course navigation wrraper
+//Course navigation wrapper
 .courseNavWrap {
   ul {
     padding: 0;
@@ -378,7 +376,7 @@ header {
       }
 
       &.active {
-        a {
+        >a {
           color: #2E2D39;
 
           &:before {
@@ -480,10 +478,9 @@ header {
 }
 
 // BreakPoints for small Screens
-
 @media screen and (max-width: 992px) {
   .courseMainHeader {
-    padding: 0;
+    padding: 0 15px;
 
     h1 {
       font-size: 32px;
@@ -530,24 +527,23 @@ header {
 
   .mainTopHeader {
     max-width: 100%;
-    padding: 0 40px;
-    .row {
-      .col {
-        padding: 0;
-      }
-    }
-
+    padding: 0 15px;
   }
 
   header {
     &.appHeader {
       .container {
         max-width: 100%;
-        padding: 0 30px;
-        .row {
-          .col {
-            padding: 0;
-          }
+        padding: 0 15px;
+      }
+    }
+  }
+
+  .contentCard{
+    &.progressWidgets{
+      #course-statistics{
+        >.row{
+          margin: 0 -10px;
         }
       }
     }
@@ -559,6 +555,15 @@ header {
   .pn-ProductNav {
     margin: 0;
     padding: 0 30px 2px;
+  }
+
+  header {
+    &.appHeader {
+      padding: 0 15px;
+      .topRightArea {
+        margin-top: 10px;
+      }
+    }
   }
 
   .mainTopHeader {
@@ -582,22 +587,17 @@ header {
   }
   .appHeader {
     .topRightArea {
-      .profileArea {
-        position: absolute;
-        top: 15px;
-      }
-
       .headerNav {
         position: absolute;
         left: 0;
-        top: 55px;
+        top: 60px;
         right: 0;
 
-        ul {
+        >ul {
           width: 100%;
           text-align: center;
 
-          li {
+          >li {
             margin-top: 9px;
 
             a {
@@ -623,6 +623,16 @@ header {
         content: '';
         top: -2px;
         font-size: 22px;
+      }
+    }
+  }
+
+  .contentCard{
+    &.progressWidgets{
+      #course-statistics{
+        >.row{
+          margin: 0 -15px;
+        }
       }
     }
   }

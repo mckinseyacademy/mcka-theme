@@ -1,14 +1,13 @@
 // That is compiled all the sass (bootstrap & local) at once:
 
-//Import all Screens
-
+//=== Import all relevent styles === //
 @import "bootstrap/bootstrap-grid";
 @import "layout/layout";
 @import "vendor/scrollbar";
 @import "common/variables";
 @import "bootstrap/mixins";
 
-
+// ===== Commonly used styles ===== //
 @import "common/variables";
 @import "common/mixins";
 @import "common/type";
@@ -32,6 +31,7 @@
 @import "common/nav";
 @import "common/scrollbar";
 
+//========= Page's styles ========= //
 @import "pages/login";
 @import "pages/activation";
 @import "pages/static";
@@ -43,11 +43,16 @@
 @import "pages/cohort";
 @import "pages/announcements";
 @import "pages/learnerDashboard";
+@import "pages/group-work";
+@import "pages/progressPage";
+@import "pages/discussion";
 
-
-// commented out these to fix release error since files not available
-// ======== Admin Styles =========== //
-//@import "admin/common/bbGrid";
-//@import "admin/common/bbGridExtend";
-//@import "admin/common/progressWidgets";
-//@import "admin/pages/adminDashboard";
+// ======== Admin Styles ========== //
+@import "admin/common/bbGrid";
+@import "admin/common/bbGridExtend";
+@import "admin/common/progressWidgets";
+//Pages
+@import "admin/pages/managerDashboard";
+@import "admin/pages/companyDashboard";
+@import "admin/pages/courseDiscussion";
+@import "admin/pages/adminDashboard";

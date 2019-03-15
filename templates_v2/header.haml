@@ -15,7 +15,7 @@
                 %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
             - else
               %a.navbar-brand{:href => "/"}
-                %img{:src => "static/image/McKA-logo-blue@2x.png", :width => "160"}
+                %img{:src => "static/image/McKA-logo-blue.svg", :width => "160"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.client_logo}}", :width => "160"}
@@ -25,7 +25,7 @@
               .profileArea
                 %a.dropdown-toggle{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
                   %span RA
-                  %img{:src => "static/image/McKA-logo-white@2x.png", :width => "160"}/
+                  %img{:src => "static/image/McKA-logo-white.svg", :width => "160"}/
                 - if LANGUAGE_BIDI
                   %div{'class' : 'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
                     .header
@@ -91,29 +91,89 @@
 
               %nav.nav.mainNav.headerNav
                 %ul
-                  %li
-                    %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
-                      {% trans "dashboard" %}
-                    - if LANGUAGE_BIDI
+                  - if request.user.is_manager
+                    {% url 'manager_dashboard' as manager_dashboard_url %}
+                    %li{class: "{% if request.path == manager_dashboard_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{manager_dashboard_url}}"}
+                        {% trans "team reports" %}
+                  - if request.user.is_mcka_admin or request.user.is_internal_admin or request.user.is_mcka_subadmin
+                    {% url 'admin_home' as admin_home_url %}
+                    %li{class: "{% if request.path == admin_home_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{admin_home_url}}"}
+                        {% trans "admin" %}
+                  - if request.user.is_company_admin
+                    {% url 'company_dashboard' as company_dashboard_url %}
+                    %li{class: "{% if request.path == company_dashboard_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{company_dashboard_url}}"}
+                        {% trans "company admin" %}
+                  - if request.user.is_mcka_ta
+                    {% url 'workgroup_list' as workgroup_list_url %}
+                    %li{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
+                        {% trans "ta" %}
+
+                  - if learner_dashboards|length > 1
+                    %li
+                      %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
+                        {% trans "dashboard" %}
+
                       %div{'class' : 'dropdown-menu-left dropdown-menu middle-menu clearfix dashboard-menu'}
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Executive Leadership Program
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Leadership Development Program
-                    - else
-                      %div{'class' : 'dropdown-menu-right dropdown-menu middle-menu clearfix'}
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Executive Leadership Program
-                        %ul.sub-nav.d-block.d-sm-none
-                          %li
-                            %a.active{:href => "#"} Calender
-                          %li
-                            %a{:href => "#"} Discussions
-                          %li
-                            %a{:href => "#"} Resources
+                        %ul.sub-nav
+                          - for dashboard in learner_dashboards
+                            %li
+                              %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
+                                - if request.session.last_visited_course and dashboard.course_id == request.session.last_visited_course
+                                  %span.bookmark
+                              %ul.sub-nav.d-block.d-sm-none
+                                %li
+                                  %a.ome.dome-c{:href => "/courses/{{dashboard.course_id}}"} {% trans "Home" %}
+                                - if dashboard.calendar_enabled and not mobile_device
+                                  %li
+                                    %a.ome.dome-c{:href => "#"} {% trans "Calendar" %}
+                                - if dashboard.features.discussions
+                                  %li
+                                    %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/discussion"} {% trans "Discussions" %}
+                                - if dashboard.features.group_work
+                                  %li
+                                    %a.ome.dome-c{:href => "/learnerdashboard/#{dashboard.id}/courses/#{course_id}/group_work"} {% trans 'Miniboard' %}
+                                - if dashboard.features.resources
+                                  %li
+                                    %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/resources"} {% trans "Resources" %}
 
-                        %a.dropdown-item.ome.dome-c{:href => "#"} Leadership Development Program
-                  %li.active
-                    %a.nav-link.ome.dome-c{:href => "/courses"}
-                      {% trans "my courses" %}
+                  - elif learner_dashboards|length == 1
+                    %li
+                      %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
+                        {% trans "dashboard" %}
 
+                      %div{'class' : 'dropdown-menu-left dropdown-menu middle-menu clearfix dashboard-menu'}
+                        %ul.sub-nav
+                          - for dashboard in learner_dashboards
+                            %li.drop-open-dashboard
+                              %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
+                                - if request.session.last_visited_course and dashboard.course_id == request.session.last_visited_course
+                                  %span.bookmark
+                              %ul.sub-nav.d-block.d-sm-none
+                                %li
+                                  %a.ome.dome-c{:href => "/courses/{{dashboard.course_id}}"} {% trans "Home" %}
+                                - if dashboard.calendar_enabled
+                                  %li
+                                    %a.ome.dome-c{:href => "#"} {% trans "Calendar" %}
+                                - if dashboard.features.discussions
+                                  %li
+                                    %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/discussion"} {% trans "Discussions" %}
+                                - if dashboard.features.group_work
+                                  %li
+                                    %a.ome.dome-c{:href => "/learnerdashboard/#{dashboard.id}/courses/#{course_id}/group_work"} {% trans 'Miniboard' %}
+                                - if dashboard.features.resources
+                                  %li
+                                    %a{:href => "/learnerdashboard/#{dashboard.id}/courses/#{dashboard.course_id}/resources"} {% trans "Resources" %}
+
+
+                  - if show_my_courses
+                    {% url 'courses' as courses_url %}
+                    %li{class: "{% if request.path == courses_url %}active{% endif %}"}
+                      %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
+                        {% trans "my courses" %}
           - else
             - if use_i18n
               .language-selector

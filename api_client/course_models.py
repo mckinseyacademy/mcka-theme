@@ -205,12 +205,7 @@ class Course(CategorisedJsonObject):
         return len(self.group_projects) > 0
 
     def module_count(self):
-        module_count = 0
-        for chapter in self.chapters:
-            for sequential in chapter.sequentials:
-                module_count += len(sequential.children)
-
-        return module_count
+        return sum(len(m.children) for c in self.chapters for m in c.sequentials)
 
     def components_ids(self, filter_out_categories=[]):
         components = []

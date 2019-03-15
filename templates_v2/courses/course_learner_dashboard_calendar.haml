@@ -1,0 +1,478 @@
+- load i18n
+#background-full-calendar
+  #over-full-calendar
+    #row-full-calendar
+      .container
+        .row.justify-content-center
+          .col-10        
+            .over-calendar
+              %i#previous-calendar.arrow-calendar.material-icons
+                chevron_left
+            #over-calendar-right.over-calendar
+              %i#next-calendar.arrow-calendar.material-icons
+                chevron_right
+            #under-calendar
+              %i#close-calendar.material-icons
+                close
+              %ul.tab-month
+                %li.head-month
+                  %span.month
+                %li.first.last
+                %li.second.last
+              %ul.tab-month
+                %li.head-month
+                  %span.month
+                %li.first.last
+                %li.second.last
+              %ul.tab-month
+                %li.head-month
+                  %span.month
+                %li.first.last
+                %li.second.last
+              %ul.tab-month
+                %li.head-month
+                  %span.month
+                %li.first.last
+                %li.second.last
+              %ul.legend-list
+                %li.light-gray-legend
+                  %i.fa.fa-circle
+                  {% trans "not available" %}
+                %li.gray-legend
+                  %i.fa.fa-circle
+                  {% trans "not started" %}
+                %li.light-green-legend
+                  %i.fa.fa-circle
+                  {% trans "in progress" %}
+                %li.green-legend
+                  %i.fa.fa-circle
+                  {% trans "complete" %}
+                %li.red-legend
+                  %i.fa.fa-circle
+                  {% trans "incomplete" %}
+                %li.teal-legend
+                  %i.fa.fa-circle
+                  {% trans "not tracked" %}
+
+            #highcharts-container
+
+%script
+  var dates = {{dates|safe}} ? {{dates|safe}}: [];
+  var elements = {{milestones|safe}} ? {{milestones|safe}}: [];
+
+  var now = new Date();
+  var dateList = [];
+  var monthList = [
+    gettext("January"),
+    gettext("February"),
+    gettext("March"),
+    gettext("April"),
+    gettext("May"),
+    gettext("June"),
+    gettext("July"),
+    gettext("August"),
+    gettext("September"),
+    gettext("October"),
+    gettext("November"),
+    gettext("December"),
+  ];
+
+  for (var i=0; i < 5; i++) {
+    dateList.push(
+      Date.UTC((new Date(dates[i])).getUTCFullYear(), (new Date(dates[i])).getUTCMonth())
+    );
+  }
+
+  addMonthNames(dates);
+  addExtraSpaceToFrontEnd();
+  
+  var minDate = dateList[1];
+  var maxDate = dateList[5];
+  var totalRows;
+  var dataIPS = [];
+  var dataCourse = [];
+  var dataWeb = [];
+  var dataDig = [];
+  var dataGroup = [];
+  var start;
+  var end;
+
+  elements = rearangeRows(elements);
+
+  for (var j = 0 in elements){
+
+    setMinMaxDate(elements[j]);
+    loadHighchartData(elements[j]);
+  }
+
+  function setMinMaxDate(element){
+    if (element.start < minDate)
+      minDate = element.start;
+    if (element.end > maxDate)
+      maxDate = element.end;
+  }
+
+  function rearangeRows(elements){
+
+    var expandedRows = [];
+    var parentRow = 0;
+    var childRow = 0;
+
+    for (var i = 0; i < getMaxRow(elements); i++){
+      expandedRows.push(0);
+    }
+
+    for (var row = 1; row <= getMaxRow(elements); row++) {
+
+      var rowElements = getRowElements(elements, row);
+      var overlappingElements = getRowOverlaps(rowElements);
+
+      if (overlappingElements.length > 0){
+        shiftRows(elements, row);
+        setOverlapsInNextRow(overlappingElements, row);
+        childRow += 1;
+      } else {
+        parentRow += 1;
+        expandedRows[parentRow-1] += childRow;
+        childRow = 0;
+      }
+    }
+
+    totalRows = getMaxRow(elements);
+    drawRowLines(totalRows, expandedRows);
+
+    return elements;
+  }
+
+  function getRowOverlaps(rowElements){
+
+    var overlaps = [];
+
+    for (var i = 0; i < rowElements.length; i++) {
+      for (var j = i + 1; j < rowElements.length; j++) {
+        if (overlap(rowElements[i], rowElements[j])){
+          overlaps.push(rowElements[j]);
+          rowElements[j] = 0;
+        }
+      }
+      cleanRowElements(rowElements);
+    }
+    return overlaps;
+  }
+
+  function cleanRowElements(rowElements){
+
+    rowElements.filter(isNull);
+
+    function isNull(value) {
+      return value != 0;
+    }
+  }
+
+  function getRowElements(elements, row){
+
+    var rowElements = [];
+
+    for (var i = 0 in elements){
+        if (elements[i].row == row){
+          rowElements.push(elements[i]);
+        }
+      }
+    return rowElements;
+  }
+
+  function shiftRows(elements, row){
+
+    for (var i = 0 in elements){
+      if (elements[i].row > row){
+        elements[i].row = elements[i].row + 1;
+      }
+    }
+  }
+
+  function setOverlapsInNextRow(overlapingElements, row){
+
+    for (var i = 0 in overlapingElements){
+      overlapingElements[i].row = row + 1;
+    }
+  }
+
+  function overlap(a, b){
+    return ((a.start <= b.end) && (a.end >= b.start));
+  }
+
+  function getMaxRow(elements){
+
+    var max = 0;
+
+    for (var i = 0 in elements){
+      if (elements[i].row > max)
+        max = elements[i].row;
+    }
+    return max;
+  }
+
+  function drawRowLines(totalRows, expandedRows){
+
+    for (i=0; i < (expandedRows.length); i++) {
+      for (j=0; j < expandedRows[i]; j++) {
+        $( "<li class='first inter-row'></li><li class='second inter-row'></li>" ).insertBefore( ".first.last" );
+      }
+
+      if (i < (expandedRows.length-1))
+        $( "<li class='first'></li><li class='second'></li>" ).insertBefore( ".first.last" );
+    }
+    $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (220 + (totalRows-2) * 50) );
+    $( "#highcharts-container").css( "height", (283 + (totalRows-2) * 52) );
+    $( ".arrow-calendar").css( "margin-top", (50 + (totalRows-2) * 20) );
+  }
+
+  function calculateColor(element, now){
+
+    var notAvailable = "#e0e0e0";
+    var notStarted = "#ccc";
+    var inProgress = "#b6d332";
+    var complete = "#629b2b";
+    var incomplete = "#cd202c";
+    var notTracked = "#66a5b5";
+
+    if (!element.track_progress){
+      return notTracked;
+    }
+
+    switch(element.tile_type) {
+      case '3':
+      case '5':
+        if (now < getPublishDate(element)){
+          return notAvailable;
+          break;
+          } else if (element.user_progress == 100){
+              return complete;
+              break;
+          } else if (element.user_progress == 0 && now < element.end){
+              return notStarted;
+              break;
+          } else if (element.user_progress < 100 && now > element.end){
+              return incomplete;
+              break;
+          }
+      case '2':
+      case '4':
+      case '7':
+        if (now < getPublishDate(element)){
+          return notAvailable;
+          break;
+          } else if (element.user_progress == 100){
+              return complete;
+              break;
+          } else if (element.user_progress == 0 && now < element.end){
+              return notStarted;
+              break;
+          } else if (element.user_progress > 0 && element.user_progress < 100 && now < element.end){
+              return inProgress;
+              break;
+          } else if (element.user_progress < 100 && now > element.end){
+              return incomplete;
+              break;
+          }
+    }
+  }
+
+  function getPublishDate(element){
+    if (element.publish_date){
+      return new Date(element.publish_date);
+    } else {
+      return null;
+    }
+  }
+
+  function loadHighchartData(element){
+
+    if (element.tile_type == "2" || element.tile_type == "3") {
+
+      dataDig.push({
+        color: calculateColor(element, now.getTime()),
+        x: element.row-1,
+        tile_type: element.tile_type,
+        label: element.label.substring(0, 16),
+        name: element.name,
+        link: element.link,
+        publish_date: getPublishDate(element),
+        note: element.note,
+        user_progress: element.user_progress,
+        low: element.start,
+        high: element.end,
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf109',
+        track_progress: element.track_progress
+      });
+    }
+
+    if (element.tile_type == "5") {
+
+      dataIPS.push({
+        color: calculateColor(element, now.getTime()),
+        x: element.row-1,
+        tile_type: element.tile_type,
+        label: element.label.substring(0, 16),
+        name: element.name,
+        link: element.link,
+        publish_date: getPublishDate(element),
+        note: element.note,
+        user_progress: element.user_progress,
+        low: element.start,
+        high: element.end,
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf0c0',
+        track_progress: element.track_progress
+      });
+    }
+
+    if (element.tile_type == "4"){
+
+      dataCourse.push({
+        color: calculateColor(element, now.getTime()),
+        x: element.row-1,
+        tile_type: element.tile_type,
+        label: element.label.substring(0, 16),
+        name: element.name,
+        link: element.link,
+        publish_date: getPublishDate(element),
+        note: element.note,
+        user_progress: element.user_progress,
+        low: element.start,
+        high: element.end,
+        track_progress: element.track_progress
+      });
+    }
+
+    if (element.tile_type == "1") {
+      dataDig.push({
+        color: '#66a5b5',
+        x: element.row-1,
+        tile_type: element.tile_type,
+        label: element.label.substring(0, 16),
+        name: element.name,
+        publish_date: getPublishDate(element),
+        note: element.note,
+        link: element.link,
+        low: element.start,
+        high: element.end,
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf109',
+        track_progress: element.track_progress
+      });
+    }
+
+    if (element.tile_type == "7") {
+      dataDig.push({
+        color: calculateColor(element, now.getTime()),
+        x: element.row-1,
+        tile_type: element.tile_type,
+        label: element.label.substring(0, 16),
+        name: element.name,
+        publish_date: getPublishDate(element),
+        note: element.note,
+        link: element.link,
+        low: element.start,
+        high: element.end,
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf086',
+        track_progress: element.track_progress
+      });
+    }
+
+    if (element.tile_type == "6") {
+      dataWeb.push({
+        color: '#66a5b5',
+        x: element.row-1,
+        tile_type: element.tile_type,
+        label: element.label.substring(0, 16),
+        name: element.name,
+        link: element.link,
+        publish_date: getPublishDate(element),
+        note: element.note,
+        low: element.start,
+        high: element.end,
+        fa_icon: element.fa_icon ? unescape('%u' + element.fa_icon.slice(-6,-2)) : '\uf03d',
+        track_progress: element.track_progress
+      });
+    }
+  }
+
+  changeDisableArrowColors();
+
+  $('#close-calendar').click(function() {
+    $('#replace-calendar').empty();
+    opened = false;
+  });
+
+  $('#next-calendar').click(function() {
+    if (maxDate > dateList[5]) {
+      $( "#previous-calendar").css("color", "" );
+      moveCalendarDates(4);
+    }
+  });
+
+  $('#previous-calendar').click(function() {
+    if (minDate < dateList[1]) {
+      $( "#next-calendar").css( "color", "" );
+      moveCalendarDates(-4);
+    }
+  });
+
+  function moveCalendarDates(moveMonth) {
+    var chart = $('#highcharts-container').highcharts();
+    extremes = chart.yAxis[0].getExtremes();
+
+    var newMinDate = new Date(extremes.min + 86400 * 9 *1000);
+    newMinDate = newMinDate.setUTCMonth((newMinDate).getUTCMonth() + moveMonth);
+
+    extremes.min = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth());
+    extremes.max = Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + 4);
+
+    dateList = [];
+    for (var i=0; i < 5; i++) {
+      dateList.push(
+        Date.UTC((new Date(newMinDate)).getUTCFullYear(), (new Date(newMinDate)).getUTCMonth() + i)
+      );
+    }
+
+    addMonthNames( dateList );
+    addExtraSpaceToFrontEnd();
+
+    chart.yAxis[0].options.tickInterval = dateList;
+    chart.yAxis[0].isDirty = true;
+
+    chart.yAxis[0].setExtremes(extremes.min, extremes.max);
+    changeDisableArrowColors();
+  }
+
+  function addExtraSpaceToFrontEnd() {
+    dateList.push(dateList[4] + 86400 * 9 * 1000);
+    dateList.unshift(dateList[0] - 86400 * 9 * 1000);
+  }
+
+  function changeDisableArrowColors() {
+    if (minDate >= dateList[1])
+      $( '#previous-calendar').css( 'color', '#868685' );
+    if (maxDate <= dateList[5])
+      $('#next-calendar').css( 'color', '#868685' );
+  }
+
+  function addMonthNames( dateList ) {
+    $( ".month" ).each(function( index ) {
+      $( this ).parent().removeClass( "active" );
+      $( this ).html( monthList[new Date(dateList[index]).getUTCMonth()] );
+
+      if ( ((new Date(dateList[index])).getUTCMonth()) == (new Date()).getUTCMonth() && ((new Date(dateList[index + 1])).getUTCFullYear()) == (new Date()).getUTCFullYear())
+        $( this ).parent().addClass( "active" );
+    });
+  }
+
+  $(window).click(function() {
+    $('#replace-calendar').empty();
+    opened = false;
+  });
+
+  $('#over-full-calendar').click(function(event){
+    event.stopPropagation();
+  });
+
+%script{"src": "/static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js"}

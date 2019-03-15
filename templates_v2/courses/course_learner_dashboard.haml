@@ -1,58 +1,96 @@
-- extends "layout.haml"
+- extends "courses/course_base_ld.haml"
 - load staticfiles
 - load i18n
 
-- block page_title
-  %title
-    = request.session.client_display_name
-    = " | "
-    = program.display_name
-    {% trans " | McKinsey Academy | Learner Dashboard" %}
 - block content
+  %link{'rel': 'stylesheet', 'href': "{% static 'css/jquery-ui.min.css' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts.js' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
+
   #learner-dashboard
-    .learner-nav
-      .container
-        %ul.nav.tertiary.d-none.d-sm-block
-          - if calendar_enabled
-            %li
-              %a.active{:href => "#"} Calender
-          - if feature_flags.discussions
-            %li
-              %a{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/discussion"} Discussions
-          - if feature_flags.resources
-            %li
-              %a{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/resources"} Resources
-    .container.full
+    #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
+    .container
       .row
-        .col-lg-8
+        .col-md-8
           .gallery-card
-            .gallery-title= learner_dashboard.title
-            .gallery-content
+            .gallery-title{"style": "color:#{learner_dashboard.title_color}"}= learner_dashboard.title
+            .gallery-content{"style": "color:#{learner_dashboard.description_color}"}
               %p= learner_dashboard.description
-            .gallery
+            .gallery.noScrollAppears#learnerDashboardGallery
               .row
                 -for tile in learner_dashboard_tiles
                   .col-md-4
-                    %a.card{href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}", target: "{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')", "data-tile-id": "#{tile.id}"}
-                      .image-holder
-                        %img{:alt => "images", :src => "/company_images/#{tile.background_image}"}
-                      .content
-                        .tag
-                          -if tile.label
-                            = tile.label
-                          -else
-                            = tile.get_tile_type_display
-                        .title= tile.title
-                        .date= tile.note
 
-        .col-lg-4
-          .side-content
-            .tag {% trans "for discovery" %}
+                    - if bookmark.tile.id == tile.id
+
+                      %a.card.last_visited{href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}", target: "{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')", "data-tile-id": "#{tile.id}"}
+                        - if tile.background_image
+                          .image-holder
+                            %img{:alt => "images", :src => "/company_images/#{tile.background_image}"}
+                        - else
+                          .image-holder{"style": "background-color: {{tile.tile_background_color}}"}
+                        .content
+                          .tag{"style": "color: #{tile.label_color};"}
+                            -if tile.label
+                              = tile.label
+                            -else
+                              = tile.get_tile_type_display
+                          .title{'style': "color: #{tile.title_color};"}= tile.title
+                          .date{'style': "color: #{tile.note_color};"}= tile.note
+                    - else
+
+                      -if tile.publish_date|date:"Y-m-d-H-i" <= today|date:"Y-m-d-H-i"
+                        %a.card{href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}", target: "{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')", "data-tile-id": "#{tile.id}"}
+                          - if tile.background_image
+                            .image-holder
+                              %img{:alt => "images", :src => "/company_images/#{tile.background_image}"}
+                          - else
+                            .image-holder{"style": "background-color: {{tile.tile_background_color}}"}
+                          .content
+                            .tag{"style": "color: #{tile.label_color};"}
+                              -if tile.label
+                                = tile.label
+                              -else
+                                = tile.get_tile_type_display
+                            .title{'style': "color: #{tile.title_color};"}= tile.title
+                            .date{'style': "color: #{tile.note_color};"}= tile.note
+                        - else
+                          %a.card.disabled{href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}", target: "{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')", "data-tile-id": "#{tile.id}"}
+                            - if tile.background_image
+                              .image-holder
+                                %img{:alt => "images", :src => "/company_images/#{tile.background_image}"}
+                            - else
+                              .image-holder{"style": "background-color: {{tile.tile_background_color}}"}
+                            .content
+                              .tag{"style": "color: #{tile.label_color};"}
+                                -if tile.label
+                                  = tile.label
+                                -else
+                                  = tile.get_tile_type_display
+                              .title{'style': "color: #{tile.title_color};"}= tile.title
+                              .date{'style': "color: #{tile.note_color};"}= tile.note
+
+
+
+        .col-md-4
+          .side-content{"style": "{% if branding and branding.discover_rule_color %} border-color:#{branding.discover_rule_color}{% endif %}"}
+            .tag{"style": "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"} {% trans "for discovery" %}
             -for item in discovery_items
               .review-holder
-                %h3.review
-                  %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')"}= item.title
-                .review-by= item.author
+                - if item.link
+                  %h3.review
+                    %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}
+                      = item.title
+                  .review-by
+                    %a{href: "#{item.link}", target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", "style": "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}
+                      = item.author
+                - else
+                  %h3.review
+                    %a{target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", style: "{% if branding and branding.discover_title_color %} color: #{branding.discover_title_color};{% endif %}"}
+                      = item.title
+                  .review-by
+                    %a{target: "_blank", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'DiscName: #{item.title}, UserID: #{request.user.id}')", "style": "{% if branding and branding.discover_author_color %} color: #{branding.discover_author_color};{% endif %}"}
+                      = item.author
 
 - block js_snippets
   %script{src: "{% static 'js/course_contact_modal.js' %}"}
@@ -63,17 +101,17 @@
 
   %script
     $(".gallery").mCustomScrollbar({
-        theme:"inset-2-dark"
+      theme:"inset-2-dark"
     });
 
 - block heap_events
   %script
     if ('{{user.id}}') {
-        heap.identify('{{user.id}}');
+      heap.identify('{{user.id}}');
     }
     if ('{{client_id}}') {
-         heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
+      heap.addUserProperties({CLIENT_ID: '{{client_id}}'});
     }
     if ('{{course.id}}' && '{{learner_dashboard.title}}') {
-     heap.track('LEARNER_DASHBOARD_VISITED', {COURSE_ID: '{{course_id}}', LEARNER_DASHBOARD_NAME: '{{learner_dashboard.title}}', USER_ID: '{{user.id}}'});
+      heap.track('LEARNER_DASHBOARD_VISITED', {COURSE_ID: '{{course_id}}', LEARNER_DASHBOARD_NAME: '{{learner_dashboard.title}}', USER_ID: '{{user.id}}'});
     }

@@ -1,0 +1,17 @@
+- extends "layout.haml"
+- load i18n
+
+- block page_title
+  %title
+    = request.session.client_display_name
+    = " | "
+    = program.display_name
+    {% trans " | McKinsey Academy | Learner Dashboard" %}
+
+
+- block help_context
+
+- block header
+  - include 'header.haml'
+  - include 'courses/course_learner_dashboard_header.haml'
+  - include 'courses/course_learner_dashboard_branding.haml'

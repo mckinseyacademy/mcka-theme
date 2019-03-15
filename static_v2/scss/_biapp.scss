@@ -31,6 +31,10 @@
       > ul {
         > li {
           @include margin-left(30px);
+          @include margin-right(0);
+          &:first-child {
+            @include margin-left(0);
+          }
         }
       }
     }
@@ -93,6 +97,25 @@
 
       i {
         @include margin-left(-4px);
+      }
+    }
+  }
+  .mainNav {
+    > ul {
+      > li {
+        @include margin-left(30px);
+        &:first-child {
+          @include margin-left(0);
+        }
+        &.notifications{
+          @include margin-right(30px !important);
+          .notification {
+            @media screen and (-ms-high-contrast: active),
+            (-ms-high-contrast: none) {
+              @include padding-right(0 !important);
+            }
+          }
+        }
       }
     }
   }
@@ -201,20 +224,23 @@
   }
 }
 
-// Widgets
-#course-statistics {
+// Progress widgets
+.progressWidgets {
   .widget {
     @include border-left(1px solid $hard-gray);
-
     &:first-child {
       @include padding-left(0);
       @include border-left(0);
     }
-
     &:last-child {
       @include padding-right(0);
     }
+  }
+}
 
+// Course Landing Page
+#course-statistics {
+  .widget {
     .progressArea {
       @include float(right);
 
@@ -222,7 +248,6 @@
         float: none;
       }
     }
-
     &.course-progress {
       .progressArea {
         @include float(none);
@@ -315,6 +340,98 @@
   }
 }
 
+// progress
+
+#course-progress-new{
+  .visual{
+    @include border-right(1px solid $gray);
+    @include padding-left(20px);
+
+    @include media-breakpoint-between(xs, sm) {
+      @include border-right(0);
+      @include padding-left(15px);
+    }
+  }
+  .modules{
+    @include padding-left(30px);
+
+    @include media-breakpoint-between(xs, sm) {
+      @include padding-left(0);
+    }
+
+    @include media-breakpoint-between(md, lg) {
+      @include padding-left(15px);
+    }
+  }
+  table{
+    td{
+      &:first-child {
+        @include border-left(0);
+      }
+      &:last-child {
+        @include border-right(0);
+      }
+      &.week{
+        span{
+          color: $black;
+          @include margin-right(20px);
+          @include media-breakpoint-between(xs, md) {
+            @include margin-right(5px);
+          }
+        }
+      }
+      .lesson-with-list {
+        .lesson-item-name {
+          .lesson-label {
+            @include margin-left(5px);
+            @include margin-right(25px);
+            @include media-breakpoint-between(xs, md){
+              @include margin-right(5px);
+            }
+          }
+        }
+      }
+    }
+  }
+  .legend-status {
+    span{
+      @include margin-right(15px);
+      @include media-breakpoint-between(xs, sm) {
+        @include margin-right(7px);
+      }
+      i{
+        @include margin-right(5px);
+      }
+    }
+  }
+
+  .proficiency-data,
+  .engagement-data{
+    .progressWidgets{
+      @include border-right(1px solid $gray);
+    }
+  }
+  .dropdown-toggle {
+    &:after {
+      @include right(-20px);
+    }
+  }
+  .proficiency-data,
+  .engagement-data {
+    table {
+      tr {
+        td {
+          &:nth-child(2) {
+            @include media-breakpoint-between(xs, sm) {
+              @include text-align(right);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 // Lesson List
 .allCoursesList {
   >.courseRow {
@@ -374,13 +491,14 @@
   }
 }
 
-// Lesson Page
 .lessonOverview {
-  .headerArea {
-    @include padding-right(35px);
+  .contentCard {
+    .headerArea {
+      @include padding-right(35px);
 
-    .zoomWrap {
-      @include right(0);
+      .zoomWrap {
+        @include right(0);
+      }
     }
   }
 }
@@ -419,15 +537,18 @@ footer {
 // CSS specific styles
 body.rtl {
   text-align: right;
-  .my-courses{
-    .bookmark{
-      background-position-x: left;
-    }
-  }
   .bookmark {
     @include flip-x-axis;
   }
-
+  .courseLanding {
+    .viewDetailCourse {
+      a {
+        &:after {
+          content: "\e408";
+        }
+      }
+    }
+  }
   #course-statistics {
     .widget {
       &.course-progress {
@@ -495,6 +616,13 @@ body.rtl {
       right: 0 !important;
       left: auto;
     }
+    &.adminModules {
+      @include left(0 !important);
+      @include right(auto !important);
+      &:after {
+        display: none;
+      }
+    }
   }
 
   .mapboxgl-ctrl-top-left {
@@ -552,33 +680,116 @@ body.rtl {
           }
         }
       }
+      [class*="col-"] {
+        @include padding-left(0);
+      }
     }
   }
 }
 
+.mCSB_inside>.mCSB_container {
+  @include margin-right(15px);
+}
+
+
 // Admin site Biapp styles
+.tableCardWrap {
+  table {
+    td {
+      @include border-left(1px solid $smooth-gray);
+      @include border-right(1px solid $smooth-gray);
+      &:first-child {
+        @include border-left(0);
+      }
+    }
+  }
+}
+
 #managerDashboardWrapper {
   table {
     td {
       &.progress {
-        >span {
+        > span {
           @include margin-right(20px);
         }
       }
     }
   }
 
-  .bbGrid-container{
+  .bbGrid-container {
     table {
       tr[class*="subgrid"] {
-        td{
-          &:last-child{
-            >span{
+        td {
+          &:last-child {
+            > span {
               @include margin-right(2px);
             }
           }
         }
       }
+    }
+  }
+}
+
+// Companies Admin styles
+.tableHeaderArea {
+  .sidePanel {
+    @include float(right);
+  }
+}
+
+.companiesStats {
+  > li {
+    @include margin-right(30px);
+    &:last-child {
+      @include margin-left(0px);
+    }
+    span {
+      @include margin-left(10px);
+      &:first-child {
+        @include margin-left(0px);
+      }
+    }
+  }
+}
+
+#courseMainDetailsContainerView {
+  .courseParticipantsButton,
+  .courseStatsButton {
+    @include margin-left(30px);
+    &:first-child {
+      @include margin-left(0)
+    }
+  }
+}
+#course-progress-new table td .dropdown-toggle {
+  @include media-breakpoint-between(xs, sm) {
+     @include margin-left(25px);
+  }
+}
+#companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
+  .bbGrid-search-bar {
+    .input-group {
+      @include float(right);
+      input:not([type='checkbox']) {
+        @include padding-right(40px);
+      }
+    }
+    .bbGrid-pager {
+    }
+  }
+}
+
+#courseMainDetailsContainerView {
+  .bbGrid-search-bar{
+    @include right(30px);
+    .input-group{
+      @include float(right);
+      @include margin-left(20px);
+    }
+    #coursesDownloadStatsButton,
+    .bulkActionsButtonContainer{
+      @include float(right);
     }
   }
 }
@@ -596,6 +807,11 @@ body.rtl {
       }
     }
   }
+  #mCSB_1_container{
+  >.row{
+    @include margin-right(-15px);
+  }
+}
 }
 
 @media screen and (max-width: 767px) {
@@ -610,12 +826,74 @@ body.rtl {
     }
   }
   .appHeader {
-    .topRightArea {
+    .logo{
+      .topRightArea {
       .profileArea {
         @include margin-left(15px);
         .dropdown-menu {
           @include right(-14px !important);
         }
+      }
+    }
+    }
+  }
+  #course-progress-new .course-page table thead tr {
+    display: block;
+    @include margin-right(-20px);
+  }
+}
+
+.dropdown-menu {
+  .sub-nav {
+    li {
+       >a{
+         position: relative;
+         @include padding-left(0);
+       }
+      .sub-nav,ul{
+        li{
+          >a{
+            @include padding-right(20px);
+            @include padding-left(20px);
+          }
+        }
+      }
+    }
+  }
+}
+
+.sub-nav
+{
+
+    li
+    {
+          .bookmark
+          {
+              @include left(-30px);
+          }
+
+    }
+}
+
+// Calendar
+
+#over-full-calendar {
+  .over-calendar {
+    @include left(-40px);
+    @include right(auto);
+  }
+  #over-calendar-right {
+    @include right(-40px);
+    @include left(auto);
+  }
+  #row-full-calendar {
+    #under-calendar {
+      @include padding-left(1rem);
+      #close-calendar {
+        @include right(-68px);
+      }
+      .tab-month {
+        @include padding-left(0);
       }
     }
   }

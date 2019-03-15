@@ -26,6 +26,17 @@ def is_mobile_user_agent(request):
     return user_agent.is_mobile
 
 
+def is_tablet_user_agent(request):
+    """
+    Helper method to check if request user agent is tablet
+    """
+    user_agent = _get_user_agent(request)
+    if user_agent is None:
+        return False
+
+    return user_agent.is_tablet
+
+
 def is_supported_mobile_device(request):
     """
     Helper method to check if request user agent is mobile and is supported

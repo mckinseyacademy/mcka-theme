@@ -83,6 +83,7 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
     if (this.$el.selector != '#managerDashboardReportGrid'){
       this.$el.find('.bbGrid-container').append('<i class="fa fa-spinner fa-spin"></i>');
     }
+
     managerDashboardReportGridBlock['partial_collection'] = this.collection;
     this.managerDashboardReportGridBlock = managerDashboardReportGridBlock;
     this.$el.find('.bbGrid-container').on('scroll', { extra : this}, this.fetchPages);
@@ -103,7 +104,7 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       success: function (val) {
         var container = "";
         $.each( val, function( key, value ){
-          container += '<tr class="bbGrid-row bbSubGrid subgrid-' + index + '" data-parent-cid="'+index+'"><td></td><td colspan="4">'+gettext("Lesson")+' '+parseInt(key + 1)+': '+value.name+'</td><td colspan="3"> '+value.progress+'% '+gettext("complete")+'</td></tr>';
+          container += '<tr class="bbGrid-row bbSubGrid subgrid-' + index + '" data-parent-cid="'+index+'"><td></td><td colspan="4">'+gettext("Lesson")+' '+parseInt(key + 1)+': '+value.name+'</td><td class="progress" colspan="3"> <span style="width:'+value.progress+'%"> '+value.progress+'%</span> '+gettext("complete")+'</td></tr>';
         });
         $(container).insertAfter(parentElement);
       },

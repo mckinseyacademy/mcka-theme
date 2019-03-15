@@ -4,7 +4,7 @@
 - for course in courses
   .col-sm-12.col-md-6.col-lg-4
     %a.d-block{:href => "#{course.nav_url}"}
-      .card{"class": "{% if course.ended %}archived{% else %}ome{% endif %}"}
+      .card.ome{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img
           %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_url}}"}
         .card-body.dome-bc
@@ -14,14 +14,23 @@
           %h3.card-title
             = course.name
           .course-detail
-            %span.lesson-count
-              = course.total_lessons
-              {% trans "Lessons" %}
+            - if course.effort
+              %span.course-effort
+                %i.material-icons
+                  access_time
+                {% trans "est. time" %} {{course.effort}}
+            - else
+              %span.lesson-count
+                = course.total_lessons
+                {% trans "Lessons" %}
             %span.course-progress
               {{course.percent_complete}}%
               %span.bar
                 %span{:style => "width: {{course.percent_complete}}%"}
-
+- empty
+  .col
+    #courses.contentCard.text-center
+      {% trans "You aren't enrolled in any courses." %}
 
 %script
   $('.card-img-top').on('error', function(e){

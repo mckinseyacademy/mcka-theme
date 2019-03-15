@@ -661,6 +661,7 @@ EXPORT_STATS_DIR = 'csv_exports'
 # Theme Settings
 
 XBLOCK_THEME_CSS_PATH = 'mcka-theme/css/apros-xblocks.css'
+XBLOCK_THEME_JS_PATH = 'mcka-theme/js/apros-xblocks.js'
 
 # Course Key Regex
 COURSE_KEY_PATTERN = r'(?P<course_key_string>[^/+]+(/|\+)[^/+]+(/|\+)[^/?]+)'

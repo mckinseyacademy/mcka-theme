@@ -1,0 +1,32 @@
+.cloned-header {
+	position: absolute;
+	font-size: 12px;
+	cursor: pointer;
+	background: whitesmoke;
+	border-collapse: separate;
+	border-spacing: 0;
+	table-layout: fixed;
+	tr {
+		border-radius: 4px 0 0 0;
+	}
+	th {
+		background-color: $background_color_1;
+		box-sizing: content-box;
+		overflow: hidden;
+		white-space: normal;
+		border-bottom: 0;
+		border-top: 1px solid #ccc;
+		border-left: 1px solid #ccc;
+		display: table-cell;
+		line-height: 1.28571rem;
+		padding: .57143rem .71429rem .71429rem;
+		font-size: 1rem;
+		font-weight: bold;
+		color: $color_1;
+		text-align: left;
+		margin: 0;
+	}
+}
+.clonedHeaderContainer {
+	display: none;
+}

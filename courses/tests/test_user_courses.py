@@ -137,11 +137,13 @@ class TestStandardData(TestCase, ApplyPatchMixin):
     def setUp(self):
         self.request = mock.Mock()
         self.request.user.id = 1
+        self.request.resolver_match.kwargs.get = lambda _: None
 
         self.course_name = "MckinseyMckinseyMckinseyMckinseyMckinseyMckinseyMckinseyMckinsey"
         course = {
             "id": "Organization_X/CS103/2018_T3",
             "name": self.course_name,
+            "learner_dashboard": False,
             "is_active": True,
         }
         self.course = course_models.Course(dictionary=course)
@@ -201,11 +203,13 @@ class TestGetProgramMenuList(TestCase, ApplyPatchMixin):
             {
                 "id": "Organization_X/CS103/2018_T3",
                 "name": "Essential Principles Of Business",
+                "learner_dashboard": False,
                 "is_active": True
             },
             {
                 "id": "Organization_Y/CS105/2018_T5",
                 "name": "An Integrated Approach To Business Studies",
+                "learner_dashboard": False,
                 "is_active": True
             }
         ]

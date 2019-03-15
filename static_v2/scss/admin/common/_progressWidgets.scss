@@ -1,0 +1,57 @@
+// Admin site top Progress Widgets
+#admin-body {
+  .contentCard {
+    .note {
+      color: $gray;
+      font-size: 0.75rem;
+      margin: 15px 0 0;
+      text-transform: none;
+      font-weight: normal;
+      strong {
+        font-weight: 600;
+      }
+    }
+    .headerArea {
+      h2 {
+        color: $black;
+        font-size: 1.8rem;
+        font-weight: 300;
+        line-height: 34px;
+      }
+    }
+  }
+  .courseMainHeader {
+    .dropdown {
+      .dropdown-menu {
+        top: 60px;
+      }
+    }
+  }
+}
+
+.progressWidgets {
+  &.admin {
+    .row {
+      margin: 0;
+    }
+    .widget {
+      min-height: auto;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      .widgetTitle {
+        margin-bottom: 8px;
+      }
+      .averageTitle {
+        font-size: 2.425rem;
+        font-weight: 600;
+        color: var(--primary);
+        line-height: 45px;
+        margin-bottom: 0;
+      }
+    }
+    small {
+      font-size: 10px;
+      color: $gray;
+    }
+  }
+}

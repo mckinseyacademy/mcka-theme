@@ -37,3 +37,4 @@ refresh_assets.sh
 csv_exports/
 import_participant_files/
 certificates/template_assets/
+reports/

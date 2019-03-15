@@ -119,11 +119,6 @@
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
 
-    - if '/admin' in request.path
-      {% assets "css_admin" %}
-        %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
-      {% endassets %}
-
     -# Custom head JS
     - block head_js
 
@@ -208,9 +203,9 @@
       window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=t.forceSSL||"https:"===document.location.protocol,a=document.createElement("script");a.type="text/javascript",a.async=!0,a.src=(r?"https:":"http:")+"//cdn.heapanalytics.com/js/heap-"+e+".js";var n=document.getElementsByTagName("script")[0];n.parentNode.insertBefore(a,n);for(var o=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],c=0;c<p.length;c++)heap[p[c]]=o(p[c])};
       heap.load('#{heap_app_id}');
 
-  %body{
+  %body.new-theme{
     id: "{% if '/admin' in request.path %}admin-body{% endif %}",
-    class: "site-wrapper {% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %} {% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %} {% block body_class %}{% endblock %}",
+    class: "site-wrapper {% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %} {% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %} {% block body_class %}{% if is_full_screen %}zoomIn{% endif %}{% endblock %}",
     style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"
   }
     - block help_context
@@ -232,6 +227,10 @@
     - block i18n
       %script{type: "text/javascript", src: "{% url 'javascript-catalog' %}"}
 
+    -# jQuery-cookie
+    - block jquery_cookie
+      %script{src: "{% static 'js/vendor/jquery.cookie.js' %}"}
+
     -# jQuery-xblock
     - block jquery_xblock
       %script{src: "{% static 'js/vendor/jquery.xblock.js' %}"}
@@ -239,7 +238,7 @@
     -# Bootstrap JS
     - block bootstrap_js
       %script{src: "{% static 'js/bootstrap.bundle.min.js' %}"}
-    
+
     - block %jquery_validation
       %script{src: "{% static 'https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.8.1/jquery.validate.js' %}"}
 
@@ -329,6 +328,17 @@
                       %button.btn.btn-primary.ome.dome-bc{:type => "button"}
                         {% trans "crop & save" %}
 
+    #generalModal.modal.fade{:role => "dialog"}
+      .modal-dialog
+        .modal-content
+          .modal-header
+            %button.close{:data-dismiss => "modal", :type => "button"} ×
+            %h4.modal-title Modal Header
+          .modal-body
+            %p Some text in the modal.
+          .modal-footer
+            %button.btn.btn-default{:data-dismiss => "modal", :type => "button"} Close
+
     %script{src: "{% static 'js/shader.js' %}"}
 
     -# Ooyala Player JS
@@ -345,3 +355,10 @@
       {% assets "js_all_v2" %}
         %script{src: "{{ ASSET_URL }}"}
       {% endassets %}
+
+    - if xblock_theme_js_path
+      %script{src: "{% static xblock_theme_js_path %}"}
+    -# Session Timeout
+    %script
+      var apros_session_timeout_seconds = {{apros_session_timeout_seconds}};
+    %script{src:"static/js/session_timeout_timer.js"}

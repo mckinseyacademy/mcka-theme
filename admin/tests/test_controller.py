@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.test import TestCase
 from django.test.client import RequestFactory
 from rest_framework import status
+from mock import patch
 
 import admin.controller as controller
 from accounts.tests.utils import ApplyPatchMixin
@@ -17,7 +18,8 @@ from admin.controller import (
     write_participant_performance_on_csv,
     write_engagement_summary_on_csv,
     write_social_engagement_report_on_csv,
-    get_course_stats_report
+    get_course_stats_report,
+    ProblemReportPostProcessor,
 )
 from admin.models import SelfRegistrationRoles, CourseRun
 from admin.tests.utils import BASE_DIR
@@ -634,3 +636,58 @@ class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
         expected_output = None
         output = controller.process_manager_email(self.manager_email, self.username, self.company_id)
         self.assertEqual(output, expected_output)
+
+
+class ProblemReportPostProcessorTest(TestCase):
+    """Test cases for ProblemReportPostProcessor."""
+
+    @patch('admin.controller.requests.get')
+    @patch(
+        'admin.controller.course_api.get_course_block_of_types',
+        return_value=[
+            {'lesson': 'L1 lesson 1',
+             'lesson_number': 1,
+             'question': 'question one?',
+             'id': 'some_block_key',
+             'module': 'M1 module 1',
+             'module_number': 1},
+            {'lesson': 'L1 lesson 2',
+             'lesson_number': 2,
+             'question': 'question two?',
+             'id': 'some_block_key 1',
+             'module': 'M2 module 2',
+             'module_number': 2}
+        ]
+    )
+    @patch('admin.controller.csv.DictReader', return_value=iter([
+        {'username': 'username3', 'title': 'Poll Title', 'location': 'Poll Location', 'Answer': 'some answer',
+         'Question': 'question one?', 'Submission count': '1', 'block_key': 'some_block_key', 'state': 'some state'},
+        {'username': 'username4', 'title': 'Poll Title', 'location': 'Poll Location', 'Answer': 'another answer',
+         'Question': 'question two?', 'Submission count': '1', 'block_key': 'some_block_key 1',
+         'state': 'some state'},
+    ]))
+    @patch(
+        'admin.controller.course_api.get_user_list_json',
+        return_value=[
+            {
+                'username': 'username3',
+                'email': 'username3@example.com',
+            },
+            {
+                'username': 'username4',
+                'email': 'username4@example.com',
+            }
+        ]
+    )
+    def test_post_process(self, mock_get_user, mock_reader, mock_get_course_blocks, mock_requests_get):
+        """Test post process."""
+        processor = ProblemReportPostProcessor('course_id', 'report_name', 'report_uri')
+        processor.file_path = 'file_path'
+        rows, keys = processor.post_process()
+        self.assertTrue(len(rows), 3)
+        self.assertEqual(
+            rows,
+            [{u'L1M1 - question one?': u'some answer', 'email': 'username3@example.com'},
+             {u'L2M2 - question two?': u'another answer', 'email': 'username4@example.com'}]
+        )
+        self.assertEqual(keys, [u'email', u'L1M1 - question one?', u'L2M2 - question two?'])

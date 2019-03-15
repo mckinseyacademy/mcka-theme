@@ -1,0 +1,11 @@
+- load i18n
+.group-member
+  %img.avatar{"src": "#{group_member.image_url_medium}", "title": "#{group_member.username}"}
+  .person-info
+    .person-username= group_member.username
+    .person-fullname= group_member.formatted_name
+    - if group_member.title
+      .person-title= group_member.title
+    .email
+      %a.email-member{"href": "#", 'data-reveal-id': '#{data_reveal_id}', 'data-member-email': '#{group_member.email}'}
+        {% trans "Email" %}

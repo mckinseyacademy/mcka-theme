@@ -1,0 +1,15 @@
+// Course Discussion for LD
+.discussion{
+  &.discussion-board{
+    &.container {
+      padding: 0;
+    }
+  }
+}
+body{
+  &.new-theme{
+    #course-discussion{
+    background: transparent !important;
+  }
+  }
+}

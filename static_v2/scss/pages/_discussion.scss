@@ -1,0 +1,26 @@
+// discussion
+// For The old UI Structure support
+body.new-theme #course-discussion {
+  z-index: auto !important;
+}
+.modal {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  width: 100% !important;
+  box-shadow: none !important;
+  background: none !important;
+  z-index: 9999 !important;
+  position: fixed !important;
+  left: 0 !important ;
+  padding: 0 !important;
+  border-radius: 0 !important;
+  .modal-header {
+    display: block !important;
+    border-bottom: 1px solid #e9ecef !important;
+
+    .close {
+      padding: 0 5px;
+      margin: 0;
+    }
+  }
+}

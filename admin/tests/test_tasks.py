@@ -1,5 +1,6 @@
 """ Tests for admin app celery tasks """
 import ddt
+from mock import patch, Mock
 
 from django.core import mail
 from django.test import TestCase, override_settings
@@ -11,8 +12,12 @@ from admin.tasks import (
     send_export_stats_status_email,
     export_stats_status_email_task,
     participants_notifications_data_task,
-    users_program_association_task
+    users_program_association_task,
+    create_problem_response_report,
+    monitor_problem_response_report,
+    post_process_problem_response_report,
 )
+from celery.exceptions import Retry
 from api_client.course_models import CourseCohortSettings
 from api_client.user_models import UserResponse
 
@@ -191,3 +196,83 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
         )
 
         self.assertEqual(result.get('total'), len(user_ids))
+
+
+@ddt.ddt
+class ProblemResponseTasksTest(TestCase):
+    """Tests for tasks pertaining to problem response post-processing."""
+
+    @patch(
+        'admin.tasks.create_problem_response_report.request.id',
+        return_value='task_id'
+    )
+    @patch(
+        'admin.tasks.instructor_api.generate_problem_responses_report',
+        return_value=Mock()
+    )
+    def test_create_problem_response_report(
+        self, mock_generate_problem_responses_report, mock_task_id
+    ):
+        """Test create problem response report task."""
+        create_problem_response_report.apply(args=('course_id', 'problem_location'))
+        mock_generate_problem_responses_report.assert_called_with('course_id', 'problem_location', None)
+
+    @ddt.data(
+        {'task_id': 'remote_task_id', 'task_state': 'SUCCESS',
+         'in_progress': False, 'task_progress': {'report_name': 'report_name'}},
+        {'task_id': 'remote_task_id', 'task_state': 'PROGRESS',
+         'in_progress': True, 'task_progress': {'report_name': 'report_name'}},
+    )
+    @patch('admin.tasks.instructor_api.get_task_status')
+    @patch(
+        'admin.tasks.monitor_problem_response_report.update_state',
+        return_value=Mock()
+    )
+    @patch(
+        'admin.tasks.monitor_problem_response_report.retry',
+        return_value=Retry()
+    )
+    def test_monitor_problem_response_report(self, tasks_result, mock_retry, mock_update_state, mock_get_task_status):
+        """Test monitor problem response report task."""
+        mock_get_task_status.return_value = tasks_result
+        if tasks_result['task_state'] == 'SUCCESS':
+            monitor_problem_response_report(
+                {'id': 'task_id', 'remote_task_id': 'remote_task_id'},
+                'course_id'
+            )
+            self.assertEqual(len(mock_update_state.mock_calls), 1)
+        else:
+            with self.assertRaises(Retry):
+                monitor_problem_response_report(
+                    {'id': 'task_id', 'remote_task_id': 'remote_task_id'},
+                    'course_id'
+                )
+        mock_get_task_status.assert_called_with('remote_task_id')
+
+    @patch('admin.tasks.AdminTask.objects.get', return_value=Mock())
+    @patch('admin.tasks.create_and_store_csv_file', return_value='file_url')
+    @patch('admin.tasks.ProblemReportPostProcessor')
+    @patch(
+        'admin.tasks.instructor_api.get_report_downloads',
+        return_value=[{'url': 'url', 'name': 'name'}]
+    )
+    def test_process_problem_response_report(
+        self,
+        mock_get_report_downloads,
+        mock_processor,
+        mock_store_file,
+        mock_admin_task_get
+    ):
+        """Test process problem response report."""
+        mock_processor().post_process.return_value = [{'key1': 'val1', 'key2': 'val2'}], ['key1', 'key2']
+        mock_processor().module_lesson_number.return_value = ('module number', 'lesson number')
+        post_process_problem_response_report(
+            {'id': 'task_id', 'report_name': 'report_name'},
+            'course_id',
+            'problem_location'
+        )
+        mock_get_report_downloads.assert_called_with('course_id', 'report_name')
+        mock_processor.assert_called_with(course_id='course_id', report_name='name', report_uri='url')
+        self.assertEqual(len(mock_processor().post_process.mock_calls), 1)
+        self.assertEqual(len(mock_store_file.mock_calls), 1)
+        self.assertEqual(len(mock_admin_task_get().save.mock_calls), 1)

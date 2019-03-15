@@ -1,0 +1,287 @@
+- extends "courses/course_base.haml"
+- load i18n
+{% load courses_extras %}
+
+- block page_title
+  %title
+    = program.display_name
+    {% trans " | Progress | Courses | McKinsey Academy" %}
+
+-block content
+  .container
+    .row
+      .col
+        %article#course-progress-new
+          .course-page.contentCard
+            %h2 {% trans "Dashboard for" %} #{progress_user.username}
+            %h5 {% trans "PROGRESS" %}
+            %p
+              - if lessons_custom_label and modules_custom_label
+                {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
+                  You are  <b>{{user_course_progress}}%</b> of the way through the course based on completion of {{modules_custom_label}} within {{lessons_custom_label}}. The cohort average is <b>{{user_average_progress}}%</b>.
+                {% endblocktrans %}
+              - elif lesson_custom_label
+                {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
+                  You are <b>{{user_course_progress}}%</b> of the way through the course based on completion of modules within {{lessons_custom_label}}. The cohort average is <b>{{user_average_progress}}%</b>.
+                {% endblocktrans %}
+              - elif module_custom_label
+                {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
+                  You are <b>{{user_course_progress}}%</b> of the way through the course based on completion of {{modules_custom_label}} within lessons. The cohort average is <b>{{user_average_progress}}%</b>.
+                {% endblocktrans %}
+              -else
+                {% blocktrans with user_course_progress=course.user_progress user_average_progress=average_progress %}
+                  You are <b>{{user_course_progress}}%</b> of the way through the course based on completion of modules within lessons. The cohort average is <b>{{user_average_progress}}%</b>.
+                {% endblocktrans %}
+            %hr
+            .user-progress
+              .row
+                .visual.progressWidgets.col-8
+                  %h5 {% trans "Progress" %}
+                  - include "courses/visualizations/course_progress.haml"
+                .col-4.modules 
+                  - if modules_custom_label
+                    %h5 # {{modules_custom_label}}
+                  -else
+                    %h5 # {% trans "Modules" %}
+                  %big {{ course.module_count }}
+
+                  - if lessons_custom_label
+                    %span #{course.chapters|length} {{lessons_custom_label}} {% trans " in this course" %}
+                  - else
+                    %span #{course.chapters|length} {{lessons_custom_label}} {% trans "Lessons in this course" %}
+            %hr
+
+            %table.progress-data
+              %thead{"class": "{% if not feature_flags.group_work %}no-group-work{% endif %}"}
+
+                %tr
+                  - if not course.is_evergreen
+                    %th{:class => "{% if not course.is_evergreen %}course-run{% endif %}"} {% trans "Course Run" %}
+                  %th {% trans "Individual Learning" %}
+                  - if feature_flags.group_work and course.has_group_work
+                    %th {% trans "Group Work (Due Date)" %}
+              %tbody
+                - for week in course.lessons_by_week
+                  %tr
+                    - if not course.is_evergreen
+                      %td.week.progress_data_col
+                        - if week.start
+                          %span
+                            {% trans 'Week' %} #{week.index}:
+                          #{week.start}-#{week.end}
+                    %td.progress_data_col
+                      - if feature_flags.group_work and week.group_only
+                        %div {% trans "N/A (focus on Group Work)" %}
+                      - for lesson in week.lessons
+                        %div{"class": "lesson-with-list lesson-row-item {% if lesson.is_started %}active{% else %}future{% endif %}"}
+                          .lesson-item-name
+                            %i{:class => "status material-icons{% if lesson.progress == 100 %} complete{% endif %}"}
+                              {% if lesson.progress == 100 %}check_circle {% elif lesson.progress == 0 %}panorama_fish_eye{% else %}tonality{% endif %}
+                            %span.lesson-label
+                              - if lesson_custom_label
+                                {% blocktrans with lesson_index=lesson.index %} {{lesson_custom_label}} 
+                                  %span {{lesson_index}}:
+                                {% endblocktrans %}
+                              -else
+                                {% trans "Lesson" %} 
+                                  %span #{lesson.index}:
+
+                          - if lesson_custom_label and modules_custom_label
+                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                              = lesson.name
+                          - elif lesson_custom_label
+                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+                              = lesson.name
+                          - elif modules_custom_label
+                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+                              = lesson.name
+                          - else
+                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
+                              = lesson.name
+                              
+                          .dropdown-menu.allLessons.allModules{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
+                            %ul.allCoursesList
+                              %b
+                                - if lesson_custom_label
+                                  {% blocktrans with course_current_progress=lesson.progress lesson_index=lesson.index %}You have completed {{course_current_progress}}% of {{lesson_custom_label}} {{lesson_index}} {% endblocktrans %}
+                                - else
+                                  {% blocktrans with course_current_progress=lesson.progress lesson_index=lesson.index %}You have completed {{course_current_progress}}% of Lesson {{lesson_index}} {% endblocktrans %}
+
+                              - for module in lesson.modules
+                                %li{"class": "courseRow {% if module.is_started %}active{% else %}locked{% endif %} {% if module.progress == 100 %}complete{% else %}{% endif %}"}
+                                  %a{:href => "#{module.navigation_url}"}
+                                    .holder
+                                      .data.serial
+                                        - if module_custom_label
+                                          {% blocktrans with module_index=module.index %}
+                                            {{module_custom_label}}
+                                            %span {{module_index}}
+                                          {% endblocktrans %}
+                                        - else
+                                          {% trans "Module" %}
+                                          %span {{module.index}}
+                                      .data.title
+                                        %span= module.name
+                                          -if not module.is_started
+                                            %i.material-icons.locked{ :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
+                                      .data.status
+                                        %i.material-icons
+                                        - if module.progress == 100
+                                          %i.material-icons check_circle
+                                          {% trans "Complete" %}
+                                        - elif module.progress == 0
+                                          %i.material-icons panorama_fish_eye
+                                          {% trans "Not Started" %}
+                                        - else
+                                          %i.material-icons tonality
+                                          {% trans "In Progress" %}
+                                    .description
+                                      Tell me and I forget. Teach me and I
+                                      remember. Involve me and I learn. - Benjamin Franklin
+                                  - if course.current_module == module
+                                    %span.bookmark
+
+                    - if feature_flags.group_work
+                      - if week.has_group
+                        %td.progress_data_col
+                          - for activity in week.group_activities
+                            .lesson-with-list.lesson-row-item.gr-data
+                              - if activity.score 
+                                %i.material-icons.complete
+                                  check_circle
+                              - else
+                                %i.material-icons
+                                  panorama_fish_eye
+                                  
+                              .lesson-item-name
+                                %a.gw-links{"href": "#{activity.link}"}
+                                  #{activity.name}:
+                                %span.due-date 
+                                  = activity.due_on
+                      - else
+                        - if course.has_group_work
+                          %td.empty
+            .legend-status
+              %span
+                <i class="status material-icons">panorama_fish_eye</i>
+                {% trans "Not Started" %}
+              %span
+                <i class="status partial material-icons">tonality</i> 
+                {% trans "In Progress" %}
+              %span.text-success
+                <i class="status complete material-icons">check_circle</i>
+                {% trans "Complete" %}
+
+            - if course_run and feature_flags.group_work
+              %p.note-progress {% trans "Note: Group Work Deliverables need to be submitted by 11pm GMT." %}
+            - if not course_run
+              - if feature_flags.group_work
+                %p.note-progress {% trans 'Note: "weeks" begin Tuesday and end the following Monday; Group Work Deliverables need to be submitted by 11pm GMT.' %}
+              - else
+                %p.note-progress {% trans 'Note: "weeks" begin Tuesday and end the following Monday' %}
+          - if feature_flags.proficiency and graded_items_count > 0
+            .contentCard.course-page.proficiency-data#proficiency-block
+
+              %h5 {% trans "PROFICIENCY" %}
+              %p
+                {% blocktrans %}
+                  Your current proficiency score is <b>{{proficiency}}%</b> following completion of {{completed_items_count}} of {{graded_items_count}} graded items in this course. The cohort average is <b>{{cohort_proficiency_average}}%</b>.
+                {% endblocktrans %}
+              %hr
+              %table
+                %thead
+                  %tr
+                    %th {% trans "Overall" %}
+                    %th {% trans "Graded Items" %}
+                    %th {% trans "Grade" %}
+                %tbody
+                  %tr
+                    %td.visual.progressWidgets{"rowspan": "#{graded_items_rows}"}
+                      - include "courses/visualizations/course_proficiency.haml"
+                  - for module in course.graded_items.modules
+                    %tr
+                      %td
+                        .lesson-row-item
+                          .lesson-item-name
+                            %i{:class => "status material-icons{% if lesson.progress == 100 %} complete{% endif %}"}
+                              {% if lesson.progress == 100 %}check_circle {% elif lesson.progress == 0 %}panorama_fish_eye{% else %}tonality{% endif %}
+                            %a.ome-dome-c{"href": "#{module.navigation_url}"}
+                              #{module.lesson_name}: {{ module.name|translate_assessment_if_needed }}
+                      %td.number{"class": "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
+                  - if feature_flags.group_work
+                    - for activity in course.graded_items.group_activities
+                      - if activity.score
+                        %tr
+                          %td
+                            .lesson-row-item
+                              .lesson-item-name
+                                %i.status.complete.material-icons
+                                  check_circle    
+                                %a.ome-dome-c{"href": "#{activity.link}"}
+                                  {% trans "Group Work" %}
+                                =activity.name
+                          - ifequal activity.score None
+                            %td.number.zero 0
+                          - else
+                            %td.number= activity.score
+                      - else
+                        %tr
+                          %td
+                            .lesson-row-item
+                              .lesson-item-name
+                                %i.status.complete.material-icons
+                                  check_circle
+                                %a.ome-dome-c{"href": "#{activity.link}"}
+                                  {% trans "Group Work" %}
+                                =activity.name
+                          - if activity.is_pending
+                            %td {% trans "Grading in progress" %}
+                          - else
+                            %td.number.zero 0
+              .legend-status
+                %span
+                  <i class="status material-icons">panorama_fish_eye</i>
+                  {% trans "Not Started" %}
+                %span
+                  <i class="status partial material-icons">tonality</i> 
+                  {% trans "In Progress" %}
+                %span.text-success
+                  <i class="status complete material-icons">check_circle</i>
+                  {% trans "Complete" %}
+              %p.note-progress
+                {% blocktrans %}
+                  You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: {{graders}}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+                {% endblocktrans %}
+          - if feature_flags.discussions
+            .contentCard.course-page.engagement-data#engagement-block
+              %h5 {% trans "ENGAGEMENT" %}
+              %p
+                {% trans "discussion" as discussion_text %}
+                {% blocktrans with social_points=social.points social_course_avg=social.course_avg course_nav_url=course.nav_url %}
+                  Your current engagement score is <b>{{social_points}}</b> based on your social interactions with other participants in your cohort in the <a href="{{course_nav_url}}/discussion">{{discussion_text}}</a> forums. The cohort average is <b>{{social_course_avg}}</b>.
+                {% endblocktrans %}
+              %table
+                %thead
+                  %tr
+                    %th {% trans "Overall" %}
+                    %th {% trans "Measured Engagement" %}
+                    %th {% trans "Stats" %}
+                %tbody
+                  %tr
+                    %td.visual.progressWidgets{"rowspan": "6"}
+                      - include "courses/visualizations/course_engagement.haml"
+                  %tr
+                    %td {% blocktrans %}Number of <span>New Posts</span> you created {% endblocktrans %}
+                    %td.number{"class": "{% if social.metrics.num_threads == 0 %}zero{% endif %}"}= social.metrics.num_threads
+                  %tr
+                    %td {% blocktrans %}Number of <span>Replies</span> you made to other posts {% endblocktrans%}
+                    %td.number{"class": "{% if total_replies == 0 %}zero{% endif %}"}= total_replies
+                  %tr
+                    %td {% blocktrans %} Number of <span>Comments Generated </span> by your posts {% endblocktrans %}
+                    %td.number{"class": "{% if social.metrics.num_comments_generated == 0 %}zero{% endif %}"}= social.metrics.num_comments_generated
+                  %tr
+                    %td {% blocktrans %} Number of <span>Upvotes</span> your posts have received {% endblocktrans %}
+                    %td.number{"class": "{% if social.metrics.num_upvotes == 0 %}zero{% endif %}"}= social.metrics.num_upvotes
+                  %tr
+                    %td {% blocktrans %} Number of your posts being <span>Followed</span> {% endblocktrans %}
+                    %td.number{"class": "{% if social.metrics.num_thread_followers == 0 %}zero{% endif %}"}= social.metrics.num_thread_followers

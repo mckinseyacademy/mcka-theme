@@ -32,6 +32,12 @@ var ApiUrls = {
   cached_resource_api: function(resource_name) {
     return this.cache + '/' + resource_name;
   },
+  course_blocks: function(courseId) {
+    return ApiUrls.course_details + '/' + (courseId || ApiUrls.currentCourseId) + '/blocks/';
+  },
+  course_reports: function(courseId) {
+    return '/admin/api/problem_response_reports/course/' + (courseId || ApiUrls.currentCourseId) + '/';
+  },
   file_upload: '/admin/api/s3file',
   validate_participant_email: '/admin/api/participants/validate_participant_email',
   validate_participant_username: '/admin/api/participants/validate_participant_username',

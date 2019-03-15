@@ -1,3 +1,5 @@
+import json
+
 from api_client import group_api, workgroup_api, organization_api, user_api, course_api
 from api_client import group_models, user_models, workgroup_models, organization_models
 
@@ -727,3 +729,61 @@ def create_self_reg_other_role(sender, instance, created, **kwargs):
 
     if created:
         SelfRegistrationRoles.objects.create(course_run=instance, option_text=OTHER_ROLE)
+
+
+class AdminTask(db_models.Model):
+    """
+    Model to represent a status for an admin task.
+    """
+    task_id = db_models.CharField(max_length=255, blank=False, null=False)
+    course_id = db_models.CharField(max_length=255, blank=True, null=True)
+    parameters = db_models.CharField(max_length=2048, blank=True, null=True)
+    task_type = db_models.CharField(max_length=512, blank=False, null=False)
+    output = db_models.TextField(blank=True, null=True)
+    status = db_models.CharField(max_length=215, blank=False, null=False, default='PROGRESS')
+    username = db_models.CharField(max_length=512, blank=True, null=True)
+    requested_datetime = db_models.DateTimeField(auto_now_add=True)
+
+    @property
+    def task_output(self):
+        """task output -> json.loads(self.output)"""
+        output = self.output or '{}'
+        try:
+            output = json.loads(output)
+        except ValueError:
+            # Invalid JSON obj.
+            output = {'output': output}
+        return output
+
+    @property
+    def task_parameters(self):
+        """task parameters -> json.loads(self.parameters)"""
+        params = self.parameters or '{}'
+        try:
+            params = json.loads(params)
+        except ValueError:
+            # Invalid JSON obj
+            params = {'params': params}
+        return params
+
+    class Meta:
+        indexes = [
+            db_models.Index(fields=['task_id']),
+            db_models.Index(fields=['course_id']),
+        ]
+
+    def __str__(self):
+        """Str -> self.task_id, self.course_id, self.status"""
+        return '{task_id}: {course_id} - {status}'.format(
+            task_id=self.task_id,
+            course_id=self.course_id,
+            status=self.status
+        )
+
+    def __repr__(self):
+        """Repr -> self.task_id, self.course_id, self.status"""
+        return 'AdminTask({task_id}, {course_id}, {status})'.format(
+            task_id=self.task_id,
+            course_id=self.course_id,
+            status=self.status
+        )

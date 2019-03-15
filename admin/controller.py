@@ -8,6 +8,7 @@ import string
 import tempfile
 import threading
 import urllib
+import requests
 import uuid
 from datetime import datetime
 from copy import deepcopy
@@ -2656,3 +2657,87 @@ def validate_participant_manager_email(participant_email, manager_email):
     else:
         errors.append(_("User and manager email cannot be empty"))
     return None, None, errors
+
+
+class ProblemReportPostProcessor(object):
+    """Problem report post processor."""
+
+    def __init__(self, course_id, report_name, report_uri):
+        """
+        Args:
+            course_id (str): Course id as string
+            course_name (str): Report name
+            report_uri (str): LMS report location to process
+        """
+        self.report_name = report_name
+        if report_uri.startswith('http'):
+            self.report_uri = report_uri
+        else:
+            self.report_uri = '/'.join([
+                'http:/',
+                '.'.join([settings.LMS_SUB_DOMAIN, settings.LMS_BASE_DOMAIN]),
+                report_uri.strip('/')
+            ])
+        self.course_id = course_id
+        self._course_blocks = self._fetch_course_blocks()
+        self._users_dict = self._fetch_user_data()
+        self._cols = {}
+
+    def _fetch_course_blocks(self):
+        """Fetch course blocks of supported types from the course blocks API."""
+        blocks = course_api.get_course_block_of_types(
+                self.course_id,
+                block_types=['poll', 'survey']
+        )
+        return {block['id']: block for block in blocks}
+
+    def _fetch_user_data(self):
+        """
+        Fetch user data for users in the selected course, and return a username-email mapping
+        """
+        users_data = course_api.get_user_list_json(course_id=self.course_id)
+        return {user['username']: user.get('email') for user in users_data}
+
+    def _get_column_name(self, row):
+        """
+        Get the generated column name for provided row
+
+        Args:
+            row (list): row from problem response report
+        Returns:
+            str: column name for the row
+        """
+        problem_location = row['block_key']
+        question = row['Question'].decode('utf-8')
+        column_key = (problem_location, question)
+        if column_key not in self._cols:
+            data = self._course_blocks.get(problem_location, {})
+            location = u'L{lesson_number}M{module_number}'.format(**data)
+            self._cols[column_key] = u'{} - {}'.format(location, question)
+        return self._cols[column_key]
+
+    def post_process(self):
+        """
+        Post process report.
+
+        Return:
+            (list, list): tuple containing the output report data and the fields
+                          in the report
+        """
+        with requests.get(self.report_uri, stream=True) as csv_report:
+            csv_report.raise_for_status()
+            report_reader = csv.DictReader(csv_report.iter_lines())
+
+            output = {}
+
+            # Process every row and yield
+            for row in report_reader:
+                column_name = self._get_column_name(row)
+                user_email = self._users_dict.get(row['username'])
+                output.setdefault(
+                    user_email, {'email': user_email}
+                ).update({
+                    column_name: row['Answer']
+                })
+
+        return output.values(), ['email'] + sorted(self._cols.values())

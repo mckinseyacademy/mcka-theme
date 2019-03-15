@@ -151,10 +151,12 @@ def _build_sso_redirect_url(provider, next):
 def _get_redirect_to_current_course(request):
     user_data = UserDataManager(request.user.id).get_basic_user_data()
     organization = user_data.get('organization')
+    user_courses = user_data.get('courses')
+    new_ui_enabled = False
     if organization:
         customization = OrgDataManager(str(organization.id)).get_branding_data().get('customization')
         if customization and customization.new_ui_enabled:
-            return reverse('courses')
+            new_ui_enabled = True
 
     current_course = user_data.current_course
     future_start_date = False
@@ -166,6 +168,24 @@ def _get_redirect_to_current_course(request):
             current_program = user_data.current_program
             if hasattr(current_program, 'start_date') and future_start_date is False:
                 future_start_date = is_future_start(current_program.start_date)
+
+    if new_ui_enabled:
+        if current_course and current_course.learner_dashboard:
+            return reverse('course_landing_page', kwargs=dict(course_id=current_course.id))
+        else:
+            user_ld_courses = [user_course for user_course in user_courses if user_course.learner_dashboard]
+            user_ld_courses = sorted(user_ld_courses, key=lambda x: x.id.lower())
+            user_course_with_ld = next(iter(user_ld_courses), None)
+            last_visited_ld = request.session.get('last_visited_course', None)
+            if last_visited_ld:
+                for user_ld_course in user_ld_courses:
+                    if user_ld_course.id == last_visited_ld:
+                        user_course_with_ld = user_ld_course
+                        break
+            if user_course_with_ld:
+                return reverse('course_landing_page', kwargs=dict(course_id=user_course_with_ld.id))
+
+            return reverse('courses')
 
     if current_course and not future_start_date:
         return reverse('course_landing_page', kwargs=dict(course_id=current_course.id))
@@ -1041,6 +1061,12 @@ def home(request):
     if 'username' in request.GET:
         mobile_popup_data = get_mobile_app_download_popup_data(request)
         data.update(mobile_popup_data)
+
+    organization = user_data.get('organization')
+    if organization:
+        customization = OrgDataManager(str(organization.id)).get_branding_data().get('customization')
+        if customization and customization.new_ui_enabled:
+            return HttpResponseRedirect(_get_redirect_to_current_course(request))
 
     return render(request, 'home/landing.haml', data)
 

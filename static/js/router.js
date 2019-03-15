@@ -263,8 +263,43 @@ var Router = Backbone.Router.extend({
     var bulkActions = new Apros.views.CourseDetailsBulkActions({'courseId':courseId,'courses_details_view':courses_details_view, 'courseDetails':courseDetails});
     bulkActions.render();
   },
+  admin_course_details_blocks: function () {
+    $('#courseDetailsMainContainer').find('.contentNavigationContainer').each(function (index, value) {
+      val = $(value);
+      if (val.hasClass('courseBlocks')) {
+        val.show();
+      } else {
+        val.hide();
+      }
+    });
+    Apros.Router.linked_views['courseBlocks']['drawn'] = true;
+    $('#problemResponseReportsGrid').hide();
+    let courseId = $('#courseDetailsDataWrapper').attr('data-id');
+    ApiUrls.currentCourseId = courseId;
+    let blocks = new Apros.collections.CourseDetailsBlocks(null, {courseId: courseId});
+    let reports = new Apros.collections.CourseDetailsProblemResponseReports(
+      null,
+      {courseId: courseId}
+    );
+    let blocksView = new Apros.views.CourseDetailsProblemResponseView({
+      el: '#courseBlocksGrid',
+      collection: blocks
+    });
+    let reportsView = new Apros.views.CourseDetailsProblemResponseReportsView({
+      el: '#courseProblemResponseReportsGrid',
+      collection: reports
+    });
+    let bulkActions = new Apros.views.AdminCourseDetailsProblemResponsesBulk({
+      el: '#courseBlocksButtonsContainer',
+      courseId: courseId,
+      blocksView: blocksView,
+      reportsView: reportsView
+    });
+    bulkActions.render();
+  },
   manager_dashboard_report: function () {
     var course_index = $('a.hashPageButton.active').attr("data-course-index");
+
     if (course_index) {
       Apros.Router.linked_views['managerDashboardCourse'+course_index]['drawn'] = true;
       var course_id = $('a.hashPageButton.active').attr("data-course");
@@ -414,6 +449,10 @@ Apros.Router = new Router;
 Apros.Router.linked_views = {
   'courseParticipants': {
     'function':Apros.Router.admin_course_details_participants,
+    'drawn': false
+  },
+  'courseBlocks': {
+    'function':Apros.Router.admin_course_details_blocks,
     'drawn': false
   },
   'courseStats': {

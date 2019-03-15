@@ -872,8 +872,14 @@ $(document).ready(function () {
 
 });
 
+function UpdateManagerCourseName() {
+    $('#managerCurrentCourse').text($('a.hashPageButton.active').text().trim());
+    $('a.hashPageButton span.bookmark').remove();
+    $('a.hashPageButton.active').html($('a.hashPageButton.active').text()+ ' <span class ="bookmark"> </span>');
+}
 
 function InitializeAverageCalculate() {
+  UpdateManagerCourseName();
   var totalProgress = 0;
   var totalProficiency = 0;
   var total = 0;

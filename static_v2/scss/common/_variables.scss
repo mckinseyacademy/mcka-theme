@@ -31,7 +31,7 @@ $modal-transition: transform .3s ease-out !default;
 
 // Brand colors
 $primary: #2042cb;
-$secondary: #0093d3;
+$secondary: #0093d3; // if this value changes here, please change it also in '.description' in 'courseLanding.sass'
 $header-top: #002960;
 
 
@@ -46,7 +46,6 @@ $colors: (
     --#{$color}: #{$value};
   }
 }
-
 
 // Type colors
 $black: #000000;
@@ -74,6 +73,33 @@ $sky-blue: #e2eff7;
 $blue-sharp: #2A3EC6;
 $light-gray: #eeeeee;
 $bg-login-footer: #251F2E;
+
+// Admin Site Variables
+$mckinsey-light-blue: #2a90ee;
+$mckinsey-dark-grey: #868685;
+$manager-progress-green: #00d8a0;
+$manager-green: #008b02;
+$manager-progress-green: #FBEDEB;
+$color_1: #222;
+$background_color_1: #f8f8f8;
+
+$color_1: #333333;
+$color_2: #000;
+$mid-gray : #cccccc;
+$mckinsey-academy-alt-blue: #3384CA;
+$mckinsey-academy-blue-gray: #B1C2CC;
+$mckinsey-academy-discussion-icon-gray: #b2b2b2;
+$mckinsey-academy-bright-gray: #E5EBEE;
+
+$background_color_1: #FFF3E7;
+$background_color_2: transparent;
+$background_color_3: #FAF2CC;
+$background_color_4: #d0e9c6;
+$background_color_5: #ebcccc;
+$background_color_6: #faf2cc;
+$background_color_7: #c4e3f3;
+$border_color_1: #d8d8d8;
+$smooth-gray: #D7D7D7;
 
 // Typography
 $body-font-family: 'Open Sans', sans-serif;

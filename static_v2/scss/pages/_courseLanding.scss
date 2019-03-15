@@ -9,9 +9,11 @@
   position: relative;
   z-index: 99;
 }
-
-.courseLanding{
-  #course-final-grade{
+.viewDetailCourse {
+  display: none;
+}
+.courseLanding {
+  #course-final-grade {
     @extend .mb-4;
     text-align: center;
     font-size: 1rem;
@@ -23,6 +25,33 @@
       color: $black;
       @include font-spec(24, 400, 32px);
       margin-bottom: 8px;
+    }
+  }
+  .widget {
+    .holder {
+      min-height: 140px;
+      overflow: hidden;
+    }
+  }
+  .viewDetailCourse {
+    display: block;
+    text-align: center;
+    margin: 0 0 -15px;
+    a {
+      display: inline-block;
+      vertical-align: top;
+      text-decoration: none;
+      color: var(--primary);
+      font-size: 12px;
+      &:after {
+        font-family: 'Material Icons';
+        content: "\e409";
+        border: 0;
+        font-size: 15px;
+        margin: 0 0 0 1px;
+        vertical-align: top;
+        line-height: 17px;
+      }
     }
   }
 }
@@ -52,8 +81,11 @@
 }
 
 .progressWidgets {
-  padding: 30px 40px;
+  padding: 30px;
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
+  .row {
+    margin: 0;
+  }
 
   .widget {
     display: inline-block;
@@ -95,8 +127,8 @@
 
     // Progress Area
     .progressArea {
-      width: 88px;
-      height: 88px;
+      width: 94px;
+      height: 94px;
       border-radius: 100%;
       position: relative;
       margin-top: 10px;
@@ -141,9 +173,10 @@
 
   .course-engagement {
     .progressArea {
-      width: 88px;
+      width: 94px;
     }
   }
+
 }
 
 // List of All Courses
@@ -172,6 +205,9 @@
       position: relative;
       z-index: 1;
     }
+    .bookmark {
+      z-index: 2;
+    } 
 
     >a {
       &:hover {
@@ -185,14 +221,13 @@
       content: '';
       z-index: 1;
       width: 100%;
-      max-width: calc(100% - 60px);
       text-decoration: none;
-      padding: 18px 92px;
+      padding: 18px 30px;
       top: 100%;
       bottom: auto;
       height: 100%;
       text-align: left;
-      background: #DFEEF7;
+      background-color: lighten($secondary, 50);
       font-style: italic;
       color: #191561;
       opacity: 0;
@@ -200,6 +235,7 @@
       text-overflow: ellipsis;
       white-space: nowrap;
       cursor: pointer;
+      left: 0;
 
       p {
         max-width: 100%;
@@ -244,6 +280,7 @@
 
       .title {
         >span {
+          color: $gray;
           .locked {
             position: absolute;
             content: '';
@@ -310,7 +347,6 @@
         {
           display: inline-block;
           vertical-align: middle;
-          color: $gray;
           @include text-ellipsis;
           position: relative;
           max-width: calc(100% - 18px);

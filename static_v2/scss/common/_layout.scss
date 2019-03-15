@@ -3,7 +3,7 @@ main{
   margin-top: 30px;
 }
 
-@include media-breakpoint-up(lg){
+@include media-breakpoint-down(lg){
   .container{
     max-width: 1244px;
   }

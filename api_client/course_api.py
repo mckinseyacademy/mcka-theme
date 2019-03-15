@@ -493,23 +493,86 @@ def get_course_content_groups(course_id, content_id):
 
 
 @api_error_protect
-def get_block_completions(course_id, username, edx_oauth2_session=None):
+def get_course_blocks(
+    course_id,
+    requested_fields=None,
+    username=None,
+    all_blocks=False,
+    student_view_data=None,
+    block_counts=None,
+    depth=0,
+    return_type=None,
+    block_types_filter=None,
+    page_size=100,
+    edx_oauth2_session=None
+):
+    """Retrieve blocks for a course.
+
+    For more information on parameters refer to `lms.djangoapp.course_api.blocks.view.BlocksView`
+
+    Args:
+        course_id (str): Course Id
+        requested_fields (str): Comma separated list of fields to return for each block.
+        username (str): Username. Empty if :param:`all_blocks` is `True`.
+        all_blocks (bool): Weather return all blocks or not.
+        student_view_data (str): Comma separated list of block types.
+        block_counts (str): Comma separated list of block types to aggregate.
+        depth (int, str): Integer or `"all"` representing depth traversed of returned blocks.
+        return_type (str): Either `dict` or `list`.
+        block_types_filter (str): Comma separated list user to filter final result of blocks.
+        page_size (int): Page size.
+        edx_oauth2_session (obj): Custom OAuth session. One will be created if none is given.
+    """
     if not edx_oauth2_session:
         edx_oauth2_session = get_oauth2_session()
-    params = {
+    args = {
         'course_id': course_id,
-        'depth': 'all',
-        'return_type': 'list',
-        'requested_fields': 'completion',
+        'requested_fields': requested_fields,
         'username': username,
+        'all_blocks': all_blocks,
+        'student_view_data': student_view_data,
+        'block_counts': block_counts,
+        'depth': depth,
+        'return_type': return_type,
+        'block_types_filter': block_types_filter,
     }
+    params = {}
+    for key in args:
+        if args[key]:
+            params[key] = args[key]
+
     url = '{}/{}/?{}'.format(
         settings.API_SERVER_ADDRESS,
         COURSE_BLOCK_API,
         urlencode(params)
     )
     response = edx_oauth2_session.get(url)
-    return JP.from_dictionary(response.json(), course_models.CourseBlockData)
+    return response.json()
+
+
+@api_error_protect
+def get_course_root_key(course_id, edx_oauth2_session=None):
+    """
+    Return root block key for course
+    """
+    data = get_course_blocks(course_id, all_blocks=True, edx_oauth2_session=None)
+    return data['root']
+
+
+@api_error_protect
+def get_block_completions(course_id, username, edx_oauth2_session=None):
+    if not edx_oauth2_session:
+        edx_oauth2_session = get_oauth2_session()
+
+    response = get_course_blocks(
+        course_id,
+        depth='all',
+        return_type='list',
+        requested_fields='completion',
+        username=username,
+        edx_oauth2_session=edx_oauth2_session
+    )
+    return JP.from_dictionary(response, course_models.CourseBlockData)
 
 
 @api_error_protect
@@ -718,6 +781,98 @@ def get_course_metrics_completions(course_id, completions_object_type=JsonObject
     response = GET(url)
 
     return JP.from_json(response.read(), completions_object_type)
+
+
+def build_block_tree(blocks):
+    if not (blocks and blocks.get('root')):
+        return
+
+    def block_tree(root_id, parent_id):
+        tree = {'_parent': parent_id}
+        tree.update(blocks['blocks'][root_id])
+        children = map(lambda block_id: block_tree(block_id, root_id), tree.get('children', []))
+        if children:
+            tree['children'] = children
+
+        return tree
+    return block_tree(blocks['root'], None)
+
+
+BLOCK_QUESTION_EXTRACTOR = {
+    'poll': lambda data: data['question'],
+    'survey': lambda data: u', '.join(item[1]['label'] for item in data['questions'])
+}
+
+
+def get_question_from_block(block):
+    """
+    Extracts the question data from a block data that includes student_view_data.
+    """
+    extractor = BLOCK_QUESTION_EXTRACTOR.get(block['type'])
+    if extractor is not None:
+        data = block.get('student_view_data')
+        if data is not None:
+            return extractor(data)
+
+
+@api_error_protect
+def get_course_block_of_types(course_id, block_types):
+    """Fetch polls for course.
+
+    Args:
+        course_id (str): Course Id.
+        block_types (list): List of strings for all block types wanted.
+    """
+    edx_oauth2_session = get_oauth2_session()
+
+    block_types_filter = '{filters},{block_types}'.format(
+        filters='course,chapter,sequential,vertical',
+        block_types=','.join(block_types)
+    )
+    blocks = get_course_blocks(
+        course_id=course_id,
+        all_blocks=True,
+        depth='all',
+        student_view_data=','.join(block_types),
+        block_types_filter=block_types_filter,
+        requested_fields='children',
+        page_size=200,
+        edx_oauth2_session=edx_oauth2_session
+    )
+    tree = build_block_tree(blocks)
+
+    response = []
+
+    lesson = [0, None]
+    module = [0, None]
+
+    def walk_tree(block):
+
+        if block['type'] == 'chapter':
+            lesson[0] += 1
+            lesson[1] = block['display_name']
+            module[0] = 0
+        elif block['type'] == 'vertical':
+            module[0] += 1
+            module[1] = block['display_name']
+        elif block['type'] in block_types:
+            response.append(
+                {
+                    'id': block['id'],
+                    'type': block['type'],
+                    'question': get_question_from_block(block),
+                    'module_number': module[0],
+                    'module': u'M{} - {}'.format(*module),
+                    'lesson_number': lesson[0],
+                    'lesson': u'L{} - {}'.format(*lesson),
+                }
+            )
+        for child in block.get('children', []):
+            walk_tree(child)
+
+    if tree:
+        walk_tree(tree)
+    return response
 
 
 @api_error_protect

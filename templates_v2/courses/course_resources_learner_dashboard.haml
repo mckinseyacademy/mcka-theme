@@ -1,0 +1,25 @@
+- extends "courses/course_base_ld.haml"
+- load staticfiles
+- load i18n
+
+- block content
+  %script{"src": "{% static 'js/highcharts/highcharts.js' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
+
+  #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
+  .container
+    .row
+      .col
+        #course-resources.contentCard.courseResourse
+          %h1 {% trans "Resources" %}
+          - autoescape off
+            = resources_content
+
+  %script
+    if ($('.courseResourse table:first td:first').find('img').length > 0){
+      $('.courseResourse table:first td:first').remove();
+    }
+
+- block js_snippets
+  %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
+  %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}

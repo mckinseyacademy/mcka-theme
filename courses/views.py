@@ -1,17 +1,18 @@
-import json
 import csv
+import hashlib
+import json
 from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseRedirect, HttpResponse, HttpResponseNotFound, HttpResponseServerError
 from django.shortcuts import render
+from django.template import loader
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
-from django.core.exceptions import ObjectDoesNotExist
-from django.template import loader
 
 from admin.controller import load_course, _clean_course_content
 from admin.models import (
@@ -20,18 +21,17 @@ from admin.models import (
 )
 from admin.views import AccessChecker
 from api_client import course_api, user_api, workgroup_api
-from api_client.course_api import course_detail_processing, get_course_completions, get_courses_tree
-from api_client.platform_api import update_course_mobile_available_status
 from api_client.api_error import ApiError
+from api_client.course_api import course_detail_processing, get_course_completions, get_courses_tree
 from api_client.group_api import PERMISSION_GROUPS
+from api_client.platform_api import update_course_mobile_available_status
 from api_client.workgroup_models import Submission
 from api_data_manager.course_data import CourseDataManager
 from lib.authorization import permission_group_required
 from lib.utils import DottableDict
-from util.data_sanitizing import sanitize_data, clean_xss_characters
 from mobile_apps.controller import get_mobile_app_download_popup_data
-
-from .models import LessonNotesItem, FeatureFlags, CourseMetaData
+from util.data_sanitizing import sanitize_data, clean_xss_characters
+from util.user_agent_helpers import is_mobile_user_agent, is_tablet_user_agent
 from .controller import (
     inject_gradebook_info,
     round_to_int,
@@ -54,14 +54,15 @@ from .controller import (
     get_user_social_metrics,
     fix_resource_page_video_scripts,
     get_assessment_module_name_translation,
-)
+    get_learner_dashboard)
+from .course_tree_builder import CourseTreeBuilder
+from .models import LessonNotesItem, FeatureFlags, CourseMetaData
 from .user_courses import (
     check_user_course_access, load_course_progress,
     check_company_admin_user_access,
     set_current_course_for_user, check_course_shell_access,
     get_program_menu_list, UserDataManager, get_course_menu_list
 )
-from .course_tree_builder import CourseTreeBuilder
 
 _progress_bar_dictionary = {
     "normal": "#b1c2cc",
@@ -137,24 +138,6 @@ def course_landing_page(request, course_id):
         data.update(mobile_popup_data)
 
     return render(request, 'courses/course_main.haml', data)
-
-
-def get_learner_dashboard(request, course_id):
-
-    learner_dashboard = None
-
-    if settings.LEARNER_DASHBOARD_ENABLED:
-        feature_flags = CourseDataManager(course_id).get_feature_flags()
-        if feature_flags.learner_dashboard:
-            organizations = user_api.get_user_organizations(request.user.id)
-            if len(organizations) > 0:
-                organization = organizations[0]
-                request.session['client_display_name'] = organization.display_name
-                try:
-                    learner_dashboard = LearnerDashboard.objects.get(course_id=course_id)
-                except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
-                    pass
-    return learner_dashboard
 
 
 @login_required
@@ -691,6 +674,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "course_run": course_run,
         'feature_flags': feature_flags,
         'course': course,
+        'total_modules': course.module_count()
     }
 
     if progress_user.id != request.user.id:
@@ -814,6 +798,9 @@ def navigate_to_lesson_module(
     if not current_sequential:
         raise Http404()
 
+    cookie_key = hashlib.md5(course_id).hexdigest()
+    is_full_screen = request.COOKIES.get(cookie_key)
+
     data = {
         "user": request.user,
         "lesson_content_parent_id": "course-lessons",
@@ -824,7 +811,8 @@ def navigate_to_lesson_module(
         "course": course,
         "right_lesson_module_navigator": right_lesson_module_navigator,
         "left_lesson_module_navigator": left_lesson_module_navigator,
-        "session_timeout_seconds": getattr(settings, "SESSION_TIMEOUT_SECONDS", 1800)
+        "is_full_screen": is_full_screen == 'true',
+        "cookie_key": cookie_key
     }
 
     try:
@@ -874,7 +862,6 @@ def navigate_to_lesson_module(
             return HttpResponse(status=204)
 
     if learner_dashboard_id:
-
         try:
             learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
         except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
@@ -1231,6 +1218,11 @@ def course_learner_dashboard(request, learner_dashboard_id):
         bookmark = None
 
     feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
+    learner_dashboard.features = feature_flags
+    mobile_device = False
+    if is_mobile_user_agent(request) or is_tablet_user_agent(request):
+        mobile_device = True
+
     data = {
         'learner_dashboard': learner_dashboard,
         'learner_dashboard_tiles': learner_dashboard_tiles,
@@ -1241,6 +1233,7 @@ def course_learner_dashboard(request, learner_dashboard_id):
         'today': datetime.now(),
         'course_id': learner_dashboard.course_id,
         'client_id': request.COOKIES.get('user_organization_id', ''),
+        'mobile_device': mobile_device,
     }
 
     if feature_flags and feature_flags.branding:
@@ -1296,7 +1289,6 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
 
 
 def course_learner_dashboard_bookmark_tile(request, learner_dashboard_id):
-
     if 'tile_id' in request.POST:
         try:
             tile = LearnerDashboardTile.objects.get(id=int(request.POST['tile_id']))
