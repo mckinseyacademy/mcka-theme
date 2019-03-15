@@ -13,6 +13,7 @@
 
     //Secondary button .btn-primary
     &.btn-primary {
+      color: $white;
       background-color: var(--primary);
       border-color: var(--primary);
     }
