@@ -24,6 +24,14 @@ footer[role=contentinfo] {
 
 body.new-theme {
   background-color: $ash-white;
+  //sync row with UI Refresh.
+  .row{
+    margin-right: -15px;
+    margin-left: -15px;
+    max-width: none;
+    width: unset;
+  }
+  
 
   @-webkit-keyframes fa-spin {
     0% {
@@ -114,7 +122,7 @@ body.new-theme {
   /* mobile */
   @media (max-width: 767px) {
     #course-discussion {
-      padding: 0px;
+      padding: 10px;
 
       .wmd-panel {
 
@@ -136,7 +144,6 @@ body.new-theme {
       }
 
       .discussion-content {
-        padding: 24px 12px 10px 7px;
 
         #discussion-container {
 
@@ -573,7 +580,7 @@ body.new-theme {
     }
 
     .discussion-content {
-      padding: 24px 29px 10px 12px;
+      padding: 24px 20px 10px;
 
       .discussion,
       .col {
@@ -621,6 +628,7 @@ body.new-theme {
         &.btn-link {
           .action-label {
             padding: 3px 5px 0;
+            color: $black;
           }
 
           .action-icon {
@@ -648,9 +656,12 @@ body.new-theme {
           .icon {
             color: $gray;
           }
-
+          
           &.is-checked {
             .icon {
+              color: var(--primary);
+            }
+            .label-checked{
               color: var(--primary);
             }
           }
@@ -839,7 +850,7 @@ body.new-theme {
           font-size: 12px;
           font-weight: normal;
           color: $gray;
-
+          margin-left: 0;
           &:not(:only-child):first-child {
             .btn-link {
               color: var(--primary)
@@ -867,7 +878,7 @@ body.new-theme {
           position: absolute;
           top: 50px;
           width: 100%;
-          left: 10px;
+          left: 0;
           text-align: left;
         }
 
@@ -877,8 +888,8 @@ body.new-theme {
 
           h1 {
             position: absolute;
-            left: 16px;
-            top: 0px;
+            left: 0;
+            top: 0;
             font-size: 1.75rem;
             font-weight: 300;
             color: $black;
@@ -941,7 +952,7 @@ body.new-theme {
 
         .ask-ta {
           background: none !important;
-          padding: 20px 20px 0;
+          padding: 20px 20px 0 0;
 
 
           .group-member {
@@ -977,7 +988,7 @@ body.new-theme {
         }
 
         .forum-nav-browse-menu-wrapper {
-          padding: 15px 10px;
+          padding: 15px 10px 15px 0;
           background: none;
           border: 0;
 
