@@ -195,9 +195,12 @@ def delete_users(ids=None, username=None):
             USER_API,
             urlencode(qs_params)
         )
-    )
+    ).read()
 
-    return json.loads(response.read())
+    if not response:
+        return {}
+
+    return json.loads(response)
 
 
 @api_error_protect
