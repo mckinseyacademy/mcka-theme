@@ -132,7 +132,8 @@ if (typeof lighten !== "undefined" && primary != null) {
 
 //  Course landing pagelesson bar hover bg color
 if (secondary !== undefined) {
-    $('.courseRow a.description').css('background-color', lighten(secondary, 80));
+    $('.courseRow a.description').css('background-color', lighten(secondary, 90));
+    $('.courseRow .bookmark.primary svg path').css('fill', lighten(secondary, 0));
 }
 
 //  Course landing pagelesson bar hover bg color
