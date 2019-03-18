@@ -359,7 +359,15 @@ $(function(){
         }, 700);
       setTimeout(function(){SendGradebookToScormShell();}, 300);
       setTimeout(function(){SendCompletionToScormShell();}, 300);
+
+      window.addEventListener('beforeunload', function(event) {
+        SendGradebookToScormShell();
+        SendProgressToScormShell();
+        SendCompletionToScormShell();
+        SendFullGradebookToScormShell();
+      });
     }
+
   });
 
   var msg_modal_selector = '#messagesModal';
