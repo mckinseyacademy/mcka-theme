@@ -449,7 +449,10 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
 
       return custom_name;
     },
-    runSearch: function(_this, timeout=1000){
+    runSearch: function(_this, timeout){
+      if (timeout === undefined){
+          timeout = 1000;
+      }
       if (_this.liveSearchTimer) {
         clearTimeout(_this.liveSearchTimer);
       }
