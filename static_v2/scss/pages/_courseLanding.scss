@@ -37,6 +37,13 @@
   }
 }
 .courseLanding {
+  .donut-loader {
+    max-height: 600px;
+    overflow: hidden;
+    .contentCard {
+      visibility: hidden;
+    }
+  }
   #course-final-grade {
     @extend .mb-4;
     text-align: center;
@@ -579,6 +586,10 @@
         }
       }
     }
+  }
+  .no-data {
+    display: none;
+    visibility: hidden;
   }
 }
 

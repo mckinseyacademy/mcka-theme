@@ -509,3 +509,12 @@ function smoothNavLinks() {
 }
 
 smoothNavLinks();
+
+
+// Preloaders
+
+window.onload = function () {
+    $('.loader').removeClass("donut-loader").removeClass("loader");
+    $('.preloader').removeClass("preloader");
+    $('.courseLanding .contentCard').css("visibility", "visible");
+}

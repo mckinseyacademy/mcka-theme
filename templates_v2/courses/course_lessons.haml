@@ -9,10 +9,10 @@
     var cookie_key = "{{cookie_key}}";
   #course-lessons{'data-current-progress': '#{user_progress}'}
     .lessonOverview
-      .container
+      .container.loader.donut-loader
         .row
           .col
-            .contentCard
+            .contentCard.preloader
               .headerArea.lesson-title
                 %h5
                   - if lesson_custom_label
