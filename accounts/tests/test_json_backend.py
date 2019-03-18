@@ -31,8 +31,10 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
                 "image_url_large": "http://test.com/static/images/profiles/default_500.png",
                 "image_url_medium": "http://test.com/static/images/profiles/default_160.png",
                 "image_url_small": "http://test.com/static/images/profiles/default_48.png",
-                "has_image": "false"
+                "has_image": "false",
             })
+        if not hasattr(user, 'title'):
+            setattr(user, 'title', 'dummy')
         result = UserResponse(dictionary=user.__dict__)
         return result
 

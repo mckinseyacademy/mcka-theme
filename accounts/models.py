@@ -26,14 +26,21 @@ class RemoteUser(AbstractUser):
         ''' take API response and blend the results into this user object '''
         if session_key is not None:
             self.session_key = session_key
+        self.fullname = "{} {}".format(user_response.first_name, user_response.last_name)
         self.email = user_response.email
         self.username = user_response.username
         self.id = user_response.id
+        self.name_initials = self.get_name_initials(
+            user_response.first_name,
+            user_response.last_name
+        )
+        self.has_image = user_response.has_image
         self.image_url_full = user_response.image_url_full
         self.image_url_large = user_response.image_url_large
         self.image_url_medium = user_response.image_url_medium
         self.image_url_small = user_response.image_url_small
         self.is_staff = user_response.is_staff
+        self.title = user_response.title
 
     def save(self, **kwargs):
         '''
@@ -96,6 +103,10 @@ class RemoteUser(AbstractUser):
     @cached_property
     def is_manager(self):
         return is_user_in_permission_group(self, PERMISSION_GROUPS.MANAGER)
+
+    def get_name_initials(self, first_name, last_name):
+        if first_name and last_name:
+            return "{}{}".format(first_name[0], last_name[0])
 
 
 class UserActivation(db_models.Model):

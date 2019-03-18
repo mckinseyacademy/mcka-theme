@@ -197,14 +197,11 @@ body {
 
 .profileDropdown {
   .header {
-    .titles-area {
-      @include margin-right(28px);
-    }
 
     .nameArea,
-    .titlesArea {
-      .edit-link {
-        @include margin-left(10px);
+    .roleArea {
+      span {
+        @include margin-right(5px);
       }
     }
 
@@ -535,8 +532,7 @@ body {
 .modal.middleSize {
   .modal-header {
     .close {
-      @include margin-left(auto);
-      @include margin-right(-1.9rem);
+      @include right(25px);
     }
   }
 }

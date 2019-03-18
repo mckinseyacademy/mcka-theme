@@ -1,47 +1,50 @@
 - load i18n
+- load assets
 - load staticfiles
 
-#profileDropdown.dropdown-menu.profile-area.large-menu.dropdown-menu-right.profileDropdown
-  .header.user-profile
-    .avatar-area
-      .userAvatar.lg
-        .holder.user-image
-          %span RA
-          %img{src: "#{user_image_url}"}
+.modal.middleSize.noTopBorder.fade.editPhotoModal{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog
+    .modal-content
+      .modal-header
+        .col
+          %h4.modal-title
+            {% trans "Profile Photo" %}
+        %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+          %span{:aria-hidden => "true"} &#xD7;
+      .modal-body
+        .photoEditSteps
+          %form#profileUploadForm{"enctype": "multipart/form-data", "name": "profile_image_upload", :action => "/accounts/user_profile/image/edit", "method": "POST"}
+            - csrf_token
+            .step
+              .head.clearfix
+                %span.stepTitle
+                  {% trans "step 1:" %}
+                %span.title
+                  {% trans "Select New Profile Image" %}
+              .inputFileWrap.clearfix
+                .file-upload
+                  .file-select.ome
+                    .file-select-button.btn.btn-primary.dome-bc{:id => ""}
+                      {% trans "browse" %}
+                    #noFile.file-select-name
+                      {% trans "No file selected" %}
+                    %input#chooseFile.browseProfilePhoto{:name => "profile_image", :type => "file", "accept":" image/*"}
 
-        %a.edit-link{:data-target => ".editPhotoModal", :data-toggle => "modal", :href => "#"}
-          {% trans "edit photo" %}
+            .step
+              .head.clearfix
+                %span.stepTitle
+                  {% trans "step 2:" %}
+                %span.title
+                  {% trans "Crop & Save" %}
+              .img-container.mb-4
+                %img.user-uploaded-image{'src': "#{user.image_url_full}", "height": "300"}
 
-    .titles-area
-      .nameArea
-        %span
-          = user.formatted_name
-        %a.edit-link{:data-target => ".editFullName", :data-toggle => "modal", :href => "#"}
-          {% trans "edit" %}
+                %input.width-position{'type': 'hidden', 'name': 'width-position'}
+                %input.height-position{'type': 'hidden', 'name': 'height-position'}
+                %input.x1-position{'type': 'hidden', 'name': 'x1-position'}
+                %input.y1-position{'type': 'hidden', 'name': 'y1-position'}
 
-      .roleArea
-        %span
-          = user.title
-        %a.edit-link{:data-target => ".editRole", :data-toggle => "modal", :href => "#"}
-          {% trans "edit" %}
+              %button.btn.btn-primary.ome.dome-bc{:type => "submit"}
+                {% trans "Crop & Save" %}
 
-  .content
-    .wrap
-      %strong.text-uppercase.title {% trans "username" %}
-      %strong.title
-        = user.username
-    .wrap
-      %strong.text-uppercase.title {% trans "email" %}
-      %span.userMail
-        = user.email
 
-  .footer
-    %a.btn.btn-secondary{href: "/accounts/logout"}
-      {% trans "Log out" %}
-
--# Jquery Cropper
-- block cropper_jquery
-  %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
-  %script{src: "{% static 'js/vendor/jquery.form.js' %}"}
-  %script{src: "{% static 'js/image_editor.js' %}"}
-  %script{src: "{% static 'js/user_profile_edit.js' %}"}

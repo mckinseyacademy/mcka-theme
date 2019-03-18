@@ -1,5 +1,6 @@
 - load i18n
 - load cache
+- load staticfiles
 - load template_helpers
 - get_current_language as LANGUAGE_CODE
 - get_available_languages as LANGUAGES
@@ -24,70 +25,53 @@
             .topRightArea
               .profileArea
                 %a.dropdown-toggle.ome.dome-bc{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
-                  %span RA
-                  %img{:src => "static/image/McKA-logo-white.svg", :width => "160"}/
-                - if LANGUAGE_BIDI
-                  %div{'class' : 'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
-                    .header
-                      .avatar-area
-                        .userAvatar.lg
-                          .holder
-                            %span RA
-                            %img{:alt => "", :src => ""}/
-                          %a.edit-link.ome.dome-c{:data-target => ".editPhotoModal", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit photo" %}
-                      .titles-area
-                        .nameArea
-                          %span Rajal Ajai
-                          %a.edit-link.ome.dome-c{:data-target => ".editFullName", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit" %}
-                        .roleArea
-                          %span UX Consultant
-                          %a.edit-link.ome.dome-c{:data-target => ".editRole", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit" %}
-                    .content
-                      .wrap
-                        %strong.text-uppercase.title
-                          {% trans "username" %}
-                        %strong.titleName raajimk
-                      .wrap
-                        %strong.text-uppercase.title
-                          {% trans "email" %}
-                        %span.userMail rajal_ajai@external.mckinsey.com
-                    .footer.ome
-                      %a.btn.btn-secondary.dome-c{href: "/accounts/logout"}
-                        {% trans "log out" %}
-                - else
-                  %div{'class' : 'dropdown-menu profile-area large-menu dropdown-menu-right profileDropdown'}
-                    .header
-                      .avatar-area
-                        .userAvatar.lg
-                          .holder
-                            %span RA
-                            %img{:alt => "", :src => ""}/
-                          %a.edit-link.ome.dome-c{:data-target => ".editPhotoModal", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit photo" %}
-                      .titles-area
-                        .nameArea
-                          %span Rajal Ajai
-                          %a.edit-link.ome.dome-c{:data-target => ".editFullName", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit" %}
-                        .roleArea
-                          %span UX Consultant
-                          %a.edit-link.ome.dome-c{:data-target => ".editRole", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit" %}
-                    .content
-                      .wrap
-                        %strong.text-uppercase.title
-                          {% trans "username" %}
-                        %strong.titleName raajimk
-                      .wrap
-                        %strong.text-uppercase.title
-                          {% trans "email" %}
-                        %span.userMail rajal_ajai@external.mckinsey.com
-                    .footer.ome
-                      %a.btn.btn-secondary.dome-c{href: "/accounts/logout"}
-                        {% trans "log out" %}
+                  - if user.has_image
+                    %img{:alt => "", :src => "{{user.image_url_medium}}", :width => "160"}/
+                  - elif user.name_initials
+                    %span {{user.name_initials|upper}}
+                  - else
+                    %img{:alt => "", :src => "{{user.image_url_full}}"}/
+
+
+                %div{'class':'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
+                  .header
+                    .avatar-area
+                      .userAvatar.lg
+                        .holder
+                          - if user.has_image
+                            %img{:alt => "", :src => "{{user.image_url_full}}"}/
+                          - elif user.name_initials
+                            %span {{user.name_initials|upper}}
+                          - else
+                            %img{:alt => "", :src => "{{user.image_url_full}}"}/
+
+
+                        %a.edit-link.ome.dome-bc{:data-target => ".editPhotoModal", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
+                          {% trans "edit photo" %}
+                    .titles-area
+                      .nameArea
+                        %span {{user.fullname}}
+                        %a.edit-link.ome.dome-bc{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
+                          {% trans "edit" %}
+                      .roleArea
+                        - if user.title
+                          %span= user.title
+                        - else
+                          %span= "Enter your role"
+                        %a.edit-link.ome.dome-bc{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
+                          {% trans "edit" %}
+                  .content
+                    .wrap
+                      %strong.text-uppercase.title
+                        {% trans "username" %}
+                      %strong.titleName {{user.username}}
+                    .wrap
+                      %strong.text-uppercase.title
+                        {% trans "email" %}
+                      %span.userMail {{user.email}}
+                  .footer.ome
+                    %a.btn.btn-secondary.dome-c{href: "/accounts/logout"}
+                      {% trans "log out" %}
 
               %nav.nav.mainNav.headerNav
                 %ul
@@ -195,3 +179,5 @@
                             {{lang.name}}
                           -else
                             {{language_name}}
+
+  %script{src: "{% static 'js/user_profile_edit_v2.js' %}"}

@@ -5,6 +5,7 @@
        margin-top: 6px;
        display: inline-block;
        vertical-align: top;
+       cursor: pointer;
      }
    .holder {
      height: 40px;
@@ -21,6 +22,7 @@
      img {
        width: 100%;
        height: auto;
+       display: block;
      }
 
    }

@@ -22,7 +22,7 @@ from django.http import (HttpResponse, HttpResponseRedirect,
                          HttpResponseBadRequest, HttpResponseForbidden,
                          HttpResponseNotAllowed, HttpResponseNotFound, JsonResponse)
 from django.contrib import auth, messages
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
@@ -31,6 +31,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 from django.forms.widgets import HiddenInput
 from django.views.decorators.cache import never_cache
 from django.template.loader import render_to_string
+from io import BytesIO
 from requests import ConnectionError, HTTPError
 from django.shortcuts import resolve_url
 from django.utils.http import urlsafe_base64_decode
@@ -1108,7 +1109,11 @@ def user_profile_image_edit(request):
         top = int(float(request.POST.get('y1-position')))
         right = int(float(request.POST.get('width-position'))) + left
         bottom = int(float(request.POST.get('height-position'))) + top
-        temp_image = request.FILES['profile_image']
+        if request.FILES.get('profile_image'):
+            temp_image = request.FILES['profile_image']
+        else:
+            response = requests.get(request.user.image_url_full)
+            temp_image = BytesIO(response.content)
 
         from PIL import Image
         original = Image.open(temp_image)
@@ -1123,9 +1128,8 @@ def user_profile_image_edit(request):
         )
 
         RemoteUser.remove_from_cache(user_id)
-        # TODO: 504 issue fix - uncomment this when original commit is included in release
-        #if thread_local.get_basic_user_data(request.user.id).get('new_ui_enabled'):
-        #    return redirect(request.META['HTTP_REFERER'])
+        if thread_local.get_basic_user_data(request.user.id).get('new_ui_enabled'):
+            return redirect(request.META['HTTP_REFERER'])
         return change_profile_image(request, user_id, template='edit_profile_image')
 
 
@@ -1186,6 +1190,7 @@ def edit_fullname(request):
                     'first_name': form.cleaned_data['first_name'],
                     'last_name': form.cleaned_data['last_name']
                 })
+                RemoteUser.remove_from_cache(request.user.id)
             except ApiError as err:
                 error = err.message
     else:
@@ -1211,6 +1216,7 @@ def edit_title(request):
                 user_api.update_user_information(request.user.id, {
                     'title': form.cleaned_data['title']
                 })
+                RemoteUser.remove_from_cache(request.user.id)
             except ApiError as err:
                 error = err.message
     else:
