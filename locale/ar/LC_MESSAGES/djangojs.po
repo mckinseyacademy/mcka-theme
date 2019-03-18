@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-10 14:38+0000\n"
+"POT-Creation-Date: 2019-03-18 11:18+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:371
-#: static/js/views/admin/participantsinfo.js:114
+#: static/js/views/admin/participantsinfo.js:116
 msgid "Course"
 msgstr "الدورة"
 
@@ -75,6 +75,7 @@ msgid "Show Errors"
 msgstr "إظهار الأخطاء"
 
 #: static/js/admin_upload_students.js:73
+#: static/js/common/mass_participants_delete.js:103
 #: static/js/common/mass_participants_enroll.js:117
 #: static/js/common/mass_participants_enroll.js:225
 #: static/js/common/mass_participants_enroll.js:362
@@ -114,8 +115,8 @@ msgid "Progress: %(value)s%"
 msgstr "التقدم المحرز: %(value)s%"
 
 #: static/js/common/bbGridExtend.js:70
-msgid "Search by Keyword"
-msgstr ""
+msgid "Keyword Search"
+msgstr "البحث عن الكلمات الرئيسية"
 
 #: static/js/common/common_js.js:171
 msgid "NoName"
@@ -173,7 +174,7 @@ msgstr[3] ""
 msgstr[4] ""
 msgstr[5] ""
 
-#: static/js/common/mass_participants_delete.js:133
+#: static/js/common/mass_participants_delete.js:131
 msgid "An error occurred submitting the request."
 msgstr ""
 
@@ -226,10 +227,6 @@ msgstr ""
 #: static/js/common/mass_participants_enroll.js:295
 #: static/js/common/mass_participants_enroll.js:432
 msgid "Report of bulk update will be sent to your email."
-msgstr ""
-
-#: static/js/common/scorm_shell.js:30 static/js/course_lesson.js:5
-msgid "It looks like you're not active. Click OK to keep working."
 msgstr ""
 
 #: static/js/company_fields.js:9
@@ -313,6 +310,10 @@ msgstr "الدورات عبر الإنترنت (ويبينار)"
 msgid "Digital Content"
 msgstr "المحتوى الرقمي"
 
+#: static/js/course_lesson.js:5
+msgid "It looks like you're not active. Click OK to keep working."
+msgstr ""
+
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
 msgstr "لم يتم تحديد ملف"
@@ -338,25 +339,13 @@ msgstr "المشاركون:"
 msgid "Email"
 msgstr "البريد الإلكتروني"
 
-#: static/js/router.js:430
+#: static/js/router.js:429
 msgid "Please select at least one course"
 msgstr "الرجاء اختيار دورة واحدة على الأقل"
 
-#: static/js/session_timeout_timer.js:39
+#: static/js/session_timeout_timer.js:19
 msgid "You were logged out due to inactivity. Please log back in to continue."
 msgstr ""
-
-#: static/js/static_translation_strings.js:2
-msgid "It looks like your browser settings has pop-ups disabled."
-msgstr ".يبدو أنك أنه قد تم تعطيل النوافذ المنبثقة لإعدادات متصفحك"
-
-#: static/js/static_translation_strings.js:3
-msgid "The content takes place in a new window."
-msgstr ".يحدث المحتوى في نافذة جديدة"
-
-#: static/js/static_translation_strings.js:4
-msgid "Launch pop-up to continue"
-msgstr "إطلاق نافذة منبثقة للمتابعة"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -473,7 +462,7 @@ msgstr "عدد الدورات التدريبية"
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:487
-#: static/js/views/admin/participantsinfo.js:364
+#: static/js/views/admin/participantsinfo.js:366
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "لا يمكن لاسم هذه الشركة أن تحتوي على رموز أحرف وأرقام!"
 
@@ -481,7 +470,7 @@ msgstr "لا يمكن لاسم هذه الشركة أن تحتوي على رمو
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:481
-#: static/js/views/admin/participantsinfo.js:358
+#: static/js/views/admin/participantsinfo.js:360
 msgid "This company name cannot have more than 30 characters!"
 msgstr "لا يمكن لاسم الشركة أن يتضمّن أكثر من 30 حرفاً!"
 
@@ -591,7 +580,7 @@ msgstr "الاسم"
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:123
+#: static/js/views/admin/participantsinfo.js:125
 msgid "Status"
 msgstr "الحالة"
 
@@ -714,7 +703,7 @@ msgstr "إلغاء التحاق جميع المشاركين المختارين �
 #: static/js/views/admin/course_details_bulk_actions.js:133
 #: static/js/views/admin/course_details_bulk_actions.js:199
 #: static/js/views/admin/course_details_bulk_actions.js:301
-#: static/js/views/admin/course_details_bulk_actions.js:771
+#: static/js/views/admin/course_details_bulk_actions.js:715
 msgid ""
 "You need to select at least one participant to be able to apply bulk actions."
 msgstr "يجب تحديد مشارك واحد على الأقل ليتمكن من تطبيق الإجراءات الكبرى."
@@ -736,21 +725,21 @@ msgstr "تغيير حالة جميع المشاركين المختارين إل�
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:377
-#: static/js/views/admin/participantsinfo.js:127
+#: static/js/views/admin/participantsinfo.js:129
 msgid "Participant"
 msgstr "المشاركون"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:378
-#: static/js/views/admin/participantsinfo.js:129
+#: static/js/views/admin/participantsinfo.js:131
 msgid "Observer"
 msgstr "المراقب"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:379
-#: static/js/views/admin/participantsinfo.js:128
+#: static/js/views/admin/participantsinfo.js:130
 msgid "TA"
 msgstr "مساعد مدرّس"
 
@@ -823,95 +812,94 @@ msgid "Export Report"
 msgstr "تصدير التقرير"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
-#: static/js/views/admin/course_details_bulk_actions.js:568
 msgid "Error initiating the report generation. Please retry later."
 msgstr "حدث خطأ أثناء إعداد التقرير، يرجى إعادة المحاولةلاحقًا."
 
-#: static/js/views/admin/course_details_bulk_actions.js:598
+#: static/js/views/admin/course_details_bulk_actions.js:546
 msgid "Download Notifications CSV"
 msgstr "تنزيل إخطارات CSV"
 
-#: static/js/views/admin/course_details_bulk_actions.js:687
+#: static/js/views/admin/course_details_bulk_actions.js:631
 msgid "Group Work: %(label)s"
 msgstr "عمل المجموعة: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:715
+#: static/js/views/admin/course_details_bulk_actions.js:659
 msgid "Assessment: %(label)s"
 msgstr "التقييم: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:741
+#: static/js/views/admin/course_details_bulk_actions.js:685
 msgid "Task failed to execute. Please retry later."
 msgstr "فشل في تنفيذ المهمة/ الرجاء إعادة المحاولة"
 
-#: static/js/views/admin/course_details_bulk_actions.js:758
+#: static/js/views/admin/course_details_bulk_actions.js:702
 msgid "Successfully Enrolled in 1 Course"
 msgstr "تم الالتحاق بنجاح في دورة واحدة"
 
-#: static/js/views/admin/course_details_bulk_actions.js:760
+#: static/js/views/admin/course_details_bulk_actions.js:704
 msgid "What would you like to do now?"
 msgstr "ماذا تريد أن تفعل الآن؟"
 
-#: static/js/views/admin/course_details_bulk_actions.js:761
+#: static/js/views/admin/course_details_bulk_actions.js:705
 msgid "Go to %(course_id)s Course"
 msgstr "الانتقال إلى الدورة %(course_id)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:763
+#: static/js/views/admin/course_details_bulk_actions.js:707
 msgid "Send Course Intro Email"
 msgstr "إرسال بريد إلكتروني يتضمن مقدمة عن الدورة"
 
-#: static/js/views/admin/course_details_bulk_actions.js:765
+#: static/js/views/admin/course_details_bulk_actions.js:709
 msgid "Enroll this list in another course"
 msgstr "تسجيل هذه القائمة في دورة أخرى"
 
-#: static/js/views/admin/course_details_bulk_actions.js:777
+#: static/js/views/admin/course_details_bulk_actions.js:721
 msgid "I'm Done"
 msgstr "لقد انتهيت"
 
-#: static/js/views/admin/course_details_bulk_actions.js:797
+#: static/js/views/admin/course_details_bulk_actions.js:741
 msgid "Successfully deleted template!"
 msgstr "تم حذف النموذج بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:804
+#: static/js/views/admin/course_details_bulk_actions.js:748
 msgid "Successfully added new template!"
 msgstr "تمت إضافة نموذج جديد بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:817
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Successfully updated template!"
 msgstr "تم تحديث النموذج بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:822
+#: static/js/views/admin/course_details_bulk_actions.js:766
 msgid "Email Preview Success!"
 msgstr "استعراض البريد الإلكتروني بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:822
+#: static/js/views/admin/course_details_bulk_actions.js:766
 msgid "Successfully sent preview email!"
 msgstr "تم إرسال البريد الإلكتروني للاستعراض بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:825
+#: static/js/views/admin/course_details_bulk_actions.js:769
 msgid "Email Success!"
 msgstr "البريد الإلكتروني ناجح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:825
+#: static/js/views/admin/course_details_bulk_actions.js:769
 msgid "Successfully sent email!"
 msgstr "إرسال البريد الإلكتروني بنجاح!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:867
+#: static/js/views/admin/course_details_bulk_actions.js:811
 msgid "Preview Email!"
 msgstr "البريد الإلكتروني الخاص بالاستعراض!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:867
+#: static/js/views/admin/course_details_bulk_actions.js:811
 msgid "Please enter preview email!"
 msgstr "الرجاء إدخال البريد الإلكتروني الخاص بالاستعراض!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:887
+#: static/js/views/admin/course_details_bulk_actions.js:831
 msgid "Please enter new template name!"
 msgstr "الرجاء إدخال اسم نموذج جديد!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:902
+#: static/js/views/admin/course_details_bulk_actions.js:846
 msgid "Please enter updated template name or leave the old one!"
 msgstr "الرجاء إدخال اسم النموذج المحدث أو ترك القديم!"
 
-#: static/js/views/admin/course_details_bulk_actions.js:915
+#: static/js/views/admin/course_details_bulk_actions.js:859
 msgid "You are about to delete email template. Are you sure?"
 msgstr "أنت على وشك حذف نموذج البريد الإلكتروني. هل أنت متأكد؟"
 
@@ -1099,7 +1087,7 @@ msgid "User successfully enrolled in course"
 msgstr "تم تسجيل المستخدم بنجاح في الدورة التدريبية"
 
 #: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:94
+#: static/js/views/admin/participantsinfo.js:96
 msgid "Admin Company"
 msgstr "الشركة المشرفة"
 
@@ -1108,12 +1096,12 @@ msgid "Try selecting your company from the type-ahead results."
 msgstr "حاول تحديد الشركة من النتائج المحددة مسبقًا."
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:103
+#: static/js/views/admin/participantsinfo.js:105
 msgid "Admin Permissions"
 msgstr "أذونات المشرف"
 
 #: static/js/views/admin/participant_details_edit_info.js:547
-#: static/js/views/admin/participantsinfo.js:106
+#: static/js/views/admin/participantsinfo.js:108
 msgid "Company Admin"
 msgstr "مشرف الشركة"
 
@@ -1124,9 +1112,6 @@ msgstr "التاريخ المضاف"
 #: static/js/views/admin/participantsinfo.js:35
 msgid "Enrolled In"
 msgstr "مسجّل في"
-
-#~ msgid "Keyword Search"
-#~ msgstr "البحث عن الكلمات الرئيسية"
 
 #~ msgid "Errors:"
 #~ msgstr "الأخطاء:"
