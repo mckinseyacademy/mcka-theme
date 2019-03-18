@@ -68,24 +68,26 @@ body.new-theme {
           }
 
           .image-explorer-hotspot-reveal {
-            background: $dark-gray;
             border-radius: 2px;
+            background: $ash-white;
+            border: 1px solid $popup-border;
 
             .image-explorer-close-reveal {
               color: transparent;
-              margin-right: 8px;
-              margin-top: 0px;
+              margin-right: 5px;
+              margin-top: -7px;
 
               &:after {
                 font-family: "Material Icons";
                 content: "\e14c";
-                color: $white;
+                color: $gray;
                 font-size: 1.125rem;
               }
             }
 
             .image-explorer-hotspot-content-wrapper {
-              margin-top: 40px;
+              margin-top: 30px;
+              color: $black;
 
               .image-explorer-hotspot-reveal-header {
                 font-size: 0.875rem;
