@@ -55,6 +55,9 @@
     .holder {
       min-height: 140px;
       overflow: hidden;
+      @include media-breakpoint-down(xs) {
+        min-height: 195px;
+      }
     }
   }
   .viewDetailCourse {
@@ -120,7 +123,6 @@
 
     &:first-child {
       > .holder {
-        display: table;
         width: 100%;
       }
     }
@@ -665,7 +667,7 @@ blockquote {
 // Media Queries
 
 //Tablet
-@media screen and (max-width: 992px) {
+@include media-breakpoint-down(xs, md) {
 
   .container {
     &.courseLanding {
@@ -797,7 +799,7 @@ blockquote {
 }
 
 //Mobile
-@media screen and (max-width: 767px) {
+@include media-breakpoint-down(xs, sm) {
 
   .progressWidgets {
     .widget {
@@ -850,7 +852,7 @@ blockquote {
         position: relative;
 
         .contenrArea {
-          margin-top: 108px !important;
+          margin-top: 114px !important;
         }
 
         .bar {
@@ -860,7 +862,11 @@ blockquote {
       }
     }
   }
-
+  @include media-breakpoint-down(xs) {
+    .progressWidgets .course-progress .holder .bar {
+      bottom: 135px;
+    }
+  }
   .contentCard {
     padding: 20px;
   }
