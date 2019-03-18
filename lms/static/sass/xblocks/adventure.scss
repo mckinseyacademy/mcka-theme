@@ -12,21 +12,34 @@ body.new-theme {
             .step-body {
                 border: 1px solid $border_color_1;
 
-                .step-child {
-                    &.ooyala-child{
-                        margin-bottom: 35px;
-                    }
-                    .questionnaire {
-                        .choices-list {
-                            .choice-selector {
-                                input[type="radio"] {
-                                    height: auto;
-                                }
-                            }
+                .step-view {
+                    padding: 0;
 
-                            .choice-label {
-                                padding-left: 12px;
-                                margin-top: -2px;
+                    .step-child {
+                        &.ooyala-child {
+                            margin-bottom: 35px;
+
+                            .ooyalaplayer.oo-player-container {
+                                min-width: 100% !important;
+                                height: auto !important;
+                            }
+                        }
+
+                        .questionnaire {
+                            .choices-list {
+                                padding: 4px 3px 0 3px;
+                                font-size: 1rem;
+
+                                .choice-selector {
+                                    input[type="radio"] {
+                                        height: auto;
+                                    }
+                                }
+
+                                .choice-label {
+                                    padding-left: 12px;
+                                    margin-top: -2px;
+                                }
                             }
                         }
                     }
@@ -73,6 +86,7 @@ body.new-theme {
                                 cursor: default;
                             }
                         }
+
                     }
                 }
             }
@@ -86,6 +100,7 @@ body.new-theme {
         [data-block-type="adventure"] {
             .adventure {
                 .step-body {
+                    padding-bottom: 35px;
                     .step-child {
                         .questionnaire {
                             .choices-list {
@@ -94,6 +109,9 @@ body.new-theme {
                                 }
                             }
                         }
+                    }
+                    .navigation-view .navigation-start-over{
+                        bottom: -30px;
                     }
                 }
             }
