@@ -667,8 +667,7 @@ blockquote {
 // Media Queries
 
 //Tablet
-@include media-breakpoint-down(xs, md) {
-
+@include media-breakpoint-down(md) {
   .container {
     &.courseLanding {
       max-width: 100%;
@@ -799,7 +798,8 @@ blockquote {
 }
 
 //Mobile
-@include media-breakpoint-down(xs, sm) {
+
+@include media-breakpoint-down(sm) {
 
   .progressWidgets {
     .widget {
