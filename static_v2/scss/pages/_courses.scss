@@ -66,17 +66,12 @@
       .course-detail {
         display: table;
         width: 100%;
+        line-height: 1rem;
         > span {
           font-size: 0.75rem;
           display: inline-block;
           vertical-align: middle;
-          &.lesson-count {
-            width: 75px;
-            max-width: 80px;
-          }
-          &.course-effort {
-            margin-right: 20px;
-          }
+          
           &.course-status {
             width: 33%;
             max-width: 100px;
@@ -87,7 +82,7 @@
             .bar {
               border: 1px solid white;
               height: 13px;
-              margin-top: 2px;
+              margin-top: 1px;
               position: relative;
               width: 68%;
               vertical-align: top;
@@ -111,7 +106,7 @@
           }
           .material-icons {
             font-size: 1rem;
-            vertical-align: sub;
+            vertical-align: middle;
             margin-right: 2px;
             max-width: 16px;
           }

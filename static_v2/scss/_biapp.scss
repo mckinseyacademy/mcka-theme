@@ -223,6 +223,10 @@ body {
             @include margin-left(5px);
           }
         }
+        .lesson-count,
+        .course-effort {
+          @include margin-right(30px);
+        }
       }
     }
   }
