@@ -13,17 +13,16 @@
                   warning
               .errorText
                 %h4
-                  {% trans "Sorry!." %}
+                  {% trans "Access forbidden." %}
               .content
                 %p
                   {% blocktrans %}
-                  You don't have permission to access the resource you requested.
+                  You do not have permission to access this page or directory. Please return to the home page.
                   {% endblocktrans %}
                 %p
                   {% blocktrans %}
-                  Please go back to
-                  %a{:href => "https://www.mckinseyacademy.com/"} https://www.mckinseyacademy.com
+                  If you believe you are seeing this message in error, please visit our
+                  %a{:href => "/faq"} FAQ page
                   or
-                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} contact us
-                  for support.
+                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support.
                   {% endblocktrans %}

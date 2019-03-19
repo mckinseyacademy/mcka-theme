@@ -13,9 +13,12 @@
                   warning
               .errorText
                 %h4
-                  {% trans "Sorry!." %}
+                  {% trans "Service is temporarily unavailable." %}
               .content
                 %p
                   {% blocktrans %}
-                  McKinsey Academy is currently undergoing scheduled maintenance. Sorry for any inconvenience.
+                  If you continue to have issues, please visit our
+                  %a{:href => "/faq"} FAQ page
+                  or
+                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support.
                   {% endblocktrans %}

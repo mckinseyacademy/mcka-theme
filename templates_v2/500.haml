@@ -13,16 +13,16 @@
                   warning
               .errorText
                 %h4
-                  {% trans "Sorry!" %}
+                  {% trans "Something has gone wrong." %}
               .content
                 %p
                   {% blocktrans %}
-                  Something has gone wrong. Our team has been alerted to the issue and is looking into it.
+                  Our team has been notified of the problem. Refresh this page.
                   {% endblocktrans %}
                 %p
                   {% blocktrans %}
-                  Please go back to
-                  %a{:href => "https://www.mckinseyacademy.com/"} https://www.mckinseyacademy.com
+                  If you continue to have issues, please visit our
+                  %a{:href => "/faq"} FAQ page
                   or
                   %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support.
                   {% endblocktrans %}
