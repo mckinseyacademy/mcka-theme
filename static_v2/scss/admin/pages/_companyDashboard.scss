@@ -223,7 +223,7 @@
 // Admin Site Breadcrum Styles
 
 .breadcurm {
-  margin: -10px 0 15px;
+  margin: 0 0 15px;
   padding: 0;
   list-style: none;
   letter-spacing: -.32em;
@@ -250,6 +250,14 @@
     text-decoration: none;
   }
 }
+
+.headerArea{
+  &.customWidth{
+    position: static;
+  }
+}
+
+
 
 .search-area {
   &.custom {
@@ -508,9 +516,6 @@
     .bulkActionsButtonContainer{
       width: auto;
     }
-    #coursesDownloadStatsButton{
-      display: none !important;
-    }
   }
 }
 #companyDashboardCompaniesWrapper{
@@ -543,10 +548,9 @@
 }
 
 .bbGrid-search-bar {
-  float: none !important;
-  clear: both;
-  overflow: hidden;
-  margin-bottom: 30px;
+  position: absolute;
+  top: 30px;
+  z-index: 9999;
 }
 
 #companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
@@ -667,6 +671,10 @@
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
 
+.bbGrid-grid-head, .bbGrid-container thead, .primaryBgLighten, .tableHeaderArea.stats {
+  background: var(--branding-lightened-color);
+}
+
 #mainCompanyDashboardContainer {
 
   #companyDashboardTitle {
@@ -681,7 +689,6 @@
   }
 
   .tableHeaderArea {
-    //background: #FDFFE4;
     padding: 10px 16px;
     overflow: hidden;
   }

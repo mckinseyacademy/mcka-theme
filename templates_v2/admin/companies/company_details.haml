@@ -89,28 +89,22 @@
 
               .contentCardWrap
                 .contentCard
-                  .headerArea.lesson-title
-                    %h2
-                      Courses
-                  %ul.breadcurm
-                    %li
-                      %a.ome.dome-c{:href => "#"} McKinsey and Company
-                    %li
-                      %a.ome.dome-c{:href => "#"} All Courses
-                    %li
-                      %a.ome.dome-c{:href => "#"} McKinsey's Approach to Problem Solving Academy
-                    %li Participants
-
-                  .search-area.clearfix.custom
-                    %a.btn.btn-primary.ome.dome-bc{:href => "#"} Export stats
-                    %form.search-form{:action => "#"}
-                      %input{:placeholder => "Search by keywords", :type => "search"}/
-                      %button.search-btn{:type => "submit"}
-                        %i.material-icons search
-
                   #companyDetailsDataWrapper
                       .companyCourses.contentNavigationContainer
                         #companyDetailsCoursesContainer
+                          .headerArea.lesson-title
+                            %h2
+                              {% trans "Courses" %}
+                            .search-area.clearfix.custom
+                              %form.search-form{:action => "#"}
+                                %input{:placeholder => "Search by keywords", :type => "search"}/
+                                %button.search-btn{:type => "submit"}
+                                  %i.material-icons search
+                          %ul.breadcurm
+                            %li
+                              %a.ome.dome-c{:href => '/admin/company_dashboard', :target => '_self'}
+                                {% trans "Company Dashboard" %}
+                            %li=company.name
                           #companyDetailsCoursesViewGridBlock
 
                       .companyCustomFields.contentNavigationContainer
@@ -119,7 +113,7 @@
                             .row.manager-info
                               .large-9.columns
                                 %input{"name": "manager_check", "type":"checkbox", "value": "manager_check"}
-                                  Include Manager Info
+                                  {% trans "Include Manager Info" %}
                               .large-3.columns
                                 %a.button.medium{"data-reveal-id" : "companyfields", "href" : "#"}
                                   {% trans "Add new field "%}

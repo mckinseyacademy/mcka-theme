@@ -67,7 +67,7 @@ _.extend(bbGrid.SearchView.prototype, {
     className: 'bbGrid-search-bar',
     template: _.template(
         '<div class="input-group">\
-            <input name="search" class="bbGrid-pager col-md-2 form-control clearable" type="text" placeholder='+gettext("Keyword Search")+'>\
+            <input name="search" class="bbGrid-pager col-md-2 form-control clearable" type="text" placeholder='+'"'+gettext('Search by Keyword')+'"'+'>\
         </div>', null, {
           evaluate: /<%([\s\S]+?)%>/g,
           interpolate: /<%=([\s\S]+?)%>/g,

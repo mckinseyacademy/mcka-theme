@@ -841,13 +841,12 @@ body.rtl {
 
 #companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
   .bbGrid-search-bar {
+    @include right(30px);
     .input-group {
       @include float(right);
       input:not([type='checkbox']) {
         @include padding-right(40px);
       }
-    }
-    .bbGrid-pager {
     }
   }
 }

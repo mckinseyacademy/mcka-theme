@@ -388,6 +388,17 @@
                       %i.material-icons keyboard_arrow_right
 
     %script{src: "{% static 'js/shader.js' %}"}
+    %script
+      var root = document.documentElement;
+      var secondary = root.style.getPropertyValue("--secondary");
+      var primary = root.style.getPropertyValue("--primary");
+      if (secondary) {
+        root.style.setProperty('--branding-lightened-color', lighten(secondary, 65));
+      } else if (primary) {
+        root.style.setProperty('--branding-lightened-color', lighten(primary, 65));
+      } else {
+        root.style.setProperty('--branding-lightened-color', lighten("#0093d3", 90));
+      }
 
     -# Ooyala Player JS
     - block ooyala_player
