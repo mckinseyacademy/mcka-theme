@@ -94,6 +94,18 @@ class CertificateViewTest(TestCase, ApplyPatchMixin):
         """
         super(CertificateViewTest, self).setUp()
         self.client = Client()
+
+        # TODO: 504 issue fix - uncomment this when original commit is included in release
+        # self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
+        # self.user = auth.get_user(self.client)
+        #
+        # self.mock_user_api_data_manager(
+        #     module_paths=[
+        #         'accounts.middleware.thread_local.UserDataManager',
+        #     ],
+        #     data={'courses': [], 'current_course': None}
+        # )
+
         self.courses = [
             ('abc/123/test', 'Abc Course'),
             ('xyz/334/dummy', 'Xyz Course'),

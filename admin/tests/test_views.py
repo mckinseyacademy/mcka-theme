@@ -79,29 +79,33 @@ def mocked_execute_task(task_runner):
 
     return task_id
 
-
-# TODO: mock API to fix test and uncomment
-# class AdminViewTest(TestCase, ApplyPatchMixin):
+# TODO: 504 issue fix - uncomment this when actual commit is included in release
+# class AdminViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
 #     """ Tests related to admin.views """
+#     client_class = AprosTestingClient
+#
 #     def setUp(self):
 #         """ Setup admin views test """
 #         super(AdminViewTest, self).setUp()
-#         self.client = Client()
-#         self.user = DottableDict({
-#             "id": '1',
-#             "username": 'mcka_admin_test_user',
-#             "first_name": 'mcka_admin',
-#             "last_name": 'Tester',
-#             "email": "mcka_admin_test_user@mckinseyacademy.com",
-#             "password": "PassworD12!@",
-#             'is_mcka_admin': True
-#         })
 #         self.url_name = 'edit_client_mobile_image'
 #         self.parameters = {
 #             'client_id': 1,
 #         }
-#         mobile_api = self.apply_patch('api_client.mobileapp_api')
+#         mobile_api = self.apply_patch('admin.views.mobileapp_api')
 #         mobile_api.get_mobile_app_themes.return_value = []
+#
+#         self.mock_user_api_data_manager(
+#             module_paths=[
+#                 'accounts.middleware.thread_local.UserDataManager',
+#             ],
+#             data={'courses': [], 'current_course': None}
+#         )
+#
+#         # Mock checking if user exists in middleware
+#         self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
+#
+#         # login as an uber admin
+#         self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
 #
 #     def test_edit_client_mobile_image_logo(self):
 #         """ test edit mobile logo page """

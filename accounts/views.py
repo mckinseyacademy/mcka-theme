@@ -37,7 +37,6 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.dateformat import format
 from django.template.response import TemplateResponse
 
-from api_data_manager.organization_data import OrgDataManager
 from util.url_helpers import get_referer_from_request
 from api_client import user_api
 from api_client.api_error import ApiError
@@ -53,9 +52,9 @@ from courses.user_courses import (
 from lib.context_processors import add_edx_notification_context
 from util.i18n_helpers import set_language
 from util.user_agent_helpers import is_mobile_user_agent
-from api_data_manager.user_data import UserDataManager
 
 from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistrationRequest
+from .middleware import thread_local
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
@@ -149,14 +148,8 @@ def _build_sso_redirect_url(provider, next):
 
 
 def _get_redirect_to_current_course(request):
-    user_data = UserDataManager(request.user.id).get_basic_user_data()
-    organization = user_data.get('organization')
+    user_data = thread_local.get_basic_user_data(request.user.id)
     user_courses = user_data.get('courses')
-    new_ui_enabled = False
-    if organization:
-        customization = OrgDataManager(str(organization.id)).get_branding_data().get('customization')
-        if customization and customization.new_ui_enabled:
-            new_ui_enabled = True
 
     current_course = user_data.current_course
     future_start_date = False
@@ -169,7 +162,7 @@ def _get_redirect_to_current_course(request):
             if hasattr(current_program, 'start_date') and future_start_date is False:
                 future_start_date = is_future_start(current_program.start_date)
 
-    if new_ui_enabled:
+    if user_data.get('new_ui_enabled'):
         if current_course and current_course.learner_dashboard:
             return reverse('course_landing_page', kwargs=dict(course_id=current_course.id))
         else:
@@ -196,7 +189,7 @@ def _get_redirect_to_current_course(request):
 def _process_authenticated_user(request, user, activate_account=False):
     # prefetch some basic data in cache for the authenticated user
     if user.id:
-        UserDataManager(user.id).get_basic_user_data()
+        thread_local.get_basic_user_data(user.id)
 
     redirect_to = _get_redirect_to(request)
     _validate_path(redirect_to)
@@ -1013,7 +1006,7 @@ def home(request):
     if not request.user.is_authenticated:
         return public_home(request)
 
-    user_data = UserDataManager(request.user.id).get_basic_user_data()
+    user_data = thread_local.get_basic_user_data(request.user.id)
     program = user_data.current_program
     course = user_data.current_course
 
@@ -1062,11 +1055,8 @@ def home(request):
         mobile_popup_data = get_mobile_app_download_popup_data(request)
         data.update(mobile_popup_data)
 
-    organization = user_data.get('organization')
-    if organization:
-        customization = OrgDataManager(str(organization.id)).get_branding_data().get('customization')
-        if customization and customization.new_ui_enabled:
-            return HttpResponseRedirect(_get_redirect_to_current_course(request))
+    if user_data.get('new_ui_enabled'):
+        return HttpResponseRedirect(_get_redirect_to_current_course(request))
 
     return render(request, 'home/landing.haml', data)
 
@@ -1133,7 +1123,9 @@ def user_profile_image_edit(request):
         )
 
         RemoteUser.remove_from_cache(user_id)
-
+        # TODO: 504 issue fix - uncomment this when original commit is included in release
+        #if thread_local.get_basic_user_data(request.user.id).get('new_ui_enabled'):
+        #    return redirect(request.META['HTTP_REFERER'])
         return change_profile_image(request, user_id, template='edit_profile_image')
 
 
