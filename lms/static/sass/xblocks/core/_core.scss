@@ -42,7 +42,7 @@
     // Media Query for Mobile
 
     @media (max-width: 767.98px) { 
-        p, ul
+        p, ul, li
         {
             @include font-size(14);
         }

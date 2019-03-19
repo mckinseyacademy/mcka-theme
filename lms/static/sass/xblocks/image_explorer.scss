@@ -68,44 +68,49 @@ body.new-theme {
           }
 
           .image-explorer-hotspot-reveal {
-            background: $dark-gray;
             border-radius: 2px;
+            background: $ash-white;
+            border: 1px solid $popup-border;
 
             .image-explorer-close-reveal {
               color: transparent;
-              margin-right: 8px;
-              margin-top: 0px;
+              margin-right: 5px;
+              margin-top: -7px;
 
               &:after {
                 font-family: "Material Icons";
                 content: "\e14c";
-                color: $white;
+                color: $gray;
                 font-size: 1.125rem;
               }
             }
 
             .image-explorer-hotspot-content-wrapper {
-              margin-top: 40px;
+              margin: 30px 20px 10px;
+              color: $black;
 
               .image-explorer-hotspot-reveal-header {
                 font-size: 0.875rem;
-                margin-bottom: 10px;
-                display: inline-block;
+                margin-bottom: 5px;
 
                 p {
                   margin: 0;
                   line-height: initial;
+                  font-size: 0.875rem;
                 }
               }
 
               .image-explorer-hotspot-reveal-body {
-                font-size: 12px;
+                ul, li, p, div, span {
+                  font-size: 12px;
+                }
 
                 ul {
                   padding-left: 5px;
+                  margin: 5px 0 0;
 
                   li {
-                    margin: 0 0 7px 17px;
+                    margin: 0 0 0 17px;
                   }
                 }
               }
