@@ -13,7 +13,7 @@
       .col
         %div
           - if course.ended
-          - include "courses/content_page/course_final_grade.haml"
+            - include "courses/content_page/course_final_grade.haml"
 
           - if feature_flags.proficiency or feature_flags.progress or feature_flags.discussions
             .contentCard.progressWidgets.clearfix
