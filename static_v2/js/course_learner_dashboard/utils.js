@@ -17,9 +17,6 @@ $(function(){
 
 
    if ($(window).width() < 767) {
-       $('.dropdown-menu').click(function(e) {
-            e.stopPropagation();
-        });
        $('a.LDCourse').click(function (event) {
            $(this).attr('href','#');
            event.preventDefault();
