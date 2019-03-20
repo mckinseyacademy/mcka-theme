@@ -497,7 +497,29 @@ body.new-theme {
     position: relative;
     z-index: 9999;
     padding-top: 0px;
+    .post-errors {
+      margin: 0 auto;
 
+      .alert-error {
+          padding: 10px;
+          border: 1px solid $bg-white-red;
+          box-shadow: none;
+
+          .alert-icon {
+              background: none;
+              color: $bg-white-red;
+          }
+
+          .alert-message {
+              display: inline-block;
+              padding: 0;
+              .alert-copy {
+                  color: $bg-white-red;
+                  font-size: 1rem;
+              }
+          }
+      }
+  }
     #contact-ta {
       .modal-dialog {
         .modal-content {
@@ -1162,7 +1184,6 @@ body.new-theme {
                 position: absolute;
                 display: block;
                 color: $gray;
-                font-size: 12px;
               }
             }
 
@@ -1177,7 +1198,6 @@ body.new-theme {
                 position: absolute;
                 display: block;
                 color: $gray;
-                font-size: 12px;
               }
             }
           }
@@ -1804,6 +1824,7 @@ body.new-theme {
 
             .discussion-reply-new {
               .add-response {
+                display: inline-block !important;
                 padding: 0 0px;
                 margin-top: 0px;
               }
