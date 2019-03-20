@@ -437,7 +437,7 @@ body {
   }
   .dropdown-toggle {
     &:after {
-      @include right(-20px);
+      @include margin-left(-2px);
     }
   }
   .proficiency-data,
@@ -940,6 +940,7 @@ body.rtl {
   #course-progress-new .course-page table thead tr {
     display: block;
     @include margin-right(-20px);
+    @include margin-left(-20px);
   }
 }
 

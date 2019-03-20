@@ -11,7 +11,7 @@
   .container.loader.donut-loader
     .row
       .col
-        %article#course-progress-new
+        %article#course-progress-new.clearfix
           .course-page.contentCard
             %h2 {% trans "Dashboard for" %} #{progress_user.username}
             %h5 {% trans "PROGRESS" %}
@@ -59,7 +59,7 @@
                     %th{:class => "{% if not course.is_evergreen %}course-run{% endif %}"} {% trans "Course Run" %}
                   %th {% trans "Individual Learning" %}
                   - if feature_flags.group_work and course.has_group_work
-                    %th {% trans "Group Work (Due Date)" %}
+                    %th.groupWork {% trans "Group Work (Due Date)" %}
               %tbody
                 - for week in course.lessons_by_week
                   %tr
@@ -87,16 +87,16 @@
                                   %span #{lesson.index}:
 
                           - if lesson_custom_label and modules_custom_label
-                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
                               = lesson.name
                           - elif lesson_custom_label
-                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
                               = lesson.name
                           - elif modules_custom_label
-                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
                               = lesson.name
                           - else
-                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
+                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
                               = lesson.name
                               
                           .dropdown-menu.allLessons.allModules{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
@@ -121,7 +121,7 @@
                                           {% trans "Module" %}
                                           %span {{module.index}}
                                       .data.title
-                                        %span= module.name
+                                        %span.ome.dome-c= module.name
                                           -if not module.is_started
                                             %i.material-icons.locked{ :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
                                       .data.status
@@ -146,6 +146,8 @@
                     - if feature_flags.group_work
                       - if week.has_group
                         %td.progress_data_col
+                          .headingForMobile
+                            {% trans "Group Work (Due Date)"%}
                           - for activity in week.group_activities
                             .lesson-with-list.lesson-row-item.gr-data
                               - if activity.score 
@@ -156,8 +158,8 @@
                                   panorama_fish_eye
                                   
                               .lesson-item-name
-                                %a.gw-links{"href": "#{activity.link}"}
-                                  #{activity.name}:
+                                %a.gw-links.ome.dome-c{"href": "#{activity.link}"}
+                                  #{activity.name}
                                 %span.due-date 
                                   = activity.due_on
                       - else
@@ -262,6 +264,7 @@
                 {% blocktrans with social_points=social.points social_course_avg=social.course_avg course_nav_url=course.nav_url %}
                   Your current engagement score is <b>{{social_points}}</b> based on your social interactions with other participants in your cohort in the <a href="{{course_nav_url}}/discussion">{{discussion_text}}</a> forums. The cohort average is <b>{{social_course_avg}}</b>.
                 {% endblocktrans %}
+              %hr
               %table
                 %thead
                   %tr
