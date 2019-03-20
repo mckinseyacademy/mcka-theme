@@ -29,22 +29,7 @@
                             {% trans "Lessons" %}
                         .dropdown-menu.allLessons{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
                           - include "courses/content_page/lesson_menu.haml"
-                    - if feature_flags.discussions
-                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_discussion' %}active{% endifequal %}"}
-                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/discussion"}
-                          {% trans "Discussion" %}
-                    - if feature_flags.group_work
-                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_group_work' %}active{% endifequal %}"}
-                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/group_work"}
-                          {% trans "Group work" %}
-                    - if feature_flags.cohort_map
-                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_cohort' %}active{% endifequal %}"}
-                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/cohort"}
-                          {% trans "Cohort" %}
-                    - if feature_flags.progress_page
-                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_progress' %}active{% endifequal %}"}
-                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/progress"}
-                          {% trans "Progress" %}
+
                     %li{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_nannouncements' %}active{% endif %}"}
                       %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
                         {% trans "Course Materials" %}
@@ -56,6 +41,22 @@
                         - if feature_flags.resources
                           %a.ome.dome-c.dropdown-item{:href => "/courses/#{active_course.id}/resources"}
                             {% trans "Resources" %}
+                    - if feature_flags.discussions
+                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_discussion' %}active{% endifequal %}"}
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/discussion"}
+                          {% trans "Discussion" %}
+                    - if feature_flags.group_work
+                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_group_work' %}active{% endifequal %}"}
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/group_work"}
+                          {% trans "Group work" %}
+                    - if feature_flags.progress_page
+                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_progress' %}active{% endifequal %}"}
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/progress"}
+                          {% trans "My Progress" %}
+                    - if feature_flags.cohort_map
+                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_cohort' %}active{% endifequal %}"}
+                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/cohort"}
+                          {% trans "Leaderboard" %}
                     - if feature_flags.notifications
                       %li.notifications
                         %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
