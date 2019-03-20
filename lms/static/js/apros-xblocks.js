@@ -1,7 +1,7 @@
 $(function () {
   var isSurveyTableFilled = false;
   $(document).on('change', '.new-theme input[type=radio]', function(e) {
-    var parent = $(e.target).parents('[data-block-type="pb-mcq"]');
+    var parent = $(e.target).parents('[data-block-type="pb-mcq"], [data-block-type="adventure"]');
     $(parent).find(".choice-selector").removeClass("selected");
     $(e.target).parent().addClass("selected");
   });
