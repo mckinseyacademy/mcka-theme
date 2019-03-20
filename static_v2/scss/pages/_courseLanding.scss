@@ -677,6 +677,46 @@ blockquote {
     }
   }
 }
+.lesson-dropdown-frame {
+  padding: 0 0 10px;
+  .dropdown-menu.allLessons .allCoursesList .holder .data.title {
+    @include media-breakpoint-down(xs) {
+      width: 77px;
+      >span {
+        padding-left: 0;
+      }
+    }
+  }
+  .lesson-dropdown-holder {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    @include media-breakpoint-down(sm) {
+      display: block;
+    }
+    >a {
+      display: inline-block;
+      padding: 4px 10px;
+      border: 1px solid var(--primary);
+      border-radius: 2px;
+      font-size: 12px;
+      line-height: 20px;
+    }
+    .dropdown-menu {
+      top: 100%!important;
+      left: 0!important;
+      min-width: 430px;
+      width: 100%;
+      max-width: 100%;
+      @include media-breakpoint-down(sm) {
+        min-width: 270px;
+      }
+      &:after {
+        display: none;
+      }
+    }
+  }
+}
 
 // Media Queries
 

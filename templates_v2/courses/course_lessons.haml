@@ -14,12 +14,16 @@
           .col
             .contentCard.preloader
               .headerArea.lesson-title
-                %h5
-                  - if lesson_custom_label
-                    {% blocktrans with lesson_index=course.current_lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
-                  - else
-                    {% trans "Lesson" %} #{course.current_lesson.index}:
-                  = course.current_lesson.name
+                .lesson-dropdown-frame
+                  .lesson-dropdown-holder
+                    %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}     
+                      - if lesson_custom_label
+                        {% blocktrans with lesson_index=course.current_lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
+                      - else
+                        {% trans "Lesson" %} #{course.current_lesson.index}:
+                      = course.current_lesson.name
+                    .dropdown-menu.allLessons
+                      - include "courses/content_page/lesson_menu.haml"
 
                 %h2
                   - if lesson_custom_label and modules_custom_label
