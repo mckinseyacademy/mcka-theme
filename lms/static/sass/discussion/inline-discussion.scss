@@ -121,8 +121,23 @@ body.new-theme {
             }
 
             .discussion-module {
-
                 .inline-discussion {
+                    top:20px;
+                    .inline-thread {
+                        padding-top: 10px;
+
+                        .forum-nav-bar .all-posts-btn {
+                            padding: 0;
+
+                            .icon {
+                                margin-left: 0;
+                            }
+                        }
+                    }
+                    .new-post-article {
+                        border: 0;
+                        padding-top: 20px;
+                    }
 
                     .forum-nav-browse-menu {
                         height: auto !important;
@@ -134,20 +149,14 @@ body.new-theme {
                         }
                     }
 
-                    .edit-post-form {
-                        padding-top: 0 !important;
-
-                        .field-input-label {
-                            top: 0 !important;
-                        }
-                    }
-
                     .forum-new-post-form,
                     .edit-post-form {
                         min-width: auto;
-                        padding: 30px 10px 30px;
+                        padding: 0;
 
-
+                        #new-post-editor-description {
+                            margin-top: 5px;
+                        }
                         .thread-title {
                             display: block;
                             font-size: 1.25rem;
@@ -162,7 +171,7 @@ body.new-theme {
                             margin-bottom: 10px;
 
                             .field-label {
-                                margin-bottom: 15px;
+                                margin-bottom: 5px;
                                 width: 100%;
                             }
 
@@ -201,7 +210,7 @@ body.new-theme {
                             font-size: 12px;
 
                             &:before {
-                                font-size: 13px;
+                                font-size: 13px !important;
                             }
                         }
 
@@ -239,6 +248,11 @@ body.new-theme {
 
                     .edit-post-form {
                         min-width: auto !important;
+                        padding-top: 0 !important;
+
+                        .field-input-label {
+                            top: 0 !important;
+                        }
 
                         .forum-edit-post-form-wrapper {
                             .post-field {
@@ -296,8 +310,9 @@ body.new-theme {
                         .post-header-actions {
                             top: 65px;
 
-                            .btn-link {
-                                border: 0;
+                            .post-actions-list {
+                                margin: 0;
+                                line-height: initial;
                             }
 
                             .action-icon {
@@ -315,7 +330,7 @@ body.new-theme {
 
                                 .username {
                                     color: var(--primary) !important;
-                                    font-weight: 600;
+                                    font-weight: normal;
                                     font-size: 12px;
                                 }
 
@@ -386,7 +401,7 @@ body.new-theme {
         background: $white;
         position: relative;
         z-index: 9999;
-        padding-top: 0px;
+        padding-top: 0 !important;
 
         .post-errors {
             margin: 0 auto;
@@ -428,9 +443,11 @@ body.new-theme {
 
         .discussion-module {
             padding: 0;
+            
 
             .discussion,
             .col {
+                top:10px;
                 padding: 0;
                 position: relative;
             }
@@ -474,6 +491,9 @@ body.new-theme {
 
             button.discussion-show {
                 @include tertiary-button;
+                position: absolute;
+                top: -3px;
+                right: -10px;
 
                 &:hover,
                 &:active,
@@ -702,10 +722,14 @@ body.new-theme {
                 font-weight: normal;
             }
 
-            .discussion-module-title {
-                font-size: 1.75rem;
-                font-weight: 300;
-                color: #000;
+            .discussion-module-header {
+                margin: 0;
+                width: 100%;
+                .discussion-module-title {
+                    font-size: 1.75rem;
+                    font-weight: 300;
+                    color: #000;
+                }
             }
 
             .add_post_btn_container {
@@ -728,8 +752,13 @@ body.new-theme {
                 }
             }
 
+            .inline-thread {
+                padding-top: 30px;
+            }
+
             .forum-nav-bar {
                 .all-posts-btn {
+                    cursor: pointer;
                     border: 0;
                     color: var(--primary);
                     background: none;
@@ -762,6 +791,7 @@ body.new-theme {
                     border: 0;
                     color: var(--primary);
                     cursor: pointer;
+                    background: none;
                 }
 
                 .edit-post-body {
@@ -815,7 +845,6 @@ body.new-theme {
                         input[type='radio'] {
                             width: auto;
                             height: auto;
-                            margin-top: 5px;
 
                         }
 
@@ -855,7 +884,7 @@ body.new-theme {
                         position: relative;
 
                         .field-label-text {
-                            margin-bottom: 8px;
+                            margin: 0 0 8px;
                         }
                     }
 
@@ -879,7 +908,7 @@ body.new-theme {
                         &#field_help_title {
 
                             position: absolute;
-                            top: 94px;
+                            top: 71px;
 
                             &:before {
                                 content: 'Add a clear and descriptive title to encourage participation.';
@@ -1251,7 +1280,7 @@ body.new-theme {
 
                                     .username {
                                         color: var(--primary);
-                                        font-weight: 600;
+                                        font-weight: normal;
                                         font-size: 12px;
                                     }
 
@@ -1271,6 +1300,8 @@ body.new-theme {
                                 }
 
                                 .post-actions-list {
+                                    margin: 0;
+                                    line-height: initial;
                                     .sr {
                                         display: none;
                                     }
@@ -1345,7 +1376,6 @@ body.new-theme {
                     .post-extended-content {
                         .response-btn-count-wrapper {
                             .discussion-reply-new .add-response {
-                                display: inline-block !important;
                                 font-size: 1rem;
                             }
 
@@ -1367,6 +1397,8 @@ body.new-theme {
                                 margin-top: 20px;
 
                                 .discussion-response {
+                                    background-color: #f9f9f9;
+
                                     .form-row {
                                         margin-bottom: 20px;
                                     }
@@ -1375,7 +1407,6 @@ body.new-theme {
                                         margin-right: 10px !important;
                                     }
 
-                                    background-color: #f9f9f9;
 
                                     .response-header {
                                         background: none;
@@ -1385,7 +1416,7 @@ body.new-theme {
                                     .response-header-content {
                                         .username {
                                             color: var(--primary);
-                                            font-weight: 600;
+                                            font-weight: normal;
                                             font-size: 12px;
                                         }
 
@@ -1404,6 +1435,12 @@ body.new-theme {
                                     }
 
                                     .response-actions-list {
+                                        list-style: none;
+                                        margin: 0;
+                                        padding: 0;
+                                        text-indent: 0;
+                                        line-height: initial;
+
                                         .actions-dropdown-list {
                                             display: grid;
                                         }
@@ -1411,6 +1448,14 @@ body.new-theme {
                                         .actions-item {
                                             margin: 0 5px 0;
                                             float: left;
+                                            .btn-link{
+                                                border: 0;
+                                                background: none;
+                                            }
+                                            .action-button {
+                                                background: none;
+                                                padding: 1px;
+                                            }
 
                                             &:last-child {
                                                 .more-wrapper {
@@ -1499,7 +1544,7 @@ body.new-theme {
 
                                         .username {
                                             color: var(--primary);
-                                            font-weight: 600;
+                                            font-weight: normal;
                                             font-size: 12px;
                                         }
 
@@ -1523,7 +1568,6 @@ body.new-theme {
 
                         .discussion-reply-new {
                             .add-response {
-                                display: inline-block !important;
                                 padding: 0;
                                 margin-top: 0;
                                 font-size: 1rem;
