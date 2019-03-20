@@ -67,11 +67,11 @@ body.new-theme {
 
         .discussion-column {
             width: 63% !important;
-            border: 1px solid #EEEEEE;
+            border: 1px solid $light-gray;
         }
 
         .thread-main-wrapper {
-            border-bottom: 1.21px solid #EBEBEB;
+            border-bottom: 1.21px solid $gray-border;
         }
 
         .forum-new-post-form,
@@ -728,7 +728,7 @@ body.new-theme {
                 .discussion-module-title {
                     font-size: 1.75rem;
                     font-weight: 300;
-                    color: #000;
+                    color: $black;
                 }
             }
 
@@ -1233,15 +1233,11 @@ body.new-theme {
                                 padding-top: 10px;
                             }
                         }
-
-                        &.helpgrid-row-participation {
-                            background: #f9f9f9;
-                        }
                     }
 
                     .helpgrid-row-notification {
                         .row-item-full {
-                            border: 1px solid #eee;
+                            border: 1px solid $light-gray;
 
                             &:before {
                                 content: "You can enable daily\0020(or weekly) notification digests which show discussion activity by accessing your profile dropdown.";
@@ -1397,7 +1393,7 @@ body.new-theme {
                                 margin-top: 20px;
 
                                 .discussion-response {
-                                    background-color: #f9f9f9;
+                                    background-color: $background_color_1;
 
                                     .form-row {
                                         margin-bottom: 20px;
@@ -1502,12 +1498,12 @@ body.new-theme {
                                 }
 
                                 .comments {
-                                    background-color: #f9f9f9;
+                                    background-color: $background_color_1;
                                     box-shadow: none;
 
                                     forum-new-post-form .edit-post-form,
                                     .new-comment {
-                                        border-top: 1.21px solid #EBEBEB;
+                                        border-top: 1.21px solid $gray-border;
 
                                         .wmd-preview-label {
                                             font-size: 1rem;
