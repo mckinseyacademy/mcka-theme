@@ -6,6 +6,8 @@ inherits from model) and therefore tables get contructed
 import hashlib
 import random
 from datetime import datetime, timedelta
+
+import dateutil
 from django.db import models as db_models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
@@ -22,7 +24,7 @@ class RemoteUser(AbstractUser):
     ''' user object that exists only in cache '''
     session_key = db_models.CharField('session_key', max_length=255, unique=True)
 
-    def update_response_fields(self, user_response, session_key=None):
+    def update_response_fields(self, user_response, session_key=None, last_login=None):
         ''' take API response and blend the results into this user object '''
         if session_key is not None:
             self.session_key = session_key
@@ -40,6 +42,7 @@ class RemoteUser(AbstractUser):
         self.image_url_medium = user_response.image_url_medium
         self.image_url_small = user_response.image_url_small
         self.is_staff = user_response.is_staff
+        self.last_signin = dateutil.parser.parse(last_login) if last_login else None
         self.title = user_response.title
 
     def save(self, **kwargs):

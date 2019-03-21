@@ -16,9 +16,9 @@ class JsonBackend(object):
     Authenticate against the remote server using an API call...
     """
 
-    def _load_user(self, user_response, auth_token=None):
+    def _load_user(self, user_response, auth_token=None, last_login=None):
         user = get_user_model()()
-        user.update_response_fields(user_response, auth_token)
+        user.update_response_fields(user_response, auth_token, last_login)
         user.save()
         return user
 
@@ -26,6 +26,7 @@ class JsonBackend(object):
         '''
         Implements django authenticate that delegates to API
         '''
+        last_login = None
         if remote_session_key and not (username and password):
             try:
                 auth_info = user_api.get_session(remote_session_key)
@@ -45,9 +46,9 @@ class JsonBackend(object):
                     raise
                 else:
                     return None
-
+            last_login = auth_info.user.last_login
             auth_info.user = user_api.get_user(auth_info.user.id)
-        user = self._load_user(auth_info.user, auth_info.token)
+        user = self._load_user(auth_info.user, auth_info.token, last_login)
         if hasattr(auth_info, 'csrftoken'):
             user.csrftoken = auth_info.csrftoken
 
