@@ -1,0 +1,329 @@
+@charset "UTF-8";
+
+// FadeIn
+
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+.fadeIn {
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
+
+// FadeInDown
+
+@-webkit-keyframes fadeInDown {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+
+.fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
+}
+
+// FadeInLeft
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(-100%, 0, 0);
+        transform: translate3d(-100%, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+
+.fadeInLeft {
+    -webkit-animation-name: fadeInLeft;
+    animation-name: fadeInLeft;
+}
+
+// FadeInRight
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(100%, 0, 0);
+        transform: translate3d(100%, 0, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+
+.fadeInRight {
+    -webkit-animation-name: fadeInRight;
+    animation-name: fadeInRight;
+}
+
+// FadeInUp
+
+@-webkit-keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+}
+
+
+.fadeInUp {
+    -webkit-animation-name: fadeInUp;
+    animation-name: fadeInUp;
+}
+
+// Animated class to animate any element in DOM
+
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: backwards;
+    animation-fill-mode: backwards;
+
+    // Animation speeds
+
+    &.infinite {
+        -webkit-animation-iteration-count: infinite;
+        animation-iteration-count: infinite;
+    }
+
+    &.delay-1s {
+        -webkit-animation-delay: 1s;
+        animation-delay: 1s;
+    }
+
+    &.delay-2s {
+        -webkit-animation-delay: 2s;
+        animation-delay: 2s;
+    }
+
+    &.delay-3s {
+        -webkit-animation-delay: 3s;
+        animation-delay: 3s;
+    }
+
+    &.delay-4s {
+        -webkit-animation-delay: 4s;
+        animation-delay: 4s;
+    }
+
+    &.delay-5s {
+        -webkit-animation-delay: 5s;
+        animation-delay: 5s;
+    }
+
+    &.fast {
+        -webkit-animation-duration: 800ms;
+        animation-duration: 800ms;
+    }
+
+    &.faster {
+        -webkit-animation-duration: 500ms;
+        animation-duration: 500ms;
+    }
+
+    &.slow {
+        -webkit-animation-duration: 2s;
+        animation-duration: 2s;
+    }
+
+    &.slower {
+        -webkit-animation-duration: 3s;
+        animation-duration: 3s;
+    }
+
+    &.firstEntry {
+        -webkit-animation-duration: .3s;
+        animation-duration: .3s;
+    }
+
+    &.secondEntry {
+        -webkit-animation-duration: .5s;
+        animation-duration: .5s;
+    }
+
+    &.thirdEntry {
+        -webkit-animation-duration: .7s;
+        animation-duration: .7s;
+    }
+}
+
+// Shimmer effect laoding
+
+.preloader {
+    position: relative;
+    overflow: hidden;
+    height: 600px;
+
+    &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 999;
+        background-color: $light-gray;
+    }
+    &:after {
+        content: "";
+        background: $light-gray;
+        background-image: linear-gradient(to right, $light-gray 0%, lighten($light-gray, 20%) 20%, $light-gray 40%, $light-gray 100%);
+        background-repeat: no-repeat;
+        background-size: 1200px;
+        display: inline-block;
+        position: absolute;
+        width: 125%;
+        height: 225%;
+        left: -10%;
+        transform: rotate(45deg) translate(-50%, -50%);
+        top: 100%;
+        z-index: 999;
+
+        -webkit-animation-duration: 2s;
+        -webkit-animation-fill-mode: forwards;
+        -webkit-animation-iteration-count: infinite;
+        -webkit-animation-name: placeholderShimmer;
+        -webkit-animation-timing-function: linear;
+    }
+
+
+    @-webkit-keyframes placeholderShimmer {
+        0% {
+            background-position: -1000px top;
+        }
+
+        100% {
+            background-position: 1800px bottom;
+        }
+    }
+}
+
+// Progressive Donut loader
+
+ .donut-loader {
+  position: relative;
+  height: 500px;
+  overflow: hidden;
+  &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 998;
+      background-color: $white;
+  }
+  &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 999;
+      margin: 30vh auto;
+      box-sizing: border-box;
+      width: 80px;
+      height: 80px;
+      border: 15px solid #DDD;
+      border-radius: 50%;
+      border-right-color: #EEE;
+      animation: spin 2s linear infinite;
+  }
+  @keyframes spin {
+      from {
+          transform: rotate(0deg)
+      }
+
+      to {
+          transform: rotate(360deg)
+      }
+  }
+}
+
+@media (print),
+(prefers-reduced-motion) {
+    .animated {
+        -webkit-animation: unset !important;
+        animation: unset !important;
+        -webkit-transition: none !important;
+        transition: none !important;
+    }
+}

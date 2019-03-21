@@ -1,5 +1,6 @@
 import ddt
 import mock
+from mock import patch
 from collections import defaultdict
 
 from django.test import TestCase, override_settings
@@ -7,7 +8,7 @@ from django.conf import settings
 from django.http.response import HttpResponseBase
 
 from accounts.tests.utils import ApplyPatchMixin, make_course, make_program
-from api_data_manager.tests.utils import mock_api_data_manager
+from api_data_manager.course_data import CourseDataManager
 from courses.user_courses import (
     set_current_course_for_user,
     standard_data,
@@ -70,24 +71,20 @@ class TestSetCurrentCourseForUser(TestCase, ApplyPatchMixin):
         self.get_cached_data.return_value = program_courses_mapping
 
     def test_set_current_course_for_user(self):
-        mock_api_data_manager(
-            module_path='courses.user_courses.UserDataManager',
-            data={'current_course': self.programs[0].courses[0],
-                  'current_program': self.programs[0],
-                  }
-        )
+        self.get_basic_user_data = self.apply_patch('courses.user_courses.thread_local.get_basic_user_data')
+        self.get_basic_user_data.return_value = DottableDict({
+            'current_course': self.programs[0].courses[0], 'current_program': self.programs[0],
+        })
         set_current_course_for_user(self.request, 'Organization_y/CS105/2018_T5')
         self.assertEqual(self.user_id, 1)
         self.assertEqual(self.preference_dictionary['current_program_id'], '1')
         self.assertEqual(self.preference_dictionary['current_course_id'], 'Organization_y/CS105/2018_T5')
 
     def test_set_current_course_for_user_with_program_courses_mapping_none(self):
-        mock_api_data_manager(
-            module_path='courses.user_courses.UserDataManager',
-            data={'current_course': self.programs[0].courses[0],
-                  'current_program': self.programs[0],
-                  }
-        )
+        self.get_basic_user_data = self.apply_patch('courses.user_courses.thread_local.get_basic_user_data')
+        self.get_basic_user_data.return_value = DottableDict({
+            'current_course': self.programs[0].courses[0], 'current_program': self.programs[0],
+        })
         self.get_cached_data.return_value = None
         set_current_course_for_user(self.request, 'Organization_y/CS105/2018_T5')
         self.assertEqual(self.user_id, 1)
@@ -151,9 +148,12 @@ class TestStandardData(TestCase, ApplyPatchMixin):
 
         self.get_mobile_apps = \
             self.apply_patch('api_data_manager.organization_data.get_mobile_apps')
+        self.get_basic_user_data = self.apply_patch('courses.user_courses.thread_local.get_basic_user_data')
         self.get_mobile_apps.return_value = {}
 
     @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}})
+    @patch.object(CourseDataManager, 'get_feature_flags', lambda _: None)
+    @patch.object(CourseDataManager, 'get_course_meta_data', lambda _: None)
     def test_standard_data(self):
         self.user_organizations = [
             DottableDict(
@@ -165,30 +165,23 @@ class TestStandardData(TestCase, ApplyPatchMixin):
                 contact_email="company@mckinseyacademy.com",
             )
         ]
-        mock_api_data_manager(
-            module_path='courses.user_courses.UserDataManager',
-            data={'courses': [self.course],
-                  'current_course': self.course,
-                  'current_program': self.program,
-                  'organizations': self.user_organizations}
-        )
-
+        self.get_basic_user_data.return_value = DottableDict({
+            'courses': [self.course],
+            'current_course': self.course,
+            'current_program': self.program,
+            'organization': None
+        })
+        self.user_learner_dashboards = self.apply_patch('courses.user_courses.user_learner_dashboards')
+        self.user_learner_dashboards.return_value = None
         result = standard_data(self.request)
         self.assertEqual(result['current_course'].id, 'Organization_X/CS103/2018_T3')
         self.assertEqual(result['program'].display_name, 'Test program')
         self.assertEqual(len(result['program'].courses), 1)
         self.assertEqual(result['program'].courses[0], self.course)
-        self.assertEqual(result['feature_flags'].course_id, 'Organization_X/CS103/2018_T3')
         self.assertEqual(result['namespace'], 'Organization_X/CS103/2018_T3')
         self.assertNotEqual(result['course_name'], self.course_name)
         self.assertEqual(result['client_customization'], None)
-        self.assertEqual(result['client_nav_links'], {})
         self.assertEqual(result['branding'], None)
-        self.assertEqual(result['organization_id'], 1)
-        self.assertEqual(result['lesson_custom_label'], '')
-        self.assertEqual(result['module_custom_label'], '')
-        self.assertEqual(result['lessons_custom_label'], '')
-        self.assertEqual(result['modules_custom_label'], '')
 
 
 class TestGetProgramMenuList(TestCase, ApplyPatchMixin):
@@ -223,16 +216,14 @@ class TestGetProgramMenuList(TestCase, ApplyPatchMixin):
         self.group_api = self.apply_patch('admin.models.group_api')
         self.organization_api = self.apply_patch('courses.user_courses.organization_api')
         self.get_mobile_apps = self.apply_patch('api_client.mobileapp_api.get_mobile_apps')
+        self.get_basic_user_data = self.apply_patch('courses.user_courses.thread_local.get_basic_user_data')
 
     @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}})
     def test_get_program_menu_list(self):
-        mock_api_data_manager(
-            module_path='courses.user_courses.UserDataManager',
-            data={'courses': self.users_courses,
-                  'current_course': self.users_courses[0],
-                  }
-        )
-
+        self.get_basic_user_data.return_value = DottableDict({
+            'courses': self.users_courses,
+            'current_course': self.users_courses[0],
+        })
         self.user_api.get_user_groups.return_value = [self.program]
         self.get_user_courses.return_value = self.users_courses
         self.get_mobile_apps.return_value = DottableDict(

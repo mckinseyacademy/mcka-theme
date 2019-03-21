@@ -23,8 +23,7 @@ from mobile_apps.constants import MOBILE_APP_DEPLOYMENT_MECHANISMS
 from license import controller as license_controller
 from util.i18n_helpers import format_lazy
 from api_data_manager.organization_data import OrgDataManager
-from api_data_manager.user_data import UserDataManager
-
+from .middleware import thread_local
 from .models import UserPasswordReset, UserActivation
 
 
@@ -474,7 +473,7 @@ def append_user_mobile_app_id_cookie(response, user_id):
     """
     Returns response by setting android_app_id and ios_app_id cookie.
     """
-    user_data = UserDataManager(user_id).get_basic_user_data()
+    user_data = thread_local.get_basic_user_data(user_id)
 
     if user_data.organization:
         # we will get ios and android id

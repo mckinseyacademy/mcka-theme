@@ -17,11 +17,11 @@
     @extend .mb-4;
     text-align: center;
     font-size: 1rem;
-    > div{
+    > div {
       color: $gray;
       line-height: 28px;
     }
-    .final-grade{
+    .final-grade {
       color: $black;
       @include font-spec(24, 400, 32px);
       margin-bottom: 8px;
@@ -59,10 +59,10 @@
 .contentCardWrap {
   margin-top: 36px;
 
-  >.head {
+  > .head {
     margin-bottom: 5px;
     padding: 0 15px;
-    h5{
+    h5 {
       margin: 15px;
     }
   }
@@ -95,7 +95,7 @@
     min-height: 112px;
 
     &:first-child {
-      >.holder {
+      > .holder {
         display: table;
         width: 100%;
       }
@@ -184,21 +184,22 @@
   padding: 0;
   margin: 0;
   list-style: none;
-  &.onPage{
-    >.courseRow{
+  &.onPage {
+    > .courseRow {
       overflow: hidden;
     }
   }
 
-  >.courseRow {
+  > .courseRow {
     position: relative;
     z-index: 1;
     padding: 0 30px;
     margin: 0 -30px;
     position: relative;
     border-top: 1px solid #F1F3F6;
+    overflow: hidden;
 
-    >.holder {
+    > .holder {
       display: block;
       overflow: hidden;
       clear: both;
@@ -208,9 +209,9 @@
     .bookmark {
       z-index: 2;
       pointer-events: none;
-    } 
+    }
 
-    >a {
+    > a {
       &:hover {
         text-decoration: none;
       }
@@ -280,7 +281,7 @@
       }
 
       .title {
-        >span {
+        > span {
           color: $gray;
           .locked {
             position: absolute;
@@ -331,21 +332,22 @@
         max-width: 250px;
         position: relative;
         @include text-ellipsis;
-        span{
-          width: 20px;
+        span {
+          width: 21px;
           display: inline-block;
           line-height: 1.55;
         }
       }
 
       &.title {
+        color: var(--primary);
+        padding: 17px 0;
         color:  var(--primary);
         font-size: 1rem;
         line-height: 22px;
         width: 44%;
 
-        >span
-        {
+        > span {
           display: inline-block;
           vertical-align: middle;
           @include text-ellipsis;
@@ -428,13 +430,13 @@
     padding: 0;
     position: relative;
 
-    >.holder {
+    > .holder {
       padding: 15px 30px;
 
-      >img {
+      > img {
         width: 100%;
       }
-      &::after{
+      &::after {
         content: "";
         position: absolute;
         width: 1px;
@@ -443,8 +445,8 @@
         background-color: $hard-gray;
       }
     }
-    &:last-child{
-      >.holder {
+    &:last-child {
+      > .holder {
         &::after {
           display: none;
         }
@@ -480,7 +482,7 @@
     }
 
     .articleTitle {
-      color:  var(--primary);
+      color: var(--primary);
       font-family: "Open Sans", sans-serif;
       font-size: 1rem;
       line-height: 22px;
@@ -493,13 +495,12 @@
       font-family: "Open Sans", sans-serif;
       font-size: 0.75rem;
       line-height: 17px;
-
     }
   }
 
   .socialArea {
     .tweet {
-      >a {
+      > a {
         width: 38px;
         height: 38px;
         overflow: hidden;
@@ -511,7 +512,7 @@
         }
       }
 
-      >.content {
+      > .content {
         overflow: hidden;
 
         .head {
@@ -532,7 +533,7 @@
           }
 
           .name-link {
-            color:  var(--primary);
+            color: var(--primary);
             font-family: "Open Sans", sans-serif;
             font-size: 0.875rem;
             line-height: 19px;
@@ -545,8 +546,8 @@
           font-size: 1rem;
           line-height: 22px;
 
-          >a {
-            color:  var(--primary);
+          > a {
+            color: var(--primary);
           }
         }
       }
@@ -580,7 +581,7 @@
     width: 115px;
     height: auto;
 
-    >a {
+    > a {
       width: 100%;
       height: 100%;
       display: block;
@@ -591,7 +592,7 @@
     overflow: hidden;
 
     .title {
-      color:  var(--primary);
+      color: var(--primary);
       font-family: "Open Sans", sans-serif;
       font-size: 1rem;
       line-height: 22px;
@@ -672,8 +673,8 @@ blockquote {
           margin-top: 30px;
         }
       }
-      >.holder{
-        &::after{
+      > .holder {
+        &::after {
           display: none;
         }
       }
@@ -709,7 +710,7 @@ blockquote {
   }
 
   .contentCard {
-    >.row {
+    > .row {
       margin: 0;
     }
   }
@@ -726,7 +727,7 @@ blockquote {
         border: 0;
       }
 
-      >.holder {
+      > .holder {
         border: 0 !important;
         padding: 0;
       }
@@ -755,7 +756,7 @@ blockquote {
   }
 
   .allCoursesList {
-    >.courseRow{
+    > .courseRow {
       padding-top: 15px;
       padding-bottom: 10px;
 
@@ -766,7 +767,7 @@ blockquote {
           opacity: 0;
         }
       }
-   }
+    }
   }
 }
 
@@ -799,7 +800,7 @@ blockquote {
       }
 
       &:first-child {
-        >.holder {
+        > .holder {
           display: block;
 
           .progressArea {
@@ -840,6 +841,11 @@ blockquote {
   }
 
   .socialWidgets {
+    .articlesArea {
+      .holder {
+        margin: 0;
+      }
+    }
     .widget {
       h5 {
         margin-left: 10px;

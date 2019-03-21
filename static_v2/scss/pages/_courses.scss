@@ -20,7 +20,7 @@
         opacity: 0.3;
         @include absolute-100;
         @include border-top-radius(4px);
-        background: linear-gradient(180deg,  var(--primary) 0%, $black 100%);
+        background: linear-gradient(180deg, var(--primary) 0%, $black 100%);
         box-shadow: inset 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 3px 0 rgba(0, 0, 0, 0.5);
       }
 
@@ -30,8 +30,8 @@
         @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
           height: auto;
           position: relative;
-          top:50%;
-          transform:translateY(-50%);
+          top: 50%;
+          transform: translateY(-50%);
         }
       }
     }
@@ -40,7 +40,7 @@
       overflow: hidden;
       @include border-bottom-radius(4px);
       padding: 20px 30px 16px;
-      background-color:  var(--primary);
+      background-color: var(--primary);
       color: $white;
       position: relative;
       h3 {
@@ -132,7 +132,7 @@
       }
     }
   }
-  .bookmark{
+  .bookmark {
     background-size: cover;
     width: 20px;
     background-position-x: right;
@@ -163,7 +163,7 @@
       }
       .card {
         margin-bottom: 10px;
-        .overlay-img{
+        .overlay-img {
           height: auto;
           .card-img-top {
             height: 120px;

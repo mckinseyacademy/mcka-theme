@@ -107,7 +107,7 @@
         &:first-child {
           @include margin-left(0);
         }
-        &.notifications{
+        &.notifications {
           @include margin-right(30px !important);
           .notification {
             @media screen and (-ms-high-contrast: active),
@@ -326,6 +326,22 @@
   }
 }
 
+// Popover
+
+.popover {
+  .popover-body,
+  .popover-content {
+    b {
+      @include padding-left(18px);
+    }
+    .material-icons {
+      &[locked] {
+        @include margin-right(3px);
+      }
+    }
+  }
+}
+
 // Course cohort
 #course-cohort {
   .leaderboards {
@@ -469,12 +485,17 @@
         }
       }
       &.serial {
-        @include padding-right(25px);
+        @include media-breakpoint-between(xs, sm) {
+          @include padding-right(5px);
+        }
         span {
           @include margin-left(4px);
         }
       }
       &.time {
+        @include media-breakpoint-between(xs, sm) {
+          @include padding-right(15px);
+        }
         i {
           @include media-breakpoint-between(xs, sm) {
             @include margin-left(0);
@@ -814,6 +835,21 @@ body.rtl {
 }
 }
 
+@media screen and (max-width: 992px) {
+  .appHeader {
+    .topRightArea {
+      .profileArea {
+        .dropdown-menu {
+          @include right(-10px !important);
+          &:after {
+            @include right(17px !important);
+          }
+        }
+      }
+    }
+  }
+}
+
 @media screen and (max-width: 767px) {
   .dropdown-menu {
     &.dashboard-menu {
@@ -822,6 +858,16 @@ body.rtl {
       &:after {
         @include left(140px !important);
         @include right(auto !important);
+      }
+    }
+  }
+  .appHeader {
+    .topRightArea {
+      .profileArea {
+        @include margin-left(15px);
+        .dropdown-menu {
+          @include right(-14px !important);
+        }
       }
     }
   }

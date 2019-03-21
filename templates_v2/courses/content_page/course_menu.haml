@@ -32,8 +32,8 @@
               %span= lesson.name
                 - if not lesson.is_started
                   %i.material-icons.locked{:data-content => "{% if lesson_custom_label %}{% blocktrans with start_date=lesson.start_upon %} This {{lesson_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=lesson.start_upon %} This lesson will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "click", :title => ""} lock
-            - if lesson.estimated_time
-              .data.time
+            .data.time
+              - if lesson.estimated_time
                 %i.material-icons
                   access_time
                 = lesson.estimated_time

@@ -14,6 +14,7 @@ from django.template import loader
 from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
+from accounts.middleware import thread_local
 from admin.controller import load_course, _clean_course_content
 from admin.models import (
     WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery,
@@ -61,7 +62,7 @@ from .user_courses import (
     check_user_course_access, load_course_progress,
     check_company_admin_user_access,
     set_current_course_for_user, check_course_shell_access,
-    get_program_menu_list, UserDataManager, get_course_menu_list
+    get_program_menu_list, get_course_menu_list
 )
 
 _progress_bar_dictionary = {
@@ -907,7 +908,7 @@ def infer_chapter_navigation(request, course_id, chapter_id):
     If no chapter or course given, system tries to go to location within last
     visited course
     '''
-    user_data = UserDataManager(request.user.id).get_basic_user_data()
+    user_data = thread_local.get_basic_user_data(request.user.id)
     current_course = user_data.current_course
 
     if not course_id:
@@ -933,7 +934,7 @@ def infer_page_navigation(request, course_id, page_id):
     Go to the specified page
     If no course given, system tries to go to location within last visited course
     '''
-    user_data = UserDataManager(request.user.id).get_basic_user_data()
+    user_data = thread_local.get_basic_user_data(request.user.id)
     current_course = user_data.current_course
 
     if not course_id:

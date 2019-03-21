@@ -6,13 +6,13 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 
-from api_data_manager.user_data import UserDataManager
 from api_data_manager.organization_data import OrgDataManager
 from api_data_manager.common_data import CommonDataManager, COMMON_DATA_PROPERTIES
 from api_data_manager.course_data import CourseDataManager
 from admin.models import Program
 from admin.controller import load_course
 from api_client import user_api, course_api, mobileapp_api, organization_api
+from accounts.middleware import thread_local
 from .controller import (
     load_static_tabs, get_completion_percentage_from_id,
     set_user_course_progress,
@@ -28,7 +28,7 @@ def set_current_course_for_user(request, course_id, course_landing_page_flag=Fal
     Sets current course and program for the user in backend
     """
     if not course_landing_page_flag:
-        user_data = UserDataManager(request.user.id).get_basic_user_data()
+        user_data = thread_local.get_basic_user_data(request.user.id)
         if user_data.current_course.id == course_id:
             return
     common_data_manager = CommonDataManager()
@@ -91,7 +91,7 @@ def check_user_course_access(func):
         Decorator which will raise an CourseAccessDeniedError
         if the user does not have access to the requested course
         """
-        user_data = UserDataManager(request.user.id).get_basic_user_data()
+        user_data = thread_local.get_basic_user_data(request.user.id)
 
         accessible_course = [course for course in user_data.courses if course.id == course_id]
 
@@ -198,15 +198,19 @@ def standard_data(request):
         course_id = request.resolver_match.kwargs.get('course_id')
         if course_id:
             course = load_course(course_id, request=request, depth=0)
-        user_data_manager = UserDataManager(user_id=request.user.id)
 
-        user_data = user_data_manager.get_basic_user_data()
+        user_data = thread_local.get_basic_user_data(request.user.id)
 
         program = user_data.current_program
         current_course = user_data.current_course
         organization = user_data.organization
-        learner_dashboards = user_learner_dashboards(request, user_data.courses)
-        show_my_courses = any(course for course in user_data.courses if not course.learner_dashboard)
+        if user_data.get('new_ui_enabled'):
+            show_my_courses = any(
+                course for course in user_data.courses if not getattr(course, 'learner_dashboard')
+            )
+            learner_dashboards = user_learner_dashboards(
+                request, [ld_course for ld_course in user_data.courses if getattr(ld_course, 'learner_dashboard')]
+            )
 
         if current_course:
             feature_flags = CourseDataManager(current_course.id).get_feature_flags()
@@ -311,15 +315,15 @@ def get_course_menu_list(request):
 def _get_user_courses(request):
     common_data_manager = CommonDataManager()
 
-    user_data_manager = UserDataManager(user_id=request.user.id)
-    user_data = user_data_manager.get_basic_user_data()
+    user_data = thread_local.get_basic_user_data(request.user.id)
     current_course = user_data.current_course
 
     companion_app_course_ids = common_data_manager.get_cached_data(COMMON_DATA_PROPERTIES.COMPANION_APP_COURSES)
 
     user_courses = user_data.courses
-    # remove the user courses for which learner dashboard is enabled
-    user_courses = [course for course in user_courses if not course.learner_dashboard]
+    # NEW UI: remove the user courses for which learner dashboard is enabled
+    if user_data.get('new_ui_enabled'):
+        user_courses = [course for course in user_courses if not getattr(course, 'learner_dashboard')]
 
     if companion_app_course_ids is None:
         companion_app = mobileapp_api.get_mobile_apps({"app_name": "LBG"})

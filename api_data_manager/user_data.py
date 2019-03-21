@@ -6,8 +6,10 @@ from django.core.cache import cache
 from lib.utils import DottableDict
 
 from .common import DataManager
-from .course_data import CourseDataManager
 from .common_data import CommonDataManager, COMMON_DATA_PROPERTIES
+
+from courses.models import FeatureFlags
+
 
 USER_PROPERTIES = DottableDict(
     PREFERENCES='preferences',
@@ -86,10 +88,18 @@ class UserDataManager(DataManager):
         courses = user_api.get_user_courses(self.user_id)
         organizations = user_api.get_user_organizations(self.user_id)
         user_preferences = user_api.get_user_preferences(self.user_id)
-
-        for course in courses:
-            feature_flags = CourseDataManager(course.id).get_feature_flags()
-            setattr(course, 'learner_dashboard', feature_flags.learner_dashboard)
+        new_ui_enabled = self.new_ui_enabled(organizations[0] if organizations else None)
+        if new_ui_enabled:
+            course_ids = [course.id for course in courses]
+            courses_ld_flag = FeatureFlags.objects.filter(course_id__in=course_ids).values(
+                'course_id', 'learner_dashboard'
+            )
+            for course in courses:
+                learner_dashboard = next(
+                    (ld_flag["learner_dashboard"] for ld_flag in courses_ld_flag if ld_flag["course_id"] == course.id),
+                    False
+                )
+                setattr(course, 'learner_dashboard', learner_dashboard)
 
         current_course_id = user_preferences.get(CURRENT_COURSE_ID, None)
         current_program_id = user_preferences.get(CURRENT_PROGRAM_ID, None)
@@ -132,4 +142,15 @@ class UserDataManager(DataManager):
             current_course=current_course,
             current_program=current_program if current_program else Program.no_program(),
             organization=organizations[0] if organizations else None,
+            new_ui_enabled=new_ui_enabled,
         )
+
+    def new_ui_enabled(self, organization):
+        from .organization_data import OrgDataManager
+        new_ui_enabled = False
+        if organization is not None:
+            customization = OrgDataManager(str(organization.id)).get_branding_data().get('customization')
+            if customization and customization.new_ui_enabled:
+                new_ui_enabled = True
+
+        return new_ui_enabled

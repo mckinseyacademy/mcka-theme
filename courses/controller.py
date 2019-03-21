@@ -14,6 +14,7 @@ from django.utils.translation import ugettext as _
 from accounts.middleware.thread_local import (
     set_static_tab_context,
     get_static_tab_context,
+    get_basic_user_data,
 )
 from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
 from admin.models import WorkGroup, ReviewAssignmentGroup, LearnerDashboardTile, LearnerDashboardTileProgress, \
@@ -29,8 +30,6 @@ from api_client.json_object import JsonParser
 from api_client.project_models import Project
 from api_client.user_api import USER_ROLES, workgroup_models
 from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
-from api_data_manager.user_data import UserDataManager
-from courses.models import FeatureFlags
 from lib.utils import PriorIdConvert
 
 log = logging.getLogger(__name__)
@@ -1042,7 +1041,7 @@ def get_learner_dashboard(request, course_id):
     if settings.LEARNER_DASHBOARD_ENABLED:
         feature_flags = CourseDataManager(course_id).get_feature_flags()
         if feature_flags.learner_dashboard:
-            organization = UserDataManager(request.user.id).get_basic_user_data().organization
+            organization = get_basic_user_data(request.user.id).organization
             if organization:
                 request.session['client_display_name'] = organization.display_name
                 try:
@@ -1054,14 +1053,19 @@ def get_learner_dashboard(request, course_id):
 
 def user_learner_dashboards(request, user_courses):
     learner_dashboards = []
+    if settings.LEARNER_DASHBOARD_ENABLED:
+        for course in user_courses:
+            dashboard = None
+            try:
+                dashboard = LearnerDashboard.objects.get(course_id=course.id)
+            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
+                pass
+            if dashboard:
+                calendar_items = LearnerDashboardTile.objects.filter(
+                    learner_dashboard=dashboard.id, show_in_calendar=True
+                )
+                dashboard.calendar_enabled = True if calendar_items else False
+                dashboard.features = CourseDataManager(course.id).get_feature_flags()
+                learner_dashboards.append(dashboard)
 
-    for course in user_courses:
-        dashboard = get_learner_dashboard(request, course_id=course.id)
-        if dashboard:
-            calendar_items = LearnerDashboardTile.objects.filter(
-                learner_dashboard=dashboard.id, show_in_calendar=True
-            )
-            dashboard.calendar_enabled = True if calendar_items else False
-            dashboard.features, created = FeatureFlags.objects.get_or_create(course_id=course.id)
-            learner_dashboards.append(dashboard)
     return learner_dashboards

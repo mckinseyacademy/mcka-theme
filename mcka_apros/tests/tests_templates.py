@@ -7,6 +7,7 @@ from django.template.loader import get_template
 from django.test import TestCase, RequestFactory
 from mock import Mock, patch
 
+from lib.utils import DottableDict
 from util.unit_test_helpers import ApplyPatchMixin
 
 
@@ -26,7 +27,7 @@ class AprosTemplateLoaderTests(TestCase, ApplyPatchMixin):
         request.resolver_match.view_name = view_name
         return request
 
-    @patch('mcka_apros.templates_loaders.get_customization')
+    @patch('mcka_apros.templates_loaders.thread_local.get_basic_user_data')
     @patch('accounts.middleware.thread_local.get_current_request')
     @ddt.data(
         # For Admin urls it should always load old templates
@@ -49,23 +50,23 @@ class AprosTemplateLoaderTests(TestCase, ApplyPatchMixin):
     )
     @ddt.unpack
     def test_template_exists(self, template_name, template_path, url, view_name, is_authenticated,
-                             new_ui_enabled, is_admin, get_current_request, get_customizations):
+                             new_ui_enabled, is_admin, get_current_request, get_basic_user_data):
         get_current_request.return_value = self.mock_request(
             is_authenticated=is_authenticated, url=url, view_name=view_name, is_admin=is_admin
         )
-        get_customizations.return_value = Mock(new_ui_enabled=new_ui_enabled)
+        get_basic_user_data.return_value = DottableDict(new_ui_enabled=new_ui_enabled)
 
         template = get_template(template_name)
         self.assertEqual(os.path.join(template_path, template_name), str(template.origin.name))
 
-    @patch('mcka_apros.templates_loaders.get_customization')
+    @patch('mcka_apros.templates_loaders.thread_local.get_basic_user_data')
     @patch('accounts.middleware.thread_local.get_current_request')
-    def test_template_not_exists(self, get_current_request, get_customizations):
+    def test_template_not_exists(self, get_current_request, get_basic_user_data):
         get_current_request.return_value = self.mock_request(
             is_authenticated=True, url='/',
             view_name='dummy', is_admin=False
         )
-        get_customizations.return_value = Mock(new_ui_enabled=False)
+        get_basic_user_data.return_value = DottableDict(new_ui_enabled=False)
 
         with self.assertRaises(TemplateDoesNotExist):
             get_template('invalid.haml')

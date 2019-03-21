@@ -262,7 +262,7 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
         Tests append_user_mobile_app_id_cookie helper method when user login and has organization
         """
         user_id = 4
-        mock_api_data_manager(module_path='accounts.controller.UserDataManager',
+        mock_api_data_manager(module_path='accounts.middleware.thread_local.UserDataManager',
                               data={'organizations': self.user_organizations})
         self.get_mobile_apps_id.return_value = self.mobile_app_id
 
@@ -276,8 +276,10 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
         Tests append_user_mobile_app_id_cookie helper method when user login and has no organization
         """
         user_id = 4
-        mock_api_data_manager(module_path='accounts.controller.UserDataManager',
-                              data={'organizations': []})
+        self.get_basic_user_data = self.apply_patch('courses.user_courses.thread_local.get_basic_user_data')
+        self.get_basic_user_data.return_value = DottableDict({
+            'organization': []
+        })
         self.get_mobile_apps_id.return_value = self.mobile_app_id
         result = append_user_mobile_app_id_cookie(HttpResponseBase(), user_id)
 

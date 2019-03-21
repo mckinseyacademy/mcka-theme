@@ -406,8 +406,8 @@ header {
 .courseMainHeader {
   margin: 0 0 18px;
 
-  ul{
-    li{
+  ul {
+    li {
       padding: 0;
     }
   }
@@ -587,10 +587,11 @@ header {
   }
   .appHeader {
     .topRightArea {
+      margin-top: 10px;
       .headerNav {
         position: absolute;
         left: 0;
-        top: 60px;
+        top: 50px;
         right: 0;
 
         >ul {
@@ -604,6 +605,17 @@ header {
               padding-bottom: 6px;
             }
           }
+        }
+      }
+    }
+    .all-logos {
+
+    }
+    .all-logos {
+      .navbar-brand {
+        img {
+          height: 30px;
+          width: auto;
         }
       }
     }

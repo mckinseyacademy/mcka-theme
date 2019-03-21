@@ -15,8 +15,9 @@ footer {
         padding: 0 0.6rem;
         position: relative;
         font-weight: 400;
+        text-transform: capitalize;
         @media screen and (max-width: 992px) {
-          padding: 0 0.4rem;
+          padding: 0 0.3rem;
         }
         &:before {
           content: "";
@@ -57,7 +58,7 @@ footer {
         justify-content: center !important;
       }
     }
-    footer{
+    footer {
       margin-top: 50px;
     }
   }
@@ -79,8 +80,19 @@ footer {
   }
 }
 
+@media screen and (max-width: 992px) {
+  footer {
+    .container {
+      padding: 15px 30px;
+    }
+  }
+}
+
 @media screen and (max-width: 767px) {
   footer {
     font-size: 10px;
+    .container {
+      padding: 15px;
+    }
   }
 }
