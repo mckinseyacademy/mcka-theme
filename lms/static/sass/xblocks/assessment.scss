@@ -54,6 +54,9 @@
         {
             margin-right:11px;
             display:inline-block;
+            @media screen and (max-width: 480px) {
+                margin-right:3px;
+            }
         }
 
 
@@ -79,7 +82,30 @@
                 font-family: 'Material Icons';
                 content: '\e002';
                 @include font-size(24);
+                position: relative;
+                top:-3px;
             }
+        }
+
+        .checkmark-incorrect {
+            color: $bg-white-red;
+
+            &::before {
+                font-family: 'Material Icons';
+                content: '\e5c9';
+                @include font-size(24);
+                position: relative;
+                top:-3px;
+            }
+        }
+
+        .checkmark-correct::before {
+            color: $bg-white-green;
+            font-family: 'Material Icons';
+            content: '\e86c';
+            @include font-size(24);
+            position: relative;
+                top:-3px;
         }
         
         .grade-result
@@ -92,6 +118,17 @@
             }
         }
 
+        .submit
+        {
+            .step-overall-checkmark
+            {
+                position: relative;
+                top: 12px;
+            }
+        }
+
+        
+
 
     }
 
@@ -101,4 +138,45 @@
         text-align: right;
         margin-top: 15px;
     }   
+}
+
+// RTL
+
+.rtl
+{
+    &.new-theme
+    {
+        .assessment-checkmark, .step-overall-checkmark
+        {
+            float: right!important;
+            margin-right: 0 !important;
+            margin-left:10px;
+        }
+
+
+        .choice-tips-container 
+        {
+            .choice-tips
+            {
+                padding: 15px 40px 15px 15px;
+            }
+        }
+
+
+        .results-section
+        {
+            margin-right: 50px;
+            margin-left: 0;
+        }
+
+        input[type="button"]
+        {
+            margin-right:0!important;
+            margin-left:10px !important;
+            @media screen and (max-width: 480px) {
+                margin-left:3px!important;
+            }
+
+        }
+    }
 }
