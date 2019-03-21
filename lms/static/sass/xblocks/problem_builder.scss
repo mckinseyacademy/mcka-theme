@@ -10,8 +10,15 @@
 
 .themed-xblock.mentoring {
     .choices-list .choice-selector {
-        padding: 4px 3px 0 3px;
+        padding: 0px 3px 0 3px;
         font-size: 16px;
+        vertical-align: top;
+
+        input[type="radio"]
+        {
+            position: relative;
+            // top:-3px;
+        }
     }
 
     .sb-review-score {
@@ -76,13 +83,13 @@
 
         &::before {
 
-            @include font-size(24)
+            
         }
     }
 
     .checkmark-correct::before {
 
-        @include font-size(24)
+       
     }
 
     .choice {
@@ -105,6 +112,11 @@
     h4 {
         text-transform: uppercase;
     }
+    .checkmark-incorrect::before {
+        content: "\f12a";
+        color:#ff0000;
+    }
+
 }
 
 body.new-theme {
