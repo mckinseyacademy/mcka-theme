@@ -50,6 +50,24 @@ footer.ld-footer-main{
 body.learner-dashboard-view{
     background-attachment: fixed;
     min-width: 960px;
+    [data-learner-dashboard-id="267"] {
+        &.learner-dashboard-logo {
+            display: none;
+        }
+        .large-4 {
+            display: none !important;
+        }
+        .large-8.dash-programs {
+            width: 940px;
+            .row {
+                width: 925px;
+                .learner-program {
+                    width: 217px;
+                }
+            }
+        }
+    }
+
 }
 
 .dash-programs{

@@ -51,7 +51,25 @@
     }
     }
   }
-
+  [data-learner-dashboard-id="267"] {
+    &.row {
+      .col-lg-4 {
+        display: none;
+      }
+      .col-lg-8 {
+        max-width: 100%;
+        flex: 0 0 100%;
+        .row {
+          .col-md-4 {
+            @include media-breakpoint-up(lg) {
+              max-width: 25%;
+              flex: 0 0 25%;
+            }
+          }
+        }
+      }
+    }
+}
   // Learner Content
   .gallery-card {
     background: white;
