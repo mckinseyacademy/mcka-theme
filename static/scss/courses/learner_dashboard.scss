@@ -59,6 +59,12 @@ body.learner-dashboard-view{
         }
         .large-8.dash-programs {
             width: 940px;
+            h3 {
+                width: 100%;
+            }
+            p {
+                width: 100%;
+            }
             .row {
                 width: 925px;
                 .learner-program {
