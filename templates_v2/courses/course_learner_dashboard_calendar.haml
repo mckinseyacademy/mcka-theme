@@ -2,9 +2,11 @@
 #background-full-calendar
   #over-full-calendar
     #row-full-calendar
-      .container.loader.donut-loader
-        .row.justify-content-center
-          .col-10        
+      .container
+        .row
+          .col-12
+            %i#close-calendar.material-icons
+                close
             .over-calendar
               %i#previous-calendar.arrow-calendar.material-icons
                 chevron_left
@@ -12,8 +14,6 @@
               %i#next-calendar.arrow-calendar.material-icons
                 chevron_right
             #under-calendar
-              %i#close-calendar.material-icons
-                close
               %ul.tab-month
                 %li.head-month
                   %span.month

@@ -275,82 +275,98 @@
   }
 }
 
-#background-full-calendar{
+#background-full-calendar {
     width: 100%;
     height: 120%;
     position: absolute;
     z-index: 3;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
-#over-full-calendar{
+#over-full-calendar {
     width: 100%;
-    height: 290px;
     position: absolute;
     z-index: 4;
 
-    .over-calendar{
-        width: 80px;
-        position: absolute;
-        z-index:221;
-        height: auto !important;
-        top: 50%;
-        transform: translateY(-50%);
+    .container,
+    .row,
+    [class*="col"] {
+        height: 100%;
+    }
+
+    [class*="col"] {
+        position: static;
+
+        .over-calendar {
+            width: 50px;
+            height: 50px !important;
+            position: absolute;
+            z-index: 221;
+            left: 0;
+            right: auto;
+            margin: 0 !important;
+            top: 50%;
+            background: var(--primary);
+            border-radius: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
 
             .arrow-calendar {
                 font-size: 50px;
                 color: $white;
-                background-color: var(--primary);
-                border-radius: 50%;
-                margin-top: 0 !important;
+                margin: 0 !important;
             }
+        }
+    }
+
+    #over-calendar-right {
+        right: 0;
+        left: auto;
     }
 
     #row-full-calendar {
-        height: auto !important;
-        min-height: 340px;
         background: white;
-        overflow: hidden;
-
-        svg {
-            font-family: $body-font-family;
-            color: $gray;
-            text {
-                font-family: FontAwesome;
-                font-weight: normal !important;
-                transform: translateX(-5px);
-            }
-        }
-        .container, .row, .col {
-            min-height: 340px;
-        }
-
-        #under-calendar{
-            width: 91%;
-            height: 340px;
+        padding-top: 30px;
+        #close-calendar {
             position: absolute;
-            background-color: white;
-            padding-top: 25px;
+            color: $gray;
+            font-size: 20px;
+            top: 0px;
+            right: 18px;
+            opacity: 0.6;
+        }
 
-            #close-calendar {
-                color: #868685;
-                font-size: 20px;
-                font-weight: bold;
-                position: absolute;
-            }
+        #close-calendar:hover {
+            color: $gray;
+            opacity: 1;
+            cursor: pointer;
+        }
 
-            #close-calendar:hover {
-                opacity: 0.6;
-                filter: alpha(opacity=60); /* internet explorer */
-                cursor: pointer;
-            }
+        .row {
+            width: 100%;
+            max-width: 1100px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        #under-calendar {
+            width: 88%;
+            position: absolute;
+            padding: 0 !important;
+            margin: 0 auto;
+            left: 50%;
+            transform: translateX(-50%);
+            overflow: hidden !important;
 
             .tab-month {
-                width: 24.5%;
-                display: inline-block;
+                width: 25%;
+                float: left;
+                margin: 0 -1px 0 0;
+                padding: 0;
                 list-style: none;
 
                 li {
+                    width: 50%;
                     height: 52px;
                 }
 
@@ -378,22 +394,33 @@
                     color: white;
                 }
 
-                .first , .second {
-                    border: 1px solid gainsboro;
-                    border-top: 0;
+                .first {
+                    border: 0 solid gainsboro;
+                    border-width: 0 0 0 1px;
+                    float: left;
+                    border-style: dotted;
+                    border-bottom-width: 1px;
+                }
+
+                .second {
+                    float: right;
+                    border: 0 solid gainsboro;
+                    border-width: 0 1px 0 0;
+                    border-style: dotted;
+                    border-bottom-width: 1px;
                 }
             }
 
             .legend-list {
-                float: left;
-                margin: 10px 15px 0 0;
-                font-size: 10px;
-
+                    font-size: 12px;
+                    position: relative;
+                    top: 3vh;
+                    padding-left: 0;
                 li {
                     font-family: 'Open Sans';
-                    font-style: italic;
-                    color: #cccccc;
-                    display: inline;
+                    font-size: 12px;
+                    color: $gray;
+                    display: inline-block;
                     margin-right: 15px;
 
                     .circle {
@@ -405,37 +432,37 @@
                 }
 
                 .light-gray-legend {
-                    i{
+                    i {
                         color: #e0e0e0;
                     }
                 }
 
                 .gray-legend {
-                    i{
+                    i {
                         color: #cccccc;
                     }
                 }
 
                 .light-green-legend {
-                    i{
+                    i {
                         color: #b6d332;
                     }
                 }
 
                 .green-legend {
-                    i{
+                    i {
                         color: #629b2b;
                     }
                 }
 
                 .red-legend {
-                    i{
+                    i {
                         color: #cd202c;
                     }
                 }
 
                 .teal-legend {
-                    i{
+                    i {
                         color: #66a5b5;
                     }
                 }
@@ -444,11 +471,18 @@
     }
 }
 
+.inter-row {
+    border-bottom-width: 0 !important;
+}
+
 #highcharts-container {
     position: absolute;
     z-index: 200;
-    margin-top: 40px;
-    height: 283px;
+    margin-top: 15px;
+    width: 88%;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
 
     .highcharts-tooltip {
 
@@ -457,9 +491,18 @@
             width: 120px;
             height: 135px;
             background-color: white;
-            overflow:auto;
+            overflow: auto;
             white-space: normal !important;
             z-index: 1;
         }
     }
+}
+
+svg text {
+    font-family: FontAwesome, sans-serif;
+}
+
+.not-published {
+    cursor: default;
+    opacity: 0.4;
 }
