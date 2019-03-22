@@ -708,6 +708,103 @@
     }
 
 
+    // TA View Content
+
+    .grading_override {
+        height: 50px;
+        line-height: 50px;
+        background: $orange;
+        color: $white;
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-align: center;
+        text-transform: uppercase;
+        margin-bottom: 15px;
+    }
+
+    .review_selector_header {
+        font-size: 12px;
+        font-style: normal;
+        color: $gray;
+    }
+
+    .review_subjects {
+        .review_subject {
+            height: 40px !important;
+            line-height: 40px;
+            padding: 0 25px;
+            margin: 0 !important;
+
+            .review_subject_label {
+                @include font-size(12);
+            }
+
+            .review_evaluating_now {
+                font-style: italic;
+                color: $black;
+                @include font-size(16);
+            }
+
+            .other_submissions {
+                a
+                {
+                    line-height: 40px;
+                    font-weight: normal;
+                    @include font-size(14);
+                }
+            }
+            &.selected
+            {
+                background: $yellow-light !important;
+            }
+        }
+    }
+
+
+    .question {
+        .group-project-question-title {
+            font-weight: normal;
+            @include font-size(16)
+        }
+    }
+    textarea.answer {
+        border-color: $hard-gray;
+        min-height: 80px !important;
+        padding: 15px !important;
+        box-sizing: border-box;
+    }
+
+    select.answer {
+
+        border-color: $hard-gray;
+        width: 100%;
+        max-width: 300px;
+        padding: 15px;
+        height: 50px;
+        margin-bottom: 15px;
+        border-radius: 0;
+        background:$white;
+
+    }
+
+    .submit {
+        @extend %button;
+        float: left !important;
+    }
+
+
+    .reveal-modal
+    {
+        .action_buttons
+        {
+            float: left !important;
+           .button
+           {
+                @extend %button;
+           }
+        }
+    }
+
     // Resources View
 
     .group-project-resources {
@@ -771,12 +868,9 @@
 
     // Discussion popup
 
-    .group-project-xblock-wrapper
-    {
-        #group-project-discussion
-        {
-            .reveal-modal
-            {
+    .group-project-xblock-wrapper {
+        #group-project-discussion {
+            .reveal-modal {
                 left: 50% !important;
                 transform: translateX(-50%);
                 max-width: none !important;
