@@ -8,6 +8,7 @@
     background-color: var(--primary) $isImportant;
     height: 40px !important;
     box-shadow: none;
+    border:0 $isImportant;
 }
 
 @mixin primary-button-hover ($isImportant:null) {
@@ -20,6 +21,7 @@
     background-color: $dark-blue !important;
     height: 40px !important;
     box-shadow: none;
+    border:0 $isImportant;
 
 }
 
@@ -29,6 +31,7 @@
     font-size: 1rem !important;
     padding: 3px 30px !important;
     box-shadow: none;
+    border:0 $isImportant;
 
 }
 
@@ -38,6 +41,7 @@
     padding: 3px 30px !important;
     font-size: 1rem !important;
     box-shadow: none;
+    border:0 $isImportant;
 }
 
 @mixin secondary-button ($isImportant:null) {
@@ -50,6 +54,7 @@
     background-color: $white $isImportant;
     color: var(--primary) $isImportant;
     height: 40px !important;
+    border:0 $isImportant;
 }
 
 @mixin secondary-button-hover ($isImportant:null) {
@@ -62,6 +67,7 @@
     font-weight: normal $isImportant;
     background-color: $white !important;
     height: 40px !important;
+    border:0 $isImportant;
 }
 
 @mixin secondary-button-large ($isImportant:null) {
@@ -69,6 +75,7 @@
     height: 50px !important;
     padding: 3px 30px $isImportant;
     font-size: 1rem $isImportant;
+    border:0 $isImportant;
 }
 
 @mixin secondary-button-hover-large ($isImportant:null) {
@@ -76,6 +83,7 @@
     height: 50px !important;
     padding: 3px 30px $isImportant;
     font-size: 1rem $isImportant;
+    border:0 $isImportant;
 }
 
 //tertiary button .btn-tertiary

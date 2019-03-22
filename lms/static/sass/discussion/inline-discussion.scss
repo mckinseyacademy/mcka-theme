@@ -98,7 +98,8 @@ body.new-theme {
 
     /* mobile */
     @media (max-width: 767px) {
-        [data-block-type="discussion"] {
+        [data-block-type="discussion"],
+        [data-block-type="discussion-forum"] {
             padding: 0px;
 
             .wmd-panel {
@@ -397,7 +398,8 @@ body.new-theme {
     }
 
     /* desktop && mobile */
-    [data-block-type="discussion"] {
+    [data-block-type="discussion"],
+    [data-block-type="discussion-forum"] {
         background: $white;
         position: relative;
         z-index: 9999;
