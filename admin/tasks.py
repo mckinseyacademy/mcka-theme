@@ -24,10 +24,10 @@ from django.utils import timezone
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from celery import states as celery_states
-from celery.exceptions import Ignore, MaxRetriesExceededError, Reject
+from celery.exceptions import Ignore, MaxRetriesExceededError, Reject, InvalidTaskError
 
 from accounts.helpers import get_organization_by_user_email
-from api_client import course_api
+from api_client import course_api, organization_api
 from api_client import group_api
 from api_client import instructor_api
 from api_client import user_api
@@ -54,7 +54,9 @@ from .controller import (
     update_company_field_for_users,
     CourseParticipantStats,
     ProblemReportPostProcessor,
-    get_emails_from_csv)
+    get_emails_from_csv,
+    delete_company_data,
+)
 from .models import UserRegistrationError, UserRegistrationBatch
 
 
@@ -618,17 +620,44 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
         logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
 
 
+@task(name='admin.delete_company_task', queue='high_priority')
+def delete_company_task(company_id, owner, base_url):
+    """
+    Deletes company by:
+    1. invoking `delete_participants_task` as function, because we don't want to proceed in case of any error,
+    2. invoking `delete_company_data` for removing other company data.
+    """
+    user_ids = organization_api.fetch_organization_user_ids(company_id)
+    organization = organization_api.fetch_organization(company_id)
+    company_name = organization.display_name
+
+    delete_participants_task(
+        user_ids,
+        send_confirmation_email=True,
+        owner=owner,
+        base_url=base_url,
+        email_template='admin/delete_company_email_template.haml',
+        template_extra_data={'company_name': company_name}
+    )
+
+    delete_company_data(company_id)
+
+
 @task(name='admin.delete_participants_task', queue='high_priority')
-def delete_participants_task(users_to_delete, send_confirmation_email, owner, base_url):
+def delete_participants_task(
+        users_to_delete, send_confirmation_email, owner, base_url, email_template=None, template_extra_data=None
+):
     """
     Extract users from CSV, delete them and (optionally) send an email to the `owner` - user that initiated deletion.
     :param users_to_delete: you need to provide either:
         - `str` being an URL to a CSV file containing users who should be deleted,
         - `list` or `set` containing users' IDs.
     """
-    from admin.views import delete_participants  # We want to avoid circular imports here.
+    from admin.controller import delete_participants  # We want to avoid circular imports here.
+
     task_log_msg = "Delete Participants task"
     file_path = ''
+    template_extra_data = template_extra_data or {}
 
     logger.info('Started - {}'.format(task_log_msg))
 
@@ -692,7 +721,7 @@ def delete_participants_task(users_to_delete, send_confirmation_email, owner, ba
 
     if send_confirmation_email:
         subject = _('Advanced Deletion Completed')
-        email_template = 'admin/delete_users_email_template.haml'
+        email_template = email_template or 'admin/delete_users_email_template.haml'
         mcka_logo = urljoin(
             base=base_url,
             url='/static/image/mcka_email_logo.png'
@@ -706,8 +735,12 @@ def delete_participants_task(users_to_delete, send_confirmation_email, owner, ba
             'successful': total - len(failed),
             'total': total,
         }
+        template_data.update(template_extra_data)
 
         send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
+
+    if failed:
+        raise InvalidTaskError("Failed to delete users.")
 
 
 @task(name='admin.user_company_fields_update_task', queue='high_priority')
@@ -782,6 +815,8 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
     activation_links = UserActivation.get_activations_by_task_key(task_key=registration_batch.task_key)
 
     errors = []
+    user_data = {}
+
     for error in error_records:
         error_data = dict(email=error.user_email, errors=error.error)
 

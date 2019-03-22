@@ -69,7 +69,9 @@
       .close-reveal-modal
         %i.fa.fa-times-circle
       .titleContainer
-        %h2 {% trans "Successfully deleted data!" %}
+        %h2 {% trans "Company deletion has been scheduled." %}
+      .contentContainer
+        {% trans "Please wait for the confirmation email." %}
       .button-wrapper.topPadding
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"}
           {% trans "I'm Done" %}

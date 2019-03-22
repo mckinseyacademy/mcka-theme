@@ -47,18 +47,18 @@ from celery import states as celery_states
 
 from accounts.controller import is_future_start, save_new_client_image, send_password_reset_email, \
     _set_number_of_enrolled_users
-from accounts.models import UserActivation, PublicRegistrationRequest, RemoteUser, UserPasswordReset
+from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
     create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_images, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
-    process_manager_email, parse_participant_profile_csv, get_users_for_deletion
+    process_manager_email, parse_participant_profile_csv, get_users_for_deletion, \
+    delete_participants
 from admin.models import AdminTask
 from admin.tasks import (
-	    user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data,
-	    create_problem_response_report, monitor_problem_response_report, post_process_problem_response_report,
-	    handle_admin_task_error, send_problem_response_report_success_email, delete_participants_task
-	)
+    user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data,
+    create_problem_response_report, monitor_problem_response_report, post_process_problem_response_report,
+    handle_admin_task_error, send_problem_response_report_success_email, delete_participants_task, delete_company_task)
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api, \
     cohort_api
 from api_client.api_error import ApiError
@@ -72,13 +72,13 @@ from api_client.project_models import Project
 from api_client.user_api import USER_ROLES
 from api_client.workgroup_models import Submission
 from certificates.controller import get_course_certificates_status
-from certificates.models import CertificateStatus, UserCourseCertificate
+from certificates.models import CertificateStatus
 from courses.controller import (
     Progress, Proficiency,
     return_course_progress, organization_course_progress_user_list,
     social_total, round_to_int_bump_zero, round_to_int
 )
-from courses.models import FeatureFlags, CourseMetaData, LessonNotesItem
+from courses.models import FeatureFlags, CourseMetaData
 from courses.user_courses import load_course_progress
 from lib.authorization import permission_group_required, permission_group_required_api, is_user_in_permission_group
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
@@ -86,7 +86,6 @@ from license import controller as license_controller
 from main.models import CuratedContentItem
 from mcka_apros.settings import COHORT_FLAG_NAMESPACE, COHORT_FLAG_SWITCH_NAME, DELETION_FLAG_NAMESPACE, \
     DELETION_FLAG_SWITCH_NAME
-from public_api.models import ApiToken
 from util.csv_helpers import csv_file_response, UnicodeWriter
 from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.s3_helpers import store_file, get_path
@@ -3925,7 +3924,7 @@ def participant_mail_activation_link(request, user_id):
     return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
 
 
-def _get_users_by_ids(user_ids):
+def get_users_by_ids(user_ids):
     """Retrieves users from external API by their IDs."""
     user_ids = [str(user_id) for user_id in user_ids]
 
@@ -3934,48 +3933,6 @@ def _get_users_by_ids(user_ids):
         raise Http404
 
     return users
-
-
-def delete_participants(user_ids, users=None):
-    """
-    Deletes all data related to users from LMS and Apros.
-    """
-    if users is None:
-        users = _get_users_by_ids(user_ids)
-
-    failed = {}
-
-    for chunk in xrange(0, len(users), settings.DELETION_SYNCHRONOUS_MAX_USERS):
-        # Get batch of users and ids
-        batch_users = list(users)[chunk:chunk + settings.DELETION_SYNCHRONOUS_MAX_USERS]
-        ids = [user.id for user in batch_users]
-
-        # Delete from edxapp and update failed
-        failed_batch = user_api.delete_users(ids=ids)
-        failed.update(failed_batch)
-
-        # Remove failed users
-        ids = [user.id for user in batch_users if user.email not in failed_batch]
-        user_emails = [user.email for user in batch_users if user.email not in failed_batch]
-        user_usernames = [user.username for user in batch_users if user.email not in failed_batch]
-
-        # Delete successful users from Apros
-        PublicRegistrationRequest.objects.filter(company_email__in=user_emails).delete()
-        UserRegistrationError.objects.filter(user_email__in=user_emails).delete()
-        UserActivation.objects.filter(email__in=user_emails).delete()
-        RemoteUser.objects.filter(username__in=user_usernames).delete()
-
-        models_for_id_deletion = [
-            UserPasswordReset,
-            DashboardAdminQuickFilter,
-            BatchOperationErrors,
-            LessonNotesItem,
-            UserCourseCertificate,
-        ]
-        for model in models_for_id_deletion:
-            model.objects.filter(user_id__in=ids).delete()
-
-    return failed
 
 
 class ParticipantsListApi(APIView):
@@ -5359,53 +5316,11 @@ class CompanyDetailsView(APIView):
         if not _deletion_flag():
             return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
 
-        user_ids = organization_api.fetch_organization_user_ids(company_id)
-        if len(user_ids) <= settings.DELETION_SYNCHRONOUS_MAX_USERS:
-            # We want to delete smaller number of users synchronously.
-            try:
-                delete_participants(user_ids)
-            except Http404:
-                # We can safely ignore not found users, because removing them is not atomic
-                # and any of them can be deleted between retrieval and deletion above.
-                pass
-
-        else:
-            # If number of users in a company exceeds `DELETION_SYNCHRONOUS_MAX_USERS`, we want to invoke Celery task
-            # to avoid timeouts and notify user with an email after it completes.
-            delete_participants_task.delay(
-                user_ids,
-                send_confirmation_email=True,
-                owner=user_api.get_user(user_id=request.user.id).to_dict(),
-                base_url=request.build_absolute_uri()
-            )
-
-        # We'd like to remove Apros data first to be sure that we don't have any leftovers if the company had been
-        # deleted via LMS directly. Then we can raise 404 without any further concerns.
-        remove_mobile_app_themes(company_id)
-
-        client_models = (
-            AccessKey,
-            ClientNavLinks,
-            ClientCustomization,
-            BrandingSettings,
-            LearnerDashboard,
-            ApiToken,
+        delete_company_task.delay(
+            company_id,
+            owner=user_api.get_user(user_id=request.user.id).to_dict(),
+            base_url=request.build_absolute_uri()
         )
-        for model in client_models:
-            model.objects.filter(client_id=company_id).delete()
-
-        company_models = (
-            CompanyInvoicingDetails,
-            CompanyContact,
-            DashboardAdminQuickFilter,
-        )
-        for model in company_models:
-            model.objects.filter(company_id=company_id).delete()
-
-        try:
-            organization_api.delete_organization(company_id)
-        except ApiError:
-            raise Http404
 
         return HttpResponse(status=204)
 

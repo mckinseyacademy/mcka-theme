@@ -16,7 +16,7 @@ from rest_framework.test import APIRequestFactory, force_authenticate
 from waffle.testutils import override_switch
 
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin, make_company, make_course, make_user, make_side_effect_raise_api_error
+from accounts.tests.utils import ApplyPatchMixin, make_company, make_course, make_user
 from admin import views
 from admin.models import (
     Client as ClientModel,
@@ -768,122 +768,18 @@ class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
         self.assertEqual(response.status_code, 403)
 
     @override_switch(get_deletion_waffle_switch(), active=True)
-    @patch('admin.controller.get_mobile_app_themes', lambda _: [])
-    @patch('api_client.organization_api.fetch_organization_user_ids', return_value=[])
-    @patch('api_client.organization_api.delete_organization', side_effect=Http404)
-    def test_delete_nonexistent_company(self, *mocks):
-        """
-        Test deleting company that doesn't exist in LMS.
-        """
-        with self.assertRaises(Http404):
-            self.api.delete(self.request, self.mock_id)
-
-        for mock in mocks:
-            mock.assert_called_with(self.mock_id)
-
-    @override_switch(get_deletion_waffle_switch(), active=True)
-    @patch('api_client.organization_api.delete_organization')
-    @patch('admin.controller.remove_mobile_app_theme', side_effect=make_side_effect_raise_api_error(404))
-    @patch('admin.views.delete_participants')
-    @patch('api_client.organization_api.fetch_organization_user_ids')
-    @patch('admin.controller.get_mobile_app_themes')
-    def test_delete_company_race_condition(self, get_theme_mock, fetch_users_mock, *mocks):
-        """
-        Test deleting company with the race condition during removing mobile app theme.
-        """
-        get_theme_mock.return_value = [{'id': self.mock_id}]
-        fetch_users_mock.return_value = [self.mock_id]
-
-        response = self.api.delete(self.request, self.mock_id)
-        for mock in mocks:
-            self.assertEqual(mock.call_count, 1)
-
-        self.assertEqual(response.status_code, 204)
-
-    @override_switch(get_deletion_waffle_switch(), active=True)
-    @patch('admin.controller.remove_mobile_app_theme')
-    @patch('api_client.organization_api.delete_organization')
-    @patch('admin.views.delete_participants')
-    @patch('api_client.organization_api.fetch_organization_user_ids')
-    @patch('admin.controller.get_mobile_app_themes')
-    def test_delete_company(self, get_theme_mock, fetch_users_mock, *mocks):
+    @patch('admin.tasks.delete_company_task.delay')
+    @patch('admin.views.user_api.get_user')
+    def test_delete_company(self, get_user_mock, delete_company_task_mock):
         """
         Test deleting company as admin.
-        """
-        get_theme_mock.return_value = [{'id': self.mock_id}]
-        fetch_users_mock.return_value = [self.mock_id]
-
-        response = self.api.delete(self.request, self.mock_id)
-        for mock in mocks:
-            self.assertEqual(mock.call_count, 1)
-
-        client_models = (
-            AccessKey,
-            ClientNavLinks,
-            ClientCustomization,
-            BrandingSettings,
-            LearnerDashboard,
-            ApiToken,
-        )
-        for model in client_models:
-            self.assertFalse(model.objects.filter(client_id=self.mock_id))
-
-        company_models = (
-            CompanyInvoicingDetails,
-            CompanyContact,
-            DashboardAdminQuickFilter,
-        )
-        for model in company_models:
-            self.assertFalse(model.objects.filter(company_id=self.mock_id))
-
-        self.assertEqual(response.status_code, 204)
-
-    @override_switch(get_deletion_waffle_switch(), active=True)
-    @override_settings(DELETION_SYNCHRONOUS_MAX_USERS=0)
-    @patch('admin.controller.remove_mobile_app_theme')
-    @patch('api_client.organization_api.delete_organization')
-    @patch('api_client.organization_api.fetch_organization_user_ids')
-    @patch('admin.controller.get_mobile_app_themes')
-    @patch('admin.views.delete_participants_task.delay')
-    @patch('admin.views.user_api.get_user')
-    def test_delete_company_with_celery(
-            self, get_user_mock, delete_participants_task_mock, get_theme_mock, fetch_users_mock, *mocks
-    ):
-        """
-        Test deleting company as admin when number of users in a company requires deletion to be invoked
-        with a Celry task to avoid timeouts.
         """
         dummy_serializable_object = Dummy()
         dummy_serializable_object.to_dict = lambda *args, **kwargs: {}
         get_user_mock.side_effect = lambda *args, **kwargs: dummy_serializable_object
-        get_theme_mock.return_value = [{'id': self.mock_id}]
-        fetch_users_mock.return_value = [self.mock_id]
 
         response = self.api.delete(self.request, self.mock_id)
-
-        self.assertEqual(delete_participants_task_mock.call_count, 1)
-
-        for mock in mocks:
-            self.assertEqual(mock.call_count, 1)
-
-        client_models = (
-            AccessKey,
-            ClientNavLinks,
-            ClientCustomization,
-            BrandingSettings,
-            LearnerDashboard,
-            ApiToken,
-        )
-        for model in client_models:
-            self.assertFalse(model.objects.filter(client_id=self.mock_id))
-
-        company_models = (
-            CompanyInvoicingDetails,
-            CompanyContact,
-            DashboardAdminQuickFilter,
-        )
-        for model in company_models:
-            self.assertFalse(model.objects.filter(company_id=self.mock_id))
+        self.assertEqual(delete_company_task_mock.call_count, 1)
 
         self.assertEqual(response.status_code, 204)
 
