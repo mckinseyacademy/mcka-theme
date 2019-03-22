@@ -4313,7 +4313,11 @@ class participant_details_api(APIView):
         if not _deletion_flag():
             return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
 
-        delete_participants([user_id])
+        failed = delete_participants([user_id])
+        if failed:
+            return HttpResponseBadRequest(json.dumps({
+                'detail': failed.values()
+            }), content_type="application/json")
         return HttpResponse(status=204)
 
 
