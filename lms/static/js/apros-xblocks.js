@@ -21,7 +21,7 @@ $(function () {
   });
 
   $(document).on('change', '.new-theme input[type=radio]', function (e) {
-    var parent = $(e.target).parents('.field-label');
+    var parent = $(e.target).parents('.field-label, .survey-row');
     $(parent).find(".selected").removeClass("selected");
     $(e.target).parent().addClass("selected");
   });

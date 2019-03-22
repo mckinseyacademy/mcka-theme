@@ -492,7 +492,7 @@ body.new-theme {
             }
 
             button.discussion-show {
-                @include tertiary-button;
+                @include secondary-button;
                 position: absolute;
                 top: -3px;
                 right: -10px;
@@ -500,14 +500,14 @@ body.new-theme {
                 &:hover,
                 &:active,
                 &:focus {
-                    @include tertiary-button-hover( !important);
+                    @include secondary-button-hover( !important);
                 }
             }
 
             button {
                 &.btn-link {
                     .action-label {
-                        padding: 5px 5px 0;
+                        padding: 2px 5px 0;
                         color: $black;
                     }
 
@@ -1121,7 +1121,9 @@ body.new-theme {
                                 background-color: $gray;
                                 color: $white;
                                 font-size: 0.625rem;
-                                padding: 0px 0px;
+                                padding: 1px 0px;
+                                line-height: initial;
+                                font-weight: 300;
 
                                 &:after {
                                     border-width: 0;
@@ -1328,6 +1330,7 @@ body.new-theme {
 
                                         .btn-link {
                                             border: 0;
+                                            cursor: pointer;
 
                                             .icon {
                                                 color: $gray;
@@ -1395,7 +1398,7 @@ body.new-theme {
                                 margin-top: 20px;
 
                                 .discussion-response {
-                                    background-color: $background_color_1;
+                                    background-color: $ash-white;
 
                                     .form-row {
                                         margin-bottom: 20px;
@@ -1448,6 +1451,7 @@ body.new-theme {
                                             float: left;
                                             .btn-link{
                                                 border: 0;
+                                                cursor: pointer;
                                                 background: none;
                                             }
                                             .action-button {
@@ -1500,7 +1504,7 @@ body.new-theme {
                                 }
 
                                 .comments {
-                                    background-color: $background_color_1;
+                                    background-color: $ash-white;
                                     box-shadow: none;
 
                                     forum-new-post-form .edit-post-form,

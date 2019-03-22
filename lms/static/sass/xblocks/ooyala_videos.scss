@@ -26,6 +26,11 @@ body.new-theme {
             .ooyalaplayer {
                 &.oo-player-container {
                     margin: 0 0 30px 0;
+
+                    .oo-state-screen .oo-action-icon {
+                        left: 47%;
+                    }
+
                     .oo-control-bar-items-wrapper {
                         .oo-playback-speed-container {
                             background-color: $mckinsey-primary-default-button !important;
@@ -48,54 +53,62 @@ body.new-theme {
                         }
                     }
 
-                    .oo-icon {
+                    .oo-interactive-container {
+                        .oo-icon {
 
-                        &.oo-icon-play-slick {
-                            color: transparent !important;
-                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
-                            background-position: -10px -9px;
-                            &:hover{
-                                background-position: -410px -9px;
+                            &.oo-icon-play-slick {
+                                color: transparent !important;
+                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                                background-position: -10px -9px;
+
+                                &:hover {
+                                    background-position: -410px -9px;
+                                }
                             }
-                        }
 
-                        &.oo-icon-pause-slick {
-                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
-                            background-position: -60px -9px;
-                            &:hover{
-                                background-position: -460px -9px;
+                            &.oo-icon-pause-slick {
+                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                                background-position: -60px -9px;
+
+                                &:hover {
+                                    background-position: -460px -9px;
+                                }
                             }
-                        }
 
-                        &.oo-icon-volume {
-                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
-                            background-position: -208px -10px;
-                            &:hover{
-                                background-position: -608px -10px;
+                            &.oo-icon-volume {
+                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                                background-position: -208px -10px;
+
+                                &:hover {
+                                    background-position: -608px -10px;
+                                }
                             }
-                        }
 
-                        &.oo-icon-volumeOff {
-                            background-position: -258px -10px;
-                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
-                            &:hover{
-                                background-position: -658px -10px;
+                            &.oo-icon-volumeOff {
+                                background-position: -258px -10px;
+                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+
+                                &:hover {
+                                    background-position: -658px -10px;
+                                }
                             }
-                        }
 
-                        &.oo-icon-compress-slick {
-                            background-position: -155px -9px;
-                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
-                            &:hover{
-                                background-position: -555px -9px;
+                            &.oo-icon-compress-slick {
+                                background-position: -155px -9px;
+                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+
+                                &:hover {
+                                    background-position: -555px -9px;
+                                }
                             }
-                        }
 
-                        &.oo-icon-expand-slick {
-                            background-position: -104px -9px;
-                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
-                            &:hover{
-                                background-position: -504px -9px;
+                            &.oo-icon-expand-slick {
+                                background-position: -104px -9px;
+                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+
+                                &:hover {
+                                    background-position: -504px -9px;
+                                }
                             }
                         }
                     }
