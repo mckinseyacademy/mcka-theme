@@ -5,7 +5,7 @@ $(document).ready(function () {
         trackColor: '#ededed',
         lineWidth: 16,
         onStep: function (from, to, percent) {
-            $(this.element).find('.pie-value').text(Math.round(percent) + '%');
+            $(this.element).find('.pie-value').text("100");
         }
     });
 });
@@ -127,7 +127,7 @@ $(document).ready(function () {
       barColor: '#0094d9',
       trackColor: '#ededed',
       lineWidth: 5,
-      size: 88,
+      size: 94,
       rotate: 0,
       animate: {
         duration: 500,

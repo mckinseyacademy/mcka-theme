@@ -60,7 +60,7 @@
         value = attributes['proficiency'];
         if (value == '-')
           return value;
-        return InternationalizePercentage(parseInt(value));
+        return parseInt(value);
       }},
       { title: gettext('Engagement'), index: true, name: 'engagement', actions: function(id, attributes)
       {

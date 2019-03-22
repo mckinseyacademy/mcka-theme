@@ -904,12 +904,12 @@ function InitializeAverageCalculate() {
     var teamAvgProficiency = Math.round(totalProficiency / total);
     setManagerDashboardOrgMetrics(courseAvg, teamAvgProgress, teamAvgProficiency);
     $('.progress-average large').text(teamAvgProgress + "%");
-    $('.proficiency-average large').text(teamAvgProficiency + "%");
+    $('.proficiency-average large').text(teamAvgProficiency);
   }
   else{
     setManagerDashboardOrgMetrics(courseAvg, 0, 0);
     $('.progress-average large').text("0%");
-    $('.proficiency-average large').text("0%");
+    $('.proficiency-average large').text("0");
   }
 }
 

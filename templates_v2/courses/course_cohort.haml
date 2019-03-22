@@ -172,8 +172,8 @@
                 %li.col
                   .header
                     .heading {%trans "Proficiency" %}
-                    .status {% trans "Your course knowledge:" %} {{proficiency.user_grade_display}}%
-                    .data {% trans "Average:" %} {{proficiency.course_average_display}}%
+                    .status {% trans "Your course knowledge:" %} {{proficiency.user_grade_display}}
+                    .data {% trans "Average:" %} {{proficiency.course_average_display}}
                     - if user_role
                       .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the proficiency leaderboard {% endblocktrans %}
                     - elif proficiency.user_position and proficiency.user_grade_value
@@ -197,7 +197,7 @@
                           %span= proficiency.leaders.0.name_initials
                       .person-name
                         %span=proficiency.leaders.0.full_name
-                      .person-rank {{proficiency.leaders.0.grade_display_value}}%
+                      .person-rank {{proficiency.leaders.0.grade_display_value}}
                   - else
                     .user.dummy
                       .rank-number #1
@@ -205,7 +205,7 @@
                         %i.material-icons account_circle
                       .person-name
                         %span {% trans "User Name" %}
-                      .person-rank 100%
+                      .person-rank 100
 
                   - if proficiency.has_leaders and  proficiency.leaders.1
                     .user
@@ -217,7 +217,7 @@
                           %span= proficiency.leaders.1.name_initials
                       .person-name
                         %span=proficiency.leaders.1.full_name
-                      .person-rank {{proficiency.leaders.1.grade_display_value}}%
+                      .person-rank {{proficiency.leaders.1.grade_display_value}}
                   - else
                     .user.dummy
                       .rank-number #2
@@ -225,7 +225,7 @@
                         %i.material-icons account_circle
                       .person-name
                         %span {% trans "User Name" %}
-                      .person-rank 100%
+                      .person-rank 100
 
                   - if proficiency.has_leaders and  proficiency.leaders.2
                     .user
@@ -237,7 +237,7 @@
                           %span= proficiency.leaders.2.name_initials
                       .person-name
                         %span=proficiency.leaders.2.full_name
-                      .person-rank {{proficiency.leaders.2.grade_display_value}}%
+                      .person-rank {{proficiency.leaders.2.grade_display_value}}
                   - else
                     .user.dummy
                       .rank-number #3
@@ -245,7 +245,7 @@
                         %i.material-icons account_circle
                       .person-name
                         %span {% trans "User Name" %}
-                      .person-rank 100%
+                      .person-rank 100
 
 - block js_snippets
   %script{src: 'https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'}
