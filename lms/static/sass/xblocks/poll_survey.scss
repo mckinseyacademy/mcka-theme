@@ -71,6 +71,8 @@ body.new-theme {
 
                 .survey-option {
                     position: relative;
+                    padding-top: 5px;
+                    padding-bottom: 5px;
 
                     label {
                         display: inline-grid;
@@ -222,6 +224,7 @@ body.new-theme {
                     }
 
                     .percentage-gauge-container {
+                        width: calc(100% - 100px);
                         .poll-answer-label {
                             font-weight: normal;
                         }
