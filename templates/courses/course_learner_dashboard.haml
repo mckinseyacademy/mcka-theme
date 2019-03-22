@@ -27,7 +27,7 @@
             .learner-program{'class': '{% if tile.publish_date|date:"Y-m-d-H-i" <= today|date:"Y-m-d-H-i" %}published{%else%}not-published{%endif%}'}
               -if bookmark.tile.id == tile.id
                 %i.bookmark{"class": "fa fa-bookmark fa-2x"}
-              .panel.panel-program{"style": "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size:100% 100%;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
+              .panel.panel-program{"style": "{% if tile.background_image %} background-image: url(/company_images/#{tile.background_image}); background-size: cover;{% else %} background-color: #{tile.tile_background_color};{% endif %}"}
                 .sub-1{"style": "color: #{tile.label_color};"}
                   -if tile.label
                     =tile.label
