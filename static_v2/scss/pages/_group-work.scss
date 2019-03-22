@@ -452,8 +452,8 @@
                             border-radius: 2px;
                             text-align: center;
                             line-height: 48px;
-                            background-color: var(--primary);
-                            border-color: var(--primary);
+                            background-color: $primary;
+                            border-color:$primary;
                             color: $white;
                             transition: .35s;
 
@@ -563,8 +563,8 @@
                         letter-spacing: 0.5px;
                         text-align: center;
                         padding: 0 20px;
-                        background-color: var(--primary);
-                        border-color: var(--primary);
+                        background-color: $primary;
+                        border-color:$primary;
                         color: $white;
                         margin-top: 15px;
 
@@ -676,8 +676,8 @@
                 letter-spacing: 0.5px;
                 text-align: center;
                 padding: 0 20px;
-                background-color: var(--primary);
-                border-color: var(--primary);
+                background-color: $primary;
+                border-color:$primary;
                 color: $white;
                 margin-bottom: 15px;
                 margin-top: 8px;
@@ -788,8 +788,8 @@
     }
 
     .submit {
-        @extend %button;
-        float: left !important;
+        //@extend %button;
+        //float: left !important;
     }
 
 
@@ -797,7 +797,7 @@
     {
         .action_buttons
         {
-            float: left !important;
+            //float: left !important;
            .button
            {
                 @extend %button;
