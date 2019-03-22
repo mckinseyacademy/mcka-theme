@@ -386,11 +386,8 @@
                     %span.carousel-control-next-icon
                       %i.material-icons keyboard_arrow_right
     -if show_new_ui_tour
-      %script
-        $(window).load(function()
-        {
-          $('.newFeatureTour').modal('show');
-        });
+      %script{src: "{% static 'js/new_ui_tour.js' %}"}
+
     %script{src: "{% static 'js/shader.js' %}"}
     %script
       var root = document.documentElement;

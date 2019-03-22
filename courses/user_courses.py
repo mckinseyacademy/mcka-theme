@@ -215,14 +215,6 @@ def standard_data(request):
         program = user_data.current_program
         current_course = user_data.current_course
         organization = user_data.organization
-        if organization:
-            customization = OrgDataManager(str(organization.id)).get_branding_data().get('customization')
-            if customization and customization.new_ui_enabled:
-                remote_user = RemoteUser.cached_fetch(request.user.id)
-                if remote_user.last_signin and remote_user.last_signin < customization.new_ui_enabled_at:
-                    remote_user.last_signin = None
-                    remote_user.save()
-                    show_new_ui_tour = True
 
         if user_data.get('new_ui_enabled'):
             show_my_courses = any(

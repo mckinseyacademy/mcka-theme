@@ -7,7 +7,7 @@ import hashlib
 import random
 from datetime import datetime, timedelta
 
-import dateutil
+import pytz
 from django.db import models as db_models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
@@ -42,7 +42,10 @@ class RemoteUser(AbstractUser):
         self.image_url_medium = user_response.image_url_medium
         self.image_url_small = user_response.image_url_small
         self.is_staff = user_response.is_staff
-        self.last_signin = dateutil.parser.parse(last_login) if last_login else None
+        self.last_signin = None
+        if last_login:
+            self.last_signin = pytz.UTC.localize(datetime.strptime(last_login, '%Y-%m-%dT%H:%M:%S.%fZ'))
+
         self.title = user_response.title
 
     def save(self, **kwargs):
