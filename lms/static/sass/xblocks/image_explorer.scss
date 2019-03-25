@@ -151,7 +151,8 @@ body.new-theme {
               width: 90% !important;
               height: 74% !important;
               top: 13%;
-              margin: 0 auto;
+              margin: 0 auto !important;
+              max-height: none !important;
             }
           }
         }
