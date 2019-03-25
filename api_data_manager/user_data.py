@@ -36,6 +36,36 @@ class UserDataManager(DataManager):
         self.user_id = user_id
         self.cache_unique_identifier = '{}_{}'.format('_'.join(identifiers), user_id) if identifiers else user_id
 
+    @property
+    def raw_courses(self):
+        from api_client import user_api
+        from courses.user_courses import CURRENT_COURSE_ID
+
+        current_course = None
+
+        courses = user_api.get_user_courses(self.user_id)
+        user_preferences = user_api.get_user_preferences(self.user_id)
+        current_course_id = user_preferences.get(CURRENT_COURSE_ID, None)
+
+        if current_course_id:
+            for course in courses:
+                if course.id == current_course_id:
+                    current_course = course
+                    break
+
+        # if preferred course is not found in user courses
+        # then set any other course as current course
+        if not current_course:
+            for course in courses:
+                if course.is_active and course.started:
+                    current_course = course
+                    break
+
+        return DottableDict(
+            courses=courses,
+            current_course=current_course,
+        )
+
     def delete_cached_data(self, property_name):
         if property_name == USER_PROPERTIES.USER_COURSE_WORKGROUPS:
             user_courses = self.get_cached_data(property_name=USER_PROPERTIES.COURSES)
@@ -81,13 +111,14 @@ class UserDataManager(DataManager):
         """
         from api_client import user_api
         from admin.models import Program
-        from courses.user_courses import CURRENT_COURSE_ID, CURRENT_PROGRAM_ID
+        from courses.user_courses import CURRENT_PROGRAM_ID
 
-        current_course = None
+        raw_courses = self.raw_courses
+        courses = raw_courses.courses
+        current_course = raw_courses.current_course
         current_program = None
-        courses = user_api.get_user_courses(self.user_id)
+
         organizations = user_api.get_user_organizations(self.user_id)
-        user_preferences = user_api.get_user_preferences(self.user_id)
         new_ui_enabled = self.new_ui_enabled(organizations[0] if organizations else None)
         if new_ui_enabled:
             course_ids = [course.id for course in courses]
@@ -101,7 +132,7 @@ class UserDataManager(DataManager):
                 )
                 setattr(course, 'learner_dashboard', learner_dashboard)
 
-        current_course_id = user_preferences.get(CURRENT_COURSE_ID, None)
+        user_preferences = user_api.get_user_preferences(self.user_id)
         current_program_id = user_preferences.get(CURRENT_PROGRAM_ID, None)
 
         if current_program_id and current_program_id != Program.NO_PROGRAM_ID:
@@ -116,18 +147,6 @@ class UserDataManager(DataManager):
                     )
             else:
                 current_program = Program.fetch(current_program_id)
-
-        if current_course_id:
-            for course in courses:
-                if course.id == current_course_id:
-                    current_course = course
-
-        # if preferred course is not found in user courses
-        # then set any other course as current course
-        if not current_course:
-            active_courses = [course for course in courses if course.is_active and course.started]
-            if active_courses:
-                current_course = active_courses[0]
 
         if not current_program and current_course:
             programs = Program.user_programs_with_course(
