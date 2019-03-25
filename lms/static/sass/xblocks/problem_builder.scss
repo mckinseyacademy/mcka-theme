@@ -595,6 +595,9 @@ body.new-theme {
                     content: "\e244";
                     font-size: 2.25rem;
                 }
+                &.read_only {
+                    margin: 20px 0px;
+                }
             }
         }
     }
