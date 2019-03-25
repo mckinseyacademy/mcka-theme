@@ -287,6 +287,8 @@
     width: 100%;
     position: absolute;
     z-index: 4;
+    padding-top: 25px;
+    background-color: $white;
 
     .container,
     .row,
@@ -298,18 +300,26 @@
         position: static;
 
         .over-calendar {
-            width: 50px;
-            height: 50px !important;
-            position: absolute;
+            height: auto !important;
             z-index: 221;
-            left: 0;
-            right: auto;
             margin: 0 !important;
-            top: 50%;
-            background: var(--primary);
-            border-radius: 50%;
-            transform: translateY(-50%);
             cursor: pointer;
+            i {
+              left: -40px;
+              right: auto;
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              border-radius: 50%;
+              width: 50px;
+              height: 50px !important;
+              background-color: var(--primary);
+              color: $white;
+              &.inactive {
+                background: $gray;
+                color: $light-gray;
+              }
+            }
 
             .arrow-calendar {
                 font-size: 50px;
@@ -320,13 +330,14 @@
     }
 
     #over-calendar-right {
-        right: 0;
-        left: auto;
+        i {
+          right: -58px;
+          left: auto;
+        }
     }
 
     #row-full-calendar {
         background: white;
-        padding-top: 30px;
         #close-calendar {
             position: absolute;
             color: $gray;
@@ -350,18 +361,15 @@
         }
 
         #under-calendar {
-            width: 88%;
+            width: 99%;
+            height: 340px;
             position: absolute;
-            padding: 0 !important;
-            margin: 0 auto;
-            left: 50%;
-            transform: translateX(-50%);
-            overflow: hidden !important;
+            background-color: white;
 
             .tab-month {
                 width: 25%;
                 float: left;
-                margin: 0 -1px 0 0;
+                margin: 0;
                 padding: 0;
                 list-style: none;
 
@@ -479,10 +487,8 @@
     position: absolute;
     z-index: 200;
     margin-top: 15px;
-    width: 88%;
-    left: 50%;
-    transform: translateX(-50%);
-    overflow: hidden;
+    width: 1100px;
+    height: 283px;    
 
     .highcharts-tooltip {
 
