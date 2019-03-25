@@ -588,6 +588,7 @@ body.new-theme {
                 color: $gray;
                 padding: 15px 10px;
                 font-weight: 200;
+                word-break: break-word;
                 &::before{
                     vertical-align: 0px;
                     font-family: 'Material Icons';
