@@ -78,20 +78,6 @@
         }
     }
 
-    .checkmark-incorrect {
-
-
-        &::before {
-
-            
-        }
-    }
-
-    .checkmark-correct::before {
-
-       
-    }
-
     .choice {
         .choice-tips-container {
             &.with-tips {
@@ -218,13 +204,13 @@ body.new-theme {
         .field-group-hd {
            p
            {
-                @include font-size(14);
+                @include font-size(16);
                 font-weight: 400;
                 margin: 0;
 
                 i
                 {
-                    @include font-size(14);
+                    @include font-size(16);
                     font-style: italic;
                     font-weight: 300;
                 }
@@ -249,6 +235,23 @@ body.new-theme {
                 padding: 0;
                 @include font-size(14);
 
+                &::before
+                {
+                    top:4px;
+                }
+
+                &.selected
+                {
+                    &::before
+                    {
+                        top: 4px;
+                    }
+
+                    &::after
+                    {
+                        top: 6px;
+                    }
+                }
             }
 
             // marks
@@ -299,7 +302,7 @@ body.new-theme {
                     color: black;
                     border-radius: 5px;
                     box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.3);
-                    padding: 15px;
+                    padding: 15px 30px 15px 15px;
 
                     p {
                         line-height: 22px;
@@ -310,14 +313,16 @@ body.new-theme {
                         &:last-child {
                             margin-bottom: 0;
                         }
+                        &:blank {
+                            display: none;
+                          }
                     }
                 }
 
                 .close {
-                    
                     opacity: 1;
-                    right: 10px !important;
-                    top: 10px !important;
+                    right: 10px ;
+                    top: 10px ;
 
                     &::before {
                         font-family: 'Material Icons';
@@ -330,11 +335,34 @@ body.new-theme {
         }
     }
 
+    // MCQ End
+
 
 
     // MRQ
 
     [data-block-type="pb-mrq"] {
+
+
+        .choice-selector
+        {
+            &::before
+            {
+                top:5px;
+            }
+
+            &.selected
+            {
+                &::before
+                {
+                    top:5px;
+                }
+                &:after
+                {
+                    top:6px;
+                }
+            }
+        }
 
 
         // Marks
@@ -353,7 +381,8 @@ body.new-theme {
                                 color: $bg-white-red;
                                 font-family: 'Material Icons';
                                 content: '\e5c9';
-                                @include font-size(24)
+                                @include font-size(24);
+                                margin-top: 2px;
                             }
                         }
 
@@ -367,9 +396,9 @@ body.new-theme {
                                 color: $bg-white-green;
                                 font-family: 'Material Icons';
                                 content: '\e86c';
-                                @include font-size(24)
+                                @include font-size(24);
+                                margin-top: 2px;
                             }
-
                         }
                     }
                 }
@@ -384,7 +413,7 @@ body.new-theme {
                 color: black;
                 border-radius: 5px;
                 box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.3);
-                padding: 15px;
+                padding: 15px 30px 15px 15px;
 
                 p {
                     line-height: 22px;
@@ -395,6 +424,9 @@ body.new-theme {
                     &:last-child {
                         margin-bottom: 0;
                     }
+                    &:blank {
+                        display: none;
+                      }
                 }
             }
 
@@ -413,6 +445,8 @@ body.new-theme {
             }
         }
     }
+
+    // MRQ END
 
 
     // Poll
