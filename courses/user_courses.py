@@ -13,6 +13,7 @@ from admin.models import Program
 from admin.controller import load_course
 from api_client import user_api, course_api, mobileapp_api, organization_api
 from accounts.middleware import thread_local
+from api_data_manager.user_data import UserDataManager
 from .controller import (
     load_static_tabs, get_completion_percentage_from_id,
     set_user_course_progress,
@@ -91,18 +92,23 @@ def check_user_course_access(func):
         Decorator which will raise an CourseAccessDeniedError
         if the user does not have access to the requested course
         """
-        user_data = thread_local.get_basic_user_data(request.user.id)
-
-        accessible_course = [course for course in user_data.courses if course.id == course_id]
+        raw_courses = UserDataManager(request.user.id).raw_courses
+        courses = raw_courses.courses
+        current_course = raw_courses.current_course
+        accessible_course = None
+        for course in courses:
+            if course.id == course_id:
+                accessible_course = course
+                break
 
         if not accessible_course:
             # if this is set as current course then clear it
-            if user_data.current_course and user_data.current_course.id == course_id:
+            if current_course and current_course.id == course_id:
                 clear_current_course_for_user(request)
 
             raise CourseAccessDeniedError(course_id, request.user.id)
 
-        if not accessible_course[0].started:
+        if not accessible_course.started:
             return HttpResponseRedirect('/courses/{}/notready'.format(course_id))
 
         return func(request, course_id, *args, **kwargs)

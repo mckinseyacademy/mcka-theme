@@ -5,10 +5,11 @@ from django.test import TestCase, override_settings
 
 from courses.user_courses import CURRENT_PROGRAM
 from courses.views import infer_page_navigation
-from api_data_manager.tests.utils import mock_api_data_manager
+from api_data_manager.tests.utils import APIDataManagerMockMixin
+from lib.utils import DottableDict
 
 
-class InferPageNavigationTests(TestCase):
+class InferPageNavigationTests(TestCase, APIDataManagerMockMixin):
     def _make_patch(self, target, new_value=None):
         new_val = new_value \
             if new_value else mock.Mock()
@@ -49,13 +50,18 @@ class InferPageNavigationTests(TestCase):
     @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}})
     def test_infer_page_navigation_no_group_work_does_not_crash(self):
         request = self._get_request_mock(1, 'course_id')
-        mock_api_data_manager(
-            module_path='accounts.middleware.thread_local.UserDataManager',
-            data={'courses': [request.course]}
-        )
-        mock_api_data_manager(
-            module_path='accounts.middleware.thread_local.UserDataManager',
-            data={'courses': [request.course]}
+        self.mock_user_api_data_manager(
+            module_paths=[
+                'accounts.middleware.thread_local.UserDataManager',
+                'courses.user_courses.UserDataManager'
+                ],
+            data={
+                'courses': [request.course],
+                'raw_courses': DottableDict(
+                    courses=[request.course],
+                    current_course=None
+                )
+            }
         )
         self.get_group_project_for_user_course_mock.return_value = (None, None)
 
@@ -90,8 +96,15 @@ class InferPageNavigationTests(TestCase):
 #         self.mock_user_api_data_manager(
 #             module_paths=[
 #                 'accounts.middleware.thread_local.UserDataManager',
+#                 'courses.user_courses.UserDataManager'
 #             ],
-#             data={'courses': [], 'current_course': None}
+#             data={
+#                 'courses': [],
+#                 'raw_courses': DottableDict(
+#                     courses=[],
+#                     current_course=None
+#                 )
+#             }
 #         )
 #
 #         response = self.client.get(self.url)
@@ -119,8 +132,15 @@ class InferPageNavigationTests(TestCase):
 #         self.mock_user_api_data_manager(
 #             module_paths=[
 #                 'accounts.middleware.thread_local.UserDataManager',
+#                 'courses.user_courses.UserDataManager'
 #             ],
-#             data={'courses': user_courses, 'current_course': current_course}
+#             data={
+#                 'courses': user_courses, 'current_course': current_course,
+#                 'raw_courses': DottableDict(
+#                     courses=user_courses,
+#                     current_course=current_course
+#                 )
+#             }
 #         )
 #
 #         response = self.client.get(self.url)
@@ -156,8 +176,15 @@ class InferPageNavigationTests(TestCase):
 #         self.mock_user_api_data_manager(
 #             module_paths=[
 #                 'accounts.middleware.thread_local.UserDataManager',
+#                 'courses.user_courses.UserDataManager'
 #             ],
-#             data={'courses': [], 'current_course': None}
+#             data={
+#                 'courses': [],
+#                 'raw_courses': DottableDict(
+#                     courses=[],
+#                     current_course=None
+#                 )
+#             }
 #         )
 #
 #         response = self.client.get(self.url)
@@ -177,8 +204,15 @@ class InferPageNavigationTests(TestCase):
 #         self.mock_user_api_data_manager(
 #             module_paths=[
 #                 'accounts.middleware.thread_local.UserDataManager',
+#                 'courses.user_courses.UserDataManager'
 #             ],
-#             data={'courses': user_courses, 'current_course': current_course}
+#             data={
+#                 'courses': user_courses, 'current_course': current_course,
+#                 'raw_courses': DottableDict(
+#                     courses=user_courses,
+#                     current_course=current_course
+#                 )
+#             }
 #         )
 #
 #         response = self.client.get(path=self.url)
