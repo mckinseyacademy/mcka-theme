@@ -24,6 +24,15 @@ class SessionTimeout(object):
         except ApiError:
             return expire_session(request)
 
+        if settings.MOBILE_APP_USER_AGENT in request.META.get('HTTP_USER_AGENT', []):
+            timeout = getattr(settings, "MOBILE_APP_SESSION_TIMEOUT_SECONDS", None)
+            last_touch = request.session.get('last_touch')
+            if timeout and last_touch:
+                time = datetime.utcnow() - last_touch
+                if time > timedelta(seconds=settings.MOBILE_APP_SESSION_TIMEOUT_SECONDS):
+                    return expire_session(request)
+            return
+
         timeout = getattr(settings, "SESSION_TIMEOUT_SECONDS", None)
         last_touch = request.session.get('last_touch')
 
@@ -35,9 +44,20 @@ class SessionTimeout(object):
         request.session['last_touch'] = datetime.utcnow()
 
     def process_response(self, request, response):
-        response.set_cookie(
-            'last_touch',
-            request.session.get('last_touch'),
-            domain=settings.LMS_SESSION_COOKIE_DOMAIN,
-        )
+        if settings.MOBILE_APP_USER_AGENT in request.META.get('HTTP_USER_AGENT', []):
+            if not request.session.get('last_touch'):
+                request.session['last_touch'] = datetime.utcnow()
+                response.set_cookie(
+                    'last_touch',
+                    datetime.utcnow(),
+                    domain=settings.LMS_SESSION_COOKIE_DOMAIN,
+                    max_age=settings.SESSION_COOKIE_AGE,
+                )
+        else:
+            response.set_cookie(
+                'last_touch',
+                request.session.get('last_touch'),
+                domain=settings.LMS_SESSION_COOKIE_DOMAIN,
+                max_age=settings.SESSION_COOKIE_AGE,
+            )
         return response
