@@ -8,6 +8,8 @@ import string
 import tempfile
 import threading
 import urllib
+
+import chardet
 import requests
 import uuid
 from datetime import datetime
@@ -2768,11 +2770,18 @@ def get_emails_from_csv(file_path):
     storage = get_storage(secure=True)
     file_stream = storage.open(file_path)
 
-    data = ''.join(file_stream.chunks()).splitlines()
-    param_type = data.pop(0)
+    data = ''.join(file_stream.chunks())
+    encoding = chardet.detect(data)['encoding']
+
+    if encoding not in ['ascii', 'utf-8']:
+        # csv module does not support UTF-16 which can be used by Excel
+        data = data.decode(encoding).encode('utf-8')
+
+    lines = data.splitlines()
+    param_type = lines.pop(0)
     if param_type != 'email':
         raise ValueError(_("The CSV file has to contain 'email' header."))
-    return param_type, data
+    return param_type, lines
 
 
 def get_users_for_deletion(file_path):

@@ -100,7 +100,9 @@ massParticipantsDeleteInit = function() {
             $('#delete_participants_confirm_message').foundation('reveal', 'open');
           },
           error: function(data) {
-            modal.find('#delete-error-list').append('<p class="warning">'+gettext('Please select file first.')+'</p>');
+            $('i.fa-spinner').hide();
+            let errorMsg = data.responseText ? data.responseText : 'Failed to submit file.';
+            modal.find('#delete-error-list').append('<p class="warning">'+gettext(errorMsg)+'</p>');
             $('#advanced_delete_modal input[type=submit]').removeAttr('disabled');
           }
         }
