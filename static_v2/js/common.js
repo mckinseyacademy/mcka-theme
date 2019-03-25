@@ -5,7 +5,7 @@ $(document).ready(function () {
         trackColor: '#ededed',
         lineWidth: 16,
         onStep: function (from, to, percent) {
-            $(this.element).find('.pie-value').text("100");
+            $(this.element).find('.pie-value').text(Math.round(percent));
         }
     });
 });
