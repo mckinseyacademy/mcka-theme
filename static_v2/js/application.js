@@ -416,7 +416,8 @@ $('.editProfileField').on('submit', 'form', function(e) {
         form.find(':submit').prop('disabled', false);
         if(form.find('input[name=title]').length)
         {
-          $('.roleArea span').text(form.find('input[name=title]').val());
+          $('.roleArea span').addClass('title');
+          $('.roleArea span.title').text(form.find('input[name=title]').val());
         }
         else
         {
@@ -428,3 +429,27 @@ $('.editProfileField').on('submit', 'form', function(e) {
     });
 });
 
+
+$('.editProfileField').on('show.bs.modal', function (e) {
+
+  var form = $(this).find('form');
+  if (form.find('input[name=title]').length) {
+
+    var title = $('.roleArea span.title').text();
+    if (title != "")
+    {
+      $(this).find('.form-group').addClass('focused');
+      form.find('input[name=title]').val(title);
+    }
+  } else {
+
+    var fullName = $('.nameArea span').text().split(" "); 
+    if(fullName.length)
+    {
+      $(this).find('.form-group').addClass('focused');
+      form.find('input[name=first_name]').val(fullName[0]);
+      form.find('input[name=last_name]').val(fullName[1]);
+    }
+  }
+
+});

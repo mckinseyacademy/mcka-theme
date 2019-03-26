@@ -55,7 +55,7 @@
                           {% trans "edit" %}
                       .roleArea
                         - if user.title
-                          %span= user.title
+                          %span.title= user.title
                         - else
                           %span= "Enter your role"
                         %a.edit-link.ome.dome-bc{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
