@@ -24,7 +24,16 @@
     }
   }
 }
-
+@media screen and (max-width: 992px) {
+  .courseNavWrap{
+    &.nav-active{
+      .pn-ProductNav {
+        padding-bottom: 502px !important;
+        margin-bottom: -500px !important;
+      }
+    }
+  }
+}
 .pn-ProductNav {
   /* For WebKit implementations, provide inertia scrolling */
   -webkit-overflow-scrolling: touch;
@@ -37,8 +46,6 @@
     overflow-x: auto;
     /* We don't want vertical scrolling */
     overflow-y: hidden;
-    padding-bottom: 500px !important;
-    margin-bottom: -500px !important;
   }
   .js & {
     /* Make an auto-hiding scroller for the 3 people using a IE */
