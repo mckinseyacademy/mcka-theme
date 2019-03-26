@@ -2,6 +2,41 @@
 @import '../base/variables';
 @import '../base/buttons';
 
+@mixin moreButtonOfPostOrComment() {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    text-indent: 0;
+    line-height: initial;
+
+    .actions-dropdown-list {
+        display: grid;
+    }
+
+    .actions-item {
+        margin: 0 5px 0;
+        float: left;
+
+        .btn-link {
+            border: 0;
+            cursor: pointer;
+            background: none;
+        }
+
+        .action-button {
+            background: none;
+            padding: 1px;
+        }
+
+        &:last-child {
+            .more-wrapper {
+                button.btn-link .icon {
+                    color: var(--primary);
+                }
+            }
+        }
+    }
+}
 
 body.new-theme {
     background-color: $ash-white;
@@ -39,6 +74,33 @@ body.new-theme {
             span {
                 background-image: url(/static/image/lesson-content/discussion/wmd-buttons-transparent.png);
             }
+            &:nth-child(6), &:nth-child(7) {
+                display: none;
+            }
+            &:nth-child(9) {
+                left: 150px!important
+            }
+            &:nth-child(10) {
+                left: 175px!important
+            }
+            &:nth-child(11) {
+                left: 200px!important
+            }
+            &:nth-child(12) {
+                left: 225px!important
+            }
+            &:nth-child(14) {
+                left: 275px!important
+            }
+            &:nth-child(15) {
+                left: 300px!important
+            }
+        }
+        .wmd-spacer2 {
+            left: 125px!important
+        }
+        .wmd-spacer3 {
+            left: 250px!important
         }
 
         .wmd-preview-container {
@@ -181,7 +243,7 @@ body.new-theme {
                 border: 1px solid $hard-gray;
             }
 
-            button.btn,
+            button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel):not(.discussion-show),
             button.btn-brand {
                 @include primary-button;
 
@@ -436,19 +498,19 @@ body.new-theme {
             }
 
             .add_post_btn_container {
-                width: 100%;
+                width: auto;
                 text-align: right;
                 border: 0;
+                bottom: 102px;
                 position: absolute;
+                right: 144px;
+                top: -72px;
 
                 .new-post-btn {
                     margin-top: 0px;
                     @include primary-button;
                     border: 0;
                     cursor: pointer;
-                    position: absolute;
-                    right: 144px;
-                    top: -72px;
 
                     &:hover {
                         @include primary-button-hover;
@@ -727,7 +789,8 @@ body.new-theme {
                         color: $black;
                         text-transform: capitalize;
                         padding-left: 30px;
-                        height: 18px;
+                        height: 22px;
+                        margin-bottom: 0;
                         position: relative;
 
                         .field-input:checked+.field-input-label {
@@ -784,6 +847,7 @@ body.new-theme {
                     background: $white;
                     border: 0;
                     margin: 0;
+                    min-height: auto;
 
                     .forum-nav-thread {
                         border: 0;
@@ -983,8 +1047,9 @@ body.new-theme {
                                     margin: 0;
 
                                     .username {
-                                        color: var(--primary);
+                                        color: $black;
                                         font-weight: normal;
+                                        pointer-events: none;
                                         font-size: 12px;
                                     }
 
@@ -1120,9 +1185,10 @@ body.new-theme {
 
                                     .response-header-content {
                                         .username {
-                                            color: var(--primary);
+                                            color: $black;
                                             font-weight: normal;
                                             font-size: 12px;
+                                            pointer-events: none;
                                         }
 
                                         .user-label-staff {
@@ -1140,37 +1206,7 @@ body.new-theme {
                                     }
 
                                     .response-actions-list {
-                                        list-style: none;
-                                        margin: 0;
-                                        padding: 0;
-                                        text-indent: 0;
-                                        line-height: initial;
-
-                                        .actions-dropdown-list {
-                                            display: grid;
-                                        }
-
-                                        .actions-item {
-                                            margin: 0 5px 0;
-                                            float: left;
-                                            .btn-link{
-                                                border: 0;
-                                                cursor: pointer;
-                                                background: none;
-                                            }
-                                            .action-button {
-                                                background: none;
-                                                padding: 1px;
-                                            }
-
-                                            &:last-child {
-                                                .more-wrapper {
-                                                    button.btn-link .icon {
-                                                        color: var(--primary);
-                                                    }
-                                                }
-                                            }
-                                        }
+                                        @include moreButtonOfPostOrComment();
                                     }
 
                                     .btn-brand {
@@ -1199,6 +1235,7 @@ body.new-theme {
                                     text-decoration: none;
                                     font-size: 0.875rem;
                                     font-weight: normal;
+                                    cursor: pointer;
 
                                     .fa-caret-down::before {
                                         color: var(--primary);
@@ -1211,7 +1248,7 @@ body.new-theme {
                                     background-color: $ash-white;
                                     box-shadow: none;
 
-                                    forum-new-post-form .edit-post-form,
+                                    .forum-new-post-form .edit-post-form,
                                     .new-comment {
                                         border-top: 1.21px solid $gray-border;
 
@@ -1249,9 +1286,10 @@ body.new-theme {
                                         margin: 0;
 
                                         .username {
-                                            color: var(--primary);
+                                            color: $black;
                                             font-weight: normal;
                                             font-size: 12px;
+                                            pointer-events: none;
                                         }
 
                                         .user-label-staff {
@@ -1268,6 +1306,16 @@ body.new-theme {
                                             }
                                         }
                                     }
+                                    #edit-comment-submit{
+                                        margin-right: 10px;
+                                    }
+                                    .edit-comment-body{
+                                        width: 100%;
+                                    }
+                                    .comment-actions-list {
+                                        @include moreButtonOfPostOrComment();
+                                    }
+                                    
                                 }
                             }
                         }
@@ -1318,7 +1366,10 @@ body.new-theme {
             padding: 0px;
 
             .wmd-panel {
-
+                .wmd-button-row {
+                    display: none!important;
+                    visibility: hidden!important;
+                }
                 .wmd-preview-container {
 
                     .wmd-preview-label {
@@ -1337,22 +1388,24 @@ body.new-theme {
             }
 
             .discussion-module {
-                .add_post_btn_container .new-post-btn {
+                .add_post_btn_container {
                     right: 144px;
                     top: -60px;
-                    color: transparent !important;
-                    padding: 0;
-                    width: 69px;
-                    min-width: auto;
+                    .new-post-btn {
+                        color: transparent !important;
+                        padding: 0;
+                        width: 69px;
+                        min-width: auto;
 
-                    &:before {
-                        font-size: 1.875rem;
-                        color: $white;
-                        font-family: "Material Icons";
-                        content: "\e145";
-                        position: absolute;
-                        left: 30%;
-                        top: -3px;
+                        &:before {
+                            font-size: 1.875rem;
+                            color: $white;
+                            font-family: "Material Icons";
+                            content: "\e145";
+                            position: absolute;
+                            left: 30%;
+                            top: -3px;
+                        }
                     }
                 }
                 button.discussion-show {
@@ -1468,8 +1521,6 @@ body.new-theme {
                             margin-bottom: 15px !important;
 
                             label {
-                                margin-bottom: 5px;
-
                                 .input-checkbox {
                                     width: 20px !important;
                                 }
@@ -1570,9 +1621,10 @@ body.new-theme {
                                 margin: 0;
 
                                 .username {
-                                    color: var(--primary) !important;
+                                    color: $black;
                                     font-weight: normal;
                                     font-size: 12px;
+                                    pointer-events: none;
                                 }
 
                                 .user-label-staff {
@@ -1665,4 +1717,47 @@ body.new-theme {
             }
         }
     }
+    .wmd-prompt-dialog {
+        background: #fff !important;
+        padding: 20px 20px;
+        .wmd-editor-dialog-form-errors{
+            padding: 4px 0;
+        }
+
+        .form {
+            .form-group-hd {
+                display: none !important;
+            }
+
+            .field {
+                margin-bottom: 20px;
+
+                label {
+                    display: block;
+                }
+
+                .has-error {
+                    color: $bg-white-red;
+                    background: none;
+                    padding: 2px 0a;
+                }
+
+                .input-text {
+                    width: 100%;
+                    padding: 10px;
+                    max-width: unset;
+                    border: 1px solid $hard-gray;
+                    margin-bottom: 5px;
+                    font-size: 0.875rem;
+                }
+
+                .field-hint {
+                    color: dimgray;
+                    font-size: 12px;
+                }
+
+            }
+        }
+    }
 }
+
