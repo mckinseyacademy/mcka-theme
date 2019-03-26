@@ -9,7 +9,6 @@ from django.utils.translation import ugettext as _
 
 
 from accounts.json_backend import JsonBackend
-from accounts.models import RemoteUser
 from api_data_manager.organization_data import OrgDataManager
 from api_data_manager.common_data import CommonDataManager, COMMON_DATA_PROPERTIES
 from api_data_manager.course_data import CourseDataManager
