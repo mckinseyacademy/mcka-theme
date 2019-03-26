@@ -45,7 +45,12 @@
 
         input[type="button"] {
             margin-right: 11px;
-            display: inline-block;
+            // display: inline-block;
+            border:1px solid transparent;
+            &:last-child
+            {
+                margin-right: 0;
+            }
         }
 
 
@@ -64,6 +69,7 @@
 
         .assessment-checkmark
         {
+            margin-top: 4px;
             &.checkmark-partially-correct {
                 &::before {
                     font-family: 'Material Icons';
@@ -95,6 +101,11 @@
         
         .step-overall-checkmark
         {
+            &::before
+            {
+                position: relative;
+                top:5px;
+            }
             &.checkmark-partially-correct {
                 &::before {
                     font-family: 'Material Icons';
@@ -132,6 +143,14 @@
             }
         }
     }
+    
+    .choice-result
+    {
+        &::before
+        {
+            position: relative;
+        }
+    }
 
     .review-link {
         display: block;
@@ -149,6 +168,11 @@
 
         [data-block-type="step-builder"]
         {
+            .step-overall-checkmark
+            {
+                float: right !important;
+            }
+
             .assessment-checkmark
             {
                 float:right !important;
@@ -165,6 +189,10 @@
             {
                 margin-right:0!important;
                 margin-left: 10px;
+                &:last-child
+                {
+                    margin-left: 0;
+                }
             }
 
         }

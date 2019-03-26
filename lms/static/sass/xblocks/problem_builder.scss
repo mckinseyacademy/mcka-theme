@@ -224,6 +224,10 @@ body.new-theme {
     input[type="button"] {
         color: white;
         cursor: pointer;
+        @media screen and (max-width: 480px) {
+            letter-spacing: 0 !important;
+        }
+        
     }
 
 
@@ -317,6 +321,10 @@ body.new-theme {
                             display: none;
                           }
                     }
+
+                    @media screen and (max-width: 480px) {
+                        width: calc(100% - 45px);
+                    }
                 }
 
                 .close {
@@ -348,18 +356,18 @@ body.new-theme {
         {
             &::before
             {
-                top:5px;
+                top:5px !important;
             }
 
             &.selected
             {
                 &::before
                 {
-                    top:5px;
+                    top:5px !important;
                 }
                 &:after
                 {
-                    top:6px;
+                    top:6px !important;
                 }
             }
         }
@@ -374,6 +382,11 @@ body.new-theme {
                     {
 
                         // Incorrect
+                        &::before
+                        {
+                            position: relative;
+                            top:2px;
+                        }
 
                         &.checkmark-incorrect
                         {
@@ -382,7 +395,7 @@ body.new-theme {
                                 font-family: 'Material Icons';
                                 content: '\e5c9';
                                 @include font-size(24);
-                                margin-top: 2px;
+                                
                             }
                         }
 
