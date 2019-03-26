@@ -157,12 +157,15 @@ body.new-theme {
             }
 
             .transcript-header {
+                display: none;
                 .language-tracks {
                     ul {
                         li {
                             color: $mckinsey-default-link !important;
                             font-size: 1rem;
                             font-weight: 400;
+                            list-style: none;
+                            list-style-type: none;
 
                             &.selected {
                                 color: #2E2D39 !important;
