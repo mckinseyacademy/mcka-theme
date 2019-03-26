@@ -274,241 +274,236 @@
     }
   }
 }
-
 #background-full-calendar {
-    width: 100%;
-    height: 120%;
-    position: absolute;
-    z-index: 999;
-    background-color: rgba(0, 0, 0, 0.4);
+  width: 100%;
+  height: 120%;
+  position: absolute;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 #over-full-calendar {
-    width: 100%;
+  width: 100%;
+  height: 290px;
+  position: absolute;
+  z-index: 4;
+
+  .over-calendar {
+    width: 80px;
+    height: 290px;
     position: absolute;
-    z-index: 4;
+    background-color: white;
     padding-top: 25px;
-    background-color: $white;
+    background-color: white;
+    z-index: 221;
 
-    .container,
-    .row,
-    [class*="col"] {
-        height: 100%;
+    .arrow-calendar {
+      font-size: 50px;
+      background-color: var(--primary);
+      color: $white;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      margin: 0 !important;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      &.inactive {
+        background-color: $gray;
+        color: $light-gray;
+      }
     }
 
-    [class*="col"] {
-        position: static;
-
-        .over-calendar {
-            height: auto !important;
-            z-index: 221;
-            margin: 0 !important;
-            cursor: pointer;
-            i {
-              left: -40px;
-              right: auto;
-              position: absolute;
-              top: 50%;
-              transform: translateY(-50%);
-              border-radius: 50%;
-              width: 50px;
-              height: 50px !important;
-              background-color: var(--primary);
-              color: $white;
-              &.inactive {
-                background: $gray;
-                color: $light-gray;
-              }
-            }
-
-            .arrow-calendar {
-                font-size: 50px;
-                color: $white;
-                margin: 0 !important;
-            }
-        }
+    #previous-calendar {
+      left: 20px;
     }
 
-    #over-calendar-right {
-        i {
-          right: -58px;
-          left: auto;
-        }
+    #next-calendar {
+      right: 20px;
+    }
+  }
+
+  #over-calendar-right {
+    margin-left: 1020px;
+  }
+
+  #row-full-calendar {
+    height: 340px;
+    background: white;
+
+    .row {
+      width: 1100px;
+      max-width: 1100px;
+      background: white;
+      margin: 0 auto;
+      position: relative;
+      #close-calendar {
+        position: absolute;
+        top: 25px;
+        right: 25px;
+        z-index: 999;
+        font-size: 18px;
+        color: $gray;
+        opacity: 0.7;
+        cursor: pointer;
+      }
+
+      #close-calendar:hover {
+        opacity: 1;
+      }
     }
 
-    #row-full-calendar {
-        background: white;
-        #close-calendar {
-            position: absolute;
-            color: $gray;
-            font-size: 20px;
-            top: 0px;
-            right: 18px;
-            opacity: 0.6;
+    #under-calendar {
+      width: 945px;
+      height: 340px;
+      position: absolute;
+      background-color: white;
+      padding-top: 25px;
+      margin-left: 80px;
+
+      .tab-month {
+        width: 232px;
+        float: left;
+        padding-left: 0;
+        margin: 0 4px 0 0;
+        list-style: none;
+
+        li {
+          width: 116px;
+          height: 52px;
         }
 
-        #close-calendar:hover {
-            color: $gray;
-            opacity: 1;
-            cursor: pointer;
+        .head-month {
+          display: table;
+          width: 100%;
+          height: 25px;
+          background-color: #f2f1f1;
+
+          span {
+            text-transform: uppercase;
+            font-family: "Open Sans", sans-serif;
+            font-weight: bold;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            border: 1px solid silver;
+            border-style: dotted;
+            font-size: 12px;
+          }
         }
 
-        .row {
-            width: 100%;
-            max-width: 1100px;
-            position: relative;
-            margin: 0 auto;
+        .active {
+          background-color: #e37222;
+          color: white;
         }
 
-        #under-calendar {
-            width: 99%;
-            height: 340px;
-            position: absolute;
-            background-color: white;
-
-            .tab-month {
-                width: 25%;
-                float: left;
-                margin: 0;
-                padding: 0;
-                list-style: none;
-
-                li {
-                    width: 50%;
-                    height: 52px;
-                }
-
-                .head-month {
-                    display: table;
-                    width: 100%;
-                    height: 25px;
-                    background-color: #f2f1f1;
-
-                    span {
-                        text-transform: uppercase;
-                        font-family: "Open Sans", sans-serif;
-                        font-weight: bold;
-                        display: table-cell;
-                        vertical-align: middle;
-                        text-align: center;
-                        border: 1px solid silver;
-                        border-style: dotted;
-                        font-size: 12px;
-                    }
-                }
-
-                .active {
-                    background-color: #e37222;
-                    color: white;
-                }
-
-                .first {
-                    border: 0 solid gainsboro;
-                    border-width: 0 0 0 1px;
-                    float: left;
-                    border-style: dotted;
-                    border-bottom-width: 1px;
-                }
-
-                .second {
-                    float: right;
-                    border: 0 solid gainsboro;
-                    border-width: 0 1px 0 0;
-                    border-style: dotted;
-                    border-bottom-width: 1px;
-                }
-            }
-
-            .legend-list {
-                    font-size: 12px;
-                    position: relative;
-                    top: 3vh;
-                    padding-left: 0;
-                li {
-                    font-family: 'Open Sans';
-                    font-size: 12px;
-                    color: $gray;
-                    display: inline-block;
-                    margin-right: 15px;
-
-                    .circle {
-                        border-radius: 50%;
-                        display: inline-block;
-                        width: 10px;
-                        height: 10px;
-                    }
-                }
-
-                .light-gray-legend {
-                    i {
-                        color: #e0e0e0;
-                    }
-                }
-
-                .gray-legend {
-                    i {
-                        color: #cccccc;
-                    }
-                }
-
-                .light-green-legend {
-                    i {
-                        color: #b6d332;
-                    }
-                }
-
-                .green-legend {
-                    i {
-                        color: #629b2b;
-                    }
-                }
-
-                .red-legend {
-                    i {
-                        color: #cd202c;
-                    }
-                }
-
-                .teal-legend {
-                    i {
-                        color: #66a5b5;
-                    }
-                }
-            }
+        .first {
+          border: 0 solid gainsboro;
+          border-width: 0 0 0 1px;
+          float: left;
+          border-style: dotted;
+          border-bottom-width: 1px;
         }
+
+        .second {
+          float: right;
+          border: 0 solid gainsboro;
+          border-width: 0 1px 0 0;
+          border-style: dotted;
+          border-bottom-width: 1px;
+        }
+      }
+
+      .legend-list {
+        float: left;
+        margin-top: 15px;
+        padding: 0;
+
+        li {
+          font-size: 12px;
+          font-family: $body-font-family;
+          color: $gray;
+          display: inline;
+          margin-right: 15px;
+
+          .circle {
+            border-radius: 50%;
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+          }
+        }
+
+        .light-gray-legend {
+          i {
+            color: #e0e0e0;
+          }
+        }
+
+        .gray-legend {
+          i {
+            color: #cccccc;
+          }
+        }
+
+        .light-green-legend {
+          i {
+            color: #b6d332;
+          }
+        }
+
+        .green-legend {
+          i {
+            color: #629b2b;
+          }
+        }
+
+        .red-legend {
+          i {
+            color: #cd202c;
+          }
+        }
+
+        .teal-legend {
+          i {
+            color: #66a5b5;
+          }
+        }
+      }
     }
+  }
 }
 
 .inter-row {
-    border-bottom-width: 0 !important;
+  border-bottom-width: 0 !important;
 }
 
 #highcharts-container {
-    position: absolute;
-    z-index: 200;
-    margin-top: 15px;
-    width: 1100px;
-    height: 283px;    
+  position: absolute;
+  z-index: 200;
+  margin-top: 40px;
+  width: 1100px;
+  height: 283px;
 
-    .highcharts-tooltip {
+  .highcharts-tooltip {
 
-        span {
-            font-family: "Open Sans", sans-serif !important;
-            width: 120px;
-            height: 135px;
-            background-color: white;
-            overflow: auto;
-            white-space: normal !important;
-            z-index: 1;
-        }
+    span {
+      font-family: "Open Sans", sans-serif !important;
+      width: 120px;
+      height: 135px;
+      background-color: white;
+      overflow: auto;
+      white-space: normal !important;
+      z-index: 1;
     }
+  }
 }
 
 svg text {
-    font-family: FontAwesome, sans-serif;
+  font-weight: normal !important;
+  font-family: FontAwesome, sans-serif;
 }
 
 .not-published {
-    cursor: default;
-    opacity: 0.4;
+  cursor: default;
+  opacity: 0.4;
 }
