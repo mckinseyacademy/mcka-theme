@@ -254,7 +254,9 @@
                   {% trans "Complete" %}
               %p.note-progress
                 {% blocktrans %}
-                  You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: {{graders}}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+                  You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: {{graders}}.
+                  %a.edit-link.ome.dome-c{:data-target => "#progressModal", :data-toggle => "modal", :href => "#"} Click here
+                  to read more about how we may share your course information.
                 {% endblocktrans %}
           - if feature_flags.discussions
             .contentCard.course-page.engagement-data#engagement-block
@@ -290,3 +292,18 @@
                   %tr
                     %td {% blocktrans %} Number of your posts being <span>Followed</span> {% endblocktrans %}
                     %td.number{"class": "{% if social.metrics.num_thread_followers == 0 %}zero{% endif %}"}= social.metrics.num_thread_followers
+
+
+
+  .modal.middleSize.noTopBorder#progressModal{:aria-hidden => "true", :aria-labelledby => "", :role => "dialog", :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          .col
+          %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+            %span{:aria-hidden => "true"} ×
+        .modal-body
+          %p
+            {% trans "If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our" %}
+            %a.ome.dome-c{'href': '/privacy'}
+              {% trans "privacy policy." %}

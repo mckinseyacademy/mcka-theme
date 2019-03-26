@@ -77,6 +77,13 @@
     top: 50%;
     transform: translateY(-50%) !important;
   }
+
+}
+
+#progressModal {
+  .modal-body {
+    padding-top: 10px;
+  }
 }
 
 .modal-dialog {
