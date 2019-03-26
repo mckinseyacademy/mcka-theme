@@ -225,10 +225,12 @@
 
 // Shimmer effect laoding
 
-.preloader {
+.preloader,
+.xblock-preloader {
   position: relative;
   overflow: hidden;
   height: 600px;
+  max-height: 600px;
 
   &:before {
     content: '';
