@@ -322,10 +322,22 @@
 
     #previous-calendar {
       left: 20px;
+      font-size: 0;
+      &:after {
+        content: "\e5cb";
+        font-size: 50px;
+        display: block;
+      }
     }
 
     #next-calendar {
       right: 20px;
+      font-size: 0;
+      &:after {
+        content: "\e5cc";
+        font-size: 50px;
+        display: block;
+      }
     }
   }
 
