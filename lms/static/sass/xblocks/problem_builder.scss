@@ -74,6 +74,7 @@
 
             .choice-label-text {
                 vertical-align: top;
+                @include font-size(16);
             }
         }
     }
