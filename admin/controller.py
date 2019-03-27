@@ -1038,8 +1038,8 @@ def get_accessible_courses(user):
         courses_list = course_api.get_course_list()
     elif user.is_internal_admin:
         internal_ids = get_internal_courses_ids()
-        if len(internal_ids) > 0:
-            courses_list = course_api.get_course_list(internal_ids)
+        courses_list = [course for course in course_api.get_course_list()
+                        if course.id in internal_ids]
     else:
         course_id_list = []
         user_roles = user_api.get_user_roles(user.id)

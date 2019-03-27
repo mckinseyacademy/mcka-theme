@@ -1267,8 +1267,8 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
     if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
         if request.user.is_internal_admin:
             internal_ids = get_internal_courses_ids()
-            if len(internal_ids) > 0:
-                courses = course_api.get_course_list(internal_ids)
+            courses = [course for course in course_api.get_course_list()
+                       if course.id in internal_ids]
         else:
             courses = course_api.get_course_list(ids=restrict_to_courses_ids)
         for course in courses:
