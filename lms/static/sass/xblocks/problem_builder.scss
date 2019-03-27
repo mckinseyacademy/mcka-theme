@@ -699,5 +699,13 @@ body.new-theme {
                 }
             }
         }
+
+        [data-block-type="pb-answer-recap"] {
+            .xblock-answer {
+                .answer {
+                    font-size: 1rem;
+                }
+            }
+        }
     }
 }

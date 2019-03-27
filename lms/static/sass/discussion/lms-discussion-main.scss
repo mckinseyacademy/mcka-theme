@@ -152,20 +152,23 @@ body.new-theme {
             padding-left: 0;
           }
 
+          .page-content{
+            padding-top: 68px;
+          }
           .page-header {
             .page-header-main {
 
               left: 0px;
-              top: 0px;
+              top: 26px;
             }
 
             .page-header-secondary {
               width: 100%;
               position: relative;
-              top: 35px;
+              top: 65px;
 
               h1 {
-                display: none;
+                top: -75px;
               }
 
               .form-actions {
@@ -497,7 +500,29 @@ body.new-theme {
     position: relative;
     z-index: 9999;
     padding-top: 0px;
+    .post-errors {
+      margin: 0 auto;
 
+      .alert-error {
+          padding: 10px;
+          border: 1px solid $bg-white-red;
+          box-shadow: none;
+
+          .alert-icon {
+              background: none;
+              color: $bg-white-red;
+          }
+
+          .alert-message {
+              display: inline-block;
+              padding: 0;
+              .alert-copy {
+                  color: $bg-white-red;
+                  font-size: 1rem;
+              }
+          }
+      }
+  }
     #contact-ta {
       .modal-dialog {
         .modal-content {
@@ -594,7 +619,7 @@ body.new-theme {
       }
 
       .page-content {
-        padding-top: 50px;
+        padding-top: 30px;
       }
 
       .post-label {
@@ -1103,7 +1128,6 @@ body.new-theme {
             input[type='radio'] {
               width: auto;
               height: auto;
-              margin-top: 5px;
 
             }
 
@@ -1162,7 +1186,6 @@ body.new-theme {
                 position: absolute;
                 display: block;
                 color: $gray;
-                font-size: 12px;
               }
             }
 
@@ -1177,7 +1200,6 @@ body.new-theme {
                 position: absolute;
                 display: block;
                 color: $gray;
-                font-size: 12px;
               }
             }
           }
@@ -1615,25 +1637,6 @@ body.new-theme {
 
           .post-extended-content {
             .response-btn-count-wrapper {
-              .add-response {
-                display: inline-block !important;
-                .btn {
-                  background: none;
-                  color: $black;
-                  border: 0;
-                  font-size: 1rem;
-                  padding: 0;
-                  text-transform: initial;
-                  height: auto !important;
-                  &:hover{
-                    background: none !important;
-                    color: $black !important;
-                    font-size: 1rem !important;
-                    text-transform: initial !important;
-                    padding: 0 !important;
-                  }
-                }
-              }
 
               .response-count {
                 display: none;

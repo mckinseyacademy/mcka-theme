@@ -2,7 +2,9 @@
   [data-block-type="pb-mcq"],
   [data-block-type="poll"],
   [data-block-type="survey"],
-  .discussion-body .field-input {
+  .discussion-body .field-input,
+  [data-block-type="discussion"] .field-input,
+  [data-block-type="adventure"] {
 
     .choice-selector,
     .poll-input-container,
