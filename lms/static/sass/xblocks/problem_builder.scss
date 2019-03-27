@@ -318,7 +318,6 @@ body.new-theme {
 
                     p {
                         line-height: 22px;
-                        font-weight: 300;
                         color: black;
                         @include font-size(14);
 
@@ -708,6 +707,10 @@ body.new-theme {
             }
         }
     }
+
+
+   
+
 }
 
 // RTL Styling
