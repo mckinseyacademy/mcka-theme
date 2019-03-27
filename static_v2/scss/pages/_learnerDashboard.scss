@@ -264,6 +264,9 @@
         a {
           color: var(--primary);
         }
+        p {
+          color: var(--primary);
+        }
       }
       .review-by {
         @include font-size(14);
