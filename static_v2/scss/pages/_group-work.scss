@@ -787,9 +787,9 @@
 
     }
 
-    .submit {
-        //@extend %button;
-        //float: left !important;
+    button.submit {
+        @extend %button;
+        float: none !important;
     }
 
 
@@ -797,11 +797,11 @@
     {
         .action_buttons
         {
-            //float: left !important;
-           .button
+            float: none !important;
+           button.button
            {
-                @extend %button;
-           }
+               @extend %button;
+           } 
         }
     }
 
