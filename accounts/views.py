@@ -50,6 +50,7 @@ from courses.user_courses import (
     CURRENT_PROGRAM,
     set_current_course_for_user
 )
+from api_data_manager.user_data import UserDataManager
 from lib.context_processors import add_edx_notification_context
 from util.i18n_helpers import set_language
 from util.user_agent_helpers import is_mobile_user_agent
@@ -152,7 +153,7 @@ def _get_redirect_to_current_course(request):
     user_data = thread_local.get_basic_user_data(request.user.id)
     user_courses = user_data.get('courses')
 
-    current_course = user_data.current_course
+    current_course = UserDataManager(request.user.id).raw_courses.current_course
     future_start_date = False
 
     if current_course:
