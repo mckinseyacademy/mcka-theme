@@ -52,6 +52,13 @@
     }
   }
   [data-learner-dashboard-id="267"] {
+    .gallery-card{
+      .gallery {
+        @include media-breakpoint-up(lg) {
+          max-height: 760px;
+        }
+      }
+    }
     &.row {
       .col-lg-4 {
         display: none;
