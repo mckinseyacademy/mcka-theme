@@ -530,6 +530,7 @@ body.new-theme {
             }
 
             .forum-nav-bar {
+                padding: 0;
                 .all-posts-btn {
                     cursor: pointer;
                     border: 0;
@@ -1480,11 +1481,15 @@ body.new-theme {
                     .inline-thread {
                         padding-top: 10px;
 
-                        .forum-nav-bar .all-posts-btn {
-                            padding: 0;
+                        .forum-nav-bar {
+                            padding: 10px 5px;
 
-                            .icon {
-                                margin-left: 0;
+                            .all-posts-btn {
+                                padding: 0;
+
+                                .icon {
+                                    margin-left: 0;
+                                }
                             }
                         }
                     }

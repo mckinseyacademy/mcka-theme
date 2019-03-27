@@ -74,6 +74,7 @@
 
             .choice-label-text {
                 vertical-align: top;
+                @include font-size(16);
             }
         }
     }
@@ -224,6 +225,13 @@ body.new-theme {
     input[type="button"] {
         color: white;
         cursor: pointer;
+        &.input-try-again
+        {
+            @media screen and (max-width: 480px) {
+                margin-bottom: 5px;
+            }
+        }
+
         @media screen and (max-width: 480px) {
             letter-spacing: 0 !important;
         }
@@ -440,6 +448,9 @@ body.new-theme {
                     &:blank {
                         display: none;
                       }
+                }
+                @media screen and (max-width: 480px) {
+                    width: calc(100% - 45px);
                 }
             }
 
@@ -730,6 +741,22 @@ body.new-theme {
 
                         .close {
                             left: 10px;
+                            
+                        }
+                    }
+                }
+            }
+        }
+
+        [data-block-type="pb-mrq"] {
+            .questionnaire {
+                .choice-tips-container {
+                    .choice-tips {
+                        padding: 15px 15px 15px 40px;
+
+                        .close {
+                            left: 10px;
+                            right:auto!important;
                         }
                     }
                 }
