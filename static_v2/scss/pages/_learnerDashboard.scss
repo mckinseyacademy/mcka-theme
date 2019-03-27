@@ -285,7 +285,7 @@
   width: 100%;
   height: 120%;
   position: absolute;
-  z-index: 3;
+  z-index: 999;
   background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -336,6 +336,17 @@
   #row-full-calendar {
     height: 340px;
     background: white;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -50px;
+      height: 50px;
+      background: $white;
+      width: 100%;
+      z-index: -1;
+    }
 
     .row {
       width: 1100px;
@@ -421,9 +432,11 @@
       }
 
       .legend-list {
-        float: left;
-        margin-top: 15px;
-        padding: 0;
+        float: left !important;
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+        padding: 0 !important;
+        margin-left: 0 !important;
 
         li {
           font-size: 12px;
