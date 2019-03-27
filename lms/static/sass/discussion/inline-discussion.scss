@@ -255,15 +255,15 @@ body.new-theme {
             }
 
             button.discussion-show {
-                @include secondary-button;
+                @include secondary-button-large;
                 position: absolute;
-                top: -3px;
+                top: 0px;
                 right: 0;
 
                 &:hover,
                 &:active,
                 &:focus {
-                    @include secondary-button-hover( !important);
+                    @include secondary-button-hover-large( !important);
                 }
             }
 
@@ -484,7 +484,12 @@ body.new-theme {
             .inline-discussion-topic {
                 font-size: 12px;
                 color: $gray;
-                font-weight: normal;
+                margin-top: 20px;
+                margin-bottom: 15px;
+                font-weight: 200;
+                span {
+                    font-weight: normal;
+                }
             }
 
             .discussion-module-header {
@@ -503,17 +508,17 @@ body.new-theme {
                 border: 0;
                 bottom: 102px;
                 position: absolute;
-                right: 144px;
-                top: -72px;
+                right: 217px;
+                top: -95px;
 
                 .new-post-btn {
                     margin-top: 0px;
-                    @include primary-button;
+                    @include primary-button-large;
                     border: 0;
                     cursor: pointer;
 
                     &:hover {
-                        @include primary-button-hover;
+                        @include primary-button-hover-large;
                         text-decoration: none;
                     }
 
@@ -525,6 +530,7 @@ body.new-theme {
             }
 
             .forum-nav-bar {
+                padding: 0;
                 .all-posts-btn {
                     cursor: pointer;
                     border: 0;
@@ -807,6 +813,9 @@ body.new-theme {
             }
 
             .inline-threads {
+                border: 1px solid $popup-border;
+                padding: 15px 0;
+                border-radius: 2px;
                 .forum-nav-refine-bar {
                     background: none;
                     margin: 0 auto 15px;
@@ -860,12 +869,13 @@ body.new-theme {
 
                         .forum-nav-thread-link {
                             border-left: 0;
-                            background-color: $ash-white;
                             border-bottom: 1.21px solid $ash-white;
-                            padding: 14px 10px !important;
+                            padding: 14px 25px !important;
 
                             .icon {
-                                color: $black;
+                                color: var(--primary);
+                                font-size: 1.250rem;
+                                vertical-align: top;
                             }
 
                             &.is-active {
@@ -879,10 +889,43 @@ body.new-theme {
 
                             .forum-nav-thread-title {
                                 font-size: 1rem;
-                                color: $black;
-                                line-height: 22px;
+                                color: var(--primary);
+                                line-height: 21px;
                                 font-weight: 400;
                             }
+                            .posted-details{
+                                color: $gray;
+                                font-size: 12px;
+                                font-weight: 200;
+                                .username{
+                                    font-weight: normal;
+                                }
+                            }
+                            .thread-preview-body{
+                                font-size: 1rem;
+                                margin-top: 16px;
+                            }
+                            .forum-nav-thread-labels{
+                                .icon{
+                                    vertical-align: text-bottom;
+                                }
+                                li {
+                                    color:$black;
+                                    font-size: 0.875rem;
+                                }
+                            }
+                            .post-context {
+                                .related-to-label {
+                                  display: none;
+                                }
+                
+                                .group-visibility-label {
+                                  color: $gray;
+                                  font-size: 12px;
+                                  font-style: italic;
+                                  font-weight: 200;
+                                }
+                              }
 
                             .forum-nav-thread-comments-count {
                                 display: inline-block !important;
@@ -903,9 +946,6 @@ body.new-theme {
                                 }
                             }
 
-                            .posted-details,
-                            .thread-preview-body,
-                            .post-context,
                             .forum-nav-thread-votes-count {
                                 display: none !important;
                             }
@@ -1163,6 +1203,7 @@ body.new-theme {
                             padding: 0;
 
                             .forum-response {
+                                box-shadow:none;
                                 border: 0;
                                 margin-top: 20px;
 
@@ -1236,6 +1277,7 @@ body.new-theme {
                                     font-size: 0.875rem;
                                     font-weight: normal;
                                     cursor: pointer;
+                                    box-shadow: none;
 
                                     .fa-caret-down::before {
                                         color: var(--primary);
@@ -1322,6 +1364,7 @@ body.new-theme {
 
                         .discussion-reply-new {
                             .add-response {
+                                display: block !important;
                                 padding: 0;
                                 margin-top: 0;
                                 font-size: 1rem;
@@ -1388,6 +1431,16 @@ body.new-theme {
             }
 
             .discussion-module {
+                .inline-discussion-topic {
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+                .inline-threads{
+                    padding: 0;
+                    .forum-nav-thread-list .forum-nav-thread .forum-nav-thread-link{
+                        padding: 14px 10px !important;
+                    }
+                }
                 .add_post_btn_container {
                     right: 144px;
                     top: -60px;
@@ -1396,6 +1449,7 @@ body.new-theme {
                         padding: 0;
                         width: 69px;
                         min-width: auto;
+                        height: 40px !important;
 
                         &:before {
                             font-size: 1.875rem;
@@ -1409,19 +1463,33 @@ body.new-theme {
                     }
                 }
                 button.discussion-show {
+                    @include secondary-button;
                     position: initial;
                     margin-top: 20px;
+    
+                    &:hover,
+                    &:active,
+                    &:focus {
+                        @include secondary-button-hover( !important);
+                    }
+                }
+                button.discussion-show {
+                    position: initial;
                 }
                 .inline-discussion {
                     top:20px;
                     .inline-thread {
                         padding-top: 10px;
 
-                        .forum-nav-bar .all-posts-btn {
-                            padding: 0;
+                        .forum-nav-bar {
+                            padding: 10px 5px;
 
-                            .icon {
-                                margin-left: 0;
+                            .all-posts-btn {
+                                padding: 0;
+
+                                .icon {
+                                    margin-left: 0;
+                                }
                             }
                         }
                     }
@@ -1720,8 +1788,8 @@ body.new-theme {
     .wmd-prompt-dialog {
         background: #fff !important;
         padding: 20px 20px;
-        .wmd-editor-dialog-form-errors{
-            padding: 4px 0;
+        #wmd-editor-dialog-form-errors{
+            display: none;
         }
 
         .form {
