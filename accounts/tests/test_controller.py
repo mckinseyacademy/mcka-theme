@@ -29,7 +29,6 @@ from api_client.organization_models import Organization
 from lib.utils import DottableDict
 from license.models import LicenseGrant
 from mcka_apros import settings
-from api_data_manager.tests.utils import mock_api_data_manager
 
 
 class TestProcessAccessKey(AccessKeyTestBase):
@@ -262,8 +261,10 @@ class MobileIdAppendInCookieTest(TestCase, ApplyPatchMixin):
         Tests append_user_mobile_app_id_cookie helper method when user login and has organization
         """
         user_id = 4
-        mock_api_data_manager(module_path='accounts.middleware.thread_local.UserDataManager',
-                              data={'organizations': self.user_organizations})
+        self.get_basic_user_data = self.apply_patch('accounts.controller.thread_local.get_basic_user_data')
+        self.get_basic_user_data.return_value = DottableDict({
+            'organization': self.user_organizations[0]
+        })
         self.get_mobile_apps_id.return_value = self.mobile_app_id
 
         result = append_user_mobile_app_id_cookie(HttpResponseBase(), user_id)
