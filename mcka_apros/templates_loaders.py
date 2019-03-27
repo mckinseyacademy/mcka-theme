@@ -14,6 +14,11 @@ NEW_UI_ADMIN_VIEWS = [
     'manager_dashboard',
 ]
 
+OLD_UI_TEMPLATES = [
+    'user_profile',
+    'courses_menu'
+]
+
 
 def old_ui_for_admin_page(request):
     if '/admin' in request.path:
@@ -30,7 +35,7 @@ class CustomLoader:
             return dirs
 
         if thread_local.get_basic_user_data(request.user.id).get('new_ui_enabled'):
-            if old_ui_for_admin_page(request):
+            if old_ui_for_admin_page(request) or request.resolver_match.view_name in OLD_UI_TEMPLATES:
                 return dirs
             return settings.TEMPLATE_NEW_DIRS + dirs
         return dirs
