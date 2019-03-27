@@ -128,11 +128,32 @@ body {
   }
 }
 
-.courseNavWrap {
+.courseNavWrap,
+.learner-nav{
   .pn-ProductNav_Contents {
     @include float(left);
   }
 }
+// Learner Dashboard navigation for mobile
+@include media-breakpoint-down(sm){
+  .learner-nav {
+  &.courseMainHeader {
+    .mainNav {
+      > ul {
+        @include padding-right(20px);
+        > li {
+          margin: 0 15px;
+          &:first-child{
+            @include margin-left(0);
+          }
+        }
+      }
+    }
+  }
+}
+}
+
+
 
 // Nav Dropdowns
 .dropdown-menu {
@@ -605,6 +626,15 @@ footer {
   }
 }
 
+
+.dashboard-menu{
+  li{
+    .bookmark {
+      @include left(-30px);
+    }
+  }
+}
+
 // CSS specific styles
 body.rtl {
   text-align: right;
@@ -695,6 +725,7 @@ body.rtl {
       }
     }
   }
+
 
   .mapboxgl-ctrl-top-left {
     left: auto;
@@ -941,35 +972,6 @@ body.rtl {
     display: block;
     @include margin-right(-20px);
     @include margin-left(-20px);
-  }
-}
-
-.dropdown-menu {
-  .sub-nav {
-    li {
-      > a {
-        position: relative;
-        @include padding-left(0);
-      }
-      .sub-nav, ul {
-        li {
-          > a {
-            @include padding-right(20px);
-            @include padding-left(20px);
-          }
-        }
-      }
-    }
-  }
-}
-
-.sub-nav {
-
-  li {
-    .bookmark {
-      @include left(-30px);
-    }
-
   }
 }
 

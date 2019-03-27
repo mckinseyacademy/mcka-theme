@@ -1,18 +1,49 @@
 - load i18n
-.learner-nav.fadeIn.animated.delay-2s{"style": "{% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %} {% if branding and branding.top_bar_color %} {% endif %}"}
+.learner-nav.courseMainHeader.fadeIn.animated.delay-2s{"style": "{% if branding and branding.rule_color %} border-bottom: 5px solid #{branding.rule_color};{% endif %} {% if branding and branding.top_bar_color %} {% endif %}"}
   .container
-    %ul.nav.tertiary.d-none.d-sm-block
-      %li
-        %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}"} {% trans "Home" %}
-      - if calendar_enabled and not mobile_device
-        %li
-          %a.ome.dome-c#open-calendar{:href => "#"} {% trans "Calendar" %}
-      - if feature_flags.discussions
-        %li
-          %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/discussion"} {% trans "Discussions" %}
-      - if feature_flags.group_work
-        %li
-          %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work"} {% trans "Miniboard" %}
-      - if feature_flags.resources
-        %li
-          %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/resources"} {% trans "Resources" %}
+    .pn-ProductNav_Wrapper.clearfix
+      %nav#pnProductNav.pn-ProductNav.clearfix{:data-overflowing => "none"}
+        .navWrapper
+          #pnProductNavContents.mainNav.pn-ProductNav_Contents
+            %ul
+              %li.active
+                %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}"} {% trans "Home" %}
+              - if calendar_enabled and not mobile_device
+                %li
+                  %a.ome.dome-c#open-calendar{:href => "#"} {% trans "Calendar" %}
+              - if feature_flags.discussions
+                %li
+                  %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/discussion"} {% trans "Discussions" %}
+              - if feature_flags.group_work
+                %li
+                  %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work"} {% trans "Miniboard" %}
+              - if feature_flags.resources
+                %li
+                  %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/resources"} {% trans "Resources" %}
+
+
+      %button#pnAdvancerLeft.pn-Advancer.pn-Advancer_Left{"type": "button"}
+        %i.material-icons
+          keyboard_arrow_left
+      %button#pnAdvancerRight.pn-Advancer.pn-Advancer_Right{:type => "button"}
+        %i.material-icons
+          keyboard_arrow_right
+
+
+
+  %script
+    var element = $("div.mainNav li.active a.nav-link");
+    $(element).on("click", function(){
+      if($(window).width() < 992)
+        this.scrollIntoView();
+    });
+
+    var language_dir = $('html').attr('dir');
+    if(language_dir == 'rtl'){
+      $("button#pnAdvancerLeft").addClass("active");
+      $("button#pnAdvancerRight").removeClass("active");
+    }
+    else{
+      $("button#pnAdvancerRight").addClass("active");
+      $("button#pnAdvancerLeft").removeClass("active");
+    }
