@@ -1,0 +1,22 @@
+- extends "base_email_template.haml"
+- load i18n
+
+- block greetings
+  #{first_name},
+
+- block body
+  %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
+    {% blocktrans %} The Company profile deletion for #{company_name} has failed and has been cancelled. {% endblocktrans %}
+    %li
+      Time taken: {{minutes_taken}} min
+    %li
+      Reason: {{reason}}
+
+- block closing
+  %p{:style => "line-height: 22px;color: #333333;"}
+    {% trans "Best Regards," %}
+    %br
+    McKinsey Academy Team
+
+- block footer
+  %p{:style => "line-height: 22px;margin-bottom: 0;color: #333333;"}

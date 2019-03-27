@@ -627,20 +627,40 @@ def delete_company_task(company_id, owner, base_url):
     1. invoking `delete_participants_task` as function, because we don't want to proceed in case of any error,
     2. invoking `delete_company_data` for removing other company data.
     """
-    user_ids = organization_api.fetch_organization_user_ids(company_id)
-    organization = organization_api.fetch_organization(company_id)
-    company_name = organization.display_name
-
-    delete_participants_task(
-        user_ids,
-        send_confirmation_email=True,
-        owner=owner,
-        base_url=base_url,
-        email_template='admin/delete_company_email_template.haml',
-        template_extra_data={'company_name': company_name}
-    )
-
-    delete_company_data(company_id)
+    started = time.time()
+    company_name = 'Unknown'
+    try:
+        # Fetch organization
+        organization = organization_api.fetch_organization(company_id)
+        company_name = organization.display_name
+        # Delete users in organization
+        user_ids = organization_api.fetch_organization_user_ids(company_id)
+        if user_ids:
+            delete_participants_task(
+                user_ids,
+                send_confirmation_email=True,
+                owner=owner,
+                base_url=base_url,
+                email_template='admin/delete_company_email_template.haml',
+                template_extra_data={'company_name': company_name}
+            )
+        # Delete organization profile
+        delete_company_data(company_id)
+    except Exception as e:
+        subject = _('Company Profile Deletion Failed')
+        email_template = 'admin/delete_company_profile_email_template.haml'
+        template_data = {
+            'company_name': company_name,
+            'first_name': owner.get('first_name', 'admin').capitalize(),
+            'mcka_logo_url': urljoin(
+                base=base_url,
+                url='/static/image/mcka_email_logo.png'
+            ),
+            'minutes_taken': math.ceil((time.time() - started) / 60),
+            'reason': str(e),
+        }
+        task_log_msg = "Delete Company profile task"
+        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
 
 
 @task(name='admin.delete_participants_task', queue='high_priority')
@@ -661,7 +681,7 @@ def delete_participants_task(
 
     logger.info('Started - {}'.format(task_log_msg))
 
-    failed = {}
+    failed, total = {}, 0
     started = time.time()
 
     if isinstance(users_to_delete, six.string_types):
@@ -691,7 +711,7 @@ def delete_participants_task(
         else:
             logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
 
-    else:
+    elif users_to_delete:
         # We have users' IDs.
         total = len(users_to_delete)
         failed.update(delete_participants(users_to_delete))

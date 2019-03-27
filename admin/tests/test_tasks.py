@@ -25,7 +25,7 @@ from api_client.course_models import CourseCohortSettings
 from api_client.user_models import UserResponse
 from celery.exceptions import Retry
 from public_api.models import ApiToken
-from util.unit_test_helpers import ApplyPatchMixin, ApiError, make_side_effect_raise_api_error
+from util.unit_test_helpers import ApplyPatchMixin, make_side_effect_raise_api_error
 from util.unit_test_helpers.common_mocked_objects import mock_storage_save
 
 
@@ -324,12 +324,15 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         self.dummy_organization = Dummy()
         self.dummy_organization.display_name = 'dummy'
 
-    def test_delete_company_task_nonexistent_company(self):
+    @patch('admin.tasks.send_email')
+    def test_delete_company_task_nonexistent_company(self, mock_send_email):
         """
         Test deleting company that doesn't exist in LMS.
         """
-        with self.assertRaises(ApiError):
-            delete_company_task(self.mock_id, None, None)
+        mock_send_email.delay = Mock()
+        delete_company_task(self.mock_id, {}, None)
+        args, _ = mock_send_email.delay.call_args
+        self.assertEqual('Company Profile Deletion Failed', args[0])
 
     @patch('api_client.organization_api.delete_organization')
     @patch('admin.controller.remove_mobile_app_theme', side_effect=make_side_effect_raise_api_error(404))
@@ -345,7 +348,7 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         fetch_users_mock.return_value = [self.mock_id]
         fetch_organization_mock.return_value = self.dummy_organization
 
-        delete_company_task(self.mock_id, None, None)
+        delete_company_task(self.mock_id, {}, None)
 
         for mock in mocks:
             self.assertEqual(mock.call_count, 1)
@@ -364,7 +367,7 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         fetch_users_mock.return_value = [self.mock_id]
         fetch_organization_mock.return_value = self.dummy_organization
 
-        delete_company_task(self.mock_id, None, None)
+        delete_company_task(self.mock_id, {}, None)
         for mock in mocks:
             self.assertEqual(mock.call_count, 1)
 
