@@ -65,15 +65,13 @@
             {% trans "Warning: Deletion cannot be undone!" %}
           #confirmDeletionContainer
             .confirm-deletion-box
-              %input{type: "checkbox", id: "checkbox_confirm_user_deletion_1", class: "deletionConfirmationCheckbox"}
-              %label
-                .title
-                  {% trans "User will not be able to access the platform" %}
+              .checkboxContainer
+                %input{type: "checkbox", id: "checkbox_confirm_user_deletion_1", class: "deletionConfirmationCheckbox"}
+                {% trans "User will not be able to access the platform" %}
               %br
-              %input{type: "checkbox", id: "checkbox_confirm_user_deletion_2", class: "deletionConfirmationCheckbox"}
-              %label
-                .title
-                  {% trans "User data will no longer be available in the platform" %}
+              .checkboxContainer
+                %input{type: "checkbox", id: "checkbox_confirm_user_deletion_2", class: "deletionConfirmationCheckbox"}
+                {% trans "User data will no longer be available in the platform" %}
         .errorContainer
         .button-wrapper
           %a.button.small.radius.menuButton.cancelButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
@@ -137,15 +135,13 @@
             .admin-form
               %form{action: "/admin/api/participants/delete_participants_from_csv", method: "DELETE", id: "deleteParticipantsConfirm"}
                 = form_delete_confirm
-                %input{type: "checkbox", id: "checkbox_confirm_mass_user_deletion_1", class: "massDeletionConfirmationCheckbox"}
-                %label
-                  .title
-                    {% trans "Users will not be able to access the platform" %}
+                .checkboxContainer
+                  %input{type: "checkbox", id: "checkbox_confirm_mass_user_deletion_1", class: "massDeletionConfirmationCheckbox"}
+                  {% trans "Users will not be able to access the platform" %}
                 %br
-                %input{type: "checkbox", id: "checkbox_confirm_mass_user_deletion_2", class: "massDeletionConfirmationCheckbox"}
-                %label
-                  .title
-                    {% trans "User data will no longer be available in the platform" %}
+                .checkboxContainer
+                  %input{type: "checkbox", id: "checkbox_confirm_mass_user_deletion_2", class: "massDeletionConfirmationCheckbox"}
+                  {% trans "User data will no longer be available in the platform" %}
 
               #delete-confirm-error-list.errorContainer
               .button-wrapper
