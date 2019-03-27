@@ -459,11 +459,14 @@
         toggleSpinner: function (root, show) {
             if ($('.new-theme').length) {
                 var spinner_class = "xblock-preloader";
+                var spinner_class_nonLesson = "xblock-donut";
                 if (show) {
-                    $(".lesson-content , .discussion-content").addClass(spinner_class);
+                    $(".lesson-content").addClass(spinner_class);
+                    $(".discussion-content").addClass(spinner_class_nonLesson);
                 } else {
                     setTimeout(function () {
-                        $(".lesson-content , .discussion-content").removeClass(spinner_class);
+                        $(".lesson-content").removeClass(spinner_class);
+                        $(".discussion-content").removeClass(spinner_class_nonLesson);
                     }, 2000);
                 }
             } else {

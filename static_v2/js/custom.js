@@ -518,3 +518,8 @@ $(window).on("load", function () {
     $('.preloader').removeClass("preloader");
     $('.courseLanding .contentCard').css("visibility", "visible");
 });
+
+$('.my-courses .card').click(function () {
+    $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
+    $(this).addClass("loader").addClass("donut-loader");
+});

@@ -239,7 +239,7 @@
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: 999;
+    z-index: 11001;
     background-color: $light-gray;
     display: block;
   }
@@ -251,7 +251,7 @@
     background-repeat: no-repeat;
     background-size: 1200px;
     position: absolute;
-    z-index: 999;
+    z-index: 11001;
     display: block;
     background-size: 100%;
     width: 150%;
@@ -295,7 +295,8 @@
 
 // Progressive Donut loader
 
- .donut-loader {
+ .donut-loader, 
+ .xblock-donut {
   position: relative;
   height: 500px;
   overflow: hidden;
@@ -333,6 +334,26 @@
 
       to {
           transform: rotate(360deg)
+      }
+  }
+  &.card {
+      height: auto;
+
+      &::before {
+          background-color: rgba(255, 255, 255, 0.6);
+      }
+
+      &::after {
+        margin: 0 auto;
+        top: 44%;
+        margin-top: -52px;
+        width: 50px;
+        height: 50px;
+        border-width: 6px;
+
+        @include media-breakpoint-between(xs, sm) {
+            top: 50%;
+        }
       }
   }
 }
