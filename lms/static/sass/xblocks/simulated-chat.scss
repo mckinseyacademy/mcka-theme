@@ -61,14 +61,13 @@
                             button {
                                 font-weight: 600;
                                 font-size: 12px;
-                                height: 40px;
+                                min-height: 40px;
                                 border-radius: 2px;
                                 text-transform: uppercase;
-                                line-height: 1.83;
                                 letter-spacing: 0.5px;
                                 text-align: center;
                                 padding: 0 20px;
-                                border: 1px solid var(--primary);
+                                border: 1px solid $primary;
                                 transition: .35s;
                                 color: $primary;
                                 cursor: pointer;
@@ -81,18 +80,16 @@
                                 }
 
                                 &:disabled {
-                                    background: $gray;
                                     opacity: 1;
                                     border-color: $gray;
                                     cursor: not-allowed;
-                                    color: $white;
+                                    color: $gray;
 
                                     &:hover {
-                                        background: $gray;
                                         opacity: 1;
                                         border-color: $gray;
                                         cursor: not-allowed;
-                                        color: $white;
+                                        color: $gray;
                                     }
                                 }
                             }
@@ -136,6 +133,17 @@
                             @include font-size(16);
 
                         }
+                    }
+                }
+
+                // Chat overlay
+                .image-overlay
+                {
+                    img
+                    {
+                        width: 100% !important;
+                        height: 100% !important;
+                        object-fit: contain;
                     }
                 }
             }
