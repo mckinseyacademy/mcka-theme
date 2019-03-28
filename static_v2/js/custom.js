@@ -118,7 +118,7 @@ $(document).ready(function() {
 
 
     $(function() {
-        $('[data-toggle="popover"]').popover()
+        $('[data-toggle="popover"]').popover();
     });
     //    Add and Remove Class on body for Lesson Overview page
     var removeClass = true;
@@ -127,6 +127,7 @@ $(document).ready(function() {
         $("body").toggleClass('zoomIn');
         removeClass = false;
         $.cookie(cookie_key, $("body").hasClass('zoomIn'), { path: '/' });
+        $('.longTapPopover').popover('hide');
     });
     // when clicking the div : never remove the class
     $(".zoomWrap").click(function() {

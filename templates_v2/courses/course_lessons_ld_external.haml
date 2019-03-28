@@ -61,7 +61,7 @@
                               .data.title
                                 %span= module.name
                                   -if not module.is_started
-                                    %i.material-icons.locked{ :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
+                                    %i.material-icons.locked.longTapPopover{ :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => "", :oncontextmenu => "return false;"} lock
                               .data.status
                                 %i.material-icons
                                 - if module.progress == 100
