@@ -111,9 +111,9 @@
         baseDomain: '{{ lms_base_domain }}',
         lmsSubDomain: '{{ lms_sub_domain }}',
         lmsPort: '{{ lms_port }}',
-        // jumpLinkRewriter: Apros.jumpLinkRewriter,
+        jumpLinkRewriter: Apros.jumpLinkRewriter,
         data: {
-            // activate_block_id: Apros.getParameterByName('activate_block_id'),
+            activate_block_id: Apros.getParameterByName('activate_block_id'),
         },
         {% if use_current_host %}
         useCurrentHost: true,
