@@ -594,8 +594,18 @@ class UploadProfileImageForm(forms.Form):
 
 class EditFullNameForm(forms.Form):
     ''' edit user full name '''
-    first_name = forms.CharField(max_length=30, label=_('First Name'), validators=[AlphanumericWithAccentedChars()])
-    last_name = forms.CharField(max_length=30, label=_('Last Name'), validators=[AlphanumericWithAccentedChars()])
+    first_name = forms.CharField(
+        max_length=30,
+        label=_('First Name'),
+        validators=[AlphanumericWithAccentedChars()],
+        error_messages={"required": _("First Name is required.")}
+    )
+    last_name = forms.CharField(
+        max_length=30,
+        label=_('Last Name'),
+        validators=[AlphanumericWithAccentedChars()],
+        error_messages={"required": _("Last Name is required.")}
+    )
 
 
 class EditTitleForm(forms.Form):

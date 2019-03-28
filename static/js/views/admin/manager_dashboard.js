@@ -25,7 +25,7 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       value = attributes['proficiency'];
       if (value == '-')
         return value;
-      return InternationalizePercentage(parseInt(value));
+      return parseInt(value);
     }},
     { title: gettext('Progress'), index: true, name: 'progress', actions: function(id, attributes)
     {

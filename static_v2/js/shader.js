@@ -117,23 +117,9 @@ $(".ome").mouseenter(function (e) {
     }
 });
 
-
-let color = $('.visualization .filled.band-1').css('background-color');
-if (color !== undefined && color !== 'rgba(0, 0, 0, 0)') {
-
-    $('.visualization .filled.band-2').css('background-color', lighten(rgb2hex(color), 15));
-}
-
-if (typeof lighten !== "undefined" && primary != null) {
-    $('.bbGrid-container thead, .primaryBgLighten').css('background-color', lighten(primary, 60));
-
-    //  Using primary lighten color for description area of lessons page.
-}
-
-//  Course landing pagelesson bar hover bg color
-if (secondary !== undefined) {
-    $('.courseRow a.description').css('background-color', lighten(secondary, 90));
-    $('.courseRow .bookmark.primary svg path').css('fill', lighten(secondary, 0));
+if (secondary !== undefined && secondary !== 'rgba(0, 0, 0, 0)') {
+    $('.visualization .filled.band-2').css('background-color', lighten(secondary, 50));
+    $('.visualization .filled.total').css('background-color', darken(secondary, 50));
 }
 
 //  Course landing pagelesson bar hover bg color

@@ -4,28 +4,167 @@
 - block content
   #mainParticipantsWrapper
     #participantsListTopContainer{:internal-flag => '#{internalAdminFlag}'}
+      #participantsTitleContainer
+        %p {% trans "Participants" %}
       #participantsAddWrapper
+        %a.button.small.radius.menuButton{:type => "button", "data-dropdown": "csvImportContainer", "aria-controls": "csvImportContainer", "aria-expanded": "false"}
+          {% trans 'Import .CSV' %}
+          %i.fa.fa-sort-desc.buttonIcon
+        .f-dropdown.dropdownMenu#csvImportContainer{"data-dropdown-content": "true", "aria-hidden": "true"}
+          .dropdownItem{'data-reveal-id': 'import_from_csv'}
+            {% trans 'Import New Participants' %}
+          %br
+          .dropdownItem{'data-reveal-id': 'enroll_to_course_from_csv'}
+            {% trans 'Enroll Existing Participants' %}
+          %br
+          .dropdownItem{'data-reveal-id': 'update_profile_data'}
+            {% trans 'Update profile data' %}
+          %br
+          .dropdownItem{'data-reveal-id': 'update_manager_data'}
+            {% trans 'Update manager data' %}
+          %br
         %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "{% trans 'Add New Participant' %}"}
-        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Enroll Existing Participants' %}", 'data-reveal-id': 'enroll_to_course_from_csv'}
-        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Import from CSV' %}", 'data-reveal-id': 'import_from_csv'}
-        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update profile data' %}", 'data-reveal-id': 'update_profile_data'}
-        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Update manager data' %}", 'data-reveal-id': 'update_manager_data'}
+        - if enableDataDeletion
+          %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Bulk Delete' %}", 'data-reveal-id': 'advanced_delete_modal'}
         %a.button.small.radius.menuButton{:href => "{% url 'participants_import_progress' %}"}
-          {% trans "Import Progress" %}
-        %input.button.small.radius.secondary.menuButton{:type => "button", :value => "{% trans 'CSV Template' %}", 'data-reveal-id': 'download_csv_template'}
+          {% trans "View Import Progress" %}
+        #searchBar
+          %select#searchSelectorField{"required": "true"}
+            %option{"disabled": true, "selected": "true"}
+              Search by
+            %option{"value": "organization_display_name"}
+              Company
+            %option{"value": "courses"}
+              Course
+            %option{"value": "name"}
+              Name
+            %option{"value": "email"}
+              Email
+          %input#searchQueryField{:placeholder => '{% trans "Search" %}', :type => 'text'}
+          %a#searchButton
+            %i.fa.fa-search.fa-flip-horizontal
       %hr
-      #participantsSearchWrapper
-        .row
-          .large-3.columns
-            %input{:placeholder => '{% trans "Company" %}', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
-          .large-3.columns
-            %input{:placeholder => '{% trans "Course" %}', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
-          .large-3.columns
-            %input{:placeholder => '{% trans "Name" %}', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
-          .large-3.columns
-            %input{:placeholder => '{% trans "Email" %}', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
 
     #participantsListViewGridBlock
+
+    - if enableDataDeletion
+      #delete_user_modal.reveal-modal.small{'data-reveal': ''}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        .titleContainer
+          %h2 {% trans "Delete data" %}
+        %hr
+        .contentContainer
+          {% trans "Data for below participant will be deleted:" %}
+          %br
+          %br
+          #participantInfoContainer
+            User Name
+          .deletionWarning
+            %i.fa.fa-warning
+            {% trans "Warning: Deletion cannot be undone!" %}
+          #confirmDeletionContainer
+            .confirm-deletion-box
+              .checkboxContainer
+                %input{type: "checkbox", id: "checkbox_confirm_user_deletion_1", class: "deletionConfirmationCheckbox"}
+                {% trans "User will not be able to access the platform" %}
+              %br
+              .checkboxContainer
+                %input{type: "checkbox", id: "checkbox_confirm_user_deletion_2", class: "deletionConfirmationCheckbox"}
+                {% trans "User data will no longer be available in the platform" %}
+        .errorContainer
+        .button-wrapper
+          %a.button.small.radius.menuButton.cancelButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+            {% trans "Cancel" %}
+          %a.button.small.radius.menuButton.confirmButton.disabled{:type => "button"}
+            {% trans "Yes" %}
+
+      #delete_user_success.reveal-modal.small{'data-reveal': ''}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        .titleContainer
+          %h2 {% trans "Successfully deleted user!" %}
+        .button-wrapper.topPadding
+          %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "I'm Done"}
+            {% trans "I'm Done" %}
+
+      #advanced_delete_modal.reveal-modal.small{'data-reveal': ''}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        .titleContainer
+          %h2 {% trans "Delete Participants From CSV" %}
+        .bottomPadding
+          %a#deleteParticipantTemplate{:href => "#", 'download': 'template.csv'}
+            {% trans "Download CSV Template" %}
+        %p
+          {% blocktrans %}
+          Download the CSV template above to delete users. All fields in the template are required.
+          {% endblocktrans %}
+        %hr
+        .admin-form
+          %form{action: "/admin/api/participants/delete_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "fileInputDelete"}
+            - csrf_token
+            = form_delete
+          %form{action: "/admin/api/participants/delete_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsDeleteCsvUpload'}
+          .upload_stats
+          #delete-error-list.errorContainer
+
+          .button-wrapper
+            %input.button.radius.small{type: "submit", value: "{% trans 'Delete Participants' %}", disabled: "disabled", id: 'submitCSVDelete'}
+            %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+              {% trans "Close" %}
+            %i.fa.fa-spin.fa-spinner{style: "display:none;"}
+
+      #delete_participants_confirm_message.reveal-modal.tiny{'data-reveal': ''}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        .titleContainer
+          %h2.delete_message {% trans "Delete Data" %}
+        .contentContainer
+          %p
+            {% blocktrans %} Data for
+            %span.user_count.boldText
+              0
+            participants will be deleted.
+            {% endblocktrans %}
+          %br
+          .deletionWarning
+            %i.fa.fa-warning
+            {% trans "Warning: Deletion cannot be undone!" %}
+          .confirm-deletion-box
+            .admin-form
+              %form{action: "/admin/api/participants/delete_participants_from_csv", method: "DELETE", id: "deleteParticipantsConfirm"}
+                = form_delete_confirm
+                .checkboxContainer
+                  %input{type: "checkbox", id: "checkbox_confirm_mass_user_deletion_1", class: "massDeletionConfirmationCheckbox"}
+                  {% trans "Users will not be able to access the platform" %}
+                %br
+                .checkboxContainer
+                  %input{type: "checkbox", id: "checkbox_confirm_mass_user_deletion_2", class: "massDeletionConfirmationCheckbox"}
+                  {% trans "User data will no longer be available in the platform" %}
+
+              #delete-confirm-error-list.errorContainer
+              .button-wrapper
+                %a.button.small.radius.menuButton.cancelButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+                  {% trans "Cancel" %}
+                %a.button.small.radius.menuButton.confirmButton.disabled{:type => "button"}
+                  {% trans "Yes" %}
+                %i.fa.fa-spin.fa-spinner{style: "display:none;"}
+
+      #delete_participants_success.reveal-modal.small{'data-reveal': ''}
+        .close-reveal-modal
+          %i.fa.fa-times-circle
+        .titleContainer
+          %h2.delete_message {% trans "Your CSV is Being Processed..." %}
+        .contentContainer
+          %p.bottomPadding
+            {% trans "Data deletion has started for selected participant / company / participants." %}
+          %p.send_email{style: "display:none;"}
+            {% trans "You will be notified by email once completed." %}
+
+          .button-wrapper.topPadding
+            %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Close"}
+              {% trans "Close" %}
 
     #add_a_participant.reveal-modal.small{'data-reveal': ''}
       .close-reveal-modal
@@ -80,7 +219,7 @@
               {% trans "City" %}
             .participantCityValue
               %input.cleanable{:type => "text", :name => "city", :maxlength => "60"}
-        .row        
+        .row
           .large-6.columns.participantGender
             .participantGenderLabel.labelUniversal
               {% trans "Gender" %}
@@ -131,12 +270,12 @@
           {% trans "Add Participant" %}
         %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
           {% trans "Cancel" %}
-    
+
     #download_csv_template.reveal-modal.small{'data-reveal': ''}
       .close-reveal-modal
         %i.fa.fa-times-circle
       %h2 {% trans "CSV Template and Formatting" %}
-      %p 
+      %p
         {% trans "Download the CSV template below to import users." %}
         %strong {% trans "All fields in the template are required." %}
         {% trans "Note that you must add users to preexisting companies and courses." %}
@@ -158,7 +297,7 @@
         %form{action: "/admin/api/participants/import_participants", method: "POST", enctype: "multipart/form-data"}
           - csrf_token
           = form
-          
+
           .button-wrapper.topPadding
             %input.button.radius.small{type: "submit", value: "{% trans 'Add Participants' %}", disabled: "disabled", id: ''}
             %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
@@ -305,3 +444,8 @@
     %p.mainText
     %a.close-reveal-modal#closeParticipantUpdateStatus{"aria-label": "Close"}
       &#215;
+
+
+- block js_snippets
+  :javascript
+    var enable_data_deletion = '{{enableDataDeletion}}';

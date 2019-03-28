@@ -2,7 +2,7 @@ import httpretty
 
 from django.conf import settings
 
-from api_client.course_api import COURSEWARE_API
+from api_client.course_api import COURSEWARE_API, COURSE_COURSE_API
 
 
 def setup_course_response(course_id, username):
@@ -21,6 +21,130 @@ def setup_course_response(course_id, username):
         status=200,
         content_type='application/json',
     )
+
+
+def setup_course_overview_response(course_id):
+    url = '{}/{}/{}/overview?parse=true'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id
+    )
+
+    httpretty.register_uri(
+        httpretty.GET,
+        url,
+        body=course_overview,
+        status=200,
+        content_type='application/json',
+    )
+
+
+def setup_course_list_response():
+    url = '{}/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+    )
+
+    httpretty.register_uri(
+        httpretty.GET,
+        url,
+        body=course_list,
+        status=200,
+        content_type='application/json',
+    )
+
+
+def setup_course_v1_response(course_id):
+    url = '{}/{}/{}/?'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSE_COURSE_API,
+        course_id
+    )
+
+    httpretty.register_uri(
+        httpretty.GET,
+        url,
+        body=course_vi,
+        status=200,
+        content_type='application/json',
+    )
+
+
+course_list = '''[
+    {
+        "id": "COTORG/COT101/2018_T1",
+        "name": "ContentCohorting",
+        "category": "course",
+        "number": "COT101",
+        "org": "COTORG",
+        "uri": "http://lms.mcka.local/api/server/courses/COTORG/COT101/2018_T1",
+        "course_image_url": "/c4x/COTORG/COT101/asset/images_course_image.jpg",
+        "mobile_available": false,
+        "due": null,
+        "start": "2018-01-01T00:00:00Z",
+        "end": null
+    },
+    {
+        "id": "course-v1:edX+DemoX+Demo_Course",
+        "name": "edX Demonstration Course",
+        "category": "course",
+        "number": "DemoX",
+        "org": "edX",
+        "uri": "http://lms.mcka.local/api/server/courses/course-v1:edX+DemoX+Demo_Course",
+        "course_image_url": "/asset-v1:edX+DemoX+Demo_Course+type@asset+block@images_course_image.jpg",
+        "mobile_available": false,
+        "due": null,
+        "start": "2019-02-05T05:00:00Z",
+        "end": null
+    }
+]'''
+
+course_vi = '''{
+    "blocks_url": "http://lms.mcka.local/api/courses/v1/blocks/?course_id=COTORG%2FCOT101%2F2018_T1",
+    "effort": null,
+    "end": null,
+    "enrollment_start": null,
+    "enrollment_end": null,
+    "id": "CCS101/ORG101/2018",
+    "media": {
+        "course_image": {
+            "uri": "/c4x/COTORG/COT101/asset/images_course_image.jpg"
+        },
+        "course_video": {
+            "uri": null
+        },
+        "image": {
+            "raw": "http://lms.mcka.local/c4x/COTORG/COT101/asset/images_course_image.jpg",
+            "small": "http://lms.mcka.local/c4x/COTORG/COT101/asset/images_course_image.jpg",
+            "large": "http://lms.mcka.local/c4x/COTORG/COT101/asset/images_course_image.jpg"
+        }
+    },
+    "name": "ContentCohorting",
+    "number": "COT101",
+    "org": "COTORG",
+    "short_description": "",
+    "start": "2018-01-01T00:00:00Z",
+    "start_display": "Jan. 1, 2018",
+    "start_type": "timestamp",
+    "pacing": "instructor",
+    "mobile_available": false,
+    "hidden": false,
+    "invitation_only": false,
+    "course_id": "COTORG/COT101/2018_T1",
+    "overview": ""
+}'''  # NOQA
+
+course_overview = '''{
+    "sections": [
+        {
+            "class": "about",
+            "attributes": {},
+            "body": "<h2>About This Course</h2><p>Include your long course description here. The long course description should contain 150-400 words.</p><p>This is paragraph 2 of the long course description. Add more paragraphs as needed. Make sure to enclose them in paragraph tags.</p>"
+        }
+    ],
+    "course_image_url": "/c4x/COTORG/COT101/asset/images_course_image.jpg",
+    "course_video": ""
+}'''  # NOQA
 
 
 course_depth_5 = '''{

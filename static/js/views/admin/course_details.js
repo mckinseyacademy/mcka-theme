@@ -60,7 +60,7 @@
         value = attributes['proficiency'];
         if (value == '-')
           return value;
-        return InternationalizePercentage(parseInt(value));
+        return parseInt(value);
       }},
       { title: gettext('Engagement'), index: true, name: 'engagement', actions: function(id, attributes)
       {
@@ -186,7 +186,7 @@
       $(document).on('onSearchEvent', { extra : this}, this.onSearchEvent);
       $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
 
-      $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').on('enter', 'input', function(event, status){
+      $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar, #courseDetailsParticipantsSearchWrapper.bbGrid-search-bar').on('enter', 'input', function(event, status){
           if (_pointer.course_participant_search_flag) {
               _pointer.course_participant_search_flag = false;
               var querryDict = {};
@@ -195,7 +195,7 @@
               if (status.clearButton){
                 var value = '';
               }else{
-                  var value = $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').val().trim();
+                  var value = $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar, #courseDetailsParticipantsSearchWrapper.bbGrid-search-bar').find('input').val().trim();
               }
               var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
               if (companyPageFlag == 'True')
@@ -600,18 +600,18 @@
   });
 
 $(function() {
-    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').keyup(function(e){
+    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar, #courseDetailsParticipantsSearchWrapper.bbGrid-search-bar').find('input').keyup(function(e){
       if(e.keyCode == 13){
         $(this).trigger('enter', [{ clearButton : false}]);
       }
     });
 
-    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').courseParticipantsclearSearch({ callback: function() {
-          $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').trigger('enter', [{ clearButton : true}]);
+    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar, #courseDetailsParticipantsSearchWrapper.bbGrid-search-bar').find('input').courseParticipantsclearSearch({ callback: function() {
+          $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar, #courseDetailsParticipantsSearchWrapper.bbGrid-search-bar').find('input').trigger('enter', [{ clearButton : true}]);
     } } );
 
     // update value
-    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar').find('input').val('').change();
+    $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar, #courseDetailsParticipantsSearchWrapper.bbGrid-search-bar').find('input').val('').change();
 });
 
   (function ($) {

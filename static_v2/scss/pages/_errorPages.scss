@@ -1,0 +1,29 @@
+// Error pages Styles
+.errorContWrap{
+  padding: 30px;
+  color: $gray;
+  .icon{
+    margin-bottom: 15px;
+    i{
+      font-size: 3.55rem;
+    }
+  }
+  .errorText{
+    margin-bottom:10px;
+    text-align: center;
+    color: $black;
+    h4{
+      margin: 0;
+      text-align: center;
+    }
+  }
+  .content{
+    p{
+      text-align: center;
+      margin:6px 0 0;
+      &:first-child{
+        margin: 0;
+      }
+    }
+  }
+}

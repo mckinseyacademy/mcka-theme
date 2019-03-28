@@ -28,6 +28,10 @@ class UserResponse(JsonObjectWithImage):
         return getattr(self.profile_image, size_name)
 
     @property
+    def has_image(self):
+        return self.profile_image.has_image
+
+    @property
     def image_url_full(self):
         return self._get_profile_image_absolute_url('image_url_full')
 

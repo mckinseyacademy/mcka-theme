@@ -4,6 +4,9 @@ $(function(){
 
   $.xblock.getRuntime().listenTo('xblock-rendered', function(event, data) {
     updateTileProgress();
+    $(window).on('beforeunload', function() {
+      updateTileProgress();
+    })
     $(data).find(".input-main, .submit, button.submit, #group-project-completion-checkmark, input.file_upload[type='file']").click(function () {
       $(document).ajaxComplete(function() {
         updateTileProgress();

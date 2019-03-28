@@ -12,7 +12,38 @@
 .viewDetailCourse {
   display: none;
 }
+.bookmark {
+  svg {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    width: 20px;
+  }
+  &.primary {
+    background: none;
+    svg {
+      path {
+        fill: var(--primary);
+      }
+    }
+  }
+  &.secondary {
+    background: none;
+    svg {
+      path {
+        fill: var(--secondary);
+      }
+    }
+  }
+}
 .courseLanding {
+  .donut-loader {
+    max-height: 600px;
+    overflow: hidden;
+    .contentCard {
+      visibility: hidden;
+    }
+  }
   #course-final-grade {
     @extend .mb-4;
     text-align: center;
@@ -31,6 +62,9 @@
     .holder {
       min-height: 140px;
       overflow: hidden;
+      @include media-breakpoint-down(xs) {
+        min-height: 195px;
+      }
     }
   }
   .viewDetailCourse {
@@ -93,10 +127,12 @@
     padding: 0 28px;
     max-width: 70%;
     min-height: 112px;
+    @include media-breakpoint-down(sm) {
+      max-width: 100%;
+    }
 
     &:first-child {
       > .holder {
-        display: table;
         width: 100%;
       }
     }
@@ -208,6 +244,7 @@
     }
     .bookmark {
       z-index: 2;
+      width: 20px;
       pointer-events: none;
     }
 
@@ -229,7 +266,7 @@
       bottom: auto;
       height: 100%;
       text-align: left;
-      background-color: lighten($primary, 50);
+      background-color: lighten($secondary, 50);
       font-style: italic;
       color: #191561;
       opacity: 0;
@@ -553,6 +590,10 @@
       }
     }
   }
+  .no-data {
+    display: none;
+    visibility: hidden;
+  }
 }
 
 .videosWidget {
@@ -636,12 +677,51 @@ blockquote {
     }
   }
 }
+.lesson-dropdown-frame {
+  padding: 0 0 10px;
+  .dropdown-menu.allLessons .allCoursesList .holder .data.title {
+    @include media-breakpoint-down(xs) {
+      width: 77px;
+      >span {
+        padding-left: 0;
+      }
+    }
+  }
+  .lesson-dropdown-holder {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    @include media-breakpoint-down(sm) {
+      display: block;
+    }
+    >a {
+      display: inline-block;
+      padding: 4px 10px;
+      border: 1px solid var(--primary);
+      border-radius: 2px;
+      font-size: 12px;
+      line-height: 20px;
+    }
+    .dropdown-menu {
+      top: 100%!important;
+      left: 0!important;
+      min-width: 430px;
+      width: 100%;
+      max-width: 100%;
+      @include media-breakpoint-down(sm) {
+        min-width: 270px;
+      }
+      &:after {
+        display: none;
+      }
+    }
+  }
+}
 
 // Media Queries
 
 //Tablet
-@media screen and (max-width: 992px) {
-
+@include media-breakpoint-down(md) {
   .container {
     &.courseLanding {
       max-width: 100%;
@@ -772,7 +852,8 @@ blockquote {
 }
 
 //Mobile
-@media screen and (max-width: 767px) {
+
+@include media-breakpoint-down(sm) {
 
   .progressWidgets {
     .widget {
@@ -803,7 +884,7 @@ blockquote {
         > .holder {
           display: block;
 
-          .progressArea {
+          .progressArea.bar {
             float: none;
             display: block;
             width: 100%;
@@ -825,7 +906,7 @@ blockquote {
         position: relative;
 
         .contenrArea {
-          margin-top: 108px !important;
+          margin-top: 114px !important;
         }
 
         .bar {
@@ -835,7 +916,11 @@ blockquote {
       }
     }
   }
-
+  @include media-breakpoint-down(xs) {
+    .progressWidgets .course-progress .holder .bar {
+      bottom: 135px;
+    }
+  }
   .contentCard {
     padding: 20px;
   }

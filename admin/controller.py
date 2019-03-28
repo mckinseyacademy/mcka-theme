@@ -8,6 +8,8 @@ import string
 import tempfile
 import threading
 import urllib
+
+import chardet
 import requests
 import uuid
 from datetime import datetime
@@ -31,9 +33,12 @@ from rest_framework import status
 from rest_framework.response import Response
 
 from accounts.helpers import get_user_activation_links, get_complete_country_name, unmake_user_manager
-from accounts.models import UserActivation
+from accounts.models import UserActivation, PublicRegistrationRequest, RemoteUser, UserPasswordReset
 from admin.forms import MobileBrandingForm
-from admin.models import Program, SelfRegistrationRoles, ClientCustomization
+from admin.models import Program, SelfRegistrationRoles, ClientCustomization, UserRegistrationError, \
+    DashboardAdminQuickFilter, BatchOperationErrors, AccessKey, ClientNavLinks, BrandingSettings, LearnerDashboard, \
+    CompanyInvoicingDetails, CompanyContact, Client, WorkGroup, WorkGroupActivityXBlock, EmailTemplate, \
+    GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY, GROUP_PROJECT_V2_ACTIVITY_CATEGORY
 from api_client import (
     course_api,
     course_models,
@@ -50,25 +55,26 @@ from api_client.api_error import ApiError
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.group_api import TAG_GROUPS
 from api_client.import_api import import_participant
-from api_client.mobileapp_api import create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme
+from api_client.mobileapp_api import (
+    create_mobile_app_theme, get_mobile_app_themes, update_mobile_app_theme, remove_mobile_app_theme
+)
 from api_client.organization_api import get_organization_fields
 from api_client.project_models import Project
-from api_client.user_api import USER_ROLES, update_user_company_field_values, get_company_fields_value_for_user
-from courses.models import FeatureFlags, CourseMetaData
+from api_client.user_api import (
+    USER_ROLES, update_user_company_field_values, get_company_fields_value_for_user, get_users
+)
+from certificates.models import UserCourseCertificate
+from courses.models import FeatureFlags, CourseMetaData, LessonNotesItem
 from lib.mail import (
     sendMultipleEmails, email_add_single_new_user, create_multiple_emails
 )
 from lib.utils import DottableDict
 from license import controller as license_controller
+from public_api.models import ApiToken
 from util.data_sanitizing import sanitize_data, clean_xss_characters, remove_characters, special_characters_match
 from util.validators import validate_first_name, validate_last_name, RoleTitleValidator, normalize_foreign_characters
 from api_data_manager.course_data import CourseDataManager
 
-from .models import (
-    Client, WorkGroup, UserRegistrationError, BatchOperationErrors, WorkGroupActivityXBlock,
-    GROUP_PROJECT_CATEGORY, GROUP_PROJECT_V2_CATEGORY,
-    GROUP_PROJECT_V2_ACTIVITY_CATEGORY, EmailTemplate
-)
 from .permissions import Permissions
 from accounts.helpers import make_user_manager, get_user_by_email
 
@@ -77,7 +83,7 @@ MINIMAL_COURSE_DEPTH = 5
 # need to load one level more deep to get Group Project V2 stages as their close dates are needed for report
 GROUP_WORK_REPORT_DEPTH = 6
 
-_logger = logging.getLogger(__name__)
+logger = logging.getLogger(__name__)
 
 
 class GroupProject(object):
@@ -2249,8 +2255,10 @@ def crop_image(request, img_name):
     return image_io
 
 
-def remove_desktop_branding_image(img_type, client_id):
-    '''Removes the global, desktop logo and Background image '''
+def remove_desktop_branding_images(img_type, client_id):
+    """
+    Remove the global, desktop logo and Background image.
+    """
     customization = ClientCustomization.objects.get(client_id=client_id)
     image_url = getattr(customization, img_type).replace('/accounts/', '')
     if image_url and default_storage.exists(image_url):
@@ -2304,6 +2312,19 @@ def update_mobile_client_detail_customization(request, client_id):
         errors = str(mobile_branding_form.errors)
         cleantext = BeautifulSoup(errors, "html").text
         return cleantext
+
+
+def remove_mobile_app_themes(client_id):
+    """
+    Remove all mobile clients theme images.
+    """
+    mobile_app_themes = get_mobile_app_themes(client_id)
+    for theme in mobile_app_themes:
+        try:
+            remove_mobile_app_theme(theme['id'])
+        except ApiError:
+            # Getting and removing theme is not atomic, so it is possible that it has already been deleted.
+            pass
 
 
 def create_roles_list(request):
@@ -2741,3 +2762,109 @@ class ProblemReportPostProcessor(object):
                 })
 
         return output.values(), ['email'] + sorted(self._cols.values())
+
+
+def get_emails_from_csv(file_path):
+    """Retrieves user from single-column CSV. The header is treated as a filter for querying users."""
+    from util.s3_helpers import get_storage
+    storage = get_storage(secure=True)
+    file_stream = storage.open(file_path)
+
+    data = ''.join(file_stream.chunks())
+    encoding = chardet.detect(data)['encoding']
+
+    if encoding not in ['ascii', 'utf-8']:
+        # csv module does not support UTF-16 which can be used by Excel
+        data = data.decode(encoding).encode('utf-8')
+
+    lines = data.splitlines()
+    param_type = lines.pop(0)
+    if param_type != 'email':
+        raise ValueError(_("The CSV file has to contain 'email' header."))
+    return param_type, lines
+
+
+def get_users_for_deletion(file_path):
+    """Retrieves user from single-column CSV. The header is treated as a filter for querying users."""
+    param_type, data = get_emails_from_csv(file_path)
+    users = get_users(**{param_type: data})
+    return users
+
+
+def delete_participants(user_ids, users=None):
+    """
+    Deletes all data related to users from LMS and Apros.
+    """
+    from admin.views import get_users_by_ids  # We want to avoid circular imports here.
+
+    if users is None:
+        users = get_users_by_ids(user_ids)
+
+    failed = {}
+
+    for chunk in xrange(0, len(users), settings.DELETION_SYNCHRONOUS_MAX_USERS):
+        # Get batch of users and ids
+        batch_users = list(users)[chunk:chunk + settings.DELETION_SYNCHRONOUS_MAX_USERS]
+        ids = [user.id for user in batch_users]
+
+        # Delete from edxapp and update failed
+        failed_batch = user_api.delete_users(ids=ids)
+        failed.update(failed_batch)
+
+        # Remove failed users
+        ids = [user.id for user in batch_users if user.email not in failed_batch]
+        user_emails = [user.email for user in batch_users if user.email not in failed_batch]
+        user_usernames = [user.username for user in batch_users if user.email not in failed_batch]
+
+        # Delete successful users from Apros
+        PublicRegistrationRequest.objects.filter(company_email__in=user_emails).delete()
+        UserRegistrationError.objects.filter(user_email__in=user_emails).delete()
+        UserActivation.objects.filter(email__in=user_emails).delete()
+        RemoteUser.objects.filter(username__in=user_usernames).delete()
+
+        models_for_id_deletion = [
+            UserPasswordReset,
+            DashboardAdminQuickFilter,
+            BatchOperationErrors,
+            LessonNotesItem,
+            UserCourseCertificate,
+        ]
+        for model in models_for_id_deletion:
+            model.objects.filter(user_id__in=ids).delete()
+
+    return failed
+
+
+def delete_company_data(company_id):
+    """
+    Deletes all data (except users) related to company from LMS and Apros.
+
+    We'd like to remove Apros data first to be sure that we don't have any leftovers if the company had been
+    deleted via LMS directly. Then we can raise 404 without any further concerns.
+    """
+    remove_mobile_app_themes(company_id)
+
+    client_models = (
+        AccessKey,
+        ClientNavLinks,
+        ClientCustomization,
+        BrandingSettings,
+        LearnerDashboard,
+        ApiToken,
+    )
+    for model in client_models:
+        model.objects.filter(client_id=company_id).delete()
+
+    company_models = (
+        CompanyInvoicingDetails,
+        CompanyContact,
+        DashboardAdminQuickFilter,
+    )
+    for model in company_models:
+        model.objects.filter(company_id=company_id).delete()
+
+    try:
+        organization_api.delete_organization(company_id)
+    except ApiError:
+        # We can safely ignore this in a case of a race condition.
+        pass

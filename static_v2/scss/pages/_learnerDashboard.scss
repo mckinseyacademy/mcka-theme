@@ -33,7 +33,7 @@
 
 
 #learner-dashboard {
-  margin: -36px auto -96px;
+  margin: -36px auto -1px;
   padding-bottom: 30px;
   .side-content{
     >.tag{
@@ -51,7 +51,32 @@
     }
     }
   }
-
+  [data-learner-dashboard-id="267"] {
+    .gallery-card{
+      .gallery {
+        @include media-breakpoint-up(lg) {
+          max-height: 760px;
+        }
+      }
+    }
+    &.row {
+      .col-lg-4 {
+        display: none;
+      }
+      .col-lg-8 {
+        max-width: 100%;
+        flex: 0 0 100%;
+        .row {
+          .col-md-4 {
+            @include media-breakpoint-up(lg) {
+              max-width: 25%;
+              flex: 0 0 25%;
+            }
+          }
+        }
+      }
+    }
+}
   // Learner Content
   .gallery-card {
     background: white;
@@ -256,192 +281,249 @@
     }
   }
 }
-
-#background-full-calendar{
-    width: 100%;
-    height: 120%;
-    position: absolute;
-    z-index: 3;
-    background-color: rgba(0,0,0,0.4);
+#background-full-calendar {
+  width: 100%;
+  height: 120%;
+  position: absolute;
+  z-index: 999;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
-#over-full-calendar{
-    width: 100%;
+#over-full-calendar {
+  width: 100%;
+  height: 290px;
+  position: absolute;
+  z-index: 4;
+
+  .over-calendar {
+    width: 80px;
     height: 290px;
     position: absolute;
-    z-index: 4;
+    background-color: white;
+    padding-top: 25px;
+    background-color: white;
+    z-index: 221;
 
-    .over-calendar{
-        width: 80px;
+    .arrow-calendar {
+      font-size: 50px;
+      background-color: var(--primary);
+      color: $white;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      margin: 0 !important;
+      border-radius: 50%;
+      transform: translateY(-50%);
+      &.inactive {
+        background-color: $gray;
+        color: $light-gray;
+      }
+    }
+
+    #previous-calendar {
+      left: 20px;
+    }
+
+    #next-calendar {
+      right: 20px;
+    }
+  }
+
+  #over-calendar-right {
+    margin-left: 1020px;
+  }
+
+  #row-full-calendar {
+    height: 340px;
+    background: white;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: -50px;
+      height: 50px;
+      background: $white;
+      width: 100%;
+      z-index: -1;
+    }
+
+    .row {
+      width: 1100px;
+      max-width: 1100px;
+      background: white;
+      margin: 0 auto;
+      position: relative;
+      #close-calendar {
         position: absolute;
-        z-index:221;
-        height: auto !important;
-        top: 50%;
-        transform: translateY(-50%);
+        top: 25px;
+        right: 25px;
+        z-index: 999;
+        font-size: 18px;
+        color: $gray;
+        opacity: 0.7;
+        cursor: pointer;
+      }
 
-            .arrow-calendar {
-                font-size: 50px;
-                color: $white;
-                background-color: var(--primary);
-                border-radius: 50%;
-                margin-top: 0 !important;
-            }
+      #close-calendar:hover {
+        opacity: 1;
+      }
     }
 
-    #row-full-calendar {
-        height: auto !important;
-        min-height: 340px;
-        background: white;
-        overflow: hidden;
+    #under-calendar {
+      width: 945px;
+      height: 340px;
+      position: absolute;
+      background-color: white;
+      padding-top: 25px;
+      margin-left: 80px;
 
-        svg {
-            font-family: $body-font-family;
-            color: $gray;
-            text {
-                font-family: FontAwesome;
-                font-weight: normal !important;
-                transform: translateX(-5px);
-            }
+      .tab-month {
+        width: 232px;
+        float: left;
+        padding-left: 0;
+        margin: 0 4px 0 0;
+        list-style: none;
+
+        li {
+          width: 116px;
+          height: 52px;
         }
-        .container, .row, .col {
-            min-height: 340px;
+
+        .head-month {
+          display: table;
+          width: 100%;
+          height: 25px;
+          background-color: #f2f1f1;
+
+          span {
+            text-transform: uppercase;
+            font-family: "Open Sans", sans-serif;
+            font-weight: bold;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            border: 1px solid silver;
+            border-style: dotted;
+            font-size: 12px;
+          }
         }
 
-        #under-calendar{
-            width: 91%;
-            height: 340px;
-            position: absolute;
-            background-color: white;
-            padding-top: 25px;
-
-            #close-calendar {
-                color: #868685;
-                font-size: 20px;
-                font-weight: bold;
-                position: absolute;
-            }
-
-            #close-calendar:hover {
-                opacity: 0.6;
-                filter: alpha(opacity=60); /* internet explorer */
-                cursor: pointer;
-            }
-
-            .tab-month {
-                width: 24.5%;
-                display: inline-block;
-                list-style: none;
-
-                li {
-                    height: 52px;
-                }
-
-                .head-month {
-                    display: table;
-                    width: 100%;
-                    height: 25px;
-                    background-color: #f2f1f1;
-
-                    span {
-                        text-transform: uppercase;
-                        font-family: "Open Sans", sans-serif;
-                        font-weight: bold;
-                        display: table-cell;
-                        vertical-align: middle;
-                        text-align: center;
-                        border: 1px solid silver;
-                        border-style: dotted;
-                        font-size: 12px;
-                    }
-                }
-
-                .active {
-                    background-color: #e37222;
-                    color: white;
-                }
-
-                .first , .second {
-                    border: 1px solid gainsboro;
-                    border-top: 0;
-                }
-            }
-
-            .legend-list {
-                float: left;
-                margin: 10px 15px 0 0;
-                font-size: 10px;
-
-                li {
-                    font-family: 'Open Sans';
-                    font-style: italic;
-                    color: #cccccc;
-                    display: inline;
-                    margin-right: 15px;
-
-                    .circle {
-                        border-radius: 50%;
-                        display: inline-block;
-                        width: 10px;
-                        height: 10px;
-                    }
-                }
-
-                .light-gray-legend {
-                    i{
-                        color: #e0e0e0;
-                    }
-                }
-
-                .gray-legend {
-                    i{
-                        color: #cccccc;
-                    }
-                }
-
-                .light-green-legend {
-                    i{
-                        color: #b6d332;
-                    }
-                }
-
-                .green-legend {
-                    i{
-                        color: #629b2b;
-                    }
-                }
-
-                .red-legend {
-                    i{
-                        color: #cd202c;
-                    }
-                }
-
-                .teal-legend {
-                    i{
-                        color: #66a5b5;
-                    }
-                }
-            }
+        .active {
+          background-color: #e37222;
+          color: white;
         }
+
+        .first {
+          border: 0 solid gainsboro;
+          border-width: 0 0 0 1px;
+          float: left;
+          border-style: dotted;
+          border-bottom-width: 1px;
+        }
+
+        .second {
+          float: right;
+          border: 0 solid gainsboro;
+          border-width: 0 1px 0 0;
+          border-style: dotted;
+          border-bottom-width: 1px;
+        }
+      }
+
+      .legend-list {
+        float: left !important;
+        margin-top: 15px !important;
+        margin-bottom: 15px !important;
+        padding: 0 !important;
+        margin-left: 0 !important;
+
+        li {
+          font-size: 12px;
+          font-family: $body-font-family;
+          color: $gray;
+          display: inline;
+          margin-right: 15px;
+
+          .circle {
+            border-radius: 50%;
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+          }
+        }
+
+        .light-gray-legend {
+          i {
+            color: #e0e0e0;
+          }
+        }
+
+        .gray-legend {
+          i {
+            color: #cccccc;
+          }
+        }
+
+        .light-green-legend {
+          i {
+            color: #b6d332;
+          }
+        }
+
+        .green-legend {
+          i {
+            color: #629b2b;
+          }
+        }
+
+        .red-legend {
+          i {
+            color: #cd202c;
+          }
+        }
+
+        .teal-legend {
+          i {
+            color: #66a5b5;
+          }
+        }
+      }
     }
+  }
+}
+
+.inter-row {
+  border-bottom-width: 0 !important;
 }
 
 #highcharts-container {
-    position: absolute;
-    z-index: 200;
-    margin-top: 40px;
-    height: 283px;
+  position: absolute;
+  z-index: 200;
+  margin-top: 40px;
+  width: 1100px;
+  height: 283px;
 
-    .highcharts-tooltip {
+  .highcharts-tooltip {
 
-        span {
-            font-family: "Open Sans", sans-serif !important;
-            width: 120px;
-            height: 135px;
-            background-color: white;
-            overflow:auto;
-            white-space: normal !important;
-            z-index: 1;
-        }
+    span {
+      font-family: "Open Sans", sans-serif !important;
+      width: 120px;
+      height: 135px;
+      background-color: white;
+      overflow: auto;
+      white-space: normal !important;
+      z-index: 1;
     }
+  }
+}
+
+svg text {
+  font-weight: normal !important;
+  font-family: FontAwesome, sans-serif;
+}
+
+.not-published {
+  cursor: default;
+  opacity: 0.4;
 }

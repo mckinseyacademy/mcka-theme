@@ -1,5 +1,5 @@
 button.btn,
-a.btn{
+a.btn {
   font-weight: 600;
   font-size: 12px;
   height: 40px;
@@ -12,15 +12,16 @@ a.btn{
 
   //Secondary button .btn-primary
   &.btn-primary {
-    background-color:  var(--primary);
-    border-color:  var(--primary);
+    background-color: var(--primary);
+    border-color: var(--primary);
   }
 
   //Secondary button .btn-secondary
   &.btn-secondary {
     background: $white;
-    border: 1px solid  var(--primary);
-    color:  var(--primary);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+
     &:hover {
       color: $dark-blue;
     }
@@ -30,7 +31,8 @@ a.btn{
   &.btn-tertiary {
     background: transparent;
     border: 1px solid transparent;
-    color:  var(--primary);
+    color: var(--primary);
+
     &:hover {
       background-color: $ash-hard;
       color: $dark-blue;
@@ -50,6 +52,7 @@ a.btn{
     font-size: 1rem;
     height: 50px;
     padding: 0 30px;
+
     i {
       line-height: inherit;
       font-size: 1rem;
@@ -76,7 +79,7 @@ a.btn{
 
 }
 
-a.btn{
+a.btn {
   font-weight: 600;
   font-size: 12px;
   height: 40px;
@@ -117,8 +120,48 @@ a.btn{
 
 .btn-primary:not(:disabled):not(.disabled):active,
 .btn-primary:not(:disabled):not(.disabled).active,
-.show > .btn-primary.dropdown-toggle {
+.show>.btn-primary.dropdown-toggle {
   color: unset;
   background-color: unset;
   border-color: unset;
+}
+
+
+// button for extend
+
+%button {
+  font-weight: 600;
+  font-size: 12px;
+  height: 40px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  line-height: 1.83;
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding: 0 20px;
+  color:$white;
+  background-color: $primary;
+  border-color:$primary;
+  transition: .35s;
+
+  &:hover {
+      background: $dark-blue;
+      border-color: $dark-blue;
+  }
+
+  &:disabled {
+      background: $gray;
+      opacity: 1;
+      border-color: $gray;
+      cursor: not-allowed;
+      color: $white;
+
+      &:hover {
+          background: $gray;
+          opacity: 1;
+          border-color: $gray;
+          cursor: not-allowed;
+          color: $white;
+      }
+  }
 }

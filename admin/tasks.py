@@ -1,9 +1,13 @@
 """
 Celery tasks related to admin app
 """
+import math
 import os
 import json
 import hashlib
+import time
+
+import six
 from collections import OrderedDict
 from multiprocessing.pool import ThreadPool
 from tempfile import TemporaryFile
@@ -14,23 +18,24 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.utils.translation import ugettext as _
 from django.conf import settings
-from django.urls import reverse, resolve, Resolver404
+from django.urls import reverse
 from django.utils import timezone
 
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from celery import states as celery_states
-from celery.exceptions import Ignore, MaxRetriesExceededError, Reject
+from celery.exceptions import Ignore, MaxRetriesExceededError, Reject, InvalidTaskError
 
 from accounts.helpers import get_organization_by_user_email
-from api_client import course_api
+from api_client import course_api, organization_api
 from api_client import group_api
 from api_client import instructor_api
 from api_client import user_api
 from api_client.api_error import ApiError
 from api_client.cohort_api import add_cohort_for_course
+from api_client.user_api import get_users
 from util.csv_helpers import CSVWriter, create_and_store_csv_file
-from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage
+from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage, get_path
 from util.email_helpers import send_html_email
 
 from admin.models import LearnerDashboardTile, AdminTask
@@ -49,11 +54,14 @@ from .controller import (
     update_company_field_for_users,
     CourseParticipantStats,
     ProblemReportPostProcessor,
+    get_emails_from_csv,
+    delete_company_data,
 )
 from .models import UserRegistrationError, UserRegistrationBatch
 
 
 logger = get_task_logger(__name__)
+DELETE_PARTICIPANTS_DIR = 'delete_participant_files'
 IMPORT_PARTICIPANTS_DIR = 'import_participant_files'
 
 
@@ -325,6 +333,27 @@ def send_export_stats_status_email(
     )
 
 
+@task(name='admin.send_email')
+def send_email(subject, email_template, template_data, user_emails, task_log_msg):
+    """
+    Sends email and logs it.
+    :param user_emails: `list` of users to whom the message will be sent.
+    """
+    logger.info('Sending notification email - {}'.format(task_log_msg))
+
+    try:
+        send_html_email(
+            subject=subject,
+            to_emails=user_emails, template_name=email_template,
+            template_data=template_data,
+        )
+    except Exception as e:
+        logger.error('Failed sending notification email to Admin {} - {}'.format(e.message, task_log_msg))
+        raise
+
+    logger.info('Email successfully sent - {}'.format(task_log_msg))
+
+
 @task(name='admin.export_stats_notification_email', max_retries=5)
 def export_stats_status_email_task(
         user_id, course_id, report_name,
@@ -491,10 +520,7 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     logger.info('Started - {}'.format(task_log_msg))
 
     storage = get_storage(secure=True)
-    try:
-        file_path = resolve(file_url).kwargs.get('path')
-    except Resolver404:
-        file_path = file_url
+    file_path = get_path(file_url)
 
     try:
         file_stream = storage.open(file_path)
@@ -594,6 +620,149 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
         logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
 
 
+@task(name='admin.delete_company_task', queue='high_priority')
+def delete_company_task(company_id, owner, base_url):
+    """
+    Deletes company by:
+    1. invoking `delete_participants_task` as function, because we don't want to proceed in case of any error,
+    2. invoking `delete_company_data` for removing other company data.
+    """
+    started = time.time()
+    company_name = 'Unknown'
+    try:
+        # Fetch organization
+        organization = organization_api.fetch_organization(company_id)
+        company_name = organization.display_name
+        # Delete users in organization
+        user_ids = organization_api.fetch_organization_user_ids(company_id)
+        if user_ids:
+            delete_participants_task(
+                user_ids,
+                send_confirmation_email=True,
+                owner=owner,
+                base_url=base_url,
+                email_template='admin/delete_company_email_template.haml',
+                template_extra_data={'company_name': company_name}
+            )
+        # Delete organization profile
+        delete_company_data(company_id)
+    except Exception as e:
+        subject = _('Company Profile Deletion Failed')
+        email_template = 'admin/delete_company_profile_email_template.haml'
+        template_data = {
+            'company_name': company_name,
+            'first_name': owner.get('first_name', 'admin').capitalize(),
+            'mcka_logo_url': urljoin(
+                base=base_url,
+                url='/static/image/mcka_email_logo.png'
+            ),
+            'minutes_taken': math.ceil((time.time() - started) / 60),
+            'reason': str(e),
+        }
+        task_log_msg = "Delete Company profile task"
+        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
+
+
+@task(name='admin.delete_participants_task', queue='high_priority')
+def delete_participants_task(
+        users_to_delete, send_confirmation_email, owner, base_url, email_template=None, template_extra_data=None
+):
+    """
+    Extract users from CSV, delete them and (optionally) send an email to the `owner` - user that initiated deletion.
+    :param users_to_delete: you need to provide either:
+        - `str` being an URL to a CSV file containing users who should be deleted,
+        - `list` or `set` containing users' IDs.
+    """
+    from admin.controller import delete_participants  # We want to avoid circular imports here.
+
+    task_log_msg = "Delete Participants task"
+    file_path = ''
+    template_extra_data = template_extra_data or {}
+
+    logger.info('Started - {}'.format(task_log_msg))
+
+    failed, total = {}, 0
+    started = time.time()
+
+    if isinstance(users_to_delete, six.string_types):
+        # The users for deletion are specified in a CSV file.
+        file_path = get_path(users_to_delete)
+
+        try:
+            field, emails = get_emails_from_csv(file_path)
+            total = len(emails)
+            users = get_users(**{field: emails})
+        except Exception:
+            logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
+            raise
+        else:
+            logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
+
+        present_emails = set(user.email for user in users)
+        failed.update({email: 'User not found' for email in emails if email not in present_emails})
+
+        failed.update(delete_participants(None, users=users))
+
+        try:
+            storage = get_storage(secure=True)
+            storage.delete(file_path)
+        except Exception as e:
+            logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
+        else:
+            logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
+
+    elif users_to_delete:
+        # We have users' IDs.
+        total = len(users_to_delete)
+        failed.update(delete_participants(users_to_delete))
+
+    logger.info('Completed - {}'.format(task_log_msg))
+
+    failed_url = None
+    if failed:
+        fields = OrderedDict([
+            ('email', ('email', '')),
+            ('reason', ('reason', '')),
+        ])
+        file_name = 'deletion_errors.csv'
+        errors = [{'email': k, 'reason': v} for k, v in failed.items()]
+        try:
+            failed_url = create_and_store_csv_file(
+                fields, errors, DELETE_PARTICIPANTS_DIR,
+                file_name, logger, task_log_msg, secure=True
+            )
+        except Exception as e:
+            logger.error('Failed to generate CSV - {} - {}'.format(e.message, task_log_msg))
+
+        failed_url = urljoin(
+            base=base_url,
+            url=failed_url
+        )
+
+    if send_confirmation_email:
+        subject = _('Advanced Deletion Completed')
+        email_template = email_template or 'admin/delete_users_email_template.haml'
+        mcka_logo = urljoin(
+            base=base_url,
+            url='/static/image/mcka_email_logo.png'
+        )
+        template_data = {
+            'first_name': owner.get('first_name'),
+            'file_name': file_path.split('/')[-1],
+            'mcka_logo_url': mcka_logo,
+            'minutes_taken': math.ceil((time.time() - started) / 60),
+            'failed_url': failed_url,
+            'successful': total - len(failed),
+            'total': total,
+        }
+        template_data.update(template_extra_data)
+
+        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
+
+    if failed:
+        raise InvalidTaskError("Failed to delete users.")
+
+
 @task(name='admin.user_company_fields_update_task', queue='high_priority')
 def user_company_fields_update_task(user_id, users_records, base_url):
     task_log_msg = 'Updating company field\'s data for user from csv'
@@ -666,6 +835,8 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
     activation_links = UserActivation.get_activations_by_task_key(task_key=registration_batch.task_key)
 
     errors = []
+    user_data = {}
+
     for error in error_records:
         error_data = dict(email=error.user_email, errors=error.error)
 
@@ -756,8 +927,23 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         base=base_url,
         url='/static/image/mcka_email_logo.png'
     )
-
-    logger.info('Sending notification email - {}'.format(task_log_msg))
+    template_data = {
+        'first_name': user_data.get('first_name'),
+        'file_name': user_file_name,
+        'completion_time': completion_time,
+        'total': registration_batch.attempted,
+        'successful': registration_batch.succeded,
+        'error_file_url': urljoin(
+            base=base_url,
+            url=error_file_url
+        ) if error_file_url else '',
+        'activation_links_url': urljoin(
+            base=base_url,
+            url=activations_links_file_url
+        ) if activations_links_file_url else '',
+        'support_email': settings.MCKA_SUPPORT_EMAIL,
+        'mcka_logo_url': mcka_logo,
+    }
 
     try:
         user_data = user_api.get_user(user_id).to_dict()
@@ -768,32 +954,10 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         raise generate_import_files_and_send_notification.retry(exc=e)
     else:
         try:
-            send_html_email(
-                subject=subject,
-                to_emails=[user_data.get('email')], template_name=email_template,
-                template_data={
-                    'first_name': user_data.get('first_name'),
-                    'file_name': user_file_name,
-                    'completion_time': completion_time,
-                    'total': registration_batch.attempted,
-                    'successful': registration_batch.succeded,
-                    'error_file_url': urljoin(
-                        base=base_url,
-                        url=error_file_url
-                    ) if error_file_url else '',
-                    'activation_links_url': urljoin(
-                        base=base_url,
-                        url=activations_links_file_url
-                    ) if activations_links_file_url else '',
-                    'support_email': settings.MCKA_SUPPORT_EMAIL,
-                    'mcka_logo_url': mcka_logo,
-                }
-            )
+            result = send_email.delay(subject, email_template, template_data, [user_data.get('email')], task_log_msg)
+            result.get()  # Catch the exception thrown by the called task
         except Exception as e:
-            logger.error('Failed sending notification email to Admin {} - {}'.format(e.message, task_log_msg))
             raise generate_import_files_and_send_notification.retry(exc=e)
-
-    logger.info('Email successfully sent - {}'.format(task_log_msg))
 
     return True
 
@@ -824,10 +988,7 @@ def purge_old_import_records_and_csv_files():
             if not url:
                 continue
 
-            try:
-                file_path = resolve(url).kwargs.get('path')
-            except Resolver404:
-                file_path = url
+            file_path = get_path(url)
 
             if file_path:
                 file_paths.append(file_path)

@@ -1,38 +1,38 @@
 import json
 import ddt
+from tempfile import NamedTemporaryFile
 
 from mcka_apros.celery import app as test_app
-from django.core.urlresolvers import reverse
+
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.files.uploadedfile import File
+from django.core.urlresolvers import reverse
+from django.http import Http404, HttpResponseForbidden
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
 from mock import patch, Mock
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
+from waffle.testutils import override_switch
 
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin, make_course
-from accounts.tests.utils import make_user, make_company
+from accounts.tests.utils import ApplyPatchMixin, make_company, make_course, make_user
 from admin import views
 from admin.models import (
     Client as ClientModel,
-    AccessKey,
-    ClientNavLinks,
     ClientCustomization,
-    BrandingSettings,
-    LearnerDashboard,
-    CompanyInvoicingDetails,
-    CompanyContact,
-    DashboardAdminQuickFilter,
     AdminTask,
 )
+from admin.tests.utils import get_deletion_waffle_switch, MockUser, Dummy
 from admin.views import client_sso, CourseDetailsApi
 from api_client import user_api, group_api
 from api_client.api_error import ApiError
 from api_client.json_object import JsonParser
 from lib.authorization import permission_groups_map
 from .test_task_runner import mocked_task
-from admin.models import ClientCustomization
+from util.unit_test_helpers import AprosTestingClient
+from api_client.group_api import PERMISSION_GROUPS
+from api_data_manager.tests.utils import APIDataManagerMockMixin
 
 
 def mock_task():
@@ -79,123 +79,124 @@ def mocked_execute_task(task_runner):
 
     return task_id
 
-# TODO: 504 issue fix - uncomment this when actual commit is included in release
-# class AdminViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
-#     """ Tests related to admin.views """
-#     client_class = AprosTestingClient
-#
-#     def setUp(self):
-#         """ Setup admin views test """
-#         super(AdminViewTest, self).setUp()
-#         self.url_name = 'edit_client_mobile_image'
-#         self.parameters = {
-#             'client_id': 1,
-#         }
-#         mobile_api = self.apply_patch('admin.views.mobileapp_api')
-#         mobile_api.get_mobile_app_themes.return_value = []
-#
-#         self.mock_user_api_data_manager(
-#             module_paths=[
-#                 'accounts.middleware.thread_local.UserDataManager',
-#             ],
-#             data={'courses': [], 'current_course': None}
-#         )
-#
-#         # Mock checking if user exists in middleware
-#         self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
-#
-#         # login as an uber admin
-#         self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
-#
-#     def test_edit_client_mobile_image_logo(self):
-#         """ test edit mobile logo page """
-#
-#         self.parameters['img_type'] = 'logo'
-#         edit_client_mobile_image_url_logo = reverse(self.url_name, kwargs=self.parameters)
-#         respose = self.client.get(edit_client_mobile_image_url_logo)
-#         self.assertEqual(respose.status_code, status.HTTP_200_OK)
-#
-#     def test_edit_client_mobile_image_header(self):
-#         """ test edit mobile header page """
-#
-#         self.parameters['img_type'] = 'header'
-#         edit_client_mobile_image_url_header = reverse(self.url_name, kwargs=self.parameters)
-#         respose = self.client.get(edit_client_mobile_image_url_header)
-#         self.assertEqual(respose.status_code, status.HTTP_200_OK)
-#
-#     def test_edit_client_mobile_image_invalid(self):
-#         """ test edit mobile logo/header page for invalid request """
-#
-#         self.parameters['img_type'] = 'invalid'
-#         edit_client_mobile_image_url_invalid = reverse(self.url_name, kwargs=self.parameters)
-#         respose = self.client.get(edit_client_mobile_image_url_invalid)
-#         self.assertEqual(respose.status_code, status.HTTP_404_NOT_FOUND)
+
+class AdminViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
+    """ Tests related to admin.views """
+    client_class = AprosTestingClient
+
+    def setUp(self):
+        """ Setup admin views test """
+        super(AdminViewTest, self).setUp()
+        self.url_name = 'edit_client_mobile_image'
+        self.parameters = {
+            'client_id': 1,
+        }
+        mobile_api = self.apply_patch('admin.views.mobileapp_api')
+        mobile_api.get_mobile_app_themes.return_value = []
+
+        self.mock_user_api_data_manager(
+            module_paths=[
+                'accounts.middleware.thread_local.UserDataManager',
+            ],
+            data={'courses': [], 'current_course': None}
+        )
+
+        # Mock checking if user exists in middleware
+        self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
+
+        # login as an uber admin
+        self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
+
+    def test_edit_client_mobile_image_logo(self):
+        """ test edit mobile logo page """
+
+        self.parameters['img_type'] = 'logo'
+        edit_client_mobile_image_url_logo = reverse(self.url_name, kwargs=self.parameters)
+        respose = self.client.get(edit_client_mobile_image_url_logo)
+        self.assertEqual(respose.status_code, status.HTTP_200_OK)
+
+    def test_edit_client_mobile_image_header(self):
+        """ test edit mobile header page """
+
+        self.parameters['img_type'] = 'header'
+        edit_client_mobile_image_url_header = reverse(self.url_name, kwargs=self.parameters)
+        respose = self.client.get(edit_client_mobile_image_url_header)
+        self.assertEqual(respose.status_code, status.HTTP_200_OK)
+
+    def test_edit_client_mobile_image_invalid(self):
+        """ test edit mobile logo/header page for invalid request """
+
+        self.parameters['img_type'] = 'invalid'
+        edit_client_mobile_image_url_invalid = reverse(self.url_name, kwargs=self.parameters)
+        respose = self.client.get(edit_client_mobile_image_url_invalid)
+        self.assertEqual(respose.status_code, status.HTTP_404_NOT_FOUND)
 
 
-# TODO: mock API to fix test and uncomment
-# @ddt
-# class TestBulkTaskAPI(TestCase, ApplyPatchMixin):
-#     """
-#     Tests bulk task API endpoints
-#     """
-#
-#     def setUp(self):
-#         super(TestBulkTaskAPI, self).setUp()
-#
-#         self.apply_patch(
-#             'admin.views.BulkTaskRunner.execute_task',
-#             new=mocked_execute_task
-#         )
-#         _create_user()
-#         self.client = Client()
-#         self.client.login(username='mcka_admin_test_user', password='PassworD12!@')
-#         self.api_url = reverse('bulk_task_api')
-#
-#     def test_post_method(self):
-#         """
-#         Tests post method of API which creates a background task
-#         """
-#         response = self.client.post(path=self.api_url, data={
-#             'task_name': 'test_task'
-#         })
-#
-#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-#         self.assertIsNotNone(response.data.get('task_id'))
-#
-#     @override_settings(CELERY_ALWAYS_EAGER=True)
-#     @data(
-#         ('PROGRESS', {'percentage': 50}),
-#         ('SUCCESS', {}),
-#     )
-#     def test_get_method(self, task_state):
-#         """
-#         Tests get method of API which returns a task status
-#         """
-#         task_id = mocked_task.delay().task_id
-#
-#         state, result = task_state
-#
-#         runner = self.apply_patch('admin.views.BulkTaskRunner')
-#         runner.get_task_state.return_value = state, result
-#
-#         response = self.client.get(path=self.api_url, data={
-#             'task_id': task_id
-#         })
-#
-#         response_data = response.data
-#
-#         self.assertEqual(response.status_code, status.HTTP_200_OK)
-#
-#         # test task progress is returned
-#         if state == 'PROGRESS':
-#             self.assertEqual(
-#                 response_data.get('values', {}).get('progress'),
-#                 result.get('percentage')
-#             )
-#
-#         # test response for success case
-#         if state == 'SUCCESS':
-#             self.assertEqual(response_data.get('values', {}).get('progress'), '100')
+@ddt.ddt
+class TestBulkTaskAPI(TestCase, ApplyPatchMixin):
+    """
+    Tests bulk task API endpoints
+    """
+    client_class = AprosTestingClient
+
+    def setUp(self):
+        super(TestBulkTaskAPI, self).setUp()
+
+        self.apply_patch(
+            'admin.views.BulkTaskRunner.execute_task',
+            new=mocked_execute_task
+        )
+        self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
+        self.api_url = reverse('bulk_task_api')
+
+        # Mock checking if user exists in middleware
+        self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
+
+    def test_post_method(self):
+        """
+        Tests post method of API which creates a background task
+        """
+        response = self.client.post(path=self.api_url, data={
+            'task_name': 'test_task'
+        })
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertIsNotNone(response.data.get('task_id'))
+
+    @override_settings(CELERY_ALWAYS_EAGER=True)
+    @ddt.data(
+        ('PROGRESS', {'percentage': 50}),
+        ('SUCCESS', {}),
+    )
+    def test_get_method(self, task_state):
+        """
+        Tests get method of API which returns a task status
+        """
+        task_id = mocked_task.delay().task_id
+
+        state, result = task_state
+
+        runner = self.apply_patch('admin.views.BulkTaskRunner')
+        runner.get_task_state.return_value = state, result
+
+        response = self.client.get(path=self.api_url, data={
+            'task_id': task_id
+        })
+
+        response_data = response.data
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # test task progress is returned
+        if state == 'PROGRESS':
+            self.assertEqual(
+                response_data.get('values', {}).get('progress'),
+                result.get('percentage')
+            )
+
+        # test response for success case
+        if state == 'SUCCESS':
+            self.assertEqual(response_data.get('values', {}).get('progress'), '100')
 
 
 class AdminClientSSOTest(TestCase, ApplyPatchMixin):
@@ -359,6 +360,15 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         }
         self.assertEqual(expected_data, result)
 
+    def create_mock_csv_file(self, header='email'):
+        """Creates file with test users' emails and one invalid email."""
+        temp_csv_file = NamedTemporaryFile(dir='')
+        temp_csv_file.write("{}\n".format(header))
+        temp_csv_file.write("\n".join((student.email for student in self.students)))
+        temp_csv_file.write("\ninvalid")
+        temp_csv_file.seek(0)
+        return File(temp_csv_file)
+
 
 class CourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
     """
@@ -480,6 +490,206 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
                 self.assertEqual(response, None)
 
 
+class DeleteParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
+    """Tests views required for bulk user deletion."""
+
+    def setUp(self):
+        super(DeleteParticipantsFromCsvTest, self).setUp()
+        self.patch_user_permissions()
+        delete_url = reverse('delete_participants_from_csv')
+        self.request = self.factory.delete(delete_url)
+        self.request.user = self.admin_user
+        self.api = views.DeleteParticipantsFromCsv()
+
+    def test_upload_csv_with_deletion_disabled(self):
+        """Test uploading CSV without enabling `data_deletion.enable_data_deletion` waffle switch. """
+        response = self.api.post(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, "`data_deletion` flag is not enabled.")
+
+    def test_delete_users_with_deletion_disabled(self):
+        """Test deleting user jswithout enabling `data_deletion.enable_data_deletion` waffle switch."""
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, "`data_deletion` flag is not enabled.")
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('lib.authorization.permission_group_required_not_in_group', lambda _: HttpResponseForbidden())
+    def test_upload_csv_without_permissions(self):
+        """Test uploading file as non-admin user."""
+        self.request.user = self.students[0]
+        middleware = SessionMiddleware()
+        middleware.process_request(self.request)
+        self.request.session.save()
+
+        response = self.api.post(self.request)
+        self.assertEqual(response.status_code, 403)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    def test_upload_without_file(self):
+        """Test upload endpoint without providing a file."""
+        self.request.data = {}
+        response = self.api.post(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, '{"student_delete_list": ["This field is required."]}')
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    def test_delete_without_file(self):
+        """Test deletion endpoint without providing a filename."""
+        self.request.data = {}
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, '{"file_url": ["This field is required."]}')
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('admin.views.store_file')
+    @patch('admin.controller.get_users')
+    def test_upload_csv(self, get_users_mock, store_file_mock):
+        """Test uploading CSV with users to delete."""
+        store_file_mock.side_effect = lambda _request, _dir, file_name, **_kwargs: file_name
+        get_users_mock.side_effect = lambda *_args, **_kwargs: self.students
+
+        csv_file = self.create_mock_csv_file()
+        expected_data = {
+            'file_url': csv_file.name,
+            'user_count': len(self.students),
+        }
+        self.request.data = {'student_delete_list': csv_file}
+        self.request.content_type = 'multipart/form-data'
+
+        response = self.api.post(self.request)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, expected_data)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('admin.views.delete_participants_task.delay')
+    @patch('admin.views.store_file')
+    @patch('admin.controller.get_users')
+    @patch('admin.views.user_api.get_user')
+    def test_delete_users(self, get_user_mock, get_users_mock, store_file_mock, participants_task_mock):
+        """Test bulk user deletion view. Deletion is invoked in a Celery task, so it's tested separately."""
+        store_file_mock.side_effect = lambda _request, _dir, file_name, **kwargs: file_name
+        get_users_mock.side_effect = lambda *args, **kwargs: self.students
+        dummy_serializable_object = Dummy()
+        dummy_serializable_object.to_dict = lambda *args, **kwargs: {}
+        get_user_mock.side_effect = lambda *args, **kwargs: dummy_serializable_object
+
+        csv_file = self.create_mock_csv_file()
+        self.request.data = {
+            'file_url': csv_file.name,
+            'send_email': False,
+        }
+
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(participants_task_mock.call_count, 1)
+
+
+class UserDeleteTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test user delete view.
+    """
+
+    def setUp(self):
+        super(UserDeleteTest, self).setUp()
+        self.patch_user_permissions()
+        self.mock_id = 0
+        delete_url = reverse('participant_details', kwargs={'user_id': self.mock_id})
+        self.request = self.factory.delete(delete_url)
+        self.request.user = self.admin_user
+        self.api = views.participant_details_api()
+
+    def test_delete_user_with_deletion_disabled(self):
+        """
+        Test deleting user without enabling `data_deletion.enable_data_deletion` waffle switch.
+        """
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(response.status_code, 400)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('lib.authorization.permission_group_required_not_in_group', lambda _: HttpResponseForbidden())
+    def test_delete_user_without_permissions(self):
+        """
+        Test deleting user as non-admin user.
+        """
+        self.request.user = self.students[0]
+        middleware = SessionMiddleware()
+        middleware.process_request(self.request)
+        self.request.session.save()
+
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(response.status_code, 403)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('api_client.user_api.get_users', return_value=[])
+    @patch('api_client.user_api.delete_users')
+    def test_delete_nonexistent_user(self, delete_users_mock, get_users_mock):
+        """
+        Test deleting user that doesn't exist in LMS.
+        """
+        with self.assertRaises(Http404):
+            self.api.delete(self.request, self.mock_id)
+
+        get_users_mock.assert_called_with(ids=[str(self.mock_id)])
+        delete_users_mock.assert_not_called()
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('api_client.user_api.get_users', return_value=[MockUser(1), MockUser(2)])
+    @patch('api_client.user_api.delete_users')
+    def test_delete_user(self, *mocks):
+        """
+        Test deleting user as admin.
+        """
+        response = self.api.delete(self.request, self.mock_id)
+        for mock in mocks:
+            self.assertEqual(mock.call_count, 1)
+        self.assertEqual(response.status_code, 204)
+
+
+class ParticipantsListViewTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test participants list view
+    """
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    def test_check_switch_on_view(self, *patch):
+        """
+        Test if waffle switch to enable deletion is correctly passed to the redered view
+        """
+        is_user_in_permission_group_lib = self.apply_patch("lib.authorization.is_user_in_permission_group")
+        is_user_in_permission_group_lib.return_value = True
+        is_user_in_permission_group_accounts = self.apply_patch("accounts.models.is_user_in_permission_group")
+        is_user_in_permission_group_accounts.return_value = True
+        is_user_in_permission_group_admin = self.apply_patch("admin.views.is_user_in_permission_group")
+        is_user_in_permission_group_admin.return_value = True
+
+        request = self.get_request(reverse('participants_list'), self.admin_user)
+        response = views.participants_list(request)
+
+        self.assertIn("var enable_data_deletion = 'True';", response.content)
+
+
+class CompaniesListViewTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test companies list view
+    """
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    def test_check_switch_on_view(self, *patch):
+        """
+        Test if waffle switch to enable deletion is correctly passed to the redered view
+        """
+        is_user_in_permission_group_lib = self.apply_patch("lib.authorization.is_user_in_permission_group")
+        is_user_in_permission_group_lib.return_value = True
+        is_user_in_permission_group_accounts = self.apply_patch("accounts.models.is_user_in_permission_group")
+        is_user_in_permission_group_accounts.return_value = True
+        is_user_in_permission_group_admin = self.apply_patch("admin.views.is_user_in_permission_group")
+        is_user_in_permission_group_admin.return_value = True
+
+        request = self.get_request(reverse('companies_list'), self.admin_user)
+        response = views.participants_list(request)
+
+        self.assertIn("var enable_data_deletion = 'True';", response.content)
+
+
 @ddt.ddt
 class ClientCustomizationTests(TestCase, ApplyPatchMixin):
     """
@@ -520,6 +730,58 @@ class ClientCustomizationTests(TestCase, ApplyPatchMixin):
             self.assertTrue(client_customization.new_ui_enabled)
         else:
             self.assertFalse(client_customization.new_ui_enabled)
+
+
+class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test company details view.
+    """
+
+    def setUp(self):
+        super(CompanyDetailsViewTest, self).setUp()
+        self.patch_user_permissions()
+        self.mock_id = 0
+        delete_url = reverse('company_details', kwargs={'company_id': self.mock_id})
+        self.request = self.factory.delete(delete_url)
+        self.request.user = self.admin_user
+        self.api = views.CompanyDetailsView()
+
+    def test_delete_company_with_deletion_disabled(self):
+        """
+        Test deleting company without enabling `data_deletion.enable_data_deletion` waffle switch.
+        """
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(response.status_code, 400)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('lib.authorization.permission_group_required_not_in_group', lambda _: HttpResponseForbidden())
+    def test_delete_company_without_permissions(self):
+        """
+        Test deleting company as non-admin company.
+        """
+        self.request.user = self.students[0]
+        middleware = SessionMiddleware()
+        middleware.process_request(self.request)
+        self.request.session.save()
+
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(response.status_code, 403)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('admin.tasks.delete_company_task.delay')
+    @patch('admin.views.user_api.get_user')
+    def test_delete_company(self, get_user_mock, delete_company_task_mock):
+        """
+        Test deleting company as admin.
+        """
+        dummy_serializable_object = Dummy()
+        dummy_serializable_object.to_dict = lambda *args, **kwargs: {}
+        get_user_mock.side_effect = lambda *args, **kwargs: dummy_serializable_object
+
+        response = self.api.delete(self.request, self.mock_id)
+        self.assertEqual(delete_company_task_mock.call_count, 1)
+
+        self.assertEqual(response.status_code, 204)
 
 
 @ddt.ddt

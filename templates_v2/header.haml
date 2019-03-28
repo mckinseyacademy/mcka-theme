@@ -1,10 +1,11 @@
 - load i18n
 - load cache
+- load staticfiles
 - load template_helpers
 - get_current_language as LANGUAGE_CODE
 - get_available_languages as LANGUAGES
 
-%header.appHeader
+%header.appHeader.fadeIn.animated.delay-1s
   .container
     .row
       .col
@@ -15,7 +16,7 @@
                 %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
             - else
               %a.navbar-brand{:href => "/"}
-                %img{:src => "static/image/McKA-logo-blue.svg", :width => "160"}
+                %img{:src => "{% static 'image/McKA-logo-blue.svg' %}", :width => "160"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.client_logo}}", :width => "160"}
@@ -23,71 +24,54 @@
           - if request.user.is_authenticated
             .topRightArea
               .profileArea
-                %a.dropdown-toggle{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
-                  %span RA
-                  %img{:src => "static/image/McKA-logo-white.svg", :width => "160"}/
-                - if LANGUAGE_BIDI
-                  %div{'class' : 'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
-                    .header
-                      .avatar-area
-                        .userAvatar.lg
-                          .holder
-                            %span RA
-                            %img{:alt => "", :src => ""}/
-                          %a.edit-link{:data-target => ".editPhotoModal", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit photo" %}
-                      .titles-area
-                        .nameArea
-                          %span Rajal Ajai
-                          %a.edit-link{:data-target => ".editFullName", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit" %}
-                        .roleArea
-                          %span UX Consultant
-                          %a.edit-link{:data-target => ".editRole", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit" %}
-                    .content
-                      .wrap
-                        %strong.text-uppercase.title
-                          {% trans "username" %}
-                        %strong.titleName raajimk
-                      .wrap
-                        %strong.text-uppercase.title
-                          {% trans "email" %}
-                        %span.userMail rajal_ajai@external.mckinsey.com
-                    .footer.ome
-                      %a.btn.btn-secondary.dome-c{href: "/accounts/logout"}
-                        {% trans "log out" %}
-                - else
-                  %div{'class' : 'dropdown-menu profile-area large-menu dropdown-menu-right profileDropdown'}
-                    .header
-                      .avatar-area
-                        .userAvatar.lg
-                          .holder
-                            %span RA
-                            %img{:alt => "", :src => ""}/
-                          %a.edit-link{:data-target => ".editPhotoModal", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit photo" %}
-                      .titles-area
-                        .nameArea
-                          %span Rajal Ajai
-                          %a.edit-link{:data-target => ".editFullName", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit" %}
-                        .roleArea
-                          %span UX Consultant
-                          %a.edit-link{:data-target => ".editRole", :data-toggle => "modal", :href => "#"}
-                            {% trans "edit" %}
-                    .content
-                      .wrap
-                        %strong.text-uppercase.title
-                          {% trans "username" %}
-                        %strong.titleName raajimk
-                      .wrap
-                        %strong.text-uppercase.title
-                          {% trans "email" %}
-                        %span.userMail rajal_ajai@external.mckinsey.com
-                    .footer.ome
-                      %a.btn.btn-secondary.dome-c{href: "/accounts/logout"}
-                        {% trans "log out" %}
+                %a.dropdown-toggle.ome.dome-bc{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
+                  - if user.has_image
+                    %img{:alt => "", :src => "{{user.image_url_medium}}", :width => "160"}/
+                  - elif user.name_initials
+                    %span {{user.name_initials|upper}}
+                  - else
+                    %img{:alt => "", :src => "{{user.image_url_full}}"}/
+
+
+                %div{'class':'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
+                  .header
+                    .avatar-area
+                      .userAvatar.lg
+                        .holder
+                          - if user.has_image
+                            %img{:alt => "", :src => "{{user.image_url_full}}"}/
+                          - elif user.name_initials
+                            %span {{user.name_initials|upper}}
+                          - else
+                            %img{:alt => "", :src => "{{user.image_url_full}}"}/
+
+
+                        %a.edit-link.ome.dome-bc{:data-target => ".editPhotoModal", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
+                          {% trans "edit photo" %}
+                    .titles-area
+                      .nameArea
+                        %span {{user.fullname}}
+                        %a.edit-link.ome.dome-bc{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
+                          {% trans "edit" %}
+                      .roleArea
+                        - if user.title
+                          %span.title= user.title
+                        - else
+                          %span= "Enter your role"
+                        %a.edit-link.ome.dome-bc{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
+                          {% trans "edit" %}
+                  .content
+                    .wrap
+                      %strong.text-uppercase.title
+                        {% trans "username" %}
+                      %strong.titleName {{user.username}}
+                    .wrap
+                      %strong.text-uppercase.title
+                        {% trans "email" %}
+                      %span.userMail {{user.email}}
+                  .footer.ome
+                    %a.btn.btn-secondary.dome-c{href: "/accounts/logout"}
+                      {% trans "log out" %}
 
               %nav.nav.mainNav.headerNav
                 %ul
@@ -123,7 +107,9 @@
                             %li
                               %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
                                 - if request.session.last_visited_course and dashboard.course_id == request.session.last_visited_course
-                                  %span.bookmark
+                                  %span.bookmark.secondary
+                                    %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
+                                      %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
                               %ul.sub-nav.d-block.d-sm-none
                                 %li
                                   %a.ome.dome-c{:href => "/courses/{{dashboard.course_id}}"} {% trans "Home" %}
@@ -151,7 +137,9 @@
                             %li.drop-open-dashboard
                               %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
                                 - if request.session.last_visited_course and dashboard.course_id == request.session.last_visited_course
-                                  %span.bookmark
+                                  %span.bookmark.secondary
+                                    %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
+                                      %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
                               %ul.sub-nav.d-block.d-sm-none
                                 %li
                                   %a.ome.dome-c{:href => "/courses/{{dashboard.course_id}}"} {% trans "Home" %}
@@ -193,3 +181,5 @@
                             {{lang.name}}
                           -else
                             {{language_name}}
+
+  %script{src: "{% static 'js/user_profile_edit_v2.js' %}"}

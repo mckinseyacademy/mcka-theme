@@ -22,7 +22,9 @@
                       - if index == 0
                         %a.hashPageButton.holder.active{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
                           = course_name
-                          %span.bookmark
+                          %span.bookmark.secondary
+                            %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
+                              %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
                       - else
                         %a.hashPageButton.holder{'href': '#', 'target': '_self', 'data-target': 'managerDashboardCourse{{index}}', 'data-container': '#managerDashboardContainer', 'onclick ': 'Apros.Router.HashPageChanger(this);Apros.Router.calculateAverage(this)', 'data-course': '{{course_id}}', 'data-course-index': '{{index}}'}
                           = course_name
@@ -46,7 +48,7 @@
                       .widgetTitle.clearfix
                         %span {% trans "Your team's average proficiency" %}
                     .averageTitle
-                      %large 0%
+                      %large 0
                   -#.avgProgress
             .contentCardWrap
               .contentCard

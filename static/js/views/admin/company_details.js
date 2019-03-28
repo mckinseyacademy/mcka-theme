@@ -2,25 +2,25 @@
     gridColumns:
       [
         { title: gettext('Course Name'), index: true, name: 'name',
-          actions: function(id, attributes){ 
+          actions: function(id, attributes){
             var company_id = $('#mainCompanyDetailsDataContainer').attr('data-id');
             var thisId = attributes['id']
             var name = attributes['name']
             if (name){
               if (name.length > 75){
-                return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>'; 
+                return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name.slice(0,75) + '...</a>';
               }
               else
               {
-                return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name + '</a>'; 
+                return '<a href="/admin/companies/' + company_id + '/courses/' + thisId + '" target="_self">' + name + '</a>';
               }
             }
-          } 
+          }
         },
         { title: gettext('Course ID'), index: true, name: 'id' },
         { title: gettext('Participants'), index: true, name: 'participants', sorttype: 'number'},
         { title: gettext('Start'), index: true, name: 'start',
-          actions: function(id, attributes){ 
+          actions: function(id, attributes){
             if(attributes['start'])
             {
               if (attributes['start'] != '-'){
@@ -33,10 +33,10 @@
             {
               return '-';
             }
-          } 
+          }
         },
         { title: gettext('End'), index: true, name: 'end',
-          actions: function(id, attributes){ 
+          actions: function(id, attributes){
             if(attributes['end'])
             {
               if (attributes['end'] != '-'){
@@ -49,7 +49,7 @@
             {
               return '-';
             }
-          } 
+          }
         },
       ],
     initialize: function(){
@@ -122,7 +122,7 @@
       dataContainer.on('keydown', '.companyDetailsInputName input', function(ev)
       {
         var keycode = (ev.keyCode ? ev.keyCode : ev.which);
-        if(keycode == 13) 
+        if(keycode == 13)
         {
           if (_saved)
             return
@@ -143,10 +143,10 @@
     },
     validateCompanyName: function(newName)
     {
-      if(newName != '') 
+      if(newName != '')
       {
         var testValue = newName.replace(/ /g,'');
-        if (/^[a-z0-9]+$/i.test(testValue)) 
+        if (/^[a-z0-9]+$/i.test(testValue))
         {
           if (newName.length <= 30)
           {
@@ -159,7 +159,7 @@
             };
             options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
             $.ajax(options)
-            .done(function(data) 
+            .done(function(data)
             {
               if (data['status'] == 'ok')
               {
@@ -225,5 +225,5 @@
       {
         $(document).trigger('email_finished', [data]);
       })
-    }
+    },
   });

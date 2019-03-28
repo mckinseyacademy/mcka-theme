@@ -1,0 +1,24 @@
+- extends "layout.haml"
+- load i18n
+
+- block content
+  #error_503.error-page
+    .container
+      .row
+        .col
+          .contentCard.progressWidgets.text-center
+            .errorContWrap
+              .icon
+                %i.material-icons
+                  warning
+              .errorText
+                %h4
+                  {% trans "Service is temporarily unavailable." %}
+              .content
+                %p
+                  {% blocktrans %}
+                  If you continue to have issues, please visit our
+                  %a{:href => "/faq"} FAQ page
+                  or
+                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support.
+                  {% endblocktrans %}

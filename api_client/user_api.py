@@ -177,6 +177,33 @@ def get_filtered_users(getParameters):
 
 
 @api_error_protect
+def delete_users(ids=None, username=None):
+    """
+    Delete a single user by their username or delete one or more users
+    by their ids.
+    """
+    if username:
+        qs_params = {'username': username}
+    elif ids:
+        qs_params = {'ids': ','.join([str(i) for i in ids])}
+    else:
+        raise ValueError('either ids or username are required')
+
+    response = DELETE(
+        '{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            USER_API,
+            urlencode(qs_params)
+        )
+    ).read()
+
+    if not response:
+        return {}
+
+    return json.loads(response)
+
+
+@api_error_protect
 def delete_session(session_key):
     ''' delete associated openedx session '''
     DELETE(

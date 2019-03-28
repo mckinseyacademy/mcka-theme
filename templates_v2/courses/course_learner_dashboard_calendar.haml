@@ -3,17 +3,17 @@
   #over-full-calendar
     #row-full-calendar
       .container
-        .row.justify-content-center
-          .col-10        
-            .over-calendar
+        .row
+          %i#close-calendar.material-icons
+            close
+          .col-12
+            .over-calendar#over-calendar-left
               %i#previous-calendar.arrow-calendar.material-icons
                 chevron_left
-            #over-calendar-right.over-calendar
+            .over-calendar#over-calendar-right
               %i#next-calendar.arrow-calendar.material-icons
                 chevron_right
             #under-calendar
-              %i#close-calendar.material-icons
-                close
               %ul.tab-month
                 %li.head-month
                   %span.month
@@ -405,14 +405,14 @@
 
   $('#next-calendar').click(function() {
     if (maxDate > dateList[5]) {
-      $( "#previous-calendar").css("color", "" );
+      $( "#previous-calendar").removeClass("inactive");
       moveCalendarDates(4);
     }
   });
 
   $('#previous-calendar').click(function() {
     if (minDate < dateList[1]) {
-      $( "#next-calendar").css( "color", "" );
+      $( "#next-calendar").removeClass("inactive");
       moveCalendarDates(-4);
     }
   });
@@ -450,10 +450,12 @@
   }
 
   function changeDisableArrowColors() {
-    if (minDate >= dateList[1])
-      $( '#previous-calendar').css( 'color', '#868685' );
-    if (maxDate <= dateList[5])
-      $('#next-calendar').css( 'color', '#868685' );
+    if (minDate >= dateList[1]){
+      $( '#previous-calendar').addClass("inactive");
+    }
+    if (maxDate <= dateList[5]){
+      $('#next-calendar').addClass("inactive");
+    }
   }
 
   function addMonthNames( dateList ) {

@@ -38,7 +38,7 @@
               {% trans "Navigation" %}
             %a.button.small.radius.accessLink{:href => "{% url 'client_sso' client_id=company.id %}"}
               {% trans "Access" %}
-            - if user.is_mcka_admin
+            - if user.is_mcka_subadmin or user.is_mcka_admin
               %a#addAppPopupLink.companyLinkedApps.button.small.radius{"data-reveal-id" : "linkApp", :href => "#"}
                 {% trans "Link Apps" %}
 
@@ -114,3 +114,7 @@
         %a.close-reveal-modal{"aria-label" : "Close"} ×
 
   %script{src: "{% static 'js/company_fields.js' %}"}
+
+- block js_snippets
+  :javascript
+    var enable_data_deletion = '{{enableDataDeletion}}';

@@ -5,8 +5,8 @@ from mock import patch, Mock
 from django.core import mail
 from django.test import TestCase, override_settings
 
-from util.unit_test_helpers import ApplyPatchMixin
-from util.unit_test_helpers.common_mocked_objects import mock_storage_save
+from admin.models import AccessKey, ClientNavLinks, ClientCustomization, BrandingSettings, LearnerDashboard, \
+    CompanyInvoicingDetails, CompanyContact, DashboardAdminQuickFilter
 from admin.tasks import (
     course_participants_data_retrieval_task,
     send_export_stats_status_email,
@@ -16,10 +16,17 @@ from admin.tasks import (
     create_problem_response_report,
     monitor_problem_response_report,
     post_process_problem_response_report,
+    delete_participants_task,
+    delete_company_task,
 )
-from celery.exceptions import Retry
+from admin.tests.test_views import CourseParticipantsStatsMixin
+from admin.tests.utils import Dummy
 from api_client.course_models import CourseCohortSettings
 from api_client.user_models import UserResponse
+from celery.exceptions import Retry
+from public_api.models import ApiToken
+from util.unit_test_helpers import ApplyPatchMixin, make_side_effect_raise_api_error
+from util.unit_test_helpers.common_mocked_objects import mock_storage_save
 
 
 class MockParticipantsStats(object):
@@ -276,3 +283,109 @@ class ProblemResponseTasksTest(TestCase):
         self.assertEqual(len(mock_processor().post_process.mock_calls), 1)
         self.assertEqual(len(mock_store_file.mock_calls), 1)
         self.assertEqual(len(mock_admin_task_get().save.mock_calls), 1)
+
+
+class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
+    """Tests tasks required for bulk user deletion."""
+
+    @patch('admin.tasks.get_path', lambda x: x)
+    @patch('admin.tasks.get_users')
+    @patch('admin.tasks.get_emails_from_csv')
+    @patch('admin.controller.delete_participants')
+    def test_delete_participants_task_with_file(
+            self, delete_participants_mock, get_emails_from_csv_mock, get_users_mock
+    ):
+        """Test bulk user deletion task with users provided in CSV file."""
+        stub_file = 'stub_file'
+        emails = [user.email for user in self.students]
+        get_users_mock.side_effect = lambda **kwargs: self.students
+        get_emails_from_csv_mock.side_effect = lambda _: ('email', emails)
+
+        delete_participants_task(stub_file, False, None, None)
+        get_emails_from_csv_mock.assert_called_with(stub_file)
+        get_users_mock.assert_called_with(**{'email': emails})
+        delete_participants_mock.assert_called_with(None, users=self.students)
+
+    @patch('admin.controller.delete_participants')
+    def test_delete_participants_task_with_ids(self, delete_participants_mock):
+        """Test bulk user deletion task with users' IDs provided directly."""
+        student_ids = [student.id for student in self.students]
+
+        delete_participants_task(student_ids, False, None, None)
+        delete_participants_mock.assert_called_with(student_ids)
+
+
+class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
+    """Tests tasks required for company deletion."""
+
+    def setUp(self):
+        super(DeleteCompanyTaskTest, self).setUp()
+        self.mock_id = 0
+        self.dummy_organization = Dummy()
+        self.dummy_organization.display_name = 'dummy'
+
+    @patch('admin.tasks.send_email')
+    def test_delete_company_task_nonexistent_company(self, mock_send_email):
+        """
+        Test deleting company that doesn't exist in LMS.
+        """
+        mock_send_email.delay = Mock()
+        delete_company_task(self.mock_id, {}, None)
+        args, _ = mock_send_email.delay.call_args
+        self.assertEqual('Company Profile Deletion Failed', args[0])
+
+    @patch('api_client.organization_api.delete_organization')
+    @patch('admin.controller.remove_mobile_app_theme', side_effect=make_side_effect_raise_api_error(404))
+    @patch('admin.tasks.delete_participants_task')
+    @patch('api_client.organization_api.fetch_organization_user_ids')
+    @patch('api_client.organization_api.fetch_organization')
+    @patch('admin.controller.get_mobile_app_themes')
+    def test_delete_company_race_condition(self, get_theme_mock, fetch_organization_mock, fetch_users_mock, *mocks):
+        """
+        Test deleting company with the race condition during removing mobile app theme.
+        """
+        get_theme_mock.return_value = [{'id': self.mock_id}]
+        fetch_users_mock.return_value = [self.mock_id]
+        fetch_organization_mock.return_value = self.dummy_organization
+
+        delete_company_task(self.mock_id, {}, None)
+
+        for mock in mocks:
+            self.assertEqual(mock.call_count, 1)
+
+    @patch('admin.controller.remove_mobile_app_theme')
+    @patch('api_client.organization_api.delete_organization')
+    @patch('admin.tasks.delete_participants_task')
+    @patch('api_client.organization_api.fetch_organization_user_ids')
+    @patch('api_client.organization_api.fetch_organization')
+    @patch('admin.controller.get_mobile_app_themes')
+    def test_delete_company(self, get_theme_mock, fetch_organization_mock, fetch_users_mock, *mocks):
+        """
+        Test deleting company as admin.
+        """
+        get_theme_mock.return_value = [{'id': self.mock_id}]
+        fetch_users_mock.return_value = [self.mock_id]
+        fetch_organization_mock.return_value = self.dummy_organization
+
+        delete_company_task(self.mock_id, {}, None)
+        for mock in mocks:
+            self.assertEqual(mock.call_count, 1)
+
+        client_models = (
+            AccessKey,
+            ClientNavLinks,
+            ClientCustomization,
+            BrandingSettings,
+            LearnerDashboard,
+            ApiToken,
+        )
+        for model in client_models:
+            self.assertFalse(model.objects.filter(client_id=self.mock_id))
+
+        company_models = (
+            CompanyInvoicingDetails,
+            CompanyContact,
+            DashboardAdminQuickFilter,
+        )
+        for model in company_models:
+            self.assertFalse(model.objects.filter(company_id=self.mock_id))

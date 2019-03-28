@@ -1,0 +1,27 @@
+- extends "base_email_template.haml"
+- load i18n
+
+- block greetings
+  #{first_name},
+
+- block body
+  %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
+    {% blocktrans with file_name=file_name %} The bulk delete file "{{file_name}}" has been processed. {% endblocktrans %}
+    %li
+      Completion time: {{minutes_taken}} min
+    %li
+      No. of. participants successfully deleted: {{successful}}/{{total}}
+    - if failed_url
+      %li
+        {% blocktrans %} Error file:
+        %a{:href => "{{failed_url}}"} here
+        {% endblocktrans %}
+
+- block closing
+  %p{:style => "line-height: 22px;color: #333333;"}
+    {% trans "Best Regards," %}
+    %br
+    McKinsey Academy Team
+
+- block footer
+  %p{:style => "line-height: 22px;margin-bottom: 0;color: #333333;"}

@@ -6,7 +6,6 @@
   %script{src: "{% static 'js/vendor/tinymce/tinymce.min.js' %}"}
 
 - block content
-
     #mainCourseDetailsWrapper
         .courseDetailsNavigationButton
           - if companyCourseDetailsPage
@@ -26,7 +25,6 @@
                             #courseDetailsTopContainer
                               .courseDetailsNameAndId
                                 = name
-                                = id
                       .courseDetailsTags
                         - if not user.is_company_admin
                           - for tag in tags
@@ -46,10 +44,10 @@
                               %a.ome.dome-c{href: "{% url 'cohorts_course_details' id %}"}
                                 {% trans "COHORTS" %}
                           %span.courseParticipantsButton.large-2.columns
-                            %a.ome.dome-c.active{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                            %a.course-tab-link.participants.ome.dome-c.active{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                               {% trans "PARTICIPANTS" %}
                           %span.courseStatsButton.large-2.columns
-                            %a.ome.dome-c{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                            %a.course-tab-link.stats.ome.dome-c{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                               {% trans "STATS" %}
                           - if user.is_mcka_subadmin or user.is_mcka_admin
                             .courseResponsesButton.large-2.columns
@@ -109,61 +107,63 @@
                           .contentCard
                             .headerArea.customWidth
                               %h2
-                                Participants
+                                %span.course-participants-tab {% trans "Participants" %}
+                                %span.course-stats-tab.d-none {% trans "Stats" %}
+
+                              #courseDetailsParticipantsSearchWrapper.bbGrid-search-bar
+                                .input-group
+                                  %input{:placeholder => '{% trans "Search by Keywords" %}', :type => 'text', :name => 'course_participants', :class => 'bbGrid-pager  form-control'}
+
+
+                                #coursesDownloadStatsButton.d-none
+                                  - if companyCourseDetailsPage
+                                    %a.btn.btn-primary.ome.dome-bc.button.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}>
+                                      {% trans "Export Stats" %}
+                                  - else
+                                    %a.btn.btn-primary.ome.dome-bc.button.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}>
+                                      {% trans "Export Stats" %}
+
+                                -#  Company Admin stats Button
+                                - if user.is_company_admin
+                                  #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
+                                    .bulkButtonWrapper
+                                      %a.btn.btn-primary.ome.dome-bc.button.radius.small.bulkExportStats.bulkButton.disabled{:href => "#"}
+                                        {% trans "Export Stats" %}
+                                - else
+                                  #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
+                                    .bulkButtonWrapper
+                                      .hiddenButtonSplitModifier.bulkButton.disabled
+                                      - if user.is_internal_admin
+                                        %a.radius.small.bulkEmailSelectedParticipantsInternal.button.disabled{:href => "#"}
+                                          {% trans "Email Selected Participants" %}
+                                      - else
+                                        %a.radius.small.bulkEmailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
+                                          {% trans "Email Selected Participants" %}
+                                      %a.button.radius.small.bulkDropdownIcon.bulkButton.disabled
+                                        .fa.fa-chevron-down
+                                    #dropBulkCourse.f-dropdown{:style => 'display: none',:aria-hidden => "true"}
+                                      %a.button.radius.small.submenuButtons.bulkChangeStatus.bulkButton.disabled{:href => "#"}
+                                        {% trans "Change status" %}
+                                      %a.button.radius.small.submenuButtons.bulkUnenrollFromCourse.bulkButton.disabled{:href => "#"}
+                                        {% trans "Unenroll from course" %}
+                                      %a.button.radius.small.submenuButtons.bulkEnrollInNewCourse.bulkButton.disabled{:href => "#"}
+                                        {% trans "Enroll in new course" %}
+                                      %a.button.radius.small.submenuButtons.bulkExportStats.bulkButton.disabled{:href => "#"}
+                                        {% trans "Export stats" %}
+                                      %a.button.radius.small.submenuButtons.bulkExportNotifData.bulkButton.disabled{:href => "#"}
+                                        {% trans "Download CSV For Notifications" %}
 
                             -#Breadcrums
                             %ul.breadcurm
                               %li
-                                %a.ome.dome-c{:href => "#"} McKinsey and Company
+                                %a.ome.dome-c{:href => '/admin/company_dashboard', :target => '_self'}
+                                  {% trans "Company Dashboard" %}
                               %li
-                                %a.ome.dome-c{:href => "#"} All Courses
-                              %li
-                                %a.ome.dome-c{:href => "#"} McKinsey's Approach to Problem Solving Academy
-                              %li Participants
-
-                            .bbGrid-search-bar
-                              .input-group
-                                %input{:placeholder => '{% trans "Search by Keywords" %}', :type => 'text', :name => 'course_participants', :class => 'bbGrid-pager  form-control'}
-
-
-                              #coursesDownloadStatsButton
-                                -#companyCourseDetailsPage Stat button
-                                - if companyCourseDetailsPage
-                                  %a.btn.btn-primary.ome.dome-bc.button.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}>
-                                    {% trans "Export Stats" %}
-                                - else
-                                  %a.btn.btn-primary.ome.dome-bc.button.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}>
-                                    {% trans "Export Stats" %}
-
-                              -#  Company Admin stats Button
-                              - if user.is_company_admin
-                                #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
-                                  .bulkButtonWrapper
-                                    %a.btn.btn-primary.ome.dome-bc.button.radius.small.bulkExportStats.bulkButton.disabled{:href => "#"}
-                                      {% trans "Export Stats" %}
-                              - else
-                                #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
-                                  .bulkButtonWrapper
-                                    .hiddenButtonSplitModifier.bulkButton.disabled
-                                    - if user.is_internal_admin
-                                      %a.radius.small.bulkEmailSelectedParticipantsInternal.button.disabled{:href => "#"}
-                                        {% trans "Email Selected Participants" %}
-                                    - else
-                                      %a.radius.small.bulkEmailSelectedParticipants.button.bulkButton.disabled{:href => "#"}
-                                        {% trans "Email Selected Participants" %}
-                                    %a.button.radius.small.bulkDropdownIcon.bulkButton.disabled
-                                      .fa.fa-chevron-down
-                                  #dropBulkCourse.f-dropdown{:style => 'display: none',:aria-hidden => "true"}
-                                    %a.button.radius.small.submenuButtons.bulkChangeStatus.bulkButton.disabled{:href => "#"}
-                                      {% trans "Change status" %}
-                                    %a.button.radius.small.submenuButtons.bulkUnenrollFromCourse.bulkButton.disabled{:href => "#"}
-                                      {% trans "Unenroll from course" %}
-                                    %a.button.radius.small.submenuButtons.bulkEnrollInNewCourse.bulkButton.disabled{:href => "#"}
-                                      {% trans "Enroll in new course" %}
-                                    %a.button.radius.small.submenuButtons.bulkExportStats.bulkButton.disabled{:href => "#"}
-                                      {% trans "Export stats" %}
-                                    %a.button.radius.small.submenuButtons.bulkExportNotifData.bulkButton.disabled{:href => "#"}
-                                      {% trans "Download CSV For Notifications" %}
+                                %a.ome.dome-c{:href => '/admin/companies/#{companyId}', :target => '_self'}
+                                  =companyName
+                              %li= name
+                              %li.course-participants-tab {% trans "Participants" %}
+                              %li.course-stats-tab.d-none {% trans "Stats" %}
 
                             #courseDetailsMainContainer
                               .courseParticipants.contentNavigationContainer
@@ -195,99 +195,24 @@
                                   #courseBlocksGrid.large-12.columns.spinnerContainer.gridContainer
                                   #courseProblemResponseReportsGrid.large-12.columns.spinnerContainer.gridContainer
 
-                  -#  Form and Modal structure
-                  .displayNoneArea
-                    #courseDetailsMainModal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
-                      %h2.courseModalTitle
-                      %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
-                      .courseModalStatus
-                      %hr
-                      .courseModalDescription
-                      .courseModalContent
-                      .courseModalControl
-                        .button.saveChanges
-                          {% trans "Save Changes" %}
-                        %a.cancelChanges{:href => "#"}
-                          {% trans "Cancel" %}
-                      %a.close-reveal-modal{"aria-label": "Close"}
-                        &#215;
-                    #courseDetailsBulkEmail.reveal-modal.medium{"aria-hidden": "true", "data-reveal": "", :role => "dialog"}
-                      %h2.emailModalTitle
-                      %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
-                      .emailModalStatus
-                      %hr
-                      %div
-                        .large-12.columns.courseModalDescription
-                          {% trans "Email selected participants" %}
-                      .emailModalContent
-                        %div
-                          .large-6.columns.participantFirstName
-                            .fromEmailLabel.labelUniversal
-                              {% trans "From" %}
-                            .fromEmailValue
-                              %input{:type => "text", :value => '', :name => "from_email", :maxlength => "128"}
-                          .large-6.columns.participantLastName
-                            .templateNameLabel.labelUniversal
-                              {% trans "Template" %}
-                            .templateControlButtons
-                              %i.fa.fa-floppy-o.saveAsNewTemplate{:data-title => "{% trans 'Save as new template' %}"}
-                              %i.fa.fa-pencil-square-o.updateTemplate{:data-title => "{% trans 'Update selected template' %}"}
-                              %i.fa.fa-trash-o.removeTemplate{:data-title => "{% trans 'Remove selected template' %}"}
-                            .templateNameValue
-                              %select{:name => 'template_id'}
-                                %option{:value => "none"}
-                                  {% trans "None" %}
-                                - for template in template_list
-                                  %option{:value => "#{template.pk}"}
-                                    =template.title
-                        %div
-                          .large-12.columns.emailSubject
-                            .emailSubjectLabel.labelUniversal
-                              {% trans "Subject" %}
-                            .emailSubjectValue
-                              %input{:type => "text", :value => '', :name => "subject", :maxlength => "256"}
-                        %div
-                          .large-12.columns.emailBody
-                            .emailBodyLabel.labelUniversal
-                              {% trans "Body" %}
-                            .emailBodyTextarea
-                              %textarea#email_editor
-                      %div
-                        .large-12.columns.emailModalControl
-                          .button.sendEmail
-                            {% trans "Send Email" %}
-                          .buttonBlock
-                            %a.previewEmail{:href => "#"}
-                              {% trans "Preview email" %}
-                            %a.scheduleForLater{:href => "#"}
-                              {% trans "Schedule for Later" %}
 
-                      %a.close-reveal-modal{"aria-label": "Close"}
-                        &#215;
-                    #courseTagsModal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
-                      %h2 {% trans "Add Tags to this Course" %}
-                      %hr
-                      %div
-                        .large-6.columns
-                          .courseTagsList
-                            %input.courseTagsInput{:type => "text", :value => '', :name => "tag_name" }
-                            .errorMessage
-                            .newTagCreationPopup
-                              {% trans "Since this tag does not yet exist, a new Tag will be created. If this is an error, try selecting your tag from the type-ahead results." %}
-                      .courseTagsModalControl
-                        .button.addTagButton.small.radius
-                          Save
-                        %a.closeModal{:href => "#"}
-                          {% trans "Cancel" %}
-                      %a.close-reveal-modal{"aria-label": "Close"}
-                        &#215;
-                    #tagCoursesListModal.reveal-modal.tiny{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
-                      %h2.tagCoursesListTitle
-                      %hr
-                      %div
-                        #tagCoursesListBlock
-                      %a.close-reveal-modal{"aria-label": "Close"}
-                        &#215;
+  #companyAdminCourseExportStatsModal.modal{:role => "dialog", :tabindex => "-1"}
+    .modal-dialog{:role => "document"}
+      .modal-content
+        .modal-header
+          %button.close{"aria-label": "Close", "data-dismiss": "modal", :type => "button"}
+            %span{"aria-hidden": "true"} ×
+          %h5.modal-title {% trans "Exporting Stats for All Users" %}
+        .modal-body
+          %p.error
+          %p {% trans "We'll e-mail you when your report is ready to download." %}
+          %div
+            %input.progress-check-box{:name => "include_lesson_progress", :style => "margin: 0px;", :type => "checkbox"}
+            %label{:style => "font-size: 12px; display: inline;"} {% trans "Include breakdown of progress for each lesson (Note: the export will take more time)" %}
+
+        .modal-footer
+          %button.btn.btn-primary.saveChanges{:type => "button"} Save changes
+          %button.btn.btn-secondary{"data-dismiss": "modal", :type => "button"} Close
 
   - include "admin/fragments/hidden_image_upload_form.haml"
 - block js_snippets
@@ -296,3 +221,17 @@
     var course_details_count_all_users = '{{count}}';
     var course_details_cohorts_available = '{{cohorts_available}}';
     var course_details_cohorts_enabled = '{{cohorts_enabled}}';
+
+    $('.new-theme .course-tab-link').on('click', function(e) {
+      if ($(e.target).hasClass('participants')) {
+        $(".course-participants-tab").removeClass('d-none');
+        $(".course-stats-tab").addClass('d-none');
+        $("#coursesDownloadStatsButton").addClass('d-none');
+        $(".bbGrid-search-bar .input-group, .bbGrid-search-bar .bulkActionsButtonContainer").removeClass('d-none');
+      } else if ($(e.target).hasClass('stats')) {
+        $(".course-participants-tab").addClass('d-none');
+        $(".course-stats-tab").removeClass('d-none');
+        $("#coursesDownloadStatsButton").removeClass('d-none');
+        $(".bbGrid-search-bar .input-group, .bbGrid-search-bar .bulkActionsButtonContainer").addClass('d-none');
+      }
+    });

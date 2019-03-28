@@ -1,0 +1,28 @@
+- extends "layout.haml"
+- load i18n
+
+- block content
+  #error_403.error-page
+    .container
+      .row
+        .col
+          .contentCard.progressWidgets.text-center
+            .errorContWrap
+              .icon
+                %i.material-icons
+                  warning
+              .errorText
+                %h4
+                  {% trans "Access forbidden." %}
+              .content
+                %p
+                  {% blocktrans %}
+                  You do not have permission to access this page or directory. Please return to the home page.
+                  {% endblocktrans %}
+                %p
+                  {% blocktrans %}
+                  If you believe you are seeing this message in error, please visit our
+                  %a{:href => "/faq"} FAQ page
+                  or
+                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support.
+                  {% endblocktrans %}

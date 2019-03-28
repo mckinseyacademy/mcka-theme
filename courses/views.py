@@ -322,11 +322,14 @@ def _render_group_work(request, course, project_group, group_project, learner_da
         calendar_items = LearnerDashboardTile.objects.filter(
             learner_dashboard=learner_dashboard_id, show_in_calendar=True
         )
-
+        mobile_device = False
+        if is_mobile_user_agent(request) or is_tablet_user_agent(request):
+            mobile_device = True
         data.update({
             "learner_dashboard": learner_dashboard,
             "calendar_enabled": True if calendar_items else False,
             "course_id": course.id,
+            "mobile_device": mobile_device,
         })
 
         if learner_dashboard.course_id == course.id:
@@ -443,11 +446,14 @@ def course_discussion_learner_dashboard(request, learner_dashboard_id, course_id
                 pass
 
     calendar_items = LearnerDashboardTile.objects.filter(learner_dashboard=learner_dashboard_id, show_in_calendar=True)
-
+    mobile_device = False
+    if is_mobile_user_agent(request) or is_tablet_user_agent(request):
+        mobile_device = True
     data.update({
         "learner_dashboard": learner_dashboard,
         "calendar_enabled": True if calendar_items else False,
         "course_id": course_id,
+        "mobile_device": mobile_device,
     })
 
     return render(request, 'courses/course_discussion_ld.haml', data)
@@ -754,13 +760,16 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
 
     resources = load_static_tabs(course_id, name="resources")
     resources_content = fix_resource_page_video_scripts(getattr(resources, 'content', ''))
-
+    mobile_device = False
+    if is_mobile_user_agent(request) or is_tablet_user_agent(request):
+        mobile_device = True
     data = {
         "resources_content": resources_content,
         "course_id": course_id,
         "calendar_enabled": True if calendar_items else False,
         "learner_dashboard": learner_dashboard,
-        "do_not_load_ooyala": True  # to avoid conflicts don't include ooyala scripts in layout.haml
+        "do_not_load_ooyala": True,  # to avoid conflicts don't include ooyala scripts in layout.haml
+        "mobile_device": mobile_device,
     }
 
     if learner_dashboard.course_id == course_id:

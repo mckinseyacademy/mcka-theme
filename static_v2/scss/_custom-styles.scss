@@ -9,6 +9,7 @@
 
 // ===== Commonly used styles ===== //
 @import "common/variables";
+@import "common/animation";
 @import "common/mixins";
 @import "common/type";
 @import "common/misc";
@@ -46,6 +47,7 @@
 @import "pages/group-work";
 @import "pages/progressPage";
 @import "pages/discussion";
+@import "pages/errorPages";
 
 // ======== Admin Styles ========== //
 @import "admin/common/bbGrid";
@@ -55,3 +57,8 @@
 @import "admin/pages/managerDashboard";
 @import "admin/pages/companyDashboard";
 @import "admin/pages/courseDiscussion";
+
+
+// === New Feature's Tour styles === //
+@import "newFeaturesTour/featuresTour";
+

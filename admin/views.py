@@ -23,10 +23,11 @@ from django.core.files.storage import default_storage
 from django.core.mail import EmailMessage, send_mass_mail
 from django.core.urlresolvers import reverse
 from django.http import (
+    HttpResponseBadRequest,
     HttpResponseForbidden,
     HttpResponseRedirect,
     HttpResponse, Http404,
-    HttpResponseServerError
+    HttpResponseServerError,
 )
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
@@ -49,15 +50,15 @@ from accounts.controller import is_future_start, save_new_client_image, send_pas
 from accounts.models import UserActivation, PublicRegistrationRequest
 from admin.controller import get_accessible_programs, get_accessible_courses_from_program, \
     load_group_projects_info_for_course, update_mobile_client_detail_customization, upload_mobile_branding_image, \
-    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_image, \
+    create_roles_list, edit_self_register_role, delete_self_reg_role, remove_desktop_branding_images, \
     get_organization_active_courses, edit_course_meta_data, get_user_company_fields, update_user_company_fields_value, \
-    process_manager_email, parse_participant_profile_csv
+    process_manager_email, parse_participant_profile_csv, get_users_for_deletion, \
+    delete_participants
 from admin.models import AdminTask
 from admin.tasks import (
-	    user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data,
-	    create_problem_response_report, monitor_problem_response_report, post_process_problem_response_report,
-	    handle_admin_task_error, send_problem_response_report_success_email
-	)
+    user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data,
+    create_problem_response_report, monitor_problem_response_report, post_process_problem_response_report,
+    handle_admin_task_error, send_problem_response_report_success_email, delete_participants_task, delete_company_task)
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api, \
     cohort_api
 from api_client.api_error import ApiError
@@ -79,13 +80,15 @@ from courses.controller import (
 )
 from courses.models import FeatureFlags, CourseMetaData
 from courses.user_courses import load_course_progress
-from lib.authorization import permission_group_required, permission_group_required_api
+from lib.authorization import permission_group_required, permission_group_required_api, is_user_in_permission_group
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from license import controller as license_controller
 from main.models import CuratedContentItem
+from mcka_apros.settings import COHORT_FLAG_NAMESPACE, COHORT_FLAG_SWITCH_NAME, DELETION_FLAG_NAMESPACE, \
+    DELETION_FLAG_SWITCH_NAME
 from util.csv_helpers import csv_file_response, UnicodeWriter
 from util.data_sanitizing import sanitize_data, clean_xss_characters
-from util.s3_helpers import store_file
+from util.s3_helpers import store_file, get_path
 from util.validators import (
     AlphanumericValidator, alphanum_accented_validator)
 from util.math_helpers import calculate_percentage
@@ -112,7 +115,8 @@ from .forms import (ClientForm, ProgramForm, UploadStudentListForm, ProgramAssoc
                     MassStudentListForm, MassParticipantsEnrollListForm, EditExistingUserForm,
                     DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm,
                     LearnerDashboardTileForm, CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm,
-                    MassCompanyFieldsUpdateForm, MassManagerDataUpdateForm)
+                    MassCompanyFieldsUpdateForm, MassManagerDataUpdateForm, MassParticipantsDeleteListForm,
+                    MassParticipantsDeleteConfirmationForm)
 from .helpers.permissions_helpers import (AccessChecker, InternalAdminCoursePermission, InternalAdminUserPermission,
                                           CompanyAdminCompanyPermission, CompanyAdminUserPermission,
                                           CompanyAdminCoursePermission, checked_user_access, checked_course_access,
@@ -838,10 +842,16 @@ def course_details(request, course_id):
     return render(request, 'admin/courses/course_details.haml', context)
 
 
-def _cohort_flag():
-    namespace = 'course_groups'
-    switch_name = 'enable_apros_integration'
+def _check_waffle_switch(namespace, switch_name):
     return waffle.switch_is_active('{}.{}'.format(namespace, switch_name))
+
+
+def _cohort_flag():
+    return _check_waffle_switch(COHORT_FLAG_NAMESPACE, COHORT_FLAG_SWITCH_NAME)
+
+
+def _deletion_flag():
+    return _check_waffle_switch(DELETION_FLAG_NAMESPACE, DELETION_FLAG_SWITCH_NAME)
 
 
 def _get_course_context(course, organization_id=''):
@@ -1740,7 +1750,7 @@ def remove_client_branding_image(request, client_id):
             response.status_code = 500
             return response
     else:
-        remove_desktop_branding_image(img_type, client_id)
+        remove_desktop_branding_images(img_type, client_id)
     return HttpResponse(json.dumps({'message': 'Successfully deleted'}), content_type='application/json')
 
 
@@ -2494,6 +2504,69 @@ def enroll_participants_from_csv(request):
                 json.dumps({"task_key": _(reg_status.task_key)}),
                 content_type='text/plain'
             )
+
+
+class DeleteParticipantsFromCsv(APIView):
+    """
+    Allows bulk deletion of users.
+
+    `/api/participants/delete_participants_from_csv`
+    """
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request):
+        """
+        Saves one-column CSV file and returns its URL nad number of users that will be deleted.
+        """
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        form = MassParticipantsDeleteListForm(request.data, request.data)
+        if form.is_valid():
+            file_name = '_'.join(request.data['student_delete_list'].name.split())
+            file_url = store_file(
+                request.data['student_delete_list'],
+                IMPORT_PARTICIPANTS_DIR,
+                file_name,
+                secure=True
+            )
+
+            try:
+                users_count = len(get_users_for_deletion(get_path(file_url)))
+            except ValueError:
+                return HttpResponseBadRequest(_("The CSV file has to contain 'email' header."))
+
+            data = {
+                'user_count': users_count,
+                'file_url': file_url,
+            }
+
+            return Response(data)
+
+        return HttpResponseBadRequest(json.dumps(form.errors))
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def delete(self, request):
+        """
+        Performs the actual bulk user deletion.
+        """
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        form = MassParticipantsDeleteConfirmationForm(request.data, request.data)
+        if form.is_valid():
+            file_url = form.cleaned_data['file_url']
+
+            delete_participants_task.delay(
+                file_url,
+                True,
+                owner=user_api.get_user(user_id=request.user.id).to_dict(),
+                base_url=request.build_absolute_uri()
+            )
+            return Response(None, status=204)
+
+        return HttpResponseBadRequest(json.dumps(form.errors))
 
 
 class ParticipantsImportProgress(APIView):
@@ -3796,13 +3869,24 @@ def workgroup_list(request, restrict_to_programs_ids=None):
 )
 def participants_list(request):
     form = MassStudentListForm()
+    form_delete = MassParticipantsDeleteListForm()
+    form_delete_confirm = MassParticipantsDeleteConfirmationForm()
     form_enroll = MassParticipantsEnrollListForm()
     form_company_fields = MassCompanyFieldsUpdateForm()
     form_manager_update = MassManagerDataUpdateForm()
     internal_admin_flag = request.user.is_internal_admin
+    enable_data_deletion = _deletion_flag() and is_user_in_permission_group(request.user, PERMISSION_GROUPS.MCKA_ADMIN)
 
-    data = {'form': form, 'form_enroll': form_enroll, 'form_company_fields': form_company_fields,
-            'form_manager_update': form_manager_update, 'internalAdminFlag': internal_admin_flag}
+    data = {
+        'form': form,
+        'form_delete': form_delete,
+        'form_delete_confirm': form_delete_confirm,
+        'form_enroll': form_enroll,
+        'form_company_fields': form_company_fields,
+        'form_manager_update': form_manager_update,
+        'internalAdminFlag': internal_admin_flag,
+        'enableDataDeletion': enable_data_deletion,
+    }
     return render(request, 'admin/participants/participants_list.haml', data)
 
 
@@ -3838,6 +3922,17 @@ def participant_mail_activation_link(request, user_id):
         except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
             messages.error(request, e.message)
     return HttpResponseRedirect(reverse('participants_details', args=(user_id, )))
+
+
+def get_users_by_ids(user_ids):
+    """Retrieves users from external API by their IDs."""
+    user_ids = [str(user_id) for user_id in user_ids]
+
+    users = user_api.get_users(ids=user_ids)
+    if not users:
+        raise Http404
+
+    return users
 
 
 class ParticipantsListApi(APIView):
@@ -4211,6 +4306,19 @@ class participant_details_api(APIView):
                                  'company_permissions': request.data['company_permissions']})
         else:
             return Response({'status': 'error', 'type': 'validation_failed', 'message': form.errors})
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def delete(self, _request, user_id):
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        failed = delete_participants([user_id])
+        if failed:
+            return HttpResponseBadRequest(json.dumps({
+                'detail': failed.values()
+            }), content_type="application/json")
+        return HttpResponse(status=204)
 
 
 class manage_user_company_api(APIView):
@@ -5048,7 +5156,13 @@ class users_company_admin_get_post_put_delete_api(APIView):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN,)
 def companies_list(request):
-    return render(request, 'admin/companies/companies_list.haml')
+    data = {
+        'enableDataDeletion': _deletion_flag() and is_user_in_permission_group(
+            request.user,
+            PERMISSION_GROUPS.MCKA_ADMIN
+        ),
+    }
+    return render(request, 'admin/companies/companies_list.haml', data)
 
 
 @permission_group_required(
@@ -5111,90 +5225,108 @@ class create_new_company_api(APIView):
             return Response({'status': 'error'})
 
 
-@permission_group_required(
-    PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.CLIENT_ADMIN,
-    PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN,
-)
-@company_admin_company_access
-def company_details(request, company_id):
-    client = Client.fetch(company_id)
-    company = {}
-    company['id'] = company_id
-    company['name'] = vars(client)['display_name']
-    requestParams = {}
-    requestParams['organizations'] = company_id
-    participants = user_api.get_filtered_users(requestParams)
-    company['numberParticipants'] = participants['count']
-    company_courses = get_organization_active_courses(request, company_id)
-    company['activeCourses'] = len(get_company_active_courses(company_courses))
+class CompanyDetailsView(APIView):
 
-    invoicing = {}
-    invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
-    if len(invoicingDetails) > 0:
-        invoicing['full_name'] = invoicingDetails[0].full_name
-        invoicing['title'] = invoicingDetails[0].title
-        invoicing['address1'] = invoicingDetails[0].address1
-        invoicing['address2'] = invoicingDetails[0].address2
-        invoicing['city'] = invoicingDetails[0].city
-        invoicing['state'] = invoicingDetails[0].state
-        invoicing['postal_code'] = invoicingDetails[0].postal_code
-        invoicing['country'] = invoicingDetails[0].country
-        invoicing['po'] = invoicingDetails[0].po
-        invoicing['identity_provider'] = invoicingDetails[0].identity_provider
-        for key, value in invoicing.items():
-            if invoicing[key].strip() == '':
-                invoicing[key] = '-'
-    else:
-        invoicing['full_name'] = '-'
-        invoicing['title'] = '-'
-        invoicing['address1'] = '-'
-        invoicing['address2'] = '-'
-        invoicing['city'] = '-'
-        invoicing['state'] = '-'
-        invoicing['postal_code'] = '-'
-        invoicing['country'] = '-'
-        invoicing['po'] = '-'
-        invoicing['identity_provider'] = '-'
+    @permission_group_required_api(
+        PERMISSION_GROUPS.MCKA_ADMIN,
+        PERMISSION_GROUPS.MCKA_SUBADMIN,
+        PERMISSION_GROUPS.CLIENT_ADMIN,
+        PERMISSION_GROUPS.COMPANY_ADMIN,
+    )
+    @method_decorator(company_admin_company_access)
+    def get(self, request, company_id):
+        client = Client.fetch(company_id)
+        company = {}
+        company['id'] = company_id
+        company['name'] = vars(client)['display_name']
+        requestParams = {}
+        requestParams['organizations'] = company_id
+        participants = user_api.get_filtered_users(requestParams)
+        company['numberParticipants'] = participants['count']
+        company_courses = get_organization_active_courses(request, company_id)
+        company['activeCourses'] = len(get_company_active_courses(company_courses))
 
-    contacts = []
-    companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
-    if len(companyContacts) > 0:
-        for companyContact in companyContacts:
-            contact = {}
-            contact_type = companyContact.contact_type
-            contact['type'] = CompanyContact.get_contact_type(int(contact_type))
-            contact['type_id'] = contact_type
-            contact['type_info'] = CompanyContact.get_type_description(contact_type)
-            contact['full_name'] = companyContact.full_name
-            contact['title'] = companyContact.title
-            contact['email'] = companyContact.email
-            contact['phone'] = companyContact.phone
-            for key, value in contact.items():
-                if contact[key].strip() == '':
-                    contact[key] = '-'
-            contacts.append(contact)
-    else:
-        for i in range(4):
-            contact_type = CompanyContact.get_contact_type(i)
-            type_description = CompanyContact.get_type_description(str(i))
-            contact = {}
-            contact['type'] = contact_type
-            contact['type_id'] = i
-            contact['type_info'] = type_description
-            contact['full_name'] = '-'
-            contact['title'] = '-'
-            contact['email'] = '-'
-            contact['phone'] = '-'
-            contacts.append(contact)
+        invoicing = {}
+        invoicingDetails = CompanyInvoicingDetails.objects.filter(company_id=int(company_id))
+        if len(invoicingDetails) > 0:
+            invoicing['full_name'] = invoicingDetails[0].full_name
+            invoicing['title'] = invoicingDetails[0].title
+            invoicing['address1'] = invoicingDetails[0].address1
+            invoicing['address2'] = invoicingDetails[0].address2
+            invoicing['city'] = invoicingDetails[0].city
+            invoicing['state'] = invoicingDetails[0].state
+            invoicing['postal_code'] = invoicingDetails[0].postal_code
+            invoicing['country'] = invoicingDetails[0].country
+            invoicing['po'] = invoicingDetails[0].po
+            invoicing['identity_provider'] = invoicingDetails[0].identity_provider
+            for key, value in invoicing.items():
+                if invoicing[key].strip() == '':
+                    invoicing[key] = '-'
+        else:
+            invoicing['full_name'] = '-'
+            invoicing['title'] = '-'
+            invoicing['address1'] = '-'
+            invoicing['address2'] = '-'
+            invoicing['city'] = '-'
+            invoicing['state'] = '-'
+            invoicing['postal_code'] = '-'
+            invoicing['country'] = '-'
+            invoicing['po'] = '-'
+            invoicing['identity_provider'] = '-'
 
-    data = {
-        'company': company,
-        'contacts': contacts,
-        'invoicing': invoicing,
-        'companyAdminFlag': request.user.is_company_admin
-    }
+        contacts = []
+        companyContacts = CompanyContact.objects.filter(company_id=int(company_id))
+        if len(companyContacts) > 0:
+            for companyContact in companyContacts:
+                contact = {}
+                contact_type = companyContact.contact_type
+                contact['type'] = CompanyContact.get_contact_type(int(contact_type))
+                contact['type_id'] = contact_type
+                contact['type_info'] = CompanyContact.get_type_description(contact_type)
+                contact['full_name'] = companyContact.full_name
+                contact['title'] = companyContact.title
+                contact['email'] = companyContact.email
+                contact['phone'] = companyContact.phone
+                for key, value in contact.items():
+                    if contact[key].strip() == '':
+                        contact[key] = '-'
+                contacts.append(contact)
+        else:
+            for i in range(4):
+                contact_type = CompanyContact.get_contact_type(i)
+                type_description = CompanyContact.get_type_description(str(i))
+                contact = {}
+                contact['type'] = contact_type
+                contact['type_id'] = i
+                contact['type_info'] = type_description
+                contact['full_name'] = '-'
+                contact['title'] = '-'
+                contact['email'] = '-'
+                contact['phone'] = '-'
+                contacts.append(contact)
 
-    return render(request, 'admin/companies/company_details.haml', data)
+        data = {
+            'company': company,
+            'contacts': contacts,
+            'invoicing': invoicing,
+            'companyAdminFlag': request.user.is_company_admin,
+            'enableDataDeletion': _deletion_flag(),
+        }
+
+        return render(request, 'admin/companies/company_details.haml', data)
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def delete(self, request, company_id):
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        delete_company_task.delay(
+            company_id,
+            owner=user_api.get_user(user_id=request.user.id).to_dict(),
+            base_url=request.build_absolute_uri()
+        )
+
+        return HttpResponse(status=204)
 
 
 class CompanyCustomFields(APIView):

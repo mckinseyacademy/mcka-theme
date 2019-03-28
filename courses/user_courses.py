@@ -1,16 +1,19 @@
 from __future__ import division
 
 import functools
+import pytz
 
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 
+from accounts.json_backend import JsonBackend
 from api_data_manager.organization_data import OrgDataManager
 from api_data_manager.common_data import CommonDataManager, COMMON_DATA_PROPERTIES
 from api_data_manager.course_data import CourseDataManager
 from admin.models import Program
 from admin.controller import load_course
+from datetime import datetime, timedelta
 from api_client import user_api, course_api, mobileapp_api, organization_api
 from accounts.middleware import thread_local
 from api_data_manager.user_data import UserDataManager
@@ -241,6 +244,15 @@ def standard_data(request):
             client_data = client_data_manager.get_org_common_data()
             client_customization = client_data.customization
             client_nav_links = client_data.nav_links
+
+            if client_customization and client_customization.new_ui_enabled:
+                remote_user = JsonBackend().get_user(request.user.id)
+                new_ui_enabled_at = client_customization.new_ui_enabled_at
+                margin = new_ui_enabled_at + timedelta(days=60)
+                last_signin = remote_user.last_signin
+
+                if last_signin and last_signin < new_ui_enabled_at and pytz.UTC.localize(datetime.now()) < margin:
+                    show_new_ui_tour = True
 
             if feature_flags and feature_flags.branding:
                 branding = client_data.branding

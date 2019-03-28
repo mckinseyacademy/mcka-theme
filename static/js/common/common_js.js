@@ -875,7 +875,7 @@ $(document).ready(function () {
 function UpdateManagerCourseName() {
     $('#managerCurrentCourse').text($('a.hashPageButton.active').text().trim());
     $('a.hashPageButton span.bookmark').remove();
-    $('a.hashPageButton.active').html($('a.hashPageButton.active').text()+ ' <span class ="bookmark"> </span>');
+    $('a.hashPageButton.active').html($('a.hashPageButton.active').text()+ ' <span class ="bookmark secondary"><svg height="100%" preserveAspectRatio="none" viewBox="0 0 20 100" width="100%"> <path d="M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z" vector-effect="non-scaling-stroke"></path> </svg> </span>');
 }
 
 function InitializeAverageCalculate() {
@@ -904,12 +904,12 @@ function InitializeAverageCalculate() {
     var teamAvgProficiency = Math.round(totalProficiency / total);
     setManagerDashboardOrgMetrics(courseAvg, teamAvgProgress, teamAvgProficiency);
     $('.progress-average large').text(teamAvgProgress + "%");
-    $('.proficiency-average large').text(teamAvgProficiency + "%");
+    $('.proficiency-average large').text(teamAvgProficiency);
   }
   else{
     setManagerDashboardOrgMetrics(courseAvg, 0, 0);
     $('.progress-average large').text("0%");
-    $('.proficiency-average large').text("0%");
+    $('.proficiency-average large').text("0");
   }
 }
 

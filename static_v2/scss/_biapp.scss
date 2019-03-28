@@ -8,6 +8,13 @@
 @import "common/dropdown";
 @import "common/header";
 
+// Body styles when Modal open
+body {
+  &.modal-open {
+    @include padding-right(0 !important);
+  }
+}
+
 // Header
 .appHeader {
   .logo {
@@ -190,14 +197,11 @@
 
 .profileDropdown {
   .header {
-    .titles-area {
-      @include margin-right(28px);
-    }
 
     .nameArea,
-    .titlesArea {
-      .edit-link {
-        @include margin-left(10px);
+    .roleArea {
+      span {
+        @include margin-right(5px);
       }
     }
 
@@ -218,6 +222,10 @@
           .bar {
             @include margin-left(5px);
           }
+        }
+        .lesson-count,
+        .course-effort {
+          @include margin-right(1.5vw);
         }
       }
     }
@@ -358,8 +366,8 @@
 
 // progress
 
-#course-progress-new{
-  .visual{
+#course-progress-new {
+  .visual {
     @include border-right(1px solid $gray);
     @include padding-left(20px);
 
@@ -368,7 +376,7 @@
       @include padding-left(15px);
     }
   }
-  .modules{
+  .modules {
     @include padding-left(30px);
 
     @include media-breakpoint-between(xs, sm) {
@@ -379,16 +387,16 @@
       @include padding-left(15px);
     }
   }
-  table{
-    td{
+  table {
+    td {
       &:first-child {
         @include border-left(0);
       }
       &:last-child {
         @include border-right(0);
       }
-      &.week{
-        span{
+      &.week {
+        span {
           color: $black;
           @include margin-right(20px);
           @include media-breakpoint-between(xs, md) {
@@ -401,7 +409,7 @@
           .lesson-label {
             @include margin-left(5px);
             @include margin-right(25px);
-            @include media-breakpoint-between(xs, md){
+            @include media-breakpoint-between(xs, md) {
               @include margin-right(5px);
             }
           }
@@ -410,26 +418,26 @@
     }
   }
   .legend-status {
-    span{
+    span {
       @include margin-right(15px);
       @include media-breakpoint-between(xs, sm) {
         @include margin-right(7px);
       }
-      i{
+      i {
         @include margin-right(5px);
       }
     }
   }
 
   .proficiency-data,
-  .engagement-data{
-    .progressWidgets{
+  .engagement-data {
+    .progressWidgets {
       @include border-right(1px solid $gray);
     }
   }
   .dropdown-toggle {
     &:after {
-      @include right(-20px);
+      @include margin-left(-2px);
     }
   }
   .proficiency-data,
@@ -528,8 +536,50 @@
 .modal.middleSize {
   .modal-header {
     .close {
-      @include margin-left(auto);
-      @include margin-right(-1.9rem);
+      @include right(25px);
+    }
+  }
+}
+
+// === newFeatureTour Modal =====
+.newFeatureTour {
+  .featureImage {
+    @include float(right);
+    @include margin-left(75px);
+  }
+
+  .btn-skip {
+    @include right(20px);
+  }
+
+  .controlsWrap {
+    .carousel-control-next {
+      @include float(right);
+    }
+    .carousel-control-prev {
+      @include float(left);
+    }
+    .carousel-control-prev,
+    .carousel-control-next {
+      > span {
+        top: 50%;
+        left: 50%;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(md){
+  .newFeatureTour{
+    .featureImage{
+      @include margin-left(0);
+    }
+  }
+}
+@include media-breakpoint-down(sm){
+  .newFeatureTour{
+    .featureImage{
+      @include margin-left(0);
     }
   }
 }
@@ -650,6 +700,10 @@ body.rtl {
     left: auto;
     right: 10px;
   }
+  .lesson-dropdown-frame .lesson-dropdown-holder .dropdown-menu {
+    left: auto !important;
+    right: 0 !important;
+  }
 
 }
 
@@ -708,10 +762,9 @@ body.rtl {
   }
 }
 
-.mCSB_inside>.mCSB_container {
+.mCSB_inside > .mCSB_container {
   @include margin-right(15px);
 }
-
 
 // Admin site Biapp styles
 .tableCardWrap {
@@ -783,33 +836,34 @@ body.rtl {
     }
   }
 }
+
 #course-progress-new table td .dropdown-toggle {
   @include media-breakpoint-between(xs, sm) {
-     @include margin-left(25px);
+    @include margin-left(25px);
   }
 }
+
 #companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
   .bbGrid-search-bar {
+    @include right(30px);
     .input-group {
       @include float(right);
       input:not([type='checkbox']) {
         @include padding-right(40px);
       }
     }
-    .bbGrid-pager {
-    }
   }
 }
 
 #courseMainDetailsContainerView {
-  .bbGrid-search-bar{
+  .bbGrid-search-bar {
     @include right(30px);
-    .input-group{
+    .input-group {
       @include float(right);
       @include margin-left(20px);
     }
     #coursesDownloadStatsButton,
-    .bulkActionsButtonContainer{
+    .bulkActionsButtonContainer {
       @include float(right);
     }
   }
@@ -828,11 +882,11 @@ body.rtl {
       }
     }
   }
-  #mCSB_1_container{
-  >.row{
-    @include margin-right(-15px);
+  #mCSB_1_container {
+    > .row {
+      @include margin-right(-15px);
+    }
   }
-}
 }
 
 @media screen and (max-width: 992px) {
@@ -872,33 +926,34 @@ body.rtl {
     }
   }
   .appHeader {
-    .logo{
+    .logo {
       .topRightArea {
-      .profileArea {
-        @include margin-left(15px);
-        .dropdown-menu {
-          @include right(-14px !important);
+        .profileArea {
+          @include margin-left(15px);
+          .dropdown-menu {
+            @include right(-14px !important);
+          }
         }
       }
-    }
     }
   }
   #course-progress-new .course-page table thead tr {
     display: block;
     @include margin-right(-20px);
+    @include margin-left(-20px);
   }
 }
 
 .dropdown-menu {
   .sub-nav {
     li {
-       >a{
-         position: relative;
-         @include padding-left(0);
-       }
-      .sub-nav,ul{
-        li{
-          >a{
+      > a {
+        position: relative;
+        @include padding-left(0);
+      }
+      .sub-nav, ul {
+        li {
+          > a {
             @include padding-right(20px);
             @include padding-left(20px);
           }
@@ -908,39 +963,13 @@ body.rtl {
   }
 }
 
-.sub-nav
-{
+.sub-nav {
 
-    li
-    {
-          .bookmark
-          {
-              @include left(-30px);
-          }
-
+  li {
+    .bookmark {
+      @include left(-30px);
     }
+
+  }
 }
 
-// Calendar
-
-#over-full-calendar {
-  .over-calendar {
-    @include left(-40px);
-    @include right(auto);
-  }
-  #over-calendar-right {
-    @include right(-40px);
-    @include left(auto);
-  }
-  #row-full-calendar {
-    #under-calendar {
-      @include padding-left(1rem);
-      #close-calendar {
-        @include right(-68px);
-      }
-      .tab-month {
-        @include padding-left(0);
-      }
-    }
-  }
-}

@@ -14,7 +14,7 @@
     %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.1.min.css' %}"}
 
 - block content
-  .container#course-discussion
+  .container#course-discussion.loader.donut-loader
     .row
       .col
         .discussion-content
@@ -44,7 +44,9 @@
             $('.discussion-body').prepend($("#discussion-ta-template").html());
           }
           $('.ask-ta').prependTo('.forum-nav');
-          $("<h1>Discussion</h1>").prependTo(".page-header-secondary");
+          $("<h1>"+gettext('Discussion')+"</h1>").prependTo(".page-header-secondary");
+          jQuery.noConflict();
+          $("#lessons-content").click();
       });
       // we need this to add some browser specific CSS rules
       $('#course-discussion').attr( "data-useragent", navigator.userAgent);

@@ -110,6 +110,7 @@
 
       .bookmark {
         background-size: 20px 100%;
+        width: 20px;
       }
     }
   }
@@ -129,7 +130,7 @@
   }
   &.allModules {
     top: calc(100% + 10px) !important;
-    min-width: 420px;
+    min-width: 435px;
   }
   &.dashboard-menu {
     > .sub-nav {

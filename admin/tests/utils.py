@@ -3,6 +3,7 @@ import os
 from mock import mock
 
 from lib.utils import DottableDict
+from mcka_apros.settings import DELETION_FLAG_NAMESPACE, DELETION_FLAG_SWITCH_NAME
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -13,6 +14,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # and some others that we don't care about for tests
 # pylint: disable=no-member,line-too-long,too-few-public-methods,missing-docstring,too-many-public-methods,
 # pointless-statement,unused-argument,protected-access,maybe-no-member,invalid-name
+
+class Dummy(object):
+    pass
+
 
 def test_user(id):
     return DottableDict({"id": id, "name": "test_user_{}".format(id)})
@@ -35,8 +40,10 @@ def test_set(num_users, workgroup_size):
 class MockUser(object):
     id = None
 
-    def __init__(self, user_id):
+    def __init__(self, user_id, email='test@example.com', username='test_user'):
         self.id = user_id
+        self.email = email
+        self.username = username
 
 
 class MockReviewAssignmentGroup(object):
@@ -82,6 +89,10 @@ class MockReviewAssignmentGroupCollection(object):
             rag = MockReviewAssignmentGroup(wg, review_assignment_processor.xblock_id)
             for user_id in review_assignment_processor.workgroup_reviewers[wg.id]:
                 rag.add_user(user_id)
+
+
+def get_deletion_waffle_switch():
+    return '{}.{}'.format(DELETION_FLAG_NAMESPACE, DELETION_FLAG_SWITCH_NAME)
 
 
 def make_side_effect_raise_value_error():

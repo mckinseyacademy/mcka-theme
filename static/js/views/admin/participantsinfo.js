@@ -1,50 +1,61 @@
 Apros.views.ParticipantsInfo = Backbone.View.extend({
     initialize: function(){
-    massParticipantsInit();
-    massParticipantsEnrollInit();
-    massParticipantsProfileUpdateInit();
-    massParticipantsManagerUpdateInit();
-    this.renderAddSingleUser();
+      massParticipantsInit();
+      massParticipantsDeleteInit();
+      massParticipantsEnrollInit();
+      massParticipantsProfileUpdateInit();
+      massParticipantsManagerUpdateInit();
+      this.renderAddSingleUser();
+      this.userToBeDeleted = null;
     },
     render: function(){
+        var _this = this;
+        table_columns = [
+          {
+            title: gettext('Name'), index: true, name: 'full_name',
+            actions: function(id, attributes){
+                let participant_name = _this.getParticipantName(attributes)
+                return '<a href="/admin/participants/' + attributes['id'] +
+                       '" target="_self">' + participant_name + '</a>';
+            }
+          },
+          { title: gettext('Company'), index: true, name: 'organizations_custom_name' },
+          { title: gettext('Email'), index: true, name: 'email' },
+          {
+            title: gettext('Date Added'), index: true, name: 'created_custom_date',
+            actions: function(id, attributes) {
+              if (attributes['created_custom_date'] != '-' && attributes['created_custom_date'] != '' && typeof attributes['created_custom_date'] != 'undefined')
+              {
+                 var last_login = attributes['created_custom_date'].split(',')[0].split('/');
+                    return '' + last_login[1] + '/' + last_login[2] + '/' + last_login[0];
+                }
+                return attributes['created_custom_date'];
+            }
+          },
+          { title: gettext('Enrolled In'), index: true, name: 'courses_enrolled',
+            actions: function(id, attributes)
+            {
+              return parseInt(attributes['courses_enrolled']);
+            }
+          },
+          { title: gettext('Activated'), index: true, name: 'active_custom_text' }
+        ];
+        if (enable_data_deletion == "True"){
+          table_columns.push({
+            title: " ", name: 'action_buttons',
+            actions: function(id, attributes){
+              return _this.userDeletionModalManager(_this, id, attributes)
+            }
+          });
+        };
         participantsListViewGrid = new bbGrid.View({
             container: this.$el,
             collection: this.collection.fullCollection,
-            colModel:[
-                { title: gettext('Name'), index: true, name: 'full_name',
-                actions: function(id, attributes)
-                {
-                    var custom_name = attributes['full_name'];
-                    if (custom_name === "")
-                      custom_name=attributes['first_name']+" " +attributes['last_name'];
-                    if (custom_name === " ")
-                      custom_name=attributes['username'];
-                    return '<a href="/admin/participants/' + attributes['id'] + '" target="_self">' + custom_name + '</a>';
-                }},
-                { title: gettext('Company'), index: true, name: 'organizations_custom_name' },
-                { title: gettext('Email'), index: true, name: 'email' },
-                { title: gettext('Date Added'), index: true, name: 'created_custom_date',
-                actions: function(id, attributes)
-                {
-                    if (attributes['created_custom_date'] != '-' && attributes['created_custom_date'] != '' && typeof attributes['created_custom_date'] != 'undefined')
-        {
-         var last_login = attributes['created_custom_date'].split(',')[0].split('/');
-            return '' + last_login[1] + '/' + last_login[2] + '/' + last_login[0];
-        }
-        return attributes['created_custom_date'];
-                }},
-        { title: gettext('Enrolled In'), index: true, name: 'courses_enrolled',
-          actions: function(id, attributes)
-          {
-            return parseInt(attributes['courses_enrolled']);
+            colModel: table_columns
           }
-        },
-                { title: gettext('Activated'), index: true, name: 'active_custom_text' }
-        ]
-        });
+        );
         participantsListViewGrid['partial_collection']=this.collection;
         this.$el.find('.bbGrid-container').scroll(this.fetchPages);
-        var _this = this;
         cloneHeader('#participantsListViewGridBlock');
         $(document).on('closed.fndtn.reveal', '#import_from_csv[data-reveal]', function () {
           $('.upload_stats').empty();
@@ -56,36 +67,19 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
           $('#import_from_csv input[type=checkbox]').attr('disabled', 'disabled');
           $('#import_from_csv input[type=checkbox]').attr('checked', false);
         });
-        $('#participantsSearchWrapper').on('keyup', 'input', function(){
-          if (_this.liveSearchTimer) {
-            clearTimeout(_this.liveSearchTimer);
-          }
-          _this.liveSearchTimer = setTimeout(function() {
-            var querryDict = {}
-            var searchFlag = false
-            $('#participantsSearchWrapper').find('input').each(function(index, value){
-              val = $(value);
-              name = val.context.name;
-              value = val.context.value.trim();
-              querryDict[name] = value;
-              if (value){
-                searchFlag = true
-              }
-            });
-            if (!jQuery.isEmptyObject(querryDict))
-            {
-              _this.collection.updateQuerryParams(querryDict);
-            }
-
-            if(_this.collection.length > 0){
-              _this.collection.getFirstPage();
-              _this.collection.fullCollection.reset();
-            }
-            if (searchFlag)
-            {
-              _this.collection.fetch();
-            }
-          }, 1000)
+        $('#searchBar').on('keyup', function(){_this.runSearch(_this)});
+        $('#searchSelectorField').on('change', function(){_this.runSearch(_this)});
+        $('#searchButton').on('click', function(){_this.runSearch(_this, timeout=100)});
+        $('#companiesAdvancedDeleteButton').on('click','.advancedDeleteOpenModal',function()
+        {
+          var advanced_delete_modal = '#advanced_delete_modal';
+          var errorContainer = $(advanced_delete_modal).find('.errorMessage');
+          $(errorContainer).empty();
+          $(advanced_delete_modal).find('.closeModal').off().on('click', function()
+          {
+            $(advanced_delete_modal).find('a.close-reveal-modal').trigger('click');
+          });
+          $(advanced_delete_modal).foundation('reveal', 'open');
         });
     },
     fetchPages: function(){
@@ -376,5 +370,121 @@ Apros.views.ParticipantsInfo = Backbone.View.extend({
         {
             $(input).parent().find('.newCompanyCreationPopup').hide();
         }
+    },
+    userDeletionModalManager: function(_this, id, attributes)
+    {
+      $(document).on('click', '#button-delete-user-' + id, function(ev){
+        var mainContainer = $('#delete_user_modal');
+        // Find components on delete modal
+        let confirmButton = mainContainer.find('.confirmButton')
+        let deletionConfirmationCheckboxes = mainContainer.find('.deletionConfirmationCheckbox');
+        // Get row of participant to be deleted
+        let row = $(this).closest('tr');
+        // Set dialog data
+        mainContainer.find('.errorContainer').empty();
+        mainContainer.find('.errorContainer').hide();
+        mainContainer.find('#participantInfoContainer').html(
+          '<table>' +
+            '<tr>' +
+              '<th>Name</td>' +
+              '<th>Company</td>' +
+              '<th>Email</td>' +
+            '</tr>' +
+            '<tr>' +
+              '<td>' + _this.getParticipantName(attributes) + '</td>' +
+              '<td>' + attributes.organizations_custom_name + '</td>' +
+              '<td>' + attributes.email + '</td>' +
+            '</tr>' +
+          '</table>'
+        );
+
+        // Uncheck checkboxes and disable delete button
+        deletionConfirmationCheckboxes.removeAttr('checked');
+        confirmButton.addClass("disabled");
+
+        deletionConfirmationCheckboxes.off().on('click', function() {
+          if (deletionConfirmationCheckboxes.not(':checked').length == 0){
+            confirmButton.removeClass('disabled');
+          } else {
+            confirmButton.addClass("disabled");
+          }
+        });
+
+        confirmButton.off().on('click', function() {
+          if (confirmButton.hasClass("disabled")) {
+            return;
+          }
+          var url = ApiUrls.participants_detail(id);
+          var options = {
+            url: url,
+            type: "DELETE",
+          };
+
+          options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+
+          $.ajax(options).done(function(data) {
+            var confirmationScreen = $('#delete_user_success');
+            confirmationScreen.foundation('reveal', 'open');
+            row.remove();
+          }).fail(function(data) {
+              mainContainer.find('.errorContainer').show();
+              mainContainer.find('.errorContainer').html("Error encountered - " + data.responseJSON.detail);
+            }
+          );
+        });
+      })
+
+      return '<a type="button" data-reveal-id="delete_user_modal" ' +
+             'class="button small radius deleteButton"' +
+             'id="button-delete-user-' + id + '">' +
+             '<i class="fa fa-trash fa-lg actionButtonIcon"/></a>';
+    },
+    getParticipantName: function(attributes)
+    {
+      var custom_name = attributes['full_name'];
+      if (custom_name === "")
+        custom_name=attributes['first_name']+" " +attributes['last_name'];
+      if (custom_name === " ")
+        custom_name=attributes['username'];
+
+      return custom_name;
+    },
+    runSearch: function(_this, timeout){
+      if (timeout === undefined){
+          timeout = 1000;
+      }
+      if (_this.liveSearchTimer) {
+        clearTimeout(_this.liveSearchTimer);
+      }
+      _this.liveSearchTimer = setTimeout(function() {
+        let searchFlag = false
+        let querryDict = {
+          "organization_display_name": "",
+          "courses": "",
+          "name": "",
+          "email": "",
+        }
+
+        let field_name = $('#searchSelectorField').val();
+        let query_value = $('#searchQueryField').val();
+        if (field_name && query_value){
+          querryDict[field_name] = query_value;
+          searchFlag = true;
+        }
+
+        if (!jQuery.isEmptyObject(querryDict))
+        {
+          _this.collection.updateQuerryParams(querryDict);
+        }
+
+        if(_this.collection.length > 0){
+          _this.collection.getFirstPage();
+          _this.collection.fullCollection.reset();
+        }
+        if (searchFlag)
+        {
+          _this.collection.fetch();
+        }
+      }, 1000)
     }
 });

@@ -11,6 +11,7 @@ from django.conf import settings
 import hashlib
 import random
 from datetime import timedelta
+from django.core.files.storage import default_storage
 from django.utils import timezone
 from django.db import models as db_models
 from django.dispatch import Signal, receiver
@@ -403,6 +404,18 @@ class ClientCustomization(db_models.Model):
     global_client_logo = db_models.CharField(max_length=200, blank=True)
     hex_background_main_navigation = db_models.CharField(max_length=7, blank=True)
     new_ui_enabled = db_models.BooleanField(default=False)
+
+    def delete(self):
+        images = (
+            'client_logo',
+            'client_background',
+            'global_client_logo'
+        )
+        for image in images:
+            image_url = getattr(self, image).replace('/accounts/', '')
+            if image_url and default_storage.exists(image_url):
+                default_storage.delete(image_url)
+        super(ClientCustomization, self).delete()
 
 
 class CompanyInvoicingDetails(db_models.Model):

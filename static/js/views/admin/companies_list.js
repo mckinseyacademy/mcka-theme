@@ -6,26 +6,35 @@
         collection.slowFieldsSuccess(collection, response, options);
       }});
     },
-    render: function(){
-      companiesListViewGrid = new bbGrid.View({
-        container: this.$el,
-        collection: this.collection,
-        enableSearch: true,
-        colModel:[
+    render: function() {
+      var _this = this;
+      const table_columns = [
         { title: gettext('Company'), index: true, name: 'name',
-          actions: function(id, attributes){ 
+          actions: function(id, attributes){
             var thisId = attributes['id'];
             var name = attributes['name'];
             if (name)
-              return '<a href="/admin/companies/' + thisId + '" target="_self">' + name + '</a>'; 
-          } 
+              return '<a href="/admin/companies/' + thisId + '" target="_self">' + name + '</a>';
+          }
         },
         { title: gettext('Company ID'), index: true, name: 'id', sorttype: 'number' },
         { title: gettext('No. of Participants'), index: true, name: 'numberParticipants', sorttype: 'number' },
         { title: gettext('No. of Courses'), index: true, name: 'numberCourses', sorttype: 'number' }
-        ]
+      ];
+      if (enable_data_deletion === "True"){
+        table_columns.push({
+            title: " ", name: 'action_buttons',
+            actions: function(id, attributes){
+              return _this.dataDeletionModalManager(id, attributes)
+            }
+        });
+      }
+      const companiesListViewGrid = new bbGrid.View({
+        container: this.$el,
+        collection: this.collection,
+        enableSearch: true,
+        colModel: table_columns,
       });
-      var _this = this;
       this.companiesListViewGrid = companiesListViewGrid;
       $(document).on('onClearSearchEvent', { extra : this}, this.onClearSearchEvent);
       $('#companiesCreateNewCompanyButton').on('click','.createNewCompanyOpenModal',function()
@@ -45,21 +54,21 @@
           $(create_new_company_modal).find('a.close-reveal-modal').trigger('click');
         });
         $(create_new_company_modal).on('keydown','.companyDisplayName',function()
-        { 
+        {
           $(create_button).attr('disabled', 'disabled');
           $(create_button).addClass('disabled');
         });
         $(create_new_company_modal).on('keyup','.companyDisplayName',function()
         {
-          if (_this.liveSearchTimer) 
+          if (_this.liveSearchTimer)
           {
             clearTimeout(_this.liveSearchTimer);
           }
-          _this.liveSearchTimer = setTimeout(function() 
-          { 
+          _this.liveSearchTimer = setTimeout(function()
+          {
             var value = $(company_name_input).val().trim();
             if( value != '')
-            { 
+            {
               if (value.length <= 30)
               {
                 var testValue = value.replace(/ /g,'');
@@ -74,8 +83,8 @@
                   };
                   options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
                   $.ajax(options)
-                  .done(function(data) 
-                  { 
+                  .done(function(data)
+                  {
                     if(data['status'] == 'error')
                     {
                       $(errorContainer).text(data['message']);
@@ -154,4 +163,59 @@
       var _this = event.data.extra;
       _this.companiesListViewGrid.searchBar.onSearch({target: '#mainCompaniesListGridWrapper .bbGrid-pager'});
     },
+    dataDeletionModalManager: function(id, attributes)
+    {
+      $(document).on('click', '#button-delete-company-' + id, function(ev){
+        var mainContainer = $('#delete_data_modal');
+
+        // Find components on delete modal
+        let confirmButton = mainContainer.find('.confirmButton')
+        let deletionConfirmationCheckboxes = mainContainer.find('.deletionConfirmationCheckbox');
+        // Get row of participant to be deleted
+        let row = $(this).closest('tr');
+        // Set dialog data
+        mainContainer.find('.errorContainer').empty();
+        mainContainer.find('.errorContainer').hide();
+        mainContainer.find('#infoContainer').html(attributes.name);
+
+        // Uncheck checkboxes and disable delete button
+        deletionConfirmationCheckboxes.removeAttr('checked');
+        confirmButton.addClass("disabled");
+
+        deletionConfirmationCheckboxes.off().on('click', function() {
+          if (deletionConfirmationCheckboxes.not(':checked').length == 0){
+            confirmButton.removeClass('disabled');
+          } else {
+            confirmButton.addClass("disabled");
+          }
+        });
+
+        confirmButton.off().on('click', function() {
+          if (confirmButton.hasClass("disabled")) {
+            return;
+          }
+          var url = ApiUrls.company_details + '/' + id;
+          var options = {
+            url: url,
+            type: "DELETE",
+          };
+
+          options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+
+          $.ajax(options).done(function(data) {
+            var confirmationScreen = $('#delete_data_success');
+            confirmationScreen.foundation('reveal', 'open');
+            row.remove();
+          }).fail(function(data) {
+              mainContainer.find('.errorContainer').html("Error deleting data. Try again later...");
+            }
+          );
+        });
+      })
+
+      return '<a type="button" data-reveal-id="delete_data_modal" ' +
+             'class="button small radius deleteButton"' +
+             'id="button-delete-company-' + id + '"' + '>' +
+             '<i class="fa fa-trash fa-lg actionButtonIcon"/></a>';
+    }
   });

@@ -529,6 +529,58 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           $('#courseDetailsMainModal').foundation('reveal', 'open');
       }
 
+      function newUIExportStatsDownloader(){
+          var saveButton = $('#companyAdminCourseExportStatsModal').find('.saveChanges');
+
+          saveButton.on('click', function () {
+            var courseId = $("#courseDetailsDataWrapper").attr("data-id");
+            var url = ApiUrls.admin_bulk_task;
+            var dictionaryToSend = {
+              type:'participants_csv_data', course_id: courseId, 
+              lesson_completions: $('.progress-check-box').is(':checked')
+            };
+
+            // if company page; pass in company id
+            var companyPageFlag = $('#courseDetailsDataWrapper').attr('company-page');
+            if (companyPageFlag == 'True'){
+              var companyId = $('#courseDetailsDataWrapper').attr('company-id');
+              dictionaryToSend['company_id'] = companyId;
+            }
+            saveButton.prop('disabled', 'disabled');
+            var options = {
+              url: url,
+              contentType: "application/json; charset=utf-8",
+              data: JSON.stringify(dictionaryToSend),
+              processData: false,
+              type: "POST",
+              dataType: "json"
+            };
+            options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
+          
+            $.ajax(options)
+            .done(function(data, textStatus, xhr) {
+              if (xhr.status === 201){
+                $('#companyAdminCourseExportStatsModal').modal('hide');
+              }
+            })
+            .fail(function(data) {
+              $('#companyAdminCourseExportStatsModal').find('.error').text(
+                gettext("Error initiating the report generation. Please retry later.")
+              );
+            });
+          });
+
+          $('#companyAdminCourseExportStatsModal').on('hidden.bs.modal', function (e) {
+            var courseModal = $('#companyAdminCourseExportStatsModal');
+            var saveButton = courseModal.find('.saveChanges');
+            courseModal.find('.progress-check-box').prop('checked', false);
+            courseModal.find('.error').html('');
+            saveButton.off();
+            saveButton.removeAttr('disabled');
+          });
+
+          $('#companyAdminCourseExportStatsModal').modal('show');
+      }
 
       $('#courseBulkActionsMainContainer').on('click','.bulkExportNotifData',function(){
         if ($(this).hasClass('disabled'))
@@ -576,7 +628,11 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         
         if($(this).hasClass('allselected')){
             // transfer control to backend downloader in case of select-all
-            exportStatsDownloader();
+            if ($('.new-theme').length) {
+              newUIExportStatsDownloader();
+            } else {
+              exportStatsDownloader();
+            }
             return;
         }
 

@@ -21,6 +21,22 @@ def setup_user_profile_response(user_id, response=None):
     )
 
 
+def setup_user_courses_response(user_id, response=None):
+    url = '{}/{}/{}/courses'.format(
+        settings.API_SERVER_ADDRESS,
+        USER_API,
+        user_id,
+    )
+
+    httpretty.register_uri(
+        httpretty.GET,
+        url,
+        body=response or user_courses,
+        status=200,
+        content_type='application/json',
+    )
+
+
 user_profile = '''{
     "username": "mcka_admin_user",
     "city": "",

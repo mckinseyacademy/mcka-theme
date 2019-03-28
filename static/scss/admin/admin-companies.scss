@@ -16,8 +16,8 @@
 	padding: 0 10px;
 }
 
-#companiesListTitle 
-{	
+#companiesListTitle
+{
 	float: left;
 
 	p
@@ -86,7 +86,7 @@
 		&.table
 		{
 			margin-left: auto;
-			margin-right: auto;	
+			margin-right: auto;
 			min-width: 100%;
 		}
 	}
@@ -152,7 +152,7 @@
 	max-width: 80%;
 	padding-bottom: 30px;
 	display: block;
-	
+
 	.editCompanyNameIcon{
 		font-size: initial;
 	    color: #3384ca;
@@ -432,11 +432,11 @@
 	float: right;
 }
 
-.companyCompanyInfo 
+.companyCompanyInfo
 {
 	min-width: 760px;
 
-	.row 
+	.row
 	{
 		margin-bottom: 20px!important;
 	}
@@ -468,7 +468,7 @@
 	}
 }
 
-#companyInfoContacts 
+#companyInfoContacts
 {
 	.columns
 	{
@@ -489,8 +489,8 @@
 	margin-right: auto;
 	width: 80%;
 
-	#companyDashboardTitle 
-	{	
+	#companyDashboardTitle
+	{
 		float: left;
 
 		p
@@ -514,7 +514,7 @@
 
 		.companyDashboardCompanyContainerTable
 		{
-			width: 100%; 
+			width: 100%;
 			border: 1px solid #CCCCCC !important;
 
 			.companyDashboardCompanyDataContainer
@@ -536,12 +536,12 @@
 			}
 
 			.companyDashboardCompanyCoursesContainer
-			{	
+			{
 				padding: 0px;
 
 				.companyDashboardCompanyCoursesTable
 				{
-					width: 100%; 
+					width: 100%;
 					border: none !important;
 					margin-bottom: 0px;
 
@@ -671,4 +671,91 @@
 			text-align: center;
 		}
 	}
+}
+
+.btn-danger{
+	background-color: #d9534f;
+    border-color: #d43f3a;
+}
+
+#delete_data_modal, #delete_data_success{
+	padding: 10px 10px 10px 10px;
+
+	.titleContainer, .contentContainer
+	{
+		text-align: center;
+	}
+
+	.boldText
+	{
+		font-weight: bold;
+	}
+
+	#infoContainer {
+		margin: 5px 0 5px 0;
+		font-weight: bold;
+	}
+
+	.deletionWarning {
+	    color: red;
+			margin-top: 5px;
+	}
+
+	table {
+		// table-layout:fixed;
+		width: 100%;
+	}
+
+	td {
+		word-wrap:break-word;
+	}
+
+	.errorContainer
+	{
+		color:red;
+		text-align: center;
+		padding-top: 10px;
+		padding-bottom:10px;
+		max-height: 300px;
+		overflow: auto;
+	}
+
+	.menuButton{
+		border-radius: 4px;
+		font-size: 14px;
+		margin: 10px 0;
+    color: white;
+	}
+
+	.button-wrapper
+	{
+		text-align: center;
+	}
+
+	#confirmDeletionContainer {
+		text-align: center;
+	}
+
+	.confirm-deletion-box
+	{
+		text-align: left;
+    width: fit-content;
+    display: inline-block;
+		padding: 10px 0px  10px 0px;
+
+		input[type="checkbox"] {
+		  margin:0;
+		}
+	}
+}
+
+td.action_buttons {
+	text-align: center;
+	width: 40px;
+}
+
+a.deleteButton {
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+	width: 40px;
 }

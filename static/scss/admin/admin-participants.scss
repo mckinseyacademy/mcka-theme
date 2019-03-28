@@ -8,7 +8,7 @@
 #mainParticipantsWrapper
 {
 	width: 100%;
-	max-width: 68.57143rem;
+	max-width: 80rem;
 }
 
 #mainParticipantsDetailsWrapper
@@ -17,6 +17,7 @@
 }
 #participantsAddWrapper{
   text-align: center;
+	float: right;
 }
 #participantsSearchWrapper{
 	.columns{
@@ -45,7 +46,7 @@
 		padding: 8px 10px;
 		font-size: 12px;
 		font-weight: 600;
-		margin-bottom: 5px;
+    margin: 0 0.2rem 5px 0;
 	}
 }
 
@@ -249,8 +250,8 @@
 }
 
 
-#participantsListViewGridBlock{ 
-	
+#participantsListViewGridBlock{
+
 	width: auto;
 	display: table;
 	margin-left: auto;
@@ -263,7 +264,7 @@
 }
 
 #activation-link-modal{
-	overflow-x: auto; 
+	overflow-x: auto;
 }
 
 #participantDetailsWrapper div[title]:hover:after {
@@ -315,6 +316,38 @@
 		}
 	}
 }
+
+#participantsTitleContainer
+{
+	float: left;
+
+	p
+	{
+		font-size: x-large;
+		margin-top: 10px;
+	}
+}
+
+.dropdownMenu {
+	background: #fff;
+	padding: 15px 15px 0px 15px;
+	box-shadow: 2px 2px 2px #a7a7a7;
+	text-align: left;
+  z-index: 99;
+	position: absolute;
+	left: -99999px;
+
+	.dropdownItem {
+		padding: 5px;
+		color: $link-color;
+	}
+	.dropdownItem:hover {
+		cursor: pointer;
+		color: darken($link-color, 15%);
+		text-decoration: underline;
+	}
+}
+
 #participantDetailsWrapper{
 
 	.participantDetailsContent{
@@ -429,7 +462,7 @@
 			position:relative;
 		}
 
-		.newCompanyCreationPopup 
+		.newCompanyCreationPopup
 		{
 			display: none;
 			position: absolute;
@@ -594,7 +627,7 @@
 		}
 	}
 }
-#import_from_csv, #enroll_to_course_from_csv{
+#import_from_csv, #enroll_to_course_from_csv, #advanced_delete_modal{
 
 	.admin-form
 	{
@@ -618,7 +651,7 @@
 	{
 		display: none;
 	}
-	
+
 	.emailActivationWrapper
 	{
 		padding-top: 20px;
@@ -628,4 +661,111 @@
 	{
 		display: inline-block;
 	}
+}
+
+#delete_user_modal, #delete_user_success, #advanced_delete_modal, #delete_participants_confirm_message, #delete_participants_success {
+	padding: 10px 10px 10px 10px;
+
+	.titleContainer, .contentContainer
+	{
+		text-align: center;
+	}
+
+	.boldText
+	{
+		font-weight: bold;
+	}
+
+	.deletionWarning {
+	    color: red;
+			margin-top: 5px;
+			margin-bottom: 10px;
+	}
+
+	table {
+		// table-layout:fixed;
+		width: 100%;
+	}
+
+	td {
+		word-break: break-word;
+	}
+
+	.errorContainer
+	{
+		color:red;
+		text-align: center;
+		padding-top: 10px;
+		padding-bottom:10px;
+		max-height: 300px;
+		overflow: auto;
+	}
+
+	.menuButton{
+		border-radius: 4px;
+		font-size: 14px;
+		margin: 10px 0;
+    color: white;
+	}
+
+	.button-wrapper
+	{
+		text-align: center;
+	}
+
+	#confirmDeletionContainer {
+		text-align: center;
+	}
+
+	.confirm-deletion-box
+	{
+		text-align: left;
+    width: fit-content;
+    display: inline-block;
+		padding: 10px 0px  10px 0px;
+
+		input[type="checkbox"] {
+		  margin:0;
+		}
+	}
+
+    .send_email {
+        font-weight: bold;
+    }
+}
+
+.actionButtonIcon
+{
+	cursor: pointer;
+}
+
+.buttonIcon {
+    display: inline-block;
+    margin-left: 7px;
+    vertical-align: text-top;
+}
+
+#searchBar {
+	white-space: nowrap;
+	width: 25rem;
+	font-size: 0;
+  display: inline-flex;
+	vertical-align: middle;
+  padding-left: 0.2rem;
+
+	#searchSelectorField {
+    width: 50%;
+		margin-bottom: 0;
+	}
+	#searchQueryField {
+		border-left: 0;
+		margin-bottom: 0;
+		display: inline;
+		white-space:nowrap;
+	}
+	#searchButton{
+		padding: 10px;
+		margin-left: -30px;
+	}
+
 }

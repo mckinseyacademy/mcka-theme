@@ -456,15 +456,26 @@
             return initDeferred;
         },
 
-        toggleSpinner: function(root, show) {
-            var spinner_class = "xblock-spinner";
-            if (show) {
-                var spinner = $("<div/>").addClass(spinner_class);
-                var spinner_styling_wrapper = $("<div/>").addClass("spinner-wrapper").appendTo(spinner);
-                spinner_styling_wrapper.append($("<i/>").addClass('fa fa-spin fa-spinner'));
-                root.append(spinner);
+        toggleSpinner: function (root, show) {
+            if ($('.new-theme').length) {
+                var spinner_class = "xblock-preloader";
+                if (show) {
+                    $(".lesson-content , .discussion-content").addClass(spinner_class);
+                } else {
+                    setTimeout(function () {
+                        $(".lesson-content , .discussion-content").removeClass(spinner_class);
+                    }, 2000);
+                }
             } else {
-                root.children("."+spinner_class).remove();
+                var spinner_class = "xblock-spinner";
+                if (show) {
+                    var spinner = $("<div/>").addClass(spinner_class);
+                    var spinner_styling_wrapper = $("<div/>").addClass("spinner-wrapper").appendTo(spinner);
+                    spinner_styling_wrapper.append($("<i/>").addClass('fa fa-spin fa-spinner'));
+                    root.append(spinner);
+                } else {
+                    root.children("." + spinner_class).remove();
+                }
             }
         }
     };

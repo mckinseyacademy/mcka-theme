@@ -383,3 +383,73 @@ $(function () {
 
   Apros.executeModalChain();
 });
+
+$('.editProfileField').on('submit', 'form', function(e) {
+
+    e.preventDefault();
+    var form = $(this);
+    var modal = form.closest('.modal');
+    modal.find('.invalid-feedback').hide();
+    form.find(':submit').prop('disabled', true);
+    $.ajax({
+      method: 'POST',
+      url: form.attr('action'),
+      data: form.serialize()
+    })
+    .done(function(data, status, xhr) {
+      if ($(data).find('.error, .errorlist').length > 0) {
+
+        var errorlist = "";
+        $($.parseHTML(data)).find('.errorlist').each(function()
+        {
+          errorlist = errorlist + $(this).html().trim();
+        });
+        var error = $($.parseHTML(data)).find('.error').text().trim();
+        modal.find('.invalid-feedback').html(errorlist);
+        modal.find('.invalid-feedback').append(error);
+        modal.find('.invalid-feedback').show();
+        form.find(':submit').prop('disabled', false);
+      }
+      else {
+        modal.modal('toggle');
+        modal.find('.form-group').removeClass('focused');
+        form.find(':submit').prop('disabled', false);
+        if(form.find('input[name=title]').length)
+        {
+          $('.roleArea span').addClass('title');
+          $('.roleArea span.title').text(form.find('input[name=title]').val());
+        }
+        else
+        {
+          $('.nameArea span').text(form.find('input[name=first_name]').val() + " " + form.find('input[name=last_name]').val());
+        }
+        form.find('input[type=text]').val('');
+
+      }
+    });
+});
+
+
+$('.editProfileField').on('show.bs.modal', function (e) {
+
+  var form = $(this).find('form');
+  if (form.find('input[name=title]').length) {
+
+    var title = $('.roleArea span.title').text();
+    if (title != "")
+    {
+      $(this).find('.form-group').addClass('focused');
+      form.find('input[name=title]').val(title);
+    }
+  } else {
+
+    var fullName = $('.nameArea span').text().split(" "); 
+    if(fullName.length)
+    {
+      $(this).find('.form-group').addClass('focused');
+      form.find('input[name=first_name]').val(fullName[0]);
+      form.find('input[name=last_name]').val(fullName[1]);
+    }
+  }
+
+});

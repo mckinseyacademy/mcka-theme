@@ -108,6 +108,7 @@
       %link{rel: "stylesheet", href: "//player.ooyala.com/static/v4/stable/4.14.9/skin-plugin/html5-skin.css"}
     - if xblock_theme_css_path
       %link{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
+      %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
 
 
     - if LANGUAGE_BIDI
@@ -215,7 +216,7 @@
       - include 'header.haml'
 
     -# Main content goes here
-    %main{role: "main"}
+    %main.fadeIn.animated.delay-2s{role: "main"}
       - block navigation_content
       - block content
 
@@ -246,7 +247,7 @@
     - block js_snippets
 
     - block edit_full_name_modal
-      .modal.middleSize.noTopBorder.fade.editFullName{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
+      .modal.middleSize.noTopBorder.fade.editProfileField#editFullName{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
         .modal-dialog
           .modal-content
             .modal-header
@@ -256,21 +257,23 @@
               %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
                 %span{:aria-hidden => "true"} ×
             .modal-body
-              %form.white.clearfix
+              %form.white.clearfix{action: "/accounts/edit_fullname/", method:"POST"}
+                - csrf_token
                 .form-group
                   %label.form-label{:for => "exampleInputEmail1"}
                     {% trans "First name" %}
-                  %input#exampleInputEmail1.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "email"}/
+                  %input.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "first_name"}/
                 .form-group
                   %label.form-label{:for => "exampleInputEmail1"}
                     {% trans "Last name" %}
-                  %input#exampleInputEmail1.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "email"}/
-                %div
+                  %input.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "last_name"}/
+                .invalid-feedback.error.mb-4
+                %div3
                   %button.btn.btn-primary.mt-20.ome.dome-bc{:type => "submit"}
                     {% trans "Save" %}
 
     - block edit_title_modal
-      .modal.middleSize.noTopBorder.fade.editRole{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
+      .modal.middleSize.noTopBorder.fade.editProfileField#editRole{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
         .modal-dialog
           .modal-content
             .modal-header
@@ -280,54 +283,19 @@
               %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
                 %span{:aria-hidden => "true"} ×
             .modal-body
-              %form.white.clearfix
+              %form.white.clearfix{:method => "POST", :action => "/accounts/edit_title/"}
+                - csrf_token
                 .form-group
                   %label.form-label{:for => "exampleInputEmail1"}
                     {% trans "Title" %}
-                  %input#exampleInputEmail1.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "email"}/
+                  %input.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "title"}/
+
+                .invalid-feedback.error.mb-4
                 %button.btn.btn-primary.mt-10.ome.dome-bc{:type => "submit"}
                   {% trans "Save" %}
 
     - block edit_photo_modal
-      .modal.middleSize.noTopBorder.fade.editPhotoModal{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
-        .modal-dialog
-          .modal-content
-            .modal-header
-              .col
-                %h4.modal-title
-                  {% trans "Profile Photo" %}
-              %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
-                %span{:aria-hidden => "true"} &#xD7;
-            .modal-body
-              .photoEditSteps
-                .step
-                  .head.clearfix
-                    %span.stepTitle
-                      {% trans "step 1:" %}
-                    %span.title
-                      {% trans "Select New Profile Image" %}
-                  .inputFileWrap.clearfix
-                    .file-upload
-                      .file-select.ome
-                        .file-select-button.btn.btn-primary.dome-bc{:id => ""}
-                          {% trans "browse" %}
-                        #noFile.file-select-name
-                          {% trans "No file selected" %}
-                        %input#chooseFile{:name => "Browe", :type => "file"}
-                      .error
-                        %i.material-icons error
-                        Error uploading the file. Please try again and be sure to use an accepted file format.
-                  .step
-                    .head.clearfix
-                      %span.stepTitle
-                        {% trans "step 2:" %}
-                      %span.title
-                        {% trans "Crop & Save" %}
-                    .imgCropWrap
-                    %div
-                      %button.btn.btn-primary.ome.dome-bc{:type => "button"}
-                        {% trans "crop & save" %}
-
+      - include "accounts/user_profile.haml"
     #generalModal.modal.fade{:role => "dialog"}
       .modal-dialog
         .modal-content
@@ -339,7 +307,98 @@
           .modal-footer
             %button.btn.btn-default{:data-dismiss => "modal", :type => "button"} Close
 
+
+    / New Feature Tour Structure
+    .modal.fade.newFeatureTour{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
+      .modal-dialog.modal-lg
+        .modal-content
+          .modal-body
+            %button.close.btn-skip{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+              %span{:aria-hidden => "true"} {% trans 'Skip'%}
+            .sliderWraper
+              #demo.carousel.slide{:data-ride => "carousel", :data-pause => "hover"}
+
+                / The slideshow
+                .carousel-inner
+                  .carousel-item.active
+                    .featureImage
+                      .holder
+                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic.png", :width => "600"}
+                    .featureContent
+                      .holder
+                        .head
+                          %h2 {%trans 'Your learning experience has a fresh look!' %}
+                        .contentHolder
+                          %p {% trans 'The new design makes it easier for you to navigate, understand your progress and stay focused on your learning.'%}
+                  .carousel-item
+                    .featureImage
+                      .holder
+                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic4.png", :width => "600"}
+                    .featureContent
+                      .holder
+                        .head
+                          %h2 {% trans 'Navigating is simple'%}
+                        .contentHolder
+                          %p {% trans 'The updated landing page makes it easier for you to access your programs or courses.'%}
+                  .carousel-item
+                    .featureImage
+                      .holder
+                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic3.png", :width => "600"}
+                    .featureContent
+                      .holder
+                        .head
+                          %h2 {% trans 'New full-screen mode'%}
+                        .contentHolder
+                          %p {% trans 'In your course, you can now zoom into the content by choosing full screen mode.'%}
+                  .carousel-item
+                    .featureImage
+                      .holder
+                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic2.png", :width => "600"}
+                    .featureContent
+                      .holder
+                        .head
+                          %h2 {% trans 'Access from any device'%}
+                        .contentHolder
+                          %p {% trans 'The designs have been optimized for all devices so you can learn from anywhere.'%}
+                  .carousel-item
+                    .featureImage
+                      .holder
+                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic5.png", :width => "600"}
+                    .featureContent
+                      .holder
+                        .head
+                          %h2 {% trans 'No interruption to your learning'%}
+                        .contentHolder
+                          %p {% trans 'Pick up where you left off! Your progress and the content in the courses is not impacted by this change.'%}
+
+                / Left and right controls
+                .controlsWrap
+                  / Indicators
+                  %ul.carousel-indicators
+                    %li.active{:data-slide-to => "0", :data-target => "#demo"}
+                    %li{:data-slide-to => "1", :data-target => "#demo"}
+                    %li{:data-slide-to => "2", :data-target => "#demo"}
+                    %li{:data-slide-to => "3", :data-target => "#demo"}
+                    %li{:data-slide-to => "4", :data-target => "#demo"}
+                  %a.carousel-control-prev{:data-slide => "prev", :href => "#demo"}
+                    %span.carousel-control-prev-icon
+                      %i.material-icons keyboard_arrow_left
+                  %a.carousel-control-next{:data-slide => "next", :href => "#demo"}
+                    %span.carousel-control-next-icon
+                      %i.material-icons keyboard_arrow_right
+
     %script{src: "{% static 'js/shader.js' %}"}
+    %script
+      var root = document.documentElement;
+      var secondary = root.style.getPropertyValue("--secondary");
+      var primary = root.style.getPropertyValue("--primary");
+      if (secondary) {
+        root.style.setProperty('--branding-lightened-color', lighten(secondary, 65));
+      } else if (primary) {
+        root.style.setProperty('--branding-lightened-color', lighten(primary, 65));
+      } else {
+        root.style.setProperty('--branding-lightened-color', lighten("#0093d3", 90));
+      }
 
     -# Ooyala Player JS
     - block ooyala_player
@@ -362,3 +421,6 @@
     %script
       var apros_session_timeout_seconds = {{apros_session_timeout_seconds}};
     %script{src:"static/js/session_timeout_timer.js"}
+    %script{src: "{% static 'js/image_editor.js' %}"}
+    %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
+

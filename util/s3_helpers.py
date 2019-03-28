@@ -4,6 +4,7 @@ from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.core.urlresolvers import reverse
+from django.urls import resolve, Resolver404
 
 from storages.backends.s3boto import S3BotoStorage
 
@@ -65,6 +66,14 @@ def store_file(file_stream, storage_dir_name, file_name, secure=False):
         file_stream.close()
 
     return file_url
+
+
+def get_path(file_url):
+    """Helper function for retrieving file path from its URL."""
+    try:
+        return resolve(file_url).kwargs.get('path')
+    except Resolver404:
+        return file_url
 
 
 class PrivateMediaStorage(S3BotoStorage):

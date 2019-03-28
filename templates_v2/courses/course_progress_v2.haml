@@ -8,10 +8,10 @@
     {% trans " | Progress | Courses | McKinsey Academy" %}
 
 -block content
-  .container
+  .container.loader.donut-loader
     .row
       .col
-        %article#course-progress-new
+        %article#course-progress-new.clearfix
           .course-page.contentCard
             %h2 {% trans "Dashboard for" %} #{progress_user.username}
             %h5 {% trans "PROGRESS" %}
@@ -59,7 +59,7 @@
                     %th{:class => "{% if not course.is_evergreen %}course-run{% endif %}"} {% trans "Course Run" %}
                   %th {% trans "Individual Learning" %}
                   - if feature_flags.group_work and course.has_group_work
-                    %th {% trans "Group Work (Due Date)" %}
+                    %th.groupWork {% trans "Group Work (Due Date)" %}
               %tbody
                 - for week in course.lessons_by_week
                   %tr
@@ -87,16 +87,16 @@
                                   %span #{lesson.index}:
 
                           - if lesson_custom_label and modules_custom_label
-                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
                               = lesson.name
                           - elif lesson_custom_label
-                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
                               = lesson.name
                           - elif modules_custom_label
-                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
                               = lesson.name
                           - else
-                            %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
+                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
                               = lesson.name
                               
                           .dropdown-menu.allLessons.allModules{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
@@ -121,7 +121,7 @@
                                           {% trans "Module" %}
                                           %span {{module.index}}
                                       .data.title
-                                        %span= module.name
+                                        %span.ome.dome-c= module.name
                                           -if not module.is_started
                                             %i.material-icons.locked{ :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
                                       .data.status
@@ -139,11 +139,15 @@
                                       Tell me and I forget. Teach me and I
                                       remember. Involve me and I learn. - Benjamin Franklin
                                   - if course.current_module == module
-                                    %span.bookmark
+                                    %span.bookmark.secondary
+                                      %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
+                                        %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
 
                     - if feature_flags.group_work
                       - if week.has_group
                         %td.progress_data_col
+                          .headingForMobile
+                            {% trans "Group Work (Due Date)"%}
                           - for activity in week.group_activities
                             .lesson-with-list.lesson-row-item.gr-data
                               - if activity.score 
@@ -154,8 +158,8 @@
                                   panorama_fish_eye
                                   
                               .lesson-item-name
-                                %a.gw-links{"href": "#{activity.link}"}
-                                  #{activity.name}:
+                                %a.gw-links.ome.dome-c{"href": "#{activity.link}"}
+                                  #{activity.name}
                                 %span.due-date 
                                   = activity.due_on
                       - else
@@ -185,7 +189,7 @@
               %h5 {% trans "PROFICIENCY" %}
               %p
                 {% blocktrans %}
-                  Your current proficiency score is <b>{{proficiency}}%</b> following completion of {{completed_items_count}} of {{graded_items_count}} graded items in this course. The cohort average is <b>{{cohort_proficiency_average}}%</b>.
+                  Your current proficiency score is <b>{{proficiency}}</b> following completion of {{completed_items_count}} of {{graded_items_count}} graded items in this course. The cohort average is <b>{{cohort_proficiency_average}}</b>.
                 {% endblocktrans %}
               %hr
               %table
@@ -205,7 +209,7 @@
                           .lesson-item-name
                             %i{:class => "status material-icons{% if lesson.progress == 100 %} complete{% endif %}"}
                               {% if lesson.progress == 100 %}check_circle {% elif lesson.progress == 0 %}panorama_fish_eye{% else %}tonality{% endif %}
-                            %a.ome-dome-c{"href": "#{module.navigation_url}"}
+                            %a.ome.dome-c{"href": "#{module.navigation_url}"}
                               #{module.lesson_name}: {{ module.name|translate_assessment_if_needed }}
                       %td.number{"class": "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
                   - if feature_flags.group_work
@@ -217,7 +221,7 @@
                               .lesson-item-name
                                 %i.status.complete.material-icons
                                   check_circle    
-                                %a.ome-dome-c{"href": "#{activity.link}"}
+                                %a.ome.dome-c{"href": "#{activity.link}"}
                                   {% trans "Group Work" %}
                                 =activity.name
                           - ifequal activity.score None
@@ -231,7 +235,7 @@
                               .lesson-item-name
                                 %i.status.complete.material-icons
                                   check_circle
-                                %a.ome-dome-c{"href": "#{activity.link}"}
+                                %a.ome.dome-c{"href": "#{activity.link}"}
                                   {% trans "Group Work" %}
                                 =activity.name
                           - if activity.is_pending
@@ -250,7 +254,9 @@
                   {% trans "Complete" %}
               %p.note-progress
                 {% blocktrans %}
-                  You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: {{graders}}. <a data-reveal-id='progress_modal'>Click here</a> to read more about how we may share your course information.
+                  You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: {{graders}}.
+                  %a.edit-link.ome.dome-c{:data-target => "#progressModal", :data-toggle => "modal", :href => "#"} Click here
+                  to read more about how we may share your course information.
                 {% endblocktrans %}
           - if feature_flags.discussions
             .contentCard.course-page.engagement-data#engagement-block
@@ -260,6 +266,7 @@
                 {% blocktrans with social_points=social.points social_course_avg=social.course_avg course_nav_url=course.nav_url %}
                   Your current engagement score is <b>{{social_points}}</b> based on your social interactions with other participants in your cohort in the <a href="{{course_nav_url}}/discussion">{{discussion_text}}</a> forums. The cohort average is <b>{{social_course_avg}}</b>.
                 {% endblocktrans %}
+              %hr
               %table
                 %thead
                   %tr
@@ -285,3 +292,18 @@
                   %tr
                     %td {% blocktrans %} Number of your posts being <span>Followed</span> {% endblocktrans %}
                     %td.number{"class": "{% if social.metrics.num_thread_followers == 0 %}zero{% endif %}"}= social.metrics.num_thread_followers
+
+
+
+  .modal.middleSize.noTopBorder#progressModal{:aria-hidden => "true", :aria-labelledby => "", :role => "dialog", :tabindex => "-1"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          .col
+          %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+            %span{:aria-hidden => "true"} ×
+        .modal-body
+          %p
+            {% trans "If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our" %}
+            %a.ome.dome-c{'href': '/privacy'}
+              {% trans "privacy policy." %}

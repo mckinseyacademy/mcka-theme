@@ -59,7 +59,9 @@
         margin-bottom: 30px;
       }
       .close {
-        margin: -2.2rem 0 -1rem 0;
+        position: absolute;
+        margin: 0;
+        top: 25px;
       }
     }
     .modal-content {
@@ -78,11 +80,17 @@
 
 }
 
+#progressModal {
+  .modal-body {
+    padding-top: 10px;
+  }
+}
+
 .modal-dialog {
   .modal-content {
     border-radius: 0;
     .modal-header {
-      border: 0;
+      border: 0 !important;
     }
   }
 }
