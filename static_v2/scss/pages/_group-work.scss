@@ -10,11 +10,11 @@
 
         .group-project-navigator {
             width: 363px;
-            margin-top: -16px;
+            margin: -16px 0 0;
         }
 
         .group-project-content {
-            width: calc(100% - 363px);
+            width: calc(100% - 373px);
             display: inline-block;
             padding-right: 15px;
         }
