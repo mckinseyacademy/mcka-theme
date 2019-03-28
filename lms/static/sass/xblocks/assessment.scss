@@ -14,12 +14,10 @@
         // Title
 
         .question-title {
-            @include font-size(24);
-            font-weight: 300;
+            font-size: 12px;
+            font-weight: 600;
             margin-bottom: 25px;
         }
-
-
 
         // UL Generic Styling
         ul {
@@ -39,8 +37,6 @@
             }
         }
 
-
-
         // Set button right margin incase of 2 buttons
 
         input[type="button"] {
@@ -52,7 +48,6 @@
                 margin-right: 0;
             }
         }
-
 
         // Add vertical Spacing for image in assessment block.
 
