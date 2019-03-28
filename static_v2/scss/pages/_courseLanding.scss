@@ -377,9 +377,7 @@
       }
 
       &.title {
-        color: var(--primary);
         padding: 17px 0;
-        color:  var(--primary);
         font-size: 1rem;
         line-height: 22px;
         width: 44%;
@@ -679,14 +677,21 @@ blockquote {
 }
 .lesson-dropdown-frame {
   padding: 0 0 10px;
-  .dropdown-menu.allLessons .allCoursesList .holder .data.title {
-    @include media-breakpoint-down(xs) {
-      width: 77px;
-      >span {
-        padding-left: 0;
+  .dropdown-menu.allLessons .allCoursesList .holder {
+      @include media-breakpoint-down(sm) {
+      .data.title {
+          width: calc(100% - 110px);
+          >span {
+            padding-left: 0;
+          }
+        }
+        .data.status {
+          width: auto;
+          font-size: 0;
+          float: right;
+        }
       }
     }
-  }
   .lesson-dropdown-holder {
     position: relative;
     display: inline-block;

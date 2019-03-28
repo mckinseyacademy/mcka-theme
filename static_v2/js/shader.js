@@ -58,6 +58,9 @@ $(".ome").mouseenter(function (e) {
     } else if (sel.hasClass('dome-c')) {
         target = sel;
         colorProp = 'color';
+    } else if (sel.hasClass('dome-f')) {
+        target = sel;
+        colorProp = 'fill';
     } else {
         var child = $(e.currentTarget).children('.dome-bc');
         if (child.length > 0) {
@@ -69,6 +72,12 @@ $(".ome").mouseenter(function (e) {
         if (child.length > 0) {
             target = child;
             colorProp = 'color';
+        }
+
+        child = $(e.currentTarget).find('.dome-f');
+        if (child.length > 0) {
+            target = child;
+            colorProp = 'fill';
         }
     }
 
@@ -97,7 +106,10 @@ $(".ome").mouseenter(function (e) {
     } else if (sel.hasClass('dome-c')) {
         target = sel;
         colorProp = 'color';
-    } else {
+    } else if (sel.hasClass('dome-f')) {
+        target = sel;
+        colorProp = 'fill';
+    }else {
         var child = $(e.currentTarget).children('.dome-bc');
         if (child.length > 0) {
             target = child;
@@ -108,6 +120,12 @@ $(".ome").mouseenter(function (e) {
         if (child.length > 0) {
             target = child;
             colorProp = 'color';
+        }
+
+        child = $(e.currentTarget).find('.dome-f');
+        if (child.length > 0) {
+            target = child;
+            colorProp = 'fill';
         }
     }
 

@@ -203,7 +203,7 @@
   }
 }
 
-@media screen and (max-width: 992px) {
+@include media-breakpoint-down(md) {
   header {
     &.appHeader {
       .headerNav {
@@ -217,7 +217,7 @@
       .allCoursesList {
         .holder {
           .data.title {
-            width: 108px;
+            width: 188px;
           }
         }
       }
@@ -228,7 +228,7 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+@include media-breakpoint-down(sm) {
   .dropdown-menu {
     &.notification {
       min-width: auto;
@@ -246,7 +246,14 @@
       width: 88% !important;
     }
     &.allModules {
-      min-width: 93vw;
+      min-width: calc(100vw - 30px);
+      &.allLessons .allCoursesList .holder .data.status {
+        font-size: 0;
+        float: right;
+      }
+      &.allLessons .allCoursesList .holder .data.title {
+        width: calc(100% - 110px);
+      }
     }
     &.dashboard-menu {
       min-width: 300px !important;
