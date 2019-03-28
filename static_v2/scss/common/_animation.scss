@@ -230,7 +230,6 @@
   position: relative;
   overflow: hidden;
   height: 600px;
-  max-height: 600px;
 
   &:before {
     content: '';
@@ -249,17 +248,15 @@
     background: $light-gray;
     background-image: linear-gradient(to right, $light-gray 0%, lighten($light-gray, 20%) 20%, $light-gray 40%, $light-gray 100%);
     background-repeat: no-repeat;
-    background-size: 1200px;
     position: absolute;
+    top: 45vh;
     z-index: 11001;
     display: block;
     background-size: 100%;
-    width: 150%;
-    height: 350%;
-    top: 50%;
-    left: -50%;
-    transform: rotate(45deg) translate(-50%, -50%);
-    margin: 0 0 0 25%;
+    width: 170vh;
+    height: 170vh;
+    transform: rotate(45deg);
+    transform-origin: 190vh 25vh;
 
 
     -webkit-animation-duration: 2s;
@@ -269,17 +266,13 @@
     -webkit-animation-timing-function: linear;
   }
 
-  @include media-breakpoint-down(md) {
-    &:after {
-      width: 180%;
-    }
-  }
   @include media-breakpoint-down(sm) {
-    &:after {
-      width: 250%;
-      top: 150px;
-      left: -180%;
-    }
+      height: 400px;
+        &:after {
+            transform-origin: 225vh 30vh;
+            width: 200vh;
+            height: 200vh;
+        }
   }
 
   @-webkit-keyframes placeholderShimmer {
