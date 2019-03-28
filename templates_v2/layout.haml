@@ -307,9 +307,8 @@
           .modal-footer
             %button.btn.btn-default{:data-dismiss => "modal", :type => "button"} Close
 
-
     / New Feature Tour Structure
-    .modal.fade.newFeatureTour{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
+    .modal.fade.newFeatureTour.in.show{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
       .modal-dialog.modal-lg
         .modal-content
           .modal-body
@@ -386,6 +385,8 @@
                   %a.carousel-control-next{:data-slide => "next", :href => "#demo"}
                     %span.carousel-control-next-icon
                       %i.material-icons keyboard_arrow_right
+    -if show_new_ui_tour
+      %script{src: "{% static 'js/new_ui_tour.js' %}"}
 
     %script{src: "{% static 'js/shader.js' %}"}
     %script

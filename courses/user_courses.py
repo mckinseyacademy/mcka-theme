@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 
+
 from accounts.json_backend import JsonBackend
 from api_data_manager.organization_data import OrgDataManager
 from api_data_manager.common_data import CommonDataManager, COMMON_DATA_PROPERTIES
@@ -202,6 +203,7 @@ def standard_data(request):
     course = None
     learner_dashboards = None
     show_my_courses = None
+    show_new_ui_tour = False
 
     if request.user and request.user.id:
         course_id = request.resolver_match.kwargs.get('course_id')
@@ -209,10 +211,10 @@ def standard_data(request):
             course = load_course(course_id, request=request, depth=0)
 
         user_data = thread_local.get_basic_user_data(request.user.id)
-
         program = user_data.current_program
         current_course = user_data.current_course
         organization = user_data.organization
+
         if user_data.get('new_ui_enabled'):
             show_my_courses = any(
                 course for course in user_data.courses if not getattr(course, 'learner_dashboard')
@@ -274,6 +276,7 @@ def standard_data(request):
         "active_course": course,
         "learner_dashboards": learner_dashboards,
         "show_my_courses": show_my_courses,
+        "show_new_ui_tour": show_new_ui_tour
     }
 
     return data

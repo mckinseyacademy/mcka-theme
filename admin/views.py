@@ -1796,7 +1796,11 @@ def client_detail_customization(request, client_id):
         customization.hex_background_main_navigation = request.POST.get('hex_background_main_navigation',
                                                                         customization.hex_background_main_navigation)
         if request.user.is_mcka_admin:
-            customization.new_ui_enabled = True if 'new_ui_enabled' in request.POST else False
+            if 'new_ui_enabled' in request.POST and not customization.new_ui_enabled:
+                customization.new_ui_enabled_at = datetime.now()
+
+            customization.new_ui_enabled = 'new_ui_enabled' in request.POST
+
         customization.save()
 
         errors = update_mobile_client_detail_customization(request, client_id)

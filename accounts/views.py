@@ -1383,3 +1383,14 @@ def switch_language_based_on_preference(request):
 
 def refresh_user_session(request):
     return HttpResponse('Session extended')
+
+
+@login_required
+def new_ui_visited(request):
+    try:
+        user = RemoteUser.cached_fetch(str(request.user.id))
+        user.last_signin = None
+        user.save()
+    except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
+        pass
+    return HttpResponse()
