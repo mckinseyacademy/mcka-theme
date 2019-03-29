@@ -121,13 +121,11 @@ if (secondary !== undefined) {
     $('.visualization .filled.band-2').css('background-color', lighten(secondary, 60));
     $('.visualization .filled.total').css('background-color', darken(secondary, 30));
 
-//  Course landing pagelesson bar hover bg color
-if (secondary !== undefined) {
-    $('.courseRow a.description').css('background-color', lighten(secondary, 90));
+  //  Course landing pagelesson bar hover bg color
+    $('.courseRow a.description').css('background-color', lighten(secondary, 60));
     $('.courseRow .bookmark.primary svg path').css('fill', lighten(secondary, 0));
 }
 
-
-
-
-
+$(window).load(function () {
+    $('#branding-color').css('background-color', lighten(secondary, 65));
+});
