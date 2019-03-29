@@ -21,74 +21,81 @@
 				>.body {
 					padding: 30px;
 
-					.response_body
-					{
+					.response_body {
 						margin: -30px;
 					}
+				}
+
+				@media screen and (max-width: 480px) {
+					//height: auto!important;
 				}
 			}
 		}
 
 		.actions {
-			li {
-				float: none !important;
-				margin:0 !important; 
-				display: inline-block !important;
-				margin-left:15px;
-				a {
-					font-weight: 600;
-					font-size: 12px;
-					height: 40px;
-					border-radius: 2px;
-					text-transform: uppercase;
-					line-height: 40px;
-					letter-spacing: 0.5px;
-					text-align: center;
-					padding: 0 20px;
-					background-color: var(--primary);
-					border-color: var(--primary);
-					transition: .35s;
-					margin-left: 15px;
+			text-align: left !important;
 
-					&:hover {
-						background: $dark-blue;
-						padding: 0 20px;
+			ul {
+				margin: 20px 0;
+				text-align: left;
+
+				li {
+					margin: 0 !important;
+
+					a {
+						font-weight: 600;
+						font-size: 12px;
+						height: 40px;
 						border-radius: 2px;
-
-					}
-
-					&:disabled {
-						background: $gray;
-						opacity: 1;
-						border-color: $gray;
-						cursor: not-allowed;
-						color: $white;
+						text-transform: uppercase;
+						line-height: 40px;
+						letter-spacing: 0.5px;
+						text-align: center;
+						padding: 0 20px;
+						background-color: $primary;
+						border-color: $primary;
+						transition: .35s;
+						margin-right: 15px;
 
 						&:hover {
+							background: $dark-blue;
+							padding: 0 20px;
+							border-radius: 2px;
+
+						}
+
+						&:disabled {
 							background: $gray;
 							opacity: 1;
 							border-color: $gray;
 							cursor: not-allowed;
 							color: $white;
+
+							&:hover {
+								background: $gray;
+								opacity: 1;
+								border-color: $gray;
+								cursor: not-allowed;
+								color: $white;
+							}
 						}
 					}
-				}
-				&.disabled
-				{
-					a
-					{
-						background: $gray !important;
-						opacity: 1;
-						border-color: $gray;
-						cursor: not-allowed;
-						color: $white !important;
 
-						&:hover {
+					&.disabled {
+						a {
 							background: $gray !important;
 							opacity: 1;
 							border-color: $gray;
 							cursor: not-allowed;
 							color: $white !important;
+
+							&:hover {
+								background: $gray !important;
+								opacity: 1;
+								border-color: $gray;
+								cursor: not-allowed;
+								color: $white !important;
+							}
 						}
 					}
 				}
@@ -102,13 +109,17 @@
 
 		.q-container {
 			.question-title {
-				@include font-size(24);
-				font-weight: 300;
+				font-size: 12px;
+				font-weight: bold;
 				margin-bottom: 15px;
 			}
 
 			.quiz-question {
 				padding-top: 0;
+
+				p {
+					margin-bottom: 10px;
+				}
 			}
 
 			.user-answers {
@@ -190,27 +201,68 @@
 			}
 		}
 	}
+
+	[data-block-type="pb-mcq"],[data-block-type="pb-mrq"] {
+		h4.question-title {
+			font-size: 12px;
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+
+		.questionnaire {
+			legend.question {
+				@include font-size(16);
+			}
+		}
+	}
+
+	[data-block-type="adventure"]
+	{
+		.questionnaire
+		{
+			.question
+			{
+				h3.question-title {
+					font-size: 12px;
+					font-weight: bold;
+					text-transform: uppercase;
+				}
+				p
+				{
+					margin-bottom: 0;
+				}
+			}
+		}
+
+		.navigation-view
+		{
+			margin-bottom: 20px;
+			.navigation-back-next-buttons
+			{
+				text-align:left!important;
+				button
+				{
+					margin-right: 10px;
+				}
+
+			}
+		}
+		
+	}
 }
 
 // RTL
 
-.rtl
-{
-	&.new-theme
-	{
-		[data-block-type="diagnostic-feedback"]
-		{
-			.user-answers
-			{
-				padding-right:0;
-				padding-left:20px;
+.rtl {
+	&.new-theme {
+		[data-block-type="diagnostic-feedback"] {
+			.user-answers {
+				padding-right: 0;
+				padding-left: 20px;
 
-				input[type="radio"] 
-				{
-					+label
-					{
-						&:before
-						{
+				input[type="radio"] {
+					+label {
+						&:before {
 							margin-right: 0;
 							margin-left: 5px;
 						}
@@ -219,18 +271,14 @@
 			}
 		}
 
-		.actions
-		{
-			text-align: left !important;
-			ul
-			{
-				margin-left:0;
-				li
-				{
-					a
-					{
-						margin-left:0;
-						margin-right:15px;
+		.actions {
+			text-align: right!important;
+			ul {
+
+				li {
+					a {
+						margin-right: 0;
+						margin-left: 15px;
 					}
 				}
 			}
