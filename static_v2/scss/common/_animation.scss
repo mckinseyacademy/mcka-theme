@@ -231,57 +231,35 @@
   overflow: hidden;
   height: 600px;
 
-  &:before {
-    content: '';
+  &:after {
+    content: "";
+    background: linear-gradient(-45deg, $light-gray 0%, lighten($light-gray, 20%) 40%, $light-gray 60%, $light-gray 100%);
+    background-size: 400% 400%;
     position: absolute;
+    z-index: 11001;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: 11001;
-    background-color: $light-gray;
-    display: block;
-  }
-  &:after {
-    display: block;
-    content: "";
-    background: $light-gray;
-    background-image: linear-gradient(to right, $light-gray 0%, lighten($light-gray, 20%) 20%, $light-gray 40%, $light-gray 100%);
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 45vh;
-    z-index: 11001;
-    display: block;
-    background-size: 100%;
-    width: 170vh;
-    height: 170vh;
-    transform: rotate(45deg);
-    transform-origin: 190vh 25vh;
-
 
     -webkit-animation-duration: 2s;
     -webkit-animation-fill-mode: forwards;
     -webkit-animation-iteration-count: infinite;
-    -webkit-animation-name: placeholderShimmer;
+    -webkit-animation-name: Gradient;
     -webkit-animation-timing-function: linear;
   }
 
-  @include media-breakpoint-down(sm) {
-      height: 400px;
-        &:after {
-            transform-origin: 225vh 30vh;
-            width: 200vh;
-            height: 200vh;
-        }
-  }
-
-  @-webkit-keyframes placeholderShimmer {
+  @-webkit-keyframes Gradient {
     0% {
-      background-position: -1000px top;
+        background-position: 100% 100%
+    }
+
+    70% {
+        background-position: 40% 40%
     }
 
     100% {
-      background-position: 1800px bottom;
+        background-position: 0% 0%
     }
   }
 }
