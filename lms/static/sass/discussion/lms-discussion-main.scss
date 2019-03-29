@@ -123,7 +123,9 @@ body.new-theme {
   @media (max-width: 767px) {
     #course-discussion {
       padding: 10px;
-
+      .contentCard {
+        padding:0px
+      }
       .wmd-panel {
 
         .wmd-preview-container {
@@ -642,7 +644,7 @@ body.new-theme {
         border: 1px solid $hard-gray;
       }
 
-      button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel),
+      button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel):not(.new-post-btn),
       button.btn-brand {
         @include primary-button;
 
