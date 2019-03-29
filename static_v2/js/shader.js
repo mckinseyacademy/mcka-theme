@@ -127,5 +127,7 @@ if (secondary !== undefined) {
 }
 
 $(window).load(function () {
-    $('#branding-color').css('background-color', lighten(secondary, 65));
+    setTimeout(function () {
+        $('#branding-color').css('background-color', lighten(secondary, 65));
+    }, 2000);
 });
