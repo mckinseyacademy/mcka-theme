@@ -3,6 +3,9 @@
 - load staticfiles
 
 - block content
+  %script
+    var cookie_key = "{{cookie_key}}";
+
   %link{'rel': 'stylesheet', "href": "{% static 'css/jquery-ui.min.css' %}"}
   %script{"src": "{% static 'js/highcharts/highcharts.js' %}"}
   %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
