@@ -48,14 +48,11 @@
       };
       $.when.apply($, discussion_content.xblock(discussion_data)).
         done(function() {
-          $.getScript('/static/js/foundation.min.js', function() {
-          window.Foundation.init();
-           $(document).foundation();
-           });
           if ($('#discussion-ta-template').length > 0) {
             $('.discussion-body').prepend($("#discussion-ta-template").html());
           }
           $('.ask-ta').prependTo('.forum-nav');
+          $("<h1>"+gettext('Discussion')+"</h1>").prependTo(".page-header-secondary");
           jQuery.noConflict();
       });
       // we need this to add some browser specific CSS rules
