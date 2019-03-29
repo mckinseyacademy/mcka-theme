@@ -9,7 +9,7 @@
               %li.active
                 %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}"} {% trans "Home" %}
               - if calendar_enabled and not mobile_device
-                %li
+                %li.calendar
                   %a.ome.dome-c#open-calendar{:href => "#"} {% trans "Calendar" %}
               - if feature_flags.discussions
                 %li
