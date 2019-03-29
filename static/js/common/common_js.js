@@ -875,7 +875,7 @@ $(document).ready(function () {
 function UpdateManagerCourseName() {
     $('#managerCurrentCourse').text($('a.hashPageButton.active').text().trim());
     $('a.hashPageButton span.bookmark').remove();
-    $('a.hashPageButton.active').html($('a.hashPageButton.active').text()+ ' <span class ="bookmark secondary"><svg height="100%" preserveAspectRatio="none" viewBox="0 0 20 100" width="100%"> <path d="M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z" vector-effect="non-scaling-stroke"></path> </svg> </span>');
+    $('a.hashPageButton.active').html($('a.hashPageButton.active').text()+ ' <span class ="bookmark"></span>');
 }
 
 function InitializeAverageCalculate() {
