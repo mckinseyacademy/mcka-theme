@@ -6,6 +6,15 @@
     background: $ash-white;
     border-bottom: 5px solid #dfb836;
     line-height: 37px;
+    @media screen and (max-width: 1024px) {
+      ul{
+        >li{
+          &.calendar{
+            display: none;
+          }
+        }
+      }
+    }
     @include media-breakpoint-down(md) {
       .pn-Advancer {
         display: none;
