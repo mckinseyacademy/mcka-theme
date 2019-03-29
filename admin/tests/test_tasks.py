@@ -332,7 +332,7 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         mock_send_email.delay = Mock()
         delete_company_task(self.mock_id, {}, None)
         args, _ = mock_send_email.delay.call_args
-        self.assertEqual('Company Profile Deletion Failed', args[0])
+        self.assertEqual('Company deletion completed', args[0])
 
     @patch('api_client.organization_api.delete_organization')
     @patch('admin.controller.remove_mobile_app_theme', side_effect=make_side_effect_raise_api_error(404))

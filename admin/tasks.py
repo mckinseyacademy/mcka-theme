@@ -635,19 +635,19 @@ def delete_company_task(company_id, owner, base_url):
         company_name = organization.display_name
         # Delete users in organization
         user_ids = organization_api.fetch_organization_user_ids(company_id)
-        if user_ids:
-            delete_participants_task(
-                user_ids,
-                send_confirmation_email=True,
-                owner=owner,
-                base_url=base_url,
-                email_template='admin/delete_company_email_template.haml',
-                template_extra_data={'company_name': company_name}
-            )
+        delete_participants_task(
+            user_ids,
+            send_confirmation_email=True,
+            owner=owner,
+            base_url=base_url,
+            email_template='admin/delete_company_email_template.haml',
+            email_subject=_('Company deletion completed'),
+            template_extra_data={'company_name': company_name}
+        )
         # Delete organization profile
         delete_company_data(company_id)
     except Exception as e:
-        subject = _('Company Profile Deletion Failed')
+        subject = _('Company deletion completed')
         email_template = 'admin/delete_company_profile_email_template.haml'
         template_data = {
             'company_name': company_name,
@@ -665,7 +665,13 @@ def delete_company_task(company_id, owner, base_url):
 
 @task(name='admin.delete_participants_task', queue='high_priority')
 def delete_participants_task(
-        users_to_delete, send_confirmation_email, owner, base_url, email_template=None, template_extra_data=None
+        users_to_delete,
+        send_confirmation_email,
+        owner,
+        base_url,
+        email_template=None,
+        email_subject=None,
+        template_extra_data=None
 ):
     """
     Extract users from CSV, delete them and (optionally) send an email to the `owner` - user that initiated deletion.
@@ -740,7 +746,7 @@ def delete_participants_task(
         )
 
     if send_confirmation_email:
-        subject = _('Advanced Deletion Completed')
+        subject = _(email_subject) or _('Bulk deletion completed')
         email_template = email_template or 'admin/delete_users_email_template.haml'
         mcka_logo = urljoin(
             base=base_url,
@@ -928,7 +934,6 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         url='/static/image/mcka_email_logo.png'
     )
     template_data = {
-        'first_name': user_data.get('first_name'),
         'file_name': user_file_name,
         'completion_time': completion_time,
         'total': registration_batch.attempted,
@@ -947,6 +952,7 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
 
     try:
         user_data = user_api.get_user(user_id).to_dict()
+        template_data.update({'first_name': user_data.get('first_name')})
     except Exception as e:
         logger.error(
             'Failed retrieving Admin User info from API - {} - {}'.format(e.message, task_log_msg)
@@ -954,8 +960,13 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         raise generate_import_files_and_send_notification.retry(exc=e)
     else:
         try:
-            result = send_email.delay(subject, email_template, template_data, [user_data.get('email')], task_log_msg)
-            result.get()  # Catch the exception thrown by the called task
+            send_email(
+                subject=subject,
+                email_template=email_template,
+                template_data=template_data,
+                user_emails=[user_data.get('email')],
+                task_log_msg=task_log_msg
+            )
         except Exception as e:
             raise generate_import_files_and_send_notification.retry(exc=e)
 

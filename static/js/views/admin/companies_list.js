@@ -205,7 +205,6 @@
           $.ajax(options).done(function(data) {
             var confirmationScreen = $('#delete_data_success');
             confirmationScreen.foundation('reveal', 'open');
-            row.remove();
           }).fail(function(data) {
               mainContainer.find('.errorContainer').html("Error deleting data. Try again later...");
             }
