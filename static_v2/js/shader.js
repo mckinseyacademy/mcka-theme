@@ -117,10 +117,9 @@ $(".ome").mouseenter(function (e) {
     }
 });
 
-if (secondary !== undefined && secondary !== 'rgba(0, 0, 0, 0)') {
-    $('.visualization .filled.band-2').css('background-color', lighten(secondary, 50));
-    $('.visualization .filled.total').css('background-color', darken(secondary, 50));
-}
+if (secondary !== undefined) {
+    $('.visualization .filled.band-2').css('background-color', lighten(secondary, 60));
+    $('.visualization .filled.total').css('background-color', darken(secondary, 30));
 
 //  Course landing pagelesson bar hover bg color
 if (secondary !== undefined) {

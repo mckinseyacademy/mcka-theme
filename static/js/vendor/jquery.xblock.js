@@ -463,10 +463,13 @@
                 if (show) {
                     $(".lesson-content").addClass(spinner_class);
                     $(".discussion-content").addClass(spinner_class_nonLesson);
+                    $("#course-group-work").addClass(spinner_class_nonLesson);
+                    $("#course-group-work .lesson-content").removeClass(spinner_class);
                 } else {
                     setTimeout(function () {
                         $(".lesson-content").removeClass(spinner_class);
                         $(".discussion-content").removeClass(spinner_class_nonLesson);
+                        $("#course-group-work").removeClass(spinner_class_nonLesson);
                     }, 2000);
                 }
             } else {

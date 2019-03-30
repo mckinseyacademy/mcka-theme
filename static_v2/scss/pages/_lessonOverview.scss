@@ -92,7 +92,7 @@
     }
   }
   .lesson-content {
-    @include font-spec(1rem, 300, normal);
+    @include font-size(16);
     .unit-title {
       display: none;
     }
