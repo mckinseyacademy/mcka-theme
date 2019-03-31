@@ -8,97 +8,188 @@
 
 
 
-.new-theme
-{
-    [data-block-type="step-builder"]
-    {
+.new-theme {
+    [data-block-type="step-builder"] {
 
         // Title
 
-        .question-title
-        {
-            @include font-size(24);
-            font-weight: 300;
+        .question-title {
+            font-size: 12px;
+            font-weight: 600;
             margin-bottom: 25px;
         }
 
-      
-
         // UL Generic Styling
-        ul
-        {
-           
+        ul {
+
             padding: 0;
             margin: 20px 0 20px 25px;
             line-height: 26px;
             @include font-size(14);
 
-            ul
-            {
-                padding:0;
-                margin:0;
+            ul {
+                padding: 0;
+                margin: 0;
             }
 
-            &.review-list
-            {
+            &.review-list {
                 margin: 5px 0 10px;
             }
-
         }
 
-        
+        // Set button right margin incase of 2 buttons
 
-         // Set button right margin incase of 2 buttons
-
-        input[type="button"]
-        {
-            margin-right:11px;
-            display:inline-block;
+        input[type="button"] {
+            margin-right: 11px;
+            // display: inline-block;
+            border:1px solid transparent;
+            &:last-child
+            {
+                margin-right: 0;
+            }
         }
-
 
         // Add vertical Spacing for image in assessment block.
 
-        img
-        {
-            margin:20px 0;
+        img {
+            margin: 20px 0;
         }
 
         // Grade Display
 
-        .sb-review-score
-        {
-            margin-left:0;
+        .sb-review-score {
+            margin-left: 0;
             margin-top: 25px;
         }
 
-        .checkmark-partially-correct
+        .assessment-checkmark
+        {
+            margin-top: 4px;
+            &.checkmark-partially-correct {
+                &::before {
+                    font-family: 'Material Icons';
+                    content: '\e002';
+                    @include font-size(24);
+                }
+            }
+
+            &.checkmark-correct {
+                &::before {
+                    font-family: 'Material Icons';
+                    content: '\e86c';
+                    @include font-size(24);
+                    color:$bg-white-green;
+                }
+            }
+
+            &.checkmark-incorrect {
+                &::before {
+                    font-family: 'Material Icons';
+                    content: '\e5c9';
+                    @include font-size(24);
+                    color:$bg-white-red;
+                }
+            }
+
+
+        }
+        
+        .step-overall-checkmark
         {
             &::before
             {
-                font-family: 'Material Icons';
-                content: '\e002';
-                @include font-size(24);
+                position: relative;
+                top:5px;
+            }
+            &.checkmark-partially-correct {
+                &::before {
+                    font-family: 'Material Icons';
+                    content: '\e002';
+                    @include font-size(24);
+                }
+            }
+
+            &.checkmark-correct {
+                &::before {
+                    font-family: 'Material Icons';
+                    content: '\e86c';
+                    @include font-size(24);
+                    color:$bg-white-green;
+                }
+            }
+
+            &.checkmark-incorrect {
+                &::before {
+                    font-family: 'Material Icons';
+                    content: '\e5c9';
+                    @include font-size(24);
+                    color:$bg-white-red;
+                }
             }
         }
-        
-        .grade-result
-        {
-            h4
-            {
+
+
+
+        .grade-result {
+            h4 {
                 @include font-size(24);
                 font-weight: 300;
                 margin-bottom: 15px;
             }
         }
-
-
+    }
+    
+    .choice-result
+    {
+        &::before
+        {
+            position: relative;
+        }
     }
 
-    .review-link
-    {
-        display:block;
+    .review-link {
+        display: block;
         text-align: right;
         margin-top: 15px;
-    }   
+    }
+}
+
+// RTL
+
+.rtl
+{
+    &.new-theme
+    {
+
+        [data-block-type="step-builder"]
+        {
+            .step-overall-checkmark
+            {
+                float: right !important;
+            }
+
+            .assessment-checkmark
+            {
+                float:right !important;
+                margin-right:0 !important;
+                margin-left: 10px !important;
+            }
+            .results-section
+            {
+                margin-left:0;
+                margin-right:50px;
+            }
+
+            input[type="button"]
+            {
+                margin-right:0!important;
+                margin-left: 10px;
+                &:last-child
+                {
+                    margin-left: 0;
+                }
+            }
+
+        }
+    }
 }

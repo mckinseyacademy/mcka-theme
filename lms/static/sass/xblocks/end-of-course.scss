@@ -1,0 +1,78 @@
+// imports
+
+@import "../base/variables";
+@import "vars/variables";
+@import "form/checkbox";
+@import "form/radiobutton";
+@import "mixins/mixins";
+@import "common/buttons";
+
+.new-theme {
+    [data-block-type="eoc-journal"] {
+
+        .eoc-journal-block {
+
+            .title {
+                h4 {
+                    @include font-size(24);
+                    font-weight: 400;
+                }
+
+                table
+                {
+                    table-layout: fixed;
+                    width: 100%;
+                    td, th
+                    {
+                        padding:5px;
+                        border-bottom: 1px solid $gray-border;
+
+                        &:nth-child(2)
+                        {
+                            text-align: center;
+                        }
+                    }
+                    @media screen and (max-width: 767px) {
+                        td
+                        {
+                            display: table-cell
+                        }
+                        th
+                        {
+                            display:table-header;
+                        }
+                    }
+                    
+                }
+            }
+
+            .eoc-selected-answers
+            {
+                margin-top: 20px;
+                .eoc-selected-answers-section
+                {
+                    margin-bottom: 20px;
+
+                    h4
+                    {
+                        @include font-size(24);
+                        font-weight: 400;
+                    }
+
+                    .eoc-selected-answer
+                    {
+                        border-bottom: 1px solid $gray-border;
+                        margin-bottom: 20px;
+                       h5
+                       {
+                            @include font-size(18);
+                            font-weight: 400;
+                            line-height: normal;
+                            margin-bottom: 20px;
+                       } 
+                    }
+                }
+            }
+        }
+    }
+}

@@ -103,6 +103,11 @@ body.new-theme {
               .image-explorer-hotspot-reveal-body {
                 ul, li, p, div, span {
                   font-size: 12px;
+                  color: $black;
+                }
+                a {
+                  text-decoration: none;
+                  color: var(--primary);
                 }
 
                 ul {
@@ -146,7 +151,8 @@ body.new-theme {
               width: 90% !important;
               height: 74% !important;
               top: 13%;
-              margin: 0 auto;
+              margin: 0 auto !important;
+              max-height: none !important;
             }
           }
         }

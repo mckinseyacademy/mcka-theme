@@ -8,6 +8,7 @@
     background-color: var(--primary) $isImportant;
     height: 40px !important;
     box-shadow: none;
+    border:0 $isImportant;
 }
 
 @mixin primary-button-hover ($isImportant:null) {
@@ -20,6 +21,7 @@
     background-color: $dark-blue !important;
     height: 40px !important;
     box-shadow: none;
+    border:0 $isImportant;
 
 }
 
@@ -29,6 +31,7 @@
     font-size: 1rem !important;
     padding: 3px 30px !important;
     box-shadow: none;
+    border:0 $isImportant;
 
 }
 
@@ -38,6 +41,7 @@
     padding: 3px 30px !important;
     font-size: 1rem !important;
     box-shadow: none;
+    border:0 $isImportant;
 }
 
 @mixin secondary-button ($isImportant:null) {
@@ -56,7 +60,7 @@
     color: $dark-blue !important;
     font-size: 12px $isImportant;
     text-transform: uppercase $isImportant;
-    border: solid 1px $dark-blue;
+    border: solid 1px $dark-blue $isImportant;
     border-radius: 2px $isImportant;
     padding: 3px 15px $isImportant;
     font-weight: normal $isImportant;
