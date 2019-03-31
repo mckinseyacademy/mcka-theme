@@ -230,72 +230,44 @@
   position: relative;
   overflow: hidden;
   height: 600px;
-  max-height: 600px;
 
-  &:before {
-    content: '';
+  &:after {
+    content: "";
+    background: linear-gradient(-45deg, $light-gray 0%, lighten($light-gray, 20%) 40%, $light-gray 60%, $light-gray 100%);
+    background-size: 400% 400%;
     position: absolute;
+    z-index: 11001;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: 999;
-    background-color: $light-gray;
-    display: block;
-  }
-  &:after {
-    display: block;
-    content: "";
-    background: $light-gray;
-    background-image: linear-gradient(to right, $light-gray 0%, lighten($light-gray, 20%) 20%, $light-gray 40%, $light-gray 100%);
-    background-repeat: no-repeat;
-    background-size: 1200px;
-    position: absolute;
-    z-index: 999;
-    display: block;
-    background-size: 100%;
-    width: 150%;
-    height: 350%;
-    top: 50%;
-    left: -50%;
-    transform: rotate(45deg) translate(-50%, -50%);
-    margin: 0 0 0 25%;
-
 
     -webkit-animation-duration: 2s;
     -webkit-animation-fill-mode: forwards;
     -webkit-animation-iteration-count: infinite;
-    -webkit-animation-name: placeholderShimmer;
+    -webkit-animation-name: Gradient;
     -webkit-animation-timing-function: linear;
   }
 
-  @include media-breakpoint-down(md) {
-    &:after {
-      width: 180%;
-    }
-  }
-  @include media-breakpoint-down(sm) {
-    &:after {
-      width: 250%;
-      top: 150px;
-      left: -180%;
-    }
-  }
-
-  @-webkit-keyframes placeholderShimmer {
+  @-webkit-keyframes Gradient {
     0% {
-      background-position: -1000px top;
+        background-position: 100% 100%
+    }
+
+    70% {
+        background-position: 40% 40%
     }
 
     100% {
-      background-position: 1800px bottom;
+        background-position: 0% 0%
     }
   }
 }
 
 // Progressive Donut loader
 
- .donut-loader {
+ .donut-loader, 
+ .xblock-donut {
   position: relative;
   height: 500px;
   overflow: hidden;
@@ -333,6 +305,26 @@
 
       to {
           transform: rotate(360deg)
+      }
+  }
+  &.card {
+      height: auto;
+
+      &::before {
+          background-color: rgba(255, 255, 255, 0.6);
+      }
+
+      &::after {
+        margin: 0 auto;
+        top: 44%;
+        margin-top: -52px;
+        width: 50px;
+        height: 50px;
+        border-width: 6px;
+
+        @include media-breakpoint-between(xs, sm) {
+            top: 50%;
+        }
       }
   }
 }

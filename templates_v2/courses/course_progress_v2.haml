@@ -38,7 +38,7 @@
                 .visual.progressWidgets.col-8
                   %h5 {% trans "Progress" %}
                   - include "courses/visualizations/course_progress.haml"
-                .col-4.modules 
+                .col-4.modules
                   - if modules_custom_label
                     %h5 # {{modules_custom_label}}
                   -else
@@ -79,11 +79,11 @@
                               {% if lesson.progress == 100 %}check_circle {% elif lesson.progress == 0 %}panorama_fish_eye{% else %}tonality{% endif %}
                             %span.lesson-label
                               - if lesson_custom_label
-                                {% blocktrans with lesson_index=lesson.index %} {{lesson_custom_label}} 
+                                {% blocktrans with lesson_index=lesson.index %} {{lesson_custom_label}}
                                   %span {{lesson_index}}:
                                 {% endblocktrans %}
                               -else
-                                {% trans "Lesson" %} 
+                                {% trans "Lesson" %}
                                   %span #{lesson.index}:
 
                           - if lesson_custom_label and modules_custom_label
@@ -98,7 +98,7 @@
                           - else
                             %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
                               = lesson.name
-                              
+
                           .dropdown-menu.allLessons.allModules{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
                             %ul.allCoursesList
                               %b
@@ -123,7 +123,7 @@
                                       .data.title
                                         %span.ome.dome-c= module.name
                                           -if not module.is_started
-                                            %i.material-icons.locked{ :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
+                                            %i.material-icons.locked.longTapPopover{:oncontextmenu => "return false;", :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
                                       .data.status
                                         %i.material-icons
                                         - if module.progress == 100
@@ -150,17 +150,17 @@
                             {% trans "Group Work (Due Date)"%}
                           - for activity in week.group_activities
                             .lesson-with-list.lesson-row-item.gr-data
-                              - if activity.score 
+                              - if activity.score
                                 %i.material-icons.complete
                                   check_circle
                               - else
                                 %i.material-icons
                                   panorama_fish_eye
-                                  
+
                               .lesson-item-name
                                 %a.gw-links.ome.dome-c{"href": "#{activity.link}"}
                                   #{activity.name}
-                                %span.due-date 
+                                %span.due-date
                                   = activity.due_on
                       - else
                         - if course.has_group_work
@@ -170,7 +170,7 @@
                 <i class="status material-icons">panorama_fish_eye</i>
                 {% trans "Not Started" %}
               %span
-                <i class="status partial material-icons">tonality</i> 
+                <i class="status partial material-icons">tonality</i>
                 {% trans "In Progress" %}
               %span.text-success
                 <i class="status complete material-icons">check_circle</i>
@@ -220,7 +220,7 @@
                             .lesson-row-item
                               .lesson-item-name
                                 %i.status.complete.material-icons
-                                  check_circle    
+                                  check_circle
                                 %a.ome.dome-c{"href": "#{activity.link}"}
                                   {% trans "Group Work" %}
                                 =activity.name
@@ -247,7 +247,7 @@
                   <i class="status material-icons">panorama_fish_eye</i>
                   {% trans "Not Started" %}
                 %span
-                  <i class="status partial material-icons">tonality</i> 
+                  <i class="status partial material-icons">tonality</i>
                   {% trans "In Progress" %}
                 %span.text-success
                   <i class="status complete material-icons">check_circle</i>

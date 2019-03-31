@@ -92,7 +92,7 @@
     }
   }
   .lesson-content {
-    @include font-spec(1rem, 300, normal);
+    @include font-size(16);
     .unit-title {
       display: none;
     }
@@ -115,6 +115,9 @@
       top: 0;
       width: 25px;
       height: 25px;
+      .popover-body {
+        white-space: nowrap;
+      }
       > a {
         display: block;
         width: 100%;
@@ -223,7 +226,7 @@ body.zoomIn {
       > .holder {
         border-top: 1px solid $border-color;
         position: relative;
-        padding: 11px 30px;
+        padding: 11px 15px;
         overflow: hidden;
       }
       .arrowPin {

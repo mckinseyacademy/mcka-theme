@@ -26,16 +26,18 @@
         border-radius: 0 !important;
         display: table-cell;
         span {
-          vertical-align: middle;
-          &:before {
-            content: "";
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            background-color: $manager-progress-green;
-            z-index: -1;
+          #branding-color {
             width: inherit;
+              &:before {
+                content: "";
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                background-color: inherit;
+                z-index: -1;
+                width: inherit;
+              }
           }
         }
       }

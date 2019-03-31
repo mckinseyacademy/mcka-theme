@@ -42,26 +42,26 @@
     %a.global-help{'data-reveal-id': 'mckinsey_help'}
       %i.fa.fa-question-circle
     - if not group_project or not project_group
-      .row
+      %div
         .error {% trans "Group work has not yet begun for this course. You will receive a message with information once it begins" %}
     - else
       - if not group_project.is_v2
         .row
           - include "courses/group_work/activity_menu.haml"
-      .row
+      %div
         - if group_project.is_v2
-          .large-12.medium-12.columns.splitpiece.left
+          .splitpiece.left
             .lesson-title
               %span {% trans "Group Project:" %}
               %span= group_project.name
             .lesson-content
         - else
-          .large-8.medium-8.columns.splitpiece.left
+          .splitpiece.left
             .lesson-title
               %span {% trans "Group Project:" %}
               %span= group_project.name
             .lesson-content
-          #group-project-users.large-4.medium-4.columns.splitpiece.right
+          #group-project-users.splitpiece.right
             .group-members
               %h4 {% trans "Group Members" %}
               - for member in project_group.members

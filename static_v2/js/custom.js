@@ -118,7 +118,7 @@ $(document).ready(function() {
 
 
     $(function() {
-        $('[data-toggle="popover"]').popover()
+        $('[data-toggle="popover"]').popover();
     });
     //    Add and Remove Class on body for Lesson Overview page
     var removeClass = true;
@@ -127,6 +127,7 @@ $(document).ready(function() {
         $("body").toggleClass('zoomIn');
         removeClass = false;
         $.cookie(cookie_key, $("body").hasClass('zoomIn'), { path: '/' });
+        $('.longTapPopover').popover('hide');
     });
     // when clicking the div : never remove the class
     $(".zoomWrap").click(function() {
@@ -517,4 +518,9 @@ $(window).on("load", function () {
     $('.loader').removeClass("donut-loader").removeClass("loader");
     $('.preloader').removeClass("preloader");
     $('.courseLanding .contentCard').css("visibility", "visible");
+});
+
+$('.my-courses .card').click(function () {
+    $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
+    $(this).addClass("loader").addClass("donut-loader");
 });

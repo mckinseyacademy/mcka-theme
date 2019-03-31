@@ -32,7 +32,7 @@ Apros.views.ManagerDashboardView = Backbone.View.extend({
       value = attributes['progress'];
       if (value == '-')
         return value;
-        return '<span>'+InternationalizePercentage(parseInt(value))+'</span>' + '<a href="JavaScript:Void(0)" class="toggle-subgrid show-subgrid button tiny" data-title="'+attributes["username"]+'">View Details</a>';
+        return '<span><span id="branding-color"></span>' + InternationalizePercentage(parseInt(value)) + '</span>' + '<a href="JavaScript:Void(0)" class="toggle-subgrid show-subgrid button tiny" data-title="' + attributes["username"] + '">View Details</a>';
     }},
 
   ],

@@ -1,3 +1,5 @@
+// Slider navigations for small screens
+
 * {
   box-sizing: inherit;
 }
@@ -15,7 +17,7 @@
     .pn-ProductNav,
     .dropdown-menu,
     .pn-Advancer,
-    .mainNav{
+    .mainNav {
       pointer-events: all;
 
       * {
@@ -24,16 +26,7 @@
     }
   }
 }
-@media screen and (max-width: 992px) {
-  .courseNavWrap{
-    &.nav-active{
-      .pn-ProductNav {
-        padding-bottom: 502px !important;
-        margin-bottom: -500px !important;
-      }
-    }
-  }
-}
+
 .pn-ProductNav {
   /* For WebKit implementations, provide inertia scrolling */
   -webkit-overflow-scrolling: touch;
@@ -124,8 +117,6 @@
   }
 }
 
-
-
 .pn-Advancer_Icon {
   width: 7px;
   height: 25px;
@@ -142,4 +133,15 @@
   background-color: transparent;
   transform-origin: 0 0;
   transition: transform .2s ease-in-out, background-color .2s ease-in-out;
+}
+
+@include media-breakpoint-down(md) {
+  .courseNavWrap{
+    &.nav-active{
+      .pn-ProductNav {
+        padding-bottom: 502px !important;
+        margin-bottom: -500px !important;
+      }
+    }
+  }
 }

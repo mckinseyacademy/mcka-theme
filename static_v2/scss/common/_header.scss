@@ -511,7 +511,7 @@ header {
 
       &.active {
         i {
-          color: $black;
+          color: var(--primary);
         }
       }
     }
