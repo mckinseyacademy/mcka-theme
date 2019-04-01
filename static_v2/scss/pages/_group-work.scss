@@ -113,6 +113,13 @@
             }
         }
 
+        &:after
+        {
+            content:'';
+            display:table;
+            clear: both;
+        }
+
     }
 
     // Navigator side navigation
@@ -882,3 +889,5 @@
     }
 
 }
+
+

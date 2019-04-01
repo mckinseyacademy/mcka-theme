@@ -217,6 +217,13 @@
   .group_submissions div {
     word-wrap: break-word;
   }
+
+    &:after
+    {
+        content:'';
+        display:table;
+        clear: both;
+    }
 }
 
 .upload_form{
