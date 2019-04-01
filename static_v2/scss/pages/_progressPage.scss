@@ -245,6 +245,9 @@
             .dropdown-menu {
               top: 100% !important;
               min-width: 360px;
+              @include media-breakpoint-down(sm) {
+                min-width: 220px;
+              }
               .material-icons {
                 vertical-align: sub;
               }
@@ -253,6 +256,7 @@
             .dropdown-toggle {
               @include font-size(16);
               position: relative;
+              display: inline-block;
               &::after {
                 display: inline-block;
                 vertical-align: middle;

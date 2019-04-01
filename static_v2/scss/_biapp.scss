@@ -65,7 +65,7 @@ body {
   }
   .profileArea {
     .dropdown-menu {
-      @include right(-5px !important);
+      @include right(-20px !important);
       @include left(auto !important);
     }
     &:after,
@@ -115,7 +115,7 @@ body {
           @include margin-left(0);
         }
         &.notifications {
-          @include margin-right(0 !important);
+          @include margin-right(30px !important);
           .notification {
             @media screen and (-ms-high-contrast: active),
             (-ms-high-contrast: none) {
@@ -129,43 +129,31 @@ body {
 }
 
 .courseNavWrap,
-.learner-nav {
+.learner-nav{
   .pn-ProductNav_Contents {
     @include float(left);
   }
 }
-
 // Learner Dashboard navigation for mobile
-@include media-breakpoint-down(sm) {
+@include media-breakpoint-down(sm){
   .learner-nav {
-    &.courseMainHeader {
-      .mainNav {
-        > ul {
-          @include padding-right(20px);
-          > li {
-            margin: 0 15px;
-            &:first-child {
-              @include margin-left(0);
-            }
-          }
-        }
-      }
-    }
-  }
-
-  .appHeader {
-    .logo {
-      .topRightArea {
-        .profileArea {
-          .dropdown-menu {
-            @include right(0 !important);
-            @include left(auto !important);
+  &.courseMainHeader {
+    .mainNav {
+      > ul {
+        @include padding-right(20px);
+        > li {
+          margin: 0 15px;
+          &:first-child{
+            @include margin-left(0);
           }
         }
       }
     }
   }
 }
+}
+
+
 
 // Nav Dropdowns
 .dropdown-menu {
@@ -442,7 +430,7 @@ body {
           .lesson-label {
             @include margin-left(5px);
             @include margin-right(25px);
-            @include media-breakpoint-between(xs, md) {
+            @include media-breakpoint-between(xs, lg) {
               @include margin-right(5px);
             }
           }
@@ -602,17 +590,16 @@ body {
   }
 }
 
-@include media-breakpoint-down(md) {
-  .newFeatureTour {
-    .featureImage {
+@include media-breakpoint-down(md){
+  .newFeatureTour{
+    .featureImage{
       @include margin-left(0);
     }
   }
 }
-
-@include media-breakpoint-down(sm) {
-  .newFeatureTour {
-    .featureImage {
+@include media-breakpoint-down(sm){
+  .newFeatureTour{
+    .featureImage{
       @include margin-left(0);
     }
   }
@@ -639,8 +626,9 @@ footer {
   }
 }
 
-.dashboard-menu {
-  li {
+
+.dashboard-menu{
+  li{
     .bookmark {
       @include left(-30px);
     }
@@ -736,7 +724,22 @@ body.rtl {
         display: none;
       }
     }
+    &.allLessons {
+      .allCoursesList {
+        .holder {
+          .data {
+            &.status {
+              float: left;
+            }
+            &.serial {
+              float: right;
+            }
+          }
+        }
+      }
+    }
   }
+
 
   .mapboxgl-ctrl-top-left {
     left: auto;
@@ -911,12 +914,12 @@ body.rtl {
   }
 }
 
-@include media-breakpoint-down(md) {
+@media screen and (max-width: 992px) {
   .appHeader {
     .topRightArea {
       .profileArea {
         .dropdown-menu {
-          @include right(5px !important);
+          @include right(-10px !important);
           &:after {
             @include right(17px !important);
           }
@@ -931,15 +934,14 @@ body.rtl {
   }
 }
 
-@include media-breakpoint-down(sm) {
+@media screen and (max-width: 767px) {
   .dropdown-menu {
     &.dashboard-menu {
-      @include left(0 !important);
-      @include right(auto !important);
+      @include left(-55px !important);
+      @include right(0 !important);
       &:after {
         @include left(140px !important);
         @include right(auto !important);
-        display: none;
       }
     }
   }
@@ -959,9 +961,7 @@ body.rtl {
         .profileArea {
           @include margin-left(15px);
           .dropdown-menu {
-            &:after {
-              @include right(7px !important);
-            }
+            @include right(-14px !important);
           }
         }
       }
@@ -972,25 +972,5 @@ body.rtl {
     @include margin-right(-20px);
     @include margin-left(-20px);
   }
-  .courseNavWrap {
-    &.nav-active {
-      .mainNav {
-        ul {
-          li {
-            position: initial;
-            .dropdown-menu {
-              @include left(0 !important);
-              @include right(auto !important);
-            }
-            &.notification {
-              .dropdown-menu {
-                @include left(auto !important);
-                @include right(0 !important);
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 }
+
