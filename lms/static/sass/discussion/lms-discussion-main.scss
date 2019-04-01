@@ -1,6 +1,7 @@
 @import 'lms/static/sass/discussion/lms-discussion-main';
 @import '../base/variables';
 @import '../base/buttons';
+@import '../discussion/partials/discussion-mobile-forum-content';
 
 
 
@@ -21,7 +22,12 @@ footer[role=contentinfo] {
     }
   }
 }
-
+@mixin usernameStyle() {
+  color: $black;
+  font-weight: 600;
+  pointer-events: none;
+  font-size: 12px;
+}
 body.new-theme {
   background-color: $ash-white;
   //sync row with UI Refresh.
@@ -58,6 +64,7 @@ body.new-theme {
   }
 
   .wmd-panel {
+    
     .wmd-button {
       span {
         background-image: url(/static/image/lesson-content/discussion/wmd-buttons-transparent.png);
@@ -127,12 +134,11 @@ body.new-theme {
         padding:0px
       }
       .wmd-panel {
-
+        .wmd-button-row {
+          display: none!important;
+          visibility: hidden!important;
+        }
         .wmd-preview-container {
-          .wmd-button-row {
-            display: none!important;
-            visibility: hidden!important;
-          }
           .wmd-preview-label {
             font-size: 12px !important;
           }
@@ -432,9 +438,7 @@ body.new-theme {
                 margin: 0;
 
                 .username {
-                  color: var(--primary) !important;
-                  font-weight: 600;
-                  font-size: 12px;
+                  @include usernameStyle();
                 }
 
                 .user-label-staff {
@@ -456,43 +460,7 @@ body.new-theme {
           }
 
           .forum-content {
-            padding-top: 0px;
-
-            .post-extended-content {
-              padding: 0;
-            }
-
-            .discussion-article {
-              padding: 0 0px;
-
-              &.view-discussion-home {
-                display: none;
-              }
-            }
-
-            .forum-response {
-              .comments {
-                .btn-brand {
-                  @include primary-button( !important);
-
-                  &:hover,
-                  &:active {
-                    @include primary-button-hover( !important);
-                  }
-                }
-              }
-            }
-
-            .discussion-reply-new {
-              .discussion-submit-post {
-                @include primary-button( !important);
-
-                &:hover,
-                &:focus {
-                  @include primary-button-hover( !important);
-                }
-              }
-            }
+            @include forum-content-mobile;
           }
         }
       }
@@ -1139,7 +1107,7 @@ body.new-theme {
             .field-input-label {
               color: var(--primary) !important;
               position: absolute;
-              top: -3px;
+              top: -2px;
               left: 30px;
 
               &:hover {
@@ -1560,9 +1528,7 @@ body.new-theme {
                   margin: 0;
 
                   .username {
-                    color: var(--primary);
-                    font-weight: 600;
-                    font-size: 12px;
+                    @include usernameStyle();
                   }
 
                   .user-label-staff {
@@ -1677,9 +1643,7 @@ body.new-theme {
 
                   .response-header-content {
                     .username {
-                      color: var(--primary);
-                      font-weight: 600;
-                      font-size: 12px;
+                      @include usernameStyle();
                     }
 
                     .user-label-staff {
@@ -1787,9 +1751,7 @@ body.new-theme {
                     margin: 0;
 
                     .username {
-                      color: var(--primary);
-                      font-weight: 600;
-                      font-size: 12px;
+                      @include usernameStyle();
                     }
 
                     .user-label-staff {

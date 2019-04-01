@@ -1,6 +1,7 @@
 //for inline discussion
 @import '../base/variables';
 @import '../base/buttons';
+@import '../discussion/partials/discussion-mobile-forum-content';
 
 @mixin moreButtonOfPostOrComment() {
     list-style: none;
@@ -36,6 +37,12 @@
             }
         }
     }
+}
+@mixin usernameStyle() {
+    color: $black;
+    font-weight: normal;
+    pointer-events: none;
+    font-size: 12px;
 }
 
 body.new-theme {
@@ -898,7 +905,7 @@ body.new-theme {
                                 font-size: 12px;
                                 font-weight: 200;
                                 .username{
-                                    font-weight: normal;
+                                    @include usernameStyle();
                                 }
                             }
                             .thread-preview-body{
@@ -1087,10 +1094,7 @@ body.new-theme {
                                     margin: 0;
 
                                     .username {
-                                        color: $black;
-                                        font-weight: normal;
-                                        pointer-events: none;
-                                        font-size: 12px;
+                                        @include usernameStyle();
                                     }
 
                                     .user-label-staff {
@@ -1226,10 +1230,7 @@ body.new-theme {
 
                                     .response-header-content {
                                         .username {
-                                            color: $black;
-                                            font-weight: normal;
-                                            font-size: 12px;
-                                            pointer-events: none;
+                                            @include usernameStyle();
                                         }
 
                                         .user-label-staff {
@@ -1328,10 +1329,7 @@ body.new-theme {
                                         margin: 0;
 
                                         .username {
-                                            color: $black;
-                                            font-weight: normal;
-                                            font-size: 12px;
-                                            pointer-events: none;
+                                            @include usernameStyle();
                                         }
 
                                         .user-label-staff {
@@ -1409,6 +1407,7 @@ body.new-theme {
             padding: 0px;
 
             .wmd-panel {
+                font-size: 14px;
                 .wmd-button-row {
                     display: none!important;
                     visibility: hidden!important;
@@ -1689,10 +1688,7 @@ body.new-theme {
                                 margin: 0;
 
                                 .username {
-                                    color: $black;
-                                    font-weight: normal;
-                                    font-size: 12px;
-                                    pointer-events: none;
+                                    @include usernameStyle();
                                 }
 
                                 .user-label-staff {
@@ -1714,43 +1710,7 @@ body.new-theme {
                     }
 
                     .forum-content {
-                        padding-top: 0px;
-
-                        .post-extended-content {
-                            padding: 0;
-                        }
-
-                        .discussion-article {
-                            padding: 0 0px;
-
-                            &.view-discussion-home {
-                                display: none;
-                            }
-                        }
-
-                        .forum-response {
-                            .comments {
-                                .btn-brand {
-                                    @include primary-button( !important);
-
-                                    &:hover,
-                                    &:active {
-                                        @include primary-button-hover( !important);
-                                    }
-                                }
-                            }
-                        }
-
-                        .discussion-reply-new {
-                            .discussion-submit-post {
-                                @include primary-button( !important);
-
-                                &:hover,
-                                &:focus {
-                                    @include primary-button-hover( !important);
-                                }
-                            }
-                        }
+                        @include forum-content-mobile;
                     }
                 }
             }
