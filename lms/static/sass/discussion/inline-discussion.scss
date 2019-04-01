@@ -11,7 +11,10 @@
     line-height: initial;
 
     .actions-dropdown-list {
-        display: grid;
+        display: inline-block;
+        li{
+            width: 90%;
+        }
     }
 
     .actions-item {
@@ -1139,7 +1142,10 @@ body.new-theme {
                                     }
 
                                     .actions-dropdown-list {
-                                        display: grid;
+                                        display: inline-block;
+                                        li{
+                                            width: 90%;
+                                        }
 
                                         .btn-link {
                                             border: 0;

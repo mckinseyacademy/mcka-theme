@@ -1561,9 +1561,16 @@ body.new-theme {
                   }
 
                   .actions-dropdown-list {
-                    display: grid;
+                    display: inline-block;
+                    li{
+                        width: 90%;
+                    }
 
                     .btn-link {
+                      color: black;
+                      font-weight: normal;
+                      font-size: 12px;
+                      padding: 1px;
                       .icon {
                         color: $gray;
                       }
@@ -1662,7 +1669,16 @@ body.new-theme {
 
                   .response-actions-list {
                     .actions-dropdown-list {
-                      display: grid;
+                      display: inline-block;
+                      li{
+                          width: 90%;
+                          .btn-link {
+                            color: black;
+                            font-weight: normal;
+                            font-size: 12px;
+                            padding: 1px;
+                          }
+                      }
                     }
 
                     .actions-item {
@@ -1766,6 +1782,39 @@ body.new-theme {
                         line-height: normal;
                         width: auto;
                       }
+                    }
+                  }
+                  .comment-actions-list {
+                    .actions-dropdown-list {
+                      display: inline-block;
+
+                      li {
+                        width: 90%;
+                      }
+
+                      .btn-link {
+                        color: black;
+                        font-weight: normal;
+                        font-size: 12px;
+                        padding: 1px;
+
+                        .icon {
+                          color: $gray;
+                        }
+
+                        &.is-checked {
+                          &.action-pin {
+                            color: var(--primary);
+                          }
+                        }
+
+                        &:hover {
+                          .icon {
+                            color: var(--primary);
+                          }
+                        }
+                      }
+
                     }
                   }
                 }
