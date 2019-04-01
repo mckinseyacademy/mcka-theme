@@ -262,7 +262,7 @@
       width: 100%;
       text-decoration: none;
       padding: 18px 30px;
-      top: 100%;
+      top: 0;
       bottom: auto;
       height: 100%;
       text-align: left;
@@ -290,7 +290,6 @@
 
     &:hover {
       .description {
-        top: 0;
         opacity: 1;
         visibility: visible;
 
