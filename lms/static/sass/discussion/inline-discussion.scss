@@ -46,6 +46,7 @@
     font-weight: normal;
     pointer-events: none;
     font-size: 12px;
+    display: inline-block;
 }
 
 body.new-theme {
@@ -876,7 +877,9 @@ body.new-theme {
                         .sr {
                             display: none;
                         }
-
+                        .forum-nav-thread-wrapper-1{
+                            width: calc(100% - 125px);
+                        }
                         .forum-nav-thread-link {
                             border-left: 0;
                             border-bottom: 1.21px solid $ash-white;

@@ -27,6 +27,7 @@ footer[role=contentinfo] {
   font-weight: 600;
   pointer-events: none;
   font-size: 12px;
+  display: inline-block;
 }
 body.new-theme {
   background-color: $ash-white;
@@ -1339,7 +1340,9 @@ body.new-theme {
             padding: 0;
 
 
-
+            .forum-nav-thread-wrapper-1{
+              width: calc(100% - 125px);
+            }
             .forum-nav-thread-link {
               border-left: 0;
               background-color: $ash-white;
