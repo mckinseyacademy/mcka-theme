@@ -47,12 +47,6 @@ class SessionTimeout(object):
         if settings.MOBILE_APP_USER_AGENT in request.META.get('HTTP_USER_AGENT', []):
             if not request.session.get('last_touch'):
                 request.session['last_touch'] = datetime.utcnow()
-                response.set_cookie(
-                    'last_touch',
-                    datetime.utcnow(),
-                    domain=settings.LMS_SESSION_COOKIE_DOMAIN,
-                    max_age=settings.SESSION_COOKIE_AGE,
-                )
         else:
             response.set_cookie(
                 'last_touch',
