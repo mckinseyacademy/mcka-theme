@@ -9,9 +9,6 @@
 
   &.nav-active {
     z-index: 9999 !important;
-    .pn-ProductNav {
-      overflow-x: hidden;
-    }
   }
 
   * {
@@ -142,6 +139,7 @@
   .courseNavWrap {
     &.nav-active {
       .pn-ProductNav {
+        overflow-x: hidden;
         padding-bottom: 502px !important;
         margin-bottom: -500px !important;
       }
