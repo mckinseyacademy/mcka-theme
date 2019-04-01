@@ -32,40 +32,7 @@
 
             .scorm_launch {
                 button {
-                    font-weight: 600;
-                    font-size: 12px;
-                    height: 40px;
-                    border-radius: 2px;
-                    text-transform: uppercase;
-                    line-height: 1.83;
-                    letter-spacing: 0.5px;
-                    text-align: center;
-                    padding: 0 20px;
-                    background-color: var(--primary);
-                    border-color: var(--primary);
-                    transition: .35s;
-                    color: $white;
-
-                    &:hover {
-                        background: $dark-blue;
-                        color: $white;
-                    }
-
-                    &:disabled {
-                        background: $gray;
-                        opacity: 1;
-                        border-color: $gray;
-                        cursor: not-allowed;
-                        color: $white;
-
-                        &:hover {
-                            background: $gray;
-                            opacity: 1;
-                            border-color: $gray;
-                            cursor: not-allowed;
-                            color: $white;
-                        }
-                    }
+                    @extend %button;
                 }
             }
         }

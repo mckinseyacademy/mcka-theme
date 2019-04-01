@@ -128,3 +128,43 @@
     border-color: unset;
   }
 }
+
+
+// button for extend
+
+%button {
+  font-weight: 600;
+  font-size: 12px;
+  height: 40px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  line-height: 1.83;
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding: 0 20px;
+  color:$white;
+  background-color: $primary;
+  border:1px solid $primary;
+  transition: .35s;
+
+  &:hover {
+      background: $dark-blue;
+      border-color: $dark-blue;
+  }
+
+  &:disabled {
+      background: $gray;
+      opacity: 1;
+      border-color: $gray;
+      cursor: not-allowed;
+      color: $white;
+
+      &:hover {
+          background: $gray;
+          opacity: 1;
+          border-color: $gray;
+          cursor: not-allowed;
+          color: $white;
+      }
+  }
+}
