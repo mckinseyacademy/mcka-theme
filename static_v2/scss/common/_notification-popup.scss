@@ -173,3 +173,8 @@ span {
     margin-top: -2px;
   }
 }
+@include media-breakpoint-down(sm) {
+  .xns-counter {
+    top: 0;
+  }
+}

@@ -190,7 +190,7 @@
                   width: 20px;
                   height: 10px;
                   background: url(../image/dropdown-arrow.png) no-repeat;
-                  display: block;
+                  display: none;
                 }
               }
             }
@@ -208,6 +208,7 @@
               .dropdown-menu {
                 width: 100%;
                 max-width: 100%;
+                min-width: 100% !important;
               }
             }
           }

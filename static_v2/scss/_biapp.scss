@@ -766,8 +766,8 @@ body.rtl {
 
 // Notification popup
 .xns-counter {
-  @include left(100%);
-  @include right(auto);
+  @include left(auto);
+  @include right(-23px);
 }
 
 
@@ -971,6 +971,9 @@ body.rtl {
     display: block;
     @include margin-right(-20px);
     @include margin-left(-20px);
+  }
+  .xns-counter {
+    @include right(0);
   }
 }
 
