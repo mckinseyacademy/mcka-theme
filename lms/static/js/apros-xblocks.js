@@ -37,7 +37,7 @@ $(function () {
   });
 
   // Survey block choice
-  $(document).on('DOMNodeInserted', '.choices-list, .choice, .choice-selector, .survey-table', function(){
+  $(document).on('DOMNodeInserted', '.survey-table', function(){
     $(".new-theme input[type=radio]:checked").parent().addClass('selected');
     $(".new-theme input[type=radio]").parent().addClass('disabled');
   });
