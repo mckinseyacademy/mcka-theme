@@ -245,9 +245,6 @@
             .dropdown-menu {
               top: 100% !important;
               min-width: 360px;
-              @include media-breakpoint-down(sm) {
-                min-width: 220px;
-              }
               .material-icons {
                 vertical-align: sub;
               }

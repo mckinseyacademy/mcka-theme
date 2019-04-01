@@ -176,5 +176,7 @@ span {
 @include media-breakpoint-down(sm) {
   .xns-counter {
     top: 0;
+    display: inline-block;
+    vertical-align: middle;
   }
 }

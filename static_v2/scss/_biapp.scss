@@ -65,7 +65,7 @@ body {
   }
   .profileArea {
     .dropdown-menu {
-      @include right(-20px !important);
+      @include right(-5px !important);
       @include left(auto !important);
     }
     &:after,
@@ -125,31 +125,43 @@ body {
 }
 
 .courseNavWrap,
-.learner-nav{
+.learner-nav {
   .pn-ProductNav_Contents {
     @include float(left);
   }
 }
+
 // Learner Dashboard navigation for mobile
-@include media-breakpoint-down(sm){
+@include media-breakpoint-down(sm) {
   .learner-nav {
-  &.courseMainHeader {
-    .mainNav {
-      > ul {
-        @include padding-right(20px);
-        > li {
-          margin: 0 15px;
-          &:first-child{
-            @include margin-left(0);
+    &.courseMainHeader {
+      .mainNav {
+        > ul {
+          @include padding-right(20px);
+          > li {
+            margin: 0 15px;
+            &:first-child {
+              @include margin-left(0);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .appHeader {
+    .logo {
+      .topRightArea {
+        .profileArea {
+          .dropdown-menu {
+            @include right(0 !important);
+            @include left(auto !important);
           }
         }
       }
     }
   }
 }
-}
-
-
 
 // Nav Dropdowns
 .dropdown-menu {
@@ -176,6 +188,7 @@ body {
   }
   &.course-materials {
     @include right(-22px !important);
+    @include left(auto !important);
   }
   &.notification {
     @include left(-23px !important);
@@ -585,16 +598,17 @@ body {
   }
 }
 
-@include media-breakpoint-down(md){
-  .newFeatureTour{
-    .featureImage{
+@include media-breakpoint-down(md) {
+  .newFeatureTour {
+    .featureImage {
       @include margin-left(0);
     }
   }
 }
-@include media-breakpoint-down(sm){
-  .newFeatureTour{
-    .featureImage{
+
+@include media-breakpoint-down(sm) {
+  .newFeatureTour {
+    .featureImage {
       @include margin-left(0);
     }
   }
@@ -621,9 +635,8 @@ footer {
   }
 }
 
-
-.dashboard-menu{
-  li{
+.dashboard-menu {
+  li {
     .bookmark {
       @include left(-30px);
     }
@@ -724,7 +737,6 @@ body.rtl {
       }
     }
   }
-
 
   .mapboxgl-ctrl-top-left {
     left: auto;
@@ -899,12 +911,12 @@ body.rtl {
   }
 }
 
-@media screen and (max-width: 992px) {
+@include media-breakpoint-down(md) {
   .appHeader {
     .topRightArea {
       .profileArea {
         .dropdown-menu {
-          @include right(-10px !important);
+          @include right(5px !important);
           &:after {
             @include right(17px !important);
           }
@@ -919,14 +931,15 @@ body.rtl {
   }
 }
 
-@media screen and (max-width: 767px) {
+@include media-breakpoint-down(sm) {
   .dropdown-menu {
     &.dashboard-menu {
-      @include left(-55px !important);
-      @include right(0 !important);
+      @include left(0 !important);
+      @include right(auto !important);
       &:after {
         @include left(140px !important);
         @include right(auto !important);
+        display: none;
       }
     }
   }
@@ -946,7 +959,9 @@ body.rtl {
         .profileArea {
           @include margin-left(15px);
           .dropdown-menu {
-            @include right(-14px !important);
+            &:after {
+              @include right(7px !important);
+            }
           }
         }
       }
@@ -957,8 +972,29 @@ body.rtl {
     @include margin-right(-20px);
     @include margin-left(-20px);
   }
+  .courseNavWrap {
+    &.nav-active {
+      .mainNav {
+        ul {
+          li {
+            position: initial;
+            .dropdown-menu {
+              @include left(0 !important);
+              @include right(auto !important);
+            }
+            &.notification {
+              .dropdown-menu {
+                @include left(auto !important);
+                @include right(0 !important);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
   .xns-counter {
-    @include right(0);
+    @include right(auto);
+    @include right(auto);
   }
 }
-

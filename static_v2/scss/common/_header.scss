@@ -68,7 +68,10 @@ header {
     border-bottom-color: #ccc;
 
     .dropdown-menu {
-      top: 45px !important;
+      top: 44px !important;
+      @include media-breakpoint-down(sm) {
+        top: 34px !important
+      }
     }
     > a {
       display: block;
@@ -152,8 +155,11 @@ header {
       .dropdown-menu {
         transform: translate(0) !important;
         top: 78px !important;
-        @include media-breakpoint-down(lg) {
-          top: 69px;
+        @include media-breakpoint-down(md) {
+          top: 79px !important;
+        }
+        @include media-breakpoint-down(sm) {
+          top: 69px !important;
         }
       }
     }

@@ -69,6 +69,7 @@
     max-height: 394px;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    z-index: 999999 !important;
 
     .allCoursesList {
       padding-right: 30px;
@@ -273,6 +274,7 @@
     }
     &.allModules {
       min-width: calc(100vw - 30px);
+      z-index: 999999 !important;
       &.allLessons .allCoursesList .holder .data.status {
         font-size: 0;
         float: right;
