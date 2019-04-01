@@ -94,16 +94,12 @@ body {
 .courseMainHeader {
   h1 {
     @include media-breakpoint-between(xs, sm) {
-      @include padding-left(27px);
+      @include padding-left(36px !important);
+      @include padding-right(0 !important);
     }
-
-    .backBtn {
+    .homeBtn {
       @include media-breakpoint-between(xs, sm) {
-        @include left(0);
-      }
-
-      i {
-        @include margin-left(-4px);
+        @include left(0px);
       }
     }
   }
@@ -180,7 +176,6 @@ body {
   }
   &.course-materials {
     @include right(-22px !important);
-    @include left(auto !important);
   }
   &.notification {
     @include left(-23px !important);
@@ -664,16 +659,6 @@ body.rtl {
               }
             }
           }
-        }
-      }
-    }
-  }
-
-  .courseMainHeader {
-    h1 {
-      .backBtn {
-        i {
-          @include flip-x-axis;
         }
       }
     }

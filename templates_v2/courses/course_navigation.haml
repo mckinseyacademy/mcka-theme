@@ -9,9 +9,9 @@
       .courseMainHeader
         %h1
           = active_course.name
-          %a.backBtn{:onclick => "javascript:history.go(-1);"}
+          %a.homeBtn{:href => "/courses"}
             %i.material-icons
-              keyboard_arrow_left
+              home
         .courseNavWrap.clearfix
           .pn-ProductNav_Wrapper.clearfix
             %nav#pnProductNav.pn-ProductNav.clearfix{:data-overflowing => "none"}

@@ -431,7 +431,7 @@ header {
     margin: 0;
     padding: 0 0 10px;
 
-    .backBtn {
+    .homeBtn {
       vertical-align: middle;
       cursor: pointer;
       display: none;
@@ -520,7 +520,7 @@ header {
   }
 
   .courseNavWrap {
-    margin: 0 -15px;
+    margin: 0;
   }
 
   .pn-ProductNav {
@@ -579,21 +579,23 @@ header {
 
   .mainTopHeader {
     padding: 0 25px;
+    border-top: 5px solid var(--header-top);
   }
 
   .courseNavWrap {
-    border-top: 1px solid #d6d3d3;
     padding: 15px 0 0;
-    margin: 0;
   }
 
   .courseMainHeader {
     padding: 0;
     margin: 0 0 15px;
     h1 {
+      padding-top: 10px;
       padding-left: 22px !important;
       margin-left: 9px;
       margin-right: 9px;
+      border-bottom: 1px solid $gray;
+      margin: 0 -10px;
     }
   }
   .appHeader {
@@ -634,18 +636,32 @@ header {
 
   .courseMainHeader {
     h1 {
+      text-align: center;
       font-size: 12px;
       line-height: 17px;
       font-weight: 600;
       text-transform: uppercase;
       position: relative;
 
-      .backBtn {
+      .homeBtn {
         position: absolute;
         display: block;
         content: '';
-        top: -2px;
+        top: 0;
+        background-color: var(--primary);
         font-size: 22px;
+        bottom: 0;
+        width: 36px;
+        text-align: center;
+        line-height: 37px;
+        font-size: 22px;
+        i {
+          top: 50%;
+          position: absolute;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          color: $white;
+        }
       }
     }
   }

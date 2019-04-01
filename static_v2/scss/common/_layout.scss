@@ -1,6 +1,5 @@
 main{
   min-height: calc(100vh - 268px);
-  margin-top: 30px;
 }
 
 @include media-breakpoint-down(lg){
@@ -11,10 +10,4 @@ main{
 
 .border-top-main{
   border-top: 6px solid  var(--secondary);
-}
-
-@include media-breakpoint-down(xs){
-  main{
-    margin-top: 20px;
-  }
 }
