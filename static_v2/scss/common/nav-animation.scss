@@ -4,11 +4,14 @@
   box-sizing: inherit;
 }
 
-.courseNavWrap{
+.courseNavWrap {
   pointer-events: none;
 
-  &.nav-active{
+  &.nav-active {
     z-index: 9999 !important;
+    .pn-ProductNav {
+      overflow-x: hidden;
+    }
   }
 
   * {
@@ -97,8 +100,8 @@
 }
 
 .pn-Advancer_Left,
-.pn-Advancer_Right{
-  z-index:99;
+.pn-Advancer_Right {
+  z-index: 99;
 }
 
 .pn-Advancer_Left {
@@ -120,7 +123,7 @@
 .pn-Advancer_Icon {
   width: 7px;
   height: 25px;
-  fill:  var(--primary);
+  fill: var(--primary);
 }
 
 .pn-ProductNav_Indicator {
@@ -136,11 +139,102 @@
 }
 
 @include media-breakpoint-down(md) {
-  .courseNavWrap{
-    &.nav-active{
+  .courseNavWrap {
+    &.nav-active {
       .pn-ProductNav {
         padding-bottom: 502px !important;
         margin-bottom: -500px !important;
+      }
+    }
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .courseNavWrap {
+    &.nav-active {
+      .pn-ProductNav {
+        position: static;
+      }
+      .mainNav {
+        ul {
+          li {
+            &.hasDropdown {
+              position: inherit;
+            }
+            .dropdown-menu {
+              width: 100%;
+              max-width: 100%;
+              &:after {
+                display: none;
+              }
+            }
+            > a {
+              &:before {
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    .mainNav {
+      ul {
+        li {
+          &.hasDropdown {
+            position: relative;
+            > a {
+              > span {
+                position: relative;
+                &:after {
+                  position: absolute;
+                  top: -9px;
+                  content: "";
+                  width: 20px;
+                  height: 10px;
+                  background: url(../image/dropdown-arrow.png) no-repeat;
+                  display: block;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  #course-progress-new {
+    table {
+      tbody {
+        tr {
+          td {
+            .lesson-with-list {
+              .dropdown-menu {
+                width: 100%;
+                max-width: 100%;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .appHeader {
+    .topRightArea {
+      .headerNav{
+        &.nav-active{
+         >ul{
+          >li {
+            position: inherit;
+            &.active{
+             position: inherit;
+            >a{
+              &:before{
+              display: none;
+            }
+            }
+            }
+          }
+        }
+        }
       }
     }
   }

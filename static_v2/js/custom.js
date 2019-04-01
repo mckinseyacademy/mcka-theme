@@ -40,7 +40,7 @@ $(document).ready(function() {
         else{
             $('.notifications .dropdown-menu').hide();
         }
-        $(e.target).parents('.courseNavWrap').addClass('nav-active');
+        $(e.target).parents('.courseNavWrap, .mainNav.headerNav').addClass('nav-active');
     });
     $(window).on('hide.bs.dropdown', function (e) {
         if ($(e.target).hasClass('notifications')){

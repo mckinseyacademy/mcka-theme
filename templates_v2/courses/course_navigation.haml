@@ -22,9 +22,10 @@
                       %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}"}
                         {% trans "Overview" %}
 
-                    %li{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_nannouncements' %}active{% endif %}"}
+                    %li.hasDropdown{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_nannouncements' %}active{% endif %}"}
                       %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
-                        {% trans "Course Materials" %}
+                        %span
+                          {% trans "Course Materials" %}
                       .dropdown-menu.course-materials{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-left{% else %}dropdown-menu-right{% endif %}"}
                         %a.ome.dome-c.dropdown-item{:href => "/courses/#{active_course.id}/announcements"}
                           {% trans "Announcements" %}
@@ -50,9 +51,10 @@
                         %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/cohort"}
                           {% trans "Leaderboard" %}
                     - if feature_flags.notifications
-                      %li.notifications
+                      %li.notifications.hasDropdown
                         %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
-                          {% trans "Notifications" %}
+                          %span
+                            {% trans "Notifications" %}
                           %span.xns-counter
                         %a.xns-icon
                         .dropdown-menu.xns-pane.notification{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}

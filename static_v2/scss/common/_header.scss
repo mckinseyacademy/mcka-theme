@@ -68,7 +68,7 @@ header {
     border-bottom-color: #ccc;
 
     .dropdown-menu {
-      top: 44px !important;
+      top: 35px !important;
     }
     > a {
       display: block;
@@ -109,7 +109,6 @@ header {
     .profileArea {
       width: 40px;
       height: 40px;
-      position: relative;
 
       > a {
         display: block;
@@ -152,7 +151,10 @@ header {
       }
       .dropdown-menu {
         transform: translate(0) !important;
-        top: 59px !important;
+        top: 78px !important;
+        @include media-breakpoint-down(lg) {
+          top: 69px;
+        }
       }
     }
 
