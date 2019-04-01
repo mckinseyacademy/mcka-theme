@@ -32,10 +32,10 @@ body.new-theme {
   background-color: $ash-white;
   //sync row with UI Refresh.
   .row{
+    display: flex;
+    flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
-    max-width: none;
-    width: unset;
   }
   
 
