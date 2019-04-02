@@ -669,8 +669,8 @@ def delete_participants_task(
         send_confirmation_email,
         owner,
         base_url,
-        email_template=None,
-        email_subject=None,
+        email_template='admin/delete_users_email_template.haml',
+        email_subject='Bulk deletion completed',
         template_extra_data=None
 ):
     """
@@ -746,8 +746,7 @@ def delete_participants_task(
         )
 
     if send_confirmation_email:
-        subject = _(email_subject) or _('Bulk deletion completed')
-        email_template = email_template or 'admin/delete_users_email_template.haml'
+        subject = _(email_subject)
         mcka_logo = urljoin(
             base=base_url,
             url='/static/image/mcka_email_logo.png'
