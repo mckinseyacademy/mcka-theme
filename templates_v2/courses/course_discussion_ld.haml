@@ -27,10 +27,12 @@
           .contentCard
             .discussion-content
 
+      - include "courses/contact_ta.haml"
+
 - block js_snippets
   %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
   %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
-  %script{src: "{% static 'js/course_contact_modal.js' %}"}
+  %script{src: "{% static 'js/course_contact.js' %}"}
   :javascript
     window.onload = (function(){
       var discussion_content = $('#course-discussion .discussion-content');
@@ -70,5 +72,5 @@
                 .person-title{:title => "#{mcka_ta.title}"}
                   = mcka_ta.title
               .email
-                %a.email-member{'data-member-email': '', 'data-reveal-id': 'contact-ta'}
+                %button.email-member{'type': 'button', 'data-member-email': '', 'data-toggle': 'modal', 'data-target': '#contact-ta'}
                   {% trans "Email" %}
