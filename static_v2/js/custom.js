@@ -132,6 +132,8 @@ $(document).ready(function() {
     // when clicking the div : never remove the class
     $(".zoomWrap").click(function() {
         removeClass = false;
+        $(".appHeader").removeClass('delay-1s');
+        $("footer").removeClass('delay-3s');
     });
     // when click event reaches "html" : remove class if needed, and reset flag
     $("html").click(function() {
