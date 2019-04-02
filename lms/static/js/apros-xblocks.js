@@ -48,6 +48,13 @@ $(function () {
     $(".new-theme .choices-list input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
   });
 
+  // Survey block choice
+  $(document).on('DOMNodeInserted', '.survey-table', function(){
+    $(".new-theme input[type=radio]:checked").parent().addClass('selected');
+    $(".new-theme input[type=radio]").parent().addClass('disabled');
+  });
+
+
   // Assessment block checkbox
 
   $(document).on('DOMNodeInserted', '.choices-list, .choice-selector', function(){
