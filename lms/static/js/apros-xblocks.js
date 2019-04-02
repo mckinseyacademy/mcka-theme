@@ -47,6 +47,13 @@ $(function () {
   $(document).on('DOMNodeInserted', '.choices-list, .choice, .choice-selector', function(){
     $(".new-theme .choices-list input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
   });
+  $(document).on('DOMNodeInserted', '.image-explorer-wrapper', function(){
+    $('.image-explorer-hotspot-reveal-body > div').each(function(index, obj){
+      if(!$(this).attr('id') || $(this).attr('id').indexOf('ooyala') === -1) {
+        $(this).addClass('ie-custom-div')
+      }
+    })
+  });
 
   // Assessment block checkbox
 
