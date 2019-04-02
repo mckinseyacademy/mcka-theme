@@ -16,20 +16,11 @@ $(function(){
   function handleAprosSessionTimeout() {
     // When timer expires, check its validity
     if (isTimeOutValid(0)) {
-      redirectOnTimeOut();
+      window.alert(gettext('You were logged out due to inactivity. Please log back in to continue.'));
+      window.location = '/accounts/login/';
     }
     else {
       launchSessionTimeoutTimer();
-    }
-  }
-
-  function redirectOnTimeOut() {
-    if (SCORM_SHELL){
-        window.parent.close();
-    }
-    else {
-      window.alert(gettext('You were logged out due to inactivity. Please log back in to continue.'));
-      window.location = '/accounts/login/';
     }
   }
 })
