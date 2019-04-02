@@ -188,7 +188,6 @@ body {
   }
   &.course-materials {
     @include right(-22px !important);
-    @include left(auto !important);
   }
   &.notification {
     @include left(-23px !important);
