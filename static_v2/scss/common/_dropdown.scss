@@ -185,6 +185,9 @@
           &.status {
             float: right;
             width: auto;
+            @include media-breakpoint-up(sm) {
+              min-width: 100px;
+            }
           }
           &.serial {
             float: left;
