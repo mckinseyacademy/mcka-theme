@@ -93,6 +93,27 @@
                                     }
                                 }
                             }
+                            &.selected
+                            {
+                                button
+                                {
+                                    &:disabled {
+                                        opacity: 1;
+                                        border-color: $gray;
+                                        cursor: not-allowed;
+                                        background: $gray;
+                                        color:$white;
+    
+                                        &:hover {
+                                            opacity: 1;
+                                            border-color: $gray;
+                                            cursor: not-allowed;
+                                            background: $gray;
+                                            color:$white;
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }
