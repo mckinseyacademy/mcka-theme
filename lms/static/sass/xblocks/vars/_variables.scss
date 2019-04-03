@@ -85,3 +85,17 @@ $body-font: 14px;
 
 $input-border:#999999;
 $popup-border: #d8d8d8;
+
+
+@mixin primary-theme-background-color ($isImportant:null) {
+  background-color: $primary $isImportant;
+  background-color: var(--primary) $isImportant;
+}
+@mixin primary-theme-border-color ($isImportant:null) {
+  border-color: $primary $isImportant;
+  border-color: var(--primary) $isImportant;
+}
+@mixin primary-theme-content-color ($isImportant:null) {
+  color: $primary $isImportant;
+  color: var(--primary) $isImportant;
+}

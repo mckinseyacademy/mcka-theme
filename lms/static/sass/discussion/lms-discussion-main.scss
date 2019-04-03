@@ -664,10 +664,10 @@ body.new-theme {
           
           &.is-checked {
             .icon {
-              color: var(--primary);
+              @include primary-theme-content-color;
             }
             .label-checked{
-              color: var(--primary);
+              @include primary-theme-content-color;
             }
           }
         }
@@ -692,7 +692,7 @@ body.new-theme {
       .icon {
         font-family: "Material Icons";
         font-size: 1.125rem;
-        color: var(--primary);
+        @include primary-theme-content-color;
 
         &.fa-spinner {
           &:before {
@@ -858,7 +858,7 @@ body.new-theme {
           margin-left: 0;
           &:not(:only-child):first-child {
             .btn-link {
-              color: var(--primary)
+              @include primary-theme-content-color;
             }
           }
         }
@@ -981,7 +981,7 @@ body.new-theme {
               }
 
               .email-member {
-                color: var(--primary);
+                @include primary-theme-content-color;
                 text-transform: lowercase;
                 font-size: 12px;
                 background: none;
@@ -1023,7 +1023,7 @@ body.new-theme {
           .forum-nav-browse-menu {
             .icon {
               top: 13px !important;
-              color: var(--primary);
+              @include primary-theme-content-color;
             }
 
             .forum-nav-browse-menu-item {
@@ -1035,7 +1035,7 @@ body.new-theme {
 
               .forum-nav-browse-title {
                 font-size: 1rem;
-                color: var(--primary);
+                @include primary-theme-content-color;
                 border-bottom: 0;
 
                 &:active,
@@ -1112,7 +1112,7 @@ body.new-theme {
             }
 
             .field-input-label {
-              color: var(--primary) !important;
+              @include primary-theme-content-color(!important);
               position: absolute;
               top: -2px;
               left: 30px;
@@ -1295,11 +1295,11 @@ body.new-theme {
             height: 18px;
 
             .field-input:checked+.field-input-label {
-              color: var(--primary);
+              @include primary-theme-content-color;
 
               .icon {
                 &::before {
-                  color: var(--primary);
+                  @include primary-theme-content-color;
                 }
               }
             }
@@ -1410,11 +1410,11 @@ body.new-theme {
             &.never-read {
               .forum-nav-thread-link {
                 border-left: 0;
-                color: var(--primary);
+                @include primary-theme-content-color;
                 background-color: transparent;
 
                 .icon {
-                  color: var(--primary);
+                  @include primary-theme-content-color;
                 }
               }
             }
@@ -1571,7 +1571,7 @@ body.new-theme {
                   .actions-item:last-child {
                     .more-wrapper {
                       button.btn-link .icon {
-                        color: var(--primary);
+                        @include primary-theme-content-color;
                       }
                     }
                   }
@@ -1593,13 +1593,13 @@ body.new-theme {
 
                       &.is-checked {
                         &.action-pin {
-                          color: var(--primary);
+                          @include primary-theme-content-color;
                         }
                       }
 
                       &:hover {
                         .icon {
-                          color: var(--primary);
+                          @include primary-theme-content-color;
                         }
                       }
                     }
@@ -1704,7 +1704,7 @@ body.new-theme {
                       &:last-child {
                         .more-wrapper {
                           button.btn-link .icon {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                           }
                         }
                       }
@@ -1730,12 +1730,12 @@ body.new-theme {
                   }
                 }
                 .action-show-comments{
-                  color: var(--primary);
+                  @include primary-theme-content-color;
                   text-decoration: none;
                   font-size: 0.875rem;
                   font-weight: normal;
                   .fa-caret-down::before{
-                    color: var(--primary);
+                    @include primary-theme-content-color;
                     font-size: 1.25rem;
                     vertical-align: text-top;
                   }
@@ -1820,13 +1820,13 @@ body.new-theme {
 
                         &.is-checked {
                           &.action-pin {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                           }
                         }
 
                         &:hover {
                           .icon {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                           }
                         }
                       }

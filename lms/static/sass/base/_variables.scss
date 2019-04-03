@@ -49,8 +49,12 @@ $media-mcka-mobile: 'only screen and (max-width: 768px)'; // Phone or tablet; ma
     }
 }
 
-// This is where to override standard Open edX LMS variables like $action-primary-bg and $link-color:
 
+// This is where to override standard Open edX LMS variables like $action-primary-bg and $link-color:
+// Brand colors
+$primary: #2042cb;
+$secondary: #0093d3;
+$header-top: #002960;
 /* syncing color codes of mcka  start*/
 $black: #000000;
 $lighter-gray: #6F6F6F;
@@ -114,3 +118,17 @@ $body-font: 0.875rem;
 $light-green: #CCE6CC;
 $light-red: #F7CCCC;
 $popup-border: #d8d8d8;
+
+
+@mixin primary-theme-background-color ($isImportant:null) {
+    background-color: $primary $isImportant;
+    background-color: var(--primary) $isImportant;
+  }
+  @mixin primary-theme-border-color ($isImportant:null) {
+    border-color: $primary $isImportant;
+    border-color: var(--primary) $isImportant;
+  }
+  @mixin primary-theme-content-color ($isImportant:null) {
+    color: $primary $isImportant;
+    color: var(--primary) $isImportant;
+  }
