@@ -429,13 +429,29 @@ header {
     }
   }
 
-  h1 {
-    color: $black;
-    font-size: 2rem;
-    font-weight: 300;
-    line-height: 40px;
-    margin: 0;
-    padding: 0 0 11px;
+  .go-to-courses {
+    display: block;
+    text-decoration: none;
+    position: relative;
+    pointer-events: none;
+    cursor: default;
+    h1 {
+      color: $black;
+      font-size: 2rem;
+      font-weight: 300;
+      line-height: 40px;
+      margin: 0;
+      padding: 0 0 11px;
+
+      @media screen and (max-width: 767px) {
+        font-size: 15px;
+        line-height: 24px;
+        font-weight: 400;
+        padding-left: 15px;
+        padding-right: 15px;
+      }
+
+    }
 
     .homeBtn {
       vertical-align: middle;
@@ -446,15 +462,9 @@ header {
         font-size: inherit;
       }
     }
-
-    @media screen and (max-width: 767px) {
-      font-size: 15px;
-      line-height: 24px;
-      font-weight: 400;
-      padding-left: 15px;
-      padding-right: 15px;
+    &:hover {
+      text-decoration: none;
     }
-
   }
 
   .pn-Advancer {
@@ -596,8 +606,7 @@ header {
     padding: 0;
     margin: 0 0 3px;
     .go-to-courses {
-      display: block;
-      text-decoration: none;
+      pointer-events: auto;
       &:hover {
         text-decoration: none;
       }
@@ -633,9 +642,6 @@ header {
           }
         }
       }
-    }
-    .all-logos {
-
     }
     .all-logos {
       .navbar-brand {
