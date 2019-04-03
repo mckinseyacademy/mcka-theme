@@ -486,11 +486,10 @@ body {
 
 // Lesson List
 .allCoursesList {
-  >.courseRow {
-    .title{
-      >span{
-        @include padding-right(20px);
-        .locked{
+  > .courseRow {
+    .title {
+      > span {
+        .locked {
           @include left(calc(100% - 20px));
         }
       }
@@ -499,12 +498,21 @@ body {
       @include margin-right(7px);
     }
 
+    &.locked {
+        .title {
+          > span {
+            @include padding-right(20px);
+          }
+        }
+      }
+
     .progressBar {
       .figure {
         @include margin-right(5px);
 
         @include media-breakpoint-between(xs, sm) {
-          @include margin-right(2px);
+          @include margin-right(0);
+          @include text-align(left);
         }
       }
     }

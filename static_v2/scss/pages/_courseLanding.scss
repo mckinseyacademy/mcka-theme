@@ -969,7 +969,9 @@ blockquote {
         }
 
         &.title {
-          width: 80%;
+          width: 100%;
+          display: block;
+          padding: 10px 0;
         }
       }
     }
