@@ -7,9 +7,9 @@
   .row
     .col
       .courseMainHeader
-        %h1
-          = active_course.name
-          %a.homeBtn{:href => "/courses"}
+        %a.go-to-courses{:href => "/courses"}
+          %h1= active_course.name
+          %span.homeBtn
             %i.material-icons
               home
         .courseNavWrap.clearfix

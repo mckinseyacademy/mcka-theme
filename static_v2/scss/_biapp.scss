@@ -92,14 +92,17 @@ body {
 }
 
 .courseMainHeader {
-  h1 {
-    @include media-breakpoint-between(xs, sm) {
-      @include padding-left(36px !important);
-      @include padding-right(0 !important);
+  .go-to-courses {
+    h1 {
+      @include media-breakpoint-between(xs, sm) {
+        @include padding-left(36px !important);
+        @include padding-right(0 !important);
+      }
     }
+
     .homeBtn {
       @include media-breakpoint-between(xs, sm) {
-        @include left(0px);
+        @include left(-10px);
       }
     }
   }

@@ -345,7 +345,7 @@ header {
     > ul {
       > li {
         > a {
-          padding: 0 0 10px;
+          padding: 0 0 17px;
         }
       }
     }
@@ -589,19 +589,26 @@ header {
   }
 
   .courseNavWrap {
-    padding: 15px 0 0;
+    padding: 17px 0 0;
   }
 
   .courseMainHeader {
     padding: 0;
-    margin: 0 0 15px;
-    h1 {
-      padding: 6px 0;
-      padding-left: 22px !important;
-      margin-left: 9px;
-      margin-right: 9px;
-      border-bottom: 1px solid $mid-gray;
-      margin: 0 -10px;
+    margin: 0 0 3px;
+    .go-to-courses {
+      display: block;
+      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+      }
+      h1 {
+        padding: 6px 0;
+        padding-left: 22px !important;
+        margin-left: 9px;
+        margin-right: 9px;
+        border-bottom: 1px solid $mid-gray;
+        margin: 0 -10px;
+      }
     }
   }
   .appHeader {
@@ -641,13 +648,15 @@ header {
   }
 
   .courseMainHeader {
-    h1 {
-      text-align: center;
-      font-size: 12px;
-      line-height: 17px;
-      font-weight: 600;
-      text-transform: uppercase;
+    .go-to-courses {
       position: relative;
+      h1 {
+        text-align: center;
+        font-size: 12px;
+        line-height: 17px;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
 
       .homeBtn {
         position: absolute;
@@ -656,10 +665,11 @@ header {
         top: 0;
         background-color: var(--primary);
         font-size: 16px;
-        bottom: -1px;
+        bottom: 0;
         width: 30px;
         text-align: center;
         line-height: 30px;
+
         i {
           top: 50%;
           position: absolute;
