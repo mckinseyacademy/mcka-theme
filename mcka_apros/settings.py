@@ -195,8 +195,13 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 # the LMS cookies at the domain level from apros
 SESSION_COOKIE_NAME = 'apros_sessionid'
 CSRF_COOKIE_NAME = 'apros_csrftoken'
-SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_TIMEOUT_SECONDS = 300
+SESSION_COOKIE_AGE = 2592000
+
+# 30 Days for react native apps
+MOBILE_APP_SESSION_TIMEOUT_SECONDS = 2592000
+MOBILE_APP_USER_AGENT = "com.mcka.RNApp"
 
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SECURE = True

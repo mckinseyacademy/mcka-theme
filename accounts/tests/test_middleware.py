@@ -1,7 +1,9 @@
 import ddt
 import urllib2
+
+from freezegun import freeze_time
 from mock import patch, Mock
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from django.test import TestCase, RequestFactory
 from django.urls import reverse
@@ -61,6 +63,58 @@ class SessionTimeoutTestCase(TestCase, ApplyPatchMixin):
         SessionTimeout().process_request(request)
 
         mock_expire_session.assert_called_with(request)
+
+    @ddt.data(
+        datetime.utcnow() + timedelta(days=2),
+        datetime.utcnow() + timedelta(days=14),
+        datetime.utcnow() + timedelta(days=15),
+        datetime.utcnow() + timedelta(days=26),
+        datetime.utcnow() + timedelta(days=30),
+
+    )
+    @patch('accounts.middleware.session_timeout.get_user_dict')
+    @patch('accounts.middleware.session_timeout.logout')
+    def test_session_ok_mobile(self, mocked_time, mock_logout, mock_get_user_dict):
+        """ Test session is kept unchanged """
+        request = self.factory.get(
+            reverse('admin_home'),
+            HTTP_USER_AGENT='com.mcka.RNApp: <platform>'
+        )
+        request.user = Mock(is_anonymous=lambda: False)
+        request.session = {'last_touch': datetime.utcnow()}
+
+        freezer = freeze_time(mocked_time)
+        freezer.start()
+        SessionTimeout().process_request(request)
+        freezer.stop()
+
+        assert 'last_touch' in request.session
+        mock_logout.assert_not_called()
+
+    @ddt.data(
+        datetime.utcnow() + timedelta(days=30, hours=1),
+        datetime.utcnow() + timedelta(days=31),
+        datetime.utcnow() + timedelta(days=35),
+        datetime.utcnow() + timedelta(days=60),
+    )
+    @patch('accounts.middleware.session_timeout.get_user_dict')
+    @patch('accounts.middleware.session_timeout.logout')
+    def test_session_expired_mobile(self, mocked_time, mock_logout, mock_get_user_dict):
+        """ Test logout when session timed out """
+        request = self.factory.get(
+            reverse('admin_home'),
+            HTTP_USER_AGENT='com.mcka.RNApp: <platform>'
+        )
+        request.user = Mock(is_anonymous=lambda: False)
+        request.session = {'last_touch': datetime.utcnow()}
+
+        freezer = freeze_time(mocked_time)
+        freezer.start()
+        SessionTimeout().process_request(request)
+        freezer.stop()
+
+        assert 'last_touch' not in request.session
+        mock_logout.assert_called_with(request)
 
 
 class TestAjaxRedirectMiddleware(TestCase):

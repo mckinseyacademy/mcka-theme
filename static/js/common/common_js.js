@@ -885,7 +885,7 @@ function InitializeAverageCalculate() {
   var total = 0;
   // Progressbar for progress column
   var dataTarget = $("a.hashPageButton.active").attr('data-target');
-  $('.'+dataTarget+' td.progress span').each(function () {
+  $('.'+dataTarget+' td.progress .progress-column').each(function () {
     var text = $(this).text();
     $(this).css("width" , text);
     totalProgress += parseInt(text.replace("%", ""));
