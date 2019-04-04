@@ -268,7 +268,7 @@ body.new-theme {
                             font-size: 0.875rem;
                             border-radius: 2px;
                             font-weight: normal;
-                            background-color: var(--primary);
+                            @include primary-theme-background-color;
                             padding: 12px 15px;
                             cursor: grab;
                             &.option-with-image{

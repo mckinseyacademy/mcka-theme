@@ -128,7 +128,7 @@ body.new-theme {
   }
 
   /* mobile */
-  @media (max-width: 767px) {
+  @media (max-width: 540px) {
     #course-discussion {
       padding: 10px;
       .contentCard {
@@ -194,6 +194,7 @@ body.new-theme {
                   height: 40px !important;
                   padding: 0 !important;
                   position: relative;
+                  top: 1px;
 
                   &:before {
                     font-size: 1.875rem;
@@ -437,6 +438,7 @@ body.new-theme {
                 font-size: 12px;
                 color: $gray;
                 margin: 0;
+                font-weight: normal;
 
                 .username {
                   @include usernameStyle();
@@ -619,7 +621,7 @@ body.new-theme {
         }
       }
 
-      button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel):not(.new-post-btn),
+      button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel):not(.new-post-btn):not(.search-button),
       button.btn-brand {
         @include primary-button;
 
@@ -664,10 +666,10 @@ body.new-theme {
           
           &.is-checked {
             .icon {
-              color: var(--primary);
+              @include primary-theme-content-color;
             }
             .label-checked{
-              color: var(--primary);
+              @include primary-theme-content-color;
             }
           }
         }
@@ -692,7 +694,7 @@ body.new-theme {
       .icon {
         font-family: "Material Icons";
         font-size: 1.125rem;
-        color: var(--primary);
+        @include primary-theme-content-color;
 
         &.fa-spinner {
           &:before {
@@ -858,7 +860,11 @@ body.new-theme {
           margin-left: 0;
           &:not(:only-child):first-child {
             .btn-link {
-              color: var(--primary)
+              @include primary-theme-content-color;
+              &:hover{
+                text-decoration: underline;
+                @include primary-theme-content-color-hover;
+              }
             }
           }
         }
@@ -912,7 +918,7 @@ body.new-theme {
 
         .forum-search {
           width: 60%;
-          margin-left: 12px;
+          margin-left: 8px;
 
           .search-input {
             width: 96%;
@@ -941,6 +947,10 @@ body.new-theme {
               content: "\e8b6";
               color: $gray;
               font-size: 1.25rem;
+            }
+
+            &:focus{
+              box-shadow: none;
             }
           }
         }
@@ -981,12 +991,16 @@ body.new-theme {
               }
 
               .email-member {
-                color: var(--primary);
+                @include primary-theme-content-color;
                 text-transform: lowercase;
                 font-size: 12px;
                 background: none;
                 border: 0;
                 padding: 0;
+                &:hover {
+                  text-decoration: underline;
+                  @include primary-theme-content-color-hover();
+                }
               }
             }
           }
@@ -1010,7 +1024,7 @@ body.new-theme {
               width: 100%;
 
               #forum-nav-browse-filter-input {
-                color: $gray;
+                color: $black;
                 font-size: 1rem !important;
                 padding: 10px 10px;
                 text-transform: capitalize;
@@ -1023,7 +1037,7 @@ body.new-theme {
           .forum-nav-browse-menu {
             .icon {
               top: 13px !important;
-              color: var(--primary);
+              @include primary-theme-content-color;
             }
 
             .forum-nav-browse-menu-item {
@@ -1035,8 +1049,12 @@ body.new-theme {
 
               .forum-nav-browse-title {
                 font-size: 1rem;
-                color: var(--primary);
+                @include primary-theme-content-color;
                 border-bottom: 0;
+                &:hover {
+                  text-decoration: underline;
+                  @include primary-theme-content-color-hover();
+                }
 
                 &:active,
                 &:hover {
@@ -1112,7 +1130,7 @@ body.new-theme {
             }
 
             .field-input-label {
-              color: var(--primary) !important;
+              @include primary-theme-content-color(!important);
               position: absolute;
               top: -2px;
               left: 30px;
@@ -1295,11 +1313,11 @@ body.new-theme {
             height: 18px;
 
             .field-input:checked+.field-input-label {
-              color: var(--primary);
+              @include primary-theme-content-color;
 
               .icon {
                 &::before {
-                  color: var(--primary);
+                  @include primary-theme-content-color;
                 }
               }
             }
@@ -1362,6 +1380,10 @@ body.new-theme {
               border-bottom: 1.21px solid $ash-white;
               padding: 14px 10px !important;
 
+              &:hover .forum-nav-thread-title{
+                text-decoration: underline;
+                color: $black;
+              }
               .icon {
                 color: $black;
               }
@@ -1372,6 +1394,10 @@ body.new-theme {
                 .forum-nav-thread-title,
                 .icon {
                   color: $dark-blue;
+                }
+                &:hover .forum-nav-thread-title{
+                  text-decoration: underline;
+                  @include primary-theme-content-color-hover();
                 }
               }
 
@@ -1410,12 +1436,16 @@ body.new-theme {
             &.never-read {
               .forum-nav-thread-link {
                 border-left: 0;
-                color: var(--primary);
+                @include primary-theme-content-color;
                 background-color: transparent;
 
                 .icon {
-                  color: var(--primary);
+                  @include primary-theme-content-color;
                 }
+              }
+              &:hover .forum-nav-thread-title{
+                text-decoration: underline;
+                @include primary-theme-content-color-hover();
               }
             }
           }
@@ -1542,6 +1572,7 @@ body.new-theme {
                   font-size: 12px;
                   color: $gray;
                   margin: 0;
+                  font-weight: normal;
 
                   .username {
                     @include usernameStyle();
@@ -1566,12 +1597,17 @@ body.new-theme {
                   .actions-item {
                     margin: 0 5px 0;
                     float: left;
+                    .action-button {
+                      &.btn-link:hover,&.btn-link:focus{
+                        border-color: $hard-gray;
+                      }
+                    }
                   }
 
                   .actions-item:last-child {
                     .more-wrapper {
                       button.btn-link .icon {
-                        color: var(--primary);
+                        @include primary-theme-content-color;
                       }
                     }
                   }
@@ -1593,13 +1629,13 @@ body.new-theme {
 
                       &.is-checked {
                         &.action-pin {
-                          color: var(--primary);
+                          @include primary-theme-content-color;
                         }
                       }
 
                       &:hover {
                         .icon {
-                          color: var(--primary);
+                          @include primary-theme-content-color;
                         }
                       }
                     }
@@ -1668,6 +1704,9 @@ body.new-theme {
                     .username {
                       @include usernameStyle();
                     }
+                    .posted-details{
+                      font-weight: normal;
+                    }
 
                     .user-label-staff {
                       width: auto;
@@ -1704,7 +1743,7 @@ body.new-theme {
                       &:last-child {
                         .more-wrapper {
                           button.btn-link .icon {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                           }
                         }
                       }
@@ -1730,12 +1769,12 @@ body.new-theme {
                   }
                 }
                 .action-show-comments{
-                  color: var(--primary);
+                  @include primary-theme-content-color;
                   text-decoration: none;
                   font-size: 0.875rem;
                   font-weight: normal;
                   .fa-caret-down::before{
-                    color: var(--primary);
+                    @include primary-theme-content-color;
                     font-size: 1.25rem;
                     vertical-align: text-top;
                   }
@@ -1781,6 +1820,7 @@ body.new-theme {
                     font-size: 12px;
                     color: $gray;
                     margin: 0;
+                    font-weight: normal;
 
                     .username {
                       @include usernameStyle();
@@ -1803,7 +1843,11 @@ body.new-theme {
                   .comment-actions-list {
                     .actions-dropdown-list {
                       display: inline-block;
-
+                      .action-button {
+                        &.btn-link:hover,&.btn-link:focus{
+                          border-color: $hard-gray;
+                        }
+                      }
                       li {
                         width: 90%;
                       }
@@ -1820,13 +1864,13 @@ body.new-theme {
 
                         &.is-checked {
                           &.action-pin {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                           }
                         }
 
                         &:hover {
                           .icon {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                           }
                         }
                       }

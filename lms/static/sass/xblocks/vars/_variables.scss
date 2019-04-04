@@ -85,3 +85,31 @@ $body-font: 14px;
 
 $input-border:#999999;
 $popup-border: #d8d8d8;
+
+$primary-hover: #0b0886; //will be changed to var object once implemented in ui-fresh
+@mixin primary-theme-background-color ($isImportant:null) {
+  background-color: $primary $isImportant;
+  background-color: var(--primary) $isImportant;
+}
+
+@mixin primary-theme-border-color ($isImportant:null) {
+  border-color: $primary $isImportant;
+  border-color: var(--primary) $isImportant;
+}
+
+@mixin primary-theme-content-color ($isImportant:null) {
+  color: $primary $isImportant;
+  color: var(--primary) $isImportant;
+}
+
+@mixin primary-theme-background-color-hover ($isImportant:null) {
+  background-color: $primary-hover $isImportant;
+}
+
+@mixin primary-theme-border-color-hover ($isImportant:null) {
+  border-color: $primary-hover $isImportant;
+}
+
+@mixin primary-theme-content-color-hover ($isImportant:null) {
+  color: $primary-hover $isImportant;
+}

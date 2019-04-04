@@ -590,7 +590,7 @@ body.new-theme {
                         .add-share-field {
                             background: none;
                             border: 0;
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                             font-size: 1.5rem;
                             padding: 0;
                         }

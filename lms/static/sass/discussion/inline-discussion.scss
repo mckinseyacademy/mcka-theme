@@ -35,7 +35,7 @@
         &:last-child {
             .more-wrapper {
                 button.btn-link .icon {
-                    color: var(--primary);
+                    @include primary-theme-content-color;
                 }
             }
         }
@@ -323,11 +323,11 @@ body.new-theme {
 
                     &.is-checked {
                         .icon {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                         }
 
                         .label-checked {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                         }
                     }
                 }
@@ -352,7 +352,7 @@ body.new-theme {
             .icon {
                 font-family: "Material Icons";
                 font-size: 1.125rem;
-                color: var(--primary);
+                @include primary-theme-content-color;
                 vertical-align: middle;
 
                 &.fa-spinner {
@@ -552,7 +552,7 @@ body.new-theme {
                 .all-posts-btn {
                     cursor: pointer;
                     border: 0;
-                    color: var(--primary);
+                    @include primary-theme-content-color;
                     background: none;
 
                     &:hover {
@@ -581,7 +581,7 @@ body.new-theme {
 
                 .add-post-cancel {
                     border: 0;
-                    color: var(--primary);
+                    @include primary-theme-content-color;
                     cursor: pointer;
                     background: none;
                 }
@@ -641,7 +641,7 @@ body.new-theme {
                         }
 
                         .field-input-label {
-                            color: var(--primary) !important;
+                            @include primary-theme-content-color(!important);
                             position: absolute;
                             top: 0px;
                             left: 30px;
@@ -825,11 +825,11 @@ body.new-theme {
                         position: relative;
 
                         .field-input:checked+.field-input-label {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
 
                             .icon {
                                 &::before {
-                                    color: var(--primary);
+                                    @include primary-theme-content-color;
                                 }
                             }
                         }
@@ -887,7 +887,10 @@ body.new-theme {
                         border: 0;
                         background: none;
                         padding: 0;
-
+                        &:hover .forum-nav-thread-title{
+                            text-decoration: underline;
+                            @include primary-theme-content-color-hover(!important);
+                        }
                         .sr {
                             display: none;
                         }
@@ -900,7 +903,7 @@ body.new-theme {
                             padding: 14px 25px !important;
 
                             .icon {
-                                color: var(--primary);
+                                @include primary-theme-content-color;
                                 font-size: 1.250rem;
                                 vertical-align: top;
                             }
@@ -916,7 +919,7 @@ body.new-theme {
 
                             .forum-nav-thread-title {
                                 font-size: 1rem;
-                                color: var(--primary);
+                                @include primary-theme-content-color;
                                 line-height: 21px;
                                 font-weight: 400;
                             }
@@ -981,11 +984,11 @@ body.new-theme {
                         &.never-read {
                             .forum-nav-thread-link {
                                 border-left: 0;
-                                color: var(--primary);
+                                @include primary-theme-content-color;
                                 background-color: transparent;
 
                                 .icon {
-                                    color: var(--primary);
+                                    @include primary-theme-content-color;
                                 }
                             }
                         }
@@ -1143,6 +1146,11 @@ body.new-theme {
                                         margin: 0 5px 0;
                                         cursor: pointer;
                                         float: left;
+                                        .action-button {
+                                            &.btn-link:hover,&.btn-link:focus{
+                                              border-color: $hard-gray;
+                                            }
+                                          }
 
                                         .btn-link {
                                             padding: 1px;
@@ -1153,7 +1161,7 @@ body.new-theme {
                                     .actions-item:last-child {
                                         .more-wrapper {
                                             button.btn-link .icon {
-                                                color: var(--primary);
+                                                @include primary-theme-content-color;
                                             }
                                         }
                                     }
@@ -1174,13 +1182,13 @@ body.new-theme {
 
                                             &.is-checked {
                                                 &.action-pin {
-                                                    color: var(--primary);
+                                                    @include primary-theme-content-color;
                                                 }
                                             }
 
                                             &:hover {
                                                 .icon {
-                                                    color: var(--primary);
+                                                    @include primary-theme-content-color;
                                                 }
                                             }
                                         }
@@ -1296,7 +1304,7 @@ body.new-theme {
                                 }
 
                                 .action-show-comments {
-                                    color: var(--primary);
+                                    @include primary-theme-content-color;
                                     text-decoration: none;
                                     font-size: 0.875rem;
                                     font-weight: normal;
@@ -1304,7 +1312,7 @@ body.new-theme {
                                     box-shadow: none;
 
                                     .fa-caret-down::before {
-                                        color: var(--primary);
+                                        @include primary-theme-content-color;
                                         font-size: 1.25rem;
                                         vertical-align: text-top;
                                     }
@@ -1424,7 +1432,7 @@ body.new-theme {
         }
     }
     /* mobile */
-    @media (max-width: 767px) {
+    @media (max-width: 540px) {
         [data-block-type="discussion"],
         [data-block-type="discussion-forum"] {
             padding: 0px;
@@ -1695,6 +1703,11 @@ body.new-theme {
                             .post-actions-list {
                                 margin: 0;
                                 line-height: initial;
+                                .action-button {
+                                    &.btn-link:hover,&.btn-link:focus{
+                                      border-color: $hard-gray;
+                                    }
+                                  }
                             }
 
                             .action-icon {

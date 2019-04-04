@@ -114,7 +114,7 @@ body.new-theme {
                 }
                 a {
                   text-decoration: none;
-                  color: var(--primary);
+                  @include primary-theme-content-color;
                 }
 
                 > ul {
