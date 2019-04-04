@@ -413,7 +413,19 @@
         }
       }
     }
-
+    table {
+      tbody {
+        tr {
+          td {
+            .lesson-with-list {
+              .dropdown-toggle {
+                display: block;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 
