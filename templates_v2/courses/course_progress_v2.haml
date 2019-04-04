@@ -134,7 +134,7 @@
                                       .data.title
                                         %span.ome.dome-c= module.name
                                           -if not module.is_started
-                                            %i.material-icons.locked.longTapPopover{:oncontextmenu => "return false;", :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
+                                            %i.material-icons.locked.longTapPopover{:oncontextmenu => "return false;", :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover" , :title => ""} lock
                                     .description
                                       Tell me and I forget. Teach me and I
                                       remember. Involve me and I learn. - Benjamin Franklin
