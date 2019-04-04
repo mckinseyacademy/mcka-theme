@@ -55,8 +55,7 @@ from .controller import (
     CourseParticipantStats,
     ProblemReportPostProcessor,
     get_emails_from_csv,
-    delete_company_data,
-)
+    delete_company_data)
 from .models import UserRegistrationError, UserRegistrationBatch
 
 
@@ -697,7 +696,9 @@ def delete_participants_task(
         try:
             field, emails = get_emails_from_csv(file_path)
             total = len(emails)
-            users = get_users(**{field: emails})
+            users = []
+            for i in range(0, total, settings.DELETION_SYNCHRONOUS_MAX_USERS):
+                users += get_users(**{field: emails[i:i + settings.DELETION_SYNCHRONOUS_MAX_USERS]})
         except Exception:
             logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
             raise

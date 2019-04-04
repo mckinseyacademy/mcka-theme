@@ -2784,10 +2784,12 @@ def get_emails_from_csv(file_path):
     return param_type, lines
 
 
-def get_users_for_deletion(file_path):
+def get_users_for_deletion(file_path, batch_size=settings.DELETION_SYNCHRONOUS_MAX_USERS):
     """Retrieves user from single-column CSV. The header is treated as a filter for querying users."""
     param_type, data = get_emails_from_csv(file_path)
-    users = get_users(**{param_type: data})
+    users = []
+    for i in range(0, len(data), batch_size):
+        users += get_users(**{param_type: data[i:i + batch_size]})
     return users
 
 
