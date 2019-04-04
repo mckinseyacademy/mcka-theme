@@ -1,0 +1,10 @@
+.new-theme {
+    [data-type="HTMLModule"] {
+        p {
+            @media screen and (max-width: 767px) {
+                padding-left: 2px;
+                padding-right: 2px;
+            }
+        }
+    }
+}
