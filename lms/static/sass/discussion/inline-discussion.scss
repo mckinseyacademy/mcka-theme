@@ -887,7 +887,10 @@ body.new-theme {
                         border: 0;
                         background: none;
                         padding: 0;
-
+                        &:hover .forum-nav-thread-title{
+                            text-decoration: underline;
+                            @include primary-theme-content-color-hover(!important);
+                        }
                         .sr {
                             display: none;
                         }
@@ -1143,6 +1146,11 @@ body.new-theme {
                                         margin: 0 5px 0;
                                         cursor: pointer;
                                         float: left;
+                                        .action-button {
+                                            &.btn-link:hover,&.btn-link:focus{
+                                              border-color: $hard-gray;
+                                            }
+                                          }
 
                                         .btn-link {
                                             padding: 1px;
@@ -1424,7 +1432,7 @@ body.new-theme {
         }
     }
     /* mobile */
-    @media (max-width: 767px) {
+    @media (max-width: 540px) {
         [data-block-type="discussion"],
         [data-block-type="discussion-forum"] {
             padding: 0px;
@@ -1695,6 +1703,11 @@ body.new-theme {
                             .post-actions-list {
                                 margin: 0;
                                 line-height: initial;
+                                .action-button {
+                                    &.btn-link:hover,&.btn-link:focus{
+                                      border-color: $hard-gray;
+                                    }
+                                  }
                             }
 
                             .action-icon {

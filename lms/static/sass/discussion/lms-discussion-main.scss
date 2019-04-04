@@ -128,7 +128,7 @@ body.new-theme {
   }
 
   /* mobile */
-  @media (max-width: 767px) {
+  @media (max-width: 540px) {
     #course-discussion {
       padding: 10px;
       .contentCard {
@@ -194,6 +194,7 @@ body.new-theme {
                   height: 40px !important;
                   padding: 0 !important;
                   position: relative;
+                  top: 1px;
 
                   &:before {
                     font-size: 1.875rem;
@@ -437,6 +438,7 @@ body.new-theme {
                 font-size: 12px;
                 color: $gray;
                 margin: 0;
+                font-weight: normal;
 
                 .username {
                   @include usernameStyle();
@@ -619,7 +621,7 @@ body.new-theme {
         }
       }
 
-      button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel):not(.new-post-btn),
+      button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel):not(.new-post-btn):not(.search-button),
       button.btn-brand {
         @include primary-button;
 
@@ -859,6 +861,10 @@ body.new-theme {
           &:not(:only-child):first-child {
             .btn-link {
               @include primary-theme-content-color;
+              &:hover{
+                text-decoration: underline;
+                @include primary-theme-content-color-hover;
+              }
             }
           }
         }
@@ -912,7 +918,7 @@ body.new-theme {
 
         .forum-search {
           width: 60%;
-          margin-left: 12px;
+          margin-left: 8px;
 
           .search-input {
             width: 96%;
@@ -941,6 +947,10 @@ body.new-theme {
               content: "\e8b6";
               color: $gray;
               font-size: 1.25rem;
+            }
+
+            &:focus{
+              box-shadow: none;
             }
           }
         }
@@ -987,6 +997,10 @@ body.new-theme {
                 background: none;
                 border: 0;
                 padding: 0;
+                &:hover {
+                  text-decoration: underline;
+                  @include primary-theme-content-color-hover();
+                }
               }
             }
           }
@@ -1010,7 +1024,7 @@ body.new-theme {
               width: 100%;
 
               #forum-nav-browse-filter-input {
-                color: $gray;
+                color: $black;
                 font-size: 1rem !important;
                 padding: 10px 10px;
                 text-transform: capitalize;
@@ -1037,6 +1051,10 @@ body.new-theme {
                 font-size: 1rem;
                 @include primary-theme-content-color;
                 border-bottom: 0;
+                &:hover {
+                  text-decoration: underline;
+                  @include primary-theme-content-color-hover();
+                }
 
                 &:active,
                 &:hover {
@@ -1362,6 +1380,10 @@ body.new-theme {
               border-bottom: 1.21px solid $ash-white;
               padding: 14px 10px !important;
 
+              &:hover .forum-nav-thread-title{
+                text-decoration: underline;
+                color: $black;
+              }
               .icon {
                 color: $black;
               }
@@ -1372,6 +1394,10 @@ body.new-theme {
                 .forum-nav-thread-title,
                 .icon {
                   color: $dark-blue;
+                }
+                &:hover .forum-nav-thread-title{
+                  text-decoration: underline;
+                  @include primary-theme-content-color-hover();
                 }
               }
 
@@ -1416,6 +1442,10 @@ body.new-theme {
                 .icon {
                   @include primary-theme-content-color;
                 }
+              }
+              &:hover .forum-nav-thread-title{
+                text-decoration: underline;
+                @include primary-theme-content-color-hover();
               }
             }
           }
@@ -1542,6 +1572,7 @@ body.new-theme {
                   font-size: 12px;
                   color: $gray;
                   margin: 0;
+                  font-weight: normal;
 
                   .username {
                     @include usernameStyle();
@@ -1566,6 +1597,11 @@ body.new-theme {
                   .actions-item {
                     margin: 0 5px 0;
                     float: left;
+                    .action-button {
+                      &.btn-link:hover,&.btn-link:focus{
+                        border-color: $hard-gray;
+                      }
+                    }
                   }
 
                   .actions-item:last-child {
@@ -1667,6 +1703,9 @@ body.new-theme {
                   .response-header-content {
                     .username {
                       @include usernameStyle();
+                    }
+                    .posted-details{
+                      font-weight: normal;
                     }
 
                     .user-label-staff {
@@ -1781,6 +1820,7 @@ body.new-theme {
                     font-size: 12px;
                     color: $gray;
                     margin: 0;
+                    font-weight: normal;
 
                     .username {
                       @include usernameStyle();
@@ -1803,7 +1843,11 @@ body.new-theme {
                   .comment-actions-list {
                     .actions-dropdown-list {
                       display: inline-block;
-
+                      .action-button {
+                        &.btn-link:hover,&.btn-link:focus{
+                          border-color: $hard-gray;
+                        }
+                      }
                       li {
                         width: 90%;
                       }
