@@ -15,7 +15,6 @@
             {% trans "Lesson" %}
             %span {{lesson.index}}
         .data.status
-          %i.material-icons
           - if lesson.progress == 100
             %i.material-icons check_circle
             {% trans "Complete" %}
