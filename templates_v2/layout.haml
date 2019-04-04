@@ -71,25 +71,6 @@
         variables: variables
       });
 
-    %script
-      var delay;
-      var longpress = 300;
-
-      document.addEventListener('touchstart', function (e) {
-        e.stopPropagation();
-        var pop = $(e.target).parents('.longTapPopover[data-toggle="popover"]');
-        delay = setTimeout(check, longpress);
-        function check() {
-          pop.popover('show');
-        }
-        document.addEventListener('touchstart', function (e) {
-          pop.popover('hide');
-        });
-      }, true);
-      document.addEventListener('click', function (e) {
-        $('.longTapPopover[data-toggle="popover"]').popover('hide');
-      });
-
     - block open_graph
       %meta{property: "og:site_name", content: "{% trans 'McKinsey Academy' %}"}
       %meta{property: "og:image", content: "/static/image/McKA_OG.png"}
