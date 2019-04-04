@@ -121,6 +121,7 @@ body.new-theme {
                 font-size: 1rem;
                 padding: 7px 10px;
                 color: $black;
+                border-top: 1px solid $hard-gray;
             }
 
             .wmd-preview {
@@ -178,6 +179,7 @@ body.new-theme {
         position: relative;
         z-index: 9999;
         padding-top: 0 !important;
+        word-break: break-word;
 
         .post-errors {
             margin: 0 auto;
