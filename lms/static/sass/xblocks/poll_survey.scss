@@ -302,6 +302,17 @@ body.new-theme {
                             right: 3px !important;
                         }
                     }
+
+                    //Gauge
+
+                    .percentage-gauge-container
+                    {
+                        .percentage-gauge
+                        {
+                            left:auto;
+                            right:0;
+                        }
+                    }
                 }
             }
         }
