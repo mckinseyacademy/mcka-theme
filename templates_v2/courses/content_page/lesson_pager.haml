@@ -30,3 +30,9 @@
       %a.arrowPin.right.disable{:href => "#"}
         %span{:data-content => "", :data-original-title => "", :data-placement => "left", :data-toggle => "popover", :data-trigger => "hover", :title => ""}
           %i.material-icons keyboard_arrow_right
+  %script
+    $(function() {
+      if(isTouchDevice()) {
+        $('a.arrowPin span[data-toggle="popover"]').popover("disable");
+      }
+    });

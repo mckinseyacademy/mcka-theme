@@ -21,3 +21,10 @@
         %a.arrowPin.right.disable
           %span
             %i.material-icons keyboard_arrow_right
+
+  %script
+    $(function() {
+      if(isTouchDevice()) {
+        $('a.arrowPin span[data-toggle="popover"]').popover("disable");
+      }
+    });
