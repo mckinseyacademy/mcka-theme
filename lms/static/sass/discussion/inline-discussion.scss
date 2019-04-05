@@ -684,13 +684,14 @@ body.new-theme {
 
                     .field-help {
                         color: transparent;
-
+                        visibility: hidden;
                         &#field_help_topic_area {
 
                             position: absolute;
                             top: 64px;
 
                             &:before {
+                                visibility: visible;
                                 content: 'Add your post to a relevant topic to help others find it.';
                                 font-size: 12px;
                                 position: absolute;
@@ -705,6 +706,7 @@ body.new-theme {
                             top: 71px;
 
                             &:before {
+                                visibility: visible;
                                 content: 'Add a clear and descriptive title to encourage participation.';
                                 font-size: 12px;
                                 position: absolute;
@@ -741,8 +743,9 @@ body.new-theme {
 
                     #field_help_post_type {
                         color: transparent;
-
+                        visibility: hidden;
                         &:before {
+                            visibility: visible;
                             content: 'Questions raise issues that need answers. Discussions share ideas and start conversations.';
                             font-size: 12px;
                             color: $gray;
@@ -757,8 +760,9 @@ body.new-theme {
                     margin-top: 35px;
                     display: inline-block;
                     color: transparent !important;
-
+                    visibility: hidden;
                     &:before {
+                        visibility: visible;
                         content: 'Your question or idea';
                         font-size: 1rem;
                         position: absolute;
@@ -827,8 +831,7 @@ body.new-theme {
                         position: relative;
 
                         .field-input:checked+.field-input-label {
-                            @include primary-theme-content-color;
-
+                            color: $black;
                             .icon {
                                 &::before {
                                     @include primary-theme-content-color;
@@ -1014,8 +1017,9 @@ body.new-theme {
 
                     .label {
                         color: transparent;
-
+                        visibility: hidden;
                         &:before {
+                            visibility: visible;
                             color: $black;
                             font-weight: normal;
                             font-size: 1.5rem;
@@ -1035,8 +1039,9 @@ body.new-theme {
                 .label {
                     &.label-settings {
                         color: transparent;
-
+                        visibility: hidden;
                         &:before {
+                            visibility: visible;
                             content: 'How to use discussions:';
                             font-size: 0.875rem;
                             color: black;
