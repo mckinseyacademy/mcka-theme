@@ -75,8 +75,11 @@ body.new-theme {
                     padding-bottom: 5px;
 
                     label {
-                        display: inline-grid;
+                        display: inline-block;
                         margin-top: 7px;
+                        padding: 0;
+                        padding-right: 24px;
+                        line-height: normal;
                     }
 
                     .visible-mobile-only {
