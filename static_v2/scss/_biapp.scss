@@ -48,7 +48,7 @@ body {
   }
   .all-logos {
     .navbar-brand {
-      @include margin-left(10px);
+      @include margin-left(6px);
       @include padding-left(10px);
       @include border-left(1px solid $border-color);
       &:first-child {
