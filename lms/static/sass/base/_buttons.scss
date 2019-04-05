@@ -52,6 +52,7 @@
     font-weight: normal $isImportant;
     background-color: $white $isImportant;
     height: 40px !important;
+    border: 1px solid;
     @include primary-theme-border-color(!important);
     @include primary-theme-content-color(!important);
 }
