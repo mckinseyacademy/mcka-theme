@@ -198,6 +198,14 @@ $(document).ready(function() {
             $('table.progress-data').addClass('table-col-3');
             break;
     }
+
+    $(".future-course #course-navigation").attr("type", "button");
+    $(".future-course #course-navigation").attr("href", "javascript:void()");
+    $(".future-course #course-navigation").click(function (e) {
+        var numdays = $(e.target).parents('*').andSelf().filter('#course-navigation').data('numdays');
+        $('#future-modal .numdays').text(numdays);
+        $('#future-modal').modal('show');
+    });
 });
 
 
@@ -525,4 +533,5 @@ $(window).on("load", function () {
 $('.my-courses .card').click(function () {
     $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
     $(this).addClass("loader").addClass("donut-loader");
+    $('.my-courses #course-navigation .card').removeClass("loader").removeClass("donut-loader");
 });
