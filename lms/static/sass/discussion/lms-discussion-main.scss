@@ -37,6 +37,8 @@ body.new-theme {
     flex-wrap: wrap;
     margin-right: -15px;
     margin-left: -15px;
+    max-width: unset;
+    width: unset;
   }
   
 
@@ -79,6 +81,7 @@ body.new-theme {
         font-size: 1rem;
         padding: 7px 10px;
         color: $black;
+        border-top: 1px solid $hard-gray;
       }
 
       .wmd-preview {
@@ -90,7 +93,9 @@ body.new-theme {
   /* desktop only  */
   @media (min-width: 767px) {
 
-
+    #course-discussion .discussion-content .discussion-body {
+      padding-bottom: 50px;
+    }
     .forum-nav {
       width: 34% !important;
       margin-right: 3% !important;
@@ -130,7 +135,7 @@ body.new-theme {
   /* mobile */
   @media (max-width: 540px) {
     #course-discussion {
-      padding: 10px;
+      padding: 0;
       .contentCard {
         padding:0px
       }
@@ -156,7 +161,9 @@ body.new-theme {
       }
 
       .discussion-content {
-
+        .discussion-column {
+          min-height: unset; ///remove spacing between content and footer in mobiles
+        }
         #discussion-container {
 
           #main.discussion-column .discussion-article.view-discussion-home,
@@ -202,8 +209,8 @@ body.new-theme {
                     font-family: "Material Icons";
                     content: "\e145";
                     position: absolute;
-                    left: 32%;
-                    top: -9px
+                    left: 29%;
+                    top: -10px
                   }
                 }
               }
@@ -460,6 +467,9 @@ body.new-theme {
               }
 
             }
+            .post-body {
+              max-width: 100%;
+            }
           }
 
           .forum-content {
@@ -475,7 +485,12 @@ body.new-theme {
     background: $white;
     position: relative;
     z-index: 9999;
-    padding-top: 0px;
+    padding: 0;
+    word-break: break-word;
+    .row {
+      margin-right: 0;
+      margin-left: 0;
+    }
     .post-errors {
       margin: 0 auto;
 
@@ -590,7 +605,6 @@ body.new-theme {
       }
 
       .discussion-body {
-        padding-bottom: 50px;
         max-width: 100%;
       }
 
@@ -1063,6 +1077,9 @@ body.new-theme {
               }
 
               .forum-nav-browse-submenu {
+                .forum-nav-browse-menu-item:last-child{
+                  border-bottom: 0;
+                }
                 .forum-nav-browse-title {
                   font-size: 12px;
                   color: $gray;
@@ -1229,6 +1246,8 @@ body.new-theme {
 
           #field_help_post_type {
             color: transparent;
+            line-height: 1;
+            margin-top: 6px;
 
             &:before {
               content: 'Questions raise issues that need answers. Discussions share ideas and start conversations.';
@@ -1364,7 +1383,21 @@ body.new-theme {
         .forum-nav-thread-list {
           background: $white;
           border: 1px solid $border_color_1;
+          .forum-nav-load-more {
+            background-color: #FFFFFF;
+            padding: 10px 0;
 
+            .forum-nav-load-more-link {
+              @include secondary-button;
+              width: 80%;
+              margin: 0 auto;
+              &:hover,
+              &:active {
+                @include secondary-button-hover;
+                text-decoration: none;
+              }
+            }
+          }
           .forum-nav-thread {
             border: 0;
             background: none;
@@ -1372,7 +1405,12 @@ body.new-theme {
 
 
             .forum-nav-thread-wrapper-1{
-              width: calc(100% - 125px);
+              width: calc(100% - 75px);
+              max-width: calc(100% - 75px);
+            }
+            .forum-nav-thread-wrapper-2{
+              align-self: flex-start;
+              min-width: 40px;
             }
             .forum-nav-thread-link {
               border-left: 0;
@@ -1413,7 +1451,7 @@ body.new-theme {
                 background-color: $gray;
                 color: $white;
                 font-size: 0.625rem;
-                padding: 0px 0px;
+                padding: 0px 2px;
 
                 &:after {
                   border-width: 0;
