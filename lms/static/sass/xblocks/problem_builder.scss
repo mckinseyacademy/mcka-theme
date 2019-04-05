@@ -141,7 +141,7 @@ body.new-theme {
 
                 &::before {
                     font-family: 'Material Icons';
-                    content: '\e5c9';
+                    content: '\e000';
                     @include font-size(24)
                 }
             }
@@ -273,7 +273,7 @@ body.new-theme {
                             &::before {
                                 color: $bg-white-red;
                                 font-family: 'Material Icons';
-                                content: '\e5c9';
+                                content: '\e000';
                                 @include font-size(24)
                             }
                         }
@@ -337,7 +337,7 @@ body.new-theme {
                         &::before {
                             color: $bg-white-red;
                             font-family: 'Material Icons';
-                            content: '\e5c9';
+                            content: '\e000';
                             @include font-size(24);
 
                         }

@@ -85,7 +85,7 @@
             &.checkmark-incorrect {
                 &::before {
                     font-family: 'Material Icons';
-                    content: '\e5c9';
+                    content: '\e000';
                     @include font-size(24);
                     color:$bg-white-red;
                 }
@@ -121,7 +121,7 @@
             &.checkmark-incorrect {
                 &::before {
                     font-family: 'Material Icons';
-                    content: '\e5c9';
+                    content: '\e000';
                     @include font-size(24);
                     color:$bg-white-red;
                 }
