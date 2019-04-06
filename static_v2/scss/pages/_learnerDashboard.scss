@@ -56,7 +56,7 @@
 }
 
 #learner-dashboard {
-  margin: -35px auto -1px;
+  margin: 0 auto -1px;
   padding-bottom: 30px;
   .side-content {
     > .tag {
@@ -133,7 +133,7 @@
         margin-bottom: 15px;
 
         .card {
-          height: 176px;
+          height: 215px;
           position: relative;
           box-sizing: border-box;
           position: relative;
@@ -192,7 +192,7 @@
               top: 55px;
               font-weight: 300;
               max-width: 85%;
-              line-height: 1;
+              line-height: 28px;
             }
 
             .date {
