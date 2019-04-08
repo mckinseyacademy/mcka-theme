@@ -697,6 +697,11 @@ header {
       }
     }
   }
+  .courseMainHeader {
+    .dropdown-menu{
+      top: 22px !important;
+    }
+  }
 }
 
 @include media-breakpoint-down(lg) {
