@@ -107,6 +107,15 @@ body.new-theme {
     max-width: unset;
     width: unset;
   }
+   //https://edx-wiki.atlassian.net/browse/MCKIN-10319 as per discussion with team overriding css here 
+  #pnProductNavContents{
+    ul {
+      li {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
   
 
   @-webkit-keyframes fa-spin {
