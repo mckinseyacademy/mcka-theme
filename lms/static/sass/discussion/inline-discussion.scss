@@ -182,7 +182,7 @@ body.new-theme {
     }
 
     /* desktop only  */
-    @media (min-width: 767px) {
+    @media (min-width: 768px) {
 
 
         .forum-nav {
@@ -1342,6 +1342,9 @@ body.new-theme {
                                     .response-header {
                                         background: none;
                                         border: 0;
+                                        .response-header-actions{
+                                            right: 10px;
+                                        }
                                     }
 
                                     .response-header-content {
@@ -1517,7 +1520,7 @@ body.new-theme {
         }
     }
     /* mobile */
-    @media (max-width: 767px) {
+    @media (max-width: 768px) {
         [data-block-type="discussion"],
         [data-block-type="discussion-forum"] {
             padding: 0px;

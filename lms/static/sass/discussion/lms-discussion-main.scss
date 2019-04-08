@@ -167,7 +167,7 @@ body.new-theme {
   }
 
   /* desktop only  */
-  @media (min-width: 767px) {
+  @media (min-width: 768px) {
 
     #course-discussion .discussion-content .discussion-body {
       padding-bottom: 50px;
@@ -209,7 +209,7 @@ body.new-theme {
   }
 
   /* mobile */
-  @media (max-width: 767px) {
+  @media (max-width: 768px) {
     #course-discussion {
       padding: 0;
       .contentCard {
@@ -505,9 +505,12 @@ body.new-theme {
           .discussion-post {
             .post-header-actions {
               top: 65px;
-
+              
               .btn-link {
                 border: 0;
+                &.action-button:hover {
+                  border: 1px solid $hard-gray;
+                }
               }
 
               .action-icon {
@@ -1786,6 +1789,9 @@ body.new-theme {
                   .response-header {
                     background: none;
                     border: 0;
+                    .response-header-actions{
+                      right: 10px;
+                    }
                   }
 
                   .response-header-content {
