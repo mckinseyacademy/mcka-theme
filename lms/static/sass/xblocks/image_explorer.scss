@@ -75,8 +75,11 @@ body.new-theme {
             .image-explorer-close-reveal {
               color: transparent;
               margin-right: 5px;
-              margin-top: -7px;
-
+              margin-top: 0;
+              
+              &::before {
+                display: none;
+              }
               &:after {
                 font-family: "Material Icons";
                 content: "\e14c";

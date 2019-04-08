@@ -22,6 +22,73 @@ footer[role=contentinfo] {
     }
   }
 }
+//disable selection of hidden transparent texts
+@mixin disableTextSelection {
+  -webkit-touch-callout: none;
+  /* iOS Safari */
+  -webkit-user-select: none;
+  /* Safari */
+  -khtml-user-select: none;
+  /* Konqueror HTML */
+  -moz-user-select: none;
+  /* Firefox */
+  -ms-user-select: none;
+  /* Internet Explorer/Edge */
+  user-select: none;
+  /* Non-prefixed version, currently  supported by Chrome and Opera */
+}
+@mixin moreButtonOfPostOrComment() {
+  .actions-item {
+    margin: 0 5px 0;
+    float: left;
+    .action-button {
+      &.btn-link:hover,&.btn-link:focus{
+        border-color: $hard-gray;
+        .icon{
+          @include primary-theme-content-color(!important);
+        }
+      }
+    }
+  }
+
+  .actions-item:last-child {
+    .more-wrapper {
+      button.btn-link .icon {
+        @include primary-theme-content-color;
+      }
+    }
+  }
+
+  .actions-dropdown-list {
+    display: inline-block;
+    li{
+        width: 90%;
+    }
+
+    .btn-link {
+      color: black;
+      font-weight: normal;
+      font-size: 12px;
+      padding: 1px;
+      .icon {
+        color: $gray;
+      }
+
+      &.is-checked {
+        &.action-pin {
+          @include primary-theme-content-color;
+        }
+      }
+
+      &:hover {
+        .icon {
+          @include primary-theme-content-color;
+        }
+      }
+    }
+
+  }
+}
 @mixin usernameStyle() {
   color: $black;
   font-weight: 600;
@@ -40,6 +107,15 @@ body.new-theme {
     max-width: unset;
     width: unset;
   }
+   //https://edx-wiki.atlassian.net/browse/MCKIN-10319 as per discussion with team overriding css here 
+  #pnProductNavContents{
+    ul {
+      li {
+        margin-bottom: 0;
+      }
+    }
+  }
+  
   
 
   @-webkit-keyframes fa-spin {
@@ -91,7 +167,7 @@ body.new-theme {
   }
 
   /* desktop only  */
-  @media (min-width: 767px) {
+  @media (min-width: 768px) {
 
     #course-discussion .discussion-content .discussion-body {
       padding-bottom: 50px;
@@ -133,7 +209,7 @@ body.new-theme {
   }
 
   /* mobile */
-  @media (max-width: 540px) {
+  @media (max-width: 768px) {
     #course-discussion {
       padding: 0;
       .contentCard {
@@ -202,6 +278,7 @@ body.new-theme {
                   padding: 0 !important;
                   position: relative;
                   top: 1px;
+                  @include disableTextSelection();
 
                   &:before {
                     font-size: 1.875rem;
@@ -428,9 +505,12 @@ body.new-theme {
           .discussion-post {
             .post-header-actions {
               top: 65px;
-
+              
               .btn-link {
                 border: 0;
+                &.action-button:hover {
+                  border: 1px solid $hard-gray;
+                }
               }
 
               .action-icon {
@@ -560,14 +640,16 @@ body.new-theme {
 
               .button {
                 @include primary-button;
+                &:not([disabled]){
+                  &:hover,
+                  &:active {
+                    @include primary-button-hover;
+                  }
 
-                &:hover,
-                &:active {
-                  @include primary-button-hover;
                 }
 
                 &:disabled {
-                  background-color: $gray;
+                  background-color: $gray !important;
                   color: $light-gray;
                   cursor: default;
                 }
@@ -630,9 +712,9 @@ body.new-theme {
         appearance: none;
         box-shadow: none;
         border: 1px solid $hard-gray;
-        &:-ms-expand {
-          display: none;
-        }
+      }
+      select::-ms-expand{
+        display: none;
       }
 
       button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel):not(.new-post-btn):not(.search-button),
@@ -952,6 +1034,7 @@ body.new-theme {
             height: 50px !important;
             color: transparent !important;
             border: 0;
+            @include disableTextSelection();
 
             &:after {
               font-family: "Material Icons";
@@ -1153,12 +1236,12 @@ body.new-theme {
               left: 30px;
 
               &:hover {
-                color: $mckinsey-primary-hover-button;
+                @include primary-theme-content-color-hover(!important);
               }
 
               .icon {
                 &:before {
-                  color: $mckinsey-primary-hover-button !important
+                  @include primary-theme-content-color(!important);
                 }
               }
 
@@ -1190,6 +1273,7 @@ body.new-theme {
           .field-help {
             color: transparent;
             visibility: hidden;
+            @include disableTextSelection();
 
             &#field_help_topic_area {
 
@@ -1241,7 +1325,7 @@ body.new-theme {
               background-position: 95%;
               background-size: 12px;
               color: $gray;
-              &:-ms-expand {
+              &::-ms-expand {
                 display: none;
               }
             }
@@ -1252,6 +1336,7 @@ body.new-theme {
             line-height: 1;
             margin-top: 6px;
             visibility: hidden;
+            @include disableTextSelection();
 
             &:before {
               visibility: visible;
@@ -1270,6 +1355,7 @@ body.new-theme {
           display: inline-block;
           color: transparent !important;
           visibility: hidden;
+          @include disableTextSelection();
 
           &:before {
             visibility: visible;
@@ -1392,11 +1478,11 @@ body.new-theme {
           border: 1px solid $border_color_1;
           .forum-nav-load-more {
             background-color: #FFFFFF;
-            padding: 10px 0;
+            padding: 10px;
 
             .forum-nav-load-more-link {
               @include secondary-button;
-              width: 80%;
+              width: 100%;
               margin: 0 auto;
               &:hover,
               &:active {
@@ -1511,6 +1597,7 @@ body.new-theme {
           .label {
             color: transparent;
             visibility: hidden;
+            @include disableTextSelection();
 
             &:before {
               visibility: visible;
@@ -1534,6 +1621,7 @@ body.new-theme {
           &.label-settings {
             color: transparent;
             visibility: hidden;
+            @include disableTextSelection();
 
             &:before {
               visibility: visible;
@@ -1643,53 +1731,7 @@ body.new-theme {
                 }
 
                 .post-actions-list {
-                  .actions-item {
-                    margin: 0 5px 0;
-                    float: left;
-                    .action-button {
-                      &.btn-link:hover,&.btn-link:focus{
-                        border-color: $hard-gray;
-                      }
-                    }
-                  }
-
-                  .actions-item:last-child {
-                    .more-wrapper {
-                      button.btn-link .icon {
-                        @include primary-theme-content-color;
-                      }
-                    }
-                  }
-
-                  .actions-dropdown-list {
-                    display: inline-block;
-                    li{
-                        width: 90%;
-                    }
-
-                    .btn-link {
-                      color: black;
-                      font-weight: normal;
-                      font-size: 12px;
-                      padding: 1px;
-                      .icon {
-                        color: $gray;
-                      }
-
-                      &.is-checked {
-                        &.action-pin {
-                          @include primary-theme-content-color;
-                        }
-                      }
-
-                      &:hover {
-                        .icon {
-                          @include primary-theme-content-color;
-                        }
-                      }
-                    }
-
-                  }
+                  @include moreButtonOfPostOrComment();
                 }
               }
 
@@ -1747,6 +1789,9 @@ body.new-theme {
                   .response-header {
                     background: none;
                     border: 0;
+                    .response-header-actions{
+                      right: 10px;
+                    }
                   }
 
                   .response-header-content {
@@ -1772,31 +1817,7 @@ body.new-theme {
                   }
 
                   .response-actions-list {
-                    .actions-dropdown-list {
-                      display: inline-block;
-                      li{
-                          width: 90%;
-                          .btn-link {
-                            color: black;
-                            font-weight: normal;
-                            font-size: 12px;
-                            padding: 1px;
-                          }
-                      }
-                    }
-
-                    .actions-item {
-                      margin: 0 5px 0;
-                      float: left;
-
-                      &:last-child {
-                        .more-wrapper {
-                          button.btn-link .icon {
-                            @include primary-theme-content-color;
-                          }
-                        }
-                      }
-                    }
+                    @include moreButtonOfPostOrComment();
                   }
 
                   .btn-brand {
@@ -1890,41 +1911,7 @@ body.new-theme {
                     }
                   }
                   .comment-actions-list {
-                    .actions-dropdown-list {
-                      display: inline-block;
-                      .action-button {
-                        &.btn-link:hover,&.btn-link:focus{
-                          border-color: $hard-gray;
-                        }
-                      }
-                      li {
-                        width: 90%;
-                      }
-
-                      .btn-link {
-                        color: black;
-                        font-weight: normal;
-                        font-size: 12px;
-                        padding: 1px;
-
-                        .icon {
-                          color: $gray;
-                        }
-
-                        &.is-checked {
-                          &.action-pin {
-                            @include primary-theme-content-color;
-                          }
-                        }
-
-                        &:hover {
-                          .icon {
-                            @include primary-theme-content-color;
-                          }
-                        }
-                      }
-
-                    }
+                    @include moreButtonOfPostOrComment();
                   }
                 }
               }

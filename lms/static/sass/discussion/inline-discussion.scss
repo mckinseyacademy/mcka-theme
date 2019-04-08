@@ -3,26 +3,71 @@
 @import '../base/buttons';
 @import '../discussion/partials/discussion-mobile-forum-content';
 
+//disable selection of hidden transparent texts
+@mixin disableTextSelection {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently supported by Chrome and Opera */
+}
 @mixin moreButtonOfPostOrComment() {
     list-style: none;
     margin: 0;
     padding: 0;
     text-indent: 0;
     line-height: initial;
-
-    .actions-dropdown-list {
+    .action-button {
+        &.btn-link:hover,&.btn-link:focus{
+          border-color: $hard-gray;
+          .icon{
+            @include primary-theme-content-color(!important);
+          }
+        }
+      }
+      .actions-dropdown-list {
         display: inline-block;
         li{
             width: 90%;
         }
-    }
+    
+        .btn-link {
+          color: black;
+          font-weight: normal;
+          font-size: 12px;
+          padding: 1px;
+          border: 0;
+          .icon {
+            color: $gray;
+          }
+    
+          &.is-checked {
+            &.action-pin {
+              @include primary-theme-content-color;
+            }
+          }
+    
+          &:hover {
+            .icon {
+              @include primary-theme-content-color;
+            }
+          }
+        }
+    
+      }
 
     .actions-item {
         margin: 0 5px 0;
         float: left;
 
         .btn-link {
-            border: 0;
             cursor: pointer;
             background: none;
         }
@@ -30,6 +75,12 @@
         .action-button {
             background: none;
             padding: 1px;
+            &.btn-link:hover,&.btn-link:focus{
+            border-color: $hard-gray;
+            .icon {
+                    @include primary-theme-content-color(!important);
+                }
+            }
         }
 
         &:last-child {
@@ -131,7 +182,7 @@ body.new-theme {
     }
 
     /* desktop only  */
-    @media (min-width: 767px) {
+    @media (min-width: 768px) {
 
 
         .forum-nav {
@@ -258,9 +309,10 @@ body.new-theme {
               appearance: none;
               box-shadow: none;
               border: 1px solid $hard-gray;
-              &:-ms-expand {
+            }
+
+            select::-ms-expand{
                 display: none;
-              }
             }
 
             button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel):not(.discussion-show),
@@ -649,12 +701,12 @@ body.new-theme {
                             left: 30px;
 
                             &:hover {
-                                color: $mckinsey-primary-hover-button;
+                                @include primary-theme-content-color-hover(!important);
                             }
 
                             .icon {
                                 &:before {
-                                    color: $mckinsey-primary-hover-button !important
+                                    @include primary-theme-content-color(!important);
                                 }
                             }
 
@@ -685,6 +737,7 @@ body.new-theme {
                     .field-help {
                         color: transparent;
                         visibility: hidden;
+                        @include disableTextSelection();
                         &#field_help_topic_area {
 
                             position: absolute;
@@ -735,7 +788,7 @@ body.new-theme {
                             background-position: 95%;
                             background-size: 12px;
                             color: $gray;
-                            &:-ms-expand {
+                            &::-ms-expand {
                               display: none;
                             }
                         }
@@ -744,6 +797,7 @@ body.new-theme {
                     #field_help_post_type {
                         color: transparent;
                         visibility: hidden;
+                        @include disableTextSelection();
                         &:before {
                             visibility: visible;
                             content: 'Questions raise issues that need answers. Discussions share ideas and start conversations.';
@@ -761,6 +815,7 @@ body.new-theme {
                     display: inline-block;
                     color: transparent !important;
                     visibility: hidden;
+                    @include disableTextSelection();
                     &:before {
                         visibility: visible;
                         content: 'Your question or idea';
@@ -887,7 +942,21 @@ body.new-theme {
                     border: 0;
                     margin: 0;
                     min-height: auto;
-
+                    .forum-nav-load-more {
+                        background-color: #FFFFFF;
+                        padding: 10px;
+            
+                        .forum-nav-load-more-link {
+                          @include secondary-button;
+                          width: 100%;
+                          margin: 0 auto;
+                          &:hover,
+                          &:active {
+                            @include secondary-button-hover;
+                            text-decoration: none;
+                          }
+                        }
+                      }
                     .forum-nav-thread {
                         border: 0;
                         background: none;
@@ -1018,6 +1087,7 @@ body.new-theme {
                     .label {
                         color: transparent;
                         visibility: hidden;
+                        @include disableTextSelection();
                         &:before {
                             visibility: visible;
                             color: $black;
@@ -1040,6 +1110,7 @@ body.new-theme {
                     &.label-settings {
                         color: transparent;
                         visibility: hidden;
+                        @include disableTextSelection();
                         &:before {
                             visibility: visible;
                             content: 'How to use discussions:';
@@ -1148,7 +1219,14 @@ body.new-theme {
                                     .sr {
                                         display: none;
                                     }
-
+                                    .action-button {
+                                        &.btn-link:hover,&.btn-link:focus{
+                                          border-color: $hard-gray;
+                                          .icon{
+                                            @include primary-theme-content-color(!important);
+                                          }
+                                        }
+                                      }
                                     .actions-item {
                                         margin: 0 5px 0;
                                         cursor: pointer;
@@ -1264,6 +1342,9 @@ body.new-theme {
                                     .response-header {
                                         background: none;
                                         border: 0;
+                                        .response-header-actions{
+                                            right: 10px;
+                                        }
                                     }
 
                                     .response-header-content {
@@ -1439,7 +1520,7 @@ body.new-theme {
         }
     }
     /* mobile */
-    @media (max-width: 540px) {
+    @media (max-width: 768px) {
         [data-block-type="discussion"],
         [data-block-type="discussion-forum"] {
             padding: 0px;
@@ -1487,6 +1568,7 @@ body.new-theme {
                         width: 69px;
                         min-width: auto;
                         height: 40px !important;
+                        @include disableTextSelection();
 
                         &:before {
                             font-size: 1.875rem;
@@ -1505,9 +1587,11 @@ body.new-theme {
                     margin-top: 20px;
     
                     &:hover,
-                    &:active,
-                    &:focus {
+                    &:active {
                         @include secondary-button-hover( !important);
+                    }
+                    &:focus {
+                        @include secondary-button( !important);
                     }
                 }
                 button.discussion-show {
@@ -1710,9 +1794,12 @@ body.new-theme {
                             .post-actions-list {
                                 margin: 0;
                                 line-height: initial;
-                                .action-button {
+                                  .action-button {
                                     &.btn-link:hover,&.btn-link:focus{
                                       border-color: $hard-gray;
+                                      .icon{
+                                        @include primary-theme-content-color(!important);
+                                      }
                                     }
                                   }
                             }
