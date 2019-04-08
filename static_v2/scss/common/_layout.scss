@@ -2,9 +2,13 @@ main{
   min-height: calc(100vh - 268px);
 }
 
-@include media-breakpoint-down(lg){
-  .container{
+.container {
+  @include media-breakpoint-down(lg) {
     max-width: 1244px;
+  }
+  @media (min-width: 992px) and (max-width: 1335px) {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
   }
 }
 

@@ -133,6 +133,7 @@ $(document).ready(function() {
     $(".zoomWrap").click(function() {
         removeClass = false;
         $(".appHeader").removeClass('delay-1s');
+        $(".learner-nav").removeClass('delay-2s');
         $("footer").removeClass('delay-3s');
     });
     // when click event reaches "html" : remove class if needed, and reset flag
