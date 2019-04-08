@@ -349,7 +349,7 @@ body.new-theme {
                                 }
 
                                 .popup-header-text {
-                                    display: inline-block;
+                                    display: none;
                                     font-size: 12px;
                                 }
 
@@ -370,13 +370,15 @@ body.new-theme {
                                     font-size: 1.125rem;
 
                                     .fa-exclamation-circle {
+                                        font-size: 2.25rem;
                                         &::before {
                                             font-family: "Material Icons";
-                                            content: "\e000";
+                                            content: "\e8b2";
                                         }
                                     }
 
                                     .fa-check-circle {
+                                        font-size: 2.25rem;
                                         &::before {
                                             font-family: "Material Icons";
                                             content: "\e86c";
