@@ -1,4 +1,10 @@
-// Learner Nav
+// Learner Dashboard Styles
+body{
+  &.learner-dashboard-view{
+    background-repeat: no-repeat !important;
+    background-size: cover !important;
+  }
+}
 
 .learner-nav {
   &.courseMainHeader {
