@@ -203,7 +203,19 @@
 }
 
 body.new-theme {
+    &.rtl .popup{
 
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        label {
+            text-align: center;
+        }
+    }
     #course-lessons {
         font-family: "Open Sans", sans-serif !important;
         margin-bottom: 15px;
@@ -340,8 +352,9 @@ body.new-theme {
                                     width: 20px;
                                     height: 20px;
                                     position: absolute;
-                                    right: 0px;
-                                    top:0px;
+                                    right: -4px;
+                                    top: 4px;
+                                    margin: 0;
                                 }
 
                                 .close-feedback-popup-mobile-button {
