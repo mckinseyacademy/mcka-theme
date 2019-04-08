@@ -80,6 +80,9 @@
     label {
         text-align: right;
     }
+    .drag-container .target .item-feedback-popup.popup .close-feedback-popup-desktop-button {
+        right: -4px !important;
+    }
 }
 
 @include dnd-mobile-only {
@@ -340,6 +343,12 @@ body.new-theme {
                             border: 1px solid $popup-border;
 
                             &.popup {
+                                @media screen and (min-width: 480px) {
+                                    margin-left: auto;
+                                    margin-right: auto;
+                                    left: 0;
+                                    right: 0;
+                                }
                                 background: $white;
                                 box-shadow: 0 0 100px rgba(0, 0, 0, 0.4);
                                 padding: 10px 0 0;
@@ -352,7 +361,7 @@ body.new-theme {
                                     width: 20px;
                                     height: 20px;
                                     position: absolute;
-                                    right: -4px;
+                                    right: 6px;
                                     top: 4px;
                                     margin: 0;
                                 }
