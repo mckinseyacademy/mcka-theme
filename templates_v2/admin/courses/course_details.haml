@@ -211,7 +211,9 @@
             %label{:style => "font-size: 12px; display: inline;"} {% trans "Include breakdown of progress for each lesson (Note: the export will take more time)" %}
 
         .modal-footer
-          %button.btn.btn-primary.saveChanges{"data-dismiss": "modal", :type => "button"} Export Stats
+          %button.btn.btn-primary.saveChanges{"data-dismiss": "modal", :type => "button"}
+            %span.spinner-border.spinner-border-sm
+            Export Stats
           %button.btn.btn-secondary.ome.dome-c{"data-dismiss": "modal", :type => "button"} Close
 
   - include "admin/fragments/hidden_image_upload_form.haml"

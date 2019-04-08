@@ -257,8 +257,6 @@
   }
 }
 
-
-
 .search-area {
   &.custom {
     display: none;
@@ -314,7 +312,6 @@
     cursor: disabled;
   }
 }
-
 
 .custom-checkbox {
   border: 1px solid $gray;
@@ -891,8 +888,20 @@ td.action_buttons {
   width: 40px;
 }
 
-// Stats Download button
-.coursesDownloadStatsButton{}
+#companyAdminCourseExportStatsModal{
+  .saveChanges{
+    .spinner-border{
+      display: none;
+      margin-top: -2px;
+    }
+    &:disabled{
+      .spinner-border{
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+}
 
 // Media SCreens
 @include media-breakpoint-down(lg) {

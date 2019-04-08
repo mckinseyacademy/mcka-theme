@@ -859,6 +859,14 @@ body.rtl {
 }
 
 // Companies Admin styles
+#companyAdminCourseExportStatsModal{
+  .saveChanges{
+    .spinner-border{
+      @include margin-right(2px);
+    }
+  }
+}
+
 .tableHeaderArea {
   .sidePanel {
     @include float(right);
