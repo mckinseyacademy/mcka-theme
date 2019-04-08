@@ -891,7 +891,7 @@ body.rtl {
 }
 
 #course-progress-new table td .dropdown-toggle {
-  @include media-breakpoint-between(xs, sm) {
+  @include media-breakpoint-between(xs, md) {
     @include margin-left(25px);
   }
 }
