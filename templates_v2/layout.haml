@@ -68,7 +68,8 @@
       cssVars({
         onlyVars: true,
         include: 'link.pony',
-        variables: variables
+        variables: variables,
+        watch: true
       });
 
     - block open_graph
@@ -106,7 +107,7 @@
     - block css
       %link{rel: "stylesheet", href: "//player.ooyala.com/static/v4/stable/4.32.8/skin-plugin/html5-skin.css"}
     - if xblock_theme_css_path
-      %link{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
+      %link.pony{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
       %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
 
 
