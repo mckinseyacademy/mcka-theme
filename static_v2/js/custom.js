@@ -221,6 +221,22 @@ $(document).ready(function() {
     $("#crop-save").click(function () {
         $("#crop-save #spinner").addClass("spinner-border-sm").addClass("spinner-border");
     });
+
+
+    //  New featre Modal (disable scrolling on body)
+    $('.carousel-control-next').click(function(){ $('.carousel').carousel('next')});
+    $('.carousel-control-prev').click(function(){ $('.carousel').carousel('prev')});
+
+    //  KeyBoard Controls Activation For New FeatureTour Modal
+    jQuery(document).bind('keyup', function (e) {
+        console.log(event.keyCode);
+        if (e.keyCode == 39) {
+            jQuery('.carousel-control-next').trigger('click');
+        }
+        else if (e.keyCode == 37) {
+            jQuery('.carousel-control-prev').trigger('click');
+        }
+    });
 });
 
 
