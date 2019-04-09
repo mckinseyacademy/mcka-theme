@@ -233,8 +233,8 @@
                           %td
                             .lesson-row-item
                               .lesson-item-name
-                                %i.status.complete.material-icons
-                                  check_circle
+                                %i.status.material-icons
+                                  panorama_fish_eye
                                 %a.ome.dome-c{"href": "#{activity.link}"}
                                   {% trans "Group Work" %}
                                 =activity.name
@@ -246,9 +246,6 @@
                 %span
                   <i class="status material-icons">panorama_fish_eye</i>
                   {% trans "Not Started" %}
-                %span
-                  <i class="status partial material-icons">tonality</i>
-                  {% trans "In Progress" %}
                 %span.text-success
                   <i class="status complete material-icons">check_circle</i>
                   {% trans "Complete" %}
