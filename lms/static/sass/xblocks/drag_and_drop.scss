@@ -80,6 +80,9 @@
     label {
         text-align: right;
     }
+    .drag-container .target .item-feedback-popup.popup .close-feedback-popup-desktop-button {
+        right: -4px !important;
+    }
 }
 
 @include dnd-mobile-only {
@@ -203,7 +206,19 @@
 }
 
 body.new-theme {
+    &.rtl .popup{
 
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        label {
+            text-align: center;
+        }
+    }
     #course-lessons {
         font-family: "Open Sans", sans-serif !important;
         margin-bottom: 15px;
@@ -328,6 +343,12 @@ body.new-theme {
                             border: 1px solid $popup-border;
 
                             &.popup {
+                                @media screen and (min-width: 480px) {
+                                    margin-left: auto;
+                                    margin-right: auto;
+                                    left: 0;
+                                    right: 0;
+                                }
                                 background: $white;
                                 box-shadow: 0 0 100px rgba(0, 0, 0, 0.4);
                                 padding: 10px 0 0;
@@ -340,8 +361,9 @@ body.new-theme {
                                     width: 20px;
                                     height: 20px;
                                     position: absolute;
-                                    right: 0px;
-                                    top:0px;
+                                    right: 6px;
+                                    top: 4px;
+                                    margin: 0;
                                 }
 
                                 .close-feedback-popup-mobile-button {
