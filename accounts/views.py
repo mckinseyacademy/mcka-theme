@@ -165,25 +165,29 @@ def _get_redirect_to_current_course(request):
                 future_start_date = is_future_start(current_program.start_date)
 
     if user_data.get('new_ui_enabled'):
-        if current_course and current_course.learner_dashboard:
-            return reverse('course_landing_page', kwargs=dict(course_id=current_course.id))
-        else:
-            user_ld_courses = [user_course for user_course in user_courses if user_course.learner_dashboard]
-            user_ld_courses = sorted(user_ld_courses, key=lambda x: x.id.lower())
-            user_course_with_ld = next(iter(user_ld_courses), None)
-            last_visited_ld = request.session.get('last_visited_course', None)
-            if last_visited_ld:
-                for user_ld_course in user_ld_courses:
-                    if user_ld_course.id == last_visited_ld:
-                        user_course_with_ld = user_ld_course
-                        break
-            if user_course_with_ld:
-                return reverse('course_landing_page', kwargs=dict(course_id=user_course_with_ld.id))
+        user_ld_courses = [user_course for user_course in user_courses if user_course.learner_dashboard]
+        user_ld_courses = sorted(user_ld_courses, key=lambda x: x.id.lower())
+        user_course_with_ld = next(iter(user_ld_courses), None)
+        last_visited_ld = request.session.get('last_visited_course', None)
+        if last_visited_ld:
+            for user_ld_course in user_ld_courses:
+                if user_ld_course.id == last_visited_ld:
+                    user_course_with_ld = user_ld_course
+                    break
+        if user_course_with_ld:
+            return reverse('course_landing_page', kwargs=dict(course_id=user_course_with_ld.id))
 
-            return reverse('courses')
+        return reverse('courses')
 
     if current_course and not future_start_date:
         return reverse('course_landing_page', kwargs=dict(course_id=current_course.id))
+    else:
+        for course in user_courses:
+            if course.is_active and course.started:
+                return reverse(
+                    'course_landing_page',
+                    kwargs=dict(course_id=course.id)
+                )
 
     return reverse('protected_home')
 
