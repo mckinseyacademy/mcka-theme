@@ -470,9 +470,9 @@
                             text-align: center;
                             line-height: 48px;
                             background-color: var(--primary);
-                            border-color:var(--primary);
                             color: $white;
                             transition: .35s;
+                            border:0;
                             box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
 
                             &:hover {
@@ -583,7 +583,7 @@
                         text-align: center;
                         padding: 0 20px;
                         background-color: var(--primary);
-                        border-color:var(--primary);
+                        border:0;
                         color: $white;
                         margin-top: 15px;
                         box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
@@ -616,6 +616,85 @@
         }
     }
 
+
+    #generalModal
+    {
+        .modal-dialog
+        {
+            .modal-content
+            {
+                .modal-header
+                {
+                    border-bottom: 1px solid $gray-border !important;
+                    .close
+                    {
+                        margin-top: 15px;
+                        color: $gray;
+                        @include font-size(18);
+                    }
+                    .modal-title
+                    {
+                        font-weight: 500;
+                        margin-bottom: 0;
+                        @include font-size(24);
+                    }
+                }
+
+                .modal-body
+                {
+                    p
+                    {
+                        @include font-size(16);
+                    }
+                }
+                
+                .modal-footer
+                {
+                    justify-content: flex-start;
+                    padding: 0 1rem 1rem;
+
+                    button
+                    {
+                        font-weight: 600;
+                        font-size: 12px;
+                        height: 40px;
+                        border-radius: 2px;
+                        text-transform: uppercase;
+                        line-height: 1.83;
+                        letter-spacing: 0.5px;
+                        text-align: center;
+                        padding: 0 20px;
+                        background-color: var(--primary);
+                        border:none;
+                        color: $white;
+                        margin-top: 15px;
+                        box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
+
+
+                        &:hover {
+                            box-shadow: inset 0 0 0 30px rgba(0,0,0,0.3);
+                        }
+
+                        &:disabled {
+                            background: $gray;
+                            opacity: 1;
+                            cursor: not-allowed;
+                            color: $white;
+                            box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
+
+                            &:hover {
+                                background: $gray;
+                                opacity: 1;
+                                cursor: not-allowed;
+                                color: $white;
+                                box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     // Peer Feedback
 
@@ -703,8 +782,7 @@
                 margin-bottom: 15px;
                 margin-top: 8px;
                 box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
-
-
+                float: none;
                 &:hover {
                     box-shadow: inset 0 0 0 30px rgba(0,0,0,0.3);
                 }

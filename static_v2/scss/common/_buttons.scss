@@ -154,7 +154,7 @@ a.btn {
   padding: 0 20px;
   color:$white;
   background-color: var(--primary);
-  border-color:var(--primary);
+  border:0;
   transition: .35s;
   box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
 
@@ -166,7 +166,6 @@ a.btn {
   &:disabled {
       background: $gray;
       opacity: 1;
-      border-color: $gray;
       cursor: not-allowed;
       color: $white;
       box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
@@ -174,7 +173,6 @@ a.btn {
       &:hover {
           background: $gray;
           opacity: 1;
-          border-color: $gray;
           cursor: not-allowed;
           color: $white;
           box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
