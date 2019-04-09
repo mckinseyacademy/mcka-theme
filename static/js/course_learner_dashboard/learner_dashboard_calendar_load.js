@@ -7,7 +7,7 @@ $('#open-calendar').click(function() {
 
     var headers = {
       'X-CSRFToken': $.cookie('apros_csrftoken')
-    }
+    };
 
     $.ajax({
       headers: headers,
@@ -16,6 +16,7 @@ $('#open-calendar').click(function() {
       success : function(data) {
         opened = true;
         $('#replace-calendar').html(data.html);
+
       },
       error: function(xhr, status, error) {
         var err = eval("(" + xhr.responseText + ")");

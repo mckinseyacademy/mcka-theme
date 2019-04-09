@@ -401,6 +401,10 @@
   $('#close-calendar').click(function() {
     $('#replace-calendar').empty();
     opened = false;
+    $('.ld-nav ul>li.active').removeClass('active');
+    $('.ld-nav ul>li.previous').addClass('active');
+    $('.ld-nav ul>li.previous').removeClass('previous');
+
   });
 
   $('#next-calendar').click(function() {
@@ -470,6 +474,9 @@
 
   $(window).click(function() {
     $('#replace-calendar').empty();
+    $('.ld-nav ul>li.active').removeClass('active');
+    $('.ld-nav ul>li.previous').addClass('active');
+    $('.ld-nav ul>li.previous').removeClass('previous');
     opened = false;
   });
 

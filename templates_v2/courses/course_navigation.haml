@@ -39,7 +39,7 @@
                         %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/discussion"}
                           {% trans "Discussion" %}
                     - if feature_flags.group_work
-                      %li{"class": "{% ifequal request.resolver_match.url_name 'course_group_work' %}active{% endifequal %}"}
+                      %li{"class": "{% if request.resolver_match.url_name == 'user_course_group_work' or request.resolver_match.url_name == 'workgroup_course_group_work' %}active{% endif %}"}
                         %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/group_work"}
                           {% trans "Group work" %}
                     - if feature_flags.progress_page

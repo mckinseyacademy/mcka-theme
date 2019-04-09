@@ -87,7 +87,7 @@
                         {% trans "admin" %}
                   - if request.user.is_company_admin
                     {% url 'company_dashboard' as company_dashboard_url %}
-                    %li.adminBtn{class: "{% if request.path == company_dashboard_url %}active{% endif %}"}
+                    %li.adminBtn{class: "{% if request.resolver_match.url_name == 'company_dashboard' or request.resolver_match.url_name == 'company_details' or request.resolver_match.url_name == 'company_course_details' %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{company_dashboard_url}}"}
                         {% trans "company admin" %}
                   - if request.user.is_mcka_ta
@@ -97,7 +97,7 @@
                         {% trans "ta" %}
 
                   - if learner_dashboards|length > 1
-                    %li
+                    %li{class: "{% if 'learnerdashboard' in request.path %}active{% endif %}"}
                       %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
                         {% trans "dashboard" %}
 
@@ -112,14 +112,14 @@
                                       %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
 
                   - elif learner_dashboards|length == 1
-                    %li
+                    %li{class: "{% if 'learnerdashboard' in request.path %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", :href => "/courses/{{learner_dashboards.0.course_id}}", :role => "button"}
                         {% trans "dashboard" %}
 
 
                   - if show_my_courses
                     {% url 'courses' as courses_url %}
-                    %li{class: "{% if request.path == courses_url %}active{% endif %}"}
+                    %li#mycoursestab{class: "{% if request.path == courses_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
                         {% trans "my courses" %}
           - else

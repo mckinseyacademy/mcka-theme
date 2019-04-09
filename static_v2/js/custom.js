@@ -13,6 +13,16 @@ $(document).ready(function() {
         $(this).addClass('active');
     });
 
+     $('.ld-nav ul>li a').click(function(e) {
+
+        $('.ld-nav li.active').addClass('previous');
+        $('.ld-nav li.active').removeClass('active');
+
+        var $parent = $(this).parent();
+        $parent.addClass('active');
+        $parent.removeClass('previous');
+    });
+
     $("#lessons-content").on('click', function(e) {
         if ($(e.target).hasClass('load-course-lessons')) {
             var course_id = $(e.target).data('course-id');

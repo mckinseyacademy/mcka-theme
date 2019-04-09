@@ -519,7 +519,7 @@ Apros.Router.HashPageChanger = function(element) {
   var _parentContainer = $(el.attr('data-container'));
   el.parent().parent().find('.hashPageButton').css('font-weight','');
   el.css('font-weight','bold');
-  $('.active').removeClass('active');
+  el.parent().parent().find('.active').removeClass('active');
   el.addClass('active');
   _parentContainer.find('.contentNavigationContainer').each(function(index, value){
     val = $(value);
