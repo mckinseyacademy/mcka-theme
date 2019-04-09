@@ -65,7 +65,7 @@ $(function () {
     $(".new-theme input[type=checkbox]:checked").parent().addClass('selected');
   });
 
-  $(document).on('DOMNodeInserted', '.lesson-content', function(){
+  $(document).on('DOMNodeInserted', '.new-theme .lesson-content', function(){
     if(!isSurveyTableFilled) {
       isSurveyTableFilled = true;
       setTimeout(function(){
@@ -76,14 +76,14 @@ $(function () {
 });
 
 function surveyTableLabelPositionsForMobile(){
-  $('.survey-table .survey-option').each(function(index, element){
+  $('.new-theme .survey-table .survey-option').each(function(index, element){
     var span = $(element).find('.visible-mobile-only').prop('outerHTML');
     $(element).find('.visible-mobile-only').remove();
     $(element).append(span);
     if (index == $('.survey-table .survey-option').length - 1) {
       setTimeout(function () {
         toggleSurveyRadios()
-      }, 500);  
+      }, 5000);  
     }
   });
 }
@@ -104,7 +104,7 @@ function toggleSurveyRadios() {
         if (el.disabled)
           $(el).parent().addClass('disabled');
       });
-    }, 2000);
+    }, 5000);
 
   });
 }
