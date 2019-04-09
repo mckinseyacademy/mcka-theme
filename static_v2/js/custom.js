@@ -200,12 +200,19 @@ $(document).ready(function() {
             break;
     }
 
+
+    // Future course modal
     $(".future-course #course-navigation").attr("type", "button");
     $(".future-course #course-navigation").attr("href", "javascript:void()");
     $(".future-course #course-navigation").click(function (e) {
         var numdays = $(e.target).parents('*').andSelf().filter('#course-navigation').data('numdays');
         $('#future-modal .numdays').text(numdays);
         $('#future-modal').modal('show');
+    });
+
+    // Add spinner to crop & save button of profile upload
+    $("#crop-save").click(function () {
+        $("#crop-save #spinner").addClass("spinner-border-sm").addClass("spinner-border");
     });
 });
 
@@ -523,16 +530,21 @@ function smoothNavLinks() {
 smoothNavLinks();
 
 
-// Preloaders
-
 $(window).on("load", function () {
+
+    // Preloaders for platform
     $('.loader').removeClass("donut-loader").removeClass("loader");
     $('.preloader').removeClass("preloader");
     $('.courseLanding .contentCard').css("visibility", "visible");
+    $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
+    
+    // Remove spinner from crop & save button
+    $("#crop-save #spinner").removeClass("spinner-border-sm").removeClass("spinner-border");
 });
+
+// Preloader for courses page
 
 $('.my-courses .card').click(function () {
     $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
     $(this).addClass("loader").addClass("donut-loader");
-    $('.my-courses #course-navigation .card').removeClass("loader").removeClass("donut-loader");
 });
