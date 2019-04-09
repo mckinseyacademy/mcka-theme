@@ -27,8 +27,7 @@
         .data.title
           %span= lesson.name
             -if not lesson.is_started
-              %i.material-icons.lock
-                ked.longTapPopover{:oncontextmenu => "return false;", :data-content => "{% if lesson_custom_label %}{% blocktrans with start_date=lesson.start_upon %} This {{lesson_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=lesson.start_upon %} This lesson will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover", :title => ""} lock
+              %i.material-icons.locked.longTapPopover{:oncontextmenu => "return false;", :data-content => "{% if lesson_custom_label %}{% blocktrans with start_date=lesson.start_upon %} This {{lesson_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=lesson.start_upon %} This lesson will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :title => ""} lock
       - if lesson.bookmark
         %span.bookmark.secondary
           %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}

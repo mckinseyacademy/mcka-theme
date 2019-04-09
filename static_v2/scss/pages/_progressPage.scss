@@ -260,6 +260,9 @@
                 display: inline-block;
                 vertical-align: middle;
               }
+              @media only screen and (max-width: 992px) and (orientation: portrait) {
+                display: block;
+              }
             }
 
             &.gr-data {
@@ -411,19 +414,6 @@
         th {
           &:first-child {
             width: 30%;
-          }
-        }
-      }
-    }
-    table {
-      tbody {
-        tr {
-          td {
-            .lesson-with-list {
-              .dropdown-toggle {
-                display: block;
-              }
-            }
           }
         }
       }

@@ -902,6 +902,9 @@ body.rtl {
   @include media-breakpoint-between(xs, md) {
     @include margin-left(25px);
   }
+  @media only screen and (orientation: landscape) and (max-width: 1024px) {
+    @include margin-left(25px);
+  }
 }
 
 #companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
