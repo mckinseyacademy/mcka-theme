@@ -105,15 +105,30 @@ body.new-theme {
 
               .image-explorer-hotspot-reveal-body {
                 > ul, > li, > p, > span {
-                  font-size: 12px;
+                  font-size: 14px;
                   color: $black;
+                  line-height: 19px;
+                  margin-bottom: 0;
+                }
+                > h1, > h2, > h3, > h4, > h5, > h6 {
+                  color: $black !important;
                 }
                 .ie-custom-div{
-                  font-size: 12px;
+                  font-size: 14px;
+                  line-height: 19px;
+                  margin-bottom: 0;
                   ul, li, p, span, div {
-                    font-size: 12px;
+                    font-size: 14px;
                     color: $black;
+                    line-height: 19px;
+                    margin-bottom: 0;
                   }
+                  h1, h2, h3, h4, h5, h6 {
+                    color: $black !important;
+                  }
+                }
+                > div:not(.ie-custom-div) {
+                  margin-top: 3px;
                 }
                 a {
                   text-decoration: none;
