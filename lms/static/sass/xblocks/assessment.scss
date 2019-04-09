@@ -68,7 +68,7 @@
             &.checkmark-partially-correct {
                 &::before {
                     font-family: 'Material Icons';
-                    content: '\e002';
+                    content: '\e644';
                     @include font-size(24);
                 }
             }
@@ -104,7 +104,7 @@
             &.checkmark-partially-correct {
                 &::before {
                     font-family: 'Material Icons';
-                    content: '\e002';
+                    content: '\e644';
                     @include font-size(24);
                 }
             }
