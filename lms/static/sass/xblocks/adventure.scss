@@ -49,42 +49,16 @@ body.new-theme {
                     .navigation-back-next-buttons {
                         .navigation-next {
 
-                            @include primary-button;
-
-                            &:enabled {
-                                cursor: pointer;
-
-                                &:hover,
-                                &:active {
-                                    @include primary-button-hover;
-                                }
-                            }
-
-                            &:disabled {
-                                background-color: $gray;
-                                color: $light-gray;
-                                cursor: default;
-                            }
+                            @extend %button;
                         }
 
                         .navigation-back {
 
-                            @include secondary-button;
-
-                            &:enabled {
-                                cursor: pointer;
-
-                                &:hover,
-                                &:active {
-                                    @include secondary-button-hover;
-                                }
-                            }
-
-                            &:disabled {
-                                background-color: $gray;
-                                color: $light-gray;
-                                cursor: default;
-                            }
+                            @extend %button;
+                            background-color: transparent!important;
+                            border: 1px solid var(--primary) !important;
+                            color: var(--primary) !important;
+                            box-shadow: none !important;
                         }
 
                     }

@@ -82,6 +82,9 @@ $(function () {
   });
 });
 
+
+
+
 function surveyTableLabelPositionsForMobile(){
   $('.survey-table .survey-option').each(function(index, element){
     var span = $(element).find('.visible-mobile-only').prop('outerHTML');
@@ -89,3 +92,13 @@ function surveyTableLabelPositionsForMobile(){
     $(element).append(span);
   });
 }
+
+
+// Add selected class to selected poll results when appended to DOM
+$(document).on('DOMNodeInserted', function(){
+  cssVars({
+    onlyVars: true,
+    include: 'link.pony',
+    variables: variables
+  });
+});
