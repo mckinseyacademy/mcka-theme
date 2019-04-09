@@ -85,9 +85,19 @@
             h1 {
                 margin-bottom: 20px;
 
-                .stage_title {
+                .stage_title{
                     @include font-size(28);
                     font-weight: 300;
+                }
+                .highlight
+                {
+                    color:$bg-white-red;
+                    @include font-size(16);
+                    font-weight: normal;
+                    &::before
+                    {
+                        content:" - ";
+                    }
                 }
             }
 
