@@ -508,6 +508,9 @@ header {
 
 // BreakPoints for small Screens
 @media screen and (max-width: 992px) {
+  .adminBtn {
+    display: none !important;
+  }
   .courseMainHeader {
     padding: 0 15px;
 

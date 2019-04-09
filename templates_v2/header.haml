@@ -77,22 +77,22 @@
                 %ul
                   - if request.user.is_manager
                     {% url 'manager_dashboard' as manager_dashboard_url %}
-                    %li{class: "{% if request.path == manager_dashboard_url %}active{% endif %}"}
+                    %li.adminBtn{class: "{% if request.path == manager_dashboard_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{manager_dashboard_url}}"}
                         {% trans "team reports" %}
                   - if request.user.is_mcka_admin or request.user.is_internal_admin or request.user.is_mcka_subadmin
                     {% url 'admin_home' as admin_home_url %}
-                    %li{class: "{% if request.path == admin_home_url %}active{% endif %}"}
+                    %li.adminBtn{class: "{% if request.path == admin_home_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{admin_home_url}}"}
                         {% trans "admin" %}
                   - if request.user.is_company_admin
                     {% url 'company_dashboard' as company_dashboard_url %}
-                    %li{class: "{% if request.path == company_dashboard_url %}active{% endif %}"}
+                    %li.adminBtn{class: "{% if request.path == company_dashboard_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{company_dashboard_url}}"}
                         {% trans "company admin" %}
                   - if request.user.is_mcka_ta
                     {% url 'workgroup_list' as workgroup_list_url %}
-                    %li{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
+                    %li.adminBtn{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
                         {% trans "ta" %}
 
