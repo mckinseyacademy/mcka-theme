@@ -1,10 +1,18 @@
 $(function(){
   // Launch a timer that expires on session timeout
-  // last_touch in cookie will be none if user is logged out
-  if (getCookieValue('last_touch') != 'None') {
+  if (lastTouchExists() && isUserLoggedIn()) {
     $(function(){
       launchSessionTimeoutTimer();
     })
+  }
+
+  function lastTouchExists() {
+    const lastTouchCookie = getCookieValue('last_touch');
+    return lastTouchCookie === 'None' || !lastTouchCookie ? false : true;
+  }
+
+  function isUserLoggedIn() {
+    return getCookieValue('sessionid') ? true : false;
   }
 
   function launchSessionTimeoutTimer() {

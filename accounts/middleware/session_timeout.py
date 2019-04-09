@@ -48,10 +48,12 @@ class SessionTimeout(object):
             if not request.session.get('last_touch'):
                 request.session['last_touch'] = datetime.utcnow()
         else:
+            # Offset in seconds to support events using this cookie's value on timeout
+            offset = 7
             response.set_cookie(
                 'last_touch',
                 request.session.get('last_touch'),
                 domain=settings.LMS_SESSION_COOKIE_DOMAIN,
-                max_age=settings.SESSION_COOKIE_AGE,
+                expires=settings.SESSION_TIMEOUT_SECONDS + offset,
             )
         return response
