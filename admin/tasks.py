@@ -626,6 +626,9 @@ def delete_company_task(company_id, owner, base_url):
     1. invoking `delete_participants_task` as function, because we don't want to proceed in case of any error,
     2. invoking `delete_company_data` for removing other company data.
     """
+    task_log_msg = "Delete Company task"
+    logger.info('Started - {} - by {}'.format(task_log_msg, owner['username']))
+
     started = time.time()
     company_name = 'Unknown'
     try:
@@ -658,7 +661,6 @@ def delete_company_task(company_id, owner, base_url):
             'minutes_taken': math.ceil((time.time() - started) / 60),
             'reason': str(e),
         }
-        task_log_msg = "Delete Company profile task"
         send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
 
 
@@ -684,7 +686,7 @@ def delete_participants_task(
     file_path = ''
     template_extra_data = template_extra_data or {}
 
-    logger.info('Started - {}'.format(task_log_msg))
+    logger.info('Started - {} - by {}'.format(task_log_msg, owner['username']))
 
     failed, total = {}, 0
     started = time.time()

@@ -28,22 +28,17 @@
           %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Bulk Delete' %}", 'data-reveal-id': 'advanced_delete_modal'}
         %a.button.small.radius.menuButton{:href => "{% url 'participants_import_progress' %}"}
           {% trans "View Import Progress" %}
-        #searchBar
-          %select#searchSelectorField{"required": "true"}
-            %option{"disabled": true, "selected": "true"}
-              Search by
-            %option{"value": "organization_display_name"}
-              Company
-            %option{"value": "courses"}
-              Course
-            %option{"value": "name"}
-              Name
-            %option{"value": "email"}
-              Email
-          %input#searchQueryField{:placeholder => '{% trans "Search" %}', :type => 'text'}
-          %a#searchButton
-            %i.fa.fa-search.fa-flip-horizontal
       %hr
+      #participantsSearchWrapper
+        .row
+          .large-3.columns
+            %input{:placeholder => '{% trans "Company" %}', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => '{% trans "Course" %}', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => '{% trans "Name" %}', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => '{% trans "Email" %}', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
 
     #participantsListViewGridBlock
 
@@ -158,9 +153,7 @@
           %h2.delete_message {% trans "Your CSV is Being Processed..." %}
         .contentContainer
           %p.bottomPadding
-            {% trans "Data deletion has started for selected participant / company / participants." %}
-          %p.send_email{style: "display:none;"}
-            {% trans "You will be notified by email once completed." %}
+            {% trans "Bulk deletion has started and you will receive an email notification on completion." %}
 
           .button-wrapper.topPadding
             %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Close"}

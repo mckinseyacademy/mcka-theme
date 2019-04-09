@@ -288,6 +288,10 @@ class ProblemResponseTasksTest(TestCase):
 class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
     """Tests tasks required for bulk user deletion."""
 
+    def setUp(self):
+        super(DeleteParticipantsTaskTest, self).setUp()
+        self.owner = {'username': u'admin', 'first_name': u'Admin'}
+
     @patch('admin.tasks.get_path', lambda x: x)
     @patch('admin.tasks.get_users')
     @patch('admin.tasks.get_emails_from_csv')
@@ -301,7 +305,7 @@ class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
         get_users_mock.side_effect = lambda **kwargs: self.students
         get_emails_from_csv_mock.side_effect = lambda _: ('email', emails)
 
-        delete_participants_task(stub_file, False, None, None)
+        delete_participants_task(stub_file, False, self.owner, None)
         get_emails_from_csv_mock.assert_called_with(stub_file)
         get_users_mock.assert_called_with(**{'email': emails})
         delete_participants_mock.assert_called_with(None, users=self.students)
@@ -311,7 +315,7 @@ class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
         """Test bulk user deletion task with users' IDs provided directly."""
         student_ids = [student.id for student in self.students]
 
-        delete_participants_task(student_ids, False, None, None)
+        delete_participants_task(student_ids, False, self.owner, None)
         delete_participants_mock.assert_called_with(student_ids)
 
 
@@ -323,6 +327,7 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         self.mock_id = 0
         self.dummy_organization = Dummy()
         self.dummy_organization.display_name = 'dummy'
+        self.owner = {'username': u'admin', 'first_name': u'Admin'}
 
     @patch('admin.tasks.send_email')
     def test_delete_company_task_nonexistent_company(self, mock_send_email):
@@ -330,7 +335,7 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         Test deleting company that doesn't exist in LMS.
         """
         mock_send_email.delay = Mock()
-        delete_company_task(self.mock_id, {}, None)
+        delete_company_task(self.mock_id, self.owner, None)
         args, _ = mock_send_email.delay.call_args
         self.assertEqual('Company deletion completed', args[0])
 
@@ -348,7 +353,7 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         fetch_users_mock.return_value = [self.mock_id]
         fetch_organization_mock.return_value = self.dummy_organization
 
-        delete_company_task(self.mock_id, {}, None)
+        delete_company_task(self.mock_id, self.owner, None)
 
         for mock in mocks:
             self.assertEqual(mock.call_count, 1)
@@ -367,7 +372,7 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         fetch_users_mock.return_value = [self.mock_id]
         fetch_organization_mock.return_value = self.dummy_organization
 
-        delete_company_task(self.mock_id, {}, None)
+        delete_company_task(self.mock_id, self.owner, None)
         for mock in mocks:
             self.assertEqual(mock.call_count, 1)
 
