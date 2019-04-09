@@ -55,13 +55,6 @@ $(function () {
     })
   });
 
-  // Survey block choice
-  $(document).on('DOMNodeInserted', '.survey-table', function(){
-    $(".new-theme input[type=radio]:checked").parent().addClass('selected');
-    $(".new-theme input[type=radio]:disabled").parent().addClass('disabled');
-  });
-
-
   // Assessment block checkbox
 
   $(document).on('DOMNodeInserted', '.choices-list, .choice-selector', function(){
@@ -87,5 +80,31 @@ function surveyTableLabelPositionsForMobile(){
     var span = $(element).find('.visible-mobile-only').prop('outerHTML');
     $(element).find('.visible-mobile-only').remove();
     $(element).append(span);
+    if (index == $('.survey-table .survey-option').length - 1) {
+      setTimeout(function () {
+        toggleSurveyRadios()
+      }, 500);  
+    }
+  });
+}
+
+function toggleSurveyRadios() {
+  $('.new-theme input[type=radio]').each(function (index, el) {
+    if (el.checked)
+      $(el).parent().addClass('selected');
+    if (el.disabled)
+      $(el).parent().addClass('disabled');
+  });
+  $('.new-theme [data-block-type="survey"] input[type=button]').on('click', function (e) {
+    // Survey block choice 
+    setTimeout(function () { // we have to wait till api responses and updates selected/disabled attributes to input
+      $(e.target).prev().find('input[type=radio]').each(function (index, el) {
+        if (el.checked)
+          $(el).parent().addClass('selected');
+        if (el.disabled)
+          $(el).parent().addClass('disabled');
+      });
+    }, 2000);
+
   });
 }

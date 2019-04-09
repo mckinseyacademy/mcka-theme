@@ -333,9 +333,11 @@ body.new-theme {
                 right: 0;
 
                 &:hover,
-                &:active,
-                &:focus {
+                &:active {
                     @include secondary-button-hover-large( !important);
+                }
+                &:focus {
+                    @include secondary-button-large( !important);
                 }
             }
 
@@ -523,7 +525,7 @@ body.new-theme {
 
                 &.fa-warning {
                     &:before {
-                        content: "\e644";
+                        content: "\e002";
                     }
                 }
 
@@ -1578,6 +1580,9 @@ body.new-theme {
                             position: absolute;
                             left: 30%;
                             top: -3px;
+                        }
+                        &:hover {
+                            height: 40px !important;
                         }
                     }
                 }
