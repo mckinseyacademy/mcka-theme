@@ -140,6 +140,7 @@
 							display: inline-block;
 							margin: 0;
 							@include font-size(14);
+							width: calc(100% - 30px);
 						}
 
 						&:before {
