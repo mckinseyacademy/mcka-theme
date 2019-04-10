@@ -246,7 +246,6 @@
       width: 20px;
       pointer-events: none;
     }
-
     > a {
       &:hover {
         text-decoration: none;
@@ -289,9 +288,6 @@
 
     &:hover {
       .description {
-        opacity: 1;
-        visibility: visible;
-
         &.no-data {
           z-index: 0;
         }
@@ -842,10 +838,6 @@ blockquote {
 
       &:hover {
         text-decoration: none;
-
-        .description {
-          opacity: 0;
-        }
       }
     }
   }
