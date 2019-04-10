@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-27 13:55+0000\n"
+"POT-Creation-Date: 2019-04-10 14:39+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -47,7 +47,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:371
-#: static/js/views/admin/participantsinfo.js:116
+#: static/js/views/admin/participantsinfo.js:114
 msgid "Course"
 msgstr "Curso"
 
@@ -338,17 +338,18 @@ msgstr "Participantes:"
 msgid "Email"
 msgstr "E-mail"
 
-#: static/js/router.js:429
+#: static/js/router.js:430
 msgid "Please select at least one course"
 msgstr "Selecione, no mínimo, um curso"
 
-#: static/js/session_timeout_timer.js:31
+#: static/js/session_timeout_timer.js:39
 msgid "You were logged out due to inactivity. Please log back in to continue."
 msgstr ""
 
 #: static/js/static_translation_strings.js:2
 msgid "It looks like your browser settings has pop-ups disabled."
-msgstr "Aparentemente as configurações do seu navegador tem pop-ups desativados."
+msgstr ""
+"Aparentemente as configurações do seu navegador tem pop-ups desativados."
 
 #: static/js/static_translation_strings.js:3
 msgid "The content takes place in a new window."
@@ -473,7 +474,7 @@ msgstr "Nº de cursos"
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:487
-#: static/js/views/admin/participantsinfo.js:366
+#: static/js/views/admin/participantsinfo.js:364
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "O nome da empresa deve conter apenas caracteres alfanuméricos!"
 
@@ -481,7 +482,7 @@ msgstr "O nome da empresa deve conter apenas caracteres alfanuméricos!"
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:481
-#: static/js/views/admin/participantsinfo.js:360
+#: static/js/views/admin/participantsinfo.js:358
 msgid "This company name cannot have more than 30 characters!"
 msgstr "O nome da empresa deve ter, no máximo, 30 caracteres!"
 
@@ -591,7 +592,7 @@ msgstr "Nome"
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:125
+#: static/js/views/admin/participantsinfo.js:123
 msgid "Status"
 msgstr "Status"
 
@@ -741,21 +742,21 @@ msgstr "Alterar o status de todos os participantes selecionados para:"
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:377
-#: static/js/views/admin/participantsinfo.js:129
+#: static/js/views/admin/participantsinfo.js:127
 msgid "Participant"
 msgstr "Participante"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:378
-#: static/js/views/admin/participantsinfo.js:131
+#: static/js/views/admin/participantsinfo.js:129
 msgid "Observer"
 msgstr "Observador"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:379
-#: static/js/views/admin/participantsinfo.js:130
+#: static/js/views/admin/participantsinfo.js:128
 msgid "TA"
 msgstr "TA"
 
@@ -1111,7 +1112,7 @@ msgid "User successfully enrolled in course"
 msgstr "Usuário inscrito no curso com sucesso "
 
 #: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:96
+#: static/js/views/admin/participantsinfo.js:94
 msgid "Admin Company"
 msgstr "Empresa do Administrador"
 
@@ -1122,12 +1123,12 @@ msgstr ""
 "antecipada."
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:105
+#: static/js/views/admin/participantsinfo.js:103
 msgid "Admin Permissions"
 msgstr "Permissões do Administrador"
 
 #: static/js/views/admin/participant_details_edit_info.js:547
-#: static/js/views/admin/participantsinfo.js:108
+#: static/js/views/admin/participantsinfo.js:106
 msgid "Company Admin"
 msgstr "Empresa do Administrador"
 
