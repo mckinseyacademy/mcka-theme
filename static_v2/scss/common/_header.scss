@@ -657,12 +657,17 @@ header {
         }
       }
     }
-    .all-logos {
-      .navbar-brand {
-        img {
-          max-height: 30px !important;
-          max-width: 94px !important;
-          height: auto !important;
+  }
+
+  header {
+    &.appHeader {
+      .all-logos {
+        .navbar-brand {
+          img {
+            max-height: 30px !important;
+            max-width: 94px !important;
+            height: auto !important;
+          }
         }
       }
     }
