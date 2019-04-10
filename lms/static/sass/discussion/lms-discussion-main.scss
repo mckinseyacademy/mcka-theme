@@ -98,7 +98,9 @@ footer[role=contentinfo] {
 }
 body.new-theme {
   background-color: $ash-white;
-  //sync row with UI Refresh.
+  //sync row with UI Refresh.    
+  -webkit-font-smoothing: unset;
+  -moz-osx-font-smoothing: unset;
   .row{
     display: flex;
     flex-wrap: wrap;
@@ -113,6 +115,14 @@ body.new-theme {
       li {
         margin-bottom: 0;
       }
+    }
+  }
+  //sync up with ui-refresh
+  .dropdown-menu{
+    .content {
+      width: unset;
+      padding: 0;
+      display: unset;
     }
   }
   
@@ -167,7 +177,7 @@ body.new-theme {
   }
 
   /* desktop only  */
-  @media (min-width: 768px) {
+  @media (min-width: 767px) {
 
     #course-discussion .discussion-content .discussion-body {
       padding-bottom: 50px;
@@ -209,7 +219,7 @@ body.new-theme {
   }
 
   /* mobile */
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     #course-discussion {
       padding: 0;
       .contentCard {

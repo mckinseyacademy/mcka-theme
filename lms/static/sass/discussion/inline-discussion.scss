@@ -182,7 +182,7 @@ body.new-theme {
     }
 
     /* desktop only  */
-    @media (min-width: 768px) {
+    @media (min-width: 767px) {
 
 
         .forum-nav {
@@ -1522,7 +1522,7 @@ body.new-theme {
         }
     }
     /* mobile */
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
         [data-block-type="discussion"],
         [data-block-type="discussion-forum"] {
             padding: 0px;
