@@ -858,6 +858,14 @@ body.rtl {
   }
 }
 
+.bbGrid-grid {
+  .bbGrid-grid-head {
+    i {
+      @include margin-left(5px);
+    }
+  }
+}
+
 // Companies Admin styles
 #companyAdminCourseExportStatsModal{
   .saveChanges{
