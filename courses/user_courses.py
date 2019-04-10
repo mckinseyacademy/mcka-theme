@@ -34,7 +34,7 @@ def set_current_course_for_user(request, course_id, course_landing_page_flag=Fal
     """
     if not course_landing_page_flag:
         user_data = thread_local.get_basic_user_data(request.user.id)
-        if user_data.current_course.id == course_id:
+        if hasattr(user_data.current_course, 'id') and user_data.current_course.id == course_id:
             return
     common_data_manager = CommonDataManager()
 

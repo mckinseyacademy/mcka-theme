@@ -372,15 +372,6 @@ $(function () {
     $(".new-theme [data-block-type='pb-mcq'] input[type=radio]:checked").parent().addClass('selected');
   });
 
-  var msg_modal_selector = '#messagesModal';
-  if ($(msg_modal_selector).length) {
-    Apros.chainModal(0, msg_modal_selector, function () {
-      setTimeout(function () {
-        $(msg_modal_selector).foundation('reveal', 'open');
-      }, 10);
-    });
-  }
-
   Apros.executeModalChain();
 });
 

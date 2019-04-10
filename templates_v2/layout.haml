@@ -306,6 +306,27 @@
           .modal-footer
             %button.btn.btn-default{:data-dismiss => "modal", :type => "button"} Close
 
+    - block messages_modal
+      - if messages
+        #messagesModal.modal.fade{:tabindex => "-1", :role => "dialog", :aria-hidden => "true"}
+          .modal-dialog{:role => "document"}
+            .modal-content
+              .modal-header
+                %button.close{:type => "button", :data-dismiss => "modal", :aria-label => "close"}
+                  %span{:aria-hidden => "true"} &times;
+                %h5.modal-title {% trans "Notice" %}
+              .modal-body
+                {% for message in messages %}
+                  {{ message }}<br/>
+                {% endfor %}
+
+        %script
+          if ($("#messagesModal").length){
+            setTimeout(function () {
+              $('#messagesModal').modal('show')
+            }, 10);
+          }
+
     / New Feature Tour Structure
     .modal.fade.newFeatureTour.in.show{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
       .modal-dialog.modal-lg
