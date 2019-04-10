@@ -17,6 +17,9 @@
           .dropdownItem{'data-reveal-id': 'enroll_to_course_from_csv'}
             {% trans 'Enroll Existing Participants' %}
           %br
+          .dropdownItem{'data-reveal-id': 'unenroll_from_course_from_csv'}
+            {% trans 'Bulk un-enroll' %}
+          %br
           .dropdownItem{'data-reveal-id': 'update_profile_data'}
             {% trans 'Update profile data' %}
           %br
@@ -329,21 +332,57 @@
       .admin-form{style: "padding-bottom:0px;"}
 
         %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "fileInputEnroll"}
-          - csrf_token
           = form_enroll
 
         %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsEnrollCsvUpload'}
 
         .upload_stats
         .button-wrapper.topPadding{style: "padding-top:10px;padding-bottom:10px;position:relative;"}
-            %input.button.radius.small{type: "submit", value: "{% trans 'Add Participants' %}", disabled: "disabled", id: 'submitCSVEnroll'}
-            %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
-              {% trans "Cancel" %}
-            %i.fa.fa-spin.fa-spinner{style: "display:none;"}
+          %input.button.radius.small{type: "submit", value: "{% trans 'Add Participants' %}", disabled: "disabled", id: 'submitCSVEnroll'}
+          %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+            {% trans "Cancel" %}
+          %i.fa.fa-spin.fa-spinner{style: "display:none;"}
         #enroll-participants-error-list
 
+    #unenroll_from_course_from_csv.reveal-modal.small{'data-reveal': ''}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      .titleContainer
+        %h2 {% trans "Unenroll Participants from courses from CSV" %}
+      .bottomPadding
+        %a#unenrollParticipantTemplate{:href => "#", 'download': 'template.csv'}
+          {% trans "Download CSV Template" %}
+      %p
+        {% blocktrans %}
+        Download the CSV template above to unenroll users. All fields in the template are required.
+        {% endblocktrans %}
+      %hr
+      .admin-form
+        %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "DELETE", enctype: "multipart/form-data", :class => "fileInputUnenroll"}
+          = form_unenroll
+        %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "DELETE", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsUnenrollCsvUpload'}
+        .upload_stats
+        .button-wrapper
+          %input.button.radius.small{type: "submit", value: "{% trans 'Unenroll Participants' %}", disabled: "disabled", id: 'submitCSVUnenroll'}
+          %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+            {% trans "Close" %}
+          %i.fa.fa-spin.fa-spinner{style: "display:none;"}
+        #unenroll-participants-error-list
 
+    #unenroll_participants_success.reveal-modal.small{'data-reveal': ''}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      .titleContainer
+        %h2.delete_message {% trans "Your CSV is Being Processed..." %}
+      .contentContainer
+        %p.bottomPadding
+          {% trans "The unenrollment has been started for the selected participants." %}
+        %p.send_email{style: "display:none;"}
+          {% trans "You will be notified by email once completed." %}
 
+        .button-wrapper.topPadding
+          %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Close"}
+            {% trans "Close" %}
 
     #confirmation_screen.reveal-modal.big{'data-reveal': '', 'data-task-key': '', 'data-uploaded': ''}
       .close-reveal-modal

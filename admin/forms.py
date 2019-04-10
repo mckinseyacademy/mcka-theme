@@ -72,21 +72,23 @@ class ProgramForm(forms.Form):
 
 
 class UploadStudentListForm(forms.Form):
-
-    ''' form to upload file for student list '''
+    """ form to upload file for student list """
     student_list = forms.FileField(help_text="ClientStudentList.csv")
 
 
 class MassStudentListForm(forms.Form):
-
-    ''' form to upload file for student list '''
+    """ form to upload file for student list """
     student_list = forms.FileField(help_text="ClientStudentList.csv")
 
 
 class MassParticipantsEnrollListForm(forms.Form):
-
-    ''' form to upload file for student list '''
+    """ form to upload file for student list """
     student_enroll_list = forms.FileField(help_text="ParticipantsCourseList.csv")
+
+
+class MassParticipantsUnenrollListForm(forms.Form):
+    """Form to upload file with students and courses for performing unenrollment."""
+    student_unenroll_list = forms.FileField(help_text="ParticipantsCourseList.csv")
 
 
 class MassParticipantsDeleteListForm(forms.Form):

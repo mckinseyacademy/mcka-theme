@@ -54,8 +54,10 @@ from .controller import (
     update_company_field_for_users,
     CourseParticipantStats,
     ProblemReportPostProcessor,
-    get_emails_from_csv,
-    delete_company_data)
+    get_data_from_csv,
+    delete_company_data,
+    unenroll_participant,
+)
 from .models import UserRegistrationError, UserRegistrationBatch
 
 
@@ -696,7 +698,7 @@ def delete_participants_task(
         file_path = get_path(users_to_delete)
 
         try:
-            field, emails = get_emails_from_csv(file_path)
+            field, emails = get_data_from_csv(file_path, 'email')
             total = len(emails)
             users = []
             for i in range(0, total, settings.DELETION_SYNCHRONOUS_MAX_USERS):
@@ -769,6 +771,92 @@ def delete_participants_task(
 
     if failed:
         raise InvalidTaskError("Failed to delete users.")
+
+
+@task(name='admin.unenroll_participants_task', queeue='high_priority')
+def unenroll_participants_task(users_to_unenroll, send_confirmation_email, owner, base_url):
+    """
+    Extract users from CSV, unenroll them and (optionally) send an email
+    to the `owner` - user that initiated unenrollment.
+    :param users_to_unenroll: URL to a CSV file containing users who should be unenrolled
+    """
+    task_log_msg = "Unenroll Participants task"
+
+    logger.info('Started - {}'.format(task_log_msg))
+
+    failed, total = {}, 0
+    started = time.time()
+
+    # The users for unenrollment are specified in a CSV file.
+    file_path = get_path(users_to_unenroll)
+
+    try:
+        headers, data = get_data_from_csv(file_path, ['participant_id', 'course_id'])
+        total = len(data)
+    except Exception:
+        logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
+        raise
+    else:
+        logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
+
+    for user_data in data:
+        result = unenroll_participant(user_data[1], user_data[0])
+        if 'message' in result:
+            failed[user_data] = result['message']
+
+    try:
+        storage = get_storage(secure=True)
+        storage.delete(file_path)
+    except Exception as e:
+        logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
+    else:
+        logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
+
+    # Create CSV with failed rows
+    failed_url = None
+    if failed:
+        fields = OrderedDict([
+            ('participant_id', ('participant_id', '')),
+            ('course_id', ('course_id', '')),
+            ('reason', ('reason', '')),
+        ])
+        file_name = 'unenrollment_errors.csv'
+        errors = [{'participant_id': k[0], 'course_id': k[1], 'reason': v} for k, v in failed.items()]
+        try:
+            failed_url = create_and_store_csv_file(
+                fields, errors, DELETE_PARTICIPANTS_DIR,
+                file_name, logger, task_log_msg, secure=True
+            )
+        except Exception as e:
+            logger.error('Failed to generate CSV - {} - {}'.format(e.message, task_log_msg))
+
+        failed_url = urljoin(
+            base=base_url,
+            url=failed_url
+        )
+
+    # Send email
+    if send_confirmation_email:
+        subject = _('Bulk unenrollment completed')
+        email_template = 'admin/unenroll_users_email_template.haml'
+        mcka_logo = urljoin(
+            base=base_url,
+            url='/static/image/mcka_email_logo.png'
+        )
+        template_data = {
+            'first_name': owner.get('first_name'),
+            'file_name': file_path.split('/')[-1],
+            'mcka_logo_url': mcka_logo,
+            'minutes_taken': math.ceil((time.time() - started) / 60),
+            'failed_url': failed_url,
+            'successful': total - len(failed),
+            'total': total,
+        }
+
+        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
+
+    if failed:
+        raise InvalidTaskError("Failed to unenroll users.")
 
 
 @task(name='admin.user_company_fields_update_task', queue='high_priority')

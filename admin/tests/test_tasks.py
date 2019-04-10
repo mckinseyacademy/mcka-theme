@@ -18,6 +18,7 @@ from admin.tasks import (
     post_process_problem_response_report,
     delete_participants_task,
     delete_company_task,
+    unenroll_participants_task,
 )
 from admin.tests.test_views import CourseParticipantsStatsMixin
 from admin.tests.utils import Dummy
@@ -294,19 +295,19 @@ class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
 
     @patch('admin.tasks.get_path', lambda x: x)
     @patch('admin.tasks.get_users')
-    @patch('admin.tasks.get_emails_from_csv')
+    @patch('admin.tasks.get_data_from_csv')
     @patch('admin.controller.delete_participants')
     def test_delete_participants_task_with_file(
-            self, delete_participants_mock, get_emails_from_csv_mock, get_users_mock
+            self, delete_participants_mock, get_data_from_csv_mock, get_users_mock
     ):
         """Test bulk user deletion task with users provided in CSV file."""
         stub_file = 'stub_file'
         emails = [user.email for user in self.students]
         get_users_mock.side_effect = lambda **kwargs: self.students
-        get_emails_from_csv_mock.side_effect = lambda _: ('email', emails)
+        get_data_from_csv_mock.side_effect = lambda *args, **kwargs: ('email', emails)
 
         delete_participants_task(stub_file, False, self.owner, None)
-        get_emails_from_csv_mock.assert_called_with(stub_file)
+        get_data_from_csv_mock.assert_called_with(stub_file, 'email')
         get_users_mock.assert_called_with(**{'email': emails})
         delete_participants_mock.assert_called_with(None, users=self.students)
 
@@ -394,3 +395,27 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         )
         for model in company_models:
             self.assertFalse(model.objects.filter(company_id=self.mock_id))
+
+
+class UnenrollParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
+    """Tests tasks required for bulk user unenrollment."""
+
+    def setUp(self):
+        super(UnenrollParticipantsTaskTest, self).setUp()
+        self.owner = {'username': u'admin', 'first_name': u'Admin'}
+
+    @patch('admin.tasks.get_path', lambda x: x)
+    @patch('admin.tasks.get_data_from_csv')
+    @patch('admin.tasks.unenroll_participant')
+    def test_delete_participants_task_with_file(self, unenroll_participant_mock, get_data_from_csv_mock):
+        """Test bulk user unenrollment task with users provided in CSV file."""
+        stub_file = 'stub_file'
+        stub_course = 'stub_course'
+        headers = ['participant_id', 'course_id']
+        data = [(student.id, stub_course) for student in self.students]
+        get_data_from_csv_mock.side_effect = lambda *args, **kwargs: (headers, data)
+
+        unenroll_participants_task(stub_file, False, None, None)
+        get_data_from_csv_mock.assert_called_with(stub_file, headers)
+        self.assertEqual(unenroll_participant_mock.call_count, len(self.students))
+        unenroll_participant_mock.assert_called_with(stub_course, self.students[-1].id)
