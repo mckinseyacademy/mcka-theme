@@ -115,6 +115,13 @@ body.new-theme {
       }
     }
   }
+  //sync up with ui-refresh
+  .dropdown-menu{
+    .content {
+      width: auto;
+      padding: 0;
+    }
+  }
   
   
 
@@ -167,7 +174,7 @@ body.new-theme {
   }
 
   /* desktop only  */
-  @media (min-width: 768px) {
+  @media (min-width: 767px) {
 
     #course-discussion .discussion-content .discussion-body {
       padding-bottom: 50px;
@@ -209,7 +216,7 @@ body.new-theme {
   }
 
   /* mobile */
-  @media (max-width: 768px) {
+  @media (max-width: 767px) {
     #course-discussion {
       padding: 0;
       .contentCard {
