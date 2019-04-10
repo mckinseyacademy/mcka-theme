@@ -171,9 +171,3 @@ if (secondary !== undefined) {
     $('.courseRow a.description').css('background-color', lighten(secondary, 60));
     $('.courseRow .bookmark.primary svg path').css('fill', lighten(secondary, 0));
 }
-
-$(window).load(function () {
-    setTimeout(function () {
-        $('#branding-color').css('background-color', lighten(secondary, 65));
-    }, 2000);
-});
