@@ -75,8 +75,11 @@ body.new-theme {
             .image-explorer-close-reveal {
               color: transparent;
               margin-right: 5px;
-              margin-top: -7px;
-
+              margin-top: 0;
+              
+              &::before {
+                display: none;
+              }
               &:after {
                 font-family: "Material Icons";
                 content: "\e14c";
@@ -101,16 +104,38 @@ body.new-theme {
               }
 
               .image-explorer-hotspot-reveal-body {
-                ul, li, p, div, span {
-                  font-size: 12px;
+                > ul, > li, > p, > span {
+                  font-size: 14px;
                   color: $black;
+                  line-height: 19px;
+                  margin-bottom: 0;
+                }
+                > h1, > h2, > h3, > h4, > h5, > h6 {
+                  color: $black !important;
+                }
+                .ie-custom-div{
+                  font-size: 14px;
+                  line-height: 19px;
+                  margin-bottom: 0;
+                  ul, li, p, span, div {
+                    font-size: 14px;
+                    color: $black;
+                    line-height: 19px;
+                    margin-bottom: 0;
+                  }
+                  h1, h2, h3, h4, h5, h6 {
+                    color: $black !important;
+                  }
+                }
+                > div:not(.ie-custom-div) {
+                  margin-top: 3px;
                 }
                 a {
                   text-decoration: none;
-                  color: var(--primary);
+                  @include primary-theme-content-color;
                 }
 
-                ul {
+                > ul {
                   padding-left: 5px;
                   margin: 5px 0 0;
 

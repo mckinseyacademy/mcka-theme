@@ -53,21 +53,21 @@
         border: 2px solid $white;
       }
 
+      &.disabled {
+        opacity: 0.5;
+      }
       &.selected {
-
         &:after {
           display: block;
         }
-    
-    &:before {
-      background: black !important;
-      top: 0;
+
+        &:before {
+          background: black !important;
+          top: 0;
         }
-
-
       }
 
-      &:hover {
+      &:hover:not(.disabled) {
         &:before {
           background: $gray-border;
         }

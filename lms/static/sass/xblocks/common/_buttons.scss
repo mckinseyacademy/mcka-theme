@@ -14,15 +14,16 @@
     //Secondary button .btn-primary
     &.btn-primary {
       color: $white;
-      background-color: var(--primary);
-      border-color: var(--primary);
+      @include primary-theme-background-color;
+      @include primary-theme-border-color;
     }
 
     //Secondary button .btn-secondary
     &.btn-secondary {
       background: $white;
       border: 1px solid var(--primary);
-      color: var(--primary);
+      @include primary-theme-border-color;
+      @include primary-theme-content-color;
 
       &:hover {
         color: $dark-blue;
@@ -33,7 +34,7 @@
     &.btn-tertiary {
       background: transparent;
       border: 1px solid transparent;
-      color: var(--primary);
+      @include primary-theme-content-color;
 
       &:hover {
         background-color: $ash-hard;
@@ -126,5 +127,45 @@
     color: unset;
     background-color: unset;
     border-color: unset;
+  }
+}
+
+
+// button for extend
+
+%button {
+  font-weight: 600;
+  font-size: 12px;
+  height: 40px;
+  border-radius: 2px;
+  text-transform: uppercase;
+  line-height: 40px;
+  letter-spacing: 0.5px;
+  text-align: center;
+  padding: 0 20px;
+  color:$white;
+  background-color: var(--primary);
+  border:none;
+  transition: .35s;
+  box-shadow:inset 0 0 0 30px rgba(0,0,0,0);
+
+  &:hover {
+      box-shadow:inset 0 0 0 30px rgba(0,0,0,0.3);
+  }
+
+  &:disabled {
+      background: $gray;
+      opacity: 1;
+      cursor: not-allowed;
+      color: $white;
+      box-shadow:inset 0 0 0 30px rgba(0,0,0,0);
+
+      &:hover {
+          background: $gray;
+          opacity: 1;
+          cursor: not-allowed;
+          color: $white;
+          box-shadow:inset 0 0 0 30px rgba(0,0,0,0);
+      }
   }
 }

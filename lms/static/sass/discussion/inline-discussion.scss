@@ -1,24 +1,73 @@
 //for inline discussion
 @import '../base/variables';
 @import '../base/buttons';
+@import '../discussion/partials/discussion-mobile-forum-content';
 
+//disable selection of hidden transparent texts
+@mixin disableTextSelection {
+    -webkit-touch-callout: none;
+    /* iOS Safari */
+    -webkit-user-select: none;
+    /* Safari */
+    -khtml-user-select: none;
+    /* Konqueror HTML */
+    -moz-user-select: none;
+    /* Firefox */
+    -ms-user-select: none;
+    /* Internet Explorer/Edge */
+    user-select: none;
+    /* Non-prefixed version, currently supported by Chrome and Opera */
+}
 @mixin moreButtonOfPostOrComment() {
     list-style: none;
     margin: 0;
     padding: 0;
     text-indent: 0;
     line-height: initial;
-
-    .actions-dropdown-list {
-        display: grid;
-    }
+    .action-button {
+        &.btn-link:hover,&.btn-link:focus{
+          border-color: $hard-gray;
+          .icon{
+            @include primary-theme-content-color(!important);
+          }
+        }
+      }
+      .actions-dropdown-list {
+        display: inline-block;
+        li{
+            width: 90%;
+        }
+    
+        .btn-link {
+          color: black;
+          font-weight: normal;
+          font-size: 12px;
+          padding: 1px;
+          border: 0;
+          .icon {
+            color: $gray;
+          }
+    
+          &.is-checked {
+            &.action-pin {
+              @include primary-theme-content-color;
+            }
+          }
+    
+          &:hover {
+            .icon {
+              @include primary-theme-content-color;
+            }
+          }
+        }
+    
+      }
 
     .actions-item {
         margin: 0 5px 0;
         float: left;
 
         .btn-link {
-            border: 0;
             cursor: pointer;
             background: none;
         }
@@ -26,16 +75,29 @@
         .action-button {
             background: none;
             padding: 1px;
+            &.btn-link:hover,&.btn-link:focus{
+            border-color: $hard-gray;
+            .icon {
+                    @include primary-theme-content-color(!important);
+                }
+            }
         }
 
         &:last-child {
             .more-wrapper {
                 button.btn-link .icon {
-                    color: var(--primary);
+                    @include primary-theme-content-color;
                 }
             }
         }
     }
+}
+@mixin usernameStyle() {
+    color: $black;
+    font-weight: normal;
+    pointer-events: none;
+    font-size: 12px;
+    display: inline-block;
 }
 
 body.new-theme {
@@ -110,6 +172,7 @@ body.new-theme {
                 font-size: 1rem;
                 padding: 7px 10px;
                 color: $black;
+                border-top: 1px solid $hard-gray;
             }
 
             .wmd-preview {
@@ -167,6 +230,7 @@ body.new-theme {
         position: relative;
         z-index: 9999;
         padding-top: 0 !important;
+        word-break: break-word;
 
         .post-errors {
             margin: 0 auto;
@@ -237,10 +301,18 @@ body.new-theme {
             select,
             input[type="text"],
             input[type="search"] {
-                border-radius: 0px !important;
-                -webkit-appearance: none !important;
-                box-shadow: none;
-                border: 1px solid $hard-gray;
+              border-radius: 0px !important;
+              -webkit-appearance: none !important;
+              -moz-appearance: none;
+              -ms-appearance: none;
+              -o-appearance: none;
+              appearance: none;
+              box-shadow: none;
+              border: 1px solid $hard-gray;
+            }
+
+            select::-ms-expand{
+                display: none;
             }
 
             button.btn:not(.cancel):not(.post-cancel):not(.add-post-cancel):not(.discussion-show),
@@ -261,9 +333,11 @@ body.new-theme {
                 right: 0;
 
                 &:hover,
-                &:active,
-                &:focus {
+                &:active {
                     @include secondary-button-hover-large( !important);
+                }
+                &:focus {
+                    @include secondary-button-large( !important);
                 }
             }
 
@@ -305,11 +379,11 @@ body.new-theme {
 
                     &.is-checked {
                         .icon {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                         }
 
                         .label-checked {
-                            color: var(--primary);
+                            @include primary-theme-content-color;
                         }
                     }
                 }
@@ -334,7 +408,7 @@ body.new-theme {
             .icon {
                 font-family: "Material Icons";
                 font-size: 1.125rem;
-                color: var(--primary);
+                @include primary-theme-content-color;
                 vertical-align: middle;
 
                 &.fa-spinner {
@@ -534,7 +608,7 @@ body.new-theme {
                 .all-posts-btn {
                     cursor: pointer;
                     border: 0;
-                    color: var(--primary);
+                    @include primary-theme-content-color;
                     background: none;
 
                     &:hover {
@@ -563,7 +637,7 @@ body.new-theme {
 
                 .add-post-cancel {
                     border: 0;
-                    color: var(--primary);
+                    @include primary-theme-content-color;
                     cursor: pointer;
                     background: none;
                 }
@@ -623,18 +697,18 @@ body.new-theme {
                         }
 
                         .field-input-label {
-                            color: var(--primary) !important;
+                            @include primary-theme-content-color(!important);
                             position: absolute;
                             top: 0px;
                             left: 30px;
 
                             &:hover {
-                                color: $mckinsey-primary-hover-button;
+                                @include primary-theme-content-color-hover(!important);
                             }
 
                             .icon {
                                 &:before {
-                                    color: $mckinsey-primary-hover-button !important
+                                    @include primary-theme-content-color(!important);
                                 }
                             }
 
@@ -664,13 +738,15 @@ body.new-theme {
 
                     .field-help {
                         color: transparent;
-
+                        visibility: hidden;
+                        @include disableTextSelection();
                         &#field_help_topic_area {
 
                             position: absolute;
                             top: 64px;
 
                             &:before {
+                                visibility: visible;
                                 content: 'Add your post to a relevant topic to help others find it.';
                                 font-size: 12px;
                                 position: absolute;
@@ -685,6 +761,7 @@ body.new-theme {
                             top: 71px;
 
                             &:before {
+                                visibility: visible;
                                 content: 'Add a clear and descriptive title to encourage participation.';
                                 font-size: 12px;
                                 position: absolute;
@@ -703,19 +780,28 @@ body.new-theme {
                             width: 55% !important;
                             background-image: url(../../images/expand-button.svg);
                             -webkit-appearance: none !important;
+                            -moz-appearance: none;
+                            -ms-appearance: none;
+                            -o-appearance: none;
+                            appearance: none;
                             padding: 0 10px;
                             border: 1px solid $hard-gray !important;
                             background-repeat: no-repeat;
                             background-position: 95%;
                             background-size: 12px;
                             color: $gray;
+                            &::-ms-expand {
+                              display: none;
+                            }
                         }
                     }
 
                     #field_help_post_type {
                         color: transparent;
-
+                        visibility: hidden;
+                        @include disableTextSelection();
                         &:before {
+                            visibility: visible;
                             content: 'Questions raise issues that need answers. Discussions share ideas and start conversations.';
                             font-size: 12px;
                             color: $gray;
@@ -730,8 +816,10 @@ body.new-theme {
                     margin-top: 35px;
                     display: inline-block;
                     color: transparent !important;
-
+                    visibility: hidden;
+                    @include disableTextSelection();
                     &:before {
+                        visibility: visible;
                         content: 'Your question or idea';
                         font-size: 1rem;
                         position: absolute;
@@ -800,11 +888,10 @@ body.new-theme {
                         position: relative;
 
                         .field-input:checked+.field-input-label {
-                            color: var(--primary);
-
+                            color: $black;
                             .icon {
                                 &::before {
-                                    color: var(--primary);
+                                    @include primary-theme-content-color;
                                 }
                             }
                         }
@@ -857,23 +944,42 @@ body.new-theme {
                     border: 0;
                     margin: 0;
                     min-height: auto;
-
+                    .forum-nav-load-more {
+                        background-color: #FFFFFF;
+                        padding: 10px;
+            
+                        .forum-nav-load-more-link {
+                          @include secondary-button;
+                          width: 100%;
+                          margin: 0 auto;
+                          &:hover,
+                          &:active {
+                            @include secondary-button-hover;
+                            text-decoration: none;
+                          }
+                        }
+                      }
                     .forum-nav-thread {
                         border: 0;
                         background: none;
                         padding: 0;
-
+                        &:hover .forum-nav-thread-title{
+                            text-decoration: underline;
+                            @include primary-theme-content-color-hover(!important);
+                        }
                         .sr {
                             display: none;
                         }
-
+                        .forum-nav-thread-wrapper-1{
+                            width: calc(100% - 125px);
+                        }
                         .forum-nav-thread-link {
                             border-left: 0;
                             border-bottom: 1.21px solid $ash-white;
                             padding: 14px 25px !important;
 
                             .icon {
-                                color: var(--primary);
+                                @include primary-theme-content-color;
                                 font-size: 1.250rem;
                                 vertical-align: top;
                             }
@@ -889,7 +995,7 @@ body.new-theme {
 
                             .forum-nav-thread-title {
                                 font-size: 1rem;
-                                color: var(--primary);
+                                @include primary-theme-content-color;
                                 line-height: 21px;
                                 font-weight: 400;
                             }
@@ -898,7 +1004,7 @@ body.new-theme {
                                 font-size: 12px;
                                 font-weight: 200;
                                 .username{
-                                    font-weight: normal;
+                                    @include usernameStyle();
                                 }
                             }
                             .thread-preview-body{
@@ -954,11 +1060,11 @@ body.new-theme {
                         &.never-read {
                             .forum-nav-thread-link {
                                 border-left: 0;
-                                color: var(--primary);
+                                @include primary-theme-content-color;
                                 background-color: transparent;
 
                                 .icon {
-                                    color: var(--primary);
+                                    @include primary-theme-content-color;
                                 }
                             }
                         }
@@ -982,8 +1088,10 @@ body.new-theme {
 
                     .label {
                         color: transparent;
-
+                        visibility: hidden;
+                        @include disableTextSelection();
                         &:before {
+                            visibility: visible;
                             color: $black;
                             font-weight: normal;
                             font-size: 1.5rem;
@@ -1003,8 +1111,10 @@ body.new-theme {
                 .label {
                     &.label-settings {
                         color: transparent;
-
+                        visibility: hidden;
+                        @include disableTextSelection();
                         &:before {
+                            visibility: visible;
                             content: 'How to use discussions:';
                             font-size: 0.875rem;
                             color: black;
@@ -1087,10 +1197,7 @@ body.new-theme {
                                     margin: 0;
 
                                     .username {
-                                        color: $black;
-                                        font-weight: normal;
-                                        pointer-events: none;
-                                        font-size: 12px;
+                                        @include usernameStyle();
                                     }
 
                                     .user-label-staff {
@@ -1114,11 +1221,23 @@ body.new-theme {
                                     .sr {
                                         display: none;
                                     }
-
+                                    .action-button {
+                                        &.btn-link:hover,&.btn-link:focus{
+                                          border-color: $hard-gray;
+                                          .icon{
+                                            @include primary-theme-content-color(!important);
+                                          }
+                                        }
+                                      }
                                     .actions-item {
                                         margin: 0 5px 0;
                                         cursor: pointer;
                                         float: left;
+                                        .action-button {
+                                            &.btn-link:hover,&.btn-link:focus{
+                                              border-color: $hard-gray;
+                                            }
+                                          }
 
                                         .btn-link {
                                             padding: 1px;
@@ -1129,13 +1248,16 @@ body.new-theme {
                                     .actions-item:last-child {
                                         .more-wrapper {
                                             button.btn-link .icon {
-                                                color: var(--primary);
+                                                @include primary-theme-content-color;
                                             }
                                         }
                                     }
 
                                     .actions-dropdown-list {
-                                        display: grid;
+                                        display: inline-block;
+                                        li{
+                                            width: 90%;
+                                        }
 
                                         .btn-link {
                                             border: 0;
@@ -1147,13 +1269,13 @@ body.new-theme {
 
                                             &.is-checked {
                                                 &.action-pin {
-                                                    color: var(--primary);
+                                                    @include primary-theme-content-color;
                                                 }
                                             }
 
                                             &:hover {
                                                 .icon {
-                                                    color: var(--primary);
+                                                    @include primary-theme-content-color;
                                                 }
                                             }
                                         }
@@ -1222,14 +1344,14 @@ body.new-theme {
                                     .response-header {
                                         background: none;
                                         border: 0;
+                                        .response-header-actions{
+                                            right: 10px;
+                                        }
                                     }
 
                                     .response-header-content {
                                         .username {
-                                            color: $black;
-                                            font-weight: normal;
-                                            font-size: 12px;
-                                            pointer-events: none;
+                                            @include usernameStyle();
                                         }
 
                                         .user-label-staff {
@@ -1272,7 +1394,7 @@ body.new-theme {
                                 }
 
                                 .action-show-comments {
-                                    color: var(--primary);
+                                    @include primary-theme-content-color;
                                     text-decoration: none;
                                     font-size: 0.875rem;
                                     font-weight: normal;
@@ -1280,7 +1402,7 @@ body.new-theme {
                                     box-shadow: none;
 
                                     .fa-caret-down::before {
-                                        color: var(--primary);
+                                        @include primary-theme-content-color;
                                         font-size: 1.25rem;
                                         vertical-align: text-top;
                                     }
@@ -1328,10 +1450,7 @@ body.new-theme {
                                         margin: 0;
 
                                         .username {
-                                            color: $black;
-                                            font-weight: normal;
-                                            font-size: 12px;
-                                            pointer-events: none;
+                                            @include usernameStyle();
                                         }
 
                                         .user-label-staff {
@@ -1409,6 +1528,7 @@ body.new-theme {
             padding: 0px;
 
             .wmd-panel {
+                font-size: 14px;
                 .wmd-button-row {
                     display: none!important;
                     visibility: hidden!important;
@@ -1450,6 +1570,7 @@ body.new-theme {
                         width: 69px;
                         min-width: auto;
                         height: 40px !important;
+                        @include disableTextSelection();
 
                         &:before {
                             font-size: 1.875rem;
@@ -1460,6 +1581,9 @@ body.new-theme {
                             left: 30%;
                             top: -3px;
                         }
+                        &:hover {
+                            height: 40px !important;
+                        }
                     }
                 }
                 button.discussion-show {
@@ -1468,9 +1592,11 @@ body.new-theme {
                     margin-top: 20px;
     
                     &:hover,
-                    &:active,
-                    &:focus {
+                    &:active {
                         @include secondary-button-hover( !important);
+                    }
+                    &:focus {
+                        @include secondary-button( !important);
                     }
                 }
                 button.discussion-show {
@@ -1673,6 +1799,14 @@ body.new-theme {
                             .post-actions-list {
                                 margin: 0;
                                 line-height: initial;
+                                  .action-button {
+                                    &.btn-link:hover,&.btn-link:focus{
+                                      border-color: $hard-gray;
+                                      .icon{
+                                        @include primary-theme-content-color(!important);
+                                      }
+                                    }
+                                  }
                             }
 
                             .action-icon {
@@ -1689,10 +1823,7 @@ body.new-theme {
                                 margin: 0;
 
                                 .username {
-                                    color: $black;
-                                    font-weight: normal;
-                                    font-size: 12px;
-                                    pointer-events: none;
+                                    @include usernameStyle();
                                 }
 
                                 .user-label-staff {
@@ -1714,43 +1845,7 @@ body.new-theme {
                     }
 
                     .forum-content {
-                        padding-top: 0px;
-
-                        .post-extended-content {
-                            padding: 0;
-                        }
-
-                        .discussion-article {
-                            padding: 0 0px;
-
-                            &.view-discussion-home {
-                                display: none;
-                            }
-                        }
-
-                        .forum-response {
-                            .comments {
-                                .btn-brand {
-                                    @include primary-button( !important);
-
-                                    &:hover,
-                                    &:active {
-                                        @include primary-button-hover( !important);
-                                    }
-                                }
-                            }
-                        }
-
-                        .discussion-reply-new {
-                            .discussion-submit-post {
-                                @include primary-button( !important);
-
-                                &:hover,
-                                &:focus {
-                                    @include primary-button-hover( !important);
-                                }
-                            }
-                        }
+                        @include forum-content-mobile;
                     }
                 }
             }

@@ -80,6 +80,9 @@
     label {
         text-align: right;
     }
+    .drag-container .target .item-feedback-popup.popup .close-feedback-popup-desktop-button {
+        right: -4px !important;
+    }
 }
 
 @include dnd-mobile-only {
@@ -203,7 +206,19 @@
 }
 
 body.new-theme {
+    &.rtl .popup{
 
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        label {
+            text-align: center;
+        }
+    }
     #course-lessons {
         font-family: "Open Sans", sans-serif !important;
         margin-bottom: 15px;
@@ -268,7 +283,7 @@ body.new-theme {
                             font-size: 0.875rem;
                             border-radius: 2px;
                             font-weight: normal;
-                            background-color: var(--primary);
+                            @include primary-theme-background-color;
                             padding: 12px 15px;
                             cursor: grab;
                             &.option-with-image{
@@ -328,6 +343,12 @@ body.new-theme {
                             border: 1px solid $popup-border;
 
                             &.popup {
+                                @media screen and (min-width: 480px) {
+                                    margin-left: auto;
+                                    margin-right: auto;
+                                    left: 0;
+                                    right: 0;
+                                }
                                 background: $white;
                                 box-shadow: 0 0 100px rgba(0, 0, 0, 0.4);
                                 padding: 10px 0 0;
@@ -340,8 +361,9 @@ body.new-theme {
                                     width: 20px;
                                     height: 20px;
                                     position: absolute;
-                                    right: 0px;
-                                    top:0px;
+                                    right: 6px;
+                                    top: 4px;
+                                    margin: 0;
                                 }
 
                                 .close-feedback-popup-mobile-button {
@@ -349,7 +371,7 @@ body.new-theme {
                                 }
 
                                 .popup-header-text {
-                                    display: inline-block;
+                                    display: none;
                                     font-size: 12px;
                                 }
 
@@ -370,13 +392,15 @@ body.new-theme {
                                     font-size: 1.125rem;
 
                                     .fa-exclamation-circle {
+                                        font-size: 2.25rem;
                                         &::before {
                                             font-family: "Material Icons";
-                                            content: "\e5c9";
+                                            content: "\e000";
                                         }
                                     }
 
                                     .fa-check-circle {
+                                        font-size: 2.25rem;
                                         &::before {
                                             font-family: "Material Icons";
                                             content: "\e86c";
@@ -442,11 +466,41 @@ body.new-theme {
                             opacity: 1;
 
                             &.reset-button {
-                                @include secondary-button;
+                                padding-left: 30px;
+                                position: relative;
+                                .btn-icon {
+                                    position: absolute;
+                                    top: 11px;
+                                    padding-right: 0;
+                                    font-size: 1rem;
+                                    left: 10px;
+                                    display: block;
 
-                                &:active,
-                                &:hover {
-                                    @include secondary-button-hover;
+                                    &:before {
+                                        font-family: 'Material Icons';
+                                        content: '\e863';
+                                        color: $light-gray;
+                                    }
+                                }
+
+                                &:not(:disabled) {
+                                    @include secondary-button;
+                                    padding-left: 30px;
+
+                                    .btn-icon:before {
+                                        @include primary-theme-content-color;
+                                    }
+
+                                    &:active,
+                                    &:hover {
+                                        @include secondary-button-hover;
+
+                                        .btn-icon:before {
+                                            @include primary-theme-content-color-hover;
+                                        }
+
+                                        padding-left: 30px;
+                                    }
                                 }
                             }
 
@@ -462,8 +516,9 @@ body.new-theme {
 
                         button[disabled] {
                             background-color: $gray !important;
-                            color: $light-gray;
+                            color: $light-gray !important;
                             opacity: 1;
+                            border: 0;
                         }
 
                         &.submit-answer {

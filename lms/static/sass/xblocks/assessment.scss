@@ -68,7 +68,7 @@
             &.checkmark-partially-correct {
                 &::before {
                     font-family: 'Material Icons';
-                    content: '\e002';
+                    content: '\e644';
                     @include font-size(24);
                 }
             }
@@ -85,7 +85,7 @@
             &.checkmark-incorrect {
                 &::before {
                     font-family: 'Material Icons';
-                    content: '\e5c9';
+                    content: '\e000';
                     @include font-size(24);
                     color:$bg-white-red;
                 }
@@ -104,7 +104,7 @@
             &.checkmark-partially-correct {
                 &::before {
                     font-family: 'Material Icons';
-                    content: '\e002';
+                    content: '\e644';
                     @include font-size(24);
                 }
             }
@@ -121,7 +121,7 @@
             &.checkmark-incorrect {
                 &::before {
                     font-family: 'Material Icons';
-                    content: '\e5c9';
+                    content: '\e000';
                     @include font-size(24);
                     color:$bg-white-red;
                 }

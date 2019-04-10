@@ -1,0 +1,42 @@
+@mixin forum-content-mobile {
+    padding-top: 0px;
+
+    .post-extended-content {
+        padding: 0;
+    }
+
+    .discussion-article {
+        padding: 0 0px;
+
+        &.view-discussion-home {
+            display: none;
+        }
+        .thread-wrapper .response-btn-count-wrapper {
+            margin: 0;
+        }
+    }
+
+    .forum-response {
+        .comments {
+            .btn-brand {
+                @include primary-button( !important);
+
+                &:hover,
+                &:active {
+                    @include primary-button-hover( !important);
+                }
+            }
+        }
+    }
+
+    .discussion-reply-new {
+        .discussion-submit-post {
+            @include primary-button( !important);
+
+            &:hover,
+            &:focus {
+                @include primary-button-hover( !important);
+            }
+        }
+    }
+}

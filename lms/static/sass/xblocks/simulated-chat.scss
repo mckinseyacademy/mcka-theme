@@ -67,16 +67,15 @@
                                 letter-spacing: 0.5px;
                                 text-align: center;
                                 padding: 0 20px;
-                                border: 1px solid $primary;
+                                border: 1px solid var(--primary);
                                 transition: .35s;
-                                color: $primary;
+                                color: var(--primary);
                                 cursor: pointer;
                                 font-family: "Open Sans",sans-serif !important;
                                 background:transparent;
 
                                 &:hover {
-                                    color: $dark-blue;
-                                    border-color: $dark-blue;
+                                    border: 1px solid var(--primary);
                                 }
 
                                 &:disabled {
@@ -90,6 +89,27 @@
                                         border-color: $gray;
                                         cursor: not-allowed;
                                         color: $gray;
+                                    }
+                                }
+                            }
+                            &.selected
+                            {
+                                button
+                                {
+                                    &:disabled {
+                                        opacity: 1;
+                                        border-color: $gray;
+                                        cursor: not-allowed;
+                                        background: $gray;
+                                        color:$white;
+    
+                                        &:hover {
+                                            opacity: 1;
+                                            border-color: $gray;
+                                            cursor: not-allowed;
+                                            background: $gray;
+                                            color:$white;
+                                        }
                                     }
                                 }
                             }
@@ -110,14 +130,14 @@
                         text-align: center;
                         padding: 0 20px;
                         transition: .35s;
-                        color: $primary;
+                        color: var(--primary);
                         cursor: pointer;
 
                         &:hover {
                             background: $ash-hard;
-                            color: $dark-blue;
+                            color: var(--primary);
                             &::before {
-                                color: $dark-blue;
+                                color: var(--primary);
                             }
                         }
 
@@ -125,7 +145,7 @@
                         &::before {
                             font-family: 'Material Icons';
                             content: '\e863';
-                            color: $primary;
+                            color: var(--primary);
                             margin-right: 6px;
                             position: relative;
                             top: 3px;
