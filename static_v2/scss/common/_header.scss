@@ -567,6 +567,16 @@ header {
         max-width: 100%;
         padding: 0 15px;
       }
+
+      .all-logos {
+        .navbar-brand {
+          img {
+            max-height: 40px !important;
+            max-width: 125px !important;
+            height: auto !important;
+          }
+        }
+      }
     }
   }
 
@@ -650,8 +660,9 @@ header {
     .all-logos {
       .navbar-brand {
         img {
-          height: 30px;
-          width: auto;
+          max-height: 30px !important;
+          max-width: 94px !important;
+          height: auto !important;
         }
       }
     }

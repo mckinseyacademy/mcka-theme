@@ -979,7 +979,7 @@ body.rtl {
     .logo {
       .topRightArea {
         .profileArea {
-          @include margin-left(15px);
+          @include margin-left(5px);
           .dropdown-menu {
             &:after {
               @include right(7px !important);
