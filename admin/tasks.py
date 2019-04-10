@@ -38,7 +38,7 @@ from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage, get_path
 from util.email_helpers import send_html_email
 
-from admin.models import LearnerDashboardTile, AdminTask
+from admin.models import LearnerDashboardTile, AdminTask, DeletionAdmin
 from accounts.models import UserActivation
 from accounts.helpers import create_activation_url
 from courses.controller import strip_tile_link, get_course_object, update_progress
@@ -663,7 +663,8 @@ def delete_company_task(company_id, owner, base_url):
             'minutes_taken': math.ceil((time.time() - started) / 60),
             'reason': str(e),
         }
-        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
+        recipients = [owner.get('email')] + [da.email for da in DeletionAdmin.objects.all()]
+        send_email.delay(subject, email_template, template_data, recipients, task_log_msg)
 
 
 @task(name='admin.delete_participants_task', queue='high_priority')
@@ -766,8 +767,8 @@ def delete_participants_task(
             'total': total,
         }
         template_data.update(template_extra_data)
-
-        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
+        recipients = [owner.get('email')] + [da.email for da in DeletionAdmin.objects.all()]
+        send_email.delay(subject, email_template, template_data, recipients, task_log_msg)
 
     if failed:
         raise InvalidTaskError("Failed to delete users.")
@@ -852,8 +853,8 @@ def unenroll_participants_task(users_to_unenroll, send_confirmation_email, owner
             'successful': total - len(failed),
             'total': total,
         }
-
-        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
+        recipients = [owner.get('email')] + [da.email for da in DeletionAdmin.objects.all()]
+        send_email.delay(subject, email_template, template_data, recipients, task_log_msg)
 
     if failed:
         raise InvalidTaskError("Failed to unenroll users.")

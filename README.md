@@ -99,3 +99,19 @@ __Marking a Migration as applied__
 To fix up migration records so that the newly added migration record does not clash with a previously created database object (e.g. The table was already created using `./manage.py syncdb` but the app is now desired to use migrations) use the following command:
 
     ./manage.py migrate --fake-initial <name_of_app>
+
+#### Deletion Admins
+Given the dangerous nature of data deletion, especially when deleting a company
+or performing a bulk deletion, we can set up extra emails to be notified when
+those are executed.
+
+Extra emails to be notified of deletions can be added by using a management command:
+
+    ./manage deletion_admin add admin_1@test.com admin_2@test.com admin_3@test.com
+
+These can be later removed by using:
+
+    ./manage deletion_admin remove admin_2@test.com admin_3@test.com
+
+Whenever a bulk or company deletion notification is sent to the admin that
+started the process, it will be also sent to the existing deletion admins.
