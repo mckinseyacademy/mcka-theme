@@ -120,8 +120,9 @@ body.new-theme {
   //sync up with ui-refresh
   .dropdown-menu{
     .content {
-      width: auto;
+      width: unset;
       padding: 0;
+      display: unset;
     }
   }
   
