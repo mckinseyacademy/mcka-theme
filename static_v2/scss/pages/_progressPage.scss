@@ -420,6 +420,23 @@
     }
   }
 }
+@include media-breakpoint-between(xs, md) {
+  #course-progress-new {
+    table {
+      tbody {
+        tr {
+          td {
+            .lesson-with-list {
+              .dropdown-toggle {
+                display: block;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 // Mobile
 
