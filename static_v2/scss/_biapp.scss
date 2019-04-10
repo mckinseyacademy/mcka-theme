@@ -37,7 +37,7 @@ body {
 
       > ul {
         > li {
-          @include margin-left(30px);
+          @include margin-left(26px);
           @include margin-right(0);
           &:first-child {
             @include margin-left(0);
@@ -109,7 +109,7 @@ body {
   .mainNav {
     > ul {
       > li {
-        @include margin-left(30px);
+        @include margin-left(26px);
         &:first-child {
           @include margin-left(0);
         }
