@@ -98,7 +98,9 @@ footer[role=contentinfo] {
 }
 body.new-theme {
   background-color: $ash-white;
-  //sync row with UI Refresh.
+  //sync row with UI Refresh.    
+  -webkit-font-smoothing: unset;
+  -moz-osx-font-smoothing: unset;
   .row{
     display: flex;
     flex-wrap: wrap;
