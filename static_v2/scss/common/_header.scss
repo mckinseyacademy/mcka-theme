@@ -395,7 +395,7 @@ header {
 
       &.active {
         >a {
-          color: #2E2D39;
+          color: #2E2D39 !important;
 
           &:before {
             width: 100%;

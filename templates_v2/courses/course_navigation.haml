@@ -22,7 +22,7 @@
                       %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}"}
                         {% trans "Overview" %}
 
-                    %li.hasDropdown{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_nannouncements' %}active{% endif %}"}
+                    %li.hasDropdown{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_overview' %}active{% endif %}"}
                       %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
                         %span
                           {% trans "Course Materials" %}
