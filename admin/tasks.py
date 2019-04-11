@@ -335,7 +335,7 @@ def send_export_stats_status_email(
 
 
 @task(name='admin.send_email')
-def send_email(subject, email_template, template_data, user_emails, task_log_msg):
+def send_email(subject, email_template, template_data, user_emails, task_log_msg, cc_emails=None):
     """
     Sends email and logs it.
     :param user_emails: `list` of users to whom the message will be sent.
@@ -346,7 +346,7 @@ def send_email(subject, email_template, template_data, user_emails, task_log_msg
         send_html_email(
             subject=subject,
             to_emails=user_emails, template_name=email_template,
-            template_data=template_data,
+            template_data=template_data, cc_emails=cc_emails
         )
     except Exception as e:
         logger.error('Failed sending notification email to Admin {} - {}'.format(e.message, task_log_msg))
@@ -663,8 +663,12 @@ def delete_company_task(company_id, owner, base_url):
             'minutes_taken': math.ceil((time.time() - started) / 60),
             'reason': str(e),
         }
-        recipients = [owner.get('email')] + [da.email for da in DeletionAdmin.objects.all()]
-        send_email.delay(subject, email_template, template_data, recipients, task_log_msg)
+        send_email.delay(subject,
+                         email_template,
+                         template_data,
+                         [owner.get('email')],
+                         task_log_msg,
+                         [da.email for da in DeletionAdmin.objects.all()])
 
 
 @task(name='admin.delete_participants_task', queue='high_priority')
@@ -767,8 +771,12 @@ def delete_participants_task(
             'total': total,
         }
         template_data.update(template_extra_data)
-        recipients = [owner.get('email')] + [da.email for da in DeletionAdmin.objects.all()]
-        send_email.delay(subject, email_template, template_data, recipients, task_log_msg)
+        send_email.delay(subject,
+                         email_template,
+                         template_data,
+                         [owner.get('email')],
+                         task_log_msg,
+                         [da.email for da in DeletionAdmin.objects.all()])
 
     if failed:
         raise InvalidTaskError("Failed to delete users.")
