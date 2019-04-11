@@ -16,7 +16,7 @@
     overflow: hidden;
     .future-course-text {
       @extend .current-bookmark-text;
-      z-index: 999;
+      z-index: 1;
       display: none;
     }
     .overlay-img {
