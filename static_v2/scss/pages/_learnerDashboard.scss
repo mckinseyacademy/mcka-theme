@@ -53,6 +53,17 @@ body{
       }
     }
   }
+  .mainNav {
+    > ul {
+      > li {
+        a {
+          &::before {
+            bottom: -8px;
+          }
+        }
+      }
+    }
+  }
 }
 
 #mCSB_1_container {
@@ -316,9 +327,9 @@ body{
       .mainNav {
         >ul {
           >li {
-            margin-top: 17px !important;
+            margin-top: 9px !important;
             a {
-              padding-bottom: 12px !important;
+              padding-bottom: 14px !important;
             }
           }
         }
