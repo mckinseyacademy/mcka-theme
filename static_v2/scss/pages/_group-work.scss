@@ -781,6 +781,38 @@
                 background: $yellow-light !important;
             }
         }
+
+        // Tablet and Mobile View
+
+        @media (max-width: 992px) { 
+            
+           
+            .review_subject
+            {
+                padding:10px !important;
+                height:auto!important;
+                line-height: normal;
+            }
+            .review_evaluating_now
+            {
+                font-size:14px !important;
+                white-space: nowrap;
+            }
+
+            .other_submissions
+            {
+                float: none !important;
+                text-align: left;
+                width: auto;
+                a
+                {
+                    line-height: normal !important;
+                    width: auto;
+                    font-size: 12px !important;
+                    margin-left: 28px;
+                }
+            }
+         }
     }
 
 
@@ -857,6 +889,18 @@
         }
     }
 
+
+.group-project-other-team-submissions
+{
+    .other-team-submission
+    {
+        .group-project-submissions
+        {
+            list-style: none;
+        }
+
+    }
+}
 
 
     // Change Icons in content.
