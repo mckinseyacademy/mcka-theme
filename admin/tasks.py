@@ -861,7 +861,7 @@ def unenroll_participants_task(users_to_unenroll, send_confirmation_email, owner
             'successful': total - len(failed),
             'total': total,
         }
-        recipients = [owner.get('email')] + [da.email for da in DeletionAdmin.objects.all()]
+        recipients = [owner.get('email')]
         send_email.delay(subject, email_template, template_data, recipients, task_log_msg)
 
     if failed:
