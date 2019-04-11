@@ -1,26 +1,4 @@
 .my-courses {
-  [class*="col"].future-course{
-    .future-course-text {
-      display: block;
-    }
-    .card {
-      &:after {
-        content: "";
-        position: absolute;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        top: 0;
-        background-color: rgba(255, 255, 255, 0.6);
-        z-index: 0;
-        pointer-events: none;
-      }
-    }
-    .future-course-link{
-      display: inline-block;
-      visibility: visible;
-    }
-  }
   h1 {
     font-size: 32px;
     line-height: 1.2;
@@ -38,7 +16,7 @@
     overflow: hidden;
     .future-course-text {
       @extend .current-bookmark-text;
-      z-index: 1;
+      z-index: 999;
       display: none;
     }
     .overlay-img {
@@ -183,6 +161,55 @@
     }
     .modal-body {
       padding-bottom: 40px;
+    }
+  }
+
+  #future-modal {
+    .modal-content {
+      padding-top: 45px;
+    }
+    .modal-header {
+      h4 {
+        margin-bottom: 20px;
+      }
+    }
+
+    .modal-body {
+      padding-bottom: 30px;
+      .btn {
+        margin-top: 45px;
+      }
+    }
+  }
+  [class*="col"].future-course {
+    #course-navigation {
+      cursor: auto;
+      &:hover {
+        h3 {
+          text-decoration: none;
+        }
+        .card {
+          box-shadow: none;
+        }
+      }
+      .card {
+        &:after {
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          top: 0;
+          background-color: rgba(255, 255, 255, 0.6);
+          z-index: 0;
+          pointer-events: none;
+        }
+        .card-body {
+          .future-course-text {
+            display: block;
+          }
+        }
+      }
     }
   }
 }

@@ -43,12 +43,14 @@
 
 
 / Modal
-#future-modal.modal.fade{:aria-hidden => "true", :aria-labelledby => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
-  .modal-dialog{:role => "document"}
+#future-modal.middleSize.modal.fade{:aria-hidden => "true", :aria-labelledby => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.text-center{:role => "document"}
     .modal-content
       .modal-header
-        %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
-          %span{:aria-hidden => "true"} ×
         %h4.modal-title
           {% trans "Welcome to McKinsey Academy" %}
-      .modal-body {% blocktrans %}Your course begins in <span class="numdays"></span> days. Before the course begins, you can explore this site to learn more about what to expect.{% endblocktrans %}
+      .modal-body 
+        {% blocktrans %}Your course begins in <b><span class="numdays"></span></b> days. Before the course begins, you can explore this site to learn more about what to expect.{% endblocktrans %} <br />
+        %button.ok-close.btn.btn-primary.btn-lg{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+          %span{:aria-hidden => "true"} {% trans "OK" %}
+      
