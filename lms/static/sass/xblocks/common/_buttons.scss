@@ -26,7 +26,7 @@
       @include primary-theme-content-color;
 
       &:hover {
-        color: $dark-blue;
+        @include primary-theme-content-color;
       }
     }
 
@@ -38,7 +38,7 @@
 
       &:hover {
         background-color: $ash-hard;
-        color: $dark-blue;
+        @include primary-theme-content-color-hover;
       }
     }
 
