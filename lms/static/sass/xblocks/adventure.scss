@@ -4,6 +4,22 @@
 
 body.new-theme {
     [data-block-type="adventure"] {
+
+
+        // MCQ
+
+        [data-type="MCQBlock"]
+        {
+            .choice-selector
+            {
+                &::before
+                {
+                    top:0;
+                }
+            }
+        }
+
+
         .adventure {
             .info {
                 font-size: 1rem;
