@@ -627,7 +627,7 @@
 		}
 	}
 }
-#import_from_csv, #enroll_to_course_from_csv, #advanced_delete_modal{
+#import_from_csv, #enroll_to_course_from_csv, #advanced_delete_modal, #unenroll_from_course_from_csv{
 
 	.admin-form
 	{
@@ -663,7 +663,7 @@
 	}
 }
 
-#delete_user_modal, #delete_user_success, #advanced_delete_modal, #delete_participants_confirm_message, #delete_participants_success {
+#delete_user_modal, #delete_user_success, #advanced_delete_modal, #delete_participants_confirm_message, #delete_participants_success, #unenroll_from_course_from_csv, #unenroll_participants_success {
 	padding: 10px 10px 10px 10px;
 
 	.titleContainer, .contentContainer

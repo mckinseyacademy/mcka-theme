@@ -17,9 +17,6 @@
           .dropdownItem{'data-reveal-id': 'enroll_to_course_from_csv'}
             {% trans 'Enroll Existing Participants' %}
           %br
-          .dropdownItem{'data-reveal-id': 'unenroll_from_course_from_csv'}
-            {% trans 'Bulk un-enroll' %}
-          %br
           .dropdownItem{'data-reveal-id': 'update_profile_data'}
             {% trans 'Update profile data' %}
           %br
@@ -27,6 +24,7 @@
             {% trans 'Update manager data' %}
           %br
         %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "{% trans 'Add New Participant' %}"}
+        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Bulk Unenroll' %}", 'data-reveal-id': 'unenroll_from_course_from_csv'}
         - if enableDataDeletion
           %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Bulk Delete' %}", 'data-reveal-id': 'advanced_delete_modal'}
         %a.button.small.radius.menuButton{:href => "{% url 'participants_import_progress' %}"}
@@ -376,7 +374,7 @@
         %h2.delete_message {% trans "Your CSV is Being Processed..." %}
       .contentContainer
         %p.bottomPadding
-          {% trans "The unenrollment has been started for the selected participants." %}
+          {% trans "The unenrollment has been started for the selected participants. Email will be sent on completion." %}
         %p.send_email{style: "display:none;"}
           {% trans "You will be notified by email once completed." %}
 
