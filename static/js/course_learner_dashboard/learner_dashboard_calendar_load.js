@@ -5,6 +5,8 @@ var learnerdashboardId = ($('#replace-calendar').data("learner-dashboard-id"));
 $('#open-calendar').click(function() {
   if (!opened) {
 
+    $('.ld-nav ul>li.calendar a').addClass('dome-active');
+
     var headers = {
       'X-CSRFToken': $.cookie('apros_csrftoken')
     };
@@ -23,6 +25,12 @@ $('#open-calendar').click(function() {
         console.log (err);
       }
     });
+  }
+  else {
+    $('#replace-calendar').empty();
+    opened = false;
+    $('.ld-nav ul>li.calendar a').removeClass('dome-active');
+
   }
 });
 

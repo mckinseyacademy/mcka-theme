@@ -9,8 +9,8 @@
               %li{"class": "{% ifequal request.resolver_match.url_name 'course_learner_dashboard' %}active{% endifequal %}"}
                 %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}"} {% trans "Home" %}
               - if calendar_enabled and not mobile_device
-                %li.calendar
-                  %a.ome.dome-c#open-calendar{:href => "#"} {% trans "Calendar" %}
+                %li.calendar.hasDropdown
+                  %a.ome.dome-c#open-calendar.dropdown-toggle{:data-toggle => "dropdown", :href => "#"} {% trans "Calendar" %}
               - if feature_flags.discussions
                 %li{"class": "{% ifequal request.resolver_match.url_name 'course_discussion_learner_dashboard' %}active{% endifequal %}"}
                   %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/discussion"} {% trans "Discussion" %}

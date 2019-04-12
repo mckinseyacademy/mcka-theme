@@ -3,7 +3,7 @@ $(document).ready(function() {
         $('.leaderboards-list .col').removeClass('col').addClass('col-12');
     }
 
-    $('#pnProductNavContents>ul> li').not(":has(.dropdown-menu)").click(function() {
+    $('#pnProductNavContents>ul> li').not(":has(.dropdown-menu) || :has(..dropdown-toggle)").click(function() {
         $('#pnProductNavContents>ul> li.active').removeClass('active');
         $(this).addClass('active');
     });
@@ -13,15 +13,6 @@ $(document).ready(function() {
         $(this).addClass('active');
     });
 
-     $('.ld-nav ul>li a').click(function(e) {
-
-        $('.ld-nav li.active').addClass('previous');
-        $('.ld-nav li.active').removeClass('active');
-
-        var $parent = $(this).parent();
-        $parent.addClass('active');
-        $parent.removeClass('previous');
-    });
 
     $("#lessons-content").on('click', function(e) {
         if ($(e.target).hasClass('load-course-lessons')) {
