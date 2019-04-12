@@ -48,7 +48,7 @@
         - for video in videos
           %li
             - if video.url
-              %a.article-title{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}"}
+              %a.article-title{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}", 'target': '_blank'}
                 - if video.title
                   = video.title
             .attribution
@@ -60,5 +60,5 @@
               - if video.body
                 .label-9= video.body
             - if video.url
-              %a{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}"}
+              %a{"data-reveal-id": 'mckinsey_video', 'data-video': "#{video.url}", 'target': '_blank'}
                 %i.fa.fa-play-circle

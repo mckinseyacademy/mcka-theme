@@ -2,12 +2,14 @@
 - load staticfiles
 
 - for course in courses
-  .col-sm-12.col-md-6.col-lg-4
-    %a.d-block{:href => "#{course.nav_url}"}
+  .col-sm-12.col-md-6.col-lg-4{"class": "{% if not courseended and not course.started %}future-course{% endif %}"}
+    %a.d-block#course-navigation{:href => "#{course.nav_url}", 'data-numdays': '#{course.days_till_start}'}
       .card.ome{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img
           %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_url}}"}
         .card-body.dome-bc
+          .future-course-text
+            {% trans "Coming Soon" %}
           - if course and current_course
             - if course.id == current_course.id
               %span.current-bookmark-text.dome-bc
@@ -37,3 +39,18 @@
   $('.card-img-top').on('error', function(e){
     $(e.target).attr('src', '/static/image/default-course-image.png');
   });
+
+
+
+/ Modal
+#future-modal.middleSize.modal.fade{:aria-hidden => "true", :aria-labelledby => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}
+  .modal-dialog.text-center{:role => "document"}
+    .modal-content
+      .modal-header
+        %h4.modal-title
+          {% trans "Welcome to McKinsey Academy" %}
+      .modal-body 
+        {% blocktrans %}Your course begins in <b><span class="numdays"></span></b> days. Before the course begins, you can explore this site to learn more about what to expect.{% endblocktrans %} <br />
+        %button.ok-close.btn.btn-primary.btn-lg{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+          %span{:aria-hidden => "true"} {% trans "OK" %}
+      

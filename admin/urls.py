@@ -257,7 +257,7 @@ urlpatterns += [
         views.download_activation_links_by_task_key, name='download_activation_links_by_task_key'),
     url(r'^api/participants/import_participants$', views.import_participants, name='import_participants'),
     url(r'^api/participants/enroll_participants_from_csv$',
-        views.enroll_participants_from_csv, name='enroll_participants_from_csv'),
+        views.ParticipantsEnrollmentFromCsv.as_view(), name='enroll_participants_from_csv'),
     url(r'^api/participants/update_company_fields_from_csv',
         views.update_company_field_from_csv, name='update_company_fields_from_csv$'),
     url(r'^api/participants/delete_participants_from_csv$',

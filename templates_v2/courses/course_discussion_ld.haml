@@ -27,10 +27,12 @@
           .contentCard
             .discussion-content
 
+      - include "courses/contact_ta.haml"
+
 - block js_snippets
   %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
   %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
-  %script{src: "{% static 'js/course_contact_modal.js' %}"}
+  %script{src: "{% static 'js/course_contact.js' %}"}
   :javascript
     window.onload = (function(){
       var discussion_content = $('#course-discussion .discussion-content');
@@ -48,14 +50,11 @@
       };
       $.when.apply($, discussion_content.xblock(discussion_data)).
         done(function() {
-          $.getScript('/static/js/foundation.min.js', function() {
-          window.Foundation.init();
-           $(document).foundation();
-           });
           if ($('#discussion-ta-template').length > 0) {
             $('.discussion-body').prepend($("#discussion-ta-template").html());
           }
           $('.ask-ta').prependTo('.forum-nav');
+          $("<h1>"+gettext('Discussion')+"</h1>").prependTo(".page-header-secondary");
           jQuery.noConflict();
       });
       // we need this to add some browser specific CSS rules
@@ -73,5 +72,5 @@
                 .person-title{:title => "#{mcka_ta.title}"}
                   = mcka_ta.title
               .email
-                %a.email-member{'data-member-email': '', 'data-reveal-id': 'contact-ta'}
+                %button.email-member{'type': 'button', 'data-member-email': '', 'data-toggle': 'modal', 'data-target': '#contact-ta'}
                   {% trans "Email" %}

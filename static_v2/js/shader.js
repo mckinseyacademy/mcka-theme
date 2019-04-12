@@ -32,17 +32,45 @@ function darken(color, amount) {
     return color = "#" + subtractLight(color.substring(0, 2), amount) + subtractLight(color.substring(2, 4), amount) + subtractLight(color.substring(4, 6), amount);
 }
 
+/*function to check hexadecimal value*/
+function isHex(h) {
+    var a = parseInt(h,16);
+    return (a.toString(16) === h)
+}
 
+/* function to convert hex value to rgb*/
+function hexToRgb(hex) {
+    // Expand shorthand form (e.g. "03F") to full form (e.g. "0033FF")
+    var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+    hex = hex.replace(shorthandRegex, function(m, r, g, b) {
+        return r + r + g + g + b + b;
+    });
+
+    var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+    } : null;
+}
+
+/* function to convert rgb value to hex*/
 function rgb2hex(rgb) {
-    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-
     function hex(x) {
         return ("0" + parseInt(x).toString(16)).slice(-2);
     }
+    if (isHex(rgb.substr(1)))
+    {
+        return "#" + hex(hexToRgb(rgb).r) + hex(hexToRgb(rgb).g) + hex(hexToRgb(rgb).b);
+        //return '#2042cb';
+    }
+    else
+    {
+        rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+        return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
+    }
 
-    return "#" + hex(rgb[1]) + hex(rgb[2]) + hex(rgb[3]);
 }
-
 
 // ome = on mouse event
 // dome = darken on mouse event
@@ -58,6 +86,9 @@ $(".ome").mouseenter(function (e) {
     } else if (sel.hasClass('dome-c')) {
         target = sel;
         colorProp = 'color';
+    } else if (sel.hasClass('dome-f')) {
+        target = sel;
+        colorProp = 'fill';
     } else {
         var child = $(e.currentTarget).children('.dome-bc');
         if (child.length > 0) {
@@ -69,6 +100,12 @@ $(".ome").mouseenter(function (e) {
         if (child.length > 0) {
             target = child;
             colorProp = 'color';
+        }
+
+        child = $(e.currentTarget).find('.dome-f');
+        if (child.length > 0) {
+            target = child;
+            colorProp = 'fill';
         }
     }
 
@@ -97,7 +134,10 @@ $(".ome").mouseenter(function (e) {
     } else if (sel.hasClass('dome-c')) {
         target = sel;
         colorProp = 'color';
-    } else {
+    } else if (sel.hasClass('dome-f')) {
+        target = sel;
+        colorProp = 'fill';
+    }else {
         var child = $(e.currentTarget).children('.dome-bc');
         if (child.length > 0) {
             target = child;
@@ -108,6 +148,12 @@ $(".ome").mouseenter(function (e) {
         if (child.length > 0) {
             target = child;
             colorProp = 'color';
+        }
+
+        child = $(e.currentTarget).find('.dome-f');
+        if (child.length > 0) {
+            target = child;
+            colorProp = 'fill';
         }
     }
 
@@ -125,9 +171,3 @@ if (secondary !== undefined) {
     $('.courseRow a.description').css('background-color', lighten(secondary, 60));
     $('.courseRow .bookmark.primary svg path').css('fill', lighten(secondary, 0));
 }
-
-$(window).load(function () {
-    setTimeout(function () {
-        $('#branding-color').css('background-color', lighten(secondary, 65));
-    }, 2000);
-});

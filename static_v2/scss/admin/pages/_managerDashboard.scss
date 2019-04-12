@@ -1,5 +1,4 @@
 // Manager Admin Dashboard Styles
-
 #admin-body {
   .contentCard {
     .headerArea {
@@ -57,6 +56,16 @@
       &:first-child {
         color: $black;
       }
+    }
+  }
+}
+.bbGrid-grid {
+  .bbGrid-grid-head {
+    i {
+      width: 17px;
+      float: none;
+      display: inline-block;
+      vertical-align: top;
     }
   }
 }

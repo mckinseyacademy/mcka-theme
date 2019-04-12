@@ -24,26 +24,22 @@
             {% trans 'Update manager data' %}
           %br
         %input.button.small.radius.menuButton.participantAddButton{:type => "button", :value => "{% trans 'Add New Participant' %}"}
+        %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Bulk Unenroll' %}", 'data-reveal-id': 'unenroll_from_course_from_csv'}
         - if enableDataDeletion
           %input.button.small.radius.menuButton{:type => "button", :value => "{% trans 'Bulk Delete' %}", 'data-reveal-id': 'advanced_delete_modal'}
         %a.button.small.radius.menuButton{:href => "{% url 'participants_import_progress' %}"}
           {% trans "View Import Progress" %}
-        #searchBar
-          %select#searchSelectorField{"required": "true"}
-            %option{"disabled": true, "selected": "true"}
-              Search by
-            %option{"value": "organization_display_name"}
-              Company
-            %option{"value": "courses"}
-              Course
-            %option{"value": "name"}
-              Name
-            %option{"value": "email"}
-              Email
-          %input#searchQueryField{:placeholder => '{% trans "Search" %}', :type => 'text'}
-          %a#searchButton
-            %i.fa.fa-search.fa-flip-horizontal
       %hr
+      #participantsSearchWrapper
+        .row
+          .large-3.columns
+            %input{:placeholder => '{% trans "Company" %}', :type => 'text', :name => 'organization_display_name', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => '{% trans "Course" %}', :type => 'text', :name => 'courses', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => '{% trans "Name" %}', :type => 'text', :name => 'name', :class => 'clearableParticipantsList'}
+          .large-3.columns
+            %input{:placeholder => '{% trans "Email" %}', :type => 'text', :name => 'email', :class => 'clearableParticipantsList'}
 
     #participantsListViewGridBlock
 
@@ -158,9 +154,7 @@
           %h2.delete_message {% trans "Your CSV is Being Processed..." %}
         .contentContainer
           %p.bottomPadding
-            {% trans "Data deletion has started for selected participant / company / participants." %}
-          %p.send_email{style: "display:none;"}
-            {% trans "You will be notified by email once completed." %}
+            {% trans "Bulk deletion has started and you will receive an email notification on completion." %}
 
           .button-wrapper.topPadding
             %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Close"}
@@ -336,21 +330,57 @@
       .admin-form{style: "padding-bottom:0px;"}
 
         %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "fileInputEnroll"}
-          - csrf_token
           = form_enroll
 
         %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsEnrollCsvUpload'}
 
         .upload_stats
         .button-wrapper.topPadding{style: "padding-top:10px;padding-bottom:10px;position:relative;"}
-            %input.button.radius.small{type: "submit", value: "{% trans 'Add Participants' %}", disabled: "disabled", id: 'submitCSVEnroll'}
-            %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
-              {% trans "Cancel" %}
-            %i.fa.fa-spin.fa-spinner{style: "display:none;"}
+          %input.button.radius.small{type: "submit", value: "{% trans 'Add Participants' %}", disabled: "disabled", id: 'submitCSVEnroll'}
+          %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+            {% trans "Cancel" %}
+          %i.fa.fa-spin.fa-spinner{style: "display:none;"}
         #enroll-participants-error-list
 
+    #unenroll_from_course_from_csv.reveal-modal.small{'data-reveal': ''}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      .titleContainer
+        %h2 {% trans "Unenroll Participants from courses from CSV" %}
+      .bottomPadding
+        %a#unenrollParticipantTemplate{:href => "#", 'download': 'template.csv'}
+          {% trans "Download CSV Template" %}
+      %p
+        {% blocktrans %}
+        Download the CSV template above to unenroll users. All fields in the template are required.
+        {% endblocktrans %}
+      %hr
+      .admin-form
+        %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "DELETE", enctype: "multipart/form-data", :class => "fileInputUnenroll"}
+          = form_unenroll
+        %form{action: "/admin/api/participants/enroll_participants_from_csv", method: "DELETE", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsUnenrollCsvUpload'}
+        .upload_stats
+        .button-wrapper
+          %input.button.radius.small{type: "submit", value: "{% trans 'Unenroll Participants' %}", disabled: "disabled", id: 'submitCSVUnenroll'}
+          %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Cancel"}
+            {% trans "Close" %}
+          %i.fa.fa-spin.fa-spinner{style: "display:none;"}
+        #unenroll-participants-error-list
 
+    #unenroll_participants_success.reveal-modal.small{'data-reveal': ''}
+      .close-reveal-modal
+        %i.fa.fa-times-circle
+      .titleContainer
+        %h2.delete_message {% trans "Your CSV is Being Processed..." %}
+      .contentContainer
+        %p.bottomPadding
+          {% trans "The unenrollment has been started for the selected participants. Email will be sent on completion." %}
+        %p.send_email{style: "display:none;"}
+          {% trans "You will be notified by email once completed." %}
 
+        .button-wrapper.topPadding
+          %a.button.small.radius.menuButton.close-reveal-modal.close-modal-inline{:type => "button", :value => "Close"}
+            {% trans "Close" %}
 
     #confirmation_screen.reveal-modal.big{'data-reveal': '', 'data-task-key': '', 'data-uploaded': ''}
       .close-reveal-modal

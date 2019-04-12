@@ -697,7 +697,7 @@ class GetUsersForDeletionTest(CourseParticipantsStatsMixin, TestCase):
     def test_get_users_for_deletion_invalid_header(self, get_storage_mock):
         """Tests extracting users for deletion from CSV file with header other than email."""
         dummy_storage = Dummy()
-        dummy_storage.open = lambda *args, **kwargs: self.create_mock_csv_file(header='username')
+        dummy_storage.open = lambda *args, **kwargs: self.create_mock_csv_file(headers=['username'])
         get_storage_mock.side_effect = lambda *args, **kwargs: dummy_storage
 
         with self.assertRaisesRegex(ValueError, "The CSV file has to contain 'email' header."):

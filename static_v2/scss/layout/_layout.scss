@@ -1,3 +1,5 @@
+@import "../common/mixins";
+
 .container {
     max-width: 1244px !important;
 
@@ -18,5 +20,22 @@
         display: table;
         clear: both;
     }
+}
+
+#messagesModal {
+
+  .modal-header {
+    padding-bottom: 0;
+    h5 {
+      @include font-spec(24);
+      color: $black;
+    }
+  }
+
+  .modal-body {
+    @include font-size(14);
+    color: $black;
+    padding-bottom: 2rem;
+  }
 }
 

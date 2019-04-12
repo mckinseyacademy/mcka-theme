@@ -69,7 +69,6 @@
   }
   .viewDetailCourse {
     display: block;
-    text-align: center;
     margin: 0 0 -15px;
     a {
       display: inline-block;
@@ -125,7 +124,7 @@
     display: inline-block;
     vertical-align: middle;
     padding: 0 28px;
-    max-width: 70%;
+    max-width: 50%;
     min-height: 112px;
     @include media-breakpoint-down(sm) {
       max-width: 100%;
@@ -247,7 +246,6 @@
       width: 20px;
       pointer-events: none;
     }
-
     > a {
       &:hover {
         text-decoration: none;
@@ -255,14 +253,14 @@
     }
 
     .description {
-      transition: all ease 0.3s;
+      transition: all ease 0.05s;
       position: absolute;
       content: '';
       z-index: 1;
       width: 100%;
       text-decoration: none;
       padding: 18px 30px;
-      top: 100%;
+      top: 0;
       bottom: auto;
       height: 100%;
       text-align: left;
@@ -290,10 +288,6 @@
 
     &:hover {
       .description {
-        top: 0;
-        opacity: 1;
-        visibility: visible;
-
         &.no-data {
           z-index: 0;
         }
@@ -377,9 +371,7 @@
       }
 
       &.title {
-        color: var(--primary);
         padding: 17px 0;
-        color:  var(--primary);
         font-size: 1rem;
         line-height: 22px;
         width: 44%;
@@ -679,14 +671,18 @@ blockquote {
 }
 .lesson-dropdown-frame {
   padding: 0 0 10px;
-  .dropdown-menu.allLessons .allCoursesList .holder .data.title {
-    @include media-breakpoint-down(xs) {
-      width: 77px;
-      >span {
-        padding-left: 0;
+  .dropdown-menu.allLessons .allCoursesList .holder {
+      @include media-breakpoint-down(sm) {
+      .data.title {
+          width: calc(100% - 110px);
+        }
+        .data.status {
+          width: 24px !important;
+          font-size: 0;
+          float: right;
+        }
       }
     }
-  }
   .lesson-dropdown-holder {
     position: relative;
     display: inline-block;
@@ -842,10 +838,6 @@ blockquote {
 
       &:hover {
         text-decoration: none;
-
-        .description {
-          opacity: 0;
-        }
       }
     }
   }
@@ -894,7 +886,6 @@ blockquote {
 
           .contenrArea {
             display: block;
-            margin-top: 40px;
           }
 
         }
@@ -965,7 +956,9 @@ blockquote {
         }
 
         &.title {
-          width: 80%;
+          width: 100%;
+          display: block;
+          padding: 10px 0;
         }
       }
     }

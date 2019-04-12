@@ -801,3 +801,10 @@ class AdminTask(db_models.Model):
             course_id=self.course_id,
             status=self.status
         )
+
+
+class DeletionAdmin(db_models.Model):
+    """
+    Model to store emails that should be cc'ed on emails.
+    """
+    email = db_models.CharField(max_length=255, blank=False, null=False, unique=True)

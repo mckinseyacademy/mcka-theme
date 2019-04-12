@@ -5,7 +5,7 @@
 - get_current_language as LANGUAGE_CODE
 - get_available_languages as LANGUAGES
 
-%header.appHeader.fadeIn.animated.delay-1s
+%header.appHeader
   .container
     .row
       .col
@@ -16,7 +16,7 @@
                 %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
             - else
               %a.navbar-brand{:href => "/"}
-                %img{:src => "{% static 'image/McKA-logo-blue.svg' %}", :width => "160"}
+                %img{:src => "{% static 'image/McKA-logo-blue.png' %}", :width => "160"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.client_logo}}", :width => "160"}
@@ -77,27 +77,27 @@
                 %ul
                   - if request.user.is_manager
                     {% url 'manager_dashboard' as manager_dashboard_url %}
-                    %li{class: "{% if request.path == manager_dashboard_url %}active{% endif %}"}
+                    %li.adminBtn{class: "{% if request.path == manager_dashboard_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{manager_dashboard_url}}"}
                         {% trans "team reports" %}
                   - if request.user.is_mcka_admin or request.user.is_internal_admin or request.user.is_mcka_subadmin
                     {% url 'admin_home' as admin_home_url %}
-                    %li{class: "{% if request.path == admin_home_url %}active{% endif %}"}
+                    %li.adminBtn{class: "{% if request.path == admin_home_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{admin_home_url}}"}
                         {% trans "admin" %}
                   - if request.user.is_company_admin
                     {% url 'company_dashboard' as company_dashboard_url %}
-                    %li{class: "{% if request.path == company_dashboard_url %}active{% endif %}"}
+                    %li.adminBtn{class: "{% if request.resolver_match.url_name == 'company_dashboard' or request.resolver_match.url_name == 'company_details' or request.resolver_match.url_name == 'company_course_details' %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{company_dashboard_url}}"}
                         {% trans "company admin" %}
                   - if request.user.is_mcka_ta
                     {% url 'workgroup_list' as workgroup_list_url %}
-                    %li{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
+                    %li.adminBtn{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
                         {% trans "ta" %}
 
                   - if learner_dashboards|length > 1
-                    %li
+                    %li{class: "{% if 'learnerdashboard' in request.path %}active{% endif %}"}
                       %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
                         {% trans "dashboard" %}
 
@@ -112,14 +112,14 @@
                                       %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
 
                   - elif learner_dashboards|length == 1
-                    %li
+                    %li{class: "{% if 'learnerdashboard' in request.path %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", :href => "/courses/{{learner_dashboards.0.course_id}}", :role => "button"}
                         {% trans "dashboard" %}
 
 
                   - if show_my_courses
                     {% url 'courses' as courses_url %}
-                    %li{class: "{% if request.path == courses_url %}active{% endif %}"}
+                    %li#mycoursestab{class: "{% if request.path == courses_url %}active{% endif %}"}
                       %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
                         {% trans "my courses" %}
           - else

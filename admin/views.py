@@ -58,7 +58,8 @@ from admin.models import AdminTask
 from admin.tasks import (
     user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data,
     create_problem_response_report, monitor_problem_response_report, post_process_problem_response_report,
-    handle_admin_task_error, send_problem_response_report_success_email, delete_participants_task, delete_company_task)
+    handle_admin_task_error, send_problem_response_report_success_email, delete_participants_task, delete_company_task,
+    unenroll_participants_task, DELETE_PARTICIPANTS_DIR)
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api, \
     cohort_api
 from api_client.api_error import ApiError
@@ -116,7 +117,7 @@ from .forms import (ClientForm, ProgramForm, UploadStudentListForm, ProgramAssoc
                     DashboardAdminQuickFilterForm, BrandingSettingsForm, DiscoveryContentCreateForm,
                     LearnerDashboardTileForm, CreateNewParticipant, LearnerDashboardBrandingForm, CourseRunForm,
                     MassCompanyFieldsUpdateForm, MassManagerDataUpdateForm, MassParticipantsDeleteListForm,
-                    MassParticipantsDeleteConfirmationForm)
+                    MassParticipantsDeleteConfirmationForm, MassParticipantsUnenrollListForm)
 from .helpers.permissions_helpers import (AccessChecker, InternalAdminCoursePermission, InternalAdminUserPermission,
                                           CompanyAdminCompanyPermission, CompanyAdminUserPermission,
                                           CompanyAdminCoursePermission, checked_user_access, checked_course_access,
@@ -1267,8 +1268,8 @@ def course_meta_content_course_list(request, restrict_to_courses_ids=None):
     if not request.user.is_mcka_admin and not request.user.is_mcka_subadmin:
         if request.user.is_internal_admin:
             internal_ids = get_internal_courses_ids()
-            if len(internal_ids) > 0:
-                courses = course_api.get_course_list(internal_ids)
+            courses = [course for course in course_api.get_course_list()
+                       if course.id in internal_ids]
         else:
             courses = course_api.get_course_list(ids=restrict_to_courses_ids)
         for course in courses:
@@ -2475,22 +2476,26 @@ def import_participants(request):
             )
 
 
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                           PERMISSION_GROUPS.MCKA_SUBADMIN)
-def enroll_participants_from_csv(request):
-    """Import existing participants into a course."""
-    if request.method == 'POST':  # If the form has been submitted...
-        # A form bound to the POST data and FILE data
-        form = MassParticipantsEnrollListForm(request.POST, request.FILES)
+class ParticipantsEnrollmentFromCsv(APIView):
+    """
+    Allows bulk enrollment and unenrollment of users.
+
+    `/api/participants/enroll_participants_from_csv`
+    """
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def post(self, request):
+        """Import existing participants into a course."""
+        form = MassParticipantsEnrollListForm(request.data, request.data)
         if form.is_valid():  # All validation rules pass
-            file_name = '_'.join(request.FILES['student_enroll_list'].name.split())
+            file_name = '_'.join(request.data['student_enroll_list'].name.split())
             reg_status = UserRegistrationBatch.create()
             reg_status.triggered_by = request.user.username
-            reg_status.uploaded_file_name = request.FILES['student_enroll_list'].name
+            reg_status.uploaded_file_name = request.data['student_enroll_list'].name
             reg_status.save()
 
             file_url = store_file(
-                request.FILES['student_enroll_list'],
+                request.data['student_enroll_list'],
                 IMPORT_PARTICIPANTS_DIR,
                 file_name,
                 secure=True
@@ -2508,6 +2513,37 @@ def enroll_participants_from_csv(request):
                 json.dumps({"task_key": _(reg_status.task_key)}),
                 content_type='text/plain'
             )
+
+        return HttpResponseBadRequest(json.dumps(form.errors))
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN)
+    def delete(self, request):
+        """Unenroll participants from courses."""
+        if not _deletion_flag():
+            return HttpResponseBadRequest(_("`data_deletion` flag is not enabled."))
+
+        form = MassParticipantsUnenrollListForm(request.data, request.data)
+        if form.is_valid():
+            file_name = '_'.join(request.data['student_unenroll_list'].name.split())
+
+            file_url = store_file(
+                request.data['student_unenroll_list'],
+                DELETE_PARTICIPANTS_DIR,
+                file_name,
+                secure=True,
+            )
+
+            unenroll_participants_task.delay(
+                file_url,
+                True,
+                owner=user_api.get_user(user_id=request.user.id).to_dict(),
+                base_url=request.build_absolute_uri(),
+            )
+
+            return Response(status=204)
+
+        return HttpResponseBadRequest(json.dumps(form.errors))
 
 
 class DeleteParticipantsFromCsv(APIView):
@@ -3876,6 +3912,7 @@ def participants_list(request):
     form_delete = MassParticipantsDeleteListForm()
     form_delete_confirm = MassParticipantsDeleteConfirmationForm()
     form_enroll = MassParticipantsEnrollListForm()
+    form_unenroll = MassParticipantsUnenrollListForm()
     form_company_fields = MassCompanyFieldsUpdateForm()
     form_manager_update = MassManagerDataUpdateForm()
     internal_admin_flag = request.user.is_internal_admin
@@ -3886,6 +3923,7 @@ def participants_list(request):
         'form_delete': form_delete,
         'form_delete_confirm': form_delete_confirm,
         'form_enroll': form_enroll,
+        'form_unenroll': form_unenroll,
         'form_company_fields': form_company_fields,
         'form_manager_update': form_manager_update,
         'internalAdminFlag': internal_admin_flag,
@@ -3949,15 +3987,10 @@ class ParticipantsListApi(APIView):
 
         # restrict participants search to internal courses
         if request.user.is_internal_admin:
-            internal_course_ids = get_internal_courses_ids()
-            query_params['courses'] = query_params.get('courses') or ','.join(internal_course_ids)
-            participants = user_api.get_filtered_participants_list(query_params)
-            participants['results'] = filter(
-                lambda participant: set(participant.get('courses_enrolled', [])).intersection(internal_course_ids),
-                participants['results']
-            )
-        else:
-            participants = user_api.get_filtered_participants_list(query_params)
+            query_params['internal_admin_flag'] = True
+            query_params['type'] = TAG_GROUPS.INTERNAL
+
+        participants = user_api.get_filtered_participants_list(query_params)
 
         # extend participants search to get course participants
         if query_params.get('course_participants_search') == 'course_participants_search':

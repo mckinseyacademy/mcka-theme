@@ -1,5 +1,7 @@
 #course-progress-new {
-
+  a {
+    color: var(--primary);
+  }
   .headingForMobile{
     display: none;
     padding: 10px 20px;
@@ -244,7 +246,7 @@
 
             .dropdown-menu {
               top: 100% !important;
-              min-width: 360px !important;
+              min-width: 360px;
               .material-icons {
                 vertical-align: sub;
               }
@@ -253,9 +255,13 @@
             .dropdown-toggle {
               @include font-size(16);
               position: relative;
+              display: inline-block;
               &::after {
                 display: inline-block;
                 vertical-align: middle;
+              }
+              @media only screen and (max-width: 992px) and (orientation: portrait) {
+                display: block;
               }
             }
 
@@ -412,7 +418,23 @@
         }
       }
     }
-
+  }
+}
+@include media-breakpoint-between(xs, md) {
+  #course-progress-new {
+    table {
+      tbody {
+        tr {
+          td {
+            .lesson-with-list {
+              .dropdown-toggle {
+                display: block;
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 

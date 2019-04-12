@@ -67,14 +67,6 @@ class UserDataManager(DataManager):
                     current_course = course
                     break
 
-        # if preferred course is not found in user courses
-        # then set any other course as current course
-        if not current_course:
-            for course in courses:
-                if course.is_active and course.started:
-                    current_course = course
-                    break
-
         return DottableDict(
             courses=courses,
             current_course=current_course,

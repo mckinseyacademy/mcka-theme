@@ -17,6 +17,7 @@ from copy import deepcopy
 import json
 
 import re
+import six
 from PIL import Image
 from bs4 import BeautifulSoup
 from dateutil.parser import parse as parsedate
@@ -1038,8 +1039,8 @@ def get_accessible_courses(user):
         courses_list = course_api.get_course_list()
     elif user.is_internal_admin:
         internal_ids = get_internal_courses_ids()
-        if len(internal_ids) > 0:
-            courses_list = course_api.get_course_list(internal_ids)
+        courses_list = [course for course in course_api.get_course_list()
+                        if course.id in internal_ids]
     else:
         course_id_list = []
         user_roles = user_api.get_user_roles(user.id)
@@ -2764,8 +2765,17 @@ class ProblemReportPostProcessor(object):
         return output.values(), ['email'] + sorted(self._cols.values())
 
 
-def get_emails_from_csv(file_path):
-    """Retrieves user from single-column CSV. The header is treated as a filter for querying users."""
+def get_data_from_csv(file_path, headers):
+    """
+    Retrieves user from single-column CSV. The header is treated as a filter for querying users.
+    :param file_path: URL to a CSV file,
+    :param headers: you need to provide either:
+        - `str` for single-header CSV files,
+        - `list` or `set` containing users' IDs.
+    :returns:
+        - `Tuple(str, List(str))` if `headers` is `str`
+        - `Tuple(Tuple(str), List(Tuple(str)))` if `headers` is `list` or `set`
+    """
     from util.s3_helpers import get_storage
     storage = get_storage(secure=True)
     file_stream = storage.open(file_path)
@@ -2779,15 +2789,28 @@ def get_emails_from_csv(file_path):
 
     lines = data.splitlines()
     param_type = lines.pop(0)
-    if param_type != 'email':
-        raise ValueError(_("The CSV file has to contain 'email' header."))
-    return param_type, lines
+    if isinstance(headers, six.string_types):
+        if param_type != headers:
+            raise ValueError(_("The CSV file has to contain '{}' header.".format(headers)))
+
+        return param_type, lines
+
+    # Support multiple headers
+    param_types = tuple(map(str.strip, param_type.split(',')))
+    if param_types != tuple(headers):
+        raise ValueError(_("The CSV file has to contain '{}' headers.".format(','.join(headers))))
+
+    data = [tuple(map(str.strip, line.split(','))) for line in lines]
+
+    return param_types, data
 
 
-def get_users_for_deletion(file_path):
+def get_users_for_deletion(file_path, batch_size=settings.DELETION_SYNCHRONOUS_MAX_USERS):
     """Retrieves user from single-column CSV. The header is treated as a filter for querying users."""
-    param_type, data = get_emails_from_csv(file_path)
-    users = get_users(**{param_type: data})
+    param_type, data = get_data_from_csv(file_path, 'email')
+    users = []
+    for i in range(0, len(data), batch_size):
+        users += get_users(**{param_type: data[i:i + batch_size]})
     return users
 
 

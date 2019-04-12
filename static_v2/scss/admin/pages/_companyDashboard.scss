@@ -257,8 +257,6 @@
   }
 }
 
-
-
 .search-area {
   &.custom {
     display: none;
@@ -314,7 +312,6 @@
     cursor: disabled;
   }
 }
-
 
 .custom-checkbox {
   border: 1px solid $gray;
@@ -582,7 +579,7 @@
 .spinnerContainer {
   position: relative;
   overflow-x: auto;
-  width: 100%;
+  width: 99.9%;
   .fa-spinner {
     position: absolute;
     left: 50%;
@@ -671,7 +668,7 @@
   box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.14), 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 1px 3px 0 rgba(0, 0, 0, 0.2);
 }
 
-.bbGrid-grid-head, .bbGrid-container thead, .primaryBgLighten, .tableHeaderArea.stats {
+.bbGrid-grid-head, .bbGrid-container thead, .primaryBgLighten, .tableHeaderArea.stats , #branding-color{
   background: var(--branding-lightened-color);
 }
 
@@ -891,8 +888,20 @@ td.action_buttons {
   width: 40px;
 }
 
-// Stats Download button
-.coursesDownloadStatsButton{}
+#companyAdminCourseExportStatsModal{
+  .saveChanges{
+    .spinner-border{
+      display: none;
+      margin-top: -2px;
+    }
+    &:disabled{
+      .spinner-border{
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+  }
+}
 
 // Media SCreens
 @include media-breakpoint-down(lg) {

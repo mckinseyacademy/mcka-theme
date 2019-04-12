@@ -81,7 +81,7 @@ urlpatterns.extend([
         r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/group_work/'
         r'(?P<workgroup_id>[0-9]+)$',
         courseviews.workgroup_course_group_work,
-        name='user_course_group_work_learner_dashboard'
+        name='workgroup_course_group_work'
     ),
     url(
         r'^learnerdashboard/(?P<learner_dashboard_id>[0-9]+)/courses/(?P<course_id>.*)/group_work$',

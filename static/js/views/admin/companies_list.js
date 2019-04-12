@@ -203,8 +203,13 @@
           options.headers = { 'X-CSRFToken': $.cookie('apros_csrftoken')};
 
           $.ajax(options).done(function(data) {
+            row.remove();
+
             var confirmationScreen = $('#delete_data_success');
             confirmationScreen.foundation('reveal', 'open');
+            confirmationScreen.off().on('closed.zf.reveal', function() {
+                window.location.reload(true);
+            });
           }).fail(function(data) {
               mainContainer.find('.errorContainer').html("Error deleting data. Try again later...");
             }

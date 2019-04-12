@@ -28,6 +28,7 @@ from api_client.group_api import PERMISSION_GROUPS
 from api_client.platform_api import update_course_mobile_available_status
 from api_client.workgroup_models import Submission
 from api_data_manager.course_data import CourseDataManager
+from api_data_manager.user_data import UserDataManager
 from lib.authorization import permission_group_required
 from lib.utils import DottableDict
 from mobile_apps.controller import get_mobile_app_download_popup_data
@@ -84,15 +85,20 @@ def course_landing_page(request, course_id):
     Course landing page for user for specified course
     etc. from user settings
     """
-    set_current_course_for_user(request, course_id, course_landing_page_flag=True)
     feature_flags = CourseDataManager(course_id).get_feature_flags()
     course_data_manager = CourseDataManager(course_id=course_id)
 
     learner_dashboard = get_learner_dashboard(request, course_id)
     if learner_dashboard:
+        user_data = UserDataManager(request.user.id)
+        organizations = user_api.get_user_organizations(user_data.user_id)
+        new_ui_enabled = user_data.new_ui_enabled(organizations[0] if organizations else None)
+        if not new_ui_enabled:
+            set_current_course_for_user(request, course_id, course_landing_page_flag=True)
         redirect_url = '/learnerdashboard/' + str(learner_dashboard.id)
         return HttpResponseRedirect(redirect_url)
 
+    set_current_course_for_user(request, course_id, course_landing_page_flag=True)
     course_tree_builder = CourseTreeBuilder(course_id=course_id, request=request)
 
     # if enhanced caching is enabled

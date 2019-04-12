@@ -62,13 +62,14 @@
   &.notification {
     padding: 30px !important;
     min-width: 370px;
-    max-width: 400px;
+    max-width: inherit;
     float: none;
   }
   &.allLessons {
     max-height: 394px;
     padding-left: 0 !important;
     padding-right: 0 !important;
+    z-index: 999999 !important;
 
     .allCoursesList {
       padding-right: 30px;
@@ -174,6 +175,35 @@
       }
     }
   }
+  &.allLessons {
+    @include media-breakpoint-up(sm) {
+      max-width: 435px;
+    }    
+    .allCoursesList {
+      .holder {
+        .data {
+          &.status {
+            float: right;
+            width: auto;
+            @include media-breakpoint-up(sm) {
+              min-width: 100px;
+            }
+          }
+          &.serial {
+            float: left;
+            width: auto;
+          }
+          &.title {
+            float: none;
+            width: auto !important;
+            display: block;
+            overflow: hidden;
+            line-height: 18px;
+          }
+        }
+      }
+    }
+  }
 }
 
 // Add carrot icon for Dropdown
@@ -203,7 +233,7 @@
   }
 }
 
-@media screen and (max-width: 992px) {
+@include media-breakpoint-down(md) {
   header {
     &.appHeader {
       .headerNav {
@@ -217,7 +247,7 @@
       .allCoursesList {
         .holder {
           .data.title {
-            width: 108px;
+            width: 188px;
           }
         }
       }
@@ -228,7 +258,7 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+@include media-breakpoint-down(sm) {
   .dropdown-menu {
     &.notification {
       min-width: auto;
@@ -246,16 +276,53 @@
       width: 88% !important;
     }
     &.allModules {
-      min-width: 93vw;
+      min-width: calc(100vw - 30px);
+      z-index: 999999 !important;
+      &.allLessons .allCoursesList .holder .data.status {
+        font-size: 0;
+        float: right;
+      }
+      &.allLessons .allCoursesList .holder .data.title {
+        width: calc(100% - 110px);
+      }
     }
     &.dashboard-menu {
-      min-width: 300px !important;
+      min-width: 100% !important;
+    }
+    &.profileDropdown{
+      width: 100% !important;
     }
     &.profileDropdown{
       width: 310px !important;
     }
-    &.profileDropdown{
-      width: 310px !important;
+  }
+
+  // Notification tabs content on mobile
+  .xns-container {
+    .xns-actions {
+      > ul {
+        white-space: inherit;
+        display: block;
+        > li {
+          white-space: initial;
+          width: 33%;
+          height: 30px;
+          vertical-align: top;
+          text-align: center;
+          line-height: 30px;
+          a {
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 10px;
+            &:after {
+              display: inline-block;
+              vertical-align: middle;
+              height: 30px;
+              content: '';
+            }
+          }
+        }
+      }
     }
   }
 }

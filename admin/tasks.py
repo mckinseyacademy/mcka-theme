@@ -38,7 +38,7 @@ from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage, get_path
 from util.email_helpers import send_html_email
 
-from admin.models import LearnerDashboardTile, AdminTask
+from admin.models import LearnerDashboardTile, AdminTask, DeletionAdmin
 from accounts.models import UserActivation
 from accounts.helpers import create_activation_url
 from courses.controller import strip_tile_link, get_course_object, update_progress
@@ -54,8 +54,9 @@ from .controller import (
     update_company_field_for_users,
     CourseParticipantStats,
     ProblemReportPostProcessor,
-    get_emails_from_csv,
+    get_data_from_csv,
     delete_company_data,
+    unenroll_participant,
 )
 from .models import UserRegistrationError, UserRegistrationBatch
 
@@ -627,6 +628,9 @@ def delete_company_task(company_id, owner, base_url):
     1. invoking `delete_participants_task` as function, because we don't want to proceed in case of any error,
     2. invoking `delete_company_data` for removing other company data.
     """
+    task_log_msg = "Delete Company task"
+    logger.info('Started - {} - by {}'.format(task_log_msg, owner['username']))
+
     started = time.time()
     company_name = 'Unknown'
     try:
@@ -659,8 +663,8 @@ def delete_company_task(company_id, owner, base_url):
             'minutes_taken': math.ceil((time.time() - started) / 60),
             'reason': str(e),
         }
-        task_log_msg = "Delete Company profile task"
-        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
+        recipients = [owner.get('email')] + [da.email for da in DeletionAdmin.objects.all()]
+        send_email.delay(subject, email_template, template_data, recipients, task_log_msg)
 
 
 @task(name='admin.delete_participants_task', queue='high_priority')
@@ -669,8 +673,8 @@ def delete_participants_task(
         send_confirmation_email,
         owner,
         base_url,
-        email_template=None,
-        email_subject=None,
+        email_template='admin/delete_users_email_template.haml',
+        email_subject='Bulk deletion completed',
         template_extra_data=None
 ):
     """
@@ -685,7 +689,7 @@ def delete_participants_task(
     file_path = ''
     template_extra_data = template_extra_data or {}
 
-    logger.info('Started - {}'.format(task_log_msg))
+    logger.info('Started - {} - by {}'.format(task_log_msg, owner['username']))
 
     failed, total = {}, 0
     started = time.time()
@@ -695,9 +699,11 @@ def delete_participants_task(
         file_path = get_path(users_to_delete)
 
         try:
-            field, emails = get_emails_from_csv(file_path)
+            field, emails = get_data_from_csv(file_path, 'email')
             total = len(emails)
-            users = get_users(**{field: emails})
+            users = []
+            for i in range(0, total, settings.DELETION_SYNCHRONOUS_MAX_USERS):
+                users += get_users(**{field: emails[i:i + settings.DELETION_SYNCHRONOUS_MAX_USERS]})
         except Exception:
             logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
             raise
@@ -746,8 +752,7 @@ def delete_participants_task(
         )
 
     if send_confirmation_email:
-        subject = _(email_subject) or _('Bulk deletion completed')
-        email_template = email_template or 'admin/delete_users_email_template.haml'
+        subject = _(email_subject)
         mcka_logo = urljoin(
             base=base_url,
             url='/static/image/mcka_email_logo.png'
@@ -762,11 +767,97 @@ def delete_participants_task(
             'total': total,
         }
         template_data.update(template_extra_data)
-
-        send_email.delay(subject, email_template, template_data, [owner.get('email')], task_log_msg)
+        recipients = [owner.get('email')] + [da.email for da in DeletionAdmin.objects.all()]
+        send_email.delay(subject, email_template, template_data, recipients, task_log_msg)
 
     if failed:
         raise InvalidTaskError("Failed to delete users.")
+
+
+@task(name='admin.unenroll_participants_task', queeue='high_priority')
+def unenroll_participants_task(users_to_unenroll, send_confirmation_email, owner, base_url):
+    """
+    Extract users from CSV, unenroll them and (optionally) send an email
+    to the `owner` - user that initiated unenrollment.
+    :param users_to_unenroll: URL to a CSV file containing users who should be unenrolled
+    """
+    task_log_msg = "Unenroll Participants task"
+
+    logger.info('Started - {}'.format(task_log_msg))
+
+    failed, total = {}, 0
+    started = time.time()
+
+    # The users for unenrollment are specified in a CSV file.
+    file_path = get_path(users_to_unenroll)
+
+    try:
+        headers, data = get_data_from_csv(file_path, ['participant_id', 'course_id'])
+        total = len(data)
+    except Exception:
+        logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
+        raise
+    else:
+        logger.info('Successfully opened CSV file - {}'.format(task_log_msg))
+
+    for user_data in data:
+        result = unenroll_participant(user_data[1], user_data[0])
+        if 'message' in result:
+            failed[user_data] = result['message']
+
+    try:
+        storage = get_storage(secure=True)
+        storage.delete(file_path)
+    except Exception as e:
+        logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
+    else:
+        logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
+
+    # Create CSV with failed rows
+    failed_url = None
+    if failed:
+        fields = OrderedDict([
+            ('participant_id', ('participant_id', '')),
+            ('course_id', ('course_id', '')),
+            ('reason', ('reason', '')),
+        ])
+        file_name = 'unenrollment_errors.csv'
+        errors = [{'participant_id': k[0], 'course_id': k[1], 'reason': v} for k, v in failed.items()]
+        try:
+            failed_url = create_and_store_csv_file(
+                fields, errors, DELETE_PARTICIPANTS_DIR,
+                file_name, logger, task_log_msg, secure=True
+            )
+        except Exception as e:
+            logger.error('Failed to generate CSV - {} - {}'.format(e.message, task_log_msg))
+
+        failed_url = urljoin(
+            base=base_url,
+            url=failed_url
+        )
+
+    # Send email
+    if send_confirmation_email:
+        subject = _('Bulk unenrollment completed')
+        email_template = 'admin/unenroll_users_email_template.haml'
+        mcka_logo = urljoin(
+            base=base_url,
+            url='/static/image/mcka_email_logo.png'
+        )
+        template_data = {
+            'first_name': owner.get('first_name'),
+            'file_name': file_path.split('/')[-1],
+            'mcka_logo_url': mcka_logo,
+            'minutes_taken': math.ceil((time.time() - started) / 60),
+            'failed_url': failed_url,
+            'successful': total - len(failed),
+            'total': total,
+        }
+        recipients = [owner.get('email')] + [da.email for da in DeletionAdmin.objects.all()]
+        send_email.delay(subject, email_template, template_data, recipients, task_log_msg)
+
+    if failed:
+        raise InvalidTaskError("Failed to unenroll users.")
 
 
 @task(name='admin.user_company_fields_update_task', queue='high_priority')

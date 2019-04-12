@@ -13,6 +13,16 @@ $(document).ready(function() {
         $(this).addClass('active');
     });
 
+     $('.ld-nav ul>li a').click(function(e) {
+
+        $('.ld-nav li.active').addClass('previous');
+        $('.ld-nav li.active').removeClass('active');
+
+        var $parent = $(this).parent();
+        $parent.addClass('active');
+        $parent.removeClass('previous');
+    });
+
     $("#lessons-content").on('click', function(e) {
         if ($(e.target).hasClass('load-course-lessons')) {
             var course_id = $(e.target).data('course-id');
@@ -40,7 +50,7 @@ $(document).ready(function() {
         else{
             $('.notifications .dropdown-menu').hide();
         }
-        $(e.target).parents('.courseNavWrap').addClass('nav-active');
+        $(e.target).parents('.courseNavWrap, .mainNav.headerNav').addClass('nav-active');
     });
     $(window).on('hide.bs.dropdown', function (e) {
         if ($(e.target).hasClass('notifications')){
@@ -132,6 +142,9 @@ $(document).ready(function() {
     // when clicking the div : never remove the class
     $(".zoomWrap").click(function() {
         removeClass = false;
+        $(".appHeader").removeClass('delay-1s');
+        $(".learner-nav").removeClass('delay-2s');
+        $("footer").removeClass('delay-3s');
     });
     // when click event reaches "html" : remove class if needed, and reset flag
     $("html").click(function() {
@@ -196,6 +209,18 @@ $(document).ready(function() {
             $('table.progress-data').addClass('table-col-3');
             break;
     }
+
+
+    // Future course modal
+
+    $(".future-course #course-navigation").attr("href", "javascript:void()");
+    $(".future-course .card-body").removeClass("dome-bc");
+
+
+    // Add spinner to crop & save button of profile upload
+    $("#crop-save").click(function () {
+        $("#crop-save #spinner").addClass("spinner-border-sm").addClass("spinner-border");
+    });
 });
 
 
@@ -512,15 +537,21 @@ function smoothNavLinks() {
 smoothNavLinks();
 
 
-// Preloaders
-
 $(window).on("load", function () {
+
+    // Preloaders for platform
     $('.loader').removeClass("donut-loader").removeClass("loader");
     $('.preloader').removeClass("preloader");
     $('.courseLanding .contentCard').css("visibility", "visible");
+
+    // Remove spinner from crop & save button
+    $("#crop-save #spinner").removeClass("spinner-border-sm").removeClass("spinner-border");
 });
+
+// Preloader for courses page
 
 $('.my-courses .card').click(function () {
     $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
     $(this).addClass("loader").addClass("donut-loader");
+    $('.my-courses #course-navigation .card').removeClass("loader").removeClass("donut-loader");
 });

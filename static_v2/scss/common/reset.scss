@@ -23,3 +23,9 @@ a{ outline : none;}
 *{
   letter-spacing: 0;
 }
+
+div#MathJax_Message {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}

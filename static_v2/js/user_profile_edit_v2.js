@@ -32,7 +32,7 @@ $(document).ready(function(){
       canvasData = $image.cropper('getCanvasData');
       $image.cropper('destroy');
   }
-  
+
   function applyCoordinates() {
       removeCropper();
       alert(canvasData);
@@ -57,6 +57,8 @@ $(document).ready(function(){
   $(".editPhotoModal").on('hidden.bs.modal', function () {
     removeCropper();
   });
-
+  $('.file-select-button').on('click', function() {
+      $('.browseProfilePhoto').click();
+  });
 });
 

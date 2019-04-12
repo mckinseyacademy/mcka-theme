@@ -68,26 +68,8 @@
       cssVars({
         onlyVars: true,
         include: 'link.pony',
-        variables: variables
-      });
-
-    %script
-      var delay;
-      var longpress = 300;
-
-      document.addEventListener('touchstart', function (e) {
-        e.stopPropagation();
-        var pop = $(e.target).parents('.longTapPopover[data-toggle="popover"]');
-        delay = setTimeout(check, longpress);
-        function check() {
-          pop.popover('show');
-        }
-        document.addEventListener('touchstart', function (e) {
-          pop.popover('hide');
-        });
-      }, true);
-      document.addEventListener('click', function (e) {
-        $('.longTapPopover[data-toggle="popover"]').popover('hide');
+        variables: variables,
+        watch: true
       });
 
     - block open_graph
@@ -125,7 +107,7 @@
     - block css
       %link{rel: "stylesheet", href: "//player.ooyala.com/static/v4/stable/4.32.8/skin-plugin/html5-skin.css"}
     - if xblock_theme_css_path
-      %link{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
+      %link.pony{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
       %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
 
 
@@ -234,7 +216,7 @@
       - include 'header.haml'
 
     -# Main content goes here
-    %main.fadeIn.animated.delay-2s{role: "main"}
+    %main.fadeIn.animated.delay-1s{role: "main"}
       - block navigation_content
       - block content
 
@@ -318,12 +300,32 @@
       .modal-dialog
         .modal-content
           .modal-header
-            %button.close{:data-dismiss => "modal", :type => "button"} ×
-            %h4.modal-title Modal Header
+            %h4.modal-title.title Modal Header
           .modal-body
-            %p Some text in the modal.
+            %p.description Some text in the modal.
           .modal-footer
             %button.btn.btn-default{:data-dismiss => "modal", :type => "button"} Close
+
+    - block messages_modal
+      - if messages
+        #messagesModal.modal.fade{:tabindex => "-1", :role => "dialog", :aria-hidden => "true"}
+          .modal-dialog{:role => "document"}
+            .modal-content
+              .modal-header
+                %button.close{:type => "button", :data-dismiss => "modal", :aria-label => "close"}
+                  %span{:aria-hidden => "true"} &times;
+                %h5.modal-title {% trans "Notice" %}
+              .modal-body
+                {% for message in messages %}
+                  {{ message }}<br/>
+                {% endfor %}
+
+        %script
+          if ($("#messagesModal").length){
+            setTimeout(function () {
+              $('#messagesModal').modal('show')
+            }, 10);
+          }
 
     / New Feature Tour Structure
     .modal.fade.newFeatureTour.in.show{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}

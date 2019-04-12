@@ -164,7 +164,7 @@ LOCALE_PATHS = (
 )
 
 USE_TZ = True
-TIME_ZONE = 'US/Eastern'
+TIME_ZONE = 'UTC'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -513,7 +513,7 @@ COHORT_FLAG_SWITCH_NAME = 'enable_apros_integration'
 DELETION_FLAG_NAMESPACE = 'data_deletion'
 DELETION_FLAG_SWITCH_NAME = 'enable_data_deletion'
 
-DELETION_SYNCHRONOUS_MAX_USERS = 250
+DELETION_SYNCHRONOUS_MAX_USERS = 50
 
 try:
     from local_settings import *  # noqa: F403, F401

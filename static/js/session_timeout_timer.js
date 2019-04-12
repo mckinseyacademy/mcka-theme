@@ -1,10 +1,18 @@
 $(function(){
   // Launch a timer that expires on session timeout
-  // last_touch in cookie will be none if user is logged out
-  if (getCookieValue('last_touch') != 'None') {
+  if (lastTouchExists() && isUserLoggedIn()) {
     $(function(){
       launchSessionTimeoutTimer();
     })
+  }
+
+  function lastTouchExists() {
+    const lastTouchCookie = getCookieValue('last_touch');
+    return lastTouchCookie === 'None' || !lastTouchCookie ? false : true;
+  }
+
+  function isUserLoggedIn() {
+    return getCookieValue('sessionid') ? true : false;
   }
 
   function launchSessionTimeoutTimer() {
@@ -16,11 +24,20 @@ $(function(){
   function handleAprosSessionTimeout() {
     // When timer expires, check its validity
     if (isTimeOutValid(0)) {
-      window.alert(gettext('You were logged out due to inactivity. Please log back in to continue.'));
-      window.location = '/accounts/login/';
+      redirectOnTimeOut();
     }
     else {
       launchSessionTimeoutTimer();
+    }
+  }
+
+  function redirectOnTimeOut() {
+    if (SCORM_SHELL){
+        window.parent.close();
+    }
+    else {
+      window.alert(gettext('You were logged out due to inactivity. Please log back in to continue.'));
+      window.location = '/accounts/login/';
     }
   }
 })

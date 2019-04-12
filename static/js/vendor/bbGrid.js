@@ -333,9 +333,9 @@
         className: 'bbGrid-grid-head',
         template: _.template(
             '<% if (isMultiselect) {%>\
-                <th style="width:15px" data-noresize><input type="checkbox"></th>\
+                <th style="width:15px; min-width:auto;" data-noresize><input type="checkbox"></th>\
             <%} if (isContainSubgrid) {%>\
-                <th style="width:15px;" data-noresize/>\
+                <th style="width:15px; min-width: auto;" data-noresize/>\
                 <%} _.each(cols, function (col) {%>\
                     <th <% if (col.tooltip) {%> title="<%=col.tooltip%>" <% } %>\
                         <% if (!col.resizable) {%> data-noresize <% } %>\

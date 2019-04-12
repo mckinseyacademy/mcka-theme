@@ -1,20 +1,17 @@
 main{
   min-height: calc(100vh - 268px);
-  margin-top: 30px;
 }
 
-@include media-breakpoint-down(lg){
-  .container{
+.container {
+  @include media-breakpoint-down(lg) {
     max-width: 1244px;
+  }
+  @media (min-width: 992px) and (max-width: 1335px) {
+    padding-left: 5% !important;
+    padding-right: 5% !important;
   }
 }
 
 .border-top-main{
-  border-top: 6px solid  var(--secondary);
-}
-
-@include media-breakpoint-down(xs){
-  main{
-    margin-top: 20px;
-  }
+  border-top: 6px solid  var(--header-top);
 }

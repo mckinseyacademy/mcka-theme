@@ -360,11 +360,16 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         }
         self.assertEqual(expected_data, result)
 
-    def create_mock_csv_file(self, header='email'):
+    def create_mock_csv_file(self, headers=None):
         """Creates file with test users' emails and one invalid email."""
+        headers = headers or ['email']
         temp_csv_file = NamedTemporaryFile(dir='')
-        temp_csv_file.write("{}\n".format(header))
-        temp_csv_file.write("\n".join((student.email for student in self.students)))
+        temp_csv_file.write("{}\n".format(','.join(headers)))
+        for student in self.students:
+            student_data = [getattr(student, header) for header in headers]
+            student_data_str = ','.join(str(student_data))
+            temp_csv_file.write("{}\n".format(student_data_str))
+
         temp_csv_file.write("\ninvalid")
         temp_csv_file.seek(0)
         return File(temp_csv_file)
@@ -466,13 +471,8 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
 
     @ddt.unpack
     @ddt.data(
-        (views.enroll_participants_from_csv, 'student_enroll_list',
-         "admin/test_data/enroll-existing-participants.csv", True),
         (views.import_participants, 'student_list',
          "admin/test_data/enroll-existing-participants.csv", True),
-
-        (views.enroll_participants_from_csv, '',
-         "admin/test_data/enroll-existing-participants.csv", False),
         (views.import_participants, '',
          "admin/test_data/enroll-existing-participants.csv", False),
     )
@@ -488,6 +488,86 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
                 self.assertIn('task_key', response.content)
             else:
                 self.assertEqual(response, None)
+
+
+@ddt.ddt
+class EnrollParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
+    """
+    Test the enrollment and unenrollment views.
+    """
+    def setUp(self):
+        super(EnrollParticipantsFromCsvTest, self).setUp()
+        self.patch_user_permissions()
+        enroll_url = reverse('enroll_participants_from_csv')
+        self.request = self.factory.delete(enroll_url)
+        self.request.user = self.admin_user
+        self.api = views.ParticipantsEnrollmentFromCsv()
+
+    @patch('admin.views.import_participants_task.delay')
+    @ddt.unpack
+    @ddt.data(
+        ('student_enroll_list', True),
+        ('', False),
+    )
+    def test_enrollment_csv_upload_views(self, file_key, is_valid, mock):
+        """Test uploading CSV for enrolling user."""
+        test_file_path = 'admin/test_data/enroll-existing-participants.csv'
+        with open(test_file_path, "rb") as test_file:
+            test_file = File(test_file)
+
+            self.request.data = {file_key: test_file}
+            self.request.content_type = 'multipart/form-data'
+            response = self.api.post(self.request)
+            if is_valid:
+                self.assertEqual(mock.call_count, 1)
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+            else:
+                self.assertEqual(mock.call_count, 0)
+                self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_unenrollment_upload_csv_with_deletion_disabled(self):
+        """Test uploading CSV without enabling `data_deletion.enable_data_deletion` waffle switch. """
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, "`data_deletion` flag is not enabled.")
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('lib.authorization.permission_group_required_not_in_group', lambda _: HttpResponseForbidden())
+    def test_unenrollment_upload_csv_without_permissions(self):
+        """Test uploading file as non-admin user."""
+        self.request.user = self.students[0]
+        middleware = SessionMiddleware()
+        middleware.process_request(self.request)
+        self.request.session.save()
+
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 403)
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    def test_unenrollment_without_file(self):
+        """Test upload endpoint without providing a file."""
+        self.request.data = {}
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.content, '{"student_unenroll_list": ["This field is required."]}')
+
+    @override_switch(get_deletion_waffle_switch(), active=True)
+    @patch('admin.views.unenroll_participants_task.delay')
+    @patch('admin.views.store_file')
+    @patch('admin.views.user_api.get_user')
+    def test_unenroll_users(self, get_user_mock, store_file_mock, unenrollment_task_mock):
+        """Test bulk user unenrollment view. Unenrollment is invoked in a Celery task, so it's tested separately."""
+        store_file_mock.side_effect = lambda _request, _dir, file_name, **kwargs: file_name
+        dummy_serializable_object = Dummy()
+        dummy_serializable_object.to_dict = lambda *args, **kwargs: {}
+        get_user_mock.side_effect = lambda *args, **kwargs: dummy_serializable_object
+
+        csv_file = self.create_mock_csv_file()
+        self.request.data = {'student_unenroll_list': csv_file}
+
+        response = self.api.delete(self.request)
+        self.assertEqual(response.status_code, 204)
+        self.assertEqual(unenrollment_task_mock.call_count, 1)
 
 
 class DeleteParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
@@ -508,7 +588,7 @@ class DeleteParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
         self.assertEqual(response.content, "`data_deletion` flag is not enabled.")
 
     def test_delete_users_with_deletion_disabled(self):
-        """Test deleting user jswithout enabling `data_deletion.enable_data_deletion` waffle switch."""
+        """Test deleting user without enabling `data_deletion.enable_data_deletion` waffle switch."""
         response = self.api.delete(self.request)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.content, "`data_deletion` flag is not enabled.")

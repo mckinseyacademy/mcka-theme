@@ -51,8 +51,8 @@ massParticipantsEnrollInit = function(){
               reader.readAsText(fileList[i]);
             }
           }
-            
-          
+
+
         });
         $(document).on('clearDropzone', function() {
           _this.removeAllFiles(true);
@@ -60,12 +60,12 @@ massParticipantsEnrollInit = function(){
         _this.on('success', function(file, response) {
           $('#import_participants_popup_message').foundation('reveal', 'open');
         });
-        _this.on("addedfile", function(file) { 
+        _this.on("addedfile", function(file) {
           $('#enroll_to_course_from_csv .upload_stats').empty();
           $('#enroll-participants-error-list').empty();
           $('#enroll_to_course_from_csv input[type=submit]').removeAttr('disabled');
         });
-        _this.on("removedfile", function(file) { 
+        _this.on("removedfile", function(file) {
           if (document.getElementById("id_student_enroll_list").files.length == 0) {
             $('#enroll_to_course_from_csv input[type=submit]').attr('disabled', 'disabled');
           }
@@ -109,6 +109,7 @@ massParticipantsEnrollInit = function(){
         processData: false,
         dataType: 'text',
         cache: false,
+        headers: {'X-CSRFToken': $.cookie('apros_csrftoken')},
         success:function( data ) {
           $('#import_participants_popup_message').foundation('reveal', 'open');
         },
@@ -129,11 +130,131 @@ massParticipantsEnrollInit = function(){
 
 };
 
+massParticipantsUnenrollInit = function () {
+  if ($('#id_student_unenroll_list').parents('#unenroll_from_course_from_csv').length > 0) {
+    $(document).on('open.fndtn.reveal', '[data-reveal]', function () {
+      setTimeout(function () {
+        var element = $('#id_student_unenroll_list');
+        var form = $('#unenroll_from_course_from_csv');
+        element.val('');
+        form.find('#submitCSVUnenroll').attr('disabled', 'disabled');
+        form.find('.button-wrapper i').hide();
+        form.find('#id_student_unenroll_list').attr('accept', '.csv');
+        form.find('#attempted-unenroll').val('0');
+        form.find('#succeded-unenroll').val('0');
+        form.find('#failed-unenroll').val('0');
+        form.find('#unenroll-participants-error-list').empty();
+        form.find(".upload_stats").empty();
+        $(document).trigger('clearDropzone');
+      }, 10);
+    });
+
+    Dropzone.options.participantsUnenrollCsvUpload = {
+      paramName: 'student_unenroll_list',
+      headers: {'X-CSRFToken': $.cookie('apros_csrftoken')},
+      autoProcessQueue: false,
+      addRemoveLinks: true,
+      acceptedFiles: ".csv",
+      method: "DELETE",
+      init: function () {
+        const _this = this;
+        $(document).on('submitDropzone', function () {
+          const fileList = _this.getQueuedFiles();
+          let checked_files = 0;
+          if (fileList.length > 0) {
+            const interval_id = setInterval(function () {
+              if (fileList.length === checked_files) {
+                _this.processQueue();
+                clearInterval(interval_id);
+              }
+            }, 1000);
+
+            for (let i = 0; i < fileList.length; i++) {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                checked_files += 1;
+              };
+              reader.readAsText(fileList[i]);
+            }
+          }
+        });
+        $(document).on('clearDropzone', function () {
+          _this.removeAllFiles(true);
+        });
+        _this.on('success', function (file, response) {
+          $('#unenroll_participants_success').foundation('reveal', 'open');
+        });
+        _this.on("addedfile", function (file) {
+          $('#unenroll_from_course_from_csv .upload_stats').empty();
+          $('#unenroll-participants-error-list').empty();
+          $('#unenroll_from_course_from_csv input[type=submit]').removeAttr('disabled');
+        });
+        _this.on("removedfile", function (file) {
+          if (document.getElementById("id_student_unenroll_list").files.length === 0) {
+            $('#unenroll_from_course_from_csv input[type=submit]').attr('disabled', 'disabled');
+          }
+          $('#unenroll_from_course_from_csv .upload_stats').empty();
+          $('#unenroll-participants-error-list').empty();
+        });
+      }
+    };
+  }
+
+  $('#id_student_unenroll_list, .select-program, .select-course').on("change", function () {
+    const program = $('#unenroll_from_course_from_csv .select-program').find(":selected").val();
+    const course = $('#unenroll_from_course_from_csv .select-course').find(":selected").val();
+    if (program !== 'select' && course !== 'select' && $('#id_student_unenroll_list').val() !== '') {
+      $('#unenroll_from_course_from_csv input[type=submit]').removeAttr('disabled');
+    }
+  });
+
+  $('#id_student_unenroll_list').on("change", function () {
+    $('#unenroll_from_course_from_csv .upload_stats').empty();
+    $('#unenroll_from_course_from_csv #unenroll-participants-error-list').empty();
+  });
+
+  $('#unenroll_from_course_from_csv .admin-form').on('click', '#submitCSVUnenroll', function (e) {
+    e.preventDefault();
+    var ready = false;
+    var form = $(this).parents('.admin-form').find(".fileInputUnenroll");
+    var modal = form.parent();
+    modal.find('.error').html('');
+    $(this).attr('disabled', 'disabled');
+    var _this = this;
+    modal.find('.button-wrapper i').show();
+    var file_input = document.getElementById("id_student_unenroll_list").files;
+    if (file_input.length > 0) {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        var options = {
+          url: form.attr('action'),
+          type: 'DELETE',
+          cache: false,
+          headers: { 'X-CSRFToken': $.cookie('apros_csrftoken')},
+          success: function (data) {
+            $('#unenroll_participants_success').foundation('reveal', 'open');
+          },
+          error: function (data) {
+            data = $.parseJSON(data);
+            modal.find('.error').append('<p class="warning">' + gettext('Please select file first.') + '</p>');
+            $('#unenroll_from_course_from_csv input[type=submit]').removeAttr('disabled');
+          }
+        };
+        form.ajaxSubmit(options);
+      };
+      reader.readAsText(file_input[0]);
+    } else if (modal.find('.dropzone')) {
+      $(document).trigger('submitDropzone');
+    }
+  });
+
+};
+
 PopulateTemplateData = function()
 {
   var data = [[gettext("email"), gettext("course id"), gettext("status")],
   ["sinatest@yopmail.com", "edX/TwoX/Two_Course", "participant"],
-  ["sinatest1@yopmail.com", "edX/TwoX/Two_Course", "ta"], 
+  ["sinatest1@yopmail.com", "edX/TwoX/Two_Course", "ta"],
   ["sinatest2@yopmail.com", "edX/TwoX/Two_Course", "observer"]];
   var csvContent = "data:text/csv;charset=utf-8,";
   data.forEach(function(infoArray, index){
@@ -141,9 +262,23 @@ PopulateTemplateData = function()
      dataString = infoArray.join(",");
      csvContent += index < data.length ? dataString+ "\n" : dataString;
 
-  }); 
+  });
   var encodedUri = encodeURI(csvContent);
   $('#enroll_to_course_from_csv #enrollParticipantTemplate').attr("href", encodedUri);
+
+  var data = [
+      [gettext("participant_id"), gettext("course_id")],
+      ["31", "edX/TwoX/Two_Course"],
+      ["32", "edX/TwoX/Two_Course"],
+      ["33", "edX/TwoX/Two_Course"]
+  ];
+  var csvContent = "data:text/csv;charset=utf-8,";
+  data.forEach(function(infoArray, index){
+     dataString = infoArray.join(",");
+     csvContent += index < data.length ? dataString+ "\n" : dataString;
+  });
+  var encodedUri = encodeURI(csvContent);
+  $('#unenroll_from_course_from_csv #unenrollParticipantTemplate').attr("href", encodedUri);
 
   var data = [[gettext("Learner email"), gettext("Business Function"), gettext("Business Unit"), gettext('location')],
   ["test@yopmail.com", "abc", "xyz", "New York"],

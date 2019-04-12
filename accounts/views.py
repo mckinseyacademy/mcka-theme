@@ -149,7 +149,7 @@ def _build_sso_redirect_url(provider, next):
     return '{lms_auth}login/tpa-saml/?{query}'.format(lms_auth=settings.LMS_AUTH_URL, query=urlencode(query_args))
 
 
-def _get_redirect_to_current_course(request):
+def _get_redirect_to_current_course(request, sso_user=False):
     user_data = thread_local.get_basic_user_data(request.user.id)
     user_courses = user_data.get('courses')
 
@@ -165,30 +165,38 @@ def _get_redirect_to_current_course(request):
                 future_start_date = is_future_start(current_program.start_date)
 
     if user_data.get('new_ui_enabled'):
-        if current_course and current_course.learner_dashboard:
+        if current_course and sso_user:
             return reverse('course_landing_page', kwargs=dict(course_id=current_course.id))
-        else:
-            user_ld_courses = [user_course for user_course in user_courses if user_course.learner_dashboard]
-            user_ld_courses = sorted(user_ld_courses, key=lambda x: x.id.lower())
-            user_course_with_ld = next(iter(user_ld_courses), None)
-            last_visited_ld = request.session.get('last_visited_course', None)
-            if last_visited_ld:
-                for user_ld_course in user_ld_courses:
-                    if user_ld_course.id == last_visited_ld:
-                        user_course_with_ld = user_ld_course
-                        break
-            if user_course_with_ld:
-                return reverse('course_landing_page', kwargs=dict(course_id=user_course_with_ld.id))
+        user_ld_courses = [user_course for user_course in user_courses if user_course.learner_dashboard]
+        user_ld_courses = sorted(user_ld_courses, key=lambda x: x.id.lower())
+        user_course_with_ld = next(iter(user_ld_courses), None)
+        last_visited_ld = request.session.get('last_visited_course', None)
+        if last_visited_ld:
+            for user_ld_course in user_ld_courses:
+                if user_ld_course.id == last_visited_ld:
+                    user_course_with_ld = user_ld_course
+                    break
+        if user_course_with_ld:
+            return reverse('course_landing_page', kwargs=dict(course_id=user_course_with_ld.id))
 
-            return reverse('courses')
+        return reverse('courses')
 
     if current_course and not future_start_date:
         return reverse('course_landing_page', kwargs=dict(course_id=current_course.id))
+    else:
+        for course in user_courses:
+            if course.is_active and course.started:
+                return reverse(
+                    'course_landing_page',
+                    kwargs=dict(course_id=course.id)
+                )
 
     return reverse('protected_home')
 
 
 def _process_authenticated_user(request, user, activate_account=False):
+    sso_user = bool(request.session.get('sso_user') or SSO_ACCESS_KEY_SESSION_ENTRY in request.session)
+
     # prefetch some basic data in cache for the authenticated user
     if user.id:
         thread_local.get_basic_user_data(user.id)
@@ -208,7 +216,7 @@ def _process_authenticated_user(request, user, activate_account=False):
             _process_access_key_and_remove_from_session(request, user, access_key, client)
 
     if not redirect_to:
-        redirect_to = _get_redirect_to_current_course(request)
+        redirect_to = _get_redirect_to_current_course(request, sso_user)
     if activate_account:
         redirect_to += '?username={}'.format(user.username)
     response = HttpResponseRedirect(redirect_to)  # Redirect after POST
@@ -856,6 +864,7 @@ def sso_registration_form(request):
 
                 _process_access_key_and_remove_from_session(request, new_user, access_key, client)
 
+                request.session['sso_user'] = True
                 # Redirect to the LMS to link the user's account to the provider permanently:
                 complete_url = '{lms_auth}complete/{backend_name}/'.format(
                     lms_auth=settings.LMS_AUTH_URL,
@@ -1246,7 +1255,7 @@ def access_key(request, code):
     if request.user.is_authenticated:
         if key and client:
             _process_access_key_and_remove_from_session(request, request.user, key, client)
-        return HttpResponseRedirect(_get_redirect_to_current_course(request))
+        return HttpResponseRedirect(_get_redirect_to_current_course(request, sso_user=True))
 
     # Show the invitation landing page. It informs the user that they are about
     #  to be redirected to their company's provider.

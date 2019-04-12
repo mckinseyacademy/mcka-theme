@@ -372,15 +372,6 @@ $(function () {
     $(".new-theme [data-block-type='pb-mcq'] input[type=radio]:checked").parent().addClass('selected');
   });
 
-  var msg_modal_selector = '#messagesModal';
-  if ($(msg_modal_selector).length) {
-    Apros.chainModal(0, msg_modal_selector, function () {
-      setTimeout(function () {
-        $(msg_modal_selector).foundation('reveal', 'open');
-      }, 10);
-    });
-  }
-
   Apros.executeModalChain();
 });
 
@@ -443,7 +434,7 @@ $('.editProfileField').on('show.bs.modal', function (e) {
     }
   } else {
 
-    var fullName = $('.nameArea span').text().split(" "); 
+    var fullName = $('.nameArea span').text().split(" ");
     if(fullName.length)
     {
       $(this).find('.form-group').addClass('focused');
@@ -452,4 +443,69 @@ $('.editProfileField').on('show.bs.modal', function (e) {
     }
   }
 
+});
+
+(function() {
+  var isMobile = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+  var longPress = 300;
+  var delay = null;
+  var shown = false;
+
+  $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).hover(
+    function(e) {
+      if (isMobile){
+        return
+      }
+
+      if ($(this).hasClass('courseRow')){
+        $(this).children('.description').css({'opacity': 1, 'visibility': 'visible', 'display': 'block'});
+        return;
+      }
+      $(this).popover('show');
+    }, function(e) {
+      if (isMobile){
+        return
+      }
+
+      if ($(this).hasClass('courseRow')){
+        $(this).children('.description').css({'opacity': 0, 'visibility': 'hidden', 'display': 'none'});
+        return;
+      }
+      $(this).popover('hide');
+    }
+  );
+
+  $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).bind('touchend', function(event){
+    if (!shown){
+      clearTimeout(delay);
+    } else {
+      event.stopPropagation();
+      event.preventDefault();
+    }
+    shown = false;
+  });
+
+  $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).bind('touchstart', function(e){
+    let self = $(this);
+    delay = setTimeout(check, longPress);
+    function check() {
+      if (self.hasClass('courseRow')){
+        self.children('.description').css({'opacity': 1, 'visibility': 'visible', 'display': 'block'});
+      }else{
+        self.popover('show');
+      }
+      shown = true;
+    }
+    document.addEventListener('touchstart', function (e) {
+      if (self.hasClass('courseRow')){
+        self.children('.description').css({'opacity': 0, 'visibility': 'hidden',  'display': 'none'});
+        return;
+      }
+      self.popover('hide');
+    });
+  });
+})();
+
+$('.lesson-dropdown-holder').on("click", ".dropdown-menu", function (e) {
+    $(e.target).parents('*').andSelf().filter('.courseRow.locked').length !== 0 && e.stopPropagation();
 });
