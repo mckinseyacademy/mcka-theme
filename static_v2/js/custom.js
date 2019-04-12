@@ -3,7 +3,7 @@ $(document).ready(function() {
         $('.leaderboards-list .col').removeClass('col').addClass('col-12');
     }
 
-    $('#pnProductNavContents>ul> li').not(":has(.dropdown-menu) || :has(..dropdown-toggle)").click(function() {
+    $('#pnProductNavContents>ul> li').not(":has(.dropdown-menu, .dropdown-toggle)").click(function() {
         $('#pnProductNavContents>ul> li.active').removeClass('active');
         $(this).addClass('active');
     });
