@@ -1507,19 +1507,19 @@ body.new-theme {
 					margin: 0 auto 15px;
 					padding: 15px 0 0;
 					border: 0;
-					width: 95%;
+					width: 100%;
 
 					select {
 						color: $gray;
 						border: 0;
 						width: 100%;
 						background-image: url(../../images/expand-button.svg);
-						padding: 0 10px;
 						background-repeat: no-repeat;
 						background-position: 90%;
 						background-size: 8px;
 						width: 100%;
-						padding: 7px 25px 7px 10px;
+						padding: 10px 25px 10px 10px;
+						padding: 10px 25px 10px 10px;
 					}
 
 					label {
