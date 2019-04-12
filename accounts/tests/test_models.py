@@ -1,8 +1,12 @@
+# -*- coding: utf-8 -*-
+import ddt
+
 from datetime import timedelta
+from mock import MagicMock
 
 from django.test import TestCase
 
-from accounts.models import UserActivation, UserPasswordReset
+from accounts.models import UserActivation, UserPasswordReset, RemoteUser
 from accounts.tests.utils import TestUserObject
 
 # TODO: Add Unit tests for RemoteUser class from models
@@ -83,3 +87,26 @@ class UserPasswordResetTests(TestCase):
             None
         )
         self.assertIsNone(reset_record)
+
+
+@ddt.ddt
+class RemoteUserTest(TestCase):
+
+    @ddt.data(
+        ('John', 'Doe', 'john.doe@corp.com', 11),
+        (u'فلانة', u'الفلاني', 'abc@xyz.ar', 22),
+        (u'कोई', u'व्यक्ति', 'xyz@abc.in', 33),
+    )
+    @ddt.unpack
+    def test_update_response_fields(self, first_name, last_name, email, user_id):
+        user_response_mock = MagicMock()
+        user_response_mock.first_name = first_name
+        user_response_mock.last_name = last_name
+        user_response_mock.email = email
+        user_response_mock.id = user_id
+        user = RemoteUser()
+        user.update_response_fields(user_response_mock)
+        self.assertTrue(user.first_name in user.fullname)
+        self.assertTrue(user.last_name in user.fullname)
+        self.assertEqual(user.name_initials[0], first_name[0])
+        self.assertEqual(user.name_initials[1], last_name[0])
