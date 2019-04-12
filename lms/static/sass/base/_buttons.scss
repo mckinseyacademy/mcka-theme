@@ -6,7 +6,6 @@
     padding: 3px 15px $isImportant;
     font-weight: normal $isImportant;
     height: 40px !important;
-    box-shadow: none;
     border:0 $isImportant;
     @include primary-theme-background-color(!important);
     text-decoration: none;
@@ -19,12 +18,10 @@
     border-radius: 2px $isImportant;
     padding: 3px 15px $isImportant;
     font-weight: normal $isImportant;
-    background-color: $dark-blue !important;
+    @include primary-theme-background-color-hover(!important);
     height: 40px !important;
-    box-shadow: none;
     border:0 $isImportant;
     text-decoration: none;
-
 }
 
 @mixin primary-button-large ($isImportant:null) {
@@ -32,10 +29,6 @@
     height: 50px !important;
     font-size: 1rem !important;
     padding: 3px 30px !important;
-    box-shadow: none;
-    border:0 $isImportant;
-    text-decoration: none;
-
 }
 
 @mixin primary-button-hover-large ($isImportant:null) {
@@ -43,9 +36,6 @@
     height: 50px !important;
     padding: 3px 30px !important;
     font-size: 1rem !important;
-    box-shadow: none;
-    border:0 $isImportant;
-    text-decoration: none;
 }
 
 @mixin secondary-button ($isImportant:null) {
@@ -60,19 +50,22 @@
     @include primary-theme-border-color(!important);
     @include primary-theme-content-color(!important);
     text-decoration: none;
+    box-shadow: none;
 }
 
 @mixin secondary-button-hover ($isImportant:null) {
-    color: $dark-blue !important;
+    border: 1px solid;
+    @include primary-theme-border-color-hover(!important);
+    @include primary-theme-content-color-hover(!important);
     font-size: 12px $isImportant;
     text-transform: uppercase $isImportant;
-    border: solid 1px $dark-blue $isImportant;
     border-radius: 2px $isImportant;
     padding: 3px 15px $isImportant;
     font-weight: normal $isImportant;
     background-color: $white !important;
     height: 40px !important;
     text-decoration: none;
+    box-shadow: none $isImportant;
 }
 
 @mixin secondary-button-large ($isImportant:null) {
@@ -80,7 +73,6 @@
     height: 50px !important;
     padding: 3px 30px $isImportant;
     font-size: 1rem $isImportant;
-    text-decoration: none;
 }
 
 @mixin secondary-button-hover-large ($isImportant:null) {
@@ -88,7 +80,6 @@
     height: 50px !important;
     padding: 3px 30px $isImportant;
     font-size: 1rem $isImportant;
-    text-decoration: none;
 }
 
 //tertiary button .btn-tertiary
@@ -101,7 +92,7 @@
 
 @mixin tertiary-button-hover ($isImportant:null) {
     background-color: $ash-hard  !important;
-    color: $dark-blue !important;
+    @include primary-theme-content-color-hover(!important);
     border: 0 !important;
     text-decoration: none;
 }
