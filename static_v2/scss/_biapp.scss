@@ -1027,4 +1027,21 @@ body.rtl {
     @include right(auto);
     @include right(auto);
   }
+  #course-statistics {
+    .widget {
+      .progressArea {
+        @include float(left);
+      }
+    }
+  }
+  .progressWidgets {
+    .widget {
+      &:first-child {
+        @include padding-left(0 !important);
+      }
+      &:last-child {
+        @include padding-right(0 !important);
+      }
+    }
+  }
 }
