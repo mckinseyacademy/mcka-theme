@@ -109,7 +109,7 @@ body {
   .mainNav {
     > ul {
       > li {
-        @include margin-left(26px);
+        @include margin-left(30px);
         &:first-child {
           @include margin-left(0);
         }
