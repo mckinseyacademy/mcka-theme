@@ -11,8 +11,6 @@
     %meta{charset: "utf-8"}
     %meta{'http-equiv': "X-UA-Compatible", content: "IE=edge"}
     %meta{name: "viewport", content: "width=device-width, maximum-scale=1, user-scalable=no"}
-    - if user_ios_mobile_app_id
-      %meta{name: "apple-itunes-app", content: "app-id={{user_ios_mobile_app_id}}"}
     - block meta
     - block page_title
       %title McKinsey Academy
@@ -96,9 +94,6 @@
     %meta{name: "msapplication-TileColor", content: "#2b5797"}
     %meta{name: "msapplication-TileImage", content: "/static/favicons/mstile-144x144.png"}
     %meta{name: "msapplication-config", content: "/static/favicons/browserconfig.xml"}
-    -# android smart app banner manifest json file
-    - if user_android_mobile_app_id
-      %link{rel:"manifest", href: "/static/android_app_banner_manifest_files/manifest{{user_organization_id}}.json"}
     -# CSS
     - if not request.is_IE8
       %link{href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,700', rel: 'stylesheet', type: 'text/css'}
