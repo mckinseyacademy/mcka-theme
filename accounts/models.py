@@ -28,7 +28,7 @@ class RemoteUser(AbstractUser):
         ''' take API response and blend the results into this user object '''
         if session_key is not None:
             self.session_key = session_key
-        self.fullname = "{} {}".format(user_response.first_name, user_response.last_name)
+        self.fullname = u"{} {}".format(user_response.first_name, user_response.last_name)
         self.email = user_response.email
         self.username = user_response.username
         self.id = user_response.id
@@ -110,7 +110,7 @@ class RemoteUser(AbstractUser):
 
     def get_name_initials(self, first_name, last_name):
         if first_name and last_name:
-            return "{}{}".format(first_name[0], last_name[0])
+            return u"{}{}".format(first_name[0], last_name[0])
 
 
 class UserActivation(db_models.Model):
