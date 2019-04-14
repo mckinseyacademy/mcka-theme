@@ -63,7 +63,7 @@
       min-height: 140px;
       overflow: hidden;
       @include media-breakpoint-down(xs) {
-        min-height: 195px;
+        min-height: 175px;
       }
     }
   }
@@ -83,7 +83,7 @@
         font-size: 15px;
         margin: 0 0 0 1px;
         vertical-align: top;
-        line-height: 17px;
+        line-height: 19px;
       }
     }
   }
@@ -124,7 +124,7 @@
     display: inline-block;
     vertical-align: middle;
     padding: 0 28px;
-    max-width: 50%;
+    max-width: 70%;
     min-height: 112px;
     @include media-breakpoint-down(sm) {
       max-width: 100%;
@@ -714,7 +714,7 @@ blockquote {
   }
 }
 
-// Media Queries
+// =========== Media Queries ===========
 
 //Tablet
 @include media-breakpoint-down(md) {
@@ -730,9 +730,17 @@ blockquote {
     }
   }
 
+  .courseLanding {
+    .widget {
+      .holder {
+        min-height: 120px;
+      }
+    }
+  }
+
   .progressWidgets {
     .widget {
-      padding: 10px !important;
+      padding: 10px 15px !important;
 
       .contenrArea {
         width: auto;
@@ -746,7 +754,11 @@ blockquote {
         float: right;
 
         &.bar {
-          margin-top: 30px;
+          margin-top: 10px;
+        }
+        span{
+          width: calc(100% - 40px);
+          height: 18px;
         }
       }
       > .holder {
@@ -844,34 +856,34 @@ blockquote {
 }
 
 //Mobile
-
 @include media-breakpoint-down(sm) {
-
   .progressWidgets {
     .widget {
       border: 0 !important;
       vertical-align: bottom;
       min-height: inherit;
-
+      padding: 8px 5px !important;
+      .widgetTitle {
+        margin: 0 0 5px;
+        font-size: 0.875rem;
+      }
       .progressArea {
         float: none;
         display: block;
         position: relative;
-        margin: 0 auto;
+        margin: 0 0 20px;
 
         span {
-          width: 100%;
+          display: block;
+          width: 70%;
+          min-width: 70px;
           margin-left: 0 !important;
         }
-
       }
-
       .contenrArea {
         display: block;
-        margin: 20px 0 0;
         width: 100%;
       }
-
       &:first-child {
         > .holder {
           display: block;
@@ -891,7 +903,6 @@ blockquote {
         }
       }
     }
-
     .course-progress {
       .holder {
         position: relative;
@@ -907,9 +918,19 @@ blockquote {
       }
     }
   }
+
+  .contentCard {
+    &.progressWidgets {
+      #course-statistics {
+        > .row {
+          margin: 0 !important;
+        }
+      }
+    }
+  }
   @include media-breakpoint-down(xs) {
     .progressWidgets .course-progress .holder .bar {
-      bottom: 135px;
+      bottom: 103px;
     }
   }
   .contentCard {

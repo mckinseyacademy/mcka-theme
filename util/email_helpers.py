@@ -11,7 +11,8 @@ def send_html_email(
     subject='', to_emails=[],
     from_email=settings.APROS_EMAIL_SENDER,
     reply_to=(settings.MCKA_SUPPORT_EMAIL, ),
-    template_name=None, template_data={}
+    template_name=None, template_data={},
+    cc_emails=None
 ):
     """
     helper method for sending out html emails
@@ -37,7 +38,7 @@ def send_html_email(
 
     email = EmailMultiAlternatives(
         subject, text_content, from_email, to_emails,
-        reply_to=reply_to
+        reply_to=reply_to, cc=cc_emails
     )
 
     email.attach_alternative(html_content, "text/html")

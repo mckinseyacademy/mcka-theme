@@ -109,7 +109,7 @@ body {
   .mainNav {
     > ul {
       > li {
-        @include margin-left(26px);
+        @include margin-left(30px);
         &:first-child {
           @include margin-left(0);
         }
@@ -1026,5 +1026,22 @@ body.rtl {
   .xns-counter {
     @include right(auto);
     @include right(auto);
+  }
+  #course-statistics {
+    .widget {
+      .progressArea {
+        @include float(left);
+      }
+    }
+  }
+  .progressWidgets {
+    .widget {
+      &:first-child {
+        @include padding-left(0 !important);
+      }
+      &:last-child {
+        @include padding-right(0 !important);
+      }
+    }
   }
 }

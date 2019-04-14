@@ -60,6 +60,7 @@
     }
     .modal-content {
       border-radius: 9px;
+      margin-bottom: 20px;
     }
   }
 
@@ -101,6 +102,7 @@
         i {
           font-size: 1.875rem;
           line-height: 20px;
+          color: $white;
         }
       }
     }
@@ -137,7 +139,7 @@
         border-radius: 100%;
         overflow: hidden;
         border: 1px solid $mid-gray;
-        transition: all 0.3s ease;
+        transition: all 0.1s ease;
         transform: translate(-50%, -50%);
       }
       &.active {
@@ -165,7 +167,7 @@
       padding: 0 40px;
     }
     .carousel-item {
-      min-height: auto;
+      min-height: 530px;
     }
     .modal-dialog {
       max-width: 745px;
@@ -178,20 +180,20 @@
     .featureImage {
       margin: 0 0 20px;
     }
-    .featureContent{
-      padding:0;
-      .contentHolder{
+    .featureContent {
+      padding: 0;
+      .contentHolder {
         font-size: 1.1rem;
         line-height: 25px;
       }
       .head {
-      h2 {
-        font-size: 1.6rem;
-        line-height: 30px;
+        h2 {
+          font-size: 1.6rem;
+          line-height: 30px;
+        }
       }
     }
-    }
-    .controlsWrap{
+    .controlsWrap {
       margin: 30px -10px -35px;
     }
     .modal-dialog {
@@ -200,6 +202,12 @@
       .modal-body {
         padding: 80px 30px 55px;
       }
+      .modal-content {
+        margin-bottom: 5px;
+      }
+    }
+    .carousel-item {
+      min-height: 366px;
     }
   }
 }
