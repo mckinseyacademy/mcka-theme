@@ -204,8 +204,12 @@ body.new-theme {
 		.discussion-column {
 			width: calc(100% - 390px) !important;
 			border: 1px solid #EEEEEE;
+			min-height: 550px;
 			@media (max-width: 1024px) {
 				width: calc(100% - 265px) !important;
+			}
+			@media (max-width: 768px) {
+				width: 100% !important;
 			}
 		}
 
@@ -269,6 +273,7 @@ body.new-theme {
 			.discussion-content {
 				.discussion-column {
 					min-height: unset; ///remove spacing between content and footer in mobiles
+					
 				}
 
 				#discussion-container {
@@ -1163,6 +1168,7 @@ body.new-theme {
 				.forum-nav-browse-menu-wrapper {
 					background: none;
 					border: 0;
+					height: 400px;					
 					.forum-nav-browse-filter {
 						padding: 0;
 						margin-bottom: 10px;
@@ -1186,6 +1192,7 @@ body.new-theme {
 					}
 
 					.forum-nav-browse-menu {
+						height: calc(100% - 55px) !important;
 						.icon {
 							top: 13px !important;
 							left:0;
@@ -1518,7 +1525,6 @@ body.new-theme {
 						background-position: 90%;
 						background-size: 8px;
 						width: 100%;
-						padding: 10px 25px 10px 10px;
 						padding: 10px 25px 10px 10px;
 					}
 
@@ -2074,11 +2080,22 @@ body.new-theme {
 		background:#F9F9F9 !important;
 		margin-right:30px !important;
 		margin-bottom:0px !important;
+		min-height: 550px;
 
 		@media (max-width: 1024px) {
 			width:250px !important;
 			padding:0 15px !important;
 			margin-right: 15px!important;
 		}
+
+		@media (max-width: 768px) {
+			width:100% !important;
+			padding:0 15px !important;
+			margin-right: 0!important;
+		}
 	}
 }
+
+
+// Tablet Portrait View.
+
