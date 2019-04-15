@@ -265,6 +265,7 @@ body.new-theme {
             .poll-answers {
                 .poll-answer {
                     .poll-input-container {
+                        padding-right: 24px;
                         [type="radio"] {
                             height: auto;
                             right: 2px;
@@ -328,6 +329,8 @@ body.new-theme {
             .survey-table {
                 .survey-option {
                     label {
+                        padding-left: 24px;
+                        padding-right: 0px;
                         &::before {
                             left: 0;
                         }
