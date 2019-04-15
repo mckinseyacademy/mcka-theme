@@ -305,15 +305,12 @@ body.new-theme {
 
                     //Gauge
 
-                    .percentage-gauge-container
-                    {
-                        .percentage-gauge
-                        {
-                            left:auto;
-                            right:0;
+                    .percentage-gauge-container {
+                        .percentage-gauge {
+                            left: auto;
+                            right: 0;
                         }
                     }
-
                 }
             }
         }
@@ -326,12 +323,42 @@ body.new-theme {
     [data-block-type="survey"] {
         .poll-block-form-wrapper {
             .survey-table {
+
                 .survey-option {
                     label {
                         padding-left: 24px;
                         padding-right: 0px;
+
                         &::before {
                             left: 0;
+                        }
+                    }
+
+                    .visible-mobile-only {
+                        text-align: right;
+                        right: 9px;
+                    }
+                }
+
+
+                // for mobile only.
+
+                @media (max-width: 767px) {
+
+                    tr,
+                    .survey-row {
+
+                        td,
+                        th {
+                            &:first-child {
+                                border-left: 0 !important;
+                                border-right: 0 !important;
+                            }
+
+                            &:last-child {
+                                border: 1px solid #ccc !important;
+                            }
+
                         }
                     }
                 }
