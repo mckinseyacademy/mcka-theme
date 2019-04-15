@@ -278,6 +278,8 @@
       &.allLessons .allCoursesList .holder .data.status {
         font-size: 0;
         float: right;
+        width: 25px;
+        height: 25px;
       }
       &.allLessons .allCoursesList .holder .data.title {
         width: calc(100% - 110px);
