@@ -477,6 +477,11 @@ $('.editProfileField').on('show.bs.modal', function (e) {
 
   $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).bind('touchend', function(event){
     if (!shown){
+      let self = $(this);
+      if (self.hasClass('courseRow')){
+        self.css('background-color', self.children('.description').css('background-color'));
+        self.children('.description').css({'opacity': 0, 'visibility': 'hidden',  'display': 'none'});
+      }
       clearTimeout(delay);
     } else {
       event.stopPropagation();
@@ -487,6 +492,7 @@ $('.editProfileField').on('show.bs.modal', function (e) {
 
   $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).bind('touchstart', function(e){
     let self = $(this);
+    $('.allCoursesList .courseRow').css('background-color', 'white');
     delay = setTimeout(check, longPress);
     function check() {
       if (self.hasClass('courseRow')){
