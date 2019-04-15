@@ -1261,7 +1261,7 @@ body.new-theme {
 
               .icon:hover {
                 &:before {
-                  color: $black !important
+                  @include primary-theme-content-color-hover(!important);
                 }
               }
 
@@ -1390,7 +1390,7 @@ body.new-theme {
 
         button {
           &.submit {
-            float: left;
+            float: left !important;
             margin: 0 10px 0 0;
 
             &:hover {
@@ -1534,7 +1534,7 @@ body.new-theme {
 
                 .forum-nav-thread-title,
                 .icon {
-                  color: $dark-blue;
+                  @include primary-theme-content-color();
                 }
                 &:hover .forum-nav-thread-title{
                   text-decoration: underline;
