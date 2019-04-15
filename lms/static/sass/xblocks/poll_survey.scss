@@ -328,6 +328,8 @@ body.new-theme {
             .survey-table {
                 .survey-option {
                     label {
+                        padding-left: 24px;
+                        padding-right: 0px;
                         &::before {
                             left: 0;
                         }
