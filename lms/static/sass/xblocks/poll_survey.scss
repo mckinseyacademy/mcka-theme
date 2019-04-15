@@ -173,6 +173,7 @@ body.new-theme {
                     display: table-row !important;
 
                     .poll-input-container {
+                        padding-right: 24px;
                         line-height: normal;
                         padding-left: 5px;
 
@@ -264,7 +265,6 @@ body.new-theme {
             .poll-answers {
                 .poll-answer {
                     .poll-input-container {
-                        padding-right: 24px;
                         [type="radio"] {
                             height: auto;
                             right: 2px;
