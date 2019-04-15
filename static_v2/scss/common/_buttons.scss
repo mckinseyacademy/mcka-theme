@@ -179,3 +179,10 @@ a.btn {
       }
   }
 }
+
+.btn.disabled {
+  &[class*="outline"] {
+    border-color: $gray !important;
+    color: $gray !important;
+  }
+}
