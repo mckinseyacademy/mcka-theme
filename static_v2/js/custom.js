@@ -237,6 +237,10 @@ $(document).ready(function() {
             jQuery('.carousel-control-prev').trigger('click');
         }
     });
+
+    if ($(window).width() < 992 && $('.progress-data tr td').length > 2) {
+        $(".progress-data").addClass("three-cols");
+     }
 });
 
 

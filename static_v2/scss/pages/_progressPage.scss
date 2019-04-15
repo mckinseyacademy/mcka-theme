@@ -418,6 +418,21 @@
         }
       }
     }
+    table {
+      &.three-cols {
+        tbody {
+          tr {
+            td {
+              .lesson-with-list {
+                .dropdown-toggle {
+                  display: block;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }
 @include media-breakpoint-between(xs, md) {
@@ -428,7 +443,7 @@
           td {
             .lesson-with-list {
               .dropdown-toggle {
-                display: block;
+                display: inline-block;
               }
             }
           }
@@ -441,15 +456,6 @@
 // Mobile
 
 @include media-breakpoint-between(xs, sm) {
-  table {
-    tr {
-      td {
-        .dropdown-toggle {
-          display: block;
-        }
-      }
-    }
-  }
   #course-progress-new {
     h2 {
       @include font-size(24);
