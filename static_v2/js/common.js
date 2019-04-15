@@ -1,7 +1,7 @@
 $(document).ready(function () {
     var customStyles = getComputedStyle(document.body);
     $('#proficiencyScore').pieChart({
-        barColor: customStyles.getPropertyValue('--secondary'),
+        barColor: (secondary !== undefined) ? secondary : default_secondary,
         trackColor: '#ededed',
         lineWidth: 16,
         onStep: function (from, to, percent) {
