@@ -833,7 +833,7 @@
         .review_subject {
             height: 40px !important;
             line-height: 40px;
-            padding: 0 25px;
+            padding: 0 15px;
             margin: 0 !important;
 
             .review_subject_label {
@@ -843,7 +843,13 @@
             .review_evaluating_now {
                 font-style: italic;
                 color: $black;
-                @include font-size(16);
+                font-size:12px;
+            }
+
+            .avatar
+            {
+                margin-top: 8px;
+                border-radius: 50px;
             }
 
             .other_submissions {
@@ -864,19 +870,30 @@
 
         @media (max-width: 992px) { 
             
-           
+            
+
+            .review_subject_label {
+                width: calc(100% - 30px);
+                display: inline-block;
+            }
+
             .review_subject
             {
                 padding:10px !important;
                 height:auto!important;
                 line-height: normal;
+                margin-left: 25px;
+                
             }
             .review_evaluating_now
             {
                 font-size:14px !important;
                 white-space: nowrap;
             }
-
+            .avatar
+            {
+                display:none;
+            }
             .other_submissions
             {
                 float: none !important;
@@ -887,7 +904,6 @@
                     line-height: normal !important;
                     width: auto;
                     font-size: 12px !important;
-                    margin-left: 28px;
                 }
             }
          }
