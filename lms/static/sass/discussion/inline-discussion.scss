@@ -106,6 +106,18 @@ body.new-theme {
     .is-hidden {
         display: none;
     }
+    ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+        color: $hard-gray;
+        opacity: 1; /* Firefox */
+      }
+      
+      :-ms-input-placeholder { /* Internet Explorer 10-11 */
+        color: $hard-gray;
+      }
+      
+      ::-ms-input-placeholder { /* Microsoft Edge */
+        color: $hard-gray;
+      }
 
     @-webkit-keyframes fa-spin {
         0% {
