@@ -604,6 +604,17 @@ header {
       .topRightArea {
         margin-top: 10px;
       }
+      .mainNav {
+        > ul {
+          > li {
+            a {
+              &::before {
+                bottom: 0;
+              }
+            }
+          }
+        }
+      }
     }
   }
 
