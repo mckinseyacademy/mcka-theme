@@ -90,17 +90,27 @@ body.new-theme {
 
         [data-type="MCQBlock"] {
             .choices-list {
-                .choice
-                {
+                .choice {
                     .choice-selector {
                         display: inline-block;
                         position: relative;
-    
+
                         &::before {
                             top: 0;
                         }
                     }
                 }
+            }
+        }
+
+        .navigation-view {
+            .navigation-back-next-buttons {
+                text-align: right !important;
+            }
+
+            .navigation-start-over {
+                right: auto;
+                left: 0;
             }
         }
     }
