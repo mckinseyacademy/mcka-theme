@@ -307,3 +307,12 @@
     }
   }
 }
+
+@media screen and (-ms-high-contrast: active),
+(-ms-high-contrast: none) {
+  .oo-player-container {
+    .oo-player.oo-fullscreen {
+      z-index: 99999;
+    }
+  }
+}
