@@ -894,6 +894,8 @@ body.new-theme {
 					}
 				}
 
+				
+
 				&.fa-reorder {
 					&:before {
 						content: "\e8fe";
@@ -1734,6 +1736,10 @@ body.new-theme {
 								text-align: center;
 								display: inline-block;
 								padding: 0;
+								&::before
+								{
+									color: var(--primary);
+								}
 							}
 
 							.row-description {
@@ -2097,5 +2103,5 @@ body.new-theme {
 }
 
 
-// Tablet Portrait View.
+
 
