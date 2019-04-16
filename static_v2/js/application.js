@@ -447,9 +447,10 @@ $('.editProfileField').on('show.bs.modal', function (e) {
 
 (function() {
   var isMobile = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
-  var longPress = 300;
+  var longPress = 400;
   var delay = null;
   var shown = false;
+  var dragging = false;
 
   $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).hover(
     function(e) {
@@ -475,18 +476,30 @@ $('.editProfileField').on('show.bs.modal', function (e) {
     }
   );
 
+  $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).bind('touchmove', function(event){
+    dragging = true;
+  });
+
   $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).bind('touchend', function(event){
     if (!shown){
+      let self = $(this);
+      if (self.hasClass('courseRow') && !dragging){
+        self.css('background-color', self.children('.description').css('background-color'));
+        self.children('.description').css({'opacity': 0, 'visibility': 'hidden',  'display': 'none'});
+      }
       clearTimeout(delay);
     } else {
       event.stopPropagation();
       event.preventDefault();
     }
+    dragging = false;
     shown = false;
   });
 
   $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).bind('touchstart', function(e){
+    shown = false;
     let self = $(this);
+    $('.allCoursesList .courseRow').css('background-color', 'white');
     delay = setTimeout(check, longPress);
     function check() {
       if (self.hasClass('courseRow')){

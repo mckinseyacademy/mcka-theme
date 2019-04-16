@@ -178,7 +178,7 @@
   &.allLessons {
     @include media-breakpoint-up(sm) {
       max-width: 435px;
-    }    
+    }
     .allCoursesList {
       .holder {
         .data {
@@ -253,7 +253,7 @@
       }
     }
     &.allModules {
-      min-width: 335px;
+      min-width: 350px;
     }
   }
 }
@@ -271,9 +271,6 @@
         padding-right: 20px;
         padding-left: 20px;
       }
-    }
-    &.large-menu {
-      width: 88% !important;
     }
     &.allModules {
       min-width: calc(100vw - 30px);

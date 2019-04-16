@@ -109,7 +109,7 @@ body {
   .mainNav {
     > ul {
       > li {
-        @include margin-left(30px);
+        @include margin-left(27px);
         &:first-child {
           @include margin-left(0);
         }
@@ -512,6 +512,7 @@ body {
 
     .progressBar {
       .figure {
+        @include text-align(right);
         @include margin-right(5px);
 
         @include media-breakpoint-between(xs, sm) {
@@ -657,6 +658,11 @@ footer {
 // CSS specific styles
 body.rtl {
   text-align: right;
+  .my-courses{
+    .bookmark{
+      background-position-x: left;
+    }
+  }
   .bookmark {
     @include flip-x-axis;
   }

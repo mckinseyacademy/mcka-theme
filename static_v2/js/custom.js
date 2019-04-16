@@ -237,6 +237,10 @@ $(document).ready(function() {
             jQuery('.carousel-control-prev').trigger('click');
         }
     });
+
+    if ($(window).width() <= 1024 && $('.progress-data tr td').length >= 2) {
+        $(".progress-data").addClass("three-cols");
+     }
 });
 
 
@@ -569,5 +573,4 @@ $(window).on("load", function () {
 $('.my-courses .card').click(function () {
     $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
     $(this).addClass("loader").addClass("donut-loader");
-    $('.my-courses #course-navigation .card').removeClass("loader").removeClass("donut-loader");
 });
