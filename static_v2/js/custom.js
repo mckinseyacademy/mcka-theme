@@ -238,7 +238,7 @@ $(document).ready(function() {
         }
     });
 
-    if ($(window).width() < 992 && $('.progress-data tr td').length > 2) {
+    if ($(window).width() <= 1024 && $('.progress-data tr td').length >= 2) {
         $(".progress-data").addClass("three-cols");
      }
 });
