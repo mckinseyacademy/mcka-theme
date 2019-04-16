@@ -53,6 +53,11 @@
     text-align: left;
     float: none;
     width: auto;
+    @media screen and (-ms-high-contrast: active),
+    (-ms-high-contrast: none) {
+      width: none;
+    }
+
   }
 
   table {
@@ -65,7 +70,7 @@
 }
 
 
-@media screen and (max-width: 767px){
+@include media-breakpoint-between(xs, sm){
   #course-news {
     img{
       width: 100%;
