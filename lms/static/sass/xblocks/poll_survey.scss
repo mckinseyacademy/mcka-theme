@@ -325,6 +325,7 @@ body.new-theme {
             .survey-table {
 
                 .survey-option {
+                    text-align:right;
                     label {
                         padding-left: 24px;
                         padding-right: 0px;
@@ -336,7 +337,7 @@ body.new-theme {
 
                     .visible-mobile-only {
                         text-align: right;
-                        right: 9px;
+                        right: 44px;
                     }
                 }
 
@@ -361,8 +362,47 @@ body.new-theme {
 
                         }
                     }
+                }               
+            }
+
+            
+        }
+
+        .poll-results
+            {
+                
+                .survey-row
+                {
+                    th
+                    {
+                        &:first-child
+                        {
+                            border-left:0;
+                        }
+                    }
+                    .survey-option
+                    {
+                        .percentage
+                        {
+                            float: left;
+                            text-align-last: left;
+                        }
+                        .visible-mobile-only
+                        {
+                            text-align: right;
+                            padding: 0;
+                            left: auto;
+                            right: -12px;
+                            position: relative;
+                            top: 0;
+                        }
+
+                        &:last-child
+                        {
+                            border-left: 1px solid #ccc;
+                        }
+                    }
                 }
             }
-        }
     }
 }
