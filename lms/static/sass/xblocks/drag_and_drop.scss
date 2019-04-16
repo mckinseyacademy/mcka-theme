@@ -292,7 +292,7 @@ body.new-theme {
 
                             &:hover,
                             &:focus {
-                                background-color: $dark-blue;
+                                @include primary-theme-background-color-hover;
                                 box-shadow: none;
                             }
                         }
@@ -364,6 +364,9 @@ body.new-theme {
                                     right: 6px;
                                     top: 4px;
                                     margin: 0;
+                                    &:hover{
+                                        box-shadow: none;
+                                    }
                                 }
 
                                 .close-feedback-popup-mobile-button {

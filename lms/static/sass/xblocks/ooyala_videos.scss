@@ -33,22 +33,23 @@ body.new-theme {
 
                     .oo-control-bar-items-wrapper {
                         .oo-playback-speed-container {
-                            background-color: $mckinsey-primary-default-button !important;
+                            @include primary-theme-background-color(!important);
                             border-radius: 2px !important;
+                            text-align: center;
 
                             &:hover,
                             &:active {
-                                background-color: $mckinsey-primary-hover-button !important;
+                                @include primary-theme-background-color-hover(!important);
                             }
                         }
 
                         .oo-popover-button-container {
-                            background-color: $mckinsey-primary-default-button !important;
+                            @include primary-theme-background-color(!important);
                             border-radius: 2px !important;
 
                             &:hover,
                             &:active {
-                                background-color: $mckinsey-primary-hover-button !important;
+                                @include primary-theme-background-color-hover(!important);
                             }
                         }
                     }
@@ -120,14 +121,14 @@ body.new-theme {
             .p3sdk-interactive-transcript-collapse-visible {
                 a {
                     .transcript-toggle {
-                        color: $mckinsey-default-link;
+                        @include primary-theme-content-color;
                         padding-right: 5px;
                     }
 
                     .fa {
                         font-family: "Material Icons";
                         font-size: 1.125rem;
-                        color: $mckinsey-default-link;
+                        @include primary-theme-content-color;
                         font-size: 2.5rem;
                         vertical-align: middle;
 
@@ -161,7 +162,7 @@ body.new-theme {
                 .language-tracks {
                     ul {
                         li {
-                            color: $mckinsey-default-link !important;
+                            @include primary-theme-content-color(!important);
                             font-size: 1rem;
                             font-weight: 400;
                             list-style: none;

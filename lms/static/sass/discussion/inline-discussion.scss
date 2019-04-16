@@ -841,7 +841,7 @@ body.new-theme {
 
                 button {
                     &.submit {
-                        float: left;
+                        float: left !important;
                         margin: 0 10px 0 0;
 
                         &:hover {
@@ -989,7 +989,7 @@ body.new-theme {
 
                                 .forum-nav-thread-title,
                                 .icon {
-                                    color: $dark-blue;
+                                    @include primary-theme-content-color;
                                 }
                             }
 
