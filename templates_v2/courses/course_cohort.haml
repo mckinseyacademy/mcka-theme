@@ -21,7 +21,7 @@
                 .header
                   .heading {% trans "Progress" %}
                   .status {% trans "Your course completion status:" %} {{completions.user_progress_display}}%
-                  .data {% trans "Average:" %} {{completions.course_average_display}}%
+                  .data {% trans "Cohort Average:" %} {{completions.course_average_display}}%
                   - if user_role
                     .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the progress leaderboard {% endblocktrans %}
                   - elif completions.position and completions.user_progress_value
@@ -96,7 +96,7 @@
                   .header
                     .heading {% trans "Engagement" %}
                     .status {% trans "Your discussion activity points:" %} {{social.score}}
-                    .data {% blocktrans with score=social.course_average_display %} Average: {{score}} points{% endblocktrans %}
+                    .data {% blocktrans with score=social.course_average_display %} Cohort Average: {{score}} points{% endblocktrans %}
                     - if user_role
                       .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the engagement leaderboard {% endblocktrans %}
                     - elif social.position
@@ -173,7 +173,7 @@
                   .header
                     .heading {%trans "Proficiency" %}
                     .status {% trans "Your course knowledge:" %} {{proficiency.user_grade_display}}
-                    .data {% trans "Average:" %} {{proficiency.course_average_display}}
+                    .data {% trans "Cohort Average:" %} {{proficiency.course_average_display}}
                     - if user_role
                       .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the proficiency leaderboard {% endblocktrans %}
                     - elif proficiency.user_position and proficiency.user_grade_value
