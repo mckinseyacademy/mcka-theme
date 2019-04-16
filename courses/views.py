@@ -1534,10 +1534,10 @@ def courses(request):
     renders user courses menu on click from frontend
     """
     raw_courses = get_course_menu_list(request)
-    cids = [rc.id for rc in raw_courses]
+    raw_cids = [rc.id for rc in raw_courses]
 
     # Get course ids with no total_lessons cached and only request tree for those courses.
-    cids = [cid for cid in cids if CourseDataManager(cid).total_lessons is None]
+    cids = [cid for cid in raw_cids if CourseDataManager(cid).total_lessons is None]
 
     if cids:
         courses_tree = get_courses_tree(cids)
@@ -1558,8 +1558,10 @@ def courses(request):
 
     user = request.user
     is_admin = any([user.is_mcka_admin, user.is_mcka_subadmin])
+    courses_roles = request.user.get_roles_on_courses(raw_cids)
+
     for raw_course in raw_courses:
-        roles = request.user.get_roles_on_course(raw_course.display_id)
+        roles = courses_roles.get(raw_course.id, [])
         roles = [role.role for role in roles]
         is_staff = 'staff' in roles or 'instructor' in roles
         course = CourseDataManager(raw_course.display_id)
