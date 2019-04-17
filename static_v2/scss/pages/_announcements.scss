@@ -55,7 +55,7 @@
     width: auto;
     @media screen and (-ms-high-contrast: active),
     (-ms-high-contrast: none) {
-      width: none;
+      width: inherit;
     }
 
   }
