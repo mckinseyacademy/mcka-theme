@@ -776,6 +776,7 @@ def course_resources_learner_dashboard(request, learner_dashboard_id, course_id)
         "learner_dashboard": learner_dashboard,
         "do_not_load_ooyala": True,  # to avoid conflicts don't include ooyala scripts in layout.haml
         "mobile_device": mobile_device,
+        "feature_flags": feature_flags,
     }
 
     if learner_dashboard.course_id == course_id:
