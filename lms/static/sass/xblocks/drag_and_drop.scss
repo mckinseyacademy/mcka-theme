@@ -292,7 +292,7 @@ body.new-theme {
 
                             &:hover,
                             &:focus {
-                                @include primary-theme-background-color-hover;
+                                @include primary-theme-background-color-hover(!important);
                                 box-shadow: none;
                             }
                         }

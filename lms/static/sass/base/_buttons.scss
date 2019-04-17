@@ -9,6 +9,7 @@
     border:0 $isImportant;
     @include primary-theme-background-color(!important);
     text-decoration: none;
+    transition: .35s;
 }
 
 @mixin primary-button-hover ($isImportant:null) {
