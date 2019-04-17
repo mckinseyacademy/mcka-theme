@@ -64,7 +64,7 @@ header {
   }
 
   &.appHeader {
-    margin: 0 0 35px;
+    margin: 0 0 30px;
     border-bottom-color: #ccc;
 
     .dropdown-menu {
@@ -180,6 +180,7 @@ header {
     .edit-link {
       color: var(--primary);
       font-size: 12px;
+      letter-spacing: 0.02em;
       line-height: 17px;
       font-weight: 400;
     }
@@ -221,6 +222,7 @@ header {
       display: block;
       color: $black;
       font-size: 12px;
+      letter-spacing: 0.02em;
       font-weight: 600;
       line-height: 17px;
       margin-top: 7px;
@@ -284,6 +286,7 @@ header {
         height: 17px;
         color: $gray;
         font-size: 12px;
+        letter-spacing: 0.02em;
         line-height: 17px;
         margin: 0 10px 0 0;
       }
@@ -336,6 +339,7 @@ header {
 //Course navigation wrapper
 .courseNavWrap {
   padding-top: 2px;
+  margin-bottom: 12px;
   ul {
     padding: 0;
     margin: 0;
@@ -441,7 +445,7 @@ header {
       color: $black;
       font-size: 2rem;
       font-weight: 300;
-      line-height: 40px;
+      line-height: 1.15;
       margin: 0;
       padding: 0 0 11px;
 
@@ -488,6 +492,7 @@ header {
     > a {
       color: var(--primary);
       font-size: 0.75rem;
+      letter-spacing: 0.02em;
       font-weight: normal;
       line-height: 17px;
       background: inherit;
@@ -538,10 +543,6 @@ header {
         }
       }
     }
-  }
-
-  .courseNavWrap {
-    margin: 0 -5px;
   }
 
   .pn-ProductNav {
@@ -626,6 +627,7 @@ header {
 
   .courseNavWrap {
     padding: 14px 0 0;
+    margin: 0 -5px;
   }
 
   .courseMainHeader {
@@ -691,6 +693,7 @@ header {
       h1 {
         text-align: center;
         font-size: 12px;
+        letter-spacing: 0.02em;
         line-height: 17px;
         font-weight: 600;
         text-transform: uppercase;
@@ -732,6 +735,12 @@ header {
     .dropdown-menu{
       top: 22px !important;
     }
+  }
+}
+
+.nav {
+  li {
+    a { letter-spacing: 0.02em;}
   }
 }
 

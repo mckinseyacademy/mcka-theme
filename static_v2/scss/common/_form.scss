@@ -21,9 +21,6 @@ form {
   .form-group {
     position: relative;
     margin-bottom:1.5rem;
-    //& + .form-group {
-    //  margin-top: 30px;
-    //}
     .ico-state {
       visibility: hidden;
       transition: all ease 0.3s;
@@ -74,9 +71,7 @@ form {
     #show-hide {
       visibility: hidden;
     }
-
   }
-
   &.white {
     .form-group {
       &.success {
@@ -103,7 +98,6 @@ form {
       }
     }
   }
-
   &.black {
     .form-group {
       &.success {
@@ -138,5 +132,4 @@ form {
       color: $white;
     }
   }
-
 }

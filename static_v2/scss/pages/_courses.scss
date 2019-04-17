@@ -1,8 +1,8 @@
 .my-courses {
   h1 {
     font-size: 32px;
-    line-height: 1.2;
-    margin-bottom: 24px;
+    line-height: 1.15;
+    margin-bottom: 20px;
     font-weight: 300;
     font-family: $body-font-family;
   }
@@ -45,10 +45,10 @@
       }
     }
     .card-body {
-      min-height: 125px;
+      min-height: 115px;
       overflow: hidden;
       @include border-bottom-radius(4px);
-      padding: 20px 30px 16px;
+      padding: 15px 30px;
       background-color: var(--primary);
       color: $white;
       .current-bookmark-text {
@@ -68,9 +68,10 @@
       }
       h3 {
         font-size: 1.5rem;
-        height: 3.7rem;
+        height: 3.5rem;
         overflow: hidden;
-        font-weight: 300;
+        font-weight: normal;
+        margin-bottom:0.5rem;
       }
       .course-detail {
         display: table;
@@ -78,6 +79,7 @@
         line-height: 1rem;
         > span {
           font-size: 0.75rem;
+          letter-spacing: 0.02em;
           display: inline-block;
           vertical-align: middle;
 
