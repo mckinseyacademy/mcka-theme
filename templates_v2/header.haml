@@ -46,19 +46,19 @@
                             %img{:alt => "", :src => "{{user.image_url_full}}"}/
 
 
-                        %a.edit-link.ome.dome-bc{:data-target => ".editPhotoModal", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
+                        %a.edit-link.ome.dome-c{:data-target => ".editPhotoModal", :href => "javascript:void(0)", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
                           {% trans "edit photo" %}
                     .titles-area
                       .nameArea
                         %span {{user.fullname}}
-                        %a.edit-link.ome.dome-bc{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
+                        %a.edit-link.ome.dome-c{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
                           {% trans "edit" %}
                       .roleArea
                         - if user.title
                           %span.title= user.title
                         - else
                           %span= "Enter your role"
-                        %a.edit-link.ome.dome-bc{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
+                        %a.edit-link.ome.dome-c{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
                           {% trans "edit" %}
                   .content
                     .wrap
