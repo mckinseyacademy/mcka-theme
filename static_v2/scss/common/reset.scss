@@ -3,7 +3,12 @@ body, html{
   min-height: 100%;
   min-width: 320px;
 }
-a{ outline : none;}
+a{
+  outline : none;
+  &:active{
+    text-decoration: none !important;
+  }
+}
 
 .row{
   >.col{
