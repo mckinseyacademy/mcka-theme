@@ -46,8 +46,9 @@ body.new-theme {
             .poll-results {
                 padding-left: 1em;
 
-                poll-top-choice {
+                .poll-top-choice {
                     @include primary-theme-content-color;
+                    color: var(--primary) !important;
                 }
 
                 .percentage-gauge-container {
@@ -110,6 +111,7 @@ body.new-theme {
                             &.poll-top-choice {
                                 @include primary-theme-content-color;
                                 background-color: $light-gray;
+                                color: var(--primary) !important;
                             }
 
                             &.survey-option .visible-mobile-only {
