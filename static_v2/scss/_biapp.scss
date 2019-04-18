@@ -366,6 +366,13 @@ body {
   }
 }
 
+.contentCard {
+  .headerArea {
+    h2 {
+      @include padding-right(10px);
+    }
+  }
+}
 // Popover
 
 .popover {
