@@ -1,7 +1,10 @@
-@import 'lms/static/sass/discussion/lms-discussion-main';
+@import 'lms/static/sass/discussion/lms-discussion-main-rtl';
 @import '../base/variables';
 @import '../base/buttons';
 @import '../discussion/partials/discussion-mobile-forum-content';
+
+
+
 
 
 body {
@@ -2228,16 +2231,48 @@ body.new-theme {
           }
         }
       }
-
-
     }
 
     .forum-nav
     {
-      margin-left: 30px !important;
       margin-right: 0 !important;
-    }
+	}
+	.discussion-column
+	{
+		margin-right: 30px !important;
+		margin-left: 0 !important;
+	}
   }
+
+
+	// select arrow
+	#course-discussion .discussion-content .forum-new-post-form .post-field .field-input .post-topic,
+	#course-discussion .discussion-content .forum-new-post-form .post-field .wrapper-custom-select .post-topic,
+	#course-discussion .discussion-content .edit-post-form .post-field .field-input .post-topic, 
+	#course-discussion .discussion-content .edit-post-form .post-field .wrapper-custom-select .post-topic 
+	{
+		background-position:3% !important;
+	}
+
+	#course-discussion .discussion-content .discussion-thread-list-container .forum-nav-refine-bar select
+	{
+		background-position:7% !important;
+	}
+
+	// button float right
+
+	#course-discussion .discussion-content .forum-content .thread-wrapper .post-extended-content .discussion-reply-new .reply-post-control button.btn
+	{
+		float:right!important;
+		margin: 0 0px 20px 0 !important;
+		&:hover
+		{
+			float:right!important;
+			margin: 0 0px 20px 0 !important;
+		}
+	}
+
+
 }
 
 

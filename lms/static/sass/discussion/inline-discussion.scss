@@ -1924,3 +1924,64 @@ body.new-theme {
     }
 }
 
+
+
+.rtl.new-theme
+{
+
+    // Radio Button
+    .field-label
+    {
+        .field-input
+        {
+            .post-type-label
+            {
+                margin-right: 0;
+
+                .field-input-label
+                {
+                    padding-right: 30px;
+                    left: auto !important;
+                }
+
+                &:before
+                {
+                    right:0;
+                }
+                &::after
+                {
+                    right:2px;
+                }
+            }
+        }
+    }
+
+    // CheckBox post Options
+
+    .post-options
+    {
+        .field-label
+        {
+            padding-right: 30px;
+            text-align: right;
+            padding-left: 0;
+            &:before
+            {
+                right:0;
+            }
+            &:after
+            {
+                right:6px;
+            }
+        }
+    }
+
+    // Button
+
+    [data-block-type="discussion-forum"] .discussion-module .forum-new-post-form button.submit
+    {
+        float:right !important;
+        margin:0 0 0 10px !important;
+    }
+
+}
