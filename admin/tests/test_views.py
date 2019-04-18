@@ -10,13 +10,14 @@ from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseForbidden
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory
+from django.contrib import auth
 from mock import patch, Mock
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
 from waffle.testutils import override_switch
 
 from accounts.models import RemoteUser
-from accounts.tests.utils import ApplyPatchMixin, make_company, make_course, make_user
+from accounts.tests.utils import ApplyPatchMixin, make_company, make_course, make_user, make_program
 from admin import views
 from admin.models import (
     Client as ClientModel,
@@ -40,6 +41,7 @@ def mock_task():
     def test_task(self, *args, **kwargs):
         """Test task."""
         pass
+
     return test_task
 
 
@@ -255,6 +257,7 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
     """
     Utilities for testing the views that use CourseParticipantsStats.
     """
+
     def setUp(self):
         """
         Create the base data.
@@ -279,7 +282,7 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
             request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
         return request
 
-    def post_request(self, url,  user=None):
+    def post_request(self, url, user=None):
         """
         POST the given URL, for the optional user, and return the request.
         """
@@ -294,6 +297,7 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         """
         Patch the authorization hit to say that the mcka_admin is in all groups.
         """
+
         def admin_is_in_all_groups(user, *_args, **_kwargs):
             """
             Our admin user is in all groups.
@@ -379,6 +383,7 @@ class CourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test the CourseDetailsApi view.
     """
+
     def setUp(self):
         """
         Patch the required APIs
@@ -434,11 +439,13 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
         groupwork and company admin or internal admin. Also makes sure the
         correct javascript variables are set for the client side.
         """
+
         def _get_course_context(t, org_id=''):
             return {
                 'cohorts_enabled': t[0],
                 'cohorts_available': t[1],
             }
+
         course_api = self.apply_patch('admin.views.load_course')
         course_api.return_value = (is_cohorted, is_available)
 
@@ -466,6 +473,7 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test the enroll_participants_from_csv and import_participants views.
     """
+
     def setUp(self):
         super(AdminCsvUploadViewsTest, self).setUp()
 
@@ -477,7 +485,7 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
          "admin/test_data/enroll-existing-participants.csv", False),
     )
     def test_csv_upload_views(self, view, file_key, test_file_path, is_valid):
-        request = self.post_request('/dummy/',  self.admin_user)
+        request = self.post_request('/dummy/', self.admin_user)
         with open(test_file_path, "rb") as test_file:
             test_file = File(test_file)
             request.FILES.update({file_key: test_file})
@@ -495,6 +503,7 @@ class EnrollParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test the enrollment and unenrollment views.
     """
+
     def setUp(self):
         super(EnrollParticipantsFromCsvTest, self).setUp()
         self.patch_user_permissions()
@@ -730,6 +739,7 @@ class ParticipantsListViewTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test participants list view
     """
+
     @override_switch(get_deletion_waffle_switch(), active=True)
     def test_check_switch_on_view(self, *patch):
         """
@@ -752,6 +762,7 @@ class CompaniesListViewTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test companies list view
     """
+
     @override_switch(get_deletion_waffle_switch(), active=True)
     def test_check_switch_on_view(self, *patch):
         """
@@ -776,6 +787,7 @@ class ClientCustomizationTests(TestCase, ApplyPatchMixin):
     Client Customization tests
     to enable / disable new UI
     """
+
     def setUp(self):
         super(ClientCustomizationTests, self).setUp()
         is_user_in_permission_group_lib = self.apply_patch("lib.authorization.is_user_in_permission_group")
@@ -997,3 +1009,102 @@ class ProblemResponseReportViewTest(TestCase):
         force_authenticate(request, user=self.admin_user)
         response = self.api(request, 'course_id')
         self.assertEqual(len(response.data['reports']), 2)
+
+
+class ProgramViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
+    """
+    Test the Program Views.
+    """
+    client_class = AprosTestingClient
+
+    def setUp(self):
+        """
+        Setup program model test
+        """
+        super(ProgramViewTest, self).setUp()
+
+        self.client.login(user_role=PERMISSION_GROUPS.MCKA_ADMIN)
+        self.user = auth.get_user(self.client)
+        self.mock_user_api_data_manager(
+            module_paths=[
+                'accounts.middleware.thread_local.UserDataManager',
+            ],
+            data={'courses': [], 'current_course': None}
+        )
+        self.program = make_program()
+        self.group_api = self.apply_patch('api_client.group_models.group_api')
+        self.group_api.fetch_group.return_value = self.program
+
+        # data for create and update
+        self.data = {'display_name': 'display_name', 'name': 'name',
+                     'start_date': '2019-01-01', 'end_date': '2019-01-01'}
+
+        # Mock checking if user exists in middleware
+        self.mock_get_user_dict = self.apply_patch('accounts.middleware.session_timeout.get_user_dict')
+
+    def test_get_program(self):
+        """
+        Test get program
+
+        return: response
+        """
+        program_url = reverse('program_new')
+        response = self.client.get(program_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(u'Save Program', response.context['submit_label'])
+
+    def test_get_program_with_id(self):
+        """
+        Test get program by program_id
+
+        return: response
+        """
+        program_url = reverse('program_edit', kwargs={'program_id': self.program.id})
+        response = self.client.get(program_url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(u'Update Program', response.context['submit_label'])
+
+    def test_create_program(self):
+        """
+        Test create program
+        return: HttpResponse
+        """
+
+        program_url = reverse('program_new')
+        mock_group_api = self.apply_patch('api_client.group_models.group_api')
+        mock_group_api.create_group.return_value = Mock(id=1)
+
+        response = self.client.post(program_url, self.data)
+        data = json.loads(response.content)
+
+        self.assertEqual(data['status'], status.HTTP_201_CREATED)
+        self.assertEqual(data['redirect_url'], '/admin/programs/1')
+
+    def test_create_program_with_invalid_data(self):
+        """
+        If we try to post with an invalid data pattern, then it will
+        rerurns the errors dict and status BAD REQUEST.
+        """
+        program_url = reverse('program_new')
+        response = self.client.post(program_url)
+        data = json.loads(response.content)
+
+        expected_errors = {u'display_name': [u'This field is required.'],
+                           u'name': [u'This field is required.'],
+                           u'end_date': [u'This field is required.'],
+                           u'start_date': [u'This field is required.']
+                           }
+        self.assertEqual(data['errors'], expected_errors)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_update_program(self):
+        """
+        Test update program
+        return: HttpResponse
+        """
+        program_url = reverse('program_edit', kwargs={'program_id': self.program.id})
+
+        response = self.client.post(program_url, self.data)
+        data = json.loads(response.content)
+        self.assertEqual(data['status'], status.HTTP_200_OK)
+        self.assertEqual(data['redirect_url'], '/admin/programs/')
