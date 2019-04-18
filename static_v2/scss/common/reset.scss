@@ -5,7 +5,10 @@ body, html{
 }
 a{
   outline : none;
-  &:active{
+  &:active,
+  &:focus,
+  &:visited{
+    outline: 0;
     text-decoration: none !important;
   }
 }
