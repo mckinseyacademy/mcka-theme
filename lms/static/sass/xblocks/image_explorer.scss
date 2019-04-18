@@ -29,7 +29,22 @@
 }
 
 body.new-theme {
+  &.rtl {
+    .image-explorer-xblock-wrapper {
+      .image-explorer-hotspot-reveal {
+        .image-explorer-hotspot-content-wrapper {
+          padding-right: 10px;
+          text-align: right;
 
+          .image-explorer-hotspot-reveal-body {
+            ul {
+              margin-right: 15px !important;
+            }
+          }
+        }
+      }
+    }
+  }
   .lesson-content {
     .image-explorer-xblock-wrapper {
       margin-bottom: 20px;
@@ -53,18 +68,38 @@ body.new-theme {
 
         .image-explorer-hotspot {
           text-align: left;
-          background-image: url(../../mcka-theme/images/hotspot-sprite.png);
-
+          // background-image: url(../../mcka-theme/images/hotspot-sprite.png);
+          background: #FFF;
+          border-radius: 50%;
           &:hover {
-            background-position: 0 -41px;
+            // background-position: 0 -41px;
+            &:before {
+              @include primary-theme-content-color-hover;
+            }
           }
 
           &.visited {
-            background-position: 0 -82px;
+            // background-position: 0 -82px;
+            &:before {
+              content: "\e86c";
+              @include primary-theme-content-color;
+            }
 
             &:hover {
-              background-position: 0 -82px;
+              // background-position: 0 -82px;
+              &:before {
+                @include primary-theme-content-color;
+              }
             }
+          }
+          &:before {
+            font-family: "Material Icons";
+            content: "\e147";
+            position: absolute;
+            font-size: 32px;
+            left: 1px;
+            top: -10px;
+            @include primary-theme-content-color;
           }
 
           .image-explorer-hotspot-reveal {
@@ -158,19 +193,23 @@ body.new-theme {
       .image-explorer-xblock-wrapper {
         .image-explorer-wrapper {
           .image-explorer-hotspot {
-            width: 25px;
-            height: 25px;        
-            &:hover {
-              background-position: 0 -25px;
-            }
+            width: 18px;
+            height: 18px;
+            &:before {
+              font-size: 22px;
+              left: -2px;
+            }      
+            // &:hover {
+            //   background-position: 0 -25px;
+            // }
 
-            &.visited {
-              background-position: 0 -50px;
+            // &.visited {
+            //   background-position: 0 -50px;
 
-              &:hover {
-                background-position: 0 -50px;
-              }
-            }
+            //   &:hover {
+            //     background-position: 0 -50px;
+            //   }
+            // }
 
             .image-explorer-hotspot-reveal {
               width: 90% !important;
@@ -178,6 +217,10 @@ body.new-theme {
               top: 13%;
               margin: 0 auto !important;
               max-height: none !important;
+              .oo-player-container {
+                min-width: unset !important;
+                width: 100% !important;
+              }
             }
           }
         }
