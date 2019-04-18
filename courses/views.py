@@ -1567,9 +1567,12 @@ def courses(request):
         is_staff = 'staff' in roles or 'instructor' in roles
         course = CourseDataManager(raw_course.display_id)
         if is_staff and is_admin:
-            raw_course.total_lessons = course.total_lessons + course.total_staff_tools
+            if course.total_lessons is not None and course.total_staff_tools is not None:
+                raw_course.total_lessons = course.total_lessons + course.total_staff_tools
+            else:
+                raw_course.total_lessons = '-'
         else:
-            raw_course.total_lessons = course.total_lessons
+            raw_course.total_lessons = course.total_lessons if course.total_lessons is not None else '-'
 
     completions = get_course_completions(username=request.user.username, page_size=0, extra_fields=None)
     for raw_course in raw_courses:
