@@ -279,3 +279,14 @@
     }
   }
 }
+
+@include media-breakpoint-between(xs, sm) {
+  .myCourses {
+    .no-dashboard {
+      margin-bottom: 10px !important;
+      .headerNav {
+        display: none;
+      }
+    }
+  }
+}
