@@ -551,13 +551,20 @@
   z-index: 9999;
 }
 
+#companyDetailsCoursesContainer{
+  table{
+    th{
+      white-space: normal !important;
+    }
+  }
+}
 #companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
   margin-left: auto;
   margin-right: auto;
 
   #companyDetailsCoursesViewGridBlock, #companyLearnerDashboardsViewGridBlock {
     width: 100%;
-    display: table;
+    display: block;
     position: relative;
 
     .bbGrid-container {
