@@ -37,6 +37,8 @@ from django.shortcuts import resolve_url
 from django.utils.http import urlsafe_base64_decode
 from django.utils.dateformat import format
 from django.template.response import TemplateResponse
+from django.utils.http import is_safe_url
+from django.http import Http404
 
 from util.url_helpers import get_referer_from_request
 from api_client import user_api
@@ -115,6 +117,9 @@ def _validate_path(redirect_to):
         logger = logging.getLogger(__name__)
         logger.error('Invalid Redirect: {}'.format(redirect_to))
         raise
+    else:
+        if not is_safe_url(redirect_to):
+            raise Http404('Invalid Redirect: {}'.format(redirect_to))
 
 
 def _get_stored_image_url(request, image_url):
@@ -202,7 +207,13 @@ def _process_authenticated_user(request, user, activate_account=False):
         thread_local.get_basic_user_data(user.id)
 
     redirect_to = _get_redirect_to(request)
-    _validate_path(redirect_to)
+
+    # if redirect path is invalid then we don't do go there
+    # and don't raise exception either so user flow don't disturb
+    try:
+        _validate_path(redirect_to)
+    except (Http404, Resolver404):
+        redirect_to = None
 
     request.session["remote_session_key"] = user.session_key
     auth.login(request, user)
