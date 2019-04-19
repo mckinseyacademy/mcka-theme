@@ -5,7 +5,7 @@
 - get_current_language as LANGUAGE_CODE
 - get_available_languages as LANGUAGES
 
-%header.appHeader{class: "{% if not learner_dashboards|length %}no-dashboard{% endif %}"}
+%header.appHeader{class: "{% if learner_dashboards|length %}has-dashboard{% endif %}"}
   .container
     .row
       .col
@@ -116,12 +116,15 @@
                       %a.nav-link.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", :href => "/courses/{{learner_dashboards.0.course_id}}", :role => "button"}
                         {% trans "dashboard" %}
 
-
-                  - if show_my_courses
-                    {% url 'courses' as courses_url %}
-                    %li#mycoursestab{class: "{% if request.path == courses_url %}active{% endif %}"}
-                      %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
-                        {% trans "my courses" %}
+                  {% url 'courses' as courses_url %}
+                  %li#mycoursestab{class: "{% if request.path == courses_url %}active{% endif %}" }
+                    %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
+                      {% trans "my courses" %}
+                  - if show_my_courses and learner_dashboards|length == 0
+                    %script
+                      if(window.innerWidth < 768){
+                        $('#mycoursestab a.nav-link').remove();
+                      }
           - else
             - if use_i18n
               .language-selector

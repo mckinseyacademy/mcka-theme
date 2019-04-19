@@ -271,22 +271,15 @@
       }
     }
   }
-  body {
-    &.myCourses {
-      .appHeader {
-        margin-bottom: 40px;
-      }
-    }
-  }
 }
 
 @include media-breakpoint-between(xs, sm) {
   .myCourses {
-    .no-dashboard {
-      margin-bottom: 10px !important;
-      .headerNav {
-        display: none;
-      }
+    .has-dashboard {
+      margin-bottom: 40px !important;
+    }
+    footer {
+      margin-top: 0;
     }
   }
 }
