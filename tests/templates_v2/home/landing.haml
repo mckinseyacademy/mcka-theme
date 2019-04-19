@@ -1,0 +1,137 @@
+- extends "layout.haml"
+- load i18n
+- load staticfiles
+
+- block content
+  .container
+    .row.login-page
+      .col
+        %img.login-McKa-logo{:alt => "", :src => "{% static 'image/login/McKA-logo.png' %}"}/
+        %h1.heading.text-center
+          {% trans "Leading transformation" %}
+          %span.nl
+            %img{:src => "{% static 'image/login/login-arrow.svg' %}"}/
+            {% trans "Transforming leaders" %}
+        .login-form-wrap
+          - if request.is_IE8
+            %br
+            .outdated_browser
+              {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
+          - else
+            %form.white.clearfix{id: "login-form", action: "/", method: "POST"}
+              .error.error-msg
+                - if activation_message
+                  = activation_message
+                - if error
+                  = error
+              - csrf_token
+              .form-group.user_name_element
+                %label.form-label{:for => "login_id"} {% trans "Username or Email:" %}
+                %input#login_id.form-control.form-input{:type => "text", :name => "login_id", value: "#{login_id}"}/
+                %i.material-icons.ico-state check_circle
+                %small.login-error.form-text
+              .form-group.user_password_element.d-none
+                %label.form-label{:for => "password"} {% trans "Password" %}
+                %input#password.form-control.form-input{:placeholder => "", :type => "password", name: "password"}/
+                %i#show-hide.material-icons{:data-container => "body", :data-content => "{% trans 'Show Password' %}", :data-placement => "bottom", :data-toggle => "popover", :data-trigger => "hover"} visibility_off
+                %i.material-icons.ico-state
+                %small.password-error.form-text
+              .form-group.text-center
+                %button#login.btn.btn-primary.btn-lg.mt-20{:type => "submit"} {% trans "Log in" %}
+                %a.forgot-pswd-link{:data-target => "#password-reset-modal", :data-toggle => "modal", :href => "/accounts/password/reset/"}
+                  %strong {% trans "Forgot password?" %}
+            .quick-links
+              %a.helpLink{:href => "javascript:Void(0)"}
+                {% trans "Need Help?" %}
+                %i.material-icons keyboard_arrow_down
+              %ul
+                %li
+                  %a{:href => "/faq", :target => "_blank"} {% trans "FAQs" %}
+                %li
+                  %a{:href => "mailto:support@mckinseyacademy.com?Subject=Trouble logging in"} {% trans "Email support" %}
+                %li
+                  %a{:href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients"} {% trans "About Mckinsey Academy" %}
+
+  -#- include "marketing/app_link_popup.haml"
+
+  #user_activation_notification.modal.middleSize.noTopBorder.fade{:aria-hidden => "true", :role => "dialog", :tabindex => "-1"}
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header
+          .col
+            %h4.modal-title.title {% trans "Check your email inbox" %}
+          %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+            %span{:aria-hidden => "true"} ×
+        .modal-body
+          %p.headline_message
+          %br
+          %br
+          %p.activation_success_message.hide
+            %span
+              {% trans "If you don't see the email in your inbox, check your spam folder or" %}
+            %a.download_user_activation{"id": "resend-email"}>
+              {% trans "resend email" %}
+            %span
+              {% trans " with the link." %}
+          %br
+          %button.btn.btn-primary.btn-lg.mt-20{:data-dismiss => "modal"} {% trans "Return to Login" %}
+
+  #user_lock_out_notification.modal.middleSize.noTopBorder.fade{:role => "dialog"}
+    .modal-dialog.modal-lg
+      .modal-content
+        .modal-header
+          .col
+            %h4.modal-title.title {% trans "You've been locked out!" %}
+          %button.close{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+            %span{:aria-hidden => "true"} ×
+        .modal-body
+          %p.mckinsey-red
+            %i.fa.fa-exclamation-triangle
+            {% trans "Your account is locked for" %}
+            %b
+              {% trans "15 minutes " %}
+            {% trans "since your 5" %}
+            %sup
+              {% trans "th" %}
+            {% trans " attempt." %}
+          %p
+            %span
+              {% trans "Your account has been disabled for security reasons. To access your account," %}
+            %a{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "#"}
+              {% trans "reset your password" %}
+            %span
+              {% trans "or try to login again in 15 minutes." %}
+          %a.button{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "#"}
+            {% trans "Reset Password" %}
+
+- block general_modal
+  #generalModal.reveal-modal.small{'data-reveal': ''}
+    %h2.title
+      =popup.title
+    %p{'class': "lead description"}
+      =popup.description
+    %a{'class': "close-reveal-modal fa fa-times-circle"}
+    - if popup.title != ''
+      %input.show-modal{'type': 'hidden', 'value': 'autoshow'}
+
+  - include 'registration/password_reset_form.haml'
+  - if form.reset == 'done'
+    - include 'registration/password_reset_done.haml'
+    %script
+      $("#password-reset-done").modal('show');
+  - if form.reset == 'complete'
+    - include 'registration/password_reset_complete.haml'
+    %script
+      $("#password-reset-complete").modal('show');
+  - if form.reset == 'failed'
+    - include 'registration/password_reset_failed.haml'
+    %script
+      $("#password-reset-failed").modal('show');
+
+-#- block js_snippets
+-#  %script{src: "{% static 'js/app_link_popup.js' %}"}
+-#
+- block js_snippets
+  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
+  %script{src: "{% static 'js/vendor/jquery.query-object.js' %}"}
+  %script{src: "{% static 'js/accounts/user_login.js' %}"}

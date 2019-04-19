@@ -327,21 +327,7 @@ def fill_email_and_redirect(request, redirect_url):
 
 def login(request):
     ''' handles requests for login form and their submission '''
-    request.session['ddt'] = False  # Django Debug Tool session key init.
-
-    # Redirect IE to home page, login not available
-    if 'HTTP_USER_AGENT' in request.META:
-        ua = request.META['HTTP_USER_AGENT'].lower()
-        if re.search('msie [1-8]\.', ua):  # noqa: W605 TODO: handle invalid escape sequence
-            return HttpResponseRedirect('/')
-
-    if request.method == 'POST':  # If the form has been submitted...
-        return login_post_view(request)
-
-    elif request.method == 'GET':
-        return login_get_view(request)
-
-    return HttpResponseNotAllowed(permitted_methods=('GET', 'POST'))
+    return redirect('home')
 
 
 def login_get_view(request):
@@ -382,7 +368,7 @@ def login_get_view(request):
     data["login_label"] = _("Log In")
     data["contact_subject"] = quote(_("Trouble logging in").encode('utf8'))
 
-    response = render(request, 'accounts/login.haml', data)
+    response = render(request, 'home/landing.haml', data)
 
     _append_login_mode_cookie(response, login_mode)
 
@@ -903,7 +889,7 @@ def sso_error(request):
 @ajaxify_http_redirects
 def reset_confirm(request, uidb64=None, token=None,
                   template_name='registration/password_reset_confirm.haml',
-                  post_reset_redirect='/accounts/login?reset=complete',
+                  post_reset_redirect='/?reset=complete',
                   set_password_form=SetNewPasswordForm, extra_context=None):
     """
     View that checks the hash in a password reset link and presents a
@@ -960,7 +946,7 @@ def reset(request, is_admin_site=False,
           password_reset_form=FpasswordForm,
           email_template_name='registration/password_reset_email.haml',
           subject_template_name='registration/password_reset_subject.haml',
-          post_reset_redirect='/accounts/login?reset=done',
+          post_reset_redirect='/?reset=done',
           from_email=settings.APROS_EMAIL_SENDER,
           extra_context=None):
 
@@ -987,7 +973,7 @@ def reset(request, is_admin_site=False,
             email = form.cleaned_data["email"]
             users = user_api.get_users(email=email)
             if len(users) < 1:
-                post_reset_redirect = '/accounts/login?reset=failed'
+                post_reset_redirect = '?reset=failed'
             form.save(**opts)
             return HttpResponseRedirect(post_reset_redirect)
     else:
@@ -1091,7 +1077,22 @@ def public_home(request):
         mobile_popup_data = get_mobile_app_download_popup_data(request)
         data.update(mobile_popup_data)
 
-    return render(request, 'home/landing.haml', data)
+    ''' handles requests for login form and their submission '''
+    request.session['ddt'] = False  # Django Debug Tool session key init.
+
+    # Redirect IE to home page, login not available
+    if 'HTTP_USER_AGENT' in request.META:
+        ua = request.META['HTTP_USER_AGENT'].lower()
+        if re.search('msie [1-8]\.', ua):  # noqa: W605 TODO: handle invalid escape sequence
+            return HttpResponseRedirect('/')
+
+    if request.method == 'POST':  # If the form has been submitted...
+        return login_post_view(request)
+
+    elif request.method == 'GET':
+        return login_get_view(request)
+
+    return HttpResponseNotAllowed(permitted_methods=('GET', 'POST'))
 
 
 @login_required

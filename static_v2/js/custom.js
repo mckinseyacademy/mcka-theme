@@ -1,4 +1,29 @@
 $(document).ready(function() {
+
+    $("#login_id").on("keyup", function () {
+        var user_name = $(".user_name_element");
+        $(user_name).removeClass("success").removeClass("error");
+        $(this).get(0).setCustomValidity("");
+        var password = $(".user_password_element");
+        var login_page = $(".login-page");
+        if(!$(password).hasClass("d-none")) {
+            $(password).addClass("d-none");
+            $(".login-page").removeClass("login-with-password");
+            $("input[name=password]").val("");
+        }
+    });
+
+    $("#password").on("keyup", function () {
+        var user_password = $(".user_password_element");
+        $(user_password).removeClass("success").removeClass("error");
+        $(this).get(0).setCustomValidity("");
+    });
+
+    $('#password-reset-done, #password-reset-complete, #password-reset-failed').on('hidden.bs.modal', function () {
+        if(window.location.href.indexOf("?"))
+            window.location.href =  window.location.href.split("?")[0];
+    });
+
     if ($(window).width() < 992 && $('.leaderboards-list .col').length === 3) {
         $('.leaderboards-list .col').removeClass('col').addClass('col-12');
     }
@@ -57,14 +82,17 @@ $(document).ready(function() {
     });
 
 
-    $('#show-hide').click(function() {
-        var text = $('#show-hide').text();
+    $('#show-hide').click(function () {
+        var text = $(this).text();
         if (text == 'visibility_off') {
-            $('#show-hide').text('visibility')
-            $('#password-visibility_setPassword').attr('type', 'text');
-        } else {
-            $('#show-hide').text('visibility_off');
-            $('#password-visibility_setPassword').attr('type', 'password');
+            $(this).text('visibility');
+            $('#password').attr('type', 'text');
+            $(this).attr("data-content", gettext("Hide Password"));
+        }
+        else {
+            $(this).text('visibility_off');
+            $('#password').attr('type', 'password');
+            $(this).attr("data-content", gettext("Show Password"));
         }
     });
 
@@ -215,14 +243,12 @@ $(document).ready(function() {
         $("#crop-save #spinner").addClass("spinner-border-sm").addClass("spinner-border");
     });
 
-
     //  New featre Modal (disable scrolling on body)
     $('.carousel-control-next').click(function(){ $('.carousel').carousel('next')});
-    $('.carousel-control-prev').click(function(){ $('.carousel').carousel('prev')});
 
+    $('.carousel-control-prev').click(function(){ $('.carousel').carousel('prev')});
     //  KeyBoard Controls Activation For New FeatureTour Modal
     jQuery(document).bind('keyup', function (e) {
-        console.log(event.keyCode);
         if (e.keyCode == 39) {
             jQuery('.carousel-control-next').trigger('click');
         }
