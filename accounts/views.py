@@ -287,9 +287,16 @@ def _expire_session_cookies(response):
 
 
 def _get_mobile_url_scheme(request):
-    return request.GET.get(
+    scheme = request.GET.get(
         'mobile_url_scheme',
         request.COOKIES.get(MOBILE_URL_SCHEME_COOKIE, None))
+
+    # check for XSS since it is get from URL and then
+    # embedded to html with |safe
+    if scheme is not None:
+        return clean_xss_characters(scheme)
+
+    return scheme
 
 
 def _build_mobile_redirect_response(request, data):
