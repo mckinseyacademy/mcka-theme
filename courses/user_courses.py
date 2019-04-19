@@ -209,6 +209,7 @@ def standard_data(request):
         course_id = request.resolver_match.kwargs.get('course_id')
         if course_id:
             course = load_course(course_id, request=request, depth=0)
+            feature_flags = CourseDataManager(course_id).get_feature_flags()
 
         user_data = thread_local.get_basic_user_data(request.user.id)
         program = user_data.current_program
@@ -224,7 +225,6 @@ def standard_data(request):
             )
 
         if current_course:
-            feature_flags = CourseDataManager(current_course.id).get_feature_flags()
             course_meta_data = CourseDataManager(current_course.id).get_course_meta_data()
 
             if current_course.ended:
