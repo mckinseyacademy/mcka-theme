@@ -1,13 +1,11 @@
-// Notes on the classes:
-
 .site-wrapper {
   &.login {
     min-height: 100vh;
-    background: #000 url("../image/login/McKA-login-bg.png") no-repeat;
+    background: #f0f0f0 url("../image/login/McKA-login-bg.png") no-repeat 50% 50% ;
     background-size: cover;
 
     a {
-      color: $white;
+      color: #000;
     }
 
     main {
@@ -23,7 +21,7 @@
       }
       .heading {
         display: block;
-        color: $white;
+        color: #000;
         margin-bottom: 35px;
         font-size: 2.625rem;
         font-weight: 300;
@@ -63,7 +61,7 @@
       max-width: 395px;
       margin: 0 auto;
       padding: 2.8125rem 2.8125rem 1.4125rem 2.8125rem;
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(#fff, .6);
       @media screen and (max-width: 767px) {
         padding: 30px;
       }
@@ -74,7 +72,7 @@
       .forgot-pswd-link {
         float: left;
         margin: 10px 0 0;
-        color: $white;
+        color: $black;
       }
     }
     .helpLink {
@@ -113,7 +111,7 @@
         }
       }
       a {
-        color: $white;
+        color: #000;
         text-transform: capitalize;
       }
 
@@ -237,9 +235,40 @@
       margin: 0 auto;
     }
     footer {
-      background: $bg-login-footer;
+      background: #e6e6e6;
       margin: 0;
+      ul li a.nav-link:before {
+        background: #000;
+      }
     }
 
+  }
+}
+.language-dropdown {
+  ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    min-width: 200px;;
+    li {
+      border-top: 1px solid rgba(0, 0, 0, 0.2);
+      padding: 10px 0;
+      &:first-child {
+        border-top: none;
+      }
+      h5 {
+        font-size: inherit;
+      }
+      a {
+        text-decoration: none;
+        color: var(--primary);
+        &:hover {
+          color: #000;
+        }
+        &.selected {
+          color: #000;
+        }
+      }
+    }
   }
 }

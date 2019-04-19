@@ -4,7 +4,6 @@ input:not([type='checkbox']) {
   border-radius: 0;
   border: 1px solid $gray;
   box-shadow: none;
-  max-width: 292px;
   &:disabled {
     border: 0;
     opacity: 0.9;
