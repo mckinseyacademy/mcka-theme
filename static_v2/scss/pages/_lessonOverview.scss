@@ -1,4 +1,44 @@
 // Lesson Overview or Details page styling
+body{
+  &.moduleArrow{
+    .lessonOverview{
+      .arrowPin {
+        &.left {
+          left: -82px;
+          opacity: 1;
+          right: auto;
+          > span {
+            opacity: 1;
+            i {
+              left: 62px;
+            }
+          }
+        }
+        &.right {
+          right: -82px;
+          left: auto;
+          opacity: 1;
+          > span {
+            opacity: 1;
+            i {
+              right: 62px;
+            }
+          }
+        }
+        > span {
+          opacity: 1;
+          visibility: visible;
+          i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 100px;
+          }
+        }
+      }
+    }
+  }
+}
 .lessonOverview {
   position: relative;
 
@@ -92,7 +132,6 @@
       }
     }
     &:hover {
-      //background:  var(--primary);
       > span {
         opacity: 1;
         visibility: visible;

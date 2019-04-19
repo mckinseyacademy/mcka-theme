@@ -404,12 +404,19 @@
                     root.html(response.html);
                 }
 
-                $this.loadResources(response.resources, options, root).done(function() {
+                $this.loadResources(response.resources, options, root).done(function () {
+
                     console.log('All XBlock resources successfully loaded');
                     $this.watchLinks(options, root);
                     $this.initializeXBlocks(options, root);
                     deferred.resolve();
                     $this.dispatcher.trigger("xblock-rendered", root);
+
+                    // Remove Class for module page's active Right/Left arrows slide effect.
+
+                    setTimeout(function () {
+                        $("body").removeClass("moduleArrow");
+                    }, 2000);
                 });
 
                 $this.setAjaxCSRFToken(response.csrf_token, options, root);
