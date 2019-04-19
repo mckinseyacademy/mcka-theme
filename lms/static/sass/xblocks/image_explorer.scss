@@ -68,6 +68,7 @@ body.new-theme {
 
         .image-explorer-hotspot {
           text-align: left;
+          z-index: 999999;
           // background-image: url(../../mcka-theme/images/hotspot-sprite.png);
           background: #FFF;
           border-radius: 50%;
