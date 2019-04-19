@@ -28,7 +28,6 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_http_methods
 from django.views.decorators.clickjacking import xframe_options_exempt
-from django.forms.widgets import HiddenInput
 from django.views.decorators.cache import never_cache
 from django.template.loader import render_to_string
 from io import BytesIO
@@ -582,12 +581,11 @@ def activate(request, activation_code, registration=None):
         if user.is_active:
             raise
 
-        # get registration object to prepopulate/hide fields in form if user came from registration form
         if registration:
             try:
-                registration_request = PublicRegistrationRequest.objects.get(company_email=user.email)
+                PublicRegistrationRequest.objects.get(company_email=user.email)
             except Exception:
-                registration_request = None
+                registration = None
 
         for field_name in VALID_USER_FIELDS:
             if field_name == "full_name":
@@ -630,33 +628,18 @@ def activate(request, activation_code, registration=None):
 
             except ActivationError as activation_error:
                 error = activation_error.value
-                form.fields["company"].widget = HiddenInput()
-                form.fields["title"].widget = HiddenInput()
-        elif not error:
-            if registration:
-                form.fields["company"].widget = HiddenInput()
-                form.fields["title"].widget = HiddenInput()
-            error = _("Some required information was missing. Please check the fields below.")
     else:
         form = ActivationForm(user_data, initial=initial_data)
-
-        # set focus to username field
-        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
-
-        if registration:
-            form.fields["company"].widget = HiddenInput()
-            form.fields["title"].widget = HiddenInput()
-            if registration_request:
-                form.fields["title"].widget.attrs.update({'readonly': 'readonly'})
-                initial_data["full_name"] = registration_request.first_name + " " + registration_request.last_name
-                initial_data["title"] = registration_request.current_role
 
     data = {
         "user": user,
         "form": form,
-        "error": error,
+        "username_error": error,
         "activation_code": activation_code,
         "activate_label": _("Create my McKinsey Academy account"),
+        "company": initial_data.get("company"),
+        "registration": registration,
+        "errors": form.errors
     }
     return render(request, 'accounts/activate.haml', data)
 
@@ -1378,6 +1361,7 @@ def demo_registration(request, course_run_name):
             form = PublicRegistrationForm(course_run_name=course_run_name)
 
         data = {
+            'errors': form.errors,
             'form': form,
             'course_run_name': course_run_name,
             'course_run': course_run,

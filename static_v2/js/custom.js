@@ -61,12 +61,14 @@ $(document).ready(function() {
         var text = $('#show-hide').text();
         if (text == 'visibility_off') {
             $('#show-hide').text('visibility')
-            $('#password-visibility').attr('type', 'text');
+            $('#password-visibility_setPassword').attr('type', 'text');
         } else {
             $('#show-hide').text('visibility_off');
-            $('#password-visibility').attr('type', 'password');
+            $('#password-visibility_setPassword').attr('type', 'password');
         }
     });
+
+
     //Input Placeholder become label
 
     $('input').focus(function() {

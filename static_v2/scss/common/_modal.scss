@@ -83,6 +83,28 @@
   }
 }
 
+.modal-with-ok {
+  .modal-dialog {
+    .modal-content {
+      padding-top: 45px;
+    }
+
+    .modal-header {
+      h4 {
+        margin-bottom: 20px;
+      }
+    }
+
+    .modal-body {
+      padding-bottom: 30px;
+
+      .btn {
+        margin-top: 45px;
+      }
+    }
+  }
+}
+
 #progressModal {
   .modal-body {
     padding-top: 10px;

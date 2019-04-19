@@ -33,13 +33,10 @@ header {
   background-color: $white;
 
   .language-selector {
-    float: right;
-    padding-left: 5px;
     height: 70px;
     width: 80px;
     line-height: 70px;
     color: var(--secondary);
-    border-left: 1px solid $light-gray;
 
     .dropdown {
       display: inline-block;

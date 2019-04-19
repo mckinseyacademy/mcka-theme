@@ -27,7 +27,6 @@
         label{
           font-size: 0.9rem;
           color: $black;
-          margin-left: 3px;
         }
       }
       .password{
@@ -47,7 +46,7 @@
         }
       }
       .checkmark{
-        top: 2px;
+        top: 3px;
       }
       .label-animate{
         position: absolute;
@@ -84,11 +83,6 @@
       &:first-child{
         padding-left: 0;
       }
-    }
-  }
-  .modal-dialog{
-    .modal-content{
-      padding: 20px;
     }
   }
 }

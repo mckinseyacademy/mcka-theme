@@ -73,6 +73,11 @@ body {
       @include right (30px);
     }
   }
+  .language-selector {
+    @include padding-left(5px);
+    @include float(right);
+    @include border-left(1px solid $light-gray);
+  }
 }
 
 // Navbar
@@ -646,11 +651,55 @@ footer {
   }
 }
 
+// Activation
+.activation {
+  .form {
+    .form-group{
+      &.agreement {
+        label {
+          @include margin-left(3px);
+        }
+      }
+    }
+  }
+}
+
 // Misc
 .bookmark {
   @include left(0);
   @include media-breakpoint-between(xs, sm) {
     @include left(-4px);
+  }
+}
+
+.form-check-label {
+  .checkmark {
+    @include left(0);
+  }
+}
+
+// form
+form {
+  .form-group {
+    .ico-state {
+      @include right(10px);
+    }
+    #show-hide {
+      @include right(14px);
+      @include left(auto);
+    }
+  }
+}
+
+// Radio Buttons
+
+.checkcontainer {
+  @include padding-left(2.1rem);
+  .radiobtn {
+    @include left(0);
+    &:after {
+      @include left(3px);
+    }
   }
 }
 
@@ -770,7 +819,23 @@ body.rtl {
     left: auto !important;
     right: 0 !important;
   }
+  .form-check {
+    padding-left: 0;
+    padding-right: 1.25rem;
+  }
 
+  .form-check-label {
+    .checkmark {
+      top: 5px;
+    }
+  }
+  .checkcontainer {
+    .radiobtn {
+      &:after {
+        top: 3px;
+      }
+    }
+  }
 }
 
 //Course Overview

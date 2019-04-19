@@ -12,74 +12,123 @@
 
 - load staticfiles
 - block content
-  #confirmation_registration.reveal-modal.small{'data-reveal': ''}
-    .close-reveal-modal
-      %i.fa.fa-times-circle
-    %h2 {% trans "Thank you for your request" %}
-    %p
-      {% trans "We will send you an email shortly." %}
+  #confirmation_registration.modal.fade.modal-with-ok.middleSize{:role => "dialog"}
+    .modal-dialog.text-center
+      .modal-content
+        .modal-header
+          %h4.modal-title {% trans "Thank you for your request" %}
+        .modal-body
+          %p {% trans "We will send you an email shortly." %}
+        %button.ok-close.btn.btn-primary.btn-lg{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+          %span{:aria-hidden => "true"} {% trans "OK" %}
 
-  #error_registration.reveal-modal.small{'data-reveal': ''}
-    .close-reveal-modal
-      %i.fa.fa-times-circle
-    %h2 {% trans "Registration Error!" %}
-    %p
-      {% blocktrans %}Sorry, there seems to be a problem with registering your account, please contact academy_info@mckinsey.com{% endblocktrans %}
+  #error_registration.modal.fade{:role => "dialog"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{:data-dismiss => "modal", :type => "button"} ×
+          %h4.modal-title {% trans "Registration Error!" %}
+        .modal-body
+          %p {% blocktrans %}Sorry, there seems to be a problem with registering your account, please contact academy_info@mckinsey.com{% endblocktrans %}
 
-  #course_closed_registration.reveal-modal.small{'data-reveal': ''}
-    .close-reveal-modal
-      %i.fa.fa-times-circle
-    %h2 {% trans "Thank you for your request" %}
-    %p
-      {% trans "We will send you an email shortly." %}
-        %h4
-          {% trans "Create your McKinsey Academy Account" %}
-        %form.white
-          .form-group
+  #course_closed_registration.modal.fade{:role => "dialog"}
+    .modal-dialog
+      .modal-content
+        .modal-header
+          %button.close{:data-dismiss => "modal", :type => "button"} ×
+          %h4.modal-title {% trans "Thank you for your request" %}
+        .modal-body
+          %p {% trans "We will send you an email shortly." %}
 
-
-  .container.activation
+  .container.activation.self-registration
     .row.justify-content-center
       .col-lg-7.col-md-12.form.border-top-main
-        - if request.is_IE8
-          %br
-          .outdated_browser
-            {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
-        - else
-          %h4 {% trans "Welcome to McKinsey Academy" %}
-          %form.white
-            .error
-              - if error
-                = error
-            - csrf_token
-            - for field in form
-              - if field.id_for_label != "id_current_role_other"
-                <label for="#{field.id_for_label}"> #{field.label}</label>
-              - if field.help_text and "options" in field.help_text
-                = field.help_text|safe
-              = field.errors
-              = field
-              - if field.help_text and "email" in field.help_text
-                = field.help_text|safe
+        %h4 Register for the access to the course
+        %h5.mb-3= course_run.self_registration_page_heading
+        %p= course_run.self_registration_description_text
+        %form#reg{:action => "/registration/#{course_run_name}/", method: "POST"}
+          - csrf_token
+          .form-group{:class => "{% if errors.first_name %}error{% endif %}"}
+            %input.form-control{:placeholder => "{% trans 'First Name' %}", :type => "text", :name => "first_name", :value => "{{form.data.first_name}}"}
+            %i.material-icons.ico-state
+              error
+          .form-group{:class => "{% if errors.last_name %}error{% endif %}"}
+            %input.form-control{:placeholder => "{% trans 'Last Name' %}", :type => "text", :name => "last_name", :value => "{{form.data.last_name}}"}
+            %i.material-icons.ico-state
+              error
+          .form-group{:class => "{% if errors.company_name %}error{% endif %}"}
+            %input.form-control{:placeholder => "{% trans 'Company' %}", :type => "text", :name => "company_name", :value => "{{form.data.company_name}}"}
+            %i.material-icons.ico-state
+              error
+          .form-group{:class => "{% if errors.company_email %}error{% endif %}"}
+            %input.form-control{:placeholder => "{% trans 'Company email' %}", :type => "text", :name => "company_email", :value => "{{form.data.company_email}}"}
+            %i.material-icons.ico-state
+              error
+            %small.error= errors.company_email.0
+            %small.form-text {% trans "Note: personal email addresses will not be processed" %}
 
-            %input.button.radius.small.registration_submit{type: "submit", value: "{% trans 'Register' %}", disabled: "True"}
-
-      .large-4.medium-4.columns{style:"border-left: none;"}
-        %h4 {% trans "WELCOME" %}
-        .sidebar
-          %p {% trans "Registering gives you access to course content and ensures that you receive updates and notifications from McKinsey Academy." %}
-          %br
-          %p {% trans "Following successful registration, you will receive an email granting access to the course." %}
-        %hr
-        %h4 {% trans "Need Help?" %}
-        .sidebar
-          %a{href: "/faq"}
-            {% trans "View our FAQ for answers to commonly asked questions." %}
+          %h4
+            {% trans "Current role" %}
+            %small.form-text {% trans "Please choose one of the following options" %}
+          .form-group.mb-3#id_current_role
+            - for index, choice in form.fields.current_role.choices
+              %label.checkcontainer.position-relative{:for => "id_current_role_{{index}}"}
+                %input{:type => "radio",  :name => "current_role", :value => "{{index}}", :required => "", :id => "id_current_role_{{index}}"}
+                %span.radiobtn
+                = choice
+          .form-group.mb-1
+            %input.form-control#id_current_role_other{:disabled => "disabled", :type => "text", :name => "current_role_other", :value => "{{form.data.current_role_other}}"}
+            %i.material-icons.ico-state
+              error
+          %button.btn.btn-primary.btn-lg.mt-3{:type => "submit"} {% trans "Register" %}
+          .form-footer
+            %ul.nav
+              %li.nav-item
+                {% trans "Need help?" %}
+              %li.nav-item
+                %a.nav-link{:href => "#"} {% trans "Read FAQs" %}
+              %li.nav-item
+                %a.nav-link{:href => "#"} {% trans "Email Support" %}
 
 - block js_snippets
   :javascript
+    $('#reg').submit(function(event) {
+      let sel = $('[name="first_name"]');
+      if(sel.val().length === 0){
+        sel.parent().addClass('error');
+        event.preventDefault();
+      }
+
+      sel = $('[name="last_name"]');
+      if(sel.val().length === 0){
+        sel.parent().addClass('error');
+        event.preventDefault();
+      }
+
+      sel = $('[name="company_name"]');
+      if(sel.val().length === 0){
+        sel.parent().addClass('error');
+        event.preventDefault();
+      }
+
+      sel = $('[name="company_email"]');
+      if(sel.val().length === 0){
+        sel.parent().addClass('error');
+        event.preventDefault();
+      }
+
+      sel = $('[name="current_role_other"]');
+      if(sel.val().length === 0 && !sel.attr('disabled')){
+        sel.parent().addClass('error');
+        event.preventDefault();
+      }
+
+    });
+
     $('form, select, input').on('keyup change', function(e) {
       $('.registration_submit').attr('disabled',false);
+      $(this).parent().removeClass('error');
+      $(this).siblings('.error').remove();
     });
     var $current_role_other = $("#id_current_role_other");
     $(window).on( "load", function() {
@@ -91,34 +140,35 @@
       toggle_field();
     });
     function toggle_field(){
-      if($.trim($('input[name=current_role]:checked').closest('label').text()) == 'Other (please describe below)') {
+      if($.trim($('input[name=current_role]:checked').closest('label').text()) == 'Other') {
           $current_role_other.prop('disabled', false);
         } else {
           $current_role_other.val("");
           $current_role_other.prop('disabled', true);
+          $current_role_other.parent().removeClass('error');
         }
     }
     function show_popup_on_registration(status_text){
       if (status_text==="Registered")
       {
-        $(document).on('close.fndtn.reveal', '#confirmation_registration', function(){
-          window.location.replace("{{home_url}}")
+        $("#confirmation_registration").on("hidden.bs.modal", function () {
+          window.location.replace("{{home_url}}");
         });
-        $("#confirmation_registration").foundation('reveal', 'open');
+        $("#confirmation_registration").modal('show');
       }
       else if (status_text==="Error")
       {
-        $(document).on('close.fndtn.reveal', '#error_registration', function(){
-          window.location.replace("{{home_url}}")
+        $("#error_registration").on("hidden.bs.modal", function () {
+          window.location.replace("{{home_url}}");
         });
-        $("#error_registration").foundation('reveal', 'open');
+        $("#error_registration").modal('show');
       }
       else if (status_text==="Course Closed")
       {
-        $(document).on('close.fndtn.reveal', '#course_closed_registration', function(){
-          window.location.replace("{{home_url}}")
+        $("#course_closed_registration").on("hidden.bs.modal", function () {
+          window.location.replace("{{home_url}}");
         });
-        $("#course_closed_registration").foundation('reveal', 'open');
+        $("#course_closed_registration").modal('show');
       }
     }
     function adjust_messages(){

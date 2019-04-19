@@ -45,8 +45,8 @@ class AprosTemplateLoaderTests(TestCase, ApplyPatchMixin):
         # When new_ui_enabled=True but template doesn't exists in new dir
         # It should fall back to old templates
         ('header.haml', settings.TEMPLATE_TEST_DIR, '/test/', 'dummy', True, True, True),
-        # When user is not logged in it should load old template
-        ('footer.haml', settings.TEMPLATE_TEST_DIR, '/test/', 'dummy', False, True, True),
+        # When user is not logged in it should load new template
+        ('footer.haml', settings.TEMPLATE_NEW_TEST_DIR, '/test/', 'dummy', False, True, True),
     )
     @ddt.unpack
     def test_template_exists(self, template_name, template_path, url, view_name, is_authenticated,
