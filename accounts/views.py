@@ -56,7 +56,7 @@ from api_data_manager.user_data import UserDataManager
 from lib.context_processors import add_edx_notification_context
 from util.i18n_helpers import set_language
 from util.user_agent_helpers import is_mobile_user_agent
-
+from util.data_sanitizing import clean_xss_characters
 from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistrationRequest
 from .middleware import thread_local
 from .controller import (
@@ -369,7 +369,7 @@ def login_get_view(request):
     if account_activate_check:
         data["activation_message"] = _("Your account has already been activated. Please enter credentials to login")
 
-    data["login_id"] = request.GET.get('login_id', '')
+    data["login_id"] = clean_xss_characters(request.GET.get('login_id', ''))
     data["form"] = form or LoginForm()
     data["login_mode"] = login_mode
     data["error"] = error

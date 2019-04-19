@@ -22,7 +22,8 @@ $(function () {
     }
 
     function loginWithPassword() {
-        $("#login-form .username_display .username").html($("input[name=login_id]").val());
+        let userName = $("input[name=login_id]").val();
+        $("#login-form .username_display .username").text(Apros.utils.escapeHtml(userName));
         $(".login-page").addClass("login-with-password");
         $("input[name=password]").focus();
     }
