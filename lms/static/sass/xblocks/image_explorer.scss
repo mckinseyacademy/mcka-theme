@@ -68,10 +68,12 @@ body.new-theme {
 
         .image-explorer-hotspot {
           text-align: left;
-          z-index: 999999;
           // background-image: url(../../mcka-theme/images/hotspot-sprite.png);
           background: #FFF;
           border-radius: 50%;
+          width: 25px;
+          height: 25px;
+
           &:hover {
             // background-position: 0 -41px;
             &:before {
@@ -98,8 +100,8 @@ body.new-theme {
             content: "\e147";
             position: absolute;
             font-size: 32px;
-            left: 1px;
-            top: -10px;
+            left: -4px;
+            top: -12px;
             @include primary-theme-content-color;
           }
 
@@ -107,6 +109,7 @@ body.new-theme {
             border-radius: 2px;
             background: $ash-white;
             border: 1px solid $popup-border;
+            margin-bottom: 60px;
 
             .image-explorer-close-reveal {
               color: transparent;
@@ -198,6 +201,7 @@ body.new-theme {
             height: 18px;
             &:before {
               font-size: 22px;
+              top: -7px;
               left: -2px;
             }      
             // &:hover {
