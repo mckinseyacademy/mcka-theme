@@ -1562,14 +1562,15 @@ body.new-theme {
                     }
                 }
                 .add_post_btn_container {
-                    right: 144px;
+                    right: 167px;
                     top: -60px;
                     .new-post-btn {
                         color: transparent !important;
                         padding: 0;
-                        width: 69px;
+                        width: 40px;
                         min-width: auto;
                         height: 40px !important;
+                        padding:0 !important;
                         @include disableTextSelection();
 
                         &:before {
@@ -1578,8 +1579,9 @@ body.new-theme {
                             font-family: "Material Icons";
                             content: "\e145";
                             position: absolute;
-                            left: 30%;
-                            top: -3px;
+                            left: 50%;
+                            top: 50%;
+                            transform: translate(-50%, -50%);
                         }
                         &:hover {
                             height: 40px !important;
@@ -1924,3 +1926,110 @@ body.new-theme {
     }
 }
 
+
+
+.rtl.new-theme
+{
+
+    // Radio Button
+    .field-label
+    {
+        .field-input
+        {
+            .post-type-label
+            {
+                margin-right: 0;
+
+                .field-input-label
+                {
+                    padding-right: 30px;
+                    left: auto !important;
+                }
+
+                &:before
+                {
+                    right:0;
+                }
+                &::after
+                {
+                    right:2px;
+                }
+            }
+        }
+    }
+
+    // CheckBox post Options
+
+    .post-options
+    {
+        .field-label
+        {
+            padding-right: 30px;
+            text-align: right;
+            padding-left: 0;
+            &:before
+            {
+                right:0;
+            }
+            &:after
+            {
+                right:6px;
+            }
+        }
+    }
+
+    // Button
+
+    [data-block-type="discussion-forum"] .discussion-module .forum-new-post-form button.submit
+    {
+        float:right !important;
+        margin:0 0 0 10px !important;
+    }
+
+    .forum-nav-thread .forum-nav-thread-link
+    {
+        align-items: unset !important;
+    }
+    .thread-wrapper .response-btn-count-wrapper
+    {
+        text-align:left;
+    }
+    .forum-nav-thread-list .thread-preview-body
+    {
+        direction: rtl;
+    }
+
+    [data-block-type="discussion-forum"] .discussion-module .inline-threads .forum-nav-thread-list .forum-nav-thread .forum-nav-thread-link
+    {
+        .forum-nav-thread-wrapper-1
+        {
+            width: calc(100% - 60px);
+            max-width: none;
+        }
+        .forum-nav-thread-wrapper-2
+        {
+            min-width: auto;
+        }
+    }
+
+    header.post-header
+    {
+        height: auto !important;
+    }
+
+    .discussion-post .post-body
+    {
+        max-width: none;
+    }
+
+    .discussion-module .add_post_btn_container
+    {
+        right:auto !important;
+        left:140px !important;
+    }
+    [data-block-type="discussion-forum"] .discussion-module .forum-new-post-form .post-field .post-type-label .field-input-label
+    {
+        margin-right: 30px;
+    }
+
+}

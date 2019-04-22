@@ -27,6 +27,36 @@ body.new-theme {
                 &.oo-player-container {
                     margin: 0 0 30px 0;
 
+
+
+                    .oo-scrubber-bar-container
+                        {
+                            .oo-scrubber-bar-padding
+                            {
+
+                                .oo-scrubber-bar
+                                {
+                                    .oo-played-indicator
+                                    {
+                                        @include primary-theme-background-color(!important);
+                                        &:hover
+                                        {
+                                            @include primary-theme-background-color-hover(!important);
+                                        }
+                                    }
+
+                                    .oo-playhead-padding
+                                    {
+                                        .oo-playhead 
+                                        {
+                                            @include primary-theme-background-color(!important);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+
                     .oo-state-screen .oo-action-icon {
                         left: 47%;
                     }
@@ -43,6 +73,8 @@ body.new-theme {
                             }
                         }
 
+                        // Popover Button 
+
                         .oo-popover-button-container {
                             @include primary-theme-background-color(!important);
                             border-radius: 2px !important;
@@ -50,6 +82,26 @@ body.new-theme {
                             &:hover,
                             &:active {
                                 @include primary-theme-background-color-hover(!important);
+                            }
+                        }
+
+
+                        
+                        
+                        // Volume Bars
+
+                        .oo-volume
+                        {
+                            .oo-volume-controls
+                            {
+                                .oo-volume-bar
+                                {
+                                    @include primary-theme-background-color(!important);
+                                    &:hover
+                                    {
+                                        @include primary-theme-background-color-hover(!important);
+                                    }
+                                }
                             }
                         }
                     }

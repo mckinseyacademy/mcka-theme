@@ -122,7 +122,7 @@ $popup-border: #d8d8d8;
 $primary-hover: #0b0886; //will be changed to var object once implemented in ui-fresh
 @mixin primary-theme-background-color ($isImportant:null) {
   background-color: var(--primary) $isImportant;
-  box-shadow:inset 0 0 0 30px rgba(0,0,0,0) $isImportant;
+  box-shadow:inset 0 0 0 60px rgba(0,0,0,0) $isImportant;
 }
 
 @mixin primary-theme-border-color ($isImportant:null) {
@@ -135,7 +135,8 @@ $primary-hover: #0b0886; //will be changed to var object once implemented in ui-
 
 @mixin primary-theme-background-color-hover ($isImportant:null) {
   background-color: var(--primary) $isImportant;
-  box-shadow:inset 0 0 0 30px rgba(0,0,0,0.3) $isImportant;
+  box-shadow:inset 0 0 0 60px rgba(0,0,0,0.3) $isImportant;
+  
 }
 
 @mixin primary-theme-border-color-hover ($isImportant:null) {

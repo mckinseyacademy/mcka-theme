@@ -46,8 +46,9 @@ body.new-theme {
             .poll-results {
                 padding-left: 1em;
 
-                poll-top-choice {
+                .poll-top-choice {
                     @include primary-theme-content-color;
+                    color: var(--primary) !important;
                 }
 
                 .percentage-gauge-container {
@@ -110,6 +111,7 @@ body.new-theme {
                             &.poll-top-choice {
                                 @include primary-theme-content-color;
                                 background-color: $light-gray;
+                                color: var(--primary) !important;
                             }
 
                             &.survey-option .visible-mobile-only {
@@ -404,5 +406,76 @@ body.new-theme {
                     }
                 }
             }
+    }
+}
+
+// Poll With Image
+
+.new-theme
+{
+    [data-block-type="poll"]
+    {
+        .has-images
+        {
+            .poll-result
+            {
+                position: relative;
+                .percentage-gauge-background
+                {                    
+                    left: 28px;
+                    top: 0;
+                    z-index: -1;
+                    width:calc(100% - 78px) !important
+                }
+                .percentage-gauge-container
+                {
+                    display: none;
+                }
+
+                .poll-percent-container
+                {
+                    position: absolute;
+                    left: calc(100% - 45px);
+                    top: 50%;
+                    transform: translateY(-50%);
+                }                    
+            }
+        }
+    }
+}
+
+// Poll With Image RTL
+.rtl.new-theme
+{
+    [data-block-type="poll"]
+    {
+        .has-images
+        {
+            .poll-result
+            {
+                position: relative;
+                .percentage-gauge-background
+                {                    
+                    right: 28px;
+                    left:auto;
+                    top: 0;
+                    z-index: -1;
+                    width:calc(100% - 78px) !important
+                }
+                .percentage-gauge-container
+                {
+                    display: none;
+                }
+
+                .poll-percent-container
+                {
+                    position: absolute;
+                    right: calc(100% - 45px);
+                    left:auto;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }                    
+            }
+        }
     }
 }
