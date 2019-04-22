@@ -437,7 +437,7 @@ body.new-theme {
 							}
 
 							.field-input-label {
-								padding: 0px !important;
+								//padding: 0px !important;
 								font-size: 0.875rem;
 							}
 						}
@@ -2177,6 +2177,16 @@ body.new-theme {
         {
           .post-field
           {
+			.field-label-text
+			{
+				left:auto;
+				right:2px;
+			}
+			.js-post-title
+			{
+				padding: 4px 40px 0 5px !important
+			}
+
             .field-label
             {
               .field-label
@@ -2201,7 +2211,7 @@ body.new-theme {
                     {
                       //right:30px;
 					  left:auto;
-					  padding-right:10px;
+					  padding-right:30px;
                     }
                   }
                 }
@@ -2212,6 +2222,13 @@ body.new-theme {
 
         .post-options
         {
+
+		.field-input-label
+		{
+			
+			padding-right:15px;
+		}
+
           .field-label
           {
             padding-left: 0;
@@ -2253,11 +2270,13 @@ body.new-theme {
 	#course-discussion .discussion-content .edit-post-form .post-field .wrapper-custom-select .post-topic 
 	{
 		background-position:3% !important;
+		padding: 10px 10px 10px 25px !important;
 	}
 
 	#course-discussion .discussion-content .discussion-thread-list-container .forum-nav-refine-bar select
 	{
 		background-position:7% !important;
+		padding: 10px 10px 10px 25px !important;
 	}
 
 	// button float right
@@ -2352,6 +2371,32 @@ body.new-theme {
 			{
 				overflow: auto !important;
 			}
+
+			.post-header-content
+			{
+				width: 100%;
+				max-width: none;
+			}
+		}
+
+		#discussion-container .forum-new-post-form .post-field .field-label-text
+		{
+			right:2px;
+			left:auto;
+		}
+		
+		#course-discussion .discussion-content #discussion-container .forum-new-post-form .post-field .js-post-title
+		{
+			padding: 4px 40px 0 5px !important;
+		}
+		header.post-header
+		{
+			height: auto!important;
+		}
+		header.page-header
+		{
+			height: auto!important;
+			margin-bottom: 20px;
 		}
 	}
 }
