@@ -2179,5 +2179,15 @@ body.new-theme {
 				overflow: auto !important;
 			}
 		}
+
+		header.post-header
+		{
+			height: auto!important;
+		}
+		header.page-header
+		{
+			height: auto!important;
+			margin-bottom: 20px;
+		}
 	}
 }
