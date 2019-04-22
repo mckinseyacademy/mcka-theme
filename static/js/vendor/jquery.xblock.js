@@ -149,7 +149,7 @@
                     resourceURL = resourceData;
                 }
                 if (resourceMimetype  === 'text/css') {
-                    $('head').append('<link href="' + resourceURL + '" rel="stylesheet" />')
+                    $('head').append('<link class="pony" href="' + resourceURL + '" rel="stylesheet" />')
                 } else if (resourceMimetype === 'application/javascript') {
                     deferred = $.getScript(resourceURL);
                 } else {
