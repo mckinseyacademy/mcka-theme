@@ -662,6 +662,14 @@ footer {
       }
     }
   }
+  form {
+    .form-group {
+      .ico-state {
+        @include left(255px);
+        @include right(auto);
+      }
+    }
+  }
 }
 
 // Misc
@@ -685,8 +693,14 @@ form {
       @include right(10px);
     }
     #show-hide {
-      @include right(14px);
-      @include left(auto);
+      @include right(auto);
+      @include left(255px);
+    }
+  }
+  .success,
+  .error {
+    input:not([type='checkbox']) {
+      @include padding-right(50px);
     }
   }
 }
@@ -707,6 +721,23 @@ form {
   li {
     .bookmark {
       @include left(-30px);
+    }
+  }
+}
+
+// Login
+
+.site-wrapper {
+  &.login {
+    .quick-links {
+      li {
+        @include margin-left(20px);
+      }
+    }
+    .login-form-wrap {
+      .forgot-pswd-link {
+        @include float(left);
+      }
     }
   }
 }
@@ -833,6 +864,15 @@ body.rtl {
     .radiobtn {
       &:after {
         top: 3px;
+      }
+    }
+  }
+
+  // Login 
+  .site-wrapper {
+    &.login {
+      .form-label {
+        transform: translate(-15px, 15px) !important;
       }
     }
   }

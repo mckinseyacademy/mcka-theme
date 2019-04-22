@@ -10,7 +10,7 @@
 
     main {
       padding: 15px 0 20px;
-      min-height: calc(100vh - 163px);
+      min-height: calc(100vh - 160px);
       @media screen and (max-width: 992px) {
         min-height: calc(100vh - 165.5px);
         padding-top: 90px;
@@ -70,7 +70,6 @@
         width: 100%;
       }
       .forgot-pswd-link {
-        float: left;
         margin: 10px 0 0;
         color: $black;
       }
@@ -104,15 +103,15 @@
       li {
         display: inline-block;
         vertical-align: middle;
-        margin: 0 0 0 20px;
         color: $white;
         &:first-child {
           margin: 0;
         }
       }
       a {
-        color: #000;
+        color: $black;
         text-transform: capitalize;
+        @include font-size(14);
       }
 
       @media screen and (max-width: 767px) {

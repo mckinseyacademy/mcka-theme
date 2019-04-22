@@ -61,9 +61,6 @@ form {
       visibility: visible;
       transform: scale(1);
     }
-    input:not([type='checkbox']) {
-      padding-right: 50px;
-    }
 
     #show-hide {
       visibility: hidden;
