@@ -429,7 +429,10 @@ body.new-theme {
                 }
                 .percentage-gauge-container
                 {
-                    display: none;
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width: 70% !important;
                 }
 
                 .poll-percent-container
