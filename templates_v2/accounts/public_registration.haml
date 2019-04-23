@@ -97,6 +97,7 @@
     $('#reg').submit(function(event) {
       let sel = $('[name="first_name"]');
       let value = sel.val();
+      sel.siblings('.error').remove();
 
       if(value === undefined || value.length === 0){
         sel.parent().addClass('error');
@@ -113,6 +114,7 @@
 
       sel = $('[name="last_name"]');
       value = sel.val();
+      sel.siblings('.error').remove();
       if(value === undefined || value.length === 0){
         sel.parent().addClass('error');
         sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
@@ -129,6 +131,7 @@
 
       sel = $('[name="company_name"]');
       value = sel.val();
+      sel.siblings('.error').remove();
       if(value === undefined || value.length === 0){
         sel.parent().addClass('error');
         sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
@@ -138,6 +141,7 @@
 
       sel = $('[name="company_email"]');
       value = sel.val();
+      sel.siblings('.error').remove();
       if(value === undefined || value.length === 0){
         sel.parent().addClass('error');
         sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
@@ -152,6 +156,7 @@
         return;
       }
       sel = $('[name="current_role_other"]');
+      sel.siblings('.error').remove();
       value = sel.val();
       if(! $('#id_current_role input').is(':checked') ||
       ((value === undefined || value.length === 0) && !sel.attr('disabled'))){
