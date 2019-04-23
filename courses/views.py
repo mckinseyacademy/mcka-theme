@@ -63,7 +63,7 @@ from .user_courses import (
     check_user_course_access, load_course_progress,
     check_company_admin_user_access,
     set_current_course_for_user, check_course_shell_access,
-    get_program_menu_list, get_course_menu_list
+    get_program_menu_list, get_course_menu_list, CURRENT_LD_COURSE_ID
 )
 
 _progress_bar_dictionary = {
@@ -96,6 +96,9 @@ def course_landing_page(request, course_id):
         if not new_ui_enabled:
             set_current_course_for_user(request, course_id, course_landing_page_flag=True)
         redirect_url = '/learnerdashboard/' + str(learner_dashboard.id)
+        user_api.set_user_preferences(request.user.id, {
+            CURRENT_LD_COURSE_ID: course_id
+        })
         return HttpResponseRedirect(redirect_url)
 
     set_current_course_for_user(request, course_id, course_landing_page_flag=True)
@@ -1204,7 +1207,6 @@ def course_learner_dashboard(request, learner_dashboard_id):
     if settings.LEARNER_DASHBOARD_ENABLED:
         try:
             learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
-            request.session['last_visited_course'] = learner_dashboard.course_id
         except ObjectDoesNotExist:
             return HttpResponse(status=404)
     else:

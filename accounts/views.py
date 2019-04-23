@@ -174,7 +174,7 @@ def _get_redirect_to_current_course(request, sso_user=False):
         user_ld_courses = [user_course for user_course in user_courses if user_course.learner_dashboard]
         user_ld_courses = sorted(user_ld_courses, key=lambda x: x.id.lower())
         user_course_with_ld = next(iter(user_ld_courses), None)
-        last_visited_ld = request.session.get('last_visited_course', None)
+        last_visited_ld = user_data.current_ld_course
         if last_visited_ld:
             for user_ld_course in user_ld_courses:
                 if user_ld_course.id == last_visited_ld:

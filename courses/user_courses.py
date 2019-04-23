@@ -26,6 +26,7 @@ from .controller import (
 CURRENT_COURSE_ID = "current_course_id"
 CURRENT_PROGRAM_ID = "current_program_id"
 CURRENT_PROGRAM = "current_program"
+CURRENT_LD_COURSE_ID = "current_ld_course"
 
 
 def set_current_course_for_user(request, course_id, course_landing_page_flag=False):
