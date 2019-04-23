@@ -235,6 +235,13 @@ body.new-theme {
 		}
 	}
 
+	@media (max-width: 768px) {
+		.forum-nav
+		{
+			position: static!important;
+		}
+	}
+
 	/* mobile */
 	@media (max-width: 767px) {
 		#course-discussion {
@@ -357,6 +364,7 @@ body.new-theme {
 						margin-bottom: 10px;
 						height: auto !important;
 						max-height: none !important;
+						position: static!important;
 
 						.forum-nav-browse-menu-wrapper {
 							border: 0;
@@ -1119,7 +1127,7 @@ body.new-theme {
 				background: $white;
 				padding: 0;
 				margin-bottom: 20px;
-				position: relative !important;
+				position: relative ;
 
 
 				.ask-ta {
@@ -1529,7 +1537,9 @@ body.new-theme {
 						background-position: 90%;
 						background-size: 8px;
 						width: 100%;
-						padding: 10px 25px 10px 10px;
+						line-height: 32px;
+						height:32px;
+						padding: 0 25px 0 10px;
 					}
 
 					label {
@@ -1550,7 +1560,7 @@ body.new-theme {
 				.forum-nav-thread-list {
 					background: $white;
 					border: 1px solid $border_color_1;
-          height: calc(100% - 64px) !important;
+          			height: calc(100% - 64px) !important;
 					.forum-nav-load-more {
 						background-color: #FFFFFF;
 						padding: 10px;
@@ -1648,12 +1658,16 @@ body.new-theme {
 
 						&.never-read {
 							.forum-nav-thread-link {
-								border-left: 0;
+								border-left: 4px solid;
 								@include primary-theme-content-color;
 								background-color: transparent;
 
 								.icon {
 									@include primary-theme-content-color;
+								}
+								.forum-nav-thread-title
+								{
+									color: var(--primary);
 								}
 							}
 
@@ -2105,6 +2119,8 @@ body.new-theme {
 				padding:0 15px !important;
 				min-height: 500px !important;
 				height: auto!important;
+				position:static!important;
+				
 			}
 		}
 	}
@@ -2161,6 +2177,7 @@ body.new-theme {
 					.page-header-main
 					{
 						left: 15px !important;
+						width: calc(100% - 30px)!important;
 					}
 				}
 
