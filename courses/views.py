@@ -1530,30 +1530,6 @@ def courses(request):
     renders user courses menu on click from frontend
     """
     raw_courses = get_course_menu_list(request)
-    raw_cids = [rc.id for rc in raw_courses]
-
-    user = request.user
-    is_admin = any([user.is_mcka_admin, user.is_mcka_subadmin])
-    courses_roles = request.user.get_roles_on_courses(raw_cids)
-    courses_lesson_count = CourseDataManager.get_lessons_count(raw_courses)
-
-    for raw_course in raw_courses:
-        roles = courses_roles.get(raw_course.id, [])
-        roles = [role.role for role in roles]
-        is_staff = 'staff' in roles or 'instructor' in roles
-        course = CourseDataManager(raw_course.display_id)
-
-        lesson_count = courses_lesson_count.get(course.course_id, {}).get(COURSE_PROPERTIES.TOTAL_LESSONS)
-        staff_tools_count = courses_lesson_count.get(course.course_id, {}).get(COURSE_PROPERTIES.TOTAL_STAFF_TOOLS)
-
-        if is_staff and is_admin:
-            if lesson_count is not None and staff_tools_count is not None:
-                raw_course.total_lessons = lesson_count + staff_tools_count
-            else:
-                raw_course.total_lessons = '-'
-        else:
-            raw_course.total_lessons = lesson_count if lesson_count is not None else '-'
-
     completions = get_course_completions(username=request.user.username, page_size=0, extra_fields=None)
     for raw_course in raw_courses:
         completion = completions.get(raw_course.display_id)
@@ -1583,3 +1559,40 @@ def course_lessons_menu(request, course_id):
     course_tree_builder.include_progress_data(course)
 
     return render(request, 'courses/content_page/lesson_menu.haml', dict(course=course))
+
+
+@login_required
+def course_lessons_count(request):
+    """
+    Renders courses lesson counts
+    """
+    course_ids = request.GET.get('course_ids', None)
+    course_ids = course_ids.split(',')
+
+    user = request.user
+    is_admin = any([user.is_mcka_admin, user.is_mcka_subadmin])
+    courses_roles = request.user.get_roles_on_courses(course_ids)
+    courses_lesson_count = CourseDataManager.get_lessons_count(course_ids)
+
+    data = {}
+
+    for course_id in course_ids:
+        roles = courses_roles.get(course_id, [])
+        roles = [role.role for role in roles]
+        is_staff = 'staff' in roles or 'instructor' in roles
+
+        lesson_count = courses_lesson_count.get(course_id, {}).get(COURSE_PROPERTIES.TOTAL_LESSONS)
+        staff_tools_count = courses_lesson_count.get(course_id, {}).get(COURSE_PROPERTIES.TOTAL_STAFF_TOOLS)
+
+        if is_staff and is_admin:
+            if lesson_count is not None and staff_tools_count is not None:
+                data[course_id] = lesson_count + staff_tools_count
+            else:
+                data[course_id] = '-'
+        else:
+            data[course_id] = lesson_count if lesson_count is not None else '-'
+
+    return HttpResponse(
+        json.dumps(data),
+        content_type='application/json'
+    )
