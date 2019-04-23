@@ -973,7 +973,7 @@ def reset(request, is_admin_site=False,
             email = form.cleaned_data["email"]
             users = user_api.get_users(email=email)
             if len(users) < 1:
-                post_reset_redirect = '?reset=failed'
+                post_reset_redirect = '/?reset=failed'
             form.save(**opts)
             return HttpResponseRedirect(post_reset_redirect)
     else:
