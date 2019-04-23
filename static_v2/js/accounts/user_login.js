@@ -45,7 +45,6 @@ $(function () {
             $("#login-form > div.user_password_element").addClass("error");
             $('.form-group.user_password_element').children('i.ico-state').html("error");
             $("input[name=password]")
-                .val("")
                 .get(0)
                 .setCustomValidity(error["password"]);
         } else if (error.lock_out) {

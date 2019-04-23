@@ -668,7 +668,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_get_username.return_value = DottableDict({"username": "test", "is_active": True})
         mock_authenticate.return_value = None
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
-        self.assertIn('{"password": "Password doesn\'t match our records. Try again."}', response.content)
+        self.assertIn('{"password": "Please enter a valid password."}', response.content)
 
     @patch('accounts.views.get_user_from_login_id')
     @patch('accounts.views.auth.authenticate')

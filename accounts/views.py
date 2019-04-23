@@ -436,7 +436,7 @@ def login_post_view(request):
                 return response
             else:
                 return JsonResponse({
-                    "password": _("Password doesn't match our records. Try again.")
+                    "password": _("Please enter a valid password.")
                 }, status=403)
 
         except ApiError as err:

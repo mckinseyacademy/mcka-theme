@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 11:18+0000\n"
+"POT-Creation-Date: 2019-04-23 13:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:371
-#: static/js/views/admin/participantsinfo.js:116
+#: static/js/views/admin/participantsinfo.js:115
 msgid "Course"
 msgstr ""
 
@@ -74,10 +74,10 @@ msgid "Show Errors"
 msgstr ""
 
 #: static/js/admin_upload_students.js:73
-#: static/js/common/mass_participants_delete.js:103
-#: static/js/common/mass_participants_enroll.js:117
-#: static/js/common/mass_participants_enroll.js:225
-#: static/js/common/mass_participants_enroll.js:362
+#: static/js/common/mass_participants_enroll.js:118
+#: static/js/common/mass_participants_enroll.js:239
+#: static/js/common/mass_participants_enroll.js:360
+#: static/js/common/mass_participants_enroll.js:497
 #: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
 #: static_v2/js/image_editor.js:77
 msgid "Please select file first."
@@ -108,7 +108,7 @@ msgid "Progress: %(value)s%"
 msgstr ""
 
 #: static/js/common/bbGridExtend.js:70
-msgid "Keyword Search"
+msgid "Search by Keyword"
 msgstr ""
 
 #: static/js/common/common_js.js:171
@@ -159,54 +159,62 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: static/js/common/mass_participants_delete.js:131
+#: static/js/common/mass_participants_delete.js:133
 msgid "An error occurred submitting the request."
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:134
+#: static/js/common/mass_participants_enroll.js:255
 msgid "email"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:134
+#: static/js/common/mass_participants_enroll.js:255
 msgid "course id"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:134
+#: static/js/common/mass_participants_enroll.js:255
 msgid "status"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:148
-#: static/js/common/mass_participants_enroll.js:161
+#: static/js/common/mass_participants_enroll.js:270
+msgid "participant_id"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:270
+msgid "course_id"
+msgstr ""
+
+#: static/js/common/mass_participants_enroll.js:283
+#: static/js/common/mass_participants_enroll.js:296
 msgid "Learner email"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:148
+#: static/js/common/mass_participants_enroll.js:283
 msgid "Business Function"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:148
+#: static/js/common/mass_participants_enroll.js:283
 msgid "Business Unit"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:148
+#: static/js/common/mass_participants_enroll.js:283
 msgid "location"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:161
+#: static/js/common/mass_participants_enroll.js:296
 msgid "Manager email"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:199
-#: static/js/common/mass_participants_enroll.js:273
-#: static/js/common/mass_participants_enroll.js:335
-#: static/js/common/mass_participants_enroll.js:410
+#: static/js/common/mass_participants_enroll.js:334
+#: static/js/common/mass_participants_enroll.js:408
+#: static/js/common/mass_participants_enroll.js:470
+#: static/js/common/mass_participants_enroll.js:545
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:295
-#: static/js/common/mass_participants_enroll.js:432
+#: static/js/common/mass_participants_enroll.js:430
+#: static/js/common/mass_participants_enroll.js:567
 msgid "Report of bulk update will be sent to your email."
 msgstr ""
 
@@ -310,7 +318,7 @@ msgid "Participants:"
 msgstr ""
 
 #: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:23
+#: static/js/views/admin/participantsinfo.js:24
 msgid "Email"
 msgstr ""
 
@@ -318,8 +326,20 @@ msgstr ""
 msgid "Please select at least one course"
 msgstr ""
 
-#: static/js/session_timeout_timer.js:19
+#: static/js/session_timeout_timer.js:39
 msgid "You were logged out due to inactivity. Please log back in to continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:2
+msgid "It looks like your browser settings has pop-ups disabled."
+msgstr ""
+
+#: static/js/static_translation_strings.js:3
+msgid "The content takes place in a new window."
+msgstr ""
+
+#: static/js/static_translation_strings.js:4
+msgid "Launch pop-up to continue"
 msgstr ""
 
 #: static/js/views/admin/cohorts.js:30
@@ -389,7 +409,7 @@ msgstr[1] ""
 
 #: static/js/views/admin/companies_list.js:12
 #: static/js/views/admin/course_details.js:29
-#: static/js/views/admin/participantsinfo.js:22
+#: static/js/views/admin/participantsinfo.js:23
 msgid "Company"
 msgstr ""
 
@@ -409,7 +429,7 @@ msgstr ""
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:487
-#: static/js/views/admin/participantsinfo.js:366
+#: static/js/views/admin/participantsinfo.js:365
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr ""
 
@@ -417,7 +437,7 @@ msgstr ""
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:481
-#: static/js/views/admin/participantsinfo.js:360
+#: static/js/views/admin/participantsinfo.js:359
 msgid "This company name cannot have more than 30 characters!"
 msgstr ""
 
@@ -517,7 +537,7 @@ msgid "No App Display Name!"
 msgstr ""
 
 #: static/js/views/admin/course_details.js:6
-#: static/js/views/admin/participantsinfo.js:15
+#: static/js/views/admin/participantsinfo.js:16
 msgid "Name"
 msgstr ""
 
@@ -527,12 +547,12 @@ msgstr ""
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:125
+#: static/js/views/admin/participantsinfo.js:124
 msgid "Status"
 msgstr ""
 
 #: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:41
+#: static/js/views/admin/participantsinfo.js:42
 msgid "Activated"
 msgstr ""
 
@@ -648,7 +668,7 @@ msgstr ""
 #: static/js/views/admin/course_details_bulk_actions.js:133
 #: static/js/views/admin/course_details_bulk_actions.js:199
 #: static/js/views/admin/course_details_bulk_actions.js:301
-#: static/js/views/admin/course_details_bulk_actions.js:715
+#: static/js/views/admin/course_details_bulk_actions.js:771
 msgid ""
 "You need to select at least one participant to be able to apply bulk actions."
 msgstr ""
@@ -670,21 +690,21 @@ msgstr ""
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:377
-#: static/js/views/admin/participantsinfo.js:129
+#: static/js/views/admin/participantsinfo.js:128
 msgid "Participant"
 msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:378
-#: static/js/views/admin/participantsinfo.js:131
+#: static/js/views/admin/participantsinfo.js:130
 msgid "Observer"
 msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:379
-#: static/js/views/admin/participantsinfo.js:130
+#: static/js/views/admin/participantsinfo.js:129
 msgid "TA"
 msgstr ""
 
@@ -754,94 +774,95 @@ msgid "Export Report"
 msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
+#: static/js/views/admin/course_details_bulk_actions.js:568
 msgid "Error initiating the report generation. Please retry later."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:546
+#: static/js/views/admin/course_details_bulk_actions.js:598
 msgid "Download Notifications CSV"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:631
+#: static/js/views/admin/course_details_bulk_actions.js:687
 msgid "Group Work: %(label)s"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:659
+#: static/js/views/admin/course_details_bulk_actions.js:715
 msgid "Assessment: %(label)s"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:685
+#: static/js/views/admin/course_details_bulk_actions.js:741
 msgid "Task failed to execute. Please retry later."
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:702
+#: static/js/views/admin/course_details_bulk_actions.js:758
 msgid "Successfully Enrolled in 1 Course"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:704
+#: static/js/views/admin/course_details_bulk_actions.js:760
 msgid "What would you like to do now?"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:705
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Go to %(course_id)s Course"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:707
+#: static/js/views/admin/course_details_bulk_actions.js:763
 msgid "Send Course Intro Email"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:709
+#: static/js/views/admin/course_details_bulk_actions.js:765
 msgid "Enroll this list in another course"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:721
+#: static/js/views/admin/course_details_bulk_actions.js:777
 msgid "I'm Done"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:741
+#: static/js/views/admin/course_details_bulk_actions.js:797
 msgid "Successfully deleted template!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:748
+#: static/js/views/admin/course_details_bulk_actions.js:804
 msgid "Successfully added new template!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:761
+#: static/js/views/admin/course_details_bulk_actions.js:817
 msgid "Successfully updated template!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:766
+#: static/js/views/admin/course_details_bulk_actions.js:822
 msgid "Email Preview Success!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:766
+#: static/js/views/admin/course_details_bulk_actions.js:822
 msgid "Successfully sent preview email!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:769
+#: static/js/views/admin/course_details_bulk_actions.js:825
 msgid "Email Success!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:769
+#: static/js/views/admin/course_details_bulk_actions.js:825
 msgid "Successfully sent email!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:811
+#: static/js/views/admin/course_details_bulk_actions.js:867
 msgid "Preview Email!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:811
+#: static/js/views/admin/course_details_bulk_actions.js:867
 msgid "Please enter preview email!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:831
+#: static/js/views/admin/course_details_bulk_actions.js:887
 msgid "Please enter new template name!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:846
+#: static/js/views/admin/course_details_bulk_actions.js:902
 msgid "Please enter updated template name or leave the old one!"
 msgstr ""
 
-#: static/js/views/admin/course_details_bulk_actions.js:859
+#: static/js/views/admin/course_details_bulk_actions.js:915
 msgid "You are about to delete email template. Are you sure?"
 msgstr ""
 
@@ -1017,7 +1038,7 @@ msgid "User successfully enrolled in course"
 msgstr ""
 
 #: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:96
+#: static/js/views/admin/participantsinfo.js:95
 msgid "Admin Company"
 msgstr ""
 
@@ -1026,19 +1047,27 @@ msgid "Try selecting your company from the type-ahead results."
 msgstr ""
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:105
+#: static/js/views/admin/participantsinfo.js:104
 msgid "Admin Permissions"
 msgstr ""
 
 #: static/js/views/admin/participant_details_edit_info.js:547
-#: static/js/views/admin/participantsinfo.js:108
+#: static/js/views/admin/participantsinfo.js:107
 msgid "Company Admin"
 msgstr ""
 
-#: static/js/views/admin/participantsinfo.js:25
+#: static/js/views/admin/participantsinfo.js:26
 msgid "Date Added"
 msgstr ""
 
-#: static/js/views/admin/participantsinfo.js:35
+#: static/js/views/admin/participantsinfo.js:36
 msgid "Enrolled In"
+msgstr ""
+
+#: static_v2/js/custom.js:110
+msgid "Hide Password"
+msgstr ""
+
+#: static_v2/js/custom.js:115
+msgid "Show Password"
 msgstr ""
