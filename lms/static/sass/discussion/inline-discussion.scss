@@ -2049,14 +2049,23 @@ body.new-theme {
     @media (max-width: 767px) {
         [data-block-type="discussion-forum"] .discussion-module .add_post_btn_container
         {
-            right: 205px !important;
+            right: auto !important;
             top: -60px !important;
-            left: auto !important;
+            left: 140px !important;
         }
         [data-block-type="discussion-forum"] .discussion-module .inline-discussion .forum-new-post-form .post-field .field-input-label
         {
             margin-right:30px;
         }
+
+        .new-post-article {
+            
+            .add-post-cancel {
+                right: auto !important;
+                left:10px !important;
+            }
+        }
+
     }
 
 }
