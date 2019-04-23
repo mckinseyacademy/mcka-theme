@@ -1,11 +1,24 @@
 $(document).ready(function() {
 
+    if($("#login_id").val() !== "")
+    {
+        $('#login').attr("disabled", false);
+        $('input[name=login_id]').parents('.form-group').addClass('focused');
+    }
+
+    if($(".reset-password #id_email").val() !== "")
+    {
+        $('#reset-password-submit').attr("disabled", false);
+        $(".reset-password #id_email").parents('.form-group').addClass('focused');
+    }
+
+
     $("#login_id").on("keyup", function () {
+        $('#login').attr("disabled", false);
         var user_name = $(".user_name_element");
         $(user_name).removeClass("success").removeClass("error");
         $(this).get(0).setCustomValidity("");
         var password = $(".user_password_element");
-        var login_page = $(".login-page");
         if(!$(password).hasClass("d-none")) {
             $(password).addClass("d-none");
             $(".login-page").removeClass("login-with-password");
@@ -13,7 +26,14 @@ $(document).ready(function() {
         }
     });
 
+    $(".reset-password #id_email").on("keyup", function ()
+    {
+        $('#reset-password-submit').attr("disabled", false);
+    });
+
+
     $("#password").on("keyup", function () {
+        $('#login').attr("disabled", false);
         var user_password = $(".user_password_element");
         $(user_password).removeClass("success").removeClass("error");
         $(this).get(0).setCustomValidity("");
@@ -108,6 +128,9 @@ $(document).ready(function() {
         if (inputValue == "") {
             $(this).removeClass('filled');
             $(this).parents('.form-group').removeClass('focused');
+            $('#login').attr('disabled', 'disabled');
+            $('#reset-password-submit').attr("disabled", 'disabled');
+
         } else {
             $(this).addClass('filled');
         }

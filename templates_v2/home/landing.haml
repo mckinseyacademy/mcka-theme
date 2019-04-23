@@ -34,8 +34,8 @@
                 %i.material-icons.ico-state
                 %small.password-error.form-text
               .form-group.text-center
-                %button#login.btn.btn-primary.btn-lg.mt-20{:type => "submit"} {% trans "Log in" %}
-                %a.forgot-pswd-link{:data-target => "#password-reset-modal", :data-toggle => "modal", :href => "/accounts/password/reset/"}
+                %button#login.btn.btn-primary.btn-lg.mt-20{:type => "submit", :disabled} {% trans "Log in" %}
+                %a.forgot-pswd-link.d-none{:data-target => "#password-reset-modal", :data-toggle => "modal", :href => "/accounts/password/reset/"}
                   %strong {% trans "Forgot password?" %}
             .quick-links
               %a.helpLink{:href => "javascript:Void(0)"}

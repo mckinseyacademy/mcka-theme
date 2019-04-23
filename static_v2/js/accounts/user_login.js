@@ -27,6 +27,11 @@ $(function () {
         $(".login-page").addClass("login-with-password");
         $('.form-group.user_password_element').toggleClass("d-none");
         $("input[name=password]").focus();
+        $('.forgot-pswd-link').removeClass('d-none');
+        if($("input[name=password]").val() =="")
+        {
+            $('#login').attr("disabled", "disabled");
+        }
     }
 
     function setError(error) {
