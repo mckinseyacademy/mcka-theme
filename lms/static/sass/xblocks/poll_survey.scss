@@ -420,12 +420,23 @@ body.new-theme {
             .poll-result
             {
                 position: relative;
+                margin-bottom: 10px !important;
+                
+                .result-image
+                {
+                    label
+                    {
+                        margin-bottom: 0!important;
+                    }
+                }
+
                 .percentage-gauge-background
                 {                    
                     left: 28px;
                     top: 0;
                     z-index: -1;
                     width:calc(100% - 78px) !important;
+                    height: 100% !important;
                 }
                 .percentage-gauge-container
                 {
