@@ -8,10 +8,7 @@
       .col
         %img.login-McKa-logo{:alt => "", :src => "{% static 'image/login/McKA-logo.png' %}"}/
         %h1.heading.text-center
-          {% trans "Leading transformation" %}
-          %span.nl
-            %img{:src => "{% static 'image/login/login-arrow.svg' %}"}/
-            {% trans "Transforming leaders" %}
+          {% trans "Leading transformation, Transforming leaders" %}
         .login-form-wrap
           - if request.is_IE8
             %br
@@ -26,7 +23,7 @@
                   = error
               - csrf_token
               .form-group.user_name_element
-                %label.form-label{:for => "login_id"} {% trans "Username or Email:" %}
+                %label.form-label{:for => "login_id"} {% trans "Username or Email" %}
                 %input#login_id.form-control.form-input{:type => "text", :name => "login_id", value: "#{login_id}"}/
                 %i.material-icons.ico-state check_circle
                 %small.login-error.form-text
@@ -48,9 +45,9 @@
                 %li
                   %a{:href => "/faq", :target => "_blank"} {% trans "FAQs" %}
                 %li
-                  %a{:href => "mailto:support@mckinseyacademy.com?Subject=Trouble logging in"} {% trans "Email support" %}
+                  %a{:href => "mailto:support@mckinseyacademy.com?Subject=Trouble logging in"} {% trans "Email Support" %}
                 %li
-                  %a{:href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients"} {% trans "About Mckinsey Academy" %}
+                  %a{:href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients"} {% trans "About McKinsey Academy" %}
 
   -#- include "marketing/app_link_popup.haml"
 

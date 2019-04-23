@@ -35,7 +35,7 @@
           .form-group.mt-4.password{:class => "{% if errors.password %}error{% endif %}"}
             %label{:class => "form-label" , :for => "setPassword"}
               {% trans "Password" %}
-            %input#password-visibility.form-control.form-input{:name => "password", :type => "password" , :id => "setPassword", :value => "{{form.data.password}}"}
+            %input#password.form-control.form-input{:name => "password", :type => "password" , :id => "setPassword", :value => "{{form.data.password}}"}
             %i#show-hide.material-icons{"data-container": "body", "data-content": "Show Password", "data-placement": "bottom", "data-toggle": "popover", "data-trigger": "hover"} visibility_off
             %small.form-text {% trans "Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters." %}
           .form-group.form-check.mt-4.agreement{:class => "{% if errors.accept_terms %}error{% endif %}"}

@@ -131,14 +131,6 @@ a.btn {
   }
 }
 
-.btn-primary:not(:disabled):not(.disabled):active,
-.btn-primary:not(:disabled):not(.disabled).active,
-.show>.btn-primary.dropdown-toggle {
-  color: unset;
-  background-color: unset;
-  border-color: unset;
-}
-
 
 // button for extend
 

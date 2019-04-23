@@ -86,12 +86,12 @@ $(document).ready(function() {
         var text = $(this).text();
         if (text == 'visibility_off') {
             $(this).text('visibility');
-            $('#password').attr('type', 'text');
+            $('#password, #password_setPassword').attr('type', 'text');
             $(this).attr("data-content", gettext("Hide Password"));
         }
         else {
             $(this).text('visibility_off');
-            $('#password').attr('type', 'password');
+            $('#password, #password_setPassword').attr('type', 'password');
             $(this).attr("data-content", gettext("Show Password"));
         }
     });
@@ -577,6 +577,17 @@ smoothNavLinks();
 
 
 $(window).on("load", function () {
+
+    function triggerFocused(sel) {
+        let input = $(sel);
+        let value = input.val();
+        if (value && input.val().length > 0) {
+            input.parents('.form-group').addClass('focused')
+        }
+    }
+    triggerFocused('[name="username"]');
+    triggerFocused('[name="password"]');
+    triggerFocused('[name="login_id"]');
 
     // Preloaders for platform
     $('.loader').removeClass("donut-loader").removeClass("loader");

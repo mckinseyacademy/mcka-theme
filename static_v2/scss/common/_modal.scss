@@ -1,12 +1,15 @@
 .modal {
   &.reset-password {
+    form.white {
+      margin-top: 15px;
+    }
     .form-group + .form-group {
       margin-top: 18px !important;
     }
     .form-group {
       small {
         font-size: 87% !important;
-        color: #9D9D9D;
+        color: $hard-gray;
       }
     }
 
