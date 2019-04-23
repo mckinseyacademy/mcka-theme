@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-23 13:24+0000\n"
+"POT-Creation-Date: 2019-04-23 18:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1124,7 +1124,7 @@ msgid "You must accept terms of service in order to continue"
 msgstr "Sie müssen den Nutzungsbedingungen zustimmen, um fortzufahren"
 
 #: accounts/forms.py:436 accounts/forms.py:494 accounts/forms.py:512
-#: accounts/forms.py:627 admin/controller.py:807 admin/views.py:2694
+#: accounts/forms.py:627 admin/controller.py:807 admin/views.py:2686
 #: marketing/forms.py:47 marketing/forms.py:93 marketing/forms.py:132
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1157,11 +1157,11 @@ msgstr ""
 "Passwort {html_span_start} Muss mindestens 8 Zeichen, Groß- und "
 "Kleinbuchstaben und Zahlen ODER Sonderzeichen enthalten.{html_span_end}"
 
-#: accounts/forms.py:461 admin/views.py:2694 marketing/forms.py:141
+#: accounts/forms.py:461 admin/views.py:2686 marketing/forms.py:141
 #: templates/admin/participants/participant_details.haml:124
 #: templates/admin/participants/participants_list.haml:36
 #: templates/admin/permissions/list.haml:36
-#: templates_v2/accounts/public_registration.haml:60
+#: templates_v2/accounts/public_registration.haml:62
 msgid "Company"
 msgstr "Firma"
 
@@ -1173,7 +1173,7 @@ msgstr "Vollständiger Name"
 #: templates/accounts/user_profile.haml:24
 #: templates/admin/learner_dashboard/discovery_list.haml:12
 #: templates/admin/learner_dashboard/element_list.haml:13
-#: templates_v2/layout.haml:283
+#: templates_v2/layout.haml:291
 msgid "Title"
 msgstr "Anrede"
 
@@ -1214,7 +1214,7 @@ msgstr "Akzeptierte Formate: JPG, PNG und GIF"
 
 #: accounts/forms.py:599 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:91
-#: templates_v2/accounts/public_registration.haml:52
+#: templates_v2/accounts/public_registration.haml:54
 msgid "First Name"
 msgstr "Vorname"
 
@@ -1226,7 +1226,7 @@ msgstr "Gültige E-Mail-Adresse erforderlich"
 
 #: accounts/forms.py:605
 #: templates/admin/participants/participant_details.haml:96
-#: templates_v2/accounts/public_registration.haml:56
+#: templates_v2/accounts/public_registration.haml:58
 msgid "Last Name"
 msgstr "Nachname"
 
@@ -1287,6 +1287,8 @@ msgstr ""
 "{html_div_start}(Bitte wählen Sie eine der folgenden Optionen){html_div_end}"
 
 #: accounts/forms.py:733 accounts/forms.py:741
+#: templates_v2/accounts/public_registration.haml:110
+#: templates_v2/accounts/public_registration.haml:127
 msgid "Special characters or numbers are not valid."
 msgstr "Sonderzeichen oder Zahlen sind nicht zulässig."
 
@@ -1312,7 +1314,7 @@ msgstr "Diese E-Mail-Adresse ist bereits registriert."
 msgid "Email you provided is not allowed."
 msgstr "Die angegebene E-Mail-Adresse ist nicht erlaubt."
 
-#: accounts/forms.py:780
+#: accounts/forms.py:780 templates_v2/accounts/public_registration.haml:154
 msgid "Please enter a valid company email address."
 msgstr "Bitte geben Sie eine gültige Firmen-E-Mail-Adresse an."
 
@@ -1426,7 +1428,7 @@ msgstr "Passwort zurücksetzen fehlgeschlagen"
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:273
 #: templates_v2/accounts/sso_terms_of_service.haml:14
-#: templates_v2/courses/content_page/courses_menu_list.haml:51
+#: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "Welcome to McKinsey Academy"
 msgstr "Willkommen zu der McKinsey Academy"
 
@@ -1448,12 +1450,12 @@ msgstr ""
 "Ihr Kurs beginnt in {days} Tagen. Bevor Ihr Kurs beginnt, können Sie die "
 "Seite erkunden, um mehr darüber zu erfahren, was Sie erwartet."
 
-#: accounts/views.py:1213 templates_v2/layout.haml:249
+#: accounts/views.py:1213 templates_v2/layout.haml:257
 msgid "Enter your full name"
 msgstr "Geben Sie Ihren vollständigen Namen ein"
 
 #: accounts/views.py:1215 accounts/views.py:1240 admin/views.py:2006
-#: admin/views.py:2040 admin/views.py:4723
+#: admin/views.py:2040 admin/views.py:4715
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
 #: templates/admin/cohorts/course_details.html:38
@@ -1468,11 +1470,11 @@ msgstr "Geben Sie Ihren vollständigen Namen ein"
 #: templates/admin/learner_dashboard/preview.haml:34
 #: templates/admin/participants/participant_edit_status.haml:35
 #: templates/certificates/new_certificate_template.haml:21
-#: templates_v2/layout.haml:266 templates_v2/layout.haml:288
+#: templates_v2/layout.haml:274 templates_v2/layout.haml:296
 msgid "Save"
 msgstr "Speichern"
 
-#: accounts/views.py:1238 templates_v2/layout.haml:275
+#: accounts/views.py:1238 templates_v2/layout.haml:283
 msgid "Enter your title"
 msgstr "Geben Sie Ihre Anrede ein"
 
@@ -1571,7 +1573,7 @@ msgstr "PROJEKT"
 msgid "Client Name"
 msgstr "Kundenname"
 
-#: admin/controller.py:799 admin/views.py:4527 admin/views.py:4629
+#: admin/controller.py:799 admin/views.py:4519 admin/views.py:4621
 #: certificates/models.py:87 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "Kurs-ID"
@@ -1595,7 +1597,7 @@ msgstr "Fortschritt %"
 msgid "Engagement"
 msgstr "Engagement"
 
-#: admin/controller.py:808 admin/views.py:4527
+#: admin/controller.py:808 admin/views.py:4519
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:71
 #: templates_v2/courses/course_cohort.haml:174
@@ -1684,13 +1686,13 @@ msgstr "Sie haben den falschen Aufgabenschlüssel gesendet!"
 msgid "There are no users in organization!"
 msgstr "Es befinden sich keine Nutzer in der Organisation!"
 
-#: admin/controller.py:2090 admin/controller.py:2091 admin/views.py:4016
-#: admin/views.py:4017 admin/views.py:4189 admin/views.py:6120
+#: admin/controller.py:2090 admin/controller.py:2091 admin/views.py:4008
+#: admin/views.py:4009 admin/views.py:4181 admin/views.py:6112
 msgid "No company"
 msgstr "Keine Firma"
 
-#: admin/controller.py:2108 admin/views.py:4021 admin/views.py:4588
-#: admin/views.py:4615 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2108 admin/views.py:4013 admin/views.py:4580
+#: admin/views.py:4607 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/companies/companies_list.haml:66
 #: templates/admin/mobile_apps/company_app_details.haml:46
 #: templates/admin/participants/participants_list.haml:76
@@ -1698,8 +1700,8 @@ msgstr "Keine Firma"
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/controller.py:2110 admin/views.py:4023 admin/views.py:4590
-#: admin/views.py:4594 admin/views.py:4617 admin/views.py:4621
+#: admin/controller.py:2110 admin/views.py:4015 admin/views.py:4582
+#: admin/views.py:4586 admin/views.py:4609 admin/views.py:4613
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
@@ -1827,12 +1829,12 @@ msgstr ""
 msgid "Enter new email address"
 msgstr "Neue E-Mail-Adresse eingeben"
 
-#: admin/forms.py:143 admin/views.py:4759
+#: admin/forms.py:143 admin/views.py:4751
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "TA"
 
-#: admin/forms.py:144 admin/views.py:4760
+#: admin/forms.py:144 admin/views.py:4752
 msgid "OBSERVER"
 msgstr "BEOBACHTER"
 
@@ -1840,19 +1842,19 @@ msgstr "BEOBACHTER"
 msgid "MODERATOR"
 msgstr ""
 
-#: admin/forms.py:170 admin/views.py:4761
+#: admin/forms.py:170 admin/views.py:4753
 msgid "ADMIN"
 msgstr "ADMIN"
 
-#: admin/forms.py:171 admin/forms.py:184 admin/views.py:4764
+#: admin/forms.py:171 admin/forms.py:184 admin/views.py:4756
 msgid "COURSE OPS"
 msgstr "KURSBETRIEB"
 
-#: admin/forms.py:172 admin/forms.py:185 admin/views.py:4763
+#: admin/forms.py:172 admin/forms.py:185 admin/views.py:4755
 msgid "INTERNAL ADMIN"
 msgstr "INTERNER ADMIN"
 
-#: admin/forms.py:173 admin/forms.py:186 admin/views.py:4762
+#: admin/forms.py:173 admin/forms.py:186 admin/views.py:4754
 msgid "COMPANY ADMIN"
 msgstr "FIRMEN-ADMIN"
 
@@ -1881,8 +1883,8 @@ msgstr "Kursbeispiel"
 msgid "Name {}"
 msgstr "Name {}"
 
-#: admin/forms.py:256 admin/views.py:2154 admin/views.py:4527
-#: admin/views.py:4629 templates/admin/program/list.haml:25
+#: admin/forms.py:256 admin/views.py:2154 admin/views.py:4519
+#: admin/views.py:4621 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
 #: templates/header.haml:109
@@ -1988,7 +1990,7 @@ msgstr "Lektion"
 msgid "Module"
 msgstr "Modul"
 
-#: admin/models.py:606 admin/views.py:4527 admin/views.py:4629
+#: admin/models.py:606 admin/views.py:4519 admin/views.py:4621
 #: templates/admin/participants/participants_list.haml:38
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
@@ -2018,7 +2020,7 @@ msgstr "Gruppenarbeit"
 msgid "Not Started"
 msgstr "Nicht begonnen"
 
-#: admin/models.py:698 admin/views.py:2637
+#: admin/models.py:698 admin/views.py:2629
 #: templates/courses/content_page/courses_menu_list.haml:12
 #: templates_v2/courses/content_page/lesson_menu.haml:26
 #: templates_v2/courses/course_lessons.haml:72
@@ -2098,7 +2100,7 @@ msgstr ""
 msgid "Import File Processed"
 msgstr ""
 
-#: admin/tasks.py:1269 admin/tasks.py:1296
+#: admin/tasks.py:1249 admin/tasks.py:1273
 msgid "Problem Response Report"
 msgstr ""
 
@@ -2248,87 +2250,81 @@ msgstr "Erfolg"
 msgid "Programs"
 msgstr "Programme"
 
-#: admin/views.py:2197
-#, fuzzy
-#| msgid "Save Program"
-msgid "Update Program"
-msgstr "Programm speichern"
-
-#: admin/views.py:2197
+#: admin/views.py:2193 admin/views.py:2241
 msgid "Save Program"
 msgstr "Programm speichern"
 
-#: admin/views.py:2532 admin/views.py:2570 admin/views.py:2603
-#: admin/views.py:4359 admin/views.py:5366
+#: admin/views.py:2524 admin/views.py:2562 admin/views.py:2595
+#: admin/views.py:4351 admin/views.py:5358
 msgid "`data_deletion` flag is not enabled."
 msgstr ""
 
-#: admin/views.py:2585
+#: admin/views.py:2577
 msgid "The CSV file has to contain 'email' header."
 msgstr ""
 
-#: admin/views.py:2694 admin/views.py:6239
+#: admin/views.py:2686 admin/views.py:6231
 #: templates/admin/participants/activation_link_modal.haml:15
-#: templates_v2/layout.haml:257
+#: templates_v2/layout.haml:265
 msgid "First name"
 msgstr "Vorname"
 
-#: admin/views.py:2694 admin/views.py:6240
+#: admin/views.py:2686 admin/views.py:6232
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
-#: templates_v2/layout.haml:261
+#: templates_v2/layout.haml:269
 msgid "Last name"
 msgstr "Nachname"
 
-#: admin/views.py:2694
+#: admin/views.py:2686
 #: templates/admin/participants/activation_link_modal.haml:4
 #: templates/admin/participants/activation_link_modal.haml:21
 msgid "Activation Link"
 msgstr "Aktivierungs-Link"
 
-#: admin/views.py:2812
+#: admin/views.py:2804
 msgid "Report is TBD"
 msgstr "Bericht noch offen"
 
-#: admin/views.py:2834 templates/courses/content_page/courses_menu_list.haml:17
+#: admin/views.py:2826 templates/courses/content_page/courses_menu_list.haml:17
 #: templates_v2/courses/content_page/courses_menu_list.haml:12
 msgid "Coming Soon"
 msgstr "Demnächst verfügbar"
 
-#: admin/views.py:2836 templates/courses/content_page/courses_menu_list.haml:8
+#: admin/views.py:2828 templates/courses/content_page/courses_menu_list.haml:8
 msgid "Archived"
 msgstr "Archiviert"
 
-#: admin/views.py:2905
+#: admin/views.py:2897
 msgid "Successfully saved courses to {} program"
 msgstr "Erfolgreich Kurse zum {} Programm hinzugefügt"
 
-#: admin/views.py:2920 admin/views.py:3321 admin/views.py:3355
-#: admin/views.py:3414
+#: admin/views.py:2912 admin/views.py:3313 admin/views.py:3347
+#: admin/views.py:3406
 msgid "Invalid program_id specified: {}"
 msgstr "Ungültige program_id spezifiziert: {}"
 
-#: admin/views.py:2929
+#: admin/views.py:2921
 msgid "Invalid student_id specified: {}"
 msgstr "Ungültige student_id spezifiziert: {}"
 
-#: admin/views.py:2935
+#: admin/views.py:2927
 msgid "Not enough places available for {} program - {} left"
 msgstr "Nicht genug Plätze für {} Programm verfügbar - {} übrig"
 
-#: admin/views.py:2963
+#: admin/views.py:2955
 msgid "Successfully associated students to {} program"
 msgstr "Erfolgreich Teilnehmer mit {} Programm verbunden"
 
-#: admin/views.py:3003
+#: admin/views.py:2995
 msgid "{} already enrolled in {}"
 msgstr "{} bereits in {} angemeldet"
 
-#: admin/views.py:3010
+#: admin/views.py:3002
 msgid "Successfully associated students to courses"
 msgstr "Erfolgreich Teilnehmer zu Kursen hinzugefügt"
 
-#: admin/views.py:3012
+#: admin/views.py:3004
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
@@ -2336,7 +2332,7 @@ msgstr ""
 "Erfolgreich Teilnehmer zu Kursen hinzugefügt, mit {} Nachrichten:\n"
 "\t{}"
 
-#: admin/views.py:3130 admin/views.py:3137
+#: admin/views.py:3122 admin/views.py:3129
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
@@ -2345,12 +2341,12 @@ msgstr ""
 "Stellen Sie dabei sicher, dass es sich um ein unterstütztes Dateiformat "
 "handelt."
 
-#: admin/views.py:3581 admin/views.py:3648
+#: admin/views.py:3573 admin/views.py:3640
 msgid "No group projects available for this course"
 msgstr "Keine Gruppenprojekte für diesen Kurs verfügbar"
 
-#: admin/views.py:3659 admin/views.py:3660 admin/views.py:3901
-#: admin/views.py:3902 templates/admin/admin_header.haml:37
+#: admin/views.py:3651 admin/views.py:3652 admin/views.py:3893
+#: admin/views.py:3894 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
@@ -2360,75 +2356,75 @@ msgstr "Keine Gruppenprojekte für diesen Kurs verfügbar"
 msgid "Group Work"
 msgstr "Gruppenarbeit"
 
-#: admin/views.py:3746
+#: admin/views.py:3738
 msgid "Group wasn't created - please select project"
 msgstr "Gruppe wurde nicht erstellt - bitte Projekt wählen"
 
-#: admin/views.py:3757
+#: admin/views.py:3749
 msgid "Bad users {} for private project"
 msgstr "Ungültige Nutzer {} für privates Projekt"
 
-#: admin/views.py:3773
+#: admin/views.py:3765
 msgid "Group successfully created"
 msgstr "Gruppe erfolgreich erstellt"
 
-#: admin/views.py:3777
+#: admin/views.py:3769
 msgid "Group was not created"
 msgstr "Gruppe wurde nicht erstellt"
 
-#: admin/views.py:3823
+#: admin/views.py:3815
 msgid "Error creating project"
 msgstr "Fehler bei Projekterstellung"
 
-#: admin/views.py:3838
+#: admin/views.py:3830
 msgid "Project already exists"
 msgstr "Projekt existiert bereits"
 
-#: admin/views.py:3843
+#: admin/views.py:3835
 msgid "Project successfully created"
 msgstr "Projekt erfolgreich erstellt"
 
-#: admin/views.py:3877
+#: admin/views.py:3869
 msgid "Project deleted successfully."
 msgstr "Projekt erfolgreich gelöscht."
 
-#: admin/views.py:3952
+#: admin/views.py:3944
 msgid "Password Reset Email successfully sent."
 msgstr "E-Mail zum Zurücksetzen des Passworts erfolgreich gesendet."
 
-#: admin/views.py:3971
+#: admin/views.py:3963
 msgid "Activation email sent."
 msgstr "Aktivierungs-E-Mail gesendet."
 
-#: admin/views.py:4062 admin/views.py:4274
+#: admin/views.py:4054 admin/views.py:4266
 msgid "Company name can only contain alphanumeric characters"
 msgstr "Firmenname darf nur alphanumerische Zeichen beinhalten"
 
-#: admin/views.py:4074 admin/views.py:4079
+#: admin/views.py:4066 admin/views.py:4071
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr ""
 "Berechtigungsfehler: Sie haben keine Berechtigung, diese Rolle zu vergeben"
 
-#: admin/views.py:4090
+#: admin/views.py:4082
 msgid "User with that email already exists!"
 msgstr "Ein Nutzer mit dieser E-Mail-Adresse existiert bereits!"
 
-#: admin/views.py:4119 admin/views.py:4307
+#: admin/views.py:4111 admin/views.py:4299
 msgid "Couldn't create company!"
 msgstr "Firma konnte nicht angelegt werden."
 
-#: admin/views.py:4132
+#: admin/views.py:4124
 msgid "Couldn't add user to company!"
 msgstr "Nutzer konnte nicht der Firma hinzugefügt werden!"
 
-#: admin/views.py:4157 templates/admin/participants/participants_list.haml:408
+#: admin/views.py:4149 templates/admin/participants/participants_list.haml:408
 msgid "Successfully added new user!"
 msgstr "Neuer Nutzer erfolgreich hinzugefügt!"
 
-#: admin/views.py:4179 admin/views.py:4181 admin/views.py:4193
-#: admin/views.py:4199 admin/views.py:4205 admin/views.py:6113
-#: admin/views.py:6115 admin/views.py:6124 admin/views.py:6130
-#: admin/views.py:6136
+#: admin/views.py:4171 admin/views.py:4173 admin/views.py:4185
+#: admin/views.py:4191 admin/views.py:4197 admin/views.py:6105
+#: admin/views.py:6107 admin/views.py:6116 admin/views.py:6122
+#: admin/views.py:6128
 #: templates/admin/participants/participant_details.haml:297
 #: templates/admin/participants/participant_details.haml:305
 #: templates/admin/participants/participant_details.haml:313
@@ -2436,21 +2432,21 @@ msgstr "Neuer Nutzer erfolgreich hinzugefügt!"
 msgid "N/A"
 msgstr "Nicht zutreffend"
 
-#: admin/views.py:4294
+#: admin/views.py:4286
 msgid "User with that username or email already exists!"
 msgstr ""
 "Ein Nutzer mit diesem Nutzernamen oder dieser E-Mail-Adresse existiert "
 "bereits!"
 
-#: admin/views.py:4380
+#: admin/views.py:4372
 msgid "Can't find user in database"
 msgstr "Nutzer wurde in der Datenbank nicht gefunden"
 
-#: admin/views.py:4469
+#: admin/views.py:4461
 msgid "There is a problem with selected user role on new course!"
 msgstr "Es besteht ein Problem mit der ausgewählten Nutzerrolle im neuen Kurs!"
 
-#: admin/views.py:4527 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4519 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
 #: templates_v2/courses/course_cohort.haml:22
@@ -2459,132 +2455,132 @@ msgstr "Es besteht ein Problem mit der ausgewählten Nutzerrolle im neuen Kurs!"
 msgid "Progress"
 msgstr "Fortschritt"
 
-#: admin/views.py:4527 admin/views.py:4630
+#: admin/views.py:4519 admin/views.py:4622
 msgid "Status"
 msgstr "Status"
 
-#: admin/views.py:4629 templates/admin/client-admin/course_info.haml:79
+#: admin/views.py:4621 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:46
 #: templates/courses/course_progress.haml:66
 #: templates_v2/admin/courses/course_details.haml:92
 msgid "Completed"
 msgstr "Beendet"
 
-#: admin/views.py:4629 templates_v2/courses/course_progress_v2.haml:200
+#: admin/views.py:4621 templates_v2/courses/course_progress_v2.haml:200
 msgid "Grade"
 msgstr "Note"
 
-#: admin/views.py:4630
+#: admin/views.py:4622
 msgid "End Date"
 msgstr "Datum der Fertigstellung"
 
-#: admin/views.py:4787
+#: admin/views.py:4779
 msgid "Problem generating activity review assignments"
 msgstr "Problem bei der Generierung der Überprüfungsaufgaben"
 
-#: admin/views.py:4811
+#: admin/views.py:4803
 msgid "Project review assignments allocated"
 msgstr "Projektüberprüfungsaufgaben zugewiesen"
 
-#: admin/views.py:4819
+#: admin/views.py:4811
 msgid "Not enough groups to meet review criteria"
 msgstr "Nicht genug Gruppen, um die Überprüfungskriterien zu erfüllen"
 
-#: admin/views.py:5054
+#: admin/views.py:5046
 msgid "Successfully added new email template!"
 msgstr "Neue E-Mail-Vorlage wurde erfolgreich hinzugefügt!"
 
-#: admin/views.py:5058
+#: admin/views.py:5050
 msgid "Missing fields in email template!"
 msgstr "Fehlende Felder in der E-Mail-Vorlage!"
 
-#: admin/views.py:5069
+#: admin/views.py:5061
 msgid "Successfully got email template!"
 msgstr "Eingang der E-Mail-Vorlage!"
 
-#: admin/views.py:5073 admin/views.py:5087 admin/views.py:5112
+#: admin/views.py:5065 admin/views.py:5079 admin/views.py:5104
 msgid "Can't find email template key!"
 msgstr "E-Mail-Vorlagenschlüssel konnte nicht gefunden werden!"
 
-#: admin/views.py:5075 admin/views.py:5089 admin/views.py:5114
+#: admin/views.py:5067 admin/views.py:5081 admin/views.py:5106
 msgid "Missing email template key!"
 msgstr "Fehlender E-Mail-Vorlagenschlüssel!"
 
-#: admin/views.py:5085
+#: admin/views.py:5077
 msgid "Successfully deleted email template!"
 msgstr "Die E-Mail-Vorlage wurde erfolgreich gelöscht!"
 
-#: admin/views.py:5108
+#: admin/views.py:5100
 msgid "Successfully updated email template!"
 msgstr "Die E-Mail-Vorlage wurde erfolgreich aktualisiert!"
 
-#: admin/views.py:5245 admin/views.py:5899
+#: admin/views.py:5237 admin/views.py:5891
 msgid "No Company Display name!"
 msgstr "Firmenname wird nicht angezeigt!"
 
-#: admin/views.py:5464
+#: admin/views.py:5456
 msgid "App name only contains alphanumeric characters"
 msgstr "App-Name enthält nur alphanumerische Zeichen"
 
-#: admin/views.py:5582
+#: admin/views.py:5574
 msgid "Learner dashboard not found"
 msgstr "Learner Dashboard nicht gefunden"
 
-#: admin/views.py:5916
+#: admin/views.py:5908
 msgid "Company name successfully changed!"
 msgstr "Firmenname erfolgreich geändert!"
 
-#: admin/views.py:5961
+#: admin/views.py:5953
 msgid "Tag with this name already exist's!"
 msgstr "Ein Tag mit diesem Namen existiert bereits!"
 
-#: admin/views.py:5972
+#: admin/views.py:5964
 msgid "Tag created!"
 msgstr "Tag erstellt!"
 
-#: admin/views.py:5974
+#: admin/views.py:5966
 msgid "You need to select tag's name!"
 msgstr "Sie müssen den Namen des Tags auswählen!"
 
-#: admin/views.py:6026
+#: admin/views.py:6018
 msgid "Tag added to Course!"
 msgstr "Tag zum Kurs hinzugefügt!"
 
-#: admin/views.py:6028 admin/views.py:6051
+#: admin/views.py:6020 admin/views.py:6043
 msgid "You need to select tag!"
 msgstr "Sie müssen ein Tag auswählen!"
 
-#: admin/views.py:6049
+#: admin/views.py:6041
 msgid "Tag removed from Course!"
 msgstr "Tag vom Kurs entfernt!"
 
-#: admin/views.py:6241 templates/admin/course_run/view.haml:65
+#: admin/views.py:6233 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "Firmenname"
 
-#: admin/views.py:6242 templates/admin/course_run/view.haml:66
-#: templates_v2/accounts/public_registration.haml:64
+#: admin/views.py:6234 templates/admin/course_run/view.haml:66
+#: templates_v2/accounts/public_registration.haml:66
 msgid "Company email"
 msgstr "Firmen-E-Mail-Adresse"
 
-#: admin/views.py:6243 templates/admin/course_run/view.haml:67
-#: templates_v2/accounts/public_registration.haml:71
+#: admin/views.py:6235 templates/admin/course_run/view.haml:67
+#: templates_v2/accounts/public_registration.haml:73
 msgid "Current role"
 msgstr "Derzeitige Rolle"
 
-#: admin/views.py:6244 templates/admin/course_run/view.haml:68
+#: admin/views.py:6236 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "Neuer Nutzer"
 
-#: admin/views.py:6245
+#: admin/views.py:6237
 msgid "McK user"
 msgstr "McK-Nutzer"
 
-#: admin/views.py:6246 templates/admin/course_run/view.haml:70
+#: admin/views.py:6238 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "Angemeldet"
 
-#: admin/views.py:6247 templates/admin/course_run/view.haml:71
+#: admin/views.py:6239 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "Aktiv"
@@ -2687,15 +2683,15 @@ msgstr "{date_field}_{component_value}"
 msgid "Missing required field '{value}'"
 msgstr "Erforderliches Feld \"{value}\" fehlt"
 
-#: api_client/user_api.py:749
+#: api_client/user_api.py:740
 msgid "User account not activated"
 msgstr "Nutzerkonto nicht aktiviert"
 
-#: api_client/user_api.py:750 api_client/user_api.py:751
+#: api_client/user_api.py:741 api_client/user_api.py:742
 msgid "Username or password invalid"
 msgstr "Nutzername oder Passwort ungültig"
 
-#: api_client/user_api.py:754
+#: api_client/user_api.py:745
 msgid "Username or email already registered"
 msgstr "Nutzername oder E-Mail-Adresse bereits registriert"
 
@@ -2734,16 +2730,16 @@ msgstr "Vorlage"
 msgid "Asset"
 msgstr "Asset"
 
-#: courses/controller.py:1016
+#: courses/controller.py:1029
 msgid "Assessment"
 msgstr "Bewertung"
 
-#: courses/user_courses.py:80 courses/user_courses.py:86
+#: courses/user_courses.py:81 courses/user_courses.py:87
 #, python-brace-format
 msgid "Access denied to course '{course_id}' for user {user_id}"
 msgstr "Zugriff zu Kurs ''{course_id}'' für Nutzer ''{user_id}'' verweigert"
 
-#: courses/user_courses.py:133 courses/user_courses.py:139
+#: courses/user_courses.py:134 courses/user_courses.py:140
 #, python-brace-format
 msgid "Access denied to user {admin_user_id} for data belonging to {user_id}"
 msgstr ""
@@ -3388,7 +3384,7 @@ msgstr "Demoregistrierung | McKinsey Academy"
 #: templates/certificates/course_certificate_notification_email.haml:13
 #: templates/layout.haml:26 templates/privacy.haml:130
 #: templates/terms_of_service.haml:113
-#: templates_v2/accounts/public_registration.haml:8 templates_v2/layout.haml:75
+#: templates_v2/accounts/public_registration.haml:8 templates_v2/layout.haml:77
 #: templates_v2/privacy.haml:130 templates_v2/terms_of_service.haml:113
 msgid "McKinsey Academy"
 msgstr "McKinsey Academy"
@@ -3408,12 +3404,12 @@ msgid "We will send you an email shortly."
 msgstr "Wir werden Ihnen bald eine E-Mail schicken."
 
 #: templates/accounts/public_registration.haml:25
-#: templates_v2/accounts/public_registration.haml:30
+#: templates_v2/accounts/public_registration.haml:29
 msgid "Registration Error!"
 msgstr "Registrierungsfehler!"
 
 #: templates/accounts/public_registration.haml:27
-#: templates_v2/accounts/public_registration.haml:32
+#: templates_v2/accounts/public_registration.haml:31
 #, fuzzy
 #| msgid ""
 #| "Sorry, there seems to be a problem with registering your account, please "
@@ -3433,7 +3429,7 @@ msgstr ""
 
 #: templates/accounts/public_registration.haml:69
 #: templates_v2/accounts/activate.haml:51
-#: templates_v2/accounts/public_registration.haml:83
+#: templates_v2/accounts/public_registration.haml:85
 msgid "Register"
 msgstr "Registrieren"
 
@@ -4772,7 +4768,7 @@ msgstr "Hinzufügen "
 #: templates/admin/course_meta_content/item_list.haml:233
 #: templates/courses/content_page/course_tabs.haml:12
 #: templates_v2/courses/content_page/course_menu.haml:15
-#: templates_v2/courses/content_page/courses_menu_list.haml:28
+#: templates_v2/courses/content_page/courses_menu_list.haml:30
 msgid "Lessons"
 msgstr "Lektionen"
 
@@ -6045,26 +6041,6 @@ msgstr "Programmverlauf:"
 msgid "Number of Courses:"
 msgstr "Anzahl der Kurse:"
 
-#: templates/admin/program/create_or_update.haml:6
-msgid "Edit Program details"
-msgstr "Programmdetails bearbeiten"
-
-#: templates/admin/program/create_or_update.haml:8
-msgid "Edit Program details using this form"
-msgstr "Programmdetails mit diesem Formular bearbeiten"
-
-#: templates/admin/program/create_or_update.haml:12
-msgid "Create a New Program"
-msgstr "Ein neues Programm erstellen"
-
-#: templates/admin/program/create_or_update.haml:14
-msgid "Add a program"
-msgstr "Ein Programm hinzufügen"
-
-#: templates/admin/program/create_or_update.haml:16
-msgid "Add a program using this form"
-msgstr "Ein Programm mit diesem Formular hinzufügen"
-
 #: templates/admin/program/detail_header.haml:7
 #: templates/admin/program/detail_header.haml:10
 #: templates/admin/workgroup/list_layout.haml:9
@@ -6078,6 +6054,14 @@ msgstr "Übersicht"
 #: templates/admin/program/detail_header.haml:17
 msgid "Assign Courses to Program"
 msgstr "Dem Programm Kurse zuweisen"
+
+#: templates/admin/program/edit.haml:4
+msgid "Edit Program details"
+msgstr "Programmdetails bearbeiten"
+
+#: templates/admin/program/edit.haml:6
+msgid "Edit Program details using this form"
+msgstr "Programmdetails mit diesem Formular bearbeiten"
 
 #: templates/admin/program/list.haml:6
 msgid ""
@@ -6112,6 +6096,18 @@ msgstr "Teilnehmer CSV"
 #: templates_v2/courses/contact_ta.haml:55
 msgid "Submit"
 msgstr "Einreichen"
+
+#: templates/admin/program/new.haml:4
+msgid "Create a New Program"
+msgstr "Ein neues Programm erstellen"
+
+#: templates/admin/program/new.haml:6
+msgid "Add a program"
+msgstr "Ein Programm hinzufügen"
+
+#: templates/admin/program/new.haml:8
+msgid "Add a program using this form"
+msgstr "Ein Programm mit diesem Formular hinzufügen"
 
 #: templates/admin/unenroll_users_email_template.haml:9
 #, python-format
@@ -9034,7 +9030,7 @@ msgstr ""
 "ein, um auf Ihre Lernerfahrung der McKinsey Academy zuzugreifen."
 
 #: templates/layout.haml:22 templates/layout.haml:23
-#: templates_v2/layout.haml:20 templates_v2/layout.haml:21
+#: templates_v2/layout.haml:22 templates_v2/layout.haml:23
 msgid ""
 "McKinsey Academy helps organizations thrive by accelerating their talent "
 "advantage"
@@ -9042,7 +9038,7 @@ msgstr ""
 "Die McKinsey Academy verhilft Organisationen durch das Vorantreiben der "
 "Nutzung ihrer Talente zum Erfolg."
 
-#: templates/layout.haml:238 templates_v2/layout.haml:313
+#: templates/layout.haml:238 templates_v2/layout.haml:321
 msgid "Notice"
 msgstr "Hinweis"
 
@@ -12823,6 +12819,7 @@ msgstr ""
 "{html_span_end}"
 
 #: templates_v2/accounts/activate.haml:40
+#: templates_v2/accounts/activate.haml:94
 #, fuzzy
 #| msgid ""
 #| "Password {html_span_start} Must be at least 8 characters and include "
@@ -12840,36 +12837,64 @@ msgstr ""
 msgid ""
 "\n"
 "                I agree to the\n"
-"                %%a{:href => \"\"} Terms of Service\n"
+"                %%a{:href => \"/terms/\", :target => \"_blank\"} Terms of "
+"Service\n"
 "                and\n"
-"                %%a{:href => \"\"} Privacy Policy\n"
+"                %%a{:href => \"/privacy/\", :target => \"_blank\"} Privacy "
+"Policy\n"
 "                "
 msgstr ""
 
 #: templates_v2/accounts/activate.haml:55
-#: templates_v2/accounts/public_registration.haml:87
+#: templates_v2/accounts/public_registration.haml:89
 #, fuzzy
 #| msgid "Need Help?"
 msgid "Need help?"
 msgstr "Brauchen Sie Hilfe?"
 
 #: templates_v2/accounts/activate.haml:57
-#: templates_v2/accounts/public_registration.haml:89
+#: templates_v2/accounts/public_registration.haml:91
 msgid "Read FAQs"
 msgstr ""
 
 #: templates_v2/accounts/activate.haml:59
-#: templates_v2/accounts/public_registration.haml:91
+#: templates_v2/accounts/public_registration.haml:93
 #: templates_v2/home/landing.haml:48
 msgid "Email Support"
 msgstr ""
 
+#: templates_v2/accounts/activate.haml:71
+#: templates_v2/accounts/activate.haml:87
+#: templates_v2/accounts/public_registration.haml:104
+#: templates_v2/accounts/public_registration.haml:120
+#: templates_v2/accounts/public_registration.haml:137
+#: templates_v2/accounts/public_registration.haml:147
+#: templates_v2/accounts/public_registration.haml:164
+#, fuzzy
+#| msgid "Valid e-mail is required"
+msgid "This field is required."
+msgstr "Gültige E-Mail-Adresse erforderlich"
+
+#: templates_v2/accounts/activate.haml:77
+#, fuzzy
+#| msgid "Please enter a valid Role."
+msgid "Please enter a valid username."
+msgstr "Bitte geben Sie eine gültige Rolle an."
+
+#: templates_v2/accounts/activate.haml:103
+#, fuzzy
+#| msgid "You must accept terms of service in order to continue"
+msgid "You must accept terms of service in order to continue."
+msgstr "Sie müssen den Nutzungsbedingungen zustimmen, um fortzufahren"
+
 #: templates_v2/accounts/public_registration.haml:23
-#: templates_v2/courses/content_page/courses_menu_list.haml:55
+#: templates_v2/accounts/public_registration.haml:33
+#: templates_v2/accounts/public_registration.haml:43
+#: templates_v2/courses/content_page/courses_menu_list.haml:77
 msgid "OK"
 msgstr ""
 
-#: templates_v2/accounts/public_registration.haml:68
+#: templates_v2/accounts/public_registration.haml:70
 #, fuzzy
 #| msgid ""
 #| "{html_div_start}Note: personal email addresses will not be "
@@ -12879,7 +12904,7 @@ msgstr ""
 "{html_div_start}Hinweis: Persönliche E-Mail-Adressen werden nicht "
 "bearbeitet{html_div_end}"
 
-#: templates_v2/accounts/public_registration.haml:72
+#: templates_v2/accounts/public_registration.haml:74
 #, fuzzy
 #| msgid ""
 #| "{html_div_start}(please choose one of the following options) "
@@ -13027,11 +13052,11 @@ msgstr "Meine Kurse"
 msgid "est. time"
 msgstr ""
 
-#: templates_v2/courses/content_page/courses_menu_list.haml:36
+#: templates_v2/courses/content_page/courses_menu_list.haml:38
 msgid "You aren't enrolled in any courses."
 msgstr "Sie sind bei keinen Kursen angemeldet."
 
-#: templates_v2/courses/content_page/courses_menu_list.haml:53
+#: templates_v2/courses/content_page/courses_menu_list.haml:75
 #, fuzzy
 #| msgid ""
 #| "Your course begins in {days} days. Before the course begins, you can "
@@ -13820,59 +13845,59 @@ msgstr "Passwort"
 msgid "FAQs"
 msgstr ""
 
-#: templates_v2/layout.haml:332
+#: templates_v2/layout.haml:340
 msgid "Skip"
 msgstr ""
 
-#: templates_v2/layout.haml:345
+#: templates_v2/layout.haml:353
 msgid "Your learning experience has a fresh look!"
 msgstr ""
 
-#: templates_v2/layout.haml:347
+#: templates_v2/layout.haml:355
 msgid ""
 "The new design makes it easier for you to navigate, understand your progress "
 "and stay focused on your learning."
 msgstr ""
 
-#: templates_v2/layout.haml:355
+#: templates_v2/layout.haml:363
 #, fuzzy
 #| msgid "Navigation"
 msgid "Navigating is simple"
 msgstr "Navigation"
 
-#: templates_v2/layout.haml:357
+#: templates_v2/layout.haml:365
 msgid ""
 "The updated landing page makes it easier for you to access your programs or "
 "courses."
 msgstr ""
 
-#: templates_v2/layout.haml:365
+#: templates_v2/layout.haml:373
 #, fuzzy
 #| msgid "Show fullscreen"
 msgid "New full-screen mode"
 msgstr "Vollbildmodus"
 
-#: templates_v2/layout.haml:367
+#: templates_v2/layout.haml:375
 msgid ""
 "In your course, you can now zoom into the content by choosing full screen "
 "mode."
 msgstr ""
 
-#: templates_v2/layout.haml:375
+#: templates_v2/layout.haml:383
 msgid "Access from any device"
 msgstr ""
 
-#: templates_v2/layout.haml:377
+#: templates_v2/layout.haml:385
 msgid ""
 "The designs have been optimized for all devices so you can learn from "
 "anywhere."
 msgstr ""
 
-#: templates_v2/layout.haml:385
+#: templates_v2/layout.haml:393
 msgid "No interruption to your learning"
 msgstr ""
 
-#: templates_v2/layout.haml:387
+#: templates_v2/layout.haml:395
 msgid ""
 "Pick up where you left off! Your progress and the content in the courses is "
 "not impacted by this change."
@@ -13982,6 +14007,11 @@ msgstr "Vorname: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nachname: {}"
+
+#, fuzzy
+#~| msgid "Save Program"
+#~ msgid "Update Program"
+#~ msgstr "Programm speichern"
 
 #~ msgid "Password doesn't match our records. Try again."
 #~ msgstr ""

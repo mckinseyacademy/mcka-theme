@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-03-18 11:19+0000\n"
+"POT-Creation-Date: 2019-04-23 18:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -46,7 +46,7 @@ msgstr ""
 #: static/js/views/admin/company_learner_dashboard_list.js:14
 #: static/js/views/admin/course_details_bulk_actions.js:277
 #: static/js/views/admin/participant_details_edit_info.js:371
-#: static/js/views/admin/participantsinfo.js:116
+#: static/js/views/admin/participantsinfo.js:115
 msgid "Course"
 msgstr "コース"
 
@@ -74,10 +74,10 @@ msgid "Show Errors"
 msgstr "エラーを表示する"
 
 #: static/js/admin_upload_students.js:73
-#: static/js/common/mass_participants_delete.js:103
-#: static/js/common/mass_participants_enroll.js:117
-#: static/js/common/mass_participants_enroll.js:225
-#: static/js/common/mass_participants_enroll.js:362
+#: static/js/common/mass_participants_enroll.js:118
+#: static/js/common/mass_participants_enroll.js:239
+#: static/js/common/mass_participants_enroll.js:360
+#: static/js/common/mass_participants_enroll.js:497
 #: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
 #: static_v2/js/image_editor.js:77
 msgid "Please select file first."
@@ -110,8 +110,8 @@ msgid "Progress: %(value)s%"
 msgstr "進度: %(value)s%"
 
 #: static/js/common/bbGridExtend.js:70
-msgid "Keyword Search"
-msgstr "キーワード検索"
+msgid "Search by Keyword"
+msgstr ""
 
 #: static/js/common/common_js.js:171
 msgid "NoName"
@@ -161,49 +161,61 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: static/js/common/mass_participants_delete.js:131
+#: static/js/common/mass_participants_delete.js:133
 msgid "An error occurred submitting the request."
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:134
+#: static/js/common/mass_participants_enroll.js:255
 msgid "email"
 msgstr "Eメール"
 
-#: static/js/common/mass_participants_enroll.js:134
+#: static/js/common/mass_participants_enroll.js:255
 msgid "course id"
 msgstr "コースID"
 
-#: static/js/common/mass_participants_enroll.js:134
+#: static/js/common/mass_participants_enroll.js:255
 msgid "status"
 msgstr "ステータス"
 
-#: static/js/common/mass_participants_enroll.js:148
-#: static/js/common/mass_participants_enroll.js:161
+#: static/js/common/mass_participants_enroll.js:270
+#, fuzzy
+#| msgid "Participant"
+msgid "participant_id"
+msgstr "参加者"
+
+#: static/js/common/mass_participants_enroll.js:270
+#, fuzzy
+#| msgid "course id"
+msgid "course_id"
+msgstr "コースID"
+
+#: static/js/common/mass_participants_enroll.js:283
+#: static/js/common/mass_participants_enroll.js:296
 msgid "Learner email"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:148
+#: static/js/common/mass_participants_enroll.js:283
 msgid "Business Function"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:148
+#: static/js/common/mass_participants_enroll.js:283
 msgid "Business Unit"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:148
+#: static/js/common/mass_participants_enroll.js:283
 #, fuzzy
 #| msgid "Notification"
 msgid "location"
 msgstr "通知"
 
-#: static/js/common/mass_participants_enroll.js:161
+#: static/js/common/mass_participants_enroll.js:296
 msgid "Manager email"
 msgstr ""
 
-#: static/js/common/mass_participants_enroll.js:199
-#: static/js/common/mass_participants_enroll.js:273
-#: static/js/common/mass_participants_enroll.js:335
-#: static/js/common/mass_participants_enroll.js:410
+#: static/js/common/mass_participants_enroll.js:334
+#: static/js/common/mass_participants_enroll.js:408
+#: static/js/common/mass_participants_enroll.js:470
+#: static/js/common/mass_participants_enroll.js:545
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
@@ -211,8 +223,8 @@ msgstr ""
 "この.csvファイルは%(limit)s行: %(lines)s以上です。ファイルを分割してくださ"
 "い。"
 
-#: static/js/common/mass_participants_enroll.js:295
-#: static/js/common/mass_participants_enroll.js:432
+#: static/js/common/mass_participants_enroll.js:430
+#: static/js/common/mass_participants_enroll.js:567
 msgid "Report of bulk update will be sent to your email."
 msgstr ""
 
@@ -322,16 +334,28 @@ msgid "Participants:"
 msgstr "参加者:"
 
 #: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:23
+#: static/js/views/admin/participantsinfo.js:24
 msgid "Email"
 msgstr "Eメール"
 
-#: static/js/router.js:429
+#: static/js/router.js:430
 msgid "Please select at least one course"
 msgstr "コースを最低1個選択してください"
 
-#: static/js/session_timeout_timer.js:19
+#: static/js/session_timeout_timer.js:39
 msgid "You were logged out due to inactivity. Please log back in to continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:2
+msgid "It looks like your browser settings has pop-ups disabled."
+msgstr ""
+
+#: static/js/static_translation_strings.js:3
+msgid "The content takes place in a new window."
+msgstr ""
+
+#: static/js/static_translation_strings.js:4
+msgid "Launch pop-up to continue"
 msgstr ""
 
 #: static/js/views/admin/cohorts.js:30
@@ -401,7 +425,7 @@ msgstr[1] ""
 
 #: static/js/views/admin/companies_list.js:12
 #: static/js/views/admin/course_details.js:29
-#: static/js/views/admin/participantsinfo.js:22
+#: static/js/views/admin/participantsinfo.js:23
 msgid "Company"
 msgstr "会社"
 
@@ -421,7 +445,7 @@ msgstr "コース数:"
 #: static/js/views/admin/company_details.js:189
 #: static/js/views/admin/company_learner_dashboard_list.js:139
 #: static/js/views/admin/participant_details_edit_info.js:487
-#: static/js/views/admin/participantsinfo.js:366
+#: static/js/views/admin/participantsinfo.js:365
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "会社名には英数字しか使用できません。"
 
@@ -429,7 +453,7 @@ msgstr "会社名には英数字しか使用できません。"
 #: static/js/views/admin/company_details.js:184
 #: static/js/views/admin/company_learner_dashboard_list.js:135
 #: static/js/views/admin/participant_details_edit_info.js:481
-#: static/js/views/admin/participantsinfo.js:360
+#: static/js/views/admin/participantsinfo.js:359
 msgid "This company name cannot have more than 30 characters!"
 msgstr "会社名は30文字以下にしてください。"
 
@@ -529,7 +553,7 @@ msgid "No App Display Name!"
 msgstr "アプリ表示名がありません。"
 
 #: static/js/views/admin/course_details.js:6
-#: static/js/views/admin/participantsinfo.js:15
+#: static/js/views/admin/participantsinfo.js:16
 msgid "Name"
 msgstr "名前"
 
@@ -539,12 +563,12 @@ msgstr "名前"
 #: static/js/views/admin/participant_details_active_courses_view.js:111
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:375
-#: static/js/views/admin/participantsinfo.js:125
+#: static/js/views/admin/participantsinfo.js:124
 msgid "Status"
 msgstr "ステータス"
 
 #: static/js/views/admin/course_details.js:31
-#: static/js/views/admin/participantsinfo.js:41
+#: static/js/views/admin/participantsinfo.js:42
 msgid "Activated"
 msgstr "有効化済み"
 
@@ -662,7 +686,7 @@ msgstr "選択したすべての参加者をこのコースから登録解除し
 #: static/js/views/admin/course_details_bulk_actions.js:133
 #: static/js/views/admin/course_details_bulk_actions.js:199
 #: static/js/views/admin/course_details_bulk_actions.js:301
-#: static/js/views/admin/course_details_bulk_actions.js:715
+#: static/js/views/admin/course_details_bulk_actions.js:771
 msgid ""
 "You need to select at least one participant to be able to apply bulk actions."
 msgstr "一括操作をするには、最低1名の参加者を選択してください。"
@@ -684,21 +708,21 @@ msgstr "すべての選択した参加者を次のステータスに変更する
 #: static/js/views/admin/course_details_bulk_actions.js:184
 #: static/js/views/admin/course_details_bulk_actions.js:283
 #: static/js/views/admin/participant_details_edit_info.js:377
-#: static/js/views/admin/participantsinfo.js:129
+#: static/js/views/admin/participantsinfo.js:128
 msgid "Participant"
 msgstr "参加者"
 
 #: static/js/views/admin/course_details_bulk_actions.js:185
 #: static/js/views/admin/course_details_bulk_actions.js:284
 #: static/js/views/admin/participant_details_edit_info.js:378
-#: static/js/views/admin/participantsinfo.js:131
+#: static/js/views/admin/participantsinfo.js:130
 msgid "Observer"
 msgstr "監視者"
 
 #: static/js/views/admin/course_details_bulk_actions.js:186
 #: static/js/views/admin/course_details_bulk_actions.js:285
 #: static/js/views/admin/participant_details_edit_info.js:379
-#: static/js/views/admin/participantsinfo.js:130
+#: static/js/views/admin/participantsinfo.js:129
 msgid "TA"
 msgstr "TA"
 
@@ -770,95 +794,96 @@ msgid "Export Report"
 msgstr "レポートをエクスポートする"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
+#: static/js/views/admin/course_details_bulk_actions.js:568
 msgid "Error initiating the report generation. Please retry later."
 msgstr "レポート作成開始エラー。後でやり直してください。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:546
+#: static/js/views/admin/course_details_bulk_actions.js:598
 msgid "Download Notifications CSV"
 msgstr "通知CSVをダウンロードする"
 
-#: static/js/views/admin/course_details_bulk_actions.js:631
+#: static/js/views/admin/course_details_bulk_actions.js:687
 msgid "Group Work: %(label)s"
 msgstr "グループワーク: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:659
+#: static/js/views/admin/course_details_bulk_actions.js:715
 msgid "Assessment: %(label)s"
 msgstr "評価: %(label)s"
 
-#: static/js/views/admin/course_details_bulk_actions.js:685
+#: static/js/views/admin/course_details_bulk_actions.js:741
 msgid "Task failed to execute. Please retry later."
 msgstr "タスクの実行に失敗しました。後でやり直してください。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:702
+#: static/js/views/admin/course_details_bulk_actions.js:758
 msgid "Successfully Enrolled in 1 Course"
 msgstr "1コースに無事登録が完了しました。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:704
+#: static/js/views/admin/course_details_bulk_actions.js:760
 msgid "What would you like to do now?"
 msgstr "次は何をしますか?"
 
-#: static/js/views/admin/course_details_bulk_actions.js:705
+#: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Go to %(course_id)s Course"
 msgstr "%(course_id)sコースを見る"
 
-#: static/js/views/admin/course_details_bulk_actions.js:707
+#: static/js/views/admin/course_details_bulk_actions.js:763
 msgid "Send Course Intro Email"
 msgstr "コース紹介をEメールで送信する"
 
-#: static/js/views/admin/course_details_bulk_actions.js:709
+#: static/js/views/admin/course_details_bulk_actions.js:765
 msgid "Enroll this list in another course"
 msgstr "他のコースにこの一覧を登録する"
 
-#: static/js/views/admin/course_details_bulk_actions.js:721
+#: static/js/views/admin/course_details_bulk_actions.js:777
 msgid "I'm Done"
 msgstr "終わりました"
 
-#: static/js/views/admin/course_details_bulk_actions.js:741
+#: static/js/views/admin/course_details_bulk_actions.js:797
 msgid "Successfully deleted template!"
 msgstr "テンプレートの削除を完了しました。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:748
+#: static/js/views/admin/course_details_bulk_actions.js:804
 msgid "Successfully added new template!"
 msgstr "新しいテンプレートの追加を完了しました。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:761
+#: static/js/views/admin/course_details_bulk_actions.js:817
 msgid "Successfully updated template!"
 msgstr "テンプレートの更新を完了しました。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:766
+#: static/js/views/admin/course_details_bulk_actions.js:822
 msgid "Email Preview Success!"
 msgstr "Eメールプレビューを完了しました。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:766
+#: static/js/views/admin/course_details_bulk_actions.js:822
 msgid "Successfully sent preview email!"
 msgstr "プレビューのEメールの送信を完了しました。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:769
+#: static/js/views/admin/course_details_bulk_actions.js:825
 msgid "Email Success!"
 msgstr "Eメール完了。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:769
+#: static/js/views/admin/course_details_bulk_actions.js:825
 msgid "Successfully sent email!"
 msgstr "メッセージの送信を完了しました。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:811
+#: static/js/views/admin/course_details_bulk_actions.js:867
 msgid "Preview Email!"
 msgstr "Eメールをプレビューする。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:811
+#: static/js/views/admin/course_details_bulk_actions.js:867
 msgid "Please enter preview email!"
 msgstr "プレビューのEメールを入力してください。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:831
+#: static/js/views/admin/course_details_bulk_actions.js:887
 msgid "Please enter new template name!"
 msgstr "新しいテンプレート名を入力してください。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:846
+#: static/js/views/admin/course_details_bulk_actions.js:902
 msgid "Please enter updated template name or leave the old one!"
 msgstr ""
 "更新したテンプレート名を入力するか、古いテンプレート名を残してください。"
 
-#: static/js/views/admin/course_details_bulk_actions.js:859
+#: static/js/views/admin/course_details_bulk_actions.js:915
 msgid "You are about to delete email template. Are you sure?"
 msgstr ""
 "あなたはEメールテンプレートを削除しようとしています。よろしいでしょうか?"
@@ -1045,7 +1070,7 @@ msgid "User successfully enrolled in course"
 msgstr "ユーザーのコースへの登録が完了しました"
 
 #: static/js/views/admin/participant_details_edit_info.js:534
-#: static/js/views/admin/participantsinfo.js:96
+#: static/js/views/admin/participantsinfo.js:95
 msgid "Admin Company"
 msgstr "管理会社"
 
@@ -1054,22 +1079,33 @@ msgid "Try selecting your company from the type-ahead results."
 msgstr "先行入力結果からあなたの会社を選択してみてください。"
 
 #: static/js/views/admin/participant_details_edit_info.js:544
-#: static/js/views/admin/participantsinfo.js:105
+#: static/js/views/admin/participantsinfo.js:104
 msgid "Admin Permissions"
 msgstr "管理者の許可"
 
 #: static/js/views/admin/participant_details_edit_info.js:547
-#: static/js/views/admin/participantsinfo.js:108
+#: static/js/views/admin/participantsinfo.js:107
 msgid "Company Admin"
 msgstr "会社の管理者"
 
-#: static/js/views/admin/participantsinfo.js:25
+#: static/js/views/admin/participantsinfo.js:26
 msgid "Date Added"
 msgstr "データが追加されました"
 
-#: static/js/views/admin/participantsinfo.js:35
+#: static/js/views/admin/participantsinfo.js:36
 msgid "Enrolled In"
 msgstr "登録済み"
+
+#: static_v2/js/custom.js:110
+msgid "Hide Password"
+msgstr ""
+
+#: static_v2/js/custom.js:115
+msgid "Show Password"
+msgstr ""
+
+#~ msgid "Keyword Search"
+#~ msgstr "キーワード検索"
 
 #~ msgid "Errors:"
 #~ msgstr "エラー:"
