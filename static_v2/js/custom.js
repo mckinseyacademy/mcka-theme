@@ -102,16 +102,16 @@ $(document).ready(function() {
     });
 
 
-    $('#show-hide').click(function () {
+    $('#show-hide, .show-hide').click(function () {
         var text = $(this).text();
         if (text == 'visibility_off') {
             $(this).text('visibility');
-            $('#password, #password_setPassword').attr('type', 'text');
+            $('#password, #password_setPassword, .pswd1, .pswd2').attr('type', 'text');
             $(this).attr("data-content", gettext("Hide Password"));
         }
         else {
             $(this).text('visibility_off');
-            $('#password, #password_setPassword').attr('type', 'password');
+            $('#password, #password_setPassword, .pswd1, .pswd2').attr('type', 'password');
             $(this).attr("data-content", gettext("Show Password"));
         }
     });

@@ -30,7 +30,7 @@ form {
       top: 13px;
       content: '';
     }
-    #show-hide {
+    #show-hide,.show-hide {
       visibility: visible;
       position: absolute;
       top: 14px;
@@ -62,7 +62,7 @@ form {
       transform: scale(1);
     }
 
-    #show-hide {
+    #show-hide,.show-hide {
       visibility: hidden;
     }
   }

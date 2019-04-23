@@ -692,7 +692,7 @@ form {
     .ico-state {
       @include right(10px);
     }
-    #show-hide {
+    #show-hide, .show-hide {
       @include right(auto);
       @include left(255px);
     }
