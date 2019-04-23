@@ -780,6 +780,8 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
         kwargs = {'root_block': chapter_id}
     else:
         kwargs = {}
+
+    course_completions = {}
     completions = course_api.get_course_completions(course.id, request.user.username, **kwargs)
     if completions and tiles:
         for tile in tiles:
@@ -791,6 +793,17 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
                     continue
                 if tile.tile_type == '7' and not link['block_id'] in tile.link:
                     continue
+                if tile.tile_type == '4' and chapter_id is not None:
+                    if course.id not in course_completions:
+                        completion = course_api.get_course_completions(
+                            course.id,
+                            request.user.username,
+                            extra_fields=''
+                        )
+                        course_completions[course.id] = completion
+                    update_progress(tile, request.user, course, course_completions[course.id], link)
+                    continue
+
                 update_progress(
                     tile,
                     request.user,
