@@ -90,7 +90,7 @@
               %li.nav-item
                 %a.nav-link{:href => "/faq/", :target => "_blank"} {% trans "Read FAQs" %}
               %li.nav-item
-                %a.nav-link{:href => "#"} {% trans "Email Support" %}
+                %a.nav-link{:href => "mailto:support@mckinseyacademy.com"} {% trans "Email Support" %}
 
 - block js_snippets
   :javascript
@@ -166,11 +166,6 @@
       }
     });
 
-    $('form, select, input').on('keyup change', function(e) {
-      $('.registration_submit').attr('disabled',false);
-      $(this).parent().removeClass('error');
-      $(this).siblings('.error').remove();
-    });
     var $current_role_other = $("#id_current_role_other");
     $(window).on( "load", function() {
       toggle_field();
@@ -188,6 +183,7 @@
           $current_role_other.prop('disabled', true);
           $current_role_other.parent().removeClass('error');
         }
+        $current_role_other.parents('.form-group').children('.error').remove();
     }
     function show_popup_on_registration(status_text){
       if (status_text==="Registered")
@@ -221,6 +217,6 @@
 
     $('form, select, input').on('keyup change', function(e) {
       $('.registration_submit').attr('disabled',false);
-      $(this).parent().removeClass('error');
+      $(this).parents('.form-group').removeClass('error');
       $(this).siblings('.error').remove();
     });

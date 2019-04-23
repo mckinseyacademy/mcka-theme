@@ -71,7 +71,7 @@
           color: $bg-white-red;
         }
         small:not(.error){
-          visibility: hidden;
+          display: none;
         }
         .form-label{
           color: $bg-white-red;
