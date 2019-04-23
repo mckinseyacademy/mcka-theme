@@ -44,17 +44,17 @@
                 %span.checkmark
                 {% blocktrans %}
                 I agree to the
-                %a{:href => ""} Terms of Service
+                %a{:href => "/terms/", :target => "_blank"} Terms of Service
                 and
-                %a{:href => ""} Privacy Policy
+                %a{:href => "/privacy/", :target => "_blank"} Privacy Policy
                 {% endblocktrans %}
-          %button.btn.btn-primary.btn-lg.mt-3{:type => "submit"} {% trans "Register" %}
+          %button.btn.btn-primary.btn-lg.mt-3.registration_submit{:type => "submit", :disabled => "disabled"} {% trans "Register" %}
           .form-footer
             %ul.nav
               %li.nav-item
                 {% trans "Need help?" %}
               %li.nav-item
-                %a.nav-link{:href => "#"} {% trans "Read FAQs" %}
+                %a.nav-link{:href => "/faq/", :target => "_blank"} {% trans "Read FAQs" %}
               %li.nav-item
                 %a.nav-link{:href => "#"} {% trans "Email Support" %}
 
@@ -63,21 +63,43 @@
   :javascript
     $('#reg').submit(function(event) {
       let sel = $('[name="username"]');
-      if(sel.val().length === 0){
+      let value = sel.val();
+
+      if(value === undefined || value.length === 0){
         sel.parent().addClass('error');
+        sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
         event.preventDefault();
+        return;
+      }
+      if(! /^([a-zA-Z0-9]*)$/.test(value)){
+        sel.parent().addClass('error');
+        sel.after('<small class="error form-text">{% trans "Please enter a valid username." %}</small>');
+        event.preventDefault();
+        return;
       }
 
       sel = $('[name="password"]');
-      if(sel.val().length === 0){
+      value = sel.val();
+      if(value === undefined || value.length === 0){
         sel.parent().addClass('error');
+        sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
         event.preventDefault();
+        return;
+      }
+
+      if(! /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)){
+        sel.parent().addClass('error');
+        sel.after('<small class="error form-text">{% trans "Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters." %}</small>');
+        event.preventDefault();
+        return;
       }
 
       sel = $('[name="accept_terms"]');
-      if(sel.val() !== "on"){
+      if(!sel.is(":checked")){
         sel.parent().addClass('error');
+        sel.siblings(":last").after('<small class="error form-text">{% trans "You must accept terms of service in order to continue." %}</small>');
         event.preventDefault();
+        return;
       }
     });
 
