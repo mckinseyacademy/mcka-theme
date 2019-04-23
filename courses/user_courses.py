@@ -277,7 +277,9 @@ def standard_data(request):
         "active_course": course,
         "learner_dashboards": learner_dashboards,
         "show_my_courses": show_my_courses,
-        "show_new_ui_tour": show_new_ui_tour
+        "show_new_ui_tour": show_new_ui_tour,
+        "zoomed_in_lesson_navigators": "/lessons/" not in request.META.get('HTTP_REFERER', '')
+
     }
 
     return data

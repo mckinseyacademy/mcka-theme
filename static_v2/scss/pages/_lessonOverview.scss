@@ -3,6 +3,10 @@ body{
   &.moduleArrow{
     .lessonOverview{
       .arrowPin {
+        transition: all ease 0.7s;
+        pointer-events: none;
+        cursor: none;
+        background: $gray !important;
         &.left {
           left: -82px;
           opacity: 1;
