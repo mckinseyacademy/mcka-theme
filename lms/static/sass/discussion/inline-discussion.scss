@@ -1562,7 +1562,7 @@ body.new-theme {
                     }
                 }
                 .add_post_btn_container {
-                    right: 167px;
+                    right: 140px;
                     top: -60px;
                     .new-post-btn {
                         color: transparent !important;
@@ -1606,6 +1606,8 @@ body.new-theme {
                 }
                 .inline-discussion {
                     top:20px;
+                    margin-bottom: 30px;
+                    
                     .inline-thread {
                         padding-top: 10px;
 
@@ -1692,6 +1694,7 @@ body.new-theme {
                             .field-input-label {
                                 padding: 0px !important;
                                 font-size: 0.875rem;
+
                             }
                         }
 
@@ -1980,6 +1983,12 @@ body.new-theme {
 
     // Button
 
+    .discussion-show
+    {
+        left:0;
+        right:auto!important;
+    }
+
     [data-block-type="discussion-forum"] .discussion-module .forum-new-post-form button.submit
     {
         float:right !important;
@@ -2009,6 +2018,8 @@ body.new-theme {
         .forum-nav-thread-wrapper-2
         {
             min-width: auto;
+            vertical-align: top;
+            align-self: flex-start;
         }
     }
 
@@ -2025,11 +2036,27 @@ body.new-theme {
     .discussion-module .add_post_btn_container
     {
         right:auto !important;
-        left:140px !important;
+        left:205px !important;
+        top:-96px !important;
     }
     [data-block-type="discussion-forum"] .discussion-module .forum-new-post-form .post-field .post-type-label .field-input-label
     {
-        margin-right: 30px;
+        // margin-right: 30px;
+    }
+
+
+    // Mobile View
+    @media (max-width: 767px) {
+        [data-block-type="discussion-forum"] .discussion-module .add_post_btn_container
+        {
+            right: 205px !important;
+            top: -60px !important;
+            left: auto !important;
+        }
+        [data-block-type="discussion-forum"] .discussion-module .inline-discussion .forum-new-post-form .post-field .field-input-label
+        {
+            margin-right:30px;
+        }
     }
 
 }
