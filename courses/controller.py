@@ -798,7 +798,7 @@ def progress_update_handler(request, course, chapter_id=None, page_id=None):
                         completion = course_api.get_course_completions(
                             course.id,
                             request.user.username,
-                            extra_fields=''
+                            extra_fields=None
                         )
                         course_completions[course.id] = completion
                     update_progress(tile, request.user, course, course_completions[course.id], link)
