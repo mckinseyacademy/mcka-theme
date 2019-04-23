@@ -165,7 +165,7 @@ def _find_group_project_v2_blocks_in_chapter(chapter):
     )
 
 
-def _clean_course_content(course, course_id):
+def clean_course_content(course, course_id):
     def is_discussion_chapter(chapter):
         return chapter.name.startswith(settings.DISCUSSION_IDENTIFIER)
 
@@ -227,7 +227,7 @@ def _load_course(course_id, depth=MINIMAL_COURSE_DEPTH, course_api_impl=course_a
     '''
 
     course = course_api_impl.get_course(course_id, depth, user=user)
-    return _clean_course_content(course, course_id)
+    return clean_course_content(course, course_id)
 
 
 def load_course(

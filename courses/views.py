@@ -15,7 +15,7 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.http import require_POST
 
 from accounts.middleware import thread_local
-from admin.controller import load_course, _clean_course_content
+from admin.controller import load_course
 from admin.models import (
     WorkGroup, LearnerDashboard, LearnerDashboardTile, LearnerDashboardDiscovery,
     TileBookmark, LearnerDashboardTileProgress, LearnerDashboardBranding
@@ -23,11 +23,11 @@ from admin.models import (
 from admin.views import AccessChecker
 from api_client import course_api, user_api, workgroup_api
 from api_client.api_error import ApiError
-from api_client.course_api import course_detail_processing, get_course_completions, get_courses_tree
+from api_client.course_api import get_course_completions
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.platform_api import update_course_mobile_available_status
 from api_client.workgroup_models import Submission
-from api_data_manager.course_data import CourseDataManager
+from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
 from api_data_manager.user_data import UserDataManager
 from lib.authorization import permission_group_required
 from lib.utils import DottableDict
@@ -1526,54 +1526,33 @@ def get_user_complete_gradebook_json(request, course_id):
 
 @login_required
 def courses(request):
-    def _is_staff_tool(chapter):
-        if chapter.category == 'pb-instructor-tool':
-            return True
-
-        return any([_is_staff_tool(c) for c in chapter.children])
-
     """
     renders user courses menu on click from frontend
     """
     raw_courses = get_course_menu_list(request)
     raw_cids = [rc.id for rc in raw_courses]
 
-    # Get course ids with no total_lessons cached and only request tree for those courses.
-    cids = [cid for cid in raw_cids if CourseDataManager(cid).total_lessons is None]
-
-    if cids:
-        courses_tree = get_courses_tree(cids)
-
-        for course_tree in courses_tree:
-            for raw_course in raw_courses:
-                if course_tree.id != raw_course.display_id:
-                    continue
-
-                course_tree = course_detail_processing(course_tree)
-                course_tree = _clean_course_content(course_tree, course_tree.id)
-
-                staff_tools = len([c for c in course_tree.chapters if _is_staff_tool(c)])
-
-                course = CourseDataManager(raw_course.display_id)
-                course.total_lessons = len(course_tree.chapters) - staff_tools
-                course.total_staff_tools = staff_tools
-
     user = request.user
     is_admin = any([user.is_mcka_admin, user.is_mcka_subadmin])
     courses_roles = request.user.get_roles_on_courses(raw_cids)
+    courses_lesson_count = CourseDataManager.get_lessons_count(raw_courses)
 
     for raw_course in raw_courses:
         roles = courses_roles.get(raw_course.id, [])
         roles = [role.role for role in roles]
         is_staff = 'staff' in roles or 'instructor' in roles
         course = CourseDataManager(raw_course.display_id)
+
+        lesson_count = courses_lesson_count.get(course.course_id, {}).get(COURSE_PROPERTIES.TOTAL_LESSONS)
+        staff_tools_count = courses_lesson_count.get(course.course_id, {}).get(COURSE_PROPERTIES.TOTAL_STAFF_TOOLS)
+
         if is_staff and is_admin:
-            if course.total_lessons is not None and course.total_staff_tools is not None:
-                raw_course.total_lessons = course.total_lessons + course.total_staff_tools
+            if lesson_count is not None and staff_tools_count is not None:
+                raw_course.total_lessons = lesson_count + staff_tools_count
             else:
                 raw_course.total_lessons = '-'
         else:
-            raw_course.total_lessons = course.total_lessons if course.total_lessons is not None else '-'
+            raw_course.total_lessons = lesson_count if lesson_count is not None else '-'
 
     completions = get_course_completions(username=request.user.username, page_size=0, extra_fields=None)
     for raw_course in raw_courses:
