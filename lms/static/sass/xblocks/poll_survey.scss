@@ -420,16 +420,31 @@ body.new-theme {
             .poll-result
             {
                 position: relative;
+                margin-bottom: 10px !important;
+                
+                .result-image
+                {
+                    label
+                    {
+                        margin-bottom: 0!important;
+                    }
+                }
+
                 .percentage-gauge-background
                 {                    
                     left: 28px;
                     top: 0;
                     z-index: -1;
-                    width:calc(100% - 78px) !important
+                    width:calc(100% - 78px) !important;
+                    height: 100% !important;
                 }
                 .percentage-gauge-container
                 {
-                    display: none;
+                    position: absolute;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    width:calc(78% - 78px) !important;
+                    
                 }
 
                 .poll-percent-container
@@ -458,22 +473,11 @@ body.new-theme {
                 {                    
                     right: 28px;
                     left:auto;
-                    top: 0;
-                    z-index: -1;
-                    width:calc(100% - 78px) !important
                 }
-                .percentage-gauge-container
-                {
-                    display: none;
-                }
-
                 .poll-percent-container
                 {
-                    position: absolute;
                     right: calc(100% - 45px);
                     left:auto;
-                    top: 50%;
-                    transform: translateY(-50%);
                 }                    
             }
         }
