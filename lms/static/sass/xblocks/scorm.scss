@@ -30,7 +30,7 @@
 
             }
 
-            .scorm_launch {
+            .scorm_launch, .scorm_completion {
                 button {
                     @extend %button;
                 }
