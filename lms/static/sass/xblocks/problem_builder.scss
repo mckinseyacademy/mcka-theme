@@ -378,6 +378,13 @@ body.new-theme {
                         margin: 0;
                     }
                 }
+
+                @media screen and (max-width: 767px) {
+                    width:100% !important;
+                    left:0;
+                    right:0;
+                    box-sizing: border-box;
+                }
             }
         }
     }
