@@ -496,6 +496,21 @@ $('.editProfileField').on('show.bs.modal', function (e) {
         self.css('background-color', self.children('.description').css('background-color'));
         self.children('.description').css({'opacity': 0, 'visibility': 'hidden',  'display': 'none'});
       }
+      if(self.hasClass('show-hide')){
+        var text = $(self).text();
+        if (text == 'visibility_off') {
+            $(self).text('visibility');
+            $(self).siblings("input").attr('type', 'text');
+            $(self).attr("data-content", gettext("Hide Password"));
+        }
+        else {
+            $(self).text('visibility_off');
+            $(self).siblings("input").attr('type', 'password');
+            $(self).attr("data-content", gettext("Show Password"));
+        }
+        event.stopPropagation();
+        event.preventDefault();
+      }
       clearTimeout(delay);
     } else {
       event.stopPropagation();

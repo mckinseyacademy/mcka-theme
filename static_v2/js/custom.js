@@ -117,8 +117,12 @@ $(document).ready(function () {
         $('#password').addClass('active');
     });
 
-
+    var isMobile = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
     $('#show-hide, .show-hide').click(function () {
+        if (isMobile){
+            return
+        }
+
         var text = $(this).text();
         if (text == 'visibility_off') {
             $(this).text('visibility');
@@ -617,7 +621,7 @@ smoothNavLinks();
 
 $(window).on("load", function () {
 
-    setTimeout(function () { 
+    setTimeout(function () {
         $(".login").trigger('click');
         let value = $("input[type='text'], input[type='password']").val();
         if (value && value.length > 0) {
