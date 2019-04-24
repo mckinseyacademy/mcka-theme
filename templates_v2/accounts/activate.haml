@@ -63,53 +63,74 @@
 
 - block js_snippets
   :javascript
-    $('#reg').submit(function(event) {
+    function checkFormForErrors(){
+      let error = false;
       let sel = $('[name="username"]');
-      sel.siblings('.error').remove();
       let value = sel.val();
+      let alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
 
       if(value === undefined || value.length === 0){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
-        event.preventDefault();
-        return;
-      }
-      if(! /^([a-zA-Z0-9]*)$/.test(value)){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "Please enter a valid username." %}</small>');
-        event.preventDefault();
-        return;
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
+        }
+        error = true;
+      } else if(! /^([a-zA-Z0-9\-_]*)$/.test(value)){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "Please enter a valid username." %}</small>');
+        }
+        error = true;
       }
 
       sel = $('[name="password"]');
-      sel.siblings('.error').remove();
       value = sel.val();
+      alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
       if(value === undefined || value.length === 0){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
-        event.preventDefault();
-        return;
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
+        }
+        error = true;
+      } else if(! /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters." %}</small>');
+        }
+        error = true;
       }
 
-      if(! /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters." %}</small>');
-        event.preventDefault();
-        return;
-      }
 
       sel = $('[name="accept_terms"]');
-      sel.siblings('.error').remove();
+      alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
       if(!sel.is(":checked")){
-        sel.parents('.form-group').addClass('error');
-        sel.siblings(":last").after('<small class="error form-text">{% trans "You must accept terms of service in order to continue." %}</small>');
-        event.preventDefault();
-        return;
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parents('.form-group').addClass('error');
+          sel.siblings(":last").after('<small class="error form-text">{% trans "You must accept terms of service in order to continue." %}</small>');
+
+        }
+        error = true;
+      }
+      return error;
+    }
+    $('#reg').submit(function(event) {
+      if (checkFormForErrors()){
+        event.preventDefault()
       }
     });
-
-    $('select, input').on('change', function(e) {
-      $('.registration_submit').attr('disabled',false);
-      $(this).parent().removeClass('error');
+   
+    $('form, select, input').on('keyup change', function(e) {
+      $(this).parents('.form-group').attr('changed', true);
+      $(this).parents('.form-group').removeClass('error');
       $(this).siblings('.error').remove();
+      if (checkFormForErrors()){
+        $('.registration_submit').attr('disabled', true);
+      } else {
+        $('.registration_submit').attr('disabled', false);
+      }
     });

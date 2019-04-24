@@ -94,75 +94,104 @@
 
 - block js_snippets
   :javascript
-    $('#reg').submit(function(event) {
+    function checkFormForErrors(){
+      let error = false;
       let sel = $('[name="first_name"]');
       let value = sel.val();
-      sel.siblings('.error').remove();
+      let alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
 
       if(value === undefined || value.length === 0){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
-        event.preventDefault();
-        return;
-      }
-      if(! /^([a-zA-Z\s]*)$/.test(value)){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "Special characters or numbers are not valid." %}</small>');
-        event.preventDefault();
-        return;
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
+        }
+        error = true;
+      } else if(! /^([a-zA-Z\u00C0-\u1EF3\s]*)$/.test(value)){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "Special characters or numbers are not valid." %}</small>');
+        }
+        error = true;
       }
 
       sel = $('[name="last_name"]');
       value = sel.val();
-      sel.siblings('.error').remove();
-      if(value === undefined || value.length === 0){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
-        event.preventDefault();
-        return;
-      }
+      alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
 
-      if(! /^([a-zA-Z\s]*)$/.test(value)){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "Special characters or numbers are not valid." %}</small>');
-        event.preventDefault();
-        return;
+      if(value === undefined || value.length === 0){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
+        }
+        error = true;
+      } else if(! /^([a-zA-Z\u00C0-\u1EF3\s]*)$/.test(value)){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "Special characters or numbers are not valid." %}</small>');
+        }
+        error = true;
       }
 
       sel = $('[name="company_name"]');
+      alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
       value = sel.val();
-      sel.siblings('.error').remove();
       if(value === undefined || value.length === 0){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
-        event.preventDefault();
-        return;
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
+        }
+        error = true;
+      } else if(! /^([a-zA-Z\s1-9]*)$/.test(value)){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "This company name cannot contain non-alphanumeric characters!" %}</small>');
+        }
+        error = true;
       }
 
       sel = $('[name="company_email"]');
+      alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
       value = sel.val();
-      sel.siblings('.error').remove();
       if(value === undefined || value.length === 0){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
-        event.preventDefault();
-        return;
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
+        }
+        error = true;
+      } else if(! /^[\w-\.]+@([\w-]+\.)+[\w-]+$/.test(value)){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "Please enter a valid company email address." %}</small>');
+        }
+        error = true;
       }
 
-      if(! /^[\w-\.]+@([\w-]+\.)+[\w-]*$/.test(value)){
-        sel.parent().addClass('error');
-        sel.after('<small class="error form-text">{% trans "Please enter a valid company email address." %}</small>');
-        event.preventDefault();
-        return;
-      }
       sel = $('[name="current_role_other"]');
-      sel.siblings('.error').remove();
       value = sel.val();
+      alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
       if(! $('#id_current_role input').is(':checked') ||
       ((value === undefined || value.length === 0) && !sel.attr('disabled'))){
-        sel.parent().addClass('error');
-        sel.siblings(":last").after('<small class="error form-text">{% trans "This field is required." %}</small>');
-        event.preventDefault();
+        if (alreadyChecked){
+          sel.parent().addClass('error');
+          sel.siblings('.error').remove();
+          sel.siblings(":last").after('<small class="error form-text">{% trans "This field is required." %}</small>');
+        }
+        error = true;
+      }
+
+      return error;
+    }
+    $('#reg').submit(function(event) {
+      if (checkFormForErrors()){
+        event.preventDefault()
       }
     });
 
@@ -216,7 +245,12 @@
     }
 
     $('form, select, input').on('keyup change', function(e) {
-      $('.registration_submit').attr('disabled',false);
+      $(this).parents('.form-group').attr('changed', true);
       $(this).parents('.form-group').removeClass('error');
       $(this).siblings('.error').remove();
+      if (checkFormForErrors()){
+        $('.registration_submit').attr('disabled', true);
+      } else {
+        $('.registration_submit').attr('disabled', false);
+      }
     });
