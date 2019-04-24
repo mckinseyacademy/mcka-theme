@@ -47,6 +47,11 @@ $(function () {
     setTimeout(function(){
       $(".new-theme input[type=radio]:disabled").parent().addClass('disabled');
     },3000);
+
+    //discussion inline- big heading
+    if($(this).find('.discussion-module-header').length > 0) {
+      inlineDiscussionLongHeading();
+    }
   });
 
   // assessment block choice
@@ -114,3 +119,21 @@ function toggleSurveyRadios() {
 
   });
 }
+
+function inlineDiscussionLongHeading() {
+  var moduleWidth = $('.discussion-module-header').width();
+  $('.discussion-module-header').each(function(){
+    $(this).children('.discussion-module-title').css({'display': 'inline'}); // to get actual width
+    //if width is more than 65 % move it downwards
+    if($(this).children('.discussion-module-title').eq(0).width() / moduleWidth  * 100 > 65){
+      $(this).parent('.discussion-module').addClass('long-discussion-heading');
+    }
+    // else // We will enable for testing, its not required for production.
+    //   $(this).parent('.discussion-module').removeClass('long-discussion-heading');
+    $(this).children('.discussion-module-title').css({'display': ''}); // rest width
+  });
+}
+// We will enable for testing, its not required for production.
+// $( window ).resize(function() {
+//   inlineDiscussionLongHeading();
+// });
