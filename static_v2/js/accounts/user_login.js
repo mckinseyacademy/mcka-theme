@@ -200,4 +200,12 @@ $(function () {
         }
     }
     ajaxify_overlay_form('#reset-password', 'form');
+    $('#reset-password').on('focusin', 'form #id_email', function() {
+        $(this).parent('.form-group').addClass('focused');
+    });
+    $('#reset-password').on('focusout', 'form #id_email', function() {
+        if($(this).val() == "") {
+            $(this).parent('.form-group').removeClass('focused');
+        }
+    });
 });

@@ -17,7 +17,11 @@ function ajaxify_overlay_form(overlaySelector, formSelector, callback) {
         window.location.href = data.redirect;
       }
       else {
-        form.parent().html(data);
+        if($('.new-theme').length && overlaySelector == '#reset-password') {
+          form.html($(data).find('form').html());
+        } else {
+          form.parent().html(data);
+        }
         if (callback !== undefined) {
           callback();
         }
