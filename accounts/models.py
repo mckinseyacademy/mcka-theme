@@ -30,6 +30,8 @@ class RemoteUser(AbstractUser):
         if session_key is not None:
             self.session_key = session_key
         self.fullname = u"{} {}".format(user_response.first_name, user_response.last_name)
+        self.first_name = user_response.first_name
+        self.last_name = user_response.last_name
         self.email = user_response.email
         self.username = user_response.username
         self.id = user_response.id

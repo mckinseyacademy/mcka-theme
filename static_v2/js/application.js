@@ -412,7 +412,16 @@ $('.editProfileField').on('submit', 'form', function(e) {
         }
         else
         {
-          $('.nameArea span').text(form.find('input[name=first_name]').val() + " " + form.find('input[name=last_name]').val());
+          let fullName = $('.nameArea span');
+          let fName = form.find('input[name=first_name]').val();
+          let lName = form.find('input[name=last_name]').val();
+
+          fullName.text(fName + " " + lName);
+          fullName.attr('firstname', fName);
+          fullName.attr('lastname', lName);
+
+          let initials = fName[0] + lName[0];
+          $('.userNameInitials').text(initials.toUpperCase())
         }
         form.find('input[type=text]').val('');
 
@@ -434,12 +443,12 @@ $('.editProfileField').on('show.bs.modal', function (e) {
     }
   } else {
 
-    var fullName = $('.nameArea span').text().split(" ");
+    let fullName = $('.nameArea span');
     if(fullName.length)
     {
       $(this).find('.form-group').addClass('focused');
-      form.find('input[name=first_name]').val(fullName[0]);
-      form.find('input[name=last_name]').val(fullName[1]);
+      form.find('input[name=first_name]').val(fullName.attr('firstname'));
+      form.find('input[name=last_name]').val(fullName.attr('lastname'));
     }
   }
 

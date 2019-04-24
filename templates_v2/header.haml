@@ -28,7 +28,7 @@
                   - if user.has_image
                     %img{:alt => "", :src => "{{user.image_url_medium}}", :width => "160"}/
                   - elif user.name_initials
-                    %span {{user.name_initials|upper}}
+                    %span.userNameInitials {{user.name_initials|upper}}
                   - else
                     %img{:alt => "", :src => "{{user.image_url_full}}"}/
 
@@ -50,7 +50,7 @@
                           {% trans "edit photo" %}
                     .titles-area
                       .nameArea
-                        %span {{user.fullname}}
+                        %span{:firstname => "{{user.first_name}}", :lastname => "{{user.last_name}}"} {{user.fullname}}
                         %a.edit-link.ome.dome-c{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
                           {% trans "edit" %}
                       .roleArea
