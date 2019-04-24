@@ -1318,7 +1318,7 @@ def demo_registration(request, course_run_name):
     except ObjectDoesNotExist:
         course_run = None
 
-    registration_status = _("Initial")
+    registration_status = "Initial"
 
     if course_run:
         if request.method == 'POST':
@@ -1346,18 +1346,18 @@ def demo_registration(request, course_run_name):
 
                 if (course_run.total_participants >= course_run.max_participants) or not course_run.is_open:
                     _process_course_run_closed(registration_request, course_run)
-                    registration_status = _("Course Closed")
+                    registration_status = "Course Closed"
 
                 # if existing user, send user object
-                if registration_status == _("Initial"):
+                if registration_status == "Initial":
                     try:
                         if not registration_request.new_user:
                             process_registration_request(request, registration_request, course_run, users[0])
                         else:
                             process_registration_request(request, registration_request, course_run)
-                        registration_status = _("Registered")
+                        registration_status = "Registered"
                     except ValueError:
-                        registration_status = _("Error")
+                        registration_status = "Error"
         else:
             form = PublicRegistrationForm(course_run_name=course_run_name)
 
