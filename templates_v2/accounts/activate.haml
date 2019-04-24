@@ -123,9 +123,8 @@
         event.preventDefault()
       }
     });
-   
+
     $('form, select, input').on('keyup change', function(e) {
-      $(this).parents('.form-group').attr('changed', true);
       $(this).parents('.form-group').removeClass('error');
       $(this).siblings('.error').remove();
       if (checkFormForErrors()){
@@ -133,4 +132,5 @@
       } else {
         $('.registration_submit').attr('disabled', false);
       }
+      $(this).parents('.form-group').attr('changed', true);
     });
