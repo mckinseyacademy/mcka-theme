@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-23 18:33+0000\n"
+"POT-Creation-Date: 2019-04-24 09:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -351,7 +351,7 @@ msgstr "Participantes:"
 msgid "Email"
 msgstr "E-mail"
 
-#: static/js/router.js:430
+#: static/js/router.js:429
 msgid "Please select at least one course"
 msgstr "Selecione, no mínimo, um curso"
 
@@ -362,14 +362,15 @@ msgstr ""
 #: static/js/static_translation_strings.js:2
 msgid "It looks like your browser settings has pop-ups disabled."
 msgstr ""
+"Aparentemente as configurações do seu navegador tem pop-ups desativados."
 
 #: static/js/static_translation_strings.js:3
 msgid "The content takes place in a new window."
-msgstr ""
+msgstr "O conteúdo aparecer em uma nova janela."
 
 #: static/js/static_translation_strings.js:4
 msgid "Launch pop-up to continue"
-msgstr ""
+msgstr "Lançar pop-up para continuar"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."

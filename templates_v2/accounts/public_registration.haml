@@ -45,7 +45,7 @@
   .container.self-registration.activation
     .row.justify-content-center
       .col-lg-7.col-md-12.form.border-top-main
-        %h4 Register for the access to the course
+        %h4 {% trans "Register for the access to the course" %}
         %h5.mb-3= course_run.self_registration_page_heading
         %p= course_run.self_registration_description_text
         %form#reg{:action => "/registration/#{course_run_name}/", method: "POST"}
