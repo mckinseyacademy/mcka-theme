@@ -39,9 +39,19 @@ $(function () {
   });
 
   // Add selected class to selected poll results when appended to DOM
-  $(document).on('DOMNodeInserted', '.poll-results-wrapper, .forum-new-post-form, .edit-post-form', function(){
+  $(document).on('DOMNodeInserted', '.poll-results-wrapper, .lessonOverview, .forum-new-post-form, .edit-post-form', function(){
     $(".new-theme .poll-results input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
     $(".new-theme .poll-results input[type=radio]:disabled, .new-theme input[type=radio]:disabled").parent().addClass('disabled');
+
+    //fall back for private results where results are fetched after 1-2 seconds
+    setTimeout(function(){
+      $(".new-theme input[type=radio]:disabled").parent().addClass('disabled');
+    },3000);
+
+    //discussion inline- big heading
+    if($(this).find('.discussion-module-header').length > 0) {
+      inlineDiscussionLongHeading();
+    }
   });
 
   // assessment block choice
@@ -109,3 +119,21 @@ function toggleSurveyRadios() {
 
   });
 }
+
+function inlineDiscussionLongHeading() {
+  var moduleWidth = $('.discussion-module-header').width();
+  $('.discussion-module-header').each(function(){
+    $(this).children('.discussion-module-title').css({'display': 'inline'}); // to get actual width
+    //if width is more than 65 % move it downwards
+    if($(this).children('.discussion-module-title').eq(0).width() / moduleWidth  * 100 > 65){
+      $(this).parent('.discussion-module').addClass('long-discussion-heading');
+    }
+    // else // We will enable for testing, its not required for production.
+    //   $(this).parent('.discussion-module').removeClass('long-discussion-heading');
+    $(this).children('.discussion-module-title').css({'display': ''}); // rest width
+  });
+}
+// We will enable for testing, its not required for production.
+// $( window ).resize(function() {
+//   inlineDiscussionLongHeading();
+// });
