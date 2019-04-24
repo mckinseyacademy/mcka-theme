@@ -160,7 +160,7 @@ class CourseDataManager(DataManager):
 
         cached_lesson_counts = cache.get_many(course_cache_keys_map.keys())
 
-        # transform to {course_id: [no_of_lessons, no_of_staff_lesssons]}
+        # transform to {course_id: {total_lessons: count, total_staff_tools: count}}
         for cache_key, value in cached_lesson_counts.items():
             course_id = course_cache_keys_map.get(cache_key)
 
@@ -200,6 +200,6 @@ class CourseDataManager(DataManager):
                 }
 
             if cache_data_to_set:
-                cache.set_many(cache_data_to_set)
+                cache.set_many(cache_data_to_set, timeout=CourseDataManager.cache_expire_time)
 
         return lesson_counts
