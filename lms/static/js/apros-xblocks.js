@@ -39,9 +39,14 @@ $(function () {
   });
 
   // Add selected class to selected poll results when appended to DOM
-  $(document).on('DOMNodeInserted', '.poll-results-wrapper, .forum-new-post-form, .edit-post-form', function(){
+  $(document).on('DOMNodeInserted', '.poll-results-wrapper, .lessonOverview, .forum-new-post-form, .edit-post-form', function(){
     $(".new-theme .poll-results input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
     $(".new-theme .poll-results input[type=radio]:disabled, .new-theme input[type=radio]:disabled").parent().addClass('disabled');
+
+    //fall back for private results where results are fetched after 1-2 seconds
+    setTimeout(function(){
+      $(".new-theme input[type=radio]:disabled").parent().addClass('disabled');
+    },3000);
   });
 
   // assessment block choice
