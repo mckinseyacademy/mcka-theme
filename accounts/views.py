@@ -325,11 +325,6 @@ def fill_email_and_redirect(request, redirect_url):
     return HttpResponseRedirect(redirect_url_with_email)
 
 
-def login(request):
-    ''' handles requests for login form and their submission '''
-    return redirect('home')
-
-
 def login_get_view(request):
     error = None
     data = {}
@@ -369,7 +364,6 @@ def login_get_view(request):
     data["contact_subject"] = quote(_("Trouble logging in").encode('utf8'))
 
     response = render(request, 'home/landing.haml', data)
-
     _append_login_mode_cookie(response, login_mode)
 
     # if loading the login page

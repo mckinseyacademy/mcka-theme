@@ -207,7 +207,7 @@
 
   %body.new-theme{
     id: "{% if '/admin' in request.path %}admin-body{% endif %}",
-    class: "site-wrapper {% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %} {% if request.path == '/' or request.path == '/home' %}login{% endif %} {% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %} {% block body_class %}{% if is_full_screen %}zoomIn{% endif %}{% endblock %}",
+    class: "site-wrapper {% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %} {% if login_mode %}login{% endif %} {% if program %}with-program {% endif %} {% if request.is_IE8 %}ie8{% endif %} {% block body_class %}{% if is_full_screen %}zoomIn{% endif %}{% endblock %}",
     style: "{% if client_customization %}{%if client_customization.hex_page_background %}background-color:#{client_customization.hex_page_background};{% endif %}{%if client_customization.client_background %}background-image:url(#{client_customization.client_background});{% endif %}{%if client_customization.client_background_css%}#{client_customization.client_background_css}{% endif %}{% endif %}"
   }
     - block help_context
