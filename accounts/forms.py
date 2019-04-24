@@ -558,9 +558,11 @@ class SetNewPasswordForm(forms.Form):
         'password_validation': _("Password doesn't match creation criteria."),
     }
     new_password1 = forms.CharField(label=_("New password"),
-                                    widget=forms.PasswordInput(attrs={'class': "form-control form-input pswd1"}))
+                                    widget=forms.PasswordInput(attrs={'class': "form-control form-input pswd1",
+                                                                      'autocomplete': "off"}))
     new_password2 = forms.CharField(label=_("New password confirmation"),
-                                    widget=forms.PasswordInput(attrs={'class': "form-control form-input pswd2"}))
+                                    widget=forms.PasswordInput(attrs={'class': "form-control form-input pswd2",
+                                                                      'autocomplete': "off"}))
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
