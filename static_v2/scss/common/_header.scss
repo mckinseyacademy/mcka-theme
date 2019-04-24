@@ -36,7 +36,7 @@ header {
     height: 70px;
     width: 80px;
     line-height: 70px;
-    color: var(--secondary);
+    color: $black;
 
     .dropdown {
       display: inline-block;
@@ -52,6 +52,13 @@ header {
           outline: none;
         }
       }
+      .dropdown-item {
+        &:active,
+        &:focus {
+          background-color: transparent !important;
+          color: $black;
+        }
+      }
     }
 
     i {
@@ -62,13 +69,10 @@ header {
 
   &.appHeader {
     margin: 0 0 30px;
-    border-bottom-color: #ccc;
+    border-bottom-color: $mid-gray;
 
     .dropdown-menu {
-      top: 44px !important;
-      @include media-breakpoint-down(sm) {
-        top: 34px !important
-      }
+      top: 55px !important;
     }
     > a {
       display: block;

@@ -15,6 +15,14 @@ input:not([type='checkbox']) {
   }
 }
 
+input:not([type='checkbox']),
+input:not([type='radio']),
+input:not([type='file']) {
+  &::-ms-clear {
+    display: none;
+  }
+}
+
 form {
 
   .form-group {
@@ -33,7 +41,9 @@ form {
     #show-hide,.show-hide {
       visibility: visible;
       position: absolute;
+      color: $lighter-gray;
       top: 14px;
+      cursor: pointer;
     }
     small {
       font-size: 90%;

@@ -4,10 +4,6 @@
     background: #f0f0f0 url("../image/login/McKA-login-bg.png") no-repeat 50% 50% ;
     background-size: cover;
 
-    a {
-      color: #000;
-    }
-
     main {
       padding: 15px 0 20px;
       min-height: calc(100vh - 160px);
@@ -88,6 +84,7 @@
       display: none;
       font-weight: 700;
       position: relative;
+      text-decoration: none !important;
       i {
         vertical-align: middle;
         transition: all ease 0.3s;
@@ -95,6 +92,7 @@
       @media screen and (max-width: 767px) {
         display: inline-block;
         text-align: center;
+        color: $black !important;
       }
     }
     .quick-links {
@@ -122,6 +120,9 @@
         color: $black;
         text-decoration: underline;
         @include font-size(14);
+        @include media-breakpoint-between(xs, sm) {
+          color: $white;
+        }
       }
 
       @media screen and (max-width: 767px) {
@@ -141,7 +142,7 @@
             bottom: 0;
             width: 100%;
             z-index: 9;
-            background: rgba(0, 0, 0, 0.6%);
+            background: rgba($white, 0.6%);
           }
           .helpLink {
             z-index: 999;
@@ -178,18 +179,6 @@
     }
     form {
       .form-group {
-        margin-bottom: 5px;
-        //input:not([type='checkbox']) {
-        //  height: 50px;
-        //  font-size: 0.9rem;
-        //  border-radius: 0;
-        //  border: 1px solid $gray;
-        //  box-shadow: none;
-        //  &:disabled {
-        //    border: 0;
-        //    opacity: 0.9;
-        //  }
-        //}
         small {
           font-size: 90%;
         }
@@ -206,7 +195,12 @@
             color: $lighter-gray;
           }
         }
-
+        &.error {
+          label,
+          small {
+            @extend .text-danger;
+          }
+        }
       }
       &.black {
         input:not([type='checkbox']) {
@@ -244,10 +238,14 @@
       margin: 0 auto;
     }
     footer {
-      background: #e6e6e6;
+      background: $gray-border;
       margin: 0;
-      ul li a.nav-link:before {
-        background: #000;
+      
+      ul li a.nav-link {
+        color: $black;
+        &:before {
+          background-color: $black;
+        }
       }
     }
     &::after {
@@ -262,6 +260,15 @@
       background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.4) 60%, rgba(255, 255, 255, 0) 100%);
       filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#00ffffff', GradientType=0);
       z-index: -1;
+    }
+    .popover.bs-popover-bottom {
+      margin-top: 10px !important;
+    }
+    #user_lock_out_notification {
+      p {
+        line-height: 21px;
+        @include font-size(14);
+      }
     }
   }
 }
@@ -283,11 +290,11 @@
       a {
         text-decoration: none;
         color: var(--primary);
-        &:hover {
-          color: #000;
-        }
         &.selected {
-          color: #000;
+          color: $black;
+        }
+        &:active {
+          background-color: transparent;
         }
       }
     }

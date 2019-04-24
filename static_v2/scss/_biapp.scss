@@ -590,6 +590,9 @@ body {
   .modal-header {
     .close {
       @include right(25px);
+      @include media-breakpoint-between(xs, sm) {
+        @include right(15px);
+      }
     }
   }
 }
@@ -739,6 +742,14 @@ form {
         @include float(left);
       }
     }
+    form.white {
+      .form-group {
+        .ico-state,
+        #show-hide {
+          @include left(265px);
+        }
+      }
+    }
   }
 }
 
@@ -791,12 +802,12 @@ body.rtl {
 
   form {
     .form-label {
-      transform: translate(-15px, 15px);
+      transform: translate(-15px, 15px) !important;
     }
 
     .focused {
       .form-label {
-        transform: translate(0, -18px);
+        transform: translate(0, -18px) !important;
       }
     }
   }

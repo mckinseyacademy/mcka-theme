@@ -114,7 +114,8 @@ a.btn {
 
   /*============= Disable Button =====================*/
 
-  &:disabled {
+  &:disabled,
+  &.disabled {
     background: $gray;
     opacity: 1;
     border-color: $gray;

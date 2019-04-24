@@ -16,7 +16,7 @@
                 %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
             - else
               %a.navbar-brand{:href => "/"}
-                %img{:src => "{% static 'image/McKA-logo-black.svg' %}", :width => "160"}
+                %img{:src => "{% static 'image/McKA-logo-black.png' %}", :width => "160"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.client_logo}}", :width => "160"}
@@ -132,7 +132,7 @@
                 .dropdown
                   %button#dropdownMenuButton.dropdown-toggle.border-0{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
                     {{ LANGUAGE_CODE }}
-                  .dropdown-menu{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
+                  .dropdown-menu.language-dropdown{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
                     - for language_code, language_name in LANGUAGES
                       - if LANGUAGE_CODE == language_code
                         %a.dropdown-item.selected

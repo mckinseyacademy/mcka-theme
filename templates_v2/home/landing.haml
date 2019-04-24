@@ -6,9 +6,9 @@
   .container
     .row.login-page
       .col
-        %img.login-McKa-logo{:alt => "", :src => "{% static 'image/login/McKA-logo.png' %}"}/
+        %img.login-McKa-logo{:alt => "", :src => "/static/image/McKinsey-Academy.png", :srcset => "/static/image/McKinsey-Academy@2x.png 2x"}/
         %h1.heading.text-center
-          {% trans "Leading transformation, Transforming leaders" %}
+          {% trans "Leading transformation, transforming leaders" %}
         .login-form-wrap
           - if request.is_IE8
             %br
@@ -23,8 +23,8 @@
                   = error
               - csrf_token
               .form-group.user_name_element
-                %label.form-label{:for => "login_id"} {% trans "Username or Email" %}
-                %input#login_id.form-control.form-input{:type => "text", :name => "login_id", value: "#{login_id}"}/
+                %label.form-label{:for => "login_id", :focused} {% trans "Username or Email" %}
+                %input#login_id.form-control.form-input{:type => "text", :name => "login_id", value: "#{login_id}", :tabindex => "1", :autocomplete => "off"}/
                 %i.material-icons.ico-state check_circle
                 %small.login-error.form-text
               .form-group.user_password_element.d-none
@@ -47,7 +47,7 @@
                 %li
                   %a{:href => "mailto:support@mckinseyacademy.com?Subject=Trouble logging in"} {% trans "Email Support" %}
                 %li
-                  %a{:href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients"} {% trans "About McKinsey Academy" %}
+                  %a{:target => "_blank", :href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients"} {% trans "About McKinsey Academy" %}
 
   -#- include "marketing/app_link_popup.haml"
 
@@ -83,7 +83,7 @@
             %span{:aria-hidden => "true"} ×
         .modal-body
           %p.mckinsey-red
-            %i.fa.fa-exclamation-triangle
+            %i.fa.fa-exclamation-triangle.text-danger
             {% trans "Your account is locked for" %}
             %b
               {% trans "15 minutes " %}
@@ -98,7 +98,7 @@
               {% trans "reset your password" %}
             %span
               {% trans "or try to login again in 15 minutes." %}
-          %a.button{"data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "#"}
+          %button.btn.btn-primary.btn-lg.mt-20{:type => "submit", "data-reveal-id": "reset-password", "data-reveal-ajax": "true", href: "#"}
             {% trans "Reset Password" %}
 
 - block general_modal

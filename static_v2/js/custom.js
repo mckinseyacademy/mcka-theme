@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
 
     if($("#login_id").val() !== "")
     {
@@ -601,16 +601,12 @@ smoothNavLinks();
 
 $(window).on("load", function () {
 
-    function triggerFocused(sel) {
-        let input = $(sel);
-        let value = input.val();
-        if (value && input.val().length > 0) {
-            input.parents('.form-group').addClass('focused')
+    setTimeout(function () { 
+        if ($("#login_id, #setUsername, #password_setPassword, #password").val() != " ") {
+            $('body').trigger('click');
+            $("#login_id, #setUsername, #password_setPassword, #password").parent().addClass("focused");
         }
-    }
-    triggerFocused('[name="username"]');
-    triggerFocused('[name="password"]');
-    triggerFocused('[name="login_id"]');
+     }, 1000);
 
     // Preloaders for platform
     $('.loader').removeClass("donut-loader").removeClass("loader");

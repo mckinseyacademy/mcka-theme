@@ -65,6 +65,9 @@
         position: absolute;
         margin: 0;
         top: 25px;
+        @include media-breakpoint-between(xs, sm) {
+          top: 15px;
+        }
       }
       .ok-close {
         position: relative;
