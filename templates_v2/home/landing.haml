@@ -124,3 +124,21 @@
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
   %script{src: "{% static 'js/vendor/jquery.query-object.js' %}"}
   %script{src: "{% static 'js/accounts/user_login.js' %}"}
+
+  :javascript
+    window.onload = function(){
+      setTimeout(loadAfterTime, 1000)
+    };
+    function loadAfterTime() {
+    if ($('input:-webkit-autofill')) {
+         $('input:-webkit-autofill').each(function () {
+           $(this).parents('.form-group').addClass('focused');
+           $('#login').attr("disabled", false);
+         });
+       }
+    }
+
+    $('#login_id').on('blur input', function() {
+       $(this).parents('.form-group').addClass('focused');
+       $('#login').attr("disabled", false);
+    });

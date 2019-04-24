@@ -1,10 +1,7 @@
 $(document).ready(function () {
 
-    if($("#login_id").val() !== "")
-    {
-        $('#login').attr("disabled", false);
-        $('input[name=login_id]').parents('.form-group').addClass('focused');
-    }
+
+
 
     if($(".reset-password #id_email").val() !== "")
     {
@@ -21,6 +18,7 @@ $(document).ready(function () {
         var password = $(".user_password_element");
         if(!$(password).hasClass("d-none")) {
             $(password).addClass("d-none");
+            $('.forgot-pswd-link').toggleClass('d-none');
             $(".login-page").removeClass("login-with-password");
             $("input[name=password]").val("");
         }
