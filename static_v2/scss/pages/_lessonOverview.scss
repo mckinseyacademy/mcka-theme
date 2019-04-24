@@ -6,7 +6,9 @@ body{
         transition: all ease 0.7s;
         pointer-events: none;
         cursor: none;
-        background: $gray !important;
+        &.disable{
+          background: var(--primary) !important;
+        }
         &.left {
           left: -82px;
           opacity: 1;
