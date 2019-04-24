@@ -374,6 +374,19 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         response = _build_mobile_redirect_response(request, {'test': 'data', 'more': 'data'})
         self.assertIn(redirect_path, response.content)
 
+    @ddt.data(
+        ('invalid-scheme', False),
+        ('test-scheme', True),
+    )
+    @ddt.unpack
+    def test_built_mobile_url_scheme_validity(self, mobile_url_scheme, expected_result):
+        request = self.factory.get('/')
+        self._setup_request(request)
+        request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = mobile_url_scheme
+        redirect_path = '{}://{}?test=data&more=data'.format(mobile_url_scheme, settings.MOBILE_SSO_PATH)
+        response = _build_mobile_redirect_response(request, {'test': 'data', 'more': 'data'})
+        self.assertEqual(redirect_path in response.content, expected_result)
+
     @ddt.data(None, 'providerid')
     def test_sso_launch_invalid_provider_id(self, provider_id):
         request = self.factory.get('/accounts/sso_launch/', {'provider_id': provider_id})

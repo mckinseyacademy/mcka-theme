@@ -29,3 +29,5 @@ TEMPLATE_TEST_DIR = os.path.join(BASE_DIR, 'templates')  # noqa: F405
 TEMPLATE_NEW_TEST_DIR = os.path.join(BASE_DIR, 'tests/templates_v2')  # noqa: F405
 
 TEMPLATE_NEW_DIRS = [TEMPLATE_NEW_TEST_DIR]
+
+MOBILE_URL_SCHEMES = ['mcka', 'test-scheme']

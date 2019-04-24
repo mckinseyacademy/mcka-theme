@@ -290,10 +290,9 @@ def _get_mobile_url_scheme(request):
         'mobile_url_scheme',
         request.COOKIES.get(MOBILE_URL_SCHEME_COOKIE, None))
 
-    # check for XSS since it is get from URL and then
-    # embedded to html with |safe
-    if scheme is not None:
-        return clean_xss_characters(scheme)
+    # ensure only on of allowed schemes is passed
+    if scheme and scheme not in settings.MOBILE_URL_SCHEMES:
+        return settings.MOBILE_URL_SCHEMES[0]
 
     return scheme
 
