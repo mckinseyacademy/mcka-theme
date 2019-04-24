@@ -31,6 +31,22 @@ $(document).ready(function () {
         $('#reset-password-submit').attr("disabled", false);
     });
 
+    $("#id_new_password1").on("keyup", function ()
+    {
+        if($('#id_new_password1').val() !== "" && $('#id_new_password2').val() !== "")
+        {
+            $('#reset-password-done').attr("disabled", false);
+        }
+    });
+
+    $("#id_new_password2").on("keyup", function ()
+    {
+        if($('#id_new_password1').val() !== "" && $('#id_new_password2').val() !== "")
+        {
+            $('#reset-password-done').attr("disabled", false);
+        }
+    });
+
 
     $("#password").on("keyup", function () {
         $('#login').attr("disabled", false);
@@ -106,12 +122,12 @@ $(document).ready(function () {
         var text = $(this).text();
         if (text == 'visibility_off') {
             $(this).text('visibility');
-            $('#password, #password_setPassword, .pswd1, .pswd2').attr('type', 'text');
+            $(this).siblings("input").attr('type', 'text');
             $(this).attr("data-content", gettext("Hide Password"));
         }
         else {
             $(this).text('visibility_off');
-            $('#password, #password_setPassword, .pswd1, .pswd2').attr('type', 'password');
+            $(this).siblings("input").attr('type', 'password');
             $(this).attr("data-content", gettext("Show Password"));
         }
     });
@@ -130,7 +146,7 @@ $(document).ready(function () {
             $(this).parents('.form-group').removeClass('focused');
             $('#login').attr('disabled', 'disabled');
             $('#reset-password-submit').attr("disabled", 'disabled');
-
+            $('#reset-password-done').attr("disabled", "disabled");
         } else {
             $(this).addClass('filled');
         }
