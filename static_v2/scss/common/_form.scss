@@ -88,7 +88,8 @@ form {
           visibility: visible;
         }
         label {
-          visibility: hidden;
+          //visibility: hidden;
+          color: $bg-white-green !important;
         }
       }
       &.error {
@@ -113,7 +114,7 @@ form {
           color: $bg-black-green !important;
         }
         label {
-          visibility: hidden;
+          //visibility: hidden;
         }
       }
       &.error {

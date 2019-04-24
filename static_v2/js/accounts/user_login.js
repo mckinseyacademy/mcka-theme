@@ -22,8 +22,9 @@ $(function () {
     }
 
     function loginWithPassword() {
+
         $("#login-form > div.user_name_element").addClass("success");
-        $('.form-group.user_name_element').children('.i.ico-state').html("check_circle");
+        $('.form-group.user_name_element').children('i.ico-state').html("check_circle");
         $(".login-page").addClass("login-with-password");
         $('.form-group.user_password_element').toggleClass("d-none");
         $("input[name=password]").focus();
