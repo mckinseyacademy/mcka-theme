@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 09:25+0000\n"
+"POT-Creation-Date: 2019-04-24 15:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1467,22 +1467,6 @@ msgstr "保存する"
 #: accounts/views.py:1238 templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "役職を入力してください"
-
-#: accounts/views.py:1321 accounts/views.py:1352
-msgid "Initial"
-msgstr "イニシャル"
-
-#: accounts/views.py:1349
-msgid "Course Closed"
-msgstr "コース閉講"
-
-#: accounts/views.py:1358
-msgid "Registered"
-msgstr "登録済み"
-
-#: accounts/views.py:1360
-msgid "Error"
-msgstr "エラー"
 
 #: admin/controller.py:269
 msgid ""
@@ -3340,6 +3324,7 @@ msgstr ""
 #: templates/accounts/login.haml:106 templates_v2/home/landing.haml:102
 #: templates_v2/registration/password_reset_confirm.haml:14
 #: templates_v2/registration/password_reset_confirm.haml:41
+#: templates_v2/registration/password_reset_form.haml:8
 #: tests/templates_v2/home/landing.haml:105
 msgid "Reset Password"
 msgstr "パスワードを再設定する"
@@ -8819,7 +8804,7 @@ msgstr "コース閉講"
 msgid "course begins in %(remaining_days)s days"
 msgstr "コースは、%(remaining_days)s日後に始まります"
 
-#: templates/home/landing.haml:15
+#: templates/home/landing.haml:15 templates_v2/home/landing.haml:11
 msgid "Leading transformation, transforming leaders"
 msgstr "変革をリードし、リーダーを変革させる"
 
@@ -11251,7 +11236,6 @@ msgstr ""
 "ださい。"
 
 #: templates/registration/password_reset_form.haml:3
-#: templates_v2/registration/password_reset_form.haml:8
 msgid "Password Reset"
 msgstr "パスワードの再設定"
 
@@ -12231,14 +12215,16 @@ msgid "Page not found."
 msgstr "404: ページが見つかりません"
 
 #: templates_v2/404.haml:19
-msgid ""
-"\n"
-"                  The page you’re looking for may have been moved or "
-"renamed.\n"
-"                  "
+#, fuzzy
+#| msgid ""
+#| "The page you are looking for might have been removed, been renamed, or "
+#| "may be temporarily unavailable."
+msgid "The page you’re looking for may have been moved or renamed."
 msgstr ""
+"お探しのページは、削除された、名前が変えられた、あるいは一時的に利用できなく"
+"なっている可能性があります。"
 
-#: templates_v2/404.haml:23
+#: templates_v2/404.haml:21
 #, python-format
 msgid ""
 "\n"
@@ -13279,12 +13265,6 @@ msgstr "ダッシュボード"
 msgid "my courses"
 msgstr "私のコース"
 
-#: templates_v2/home/landing.haml:11
-#, fuzzy
-#| msgid "Leading transformation, transforming leaders"
-msgid "Leading transformation, Transforming leaders"
-msgstr "変革をリードし、リーダーを変革させる"
-
 #: templates_v2/home/landing.haml:26
 #, fuzzy
 #| msgid "Username or Email:"
@@ -13462,6 +13442,23 @@ msgstr "名: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "氏: {}"
+
+#~ msgid "Initial"
+#~ msgstr "イニシャル"
+
+#~ msgid "Course Closed"
+#~ msgstr "コース閉講"
+
+#~ msgid "Registered"
+#~ msgstr "登録済み"
+
+#~ msgid "Error"
+#~ msgstr "エラー"
+
+#, fuzzy
+#~| msgid "Leading transformation, transforming leaders"
+#~ msgid "Leading transformation, Transforming leaders"
+#~ msgstr "変革をリードし、リーダーを変革させる"
 
 #~ msgid "Password doesn't match our records. Try again."
 #~ msgstr "パスワードが間違っています。もう一度試してください。"

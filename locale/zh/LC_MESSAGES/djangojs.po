@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 09:26+0000\n"
+"POT-Creation-Date: 2019-04-24 15:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -351,15 +351,15 @@ msgstr "长时间无操作登出。请重新登录。"
 
 #: static/js/static_translation_strings.js:2
 msgid "It looks like your browser settings has pop-ups disabled."
-msgstr ""
+msgstr "您的浏览器设置可能禁用了弹出窗口。"
 
 #: static/js/static_translation_strings.js:3
 msgid "The content takes place in a new window."
-msgstr ""
+msgstr "内容出现在新窗口中。"
 
 #: static/js/static_translation_strings.js:4
 msgid "Launch pop-up to continue"
-msgstr ""
+msgstr "启动弹出窗口以继续"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."

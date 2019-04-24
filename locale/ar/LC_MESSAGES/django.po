@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 09:24+0000\n"
+"POT-Creation-Date: 2019-04-24 15:30+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1463,22 +1463,6 @@ msgstr "حفظ"
 #: accounts/views.py:1238 templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "أدخل منصبك"
-
-#: accounts/views.py:1321 accounts/views.py:1352
-msgid "Initial"
-msgstr "الأولى"
-
-#: accounts/views.py:1349
-msgid "Course Closed"
-msgstr "دورة مغلقة"
-
-#: accounts/views.py:1358
-msgid "Registered"
-msgstr "مسجلة"
-
-#: accounts/views.py:1360
-msgid "Error"
-msgstr "خطأ"
 
 #: admin/controller.py:269
 msgid ""
@@ -3328,6 +3312,7 @@ msgstr ""
 #: templates/accounts/login.haml:106 templates_v2/home/landing.haml:102
 #: templates_v2/registration/password_reset_confirm.haml:14
 #: templates_v2/registration/password_reset_confirm.haml:41
+#: templates_v2/registration/password_reset_form.haml:8
 #: tests/templates_v2/home/landing.haml:105
 msgid "Reset Password"
 msgstr "إعادة تعيين كلمة المرور"
@@ -8786,7 +8771,7 @@ msgstr "دورة مغلقة"
 msgid "course begins in %(remaining_days)s days"
 msgstr "تبدأ الدورة في%(remaining_days)s الأيام"
 
-#: templates/home/landing.haml:15
+#: templates/home/landing.haml:15 templates_v2/home/landing.haml:11
 msgid "Leading transformation, transforming leaders"
 msgstr "قيادة عملية التحول، وقادة عملية التحول"
 
@@ -11208,7 +11193,6 @@ msgstr ""
 "الإلكتروني والمحاولة مرة أخرى."
 
 #: templates/registration/password_reset_form.haml:3
-#: templates_v2/registration/password_reset_form.haml:8
 msgid "Password Reset"
 msgstr "إعادة تعيين كلمة المرور"
 
@@ -12170,14 +12154,15 @@ msgid "Page not found."
 msgstr "404: لم يتم العثور على الصفحة"
 
 #: templates_v2/404.haml:19
-msgid ""
-"\n"
-"                  The page you’re looking for may have been moved or "
-"renamed.\n"
-"                  "
+#, fuzzy
+#| msgid ""
+#| "The page you are looking for might have been removed, been renamed, or "
+#| "may be temporarily unavailable."
+msgid "The page you’re looking for may have been moved or renamed."
 msgstr ""
+"الصفحة التي تبحث عنها قد أزيلت، أوتمت إعادة تسميته، أو قد غير متوفرة مؤقتاً."
 
-#: templates_v2/404.haml:23
+#: templates_v2/404.haml:21
 #, python-format
 msgid ""
 "\n"
@@ -13159,12 +13144,6 @@ msgstr "لوحة المعلومات"
 msgid "my courses"
 msgstr "دوراتي التدريبية"
 
-#: templates_v2/home/landing.haml:11
-#, fuzzy
-#| msgid "Leading transformation, transforming leaders"
-msgid "Leading transformation, Transforming leaders"
-msgstr "قيادة عملية التحول، وقادة عملية التحول"
-
 #: templates_v2/home/landing.haml:26
 #, fuzzy
 #| msgid "Username or Email:"
@@ -13342,6 +13321,23 @@ msgstr "الاسم الأول: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "اسم العائلة: {}"
+
+#~ msgid "Initial"
+#~ msgstr "الأولى"
+
+#~ msgid "Course Closed"
+#~ msgstr "دورة مغلقة"
+
+#~ msgid "Registered"
+#~ msgstr "مسجلة"
+
+#~ msgid "Error"
+#~ msgstr "خطأ"
+
+#, fuzzy
+#~| msgid "Leading transformation, transforming leaders"
+#~ msgid "Leading transformation, Transforming leaders"
+#~ msgstr "قيادة عملية التحول، وقادة عملية التحول"
 
 #~ msgid "Password doesn't match our records. Try again."
 #~ msgstr "كلمة المرور غير صحيحة، حاول مرة أخرى."

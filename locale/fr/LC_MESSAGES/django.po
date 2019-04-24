@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 09:25+0000\n"
+"POT-Creation-Date: 2019-04-24 15:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1353,10 +1353,8 @@ msgid "Username/email is not recognised. Try again."
 msgstr "Le nom d’utilisateur/l’e-mail n’est pas reconnu. Veuillez réessayer."
 
 #: accounts/views.py:439
-#, fuzzy
-#| msgid "Please enter a valid Role."
 msgid "Please enter a valid password."
-msgstr "Saisir un poste valide."
+msgstr "Saisissez un mot de passe valide."
 
 #: accounts/views.py:625 accounts/views.py:693
 msgid "Create my McKinsey Academy account"
@@ -1466,22 +1464,6 @@ msgstr "Enregistrer"
 #: accounts/views.py:1238 templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "Saisir votre titre"
-
-#: accounts/views.py:1321 accounts/views.py:1352
-msgid "Initial"
-msgstr "Initiale"
-
-#: accounts/views.py:1349
-msgid "Course Closed"
-msgstr "Cours fermé"
-
-#: accounts/views.py:1358
-msgid "Registered"
-msgstr "Enregistré"
-
-#: accounts/views.py:1360
-msgid "Error"
-msgstr "Erreur"
 
 #: admin/controller.py:269
 msgid ""
@@ -3370,6 +3352,7 @@ msgstr "ou essayez de vous connecter à nouveau dans 15 minutes."
 #: templates/accounts/login.haml:106 templates_v2/home/landing.haml:102
 #: templates_v2/registration/password_reset_confirm.haml:14
 #: templates_v2/registration/password_reset_confirm.haml:41
+#: templates_v2/registration/password_reset_form.haml:8
 #: tests/templates_v2/home/landing.haml:105
 msgid "Reset Password"
 msgstr "Réinitialiser le mot de passe"
@@ -8908,7 +8891,7 @@ msgstr "COURS FERMÉ"
 msgid "course begins in %(remaining_days)s days"
 msgstr "Le cours commence dans %(remaining_days)s jours"
 
-#: templates/home/landing.haml:15
+#: templates/home/landing.haml:15 templates_v2/home/landing.haml:11
 msgid "Leading transformation, transforming leaders"
 msgstr "Leader de la transformation, transformateur de leaders"
 
@@ -11569,7 +11552,6 @@ msgstr ""
 "réessayez."
 
 #: templates/registration/password_reset_form.haml:3
-#: templates_v2/registration/password_reset_form.haml:8
 msgid "Password Reset"
 msgstr "Réinitialisation du mot de passe"
 
@@ -11612,8 +11594,6 @@ msgid "Dear"
 msgstr ""
 
 #: templates/registration/public_registration_activation_link.haml:6
-#, fuzzy
-#| msgid "Account activation: yoooo"
 msgid "Account activation:"
 msgstr "Activation du compte :"
 
@@ -12652,18 +12632,10 @@ msgid "Page not found."
 msgstr "Page introuvable"
 
 #: templates_v2/404.haml:19
-msgid ""
-"\n"
-"                  The page you’re looking for may have been moved or "
-"renamed.\n"
-"                  "
-msgstr ""
-"\n"
-"                  La page que vous recherchez a peut-être été déplacée ou "
-"renommée.\n"
-"                  "
+msgid "The page you’re looking for may have been moved or renamed."
+msgstr "La page que vous recherchez a peut-être été déplacée ou renommée."
 
-#: templates_v2/404.haml:23
+#: templates_v2/404.haml:21
 #, python-format
 msgid ""
 "\n"
@@ -12792,8 +12764,6 @@ msgid "Please enter a valid username."
 msgstr "Saisir un poste valide."
 
 #: templates_v2/accounts/activate.haml:103
-#, fuzzy
-#| msgid "You must accept terms of service in order to continue"
 msgid "You must accept terms of service in order to continue."
 msgstr ""
 "Vous devez accepter les conditions d’utilisation afin de pouvoir continuer"
@@ -13546,15 +13516,7 @@ msgstr "tableau de bord"
 msgid "my courses"
 msgstr "mes cours"
 
-#: templates_v2/home/landing.haml:11
-#, fuzzy
-#| msgid "Leading transformation, transforming leaders"
-msgid "Leading transformation, Transforming leaders"
-msgstr "Leader de la transformation, transformateur de leaders"
-
 #: templates_v2/home/landing.haml:26
-#, fuzzy
-#| msgid "Username or Email:"
 msgid "Username or Email"
 msgstr "Nom d’utilisateur ou e-mail :"
 
@@ -13687,8 +13649,6 @@ msgid "Email support"
 msgstr "envoyer un e-mail à l’assistance"
 
 #: tests/templates_v2/home/landing.haml:53
-#, fuzzy
-#| msgid "About McKinsey Academy"
 msgid "About Mckinsey Academy"
 msgstr "À propos de McKinsey Academy"
 
@@ -13727,6 +13687,23 @@ msgstr "Prénom : {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nom de famille : {}"
+
+#~ msgid "Initial"
+#~ msgstr "Initiale"
+
+#~ msgid "Course Closed"
+#~ msgstr "Cours fermé"
+
+#~ msgid "Registered"
+#~ msgstr "Enregistré"
+
+#~ msgid "Error"
+#~ msgstr "Erreur"
+
+#, fuzzy
+#~| msgid "Leading transformation, transforming leaders"
+#~ msgid "Leading transformation, Transforming leaders"
+#~ msgstr "Leader de la transformation, transformateur de leaders"
 
 #~ msgid "Password doesn't match our records. Try again."
 #~ msgstr ""

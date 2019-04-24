@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 09:25+0000\n"
+"POT-Creation-Date: 2019-04-24 15:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,19 +29,19 @@ msgstr "U moet een cursus-id invoeren!"
 
 #: static/js/admin/course_meta_content.js:1
 msgid "Click Add to specify Lesson Label"
-msgstr ""
+msgstr "Klik op Toevoegen om Leslabel op te geven"
 
 #: static/js/admin/course_meta_content.js:2
 msgid "Click Add to specify Module Label"
-msgstr ""
+msgstr "Klik op Toevoegen om Modulelabel op te geven"
 
 #: static/js/admin/course_meta_content.js:3
 msgid "Click Add to specify Lessons Label"
-msgstr ""
+msgstr "Klik op Toevoegen om Lessenlabel op te geven"
 
 #: static/js/admin/course_meta_content.js:4
 msgid "Click Add to specify Modules Label"
-msgstr ""
+msgstr "Klik op Toevoegen om Modulenlabel op te geven"
 
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
@@ -91,7 +91,7 @@ msgstr "Uw cursus is nog niet begonnen. "
 #: static/js/application.js:195 static_v2/js/application.js:207
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)s days."
-msgstr[0] "Uw cursus begint over %(days)s dagen."
+msgstr[0] "Uw cursus begint over %(days)s dag."
 msgstr[1] "Uw cursus begint over %(days)s dagen."
 msgstr[2] "Uw cursus begint over %(days)s dagen."
 msgstr[3] "Uw cursus begint over %(days)s dagen."
@@ -116,7 +116,7 @@ msgstr "Vooruitgang: %(value)s%"
 
 #: static/js/common/bbGridExtend.js:70
 msgid "Search by Keyword"
-msgstr ""
+msgstr "Zoeken op Trefwoord"
 
 #: static/js/common/common_js.js:171
 msgid "NoName"
@@ -138,15 +138,19 @@ msgstr "%(value)s%"
 msgid ""
 "<span class=\"red\"> %(diff)s% </span> below your organization's average"
 msgstr ""
+"<span class=\"red\"> %(diff)s% </span> onder het gemiddelde van uw "
+"organisatie"
 
 #: static/js/common/common_js.js:963
 msgid ""
 "<span class=\"green\">%(diff)s% </span> above your organization's average"
 msgstr ""
+"<span class=\"green\">%(diff)s% </span> boven het gemiddelde van uw "
+"organisatie"
 
 #: static/js/common/common_js.js:968 static/js/common/common_js.js:988
 msgid "same as your organization's average"
-msgstr ""
+msgstr "zelfde als het gemiddelde van uw organisatie"
 
 #: static/js/common/common_js.js:976
 msgid ""
@@ -154,11 +158,23 @@ msgid ""
 msgid_plural ""
 "<span class=\"red\"> %(diff)s points</span> below your organization's average"
 msgstr[0] ""
+"<span class=\"red\"> %(diff)s punt</span> onder het gemiddelde van uw "
+"organisatie"
 msgstr[1] ""
+"<span class=\"red\"> %(diff)s punten</span> onder het gemiddelde van uw "
+"organisatie"
 msgstr[2] ""
+"<span class=\"red\"> %(diff)s punten</span> onder het gemiddelde van uw "
+"organisatie"
 msgstr[3] ""
+"<span class=\"red\"> %(diff)s punten</span> onder het gemiddelde van uw "
+"organisatie"
 msgstr[4] ""
+"<span class=\"red\"> %(diff)s punten</span> onder het gemiddelde van uw "
+"organisatie"
 msgstr[5] ""
+"<span class=\"red\"> %(diff)s punten</span> onder het gemiddelde van uw "
+"organisatie"
 
 #: static/js/common/common_js.js:983
 msgid ""
@@ -168,15 +184,27 @@ msgid_plural ""
 "<span class=\"green\"> %(diff)s points</span> above your organization's "
 "average"
 msgstr[0] ""
+"<span class=\"green\"> %(diff)s punt</span> boven het gemiddelde van uw "
+"organisatie"
 msgstr[1] ""
+"<span class=\"green\"> %(diff)s punten</span> boven het gemiddelde van uw "
+"organisatie"
 msgstr[2] ""
+"<span class=\"green\"> %(diff)s punten</span> boven het gemiddelde van uw "
+"organisatie"
 msgstr[3] ""
+"<span class=\"green\"> %(diff)s punten</span> boven het gemiddelde van uw "
+"organisatie"
 msgstr[4] ""
+"<span class=\"green\"> %(diff)s punten</span> boven het gemiddelde van uw "
+"organisatie"
 msgstr[5] ""
+"<span class=\"green\"> %(diff)s punten</span> boven het gemiddelde van uw "
+"organisatie"
 
 #: static/js/common/mass_participants_delete.js:133
 msgid "An error occurred submitting the request."
-msgstr ""
+msgstr "Er trad een fout op tijdens het indienen van het verzoek."
 
 #: static/js/common/mass_participants_enroll.js:255
 msgid "email"
@@ -205,25 +233,23 @@ msgstr "cursus-id"
 #: static/js/common/mass_participants_enroll.js:283
 #: static/js/common/mass_participants_enroll.js:296
 msgid "Learner email"
-msgstr ""
+msgstr "E-mail leerling"
 
 #: static/js/common/mass_participants_enroll.js:283
 msgid "Business Function"
-msgstr ""
+msgstr "Bedrijfsfunctie"
 
 #: static/js/common/mass_participants_enroll.js:283
 msgid "Business Unit"
-msgstr ""
+msgstr "Bedrijfseenheid"
 
 #: static/js/common/mass_participants_enroll.js:283
-#, fuzzy
-#| msgid "Notification"
 msgid "location"
-msgstr "Melding"
+msgstr "locatie"
 
 #: static/js/common/mass_participants_enroll.js:296
 msgid "Manager email"
-msgstr ""
+msgstr "E-mail manager"
 
 #: static/js/common/mass_participants_enroll.js:334
 #: static/js/common/mass_participants_enroll.js:408
@@ -233,25 +259,25 @@ msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
 msgstr ""
-"Het CSV-bestand heeft meer dan %(limit)s rijen: %(lines)s , splits het "
-"bestand op in meerdere bestanden."
+"Het .csv-bestand heeft meer dan %(limit)s rijen: %(lines)s , splits het "
+"bestand op in meerdere bestanden!"
 
 #: static/js/common/mass_participants_enroll.js:430
 #: static/js/common/mass_participants_enroll.js:567
 msgid "Report of bulk update will be sent to your email."
-msgstr ""
+msgstr "Rapport voor bulk-update wordt naar uw e-mailadres verzonden."
 
 #: static/js/company_fields.js:9
 msgid "2 or more fields can not have the same name"
-msgstr ""
+msgstr "2 of meer velden kunnen niet dezelfde naam hebben"
 
 #: static/js/company_fields.js:13
 msgid "Only alphanumeric characters and spaces allowed"
-msgstr ""
+msgstr "Alleen alfanumerieke tekens en spaties toegestaan"
 
 #: static/js/company_fields.js:53 static/js/company_fields.js:72
 msgid "You can only add up to 4 fields"
-msgstr ""
+msgstr "U kunt niet meer dan 4 velden toevoegen"
 
 #: static/js/course_contact_modal.js:15 static_v2/js/course_contact.js:16
 msgid "Notification"
@@ -271,7 +297,7 @@ msgstr "Selecteer een project"
 
 #: static/js/course_drag_drop.js:174
 msgid "Group was not created"
-msgstr "Groep is niet gemaakt"
+msgstr "Groep is niet aangemaakt"
 
 #: static/js/course_drag_drop.js:234
 msgid "All students added to private group have to be members of same company."
@@ -325,6 +351,7 @@ msgstr "Digitale inhoud"
 #: static/js/course_lesson.js:5
 msgid "It looks like you're not active. Click OK to keep working."
 msgstr ""
+"Het lijkt erop dat u niet actief bent. Klik op OK om te blijven werken."
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
@@ -357,7 +384,7 @@ msgstr "Selecteer ten minste één cursus"
 
 #: static/js/session_timeout_timer.js:39
 msgid "You were logged out due to inactivity. Please log back in to continue."
-msgstr ""
+msgstr "U bent uitgelogd vanwege inactiviteit. Log opnieuw in om door te gaan."
 
 #: static/js/static_translation_strings.js:2
 msgid "It looks like your browser settings has pop-ups disabled."
@@ -373,26 +400,26 @@ msgstr "Pop-up toestaan om verder te gaan"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
-msgstr ""
+msgstr "Er trad een fout op tijdens het indienen van uw bestand."
 
 #: static/js/views/admin/cohorts.js:35
 msgid "Invalid format for CSV file."
-msgstr ""
+msgstr "Ongeldig formaat voor CSV-bestand."
 
 #: static/js/views/admin/cohorts.js:37
 msgid "Error processing CSV file."
-msgstr ""
+msgstr "Fout bij verwerken CSV-bestand."
 
 #: static/js/views/admin/cohorts.js:132
 #, javascript-format
 msgid "%s learner has been added to this cohort."
 msgid_plural "%s learners have been added to this cohort."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%s leerling is toegevoegd aan deze groep."
+msgstr[1] "%s leerlingen zijn toegevoegd aan deze groep."
+msgstr[2] "%s leerlingen zijn toegevoegd aan deze groep."
+msgstr[3] "%s leerlingen zijn toegevoegd aan deze groep."
+msgstr[4] "%s leerlingen zijn toegevoegd aan deze groep."
+msgstr[5] "%s leerlingen zijn toegevoegd aan deze groep."
 
 #: static/js/views/admin/cohorts.js:138
 #, javascript-format
@@ -403,66 +430,79 @@ msgid_plural ""
 "%s learners were preassigned to this cohort. These learners will "
 "automatically be added to the cohort when they enroll in the course."
 msgstr[0] ""
+"%s leerling is vooraf aan deze groep toegevoegd. Deze leerling wordt "
+"automatisch toegevoegd aan de groep zodra hij/zij zich voor de cursus "
+"inschrijft."
 msgstr[1] ""
+"%s leerlingen zijn vooraf aan deze groep toegevoegd. Deze leerlingen worden "
+"automatisch toegevoegd aan de groep zodra ze zich voor de cursus inschrijven."
 msgstr[2] ""
+"%s leerlingen zijn vooraf aan deze groep toegevoegd. Deze leerlingen worden "
+"automatisch toegevoegd aan de groep zodra ze zich voor de cursus inschrijven."
 msgstr[3] ""
+"%s leerlingen zijn vooraf aan deze groep toegevoegd. Deze leerlingen worden "
+"automatisch toegevoegd aan de groep zodra ze zich voor de cursus inschrijven."
 msgstr[4] ""
+"%s leerlingen zijn vooraf aan deze groep toegevoegd. Deze leerlingen worden "
+"automatisch toegevoegd aan de groep zodra ze zich voor de cursus inschrijven."
 msgstr[5] ""
+"%s leerlingen zijn vooraf aan deze groep toegevoegd. Deze leerlingen worden "
+"automatisch toegevoegd aan de groep zodra ze zich voor de cursus inschrijven."
 
 #: static/js/views/admin/cohorts.js:144
 #, javascript-format
 msgid "%s learner has been moved to this cohort."
 msgid_plural "%s learners have been moved to this cohort."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%s leerling is verplaatst naar deze groep."
+msgstr[1] "%s leerlingen zijn verplaatst naar deze groep."
+msgstr[2] "%s leerlingen zijn verplaatst naar deze groep."
+msgstr[3] "%s leerlingen zijn verplaatst naar deze groep."
+msgstr[4] "%s leerlingen zijn verplaatst naar deze groep."
+msgstr[5] "%s leerlingen zijn verplaatst naar deze groep."
 
 #: static/js/views/admin/cohorts.js:150
 #, javascript-format
 msgid "%s invalid email was ignored."
 msgid_plural "%s invalid emails were ignored."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%s ongeldig e-mailadres is genegeerd."
+msgstr[1] "%s ongeldige e-mailadressen zijn genegeerd."
+msgstr[2] "%s ongeldige e-mailadressen zijn genegeerd."
+msgstr[3] "%s ongeldige e-mailadressen zijn genegeerd."
+msgstr[4] "%s ongeldige e-mailadressen zijn genegeerd."
+msgstr[5] "%s ongeldige e-mailadressen zijn genegeerd."
 
 #: static/js/views/admin/cohorts.js:156
 #, javascript-format
 msgid "%s user was already in this cohort."
 msgid_plural "%s users were already in this cohort."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%s gebruiker zat al in deze groep."
+msgstr[1] "%s gebruikers zaten al in deze groep."
+msgstr[2] "%s gebruikers zaten al in deze groep."
+msgstr[3] "%s gebruikers zaten al in deze groep."
+msgstr[4] "%s gebruikers zaten al in deze groep."
+msgstr[5] "%s gebruikers zaten al in deze groep."
 
 #: static/js/views/admin/cohorts.js:162
 #, javascript-format
 msgid "%s user/email was not found."
 msgid_plural "%s users/email were not found."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "%s gebruiker/e-mailadres is niet gevonden."
+msgstr[1] "%s gebruikers/e-mailadressen zijn niet gevonden."
+msgstr[2] "%s gebruikers/e-mailadressen zijn niet gevonden."
+msgstr[3] "%s gebruikers/e-mailadressen zijn niet gevonden."
+msgstr[4] "%s gebruikers/e-mailadressen zijn niet gevonden."
+msgstr[5] "%s gebruikers/e-mailadressen zijn niet gevonden."
 
 #: static/js/views/admin/cohorts.js:222
 #, javascript-format
 msgid "contains %s learner"
 msgid_plural "contains %s learners"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "bevat %s leerling"
+msgstr[1] "bevat %s leerlingen"
+msgstr[2] "bevat %s leerlingen"
+msgstr[3] "bevat %s leerlingen"
+msgstr[4] "bevat %s leerlingen"
+msgstr[5] "bevat %s leerlingen"
 
 #: static/js/views/admin/companies_list.js:12
 #: static/js/views/admin/course_details.js:29
@@ -488,7 +528,7 @@ msgstr "Aantal cursussen"
 #: static/js/views/admin/participant_details_edit_info.js:487
 #: static/js/views/admin/participantsinfo.js:365
 msgid "This company name cannot contain non-alphanumeric characters!"
-msgstr "De bedrijfsnaam mag geen alfanumerieke tekens bevatten."
+msgstr "De bedrijfsnaam mag geen alfanumerieke tekens bevatten!"
 
 #: static/js/views/admin/companies_list.js:114
 #: static/js/views/admin/company_details.js:184
@@ -496,11 +536,11 @@ msgstr "De bedrijfsnaam mag geen alfanumerieke tekens bevatten."
 #: static/js/views/admin/participant_details_edit_info.js:481
 #: static/js/views/admin/participantsinfo.js:359
 msgid "This company name cannot have more than 30 characters!"
-msgstr "De bedrijfsnaam mag niet meer dan 30 tekens bevatten."
+msgstr "De bedrijfsnaam mag niet meer dan 30 tekens bevatten!"
 
 #: static/js/views/admin/companies_list.js:151
 msgid "Couldn't create new company!"
-msgstr "Kan geen nieuw bedrijf maken."
+msgstr "Kan geen nieuw bedrijf maken!"
 
 #: static/js/views/admin/company_details.js:4
 #: static/js/views/admin/course_details.js:389
@@ -534,12 +574,12 @@ msgstr "Einde"
 
 #: static/js/views/admin/company_details.js:68
 msgid "Cohort Comp."
-msgstr "Bedrijf groep"
+msgstr "Bedrijfscohort"
 
 #: static/js/views/admin/company_details.js:194
 #: static/js/views/admin/company_learner_dashboard_list.js:143
 msgid "No Company Display Name!"
-msgstr "Geen bedrijfsweergavenaam."
+msgstr "Geen bedrijfsweergavenaam!"
 
 #: static/js/views/admin/company_learner_dashboard_list.js:4
 msgid "Dashboard Name"
@@ -575,23 +615,23 @@ msgstr "Actief"
 
 #: static/js/views/admin/company_linked_apps.js:147
 msgid "Couldn't link this App!"
-msgstr "Kan deze app niet koppelen."
+msgstr "Kan deze app niet koppelen!"
 
 #: static/js/views/admin/company_mobileapp_details.js:31
 msgid "Couldn't delink App!"
-msgstr "Kan deze app niet ontkoppelen."
+msgstr "Kan deze app niet ontkoppelen!"
 
 #: static/js/views/admin/company_mobileapp_details.js:108
 msgid "This app name cannot have more than 30 characters!"
-msgstr "De app-naam mag niet meer dan 30 tekens bevatten."
+msgstr "De app-naam mag niet meer dan 30 tekens bevatten!"
 
 #: static/js/views/admin/company_mobileapp_details.js:113
 msgid "This app name cannot contain non-alphanumeric characters!"
-msgstr "De app-naam mag enkel alfanumerieke tekens bevatten."
+msgstr "De app-naam mag enkel alfanumerieke tekens bevatten!"
 
 #: static/js/views/admin/company_mobileapp_details.js:118
 msgid "No App Display Name!"
-msgstr "Geen app-weergavenaam."
+msgstr "Geen app-weergavenaam!"
 
 #: static/js/views/admin/course_details.js:6
 #: static/js/views/admin/participantsinfo.js:16
@@ -614,10 +654,8 @@ msgid "Activated"
 msgstr "Geactiveerd"
 
 #: static/js/views/admin/course_details.js:32
-#, fuzzy
-#| msgid "Cohort Comp."
 msgid "Cohort"
-msgstr "Bedrijf groep"
+msgstr "Cohort"
 
 #: static/js/views/admin/course_details.js:40
 msgid "Last Log In"
@@ -636,7 +674,7 @@ msgstr "Vaardigheid"
 
 #: static/js/views/admin/course_details.js:65
 msgid "Engagement"
-msgstr "Betrokkenheid"
+msgstr "Inzet"
 
 #: static/js/views/admin/course_details.js:72
 #: static/js/views/admin/course_details.js:76
@@ -653,19 +691,19 @@ msgstr "Land"
 
 #: static/js/views/admin/course_details.js:318
 msgid "Couldn't create new tag!"
-msgstr "Kan geen nieuw label maken."
+msgstr "Kan geen nieuwe tag maken!"
 
 #: static/js/views/admin/course_details.js:332
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
 msgstr ""
-"U beschikt niet over de machtiging voor het maken van een nieuw label. "
-"Selecteer een label in de lijst."
+"U beschikt niet over de machtiging voor het maken van een nieuwe tag. "
+"Selecteer een tag in de lijst!"
 
 #: static/js/views/admin/course_details.js:362
 msgid "Couldn't delete tag!"
-msgstr "Kan het label niet verwijderen."
+msgstr "Kan tag niet verwijderen!"
 
 #: static/js/views/admin/course_details.js:402
 msgid "%(count)s Course Tagged with %(tagDetails)s"
@@ -685,15 +723,15 @@ msgstr ""
 
 #: static/js/views/admin/course_details.js:545
 msgid "This tag name cannot have more than 30 characters!"
-msgstr "De labelnaam mag niet meer dan 30 tekens bevatten."
+msgstr "De tagnaam mag niet meer dan 30 tekens bevatten!"
 
 #: static/js/views/admin/course_details.js:552
 msgid "This tag name cannot contain non-alphanumeric characters!"
-msgstr "De labelnaam mag enkel alfanumerieke tekens bevatten."
+msgstr "De tagnaam mag enkel alfanumerieke tekens bevatten!"
 
 #: static/js/views/admin/course_details.js:592
 msgid "Couldn't add tag to course!"
-msgstr "Kan geen label aan de cursus toevoegen."
+msgstr "Kan geen tag aan de cursus toevoegen!"
 
 #: static/js/views/admin/course_details_blocks.js:34
 #: static/js/views/admin/manager_dashboard.js:107
@@ -708,11 +746,11 @@ msgstr "Module"
 
 #: static/js/views/admin/course_details_blocks.js:48
 msgid "Poll/Survey Question"
-msgstr ""
+msgstr "Peiling/onderzoeksvraag"
 
 #: static/js/views/admin/course_details_bulk_actions.js:58
 msgid "File successfully uploaded!"
-msgstr "Het bestand is geüpload."
+msgstr "Het bestand is geüpload!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:116
 msgid "Unenroll Participants"
@@ -785,7 +823,7 @@ msgstr "Wijzigingen opslaan"
 #: static/js/views/admin/participant_details_edit_info.js:413
 #: static/js/views/admin/participant_details_edit_info.js:419
 msgid "You need to select status!"
-msgstr "U moet een status selecteren."
+msgstr "U moet een status selecteren!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:266
 #: static/js/views/admin/participant_details_edit_info.js:365
@@ -812,7 +850,7 @@ msgstr "Deelnemers inschrijven"
 #: static/js/views/admin/participant_details_edit_info.js:424
 #: static/js/views/admin/participant_details_edit_info.js:428
 msgid "You need to select course!"
-msgstr "U moet een cursus selecteren."
+msgstr "U moet een cursus selecteren!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:429
 msgid "Download"
@@ -831,23 +869,23 @@ msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
 msgstr ""
+"Vooruitgangsanalyse toevoegen voor elke les (let op: het exporteren kost "
+"meer tijd)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
 msgid "We'll e-mail you when your report is ready to download."
-msgstr ""
+msgstr "We sturen u een e-mail wanneer uw rapport klaar is om te downloaden."
 
 #: static/js/views/admin/course_details_bulk_actions.js:476
 msgid "Exporting Stats for All Users"
-msgstr ""
+msgstr "Statistieken voor alle gebruikers exporteren"
 
 #: static/js/views/admin/course_details_bulk_actions.js:477
 msgid "Export Report"
-msgstr ""
+msgstr "Rapport exporteren"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #: static/js/views/admin/course_details_bulk_actions.js:568
-#, fuzzy
-#| msgid "Task failed to execute. Please retry later."
 msgid "Error initiating the report generation. Please retry later."
 msgstr "Taakuitvoering is mislukt. Probeer het later opnieuw."
 
@@ -893,47 +931,47 @@ msgstr "Ik ben klaar"
 
 #: static/js/views/admin/course_details_bulk_actions.js:797
 msgid "Successfully deleted template!"
-msgstr "De sjabloon is verwijderd."
+msgstr "De sjabloon is verwijderd!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:804
 msgid "Successfully added new template!"
-msgstr "De sjabloon is toegevoegd."
+msgstr "De sjabloon is toegevoegd!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:817
 msgid "Successfully updated template!"
-msgstr "De sjabloon is bijgewerkt."
+msgstr "De sjabloon is bijgewerkt!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:822
 msgid "Email Preview Success!"
-msgstr "Het e-mailvoorbeeld is gelukt."
+msgstr "Het e-mailvoorbeeld is gelukt!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:822
 msgid "Successfully sent preview email!"
-msgstr "De voorbeelde-mail is verzonden."
+msgstr "De voorbeeldmail is verzonden!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:825
 msgid "Email Success!"
-msgstr "E-mail is gelukt."
+msgstr "E-mail is gelukt!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:825
 msgid "Successfully sent email!"
-msgstr "E-mail is verzonden."
+msgstr "E-mail is verzonden!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:867
 msgid "Preview Email!"
-msgstr "Voorbeelde-mail."
+msgstr "Voorbeeldmail!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:867
 msgid "Please enter preview email!"
-msgstr "Voer een nieuwe voorbeelde-mail in."
+msgstr "Voer een nieuwe voorbeeldmail in!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:887
 msgid "Please enter new template name!"
-msgstr "Voer een nieuwe sjabloonnaam in."
+msgstr "Voer een nieuwe sjabloonnaam in!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:902
 msgid "Please enter updated template name or leave the old one!"
-msgstr "Voer een bijgewerkte sjabloonnaam in of laat de oude naam staan."
+msgstr "Voer een bijgewerkte sjabloonnaam in of laat de oude naam staan!"
 
 #: static/js/views/admin/course_details_bulk_actions.js:915
 msgid "You are about to delete email template. Are you sure?"
@@ -953,14 +991,12 @@ msgid "Avg Progress"
 msgstr "Gem. voortgang"
 
 #: static/js/views/admin/course_details_problem_response_reports.js:12
-#, fuzzy
-#| msgid "Username"
 msgid "Filename"
-msgstr "Gebruikersnaam"
+msgstr "Bestandsnaam"
 
 #: static/js/views/admin/course_details_problem_response_reports.js:30
 msgid "Request Time"
-msgstr ""
+msgstr "Verzoektijd"
 
 #: static/js/views/admin/courseinfo.js:21
 msgid ".0%"
@@ -984,71 +1020,63 @@ msgstr "Weet u zeker dat u de volgende verwijdering wilt uitvoeren: \n"
 
 #: static/js/views/admin/import_progress.js:4
 msgid "File name"
-msgstr ""
+msgstr "Bestandsnaam"
 
 #: static/js/views/admin/import_progress.js:9
-#, fuzzy
-#| msgid "Start"
 msgid "Start time"
-msgstr "Begin"
+msgstr "Begindatum"
 
 #: static/js/views/admin/import_progress.js:10
-#, fuzzy
-#| msgid "End Date"
 msgid "End time"
 msgstr "Einddatum"
 
 #: static/js/views/admin/import_progress.js:18
 #: static/js/views/admin/import_progress.js:97
 msgid "Importing.."
-msgstr ""
+msgstr "Importeren..."
 
 #: static/js/views/admin/import_progress.js:23
 #: static/js/views/admin/import_progress.js:123
 #: static/js/views/admin/import_progress.js:128
 msgid "Successful"
-msgstr ""
+msgstr "Gelukt"
 
 #: static/js/views/admin/import_progress.js:26
 #: static/js/views/admin/import_progress.js:117
-#, fuzzy
-#| msgid "Show Errors"
 msgid "Contains Errors"
-msgstr "Fouten weergeven"
+msgstr "Bevat fouten"
 
 #: static/js/views/admin/import_progress.js:34
-#, fuzzy
-#| msgid "Activation Link"
 msgid "Activation File"
-msgstr "Activeringslink"
+msgstr "Activeringsbestand"
 
 #: static/js/views/admin/import_progress.js:44
 msgid "Error File"
-msgstr ""
+msgstr "Foutmeldingsbestand"
 
 #: static/js/views/admin/import_progress.js:53
 msgid "Initiated by"
-msgstr ""
+msgstr "Geïnitieerd door"
 
 #: static/js/views/admin/import_progress.js:131
 msgid "Importing %(processed)s of %(total)s rows"
-msgstr ""
+msgstr "%(processed)s van %(total)s rijen importeren"
 
 #: static/js/views/admin/manager_dashboard.js:107
 msgid "complete"
-msgstr "Onvolledig"
+msgstr "voltooien"
 
 #: static/js/views/admin/manager_dashboard.js:112
 msgid "Error Occured!"
-msgstr ""
+msgstr "Fout opgetreden!"
 
 #: static/js/views/admin/manager_dashboard.js:115
 msgid "Hide Details"
-msgstr ""
+msgstr "Gegevens verbergen"
 
 #: static/js/views/admin/manager_dashboard.js:145
 msgid "View Details"
-msgstr ""
+msgstr "Gegevens weergeven"
 
 #: static/js/views/admin/navigation.js:18
 msgid "Are you sure you want to remove this ?"
@@ -1073,27 +1101,27 @@ msgstr "Einddatum"
 
 #: static/js/views/admin/participant_details_edit_info.js:114
 msgid "Username can't be empty! "
-msgstr "Gebruikersnaam mag niet leeg zijn. "
+msgstr "Gebruikersnaam mag niet leeg zijn!"
 
 #: static/js/views/admin/participant_details_edit_info.js:119
 msgid "First name can't be empty! "
-msgstr "Voornaam mag niet leeg zijn. "
+msgstr "Voornaam mag niet leeg zijn!"
 
 #: static/js/views/admin/participant_details_edit_info.js:124
 msgid "Last name can't be empty! "
-msgstr "Achternaam mag niet leeg zijn. "
+msgstr "Achternaam mag niet leeg zijn!"
 
 #: static/js/views/admin/participant_details_edit_info.js:129
 msgid "Email can't be empty! "
-msgstr "E-mailadres mag niet leeg zijn. "
+msgstr "E-mailadres mag niet leeg zijn!"
 
 #: static/js/views/admin/participant_details_edit_info.js:153
 msgid "Company doesn't exist! "
-msgstr "Bedrijf bestaat niet. "
+msgstr "Bedrijf bestaat niet!"
 
 #: static/js/views/admin/participant_details_edit_info.js:203
 msgid "Updated user data!"
-msgstr "Gebruikersgegevens bijgewerkt."
+msgstr "Gebruikersgegevens bijgewerkt!"
 
 #: static/js/views/admin/participant_details_edit_info.js:255
 #: static/js/views/admin/participant_details_edit_info.js:296
@@ -1112,7 +1140,7 @@ msgstr ""
 
 #: static/js/views/admin/participant_details_edit_info.js:367
 msgid "Moderator"
-msgstr ""
+msgstr "Moderator"
 
 #: static/js/views/admin/participant_details_edit_info.js:390
 msgid "Enroll Participant"
@@ -1151,46 +1179,8 @@ msgstr "Ingeschreven voor"
 
 #: static_v2/js/custom.js:110
 msgid "Hide Password"
-msgstr ""
+msgstr "Wachtwoord verbergen"
 
 #: static_v2/js/custom.js:115
 msgid "Show Password"
-msgstr ""
-
-#~ msgid "Keyword Search"
-#~ msgstr "Zoeken op trefwoord"
-
-#~ msgid "Errors:"
-#~ msgstr "Fouten:"
-
-#~ msgid "Total:"
-#~ msgstr "Totaal:"
-
-#~ msgid "Succeded:"
-#~ msgstr "Geslaagd:"
-
-#~ msgid "Failed:"
-#~ msgstr "Niet geslaagd:"
-
-#~ msgid "0"
-#~ msgstr "0"
-
-#~ msgid "Download Participants"
-#~ msgstr "Deelnemers downloaden"
-
-#~ msgid "'"
-#~ msgstr "'"
-
-#~ msgid "Please correct following error: %(errors)s"
-#~ msgid_plural "Please correct following errors: %(errors)s"
-#~ msgstr[0] "الرجاء تصحيح الخطأ التالي: % (أخطاء)"
-#~ msgstr[1] "الرجاء تصحيح الأخطاء التالية:% (أخطاء)"
-
-#~ msgid "days"
-#~ msgstr "أيام"
-
-#~ msgid "weeks"
-#~ msgstr "أسابيع"
-
-#~ msgid "The discussion you are trying to access has been deleted"
-#~ msgstr "لقد تم حذف المناقشة التي تحاول الوصول إليها"
+msgstr "Wachtwoord weergeven"

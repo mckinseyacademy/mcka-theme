@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 09:25+0000\n"
+"POT-Creation-Date: 2019-04-24 15:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -363,14 +363,16 @@ msgstr ""
 #: static/js/static_translation_strings.js:2
 msgid "It looks like your browser settings has pop-ups disabled."
 msgstr ""
+"Il semblerait que les fenêtres contextuelles soient désactivées dans les "
+"paramètres de votre navigateur."
 
 #: static/js/static_translation_strings.js:3
 msgid "The content takes place in a new window."
-msgstr ""
+msgstr "Le contenu s’affiche dans une nouvelle fenêtre."
 
 #: static/js/static_translation_strings.js:4
 msgid "Launch pop-up to continue"
-msgstr ""
+msgstr "Lancez la fenêtre contextuelle pour continuer"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
