@@ -107,6 +107,11 @@
       }
     }
   }
+  button{
+    &:disabled{
+      background: $gray !important;
+    }
+  }
 }
 
 #confirmation_registration {

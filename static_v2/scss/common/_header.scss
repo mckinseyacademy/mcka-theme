@@ -332,6 +332,21 @@ header {
     }
   }
 
+  header {
+    .language-selector {
+      border: 0;
+      .dropdown {
+        button {
+          background: transparent;
+          color: $black;
+        }
+      }
+    }
+    i {
+      color: $black;
+    }
+  }
+
   .navbar-brand {
     padding: 0;
   }
