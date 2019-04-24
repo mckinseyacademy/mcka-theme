@@ -228,6 +228,8 @@
                             font-weight: normal;
                             display: inline-block;
                             vertical-align: middle;
+                            line-height: normal;
+                            margin-top: -2px;
                             @include font-size(16);
                         }
 
