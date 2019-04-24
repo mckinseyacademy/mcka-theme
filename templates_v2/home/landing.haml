@@ -23,8 +23,8 @@
                   = error
               - csrf_token
               .form-group.user_name_element
-                %label.form-label{:for => "login_id", :focused} {% trans "Username or Email" %}
-                %input#login_id.form-control.form-input{:type => "text", :name => "login_id", value: "#{login_id}", :tabindex => "1", :autocomplete => "off"}/
+                %label.form-label{:for => "login_id", :focused} {% trans "Username or email" %}
+                %input#login_id.form-control.form-input{:type => "text", :name => "login_id", value: "#{login_id}", :tabindex => "1"}/
                 %i.material-icons.ico-state check_circle
                 %small.login-error.form-text
               .form-group.user_password_element.d-none

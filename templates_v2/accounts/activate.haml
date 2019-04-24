@@ -37,6 +37,8 @@
               {% trans "Password" %}
             %input#password.form-control.form-input{:name => "password", :type => "password" , :id => "setPassword", :tabindex => "2", :value => "{{form.data.password}}"}
             %i#show-hide.material-icons{"data-container": "body", "data-content": "Show Password", "data-placement": "bottom", "data-toggle": "popover", "data-trigger": "hover"} visibility_off
+            %i.material-icons.ico-state
+              error
             %small.form-text {% trans "Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters." %}
           .form-group.form-check.mt-4.agreement{:class => "{% if errors.accept_terms %}error{% endif %}"}
             %label.form-check-label{:for => "agree"}
@@ -48,7 +50,7 @@
                 and
                 %a{:href => "/privacy/", :target => "_blank"} Privacy Policy
                 {% endblocktrans %}
-          %button.btn.btn-primary.btn-lg.mt-3.registration_submit.disabled{:type => "submit", :disabled => "disabled"} {% trans "Register" %}
+          %button.btn.btn-primary.btn-lg.mt-3.registration_submit{:type => "submit", :disabled => "disabled"} {% trans "Register" %}
           .form-footer
             %ul.nav
               %li.nav-item
@@ -106,7 +108,7 @@
       }
     });
 
-    $('form, select, input').on('keyup change', function(e) {
+    $('select, input').on('change', function(e) {
       $('.registration_submit').attr('disabled',false);
       $(this).parent().removeClass('error');
       $(this).siblings('.error').remove();

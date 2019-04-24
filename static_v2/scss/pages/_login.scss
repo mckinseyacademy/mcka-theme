@@ -197,7 +197,8 @@
         }
         &.error {
           label,
-          small {
+          small,
+          input {
             @extend .text-danger;
           }
         }

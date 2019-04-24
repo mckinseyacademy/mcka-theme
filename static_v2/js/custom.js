@@ -602,11 +602,12 @@ smoothNavLinks();
 $(window).on("load", function () {
 
     setTimeout(function () { 
-        if ($("#login_id, #setUsername, #password_setPassword, #password").val() != " ") {
-            $('body').trigger('click');
-            $("#login_id, #setUsername, #password_setPassword, #password").parent().addClass("focused");
+        $(".login").trigger('click');
+        let value = $("input[type='text'], input[type='password']").val();
+        if (value && value.length > 0) {
+            $("input[type='text'], input[type='password']").trigger("click");
         }
-     }, 1000);
+     }, 2000);
 
     // Preloaders for platform
     $('.loader').removeClass("donut-loader").removeClass("loader");

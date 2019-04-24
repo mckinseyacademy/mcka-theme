@@ -82,6 +82,7 @@
         }
         input {
           border-color: $bg-white-red;
+          @extend .text-danger;
         }
       }
     }
@@ -96,7 +97,8 @@
       font-weight: bold;
       a{
         font-weight: 400;
-        padding: 0;text-transform: unset;
+        padding: 0;
+        text-transform: none;
         font-size: 0.88rem;
 
       }
