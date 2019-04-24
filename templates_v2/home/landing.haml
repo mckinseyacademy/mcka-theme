@@ -30,7 +30,7 @@
               .form-group.user_password_element.d-none
                 %label.form-label{:for => "password"} {% trans "Password" %}
                 %input#password.form-control.form-input{:placeholder => "", :type => "password", name: "password"}/
-                %i.material-icons.longTapPopove.show-hide{:data-container => "body", :data-content => "{% trans 'Show Password' %}", :data-placement => "bottom", :data-toggle => "popover"} visibility_off
+                %i.material-icons.longTapPopover.show-hide{:data-container => "body", :data-content => "{% trans 'Show Password' %}", :data-placement => "bottom", :data-toggle => "popover"} visibility_off
                 %i.material-icons.ico-state
                 %small.password-error.form-text
               .form-group.text-center
