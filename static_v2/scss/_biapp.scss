@@ -698,6 +698,9 @@ form {
     #show-hide, .show-hide {
       @include right(auto);
       @include left(264px);
+      @include media-breakpoint-between(xs, sm) {
+        @include left(89.5%);
+      }
     }
   }
   .success,
@@ -747,6 +750,9 @@ form {
         .ico-state,
         #show-hide {
           @include left(265px);
+          @include media-breakpoint-between(xs, sm) {
+            @include left(90%);
+          }
         }
       }
     }
