@@ -501,12 +501,12 @@ $('.editProfileField').on('show.bs.modal', function (e) {
         if (text == 'visibility_off') {
             $(self).text('visibility');
             $(self).siblings("input").attr('type', 'text');
-            $(self).attr("data-content", gettext("Hide Password"));
+            $(self).attr("data-content", gettext("Hide password"));
         }
         else {
             $(self).text('visibility_off');
             $(self).siblings("input").attr('type', 'password');
-            $(self).attr("data-content", gettext("Show Password"));
+            $(self).attr("data-content", gettext("Show password"));
         }
         event.stopPropagation();
         event.preventDefault();

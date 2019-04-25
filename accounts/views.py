@@ -408,7 +408,7 @@ def login_post_view(request):
 
             # Invalid or missing username/email
             return JsonResponse({
-                "login_id": _("Username/email is not recognised. Try again.")
+                "login_id": _("Username/email is not recognized. Try again.")
             }, status=403)
 
         # normal login
@@ -437,7 +437,7 @@ def login_post_view(request):
 
     # If form validation fails it's due to a longer than 255-char username
     return JsonResponse({
-        "login_id": _("Username/email is not recognised. Try again.")
+        "login_id": _("Username/email is not recognized. Try again.")
     }, status=403)
 
 

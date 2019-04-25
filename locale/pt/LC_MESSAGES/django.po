@@ -1350,7 +1350,7 @@ msgid "Trouble logging in"
 msgstr "Problema para efetuar login"
 
 #: accounts/views.py:418 accounts/views.py:447
-msgid "Username/email is not recognised. Try again."
+msgid "Username/email is not recognized. Try again."
 msgstr "Nome de usuário/e-mail não reconhecido. Tente novamente."
 
 #: accounts/views.py:439

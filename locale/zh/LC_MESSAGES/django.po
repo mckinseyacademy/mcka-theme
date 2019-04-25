@@ -1335,7 +1335,7 @@ msgid "Trouble logging in"
 msgstr "登录时遇到问题"
 
 #: accounts/views.py:418 accounts/views.py:447
-msgid "Username/email is not recognised. Try again."
+msgid "Username/email is not recognized. Try again."
 msgstr "无法识别用户名/电子邮件。请重试。"
 
 #: accounts/views.py:439

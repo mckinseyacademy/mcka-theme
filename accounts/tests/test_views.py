@@ -599,7 +599,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_authenticate.return_value = None
         mock_get_username.return_value = DottableDict({"username": None, "is_active": True})
         response = self.client.post(reverse('home'), {'login_id': login_id, 'validate_login_id': True})
-        self.assertIn("Username/email is not recognised. Try again.", response.content)
+        self.assertIn("Username/email is not recognized. Try again.", response.content)
 
     @patch('accounts.views.get_sso_provider')
     @patch('accounts.views.get_user_from_login_id')

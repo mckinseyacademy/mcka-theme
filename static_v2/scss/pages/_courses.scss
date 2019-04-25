@@ -275,6 +275,7 @@
 
 @include media-breakpoint-between(xs, sm) {
   .myCourses {
+    margin-bottom: 0;
     .has-dashboard {
       margin-bottom: 40px !important;
     }

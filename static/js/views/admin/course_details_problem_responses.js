@@ -31,7 +31,7 @@ Apros.views.AdminCourseDetailsProblemResponsesBulk = Backbone.View.extend({
           _this.reportsView.collection.fetch();
           _this.reportsView.collection.scheduleRefresh(10000, true);
         } else {
-          console.warn('Got unrecognised task request status ' + data.status);
+          console.warn('Got unrecognized task request status ' + data.status);
         }
       })
       .fail(function (data) {

@@ -617,6 +617,10 @@ header {
   header {
     height: 67.61px;
     &.appHeader {
+      margin-bottom: 0;
+      &.has-dashboard {
+        margin-bottom: 35px;
+      }
       padding: 0 15px;
       .topRightArea {
         margin-top: 10px;

@@ -1,8 +1,5 @@
 $(document).ready(function () {
 
-
-
-
     if($(".reset-password #id_email").val() !== "")
     {
         $('#reset-password-submit').attr("disabled", false);
@@ -125,12 +122,12 @@ $(document).ready(function () {
         if (text == 'visibility_off') {
             $(this).text('visibility');
             $(this).siblings("input").attr('type', 'text');
-            $(this).attr("data-content", gettext("Hide Password"));
+            $(this).attr("data-content", gettext("Hide password"));
         }
         else {
             $(this).text('visibility_off');
             $(this).siblings("input").attr('type', 'password');
-            $(this).attr("data-content", gettext("Show Password"));
+            $(this).attr("data-content", gettext("Show password"));
         }
     });
 

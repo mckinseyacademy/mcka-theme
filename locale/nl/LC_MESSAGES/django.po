@@ -1352,7 +1352,7 @@ msgid "Trouble logging in"
 msgstr "Kan niet inloggen"
 
 #: accounts/views.py:418 accounts/views.py:447
-msgid "Username/email is not recognised. Try again."
+msgid "Username/email is not recognized. Try again."
 msgstr "Gebruikersnaam/e-mail niet herkend. Probeer het opnieuw."
 
 #: accounts/views.py:439
