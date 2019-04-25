@@ -81,6 +81,10 @@ If you get 404 on the pages above, Please coordinate with the development team a
 - #### While running vagrant up, **NFS fails**.
   Solution:
   `sudo apt-get install nfs-common nfs-kernel-server`
+  
+- ### ImportError: No module named edx_jsme
+  Solution:
+  Run `make clean` and start lms 
 
 ### Share vagrant setup (Mac only)
 1.  Install virtual box and vagrant on the remote machine
