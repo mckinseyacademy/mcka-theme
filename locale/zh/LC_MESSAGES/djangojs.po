@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 12:49+0000\n"
+"POT-Creation-Date: 2019-04-25 15:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,11 +84,11 @@ msgstr "显示错误"
 msgid "Please select file first."
 msgstr "请先选择文件。"
 
-#: static/js/application.js:192 static_v2/js/application.js:205
+#: static/js/application.js:192 static_v2/js/application.js:236
 msgid "Your course hasn't begun yet. "
 msgstr "您的课程尚未开始。"
 
-#: static/js/application.js:195 static_v2/js/application.js:207
+#: static/js/application.js:195 static_v2/js/application.js:238
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)s days."
 msgstr[0] "您的课程于 %(days)s 天后开始。"
@@ -98,11 +98,11 @@ msgstr[3] "您的课程于 %(days)s 天后开始。"
 msgstr[4] "您的课程于 %(days)s 天后开始。"
 msgstr[5] "您的课程于 %(days)s 天后开始。"
 
-#: static/js/application.js:198 static_v2/js/application.js:212
+#: static/js/application.js:198 static_v2/js/application.js:243
 msgid "Welcome to McKinsey Academy"
 msgstr "欢迎来到麦肯锡学院"
 
-#: static/js/application.js:199 static_v2/js/application.js:213
+#: static/js/application.js:199 static_v2/js/application.js:244
 msgid ""
 "%(courseStr)s Before the course begins, you can explore this site to learn "
 "more about what to expect."
@@ -1111,14 +1111,10 @@ msgstr "添加日期"
 msgid "Enrolled In"
 msgstr "已注册"
 
-#: static_v2/js/application.js:504 static_v2/js/custom.js:125
-#, fuzzy
-#| msgid "Hide Password"
+#: static_v2/js/application.js:535 static_v2/js/custom.js:125
 msgid "Hide password"
 msgstr "隐藏密码"
 
-#: static_v2/js/application.js:509 static_v2/js/custom.js:130
-#, fuzzy
-#| msgid "Show Password"
+#: static_v2/js/application.js:540 static_v2/js/custom.js:130
 msgid "Show password"
 msgstr "显示密码"

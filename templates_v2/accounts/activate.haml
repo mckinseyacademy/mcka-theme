@@ -36,7 +36,7 @@
             %label{:class => "form-label" , :for => "setPassword"}
               {% trans "Password" %}
             %input#password.form-control.form-input{:name => "password", :type => "password" , :id => "setPassword", :tabindex => "2", :value => "{{form.data.password}}"}
-            %i#show-hide.show-hide.material-icons.longTapPopover{"data-container": "body", "data-content": "Show Password", "data-placement": "bottom", "data-toggle": "popover"} visibility_off
+            %i#show-hide.show-hide.material-icons.longTapPopover{"data-container": "body", "data-content": "{% trans 'Show Password' %}", "data-placement": "bottom", "data-toggle": "popover"} visibility_off
             %i.material-icons.ico-state
               error
             %small.form-text {% trans "Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters." %}

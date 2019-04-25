@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 12:48+0000\n"
+"POT-Creation-Date: 2019-04-25 15:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -84,11 +84,11 @@ msgstr "Mostrar errores"
 msgid "Please select file first."
 msgstr "Seleccione el archivo primero."
 
-#: static/js/application.js:192 static_v2/js/application.js:205
+#: static/js/application.js:192 static_v2/js/application.js:236
 msgid "Your course hasn't begun yet. "
 msgstr "Su curso aún no ha comenzado. "
 
-#: static/js/application.js:195 static_v2/js/application.js:207
+#: static/js/application.js:195 static_v2/js/application.js:238
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)s days."
 msgstr[0] "Su curso comienza en %(days)s día."
@@ -98,11 +98,11 @@ msgstr[3] "Su curso comienza en %(days)s días."
 msgstr[4] "Su curso comienza en %(days)s días."
 msgstr[5] "Su curso comienza en %(days)s días."
 
-#: static/js/application.js:198 static_v2/js/application.js:212
+#: static/js/application.js:198 static_v2/js/application.js:243
 msgid "Welcome to McKinsey Academy"
 msgstr "Bienvenido a McKinsey Academy"
 
-#: static/js/application.js:199 static_v2/js/application.js:213
+#: static/js/application.js:199 static_v2/js/application.js:244
 msgid ""
 "%(courseStr)s Before the course begins, you can explore this site to learn "
 "more about what to expect."
@@ -1180,15 +1180,11 @@ msgstr "Se agregó la fecha"
 msgid "Enrolled In"
 msgstr "Inscrito"
 
-#: static_v2/js/application.js:504 static_v2/js/custom.js:125
-#, fuzzy
-#| msgid "Hide Password"
+#: static_v2/js/application.js:535 static_v2/js/custom.js:125
 msgid "Hide password"
 msgstr "Ocultar contraseña"
 
-#: static_v2/js/application.js:509 static_v2/js/custom.js:130
-#, fuzzy
-#| msgid "Show Password"
+#: static_v2/js/application.js:540 static_v2/js/custom.js:130
 msgid "Show password"
 msgstr "Mostrar contraseña"
 

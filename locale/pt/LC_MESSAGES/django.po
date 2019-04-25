@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 12:48+0000\n"
+"POT-Creation-Date: 2019-04-25 15:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12471,6 +12471,13 @@ msgstr ""
 "Não pode ser alterado mais tarde e não pode conter caracteres que não "
 "estejam em inglês."
 
+#: templates_v2/accounts/activate.haml:39
+#: templates_v2/registration/password_reset_confirm.haml:26
+#: templates_v2/registration/password_reset_confirm.haml:37
+#: tests/templates_v2/home/landing.haml:36
+msgid "Show Password"
+msgstr "Exibir senha"
+
 #: templates_v2/accounts/activate.haml:42
 #: templates_v2/accounts/activate.haml:101
 msgid ""
@@ -13383,10 +13390,6 @@ msgstr "Liderando a transformação"
 #: tests/templates_v2/home/landing.haml:14
 msgid "Transforming leaders"
 msgstr "Transformando líderes"
-
-#: tests/templates_v2/home/landing.haml:36
-msgid "Show Password"
-msgstr "Exibir senha"
 
 #: tests/templates_v2/home/landing.haml:51
 msgid "Email support"

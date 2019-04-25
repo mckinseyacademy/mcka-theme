@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 12:47+0000\n"
+"POT-Creation-Date: 2019-04-25 15:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,19 +29,19 @@ msgstr "يجب تحديد دورة!"
 
 #: static/js/admin/course_meta_content.js:1
 msgid "Click Add to specify Lesson Label"
-msgstr ""
+msgstr "انقر فوق إضافة لتحديد تسمية الدرس"
 
 #: static/js/admin/course_meta_content.js:2
 msgid "Click Add to specify Module Label"
-msgstr ""
+msgstr "انقر فوق إضافة لتحديد تسمية الوحدة"
 
 #: static/js/admin/course_meta_content.js:3
 msgid "Click Add to specify Lessons Label"
-msgstr ""
+msgstr "انقر فوق إضافة لتحديد تسمية الدروس"
 
 #: static/js/admin/course_meta_content.js:4
 msgid "Click Add to specify Modules Label"
-msgstr ""
+msgstr "انقر فوق إضافة لتحديد تسمية الوحدات"
 
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
@@ -84,11 +84,11 @@ msgstr "إظهار الأخطاء"
 msgid "Please select file first."
 msgstr "الرجاء تحديد الملف أولاً."
 
-#: static/js/application.js:192 static_v2/js/application.js:205
+#: static/js/application.js:192 static_v2/js/application.js:236
 msgid "Your course hasn't begun yet. "
 msgstr "دورتك لم تبدأ بعد"
 
-#: static/js/application.js:195 static_v2/js/application.js:207
+#: static/js/application.js:195 static_v2/js/application.js:238
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)s days."
 msgstr[0] "تبدأ دورتك في %(days)s"
@@ -98,11 +98,11 @@ msgstr[3] "تبدأ دورتك في %(days)s"
 msgstr[4] "تبدأ دورتك في %(days)s"
 msgstr[5] "تبدأ دورتك في %(days)s"
 
-#: static/js/application.js:198 static_v2/js/application.js:212
+#: static/js/application.js:198 static_v2/js/application.js:243
 msgid "Welcome to McKinsey Academy"
 msgstr "مرحبا بكم في McKinsey Academy"
 
-#: static/js/application.js:199 static_v2/js/application.js:213
+#: static/js/application.js:199 static_v2/js/application.js:244
 msgid ""
 "%(courseStr)s Before the course begins, you can explore this site to learn "
 "more about what to expect."
@@ -116,7 +116,7 @@ msgstr "التقدم المحرز: %(value)s%"
 
 #: static/js/common/bbGridExtend.js:70
 msgid "Search by Keyword"
-msgstr ""
+msgstr "البحث باستخدام الكلمة الرئيسية"
 
 #: static/js/common/common_js.js:171
 msgid "NoName"
@@ -137,28 +137,28 @@ msgstr "%(value)s%"
 #: static/js/common/common_js.js:956
 msgid ""
 "<span class=\"red\"> %(diff)s% </span> below your organization's average"
-msgstr ""
+msgstr "<span class=\"red\"> %(diff)s% </span> أقل من متوسط مؤسستك"
 
 #: static/js/common/common_js.js:963
 msgid ""
 "<span class=\"green\">%(diff)s% </span> above your organization's average"
-msgstr ""
+msgstr "<span class=\"green\">%(diff)s% </span> أكثر من متوسط مؤسستك"
 
 #: static/js/common/common_js.js:968 static/js/common/common_js.js:988
 msgid "same as your organization's average"
-msgstr ""
+msgstr "نفس متوسط مؤسستك"
 
 #: static/js/common/common_js.js:976
 msgid ""
 "<span class=\"red\"> %(diff)s point</span> below your organization's average"
 msgid_plural ""
 "<span class=\"red\"> %(diff)s points</span> below your organization's average"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "<span class=\"red\"> %(diff)s النقطة</span> أقل من متوسط مؤسستك"
+msgstr[1] "<span class=\"red\"> %(diff)s النقاط</span> أقل من متوسط مؤسستك"
+msgstr[2] "<span class=\"red\"> %(diff)s النقاط</span> أقل من متوسط مؤسستك"
+msgstr[3] "<span class=\"red\"> %(diff)s النقاط</span> أقل من متوسط مؤسستك"
+msgstr[4] "<span class=\"red\"> %(diff)s النقاط</span> أقل من متوسط مؤسستك"
+msgstr[5] "<span class=\"red\"> %(diff)s النقاط</span> أقل من متوسط مؤسستك"
 
 #: static/js/common/common_js.js:983
 msgid ""
@@ -167,16 +167,16 @@ msgid ""
 msgid_plural ""
 "<span class=\"green\"> %(diff)s points</span> above your organization's "
 "average"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "<span class=\"green\"> %(diff)s النقطة</span> أكثر من متوسط مؤسستك"
+msgstr[1] "<span class=\"green\"> %(diff)s النقاط</span> أكثر من متوسط مؤسستك"
+msgstr[2] "<span class=\"green\"> %(diff)s النقاط</span> أكثر من متوسط مؤسستك"
+msgstr[3] "<span class=\"green\"> %(diff)s النقاط</span> أكثر من متوسط مؤسستك"
+msgstr[4] "<span class=\"green\"> %(diff)s النقاط</span> أكثر من متوسط مؤسستك"
+msgstr[5] "<span class=\"green\"> %(diff)s النقاط</span> أكثر من متوسط مؤسستك"
 
 #: static/js/common/mass_participants_delete.js:133
 msgid "An error occurred submitting the request."
-msgstr ""
+msgstr "حدث خطأ ما أثناء تقديم الطلب."
 
 #: static/js/common/mass_participants_enroll.js:255
 msgid "email"
@@ -205,25 +205,23 @@ msgstr "معرّف الدورة"
 #: static/js/common/mass_participants_enroll.js:283
 #: static/js/common/mass_participants_enroll.js:296
 msgid "Learner email"
-msgstr ""
+msgstr "البريد الإلكتروني للمتعلم"
 
 #: static/js/common/mass_participants_enroll.js:283
 msgid "Business Function"
-msgstr ""
+msgstr "وظيفة العمل"
 
 #: static/js/common/mass_participants_enroll.js:283
 msgid "Business Unit"
-msgstr ""
+msgstr "وحدة العمل"
 
 #: static/js/common/mass_participants_enroll.js:283
-#, fuzzy
-#| msgid "Notification"
 msgid "location"
 msgstr "الإخطار"
 
 #: static/js/common/mass_participants_enroll.js:296
 msgid "Manager email"
-msgstr ""
+msgstr "البريد الإلكتروني للمدير"
 
 #: static/js/common/mass_participants_enroll.js:334
 #: static/js/common/mass_participants_enroll.js:408
@@ -239,19 +237,19 @@ msgstr ""
 #: static/js/common/mass_participants_enroll.js:430
 #: static/js/common/mass_participants_enroll.js:567
 msgid "Report of bulk update will be sent to your email."
-msgstr ""
+msgstr "سيتم إرسال تقرير التحديث المجمع إلى بريدك الإلكتروني."
 
 #: static/js/company_fields.js:9
 msgid "2 or more fields can not have the same name"
-msgstr ""
+msgstr "لا يمكن أن يكون حقلين أو أكثر بنفس الاسم"
 
 #: static/js/company_fields.js:13
 msgid "Only alphanumeric characters and spaces allowed"
-msgstr ""
+msgstr "لا يُسمح سوى بالأحرف الأبجدية الرقمية والمسافات"
 
 #: static/js/company_fields.js:53 static/js/company_fields.js:72
 msgid "You can only add up to 4 fields"
-msgstr ""
+msgstr "لا يمكنك إضافة سوى ما يصل إلى 4 حقول"
 
 #: static/js/course_contact_modal.js:15 static_v2/js/course_contact.js:16
 msgid "Notification"
@@ -324,7 +322,7 @@ msgstr "المحتوى الرقمي"
 
 #: static/js/course_lesson.js:5
 msgid "It looks like you're not active. Click OK to keep working."
-msgstr ""
+msgstr "يبدو أنك غير نشط. انقر فوق \"موافق\" لمواصلة العمل."
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
@@ -358,14 +356,16 @@ msgstr "الرجاء اختيار دورة واحدة على الأقل"
 #: static/js/session_timeout_timer.js:39
 msgid "You were logged out due to inactivity. Please log back in to continue."
 msgstr ""
+"لقد تم تسجيل خروجك نظرًا لانعدام النشاط في حسابك. يرجى تسجيل الدخول مرة أخرى "
+"للمتابعة."
 
 #: static/js/static_translation_strings.js:2
 msgid "It looks like your browser settings has pop-ups disabled."
-msgstr ".يبدو أنك أنه قد تم تعطيل النوافذ المنبثقة لإعدادات متصفحك"
+msgstr ""
 
 #: static/js/static_translation_strings.js:3
 msgid "The content takes place in a new window."
-msgstr ".يحدث المحتوى في نافذة جديدة"
+msgstr "يحدث المحتوى في نافذة جديدة."
 
 #: static/js/static_translation_strings.js:4
 msgid "Launch pop-up to continue"
@@ -373,26 +373,26 @@ msgstr "إطلاق نافذة منبثقة للمتابعة"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
-msgstr ""
+msgstr "حدث خطأ ما أثناء إرسال الملف."
 
 #: static/js/views/admin/cohorts.js:35
 msgid "Invalid format for CSV file."
-msgstr ""
+msgstr "تنسيق غير صالح لملف CSV."
 
 #: static/js/views/admin/cohorts.js:37
 msgid "Error processing CSV file."
-msgstr ""
+msgstr "حدث خطأ أثناء معالجة ملف CSV."
 
 #: static/js/views/admin/cohorts.js:132
 #, javascript-format
 msgid "%s learner has been added to this cohort."
 msgid_plural "%s learners have been added to this cohort."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "تمت إضافة %s متعلم إلى هذا الفوج."
+msgstr[1] "تمت إضافة %s متعلمين إلى هذا الفوج."
+msgstr[2] "تمت إضافة %s متعلمين إلى هذا الفوج."
+msgstr[3] "تمت إضافة %s متعلمين إلى هذا الفوج."
+msgstr[4] "تمت إضافة %s متعلمين إلى هذا الفوج."
+msgstr[5] "تمت إضافة %s متعلمين إلى هذا الفوج."
 
 #: static/js/views/admin/cohorts.js:138
 #, javascript-format
@@ -403,66 +403,78 @@ msgid_plural ""
 "%s learners were preassigned to this cohort. These learners will "
 "automatically be added to the cohort when they enroll in the course."
 msgstr[0] ""
+"لقد تم تعيين %s متعلم مسبقًا إلى هذا الفوج. سيتم إضافة هذا المتعلم تلقائيًا "
+"إلى الفوج عند تسجيله في الدورة التدريبية."
 msgstr[1] ""
+"لقد تم تعيين %s متعلمين مسبقًا إلى هذا الفوج. سيتم إضافة هؤلاء المتعلمين "
+"تلقائيًا إلى الفوج عند تسجيلهم في الدورة التدريبية."
 msgstr[2] ""
+"لقد تم تعيين %s متعلمين مسبقًا إلى هذا الفوج. سيتم إضافة هؤلاء المتعلمين "
+"تلقائيًا إلى الفوج عند تسجيلهم في الدورة التدريبية."
 msgstr[3] ""
+"لقد تم تعيين %s متعلمين مسبقًا إلى هذا الفوج. سيتم إضافة هؤلاء المتعلمين "
+"تلقائيًا إلى الفوج عند تسجيلهم في الدورة التدريبية."
 msgstr[4] ""
+"لقد تم تعيين %s متعلمين مسبقًا إلى هذا الفوج. سيتم إضافة هؤلاء المتعلمين "
+"تلقائيًا إلى الفوج عند تسجيلهم في الدورة التدريبية."
 msgstr[5] ""
+"لقد تم تعيين %s متعلمين مسبقًا إلى هذا الفوج. سيتم إضافة هؤلاء المتعلمين "
+"تلقائيًا إلى الفوج عند تسجيلهم في الدورة التدريبية."
 
 #: static/js/views/admin/cohorts.js:144
 #, javascript-format
 msgid "%s learner has been moved to this cohort."
 msgid_plural "%s learners have been moved to this cohort."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "تم نقل %s متعلم إلى هذا الفوج."
+msgstr[1] "تم نقل %s متعلمين إلى هذا الفوج."
+msgstr[2] "تم نقل %s متعلمين إلى هذا الفوج."
+msgstr[3] "تم نقل %s متعلمين إلى هذا الفوج."
+msgstr[4] "تم نقل %s متعلمين إلى هذا الفوج."
+msgstr[5] "تم نقل %s متعلمين إلى هذا الفوج."
 
 #: static/js/views/admin/cohorts.js:150
 #, javascript-format
 msgid "%s invalid email was ignored."
 msgid_plural "%s invalid emails were ignored."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "تم تجاهل %s بريد إلكتروني غير صالح."
+msgstr[1] "تم تجاهل %s بريد إلكتروني غير صالح."
+msgstr[2] "تم تجاهل %s بريد إلكتروني غير صالح."
+msgstr[3] "تم تجاهل %s بريد إلكتروني غير صالح."
+msgstr[4] "تم تجاهل %s بريد إلكتروني غير صالح."
+msgstr[5] "تم تجاهل %s بريد إلكتروني غير صالح."
 
 #: static/js/views/admin/cohorts.js:156
 #, javascript-format
 msgid "%s user was already in this cohort."
 msgid_plural "%s users were already in this cohort."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لقد كان يوجد %s مُستخدِم بالفعل في هذا الفوج."
+msgstr[1] "لقد كان يوجد %s مُستخدِمين بالفعل في هذا الفوج."
+msgstr[2] "لقد كان يوجد %s مُستخدِمين بالفعل في هذا الفوج."
+msgstr[3] "لقد كان يوجد %s مُستخدِمين بالفعل في هذا الفوج."
+msgstr[4] "لقد كان يوجد %s مُستخدِمين بالفعل في هذا الفوج."
+msgstr[5] "لقد كان يوجد %s مُستخدِمين بالفعل في هذا الفوج."
 
 #: static/js/views/admin/cohorts.js:162
 #, javascript-format
 msgid "%s user/email was not found."
 msgid_plural "%s users/email were not found."
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "لم يتم العثور على %s مُستخدِم / بريد إلكتروني."
+msgstr[1] "لم يتم العثور على %s مُستخدِمين / بريد إلكتروني."
+msgstr[2] "لم يتم العثور على %s مُستخدِمين / بريد إلكتروني."
+msgstr[3] "لم يتم العثور على %s مُستخدِمين / بريد إلكتروني."
+msgstr[4] "لم يتم العثور على %s مُستخدِمين / بريد إلكتروني."
+msgstr[5] "لم يتم العثور على %s مُستخدِمين / بريد إلكتروني."
 
 #: static/js/views/admin/cohorts.js:222
 #, javascript-format
 msgid "contains %s learner"
 msgid_plural "contains %s learners"
-msgstr[0] ""
-msgstr[1] ""
-msgstr[2] ""
-msgstr[3] ""
-msgstr[4] ""
-msgstr[5] ""
+msgstr[0] "يحتوي على %s متعلم"
+msgstr[1] "يحتوي على %s متعلمين"
+msgstr[2] "يحتوي على %s متعلمين"
+msgstr[3] "يحتوي على %s متعلمين"
+msgstr[4] "يحتوي على %s متعلمين"
+msgstr[5] "يحتوي على %s متعلمين"
 
 #: static/js/views/admin/companies_list.js:12
 #: static/js/views/admin/course_details.js:29
@@ -614,8 +626,6 @@ msgid "Activated"
 msgstr "مفعّل"
 
 #: static/js/views/admin/course_details.js:32
-#, fuzzy
-#| msgid "Cohort Comp."
 msgid "Cohort"
 msgstr "تشكيلة الأفواج"
 
@@ -704,7 +714,7 @@ msgstr "الوحدة النمطية"
 
 #: static/js/views/admin/course_details_blocks.js:48
 msgid "Poll/Survey Question"
-msgstr ""
+msgstr "سؤال الاستبيان / استطلاع الرأي"
 
 #: static/js/views/admin/course_details_bulk_actions.js:58
 msgid "File successfully uploaded!"
@@ -941,14 +951,12 @@ msgid "Avg Progress"
 msgstr "متوسط التقدم"
 
 #: static/js/views/admin/course_details_problem_response_reports.js:12
-#, fuzzy
-#| msgid "Username"
 msgid "Filename"
 msgstr "اسم المستخدم"
 
 #: static/js/views/admin/course_details_problem_response_reports.js:30
 msgid "Request Time"
-msgstr ""
+msgstr "الوقت المطلوب"
 
 #: static/js/views/admin/courseinfo.js:21
 msgid ".0%"
@@ -972,73 +980,63 @@ msgstr "هل تريد حقاً الحذف: \n"
 
 #: static/js/views/admin/import_progress.js:4
 msgid "File name"
-msgstr ""
+msgstr "اسم الملف"
 
 #: static/js/views/admin/import_progress.js:9
-#, fuzzy
-#| msgid "Start"
 msgid "Start time"
 msgstr "البدء"
 
 #: static/js/views/admin/import_progress.js:10
-#, fuzzy
-#| msgid "End Date"
 msgid "End time"
 msgstr "تاريخ الانتهاء"
 
 #: static/js/views/admin/import_progress.js:18
 #: static/js/views/admin/import_progress.js:97
 msgid "Importing.."
-msgstr ""
+msgstr "جاري الاستيراد.."
 
 #: static/js/views/admin/import_progress.js:23
 #: static/js/views/admin/import_progress.js:123
 #: static/js/views/admin/import_progress.js:128
 msgid "Successful"
-msgstr ""
+msgstr "ناجح"
 
 #: static/js/views/admin/import_progress.js:26
 #: static/js/views/admin/import_progress.js:117
-#, fuzzy
-#| msgid "Show Errors"
 msgid "Contains Errors"
 msgstr "إظهار الأخطاء"
 
 #: static/js/views/admin/import_progress.js:34
-#, fuzzy
-#| msgid "Activation Link"
 msgid "Activation File"
 msgstr "رابط التفعيل"
 
 #: static/js/views/admin/import_progress.js:44
 msgid "Error File"
-msgstr ""
+msgstr "ملف الخطأ"
 
 #: static/js/views/admin/import_progress.js:53
 msgid "Initiated by"
-msgstr ""
+msgstr "تم بدؤه بواسطة"
 
 #: static/js/views/admin/import_progress.js:131
 msgid "Importing %(processed)s of %(total)s rows"
-msgstr ""
+msgstr "استيراد صفوف %(معالجة) من %(إجمالي) صفوف."
 
 #: static/js/views/admin/manager_dashboard.js:107
-#, fuzzy
-#| msgid "Incomplete"
 msgid "complete"
 msgstr "غير مكتمل"
 
 #: static/js/views/admin/manager_dashboard.js:112
 msgid "Error Occured!"
-msgstr ""
+msgstr "حدث خطأ ما!"
 
 #: static/js/views/admin/manager_dashboard.js:115
 msgid "Hide Details"
-msgstr ""
+msgstr "إخفاء التفاصيل"
 
 #: static/js/views/admin/manager_dashboard.js:145
 msgid "View Details"
-msgstr ""
+msgstr "إظهار التفاصيل"
 
 #: static/js/views/admin/navigation.js:18
 msgid "Are you sure you want to remove this ?"
@@ -1101,7 +1099,7 @@ msgstr "سوف يتم إلحاق المستخدم  بالدورة المحددة
 
 #: static/js/views/admin/participant_details_edit_info.js:367
 msgid "Moderator"
-msgstr ""
+msgstr "المنسق"
 
 #: static/js/views/admin/participant_details_edit_info.js:390
 msgid "Enroll Participant"
@@ -1138,13 +1136,13 @@ msgstr "التاريخ المضاف"
 msgid "Enrolled In"
 msgstr "مسجّل في"
 
-#: static_v2/js/application.js:504 static_v2/js/custom.js:125
+#: static_v2/js/application.js:535 static_v2/js/custom.js:125
 msgid "Hide password"
-msgstr ""
+msgstr "إخفاء كلمة المرور"
 
-#: static_v2/js/application.js:509 static_v2/js/custom.js:130
+#: static_v2/js/application.js:540 static_v2/js/custom.js:130
 msgid "Show password"
-msgstr ""
+msgstr "إظهار كلمة المرور"
 
 #~ msgid "Keyword Search"
 #~ msgstr "البحث عن الكلمات الرئيسية"
