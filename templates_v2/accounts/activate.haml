@@ -134,3 +134,17 @@
       $(this).parents('.form-group').attr('changed', true);
     });
 
+
+    window.onload = function(){
+      setTimeout(loadAfterTime, 1000)
+    };
+    function loadAfterTime()
+    {
+        if ($('input:-webkit-autofill')) {
+            $('input:-webkit-autofill').each(function () {
+                $(this).parents('.form-group').addClass('focused');
+                $('#login').attr("disabled", false);
+            });
+        }
+    }
+

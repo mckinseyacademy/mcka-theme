@@ -1,26 +1,12 @@
-
-
-window.onload = function(){
-  setTimeout(loadAfterTime, 1000)
-};
-function loadAfterTime() {
-if ($('input:-webkit-autofill')) {
-     $('input:-webkit-autofill').each(function () {
-       $(this).parents('.form-group').addClass('focused');
-       $('#login').attr("disabled", false);
-     });
-   }
-}
-
 $('#login_id').on('blur input', function() {
-   $(this).parents('.form-group').addClass('focused');
-   $('#login').attr("disabled", false);
+    $(this).parents('.form-group').addClass('focused');
+    $('#login').attr("disabled", false);
 });
 
 if($("#login_id").val() !== "")
 {
-  $("#login_id").parents('.form-group').addClass('focused');
-   $('#login').attr("disabled", false);
+    $("#login_id").parents('.form-group').addClass('focused');
+    $('#login').attr("disabled", false);
 }
 
 $('#id_email').on('blur input', function() {
