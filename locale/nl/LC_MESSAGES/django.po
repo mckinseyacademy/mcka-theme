@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 15:32+0000\n"
+"POT-Creation-Date: 2019-04-25 12:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1126,7 +1126,7 @@ msgid "You must accept terms of service in order to continue"
 msgstr "U moet de servicevoorwaarden accepteren om verder te kunnen gaan"
 
 #: accounts/forms.py:436 accounts/forms.py:494 accounts/forms.py:512
-#: accounts/forms.py:627 admin/controller.py:807 admin/views.py:2694
+#: accounts/forms.py:629 admin/controller.py:807 admin/views.py:2694
 #: marketing/forms.py:47 marketing/forms.py:93 marketing/forms.py:132
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1149,7 +1149,7 @@ msgstr ""
 "Openbare gebruikersnaam {html_span_start} U kunt dit later niet meer "
 "wijzigen.{html_span_end}"
 
-#: accounts/forms.py:453 accounts/forms.py:639
+#: accounts/forms.py:453 accounts/forms.py:641
 #, python-brace-format
 msgid ""
 "Password {html_span_start} Must be at least 8 characters and include upper "
@@ -1204,35 +1204,35 @@ msgstr "Wachtwoord voldoet niet aan aanmaakcriteria."
 msgid "New password"
 msgstr "Nieuw wachtwoord"
 
-#: accounts/forms.py:562
+#: accounts/forms.py:563
 msgid "New password confirmation"
 msgstr "Bevestiging nieuw wachtwoord"
 
-#: accounts/forms.py:592 admin/forms.py:193
+#: accounts/forms.py:594 admin/forms.py:193
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "Geaccepteerde bestandstypen: JPG, PNG en GIF"
 
-#: accounts/forms.py:599 templates/admin/course_run/view.haml:63
+#: accounts/forms.py:601 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:91
 #: templates_v2/accounts/public_registration.haml:54
 msgid "First Name"
 msgstr "Voornaam"
 
-#: accounts/forms.py:601
+#: accounts/forms.py:603
 msgid "First Name is required."
 msgstr "Voornaam is vereist."
 
-#: accounts/forms.py:605
+#: accounts/forms.py:607
 #: templates/admin/participants/participant_details.haml:96
 #: templates_v2/accounts/public_registration.haml:58
 msgid "Last Name"
 msgstr "Achternaam"
 
-#: accounts/forms.py:607
+#: accounts/forms.py:609
 msgid "Last Name is required."
 msgstr "Achternaam is vereist."
 
-#: accounts/forms.py:631
+#: accounts/forms.py:633
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later. "
@@ -1241,32 +1241,32 @@ msgstr ""
 "Openbare gebruikersnaam {html_span_start} U kunt dit later niet meer "
 "wijzigen. {html_span_end}"
 
-#: accounts/forms.py:681
+#: accounts/forms.py:683
 #, python-brace-format
 msgid "First Name {html_span}"
 msgstr "Voornaam {html_span}"
 
-#: accounts/forms.py:685
+#: accounts/forms.py:687
 #, python-brace-format
 msgid "Last Name {html_span}"
 msgstr "Achternaam {html_span}"
 
-#: accounts/forms.py:689
+#: accounts/forms.py:691
 #, python-brace-format
 msgid "Company Name {html_span}"
 msgstr "Bedrijfsnaam {html_span}"
 
-#: accounts/forms.py:693
+#: accounts/forms.py:695
 #, python-brace-format
 msgid "Company Email {html_span}"
 msgstr "E-mail bedrijf {html_span}"
 
-#: accounts/forms.py:697
+#: accounts/forms.py:699
 #, python-brace-format
 msgid "Current Role {html_span}"
 msgstr "Huidige functie {html_span}"
 
-#: accounts/forms.py:701
+#: accounts/forms.py:703
 #, python-brace-format
 msgid ""
 "{html_div_start}Note: personal email addresses will not be "
@@ -1275,49 +1275,49 @@ msgstr ""
 "{html_div_start}Opmerking: persoonlijke e-mailadressen worden niet "
 "verwerkt{html_div_end}"
 
-#: accounts/forms.py:707 accounts/forms.py:713
+#: accounts/forms.py:709 accounts/forms.py:715
 #, python-brace-format
 msgid ""
 "{html_div_start}(please choose one of the following options) {html_div_end}"
 msgstr "{html_div_start}(kies een van de volgende opties) {html_div_end}"
 
-#: accounts/forms.py:733 accounts/forms.py:741
-#: templates_v2/accounts/public_registration.haml:110
-#: templates_v2/accounts/public_registration.haml:127
+#: accounts/forms.py:735 accounts/forms.py:743
+#: templates_v2/accounts/public_registration.haml:114
+#: templates_v2/accounts/public_registration.haml:134
 msgid "Special characters or numbers are not valid."
 msgstr "Speciale tekens of cijfers zijn niet geldig."
 
-#: accounts/forms.py:750
+#: accounts/forms.py:752
 msgid "Email must be a string."
 msgstr "E-mail moet een string zijn."
 
-#: accounts/forms.py:755
+#: accounts/forms.py:757
 #, python-brace-format
 msgid "Email '{email}' must be at least {min} characters long"
 msgstr "E-mail ‘{email}’ moet minstens {min} tekens lang zijn"
 
-#: accounts/forms.py:762
+#: accounts/forms.py:764
 #, python-brace-format
 msgid "Email '{email}' must be at most {max} characters long"
 msgstr "E-mail ‘{email}’ mag {max} tekens lang zijn"
 
-#: accounts/forms.py:772
+#: accounts/forms.py:774
 msgid "This email address has already been registered."
 msgstr "Dit e-mailadres is al geregistreerd."
 
-#: accounts/forms.py:778
+#: accounts/forms.py:780
 msgid "Email you provided is not allowed."
 msgstr "De e-mail die u heeft opgegeven, is niet toegestaan."
 
-#: accounts/forms.py:780 templates_v2/accounts/public_registration.haml:154
+#: accounts/forms.py:782 templates_v2/accounts/public_registration.haml:172
 msgid "Please enter a valid company email address."
 msgstr "Voer een geldig zakelijk e-mailadres in."
 
-#: accounts/forms.py:798
+#: accounts/forms.py:800
 msgid "Special characters are not valid."
 msgstr "Speciale tekens zijn niet geldig."
 
-#: accounts/forms.py:817
+#: accounts/forms.py:819
 msgid "Please enter a valid Role."
 msgstr "Voer een geldige functie in."
 
@@ -1337,66 +1337,66 @@ msgstr ""
 "Er is een fout opgetreden bij uw inschrijving voor een cursus met de "
 "registratiesleutel die u heeft opgegeven"
 
-#: accounts/views.py:362
+#: accounts/views.py:356
 msgid ""
 "Your account has already been activated. Please enter credentials to login"
 msgstr ""
 "Uw account is al geactiveerd. Voer uw aanmeldgegevens in om in te loggen"
 
-#: accounts/views.py:368
+#: accounts/views.py:362
 msgid "Log In"
 msgstr "Inloggen"
 
-#: accounts/views.py:369
+#: accounts/views.py:363
 msgid "Trouble logging in"
 msgstr "Kan niet inloggen"
 
-#: accounts/views.py:418 accounts/views.py:447
+#: accounts/views.py:411 accounts/views.py:440
 msgid "Username/email is not recognized. Try again."
 msgstr "Gebruikersnaam/e-mail niet herkend. Probeer het opnieuw."
 
-#: accounts/views.py:439
+#: accounts/views.py:432
 msgid "Please enter a valid password."
 msgstr "Voer een geldig wachtwoord in."
 
-#: accounts/views.py:625 accounts/views.py:693
+#: accounts/views.py:618 accounts/views.py:686
 msgid "Create my McKinsey Academy account"
 msgstr "Maak Mijn McKinsey Academy-account aan"
 
-#: accounts/views.py:659
+#: accounts/views.py:652
 msgid "Invalid Activation Code"
 msgstr "Ongeldige activeringscode"
 
-#: accounts/views.py:681
+#: accounts/views.py:674
 msgid "Some required information was missing. Please check the fields below."
 msgstr "Vereiste informatie ontbreekt. Controleer onderstaande velden."
 
-#: accounts/views.py:732
+#: accounts/views.py:725
 msgid "No provider data found."
 msgstr "Geen providergegevens gevonden."
 
-#: accounts/views.py:734
+#: accounts/views.py:727
 msgid "Provider data does not seem valid."
 msgstr "Providergegevens lijken ongeldig."
 
-#: accounts/views.py:790
+#: accounts/views.py:783
 msgid "Access Key missing."
 msgstr "Toegangssleutel ontbreekt."
 
-#: accounts/views.py:807 accounts/views.py:814
+#: accounts/views.py:800 accounts/views.py:807
 msgid "Accept"
 msgstr "Accepteren"
 
-#: accounts/views.py:862
+#: accounts/views.py:855
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "Registreren van gebruiker mislukt: {exception_message}"
 
-#: accounts/views.py:864
+#: accounts/views.py:857
 msgid "Some required information was missing."
 msgstr "Vereiste informatie ontbreekt."
 
-#: accounts/views.py:866
+#: accounts/views.py:859
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1404,15 +1404,15 @@ msgstr ""
 "Verificatie-cookie ontbreekt. Er kan een time-out van uw sessie zijn "
 "opgetreden. Begin opnieuw."
 
-#: accounts/views.py:915
+#: accounts/views.py:908
 msgid "Enter new password"
 msgstr "Voer nieuw wachtwoord in"
 
-#: accounts/views.py:932
+#: accounts/views.py:925
 msgid "Password reset unsuccessful"
 msgstr "Wachtwoord opnieuw instellen mislukt"
 
-#: accounts/views.py:1030 lib/mail.py:133 templates/accounts/activate.haml:16
+#: accounts/views.py:1023 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:273
 #: templates_v2/accounts/sso_terms_of_service.haml:14
@@ -1420,7 +1420,7 @@ msgstr "Wachtwoord opnieuw instellen mislukt"
 msgid "Welcome to McKinsey Academy"
 msgstr "Welkom bij McKinsey Academy"
 
-#: accounts/views.py:1031
+#: accounts/views.py:1024
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1429,7 +1429,7 @@ msgstr ""
 "Uw programma start over {days} dagen. Verken in de tussentijd de site voor "
 "meer informatie."
 
-#: accounts/views.py:1035
+#: accounts/views.py:1028
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1438,11 +1438,11 @@ msgstr ""
 "Uw cursus begint over {days} dagen. Voordat de cursus begint, kunt u deze "
 "site verkennen voor meer informatie over wat u kunt verwachten."
 
-#: accounts/views.py:1213 templates_v2/layout.haml:249
+#: accounts/views.py:1206 templates_v2/layout.haml:249
 msgid "Enter your full name"
 msgstr "Voer uw volledige naam in"
 
-#: accounts/views.py:1215 accounts/views.py:1240 admin/views.py:2006
+#: accounts/views.py:1208 accounts/views.py:1233 admin/views.py:2006
 #: admin/views.py:2040 admin/views.py:4723
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
@@ -1462,7 +1462,7 @@ msgstr "Voer uw volledige naam in"
 msgid "Save"
 msgstr "Opslaan"
 
-#: accounts/views.py:1238 templates_v2/layout.haml:275
+#: accounts/views.py:1231 templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "Voer uw titel in"
 
@@ -1780,16 +1780,12 @@ msgid "User and manager email cannot be empty"
 msgstr "E-mailadres van gebruiker en manager mogen niet leeg zijn"
 
 #: admin/controller.py:2794
-#, fuzzy
-#| msgid "The CSV file has to contain 'email' header."
 msgid "The CSV file has to contain '{}' header."
-msgstr "Het CSV-document moet een 'e-mail'-titel hebben."
+msgstr "Het CSV-document moet een '{}'-titel hebben."
 
 #: admin/controller.py:2801
-#, fuzzy
-#| msgid "The CSV file has to contain 'email' header."
 msgid "The CSV file has to contain '{}' headers."
-msgstr "Het CSV-document moet een 'e-mail'-titel hebben."
+msgstr "Het CSV-document moet een '{}'-titel hebben."
 
 #: admin/forms.py:27
 msgid "Hex code should starts with # and followed by 6 or 8 hex digits."
@@ -3382,7 +3378,7 @@ msgstr ""
 "asterisk"
 
 #: templates/accounts/public_registration.haml:69
-#: templates_v2/accounts/activate.haml:51
+#: templates_v2/accounts/activate.haml:52
 #: templates_v2/accounts/public_registration.haml:85
 msgid "Register"
 msgstr "Registreer"
@@ -11466,18 +11462,18 @@ msgstr ""
 "het instellen van een nieuw wachtwoord."
 
 #: templates/registration/password_reset_form.haml:14
-#: templates_v2/registration/password_reset_form.haml:18
+#: templates_v2/registration/password_reset_form.haml:17
 msgid "Your Email Address:"
 msgstr "Uw e-mailadres:"
 
 #: templates/registration/password_reset_form.haml:17
-#: templates_v2/registration/password_reset_form.haml:20
+#: templates_v2/registration/password_reset_form.haml:21
 msgid "This is the email address you used to register with McKinsey Academy"
 msgstr ""
 "Dit e-mailadres heb je gebruikt om je aan te melden bij McKinsey Academy."
 
 #: templates/registration/password_reset_form.haml:20
-#: templates_v2/registration/password_reset_form.haml:23
+#: templates_v2/registration/password_reset_form.haml:24
 msgid "Reset My Password"
 msgstr "Mijn wachtwoord opnieuw instellen"
 
@@ -12590,8 +12586,8 @@ msgstr "Dienst tijdelijk niet beschikbaar."
 msgid "This cannot be changed later and cannot contain non-English characters."
 msgstr "U kunt dit later niet meer wijzigen."
 
-#: templates_v2/accounts/activate.haml:40
-#: templates_v2/accounts/activate.haml:94
+#: templates_v2/accounts/activate.haml:42
+#: templates_v2/accounts/activate.haml:101
 msgid ""
 "Must be at least 8 characters and include upper and lowercase letters - plus "
 "numbers OR special characters."
@@ -12599,66 +12595,57 @@ msgstr ""
 "Moet ten minste 8 tekens lang zijn en hoofdletters en kleine letters "
 "bevatten, plus cijfers OF speciale tekens."
 
-#: templates_v2/accounts/activate.haml:45
-#, python-format
-msgid ""
-"\n"
-"                I agree to the\n"
-"                %%a{:href => \"/terms/\", :target => \"_blank\"} Terms of "
-"Service\n"
-"                and\n"
-"                %%a{:href => \"/privacy/\", :target => \"_blank\"} Privacy "
-"Policy\n"
-"                "
-msgstr ""
-"\n"
-"                  IIk ga akkoord met de \n"
-"                  %%a{:href => \"/terms/\", :target => \"_blank\"}  "
-"Servicevoorwaarden \n"
-"                  en het \n"
-"                  %%a{:href => \"/privacy/\", :target => \"_blank\"}  "
-"Privacybeleid \n"
-"                  "
+#: templates_v2/accounts/activate.haml:48
+msgid "I agree to the "
+msgstr "IIk ga akkoord met de"
 
-#: templates_v2/accounts/activate.haml:55
+#: templates_v2/accounts/activate.haml:49
+msgid "Terms of Service "
+msgstr "Servicevoorwaarden"
+
+#: templates_v2/accounts/activate.haml:50
+msgid "and "
+msgstr "en het "
+
+#: templates_v2/accounts/activate.haml:51
+msgid "Privacy Policy "
+msgstr "Privacybeleid"
+
+#: templates_v2/accounts/activate.haml:56
 #: templates_v2/accounts/public_registration.haml:89
 msgid "Need help?"
 msgstr "Hulp nodig?"
 
-#: templates_v2/accounts/activate.haml:57
+#: templates_v2/accounts/activate.haml:58
 #: templates_v2/accounts/public_registration.haml:91
 msgid "Read FAQs"
 msgstr "LEES ONZE FAQ'S"
 
-#: templates_v2/accounts/activate.haml:59
+#: templates_v2/accounts/activate.haml:60
 #: templates_v2/accounts/public_registration.haml:93
 #: templates_v2/home/landing.haml:48
 msgid "Email Support"
 msgstr "E-mailsupport"
 
-#: templates_v2/accounts/activate.haml:71
-#: templates_v2/accounts/activate.haml:87
-#: templates_v2/accounts/public_registration.haml:104
-#: templates_v2/accounts/public_registration.haml:120
-#: templates_v2/accounts/public_registration.haml:137
-#: templates_v2/accounts/public_registration.haml:147
-#: templates_v2/accounts/public_registration.haml:164
-#, fuzzy
-#| msgid "First Name is required."
+#: templates_v2/accounts/activate.haml:75
+#: templates_v2/accounts/activate.haml:94
+#: templates_v2/accounts/public_registration.haml:107
+#: templates_v2/accounts/public_registration.haml:127
+#: templates_v2/accounts/public_registration.haml:146
+#: templates_v2/accounts/public_registration.haml:165
+#: templates_v2/accounts/public_registration.haml:185
 msgid "This field is required."
 msgstr "Voornaam is vereist."
 
-#: templates_v2/accounts/activate.haml:77
+#: templates_v2/accounts/activate.haml:82
 #, fuzzy
 #| msgid "Please enter a valid Role."
 msgid "Please enter a valid username."
 msgstr "Voer een geldige functie in."
 
-#: templates_v2/accounts/activate.haml:103
-#, fuzzy
-#| msgid "You must accept terms of service in order to continue"
+#: templates_v2/accounts/activate.haml:113
 msgid "You must accept terms of service in order to continue."
-msgstr "U moet de servicevoorwaarden accepteren om verder te kunnen gaan"
+msgstr "U moet de servicevoorwaarden accepteren om verder te kunnen gaan."
 
 #: templates_v2/accounts/public_registration.haml:23
 #: templates_v2/accounts/public_registration.haml:33
@@ -12678,6 +12665,10 @@ msgstr "Opmerking: persoonlijke e-mailadressen worden niet verwerkt"
 #: templates_v2/accounts/public_registration.haml:74
 msgid "Please choose one of the following options"
 msgstr "kies een van de volgende opties"
+
+#: templates_v2/accounts/public_registration.haml:153
+msgid "This company name cannot contain non-alphanumeric characters!"
+msgstr "Bedrijfsnaam mag alleen alfanumerieke tekens bevatten"
 
 #: templates_v2/accounts/user_profile.haml:11
 msgid "Profile Photo"
@@ -12789,17 +12780,14 @@ msgid "You aren't enrolled in any courses."
 msgstr "U staat voor geen enkele cursus ingeschreven."
 
 #: templates_v2/courses/content_page/courses_menu_list.haml:75
-#, fuzzy
-#| msgid ""
-#| "Your course begins in {days} days. Before the course begins, you can "
-#| "explore this site to learn more about what to expect."
 msgid ""
 "Your course begins in <b><span class=\"numdays\"></span></b> days. Before "
 "the course begins, you can explore this site to learn more about what to "
 "expect."
 msgstr ""
-"Uw cursus begint over {days} dagen. Voordat de cursus begint, kunt u deze "
-"site verkennen voor meer informatie over wat u kunt verwachten."
+"Uw cursus begint over <b><span class=\"numdays\"></span></b> dagen. Voordat "
+"de cursus begint, kunt u deze site verkennen voor meer informatie over wat u "
+"kunt verwachten."
 
 #: templates_v2/courses/content_page/lesson_pager.haml:11
 #: templates_v2/courses/content_page/lesson_pager.haml:15
@@ -12841,10 +12829,8 @@ msgstr "Uw status van cursusvoltooiing:"
 #: templates_v2/courses/course_cohort.haml:176
 #: templates_v2/courses/visualizations/course_proficiency.haml:13
 #: templates_v2/courses/visualizations/course_progress.haml:11
-#, fuzzy
-#| msgid "Cohort Average"
 msgid "Cohort Average:"
-msgstr "Cohortgemiddelde"
+msgstr "Cohortgemiddelde:"
 
 #: templates_v2/courses/course_cohort.haml:29
 msgid "Your progress position"
@@ -12875,10 +12861,9 @@ msgid "Your discussion activity points:"
 msgstr "Uw punten voor discussieactiviteit:"
 
 #: templates_v2/courses/course_cohort.haml:99
-#, fuzzy, python-format
-#| msgid " Average: %(score)s points"
+#, python-format
 msgid " Cohort Average: %(score)s points"
-msgstr " Gemiddelde:%(score)s punten"
+msgstr " Cohortgemiddelde:%(score)s punten"
 
 #: templates_v2/courses/course_cohort.haml:104
 msgid "Your engagement position"
@@ -13090,11 +13075,7 @@ msgid "Group Work (Due Date)"
 msgstr "Groepswerk (deadline)"
 
 #: templates_v2/courses/course_progress_v2.haml:82
-#, fuzzy, python-format
-#| msgid ""
-#| " %(lesson_custom_label)s \n"
-#| "                                  %%span %(lesson_index)s:\n"
-#| "                                "
+#, python-format
 msgid ""
 " %(lesson_custom_label)s\n"
 "                                  %%span %(lesson_index)s:\n"
@@ -13118,14 +13099,7 @@ msgstr ""
 "                                          "
 
 #: templates_v2/courses/course_progress_v2.haml:191
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  Your current proficiency score is <b>%(proficiency)s%%</"
-#| "b> following completion of %(completed_items_count)s of "
-#| "%(graded_items_count)s graded items in this course. The cohort average is "
-#| "<b>%(cohort_proficiency_average)s%%</b>.\n"
-#| "                "
+#, python-format
 msgid ""
 "\n"
 "                  Your current proficiency score is <b>%(proficiency)s</b> "
@@ -13135,10 +13109,10 @@ msgid ""
 "                "
 msgstr ""
 "\n"
-"            Uw huidige vaardigheidsscore is <b>%(proficiency)s%%</b> na "
+"            Uw huidige vaardigheidsscore is <b>%(proficiency)s</b> na "
 "voltooiing van %(completed_items_count)s van %(graded_items_count)s met een "
 "cijfer beoordeelde items in deze cursus. Het cohortgemiddelde is <b>"
-"%(cohort_proficiency_average)s%%</b>."
+"%(cohort_proficiency_average)s</b>."
 
 #: templates_v2/courses/course_progress_v2.haml:198
 #: templates_v2/courses/course_progress_v2.haml:270
@@ -13150,14 +13124,7 @@ msgid "Graded Items"
 msgstr "Met een cijfer beoordeelde items"
 
 #: templates_v2/courses/course_progress_v2.haml:253
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  You need a combined course grade of at least 70%% to "
-#| "earn a certificate of completion. Your final grade is calculated as "
-#| "follows: %(graders)s. <a data-reveal-id='progress_modal'>Click here</a> "
-#| "to read more about how we may share your course information.\n"
-#| "                "
+#, python-format
 msgid ""
 "\n"
 "                  You need a combined course grade of at least 70%% to earn "
@@ -13172,8 +13139,9 @@ msgstr ""
 "\n"
 "            U heeft een gecombineerd cursuscijfer van minstens 70%% nodig om "
 "een certificaat van voltooiing te verkrijgen. Uw eindcijfer wordt als volgt "
-"berekend: %(graders)s. <a data-reveal-id='progress_modal'>Klik hier</a> om "
-"meer te lezen over hoe we uw cursusinformatie kunnen delen."
+"berekend: %(graders)s. %%a.edit-link.ome.dome-c{:data-target => "
+"\"#progressModal\", :data-toggle => \"modal\", :href => \"#\"} Klik hier\n"
+" om meer te lezen over hoe we uw cursusinformatie kunnen delen."
 
 #: templates_v2/courses/course_progress_v2.haml:263
 #, python-format
@@ -13206,8 +13174,6 @@ msgstr "Uw punten voor discussieactiviteit"
 #: templates_v2/courses/visualizations/course_engagement.haml:20
 #: templates_v2/courses/visualizations/course_proficiency.haml:16
 #: templates_v2/courses/visualizations/course_progress.haml:20
-#, fuzzy
-#| msgid "View Details"
 msgid "View details"
 msgstr "Details bekijken"
 
@@ -13400,11 +13366,11 @@ msgid "my courses"
 msgstr "mijn cursussen"
 
 #: templates_v2/home/landing.haml:26
-msgid "Username or Email"
+msgid "Username or email"
 msgstr "Gebruikersnaam of wachtwoord:"
 
-#: templates_v2/home/landing.haml:33 tests/templates_v2/home/landing.haml:36
-msgid "Show Password"
+#: templates_v2/home/landing.haml:33
+msgid "Show password"
 msgstr "Wachtwoord weergeven"
 
 #: templates_v2/home/landing.haml:46 tests/templates_v2/home/landing.haml:49
@@ -13527,6 +13493,10 @@ msgstr "Toonaangevende transformatie"
 msgid "Transforming leaders"
 msgstr "Toonaangevend leiderschap"
 
+#: tests/templates_v2/home/landing.haml:36
+msgid "Show Password"
+msgstr "Wachtwoord weergeven"
+
 #: tests/templates_v2/home/landing.haml:51
 msgid "Email support"
 msgstr "E-mailsupport"
@@ -13570,3 +13540,22 @@ msgstr "Voornaam: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Achternaam: {}"
+
+#~ msgid ""
+#~ "\n"
+#~ "                  I agree to the\n"
+#~ "                  %%a{:href => \"/terms/\", :target => \"_blank\"} Terms "
+#~ "of Service\n"
+#~ "                  and\n"
+#~ "                  %%a{:href => \"/privacy/\", :target => \"_blank\"} "
+#~ "Privacy Policy\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "                  IIk ga akkoord met de\n"
+#~ "                  %%a{:href => \"/terms/\", :target => \"_blank\"}  "
+#~ "Servicevoorwaarden \n"
+#~ "                  en het\n"
+#~ "                  %%a{:href => \"/privacy/\", :target => \"_blank\"} "
+#~ "Privacybeleid\n"
+#~ "                  "

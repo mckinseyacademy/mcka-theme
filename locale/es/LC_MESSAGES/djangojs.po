@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 15:31+0000\n"
+"POT-Creation-Date: 2019-04-25 12:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1180,12 +1180,16 @@ msgstr "Se agregó la fecha"
 msgid "Enrolled In"
 msgstr "Inscrito"
 
-#: static_v2/js/custom.js:110
-msgid "Hide Password"
+#: static_v2/js/application.js:504 static_v2/js/custom.js:125
+#, fuzzy
+#| msgid "Hide Password"
+msgid "Hide password"
 msgstr "Ocultar contraseña"
 
-#: static_v2/js/custom.js:115
-msgid "Show Password"
+#: static_v2/js/application.js:509 static_v2/js/custom.js:130
+#, fuzzy
+#| msgid "Show Password"
+msgid "Show password"
 msgstr "Mostrar contraseña"
 
 #~ msgid "Keyword Search"

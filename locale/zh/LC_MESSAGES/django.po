@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 15:32+0000\n"
+"POT-Creation-Date: 2019-04-25 12:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1119,7 +1119,7 @@ msgid "You must accept terms of service in order to continue"
 msgstr "您必须接受服务条款才能继续"
 
 #: accounts/forms.py:436 accounts/forms.py:494 accounts/forms.py:512
-#: accounts/forms.py:627 admin/controller.py:807 admin/views.py:2694
+#: accounts/forms.py:629 admin/controller.py:807 admin/views.py:2694
 #: marketing/forms.py:47 marketing/forms.py:93 marketing/forms.py:132
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1142,7 +1142,7 @@ msgstr ""
 "公共用户名 {html_span_start} 此用户名不得包含非英文字符，且今后无法更改。"
 "{html_span_end}"
 
-#: accounts/forms.py:453 accounts/forms.py:639
+#: accounts/forms.py:453 accounts/forms.py:641
 #, python-brace-format
 msgid ""
 "Password {html_span_start} Must be at least 8 characters and include upper "
@@ -1196,116 +1196,116 @@ msgstr "密码不符合创建标准。"
 msgid "New password"
 msgstr "新密码"
 
-#: accounts/forms.py:562
+#: accounts/forms.py:563
 msgid "New password confirmation"
 msgstr "新密码确认"
 
-#: accounts/forms.py:592 admin/forms.py:193
+#: accounts/forms.py:594 admin/forms.py:193
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "接受的格式：JPG、PNG 和 GIF"
 
-#: accounts/forms.py:599 templates/admin/course_run/view.haml:63
+#: accounts/forms.py:601 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:91
 #: templates_v2/accounts/public_registration.haml:54
 msgid "First Name"
 msgstr "名字"
 
-#: accounts/forms.py:601
+#: accounts/forms.py:603
 msgid "First Name is required."
 msgstr "名字为必填项。"
 
-#: accounts/forms.py:605
+#: accounts/forms.py:607
 #: templates/admin/participants/participant_details.haml:96
 #: templates_v2/accounts/public_registration.haml:58
 msgid "Last Name"
 msgstr "姓氏"
 
-#: accounts/forms.py:607
+#: accounts/forms.py:609
 msgid "Last Name is required."
 msgstr "姓氏为必填项。"
 
-#: accounts/forms.py:631
+#: accounts/forms.py:633
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later. "
 "{html_span_end}"
 msgstr "公开用户名 {html_span_start} 此用户名今后将无法更改。{html_span_end}"
 
-#: accounts/forms.py:681
+#: accounts/forms.py:683
 #, python-brace-format
 msgid "First Name {html_span}"
 msgstr "名字 {html_span}"
 
-#: accounts/forms.py:685
+#: accounts/forms.py:687
 #, python-brace-format
 msgid "Last Name {html_span}"
 msgstr "姓氏 {html_span}"
 
-#: accounts/forms.py:689
+#: accounts/forms.py:691
 #, python-brace-format
 msgid "Company Name {html_span}"
 msgstr "公司名称 {html_span}"
 
-#: accounts/forms.py:693
+#: accounts/forms.py:695
 #, python-brace-format
 msgid "Company Email {html_span}"
 msgstr "公司电子邮件 {html_span}"
 
-#: accounts/forms.py:697
+#: accounts/forms.py:699
 #, python-brace-format
 msgid "Current Role {html_span}"
 msgstr "当前角色 {html_span}"
 
-#: accounts/forms.py:701
+#: accounts/forms.py:703
 #, python-brace-format
 msgid ""
 "{html_div_start}Note: personal email addresses will not be "
 "processed{html_div_end}"
 msgstr "{html_div_start}注意：个人电子邮件地址不会被处理{html_div_end}"
 
-#: accounts/forms.py:707 accounts/forms.py:713
+#: accounts/forms.py:709 accounts/forms.py:715
 #, python-brace-format
 msgid ""
 "{html_div_start}(please choose one of the following options) {html_div_end}"
 msgstr "{html_div_start}（请选择以下选项之一） {html_div_end}"
 
-#: accounts/forms.py:733 accounts/forms.py:741
-#: templates_v2/accounts/public_registration.haml:110
-#: templates_v2/accounts/public_registration.haml:127
+#: accounts/forms.py:735 accounts/forms.py:743
+#: templates_v2/accounts/public_registration.haml:114
+#: templates_v2/accounts/public_registration.haml:134
 msgid "Special characters or numbers are not valid."
 msgstr "特殊字符或数字无效。"
 
-#: accounts/forms.py:750
+#: accounts/forms.py:752
 msgid "Email must be a string."
 msgstr "电子邮件必须是字符串。"
 
-#: accounts/forms.py:755
+#: accounts/forms.py:757
 #, python-brace-format
 msgid "Email '{email}' must be at least {min} characters long"
 msgstr "电子邮件“{email}”必须至少包含 {min} 个字符"
 
-#: accounts/forms.py:762
+#: accounts/forms.py:764
 #, python-brace-format
 msgid "Email '{email}' must be at most {max} characters long"
 msgstr "电子邮件“{email}”的长度不能超过 {max} 个字符"
 
-#: accounts/forms.py:772
+#: accounts/forms.py:774
 msgid "This email address has already been registered."
 msgstr "此电子邮件地址已被注册。"
 
-#: accounts/forms.py:778
+#: accounts/forms.py:780
 msgid "Email you provided is not allowed."
 msgstr "您提供的电子邮件地址无效。"
 
-#: accounts/forms.py:780 templates_v2/accounts/public_registration.haml:154
+#: accounts/forms.py:782 templates_v2/accounts/public_registration.haml:172
 msgid "Please enter a valid company email address."
 msgstr "请输入有效的公司电子邮件地址。"
 
-#: accounts/forms.py:798
+#: accounts/forms.py:800
 msgid "Special characters are not valid."
 msgstr "特殊字符无效。"
 
-#: accounts/forms.py:817
+#: accounts/forms.py:819
 msgid "Please enter a valid Role."
 msgstr "请输入有效的角色。"
 
@@ -1321,79 +1321,79 @@ msgid ""
 "provided"
 msgstr "使用您提供的注册密钥注册课程时出错"
 
-#: accounts/views.py:362
+#: accounts/views.py:356
 msgid ""
 "Your account has already been activated. Please enter credentials to login"
 msgstr "您的帐户已激活。请输入凭据登录"
 
-#: accounts/views.py:368
+#: accounts/views.py:362
 msgid "Log In"
 msgstr "登录"
 
-#: accounts/views.py:369
+#: accounts/views.py:363
 msgid "Trouble logging in"
 msgstr "登录时遇到问题"
 
-#: accounts/views.py:418 accounts/views.py:447
+#: accounts/views.py:411 accounts/views.py:440
 msgid "Username/email is not recognized. Try again."
 msgstr "无法识别用户名/电子邮件。请重试。"
 
-#: accounts/views.py:439
+#: accounts/views.py:432
 msgid "Please enter a valid password."
 msgstr "请输入有效密码。"
 
-#: accounts/views.py:625 accounts/views.py:693
+#: accounts/views.py:618 accounts/views.py:686
 msgid "Create my McKinsey Academy account"
 msgstr "创建我的麦肯锡学院帐户"
 
-#: accounts/views.py:659
+#: accounts/views.py:652
 msgid "Invalid Activation Code"
 msgstr "激活码无效"
 
-#: accounts/views.py:681
+#: accounts/views.py:674
 msgid "Some required information was missing. Please check the fields below."
 msgstr "缺少一些必填信息。请检查下面的字段。"
 
-#: accounts/views.py:732
+#: accounts/views.py:725
 msgid "No provider data found."
 msgstr "找不到提供程序数据。"
 
-#: accounts/views.py:734
+#: accounts/views.py:727
 msgid "Provider data does not seem valid."
 msgstr "提供程序数据似乎无效。"
 
-#: accounts/views.py:790
+#: accounts/views.py:783
 msgid "Access Key missing."
 msgstr "缺少访问密钥。"
 
-#: accounts/views.py:807 accounts/views.py:814
+#: accounts/views.py:800 accounts/views.py:807
 msgid "Accept"
 msgstr "接受"
 
-#: accounts/views.py:862
+#: accounts/views.py:855
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "无法注册用户：{exception_message}"
 
-#: accounts/views.py:864
+#: accounts/views.py:857
 msgid "Some required information was missing."
 msgstr "缺少一些必要信息。"
 
-#: accounts/views.py:866
+#: accounts/views.py:859
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
 msgstr "缺少身份验证 Cookie。您的会话可能已超时。请重新开始。"
 
-#: accounts/views.py:915
+#: accounts/views.py:908
 msgid "Enter new password"
 msgstr "输入新密码"
 
-#: accounts/views.py:932
+#: accounts/views.py:925
 msgid "Password reset unsuccessful"
 msgstr "密码重置不成功"
 
-#: accounts/views.py:1030 lib/mail.py:133 templates/accounts/activate.haml:16
+#: accounts/views.py:1023 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:273
 #: templates_v2/accounts/sso_terms_of_service.haml:14
@@ -1401,7 +1401,7 @@ msgstr "密码重置不成功"
 msgid "Welcome to McKinsey Academy"
 msgstr "欢迎来到麦肯锡学院"
 
-#: accounts/views.py:1031
+#: accounts/views.py:1024
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1410,7 +1410,7 @@ msgstr ""
 "您的计划将在 {days} 天后开始。在此期间，请浏览该网站了解更多有关此体验的信"
 "息。"
 
-#: accounts/views.py:1035
+#: accounts/views.py:1028
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1419,11 +1419,11 @@ msgstr ""
 "您的课程将在 {days} 天后开始。在课程开始之前，您可以浏览本网站了解更多有关课"
 "程内容的信息。"
 
-#: accounts/views.py:1213 templates_v2/layout.haml:249
+#: accounts/views.py:1206 templates_v2/layout.haml:249
 msgid "Enter your full name"
 msgstr "输入您的全名"
 
-#: accounts/views.py:1215 accounts/views.py:1240 admin/views.py:2006
+#: accounts/views.py:1208 accounts/views.py:1233 admin/views.py:2006
 #: admin/views.py:2040 admin/views.py:4723
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
@@ -1443,7 +1443,7 @@ msgstr "输入您的全名"
 msgid "Save"
 msgstr "保存"
 
-#: accounts/views.py:1238 templates_v2/layout.haml:275
+#: accounts/views.py:1231 templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "输入您的职位"
 
@@ -3316,7 +3316,7 @@ msgid "Complete the fields below. Required fields are noted by an asterisk"
 msgstr "填写以下字段。必填字段带星号标记"
 
 #: templates/accounts/public_registration.haml:69
-#: templates_v2/accounts/activate.haml:51
+#: templates_v2/accounts/activate.haml:52
 #: templates_v2/accounts/public_registration.haml:85
 msgid "Register"
 msgstr "注册"
@@ -10663,17 +10663,17 @@ msgid ""
 msgstr "请在下面输入您的电子邮件地址，我们会向您发送设置新密码的说明。"
 
 #: templates/registration/password_reset_form.haml:14
-#: templates_v2/registration/password_reset_form.haml:18
+#: templates_v2/registration/password_reset_form.haml:17
 msgid "Your Email Address:"
 msgstr "您的电子邮件地址："
 
 #: templates/registration/password_reset_form.haml:17
-#: templates_v2/registration/password_reset_form.haml:20
+#: templates_v2/registration/password_reset_form.haml:21
 msgid "This is the email address you used to register with McKinsey Academy"
 msgstr "这是您用于注册麦肯锡学院的电子邮件地址"
 
 #: templates/registration/password_reset_form.haml:20
-#: templates_v2/registration/password_reset_form.haml:23
+#: templates_v2/registration/password_reset_form.haml:24
 msgid "Reset My Password"
 msgstr "重置我的密码"
 
@@ -11575,67 +11575,64 @@ msgstr "服务器暂时无法使用。"
 msgid "This cannot be changed later and cannot contain non-English characters."
 msgstr "此用户名不得包含非英文字符，且今后无法更改。"
 
-#: templates_v2/accounts/activate.haml:40
-#: templates_v2/accounts/activate.haml:94
+#: templates_v2/accounts/activate.haml:42
+#: templates_v2/accounts/activate.haml:101
 msgid ""
 "Must be at least 8 characters and include upper and lowercase letters - plus "
 "numbers OR special characters."
 msgstr "密码必须至少包含 8 个字符，并且包含大写和小写字母以及数字或特殊字符。"
 
-#: templates_v2/accounts/activate.haml:45
-#, python-format
-msgid ""
-"\n"
-"                I agree to the\n"
-"                %%a{:href => \"/terms/\", :target => \"_blank\"} Terms of "
-"Service\n"
-"                and\n"
-"                %%a{:href => \"/privacy/\", :target => \"_blank\"} Privacy "
-"Policy\n"
-"                "
-msgstr ""
-"\n"
-"我同意\n"
-"   %%a{:href => \"/terms/\", :target => \"_blank\"} 服务条款\n"
-"或\n"
-"%%a{:href => \"/privacy/\", :target => \"_blank\"} 隐私政策\n"
-"                  "
+#: templates_v2/accounts/activate.haml:48
+msgid "I agree to the "
+msgstr "J’accepte les "
 
-#: templates_v2/accounts/activate.haml:55
+#: templates_v2/accounts/activate.haml:49
+msgid "Terms of Service "
+msgstr "服务条款 "
+
+#: templates_v2/accounts/activate.haml:50
+msgid "and "
+msgstr "或 "
+
+#: templates_v2/accounts/activate.haml:51
+msgid "Privacy Policy "
+msgstr "隐私政策"
+
+#: templates_v2/accounts/activate.haml:56
 #: templates_v2/accounts/public_registration.haml:89
 msgid "Need help?"
 msgstr "需要帮助？"
 
-#: templates_v2/accounts/activate.haml:57
+#: templates_v2/accounts/activate.haml:58
 #: templates_v2/accounts/public_registration.haml:91
 msgid "Read FAQs"
 msgstr "阅读常见问题"
 
-#: templates_v2/accounts/activate.haml:59
+#: templates_v2/accounts/activate.haml:60
 #: templates_v2/accounts/public_registration.haml:93
 #: templates_v2/home/landing.haml:48
 msgid "Email Support"
 msgstr "电子邮件支持"
 
-#: templates_v2/accounts/activate.haml:71
-#: templates_v2/accounts/activate.haml:87
-#: templates_v2/accounts/public_registration.haml:104
-#: templates_v2/accounts/public_registration.haml:120
-#: templates_v2/accounts/public_registration.haml:137
-#: templates_v2/accounts/public_registration.haml:147
-#: templates_v2/accounts/public_registration.haml:164
+#: templates_v2/accounts/activate.haml:75
+#: templates_v2/accounts/activate.haml:94
+#: templates_v2/accounts/public_registration.haml:107
+#: templates_v2/accounts/public_registration.haml:127
+#: templates_v2/accounts/public_registration.haml:146
+#: templates_v2/accounts/public_registration.haml:165
+#: templates_v2/accounts/public_registration.haml:185
 #, fuzzy
 #| msgid "First Name is required."
 msgid "This field is required."
 msgstr "名字为必填项。"
 
-#: templates_v2/accounts/activate.haml:77
+#: templates_v2/accounts/activate.haml:82
 #, fuzzy
 #| msgid "Please enter a valid Role."
 msgid "Please enter a valid username."
 msgstr "请输入有效的角色。"
 
-#: templates_v2/accounts/activate.haml:103
+#: templates_v2/accounts/activate.haml:113
 msgid "You must accept terms of service in order to continue."
 msgstr "您必须接受服务条款才能继续"
 
@@ -11657,6 +11654,10 @@ msgstr "注意：不接受个人电子邮件地址。"
 #: templates_v2/accounts/public_registration.haml:74
 msgid "Please choose one of the following options"
 msgstr "请选择以下选项之一"
+
+#: templates_v2/accounts/public_registration.haml:153
+msgid "This company name cannot contain non-alphanumeric characters!"
+msgstr "公司名称只能包含字母数字字符"
 
 #: templates_v2/accounts/user_profile.haml:11
 msgid "Profile Photo"
@@ -11765,17 +11766,13 @@ msgid "You aren't enrolled in any courses."
 msgstr "您没有注册任何课程。"
 
 #: templates_v2/courses/content_page/courses_menu_list.haml:75
-#, fuzzy
-#| msgid ""
-#| "Your course begins in {days} days. Before the course begins, you can "
-#| "explore this site to learn more about what to expect."
 msgid ""
 "Your course begins in <b><span class=\"numdays\"></span></b> days. Before "
 "the course begins, you can explore this site to learn more about what to "
 "expect."
 msgstr ""
-"您的课程将在 {days} 天后开始。在课程开始之前，您可以浏览本网站了解更多有关课"
-"程内容的信息。"
+"您的课程将在 <b><span class=\"numdays\"></span></b> 天后开始。在课程开始之"
+"前，您可以浏览本网站了解更多有关课程内容的信息。"
 
 #: templates_v2/courses/content_page/lesson_pager.haml:11
 #: templates_v2/courses/content_page/lesson_pager.haml:15
@@ -11787,10 +11784,9 @@ msgstr "%(lesson_custom_label)s %(lesson_index)s："
 
 #: templates_v2/courses/content_page/lesson_pager.haml:15
 #: templates_v2/courses/content_page/lesson_pager.haml:29
-#, fuzzy, python-format
-#| msgid "This %(lesson_custom_label)s will unlock on %(start_date)s"
+#, python-format
 msgid "This %(lesson_custom_label)s will unlock on %(start_date)s"
-msgstr "%(lessons_custom_label)s 将于 %(start_date)s 开始"
+msgstr "%(lesson_custom_label)s 将于 %(start_date)s 开始"
 
 #: templates_v2/courses/content_page/lesson_pager.haml:15
 #: templates_v2/courses/content_page/lesson_pager.haml:29
@@ -11850,10 +11846,9 @@ msgid "Your discussion activity points:"
 msgstr "您的讨论活动分数："
 
 #: templates_v2/courses/course_cohort.haml:99
-#, fuzzy, python-format
-#| msgid " Average: %(score)s points"
+#, python-format
 msgid " Cohort Average: %(score)s points"
-msgstr " 平均值：%(score)s 分"
+msgstr " 群组平均值：%(score)s 分"
 
 #: templates_v2/courses/course_cohort.haml:104
 msgid "Your engagement position"
@@ -12086,14 +12081,7 @@ msgstr ""
 "                                          "
 
 #: templates_v2/courses/course_progress_v2.haml:191
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  Your current proficiency score is <b>%(proficiency)s%%</"
-#| "b> following completion of %(completed_items_count)s of "
-#| "%(graded_items_count)s graded items in this course. The cohort average is "
-#| "<b>%(cohort_proficiency_average)s%%</b>.\n"
-#| "                "
+#, python-format
 msgid ""
 "\n"
 "                  Your current proficiency score is <b>%(proficiency)s</b> "
@@ -12104,8 +12092,8 @@ msgid ""
 msgstr ""
 "\n"
 "            在完成本课程中 %(graded_items_count)s 个评分项目中的 "
-"%(completed_items_count)s 个之后，您当前的熟练程度分数是 %(proficiency)s%%。"
-"群组平均分是 %(cohort_proficiency_average)s%%。\n"
+"%(completed_items_count)s 个之后，您当前的熟练程度分数是 %(proficiency)s。群"
+"组平均分是 %(cohort_proficiency_average)s。\n"
 "          "
 
 #: templates_v2/courses/course_progress_v2.haml:198
@@ -12118,14 +12106,7 @@ msgid "Graded Items"
 msgstr "已评分项目"
 
 #: templates_v2/courses/course_progress_v2.haml:253
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  You need a combined course grade of at least 70%% to "
-#| "earn a certificate of completion. Your final grade is calculated as "
-#| "follows: %(graders)s. <a data-reveal-id='progress_modal'>Click here</a> "
-#| "to read more about how we may share your course information.\n"
-#| "                "
+#, python-format
 msgid ""
 "\n"
 "                  You need a combined course grade of at least 70%% to earn "
@@ -12139,8 +12120,9 @@ msgid ""
 msgstr ""
 "\n"
 "            您需要至少 70%% 分的综合课程评分才能获得结业证书。您的最终评分计"
-"算如下：%(graders)s。<a data-reveal-id='progress_modal'>单击此处</a>深入了解"
-"我们如何共享您的课程信息。\n"
+"算如下：%(graders)s。%%a.edit-link.ome.dome-c{:data-target => "
+"\"#progressModal\", :data-toggle => \"modal\", :href => \"#\"} 单击此处\n"
+" 深入了解我们如何共享您的课程信息。\n"
 "          "
 
 #: templates_v2/courses/course_progress_v2.haml:263
@@ -12356,11 +12338,11 @@ msgid "my courses"
 msgstr "我的课程"
 
 #: templates_v2/home/landing.haml:26
-msgid "Username or Email"
+msgid "Username or email"
 msgstr "用户名或电子邮件："
 
-#: templates_v2/home/landing.haml:33 tests/templates_v2/home/landing.haml:36
-msgid "Show Password"
+#: templates_v2/home/landing.haml:33
+msgid "Show password"
 msgstr "显示密码"
 
 #: templates_v2/home/landing.haml:46 tests/templates_v2/home/landing.haml:49
@@ -12471,6 +12453,10 @@ msgstr "引领转型"
 msgid "Transforming leaders"
 msgstr "转变领导者"
 
+#: tests/templates_v2/home/landing.haml:36
+msgid "Show Password"
+msgstr "显示密码"
+
 #: tests/templates_v2/home/landing.haml:51
 msgid "Email support"
 msgstr "电子邮件支持"
@@ -12508,6 +12494,23 @@ msgstr "名字：{}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "姓氏：{}"
+
+#~ msgid ""
+#~ "\n"
+#~ "                  I agree to the\n"
+#~ "                  %%a{:href => \"/terms/\", :target => \"_blank\"} Terms "
+#~ "of Service\n"
+#~ "                  and\n"
+#~ "                  %%a{:href => \"/privacy/\", :target => \"_blank\"} "
+#~ "Privacy Policy\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "我同意\n"
+#~ "   %%a{:href => \"/terms/\", :target => \"_blank\"} 服务条款\n"
+#~ "或\n"
+#~ "%%a{:href => \"/privacy/\", :target => \"_blank\"} 隐私政策\n"
+#~ "                  "
 
 #~ msgid "Initial"
 #~ msgstr "首字母大写"

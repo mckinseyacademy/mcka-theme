@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-24 15:32+0000\n"
+"POT-Creation-Date: 2019-04-25 12:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1122,7 +1122,7 @@ msgid "You must accept terms of service in order to continue"
 msgstr "続行するには、サービス利用規約に同意してください"
 
 #: accounts/forms.py:436 accounts/forms.py:494 accounts/forms.py:512
-#: accounts/forms.py:627 admin/controller.py:807 admin/views.py:2694
+#: accounts/forms.py:629 admin/controller.py:807 admin/views.py:2694
 #: marketing/forms.py:47 marketing/forms.py:93 marketing/forms.py:132
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1145,7 +1145,7 @@ msgstr ""
 "公開ユーザー名 {html_span_start}これは後で変更することができません。また、英"
 "字以外の文字は使用できません。{html_span_end}"
 
-#: accounts/forms.py:453 accounts/forms.py:639
+#: accounts/forms.py:453 accounts/forms.py:641
 #, python-brace-format
 msgid ""
 "Password {html_span_start} Must be at least 8 characters and include upper "
@@ -1199,39 +1199,39 @@ msgstr "パスワードが基準を満たしていません。"
 msgid "New password"
 msgstr "新しいパスワード"
 
-#: accounts/forms.py:562
+#: accounts/forms.py:563
 msgid "New password confirmation"
 msgstr "新しいパスワードの確認"
 
-#: accounts/forms.py:592 admin/forms.py:193
+#: accounts/forms.py:594 admin/forms.py:193
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "対応形式: JPG、PNG、GIF"
 
-#: accounts/forms.py:599 templates/admin/course_run/view.haml:63
+#: accounts/forms.py:601 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:91
 #: templates_v2/accounts/public_registration.haml:54
 msgid "First Name"
 msgstr "名"
 
-#: accounts/forms.py:601
+#: accounts/forms.py:603
 #, fuzzy
 #| msgid "Valid e-mail is required"
 msgid "First Name is required."
 msgstr "有効なEメールが必要です"
 
-#: accounts/forms.py:605
+#: accounts/forms.py:607
 #: templates/admin/participants/participant_details.haml:96
 #: templates_v2/accounts/public_registration.haml:58
 msgid "Last Name"
 msgstr "氏"
 
-#: accounts/forms.py:607
+#: accounts/forms.py:609
 #, fuzzy
 #| msgid "Valid e-mail is required"
 msgid "Last Name is required."
 msgstr "有効なEメールが必要です"
 
-#: accounts/forms.py:631
+#: accounts/forms.py:633
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later. "
@@ -1240,32 +1240,32 @@ msgstr ""
 "公開ユーザー名 {html_span_start}これは後で変更することができません。"
 "{html_span_end}"
 
-#: accounts/forms.py:681
+#: accounts/forms.py:683
 #, python-brace-format
 msgid "First Name {html_span}"
 msgstr "名 {html_span}"
 
-#: accounts/forms.py:685
+#: accounts/forms.py:687
 #, python-brace-format
 msgid "Last Name {html_span}"
 msgstr "氏 {html_span}"
 
-#: accounts/forms.py:689
+#: accounts/forms.py:691
 #, python-brace-format
 msgid "Company Name {html_span}"
 msgstr "会社名 {html_span}"
 
-#: accounts/forms.py:693
+#: accounts/forms.py:695
 #, python-brace-format
 msgid "Company Email {html_span}"
 msgstr "会社Eメール {html_span}"
 
-#: accounts/forms.py:697
+#: accounts/forms.py:699
 #, python-brace-format
 msgid "Current Role {html_span}"
 msgstr "現在のロール {html_span}"
 
-#: accounts/forms.py:701
+#: accounts/forms.py:703
 #, python-brace-format
 msgid ""
 "{html_div_start}Note: personal email addresses will not be "
@@ -1273,49 +1273,49 @@ msgid ""
 msgstr ""
 "{html_div_start}注: 個人のEメールアドレスは処理されません{html_div_end}"
 
-#: accounts/forms.py:707 accounts/forms.py:713
+#: accounts/forms.py:709 accounts/forms.py:715
 #, python-brace-format
 msgid ""
 "{html_div_start}(please choose one of the following options) {html_div_end}"
 msgstr "{html_div_start}(以下から1つ選んでください){html_div_end}"
 
-#: accounts/forms.py:733 accounts/forms.py:741
-#: templates_v2/accounts/public_registration.haml:110
-#: templates_v2/accounts/public_registration.haml:127
+#: accounts/forms.py:735 accounts/forms.py:743
+#: templates_v2/accounts/public_registration.haml:114
+#: templates_v2/accounts/public_registration.haml:134
 msgid "Special characters or numbers are not valid."
 msgstr "特殊文字や数字は無効です。"
 
-#: accounts/forms.py:750
+#: accounts/forms.py:752
 msgid "Email must be a string."
 msgstr "Eメールは文字列であること。"
 
-#: accounts/forms.py:755
+#: accounts/forms.py:757
 #, python-brace-format
 msgid "Email '{email}' must be at least {min} characters long"
 msgstr "Eメール「{email}」は少なくとも{min}文字であること。"
 
-#: accounts/forms.py:762
+#: accounts/forms.py:764
 #, python-brace-format
 msgid "Email '{email}' must be at most {max} characters long"
 msgstr "Eメール「{email}」は最大{max}文字であること。"
 
-#: accounts/forms.py:772
+#: accounts/forms.py:774
 msgid "This email address has already been registered."
 msgstr "このEメールアドレスは既に登録されています。"
 
-#: accounts/forms.py:778
+#: accounts/forms.py:780
 msgid "Email you provided is not allowed."
 msgstr "入力したEメールアドレスは使用できません。"
 
-#: accounts/forms.py:780 templates_v2/accounts/public_registration.haml:154
+#: accounts/forms.py:782 templates_v2/accounts/public_registration.haml:172
 msgid "Please enter a valid company email address."
 msgstr "有効な会社Eメールアドレスを入力してください。"
 
-#: accounts/forms.py:798
+#: accounts/forms.py:800
 msgid "Special characters are not valid."
 msgstr "特殊文字は無効です。"
 
-#: accounts/forms.py:817
+#: accounts/forms.py:819
 msgid "Please enter a valid Role."
 msgstr "有効なロールを入力してください。"
 
@@ -1333,72 +1333,74 @@ msgid ""
 "provided"
 msgstr "入力された登録キーを使ったコース登録でエラーが生じました"
 
-#: accounts/views.py:362
+#: accounts/views.py:356
 msgid ""
 "Your account has already been activated. Please enter credentials to login"
 msgstr ""
 "あなたのアカウントは既に有効になっています。ログインするには、認証情報を入力"
 "してください。"
 
-#: accounts/views.py:368
+#: accounts/views.py:362
 msgid "Log In"
 msgstr "ログイン"
 
-#: accounts/views.py:369
+#: accounts/views.py:363
 msgid "Trouble logging in"
 msgstr "ログインに失敗しました"
 
-#: accounts/views.py:418 accounts/views.py:447
+#: accounts/views.py:411 accounts/views.py:440
+#, fuzzy
+#| msgid "Username/email is not recognised. Try again."
 msgid "Username/email is not recognized. Try again."
 msgstr ""
 "ユーザー名/Eメールアドレスが確認できませんでした。もう一度試してください。"
 
-#: accounts/views.py:439
+#: accounts/views.py:432
 #, fuzzy
 #| msgid "Please enter a valid Role."
 msgid "Please enter a valid password."
 msgstr "有効なロールを入力してください。"
 
-#: accounts/views.py:625 accounts/views.py:693
+#: accounts/views.py:618 accounts/views.py:686
 msgid "Create my McKinsey Academy account"
 msgstr "McKinsey Academyアカウントを作成する"
 
-#: accounts/views.py:659
+#: accounts/views.py:652
 msgid "Invalid Activation Code"
 msgstr "無効なアクティベーションコード"
 
-#: accounts/views.py:681
+#: accounts/views.py:674
 msgid "Some required information was missing. Please check the fields below."
 msgstr "一部の必須情報がありません。以下の欄を確認してください。"
 
-#: accounts/views.py:732
+#: accounts/views.py:725
 msgid "No provider data found."
 msgstr "プロバイダのデータが見つかりません。"
 
-#: accounts/views.py:734
+#: accounts/views.py:727
 msgid "Provider data does not seem valid."
 msgstr "プロバイダのデータが無効です。"
 
-#: accounts/views.py:790
+#: accounts/views.py:783
 msgid "Access Key missing."
 msgstr "アクセスキーがありません。"
 
-#: accounts/views.py:807 accounts/views.py:814
+#: accounts/views.py:800 accounts/views.py:807
 #, fuzzy
 #| msgid "Access"
 msgid "Accept"
 msgstr "アクセス"
 
-#: accounts/views.py:862
+#: accounts/views.py:855
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "ユーザー登録が失敗しました：{exception_message}"
 
-#: accounts/views.py:864
+#: accounts/views.py:857
 msgid "Some required information was missing."
 msgstr "一部の必須情報がありません。"
 
-#: accounts/views.py:866
+#: accounts/views.py:859
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1406,15 +1408,15 @@ msgstr ""
 "認証クッキーがありません。セッションがタイムアウトになりました。最初からやり"
 "直してください。"
 
-#: accounts/views.py:915
+#: accounts/views.py:908
 msgid "Enter new password"
 msgstr "新しいパスワードを入力"
 
-#: accounts/views.py:932
+#: accounts/views.py:925
 msgid "Password reset unsuccessful"
 msgstr "パスワードの再設定に失敗しました"
 
-#: accounts/views.py:1030 lib/mail.py:133 templates/accounts/activate.haml:16
+#: accounts/views.py:1023 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:273
 #: templates_v2/accounts/sso_terms_of_service.haml:14
@@ -1422,7 +1424,7 @@ msgstr "パスワードの再設定に失敗しました"
 msgid "Welcome to McKinsey Academy"
 msgstr "McKinsey Academyへようこそ"
 
-#: accounts/views.py:1031
+#: accounts/views.py:1024
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1431,7 +1433,7 @@ msgstr ""
 "あなたのプログラムは{days}日後に開始します。それまでは、サイト内の各ページの"
 "情報から体験内容をご確認ください。"
 
-#: accounts/views.py:1035
+#: accounts/views.py:1028
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1440,11 +1442,11 @@ msgstr ""
 "あなたのコースは{days}日後に開始します。コースが始まるまでは、サイト内の各"
 "ページの情報から提供内容をご確認ください。"
 
-#: accounts/views.py:1213 templates_v2/layout.haml:249
+#: accounts/views.py:1206 templates_v2/layout.haml:249
 msgid "Enter your full name"
 msgstr "氏名を入力してください"
 
-#: accounts/views.py:1215 accounts/views.py:1240 admin/views.py:2006
+#: accounts/views.py:1208 accounts/views.py:1233 admin/views.py:2006
 #: admin/views.py:2040 admin/views.py:4723
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
@@ -1464,7 +1466,7 @@ msgstr "氏名を入力してください"
 msgid "Save"
 msgstr "保存する"
 
-#: accounts/views.py:1238 templates_v2/layout.haml:275
+#: accounts/views.py:1231 templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "役職を入力してください"
 
@@ -3380,7 +3382,7 @@ msgid "Complete the fields below. Required fields are noted by an asterisk"
 msgstr "以下の欄に入力してください。必須項目にはアスタリスクが付いています"
 
 #: templates/accounts/public_registration.haml:69
-#: templates_v2/accounts/activate.haml:51
+#: templates_v2/accounts/activate.haml:52
 #: templates_v2/accounts/public_registration.haml:85
 msgid "Register"
 msgstr "登録"
@@ -11249,18 +11251,18 @@ msgstr ""
 "ついて、ご連絡いたします。"
 
 #: templates/registration/password_reset_form.haml:14
-#: templates_v2/registration/password_reset_form.haml:18
+#: templates_v2/registration/password_reset_form.haml:17
 msgid "Your Email Address:"
 msgstr "お客様のEメールアドレス:"
 
 #: templates/registration/password_reset_form.haml:17
-#: templates_v2/registration/password_reset_form.haml:20
+#: templates_v2/registration/password_reset_form.haml:21
 msgid "This is the email address you used to register with McKinsey Academy"
 msgstr ""
 "McKinsey Academy登録の際にお客様が使用したEメールアドレスを入力してください"
 
 #: templates/registration/password_reset_form.haml:20
-#: templates_v2/registration/password_reset_form.haml:23
+#: templates_v2/registration/password_reset_form.haml:24
 msgid "Reset My Password"
 msgstr "パスワードを再設定する"
 
@@ -12278,8 +12280,8 @@ msgstr ""
 "公開ユーザー名 {html_span_start}これは後で変更することができません。また、英"
 "字以外の文字は使用できません。{html_span_end}"
 
-#: templates_v2/accounts/activate.haml:40
-#: templates_v2/accounts/activate.haml:94
+#: templates_v2/accounts/activate.haml:42
+#: templates_v2/accounts/activate.haml:101
 #, fuzzy
 #| msgid ""
 #| "Password {html_span_start} Must be at least 8 characters and include "
@@ -12292,56 +12294,63 @@ msgstr ""
 "パスワード {html_span_start}最低8文字で大文字と小文字を含み、数字あるいは特殊"
 "文字も含める必要があります。{html_span_end}"
 
-#: templates_v2/accounts/activate.haml:45
-#, python-format
-msgid ""
-"\n"
-"                I agree to the\n"
-"                %%a{:href => \"/terms/\", :target => \"_blank\"} Terms of "
-"Service\n"
-"                and\n"
-"                %%a{:href => \"/privacy/\", :target => \"_blank\"} Privacy "
-"Policy\n"
-"                "
+#: templates_v2/accounts/activate.haml:48
+msgid "I agree to the "
 msgstr ""
 
-#: templates_v2/accounts/activate.haml:55
+#: templates_v2/accounts/activate.haml:49
+#, fuzzy
+#| msgid "Terms of Service"
+msgid "Terms of Service "
+msgstr "サービス利用規約"
+
+#: templates_v2/accounts/activate.haml:50
+msgid "and "
+msgstr ""
+
+#: templates_v2/accounts/activate.haml:51
+#, fuzzy
+#| msgid "Privacy Policy"
+msgid "Privacy Policy "
+msgstr "プライバシーに関する方針"
+
+#: templates_v2/accounts/activate.haml:56
 #: templates_v2/accounts/public_registration.haml:89
 #, fuzzy
 #| msgid "Need Help?"
 msgid "Need help?"
 msgstr "ヘルプが必要ですか?"
 
-#: templates_v2/accounts/activate.haml:57
+#: templates_v2/accounts/activate.haml:58
 #: templates_v2/accounts/public_registration.haml:91
 msgid "Read FAQs"
 msgstr ""
 
-#: templates_v2/accounts/activate.haml:59
+#: templates_v2/accounts/activate.haml:60
 #: templates_v2/accounts/public_registration.haml:93
 #: templates_v2/home/landing.haml:48
 msgid "Email Support"
 msgstr ""
 
-#: templates_v2/accounts/activate.haml:71
-#: templates_v2/accounts/activate.haml:87
-#: templates_v2/accounts/public_registration.haml:104
-#: templates_v2/accounts/public_registration.haml:120
-#: templates_v2/accounts/public_registration.haml:137
-#: templates_v2/accounts/public_registration.haml:147
-#: templates_v2/accounts/public_registration.haml:164
+#: templates_v2/accounts/activate.haml:75
+#: templates_v2/accounts/activate.haml:94
+#: templates_v2/accounts/public_registration.haml:107
+#: templates_v2/accounts/public_registration.haml:127
+#: templates_v2/accounts/public_registration.haml:146
+#: templates_v2/accounts/public_registration.haml:165
+#: templates_v2/accounts/public_registration.haml:185
 #, fuzzy
 #| msgid "Valid e-mail is required"
 msgid "This field is required."
 msgstr "有効なEメールが必要です"
 
-#: templates_v2/accounts/activate.haml:77
+#: templates_v2/accounts/activate.haml:82
 #, fuzzy
 #| msgid "Please enter a valid Role."
 msgid "Please enter a valid username."
 msgstr "有効なロールを入力してください。"
 
-#: templates_v2/accounts/activate.haml:103
+#: templates_v2/accounts/activate.haml:113
 #, fuzzy
 #| msgid "You must accept terms of service in order to continue"
 msgid "You must accept terms of service in order to continue."
@@ -12374,6 +12383,12 @@ msgstr ""
 #| "{html_div_end}"
 msgid "Please choose one of the following options"
 msgstr "{html_div_start}(以下から1つ選んでください){html_div_end}"
+
+#: templates_v2/accounts/public_registration.haml:153
+#, fuzzy
+#| msgid "Company name can only contain alphanumeric characters"
+msgid "This company name cannot contain non-alphanumeric characters!"
+msgstr "会社名には英数字しか使用できません"
 
 #: templates_v2/accounts/user_profile.haml:11
 #, fuzzy
@@ -13268,13 +13283,13 @@ msgstr "私のコース"
 #: templates_v2/home/landing.haml:26
 #, fuzzy
 #| msgid "Username or Email:"
-msgid "Username or Email"
+msgid "Username or email"
 msgstr "ユーザー名またはEメール:"
 
-#: templates_v2/home/landing.haml:33 tests/templates_v2/home/landing.haml:36
+#: templates_v2/home/landing.haml:33
 #, fuzzy
 #| msgid "Password"
-msgid "Show Password"
+msgid "Show password"
 msgstr "パスワード"
 
 #: templates_v2/home/landing.haml:46 tests/templates_v2/home/landing.haml:49
@@ -13396,6 +13411,12 @@ msgstr "変革をリードし、リーダーを変革させる"
 #: tests/templates_v2/home/landing.haml:14
 msgid "Transforming leaders"
 msgstr ""
+
+#: tests/templates_v2/home/landing.haml:36
+#, fuzzy
+#| msgid "Password"
+msgid "Show Password"
+msgstr "パスワード"
 
 #: tests/templates_v2/home/landing.haml:51
 msgid "Email support"
