@@ -142,3 +142,9 @@
        $(this).parents('.form-group').addClass('focused');
        $('#login').attr("disabled", false);
     });
+
+    if($("#login_id").val() !== "")
+    {
+      $("#login_id").parents('.form-group').addClass('focused');
+       $('#login').attr("disabled", false);
+    }
