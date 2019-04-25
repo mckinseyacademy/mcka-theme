@@ -95,7 +95,7 @@
           sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
         }
         error = true;
-      } else if(! /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)){
+      } else if(! /^(?=.*[\d\W])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)){
         if (alreadyChecked){
           sel.siblings('.error').remove();
           sel.parent().addClass('error');
