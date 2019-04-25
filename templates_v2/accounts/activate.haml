@@ -22,7 +22,7 @@
           - if not registration
             .form-group
               %input.form-control{:disabled => "disabled", :placeholder => "{{company}}", :type => "text"}
-          .form-group.mt-30.position-relative{:class => "{% if username_error %}error{% endif %}"}
+          .form-group.mt-30.position-relative{:class => "{% if username_error %}error{% endif %} {% if form.data.username %}focused{% endif %}"}
             %label{:class => "form-label" , :for => "setUsername"}
               {% trans "Username" %}
             %input.form-control.form-input{:type => "text", :tabindex => "1", :autocomplete => "false", :id => "setUsername", :name => "username", :value => "{{form.data.username}}"}
@@ -32,7 +32,7 @@
                 %small.error.form-text= username_error
               %small.form-text {% trans "This cannot be changed later and cannot contain non-English characters." %}
 
-          .form-group.mt-4.password{:class => "{% if errors.password %}error{% endif %}"}
+          .form-group.mt-4.password{:class => "{% if errors.password %}error{% endif %} {% if form.data.password %}focused{% endif %}"}
             %label{:class => "form-label" , :for => "setPassword"}
               {% trans "Password" %}
             %input#password.form-control.form-input{:name => "password", :type => "password" , :id => "setPassword", :tabindex => "2", :value => "{{form.data.password}}"}
