@@ -235,7 +235,10 @@ footer, main, header, body {
   transition: all ease 0.5s;
 }
 
-body.zoomIn {
+
+
+@media screen and (min-width: 992px){
+  body.zoomIn {
   background: $white;
   main {
     margin: 0;
@@ -266,6 +269,7 @@ body.zoomIn {
       }
     }
   }
+}
 }
 
 @media screen and (max-width: 992px) {
