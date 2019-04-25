@@ -1,6 +1,6 @@
 // submits forms via ajax and re-renders the html
 
-$('form.admin-form').submit(function (event) {
+$('form#program-form.admin-form').submit(function (event) {
     var headers, url,
         programId = $("p[name=program_id").text(),
         form = $(this), data;
@@ -13,7 +13,7 @@ $('form.admin-form').submit(function (event) {
     else {
         url = "/admin/programs/program_new";
     }
-    var data = form.serialize();
+    data = form.serialize();
     event.preventDefault();
     $.ajax({
         url: url,
@@ -33,7 +33,7 @@ $('form.admin-form').submit(function (event) {
                 displayName.addClass('hidden').text('');
                 name.addClass('hidden').text('');
                 data = $.parseJSON(response.responseText);
-                errors = data['errors']
+                errors = data['errors'];
                 if (errors.hasOwnProperty('display_name')) {
                     displayName.removeClass('hidden');
                     displayName.text(data['errors']['display_name'][0]);
