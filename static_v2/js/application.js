@@ -1,3 +1,20 @@
+$('#login_id').on('blur input', function() {
+    $(this).parents('.form-group').addClass('focused');
+    $('#login').attr("disabled", false);
+});
+
+if($("#login_id").val() !== "")
+{
+    $("#login_id").parents('.form-group').addClass('focused');
+    $('#login').attr("disabled", false);
+}
+
+$('#id_email').on('blur input', function() {
+   $(this).parents('.form-group').addClass('focused');
+   $('#reset-password-submit').attr("disabled", false)
+});
+
+
 window.Apros = {
   models: {},
   collections: {},
@@ -412,7 +429,16 @@ $('.editProfileField').on('submit', 'form', function(e) {
         }
         else
         {
-          $('.nameArea span').text(form.find('input[name=first_name]').val() + " " + form.find('input[name=last_name]').val());
+          let fullName = $('.nameArea span');
+          let fName = form.find('input[name=first_name]').val();
+          let lName = form.find('input[name=last_name]').val();
+
+          fullName.text(fName + " " + lName);
+          fullName.attr('firstname', fName);
+          fullName.attr('lastname', lName);
+
+          let initials = fName[0] + lName[0];
+          $('.userNameInitials').text(initials.toUpperCase())
         }
         form.find('input[type=text]').val('');
 
@@ -434,12 +460,12 @@ $('.editProfileField').on('show.bs.modal', function (e) {
     }
   } else {
 
-    var fullName = $('.nameArea span').text().split(" ");
+    let fullName = $('.nameArea span');
     if(fullName.length)
     {
       $(this).find('.form-group').addClass('focused');
-      form.find('input[name=first_name]').val(fullName[0]);
-      form.find('input[name=last_name]').val(fullName[1]);
+      form.find('input[name=first_name]').val(fullName.attr('firstname'));
+      form.find('input[name=last_name]').val(fullName.attr('lastname'));
     }
   }
 
@@ -486,6 +512,21 @@ $('.editProfileField').on('show.bs.modal', function (e) {
       if (self.hasClass('courseRow') && !dragging){
         self.css('background-color', self.children('.description').css('background-color'));
         self.children('.description').css({'opacity': 0, 'visibility': 'hidden',  'display': 'none'});
+      }
+      if(self.hasClass('show-hide')){
+        var text = $(self).text();
+        if (text == 'visibility_off') {
+            $(self).text('visibility');
+            $(self).siblings("input").attr('type', 'text');
+            $(self).attr("data-content", gettext("Hide password"));
+        }
+        else {
+            $(self).text('visibility_off');
+            $(self).siblings("input").attr('type', 'password');
+            $(self).attr("data-content", gettext("Show password"));
+        }
+        event.stopPropagation();
+        event.preventDefault();
       }
       clearTimeout(delay);
     } else {

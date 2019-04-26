@@ -1,7 +1,9 @@
-%p Dear #{username},
+- load i18n
+
+%p {% trans "Dear" %} #{username},
 %p #{template_text}
-%p Please reach out to your McKinsey contact or academy_info@mckinsey.com if you have any further questions.
+%p {% trans "Please reach out to your McKinsey contact or academy_info@mckinsey.com if you have any further questions." %}
 %p
-  Best,
+  {% trans "Best," %}
   %br
   McKinsey Academy

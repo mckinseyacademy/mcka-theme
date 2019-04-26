@@ -2,7 +2,7 @@
 - load staticfiles
 
 - for course in courses
-  .col-sm-12.col-md-6.col-lg-4{"class": "{% if not courseended and not course.started %}future-course{% endif %}"}
+  .col-sm-12.col-md-6.col-lg-4.course-card{"class": "{% if not courseended and not course.started %}future-course{% endif %}", 'data-course_id': '#{course.id}'}
     %a.d-block#course-navigation{:href => "#{course.nav_url}", 'data-numdays': '#{course.days_till_start}'}
       .card.ome{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img
@@ -24,7 +24,9 @@
                 {% trans "est. time" %} {{course.effort}}
             - else
               %span.lesson-count
-                = course.total_lessons
+                %span
+                  %span.spinner-border.spinner-border-sm{"aria-hidden": "true", 'role': "status"}
+
                 {% trans "Lessons" %}
             %span.course-progress
               {{course.percent_complete}}%
@@ -40,7 +42,27 @@
     $(e.target).attr('src', '/static/image/default-course-image.png');
   });
 
-
+  $(function() {
+    var course_ids = [];
+    $('.course-card').each(function() {
+        course_ids.push($(this).data('course_id'));
+    });
+    for (var i = 0; i < course_ids.length;) {
+      var data = {
+        'course_ids': course_ids.slice(i, i+=100).join(',')
+      };
+      $.ajax({
+        url: '/courses/lessons_count/',
+        method: 'GET',
+        data: data,
+        success: function(response) {
+          $.each(response, function(course_id, lessons_count) {
+            $('.course-card[data-course_id="'+ course_id +'"] .lesson-count span').html(lessons_count);
+          });
+        }
+      });
+    }
+  });
 
 / Modal
 #future-modal.middleSize.modal.fade{:aria-hidden => "true", :aria-labelledby => "exampleModalLabel", :role => "dialog", :tabindex => "-1"}

@@ -280,15 +280,14 @@ def get_courses_tree(course_ids):
     Retrieves course structure information from the API for specified course
     '''
     edx_oauth2_session = get_oauth2_session()
-    qs_params = {"course_ids": ",".join(course_ids)}
-    url = '{}/{}/?{}'.format(
-        settings.API_SERVER_ADDRESS,
-        COURSES_TREE_API,
-        urlencode(qs_params)
-    )
-    response = edx_oauth2_session.get(url)
+    request_data = {'course_ids': course_ids}
 
-    return CJP.from_json(response.text)
+    url = '{}/{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSES_TREE_API
+    )
+    response = edx_oauth2_session.post(url, json=request_data)
+    return CJP.from_dictionary(response.json())
 
 
 @api_error_protect

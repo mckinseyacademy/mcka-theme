@@ -1,0 +1,150 @@
+- extends "layout.haml"
+- load i18n
+- comment "This template is used /accounts/activate (normal registration)"
+
+- block page_title
+  %title {% trans "Register | McKinsey Academy" %}
+
+- block header
+  - include 'accounts/login_header.haml'
+
+- block content
+  .container.activation
+    .row.justify-content-center
+      .col-lg-7.col-md-12.form.border-top-main
+        %h4 {% trans "Create your McKinsey Academy account" %}
+        %form#reg{action: "", method: "POST", :autocomplete => "off"}
+          - csrf_token
+          .form-group
+            %input.form-control{:disabled => "disabled", :placeholder => "{{user.email}}", :type => "text"}
+          .form-group
+            %input.form-control{:disabled => "disabled", :placeholder => "{{user.full_name}}", :type => "text"}
+          - if not registration
+            .form-group
+              %input.form-control{:disabled => "disabled", :placeholder => "{{company}}", :type => "text"}
+          .form-group.mt-30.position-relative{:class => "{% if username_error %}error{% endif %} {% if form.data.username %}focused{% endif %}"}
+            %label{:class => "form-label" , :for => "setUsername"}
+              {% trans "Username" %}
+            %input.form-control.form-input{:type => "text", :tabindex => "1", :autocomplete => "false", :id => "setUsername", :name => "username", :value => "{{form.data.username}}"}
+              %i.material-icons.ico-state
+                error
+              - if username_error
+                %small.error.form-text= username_error
+              %small.form-text {% trans "This cannot be changed later and cannot contain non-English characters." %}
+
+          .form-group.mt-4.password{:class => "{% if errors.password %}error{% endif %} {% if form.data.password %}focused{% endif %}"}
+            %label{:class => "form-label" , :for => "setPassword"}
+              {% trans "Password" %}
+            %input#password.form-control.form-input{:name => "password", :type => "password" , :id => "setPassword", :tabindex => "2", :value => "{{form.data.password}}"}
+            %i#show-hide.show-hide.material-icons.longTapPopover{"data-container": "body", "data-content": "{% trans 'Show Password' %}", "data-placement": "bottom", "data-toggle": "popover"} visibility_off
+            %i.material-icons.ico-state
+              error
+            %small.form-text {% trans "Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters." %}
+          .form-group.form-check.mt-4.agreement{:class => "{% if errors.accept_terms %}error{% endif %}"}
+            %label.form-check-label{:for => "agree"}
+              %input#agree.form-check-input{:type => "checkbox", :name => "accept_terms"}
+                %span.checkmark
+                %span
+                  {% trans "I agree to the " %}
+                  %a{:href => "/terms/", :target => "_blank"} {% trans "Terms of Service " %}
+                  {% trans "and " %}
+                  %a{:href => "/privacy/", :target => "_blank"} {% trans "Privacy Policy " %}
+          %button.btn.btn-primary.btn-lg.mt-3.registration_submit{:type => "submit", :disabled => "disabled"} {% trans "Register" %}
+          .form-footer
+            %ul.nav
+              %li.nav-item
+                {% trans "Need help?" %}
+              %li.nav-item
+                %a.nav-link{:href => "/faq/", :target => "_blank"} {% trans "Read FAQs" %}
+              %li.nav-item
+                %a.nav-link{:href => "mailto:support@mckinseyacademy.com"} {% trans "Email Support" %}
+
+
+- block js_snippets
+  :javascript
+    function checkFormForErrors(){
+      let error = false;
+      let sel = $('[name="username"]');
+      let value = sel.val();
+      let alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
+
+      if(value === undefined || value.length === 0){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
+        }
+        error = true;
+      } else if(! /^([a-zA-Z0-9\-_]*)$/.test(value)){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "Please enter a valid username." %}</small>');
+        }
+        error = true;
+      }
+
+      sel = $('[name="password"]');
+      value = sel.val();
+      alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
+      if(value === undefined || value.length === 0){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
+        }
+        error = true;
+      } else if(! /^(?=.*[\d\W])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(value)){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parent().addClass('error');
+          sel.after('<small class="error form-text">{% trans "Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters." %}</small>');
+        }
+        error = true;
+      }
+
+
+      sel = $('[name="accept_terms"]');
+      alreadyChecked = $(sel).parents('.form-group[changed]').length > 0;
+      if(!sel.is(":checked")){
+        if (alreadyChecked){
+          sel.siblings('.error').remove();
+          sel.parents('.form-group').addClass('error');
+          sel.siblings(":last").after('<small class="error form-text">{% trans "You must accept terms of service in order to continue." %}</small>');
+
+        }
+        error = true;
+      }
+      return error;
+    }
+    $('#reg').submit(function(event) {
+      if (checkFormForErrors()){
+        event.preventDefault()
+      }
+    });
+
+    $('form, select, input').on('keyup change', function(e) {
+      $(this).parents('.form-group').removeClass('error');
+      $(this).siblings('.error').remove();
+      if (checkFormForErrors()){
+        $('.registration_submit').attr('disabled', true);
+      } else {
+        $('.registration_submit').attr('disabled', false);
+      }
+      $(this).parents('.form-group').attr('changed', true);
+    });
+
+
+    window.onload = function(){
+      setTimeout(loadAfterTime, 1000)
+    };
+    function loadAfterTime()
+    {
+        if ($('input:-webkit-autofill')) {
+            $('input:-webkit-autofill').each(function () {
+                $(this).parents('.form-group').addClass('focused');
+                $('#login').attr("disabled", false);
+            });
+        }
+    }
+

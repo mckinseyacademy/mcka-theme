@@ -1,12 +1,15 @@
 .modal {
   &.reset-password {
+    form.white {
+      margin-top: 15px;
+    }
     .form-group + .form-group {
       margin-top: 18px !important;
     }
     .form-group {
       small {
         font-size: 87% !important;
-        color: #9D9D9D;
+        color: $hard-gray;
       }
     }
 
@@ -62,6 +65,9 @@
         position: absolute;
         margin: 0;
         top: 25px;
+        @include media-breakpoint-between(xs, sm) {
+          top: 15px;
+        }
       }
       .ok-close {
         position: relative;
@@ -80,6 +86,28 @@
     margin: 0 auto;
     top: 50%;
     transform: translateY(-50%) !important;
+  }
+}
+
+.modal-with-ok {
+  .modal-dialog {
+    .modal-content {
+      padding-top: 45px;
+    }
+
+    .modal-header {
+      h4 {
+        margin-bottom: 20px;
+      }
+    }
+
+    .modal-body {
+      padding-bottom: 30px;
+
+      .btn {
+        margin-top: 45px;
+      }
+    }
   }
 }
 

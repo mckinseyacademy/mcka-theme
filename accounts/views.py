@@ -28,7 +28,6 @@ from django.utils.translation import ugettext as _
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST, require_http_methods
 from django.views.decorators.clickjacking import xframe_options_exempt
-from django.forms.widgets import HiddenInput
 from django.views.decorators.cache import never_cache
 from django.template.loader import render_to_string
 from io import BytesIO
@@ -37,6 +36,8 @@ from django.shortcuts import resolve_url
 from django.utils.http import urlsafe_base64_decode
 from django.utils.dateformat import format
 from django.template.response import TemplateResponse
+from django.utils.http import is_safe_url
+from django.http import Http404
 
 from util.url_helpers import get_referer_from_request
 from api_client import user_api
@@ -54,7 +55,7 @@ from api_data_manager.user_data import UserDataManager
 from lib.context_processors import add_edx_notification_context
 from util.i18n_helpers import set_language
 from util.user_agent_helpers import is_mobile_user_agent
-
+from util.data_sanitizing import clean_xss_characters
 from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistrationRequest
 from .middleware import thread_local
 from .controller import (
@@ -115,6 +116,9 @@ def _validate_path(redirect_to):
         logger = logging.getLogger(__name__)
         logger.error('Invalid Redirect: {}'.format(redirect_to))
         raise
+    else:
+        if not is_safe_url(redirect_to):
+            raise Http404('Invalid Redirect: {}'.format(redirect_to))
 
 
 def _get_stored_image_url(request, image_url):
@@ -170,7 +174,7 @@ def _get_redirect_to_current_course(request, sso_user=False):
         user_ld_courses = [user_course for user_course in user_courses if user_course.learner_dashboard]
         user_ld_courses = sorted(user_ld_courses, key=lambda x: x.id.lower())
         user_course_with_ld = next(iter(user_ld_courses), None)
-        last_visited_ld = request.session.get('last_visited_course', None)
+        last_visited_ld = user_data.current_ld_course
         if last_visited_ld:
             for user_ld_course in user_ld_courses:
                 if user_ld_course.id == last_visited_ld:
@@ -202,7 +206,13 @@ def _process_authenticated_user(request, user, activate_account=False):
         thread_local.get_basic_user_data(user.id)
 
     redirect_to = _get_redirect_to(request)
-    _validate_path(redirect_to)
+
+    # if redirect path is invalid then we don't do go there
+    # and don't raise exception either so user flow don't disturb
+    try:
+        _validate_path(redirect_to)
+    except (Http404, Resolver404):
+        redirect_to = None
 
     request.session["remote_session_key"] = user.session_key
     auth.login(request, user)
@@ -276,9 +286,15 @@ def _expire_session_cookies(response):
 
 
 def _get_mobile_url_scheme(request):
-    return request.GET.get(
+    scheme = request.GET.get(
         'mobile_url_scheme',
         request.COOKIES.get(MOBILE_URL_SCHEME_COOKIE, None))
+
+    # ensure only on of allowed schemes is passed
+    if scheme and scheme not in settings.MOBILE_URL_SCHEMES:
+        return settings.MOBILE_URL_SCHEMES[0]
+
+    return scheme
 
 
 def _build_mobile_redirect_response(request, data):
@@ -306,25 +322,6 @@ def fill_email_and_redirect(request, redirect_url):
     redirect_url_with_email = urlparse.urlunparse(url_parts)
 
     return HttpResponseRedirect(redirect_url_with_email)
-
-
-def login(request):
-    ''' handles requests for login form and their submission '''
-    request.session['ddt'] = False  # Django Debug Tool session key init.
-
-    # Redirect IE to home page, login not available
-    if 'HTTP_USER_AGENT' in request.META:
-        ua = request.META['HTTP_USER_AGENT'].lower()
-        if re.search('msie [1-8]\.', ua):  # noqa: W605 TODO: handle invalid escape sequence
-            return HttpResponseRedirect('/')
-
-    if request.method == 'POST':  # If the form has been submitted...
-        return login_post_view(request)
-
-    elif request.method == 'GET':
-        return login_get_view(request)
-
-    return HttpResponseNotAllowed(permitted_methods=('GET', 'POST'))
 
 
 def login_get_view(request):
@@ -358,15 +355,14 @@ def login_get_view(request):
     if account_activate_check:
         data["activation_message"] = _("Your account has already been activated. Please enter credentials to login")
 
-    data["login_id"] = request.GET.get('login_id', '')
+    data["login_id"] = clean_xss_characters(request.GET.get('login_id', ''))
     data["form"] = form or LoginForm()
     data["login_mode"] = login_mode
     data["error"] = error
     data["login_label"] = _("Log In")
     data["contact_subject"] = quote(_("Trouble logging in").encode('utf8'))
 
-    response = render(request, 'accounts/login.haml', data)
-
+    response = render(request, 'home/landing.haml', data)
     _append_login_mode_cookie(response, login_mode)
 
     # if loading the login page
@@ -412,7 +408,7 @@ def login_post_view(request):
 
             # Invalid or missing username/email
             return JsonResponse({
-                "login_id": _("Username/email is not recognised. Try again.")
+                "login_id": _("Username/email is not recognized. Try again.")
             }, status=403)
 
         # normal login
@@ -433,7 +429,7 @@ def login_post_view(request):
                 return response
             else:
                 return JsonResponse({
-                    "password": _("Password doesn't match our records. Try again.")
+                    "password": _("Please enter a valid password.")
                 }, status=403)
 
         except ApiError as err:
@@ -441,7 +437,7 @@ def login_post_view(request):
 
     # If form validation fails it's due to a longer than 255-char username
     return JsonResponse({
-        "login_id": _("Username/email is not recognised. Try again.")
+        "login_id": _("Username/email is not recognized. Try again.")
     }, status=403)
 
 
@@ -564,12 +560,11 @@ def activate(request, activation_code, registration=None):
         if user.is_active:
             raise
 
-        # get registration object to prepopulate/hide fields in form if user came from registration form
         if registration:
             try:
-                registration_request = PublicRegistrationRequest.objects.get(company_email=user.email)
+                PublicRegistrationRequest.objects.get(company_email=user.email)
             except Exception:
-                registration_request = None
+                registration = None
 
         for field_name in VALID_USER_FIELDS:
             if field_name == "full_name":
@@ -612,33 +607,18 @@ def activate(request, activation_code, registration=None):
 
             except ActivationError as activation_error:
                 error = activation_error.value
-                form.fields["company"].widget = HiddenInput()
-                form.fields["title"].widget = HiddenInput()
-        elif not error:
-            if registration:
-                form.fields["company"].widget = HiddenInput()
-                form.fields["title"].widget = HiddenInput()
-            error = _("Some required information was missing. Please check the fields below.")
     else:
         form = ActivationForm(user_data, initial=initial_data)
-
-        # set focus to username field
-        form.fields["username"].widget.attrs.update({'autofocus': 'autofocus'})
-
-        if registration:
-            form.fields["company"].widget = HiddenInput()
-            form.fields["title"].widget = HiddenInput()
-            if registration_request:
-                form.fields["title"].widget.attrs.update({'readonly': 'readonly'})
-                initial_data["full_name"] = registration_request.first_name + " " + registration_request.last_name
-                initial_data["title"] = registration_request.current_role
 
     data = {
         "user": user,
         "form": form,
-        "error": error,
+        "username_error": error,
         "activation_code": activation_code,
         "activate_label": _("Create my McKinsey Academy account"),
+        "company": initial_data.get("company"),
+        "registration": registration,
+        "errors": form.errors
     }
     return render(request, 'accounts/activate.haml', data)
 
@@ -902,7 +882,7 @@ def sso_error(request):
 @ajaxify_http_redirects
 def reset_confirm(request, uidb64=None, token=None,
                   template_name='registration/password_reset_confirm.haml',
-                  post_reset_redirect='/accounts/login?reset=complete',
+                  post_reset_redirect='/?reset=complete',
                   set_password_form=SetNewPasswordForm, extra_context=None):
     """
     View that checks the hash in a password reset link and presents a
@@ -959,7 +939,7 @@ def reset(request, is_admin_site=False,
           password_reset_form=FpasswordForm,
           email_template_name='registration/password_reset_email.haml',
           subject_template_name='registration/password_reset_subject.haml',
-          post_reset_redirect='/accounts/login?reset=done',
+          post_reset_redirect='/?reset=done',
           from_email=settings.APROS_EMAIL_SENDER,
           extra_context=None):
 
@@ -986,7 +966,7 @@ def reset(request, is_admin_site=False,
             email = form.cleaned_data["email"]
             users = user_api.get_users(email=email)
             if len(users) < 1:
-                post_reset_redirect = '/accounts/login?reset=failed'
+                post_reset_redirect = '/?reset=failed'
             form.save(**opts)
             return HttpResponseRedirect(post_reset_redirect)
     else:
@@ -1090,7 +1070,22 @@ def public_home(request):
         mobile_popup_data = get_mobile_app_download_popup_data(request)
         data.update(mobile_popup_data)
 
-    return render(request, 'home/landing.haml', data)
+    ''' handles requests for login form and their submission '''
+    request.session['ddt'] = False  # Django Debug Tool session key init.
+
+    # Redirect IE to home page, login not available
+    if 'HTTP_USER_AGENT' in request.META:
+        ua = request.META['HTTP_USER_AGENT'].lower()
+        if re.search('msie [1-8]\.', ua):  # noqa: W605 TODO: handle invalid escape sequence
+            return HttpResponseRedirect('/')
+
+    if request.method == 'POST':  # If the form has been submitted...
+        return login_post_view(request)
+
+    elif request.method == 'GET':
+        return login_get_view(request)
+
+    return HttpResponseNotAllowed(permitted_methods=('GET', 'POST'))
 
 
 @login_required
@@ -1316,7 +1311,7 @@ def demo_registration(request, course_run_name):
     except ObjectDoesNotExist:
         course_run = None
 
-    registration_status = _("Initial")
+    registration_status = "Initial"
 
     if course_run:
         if request.method == 'POST':
@@ -1344,22 +1339,23 @@ def demo_registration(request, course_run_name):
 
                 if (course_run.total_participants >= course_run.max_participants) or not course_run.is_open:
                     _process_course_run_closed(registration_request, course_run)
-                    registration_status = _("Course Closed")
+                    registration_status = "Course Closed"
 
                 # if existing user, send user object
-                if registration_status == _("Initial"):
+                if registration_status == "Initial":
                     try:
                         if not registration_request.new_user:
                             process_registration_request(request, registration_request, course_run, users[0])
                         else:
                             process_registration_request(request, registration_request, course_run)
-                        registration_status = _("Registered")
+                        registration_status = "Registered"
                     except ValueError:
-                        registration_status = _("Error")
+                        registration_status = "Error"
         else:
             form = PublicRegistrationForm(course_run_name=course_run_name)
 
         data = {
+            'errors': form.errors,
             'form': form,
             'course_run_name': course_run_name,
             'course_run': course_run,

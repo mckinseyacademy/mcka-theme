@@ -1,13 +1,15 @@
-%p Dear #{username},
+- load i18n
+
+%p {% trans "Dear" %} #{username},
 %p #{template_text}
 %p
-  %strong To access the course, click the following link:
+  %strong {% trans "To access the course, click the following link:" %}
 %p
   #{link}
 %p
-  Note that you must be on the McKinsey Network or VPN to access the course. Please contact our team at support@mckinseyacademy.com if you experience any technical issues.
+  {% trans "Note that you must be on the McKinsey Network or VPN to access the course. Please contact our team at support@mckinseyacademy.com if you experience any technical issues." %}
 
 %p
-  Best,
+  {% trans "Best," %}
   %br
   McKinsey Academy

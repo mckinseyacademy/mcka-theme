@@ -4,7 +4,6 @@ input:not([type='checkbox']) {
   border-radius: 0;
   border: 1px solid $gray;
   box-shadow: none;
-  max-width: 292px;
   &:disabled {
     border: 0;
     opacity: 0.9;
@@ -16,14 +15,22 @@ input:not([type='checkbox']) {
   }
 }
 
+input:not([type='checkbox']),
+input:not([type='radio']),
+input:not([type='file']) {
+  &::-ms-clear,
+  &::-ms-reveal{
+    display: none !important;
+    width: 0;
+    height: 0;
+  }
+}
+
 form {
 
   .form-group {
     position: relative;
     margin-bottom:1.5rem;
-    //& + .form-group {
-    //  margin-top: 30px;
-    //}
     .ico-state {
       visibility: hidden;
       transition: all ease 0.3s;
@@ -31,15 +38,15 @@ form {
     }
     .ico-state {
       position: absolute;
-      right: 10px;
       top: 13px;
       content: '';
     }
-    #show-hide {
+    #show-hide,.show-hide {
       visibility: visible;
       position: absolute;
-      right: 10px;
+      color: $lighter-gray;
       top: 14px;
+      cursor: pointer;
     }
     small {
       font-size: 90%;
@@ -67,16 +74,11 @@ form {
       visibility: visible;
       transform: scale(1);
     }
-    input:not([type='checkbox']) {
-      padding-right: 50px;
-    }
 
-    #show-hide {
+    #show-hide,.show-hide {
       visibility: hidden;
     }
-
   }
-
   &.white {
     .form-group {
       &.success {
@@ -89,7 +91,8 @@ form {
           visibility: visible;
         }
         label {
-          visibility: hidden;
+          //visibility: hidden;
+          color: $bg-white-green !important;
         }
       }
       &.error {
@@ -103,7 +106,6 @@ form {
       }
     }
   }
-
   &.black {
     .form-group {
       &.success {
@@ -115,7 +117,7 @@ form {
           color: $bg-black-green !important;
         }
         label {
-          visibility: hidden;
+          //visibility: hidden;
         }
       }
       &.error {
@@ -139,4 +141,24 @@ form {
     }
   }
 
+  .error {
+    input:-webkit-autofill,
+    input:-internal-autofill-selected,
+    input:-webkit-autofill:hover,
+    input:-webkit-autofill:focus textarea:-webkit-autofill,
+    textarea:-webkit-autofill:hover textarea:-webkit-autofill:focus,
+    select:-webkit-autofill,
+    select:-webkit-autofill:hover,
+    select:-webkit-autofill:focus {
+      border: 1px solid $gray;
+      -webkit-text-fill-color: $bg-white-red;
+      -webkit-box-shadow: none;
+      background-color: $white !important;
+    }
+  }
+  button{
+    &:disabled{
+      background: $gray !important;
+    }
+  }
 }

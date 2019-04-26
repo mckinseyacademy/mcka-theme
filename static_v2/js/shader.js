@@ -124,10 +124,13 @@ $(".ome").mouseenter(function (e) {
         target.css(colorProp, dc);
     }
 }).mouseleave(function (e) {
+
     e = e || window.event;
     var target;
     var colorProp;
     var sel = $(e.currentTarget);
+    if(sel.hasClass('dome-active'))
+        return
     if (sel.hasClass('dome-bc')) {
         target = sel;
         colorProp = 'background-color';

@@ -2,11 +2,11 @@ button.btn,
 a.btn {
   font-weight: 600;
   font-size: 12px;
+  letter-spacing: 0.02em;
   height: 40px;
   border-radius: 2px;
   text-transform: uppercase;
   line-height: 1.83;
-  letter-spacing: 0.5px;
   text-align: center;
   padding: 0 20px;
   border:0;
@@ -95,11 +95,11 @@ a.btn {
 a.btn {
   font-weight: 600;
   font-size: 12px;
+  letter-spacing: 0.02em;
   height: 40px;
   border-radius: 2px;
   text-transform: uppercase;
   line-height: 1.83;
-  letter-spacing: 0.5px;
   text-align: center;
   padding: 0 20px;
   line-height: 40px;
@@ -114,7 +114,8 @@ a.btn {
 
   /*============= Disable Button =====================*/
 
-  &:disabled {
+  &:disabled,
+  &.disabled {
     background: $gray;
     opacity: 1;
     border-color: $gray;
@@ -131,25 +132,17 @@ a.btn {
   }
 }
 
-.btn-primary:not(:disabled):not(.disabled):active,
-.btn-primary:not(:disabled):not(.disabled).active,
-.show>.btn-primary.dropdown-toggle {
-  color: unset;
-  background-color: unset;
-  border-color: unset;
-}
-
 
 // button for extend
 
 %button {
   font-weight: 600;
   font-size: 12px;
+  letter-spacing: 0.02em;
   height: 40px;
   border-radius: 2px;
   text-transform: uppercase;
   line-height: 1.83;
-  letter-spacing: 0.5px;
   text-align: center;
   padding: 0 20px;
   color:$white;
@@ -177,5 +170,12 @@ a.btn {
           color: $white;
           box-shadow: inset 0 0 0 30px rgba(0,0,0,0);
       }
+  }
+}
+
+.btn.disabled {
+  &[class*="outline"] {
+    border-color: $gray !important;
+    color: $gray !important;
   }
 }

@@ -96,7 +96,7 @@
     margin-bottom: 5px;
     padding: 0 15px;
     h5 {
-      margin: 15px;
+      margin: 15px 15px 8px;
     }
   }
 
@@ -220,6 +220,7 @@
   margin: 0;
   list-style: none;
   &.onPage {
+    margin-top: -15px;
     > .courseRow {
       overflow: hidden;
     }
@@ -677,6 +678,7 @@ blockquote {
         }
         .data.status {
           width: 24px !important;
+          height: 24px !important;
           font-size: 0;
           float: right;
         }

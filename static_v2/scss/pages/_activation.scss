@@ -22,12 +22,12 @@
       small{
         font-size: 90%;
         color: $gray;
+        visibility: visible;
       }
       &.agreement{
         label{
           font-size: 0.9rem;
           color: $black;
-          margin-left: 3px;
         }
       }
       .password{
@@ -47,7 +47,7 @@
         }
       }
       .checkmark{
-        top: 2px;
+        top: 3px;
       }
       .label-animate{
         position: absolute;
@@ -66,6 +66,25 @@
       &.mt-30{
         margin-top: 1.9rem;
       }
+
+      &.error{
+        small.error{
+          color: $bg-white-red;
+        }
+        small:not(.error){
+          display: none;
+        }
+        .form-label{
+          color: $bg-white-red;
+        }
+        i {
+          color: $bg-white-red;
+        }
+        input {
+          border-color: $bg-white-red;
+          @extend .text-danger;
+        }
+      }
     }
   }
   .form-footer{
@@ -79,17 +98,26 @@
       a{
         font-weight: 400;
         padding: 0;
+        text-transform: none;
         font-size: 0.88rem;
+
       }
       &:first-child{
         padding-left: 0;
       }
     }
   }
-  .modal-dialog{
-    .modal-content{
-      padding: 20px;
+  button{
+    &:disabled{
+      background: $gray !important;
     }
+  }
+}
+
+#confirmation_registration {
+  button.ok-close {
+    width: 85px;
+    margin: auto;
   }
 }
 

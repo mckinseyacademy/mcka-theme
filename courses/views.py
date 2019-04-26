@@ -63,7 +63,7 @@ from .user_courses import (
     check_user_course_access, load_course_progress,
     check_company_admin_user_access,
     set_current_course_for_user, check_course_shell_access,
-    get_program_menu_list, get_course_menu_list
+    get_program_menu_list, get_course_menu_list, CURRENT_LD_COURSE_ID
 )
 
 _progress_bar_dictionary = {
@@ -96,6 +96,9 @@ def course_landing_page(request, course_id):
         if not new_ui_enabled:
             set_current_course_for_user(request, course_id, course_landing_page_flag=True)
         redirect_url = '/learnerdashboard/' + str(learner_dashboard.id)
+        user_api.set_user_preferences(request.user.id, {
+            CURRENT_LD_COURSE_ID: course_id
+        })
         return HttpResponseRedirect(redirect_url)
 
     set_current_course_for_user(request, course_id, course_landing_page_flag=True)
@@ -1204,7 +1207,6 @@ def course_learner_dashboard(request, learner_dashboard_id):
     if settings.LEARNER_DASHBOARD_ENABLED:
         try:
             learner_dashboard = LearnerDashboard.objects.get(pk=learner_dashboard_id)
-            request.session['last_visited_course'] = learner_dashboard.course_id
         except ObjectDoesNotExist:
             return HttpResponse(status=404)
     else:
@@ -1528,28 +1530,6 @@ def courses(request):
     renders user courses menu on click from frontend
     """
     raw_courses = get_course_menu_list(request)
-
-    user = request.user
-    is_admin = any([user.is_mcka_admin, user.is_mcka_subadmin])
-    courses_lesson_count = CourseDataManager.get_lessons_count(raw_courses)
-
-    for raw_course in raw_courses:
-        roles = request.user.get_roles_on_course(raw_course.display_id)
-        roles = [role.role for role in roles]
-        is_staff = 'staff' in roles or 'instructor' in roles
-        course = CourseDataManager(raw_course.display_id)
-
-        lesson_count = courses_lesson_count.get(course.course_id, {}).get(COURSE_PROPERTIES.TOTAL_LESSONS)
-        staff_tools_count = courses_lesson_count.get(course.course_id, {}).get(COURSE_PROPERTIES.TOTAL_STAFF_TOOLS)
-
-        if is_staff and is_admin:
-            if lesson_count is not None and staff_tools_count is not None:
-                raw_course.total_lessons = lesson_count + staff_tools_count
-            else:
-                raw_course.total_lessons = '-'
-        else:
-            raw_course.total_lessons = lesson_count if lesson_count is not None else '-'
-
     completions = get_course_completions(username=request.user.username, page_size=0, extra_fields=None)
     for raw_course in raw_courses:
         completion = completions.get(raw_course.display_id)
@@ -1579,3 +1559,40 @@ def course_lessons_menu(request, course_id):
     course_tree_builder.include_progress_data(course)
 
     return render(request, 'courses/content_page/lesson_menu.haml', dict(course=course))
+
+
+@login_required
+def course_lessons_count(request):
+    """
+    Renders courses lesson counts
+    """
+    course_ids = request.GET.get('course_ids', None)
+    course_ids = course_ids.split(',')
+
+    user = request.user
+    is_admin = any([user.is_mcka_admin, user.is_mcka_subadmin])
+    courses_roles = request.user.get_roles_on_courses(course_ids)
+    courses_lesson_count = CourseDataManager.get_lessons_count(course_ids)
+
+    data = {}
+
+    for course_id in course_ids:
+        roles = courses_roles.get(course_id, [])
+        roles = [role.role for role in roles]
+        is_staff = 'staff' in roles or 'instructor' in roles
+
+        lesson_count = courses_lesson_count.get(course_id, {}).get(COURSE_PROPERTIES.TOTAL_LESSONS)
+        staff_tools_count = courses_lesson_count.get(course_id, {}).get(COURSE_PROPERTIES.TOTAL_STAFF_TOOLS)
+
+        if is_staff and is_admin:
+            if lesson_count is not None and staff_tools_count is not None:
+                data[course_id] = lesson_count + staff_tools_count
+            else:
+                data[course_id] = '-'
+        else:
+            data[course_id] = lesson_count if lesson_count is not None else '-'
+
+    return HttpResponse(
+        json.dumps(data),
+        content_type='application/json'
+    )

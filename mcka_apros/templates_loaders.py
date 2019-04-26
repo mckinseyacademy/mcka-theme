@@ -32,7 +32,7 @@ class CustomLoader:
         dirs = getattr(self, 'dirs', None) or self.engine.dirs
         request = thread_local.get_current_request()
         if not hasattr(request, 'user') or not request.user.is_authenticated:
-            return dirs
+            return settings.TEMPLATE_NEW_DIRS + dirs
 
         if thread_local.get_basic_user_data(request.user.id).get('new_ui_enabled'):
             if old_ui_for_admin_page(request) or request.resolver_match.view_name in OLD_UI_TEMPLATES:

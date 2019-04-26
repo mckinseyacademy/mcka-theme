@@ -26,52 +26,12 @@ if (typeof COURSE_MAIN_PAGE === "undefined")
 
 $(document).on("scorm_shell_activate", function()
 {
-    const scormShellTimeoutAlertInterval = 30; //offset in sec
-    const timeoutAlertMessage = gettext('It looks like you\'re not active. Click OK to keep working.');
-    const refreshUserSessionURL = '/accounts/refresh_user_session';
-
     if (COURSE_MAIN_PAGE && SCORM_SHELL)
     {
         SendGradebookToScormShell();
         SendProgressToScormShell();
         SendCompletionToScormShell();
         SendFullGradebookToScormShell();
-    }
-
-    if (SCORM_SHELL) {
-      // Show alert before timeout when in scorm shell
-      launchScormShellTimeoutAlertTimer(scormShellTimeoutAlertInterval);
-    }
-
-    function launchScormShellTimeoutAlertTimer(offset) {
-      window.setTimeout(function(){
-          handleScormShellAlertTimeout();
-        }, (getTimeoutSeconds() - offset) * 1000)
-    }
-
-    function handleScormShellAlertTimeout() {
-      if (isTimeOutValid(scormShellTimeoutAlertInterval)) {
-        showAlertInScormShell()
-      }
-      else {
-        launchScormShellTimeoutAlertTimer(scormShellTimeoutAlertInterval)
-      }
-    }
-
-    function showAlertInScormShell() {
-      let didPressOk = window.confirm(timeoutAlertMessage);
-      if (didPressOk) {
-          refreshUserSession();
-      }
-    }
-
-    function refreshUserSession() {
-      $.ajax({
-        type: 'GET',
-        url: refreshUserSessionURL
-      }).done( function(data){
-          launchScormShellTimeoutAlertTimer(scormShellTimeoutAlertInterval);
-      });
     }
 });
 

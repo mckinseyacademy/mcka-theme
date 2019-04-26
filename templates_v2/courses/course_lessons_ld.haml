@@ -27,16 +27,16 @@
                     = course.current_lesson.name
                   %h2
                     - if lesson_custom_label and modules_custom_label
-                      %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                      %a.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
                         = course.current_module.name
                     - elif lesson_custom_label
-                      %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+                      %a.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
                         = course.current_module.name
                     - elif modules_custom_label
-                      %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+                      %a.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
                         = course.current_module.name
                     - else
-                      %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
+                      %a.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
                         = course.current_module.name
 
                     .dropdown-menu.allLessons.allModules{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}

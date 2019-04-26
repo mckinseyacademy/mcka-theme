@@ -1,11 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="17px" height="29px" viewBox="0 0 17 29" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.6 (67491) - http://www.bohemiancoding.com/sketch -->
-    <title>Path</title>
-    <desc>Created with Sketch.</desc>
-    <g id="McKA---1440-2-Login-TH-01·15·2019" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Login-Step0" transform="translate(-734.000000, -193.000000)" fill="#FFFFFF" fill-rule="nonzero">
-            <polygon id="Path" points="734.333923 194.745883 735.666077 193.254117 750.894741 206.853386 750.894741 208.345152 735.666077 221.94442 734.333923 220.452654 748.727336 207.599269"></polygon>
-        </g>
+<svg xmlns="http://www.w3.org/2000/svg" width="16.56" height="28.69" viewBox="0 0 16.56 28.69">
+  <g id="login-arrow" transform="translate(-0.34 -0.25)">
+    <g id="Login-Step0">
+      <path id="Path" d="M14.73,14.6.34,27.45l1.33,1.49L16.9,15.34V13.85L1.67.25.34,1.74Z"/>
     </g>
+  </g>
 </svg>

@@ -1,14 +1,16 @@
-%p Dear #{username},
+- load i18n
+
+%p {% trans "Dear" %} #{username},
 %p #{template_text}
 %p
-  You already have an account with McKinsey Academy associated with this email address.
-  To access the course, click the following link and login with your credentials.
+  {% trans "You already have an account with McKinsey Academy associated with this email address." %}
+  {% trans "To access the course, click the following link and login with your credentials." %}
   %p
   #{link}
   %p
-    If you've forgotten your credentials, please click the "Forgot Password?" link and follow the on-screen instructions.
-%p Please contact our team at support@mckinseyacademy.com if you experience any technical issues.
+    {% trans "If you've forgotten your credentials, please click the 'Forgot Password?' link and follow the on-screen instructions." %}
+%p {% trans "Please contact our team at support@mckinseyacademy.com if you experience any technical issues." %}
 %p
-  Best,
+  {% trans "Best," %}
   %br
   McKinsey Academy

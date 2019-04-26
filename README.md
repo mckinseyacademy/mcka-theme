@@ -1,6 +1,6 @@
 
 
-mcka-apros   [![codecov](https://img.shields.io/codecov/c/token/bN22sHuE49/gh/mckinseyacademy/mcka_apros.svg?label=Python%20codecoverage&logo=codecov)](https://codecov.io/gh/mckinseyacademy/mcka_apros)
+mcka-apros   [![codecov](https://codecov.io/gh/mckinseyacademy/mcka_apros/branch/development/graph/badge.svg?token=bN22sHuE49)](https://codecov.io/gh/mckinseyacademy/mcka_apros)
 ==========
 
 Mckinsey Academy custom front end application

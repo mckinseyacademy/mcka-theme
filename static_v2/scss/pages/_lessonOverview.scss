@@ -1,4 +1,50 @@
 // Lesson Overview or Details page styling
+body{
+  &.moduleArrow{
+    .lessonOverview{
+      .arrowPin {
+        transition: all ease 0.7s;
+        pointer-events: none;
+        cursor: none;
+        &.disable{
+          background: var(--primary) !important;
+        }
+        &.left {
+          left: -82px;
+          opacity: 1;
+          right: auto;
+          > span {
+            opacity: 1;
+            i {
+              left: 62px;
+            }
+          }
+        }
+        &.right {
+          right: -82px;
+          left: auto;
+          opacity: 1;
+          > span {
+            opacity: 1;
+            i {
+              right: 62px;
+            }
+          }
+        }
+        > span {
+          opacity: 1;
+          visibility: visible;
+          i {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 100px;
+          }
+        }
+      }
+    }
+  }
+}
 .lessonOverview {
   position: relative;
 
@@ -7,6 +53,17 @@
   }
   .contentCard {
     padding: 30px;
+    .headerArea{
+      .forModule {
+        &:after {
+          border: 1px solid var(--primary);
+          line-height: 1;
+          padding: 0 2px;
+          border-radius: 2px;
+          margin-top:-3px;
+        }
+      }
+    }
   }
 
   .lessonContentWrap {
@@ -81,7 +138,6 @@
       }
     }
     &:hover {
-      //background:  var(--primary);
       > span {
         opacity: 1;
         visibility: visible;
@@ -179,7 +235,10 @@ footer, main, header, body {
   transition: all ease 0.5s;
 }
 
-body.zoomIn {
+
+
+@media screen and (min-width: 992px){
+  body.zoomIn {
   background: $white;
   main {
     margin: 0;
@@ -210,6 +269,7 @@ body.zoomIn {
       }
     }
   }
+}
 }
 
 @media screen and (max-width: 992px) {

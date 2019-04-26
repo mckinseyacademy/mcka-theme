@@ -33,13 +33,10 @@ header {
   background-color: $white;
 
   .language-selector {
-    float: right;
-    padding-left: 5px;
     height: 70px;
     width: 80px;
     line-height: 70px;
-    color: var(--secondary);
-    border-left: 1px solid $light-gray;
+    color: $black;
 
     .dropdown {
       display: inline-block;
@@ -55,6 +52,13 @@ header {
           outline: none;
         }
       }
+      .dropdown-item {
+        &:active,
+        &:focus {
+          background-color: transparent !important;
+          color: $black;
+        }
+      }
     }
 
     i {
@@ -64,14 +68,11 @@ header {
   }
 
   &.appHeader {
-    margin: 0 0 35px;
-    border-bottom-color: #ccc;
+    margin: 0 0 30px;
+    border-bottom-color: $mid-gray;
 
     .dropdown-menu {
-      top: 44px !important;
-      @include media-breakpoint-down(sm) {
-        top: 34px !important
-      }
+      top: 55px !important;
     }
     > a {
       display: block;
@@ -180,6 +181,7 @@ header {
     .edit-link {
       color: var(--primary);
       font-size: 12px;
+      letter-spacing: 0.02em;
       line-height: 17px;
       font-weight: 400;
     }
@@ -221,6 +223,7 @@ header {
       display: block;
       color: $black;
       font-size: 12px;
+      letter-spacing: 0.02em;
       font-weight: 600;
       line-height: 17px;
       margin-top: 7px;
@@ -284,6 +287,7 @@ header {
         height: 17px;
         color: $gray;
         font-size: 12px;
+        letter-spacing: 0.02em;
         line-height: 17px;
         margin: 0 10px 0 0;
       }
@@ -317,14 +321,29 @@ header {
         .dropdown {
           button {
             background: transparent;
-            color: $white;
+            color: $black;
           }
         }
       }
 
       i {
-        color: $white;
+        color: $black;
       }
+    }
+  }
+
+  header {
+    .language-selector {
+      border: 0;
+      .dropdown {
+        button {
+          background: transparent;
+          color: $black;
+        }
+      }
+    }
+    i {
+      color: $black;
     }
   }
 
@@ -441,7 +460,7 @@ header {
       color: $black;
       font-size: 2rem;
       font-weight: 300;
-      line-height: 40px;
+      line-height: 1.15;
       margin: 0;
       padding: 0 0 11px;
 
@@ -488,6 +507,7 @@ header {
     > a {
       color: var(--primary);
       font-size: 0.75rem;
+      letter-spacing: 0.02em;
       font-weight: normal;
       line-height: 17px;
       background: inherit;
@@ -538,10 +558,6 @@ header {
         }
       }
     }
-  }
-
-  .courseNavWrap {
-    margin: 0 -5px;
   }
 
   .pn-ProductNav {
@@ -601,6 +617,10 @@ header {
   header {
     height: 67.61px;
     &.appHeader {
+      margin-bottom: 0;
+      &.has-dashboard {
+        margin-bottom: 35px;
+      }
       padding: 0 15px;
       .topRightArea {
         margin-top: 10px;
@@ -626,6 +646,7 @@ header {
 
   .courseNavWrap {
     padding: 14px 0 0;
+    margin: 0 -5px;
   }
 
   .courseMainHeader {
@@ -691,6 +712,7 @@ header {
       h1 {
         text-align: center;
         font-size: 12px;
+        letter-spacing: 0.02em;
         line-height: 17px;
         font-weight: 600;
         text-transform: uppercase;
@@ -732,6 +754,12 @@ header {
     .dropdown-menu{
       top: 22px !important;
     }
+  }
+}
+
+.nav {
+  li {
+    a { letter-spacing: 0.02em;}
   }
 }
 

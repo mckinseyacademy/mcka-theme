@@ -7,6 +7,7 @@ import hashlib
 import random
 from datetime import datetime, timedelta
 
+import collections
 import dateutil
 from django.db import models as db_models
 from django.contrib.auth.models import AbstractUser
@@ -29,6 +30,8 @@ class RemoteUser(AbstractUser):
         if session_key is not None:
             self.session_key = session_key
         self.fullname = u"{} {}".format(user_response.first_name, user_response.last_name)
+        self.first_name = user_response.first_name
+        self.last_name = user_response.last_name
         self.email = user_response.email
         self.username = user_response.username
         self.id = user_response.id
@@ -61,6 +64,14 @@ class RemoteUser(AbstractUser):
     def get_roles_on_course(self, course_id):
         roles = self.get_roles()
         return [role for role in roles if role.course_id == course_id]
+
+    def get_roles_on_courses(self, course_ids):
+        raw_roles = self.get_roles()
+        roles = collections.defaultdict(list)
+        for raw_role in raw_roles:
+            if raw_role.course_id in course_ids:
+                roles[raw_role.course_id] += [raw_role]
+        return roles
 
     @staticmethod
     def cached_fetch(user_id):

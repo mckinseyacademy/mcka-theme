@@ -462,7 +462,7 @@ class BaseRegistrationForm(AcceptTermsForm):
     full_name = forms.CharField(max_length=512, required=False, label=_("Full Name"))
     title = forms.CharField(max_length=255, required=False, label=_("Title"), validators=[RoleTitleValidator()])
     city = forms.CharField(
-        max_length=255, required=True, widget=forms.TextInput(attrs={'required': True}),
+        max_length=255, required=False, widget=forms.TextInput(attrs={'required': False}),
         label=mark_safe_lazy(format_lazy(
             _('City {html_span}'),
             html_span='<span class="required-field"></span>')),
@@ -558,9 +558,11 @@ class SetNewPasswordForm(forms.Form):
         'password_validation': _("Password doesn't match creation criteria."),
     }
     new_password1 = forms.CharField(label=_("New password"),
-                                    widget=forms.PasswordInput)
+                                    widget=forms.PasswordInput(attrs={'class': "form-control form-input pswd1",
+                                                                      'autocomplete': "off"}))
     new_password2 = forms.CharField(label=_("New password confirmation"),
-                                    widget=forms.PasswordInput)
+                                    widget=forms.PasswordInput(attrs={'class': "form-control form-input pswd2",
+                                                                      'autocomplete': "off"}))
 
     def __init__(self, user, *args, **kwargs):
         self.user = user

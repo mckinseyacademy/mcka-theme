@@ -2,8 +2,18 @@ body, html{
   position: relative;
   min-height: 100%;
   min-width: 320px;
+  width: auto !important;
+  margin: auto !important;
 }
-a{ outline : none;}
+a{
+  outline : none;
+  &:active,
+  &:focus,
+  &:visited{
+    outline: 0;
+    text-decoration: none !important;
+  }
+}
 
 .row{
   >.col{

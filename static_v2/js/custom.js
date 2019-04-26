@@ -1,9 +1,65 @@
-$(document).ready(function() {
+$(document).ready(function () {
+
+    if($(".reset-password #id_email").val() !== "")
+    {
+        $('#reset-password-submit').attr("disabled", false);
+        $(".reset-password #id_email").parents('.form-group').addClass('focused');
+    }
+
+
+    $("#login_id").on("keyup", function () {
+        $('#login').attr("disabled", false);
+        var user_name = $(".user_name_element");
+        $(user_name).removeClass("success").removeClass("error");
+        $(this).get(0).setCustomValidity("");
+        var password = $(".user_password_element");
+        if(!$(password).hasClass("d-none")) {
+            $(password).addClass("d-none");
+            $('.forgot-pswd-link').toggleClass('d-none');
+            $(".login-page").removeClass("login-with-password");
+            $("input[name=password]").val("");
+        }
+    });
+
+    $(".reset-password #id_email").on("keyup", function ()
+    {
+        $('#reset-password-submit').attr("disabled", false);
+    });
+
+    $("#id_new_password1").on("keyup", function ()
+    {
+        if($('#id_new_password1').val() !== "" && $('#id_new_password2').val() !== "")
+        {
+            $('#reset-password-done').attr("disabled", false);
+        }
+    });
+
+    $("#id_new_password2").on("keyup", function ()
+    {
+        if($('#id_new_password1').val() !== "" && $('#id_new_password2').val() !== "")
+        {
+            $('#reset-password-done').attr("disabled", false);
+        }
+    });
+
+
+    $("#password").on("keyup", function () {
+        $('#login').attr("disabled", false);
+        var user_password = $(".user_password_element");
+        $(user_password).removeClass("success").removeClass("error");
+        $(this).get(0).setCustomValidity("");
+    });
+
+    $('#password-reset-done, #password-reset-complete, #password-reset-failed').on('hidden.bs.modal', function () {
+        if(window.location.href.indexOf("?"))
+            window.location.href =  window.location.href.split("?")[0];
+    });
+
     if ($(window).width() < 992 && $('.leaderboards-list .col').length === 3) {
         $('.leaderboards-list .col').removeClass('col').addClass('col-12');
     }
 
-    $('#pnProductNavContents>ul> li').not(":has(.dropdown-menu)").click(function() {
+    $('#pnProductNavContents>ul> li').not(":has(.dropdown-menu, .dropdown-toggle)").click(function() {
         $('#pnProductNavContents>ul> li.active').removeClass('active');
         $(this).addClass('active');
     });
@@ -13,15 +69,6 @@ $(document).ready(function() {
         $(this).addClass('active');
     });
 
-     $('.ld-nav ul>li a').click(function(e) {
-
-        $('.ld-nav li.active').addClass('previous');
-        $('.ld-nav li.active').removeClass('active');
-
-        var $parent = $(this).parent();
-        $parent.addClass('active');
-        $parent.removeClass('previous');
-    });
 
     $("#lessons-content").on('click', function(e) {
         if ($(e.target).hasClass('load-course-lessons')) {
@@ -65,17 +112,26 @@ $(document).ready(function() {
         $('#password').addClass('active');
     });
 
+    var isMobile = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+    $('#show-hide, .show-hide').click(function () {
+        if (isMobile){
+            return
+        }
 
-    $('#show-hide').click(function() {
-        var text = $('#show-hide').text();
+        var text = $(this).text();
         if (text == 'visibility_off') {
-            $('#show-hide').text('visibility')
-            $('#password-visibility').attr('type', 'text');
-        } else {
-            $('#show-hide').text('visibility_off');
-            $('#password-visibility').attr('type', 'password');
+            $(this).text('visibility');
+            $(this).siblings("input").attr('type', 'text');
+            $(this).attr("data-content", gettext("Hide password"));
+        }
+        else {
+            $(this).text('visibility_off');
+            $(this).siblings("input").attr('type', 'password');
+            $(this).attr("data-content", gettext("Show password"));
         }
     });
+
+
     //Input Placeholder become label
 
     $('input').focus(function() {
@@ -87,6 +143,9 @@ $(document).ready(function() {
         if (inputValue == "") {
             $(this).removeClass('filled');
             $(this).parents('.form-group').removeClass('focused');
+            $('#login').attr('disabled', 'disabled');
+            $('#reset-password-submit').attr("disabled", 'disabled');
+            $('#reset-password-done').attr("disabled", "disabled");
         } else {
             $(this).addClass('filled');
         }
@@ -222,14 +281,12 @@ $(document).ready(function() {
         $("#crop-save #spinner").addClass("spinner-border-sm").addClass("spinner-border");
     });
 
-
     //  New featre Modal (disable scrolling on body)
     $('.carousel-control-next').click(function(){ $('.carousel').carousel('next')});
-    $('.carousel-control-prev').click(function(){ $('.carousel').carousel('prev')});
 
+    $('.carousel-control-prev').click(function(){ $('.carousel').carousel('prev')});
     //  KeyBoard Controls Activation For New FeatureTour Modal
     jQuery(document).bind('keyup', function (e) {
-        console.log(event.keyCode);
         if (e.keyCode == 39) {
             jQuery('.carousel-control-next').trigger('click');
         }
@@ -558,6 +615,14 @@ smoothNavLinks();
 
 
 $(window).on("load", function () {
+
+    setTimeout(function () {
+        $(".login").trigger('click');
+        let value = $("input[type='text'], input[type='password']").val();
+        if (value && value.length > 0) {
+            $("input[type='text'], input[type='password']").trigger("click");
+        }
+     }, 2000);
 
     // Preloaders for platform
     $('.loader').removeClass("donut-loader").removeClass("loader");

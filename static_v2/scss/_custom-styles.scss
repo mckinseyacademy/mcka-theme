@@ -27,6 +27,7 @@
 @import "common/inputFile";
 @import "common/nav-animation";
 @import "common/checkbox";
+@import "common/radio";
 @import "common/dropdown";
 @import "common/notification-popup";
 @import "common/nav";
@@ -35,6 +36,7 @@
 //========= Page's styles ========= //
 @import "pages/login";
 @import "pages/activation";
+@import "pages/resetPassword";
 @import "pages/static";
 @import "pages/resourses";
 @import "pages/courses";

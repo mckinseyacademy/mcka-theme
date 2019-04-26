@@ -57,8 +57,15 @@ $(document).ready(function(){
   $(".editPhotoModal").on('hidden.bs.modal', function () {
     removeCropper();
   });
+
   $('.file-select-button').on('click', function() {
       $('.browseProfilePhoto').click();
   });
+
+  if (SCORM_SHELL){
+    $('.footer.ome a').attr("href", "javascript:void(0)");
+    $('.footer.ome a').addClass("disabled btn-outline-secondary");
+  }
+
 });
 

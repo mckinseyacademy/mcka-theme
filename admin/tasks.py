@@ -1150,9 +1150,8 @@ def create_tile_progress_data(tile_id):
     completions = course_api.get_course_completions(link['course_id'], page_size=1000)
     for user in users:
         course = get_course_object(user['id'], link['course_id'])
-        user_completions = completions.get(user['username'], None)
-        if course and user_completions:
-            update_progress(tile, user, course, user_completions, link)
+        if course and completions:
+            update_progress(tile, user, course, completions, link)
     return True
 
 

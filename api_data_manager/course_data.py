@@ -128,7 +128,7 @@ class CourseDataManager(DataManager):
         return self.get_cached_data(cache_property)
 
     @staticmethod
-    def get_lessons_count(courses):
+    def get_lessons_count(course_ids):
         """
         Retrieves count of lessons in given courses
 
@@ -146,7 +146,7 @@ class CourseDataManager(DataManager):
 
             return any([_is_staff_tool(c) for c in chapter.children])
 
-        course_data_managers = [CourseDataManager(course.id) for course in courses]
+        course_data_managers = [CourseDataManager(cid) for cid in course_ids]
 
         # map from cache keys to course
         course_cache_keys_map = dict()
@@ -181,27 +181,23 @@ class CourseDataManager(DataManager):
             cache_data_to_set = {}
 
             for course_tree in courses_tree:
-                for raw_course in courses:
-                    if course_tree.id != raw_course.display_id:
-                        continue
+                course_tree = course_detail_processing(course_tree)
+                course_tree = clean_course_content(course_tree, course_tree.id)
 
-                    course_tree = course_detail_processing(course_tree)
-                    course_tree = clean_course_content(course_tree, course_tree.id)
+                staff_tools = len([c for c in course_tree.chapters if _is_staff_tool(c)])
 
-                    staff_tools = len([c for c in course_tree.chapters if _is_staff_tool(c)])
+                course = CourseDataManager(course_tree.id)
 
-                    course = CourseDataManager(raw_course.display_id)
+                cache_data_to_set.update({
+                    course.get_cache_key(COURSE_PROPERTIES.TOTAL_LESSONS): len(course_tree.chapters) - staff_tools,
+                    course.get_cache_key(COURSE_PROPERTIES.TOTAL_STAFF_TOOLS): staff_tools
+                })
 
-                    cache_data_to_set.update({
-                        course.get_cache_key(COURSE_PROPERTIES.TOTAL_LESSONS): len(course_tree.chapters) - staff_tools,
-                        course.get_cache_key(COURSE_PROPERTIES.TOTAL_STAFF_TOOLS): staff_tools
-                    })
-
-                    # keep in a dict, so we don't need to read it again from cache
-                    lesson_counts[course.course_id] = {
-                        COURSE_PROPERTIES.TOTAL_LESSONS: len(course_tree.chapters) - staff_tools,
-                        COURSE_PROPERTIES.TOTAL_STAFF_TOOLS: staff_tools
-                    }
+                # keep in a dict, so we don't need to read it again from cache
+                lesson_counts[course.course_id] = {
+                    COURSE_PROPERTIES.TOTAL_LESSONS: len(course_tree.chapters) - staff_tools,
+                    COURSE_PROPERTIES.TOTAL_STAFF_TOOLS: staff_tools
+                }
 
             if cache_data_to_set:
                 cache.set_many(cache_data_to_set, timeout=CourseDataManager.cache_expire_time)

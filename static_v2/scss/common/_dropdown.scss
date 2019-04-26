@@ -19,6 +19,7 @@
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.4);
   border-radius: 0;
   font-size: 0.75rem;
+  letter-spacing: 0.02em;
   line-height: 17px;
   min-width: 176px;
   top: 6px;
@@ -30,6 +31,7 @@
   > a {
     color: var(--primary);
     font-size: 0.75rem;
+    letter-spacing: 0.02em;
     line-height: 17px;
     background: inherit;
     border-top: 1px solid $gray-border;
@@ -95,6 +97,7 @@
           &.title {
             width: 170px;
             font-size: 0.75rem;
+            letter-spacing: 0.02em;
             position: relative;
           }
 
@@ -142,6 +145,7 @@
     .totalNumber{
       display: block;
       font-size: 0.75rem;
+      letter-spacing: 0.02em;
       line-height: 17px;
       color: $black;
       font-weight: 600;
@@ -157,6 +161,7 @@
           display: block;
           color: var(--primary);
           font-size: 0.75rem;
+          letter-spacing: 0.02em;
           font-weight: normal;
           line-height: 17px;
           background: inherit;
@@ -278,6 +283,8 @@
       &.allLessons .allCoursesList .holder .data.status {
         font-size: 0;
         float: right;
+        width: 25px;
+        height: 25px;
       }
       &.allLessons .allCoursesList .holder .data.title {
         width: calc(100% - 110px);

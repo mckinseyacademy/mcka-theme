@@ -73,6 +73,11 @@ body {
       @include right (30px);
     }
   }
+  .language-selector {
+    @include padding-left(5px);
+    @include float(right);
+    @include border-left(1px solid $light-gray);
+  }
 }
 
 // Navbar
@@ -257,7 +262,7 @@ body {
         }
         .lesson-count,
         .course-effort {
-          @include margin-right(1.5vw);
+          @include margin-right(30px);
         }
       }
     }
@@ -366,6 +371,13 @@ body {
   }
 }
 
+.contentCard {
+  .headerArea {
+    h2 {
+      @include padding-right(10px);
+    }
+  }
+}
 // Popover
 
 .popover {
@@ -578,6 +590,9 @@ body {
   .modal-header {
     .close {
       @include right(25px);
+      @include media-breakpoint-between(xs, sm) {
+        @include right(15px);
+      }
     }
   }
 }
@@ -639,6 +654,27 @@ footer {
   }
 }
 
+// Activation
+.activation {
+  .form {
+    .form-group{
+      &.agreement {
+        label {
+          @include margin-left(3px);
+        }
+      }
+    }
+  }
+  form {
+    .form-group {
+      .ico-state {
+        @include left(255px);
+        @include right(auto);
+      }
+    }
+  }
+}
+
 // Misc
 .bookmark {
   @include left(0);
@@ -647,10 +683,78 @@ footer {
   }
 }
 
+.form-check-label {
+  .checkmark {
+    @include left(0);
+  }
+}
+
+// form
+form {
+  .form-group {
+    .ico-state {
+      @include right(10px);
+    }
+    #show-hide, .show-hide {
+      @include right(auto);
+      @include left(264px);
+      @include media-breakpoint-between(xs, sm) {
+        @include left(89.5%);
+      }
+    }
+  }
+  .success,
+  .error {
+    input:not([type='checkbox']) {
+      @include padding-right(50px);
+    }
+  }
+}
+
+// Radio Buttons
+
+.checkcontainer {
+  @include padding-left(2.1rem);
+  .radiobtn {
+    @include left(0);
+    &:after {
+      @include left(3px);
+    }
+  }
+}
+
 .dashboard-menu {
   li {
     .bookmark {
       @include left(-30px);
+    }
+  }
+}
+
+// Login
+
+.site-wrapper {
+  &.login {
+    .quick-links {
+      li {
+        @include margin-left(20px);
+      }
+    }
+    .login-form-wrap {
+      .forgot-pswd-link {
+        @include float(left);
+      }
+    }
+    form.white {
+      .form-group {
+        .ico-state,
+        #show-hide {
+          @include left(265px);
+          @include media-breakpoint-between(xs, sm) {
+            @include left(90%);
+          }
+        }
+      }
     }
   }
 }
@@ -704,12 +808,12 @@ body.rtl {
 
   form {
     .form-label {
-      transform: translate(-15px, 15px);
+      transform: translate(-15px, 15px) !important;
     }
 
     .focused {
       .form-label {
-        transform: translate(0, -18px);
+        transform: translate(0, -18px) !important;
       }
     }
   }
@@ -763,7 +867,94 @@ body.rtl {
     left: auto !important;
     right: 0 !important;
   }
+  .form-check {
+    padding-left: 0;
+    padding-right: 1.25rem;
+  }
 
+  .form-check-label {
+    .checkmark {
+      top: 5px;
+    }
+  }
+  .checkcontainer {
+    .radiobtn {
+      &:after {
+        top: 3px;
+      }
+    }
+  }
+
+  // Login 
+  .site-wrapper {
+    &.login {
+      .form-label {
+        transform: translate(-15px, 15px) !important;
+      }
+    }
+  }
+
+  .newFeatureTour{
+    .carousel-indicators li {
+      float: right; 
+      &:before{
+        top: 0;
+        right: 0;
+      }
+      &:after{
+
+        top: 50%;
+        bottom: 0;
+        left:auto;
+        overflow: hidden;
+        border: 1px solid #ccc;
+        transition: all .1s ease;
+        transform: translateY(-50%);
+      }
+      &.active{
+        &:after{
+          right: -3px;
+          width: 14px;
+          height: 14px;
+          border-color: var(--primary);
+        }
+      }
+    }
+    .carousel-control-next,
+    .carousel-control-prev{
+      >span{
+        i{
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .carousel-fade .carousel-item {
+      opacity: 0;
+      transition-duration: .6s;
+      transition-property: opacity;
+    }
+    
+    .carousel-fade  .carousel-item.active,
+    .carousel-fade  .carousel-item-next.carousel-item-left,
+    .carousel-fade  .carousel-item-prev.carousel-item-right {
+      opacity: 1;
+    }
+    
+    .carousel-fade .active.carousel-item-left,
+    .carousel-fade  .active.carousel-item-right {
+      opacity: 0;
+    }
+    
+    .carousel-fade  .carousel-item-next,
+    .carousel-fade .carousel-item-prev,
+    .carousel-fade .carousel-item.active,
+    .carousel-fade .active.carousel-item-left,
+    .carousel-fade  .active.carousel-item-prev {
+      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
+    }
+  }
 }
 
 //Course Overview
@@ -1051,3 +1242,5 @@ body.rtl {
     }
   }
 }
+
+

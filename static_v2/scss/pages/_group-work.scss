@@ -228,6 +228,8 @@
                             font-weight: normal;
                             display: inline-block;
                             vertical-align: middle;
+                            line-height: normal;
+                            margin-top: -2px;
                             @include font-size(16);
                         }
 
@@ -835,6 +837,17 @@
             line-height: 40px;
             padding: 0 15px;
             margin: 0 !important;
+            .group-project-review-state
+            {
+                &.completed
+                {
+                    color:$bg-white-green !important;
+                }
+                &.not_started
+                {
+                    color:$lighter-gray !important;
+                }
+            }
 
             .review_subject_label {
                 @include font-size(12);
@@ -850,6 +863,7 @@
             {
                 margin-top: 8px;
                 border-radius: 50px;
+                display:none;
             }
 
             .other_submissions {

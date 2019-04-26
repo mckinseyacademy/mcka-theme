@@ -5,7 +5,7 @@
 - get_current_language as LANGUAGE_CODE
 - get_available_languages as LANGUAGES
 
-%header.appHeader
+%header.appHeader{class: "{% if learner_dashboards|length %}has-dashboard{% endif %}"}
   .container
     .row
       .col
@@ -16,7 +16,7 @@
                 %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
             - else
               %a.navbar-brand{:href => "/"}
-                %img{:src => "{% static 'image/McKA-logo-blue.png' %}", :width => "160"}
+                %img{:src => "{% static 'image/McKA-logo-black.png' %}", :width => "160"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.client_logo}}", :width => "160"}
@@ -28,7 +28,7 @@
                   - if user.has_image
                     %img{:alt => "", :src => "{{user.image_url_medium}}", :width => "160"}/
                   - elif user.name_initials
-                    %span {{user.name_initials|upper}}
+                    %span.userNameInitials {{user.name_initials|upper}}
                   - else
                     %img{:alt => "", :src => "{{user.image_url_full}}"}/
 
@@ -46,19 +46,19 @@
                             %img{:alt => "", :src => "{{user.image_url_full}}"}/
 
 
-                        %a.edit-link.ome.dome-bc{:data-target => ".editPhotoModal", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
+                        %a.edit-link.ome.dome-c{:data-target => ".editPhotoModal", :href => "javascript:void(0)", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
                           {% trans "edit photo" %}
                     .titles-area
                       .nameArea
-                        %span {{user.fullname}}
-                        %a.edit-link.ome.dome-bc{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
+                        %span{:firstname => "{{user.first_name}}", :lastname => "{{user.last_name}}"} {{user.fullname}}
+                        %a.edit-link.ome.dome-c{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
                           {% trans "edit" %}
                       .roleArea
                         - if user.title
                           %span.title= user.title
                         - else
                           %span= "Enter your role"
-                        %a.edit-link.ome.dome-bc{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
+                        %a.edit-link.ome.dome-c{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
                           {% trans "edit" %}
                   .content
                     .wrap
@@ -106,7 +106,7 @@
                           - for dashboard in learner_dashboards
                             %li
                               %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
-                                - if request.session.last_visited_course and dashboard.course_id == request.session.last_visited_course
+                                - if course_id and dashboard.course_id == course_id
                                   %span.bookmark.secondary
                                     %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
                                       %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
@@ -116,12 +116,15 @@
                       %a.nav-link.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", :href => "/courses/{{learner_dashboards.0.course_id}}", :role => "button"}
                         {% trans "dashboard" %}
 
-
-                  - if show_my_courses
-                    {% url 'courses' as courses_url %}
-                    %li#mycoursestab{class: "{% if request.path == courses_url %}active{% endif %}"}
-                      %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
-                        {% trans "my courses" %}
+                  {% url 'courses' as courses_url %}
+                  %li#mycoursestab{class: "{% if request.path == courses_url %}active{% endif %}" }
+                    %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
+                      {% trans "my courses" %}
+                  - if show_my_courses and learner_dashboards|length == 0
+                    %script
+                      if(window.innerWidth < 768){
+                        $('#mycoursestab a.nav-link').remove();
+                      }
           - else
             - if use_i18n
               .language-selector
@@ -129,7 +132,7 @@
                 .dropdown
                   %button#dropdownMenuButton.dropdown-toggle.border-0{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
                     {{ LANGUAGE_CODE }}
-                  .dropdown-menu{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
+                  .dropdown-menu.language-dropdown{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
                     - for language_code, language_name in LANGUAGES
                       - if LANGUAGE_CODE == language_code
                         %a.dropdown-item.selected

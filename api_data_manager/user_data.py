@@ -39,9 +39,10 @@ class UserDataManager(DataManager):
     @property
     def raw_courses(self):
         from api_client import user_api
-        from courses.user_courses import CURRENT_COURSE_ID
+        from courses.user_courses import CURRENT_COURSE_ID, CURRENT_LD_COURSE_ID
 
         current_course = None
+        current_ld_course = None
 
         courses = user_api.get_user_courses(self.user_id)
         organizations = user_api.get_user_organizations(self.user_id)
@@ -60,6 +61,7 @@ class UserDataManager(DataManager):
 
         user_preferences = user_api.get_user_preferences(self.user_id)
         current_course_id = user_preferences.get(CURRENT_COURSE_ID, None)
+        current_ld_course = user_preferences.get(CURRENT_LD_COURSE_ID)
 
         if current_course_id:
             for course in courses:
@@ -70,6 +72,7 @@ class UserDataManager(DataManager):
         return DottableDict(
             courses=courses,
             current_course=current_course,
+            current_ld_course=current_ld_course,
         )
 
     def delete_cached_data(self, property_name):
@@ -122,6 +125,7 @@ class UserDataManager(DataManager):
         raw_courses = self.raw_courses
         courses = raw_courses.courses
         current_course = raw_courses.current_course
+        current_ld_course = raw_courses.current_ld_course
         current_program = None
 
         organizations = user_api.get_user_organizations(self.user_id)
@@ -154,6 +158,7 @@ class UserDataManager(DataManager):
         return DottableDict(
             courses=courses,
             current_course=current_course,
+            current_ld_course=current_ld_course,
             current_program=current_program if current_program else Program.no_program(),
             organization=organizations[0] if organizations else None,
             new_ui_enabled=new_ui_enabled,

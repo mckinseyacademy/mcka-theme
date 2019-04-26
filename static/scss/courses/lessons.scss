@@ -365,3 +365,14 @@
     }
   }
 }
+
+.complete-scorm{
+  .complete-scorm-content{
+    color: $mckinsey-red;
+  }
+  .fa-lock{
+    -webkit-text-stroke: 1px $pure-white !important;
+    padding-right: 5px;
+    font-size: 15px;
+  }
+}

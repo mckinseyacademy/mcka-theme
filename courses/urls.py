@@ -4,6 +4,7 @@ from . import views
 
 urlpatterns = [
     url(r'^$', views.courses, name='courses'),
+    url(r'lessons_count/$', views.course_lessons_count, name='course_lessons_count'),
     url(r'courses_menu/$', views.courses_menu, name='courses_menu'),
     url(r'^(?P<course_id>.*)/course_lessons_menu$', views.course_lessons_menu, name='course_lessons_menu'),
     url(

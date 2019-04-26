@@ -30,7 +30,7 @@
       display: inline-block;
       vertical-align: middle;
       background-color: var(--primary);
-      border-color: var(--primary);
+      border: 0;
       color: $white;
       line-height: 40px;
       cursor: pointer;
@@ -62,7 +62,7 @@
     &:hover {
       cursor: default;
       display: block;
-      border: 2px solid #dce4ec;
+      border: 0;
       color: #34495e;
       cursor: pointer;
       height: 40px;
@@ -95,14 +95,12 @@
 
 .file-upload.active {
   .file-select {
-    //border-color: $bg-white-green;
-    border-color:  var(--primary);
+    border: 0;
     transition: all .2s ease-in-out;
     -moz-transition: all .2s ease-in-out;
     -webkit-transition: all .2s ease-in-out;
     -o-transition: all .2s ease-in-out;
     .file-select-button {
-      //background: $bg-white-green;
       background:  var(--primary);
       color: #FFFFFF;
       transition: all .2s ease-in-out;
