@@ -107,10 +107,69 @@
       }
     }
   }
-  .carousel-item {
+
+  .carousel-item
+  {
     min-height: 345px;
     background: white;
+    display: block;
+    visibility: hidden;
+    transition: .35s;
+    &.active
+    {
+      visibility: visible;
+      -webkit-animation: fadeIn 1s ;
+      animation: fadeIn 1s;
+    }
   }
+
+  .carousel-inner{
+    &.nextSlide{
+      .carousel-item {
+        -webkit-animation: fadeOut 1s ;
+        animation: fadeOut 1s;
+        transform: translateX(100%);
+        &.active
+        {
+          -webkit-animation: fadeIn 1s ;
+          animation: fadeIn 1s;
+          visibility: visible;
+          &.next
+          {
+            transform: translateX(0) ;
+          }
+        }
+      &.next
+      {
+        transform: translateX(-100%);
+      }
+    }
+  }
+  &.prevSlide
+  {
+    .carousel-item
+    {
+      -webkit-animation: fadeOut 1s ;
+      animation: fadeOut 1s;
+      transform: translateX(-100%);
+      &.active
+      {
+        -webkit-animation: fadeIn 1s ;
+        animation: fadeIn 1s;
+        visibility: visible;
+        &.prev
+        {
+          transform: translateX(0);
+        }
+      }
+      &.prev
+      {
+        transform: translateX(100%);
+      }
+    }
+  }
+  } 
+
   .carousel-indicators {
     top: 50%;
     transform: translateY(-50%);
@@ -213,28 +272,39 @@
   }
 }
 
-.carousel-fade .carousel-item {
-  opacity: 0;
-  transition-duration: .6s;
-  transition-property: opacity;
- }
- 
- .carousel-fade  .carousel-item.active,
- .carousel-fade  .carousel-item-next.carousel-item-left,
- .carousel-fade  .carousel-item-prev.carousel-item-right {
-   opacity: 1;
- }
- 
- .carousel-fade .active.carousel-item-left,
- .carousel-fade  .active.carousel-item-right {
-  opacity: 0;
- }
- 
- .carousel-fade  .carousel-item-next,
- .carousel-fade .carousel-item-prev,
- .carousel-fade .carousel-item.active,
- .carousel-fade .active.carousel-item-left,
- .carousel-fade  .active.carousel-item-prev {
-  transform: translateX(0);
-  transform: translate3d(0, 0, 0);
- }
+ /* Safari 4.0 - 8.0 */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0; }
+  to {opacity: 1;}
+}
+
+/* Standard syntax */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+ /* Safari 4.0 - 8.0 */
+ @-webkit-keyframes fadeOut {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
+
+/* Standard syntax */
+@keyframes fadeOut {
+  from {opacity: 1;}
+  to {opacity: 0;}
+}
+
+
+ /* Safari 4.0 - 8.0 */
+ @-webkit-keyframes slideIn {
+  from {transform:translateX(100%) ;}
+  to {transform:translateX(0) ;}
+}
+
+/* Standard syntax */
+@keyframes slideIn {
+  from {transform:translateX(100%);}
+  to {transform:translateX(0);}
+}

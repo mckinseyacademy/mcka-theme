@@ -282,9 +282,27 @@ $(document).ready(function () {
     });
 
     //  New featre Modal (disable scrolling on body)
-    $('.carousel-control-next').click(function(){ $('.carousel').carousel('next')});
+    $('.carousel-control-next').click(function(){ 
+        $('.carousel-item').removeClass("next");
+        $('.carousel-item').removeClass("prev");
+        $('.carousel-item.active').addClass("next");
+        $('.carousel').carousel('next')
+        $('.carousel-item.active').addClass("next");
+        $('.carousel-inner').removeClass("nextSlide");
+        $('.carousel-inner').removeClass("prevSlide");
+        $('.carousel-inner').addClass("nextSlide");
+    });
 
-    $('.carousel-control-prev').click(function(){ $('.carousel').carousel('prev')});
+    $('.carousel-control-prev').click(function(){ 
+        $('.carousel-item').removeClass("prev");
+        $('.carousel-item').removeClass("next");
+        $('.carousel-item.active').addClass("prev");
+        $('.carousel').carousel('prev')
+        $('.carousel-item.active').addClass("prev");
+        $('.carousel-inner').removeClass("nextSlide");
+        $('.carousel-inner').removeClass("prevSlide");
+        $('.carousel-inner').addClass("prevSlide");
+    });
     //  KeyBoard Controls Activation For New FeatureTour Modal
     jQuery(document).bind('keyup', function (e) {
         if (e.keyCode == 39) {
