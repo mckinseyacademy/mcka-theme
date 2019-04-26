@@ -57,7 +57,7 @@
                         - if user.title
                           %span.title= user.title
                         - else
-                          %span= "Enter your role"
+                          %span {% trans "Enter your title" %}
                         %a.edit-link.ome.dome-c{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
                           {% trans "edit" %}
                   .content

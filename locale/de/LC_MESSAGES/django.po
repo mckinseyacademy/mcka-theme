@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 15:00+0000\n"
+"POT-Creation-Date: 2019-04-26 12:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1476,7 +1476,8 @@ msgstr "Geben Sie Ihren vollständigen Namen ein"
 msgid "Save"
 msgstr "Speichern"
 
-#: accounts/views.py:1231 templates_v2/layout.haml:275
+#: accounts/views.py:1231 templates_v2/header.haml:60
+#: templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "Geben Sie Ihre Anrede ein"
 
@@ -1578,7 +1579,7 @@ msgstr "Fortschritt %"
 #: admin/controller.py:807
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:148
-#: templates_v2/courses/course_cohort.haml:97
+#: templates_v2/courses/course_cohort.haml:100
 #: templates_v2/courses/visualizations/course_engagement.haml:11
 msgid "Engagement"
 msgstr "Engagement"
@@ -1586,7 +1587,7 @@ msgstr "Engagement"
 #: admin/controller.py:808 admin/views.py:4527
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:71
-#: templates_v2/courses/course_cohort.haml:174
+#: templates_v2/courses/course_cohort.haml:177
 #: templates_v2/courses/visualizations/course_proficiency.haml:9
 msgid "Proficiency"
 msgstr "Kompetenzen"
@@ -2441,7 +2442,7 @@ msgstr "Es besteht ein Problem mit der ausgewählten Nutzerrolle im neuen Kurs!"
 #: admin/views.py:4527 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
-#: templates_v2/courses/course_cohort.haml:22
+#: templates_v2/courses/course_cohort.haml:25
 #: templates_v2/courses/course_progress_v2.haml:39
 #: templates_v2/courses/visualizations/course_progress.haml:6
 msgid "Progress"
@@ -4721,7 +4722,7 @@ msgstr ""
 "Fortschrittsbereich auf der Kursstartseite ausgeblendet."
 
 #: templates/admin/course_meta_content/item_list.haml:181
-#: templates_v2/courses/course_cohort.haml:17
+#: templates_v2/courses/course_cohort.haml:20
 #: templates_v2/courses/course_navigation.haml:52
 msgid "Leaderboard"
 msgstr "Bestenliste"
@@ -6782,12 +6783,12 @@ msgid "of participants:"
 msgstr "Anzahl der Teilnehmer:"
 
 #: templates/courses/course_cohort.haml:32
-#: templates_v2/courses/course_cohort.haml:14
+#: templates_v2/courses/course_cohort.haml:17
 msgid "in your cohort"
 msgstr "in Ihrem Jahrgang"
 
 #: templates/courses/course_cohort.haml:33
-#: templates_v2/courses/course_cohort.haml:14
+#: templates_v2/courses/course_cohort.haml:17
 msgid "group work team members"
 msgstr "Gruppenarbeits-Teammitglieder"
 
@@ -6810,7 +6811,7 @@ msgid "Proficiency:"
 msgstr "Kompetenzen:"
 
 #: templates/courses/course_cohort.haml:49
-#: templates_v2/courses/course_cohort.haml:178
+#: templates_v2/courses/course_cohort.haml:181
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the proficiency leaderboard "
@@ -6869,7 +6870,7 @@ msgid "Progress:"
 msgstr "Fortschritt:"
 
 #: templates/courses/course_cohort.haml:119
-#: templates_v2/courses/course_cohort.haml:26
+#: templates_v2/courses/course_cohort.haml:29
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr ""
@@ -6906,7 +6907,7 @@ msgid " cohort average = %(course_avg)s points "
 msgstr " Jahrgangsdurchschnitt = %(course_avg)s Punkte "
 
 #: templates/courses/course_cohort.haml:182
-#: templates_v2/courses/course_cohort.haml:101
+#: templates_v2/courses/course_cohort.haml:104
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
@@ -7841,10 +7842,7 @@ msgstr ""
 "wie folgt berechnet:"
 
 #: templates/courses/course_progress.haml:57
-#, fuzzy, python-format, python-brace-format
-#| msgid ""
-#| " You need a combined course grade of at least ={pass_grade}%% to earn a "
-#| "certificate of completion. Your final grade is calculated as follows: "
+#, python-format, python-brace-format
 msgid ""
 " You need a combined course grade of at least #{pass_grade}%% to earn a "
 "certificate of completion. Your final grade is calculated as follows: "
@@ -7904,7 +7902,7 @@ msgid "Grades:"
 msgstr "Noten:"
 
 #: templates/courses/course_progress.haml:129
-#: templates_v2/courses/course_progress_v2.haml:304
+#: templates_v2/courses/course_progress_v2.haml:303
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -7927,7 +7925,7 @@ msgstr ""
 
 #: templates/courses/course_progress.haml:131
 #: templates/courses/course_progress_v2.haml:237
-#: templates_v2/courses/course_progress_v2.haml:306
+#: templates_v2/courses/course_progress_v2.haml:305
 msgid "privacy policy."
 msgstr "Datenschutzrichtlinie."
 
@@ -8117,7 +8115,14 @@ msgid "not started / incomplete"
 msgstr "nicht begonnen / unvollständig"
 
 #: templates/courses/course_progress_v2.haml:195
-#, python-format
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "            You need a combined course grade of at least 70%% to earn a "
+#| "certificate of completion. Your final grade is calculated as follows: "
+#| "%(graders)s. <a data-reveal-id='progress_modal'>Click here</a> to read "
+#| "more about how we may share your course information.\n"
+#| "          "
 msgid ""
 "\n"
 "            You need a combined course grade of at least 70%% to earn a "
@@ -8135,12 +8140,12 @@ msgstr ""
 "           "
 
 #: templates/courses/course_progress_v2.haml:200
-#: templates_v2/courses/course_progress_v2.haml:260
+#: templates_v2/courses/course_progress_v2.haml:259
 msgid "ENGAGEMENT"
 msgstr "ENGAGEMENT"
 
 #: templates/courses/course_progress_v2.haml:202
-#: templates_v2/courses/course_progress_v2.haml:262
+#: templates_v2/courses/course_progress_v2.haml:261
 msgid "discussion"
 msgstr "Diskussion"
 
@@ -8170,28 +8175,28 @@ msgid "Stats:"
 msgstr "Statistiken:"
 
 #: templates/courses/course_progress_v2.haml:216
-#: templates_v2/courses/course_progress_v2.haml:278
+#: templates_v2/courses/course_progress_v2.haml:277
 msgid "Number of <span>New Posts</span> you created "
 msgstr "Anzahl der von Ihnen erstellten <span>neuen Beiträge</span> "
 
 #: templates/courses/course_progress_v2.haml:219
-#: templates_v2/courses/course_progress_v2.haml:281
+#: templates_v2/courses/course_progress_v2.haml:280
 msgid "Number of <span>Replies</span> you made to other posts "
 msgstr "Anzahl Ihrer <span>Antworten</span> auf andere Beiträge "
 
 #: templates/courses/course_progress_v2.haml:222
-#: templates_v2/courses/course_progress_v2.haml:284
+#: templates_v2/courses/course_progress_v2.haml:283
 msgid " Number of <span>Comments Generated </span> by your posts "
 msgstr " Anzahl der durch Ihre Beiträge <span>erzeugten Kommentare </span>"
 
 #: templates/courses/course_progress_v2.haml:225
-#: templates_v2/courses/course_progress_v2.haml:287
+#: templates_v2/courses/course_progress_v2.haml:286
 msgid " Number of <span>Upvotes</span> your posts have received "
 msgstr ""
 " Anzahl der zu Ihren Beiträgen erzielten <span>positiven Bewertungen</span> "
 
 #: templates/courses/course_progress_v2.haml:228
-#: templates_v2/courses/course_progress_v2.haml:290
+#: templates_v2/courses/course_progress_v2.haml:289
 msgid " Number of your posts being <span>Followed</span> "
 msgstr "Anzahl Ihrer Beiträge, denen aktuell <span>gefolgt</span> wird "
 
@@ -13030,7 +13035,7 @@ msgstr "Durchschnittliche Kompetenzen:"
 
 #: templates_v2/admin/courses/course_details.haml:111
 #: templates_v2/admin/courses/course_details.haml:166
-#: templates_v2/courses/course_progress_v2.haml:272
+#: templates_v2/courses/course_progress_v2.haml:271
 #, fuzzy
 #| msgid "Stats:"
 msgid "Stats"
@@ -13128,12 +13133,18 @@ msgstr "Lektion verfügbar auf %(start_date)s"
 msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "Lektion verfügbar auf %(start_date)s"
 
-#: templates_v2/courses/course_cohort.haml:23
+#: templates_v2/courses/course_cohort.haml:8
+#, fuzzy
+#| msgid "| Cohort | Courses | McKinsey Academy"
+msgid "| Leaderboard | Courses | McKinsey Academy"
+msgstr "| Jahrgang | Kurse | McKinsey Academy"
+
+#: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
 msgstr "Ihr Kursabschluss-Status:"
 
-#: templates_v2/courses/course_cohort.haml:24
-#: templates_v2/courses/course_cohort.haml:176
+#: templates_v2/courses/course_cohort.haml:27
+#: templates_v2/courses/course_cohort.haml:179
 #: templates_v2/courses/visualizations/course_proficiency.haml:13
 #: templates_v2/courses/visualizations/course_progress.haml:11
 #, fuzzy
@@ -13141,83 +13152,83 @@ msgstr "Ihr Kursabschluss-Status:"
 msgid "Cohort Average:"
 msgstr "Jahrgangsdurchschnitt"
 
-#: templates_v2/courses/course_cohort.haml:29
+#: templates_v2/courses/course_cohort.haml:32
 #, fuzzy
 #| msgid "Progress Widget"
 msgid "Your progress position"
 msgstr "Fortschritts-Widget"
 
-#: templates_v2/courses/course_cohort.haml:31
+#: templates_v2/courses/course_cohort.haml:34
 #, fuzzy
 #| msgid "your progress position <br> will be displayed here"
 msgid "Your progress position will be displayed here"
 msgstr "Ihr Fortschrittsrang <br> wird hier angezeigt"
 
-#: templates_v2/courses/course_cohort.haml:36
+#: templates_v2/courses/course_cohort.haml:39
 #, fuzzy
 #| msgid "In progress"
 msgid "Top 3 on progress"
 msgstr "In Bearbeitung"
 
-#: templates_v2/courses/course_cohort.haml:54
-#: templates_v2/courses/course_cohort.haml:73
-#: templates_v2/courses/course_cohort.haml:92
-#: templates_v2/courses/course_cohort.haml:129
-#: templates_v2/courses/course_cohort.haml:149
-#: templates_v2/courses/course_cohort.haml:169
-#: templates_v2/courses/course_cohort.haml:207
-#: templates_v2/courses/course_cohort.haml:227
-#: templates_v2/courses/course_cohort.haml:247
+#: templates_v2/courses/course_cohort.haml:57
+#: templates_v2/courses/course_cohort.haml:76
+#: templates_v2/courses/course_cohort.haml:95
+#: templates_v2/courses/course_cohort.haml:132
+#: templates_v2/courses/course_cohort.haml:152
+#: templates_v2/courses/course_cohort.haml:172
+#: templates_v2/courses/course_cohort.haml:210
+#: templates_v2/courses/course_cohort.haml:230
+#: templates_v2/courses/course_cohort.haml:250
 #, fuzzy
 #| msgid "Username"
 msgid "User Name"
 msgstr "Nutzername"
 
-#: templates_v2/courses/course_cohort.haml:98
+#: templates_v2/courses/course_cohort.haml:101
 msgid "Your discussion activity points:"
 msgstr "Ihre Punkte für die Diskussionsteilnahme:"
 
-#: templates_v2/courses/course_cohort.haml:99
+#: templates_v2/courses/course_cohort.haml:102
 #, fuzzy, python-format
 #| msgid " Average: %(score)s points"
 msgid " Cohort Average: %(score)s points"
 msgstr " Durchschnitt = %(score)s Punkte "
 
-#: templates_v2/courses/course_cohort.haml:104
+#: templates_v2/courses/course_cohort.haml:107
 #, fuzzy
 #| msgid "your engagement position <br> will be displayed here"
 msgid "Your engagement position"
 msgstr "Ihr Engagementrang <br> wird hier angezeigt"
 
-#: templates_v2/courses/course_cohort.haml:106
+#: templates_v2/courses/course_cohort.haml:109
 #, fuzzy
 #| msgid "your engagement position <br> will be displayed here"
 msgid "Your engagement position will be displayed here"
 msgstr "Ihr Engagementrang <br> wird hier angezeigt"
 
-#: templates_v2/courses/course_cohort.haml:110
+#: templates_v2/courses/course_cohort.haml:113
 #, fuzzy
 #| msgid "Engagement"
 msgid "Top 3 on engagement"
 msgstr "Engagement"
 
-#: templates_v2/courses/course_cohort.haml:175
+#: templates_v2/courses/course_cohort.haml:178
 msgid "Your course knowledge:"
 msgstr "Ihr Kurswissen:"
 
-#: templates_v2/courses/course_cohort.haml:181
+#: templates_v2/courses/course_cohort.haml:184
 #, fuzzy
 #| msgid "your proficiency position <br> will be displayed here"
 msgid "Your proficiency position"
 msgstr "Ihr Kompetenzrang <br> wird hier angezeigt"
 
-#: templates_v2/courses/course_cohort.haml:183
+#: templates_v2/courses/course_cohort.haml:186
 #, fuzzy
 #| msgid "your proficiency position <br> will be displayed here"
 msgid "Your proficiency position will be displayed here"
 msgstr "Ihr Kompetenzrang <br> wird hier angezeigt"
 
-#: templates_v2/courses/course_cohort.haml:187
+#: templates_v2/courses/course_cohort.haml:190
 #, fuzzy
 #| msgid "Proficiency"
 msgid "Top 3 on Proficiency"
@@ -13496,7 +13507,7 @@ msgstr ""
 "          "
 
 #: templates_v2/courses/course_progress_v2.haml:198
-#: templates_v2/courses/course_progress_v2.haml:270
+#: templates_v2/courses/course_progress_v2.haml:269
 #, fuzzy
 #| msgid "Overall:"
 msgid "Overall"
@@ -13508,35 +13519,30 @@ msgstr "Gesamt:"
 msgid "Graded Items"
 msgstr "Benotete Aufgaben:"
 
-#: templates_v2/courses/course_progress_v2.haml:253
+#: templates_v2/courses/course_progress_v2.haml:254
 #, fuzzy, python-format
 #| msgid ""
-#| "\n"
-#| "            You need a combined course grade of at least 70%% to earn a "
+#| " You need a combined course grade of at least ={pass_grade}%% to earn a "
 #| "certificate of completion. Your final grade is calculated as follows: "
-#| "%(graders)s. <a data-reveal-id='progress_modal'>Click here</a> to read "
-#| "more about how we may share your course information.\n"
-#| "          "
 msgid ""
-"\n"
-"                  You need a combined course grade of at least 70%% to earn "
-"a certificate of completion. Your final grade is calculated as follows: "
-"%(graders)s.\n"
-"                  %%a.edit-link.ome.dome-c{:data-target => \"#progressModal"
-"\", :data-toggle => \"modal\", :href => \"#\"} Click here\n"
-"                  to read more about how we may share your course "
-"information.\n"
-"                "
+"You need a combined course grade of at least 70%% to earn a certificate of "
+"completion. Your final grade is calculated as follows:"
 msgstr ""
-"\n"
-"            Um ein Abschlusszertifikat zu erhalten, brauchen Sie eine "
-"Gesamtnote von mindestens 70%%. Ihre Endnote wird wie folgt berechnet: "
-"%(graders)s. <a data-reveal-id='progress_modal'>Klicken Sie hier</a>, um "
-"Weiteres darüber zu erfahren, wie wir Informationen über Ihre Kurse "
-"weiterleiten können.\n"
-"           "
+" Sie müssen eine Gesamtnote für den Kurs von mindestens ={pass_grade}%% "
+"erreichen, um eine Abschlusszertifikat zu erhalten. Ihre Abschlussnote wird "
+"wie folgt berechnet:"
 
-#: templates_v2/courses/course_progress_v2.haml:263
+#: templates_v2/courses/course_progress_v2.haml:255
+#, fuzzy
+#| msgid "Click here."
+msgid "Click here"
+msgstr "Hier klicken."
+
+#: templates_v2/courses/course_progress_v2.haml:256
+msgid "to read more about how we may share your course information."
+msgstr ""
+
+#: templates_v2/courses/course_progress_v2.haml:262
 #, fuzzy, python-format
 #| msgid ""
 #| "\n"
@@ -13560,7 +13566,7 @@ msgstr ""
 "Foren. Der Jahrgangsdurchschnitt beträgt %(social_course_avg)s.\n"
 "             "
 
-#: templates_v2/courses/course_progress_v2.haml:271
+#: templates_v2/courses/course_progress_v2.haml:270
 #, fuzzy
 #| msgid "Measured Engagement:"
 msgid "Measured Engagement"
@@ -13793,7 +13799,7 @@ msgid "We’ll do our best to help."
 msgstr ""
 
 #: templates_v2/footer.haml:6
-msgid "Copyright &#9400; 2019 McKinsey & Company. All Rights Reserved."
+msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
 msgstr ""
 
 #: templates_v2/footer.haml:13
@@ -14022,6 +14028,34 @@ msgstr "Vorname: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nachname: {}"
+
+#, fuzzy
+#~| msgid ""
+#~| "\n"
+#~| "            You need a combined course grade of at least 70%% to earn a "
+#~| "certificate of completion. Your final grade is calculated as follows: "
+#~| "%(graders)s. <a data-reveal-id='progress_modal'>Click here</a> to read "
+#~| "more about how we may share your course information.\n"
+#~| "          "
+#~ msgid ""
+#~ "\n"
+#~ "                  You need a combined course grade of at least 70%% to "
+#~ "earn a certificate of completion. Your final grade is calculated as "
+#~ "follows: %(graders)s.\n"
+#~ "                  %%a.edit-link.ome.dome-c{:data-target => "
+#~ "\"#progressModal\", :data-toggle => \"modal\", :href => \"#\"} Click "
+#~ "here\n"
+#~ "                  to read more about how we may share your course "
+#~ "information.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "            Um ein Abschlusszertifikat zu erhalten, brauchen Sie eine "
+#~ "Gesamtnote von mindestens 70%%. Ihre Endnote wird wie folgt berechnet: "
+#~ "%(graders)s. <a data-reveal-id='progress_modal'>Klicken Sie hier</a>, um "
+#~ "Weiteres darüber zu erfahren, wie wir Informationen über Ihre Kurse "
+#~ "weiterleiten können.\n"
+#~ "           "
 
 #~ msgid "Initial"
 #~ msgstr "Initialen"

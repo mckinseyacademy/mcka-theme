@@ -250,11 +250,10 @@
                   <i class="status complete material-icons">check_circle</i>
                   {% trans "Complete" %}
               %p.note-progress
-                {% blocktrans %}
-                  You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows: {{graders}}.
-                  %a.edit-link.ome.dome-c{:data-target => "#progressModal", :data-toggle => "modal", :href => "#"} Click here
-                  to read more about how we may share your course information.
-                {% endblocktrans %}
+                %span
+                  {% trans "You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows:" %} {{graders}}.
+                  %a.edit-link.ome.dome-c{:data-target => "#progressModal", :data-toggle => "modal", :href => "#"} {% trans "Click here" %}
+                  {% trans "to read more about how we may share your course information." %}
           - if feature_flags.discussions
             .contentCard.course-page.engagement-data#engagement-block
               %h5 {% trans "ENGAGEMENT" %}

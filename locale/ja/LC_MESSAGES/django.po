@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 15:01+0000\n"
+"POT-Creation-Date: 2019-04-26 12:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1466,7 +1466,8 @@ msgstr "氏名を入力してください"
 msgid "Save"
 msgstr "保存する"
 
-#: accounts/views.py:1231 templates_v2/layout.haml:275
+#: accounts/views.py:1231 templates_v2/header.haml:60
+#: templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "役職を入力してください"
 
@@ -1568,7 +1569,7 @@ msgstr "進度%"
 #: admin/controller.py:807
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:148
-#: templates_v2/courses/course_cohort.haml:97
+#: templates_v2/courses/course_cohort.haml:100
 #: templates_v2/courses/visualizations/course_engagement.haml:11
 msgid "Engagement"
 msgstr "エンゲージメント"
@@ -1576,7 +1577,7 @@ msgstr "エンゲージメント"
 #: admin/controller.py:808 admin/views.py:4527
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:71
-#: templates_v2/courses/course_cohort.haml:174
+#: templates_v2/courses/course_cohort.haml:177
 #: templates_v2/courses/visualizations/course_proficiency.haml:9
 msgid "Proficiency"
 msgstr "習熟度"
@@ -2416,7 +2417,7 @@ msgstr "新しいコースで選択されたユーザーロールについて問
 #: admin/views.py:4527 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
-#: templates_v2/courses/course_cohort.haml:22
+#: templates_v2/courses/course_cohort.haml:25
 #: templates_v2/courses/course_progress_v2.haml:39
 #: templates_v2/courses/visualizations/course_progress.haml:6
 msgid "Progress"
@@ -4662,7 +4663,7 @@ msgstr ""
 "クションが表示されなくなります。"
 
 #: templates/admin/course_meta_content/item_list.haml:181
-#: templates_v2/courses/course_cohort.haml:17
+#: templates_v2/courses/course_cohort.haml:20
 #: templates_v2/courses/course_navigation.haml:52
 msgid "Leaderboard"
 msgstr "リーダーボード"
@@ -6699,12 +6700,12 @@ msgid "of participants:"
 msgstr "参加者の:"
 
 #: templates/courses/course_cohort.haml:32
-#: templates_v2/courses/course_cohort.haml:14
+#: templates_v2/courses/course_cohort.haml:17
 msgid "in your cohort"
 msgstr "あなたのコホート中:"
 
 #: templates/courses/course_cohort.haml:33
-#: templates_v2/courses/course_cohort.haml:14
+#: templates_v2/courses/course_cohort.haml:17
 msgid "group work team members"
 msgstr "グループワークのチーム・メンバー"
 
@@ -6727,7 +6728,7 @@ msgid "Proficiency:"
 msgstr "習熟度:"
 
 #: templates/courses/course_cohort.haml:49
-#: templates_v2/courses/course_cohort.haml:178
+#: templates_v2/courses/course_cohort.haml:181
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the proficiency leaderboard "
@@ -6784,7 +6785,7 @@ msgid "Progress:"
 msgstr "進度:"
 
 #: templates/courses/course_cohort.haml:119
-#: templates_v2/courses/course_cohort.haml:26
+#: templates_v2/courses/course_cohort.haml:29
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr "%(role_user)sユーザーのあなたは、進度リーダーボードに表示されません"
@@ -6819,7 +6820,7 @@ msgid " cohort average = %(course_avg)s points "
 msgstr "コホート平均 = %(course_avg)s点"
 
 #: templates/courses/course_cohort.haml:182
-#: templates_v2/courses/course_cohort.haml:101
+#: templates_v2/courses/course_cohort.haml:104
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
@@ -7724,10 +7725,7 @@ msgstr ""
 "要です。コースの成績評価算出法は、以下の通りです。"
 
 #: templates/courses/course_progress.haml:57
-#, fuzzy, python-format, python-brace-format
-#| msgid ""
-#| " You need a combined course grade of at least ={pass_grade}%% to earn a "
-#| "certificate of completion. Your final grade is calculated as follows: "
+#, python-format, python-brace-format
 msgid ""
 " You need a combined course grade of at least #{pass_grade}%% to earn a "
 "certificate of completion. Your final grade is calculated as follows: "
@@ -7785,7 +7783,7 @@ msgid "Grades:"
 msgstr "成績評価:"
 
 #: templates/courses/course_progress.haml:129
-#: templates_v2/courses/course_progress_v2.haml:304
+#: templates_v2/courses/course_progress_v2.haml:303
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -7804,7 +7802,7 @@ msgstr ""
 
 #: templates/courses/course_progress.haml:131
 #: templates/courses/course_progress_v2.haml:237
-#: templates_v2/courses/course_progress_v2.haml:306
+#: templates_v2/courses/course_progress_v2.haml:305
 msgid "privacy policy."
 msgstr "当社のプライバシーに関する方針で詳しくお読みください。"
 
@@ -8000,12 +7998,12 @@ msgstr ""
 "さい。"
 
 #: templates/courses/course_progress_v2.haml:200
-#: templates_v2/courses/course_progress_v2.haml:260
+#: templates_v2/courses/course_progress_v2.haml:259
 msgid "ENGAGEMENT"
 msgstr "エンゲージメント"
 
 #: templates/courses/course_progress_v2.haml:202
-#: templates_v2/courses/course_progress_v2.haml:262
+#: templates_v2/courses/course_progress_v2.haml:261
 msgid "discussion"
 msgstr "ディスカッション"
 
@@ -8035,27 +8033,27 @@ msgid "Stats:"
 msgstr "統計:"
 
 #: templates/courses/course_progress_v2.haml:216
-#: templates_v2/courses/course_progress_v2.haml:278
+#: templates_v2/courses/course_progress_v2.haml:277
 msgid "Number of <span>New Posts</span> you created "
 msgstr "あなたが作成した<span>新規投稿</span>数"
 
 #: templates/courses/course_progress_v2.haml:219
-#: templates_v2/courses/course_progress_v2.haml:281
+#: templates_v2/courses/course_progress_v2.haml:280
 msgid "Number of <span>Replies</span> you made to other posts "
 msgstr "他の投稿に対してあなたが行った<span>返信</span>数"
 
 #: templates/courses/course_progress_v2.haml:222
-#: templates_v2/courses/course_progress_v2.haml:284
+#: templates_v2/courses/course_progress_v2.haml:283
 msgid " Number of <span>Comments Generated </span> by your posts "
 msgstr "あなたの投稿から<span>発生したコメント</span>数"
 
 #: templates/courses/course_progress_v2.haml:225
-#: templates_v2/courses/course_progress_v2.haml:287
+#: templates_v2/courses/course_progress_v2.haml:286
 msgid " Number of <span>Upvotes</span> your posts have received "
 msgstr "あなたの投稿が受けた<span>賛成票</span>の数"
 
 #: templates/courses/course_progress_v2.haml:228
-#: templates_v2/courses/course_progress_v2.haml:290
+#: templates_v2/courses/course_progress_v2.haml:289
 msgid " Number of your posts being <span>Followed</span> "
 msgstr " <span>フォロー</span>されている投稿数"
 
@@ -12493,7 +12491,7 @@ msgstr "平均習熟度:"
 
 #: templates_v2/admin/courses/course_details.haml:111
 #: templates_v2/admin/courses/course_details.haml:166
-#: templates_v2/courses/course_progress_v2.haml:272
+#: templates_v2/courses/course_progress_v2.haml:271
 #, fuzzy
 #| msgid "Stats:"
 msgid "Stats"
@@ -12591,12 +12589,18 @@ msgstr "レッスンは%(start_date)sに利用可能"
 msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "レッスンは%(start_date)sに利用可能"
 
-#: templates_v2/courses/course_cohort.haml:23
+#: templates_v2/courses/course_cohort.haml:8
+#, fuzzy
+#| msgid "| Cohort | Courses | McKinsey Academy"
+msgid "| Leaderboard | Courses | McKinsey Academy"
+msgstr "| コホート | コース | McKinsey Academy"
+
+#: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
 msgstr "コース完了状況:"
 
-#: templates_v2/courses/course_cohort.haml:24
-#: templates_v2/courses/course_cohort.haml:176
+#: templates_v2/courses/course_cohort.haml:27
+#: templates_v2/courses/course_cohort.haml:179
 #: templates_v2/courses/visualizations/course_proficiency.haml:13
 #: templates_v2/courses/visualizations/course_progress.haml:11
 #, fuzzy
@@ -12604,83 +12608,83 @@ msgstr "コース完了状況:"
 msgid "Cohort Average:"
 msgstr "コホート平均"
 
-#: templates_v2/courses/course_cohort.haml:29
+#: templates_v2/courses/course_cohort.haml:32
 #, fuzzy
 #| msgid "Progress Widget"
 msgid "Your progress position"
 msgstr "進度ウィジェット"
 
-#: templates_v2/courses/course_cohort.haml:31
+#: templates_v2/courses/course_cohort.haml:34
 #, fuzzy
 #| msgid "your progress position <br> will be displayed here"
 msgid "Your progress position will be displayed here"
 msgstr "あなたの進度<br>はここに表示されます"
 
-#: templates_v2/courses/course_cohort.haml:36
+#: templates_v2/courses/course_cohort.haml:39
 #, fuzzy
 #| msgid "In progress"
 msgid "Top 3 on progress"
 msgstr "進行中"
 
-#: templates_v2/courses/course_cohort.haml:54
-#: templates_v2/courses/course_cohort.haml:73
-#: templates_v2/courses/course_cohort.haml:92
-#: templates_v2/courses/course_cohort.haml:129
-#: templates_v2/courses/course_cohort.haml:149
-#: templates_v2/courses/course_cohort.haml:169
-#: templates_v2/courses/course_cohort.haml:207
-#: templates_v2/courses/course_cohort.haml:227
-#: templates_v2/courses/course_cohort.haml:247
+#: templates_v2/courses/course_cohort.haml:57
+#: templates_v2/courses/course_cohort.haml:76
+#: templates_v2/courses/course_cohort.haml:95
+#: templates_v2/courses/course_cohort.haml:132
+#: templates_v2/courses/course_cohort.haml:152
+#: templates_v2/courses/course_cohort.haml:172
+#: templates_v2/courses/course_cohort.haml:210
+#: templates_v2/courses/course_cohort.haml:230
+#: templates_v2/courses/course_cohort.haml:250
 #, fuzzy
 #| msgid "Username"
 msgid "User Name"
 msgstr "ユーザー名"
 
-#: templates_v2/courses/course_cohort.haml:98
+#: templates_v2/courses/course_cohort.haml:101
 msgid "Your discussion activity points:"
 msgstr "ディスカッションアクティビティポイント:"
 
-#: templates_v2/courses/course_cohort.haml:99
+#: templates_v2/courses/course_cohort.haml:102
 #, fuzzy, python-format
 #| msgid " cohort average = %(course_avg)s points "
 msgid " Cohort Average: %(score)s points"
 msgstr "コホート平均 = %(course_avg)s点"
 
-#: templates_v2/courses/course_cohort.haml:104
+#: templates_v2/courses/course_cohort.haml:107
 #, fuzzy
 #| msgid "your engagement position <br> will be displayed here"
 msgid "Your engagement position"
 msgstr "あなたのエンゲージメントは<br>ここに表示されます"
 
-#: templates_v2/courses/course_cohort.haml:106
+#: templates_v2/courses/course_cohort.haml:109
 #, fuzzy
 #| msgid "your engagement position <br> will be displayed here"
 msgid "Your engagement position will be displayed here"
 msgstr "あなたのエンゲージメントは<br>ここに表示されます"
 
-#: templates_v2/courses/course_cohort.haml:110
+#: templates_v2/courses/course_cohort.haml:113
 #, fuzzy
 #| msgid "Engagement"
 msgid "Top 3 on engagement"
 msgstr "エンゲージメント"
 
-#: templates_v2/courses/course_cohort.haml:175
+#: templates_v2/courses/course_cohort.haml:178
 msgid "Your course knowledge:"
 msgstr "コースに関する知識:"
 
-#: templates_v2/courses/course_cohort.haml:181
+#: templates_v2/courses/course_cohort.haml:184
 #, fuzzy
 #| msgid "your proficiency position <br> will be displayed here"
 msgid "Your proficiency position"
 msgstr "あなたの習熟度<br>はここに表示されます"
 
-#: templates_v2/courses/course_cohort.haml:183
+#: templates_v2/courses/course_cohort.haml:186
 #, fuzzy
 #| msgid "your proficiency position <br> will be displayed here"
 msgid "Your proficiency position will be displayed here"
 msgstr "あなたの習熟度<br>はここに表示されます"
 
-#: templates_v2/courses/course_cohort.haml:187
+#: templates_v2/courses/course_cohort.haml:190
 #, fuzzy
 #| msgid "Proficiency"
 msgid "Top 3 on Proficiency"
@@ -12950,7 +12954,7 @@ msgstr ""
 "          "
 
 #: templates_v2/courses/course_progress_v2.haml:198
-#: templates_v2/courses/course_progress_v2.haml:270
+#: templates_v2/courses/course_progress_v2.haml:269
 #, fuzzy
 #| msgid "Overall:"
 msgid "Overall"
@@ -12962,33 +12966,24 @@ msgstr "全体:"
 msgid "Graded Items"
 msgstr "成績評価済み項目:"
 
-#: templates_v2/courses/course_progress_v2.haml:253
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "            You need a combined course grade of at least 70%% to earn a "
-#| "certificate of completion. Your final grade is calculated as follows: "
-#| "%(graders)s. <a data-reveal-id='progress_modal'>Click here</a> to read "
-#| "more about how we may share your course information.\n"
-#| "          "
+#: templates_v2/courses/course_progress_v2.haml:254
+#, python-format
 msgid ""
-"\n"
-"                  You need a combined course grade of at least 70%% to earn "
-"a certificate of completion. Your final grade is calculated as follows: "
-"%(graders)s.\n"
-"                  %%a.edit-link.ome.dome-c{:data-target => \"#progressModal"
-"\", :data-toggle => \"modal\", :href => \"#\"} Click here\n"
-"                  to read more about how we may share your course "
-"information.\n"
-"                "
+"You need a combined course grade of at least 70%% to earn a certificate of "
+"completion. Your final grade is calculated as follows:"
 msgstr ""
-"\n"
-"            修了証書を獲得するには、コースの総合成績が少なくとも70%%必要で"
-"す。最終評価の算出法は、次の通りです: %(graders)s。コース情報の共有に関する詳"
-"細については、<a data-reveal-id='progress_modal'>こちらをクリック</a>してくだ"
-"さい。"
+"修了証書を獲得するには、コース成績評価で少なくとも 70%%の総合点が必要です。最"
+"終評価算出法は、以下の通りです。"
 
-#: templates_v2/courses/course_progress_v2.haml:263
+#: templates_v2/courses/course_progress_v2.haml:255
+msgid "Click here"
+msgstr "ここをクリックしてください。"
+
+#: templates_v2/courses/course_progress_v2.haml:256
+msgid "to read more about how we may share your course information."
+msgstr "コース情報の共有に関する詳細については、"
+
+#: templates_v2/courses/course_progress_v2.haml:262
 #, fuzzy, python-format
 #| msgid ""
 #| "\n"
@@ -13012,7 +13007,7 @@ msgstr ""
 "は、%(social_course_avg)sです。\n"
 "          "
 
-#: templates_v2/courses/course_progress_v2.haml:271
+#: templates_v2/courses/course_progress_v2.haml:270
 #, fuzzy
 #| msgid "Measured Engagement:"
 msgid "Measured Engagement"
@@ -13238,7 +13233,7 @@ msgid "We’ll do our best to help."
 msgstr ""
 
 #: templates_v2/footer.haml:6
-msgid "Copyright &#9400; 2019 McKinsey & Company. All Rights Reserved."
+msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
 msgstr ""
 
 #: templates_v2/footer.haml:13
@@ -13466,6 +13461,24 @@ msgstr "名: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "氏: {}"
+
+#~ msgid ""
+#~ "\n"
+#~ "                  You need a combined course grade of at least 70%% to "
+#~ "earn a certificate of completion. Your final grade is calculated as "
+#~ "follows: %(graders)s.\n"
+#~ "                  %%a.edit-link.ome.dome-c{:data-target => "
+#~ "\"#progressModal\", :data-toggle => \"modal\", :href => \"#\"} Click "
+#~ "here\n"
+#~ "                  to read more about how we may share your course "
+#~ "information.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "            修了証書を獲得するには、コースの総合成績が少なくとも70%%必要で"
+#~ "す。最終評価の算出法は、次の通りです: %(graders)s。コース情報の共有に関す"
+#~ "る詳細については、<a data-reveal-id='progress_modal'>こちらをクリック</a>"
+#~ "してください。"
 
 #~ msgid "Initial"
 #~ msgstr "イニシャル"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 15:00+0000\n"
+"POT-Creation-Date: 2019-04-26 12:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1454,7 +1454,8 @@ msgstr "أدخل اسمك بالكامل"
 msgid "Save"
 msgstr "حفظ"
 
-#: accounts/views.py:1231 templates_v2/layout.haml:275
+#: accounts/views.py:1231 templates_v2/header.haml:60
+#: templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "أدخل عنوانك"
 
@@ -1555,7 +1556,7 @@ msgstr "% التقدم المحرز"
 #: admin/controller.py:807
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:148
-#: templates_v2/courses/course_cohort.haml:97
+#: templates_v2/courses/course_cohort.haml:100
 #: templates_v2/courses/visualizations/course_engagement.haml:11
 msgid "Engagement"
 msgstr "المشاركة"
@@ -1563,7 +1564,7 @@ msgstr "المشاركة"
 #: admin/controller.py:808 admin/views.py:4527
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:71
-#: templates_v2/courses/course_cohort.haml:174
+#: templates_v2/courses/course_cohort.haml:177
 #: templates_v2/courses/visualizations/course_proficiency.haml:9
 msgid "Proficiency"
 msgstr "الإجادة"
@@ -2401,7 +2402,7 @@ msgstr "توجد مشكلة بخصوص دور المستخدم المحدد في
 #: admin/views.py:4527 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
-#: templates_v2/courses/course_cohort.haml:22
+#: templates_v2/courses/course_cohort.haml:25
 #: templates_v2/courses/course_progress_v2.haml:39
 #: templates_v2/courses/visualizations/course_progress.haml:6
 msgid "Progress"
@@ -4600,7 +4601,7 @@ msgstr ""
 "في مستويات الوحدة والدرس."
 
 #: templates/admin/course_meta_content/item_list.haml:181
-#: templates_v2/courses/course_cohort.haml:17
+#: templates_v2/courses/course_cohort.haml:20
 #: templates_v2/courses/course_navigation.haml:52
 msgid "Leaderboard"
 msgstr "لوحة تسجيل أعلى النقاط"
@@ -6609,12 +6610,12 @@ msgid "of participants:"
 msgstr "من المشاركين:"
 
 #: templates/courses/course_cohort.haml:32
-#: templates_v2/courses/course_cohort.haml:14
+#: templates_v2/courses/course_cohort.haml:17
 msgid "in your cohort"
 msgstr "في الفوج الخاص بك"
 
 #: templates/courses/course_cohort.haml:33
-#: templates_v2/courses/course_cohort.haml:14
+#: templates_v2/courses/course_cohort.haml:17
 msgid "group work team members"
 msgstr "أعضاء فريق عمل المجموعة"
 
@@ -6637,7 +6638,7 @@ msgid "Proficiency:"
 msgstr "الكفاءة:"
 
 #: templates/courses/course_cohort.haml:49
-#: templates_v2/courses/course_cohort.haml:178
+#: templates_v2/courses/course_cohort.haml:181
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the proficiency leaderboard "
@@ -6695,7 +6696,7 @@ msgid "Progress:"
 msgstr "التقدم المحرز:"
 
 #: templates/courses/course_cohort.haml:119
-#: templates_v2/courses/course_cohort.haml:26
+#: templates_v2/courses/course_cohort.haml:29
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr ""
@@ -6732,7 +6733,7 @@ msgid " cohort average = %(course_avg)s points "
 msgstr " متوسط الفوج = %(course_avg)sالنقاط "
 
 #: templates/courses/course_cohort.haml:182
-#: templates_v2/courses/course_cohort.haml:101
+#: templates_v2/courses/course_cohort.haml:104
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
@@ -7643,7 +7644,7 @@ msgid "Grades:"
 msgstr "الدرجات:"
 
 #: templates/courses/course_progress.haml:129
-#: templates_v2/courses/course_progress_v2.haml:304
+#: templates_v2/courses/course_progress_v2.haml:303
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -7664,7 +7665,7 @@ msgstr ""
 
 #: templates/courses/course_progress.haml:131
 #: templates/courses/course_progress_v2.haml:237
-#: templates_v2/courses/course_progress_v2.haml:306
+#: templates_v2/courses/course_progress_v2.haml:305
 msgid "privacy policy."
 msgstr "سياسة الخصوصية."
 
@@ -7859,12 +7860,12 @@ msgstr ""
 "          "
 
 #: templates/courses/course_progress_v2.haml:200
-#: templates_v2/courses/course_progress_v2.haml:260
+#: templates_v2/courses/course_progress_v2.haml:259
 msgid "ENGAGEMENT"
 msgstr "المشاركة"
 
 #: templates/courses/course_progress_v2.haml:202
-#: templates_v2/courses/course_progress_v2.haml:262
+#: templates_v2/courses/course_progress_v2.haml:261
 msgid "discussion"
 msgstr "المناقشة"
 
@@ -7894,27 +7895,27 @@ msgid "Stats:"
 msgstr "الإحصائيات:"
 
 #: templates/courses/course_progress_v2.haml:216
-#: templates_v2/courses/course_progress_v2.haml:278
+#: templates_v2/courses/course_progress_v2.haml:277
 msgid "Number of <span>New Posts</span> you created "
 msgstr "عدد <span>المنشورات الجديدة</span> التي قمت بإنشائها "
 
 #: templates/courses/course_progress_v2.haml:219
-#: templates_v2/courses/course_progress_v2.haml:281
+#: templates_v2/courses/course_progress_v2.haml:280
 msgid "Number of <span>Replies</span> you made to other posts "
 msgstr "عدد <span>الردود</span> التي أجريتها على المنشورات الأخرى "
 
 #: templates/courses/course_progress_v2.haml:222
-#: templates_v2/courses/course_progress_v2.haml:284
+#: templates_v2/courses/course_progress_v2.haml:283
 msgid " Number of <span>Comments Generated </span> by your posts "
 msgstr "عدد <span>التعليقات التي تم إنشاؤها</span> بواسطة منشوراتك "
 
 #: templates/courses/course_progress_v2.haml:225
-#: templates_v2/courses/course_progress_v2.haml:287
+#: templates_v2/courses/course_progress_v2.haml:286
 msgid " Number of <span>Upvotes</span> your posts have received "
 msgstr "عدد <span>التأييدات</span> التي تلقتها منشوراتك "
 
 #: templates/courses/course_progress_v2.haml:228
-#: templates_v2/courses/course_progress_v2.haml:290
+#: templates_v2/courses/course_progress_v2.haml:289
 msgid " Number of your posts being <span>Followed</span> "
 msgstr "عدد منشوراتك التي تم <span>متابعتها</span> "
 
@@ -12191,10 +12192,8 @@ msgid "This field is required."
 msgstr "يلزم توافر الاسم الأول."
 
 #: templates_v2/accounts/activate.haml:82
-#, fuzzy
-#| msgid "Please enter a valid Role."
 msgid "Please enter a valid username."
-msgstr "يرجى إدخال دور صالح."
+msgstr "لم يتم التعرف على اسم المستخدم / البريد الإلكتروني، حاول مرة أخرى."
 
 #: templates_v2/accounts/activate.haml:113
 msgid "You must accept terms of service in order to continue."
@@ -12292,7 +12291,7 @@ msgstr "متوسط الكفاءة:"
 
 #: templates_v2/admin/courses/course_details.haml:111
 #: templates_v2/admin/courses/course_details.haml:166
-#: templates_v2/courses/course_progress_v2.haml:272
+#: templates_v2/courses/course_progress_v2.haml:271
 msgid "Stats"
 msgstr "الإحصائيات:"
 
@@ -12374,75 +12373,81 @@ msgstr ""
 msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "%(lesson_count)s %(lesson_index)sالدرس المتاحة على "
 
-#: templates_v2/courses/course_cohort.haml:23
+#: templates_v2/courses/course_cohort.haml:8
+#, fuzzy
+#| msgid "| Cohort | Courses | McKinsey Academy"
+msgid "| Leaderboard | Courses | McKinsey Academy"
+msgstr "| الفوج | الدورات التدريبية | أكاديمية ماكينزي"
+
+#: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
 msgstr "حالة إكمال دورتك التدريبية:"
 
-#: templates_v2/courses/course_cohort.haml:24
-#: templates_v2/courses/course_cohort.haml:176
+#: templates_v2/courses/course_cohort.haml:27
+#: templates_v2/courses/course_cohort.haml:179
 #: templates_v2/courses/visualizations/course_proficiency.haml:13
 #: templates_v2/courses/visualizations/course_progress.haml:11
 msgid "Cohort Average:"
 msgstr "معدل الأفواج:"
 
-#: templates_v2/courses/course_cohort.haml:29
+#: templates_v2/courses/course_cohort.haml:32
 msgid "Your progress position"
 msgstr "ودجة التقدم المحرز"
 
-#: templates_v2/courses/course_cohort.haml:31
+#: templates_v2/courses/course_cohort.haml:34
 msgid "Your progress position will be displayed here"
 msgstr "سيتم عرض موقعك من ناحية تقدم العمل هنا"
 
-#: templates_v2/courses/course_cohort.haml:36
+#: templates_v2/courses/course_cohort.haml:39
 msgid "Top 3 on progress"
 msgstr "جاري العمل"
 
-#: templates_v2/courses/course_cohort.haml:54
-#: templates_v2/courses/course_cohort.haml:73
-#: templates_v2/courses/course_cohort.haml:92
-#: templates_v2/courses/course_cohort.haml:129
-#: templates_v2/courses/course_cohort.haml:149
-#: templates_v2/courses/course_cohort.haml:169
-#: templates_v2/courses/course_cohort.haml:207
-#: templates_v2/courses/course_cohort.haml:227
-#: templates_v2/courses/course_cohort.haml:247
+#: templates_v2/courses/course_cohort.haml:57
+#: templates_v2/courses/course_cohort.haml:76
+#: templates_v2/courses/course_cohort.haml:95
+#: templates_v2/courses/course_cohort.haml:132
+#: templates_v2/courses/course_cohort.haml:152
+#: templates_v2/courses/course_cohort.haml:172
+#: templates_v2/courses/course_cohort.haml:210
+#: templates_v2/courses/course_cohort.haml:230
+#: templates_v2/courses/course_cohort.haml:250
 msgid "User Name"
 msgstr "اسم المستخدم"
 
-#: templates_v2/courses/course_cohort.haml:98
+#: templates_v2/courses/course_cohort.haml:101
 msgid "Your discussion activity points:"
 msgstr "نقاط نشاط مناقشتك:"
 
-#: templates_v2/courses/course_cohort.haml:99
+#: templates_v2/courses/course_cohort.haml:102
 #, python-format
 msgid " Cohort Average: %(score)s points"
 msgstr " معدل الأفواج: = %(score)sالنقاط "
 
-#: templates_v2/courses/course_cohort.haml:104
+#: templates_v2/courses/course_cohort.haml:107
 msgid "Your engagement position"
 msgstr "سيُعرض موقعك من ناحية المشاركة <br> هنا"
 
-#: templates_v2/courses/course_cohort.haml:106
+#: templates_v2/courses/course_cohort.haml:109
 msgid "Your engagement position will be displayed here"
 msgstr "سيُعرض موقعك من ناحية المشاركة <br> هنا"
 
-#: templates_v2/courses/course_cohort.haml:110
+#: templates_v2/courses/course_cohort.haml:113
 msgid "Top 3 on engagement"
 msgstr "المشاركة"
 
-#: templates_v2/courses/course_cohort.haml:175
+#: templates_v2/courses/course_cohort.haml:178
 msgid "Your course knowledge:"
 msgstr "معرفتك بالدورة التدريبية:"
 
-#: templates_v2/courses/course_cohort.haml:181
+#: templates_v2/courses/course_cohort.haml:184
 msgid "Your proficiency position"
 msgstr "سيُعرض موقعك من حيث الكفاءة <br> هنا"
 
-#: templates_v2/courses/course_cohort.haml:183
+#: templates_v2/courses/course_cohort.haml:186
 msgid "Your proficiency position will be displayed here"
 msgstr "سيُعرض موقعك من حيث الكفاءة <br> هنا"
 
-#: templates_v2/courses/course_cohort.haml:187
+#: templates_v2/courses/course_cohort.haml:190
 msgid "Top 3 on Proficiency"
 msgstr "الإجادة"
 
@@ -12662,7 +12667,7 @@ msgstr ""
 "          "
 
 #: templates_v2/courses/course_progress_v2.haml:198
-#: templates_v2/courses/course_progress_v2.haml:270
+#: templates_v2/courses/course_progress_v2.haml:269
 msgid "Overall"
 msgstr "المجموع الكلي:"
 
@@ -12670,28 +12675,24 @@ msgstr "المجموع الكلي:"
 msgid "Graded Items"
 msgstr "العناصر المدرّجة:"
 
-#: templates_v2/courses/course_progress_v2.haml:253
+#: templates_v2/courses/course_progress_v2.haml:254
 #, python-format
 msgid ""
-"\n"
-"                  You need a combined course grade of at least 70%% to earn "
-"a certificate of completion. Your final grade is calculated as follows: "
-"%(graders)s.\n"
-"                  %%a.edit-link.ome.dome-c{:data-target => \"#progressModal"
-"\", :data-toggle => \"modal\", :href => \"#\"} Click here\n"
-"                  to read more about how we may share your course "
-"information.\n"
-"                "
+"You need a combined course grade of at least 70%% to earn a certificate of "
+"completion. Your final grade is calculated as follows:"
 msgstr ""
-"\n"
-"            تحتاج إلى درجة مدمجة في الدورة تصل إلى 70 على الأقل%% للحصول على "
-"شهادة إتمام الدورة. يتم احتساب الدرجة النهائية الخاصة بك كما يلي"
-"%(graders)s:. %%a.edit-link.ome.dome-c{:data-target => \"#progressModal\", :"
-"data-toggle => \"modal\", :href => \"#\"} اضغط هنا\n"
-" لقراءة المزيد حول كيفية مشاركة معلوماتك في الدورة.\n"
-"          "
+"تحتاج إلى تحصيل درجة مدمجة في الدورة التدريبية لا تقل عن 70%% للحصول على "
+"شهادة الإكمال. ويتم احتساب درجتك النهائية كما يلي: "
 
-#: templates_v2/courses/course_progress_v2.haml:263
+#: templates_v2/courses/course_progress_v2.haml:255
+msgid "Click here"
+msgstr "انقر هنا."
+
+#: templates_v2/courses/course_progress_v2.haml:256
+msgid "to read more about how we may share your course information."
+msgstr "اضغط هنا لقراءة المزيد حول كيفية مشاركة معلوماتك في الدورة."
+
+#: templates_v2/courses/course_progress_v2.haml:262
 #, python-format
 msgid ""
 "\n"
@@ -12708,7 +12709,7 @@ msgstr ""
 "%(social_course_avg)s.\n"
 "          "
 
-#: templates_v2/courses/course_progress_v2.haml:271
+#: templates_v2/courses/course_progress_v2.haml:270
 msgid "Measured Engagement"
 msgstr "المشاركة المقاسة:"
 
@@ -12873,8 +12874,8 @@ msgid "We’ll do our best to help."
 msgstr "سنبذل قصارى جهدنا لتقديم المساعدة."
 
 #: templates_v2/footer.haml:6
-msgid "Copyright &#9400; 2019 McKinsey & Company. All Rights Reserved."
-msgstr "حقوق الطبع والنشر &#9400; 2019 McKinsey & Company. جميع الحقوق محفوظة."
+msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
+msgstr "&#9400; 2019 McKinsey & Company. جميع الحقوق محفوظة."
 
 #: templates_v2/footer.haml:13
 msgid "About"
@@ -13083,6 +13084,26 @@ msgstr "الاسم الأول: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "اسم العائلة: {}"
+
+#~ msgid ""
+#~ "\n"
+#~ "                  You need a combined course grade of at least 70%% to "
+#~ "earn a certificate of completion. Your final grade is calculated as "
+#~ "follows: %(graders)s.\n"
+#~ "                  %%a.edit-link.ome.dome-c{:data-target => "
+#~ "\"#progressModal\", :data-toggle => \"modal\", :href => \"#\"} Click "
+#~ "here\n"
+#~ "                  to read more about how we may share your course "
+#~ "information.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "            تحتاج إلى درجة مدمجة في الدورة تصل إلى 70%% على الأقل للحصول "
+#~ "على شهادة إتمام الدورة. يتم احتساب الدرجة النهائية الخاصة بك كما يلي"
+#~ "%(graders)s:. %%a.edit-link.ome.dome-c{:data-target => \"#progressModal"
+#~ "\", :data-toggle => \"modal\", :href => \"#\"} اضغط هنا\n"
+#~ " لقراءة المزيد حول كيفية مشاركة معلوماتك في الدورة.\n"
+#~ "          "
 
 #, fuzzy
 #~| msgid ""
