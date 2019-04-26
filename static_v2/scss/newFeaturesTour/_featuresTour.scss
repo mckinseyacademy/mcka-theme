@@ -128,7 +128,7 @@
       .carousel-item {
         -webkit-animation: fadeOut 1s ;
         animation: fadeOut 1s;
-        transform: translateX(100%);
+        // transform: translateX(100%);
         &.active
         {
           -webkit-animation: fadeIn 1s ;
@@ -136,12 +136,12 @@
           visibility: visible;
           &.next
           {
-            transform: translateX(0) ;
+            // transform: translateX(0) ;
           }
         }
       &.next
       {
-        transform: translateX(-100%);
+        // transform: translateX(-100%);
       }
     }
   }
@@ -151,7 +151,7 @@
     {
       -webkit-animation: fadeOut 1s ;
       animation: fadeOut 1s;
-      transform: translateX(-100%);
+      //transform: translateX(-100%);
       &.active
       {
         -webkit-animation: fadeIn 1s ;
@@ -159,12 +159,12 @@
         visibility: visible;
         &.prev
         {
-          transform: translateX(0);
+          //transform: translateX(0);
         }
       }
       &.prev
       {
-        transform: translateX(100%);
+        //transform: translateX(100%);
       }
     }
   }

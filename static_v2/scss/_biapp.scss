@@ -627,17 +627,17 @@ body {
   .carousel-inner{
   &.nextSlide{
     .carousel-item {
-      transform: translateX(-100%);
+      // transform: translateX(-100%);
       &.active
       {
         &.next
         {
-          transform: translateX(0) ;
+          // transform: translateX(0) ;
         }
       }
     &.next
     {
-      transform: translateX(100%);
+      // transform: translateX(100%);
     }
   }
 }
@@ -645,17 +645,17 @@ body {
 {
   .carousel-item
   {
-    transform: translateX(100%);
+    // transform: translateX(100%);
     &.active
     {
       &.prev
       {
-        transform: translateX(0);
+        // transform: translateX(0);
       }
     }
     &.prev
     {
-      transform: translateX(-100%);
+      // transform: translateX(-100%);
     }
   }
 }
