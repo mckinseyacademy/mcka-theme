@@ -110,7 +110,6 @@ body.new-theme {
 
                             &.poll-top-choice {
                                 @include primary-theme-content-color;
-                                background-color: $light-gray;
                                 color: var(--primary) !important;
                             }
 
