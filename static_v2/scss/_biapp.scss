@@ -733,11 +733,8 @@ form {
       @include right(10px);
     }
     #show-hide, .show-hide {
-      @include right(auto);
-      @include left(264px);
-      @include media-breakpoint-between(xs, sm) {
-        @include left(89.5%);
-      }
+      @include right(15px);
+      @include left(auto);
     }
   }
   .success,
