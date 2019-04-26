@@ -228,8 +228,12 @@ class ProblemResponseTasksTest(TestCase):
     @ddt.data(
         {'task_id': 'remote_task_id', 'task_state': 'SUCCESS',
          'in_progress': False, 'task_progress': {'report_name': 'report_name'}},
-        {'task_id': 'remote_task_id', 'task_state': 'PROGRESS',
+        {'task_id': 'remote_task_id', 'task_state': 'PENDING',
          'in_progress': True, 'task_progress': {'report_name': 'report_name'}},
+        {'task_id': 'remote_task_id', 'task_state': 'FAILURE',
+         'in_progress': False, 'task_progress': {'report_name': 'report_name'}},
+        {'task_id': 'remote_task_id', 'task_state': 'SUCCESS',
+         'in_progress': False, 'task_progress': {}}
     )
     @patch('admin.tasks.instructor_api.get_task_status')
     @patch(
@@ -243,18 +247,28 @@ class ProblemResponseTasksTest(TestCase):
     def test_monitor_problem_response_report(self, tasks_result, mock_retry, mock_update_state, mock_get_task_status):
         """Test monitor problem response report task."""
         mock_get_task_status.return_value = tasks_result
-        if tasks_result['task_state'] == 'SUCCESS':
-            monitor_problem_response_report(
+        report_name = tasks_result['task_progress'].get('report_name')
+        if tasks_result['task_state'] == 'SUCCESS' and report_name:
+            res = monitor_problem_response_report(
                 {'id': 'task_id', 'remote_task_id': 'remote_task_id'},
                 'course_id'
             )
             self.assertEqual(len(mock_update_state.mock_calls), 1)
-        else:
+            self.assertEqual(res['report_name'], tasks_result['task_progress']['report_name'])
+        elif (tasks_result['task_state'] == 'PENDING' or
+              tasks_result['task_state'] == 'SUCCESS' and not report_name):
             with self.assertRaises(Retry):
                 monitor_problem_response_report(
                     {'id': 'task_id', 'remote_task_id': 'remote_task_id'},
                     'course_id'
                 )
+        elif tasks_result['task_state'] == 'FAILURE':
+            with self.assertRaises(Exception):
+                monitor_problem_response_report(
+                    {'id': 'task_id', 'remote_task_id': 'remote_task_id'},
+                    'course_id'
+                )
+
         mock_get_task_status.assert_called_with('remote_task_id')
 
     @patch('admin.tasks.AdminTask.objects.get', return_value=Mock())

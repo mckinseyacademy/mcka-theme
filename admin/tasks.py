@@ -1171,13 +1171,37 @@ def create_problem_response_report(
 @task(bind=True, name='admin.monitor_problem_response_report', max_retries=30)
 def monitor_problem_response_report(self, parent_task, course_id):
     """
-    Monitors problem response report task. This task will long-poll for one hour before bailing.
+    Monitor problem response report task. This task will long-poll for one hour before bailing.
     """
     task = instructor_api.get_task_status(parent_task['remote_task_id'])
-    if (task and task['in_progress']):
-        raise self.retry(countdown=60 * 2)  # Retry in 2 minutes
-    self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 15})
-    return {'id': parent_task['id'], 'report_name': task['task_progress']['report_name']}
+    if task and task['in_progress'] or task['task_state'] in celery_states.UNREADY_STATES:
+        raise self.retry(
+            countdown=60 * 2,
+            exc=Exception('Progress or Unready state in remote task: {task_id}'.format(
+                task_id=parent_task['remote_task_id']
+                )
+            )
+        )  # Retry in 2 minutes and propagate exception message
+    elif task and task['task_state'] == celery_states.SUCCESS:
+        report_name = task.get('task_progress', {}).get('report_name')
+        if not report_name:
+            raise self.retry(
+                countdown=60 * 2,
+                exc=Exception('Could not retrieve report name from remote task: {task_id}'.format(
+                    task_id=parent_task['remote_task_id']
+                    )
+                )
+            )  # Retry in 2 minutes and propagate exception message
+
+        self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 15})
+        return {'id': parent_task['id'], 'report_name': report_name}
+    else:  # If state not in ['SUCCESS', UNREADY_STATES] then we're in an exception or propagate state
+        raise Exception(task.get('task_progress', {}).get(
+            'exception',
+            'There was an error in remote task: {task_id}'.format(
+                task_id=parent_task['remote_task_id']
+            )
+        ))
 
 
 @task(bind=True, name='admin.post_process_problem_response_report', max_retries=3)
