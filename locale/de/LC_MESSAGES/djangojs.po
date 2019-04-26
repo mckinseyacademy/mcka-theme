@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 12:41+0000\n"
+"POT-Creation-Date: 2019-04-26 15:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,27 +20,27 @@ msgstr ""
 
 #: static/js/admin/client_sso.js:182
 msgid "You need to enter name!"
-msgstr "Bitte geben Sie den Namen ein."
+msgstr "Bitte geben Sie den Namen ein!"
 
 #: static/js/admin/client_sso.js:187
 msgid "You need to enter course ID!"
-msgstr "Bitte geben Sie die Kurs-ID ein."
+msgstr "Bitte geben Sie die Kurs-ID ein!"
 
 #: static/js/admin/course_meta_content.js:1
 msgid "Click Add to specify Lesson Label"
-msgstr ""
+msgstr "Auf \"Hinzufügen\" klicken, um die Lektionsbeschriftung anzugeben"
 
 #: static/js/admin/course_meta_content.js:2
 msgid "Click Add to specify Module Label"
-msgstr ""
+msgstr "Auf \"Hinzufügen\" klicken, um die Modulbeschriftung anzugeben"
 
 #: static/js/admin/course_meta_content.js:3
 msgid "Click Add to specify Lessons Label"
-msgstr ""
+msgstr "Auf \"Hinzufügen\" klicken, um die Lektionsbeschriftung anzugeben"
 
 #: static/js/admin/course_meta_content.js:4
 msgid "Click Add to specify Modules Label"
-msgstr ""
+msgstr "Auf \"Hinzufügen\" klicken, um die Modulbeschriftung anzugeben"
 
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
@@ -95,7 +95,7 @@ msgstr[1] "Ihr Kurs fängt in %(days)s Tagen an."
 
 #: static/js/application.js:198 static_v2/js/application.js:229
 msgid "Welcome to McKinsey Academy"
-msgstr "Willkommen zu der McKinsey Academy"
+msgstr "Willkommen bei der McKinsey Academy"
 
 #: static/js/application.js:199 static_v2/js/application.js:230
 msgid ""
@@ -111,7 +111,7 @@ msgstr "Fortschritt: %(value)s%"
 
 #: static/js/common/bbGridExtend.js:70
 msgid "Search by Keyword"
-msgstr ""
+msgstr "Nach Keywords suchen"
 
 #: static/js/common/common_js.js:171
 msgid "NoName"
@@ -133,15 +133,19 @@ msgstr "%(value)s%"
 msgid ""
 "<span class=\"red\"> %(diff)s% </span> below your organization's average"
 msgstr ""
+"<span class=\"red\"> %(diff)s% </span> unter dem Durchschnitt Ihrer "
+"Organisation"
 
 #: static/js/common/common_js.js:963
 msgid ""
 "<span class=\"green\">%(diff)s% </span> above your organization's average"
 msgstr ""
+"<span class=\"green\">%(diff)s% </span> über dem Durchschnitt Ihrer "
+"Organisation"
 
 #: static/js/common/common_js.js:968 static/js/common/common_js.js:988
 msgid "same as your organization's average"
-msgstr ""
+msgstr "wie der Durchschnitt Ihrer Organisation"
 
 #: static/js/common/common_js.js:976
 msgid ""
@@ -149,7 +153,11 @@ msgid ""
 msgid_plural ""
 "<span class=\"red\"> %(diff)s points</span> below your organization's average"
 msgstr[0] ""
+"<span class=\"red\"> %(diff)s point</span> unter dem Durchschnitt Ihrer "
+"Organisation"
 msgstr[1] ""
+"<span class=\"red\"> %(diff)s points</span> unter dem Durchschnitt Ihrer "
+"Organisation"
 
 #: static/js/common/common_js.js:983
 msgid ""
@@ -159,11 +167,15 @@ msgid_plural ""
 "<span class=\"green\"> %(diff)s points</span> above your organization's "
 "average"
 msgstr[0] ""
+"<span class=\"green\"> %(diff)s point</span> über dem Durchschnitt Ihrer "
+"Organisation"
 msgstr[1] ""
+"<span class=\"green\"> %(diff)s points</span> über dem Durchschnitt Ihrer "
+"Organisation"
 
 #: static/js/common/mass_participants_delete.js:133
 msgid "An error occurred submitting the request."
-msgstr ""
+msgstr "Beim Einreichen der Anfrage ist ein Fehler aufgetreten."
 
 #: static/js/common/mass_participants_enroll.js:255
 msgid "email"
@@ -192,25 +204,23 @@ msgstr "Kurs-ID"
 #: static/js/common/mass_participants_enroll.js:283
 #: static/js/common/mass_participants_enroll.js:296
 msgid "Learner email"
-msgstr ""
+msgstr "E-Mail des Lernenden"
 
 #: static/js/common/mass_participants_enroll.js:283
 msgid "Business Function"
-msgstr ""
+msgstr "Geschäftsfunktion"
 
 #: static/js/common/mass_participants_enroll.js:283
 msgid "Business Unit"
-msgstr ""
+msgstr "Geschäftseinheit"
 
 #: static/js/common/mass_participants_enroll.js:283
-#, fuzzy
-#| msgid "Notification"
 msgid "location"
-msgstr "Benachrichtigung"
+msgstr "Ort"
 
 #: static/js/common/mass_participants_enroll.js:296
 msgid "Manager email"
-msgstr ""
+msgstr "E-Mail des Managers"
 
 #: static/js/common/mass_participants_enroll.js:334
 #: static/js/common/mass_participants_enroll.js:408
@@ -226,19 +236,19 @@ msgstr ""
 #: static/js/common/mass_participants_enroll.js:430
 #: static/js/common/mass_participants_enroll.js:567
 msgid "Report of bulk update will be sent to your email."
-msgstr ""
+msgstr "Bericht der Massenaktualisierung wird an Ihre E-Mail-Adresse gesendet."
 
 #: static/js/company_fields.js:9
 msgid "2 or more fields can not have the same name"
-msgstr ""
+msgstr "2 oder mehr Felder können nicht denselben Namen haben"
 
 #: static/js/company_fields.js:13
 msgid "Only alphanumeric characters and spaces allowed"
-msgstr ""
+msgstr "Nur alphanumerische Zeichen und Leerzeichen erlaubt"
 
 #: static/js/company_fields.js:53 static/js/company_fields.js:72
 msgid "You can only add up to 4 fields"
-msgstr ""
+msgstr "Sie können nur bis zu 4 Felder hinzufügen"
 
 #: static/js/course_contact_modal.js:15 static_v2/js/course_contact.js:16
 msgid "Notification"
@@ -258,7 +268,7 @@ msgstr "Bitte wählen Sie ein Projekt"
 
 #: static/js/course_drag_drop.js:174
 msgid "Group was not created"
-msgstr "Die Gruppe wurde nicht geschaffen"
+msgstr "Die Gruppe wurde nicht erstellt"
 
 #: static/js/course_drag_drop.js:234
 msgid "All students added to private group have to be members of same company."
@@ -313,6 +323,12 @@ msgstr "Digitaler Inhalt"
 #: static/js/course_lesson.js:5
 msgid "It looks like you're not active. Click OK to keep working."
 msgstr ""
+"Es scheint, als seien Sie nicht aktiv. Klicken Sie auf OK um "
+"weiterzuarbeiten."
+
+#: static/js/course_lesson.js:112
+msgid "Complete all content to continue"
+msgstr ""
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
@@ -347,6 +363,8 @@ msgstr "Wählen Sie mindestens einen Kurs aus"
 #: static/js/session_timeout_timer.js:39
 msgid "You were logged out due to inactivity. Please log back in to continue."
 msgstr ""
+"Sie wurden aufgrund von Inaktivität ausgeloggt. Bitte loggen Sie sich wieder "
+"ein, um fortzufahren."
 
 #: static/js/static_translation_strings.js:2
 msgid "It looks like your browser settings has pop-ups disabled."
@@ -362,22 +380,22 @@ msgstr "Zum Fortfahren Pop-up-Fenster öffnen"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
-msgstr ""
+msgstr "Beim Einreichen Ihrer Datei ist ein Fehler aufgetreten."
 
 #: static/js/views/admin/cohorts.js:35
 msgid "Invalid format for CSV file."
-msgstr ""
+msgstr "Ungültiges Format für CSV-Datei."
 
 #: static/js/views/admin/cohorts.js:37
 msgid "Error processing CSV file."
-msgstr ""
+msgstr "Fehler bei der Verarbeitung der CVS-Datei."
 
 #: static/js/views/admin/cohorts.js:132
 #, javascript-format
 msgid "%s learner has been added to this cohort."
 msgid_plural "%s learners have been added to this cohort."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s Lerner wurde diesem Jahrgang hinzugefügt."
+msgstr[1] "%s Lerner wurden diesem Jahrgang hinzugefügt."
 
 #: static/js/views/admin/cohorts.js:138
 #, javascript-format
@@ -388,42 +406,46 @@ msgid_plural ""
 "%s learners were preassigned to this cohort. These learners will "
 "automatically be added to the cohort when they enroll in the course."
 msgstr[0] ""
+"%s Lerner wurde diesem Jahrgang im Vorhinein hinzugefügt. Dieser Lerner wird "
+"dem Jahrgang automatisch zugeordnet, wenn er sich zum Kurs anmeldet."
 msgstr[1] ""
+"%s Lerner wurden diesem Jahrgang im Vorhinein hinzugefügt. Diese Lerner "
+"werden dem Jahrgang automatisch zugeordnet, wenn sie sich zum Kurs anmelden."
 
 #: static/js/views/admin/cohorts.js:144
 #, javascript-format
 msgid "%s learner has been moved to this cohort."
 msgid_plural "%s learners have been moved to this cohort."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s Lerner ist in diesen Jahrgang gewechselt."
+msgstr[1] "%s Lerner sind in diesen Jahrgang gewechselt."
 
 #: static/js/views/admin/cohorts.js:150
 #, javascript-format
 msgid "%s invalid email was ignored."
 msgid_plural "%s invalid emails were ignored."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s ungültige E-Mail-Adresse wurde übergangen."
+msgstr[1] "%s ungültige E-Mail-Adressen wurden übergangen."
 
 #: static/js/views/admin/cohorts.js:156
 #, javascript-format
 msgid "%s user was already in this cohort."
 msgid_plural "%s users were already in this cohort."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s Nutzer war bereits in diesem Jahrgang."
+msgstr[1] "%s Nutzer waren bereits in diesem Jahrgang."
 
 #: static/js/views/admin/cohorts.js:162
 #, javascript-format
 msgid "%s user/email was not found."
 msgid_plural "%s users/email were not found."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s Nutzer/E-Mail-Adresse wurde nicht gefunden."
+msgstr[1] "%s Nutzer/E-Mail-Adressen wurden nicht gefunden."
 
 #: static/js/views/admin/cohorts.js:222
 #, javascript-format
 msgid "contains %s learner"
 msgid_plural "contains %s learners"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "enthält %s Lerner"
+msgstr[1] "enthält %s Lerner"
 
 #: static/js/views/admin/companies_list.js:12
 #: static/js/views/admin/course_details.js:29
@@ -536,7 +558,7 @@ msgstr "Aktiv"
 
 #: static/js/views/admin/company_linked_apps.js:147
 msgid "Couldn't link this App!"
-msgstr "Diese App konnte nicht verlinkt werden!"
+msgstr "Diese App konnte nicht verbunden werden!"
 
 #: static/js/views/admin/company_mobileapp_details.js:31
 msgid "Couldn't delink App!"
@@ -575,14 +597,12 @@ msgid "Activated"
 msgstr "Aktiviert"
 
 #: static/js/views/admin/course_details.js:32
-#, fuzzy
-#| msgid "Cohort Comp."
 msgid "Cohort"
 msgstr "Jahrgang Firma"
 
 #: static/js/views/admin/course_details.js:40
 msgid "Last Log In"
-msgstr "Letzter Anmeldung"
+msgstr "Letzte Anmeldung"
 
 #: static/js/views/admin/course_details.js:51
 #: static/js/views/admin/manager_dashboard.js:30
@@ -593,7 +613,7 @@ msgstr "Fortschritt"
 #: static/js/views/admin/course_details.js:58
 #: static/js/views/admin/participant_details_active_courses_view.js:93
 msgid "Proficiency"
-msgstr "Leistung"
+msgstr "Kompetenzen"
 
 #: static/js/views/admin/course_details.js:65
 msgid "Engagement"
@@ -614,19 +634,19 @@ msgstr "Land"
 
 #: static/js/views/admin/course_details.js:318
 msgid "Couldn't create new tag!"
-msgstr "Eine neue Markierung konnte nicht erstellt werden!"
+msgstr "Eine neues Tag konnte nicht erstellt werden!"
 
 #: static/js/views/admin/course_details.js:332
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
 msgstr ""
-"Sie verfügen nicht über die Berechtigungen, um eine neue Markierung zu "
-"kreieren. Bitte wählen Sie daher eine von der Liste!"
+"Sie verfügen nicht über die Berechtigungen, um ein neues Tag zu erstellen. "
+"Bitte wählen Sie daher eines von der Liste!"
 
 #: static/js/views/admin/course_details.js:362
 msgid "Couldn't delete tag!"
-msgstr "Die Markierung konnte nicht gelöscht werden!"
+msgstr "Das Tag konnte nicht gelöscht werden!"
 
 #: static/js/views/admin/course_details.js:402
 msgid "%(count)s Course Tagged with %(tagDetails)s"
@@ -646,15 +666,15 @@ msgstr ""
 
 #: static/js/views/admin/course_details.js:545
 msgid "This tag name cannot have more than 30 characters!"
-msgstr "Dieser Markierungsname darf nicht mehr als 30 Zeichen beinhalten!"
+msgstr "Dieser Tagname darf nicht mehr als 30 Zeichen beinhalten!"
 
 #: static/js/views/admin/course_details.js:552
 msgid "This tag name cannot contain non-alphanumeric characters!"
-msgstr "Dieser Markierungsname darf nur alphanumerische Zeichen beinhalten!"
+msgstr "Dieser Tagname darf nur alphanumerische Zeichen beinhalten!"
 
 #: static/js/views/admin/course_details.js:592
 msgid "Couldn't add tag to course!"
-msgstr "Dieser Kurs konnte nicht markiert werden!"
+msgstr "Diesem Kurs konnte kein Tag hinzugefügt werden!"
 
 #: static/js/views/admin/course_details_blocks.js:34
 #: static/js/views/admin/manager_dashboard.js:107
@@ -669,7 +689,7 @@ msgstr "Modul"
 
 #: static/js/views/admin/course_details_blocks.js:48
 msgid "Poll/Survey Question"
-msgstr ""
+msgstr "Umfrage/Frage"
 
 #: static/js/views/admin/course_details_bulk_actions.js:58
 msgid "File successfully uploaded!"
@@ -790,7 +810,7 @@ msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
 msgstr ""
-"Aufschlüsselung des Fortschritts für jede Übung erfassen (Hinweis: der "
+"Aufschlüsselung des Fortschritts für jede Lektion erfassen (Hinweis: der "
 "Export wird mehr Zeit in Anspruch nehmen)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
@@ -805,13 +825,13 @@ msgstr "Statistiken für alle Nutzer exportieren"
 
 #: static/js/views/admin/course_details_bulk_actions.js:477
 msgid "Export Report"
-msgstr "Report exportieren"
+msgstr "Bericht exportieren"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #: static/js/views/admin/course_details_bulk_actions.js:568
 msgid "Error initiating the report generation. Please retry later."
 msgstr ""
-"Bei dem Start der Reportgenerierung ist ein Fehler aufgetreten. Bitte "
+"Bei dem Start der Berichtgenerierung ist ein Fehler aufgetreten. Bitte "
 "versuchen Sie es später noch einmal."
 
 #: static/js/views/admin/course_details_bulk_actions.js:598
@@ -842,7 +862,7 @@ msgstr "Was würden Sie jetzt gerne tun?"
 
 #: static/js/views/admin/course_details_bulk_actions.js:761
 msgid "Go to %(course_id)s Course"
-msgstr "Gehe zu %(course_id)s Kurs"
+msgstr "Gehe zu Kurs %(course_id)s "
 
 #: static/js/views/admin/course_details_bulk_actions.js:763
 msgid "Send Course Intro Email"
@@ -919,14 +939,12 @@ msgid "Avg Progress"
 msgstr "Durchschnittlicher Fortschritt"
 
 #: static/js/views/admin/course_details_problem_response_reports.js:12
-#, fuzzy
-#| msgid "Username"
 msgid "Filename"
 msgstr "Nutzername"
 
 #: static/js/views/admin/course_details_problem_response_reports.js:30
 msgid "Request Time"
-msgstr ""
+msgstr "Zeit für die Anfrage"
 
 #: static/js/views/admin/courseinfo.js:21
 msgid ".0%"
@@ -950,71 +968,63 @@ msgstr "Möchten Sie Folgendes wirklich löschen: \n"
 
 #: static/js/views/admin/import_progress.js:4
 msgid "File name"
-msgstr ""
+msgstr "Dateiname"
 
 #: static/js/views/admin/import_progress.js:9
-#, fuzzy
-#| msgid "Start"
 msgid "Start time"
 msgstr "Start"
 
 #: static/js/views/admin/import_progress.js:10
-#, fuzzy
-#| msgid "End Date"
 msgid "End time"
-msgstr "Datum der Fertigstellung"
+msgstr "Ende"
 
 #: static/js/views/admin/import_progress.js:18
 #: static/js/views/admin/import_progress.js:97
 msgid "Importing.."
-msgstr ""
+msgstr "Wird importiert..."
 
 #: static/js/views/admin/import_progress.js:23
 #: static/js/views/admin/import_progress.js:123
 #: static/js/views/admin/import_progress.js:128
 msgid "Successful"
-msgstr ""
+msgstr "Erfolgreich"
 
 #: static/js/views/admin/import_progress.js:26
 #: static/js/views/admin/import_progress.js:117
-#, fuzzy
-#| msgid "Show Errors"
 msgid "Contains Errors"
-msgstr "Fehler anzeigen"
+msgstr "Enthält Fehler "
 
 #: static/js/views/admin/import_progress.js:34
-#, fuzzy
-#| msgid "Activation Link"
 msgid "Activation File"
 msgstr "Aktivierungs-Link"
 
 #: static/js/views/admin/import_progress.js:44
 msgid "Error File"
-msgstr ""
+msgstr "Fehler Datei"
 
 #: static/js/views/admin/import_progress.js:53
 msgid "Initiated by"
-msgstr ""
+msgstr "Eingeleitet von"
 
 #: static/js/views/admin/import_progress.js:131
 msgid "Importing %(processed)s of %(total)s rows"
-msgstr ""
+msgstr "Wird importiert %(Fortschritt)e von %(Gesamt) Reihen"
 
 #: static/js/views/admin/manager_dashboard.js:107
 msgid "complete"
-msgstr "unvollständig"
+msgstr "vollständig"
 
 #: static/js/views/admin/manager_dashboard.js:112
 msgid "Error Occured!"
-msgstr ""
+msgstr "Fehler aufgetreten!"
 
 #: static/js/views/admin/manager_dashboard.js:115
 msgid "Hide Details"
-msgstr ""
+msgstr "Details verbergen"
 
 #: static/js/views/admin/manager_dashboard.js:145
 msgid "View Details"
-msgstr ""
+msgstr "Details ansehen"
 
 #: static/js/views/admin/navigation.js:18
 msgid "Are you sure you want to remove this ?"
@@ -1077,7 +1087,7 @@ msgstr "Nutzer wird bei dem unten ausgewählten Kurs angemeldet."
 
 #: static/js/views/admin/participant_details_edit_info.js:367
 msgid "Moderator"
-msgstr ""
+msgstr "Moderator"
 
 #: static/js/views/admin/participant_details_edit_info.js:390
 msgid "Enroll Participant"
@@ -1116,11 +1126,11 @@ msgstr "Angemeldet bei"
 
 #: static_v2/js/application.js:521 static_v2/js/custom.js:125
 msgid "Hide password"
-msgstr ""
+msgstr "Passwort ausblenden"
 
 #: static_v2/js/application.js:526 static_v2/js/custom.js:130
 msgid "Show password"
-msgstr ""
+msgstr "Passwort anzeigen"
 
 #~ msgid "Keyword Search"
 #~ msgstr "Keyword-Suche"

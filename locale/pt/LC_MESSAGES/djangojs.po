@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 12:42+0000\n"
+"POT-Creation-Date: 2019-04-26 15:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -349,6 +349,10 @@ msgstr "Conteúdo digital"
 msgid "It looks like you're not active. Click OK to keep working."
 msgstr ""
 "Parece que você não está ativo. Clique em OK para continuar a trabalhar."
+
+#: static/js/course_lesson.js:112
+msgid "Complete all content to continue"
+msgstr ""
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"

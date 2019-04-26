@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 12:42+0000\n"
+"POT-Creation-Date: 2019-04-26 15:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1554,7 +1554,7 @@ msgstr "ID do curso"
 #: admin/controller.py:807
 #: templates/admin/participants/participant_details.haml:103
 #: templates/admin/participants/participant_details.haml:205
-#: templates_v2/accounts/activate.haml:27
+#: templates_v2/accounts/activate.haml:31
 msgid "Username"
 msgstr "Nome de usuário"
 
@@ -3022,7 +3022,7 @@ msgstr "403: Permissão negada"
 
 #: templates/403.haml:10 templates/404.haml:10 templates/500.haml:10
 #: templates/503.haml:10 templates/accounts/access.haml:20
-#: templates/accounts/sso_error.haml:12 templates_v2/accounts/access.haml:20
+#: templates/accounts/sso_error.haml:12 templates_v2/accounts/access.haml:18
 #: templates_v2/accounts/sso_error.haml:12
 msgid "Sorry!"
 msgstr "Desculpe!"
@@ -3081,11 +3081,11 @@ msgstr ""
 msgid "Access | McKinsey Academy"
 msgstr "Acesso | McKinsey Academy"
 
-#: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:14
+#: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:13
 msgid "You will be redirected to your login provider."
 msgstr "Você será redirecionado para o seu provedor de login."
 
-#: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:21
+#: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:19
 msgid "There was a problem with your access code."
 msgstr "Houve um problema com seu código de acesso."
 
@@ -3229,7 +3229,7 @@ msgstr "Faça login no McKinsey Academy"
 msgid "Username or Email:"
 msgstr "Nome de usuário ou e-mail:"
 
-#: templates/accounts/login.haml:43 templates_v2/accounts/activate.haml:37
+#: templates/accounts/login.haml:43 templates_v2/accounts/activate.haml:42
 #: templates_v2/home/landing.haml:31 tests/templates_v2/home/landing.haml:34
 msgid "Password"
 msgstr "Senha"
@@ -3323,7 +3323,7 @@ msgstr "ou tente entrar novamente em 15 minutos."
 
 #: templates/accounts/login.haml:106 templates_v2/home/landing.haml:102
 #: templates_v2/registration/password_reset_confirm.haml:14
-#: templates_v2/registration/password_reset_confirm.haml:41
+#: templates_v2/registration/password_reset_confirm.haml:43
 #: templates_v2/registration/password_reset_form.haml:8
 #: tests/templates_v2/home/landing.haml:105
 msgid "Reset Password"
@@ -3378,7 +3378,7 @@ msgstr ""
 "asterisco."
 
 #: templates/accounts/public_registration.haml:69
-#: templates_v2/accounts/activate.haml:52
+#: templates_v2/accounts/activate.haml:59
 #: templates_v2/accounts/public_registration.haml:85
 msgid "Register"
 msgstr "Inscrição"
@@ -11297,13 +11297,13 @@ msgstr "Alterar minha senha"
 
 #: templates/registration/password_reset_confirm.haml:36
 #: templates/registration/password_reset_failed.haml:3
-#: templates_v2/registration/password_reset_confirm.haml:44
+#: templates_v2/registration/password_reset_confirm.haml:46
 #: templates_v2/registration/password_reset_failed.haml:8
 msgid "Password Reset Unsuccessful"
 msgstr "Falha na redefinição da senha"
 
 #: templates/registration/password_reset_confirm.haml:37
-#: templates_v2/registration/password_reset_confirm.haml:45
+#: templates_v2/registration/password_reset_confirm.haml:47
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
@@ -12466,21 +12466,21 @@ msgstr ""
 msgid "Service is temporarily unavailable."
 msgstr "O serviço está temporariamente indisponível."
 
-#: templates_v2/accounts/activate.haml:33
+#: templates_v2/accounts/activate.haml:37
 msgid "This cannot be changed later and cannot contain non-English characters."
 msgstr ""
 "Não pode ser alterado mais tarde e não pode conter caracteres que não "
 "estejam em inglês."
 
-#: templates_v2/accounts/activate.haml:39
-#: templates_v2/registration/password_reset_confirm.haml:26
-#: templates_v2/registration/password_reset_confirm.haml:37
+#: templates_v2/accounts/activate.haml:45
+#: templates_v2/registration/password_reset_confirm.haml:27
+#: templates_v2/registration/password_reset_confirm.haml:39
 #: tests/templates_v2/home/landing.haml:36
 msgid "Show Password"
 msgstr "Exibir senha"
 
-#: templates_v2/accounts/activate.haml:42
-#: templates_v2/accounts/activate.haml:101
+#: templates_v2/accounts/activate.haml:48
+#: templates_v2/accounts/activate.haml:108
 msgid ""
 "Must be at least 8 characters and include upper and lowercase letters - plus "
 "numbers OR special characters."
@@ -12488,40 +12488,40 @@ msgstr ""
 "Deve ter no mínimo 8 caracteres e incluir letras maiúsculas e minúsculas - "
 "além de números OU caracteres especiais."
 
-#: templates_v2/accounts/activate.haml:48
+#: templates_v2/accounts/activate.haml:55
 msgid "I agree to the "
 msgstr "Eu concordo com os"
 
-#: templates_v2/accounts/activate.haml:49
+#: templates_v2/accounts/activate.haml:56
 msgid "Terms of Service "
 msgstr "Termos de Serviço"
 
-#: templates_v2/accounts/activate.haml:50
+#: templates_v2/accounts/activate.haml:57
 msgid "and "
 msgstr "ou "
 
-#: templates_v2/accounts/activate.haml:51
+#: templates_v2/accounts/activate.haml:58
 msgid "Privacy Policy "
 msgstr "Política de Privacidade"
 
-#: templates_v2/accounts/activate.haml:56
+#: templates_v2/accounts/activate.haml:63
 #: templates_v2/accounts/public_registration.haml:89
 msgid "Need help?"
 msgstr "Precisa de ajuda?"
 
-#: templates_v2/accounts/activate.haml:58
+#: templates_v2/accounts/activate.haml:65
 #: templates_v2/accounts/public_registration.haml:91
 msgid "Read FAQs"
 msgstr "LER AS FAQS"
 
-#: templates_v2/accounts/activate.haml:60
+#: templates_v2/accounts/activate.haml:67
 #: templates_v2/accounts/public_registration.haml:93
 #: templates_v2/home/landing.haml:48
 msgid "Email Support"
 msgstr "Assistência por e-mail"
 
-#: templates_v2/accounts/activate.haml:75
-#: templates_v2/accounts/activate.haml:94
+#: templates_v2/accounts/activate.haml:82
+#: templates_v2/accounts/activate.haml:101
 #: templates_v2/accounts/public_registration.haml:107
 #: templates_v2/accounts/public_registration.haml:127
 #: templates_v2/accounts/public_registration.haml:146
@@ -12532,11 +12532,11 @@ msgstr "Assistência por e-mail"
 msgid "This field is required."
 msgstr "Um nome válido é obrigatório."
 
-#: templates_v2/accounts/activate.haml:82
+#: templates_v2/accounts/activate.haml:89
 msgid "Please enter a valid username."
 msgstr "Nome de usuário/e-mail não reconhecido. Tente novamente."
 
-#: templates_v2/accounts/activate.haml:113
+#: templates_v2/accounts/activate.haml:120
 msgid "You must accept terms of service in order to continue."
 msgstr "Você deve aceitar os Termos de Serviço para continuar"
 
@@ -13279,11 +13279,11 @@ msgstr "Perguntas mais frequentes"
 msgid "Skip"
 msgstr "Pular"
 
-#: templates_v2/layout.haml:345
+#: templates_v2/layout.haml:346
 msgid "Your learning experience has a fresh look!"
 msgstr "Sua experiência de aprendizado tem um visual novo!"
 
-#: templates_v2/layout.haml:347
+#: templates_v2/layout.haml:348
 msgid ""
 "The new design makes it easier for you to navigate, understand your progress "
 "and stay focused on your learning."
@@ -13291,11 +13291,11 @@ msgstr ""
 "O novo design facilita a navegação, o entendimento do seu progresso e o foco "
 "no aprendizado."
 
-#: templates_v2/layout.haml:355
+#: templates_v2/layout.haml:356
 msgid "Navigating is simple"
 msgstr "A navegação é simples"
 
-#: templates_v2/layout.haml:357
+#: templates_v2/layout.haml:358
 msgid ""
 "The updated landing page makes it easier for you to access your programs or "
 "courses."
@@ -13303,11 +13303,11 @@ msgstr ""
 "A página de aterrissagem atualizada facilita o acesso aos programas ou "
 "cursos."
 
-#: templates_v2/layout.haml:365
+#: templates_v2/layout.haml:366
 msgid "New full-screen mode"
 msgstr "Novo modo de tela cheia"
 
-#: templates_v2/layout.haml:367
+#: templates_v2/layout.haml:368
 msgid ""
 "In your course, you can now zoom into the content by choosing full screen "
 "mode."
@@ -13315,11 +13315,11 @@ msgstr ""
 "No seu curso, você pode agora ampliar o conteúdo escolhendo o modo tela "
 "cheia."
 
-#: templates_v2/layout.haml:375
+#: templates_v2/layout.haml:376
 msgid "Access from any device"
 msgstr "Acesse em qualquer dispositivo"
 
-#: templates_v2/layout.haml:377
+#: templates_v2/layout.haml:378
 msgid ""
 "The designs have been optimized for all devices so you can learn from "
 "anywhere."
@@ -13327,11 +13327,11 @@ msgstr ""
 "Os designs foram otimizados para todos os dispositivos, para que você possa "
 "aprender em qualquer lugar."
 
-#: templates_v2/layout.haml:385
+#: templates_v2/layout.haml:386
 msgid "No interruption to your learning"
 msgstr "Sem interrupções no aprendizado"
 
-#: templates_v2/layout.haml:387
+#: templates_v2/layout.haml:388
 msgid ""
 "Pick up where you left off! Your progress and the content in the courses is "
 "not impacted by this change."
@@ -13368,11 +13368,11 @@ msgstr ""
 msgid "Your new password must be different from your previous password."
 msgstr "Sua nova senha precisa ser diferente da senha anterior."
 
-#: templates_v2/registration/password_reset_confirm.haml:22
+#: templates_v2/registration/password_reset_confirm.haml:23
 msgid "New Password"
 msgstr "Nova senha"
 
-#: templates_v2/registration/password_reset_confirm.haml:29
+#: templates_v2/registration/password_reset_confirm.haml:30
 msgid ""
 "Must be at least 8 characters and must include upper and lowercase letters - "
 "plus numbers OR special characters."
@@ -13380,7 +13380,7 @@ msgstr ""
 "Deve ter no mínimo 8 caracteres e incluir letras maiúsculas e minúsculas - "
 "além de números ou caracteres especiais."
 
-#: templates_v2/registration/password_reset_confirm.haml:34
+#: templates_v2/registration/password_reset_confirm.haml:36
 msgid "Confirm new password"
 msgstr "Confirme a nova senha"
 

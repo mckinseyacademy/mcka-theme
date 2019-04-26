@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 12:41+0000\n"
+"POT-Creation-Date: 2019-04-26 15:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1554,7 +1554,7 @@ msgstr "Cursus-ID"
 #: admin/controller.py:807
 #: templates/admin/participants/participant_details.haml:103
 #: templates/admin/participants/participant_details.haml:205
-#: templates_v2/accounts/activate.haml:27
+#: templates_v2/accounts/activate.haml:31
 msgid "Username"
 msgstr "Gebruikersnaam"
 
@@ -3020,7 +3020,7 @@ msgstr "403: Toestemming geweigerd"
 
 #: templates/403.haml:10 templates/404.haml:10 templates/500.haml:10
 #: templates/503.haml:10 templates/accounts/access.haml:20
-#: templates/accounts/sso_error.haml:12 templates_v2/accounts/access.haml:20
+#: templates/accounts/sso_error.haml:12 templates_v2/accounts/access.haml:18
 #: templates_v2/accounts/sso_error.haml:12
 msgid "Sorry!"
 msgstr "Helaas!"
@@ -3079,11 +3079,11 @@ msgstr ""
 msgid "Access | McKinsey Academy"
 msgstr "Toegang | McKinsey Academy"
 
-#: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:14
+#: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:13
 msgid "You will be redirected to your login provider."
 msgstr "U wordt omgeleid naar uw aanmeldingsprovider."
 
-#: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:21
+#: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:19
 msgid "There was a problem with your access code."
 msgstr "Er is een probleem opgetreden met uw toegangscode."
 
@@ -3229,7 +3229,7 @@ msgstr "Aanmelden bij McKinsey Academy"
 msgid "Username or Email:"
 msgstr "Gebruikersnaam of wachtwoord:"
 
-#: templates/accounts/login.haml:43 templates_v2/accounts/activate.haml:37
+#: templates/accounts/login.haml:43 templates_v2/accounts/activate.haml:42
 #: templates_v2/home/landing.haml:31 tests/templates_v2/home/landing.haml:34
 msgid "Password"
 msgstr "Wachtwoord"
@@ -3324,7 +3324,7 @@ msgstr "of probeer het over 15 minuten opnieuw."
 
 #: templates/accounts/login.haml:106 templates_v2/home/landing.haml:102
 #: templates_v2/registration/password_reset_confirm.haml:14
-#: templates_v2/registration/password_reset_confirm.haml:41
+#: templates_v2/registration/password_reset_confirm.haml:43
 #: templates_v2/registration/password_reset_form.haml:8
 #: tests/templates_v2/home/landing.haml:105
 msgid "Reset Password"
@@ -3379,7 +3379,7 @@ msgstr ""
 "asterisk"
 
 #: templates/accounts/public_registration.haml:69
-#: templates_v2/accounts/activate.haml:52
+#: templates_v2/accounts/activate.haml:59
 #: templates_v2/accounts/public_registration.haml:85
 msgid "Register"
 msgstr "Registreer"
@@ -11383,13 +11383,13 @@ msgstr "Mijn wachtwoord wijzigen"
 
 #: templates/registration/password_reset_confirm.haml:36
 #: templates/registration/password_reset_failed.haml:3
-#: templates_v2/registration/password_reset_confirm.haml:44
+#: templates_v2/registration/password_reset_confirm.haml:46
 #: templates_v2/registration/password_reset_failed.haml:8
 msgid "Password Reset Unsuccessful"
 msgstr "Wachtwoord opnieuw instellen mislukt"
 
 #: templates/registration/password_reset_confirm.haml:37
-#: templates_v2/registration/password_reset_confirm.haml:45
+#: templates_v2/registration/password_reset_confirm.haml:47
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
@@ -12583,19 +12583,19 @@ msgstr ""
 msgid "Service is temporarily unavailable."
 msgstr "Dienst tijdelijk niet beschikbaar."
 
-#: templates_v2/accounts/activate.haml:33
+#: templates_v2/accounts/activate.haml:37
 msgid "This cannot be changed later and cannot contain non-English characters."
 msgstr "U kunt dit later niet meer wijzigen."
 
-#: templates_v2/accounts/activate.haml:39
-#: templates_v2/registration/password_reset_confirm.haml:26
-#: templates_v2/registration/password_reset_confirm.haml:37
+#: templates_v2/accounts/activate.haml:45
+#: templates_v2/registration/password_reset_confirm.haml:27
+#: templates_v2/registration/password_reset_confirm.haml:39
 #: tests/templates_v2/home/landing.haml:36
 msgid "Show Password"
 msgstr "Wachtwoord weergeven"
 
-#: templates_v2/accounts/activate.haml:42
-#: templates_v2/accounts/activate.haml:101
+#: templates_v2/accounts/activate.haml:48
+#: templates_v2/accounts/activate.haml:108
 msgid ""
 "Must be at least 8 characters and include upper and lowercase letters - plus "
 "numbers OR special characters."
@@ -12603,40 +12603,40 @@ msgstr ""
 "Moet ten minste 8 tekens lang zijn en hoofdletters en kleine letters "
 "bevatten, plus cijfers OF speciale tekens."
 
-#: templates_v2/accounts/activate.haml:48
+#: templates_v2/accounts/activate.haml:55
 msgid "I agree to the "
 msgstr "IIk ga akkoord met de"
 
-#: templates_v2/accounts/activate.haml:49
+#: templates_v2/accounts/activate.haml:56
 msgid "Terms of Service "
 msgstr "Servicevoorwaarden"
 
-#: templates_v2/accounts/activate.haml:50
+#: templates_v2/accounts/activate.haml:57
 msgid "and "
 msgstr "en het "
 
-#: templates_v2/accounts/activate.haml:51
+#: templates_v2/accounts/activate.haml:58
 msgid "Privacy Policy "
 msgstr "Privacybeleid"
 
-#: templates_v2/accounts/activate.haml:56
+#: templates_v2/accounts/activate.haml:63
 #: templates_v2/accounts/public_registration.haml:89
 msgid "Need help?"
 msgstr "Hulp nodig?"
 
-#: templates_v2/accounts/activate.haml:58
+#: templates_v2/accounts/activate.haml:65
 #: templates_v2/accounts/public_registration.haml:91
 msgid "Read FAQs"
 msgstr "LEES ONZE FAQ'S"
 
-#: templates_v2/accounts/activate.haml:60
+#: templates_v2/accounts/activate.haml:67
 #: templates_v2/accounts/public_registration.haml:93
 #: templates_v2/home/landing.haml:48
 msgid "Email Support"
 msgstr "E-mailsupport"
 
-#: templates_v2/accounts/activate.haml:75
-#: templates_v2/accounts/activate.haml:94
+#: templates_v2/accounts/activate.haml:82
+#: templates_v2/accounts/activate.haml:101
 #: templates_v2/accounts/public_registration.haml:107
 #: templates_v2/accounts/public_registration.haml:127
 #: templates_v2/accounts/public_registration.haml:146
@@ -12645,11 +12645,11 @@ msgstr "E-mailsupport"
 msgid "This field is required."
 msgstr "Voornaam is vereist."
 
-#: templates_v2/accounts/activate.haml:82
+#: templates_v2/accounts/activate.haml:89
 msgid "Please enter a valid username."
 msgstr "Gebruikersnaam/e-mail niet herkend. Probeer het opnieuw."
 
-#: templates_v2/accounts/activate.haml:113
+#: templates_v2/accounts/activate.haml:120
 msgid "You must accept terms of service in order to continue."
 msgstr "U moet de servicevoorwaarden accepteren om verder te kunnen gaan."
 
@@ -13391,11 +13391,11 @@ msgstr "FAQ’s"
 msgid "Skip"
 msgstr "Overslaan"
 
-#: templates_v2/layout.haml:345
+#: templates_v2/layout.haml:346
 msgid "Your learning experience has a fresh look!"
 msgstr "Uw leerervaring heeft een vernieuwde look!"
 
-#: templates_v2/layout.haml:347
+#: templates_v2/layout.haml:348
 msgid ""
 "The new design makes it easier for you to navigate, understand your progress "
 "and stay focused on your learning."
@@ -13403,11 +13403,11 @@ msgstr ""
 "Door het nieuwe ontwerp is het makkelijker navigeren, inzicht te krijgen in "
 "uw vooruitgang en effectief te blijven leren."
 
-#: templates_v2/layout.haml:355
+#: templates_v2/layout.haml:356
 msgid "Navigating is simple"
 msgstr "Navigeren is eenvoudig"
 
-#: templates_v2/layout.haml:357
+#: templates_v2/layout.haml:358
 msgid ""
 "The updated landing page makes it easier for you to access your programs or "
 "courses."
@@ -13415,11 +13415,11 @@ msgstr ""
 "Met de bijgewerkte startpagina is het gemakkelijker om toegang te krijgen "
 "tot uw programma’s of cursussen."
 
-#: templates_v2/layout.haml:365
+#: templates_v2/layout.haml:366
 msgid "New full-screen mode"
 msgstr "Nieuwe weergave volledig scherm"
 
-#: templates_v2/layout.haml:367
+#: templates_v2/layout.haml:368
 msgid ""
 "In your course, you can now zoom into the content by choosing full screen "
 "mode."
@@ -13427,11 +13427,11 @@ msgstr ""
 "U kunt nu inzoomen op de inhoud van uw cursus door te klikken op de weergave "
 "volledig scherm."
 
-#: templates_v2/layout.haml:375
+#: templates_v2/layout.haml:376
 msgid "Access from any device"
 msgstr "Toegang vanaf ieder apparaat."
 
-#: templates_v2/layout.haml:377
+#: templates_v2/layout.haml:378
 msgid ""
 "The designs have been optimized for all devices so you can learn from "
 "anywhere."
@@ -13439,11 +13439,11 @@ msgstr ""
 "De designs zijn geoptimaliseerd voor alle apparaten, zodat u overal kunt "
 "leren."
 
-#: templates_v2/layout.haml:385
+#: templates_v2/layout.haml:386
 msgid "No interruption to your learning"
 msgstr "Geen onderbrekingen tijdens het leren."
 
-#: templates_v2/layout.haml:387
+#: templates_v2/layout.haml:388
 msgid ""
 "Pick up where you left off! Your progress and the content in the courses is "
 "not impacted by this change."
@@ -13479,11 +13479,11 @@ msgstr ""
 msgid "Your new password must be different from your previous password."
 msgstr "Uw nieuwe wachtwoord mag niet hetzelfde zijn als uw oude wachtwoord."
 
-#: templates_v2/registration/password_reset_confirm.haml:22
+#: templates_v2/registration/password_reset_confirm.haml:23
 msgid "New Password"
 msgstr "Nieuw wachtwoord"
 
-#: templates_v2/registration/password_reset_confirm.haml:29
+#: templates_v2/registration/password_reset_confirm.haml:30
 msgid ""
 "Must be at least 8 characters and must include upper and lowercase letters - "
 "plus numbers OR special characters."
@@ -13491,7 +13491,7 @@ msgstr ""
 "Het moet minstens acht tekens bevatten en uit een combinatie bestaan van "
 "hoofdletters, kleine letters en cijfers of speciale tekens"
 
-#: templates_v2/registration/password_reset_confirm.haml:34
+#: templates_v2/registration/password_reset_confirm.haml:36
 msgid "Confirm new password"
 msgstr "Nieuw wachtwoord bevestigen"
 

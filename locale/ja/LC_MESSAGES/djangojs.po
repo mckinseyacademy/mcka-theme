@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 12:41+0000\n"
+"POT-Creation-Date: 2019-04-26 15:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,19 +28,19 @@ msgstr "コースIDを入力してください。"
 
 #: static/js/admin/course_meta_content.js:1
 msgid "Click Add to specify Lesson Label"
-msgstr ""
+msgstr "[追加]をクリックしてレッスンラベルを指定します"
 
 #: static/js/admin/course_meta_content.js:2
 msgid "Click Add to specify Module Label"
-msgstr ""
+msgstr "[追加]をクリックしてモジュールラベルを指定します"
 
 #: static/js/admin/course_meta_content.js:3
 msgid "Click Add to specify Lessons Label"
-msgstr ""
+msgstr "[追加]をクリックしてレッスンラベルを指定します"
 
 #: static/js/admin/course_meta_content.js:4
 msgid "Click Add to specify Modules Label"
-msgstr ""
+msgstr "[追加]をクリックしてモジュールラベルを指定します"
 
 #: static/js/admin_learner_dashboard/element_modal.js:64
 #: static/js/views/admin/company_learner_dashboard_list.js:14
@@ -111,7 +111,7 @@ msgstr "進度: %(value)s%"
 
 #: static/js/common/bbGridExtend.js:70
 msgid "Search by Keyword"
-msgstr ""
+msgstr "キーワードで検索"
 
 #: static/js/common/common_js.js:171
 msgid "NoName"
@@ -132,24 +132,24 @@ msgstr "%(value)s%"
 #: static/js/common/common_js.js:956
 msgid ""
 "<span class=\"red\"> %(diff)s% </span> below your organization's average"
-msgstr ""
+msgstr "組織の平均の<span class=\"red\"> %(diff)s% </span>以下"
 
 #: static/js/common/common_js.js:963
 msgid ""
 "<span class=\"green\">%(diff)s% </span> above your organization's average"
-msgstr ""
+msgstr "組織の平均の<span class=\"green\">%(diff)s% </span>以上"
 
 #: static/js/common/common_js.js:968 static/js/common/common_js.js:988
 msgid "same as your organization's average"
-msgstr ""
+msgstr "組織の平均と同じ"
 
 #: static/js/common/common_js.js:976
 msgid ""
 "<span class=\"red\"> %(diff)s point</span> below your organization's average"
 msgid_plural ""
 "<span class=\"red\"> %(diff)s points</span> below your organization's average"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "組織の平均の<span class=\"red\"> %(diff)sポイント</span>以下"
+msgstr[1] "組織の平均の<span class=\"red\"> %(diff)sポイント</span>以下"
 
 #: static/js/common/common_js.js:983
 msgid ""
@@ -158,12 +158,12 @@ msgid ""
 msgid_plural ""
 "<span class=\"green\"> %(diff)s points</span> above your organization's "
 "average"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "組織の平均の<span class=\"green\">%(diff)sポイント</span>以上"
+msgstr[1] "組織の平均の<span class=\"green\">%(diff)sポイント</span>以上"
 
 #: static/js/common/mass_participants_delete.js:133
 msgid "An error occurred submitting the request."
-msgstr ""
+msgstr "リクエストの送信注にエラーが発生しました。"
 
 #: static/js/common/mass_participants_enroll.js:255
 msgid "email"
@@ -192,15 +192,15 @@ msgstr "コースID"
 #: static/js/common/mass_participants_enroll.js:283
 #: static/js/common/mass_participants_enroll.js:296
 msgid "Learner email"
-msgstr ""
+msgstr "学習者Eメール"
 
 #: static/js/common/mass_participants_enroll.js:283
 msgid "Business Function"
-msgstr ""
+msgstr "事業機能"
 
 #: static/js/common/mass_participants_enroll.js:283
 msgid "Business Unit"
-msgstr ""
+msgstr "事業部門"
 
 #: static/js/common/mass_participants_enroll.js:283
 #, fuzzy
@@ -210,7 +210,7 @@ msgstr "通知"
 
 #: static/js/common/mass_participants_enroll.js:296
 msgid "Manager email"
-msgstr ""
+msgstr "マネージャーEメール"
 
 #: static/js/common/mass_participants_enroll.js:334
 #: static/js/common/mass_participants_enroll.js:408
@@ -226,19 +226,19 @@ msgstr ""
 #: static/js/common/mass_participants_enroll.js:430
 #: static/js/common/mass_participants_enroll.js:567
 msgid "Report of bulk update will be sent to your email."
-msgstr ""
+msgstr "大量更新のレポートがEメールに送信されます。"
 
 #: static/js/company_fields.js:9
 msgid "2 or more fields can not have the same name"
-msgstr ""
+msgstr "2つ以上の欄に同じ名前を入力することはできません。"
 
 #: static/js/company_fields.js:13
 msgid "Only alphanumeric characters and spaces allowed"
-msgstr ""
+msgstr "英数字とスペースだけが許可されています"
 
 #: static/js/company_fields.js:53 static/js/company_fields.js:72
 msgid "You can only add up to 4 fields"
-msgstr ""
+msgstr "最高4つの欄まで追加できます"
 
 #: static/js/course_contact_modal.js:15 static_v2/js/course_contact.js:16
 msgid "Notification"
@@ -311,6 +311,10 @@ msgstr "デジタルコンテンツ"
 
 #: static/js/course_lesson.js:5
 msgid "It looks like you're not active. Click OK to keep working."
+msgstr "アクティブではないようです。[OK]をクリックして活動を続けてください。"
+
+#: static/js/course_lesson.js:112
+msgid "Complete all content to continue"
 msgstr ""
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
@@ -345,6 +349,8 @@ msgstr "コースを最低1個選択してください"
 #: static/js/session_timeout_timer.js:39
 msgid "You were logged out due to inactivity. Please log back in to continue."
 msgstr ""
+"アクティブでなかったためにログアウトされました。続けるにはログインし直してく"
+"ださい。"
 
 #: static/js/static_translation_strings.js:2
 msgid "It looks like your browser settings has pop-ups disabled."
@@ -360,22 +366,22 @@ msgstr "ポップアップを起動して続行する"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
-msgstr ""
+msgstr "ファイルの送信でエラーが発生しました。"
 
 #: static/js/views/admin/cohorts.js:35
 msgid "Invalid format for CSV file."
-msgstr ""
+msgstr "CSVファイルの形式が無効です。"
 
 #: static/js/views/admin/cohorts.js:37
 msgid "Error processing CSV file."
-msgstr ""
+msgstr "CSVファイルの処理でエラー。"
 
 #: static/js/views/admin/cohorts.js:132
 #, javascript-format
 msgid "%s learner has been added to this cohort."
 msgid_plural "%s learners have been added to this cohort."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s学習者がこのコホートに追加されました。"
+msgstr[1] "%s学習者がこのコホートに追加されました。"
 
 #: static/js/views/admin/cohorts.js:138
 #, javascript-format
@@ -386,42 +392,46 @@ msgid_plural ""
 "%s learners were preassigned to this cohort. These learners will "
 "automatically be added to the cohort when they enroll in the course."
 msgstr[0] ""
+"%s学習者がこのコホートに事前に割り当てられました。この学習者はコースに登録し"
+"た際に自動的にコホートに追加されます。"
 msgstr[1] ""
+"%s学習者がこのコホートに事前に割り当てられました。これらの学習者はコースに登"
+"録した際に自動的にコホートに追加されます。"
 
 #: static/js/views/admin/cohorts.js:144
 #, javascript-format
 msgid "%s learner has been moved to this cohort."
 msgid_plural "%s learners have been moved to this cohort."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s学習者がこのコホートに移動されました。"
+msgstr[1] "%s学習者がこのコホートに移動されました。"
 
 #: static/js/views/admin/cohorts.js:150
 #, javascript-format
 msgid "%s invalid email was ignored."
 msgid_plural "%s invalid emails were ignored."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s無効なEメールは無視されました。"
+msgstr[1] "%s無効なEメールは無視されました。"
 
 #: static/js/views/admin/cohorts.js:156
 #, javascript-format
 msgid "%s user was already in this cohort."
 msgid_plural "%s users were already in this cohort."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%sユーザーは既にこのコホートにいました。"
+msgstr[1] "%sユーザーは既にこのコホートにいました。"
 
 #: static/js/views/admin/cohorts.js:162
 #, javascript-format
 msgid "%s user/email was not found."
 msgid_plural "%s users/email were not found."
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%sユーザー/Eメールが見つかりませんでした。"
+msgstr[1] "%sユーザー/Eメールが見つかりませんでした。"
 
 #: static/js/views/admin/cohorts.js:222
 #, javascript-format
 msgid "contains %s learner"
 msgid_plural "contains %s learners"
-msgstr[0] ""
-msgstr[1] ""
+msgstr[0] "%s学習者を含む"
+msgstr[1] "%s学習者を含む"
 
 #: static/js/views/admin/companies_list.js:12
 #: static/js/views/admin/course_details.js:29
@@ -663,7 +673,7 @@ msgstr "モジュール"
 
 #: static/js/views/admin/course_details_blocks.js:48
 msgid "Poll/Survey Question"
-msgstr ""
+msgstr "投票調査/アンケート調査の質問"
 
 #: static/js/views/admin/course_details_bulk_actions.js:58
 msgid "File successfully uploaded!"
@@ -908,7 +918,7 @@ msgstr "ユーザー名"
 
 #: static/js/views/admin/course_details_problem_response_reports.js:30
 msgid "Request Time"
-msgstr ""
+msgstr "リクエスト時間"
 
 #: static/js/views/admin/courseinfo.js:21
 msgid ".0%"
@@ -932,7 +942,7 @@ msgstr "本当に消去しますか: \n"
 
 #: static/js/views/admin/import_progress.js:4
 msgid "File name"
-msgstr ""
+msgstr "名前"
 
 #: static/js/views/admin/import_progress.js:9
 #, fuzzy
@@ -949,13 +959,13 @@ msgstr "終了日"
 #: static/js/views/admin/import_progress.js:18
 #: static/js/views/admin/import_progress.js:97
 msgid "Importing.."
-msgstr ""
+msgstr "インポート中…"
 
 #: static/js/views/admin/import_progress.js:23
 #: static/js/views/admin/import_progress.js:123
 #: static/js/views/admin/import_progress.js:128
 msgid "Successful"
-msgstr ""
+msgstr "成功"
 
 #: static/js/views/admin/import_progress.js:26
 #: static/js/views/admin/import_progress.js:117
@@ -972,15 +982,15 @@ msgstr "有効化リンク"
 
 #: static/js/views/admin/import_progress.js:44
 msgid "Error File"
-msgstr ""
+msgstr "エラーファイル"
 
 #: static/js/views/admin/import_progress.js:53
 msgid "Initiated by"
-msgstr ""
+msgstr "開始者"
 
 #: static/js/views/admin/import_progress.js:131
 msgid "Importing %(processed)s of %(total)s rows"
-msgstr ""
+msgstr "%(total)s列の%(processed)sをインポート中"
 
 #: static/js/views/admin/manager_dashboard.js:107
 msgid "complete"
@@ -988,15 +998,15 @@ msgstr "未完了"
 
 #: static/js/views/admin/manager_dashboard.js:112
 msgid "Error Occured!"
-msgstr ""
+msgstr "エラーが発生しまいた！"
 
 #: static/js/views/admin/manager_dashboard.js:115
 msgid "Hide Details"
-msgstr ""
+msgstr "詳細を非表示"
 
 #: static/js/views/admin/manager_dashboard.js:145
 msgid "View Details"
-msgstr ""
+msgstr "詳細を表示"
 
 #: static/js/views/admin/navigation.js:18
 msgid "Are you sure you want to remove this ?"
@@ -1059,7 +1069,7 @@ msgstr "選択された以下のコースにユーザーを登録します。"
 
 #: static/js/views/admin/participant_details_edit_info.js:367
 msgid "Moderator"
-msgstr ""
+msgstr "主宰者"
 
 #: static/js/views/admin/participant_details_edit_info.js:390
 msgid "Enroll Participant"
@@ -1098,11 +1108,11 @@ msgstr "登録済み"
 
 #: static_v2/js/application.js:521 static_v2/js/custom.js:125
 msgid "Hide password"
-msgstr ""
+msgstr "パスワードを非表示にする"
 
 #: static_v2/js/application.js:526 static_v2/js/custom.js:130
 msgid "Show password"
-msgstr ""
+msgstr "パスワードを表示する"
 
 #~ msgid "Keyword Search"
 #~ msgstr "キーワード検索"
