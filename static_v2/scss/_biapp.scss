@@ -790,6 +790,14 @@ form {
         }
       }
     }
+    form{
+      .show-hide{
+        @include right(16px);
+        @include media-breakpoint-down(sm) {
+          @include right(10px);
+        }
+      }
+    }
   }
 }
 
