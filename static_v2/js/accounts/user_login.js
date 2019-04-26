@@ -67,7 +67,7 @@ $(function () {
         window.setTimeout(redirect, 250);
     }
 
-    $('form input[type="text"], form input[type="password"]').on('keypress', resetErrors);
+    $('form input[type="text"], form input[type="password"]').on('keyup', resetErrors);
 
     $("#login-form").submit(handleLoginFormSubmit);
 
