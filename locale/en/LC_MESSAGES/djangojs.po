@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 15:00+0000\n"
+"POT-Creation-Date: 2019-04-26 15:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -83,21 +83,21 @@ msgstr ""
 msgid "Please select file first."
 msgstr ""
 
-#: static/js/application.js:192 static_v2/js/application.js:236
+#: static/js/application.js:192 static_v2/js/application.js:222
 msgid "Your course hasn't begun yet. "
 msgstr ""
 
-#: static/js/application.js:195 static_v2/js/application.js:238
+#: static/js/application.js:195 static_v2/js/application.js:224
 msgid "Your course begins in %(days)s day."
 msgid_plural "Your course begins in %(days)s days."
 msgstr[0] ""
 msgstr[1] ""
 
-#: static/js/application.js:198 static_v2/js/application.js:243
+#: static/js/application.js:198 static_v2/js/application.js:229
 msgid "Welcome to McKinsey Academy"
 msgstr ""
 
-#: static/js/application.js:199 static_v2/js/application.js:244
+#: static/js/application.js:199 static_v2/js/application.js:230
 msgid ""
 "%(courseStr)s Before the course begins, you can explore this site to learn "
 "more about what to expect."
@@ -297,6 +297,10 @@ msgstr ""
 
 #: static/js/course_lesson.js:5
 msgid "It looks like you're not active. Click OK to keep working."
+msgstr ""
+
+#: static/js/course_lesson.js:112
+msgid "Complete all content to continue"
 msgstr ""
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
@@ -1064,10 +1068,10 @@ msgstr ""
 msgid "Enrolled In"
 msgstr ""
 
-#: static_v2/js/application.js:535 static_v2/js/custom.js:125
+#: static_v2/js/application.js:521 static_v2/js/custom.js:125
 msgid "Hide password"
 msgstr ""
 
-#: static_v2/js/application.js:540 static_v2/js/custom.js:130
+#: static_v2/js/application.js:526 static_v2/js/custom.js:130
 msgid "Show password"
 msgstr ""

@@ -7,10 +7,13 @@
     h4{
       margin: 20px 0 20px;
     }
+    .maxInputWrap{
+      max-width: 293px;
+    }
     .form-group{
       margin-bottom: 10px;
       input:not([type='checkbox']){
-        max-width: 293px;
+        width: 100%;
         height: 50px;
         border-radius: 0;
         border: 1px solid $gray;
@@ -114,6 +117,8 @@
   }
 }
 
+.maxInputWrap{position: relative;}
+
 #confirmation_registration {
   button.ok-close {
     width: 85px;
@@ -121,15 +126,14 @@
   }
 }
 
-//Tablet
-@include media-breakpoint-up(md) {
-
-}
-
 //Mobile
 @include media-breakpoint-down(xs) {
   .activation{
     .form{
+      .maxInputWrap{
+        max-width: 288px;
+        position: relative;
+      }
       padding: 10px 20px 30px;
       h4{
         margin-top: 10px;
@@ -137,7 +141,7 @@
       }
       .form-group{
         input:not([type='checkbox']){
-          max-width: 288px;
+          max-width: 100%;
         }
       }
     }

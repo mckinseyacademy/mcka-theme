@@ -339,11 +339,12 @@
             %button.close.btn-skip{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
               %span{:aria-hidden => "true"} {% trans 'Skip'%}
             .sliderWraper
-              #demo.carousel.slide.carousel-fade{:data-ride => "carousel", :data-interval=> "false", :data-keyboard=> "true", :data-pause => "hover"}
+
+              #demo.carousel{:data-ride => "carousel", :data-touch=> "false", :data-interval=> "false", :data-keyboard=> "false", :data-pause => "hover"}
 
                 / The slideshow
-                .carousel-inner
-                  .carousel-item.active
+                .carousel-inner.nextSlide
+                  .carousel-item.active.next
                     .featureImage
                       .holder
                         %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic.png", :width => "600"}

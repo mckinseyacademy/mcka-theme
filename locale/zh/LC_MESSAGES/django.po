@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-25 15:01+0000\n"
+"POT-Creation-Date: 2019-04-26 15:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1443,7 +1443,8 @@ msgstr "输入您的全名"
 msgid "Save"
 msgstr "保存"
 
-#: accounts/views.py:1231 templates_v2/layout.haml:275
+#: accounts/views.py:1231 templates_v2/header.haml:60
+#: templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "输入您的职位"
 
@@ -1533,7 +1534,7 @@ msgstr "课程 ID"
 #: admin/controller.py:807
 #: templates/admin/participants/participant_details.haml:103
 #: templates/admin/participants/participant_details.haml:205
-#: templates_v2/accounts/activate.haml:27
+#: templates_v2/accounts/activate.haml:31
 msgid "Username"
 msgstr "用户名"
 
@@ -1544,7 +1545,7 @@ msgstr "进度 %"
 #: admin/controller.py:807
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:148
-#: templates_v2/courses/course_cohort.haml:97
+#: templates_v2/courses/course_cohort.haml:100
 #: templates_v2/courses/visualizations/course_engagement.haml:11
 msgid "Engagement"
 msgstr "参与度"
@@ -1552,7 +1553,7 @@ msgstr "参与度"
 #: admin/controller.py:808 admin/views.py:4527
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:71
-#: templates_v2/courses/course_cohort.haml:174
+#: templates_v2/courses/course_cohort.haml:177
 #: templates_v2/courses/visualizations/course_proficiency.haml:9
 msgid "Proficiency"
 msgstr "熟练程度"
@@ -2384,7 +2385,7 @@ msgstr "新课程中选定的用户角色存在问题！"
 #: admin/views.py:4527 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
-#: templates_v2/courses/course_cohort.haml:22
+#: templates_v2/courses/course_cohort.haml:25
 #: templates_v2/courses/course_progress_v2.haml:39
 #: templates_v2/courses/visualizations/course_progress.haml:6
 msgid "Progress"
@@ -2977,7 +2978,7 @@ msgstr "403：权限被拒"
 
 #: templates/403.haml:10 templates/404.haml:10 templates/500.haml:10
 #: templates/503.haml:10 templates/accounts/access.haml:20
-#: templates/accounts/sso_error.haml:12 templates_v2/accounts/access.haml:20
+#: templates/accounts/sso_error.haml:12 templates_v2/accounts/access.haml:18
 #: templates_v2/accounts/sso_error.haml:12
 msgid "Sorry!"
 msgstr "抱歉！"
@@ -3030,11 +3031,11 @@ msgstr "麦肯锡学院网站目前正在进行定期维护。如有不便，敬
 msgid "Access | McKinsey Academy"
 msgstr "访问 | 麦肯锡学院"
 
-#: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:14
+#: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:13
 msgid "You will be redirected to your login provider."
 msgstr "您将被重定向到您的登录提供程序。"
 
-#: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:21
+#: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:19
 msgid "There was a problem with your access code."
 msgstr "您的访问代码有问题。"
 
@@ -3173,7 +3174,7 @@ msgstr "登录麦肯锡学院"
 msgid "Username or Email:"
 msgstr "用户名或电子邮件："
 
-#: templates/accounts/login.haml:43 templates_v2/accounts/activate.haml:37
+#: templates/accounts/login.haml:43 templates_v2/accounts/activate.haml:42
 #: templates_v2/home/landing.haml:31 tests/templates_v2/home/landing.haml:34
 msgid "Password"
 msgstr "密码"
@@ -3265,7 +3266,7 @@ msgstr "或者尝试 15 分钟后再次登录。"
 
 #: templates/accounts/login.haml:106 templates_v2/home/landing.haml:102
 #: templates_v2/registration/password_reset_confirm.haml:14
-#: templates_v2/registration/password_reset_confirm.haml:41
+#: templates_v2/registration/password_reset_confirm.haml:43
 #: templates_v2/registration/password_reset_form.haml:8
 #: tests/templates_v2/home/landing.haml:105
 msgid "Reset Password"
@@ -3316,7 +3317,7 @@ msgid "Complete the fields below. Required fields are noted by an asterisk"
 msgstr "填写以下字段。必填字段带星号标记"
 
 #: templates/accounts/public_registration.haml:69
-#: templates_v2/accounts/activate.haml:52
+#: templates_v2/accounts/activate.haml:59
 #: templates_v2/accounts/public_registration.haml:85
 msgid "Register"
 msgstr "注册"
@@ -4511,7 +4512,7 @@ msgid ""
 msgstr "注：如果您禁用“进度提示”，则会隐藏课时和模块级别的“进度级别”。"
 
 #: templates/admin/course_meta_content/item_list.haml:181
-#: templates_v2/courses/course_cohort.haml:17
+#: templates_v2/courses/course_cohort.haml:20
 #: templates_v2/courses/course_navigation.haml:52
 msgid "Leaderboard"
 msgstr "排行榜"
@@ -6480,12 +6481,12 @@ msgid "of participants:"
 msgstr "参与者："
 
 #: templates/courses/course_cohort.haml:32
-#: templates_v2/courses/course_cohort.haml:14
+#: templates_v2/courses/course_cohort.haml:17
 msgid "in your cohort"
 msgstr "您的群组中"
 
 #: templates/courses/course_cohort.haml:33
-#: templates_v2/courses/course_cohort.haml:14
+#: templates_v2/courses/course_cohort.haml:17
 msgid "group work team members"
 msgstr "小组作业团队成员"
 
@@ -6508,7 +6509,7 @@ msgid "Proficiency:"
 msgstr "熟练程度："
 
 #: templates/courses/course_cohort.haml:49
-#: templates_v2/courses/course_cohort.haml:178
+#: templates_v2/courses/course_cohort.haml:181
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the proficiency leaderboard "
@@ -6565,7 +6566,7 @@ msgid "Progress:"
 msgstr "进度："
 
 #: templates/courses/course_cohort.haml:119
-#: templates_v2/courses/course_cohort.haml:26
+#: templates_v2/courses/course_cohort.haml:29
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr " 作为 %(role_user)s 用户，您不会出现在进度排行榜上"
@@ -6600,7 +6601,7 @@ msgid " cohort average = %(course_avg)s points "
 msgstr " 群组平均分 = %(course_avg)s 分"
 
 #: templates/courses/course_cohort.haml:182
-#: templates_v2/courses/course_cohort.haml:101
+#: templates_v2/courses/course_cohort.haml:104
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
@@ -7464,7 +7465,7 @@ msgid "Grades:"
 msgstr "评分："
 
 #: templates/courses/course_progress.haml:129
-#: templates_v2/courses/course_progress_v2.haml:304
+#: templates_v2/courses/course_progress_v2.haml:303
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -7483,7 +7484,7 @@ msgstr ""
 
 #: templates/courses/course_progress.haml:131
 #: templates/courses/course_progress_v2.haml:237
-#: templates_v2/courses/course_progress_v2.haml:306
+#: templates_v2/courses/course_progress_v2.haml:305
 msgid "privacy policy."
 msgstr "信息。"
 
@@ -7678,12 +7679,12 @@ msgstr ""
 "          "
 
 #: templates/courses/course_progress_v2.haml:200
-#: templates_v2/courses/course_progress_v2.haml:260
+#: templates_v2/courses/course_progress_v2.haml:259
 msgid "ENGAGEMENT"
 msgstr "参与度"
 
 #: templates/courses/course_progress_v2.haml:202
-#: templates_v2/courses/course_progress_v2.haml:262
+#: templates_v2/courses/course_progress_v2.haml:261
 msgid "discussion"
 msgstr "讨论"
 
@@ -7712,27 +7713,27 @@ msgid "Stats:"
 msgstr "统计数据："
 
 #: templates/courses/course_progress_v2.haml:216
-#: templates_v2/courses/course_progress_v2.haml:278
+#: templates_v2/courses/course_progress_v2.haml:277
 msgid "Number of <span>New Posts</span> you created "
 msgstr "您创建的<span>新帖子</span>数量"
 
 #: templates/courses/course_progress_v2.haml:219
-#: templates_v2/courses/course_progress_v2.haml:281
+#: templates_v2/courses/course_progress_v2.haml:280
 msgid "Number of <span>Replies</span> you made to other posts "
 msgstr "您对其他帖子的<span>回复</span>数量"
 
 #: templates/courses/course_progress_v2.haml:222
-#: templates_v2/courses/course_progress_v2.haml:284
+#: templates_v2/courses/course_progress_v2.haml:283
 msgid " Number of <span>Comments Generated </span> by your posts "
 msgstr "您的帖子的<span>评论</span>数量"
 
 #: templates/courses/course_progress_v2.haml:225
-#: templates_v2/courses/course_progress_v2.haml:287
+#: templates_v2/courses/course_progress_v2.haml:286
 msgid " Number of <span>Upvotes</span> your posts have received "
 msgstr "您的帖子收到的<span>赞成票</span>数量"
 
 #: templates/courses/course_progress_v2.haml:228
-#: templates_v2/courses/course_progress_v2.haml:290
+#: templates_v2/courses/course_progress_v2.haml:289
 msgid " Number of your posts being <span>Followed</span> "
 msgstr "您当前有<span>关注者</span>的帖子数量"
 
@@ -10592,13 +10593,13 @@ msgstr "更改我的密码"
 
 #: templates/registration/password_reset_confirm.haml:36
 #: templates/registration/password_reset_failed.haml:3
-#: templates_v2/registration/password_reset_confirm.haml:44
+#: templates_v2/registration/password_reset_confirm.haml:46
 #: templates_v2/registration/password_reset_failed.haml:8
 msgid "Password Reset Unsuccessful"
 msgstr "密码重置失败"
 
 #: templates/registration/password_reset_confirm.haml:37
-#: templates_v2/registration/password_reset_confirm.haml:45
+#: templates_v2/registration/password_reset_confirm.haml:47
 msgid ""
 "The password reset link was invalid, possibly because it has already been "
 "used.  Please request a new password reset."
@@ -11571,58 +11572,58 @@ msgstr ""
 msgid "Service is temporarily unavailable."
 msgstr "服务器暂时无法使用。"
 
-#: templates_v2/accounts/activate.haml:33
+#: templates_v2/accounts/activate.haml:37
 msgid "This cannot be changed later and cannot contain non-English characters."
 msgstr "此用户名不得包含非英文字符，且今后无法更改。"
 
-#: templates_v2/accounts/activate.haml:39
-#: templates_v2/registration/password_reset_confirm.haml:26
-#: templates_v2/registration/password_reset_confirm.haml:37
+#: templates_v2/accounts/activate.haml:45
+#: templates_v2/registration/password_reset_confirm.haml:27
+#: templates_v2/registration/password_reset_confirm.haml:39
 #: tests/templates_v2/home/landing.haml:36
 msgid "Show Password"
 msgstr "显示密码"
 
-#: templates_v2/accounts/activate.haml:42
-#: templates_v2/accounts/activate.haml:101
+#: templates_v2/accounts/activate.haml:48
+#: templates_v2/accounts/activate.haml:108
 msgid ""
 "Must be at least 8 characters and include upper and lowercase letters - plus "
 "numbers OR special characters."
 msgstr "密码必须至少包含 8 个字符，并且包含大写和小写字母以及数字或特殊字符。"
 
-#: templates_v2/accounts/activate.haml:48
+#: templates_v2/accounts/activate.haml:55
 msgid "I agree to the "
 msgstr "J’accepte les "
 
-#: templates_v2/accounts/activate.haml:49
+#: templates_v2/accounts/activate.haml:56
 msgid "Terms of Service "
 msgstr "服务条款 "
 
-#: templates_v2/accounts/activate.haml:50
+#: templates_v2/accounts/activate.haml:57
 msgid "and "
 msgstr "或 "
 
-#: templates_v2/accounts/activate.haml:51
+#: templates_v2/accounts/activate.haml:58
 msgid "Privacy Policy "
 msgstr "隐私政策"
 
-#: templates_v2/accounts/activate.haml:56
+#: templates_v2/accounts/activate.haml:63
 #: templates_v2/accounts/public_registration.haml:89
 msgid "Need help?"
 msgstr "需要帮助？"
 
-#: templates_v2/accounts/activate.haml:58
+#: templates_v2/accounts/activate.haml:65
 #: templates_v2/accounts/public_registration.haml:91
 msgid "Read FAQs"
 msgstr "阅读常见问题"
 
-#: templates_v2/accounts/activate.haml:60
+#: templates_v2/accounts/activate.haml:67
 #: templates_v2/accounts/public_registration.haml:93
 #: templates_v2/home/landing.haml:48
 msgid "Email Support"
 msgstr "电子邮件支持"
 
-#: templates_v2/accounts/activate.haml:75
-#: templates_v2/accounts/activate.haml:94
+#: templates_v2/accounts/activate.haml:82
+#: templates_v2/accounts/activate.haml:101
 #: templates_v2/accounts/public_registration.haml:107
 #: templates_v2/accounts/public_registration.haml:127
 #: templates_v2/accounts/public_registration.haml:146
@@ -11633,13 +11634,11 @@ msgstr "电子邮件支持"
 msgid "This field is required."
 msgstr "名字为必填项。"
 
-#: templates_v2/accounts/activate.haml:82
-#, fuzzy
-#| msgid "Please enter a valid Role."
+#: templates_v2/accounts/activate.haml:89
 msgid "Please enter a valid username."
-msgstr "请输入有效的角色。"
+msgstr "无法识别用户名/电子邮件。请重试。"
 
-#: templates_v2/accounts/activate.haml:113
+#: templates_v2/accounts/activate.haml:120
 msgid "You must accept terms of service in order to continue."
 msgstr "您必须接受服务条款才能继续"
 
@@ -11734,7 +11733,7 @@ msgstr "平均熟练程度："
 
 #: templates_v2/admin/courses/course_details.haml:111
 #: templates_v2/admin/courses/course_details.haml:166
-#: templates_v2/courses/course_progress_v2.haml:272
+#: templates_v2/courses/course_progress_v2.haml:271
 msgid "Stats"
 msgstr "统计数据"
 
@@ -11813,75 +11812,81 @@ msgstr "%(lesson_count)s 的 %(module_custom_label)s %(lesson_index)s"
 msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "%(lesson_count)s 的模块 %(lesson_index)s"
 
-#: templates_v2/courses/course_cohort.haml:23
+#: templates_v2/courses/course_cohort.haml:8
+#, fuzzy
+#| msgid "| Cohort | Courses | McKinsey Academy"
+msgid "| Leaderboard | Courses | McKinsey Academy"
+msgstr "| 群组 | 课程 | McKinsey Academy"
+
+#: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
 msgstr "您的课程完成状态："
 
-#: templates_v2/courses/course_cohort.haml:24
-#: templates_v2/courses/course_cohort.haml:176
+#: templates_v2/courses/course_cohort.haml:27
+#: templates_v2/courses/course_cohort.haml:179
 #: templates_v2/courses/visualizations/course_proficiency.haml:13
 #: templates_v2/courses/visualizations/course_progress.haml:11
 msgid "Cohort Average:"
 msgstr "群组平均值"
 
-#: templates_v2/courses/course_cohort.haml:29
+#: templates_v2/courses/course_cohort.haml:32
 msgid "Your progress position"
 msgstr "进度排名"
 
-#: templates_v2/courses/course_cohort.haml:31
+#: templates_v2/courses/course_cohort.haml:34
 msgid "Your progress position will be displayed here"
 msgstr "您的进度排名将显示在此处"
 
-#: templates_v2/courses/course_cohort.haml:36
+#: templates_v2/courses/course_cohort.haml:39
 msgid "Top 3 on progress"
 msgstr "进度前 3 名"
 
-#: templates_v2/courses/course_cohort.haml:54
-#: templates_v2/courses/course_cohort.haml:73
-#: templates_v2/courses/course_cohort.haml:92
-#: templates_v2/courses/course_cohort.haml:129
-#: templates_v2/courses/course_cohort.haml:149
-#: templates_v2/courses/course_cohort.haml:169
-#: templates_v2/courses/course_cohort.haml:207
-#: templates_v2/courses/course_cohort.haml:227
-#: templates_v2/courses/course_cohort.haml:247
+#: templates_v2/courses/course_cohort.haml:57
+#: templates_v2/courses/course_cohort.haml:76
+#: templates_v2/courses/course_cohort.haml:95
+#: templates_v2/courses/course_cohort.haml:132
+#: templates_v2/courses/course_cohort.haml:152
+#: templates_v2/courses/course_cohort.haml:172
+#: templates_v2/courses/course_cohort.haml:210
+#: templates_v2/courses/course_cohort.haml:230
+#: templates_v2/courses/course_cohort.haml:250
 msgid "User Name"
 msgstr "用户名"
 
-#: templates_v2/courses/course_cohort.haml:98
+#: templates_v2/courses/course_cohort.haml:101
 msgid "Your discussion activity points:"
 msgstr "您的讨论活动分数："
 
-#: templates_v2/courses/course_cohort.haml:99
+#: templates_v2/courses/course_cohort.haml:102
 #, python-format
 msgid " Cohort Average: %(score)s points"
 msgstr " 群组平均值：%(score)s 分"
 
-#: templates_v2/courses/course_cohort.haml:104
+#: templates_v2/courses/course_cohort.haml:107
 msgid "Your engagement position"
 msgstr "参与度排名"
 
-#: templates_v2/courses/course_cohort.haml:106
+#: templates_v2/courses/course_cohort.haml:109
 msgid "Your engagement position will be displayed here"
 msgstr "您的参与度排名将显示在此处"
 
-#: templates_v2/courses/course_cohort.haml:110
+#: templates_v2/courses/course_cohort.haml:113
 msgid "Top 3 on engagement"
 msgstr "参与度前 3 名"
 
-#: templates_v2/courses/course_cohort.haml:175
+#: templates_v2/courses/course_cohort.haml:178
 msgid "Your course knowledge:"
 msgstr "您的课程知识："
 
-#: templates_v2/courses/course_cohort.haml:181
+#: templates_v2/courses/course_cohort.haml:184
 msgid "Your proficiency position"
 msgstr "熟练程度排名"
 
-#: templates_v2/courses/course_cohort.haml:183
+#: templates_v2/courses/course_cohort.haml:186
 msgid "Your proficiency position will be displayed here"
 msgstr "您的熟练程度排名将显示在此处"
 
-#: templates_v2/courses/course_cohort.haml:187
+#: templates_v2/courses/course_cohort.haml:190
 msgid "Top 3 on Proficiency"
 msgstr "熟练程度前 3 名"
 
@@ -12104,7 +12109,7 @@ msgstr ""
 "          "
 
 #: templates_v2/courses/course_progress_v2.haml:198
-#: templates_v2/courses/course_progress_v2.haml:270
+#: templates_v2/courses/course_progress_v2.haml:269
 msgid "Overall"
 msgstr "总计"
 
@@ -12112,27 +12117,23 @@ msgstr "总计"
 msgid "Graded Items"
 msgstr "已评分项目"
 
-#: templates_v2/courses/course_progress_v2.haml:253
+#: templates_v2/courses/course_progress_v2.haml:254
 #, python-format
 msgid ""
-"\n"
-"                  You need a combined course grade of at least 70%% to earn "
-"a certificate of completion. Your final grade is calculated as follows: "
-"%(graders)s.\n"
-"                  %%a.edit-link.ome.dome-c{:data-target => \"#progressModal"
-"\", :data-toggle => \"modal\", :href => \"#\"} Click here\n"
-"                  to read more about how we may share your course "
-"information.\n"
-"                "
+"You need a combined course grade of at least 70%% to earn a certificate of "
+"completion. Your final grade is calculated as follows:"
 msgstr ""
-"\n"
-"            您需要至少 70%% 分的综合课程评分才能获得结业证书。您的最终评分计"
-"算如下：%(graders)s。%%a.edit-link.ome.dome-c{:data-target => "
-"\"#progressModal\", :data-toggle => \"modal\", :href => \"#\"} 单击此处\n"
-" 深入了解我们如何共享您的课程信息。\n"
-"          "
+" 您需要获得至少 70%% 分的综合课程评分才能获得结业证书。您的最终评分计算如下："
 
-#: templates_v2/courses/course_progress_v2.haml:263
+#: templates_v2/courses/course_progress_v2.haml:255
+msgid "Click here"
+msgstr "点击此处。"
+
+#: templates_v2/courses/course_progress_v2.haml:256
+msgid "to read more about how we may share your course information."
+msgstr "单击此处 深入了解我们如何共享您的课程信息。"
+
+#: templates_v2/courses/course_progress_v2.haml:262
 #, python-format
 msgid ""
 "\n"
@@ -12149,7 +12150,7 @@ msgstr ""
 "%(social_course_avg)s</b>。\n"
 "          "
 
-#: templates_v2/courses/course_progress_v2.haml:271
+#: templates_v2/courses/course_progress_v2.haml:270
 msgid "Measured Engagement"
 msgstr "经衡量后的参与度"
 
@@ -12301,8 +12302,8 @@ msgid "We’ll do our best to help."
 msgstr "我们将竭诚提供帮助。"
 
 #: templates_v2/footer.haml:6
-msgid "Copyright &#9400; 2019 McKinsey & Company. All Rights Reserved."
-msgstr "版权 # 9400；2019归麦肯锡公司所有。保留所有权利。"
+msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
+msgstr "&#9400；2019归麦肯锡公司所有。保留所有权利。"
 
 #: templates_v2/footer.haml:13
 msgid "About"
@@ -12360,51 +12361,51 @@ msgstr "常见问题"
 msgid "Skip"
 msgstr "跳过"
 
-#: templates_v2/layout.haml:345
+#: templates_v2/layout.haml:346
 msgid "Your learning experience has a fresh look!"
 msgstr "您将拥有全新的学习体验！"
 
-#: templates_v2/layout.haml:347
+#: templates_v2/layout.haml:348
 msgid ""
 "The new design makes it easier for you to navigate, understand your progress "
 "and stay focused on your learning."
 msgstr "新设计方便您浏览，了解进度，专注学习。"
 
-#: templates_v2/layout.haml:355
+#: templates_v2/layout.haml:356
 msgid "Navigating is simple"
 msgstr "导航很简单"
 
-#: templates_v2/layout.haml:357
+#: templates_v2/layout.haml:358
 msgid ""
 "The updated landing page makes it easier for you to access your programs or "
 "courses."
 msgstr "更新后的登录页面方便您访问您的项目或课程。"
 
-#: templates_v2/layout.haml:365
+#: templates_v2/layout.haml:366
 msgid "New full-screen mode"
 msgstr "全新推出的全屏模式"
 
-#: templates_v2/layout.haml:367
+#: templates_v2/layout.haml:368
 msgid ""
 "In your course, you can now zoom into the content by choosing full screen "
 "mode."
 msgstr "现在您可以在课程中选择全屏模式来放大内容。"
 
-#: templates_v2/layout.haml:375
+#: templates_v2/layout.haml:376
 msgid "Access from any device"
 msgstr "通过任何设备访问"
 
-#: templates_v2/layout.haml:377
+#: templates_v2/layout.haml:378
 msgid ""
 "The designs have been optimized for all devices so you can learn from "
 "anywhere."
 msgstr "灵活的设计适用所有设备，方便您随时随地开展学习。"
 
-#: templates_v2/layout.haml:385
+#: templates_v2/layout.haml:386
 msgid "No interruption to your learning"
 msgstr "避免学习中断"
 
-#: templates_v2/layout.haml:387
+#: templates_v2/layout.haml:388
 msgid ""
 "Pick up where you left off! Your progress and the content in the courses is "
 "not impacted by this change."
@@ -12438,17 +12439,17 @@ msgstr ""
 msgid "Your new password must be different from your previous password."
 msgstr "您的新密码必须与前五个密码不同。"
 
-#: templates_v2/registration/password_reset_confirm.haml:22
+#: templates_v2/registration/password_reset_confirm.haml:23
 msgid "New Password"
 msgstr "新密码"
 
-#: templates_v2/registration/password_reset_confirm.haml:29
+#: templates_v2/registration/password_reset_confirm.haml:30
 msgid ""
 "Must be at least 8 characters and must include upper and lowercase letters - "
 "plus numbers OR special characters."
 msgstr "密码必须至少包含 8 个字符，并且包含大写和小写字母以及数字或特殊字符。"
 
-#: templates_v2/registration/password_reset_confirm.haml:34
+#: templates_v2/registration/password_reset_confirm.haml:36
 msgid "Confirm new password"
 msgstr "确认新密码"
 
@@ -12497,6 +12498,25 @@ msgstr "名字：{}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "姓氏：{}"
+
+#~ msgid ""
+#~ "\n"
+#~ "                  You need a combined course grade of at least 70%% to "
+#~ "earn a certificate of completion. Your final grade is calculated as "
+#~ "follows: %(graders)s.\n"
+#~ "                  %%a.edit-link.ome.dome-c{:data-target => "
+#~ "\"#progressModal\", :data-toggle => \"modal\", :href => \"#\"} Click "
+#~ "here\n"
+#~ "                  to read more about how we may share your course "
+#~ "information.\n"
+#~ "                "
+#~ msgstr ""
+#~ "\n"
+#~ "            您需要至少 70%% 分的综合课程评分才能获得结业证书。您的最终评分"
+#~ "计算如下：%(graders)s。%%a.edit-link.ome.dome-c{:data-target => "
+#~ "\"#progressModal\", :data-toggle => \"modal\", :href => \"#\"} 单击此处\n"
+#~ " 深入了解我们如何共享您的课程信息。\n"
+#~ "          "
 
 #~ msgid ""
 #~ "\n"
