@@ -9,7 +9,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         company_ids_to_exclude = [775, 807, 101, 17]
         try:
-            client_customizations = ClientCustomization.objects.exclude(id__in=company_ids_to_exclude)
+            client_customizations = ClientCustomization.objects.exclude(client_id__in=company_ids_to_exclude)
             for client_customization in client_customizations:
                 client_customization.new_ui_enabled = False
                 client_customization.save()
