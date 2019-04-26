@@ -281,6 +281,11 @@ $(document).ready(function () {
         $("#crop-save #spinner").addClass("spinner-border-sm").addClass("spinner-border");
     });
 
+
+    $('.carousel').carousel({
+        keyboard: false
+      });
+
     //  New featre Modal (disable scrolling on body)
     $('.carousel-control-next').click(function(){ 
         $('.carousel-item').removeClass("next");
@@ -309,7 +314,7 @@ $(document).ready(function () {
             jQuery('.carousel-control-next').trigger('click');
         }
         else if (e.keyCode == 37) {
-            jQuery('.carousel-control-prev').trigger('click');
+            jQuery('.carousel-control-prev').trigger('click'); 
         }
     });
 
