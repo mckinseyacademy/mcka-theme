@@ -166,7 +166,7 @@ $(function(){
       }
       else {
         modal.foundation('reveal', 'close');
-
+        $('.reveal-modal-bg').css('display', 'none');
         // force user info refresh
         $('#profile-container').empty();
       }

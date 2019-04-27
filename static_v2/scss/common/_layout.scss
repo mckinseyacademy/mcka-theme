@@ -6,9 +6,14 @@ main{
   @include media-breakpoint-down(lg) {
     max-width: 1244px;
   }
-  @media (min-width: 992px) and (max-width: 1335px) {
-    padding-left: 5% !important;
-    padding-right: 5% !important;
+}
+
+.lessonPageBody {
+  .container {
+    @media (min-width: 992px) and (max-width: 1335px) {
+      padding-left: 5% !important;
+      padding-right: 5% !important;
+    }
   }
 }
 

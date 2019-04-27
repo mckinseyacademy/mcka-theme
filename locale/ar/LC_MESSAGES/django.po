@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 15:11+0000\n"
+"POT-Creation-Date: 2019-04-27 12:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7257,9 +7257,9 @@ msgid ""
 "and right arrows. Hover over the arrows to see details of upcoming (or "
 "previous) %(modules_custom_label)s"
 msgstr ""
-" %(module_custom_label)s %(module_custom_label)s %(modules_custom_label)s "
-"الانتقال من وحدة نمطية إلى وحدة نمطية باستخدام الأسهم الأيمن والأيسر. حُم فوق "
-"الأسهم لرؤية تفاصيل وحدات القادمة (أو السابقة)"
+"الانتقال من %(module_custom_label)s إلى %(module_custom_label)s باستخدام"
+"السهمين الأيسر والأيمن. قم بالمرور فوق السهمين لرؤية تفاصيل"
+" الوحدات القادمة (أو السابقة) %(modules_custom_label)s"
 
 #: templates/courses/course_navigation.haml:31
 #, python-format
@@ -7278,8 +7278,8 @@ msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
 "arrows to see details of upcoming (or previous) %(modules_custom_label)s"
 msgstr ""
-"%(modules_custom_label)s الانتقال من وحدة نمطية إلى وحدة نمطية باستخدام "
-"الأسهم الأيمن والأيسر. حُم فوق الأسهم لرؤية تفاصيل وحدات القادمة (أو السابقة)"
+"الانتقال من وحدة إلى أخرى باستخدام السهمين الأيسر والأيمن. "
+"قم بالمرور فوق السهمين لرؤية تفاصيل الوحدات القادمة (أو السابقة) %(modules_custom_label)s"
 
 #: templates/courses/course_navigation.haml:35
 msgid ""
@@ -7296,9 +7296,8 @@ msgid ""
 "discussion page. View the discussion page using the <i class=\"fa fa-"
 "comments-o\"></i> icon in the main navigation bar "
 msgstr ""
-"يتم نشر %(modules_custom_label)s مع المناقشات المضمنة في صفحة المناقشات "
-"الأكبر. ويتم عرض صفحة المناقشات باستخدام الرمز <i class=\"fa fa-comments-o"
-"\"></i> الموجود في شريط التنقل الرئيسي "
+"يتم نشر %(modules_custom_label)s مع المناقشات المضمنة في صفحة المناقشات الأكبر. "
+"ويتم عرض صفحة المناقشات باستخدام الرمز <i class=\"fa fa-comments-o\"></i> الموجود في شريط التنقل الرئيسي "
 
 #: templates/courses/course_navigation.haml:41
 msgid ""
@@ -12204,7 +12203,7 @@ msgstr "يجب قبول شروط الخدمة للمتابعة"
 #: templates_v2/accounts/public_registration.haml:43
 #: templates_v2/courses/content_page/courses_menu_list.haml:77
 msgid "OK"
-msgstr ""
+msgstr "موافق"
 
 #: templates_v2/accounts/public_registration.haml:48
 msgid "Register for the access to the course"
@@ -12365,19 +12364,17 @@ msgstr " هذا الدرس سوف تكون متاحة عبر%(start_date)s "
 #, python-format
 msgid " %(module_custom_label)s %(lesson_index)s of %(lesson_count)s "
 msgstr ""
-"%(module_custom_label)s %(lesson_index)s الدرس المتاحة على %(lesson_count)s "
+" %(module_custom_label)s %(lesson_index)s من %(lesson_count)s "
 
 #: templates_v2/courses/content_page/lesson_pager_ld.haml:11
 #: templates_v2/courses/content_page/lesson_pager_ld.haml:21
 #, python-format
 msgid " Module %(lesson_index)s of %(lesson_count)s "
-msgstr "%(lesson_count)s %(lesson_index)sالدرس المتاحة على "
+msgstr "الوحدة %(lesson_index)s من %(lesson_count)s "
 
 #: templates_v2/courses/course_cohort.haml:8
-#, fuzzy
-#| msgid "| Cohort | Courses | McKinsey Academy"
 msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| الفوج | الدورات التدريبية | أكاديمية ماكينزي"
+msgstr "| الفوج | الدورات التدريبية | لوحة تسجيل أعلى النقاط"
 
 #: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
@@ -12510,7 +12507,7 @@ msgstr ""
 #: templates_v2/courses/course_progress_v2.haml:137
 #, python-format
 msgid " This %(module_custom_label)s will be available on %(start_date)s "
-msgstr " %(module_custom_label)s هذا الدرس سوف تكون متاحة عبر%(start_date)s "
+msgstr " ستتوافر %(module_custom_label)s هذه في %(start_date)s "
 
 #: templates_v2/courses/course_lessons.haml:76
 #: templates_v2/courses/course_lessons_ld.haml:77
@@ -12546,7 +12543,7 @@ msgstr ""
 
 #: templates_v2/courses/course_navigation.haml:48
 msgid "My Progress"
-msgstr "% التقدم"
+msgstr "التقدم"
 
 #: templates_v2/courses/course_progress_v2.haml:20
 #, python-format
@@ -12749,8 +12746,13 @@ msgstr "لتغيير عنوان بريدك الإلكتروني، يرجى إر�
 
 #: templates_v2/faq.haml:51
 msgid ""
-"If you've forgotten your password, please try resetting it by clicking \\"
-msgstr "في حالة نسيان كلمة مرورك، يرجى محاولة إعادة تعيينها بالنقر فوق \\"
+"If you've forgotten your password, please try resetting it by clicking "
+"'Forgot my password' on the log in screen. If that does not work, please "
+"email"
+msgstr ""
+"إذا نسيت كلمة مرورك، يرجى محاولة إعادة تعيينها بالنقر فوق الرابط \"نسيت كلمة "
+"مروري\" الموجود في شاشة تسجيل الدخول. وإذا لم ينجح ذلك، يرجى إرسال رسالة "
+"بريد إلكتروني إلى العنوان"
 
 #: templates_v2/faq.haml:58
 msgid ""
@@ -13084,6 +13086,10 @@ msgstr "الاسم الأول: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "اسم العائلة: {}"
+
+#~ msgid ""
+#~ "If you've forgotten your password, please try resetting it by clicking \\"
+#~ msgstr "في حالة نسيان كلمة مرورك، يرجى محاولة إعادة تعيينها بالنقر فوق \\"
 
 #~ msgid ""
 #~ "\n"

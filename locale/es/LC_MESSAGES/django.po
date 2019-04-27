@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 15:11+0000\n"
+"POT-Creation-Date: 2019-04-27 12:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1160,7 +1160,7 @@ msgstr ""
 #: templates/admin/participants/participant_details.haml:124
 #: templates/admin/participants/participants_list.haml:36
 #: templates/admin/permissions/list.haml:36
-#: templates_v2/accounts/public_registration.haml:62
+#: templates_v2/accounts/public_registration.haml:65
 msgid "Company"
 msgstr "Compañía"
 
@@ -1211,7 +1211,7 @@ msgstr "Formatos aceptados: JPG, PNG y GIF"
 
 #: accounts/forms.py:601 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:91
-#: templates_v2/accounts/public_registration.haml:54
+#: templates_v2/accounts/public_registration.haml:55
 msgid "First Name"
 msgstr "Nombre"
 
@@ -1221,7 +1221,7 @@ msgstr "Se requiere un correo electrónico válido"
 
 #: accounts/forms.py:607
 #: templates/admin/participants/participant_details.haml:96
-#: templates_v2/accounts/public_registration.haml:58
+#: templates_v2/accounts/public_registration.haml:60
 msgid "Last Name"
 msgstr "Apellido"
 
@@ -1279,8 +1279,8 @@ msgid ""
 msgstr "{html_div_start}(elija una de las siguientes opciones) {html_div_end}"
 
 #: accounts/forms.py:735 accounts/forms.py:743
-#: templates_v2/accounts/public_registration.haml:114
-#: templates_v2/accounts/public_registration.haml:134
+#: templates_v2/accounts/public_registration.haml:120
+#: templates_v2/accounts/public_registration.haml:140
 msgid "Special characters or numbers are not valid."
 msgstr "No se admiten caracteres especiales o números."
 
@@ -1307,7 +1307,7 @@ msgstr "Esta dirección de correo electrónico ya está registrada."
 msgid "Email you provided is not allowed."
 msgstr "El correo electrónico que suministró no está permitido."
 
-#: accounts/forms.py:782 templates_v2/accounts/public_registration.haml:172
+#: accounts/forms.py:782 templates_v2/accounts/public_registration.haml:178
 msgid "Please enter a valid company email address."
 msgstr "Ingrese una dirección de correo electrónico de la compañía válida."
 
@@ -2534,12 +2534,12 @@ msgid "Company name"
 msgstr "Nombre de la compañía"
 
 #: admin/views.py:6242 templates/admin/course_run/view.haml:66
-#: templates_v2/accounts/public_registration.haml:66
+#: templates_v2/accounts/public_registration.haml:70
 msgid "Company email"
 msgstr "Correo electrónico de la compañía"
 
 #: admin/views.py:6243 templates/admin/course_run/view.haml:67
-#: templates_v2/accounts/public_registration.haml:73
+#: templates_v2/accounts/public_registration.haml:77
 msgid "Current role"
 msgstr "Rol actual"
 
@@ -3387,7 +3387,7 @@ msgstr ""
 
 #: templates/accounts/public_registration.haml:69
 #: templates_v2/accounts/activate.haml:59
-#: templates_v2/accounts/public_registration.haml:85
+#: templates_v2/accounts/public_registration.haml:90
 msgid "Register"
 msgstr "Registrarse"
 
@@ -12567,7 +12567,7 @@ msgid "Show Password"
 msgstr "Mostrar contraseña"
 
 #: templates_v2/accounts/activate.haml:48
-#: templates_v2/accounts/activate.haml:108
+#: templates_v2/accounts/activate.haml:109
 msgid ""
 "Must be at least 8 characters and include upper and lowercase letters - plus "
 "numbers OR special characters."
@@ -12591,40 +12591,40 @@ msgstr "y la "
 msgid "Privacy Policy "
 msgstr "Política de privacidad"
 
-#: templates_v2/accounts/activate.haml:63
-#: templates_v2/accounts/public_registration.haml:89
+#: templates_v2/accounts/activate.haml:64
+#: templates_v2/accounts/public_registration.haml:95
 msgid "Need help?"
 msgstr "¿Necesita ayuda?"
 
-#: templates_v2/accounts/activate.haml:65
-#: templates_v2/accounts/public_registration.haml:91
+#: templates_v2/accounts/activate.haml:66
+#: templates_v2/accounts/public_registration.haml:97
 msgid "Read FAQs"
 msgstr "LEER PREGUNTAS FRECUENTES"
 
-#: templates_v2/accounts/activate.haml:67
-#: templates_v2/accounts/public_registration.haml:93
+#: templates_v2/accounts/activate.haml:68
+#: templates_v2/accounts/public_registration.haml:99
 #: templates_v2/home/landing.haml:48
 msgid "Email Support"
 msgstr "ayuda por correo electrónico"
 
-#: templates_v2/accounts/activate.haml:82
-#: templates_v2/accounts/activate.haml:101
-#: templates_v2/accounts/public_registration.haml:107
-#: templates_v2/accounts/public_registration.haml:127
-#: templates_v2/accounts/public_registration.haml:146
-#: templates_v2/accounts/public_registration.haml:165
-#: templates_v2/accounts/public_registration.haml:185
+#: templates_v2/accounts/activate.haml:83
+#: templates_v2/accounts/activate.haml:102
+#: templates_v2/accounts/public_registration.haml:113
+#: templates_v2/accounts/public_registration.haml:133
+#: templates_v2/accounts/public_registration.haml:152
+#: templates_v2/accounts/public_registration.haml:171
+#: templates_v2/accounts/public_registration.haml:191
 #, fuzzy
 #| msgid "First Name is required."
 msgid "This field is required."
 msgstr "Se requiere un correo electrónico válido"
 
-#: templates_v2/accounts/activate.haml:89
+#: templates_v2/accounts/activate.haml:90
 msgid "Please enter a valid username."
 msgstr ""
 "No se reconoce el nombre de usuario o correo electrónico. Inténtelo de nuevo."
 
-#: templates_v2/accounts/activate.haml:120
+#: templates_v2/accounts/activate.haml:121
 msgid "You must accept terms of service in order to continue."
 msgstr "Debe aceptar las Condiciones de servicio para continuar"
 
@@ -12639,16 +12639,16 @@ msgstr "Aceptar"
 msgid "Register for the access to the course"
 msgstr "Suscribirse para obtener acceso al curso"
 
-#: templates_v2/accounts/public_registration.haml:70
+#: templates_v2/accounts/public_registration.haml:74
 msgid "Note: personal email addresses will not be processed"
 msgstr ""
 "Nota: las direcciones personales de correo electrónico no serán procesadas"
 
-#: templates_v2/accounts/public_registration.haml:74
+#: templates_v2/accounts/public_registration.haml:78
 msgid "Please choose one of the following options"
 msgstr "elija una de las siguientes opciones"
 
-#: templates_v2/accounts/public_registration.haml:153
+#: templates_v2/accounts/public_registration.haml:159
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "El nombre de la compañía solo puede contener caracteres alfanuméricos"
 
@@ -12806,10 +12806,8 @@ msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr " Módulo %(lesson_index)s de %(lesson_count)s "
 
 #: templates_v2/courses/course_cohort.haml:8
-#, fuzzy
-#| msgid "| Cohort | Courses | McKinsey Academy"
 msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| Grupo | Cursos | McKinsey Academy"
+msgstr "| Marcador | Cursos | McKinsey Academy"
 
 #: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
@@ -13128,7 +13126,7 @@ msgstr "Haga clic aquí."
 
 #: templates_v2/courses/course_progress_v2.haml:256
 msgid "to read more about how we may share your course information."
-msgstr ""
+msgstr "para conocer más sobre cómo compartimos su información del curso."
 
 #: templates_v2/courses/course_progress_v2.haml:262
 #, python-format
@@ -13186,8 +13184,13 @@ msgstr "Para cambiar su dirección de correo electrónico, envíe un correo"
 
 #: templates_v2/faq.haml:51
 msgid ""
-"If you've forgotten your password, please try resetting it by clicking \\"
-msgstr "Si olvidó su contraseña, restablézcala con un clic en \\"
+"If you've forgotten your password, please try resetting it by clicking "
+"'Forgot my password' on the log in screen. If that does not work, please "
+"email"
+msgstr ""
+"Si olvidó su contraseña, intente restablecerla mediante un clic en “olvidé "
+"mi contraseña” en la página de inicio de sesión. Si eso no funciona, "
+"escríbanos a "
 
 #: templates_v2/faq.haml:58
 msgid ""
@@ -13524,6 +13527,10 @@ msgstr "Nombre: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Apellido: {}"
+
+#~ msgid ""
+#~ "If you've forgotten your password, please try resetting it by clicking \\"
+#~ msgstr "Si olvidó su contraseña, restablézcala con un clic en \\"
 
 #~ msgid ""
 #~ "\n"

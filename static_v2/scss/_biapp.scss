@@ -710,6 +710,13 @@ footer {
       }
     }
   }
+  .form-footer {
+    ul {
+      li {
+        @include padding-right(0.94rem);
+      }
+    }
+  }
 }
 
 // Misc
