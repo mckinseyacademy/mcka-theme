@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 15:12+0000\n"
+"POT-Creation-Date: 2019-04-27 11:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12942,10 +12942,8 @@ msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "Module %(lesson_index)s de %(lesson_count)s "
 
 #: templates_v2/courses/course_cohort.haml:8
-#, fuzzy
-#| msgid "| Cohort | Courses | McKinsey Academy"
 msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| Division | Cours | McKinsey Academy"
+msgstr "| Classement | Cours | McKinsey Academy"
 
 #: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
@@ -13325,10 +13323,13 @@ msgstr "Pour modifier votre adresse e-mail, veuillez envoyer un e-mail à"
 
 #: templates_v2/faq.haml:51
 msgid ""
-"If you've forgotten your password, please try resetting it by clicking \\"
+"If you've forgotten your password, please try resetting it by clicking "
+"'Forgot my password' on the log in screen. If that does not work, please "
+"email"
 msgstr ""
 "Si vous avez oublié votre mot de passe, essayez de le réinitialiser en "
-"cliquant sur \\"
+"cliquant sur « Mot de passe oublié » dans l’écran de connexion. Si cela ne "
+"fonctionne pas, envoyez un e-mail à"
 
 #: templates_v2/faq.haml:58
 msgid ""
@@ -13668,6 +13669,12 @@ msgstr "Prénom : {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nom de famille : {}"
+
+#~ msgid ""
+#~ "If you've forgotten your password, please try resetting it by clicking \\"
+#~ msgstr ""
+#~ "Si vous avez oublié votre mot de passe, essayez de le réinitialiser en "
+#~ "cliquant sur \\"
 
 #~ msgid ""
 #~ "\n"
