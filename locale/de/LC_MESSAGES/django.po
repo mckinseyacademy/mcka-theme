@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 15:11+0000\n"
+"POT-Creation-Date: 2019-04-27 10:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12934,10 +12934,8 @@ msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "Modul %(lesson_index)s von %(lesson_count)s "
 
 #: templates_v2/courses/course_cohort.haml:8
-#, fuzzy
-#| msgid "| Cohort | Courses | McKinsey Academy"
 msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| Jahrgang | Kurse | McKinsey Academy"
+msgstr "| Bestenlisten | Kurse | McKinsey Academy"
 
 #: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
@@ -13261,7 +13259,7 @@ msgstr "Hier klicken."
 
 #: templates_v2/courses/course_progress_v2.haml:256
 msgid "to read more about how we may share your course information."
-msgstr ""
+msgstr " um Weiteres darüber zu erfahren, wie wir Informationen über Ihre Kurse weiterleiten können."
 
 #: templates_v2/courses/course_progress_v2.haml:262
 #, python-format
@@ -13334,8 +13332,7 @@ msgstr ""
 "Die Auswahlliste, mit der Sie zwischen verschiedenen Kursen navigieren "
 "können, befindet sich links außen auf der zweiten (hellblauen) "
 "Navigationsleiste. Falls der Kurs, für den Sie angemeldet sind, dort nicht "
-"angezeigt wird, schicken Sie eine Email an <a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
+"angezeigt wird, schicken Sie eine Email an"
 
 #: templates_v2/faq.haml:65
 msgid ""
@@ -13350,10 +13347,6 @@ msgstr ""
 "ihre Postfächer zu überladen. Unsere E-Mails beinhalten wichtige "
 "Informationen für die nächste Woche und zusätzliche inhaltliche Vorschläge. "
 "Sollten Sie keine weiteren E-Mails erhalten wollen, senden Sie eine Mail an "
-"<a href=“mailto:support@mckinseyacademy.com“>support@mckinseyacademy.com</a> "
-"(oder klicken Sie am Ende einer beliebigen E-Mail von uns auf den Link zum "
-"Abmelden). Bitte besuchen unsere Ankündigungsseite regelmäßig, um auf dem "
-"Laufenden zu bleiben!"
 
 #: templates_v2/faq.haml:67
 msgid ""
@@ -13383,7 +13376,6 @@ msgstr ""
 msgid "If you have any questions about a grade you received, please email"
 msgstr ""
 "Wenn Sie Fragen zu einer erhaltenen Note haben, schicken Sie eine E-Mail an "
-"<a href=\"mailto:tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>."
 
 #: templates_v2/faq.haml:145
 msgid ""
@@ -13398,8 +13390,6 @@ msgstr ""
 "Schauen Sie sich das Diskussionsforum des Kurses an, wo Sie Fragen, "
 "Antworten und Kommentare von den anderen Teilnehmern lesen sowie Fragen "
 "posten können. Sie können auch die Assistenten von McKinsey kontaktieren, "
-"indem Sie ihnen eine E-Mail an <a href=\"mailto:tas@mckinseyacademy.com"
-"\">schreiben</a>. Sie werden Ihnen so schnell wie möglich antworten."
 
 #: templates_v2/faq.haml:146
 msgid "emailing them"
