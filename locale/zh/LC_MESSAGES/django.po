@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 15:13+0000\n"
+"POT-Creation-Date: 2019-04-27 11:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11813,10 +11813,8 @@ msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "%(lesson_count)s 的模块 %(lesson_index)s"
 
 #: templates_v2/courses/course_cohort.haml:8
-#, fuzzy
-#| msgid "| Cohort | Courses | McKinsey Academy"
 msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| 群组 | 课程 | McKinsey Academy"
+msgstr "| 排行榜 | 课程 | McKinsey Academy"
 
 #: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
@@ -12303,7 +12301,7 @@ msgstr "我们将竭诚提供帮助。"
 
 #: templates_v2/footer.haml:6
 msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
-msgstr "&#9400；2019归麦肯锡公司所有。保留所有权利。"
+msgstr "&#9400 2019归麦肯锡公司所有。保留所有权利。"
 
 #: templates_v2/footer.haml:13
 msgid "About"
