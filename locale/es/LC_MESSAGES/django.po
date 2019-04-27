@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 15:11+0000\n"
+"POT-Creation-Date: 2019-04-27 11:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12806,10 +12806,8 @@ msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr " Módulo %(lesson_index)s de %(lesson_count)s "
 
 #: templates_v2/courses/course_cohort.haml:8
-#, fuzzy
-#| msgid "| Cohort | Courses | McKinsey Academy"
 msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| Grupo | Cursos | McKinsey Academy"
+msgstr "| Marcador | Cursos | McKinsey Academy"
 
 #: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
@@ -13128,7 +13126,7 @@ msgstr "Haga clic aquí."
 
 #: templates_v2/courses/course_progress_v2.haml:256
 msgid "to read more about how we may share your course information."
-msgstr ""
+msgstr "para conocer más sobre cómo compartimos su información del curso."
 
 #: templates_v2/courses/course_progress_v2.haml:262
 #, python-format
