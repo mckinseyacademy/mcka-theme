@@ -57,14 +57,15 @@
                   {% trans "and " %}
                   %a{:href => "/privacy/", :target => "_blank"} {% trans "Privacy Policy " %}
           %button.btn.btn-primary.btn-lg.mt-3.registration_submit{:type => "submit", :disabled => "disabled"} {% trans "Register" %}
-          .form-footer
-            %ul.nav
-              %li.nav-item
-                {% trans "Need help?" %}
-              %li.nav-item
-                %a.nav-link{:href => "/faq/", :target => "_blank"} {% trans "Read FAQs" %}
-              %li.nav-item
-                %a.nav-link{:href => "mailto:support@mckinseyacademy.com"} {% trans "Email Support" %}
+    .row.justify-content-center
+      .col-lg-7.col-md-12.form-footer
+        %ul
+          %li.nav-item
+            {% trans "Need help?" %}
+          %li.nav-item
+            %a.nav-link{:href => "/faq/", :target => "_blank"} {% trans "Read FAQs" %}
+          %li.nav-item
+            %a.nav-link{:href => "mailto:support@mckinseyacademy.com"} {% trans "Email Support" %}
 
 
 - block js_snippets

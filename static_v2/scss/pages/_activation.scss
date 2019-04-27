@@ -1,6 +1,5 @@
-// Notes on the classes:
-
 .activation{
+  margin-top: 40px;
   .form{
     background-color: $white;
     padding: 30px 50px;
@@ -91,22 +90,26 @@
     }
   }
   .form-footer{
-    position: absolute;
-    bottom: -40px;
-    li{
-      font-size: 0.88rem;
-      color: $black;
-      padding: 0.5rem 0.94rem;
-      font-weight: bold;
-      a{
-        font-weight: 400;
-        padding: 0;
-        text-transform: none;
+    @extend .form;
+    padding-top: 20px;
+    background-color: transparent;
+    ul {
+      padding: 0;
+      margin: 0;
+      list-style: none;
+      li {
         font-size: 0.88rem;
+        color: $black;
+        padding-bottom: 0.5rem;
+        font-weight: bold;
+        display: inline-block;
 
-      }
-      &:first-child{
-        padding-left: 0;
+        a {
+          font-weight: 400;
+          padding: 0;
+          text-transform: none;
+          font-size: 0.88rem;
+        }
       }
     }
   }
@@ -127,7 +130,7 @@
 }
 
 //Mobile
-@include media-breakpoint-down(xs) {
+@include media-breakpoint-down(sm) {
   .activation{
     .form{
       .maxInputWrap{
@@ -142,6 +145,15 @@
       .form-group{
         input:not([type='checkbox']){
           max-width: 100%;
+        }
+      }
+    }
+    .form-footer {
+      ul {
+        li {
+          &:first-child {
+            display: block;
+          }
         }
       }
     }
