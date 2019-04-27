@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-27 11:40+0000\n"
+"POT-Creation-Date: 2019-04-27 12:46+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1158,7 +1158,7 @@ msgstr ""
 #: templates/admin/participants/participant_details.haml:124
 #: templates/admin/participants/participants_list.haml:36
 #: templates/admin/permissions/list.haml:36
-#: templates_v2/accounts/public_registration.haml:62
+#: templates_v2/accounts/public_registration.haml:65
 msgid "Company"
 msgstr "会社"
 
@@ -1209,7 +1209,7 @@ msgstr "対応形式: JPG、PNG、GIF"
 
 #: accounts/forms.py:601 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:91
-#: templates_v2/accounts/public_registration.haml:54
+#: templates_v2/accounts/public_registration.haml:55
 msgid "First Name"
 msgstr "名"
 
@@ -1219,7 +1219,7 @@ msgstr "有効なEメールが必要です"
 
 #: accounts/forms.py:607
 #: templates/admin/participants/participant_details.haml:96
-#: templates_v2/accounts/public_registration.haml:58
+#: templates_v2/accounts/public_registration.haml:60
 msgid "Last Name"
 msgstr "氏"
 
@@ -1276,8 +1276,8 @@ msgid ""
 msgstr "{html_div_start}(以下から1つ選んでください){html_div_end}"
 
 #: accounts/forms.py:735 accounts/forms.py:743
-#: templates_v2/accounts/public_registration.haml:114
-#: templates_v2/accounts/public_registration.haml:134
+#: templates_v2/accounts/public_registration.haml:120
+#: templates_v2/accounts/public_registration.haml:140
 msgid "Special characters or numbers are not valid."
 msgstr "特殊文字や数字は無効です。"
 
@@ -1303,7 +1303,7 @@ msgstr "このEメールアドレスは既に登録されています。"
 msgid "Email you provided is not allowed."
 msgstr "入力したEメールアドレスは使用できません。"
 
-#: accounts/forms.py:782 templates_v2/accounts/public_registration.haml:172
+#: accounts/forms.py:782 templates_v2/accounts/public_registration.haml:178
 msgid "Please enter a valid company email address."
 msgstr "有効な会社Eメールアドレスを入力してください。"
 
@@ -2517,12 +2517,12 @@ msgid "Company name"
 msgstr "会社名"
 
 #: admin/views.py:6242 templates/admin/course_run/view.haml:66
-#: templates_v2/accounts/public_registration.haml:66
+#: templates_v2/accounts/public_registration.haml:70
 msgid "Company email"
 msgstr "会社Eメール"
 
 #: admin/views.py:6243 templates/admin/course_run/view.haml:67
-#: templates_v2/accounts/public_registration.haml:73
+#: templates_v2/accounts/public_registration.haml:77
 msgid "Current role"
 msgstr "現在のロール"
 
@@ -3365,7 +3365,7 @@ msgstr "以下の欄に入力してください。必須項目にはアスタリ
 
 #: templates/accounts/public_registration.haml:69
 #: templates_v2/accounts/activate.haml:59
-#: templates_v2/accounts/public_registration.haml:85
+#: templates_v2/accounts/public_registration.haml:90
 msgid "Register"
 msgstr "登録"
 
@@ -12138,7 +12138,7 @@ msgid "Show Password"
 msgstr "パスワード"
 
 #: templates_v2/accounts/activate.haml:48
-#: templates_v2/accounts/activate.haml:108
+#: templates_v2/accounts/activate.haml:109
 msgid ""
 "Must be at least 8 characters and include upper and lowercase letters - plus "
 "numbers OR special characters."
@@ -12161,40 +12161,40 @@ msgstr ""
 msgid "Privacy Policy "
 msgstr "プライバシーに関する方針"
 
-#: templates_v2/accounts/activate.haml:63
-#: templates_v2/accounts/public_registration.haml:89
+#: templates_v2/accounts/activate.haml:64
+#: templates_v2/accounts/public_registration.haml:95
 msgid "Need help?"
 msgstr "ヘルプが必要ですか?"
 
-#: templates_v2/accounts/activate.haml:65
-#: templates_v2/accounts/public_registration.haml:91
+#: templates_v2/accounts/activate.haml:66
+#: templates_v2/accounts/public_registration.haml:97
 msgid "Read FAQs"
 msgstr "FAQを読む"
 
-#: templates_v2/accounts/activate.haml:67
-#: templates_v2/accounts/public_registration.haml:93
+#: templates_v2/accounts/activate.haml:68
+#: templates_v2/accounts/public_registration.haml:99
 #: templates_v2/home/landing.haml:48
 msgid "Email Support"
 msgstr "Eメールサポート"
 
-#: templates_v2/accounts/activate.haml:82
-#: templates_v2/accounts/activate.haml:101
-#: templates_v2/accounts/public_registration.haml:107
-#: templates_v2/accounts/public_registration.haml:127
-#: templates_v2/accounts/public_registration.haml:146
-#: templates_v2/accounts/public_registration.haml:165
-#: templates_v2/accounts/public_registration.haml:185
+#: templates_v2/accounts/activate.haml:83
+#: templates_v2/accounts/activate.haml:102
+#: templates_v2/accounts/public_registration.haml:113
+#: templates_v2/accounts/public_registration.haml:133
+#: templates_v2/accounts/public_registration.haml:152
+#: templates_v2/accounts/public_registration.haml:171
+#: templates_v2/accounts/public_registration.haml:191
 #, fuzzy
 #| msgid "First Name is required."
 msgid "This field is required."
 msgstr "有効なEメールが必要です"
 
-#: templates_v2/accounts/activate.haml:89
+#: templates_v2/accounts/activate.haml:90
 msgid "Please enter a valid username."
 msgstr ""
 "ユーザー名/Eメールアドレスが確認できませんでした。もう一度試してください。"
 
-#: templates_v2/accounts/activate.haml:120
+#: templates_v2/accounts/activate.haml:121
 msgid "You must accept terms of service in order to continue."
 msgstr "続行するには、サービス利用規約に同意してください"
 
@@ -12209,15 +12209,15 @@ msgstr ""
 msgid "Register for the access to the course"
 msgstr "コースのデモバージョンにアクセスするために登録する"
 
-#: templates_v2/accounts/public_registration.haml:70
+#: templates_v2/accounts/public_registration.haml:74
 msgid "Note: personal email addresses will not be processed"
 msgstr "注: 個人のEメールアドレスは処理されません"
 
-#: templates_v2/accounts/public_registration.haml:74
+#: templates_v2/accounts/public_registration.haml:78
 msgid "Please choose one of the following options"
 msgstr "以下から1つ選んでください"
 
-#: templates_v2/accounts/public_registration.haml:153
+#: templates_v2/accounts/public_registration.haml:159
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "会社名には英数字しか使用できません"
 
@@ -12748,8 +12748,12 @@ msgstr "Eメールアドレスを変更するには、Eメールを送ってく�
 
 #: templates_v2/faq.haml:51
 msgid ""
-"If you've forgotten your password, please try resetting it by clicking \\"
-msgstr "パスワードを忘れた場合は、次をクリックして再設定を試してください:"
+"If you've forgotten your password, please try resetting it by clicking "
+"'Forgot my password' on the log in screen. If that does not work, please "
+"email"
+msgstr ""
+"パスワードを忘れた場合は、ログイン画面の [パスワードを忘れた] をクリックして"
+"再設定を試みてください。それでも上手くいかない場合は、までご連絡くださ い。"
 
 #: templates_v2/faq.haml:58
 msgid ""
@@ -13079,6 +13083,10 @@ msgstr "名: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "氏: {}"
+
+#~ msgid ""
+#~ "If you've forgotten your password, please try resetting it by clicking \\"
+#~ msgstr "パスワードを忘れた場合は、次をクリックして再設定を試してください:"
 
 #, fuzzy
 #~| msgid ""
