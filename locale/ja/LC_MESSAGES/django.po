@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 15:12+0000\n"
+"POT-Creation-Date: 2019-04-27 08:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12691,7 +12691,7 @@ msgstr "ここをクリックしてください。"
 
 #: templates_v2/courses/course_progress_v2.haml:256
 msgid "to read more about how we may share your course information."
-msgstr ""
+msgstr "コース情報の共有に関する詳細については、"
 
 #: templates_v2/courses/course_progress_v2.haml:262
 #, python-format
