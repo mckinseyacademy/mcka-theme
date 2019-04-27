@@ -549,6 +549,13 @@
   position: absolute;
   top: 30px;
   z-index: 9999;
+
+  .input-group
+  {
+    input[type="text"]{
+      max-width: none;
+    } 
+  }
 }
 
 #companyDetailsCoursesContainer{
