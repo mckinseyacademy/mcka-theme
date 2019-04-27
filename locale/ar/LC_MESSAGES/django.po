@@ -7257,9 +7257,9 @@ msgid ""
 "and right arrows. Hover over the arrows to see details of upcoming (or "
 "previous) %(modules_custom_label)s"
 msgstr ""
-" %(module_custom_label)s %(module_custom_label)s %(modules_custom_label)s "
-"الانتقال من وحدة نمطية إلى وحدة نمطية باستخدام الأسهم الأيمن والأيسر. حُم فوق "
-"الأسهم لرؤية تفاصيل وحدات القادمة (أو السابقة)"
+"الانتقال من %(module_custom_label)s إلى %(module_custom_label)s باستخدام"
+"السهمين الأيسر والأيمن. قم بالمرور فوق السهمين لرؤية تفاصيل"
+" الوحدات القادمة (أو السابقة) %(modules_custom_label)s"
 
 #: templates/courses/course_navigation.haml:31
 #, python-format
@@ -7278,8 +7278,8 @@ msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
 "arrows to see details of upcoming (or previous) %(modules_custom_label)s"
 msgstr ""
-"%(modules_custom_label)s الانتقال من وحدة نمطية إلى وحدة نمطية باستخدام "
-"الأسهم الأيمن والأيسر. حُم فوق الأسهم لرؤية تفاصيل وحدات القادمة (أو السابقة)"
+"الانتقال من وحدة إلى أخرى باستخدام السهمين الأيسر والأيمن. "
+"قم بالمرور فوق السهمين لرؤية تفاصيل الوحدات القادمة (أو السابقة) %(modules_custom_label)s"
 
 #: templates/courses/course_navigation.haml:35
 msgid ""
@@ -7296,9 +7296,8 @@ msgid ""
 "discussion page. View the discussion page using the <i class=\"fa fa-"
 "comments-o\"></i> icon in the main navigation bar "
 msgstr ""
-"يتم نشر %(modules_custom_label)s مع المناقشات المضمنة في صفحة المناقشات "
-"الأكبر. ويتم عرض صفحة المناقشات باستخدام الرمز <i class=\"fa fa-comments-o"
-"\"></i> الموجود في شريط التنقل الرئيسي "
+"يتم نشر %(modules_custom_label)s مع المناقشات المضمنة في صفحة المناقشات الأكبر. "
+"ويتم عرض صفحة المناقشات باستخدام الرمز <i class=\"fa fa-comments-o\"></i> الموجود في شريط التنقل الرئيسي "
 
 #: templates/courses/course_navigation.haml:41
 msgid ""
@@ -12365,13 +12364,13 @@ msgstr " هذا الدرس سوف تكون متاحة عبر%(start_date)s "
 #, python-format
 msgid " %(module_custom_label)s %(lesson_index)s of %(lesson_count)s "
 msgstr ""
-"%(module_custom_label)s %(lesson_index)s الدرس المتاحة على %(lesson_count)s "
+" %(module_custom_label)s %(lesson_index)s من %(lesson_count)s "
 
 #: templates_v2/courses/content_page/lesson_pager_ld.haml:11
 #: templates_v2/courses/content_page/lesson_pager_ld.haml:21
 #, python-format
 msgid " Module %(lesson_index)s of %(lesson_count)s "
-msgstr "%(lesson_count)s %(lesson_index)sالدرس المتاحة على "
+msgstr "الوحدة %(lesson_index)s من %(lesson_count)s "
 
 #: templates_v2/courses/course_cohort.haml:8
 msgid "| Leaderboard | Courses | McKinsey Academy"
@@ -12508,7 +12507,7 @@ msgstr ""
 #: templates_v2/courses/course_progress_v2.haml:137
 #, python-format
 msgid " This %(module_custom_label)s will be available on %(start_date)s "
-msgstr " %(module_custom_label)s هذا الدرس سوف تكون متاحة عبر%(start_date)s "
+msgstr " ستتوافر %(module_custom_label)s هذه في %(start_date)s "
 
 #: templates_v2/courses/course_lessons.haml:76
 #: templates_v2/courses/course_lessons_ld.haml:77
