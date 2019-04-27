@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-27 08:43+0000\n"
+"POT-Creation-Date: 2019-04-27 11:40+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12371,10 +12371,8 @@ msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "%(lesson_count)sのモジュール%(lesson_index)s"
 
 #: templates_v2/courses/course_cohort.haml:8
-#, fuzzy
-#| msgid "| Cohort | Courses | McKinsey Academy"
 msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| コホート | コース | McKinsey Academy"
+msgstr "| リーダーボード | コース | McKinsey Academy"
 
 #: templates_v2/courses/course_cohort.haml:26
 msgid "Your course completion status:"
