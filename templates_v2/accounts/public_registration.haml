@@ -51,21 +51,25 @@
         %form#reg{:action => "/registration/#{course_run_name}/", method: "POST"}
           - csrf_token
           .form-group{:class => "{% if errors.first_name %}error{% endif %}"}
-            %input.form-control{:placeholder => "{% trans 'First Name' %}", :type => "text", :name => "first_name", :value => "{{form.data.first_name}}"}
-            %i.material-icons.ico-state
-              error
+            .maxInputWrap
+              %input.form-control{:placeholder => "{% trans 'First Name' %}", :type => "text", :name => "first_name", :value => "{{form.data.first_name}}"}
+              %i.material-icons.ico-state
+                error
           .form-group{:class => "{% if errors.last_name %}error{% endif %}"}
-            %input.form-control{:placeholder => "{% trans 'Last Name' %}", :type => "text", :name => "last_name", :value => "{{form.data.last_name}}"}
-            %i.material-icons.ico-state
-              error
+            .maxInputWrap
+              %input.form-control{:placeholder => "{% trans 'Last Name' %}", :type => "text", :name => "last_name", :value => "{{form.data.last_name}}"}
+              %i.material-icons.ico-state
+                error
           .form-group{:class => "{% if errors.company_name %}error{% endif %}"}
-            %input.form-control{:placeholder => "{% trans 'Company' %}", :type => "text", :name => "company_name", :value => "{{form.data.company_name}}"}
-            %i.material-icons.ico-state
-              error
+            .maxInputWrap
+              %input.form-control{:placeholder => "{% trans 'Company' %}", :type => "text", :name => "company_name", :value => "{{form.data.company_name}}"}
+              %i.material-icons.ico-state
+                error
           .form-group{:class => "{% if errors.company_email %}error{% endif %}"}
-            %input.form-control{:placeholder => "{% trans 'Company email' %}", :type => "text", :name => "company_email", :value => "{{form.data.company_email}}"}
-            %i.material-icons.ico-state
-              error
+            .maxInputWrap
+              %input.form-control{:placeholder => "{% trans 'Company email' %}", :type => "text", :name => "company_email", :value => "{{form.data.company_email}}"}
+              %i.material-icons.ico-state
+                error
             %small.error= errors.company_email.0
             %small.form-text {% trans "Note: personal email addresses will not be processed" %}
 
@@ -79,7 +83,8 @@
                 %span.radiobtn
                 = choice
           .form-group.mb-1
-            %input.form-control#id_current_role_other{:disabled => "disabled", :type => "text", :name => "current_role_other", :value => "{{form.data.current_role_other}}"}
+            .maxInputWrap
+              %input.form-control#id_current_role_other{:disabled => "disabled", :type => "text", :name => "current_role_other", :value => "{{form.data.current_role_other}}"}
             %i.material-icons.ico-state
               error
           %button.btn.btn-primary.btn-lg.mt-3.registration_submit{:type => "submit", :disabled => "disabled"} {% trans "Register" %}
@@ -104,14 +109,14 @@
       if(value === undefined || value.length === 0){
         if (alreadyChecked){
           sel.siblings('.error').remove();
-          sel.parent().addClass('error');
+          sel.closest('.form-group').addClass('error');
           sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
         }
         error = true;
       } else if(! /^([a-zA-Z\u00C0-\u1EF3\s]*)$/.test(value)){
         if (alreadyChecked){
           sel.siblings('.error').remove();
-          sel.parent().addClass('error');
+          sel.closest('.form-group').addClass('error');
           sel.after('<small class="error form-text">{% trans "Special characters or numbers are not valid." %}</small>');
         }
         error = true;
@@ -124,14 +129,14 @@
       if(value === undefined || value.length === 0){
         if (alreadyChecked){
           sel.siblings('.error').remove();
-          sel.parent().addClass('error');
+          sel.closest('.form-group').addClass('error');
           sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
         }
         error = true;
       } else if(! /^([a-zA-Z\u00C0-\u1EF3\s]*)$/.test(value)){
         if (alreadyChecked){
           sel.siblings('.error').remove();
-          sel.parent().addClass('error');
+          sel.closest('.form-group').addClass('error');
           sel.after('<small class="error form-text">{% trans "Special characters or numbers are not valid." %}</small>');
         }
         error = true;
@@ -143,14 +148,14 @@
       if(value === undefined || value.length === 0){
         if (alreadyChecked){
           sel.siblings('.error').remove();
-          sel.parent().addClass('error');
+          sel.closest('.form-group').addClass('error');
           sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
         }
         error = true;
       } else if(! /^([a-zA-Z\s1-9]*)$/.test(value)){
         if (alreadyChecked){
           sel.siblings('.error').remove();
-          sel.parent().addClass('error');
+          sel.closest('.form-group').addClass('error');
           sel.after('<small class="error form-text">{% trans "This company name cannot contain non-alphanumeric characters!" %}</small>');
         }
         error = true;
@@ -162,14 +167,14 @@
       if(value === undefined || value.length === 0){
         if (alreadyChecked){
           sel.siblings('.error').remove();
-          sel.parent().addClass('error');
+          sel.closest('.form-group').addClass('error');
           sel.after('<small class="error form-text">{% trans "This field is required." %}</small>');
         }
         error = true;
       } else if(! /^[\w-\.]+@([\w-]+\.)+[\w-]+$/.test(value)){
         if (alreadyChecked){
           sel.siblings('.error').remove();
-          sel.parent().addClass('error');
+          sel.closest('.form-group').addClass('error');
           sel.after('<small class="error form-text">{% trans "Please enter a valid company email address." %}</small>');
         }
         error = true;
@@ -181,7 +186,7 @@
       if(! $('#id_current_role input').is(':checked') ||
       ((value === undefined || value.length === 0) && !sel.attr('disabled'))){
         if (alreadyChecked){
-          sel.parent().addClass('error');
+          sel.parent('.form-group').addClass('error');
           sel.siblings('.error').remove();
           sel.siblings(":last").after('<small class="error form-text">{% trans "This field is required." %}</small>');
         }
