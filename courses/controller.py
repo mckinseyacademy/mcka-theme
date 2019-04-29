@@ -1067,18 +1067,15 @@ def get_learner_dashboard(request, course_id):
 def user_learner_dashboards(request, user_courses):
     learner_dashboards = []
     if settings.LEARNER_DASHBOARD_ENABLED:
-        for course in user_courses:
-            dashboard = None
-            try:
-                dashboard = LearnerDashboard.objects.get(course_id=course.id)
-            except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
-                pass
-            if dashboard:
-                calendar_items = LearnerDashboardTile.objects.filter(
-                    learner_dashboard=dashboard.id, show_in_calendar=True
-                )
-                dashboard.calendar_enabled = True if calendar_items else False
-                dashboard.features = CourseDataManager(course.id).get_feature_flags()
-                learner_dashboards.append(dashboard)
+        course_ids = [c.id for c in user_courses]
+        lds = LearnerDashboard.objects.filter(course_id__in=course_ids)
+        calendar_items = LearnerDashboardTile.objects.filter(
+            learner_dashboard__in=lds, show_in_calendar=True
+        ).values_list('learner_dashboard', flat=True)
+
+        for ld in lds:
+            ld.calendar_enabled = ld.id in calendar_items
+            ld.features = CourseDataManager(ld.course_id).get_feature_flags()
+            learner_dashboards.append(ld)
 
     return learner_dashboards
