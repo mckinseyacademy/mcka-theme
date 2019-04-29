@@ -16,7 +16,7 @@
               {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
           - else
             %form.white.clearfix{id: "login-form", action: "/", method: "POST"}
-              .error.error-msg.already-activated
+              .error.error-msg
                 - if activation_message
                   = activation_message
                 - if error

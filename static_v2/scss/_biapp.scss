@@ -823,12 +823,6 @@ form {
         }
       }
     }
-    .already-activated {
-      @include padding-left(55px);
-      &::before {
-        @include left(18px);
-      }
-    }
   }
 }
 
