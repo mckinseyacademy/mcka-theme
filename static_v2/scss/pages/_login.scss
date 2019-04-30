@@ -272,13 +272,13 @@
       }
     }
     .already-activated {
-      padding: 20px 10px;
+      padding: 10px;
       border: 1px solid $bg-white-red;
       @extend .form-group;
       color: $black;
       font-size: 0.75rem;
       position: relative;
-      margin-bottom: 25px !important;
+      margin-bottom: 30px !important;
 
       &::before {
         font-family: 'Material Icons';
