@@ -14,7 +14,7 @@ from django.utils.translation import ugettext as _
 from .json_object import JsonParser as JP
 from . import user_models, gradebook_models, organization_models, workgroup_models, course_models
 from .json_requests import GET, POST, PUT, DELETE
-from .api_error import api_error_protect, ERROR_CODE_MESSAGES
+from .api_error import api_error_protect, ERROR_CODE_MESSAGES, ApiError
 from .group_models import GroupInfo
 from .oauth2_requests import get_oauth2_session, get_and_unpaginate
 
@@ -578,21 +578,22 @@ def is_user_in_group(user_id, group_id):
 
 @api_error_protect
 def set_user_preferences(user_id, preference_dictionary):
-    ''' sets users preferences information '''
-    POST(
-        '{}/{}/{}/preferences'.format(
+    """ sets users preferences information """
+    try:
+        POST('{}/{}/{}/preferences'.format(
             settings.API_SERVER_ADDRESS,
             USER_API,
             user_id,
         ),
-        preference_dictionary
-    )
+            preference_dictionary
+        )
+    except ApiError:
+        return False
 
     user_data_updated.send(
         sender=__name__, user_ids=[user_id],
         data_type=USER_PROPERTIES.PREFERENCES
     )
-
     return True
 
 
