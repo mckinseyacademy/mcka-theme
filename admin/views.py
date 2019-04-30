@@ -3313,8 +3313,10 @@ def groupwork_dashboard_courses(request, program_id, restrict_to_programs_ids=No
         return make_json_error(_("Invalid program_id specified: {}").format(program_id), 400)
 
     AccessChecker.check_has_program_access(program_id, restrict_to_programs_ids)
-
-    user_api.set_user_preferences(request.user.id, {"DASHBOARD_PROGRAM_ID": str(program_id)})
+    try:
+        user_api.set_user_preferences(request.user.id, {"DASHBOARD_PROGRAM_ID": str(program_id)})
+    except ApiError:
+        pass
     accessible_courses = get_accessible_courses_from_program(request.user, int(program_id), restrict_to_courses_ids)
 
     data = [_make_select_option_response(item.course_id, item.display_name) for item in accessible_courses]

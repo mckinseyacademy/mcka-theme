@@ -15,6 +15,7 @@ from api_data_manager.course_data import CourseDataManager
 from admin.models import Program
 from admin.controller import load_course
 from datetime import datetime, timedelta
+from api_client.api_error import ApiError
 from api_client import user_api, course_api, mobileapp_api, organization_api
 from accounts.middleware import thread_local
 from api_data_manager.user_data import UserDataManager
@@ -56,12 +57,15 @@ def set_current_course_for_user(request, course_id, course_landing_page_flag=Fal
                 break
 
     # persist user choice
-    user_api.set_user_preferences(
-        request.user.id, {
-            CURRENT_COURSE_ID: course_id,
-            CURRENT_PROGRAM_ID: str(current_program.id),
-        }
-    )
+    try:
+        user_api.set_user_preferences(
+            request.user.id, {
+                CURRENT_COURSE_ID: course_id,
+                CURRENT_PROGRAM_ID: str(current_program.id),
+            }
+        )
+    except ApiError:
+        pass
 
 
 def clear_current_course_for_user(request):

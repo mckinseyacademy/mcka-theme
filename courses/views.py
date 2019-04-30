@@ -96,9 +96,12 @@ def course_landing_page(request, course_id):
         if not new_ui_enabled:
             set_current_course_for_user(request, course_id, course_landing_page_flag=True)
         redirect_url = '/learnerdashboard/' + str(learner_dashboard.id)
-        user_api.set_user_preferences(request.user.id, {
-            CURRENT_LD_COURSE_ID: course_id
-        })
+        try:
+            user_api.set_user_preferences(request.user.id, {
+                CURRENT_LD_COURSE_ID: course_id
+            })
+        except ApiError:
+            pass
         return HttpResponseRedirect(redirect_url)
 
     set_current_course_for_user(request, course_id, course_landing_page_flag=True)
@@ -399,7 +402,10 @@ def workgroup_course_group_work(request, course_id, workgroup_id, learner_dashbo
         branding_flag = feature_flags.branding
 
     # set this workgroup as the preference for reviewing
-    user_api.set_user_preferences(request.user.id, {"TA_REVIEW_WORKGROUP": workgroup_id})
+    try:
+        user_api.set_user_preferences(request.user.id, {"TA_REVIEW_WORKGROUP": workgroup_id})
+    except ApiError:
+        pass
 
     course = load_course(course_id, request=request)
     project_group, group_project = get_group_project_for_workgroup_course(workgroup_id, course)
