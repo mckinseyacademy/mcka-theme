@@ -8507,10 +8507,10 @@ msgstr "كيف يتم تحديد الشهادات؟"
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
-"achieve a score of 70%% or above across the program’s 5 core courses."
+"achieve a score of 70%% or above across the program’s 4 core courses."
 msgstr ""
 "للتأهل للحصول على شهادة إتمام برنامج ماكنزي للإدارة (MMP)، يلزم على "
-"المشاركين تحقيق درجة 70%% أو أعلى خلال كافة دورات البرنامج الأساسية الخمس."
+"المشاركين تحقيق درجة 70%% أو أعلى خلال كافة دورات البرنامج الأساسية أربعة."
 
 #: templates/faq.haml:81 templates_v2/faq.haml:190
 msgid "How are McKinsey Academy certificates delivered?"

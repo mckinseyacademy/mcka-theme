@@ -8717,10 +8717,10 @@ msgstr "Quelles sont les conditions d’obtention des certificats ?"
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
-"achieve a score of 70%% or above across the program’s 5 core courses."
+"achieve a score of 70%% or above across the program’s 4 core courses."
 msgstr ""
 "Pour recevoir un certificat de réussite MMP, les participants doivent "
-"obtenir une note de 70 %% ou plus pour 5 cours majeurs du programme."
+"obtenir une note de 70 %% ou plus pour 4 cours majeurs du programme."
 
 #: templates/faq.haml:81 templates_v2/faq.haml:190
 msgid "How are McKinsey Academy certificates delivered?"

@@ -8613,10 +8613,10 @@ msgstr "Como os certificados são determinados?"
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
-"achieve a score of 70%% or above across the program’s 5 core courses."
+"achieve a score of 70%% or above across the program’s 4 core courses."
 msgstr ""
 "Para ser elegível para o certificado de conclusão do MMP, os participantes "
-"precisam atingir uma pontuação mínima de 70%% nos cinco principais cursos do "
+"precisam atingir uma pontuação mínima de 70%% nos quatro principais cursos do "
 "programa."
 
 #: templates/faq.haml:81 templates_v2/faq.haml:190

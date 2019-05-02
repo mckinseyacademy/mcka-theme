@@ -7922,7 +7922,7 @@ msgstr ""
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
-"achieve a score of 70%% or above across the program’s 5 core courses."
+"achieve a score of 70%% or above across the program’s 4 core courses."
 msgstr ""
 
 #: templates/faq.haml:81 templates_v2/faq.haml:190

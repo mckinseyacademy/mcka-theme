@@ -8505,9 +8505,9 @@ msgstr "証書の判断基準は何ですか?"
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
-"achieve a score of 70%% or above across the program’s 5 core courses."
+"achieve a score of 70%% or above across the program’s 4 core courses."
 msgstr ""
-"MMP修了証書を受けるためには、プログラムの5つのコア・コースで70%%以上を達成す"
+"MMP修了証書を受けるためには、プログラムの4つのコア・コースで70%%以上を達成す"
 "る必要があります。"
 
 #: templates/faq.haml:81 templates_v2/faq.haml:190

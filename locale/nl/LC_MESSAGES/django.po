@@ -8598,10 +8598,10 @@ msgstr "Op basis waarvan worden certificaten toegekend?"
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
-"achieve a score of 70%% or above across the program’s 5 core courses."
+"achieve a score of 70%% or above across the program’s 4 core courses."
 msgstr ""
 "Om in aanmerking te komen voor een MMP-certificaat van voltooiing moeten "
-"deelnemers een score behalen van 70%% of hoger voor de 5 kerncursussen van "
+"deelnemers een score behalen van 70%% of hoger voor de 4 kerncursussen van "
 "het programma."
 
 #: templates/faq.haml:81 templates_v2/faq.haml:190
