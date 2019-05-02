@@ -349,7 +349,7 @@ body.new-theme {
 									font-size: 12px;
 									padding: 0px 1% 0px 3%;
 									height: 38px !important;
-									width: 96% !important;
+									width: calc(100% - 20px) !important;
 								}
 
 								&:after {
