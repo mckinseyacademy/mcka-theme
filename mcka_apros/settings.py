@@ -697,4 +697,18 @@ mimetypes.add_type("image/svg+xml", ".svg", True)
 mimetypes.add_type("image/svg+xml", ".svgz", True)
 
 # allowed mobile url schemes for SSO flow
-MOBILE_URL_SCHEMES = ['mck', 'mckinsey-mcka-debug', 'mckinsey-mcka-stage', 'mckinsey-mcka-release', ]
+MOBILE_URL_SCHEMES = [
+    'mck',
+    'mckinsey-mcka-debug',
+    'mckinsey-rtsa-debug',
+    'mckinsey-mcka-hla-debug',
+    'mckinsey-horizon-debug',
+    'mckinsey-mcka-stage',
+    'mckinsey-rtsa-stage',
+    'mckinsey-mcka-hla-stage',
+    'mckinsey-horizon-stage',
+    'mckinsey-mcka-release',
+    'mckinsey-rtsa-release',
+    'mckinsey-mcka-hla-release',
+    'mckinsey-horizon-release',
+]
