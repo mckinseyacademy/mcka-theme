@@ -12,10 +12,6 @@
     .row
       .col
         #course-cohort
-          .student-data
-            .students
-              #{metrics.users_enrolled} {% trans "in your cohort" %}, #{metrics.group_enrolled} {% trans "group work team members" %}
-            #map-cohort
           .leaderboard-header
             %h5 {% trans "Leaderboard" %}
           .leaderboards
@@ -264,15 +260,3 @@
                       .person-name
                         %span {% trans "User Name" %}
                       .person-rank 100
-
-- block js_snippets
-  %script{src: 'https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.js'}
-  %script{src: 'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-language/v0.9.2/mapbox-gl-language.js'}
-  %link{href:'https://api.mapbox.com/mapbox-gl-js/v0.44.1/mapbox-gl.css', rel:'stylesheet'}
-  %script
-    var CohortMapUsers = {{metrics.groups_users|safe}};
-    var CohortMapCities = {{metrics.cities|safe}};
-    - if not course.ended
-      var TAUser = {{ta_user|safe}};
-    var mapbox_map_id = "{{mapbox_map_id}}";
-    var mapbox_access_token = "{{mapbox_token}}";

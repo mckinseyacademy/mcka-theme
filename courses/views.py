@@ -194,7 +194,7 @@ def course_news(request, course_id):
 @check_user_course_access
 def course_cohort(request, course_id):
     feature_flags = CourseDataManager(course_id).get_feature_flags()
-    if not feature_flags.cohort_map:
+    if not feature_flags.leaderboard:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     try:
@@ -1286,7 +1286,6 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     feature_flags.group_work = request.POST.get('group_work', None) == 'on'
     feature_flags.discussions = request.POST.get('discussions', None) == 'on'
-    feature_flags.cohort_map = request.POST.get('cohort_map', None) == 'on'
     feature_flags.proficiency = request.POST.get('proficiency', None) == 'on'
     feature_flags.learner_dashboard = request.POST.get('learner_dashboard', None) == 'on'
     feature_flags.progress_page = request.POST.get('progress_page', None) == 'on'

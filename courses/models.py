@@ -64,9 +64,8 @@ class FeatureFlags(db_models.Model):
     course_id = db_models.CharField(max_length=200, unique=False, db_index=True)
     group_work = db_models.BooleanField(default=True)
     discussions = db_models.BooleanField(default=True)
-    cohort_map = db_models.BooleanField(default=True)
+    leaderboard = db_models.BooleanField(default=True)
     lesson_label = db_models.BooleanField(default=True)
-    leaderboard = db_models.BooleanField(default=False)
     proficiency = db_models.BooleanField(default=True)
     progress = db_models.BooleanField(default=True)
     progress_indication = db_models.BooleanField(default=True)
@@ -89,7 +88,6 @@ class FeatureFlags(db_models.Model):
             course_id=self.course_id,
             group_work=self.group_work,
             discussions=self.discussions,
-            cohort_map=self.cohort_map,
             lesson_label=self.lesson_label,
             leaderboard=self.leaderboard,
             progress_indication=self.progress_indication,

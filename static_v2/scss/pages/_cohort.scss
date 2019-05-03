@@ -3,20 +3,6 @@
   color: $black;
   width: 100%;
 
-  .student-data {
-    padding: 40px 30px 35px;
-    background-color: $white;
-    margin-bottom: 40px;
-
-    .students {
-      @extend .mb-2;
-      @extend .type-cohort;
-    }
-
-    #map-cohort {
-      height: 540px;
-    }
-  }
 
   .leaderboard-header {
     h5 {

@@ -55,13 +55,6 @@
           %label{for: 'group_work'}
             {% trans "Group Work" %}
         %li
-          - if feature_flags.cohort_map
-            %input#cohort_map{type: 'checkbox', name: 'cohort_map', checked: 'checked'}
-          - else
-            %input#cohort_map{type: 'checkbox', name: 'cohort_map'}
-          %label{for: 'cohort_map'}
-            {% trans "Cohort Map" %}
-        %li
           - if feature_flags.proficiency
             %input#cohort_map{type: 'checkbox', name: 'proficiency', checked: 'checked'}
           - else
