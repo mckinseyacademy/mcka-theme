@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 15:12+0000\n"
+"POT-Creation-Date: 2019-05-03 10:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1163,7 +1163,7 @@ msgstr ""
 #: templates/admin/participants/participant_details.haml:124
 #: templates/admin/participants/participants_list.haml:36
 #: templates/admin/permissions/list.haml:36
-#: templates_v2/accounts/public_registration.haml:62
+#: templates_v2/accounts/public_registration.haml:65
 msgid "Company"
 msgstr "Bedrijf"
 
@@ -1214,7 +1214,7 @@ msgstr "Geaccepteerde bestandstypen: JPG, PNG en GIF"
 
 #: accounts/forms.py:601 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:91
-#: templates_v2/accounts/public_registration.haml:54
+#: templates_v2/accounts/public_registration.haml:55
 msgid "First Name"
 msgstr "Voornaam"
 
@@ -1224,7 +1224,7 @@ msgstr "Voornaam is vereist."
 
 #: accounts/forms.py:607
 #: templates/admin/participants/participant_details.haml:96
-#: templates_v2/accounts/public_registration.haml:58
+#: templates_v2/accounts/public_registration.haml:60
 msgid "Last Name"
 msgstr "Achternaam"
 
@@ -1282,8 +1282,8 @@ msgid ""
 msgstr "{html_div_start}(kies een van de volgende opties) {html_div_end}"
 
 #: accounts/forms.py:735 accounts/forms.py:743
-#: templates_v2/accounts/public_registration.haml:114
-#: templates_v2/accounts/public_registration.haml:134
+#: templates_v2/accounts/public_registration.haml:120
+#: templates_v2/accounts/public_registration.haml:140
 msgid "Special characters or numbers are not valid."
 msgstr "Speciale tekens of cijfers zijn niet geldig."
 
@@ -1309,7 +1309,7 @@ msgstr "Dit e-mailadres is al geregistreerd."
 msgid "Email you provided is not allowed."
 msgstr "De e-mail die u heeft opgegeven, is niet toegestaan."
 
-#: accounts/forms.py:782 templates_v2/accounts/public_registration.haml:172
+#: accounts/forms.py:782 templates_v2/accounts/public_registration.haml:178
 msgid "Please enter a valid company email address."
 msgstr "Voer een geldig zakelijk e-mailadres in."
 
@@ -1414,7 +1414,7 @@ msgstr "Wachtwoord opnieuw instellen mislukt"
 
 #: accounts/views.py:1023 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
-#: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:273
+#: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:272
 #: templates_v2/accounts/sso_terms_of_service.haml:14
 #: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "Welcome to McKinsey Academy"
@@ -1443,16 +1443,16 @@ msgid "Enter your full name"
 msgstr "Voer uw volledige naam in"
 
 #: accounts/views.py:1208 accounts/views.py:1233 admin/views.py:2006
-#: admin/views.py:2040 admin/views.py:4723
+#: admin/views.py:2040 admin/views.py:4725
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
 #: templates/admin/cohorts/course_details.html:38
 #: templates/admin/cohorts/course_details.html:189
 #: templates/admin/course_meta_content/item_detail.haml:16
-#: templates/admin/course_meta_content/item_list.haml:223
-#: templates/admin/course_meta_content/item_list.haml:252
-#: templates/admin/course_meta_content/item_list.haml:281
-#: templates/admin/course_meta_content/item_list.haml:310
+#: templates/admin/course_meta_content/item_list.haml:216
+#: templates/admin/course_meta_content/item_list.haml:245
+#: templates/admin/course_meta_content/item_list.haml:274
+#: templates/admin/course_meta_content/item_list.haml:303
 #: templates/admin/course_run/form_modal.haml:118
 #: templates/admin/learner_dashboard/main.haml:155
 #: templates/admin/learner_dashboard/preview.haml:34
@@ -1546,7 +1546,7 @@ msgstr "PROJECT"
 msgid "Client Name"
 msgstr "Naam klant"
 
-#: admin/controller.py:799 admin/views.py:4527 admin/views.py:4629
+#: admin/controller.py:799 admin/views.py:4529 admin/views.py:4631
 #: certificates/models.py:87 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "Cursus-ID"
@@ -1564,16 +1564,16 @@ msgstr "Vooruitgang %"
 
 #: admin/controller.py:807
 #: templates/admin/client-admin/course_analytics.haml:71
-#: templates/admin/course_meta_content/item_list.haml:148
-#: templates_v2/courses/course_cohort.haml:100
+#: templates/admin/course_meta_content/item_list.haml:141
+#: templates_v2/courses/course_cohort.haml:96
 #: templates_v2/courses/visualizations/course_engagement.haml:11
 msgid "Engagement"
 msgstr "Inzet"
 
-#: admin/controller.py:808 admin/views.py:4527
+#: admin/controller.py:808 admin/views.py:4529
 #: templates/admin/client-admin/course_analytics.haml:53
-#: templates/admin/course_meta_content/item_list.haml:71
-#: templates_v2/courses/course_cohort.haml:177
+#: templates/admin/course_meta_content/item_list.haml:64
+#: templates_v2/courses/course_cohort.haml:173
 #: templates_v2/courses/visualizations/course_proficiency.haml:9
 msgid "Proficiency"
 msgstr "Vaardigheid"
@@ -1659,13 +1659,13 @@ msgstr "U heeft een ongeldige taaksleutel verzonden!"
 msgid "There are no users in organization!"
 msgstr "Er zijn geen gebruikers in de organisatie!"
 
-#: admin/controller.py:2090 admin/controller.py:2091 admin/views.py:4016
-#: admin/views.py:4017 admin/views.py:4189 admin/views.py:6120
+#: admin/controller.py:2090 admin/controller.py:2091 admin/views.py:4018
+#: admin/views.py:4019 admin/views.py:4191 admin/views.py:6122
 msgid "No company"
 msgstr "Geen bedrijf"
 
-#: admin/controller.py:2108 admin/views.py:4021 admin/views.py:4588
-#: admin/views.py:4615 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2108 admin/views.py:4023 admin/views.py:4590
+#: admin/views.py:4617 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/companies/companies_list.haml:66
 #: templates/admin/mobile_apps/company_app_details.haml:46
 #: templates/admin/participants/participants_list.haml:76
@@ -1673,8 +1673,8 @@ msgstr "Geen bedrijf"
 msgid "Yes"
 msgstr "Ja"
 
-#: admin/controller.py:2110 admin/views.py:4023 admin/views.py:4590
-#: admin/views.py:4594 admin/views.py:4617 admin/views.py:4621
+#: admin/controller.py:2110 admin/views.py:4025 admin/views.py:4592
+#: admin/views.py:4596 admin/views.py:4619 admin/views.py:4623
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
@@ -1797,12 +1797,12 @@ msgstr ""
 msgid "Enter new email address"
 msgstr "Voer nieuw e-mailadres in"
 
-#: admin/forms.py:143 admin/views.py:4759
+#: admin/forms.py:143 admin/views.py:4761
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "OA"
 
-#: admin/forms.py:144 admin/views.py:4760
+#: admin/forms.py:144 admin/views.py:4762
 msgid "OBSERVER"
 msgstr "WAARNEMER"
 
@@ -1810,19 +1810,19 @@ msgstr "WAARNEMER"
 msgid "MODERATOR"
 msgstr "MODERATOR"
 
-#: admin/forms.py:170 admin/views.py:4761
+#: admin/forms.py:170 admin/views.py:4763
 msgid "ADMIN"
 msgstr "BEHEER"
 
-#: admin/forms.py:171 admin/forms.py:184 admin/views.py:4764
+#: admin/forms.py:171 admin/forms.py:184 admin/views.py:4766
 msgid "COURSE OPS"
 msgstr "CURSUSOPTIES"
 
-#: admin/forms.py:172 admin/forms.py:185 admin/views.py:4763
+#: admin/forms.py:172 admin/forms.py:185 admin/views.py:4765
 msgid "INTERNAL ADMIN"
 msgstr "INTERN BEHEER"
 
-#: admin/forms.py:173 admin/forms.py:186 admin/views.py:4762
+#: admin/forms.py:173 admin/forms.py:186 admin/views.py:4764
 msgid "COMPANY ADMIN"
 msgstr "BEDRIJFSBEHEER"
 
@@ -1851,8 +1851,8 @@ msgstr "Cursusversie"
 msgid "Name {}"
 msgstr "Naam {}"
 
-#: admin/forms.py:256 admin/views.py:2154 admin/views.py:4527
-#: admin/views.py:4629 templates/admin/program/list.haml:25
+#: admin/forms.py:256 admin/views.py:2154 admin/views.py:4529
+#: admin/views.py:4631 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
 #: templates/header.haml:109
@@ -1917,7 +1917,7 @@ msgstr ""
 msgid "Article"
 msgstr "Artikel"
 
-#: admin/models.py:604 templates/admin/course_meta_content/item_list.haml:204
+#: admin/models.py:604 templates/admin/course_meta_content/item_list.haml:197
 #: templates/courses/content_page/lesson_menu.haml:12
 #: templates/courses/content_page/lesson_menu.haml:22
 #: templates/courses/content_page/lesson_pager.haml:13
@@ -1937,7 +1937,7 @@ msgstr "Artikel"
 msgid "Lesson"
 msgstr "Les"
 
-#: admin/models.py:605 templates/admin/course_meta_content/item_list.haml:262
+#: admin/models.py:605 templates/admin/course_meta_content/item_list.haml:255
 #: templates/courses/content_page/lesson_pager.haml:17
 #: templates/courses/content_page/lesson_pager.haml:45
 #: templates/courses/content_page/lesson_pager_ld.haml:15
@@ -1957,7 +1957,7 @@ msgstr "Les"
 msgid "Module"
 msgstr "Module"
 
-#: admin/models.py:606 admin/views.py:4527 admin/views.py:4629
+#: admin/models.py:606 admin/views.py:4529 admin/views.py:4631
 #: templates/admin/participants/participants_list.haml:38
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
@@ -2225,7 +2225,7 @@ msgid "Save Program"
 msgstr "Programma opslaan"
 
 #: admin/views.py:2532 admin/views.py:2570 admin/views.py:2603
-#: admin/views.py:4359 admin/views.py:5366
+#: admin/views.py:4361 admin/views.py:5368
 msgid "`data_deletion` flag is not enabled."
 msgstr "`data_deletion` niet ingeschakeld"
 
@@ -2233,13 +2233,13 @@ msgstr "`data_deletion` niet ingeschakeld"
 msgid "The CSV file has to contain 'email' header."
 msgstr "Het CSV-document moet een 'e-mail'-titel hebben."
 
-#: admin/views.py:2694 admin/views.py:6239
+#: admin/views.py:2694 admin/views.py:6241
 #: templates/admin/participants/activation_link_modal.haml:15
 #: templates_v2/layout.haml:257
 msgid "First name"
 msgstr "Voornaam"
 
-#: admin/views.py:2694 admin/views.py:6240
+#: admin/views.py:2694 admin/views.py:6242
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
 #: templates_v2/layout.haml:261
@@ -2269,8 +2269,8 @@ msgstr "Gearchiveerd"
 msgid "Successfully saved courses to {} program"
 msgstr "Cursussen zijn met succes opgeslagen naar {}-programma"
 
-#: admin/views.py:2920 admin/views.py:3321 admin/views.py:3355
-#: admin/views.py:3414
+#: admin/views.py:2920 admin/views.py:3321 admin/views.py:3357
+#: admin/views.py:3416
 msgid "Invalid program_id specified: {}"
 msgstr "Ongeldig(e) program_id opgegeven: {}"
 
@@ -2308,12 +2308,12 @@ msgstr ""
 "Fout bij uploaden van bestand. Probeer het opnieuw en zorg ervoor dat u een "
 "geaccepteerd bestandstype gebruikt."
 
-#: admin/views.py:3581 admin/views.py:3648
+#: admin/views.py:3583 admin/views.py:3650
 msgid "No group projects available for this course"
 msgstr "Er zijn geen groepsprojecten beschikbaar voor deze cursus"
 
-#: admin/views.py:3659 admin/views.py:3660 admin/views.py:3901
-#: admin/views.py:3902 templates/admin/admin_header.haml:37
+#: admin/views.py:3661 admin/views.py:3662 admin/views.py:3903
+#: admin/views.py:3904 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
@@ -2323,74 +2323,74 @@ msgstr "Er zijn geen groepsprojecten beschikbaar voor deze cursus"
 msgid "Group Work"
 msgstr "Groepswerk"
 
-#: admin/views.py:3746
+#: admin/views.py:3748
 msgid "Group wasn't created - please select project"
 msgstr "Groep is niet aangemaakt - selecteer project"
 
-#: admin/views.py:3757
+#: admin/views.py:3759
 msgid "Bad users {} for private project"
 msgstr "Onjuiste gebruikers {} voor privéproject"
 
-#: admin/views.py:3773
+#: admin/views.py:3775
 msgid "Group successfully created"
 msgstr "Groep is aangemaakt"
 
-#: admin/views.py:3777
+#: admin/views.py:3779
 msgid "Group was not created"
 msgstr "Groep is niet gemaakt"
 
-#: admin/views.py:3823
+#: admin/views.py:3825
 msgid "Error creating project"
 msgstr "Fout bij aanmaken van project"
 
-#: admin/views.py:3838
+#: admin/views.py:3840
 msgid "Project already exists"
 msgstr "Project bestaat al"
 
-#: admin/views.py:3843
+#: admin/views.py:3845
 msgid "Project successfully created"
 msgstr "Project is aangemaakt"
 
-#: admin/views.py:3877
+#: admin/views.py:3879
 msgid "Project deleted successfully."
 msgstr "Project is gewist."
 
-#: admin/views.py:3952
+#: admin/views.py:3954
 msgid "Password Reset Email successfully sent."
 msgstr "E-mail voor wachtwoord opnieuw instellen verzonden."
 
-#: admin/views.py:3971
+#: admin/views.py:3973
 msgid "Activation email sent."
 msgstr "E-mail voor activering verzonden."
 
-#: admin/views.py:4062 admin/views.py:4274
+#: admin/views.py:4064 admin/views.py:4276
 msgid "Company name can only contain alphanumeric characters"
 msgstr "Bedrijfsnaam mag alleen alfanumerieke tekens bevatten"
 
-#: admin/views.py:4074 admin/views.py:4079
+#: admin/views.py:4076 admin/views.py:4081
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr "Fout in rechten: U heeft geen rechten om deze functie te verlenen"
 
-#: admin/views.py:4090
+#: admin/views.py:4092
 msgid "User with that email already exists!"
 msgstr "Er bestaat al een gebruiker met dat e-mailadres!"
 
-#: admin/views.py:4119 admin/views.py:4307
+#: admin/views.py:4121 admin/views.py:4309
 msgid "Couldn't create company!"
 msgstr "Bedrijf kan niet worden aangemaakt!"
 
-#: admin/views.py:4132
+#: admin/views.py:4134
 msgid "Couldn't add user to company!"
 msgstr "Gebruiker kan niet worden toegevoegd aan bedrijf!"
 
-#: admin/views.py:4157 templates/admin/participants/participants_list.haml:408
+#: admin/views.py:4159 templates/admin/participants/participants_list.haml:408
 msgid "Successfully added new user!"
 msgstr "Nieuwe gebruiker is toegevoegd!"
 
-#: admin/views.py:4179 admin/views.py:4181 admin/views.py:4193
-#: admin/views.py:4199 admin/views.py:4205 admin/views.py:6113
-#: admin/views.py:6115 admin/views.py:6124 admin/views.py:6130
-#: admin/views.py:6136
+#: admin/views.py:4181 admin/views.py:4183 admin/views.py:4195
+#: admin/views.py:4201 admin/views.py:4207 admin/views.py:6115
+#: admin/views.py:6117 admin/views.py:6126 admin/views.py:6132
+#: admin/views.py:6138
 #: templates/admin/participants/participant_details.haml:297
 #: templates/admin/participants/participant_details.haml:305
 #: templates/admin/participants/participant_details.haml:313
@@ -2398,155 +2398,155 @@ msgstr "Nieuwe gebruiker is toegevoegd!"
 msgid "N/A"
 msgstr "N.v.t."
 
-#: admin/views.py:4294
+#: admin/views.py:4296
 msgid "User with that username or email already exists!"
 msgstr "Er bestaat al een gebruiker met die gebruikersnaam of dat e-mailadres!"
 
-#: admin/views.py:4380
+#: admin/views.py:4382
 msgid "Can't find user in database"
 msgstr "Kan gebruiker niet vinden in database"
 
-#: admin/views.py:4469
+#: admin/views.py:4471
 msgid "There is a problem with selected user role on new course!"
 msgstr ""
 "Er is een probleem met de geselecteerde gebruikersfunctie voor de nieuwe "
 "cursus!"
 
-#: admin/views.py:4527 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4529 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
-#: templates_v2/courses/course_cohort.haml:25
+#: templates_v2/courses/course_cohort.haml:21
 #: templates_v2/courses/course_progress_v2.haml:39
 #: templates_v2/courses/visualizations/course_progress.haml:6
 msgid "Progress"
 msgstr "Vooruitgang"
 
-#: admin/views.py:4527 admin/views.py:4630
+#: admin/views.py:4529 admin/views.py:4632
 msgid "Status"
 msgstr "Status"
 
-#: admin/views.py:4629 templates/admin/client-admin/course_info.haml:79
+#: admin/views.py:4631 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:46
 #: templates/courses/course_progress.haml:66
 #: templates_v2/admin/courses/course_details.haml:92
 msgid "Completed"
 msgstr "Voltooid"
 
-#: admin/views.py:4629 templates_v2/courses/course_progress_v2.haml:200
+#: admin/views.py:4631 templates_v2/courses/course_progress_v2.haml:200
 msgid "Grade"
 msgstr "Cijfer"
 
-#: admin/views.py:4630
+#: admin/views.py:4632
 msgid "End Date"
 msgstr "Einddatum"
 
-#: admin/views.py:4787
+#: admin/views.py:4789
 msgid "Problem generating activity review assignments"
 msgstr "Probleem bij het genereren van opdrachtbeoordeling"
 
-#: admin/views.py:4811
+#: admin/views.py:4813
 msgid "Project review assignments allocated"
 msgstr "Opdrachten projectbeoordeling toegewezen"
 
-#: admin/views.py:4819
+#: admin/views.py:4821
 msgid "Not enough groups to meet review criteria"
 msgstr "Onvoldoende groepen voldoen aan de beoordelingscriteria"
 
-#: admin/views.py:5054
+#: admin/views.py:5056
 msgid "Successfully added new email template!"
 msgstr "Nieuwe e-mailsjabloon is toegevoegd!"
 
-#: admin/views.py:5058
+#: admin/views.py:5060
 msgid "Missing fields in email template!"
 msgstr "Ontbrekende velden in e-mailsjabloon!"
 
-#: admin/views.py:5069
+#: admin/views.py:5071
 msgid "Successfully got email template!"
 msgstr "E-mailsjabloon is opgehaald!"
 
-#: admin/views.py:5073 admin/views.py:5087 admin/views.py:5112
+#: admin/views.py:5075 admin/views.py:5089 admin/views.py:5114
 msgid "Can't find email template key!"
 msgstr "Kan sleutel voor e-mailsjabloon niet vinden!"
 
-#: admin/views.py:5075 admin/views.py:5089 admin/views.py:5114
+#: admin/views.py:5077 admin/views.py:5091 admin/views.py:5116
 msgid "Missing email template key!"
 msgstr "Ontbrekende sleutel voor e-mailsjabloon!"
 
-#: admin/views.py:5085
+#: admin/views.py:5087
 msgid "Successfully deleted email template!"
 msgstr "E-mailsjabloon is verwijderd!"
 
-#: admin/views.py:5108
+#: admin/views.py:5110
 msgid "Successfully updated email template!"
 msgstr "E-mailsjabloon is bijgewerkt!"
 
-#: admin/views.py:5245 admin/views.py:5899
+#: admin/views.py:5247 admin/views.py:5901
 msgid "No Company Display name!"
 msgstr "Geen bedrijfsweergavenaam."
 
-#: admin/views.py:5464
+#: admin/views.py:5466
 msgid "App name only contains alphanumeric characters"
 msgstr "App-naam bevat alleen alfanumerieke tekens"
 
-#: admin/views.py:5582
+#: admin/views.py:5584
 msgid "Learner dashboard not found"
 msgstr "Dashboard leerling niet gevonden"
 
-#: admin/views.py:5916
+#: admin/views.py:5918
 msgid "Company name successfully changed!"
 msgstr "Bedrijfsnaam is gewijzigd!"
 
-#: admin/views.py:5961
+#: admin/views.py:5963
 msgid "Tag with this name already exist's!"
 msgstr "Tag met deze naam bestaat al!"
 
-#: admin/views.py:5972
+#: admin/views.py:5974
 msgid "Tag created!"
 msgstr "Tag aangemaakt!"
 
-#: admin/views.py:5974
+#: admin/views.py:5976
 msgid "You need to select tag's name!"
 msgstr "U moet de naam van de tag selecteren!"
 
-#: admin/views.py:6026
+#: admin/views.py:6028
 msgid "Tag added to Course!"
 msgstr "Tag toegevoegd aan cursus!"
 
-#: admin/views.py:6028 admin/views.py:6051
+#: admin/views.py:6030 admin/views.py:6053
 msgid "You need to select tag!"
 msgstr "U moet de tag selecteren!"
 
-#: admin/views.py:6049
+#: admin/views.py:6051
 msgid "Tag removed from Course!"
 msgstr "Tag uit cursus verwijderd!"
 
-#: admin/views.py:6241 templates/admin/course_run/view.haml:65
+#: admin/views.py:6243 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "Bedrijfsnaam"
 
-#: admin/views.py:6242 templates/admin/course_run/view.haml:66
-#: templates_v2/accounts/public_registration.haml:66
+#: admin/views.py:6244 templates/admin/course_run/view.haml:66
+#: templates_v2/accounts/public_registration.haml:70
 msgid "Company email"
 msgstr "E-mail bedrijf"
 
-#: admin/views.py:6243 templates/admin/course_run/view.haml:67
-#: templates_v2/accounts/public_registration.haml:73
+#: admin/views.py:6245 templates/admin/course_run/view.haml:67
+#: templates_v2/accounts/public_registration.haml:77
 msgid "Current role"
 msgstr "Huidige functie"
 
-#: admin/views.py:6244 templates/admin/course_run/view.haml:68
+#: admin/views.py:6246 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "Nieuwe gebruiker"
 
-#: admin/views.py:6245
+#: admin/views.py:6247
 msgid "McK user"
 msgstr "McK-gebruiker"
 
-#: admin/views.py:6246 templates/admin/course_run/view.haml:70
+#: admin/views.py:6248 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "Ingeschreven"
 
-#: admin/views.py:6247 templates/admin/course_run/view.haml:71
+#: admin/views.py:6249 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "Actief"
@@ -2649,15 +2649,15 @@ msgstr "{date_field}_{component_value}"
 msgid "Missing required field '{value}'"
 msgstr "Vereist veld ontbreekt ‘{value}’"
 
-#: api_client/user_api.py:749
+#: api_client/user_api.py:748
 msgid "User account not activated"
 msgstr "Gebruikersaccount niet geactiveerd"
 
-#: api_client/user_api.py:750 api_client/user_api.py:751
+#: api_client/user_api.py:749 api_client/user_api.py:750
 msgid "Username or password invalid"
 msgstr "Gebruikersnaam of wachtwoord ongeldig"
 
-#: api_client/user_api.py:754
+#: api_client/user_api.py:753
 msgid "Username or email already registered"
 msgstr "Gebruikersnaam of e-mail reeds geregistreerd"
 
@@ -2700,59 +2700,59 @@ msgstr "Activum"
 msgid "Assessment"
 msgstr "Beoordeling"
 
-#: courses/user_courses.py:80 courses/user_courses.py:86
+#: courses/user_courses.py:84 courses/user_courses.py:90
 #, python-brace-format
 msgid "Access denied to course '{course_id}' for user {user_id}"
 msgstr "Toegang tot cursus ‘{course_id}’ geweigerd voor gebruiker {user_id}"
 
-#: courses/user_courses.py:133 courses/user_courses.py:139
+#: courses/user_courses.py:137 courses/user_courses.py:143
 #, python-brace-format
 msgid "Access denied to user {admin_user_id} for data belonging to {user_id}"
 msgstr ""
 "Toegang aan gebruiker {admin_user_id} geweigerd voor gegevens die toebehoren "
 "aan {user_id}"
 
-#: courses/views.py:571
+#: courses/views.py:579
 msgid "TOTAL"
 msgstr "TOTAAL"
 
-#: courses/views.py:845
+#: courses/views.py:853
 #, python-brace-format
 msgid "This lesson does not start until {start_upon}"
 msgstr "Deze les start niet eerder dan {start_upon}"
 
-#: courses/views.py:848
+#: courses/views.py:856
 #, python-brace-format
 msgid "This {custom_lesson_label} does not start until {start_upon}"
 msgstr "Deze {custom_lesson_label} start niet eerder dan {start_upon}"
 
-#: courses/views.py:1038 courses/views.py:1071 courses/views.py:1105
+#: courses/views.py:1046 courses/views.py:1079 courses/views.py:1113
 msgid "Message not sent."
 msgstr "Bericht niet verzonden."
 
-#: courses/views.py:1040 courses/views.py:1072 courses/views.py:1106
-#: courses/views.py:1147
+#: courses/views.py:1048 courses/views.py:1080 courses/views.py:1114
+#: courses/views.py:1155
 msgid "Message successfully sent."
 msgstr "Bericht is verzonden."
 
-#: courses/views.py:1059 courses/views.py:1087
+#: courses/views.py:1067 courses/views.py:1095
 #, python-brace-format
 msgid "Group Project Message - {course_name}"
 msgstr "Bericht groepsproject - {course_name}"
 
-#: courses/views.py:1109
+#: courses/views.py:1117
 msgid "Message not sent. Email is not valid"
 msgstr "Bericht niet verzonden. E-mail is niet geldig"
 
-#: courses/views.py:1124
+#: courses/views.py:1132
 msgid "Submission not found."
 msgstr "Indiening niet gevonden."
 
-#: courses/views.py:1130
+#: courses/views.py:1138
 msgid "We've received your submission!"
 msgstr "We hebben uw indiening ontvangen!"
 
-#: courses/views.py:1131
+#: courses/views.py:1139
 #, python-brace-format
 msgid ""
 "Thank you for your group work submission. We received {file_name} uploaded "
@@ -2763,27 +2763,27 @@ msgstr ""
 "door {user_full_name} op {submission_dt}, ontvangen. U kunt dit bestand op "
 "elk gewenst moment vóór de deadline van het groepswerk vervangen."
 
-#: courses/views.py:1143
+#: courses/views.py:1151
 msgid "There was a problem; message not sent."
 msgstr "Er is een probleem opgetreden; bericht niet verzonden."
 
-#: courses/views.py:1161
+#: courses/views.py:1169
 msgid "Created At"
 msgstr "Aangemaakt op"
 
-#: courses/views.py:1161
+#: courses/views.py:1169
 msgid "Course Name"
 msgstr "Cursusnaam"
 
-#: courses/views.py:1161
+#: courses/views.py:1169
 msgid "Lesson Name"
 msgstr "Lesnaam"
 
-#: courses/views.py:1161
+#: courses/views.py:1169
 msgid "Module Name"
 msgstr "Modulenaam"
 
-#: courses/views.py:1161
+#: courses/views.py:1169
 msgid "Note"
 msgstr "Opmerking"
 
@@ -3154,7 +3154,7 @@ msgstr ""
 #: templates/accounts/public_registration.haml:78
 #: templates/accounts/sso_terms_of_service.haml:35
 #: templates_v2/accounts/sso_terms_of_service.haml:33
-#: templates_v2/home/landing.haml:42 tests/templates_v2/home/landing.haml:45
+#: templates_v2/home/landing.haml:43 tests/templates_v2/home/landing.haml:45
 msgid "Need Help?"
 msgstr "Hulp nodig?"
 
@@ -3230,11 +3230,11 @@ msgid "Username or Email:"
 msgstr "Gebruikersnaam of wachtwoord:"
 
 #: templates/accounts/login.haml:43 templates_v2/accounts/activate.haml:42
-#: templates_v2/home/landing.haml:31 tests/templates_v2/home/landing.haml:34
+#: templates_v2/home/landing.haml:32 tests/templates_v2/home/landing.haml:34
 msgid "Password"
 msgstr "Wachtwoord"
 
-#: templates/accounts/login.haml:48 templates_v2/home/landing.haml:39
+#: templates/accounts/login.haml:48 templates_v2/home/landing.haml:40
 #: tests/templates_v2/home/landing.haml:42
 msgid "Forgot password?"
 msgstr "Wachtwoord vergeten?"
@@ -3249,62 +3249,62 @@ msgstr ""
 msgid "Trouble logging in? Contact us."
 msgstr "Problemen met inloggen? Neem contact met ons op."
 
-#: templates/accounts/login.haml:68 templates_v2/home/landing.haml:59
+#: templates/accounts/login.haml:68 templates_v2/home/landing.haml:60
 #: tests/templates_v2/home/landing.haml:62
 msgid "Check your email inbox"
 msgstr "Controleer uw inbox"
 
-#: templates/accounts/login.haml:75 templates_v2/home/landing.haml:68
+#: templates/accounts/login.haml:75 templates_v2/home/landing.haml:69
 #: tests/templates_v2/home/landing.haml:71
 msgid "If you don't see the email in your inbox, check your spam folder or"
 msgstr "Controleer uw spammap als de e-mail niet in uw inbox staat of"
 
-#: templates/accounts/login.haml:77 templates_v2/home/landing.haml:70
+#: templates/accounts/login.haml:77 templates_v2/home/landing.haml:71
 #: tests/templates_v2/home/landing.haml:73
 msgid "resend email"
 msgstr "e-mail opnieuw verzenden"
 
-#: templates/accounts/login.haml:79 templates_v2/home/landing.haml:72
+#: templates/accounts/login.haml:79 templates_v2/home/landing.haml:73
 #: tests/templates_v2/home/landing.haml:75
 msgid " with the link."
 msgstr "met de link."
 
-#: templates/accounts/login.haml:82 templates_v2/home/landing.haml:74
+#: templates/accounts/login.haml:82 templates_v2/home/landing.haml:75
 #: tests/templates_v2/home/landing.haml:77
 msgid "Return to Login"
 msgstr "Ga terug naar Login"
 
-#: templates/accounts/login.haml:88 templates_v2/home/landing.haml:81
+#: templates/accounts/login.haml:88 templates_v2/home/landing.haml:82
 #: tests/templates_v2/home/landing.haml:84
 msgid "You've been locked out!"
 msgstr "U heeft geen toegang!"
 
-#: templates/accounts/login.haml:91 templates_v2/home/landing.haml:87
+#: templates/accounts/login.haml:91 templates_v2/home/landing.haml:88
 #: tests/templates_v2/home/landing.haml:90
 msgid "Your account is locked for"
 msgstr "Uw account is vergrendeld voor"
 
-#: templates/accounts/login.haml:93 templates_v2/home/landing.haml:89
+#: templates/accounts/login.haml:93 templates_v2/home/landing.haml:90
 #: tests/templates_v2/home/landing.haml:92
 msgid "15 minutes "
 msgstr "15 minuten"
 
-#: templates/accounts/login.haml:94 templates_v2/home/landing.haml:90
+#: templates/accounts/login.haml:94 templates_v2/home/landing.haml:91
 #: tests/templates_v2/home/landing.haml:93
 msgid "since your 5"
 msgstr "sinds uw vijf"
 
-#: templates/accounts/login.haml:96 templates_v2/home/landing.haml:92
+#: templates/accounts/login.haml:96 templates_v2/home/landing.haml:93
 #: tests/templates_v2/home/landing.haml:95
 msgid "th"
 msgstr "de"
 
-#: templates/accounts/login.haml:97 templates_v2/home/landing.haml:93
+#: templates/accounts/login.haml:97 templates_v2/home/landing.haml:94
 #: tests/templates_v2/home/landing.haml:96
 msgid " attempt."
 msgstr "poging."
 
-#: templates/accounts/login.haml:100 templates_v2/home/landing.haml:96
+#: templates/accounts/login.haml:100 templates_v2/home/landing.haml:97
 #: tests/templates_v2/home/landing.haml:99
 msgid ""
 "Your account has been disabled for security reasons. To access your account,"
@@ -3312,17 +3312,17 @@ msgstr ""
 "Uw account is vanwege veiligheidsredenen uitgeschakeld. Om toegang te "
 "krijgen tot uw account,"
 
-#: templates/accounts/login.haml:102 templates_v2/home/landing.haml:98
+#: templates/accounts/login.haml:102 templates_v2/home/landing.haml:99
 #: tests/templates_v2/home/landing.haml:101
 msgid "reset your password"
 msgstr "wachtwoord opnieuw instellen"
 
-#: templates/accounts/login.haml:104 templates_v2/home/landing.haml:100
+#: templates/accounts/login.haml:104 templates_v2/home/landing.haml:101
 #: tests/templates_v2/home/landing.haml:103
 msgid "or try to login again in 15 minutes."
 msgstr "of probeer het over 15 minuten opnieuw."
 
-#: templates/accounts/login.haml:106 templates_v2/home/landing.haml:102
+#: templates/accounts/login.haml:106 templates_v2/home/landing.haml:103
 #: templates_v2/registration/password_reset_confirm.haml:14
 #: templates_v2/registration/password_reset_confirm.haml:43
 #: templates_v2/registration/password_reset_form.haml:8
@@ -3380,7 +3380,7 @@ msgstr ""
 
 #: templates/accounts/public_registration.haml:69
 #: templates_v2/accounts/activate.haml:59
-#: templates_v2/accounts/public_registration.haml:85
+#: templates_v2/accounts/public_registration.haml:90
 msgid "Register"
 msgstr "Registreer"
 
@@ -3542,7 +3542,7 @@ msgid "Course Content"
 msgstr "Cursusinhoud"
 
 #: templates/admin/admin_header.haml:47
-#: templates/admin/course_meta_content/item_list.haml:132
+#: templates/admin/course_meta_content/item_list.haml:125
 msgid "Certificates"
 msgstr "Certificaten"
 
@@ -3646,8 +3646,8 @@ msgstr "Gemiddeld cijfer op basis van huidig cijfer van deelnemers."
 
 #: templates/admin/client-admin/course_analytics.haml:62
 #: templates/admin/client-admin/course_analytics.haml:79
-#: templates/courses/course_cohort.haml:47
-#: templates/courses/course_cohort.haml:117
+#: templates/courses/course_cohort.haml:33
+#: templates/courses/course_cohort.haml:103
 #: templates/courses/visualizations/course_engagement.haml:15
 #: templates/courses/visualizations/course_proficiency.haml:16
 #: templates/courses/visualizations/course_progress.haml:16
@@ -3697,10 +3697,10 @@ msgstr "Kleuren opnieuw instellen"
 #: templates/admin/companies/company_details.haml:101
 #: templates/admin/companies/company_details.haml:113
 #: templates/admin/course_meta_content/item_detail.haml:18
-#: templates/admin/course_meta_content/item_list.haml:220
-#: templates/admin/course_meta_content/item_list.haml:249
-#: templates/admin/course_meta_content/item_list.haml:278
-#: templates/admin/course_meta_content/item_list.haml:307
+#: templates/admin/course_meta_content/item_list.haml:213
+#: templates/admin/course_meta_content/item_list.haml:242
+#: templates/admin/course_meta_content/item_list.haml:271
+#: templates/admin/course_meta_content/item_list.haml:300
 #: templates/admin/courses/course_details.haml:161
 #: templates/admin/courses/course_details.haml:233
 #: templates/admin/mobile_apps/company_app_details.haml:67
@@ -3733,7 +3733,7 @@ msgstr "Analyses"
 
 #: templates/admin/client-admin/course_header.haml:30
 #: templates/admin/client-admin/course_header.haml:33
-#: templates/admin/course_meta_content/item_list.haml:104
+#: templates/admin/course_meta_content/item_list.haml:97
 #: templates/admin/learner_dashboard/header.haml:20
 msgid "Branding"
 msgstr "Aankleding"
@@ -4486,10 +4486,10 @@ msgid "TYPE"
 msgstr "TYPE"
 
 #: templates/admin/course_meta_content/item_list.haml:30
-#: templates/admin/course_meta_content/item_list.haml:217
-#: templates/admin/course_meta_content/item_list.haml:246
-#: templates/admin/course_meta_content/item_list.haml:275
-#: templates/admin/course_meta_content/item_list.haml:304
+#: templates/admin/course_meta_content/item_list.haml:210
+#: templates/admin/course_meta_content/item_list.haml:239
+#: templates/admin/course_meta_content/item_list.haml:268
+#: templates/admin/course_meta_content/item_list.haml:297
 #: templates/admin/course_run/list.haml:28
 #: templates/admin/course_run/view.haml:17
 #: templates/admin/learner_dashboard/branding.haml:65
@@ -4516,7 +4516,7 @@ msgid "This is the course feature list."
 msgstr "Dit is de cursuskenmerkenlijst."
 
 #: templates/admin/course_meta_content/item_list.haml:48
-#: templates/courses/course_cohort.haml:242
+#: templates/courses/course_cohort.haml:228
 msgid "Discussions"
 msgstr "Discussies"
 
@@ -4535,11 +4535,7 @@ msgstr ""
 "Hiermee wordt ook het gedeelte Inzet van het leiderbord (leaderboard) "
 "uitgeschakeld, ook al is de markering ‘Inzet’ ingeschakeld."
 
-#: templates/admin/course_meta_content/item_list.haml:63
-msgid "Cohort Map"
-msgstr "Cohortkaart"
-
-#: templates/admin/course_meta_content/item_list.haml:72
+#: templates/admin/course_meta_content/item_list.haml:65
 msgid ""
 "Note: If you disable 'Proficiency', it will hide proficiency section from "
 "course landing, progress page and from leaderboard on cohort page."
@@ -4548,11 +4544,11 @@ msgstr ""
 "vaardigheid op de cursusopeningspagina en de voortgangspagina alsmede op het "
 "leiderbord op de cohortpagina verborgen."
 
-#: templates/admin/course_meta_content/item_list.haml:80
+#: templates/admin/course_meta_content/item_list.haml:73
 msgid "Progress Widget"
 msgstr "Voortgangswidget"
 
-#: templates/admin/course_meta_content/item_list.haml:81
+#: templates/admin/course_meta_content/item_list.haml:74
 msgid ""
 "Note: If you disable 'Progress Widget', it will hide progress section from "
 "course landing page."
@@ -4560,11 +4556,11 @@ msgstr ""
 "Opmerking: als u 'Voortgangswidget' uitschakelt, wordt het gedeelte met de "
 "voortgang op de cursusopeningspagina verborgen."
 
-#: templates/admin/course_meta_content/item_list.haml:89
+#: templates/admin/course_meta_content/item_list.haml:82
 msgid "Progress Page"
 msgstr "Voortgangspagina"
 
-#: templates/admin/course_meta_content/item_list.haml:90
+#: templates/admin/course_meta_content/item_list.haml:83
 msgid ""
 "Note: If you disable 'Progress Page', it will hide progress page icon from "
 "secondary navigation."
@@ -4572,18 +4568,18 @@ msgstr ""
 "Opmerking: als u ‘Voortgangspagina’ uitschakelt, wordt het pictogram van de "
 "voortgangspagina in de secundaire navigatie verborgen."
 
-#: templates/admin/course_meta_content/item_list.haml:97
+#: templates/admin/course_meta_content/item_list.haml:90
 #: templates/courses/content_page/course_tabs.haml:45
 #: templates_v2/courses/course_navigation.haml:57
 msgid "Notifications"
 msgstr "Meldingen"
 
-#: templates/admin/course_meta_content/item_list.haml:111
+#: templates/admin/course_meta_content/item_list.haml:104
 #: templates/courses/content_page/course_tabs.haml:5
 msgid "Learner Dashboard"
 msgstr "Dashboard leerling"
 
-#: templates/admin/course_meta_content/item_list.haml:118
+#: templates/admin/course_meta_content/item_list.haml:111
 #: templates/courses/content_page/course_tabs.haml:42
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_learner_dashboard_header.haml:33
@@ -4595,16 +4591,16 @@ msgstr "Dashboard leerling"
 msgid "Resources"
 msgstr "Resources"
 
-#: templates/admin/course_meta_content/item_list.haml:125
+#: templates/admin/course_meta_content/item_list.haml:118
 #: templates_v2/courses/visualizations/course_engagement.haml:17
 msgid "Cohort Average"
 msgstr "Cohortgemiddelde"
 
-#: templates/admin/course_meta_content/item_list.haml:141
+#: templates/admin/course_meta_content/item_list.haml:134
 msgid "Mobile Available"
 msgstr "Mobiel beschikbaar"
 
-#: templates/admin/course_meta_content/item_list.haml:149
+#: templates/admin/course_meta_content/item_list.haml:142
 msgid ""
 "Note: If you disable 'Engagement', it will hide Engagement section from "
 "leaderboard."
@@ -4612,12 +4608,12 @@ msgstr ""
 "Opmerking: als u ‘Inzet’ uitschakelt, wordt het gedeelte Inzet op het "
 "leiderbord verborgen."
 
-#: templates/admin/course_meta_content/item_list.haml:156
+#: templates/admin/course_meta_content/item_list.haml:149
 #: templates_v2/courses/content_page/course_discover.haml:6
 msgid "Discover"
 msgstr "Ontdekken"
 
-#: templates/admin/course_meta_content/item_list.haml:157
+#: templates/admin/course_meta_content/item_list.haml:150
 msgid ""
 "Note: If you disable the 'Discover', it will hide Discover section from "
 "course main page."
@@ -4625,20 +4621,20 @@ msgstr ""
 "Opmerking: als u ‘Ontdekken’ uitschakelt, wordt het gedeelte Ontdekken op de "
 "cursushoofdpagina verborgen."
 
-#: templates/admin/course_meta_content/item_list.haml:165
+#: templates/admin/course_meta_content/item_list.haml:158
 msgid "Lesson Label"
 msgstr "Lesnaam"
 
-#: templates/admin/course_meta_content/item_list.haml:166
+#: templates/admin/course_meta_content/item_list.haml:159
 msgid "Note: If you disable the 'Lesson Label', it will hide Lesson Label."
 msgstr ""
 "Opmerking: als u ‘Lesnaam’ uitschakelt, wordt het gedeelte Lesnaam verborgen."
 
-#: templates/admin/course_meta_content/item_list.haml:173
+#: templates/admin/course_meta_content/item_list.haml:166
 msgid "Progress Indication"
 msgstr "Voortgangsindicatie"
 
-#: templates/admin/course_meta_content/item_list.haml:174
+#: templates/admin/course_meta_content/item_list.haml:167
 msgid ""
 "Note: If you disable the 'Progress Indication', it will hide Progress Level "
 "on the lesson and module levels."
@@ -4646,13 +4642,13 @@ msgstr ""
 "Opmerking: als u 'Voortgangsindicatie' uitschakelt, wordt het gedeelte met "
 "de voortgang op de cursusopeningspagina verborgen."
 
-#: templates/admin/course_meta_content/item_list.haml:181
-#: templates_v2/courses/course_cohort.haml:20
+#: templates/admin/course_meta_content/item_list.haml:174
+#: templates_v2/courses/course_cohort.haml:16
 #: templates_v2/courses/course_navigation.haml:52
 msgid "Leaderboard"
 msgstr "Leiderbord"
 
-#: templates/admin/course_meta_content/item_list.haml:182
+#: templates/admin/course_meta_content/item_list.haml:175
 msgid ""
 "Note: If you disable the 'Leaderboard', it will hide leaderboard on the "
 "cohort page."
@@ -4660,11 +4656,11 @@ msgstr ""
 "Opmerking: als u ‘Leiderbord’ uitschakelt, wordt het gedeelte Leiderbord op "
 "de cohortpagina verborgen."
 
-#: templates/admin/course_meta_content/item_list.haml:190
+#: templates/admin/course_meta_content/item_list.haml:183
 msgid "Enhanced Caching"
 msgstr "Verbeterde Caching"
 
-#: templates/admin/course_meta_content/item_list.haml:191
+#: templates/admin/course_meta_content/item_list.haml:184
 msgid ""
 "Note: Enabling enhanced caching will improve the performance but changes to "
 "course content would not reflect until the cache refreshes (cache refresh "
@@ -4674,21 +4670,21 @@ msgstr ""
 "verbeterd, maar veranderingen van de cursusinhoud wordt niet getoond voor "
 "het vernieuwen van de cache (cache wordt iedere 24 uur vernieuwd)"
 
-#: templates/admin/course_meta_content/item_list.haml:214
-#: templates/admin/course_meta_content/item_list.haml:243
-#: templates/admin/course_meta_content/item_list.haml:272
-#: templates/admin/course_meta_content/item_list.haml:301
+#: templates/admin/course_meta_content/item_list.haml:207
+#: templates/admin/course_meta_content/item_list.haml:236
+#: templates/admin/course_meta_content/item_list.haml:265
+#: templates/admin/course_meta_content/item_list.haml:294
 msgid "Add"
 msgstr "Toevoegen"
 
-#: templates/admin/course_meta_content/item_list.haml:233
+#: templates/admin/course_meta_content/item_list.haml:226
 #: templates/courses/content_page/course_tabs.haml:12
 #: templates_v2/courses/content_page/course_menu.haml:15
 #: templates_v2/courses/content_page/courses_menu_list.haml:30
 msgid "Lessons"
 msgstr "Lessen"
 
-#: templates/admin/course_meta_content/item_list.haml:291
+#: templates/admin/course_meta_content/item_list.haml:284
 #: templates_v2/courses/course_progress_v2.haml:45
 msgid "Modules"
 msgstr "Modules:"
@@ -6555,7 +6551,6 @@ msgstr "Discussie"
 
 #: templates/courses/content_page/course_tabs.haml:26
 #: templates/courses/course_cohort.haml:14
-#: templates/courses/course_cohort.haml:25
 msgid "Cohort"
 msgstr "Cohort"
 
@@ -6680,40 +6675,18 @@ msgstr ""
 msgid "This video walks you through the learner experience:"
 msgstr "In deze video wordt u door de leerlingervaring geleid:"
 
-#: templates/courses/course_cohort.haml:31
-msgid "of participants:"
-msgstr "van deelnemers:"
-
-#: templates/courses/course_cohort.haml:32
-#: templates_v2/courses/course_cohort.haml:17
-msgid "in your cohort"
-msgstr "in uw cohort"
-
-#: templates/courses/course_cohort.haml:33
-#: templates_v2/courses/course_cohort.haml:17
-msgid "group work team members"
-msgstr "teamleden groepswerk"
-
-#: templates/courses/course_cohort.haml:35
-msgid "Hide team profiles"
-msgstr "Teamprofielen verbergen"
-
-#: templates/courses/course_cohort.haml:37
-msgid "Show team profiles"
-msgstr "Teamprofielen tonen"
-
-#: templates/courses/course_cohort.haml:40
+#: templates/courses/course_cohort.haml:26
 msgid "Leaderboards"
 msgstr "Leaderboards"
 
-#: templates/courses/course_cohort.haml:46
+#: templates/courses/course_cohort.haml:32
 #: templates/courses/visualizations/course_proficiency.haml:8
 #: templates_v2/faq.haml:164
 msgid "Proficiency:"
 msgstr "Vaardigheid:"
 
-#: templates/courses/course_cohort.haml:49
-#: templates_v2/courses/course_cohort.haml:181
+#: templates/courses/course_cohort.haml:35
+#: templates_v2/courses/course_cohort.haml:177
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the proficiency leaderboard "
@@ -6721,7 +6694,7 @@ msgstr ""
 " Als %(role_user)s gebruiker verschijnt u niet in het leiderbord voor "
 "vaardigheid "
 
-#: templates/courses/course_cohort.haml:51
+#: templates/courses/course_cohort.haml:37
 #, python-format
 msgid ""
 " your proficiency position: <br><span>%(position)s</span> with <span>"
@@ -6730,56 +6703,56 @@ msgstr ""
 " uw positie voor vaardigheid: <br><span>%(position)s</span> met <span>"
 "%(position_value)s</span> "
 
-#: templates/courses/course_cohort.haml:53
+#: templates/courses/course_cohort.haml:39
 msgid "your proficiency position <br> will be displayed here"
 msgstr "uw positie voor vaardigheid <br> wordt hier weergegeven"
 
-#: templates/courses/course_cohort.haml:67
-#: templates/courses/course_cohort.haml:87
-#: templates/courses/course_cohort.haml:107
-#: templates/courses/course_cohort.haml:137
-#: templates/courses/course_cohort.haml:154
-#: templates/courses/course_cohort.haml:171
-#: templates/courses/course_cohort.haml:200
-#: templates/courses/course_cohort.haml:217
-#: templates/courses/course_cohort.haml:234 templates_v2/header.haml:66
+#: templates/courses/course_cohort.haml:53
+#: templates/courses/course_cohort.haml:73
+#: templates/courses/course_cohort.haml:93
+#: templates/courses/course_cohort.haml:123
+#: templates/courses/course_cohort.haml:140
+#: templates/courses/course_cohort.haml:157
+#: templates/courses/course_cohort.haml:186
+#: templates/courses/course_cohort.haml:203
+#: templates/courses/course_cohort.haml:220 templates_v2/header.haml:66
 msgid "username"
 msgstr "gebruikersnaam"
 
-#: templates/courses/course_cohort.haml:69
-#: templates/courses/course_cohort.haml:89
-#: templates/courses/course_cohort.haml:109
-#: templates/courses/course_cohort.haml:138
-#: templates/courses/course_cohort.haml:155
-#: templates/courses/course_cohort.haml:172
-#: templates/courses/course_cohort.haml:201
-#: templates/courses/course_cohort.haml:218
-#: templates/courses/course_cohort.haml:235
+#: templates/courses/course_cohort.haml:55
+#: templates/courses/course_cohort.haml:75
+#: templates/courses/course_cohort.haml:95
+#: templates/courses/course_cohort.haml:124
+#: templates/courses/course_cohort.haml:141
+#: templates/courses/course_cohort.haml:158
+#: templates/courses/course_cohort.haml:187
+#: templates/courses/course_cohort.haml:204
+#: templates/courses/course_cohort.haml:221
 msgid "title"
 msgstr "titel"
 
-#: templates/courses/course_cohort.haml:72
-#: templates/courses/course_cohort.haml:92
-#: templates/courses/course_cohort.haml:112
+#: templates/courses/course_cohort.haml:58
+#: templates/courses/course_cohort.haml:78
+#: templates/courses/course_cohort.haml:98
 msgid "100"
 msgstr "100"
 
-#: templates/courses/course_cohort.haml:116
+#: templates/courses/course_cohort.haml:102
 #: templates/courses/course_progress.haml:84
 #: templates/courses/visualizations/course_progress.haml:8
 #: templates_v2/faq.haml:167
 msgid "Progress:"
 msgstr "Vooruitgang:"
 
-#: templates/courses/course_cohort.haml:119
-#: templates_v2/courses/course_cohort.haml:29
+#: templates/courses/course_cohort.haml:105
+#: templates_v2/courses/course_cohort.haml:25
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr ""
 " Als %(role_user)s gebruiker verschijnt u niet in het leiderbord voor "
 "voortgang "
 
-#: templates/courses/course_cohort.haml:121
+#: templates/courses/course_cohort.haml:107
 #, python-format
 msgid ""
 " your progress position: <br><span>%(position)s</span> with <span>"
@@ -6788,35 +6761,35 @@ msgstr ""
 " uw positie voor voortgang: <br><span>%(position)s</span> met <span>"
 "%(progress_value)s%%</span> "
 
-#: templates/courses/course_cohort.haml:123
+#: templates/courses/course_cohort.haml:109
 msgid "your progress position <br> will be displayed here"
 msgstr "uw positie voor voortgang <br> wordt hier weergegeven"
 
-#: templates/courses/course_cohort.haml:174
+#: templates/courses/course_cohort.haml:160
 #, python-format
 msgid "100%%"
 msgstr "100%%"
 
-#: templates/courses/course_cohort.haml:179
+#: templates/courses/course_cohort.haml:165
 #: templates/courses/visualizations/course_engagement.haml:8
 #: templates_v2/faq.haml:170
 msgid "Engagement:"
 msgstr "Inzet:"
 
-#: templates/courses/course_cohort.haml:180
+#: templates/courses/course_cohort.haml:166
 #, python-format
 msgid " cohort average = %(course_avg)s points "
 msgstr " cohortgemiddelde = %(course_avg)s punten "
 
-#: templates/courses/course_cohort.haml:182
-#: templates_v2/courses/course_cohort.haml:104
+#: templates/courses/course_cohort.haml:168
+#: templates_v2/courses/course_cohort.haml:100
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
 msgstr ""
 " Als %(role_user)s gebruiker verschijnt u niet in het leiderbord voor inzet"
 
-#: templates/courses/course_cohort.haml:184
+#: templates/courses/course_cohort.haml:170
 #, python-format
 msgid ""
 "  your engagement position: <br><span>%(position)s</span> with <span>"
@@ -6825,17 +6798,17 @@ msgstr ""
 "  uw positie voor inzet: <br><span>%(position)s</span> met <span>%(points)s "
 "pnt.</span> "
 
-#: templates/courses/course_cohort.haml:186
+#: templates/courses/course_cohort.haml:172
 msgid "your engagement position <br> will be displayed here"
 msgstr "uw positie voor inzet <br> wordt hier weergegeven"
 
-#: templates/courses/course_cohort.haml:203
-#: templates/courses/course_cohort.haml:220
-#: templates/courses/course_cohort.haml:237
+#: templates/courses/course_cohort.haml:189
+#: templates/courses/course_cohort.haml:206
+#: templates/courses/course_cohort.haml:223
 msgid "100 pts."
 msgstr "100 pnt."
 
-#: templates/courses/course_cohort.haml:243
+#: templates/courses/course_cohort.haml:229
 msgid ""
 "Even if we cannot directly shape an outcome, a model’s prediction may be "
 "communicated in a way that alters behavior and indirectly shapes it."
@@ -6844,23 +6817,23 @@ msgstr ""
 "voorspelling van een model worden gecommuniceerd op een manier die het "
 "gedrag verandert en het indirect vormt."
 
-#: templates/courses/course_cohort.haml:247
+#: templates/courses/course_cohort.haml:233
 msgid "gwensisco"
 msgstr "Gwensisco"
 
-#: templates/courses/course_cohort.haml:248
+#: templates/courses/course_cohort.haml:234
 msgid "Media Buyer"
 msgstr "Media-inkoper"
 
-#: templates/courses/course_cohort.haml:251
+#: templates/courses/course_cohort.haml:237
 msgid "Recommendations"
 msgstr "Aanbevelingen"
 
-#: templates/courses/course_cohort.haml:254
+#: templates/courses/course_cohort.haml:240
 msgid "Scientists Without Borders"
 msgstr "Scientists Without Borders"
 
-#: templates/courses/course_cohort.haml:255
+#: templates/courses/course_cohort.haml:241
 msgid ""
 "A worldwide community of changemakers collaborating to accelerate solutions "
 "to urgent development challenges."
@@ -6869,7 +6842,7 @@ msgstr ""
 "oplossingen te vinden voor urgente uitdagingen op het gebied van "
 "ontwikkeling."
 
-#: templates/courses/course_cohort.haml:257
+#: templates/courses/course_cohort.haml:243
 msgid "Suggest a Link"
 msgstr "Een link voorstellen"
 
@@ -7171,7 +7144,7 @@ msgid "not tracked"
 msgstr "niet bijgehouden"
 
 #: templates/courses/course_learner_dashboard_header.haml:24
-#: templates/home/landing.haml:32 templates_v2/home/landing.haml:37
+#: templates/home/landing.haml:32 templates_v2/home/landing.haml:38
 #: tests/templates_v2/home/landing.haml:40
 msgid "Log in"
 msgstr "Inloggen"
@@ -7265,7 +7238,7 @@ msgstr "#{lesson_custom_label} %(current_lesson_index)s:"
 msgid " | Courses | McKinsey Academy"
 msgstr " | Cursussen | McKinsey Academy"
 
-#: templates/courses/course_main.haml:41 templates/layout.haml:254
+#: templates/courses/course_main.haml:41 templates/layout.haml:253
 msgid ""
 "This is the McKinsey Academy Beta and we are happy to have you participate "
 "ahead of the official public launch!"
@@ -7273,7 +7246,7 @@ msgstr ""
 "Dit is de bèta McKinsey Academy en we zijn blij dat u deelneemt vóór de "
 "officiële openbare lancering!"
 
-#: templates/courses/course_main.haml:42 templates/layout.haml:255
+#: templates/courses/course_main.haml:42 templates/layout.haml:254
 msgid ""
 "As a beta user, you will occasionally see pages and features like this one "
 "in early stages of development. Please feel free to explore, and we’ll "
@@ -8839,11 +8812,11 @@ msgstr ""
 "McKinsey Academy helpt organisaties succesvol te zijn door hun "
 "talentvoordeel te bevorderen"
 
-#: templates/layout.haml:238 templates_v2/layout.haml:313
+#: templates/layout.haml:237 templates_v2/layout.haml:313
 msgid "Notice"
 msgstr "Kennisgeving"
 
-#: templates/layout.haml:265
+#: templates/layout.haml:264
 msgid ""
 "We're sorry, McKinsey Academy is not compatible with your browser. Please "
 "update your browser to access course content. We recommend the latest "
@@ -8855,7 +8828,7 @@ msgstr ""
 "ervaring raden we u de meest recente versies van Google Chrome, Mozilla "
 "Firefox en Apple Safari aan."
 
-#: templates/layout.haml:274
+#: templates/layout.haml:273
 msgid ""
 "McKinsey Academy is a dynamic business education platform built to help "
 "organizations thrive by accelerating their talent advantage. This video will "
@@ -8865,7 +8838,7 @@ msgstr ""
 "gebouwd om organisaties te helpen succesvol te zijn door hun talentvoordeel "
 "te bevorderen. Deze video leidt u door onze studentervaring."
 
-#: templates/layout.haml:277
+#: templates/layout.haml:276
 msgid ""
 "\n"
 "              This product walkthrough can always be found in the page "
@@ -8905,7 +8878,7 @@ msgstr ""
 "McKinsey Academy is in het leven geroepen met als doel individuele "
 "prestaties en organisatiedoeltreffendheid drastisch te verbeteren"
 
-#: templates/marketing/about.haml:20 templates_v2/home/landing.haml:50
+#: templates/marketing/about.haml:20 templates_v2/home/landing.haml:51
 msgid "About McKinsey Academy"
 msgstr "Over McKinsey Academy"
 
@@ -12595,7 +12568,7 @@ msgid "Show Password"
 msgstr "Wachtwoord weergeven"
 
 #: templates_v2/accounts/activate.haml:48
-#: templates_v2/accounts/activate.haml:108
+#: templates_v2/accounts/activate.haml:109
 msgid ""
 "Must be at least 8 characters and include upper and lowercase letters - plus "
 "numbers OR special characters."
@@ -12619,37 +12592,37 @@ msgstr "en het "
 msgid "Privacy Policy "
 msgstr "Privacybeleid"
 
-#: templates_v2/accounts/activate.haml:63
-#: templates_v2/accounts/public_registration.haml:89
+#: templates_v2/accounts/activate.haml:64
+#: templates_v2/accounts/public_registration.haml:95
 msgid "Need help?"
 msgstr "Hulp nodig?"
 
-#: templates_v2/accounts/activate.haml:65
-#: templates_v2/accounts/public_registration.haml:91
+#: templates_v2/accounts/activate.haml:66
+#: templates_v2/accounts/public_registration.haml:97
 msgid "Read FAQs"
 msgstr "LEES ONZE FAQ'S"
 
-#: templates_v2/accounts/activate.haml:67
-#: templates_v2/accounts/public_registration.haml:93
-#: templates_v2/home/landing.haml:48
+#: templates_v2/accounts/activate.haml:68
+#: templates_v2/accounts/public_registration.haml:99
+#: templates_v2/home/landing.haml:49
 msgid "Email Support"
-msgstr "E-mailsupport"
+msgstr "E-mail Support"
 
-#: templates_v2/accounts/activate.haml:82
-#: templates_v2/accounts/activate.haml:101
-#: templates_v2/accounts/public_registration.haml:107
-#: templates_v2/accounts/public_registration.haml:127
-#: templates_v2/accounts/public_registration.haml:146
-#: templates_v2/accounts/public_registration.haml:165
-#: templates_v2/accounts/public_registration.haml:185
+#: templates_v2/accounts/activate.haml:83
+#: templates_v2/accounts/activate.haml:102
+#: templates_v2/accounts/public_registration.haml:113
+#: templates_v2/accounts/public_registration.haml:133
+#: templates_v2/accounts/public_registration.haml:152
+#: templates_v2/accounts/public_registration.haml:171
+#: templates_v2/accounts/public_registration.haml:191
 msgid "This field is required."
 msgstr "Voornaam is vereist."
 
-#: templates_v2/accounts/activate.haml:89
+#: templates_v2/accounts/activate.haml:90
 msgid "Please enter a valid username."
 msgstr "Gebruikersnaam/e-mail niet herkend. Probeer het opnieuw."
 
-#: templates_v2/accounts/activate.haml:120
+#: templates_v2/accounts/activate.haml:121
 msgid "You must accept terms of service in order to continue."
 msgstr "U moet de servicevoorwaarden accepteren om verder te kunnen gaan."
 
@@ -12664,15 +12637,15 @@ msgstr "OK"
 msgid "Register for the access to the course"
 msgstr "Meld je aan voor toegang tot de cursus"
 
-#: templates_v2/accounts/public_registration.haml:70
+#: templates_v2/accounts/public_registration.haml:74
 msgid "Note: personal email addresses will not be processed"
 msgstr "Opmerking: persoonlijke e-mailadressen worden niet verwerkt"
 
-#: templates_v2/accounts/public_registration.haml:74
+#: templates_v2/accounts/public_registration.haml:78
 msgid "Please choose one of the following options"
 msgstr "kies een van de volgende opties"
 
-#: templates_v2/accounts/public_registration.haml:153
+#: templates_v2/accounts/public_registration.haml:159
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "Bedrijfsnaam mag alleen alfanumerieke tekens bevatten"
 
@@ -12828,80 +12801,78 @@ msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "Module %(lesson_index)s van %(lesson_count)s"
 
 #: templates_v2/courses/course_cohort.haml:8
-#, fuzzy
-#| msgid "| Cohort | Courses | McKinsey Academy"
 msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| Cohort | Cursussen | McKinsey Academy"
+msgstr "| Leiderbord | Cursussen | McKinsey Academy"
 
-#: templates_v2/courses/course_cohort.haml:26
+#: templates_v2/courses/course_cohort.haml:22
 msgid "Your course completion status:"
 msgstr "Uw status van cursusvoltooiing:"
 
-#: templates_v2/courses/course_cohort.haml:27
-#: templates_v2/courses/course_cohort.haml:179
+#: templates_v2/courses/course_cohort.haml:23
+#: templates_v2/courses/course_cohort.haml:175
 #: templates_v2/courses/visualizations/course_proficiency.haml:13
 #: templates_v2/courses/visualizations/course_progress.haml:11
 msgid "Cohort Average:"
 msgstr "Cohortgemiddelde:"
 
-#: templates_v2/courses/course_cohort.haml:32
+#: templates_v2/courses/course_cohort.haml:28
 msgid "Your progress position"
 msgstr "Uw voortgangspositie"
 
-#: templates_v2/courses/course_cohort.haml:34
+#: templates_v2/courses/course_cohort.haml:30
 msgid "Your progress position will be displayed here"
 msgstr "Uw voortgangspositie wordt hier weergegeven"
 
-#: templates_v2/courses/course_cohort.haml:39
+#: templates_v2/courses/course_cohort.haml:35
 msgid "Top 3 on progress"
 msgstr "Top 3 voortgang"
 
-#: templates_v2/courses/course_cohort.haml:57
-#: templates_v2/courses/course_cohort.haml:76
-#: templates_v2/courses/course_cohort.haml:95
-#: templates_v2/courses/course_cohort.haml:132
-#: templates_v2/courses/course_cohort.haml:152
-#: templates_v2/courses/course_cohort.haml:172
-#: templates_v2/courses/course_cohort.haml:210
-#: templates_v2/courses/course_cohort.haml:230
-#: templates_v2/courses/course_cohort.haml:250
+#: templates_v2/courses/course_cohort.haml:53
+#: templates_v2/courses/course_cohort.haml:72
+#: templates_v2/courses/course_cohort.haml:91
+#: templates_v2/courses/course_cohort.haml:128
+#: templates_v2/courses/course_cohort.haml:148
+#: templates_v2/courses/course_cohort.haml:168
+#: templates_v2/courses/course_cohort.haml:206
+#: templates_v2/courses/course_cohort.haml:226
+#: templates_v2/courses/course_cohort.haml:246
 msgid "User Name"
 msgstr "Gebruikersnaam"
 
-#: templates_v2/courses/course_cohort.haml:101
+#: templates_v2/courses/course_cohort.haml:97
 msgid "Your discussion activity points:"
 msgstr "Uw punten voor discussieactiviteit:"
 
-#: templates_v2/courses/course_cohort.haml:102
+#: templates_v2/courses/course_cohort.haml:98
 #, python-format
 msgid " Cohort Average: %(score)s points"
 msgstr " Cohortgemiddelde:%(score)s punten"
 
-#: templates_v2/courses/course_cohort.haml:107
+#: templates_v2/courses/course_cohort.haml:103
 msgid "Your engagement position"
 msgstr "Uw inzetpositie"
 
-#: templates_v2/courses/course_cohort.haml:109
+#: templates_v2/courses/course_cohort.haml:105
 msgid "Your engagement position will be displayed here"
 msgstr "Uw inzetpositie wordt hier weergegeven"
 
-#: templates_v2/courses/course_cohort.haml:113
+#: templates_v2/courses/course_cohort.haml:109
 msgid "Top 3 on engagement"
 msgstr "Top 3 inzet"
 
-#: templates_v2/courses/course_cohort.haml:178
+#: templates_v2/courses/course_cohort.haml:174
 msgid "Your course knowledge:"
 msgstr "Uw cursuskennis"
 
-#: templates_v2/courses/course_cohort.haml:184
+#: templates_v2/courses/course_cohort.haml:180
 msgid "Your proficiency position"
 msgstr "Uw vaardigheidspositie"
 
-#: templates_v2/courses/course_cohort.haml:186
+#: templates_v2/courses/course_cohort.haml:182
 msgid "Your proficiency position will be displayed here"
 msgstr "Uw vaardigheidspositie wordt hier weergegeven"
 
-#: templates_v2/courses/course_cohort.haml:190
+#: templates_v2/courses/course_cohort.haml:186
 msgid "Top 3 on Proficiency"
 msgstr "Top 3 vaardigheid"
 
@@ -13209,9 +13180,13 @@ msgstr "Om uw e-mailadres te wijzigen, e-mail naar"
 
 #: templates_v2/faq.haml:51
 msgid ""
-"If you've forgotten your password, please try resetting it by clicking \\"
+"If you've forgotten your password, please try resetting it by clicking "
+"'Forgot my password' on the log in screen. If that does not work, please "
+"email"
 msgstr ""
-"Indien u uw wachtwoord vergeten bent, reset deze dan door te klikken op \\"
+"Als u uw wachtwoord vergeten bent, probeer dit dan opnieuw in te stellen "
+"door te klikken op “Mijn wachtwoord vergeten” in het aanmeldscherm. Als dat "
+"niet werkt, stuurt u een e-mail naar"
 
 #: templates_v2/faq.haml:58
 msgid ""
@@ -13375,15 +13350,15 @@ msgstr "dashboard"
 msgid "my courses"
 msgstr "mijn cursussen"
 
-#: templates_v2/home/landing.haml:26
+#: templates_v2/home/landing.haml:27
 msgid "Username or email"
 msgstr "Gebruikersnaam of wachtwoord:"
 
-#: templates_v2/home/landing.haml:33
+#: templates_v2/home/landing.haml:34
 msgid "Show password"
 msgstr "Wachtwoord weergeven"
 
-#: templates_v2/home/landing.haml:46 tests/templates_v2/home/landing.haml:49
+#: templates_v2/home/landing.haml:47 tests/templates_v2/home/landing.haml:49
 msgid "FAQs"
 msgstr "FAQ’s"
 
@@ -13505,7 +13480,7 @@ msgstr "Toonaangevend leiderschap"
 
 #: tests/templates_v2/home/landing.haml:51
 msgid "Email support"
-msgstr "E-mailsupport"
+msgstr "E-mail support"
 
 #: tests/templates_v2/home/landing.haml:53
 msgid "About Mckinsey Academy"
@@ -13546,6 +13521,29 @@ msgstr "Voornaam: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Achternaam: {}"
+
+#~ msgid "Cohort Map"
+#~ msgstr "Cohortkaart"
+
+#~ msgid "of participants:"
+#~ msgstr "van deelnemers:"
+
+#~ msgid "in your cohort"
+#~ msgstr "in uw cohort"
+
+#~ msgid "group work team members"
+#~ msgstr "teamleden groepswerk"
+
+#~ msgid "Hide team profiles"
+#~ msgstr "Teamprofielen verbergen"
+
+#~ msgid "Show team profiles"
+#~ msgstr "Teamprofielen tonen"
+
+#~ msgid ""
+#~ "If you've forgotten your password, please try resetting it by clicking \\"
+#~ msgstr ""
+#~ "Indien u uw wachtwoord vergeten bent, reset deze dan door te klikken op \\"
 
 #~ msgid ""
 #~ "\n"
