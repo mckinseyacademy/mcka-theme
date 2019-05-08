@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-26 15:12+0000\n"
+"POT-Creation-Date: 2019-05-03 10:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -373,16 +373,7 @@ msgstr ""
 msgid "Please select file for upload."
 msgstr "Selecteer een te uploaden bestand."
 
-#: static/js/models/city.js:29
-msgid "Participants:"
-msgstr "Deelnemers:"
-
-#: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:24
-msgid "Email"
-msgstr "E-mail"
-
-#: static/js/router.js:429
+#: static/js/router.js:424
 msgid "Please select at least one course"
 msgstr "Selecteer ten minste één cursus"
 
@@ -641,6 +632,11 @@ msgstr "Geen app-weergavenaam!"
 #: static/js/views/admin/participantsinfo.js:16
 msgid "Name"
 msgstr "Naam"
+
+#: static/js/views/admin/course_details.js:28
+#: static/js/views/admin/participantsinfo.js:24
+msgid "Email"
+msgstr "E-mail"
 
 #: static/js/views/admin/course_details.js:30
 #: static/js/views/admin/course_details_bulk_actions.js:281
@@ -1188,3 +1184,6 @@ msgstr "Wachtwoord verbergen"
 #: static_v2/js/application.js:526 static_v2/js/custom.js:130
 msgid "Show password"
 msgstr "Wachtwoord weergeven"
+
+#~ msgid "Participants:"
+#~ msgstr "Deelnemers:"

@@ -37,7 +37,8 @@ def make_company(org_id, display_name='company_name'):
 
 def make_program(prog_id=1, display_name='Test program', courses=None):
     courses = courses if courses else []
-    program = Program(dictionary={'id': prog_id, 'display_name': display_name})
+    program = Program(dictionary={'id': prog_id, 'display_name': display_name, 'name': 'name',
+                                  'start_date': '2019-01-01', 'end_date': '2019-01-01'})
     program.courses = courses
     return program
 

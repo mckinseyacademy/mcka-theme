@@ -1,0 +1,35 @@
+- load i18n
+- load staticfiles
+%header
+  - if program_id
+    %h1
+      {% trans "Edit Program details" %}
+    %p.description
+      {% trans "Edit Program details using this form" %}
+      %p.hidden{name: "program_id"} #{program_id}
+  - else
+    %h1
+      {% trans "Create a New Program" %}
+    .sub-1
+      {% trans "Add a program" %}
+    %p.description
+      {% trans "Add a program using this form" %}
+
+
+.close-reveal-modal
+  %i.fa.fa-times-circle
+
+%form.admin-form#program-form
+  - csrf_token
+  %fieldset
+    - for field in form
+      .row
+        .small-3.columns= field.label_tag
+        .small-9.columns= field
+        .small-9.columns.error.hidden{:data-name => '#{field.name}',}
+
+  .submit-area
+    %input.button.radius.small{type: "submit", value: "#{submit_label}"}
+
+- block js_snippets
+  %script{src: "{% static 'js/views/admin/program_create_and_update.js' %}"}

@@ -2164,88 +2164,96 @@ def program_list(request):
     )
 
 
-@ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def program_new(request):
-    ''' handles requests for login form and their submission '''
-    error = None
-    if request.method == 'POST':  # If the form has been submitted...
-        form = ProgramForm(request.POST)  # A form bound to the POST data
-        if form.is_valid():  # All validation rules pass
-            try:
-                program = Program.create(request.POST["name"], request.POST)
-                # Redirect after POST
-                return HttpResponseRedirect('/admin/programs/{}'.format(program.id))
-
-            except ApiError as err:
-                error = err.message
-
-    else:
-        ''' adds a new client '''
-        form = ProgramForm()  # An unbound form
-
-    # set focus to public name field
-    form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
-
-    data = {
-        "form": form,
-        "error": error,
-        "submit_label": _("Save Program"),
-    }
-
-    return render(
-        request,
-        'admin/program/new.haml',
-        data
-    )
-
-
-@ajaxify_http_redirects
-@permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
-def program_edit(request, program_id):
-    error = None
-    if request.method == 'POST':  # If the form has been submitted...
-        form = ProgramForm(request.POST)  # A form bound to the POST data
-        if form.is_valid():  # All validation rules pass
-            name = form.cleaned_data.get('name')
-            data = {
-                'display_name': form.cleaned_data.get('display_name'),
-                'start_date': form.cleaned_data.get('start_date'),
-                'end_date': form.cleaned_data.get('end_date'),
+class ProgramView(APIView):
+    """
+    Handle requests for program and thier submissions.
+    """
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, )
+    def get(self, request, program_id=None):
+        """
+        Displays the Program create and update model.
+        Args:
+            request (`Request`): The Django Request object.
+            program_id (int): The program key.
+        Keyword Args:
+            error: If provided, display this error message
+                    on the page.
+        Returns:
+            Response
+        """
+        program_form = ProgramForm()
+        template_name = 'admin/program/create_or_update.haml'
+        if program_id:
+            program = Program.fetch(program_id)
+            program_detail = {
+                'name': program.name,
+                'display_name': program.display_name,
+                'start_date': program.start_date,
+                'end_date': program.end_date
             }
+            program_form = ProgramForm(program_detail)
+        program_data = {
+            "form": program_form,
+            "submit_label": _("Update Program") if program_id else _("Save Program"),
+            "program_id": program_id if program_id else None
+        }
+
+        # set focus to company name field
+        program_form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
+
+        return render(
+            request,
+            template_name,
+            program_data
+        )
+
+    @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, )
+    def post(self, request, program_id=None):
+        """
+        Takes the form submission from the page and parses it.
+        Args:
+            request (`Request`): The Django Request object.
+            program_id (int): The program key.
+
+        Returns:
+           Status code 400 when the requested mode is unsupported and returns error
+           message if form in invalid. When program is created, redirects to the
+           created program detail page or when program updated it redirects to the
+           all program page.
+        """
+        error = None
+        program_form = ProgramForm(request.POST)  # A form bound to the POST data
+        if program_form.is_valid():  # All validation rules pass
+            if program_id:
+                name = program_form.cleaned_data.get('name')
+                program_data = {
+                    'display_name': program_form.cleaned_data.get('display_name'),
+                    'start_date': program_form.cleaned_data.get('start_date'),
+                    'end_date': program_form.cleaned_data.get('end_date'),
+                }
             try:
-                program = Program.fetch(program_id).update(program_id, name, data)
-                # Redirect after POST
-                return HttpResponseRedirect('/admin/programs/')
+                if program_id:
+                    program = Program.fetch(program_id).update(program_id, name, program_data)
+                    response = {'redirect_url': '/admin/programs/', 'status': status.HTTP_200_OK}
+                else:
+                    program = Program.create(request.POST["name"], request.POST)
+                    response = {'redirect_url': '/admin/programs/{}'.format(program.id),
+                                'status': status.HTTP_201_CREATED}
+
+                return HttpResponse(
+                    json.dumps(response),
+                    content_type='application/json'
+                )
 
             except ApiError as err:
                 error = err.message
-    else:
-        ''' edit a program '''
-        program = Program.fetch(program_id)
-        data_dict = {
-            'name': program.name,
-            'display_name': program.display_name,
-            'start_date': program.start_date,
-            'end_date': program.end_date
-        }
-        form = ProgramForm(data_dict)
 
-    # set focus to company name field
-    form.fields["display_name"].widget.attrs.update({'autofocus': 'autofocus'})
-
-    data = {
-        "form": form,
-        "program_id": program_id,
-        "error": error,
-        "submit_label": _("Save Program"),
-    }
-
-    return render(
-        request,
-        'admin/program/edit.haml',
-        data
-    )
+        response = HttpResponse(
+            json.dumps({'errors': program_form.errors if program_form.errors else error}),
+            content_type='application/json'
+        )
+        response.status_code = status.HTTP_400_BAD_REQUEST
+        return response
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
