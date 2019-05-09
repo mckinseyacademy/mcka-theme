@@ -26,15 +26,38 @@ if (typeof COURSE_MAIN_PAGE === "undefined")
 
 $(document).on("scorm_shell_activate", function()
 {
-    if (COURSE_MAIN_PAGE && SCORM_SHELL)
+    if(SCORM_SHELL)
     {
-        SendGradebookToScormShell();
-        SendProgressToScormShell();
-        SendCompletionToScormShell();
-        SendFullGradebookToScormShell();
+        disableLogoutButton();
+        if (COURSE_MAIN_PAGE)
+        {
+            SendGradebookToScormShell();
+            SendProgressToScormShell();
+            SendCompletionToScormShell();
+            SendFullGradebookToScormShell();
+        }
     }
+
 });
 
+
+function disableLogoutButton()
+{
+    if(isNewUI())
+    {
+        $('.footer.ome a').attr("href", "javascript:void(0)");
+        $('.footer.ome a').addClass("disabled btn-outline-secondary");
+    }
+    else
+    {
+        $('.logout a').attr("href", "javascript:void(0)");
+        $('.logout a').attr("disabled", true);
+    }
+}
+
+function isNewUI() {
+    return $("body").hasClass("new-theme");
+}
 
 function SendScormAssigmentRelevantData()
 {
