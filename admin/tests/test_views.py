@@ -818,10 +818,7 @@ class ClientCustomizationTests(TestCase, ApplyPatchMixin):
         response = views.client_detail_customization(request, self.client.id)
         client_customization.refresh_from_db()
         self.assertEqual(response.status_code, status.HTTP_302_FOUND)
-        if is_mcka_admin:
-            self.assertTrue(client_customization.new_ui_enabled)
-        else:
-            self.assertFalse(client_customization.new_ui_enabled)
+        self.assertTrue(client_customization.new_ui_enabled)
 
 
 class CompanyDetailsViewTest(CourseParticipantsStatsMixin, TestCase):

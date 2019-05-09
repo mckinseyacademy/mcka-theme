@@ -403,7 +403,7 @@ class ClientCustomization(db_models.Model):
     client_background_css = db_models.CharField(max_length=200)
     global_client_logo = db_models.CharField(max_length=200, blank=True)
     hex_background_main_navigation = db_models.CharField(max_length=7, blank=True)
-    new_ui_enabled = db_models.BooleanField(default=False)
+    new_ui_enabled = db_models.BooleanField(default=True)
     new_ui_enabled_at = db_models.DateTimeField(auto_now_add=True)
 
     def delete(self):

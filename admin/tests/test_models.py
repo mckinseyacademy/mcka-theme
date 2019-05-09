@@ -24,4 +24,4 @@ class ProgramTests(TestCase):
 class AdminClientUITests(TestCase):
     def test_new_ui_is_disabled_by_default(self):
         client_customization = ClientCustomization.objects.create(client_id=100, identity_provider='')
-        self.assertFalse(client_customization.new_ui_enabled)
+        self.assertTrue(client_customization.new_ui_enabled)
