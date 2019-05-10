@@ -472,7 +472,7 @@ $('.editProfileField').on('show.bs.modal', function (e) {
 });
 
 (function() {
-  var isMobile = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+  var isMobile = (/android|webos|iphone|ipad|ipod|blackberry|com.mcka.RNApp|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
   var longPress = 400;
   var delay = null;
   var shown = false;

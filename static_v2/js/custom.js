@@ -112,7 +112,7 @@ $(document).ready(function () {
         $('#password').addClass('active');
     });
 
-    var isMobile = (/android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
+    var isMobile = (/android|webos|iphone|com.mcka.RNApp|ipad|ipod|blackberry|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
     $('#show-hide, .show-hide').click(function () {
         if (isMobile){
             return

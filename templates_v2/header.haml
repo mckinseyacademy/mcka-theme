@@ -146,15 +146,3 @@
                             {{language_name}}
 
   %script{src: "{% static 'js/user_profile_edit_v2.js' %}"}
-
-  :javascript
-    window.onload = function(){
-      setTimeout(disableScormShellLogoutButton, 1000)
-    };
-    function disableScormShellLogoutButton() {
-      if (SCORM_SHELL) {
-        $('.footer.ome a').attr("href", "javascript:void(0)");
-        $('.footer.ome a').addClass("disabled btn-outline-secondary");
-      }
-    }
-

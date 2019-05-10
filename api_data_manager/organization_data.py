@@ -31,10 +31,7 @@ class OrgDataManager(DataManager):
         if branding_data is not None:
             return branding_data
 
-        try:
-            client_customization = ClientCustomization.objects.get(client_id=self.organization_id)
-        except ClientCustomization.DoesNotExist:
-            client_customization = None
+        client_customization = ClientCustomization.objects.get_or_create(client_id=self.organization_id)[0]
 
         try:
             branding = BrandingSettings.objects.get(client_id=self.organization_id)
