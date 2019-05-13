@@ -344,8 +344,8 @@ $(function () {
     };
     var result = mapping[data.state];
     if (result !== undefined) {
-      var arrows = $('.page-to');
-      arrows[result]('disabled');
+      var arrows = $('.arrowPin');
+      arrows[result]('disable');
     }
   });
 
