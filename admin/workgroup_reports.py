@@ -97,7 +97,8 @@ class WorkgroupCompletionData(object):
             self.stage_blocks[uri] = WorkGroupV2StageXBlock.fetch_from_uri(uri)
         return self.stage_blocks[uri]
 
-    def __init__(self, course_id, group_id=None, restrict_to_users_ids=None, request=None):
+    def __init__(self, course_id, group_id=None, restrict_to_users_ids=None, prefetched_completions={}, request=None):
+        self.course_id = course_id
         self.activity_xblocks = {}
         self.course = load_course(course_id, depth=GROUP_WORK_REPORT_DEPTH, request=request)
         self.restrict_to_users_ids = restrict_to_users_ids
@@ -111,7 +112,7 @@ class WorkgroupCompletionData(object):
             self.workgroup_id = int(group_id)
             self.projects = [Project.fetch(WorkGroup.fetch(self.workgroup_id).project)]
 
-        self.completions = self._load_completions_data(course_id)
+        self.completions = prefetched_completions if prefetched_completions else {}
         self._load()
 
     @staticmethod
@@ -135,23 +136,13 @@ class WorkgroupCompletionData(object):
                 ]
 
     def _load_completions_data(self, course_id):
-        completions = {}
+        if self.completions:
+            return self.completions
 
-        course_users = course_api.get_course_details_users(course_id).get('results', [])
-        for user in course_users:
-            username = user['username']
-            user_id = user['id']
-            user_completions = course_api.get_block_completions(
-                course_id=course_id,
-                username=username,
-            )
-            for completion in user_completions:
-                if completion.is_complete():
-                    completion_key = WorkgroupCompletionData._make_completion_key(
-                        content_id=completion.id,
-                        user_id=user_id,
-                    )
-                    completions[completion_key] = completion
+        completion_data = course_api.get_course_blocks_completions_list(course_id, qs_params={'page_size': 'all'})
+        completions = {
+            WorkgroupCompletionData._make_completion_key(c.content_id, c.user_id, c.stage): c for c in completion_data
+        }
 
         return completions
 
@@ -183,6 +174,7 @@ class WorkgroupCompletionData(object):
                     self._load_project_workgroup_status(project, pw)
 
     def build_report_data(self):
+        self.completions = self._load_completions_data(self.course_id)
         total_group_count = 0
         projects = []
         for project in self.projects:
@@ -527,13 +519,15 @@ class WorkgroupCompletionData(object):
         return result
 
 
-def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=None, request=None):
+def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=None, completions={}, request=None):
     output_lines = []
 
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
 
-    wcd = WorkgroupCompletionData(course_id, restrict_to_users_ids=restrict_to_users_ids, request=request)
+    wcd = WorkgroupCompletionData(
+        course_id, restrict_to_users_ids=restrict_to_users_ids, prefetched_completions=completions, request=request
+    )
 
     # column structure:
     # Group

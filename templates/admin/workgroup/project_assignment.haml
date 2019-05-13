@@ -24,10 +24,10 @@
               %p
                 {% trans "Generate random peer-reviews for project activities" %}
           - if user.is_mcka_admin or user.is_mcka_ta or user.is_internal_admin or user.is_mcka_subadmin
-            %div
-              %p
-                %a{href: "/admin/workgroup/course/#{course.id}/download_group_projects_report", target: "_blank"}
-                  {% trans "Downloadable Workgroup Completion Report" %}
+            #workGroupReportContainer{:data-id => '#{course.id}', :data-name => '#{course.name}'}
+              %a.button.radius.small.submenuButtons.bulkExportStats.bulkButton{:href => "#"}
+                {% trans "Downloadable Workgroup Completion Report" %}
+
         %hr
         %section
           .sub-1
@@ -82,10 +82,24 @@
                           %div
                             %input.button.radius.tiny{type: "submit", value: '{% trans "Confirm" %}'}
                         .informational-message
-
+  #courseDetailsMainModal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
+    %h2.courseModalTitle
+    %i.fa.fa-spinner.fa-spin.loadingIcon.hidden
+    .courseModalStatus
+    %hr
+    .courseModalDescription
+    .courseModalContent
+    .courseModalControl
+      .button.saveChanges
+        {% trans "Export Report" %}
+      %a.cancelChanges{:href => "#"}
+        {% trans "Cancel" %}
+    %a.close-reveal-modal{"aria-label": "Close"}
+      &#215;
   #generate-reviews-modal.reveal-modal{"data-reveal": "true"}
 
 - block js_snippets
+  %script{src: "{% static 'js/views/admin/group_work_dashboard_assignment_info.js' %}"}
   :javascript
     var show_activities_for_project = function(project_id){
       var project_activities = $('.project_activities_detail').hide();
@@ -126,4 +140,8 @@
     });
     $(function(){
       show_activities_for_project($('.group-project-select').val());
+    });
+
+    $(function(){
+      group_work_dashboard_assignment_info();
     });

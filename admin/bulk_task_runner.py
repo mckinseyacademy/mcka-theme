@@ -5,10 +5,11 @@ Handles running of different bulk tasks for admin
 from celery.result import AsyncResult
 from celery.utils.log import get_task_logger
 from upload_validator import FileTypeValidator
+from django.core.exceptions import ImproperlyConfigured
 
 from .tasks import (
-    course_participants_data_retrieval_task, participants_notifications_data_task,
-    users_program_association_task
+    course_participants_data_retrieval_task, workgroup_completion_data_retrieval_task,
+    participants_notifications_data_task, users_program_association_task
 )
 from .controller import (
     course_bulk_actions, build_student_list_from_file,
@@ -53,6 +54,19 @@ class BulkTaskRunner(object):
             )
         elif self.task_name == 'push_notifications_data':
             task_id = _execute_notifications_data_task(course_id, company_id)
+        elif self.task_name == 'workgroup_completion_report':
+            try:
+                url_prefix = "{}://{}".format(
+                    "https" if self.request.is_secure() else "http",
+                    self.request.META['HTTP_HOST']
+                )
+            except KeyError:
+                raise ImproperlyConfigured(
+                    'Requested HTTP_HOST, but it is not set in request.META'
+                )
+            task_id = _execute_workgroup_data_task(
+                course_id, url_prefix, base_url, user_id=self.request.user.id
+            )
         elif self.task_name == 'user_program_association':
             task_id = _execute_users_program_association_task(
                 self.request.FILES.get('participants_file'),
@@ -96,6 +110,15 @@ def _execute_participants_data_task(course_id, company_id, base_url, lesson_comp
     return course_participants_data_retrieval_task.delay(
         course_id=course_id, company_id=company_id, base_url=base_url,
         lesson_completions=lesson_completions, user_id=user_id
+    ).task_id
+
+
+def _execute_workgroup_data_task(course_id, url_prefix, base_url, user_id):
+    """
+    Executes the workgroup data task
+    """
+    return workgroup_completion_data_retrieval_task.delay(
+        course_id=course_id, url_prefix=url_prefix, base_url=base_url, user_id=user_id
     ).task_id
 
 
