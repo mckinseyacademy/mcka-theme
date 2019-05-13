@@ -28,42 +28,24 @@
       }
 
       &:before {
-        content: '';
+        content: '\e836';
+        font-family: 'Material Icons';
+        font-size: 20px;
+        color: $black;
         box-sizing: border-box;
+        position: absolute;
+        left: -1px !important;
+        top: -1px !important;
         width: 18px;
         height: 18px;
-        background: $white;
-        border-radius: 16px;
-        position: absolute;
-        border: 2px solid $black;
-        display: inline-block;
-
-      }
-
-      &:after {
-        content: "";
-        position: absolute;
-        display: none;
-        left: 2px;
-        top: 2px;
-        width: 14px;
-        height: 14px;
-        background: $black;
-        border-radius: 9px;
-        border: 2px solid $white;
       }
 
       &.disabled {
         opacity: 0.5;
       }
       &.selected {
-        &:after {
-          display: block;
-        }
-
         &:before {
-          background: black !important;
-          top: 0;
+          content: '\e837';
         }
       }
 
