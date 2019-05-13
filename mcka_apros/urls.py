@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^terms/', main_views.terms, name='terms'),
     url(r'^privacy/', main_views.privacy, name='privacy'),
     url(r'^faq/', main_views.faq, name='faq'),
+    url(r'^getting-started/', main_views.getting_started, name='getting_started'),
     url(r'^error_404/', main_views.error_404, name='error_404'),
     url(r'^error_500/', main_views.error_500, name='error_500'),
     url(r'^accounts/', include('accounts.urls'), name='accounts'),

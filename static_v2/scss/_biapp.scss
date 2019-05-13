@@ -772,6 +772,19 @@ form {
   }
 }
 
+// Static Pages
+
+.guide {
+  .illustrations {
+    .img-with-cap {
+      @include float(left);
+      &:first-child {
+        @include margin-right(20px);
+      }
+    }
+  }
+}
+
 .sso {
   p {
     label {

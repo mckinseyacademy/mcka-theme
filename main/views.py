@@ -30,6 +30,10 @@ def faq(request):
     return render(request, 'faq.haml')
 
 
+def getting_started(request):
+    return render(request, 'getting-started.haml')
+
+
 def error_403(request, exception):
     return render(request, '403.haml', status=403)
 

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="227px" height="177px" viewBox="0 0 227 177" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>cartoon/activation-link@1x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="McKA---Getting-Started-Guide" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="GettingStartedGuide" transform="translate(-602.000000, -554.000000)">
+            <g id="cartoon/email" transform="translate(602.000000, 554.000000)">
+                <rect id="Name" fill="#E6E6E6" x="0" y="0" width="227" height="15.84" rx="7.92"></rect>
+                <rect id="Name" fill="#E6E6E6" x="0" y="26.4" width="197.965116" height="15.84" rx="7.92"></rect>
+                <rect id="Name" fill="#E6E6E6" x="0" y="52.8" width="227" height="15.84" rx="7.92"></rect>
+                <rect id="Name" fill="#E6E6E6" x="0" y="79.2" width="197.965116" height="15.84" rx="7.92"></rect>
+                <rect id="Rectangle" fill="#2042CB" x="0" y="106.92" width="227" height="42.24" rx="4"></rect>
+                <g id="cursor" stroke-width="1" transform="translate(120.098837, 128.040000)">
+                    <polygon id="Path" fill="#FFFFFF" fill-rule="nonzero" points="0.527906977 42.636 0.527906977 0.396 31.1465116 31.02 13.1976744 31.02 12.1418605 31.284"></polygon>
+                    <polygon id="Path" fill="#FFFFFF" fill-rule="nonzero" points="24.5476744 44.484 15.0453488 48.444 2.63953488 19.14 12.405814 15.18"></polygon>
+                    <polygon id="Rectangle" fill="#2042CB" fill-rule="nonzero" transform="translate(14.519580, 33.908186) rotate(-22.772792) translate(-14.519580, -33.908186) " points="11.8804878 23.3480249 17.16 23.3476929 17.1586719 44.4683479 11.8791597 44.4686799"></polygon>
+                    <polygon id="Path" fill="#2042CB" fill-rule="nonzero" points="3.16744186 6.732 3.16744186 36.3 11.0860465 28.644 12.1418605 28.38 24.8116279 28.38"></polygon>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
