@@ -205,5 +205,18 @@
         margin-bottom: .5rem;
       }
     }
+    &.guide {
+      padding: 2rem 1.8rem !important;
+      .illustrations {
+        .img-with-cap {
+          &:first-child {
+            margin-bottom: 20px;
+          }
+        }
+        img {
+          max-width: 100% !important;
+        }
+      }
+    }
   }
 }
