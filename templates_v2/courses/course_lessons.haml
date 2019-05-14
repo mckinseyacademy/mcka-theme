@@ -3,9 +3,7 @@
 
 - block content
   %script
-    $(document).ready(function () {
-      $('body').addClass("lessonPageBody noAppHeader");
-    });
+    $('body').addClass("lessonPageBody noAppHeader");
     var cookie_key = "{{cookie_key}}";
   #course-lessons{'data-current-progress': '#{user_progress}'}
     .lessonOverview

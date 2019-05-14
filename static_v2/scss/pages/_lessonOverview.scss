@@ -362,6 +362,8 @@ footer, main, header, body {
     &.lessonPageBody {
       footer {
         display: none !important;
+        transition: none;
+        animation: none;
       }
     }
   }
