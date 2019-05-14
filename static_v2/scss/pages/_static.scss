@@ -32,6 +32,9 @@
     .collapse {
       @extend .mb-3;
     }
+    .mb-0 {
+      margin-bottom: 10px !important;
+    }
   }
   &.FAQ {
     .style-2 {
