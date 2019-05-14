@@ -447,3 +447,8 @@
     %script{src:"static/js/session_timeout_timer.js"}
     %script{src: "{% static 'js/image_editor.js' %}"}
     %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
+
+    %script
+      if (window.location.search === '?reset-password') {
+          $("#password-reset-modal").modal("show");
+      }

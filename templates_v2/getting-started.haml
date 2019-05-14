@@ -49,9 +49,9 @@
         {% blocktrans %}
             %p 
                 Once registered, you can
-                %a{:href => "https://www.mckinseyacademy.com/login"} login
+                %a{:href => "/login"} login
                 with the username or email address associated with your account. Save or bookmark this URL to easily access your course or program in the future. Reset your password anytime by using the
-                %a{:href => "https://www.mckinseyacademy.com/login"} Forgot password?
+                %a{:href => "/?reset-password"} Forgot password?
                 link.
         {% endblocktrans %}
         
@@ -59,7 +59,14 @@
         %hr.hr-lg.blank#navigation-platform
         
         %h2 {% trans "Navigation and platform highlights" %}
-        %p {% trans "Depending on your course or program, you'll be directed to the My Courses or Learner Dashboard landing page." %}
+        {% blocktrans %}
+            %p 
+                Depending on your course or program, you'll be directed to the 
+                %i My Courses
+                or 
+                %i Learner Dashboard
+                landing page.
+        {% endblocktrans %}
         %div.illustrations
             .img-with-cap.fifty-half
                 %p
@@ -72,7 +79,7 @@
         %hr.blank
         %p {% trans "From here, you can navigate to the courses or activities you're enrolled in. Return to your landing page anytime using the main navigation." %}
         %p {% trans "See below for more information on" %}
-            %a{:href => "http://mckinseyacademy.com/courses"} {% trans "Learner Dashboards" %}
+            %a{:href => "/courses"} {% trans "Learner Dashboards" %}
             .
         
         %hr.blank
@@ -94,10 +101,10 @@
             %p
                 Use the module navigator in the lesson title to jump to a specific module. Here you can also see the status of individual modules: 
                 not started
-                %i.material-icons
+                %i.material-icons.gray
                     panorama_fish_eye
                 , in progress 
-                %i.material-icons
+                %i.material-icons.gray
                     tonality
                 , and completed
                 %i.material-icons
