@@ -217,16 +217,6 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
             # The user should see the terms of service for new users.
             self.assertEqual(response.status_code, 200)
             self.assertTemplateUsed(response, 'accounts/sso_terms_of_service.haml')
-            self.assertNotIn(
-                "You must accept terms of service in order to continue",
-                response.content,
-            )
-            response = self.client.post(url, {'accept_terms': False})
-            # Display error if TOS are not accepted
-            self.assertIn(
-                "You must accept terms of service in order to continue",
-                response.content,
-            )
             response = self.client.post(url, {'accept_terms': True})
             self.assertEqual(response.status_code, 302)
             self.assertTrue(response['Location'].endswith('/auth/complete/tpa-saml/'))

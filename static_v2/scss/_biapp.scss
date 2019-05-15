@@ -772,6 +772,24 @@ form {
   }
 }
 
+.sso {
+  p {
+    label {
+      @include padding-left(20px);
+    }
+    input[type="checkbox"] {
+      @include left(-3px);
+    }
+  }
+  .form-footer {
+    ul {
+      li {
+        @include padding-right(0.94rem);
+      }
+    }
+  }
+}
+
 // Login
 
 .site-wrapper {

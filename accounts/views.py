@@ -65,7 +65,7 @@ from .controller import (
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
-    EditFullNameForm, EditTitleForm, ActivationFormV2, PublicRegistrationForm, LoginIdForm, AcceptTermsForm,
+    EditFullNameForm, EditTitleForm, ActivationFormV2, PublicRegistrationForm, LoginIdForm, AcceptTermsFormSSO,
 )
 import logout as logout_handler
 
@@ -795,16 +795,16 @@ def sso_registration_form(request):
     if remote_session_key:
         if request.method == 'GET':
             # After redirecting to this page after registering
-            form = AcceptTermsForm()
+            form = AcceptTermsFormSSO()
             return render(request, 'accounts/sso_terms_of_service.haml', {
-                'accept_label': _('Accept'),
+                'accept_label': _('REGISTER'),
                 'form': form,
             })
         elif request.method == 'POST':
-            form = AcceptTermsForm(request.POST)
+            form = AcceptTermsFormSSO(request.POST)
             if not form.is_valid():
                 return render(request, 'accounts/sso_terms_of_service.haml', {
-                    'accept_label': _('Accept'),
+                    'accept_label': _('REGISTER'),
                     'form': form,
                 })
         user_data = {
