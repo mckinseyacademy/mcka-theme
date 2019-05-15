@@ -420,6 +420,21 @@ class AcceptTermsForm(NoSuffixLabelForm):
         return value
 
 
+class AcceptTermsFormSSO(AcceptTermsForm):
+    accept_terms = forms.BooleanField(
+        required=True,
+        label=mark_safe_lazy(format_lazy(
+            _('I agree to the {html_anchor_start} Terms of Service '
+              '{html_anchor_end} and {html_anchor_second} Privacy Policy '
+              '{html_anchor_end} {html_span}'),
+            html_anchor_start='<a href="/terms" target="_blank">',
+            html_anchor_end='</a>',
+            html_anchor_second='<a href="/privacy" target="_blank">',
+            html_span='<span class="required-field"></span>'
+        ))
+    )
+
+
 class BaseRegistrationForm(AcceptTermsForm):
     ''' base for ActivationForm and FinalizeRegistrationForm '''
 

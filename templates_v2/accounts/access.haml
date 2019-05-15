@@ -14,10 +14,11 @@
   - else
     .container.text-center
       .row
-        .col-12.contentCard
-          .sub-1 {% trans "Sorry!" %}
-          %p {% trans "There was a problem with your access code." %}
-
+        .col-12
+          .contentCard
+            %h3.sub-1 {% trans "Sorry!" %}
+            %hr.blank
+            %p {% trans "There was a problem with your access code." %}
 - block js_snippets
   - if redirect_to
     :javascript
