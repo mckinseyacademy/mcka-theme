@@ -844,6 +844,7 @@ def sso_registration_form(request):
 
                 _process_access_key_and_remove_from_session(request, new_user, access_key, client)
 
+                # Set session key to land sso user to course landing page
                 request.session['sso_user'] = True
                 # Redirect to the LMS to link the user's account to the provider permanently:
                 complete_url = '{lms_auth}complete/{backend_name}/'.format(
@@ -1047,7 +1048,8 @@ def home(request):
         data.update(mobile_popup_data)
 
     if user_data.get('new_ui_enabled'):
-        return HttpResponseRedirect(_get_redirect_to_current_course(request))
+        sso_user = bool(request.session.get('sso_user'))
+        return HttpResponseRedirect(_get_redirect_to_current_course(request, sso_user))
 
     return render(request, 'home/landing.haml', data)
 
