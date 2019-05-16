@@ -181,9 +181,8 @@ def _inject_formatted_data(program, course, page_id, static_tab_info=None):
                 lesson.description = lesson_description.content
 
 
-def load_course_progress(course, user_id=None, username=None):
-    if username is None:
-        username = user_api.get_user(user_id).username
+def load_course_progress(course, user_id):
+    username = user_api.get_user(user_id).username
     completions = course_api.get_course_completions(course.id, username)
     user_completions = completions.get(username, {})
     course.user_progress = get_completion_percentage_from_id(user_completions, 'course')
@@ -283,7 +282,8 @@ def standard_data(request):
         "show_my_courses": show_my_courses,
         "show_new_ui_tour": show_new_ui_tour,
         "zoomed_in_lesson_navigators": "/lessons/" not in request.META.get('HTTP_REFERER', ''),
-        "react_native_app": settings.REACT_NATIVE_UA_PREFIX in request.META.get('HTTP_USER_AGENT', '')
+        "support": settings.MCKA_SUPPORT_FORM_LINK,
+
     }
 
     return data

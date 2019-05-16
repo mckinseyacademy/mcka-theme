@@ -304,6 +304,7 @@ ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
 
 # Mcka support email
 MCKA_SUPPORT_EMAIL = 'support@mckinseyacademy.com'
+MCKA_SUPPORT_FORM_LINK = 'https://mckinseynvt.secure.force.com/mckinseysupport/'
 
 # Disabling automatic program enrollment for no (MCKIN-1750)
 ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False
@@ -464,7 +465,7 @@ LOGIN_BUTTON_FOR_MOBILE_ENABLED = True
 
 # NOTIFICATION IN CASE THE NUMBER OF PARTICIPANTS IS CLOSE TO MAX
 COURSE_RUN_PARTICIPANTS_TRESHOLD = 4000
-DEDICATED_COURSE_RUN_PERSON = "staff@mckinseyacademy.com"
+DEDICATED_COURSE_RUN_PERSON = "no-reply@mckinseyacademy.com"
 
 TEMPLATE_NEW_DIRS = [os.path.join(BASE_DIR, 'templates_v2')]
 

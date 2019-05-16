@@ -142,7 +142,7 @@ def email_user_activation_link(request, user_data, activation_link):
         to_emails=[user_data.get('email')], template_name=template,
         template_data={
             'first_name': user_data.get('first_name'),
-            'activation_link': activation_link, 'support_email': settings.MCKA_SUPPORT_EMAIL,
+            'activation_link': activation_link, 'support': settings.MCKA_SUPPORT_FORM_LINK,
             'mcka_logo_url': mcka_logo,
         }
     )

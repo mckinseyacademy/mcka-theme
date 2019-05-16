@@ -48,7 +48,7 @@
           %form#tech-support{action: '/support/', method: 'POST'}
             - csrf_token
             %fieldset
-              = support_form
+              = #{support}
               %div
                 %input.button.small.radius{type: 'submit', value: '{% trans "Submit" %}'}
         %section.trouble.label-2.hidden

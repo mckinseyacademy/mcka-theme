@@ -12,14 +12,14 @@
       %i.fa.fa-times-circle
     .sub-1 {% trans "Group Work" %}
     - if group_project.is_v2
-      %p {% blocktrans %} Below are helpful tips to contribute to group work. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+      %p {% blocktrans %} Below are helpful tips to contribute to group work. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="#{support}">support</a> and we’ll sort it out for you. {% endblocktrans %}
       .help-line {% blocktrans %} Access group work using the <i class="mk-icon-groupworknav blue"></i> icon in the main navigation bar {% endblocktrans %}
       .help-line {% blocktrans %} Upload deliverables by clicking the <i class="fa fa-upload blue"></i> icon at the bottom of the Project Navigator. {% endblocktrans %}
       .help-line {% blocktrans %} Access project resources by clicking the <i class="fa fa-files-o blue"></i> icon at the bottom of the Project Navigator. {% endblocktrans %}
       .help-line {% blocktrans %} Group work has a private discussion you can use to collaborate with your group members. You can chat with your team by clicking the <i class="fa fa-comments-o blue"></i> icon at the bottom of the Project Navigator. Your private discussions, even when viewed on the main discussion page, are only visible to your group members, never to the larger cohort. {% endblocktrans %}
       .help-line {% blocktrans %} Send a message to a McKinsey TA by clicking the <span class="nav-1" style="font-size:16px;">TA</span> icon at the bottom of the Project Navigator. {% endblocktrans %}
     - else
-      %p {% blocktrans %} Below are helpful tips to contribute to group work. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+      %p {% blocktrans %} Below are helpful tips to contribute to group work. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="#{support}">support</a> and we’ll sort it out for you. {% endblocktrans %}
       .help-line {% blocktrans %} Access group work using the <i class="mk-icon-groupworknav"></i> icon in the main navigation bar {% endblocktrans %}
       .help-line {% trans "Group work is made up of one or more activities, and each activity is made up of up to 4 stages:" %}
       .help-line {% trans "OVERVIEW - provides a high-level overview of the task(s)" %}

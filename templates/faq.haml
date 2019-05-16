@@ -21,13 +21,13 @@
         %p {% trans "At this time, McKinsey Academy courses are only available to companies. If you are interested in inquiring further, please contact us." %}
         %p.style-2 {% trans "How can I change the name or email address on my account?" %}
         %p {% trans 'To change your name, log in, and find your profile in the upper right-hand corner of your screen. Click the down arrow and select "Edit" next to your name.' %}
-        %p {% blocktrans %}To change your email address, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a>.{% endblocktrans %}
+        %p {% blocktrans %}To change your email address, please email <a href="#{support}">support</a>.{% endblocktrans %}
         %p.style-2 {% trans "My account login isn't working." %}
-        %p {% blocktrans %}If you've forgotten your password, please try resetting it by clicking "Forgot my password" on the log in screen. If that does not work, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a>.{% endblocktrans %}
+        %p {% blocktrans %}If you've forgotten your password, please try resetting it by clicking "Forgot my password" on the log in screen. If that does not work, please email <a href="#{support}">support</a>.{% endblocktrans %}
         %p.style-2 {% trans "I can't access a course I'm enrolled in." %}
-        %p {% blocktrans %}The drop down for moving between multiple courses is on the far left of the second (lighter blue) navigation bar. If the course you are supposed to be enrolled in does not appear in that drop down menu, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a>.{% endblocktrans %}
+        %p {% blocktrans %}The drop down for moving between multiple courses is on the far left of the second (lighter blue) navigation bar. If the course you are supposed to be enrolled in does not appear in that drop down menu, please email <a href="#{support}">support</a>.{% endblocktrans %}
         %p.style-2 {% trans "How can I stop or start receiving emails from my courses?" %}
-        %p {% blocktrans %}We try to keep our email communication at an optimal level to ensure all participants know what is happening in the course without cluttering your inbox. Our emails contain important information about what's expected each week and additional curated content suggestions. If you no longer wish to receive emails, please email <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> (or click unsubscribe at the bottom of any email you receive from us). Be sure to check the "Announcements" page frequently to stay up to date!{% endblocktrans %}
+        %p {% blocktrans %}We try to keep our email communication at an optimal level to ensure all participants know what is happening in the course without cluttering your inbox. Our emails contain important information about what's expected each week and additional curated content suggestions. If you no longer wish to receive emails, please email <a href="#{support}">support</a> (or click unsubscribe at the bottom of any email you receive from us). Be sure to check the "Announcements" page frequently to stay up to date!{% endblocktrans %}
         %p.sub-1 {% trans "COURSES:" %}
         %p.style-2 {% trans "When does my course start and/or finish?" %}
         %p {% trans "You can find the start date and course duration for each course on its course overview page.  You will receive a welcome email when the course is open." %}
@@ -55,13 +55,13 @@
         %p.style-2 {% trans "My course deadlines are in UTC, what’s that?" %}
         %p {% trans "UTC refers to Universal Coordinated Time. To find the current time in UTC and convert it to your local time, check World Time Server or other Internet time services." %}
         %p.style-2 {% trans "What if I have a question or concern regarding course grading?" %}
-        %p {% blocktrans %}If you have any questions about a grade you received, please email <a href="mailto:tas@mckinseyacademy.com">TAs@mckinseyacademy.com</a>.{% endblocktrans %}
+        %p {% blocktrans %}If you have any questions about a grade you received, please email <a href="#{support}">TAs</a>.{% endblocktrans %}
         %p.style-2 {% trans "How can I meet/find other participants?" %}
         %p {% trans "All McKinsey Academy courses have discussion forums where you can chat with and help other participants." %}
         %p.style-2 {% trans "How can I talk to McKinsey practitioners teaching my courses and teaching assistants?" %}
         %p {% trans "The discussion forum is the best place to reach out to the McKinsey Academy course team for your cohort; just post your questions or email the TA. We do our best to respond as promptly as possible." %}
         %p.style-2 {% trans "How do I get help and support regarding my course?" %}
-        %p {% blocktrans %}You are part of a cohort of participants you can engage with questions as well as support from the TAs who monitor the course. Take a look at the course's discussion forum where you can review questions, answers and comments from fellow participants, as well as post a question. You can also reach out to the McKinsey teaching assistants by <a href="mailto:tas@mckinseyacademy.com">emailing them</a> and they will get back to you as soon as possible.{% endblocktrans %}
+        %p {% blocktrans %}You are part of a cohort of participants you can engage with questions as well as support from the TAs who monitor the course. Take a look at the course's discussion forum where you can review questions, answers and comments from fellow participants, as well as post a question. You can also reach out to the McKinsey teaching assistants by <a href="#{support}">emailing them</a> and they will get back to you as soon as possible.{% endblocktrans %}
         %p.style-2 {% trans "Can I re-take a course?" %}
         %p {% trans "McKinsey Academy courses cannot be re-taken, but exercises and materials remain available for 12 months after the course ends." %}
         %p.style-2 {% trans "Can I access the course content after my course ends?" %}
@@ -100,7 +100,7 @@
   %script
     let login_flow = 'new_flow';
   :javascript
-    $("a[href='mailto:support@mckinseyacademy.com']").click(function(){
+    $("a[href='#{support}']").click(function(){
       let data = { dimension4: login_flow };
       if(window.hashedUserId) {
         data['dimension1'] = window.hashedUserId;

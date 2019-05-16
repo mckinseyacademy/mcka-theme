@@ -302,7 +302,7 @@ def send_bulk_fields_update_email(
         template_data={
             'first_name': user_detail.get('first_name'), 'total_records': total_records,
             'success_count': record_count, 'failed_count': (total_records-record_count),
-            'errors': errors, 'support_email': settings.MCKA_SUPPORT_EMAIL,
+            'errors': errors, 'support': settings.MCKA_SUPPORT_FORM_LINK,
             'mcka_logo_url': mcka_logo,
         }
     )
@@ -390,7 +390,7 @@ def export_stats_status_email_task(
             to_emails=[user_data.get('email')], template_name=template,
             template_data={
                 'first_name': user_data.get('first_name'),
-                'download_link': download_url, 'support_email': settings.MCKA_SUPPORT_EMAIL,
+                'download_link': download_url, 'support': settings.MCKA_SUPPORT_FORM_LINK,
                 'report_name': report_name, 'mcka_logo_url': mcka_logo, 'course_id': course_id,
             }
         )
@@ -1045,7 +1045,7 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
             base=base_url,
             url=activations_links_file_url
         ) if activations_links_file_url else '',
-        'support_email': settings.MCKA_SUPPORT_EMAIL,
+        'support': settings.MCKA_SUPPORT_FORM_LINK,
         'mcka_logo_url': mcka_logo,
     }
 

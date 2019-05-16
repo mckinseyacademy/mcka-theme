@@ -531,7 +531,7 @@ class TestSendWarningEmailToAdmin(TestCase):
         send_warning_email_to_admin(self.course_run)
         self.assertEquals(len(mail.outbox), 1)
         self.assertEquals(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
-        self.assertEquals(mail.outbox[0].to[0], 'staff@mckinseyacademy.com')
+        self.assertEquals(mail.outbox[0].to[0], 'no-reply@mckinseyacademy.com')
         self.assertEquals(mail.outbox[0].subject, 'Demo Registration - Warning')
 
 
