@@ -8,143 +8,128 @@
         %h1 {% trans "McKinsey Academy Quick Start Guide" %}
         %h5 {% trans "QUICK LINKS" %}
         %ul.nav-links
-            %li
-                %a{:href => "#access-mckinsey-academy"} {% trans "Accessing McKinsey Academy" %}
-            %li
-                %a{:href => "#navigation-platform"} {% trans "Navigation and platform highlights" %}
-            %li
-                %a{:href => "#mobile-app"} {% trans "Mobile app" %}
-        {% blocktrans %}
-                %p McKinsey Academy is compatible with Chrome, Firefox, Safari, and Internet Explorer (version 11). For the best experience, we recommend 
-                    %a{:href => "https://www.google.com/chrome/" , :target => "_blank"} Chrome.
-        {% endblocktrans%}
+          %li
+            %a{:href => "#access-mckinsey-academy"} {% trans "Accessing McKinsey Academy" %}
+          %li
+            %a{:href => "#navigation-platform"} {% trans "Navigation and platform highlights" %}
+          %li
+            %a{:href => "#mobile-app"} {% trans "Mobile app" %}
+        %p
+          {% trans "McKinsey Academy is compatible with Chrome, Firefox, Safari, and Internet Explorer (version 11)." %}
+            {% trans "For the best experience, we recommend " %}
+            %a{:href => 'https://www.google.com/chrome/' , :target => '_blank'} {% trans "Chrome." %}
+
         %hr.blank.hr-lg#access-mckinsey-academy
         %h2 {% trans "Accessing McKinsey Academy" %}
         %h5 {% trans "Registration" %}
         %p {% trans "Each participant receives a welcome email with an activation link. Follow this link to create an account username and password." %}
         %div.illustrations
-            %img.thirty-3{:alt => "", :src => "/static/image/guide/activation-link@1x.svg"}/
+          %img.thirty-3{:alt => "", :src => "/static/image/guide/activation-link@1x.svg"}/
         %p {% trans "If you believe you are enrolled in a course but have not received a welcome email:" %}
         %ul.steps
-            %li 
-                %b {% trans "Check your junk folder." %}
-                {% trans "Your welcome email may have been caught by spam filters." %}
-            %li 
-                %b {% trans "Check that your inbox is not out of storage." %}
-                {% trans "Emails may be rejected by full servers." %}
-            %li 
-                %b {% trans "Check your local firewall settings." %}
-                %a{:href => "https://www.mckinseyacademy.com/"} mckinseyacademy.com
-                {% trans "may be blocked." %}
-            %li 
-                %b {% trans "Confirm your enrollment with a local administrator" %}
-        {% blocktrans %}
-                %p For further technical support and troubleshooting, see our
-                    %a{:href => "/faq"} FAQs
-                    page. If you still seek assistance, contact
-                    %a{:href => "mailto:support@mckinseyacademy.com", :target => "_blank"} support@mckinseyacademy.com
-        {% endblocktrans %}
+          %li
+            %b {% trans "Check your junk folder." %}
+            {% trans "Your welcome email may have been caught by spam filters." %}
+          %li
+            %b {% trans "Check that your inbox is not out of storage." %}
+            {% trans "Emails may be rejected by full servers." %}
+          %li
+            %b {% trans "Check your local firewall settings." %}
+            %a{:href => "https://www.mckinseyacademy.com/"} mckinseyacademy.com
+            {% trans "may be blocked." %}
+          %li
+            %b {% trans "Confirm your enrollment with a local administrator" %}
+        %p
+          {% trans "For further technical support and troubleshooting, see our" %}
+          %a{:href => "/faq"} {% trans "FAQs" %}
+          {% trans "page. If you still seek assistance, contact " %}
+          %a{:href => "mailto:support@mckinseyacademy.com", :target => "_blank"} support@mckinseyacademy.com
 
         %h5 {% trans "Login" %}
-        {% blocktrans %}
-            %p 
-                Once registered, you can
-                %a{:href => "/login"} login
-                with the username or email address associated with your account. Save or bookmark this URL to easily access your course or program in the future. Reset your password anytime by using the
-                %a{:href => "/?reset-password"} Forgot password?
-                link.
-        {% endblocktrans %}
-        
+        %p
+          {% trans "Once registered, you can" %}
+          %a{:href => "https://www.mckinseyacademy.com/login"} {% trans "login" %}
+          {% trans "with the username or email address associated with your account. Save or bookmark this URL to easily access your course or program in the future. Reset your password anytime by using the" %}
+          %a{:href => "https://www.mckinseyacademy.com/login"} {% trans "Forgot password?" %}
+          {% trans "link." %}
+
 
         %hr.hr-lg.blank#navigation-platform
-        
+
         %h2 {% trans "Navigation and platform highlights" %}
-        {% blocktrans %}
-            %p 
-                Depending on your course or program, you'll be directed to the 
-                %i My Courses
-                or 
-                %i Learner Dashboard
-                landing page.
-        {% endblocktrans %}
+        %p {% trans "Depending on your course or program, you'll be directed to the My Courses or Learner Dashboard landing page." %}
         %div.illustrations
-            .img-with-cap.fifty-half
-                %p
-                    %img{:alt => "", :src => "/static/image/guide/my-courses-footprint@1x.svg"}/
-                {% trans "My Courses" %}
-            .img-with-cap.fifty-half
-                %p
-                    %img{:alt => "", :src => "/static/image/guide/learner-dashboard-footprint@1x.svg"}/
-                {% trans "Learner Dashboard" %}
+          .img-with-cap.fifty-half
+            %p
+              %img{:alt => "", :src => "/static/image/guide/my-courses-footprint@1x.svg"}/
+            {% trans "My Courses" %}
+          .img-with-cap.fifty-half
+            %p
+              %img{:alt => "", :src => "/static/image/guide/learner-dashboard-footprint@1x.svg"}/
+            {% trans "Learner Dashboard" %}
         %hr.blank
         %p {% trans "From here, you can navigate to the courses or activities you're enrolled in. Return to your landing page anytime using the main navigation." %}
         %p {% trans "See below for more information on" %}
-            %a{:href => "/courses"} {% trans "Learner Dashboards" %}
-            .
-        
+          %a{:href => "http://mckinseyacademy.com/courses"} {% trans "Learner Dashboards" %}
+          .
+
         %hr.blank
-        
+
         %h5 {% trans "COURSE OVERVIEW" %}
         %p {% trans "Each course has an overview page where you can access lessons, course materials, announcements, and resources." %}
         %div.illustrations
-            %img.full-width{:alt => "", :src => "/static/image/guide/course-overview-footprint@1x.svg"}/
+          %img.full-width{:alt => "", :src => "/static/image/guide/course-overview-footprint@1x.svg"}/
         %p {% trans "Depending on your course, you can also explore course features such as Discussions, Group Work, and cohort Leaderboard. Note: not all courses have all features." %}
         %h5 {% trans "LESSONS" %}
         %p {% trans "Lessons are composed of individual modules. Complete the modules to complete the lesson. Complete the lessons to complete the course." %}
-        %p {% trans "View modules in fullscreen mode" %} 
-            %i.material-icons
-                zoom_out_map
-            {% trans "to put learning front-and-center. Move between modules by using the contextual navigation on screen." %}
+        %p {% trans "View modules in fullscreen mode" %}
+          %i.material-icons
+            zoom_out_map
+          {% trans "to put learning front-and-center. Move between modules by using the contextual navigation on screen." %}
         %div.illustrations
-            %img.sixty-6{:alt => "", :src => "/static/image/guide/prev-next-module-navigator@1x.svg"}/
-        {% blocktrans %} 
-            %p
-                Use the module navigator in the lesson title to jump to a specific module. Here you can also see the status of individual modules: 
-                not started
-                %i.material-icons.gray
-                    panorama_fish_eye
-                , in progress 
-                %i.material-icons.gray
-                    tonality
-                , and completed
-                %i.material-icons
-                    check_circle
-                .
-        {% endblocktrans %}
-            .illustrations
-                %img.sixty-6{:alt => "", :src => "/static/image/guide/progress@1x.svg"}/
-            %p {% trans "As you complete modules and lessons, your completion status will update in detail on the My Progress page." %}
+          %img.sixty-6{:alt => "", :src => "/static/image/guide/prev-next-module-navigator@1x.svg"}/
+          %p
+            {% trans "Use the module navigator in the lesson title to jump to a specific module. Here you can also see the status of individual modules:" %}
+            {% trans "not started" %}
+            %i.material-icons
+              panorama_fish_eye
+            {% trans ", in progress " %}
+            %i.material-icons
+              tonality
+            {% trans ", and completed " %}
+            %i.material-icons
+              check_circle
+            .
+          .illustrations
+            %img.sixty-6{:alt => "", :src => "/static/image/guide/progress@1x.svg"}/
+          %p {% trans "As you complete modules and lessons, your completion status will update in detail on the My Progress page." %}
 
-            %hr.blank.hr-lg
-            
-            %h5 {% trans "Learner Dashboard" %}
-            %p {% trans "Learner Dashboards help you manage program activities. Keep track of deadlines and milestones with your Calendar, participate in threaded Discussions, and complete group activities via the Miniboard." %}
-            %p {% trans "Your course might be designed to unfold over time. You may find some tiles are locked until they’re ready to be used." %}
+          %hr.blank.hr-lg
 
-            %hr.blank.hr-lg#mobile-app
+          %h5 {% trans "Learner Dashboard" %}
+          %p {% trans "Learner Dashboards help you manage program activities. Keep track of deadlines and milestones with your Calendar, participate in threaded Discussions, and complete group activities via the Miniboard." %}
+          %p {% trans "Your course might be designed to unfold over time. You may find some tiles are locked until they’re ready to be used." %}
 
-            %h2 {% trans "Mobile App" %}
-            {% blocktrans %} 
-                %p Your courses may also be available on mobile. You can download our mobile app on the 
-                    %a{:href => "https://itunes.apple.com/us/app/mckinsey-academy/id1343006364", :target => "_blank"} App Store
-                    or on
-                    %a{:href => "https://play.google.com/store/apps/details?id=com.mckinseyacademy.android", :target => "_blank"} Google Play.
-            {% endblocktrans %}
+          %hr.blank.hr-lg#mobile-app
+
+          %h2 {% trans "Mobile App" %}
+          %p
+            {% trans "Your courses may also be available on mobile. You can download our mobile app on the" %}
+            %a{:href => "https://itunes.apple.com/us/app/mckinsey-academy/id1343006364", :target => "_blank"} {% trans "App Store" %}
+            {% trans "or on" %}
+            %a{:href => "https://play.google.com/store/apps/details?id=com.mckinseyacademy.android", :target => "_blank"} {% trans "Google Play." %}
             %div.illustrations
-                %img{:alt => "", :src => "/static/image/guide/mobile-app.png"}/
+              %img{:alt => "", :src => "/static/image/guide/mobile-app.png"}/
             %hr.blank.hr-lg
             %div.illustrations
-                %a{:href => "https://itunes.apple.com/us/app/mckinsey-academy/id1343006364", :target => "_blank"}
-                    %img.height-40{:alt => "", :src => "/static/image/guide/app-store.png"}/
-                %a{:href => "https://play.google.com/store/apps/details?id=com.mckinseyacademy.android", :target => "_blank"}
-                    %img.height-40{:alt => "", :src => "/static/image/guide/google-play.png"}/
+              %a{:href => "https://itunes.apple.com/us/app/mckinsey-academy/id1343006364", :target => "_blank"}
+                %img.height-40{:alt => "", :src => "/static/image/guide/app-store.png"}/
+              %a{:href => "https://play.google.com/store/apps/details?id=com.mckinseyacademy.android", :target => "_blank"}
+                %img.height-40{:alt => "", :src => "/static/image/guide/google-play.png"}/
     .row.justify-content-center
-        .col-lg-8.col-md-12.static-page.guide-footer
-            {% blocktrans %} 
-                %p 
-                    %b Still have questions? 
-                    Visit our 
-                    %a{:href => "/faq"} FAQs
-                    for more guidance.
-            {% endblocktrans %}
-
+      .col-lg-8.col-md-12.static-page.guide-footer
+        %p
+          %b {% trans "Still have questions?" %}
+          {% trans "Visit our " %}
+          %a{:href => "/faq"} {% trans "FAQs" %}
+          {% trans "for more guidance." %}
