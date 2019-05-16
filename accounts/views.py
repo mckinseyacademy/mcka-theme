@@ -1047,8 +1047,8 @@ def home(request):
         mobile_popup_data = get_mobile_app_download_popup_data(request)
         data.update(mobile_popup_data)
 
-    if user_data.get('new_ui_enabled'):
-        sso_user = bool(request.session.get('sso_user'))
+    sso_user = bool(request.session.get('sso_user'))
+    if user_data.get('new_ui_enabled') or sso_user:
         return HttpResponseRedirect(_get_redirect_to_current_course(request, sso_user))
 
     return render(request, 'home/landing.haml', data)
