@@ -6,7 +6,7 @@ import pytz
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
-
+from django.conf import settings
 
 from accounts.json_backend import JsonBackend
 from api_data_manager.organization_data import OrgDataManager
@@ -282,8 +282,8 @@ def standard_data(request):
         "learner_dashboards": learner_dashboards,
         "show_my_courses": show_my_courses,
         "show_new_ui_tour": show_new_ui_tour,
-        "zoomed_in_lesson_navigators": "/lessons/" not in request.META.get('HTTP_REFERER', '')
-
+        "zoomed_in_lesson_navigators": "/lessons/" not in request.META.get('HTTP_REFERER', ''),
+        "react_native_app": settings.REACT_NATIVE_UA_PREFIX in request.META.get('HTTP_USER_AGENT', '')
     }
 
     return data

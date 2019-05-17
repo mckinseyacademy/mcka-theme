@@ -712,3 +712,5 @@ MOBILE_URL_SCHEMES = [
     'mckinsey-mcka-hla-release',
     'mckinsey-horizon-release',
 ]
+
+REACT_NATIVE_UA_PREFIX = 'com.mcka.RNApp'

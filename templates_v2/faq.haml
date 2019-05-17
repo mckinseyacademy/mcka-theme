@@ -1,6 +1,10 @@
 - extends "layout.haml"
 - load i18n
 
+- block header
+  - if not react_native_app
+    - include 'header.haml'
+
 - block content
   .container
     .row.justify-content-center
