@@ -34,8 +34,8 @@
                       #mk_overview_player.thumb
                         - if overview.video
                           #mk-player{'data-video-id': "#{overview.course_video}"}
-                        - elif overview.course_image_url
-                          %img{'src': '#{overview.course_image_url}'}
+                        - elif overview.course_image_urls
+                          %img{'src': '#{overview.course_image_urls.large}'}
                       .video-overview.hidden
                         %i.fa.fa-play-circle
                         %span {% trans "Course Overview" %}
