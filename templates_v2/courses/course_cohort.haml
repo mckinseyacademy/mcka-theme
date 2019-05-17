@@ -110,11 +110,11 @@
                       .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the engagement leaderboard {% endblocktrans %}
                     - elif social.position
                       .rank
-                      %h5 {% trans "Position" %}                      
-                      .position
-                        {% blocktrans with position=social.position total=completions.total_users %}
-                          You are ranked <b>##{position}</b> out of {{total}} members in your cohort.
-                        {% endblocktrans %}
+                        %h5 {% trans "Position" %}
+                        .position
+                          {% blocktrans with position=social.position total=completions.total_users %}
+                            You are ranked <b>##{position}</b> out of {{total}} members in your cohort.
+                          {% endblocktrans %}
                     - else
                       .rank.default {% trans "Your engagement position will be displayed here" %}
                   .top-ranking
@@ -191,11 +191,12 @@
                     - if user_role
                       .rank.default {% blocktrans with role_user=user_role %} As {{role_user}} user you will not appear on the proficiency leaderboard {% endblocktrans %}
                     - elif proficiency.user_position and proficiency.user_grade_value
-                      .rank {% trans "Position" %}
-                      .position
-                        {% blocktrans with position=proficiency.user_position total=completions.total_users %}
-                          You are ranked <b>##{position}</b> out of {{total}} members in your cohort.
-                        {% endblocktrans %}
+                      .rank
+                        %h5 {% trans "Position" %}
+                        .position
+                          {% blocktrans with position=proficiency.user_position total=completions.total_users %}
+                            You are ranked <b>##{position}</b> out of {{total}} members in your cohort.
+                          {% endblocktrans %}
                     - else
                       .rank.default {% trans "Your proficiency position will be displayed here" %}
                   .top-ranking
