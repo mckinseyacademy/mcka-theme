@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-16 11:51+0000\n"
+"POT-Creation-Date: 2019-05-20 07:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1323,8 +1323,8 @@ msgstr "使用您提供的注册密钥注册课程时出错"
 
 #: accounts/views.py:356
 msgid ""
-"Your account has already been activated. Please enter credentials to login"
-msgstr "您的帐户已激活。请输入凭据登录"
+"Your account has already been activated. Please enter credentials to login."
+msgstr "您的帐户已激活。请输入凭据登录."
 
 #: accounts/views.py:362
 msgid "Log In"
@@ -1370,37 +1370,37 @@ msgstr "缺少访问密钥。"
 msgid "REGISTER"
 msgstr ""
 
-#: accounts/views.py:855
+#: accounts/views.py:856
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "无法注册用户：{exception_message}"
 
-#: accounts/views.py:857
+#: accounts/views.py:858
 msgid "Some required information was missing."
 msgstr "缺少一些必要信息。"
 
-#: accounts/views.py:859
+#: accounts/views.py:860
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
 msgstr "缺少身份验证 Cookie。您的会话可能已超时。请重新开始。"
 
-#: accounts/views.py:908
+#: accounts/views.py:909
 msgid "Enter new password"
 msgstr "输入新密码"
 
-#: accounts/views.py:925
+#: accounts/views.py:926
 msgid "Password reset unsuccessful"
 msgstr "密码重置不成功"
 
-#: accounts/views.py:1023 lib/mail.py:133 templates/accounts/activate.haml:16
+#: accounts/views.py:1024 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:272
 #: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "Welcome to McKinsey Academy"
 msgstr "欢迎来到麦肯锡学院"
 
-#: accounts/views.py:1024
+#: accounts/views.py:1025
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1409,7 +1409,7 @@ msgstr ""
 "您的计划将在 {days} 天后开始。在此期间，请浏览该网站了解更多有关此体验的信"
 "息。"
 
-#: accounts/views.py:1028
+#: accounts/views.py:1029
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1418,11 +1418,11 @@ msgstr ""
 "您的课程将在 {days} 天后开始。在课程开始之前，您可以浏览本网站了解更多有关课"
 "程内容的信息。"
 
-#: accounts/views.py:1206 templates_v2/layout.haml:249
+#: accounts/views.py:1208 templates_v2/layout.haml:249
 msgid "Enter your full name"
 msgstr "输入您的全名"
 
-#: accounts/views.py:1208 accounts/views.py:1233 admin/views.py:2006
+#: accounts/views.py:1210 accounts/views.py:1235 admin/views.py:2006
 #: admin/views.py:2040 admin/views.py:4725
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
@@ -1442,7 +1442,7 @@ msgstr "输入您的全名"
 msgid "Save"
 msgstr "保存"
 
-#: accounts/views.py:1231 templates_v2/header.haml:60
+#: accounts/views.py:1233 templates_v2/header.haml:60
 #: templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "输入您的职位"
@@ -2302,7 +2302,7 @@ msgstr "此课程没有可用的小组项目"
 #: templates/courses/course_group_work.haml:13
 #: templates/courses/course_progress.haml:70 templates/faq.haml:39
 #: templates_v2/courses/course_progress_v2.haml:225
-#: templates_v2/courses/course_progress_v2.haml:239 templates_v2/faq.haml:84
+#: templates_v2/courses/course_progress_v2.haml:239 templates_v2/faq.haml:88
 msgid "Group Work"
 msgstr "小组作业"
 
@@ -3290,7 +3290,7 @@ msgstr "注册演示视频 | 麦肯锡学院"
 #: templates/layout.haml:26 templates/privacy.haml:130
 #: templates/terms_of_service.haml:113
 #: templates_v2/accounts/public_registration.haml:8 templates_v2/layout.haml:75
-#: templates_v2/privacy.haml:130 templates_v2/terms_of_service.haml:113
+#: templates_v2/privacy.haml:134 templates_v2/terms_of_service.haml:113
 msgid "McKinsey Academy"
 msgstr "麦肯锡学院"
 
@@ -6501,7 +6501,7 @@ msgstr "排行榜"
 
 #: templates/courses/course_cohort.haml:32
 #: templates/courses/visualizations/course_proficiency.haml:8
-#: templates_v2/faq.haml:164
+#: templates_v2/faq.haml:168
 msgid "Proficiency:"
 msgstr "熟练程度："
 
@@ -6558,7 +6558,7 @@ msgstr "100"
 #: templates/courses/course_cohort.haml:102
 #: templates/courses/course_progress.haml:84
 #: templates/courses/visualizations/course_progress.haml:8
-#: templates_v2/faq.haml:167
+#: templates_v2/faq.haml:171
 msgid "Progress:"
 msgstr "进度："
 
@@ -6588,7 +6588,7 @@ msgstr "100%%"
 
 #: templates/courses/course_cohort.haml:165
 #: templates/courses/visualizations/course_engagement.haml:8
-#: templates_v2/faq.haml:170
+#: templates_v2/faq.haml:174
 msgid "Engagement:"
 msgstr "参与度："
 
@@ -7873,11 +7873,11 @@ msgstr "参与者常见问题"
 msgid "ACCESS:"
 msgstr "访问："
 
-#: templates/faq.haml:10 templates_v2/faq.haml:14
+#: templates/faq.haml:10 templates_v2/faq.haml:18
 msgid "Which browsers are recommended for use with McKinsey Academy?"
 msgstr "推荐使用哪些浏览器来访问麦肯锡学院？"
 
-#: templates/faq.haml:11 templates_v2/faq.haml:17
+#: templates/faq.haml:11 templates_v2/faq.haml:21
 msgid ""
 "We recommend the latest versions of Google Chrome, Mozilla Firefox, and "
 "Apple Safari for an optimal experience. McKinsey Academy is not accessible "
@@ -7887,36 +7887,36 @@ msgstr ""
 "最佳体验。使用某些较早版本的浏览器（如 Internet Explorer 8）无法访问麦肯锡学"
 "院。"
 
-#: templates/faq.haml:12 templates_v2/faq.haml:20
+#: templates/faq.haml:12 templates_v2/faq.haml:24
 msgid ""
 "What if I have technical trouble with registration, login, or course access?"
 msgstr "如果我在注册、登录或课程访问方面遇到技术问题该怎么办？"
 
-#: templates/faq.haml:13 templates_v2/faq.haml:22
+#: templates/faq.haml:13 templates_v2/faq.haml:26
 msgid ""
 "Many problems with registration, login, or access to courses are caused by "
 "browser issues. Here are some things to try:"
 msgstr ""
 "许多注册、登录或课程访问方面的问题都是由浏览器问题造成。您可以尝试以下操作："
 
-#: templates/faq.haml:15 templates_v2/faq.haml:24
+#: templates/faq.haml:15 templates_v2/faq.haml:28
 msgid "Switch to a current version of Chrome or Firefox"
 msgstr "切换到最新版本的 Chrome 或 Firefox"
 
-#: templates/faq.haml:16 templates_v2/faq.haml:25
+#: templates/faq.haml:16 templates_v2/faq.haml:29
 msgid ""
 "Check your browser settings to ensure both JavaScript and cookies are enabled"
 msgstr "检查您的浏览器设置，确保已启用 JavaScript 和 Cookie"
 
-#: templates/faq.haml:17 templates_v2/faq.haml:26
+#: templates/faq.haml:17 templates_v2/faq.haml:30
 msgid "Clear your browser's cache"
 msgstr "清除浏览器的缓存"
 
-#: templates/faq.haml:18 templates_v2/faq.haml:29
+#: templates/faq.haml:18 templates_v2/faq.haml:33
 msgid "Which devices are recommended for use with McKinsey Academy?"
 msgstr "推荐使用哪些设备来访问麦肯锡学院？"
 
-#: templates/faq.haml:19 templates_v2/faq.haml:31
+#: templates/faq.haml:19 templates_v2/faq.haml:35
 msgid ""
 "The platform is accessible on all computer and tablet devices. The site is "
 "currently not optimized for mobile device use, and you will not currently be "
@@ -7925,22 +7925,22 @@ msgstr ""
 "该平台可在所有计算机和平板电脑设备上访问。该网站目前尚未对移动设备使用进行优"
 "化，您目前无法在手机上访问课程内容。"
 
-#: templates/faq.haml:20 templates_v2/faq.haml:34
+#: templates/faq.haml:20 templates_v2/faq.haml:38
 msgid "How can I sign-up for a McKinsey Academy course or program?"
 msgstr "如何注册麦肯锡学院课程或计划？"
 
-#: templates/faq.haml:21 templates_v2/faq.haml:36
+#: templates/faq.haml:21 templates_v2/faq.haml:40
 msgid ""
 "At this time, McKinsey Academy courses are only available to companies. If "
 "you are interested in inquiring further, please contact us."
 msgstr ""
 "目前，麦肯锡学院课程仅面向公司开放。如果您有意进一步询问，请与我们联系。"
 
-#: templates/faq.haml:22 templates_v2/faq.haml:39
+#: templates/faq.haml:22 templates_v2/faq.haml:43
 msgid "How can I change the name or email address on my account?"
 msgstr "如何更改帐户的用户名或电子邮件地址？"
 
-#: templates/faq.haml:23 templates_v2/faq.haml:42
+#: templates/faq.haml:23 templates_v2/faq.haml:46
 msgid ""
 "To change your name, log in, and find your profile in the upper right-hand "
 "corner of your screen. Click the down arrow and select \"Edit\" next to your "
@@ -7961,7 +7961,7 @@ msgstr ""
 "要更改您的电子邮件地址，请发送电子邮件至 <a href=\"mailto:"
 "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>。"
 
-#: templates/faq.haml:25 templates_v2/faq.haml:48
+#: templates/faq.haml:25 templates_v2/faq.haml:52
 msgid "My account login isn't working."
 msgstr "我的帐户登录信息无效。"
 
@@ -7979,7 +7979,7 @@ msgstr ""
 "如果忘记密码，请尝试单击登录屏幕上的“忘记我的密码”来重置密码。如果该操作不管"
 "用，请发送电子邮件至 "
 
-#: templates/faq.haml:27 templates_v2/faq.haml:55
+#: templates/faq.haml:27 templates_v2/faq.haml:59
 msgid "I can't access a course I'm enrolled in."
 msgstr "我无法访问我注册的课程。"
 
@@ -7998,7 +7998,7 @@ msgstr ""
 "用于在多个课程之间移动的下拉菜单位于第二个（浅蓝色）导航栏的最左侧。如果您要"
 "注册的课程未出现在该下拉菜单中，请发送电子邮件至"
 
-#: templates/faq.haml:29 templates_v2/faq.haml:62
+#: templates/faq.haml:29 templates_v2/faq.haml:66
 msgid "How can I stop or start receiving emails from my courses?"
 msgstr "如何停止或开始接收来自我的课程的电子邮件？"
 
@@ -8033,11 +8033,11 @@ msgstr ""
 msgid "COURSES:"
 msgstr "课程："
 
-#: templates/faq.haml:32 templates_v2/faq.haml:71
+#: templates/faq.haml:32 templates_v2/faq.haml:75
 msgid "When does my course start and/or finish?"
 msgstr "我的课程何时开始和/或结束？"
 
-#: templates/faq.haml:33 templates_v2/faq.haml:73
+#: templates/faq.haml:33 templates_v2/faq.haml:77
 msgid ""
 "You can find the start date and course duration for each course on its "
 "course overview page.  You will receive a welcome email when the course is "
@@ -8046,7 +8046,7 @@ msgstr ""
 "您可以在课程概述页面上找到每门课程的开课日期和课程持续时间。课程开放时您将收"
 "到欢迎电子邮件。"
 
-#: templates/faq.haml:34 templates_v2/faq.haml:76
+#: templates/faq.haml:34 templates_v2/faq.haml:80
 msgid "What are passing requirements for courses?"
 msgstr "课程的通过要求是什么？"
 
@@ -8060,38 +8060,38 @@ msgstr ""
 "您需要完成所有小组作业和反馈活动，并获得至少 70%% 分的综合课程评分，才能获得"
 "计划结业证书。您的课程评分计算如下："
 
-#: templates/faq.haml:37 templates_v2/faq.haml:81
+#: templates/faq.haml:37 templates_v2/faq.haml:85
 msgid "End of lesson (EOL) assessments"
 msgstr "课时结束 (EOL) 评定"
 
-#: templates/faq.haml:38 templates_v2/faq.haml:82
+#: templates/faq.haml:38 templates_v2/faq.haml:86
 msgid ""
 "Note that EOL assessments vary based on number of lessons and may not be "
 "included in some lessons"
 msgstr "请注意，EOL 评定根据课时数量而有所不同，可能不会包含在某些课时中"
 
-#: templates/faq.haml:40 templates_v2/faq.haml:85
+#: templates/faq.haml:40 templates_v2/faq.haml:89
 msgid ""
 "Note that Group Work may be made up of one or more activities which are "
 "graded throughout the duration of a course"
 msgstr ""
 "请注意，小组作业可能由一个或多个活动组成，这些活动会在整个课程期间进行评分"
 
-#: templates/faq.haml:41 templates_v2/faq.haml:86
+#: templates/faq.haml:41 templates_v2/faq.haml:90
 msgid "Final Assessment"
 msgstr "最终评定"
 
-#: templates/faq.haml:42 templates_v2/faq.haml:87
+#: templates/faq.haml:42 templates_v2/faq.haml:91
 msgid ""
 "There is no minimum amount of course content that must be completed, but "
 "participants must complete the Final Assessment."
 msgstr "必须完成的课程内容没有最低限度，但参与者必须完成最终评定。"
 
-#: templates/faq.haml:43 templates_v2/faq.haml:90
+#: templates/faq.haml:43 templates_v2/faq.haml:94
 msgid "How do I log in to take a McKinsey Academy course?"
 msgstr "如何登录参加麦肯锡学院课程？"
 
-#: templates/faq.haml:44 templates_v2/faq.haml:92
+#: templates/faq.haml:44 templates_v2/faq.haml:96
 msgid ""
 "Once you activate your account, click on the \"Log in\" button on the "
 "McKinsey Academy home page and type in your username and password. This will "
@@ -8100,11 +8100,11 @@ msgstr ""
 "激活帐户后，单击麦肯锡学院主页上的“登录”按钮并输入用户名和密码。系统将为您导"
 "航到当前的课程页面。"
 
-#: templates/faq.haml:45 templates_v2/faq.haml:95
+#: templates/faq.haml:45 templates_v2/faq.haml:99
 msgid "How much time should I expect to devote to each course?"
 msgstr "我预计要投入多少时间来学习每门课程？"
 
-#: templates/faq.haml:46 templates_v2/faq.haml:97
+#: templates/faq.haml:46 templates_v2/faq.haml:101
 msgid ""
 "The projected time commitment required for each course is included on the "
 "course overview page. We typically find that dedicating 60-120 minutes per "
@@ -8113,20 +8113,20 @@ msgstr ""
 "课程概述页面包含每门课程所需的预计时间投入。我们通常发现，每周投入 60 至 120 "
 "分钟就足以完成所有课程要求，包括小组作业。"
 
-#: templates/faq.haml:47 templates_v2/faq.haml:100
+#: templates/faq.haml:47 templates_v2/faq.haml:104
 msgid "Can I take more than one course at a time?"
 msgstr "我可以同时参加多门课程吗？"
 
-#: templates/faq.haml:48 templates_v2/faq.haml:102
+#: templates/faq.haml:48 templates_v2/faq.haml:106
 msgid ""
 "McKinsey Academy programs are a collection of courses taken one at a time."
 msgstr "麦肯锡学院计划是一组一次参加一门的课程。"
 
-#: templates/faq.haml:49 templates_v2/faq.haml:105
+#: templates/faq.haml:49 templates_v2/faq.haml:109
 msgid "What time is the class?"
 msgstr "什么时候上课？"
 
-#: templates/faq.haml:50 templates_v2/faq.haml:107
+#: templates/faq.haml:50 templates_v2/faq.haml:111
 msgid ""
 "McKinsey Academy courses take place at your convenience. Videos and "
 "assignments are available 24 hours a day, which means you can watch videos "
@@ -8140,11 +8140,11 @@ msgstr ""
 "然小组作业活动具有截止日期，但这些活动均提供了足够的交付周期，以便您轻松安排"
 "工作。"
 
-#: templates/faq.haml:51 templates_v2/faq.haml:110
+#: templates/faq.haml:51 templates_v2/faq.haml:114
 msgid "If I miss a week, how does this affect my performance?"
 msgstr "如果我有一周未参与，这对我的表现会有什么影响？"
 
-#: templates/faq.haml:52 templates_v2/faq.haml:112
+#: templates/faq.haml:52 templates_v2/faq.haml:116
 msgid ""
 "It is certainly possible to finish a McKinsey Academy course if you miss a "
 "week; however you should certainly review content you may have missed. If "
@@ -8158,11 +8158,11 @@ msgstr ""
 "他成员联系。查看小组作业和课程概述来了解重要日期和时间，以便在您离开时不错过"
 "提交截止日期。"
 
-#: templates/faq.haml:53 templates_v2/faq.haml:115
+#: templates/faq.haml:53 templates_v2/faq.haml:119
 msgid "I missed a deadline; can I get an extension?"
 msgstr "我错过了截止日期；可以延期吗？"
 
-#: templates/faq.haml:54 templates_v2/faq.haml:117
+#: templates/faq.haml:54 templates_v2/faq.haml:121
 msgid ""
 "We are not able to offer individual extensions as course schedules are fixed "
 "and there is no way to change the dates of assignments or exams for one "
@@ -8171,11 +8171,11 @@ msgstr ""
 "我们无法为个人提供延期，因为课程时间表均已固定，无法为某一个参与者而更改任务"
 "或考试日期。"
 
-#: templates/faq.haml:55 templates_v2/faq.haml:120
+#: templates/faq.haml:55 templates_v2/faq.haml:124
 msgid "My course deadlines are in UTC, what’s that?"
 msgstr "我的课程截止日期使用的是 UTC，这是什么？"
 
-#: templates/faq.haml:56 templates_v2/faq.haml:122
+#: templates/faq.haml:56 templates_v2/faq.haml:126
 msgid ""
 "UTC refers to Universal Coordinated Time. To find the current time in UTC "
 "and convert it to your local time, check World Time Server or other Internet "
@@ -8184,7 +8184,7 @@ msgstr ""
 "UTC 是指世界协调时间。要查找当前 UTC 时间并将其转换为当地时间，请查看 World "
 "Time Server 或其他互联网时间服务。"
 
-#: templates/faq.haml:57 templates_v2/faq.haml:125
+#: templates/faq.haml:57 templates_v2/faq.haml:129
 msgid "What if I have a question or concern regarding course grading?"
 msgstr "如果我对课程评分有疑问或疑虑该怎么办？"
 
@@ -8196,23 +8196,23 @@ msgid ""
 "\"#{support}\">TAs</a>."
 msgstr "如果您对收到的评分有任何疑问，请发送电子邮件至"
 
-#: templates/faq.haml:59 templates_v2/faq.haml:132
+#: templates/faq.haml:59 templates_v2/faq.haml:136
 msgid "How can I meet/find other participants?"
 msgstr "如何才能见到/找到其他参与者？"
 
-#: templates/faq.haml:60 templates_v2/faq.haml:134
+#: templates/faq.haml:60 templates_v2/faq.haml:138
 msgid ""
 "All McKinsey Academy courses have discussion forums where you can chat with "
 "and help other participants."
 msgstr "所有麦肯锡学院课程都有论坛，您可以在其中与其他参与者聊天并提供帮助。"
 
-#: templates/faq.haml:61 templates_v2/faq.haml:137
+#: templates/faq.haml:61 templates_v2/faq.haml:141
 msgid ""
 "How can I talk to McKinsey practitioners teaching my courses and teaching "
 "assistants?"
 msgstr "如何与教授课程的麦肯锡从业人员和助教交流？"
 
-#: templates/faq.haml:62 templates_v2/faq.haml:139
+#: templates/faq.haml:62 templates_v2/faq.haml:143
 msgid ""
 "The discussion forum is the best place to reach out to the McKinsey Academy "
 "course team for your cohort; just post your questions or email the TA. We do "
@@ -8221,7 +8221,7 @@ msgstr ""
 "论坛是与所在群组的麦肯锡学院课程团队接触的最佳场所；只需发布您的问题或发送电"
 "子邮件给助教即可。我们将尽最大努力尽快回复。"
 
-#: templates/faq.haml:63 templates_v2/faq.haml:142
+#: templates/faq.haml:63 templates_v2/faq.haml:146
 msgid "How do I get help and support regarding my course?"
 msgstr "如何获得课程帮助和支持？"
 
@@ -8249,22 +8249,22 @@ msgstr ""
 "通过<a href=\"mailto:tas@mckinseyacademy.com\">发送电子邮件</a>与麦肯锡助教联"
 "系，他们会尽快回复您。"
 
-#: templates/faq.haml:65 templates_v2/faq.haml:150
+#: templates/faq.haml:65 templates_v2/faq.haml:154
 msgid "Can I re-take a course?"
 msgstr "我可以重新参加课程吗？"
 
-#: templates/faq.haml:66 templates_v2/faq.haml:152
+#: templates/faq.haml:66 templates_v2/faq.haml:156
 msgid ""
 "McKinsey Academy courses cannot be re-taken, but exercises and materials "
 "remain available for 12 months after the course ends."
 msgstr ""
 "麦肯锡学院的课程不能重新参加，但课程结束后的 12 个月内，练习和材料仍然可用。"
 
-#: templates/faq.haml:67 templates_v2/faq.haml:155
+#: templates/faq.haml:67 templates_v2/faq.haml:159
 msgid "Can I access the course content after my course ends?"
 msgstr "课程结束后我可以访问课程内容吗？"
 
-#: templates/faq.haml:68 templates_v2/faq.haml:157
+#: templates/faq.haml:68 templates_v2/faq.haml:161
 msgid ""
 "McKinsey Academy past courses are available as archives for 12 months after "
 "the course ends. These courses can only be audited and some features, such "
@@ -8273,7 +8273,7 @@ msgstr ""
 "麦肯锡学院以往的课程可在课程结束后 12 个月内以存档形式提供。这些课程只能旁"
 "听，并且某些功能（如论坛）可能无法使用。"
 
-#: templates/faq.haml:69 templates_v2/faq.haml:160
+#: templates/faq.haml:69 templates_v2/faq.haml:164
 msgid ""
 "What information is displayed in visualizations on the course home page?"
 msgstr "课程主页上以可视化形式显示哪些信息？"
@@ -8309,29 +8309,29 @@ msgstr ""
 msgid "CERTIFICATES:"
 msgstr "证书："
 
-#: templates/faq.haml:75 templates_v2/faq.haml:175
+#: templates/faq.haml:75 templates_v2/faq.haml:179
 msgid "Will my certificate include an overall program grade?"
 msgstr "我的证书是否包括课程计划的总体成绩？"
 
-#: templates/faq.haml:76 templates_v2/faq.haml:177
+#: templates/faq.haml:76 templates_v2/faq.haml:181
 msgid "Your certificate will not include final grades."
 msgstr "您的证书不包括最终成绩。"
 
-#: templates/faq.haml:77 templates_v2/faq.haml:180
+#: templates/faq.haml:77 templates_v2/faq.haml:184
 msgid "Can I get a paper copy of my certificate?"
 msgstr "我可以获得纸质证书副本吗？"
 
-#: templates/faq.haml:78 templates_v2/faq.haml:182
+#: templates/faq.haml:78 templates_v2/faq.haml:186
 msgid ""
 "McKinsey Academy certificates are digital files which you can print on "
 "standard size paper."
 msgstr "麦肯锡学院的证书为数字文件，您可以将其打印在标准规格的纸张上。"
 
-#: templates/faq.haml:79 templates_v2/faq.haml:185
+#: templates/faq.haml:79 templates_v2/faq.haml:189
 msgid "How are certificates determined?"
 msgstr "如何确定是否颁发证书？"
 
-#: templates/faq.haml:80 templates_v2/faq.haml:187
+#: templates/faq.haml:80 templates_v2/faq.haml:191
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
@@ -8340,25 +8340,25 @@ msgstr ""
 "要想有资格获得 MMP 结业证书，参与者需要在该课程计划的 4 门核心课程中取得 "
 "70%% 分或以上的成绩。"
 
-#: templates/faq.haml:81 templates_v2/faq.haml:190
+#: templates/faq.haml:81 templates_v2/faq.haml:194
 msgid "How are McKinsey Academy certificates delivered?"
 msgstr "麦肯锡学院的证书如何递送？"
 
-#: templates/faq.haml:82 templates_v2/faq.haml:192
+#: templates/faq.haml:82 templates_v2/faq.haml:196
 msgid ""
 "McKinsey Academy certificates are delivered via email following successful "
 "completion of a program."
 msgstr "麦肯锡学院的证书将在课程计划成功结业后通过电子邮件递送。"
 
-#: templates/faq.haml:83 templates_v2/faq.haml:193
+#: templates/faq.haml:83 templates_v2/faq.haml:197
 msgid "TECHNICAL ISSUES:"
 msgstr "技术问题："
 
-#: templates/faq.haml:84 templates_v2/faq.haml:196
+#: templates/faq.haml:84 templates_v2/faq.haml:200
 msgid "How can I get technical support?"
 msgstr "如何获得技术支持？"
 
-#: templates/faq.haml:85 templates_v2/faq.haml:198
+#: templates/faq.haml:85 templates_v2/faq.haml:202
 msgid ""
 "If you are having technical issues, please contact us here so we can resolve "
 "your problem. and we will get back to you by the next business day (likely "
@@ -8367,36 +8367,36 @@ msgstr ""
 "如果遇到技术问题，请在此处与我们联系，以便我们解决您的问题，我们会在下一个工"
 "作日（可能更早）答复您。"
 
-#: templates/faq.haml:86 templates_v2/faq.haml:201
+#: templates/faq.haml:86 templates_v2/faq.haml:205
 msgid "What if I did not receive my password reset email?"
 msgstr "如果没有收到密码重置电子邮件，我该怎么办？"
 
-#: templates/faq.haml:87 templates_v2/faq.haml:203
+#: templates/faq.haml:87 templates_v2/faq.haml:207
 msgid "If you did not receive an automated email it may be because:"
 msgstr "如果您没有收到自动发送的电子邮件，原因可能是："
 
-#: templates/faq.haml:89 templates_v2/faq.haml:205
+#: templates/faq.haml:89 templates_v2/faq.haml:209
 msgid "There was a typo in your email address"
 msgstr "您的电子邮件地址存在拼写错误"
 
-#: templates/faq.haml:90 templates_v2/faq.haml:206
+#: templates/faq.haml:90 templates_v2/faq.haml:210
 msgid ""
 "Your spam filter may have caught the email; please check your spam folder"
 msgstr "垃圾邮件过滤器可能拦截了该封电子邮件；请检查您的垃圾邮件文件夹"
 
-#: templates/faq.haml:91 templates_v2/faq.haml:207
+#: templates/faq.haml:91 templates_v2/faq.haml:211
 msgid ""
 "You may be using an older browser; we recommend downloading the current "
 "version of Chrome or Firefox"
 msgstr "您可能正在使用旧版本浏览器；建议您下载最新版本的 Chrome 或 Firefox"
 
-#: templates/faq.haml:92 templates_v2/faq.haml:208
+#: templates/faq.haml:92 templates_v2/faq.haml:212
 msgid ""
 "JavaScript is disabled in your browser; please check your browser settings "
 "and confirm that JavaScript is enabled"
 msgstr "您的浏览器已禁用 JavaScript；请检查浏览器设置并确认已启用 JavaScript"
 
-#: templates/faq.haml:93 templates_v2/faq.haml:209
+#: templates/faq.haml:93 templates_v2/faq.haml:213
 msgid ""
 "You have not successfully registered an account with McKinsey Academy' "
 "please try registering again with the same email address (if an account "
@@ -8405,14 +8405,14 @@ msgstr ""
 "您尚未成功注册麦肯锡学院帐户。请使用同一电子邮件地址再次尝试注册（如果帐户已"
 "经存在，则将显示电子邮件地址重复错误）"
 
-#: templates/faq.haml:94 templates_v2/faq.haml:212
+#: templates/faq.haml:94 templates_v2/faq.haml:216
 msgid ""
 "What if I have problems with the display (e.g., there are tools missing from "
 "the course display, or I am unable to view video)?"
 msgstr ""
 "如果出现显示问题（例如课程显示中有工具缺失或无法观看视频），我该怎么办？"
 
-#: templates/faq.haml:95 templates_v2/faq.haml:214
+#: templates/faq.haml:95 templates_v2/faq.haml:218
 msgid ""
 "Please check your browser and settings - JavaScript must be enabled. We "
 "recommend downloading and using the current version of either Chrome or "
@@ -8421,7 +8421,7 @@ msgstr ""
 "请检查您的浏览器和设置 — 必须启用 JavaScript。我们建议您下载并使用最新版本的 "
 "Chrome 或 Firefox。"
 
-#: templates/faq.haml:96 templates_v2/faq.haml:217
+#: templates/faq.haml:96 templates_v2/faq.haml:221
 msgid "How can I sign up for a McKinsey Academy course or program?"
 msgstr "如何注册参加麦肯锡学院的课程或计划？"
 
@@ -8429,7 +8429,7 @@ msgstr "如何注册参加麦肯锡学院的课程或计划？"
 msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 msgstr "请<a href=\"mailto:info@mckinseyacademy.com\">联系我们！</a>"
 
-#: templates/faq.haml:98 templates_v2/faq.haml:224
+#: templates/faq.haml:98 templates_v2/faq.haml:228
 msgid "What if my question isn’t answered here?"
 msgstr "如果问题在这里没有得到解答，该怎么办？"
 
@@ -8447,7 +8447,7 @@ msgid "Terms of Service"
 msgstr "服务条款"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
-#: templates_v2/footer.haml:19 templates_v2/privacy.haml:8
+#: templates_v2/footer.haml:19 templates_v2/privacy.haml:12
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "隐私政策"
@@ -8572,6 +8572,8 @@ msgstr "麦肯锡学院概况"
 #: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml:10
 #: templates/marketing/productwalkthrough.haml:9
 #: templates/marketing/productwalkthrough.haml:10
+#: templates_v2/marketing/productwalkthrough.haml:9
+#: templates_v2/marketing/productwalkthrough.haml:10
 msgid ""
 "McKinsey Academy is a dynamic business education platform built to help "
 "organizations thrive by accelerating their talent advantage."
@@ -9233,10 +9235,12 @@ msgid "Elevate their visibility within your organization"
 msgstr "提升其在贵组织内的知名度"
 
 #: templates/marketing/productwalkthrough.haml:5
+#: templates_v2/marketing/productwalkthrough.haml:5
 msgid "Product Walkthrough | McKinsey Academy"
 msgstr "产品详细指导 | 麦肯锡学院"
 
 #: templates/marketing/productwalkthrough.haml:6
+#: templates_v2/marketing/productwalkthrough.haml:6
 msgid "McKinsey Academy Product Walkthrough"
 msgstr "麦肯锡学院产品详细指导"
 
@@ -9886,11 +9890,11 @@ msgstr "重置"
 msgid "Please refresh the page to see the changes applied."
 msgstr "请刷新页面以查看所应用的更改。"
 
-#: templates/privacy.haml:10 templates_v2/privacy.haml:10
+#: templates/privacy.haml:10 templates_v2/privacy.haml:14
 msgid "This Privacy Policy was last updated on November 13, 2017"
 msgstr "本隐私政策的最近更新日期为 2017 年 11 月 13 日"
 
-#: templates/privacy.haml:12 templates_v2/privacy.haml:12
+#: templates/privacy.haml:12 templates_v2/privacy.haml:16
 msgid ""
 "McKinsey & Company and its subsidiaries and affiliates (collectively, "
 "“McKinsey”, “us” or “we”) understands that your privacy is important to you. "
@@ -9903,11 +9907,11 @@ msgstr ""
 "我们可能会处理您的个人数据，且承诺尊重您的隐私并保护您的个人数据，包括在您使"
 "用麦肯锡学院时收集的可以识别您个人身份的任何信息。"
 
-#: templates/privacy.haml:14 templates_v2/privacy.haml:14
+#: templates/privacy.haml:14 templates_v2/privacy.haml:18
 msgid "“McKinsey Academy” refers collectively to any website, including"
 msgstr "“麦肯锡学院”是以下所有有网站的统称，包括："
 
-#: templates/privacy.haml:17 templates_v2/privacy.haml:17
+#: templates/privacy.haml:17 templates_v2/privacy.haml:21
 msgid ""
 " (the “Sites”), and any mobile device or tablet application or similar "
 "software (each a “Mobile Offering”) that is provided by us and that links to "
@@ -9924,21 +9928,21 @@ msgstr ""
 "请参阅我们的"
 
 #: templates/privacy.haml:19 templates/terms_of_service.haml:3
-#: templates_v2/privacy.haml:19 templates_v2/terms_of_service.haml:3
+#: templates_v2/privacy.haml:23 templates_v2/terms_of_service.haml:3
 msgid "Terms of Use"
 msgstr "使用条款"
 
-#: templates/privacy.haml:20 templates_v2/privacy.haml:20
+#: templates/privacy.haml:20 templates_v2/privacy.haml:24
 msgid ""
 "(the “Terms”) for more information about our online terms and policies that "
 "apply to your use of McKinsey Academy."
 msgstr "（以下简称“条款”），详细了解您使用麦肯锡学院时所适用的在线条款和政策。"
 
-#: templates/privacy.haml:21 templates_v2/privacy.haml:21
+#: templates/privacy.haml:21 templates_v2/privacy.haml:25
 msgid "Information we collect"
 msgstr "信息的收集"
 
-#: templates/privacy.haml:23 templates_v2/privacy.haml:23
+#: templates/privacy.haml:23 templates_v2/privacy.haml:27
 msgid ""
 "McKinsey collects personal data when you register, access or use McKinsey "
 "Academy or McKinsey Academy Content (as such term is defined in the Terms), "
@@ -9951,7 +9955,7 @@ msgstr ""
 "义见条款），可通过网站、移动产品或其他方式，包括与您使用课程内容、提交“用户内"
 "容”（定义见“条款”）和参与用户发布区（如公告栏、论坛和调查）有关的方式。"
 
-#: templates/privacy.haml:25 templates_v2/privacy.haml:25
+#: templates/privacy.haml:25 templates_v2/privacy.haml:29
 msgid ""
 "The personal data collected may consist of information that you provide, "
 "such as your name, e-mail address, and other User Account Information (as "
@@ -9968,7 +9972,7 @@ msgstr ""
 "收集并/或创建有关您对麦肯锡学院的使用和参与的个人数据，包括“参与数据”（定义见"
 "下文）。"
 
-#: templates/privacy.haml:27 templates_v2/privacy.haml:27
+#: templates/privacy.haml:27 templates_v2/privacy.haml:31
 msgid ""
 "We may also automatically collect information about the devices you use to "
 "interact with McKinsey Academy. The information we automatically collect may "
@@ -9988,11 +9992,11 @@ msgstr ""
 "学院的信息，例如您搜索、查看和使用的内容。自动收集的信息可能与您的个人数据相"
 "关联，并且在某些情况下本身即可构成个人数据。"
 
-#: templates/privacy.haml:28 templates_v2/privacy.haml:28
+#: templates/privacy.haml:28 templates_v2/privacy.haml:32
 msgid "Use of information"
 msgstr "信息的使用"
 
-#: templates/privacy.haml:30 templates_v2/privacy.haml:30
+#: templates/privacy.haml:30 templates_v2/privacy.haml:34
 msgid ""
 "The personal data we collect may be used where McKinsey has a legitimate "
 "interest in or other legal basis for processing such information. In some "
@@ -10018,7 +10022,7 @@ msgstr ""
 "企业报告义务；执行麦肯锡协议；以及完成您可能提出或要求的其他目的。我们可能会"
 "存档您的任何个人信息，并使用此类信息与您联系。"
 
-#: templates/privacy.haml:32 templates_v2/privacy.haml:32
+#: templates/privacy.haml:32 templates_v2/privacy.haml:36
 msgid ""
 "McKinsey may use first and third party cookies to manage our Sites and our "
 "services and collect analytics about how you use them. McKinsey Academy "
@@ -10027,11 +10031,11 @@ msgstr ""
 "麦肯锡可能会使用第一方和第三方 Cookie 来管理我们的网站和服务，并收集您如何使"
 "用我们网站和服务的相关分析。麦肯锡学院遵循麦肯锡的"
 
-#: templates/privacy.haml:34 templates_v2/privacy.haml:34
+#: templates/privacy.haml:34 templates_v2/privacy.haml:38
 msgid "Cookie Policy"
 msgstr "Cookie 政策"
 
-#: templates/privacy.haml:35 templates_v2/privacy.haml:35
+#: templates/privacy.haml:35 templates_v2/privacy.haml:39
 msgid ""
 ", but please note that references in the posted Cookie Policy to “our "
 "privacy policy” and “our terms of use” and our or the “Site” refer, "
@@ -10040,7 +10044,7 @@ msgstr ""
 "，但请注意，已发布的 Cookie 政策中提及的“我们的隐私政策”、“我们的使用条款”以"
 "及“我们”或“网站”分别指的是本隐私政策、条款和麦肯锡学院。"
 
-#: templates/privacy.haml:37 templates_v2/privacy.haml:37
+#: templates/privacy.haml:37 templates_v2/privacy.haml:41
 msgid ""
 "We may also use your personal data (including your User Account Information "
 "and Participation Data), as well as your User Content, to (a) verify your "
@@ -10077,7 +10081,7 @@ msgstr ""
 "信（包括有关未来课程、服务或产品的信息），请通过下方的本隐私政策“联系我们”部"
 "分中列出的地址与我们联系。"
 
-#: templates/privacy.haml:39 templates_v2/privacy.haml:39
+#: templates/privacy.haml:39 templates_v2/privacy.haml:43
 msgid ""
 "Your personal data may also be used, both by us and by our authorized third "
 "party service providers, to collect, discover, and prepare aggregate "
@@ -10109,11 +10113,11 @@ msgstr ""
 "述的任何其他目的。我们可能会无限期地保留所有汇总信息，即使该汇总信息是由您的"
 "用户帐户信息、用户内容或个人数据衍生或开发而来。"
 
-#: templates/privacy.haml:40 templates_v2/privacy.haml:40
+#: templates/privacy.haml:40 templates_v2/privacy.haml:44
 msgid "Sharing information with your Sponsoring Organization"
 msgstr "与您的赞助组织共享信息"
 
-#: templates/privacy.haml:42 templates_v2/privacy.haml:42
+#: templates/privacy.haml:42 templates_v2/privacy.haml:46
 msgid ""
 "If you are participating in McKinsey Academy with the facilitation of a "
 "Sponsoring Organization (as such term is defined in the Terms), at the "
@@ -10135,11 +10139,11 @@ msgstr ""
 "您的赞助组织对此类信息的使用概不负责或承担任何法律责任，而且上述使用应受您的"
 "赞助组织适用于您的政策（包括隐私政策）的约束。"
 
-#: templates/privacy.haml:43 templates_v2/privacy.haml:43
+#: templates/privacy.haml:43 templates_v2/privacy.haml:47
 msgid "Data recipients and international data transfers"
 msgstr "数据接收者和国际数据传输"
 
-#: templates/privacy.haml:45 templates_v2/privacy.haml:45
+#: templates/privacy.haml:45 templates_v2/privacy.haml:49
 msgid ""
 "Personal data collected or processed by McKinsey Academy may be transferred "
 "from time to time to McKinsey subsidiaries and affiliates and their "
@@ -10163,7 +10167,7 @@ msgstr ""
 "机制，包括将您的个人信息转移至您所居住国家/地区以外的国家/地区。使用麦肯锡学"
 "院即表示您自愿同意跨境传输和托管此类信息。"
 
-#: templates/privacy.haml:47 templates_v2/privacy.haml:47
+#: templates/privacy.haml:47 templates_v2/privacy.haml:51
 msgid ""
 "McKinsey shall not intentionally disclose or transfer (and shall take "
 "reasonable steps to prevent the unauthorized or accidental disclosure of) "
@@ -10183,7 +10187,7 @@ msgstr ""
 "供商首先要同意对此类信息保密，并为此类个人数据提供与麦肯锡提供的相当或更高级"
 "别的数据安全保护。"
 
-#: templates/privacy.haml:49 templates_v2/privacy.haml:49
+#: templates/privacy.haml:49 templates_v2/privacy.haml:53
 msgid ""
 "We also may share your personal data with third party service providers who "
 "perform services and functions on our behalf to support our interactions "
@@ -10198,19 +10202,19 @@ msgstr ""
 "非本隐私政策和条款另有规定，并且这些第三方服务提供商必须代表我们提供服务或者"
 "为了遵循法律规定，否则这些第三方服务提供商不得使用或者披露您的个人数据。"
 
-#: templates/privacy.haml:51 templates_v2/privacy.haml:51
+#: templates/privacy.haml:51 templates_v2/privacy.haml:55
 msgid "In addition, we may disclose information about you:"
 msgstr "此外，我们可能会因以下情况披露您的信息："
 
-#: templates/privacy.haml:54 templates_v2/privacy.haml:54
+#: templates/privacy.haml:54 templates_v2/privacy.haml:58
 msgid "If we are required to do so by law or legal process;"
 msgstr "需履行相关法律或法律程序义务；"
 
-#: templates/privacy.haml:56 templates_v2/privacy.haml:56
+#: templates/privacy.haml:56 templates_v2/privacy.haml:60
 msgid "To law enforcement authorities or other government officials;"
 msgstr "需向执法机构或者其他政府官员披露信息；"
 
-#: templates/privacy.haml:58 templates_v2/privacy.haml:58
+#: templates/privacy.haml:58 templates_v2/privacy.haml:62
 msgid ""
 "When we believe disclosure is necessary or appropriate to prevent physical "
 "harm\n"
@@ -10220,23 +10224,23 @@ msgstr ""
 "我们认为必须或者适当披露信息才能避免人身伤害\n"
 "或经济损失，或者协助调查可疑或实际非法活动；"
 
-#: templates/privacy.haml:61 templates_v2/privacy.haml:61
+#: templates/privacy.haml:61 templates_v2/privacy.haml:65
 msgid "If disclosure is necessary to protect the vital interests of a person;"
 msgstr "必须披露信息才能保护某个人的重要利益；"
 
-#: templates/privacy.haml:63 templates_v2/privacy.haml:63
+#: templates/privacy.haml:63 templates_v2/privacy.haml:67
 msgid "To enforce our Terms;"
 msgstr "为达到执行我们的条款之目的；"
 
-#: templates/privacy.haml:65 templates_v2/privacy.haml:65
+#: templates/privacy.haml:65 templates_v2/privacy.haml:69
 msgid "To protect our property, services and legal rights;"
 msgstr "为保护我们的财产、服务和合法权利；"
 
-#: templates/privacy.haml:67 templates_v2/privacy.haml:67
+#: templates/privacy.haml:67 templates_v2/privacy.haml:71
 msgid "To your Sponsoring Organization as described in this Privacy Policy;"
 msgstr "按照本隐私政策所述，向您的赞助组织披露您的相关信息；"
 
-#: templates/privacy.haml:69 templates_v2/privacy.haml:69
+#: templates/privacy.haml:69 templates_v2/privacy.haml:73
 msgid ""
 "To prevent fraud against McKinsey, our subsidiaries and affiliates and "
 "business\n"
@@ -10245,15 +10249,15 @@ msgstr ""
 "为了避免麦肯锡、我们的子公司、关联企业和商业\n"
 "合作伙伴受到欺诈；"
 
-#: templates/privacy.haml:72 templates_v2/privacy.haml:72
+#: templates/privacy.haml:72 templates_v2/privacy.haml:76
 msgid "To support auditing, compliance, and corporate governance functions; or"
 msgstr "为了支持审计、合规性和公司治理功能；或者"
 
-#: templates/privacy.haml:74 templates_v2/privacy.haml:74
+#: templates/privacy.haml:74 templates_v2/privacy.haml:78
 msgid "To comply with any and all applicable laws."
 msgstr "为了遵守任何和所有适用法律的相关规定。"
 
-#: templates/privacy.haml:76 templates_v2/privacy.haml:76
+#: templates/privacy.haml:76 templates_v2/privacy.haml:80
 msgid ""
 "We maintain processes designed to ensure that any processing of personal "
 "data by third party service providers is consistent with this Privacy Policy "
@@ -10263,7 +10267,7 @@ msgstr ""
 "我们采用相应的流程来确保第三方服务提供商对个人信息的任何处理符合本隐私政策之"
 "规定，并保护您个人信息的机密性、可获得性和完整性。"
 
-#: templates/privacy.haml:78 templates_v2/privacy.haml:78
+#: templates/privacy.haml:78 templates_v2/privacy.haml:82
 msgid ""
 "In addition, in the event of a re-organization, merger, sale, joint venture, "
 "assignment, or other transfer or disposition of all or any portion of our "
@@ -10272,11 +10276,11 @@ msgstr ""
 "此外，在重组、合并、出售、组建合资企业、转让或以其他方式转移或处置我们全部或"
 "部分业务时，我们可以披露或传输您的个人信息。"
 
-#: templates/privacy.haml:79 templates_v2/privacy.haml:79
+#: templates/privacy.haml:79 templates_v2/privacy.haml:83
 msgid "Surveys"
 msgstr "问卷调查"
 
-#: templates/privacy.haml:81 templates_v2/privacy.haml:81
+#: templates/privacy.haml:81 templates_v2/privacy.haml:85
 msgid ""
 "If you participate in a survey in connection with McKinsey Academy, our "
 "research results may be reported as totals or in other aggregated form and "
@@ -10294,11 +10298,11 @@ msgstr ""
 "获取更多信息，从而改善麦肯锡学院的总体体验。如果您不希望我们继续跟进您的调查"
 "回答，请通过下方本隐私政策“联系我们”部分中列出的地址与我们联系。"
 
-#: templates/privacy.haml:82 templates_v2/privacy.haml:82
+#: templates/privacy.haml:82 templates_v2/privacy.haml:86
 msgid "User disclosure"
 msgstr "用户披露"
 
-#: templates/privacy.haml:84 templates_v2/privacy.haml:84
+#: templates/privacy.haml:84 templates_v2/privacy.haml:88
 msgid ""
 "You should be aware that whenever you publicly disclose information, even to "
 "a limited group of recipients (for example, other users who are enrolled in "
@@ -10313,11 +10317,11 @@ msgstr ""
 "锡不对任何第三方的任何行为或政策负责，这些第三方包括收集用户披露给上述第三方"
 "的麦肯锡学院使用情况相关信息的其他麦肯锡学院用户。"
 
-#: templates/privacy.haml:85 templates_v2/privacy.haml:85
+#: templates/privacy.haml:85 templates_v2/privacy.haml:89
 msgid "Third-party websites and platforms"
 msgstr "第三方网站和平台"
 
-#: templates/privacy.haml:87 templates_v2/privacy.haml:87
+#: templates/privacy.haml:87 templates_v2/privacy.haml:91
 msgid ""
 "McKinsey may provide links or directions to third party websites or "
 "information as a service to our users. If you use these links, you will "
@@ -10332,7 +10336,7 @@ msgstr ""
 "中包含信息的认可、赞助或者建议，且麦肯锡对您使用上述站点概不负责或承担法律责"
 "任。此类使用需遵守适用于这些站点的使用条款和隐私政策。"
 
-#: templates/privacy.haml:89 templates_v2/privacy.haml:89
+#: templates/privacy.haml:89 templates_v2/privacy.haml:93
 msgid ""
 "In addition, certain Mobile Offerings may be made available to you through a "
 "website, application or platform operated by a Mobile Platform Provider (as "
@@ -10361,7 +10365,7 @@ msgstr ""
 "条款和隐私政策不受我们控制，也不受我们的条款或本隐私政策管辖，建议您仔细阅"
 "读。"
 
-#: templates/privacy.haml:91 templates_v2/privacy.haml:91
+#: templates/privacy.haml:91 templates_v2/privacy.haml:95
 msgid ""
 "In connection with our Mobile Offerings, McKinsey may use third party "
 "service providers to analyze non-personally identifiable user activity to "
@@ -10381,11 +10385,11 @@ msgstr ""
 "错误的相关报告。任何第三方服务提供商不得试图以识别任何特定用户的方式收集信"
 "息。"
 
-#: templates/privacy.haml:92 templates_v2/privacy.haml:92
+#: templates/privacy.haml:92 templates_v2/privacy.haml:96
 msgid "Security"
 msgstr "安全"
 
-#: templates/privacy.haml:94 templates_v2/privacy.haml:94
+#: templates/privacy.haml:94 templates_v2/privacy.haml:98
 msgid ""
 "McKinsey has implemented generally accepted standards of technology and "
 "operational security to protect personal data from loss, misuse, alteration, "
@@ -10406,11 +10410,11 @@ msgstr ""
 "关个人数据（包括您的用户帐户信息）可能已被泄露，请立即通过下方的本隐私政策“联"
 "系我们”部分中列出的地址与我们联系。"
 
-#: templates/privacy.haml:95 templates_v2/privacy.haml:95
+#: templates/privacy.haml:95 templates_v2/privacy.haml:99
 msgid "Data retention policy"
 msgstr "信息保留政策"
 
-#: templates/privacy.haml:97 templates_v2/privacy.haml:97
+#: templates/privacy.haml:97 templates_v2/privacy.haml:101
 msgid ""
 "McKinsey retains all personal data for the duration of the relevant business "
 "relationship or, where required, in accordance with our information "
@@ -10425,11 +10429,11 @@ msgstr ""
 "以全部删除保留信息的所有实例。如需要求访问、更改或删除保留信息，请参阅本隐私"
 "政策的“您的权利”部分。"
 
-#: templates/privacy.haml:98 templates_v2/privacy.haml:98
+#: templates/privacy.haml:98 templates_v2/privacy.haml:102
 msgid "Children"
 msgstr "儿童"
 
-#: templates/privacy.haml:100 templates_v2/privacy.haml:100
+#: templates/privacy.haml:100 templates_v2/privacy.haml:104
 msgid ""
 "McKinsey Academy is not designed for or directed at children 13 years of age "
 "or younger, and McKinsey does not intentionally collect or maintain personal "
@@ -10438,11 +10442,11 @@ msgstr ""
 "由于麦肯锡学院并非专为 13 岁及以下儿童设计，因此麦肯锡不会有意收集或保留 13 "
 "岁以下儿童的个人信息。"
 
-#: templates/privacy.haml:101 templates_v2/privacy.haml:101
+#: templates/privacy.haml:101 templates_v2/privacy.haml:105
 msgid "Your rights"
 msgstr "您的权利"
 
-#: templates/privacy.haml:103 templates_v2/privacy.haml:103
+#: templates/privacy.haml:103 templates_v2/privacy.haml:107
 msgid ""
 "Where granted by local law, you may have the right to request access to the "
 "personal data that we have collected about you for the purposes of "
@@ -10455,7 +10459,7 @@ msgstr ""
 "的、与您有关的个人信息。您还有权要求获得一份我们已经收集的、与您有关的个人信"
 "息。在某些情况下，您也可以要求我们停止处理您的个人信息。"
 
-#: templates/privacy.haml:105 templates_v2/privacy.haml:105
+#: templates/privacy.haml:105 templates_v2/privacy.haml:109
 msgid ""
 "If you would like to make a request to access, review, or correct the "
 "personal data we have collected about you, or to discuss how we process your "
@@ -10464,7 +10468,7 @@ msgstr ""
 "如果您想要请求访问、查看或更正我们已经收集的、与您有关的个人信息或者讨论我们"
 "如何处理您的个人信息，请通过以下方式联系我们："
 
-#: templates/privacy.haml:108 templates_v2/privacy.haml:108
+#: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
 "To help protect your privacy and security, we will take reasonable steps to "
 "verify your identity, such as requiring you to provide or confirm your "
@@ -10495,7 +10499,7 @@ msgstr ""
 "显无来由和/或无充分理据，或者根据适用法律不可接受或非正当的情况下拒绝您请求的"
 "权利。"
 
-#: templates/privacy.haml:110 templates_v2/privacy.haml:110
+#: templates/privacy.haml:110 templates_v2/privacy.haml:114
 msgid ""
 "In addition, and where granted by local law, you have the legal right to "
 "lodge a complaint with a competent data protection authority."
@@ -10503,7 +10507,7 @@ msgstr ""
 "此外，在当地法律允许的情况下，您具有向有资质的数据保护机关提出投诉的合法权"
 "利。"
 
-#: templates/privacy.haml:112 templates_v2/privacy.haml:112
+#: templates/privacy.haml:112 templates_v2/privacy.haml:116
 msgid ""
 "You may revoke your consent to the collection, processing and/or disclosure "
 "of your personal data at any time. To do so, please either follow the "
@@ -10521,11 +10525,11 @@ msgstr ""
 "的某些功能（包括您当前注册参加的课程），因为它们都依赖于收集、处理和/或披露您"
 "的个人数据。"
 
-#: templates/privacy.haml:113 templates_v2/privacy.haml:113
+#: templates/privacy.haml:113 templates_v2/privacy.haml:117
 msgid "Your California privacy rights"
 msgstr "您在加利福尼亚州的隐私权利"
 
-#: templates/privacy.haml:115 templates_v2/privacy.haml:115
+#: templates/privacy.haml:115 templates_v2/privacy.haml:119
 msgid ""
 "Pursuant to California Civil Code Section 1798.83(c)(2), McKinsey does not "
 "share your personal data with third parties for those third parties’ direct "
@@ -10534,7 +10538,7 @@ msgstr ""
 "根据《加利福尼亚州民法》第 1798.83(c)(2) 条的相关规定，麦肯锡不得与第三方分享"
 "您的个人信息以作第三方直接营销之用。"
 
-#: templates/privacy.haml:117 templates_v2/privacy.haml:117
+#: templates/privacy.haml:117 templates_v2/privacy.haml:121
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -10548,7 +10552,7 @@ msgstr ""
 "公开发布的内容或信息。如需提出上述申请，请在电子邮件中详细描述具体内容或信"
 "息，并发送至"
 
-#: templates/privacy.haml:119 templates_v2/privacy.haml:119
+#: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
 "Please be aware that such a request does not ensure complete or "
 "comprehensive removal of the content or information you have posted and that "
@@ -10558,11 +10562,11 @@ msgstr ""
 "请注意，上述申请无法确保完全或全部移除您已发布的内容或信息，而且某些情况下，"
 "即使提出申请，法律亦不要求或者允许移除上述信息。"
 
-#: templates/privacy.haml:120 templates_v2/privacy.haml:120
+#: templates/privacy.haml:120 templates_v2/privacy.haml:124
 msgid "Consent; changes to privacy policy"
 msgstr "同意和更改本隐私政策"
 
-#: templates/privacy.haml:122 templates_v2/privacy.haml:122
+#: templates/privacy.haml:122 templates_v2/privacy.haml:126
 msgid ""
 "By using McKinsey Academy, including the Site or any Mobile Offering, you "
 "consent to the collection, use, and storage of your information, including "
@@ -10576,7 +10580,7 @@ msgstr ""
 "据）。我们保留随时更改本隐私政策的权利。我们将通过更新本隐私政策告知您任何此"
 "类更改，本隐私政策可在以下地址找到"
 
-#: templates/privacy.haml:125 templates_v2/privacy.haml:125
+#: templates/privacy.haml:125 templates_v2/privacy.haml:129
 msgid ""
 "If we make material changes to this Privacy Policy that increase our rights "
 "to use personal data that we have previously collected about you, we will "
@@ -10588,11 +10592,11 @@ msgstr ""
 "权利，我们将通过发送电子邮件至您已注册电子邮件地址以征得您的同意，或者以麦肯"
 "锡学院用户可访问的方式突出显示变更内容的相关信息。"
 
-#: templates/privacy.haml:126 templates_v2/privacy.haml:126
+#: templates/privacy.haml:126 templates_v2/privacy.haml:130
 msgid "Contact our privacy department"
 msgstr "联系隐私部门"
 
-#: templates/privacy.haml:128 templates_v2/privacy.haml:128
+#: templates/privacy.haml:128 templates_v2/privacy.haml:132
 msgid ""
 "If you have any questions about our Privacy Policy or if you require any "
 "assistance in navigating or reading the Terms or this Privacy Policy, please "
@@ -10602,17 +10606,17 @@ msgstr ""
 "通过以下方式联系我们："
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
-#: templates_v2/privacy.haml:131 templates_v2/terms_of_service.haml:114
+#: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
 msgid "c/o Marc Metakis"
 msgstr "c/o Marc Metakis"
 
 #: templates/privacy.haml:132 templates/terms_of_service.haml:115
-#: templates_v2/privacy.haml:132 templates_v2/terms_of_service.haml:115
+#: templates_v2/privacy.haml:136 templates_v2/terms_of_service.haml:115
 msgid "55 East 52nd Street"
 msgstr "55 East 52nd Street"
 
 #: templates/privacy.haml:133 templates/terms_of_service.haml:116
-#: templates_v2/privacy.haml:133 templates_v2/terms_of_service.haml:116
+#: templates_v2/privacy.haml:137 templates_v2/terms_of_service.haml:116
 msgid "New York, NY 10022"
 msgstr "New York, NY 10022"
 
@@ -11923,15 +11927,13 @@ msgstr "群组平均值"
 
 #: templates_v2/courses/course_cohort.haml:27
 #: templates_v2/courses/course_cohort.haml:107
-#: templates_v2/courses/course_cohort.haml:188
+#: templates_v2/courses/course_cohort.haml:189
 #, fuzzy
 #| msgid "Tile Positions"
 msgid "Position"
 msgstr "磁贴位置"
 
 #: templates_v2/courses/course_cohort.haml:29
-#: templates_v2/courses/course_cohort.haml:109
-#: templates_v2/courses/course_cohort.haml:190
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -11954,9 +11956,9 @@ msgstr "进度前 3 名"
 #: templates_v2/courses/course_cohort.haml:136
 #: templates_v2/courses/course_cohort.haml:156
 #: templates_v2/courses/course_cohort.haml:176
-#: templates_v2/courses/course_cohort.haml:218
-#: templates_v2/courses/course_cohort.haml:238
-#: templates_v2/courses/course_cohort.haml:258
+#: templates_v2/courses/course_cohort.haml:219
+#: templates_v2/courses/course_cohort.haml:239
+#: templates_v2/courses/course_cohort.haml:259
 msgid "User Name"
 msgstr "用户名"
 
@@ -11968,6 +11970,16 @@ msgstr "您的讨论活动分数："
 #, python-format
 msgid " Cohort Average: %(score)s points"
 msgstr " 群组平均值：%(score)s 分"
+
+#: templates_v2/courses/course_cohort.haml:109
+#: templates_v2/courses/course_cohort.haml:191
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"                            You are ranked <b>##{position}</b> out of "
+"%(total)s members in your cohort.\n"
+"                          "
+msgstr ""
 
 #: templates_v2/courses/course_cohort.haml:113
 msgid "Your engagement position will be displayed here"
@@ -11981,11 +11993,11 @@ msgstr "参与度前 3 名"
 msgid "Your course knowledge:"
 msgstr "您的课程知识："
 
-#: templates_v2/courses/course_cohort.haml:194
+#: templates_v2/courses/course_cohort.haml:195
 msgid "Your proficiency position will be displayed here"
 msgstr "您的熟练程度排名将显示在此处"
 
-#: templates_v2/courses/course_cohort.haml:198
+#: templates_v2/courses/course_cohort.haml:199
 msgid "Top 3 on Proficiency"
 msgstr "熟练程度前 3 名"
 
@@ -12275,19 +12287,19 @@ msgstr "您的课程知识"
 msgid "Your course completion status"
 msgstr "您的课程完成状态"
 
-#: templates_v2/faq.haml:9
+#: templates_v2/faq.haml:13
 msgid "Participant FAQs"
 msgstr "参与者常见问题"
 
-#: templates_v2/faq.haml:10
+#: templates_v2/faq.haml:14
 msgid "Access Related:"
 msgstr "相关访问："
 
-#: templates_v2/faq.haml:44
+#: templates_v2/faq.haml:48
 msgid "To change your email address, please email"
 msgstr "如需更改邮箱地址，请发送电子邮件"
 
-#: templates_v2/faq.haml:51
+#: templates_v2/faq.haml:55
 msgid ""
 "If you've forgotten your password, please try resetting it by clicking "
 "'Forgot my password' on the log in screen. If that does not work, please "
@@ -12296,7 +12308,7 @@ msgstr ""
 "如果忘记密码，请尝试单击登录屏幕上的“忘记我的密码”来重置密码。如果该操作不管"
 "用，请发送电子邮件至 "
 
-#: templates_v2/faq.haml:58
+#: templates_v2/faq.haml:62
 msgid ""
 "The drop down for moving between multiple courses is on the far left of the "
 "second (lighter blue) navigation bar. If the course you are supposed to be "
@@ -12305,7 +12317,7 @@ msgstr ""
 "用于在多个课程之间移动的下拉菜单位于第二个（浅蓝色）导航栏的最左侧。如果您要"
 "注册的课程未出现在该下拉菜单中，请发送电子邮件至"
 
-#: templates_v2/faq.haml:65
+#: templates_v2/faq.haml:69
 msgid ""
 "We try to keep our email communication at an optimal level to ensure all "
 "participants know what is happening in the course without cluttering your "
@@ -12319,7 +12331,7 @@ msgstr ""
 "com\">support@mckinseyacademy.com</a>（或者在您收到的任何电子邮件的底部单"
 "击“取消订阅”）。请务必经常查看“公告”页面，了解最新信息！"
 
-#: templates_v2/faq.haml:67
+#: templates_v2/faq.haml:71
 msgid ""
 "(or click unsubscribe at the bottom of any email you receive from us). Be "
 "sure to check the \"Announcements\" page frequently to stay up to date!"
@@ -12327,11 +12339,11 @@ msgstr ""
 "（或者在收到的我们的任何电子邮件底部取消订阅）。请务必经常查看“公告”页面，了"
 "解最新情况！"
 
-#: templates_v2/faq.haml:68
+#: templates_v2/faq.haml:72
 msgid "Courses Related:"
 msgstr "相关课程："
 
-#: templates_v2/faq.haml:78
+#: templates_v2/faq.haml:82
 #, python-format
 msgid ""
 "You need to complete all group work and feedback activities and earn a "
@@ -12341,11 +12353,11 @@ msgstr ""
 "您需要完成所有小组作业和反馈活动，并获得至少 70%% 分的综合课程评分，才能获得"
 "计划结业证书。您的课程评分计算如下："
 
-#: templates_v2/faq.haml:128
+#: templates_v2/faq.haml:132
 msgid "If you have any questions about a grade you received, please email"
 msgstr "如果您对收到的评分有任何疑问，请发送电子邮件至"
 
-#: templates_v2/faq.haml:145
+#: templates_v2/faq.haml:149
 msgid ""
 "You are part of a cohort of participants you can engage with questions as "
 "well as support from the TAs who monitor the course. Take a look at the "
@@ -12357,15 +12369,15 @@ msgstr ""
 "持。您可以在课程的论坛中查看其他参与者的问题、回答和评论，或发布问题，也可以"
 "通过"
 
-#: templates_v2/faq.haml:146
+#: templates_v2/faq.haml:150
 msgid "emailing them"
 msgstr "向他们发送邮件"
 
-#: templates_v2/faq.haml:147
+#: templates_v2/faq.haml:151
 msgid "and they will get back to you as soon as possible."
 msgstr "与麦肯锡助教联系，他们会尽快回复您。"
 
-#: templates_v2/faq.haml:165
+#: templates_v2/faq.haml:169
 msgid ""
 "Your proficiency is based on performance on all graded items in the course "
 "(including end of lesson assessments, group work, and final assessment)"
@@ -12373,7 +12385,7 @@ msgstr ""
 "您的熟练程度取决于在课程中所有评分项目上的表现（包括课末评估、小组合作和最终"
 "评估）"
 
-#: templates_v2/faq.haml:168
+#: templates_v2/faq.haml:172
 msgid ""
 "Your progress through course content is displayed as you move through all "
 "items in the course (including videos, exercises, assessments, and readings)"
@@ -12381,26 +12393,26 @@ msgstr ""
 "当您在课程的所有项目（包括视频、练习、评估和阅读）中导航时，课程主页会显示您"
 "的课程内容进度"
 
-#: templates_v2/faq.haml:171
+#: templates_v2/faq.haml:175
 msgid ""
 "Your engagement increases through your social interactions with other "
 "participants in your cohort (through engagement on the discussion forums)"
 msgstr ""
 "您可以通过与同期其他参与者进行社交互动（通过参与论坛），来提高自身参与度"
 
-#: templates_v2/faq.haml:172
+#: templates_v2/faq.haml:176
 msgid "Certificates Related:"
 msgstr "相关证书："
 
-#: templates_v2/faq.haml:220 templates_v2/faq.haml:227
+#: templates_v2/faq.haml:224 templates_v2/faq.haml:231
 msgid "Please"
 msgstr "请"
 
-#: templates_v2/faq.haml:221 templates_v2/faq.haml:228
+#: templates_v2/faq.haml:225 templates_v2/faq.haml:232
 msgid "contact us!"
 msgstr "联系我们！"
 
-#: templates_v2/faq.haml:229
+#: templates_v2/faq.haml:233
 msgid "We’ll do our best to help."
 msgstr "我们将竭诚提供帮助。"
 

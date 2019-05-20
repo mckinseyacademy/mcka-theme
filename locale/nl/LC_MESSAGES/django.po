@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-16 11:50+0000\n"
+"POT-Creation-Date: 2019-05-20 07:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1339,9 +1339,9 @@ msgstr ""
 
 #: accounts/views.py:356
 msgid ""
-"Your account has already been activated. Please enter credentials to login"
+"Your account has already been activated. Please enter credentials to login."
 msgstr ""
-"Uw account is al geactiveerd. Voer uw aanmeldgegevens in om in te loggen"
+"Uw account is al geactiveerd. Voer uw aanmeldgegevens in om in te loggen."
 
 #: accounts/views.py:362
 msgid "Log In"
@@ -1387,16 +1387,16 @@ msgstr "Toegangssleutel ontbreekt."
 msgid "REGISTER"
 msgstr ""
 
-#: accounts/views.py:855
+#: accounts/views.py:856
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "Registreren van gebruiker mislukt: {exception_message}"
 
-#: accounts/views.py:857
+#: accounts/views.py:858
 msgid "Some required information was missing."
 msgstr "Vereiste informatie ontbreekt."
 
-#: accounts/views.py:859
+#: accounts/views.py:860
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1404,22 +1404,22 @@ msgstr ""
 "Verificatie-cookie ontbreekt. Er kan een time-out van uw sessie zijn "
 "opgetreden. Begin opnieuw."
 
-#: accounts/views.py:908
+#: accounts/views.py:909
 msgid "Enter new password"
 msgstr "Voer nieuw wachtwoord in"
 
-#: accounts/views.py:925
+#: accounts/views.py:926
 msgid "Password reset unsuccessful"
 msgstr "Wachtwoord opnieuw instellen mislukt"
 
-#: accounts/views.py:1023 lib/mail.py:133 templates/accounts/activate.haml:16
+#: accounts/views.py:1024 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:272
 #: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "Welcome to McKinsey Academy"
 msgstr "Welkom bij McKinsey Academy"
 
-#: accounts/views.py:1024
+#: accounts/views.py:1025
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1428,7 +1428,7 @@ msgstr ""
 "Uw programma start over {days} dagen. Verken in de tussentijd de site voor "
 "meer informatie."
 
-#: accounts/views.py:1028
+#: accounts/views.py:1029
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1437,11 +1437,11 @@ msgstr ""
 "Uw cursus begint over {days} dagen. Voordat de cursus begint, kunt u deze "
 "site verkennen voor meer informatie over wat u kunt verwachten."
 
-#: accounts/views.py:1206 templates_v2/layout.haml:249
+#: accounts/views.py:1208 templates_v2/layout.haml:249
 msgid "Enter your full name"
 msgstr "Voer uw volledige naam in"
 
-#: accounts/views.py:1208 accounts/views.py:1233 admin/views.py:2006
+#: accounts/views.py:1210 accounts/views.py:1235 admin/views.py:2006
 #: admin/views.py:2040 admin/views.py:4725
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
@@ -1461,7 +1461,7 @@ msgstr "Voer uw volledige naam in"
 msgid "Save"
 msgstr "Opslaan"
 
-#: accounts/views.py:1231 templates_v2/header.haml:60
+#: accounts/views.py:1233 templates_v2/header.haml:60
 #: templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "Voer uw titel in"
@@ -2330,7 +2330,7 @@ msgstr "Er zijn geen groepsprojecten beschikbaar voor deze cursus"
 #: templates/courses/course_group_work.haml:13
 #: templates/courses/course_progress.haml:70 templates/faq.haml:39
 #: templates_v2/courses/course_progress_v2.haml:225
-#: templates_v2/courses/course_progress_v2.haml:239 templates_v2/faq.haml:84
+#: templates_v2/courses/course_progress_v2.haml:239 templates_v2/faq.haml:88
 msgid "Group Work"
 msgstr "Groepswerk"
 
@@ -3348,7 +3348,7 @@ msgstr "Demo registratie | McKinsey Academy"
 #: templates/layout.haml:26 templates/privacy.haml:130
 #: templates/terms_of_service.haml:113
 #: templates_v2/accounts/public_registration.haml:8 templates_v2/layout.haml:75
-#: templates_v2/privacy.haml:130 templates_v2/terms_of_service.haml:113
+#: templates_v2/privacy.haml:134 templates_v2/terms_of_service.haml:113
 msgid "McKinsey Academy"
 msgstr "McKinsey Academy"
 
@@ -6705,7 +6705,7 @@ msgstr "Leaderboards"
 
 #: templates/courses/course_cohort.haml:32
 #: templates/courses/visualizations/course_proficiency.haml:8
-#: templates_v2/faq.haml:164
+#: templates_v2/faq.haml:168
 msgid "Proficiency:"
 msgstr "Vaardigheid:"
 
@@ -6764,7 +6764,7 @@ msgstr "100"
 #: templates/courses/course_cohort.haml:102
 #: templates/courses/course_progress.haml:84
 #: templates/courses/visualizations/course_progress.haml:8
-#: templates_v2/faq.haml:167
+#: templates_v2/faq.haml:171
 msgid "Progress:"
 msgstr "Vooruitgang:"
 
@@ -6796,7 +6796,7 @@ msgstr "100%%"
 
 #: templates/courses/course_cohort.haml:165
 #: templates/courses/visualizations/course_engagement.haml:8
-#: templates_v2/faq.haml:170
+#: templates_v2/faq.haml:174
 msgid "Engagement:"
 msgstr "Inzet:"
 
@@ -8165,11 +8165,11 @@ msgstr "Veelgestelde vragen deelnemer"
 msgid "ACCESS:"
 msgstr "TOEGANG:"
 
-#: templates/faq.haml:10 templates_v2/faq.haml:14
+#: templates/faq.haml:10 templates_v2/faq.haml:18
 msgid "Which browsers are recommended for use with McKinsey Academy?"
 msgstr "Welke browsers worden aanbevolen voor gebruik van McKinsey Academy?"
 
-#: templates/faq.haml:11 templates_v2/faq.haml:17
+#: templates/faq.haml:11 templates_v2/faq.haml:21
 msgid ""
 "We recommend the latest versions of Google Chrome, Mozilla Firefox, and "
 "Apple Safari for an optimal experience. McKinsey Academy is not accessible "
@@ -8180,14 +8180,14 @@ msgstr ""
 "toegankelijk in sommige oudere versies van browsers (zoals Internet Explorer "
 "8)."
 
-#: templates/faq.haml:12 templates_v2/faq.haml:20
+#: templates/faq.haml:12 templates_v2/faq.haml:24
 msgid ""
 "What if I have technical trouble with registration, login, or course access?"
 msgstr ""
 "Wat als ik technische problemen heb met registratie, aanmelding of "
 "cursustoegang?"
 
-#: templates/faq.haml:13 templates_v2/faq.haml:22
+#: templates/faq.haml:13 templates_v2/faq.haml:26
 msgid ""
 "Many problems with registration, login, or access to courses are caused by "
 "browser issues. Here are some things to try:"
@@ -8196,26 +8196,26 @@ msgstr ""
 "veroorzaakt door browserproblemen. Hier zijn enkele dingen die u kunt "
 "proberen:"
 
-#: templates/faq.haml:15 templates_v2/faq.haml:24
+#: templates/faq.haml:15 templates_v2/faq.haml:28
 msgid "Switch to a current version of Chrome or Firefox"
 msgstr "Schakel over op een actuele versie van Chrome of Firefox"
 
-#: templates/faq.haml:16 templates_v2/faq.haml:25
+#: templates/faq.haml:16 templates_v2/faq.haml:29
 msgid ""
 "Check your browser settings to ensure both JavaScript and cookies are enabled"
 msgstr ""
 "Controleer uw browserinstellingen om ervoor te zorgen dat zowel JavaScript "
 "als cookies zijn ingeschakeld"
 
-#: templates/faq.haml:17 templates_v2/faq.haml:26
+#: templates/faq.haml:17 templates_v2/faq.haml:30
 msgid "Clear your browser's cache"
 msgstr "Maak de cache van uw browser leeg"
 
-#: templates/faq.haml:18 templates_v2/faq.haml:29
+#: templates/faq.haml:18 templates_v2/faq.haml:33
 msgid "Which devices are recommended for use with McKinsey Academy?"
 msgstr "Welke apparaten worden aanbevolen voor gebruik van McKinsey Academy?"
 
-#: templates/faq.haml:19 templates_v2/faq.haml:31
+#: templates/faq.haml:19 templates_v2/faq.haml:35
 msgid ""
 "The platform is accessible on all computer and tablet devices. The site is "
 "currently not optimized for mobile device use, and you will not currently be "
@@ -8225,12 +8225,12 @@ msgstr ""
 "momenteel niet geoptimaliseerd voor gebruik met een mobiel apparaat en u "
 "kunt de cursusinhoud op dit moment niet openen op mobiele telefoons."
 
-#: templates/faq.haml:20 templates_v2/faq.haml:34
+#: templates/faq.haml:20 templates_v2/faq.haml:38
 msgid "How can I sign-up for a McKinsey Academy course or program?"
 msgstr ""
 "Hoe kan ik me aanmelden voor een McKinsey Academy-cursus of -programma?"
 
-#: templates/faq.haml:21 templates_v2/faq.haml:36
+#: templates/faq.haml:21 templates_v2/faq.haml:40
 msgid ""
 "At this time, McKinsey Academy courses are only available to companies. If "
 "you are interested in inquiring further, please contact us."
@@ -8238,11 +8238,11 @@ msgstr ""
 "Op dit moment zijn McKinsey Academy-cursussen alleen beschikbaar voor "
 "bedrijven. Als u meer wilt weten, neem dan contact met ons op."
 
-#: templates/faq.haml:22 templates_v2/faq.haml:39
+#: templates/faq.haml:22 templates_v2/faq.haml:43
 msgid "How can I change the name or email address on my account?"
 msgstr "Hoe kan ik de naam of het e-mailadres voor mijn account veranderen?"
 
-#: templates/faq.haml:23 templates_v2/faq.haml:42
+#: templates/faq.haml:23 templates_v2/faq.haml:46
 msgid ""
 "To change your name, log in, and find your profile in the upper right-hand "
 "corner of your screen. Click the down arrow and select \"Edit\" next to your "
@@ -8264,7 +8264,7 @@ msgstr ""
 "Als u uw e-mailadres wilt veranderen, stuurt u een e-mail naar <a href="
 "\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
 
-#: templates/faq.haml:25 templates_v2/faq.haml:48
+#: templates/faq.haml:25 templates_v2/faq.haml:52
 msgid "My account login isn't working."
 msgstr "Het aanmelden bij mijn account werkt niet."
 
@@ -8283,7 +8283,7 @@ msgstr ""
 "door te klikken op “Mijn wachtwoord vergeten” in het aanmeldscherm. Als dat "
 "niet werkt, stuurt u een e-mail naar"
 
-#: templates/faq.haml:27 templates_v2/faq.haml:55
+#: templates/faq.haml:27 templates_v2/faq.haml:59
 msgid "I can't access a course I'm enrolled in."
 msgstr "Ik heb geen toegang tot een cursus waarvoor ik ben ingeschreven."
 
@@ -8304,7 +8304,7 @@ msgstr ""
 "waarvoor u ingeschreven zou moeten zijn niet in dit uitklapmenu verschijnt, "
 "stuur dan een e-mail"
 
-#: templates/faq.haml:29 templates_v2/faq.haml:62
+#: templates/faq.haml:29 templates_v2/faq.haml:66
 msgid "How can I stop or start receiving emails from my courses?"
 msgstr ""
 "Hoe kan ik het ontvangen van e-mails van mijn cursussen stoppen of laten "
@@ -8344,11 +8344,11 @@ msgstr ""
 msgid "COURSES:"
 msgstr "CURSUSSEN:"
 
-#: templates/faq.haml:32 templates_v2/faq.haml:71
+#: templates/faq.haml:32 templates_v2/faq.haml:75
 msgid "When does my course start and/or finish?"
 msgstr "Wanneer begint en/of eindigt mijn cursus?"
 
-#: templates/faq.haml:33 templates_v2/faq.haml:73
+#: templates/faq.haml:33 templates_v2/faq.haml:77
 msgid ""
 "You can find the start date and course duration for each course on its "
 "course overview page.  You will receive a welcome email when the course is "
@@ -8358,7 +8358,7 @@ msgstr ""
 "cursusoverzichtspagina. U ontvangt een welkomstmail wanneer de cursus is "
 "geopend."
 
-#: templates/faq.haml:34 templates_v2/faq.haml:76
+#: templates/faq.haml:34 templates_v2/faq.haml:80
 msgid "What are passing requirements for courses?"
 msgstr "Wat zijn de vereisten om voor cursussen te slagen?"
 
@@ -8374,11 +8374,11 @@ msgstr ""
 "een programmacertificaat van voltooiing. Uw cursuscijfer wordt als volgt "
 "berekend:"
 
-#: templates/faq.haml:37 templates_v2/faq.haml:81
+#: templates/faq.haml:37 templates_v2/faq.haml:85
 msgid "End of lesson (EOL) assessments"
 msgstr "Einde les (EOL)-beoordelingen"
 
-#: templates/faq.haml:38 templates_v2/faq.haml:82
+#: templates/faq.haml:38 templates_v2/faq.haml:86
 msgid ""
 "Note that EOL assessments vary based on number of lessons and may not be "
 "included in some lessons"
@@ -8386,7 +8386,7 @@ msgstr ""
 "Let op: de EOL-beoordelingen kunnen verschillen afhankelijk van het aantal "
 "lessen en zijn mogelijk niet in alle lessen opgenomen"
 
-#: templates/faq.haml:40 templates_v2/faq.haml:85
+#: templates/faq.haml:40 templates_v2/faq.haml:89
 msgid ""
 "Note that Group Work may be made up of one or more activities which are "
 "graded throughout the duration of a course"
@@ -8394,11 +8394,11 @@ msgstr ""
 "Let op: groepswerk kan bestaan uit een of meerdere activiteiten die "
 "gedurende de loop van een cursus met een cijfer worden beoordeeld"
 
-#: templates/faq.haml:41 templates_v2/faq.haml:86
+#: templates/faq.haml:41 templates_v2/faq.haml:90
 msgid "Final Assessment"
 msgstr "Eindbeoordeling"
 
-#: templates/faq.haml:42 templates_v2/faq.haml:87
+#: templates/faq.haml:42 templates_v2/faq.haml:91
 msgid ""
 "There is no minimum amount of course content that must be completed, but "
 "participants must complete the Final Assessment."
@@ -8406,11 +8406,11 @@ msgstr ""
 "Er is geen minimumhoeveelheid cursusinhoud die moet worden voltooid, maar "
 "deelnemers moeten wel de eindbeoordeling afronden."
 
-#: templates/faq.haml:43 templates_v2/faq.haml:90
+#: templates/faq.haml:43 templates_v2/faq.haml:94
 msgid "How do I log in to take a McKinsey Academy course?"
 msgstr "Hoe meld ik me aan om een McKinsey Academy-cursus te volgen?"
 
-#: templates/faq.haml:44 templates_v2/faq.haml:92
+#: templates/faq.haml:44 templates_v2/faq.haml:96
 msgid ""
 "Once you activate your account, click on the \"Log in\" button on the "
 "McKinsey Academy home page and type in your username and password. This will "
@@ -8420,11 +8420,11 @@ msgstr ""
 "startpagina van McKinsey Academy en typt u uw gebruikersnaam en wachtwoord "
 "in. Hiermee wordt u naar de huidige cursuspagina geleid."
 
-#: templates/faq.haml:45 templates_v2/faq.haml:95
+#: templates/faq.haml:45 templates_v2/faq.haml:99
 msgid "How much time should I expect to devote to each course?"
 msgstr "Hoeveel tijd moet ik naar verwachting besteden aan elke cursus?"
 
-#: templates/faq.haml:46 templates_v2/faq.haml:97
+#: templates/faq.haml:46 templates_v2/faq.haml:101
 msgid ""
 "The projected time commitment required for each course is included on the "
 "course overview page. We typically find that dedicating 60-120 minutes per "
@@ -8434,22 +8434,22 @@ msgstr ""
 "Doorgaans merken we dat een besteding van 60-120 minuten per week voldoende "
 "is om alle cursusvereisten te voltooien, inclusief het groepswerk."
 
-#: templates/faq.haml:47 templates_v2/faq.haml:100
+#: templates/faq.haml:47 templates_v2/faq.haml:104
 msgid "Can I take more than one course at a time?"
 msgstr "Kan ik meer dan één cursus tegelijkertijd volgen?"
 
-#: templates/faq.haml:48 templates_v2/faq.haml:102
+#: templates/faq.haml:48 templates_v2/faq.haml:106
 msgid ""
 "McKinsey Academy programs are a collection of courses taken one at a time."
 msgstr ""
 "McKinsey Academy-programma’s zijn een verzameling cursussen die een voor een "
 "worden gevolgd."
 
-#: templates/faq.haml:49 templates_v2/faq.haml:105
+#: templates/faq.haml:49 templates_v2/faq.haml:109
 msgid "What time is the class?"
 msgstr "Hoe laat vindt de les plaats?"
 
-#: templates/faq.haml:50 templates_v2/faq.haml:107
+#: templates/faq.haml:50 templates_v2/faq.haml:111
 msgid ""
 "McKinsey Academy courses take place at your convenience. Videos and "
 "assignments are available 24 hours a day, which means you can watch videos "
@@ -8465,11 +8465,11 @@ msgstr ""
 "activiteiten voor het groepswerk deadlines hebben, zijn deze zo opgezet dat "
 "ze voldoende looptijd bieden om uw werk eenvoudig daarbinnen te plannen."
 
-#: templates/faq.haml:51 templates_v2/faq.haml:110
+#: templates/faq.haml:51 templates_v2/faq.haml:114
 msgid "If I miss a week, how does this affect my performance?"
 msgstr "Wat zijn de gevolgen voor mijn prestaties als ik een week mis?"
 
-#: templates/faq.haml:52 templates_v2/faq.haml:112
+#: templates/faq.haml:52 templates_v2/faq.haml:116
 msgid ""
 "It is certainly possible to finish a McKinsey Academy course if you miss a "
 "week; however you should certainly review content you may have missed. If "
@@ -8485,11 +8485,11 @@ msgstr ""
 "Controleer uw groepswerk en cursusoverzicht op belangrijke datums en tijden, "
 "zodat u geen deadline voor indiening mist terwijl u afwezig bent."
 
-#: templates/faq.haml:53 templates_v2/faq.haml:115
+#: templates/faq.haml:53 templates_v2/faq.haml:119
 msgid "I missed a deadline; can I get an extension?"
 msgstr "Ik heb een deadline gemist. Kan ik uitstel krijgen?"
 
-#: templates/faq.haml:54 templates_v2/faq.haml:117
+#: templates/faq.haml:54 templates_v2/faq.haml:121
 msgid ""
 "We are not able to offer individual extensions as course schedules are fixed "
 "and there is no way to change the dates of assignments or exams for one "
@@ -8499,11 +8499,11 @@ msgstr ""
 "en we op geen enkele manier de datums van opdrachten of examens kunnen "
 "wijzigen voor één deelnemer."
 
-#: templates/faq.haml:55 templates_v2/faq.haml:120
+#: templates/faq.haml:55 templates_v2/faq.haml:124
 msgid "My course deadlines are in UTC, what’s that?"
 msgstr "De deadlines voor mijn cursussen zijn in UTC, wat betekent dat?"
 
-#: templates/faq.haml:56 templates_v2/faq.haml:122
+#: templates/faq.haml:56 templates_v2/faq.haml:126
 msgid ""
 "UTC refers to Universal Coordinated Time. To find the current time in UTC "
 "and convert it to your local time, check World Time Server or other Internet "
@@ -8514,7 +8514,7 @@ msgstr ""
 "omzetten, controleer dan de World Time Server of andere tijddiensten op het "
 "internet."
 
-#: templates/faq.haml:57 templates_v2/faq.haml:125
+#: templates/faq.haml:57 templates_v2/faq.haml:129
 msgid "What if I have a question or concern regarding course grading?"
 msgstr ""
 "Wat als ik een vraag of opmerking heb met betrekking tot de "
@@ -8528,11 +8528,11 @@ msgid ""
 "\"#{support}\">TAs</a>."
 msgstr "Als u vragen heeft over een cijfer, stuur dan een e-mail"
 
-#: templates/faq.haml:59 templates_v2/faq.haml:132
+#: templates/faq.haml:59 templates_v2/faq.haml:136
 msgid "How can I meet/find other participants?"
 msgstr "Hoe kan ik andere deelnemers vinden/ontmoeten?"
 
-#: templates/faq.haml:60 templates_v2/faq.haml:134
+#: templates/faq.haml:60 templates_v2/faq.haml:138
 msgid ""
 "All McKinsey Academy courses have discussion forums where you can chat with "
 "and help other participants."
@@ -8540,7 +8540,7 @@ msgstr ""
 "Alle McKinsey Academy-cursussen hebben discussieforums waarop u met andere "
 "deelnemers kunt chatten en hen kunt helpen."
 
-#: templates/faq.haml:61 templates_v2/faq.haml:137
+#: templates/faq.haml:61 templates_v2/faq.haml:141
 msgid ""
 "How can I talk to McKinsey practitioners teaching my courses and teaching "
 "assistants?"
@@ -8548,7 +8548,7 @@ msgstr ""
 "Hoe kan ik met McKinsey-onderwijzers die mijn cursussen geven en met "
 "onderwijsassistenten communiceren?"
 
-#: templates/faq.haml:62 templates_v2/faq.haml:139
+#: templates/faq.haml:62 templates_v2/faq.haml:143
 msgid ""
 "The discussion forum is the best place to reach out to the McKinsey Academy "
 "course team for your cohort; just post your questions or email the TA. We do "
@@ -8558,7 +8558,7 @@ msgstr ""
 "Academy-cursusteam voor uw cohort; post gewoon uw vragen of stuur een e-mail "
 "naar de OA. We doen ons best om zo snel mogelijk te antwoorden."
 
-#: templates/faq.haml:63 templates_v2/faq.haml:142
+#: templates/faq.haml:63 templates_v2/faq.haml:146
 msgid "How do I get help and support regarding my course?"
 msgstr "Hoe kan ik hulp en ondersteuning voor mijn cursus krijgen?"
 
@@ -8589,11 +8589,11 @@ msgstr ""
 "onderwijsassistenten door <a href=\"mailto:tas@mckinseyacademy.com\">ze een "
 "e-mail te sturen</a>; zij komen dan zo snel mogelijk bij u terug."
 
-#: templates/faq.haml:65 templates_v2/faq.haml:150
+#: templates/faq.haml:65 templates_v2/faq.haml:154
 msgid "Can I re-take a course?"
 msgstr "Kan ik een cursus opnieuw volgen?"
 
-#: templates/faq.haml:66 templates_v2/faq.haml:152
+#: templates/faq.haml:66 templates_v2/faq.haml:156
 msgid ""
 "McKinsey Academy courses cannot be re-taken, but exercises and materials "
 "remain available for 12 months after the course ends."
@@ -8602,11 +8602,11 @@ msgstr ""
 "oefeningen en materialen blijven 12 maanden na afloop van de cursus "
 "beschikbaar."
 
-#: templates/faq.haml:67 templates_v2/faq.haml:155
+#: templates/faq.haml:67 templates_v2/faq.haml:159
 msgid "Can I access the course content after my course ends?"
 msgstr "Kan ik de cursusinhoud na afloop van de cursus openen?"
 
-#: templates/faq.haml:68 templates_v2/faq.haml:157
+#: templates/faq.haml:68 templates_v2/faq.haml:161
 msgid ""
 "McKinsey Academy past courses are available as archives for 12 months after "
 "the course ends. These courses can only be audited and some features, such "
@@ -8617,7 +8617,7 @@ msgstr ""
 "worden gecontroleerd en sommige functies, zoals de discussieforums, zijn "
 "mogelijk niet beschikbaar."
 
-#: templates/faq.haml:69 templates_v2/faq.haml:160
+#: templates/faq.haml:69 templates_v2/faq.haml:164
 msgid ""
 "What information is displayed in visualizations on the course home page?"
 msgstr ""
@@ -8658,19 +8658,19 @@ msgstr ""
 msgid "CERTIFICATES:"
 msgstr "CERTIFICATEN:"
 
-#: templates/faq.haml:75 templates_v2/faq.haml:175
+#: templates/faq.haml:75 templates_v2/faq.haml:179
 msgid "Will my certificate include an overall program grade?"
 msgstr "Bevat mijn certificaat een cijfer voor het gehele programma?"
 
-#: templates/faq.haml:76 templates_v2/faq.haml:177
+#: templates/faq.haml:76 templates_v2/faq.haml:181
 msgid "Your certificate will not include final grades."
 msgstr "Uw certificaat bevat geen eindcijfers."
 
-#: templates/faq.haml:77 templates_v2/faq.haml:180
+#: templates/faq.haml:77 templates_v2/faq.haml:184
 msgid "Can I get a paper copy of my certificate?"
 msgstr "Kan ik een papieren exemplaar van mijn certificaat krijgen?"
 
-#: templates/faq.haml:78 templates_v2/faq.haml:182
+#: templates/faq.haml:78 templates_v2/faq.haml:186
 msgid ""
 "McKinsey Academy certificates are digital files which you can print on "
 "standard size paper."
@@ -8678,11 +8678,11 @@ msgstr ""
 "McKinsey Academy-certificaten zijn digitale bestanden die u kunt afdrukken "
 "op papier van een standaardformaat."
 
-#: templates/faq.haml:79 templates_v2/faq.haml:185
+#: templates/faq.haml:79 templates_v2/faq.haml:189
 msgid "How are certificates determined?"
 msgstr "Op basis waarvan worden certificaten toegekend?"
 
-#: templates/faq.haml:80 templates_v2/faq.haml:187
+#: templates/faq.haml:80 templates_v2/faq.haml:191
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
@@ -8692,11 +8692,11 @@ msgstr ""
 "deelnemers een score behalen van 70%% of hoger voor de 4 kerncursussen van "
 "het programma."
 
-#: templates/faq.haml:81 templates_v2/faq.haml:190
+#: templates/faq.haml:81 templates_v2/faq.haml:194
 msgid "How are McKinsey Academy certificates delivered?"
 msgstr "Hoe worden McKinsey Academy-certificaten bezorgd?"
 
-#: templates/faq.haml:82 templates_v2/faq.haml:192
+#: templates/faq.haml:82 templates_v2/faq.haml:196
 msgid ""
 "McKinsey Academy certificates are delivered via email following successful "
 "completion of a program."
@@ -8704,15 +8704,15 @@ msgstr ""
 "McKinsey Academy-certificaten worden na een geslaagde afronding van een "
 "programma per e-mail bezorgd."
 
-#: templates/faq.haml:83 templates_v2/faq.haml:193
+#: templates/faq.haml:83 templates_v2/faq.haml:197
 msgid "TECHNICAL ISSUES:"
 msgstr "TECHNISCHE PROBLEMEN:"
 
-#: templates/faq.haml:84 templates_v2/faq.haml:196
+#: templates/faq.haml:84 templates_v2/faq.haml:200
 msgid "How can I get technical support?"
 msgstr "Hoe kan ik technische ondersteuning krijgen?"
 
-#: templates/faq.haml:85 templates_v2/faq.haml:198
+#: templates/faq.haml:85 templates_v2/faq.haml:202
 msgid ""
 "If you are having technical issues, please contact us here so we can resolve "
 "your problem. and we will get back to you by the next business day (likely "
@@ -8722,30 +8722,30 @@ msgstr ""
 "zodat we uw probleem kunnen oplossen. Wij nemen dan de volgende werkdag "
 "(maar waarschijnlijk eerder) contact met u op."
 
-#: templates/faq.haml:86 templates_v2/faq.haml:201
+#: templates/faq.haml:86 templates_v2/faq.haml:205
 msgid "What if I did not receive my password reset email?"
 msgstr ""
 "Waarom heb ik geen e-mail ontvangen voor het opnieuw instellen van mijn "
 "wachtwoord?"
 
-#: templates/faq.haml:87 templates_v2/faq.haml:203
+#: templates/faq.haml:87 templates_v2/faq.haml:207
 msgid "If you did not receive an automated email it may be because:"
 msgstr ""
 "Als u geen geautomatiseerd e-mailbericht heeft ontvangen, wordt dat mogelijk "
 "veroorzaakt door het volgende:"
 
-#: templates/faq.haml:89 templates_v2/faq.haml:205
+#: templates/faq.haml:89 templates_v2/faq.haml:209
 msgid "There was a typo in your email address"
 msgstr "Een typfout in uw e-mailadres"
 
-#: templates/faq.haml:90 templates_v2/faq.haml:206
+#: templates/faq.haml:90 templates_v2/faq.haml:210
 msgid ""
 "Your spam filter may have caught the email; please check your spam folder"
 msgstr ""
 "Het e-mailbericht is mogelijk terechtgekomen in uw spamfilter; controleer uw "
 "map voor spam"
 
-#: templates/faq.haml:91 templates_v2/faq.haml:207
+#: templates/faq.haml:91 templates_v2/faq.haml:211
 msgid ""
 "You may be using an older browser; we recommend downloading the current "
 "version of Chrome or Firefox"
@@ -8753,7 +8753,7 @@ msgstr ""
 "U gebruikt mogelijk een oudere browser. Aangeraden wordt om de actuele "
 "versie van Chrome of Firefox te downloaden"
 
-#: templates/faq.haml:92 templates_v2/faq.haml:208
+#: templates/faq.haml:92 templates_v2/faq.haml:212
 msgid ""
 "JavaScript is disabled in your browser; please check your browser settings "
 "and confirm that JavaScript is enabled"
@@ -8761,7 +8761,7 @@ msgstr ""
 "JavaScript is uitgeschakeld in uw browser. Controleer uw browserinstellingen "
 "en controleer of JavaScript is ingeschakeld"
 
-#: templates/faq.haml:93 templates_v2/faq.haml:209
+#: templates/faq.haml:93 templates_v2/faq.haml:213
 msgid ""
 "You have not successfully registered an account with McKinsey Academy' "
 "please try registering again with the same email address (if an account "
@@ -8771,7 +8771,7 @@ msgstr ""
 "probeert u het dan opnieuw met hetzelfde e-mailadres (als het account al "
 "bestaat, wordt er een fout weergegeven over een dubbel e-mailadres)"
 
-#: templates/faq.haml:94 templates_v2/faq.haml:212
+#: templates/faq.haml:94 templates_v2/faq.haml:216
 msgid ""
 "What if I have problems with the display (e.g., there are tools missing from "
 "the course display, or I am unable to view video)?"
@@ -8779,7 +8779,7 @@ msgstr ""
 "Wat als ik problemen ondervind bij het weergeven (bijvoorbeeld hulpmiddelen "
 "die ontbreken in de cursusweergave of als ik geen video’s kan bekijken)?"
 
-#: templates/faq.haml:95 templates_v2/faq.haml:214
+#: templates/faq.haml:95 templates_v2/faq.haml:218
 msgid ""
 "Please check your browser and settings - JavaScript must be enabled. We "
 "recommend downloading and using the current version of either Chrome or "
@@ -8789,7 +8789,7 @@ msgstr ""
 "raden aan om de actuele versie van Chrome of Firefox te downloaden en "
 "gebruiken."
 
-#: templates/faq.haml:96 templates_v2/faq.haml:217
+#: templates/faq.haml:96 templates_v2/faq.haml:221
 msgid "How can I sign up for a McKinsey Academy course or program?"
 msgstr ""
 "Hoe kan ik me registreren voor een McKinsey Academy-cursus of -programma?"
@@ -8799,7 +8799,7 @@ msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 msgstr ""
 "Neem <a href=\"mailto:academy_info@mckinsey.com\">contact met ons op.</a>"
 
-#: templates/faq.haml:98 templates_v2/faq.haml:224
+#: templates/faq.haml:98 templates_v2/faq.haml:228
 msgid "What if my question isn’t answered here?"
 msgstr "Wat als mijn vraag hier niet wordt beantwoord?"
 
@@ -8817,7 +8817,7 @@ msgid "Terms of Service"
 msgstr "Servicevoorwaarden"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
-#: templates_v2/footer.haml:19 templates_v2/privacy.haml:8
+#: templates_v2/footer.haml:19 templates_v2/privacy.haml:12
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "Privacybeleid"
@@ -8950,6 +8950,8 @@ msgstr "McKinsey Academy - Info"
 #: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml:10
 #: templates/marketing/productwalkthrough.haml:9
 #: templates/marketing/productwalkthrough.haml:10
+#: templates_v2/marketing/productwalkthrough.haml:9
+#: templates_v2/marketing/productwalkthrough.haml:10
 msgid ""
 "McKinsey Academy is a dynamic business education platform built to help "
 "organizations thrive by accelerating their talent advantage."
@@ -9704,10 +9706,12 @@ msgid "Elevate their visibility within your organization"
 msgstr "Hun zichtbaarheid binnen uw organisatie vergroten"
 
 #: templates/marketing/productwalkthrough.haml:5
+#: templates_v2/marketing/productwalkthrough.haml:5
 msgid "Product Walkthrough | McKinsey Academy"
 msgstr "Productrondleiding | McKinsey Academy"
 
 #: templates/marketing/productwalkthrough.haml:6
+#: templates_v2/marketing/productwalkthrough.haml:6
 msgid "McKinsey Academy Product Walkthrough"
 msgstr "McKinsey Academy Productrondleiding"
 
@@ -10495,11 +10499,11 @@ msgstr "Opnieuw instellen"
 msgid "Please refresh the page to see the changes applied."
 msgstr "Vernieuw de pagina om de doorgevoerde wijzigingen weer te geven."
 
-#: templates/privacy.haml:10 templates_v2/privacy.haml:10
+#: templates/privacy.haml:10 templates_v2/privacy.haml:14
 msgid "This Privacy Policy was last updated on November 13, 2017"
 msgstr "Dit Privacybeleid is voor het laatst bijgewerkt op 13 november 2017"
 
-#: templates/privacy.haml:12 templates_v2/privacy.haml:12
+#: templates/privacy.haml:12 templates_v2/privacy.haml:16
 msgid ""
 "McKinsey & Company and its subsidiaries and affiliates (collectively, "
 "“McKinsey”, “us” or “we”) understands that your privacy is important to you. "
@@ -10515,11 +10519,11 @@ msgstr ""
 "informatiegegevens die u kunnen identificeren als individuele persoon en die "
 "worden verzameld in verband met McKinsey Academy."
 
-#: templates/privacy.haml:14 templates_v2/privacy.haml:14
+#: templates/privacy.haml:14 templates_v2/privacy.haml:18
 msgid "“McKinsey Academy” refers collectively to any website, including"
 msgstr "“McKinsey Academy” verwijst naar elke website, waaronder"
 
-#: templates/privacy.haml:17 templates_v2/privacy.haml:17
+#: templates/privacy.haml:17 templates_v2/privacy.haml:21
 msgid ""
 " (the “Sites”), and any mobile device or tablet application or similar "
 "software (each a “Mobile Offering”) that is provided by us and that links to "
@@ -10539,11 +10543,11 @@ msgstr ""
 "Zie onze"
 
 #: templates/privacy.haml:19 templates/terms_of_service.haml:3
-#: templates_v2/privacy.haml:19 templates_v2/terms_of_service.haml:3
+#: templates_v2/privacy.haml:23 templates_v2/terms_of_service.haml:3
 msgid "Terms of Use"
 msgstr "Gebruiksvoorwaarden"
 
-#: templates/privacy.haml:20 templates_v2/privacy.haml:20
+#: templates/privacy.haml:20 templates_v2/privacy.haml:24
 msgid ""
 "(the “Terms”) for more information about our online terms and policies that "
 "apply to your use of McKinsey Academy."
@@ -10551,11 +10555,11 @@ msgstr ""
 "(de “Voorwaarden”) voor meer informatie over onze online voorwaarden en ons "
 "beleid die van toepassing zijn op uw gebruik van McKinsey Academy."
 
-#: templates/privacy.haml:21 templates_v2/privacy.haml:21
+#: templates/privacy.haml:21 templates_v2/privacy.haml:25
 msgid "Information we collect"
 msgstr "Gegevens die we verzamelen"
 
-#: templates/privacy.haml:23 templates_v2/privacy.haml:23
+#: templates/privacy.haml:23 templates_v2/privacy.haml:27
 msgid ""
 "McKinsey collects personal data when you register, access or use McKinsey "
 "Academy or McKinsey Academy Content (as such term is defined in the Terms), "
@@ -10572,7 +10576,7 @@ msgstr ""
 "“Voorwaarden”) en deelname aan openbare forums (zoals bulletinboards, "
 "discussieforums en enquêtes)."
 
-#: templates/privacy.haml:25 templates_v2/privacy.haml:25
+#: templates/privacy.haml:25 templates_v2/privacy.haml:29
 msgid ""
 "The personal data collected may consist of information that you provide, "
 "such as your name, e-mail address, and other User Account Information (as "
@@ -10592,7 +10596,7 @@ msgstr ""
 "betrekking hebben op uw gebruik van en deelname aan McKinsey Academy, "
 "waaronder Deelnamegegevens (zoals hierna gedefinieerd)."
 
-#: templates/privacy.haml:27 templates_v2/privacy.haml:27
+#: templates/privacy.haml:27 templates_v2/privacy.haml:31
 msgid ""
 "We may also automatically collect information about the devices you use to "
 "interact with McKinsey Academy. The information we automatically collect may "
@@ -10618,11 +10622,11 @@ msgstr ""
 "gekoppeld aan uw persoonsgegevens en in sommige gevallen zelfs "
 "persoonsgegevens betreffen."
 
-#: templates/privacy.haml:28 templates_v2/privacy.haml:28
+#: templates/privacy.haml:28 templates_v2/privacy.haml:32
 msgid "Use of information"
 msgstr "Gebruik van informatie"
 
-#: templates/privacy.haml:30 templates_v2/privacy.haml:30
+#: templates/privacy.haml:30 templates_v2/privacy.haml:34
 msgid ""
 "The personal data we collect may be used where McKinsey has a legitimate "
 "interest in or other legal basis for processing such information. In some "
@@ -10657,7 +10661,7 @@ msgstr ""
 "werking kunt stellen of waar u om kunt verzoeken. We kunnen uw "
 "persoonsgegevens bewaren en gebruiken om contact met u op te nemen."
 
-#: templates/privacy.haml:32 templates_v2/privacy.haml:32
+#: templates/privacy.haml:32 templates_v2/privacy.haml:36
 msgid ""
 "McKinsey may use first and third party cookies to manage our Sites and our "
 "services and collect analytics about how you use them. McKinsey Academy "
@@ -10667,11 +10671,11 @@ msgstr ""
 "onze diensten te beheren en om analytische informatie te verzamelen over uw "
 "gebruik ervan. McKinsey Academy volgt McKinsey’s"
 
-#: templates/privacy.haml:34 templates_v2/privacy.haml:34
+#: templates/privacy.haml:34 templates_v2/privacy.haml:38
 msgid "Cookie Policy"
 msgstr "Cookiebeleid"
 
-#: templates/privacy.haml:35 templates_v2/privacy.haml:35
+#: templates/privacy.haml:35 templates_v2/privacy.haml:39
 msgid ""
 ", but please note that references in the posted Cookie Policy to “our "
 "privacy policy” and “our terms of use” and our or the “Site” refer, "
@@ -10682,7 +10686,7 @@ msgstr ""
 "gepubliceerde Cookiebeleid, respectievelijk verwijzen naar dit "
 "Privacybeleid, de Voorwaarden en McKinsey Academy."
 
-#: templates/privacy.haml:37 templates_v2/privacy.haml:37
+#: templates/privacy.haml:37 templates_v2/privacy.haml:41
 msgid ""
 "We may also use your personal data (including your User Account Information "
 "and Participation Data), as well as your User Content, to (a) verify your "
@@ -10731,7 +10735,7 @@ msgstr ""
 "met ons opnemen op het adres dat hierna is vermeld in de sectie Contact "
 "opnemen van dit Privacybeleid."
 
-#: templates/privacy.haml:39 templates_v2/privacy.haml:39
+#: templates/privacy.haml:39 templates_v2/privacy.haml:43
 msgid ""
 "Your personal data may also be used, both by us and by our authorized third "
 "party service providers, to collect, discover, and prepare aggregate "
@@ -10775,11 +10779,11 @@ msgstr ""
 "deze is afgeleid uit of is ontwikkeld via uw Gebruikersaccountinformatie, "
 "Gebruikersinhoud of persoonsgegevens."
 
-#: templates/privacy.haml:40 templates_v2/privacy.haml:40
+#: templates/privacy.haml:40 templates_v2/privacy.haml:44
 msgid "Sharing information with your Sponsoring Organization"
 msgstr "Informatie delen met uw Sponsororganisatie"
 
-#: templates/privacy.haml:42 templates_v2/privacy.haml:42
+#: templates/privacy.haml:42 templates_v2/privacy.haml:46
 msgid ""
 "If you are participating in McKinsey Academy with the facilitation of a "
 "Sponsoring Organization (as such term is defined in the Terms), at the "
@@ -10808,11 +10812,11 @@ msgstr ""
 "onderworpen zijn aan het beleid (waaronder het privacybeleid) van uw "
 "Sponsorganisatie dat op u van toepassing is."
 
-#: templates/privacy.haml:43 templates_v2/privacy.haml:43
+#: templates/privacy.haml:43 templates_v2/privacy.haml:47
 msgid "Data recipients and international data transfers"
 msgstr "Gegevensontvangers en internationale gegevensoverdrachten"
 
-#: templates/privacy.haml:45 templates_v2/privacy.haml:45
+#: templates/privacy.haml:45 templates_v2/privacy.haml:49
 msgid ""
 "Personal data collected or processed by McKinsey Academy may be transferred "
 "from time to time to McKinsey subsidiaries and affiliates and their "
@@ -10844,7 +10848,7 @@ msgstr ""
 "Door McKinsey Academy te gebruiken, stemt u vrijwillig in met dergelijke "
 "grensoverschrijdende overdrachten en hosting van dergelijke informatie."
 
-#: templates/privacy.haml:47 templates_v2/privacy.haml:47
+#: templates/privacy.haml:47 templates_v2/privacy.haml:51
 msgid ""
 "McKinsey shall not intentionally disclose or transfer (and shall take "
 "reasonable steps to prevent the unauthorized or accidental disclosure of) "
@@ -10871,7 +10875,7 @@ msgstr ""
 "niveau dat door McKinsey wordt geboden met betrekking tot dergelijke "
 "persoonsgegevens."
 
-#: templates/privacy.haml:49 templates_v2/privacy.haml:49
+#: templates/privacy.haml:49 templates_v2/privacy.haml:53
 msgid ""
 "We also may share your personal data with third party service providers who "
 "perform services and functions on our behalf to support our interactions "
@@ -10890,21 +10894,21 @@ msgstr ""
 "verstrekken op een andere wijze dan noodzakelijk is voor het voorzien in "
 "diensten namens ons of het voldoen aan wettelijke vereisten."
 
-#: templates/privacy.haml:51 templates_v2/privacy.haml:51
+#: templates/privacy.haml:51 templates_v2/privacy.haml:55
 msgid "In addition, we may disclose information about you:"
 msgstr "Daarnaast kunnen we informatie over u verstrekken:"
 
-#: templates/privacy.haml:54 templates_v2/privacy.haml:54
+#: templates/privacy.haml:54 templates_v2/privacy.haml:58
 msgid "If we are required to do so by law or legal process;"
 msgstr ""
 "als we uit hoofde van de wet of een juridisch proces verplicht zijn om dat "
 "te doen;"
 
-#: templates/privacy.haml:56 templates_v2/privacy.haml:56
+#: templates/privacy.haml:56 templates_v2/privacy.haml:60
 msgid "To law enforcement authorities or other government officials;"
 msgstr "aan wetshandhavingsautoriteiten of andere overheidsfunctionarissen;"
 
-#: templates/privacy.haml:58 templates_v2/privacy.haml:58
+#: templates/privacy.haml:58 templates_v2/privacy.haml:62
 msgid ""
 "When we believe disclosure is necessary or appropriate to prevent physical "
 "harm\n"
@@ -10916,27 +10920,27 @@ msgstr ""
 " of financieel verlies te voorkomen of in verband met een onderzoek naar "
 "vermoedelijke of daadwerkelijke onrechtmatige activiteiten;"
 
-#: templates/privacy.haml:61 templates_v2/privacy.haml:61
+#: templates/privacy.haml:61 templates_v2/privacy.haml:65
 msgid "If disclosure is necessary to protect the vital interests of a person;"
 msgstr ""
 "als verstrekking noodzakelijk is voor het beschermen van de vitale belangen "
 "van een persoon;"
 
-#: templates/privacy.haml:63 templates_v2/privacy.haml:63
+#: templates/privacy.haml:63 templates_v2/privacy.haml:67
 msgid "To enforce our Terms;"
 msgstr "voor de handhaving van onze Voorwaarden;"
 
-#: templates/privacy.haml:65 templates_v2/privacy.haml:65
+#: templates/privacy.haml:65 templates_v2/privacy.haml:69
 msgid "To protect our property, services and legal rights;"
 msgstr ""
 "voor de bescherming van onze rechten met betrekking tot eigendom, diensten "
 "en wettelijke rechten;"
 
-#: templates/privacy.haml:67 templates_v2/privacy.haml:67
+#: templates/privacy.haml:67 templates_v2/privacy.haml:71
 msgid "To your Sponsoring Organization as described in this Privacy Policy;"
 msgstr "aan uw Sponsororganisatie, zoals beschreven is in dit Privacybeleid;"
 
-#: templates/privacy.haml:69 templates_v2/privacy.haml:69
+#: templates/privacy.haml:69 templates_v2/privacy.haml:73
 msgid ""
 "To prevent fraud against McKinsey, our subsidiaries and affiliates and "
 "business\n"
@@ -10946,16 +10950,16 @@ msgstr ""
 "en\n"
 "            zakenpartners te voorkomen;"
 
-#: templates/privacy.haml:72 templates_v2/privacy.haml:72
+#: templates/privacy.haml:72 templates_v2/privacy.haml:76
 msgid "To support auditing, compliance, and corporate governance functions; or"
 msgstr ""
 "ter ondersteuning van audits, compliance en corporate governance-functies; of"
 
-#: templates/privacy.haml:74 templates_v2/privacy.haml:74
+#: templates/privacy.haml:74 templates_v2/privacy.haml:78
 msgid "To comply with any and all applicable laws."
 msgstr "om te voldoen aan welke toepasselijke wetgeving dan ook."
 
-#: templates/privacy.haml:76 templates_v2/privacy.haml:76
+#: templates/privacy.haml:76 templates_v2/privacy.haml:80
 msgid ""
 "We maintain processes designed to ensure that any processing of personal "
 "data by third party service providers is consistent with this Privacy Policy "
@@ -10967,7 +10971,7 @@ msgstr ""
 "overeenstemming is met dit Privacybeleid en dat de vertrouwelijkheid, "
 "beschikbaarheid en integriteit van uw persoonsgegevens worden beschermd."
 
-#: templates/privacy.haml:78 templates_v2/privacy.haml:78
+#: templates/privacy.haml:78 templates_v2/privacy.haml:82
 msgid ""
 "In addition, in the event of a re-organization, merger, sale, joint venture, "
 "assignment, or other transfer or disposition of all or any portion of our "
@@ -10978,11 +10982,11 @@ msgstr ""
 "een gedeelte van onze activiteiten, uw persoonsgegevens verstrekken of "
 "overdragen."
 
-#: templates/privacy.haml:79 templates_v2/privacy.haml:79
+#: templates/privacy.haml:79 templates_v2/privacy.haml:83
 msgid "Surveys"
 msgstr "Enquêtes"
 
-#: templates/privacy.haml:81 templates_v2/privacy.haml:81
+#: templates/privacy.haml:81 templates_v2/privacy.haml:85
 msgid ""
 "If you participate in a survey in connection with McKinsey Academy, our "
 "research results may be reported as totals or in other aggregated form and "
@@ -11006,11 +11010,11 @@ msgstr ""
 "ons opnemen via het adres dat hierna wordt vermeld in de sectie Contact "
 "opnemen van dit Privacybeleid."
 
-#: templates/privacy.haml:82 templates_v2/privacy.haml:82
+#: templates/privacy.haml:82 templates_v2/privacy.haml:86
 msgid "User disclosure"
 msgstr "Verstrekking door gebruiker"
 
-#: templates/privacy.haml:84 templates_v2/privacy.haml:84
+#: templates/privacy.haml:84 templates_v2/privacy.haml:88
 msgid ""
 "You should be aware that whenever you publicly disclose information, even to "
 "a limited group of recipients (for example, other users who are enrolled in "
@@ -11029,11 +11033,11 @@ msgstr ""
 "informatie verzamelen die gebruikers verstrekken aan dergelijke derde "
 "partijen in verband met hun gebruik van McKinsey Academy."
 
-#: templates/privacy.haml:85 templates_v2/privacy.haml:85
+#: templates/privacy.haml:85 templates_v2/privacy.haml:89
 msgid "Third-party websites and platforms"
 msgstr "Websites en platforms van derde partijen"
 
-#: templates/privacy.haml:87 templates_v2/privacy.haml:87
+#: templates/privacy.haml:87 templates_v2/privacy.haml:91
 msgid ""
 "McKinsey may provide links or directions to third party websites or "
 "information as a service to our users. If you use these links, you will "
@@ -11053,7 +11057,7 @@ msgstr ""
 "dergelijk gebruik zal onderworpen zijn aan de gebruiksvoorwaarden en het "
 "privacybeleid voor de desbetreffende sites."
 
-#: templates/privacy.haml:89 templates_v2/privacy.haml:89
+#: templates/privacy.haml:89 templates_v2/privacy.haml:93
 msgid ""
 "In addition, certain Mobile Offerings may be made available to you through a "
 "website, application or platform operated by a Mobile Platform Provider (as "
@@ -11092,7 +11096,7 @@ msgstr ""
 "voorwaarden en dat beleid niet onderworpen zijn aan onze Voorwaarden of aan "
 "dit Privacybeleid."
 
-#: templates/privacy.haml:91 templates_v2/privacy.haml:91
+#: templates/privacy.haml:91 templates_v2/privacy.haml:95
 msgid ""
 "In connection with our Mobile Offerings, McKinsey may use third party "
 "service providers to analyze non-personally identifiable user activity to "
@@ -11118,11 +11122,11 @@ msgstr ""
 "externe dienstverleners verzamelt informatie op een wijze die is gericht op "
 "het persoonlijk identificeren van welke gebruiker dan ook."
 
-#: templates/privacy.haml:92 templates_v2/privacy.haml:92
+#: templates/privacy.haml:92 templates_v2/privacy.haml:96
 msgid "Security"
 msgstr "Beveiliging"
 
-#: templates/privacy.haml:94 templates_v2/privacy.haml:94
+#: templates/privacy.haml:94 templates_v2/privacy.haml:98
 msgid ""
 "McKinsey has implemented generally accepted standards of technology and "
 "operational security to protect personal data from loss, misuse, alteration, "
@@ -11150,11 +11154,11 @@ msgstr ""
 "het adres dat hieronder wordt vermeld in de sectie Contact opnemen van dit "
 "Privacybeleid."
 
-#: templates/privacy.haml:95 templates_v2/privacy.haml:95
+#: templates/privacy.haml:95 templates_v2/privacy.haml:99
 msgid "Data retention policy"
 msgstr "Beleid inzake gegevensbewaring"
 
-#: templates/privacy.haml:97 templates_v2/privacy.haml:97
+#: templates/privacy.haml:97 templates_v2/privacy.haml:101
 msgid ""
 "McKinsey retains all personal data for the duration of the relevant business "
 "relationship or, where required, in accordance with our information "
@@ -11172,11 +11176,11 @@ msgstr ""
 "geheel te verwijderen. Raadpleeg de sectie UW RECHTEN van dit Privacybeleid "
 "voor aanvragen voor inzage, correcties of verwijdering."
 
-#: templates/privacy.haml:98 templates_v2/privacy.haml:98
+#: templates/privacy.haml:98 templates_v2/privacy.haml:102
 msgid "Children"
 msgstr "Kinderen"
 
-#: templates/privacy.haml:100 templates_v2/privacy.haml:100
+#: templates/privacy.haml:100 templates_v2/privacy.haml:104
 msgid ""
 "McKinsey Academy is not designed for or directed at children 13 years of age "
 "or younger, and McKinsey does not intentionally collect or maintain personal "
@@ -11186,11 +11190,11 @@ msgstr ""
 "of jonger. McKinsey houdt zich niet doelbewust bezig met het verzamelen of "
 "bewaren van persoonsgegevens van personen onder deze leeftijd."
 
-#: templates/privacy.haml:101 templates_v2/privacy.haml:101
+#: templates/privacy.haml:101 templates_v2/privacy.haml:105
 msgid "Your rights"
 msgstr "Uw rechten"
 
-#: templates/privacy.haml:103 templates_v2/privacy.haml:103
+#: templates/privacy.haml:103 templates_v2/privacy.haml:107
 msgid ""
 "Where granted by local law, you may have the right to request access to the "
 "personal data that we have collected about you for the purposes of "
@@ -11207,7 +11211,7 @@ msgstr ""
 "verzameld. Onder bepaalde omstandigheden kunt u daarnaast een aanvraag doen "
 "om de verwerking van uw persoonsgegevens door ons te staken."
 
-#: templates/privacy.haml:105 templates_v2/privacy.haml:105
+#: templates/privacy.haml:105 templates_v2/privacy.haml:109
 msgid ""
 "If you would like to make a request to access, review, or correct the "
 "personal data we have collected about you, or to discuss how we process your "
@@ -11217,7 +11221,7 @@ msgstr ""
 "van de persoonsgegevens die we over u hebben verzameld of om te bespreken "
 "hoe we uw persoonsgegevens verwerken, kunt u contact met ons opnemen via"
 
-#: templates/privacy.haml:108 templates_v2/privacy.haml:108
+#: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
 "To help protect your privacy and security, we will take reasonable steps to "
 "verify your identity, such as requiring you to provide or confirm your "
@@ -11259,7 +11263,7 @@ msgstr ""
 "buitensporig zijn of anderszins bezwaarlijk of onterecht zijn onder de "
 "toepasselijke wetgeving."
 
-#: templates/privacy.haml:110 templates_v2/privacy.haml:110
+#: templates/privacy.haml:110 templates_v2/privacy.haml:114
 msgid ""
 "In addition, and where granted by local law, you have the legal right to "
 "lodge a complaint with a competent data protection authority."
@@ -11268,7 +11272,7 @@ msgstr ""
 "daarnaast het recht om een klacht in te dienen bij een ter zake bevoegde "
 "gegevensbeschermingsautoriteit."
 
-#: templates/privacy.haml:112 templates_v2/privacy.haml:112
+#: templates/privacy.haml:112 templates_v2/privacy.haml:116
 msgid ""
 "You may revoke your consent to the collection, processing and/or disclosure "
 "of your personal data at any time. To do so, please either follow the "
@@ -11291,11 +11295,11 @@ msgstr ""
 "voor u, aangezien deze afhankelijk zijn van het verzamelen, verwerken en/of "
 "verstrekken van uw persoonsgegevens."
 
-#: templates/privacy.haml:113 templates_v2/privacy.haml:113
+#: templates/privacy.haml:113 templates_v2/privacy.haml:117
 msgid "Your California privacy rights"
 msgstr "Uw privacyrechten onder de wetgeving in Californië"
 
-#: templates/privacy.haml:115 templates_v2/privacy.haml:115
+#: templates/privacy.haml:115 templates_v2/privacy.haml:119
 msgid ""
 "Pursuant to California Civil Code Section 1798.83(c)(2), McKinsey does not "
 "share your personal data with third parties for those third parties’ direct "
@@ -11306,7 +11310,7 @@ msgstr ""
 "McKinsey uw persoonsgegevens niet met derde partijen voor direct-"
 "marketinggebruik door deze derde partijen. "
 
-#: templates/privacy.haml:117 templates_v2/privacy.haml:117
+#: templates/privacy.haml:117 templates_v2/privacy.haml:121
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -11325,7 +11329,7 @@ msgstr ""
 "mailbericht met een gedetailleerde beschrijving van de specifieke inhoud of "
 "informatie naar"
 
-#: templates/privacy.haml:119 templates_v2/privacy.haml:119
+#: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
 "Please be aware that such a request does not ensure complete or "
 "comprehensive removal of the content or information you have posted and that "
@@ -11338,11 +11342,11 @@ msgstr ""
 "wetgeving verwijdering niet vereist of toestaat, zelfs als deze is "
 "aangevraagd."
 
-#: templates/privacy.haml:120 templates_v2/privacy.haml:120
+#: templates/privacy.haml:120 templates_v2/privacy.haml:124
 msgid "Consent; changes to privacy policy"
 msgstr "Toestemming; wijzigingen in het privacybeleid"
 
-#: templates/privacy.haml:122 templates_v2/privacy.haml:122
+#: templates/privacy.haml:122 templates_v2/privacy.haml:126
 msgid ""
 "By using McKinsey Academy, including the Site or any Mobile Offering, you "
 "consent to the collection, use, and storage of your information, including "
@@ -11360,7 +11364,7 @@ msgstr ""
 "attenderen op dergelijke wijzigingen door dit Privacybeleid bij te werken, "
 "zoals dat beschikbaar is op"
 
-#: templates/privacy.haml:125 templates_v2/privacy.haml:125
+#: templates/privacy.haml:125 templates_v2/privacy.haml:129
 msgid ""
 "If we make material changes to this Privacy Policy that increase our rights "
 "to use personal data that we have previously collected about you, we will "
@@ -11375,11 +11379,11 @@ msgstr ""
 "publiceren over de wijzigingen op een wijze die toegankelijk is voor "
 "McKinsey Academy-gebruikers."
 
-#: templates/privacy.haml:126 templates_v2/privacy.haml:126
+#: templates/privacy.haml:126 templates_v2/privacy.haml:130
 msgid "Contact our privacy department"
 msgstr "Contact opnemen met onze afdeling Privacy"
 
-#: templates/privacy.haml:128 templates_v2/privacy.haml:128
+#: templates/privacy.haml:128 templates_v2/privacy.haml:132
 msgid ""
 "If you have any questions about our Privacy Policy or if you require any "
 "assistance in navigating or reading the Terms or this Privacy Policy, please "
@@ -11390,17 +11394,17 @@ msgstr ""
 "contact met ons opnemen via:"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
-#: templates_v2/privacy.haml:131 templates_v2/terms_of_service.haml:114
+#: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
 msgid "c/o Marc Metakis"
 msgstr "t.a.v. Marc Metakis"
 
 #: templates/privacy.haml:132 templates/terms_of_service.haml:115
-#: templates_v2/privacy.haml:132 templates_v2/terms_of_service.haml:115
+#: templates_v2/privacy.haml:136 templates_v2/terms_of_service.haml:115
 msgid "55 East 52nd Street"
 msgstr "55 East 52nd Street"
 
 #: templates/privacy.haml:133 templates/terms_of_service.haml:116
-#: templates_v2/privacy.haml:133 templates_v2/terms_of_service.haml:116
+#: templates_v2/privacy.haml:137 templates_v2/terms_of_service.haml:116
 msgid "New York, NY 10022"
 msgstr "New York, NY 10022"
 
@@ -12938,15 +12942,13 @@ msgstr "Cohortgemiddelde:"
 
 #: templates_v2/courses/course_cohort.haml:27
 #: templates_v2/courses/course_cohort.haml:107
-#: templates_v2/courses/course_cohort.haml:188
+#: templates_v2/courses/course_cohort.haml:189
 #, fuzzy
 #| msgid "Tile Positions"
 msgid "Position"
 msgstr "Tegelposities"
 
 #: templates_v2/courses/course_cohort.haml:29
-#: templates_v2/courses/course_cohort.haml:109
-#: templates_v2/courses/course_cohort.haml:190
 #, python-format, python-brace-format
 msgid ""
 "\n"
@@ -12969,9 +12971,9 @@ msgstr "Top 3 voortgang"
 #: templates_v2/courses/course_cohort.haml:136
 #: templates_v2/courses/course_cohort.haml:156
 #: templates_v2/courses/course_cohort.haml:176
-#: templates_v2/courses/course_cohort.haml:218
-#: templates_v2/courses/course_cohort.haml:238
-#: templates_v2/courses/course_cohort.haml:258
+#: templates_v2/courses/course_cohort.haml:219
+#: templates_v2/courses/course_cohort.haml:239
+#: templates_v2/courses/course_cohort.haml:259
 msgid "User Name"
 msgstr "Gebruikersnaam"
 
@@ -12983,6 +12985,16 @@ msgstr "Uw punten voor discussieactiviteit:"
 #, python-format
 msgid " Cohort Average: %(score)s points"
 msgstr " Cohortgemiddelde:%(score)s punten"
+
+#: templates_v2/courses/course_cohort.haml:109
+#: templates_v2/courses/course_cohort.haml:191
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"                            You are ranked <b>##{position}</b> out of "
+"%(total)s members in your cohort.\n"
+"                          "
+msgstr ""
 
 #: templates_v2/courses/course_cohort.haml:113
 msgid "Your engagement position will be displayed here"
@@ -12996,11 +13008,11 @@ msgstr "Top 3 inzet"
 msgid "Your course knowledge:"
 msgstr "Uw cursuskennis"
 
-#: templates_v2/courses/course_cohort.haml:194
+#: templates_v2/courses/course_cohort.haml:195
 msgid "Your proficiency position will be displayed here"
 msgstr "Uw vaardigheidspositie wordt hier weergegeven"
 
-#: templates_v2/courses/course_cohort.haml:198
+#: templates_v2/courses/course_cohort.haml:199
 msgid "Top 3 on Proficiency"
 msgstr "Top 3 vaardigheid"
 
@@ -13294,19 +13306,19 @@ msgstr "Uw cursuskennis"
 msgid "Your course completion status"
 msgstr "Uw status van cursusvoltooiing"
 
-#: templates_v2/faq.haml:9
+#: templates_v2/faq.haml:13
 msgid "Participant FAQs"
 msgstr "Veelgestelde vragen deelnemer"
 
-#: templates_v2/faq.haml:10
+#: templates_v2/faq.haml:14
 msgid "Access Related:"
 msgstr "Toeganggerelateerd:"
 
-#: templates_v2/faq.haml:44
+#: templates_v2/faq.haml:48
 msgid "To change your email address, please email"
 msgstr "Om uw e-mailadres te wijzigen, e-mail naar"
 
-#: templates_v2/faq.haml:51
+#: templates_v2/faq.haml:55
 msgid ""
 "If you've forgotten your password, please try resetting it by clicking "
 "'Forgot my password' on the log in screen. If that does not work, please "
@@ -13316,7 +13328,7 @@ msgstr ""
 "door te klikken op “Mijn wachtwoord vergeten” in het aanmeldscherm. Als dat "
 "niet werkt, stuurt u een e-mail naar"
 
-#: templates_v2/faq.haml:58
+#: templates_v2/faq.haml:62
 msgid ""
 "The drop down for moving between multiple courses is on the far left of the "
 "second (lighter blue) navigation bar. If the course you are supposed to be "
@@ -13327,7 +13339,7 @@ msgstr ""
 "waarvoor u ingeschreven zou moeten zijn niet in dit uitklapmenu verschijnt, "
 "stuur dan een e-mail"
 
-#: templates_v2/faq.haml:65
+#: templates_v2/faq.haml:69
 msgid ""
 "We try to keep our email communication at an optimal level to ensure all "
 "participants know what is happening in the course without cluttering your "
@@ -13342,7 +13354,7 @@ msgstr ""
 "aanvullende suggesties voor inhoud. Als u geen e-mails meer wilt ontvangen, "
 "stuur dan een e-mail"
 
-#: templates_v2/faq.haml:67
+#: templates_v2/faq.haml:71
 msgid ""
 "(or click unsubscribe at the bottom of any email you receive from us). Be "
 "sure to check the \"Announcements\" page frequently to stay up to date!"
@@ -13350,11 +13362,11 @@ msgstr ""
 "(of klik op uitschrijven onderaan een e-mail die u van ons ontvangt). Kijk "
 "regelmatig op onze pagina ”Mededelingen” om op de hoogte te blijven!"
 
-#: templates_v2/faq.haml:68
+#: templates_v2/faq.haml:72
 msgid "Courses Related:"
 msgstr "Gerelateerde cursussen:"
 
-#: templates_v2/faq.haml:78
+#: templates_v2/faq.haml:82
 #, python-format
 msgid ""
 "You need to complete all group work and feedback activities and earn a "
@@ -13366,11 +13378,11 @@ msgstr ""
 "een programmacertificaat van voltooiing. Uw cursuscijfer wordt als volgt "
 "berekend:"
 
-#: templates_v2/faq.haml:128
+#: templates_v2/faq.haml:132
 msgid "If you have any questions about a grade you received, please email"
 msgstr "Als u vragen heeft over een cijfer, stuur dan een e-mail"
 
-#: templates_v2/faq.haml:145
+#: templates_v2/faq.haml:149
 msgid ""
 "You are part of a cohort of participants you can engage with questions as "
 "well as support from the TAs who monitor the course. Take a look at the "
@@ -13384,15 +13396,15 @@ msgstr ""
 "vragen, antwoorden en commentaren van mededeelnemers kunt bekijken, en ook "
 "een vraag kan posten. U kunt ook contact opnemen"
 
-#: templates_v2/faq.haml:146
+#: templates_v2/faq.haml:150
 msgid "emailing them"
 msgstr "via de mail"
 
-#: templates_v2/faq.haml:147
+#: templates_v2/faq.haml:151
 msgid "and they will get back to you as soon as possible."
 msgstr "we komen zo snel mogelijk bij u terug."
 
-#: templates_v2/faq.haml:165
+#: templates_v2/faq.haml:169
 msgid ""
 "Your proficiency is based on performance on all graded items in the course "
 "(including end of lesson assessments, group work, and final assessment)"
@@ -13401,7 +13413,7 @@ msgstr ""
 "in de cursus waarvoor cijfers worden gegeven (waaronder beoordelingen aan "
 "het einde van de les, groepswerk en de eindbeoordeling)"
 
-#: templates_v2/faq.haml:168
+#: templates_v2/faq.haml:172
 msgid ""
 "Your progress through course content is displayed as you move through all "
 "items in the course (including videos, exercises, assessments, and readings)"
@@ -13410,7 +13422,7 @@ msgstr ""
 "alle items in de cursus (waaronder video’s, oefeningen, beoordelingen en "
 "leesopdrachten)"
 
-#: templates_v2/faq.haml:171
+#: templates_v2/faq.haml:175
 msgid ""
 "Your engagement increases through your social interactions with other "
 "participants in your cohort (through engagement on the discussion forums)"
@@ -13418,19 +13430,19 @@ msgstr ""
 "Uw inzet neemt toe door uw sociale interactie met andere deelnemers in uw "
 "cohort (via betrokkenheid op de discussieforums)"
 
-#: templates_v2/faq.haml:172
+#: templates_v2/faq.haml:176
 msgid "Certificates Related:"
 msgstr "Gegenereerde certificaten:"
 
-#: templates_v2/faq.haml:220 templates_v2/faq.haml:227
+#: templates_v2/faq.haml:224 templates_v2/faq.haml:231
 msgid "Please"
 msgstr "Alstublieft"
 
-#: templates_v2/faq.haml:221 templates_v2/faq.haml:228
+#: templates_v2/faq.haml:225 templates_v2/faq.haml:232
 msgid "contact us!"
 msgstr "neem contact met ons op!"
 
-#: templates_v2/faq.haml:229
+#: templates_v2/faq.haml:233
 msgid "We’ll do our best to help."
 msgstr "We doen ons best u te helpen."
 

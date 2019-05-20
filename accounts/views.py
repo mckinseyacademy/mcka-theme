@@ -353,7 +353,7 @@ def login_get_view(request):
         form.reset = request.GET['reset']
 
     if account_activate_check:
-        data["activation_message"] = _("Your account has already been activated. Please enter credentials to login")
+        data["activation_message"] = _("Your account has already been activated. Please enter credentials to login.")
 
     data["login_id"] = clean_xss_characters(request.GET.get('login_id', ''))
     data["form"] = form or LoginForm()
