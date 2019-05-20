@@ -40,11 +40,16 @@
         // Set button right margin incase of 2 buttons
 
         input[type="button"] {
-            margin-right: 11px;
+            margin-right: 6px;
             // display: inline-block;
-            border:1px solid transparent;
-            &:last-child
-            {
+            border: 1px solid transparent;
+            margin-bottom: 10px;
+
+            &:last-child {
+                margin-right: 0;
+            }
+
+            @media (max-width: 575.98px) {
                 margin-right: 0;
             }
         }
@@ -62,9 +67,9 @@
             margin-top: 25px;
         }
 
-        .assessment-checkmark
-        {
+        .assessment-checkmark {
             margin-top: 4px;
+
             &.checkmark-partially-correct {
                 &::before {
                     font-family: 'Material Icons';
@@ -78,7 +83,7 @@
                     font-family: 'Material Icons';
                     content: '\e86c';
                     @include font-size(24);
-                    color:$bg-white-green;
+                    color: $bg-white-green;
                 }
             }
 
@@ -87,20 +92,19 @@
                     font-family: 'Material Icons';
                     content: '\e000';
                     @include font-size(24);
-                    color:$bg-white-red;
+                    color: $bg-white-red;
                 }
             }
 
 
         }
-        
-        .step-overall-checkmark
-        {
-            &::before
-            {
+
+        .step-overall-checkmark {
+            &::before {
                 position: relative;
-                top:5px;
+                top: 5px;
             }
+
             &.checkmark-partially-correct {
                 &::before {
                     font-family: 'Material Icons';
@@ -114,7 +118,7 @@
                     font-family: 'Material Icons';
                     content: '\e86c';
                     @include font-size(24);
-                    color:$bg-white-green;
+                    color: $bg-white-green;
                 }
             }
 
@@ -123,7 +127,7 @@
                     font-family: 'Material Icons';
                     content: '\e000';
                     @include font-size(24);
-                    color:$bg-white-red;
+                    color: $bg-white-red;
                 }
             }
         }
@@ -138,11 +142,9 @@
             }
         }
     }
-    
-    .choice-result
-    {
-        &::before
-        {
+
+    .choice-result {
+        &::before {
             position: relative;
         }
     }
@@ -156,36 +158,33 @@
 
 // RTL
 
-.rtl
-{
-    &.new-theme
-    {
+.rtl {
+    &.new-theme {
 
-        [data-block-type="step-builder"]
-        {
-            .step-overall-checkmark
-            {
+        [data-block-type="step-builder"] {
+            .step-overall-checkmark {
                 float: right !important;
             }
 
-            .assessment-checkmark
-            {
-                float:right !important;
-                margin-right:0 !important;
+            .assessment-checkmark {
+                float: right !important;
+                margin-right: 0 !important;
                 margin-left: 10px !important;
             }
-            .results-section
-            {
-                margin-left:0;
-                margin-right:50px;
+
+            .results-section {
+                margin-left: 0;
+                margin-right: 50px;
             }
 
-            input[type="button"]
-            {
-                margin-right:0!important;
-                margin-left: 10px;
-                &:last-child
-                {
+            input[type="button"] {
+                margin-right: 0 !important;
+                margin-left: 6px;
+
+                &:last-child {
+                    margin-left: 0;
+                }
+                @media (max-width: 575.98px) {
                     margin-left: 0;
                 }
             }
