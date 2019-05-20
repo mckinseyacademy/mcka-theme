@@ -82,9 +82,34 @@ If you get 404 on the pages above, Please coordinate with the development team a
   Solution:
   `sudo apt-get install nfs-common nfs-kernel-server`
   
-- ### ImportError: No module named edx_jsme
+- #### ImportError: No module named edx_jsme
   Solution:
   Run `make clean` and start lms 
+  
+- #### failed to open /dev/vboxnetctl: No such file or directory
+  if you find this error
+  `VBoxManage: error: VBoxNetAdpCtl: Error while adding new interface: failed to open /dev/vboxnetctl: No such file or directory`
+  and you are also on Mac OS High Sierra, this could be because High Sierra introduces a new feature that requires user approval before loading newly-installed third-party kernel extensions (KEXTs).
+  Solution:
+  1. Grant permission to VirtualBox under System Preferences > Security & Privacy > General (this request is new to macOS High Sierra)
+  2. Open Terminal and run: `sudo "/Library/Application Support/VirtualBox/LaunchDaemons/VirtualBoxStartup.sh" restart'
+  
+- #### if guest additions is not found in your VM during vagrant up.
+  Solution:
+  ```
+  vagrant ssh
+  sudo su
+  cd /tmp
+  wget http://download.virtualbox.org/virtualbox/5.2.30/VBoxGuestAdditions_5.2.30.iso
+  mkdir /media/VBoxGuestAdditions
+  mount -o loop,ro VBoxGuestAdditions_5.2.29-130064.iso /media/VBoxGuestAdditions
+  sh /media/VBoxGuestAdditions/VBoxLinuxAdditions.run
+  rm VBoxGuestAdditions_5.2.29-130064.iso
+  umount /media/VBoxGuestAdditions
+  rmdir /media/VBoxGuestAdditions
+  exit
+  exit
+  ```
 
 ### Share vagrant setup (Mac only)
 1.  Install virtual box and vagrant on the remote machine
@@ -221,3 +246,4 @@ vagrant init [machine name as it shows in virtual box] /Users/myuser/Documents/W
   ```tail -n 200 [FILE_NAME]```
 
   Where 200 is the most recent number of lines to be shown from the file.
+  
