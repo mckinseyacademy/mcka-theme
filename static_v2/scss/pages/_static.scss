@@ -131,6 +131,9 @@
     }
     a {
       color: $primary !important;
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
   &.guide-footer {

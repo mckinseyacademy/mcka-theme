@@ -1020,6 +1020,13 @@ body.rtl {
       }
     }
   }
+  .guide {
+    .illustrations {
+      img {
+        // @include flip-x-axis;
+      }
+    }
+  }
 }
 
 //Course Overview
