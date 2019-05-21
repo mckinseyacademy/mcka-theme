@@ -2,6 +2,11 @@
   a {
     color: var(--primary);
   }
+  .future {
+    > a {
+      color: $gray;
+    }
+  }
   .headingForMobile{
     display: none;
     padding: 10px 20px;
@@ -399,7 +404,7 @@
   }
 }
 
-// Tablet 
+// Tablet
 
 @include media-breakpoint-between(md, lg) {
   #course-progress-new {
@@ -614,7 +619,7 @@
   }
 }
 
-// Tablet 
+// Tablet
 
 @include media-breakpoint-between(md, lg) {
   #course-progress-new {

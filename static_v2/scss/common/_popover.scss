@@ -9,7 +9,7 @@
   min-width: 110px;
   max-width: 220px;
   text-align: center;
-  z-index: 99999;
+  z-index: 999999;
   .popover-title {
     display: none;
   }
@@ -79,7 +79,7 @@
   margin: 0;
 }
 
-.bs-popover-left > .arrow::after, 
+.bs-popover-left > .arrow::after,
 .bs-popover-auto[x-placement^="left"] > .arrow::after {
   border-left-color: #4b4b4b;
 }
@@ -94,7 +94,7 @@
   right: -5px;
 }
 
-.bs-popover-right > .arrow::after, 
+.bs-popover-right > .arrow::after,
 .bs-popover-auto[x-placement^="right"] > .arrow::after {
   border-right-color: #4b4b4b;
 }
@@ -104,6 +104,9 @@
   top: -5px;
 }
 
+.bs-popover-top > .arrow::after, .bs-popover-auto[x-placement^="top"] > .arrow::after {
+  border-top-color: #4b4b4b;
+}
 .bs-popover-bottom > .arrow::after, .bs-popover-auto[x-placement^="bottom"] > .arrow::after {
   border-bottom-color: #4b4b4b;
 }
