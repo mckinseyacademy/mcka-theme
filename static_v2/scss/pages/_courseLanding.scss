@@ -456,6 +456,18 @@
   }
 }
 
+.allModules{
+  .allCoursesList{
+    .holder{
+      .data{
+        &.title{
+          text-transform: none;
+        }
+      }
+    }
+  }
+}
+
 // Social Widgets
 
 .socialWidgets {
