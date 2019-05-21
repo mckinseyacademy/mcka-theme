@@ -26,23 +26,6 @@ $(document).ready(function () {
         $('#reset-password-submit').attr("disabled", false);
     });
 
-    $("#id_new_password1").on("keyup", function ()
-    {
-        if($('#id_new_password1').val() !== "" && $('#id_new_password2').val() !== "")
-        {
-            $('#reset-password-done').attr("disabled", false);
-        }
-    });
-
-    $("#id_new_password2").on("keyup", function ()
-    {
-        if($('#id_new_password1').val() !== "" && $('#id_new_password2').val() !== "")
-        {
-            $('#reset-password-done').attr("disabled", false);
-        }
-    });
-
-
     $("#password").on("keyup", function () {
         $('#login').attr("disabled", false);
         var user_password = $(".user_password_element");
