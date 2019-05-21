@@ -47,11 +47,5 @@ $(function(){
 
     form.ajaxSubmit(options);
   });
-
-  if (SCORM_SHELL){
-    $('.logout a').attr("href", "javascript:void(0)");
-    $('.logout a').attr("disabled", true);
-  }
-
 });
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-03 10:12+0000\n"
+"POT-Creation-Date: 2019-05-20 07:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -392,6 +392,18 @@ msgstr "De inhoud wordt weergegeven in een nieuw venster."
 #: static/js/static_translation_strings.js:4
 msgid "Launch pop-up to continue"
 msgstr "Pop-up toestaan om verder te gaan"
+
+#: static/js/static_translation_strings.js:6
+msgid "Content is complete, please continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:7
+msgid "Complete all content to continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:8
+msgid "Check for Completion"
+msgstr ""
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -873,6 +885,7 @@ msgstr ""
 "meer tijd)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:5
 msgid "We'll e-mail you when your report is ready to download."
 msgstr "We sturen u een e-mail wanneer uw rapport klaar is om te downloaden."
 
@@ -886,6 +899,7 @@ msgstr "Rapport exporteren"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #: static/js/views/admin/course_details_bulk_actions.js:568
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:36
 msgid "Error initiating the report generation. Please retry later."
 msgstr "Taakuitvoering is mislukt. Probeer het later opnieuw."
 
@@ -1017,6 +1031,10 @@ msgstr "Geen"
 #: static/js/views/admin/group_work_dashboard.js:195
 msgid "Do you really want to delete: \n"
 msgstr "Weet u zeker dat u de volgende verwijdering wilt uitvoeren: \n"
+
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:3
+msgid "Downloadable Workgroup Completion Report"
+msgstr ""
 
 #: static/js/views/admin/import_progress.js:4
 msgid "File name"
@@ -1184,6 +1202,3 @@ msgstr "Wachtwoord verbergen"
 #: static_v2/js/application.js:526 static_v2/js/custom.js:130
 msgid "Show password"
 msgstr "Wachtwoord weergeven"
-
-#~ msgid "Participants:"
-#~ msgstr "Deelnemers:"

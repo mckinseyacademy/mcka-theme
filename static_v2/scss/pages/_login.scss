@@ -271,6 +271,25 @@
         @include font-size(14);
       }
     }
+    .already-activated {
+      padding: 10px;
+      border: 1px solid $bg-white-red;
+      @extend .form-group;
+      color: $black;
+      font-size: 0.75rem;
+      position: relative;
+      margin-bottom: 30px !important;
+
+      &::before {
+        font-family: 'Material Icons';
+        content: '\e000';
+        position: absolute;
+        font-size: 1.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: $bg-white-red;
+      }
+    }
   }
 }
 .language-dropdown {

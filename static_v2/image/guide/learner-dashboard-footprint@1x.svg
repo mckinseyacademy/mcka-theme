@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="344px" height="250px" viewBox="0 0 344 250" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
+    <title>cartoon/learner-dashboard-footprint@1x</title>
+    <desc>Created with Sketch.</desc>
+    <g id="McKA---Getting-Started-Guide" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="GettingStartedGuide" transform="translate(-729.000000, -1192.000000)">
+            <g id="cartoon/dashboard-sharp" transform="translate(729.000000, 1192.000000)">
+                <path d="M0,28 L344,28 L344,246 C344,248.209139 342.209139,250 340,250 L4,250 C1.790861,250 2.705415e-16,248.209139 0,246 L0,28 Z" id="Container" fill="#F3F4F6"></path>
+                <rect id="Background" fill="#FFFFFF" x="16" y="48" width="186" height="182" rx="4"></rect>
+                <rect id="Name" fill="#D0D0D0" x="210" y="92" width="118" height="6" rx="3"></rect>
+                <rect id="Name" fill="#D0D0D0" x="210" y="102" width="86" height="6" rx="3"></rect>
+                <rect id="Name" fill="#D0D0D0" x="210" y="116" width="118" height="6" rx="3"></rect>
+                <rect id="Name" fill="#D0D0D0" x="210" y="126" width="86" height="6" rx="3"></rect>
+                <rect id="Name" fill="#D0D0D0" x="210" y="140" width="118" height="6" rx="3"></rect>
+                <rect id="Name" fill="#D0D0D0" x="210" y="164" width="118" height="6" rx="3"></rect>
+                <rect id="Name" fill="#D0D0D0" x="210" y="150" width="86" height="6" rx="3"></rect>
+                <rect id="Name" fill="#D0D0D0" x="210" y="174" width="86" height="6" rx="3"></rect>
+                <path d="M8,0 L336,0 C340.418278,-8.11624501e-16 344,3.581722 344,8 L344,28 L0,28 L0,8 C-5.41083001e-16,3.581722 3.581722,8.11624501e-16 8,0 Z" id="Header" fill="#B3B3B3"></path>
+                <g id="Buttons" stroke-width="1" transform="translate(9.000000, 10.000000)" fill="#F2F2F2">
+                    <circle id="buttons" cx="4" cy="4" r="4"></circle>
+                    <circle id="buttons" cx="16" cy="4" r="4"></circle>
+                    <circle id="buttons" cx="28" cy="4" r="4"></circle>
+                </g>
+                <rect id="Data" fill="#2042CB" x="24" y="76" width="54" height="43" rx="2"></rect>
+                <rect id="Data" fill="#2042CB" x="24" y="124" width="54" height="43" rx="2"></rect>
+                <rect id="Data" fill="#2042CB" x="82" y="76" width="54" height="43" rx="2"></rect>
+                <rect id="Data" fill="#2042CB" x="82" y="124" width="54" height="43" rx="2"></rect>
+                <rect id="Data" fill="#2042CB" x="140" y="76" width="54" height="43" rx="2"></rect>
+                <rect id="Data" fill="#2042CB" x="140" y="124" width="54" height="43" rx="2"></rect>
+                <rect id="Data" fill="#2042CB" x="24" y="171" width="54" height="43" rx="2"></rect>
+                <rect id="Data" fill="#2042CB" x="82" y="171" width="54" height="43" rx="2"></rect>
+                <rect id="Data" fill="#2042CB" x="140" y="171" width="54" height="43" rx="2"></rect>
+                <rect id="Rectangle" fill="#B3B3B3" x="210" y="76" width="118" height="4" rx="2"></rect>
+                <rect id="Name" fill="#B3B3B3" x="24" y="56" width="86" height="8" rx="4"></rect>
+            </g>
+        </g>
+    </g>
+</svg>

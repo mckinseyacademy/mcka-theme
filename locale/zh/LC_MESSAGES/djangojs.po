@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-27 13:06+0000\n"
+"POT-Creation-Date: 2019-05-20 07:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -336,16 +336,7 @@ msgstr "上传文件时出错。请确保使用接受的文件格式，然后重
 msgid "Please select file for upload."
 msgstr "请选择要上传的文件。"
 
-#: static/js/models/city.js:29
-msgid "Participants:"
-msgstr "参与者："
-
-#: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:24
-msgid "Email"
-msgstr "电子邮件"
-
-#: static/js/router.js:429
+#: static/js/router.js:424
 msgid "Please select at least one course"
 msgstr "请至少选择一门课程"
 
@@ -364,6 +355,18 @@ msgstr "内容出现在新窗口中。"
 #: static/js/static_translation_strings.js:4
 msgid "Launch pop-up to continue"
 msgstr "启动弹出窗口以继续"
+
+#: static/js/static_translation_strings.js:6
+msgid "Content is complete, please continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:7
+msgid "Complete all content to continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:8
+msgid "Check for Completion"
+msgstr ""
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -592,6 +595,11 @@ msgstr "无应用程序显示名称！"
 msgid "Name"
 msgstr "名称"
 
+#: static/js/views/admin/course_details.js:28
+#: static/js/views/admin/participantsinfo.js:24
+msgid "Email"
+msgstr "电子邮件"
+
 #: static/js/views/admin/course_details.js:30
 #: static/js/views/admin/course_details_bulk_actions.js:281
 #: static/js/views/admin/import_progress.js:15
@@ -813,6 +821,7 @@ msgid ""
 msgstr "包括每个课时的进度明细（注意：导出将需要更多时间）"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:5
 msgid "We'll e-mail you when your report is ready to download."
 msgstr "当报告准备就绪可供下载时，我们会通过邮件通知您。"
 
@@ -826,6 +835,7 @@ msgstr "导出报告"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #: static/js/views/admin/course_details_bulk_actions.js:568
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:36
 msgid "Error initiating the report generation. Please retry later."
 msgstr "初始化报告生成时出错。请稍后重试。"
 
@@ -956,6 +966,10 @@ msgstr "无"
 #: static/js/views/admin/group_work_dashboard.js:195
 msgid "Do you really want to delete: \n"
 msgstr "是否确定要删除：\n"
+
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:3
+msgid "Downloadable Workgroup Completion Report"
+msgstr ""
 
 #: static/js/views/admin/import_progress.js:4
 msgid "File name"

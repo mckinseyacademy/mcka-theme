@@ -253,7 +253,7 @@
     }
 
     .description {
-      transition: all ease 0.05s;
+      transition: none;
       position: absolute;
       content: '';
       z-index: 1;
@@ -273,6 +273,9 @@
       white-space: nowrap;
       cursor: pointer;
       left: 0;
+      &.no-data {
+        z-index: 0;
+      }
 
       p {
         max-width: 100%;

@@ -177,5 +177,6 @@ a.btn {
   &[class*="outline"] {
     border-color: $gray !important;
     color: $gray !important;
+    background: $white;
   }
 }

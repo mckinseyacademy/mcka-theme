@@ -23,14 +23,17 @@
       display: block;
       font-size: 1rem;
       padding: 0;
-      color:  var(--primary);
+      color:  $primary;
       margin-bottom: .25rem;
       &:hover {
-        color:  var(--primary);
+        color:  $primary;
       }
     }
     .collapse {
       @extend .mb-3;
+    }
+    .mb-0 {
+      margin-bottom: 10px !important;
     }
   }
   &.FAQ {
@@ -203,6 +206,19 @@
     .accordion {
       a {
         margin-bottom: .5rem;
+      }
+    }
+    &.guide {
+      padding: 2rem 1.8rem !important;
+      .illustrations {
+        .img-with-cap {
+          &:first-child {
+            margin-bottom: 20px;
+          }
+        }
+        img {
+          max-width: 100% !important;
+        }
       }
     }
   }

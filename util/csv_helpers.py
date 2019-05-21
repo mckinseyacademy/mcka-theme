@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Generic CSV related methods
 """
@@ -85,7 +86,7 @@ def csv_file_response(file_name, fields={}, data=[], header=True):
         file_name = '{}.csv'.format(file_name)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = "attachment; filename={}".format(file_name)
+    response['Content-Disposition'] = "attachment; filename={}".format(file_name.encode('utf-8'))
 
     csv_writer = CSVWriter(response, fields, data, header)
     response = csv_writer.write_csv()

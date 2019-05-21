@@ -1,5 +1,8 @@
 main{
   min-height: calc(100vh - 262px);
+  @include media-breakpoint-down(sm) {
+    min-height: calc(100vh - 220px);
+  }
 }
 
 .container {

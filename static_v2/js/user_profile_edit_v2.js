@@ -62,10 +62,4 @@ $(document).ready(function(){
       $('.browseProfilePhoto').click();
   });
 
-  if (SCORM_SHELL){
-    $('.footer.ome a').attr("href", "javascript:void(0)");
-    $('.footer.ome a').addClass("disabled btn-outline-secondary");
-  }
-
 });
-

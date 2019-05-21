@@ -8,7 +8,6 @@ var Router = Backbone.Router.extend({
     'courses/*course_id/progress':            'course_progress',
     'courses/*course_id/progress/*user_id':   'course_progress',
     'courses/*course_id/overview':            'course_overview',
-    'courses/*course_id/cohort':              'course_cohort',
     'courses/*course_id/group_work':          'course_group_work',
     'courses/*course_id/resources':           'course_resources',
     'courses/*course_id/lessons/*lesson_id/module/*module_id':  'course_lesson',
@@ -104,10 +103,6 @@ var Router = Backbone.Router.extend({
         OO.Player.create('mk-player', container.data('video-id'));
       });
     }
-  },
-
-  course_cohort: function(course_id) {
-    new Apros.views.CourseCohort({el: $('#course-cohort')}).render();
   },
 
   course_group_work: function(course_id) {

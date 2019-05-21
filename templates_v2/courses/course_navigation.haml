@@ -46,7 +46,7 @@
                       %li{"class": "{% ifequal request.resolver_match.url_name 'course_progress' %}active{% endifequal %}"}
                         %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/progress"}
                           {% trans "My Progress" %}
-                    - if feature_flags.cohort_map
+                    - if feature_flags.leaderboard
                       %li{"class": "{% ifequal request.resolver_match.url_name 'course_cohort' %}active{% endifequal %}"}
                         %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/cohort"}
                           {% trans "Leaderboard" %}

@@ -353,7 +353,7 @@ def login_get_view(request):
         form.reset = request.GET['reset']
 
     if account_activate_check:
-        data["activation_message"] = _("Your account has already been activated. Please enter credentials to login")
+        data["activation_message"] = _("Your account has already been activated. Please enter credentials to login.")
 
     data["login_id"] = clean_xss_characters(request.GET.get('login_id', ''))
     data["form"] = form or LoginForm()
@@ -844,6 +844,7 @@ def sso_registration_form(request):
 
                 _process_access_key_and_remove_from_session(request, new_user, access_key, client)
 
+                # Set session key to land sso user to course landing page
                 request.session['sso_user'] = True
                 # Redirect to the LMS to link the user's account to the provider permanently:
                 complete_url = '{lms_auth}complete/{backend_name}/'.format(
@@ -1046,8 +1047,9 @@ def home(request):
         mobile_popup_data = get_mobile_app_download_popup_data(request)
         data.update(mobile_popup_data)
 
-    if user_data.get('new_ui_enabled'):
-        return HttpResponseRedirect(_get_redirect_to_current_course(request))
+    sso_user = bool(request.session.get('sso_user'))
+    if user_data.get('new_ui_enabled') or sso_user:
+        return HttpResponseRedirect(_get_redirect_to_current_course(request, sso_user))
 
     return render(request, 'home/landing.haml', data)
 

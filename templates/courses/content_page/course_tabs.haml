@@ -21,7 +21,7 @@
     %li
       %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_group_work' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/group_work", "data-tooltip": '{% trans "Group Work" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.mk-icon-groupworknav
-  - if feature_flags.cohort_map
+  - if feature_flags.leaderboard
     %li
       %a{"class": "nav-1 {% ifequal request.resolver_match.url_name 'course_cohort' %}selected{% endifequal %}", "href": "/courses/#{current_course.id}/cohort", "data-tooltip": '{% trans "Cohort" %}', "style": "{% if client_customization and client_customization.hex_navigation_icons %}color:#{client_customization.hex_navigation_icons};{% endif %}"}
         %i.fa.fa-globe

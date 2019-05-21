@@ -772,6 +772,19 @@ form {
   }
 }
 
+// Static Pages
+
+.guide {
+  .illustrations {
+    .img-with-cap {
+      @include float(left);
+      &:first-child {
+        @include margin-right(20px);
+      }
+    }
+  }
+}
+
 .sso {
   p {
     label {
@@ -821,6 +834,12 @@ form {
         @include media-breakpoint-down(sm) {
           @include right(10px);
         }
+      }
+    }
+    .already-activated {
+      @include padding-left(55px);
+      &::before {
+        @include left(18px);
       }
     }
   }
@@ -926,10 +945,6 @@ body.rtl {
     }
   }
 
-  .mapboxgl-ctrl-top-left {
-    left: auto;
-    right: 10px;
-  }
   .lesson-dropdown-frame .lesson-dropdown-holder .dropdown-menu {
     left: auto !important;
     right: 0 !important;
@@ -1285,5 +1300,4 @@ body.rtl {
     }
   }
 }
-
 

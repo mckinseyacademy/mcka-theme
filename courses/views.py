@@ -56,7 +56,9 @@ from .controller import (
     get_user_social_metrics,
     fix_resource_page_video_scripts,
     get_assessment_module_name_translation,
-    get_learner_dashboard)
+    get_learner_dashboard,
+    get_completion_percentage_from_id,
+)
 from .course_tree_builder import CourseTreeBuilder
 from .models import LessonNotesItem, FeatureFlags, CourseMetaData
 from .user_courses import (
@@ -192,7 +194,7 @@ def course_news(request, course_id):
 @check_user_course_access
 def course_cohort(request, course_id):
     feature_flags = CourseDataManager(course_id).get_feature_flags()
-    if not feature_flags.cohort_map:
+    if not feature_flags.leaderboard:
         return HttpResponseRedirect('/courses/{}'.format(course_id))
 
     try:
@@ -1284,7 +1286,6 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags = FeatureFlags.objects.get(course_id=course_id)
     feature_flags.group_work = request.POST.get('group_work', None) == 'on'
     feature_flags.discussions = request.POST.get('discussions', None) == 'on'
-    feature_flags.cohort_map = request.POST.get('cohort_map', None) == 'on'
     feature_flags.proficiency = request.POST.get('proficiency', None) == 'on'
     feature_flags.learner_dashboard = request.POST.get('learner_dashboard', None) == 'on'
     feature_flags.progress_page = request.POST.get('progress_page', None) == 'on'
@@ -1462,13 +1463,13 @@ def check_tile_type(element):
 
 @login_required
 def get_user_progress_json(request, course_id):
-    user_progress = course_api.get_course_metrics_completions(
-        course_id=course_id,
-        user_id=request.user.id,
-        skipleaders=True
-    )
+    username = request.user.username
+    completions = course_api.get_course_completions(course_id, username)
+    user_completions = completions.get(username, {})
+    user_progress = get_completion_percentage_from_id(user_completions, 'course')
+
     if user_progress:
-        data = {"user_progress": user_progress.completions}
+        data = {"user_progress": user_progress}
     else:
         data = {"user_progress": 0}
 

@@ -9,6 +9,13 @@ body {
       }
     }
   }
+  &.learner-dashboard-view{
+    header{
+      &.appHeader{
+        margin-bottom: 0;
+      }
+    }
+  }
 }
 .dropdown-item {
   white-space: normal !important;
@@ -174,6 +181,9 @@ header {
         > li { margin-bottom: 0;}
       }
     }
+  }
+  .container{
+    padding: 0 15px !important;
   }
 }
 

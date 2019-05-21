@@ -1,6 +1,10 @@
 - extends "layout.haml"
 - load i18n
 
+- block header
+  - if not react_native_app
+    - include 'header.haml'
+
 - block content
   .container
     .row.justify-content-center
@@ -184,7 +188,7 @@
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentySeven", :data-toggle => "collapse"}
               {% trans "How are certificates determined?" %}
           #twentySeven.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "To be eligible for the MMP certificate of completion, participants need to achieve a score of 70% or above across the program’s 5 core courses." %}
+            %p {% trans "To be eligible for the MMP certificate of completion, participants need to achieve a score of 70% or above across the program’s 4 core courses." %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentyEight", :data-toggle => "collapse"}
               {% trans "How are McKinsey Academy certificates delivered?" %}

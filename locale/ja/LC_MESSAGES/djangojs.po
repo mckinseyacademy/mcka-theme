@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-27 12:46+0000\n"
+"POT-Creation-Date: 2019-05-20 07:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -333,16 +333,7 @@ msgstr ""
 msgid "Please select file for upload."
 msgstr "アップロードするファイルをクリックしてください。"
 
-#: static/js/models/city.js:29
-msgid "Participants:"
-msgstr "参加者:"
-
-#: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:24
-msgid "Email"
-msgstr "Eメール"
-
-#: static/js/router.js:429
+#: static/js/router.js:424
 msgid "Please select at least one course"
 msgstr "コースを最低1個選択してください"
 
@@ -363,6 +354,18 @@ msgstr "コンテンツは新しいウィンドウで実行されます。"
 #: static/js/static_translation_strings.js:4
 msgid "Launch pop-up to continue"
 msgstr "ポップアップを起動して続行する"
+
+#: static/js/static_translation_strings.js:6
+msgid "Content is complete, please continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:7
+msgid "Complete all content to continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:8
+msgid "Check for Completion"
+msgstr ""
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -566,6 +569,11 @@ msgstr "アプリ表示名がありません。"
 #: static/js/views/admin/participantsinfo.js:16
 msgid "Name"
 msgstr "名前"
+
+#: static/js/views/admin/course_details.js:28
+#: static/js/views/admin/participantsinfo.js:24
+msgid "Email"
+msgstr "Eメール"
 
 #: static/js/views/admin/course_details.js:30
 #: static/js/views/admin/course_details_bulk_actions.js:281
@@ -791,6 +799,7 @@ msgstr ""
 "レッスンごとの進度の内訳を含む (注記: エクスポートにはさらに時間を要します)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:5
 msgid "We'll e-mail you when your report is ready to download."
 msgstr ""
 "あなたのレポートのダウンロードの準備ができたときに、Eメールを送信します。"
@@ -805,6 +814,7 @@ msgstr "レポートをエクスポートする"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #: static/js/views/admin/course_details_bulk_actions.js:568
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:36
 msgid "Error initiating the report generation. Please retry later."
 msgstr "レポート作成開始エラー。後でやり直してください。"
 
@@ -939,6 +949,10 @@ msgstr "なし"
 #: static/js/views/admin/group_work_dashboard.js:195
 msgid "Do you really want to delete: \n"
 msgstr "本当に消去しますか: \n"
+
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:3
+msgid "Downloadable Workgroup Completion Report"
+msgstr ""
 
 #: static/js/views/admin/import_progress.js:4
 msgid "File name"
@@ -1113,21 +1127,3 @@ msgstr "パスワードを非表示にする"
 #: static_v2/js/application.js:526 static_v2/js/custom.js:130
 msgid "Show password"
 msgstr "パスワードを表示する"
-
-#~ msgid "Keyword Search"
-#~ msgstr "キーワード検索"
-
-#~ msgid "Errors:"
-#~ msgstr "エラー:"
-
-#~ msgid "Total:"
-#~ msgstr "合計:"
-
-#~ msgid "Succeded:"
-#~ msgstr "完了:"
-
-#~ msgid "Failed:"
-#~ msgstr "失敗:"
-
-#~ msgid "0"
-#~ msgstr "0"

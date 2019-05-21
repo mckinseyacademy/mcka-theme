@@ -3,20 +3,6 @@
   color: $black;
   width: 100%;
 
-  .student-data {
-    padding: 40px 30px 35px;
-    background-color: $white;
-    margin-bottom: 40px;
-
-    .students {
-      @extend .mb-2;
-      @extend .type-cohort;
-    }
-
-    #map-cohort {
-      height: 540px;
-    }
-  }
 
   .leaderboard-header {
     h5 {
@@ -41,51 +27,53 @@
           @extend .pb-4;
           @extend .mb-3;
           @extend .mt-1;
-          border-bottom: 1px solid $light-gray;
+          border-bottom: 1px solid $hard-gray;
 
           .heading {
             @extend .type-cohort;
             margin-bottom: 0.75rem;
           }
 
-          .status {
-            min-height: 48px;
-            font-size: 1rem;
-            font-weight: normal;
-            margin: 0 0 5px;
-          }
+          .status-and-data {
+            min-height: 60px;
+            margin: 0 0 10px;
+            .status {
+              font-size: 1rem;
+              font-weight: normal;
+              line-height: 18px;
+              margin-bottom: 5px;
+            }
 
-          .data {
-            font-size: 0.75rem;
-            line-height: 17px;
-            color: $gray;
-            font-weight: normal;
+            .data {
+              font-size: 0.75rem;
+              line-height: 17px;
+              color: $gray;
+              font-weight: normal;
+            }
           }
 
           .rank {
-            @include heading1;
-            min-height: 70px;
-            margin-top: 11px;
-            display: inline-block;
-            text-align: center;
-            color: var(--secondary);
-            font-weight: 600;
-
-            span {
-              font-size: 12px;
-              display: block;
-              color: $gray;
-              font-weight: normal;
-              margin-top: -6px;
+            font-weight: normal;
+            color: $black;
+            font-size: 1.5rem !important;
+            line-height: normal;
+            b {
+              color: var(--secondary);
+            }
+            h5 {
+              font-size: .75rem;
+              line-height: 1.05rem;
+              text-transform: uppercase;
+              font-weight: 600;
             }
 
             &.default {
               @extend .status;
               color: $black;
-              text-align: left;
               padding-top: 15px;
               margin-bottom: 25px;
               min-height: 63px;
+              font-size: 1rem !important;
             }
           }
         }
@@ -225,7 +213,11 @@
 @include media-breakpoint-between(md, lg) {
   .course-cohort {
     max-width: none !important;
-    padding: 0 !important;
+    >.row{
+      >.col{
+        padding: 0;
+      }
+    }
     #course-cohort {
       .leaderboards {
         padding: 30px 35px;
@@ -259,7 +251,11 @@
   .course-cohort {
     max-width: none !important;
     width: auto !important;
-
+    >.row{
+      >.col{
+        padding: 0;
+      }
+    }
     #course-cohort {
       .student-data {
         padding: 30px 0 20px;
@@ -282,6 +278,7 @@
 
       .leaderboards {
         padding: 20px 15px;
+        overflow: hidden;
       }
 
       .header{

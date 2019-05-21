@@ -3,51 +3,6 @@
   .leaflet-container{
     font-family: $body-font-family;
   }
-  #map-cohort {
-    height: rem-calc(355);
-    background: $pure-white;
-    svg {
-      @include user-select();
-      display: block;
-      width:auto;
-      height:auto;
-    }
-
-    .mapboxgl-ctrl-group > button {
-      margin: 0;
-    }
-
-    .ta_user{
-      border: 2px solid $mckinsey-orange;
-    }
-    .leaflet-map-pane,
-    .leaflet-objects-pane,
-    .leaflet-overlay-pane{
-      width:100%;
-      height:100%;
-    }
-  }
-
-  .student-data {
-    margin-top: 20px;
-    @include clearfix;
-
-    ul.students {
-      margin: 0;
-      list-style-type: none;
-      @include clearfix;
-
-      li {
-        padding: 0 5px;
-        &:first-child { padding: 0; }
-      }
-    }
-
-    a.hide-team {
-      @include font-spec(12, bold, 14);
-
-    }
-  }
 
   .leaderboard-header {
     ul.select-board {

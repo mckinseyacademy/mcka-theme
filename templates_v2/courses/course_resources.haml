@@ -22,3 +22,8 @@
 
     $('#course-resources a').addClass('ome').addClass('dome-c');
     $('#course-resources a i').addClass('ome').addClass('dome-c');
+
+    $("tbody a").on("click", function(e){
+      window.location.hash = $(this).attr("href");
+    });
+

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-04-27 11:54+0000\n"
+"POT-Creation-Date: 2019-05-20 07:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -345,16 +345,7 @@ msgstr ""
 msgid "Please select file for upload."
 msgstr "Sélectionnez le fichier à télécharger."
 
-#: static/js/models/city.js:29
-msgid "Participants:"
-msgstr "Participants :"
-
-#: static/js/models/city.js:68 static/js/views/admin/course_details.js:28
-#: static/js/views/admin/participantsinfo.js:24
-msgid "Email"
-msgstr "E-mail"
-
-#: static/js/router.js:429
+#: static/js/router.js:424
 msgid "Please select at least one course"
 msgstr "Sélectionnez au moins un cours"
 
@@ -377,6 +368,18 @@ msgstr "Le contenu s’affiche dans une nouvelle fenêtre."
 #: static/js/static_translation_strings.js:4
 msgid "Launch pop-up to continue"
 msgstr "Lancez la fenêtre contextuelle pour continuer"
+
+#: static/js/static_translation_strings.js:6
+msgid "Content is complete, please continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:7
+msgid "Complete all content to continue."
+msgstr ""
+
+#: static/js/static_translation_strings.js:8
+msgid "Check for Completion"
+msgstr ""
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -583,6 +586,11 @@ msgstr "Aucun nom d’affichage d’application"
 #: static/js/views/admin/participantsinfo.js:16
 msgid "Name"
 msgstr "Nom"
+
+#: static/js/views/admin/course_details.js:28
+#: static/js/views/admin/participantsinfo.js:24
+msgid "Email"
+msgstr "E-mail"
 
 #: static/js/views/admin/course_details.js:30
 #: static/js/views/admin/course_details_bulk_actions.js:281
@@ -817,6 +825,7 @@ msgstr ""
 "l’exportation prendra plus de temps)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:5
 msgid "We'll e-mail you when your report is ready to download."
 msgstr ""
 "Nous vous enverrons un e-mail lorsque le téléchargement de votre rapport "
@@ -832,6 +841,7 @@ msgstr "Exporter le rapport"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #: static/js/views/admin/course_details_bulk_actions.js:568
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:36
 msgid "Error initiating the report generation. Please retry later."
 msgstr ""
 "Erreur d’initiation de génération de rapport. Veuillez réessayer plus tard."
@@ -964,6 +974,10 @@ msgstr "Aucun"
 #: static/js/views/admin/group_work_dashboard.js:195
 msgid "Do you really want to delete: \n"
 msgstr "Voulez-vous vraiment supprimer : \n"
+
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:3
+msgid "Downloadable Workgroup Completion Report"
+msgstr ""
 
 #: static/js/views/admin/import_progress.js:4
 msgid "File name"
@@ -1131,21 +1145,3 @@ msgstr "Masquer le mot de passe"
 #: static_v2/js/application.js:526 static_v2/js/custom.js:130
 msgid "Show password"
 msgstr "Afficher le mot de passe"
-
-#~ msgid "Keyword Search"
-#~ msgstr "Recherche de mots-clés"
-
-#~ msgid "Errors:"
-#~ msgstr "Erreurs :"
-
-#~ msgid "Total:"
-#~ msgstr "Total"
-
-#~ msgid "Succeded:"
-#~ msgstr "Validé"
-
-#~ msgid "Failed:"
-#~ msgstr "Échec :"
-
-#~ msgid "0"
-#~ msgstr "0"
