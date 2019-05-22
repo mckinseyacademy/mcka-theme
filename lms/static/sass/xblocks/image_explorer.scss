@@ -30,6 +30,10 @@
 
 body.new-theme {
   &.rtl {
+    .image-explorer-close-reveal{
+      right:auto !important;
+      left:-5px;
+    }
     .image-explorer-xblock-wrapper {
       .image-explorer-hotspot-reveal {
         .image-explorer-hotspot-content-wrapper {
@@ -109,12 +113,11 @@ body.new-theme {
             border-radius: 2px;
             background: $ash-white;
             border: 1px solid $popup-border;
-            margin-bottom: 60px;
 
             .image-explorer-close-reveal {
-              color: transparent;
-              margin-right: 5px;
-              margin-top: 0;
+              position: absolute;
+              right: 6px;
+              top: 0px;
               
               &::before {
                 display: none;
@@ -128,17 +131,22 @@ body.new-theme {
             }
 
             .image-explorer-hotspot-content-wrapper {
-              margin: 30px 20px 10px;
               color: $black;
+              margin: 20px 16px 20px;
+              overflow: auto;
+              height: 88%;
 
               .image-explorer-hotspot-reveal-header {
                 font-size: 0.875rem;
                 margin-bottom: 5px;
 
                 p {
-                  margin: 0;
+                  margin: 0 0 15px 0 !important;
                   line-height: initial;
                   font-size: 0.875rem;
+                }
+                ul{
+                  margin: 0 0 15px 0 !important;
                 }
               }
 
@@ -147,8 +155,15 @@ body.new-theme {
                   font-size: 14px;
                   color: $black;
                   line-height: 19px;
-                  margin-bottom: 0;
                 }
+
+                .image-explorer-hotspot-reveal-body {
+                  ul{
+                    margin-bottom: 15px !important;
+                  }
+                }
+
+
                 > h1, > h2, > h3, > h4, > h5, > h6 {
                   color: $black !important;
                 }
@@ -176,10 +191,10 @@ body.new-theme {
 
                 > ul {
                   padding-left: 5px;
-                  margin: 5px 0 0;
+                  margin: 5px 0;
 
                   li {
-                    margin: 0 0 0 17px;
+                    margin: 0 0 15px 17px;
                   }
                 }
               }
@@ -204,17 +219,6 @@ body.new-theme {
               top: -7px;
               left: -2px;
             }      
-            // &:hover {
-            //   background-position: 0 -25px;
-            // }
-
-            // &.visited {
-            //   background-position: 0 -50px;
-
-            //   &:hover {
-            //     background-position: 0 -50px;
-            //   }
-            // }
 
             .image-explorer-hotspot-reveal {
               width: 90% !important;
