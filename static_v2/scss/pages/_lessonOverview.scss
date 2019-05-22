@@ -9,6 +9,11 @@ body{
         &.disable{
           background: var(--primary) !important;
           pointer-events: none;
+          span{
+            >i{
+              color: $white;
+            }
+          }
         }
         &.left {
           left: -82px;
