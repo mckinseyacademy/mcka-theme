@@ -252,7 +252,6 @@ body {
 .my-courses {
   .card {
     .card-body {
-      @include padding-left(25px);
 
       .course-detail {
         > span.course-progress {
@@ -262,7 +261,7 @@ body {
         }
         .lesson-count,
         .course-effort {
-          @include margin-right(30px);
+          @include margin-right(26px);
         }
       }
     }
