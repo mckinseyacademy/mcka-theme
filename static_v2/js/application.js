@@ -345,7 +345,7 @@ $(function () {
     var result = mapping[data.state];
     if (result !== undefined) {
       var arrows = $('.arrowPin');
-      arrows[result]('disable');
+      arrows[result]('disabled');
     }
   });
 

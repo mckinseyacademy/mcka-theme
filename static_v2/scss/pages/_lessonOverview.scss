@@ -8,6 +8,9 @@ body{
         cursor: none;
         &.disable{
           background: var(--primary) !important;
+        }
+        &.disabled{
+          background: var(--primary) !important;
           pointer-events: none;
           span{
             >i{
@@ -97,6 +100,12 @@ body{
     transition: all ease 0.3s;
     opacity: 0.5;
     &.disable {
+      background: $gray !important;
+      &:hover {
+        opacity: 1;
+      }
+    }
+    &.disabled {
       background: $gray !important;
       pointer-events: none;
       &:hover {
