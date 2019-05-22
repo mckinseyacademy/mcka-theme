@@ -23,11 +23,10 @@ def licenses_report(granted_id, grantor_id):
         granted_id=granted_id,
         grantor_id=grantor_id
     )
-    allocated = len(licenses)
     assigned = len(
         [license for license in licenses if license.grantee_id is not None])
 
-    return allocated, assigned
+    return assigned, licenses
 
 
 def assigned_licenses(granted_id, grantor_id):

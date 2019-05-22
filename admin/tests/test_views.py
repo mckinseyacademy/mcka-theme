@@ -1,5 +1,7 @@
 import json
 import ddt
+import csv
+import io
 from tempfile import NamedTemporaryFile
 
 from mcka_apros.celery import app as test_app
@@ -9,8 +11,8 @@ from django.core.files.uploadedfile import File
 from django.core.urlresolvers import reverse
 from django.http import Http404, HttpResponseForbidden
 from django.test import TestCase, override_settings
-from django.test.client import RequestFactory
 from django.contrib import auth
+from django.test.client import RequestFactory
 from mock import patch, Mock
 from rest_framework import status
 from rest_framework.test import APIRequestFactory, force_authenticate
@@ -41,7 +43,6 @@ def mock_task():
     def test_task(self, *args, **kwargs):
         """Test task."""
         pass
-
     return test_task
 
 
@@ -257,7 +258,6 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
     """
     Utilities for testing the views that use CourseParticipantsStats.
     """
-
     def setUp(self):
         """
         Create the base data.
@@ -282,7 +282,7 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
             request.session = Mock(session_key='', __contains__=lambda _a, _b: False)
         return request
 
-    def post_request(self, url, user=None):
+    def post_request(self, url,  user=None):
         """
         POST the given URL, for the optional user, and return the request.
         """
@@ -297,7 +297,6 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         """
         Patch the authorization hit to say that the mcka_admin is in all groups.
         """
-
         def admin_is_in_all_groups(user, *_args, **_kwargs):
             """
             Our admin user is in all groups.
@@ -383,7 +382,6 @@ class CourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test the CourseDetailsApi view.
     """
-
     def setUp(self):
         """
         Patch the required APIs
@@ -439,13 +437,11 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
         groupwork and company admin or internal admin. Also makes sure the
         correct javascript variables are set for the client side.
         """
-
         def _get_course_context(t, org_id=''):
             return {
                 'cohorts_enabled': t[0],
                 'cohorts_available': t[1],
             }
-
         course_api = self.apply_patch('admin.views.load_course')
         course_api.return_value = (is_cohorted, is_available)
 
@@ -473,7 +469,6 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test the enroll_participants_from_csv and import_participants views.
     """
-
     def setUp(self):
         super(AdminCsvUploadViewsTest, self).setUp()
 
@@ -485,7 +480,7 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
          "admin/test_data/enroll-existing-participants.csv", False),
     )
     def test_csv_upload_views(self, view, file_key, test_file_path, is_valid):
-        request = self.post_request('/dummy/', self.admin_user)
+        request = self.post_request('/dummy/',  self.admin_user)
         with open(test_file_path, "rb") as test_file:
             test_file = File(test_file)
             request.FILES.update({file_key: test_file})
@@ -503,7 +498,6 @@ class EnrollParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test the enrollment and unenrollment views.
     """
-
     def setUp(self):
         super(EnrollParticipantsFromCsvTest, self).setUp()
         self.patch_user_permissions()
@@ -739,7 +733,6 @@ class ParticipantsListViewTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test participants list view
     """
-
     @override_switch(get_deletion_waffle_switch(), active=True)
     def test_check_switch_on_view(self, *patch):
         """
@@ -762,7 +755,6 @@ class CompaniesListViewTest(CourseParticipantsStatsMixin, TestCase):
     """
     Test companies list view
     """
-
     @override_switch(get_deletion_waffle_switch(), active=True)
     def test_check_switch_on_view(self, *patch):
         """
@@ -1006,6 +998,52 @@ class ProblemResponseReportViewTest(TestCase):
         force_authenticate(request, user=self.admin_user)
         response = self.api(request, 'course_id')
         self.assertEqual(len(response.data['reports']), 2)
+
+
+class TestClientModel:
+    def __init__(self, display_name, places_allocated, places_assigned, licenses):
+        self.display_name = display_name
+        self.places_allocated = places_allocated
+        self.places_assigned = places_assigned
+        self.licenses = licenses
+
+
+class TestDownloadProgarmReport(TestCase, ApplyPatchMixin):
+    """Testing download program report"""
+    def setUp(self):
+        self.clients = [TestClientModel('C1', 10, 4, []),
+                        TestClientModel('C2', 10, 4, [])]
+
+        self.is_user_in_permission_group_lib = self.apply_patch("lib.authorization.is_user_in_permission_group")
+        self.is_user_in_permission_group_lib.return_value = True
+        self.factory = RequestFactory()
+        self.fetch_clients = self.apply_patch('admin.views.fetch_clients_with_program')
+        self.user = RemoteUser.objects.create_user(
+            username='johndoe', email='john@doe.org', password='password')
+        self.request = self.factory.get('programs/abc/download_program_report')
+        self.request.user = self.user
+
+    def test_download_program_report_empty_report(self):
+        response = views.download_program_report(self.request, '')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEquals(
+            response.get('Content-Disposition'),
+            "attachment; filename=Clients Report.csv"
+        )
+        content = response.content.decode('utf-8')
+        read = csv.reader(io.StringIO(content))
+        self.assertEqual(len(list(read)), 0)
+
+    def test_download_program_report_non_empty_report(self):
+        self.fetch_clients.return_value = self.clients
+        response = views.download_program_report(self.request, '')
+        content = response.content.decode('utf-8')
+        read = list(csv.reader(io.StringIO(content)))
+        self.assertEqual(len(list(read)), 8)
+        self.assertEqual(read[0], ['Summary of C1'])
+        self.assertEqual(read[1], ['Client:C1', 'Allocated Slots:10', 'Assigned Slots:4'])
+        self.assertEqual(read[2], ['Details of C1'])
+        self.assertEqual(read[3], ['grantee_id', 'grantor_id', 'granted_id', 'granted_on'])
 
 
 class ProgramViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):

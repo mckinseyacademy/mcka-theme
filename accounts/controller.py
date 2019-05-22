@@ -193,7 +193,8 @@ def assign_student_to_program(user, client, program_id):
     program = Program.fetch(program_id)
     program.courses = program.fetch_courses()
 
-    allocated, assigned = license_controller.licenses_report(program.id, client.id)
+    assigned, licences = license_controller.licenses_report(program.id, client.id)
+    allocated = len(licences)
     remaining = allocated - assigned
     if remaining <= 0:
         message = (

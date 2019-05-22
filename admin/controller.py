@@ -685,10 +685,12 @@ def fetch_clients_with_program(program_id):
     clients = group_api.get_organizations_in_group(program_id, group_object=Client)
     for client in clients:
         try:
-            client.places_allocated, client.places_assigned = license_controller.licenses_report(program_id, client.id)
+            client.places_assigned, client.licenses = license_controller.licenses_report(program_id, client.id)
+            client.places_allocated = len(client.licenses)
         except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
             client.places_allocated = None
             client.places_assigned = None
+            client.licenses = None
 
     return clients
 

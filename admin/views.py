@@ -2807,11 +2807,30 @@ def mass_student_enroll_check(request, client_id, task_key):
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def download_program_report(request, program_id):
-    filename = "Empty Report.csv"
+    csv_data = []
+
+    def output_line(line_data_array):
+        csv_data.append(','.join(line_data_array))
+
+    filename = "Clients Report.csv"
+    clients = fetch_clients_with_program(program_id)
+    if clients:
+        for client in clients:
+            output_line(['Summary of ' + client.display_name])
+            output_line(['Client:' + str(client.display_name), 'Allocated Slots:' + str(client.places_allocated),
+                         'Assigned Slots:'+str(client.places_assigned)])
+            output_line(['Details of ' + client.display_name])
+            output_line(['grantee_id', 'grantor_id', 'granted_id', 'granted_on'])
+            if client.licenses:
+                for licence in client.licenses:
+                    if licence.grantee_id:
+                        output_line([str(licence.grantee_id), str(licence.grantor_id),
+                                     str(licence.granted_id), str(licence.granted_on)])
     response = HttpResponse(
-        _("Report is TBD"),
+        '\n'.join(csv_data),
         content_type='text/csv'
     )
+
     response['Content-Disposition'] = 'attachment; filename={}'.format(
         filename
     )
@@ -2927,8 +2946,8 @@ def add_students_to_program(request, client_id, restrict_to_programs_ids=None, r
             students = [student_id for student_id in students if int(student_id) in restrict_to_users_ids]
     except ValueError:
         return make_json_error(_("Invalid student_id specified: {}").format(student_id), 400)
-    allocated, assigned = license_controller.licenses_report(
-        program.id, client_id)
+    assigned, license = license_controller.licenses_report(program.id, client_id)
+    allocated = len(license)
     remaining = allocated - assigned
     if len(students) > remaining:
         return make_json_error(
