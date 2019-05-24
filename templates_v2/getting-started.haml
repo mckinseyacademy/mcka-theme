@@ -1,6 +1,9 @@
 - extends "layout.haml"
 - load i18n
 
+- get_current_language as LANGUAGE_CODE
+- get_current_language_bidi as LANGUAGE_BIDI
+
 - block content
   .container
     .row.justify-content-center
@@ -101,8 +104,8 @@
             check_circle
           .
         %div.illustrations
-          %img.sixty-6{:alt => "", :src => "/static/image/guide/progress.png"}/
-        
+          %img.sixty-6{:alt => "", :src => "{% if LANGUAGE_BIDI %}/static/image/guide/progress.png{% else %}/static/image/guide/progress.png{% endif %}"}/
+
         %p {% trans "As you complete modules and lessons, your completion status will update in detail on the My Progress page." %}
 
         %hr.blank.hr-lg
@@ -123,11 +126,10 @@
             %img{:alt => "", :src => "/static/image/guide/mobile-app.png"}/
           %hr.blank.hr-lg
           %div.illustrations
-            %a{:target => "_blank", :href => "https://itunes.apple.com/us/app/mckinsey-academy/id1343006364?mt=8", :style => "display:inline-block;overflow:hidden;background:url(https://linkmaker.itunes.apple.com/en-us/badge-lrg.svg?releaseDate=2018-02-07&kind=iossoftware&bubble=ios_apps) no-repeat;width:135px;height:40px;"}
-            -# %a{:href => "https://itunes.apple.com/us/app/mckinsey-academy/id1343006364", :target => "_blank"}
-            -#   %img.height-40{:alt => "", :src => "/static/image/guide/app-store.png"}/
-            -# %a{:href => "https://play.google.com/store/apps/details?id=com.mckinseyacademy.android", :target => "_blank"}
-            -#   %img.height-40{:alt => "", :src => "/static/image/guide/google-play.png"}/
+            %a{:target => "_blank", :href => "https://itunes.apple.com/us/app/mckinsey-academy/id1343006364?mt=8", :style => "display:inline-block;overflow:hidden;background:url(/static/image/logos/ios-{{LANGUAGE_CODE }}.svg) no-repeat;width:135px;height:40px;"}
+            %a{:href => "https://play.google.com/store/apps/details?id=com.mckinseyacademy.android&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"}
+              %img{:height => "40", :src => "https://play.google.com/intl/en_us/badges/images/generic/{% if LANGUAGE_CODE == 'zh' %}zh-cn{% else %}{{ LANGUAGE_CODE }}{% endif %}_badge_web_generic.png"}/
+
     .row.justify-content-center
       .col-lg-8.col-md-12.static-page.guide-footer
         %p
