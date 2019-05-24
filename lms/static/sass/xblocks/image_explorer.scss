@@ -72,12 +72,9 @@ body.new-theme {
 
         .image-explorer-hotspot {
           text-align: left;
-          // background-image: url(../../mcka-theme/images/hotspot-sprite.png);
-          background: #FFF;
-          border-radius: 50%;
-          width: 25px;
-          height: 25px;
-
+          background: transparent;
+          border-radius: 22px;
+         
           &:hover {
             // background-position: 0 -41px;
             &:before {
@@ -100,13 +97,20 @@ body.new-theme {
             }
           }
           &:before {
-            font-family: "Material Icons";
+            @include primary-theme-content-color;
             content: "\e147";
+            font-family: "Material Icons";
             position: absolute;
             font-size: 32px;
-            left: -4px;
-            top: -12px;
-            @include primary-theme-content-color;
+            width: 23px;
+            height: 23px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            line-height: 24px;
+            text-indent: -5px;
+            background: white;
+            border-radius: 25px;
           }
 
           .image-explorer-hotspot-reveal {
@@ -134,7 +138,7 @@ body.new-theme {
               color: $black;
               margin: 20px 16px 20px;
               overflow: auto;
-              height: 88%;
+              height: calc(100% - 50px);
 
               .image-explorer-hotspot-reveal-header {
                 font-size: 0.875rem;
@@ -212,12 +216,13 @@ body.new-theme {
       .image-explorer-xblock-wrapper {
         .image-explorer-wrapper {
           .image-explorer-hotspot {
-            width: 18px;
-            height: 18px;
+           
             &:before {
               font-size: 22px;
-              top: -7px;
-              left: -2px;
+              width: 14px;
+              height: 14px;
+              line-height: 14px;
+
             }      
 
             .image-explorer-hotspot-reveal {
