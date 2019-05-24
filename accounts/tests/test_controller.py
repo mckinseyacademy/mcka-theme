@@ -462,8 +462,10 @@ class TestActivationError(TestCase):
 
     def test_activation_error_str(self):
         exception_message = 'test'
-        error = ActivationError(exception_message)
+        error_code = 'invalid'
+        error = ActivationError(exception_message, error_code)
         self.assertEquals(error.value, 'test')
+        self.assertEquals(error.error_code, 'invalid')
         self.assertEquals(error.__str__(), "ActivationError 'test'")
 
 

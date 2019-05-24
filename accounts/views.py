@@ -550,6 +550,7 @@ def logout(request):
 def activate(request, activation_code, registration=None):
     ''' handles requests for activation form and their submission '''
     error = None
+    error_code = None
     user = None
     user_data = None
     initial_data = {}
@@ -607,13 +608,15 @@ def activate(request, activation_code, registration=None):
 
             except ActivationError as activation_error:
                 error = activation_error.value
+                error_code = activation_error.error_code
     else:
         form = ActivationForm(user_data, initial=initial_data)
 
     data = {
         "user": user,
         "form": form,
-        "username_error": error,
+        "error_message": error,
+        "error_code": error_code,
         "activation_code": activation_code,
         "activate_label": _("Create my McKinsey Academy account"),
         "company": initial_data.get("company"),
