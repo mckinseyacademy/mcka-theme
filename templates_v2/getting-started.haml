@@ -27,7 +27,7 @@
         %h5 {% trans "Registration" %}
         %p {% trans "Each participant receives a welcome email with an activation link. Follow this link to create an account username and password." %}
         %div.illustrations
-          %img.thirty-3{:alt => "", :src => "/static/image/guide/activation-link.png"}/
+          %img.thirty-3.flip-rtl{:alt => "", :src => "/static/image/guide/activation-link.png"}/
         %p {% trans "If you believe you are enrolled in a course but have not received a welcome email:" %}
         %ul.steps
           %li
@@ -64,11 +64,11 @@
         %div.illustrations
           .img-with-cap.fifty-half
             %p
-              %img{:alt => "", :src => "/static/image/guide/my-courses-footprint.png"}/
+              %img.flip-rtl{:alt => "", :src => "/static/image/guide/my-courses-footprint.png"}/
             {% trans "My Courses" %}
           .img-with-cap.fifty-half
             %p
-              %img{:alt => "", :src => "/static/image/guide/learner-dashboard-footprint.png"}/
+              %img.flip-rtl{:alt => "", :src => "/static/image/guide/learner-dashboard-footprint.png"}/
             {% trans "Learner Dashboard" %}
         %hr.blank
         %p {% trans "From here, you can navigate to the courses or activities you're enrolled in. Return to your landing page anytime using the main navigation." %}
@@ -81,7 +81,7 @@
         %h5 {% trans "COURSE OVERVIEW" %}
         %p {% trans "Each course has an overview page where you can access lessons, course materials, announcements, and resources." %}
         %div.illustrations
-          %img.full-width{:alt => "", :src => "/static/image/guide/course-overview-footprint.png"}/
+          %img.full-width.replace-rtl{:alt => "", :src => "{% if LANGUAGE_BIDI %}/static/image/guide/course-overview-footprint-rtl.png{% else %}/static/image/guide/course-overview-footprint.png{% endif %}"}/
         %p {% trans "Depending on your course, you can also explore course features such as Discussions, Group Work, and cohort Leaderboard. Note: not all courses have all features." %}
         %h5 {% trans "LESSONS" %}
         %p {% trans "Lessons are composed of individual modules. Complete the modules to complete the lesson. Complete the lessons to complete the course." %}
@@ -90,21 +90,21 @@
             zoom_out_map
           {% trans "to put learning front-and-center. Move between modules by using the contextual navigation on screen." %}
         %div.illustrations
-          %img.sixty-6{:alt => "", :src => "/static/image/guide/prev-next-module-navigator.png"}
+          %img.sixty-6.flip-rtl{:alt => "", :src => "/static/image/guide/prev-next-module-navigator.png"}
         %p
           {% trans "Use the module navigator in the lesson title to jump to a specific module. Here you can also see the status of individual modules:" %}
           {% trans "not started" %}
-          %i.material-icons
+          %i.material-icons.gray
             panorama_fish_eye
           {% trans ", in progress " %}
-          %i.material-icons
+          %i.material-icons.gray
             tonality
           {% trans ", and completed " %}
           %i.material-icons
             check_circle
           .
         %div.illustrations
-          %img.sixty-6{:alt => "", :src => "{% if LANGUAGE_BIDI %}/static/image/guide/progress.png{% else %}/static/image/guide/progress.png{% endif %}"}/
+          %img.sixty-6.replace-rtl{:alt => "", :src => "{% if LANGUAGE_BIDI %}/static/image/guide/progress-rtl.png{% else %}/static/image/guide/progress.png{% endif %}"}/
 
         %p {% trans "As you complete modules and lessons, your completion status will update in detail on the My Progress page." %}
 
@@ -125,10 +125,10 @@
           %div.illustrations
             %img{:alt => "", :src => "/static/image/guide/mobile-app.png"}/
           %hr.blank.hr-lg
-          %div.illustrations
+          %div.illustrations.stores
             %a{:target => "_blank", :href => "https://itunes.apple.com/us/app/mckinsey-academy/id1343006364?mt=8", :style => "display:inline-block;overflow:hidden;background:url(/static/image/logos/ios-{{LANGUAGE_CODE }}.svg) no-repeat;width:135px;height:40px;"}
             %a{:href => "https://play.google.com/store/apps/details?id=com.mckinseyacademy.android&pcampaignid=MKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1"}
-              %img{:height => "40", :src => "https://play.google.com/intl/en_us/badges/images/generic/{% if LANGUAGE_CODE == 'zh' %}zh-cn{% else %}{{ LANGUAGE_CODE }}{% endif %}_badge_web_generic.png"}/
+              %img{:src => "https://play.google.com/intl/en_us/badges/images/generic/{% if LANGUAGE_CODE == 'zh' %}zh-cn{% else %}{{ LANGUAGE_CODE }}{% endif %}_badge_web_generic.png"}/
 
     .row.justify-content-center
       .col-lg-8.col-md-12.static-page.guide-footer

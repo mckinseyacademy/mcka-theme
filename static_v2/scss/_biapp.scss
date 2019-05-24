@@ -782,11 +782,25 @@ form {
 // Static Pages
 
 .guide {
+  ul {
+    @include padding-left(20px);
+  }
   .illustrations {
     .img-with-cap {
       @include float(left);
       &:first-child {
         @include margin-right(20px);
+      }
+    }
+    .fifty-half {
+      @include float(left);
+    }
+  }
+  .stores {
+    a {
+      @include margin-left(-4px);
+      img {
+        @include left(0);
       }
     }
   }
@@ -1022,8 +1036,8 @@ body.rtl {
   }
   .guide {
     .illustrations {
-      img {
-        // @include flip-x-axis;
+      img.flip-rtl {
+        @include flip-x-axis;
       }
     }
   }
