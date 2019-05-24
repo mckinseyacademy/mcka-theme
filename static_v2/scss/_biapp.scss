@@ -403,6 +403,13 @@ body {
         &:first-child {
           border: 0;
         }
+        .user {
+          >div {
+            &.person-rank{
+              @include text-align(right);
+            }
+          }
+        }
       }
     }
   }
