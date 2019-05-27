@@ -1,5 +1,6 @@
 - extends "courses/course_base.haml"
 - load i18n
+- load staticfiles
 
 - block page_title
   %title
@@ -48,5 +49,5 @@
               - include "courses/contact_ta.haml" with contact_from="group-work"
 
 - block js_snippets
-  %script{src: '/static/js/course_learner_dashboard/tile_progress_update.js'}
+  %script{src: "{% static 'js/course_learner_dashboard/tile_progress_update.js' %}"}
   - include "courses/group_work/js_snippets.haml"

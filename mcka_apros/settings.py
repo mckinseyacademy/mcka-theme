@@ -190,6 +190,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static_v2"),
 )
 
+STATICFILES_STORAGE = 'mcka_apros.static_file_storage.NonStrictManifestStaticFilesStorage'
+
 BASE_CERTIFICATE_TEMPLATE_ASSET_PATH = 'certificates/template_assets/'
 
 # Handle session is not Json Serializable

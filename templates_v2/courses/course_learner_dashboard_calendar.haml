@@ -1,4 +1,6 @@
 - load i18n
+- load staticfiles
+
 #background-full-calendar
   #over-full-calendar
     #row-full-calendar
@@ -482,4 +484,4 @@
     event.stopPropagation();
   });
 
-%script{"src": "/static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js"}
+%script{"src": "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js' %}"}
