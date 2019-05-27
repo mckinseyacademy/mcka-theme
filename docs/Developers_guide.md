@@ -15,7 +15,7 @@ and think of it as important, please open up a PR and add to the file. Thanks.
 
 The following sub-section demonstrates solutions to commonly faced issues during the apros and lms setups mentioned above.
 If you get 404 on the pages above, Please coordinate with the development team and make sure your github id has proper access rights.
-### Issues
+### Setup Issues and Solutions
 
 
 - #### "msg": "Failed to update apt cache."
@@ -226,6 +226,10 @@ vagrant init [machine name as it shows in virtual box] /Users/myuser/Documents/W
   `ssh GITHUBUSERNAME@stage-bastion.mckinsey.edx.org`
   then
   `/edx/bin/edxapp-rds.sh`
+  
+  ### Commands
+  - Access Django Shell (QA)
+    `sudo -u edxapp /edx/bin/python.edxapp /edx/app/edxapp/edx-platform/manage.py lms shell --settings=aws`
   
 ## Supervisor
   ### Supervisor Commands:

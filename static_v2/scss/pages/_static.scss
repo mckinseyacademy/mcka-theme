@@ -55,9 +55,8 @@
       margin-top: 25px;
     }
     ul {
-      padding: 0;
       margin: 0 0 20px;
-      list-style-position: inside;
+      list-style-position: outside;
       li {
         margin-bottom: 5px;
         font-size: 12px;
@@ -116,7 +115,7 @@
       }
       .fifty-half {
         max-width: 351px;
-        width: 100%;
+        width: calc(50% - 10px);
       }
       .sixty-6 {
         max-width: 66%;
@@ -129,8 +128,24 @@
         width: auto;
       }
     }
+    .stores {
+      a {
+        display: inline-block;
+        height: 40px;
+        width: 145px;
+        position: relative;
+        img {
+          position: absolute;
+          top: -10px;
+          height: 59px;
+        }
+      }
+    }
     a {
       color: $primary !important;
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
   &.guide-footer {
