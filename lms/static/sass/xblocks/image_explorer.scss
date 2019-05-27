@@ -30,6 +30,10 @@
 
 body.new-theme {
   &.rtl {
+    .image-explorer-close-reveal{
+      right:auto !important;
+      left:-5px;
+    }
     .image-explorer-xblock-wrapper {
       .image-explorer-hotspot-reveal {
         .image-explorer-hotspot-content-wrapper {
@@ -68,12 +72,9 @@ body.new-theme {
 
         .image-explorer-hotspot {
           text-align: left;
-          // background-image: url(../../mcka-theme/images/hotspot-sprite.png);
-          background: #FFF;
-          border-radius: 50%;
-          width: 25px;
-          height: 25px;
-
+          background: transparent;
+          border-radius: 22px;
+         
           &:hover {
             // background-position: 0 -41px;
             &:before {
@@ -96,25 +97,31 @@ body.new-theme {
             }
           }
           &:before {
-            font-family: "Material Icons";
+            @include primary-theme-content-color;
             content: "\e147";
+            font-family: "Material Icons";
             position: absolute;
             font-size: 32px;
-            left: -4px;
-            top: -12px;
-            @include primary-theme-content-color;
+            width: 23px;
+            height: 23px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            line-height: 24px;
+            text-indent: -5px;
+            background: white;
+            border-radius: 25px;
           }
 
           .image-explorer-hotspot-reveal {
             border-radius: 2px;
             background: $ash-white;
             border: 1px solid $popup-border;
-            margin-bottom: 60px;
 
             .image-explorer-close-reveal {
-              color: transparent;
-              margin-right: 5px;
-              margin-top: 0;
+              position: absolute;
+              right: 6px;
+              top: 0px;
               
               &::before {
                 display: none;
@@ -128,17 +135,22 @@ body.new-theme {
             }
 
             .image-explorer-hotspot-content-wrapper {
-              margin: 30px 20px 10px;
               color: $black;
+              margin: 20px 16px 20px;
+              overflow: auto;
+              height: calc(100% - 50px);
 
               .image-explorer-hotspot-reveal-header {
                 font-size: 0.875rem;
                 margin-bottom: 5px;
 
                 p {
-                  margin: 0;
+                  margin: 0 0 15px 0 !important;
                   line-height: initial;
                   font-size: 0.875rem;
+                }
+                ul{
+                  margin: 0 0 15px 0 !important;
                 }
               }
 
@@ -147,8 +159,15 @@ body.new-theme {
                   font-size: 14px;
                   color: $black;
                   line-height: 19px;
-                  margin-bottom: 0;
                 }
+
+                .image-explorer-hotspot-reveal-body {
+                  ul{
+                    margin-bottom: 15px !important;
+                  }
+                }
+
+
                 > h1, > h2, > h3, > h4, > h5, > h6 {
                   color: $black !important;
                 }
@@ -176,10 +195,10 @@ body.new-theme {
 
                 > ul {
                   padding-left: 5px;
-                  margin: 5px 0 0;
+                  margin: 5px 0;
 
                   li {
-                    margin: 0 0 0 17px;
+                    margin: 0 0 15px 17px;
                   }
                 }
               }
@@ -197,24 +216,14 @@ body.new-theme {
       .image-explorer-xblock-wrapper {
         .image-explorer-wrapper {
           .image-explorer-hotspot {
-            width: 18px;
-            height: 18px;
+           
             &:before {
               font-size: 22px;
-              top: -7px;
-              left: -2px;
+              width: 14px;
+              height: 14px;
+              line-height: 14px;
+
             }      
-            // &:hover {
-            //   background-position: 0 -25px;
-            // }
-
-            // &.visited {
-            //   background-position: 0 -50px;
-
-            //   &:hover {
-            //     background-position: 0 -50px;
-            //   }
-            // }
 
             .image-explorer-hotspot-reveal {
               width: 90% !important;
