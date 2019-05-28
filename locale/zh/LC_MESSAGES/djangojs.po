@@ -320,7 +320,7 @@ msgstr "您已长时间无操作。单击“确定”继续。"
 
 #: static/js/course_lesson.js:112
 msgid "Complete all content to continue"
-msgstr ""
+msgstr "完整填写内容才能继续"
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
@@ -358,15 +358,15 @@ msgstr "启动弹出窗口以继续"
 
 #: static/js/static_translation_strings.js:6
 msgid "Content is complete, please continue."
-msgstr ""
+msgstr "内容填写完整，请继续"
 
 #: static/js/static_translation_strings.js:7
 msgid "Complete all content to continue."
-msgstr ""
+msgstr "完整填写内容才能继续"
 
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
-msgstr ""
+msgstr "检查是否填写完整"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."

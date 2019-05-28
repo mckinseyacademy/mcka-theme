@@ -326,7 +326,7 @@ msgstr "يبدو أنك غير نشط. انقر فوق \"موافق\" لمواص
 
 #: static/js/course_lesson.js:112
 msgid "Complete all content to continue"
-msgstr ""
+msgstr "أكمل كل المحتوى للمتابعة"
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
@@ -368,15 +368,15 @@ msgstr "إطلاق نافذة منبثقة للمتابعة"
 
 #: static/js/static_translation_strings.js:6
 msgid "Content is complete, please continue."
-msgstr ""
+msgstr "المحتوى مكتمل، الرجاء المتابعة"
 
 #: static/js/static_translation_strings.js:7
 msgid "Complete all content to continue."
-msgstr ""
+msgstr "أكمل كل المحتوى للمتابعة"
 
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
-msgstr ""
+msgstr "تحقق من الاكتمال"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."

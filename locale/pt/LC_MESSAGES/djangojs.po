@@ -352,7 +352,7 @@ msgstr ""
 
 #: static/js/course_lesson.js:112
 msgid "Complete all content to continue"
-msgstr ""
+msgstr "Complete todo o conteúdo para continuar"
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
@@ -394,15 +394,15 @@ msgstr "Lançar pop-up para continuar"
 
 #: static/js/static_translation_strings.js:6
 msgid "Content is complete, please continue."
-msgstr ""
+msgstr "O conteúdo está completo, por favor, continue"
 
 #: static/js/static_translation_strings.js:7
 msgid "Complete all content to continue."
-msgstr ""
+msgstr "Complete todo o conteúdo para continuar"
 
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
-msgstr ""
+msgstr "Verificação de Conclusão"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
