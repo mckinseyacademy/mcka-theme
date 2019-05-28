@@ -6,14 +6,11 @@ body{
         transition: all ease 0.7s;
         pointer-events: none;
         cursor: none;
-        &.disable{
-          background: var(--primary) !important;
-        }
-        &.disabled{
+        &.disable {
           background: var(--primary) !important;
           pointer-events: none;
-          span{
-            >i{
+          span {
+            > i {
               color: $white;
             }
           }
@@ -101,15 +98,14 @@ body{
     opacity: 0.5;
     &.disable {
       background: $gray !important;
-      &:hover {
-        opacity: 1;
-      }
-    }
-    &.disabled {
-      background: $gray !important;
       pointer-events: none;
       &:hover {
         opacity: 1;
+      }
+      > span {
+        i {
+          color: $white;
+        }
       }
     }
     &.left {
