@@ -8,8 +8,16 @@ body{
         cursor: none;
         &.disable {
           background: var(--primary) !important;
+          >span {
+            > i {
+              color: $white;
+            }
+          }
+        }
+        &.disabled {
+          background: var(--primary) !important;
           pointer-events: none;
-          span {
+          >span {
             > i {
               color: $white;
             }
@@ -98,12 +106,23 @@ body{
     opacity: 0.5;
     &.disable {
       background: $gray !important;
+      &:hover {
+        opacity: 1;
+      }
+      >span {
+        > i {
+          color: $white;
+        }
+      }
+    }
+    &.disabled {
+      background: $gray !important;
       pointer-events: none;
       &:hover {
         opacity: 1;
       }
-      > span {
-        i {
+      >span {
+        > i {
           color: $white;
         }
       }
