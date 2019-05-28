@@ -326,86 +326,87 @@
             }, 10);
           }
 
-    / New Feature Tour Structure
-    .modal.fade.newFeatureTour.in.show{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
-      .modal-dialog.modal-lg
-        .modal-content
-          .modal-body
-            %button.close.btn-skip{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
-              %span{:aria-hidden => "true"} {% trans 'Skip'%}
-            .sliderWraper
-
-              #demo.carousel{:data-ride => "carousel", :data-touch=> "false", :data-interval=> "false", :data-keyboard=> "false", :data-pause => "hover"}
-
-                / The slideshow
-                .carousel-inner.nextSlide
-                  .carousel-item.active.next
-                    .featureImage
-                      .holder
-                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic.png' %}", :width => "600"}
-                    .featureContent
-                      .holder
-                        .head
-                          %h2 {%trans 'Your learning experience has a fresh look!' %}
-                        .contentHolder
-                          %p {% trans 'The new design makes it easier for you to navigate, understand your progress and stay focused on your learning.'%}
-                  .carousel-item
-                    .featureImage
-                      .holder
-                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic4.png' %}", :width => "600"}
-                    .featureContent
-                      .holder
-                        .head
-                          %h2 {% trans 'Navigating is simple'%}
-                        .contentHolder
-                          %p {% trans 'The updated landing page makes it easier for you to access your programs or courses.'%}
-                  .carousel-item
-                    .featureImage
-                      .holder
-                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic3.png' %}", :width => "600"}
-                    .featureContent
-                      .holder
-                        .head
-                          %h2 {% trans 'New full-screen mode'%}
-                        .contentHolder
-                          %p {% trans 'In your course, you can now zoom into the content by choosing full screen mode.'%}
-                  .carousel-item
-                    .featureImage
-                      .holder
-                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic2.png' %}", :width => "600"}
-                    .featureContent
-                      .holder
-                        .head
-                          %h2 {% trans 'Access from any device'%}
-                        .contentHolder
-                          %p {% trans 'The designs have been optimized for all devices so you can learn from anywhere.'%}
-                  .carousel-item
-                    .featureImage
-                      .holder
-                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic5.png' %}", :width => "600"}
-                    .featureContent
-                      .holder
-                        .head
-                          %h2 {% trans 'No interruption to your learning'%}
-                        .contentHolder
-                          %p {% trans 'Pick up where you left off! Your progress and the content in the courses is not impacted by this change.'%}
-
-                / Left and right controls
-                .controlsWrap
-                  / Indicators
-                  %ul.carousel-indicators
-                    %li.active{:data-slide-to => "0", :data-target => "#demo"}
-                    %li{:data-slide-to => "1", :data-target => "#demo"}
-                    %li{:data-slide-to => "2", :data-target => "#demo"}
-                    %li{:data-slide-to => "3", :data-target => "#demo"}
-                    %li{:data-slide-to => "4", :data-target => "#demo"}
-                  %a.carousel-control-prev.ome.dome-bc{:data-slide => "prev", :href => "javascript:void(0)"}
-                    %span.carousel-control-prev-icon
-                      %i.material-icons keyboard_arrow_left
-                  %a.carousel-control-next.ome.dome-bc{:data-slide => "next", :href => "javascript:void(0)"}
-                    %span.carousel-control-next-icon
-                      %i.material-icons keyboard_arrow_right
     -if show_new_ui_tour
+      / New Feature Tour Structure
+      .modal.fade.newFeatureTour.in.show{:aria-hidden => "true", :aria-labelledby => "myLargeModalLabel", :role => "dialog", :tabindex => "-1"}
+        .modal-dialog.modal-lg
+          .modal-content
+            .modal-body
+              %button.close.btn-skip{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
+                %span{:aria-hidden => "true"} {% trans 'Skip'%}
+              .sliderWraper
+
+                #demo.carousel{:data-ride => "carousel", :data-touch=> "false", :data-interval=> "false", :data-keyboard=> "false", :data-pause => "hover"}
+
+                  / The slideshow
+                  .carousel-inner.nextSlide
+                    .carousel-item.active.next
+                      .featureImage
+                        .holder
+                          %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic.png' %}", :width => "600"}
+                      .featureContent
+                        .holder
+                          .head
+                            %h2 {%trans 'Your learning experience has a fresh look!' %}
+                          .contentHolder
+                            %p {% trans 'The new design makes it easier for you to navigate, understand your progress and stay focused on your learning.'%}
+                    .carousel-item
+                      .featureImage
+                        .holder
+                          %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic4.png' %}", :width => "600"}
+                      .featureContent
+                        .holder
+                          .head
+                            %h2 {% trans 'Navigating is simple'%}
+                          .contentHolder
+                            %p {% trans 'The updated landing page makes it easier for you to access your programs or courses.'%}
+                    .carousel-item
+                      .featureImage
+                        .holder
+                          %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic3.png' %}", :width => "600"}
+                      .featureContent
+                        .holder
+                          .head
+                            %h2 {% trans 'New full-screen mode'%}
+                          .contentHolder
+                            %p {% trans 'In your course, you can now zoom into the content by choosing full screen mode.'%}
+                    .carousel-item
+                      .featureImage
+                        .holder
+                          %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic2.png' %}", :width => "600"}
+                      .featureContent
+                        .holder
+                          .head
+                            %h2 {% trans 'Access from any device'%}
+                          .contentHolder
+                            %p {% trans 'The designs have been optimized for all devices so you can learn from anywhere.'%}
+                    .carousel-item
+                      .featureImage
+                        .holder
+                          %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic5.png' %}", :width => "600"}
+                      .featureContent
+                        .holder
+                          .head
+                            %h2 {% trans 'No interruption to your learning'%}
+                          .contentHolder
+                            %p {% trans 'Pick up where you left off! Your progress and the content in the courses is not impacted by this change.'%}
+
+                  / Left and right controls
+                  .controlsWrap
+                    / Indicators
+                    %ul.carousel-indicators
+                      %li.active{:data-slide-to => "0", :data-target => "#demo"}
+                      %li{:data-slide-to => "1", :data-target => "#demo"}
+                      %li{:data-slide-to => "2", :data-target => "#demo"}
+                      %li{:data-slide-to => "3", :data-target => "#demo"}
+                      %li{:data-slide-to => "4", :data-target => "#demo"}
+                    %a.carousel-control-prev.ome.dome-bc{:data-slide => "prev", :href => "javascript:void(0)"}
+                      %span.carousel-control-prev-icon
+                        %i.material-icons keyboard_arrow_left
+                    %a.carousel-control-next.ome.dome-bc{:data-slide => "next", :href => "javascript:void(0)"}
+                      %span.carousel-control-next-icon
+                        %i.material-icons keyboard_arrow_right
+
       %script{src: "{% static 'js/new_ui_tour.js' %}"}
 
     %script{src: "{% static 'js/shader.js' %}"}
