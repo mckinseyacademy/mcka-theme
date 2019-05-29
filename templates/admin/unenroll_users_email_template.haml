@@ -6,7 +6,7 @@
 
 - block body
   %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
-    {% blocktrans with file_name=file_name %} The bulk unenrollment file "{{file_name}}" has been processed. {% endblocktrans %}
+    {% blocktrans with file_name=file_name %} The bulk unenrollment file "{{file_name}}" has been processed in {{domain}}. {% endblocktrans %}
     %li
       Completion time: {{minutes_taken}} min
     %li

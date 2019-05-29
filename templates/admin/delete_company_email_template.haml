@@ -7,9 +7,9 @@
 - block body
   %p{:style => "line-height: 22px;font-size: 15px;color: #333333;"}
     - if failed_url
-      {% blocktrans with file_name=file_name %} The Company deletion for {{company_name}} was partially completed and had some errors. {% endblocktrans %}
+      {% blocktrans with file_name=file_name %} The Company deletion for {{company_name}} was partially completed in {{domain}} and had some errors. {% endblocktrans %}
     - else
-      {% blocktrans with file_name=file_name %} The Company deletion has been completed for {{company_name}}. {% endblocktrans %}
+      {% blocktrans with file_name=file_name %} The Company deletion has been completed for {{company_name}} in {{domain}}. {% endblocktrans %}
     %li
       Completion time: {{minutes_taken}} min
     %li

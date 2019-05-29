@@ -2893,3 +2893,7 @@ def delete_company_data(company_id):
     except ApiError:
         # We can safely ignore this in a case of a race condition.
         pass
+
+
+def get_domain(url):
+    return '/'.join(url.split('/')[:3])

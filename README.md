@@ -107,11 +107,11 @@ those are executed.
 
 Extra emails to be notified of deletions can be added by using a management command:
 
-    ./manage deletion_admin add admin_1@test.com admin_2@test.com admin_3@test.com
+    ./manage.py deletion_admin add admin_1@test.com admin_2@test.com admin_3@test.com
 
 These can be later removed by using:
 
-    ./manage deletion_admin remove admin_2@test.com admin_3@test.com
+    ./manage.py deletion_admin remove admin_2@test.com admin_3@test.com
 
 Whenever a bulk or company deletion notification is sent to the admin that
 started the process, it will be also sent to the existing deletion admins.
