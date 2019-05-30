@@ -5,9 +5,6 @@
     &.fa {
       font-size: 1.125rem;
       width: 1.8rem;
-      &:before {
-        text-align: left;
-      }
     }
   }
 
@@ -30,7 +27,7 @@
       td {
         &:first-child {
           width: 200px;
-          padding: 0 30px 30px 0;
+          padding-bottom: 30px;
           overflow: hidden;
         }
         padding: 0;
@@ -52,11 +49,9 @@
         display: inline-block;
         color: var(--primary);
         vertical-align: middle;
-        margin: 0 7px 0 0;
         position: relative;
         font-size: 1rem;
         line-height: 22px;
-        padding-left: 1.742857rem;
         i {
           font-size: 1.125rem;
           line-height: 22px;
@@ -82,8 +77,6 @@
 
   i.fa::before {
     @extend .d-block;
-    text-align: left;
-    margin-right: 3px;
   }
 
   .fa-li {
@@ -112,8 +105,10 @@
     padding-top: 30px;
   }
 
-  ul.fa-ul {
+  ul.fa-ul,
+  >ul{
     margin: 0 0 20px;
+    padding: 0;
     > li {
       position: relative;
       margin-top: 4px;
@@ -129,7 +124,6 @@
       position: relative;
       font-size: 1rem;
       line-height: 22px;
-      padding-left: 1.742857rem;
       & + a {
         padding-left: 0;
         margin: 0;
@@ -141,7 +135,6 @@
         position: absolute;
         top: 0.042857em;
         text-align: center;
-        left: 0;
         width: auto;
       }
     }
@@ -151,7 +144,6 @@
     > a {
       margin-bottom: 4px;
       display: inline-block;
-      padding-left: 1.742857rem;
       position: relative;
       font-size: 1rem;
       line-height: 22px;
@@ -162,7 +154,6 @@
         position: absolute;
         top: 0.042857em;
         text-align: center;
-        left: 0;
         width: auto;
         line-height: initial;
       }
@@ -190,7 +181,6 @@
     }
     i.fa-level-down {
       transform: rotate(-135deg) scaleX(-1);
-      left: 0;
       top: 6px;
     }
   }

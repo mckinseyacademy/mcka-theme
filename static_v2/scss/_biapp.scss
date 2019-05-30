@@ -393,6 +393,68 @@ body {
   }
 }
 
+// Course Material / Resources
+#course-resources {
+  &.courseResourse,
+  #course-resources {
+    i {
+      &.fa-level-down {
+        @include left(0);
+      }
+    }
+  }
+  table tr td:first-child {
+    @include padding-right(30px !important);
+  }
+  i.fa:before {
+    @include text-align(left);
+    @include margin-right(3px);
+  }
+  table h2 a {
+    @include padding-left(1.742857rem);
+    @include margin-right(7px);
+  }
+  >ul {
+    &.fa-ul {
+      a {
+        @include padding-left(1.742857rem);
+        i {
+          @include left(0);
+        }
+      }
+    }
+    >ul{
+      @include padding-left(17px);
+    }
+  }
+  p>a{
+    @include padding-left(1.64286rem);
+    i{
+      @include left(0);
+      @include right(auto);
+    }
+  }
+}
+
+body.rtl {
+  #course-resources {
+    i {
+      &.fa-level-down {
+        transform: rotate(-229deg) scaleX(1) !important;
+        top: 0 !important;
+        width: 1rem;
+        &:before{
+          transform: scale(1, 1) !important;
+        }
+      }
+    }
+    i.fa:before {
+      transform: scale(-1 , 1) translateX(15px) translateY(1px);
+      width: 1px;
+    }
+  }
+}
+
 // Course cohort
 #course-cohort {
   .leaderboards {
