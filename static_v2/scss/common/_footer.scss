@@ -40,6 +40,10 @@ footer {
         &:hover {
           text-decoration: underline;
         }
+        &:focus {
+          background-color: lighten(desaturate(adjust-hue($primary, -25deg), 16), 47);
+          border-radius: 4px;
+        }
       }
       &:first-child {
         a {
