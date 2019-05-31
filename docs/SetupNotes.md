@@ -481,6 +481,10 @@ To compile messages files to `.mo` files:
 
     django-admin compilemessages
 
+To generate i18n JS static files from JavaScript catalog:
+
+    python manage.py compilejsi18n
+
 
 ## Appendix G: Using Waffle
 If you need to enable a feature behind a feature flag, you can see the

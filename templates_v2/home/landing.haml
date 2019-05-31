@@ -6,7 +6,7 @@
   .container
     .row.login-page
       .col
-        %img.login-McKa-logo{:alt => "", :src => "/static/image/McKinsey-Academy.png", :srcset => "/static/image/McKinsey-Academy@2x.png 2x"}/
+        %img.login-McKa-logo{:alt => "", :src => "{% static 'image/McKinsey-Academy.png' %}", :srcset => "/static/image/McKinsey-Academy@2x.png 2x"}/
         %h1.heading.text-center
           {% trans "Leading transformation, transforming leaders" %}
         .login-form-wrap

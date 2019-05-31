@@ -45,20 +45,6 @@ class UserDataManager(DataManager):
         current_ld_course = None
 
         courses = user_api.get_user_courses(self.user_id)
-        organizations = user_api.get_user_organizations(self.user_id)
-        new_ui_enabled = self.new_ui_enabled(organizations[0] if organizations else None)
-        if new_ui_enabled:
-            course_ids = [course.id for course in courses]
-            courses_ld_flag = FeatureFlags.objects.filter(course_id__in=course_ids).values(
-                'course_id', 'learner_dashboard'
-            )
-            for course in courses:
-                learner_dashboard = next(
-                    (ld_flag["learner_dashboard"] for ld_flag in courses_ld_flag if ld_flag["course_id"] == course.id),
-                    False
-                )
-                setattr(course, 'learner_dashboard', learner_dashboard)
-
         user_preferences = user_api.get_user_preferences(self.user_id)
         current_course_id = user_preferences.get(CURRENT_COURSE_ID, None)
         current_ld_course = user_preferences.get(CURRENT_LD_COURSE_ID)
@@ -130,6 +116,17 @@ class UserDataManager(DataManager):
 
         organizations = user_api.get_user_organizations(self.user_id)
         new_ui_enabled = self.new_ui_enabled(organizations[0] if organizations else None)
+        if new_ui_enabled:
+            course_ids = [course.id for course in courses]
+            courses_ld_flag = FeatureFlags.objects.filter(course_id__in=course_ids).values(
+                'course_id', 'learner_dashboard'
+            )
+            for course in courses:
+                learner_dashboard = next(
+                    (ld_flag["learner_dashboard"] for ld_flag in courses_ld_flag if ld_flag["course_id"] == course.id),
+                    False
+                )
+                setattr(course, 'learner_dashboard', learner_dashboard)
 
         user_preferences = user_api.get_user_preferences(self.user_id)
         current_program_id = user_preferences.get(CURRENT_PROGRAM_ID, None)

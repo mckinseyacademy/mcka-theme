@@ -151,7 +151,7 @@
                 if (resourceMimetype  === 'text/css') {
                     $('head').append('<link class="pony" href="' + resourceURL + '" rel="stylesheet" />')
                 } else if (resourceMimetype === 'application/javascript') {
-                    deferred = $.getScript(resourceURL);
+                    deferred = $.getScriptCached(resourceURL);
                 } else {
                     console.log('Unknown XBlock resource mimetype', resourceMimetype);
                 }

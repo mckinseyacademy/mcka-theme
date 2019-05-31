@@ -1,6 +1,7 @@
 - load i18n
 - load assets
 - load staticfiles
+- load statici18n
 
 - get_current_language as LANGUAGE_CODE
 - get_current_language_bidi as LANGUAGE_BIDI
@@ -73,27 +74,27 @@
 
     - block open_graph
       %meta{property: "og:site_name", content: "{% trans 'McKinsey Academy' %}"}
-      %meta{property: "og:image", content: "/static/image/McKA_OG.png"}
+      %meta{property: "og:image", content: "{% static 'image/McKA_OG.png' %}"}
 
     -# favicon
-    %link{rel: "shortcut icon", href: "/static/favicons/favicon.ico?s=#{session_id}"}
-    %link{rel: "apple-touch-icon", sizes: "57x57", href: "/static/favicons/apple-touch-icon-57x57.png?s=#{session_id}"}
-    %link{rel: "apple-touch-icon", sizes: "114x114", href: "/static/favicons/apple-touch-icon-114x114.png?s=#{session_id}"}
-    %link{rel: "apple-touch-icon", sizes: "72x72", href: "/static/favicons/apple-touch-icon-72x72.png?s=#{session_id}"}
-    %link{rel: "apple-touch-icon", sizes: "144x144", href: "/static/favicons/apple-touch-icon-144x144.png?s=#{session_id}"}
-    %link{rel: "apple-touch-icon", sizes: "60x60", href: "/static/favicons/apple-touch-icon-60x60.png?s=#{session_id}"}
-    %link{rel: "apple-touch-icon", sizes: "120x120", href: "/static/favicons/apple-touch-icon-120x120.png?s=#{session_id}"}
-    %link{rel: "apple-touch-icon", sizes: "76x76", href: "/static/favicons/apple-touch-icon-76x76.png?s=#{session_id}"}
-    %link{rel: "apple-touch-icon", sizes: "152x152", href: "/static/favicons/apple-touch-icon-152x152.png?s=#{session_id}"}
-    %link{rel: "apple-touch-icon", sizes: "180x180", href: "/static/favicons/apple-touch-icon-180x180.png?s=#{session_id}"}
-    %link{rel: "icon", type: "image/png", href: "/static/favicons/favicon-192x192.png?s=#{session_id}", sizes: "192x192"}
-    %link{rel:"icon", type:"image/png", href: "/static/favicons/favicon-160x160.png?s=#{session_id}", sizes: "160x160"}
-    %link{rel:"icon", type:"image/png", href: "/static/favicons/favicon-96x96.png?s=#{session_id}", sizes: "96x96"}
-    %link{rel:"icon", type:"image/png", href: "/static/favicons/favicon-16x16.png?s=#{session_id}", sizes: "16x16"}
-    %link{rel:"icon", type:"image/png", href: "/static/favicons/favicon-32x32.png?s=#{session_id}", sizes: "32x32"}
+    %link{rel: "shortcut icon", href: "{% static 'favicons/favicon.ico' %}"}
+    %link{rel: "apple-touch-icon", sizes: "57x57", href: "{% static 'favicons/apple-touch-icon-57x57.png' %}"}
+    %link{rel: "apple-touch-icon", sizes: "114x114", href: "{% static 'favicons/apple-touch-icon-114x114.png' %}"}
+    %link{rel: "apple-touch-icon", sizes: "72x72", href: "{% static 'favicons/apple-touch-icon-72x72.png' %}"}
+    %link{rel: "apple-touch-icon", sizes: "144x144", href: "{% static 'favicons/apple-touch-icon-144x144.png' %}"}
+    %link{rel: "apple-touch-icon", sizes: "60x60", href: "{% static 'favicons/apple-touch-icon-60x60.png' %}"}
+    %link{rel: "apple-touch-icon", sizes: "120x120", href: "{% static 'favicons/apple-touch-icon-120x120.png' %}"}
+    %link{rel: "apple-touch-icon", sizes: "76x76", href: "{% static 'favicons/apple-touch-icon-76x76.png' %}"}
+    %link{rel: "apple-touch-icon", sizes: "152x152", href: "{% static 'favicons/apple-touch-icon-152x152.png' %}"}
+    %link{rel: "apple-touch-icon", sizes: "180x180", href: "{% static 'favicons/apple-touch-icon-180x180.png' %}"}
+    %link{rel: "icon", type: "image/png", href: "{% static 'favicons/favicon-192x192.png' %}", sizes: "192x192"}
+    %link{rel:"icon", type:"image/png", href: "{% static 'favicons/favicon-160x160.png' %}", sizes: "160x160"}
+    %link{rel:"icon", type:"image/png", href: "{% static 'favicons/favicon-96x96.png' %}", sizes: "96x96"}
+    %link{rel:"icon", type:"image/png", href: "{% static 'favicons/favicon-16x16.png' %}", sizes: "16x16"}
+    %link{rel:"icon", type:"image/png", href: "{% static 'favicons/favicon-32x32.png' %}", sizes: "32x32"}
     %meta{name: "msapplication-TileColor", content: "#2b5797"}
-    %meta{name: "msapplication-TileImage", content: "/static/favicons/mstile-144x144.png"}
-    %meta{name: "msapplication-config", content: "/static/favicons/browserconfig.xml"}
+    %meta{name: "msapplication-TileImage", content: "{% static 'favicons/mstile-144x144.png' %}"}
+    %meta{name: "msapplication-config", content: "{% static 'favicons/browserconfig.xml' %}"}
     -# CSS
     - if not request.is_IE8
       %link{href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,700', rel: 'stylesheet', type: 'text/css'}
@@ -101,7 +102,6 @@
     %link{:href => "https://fonts.googleapis.com/icon?family=Material+Icons", :rel => "stylesheet"}
 
     - block css
-      %link{rel: "stylesheet", href: "//player.ooyala.com/static/v4/stable/4.32.8/skin-plugin/html5-skin.css"}
     - if xblock_theme_css_path
       %link.pony{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
       %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
@@ -174,9 +174,9 @@
 
     -# edx-notifications script dependencies
     - block edx_notifications
-      %script{src: "/static/js/vendor/underscore.js"}
-      %script{src: "/static/js/vendor/backbone.js"}
-      %script{src: "/static/js/vendor/date.js"}
+      %script{src: "{% static 'js/vendor/underscore.js' %}"}
+      %script{src: "{% static 'js/vendor/backbone.js' %}"}
+      %script{src: "{% static 'js/vendor/date.js' %}"}
     -# custom js libs
     - block custom_js
 
@@ -222,7 +222,7 @@
 
     -# i18n JS Catalog
     - block i18n
-      %script{type: "text/javascript", src: "{% url 'javascript-catalog' %}"}
+      %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
 
     -# jQuery-cookie
     - block jquery_cookie
@@ -342,7 +342,7 @@
                   .carousel-item.active.next
                     .featureImage
                       .holder
-                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic.png", :width => "600"}
+                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic.png' %}", :width => "600"}
                     .featureContent
                       .holder
                         .head
@@ -352,7 +352,7 @@
                   .carousel-item
                     .featureImage
                       .holder
-                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic4.png", :width => "600"}
+                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic4.png' %}", :width => "600"}
                     .featureContent
                       .holder
                         .head
@@ -362,7 +362,7 @@
                   .carousel-item
                     .featureImage
                       .holder
-                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic3.png", :width => "600"}
+                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic3.png' %}", :width => "600"}
                     .featureContent
                       .holder
                         .head
@@ -372,7 +372,7 @@
                   .carousel-item
                     .featureImage
                       .holder
-                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic2.png", :width => "600"}
+                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic2.png' %}", :width => "600"}
                     .featureContent
                       .holder
                         .head
@@ -382,7 +382,7 @@
                   .carousel-item
                     .featureImage
                       .holder
-                        %img{:alt => "", :height => "", :src => "static/image/newUiTour/McKA-UI-Refresh_Comm-Graphic5.png", :width => "600"}
+                        %img{:alt => "", :height => "", :src => "{% static 'image/newUiTour/McKA-UI-Refresh_Comm-Graphic5.png' %}", :width => "600"}
                     .featureContent
                       .holder
                         .head
@@ -424,15 +424,6 @@
         }
       }
 
-    -# Ooyala Player JS
-    - block ooyala_player
-      - if not do_not_load_ooyala
-        -# locally hosted ooyala core file customized to include pcode & brandingid
-        %script{src: "{% static 'js/vendor/ooyala/ooyala_core_4.32.8.js' %}"}
-        %script{src: "//player.ooyala.com/static/v4/stable/4.32.8/skin-plugin/html5-skin.min.js"}
-        %script{src: "//player.ooyala.com/static/v4/stable/4.32.8/video-plugin/main_html5.min.js"}
-        %script{src: "//player.ooyala.com/static/v4/stable/4.32.8/video-plugin/bit_wrapper.min.js"}
-
     -# Custom JS
     - block body_js
       {% assets "js_all_v2" %}
@@ -444,7 +435,7 @@
     -# Session Timeout
     %script
       var apros_session_timeout_seconds = {{apros_session_timeout_seconds}};
-    %script{src:"static/js/session_timeout_timer.js"}
+    %script{src: "{% static 'js/session_timeout_timer.js' %}"}
     %script{src: "{% static 'js/image_editor.js' %}"}
     %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
 

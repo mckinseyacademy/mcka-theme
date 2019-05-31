@@ -1,6 +1,7 @@
 - load i18n
 - load assets
 - load staticfiles
+- load statici18n
 
 - get_current_language as LANGUAGE_CODE
 - get_current_language_bidi as LANGUAGE_BIDI
@@ -62,7 +63,6 @@
       %link{rel: "stylesheet", href: "{% static 'css/bbGrid.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/countrySelect.min.css' %}"}
       %link{rel: "stylesheet", href: "{% static 'css/dropzone.css' %}"}
-      %link{rel: "stylesheet", href: "//player.ooyala.com/static/v4/stable/4.32.8/skin-plugin/html5-skin.css"}
     - if xblock_theme_css_path
       %link{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
 
@@ -287,7 +287,7 @@
 
     -# i18n JS Catalog
     - block i18n
-      %script{type: "text/javascript", src: "{% url 'javascript-catalog' %}"}
+      %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
 
     -# jQuery-xblock
     - block jquery_xblock
@@ -301,10 +301,7 @@
     - block ooyala_player
       - if not do_not_load_ooyala
         -# locally hosted ooyala core file customized to include pcode & brandingid
-        %script{src: "{% static 'js/vendor/ooyala/ooyala_core_4.32.8.js' %}"}
-        %script{src: "//player.ooyala.com/static/v4/stable/4.32.8/skin-plugin/html5-skin.min.js"}
-        %script{src: "//player.ooyala.com/static/v4/stable/4.32.8/video-plugin/main_html5.min.js"}
-        %script{src: "//player.ooyala.com/static/v4/stable/4.32.8/video-plugin/bit_wrapper.min.js"}
+        %script{src: "{% static 'js/vendor/ooyala/4.33.25-combined.js' %}"}
 
     - block jquery_ui
       %script{src: "{% static 'js/vendor/jquery-ui.min.js' %}"}

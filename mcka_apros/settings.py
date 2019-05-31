@@ -65,6 +65,7 @@ THIRD_PARTY_APPS = (
     'release_util',
     # Django Waffle for feature-flipping
     'waffle',
+    'statici18n',
 )
 
 LOCAL_APPS = (
@@ -163,6 +164,9 @@ LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
+STATICI18N_ROOT = os.path.join(BASE_DIR, "static")
+STATICI18N_OUTPUT_DIR = "js/i18n"
+
 USE_TZ = True
 TIME_ZONE = 'UTC'
 
@@ -185,6 +189,8 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static/gen"),
     os.path.join(BASE_DIR, "static_v2"),
 )
+
+STATICFILES_STORAGE = 'mcka_apros.static_file_storage.NonStrictManifestStaticFilesStorage'
 
 BASE_CERTIFICATE_TEMPLATE_ASSET_PATH = 'certificates/template_assets/'
 
