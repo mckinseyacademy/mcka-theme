@@ -21,7 +21,7 @@ def sendMultipleEmails(messages):
 
 def email_add_active_student(request, program, student):
     subject, from_email, to = _('Welcome to the {display_name} Program!').format(
-        display_name=program.display_name), settings.ENROLL_STUDENT_EMAIL, student.email
+        display_name=program.display_name), settings.APROS_EMAIL_SENDER, student.email
     date_format = _('%m/%d/%Y')
     url = '/courses/{}/lessons'.format(program.courses[0].course_id)
     text_content = _('Welcome to the {display_name} Program! Your program starts on '
@@ -53,7 +53,7 @@ def email_add_active_student(request, program, student):
 def email_add_inactive_student(request, program, student):
 
     subject, from_email, to = _('Welcome to the {display_name} Program!').format(
-        display_name=program.display_name), settings.ENROLL_STUDENT_EMAIL, student.email
+        display_name=program.display_name), settings.APROS_EMAIL_SENDER, student.email
 
     date_format = _('%m/%d/%Y')
     url = '/accounts/activate/{}'.format(
@@ -88,7 +88,7 @@ def email_add_inactive_student(request, program, student):
 
 def email_add_single_new_user(absolute_activation_uri, student, activation_record):
 
-    subject, from_email, to = _('Mckinsey academy activation mail!'), settings.ENROLL_STUDENT_EMAIL, student.email
+    subject, from_email, to = _('Mckinsey academy activation mail!'), settings.APROS_EMAIL_SENDER, student.email
     url = '{}'.format(activation_record.activation_key)
 
     text_content = _("Welcome to the Mckinsey academy! An administrator has created an "
