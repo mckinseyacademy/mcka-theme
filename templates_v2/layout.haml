@@ -1,7 +1,6 @@
 - load i18n
 - load assets
 - load staticfiles
-- load statici18n
 
 - get_current_language as LANGUAGE_CODE
 - get_current_language_bidi as LANGUAGE_BIDI
@@ -222,7 +221,7 @@
 
     -# i18n JS Catalog
     - block i18n
-      %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
+      %script{type: "text/javascript", src: "{% url 'javascript-catalog' %}"}
 
     -# jQuery-cookie
     - block jquery_cookie

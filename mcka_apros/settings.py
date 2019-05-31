@@ -65,7 +65,6 @@ THIRD_PARTY_APPS = (
     'release_util',
     # Django Waffle for feature-flipping
     'waffle',
-    'statici18n',
 )
 
 LOCAL_APPS = (
@@ -163,9 +162,6 @@ USE_L10N = True
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
-
-STATICI18N_ROOT = os.path.join(BASE_DIR, "static")
-STATICI18N_OUTPUT_DIR = "js/i18n"
 
 USE_TZ = True
 TIME_ZONE = 'UTC'
