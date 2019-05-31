@@ -16,5 +16,3 @@ do
 		python manage.py compilemessages -l $bn
 	fi
 done
-
-python manage.py compilejsi18n
