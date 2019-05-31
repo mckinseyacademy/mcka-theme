@@ -53,6 +53,9 @@ unicodecsv==0.14.1
 
 edx-i18n-tools==0.4.2
 
+# Static i18n support
+django-statici18n==1.8.3
+
 # Redis version
 redis==2.10.6
 jsonfield==2.0.2
