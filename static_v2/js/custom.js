@@ -645,3 +645,33 @@ $('.my-courses .card').click(function () {
     $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
     $(this).addClass("loader").addClass("donut-loader");
 });
+
+"use strict";
+// $(".faculty img").wrap( "<div style='position:relative;'></div>" );
+function scaleImage() {
+    var scaler;
+    var imgWidth = $(".faculty img").width();
+    var imgHeight = $(".faculty img").height();
+    var stageW = $(".faculty label").width();
+    var stageH = $(".faculty label").height();
+
+
+    if (stageH / stageW > imgHeight / imgWidth) {
+        scaler = imgWidth / imgHeight;
+        imgWidth = stageH * scaler;
+        $(".faculty img").css("width", imgWidth)
+        $(".faculty img").css("height", "auto")
+
+    } else {
+        scaler = imgHeight / imgWidth;
+        imgHeight = stageW * scaler;
+        $(".faculty img").css("height", imgHeight)
+        $(".faculty img").css("width", "auto")
+
+    }
+}
+
+$(window).resize(function () {
+    scaleImage();
+});
+scaleImage();
