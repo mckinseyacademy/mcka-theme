@@ -715,3 +715,10 @@ MOBILE_URL_SCHEMES = [
 ]
 
 REACT_NATIVE_UA_PREFIX = 'com.mcka.RNApp'
+
+# Image sizes in width, height
+IMAGE_SIZES = {
+    'client_logo': (180, 80),
+    'global_client_logo': (180, 80),
+    'ld_tile_background_image': (400, 400)
+}
