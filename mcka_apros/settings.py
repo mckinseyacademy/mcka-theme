@@ -155,6 +155,7 @@ LANGUAGES = (
     ('fr', u'Français'),
     ('ja', u'日本人'),
     ('de', u'Deutsch'),
+    ('pl', u'Polskie'),
 )
 
 
