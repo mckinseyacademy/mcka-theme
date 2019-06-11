@@ -533,6 +533,21 @@
     }
   }
   #courseDetailsParticipantsGridWrapper{
+    #courseDetailsParticipantsGrid{
+      margin: 0;
+      padding: 0;
+      margin-left: auto;
+      margin-right: auto;
+      max-height: calc(100vh - 400px);
+      position: relative;
+      float: none!important;
+      .bbGrid-container{
+        max-height: calc(100vh - 400px);
+        overflow: auto;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
     table{
       table-layout: auto !important;
     }
@@ -554,7 +569,7 @@
   {
     input[type="text"]{
       max-width: none;
-    } 
+    }
   }
 }
 
@@ -599,7 +614,7 @@
     position: absolute;
     left: 50%;
     transform: translateX(-50%);
-    top: 62%;
+    bottom: 10%;
     font-size: 25px;
   }
 }
