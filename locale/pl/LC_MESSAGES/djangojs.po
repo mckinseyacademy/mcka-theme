@@ -1,0 +1,1085 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-05-28 09:41+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: static/js/admin/client_sso.js:182
+msgid "You need to enter name!"
+msgstr "Musisz wprowadzić imię!"
+
+#: static/js/admin/client_sso.js:187
+msgid "You need to enter course ID!"
+msgstr "Musisz wprowadzić numer identyfikacyjny kursu!"
+
+#: static/js/admin/course_meta_content.js:1
+msgid "Click Add to specify Lesson Label"
+msgstr "Kliknij „Dodaj”, aby określić Etykietę lekcji"
+
+#: static/js/admin/course_meta_content.js:2
+msgid "Click Add to specify Module Label"
+msgstr "Kliknij „Dodaj”, aby określić Etykietę modułu"
+
+#: static/js/admin/course_meta_content.js:3
+msgid "Click Add to specify Lessons Label"
+msgstr "Kliknij „Dodaj”, aby określić Etykietę lekcji"
+
+#: static/js/admin/course_meta_content.js:4
+msgid "Click Add to specify Modules Label"
+msgstr "Kliknij „Dodaj”, aby określić Etykietę modułów"
+
+#: static/js/admin_learner_dashboard/element_modal.js:64
+#: static/js/views/admin/company_learner_dashboard_list.js:14
+#: static/js/views/admin/course_details_bulk_actions.js:277
+#: static/js/views/admin/participant_details_edit_info.js:371
+#: static/js/views/admin/participantsinfo.js:115
+msgid "Course"
+msgstr "Kurs"
+
+#: static/js/admin_learner_dashboard/element_modal.js:72
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
+#: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
+msgid "In Person Session"
+msgstr "Sesja na żywo"
+
+#: static/js/admin_learner_dashboard/self_registration_roles.js:9
+msgid "Add new role e.g CEO,CTO"
+msgstr "Dodaj nowe stanowisko/rolę np. CEO,CTO"
+
+#: static/js/admin_learner_dashboard/self_registration_roles.js:10
+msgid "Delete Role"
+msgstr "Usuń stanowisko/rolę"
+
+#: static/js/admin_learner_dashboard/sort.js:72
+#: static/js/learner_dashboard_sort.js:54
+msgid "Are you sure?"
+msgstr "Czy jesteś pewny?"
+
+#: static/js/admin_upload_students.js:8
+msgid "Show Errors"
+msgstr "Pokaż błędy"
+
+#: static/js/admin_upload_students.js:73
+#: static/js/common/mass_participants_enroll.js:118
+#: static/js/common/mass_participants_enroll.js:239
+#: static/js/common/mass_participants_enroll.js:360
+#: static/js/common/mass_participants_enroll.js:497
+#: static/js/common/mass_participants_upload.js:94 static/js/image_editor.js:77
+#: static_v2/js/image_editor.js:77
+msgid "Please select file first."
+msgstr "Prosimy najpierw wybrać plik."
+
+#: static/js/application.js:192 static_v2/js/application.js:222
+msgid "Your course hasn't begun yet. "
+msgstr "Twój kurs jeszcze się nie rozpoczął."
+
+#: static/js/application.js:195 static_v2/js/application.js:224
+msgid "Your course begins in %(days)s day."
+msgid_plural "Your course begins in %(days)s days."
+msgstr[0] "Twój kurs rozpocznie się za %(days)s dzień."
+msgstr[1] "Twój kurs rozpocznie się za %(days)s dni."
+
+#: static/js/application.js:198 static_v2/js/application.js:229
+msgid "Welcome to McKinsey Academy"
+msgstr "Witamy w McKinsey Academy"
+
+#: static/js/application.js:199 static_v2/js/application.js:230
+msgid ""
+"%(courseStr)s Before the course begins, you can explore this site to learn "
+"more about what to expect."
+msgstr "%(courseStr)s Wykorzystaj czas pozostały do rozpoczęcia kursu, aby lepiej zapoznać się z naszą stroną i przygotować się na czekające Cię doświadczenia."
+
+#: static/js/common/admin_bulk_actions.js:17
+msgid "Progress: %(value)s%"
+msgstr "Stopień ukończenia: %(value)s%"
+
+#: static/js/common/bbGridExtend.js:70
+msgid "Search by Keyword"
+msgstr "Wyszukaj za pomocą słowa kluczowych"
+
+#: static/js/common/common_js.js:171
+msgid "NoName"
+msgstr "NoName"
+
+#: static/js/common/common_js.js:516
+msgid "Send"
+msgstr "Wyślij"
+
+#: static/js/common/common_js.js:746
+msgid "Fetching data for file: %(filename)s"
+msgstr "Pobieranie danych dla pliku: %(filename)s"
+
+#: static/js/common/common_js.js:858
+msgid "%(value)s%"
+msgstr "%(value)s%"
+
+#: static/js/common/common_js.js:956
+msgid ""
+"<span class=\"red\"> %(diff)s% </span> below your organization's average"
+msgstr "<span class=\"red\"> %(diff)s% </span> poniżej średniej Twojej organizacji"
+
+#: static/js/common/common_js.js:963
+msgid ""
+"<span class=\"green\">%(diff)s% </span> above your organization's average"
+msgstr "<span class=\"green\">%(diff)s% </span> powyżej średniej Twojej organizacji"
+
+#: static/js/common/common_js.js:968 static/js/common/common_js.js:988
+msgid "same as your organization's average"
+msgstr "tak samo, jak średnia Twojej organizacji"
+
+#: static/js/common/common_js.js:976
+msgid ""
+"<span class=\"red\"> %(diff)s point</span> below your organization's average"
+msgid_plural "<span class=\"red\"> %(diff)s points</span> below your organization's average"
+msgstr[0] "<span class=\"red\"> %(diff)s point</span> poniżej średniej Twojej organizacji"
+msgstr[1] "<span class=\"red\"> %(diff)s points</span> poniżej średniej Twojej organizacji"
+
+#: static/js/common/common_js.js:983
+msgid ""
+"<span class=\"green\"> %(diff)s point</span> above your organization's "
+"average"
+msgid_plural "<span class=\"green\"> %(diff)s points</span> above your organization's average"
+msgstr[0] "<span class=\"green\"> %(diff)s point</span> powyżej średniej Twojej organizacji"
+msgstr[1] "<span class=\"green\"> %(diff)s points</span> powyżej średniej Twojej organizacji"
+
+#: static/js/common/mass_participants_delete.js:133
+msgid "An error occurred submitting the request."
+msgstr "Podczas wysyłania żądania wystąpił błąd."
+
+#: static/js/common/mass_participants_enroll.js:255
+msgid "email"
+msgstr "e-mail"
+
+#: static/js/common/mass_participants_enroll.js:255
+msgid "course id"
+msgstr "numer identyfikacyjny kursu"
+
+#: static/js/common/mass_participants_enroll.js:255
+msgid "status"
+msgstr "status"
+
+#: static/js/common/mass_participants_enroll.js:270
+msgid "participant_id"
+msgstr "participant_id"
+
+#: static/js/common/mass_participants_enroll.js:270
+msgid "course_id"
+msgstr "course_id"
+
+#: static/js/common/mass_participants_enroll.js:283
+#: static/js/common/mass_participants_enroll.js:296
+msgid "Learner email"
+msgstr "Adres e-mail ucznia"
+
+#: static/js/common/mass_participants_enroll.js:283
+msgid "Business Function"
+msgstr "Funkcja biznesowa"
+
+#: static/js/common/mass_participants_enroll.js:283
+msgid "Business Unit"
+msgstr "Jednostka biznesowa"
+
+#: static/js/common/mass_participants_enroll.js:283
+msgid "location"
+msgstr "lokalizacja"
+
+#: static/js/common/mass_participants_enroll.js:296
+msgid "Manager email"
+msgstr "Adres e-mail menedżera"
+
+#: static/js/common/mass_participants_enroll.js:334
+#: static/js/common/mass_participants_enroll.js:408
+#: static/js/common/mass_participants_enroll.js:470
+#: static/js/common/mass_participants_enroll.js:545
+msgid ""
+"The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
+"more files!"
+msgstr "Pliki .csv nie może zawierać więcej niż %(limit)s wierszy: %(lines)s , prosimy podzielić go na więcej plików!"
+
+#: static/js/common/mass_participants_enroll.js:430
+#: static/js/common/mass_participants_enroll.js:567
+msgid "Report of bulk update will be sent to your email."
+msgstr "Raport z aktualizacji masowej zostanie wysłany na Twój adres e-mail."
+
+#: static/js/company_fields.js:9
+msgid "2 or more fields can not have the same name"
+msgstr "2 lub więcej pól nie mogą mieć takiej samej nazwy"
+
+#: static/js/company_fields.js:13
+msgid "Only alphanumeric characters and spaces allowed"
+msgstr "Dozwolone są tylko znaki alfanumeryczne i spacje"
+
+#: static/js/company_fields.js:53 static/js/company_fields.js:72
+msgid "You can only add up to 4 fields"
+msgstr "Możesz dodać tylko do 4 pól"
+
+#: static/js/course_contact_modal.js:15 static_v2/js/course_contact.js:16
+msgid "Notification"
+msgstr "Powiadomienia"
+
+#: static/js/course_drag_drop.js:70
+msgid "Group successfully updated"
+msgstr "Grupa zaktualizowana prawidłowo"
+
+#: static/js/course_drag_drop.js:153
+msgid "Please select at least one student"
+msgstr "Należy wybrać przynajmniej jednego ucznia"
+
+#: static/js/course_drag_drop.js:160
+msgid "Please select project"
+msgstr "Prosimy wybrać projekt"
+
+#: static/js/course_drag_drop.js:174
+msgid "Group was not created"
+msgstr "Grupa nie została utworzona"
+
+#: static/js/course_drag_drop.js:234
+msgid "All students added to private group have to be members of same company."
+msgstr "Wszyscy uczniowie dodani do grupy prywatnej muszą być członkami tej samej firmy."
+
+#: static/js/course_drag_drop.js:242
+msgid ""
+"Are you sure you want to remove this group? Doing so will remove submissions "
+"and feedback associated with the group."
+msgstr "Czy jesteś pewny, że chcesz usunąć tę grupę? Spowoduje to usunięcie wszelkich przesłanych plików i informacji zwrotnych powiązanych z grupą."
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
+#: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
+msgid "Your Progress: %(value)s%"
+msgstr "Twój stopień ukończenia: %(value)s%"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+#: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+msgid "Complete"
+msgstr "Ukończono"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+#: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+msgid "Incomplete"
+msgstr "Nie ukończono"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
+#: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
+msgid "Digital Course"
+msgstr "Kurs cyfrowy"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
+#: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
+msgid "Group work"
+msgstr "Praca grupowa"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
+#: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
+msgid "Webinar"
+msgstr "Webinarium"
+
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
+#: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
+msgid "Digital Content"
+msgstr "Zawartość cyfrowa"
+
+#: static/js/course_lesson.js:5
+msgid "It looks like you're not active. Click OK to keep working."
+msgstr "Wygląda na to, że jesteś nieaktywny. Wciśnij OK, aby kontynuować pracę."
+
+#: static/js/course_lesson.js:112
+msgid "Complete all content to continue"
+msgstr "Prosimy wypełnić całą zawartość, aby kontynuować"
+
+#: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
+msgid "No file Selected"
+msgstr "Nie wybrano pliku."
+
+#: static/js/image_editor.js:45 static_v2/js/image_editor.js:45
+msgid ""
+"Error uploading file. Please try again and be sure to use an accepted file "
+"format."
+msgstr "Nie udało się przesłać pliku. Sprawdź, czy format pliku jest poprawny i spróbuj ponownie."
+
+#: static/js/image_editor.js:52 static_v2/js/image_editor.js:52
+msgid "Please select file for upload."
+msgstr "Prosimy najpierw wybrać plik."
+
+#: static/js/router.js:424
+msgid "Please select at least one course"
+msgstr "Należy wybrać przynajmniej jeden kurs."
+
+#: static/js/session_timeout_timer.js:39
+msgid "You were logged out due to inactivity. Please log back in to continue."
+msgstr "Zostałeś wylogowany z powodu zbyt długiej nieaktywności. Aby kontynuować, zaloguj się ponownie."
+
+#: static/js/static_translation_strings.js:2
+msgid "It looks like your browser settings has pop-ups disabled."
+msgstr "Wygląda na to, że Twoja przeglądarka blokuje wyskakujące okienka."
+
+#: static/js/static_translation_strings.js:3
+msgid "The content takes place in a new window."
+msgstr "Ta zawartość musi zostać otwarta w nowym oknie."
+
+#: static/js/static_translation_strings.js:4
+msgid "Launch pop-up to continue"
+msgstr "Włącz obsługę wyskakujących okienek, aby kontynuować"
+
+#: static/js/static_translation_strings.js:6
+msgid "Content is complete, please continue."
+msgstr "Zawartość jest wypełniona, prosimy kontynuować"
+
+#: static/js/static_translation_strings.js:7
+msgid "Complete all content to continue."
+msgstr "Prosimy wypełnić całą zawartość, aby kontynuować"
+
+#: static/js/static_translation_strings.js:8
+msgid "Check for Completion"
+msgstr "Sprawdź pod kątem wypełnienia"
+
+#: static/js/views/admin/cohorts.js:30
+msgid "There was an error submitting your file."
+msgstr "Podczas przesyłania Twojego pliku wystąpił błąd."
+
+#: static/js/views/admin/cohorts.js:35
+msgid "Invalid format for CSV file."
+msgstr "Nieprawidłowy format pliku CSV."
+
+#: static/js/views/admin/cohorts.js:37
+msgid "Error processing CSV file."
+msgstr "Błąd przetwarzania pliku CSV."
+
+#: static/js/views/admin/cohorts.js:132
+#, javascript-format
+msgid "%s learner has been added to this cohort."
+msgid_plural "%s learners have been added to this cohort."
+msgstr[0] "%s uczeń został dodany do tej grupy kursantów."
+msgstr[1] "%s uczniów zostało dodanych do tej grupy kursantów."
+
+#: static/js/views/admin/cohorts.js:138
+#, javascript-format
+msgid ""
+"%s learner was preassigned to this cohort. This learner will automatically "
+"be added to the cohort when they enroll in the course."
+msgid_plural "%s learners were preassigned to this cohort. These learners will automatically be added to the cohort when they enroll in the course."
+msgstr[0] "%s uczeń został wstępnie dodany do tej grupy kursantów. Po zarejestrowaniu się, uczeń ten zostanie automatycznie dodany do grupy kursantów."
+msgstr[1] "%s uczniów zostało wstępnie dodanych do tej grupy kursantów. Po zarejestrowaniu się, uczeń ten zostanie automatycznie dodany do grupy kursantów."
+
+#: static/js/views/admin/cohorts.js:144
+#, javascript-format
+msgid "%s learner has been moved to this cohort."
+msgid_plural "%s learners have been moved to this cohort."
+msgstr[0] "%s uczeń został przeniesiony do tej grupy kursantów."
+msgstr[1] "%s uczniów zostało przeniesionych do tej grupy kursantów."
+
+#: static/js/views/admin/cohorts.js:150
+#, javascript-format
+msgid "%s invalid email was ignored."
+msgid_plural "%s invalid emails were ignored."
+msgstr[0] "%s nieprawidłowy e-mail został zignorowany."
+msgstr[1] "%s nieprawidłowych e-maili zostało zignorowanych."
+
+#: static/js/views/admin/cohorts.js:156
+#, javascript-format
+msgid "%s user was already in this cohort."
+msgid_plural "%s users were already in this cohort."
+msgstr[0] "%s użytkownik jest już w tej grupie kursantów."
+msgstr[1] "%s użytkowników jest już w tej grupie kursantów."
+
+#: static/js/views/admin/cohorts.js:162
+#, javascript-format
+msgid "%s user/email was not found."
+msgid_plural "%s users/email were not found."
+msgstr[0] "%s użytkownik/adres e-mail nie został odnaleziony."
+msgstr[1] "%s użytkowników/adresów e-mail nie zostało odnalezionych."
+
+#: static/js/views/admin/cohorts.js:222
+#, javascript-format
+msgid "contains %s learner"
+msgid_plural "contains %s learners"
+msgstr[0] "zawiera %s ucznia."
+msgstr[1] "zawiera %s uczniów."
+
+#: static/js/views/admin/companies_list.js:12
+#: static/js/views/admin/course_details.js:29
+#: static/js/views/admin/participantsinfo.js:23
+msgid "Company"
+msgstr "Firma"
+
+#: static/js/views/admin/companies_list.js:20
+msgid "Company ID"
+msgstr "Numer ID firmy"
+
+#: static/js/views/admin/companies_list.js:21
+msgid "No. of Participants"
+msgstr "Liczba uczestników"
+
+#: static/js/views/admin/companies_list.js:22
+msgid "No. of Courses"
+msgstr "Liczba kursów"
+
+#: static/js/views/admin/companies_list.js:107
+#: static/js/views/admin/company_details.js:189
+#: static/js/views/admin/company_learner_dashboard_list.js:139
+#: static/js/views/admin/participant_details_edit_info.js:487
+#: static/js/views/admin/participantsinfo.js:365
+msgid "This company name cannot contain non-alphanumeric characters!"
+msgstr "Nazwa firmy może posiadać jedynie znaki alfanumeryczne"
+
+#: static/js/views/admin/companies_list.js:114
+#: static/js/views/admin/company_details.js:184
+#: static/js/views/admin/company_learner_dashboard_list.js:135
+#: static/js/views/admin/participant_details_edit_info.js:481
+#: static/js/views/admin/participantsinfo.js:359
+msgid "This company name cannot have more than 30 characters!"
+msgstr "Nazwa firmy nie może przekroczyć 30 znaków"
+
+#: static/js/views/admin/companies_list.js:151
+msgid "Couldn't create new company!"
+msgstr "Nie można utworzyć firmy!"
+
+#: static/js/views/admin/company_details.js:4
+#: static/js/views/admin/course_details.js:389
+#: static/js/views/admin/courses_list.js:16
+#: static/js/views/admin/participant_details_active_courses_view.js:54
+#: static/js/views/admin/participant_details_course_history_view.js:10
+msgid "Course Name"
+msgstr "Nazwa kursu"
+
+#: static/js/views/admin/company_details.js:20
+#: static/js/views/admin/course_details.js:399
+#: static/js/views/admin/courses_list.js:26
+#: static/js/views/admin/participant_details_active_courses_view.js:72
+#: static/js/views/admin/participant_details_course_history_view.js:28
+msgid "Course ID"
+msgstr "Numer identyfikacyjny kursu"
+
+#: static/js/views/admin/company_details.js:21
+msgid "Participants"
+msgstr "Uczestnicy"
+
+#: static/js/views/admin/company_details.js:22
+#: static/js/views/admin/courses_list.js:27
+msgid "Start"
+msgstr "Start"
+
+#: static/js/views/admin/company_details.js:38
+#: static/js/views/admin/courses_list.js:36
+msgid "End"
+msgstr "Koniec"
+
+#: static/js/views/admin/company_details.js:68
+msgid "Cohort Comp."
+msgstr "Firma tej grupy kursa"
+
+#: static/js/views/admin/company_details.js:194
+#: static/js/views/admin/company_learner_dashboard_list.js:143
+msgid "No Company Display Name!"
+msgstr "Brak publicznej nazwy firmy"
+
+#: static/js/views/admin/company_learner_dashboard_list.js:4
+msgid "Dashboard Name"
+msgstr "Nazwa panelu"
+
+#: static/js/views/admin/company_linked_apps.js:4
+msgid "App Name"
+msgstr "Nazwa aplikacji"
+
+#: static/js/views/admin/company_linked_apps.js:20
+msgid "Deployment Mech"
+msgstr "Mechanizm wdrożenia"
+
+#: static/js/views/admin/company_linked_apps.js:21
+msgid "iOS DL URL"
+msgstr "iOS DL URL"
+
+#: static/js/views/admin/company_linked_apps.js:26
+msgid "Android DL URL"
+msgstr "Android DL URL"
+
+#: static/js/views/admin/company_linked_apps.js:31
+msgid "Urban Airship URL"
+msgstr "Adres URL dla Urban Airship"
+
+#: static/js/views/admin/company_linked_apps.js:36
+msgid "Analytics URL"
+msgstr "Adres URL dla analizy i statystyk"
+
+#: static/js/views/admin/company_linked_apps.js:41
+msgid "Active"
+msgstr "Aktywny"
+
+#: static/js/views/admin/company_linked_apps.js:147
+msgid "Couldn't link this App!"
+msgstr "Nie można podłączyć tej aplikacji!"
+
+#: static/js/views/admin/company_mobileapp_details.js:31
+msgid "Couldn't delink App!"
+msgstr "Nie można odłączyć tej aplikacji!"
+
+#: static/js/views/admin/company_mobileapp_details.js:108
+msgid "This app name cannot have more than 30 characters!"
+msgstr "Nazwa tej aplikacji nie może przekroczyć 30 znaków"
+
+#: static/js/views/admin/company_mobileapp_details.js:113
+msgid "This app name cannot contain non-alphanumeric characters!"
+msgstr "Nazwa tej aplikacji może posiadać jedynie znaki alfanumeryczne"
+
+#: static/js/views/admin/company_mobileapp_details.js:118
+msgid "No App Display Name!"
+msgstr "Brak publicznej nazwy aplikacji!"
+
+#: static/js/views/admin/course_details.js:6
+#: static/js/views/admin/participantsinfo.js:16
+msgid "Name"
+msgstr "Nazwa"
+
+#: static/js/views/admin/course_details.js:28
+#: static/js/views/admin/participantsinfo.js:24
+msgid "Email"
+msgstr "E-mail"
+
+#: static/js/views/admin/course_details.js:30
+#: static/js/views/admin/course_details_bulk_actions.js:281
+#: static/js/views/admin/import_progress.js:15
+#: static/js/views/admin/participant_details_active_courses_view.js:111
+#: static/js/views/admin/participant_details_course_history_view.js:32
+#: static/js/views/admin/participant_details_edit_info.js:375
+#: static/js/views/admin/participantsinfo.js:124
+msgid "Status"
+msgstr "Status"
+
+#: static/js/views/admin/course_details.js:31
+#: static/js/views/admin/participantsinfo.js:42
+msgid "Activated"
+msgstr "Aktywowano"
+
+#: static/js/views/admin/course_details.js:32
+msgid "Cohort"
+msgstr "Grupa kursantów"
+
+#: static/js/views/admin/course_details.js:40
+msgid "Last Log In"
+msgstr "Ostatnie logowanie"
+
+#: static/js/views/admin/course_details.js:51
+#: static/js/views/admin/manager_dashboard.js:30
+#: static/js/views/admin/participant_details_active_courses_view.js:74
+msgid "Progress"
+msgstr "Stopień ukończenia"
+
+#: static/js/views/admin/course_details.js:58
+#: static/js/views/admin/participant_details_active_courses_view.js:93
+msgid "Proficiency"
+msgstr "Biegłość"
+
+#: static/js/views/admin/course_details.js:65
+msgid "Engagement"
+msgstr "Poziom zaangażowania"
+
+#: static/js/views/admin/course_details.js:72
+#: static/js/views/admin/course_details.js:76
+msgid "Activation Link"
+msgstr "Link aktywacyjny"
+
+#: static/js/views/admin/course_details.js:80
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: static/js/views/admin/course_details.js:81
+msgid "Country"
+msgstr "Kraj"
+
+#: static/js/views/admin/course_details.js:318
+msgid "Couldn't create new tag!"
+msgstr "Nie można utworzyć nowego tagu!"
+
+#: static/js/views/admin/course_details.js:332
+msgid ""
+"You don't have permission to create a new tag, please select one from the "
+"list!"
+msgstr "Nie posiadasz uprawnień pozwalających na stworzenie nowego tagu, prosimy wybrać tag z listy"
+
+#: static/js/views/admin/course_details.js:362
+msgid "Couldn't delete tag!"
+msgstr "Nie można usunąć tagu"
+
+#: static/js/views/admin/course_details.js:402
+msgid "%(count)s Course Tagged with %(tagDetails)s"
+msgid_plural "%(count)s Courses Tagged with %(tagDetails)s"
+msgstr[0] "%(count)s Kurs otagowany za pomocą %(tagDetails)s"
+msgstr[1] "%(count)s Kursy otagowany za pomocą %(tagDetails)s"
+
+#: static/js/views/admin/course_details.js:457
+msgid "Progress: %(progress)s %"
+msgstr "Stopień ukończenia: %(progress)s %"
+
+#: static/js/views/admin/course_details.js:494
+msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
+msgstr "Wybranych: %(selected)s, Ukończyło pomyślnie: %(successful)s, Nie ukończyło: %(failed)s"
+
+#: static/js/views/admin/course_details.js:545
+msgid "This tag name cannot have more than 30 characters!"
+msgstr "Nazwa tego tagu nie może przekroczyć 30 znaków!"
+
+#: static/js/views/admin/course_details.js:552
+msgid "This tag name cannot contain non-alphanumeric characters!"
+msgstr "Nazwa tego tagu może zawierać jedynie znaki alfanumeryczne"
+
+#: static/js/views/admin/course_details.js:592
+msgid "Couldn't add tag to course!"
+msgstr "Nie można dodać tagu do kursu"
+
+#: static/js/views/admin/course_details_blocks.js:34
+#: static/js/views/admin/manager_dashboard.js:107
+#: static/js/views/courses/lesson_note.js:2
+msgid "Lesson"
+msgstr "Lekcja"
+
+#: static/js/views/admin/course_details_blocks.js:41
+#: static/js/views/courses/lesson_note.js:3
+msgid "Module"
+msgstr "Moduł"
+
+#: static/js/views/admin/course_details_blocks.js:48
+msgid "Poll/Survey Question"
+msgstr "Pytanie sondażu/ankiety"
+
+#: static/js/views/admin/course_details_bulk_actions.js:58
+msgid "File successfully uploaded!"
+msgstr "Plik przesłany pomyślnie"
+
+#: static/js/views/admin/course_details_bulk_actions.js:116
+msgid "Unenroll Participants"
+msgstr "Wyrejestruj uczestników"
+
+#: static/js/views/admin/course_details_bulk_actions.js:117
+#: static/js/views/admin/course_details_bulk_actions.js:179
+#: static/js/views/admin/course_details_bulk_actions.js:267
+msgid "Selected: %(selectedRows)s, Successful: 0, Failed: 0"
+msgstr "Wybranych: %(selectedRows)s, Ukończyło pomyślnie: 0, Nie ukończyło: 0"
+
+#: static/js/views/admin/course_details_bulk_actions.js:120
+msgid "Unenroll all selected participants from this course?"
+msgstr "Na pewno wyrejestrować wszystkich wybranych uczestników z tego kursu?"
+
+#: static/js/views/admin/course_details_bulk_actions.js:133
+#: static/js/views/admin/course_details_bulk_actions.js:199
+#: static/js/views/admin/course_details_bulk_actions.js:301
+#: static/js/views/admin/course_details_bulk_actions.js:771
+msgid ""
+"You need to select at least one participant to be able to apply bulk actions."
+msgstr "Musisz wybrać przynajmniej jednego uczestnika, aby zastosować akcje masowe."
+
+#: static/js/views/admin/course_details_bulk_actions.js:137
+#: static/js/views/admin/participant_details_active_courses_view.js:131
+#: static/js/views/admin/participant_details_active_courses_view.js:133
+msgid "Unenroll"
+msgstr "Wyrejestruj"
+
+#: static/js/views/admin/course_details_bulk_actions.js:178
+msgid "Change Status"
+msgstr "Zmień status"
+
+#: static/js/views/admin/course_details_bulk_actions.js:182
+msgid "Change status of all selected participants to:"
+msgstr "Zmień status wybranych uczestników na:"
+
+#: static/js/views/admin/course_details_bulk_actions.js:184
+#: static/js/views/admin/course_details_bulk_actions.js:283
+#: static/js/views/admin/participant_details_edit_info.js:377
+#: static/js/views/admin/participantsinfo.js:128
+msgid "Participant"
+msgstr "Uczestnik"
+
+#: static/js/views/admin/course_details_bulk_actions.js:185
+#: static/js/views/admin/course_details_bulk_actions.js:284
+#: static/js/views/admin/participant_details_edit_info.js:378
+#: static/js/views/admin/participantsinfo.js:130
+msgid "Observer"
+msgstr "Obserwator"
+
+#: static/js/views/admin/course_details_bulk_actions.js:186
+#: static/js/views/admin/course_details_bulk_actions.js:285
+#: static/js/views/admin/participant_details_edit_info.js:379
+#: static/js/views/admin/participantsinfo.js:129
+msgid "TA"
+msgstr "Asystent kursu"
+
+#: static/js/views/admin/course_details_bulk_actions.js:203
+msgid "Save Changes"
+msgstr "Zapisz zmiany"
+
+#: static/js/views/admin/course_details_bulk_actions.js:224
+#: static/js/views/admin/course_details_bulk_actions.js:329
+#: static/js/views/admin/course_details_bulk_actions.js:335
+#: static/js/views/admin/participant_details_edit_info.js:413
+#: static/js/views/admin/participant_details_edit_info.js:419
+msgid "You need to select status!"
+msgstr "Musisz wybrać status!"
+
+#: static/js/views/admin/course_details_bulk_actions.js:266
+#: static/js/views/admin/participant_details_edit_info.js:365
+msgid "Select Course"
+msgstr "Wybierz kurs"
+
+#: static/js/views/admin/course_details_bulk_actions.js:270
+msgid "%(selectedRows)s Participants will be enroll in course selected below."
+msgid_plural "%(selectedRows)s Participant will be enroll in course selected below."
+msgstr[0] "%(selectedRows)s Uczestnicy zostaną zarejestrowani na kurs wybrany poniżej."
+msgstr[1] "%(selectedRows)s Uczestnik zostanie zarejestrowany na kurs wybrany poniżej."
+
+#: static/js/views/admin/course_details_bulk_actions.js:305
+msgid "Enroll Participants"
+msgstr "Zarejestruj uczestników"
+
+#: static/js/views/admin/course_details_bulk_actions.js:340
+#: static/js/views/admin/course_details_bulk_actions.js:344
+#: static/js/views/admin/participant_details_edit_info.js:424
+#: static/js/views/admin/participant_details_edit_info.js:428
+msgid "You need to select course!"
+msgstr "Musisz wybrać kurs!"
+
+#: static/js/views/admin/course_details_bulk_actions.js:429
+msgid "Download"
+msgstr "Pobierz"
+
+#: static/js/views/admin/course_details_bulk_actions.js:429
+msgid "Progress : 0%"
+msgstr "Stopień ukończenia: 0%"
+
+#: static/js/views/admin/course_details_bulk_actions.js:430
+msgid "Download CSV File"
+msgstr "Pobierz plik CSV"
+
+#: static/js/views/admin/course_details_bulk_actions.js:467
+msgid ""
+"Include breakdown of progress for each lesson (Note: the export will take "
+"more time)"
+msgstr "Uwzględnij zestawienie stopnia ukończenia dla każdej lekcji z osobna (Uwaga: eksport zajmie więcej czasu)"
+
+#: static/js/views/admin/course_details_bulk_actions.js:473
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:5
+msgid "We'll e-mail you when your report is ready to download."
+msgstr "Wyślemy Ci e-mail, gdy raport będzie gotowy do pobrania."
+
+#: static/js/views/admin/course_details_bulk_actions.js:476
+msgid "Exporting Stats for All Users"
+msgstr "Eksportowanie statystyk dla wszystkich uczestników"
+
+#: static/js/views/admin/course_details_bulk_actions.js:477
+msgid "Export Report"
+msgstr "Wyeksportuj raport"
+
+#: static/js/views/admin/course_details_bulk_actions.js:517
+#: static/js/views/admin/course_details_bulk_actions.js:568
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:36
+msgid "Error initiating the report generation. Please retry later."
+msgstr "Podczas próby wygenerowania reportu wystąpił błąd. Spróbuj później."
+
+#: static/js/views/admin/course_details_bulk_actions.js:598
+msgid "Download Notifications CSV"
+msgstr "Pobierz powiadomienia CSV"
+
+#: static/js/views/admin/course_details_bulk_actions.js:687
+msgid "Group Work: %(label)s"
+msgstr "Praca grupowa: %(label)s"
+
+#: static/js/views/admin/course_details_bulk_actions.js:715
+msgid "Assessment: %(label)s"
+msgstr "Ocena: %(label)s"
+
+#: static/js/views/admin/course_details_bulk_actions.js:741
+msgid "Task failed to execute. Please retry later."
+msgstr "Nie udało się wykonać zadania. Spróbuj później."
+
+#: static/js/views/admin/course_details_bulk_actions.js:758
+msgid "Successfully Enrolled in 1 Course"
+msgstr "Udało się zarejestrować Cię na 1 kurs."
+
+#: static/js/views/admin/course_details_bulk_actions.js:760
+msgid "What would you like to do now?"
+msgstr "Co chciałbyś teraz zrobić?"
+
+#: static/js/views/admin/course_details_bulk_actions.js:761
+msgid "Go to %(course_id)s Course"
+msgstr "Przejdź do kursu %(course_id)s"
+
+#: static/js/views/admin/course_details_bulk_actions.js:763
+msgid "Send Course Intro Email"
+msgstr "Wyślij wiadomość e-mail ze wstępem do kursu"
+
+#: static/js/views/admin/course_details_bulk_actions.js:765
+msgid "Enroll this list in another course"
+msgstr "Zarejestruj tę listę na inny kurs"
+
+#: static/js/views/admin/course_details_bulk_actions.js:777
+msgid "I'm Done"
+msgstr "Skończyłem"
+
+#: static/js/views/admin/course_details_bulk_actions.js:797
+msgid "Successfully deleted template!"
+msgstr "Pomyślnie usunięto szablon"
+
+#: static/js/views/admin/course_details_bulk_actions.js:804
+msgid "Successfully added new template!"
+msgstr "Pomyślnie dodano nowy szablon"
+
+#: static/js/views/admin/course_details_bulk_actions.js:817
+msgid "Successfully updated template!"
+msgstr "Pomyślnie zaktualizowano szablon"
+
+#: static/js/views/admin/course_details_bulk_actions.js:822
+msgid "Email Preview Success!"
+msgstr "Pomyślnie wysłano e-mail wstępny!"
+
+#: static/js/views/admin/course_details_bulk_actions.js:822
+msgid "Successfully sent preview email!"
+msgstr "Pomyślnie wysłano e-mail wstępny!"
+
+#: static/js/views/admin/course_details_bulk_actions.js:825
+msgid "Email Success!"
+msgstr "Pomyślnie wysłano e-mail!"
+
+#: static/js/views/admin/course_details_bulk_actions.js:825
+msgid "Successfully sent email!"
+msgstr "Pomyślnie wysłano wiadomość e-mail!"
+
+#: static/js/views/admin/course_details_bulk_actions.js:867
+msgid "Preview Email!"
+msgstr "E-mail wstępny!"
+
+#: static/js/views/admin/course_details_bulk_actions.js:867
+msgid "Please enter preview email!"
+msgstr "Wprowadź e-mail wstępny"
+
+#: static/js/views/admin/course_details_bulk_actions.js:887
+msgid "Please enter new template name!"
+msgstr "Wprowadź nazwę nowego szablonu"
+
+#: static/js/views/admin/course_details_bulk_actions.js:902
+msgid "Please enter updated template name or leave the old one!"
+msgstr "Wprowadź zaktualizowaną nazwę szablonu lub pozostaw poprzednią"
+
+#: static/js/views/admin/course_details_bulk_actions.js:915
+msgid "You are about to delete email template. Are you sure?"
+msgstr "To działanie spowoduje usunięcie szablonu e-mail. Czy chcesz kontynuować?"
+
+#: static/js/views/admin/course_details_engagement.js:11
+msgid "# of people"
+msgstr "# ludzi"
+
+#: static/js/views/admin/course_details_engagement.js:12
+msgid "% total cohort"
+msgstr "% całkowitej liczby kursantów"
+
+#: static/js/views/admin/course_details_engagement.js:13
+msgid "Avg Progress"
+msgstr "Średni stopień ukończenia"
+
+#: static/js/views/admin/course_details_problem_response_reports.js:12
+msgid "Filename"
+msgstr "Nazwa pliku"
+
+#: static/js/views/admin/course_details_problem_response_reports.js:30
+msgid "Request Time"
+msgstr "Czas żądania"
+
+#: static/js/views/admin/courseinfo.js:21
+msgid ".0%"
+msgstr "0%"
+
+#: static/js/views/admin/courseinfo.js:48
+msgid " day"
+msgstr " dzień"
+
+#: static/js/views/admin/courseinfo.js:49
+msgid " week"
+msgstr " tydzień"
+
+#: static/js/views/admin/group_work_dashboard.js:52
+msgid "None"
+msgstr "Żadne"
+
+#: static/js/views/admin/group_work_dashboard.js:195
+msgid "Do you really want to delete: \n"
+msgstr "Czy na pewno chcesz usunąć: \n"
+
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:3
+msgid "Downloadable Workgroup Completion Report"
+msgstr "Raport o ukończeniu zadań grupowych w wersji do pobrania"
+
+#: static/js/views/admin/import_progress.js:4
+msgid "File name"
+msgstr "Nazwa pliku"
+
+#: static/js/views/admin/import_progress.js:9
+msgid "Start time"
+msgstr "Czas rozpoczęcia"
+
+#: static/js/views/admin/import_progress.js:10
+msgid "End time"
+msgstr "Czas zakończenia"
+
+#: static/js/views/admin/import_progress.js:18
+#: static/js/views/admin/import_progress.js:97
+msgid "Importing.."
+msgstr "Trwa importowanie.."
+
+#: static/js/views/admin/import_progress.js:23
+#: static/js/views/admin/import_progress.js:123
+#: static/js/views/admin/import_progress.js:128
+msgid "Successful"
+msgstr "Zakończono powodzeniem"
+
+#: static/js/views/admin/import_progress.js:26
+#: static/js/views/admin/import_progress.js:117
+msgid "Contains Errors"
+msgstr "Zawiera błędy"
+
+#: static/js/views/admin/import_progress.js:34
+msgid "Activation File"
+msgstr "Plik aktywacyjny"
+
+#: static/js/views/admin/import_progress.js:44
+msgid "Error File"
+msgstr "Plik błędu"
+
+#: static/js/views/admin/import_progress.js:53
+msgid "Initiated by"
+msgstr "Zainicjowany przez"
+
+#: static/js/views/admin/import_progress.js:131
+msgid "Importing %(processed)s of %(total)s rows"
+msgstr "Trwa importowanie %(processed)s z %(total)s wierszy"
+
+#: static/js/views/admin/manager_dashboard.js:107
+msgid "complete"
+msgstr "ukończono"
+
+#: static/js/views/admin/manager_dashboard.js:112
+msgid "Error Occured!"
+msgstr "Wystąpił błąd!"
+
+#: static/js/views/admin/manager_dashboard.js:115
+msgid "Hide Details"
+msgstr "Ukryj szczegóły"
+
+#: static/js/views/admin/manager_dashboard.js:145
+msgid "View Details"
+msgstr "Zobacz szczegóły"
+
+#: static/js/views/admin/navigation.js:18
+msgid "Are you sure you want to remove this ?"
+msgstr "Czy na pewno chcesz usunąć ?"
+
+#: static/js/views/admin/participant_details_active_courses_view.js:73
+#: static/js/views/admin/participant_details_course_history_view.js:29
+msgid "Program"
+msgstr "Program"
+
+#: static/js/views/admin/participant_details_course_history_view.js:30
+msgid "Completed"
+msgstr "Ukończono"
+
+#: static/js/views/admin/participant_details_course_history_view.js:31
+msgid "Grade"
+msgstr "Ocena"
+
+#: static/js/views/admin/participant_details_course_history_view.js:33
+msgid "End Date"
+msgstr "Data ukończenia"
+
+#: static/js/views/admin/participant_details_edit_info.js:114
+msgid "Username can't be empty! "
+msgstr "Nazwa użytkownika nie może być pusta!"
+
+#: static/js/views/admin/participant_details_edit_info.js:119
+msgid "First name can't be empty! "
+msgstr "Imię nie może być puste!"
+
+#: static/js/views/admin/participant_details_edit_info.js:124
+msgid "Last name can't be empty! "
+msgstr "Nazwisko nie może być puste!"
+
+#: static/js/views/admin/participant_details_edit_info.js:129
+msgid "Email can't be empty! "
+msgstr "Adres e-mail nie może być pusty!"
+
+#: static/js/views/admin/participant_details_edit_info.js:153
+msgid "Company doesn't exist! "
+msgstr "Firma nie istnieje!"
+
+#: static/js/views/admin/participant_details_edit_info.js:203
+msgid "Updated user data!"
+msgstr "Zaktualizowano dane użytkownika"
+
+#: static/js/views/admin/participant_details_edit_info.js:255
+#: static/js/views/admin/participant_details_edit_info.js:296
+msgid "Male"
+msgstr "Mężczyzna"
+
+#: static/js/views/admin/participant_details_edit_info.js:257
+#: static/js/views/admin/participant_details_edit_info.js:294
+msgid "Female"
+msgstr "Kobieta"
+
+#: static/js/views/admin/participant_details_edit_info.js:366
+msgid "User will be enrolled in course selected below."
+msgstr "Użytkownik zostanie zarejestrowany na kursy wybrane poniżej."
+
+#: static/js/views/admin/participant_details_edit_info.js:367
+msgid "Moderator"
+msgstr "Moderator"
+
+#: static/js/views/admin/participant_details_edit_info.js:390
+msgid "Enroll Participant"
+msgstr "Zarejestruj uczestnika"
+
+#: static/js/views/admin/participant_details_edit_info.js:448
+msgid "User successfully enrolled in course"
+msgstr "Udało się zarejestrować użytkownika na kurs"
+
+#: static/js/views/admin/participant_details_edit_info.js:534
+#: static/js/views/admin/participantsinfo.js:95
+msgid "Admin Company"
+msgstr "Firma administratora"
+
+#: static/js/views/admin/participant_details_edit_info.js:538
+msgid "Try selecting your company from the type-ahead results."
+msgstr "Spróbuj wybrać swoją firmę spośród pojawiających się podpowiedzi"
+
+#: static/js/views/admin/participant_details_edit_info.js:544
+#: static/js/views/admin/participantsinfo.js:104
+msgid "Admin Permissions"
+msgstr "Uprawnienia dostępu administratora"
+
+#: static/js/views/admin/participant_details_edit_info.js:547
+#: static/js/views/admin/participantsinfo.js:107
+msgid "Company Admin"
+msgstr "Administrator firmy"
+
+#: static/js/views/admin/participantsinfo.js:26
+msgid "Date Added"
+msgstr "Data dodania"
+
+#: static/js/views/admin/participantsinfo.js:36
+msgid "Enrolled In"
+msgstr "Zarejestrowany"
+
+#: static_v2/js/application.js:521 static_v2/js/custom.js:108
+msgid "Hide password"
+msgstr "Ukryj hasło"
+
+#: static_v2/js/application.js:526 static_v2/js/custom.js:113
+msgid "Show password"
+msgstr "Pokaż hasło"
