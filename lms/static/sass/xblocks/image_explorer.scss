@@ -117,6 +117,7 @@ body.new-theme {
             border-radius: 2px;
             background: $ash-white;
             border: 1px solid $popup-border;
+            height:auto !important;
 
             .image-explorer-close-reveal {
               position: absolute;
@@ -136,9 +137,10 @@ body.new-theme {
 
             .image-explorer-hotspot-content-wrapper {
               color: $black;
-              margin: 20px 16px 20px;
+              margin: 30px;
               overflow: auto;
-              height: calc(100% - 50px);
+              height: auto;
+              max-height: 300px;
 
               .image-explorer-hotspot-reveal-header {
                 font-size: 0.875rem;
@@ -231,6 +233,13 @@ body.new-theme {
               top: 13%;
               margin: 0 auto !important;
               max-height: none !important;
+
+              .image-explorer-hotspot-content-wrapper
+              {
+                height: calc(100% - 60px);
+                max-height: none;
+              }
+
               .oo-player-container {
                 min-width: unset !important;
                 width: 100% !important;
