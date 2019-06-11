@@ -138,8 +138,8 @@
         // For the native mobile apps, there are some style overrides:
         // TBD - what MCKIN ticket were these for?
         .drag-container {
-            background-color: #f7f7f7;
-            padding: 15px;
+            background-color: #f7f7f7; 
+            display: block;
         }
 
         .drag-container .item-bank {
@@ -311,14 +311,14 @@ body.new-theme {
 
                     @media (max-width: 767px) {
                         .target {
-                            max-height: 300px;
+                            max-height: 55vh;
                             overflow: scroll;
 
                             .target-img-wrapper {
-                                width: 100%;
-                                img {
-                                    max-height: 300px;
-                                    overflow: scroll;
+                                width: calc(100% - 14px);
+                                box-sizing: border-box;
+                                img{
+                                    display: block;
                                 }
                             }
 
