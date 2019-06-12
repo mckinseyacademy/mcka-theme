@@ -71,6 +71,9 @@
         &:hover {
           box-shadow: inset 0 0 100px rgba(0,0,0,0.3);
         }
+        &:focus {
+          box-shadow: inset 0 0 100px rgba(0,0,0,0.3) !important;
+        }
       }
       .forgot-pswd-link {
         margin: 10px 0 0;

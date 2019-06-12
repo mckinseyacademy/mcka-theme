@@ -637,6 +637,11 @@ $(window).on("load", function () {
 
     // Remove spinner from crop & save button
     $("#crop-save #spinner").removeClass("spinner-border-sm").removeClass("spinner-border");
+
+    // Cover images with width & height of their parent
+    $('div.faculty label').each(function (index) {
+        scaleImage(this);
+    });
 });
 
 // Preloader for courses page
@@ -647,31 +652,28 @@ $('.my-courses .card').click(function () {
 });
 
 "use strict";
-// $(".faculty img").wrap( "<div style='position:relative;'></div>" );
-function scaleImage() {
+function scaleImage(label) {
     var scaler;
-    var imgWidth = $(".faculty img").width();
-    var imgHeight = $(".faculty img").height();
-    var stageW = $(".faculty label").width();
-    var stageH = $(".faculty label").height();
-
-
+    var imgWidth = $(label).find("img").width();
+    var imgHeight = $(label).find("img").height();
+    var stageW = $(label).width();
+    var stageH = $(label).height();
     if (stageH / stageW > imgHeight / imgWidth) {
         scaler = imgWidth / imgHeight;
         imgWidth = stageH * scaler;
-        $(".faculty img").css("width", imgWidth)
-        $(".faculty img").css("height", "auto")
-
+        $(label).find("img").css("width", imgWidth)
+        $(label).find("img").css("height", "auto")
     } else {
         scaler = imgHeight / imgWidth;
         imgHeight = stageW * scaler;
-        $(".faculty img").css("height", imgHeight)
-        $(".faculty img").css("width", "auto")
-
+        $(label).find("img").css("height", imgHeight)
+        $(label).find("img").css("width", "auto")
     }
 }
 
+
 $(window).resize(function () {
-    scaleImage();
+    $('div.faculty label').each(function (index) {
+        scaleImage(this);
+    });
 });
-scaleImage();

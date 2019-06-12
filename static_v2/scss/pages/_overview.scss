@@ -69,8 +69,9 @@
         vertical-align: top;
         position: relative;
         overflow: hidden;
-        margin-right: 20px;
+        margin-right: 16px;
         cursor: pointer;
+        margin-bottom: 20px;
         &:after {
           position: absolute;
           display: block;
@@ -91,7 +92,8 @@
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-
+          min-width:100%;
+          min-height: 100%;
         }
       }
 
