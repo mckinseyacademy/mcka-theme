@@ -415,7 +415,6 @@
       var _this = event.data.extra;
       if  ($(this).find('.bbGrid-grid.table').height() - $(this).height() - $(this).scrollTop() < 20)
       {
-        $(this).find('i.fa-spinner').show();
         _this.coursesListDetailsViewGrid.partial_collection.getNextPage();
       }
     },
