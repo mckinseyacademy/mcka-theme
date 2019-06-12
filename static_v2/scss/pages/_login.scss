@@ -1,7 +1,10 @@
 .site-wrapper {
   &.login {
     min-height: 100vh;
-    background: #f0f0f0 url("../image/login/McKA-login-bg.png") no-repeat 50% 50% ;
+    background: #f0f0f0 url("../image/login/McKA-login-bg-lg.png") no-repeat 50% 50% ;
+    @media screen and (max-width: 1500px) {
+      background: #f0f0f0 url("../image/login/McKA-login-bg.png") no-repeat 50% 50% ;
+    }
     background-size: cover;
 
     main {
@@ -241,7 +244,7 @@
     footer {
       background: $gray-border;
       margin: 0;
-      
+
       ul li a.nav-link {
         color: $black;
         &:before {
