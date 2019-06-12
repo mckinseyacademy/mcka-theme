@@ -306,6 +306,7 @@ body.new-theme {
                         .option {
                             background-color: $gray;
                             box-shadow: none;
+                            
                         }
                     }
 
@@ -624,4 +625,11 @@ body.new-theme {
             }
         }
     }
+
+    .item-wrapper{
+        .option{
+           width: 100% !important;
+        }
+    }
+    
 }
