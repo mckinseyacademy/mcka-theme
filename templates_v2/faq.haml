@@ -46,28 +46,28 @@
               {% trans 'To change your name, log in, and find your profile in the upper right-hand corner of your screen. Click the down arrow and select "Edit" next to your name.' %}
             %p
               {% trans "To change your email address, please email" %}
-                %a{:href => "#{support}"} support
+                %a{:href => "#{support}"} {% trans "support" %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#six", :data-toggle => "collapse"}
               {% trans "My account login isn't working." %}
           #six.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
               {% trans "If you've forgotten your password, please try resetting it by clicking 'Forgot my password' on the log in screen. If that does not work, please email" %}
-                %a{:href => "#{support}"} support
+                %a{:href => "#{support}"} {% trans "support" %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#seven", :data-toggle => "collapse"}
               {% trans "I can't access a course I'm enrolled in." %}
           #seven.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
               {% trans "The drop down for moving between multiple courses is on the far left of the second (lighter blue) navigation bar. If the course you are supposed to be enrolled in does not appear in that drop down menu, please email" %}
-                %a{:href => "#{support}"} support
+                %a{:href => "#{support}"} {% trans "support" %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#eight", :data-toggle => "collapse"}
               {% trans "How can I stop or start receiving emails from my courses?" %}
           #eight.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
               {% trans "We try to keep our email communication at an optimal level to ensure all participants know what is happening in the course without cluttering your inbox. Our emails contain important information about what's expected each week and additional curated content suggestions. If you no longer wish to receive emails, please email" %}
-              %a{:href => "#{support}"} support
+              %a{:href => "#{support}"} {% trans "support" %}
               {% trans '(or click unsubscribe at the bottom of any email you receive from us). Be sure to check the "Announcements" page frequently to stay up to date!' %}
           %p.style-2 {% trans "Courses Related:" %}
           %h5.mb-0
@@ -130,7 +130,7 @@
           #eighteen.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
               {% trans "If you have any questions about a grade you received, please email" %}
-                %a{:href => "#{support}"} TAs
+                %a{:href => "#{support}"} {% trans "TAs" %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#nineteen", :data-toggle => "collapse"}
               {% trans "How can I meet/find other participants?" %}
