@@ -3,9 +3,6 @@
 - load i18n
 
 - block content
-  %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
-  %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
-
   #learner-dashboard
     #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
   .container.loader.donut-loader
@@ -55,7 +52,4 @@
 
 
 - block js_snippets
-  %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
-  %script{src: "{% static 'js/course_learner_dashboard/tile_progress_update.js' %}"}
-  %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
   - include "courses/group_work/js_snippets.haml"

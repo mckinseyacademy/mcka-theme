@@ -9,10 +9,6 @@
     %link{rel: "stylesheet", href: "{% static 'css/lms-discussion-main.1.min.css' %}"}
 
 - block content
-  %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
-  %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
-
-
   #learner-dashboard
     #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
   #course-discussion
@@ -25,9 +21,6 @@
       - include "courses/contact_ta.haml"
 
 - block js_snippets
-  %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
-  %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
-  %script{src: "{% static 'js/course_contact.js' %}"}
   :javascript
     window.onload = (function(){
       var discussion_content = $('#course-discussion .discussion-content');
