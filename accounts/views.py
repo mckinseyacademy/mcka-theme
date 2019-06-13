@@ -61,7 +61,7 @@ from .middleware import thread_local
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
-    send_warning_email_to_admin, append_user_mobile_app_id_cookie
+    send_warning_email_to_admin, append_user_mobile_app_id_cookie, image_transpose_exif
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
@@ -1127,7 +1127,8 @@ def user_profile_image_edit(request):
 
         from PIL import Image
         original = Image.open(temp_image)
-        cropped_example = original.crop((left, top, right, bottom))
+        original_transpose = image_transpose_exif(original)
+        cropped_example = original_transpose.crop((left, top, right, bottom))
         avatar_image_io = StringIO.StringIO()
         cropped_example.convert('RGB').save(avatar_image_io, format='JPEG')
         avatar_image_io.seek(0)

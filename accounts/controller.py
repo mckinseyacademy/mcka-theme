@@ -3,6 +3,7 @@ import re
 import json
 import datetime
 import logging
+from PIL import Image, ExifTags
 from collections import namedtuple
 
 from django.contrib import messages
@@ -527,3 +528,23 @@ def get_mobile_apps_id(organization_id):
         'android_app_id': android_app_id,
         'user_org': user_org
     }
+
+
+def image_transpose_exif(image):
+    # This solution is taken from following link.
+    #  https://stackoverflow.com/a/6218425/5244255
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                break
+        exif = dict(image._getexif().items())
+
+        if exif[orientation] == 3:
+            image = image.transpose(Image.ROTATE_180)
+        elif exif[orientation] == 6:
+            image = image.transpose(Image.ROTATE_270)
+        elif exif[orientation] == 8:
+            image = image.transpose(Image.ROTATE_90)
+        return image
+    except Exception:
+        return image
