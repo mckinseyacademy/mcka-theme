@@ -40,16 +40,16 @@
                     .companyDashboardCompanyDown
                     - if not user.is_company_admin
                       .companyDashboardCompanyInfo
-                        %a.btn.btn-primary.ome.dome-bc{:href => '/admin/companies/#{company.id}', :target => '_self'} Edit Company Info
+                        %a.btn.btn-primary{:href => '/admin/companies/#{company.id}', :target => '_self'} Edit Company Info
                     .companyDashboardCompanyAllCourses
-                      %a.btn.btn-primary.ome.dome-bc{:href => "/admin/companies/#{company.id}", :target => '_self'}
+                      %a.btn.btn-primary{:href => "/admin/companies/#{company.id}", :target => '_self'}
                         {% trans "View All Courses" %}
                 .tableHscrollWrap
                   %table.bbGrid-grid.table-curved
                     - for course in company.courses
                       %tr.companyDashboardCompanyCourse
                         %td
-                          %a.ome.dome-c{:href => "/admin/companies/#{company.id}/courses/#{course.id}", :target => '_self'}
+                          %a{:href => "/admin/companies/#{company.id}/courses/#{course.id}", :target => '_self'}
                             = course.name
                         %td= course.id
                         %td

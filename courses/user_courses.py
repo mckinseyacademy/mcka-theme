@@ -19,6 +19,7 @@ from api_client.api_error import ApiError
 from api_client import user_api, course_api, mobileapp_api, organization_api
 from accounts.middleware import thread_local
 from api_data_manager.user_data import UserDataManager
+from lib.color import get_branding_colors
 from .controller import (
     load_static_tabs, get_completion_percentage_from_id,
     set_user_course_progress,
@@ -286,6 +287,7 @@ def standard_data(request):
         "show_new_ui_tour": show_new_ui_tour,
         "zoomed_in_lesson_navigators": "/lessons/" not in request.META.get('HTTP_REFERER', ''),
         "support": settings.MCKA_SUPPORT_FORM_LINK,
+        'branding_colors': get_branding_colors(client_customization),
 
     }
 

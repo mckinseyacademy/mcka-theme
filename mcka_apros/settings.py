@@ -717,6 +717,18 @@ MOBILE_URL_SCHEMES = [
 
 REACT_NATIVE_UA_PREFIX = 'com.mcka.RNApp'
 
+DEFAULT_COLORS = {
+    'primary': '#2042cb',
+    'secondary': '#0093d3',
+    'header-top': '#002960',
+    'dark-gray': '#4A4A4A',
+}
+
+COLOR_VERSIONS = {
+    'lighten-60': 0.60,
+    'darken-30': -0.30,
+}
+
 # Image sizes in width, height
 IMAGE_SIZES = {
     'ld_tile_background_image': (400, 400)

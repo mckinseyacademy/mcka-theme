@@ -37,7 +37,6 @@ js_files.extend([
     get_assets_path('js/vendor/jquery.cookie.js', v2=False),
     get_assets_path('js/vendor/jquery.xblock.js', v2=False),
     get_assets_path('js/bootstrap.bundle.min.js', v2=True),
-    get_assets_path('js/shader.js', v2=True),
     get_assets_path('js/session_timeout_timer.js', v2=False),
     get_assets_path('js/image_editor.js', v2=True),
     get_assets_path('js/vendor/cropper.min.js', v2=False),

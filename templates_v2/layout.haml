@@ -6,6 +6,8 @@
 - get_current_language as LANGUAGE_CODE
 - get_current_language_bidi as LANGUAGE_BIDI
 
+{% load template_helpers %}
+
 !!! 5
 %html.no-js{lang:"#{LANGUAGE_CODE}", dir: "{% if LANGUAGE_BIDI %}rtl{% else %}ltr{% endif %}"}
   %head
@@ -23,38 +25,30 @@
 
     %script{src: "{% static 'js/css-vars-ponyfill.js' %}"}
 
+    :css
+      :root{
+        {% for key, value in branding_colors.items %}
+          --{{key}}: {{value}} !important;
+        {% endfor %}
+      }
+
+    %script
+      {% for key, value in branding_colors.items %}
+        var {{key|clean_key}} = "{{value}}";
+      {% endfor %}
+
     {% assets "css_core_v2" %}
       %link.pony{rel: "stylesheet", href: "{{ ASSET_URL }}"}
     {% endassets %}
 
-
     %script
-      var primary = null;
-      var default_secondary = "#0093d3";
-      var secondary = undefined;
-
-    -if client_customization.hex_course_title
-      :css
-        :root{
-          --primary: {{client_customization.hex_course_title}};
-          --header-top: {{client_customization.hex_course_title}};
-          --secondary: {{client_customization.hex_course_title}};
-        }
-      %script
-        var primary = "{{client_customization.hex_course_title}}";
-        var secondary = "{{client_customization.hex_course_title}}";
-        var header_top = "{{client_customization.hex_course_title}}";
-
-    -if client_customization.hex_background_bar
-      :css
-        :root{
-          --header-top: {{client_customization.hex_background_bar}};
-          --secondary: {{client_customization.hex_background_bar}};
-        }
-
-      %script
-        var secondary = "{{client_customization.hex_background_bar}}";
-        var header_top = "{{client_customization.hex_background_bar}}";
+      var variables = {{branding_colors | safe}};
+      cssVars({
+        onlyVars: true,
+        include: 'link.pony',
+        variables: variables,
+        watch: true
+      });
 
 
     %script
@@ -180,15 +174,6 @@
           }
         }
 
-    -# Override if you need another version of jQuery
-    - block jquery
-      %script{src: "{% static 'js/jquery-1.11.2.min.js' %}"}
-
-    -# edx-notifications script dependencies
-    - block edx_notifications
-      %script{src: "{% static 'js/vendor/underscore.js' %}"}
-      %script{src: "{% static 'js/vendor/backbone.js' %}"}
-      %script{src: "{% static 'js/vendor/date.js' %}"}
     -# custom js libs
     - block custom_js
 
@@ -278,7 +263,7 @@
                   %input.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "last_name"}/
                 .invalid-feedback.error.mb-4
                 %div3
-                  %button.btn.btn-primary.mt-20.ome.dome-bc{:type => "submit"}
+                  %button.btn.btn-primary.mt-20{:type => "submit"}
                     {% trans "Save" %}
 
     - block edit_title_modal
@@ -300,7 +285,7 @@
                   %input.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "title"}/
 
                 .invalid-feedback.error.mb-4
-                %button.btn.btn-primary.mt-10.ome.dome-bc{:type => "submit"}
+                %button.btn.btn-primary.mt-10{:type => "submit"}
                   {% trans "Save" %}
 
     - block edit_photo_modal
@@ -413,10 +398,10 @@
                       %li{:data-slide-to => "2", :data-target => "#demo"}
                       %li{:data-slide-to => "3", :data-target => "#demo"}
                       %li{:data-slide-to => "4", :data-target => "#demo"}
-                    %a.carousel-control-prev.ome.dome-bc{:data-slide => "prev", :href => "javascript:void(0)"}
+                    %a.carousel-control-prev{:data-slide => "prev", :href => "javascript:void(0)"}
                       %span.carousel-control-prev-icon
                         %i.material-icons keyboard_arrow_left
-                    %a.carousel-control-next.ome.dome-bc{:data-slide => "next", :href => "javascript:void(0)"}
+                    %a.carousel-control-next{:data-slide => "next", :href => "javascript:void(0)"}
                       %span.carousel-control-next-icon
                         %i.material-icons keyboard_arrow_right
 
@@ -436,41 +421,6 @@
       if (window.location.search === '?reset-password') {
           $("#password-reset-modal").modal("show");
       }
-
-    %script
-      var variables = {}
-      if (primary !== null){
-        variables = {
-          '--primary': primary,
-          '--secondary': secondary,
-          '--header-top': header_top
-          };
-      }
-      cssVars({
-        onlyVars: true,
-        include: 'link.pony',
-        variables: variables,
-        watch: true
-      });
-
-    %script
-      if(!navigator.userAgent.match(/Trident.*rv\:11\./))
-      {
-        var root = document.documentElement;
-        var secondary = root.style.getPropertyValue("--secondary");
-        var primary = root.style.getPropertyValue("--primary");
-        if (secondary) {
-          root.style.setProperty('--branding-lightened-color', lighten(secondary, 65));
-        } else if (primary) {
-          root.style.setProperty('--branding-lightened-color', lighten(primary, 65));
-        } else {
-          root.style.setProperty('--branding-lightened-color', lighten("#0093d3", 90));
-        }
-      }
-
-    -# Custom JS
-    - block body_js
-    %script
       $(document).ready(function () {
         $('body').jpreLoader();
       });

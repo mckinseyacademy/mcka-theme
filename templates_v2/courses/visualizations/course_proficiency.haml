@@ -12,5 +12,5 @@
     .averageTitle
       %span {% trans "Cohort Average:" %} #{cohort_proficiency_average}
   %span.viewDetailCourse   
-    %a.ome.dome-c{:href => "/courses/#{active_course.id}/progress#proficiency-block"} 
+    %a{:href => "/courses/#{active_course.id}/progress#proficiency-block"} 
       {% trans "View details" %}

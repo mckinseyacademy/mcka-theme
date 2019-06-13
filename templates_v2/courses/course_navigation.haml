@@ -19,28 +19,29 @@
                 #pnProductNavContents.mainNav.pn-ProductNav_Contents
                   %ul
                     %li{"class": "{% ifequal request.resolver_match.url_name 'course_landing_page' %}active{% endifequal %}"}
-                      %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}"}
+                      %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}"}
                         {% trans "Overview" %}
 
                     %li.hasDropdown{"class": "{% if request.resolver_match.url_name == 'course_resources' or request.resolver_match.url_name == 'course_news' or request.resolver_match.url_name == 'course_overview' %}active{% endif %}"}
-                      %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
+                      %a.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
                         %span
                           {% trans "Course Materials" %}
                       .dropdown-menu.course-materials{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-left{% else %}dropdown-menu-right{% endif %}"}
-                        %a.ome.dome-c.dropdown-item{:href => "/courses/#{active_course.id}/announcements"}
+                        %a.dropdown-item{:href => "/courses/#{active_course.id}/announcements"}
                           {% trans "Announcements" %}
                           - if request.resolver_match.url_name == 'course_news'
                             %span.bookmark.secondary
                               %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
                                 %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
                         %a.ome.dome-c.dropdown-item{:href => "/courses/#{active_course.id}/overview"}
+                        %a.dropdown-item{:href => "/courses/#{active_course.id}/overview"}
                           {% trans "Course Overview" %}
                           - if request.resolver_match.url_name == 'course_overview'
                             %span.bookmark.secondary
                               %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
                                 %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
                         - if feature_flags.resources
-                          %a.ome.dome-c.dropdown-item{:href => "/courses/#{active_course.id}/resources"}
+                          %a.dropdown-item{:href => "/courses/#{active_course.id}/resources"}
                             {% trans "Resources" %}
                             - if request.resolver_match.url_name == 'course_resources'
                               %span.bookmark.secondary
@@ -48,23 +49,23 @@
                                   %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
                     - if feature_flags.discussions
                       %li{"class": "{% ifequal request.resolver_match.url_name 'course_discussion' %}active{% endifequal %}"}
-                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/discussion"}
+                        %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/discussion"}
                           {% trans "Discussion" %}
                     - if feature_flags.group_work
                       %li{"class": "{% if request.resolver_match.url_name == 'user_course_group_work' or request.resolver_match.url_name == 'workgroup_course_group_work' %}active{% endif %}"}
-                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/group_work"}
+                        %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/group_work"}
                           {% trans "Group work" %}
                     - if feature_flags.progress_page
                       %li{"class": "{% ifequal request.resolver_match.url_name 'course_progress' %}active{% endifequal %}"}
-                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/progress"}
+                        %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/progress"}
                           {% trans "My Progress" %}
                     - if feature_flags.leaderboard
                       %li{"class": "{% ifequal request.resolver_match.url_name 'course_cohort' %}active{% endifequal %}"}
-                        %a.ome.dome-c.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/cohort"}
+                        %a.nav-link.pn-ProductNav_Link{"href": "/courses/#{active_course.id}/cohort"}
                           {% trans "Leaderboard" %}
                     - if feature_flags.notifications
                       %li.notifications.hasDropdown
-                        %a.ome.dome-c.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
+                        %a.nav-link.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
                           %span
                             {% trans "Notifications" %}
                           %span.xns-counter

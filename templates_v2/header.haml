@@ -24,7 +24,7 @@
           - if request.user.is_authenticated
             .topRightArea
               .profileArea
-                %a.dropdown-toggle.ome.dome-bc{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
+                %a.dropdown-toggle{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
                   - if user.has_image
                     %img{:alt => "", :src => "{{user.image_url_medium}}", :width => "160"}/
                   - elif user.name_initials
@@ -46,19 +46,19 @@
                             %img{:alt => "", :src => "{{user.image_url_full}}"}/
 
 
-                        %a.edit-link.ome.dome-c{:data-target => ".editPhotoModal", :href => "javascript:void(0)", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
+                        %a.edit-link{:data-target => ".editPhotoModal", :href => "javascript:void(0)", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
                           {% trans "edit photo" %}
                     .titles-area
                       .nameArea
                         %span{:firstname => "{{user.first_name}}", :lastname => "{{user.last_name}}"} {{user.fullname}}
-                        %a.edit-link.ome.dome-c{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
+                        %a.edit-link{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
                           {% trans "edit" %}
                       .roleArea
                         - if user.title
                           %span.title= user.title
                         - else
                           %span {% trans "Enter your title" %}
-                        %a.edit-link.ome.dome-c{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
+                        %a.edit-link{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
                           {% trans "edit" %}
                   .content
                     .wrap
@@ -69,8 +69,8 @@
                       %strong.text-uppercase.title
                         {% trans "email" %}
                       %span.userMail {{user.email}}
-                  .footer.ome
-                    %a.btn.btn-secondary.dome-c{href: "/accounts/logout"}
+                  .footer
+                    %a.btn.btn-secondary{href: "/accounts/logout"}
                       {% trans "log out" %}
 
               %nav.nav.mainNav.headerNav
@@ -78,34 +78,34 @@
                   - if request.user.is_manager
                     {% url 'manager_dashboard' as manager_dashboard_url %}
                     %li.adminBtn{class: "{% if request.path == manager_dashboard_url %}active{% endif %}"}
-                      %a.nav-link.ome.dome-c{href: "{{manager_dashboard_url}}"}
+                      %a.nav-link{href: "{{manager_dashboard_url}}"}
                         {% trans "team reports" %}
                   - if request.user.is_mcka_admin or request.user.is_internal_admin or request.user.is_mcka_subadmin
                     {% url 'admin_home' as admin_home_url %}
                     %li.adminBtn{class: "{% if request.path == admin_home_url %}active{% endif %}"}
-                      %a.nav-link.ome.dome-c{href: "{{admin_home_url}}"}
+                      %a.nav-link{href: "{{admin_home_url}}"}
                         {% trans "admin" %}
                   - if request.user.is_company_admin
                     {% url 'company_dashboard' as company_dashboard_url %}
                     %li.adminBtn{class: "{% if request.resolver_match.url_name == 'company_dashboard' or request.resolver_match.url_name == 'company_details' or request.resolver_match.url_name == 'company_course_details' %}active{% endif %}"}
-                      %a.nav-link.ome.dome-c{href: "{{company_dashboard_url}}"}
+                      %a.nav-link{href: "{{company_dashboard_url}}"}
                         {% trans "company admin" %}
                   - if request.user.is_mcka_ta
                     {% url 'workgroup_list' as workgroup_list_url %}
                     %li.adminBtn{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
-                      %a.nav-link.ome.dome-c{href: "{{workgroup_list_url}}"}
+                      %a.nav-link{href: "{{workgroup_list_url}}"}
                         {% trans "ta" %}
 
                   - if learner_dashboards|length > 1
                     %li{class: "{% if 'learnerdashboard' in request.path %}active{% endif %}"}
-                      %a.nav-link.dropdown-toggle.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
+                      %a.nav-link.dropdown-toggle{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
                         {% trans "dashboard" %}
 
                       %div{'class' : 'dropdown-menu-left dropdown-menu middle-menu clearfix dashboard-menu'}
                         %ul.sub-nav
                           - for dashboard in learner_dashboards
                             %li
-                              %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
+                              %a.dropdown-item.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
                                 - if current_ld_course and dashboard.course_id == current_ld_course
                                   %span.bookmark.secondary
                                     %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
@@ -113,12 +113,12 @@
 
                   - elif learner_dashboards|length == 1
                     %li{class: "{% if 'learnerdashboard' in request.path %}active{% endif %}"}
-                      %a.nav-link.ome.dome-c{"aria-expanded": "false", "aria-haspopup": "true", :href => "/courses/{{learner_dashboards.0.course_id}}", :role => "button"}
+                      %a.nav-link{"aria-expanded": "false", "aria-haspopup": "true", :href => "/courses/{{learner_dashboards.0.course_id}}", :role => "button"}
                         {% trans "dashboard" %}
 
                   {% url 'courses' as courses_url %}
                   %li#mycoursestab{class: "{% if request.path == courses_url %}active{% endif %}" }
-                    %a.nav-link.ome.dome-c{href: "{{courses_url}}"}
+                    %a.nav-link{href: "{{courses_url}}"}
                       {% trans "my courses" %}
                   - if show_my_courses and learner_dashboards|length == 0
                     %script

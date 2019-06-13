@@ -247,7 +247,6 @@
     }
   }
   a {
-    color: var(--primary);
     text-decoration: none;
   }
 }
@@ -302,15 +301,6 @@
         color: $gray;
       }
     }
-  }
-  .btn {
-    background: var(--primary);
-    color: $white;
-  }
-  .btn.disabled {
-    background: $gray !important;
-    border-color: $gray !important;
-    cursor: disabled;
   }
 }
 
@@ -476,7 +466,6 @@
   .courseStatsButton {
     padding: 0 0 7px;
     a {
-      color: var(--primary);
       &:hover {
         text-decoration: none;
       }
@@ -710,7 +699,7 @@
 }
 
 .bbGrid-grid-head, .bbGrid-container thead, .primaryBgLighten, .tableHeaderArea.stats , #branding-color{
-  background: var(--branding-lightened-color);
+  background: var(--secondary-lighten-60);
 }
 
 #mainCompanyDashboardContainer {
@@ -731,6 +720,12 @@
     overflow: hidden;
   }
   .companyTableWrap {
+    a:not(.btn) {
+      color: var(--primary);
+      &:hover{
+        color: var(--primary-darken-30);
+      }
+    }
     .companyDashboardCompanyContainerTable {
       width: 100%;
       background: $white;

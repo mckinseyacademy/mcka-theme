@@ -232,6 +232,11 @@ body{
         g {
           fill: var(--primary);
         }
+        &:hover {
+          g {
+            fill: var(--primary-darken-30);
+          }
+        }
       }
     }
     h5 {

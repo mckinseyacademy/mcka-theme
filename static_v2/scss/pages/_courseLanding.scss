@@ -74,7 +74,6 @@
       display: inline-block;
       vertical-align: top;
       text-decoration: none;
-      color: var(--primary);
       font-size: 12px;
       &:after {
         font-family: 'Material Icons';
@@ -245,9 +244,14 @@
       z-index: 2;
       width: 20px;
       pointer-events: none;
+      svg{
+        path {
+          color: var(--secondary);
+        }
+      }
     }
     > a {
-      &:hover {
+      &:hover{
         text-decoration: none;
       }
     }
@@ -264,7 +268,7 @@
       bottom: auto;
       height: 100%;
       text-align: left;
-      background-color: lighten($secondary, 50);
+      background-color: var(--secondary-lighten-60);
       font-style: italic;
       color: #191561;
       opacity: 0;
@@ -294,6 +298,7 @@
 
     &:hover {
       .description {
+        opacity: 1;
         &.no-data {
           z-index: 0;
         }
@@ -593,10 +598,6 @@
           color: $black;
           font-size: 1rem;
           line-height: 22px;
-
-          > a {
-            color: var(--primary);
-          }
         }
       }
     }

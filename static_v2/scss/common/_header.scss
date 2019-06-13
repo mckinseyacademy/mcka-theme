@@ -188,6 +188,7 @@ header {
         > li { margin-bottom: 0;}
       }
     }
+
   }
   .container{
     padding: 0 15px !important;
@@ -198,7 +199,6 @@ header {
 .profileDropdown {
   .header {
     .edit-link {
-      color: var(--primary);
       font-size: 12px;
       letter-spacing: 0.02em;
       line-height: 17px;
@@ -417,7 +417,6 @@ header {
       line-height: 16px;
       text-align: center;
       > a {
-        color: var(--primary);
         padding: 0 0 18px;
 
         &:before {
@@ -455,11 +454,6 @@ header {
           &:after {
             display: none;
           }
-        }
-      }
-      .dropdown-menu {
-        > a {
-          color: var(--primary);
         }
       }
     }
@@ -532,7 +526,6 @@ header {
 .mainNav {
   .dropdown-menu {
     > a {
-      color: var(--primary);
       font-size: 0.75rem;
       letter-spacing: 0.02em;
       font-weight: normal;

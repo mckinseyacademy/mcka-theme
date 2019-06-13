@@ -33,7 +33,7 @@
       z-index: 5;
       @include square-size(78px);
       &.filled {
-        background-color: lighten($secondary, 10%);
+        background-color: var(--secondary-lighten-60);
         opacity: 0.3;
       }
     }
@@ -52,7 +52,7 @@
       @include square-size(35px);
       @include font-size(15);
       &.filled {
-        background-color: darken($secondary, 20%);
+        background-color: var(--secondary-darken-30);
       }
     }
   }

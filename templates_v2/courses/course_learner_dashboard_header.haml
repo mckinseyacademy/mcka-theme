@@ -7,19 +7,19 @@
           #pnProductNavContents.mainNav.pn-ProductNav_Contents.ld-nav
             %ul
               %li{"class": "{% ifequal request.resolver_match.url_name 'course_learner_dashboard' %}active{% endifequal %}"}
-                %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}"} {% trans "Home" %}
+                %a{:href => "/learnerdashboard/#{learner_dashboard.id}"} {% trans "Home" %}
               - if calendar_enabled and not mobile_device
                 %li.calendar.hasDropdown
-                  %a.ome.dome-c#open-calendar.dropdown-toggle{:data-toggle => "dropdown", :href => "#"} {% trans "Calendar" %}
+                  %a#open-calendar.dropdown-toggle{:data-toggle => "dropdown", :href => "#"} {% trans "Calendar" %}
               - if feature_flags.discussions
                 %li{"class": "{% ifequal request.resolver_match.url_name 'course_discussion_learner_dashboard' %}active{% endifequal %}"}
-                  %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/discussion"} {% trans "Discussion" %}
+                  %a{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/discussion"} {% trans "Discussion" %}
               - if feature_flags.group_work
                 %li{"class": "{% if request.resolver_match.url_name == 'user_course_group_work_learner_dashboard' or  request.resolver_match.url_name == 'workgroup_course_group_work' %}active{% endif %}"}
-                  %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work"} {% trans "Miniboard" %}
+                  %a{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{course_id}/group_work"} {% trans "Miniboard" %}
               - if feature_flags.resources
                 %li{"class": "{% ifequal request.resolver_match.url_name 'course_resources_learner_dashboard' %}active{% endifequal %}"}
-                  %a.ome.dome-c{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/resources"} {% trans "Resources" %}
+                  %a{:href => "/learnerdashboard/#{learner_dashboard.id}/courses/#{learner_dashboard.course_id}/resources"} {% trans "Resources" %}
 
 
       %button#pnAdvancerLeft.pn-Advancer.pn-Advancer_Left{"type": "button"}

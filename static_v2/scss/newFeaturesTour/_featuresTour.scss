@@ -91,6 +91,9 @@
       position: relative;
       overflow: hidden;
       border-radius: 100%;
+      &:hover {
+        background: var(--primary-darken-30);
+      }
       > span {
         display: block;
         background-image: none;

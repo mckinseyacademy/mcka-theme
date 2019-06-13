@@ -16,7 +16,7 @@
               .headerArea.lesson-title
                 .lesson-dropdown-frame
                   .lesson-dropdown-holder
-                    %a.ome.dome-c.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
+                    %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#"}
                       - if lesson_custom_label
                         {% blocktrans with lesson_index=course.current_lesson.index %} {{lesson_custom_label}} {{lesson_index}}:{% endblocktrans %}
                       - else
@@ -27,16 +27,16 @@
 
                 %h2
                   - if lesson_custom_label and modules_custom_label
-                    %a.ome.dome-c.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                    %a.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
                       = course.current_module.name
                   - elif lesson_custom_label
-                    %a.ome.dome-c.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+                    %a.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
                       = course.current_module.name
                   - elif modules_custom_label
-                    %a.ome.dome-c.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+                    %a.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
                       = course.current_module.name
                   - else
-                    %a.ome.dome-c.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
+                    %a.pn-ProductNav_Link.dropdown-toggle.forModule{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
                       = course.current_module.name
 
                   .dropdown-menu.allLessons.allModules{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
@@ -49,7 +49,7 @@
 
                       - for module in course.current_lesson.modules
                         %li{"class": "courseRow {% if module.is_started %}active{% else %}locked{% endif %} {% if module.progress == 100 %}complete{% else %}{% endif %}"}
-                          %a.ome.dome-c.holder{:href => "#{module.navigation_url}"}
+                          %a.holder{:href => "#{module.navigation_url}"}
 
                             .data.serial
                               - if module_custom_label
@@ -80,12 +80,12 @@
                                 %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
 
                 .zoomWrap
-                  %a.ome.zoomout.longTapPopover{ :data-content => "{% trans 'Show fullscreen' %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :href => "#", :title => "", :oncontextmenu => "return false;"}
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="icon/fullscreen-expand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="dome-f" d="M24,16 L24,24 L16,24 L19.072,20.928 L15.2,17.12 L17.12,15.2 L20.928,19.072 L24,16 Z M8,24 L0,24 L0,16 L3.072,19.072 L6.88,15.2 L8.8,17.12 L4.928,20.928 L8,24 Z M0,8 L0,-7.10542736e-15 L8,-7.10542736e-15 L4.928,3.072 L8.8,6.88 L6.88,8.8 L3.072,4.928 L0,8 Z M16,-7.10542736e-15 L24,-7.10542736e-15 L24,8 L20.928,4.928 L17.12,8.8 L15.2,6.88 L19.072,3.072 L16,-7.10542736e-15 Z" id="fullscreen-expand" fill="" fill-rule="nonzero"></path></g></svg>
+                  %a.zoomout.longTapPopover{ :data-content => "{% trans 'Show fullscreen' %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :href => "#", :title => "", :oncontextmenu => "return false;"}
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="icon/fullscreen-expand" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M24,16 L24,24 L16,24 L19.072,20.928 L15.2,17.12 L17.12,15.2 L20.928,19.072 L24,16 Z M8,24 L0,24 L0,16 L3.072,19.072 L6.88,15.2 L8.8,17.12 L4.928,20.928 L8,24 Z M0,8 L0,-7.10542736e-15 L8,-7.10542736e-15 L4.928,3.072 L8.8,6.88 L6.88,8.8 L3.072,4.928 L0,8 Z M16,-7.10542736e-15 L24,-7.10542736e-15 L24,8 L20.928,4.928 L17.12,8.8 L15.2,6.88 L19.072,3.072 L16,-7.10542736e-15 Z" id="fullscreen-expand" fill="" fill-rule="nonzero"></path></g></svg>
 
 
-                  %a.ome.zoomIn.longTapPopover{ :data-content => "{% trans 'Exit fullscreen' %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :href => "#", :title => "", :oncontextmenu => "return false;"}
-                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="icon/fullscreen-collapse" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path class="dome-f" d="M15.2094358,23.2018423 L15.1706094,15.2091144 L23.1669729,15.1703056 L20.1112787,18.2544157 L24,22.0401707 L22.0901911,23.9677395 L18.2651301,20.1177322 L15.2094358,23.2018423 Z M0.76233073,15.2173709 L8.75854904,15.1517736 L8.82411654,23.1443568 L5.72839079,20.1003943 L1.95395394,24 L0.0191253463,22.0975234 L3.85805648,18.2613335 L0.76233073,15.2173709 Z M8.79671512,0.803045159 L8.79233946,8.79586804 L0.795880878,8.79149039 L3.86820123,5.72392742 L-1.23989707e-12,1.91722686 L1.92020022,6.35935749e-13 L5.72439477,3.87060813 L8.79671512,0.803045159 Z M23.1829674,8.79787277 L15.1865156,8.78805946 L15.1963334,0.795243396 L18.2632008,3.86825308 L22.0742637,0.00440123623 L23.9910558,1.92503229 L20.1160999,5.72486309 L23.1829674,8.79787277 Z" id="fullscreen-collapse" fill=""></path></g></svg>
+                  %a.zoomIn.longTapPopover{ :data-content => "{% trans 'Exit fullscreen' %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :href => "#", :title => "", :oncontextmenu => "return false;"}
+                    <svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g id="icon/fullscreen-collapse" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"><path d="M15.2094358,23.2018423 L15.1706094,15.2091144 L23.1669729,15.1703056 L20.1112787,18.2544157 L24,22.0401707 L22.0901911,23.9677395 L18.2651301,20.1177322 L15.2094358,23.2018423 Z M0.76233073,15.2173709 L8.75854904,15.1517736 L8.82411654,23.1443568 L5.72839079,20.1003943 L1.95395394,24 L0.0191253463,22.0975234 L3.85805648,18.2613335 L0.76233073,15.2173709 Z M8.79671512,0.803045159 L8.79233946,8.79586804 L0.795880878,8.79149039 L3.86820123,5.72392742 L-1.23989707e-12,1.91722686 L1.92020022,6.35935749e-13 L5.72439477,3.87060813 L8.79671512,0.803045159 Z M23.1829674,8.79787277 L15.1865156,8.78805946 L15.1963334,0.795243396 L18.2632008,3.86825308 L22.0742637,0.00440123623 L23.9910558,1.92503229 L20.1160999,5.72486309 L23.1829674,8.79787277 Z" id="fullscreen-collapse" fill=""></path></g></svg>
 
 
               - block lesson_content

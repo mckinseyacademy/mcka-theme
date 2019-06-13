@@ -82,19 +82,19 @@
                                   %span #{lesson.index}:
                           - if lesson.is_started
                             - if lesson_custom_label and modules_custom_label
-                              %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                              %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
                                 = lesson.name
                             - elif lesson_custom_label
-                              %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+                              %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
                                 = lesson.name
                             - elif modules_custom_label
-                              %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+                              %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
                                 = lesson.name
                             - else
-                              %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
+                              %a.pn-ProductNav_Link.dropdown-toggle{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
                                 = lesson.name
                           - else
-                            %a.pn-ProductNav_Link.ome.dome-c
+                            %a.pn-ProductNav_Link
                               - if lesson_custom_label and modules_custom_label
                                 = lesson.name
                               - elif lesson_custom_label
@@ -116,7 +116,7 @@
 
                                 - for module in lesson.modules
                                   %li{"class": "courseRow {% if module.is_started %}active{% else %}locked{% endif %} {% if module.progress == 100 %}complete{% else %}{% endif %}"}
-                                    %a.holder.ome.dome-c{"href": "{% if lesson.is_started %}#{module.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
+                                    %a.holder{"href": "{% if lesson.is_started %}#{module.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
                                       .data.serial
                                         - if module_custom_label
                                           {% blocktrans with module_index=module.index %}
@@ -161,7 +161,7 @@
                                   panorama_fish_eye
 
                               .lesson-item-name
-                                %a.gw-links.ome.dome-c{"href": "#{activity.link}"}
+                                %a.gw-links{"href": "#{activity.link}"}
                                   #{activity.name}
                                 %span.due-date
                                   = activity.due_on
@@ -212,7 +212,7 @@
                           .lesson-item-name
                             %i{:class => "status material-icons{% if module.progress == 100 %} complete{% endif %}"}
                               {% if module.progress == 100 %}check_circle {% else %} panorama_fish_eye{% endif %}
-                            %a.ome.dome-c{"href": "#{module.navigation_url}"}
+                            %a{"href": "#{module.navigation_url}"}
                               #{module.lesson_name}: {{ module.name|translate_assessment_if_needed }}
                       %td.number{"class": "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
                   - if feature_flags.group_work
@@ -224,7 +224,7 @@
                               .lesson-item-name
                                 %i.status.complete.material-icons
                                   check_circle
-                                %a.ome.dome-c{"href": "#{activity.link}"}
+                                %a{"href": "#{activity.link}"}
                                   {% trans "Group Work" %}
                                 =activity.name
                           - ifequal activity.score None
@@ -238,7 +238,7 @@
                               .lesson-item-name
                                 %i.status.material-icons
                                   panorama_fish_eye
-                                %a.ome.dome-c{"href": "#{activity.link}"}
+                                %a{"href": "#{activity.link}"}
                                   {% trans "Group Work" %}
                                 =activity.name
                           - if activity.is_pending
@@ -255,7 +255,7 @@
               %p.note-progress
                 %span
                   {% trans "You need a combined course grade of at least 70% to earn a certificate of completion. Your final grade is calculated as follows:" %} {{graders}}.
-                  %a.edit-link.ome.dome-c{:data-target => "#progressModal", :data-toggle => "modal", :href => "#"} {% trans "Click here" %}
+                  %a.edit-link{:data-target => "#progressModal", :data-toggle => "modal", :href => "#"} {% trans "Click here" %}
                   {% trans "to read more about how we may share your course information." %}
           - if feature_flags.discussions
             .contentCard.course-page.engagement-data#engagement-block
@@ -304,5 +304,5 @@
         .modal-body
           %p
             {% trans "If you are participating in McKinsey Academy as part of an employer-sponsored program, we may provide access to certain of your personally-identifiable information, including the courses you are taking, your progress through those courses and your level of achievement (including your grades) and participation in those courses, to your employer, in order to help them and you evaluate McKinsey Academy and its value to you and to your company. You could read more about our privacy and information sharing practices in our" %}
-            %a.ome.dome-c{'href': '/privacy'}
+            %a{'href': '/privacy'}
               {% trans "privacy policy." %}

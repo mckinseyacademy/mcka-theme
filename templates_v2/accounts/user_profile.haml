@@ -23,8 +23,8 @@
                   {% trans "Select New Profile Image" %}
               .inputFileWrap.clearfix
                 .file-upload
-                  .file-select.ome
-                    .file-select-button.btn.btn-primary.dome-bc{:id => ""}
+                  .file-select
+                    .file-select-button.btn.btn-primary{:id => ""}
                       {% trans "browse" %}
                     #noFile.file-select-name
                       {% trans "No file selected" %}
@@ -44,7 +44,7 @@
                 %input.x1-position{'type': 'hidden', 'name': 'x1-position'}
                 %input.y1-position{'type': 'hidden', 'name': 'y1-position'}
 
-              %button.btn.btn-primary.ome.dome-bc#crop-save{:type => "submit"}
+              %button.btn.btn-primary#crop-save{:type => "submit"}
                 %span#spinner
                 {% trans "Crop & Save" %}
 
