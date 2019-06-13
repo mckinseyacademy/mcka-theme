@@ -21,12 +21,9 @@
       %meta{name: "description", content: "{% trans 'McKinsey Academy helps organizations thrive by accelerating their talent advantage' %}"}
       %meta{property: "og:description", content: "{% trans 'McKinsey Academy helps organizations thrive by accelerating their talent advantage' %}"}
 
-    %script{src: "{% static 'js/css-vars-ponyfill.js' %}"}
-
     {% assets "css_core_v2" %}
       %link.pony{rel: "stylesheet", href: "{{ ASSET_URL }}"}
     {% endassets %}
-
 
     %script
       var primary = null;
@@ -54,23 +51,6 @@
       %script
         var secondary = "{{client_customization.hex_background_bar}}";
         var header_top = "{{client_customization.hex_background_bar}}";
-
-
-    %script
-      var variables = {}
-      if (primary !== null){
-        variables = {
-          '--primary': primary,
-          '--secondary': secondary,
-          '--header-top': header_top
-          };
-      }
-      cssVars({
-        onlyVars: true,
-        include: 'link.pony',
-        variables: variables,
-        watch: true
-      });
 
     - block open_graph
       %meta{property: "og:site_name", content: "{% trans 'McKinsey Academy' %}"}
@@ -102,20 +82,31 @@
     - block css
     - if xblock_theme_css_path
       %link.pony{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
-      %link{rel: "stylesheet", href: "{% static 'css/cropper.css' %}"}
-
 
     - if LANGUAGE_BIDI
-      {% assets "scss_rtl_v2" %}
+      {% assets "css_rtl_v2" %}
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
     - else
-      {% assets "scss_ltr_v2" %}
+      {% assets "css_ltr_v2" %}
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
 
     -# Custom head JS
     - block head_js
+      -# Override if you need another version of jQuery
+      - block jquery
+        %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"}
+
+      - block underscore
+        %script{src: "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"}
+
+      - block i18n
+        %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
+
+      {% assets "js_all_v2" %}
+        %script{src: "{{ ASSET_URL }}"}
+      {% endassets %}
 
     - if ga_tracking_id
       %script
@@ -166,15 +157,6 @@
           }
         }
 
-    -# Override if you need another version of jQuery
-    - block jquery
-      %script{src: "{% static 'js/jquery-1.11.2.min.js' %}"}
-
-    -# edx-notifications script dependencies
-    - block edx_notifications
-      %script{src: "{% static 'js/vendor/underscore.js' %}"}
-      %script{src: "{% static 'js/vendor/backbone.js' %}"}
-      %script{src: "{% static 'js/vendor/date.js' %}"}
     -# custom js libs
     - block custom_js
 
@@ -217,25 +199,6 @@
     -# Footer
     - block footer
       - include 'footer.haml'
-
-    -# i18n JS Catalog
-    - block i18n
-      %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
-
-    -# jQuery-cookie
-    - block jquery_cookie
-      %script{src: "{% static 'js/vendor/jquery.cookie.js' %}"}
-
-    -# jQuery-xblock
-    - block jquery_xblock
-      %script{src: "{% static 'js/vendor/jquery.xblock.js' %}"}
-
-    -# Bootstrap JS
-    - block bootstrap_js
-      %script{src: "{% static 'js/bootstrap.bundle.min.js' %}"}
-    
-    - block %jquery_validation
-      %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.8.1/jquery.validate.js"}
 
     -# JS - custom snippets
     - block js_snippets
@@ -408,7 +371,36 @@
       %script{src: "{% static 'js/new_ui_tour.js' %}"}
     %script{src: "{% static 'js/jpreLoader.min.js' %}"}
 
-    %script{src: "{% static 'js/shader.js' %}"}
+    -# Custom JS
+    - block body_js
+
+    - if xblock_theme_js_path
+      %script{src: "{% static xblock_theme_js_path %}"}
+    -# Session Timeout
+    %script
+      var apros_session_timeout_seconds = {{apros_session_timeout_seconds}};
+
+    %script
+      if (window.location.search === '?reset-password') {
+          $("#password-reset-modal").modal("show");
+      }
+
+    %script
+      var variables = {}
+      if (primary !== null){
+        variables = {
+          '--primary': primary,
+          '--secondary': secondary,
+          '--header-top': header_top
+          };
+      }
+      cssVars({
+        onlyVars: true,
+        include: 'link.pony',
+        variables: variables,
+        watch: true
+      });
+
     %script
       if(!navigator.userAgent.match(/Trident.*rv\:11\./))
       {
@@ -423,30 +415,3 @@
           root.style.setProperty('--branding-lightened-color', lighten("#0093d3", 90));
         }
       }
-
-    -# Custom JS
-    - block body_js
-      {% assets "js_all_v2" %}
-        %script{src: "{{ ASSET_URL }}"}
-      {% endassets %}
-
-    - if xblock_theme_js_path
-      %script{src: "{% static xblock_theme_js_path %}"}
-    -# Session Timeout
-    %script
-      var apros_session_timeout_seconds = {{apros_session_timeout_seconds}};
-    %script{src: "{% static 'js/session_timeout_timer.js' %}"}
-    %script{src: "{% static 'js/image_editor.js' %}"}
-    %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
-
-    %script
-      if (window.location.search === '?reset-password') {
-          $("#password-reset-modal").modal("show");
-      }
-
-      $(document).ready(function () {
-
-          $('body').jpreLoader();
-
-      });
-

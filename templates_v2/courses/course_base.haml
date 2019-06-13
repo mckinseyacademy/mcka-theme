@@ -1,4 +1,5 @@
 - extends "layout.haml"
+- load assets
 - load i18n
 
 - block page_title
@@ -12,9 +13,9 @@
 - block help_context
 
 - block navigation_content
- - include "courses/course_navigation.haml"
+  - include "courses/course_navigation.haml"
 
-
+- block custom_js
   %script
     $(function(){
       $(".headerNav li#mycoursestab").addClass('active');

@@ -166,7 +166,7 @@ $(".ome").mouseenter(function (e) {
     }
 });
 
-if (secondary !== undefined) {
+if (window.secondary) {
     $('.visualization .filled.band-2').css('background-color', lighten(secondary, 60));
     $('.visualization .filled.total').css('background-color', darken(secondary, 30));
 
