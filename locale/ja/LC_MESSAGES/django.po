@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-21 13:51+0000\n"
+"POT-Creation-Date: 2019-05-20 07:47+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: accounts/controller.py:136
+#: accounts/controller.py:134
 #, python-brace-format
 msgid ""
 "Access Key {key} is associated with company {company}, but you're not "
@@ -26,30 +26,30 @@ msgstr ""
 "アクセスキー{key}は会社と関連付けられていますが{company}、あなたはそれによっ"
 "て登録されていません。"
 
-#: accounts/controller.py:204
+#: accounts/controller.py:201
 msgid "Unable to enroll you in the requested program, {}. No remaining places."
 msgstr "要求されたプログラム{}に登録することができません。定員に達しています。"
 
-#: accounts/controller.py:229 accounts/controller.py:260
+#: accounts/controller.py:226 accounts/controller.py:257
 msgid "Successfully enrolled you in a course {}."
 msgstr "{}コースに無事登録が完了しました。"
 
-#: accounts/controller.py:238 accounts/controller.py:269
+#: accounts/controller.py:235 accounts/controller.py:266
 msgid "Unable to enroll you in course \"{}\"."
 msgstr "「{}」コースに登録することができません。"
 
-#: accounts/controller.py:243
+#: accounts/controller.py:240
 msgid ""
 "Unable to enroll you in course \"{}\" - it is no longer part of your program."
 msgstr ""
 "「{}」コースに登録することができません。あなたのプログラムにもう含まれていま"
 "せん。"
 
-#: accounts/controller.py:332
+#: accounts/controller.py:329
 msgid "Problem with course enrollment"
 msgstr "コース登録で問題が発生しました"
 
-#: accounts/controller.py:456
+#: accounts/controller.py:453
 msgid "Demo Registration - Warning"
 msgstr "デモ登録: 警告"
 
@@ -1107,15 +1107,7 @@ msgstr "パスワード{html_span}"
 msgid "Username or Email {html_span}"
 msgstr "ユーザー名またはEメール{html_span}"
 
-#: accounts/forms.py:412
-msgid ""
-"Please enter a valid username or email containing only english characters "
-"and numerals, and the following special characters @ . _ -"
-msgstr ""
-"英語の文字および数字と特殊文字「@ . _ -」のみを含む有効なユーザー名または E "
-"メール アドレスを入力してください。"
-
-#: accounts/forms.py:422 accounts/forms.py:443
+#: accounts/forms.py:406 accounts/forms.py:427
 #, python-brace-format
 msgid ""
 "I agree to the {html_anchor_start} Terms of Service {html_anchor_end} and "
@@ -1125,12 +1117,19 @@ msgstr ""
 "{html_anchor_second}プライバシーに関する方針{html_anchor_end}に同意します"
 "{html_span}"
 
-#: accounts/forms.py:435
+#: accounts/forms.py:412
+msgid ""
+"Please enter a valid username or email containing only english characters "
+"and numerals, and the following special characters @ . _ -"
+msgstr ""
+"英語の文字および数字と特殊文字「@ . _ -」のみを含む有効なユーザー名または E メール アドレスを入力してください。"
+
+#: accounts/forms.py:419
 msgid "You must accept terms of service in order to continue"
 msgstr "続行するには、サービス利用規約に同意してください"
 
-#: accounts/forms.py:467 accounts/forms.py:525 accounts/forms.py:543
-#: accounts/forms.py:660 admin/controller.py:809 admin/views.py:2690
+#: accounts/forms.py:451 accounts/forms.py:509 accounts/forms.py:527
+#: accounts/forms.py:644 admin/controller.py:807 admin/views.py:2694
 #: marketing/forms.py:47 marketing/forms.py:93 marketing/forms.py:132
 #: templates/accounts/user_profile.haml:33
 #: templates/admin/participants/activation_link_modal.haml:13
@@ -1139,12 +1138,12 @@ msgstr "続行するには、サービス利用規約に同意してください
 #: templates/courses/course_discussion_ld.haml:78
 #: templates/courses/group_work/group_member.haml:11
 #: templates_v2/courses/course_discussion.haml:67
-#: templates_v2/courses/course_discussion_ld.haml:69
+#: templates_v2/courses/course_discussion_ld.haml:76
 #: templates_v2/courses/group_work/group_member.haml:11
 msgid "Email"
 msgstr "Eメール"
 
-#: accounts/forms.py:473
+#: accounts/forms.py:457
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later and cannot "
@@ -1153,7 +1152,7 @@ msgstr ""
 "公開ユーザー名 {html_span_start}これは後で変更することができません。また、英"
 "字以外の文字は使用できません。{html_span_end}"
 
-#: accounts/forms.py:484 accounts/forms.py:672
+#: accounts/forms.py:468 accounts/forms.py:656
 #, python-brace-format
 msgid ""
 "Password {html_span_start} Must be at least 8 characters and include upper "
@@ -1162,7 +1161,7 @@ msgstr ""
 "パスワード {html_span_start}最低8文字で大文字と小文字を含み、数字あるいは特殊"
 "文字も含める必要があります。{html_span_end}"
 
-#: accounts/forms.py:492 admin/views.py:2690 marketing/forms.py:141
+#: accounts/forms.py:476 admin/views.py:2694 marketing/forms.py:141
 #: templates/admin/participants/participant_details.haml:124
 #: templates/admin/participants/participants_list.haml:36
 #: templates/admin/permissions/list.haml:36
@@ -1170,73 +1169,72 @@ msgstr ""
 msgid "Company"
 msgstr "会社"
 
-#: accounts/forms.py:493 admin/controller.py:809
+#: accounts/forms.py:477 admin/controller.py:807
 msgid "Full Name"
 msgstr "氏名"
 
-#: accounts/forms.py:494 admin/controller.py:809 marketing/forms.py:149
+#: accounts/forms.py:478 admin/controller.py:807 marketing/forms.py:149
 #: templates/accounts/user_profile.haml:24
 #: templates/admin/learner_dashboard/discovery_list.haml:12
 #: templates/admin/learner_dashboard/element_list.haml:13
-#: templates_v2/layout.haml:247
+#: templates_v2/layout.haml:283
 msgid "Title"
 msgstr "役職"
 
-#: accounts/forms.py:498
+#: accounts/forms.py:482
 #, python-brace-format
 msgid "City {html_span}"
 msgstr "都市{html_span}"
 
-#: accounts/forms.py:502
+#: accounts/forms.py:486
 msgid "Country"
 msgstr "国"
 
-#: accounts/forms.py:552
+#: accounts/forms.py:536
 msgid "The account associated with this email is not activated yet"
 msgstr "このEメールアドレスに対応するアカウントはまだ有効になっていません"
 
-#: accounts/forms.py:588
-#: templates_v2/registration/password_reset_confirm.haml:108
+#: accounts/forms.py:572
 msgid "The two password fields didn't match."
 msgstr "2つのパスワード欄が一致しませんでした。"
 
-#: accounts/forms.py:589
+#: accounts/forms.py:573
 msgid "Password doesn't match creation criteria."
 msgstr "パスワードが基準を満たしていません。"
 
-#: accounts/forms.py:591
+#: accounts/forms.py:575
 msgid "New password"
 msgstr "新しいパスワード"
 
-#: accounts/forms.py:594
+#: accounts/forms.py:578
 msgid "New password confirmation"
 msgstr "新しいパスワードの確認"
 
-#: accounts/forms.py:625 admin/forms.py:199
+#: accounts/forms.py:609 admin/forms.py:193
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "対応形式: JPG、PNG、GIF"
 
-#: accounts/forms.py:632 templates/admin/course_run/view.haml:63
+#: accounts/forms.py:616 templates/admin/course_run/view.haml:63
 #: templates/admin/participants/participant_details.haml:91
 #: templates_v2/accounts/public_registration.haml:55
 msgid "First Name"
 msgstr "名"
 
-#: accounts/forms.py:634
+#: accounts/forms.py:618
 msgid "First Name is required."
 msgstr "有効なEメールが必要です"
 
-#: accounts/forms.py:638
+#: accounts/forms.py:622
 #: templates/admin/participants/participant_details.haml:96
 #: templates_v2/accounts/public_registration.haml:60
 msgid "Last Name"
 msgstr "氏"
 
-#: accounts/forms.py:640
+#: accounts/forms.py:624
 msgid "Last Name is required."
 msgstr "有効なEメールが必要です"
 
-#: accounts/forms.py:664
+#: accounts/forms.py:648
 #, python-brace-format
 msgid ""
 "Public username {html_span_start} This cannot be changed later. "
@@ -1245,32 +1243,32 @@ msgstr ""
 "公開ユーザー名 {html_span_start}これは後で変更することができません。"
 "{html_span_end}"
 
-#: accounts/forms.py:714
+#: accounts/forms.py:698
 #, python-brace-format
 msgid "First Name {html_span}"
 msgstr "名 {html_span}"
 
-#: accounts/forms.py:718
+#: accounts/forms.py:702
 #, python-brace-format
 msgid "Last Name {html_span}"
 msgstr "氏 {html_span}"
 
-#: accounts/forms.py:722
+#: accounts/forms.py:706
 #, python-brace-format
 msgid "Company Name {html_span}"
 msgstr "会社名 {html_span}"
 
-#: accounts/forms.py:726
+#: accounts/forms.py:710
 #, python-brace-format
 msgid "Company Email {html_span}"
 msgstr "会社Eメール {html_span}"
 
-#: accounts/forms.py:730
+#: accounts/forms.py:714
 #, python-brace-format
 msgid "Current Role {html_span}"
 msgstr "現在のロール {html_span}"
 
-#: accounts/forms.py:734
+#: accounts/forms.py:718
 #, python-brace-format
 msgid ""
 "{html_div_start}Note: personal email addresses will not be "
@@ -1278,49 +1276,49 @@ msgid ""
 msgstr ""
 "{html_div_start}注: 個人のEメールアドレスは処理されません{html_div_end}"
 
-#: accounts/forms.py:740 accounts/forms.py:746
+#: accounts/forms.py:724 accounts/forms.py:730
 #, python-brace-format
 msgid ""
 "{html_div_start}(please choose one of the following options) {html_div_end}"
 msgstr "{html_div_start}(以下から1つ選んでください){html_div_end}"
 
-#: accounts/forms.py:766 accounts/forms.py:774
+#: accounts/forms.py:750 accounts/forms.py:758
 #: templates_v2/accounts/public_registration.haml:120
 #: templates_v2/accounts/public_registration.haml:140
 msgid "Special characters or numbers are not valid."
 msgstr "特殊文字や数字は無効です。"
 
-#: accounts/forms.py:783
+#: accounts/forms.py:767
 msgid "Email must be a string."
 msgstr "Eメールは文字列であること。"
 
-#: accounts/forms.py:788
+#: accounts/forms.py:772
 #, python-brace-format
 msgid "Email '{email}' must be at least {min} characters long"
 msgstr "Eメール「{email}」は少なくとも{min}文字であること。"
 
-#: accounts/forms.py:795
+#: accounts/forms.py:779
 #, python-brace-format
 msgid "Email '{email}' must be at most {max} characters long"
 msgstr "Eメール「{email}」は最大{max}文字であること。"
 
-#: accounts/forms.py:805
+#: accounts/forms.py:789
 msgid "This email address has already been registered."
 msgstr "このEメールアドレスは既に登録されています。"
 
-#: accounts/forms.py:811
+#: accounts/forms.py:795
 msgid "Email you provided is not allowed."
 msgstr "入力したEメールアドレスは使用できません。"
 
-#: accounts/forms.py:813 templates_v2/accounts/public_registration.haml:178
+#: accounts/forms.py:797 templates_v2/accounts/public_registration.haml:178
 msgid "Please enter a valid company email address."
 msgstr "有効な会社Eメールアドレスを入力してください。"
 
-#: accounts/forms.py:831
+#: accounts/forms.py:815
 msgid "Special characters are not valid."
 msgstr "特殊文字は無効です。"
 
-#: accounts/forms.py:850
+#: accounts/forms.py:834
 msgid "Please enter a valid Role."
 msgstr "有効なロールを入力してください。"
 
@@ -1353,7 +1351,7 @@ msgstr "ログイン"
 msgid "Trouble logging in"
 msgstr "ログインに失敗しました"
 
-#: accounts/views.py:411
+#: accounts/views.py:411 accounts/views.py:440
 msgid "Username/email is not recognized. Try again."
 msgstr ""
 "ユーザー名/Eメールアドレスが確認できませんでした。もう一度試してください。"
@@ -1362,44 +1360,44 @@ msgstr ""
 msgid "Please enter a valid password."
 msgstr "有効なパスワードを入力してください。"
 
-#: accounts/views.py:623 accounts/views.py:691
+#: accounts/views.py:618 accounts/views.py:686
 msgid "Create my McKinsey Academy account"
 msgstr "McKinsey Academyアカウントを作成する"
 
-#: accounts/views.py:657
+#: accounts/views.py:652
 msgid "Invalid Activation Code"
 msgstr "無効なアクティベーションコード"
 
-#: accounts/views.py:679
+#: accounts/views.py:674
 msgid "Some required information was missing. Please check the fields below."
 msgstr "一部の必須情報がありません。以下の欄を確認してください。"
 
-#: accounts/views.py:730
+#: accounts/views.py:725
 msgid "No provider data found."
 msgstr "プロバイダのデータが見つかりません。"
 
-#: accounts/views.py:732
+#: accounts/views.py:727
 msgid "Provider data does not seem valid."
 msgstr "プロバイダのデータが無効です。"
 
-#: accounts/views.py:788
+#: accounts/views.py:783
 msgid "Access Key missing."
 msgstr "アクセスキーがありません。"
 
-#: accounts/views.py:805 accounts/views.py:812
+#: accounts/views.py:800 accounts/views.py:807
 msgid "REGISTER"
 msgstr ""
 
-#: accounts/views.py:861
+#: accounts/views.py:856
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "ユーザー登録が失敗しました: {exception_message}"
 
-#: accounts/views.py:863
+#: accounts/views.py:858
 msgid "Some required information was missing."
 msgstr "一部の必須情報がありません。"
 
-#: accounts/views.py:865
+#: accounts/views.py:860
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1407,22 +1405,22 @@ msgstr ""
 "認証クッキーがありません。セッションがタイムアウトになりました。最初からやり"
 "直してください。"
 
-#: accounts/views.py:914
+#: accounts/views.py:909
 msgid "Enter new password"
 msgstr "新しいパスワードを入力"
 
-#: accounts/views.py:931
+#: accounts/views.py:926
 msgid "Password reset unsuccessful"
 msgstr "パスワードの再設定に失敗しました"
 
-#: accounts/views.py:1029 lib/mail.py:133 templates/accounts/activate.haml:16
+#: accounts/views.py:1024 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:272
 #: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "Welcome to McKinsey Academy"
 msgstr "McKinsey Academyへようこそ"
 
-#: accounts/views.py:1030
+#: accounts/views.py:1025
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1431,7 +1429,7 @@ msgstr ""
 "あなたのプログラムは{days}日後に開始します。それまでは、サイト内の各ページの"
 "情報から体験内容をご確認ください。"
 
-#: accounts/views.py:1034
+#: accounts/views.py:1029
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1440,12 +1438,12 @@ msgstr ""
 "あなたのコースは{days}日後に開始します。コースが始まるまでは、サイト内の各"
 "ページの情報から提供内容をご確認ください。"
 
-#: accounts/views.py:1214 templates_v2/layout.haml:213
+#: accounts/views.py:1208 templates_v2/layout.haml:249
 msgid "Enter your full name"
 msgstr "氏名を入力してください"
 
-#: accounts/views.py:1216 accounts/views.py:1241 admin/views.py:2000
-#: admin/views.py:2034 admin/views.py:4733
+#: accounts/views.py:1210 accounts/views.py:1235 admin/views.py:2006
+#: admin/views.py:2040 admin/views.py:4725
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
 #: templates/admin/cohorts/course_details.html:38
@@ -1460,12 +1458,12 @@ msgstr "氏名を入力してください"
 #: templates/admin/learner_dashboard/preview.haml:34
 #: templates/admin/participants/participant_edit_status.haml:35
 #: templates/certificates/new_certificate_template.haml:21
-#: templates_v2/layout.haml:230 templates_v2/layout.haml:252
+#: templates_v2/layout.haml:266 templates_v2/layout.haml:288
 msgid "Save"
 msgstr "保存する"
 
-#: accounts/views.py:1239 templates_v2/header.haml:60
-#: templates_v2/layout.haml:239
+#: accounts/views.py:1233 templates_v2/header.haml:60
+#: templates_v2/layout.haml:275
 msgid "Enter your title"
 msgstr "役職を入力してください"
 
@@ -1532,7 +1530,7 @@ msgstr "生徒の登録でエラー発生: {reason} - {email}"
 msgid "Error processing data: {reason} - {email}"
 msgstr "データ処理でエラーが発生: {reason} - {email}"
 
-#: admin/controller.py:653 admin/controller.py:1278
+#: admin/controller.py:653 admin/controller.py:1276
 msgid "Activated"
 msgstr "有効化済み"
 
@@ -1544,80 +1542,80 @@ msgstr "アクティベーションレコードを取得できませんでした
 msgid "PROJECT"
 msgstr "プロジェクト"
 
-#: admin/controller.py:801
+#: admin/controller.py:799
 msgid "Client Name"
 msgstr "クライアント名"
 
-#: admin/controller.py:801 admin/views.py:4537 admin/views.py:4639
+#: admin/controller.py:799 admin/views.py:4529 admin/views.py:4631
 #: certificates/models.py:87 templates/admin/course_run/list.haml:25
 msgid "Course ID"
 msgstr "コースID"
 
-#: admin/controller.py:809
+#: admin/controller.py:807
 #: templates/admin/participants/participant_details.haml:103
 #: templates/admin/participants/participant_details.haml:205
 #: templates_v2/accounts/activate.haml:31
 msgid "Username"
 msgstr "ユーザー名"
 
-#: admin/controller.py:809
+#: admin/controller.py:807
 msgid "Progress %"
 msgstr "進度%"
 
-#: admin/controller.py:809
+#: admin/controller.py:807
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:141
-#: templates_v2/courses/course_cohort.haml:98
+#: templates_v2/courses/course_cohort.haml:99
 #: templates_v2/courses/visualizations/course_engagement.haml:11
 msgid "Engagement"
 msgstr "エンゲージメント"
 
-#: admin/controller.py:810 admin/views.py:4537
+#: admin/controller.py:808 admin/views.py:4529
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:64
-#: templates_v2/courses/course_cohort.haml:179
+#: templates_v2/courses/course_cohort.haml:181
 #: templates_v2/courses/visualizations/course_proficiency.haml:9
 msgid "Proficiency"
 msgstr "習熟度"
 
-#: admin/controller.py:810
+#: admin/controller.py:808
 #: templates/admin/client-admin/course_participants.haml:50
 msgid "Course Completed"
 msgstr "コース修了"
 
-#: admin/controller.py:831
+#: admin/controller.py:829
 msgid "0%"
 msgstr "0%"
 
-#: admin/controller.py:833 admin/views.py:1054 admin/views.py:1063
+#: admin/controller.py:831 admin/views.py:1059 admin/views.py:1068
 msgid "{}%"
 msgstr "{}%"
 
-#: admin/controller.py:1257
+#: admin/controller.py:1255
 msgid "# of posts"
 msgstr "投稿数"
 
-#: admin/controller.py:1258
+#: admin/controller.py:1256
 msgid "% participants posting"
 msgstr "投稿参加者%"
 
-#: admin/controller.py:1259
+#: admin/controller.py:1257
 msgid "Avg posts per participant"
 msgstr "参加者一人当たりの平均投稿数"
 
-#: admin/controller.py:1272
+#: admin/controller.py:1270
 msgid "Total Cohort"
 msgstr "合計コホート"
 
-#: admin/controller.py:1284
+#: admin/controller.py:1282
 msgid "Engaged"
 msgstr "エンゲージメント"
 
-#: admin/controller.py:1290
+#: admin/controller.py:1288
 msgid "Logged in over last 7 days"
 msgstr "過去7日間のログイン"
 
-#: admin/controller.py:1540
+#: admin/controller.py:1538
 msgid ""
 "Required fields missing; format is: FirstName, LastName, Email, Company, "
 "CourseID, Status"
@@ -1625,49 +1623,49 @@ msgstr ""
 "必須欄が入力されていません。形式は、名前、名字、Eメール、会社名、コースID、ス"
 "テータスです。"
 
-#: admin/controller.py:1588
+#: admin/controller.py:1586
 msgid "Could not parse user info from {}"
 msgstr "{}からユーザー情報を解析できませんでした"
 
-#: admin/controller.py:1644
+#: admin/controller.py:1642
 msgid "Activation record error"
 msgstr "アクティベーションレコードエラー"
 
-#: admin/controller.py:1646
+#: admin/controller.py:1644
 msgid "Processing Data Error"
 msgstr "データ処理エラー"
 
-#: admin/controller.py:1647
+#: admin/controller.py:1645
 msgid "Error processing data: {} "
 msgstr "データ処理でエラーが発生: {} - {}"
 
-#: admin/controller.py:1759
+#: admin/controller.py:1757
 msgid "This company already exists!"
 msgstr "この会社は既に存在します"
 
-#: admin/controller.py:1761
+#: admin/controller.py:1759
 msgid "Company Validation Success!"
 msgstr "会社の認証が無事完了しました"
 
-#: admin/controller.py:1828
+#: admin/controller.py:1826
 msgid "You have sent incorrect chunk number!"
 msgstr "送信したチャンク数は間違っています"
 
-#: admin/controller.py:1830
+#: admin/controller.py:1828
 msgid "You have sent incorrect task key!"
 msgstr "送信したタスクキーは間違っています"
 
-#: admin/controller.py:1847
+#: admin/controller.py:1845
 msgid "There are no users in organization!"
 msgstr "組織にユーザーがいません"
 
-#: admin/controller.py:2092 admin/controller.py:2093 admin/views.py:4028
-#: admin/views.py:4029 admin/views.py:4201 admin/views.py:6115
+#: admin/controller.py:2090 admin/controller.py:2091 admin/views.py:4018
+#: admin/views.py:4019 admin/views.py:4191 admin/views.py:6122
 msgid "No company"
 msgstr "会社がありません"
 
-#: admin/controller.py:2110 admin/views.py:4033 admin/views.py:4598
-#: admin/views.py:4625 templates/admin/client-admin/course_participants.haml:73
+#: admin/controller.py:2108 admin/views.py:4023 admin/views.py:4590
+#: admin/views.py:4617 templates/admin/client-admin/course_participants.haml:73
 #: templates/admin/companies/companies_list.haml:66
 #: templates/admin/mobile_apps/company_app_details.haml:46
 #: templates/admin/participants/participants_list.haml:76
@@ -1675,172 +1673,172 @@ msgstr "会社がありません"
 msgid "Yes"
 msgstr "はい"
 
-#: admin/controller.py:2112 admin/views.py:4035 admin/views.py:4600
-#: admin/views.py:4604 admin/views.py:4627 admin/views.py:4631
+#: admin/controller.py:2110 admin/views.py:4025 admin/views.py:4592
+#: admin/views.py:4596 admin/views.py:4619 admin/views.py:4623
 #: templates/admin/client-admin/course_participants.haml:75
 #: templates/admin/mobile_apps/company_app_details.haml:48
 msgid "No"
 msgstr "いいえ"
 
-#: admin/controller.py:2132 admin/controller.py:2140
+#: admin/controller.py:2130 admin/controller.py:2138
 msgid "000"
 msgstr "000"
 
-#: admin/controller.py:2350 admin/controller.py:2372
+#: admin/controller.py:2348 admin/controller.py:2370
 msgid "Sorry, We can not process your request"
 msgstr "申し訳ありませんが、要求を処理できません"
 
-#: admin/controller.py:2357 admin/controller.py:2369
+#: admin/controller.py:2355 admin/controller.py:2367
 msgid "Operation Successful"
 msgstr "作業が無事完了しました"
 
-#: admin/controller.py:2360
+#: admin/controller.py:2358
 msgid "Please enter role text"
 msgstr "ロールテキストを入力してください"
 
-#: admin/controller.py:2397 templates/admin/courses/course_details.haml:115
+#: admin/controller.py:2395 templates/admin/courses/course_details.haml:115
 #: templates_v2/admin/courses/course_details.haml:178
 msgid "Engagement Summary"
 msgstr "エンゲージメント概要"
 
-#: admin/controller.py:2397
+#: admin/controller.py:2395
 msgid "# of people"
 msgstr "人数"
 
-#: admin/controller.py:2397
+#: admin/controller.py:2395
 msgid "% total cohort"
 msgstr "合計コホート%"
 
-#: admin/controller.py:2397
+#: admin/controller.py:2395
 msgid "Avg Progress"
 msgstr "平均進度"
 
-#: admin/controller.py:2404
+#: admin/controller.py:2402
 msgid "Participant Performance"
 msgstr "参加者成績"
 
-#: admin/controller.py:2404
+#: admin/controller.py:2402
 #, python-format
 msgid "% completion"
 msgstr "% c完了"
 
-#: admin/controller.py:2404
+#: admin/controller.py:2402
 msgid "Score"
 msgstr "スコア"
 
-#: admin/controller.py:2405
+#: admin/controller.py:2403
 msgid "Group work 1"
 msgstr "グループワーク1"
 
-#: admin/controller.py:2406
+#: admin/controller.py:2404
 msgid "Group work 2"
 msgstr "グループワーク2"
 
-#: admin/controller.py:2407
+#: admin/controller.py:2405
 msgid "Mid-course assessment"
 msgstr "中間評価"
 
-#: admin/controller.py:2408
+#: admin/controller.py:2406
 msgid "Final assessment"
 msgstr "最終評価"
 
-#: admin/controller.py:2415 templates/admin/courses/course_details.haml:128
+#: admin/controller.py:2413 templates/admin/courses/course_details.haml:128
 #: templates_v2/admin/courses/course_details.haml:184
 msgid "Social Engagement"
 msgstr "ソーシャルエンゲージメント"
 
-#: admin/controller.py:2613
+#: admin/controller.py:2611
 msgid "user {} is not updated"
 msgstr "ユーザー{}は更新されていません"
 
-#: admin/controller.py:2615
+#: admin/controller.py:2613
 msgid "user {} doesn't exists"
 msgstr "ユーザー{}は存在しません"
 
-#: admin/controller.py:2629
+#: admin/controller.py:2627
 msgid "Field {} does not match with organization fields"
 msgstr "欄{}は組織欄と一致しません"
 
-#: admin/controller.py:2649
+#: admin/controller.py:2647
 msgid ""
 "Participant with email {} and manager with email {} doesn't belong to a same "
 "organization"
 msgstr "Eメール{}の参加者とEメール{}のマネージャーは組織に所属していません。"
 
-#: admin/controller.py:2665 admin/tasks.py:1027
+#: admin/controller.py:2663 admin/tasks.py:1023
 msgid ""
 "File is not formatted properly. Please format according to given template."
 msgstr ""
 "ファイルが適切にフォーマットされていません。所定のテンプレートに従って、"
 "フォーマットしてください。"
 
-#: admin/controller.py:2678 admin/controller.py:2680
+#: admin/controller.py:2676 admin/controller.py:2678
 msgid "User with email {} doesn't exists"
 msgstr "このユーザーは存在しません"
 
-#: admin/controller.py:2682
+#: admin/controller.py:2680
 msgid "User and manager email cannot be empty"
 msgstr "ユーザーとマネージャーのEメールは空欄にできません"
 
-#: admin/controller.py:2796
+#: admin/controller.py:2794
 #, fuzzy
 #| msgid "The CSV file has to contain 'email' header."
 msgid "The CSV file has to contain '{}' header."
 msgstr "CSVファイルは「Eメール」ヘダーを含んでいなければなりません。"
 
-#: admin/controller.py:2803
+#: admin/controller.py:2801
 #, fuzzy
 #| msgid "The CSV file has to contain 'email' header."
 msgid "The CSV file has to contain '{}' headers."
 msgstr "CSVファイルは「Eメール」ヘダーを含んでいなければなりません。"
 
-#: admin/forms.py:33
+#: admin/forms.py:27
 msgid "Hex code should starts with # and followed by 6 or 8 hex digits."
 msgstr ""
 "16進コードは、数字で始まりそれに続く6つまたは8つの16進数で構成すること。"
 
-#: admin/forms.py:48
+#: admin/forms.py:42
 msgid "Enter new email address"
 msgstr "新しいEメールアドレスを入力してください"
 
-#: admin/forms.py:149 admin/views.py:4769
+#: admin/forms.py:143 admin/views.py:4761
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "TA"
 
-#: admin/forms.py:150 admin/views.py:4770
+#: admin/forms.py:144 admin/views.py:4762
 msgid "OBSERVER"
 msgstr "オブザーバー"
 
-#: admin/forms.py:151
+#: admin/forms.py:145
 msgid "MODERATOR"
 msgstr "主宰者"
 
-#: admin/forms.py:176 admin/views.py:4771
+#: admin/forms.py:170 admin/views.py:4763
 msgid "ADMIN"
 msgstr "管理者"
 
-#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4774
+#: admin/forms.py:171 admin/forms.py:184 admin/views.py:4766
 msgid "COURSE OPS"
 msgstr "コース運用"
 
-#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4773
+#: admin/forms.py:172 admin/forms.py:185 admin/views.py:4765
 msgid "INTERNAL ADMIN"
 msgstr "社内管理者"
 
-#: admin/forms.py:179 admin/forms.py:192 admin/views.py:4772
+#: admin/forms.py:173 admin/forms.py:186 admin/views.py:4764
 msgid "COMPANY ADMIN"
 msgstr "会社管理者"
 
-#: admin/forms.py:235
+#: admin/forms.py:229
 msgid "Email(s) separated by commas"
 msgstr "Eメールはカンマで区切られます"
 
-#: admin/forms.py:237
+#: admin/forms.py:231
 msgid "Message (optional)"
 msgstr "メッセージ (任意)"
 
-#: admin/forms.py:245 admin/forms.py:261 admin/forms.py:270
+#: admin/forms.py:239 admin/forms.py:255 admin/forms.py:264
 #: certificates/models.py:79 marketing/forms.py:45
 #: templates/admin/client-admin/course_participants.haml:40
 #: templates/admin/course_run/list.haml:24
@@ -1849,31 +1847,31 @@ msgstr "メッセージ (任意)"
 msgid "Name"
 msgstr "名前"
 
-#: admin/forms.py:246 admin/forms.py:263
+#: admin/forms.py:240 admin/forms.py:257
 msgid "Course Instance"
 msgstr "コース事例"
 
-#: admin/forms.py:252
+#: admin/forms.py:246
 msgid "Name {}"
 msgstr "名前{}"
 
-#: admin/forms.py:262 admin/views.py:2148 admin/views.py:4537
-#: admin/views.py:4639 templates/admin/program/list.haml:25
+#: admin/forms.py:256 admin/views.py:2154 admin/views.py:4529
+#: admin/views.py:4631 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
 #: templates/header.haml:109
 msgid "Program"
 msgstr "プログラム"
 
-#: admin/forms.py:477
+#: admin/forms.py:463
 msgid "Course with this ID does not exist"
 msgstr "このIDのコースは存在しません"
 
-#: admin/forms.py:486
+#: admin/forms.py:472
 msgid "That number is not allowed"
 msgstr "その数字は使用できません"
 
-#: admin/forms.py:488
+#: admin/forms.py:474
 msgid "Number of participants is limited to 5000"
 msgstr "参加者数は定員5000人です"
 
@@ -1935,8 +1933,8 @@ msgstr "項目"
 #: templates_v2/courses/content_page/lesson_pager.haml:15
 #: templates_v2/courses/content_page/lesson_pager.haml:25
 #: templates_v2/courses/content_page/lesson_pager.haml:29
-#: templates_v2/courses/course_lessons.haml:23
-#: templates_v2/courses/course_lessons_ld_external.haml:23
+#: templates_v2/courses/course_lessons.haml:21
+#: templates_v2/courses/course_lessons_ld_external.haml:24
 #: templates_v2/courses/course_progress_v2.haml:86
 msgid "Lesson"
 msgstr "レッスン"
@@ -1954,14 +1952,14 @@ msgstr "レッスン"
 #: templates_v2/courses/content_page/lesson_pager.haml:15
 #: templates_v2/courses/content_page/lesson_pager.haml:25
 #: templates_v2/courses/content_page/lesson_pager.haml:29
-#: templates_v2/courses/course_lessons.haml:61
+#: templates_v2/courses/course_lessons.haml:59
 #: templates_v2/courses/course_lessons_ld.haml:61
-#: templates_v2/courses/course_lessons_ld_external.haml:58
-#: templates_v2/courses/course_progress_v2.haml:132
+#: templates_v2/courses/course_lessons_ld_external.haml:59
+#: templates_v2/courses/course_progress_v2.haml:121
 msgid "Module"
 msgstr "モジュール"
 
-#: admin/models.py:606 admin/views.py:4537 admin/views.py:4639
+#: admin/models.py:606 admin/views.py:4529 admin/views.py:4631
 #: templates/admin/participants/participants_list.haml:38
 #: templates/admin/workgroup/dashboard.haml:42
 #: templates/admin/workgroup/dashboardV2.haml:32
@@ -1982,33 +1980,33 @@ msgstr "グループワーク"
 
 #: admin/models.py:697 templates/admin/client-admin/course_info.haml:85
 #: templates_v2/courses/content_page/lesson_menu.haml:23
-#: templates_v2/courses/course_lessons.haml:69
+#: templates_v2/courses/course_lessons.haml:67
 #: templates_v2/courses/course_lessons_ld.haml:70
-#: templates_v2/courses/course_lessons_ld_external.haml:67
-#: templates_v2/courses/course_progress_v2.haml:141
-#: templates_v2/courses/course_progress_v2.haml:179
-#: templates_v2/courses/course_progress_v2.haml:256
+#: templates_v2/courses/course_lessons_ld_external.haml:68
+#: templates_v2/courses/course_progress_v2.haml:130
+#: templates_v2/courses/course_progress_v2.haml:171
+#: templates_v2/courses/course_progress_v2.haml:248
 msgid "Not Started"
 msgstr "開始前"
 
-#: admin/models.py:698 admin/views.py:2634
+#: admin/models.py:698 admin/views.py:2637
 #: templates/courses/content_page/courses_menu_list.haml:12
 #: templates_v2/courses/content_page/lesson_menu.haml:26
-#: templates_v2/courses/course_lessons.haml:72
+#: templates_v2/courses/course_lessons.haml:70
 #: templates_v2/courses/course_lessons_ld.haml:73
-#: templates_v2/courses/course_lessons_ld_external.haml:70
-#: templates_v2/courses/course_progress_v2.haml:144
-#: templates_v2/courses/course_progress_v2.haml:182
+#: templates_v2/courses/course_lessons_ld_external.haml:71
+#: templates_v2/courses/course_progress_v2.haml:133
+#: templates_v2/courses/course_progress_v2.haml:174
 msgid "In Progress"
 msgstr "進行中"
 
 #: admin/models.py:699 templates_v2/courses/content_page/lesson_menu.haml:20
-#: templates_v2/courses/course_lessons.haml:66
+#: templates_v2/courses/course_lessons.haml:64
 #: templates_v2/courses/course_lessons_ld.haml:67
-#: templates_v2/courses/course_lessons_ld_external.haml:64
-#: templates_v2/courses/course_progress_v2.haml:138
-#: templates_v2/courses/course_progress_v2.haml:185
-#: templates_v2/courses/course_progress_v2.haml:259
+#: templates_v2/courses/course_lessons_ld_external.haml:65
+#: templates_v2/courses/course_progress_v2.haml:127
+#: templates_v2/courses/course_progress_v2.haml:177
+#: templates_v2/courses/course_progress_v2.haml:251
 msgid "Complete"
 msgstr "完了"
 
@@ -2026,155 +2024,155 @@ msgid "Some of the files aren't uploaded, Please upload again!"
 msgstr ""
 "ファイルの一部がアップロードされていません。再度アップロードしてください"
 
-#: admin/tasks.py:193
+#: admin/tasks.py:192
 #, python-brace-format
 msgid "Group Work: {label}"
 msgstr "グループワーク: {label}"
 
-#: admin/tasks.py:200
+#: admin/tasks.py:199
 #, python-brace-format
 msgid "Assessment: {label}"
 msgstr "評価: {label}"
 
-#: admin/tasks.py:206
+#: admin/tasks.py:205
 #, python-brace-format
 msgid "Lesson {lesson_number} Progress"
 msgstr "レッスン{lesson_number}進度"
 
-#: admin/tasks.py:426
+#: admin/tasks.py:425
 msgid "Report for bulk update"
 msgstr "大量更新で報告"
 
-#: admin/tasks.py:455
+#: admin/tasks.py:454
 msgid "Participant stats for {} is ready to download"
 msgstr "{}の参加者統計をダウンロードする準備ができました"
 
-#: admin/tasks.py:457
+#: admin/tasks.py:456
 #, fuzzy
 #| msgid "Participant stats for {} is ready to download"
 msgid "Workgroup Completion report for {} is ready to download"
 msgstr "{}の参加者統計をダウンロードする準備ができました"
 
-#: admin/tasks.py:461
+#: admin/tasks.py:460
 msgid "Participant stats for {} did not generate"
 msgstr "{}の参加者統計が生成されませんでした"
 
-#: admin/tasks.py:463
+#: admin/tasks.py:462
 #, fuzzy
 #| msgid "Participant stats for {} did not generate"
 msgid "Workgroup Completion report for {} did not generate"
 msgstr "{}の参加者統計が生成されませんでした"
 
-#: admin/tasks.py:790 admin/tasks.py:796
+#: admin/tasks.py:789 admin/tasks.py:795
 #, fuzzy
 #| msgid "Advanced Deletion Completed"
-msgid "Company deletion completed in {}."
+msgid "Company deletion completed"
 msgstr "パスワードの再設定が完了しました"
 
-#: admin/tasks.py:993
-msgid "Bulk unenrollment completed in {}."
+#: admin/tasks.py:990
+msgid "Bulk unenrollment completed"
 msgstr ""
 
-#: admin/tasks.py:1061
+#: admin/tasks.py:1057
 msgid "User with email {} and manager with email {} was unsuccessfull."
 msgstr "Eメール{}のユーザーとEメール{}のマネージャーは成功しませんでした。"
 
-#: admin/tasks.py:1174
+#: admin/tasks.py:1170
 msgid "Import File Processed"
 msgstr "インポートファイル処理済み"
 
-#: admin/tasks.py:1438 admin/tasks.py:1465
+#: admin/tasks.py:1434 admin/tasks.py:1461
 msgid "Problem Response Report"
 msgstr "問題回答レポート"
 
-#: admin/views.py:621
+#: admin/views.py:626
 msgid "Edit Email"
 msgstr "Eメールを編集"
 
-#: admin/views.py:660
+#: admin/views.py:665
 msgid "Un-enroll from this course"
 msgstr "このコースの登録を撤回する"
 
-#: admin/views.py:661
+#: admin/views.py:666
 msgid "Un-enroll from entire program "
 msgstr "プログラム全体の登録を撤回する"
 
-#: admin/views.py:973
+#: admin/views.py:978
 msgid "% Progress"
 msgstr "進度%"
 
-#: admin/views.py:974
+#: admin/views.py:979
 msgid "% Progress (Engaged)"
 msgstr "進度% (エンゲージメント)"
 
-#: admin/views.py:1049
+#: admin/views.py:1054
 msgid "GW_{}"
 msgstr "GW_{}"
 
-#: admin/views.py:1052
+#: admin/views.py:1057
 msgid "Group Work: {}"
 msgstr "グループワーク: {}"
 
-#: admin/views.py:1058
+#: admin/views.py:1063
 msgid "AS_{}"
 msgstr "AS_{}"
 
-#: admin/views.py:1061
+#: admin/views.py:1066
 msgid "Assessment: {}"
 msgstr "評価: {}"
 
-#: admin/views.py:1244
+#: admin/views.py:1249
 msgid "No such task!"
 msgstr "そのようなタスクはありません"
 
-#: admin/views.py:1337 admin/views.py:1376
+#: admin/views.py:1342 admin/views.py:1381
 msgid "please fix the problems indicated below."
 msgstr "以下に示す問題を解決してください。"
 
-#: admin/views.py:1426
+#: admin/views.py:1431
 msgid "Client"
 msgstr "クライアント"
 
-#: admin/views.py:1427
+#: admin/views.py:1432
 msgid "Clients"
 msgstr "クライアント (複数)"
 
-#: admin/views.py:1487 admin/views.py:1536
+#: admin/views.py:1492 admin/views.py:1541
 msgid "Save Client"
 msgstr "クライアントを保存する"
 
-#: admin/views.py:1548
+#: admin/views.py:1553
 #, python-brace-format
 msgid "Successfully processed {processed} of {total} record"
 msgid_plural "Successfully processed {processed} of {total} records"
 msgstr[0] "{total}件中{processed}件の記録を無事処理しました"
 msgstr[1] "{total}件中{processed}件の記録を無事処理しました"
 
-#: admin/views.py:1730
+#: admin/views.py:1736
 msgid "Bad request, The Image type is not valid."
 msgstr "不正な要求です。画像の種類が無効です。"
 
-#: admin/views.py:1742
+#: admin/views.py:1748
 msgid "Could not delete the image, Please try later"
 msgstr "画像を削除できませんでした。後でもう一度試してください"
 
-#: admin/views.py:1903
+#: admin/views.py:1908
 msgid "Contact has been removed."
 msgstr "連絡先が削除されました。"
 
-#: admin/views.py:1918 admin/views.py:1924
+#: admin/views.py:1924 admin/views.py:1930
 msgid "Invalid Course Run"
 msgstr "コースランが無効です"
 
-#: admin/views.py:1920
+#: admin/views.py:1926
 msgid "Invalid Program ID"
 msgstr "プログラムIDが無効です"
 
-#: admin/views.py:1924
+#: admin/views.py:1930
 msgid "Course: {}"
 msgstr "コース: {}"
 
-#: admin/views.py:1950
+#: admin/views.py:1956
 msgid ""
 "\n"
 "            If this client should use SSO: DevOps must configure and enable "
@@ -2191,126 +2189,130 @@ msgstr ""
 "Configuration - SAML IdP」)。設定した「Idp slug」をここに入力してください。ク"
 "ライアントがSSOを使用しない場合は、この欄は空欄のままにしてください。"
 
-#: admin/views.py:1993 admin/views.py:1994 admin/views.py:2028
+#: admin/views.py:1999 admin/views.py:2000 admin/views.py:2034
 msgid "- Select -"
 msgstr "- 選択 -"
 
-#: admin/views.py:2051
+#: admin/views.py:2057
 msgid "Access Key couldn't be created, please check course ID!"
 msgstr "アクセスキーが作成できませんでした。コースIDを確認してください"
 
-#: admin/views.py:2059
+#: admin/views.py:2065
 msgid "Access Key created successfully!"
 msgstr "アクセスキーが無事作成されました"
 
-#: admin/views.py:2074
+#: admin/views.py:2080
 msgid "Access Key"
 msgstr "アクセスキー"
 
-#: admin/views.py:2096
+#: admin/views.py:2102
 msgid "Send"
 msgstr "送信"
 
-#: admin/views.py:2121
+#: admin/views.py:2127
 msgid "This student hasn't been added to any programs yet."
 msgstr "この生徒は、まだどのプログラムにも追加されていません。"
 
-#: admin/views.py:2132
+#: admin/views.py:2138
 msgid "fail"
 msgstr "失敗"
 
-#: admin/views.py:2136
+#: admin/views.py:2142
 msgid "success"
 msgstr "成功"
 
-#: admin/views.py:2149 templates/admin/admin_header.haml:59
+#: admin/views.py:2155 templates/admin/admin_header.haml:59
 #: templates/marketing/programs.haml:237
 msgid "Programs"
 msgstr "プログラム"
 
-#: admin/views.py:2192
+#: admin/views.py:2197
 #, fuzzy
 #| msgid "Save Program"
 msgid "Update Program"
 msgstr "プログラムを保存"
 
-#: admin/views.py:2192
+#: admin/views.py:2197
 msgid "Save Program"
 msgstr "プログラムを保存"
 
-#: admin/views.py:2528 admin/views.py:2567 admin/views.py:2600
-#: admin/views.py:4371 admin/views.py:5369
+#: admin/views.py:2532 admin/views.py:2570 admin/views.py:2603
+#: admin/views.py:4361 admin/views.py:5368
 msgid "`data_deletion` flag is not enabled."
 msgstr "「data_deletion」フラグが有効化されていません。"
 
-#: admin/views.py:2582
+#: admin/views.py:2585
 msgid "The CSV file has to contain 'email' header."
 msgstr "CSVファイルは「Eメール」ヘダーを含んでいなければなりません。"
 
-#: admin/views.py:2690 admin/views.py:6233
+#: admin/views.py:2694 admin/views.py:6241
 #: templates/admin/participants/activation_link_modal.haml:15
-#: templates_v2/layout.haml:221
+#: templates_v2/layout.haml:257
 msgid "First name"
 msgstr "名"
 
-#: admin/views.py:2690 admin/views.py:6234
+#: admin/views.py:2694 admin/views.py:6242
 #: templates/admin/course_run/view.haml:64
 #: templates/admin/participants/activation_link_modal.haml:17
-#: templates_v2/layout.haml:225
+#: templates_v2/layout.haml:261
 msgid "Last name"
 msgstr "氏"
 
-#: admin/views.py:2690
+#: admin/views.py:2694
 #: templates/admin/participants/activation_link_modal.haml:4
 #: templates/admin/participants/activation_link_modal.haml:21
 msgid "Activation Link"
 msgstr "アクティベーションリンク"
 
-#: admin/views.py:2849 templates/courses/content_page/courses_menu_list.haml:17
+#: admin/views.py:2812
+msgid "Report is TBD"
+msgstr "レポート未定"
+
+#: admin/views.py:2834 templates/courses/content_page/courses_menu_list.haml:17
 #: templates_v2/courses/content_page/courses_menu_list.haml:12
 msgid "Coming Soon"
 msgstr "準備中"
 
-#: admin/views.py:2851 templates/courses/content_page/courses_menu_list.haml:8
+#: admin/views.py:2836 templates/courses/content_page/courses_menu_list.haml:8
 msgid "Archived"
 msgstr "保管中"
 
-#: admin/views.py:2920
+#: admin/views.py:2905
 msgid "Successfully saved courses to {} program"
 msgstr "{}プログラムにコースを無事保存しました"
 
-#: admin/views.py:2935 admin/views.py:3331 admin/views.py:3367
-#: admin/views.py:3426
+#: admin/views.py:2920 admin/views.py:3321 admin/views.py:3357
+#: admin/views.py:3416
 msgid "Invalid program_id specified: {}"
 msgstr "無効なプログラム_idが指定されています: {}"
 
-#: admin/views.py:2944
+#: admin/views.py:2929
 msgid "Invalid student_id specified: {}"
 msgstr "無効な生徒_idが指定されています: {}"
 
-#: admin/views.py:2950
+#: admin/views.py:2935
 msgid "Not enough places available for {} program - {} left"
 msgstr "{}プログラムの残席が足りません - 残り{}席"
 
-#: admin/views.py:2978
+#: admin/views.py:2963
 msgid "Successfully associated students to {} program"
 msgstr "生徒を無事{}プログラムに追加しました"
 
-#: admin/views.py:3017
+#: admin/views.py:3003
 msgid "{} already enrolled in {}"
 msgstr "{}は既に{}に登録されています"
 
-#: admin/views.py:3024
+#: admin/views.py:3010
 msgid "Successfully associated students to courses"
 msgstr "生徒を無事コースに追加しました"
 
-#: admin/views.py:3026
+#: admin/views.py:3012
 msgid ""
 "Successfully associated students to courses, with {} messages:\n"
 "\t{}"
 msgstr "{}メッセージで、生徒を無事コースに追加しました: \t{}"
 
-#: admin/views.py:3143 admin/views.py:3150
+#: admin/views.py:3130 admin/views.py:3137
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
@@ -2318,89 +2320,89 @@ msgstr ""
 "ファイルのアップロード中、エラーが発生しました。使用可能なファイル形式を確認"
 "し、再度試してください。"
 
-#: admin/views.py:3593 admin/views.py:3660
+#: admin/views.py:3583 admin/views.py:3650
 msgid "No group projects available for this course"
 msgstr "このコースには、グループプロジェクトはありません。"
 
-#: admin/views.py:3671 admin/views.py:3672 admin/views.py:3913
-#: admin/views.py:3914 templates/admin/admin_header.haml:37
+#: admin/views.py:3661 admin/views.py:3662 admin/views.py:3903
+#: admin/views.py:3904 templates/admin/admin_header.haml:37
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
 #: templates/courses/course_progress.haml:70 templates/faq.haml:39
-#: templates_v2/courses/course_progress_v2.haml:233
-#: templates_v2/courses/course_progress_v2.haml:247 templates_v2/faq.haml:88
+#: templates_v2/courses/course_progress_v2.haml:225
+#: templates_v2/courses/course_progress_v2.haml:239 templates_v2/faq.haml:88
 msgid "Group Work"
 msgstr "グループワーク"
 
-#: admin/views.py:3758
+#: admin/views.py:3748
 msgid "Group wasn't created - please select project"
 msgstr "グループが作成されませんでした - プロジェクトを選択してください"
 
-#: admin/views.py:3769
+#: admin/views.py:3759
 msgid "Bad users {} for private project"
 msgstr "非公開プロジェクトについて不正なユーザー{}"
 
-#: admin/views.py:3785
+#: admin/views.py:3775
 msgid "Group successfully created"
 msgstr "グループの作成が完了しました"
 
-#: admin/views.py:3789
+#: admin/views.py:3779
 msgid "Group was not created"
 msgstr "グループは作成されませんでした"
 
-#: admin/views.py:3835
+#: admin/views.py:3825
 msgid "Error creating project"
 msgstr "プロジェクトの作成でエラーが発生しました"
 
-#: admin/views.py:3850
+#: admin/views.py:3840
 msgid "Project already exists"
 msgstr "プロジェクトは既に存在します"
 
-#: admin/views.py:3855
+#: admin/views.py:3845
 msgid "Project successfully created"
 msgstr "プロジェクトの作成が完了しました"
 
-#: admin/views.py:3889
+#: admin/views.py:3879
 msgid "Project deleted successfully."
 msgstr "プロジェクトの削除が完了しました。"
 
-#: admin/views.py:3964
+#: admin/views.py:3954
 msgid "Password Reset Email successfully sent."
 msgstr "パスワード再設定Eメールの送信が完了しました。"
 
-#: admin/views.py:3983
+#: admin/views.py:3973
 msgid "Activation email sent."
 msgstr "アクティベーションEメールが送信されました。"
 
-#: admin/views.py:4074 admin/views.py:4286
+#: admin/views.py:4064 admin/views.py:4276
 msgid "Company name can only contain alphanumeric characters"
 msgstr "会社名には英数字しか使用できません"
 
-#: admin/views.py:4086 admin/views.py:4091
+#: admin/views.py:4076 admin/views.py:4081
 msgid "Permission Error: You don't have permissions to grant this role"
 msgstr "権限エラー: このロールを付与する権限はありません"
 
-#: admin/views.py:4102
+#: admin/views.py:4092
 msgid "User with that email already exists!"
 msgstr "このEメールのユーザーは既に存在します"
 
-#: admin/views.py:4131 admin/views.py:4319
+#: admin/views.py:4121 admin/views.py:4309
 msgid "Couldn't create company!"
 msgstr "会社を作成できませんでした"
 
-#: admin/views.py:4144
+#: admin/views.py:4134
 msgid "Couldn't add user to company!"
 msgstr "ユーザーを会社に追加できませんでした"
 
-#: admin/views.py:4169 templates/admin/participants/participants_list.haml:408
+#: admin/views.py:4159 templates/admin/participants/participants_list.haml:408
 msgid "Successfully added new user!"
 msgstr "新しいユーザーを無事追加しました"
 
-#: admin/views.py:4191 admin/views.py:4193 admin/views.py:4205
-#: admin/views.py:4211 admin/views.py:4217 admin/views.py:6108
-#: admin/views.py:6110 admin/views.py:6119 admin/views.py:6125
-#: admin/views.py:6131
+#: admin/views.py:4181 admin/views.py:4183 admin/views.py:4195
+#: admin/views.py:4201 admin/views.py:4207 admin/views.py:6115
+#: admin/views.py:6117 admin/views.py:6126 admin/views.py:6132
+#: admin/views.py:6138
 #: templates/admin/participants/participant_details.haml:297
 #: templates/admin/participants/participant_details.haml:305
 #: templates/admin/participants/participant_details.haml:313
@@ -2408,19 +2410,19 @@ msgstr "新しいユーザーを無事追加しました"
 msgid "N/A"
 msgstr "該当なし"
 
-#: admin/views.py:4306
+#: admin/views.py:4296
 msgid "User with that username or email already exists!"
 msgstr "このユーザー名またはEメールのユーザーは既に存在します"
 
-#: admin/views.py:4392
+#: admin/views.py:4382
 msgid "Can't find user in database"
 msgstr "ユーザーをデータベースで確認できません"
 
-#: admin/views.py:4479
+#: admin/views.py:4471
 msgid "There is a problem with selected user role on new course!"
 msgstr "新しいコースで選択されたユーザーロールについて問題があります"
 
-#: admin/views.py:4537 templates/admin/client-admin/course_analytics.haml:28
+#: admin/views.py:4529 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
 #: templates_v2/courses/course_cohort.haml:19
@@ -2429,70 +2431,70 @@ msgstr "新しいコースで選択されたユーザーロールについて問
 msgid "Progress"
 msgstr "進度"
 
-#: admin/views.py:4537 admin/views.py:4640
+#: admin/views.py:4529 admin/views.py:4632
 msgid "Status"
 msgstr "ステータス"
 
-#: admin/views.py:4639 templates/admin/client-admin/course_info.haml:79
+#: admin/views.py:4631 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:46
 #: templates/courses/course_progress.haml:66
 #: templates_v2/admin/courses/course_details.haml:92
 msgid "Completed"
 msgstr "完了"
 
-#: admin/views.py:4639 templates_v2/courses/course_progress_v2.haml:208
+#: admin/views.py:4631 templates_v2/courses/course_progress_v2.haml:200
 msgid "Grade"
 msgstr "成績"
 
-#: admin/views.py:4640
+#: admin/views.py:4632
 msgid "End Date"
 msgstr "終了日"
 
-#: admin/views.py:4797
+#: admin/views.py:4789
 msgid "Problem generating activity review assignments"
 msgstr "アクティビティ確認課題の生成で問題が発生しました"
 
-#: admin/views.py:4821
+#: admin/views.py:4813
 msgid "Project review assignments allocated"
 msgstr "プロジェクト確認課題が割り当てられました"
 
-#: admin/views.py:4829
+#: admin/views.py:4821
 msgid "Not enough groups to meet review criteria"
 msgstr "グループの数が確認基準に達していません"
 
-#: admin/views.py:5057
+#: admin/views.py:5056
 msgid "Successfully added new email template!"
 msgstr "新しいEメール・テンプレートを無事追加しました"
 
-#: admin/views.py:5061
+#: admin/views.py:5060
 msgid "Missing fields in email template!"
 msgstr "Eメール・テンプレートに空欄があります"
 
-#: admin/views.py:5072
+#: admin/views.py:5071
 msgid "Successfully got email template!"
 msgstr "Eメール・テンプレートを無事取得しました"
 
-#: admin/views.py:5076 admin/views.py:5090 admin/views.py:5115
+#: admin/views.py:5075 admin/views.py:5089 admin/views.py:5114
 msgid "Can't find email template key!"
 msgstr "Eメール・テンプレートキーが確認できません"
 
-#: admin/views.py:5078 admin/views.py:5092 admin/views.py:5117
+#: admin/views.py:5077 admin/views.py:5091 admin/views.py:5116
 msgid "Missing email template key!"
 msgstr "Eメール・テンプレートキーがありません"
 
-#: admin/views.py:5088
+#: admin/views.py:5087
 msgid "Successfully deleted email template!"
 msgstr "Eメール・テンプレートを無事削除しました"
 
-#: admin/views.py:5111
+#: admin/views.py:5110
 msgid "Successfully updated email template!"
 msgstr "Eメール・テンプレートを無事更新しました"
 
-#: admin/views.py:5248 admin/views.py:5894
+#: admin/views.py:5247 admin/views.py:5901
 msgid "No Company Display name!"
 msgstr "会社表示名がありません"
 
-#: admin/views.py:5467
+#: admin/views.py:5466
 msgid "App name only contains alphanumeric characters"
 msgstr "アプリ名には英数字しか含まれていません"
 
@@ -2500,61 +2502,61 @@ msgstr "アプリ名には英数字しか含まれていません"
 msgid "Learner dashboard not found"
 msgstr "学習者ダッシュボードが見つかりません"
 
-#: admin/views.py:5911
+#: admin/views.py:5918
 msgid "Company name successfully changed!"
 msgstr "会社名が無事変更されました"
 
-#: admin/views.py:5956
+#: admin/views.py:5963
 msgid "Tag with this name already exist's!"
 msgstr "この名前のタグは既に存在します"
 
-#: admin/views.py:5967
+#: admin/views.py:5974
 msgid "Tag created!"
 msgstr "タグが作成されました"
 
-#: admin/views.py:5969
+#: admin/views.py:5976
 msgid "You need to select tag's name!"
 msgstr "タグ名を選択する必要があります"
 
-#: admin/views.py:6021
+#: admin/views.py:6028
 msgid "Tag added to Course!"
 msgstr "コースにタグが追加されました"
 
-#: admin/views.py:6023 admin/views.py:6046
+#: admin/views.py:6030 admin/views.py:6053
 msgid "You need to select tag!"
 msgstr "タグを選択する必要があります"
 
-#: admin/views.py:6044
+#: admin/views.py:6051
 msgid "Tag removed from Course!"
 msgstr "コースからタグが削除されました"
 
-#: admin/views.py:6235 templates/admin/course_run/view.haml:65
+#: admin/views.py:6243 templates/admin/course_run/view.haml:65
 msgid "Company name"
 msgstr "会社名"
 
-#: admin/views.py:6236 templates/admin/course_run/view.haml:66
+#: admin/views.py:6244 templates/admin/course_run/view.haml:66
 #: templates_v2/accounts/public_registration.haml:70
 msgid "Company email"
 msgstr "会社Eメール"
 
-#: admin/views.py:6237 templates/admin/course_run/view.haml:67
+#: admin/views.py:6245 templates/admin/course_run/view.haml:67
 #: templates_v2/accounts/public_registration.haml:77
 msgid "Current role"
 msgstr "現在のロール"
 
-#: admin/views.py:6238 templates/admin/course_run/view.haml:68
+#: admin/views.py:6246 templates/admin/course_run/view.haml:68
 msgid "New user"
 msgstr "新しいユーザー"
 
-#: admin/views.py:6239
+#: admin/views.py:6247
 msgid "McK user"
 msgstr "McKユーザー"
 
-#: admin/views.py:6240 templates/admin/course_run/view.haml:70
+#: admin/views.py:6248 templates/admin/course_run/view.haml:70
 msgid "Enrolled"
 msgstr "登録済み"
 
-#: admin/views.py:6241 templates/admin/course_run/view.haml:71
+#: admin/views.py:6249 templates/admin/course_run/view.haml:71
 #: templates/admin/mobile_apps/company_app_details.haml:44
 msgid "Active"
 msgstr "有効"
@@ -2616,7 +2618,7 @@ msgstr "利用可"
 #: templates/courses/course_learner_dashboard_calendar.haml:45
 #: templates/courses/course_progress_v2.haml:129
 #: templates/courses/course_progress_v2.haml:193
-#: templates_v2/courses/course_learner_dashboard_calendar.haml:51
+#: templates_v2/courses/course_learner_dashboard_calendar.haml:49
 msgid "complete"
 msgstr "完了"
 
@@ -2708,13 +2710,13 @@ msgstr "アセット"
 msgid "Assessment"
 msgstr "評価"
 
-#: courses/user_courses.py:86 courses/user_courses.py:92
+#: courses/user_courses.py:85 courses/user_courses.py:91
 #, python-brace-format
 msgid "Access denied to course '{course_id}' for user {user_id}"
 msgstr ""
 "ユーザー{user_id}についてコース「{course_id}」へのアクセスが拒否されました"
 
-#: courses/user_courses.py:139 courses/user_courses.py:145
+#: courses/user_courses.py:138 courses/user_courses.py:144
 #, python-brace-format
 msgid "Access denied to user {admin_user_id} for data belonging to {user_id}"
 msgstr ""
@@ -2961,11 +2963,11 @@ msgstr ""
 "McKinsey Academyに興味をお持ちいただき、ありがとうございます。進度は、逐一お"
 "知らせいたします。"
 
-#: mcka_apros/settings.py:226 templates/marketing/programs.haml:248
+#: mcka_apros/settings.py:219 templates/marketing/programs.haml:248
 msgid "McKinsey Management Program"
 msgstr "McKinseyマネジメント・プログラム"
 
-#: mcka_apros/settings.py:318
+#: mcka_apros/settings.py:311
 msgid "Congratulations! Your certificate has been generated"
 msgstr "おめでとうございます! あなたの証書が生成されました"
 
@@ -3029,7 +3031,7 @@ msgstr "403: 権限がありません"
 #: templates/403.haml:10 templates/404.haml:10 templates/500.haml:10
 #: templates/503.haml:10 templates/accounts/access.haml:20
 #: templates/accounts/sso_error.haml:12 templates_v2/accounts/access.haml:19
-#: templates_v2/accounts/sso_error.haml:14
+#: templates_v2/accounts/sso_error.haml:12
 msgid "Sorry!"
 msgstr "申し訳ございません"
 
@@ -3158,7 +3160,7 @@ msgstr ""
 #: templates/accounts/activate.haml:44 templates/accounts/login.haml:52
 #: templates/accounts/public_registration.haml:78
 #: templates/accounts/sso_terms_of_service.haml:35
-#: templates_v2/home/landing.haml:44 tests/templates_v2/home/landing.haml:45
+#: templates_v2/home/landing.haml:43 tests/templates_v2/home/landing.haml:45
 msgid "Need Help?"
 msgstr "ヘルプが必要ですか?"
 
@@ -3210,7 +3212,7 @@ msgstr "< 戻る"
 
 #: templates/accounts/login.haml:21
 #: templates/accounts/public_registration.haml:41
-#: templates_v2/home/landing.haml:17 tests/templates_v2/home/landing.haml:19
+#: templates_v2/home/landing.haml:16 tests/templates_v2/home/landing.haml:19
 msgid ""
 "We're sorry, McKinsey Academy is not compatible with your browser. You will "
 "not be able to access course content without updating your browser. We "
@@ -3231,12 +3233,12 @@ msgid "Username or Email:"
 msgstr "ユーザー名またはEメール:"
 
 #: templates/accounts/login.haml:43 templates_v2/accounts/activate.haml:42
-#: templates_v2/home/landing.haml:33 tests/templates_v2/home/landing.haml:34
+#: templates_v2/home/landing.haml:32 tests/templates_v2/home/landing.haml:34
 msgid "Password"
 msgstr "パスワード"
 
-#: templates/accounts/login.haml:48 templates_v2/getting-started.haml:57
-#: templates_v2/home/landing.haml:41 tests/templates_v2/home/landing.haml:42
+#: templates/accounts/login.haml:48 templates_v2/getting-started.haml:53
+#: templates_v2/home/landing.haml:40 tests/templates_v2/home/landing.haml:42
 msgid "Forgot password?"
 msgstr "パスワードをお忘れですか?"
 
@@ -3249,62 +3251,62 @@ msgstr "よく聞かれる質問については、当社のFAQをご覧くださ
 msgid "Trouble logging in? Contact us."
 msgstr "ログインできない場合は、ご連絡ください。"
 
-#: templates/accounts/login.haml:68 templates_v2/home/landing.haml:61
+#: templates/accounts/login.haml:68 templates_v2/home/landing.haml:60
 #: tests/templates_v2/home/landing.haml:62
 msgid "Check your email inbox"
 msgstr "受信箱をご確認ください"
 
-#: templates/accounts/login.haml:75 templates_v2/home/landing.haml:70
+#: templates/accounts/login.haml:75 templates_v2/home/landing.haml:69
 #: tests/templates_v2/home/landing.haml:71
 msgid "If you don't see the email in your inbox, check your spam folder or"
 msgstr "受信箱にメールが届いていない場合は、迷惑メールフォルダーをご確認頂くか"
 
-#: templates/accounts/login.haml:77 templates_v2/home/landing.haml:72
+#: templates/accounts/login.haml:77 templates_v2/home/landing.haml:71
 #: tests/templates_v2/home/landing.haml:73
 msgid "resend email"
 msgstr "リンクをクリックしてメールを"
 
-#: templates/accounts/login.haml:79 templates_v2/home/landing.haml:74
+#: templates/accounts/login.haml:79 templates_v2/home/landing.haml:73
 #: tests/templates_v2/home/landing.haml:75
 msgid " with the link."
 msgstr "再度送信してください。"
 
-#: templates/accounts/login.haml:82 templates_v2/home/landing.haml:76
+#: templates/accounts/login.haml:82 templates_v2/home/landing.haml:75
 #: tests/templates_v2/home/landing.haml:77
 msgid "Return to Login"
 msgstr "ログイン画面に戻る"
 
-#: templates/accounts/login.haml:88 templates_v2/home/landing.haml:83
+#: templates/accounts/login.haml:88 templates_v2/home/landing.haml:82
 #: tests/templates_v2/home/landing.haml:84
 msgid "You've been locked out!"
 msgstr "ロックアウトされました！"
 
-#: templates/accounts/login.haml:91 templates_v2/home/landing.haml:89
+#: templates/accounts/login.haml:91 templates_v2/home/landing.haml:88
 #: tests/templates_v2/home/landing.haml:90
 msgid "Your account is locked for"
 msgstr "アカウントのロックアウト時間"
 
-#: templates/accounts/login.haml:93 templates_v2/home/landing.haml:91
+#: templates/accounts/login.haml:93 templates_v2/home/landing.haml:90
 #: tests/templates_v2/home/landing.haml:92
 msgid "15 minutes "
 msgstr "15分 "
 
-#: templates/accounts/login.haml:94 templates_v2/home/landing.haml:92
+#: templates/accounts/login.haml:94 templates_v2/home/landing.haml:91
 #: tests/templates_v2/home/landing.haml:93
 msgid "since your 5"
 msgstr "あなたのコホート中:"
 
-#: templates/accounts/login.haml:96 templates_v2/home/landing.haml:94
+#: templates/accounts/login.haml:96 templates_v2/home/landing.haml:93
 #: tests/templates_v2/home/landing.haml:95
 msgid "th"
 msgstr "パス"
 
-#: templates/accounts/login.haml:97 templates_v2/home/landing.haml:95
+#: templates/accounts/login.haml:97 templates_v2/home/landing.haml:94
 #: tests/templates_v2/home/landing.haml:96
 msgid " attempt."
 msgstr "回。"
 
-#: templates/accounts/login.haml:100 templates_v2/home/landing.haml:98
+#: templates/accounts/login.haml:100 templates_v2/home/landing.haml:97
 #: tests/templates_v2/home/landing.haml:99
 msgid ""
 "Your account has been disabled for security reasons. To access your account,"
@@ -3312,17 +3314,17 @@ msgstr ""
 "セキュリティ上の理由でアカウントは無効になっています。アカウントにアクセスす"
 "るには、"
 
-#: templates/accounts/login.haml:102 templates_v2/home/landing.haml:100
+#: templates/accounts/login.haml:102 templates_v2/home/landing.haml:99
 #: tests/templates_v2/home/landing.haml:101
 msgid "reset your password"
 msgstr "パスワードを再設定する"
 
-#: templates/accounts/login.haml:104 templates_v2/home/landing.haml:102
+#: templates/accounts/login.haml:104 templates_v2/home/landing.haml:101
 #: tests/templates_v2/home/landing.haml:103
 msgid "or try to login again in 15 minutes."
 msgstr "または15分後に再度ログインし直してください。"
 
-#: templates/accounts/login.haml:106 templates_v2/home/landing.haml:104
+#: templates/accounts/login.haml:106 templates_v2/home/landing.haml:103
 #: templates_v2/registration/password_reset_confirm.haml:14
 #: templates_v2/registration/password_reset_confirm.haml:43
 #: templates_v2/registration/password_reset_form.haml:8
@@ -3337,9 +3339,9 @@ msgstr "デモ登録 | McKinsey Academy"
 
 #: templates/accounts/public_registration.haml:8
 #: templates/certificates/course_certificate_notification_email.haml:13
-#: templates/layout.haml:27 templates/privacy.haml:130
+#: templates/layout.haml:26 templates/privacy.haml:130
 #: templates/terms_of_service.haml:113
-#: templates_v2/accounts/public_registration.haml:8 templates_v2/layout.haml:54
+#: templates_v2/accounts/public_registration.haml:8 templates_v2/layout.haml:75
 #: templates_v2/privacy.haml:134 templates_v2/terms_of_service.haml:113
 msgid "McKinsey Academy"
 msgstr "McKinsey Academy"
@@ -3377,7 +3379,7 @@ msgid "Complete the fields below. Required fields are noted by an asterisk"
 msgstr "以下の欄に入力してください。必須項目にはアスタリスクが付いています"
 
 #: templates/accounts/public_registration.haml:69
-#: templates_v2/accounts/activate.haml:61
+#: templates_v2/accounts/activate.haml:59
 #: templates_v2/accounts/public_registration.haml:90
 msgid "Register"
 msgstr "登録"
@@ -3392,15 +3394,15 @@ msgid ""
 "to the course."
 msgstr "登録が無事完了すると、コースへアクセスするためのEメールが届きます。"
 
-#: templates/accounts/sso_error.haml:4 templates_v2/accounts/sso_error.haml:6
+#: templates/accounts/sso_error.haml:4 templates_v2/accounts/sso_error.haml:4
 msgid "Login Process Failed | McKinsey Academy"
 msgstr "ログイン処理失敗 | McKinsey Academy"
 
-#: templates/accounts/sso_error.haml:10 templates_v2/accounts/sso_error.haml:12
+#: templates/accounts/sso_error.haml:10 templates_v2/accounts/sso_error.haml:10
 msgid "Sign in error"
 msgstr "サインイン エラー"
 
-#: templates/accounts/sso_error.haml:17 templates_v2/accounts/sso_error.haml:19
+#: templates/accounts/sso_error.haml:17 templates_v2/accounts/sso_error.haml:17
 msgid ""
 "Something has gone wrong, and we were not able to process the login with "
 "your company's login provider."
@@ -3408,7 +3410,7 @@ msgstr ""
 "問題が発生し、あなたの会社のログイン・プロバイダでログイン処理ができませんで"
 "した。"
 
-#: templates/accounts/sso_error.haml:18 templates_v2/accounts/sso_error.haml:20
+#: templates/accounts/sso_error.haml:18 templates_v2/accounts/sso_error.haml:18
 #, fuzzy, python-brace-format
 #| msgid ""
 #| " Please contact us at <a href:'mailto:support@mckinseyacademy."
@@ -4553,7 +4555,7 @@ msgstr "通知"
 
 #: templates/admin/course_meta_content/item_list.haml:104
 #: templates/courses/content_page/course_tabs.haml:5
-#: templates_v2/getting-started.haml:73 templates_v2/getting-started.haml:114
+#: templates_v2/getting-started.haml:69 templates_v2/getting-started.haml:109
 msgid "Learner Dashboard"
 msgstr "学習者ダッシュボード"
 
@@ -4565,7 +4567,7 @@ msgstr "学習者ダッシュボード"
 #: templates_v2/courses/course_learner_dashboard_header.haml:22
 #: templates_v2/courses/course_navigation.haml:36
 #: templates_v2/courses/course_resources.haml:14
-#: templates_v2/courses/course_resources_learner_dashboard.haml:12
+#: templates_v2/courses/course_resources_learner_dashboard.haml:15
 msgid "Resources"
 msgstr "リソース"
 
@@ -5031,14 +5033,13 @@ msgstr "「%(report)s」レポートをダウンロードする準備が整い�
 #: templates/admin/delete_company_email_template.haml:10
 #, python-format
 msgid ""
-" The Company deletion for %(company_name)s was partially completed in "
-"%(domain)s and had some errors. "
+" The Company deletion for %(company_name)s was partially completed and had "
+"some errors. "
 msgstr ""
 
 #: templates/admin/delete_company_email_template.haml:12
 #, python-format
-msgid ""
-" The Company deletion has been completed for %(company_name)s in %(domain)s. "
+msgid " The Company deletion has been completed for %(company_name)s. "
 msgstr ""
 
 #: templates/admin/delete_company_email_template.haml:19
@@ -5058,14 +5059,12 @@ msgstr ""
 #, python-brace-format
 msgid ""
 " The Company profile deletion for #{company_name} has failed and has been "
-"cancelled in #{domain}. "
+"cancelled. "
 msgstr ""
 
 #: templates/admin/delete_users_email_template.haml:9
-#, fuzzy, python-format
-#| msgid " The bulk delete file \"%(file_name)s\" has been processed. "
-msgid ""
-" The bulk delete file \"%(file_name)s\" has been processed in %(domain)s. "
+#, python-format
+msgid " The bulk delete file \"%(file_name)s\" has been processed. "
 msgstr "大量削除ファイル[%(file_name)s]が処理されました。"
 
 #: templates/admin/export_stats_email_template.haml:12
@@ -5984,9 +5983,7 @@ msgstr "提出する"
 #: templates/admin/unenroll_users_email_template.haml:9
 #, fuzzy, python-format
 #| msgid " The bulk delete file \"%(file_name)s\" has been processed. "
-msgid ""
-" The bulk unenrollment file \"%(file_name)s\" has been processed in "
-"%(domain)s. "
+msgid " The bulk unenrollment file \"%(file_name)s\" has been processed. "
 msgstr "大量削除ファイル[%(file_name)s]が処理されました。"
 
 #: templates/admin/workgroup/course_detail.haml:20
@@ -6486,8 +6483,8 @@ msgstr "レッスン:"
 #: templates/courses/content_page/lesson_pager.haml:39
 #: templates/courses/course_lessons.haml:12
 #: templates/courses/course_progress_v2.haml:77
-#: templates_v2/courses/course_lessons.haml:21
-#: templates_v2/courses/course_lessons_ld_external.haml:21
+#: templates_v2/courses/course_lessons.haml:19
+#: templates_v2/courses/course_lessons_ld_external.haml:22
 #, python-format
 msgid " %(lesson_custom_label)s %(lesson_index)s:"
 msgstr " %(lesson_custom_label)s %(lesson_index)s:"
@@ -6500,7 +6497,6 @@ msgstr "レッスン"
 #: templates_v2/courses/content_page/course_menu.haml:34
 #: templates_v2/courses/content_page/course_menu.haml:49
 #: templates_v2/courses/content_page/lesson_menu.haml:30
-#: templates_v2/courses/course_progress_v2.haml:111
 #, python-format
 msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
 msgstr ""
@@ -6510,7 +6506,6 @@ msgstr ""
 #: templates_v2/courses/content_page/course_menu.haml:34
 #: templates_v2/courses/content_page/course_menu.haml:51
 #: templates_v2/courses/content_page/lesson_menu.haml:30
-#: templates_v2/courses/course_progress_v2.haml:111
 #, python-format
 msgid " This lesson will be available on %(start_date)s "
 msgstr "このレッスンは%(start_date)sに利用可能となります"
@@ -6665,7 +6660,7 @@ msgid "Proficiency:"
 msgstr "習熟度:"
 
 #: templates/courses/course_cohort.haml:35
-#: templates_v2/courses/course_cohort.haml:184
+#: templates_v2/courses/course_cohort.haml:186
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the proficiency leaderboard "
@@ -6757,7 +6752,7 @@ msgid " cohort average = %(course_avg)s points "
 msgstr "コホート平均 = %(course_avg)s点"
 
 #: templates/courses/course_cohort.haml:168
-#: templates_v2/courses/course_cohort.haml:103
+#: templates_v2/courses/course_cohort.haml:104
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
@@ -6898,7 +6893,7 @@ msgstr "ユーザー・プロフィールは利用できません"
 
 #: templates/courses/course_group_work.haml:7
 #: templates/courses/course_group_work_ld.haml:8
-#: templates_v2/courses/course_group_work.haml:8
+#: templates_v2/courses/course_group_work.haml:7
 #: templates_v2/courses/course_group_work_ld.haml:8
 msgid " | Group Work | Courses | McKinsey Academy"
 msgstr "| グループワーク | コース | McKinsey Academy"
@@ -7054,7 +7049,7 @@ msgstr "この動画では、グループワーク体験をご紹介します:"
 
 #: templates/courses/course_group_work.haml:46
 #: templates/courses/course_group_work_ld.haml:20
-#: templates_v2/courses/course_group_work_ld.haml:20
+#: templates_v2/courses/course_group_work_ld.haml:23
 msgid ""
 "Group work has not yet begun for this course. You will receive a message "
 "with information once it begins"
@@ -7066,31 +7061,31 @@ msgstr ""
 #: templates/courses/course_group_work.haml:61
 #: templates/courses/course_group_work_ld.haml:29
 #: templates/courses/course_group_work_ld.haml:35
-#: templates_v2/courses/course_group_work.haml:25
-#: templates_v2/courses/course_group_work.haml:31
-#: templates_v2/courses/course_group_work_ld.haml:29
-#: templates_v2/courses/course_group_work_ld.haml:35
+#: templates_v2/courses/course_group_work.haml:24
+#: templates_v2/courses/course_group_work.haml:30
+#: templates_v2/courses/course_group_work_ld.haml:32
+#: templates_v2/courses/course_group_work_ld.haml:38
 msgid "Group Project:"
 msgstr "グループプロジェクト:"
 
 #: templates/courses/course_group_work.haml:66
 #: templates/courses/course_group_work_ld.haml:40
-#: templates_v2/courses/course_group_work.haml:36
-#: templates_v2/courses/course_group_work_ld.haml:40
+#: templates_v2/courses/course_group_work.haml:35
+#: templates_v2/courses/course_group_work_ld.haml:43
 msgid "Group Members"
 msgstr "グループメンバー"
 
 #: templates/courses/course_group_work.haml:71
 #: templates/courses/course_group_work_ld.haml:45
-#: templates_v2/courses/course_group_work.haml:41
-#: templates_v2/courses/course_group_work_ld.haml:45
+#: templates_v2/courses/course_group_work.haml:40
+#: templates_v2/courses/course_group_work_ld.haml:48
 msgid "Email your group"
 msgstr "グループにEメールを送信する"
 
 #: templates/courses/course_group_work.haml:75
 #: templates/courses/course_group_work_ld.haml:49
-#: templates_v2/courses/course_group_work.haml:45
-#: templates_v2/courses/course_group_work_ld.haml:49
+#: templates_v2/courses/course_group_work.haml:44
+#: templates_v2/courses/course_group_work_ld.haml:52
 msgid "Ask a TA"
 msgstr "TAに聞く"
 
@@ -7101,34 +7096,34 @@ msgid " | McKinsey Academy | Learner Dashboard"
 msgstr " | McKinsey Academy | 学習者ダッシュボード"
 
 #: templates/courses/course_learner_dashboard_calendar.haml:36
-#: templates_v2/courses/course_learner_dashboard_calendar.haml:42
+#: templates_v2/courses/course_learner_dashboard_calendar.haml:40
 msgid "not available"
 msgstr "利用不可"
 
 #: templates/courses/course_learner_dashboard_calendar.haml:39
 #: templates/courses/course_progress_v2.haml:127
-#: templates_v2/courses/course_learner_dashboard_calendar.haml:45
-#: templates_v2/getting-started.haml:97
+#: templates_v2/courses/course_learner_dashboard_calendar.haml:43
+#: templates_v2/getting-started.haml:93
 msgid "not started"
 msgstr "開始前"
 
 #: templates/courses/course_learner_dashboard_calendar.haml:42
-#: templates_v2/courses/course_learner_dashboard_calendar.haml:48
+#: templates_v2/courses/course_learner_dashboard_calendar.haml:46
 msgid "in progress"
 msgstr "進行中"
 
 #: templates/courses/course_learner_dashboard_calendar.haml:48
-#: templates_v2/courses/course_learner_dashboard_calendar.haml:54
+#: templates_v2/courses/course_learner_dashboard_calendar.haml:52
 msgid "incomplete"
 msgstr "未完了"
 
 #: templates/courses/course_learner_dashboard_calendar.haml:51
-#: templates_v2/courses/course_learner_dashboard_calendar.haml:57
+#: templates_v2/courses/course_learner_dashboard_calendar.haml:55
 msgid "not tracked"
 msgstr "追跡なし"
 
 #: templates/courses/course_learner_dashboard_header.haml:24
-#: templates/home/landing.haml:32 templates_v2/home/landing.haml:39
+#: templates/home/landing.haml:32 templates_v2/home/landing.haml:38
 #: tests/templates_v2/home/landing.haml:40
 msgid "Log in"
 msgstr "ログイン"
@@ -7153,9 +7148,9 @@ msgstr "カレンダー"
 #: templates/courses/course_lessons_ld.haml:26
 #: templates/courses/course_lessons_ld_external.haml:23
 #: templates/courses/course_progress_v2.haml:85
-#: templates_v2/courses/course_lessons.haml:33
+#: templates_v2/courses/course_lessons.haml:31
 #: templates_v2/courses/course_lessons_ld.haml:33
-#: templates_v2/courses/course_lessons_ld_external.haml:30
+#: templates_v2/courses/course_lessons_ld_external.haml:31
 #: templates_v2/courses/course_progress_v2.haml:93
 msgid " Modules"
 msgstr "モジュール:"
@@ -7164,9 +7159,9 @@ msgstr "モジュール:"
 #: templates/courses/course_lessons_ld.haml:29
 #: templates/courses/course_lessons_ld_external.haml:26
 #: templates/courses/course_progress_v2.haml:88
-#: templates_v2/courses/course_lessons.haml:36
+#: templates_v2/courses/course_lessons.haml:34
 #: templates_v2/courses/course_lessons_ld.haml:36
-#: templates_v2/courses/course_lessons_ld_external.haml:33
+#: templates_v2/courses/course_lessons_ld_external.haml:34
 #: templates_v2/courses/course_progress_v2.haml:96
 msgid "Lesson "
 msgstr "レッスン"
@@ -7175,9 +7170,9 @@ msgstr "レッスン"
 #: templates/courses/course_lessons_ld.haml:32
 #: templates/courses/course_lessons_ld_external.haml:29
 #: templates/courses/course_progress_v2.haml:91
-#: templates_v2/courses/course_lessons.haml:39
+#: templates_v2/courses/course_lessons.haml:37
 #: templates_v2/courses/course_lessons_ld.haml:39
-#: templates_v2/courses/course_lessons_ld_external.haml:36
+#: templates_v2/courses/course_lessons_ld_external.haml:37
 #: templates_v2/courses/course_progress_v2.haml:99
 msgid "Lesson Modules"
 msgstr "レッスン・モジュール"
@@ -7240,17 +7235,17 @@ msgstr ""
 "にするでしょう。今後も機能を追加し続けていくので、ご自由にご覧ください。"
 
 #: templates/courses/course_navigation.haml:8
-#: templates_v2/courses/course_base.haml:9
+#: templates_v2/courses/course_base.haml:8
 msgid " | "
 msgstr "-"
 
 #: templates/courses/course_navigation.haml:8
-#: templates_v2/courses/course_base.haml:9
+#: templates_v2/courses/course_base.haml:8
 msgid " | McKinsey Academy"
 msgstr " | McKinsey Academy | "
 
 #: templates/courses/course_navigation.haml:10
-#: templates_v2/courses/course_base.haml:11
+#: templates_v2/courses/course_base.haml:10
 msgid " | Lessons | McKinsey Academy"
 msgstr "| レッスン | McKinsey Academy"
 
@@ -7701,7 +7696,7 @@ msgid "Grades:"
 msgstr "成績評価:"
 
 #: templates/courses/course_progress.haml:129
-#: templates_v2/courses/course_progress_v2.haml:311
+#: templates_v2/courses/course_progress_v2.haml:303
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -7720,7 +7715,7 @@ msgstr ""
 
 #: templates/courses/course_progress.haml:131
 #: templates/courses/course_progress_v2.haml:237
-#: templates_v2/courses/course_progress_v2.haml:313
+#: templates_v2/courses/course_progress_v2.haml:305
 msgid "privacy policy."
 msgstr "当社のプライバシーに関する方針で詳しくお読みください。"
 
@@ -7842,12 +7837,12 @@ msgid "partially complete"
 msgstr "部分的に完了"
 
 #: templates/courses/course_progress_v2.haml:131
-#: templates_v2/courses/course_progress_v2.haml:188
+#: templates_v2/courses/course_progress_v2.haml:180
 msgid "Note: Group Work Deliverables need to be submitted by 11pm GMT."
 msgstr "注: グループワークの提出物は、GMT午後11時までの提出が必要です。"
 
 #: templates/courses/course_progress_v2.haml:134
-#: templates_v2/courses/course_progress_v2.haml:191
+#: templates_v2/courses/course_progress_v2.haml:183
 msgid ""
 "Note: \"weeks\" begin Tuesday and end the following Monday; Group Work "
 "Deliverables need to be submitted by 11pm GMT."
@@ -7856,12 +7851,12 @@ msgstr ""
 "出物は、GMT午後11時までの提出が必要です。"
 
 #: templates/courses/course_progress_v2.haml:136
-#: templates_v2/courses/course_progress_v2.haml:193
+#: templates_v2/courses/course_progress_v2.haml:185
 msgid "Note: \"weeks\" begin Tuesday and end the following Monday"
 msgstr "注: 「週」は、開始日を火曜日、最終日を翌週月曜日とします"
 
 #: templates/courses/course_progress_v2.haml:139
-#: templates_v2/courses/course_progress_v2.haml:197
+#: templates_v2/courses/course_progress_v2.haml:189
 msgid "PROFICIENCY"
 msgstr "習熟度"
 
@@ -7890,7 +7885,7 @@ msgid "Grade:"
 msgstr "成績評価:"
 
 #: templates/courses/course_progress_v2.haml:188
-#: templates_v2/courses/course_progress_v2.haml:250
+#: templates_v2/courses/course_progress_v2.haml:242
 msgid "Grading in progress"
 msgstr "成績評価中"
 
@@ -7915,12 +7910,12 @@ msgstr ""
 "さい。"
 
 #: templates/courses/course_progress_v2.haml:200
-#: templates_v2/courses/course_progress_v2.haml:267
+#: templates_v2/courses/course_progress_v2.haml:259
 msgid "ENGAGEMENT"
 msgstr "エンゲージメント"
 
 #: templates/courses/course_progress_v2.haml:202
-#: templates_v2/courses/course_progress_v2.haml:269
+#: templates_v2/courses/course_progress_v2.haml:261
 msgid "discussion"
 msgstr "ディスカッション"
 
@@ -7950,27 +7945,27 @@ msgid "Stats:"
 msgstr "統計:"
 
 #: templates/courses/course_progress_v2.haml:216
-#: templates_v2/courses/course_progress_v2.haml:285
+#: templates_v2/courses/course_progress_v2.haml:277
 msgid "Number of <span>New Posts</span> you created "
 msgstr "あなたが作成した<span>新規投稿</span>数"
 
 #: templates/courses/course_progress_v2.haml:219
-#: templates_v2/courses/course_progress_v2.haml:288
+#: templates_v2/courses/course_progress_v2.haml:280
 msgid "Number of <span>Replies</span> you made to other posts "
 msgstr "他の投稿に対してあなたが行った<span>返信</span>数"
 
 #: templates/courses/course_progress_v2.haml:222
-#: templates_v2/courses/course_progress_v2.haml:291
+#: templates_v2/courses/course_progress_v2.haml:283
 msgid " Number of <span>Comments Generated </span> by your posts "
 msgstr "あなたの投稿から<span>発生したコメント</span>数"
 
 #: templates/courses/course_progress_v2.haml:225
-#: templates_v2/courses/course_progress_v2.haml:294
+#: templates_v2/courses/course_progress_v2.haml:286
 msgid " Number of <span>Upvotes</span> your posts have received "
 msgstr "あなたの投稿が受けた<span>賛成票</span>の数"
 
 #: templates/courses/course_progress_v2.haml:228
-#: templates_v2/courses/course_progress_v2.haml:297
+#: templates_v2/courses/course_progress_v2.haml:289
 msgid " Number of your posts being <span>Followed</span> "
 msgstr " <span>フォロー</span>されている投稿数"
 
@@ -8693,13 +8688,13 @@ msgstr ""
 "<a href=\"mailto:info@mckinseyacademy.com\">こちらからご連絡ください。</a>サ"
 "ポートいたします。"
 
-#: templates/footer.haml:11 templates_v2/footer.haml:19
+#: templates/footer.haml:11 templates_v2/footer.haml:16
 #: tests/templates_v2/footer.haml:11
 msgid "Terms of Service"
 msgstr "サービス利用規約"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
-#: templates_v2/footer.haml:22 templates_v2/privacy.haml:12
+#: templates_v2/footer.haml:19 templates_v2/privacy.haml:12
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "プライバシーに関する方針"
@@ -8741,7 +8736,7 @@ msgstr "コース閉講"
 msgid "course begins in %(remaining_days)s days"
 msgstr "コースは、%(remaining_days)s日後に始まります"
 
-#: templates/home/landing.haml:15 templates_v2/home/landing.haml:12
+#: templates/home/landing.haml:15 templates_v2/home/landing.haml:11
 msgid "Leading transformation, transforming leaders"
 msgstr "変革をリードし、リーダーを変革させる"
 
@@ -8773,8 +8768,8 @@ msgstr ""
 "登録済みの参加者の場合は、以下からログインし、McKinsey Academyの学習体験にア"
 "クセスしてください。"
 
-#: templates/layout.haml:23 templates/layout.haml:24
-#: templates_v2/layout.haml:23 templates_v2/layout.haml:24
+#: templates/layout.haml:22 templates/layout.haml:23
+#: templates_v2/layout.haml:20 templates_v2/layout.haml:21
 msgid ""
 "McKinsey Academy helps organizations thrive by accelerating their talent "
 "advantage"
@@ -8782,7 +8777,7 @@ msgstr ""
 "McKinsey Academyでは、組織がもつ人材の強みを加速させることで、組織が前進する"
 "お手伝いをします"
 
-#: templates/layout.haml:237 templates_v2/layout.haml:277
+#: templates/layout.haml:237 templates_v2/layout.haml:313
 msgid "Notice"
 msgstr "通知"
 
@@ -8831,8 +8826,8 @@ msgstr "McKinsey Academy概要"
 #: templates/marketing/fblf.haml:9 templates/marketing/fblf.haml:10
 #: templates/marketing/productwalkthrough.haml:9
 #: templates/marketing/productwalkthrough.haml:10
+#: templates_v2/marketing/productwalkthrough.haml:9
 #: templates_v2/marketing/productwalkthrough.haml:10
-#: templates_v2/marketing/productwalkthrough.haml:11
 msgid ""
 "McKinsey Academy is a dynamic business education platform built to help "
 "organizations thrive by accelerating their talent advantage."
@@ -8848,7 +8843,7 @@ msgstr ""
 "McKinsey Academyは、個人の成績と組織の効率を飛躍的に向上させることを目指して"
 "生まれました"
 
-#: templates/marketing/about.haml:20 templates_v2/home/landing.haml:52
+#: templates/marketing/about.haml:20 templates_v2/home/landing.haml:51
 msgid "About McKinsey Academy"
 msgstr "McKinsey Academyについて"
 
@@ -9536,12 +9531,12 @@ msgid "Elevate their visibility within your organization"
 msgstr "組織における認知度を上げます"
 
 #: templates/marketing/productwalkthrough.haml:5
-#: templates_v2/marketing/productwalkthrough.haml:6
+#: templates_v2/marketing/productwalkthrough.haml:5
 msgid "Product Walkthrough | McKinsey Academy"
 msgstr "商品紹介 | McKinsey Academy"
 
 #: templates/marketing/productwalkthrough.haml:6
-#: templates_v2/marketing/productwalkthrough.haml:7
+#: templates_v2/marketing/productwalkthrough.haml:6
 msgid "McKinsey Academy Product Walkthrough"
 msgstr "McKinsey Academy商品紹介"
 
@@ -10889,24 +10884,14 @@ msgstr ""
 "することができる場合もあります。"
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
-#, fuzzy
-#| msgid ""
-#| "If you would like to make a request to access, review, or correct the "
-#| "personal data we have collected about you, or to discuss how we process "
-#| "your personal data, please contact us at"
 msgid ""
-"To make a request to access, review, or correct the personal data we have "
-"collected about you, or to discuss how we process your personal data, please "
-"contact our"
+"If you would like to make a request to access, review, or correct the "
+"personal data we have collected about you, or to discuss how we process your "
+"personal data, please contact us at"
 msgstr ""
 "お客様に関し当社で収集した個人データのアクセス、閲覧、または修正の依頼を希望"
 "される場合、あるいは、当社の個人データ処理に関するお問い合わせについては、以"
 "下までご連絡ください"
-
-#: templates/privacy.haml:106 templates/privacy.haml:118
-#: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
-msgid "support team"
-msgstr ""
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -10986,21 +10971,13 @@ msgstr ""
 "せん。"
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
-#, fuzzy
-#| msgid ""
-#| "If you are a California resident under the age of 18, and a registered "
-#| "user of McKinsey Academy subject to this Privacy Policy, California "
-#| "Business and Professions Code Section 22581 permits you to request and "
-#| "obtain removal of content or information you have publicly posted. To "
-#| "make such a request, please send an email with a detailed description of "
-#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
 "Professions Code Section 22581 permits you to request and obtain removal of "
 "content or information you have publicly posted. To make such a request, "
-"please send a detailed description of the specific content or information to "
-"our"
+"please send an email with a detailed description of the specific content or "
+"information to"
 msgstr ""
 "お客様が、18歳未満のカリフォルニア州在住者で、当該プライバシーに関する方針の"
 "対象となるMcKinsey Academyの登録ユーザーである場合、カリフォルニア州企業・職"
@@ -11059,12 +11036,15 @@ msgstr ""
 msgid "Contact our privacy department"
 msgstr "当社プライバシー部へお問い合わせ"
 
-#: templates/privacy.haml:128 templates/terms_of_service.haml:110
-#: templates_v2/privacy.haml:132 templates_v2/terms_of_service.haml:110
+#: templates/privacy.haml:128 templates_v2/privacy.haml:132
 msgid ""
-"For questions or concerns about our Terms of Service or our Privacy Policy, "
-"please contact:"
+"If you have any questions about our Privacy Policy or if you require any "
+"assistance in navigating or reading the Terms or this Privacy Policy, please "
+"contact us at:"
 msgstr ""
+"当社のプライバシーに関する方針についてご質問がある場合や、規約またはプライバ"
+"シーに関する方針の実施または理解に関してご質問がある場合は、以下までご連絡く"
+"ださい:"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
@@ -12116,6 +12096,16 @@ msgstr ""
 msgid "15. Contact Us"
 msgstr "15. お問い合わせ"
 
+#: templates/terms_of_service.haml:110 templates_v2/terms_of_service.haml:110
+msgid ""
+"If you have any questions about these Terms, our Privacy Policy, or if you "
+"require any assistance in navigating McKinsey Academy, these Terms, or our "
+"Privacy Policy, please contact us at:"
+msgstr ""
+"これらの規約やプライバシーに関する方針についてご質問がある場合や、McKinsey "
+"Academy、これらの規約、又は当社のプライバシーに関する方針の実施または理解に関"
+"してご質問がある場合は、以下までご連絡ください:"
+
 #: templates_v2/403.haml:16
 msgid "Access forbidden."
 msgstr "アクセスが禁止されています。"
@@ -12148,8 +12138,7 @@ msgid ""
 "please visit our\n"
 "                  %%a{:href => \"/faq\"} FAQ page\n"
 "                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support.\n"
+"                  %%a{:href => \"#{support}\"} email support.\n"
 "                  "
 msgstr ""
 "\n"
@@ -12182,8 +12171,7 @@ msgid ""
 "                  If you continue to have issues, please visit our\n"
 "                  %%a{:href => \"/faq\"} FAQ page\n"
 "                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support\n"
+"                  %%a{:href => \"#{support}\"} email support\n"
 "                  "
 msgstr ""
 "\n"
@@ -12223,8 +12211,7 @@ msgid ""
 "                  If you continue to have issues, please visit our\n"
 "                  %%a{:href => \"/faq\"} FAQ page\n"
 "                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support.\n"
+"                  %%a{:href => \"#{support}\"} email support.\n"
 "                  "
 msgstr ""
 "\n"
@@ -12250,63 +12237,67 @@ msgstr ""
 msgid "Show Password"
 msgstr "パスワード"
 
-#: templates_v2/accounts/activate.haml:50
-#: templates_v2/accounts/activate.haml:111
+#: templates_v2/accounts/activate.haml:48
+#: templates_v2/accounts/activate.haml:109
 msgid ""
 "Must be at least 8 characters and include upper and lowercase letters - plus "
 "numbers OR special characters."
 msgstr ""
 "最低8文字で大文字と小文字を含み、数字あるいは特殊文字も含める必要があります。"
 
-#: templates_v2/accounts/activate.haml:57
+#: templates_v2/accounts/activate.haml:55
 msgid "I agree to the "
 msgstr "サービス利用規約 "
 
-#: templates_v2/accounts/activate.haml:58
+#: templates_v2/accounts/activate.haml:56
 msgid "Terms of Service "
 msgstr "サービス利用規約"
 
-#: templates_v2/accounts/activate.haml:59
+#: templates_v2/accounts/activate.haml:57
 msgid "and "
 msgstr ""
 
-#: templates_v2/accounts/activate.haml:60
+#: templates_v2/accounts/activate.haml:58
 msgid "Privacy Policy "
 msgstr "プライバシーに関する方針"
 
-#: templates_v2/accounts/activate.haml:66
+#: templates_v2/accounts/activate.haml:64
 #: templates_v2/accounts/public_registration.haml:95
 #: templates_v2/accounts/sso_terms_of_service.haml:25
 msgid "Need help?"
 msgstr "ヘルプが必要ですか?"
 
-#: templates_v2/accounts/activate.haml:68
+#: templates_v2/accounts/activate.haml:66
 #: templates_v2/accounts/public_registration.haml:97
 #: templates_v2/accounts/sso_terms_of_service.haml:27
 msgid "Read FAQs"
 msgstr "FAQを読む"
 
-#: templates_v2/accounts/activate.haml:70
+#: templates_v2/accounts/activate.haml:68
 #: templates_v2/accounts/public_registration.haml:99
 #: templates_v2/accounts/sso_terms_of_service.haml:29
+#: templates_v2/home/landing.haml:49
 msgid "Email Support"
 msgstr "Eメールサポート"
 
-#: templates_v2/accounts/activate.haml:85
-#: templates_v2/accounts/activate.haml:104
+#: templates_v2/accounts/activate.haml:83
+#: templates_v2/accounts/activate.haml:102
 #: templates_v2/accounts/public_registration.haml:113
 #: templates_v2/accounts/public_registration.haml:133
 #: templates_v2/accounts/public_registration.haml:152
 #: templates_v2/accounts/public_registration.haml:171
 #: templates_v2/accounts/public_registration.haml:191
+#, fuzzy
+#| msgid "First Name is required."
 msgid "This field is required."
-msgstr "このフィールドへの入力は必須です。"
+msgstr "有効なEメールが必要です"
 
-#: templates_v2/accounts/activate.haml:92
+#: templates_v2/accounts/activate.haml:90
 msgid "Please enter a valid username."
-msgstr "有効なユーザー名を入力してください。"
+msgstr ""
+"ユーザー名/Eメールアドレスが確認できませんでした。もう一度試してください。"
 
-#: templates_v2/accounts/activate.haml:123
+#: templates_v2/accounts/activate.haml:121
 msgid "You must accept terms of service in order to continue."
 msgstr "続行するには、サービス利用規約に同意してください"
 
@@ -12406,7 +12397,7 @@ msgstr "平均習熟度:"
 
 #: templates_v2/admin/courses/course_details.haml:111
 #: templates_v2/admin/courses/course_details.haml:166
-#: templates_v2/courses/course_progress_v2.haml:279
+#: templates_v2/courses/course_progress_v2.haml:271
 msgid "Stats"
 msgstr "統計:"
 
@@ -12495,96 +12486,99 @@ msgid "Your course completion status:"
 msgstr "コース完了状況:"
 
 #: templates_v2/courses/course_cohort.haml:22
-#: templates_v2/courses/course_cohort.haml:182
+#: templates_v2/courses/course_cohort.haml:184
 #: templates_v2/courses/visualizations/course_proficiency.haml:13
 #: templates_v2/courses/visualizations/course_progress.haml:11
 msgid "Cohort Average:"
 msgstr "コホート平均:"
 
 #: templates_v2/courses/course_cohort.haml:27
-#: templates_v2/courses/course_cohort.haml:106
-#: templates_v2/courses/course_cohort.haml:187
+#: templates_v2/courses/course_cohort.haml:107
+#: templates_v2/courses/course_cohort.haml:189
+#, fuzzy
+#| msgid "Tile Positions"
 msgid "Position"
-msgstr "順位"
+msgstr "役職肩書き"
 
 #: templates_v2/courses/course_cohort.haml:29
-#: templates_v2/courses/course_cohort.haml:108
-#: templates_v2/courses/course_cohort.haml:189
-msgid "You are ranked "
-msgstr "あなたの順位は、"
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"                          You are ranked <b>##{position}</b> out of "
+"%(total)s members in your cohort.\n"
+"                        "
+msgstr ""
 
-#: templates_v2/courses/course_cohort.haml:30
-#: templates_v2/courses/course_cohort.haml:109
-#: templates_v2/courses/course_cohort.haml:190
-msgid "out of"
-msgstr "あなたのコーホートに含まれる "
-
-#: templates_v2/courses/course_cohort.haml:30
-#: templates_v2/courses/course_cohort.haml:109
-#: templates_v2/courses/course_cohort.haml:190
-msgid "members in your cohort."
-msgstr " 位です 人のメンバー中 "
-
-#: templates_v2/courses/course_cohort.haml:32
+#: templates_v2/courses/course_cohort.haml:33
 msgid "Your progress position will be displayed here"
 msgstr "あなたの進度<br>はここに表示されます"
 
-#: templates_v2/courses/course_cohort.haml:37
+#: templates_v2/courses/course_cohort.haml:38
 msgid "Top 3 on progress"
 msgstr "進行中"
 
-#: templates_v2/courses/course_cohort.haml:55
-#: templates_v2/courses/course_cohort.haml:74
-#: templates_v2/courses/course_cohort.haml:93
-#: templates_v2/courses/course_cohort.haml:134
-#: templates_v2/courses/course_cohort.haml:154
-#: templates_v2/courses/course_cohort.haml:174
-#: templates_v2/courses/course_cohort.haml:216
-#: templates_v2/courses/course_cohort.haml:236
-#: templates_v2/courses/course_cohort.haml:256
+#: templates_v2/courses/course_cohort.haml:56
+#: templates_v2/courses/course_cohort.haml:75
+#: templates_v2/courses/course_cohort.haml:94
+#: templates_v2/courses/course_cohort.haml:136
+#: templates_v2/courses/course_cohort.haml:156
+#: templates_v2/courses/course_cohort.haml:176
+#: templates_v2/courses/course_cohort.haml:219
+#: templates_v2/courses/course_cohort.haml:239
+#: templates_v2/courses/course_cohort.haml:259
 msgid "User Name"
 msgstr "ユーザー名"
 
-#: templates_v2/courses/course_cohort.haml:100
+#: templates_v2/courses/course_cohort.haml:101
 msgid "Your discussion activity points:"
 msgstr "ディスカッションアクティビティポイント:"
 
-#: templates_v2/courses/course_cohort.haml:101
+#: templates_v2/courses/course_cohort.haml:102
 #, python-format
 msgid " Cohort Average: %(score)s points"
 msgstr "コホート平均: %(score)s 点"
 
-#: templates_v2/courses/course_cohort.haml:111
+#: templates_v2/courses/course_cohort.haml:109
+#: templates_v2/courses/course_cohort.haml:191
+#, python-format, python-brace-format
+msgid ""
+"\n"
+"                            You are ranked <b>##{position}</b> out of "
+"%(total)s members in your cohort.\n"
+"                          "
+msgstr ""
+
+#: templates_v2/courses/course_cohort.haml:113
 msgid "Your engagement position will be displayed here"
 msgstr "あなたのエンゲージメントは<br>ここに表示されます"
 
-#: templates_v2/courses/course_cohort.haml:115
+#: templates_v2/courses/course_cohort.haml:117
 msgid "Top 3 on engagement"
 msgstr "エンゲージメント"
 
-#: templates_v2/courses/course_cohort.haml:181
+#: templates_v2/courses/course_cohort.haml:183
 msgid "Your course knowledge:"
 msgstr "コースに関する知識:"
 
-#: templates_v2/courses/course_cohort.haml:192
+#: templates_v2/courses/course_cohort.haml:195
 msgid "Your proficiency position will be displayed here"
 msgstr "あなたの習熟度<br>はここに表示されます"
 
-#: templates_v2/courses/course_cohort.haml:196
+#: templates_v2/courses/course_cohort.haml:199
 msgid "Top 3 on Proficiency"
 msgstr "習熟度"
 
-#: templates_v2/courses/course_group_work.haml:17
+#: templates_v2/courses/course_group_work.haml:16
 msgid "Group work has not yet begun for this course."
 msgstr "このコースには、グループプロジェクトはありません。"
 
-#: templates_v2/courses/course_group_work.haml:18
+#: templates_v2/courses/course_group_work.haml:17
 msgid "You will receive a message with information once it begins."
 msgstr ""
 "このコースでは、グループワークがまだ開始されていません。開始すると、関連情報"
 "に関するメッセージが届きます"
 
-#: templates_v2/courses/course_learner_dashboard.haml:76
+#: templates_v2/courses/course_learner_dashboard.haml:77
 msgid "for discovery"
 msgstr "ディスカバー"
 
@@ -12592,10 +12586,10 @@ msgstr "ディスカバー"
 msgid "Home"
 msgstr "ホーム"
 
-#: templates_v2/courses/course_lessons.haml:46
+#: templates_v2/courses/course_lessons.haml:44
 #: templates_v2/courses/course_lessons_ld.haml:46
-#: templates_v2/courses/course_lessons_ld_external.haml:43
-#: templates_v2/courses/course_progress_v2.haml:118
+#: templates_v2/courses/course_lessons_ld_external.haml:44
+#: templates_v2/courses/course_progress_v2.haml:106
 #, python-format
 msgid ""
 "You have completed %(course_current_progress)s%% of %(lesson_custom_label)s "
@@ -12604,65 +12598,65 @@ msgstr ""
 "%(lesson_custom_label)s %(lesson_index)sの%(course_current_progress)s%%が終了"
 "しました: "
 
-#: templates_v2/courses/course_lessons.haml:48
+#: templates_v2/courses/course_lessons.haml:46
 #: templates_v2/courses/course_lessons_ld.haml:48
-#: templates_v2/courses/course_lessons_ld_external.haml:45
-#: templates_v2/courses/course_progress_v2.haml:120
+#: templates_v2/courses/course_lessons_ld_external.haml:46
+#: templates_v2/courses/course_progress_v2.haml:108
 #, python-format
 msgid ""
 "You have completed %(course_current_progress)s%% of Lesson %(lesson_index)s "
 msgstr ""
 "レッスン%(lesson_index)sの%(course_current_progress)s%%が終了しました: "
 
-#: templates_v2/courses/course_lessons.haml:56
-#, python-format
-msgid ""
-"\n"
-"                                  %(module_custom_label)s\n"
-"                                  %%span %(module_index)s\n"
-"                                "
-msgstr ""
-"\n"
-"                                    %(module_custom_label)s\n"
-"                                    %%スパン%(module_index)s\n"
-"                                  "
-
-#: templates_v2/courses/course_lessons.haml:76
-#: templates_v2/courses/course_lessons_ld.haml:77
-#: templates_v2/courses/course_lessons_ld_external.haml:74
-#: templates_v2/courses/course_progress_v2.haml:148
-#, python-format
-msgid " This %(module_custom_label)s will be available on %(start_date)s "
-msgstr "この%(module_custom_label)sは%(start_date)sに利用可能となります"
-
-#: templates_v2/courses/course_lessons.haml:76
-#: templates_v2/courses/course_lessons_ld.haml:77
-#: templates_v2/courses/course_lessons_ld_external.haml:74
-#: templates_v2/courses/course_progress_v2.haml:148
-#, python-format
-msgid " This module will be available on %(start_date)s "
-msgstr "このレッスンは%(start_date)sに利用可能となります"
-
-#: templates_v2/courses/course_lessons.haml:83
-#: templates_v2/courses/course_lessons_ld.haml:87
-#: templates_v2/courses/course_lessons_ld_external.haml:83
-msgid "Show fullscreen"
-msgstr "全画面で表示する"
-
-#: templates_v2/courses/course_lessons.haml:87
-#: templates_v2/courses/course_lessons_ld.haml:91
-#: templates_v2/courses/course_lessons_ld_external.haml:87
-msgid "Exit fullscreen"
-msgstr "全画面を解除する"
-
-#: templates_v2/courses/course_lessons_ld.haml:56
-#: templates_v2/courses/course_lessons_ld_external.haml:53
+#: templates_v2/courses/course_lessons.haml:54
+#: templates_v2/courses/course_lessons_ld_external.haml:54
 #, python-format
 msgid ""
 "\n"
 "                                    %(module_custom_label)s\n"
 "                                    %%span %(module_index)s\n"
 "                                  "
+msgstr ""
+"\n"
+"                                    %(module_custom_label)s\n"
+"                                    %%スパン%(module_index)s\n"
+"                                  "
+
+#: templates_v2/courses/course_lessons.haml:74
+#: templates_v2/courses/course_lessons_ld.haml:77
+#: templates_v2/courses/course_lessons_ld_external.haml:75
+#: templates_v2/courses/course_progress_v2.haml:137
+#, python-format
+msgid " This %(module_custom_label)s will be available on %(start_date)s "
+msgstr "この%(module_custom_label)sは%(start_date)sに利用可能となります"
+
+#: templates_v2/courses/course_lessons.haml:74
+#: templates_v2/courses/course_lessons_ld.haml:77
+#: templates_v2/courses/course_lessons_ld_external.haml:75
+#: templates_v2/courses/course_progress_v2.haml:137
+#, python-format
+msgid " This module will be available on %(start_date)s "
+msgstr "このレッスンは%(start_date)sに利用可能となります"
+
+#: templates_v2/courses/course_lessons.haml:84
+#: templates_v2/courses/course_lessons_ld.haml:87
+#: templates_v2/courses/course_lessons_ld_external.haml:84
+msgid "Show fullscreen"
+msgstr "全画面で表示する"
+
+#: templates_v2/courses/course_lessons.haml:88
+#: templates_v2/courses/course_lessons_ld.haml:91
+#: templates_v2/courses/course_lessons_ld_external.haml:88
+msgid "Exit fullscreen"
+msgstr "全画面を解除する"
+
+#: templates_v2/courses/course_lessons_ld.haml:56
+#, python-format
+msgid ""
+"\n"
+"                                      %(module_custom_label)s\n"
+"                                      %%span %(module_index)s\n"
+"                                    "
 msgstr ""
 "\n"
 "                                    %(module_custom_label)s\n"
@@ -12749,7 +12743,7 @@ msgid "Individual Learning"
 msgstr "個人学習:"
 
 #: templates_v2/courses/course_progress_v2.haml:62
-#: templates_v2/courses/course_progress_v2.haml:158
+#: templates_v2/courses/course_progress_v2.haml:150
 msgid "Group Work (Due Date)"
 msgstr "グループワーク (期日):"
 
@@ -12764,7 +12758,7 @@ msgstr ""
 "                                  %%スパン %(lesson_index)s:\n"
 "                                "
 
-#: templates_v2/courses/course_progress_v2.haml:127
+#: templates_v2/courses/course_progress_v2.haml:116
 #, python-format
 msgid ""
 "\n"
@@ -12777,7 +12771,7 @@ msgstr ""
 "                                    %%スパン%(module_index)s\n"
 "                                  "
 
-#: templates_v2/courses/course_progress_v2.haml:199
+#: templates_v2/courses/course_progress_v2.haml:191
 #, python-format
 msgid ""
 "\n"
@@ -12793,16 +12787,16 @@ msgstr ""
 "平均は、%(cohort_proficiency_average)sです。\n"
 "          "
 
-#: templates_v2/courses/course_progress_v2.haml:206
-#: templates_v2/courses/course_progress_v2.haml:277
+#: templates_v2/courses/course_progress_v2.haml:198
+#: templates_v2/courses/course_progress_v2.haml:269
 msgid "Overall"
 msgstr "全体:"
 
-#: templates_v2/courses/course_progress_v2.haml:207
+#: templates_v2/courses/course_progress_v2.haml:199
 msgid "Graded Items"
 msgstr "成績評価済み項目:"
 
-#: templates_v2/courses/course_progress_v2.haml:262
+#: templates_v2/courses/course_progress_v2.haml:254
 #, python-format
 msgid ""
 "You need a combined course grade of at least 70%% to earn a certificate of "
@@ -12811,15 +12805,15 @@ msgstr ""
 "修了証書を獲得するには、コース成績評価で少なくとも 70%%の総合点が必要です。最"
 "終評価算出法は、以下の通りです。"
 
-#: templates_v2/courses/course_progress_v2.haml:263
+#: templates_v2/courses/course_progress_v2.haml:255
 msgid "Click here"
 msgstr "ここをクリックしてください。"
 
-#: templates_v2/courses/course_progress_v2.haml:264
+#: templates_v2/courses/course_progress_v2.haml:256
 msgid "to read more about how we may share your course information."
 msgstr "コース情報の共有に関する詳細については、"
 
-#: templates_v2/courses/course_progress_v2.haml:270
+#: templates_v2/courses/course_progress_v2.haml:262
 #, python-format
 msgid ""
 "\n"
@@ -12836,11 +12830,11 @@ msgstr ""
 "は、%(social_course_avg)sです。\n"
 "          "
 
-#: templates_v2/courses/course_progress_v2.haml:278
+#: templates_v2/courses/course_progress_v2.haml:270
 msgid "Measured Engagement"
 msgstr "エンゲージメント測定:"
 
-#: templates_v2/courses/courses.haml:11 templates_v2/getting-started.haml:69
+#: templates_v2/courses/courses.haml:11 templates_v2/getting-started.haml:65
 msgid "My Courses"
 msgstr "私のコース"
 
@@ -12873,13 +12867,6 @@ msgstr "アクセスキー"
 #: templates_v2/faq.haml:48
 msgid "To change your email address, please email"
 msgstr "Eメールアドレスを変更するには、Eメールを送ってください"
-
-#: templates_v2/faq.haml:49 templates_v2/faq.haml:56 templates_v2/faq.haml:63
-#: templates_v2/faq.haml:70
-#, fuzzy
-#| msgid "Report"
-msgid "support"
-msgstr "レポート"
 
 #: templates_v2/faq.haml:55
 msgid ""
@@ -12945,12 +12932,6 @@ msgid "If you have any questions about a grade you received, please email"
 msgstr ""
 "受けた成績評価についてご質問がある場合は、<a href=\"mailto:"
 "tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>までご連絡ください。"
-
-#: templates_v2/faq.haml:133
-#, fuzzy
-#| msgid "TA"
-msgid "TAs"
-msgstr "TA"
 
 #: templates_v2/faq.haml:149
 msgid ""
@@ -13023,33 +13004,27 @@ msgstr "&#9400; 2019 McKinsey & Company. All Rights Reserved."
 msgid "About"
 msgstr "基本情報"
 
-#: templates_v2/footer.haml:16 templates_v2/getting-started.haml:48
-#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:48
-#: tests/templates_v2/home/landing.haml:49
-msgid "FAQs"
-msgstr "FAQ"
-
-#: templates_v2/getting-started.haml:12
+#: templates_v2/getting-started.haml:8
 msgid "McKinsey Academy Quick Start Guide"
 msgstr "McKinsey Academyクイックスタートガイド"
 
-#: templates_v2/getting-started.haml:13
+#: templates_v2/getting-started.haml:9
 msgid "QUICK LINKS"
 msgstr "クイックリンク"
 
-#: templates_v2/getting-started.haml:16 templates_v2/getting-started.haml:27
+#: templates_v2/getting-started.haml:12 templates_v2/getting-started.haml:23
 msgid "Accessing McKinsey Academy"
 msgstr "McKinsey Academy にアクセスする"
 
-#: templates_v2/getting-started.haml:18 templates_v2/getting-started.haml:63
+#: templates_v2/getting-started.haml:14 templates_v2/getting-started.haml:59
 msgid "Navigation and platform highlights"
 msgstr "ナビゲーションとプラットフォームのハイライト"
 
-#: templates_v2/getting-started.haml:20
+#: templates_v2/getting-started.haml:16
 msgid "Mobile app"
 msgstr "モバイルアプリ"
 
-#: templates_v2/getting-started.haml:22
+#: templates_v2/getting-started.haml:18
 msgid ""
 "McKinsey Academy is compatible with Chrome, Firefox, Safari, and Internet "
 "Explorer (version 11)."
@@ -13057,19 +13032,19 @@ msgstr ""
 "McKinsey Academy は、Chrome、Firefox、Safari、Internet Explorer (バージョン "
 "11) に対応しています。 "
 
-#: templates_v2/getting-started.haml:23
+#: templates_v2/getting-started.haml:19
 msgid "For the best experience, we recommend "
 msgstr " 最高の体験を得られるように、弊社では、奨しています "
 
-#: templates_v2/getting-started.haml:24
+#: templates_v2/getting-started.haml:20
 msgid "Chrome."
 msgstr "Chrome."
 
-#: templates_v2/getting-started.haml:28
+#: templates_v2/getting-started.haml:24
 msgid "Registration"
 msgstr "登録"
 
-#: templates_v2/getting-started.haml:29
+#: templates_v2/getting-started.haml:25
 msgid ""
 "Each participant receives a welcome email with an activation link. Follow "
 "this link to create an account username and password."
@@ -13078,62 +13053,67 @@ msgstr ""
 "す。アカウントのユーザー名とパスワードを作成するには、このリンクをクリックし"
 "ます。"
 
-#: templates_v2/getting-started.haml:32
+#: templates_v2/getting-started.haml:28
 msgid ""
 "If you believe you are enrolled in a course but have not received a welcome "
 "email:"
 msgstr "コースに登録したがようこそメールが送信されていない場合:"
 
-#: templates_v2/getting-started.haml:35
+#: templates_v2/getting-started.haml:31
 msgid "Check your junk folder."
 msgstr "迷惑メールフォルダを確認する。"
 
-#: templates_v2/getting-started.haml:36
+#: templates_v2/getting-started.haml:32
 msgid "Your welcome email may have been caught by spam filters."
 msgstr ""
 "お客様のようこそメールはスパムフィルターによって捕らえられたかもしれません。"
 
-#: templates_v2/getting-started.haml:38
+#: templates_v2/getting-started.haml:34
 msgid "Check that your inbox is not out of storage."
 msgstr "受信トレイが容量不足でないことを確認する。"
 
-#: templates_v2/getting-started.haml:39
+#: templates_v2/getting-started.haml:35
 msgid "Emails may be rejected by full servers."
 msgstr "Eメールがフルサーバーに拒否された可能性がある。"
 
-#: templates_v2/getting-started.haml:41
+#: templates_v2/getting-started.haml:37
 msgid "Check your local firewall settings."
 msgstr "ローカルファイアウォールの設定を確認してください。"
 
-#: templates_v2/getting-started.haml:43
+#: templates_v2/getting-started.haml:39
 msgid "may be blocked."
 msgstr "がブロックされている可能性があります。"
 
-#: templates_v2/getting-started.haml:45
+#: templates_v2/getting-started.haml:41
 msgid "Confirm your enrollment with a local administrator"
 msgstr "ローカル管理者に登録を確認してください。"
 
-#: templates_v2/getting-started.haml:47
+#: templates_v2/getting-started.haml:43
 msgid "For further technical support and troubleshooting, see our"
 msgstr "技術サポートとトラブルシューティングの詳細については、 をご覧ください"
 
-#: templates_v2/getting-started.haml:49
+#: templates_v2/getting-started.haml:44 templates_v2/getting-started.haml:134
+#: templates_v2/home/landing.haml:47 tests/templates_v2/home/landing.haml:49
+msgid "FAQs"
+msgstr "FAQ"
+
+#: templates_v2/getting-started.haml:45
 msgid "page. If you still seek assistance, contact "
 msgstr "ページ. なおも問題が解決しない場合は、までお問い合わせください "
 
-#: templates_v2/getting-started.haml:52
+#: templates_v2/getting-started.haml:48
 msgid "Login"
 msgstr "ログイン"
 
-#: templates_v2/getting-started.haml:54
+#: templates_v2/getting-started.haml:50
 msgid "Once registered, you can"
 msgstr "登録が完了したら、ことができます"
 
-#: templates_v2/getting-started.haml:55
+#: templates_v2/getting-started.haml:51
 msgid "login"
 msgstr "ログイン"
 
-#: templates_v2/getting-started.haml:56
+#: templates_v2/getting-started.haml:52
 msgid ""
 "with the username or email address associated with your account. Save or "
 "bookmark this URL to easily access your course or program in the future. "
@@ -13143,11 +13123,11 @@ msgstr ""
 "スやプログラムにアクセスしやすいように、このURLは保存するか、お気に入りに保存"
 "してくださいパスワードは、 からいつでもリセットできます"
 
-#: templates_v2/getting-started.haml:58
+#: templates_v2/getting-started.haml:54
 msgid "link."
 msgstr "リンク."
 
-#: templates_v2/getting-started.haml:64
+#: templates_v2/getting-started.haml:60
 msgid ""
 "Depending on your course or program, you'll be directed to the My Courses or "
 "Learner Dashboard landing page."
@@ -13155,7 +13135,7 @@ msgstr ""
 "コースやプログラムによっては、[私のコース]または[学習者ダッシュボード]のラン"
 "ディングページに移動します。"
 
-#: templates_v2/getting-started.haml:75
+#: templates_v2/getting-started.haml:71
 msgid ""
 "From here, you can navigate to the courses or activities you're enrolled in. "
 "Return to your landing page anytime using the main navigation."
@@ -13164,19 +13144,19 @@ msgstr ""
 "メイン・ナビゲーションを使用して、いつでもランディングページに戻ることができ"
 "ます。"
 
-#: templates_v2/getting-started.haml:76
+#: templates_v2/getting-started.haml:72
 msgid "See below for more information on"
 msgstr "の詳細については、以下を参照してください"
 
-#: templates_v2/getting-started.haml:77
+#: templates_v2/getting-started.haml:73
 msgid "Learner Dashboards"
 msgstr "学習者ダッシュボード"
 
-#: templates_v2/getting-started.haml:82
+#: templates_v2/getting-started.haml:78
 msgid "COURSE OVERVIEW"
 msgstr "コース概要"
 
-#: templates_v2/getting-started.haml:83
+#: templates_v2/getting-started.haml:79
 msgid ""
 "Each course has an overview page where you can access lessons, course "
 "materials, announcements, and resources."
@@ -13184,7 +13164,7 @@ msgstr ""
 "各コースには、レッスン、コース教材、告知、およびリソースにアクセスできる概要"
 "ページがあります。"
 
-#: templates_v2/getting-started.haml:86
+#: templates_v2/getting-started.haml:82
 msgid ""
 "Depending on your course, you can also explore course features such as "
 "Discussions, Group Work, and cohort Leaderboard. Note: not all courses have "
@@ -13194,11 +13174,11 @@ msgstr ""
 "どのコース機能を調べることもできます。注: すべてのコースですべての機能を使用"
 "できるわけではありません。"
 
-#: templates_v2/getting-started.haml:87
+#: templates_v2/getting-started.haml:83
 msgid "LESSONS"
 msgstr "レッスン"
 
-#: templates_v2/getting-started.haml:88
+#: templates_v2/getting-started.haml:84
 msgid ""
 "Lessons are composed of individual modules. Complete the modules to complete "
 "the lesson. Complete the lessons to complete the course."
@@ -13206,11 +13186,11 @@ msgstr ""
 "レッスンは個々のモジュールで構成されています。レッスンを完了するには、モ"
 "ジュールを修了します。コースを完了するには、モジュールを修了します。"
 
-#: templates_v2/getting-started.haml:89
+#: templates_v2/getting-started.haml:85
 msgid "View modules in fullscreen mode"
 msgstr "全画面モード"
 
-#: templates_v2/getting-started.haml:92
+#: templates_v2/getting-started.haml:88
 msgid ""
 "to put learning front-and-center. Move between modules by using the "
 "contextual navigation on screen."
@@ -13218,7 +13198,7 @@ msgstr ""
 "でモジュールを表示し、学習を中心に置きます。画面上のコンテキストナビゲーショ"
 "ンを使用してモジュール間を移動します。"
 
-#: templates_v2/getting-started.haml:96
+#: templates_v2/getting-started.haml:92
 msgid ""
 "Use the module navigator in the lesson title to jump to a specific module. "
 "Here you can also see the status of individual modules:"
@@ -13226,15 +13206,15 @@ msgstr ""
 "特定のモジュールに移動するには、レッスンタイトルのモジュールナビゲーターを使"
 "用します。ここには、個々のモジュールのステータス"
 
-#: templates_v2/getting-started.haml:100
+#: templates_v2/getting-started.haml:96
 msgid ", in progress "
 msgstr ", 進行中"
 
-#: templates_v2/getting-started.haml:103
+#: templates_v2/getting-started.haml:99
 msgid ", and completed "
 msgstr ", 完了アイコン"
 
-#: templates_v2/getting-started.haml:110
+#: templates_v2/getting-started.haml:105
 msgid ""
 "As you complete modules and lessons, your completion status will update in "
 "detail on the My Progress page."
@@ -13242,7 +13222,7 @@ msgstr ""
 "モジュールとレッスンを完了すると、[私の進度]ページに完了ステータスが詳細に更"
 "新されます。"
 
-#: templates_v2/getting-started.haml:115
+#: templates_v2/getting-started.haml:110
 msgid ""
 "Learner Dashboards help you manage program activities. Keep track of "
 "deadlines and milestones with your Calendar, participate in threaded "
@@ -13252,7 +13232,7 @@ msgstr ""
 "カレンダーで期限やマイルストーンを追跡し、スレッド化されたディスカッションに"
 "参加し、ミニボードを介してグループ活動を完了します。"
 
-#: templates_v2/getting-started.haml:116
+#: templates_v2/getting-started.haml:111
 msgid ""
 "Your course might be designed to unfold over time. You may find some tiles "
 "are locked until they’re ready to be used."
@@ -13260,11 +13240,11 @@ msgstr ""
 "コースは、時間の経過とともにデプロイするように設計されている場合があります。"
 "一部のタイルは、使用する準備ができるまでロックされていることがあります。"
 
-#: templates_v2/getting-started.haml:120
+#: templates_v2/getting-started.haml:115
 msgid "Mobile App"
 msgstr "モバイルアプリ"
 
-#: templates_v2/getting-started.haml:122
+#: templates_v2/getting-started.haml:117
 msgid ""
 "Your courses may also be available on mobile. You can download our mobile "
 "app on the"
@@ -13272,27 +13252,27 @@ msgstr ""
 "受講中のコースの中には、モバイル機器上で受講できるものもあります。からダウン"
 "ロードすることができます当社のモバイルアプリは"
 
-#: templates_v2/getting-started.haml:123
+#: templates_v2/getting-started.haml:118
 msgid "App Store"
 msgstr "App Store"
 
-#: templates_v2/getting-started.haml:124
+#: templates_v2/getting-started.haml:119
 msgid "or on"
 msgstr "または"
 
-#: templates_v2/getting-started.haml:125
+#: templates_v2/getting-started.haml:120
 msgid "Google Play."
 msgstr "Google Play."
 
-#: templates_v2/getting-started.haml:137
+#: templates_v2/getting-started.haml:132
 msgid "Still have questions?"
 msgstr "解決できませんか?"
 
-#: templates_v2/getting-started.haml:138
+#: templates_v2/getting-started.haml:133
 msgid "Visit our "
 msgstr "を参照してください "
 
-#: templates_v2/getting-started.haml:140
+#: templates_v2/getting-started.haml:135
 msgid "for more guidance."
 msgstr "詳細なガイダンスについては"
 
@@ -13332,29 +13312,23 @@ msgstr "ダッシュボード"
 msgid "my courses"
 msgstr "私のコース"
 
-#: templates_v2/home/landing.haml:28
+#: templates_v2/home/landing.haml:27
 msgid "Username or email"
 msgstr "ユーザー名またはEメール:"
 
-#: templates_v2/home/landing.haml:35
+#: templates_v2/home/landing.haml:34
 msgid "Show password"
 msgstr "パスワード"
 
-#: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
-#, fuzzy
-#| msgid "Contact: "
-msgid "Contact Support"
-msgstr "連絡先: "
-
-#: templates_v2/layout.haml:297
+#: templates_v2/layout.haml:332
 msgid "Skip"
 msgstr "スキップ"
 
-#: templates_v2/layout.haml:311
+#: templates_v2/layout.haml:346
 msgid "Your learning experience has a fresh look!"
 msgstr "学習体験が新しい装いになりました！"
 
-#: templates_v2/layout.haml:313
+#: templates_v2/layout.haml:348
 msgid ""
 "The new design makes it easier for you to navigate, understand your progress "
 "and stay focused on your learning."
@@ -13362,11 +13336,11 @@ msgstr ""
 "新しいデザインは、ナビゲートし、進捗を理解し、学習に集中することが簡単になっ"
 "ています。"
 
-#: templates_v2/layout.haml:321
+#: templates_v2/layout.haml:356
 msgid "Navigating is simple"
 msgstr "移動がシンプル"
 
-#: templates_v2/layout.haml:323
+#: templates_v2/layout.haml:358
 msgid ""
 "The updated landing page makes it easier for you to access your programs or "
 "courses."
@@ -13374,11 +13348,11 @@ msgstr ""
 "更新されたランディングページによって、プログラムやコースにアクセスしやすく"
 "なっています。"
 
-#: templates_v2/layout.haml:331
+#: templates_v2/layout.haml:366
 msgid "New full-screen mode"
 msgstr "新しいフルスクリーンモード"
 
-#: templates_v2/layout.haml:333
+#: templates_v2/layout.haml:368
 msgid ""
 "In your course, you can now zoom into the content by choosing full screen "
 "mode."
@@ -13386,22 +13360,22 @@ msgstr ""
 "コースで、フル画面モードを選ぶことで、コンテンツを拡大できるようになりまし"
 "た。"
 
-#: templates_v2/layout.haml:341
+#: templates_v2/layout.haml:376
 msgid "Access from any device"
 msgstr "あらゆるデバイスからアクセス"
 
-#: templates_v2/layout.haml:343
+#: templates_v2/layout.haml:378
 msgid ""
 "The designs have been optimized for all devices so you can learn from "
 "anywhere."
 msgstr ""
 "あらゆるデバイスに最適化されたデザインなので、どこからでも学習できます。"
 
-#: templates_v2/layout.haml:351
+#: templates_v2/layout.haml:386
 msgid "No interruption to your learning"
 msgstr "学習が中断されません"
 
-#: templates_v2/layout.haml:353
+#: templates_v2/layout.haml:388
 msgid ""
 "Pick up where you left off! Your progress and the content in the courses is "
 "not impacted by this change."
@@ -13464,6 +13438,10 @@ msgstr "変革の主導"
 msgid "Transforming leaders"
 msgstr "リーダーの変革"
 
+#: tests/templates_v2/home/landing.haml:51
+msgid "Email support"
+msgstr ""
+
 #: tests/templates_v2/home/landing.haml:53
 msgid "About Mckinsey Academy"
 msgstr "McKinsey Academyについて"
@@ -13503,42 +13481,6 @@ msgstr "名: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "氏: {}"
-
-#, fuzzy
-#~| msgid ""
-#~| "\n"
-#~| "                  Our team has been notified of the problem. Refresh "
-#~| "this page.\n"
-#~| "                  "
-#~ msgid ""
-#~ "\n"
-#~ "                        out of %(total)s members in your cohort.\n"
-#~ "                        "
-#~ msgstr ""
-#~ "\n"
-#~ "問題が発生しました。現在、チームが内容を確認中です。\n"
-#~ "                  "
-
-#~ msgid "Report is TBD"
-#~ msgstr "レポート未定"
-
-#~ msgid ""
-#~ "If you have any questions about our Privacy Policy or if you require any "
-#~ "assistance in navigating or reading the Terms or this Privacy Policy, "
-#~ "please contact us at:"
-#~ msgstr ""
-#~ "当社のプライバシーに関する方針についてご質問がある場合や、規約またはプライ"
-#~ "バシーに関する方針の実施または理解に関してご質問がある場合は、以下までご連"
-#~ "絡ください:"
-
-#~ msgid ""
-#~ "If you have any questions about these Terms, our Privacy Policy, or if "
-#~ "you require any assistance in navigating McKinsey Academy, these Terms, "
-#~ "or our Privacy Policy, please contact us at:"
-#~ msgstr ""
-#~ "これらの規約やプライバシーに関する方針についてご質問がある場合や、"
-#~ "McKinsey Academy、これらの規約、又は当社のプライバシーに関する方針の実施ま"
-#~ "たは理解に関してご質問がある場合は、以下までご連絡ください:"
 
 #, fuzzy
 #~| msgid ""

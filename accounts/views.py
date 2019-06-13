@@ -435,10 +435,12 @@ def login_post_view(request):
         except ApiError as err:
             return JsonResponse({"error": err.message}, status=500)
 
-    # If form validation fails it's due to a longer than 255-char username
-    return JsonResponse({
-        "login_id": _("Username/email is not recognized. Try again.")
-    }, status=403)
+    # If form validation fails
+    if form.errors['login_id']:
+        response = {"login_id": form.errors['login_id']}
+    else:
+        response = {"password": form.errors['password']}
+    return JsonResponse(response, status=status.HTTP_403_FORBIDDEN)
 
 
 @require_http_methods(['GET'])

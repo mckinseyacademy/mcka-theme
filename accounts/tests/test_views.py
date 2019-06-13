@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import urllib2
 import uuid
 from urllib import urlencode
@@ -698,6 +699,19 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_authenticate.return_value = make_user()
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
         self.assertIn(response_msg, response.content)
+
+    @ddt.data('ütest', 'ütest@email.com')
+    def test_login_validate_with_unicode_login_id(self, login_id):
+        """
+        If we try to post with an invalid data pattern like unicode,
+        then it will return the errors and status forbidden.
+        """
+        response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("login_id", response.content)
+        self.assertIn("Please enter a valid username or email "
+                      "containing only english characters and numerals,"
+                      " and the following special characters @ . _ -", response.content)
 
 
 @ddt.ddt
