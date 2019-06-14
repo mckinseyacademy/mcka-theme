@@ -2109,6 +2109,80 @@ body.new-theme {
 // Layout 
 .new-theme{
 	#course-discussion {
+		
+		// start new-theme discussion home page 
+		.forum-content{
+			.view-discussion-home
+			{
+				padding: 0 45px !important;
+				h1{
+					@include font-size(21);
+					margin-bottom: 15px;
+				}
+				.sub-heading{
+					@include font-size(14);
+					font-weight: 600;
+				}
+				.discussion-wrapper{
+					h4{
+						@include font-size(12);
+						font-weight: bold;
+						text-transform: uppercase;
+						margin-bottom: 10px;
+						&:nth-child(2){
+							margin-top: 20px;
+						}
+					}
+					p{
+						@include font-size(14);
+						margin-bottom: 10px;
+						line-height: normal;
+						span{
+							color:var(--primary);
+						}
+						&:nth-child(3){
+							&:before{
+								content: '\e8b6';
+								font-family: 'Material Icons';
+								font-size: 18px;
+								position: relative;
+								top: 4px;
+								display:inline-block;
+								color:var(--primary);
+								margin-right: 3px;
+							}
+						}
+					}
+
+					hr{
+						margin: 30px 0;
+					}
+
+					.discussion-features{
+						margin:0 0 15px;
+						padding: 0;
+						list-style: none;
+						li{
+							@include font-size(14);
+							span.icon{
+								margin-right: 5px;
+								@include font-size(16);
+								&.fa-flag{
+									&:before{
+										font-family: 'Material Icons';
+  										content: '\e153'
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		// end new-theme discussion home page 
+
+
 		.forum-nav {
 			
 			width:360px !important;
