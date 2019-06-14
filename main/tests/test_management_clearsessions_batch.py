@@ -4,6 +4,7 @@ from django.contrib.sessions.models import Session
 from django.test import TestCase, override_settings
 from django.utils import timezone
 from freezegun import freeze_time
+from mock import patch
 
 
 @override_settings(SESSION_ENGINE='django.contrib.sessions.backends.db')
@@ -31,7 +32,8 @@ class ClearSessionsBarchCommandTestCase(TestCase):
             call_command('clearsessions_batch', '10')
             self.assertEqual(Session.objects.all().count(), 90 - 10 * run_count)
         # The run after that should only clear 1 expired session
-        with self.assertRaises(CommandError):
+        with patch('main.management.commands.clearsessions_batch.logger') as mock:
             call_command('clearsessions_batch', '10')
+            mock.warn.assert_called_with("No more sessions to clear")
 
         self.assertEqual(Session.objects.all().count(), 30)
