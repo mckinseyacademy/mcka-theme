@@ -8,6 +8,34 @@
 
 .rtl.new-theme
 {
+
+
+	// new-theme discussion home page rtl
+
+	.forum-content{
+		.view-discussion-home
+		{
+			p{
+				&:nth-child(3){
+						&:before{
+							margin-left: 3px;
+							margin-right: 0 !important;
+						}
+					}
+				}
+				.discussion-features{
+					li{
+						span.icon{
+							margin-left: 5px;
+							margin-right: 0 !important;	
+						}
+					}
+				}
+			}
+		}
+	
+
+
 	.response-btn-count-wrapper
 	{
 		text-align: right;
