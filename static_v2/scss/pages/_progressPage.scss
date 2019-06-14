@@ -227,6 +227,12 @@
           .lesson-with-list {
             position: relative;
             padding-bottom: 10px;
+            .pn-ProductNav_Link{
+              margin-left: 25px;
+              display: inline-block;
+              width: calc(100% - 190px)
+            }
+            
 
             .lesson-item-name {
               display: inline-block;
@@ -267,6 +273,8 @@
               @include font-size(16);
               position: relative;
               display: inline-block;
+              width: auto;
+              
               &::after {
                 display: inline-block;
                 vertical-align: middle;
@@ -453,6 +461,9 @@
         tr {
           td {
             .lesson-with-list {
+              .pn-ProductNav_Link{
+                width: calc(100% - 25px);
+              }
               .dropdown-toggle {
                 display: inline-block;
               }
