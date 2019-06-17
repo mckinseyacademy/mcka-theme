@@ -26,9 +26,8 @@
                     .rank
                       %h5 {% trans "Position" %}
                       .position
-                        {% blocktrans with position=completions.position total=completions.total_users %}
-                          You are ranked <b>##{position}</b> out of {{total}} members in your cohort.
-                        {% endblocktrans %}
+                        {% trans "You are ranked " %} <b>##{completions.position}</b>
+                        {% trans "out of" %} {{completions.total_users}} {% trans "members in your cohort." %}
                   - else
                     .rank.default {% trans "Your progress position will be displayed here" %}
 
@@ -106,9 +105,8 @@
                       .rank
                         %h5 {% trans "Position" %}
                         .position
-                          {% blocktrans with position=social.position total=completions.total_users %}
-                            You are ranked <b>##{position}</b> out of {{total}} members in your cohort.
-                          {% endblocktrans %}
+                          {% trans "You are ranked " %} <b>##{social.position}</b>
+                          {% trans "out of" %} {{completions.total_users}} {% trans "members in your cohort." %}
                     - else
                       .rank.default {% trans "Your engagement position will be displayed here" %}
                   .top-ranking
@@ -188,9 +186,8 @@
                       .rank
                         %h5 {% trans "Position" %}
                         .position
-                          {% blocktrans with position=proficiency.user_position total=completions.total_users %}
-                            You are ranked <b>##{position}</b> out of {{total}} members in your cohort.
-                          {% endblocktrans %}
+                          {% trans "You are ranked " %} <b>##{proficiency.user_position}</b>
+                          {% trans "out of" %} {{completions.total_users}} {% trans "members in your cohort." %}
                     - else
                       .rank.default {% trans "Your proficiency position will be displayed here" %}
                   .top-ranking
