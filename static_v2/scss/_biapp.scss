@@ -445,6 +445,7 @@ body {
       &:last-child {
         @include border-right(0);
       }
+
       &.week {
         span {
           color: $black;
@@ -454,7 +455,6 @@ body {
           }
         }
       }
-      .lesson-with-list {
         .lesson-item-name {
           .lesson-label {
             @include margin-left(5px);
@@ -465,8 +465,23 @@ body {
           }
         }
       }
+      // case of three columns
+
+      &.three-cols {
+        tbody {
+          tr {
+            td {
+              .lesson-with-list {
+                .pn-ProductNav_Link{
+                  @include margin-left(25px);
+                }
+              }
+            }
+          }
+        }
+      }
     }
-  }
+  
   .legend-status {
     span {
       @include margin-right(15px);
@@ -505,6 +520,7 @@ body {
     }
   }
 }
+
 
 // Lesson List
 .allCoursesList {
@@ -1194,7 +1210,7 @@ body.rtl {
   }
 }
 
-#course-progress-new table td .dropdown-toggle {
+#course-progress-new table td .pn-ProductNav_Link {
   @include media-breakpoint-between(xs, md) {
     @include margin-left(25px);
   }
