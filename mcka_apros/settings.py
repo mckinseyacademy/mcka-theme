@@ -300,10 +300,10 @@ TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
 INITIAL_PASSWORD = 'PassworD12!@'
 
 # Email address students get their enrollment email sent from
-ENROLL_STUDENT_EMAIL = 'support@mckinseyacademy.com'
+ENROLL_STUDENT_EMAIL = 'support@mckinsey.com'
 
 # Mcka support email
-MCKA_SUPPORT_EMAIL = 'support@mckinseyacademy.com'
+MCKA_SUPPORT_EMAIL = 'support@mckinsey.com'
 MCKA_SUPPORT_FORM_LINK = 'https://mckinseynvt.secure.force.com/mckinseysupport/'
 
 # Disabling automatic program enrollment for no (MCKIN-1750)
