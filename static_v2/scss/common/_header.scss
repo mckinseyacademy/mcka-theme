@@ -31,6 +31,9 @@ body {
         max-height: 40px;
         width: auto;
         max-width: 180px;
+        &[src$=".svg"] {
+          width: 160px;
+        }
       }
     }
   }
