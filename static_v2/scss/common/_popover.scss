@@ -104,6 +104,11 @@
    top: -8px;
 }
 
+.bs-popover-top .arrow, 
+.bs-popover-auto[x-placement^="top"] .arrow{
+  bottom: -8px;
+}
+
 .bs-popover-top > .arrow::after, .bs-popover-auto[x-placement^="top"] > .arrow::after {
   border-top-color: #4b4b4b;
 }
