@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-17 11:31+0000\n"
+"POT-Creation-Date: 2019-06-19 07:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1136,10 +1136,7 @@ msgstr "続行するには、サービス利用規約に同意してください
 #: templates/admin/participants/activation_link_modal.haml:13
 #: templates/admin/participants/participant_details.haml:112
 #: templates/admin/participants/participants_list.haml:42
-#: templates/courses/course_discussion_ld.haml:78
 #: templates/courses/group_work/group_member.haml:11
-#: templates_v2/courses/course_discussion.haml:67
-#: templates_v2/courses/course_discussion_ld.haml:69
 #: templates_v2/courses/group_work/group_member.haml:11
 msgid "Email"
 msgstr "Eメール"
@@ -10894,9 +10891,9 @@ msgid ""
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"弊社が収集したお客様に関する個人データへのアクセス、または当該個人データの見直"
-"しもしくは訂正をご希望の方、あるいは弊社によるお客様の個人データの処理"
-"方法について知りたい方は、弊社のまでご連絡ください。"
+"弊社が収集したお客様に関する個人データへのアクセス、または当該個人データの見"
+"直しもしくは訂正をご希望の方、あるいは弊社によるお客様の個人データの処理方法"
+"について知りたい方は、弊社のまでご連絡ください。"
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
@@ -10992,8 +10989,8 @@ msgstr ""
 "お客様が、18歳未満のカリフォルニア州在住者で、当該プライバシーに関する方針の"
 "対象となるMcKinsey Academyの登録ユーザーである場合、カリフォルニア州企業・職"
 "業法第22581項により、お客様が公に掲示したコンテンツまたは情報の削除を依頼する"
-"ことができます。ご依頼の際には、具体的な内容または情報に関する詳しい説明を弊社の"
-"にご提示ください。"
+"ことができます。ご依頼の際には、具体的な内容または情報に関する詳しい説明を弊"
+"社のにご提示ください。"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -11051,7 +11048,9 @@ msgstr "当社プライバシー部へお問い合わせ"
 msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
-msgstr "弊社の利用規約またはプライバシー ポリシーに関する質問またはお問い合わせは、下記までお寄せください。"
+msgstr ""
+"弊社の利用規約またはプライバシー ポリシーに関する質問またはお問い合わせは、下"
+"記までお寄せください。"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
@@ -12276,8 +12275,9 @@ msgstr "FAQを読む"
 #: templates_v2/accounts/activate.haml:70
 #: templates_v2/accounts/public_registration.haml:99
 #: templates_v2/accounts/sso_terms_of_service.haml:29
-msgid "Email Support"
-msgstr "Eメールサポート"
+#: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
+msgid "Contact Support"
+msgstr "サポートに連絡"
 
 #: templates_v2/accounts/activate.haml:85
 #: templates_v2/accounts/activate.haml:104
@@ -13327,10 +13327,6 @@ msgstr "ユーザー名またはEメール:"
 msgid "Show password"
 msgstr "パスワード"
 
-#: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
-msgid "Contact Support"
-msgstr "サポートに連絡"
-
 #: templates_v2/layout.haml:297
 msgid "Skip"
 msgstr "スキップ"
@@ -13488,6 +13484,9 @@ msgstr "名: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "氏: {}"
+
+#~ msgid "Email Support"
+#~ msgstr "Eメールサポート"
 
 #, fuzzy
 #~| msgid ""

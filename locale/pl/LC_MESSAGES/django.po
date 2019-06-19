@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-17 11:32+0000\n"
+"POT-Creation-Date: 2019-06-19 07:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1136,10 +1136,7 @@ msgstr "Aby przejść dalej, musisz zaakceptować warunki użytkowania serwisu"
 #: templates/admin/participants/activation_link_modal.haml:13
 #: templates/admin/participants/participant_details.haml:112
 #: templates/admin/participants/participants_list.haml:42
-#: templates/courses/course_discussion_ld.haml:78
 #: templates/courses/group_work/group_member.haml:11
-#: templates_v2/courses/course_discussion.haml:67
-#: templates_v2/courses/course_discussion_ld.haml:69
 #: templates_v2/courses/group_work/group_member.haml:11
 msgid "Email"
 msgstr "E-mail"
@@ -11324,9 +11321,9 @@ msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
 msgstr ""
-"Jeśli masz jakieś pytania dotyczące naszych „Warunków korzystania z "
-"usługi” lub naszej „Polityki prywatności”, skontaktuj się z nami używając "
-"poniższych danych:"
+"Jeśli masz jakieś pytania dotyczące naszych „Warunków korzystania z usługi” "
+"lub naszej „Polityki prywatności”, skontaktuj się z nami używając poniższych "
+"danych:"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
@@ -12651,8 +12648,9 @@ msgstr "Zapoznaj się z działem FAQ"
 #: templates_v2/accounts/activate.haml:70
 #: templates_v2/accounts/public_registration.haml:99
 #: templates_v2/accounts/sso_terms_of_service.haml:29
-msgid "Email Support"
-msgstr "Wyślij e-mail do działu pomocy"
+#: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
+msgid "Contact Support"
+msgstr "Kontakt z Działem Pomocy"
 
 #: templates_v2/accounts/activate.haml:85
 #: templates_v2/accounts/activate.haml:104
@@ -13713,10 +13711,6 @@ msgstr "Nazwa użytkownika lub adres e-mail"
 msgid "Show password"
 msgstr "Pokaż hasło"
 
-#: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
-msgid "Contact Support"
-msgstr "Kontakt z Działem Pomocy"
-
 #: templates_v2/layout.haml:297
 msgid "Skip"
 msgstr "Pomiń"
@@ -13872,6 +13866,9 @@ msgstr "Imię: {}"
 msgid "Last name: {}"
 msgstr "Nazwisko: {}"
 
+#~ msgid "Email Support"
+#~ msgstr "Wyślij e-mail do działu pomocy"
+
 #~ msgid ""
 #~ "If you have any questions about our Privacy Policy or if you require any "
 #~ "assistance in navigating or reading the Terms or this Privacy Policy, "
@@ -13891,27 +13888,20 @@ msgstr "Nazwisko: {}"
 #~ "niniejszymi Warunkami lub naszą Polityką prywatności, skontaktuj się z "
 #~ "nami pod adresem"
 
+#~ msgid "View unread"
+#~ msgstr "Zobacz nieprzeczytane"
 
-#: edx_notifications/server/web/templates/django/notifications_widget_header.html:27
-msgid "View unread"
-msgstr "Zobacz nieprzeczytane"
+#~ msgid "View all"
+#~ msgstr "Zobacz wszystkie"
 
-#: edx_notifications/server/web/templates/django/notifications_widget_header.html:28
-msgid "View all"
-msgstr "Zobacz wszystkie"
+#~ msgid "Mark as read"
+#~ msgstr "Oznacz jako przeczytane"
 
-#: edx_notifications/server/web/templates/django/notifications_widget_header.html:29
-msgid "Mark as read"
-msgstr "Oznacz jako przeczytane"
+#~ msgid "Hide"
+#~ msgstr "Ukryj"
 
-#: edx_notifications/server/web/templates/django/notifications_widget_header.html:32
-msgid "Hide"
-msgstr "Ukryj"
+#~ msgid "You have no unread notifications."
+#~ msgstr "Nie masz żadnych nieprzeczytanych powiadomień"
 
-#: edx_notifications/server/web/templates/django/notifications_widget_header.html:45
-msgid "You have no unread notifications."
-msgstr "Nie masz żadnych nieprzeczytanych powiadomień"
-
-#: edx_notifications/server/web/templates/django/notifications_widget_preferences_header.html:11
-msgid "Notification preferences"
-msgstr "Ustawienia powiadomień"
+#~ msgid "Notification preferences"
+#~ msgstr "Ustawienia powiadomień"
