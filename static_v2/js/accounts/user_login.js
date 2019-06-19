@@ -155,6 +155,7 @@ $(function () {
                 },
                 type: 'POST',
                 success: function (_1, _2, xhr) {
+                    $("#login-form > div.already-activated").addClass("d-none");
                     ga('send', 'event', 'Login', 'validate', 'success', {
                         dimension4: hashed_id,
                     });

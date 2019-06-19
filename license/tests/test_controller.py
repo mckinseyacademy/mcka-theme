@@ -8,7 +8,8 @@ class TestLicenses(TestCase):
         # grant 1 license to course 1 on behalf of organisation 11
         controller.create_licenses(1, 11, 1)
 
-        allocated, assigned = controller.licenses_report(1, 11)
+        assigned, licences = controller.licenses_report(1, 11)
+        allocated = len(licences)
         self.assertEqual(allocated, 1)
         self.assertEqual(assigned, 0)
 
@@ -24,7 +25,8 @@ class TestLicenses(TestCase):
         assigned_licenses = controller.assigned_licenses(1, 11)
         self.assertEqual(len(assigned_licenses), 1)
 
-        allocated, assigned = controller.licenses_report(1, 11)
+        assigned, licences = controller.licenses_report(1, 11)
+        allocated = len(licences)
         self.assertEqual(allocated, 1)
         self.assertEqual(assigned, 1)
 
@@ -32,13 +34,15 @@ class TestLicenses(TestCase):
         with self.assertRaises(controller.NoAvailableLicensesError):
             license2 = controller.assign_license(1, 11, 102)
 
-        allocated, assigned = controller.licenses_report(1, 11)
+        assigned, licences = controller.licenses_report(1, 11)
+        allocated = len(licences)
         self.assertEqual(allocated, 1)
         self.assertEqual(assigned, 1)
 
         # now revoke license for user 101
         controller.revoke_license(1, 11, 101)
-        allocated, assigned = controller.licenses_report(1, 11)
+        assigned, licences = controller.licenses_report(1, 11)
+        allocated = len(licences)
         self.assertEqual(allocated, 1)
         self.assertEqual(assigned, 0)
 
@@ -48,14 +52,16 @@ class TestLicenses(TestCase):
         self.assertEqual(license2.grantor_id, 11)
         self.assertEqual(license2.grantee_id, 102)
 
-        allocated, assigned = controller.licenses_report(1, 11)
+        assigned, licences = controller.licenses_report(1, 11)
+        allocated = len(licences)
         self.assertEqual(allocated, 1)
         self.assertEqual(assigned, 1)
 
     def test_many_licenses(self):
         controller.create_licenses(2, 12, 100)
 
-        allocated, assigned = controller.licenses_report(2, 12)
+        assigned, licences = controller.licenses_report(2, 12)
+        allocated = len(licences)
         self.assertEqual(allocated, 100)
         self.assertEqual(assigned, 0)
 
@@ -64,7 +70,8 @@ class TestLicenses(TestCase):
 
         for x in range(1, 101):
             controller.assign_license(2, 12, x + 100)
-            allocated, assigned = controller.licenses_report(2, 12)
+            assigned, licences = controller.licenses_report(2, 12)
+            allocated = len(licences)
             self.assertEqual(allocated, 100)
             self.assertEqual(assigned, x)
 
@@ -74,14 +81,16 @@ class TestLicenses(TestCase):
         with self.assertRaises(controller.NoAvailableLicensesError):
             controller.assign_license(2, 12, 201)
 
-        allocated, assigned = controller.licenses_report(2, 12)
+        assigned, licences = controller.licenses_report(2, 12)
+        allocated = len(licences)
         self.assertEqual(allocated, 100)
         self.assertEqual(assigned, 100)
 
         # revoke form somewhere in the middle of the pack
         controller.revoke_license(2, 12, 155)
 
-        allocated, assigned = controller.licenses_report(2, 12)
+        assigned, licences = controller.licenses_report(2, 12)
+        allocated = len(licences)
         self.assertEqual(allocated, 100)
         self.assertEqual(assigned, 99)
 
@@ -91,7 +100,8 @@ class TestLicenses(TestCase):
         self.assertEqual(license.grantor_id, 12)
         self.assertEqual(license.grantee_id, 201)
 
-        allocated, assigned = controller.licenses_report(2, 12)
+        assigned, licences = controller.licenses_report(2, 12)
+        allocated = len(licences)
         self.assertEqual(allocated, 100)
         self.assertEqual(assigned, 100)
 

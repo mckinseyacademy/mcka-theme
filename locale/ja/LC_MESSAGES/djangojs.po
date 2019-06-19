@@ -315,7 +315,7 @@ msgstr "アクティブではないようです。[OK]をクリックして活�
 
 #: static/js/course_lesson.js:112
 msgid "Complete all content to continue"
-msgstr ""
+msgstr "続行するにはすべての内容を完了してください"
 
 #: static/js/image_editor.js:3 static_v2/js/image_editor.js:3
 msgid "No file Selected"
@@ -357,15 +357,15 @@ msgstr "ポップアップを起動して続行する"
 
 #: static/js/static_translation_strings.js:6
 msgid "Content is complete, please continue."
-msgstr ""
+msgstr "内容が完了しました。続行してください"
 
 #: static/js/static_translation_strings.js:7
 msgid "Complete all content to continue."
-msgstr ""
+msgstr "続行するにはすべての内容を完了してください"
 
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
-msgstr ""
+msgstr "完了したことを確認します"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."

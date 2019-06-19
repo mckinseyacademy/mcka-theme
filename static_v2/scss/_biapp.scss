@@ -252,7 +252,6 @@ body {
 .my-courses {
   .card {
     .card-body {
-      @include padding-left(25px);
 
       .course-detail {
         > span.course-progress {
@@ -262,7 +261,7 @@ body {
         }
         .lesson-count,
         .course-effort {
-          @include margin-right(30px);
+          @include margin-right(26px);
         }
       }
     }
@@ -842,19 +841,14 @@ form {
       .form-group {
         .ico-state,
         #show-hide {
-          @include left(265px);
-          @include media-breakpoint-between(xs, sm) {
-            @include left(90%);
-          }
+          @include left(auto);
+          @include right(10px);
         }
       }
     }
     form{
       .show-hide{
-        @include right(16px);
-        @include media-breakpoint-down(sm) {
-          @include right(10px);
-        }
+        @include right(11px);
       }
     }
     .already-activated {

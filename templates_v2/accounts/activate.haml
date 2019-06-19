@@ -25,18 +25,18 @@
             .form-group
               .maxInputWrap
                %input.form-control{:disabled => "disabled", :placeholder => "{{company}}", :type => "text"}
-          .form-group.mt-30.position-relative{:class => "{% if username_error %}error{% endif %} {% if form.data.username %}focused{% endif %}"}
+          .form-group.mt-30.position-relative{:class => "{% if error_code == 'invalid_username' %}error{% endif %} {% if form.data.username %}focused{% endif %}"}
             .maxInputWrap
               %label{:class => "form-label" , :for => "setUsername"}
                 {% trans "Username" %}
               %input.form-control.form-input{:type => "text", :tabindex => "1", :autocomplete => "false", :id => "setUsername", :name => "username", :value => "{{form.data.username}}"}
                 %i.material-icons.ico-state
                   error
-              - if username_error
-                %small.error.form-text= username_error
+              - if error_code == 'invalid_username'
+                %small.error.form-text= error_message
             %small.form-text {% trans "This cannot be changed later and cannot contain non-English characters." %}
 
-          .form-group.mt-4.password{:class => "{% if errors.password %}error{% endif %} {% if form.data.password %}focused{% endif %}"}
+          .form-group.mt-4.password{:class => "{% if errors.password or error_code == 'invalid_password' %}error{% endif %} {% if form.data.password %}focused{% endif %}"}
 
             %label{:class => "form-label" , :for => "setPassword"}
               {% trans "Password" %}
@@ -45,6 +45,8 @@
               %i#show-hide.show-hide.material-icons.longTapPopover{"data-container": "body", "data-content": "{% trans 'Show Password' %}", "data-placement": "bottom", "data-toggle": "popover"}               visibility_off
               %i.material-icons.ico-state
                 error
+              - if error_code == 'invalid_password'
+                %small.error.form-text= error_message
             %small.form-text {% trans "Must be at least 8 characters and include upper and lowercase letters - plus numbers OR special characters." %}
 
           .form-group.form-check.mt-4.agreement{:class => "{% if errors.accept_terms %}error{% endif %}"}

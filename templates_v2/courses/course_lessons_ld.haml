@@ -49,35 +49,35 @@
 
                         - for module in course.current_lesson.modules
                           %li{"class": "courseRow {% if module.is_started %}active{% else %}locked{% endif %} {% if module.progress == 100 %}complete{% else %}{% endif %}"}
-                            %a.ome.dome-c{:href => "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}"}
-                              .holder
-                                .data.serial
-                                  - if module_custom_label
-                                    {% blocktrans with module_index=module.index %}
-                                      {{module_custom_label}}
-                                      %span {{module_index}}
-                                    {% endblocktrans %}
-                                  - else
-                                    {% trans "Module" %}
-                                    %span {{module.index}}
-                                .data.status
-                                  %i.material-icons
-                                  - if module.progress == 100
-                                    %i.material-icons check_circle
-                                    {% trans "Complete" %}
-                                  - elif module.progress == 0
-                                    %i.material-icons panorama_fish_eye
-                                    {% trans "Not Started" %}
-                                  - else
-                                    %i.material-icons tonality
-                                    {% trans "In Progress" %}
-                                .data.title
-                                  %span= module.name
-                                    -if not module.is_started
-                                      %i.material-icons.locked.longTapPopover{:oncontextmenu => "return false;", :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :title => ""} lock
-                              .description
-                                Tell me and I forget. Teach me and I
-                                remember. Involve me and I learn. - Benjamin Franklin
+                            %a.ome.dome-c.holder{:href => "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}"}
+
+                              .data.serial
+                                - if module_custom_label
+                                  {% blocktrans with module_index=module.index %}
+                                    {{module_custom_label}}
+                                    %span {{module_index}}
+                                  {% endblocktrans %}
+                                - else
+                                  {% trans "Module" %}
+                                  %span {{module.index}}
+                              .data.status
+                                %i.material-icons
+                                - if module.progress == 100
+                                  %i.material-icons check_circle
+                                  {% trans "Complete" %}
+                                - elif module.progress == 0
+                                  %i.material-icons panorama_fish_eye
+                                  {% trans "Not Started" %}
+                                - else
+                                  %i.material-icons tonality
+                                  {% trans "In Progress" %}
+                              .data.title
+                                %span= module.name
+                                  -if not module.is_started
+                                    %i.material-icons.locked.longTapPopover{:oncontextmenu => "return false;", :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :title => ""} lock
+                            -#.description
+                            -#  Tell me and I forget. Teach me and I
+                            -#  remember. Involve me and I learn. - Benjamin Franklin
                             - if course.current_module == module
                               %span.bookmark.secondary
                                 %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}

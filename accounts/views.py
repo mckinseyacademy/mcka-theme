@@ -61,7 +61,7 @@ from .middleware import thread_local
 from .controller import (
     user_activation_with_data, ActivationError, is_future_start, get_sso_provider,
     process_access_key, process_registration_request, _process_course_run_closed, _set_number_of_enrolled_users,
-    send_warning_email_to_admin, append_user_mobile_app_id_cookie
+    send_warning_email_to_admin, append_user_mobile_app_id_cookie, image_transpose_exif
 )
 from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
@@ -550,6 +550,7 @@ def logout(request):
 def activate(request, activation_code, registration=None):
     ''' handles requests for activation form and their submission '''
     error = None
+    error_code = None
     user = None
     user_data = None
     initial_data = {}
@@ -607,13 +608,15 @@ def activate(request, activation_code, registration=None):
 
             except ActivationError as activation_error:
                 error = activation_error.value
+                error_code = activation_error.error_code
     else:
         form = ActivationForm(user_data, initial=initial_data)
 
     data = {
         "user": user,
         "form": form,
-        "username_error": error,
+        "error_message": error,
+        "error_code": error_code,
         "activation_code": activation_code,
         "activate_label": _("Create my McKinsey Academy account"),
         "company": initial_data.get("company"),
@@ -1124,7 +1127,8 @@ def user_profile_image_edit(request):
 
         from PIL import Image
         original = Image.open(temp_image)
-        cropped_example = original.crop((left, top, right, bottom))
+        original_transpose = image_transpose_exif(original)
+        cropped_example = original_transpose.crop((left, top, right, bottom))
         avatar_image_io = StringIO.StringIO()
         cropped_example.convert('RGB').save(avatar_image_io, format='JPEG')
         avatar_image_io.seek(0)

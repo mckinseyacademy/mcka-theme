@@ -35,7 +35,11 @@
 
       .card-img-top {
         object-fit: cover;
-        height: 100%;
+        height: auto;
+        min-height: 190px;
+        position: relative;
+        top: 50%;
+        transform: translateY(-50%);
         @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
           height: auto;
           position: relative;
@@ -48,7 +52,7 @@
       min-height: 115px;
       overflow: hidden;
       @include border-bottom-radius(4px);
-      padding: 15px 30px;
+      padding: 15px 25px;
       background-color: var(--primary);
       color: $white;
       .current-bookmark-text {
@@ -89,13 +93,13 @@
           }
 
           &.course-progress {
-            width: 142px;
+            width: 133px;
             .bar {
               border: 1px solid white;
               height: 13px;
               margin-top: 1px;
               position: relative;
-              width: 68%;
+              width: 74%;
               vertical-align: top;
               display: inline-block;
             }
@@ -223,6 +227,15 @@
       padding: 0 10px;
       .card {
         margin-bottom: 20px;
+        .card-body {
+          .course-detail {
+            > {
+              span.course-progress {
+                width: 127px;
+              }
+            }
+          }
+        }
       }
     }
   }
@@ -241,7 +254,7 @@
       .card {
         margin-bottom: 10px;
         .overlay-img {
-          height: auto;
+          height: 120px;
           .card-img-top {
             height: 120px;
             object-fit: cover;

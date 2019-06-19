@@ -6,9 +6,22 @@ body{
         transition: all ease 0.7s;
         pointer-events: none;
         cursor: none;
-        &.disable{
+        &.disable {
+          background: var(--primary) !important;
+          >span {
+            > i {
+              color: $white;
+            }
+          }
+        }
+        &.disabled {
           background: var(--primary) !important;
           pointer-events: none;
+          >span {
+            > i {
+              color: $white;
+            }
+          }
         }
         &.left {
           left: -82px;
@@ -93,9 +106,25 @@ body{
     opacity: 0.5;
     &.disable {
       background: $gray !important;
+      &:hover {
+        opacity: 1;
+      }
+      >span {
+        > i {
+          color: $white;
+        }
+      }
+    }
+    &.disabled {
+      background: $gray !important;
       pointer-events: none;
       &:hover {
         opacity: 1;
+      }
+      >span {
+        > i {
+          color: $white;
+        }
       }
     }
     &.left {

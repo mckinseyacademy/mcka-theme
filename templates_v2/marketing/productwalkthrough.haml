@@ -1,5 +1,6 @@
 - extends "layout.haml"
 - load i18n
+- load staticfiles
 - block page_title
   %title
     {% trans "Product Walkthrough | McKinsey Academy" %}
@@ -16,3 +17,7 @@
         %article#product-walkthrough
           .collapse.show
             #mk-productwalkthrough-video{'data-video-id': "gwa25sYTE6-r6IGq0tR3M-eeMPtqEKoZ"}
+
+- block custom_js
+  -# Ooyala source file to play any embedded video content
+  %script{src: "{% static 'js/vendor/ooyala/4.33.25-combined.js' %}"}

@@ -59,6 +59,7 @@ Apros.config.EDX_LANGUAGES_CODE_MAP = {
     'fr': 'fr',
     'ja': 'ja-jp',
     'nl': 'nl-nl',
+    'pl': 'pl',
     'pt': 'pt-br',
     'zh': 'zh-cn'
 };

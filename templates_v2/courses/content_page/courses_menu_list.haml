@@ -14,7 +14,7 @@
             - if course.id == current_course.id
               %span.current-bookmark-text.dome-bc
                 {% trans "resume course" %}
-          %h3.card-title
+          %h3.card-title{"dir": "ltr"}
             = course.name
           .course-detail
             - if course.effort
@@ -71,8 +71,7 @@
       .modal-header
         %h4.modal-title
           {% trans "Welcome to McKinsey Academy" %}
-      .modal-body 
+      .modal-body
         {% blocktrans %}Your course begins in <b><span class="numdays"></span></b> days. Before the course begins, you can explore this site to learn more about what to expect.{% endblocktrans %} <br />
         %button.ok-close.btn.btn-primary.btn-lg{:aria-label => "Close", :data-dismiss => "modal", :type => "button"}
           %span{:aria-hidden => "true"} {% trans "OK" %}
-      

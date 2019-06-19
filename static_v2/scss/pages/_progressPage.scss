@@ -2,6 +2,17 @@
   a {
     color: var(--primary);
   }
+  .future {
+    > a {
+      color: $gray;
+      font-size: 1rem;
+      > i {
+        margin: 0 4px;
+        line-height: 1.5;
+        position: absolute;
+      }
+    }
+  }
   .headingForMobile{
     display: none;
     padding: 10px 20px;
@@ -399,7 +410,7 @@
   }
 }
 
-// Tablet 
+// Tablet
 
 @include media-breakpoint-between(md, lg) {
   #course-progress-new {
@@ -614,7 +625,7 @@
   }
 }
 
-// Tablet 
+// Tablet
 
 @include media-breakpoint-between(md, lg) {
   #course-progress-new {

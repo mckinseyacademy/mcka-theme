@@ -3,6 +3,7 @@ import re
 import json
 import datetime
 import logging
+from PIL import Image, ExifTags
 from collections import namedtuple
 
 from django.contrib import messages
@@ -34,8 +35,9 @@ class ActivationError(Exception):
     '''
     Exception to be thrown when an activation failure occurs
     '''
-    def __init__(self, value):
+    def __init__(self, value, code):
         self.value = value
+        self.error_code = code
         super(ActivationError, self).__init__()
 
     def __str__(self):
@@ -48,13 +50,13 @@ def user_activation_with_data(user_id, user_data, activation_record):
         user_data["is_active"] = False
         user_api.update_user_information(user_id, user_data)
     except ApiError as e:
-        raise ActivationError(e.message)
+        raise ActivationError(e.message, e.content_dictionary.get("code"))
 
     # if we are still okay, then activate in a separate operation
     try:
         user_api.activate_user(user_id)
     except ApiError as e:
-        raise ActivationError(e.message)
+        raise ActivationError(e.message, e.content_dictionary.get("code"))
 
     try:
         activation_record.delete()
@@ -193,7 +195,8 @@ def assign_student_to_program(user, client, program_id):
     program = Program.fetch(program_id)
     program.courses = program.fetch_courses()
 
-    allocated, assigned = license_controller.licenses_report(program.id, client.id)
+    assigned, licences = license_controller.licenses_report(program.id, client.id)
+    allocated = len(licences)
     remaining = allocated - assigned
     if remaining <= 0:
         message = (
@@ -525,3 +528,23 @@ def get_mobile_apps_id(organization_id):
         'android_app_id': android_app_id,
         'user_org': user_org
     }
+
+
+def image_transpose_exif(image):
+    # This solution is taken from following link.
+    #  https://stackoverflow.com/a/6218425/5244255
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                break
+        exif = dict(image._getexif().items())
+
+        if exif[orientation] == 3:
+            image = image.transpose(Image.ROTATE_180)
+        elif exif[orientation] == 6:
+            image = image.transpose(Image.ROTATE_270)
+        elif exif[orientation] == 8:
+            image = image.transpose(Image.ROTATE_90)
+        return image
+    except Exception:
+        return image

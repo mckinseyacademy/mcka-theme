@@ -198,8 +198,8 @@ class Client(organization_models.Organization):
 
         for program in programs:
             try:
-                program.places_allocated, program.places_assigned = license_controller.licenses_report(program.id,
-                                                                                                       self.id)
+                program.places_assigned, license = license_controller.licenses_report(program.id, self.id)
+                program.places_allocated = len(license)
             except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
                 program.places_allocated = None
                 program.places_assigned = None

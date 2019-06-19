@@ -73,7 +73,7 @@
                       - if feature_flags.group_work and week.group_only
                         %div {% trans "N/A (focus on Group Work)" %}
                       - for lesson in week.lessons
-                        %div{"class": "lesson-with-list lesson-row-item {% if lesson.is_started %}active{% else %}future{% endif %}"}
+                        %div.lesson-dropdown-holder{"class": "lesson-with-list lesson-row-item {% if lesson.is_started %}active{% else %}future{% endif %}"}
                           .lesson-item-name
                             %i{:class => "status material-icons{% if lesson.progress == 100 %} complete{% endif %}"}
                               {% if lesson.progress == 100 %}check_circle {% elif lesson.progress == 0 %}panorama_fish_eye{% else %}tonality{% endif %}
@@ -85,32 +85,43 @@
                               -else
                                 {% trans "Lesson" %}
                                   %span #{lesson.index}:
-
-                          - if lesson_custom_label and modules_custom_label
-                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
-                              = lesson.name
-                          - elif lesson_custom_label
-                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
-                              = lesson.name
-                          - elif modules_custom_label
-                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
-                              = lesson.name
+                          - if lesson.is_started
+                            - if lesson_custom_label and modules_custom_label
+                              %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label} #{modules_custom_label}"}
+                                = lesson.name
+                            - elif lesson_custom_label
+                              %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "#{lesson_custom_label}{% trans ' Modules' %}"}
+                                = lesson.name
+                            - elif modules_custom_label
+                              %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson ' %}#{modules_custom_label}"}
+                                = lesson.name
+                            - else
+                              %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
+                                = lesson.name
                           - else
-                            %a.pn-ProductNav_Link.dropdown-toggle.ome.dome-c{:data-toggle => "dropdown", :href => "#", "data-tooltip": "{% trans 'Lesson Modules' %}"}
-                              = lesson.name
+                            %a.pn-ProductNav_Link.ome.dome-c
+                              - if lesson_custom_label and modules_custom_label
+                                = lesson.name
+                              - elif lesson_custom_label
+                                = lesson.name
+                              - elif modules_custom_label
+                                = lesson.name
+                              - else
+                                = lesson.name
+                              %i.material-icons.locked.longTapPopover{:oncontextmenu => "return false;", :data-content => "{% if lesson_custom_label %}{% blocktrans with start_date=lesson.start_upon %} This {{lesson_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=lesson.start_upon %} This lesson will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :title => ""} lock
 
-                          .dropdown-menu.allLessons.allModules{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
-                            %ul.allCoursesList
-                              %b
-                                - if lesson_custom_label
-                                  {% blocktrans with course_current_progress=lesson.progress lesson_index=lesson.index %}You have completed {{course_current_progress}}% of {{lesson_custom_label}} {{lesson_index}} {% endblocktrans %}
-                                - else
-                                  {% blocktrans with course_current_progress=lesson.progress lesson_index=lesson.index %}You have completed {{course_current_progress}}% of Lesson {{lesson_index}} {% endblocktrans %}
+                          - if lesson.is_started
+                            .dropdown-menu.allLessons.allModules{:class => "{% if LANGUAGE_BIDI %}dropdown-menu-right{% else %}dropdown-menu-left{% endif %}"}
+                              %ul.allCoursesList
+                                %b
+                                  - if lesson_custom_label
+                                    {% blocktrans with course_current_progress=lesson.progress lesson_index=lesson.index %}You have completed {{course_current_progress}}% of {{lesson_custom_label}} {{lesson_index}} {% endblocktrans %}
+                                  - else
+                                    {% blocktrans with course_current_progress=lesson.progress lesson_index=lesson.index %}You have completed {{course_current_progress}}% of Lesson {{lesson_index}} {% endblocktrans %}
 
-                              - for module in lesson.modules
-                                %li{"class": "courseRow {% if module.is_started %}active{% else %}locked{% endif %} {% if module.progress == 100 %}complete{% else %}{% endif %}"}
-                                  %a{:href => "#{module.navigation_url}"}
-                                    .holder
+                                - for module in lesson.modules
+                                  %li{"class": "courseRow {% if module.is_started %}active{% else %}locked{% endif %} {% if module.progress == 100 %}complete{% else %}{% endif %}"}
+                                    %a.holder.ome.dome-c{"href": "{% if lesson.is_started %}#{module.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
                                       .data.serial
                                         - if module_custom_label
                                           {% blocktrans with module_index=module.index %}
@@ -132,16 +143,13 @@
                                           %i.material-icons tonality
                                           {% trans "In Progress" %}
                                       .data.title
-                                        %span.ome.dome-c= module.name
+                                        %span= module.name
                                           -if not module.is_started
                                             %i.material-icons.locked.longTapPopover{:oncontextmenu => "return false;", :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover" , :title => ""} lock
-                                    .description
-                                      Tell me and I forget. Teach me and I
-                                      remember. Involve me and I learn. - Benjamin Franklin
-                                  - if course.current_module == module
-                                    %span.bookmark.secondary
-                                      %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
-                                        %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
+                                    - if course.current_module == module
+                                      %span.bookmark.secondary
+                                        %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
+                                          %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
 
                     - if feature_flags.group_work
                       - if week.has_group

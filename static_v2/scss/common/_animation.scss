@@ -284,12 +284,10 @@
   &:after {
       content: '';
       position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
+      left: 50%;
+      top: 50%;
       z-index: 999;
-      margin: 15vh auto;
+      margin: -40px 0 0 -40px;
       box-sizing: border-box;
       width: 80px;
       height: 80px;
@@ -315,12 +313,12 @@
       }
 
       &::after {
-        margin: 0 auto;
+        margin: -52px 0 0 -25px;
         top: 44%;
-        margin-top: -52px;
         width: 50px;
         height: 50px;
         border-width: 6px;
+
 
         @include media-breakpoint-between(xs, sm) {
             top: 50%;

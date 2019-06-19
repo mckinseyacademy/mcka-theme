@@ -26,23 +26,6 @@ $(document).ready(function () {
         $('#reset-password-submit').attr("disabled", false);
     });
 
-    $("#id_new_password1").on("keyup", function ()
-    {
-        if($('#id_new_password1').val() !== "" && $('#id_new_password2').val() !== "")
-        {
-            $('#reset-password-done').attr("disabled", false);
-        }
-    });
-
-    $("#id_new_password2").on("keyup", function ()
-    {
-        if($('#id_new_password1').val() !== "" && $('#id_new_password2').val() !== "")
-        {
-            $('#reset-password-done').attr("disabled", false);
-        }
-    });
-
-
     $("#password").on("keyup", function () {
         $('#login').attr("disabled", false);
         var user_password = $(".user_password_element");
@@ -654,6 +637,11 @@ $(window).on("load", function () {
 
     // Remove spinner from crop & save button
     $("#crop-save #spinner").removeClass("spinner-border-sm").removeClass("spinner-border");
+
+    // Cover images with width & height of their parent
+    $('div.faculty label').each(function (index) {
+        scaleImage(this);
+    });
 });
 
 // Preloader for courses page
@@ -661,4 +649,31 @@ $(window).on("load", function () {
 $('.my-courses .card').click(function () {
     $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
     $(this).addClass("loader").addClass("donut-loader");
+});
+
+"use strict";
+function scaleImage(label) {
+    var scaler;
+    var imgWidth = $(label).find("img").width();
+    var imgHeight = $(label).find("img").height();
+    var stageW = $(label).width();
+    var stageH = $(label).height();
+    if (stageH / stageW > imgHeight / imgWidth) {
+        scaler = imgWidth / imgHeight;
+        imgWidth = stageH * scaler;
+        $(label).find("img").css("width", imgWidth)
+        $(label).find("img").css("height", "auto")
+    } else {
+        scaler = imgHeight / imgWidth;
+        imgHeight = stageW * scaler;
+        $(label).find("img").css("height", imgHeight)
+        $(label).find("img").css("width", "auto")
+    }
+}
+
+
+$(window).resize(function () {
+    $('div.faculty label').each(function (index) {
+        scaleImage(this);
+    });
 });
