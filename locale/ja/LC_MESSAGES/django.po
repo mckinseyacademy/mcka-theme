@@ -10889,24 +10889,19 @@ msgstr ""
 "することができる場合もあります。"
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
-#, fuzzy
-#| msgid ""
-#| "If you would like to make a request to access, review, or correct the "
-#| "personal data we have collected about you, or to discuss how we process "
-#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"お客様に関し当社で収集した個人データのアクセス、閲覧、または修正の依頼を希望"
-"される場合、あるいは、当社の個人データ処理に関するお問い合わせについては、以"
-"下までご連絡ください"
+"弊社が収集したお客様に関する個人データへのアクセス、または当該個人データの見直"
+"しもしくは訂正をご希望の方、あるいは弊社によるお客様の個人データの処理"
+"方法について知りたい方は、弊社のまでご連絡ください。"
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr ""
+msgstr "サポート チーム"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -10986,14 +10981,6 @@ msgstr ""
 "せん。"
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
-#, fuzzy
-#| msgid ""
-#| "If you are a California resident under the age of 18, and a registered "
-#| "user of McKinsey Academy subject to this Privacy Policy, California "
-#| "Business and Professions Code Section 22581 permits you to request and "
-#| "obtain removal of content or information you have publicly posted. To "
-#| "make such a request, please send an email with a detailed description of "
-#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -11005,8 +10992,8 @@ msgstr ""
 "お客様が、18歳未満のカリフォルニア州在住者で、当該プライバシーに関する方針の"
 "対象となるMcKinsey Academyの登録ユーザーである場合、カリフォルニア州企業・職"
 "業法第22581項により、お客様が公に掲示したコンテンツまたは情報の削除を依頼する"
-"ことができます。削除の依頼を行う場合は、特定のコンテンツまたは情報に関し詳細"
-"な説明するEメールを以下まで送信してください"
+"ことができます。ご依頼の際には、具体的な内容または情報に関する詳しい説明を弊社の"
+"にご提示ください。"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -11064,7 +11051,7 @@ msgstr "当社プライバシー部へお問い合わせ"
 msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
-msgstr ""
+msgstr "弊社の利用規約またはプライバシー ポリシーに関する質問またはお問い合わせは、下記までお寄せください。"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114

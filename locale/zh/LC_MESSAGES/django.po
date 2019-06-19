@@ -10471,23 +10471,18 @@ msgstr ""
 "息。在某些情况下，您也可以要求我们停止处理您的个人信息。"
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
-#, fuzzy
-#| msgid ""
-#| "If you would like to make a request to access, review, or correct the "
-#| "personal data we have collected about you, or to discuss how we process "
-#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"如果您想要请求访问、查看或更正我们已经收集的、与您有关的个人信息或者讨论我们"
-"如何处理您的个人信息，请通过以下方式联系我们："
+"如要申请访问、核查或更正我们所收集的您的个人数据，"
+"或如要讨论您的个人数据处理方法，请联系我们的"
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr ""
+msgstr "支持团队"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -10560,14 +10555,6 @@ msgstr ""
 "您的个人信息以作第三方直接营销之用。"
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
-#, fuzzy
-#| msgid ""
-#| "If you are a California resident under the age of 18, and a registered "
-#| "user of McKinsey Academy subject to this Privacy Policy, California "
-#| "Business and Professions Code Section 22581 permits you to request and "
-#| "obtain removal of content or information you have publicly posted. To "
-#| "make such a request, please send an email with a detailed description of "
-#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -10578,8 +10565,7 @@ msgid ""
 msgstr ""
 "如果您是未满 18 岁的加利福尼亚州居民，并且是遵循本隐私政策的麦肯锡学院注册用"
 "户，根据《加利福尼亚州商业和职业条例》第 22581 条的相关规定，您有权要求移除您"
-"公开发布的内容或信息。如需提出上述申请，请在电子邮件中详细描述具体内容或信"
-"息，并发送至"
+"公开发布的内容或信息。如需提出此申请，请将具体内容或信息的详细描述发送给我们的"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -10630,7 +10616,7 @@ msgstr "联系隐私部门"
 msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
-msgstr ""
+msgstr "如对我们的服务条款或隐私政策有任何疑问或担忧，请联系："
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114

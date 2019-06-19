@@ -11329,25 +11329,20 @@ msgstr ""
 "personnelles."
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
-#, fuzzy
-#| msgid ""
-#| "If you would like to make a request to access, review, or correct the "
-#| "personal data we have collected about you, or to discuss how we process "
-#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"Si vous souhaitez effectuer une demande d’accès à vos données personnelles, "
-"de révision ou de correction de celles que nous avons collectées vous "
-"concernant, ou discuter de la façon dont nous traitons vos données "
-"personnelles, contactez-nous à"
+"Pour adresser une demande d'accès, de révision ou de correction des données "
+"personnelles que nous avons collectées à votre sujet, ou pour discuter de la "
+"façon dont nous traitons vos données personnelles, veuillez contacter "
+"notre"
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr ""
+msgstr "équipe de soutien"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -11435,14 +11430,6 @@ msgstr ""
 "marketing direct de ces tierces parties."
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
-#, fuzzy
-#| msgid ""
-#| "If you are a California resident under the age of 18, and a registered "
-#| "user of McKinsey Academy subject to this Privacy Policy, California "
-#| "Business and Professions Code Section 22581 permits you to request and "
-#| "obtain removal of content or information you have publicly posted. To "
-#| "make such a request, please send an email with a detailed description of "
-#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -11456,8 +11443,8 @@ msgstr ""
 "politique de confidentialité, la section 22581 du California Business and "
 "Professions Code vous autorise à demander et à obtenir la suppression du "
 "contenu ou des informations que vous avez publiquement mis en ligne. Pour "
-"présenter cette demande, envoyez un e-mail avec une description détaillée du "
-"contenu spécifique ou des informations à"
+"effectuer une telle demande, veuillez envoyer une description détaillée du "
+"contenu ou des informations spécifiques à notre"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -11519,6 +11506,8 @@ msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
 msgstr ""
+"Pour toute question ou préoccupation concernant nos Conditions d'utilisation "
+"ou notre Politique de confidentialité, veuillez contacter :"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114

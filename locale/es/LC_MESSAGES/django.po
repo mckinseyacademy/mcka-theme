@@ -11225,24 +11225,19 @@ msgstr ""
 "procesamiento de su información personal."
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
-#, fuzzy
-#| msgid ""
-#| "If you would like to make a request to access, review, or correct the "
-#| "personal data we have collected about you, or to discuss how we process "
-#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"Si desea realizar una solicitud para acceder, revisar o corregir la "
-"información personal que hemos reunido sobre usted o desea analizar cómo "
-"procesamos su información personal, comuníquese con nosotros a"
+"Para solicitar acceso, revisión o corrección de la información personal que "
+"tenemos sobre usted, o para conversar sobre la forma en que procesamos su "
+"información personal, comuníquese con nuestro al cliente."
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr ""
+msgstr "equipo de servicio"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -11328,14 +11323,6 @@ msgstr ""
 "fines comerciales. "
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
-#, fuzzy
-#| msgid ""
-#| "If you are a California resident under the age of 18, and a registered "
-#| "user of McKinsey Academy subject to this Privacy Policy, California "
-#| "Business and Professions Code Section 22581 permits you to request and "
-#| "obtain removal of content or information you have publicly posted. To "
-#| "make such a request, please send an email with a detailed description of "
-#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -11348,9 +11335,9 @@ msgstr ""
 "simultáneamente un usuario registrado de McKinsey Academy sujeto a esta "
 "Política de Privacidad, el artículo 22581 del Código Comercial y de "
 "Profesiones de California le permite solicitar la eliminación del contenido "
-"o la información que usted haya compartido públicamente. Para efectuar dicha "
-"solicitud, envíe un correo electrónico con una descripción detallada del "
-"contenido o información específicos a"
+"o la información que usted haya compartido públicamente. Para realizar "
+"dicha solicitud, envíe una descripción detallada del contenido o información "
+"específicos a nuestro al cliente."
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -11411,6 +11398,8 @@ msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
 msgstr ""
+"Para preguntas o inquietudes sobre nuestros Términos de servicio o "
+"Política de privacidad, comuníquese con:"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114

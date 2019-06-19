@@ -11150,24 +11150,19 @@ msgstr ""
 "também poderá solicitar que deixemos de processar seus dados pessoais."
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
-#, fuzzy
-#| msgid ""
-#| "If you would like to make a request to access, review, or correct the "
-#| "personal data we have collected about you, or to discuss how we process "
-#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"Se desejar solicitar acesso, revisão ou correção dos seus dados pessoais "
-"coletados ou se desejar discutir a forma como processamos os seus dados "
-"pessoais, contate-nos em"
+"Para fazer uma solicitação de acesso, revisar ou corrigir os dados pessoais "
+"que coletamos sobre você ou para discutir como processamos seus dados "
+"pessoais, entre em contato com nossa"
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr ""
+msgstr "equipe de suporte"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -11253,14 +11248,6 @@ msgstr ""
 "marketing direto de terceiros. "
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
-#, fuzzy
-#| msgid ""
-#| "If you are a California resident under the age of 18, and a registered "
-#| "user of McKinsey Academy subject to this Privacy Policy, California "
-#| "Business and Professions Code Section 22581 permits you to request and "
-#| "obtain removal of content or information you have publicly posted. To "
-#| "make such a request, please send an email with a detailed description of "
-#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -11273,8 +11260,8 @@ msgstr ""
 "registrado do McKinsey Academy sujeito a esta Política de Privacidade, a "
 "Seção 22581 do Código Comercial e Profissional da Califórnia permite que "
 "você solicite e obtenha a remoção de conteúdo ou informações que tenha "
-"publicado. Para tanto, envie um e-mail com uma descrição detalhada do "
-"conteúdo ou informação específica para"
+"publicado. Para fazer tal solicitação, envie uma descrição detalhada do "
+"conteúdo ou informação específica para nossa"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -11333,6 +11320,8 @@ msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
 msgstr ""
+"Em caso de dúvidas sobre nos Termos de Serviço ou Política de Privacidade, "
+"entre em contato:"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114

@@ -10834,24 +10834,19 @@ msgstr ""
 "التوقف عن معالجة بياناتك الشخصية."
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
-#, fuzzy
-#| msgid ""
-#| "If you would like to make a request to access, review, or correct the "
-#| "personal data we have collected about you, or to discuss how we process "
-#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"إذا كنت ترغب في تقديم طلب الوصول إلى البيانات الشخصية التي جمعناها عنك، أو "
-"مراجعتها، أو تصحيحها، أو إذا أردت مناقشة كيفية معالجتنا لبياناتك الشخصية، "
-"يرجى الاتصال بنا على"
+"لتقديم طلب الوصول إلى البيانات الشخصية التي جمعناها عنك أو "
+"مراجعتها أو تصحيحها أو إذا أردت مناقشة كيفية معالجتنا لبياناتك الشخصية، "
+" يرجى الاتصال لدينا"
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr ""
+msgstr "فريق الدعم"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -10929,14 +10924,6 @@ msgstr ""
 "ذلك الطرف الثالث."
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
-#, fuzzy
-#| msgid ""
-#| "If you are a California resident under the age of 18, and a registered "
-#| "user of McKinsey Academy subject to this Privacy Policy, California "
-#| "Business and Professions Code Section 22581 permits you to request and "
-#| "obtain removal of content or information you have publicly posted. To "
-#| "make such a request, please send an email with a detailed description of "
-#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -10948,8 +10935,8 @@ msgstr ""
 "إذا كنت مقيمًا في كالفورنيا وسنك أقل من 18 عامًا، ومستخدمًا مسجلاً في أكاديمية "
 "ماكنزي خاضعًا لسياسة الخصوصية هذه، تجيز لك المادة رقم 22581 من قانون "
 "كالفورنيا للأعمال والمهن التجارية طلب حذف المحتوى أو المعلومات التي نشرتها "
-"علنًا والموافقة على طلبك. لتقديم مثل هذا الطلب، يرجى إرسال بريد إلكتروني مع "
-"وصف تفصيلي للمحتوى أو المعلومات المحددة إلى"
+"علنًا والموافقة على طلبك. لتقديم هذا الطلب، يرجى إرسال وصف مفصل "
+"للمحتوى أو المعلومات المحددة إلى لدينا"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -11004,6 +10991,8 @@ msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
 msgstr ""
+" أو الاستفسارات حول شروط الخدمة أو سياسة الخصوصية لدينا، يرجى الاتصال بـ:"
+"للأسئلة"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
