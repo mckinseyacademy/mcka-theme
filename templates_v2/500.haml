@@ -20,9 +20,7 @@
                   Our team has been notified of the problem. Refresh this page.
                   {% endblocktrans %}
                 %p
-                  {% blocktrans %}
-                  If you continue to have issues, please visit our
-                  %a{:href => "/faq"} FAQ page
-                  or
-                  %a{:href => "#{support}", :target => "_blank"} support.
-                  {% endblocktrans %}
+                  {% blocktrans %}If you continue to have issues, please visit our{% endblocktrans %}
+                  %a{:href => "/faq"} {% trans "FAQ page" %}
+                  {% trans "or" %}
+                  %a{:href => "#{support}", :target => "_blank"} {% trans "support" %}.

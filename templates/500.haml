@@ -9,5 +9,10 @@
         %hr
         .sub-1 {% trans "Sorry!" %}
         %p {% trans "Something has gone wrong. Our team has been alerted to the issue and is looking into it." %}
-        %p {% blocktrans %}Please go back to <a href='https://www.mckinseyacademy.com'>www.mckinseyacademy.com</a>, or contact us at <a href:'#{support}'>support</a>.{% endblocktrans %}
+        %p
+          {% blocktrans %}Please go back to {% endblocktrans%}
+          <a href='https://www.mckinseyacademy.com'>www.mckinseyacademy.com</a>
+          {% trans ", or contact us at" %}
+          %a{:href => "#{support}"} {% trans "support" %}.
+
         %img{src: "/static/image/errors/McKA_errors_1500illus.png", srcset: "/static/image/errors/McKA_errors_1500illus@2x.png 2x"}

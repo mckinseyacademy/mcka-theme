@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-19 07:52+0000\n"
+"POT-Creation-Date: 2019-06-19 15:23+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2324,7 +2324,7 @@ msgstr "このコースには、グループプロジェクトはありません
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
-#: templates/courses/course_progress.haml:70 templates/faq.haml:39
+#: templates/courses/course_progress.haml:75 templates/faq.haml:48
 #: templates_v2/courses/course_progress_v2.haml:233
 #: templates_v2/courses/course_progress_v2.haml:247 templates_v2/faq.haml:88
 msgid "Group Work"
@@ -2432,7 +2432,7 @@ msgstr "ステータス"
 
 #: admin/views.py:4639 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:46
-#: templates/courses/course_progress.haml:66
+#: templates/courses/course_progress.haml:71
 #: templates_v2/admin/courses/course_details.haml:92
 msgid "Completed"
 msgstr "完了"
@@ -3034,19 +3034,31 @@ msgstr "申し訳ございません"
 msgid "You don't have permission to access the resource you requested."
 msgstr "要求されたリソースへのアクセス権がありません。"
 
-#: templates/403.haml:12 templates/404.haml:12 templates/500.haml:12
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Please go back to <a href='https://www.mckinseyacademy.com'>www."
-#| "mckinseyacademy.com</a>, or contact us at <a href:'mailto:"
-#| "support@mckinseyacademy.com'>support@mckinseyacademy.com</a>."
-msgid ""
-"Please go back to <a href='https://www.mckinseyacademy.com'>www."
-"mckinseyacademy.com</a>, or contact us at <a href:'#{support}'>support</a>."
-msgstr ""
-"<ahref='https://www.mckinseyacademy.com'>www.mckinseyacademy.com</a>へ戻る"
-"か、<ahref:'mailto:support@mckinseyacademy.com'>support@mckinseyacademy.com</"
-"a>までご連絡ください。"
+#: templates/403.haml:13 templates/404.haml:13 templates/500.haml:13
+msgid "Please go back to "
+msgstr "へ戻るか、"
+
+#: templates/403.haml:15 templates/404.haml:15 templates/500.haml:15
+msgid ", or contact us at"
+msgstr "までご連絡ください。 "
+
+#: templates/403.haml:16 templates/404.haml:16 templates/500.haml:16
+#: templates/accounts/sso_error.haml:19 templates/courses/course_cohort.haml:19
+#: templates/courses/course_discussion.haml:19
+#: templates/courses/course_group_work.haml:19
+#: templates/courses/course_group_work.haml:31
+#: templates/courses/course_navigation.haml:21
+#: templates/courses/course_news.haml:18
+#: templates/courses/course_overview.haml:18
+#: templates/courses/course_progress.haml:24
+#: templates/courses/course_resources.haml:18 templates/faq.haml:26
+#: templates/faq.haml:30 templates/faq.haml:34 templates/faq.haml:38
+#: templates_v2/403.haml:26 templates_v2/404.haml:24 templates_v2/500.haml:26
+#: templates_v2/503.haml:22 templates_v2/accounts/sso_error.haml:21
+#: templates_v2/faq.haml:49 templates_v2/faq.haml:56 templates_v2/faq.haml:63
+#: templates_v2/faq.haml:70
+msgid "support"
+msgstr "サポート"
 
 #: templates/404.haml:8
 msgid "404: Page not found"
@@ -3406,14 +3418,8 @@ msgstr ""
 "した。"
 
 #: templates/accounts/sso_error.haml:18 templates_v2/accounts/sso_error.haml:20
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Please contact us at <a href:'mailto:support@mckinseyacademy."
-#| "com'>support@mckinseyacademy.com</a>. "
-msgid " Please contact us at <a href:'#{support}'>support</a>. "
-msgstr ""
-"<ahref:'mailto:support@mckinseyacademy.com'>support@mckinseyacademy.com</a>ま"
-"でご連絡ください。"
+msgid "Please contact us at "
+msgstr "までご連絡ください。"
 
 #: templates/accounts/upload_profile_image.haml:8
 #: templates/admin/client/edit_mobile_app_image.haml:13
@@ -3636,8 +3642,8 @@ msgstr "参加者の現在の成績に基づく平均成績。"
 
 #: templates/admin/client-admin/course_analytics.haml:62
 #: templates/admin/client-admin/course_analytics.haml:79
-#: templates/courses/course_cohort.haml:33
-#: templates/courses/course_cohort.haml:103
+#: templates/courses/course_cohort.haml:38
+#: templates/courses/course_cohort.haml:108
 #: templates/courses/visualizations/course_engagement.haml:15
 #: templates/courses/visualizations/course_proficiency.haml:16
 #: templates/courses/visualizations/course_progress.haml:16
@@ -4491,7 +4497,7 @@ msgid "This is the course feature list."
 msgstr "これはコースの特徴リストです。"
 
 #: templates/admin/course_meta_content/item_list.haml:48
-#: templates/courses/course_cohort.haml:228
+#: templates/courses/course_cohort.haml:233
 msgid "Discussions"
 msgstr "ディスカッション"
 
@@ -4558,7 +4564,7 @@ msgstr "学習者ダッシュボード"
 #: templates/courses/content_page/course_tabs.haml:42
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_learner_dashboard_header.haml:33
-#: templates/courses/course_resources.haml:27
+#: templates/courses/course_resources.haml:32
 #: templates_v2/courses/course_learner_dashboard_header.haml:22
 #: templates_v2/courses/course_navigation.haml:36
 #: templates_v2/courses/course_resources.haml:14
@@ -5933,7 +5939,7 @@ msgstr "このフォームを使ってプログラムを追加する"
 #: templates/admin/program/detail_header.haml:7
 #: templates/admin/program/detail_header.haml:10
 #: templates/admin/workgroup/list_layout.haml:9
-#: templates/courses/course_overview.haml:39
+#: templates/courses/course_overview.haml:45
 #: templates_v2/courses/course_navigation.haml:23
 #: templates_v2/courses/course_overview.haml:25
 msgid "Overview"
@@ -6185,7 +6191,7 @@ msgstr "重要事項のリストを説明するには、ここにメッセージ
 #: templates/admin/workgroup/project_assignment.haml:19
 #: templates/admin/workgroup/workgroup_detail_report.haml:12
 #: templates/admin/workgroup/workgroup_report.haml:12
-#: templates/courses/course_progress.haml:103
+#: templates/courses/course_progress.haml:108
 #: templates/courses/course_progress_v2.haml:172
 #: templates/courses/course_progress_v2.haml:185
 msgid "Group Work:"
@@ -6360,15 +6366,11 @@ msgstr ""
 #: templates/certificates/course_certificate_notification_email.haml:8
 #: templates/registration/public_registration_activation_link.haml:14
 #: templates/registration/public_registration_existing.haml:12
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Please contact our team at support@mckinseyacademy.com if you experience "
-#| "any technical issues."
+#, python-format
 msgid ""
-"Please contact our team at #{support} if you experience any technical issues."
-msgstr ""
-"技術的な問題が発生した場合は、担当チームにご連絡ください "
-"(support@mckinseyacademy.com)。"
+"Please contact our team at %(support)s if you experience any technical "
+"issues."
+msgstr "技術的な問題が発生した場合は、担当チームにご連絡ください %(support)s。"
 
 #: templates/certificates/course_certificate_notification_email.haml:11
 #: templates/registration/public_registration_activation_link.haml:17
@@ -6532,14 +6534,14 @@ msgid "Course Materials"
 msgstr "コース教材"
 
 #: templates/courses/content_page/course_tabs.haml:37
-#: templates/courses/course_news.haml:24
+#: templates/courses/course_news.haml:30
 #: templates_v2/courses/course_navigation.haml:31
 #: templates_v2/courses/course_news.haml:15
 msgid "Announcements"
 msgstr "告知"
 
 #: templates/courses/content_page/course_tabs.haml:39
-#: templates/courses/course_overview.haml:53
+#: templates/courses/course_overview.haml:59
 #: templates_v2/courses/course_navigation.haml:33
 #: templates_v2/courses/course_overview.haml:41
 msgid "Course Overview"
@@ -6591,27 +6593,51 @@ msgstr " %(module_custom_label)s %(lesson_index)s / %(lesson_count)s"
 msgid "| Cohort | Courses | McKinsey Academy"
 msgstr "| コホート | コース | McKinsey Academy"
 
-#: templates/courses/course_cohort.haml:15
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to interact with the cohort map and leaderboards. "
-#| "You may also find answers to your questions in the <a href=\"/faq\">FAQ</"
-#| "a>. Can’t find the answer there? Please contact us directly at <a href="
-#| "\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a> "
-#| "and we’ll sort it out for you. "
-msgid ""
-" Below are helpful tips to interact with the cohort map and leaderboards. "
-"You may also find answers to your questions in the <a href=\"/faq\">FAQ</a>. "
-"Can’t find the answer there? Please contact us directly at <a href="
-"\"#{support}\">support</a> and we’ll sort it out for you. "
-msgstr ""
-"以下は、コホート・マップやリーダーボードの利用法に関するヒントです。また、<a "
-"href=\"/faq\">FAQ</a>では質問への答えが見つかるかもしれません。そこで答えが見"
-"つからない場合は、<ahref=\"mailto:support@mckinseyacademy.com"
-"\">support@mckinseyacademy.com</a>まで直接ご連絡ください。解決のお手伝いをし"
-"ます。"
-
 #: templates/courses/course_cohort.haml:16
+msgid ""
+"Below are helpful tips to interact with the cohort map and leaderboards. You "
+"may also find answers to your questions in the "
+msgstr ""
+"以下は、コホート・マップやリーダーボードの利用法に関するヒントです。また、"
+
+#: templates/courses/course_cohort.haml:17
+#: templates/courses/course_discussion.haml:17
+#: templates/courses/course_group_work.haml:17
+#: templates/courses/course_group_work.haml:29
+#: templates/courses/course_navigation.haml:19
+#: templates/courses/course_news.haml:16
+#: templates/courses/course_overview.haml:16
+#: templates/courses/course_progress.haml:22
+#: templates/courses/course_resources.haml:16 templates/footer.haml:17
+#: tests/templates_v2/footer.haml:17
+msgid "FAQ"
+msgstr "FAQ"
+
+#: templates/courses/course_cohort.haml:18
+#: templates/courses/course_discussion.haml:18
+#: templates/courses/course_group_work.haml:18
+#: templates/courses/course_group_work.haml:30
+#: templates/courses/course_navigation.haml:20
+#: templates/courses/course_news.haml:17
+#: templates/courses/course_overview.haml:17
+#: templates/courses/course_progress.haml:23
+#: templates/courses/course_resources.haml:17
+msgid "Can’t find the answer there? Please contact us directly at "
+msgstr ""
+"では質問への答えが見つかるかもしれません。そこで答えが見つからない場合は、"
+
+#: templates/courses/course_cohort.haml:20
+#: templates/courses/course_discussion.haml:20
+#: templates/courses/course_group_work.haml:20
+#: templates/courses/course_navigation.haml:22
+#: templates/courses/course_news.haml:19
+#: templates/courses/course_overview.haml:19
+#: templates/courses/course_progress.haml:25
+#: templates/courses/course_resources.haml:19
+msgid " and we’ll sort it out for you."
+msgstr "まで直接ご 連絡ください。解決のお手伝いをいたします。"
+
+#: templates/courses/course_cohort.haml:21
 msgid ""
 " Access the cohort using the <i class=\"fa fa-globe\"></i> icon in the main "
 "navigation bar. "
@@ -6619,7 +6645,7 @@ msgstr ""
 "メイン・ナビゲーション・バーの <i class=\"fa fa-globe\"></i> アイコンを使っ"
 "て、コホートにアクセスします。"
 
-#: templates/courses/course_cohort.haml:17
+#: templates/courses/course_cohort.haml:22
 msgid ""
 "COHORT MAP displays your group members, your McKinsey TA, and the number of "
 "cohort participants from various cities. The details on the number of "
@@ -6630,11 +6656,11 @@ msgstr ""
 "数が表示されます。社内参加者数やコホート合計参加者数に関する詳細は、マップ下"
 "に表示されます。"
 
-#: templates/courses/course_cohort.haml:18
+#: templates/courses/course_cohort.haml:23
 msgid "You can email your McKinsey TA who is displayed on the map"
 msgstr "マップに表示されているMcKinsey TAにEメールを送信できます"
 
-#: templates/courses/course_cohort.haml:19
+#: templates/courses/course_cohort.haml:24
 msgid ""
 "LEADERBOARDS display the top participants across proficiency, progress, and "
 "engagement, as well as your own ranking compared to the cohort average"
@@ -6642,33 +6668,33 @@ msgstr ""
 "リーダーボードには、習熟度、進度、およびエンゲージメントにおけるトップの参加"
 "者や、コホート平均と比較した場合の自身のランキングが表示されます。"
 
-#: templates/courses/course_cohort.haml:20
-#: templates/courses/course_discussion.haml:21
-#: templates/courses/course_navigation.haml:47
-#: templates/courses/course_news.haml:19
-#: templates/courses/course_overview.haml:22
-#: templates/courses/course_resources.haml:22
+#: templates/courses/course_cohort.haml:25
+#: templates/courses/course_discussion.haml:26
+#: templates/courses/course_navigation.haml:52
+#: templates/courses/course_news.haml:25
+#: templates/courses/course_overview.haml:28
+#: templates/courses/course_resources.haml:27
 msgid "This video walks you through the learner experience:"
 msgstr "この動画では、学習者体験をご紹介します:"
 
-#: templates/courses/course_cohort.haml:26
+#: templates/courses/course_cohort.haml:31
 msgid "Leaderboards"
 msgstr "リーダーボード"
 
-#: templates/courses/course_cohort.haml:32
+#: templates/courses/course_cohort.haml:37
 #: templates/courses/visualizations/course_proficiency.haml:8
 #: templates_v2/faq.haml:168
 msgid "Proficiency:"
 msgstr "習熟度:"
 
-#: templates/courses/course_cohort.haml:35
+#: templates/courses/course_cohort.haml:40
 #: templates_v2/courses/course_cohort.haml:184
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the proficiency leaderboard "
 msgstr "%(role_user)sユーザーのあなたは、習熟度リーダーボードに表示されません"
 
-#: templates/courses/course_cohort.haml:37
+#: templates/courses/course_cohort.haml:42
 #, python-format
 msgid ""
 " your proficiency position: <br><span>%(position)s</span> with <span>"
@@ -6677,54 +6703,54 @@ msgstr ""
 "あなたの習熟度: <br><span>%(position)s</span>で<span>%(position_value)s</"
 "span> "
 
-#: templates/courses/course_cohort.haml:39
+#: templates/courses/course_cohort.haml:44
 msgid "your proficiency position <br> will be displayed here"
 msgstr "あなたの習熟度<br>はここに表示されます"
-
-#: templates/courses/course_cohort.haml:53
-#: templates/courses/course_cohort.haml:73
-#: templates/courses/course_cohort.haml:93
-#: templates/courses/course_cohort.haml:123
-#: templates/courses/course_cohort.haml:140
-#: templates/courses/course_cohort.haml:157
-#: templates/courses/course_cohort.haml:186
-#: templates/courses/course_cohort.haml:203
-#: templates/courses/course_cohort.haml:220 templates_v2/header.haml:66
-msgid "username"
-msgstr "ユーザー名"
-
-#: templates/courses/course_cohort.haml:55
-#: templates/courses/course_cohort.haml:75
-#: templates/courses/course_cohort.haml:95
-#: templates/courses/course_cohort.haml:124
-#: templates/courses/course_cohort.haml:141
-#: templates/courses/course_cohort.haml:158
-#: templates/courses/course_cohort.haml:187
-#: templates/courses/course_cohort.haml:204
-#: templates/courses/course_cohort.haml:221
-msgid "title"
-msgstr "役職"
 
 #: templates/courses/course_cohort.haml:58
 #: templates/courses/course_cohort.haml:78
 #: templates/courses/course_cohort.haml:98
+#: templates/courses/course_cohort.haml:128
+#: templates/courses/course_cohort.haml:145
+#: templates/courses/course_cohort.haml:162
+#: templates/courses/course_cohort.haml:191
+#: templates/courses/course_cohort.haml:208
+#: templates/courses/course_cohort.haml:225 templates_v2/header.haml:66
+msgid "username"
+msgstr "ユーザー名"
+
+#: templates/courses/course_cohort.haml:60
+#: templates/courses/course_cohort.haml:80
+#: templates/courses/course_cohort.haml:100
+#: templates/courses/course_cohort.haml:129
+#: templates/courses/course_cohort.haml:146
+#: templates/courses/course_cohort.haml:163
+#: templates/courses/course_cohort.haml:192
+#: templates/courses/course_cohort.haml:209
+#: templates/courses/course_cohort.haml:226
+msgid "title"
+msgstr "役職"
+
+#: templates/courses/course_cohort.haml:63
+#: templates/courses/course_cohort.haml:83
+#: templates/courses/course_cohort.haml:103
 msgid "100"
 msgstr "100"
 
-#: templates/courses/course_cohort.haml:102
-#: templates/courses/course_progress.haml:84
+#: templates/courses/course_cohort.haml:107
+#: templates/courses/course_progress.haml:89
 #: templates/courses/visualizations/course_progress.haml:8
 #: templates_v2/faq.haml:171
 msgid "Progress:"
 msgstr "進度:"
 
-#: templates/courses/course_cohort.haml:105
+#: templates/courses/course_cohort.haml:110
 #: templates_v2/courses/course_cohort.haml:24
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr "%(role_user)sユーザーのあなたは、進度リーダーボードに表示されません"
 
-#: templates/courses/course_cohort.haml:107
+#: templates/courses/course_cohort.haml:112
 #, python-format
 msgid ""
 " your progress position: <br><span>%(position)s</span> with <span>"
@@ -6733,27 +6759,27 @@ msgstr ""
 "あなたの進度: <br><span>%(position)s</span>で<span>%(progress_value)s%%</"
 "span> "
 
-#: templates/courses/course_cohort.haml:109
+#: templates/courses/course_cohort.haml:114
 msgid "your progress position <br> will be displayed here"
 msgstr "あなたの進度<br>はここに表示されます"
 
-#: templates/courses/course_cohort.haml:160
+#: templates/courses/course_cohort.haml:165
 #, python-format
 msgid "100%%"
 msgstr "100%%"
 
-#: templates/courses/course_cohort.haml:165
+#: templates/courses/course_cohort.haml:170
 #: templates/courses/visualizations/course_engagement.haml:8
 #: templates_v2/faq.haml:174
 msgid "Engagement:"
 msgstr "エンゲージメント:"
 
-#: templates/courses/course_cohort.haml:166
+#: templates/courses/course_cohort.haml:171
 #, python-format
 msgid " cohort average = %(course_avg)s points "
 msgstr "コホート平均 = %(course_avg)s点"
 
-#: templates/courses/course_cohort.haml:168
+#: templates/courses/course_cohort.haml:173
 #: templates_v2/courses/course_cohort.haml:103
 #, python-format
 msgid ""
@@ -6762,7 +6788,7 @@ msgstr ""
 "%(role_user)sユーザーのあなたは、エンゲージメントリーダーボードに表示されませ"
 "ん"
 
-#: templates/courses/course_cohort.haml:170
+#: templates/courses/course_cohort.haml:175
 #, python-format
 msgid ""
 "  your engagement position: <br><span>%(position)s</span> with <span>"
@@ -6771,17 +6797,17 @@ msgstr ""
 "あなたのエンゲージメント: <br><span>%(position)s</span>で<span>%(points)s点</"
 "span> "
 
-#: templates/courses/course_cohort.haml:172
+#: templates/courses/course_cohort.haml:177
 msgid "your engagement position <br> will be displayed here"
 msgstr "あなたのエンゲージメントは<br>ここに表示されます"
 
-#: templates/courses/course_cohort.haml:189
-#: templates/courses/course_cohort.haml:206
-#: templates/courses/course_cohort.haml:223
+#: templates/courses/course_cohort.haml:194
+#: templates/courses/course_cohort.haml:211
+#: templates/courses/course_cohort.haml:228
 msgid "100 pts."
 msgstr "100点"
 
-#: templates/courses/course_cohort.haml:229
+#: templates/courses/course_cohort.haml:234
 msgid ""
 "Even if we cannot directly shape an outcome, a model’s prediction may be "
 "communicated in a way that alters behavior and indirectly shapes it."
@@ -6789,30 +6815,30 @@ msgstr ""
 "成果を直接形作ることができないにしても、モデル予想を伝えることで、行動を変"
 "え、間接的に形作ることができるかもしれません。"
 
-#: templates/courses/course_cohort.haml:233
+#: templates/courses/course_cohort.haml:238
 msgid "gwensisco"
 msgstr "gwensisco"
 
-#: templates/courses/course_cohort.haml:234
+#: templates/courses/course_cohort.haml:239
 msgid "Media Buyer"
 msgstr "メディア・バイヤー"
 
-#: templates/courses/course_cohort.haml:237
+#: templates/courses/course_cohort.haml:242
 msgid "Recommendations"
 msgstr "推奨事項"
 
-#: templates/courses/course_cohort.haml:240
+#: templates/courses/course_cohort.haml:245
 msgid "Scientists Without Borders"
 msgstr "国境なき科学者"
 
-#: templates/courses/course_cohort.haml:241
+#: templates/courses/course_cohort.haml:246
 msgid ""
 "A worldwide community of changemakers collaborating to accelerate solutions "
 "to urgent development challenges."
 msgstr ""
 "喫緊の発展課題の解決を加速すべく協力する、変革を起こす者たちの世界的集団"
 
-#: templates/courses/course_cohort.haml:243
+#: templates/courses/course_cohort.haml:248
 msgid "Suggest a Link"
 msgstr "リンクを提案する"
 
@@ -6823,29 +6849,16 @@ msgstr "リンクを提案する"
 msgid " | Discussion | Courses | McKinsey Academy"
 msgstr "| ディスカッション | コース | McKinsey Academy"
 
-#: templates/courses/course_discussion.haml:15
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to engage in discussions with your cohort or "
-#| "group members (via private discussions). You may also find answers to "
-#| "your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-#| "there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
+#: templates/courses/course_discussion.haml:16
 msgid ""
-" Below are helpful tips to engage in discussions with your cohort or group "
+"Below are helpful tips to engage in discussions with your cohort or group "
 "members (via private discussions). You may also find answers to your "
-"questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer there? "
-"Please contact us directly at <a href=\"#{support}\">support</a> and we’ll "
-"sort it out for you. "
+"questions in the "
 msgstr ""
 "以下は、コホートやグループメンバー (非公開のディスカッションを通じた) との"
-"ディスカッションに関するヒントです。また、<a href=\"/faq\">FAQ</a>では質問へ"
-"の答えが見つかるかもしれません。そこで答えが見つからない場合は、<ahref="
-"\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a>まで直"
-"接ご連絡ください。解決のお手伝いをいたします。"
+"ディスカッションに関するヒントです。また、"
 
-#: templates/courses/course_discussion.haml:16
+#: templates/courses/course_discussion.haml:21
 msgid ""
 " Access discussions using the <i class=\"fa fa-comments-o\"></i> icon in the "
 "main navigation bar "
@@ -6853,7 +6866,7 @@ msgstr ""
 "メイン・ナビゲーション・バーの <i class=\"fa fa-comments-o\"></i> アイコンを"
 "使って、ディスカッションにアクセスします"
 
-#: templates/courses/course_discussion.haml:17
+#: templates/courses/course_discussion.haml:22
 msgid ""
 " FIND DISCUSSIONS tools help you focus on specific topics <i class=\"fa fa-"
 "bars\"></i> search for specific posts, and sort by date, vote, or comments "
@@ -6863,7 +6876,7 @@ msgstr ""
 "フォーカスし、特定の投稿について検索し、日付、投票、またはコメントごとに分類"
 "することができます <i class=\"fa fa-search\"></i> "
 
-#: templates/courses/course_discussion.haml:18
+#: templates/courses/course_discussion.haml:23
 msgid ""
 " ENGAGE WITH POSTS features allow you to upvote posts and good responses <i "
 "class=\"fa fa-plus\"></i>, report forum misuse <i class=\"fa fa-flag\"></i> "
@@ -6873,7 +6886,7 @@ msgstr ""
 "フォーラムの誤用を報告し <i class=\"fa fa-flag\"></i>、投稿の更新を確認するこ"
 "とができます <i class=\"fa fa-star\"></i>。"
 
-#: templates/courses/course_discussion.haml:19
+#: templates/courses/course_discussion.haml:24
 msgid ""
 " RECEIVE UPDATES by checking the box near the <i class=\"fa fa-envelope\"></"
 "i> icon to receive a daily email digest notifying you about new, unread "
@@ -6883,7 +6896,7 @@ msgstr ""
 "スをオンにすると、フォローしている投稿の新規または未読のアクティビティに関す"
 "るダイジェストメールが届きます"
 
-#: templates/courses/course_discussion.haml:20
+#: templates/courses/course_discussion.haml:25
 msgid ""
 "You can email your McKinsey TA who is displayed in the upper left corner of "
 "the page"
@@ -6900,28 +6913,14 @@ msgstr "ユーザー・プロフィールは利用できません"
 msgid " | Group Work | Courses | McKinsey Academy"
 msgstr "| グループワーク | コース | McKinsey Academy"
 
-#: templates/courses/course_group_work.haml:15
-#: templates/courses/course_group_work.haml:22
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to contribute to group work. You may also find "
-#| "answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-#| "answer there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
-msgid ""
-" Below are helpful tips to contribute to group work. You may also find "
-"answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-"answer there? Please contact us directly at <a href=\"#{support}\">support</"
-"a> and we’ll sort it out for you. "
-msgstr ""
-"以下は、グループワークへの貢献に関するヒントです。また、<a href=\"/faq"
-"\">FAQ</a>では質問への答えが見つかるかもしれません。そこで答えが見つからない"
-"場合は、<ahref=\"mailto:support@mckinseyacademy.com"
-"\">support@mckinseyacademy.com</a>まで直接ご連絡ください。解決のお手伝いをい"
-"たします。"
-
 #: templates/courses/course_group_work.haml:16
+#: templates/courses/course_group_work.haml:28
+msgid ""
+"Below are helpful tips to contribute to group work. You may also find "
+"answers to your questions in the "
+msgstr "以下は、グループワークへの貢献に関するヒントです。また、"
+
+#: templates/courses/course_group_work.haml:21
 msgid ""
 " Access group work using the <i class=\"mk-icon-groupworknav blue\"></i> "
 "icon in the main navigation bar "
@@ -6929,7 +6928,7 @@ msgstr ""
 "メイン・ナビゲーション・バーの <i class=\"mk-icon-groupworknav blue\"></i> ア"
 "イコンを使って、グループワークにアクセスします"
 
-#: templates/courses/course_group_work.haml:17
+#: templates/courses/course_group_work.haml:22
 msgid ""
 " Upload deliverables by clicking the <i class=\"fa fa-upload blue\"></i> "
 "icon at the bottom of the Project Navigator. "
@@ -6937,7 +6936,7 @@ msgstr ""
 "プロジェクト・ナビゲーター下部の <i class=\"fa fa-upload blue\"></i> アイコン"
 "をクリックして、提出物をアップロードします。"
 
-#: templates/courses/course_group_work.haml:18
+#: templates/courses/course_group_work.haml:23
 msgid ""
 " Access project resources by clicking the <i class=\"fa fa-files-o blue\"></"
 "i> icon at the bottom of the Project Navigator. "
@@ -6945,7 +6944,7 @@ msgstr ""
 "プロジェクト・ナビゲーター下部の <i class=\"fa fa-files-o blue\"></i> アイコ"
 "ンをクリックして、プロジェクト・リソースにアクセスします。"
 
-#: templates/courses/course_group_work.haml:19
+#: templates/courses/course_group_work.haml:24
 msgid ""
 " Group work has a private discussion you can use to collaborate with your "
 "group members. You can chat with your team by clicking the <i class=\"fa fa-"
@@ -6960,7 +6959,7 @@ msgstr ""
 "も、グループ・メンバーのみが閲覧可能で、コホート全体には絶対に表示されませ"
 "ん。"
 
-#: templates/courses/course_group_work.haml:20
+#: templates/courses/course_group_work.haml:25
 msgid ""
 " Send a message to a McKinsey TA by clicking the <span class=\"nav-1\" style="
 "\"font-size:16px;\">TA</span> icon at the bottom of the Project Navigator. "
@@ -6969,7 +6968,7 @@ msgstr ""
 "size:16px;\">TA</span> アイコンをクリックして、McKinsey TAにメッセージを送信"
 "します。"
 
-#: templates/courses/course_group_work.haml:23
+#: templates/courses/course_group_work.haml:32
 msgid ""
 " Access group work using the <i class=\"mk-icon-groupworknav\"></i> icon in "
 "the main navigation bar "
@@ -6977,7 +6976,7 @@ msgstr ""
 "メイン・ナビゲーション・バーの <i class=\"mk-icon-groupworknav\"></i> アイコ"
 "ンを使って、グループワークにアクセスします"
 
-#: templates/courses/course_group_work.haml:24
+#: templates/courses/course_group_work.haml:33
 msgid ""
 "Group work is made up of one or more activities, and each activity is made "
 "up of up to 4 stages:"
@@ -6985,29 +6984,29 @@ msgstr ""
 "グループワークには1つ以上のアクティビティがあり、各アクティビティは4つのス"
 "テージで構成されています:"
 
-#: templates/courses/course_group_work.haml:25
+#: templates/courses/course_group_work.haml:34
 msgid "OVERVIEW - provides a high-level overview of the task(s)"
 msgstr "概要 - タスクの高度な概要を説明しています"
 
-#: templates/courses/course_group_work.haml:26
+#: templates/courses/course_group_work.haml:35
 msgid "UPLOAD - allows your team to upload deliverables for TA or peer grading"
 msgstr ""
 "アップロード - TAまたは査読評価用にチームが提出物をアップロードできます"
 
-#: templates/courses/course_group_work.haml:27
+#: templates/courses/course_group_work.haml:36
 msgid ""
 "REVIEWS - allows you to anonymously grade peer projects and/or provide team "
 "feedback"
 msgstr ""
 "査読 - クラスメートのプロジェクト評価やフィードバック提供が匿名でできます"
 
-#: templates/courses/course_group_work.haml:28
+#: templates/courses/course_group_work.haml:37
 msgid "GRADE - displays your team feedback and peer (or TA) grade"
 msgstr ""
 "成績評価 - チームのフィードバックやクラスメート (またはTAによる) 査読評価を表"
 "示します"
 
-#: templates/courses/course_group_work.haml:32
+#: templates/courses/course_group_work.haml:41
 msgid ""
 "Move from stage to stage within an activity using the left and right arrows; "
 "deadlines for each stage are posted, and if a particular stage has not yet "
@@ -7017,7 +7016,7 @@ msgstr ""
 "は投稿されます。特定のステージがまだ開かれていない場合、注意書きとして表示さ"
 "れます"
 
-#: templates/courses/course_group_work.haml:33
+#: templates/courses/course_group_work.haml:42
 msgid ""
 " Group work has a private inline discussion you can use to collaborate with "
 "only your group members. View these conversations in group work pages, or by "
@@ -7033,7 +7032,7 @@ msgstr ""
 "のディスカッションは、メイン・ディスカッション・ページで閲覧した場合でも、グ"
 "ループメンバーのみが閲覧可能で、コホート全体には絶対に表示されません。"
 
-#: templates/courses/course_group_work.haml:34
+#: templates/courses/course_group_work.haml:43
 msgid ""
 "Email your group members (individually or combined) from the right column of "
 "each stage"
@@ -7041,15 +7040,15 @@ msgstr ""
 "各ステージ右側の欄から、グループメンバーに (個人または複数宛てに) Eメールを送"
 "信します"
 
-#: templates/courses/course_group_work.haml:35
+#: templates/courses/course_group_work.haml:44
 msgid "Email your McKinsey TA from the right column of each stage."
 msgstr "各ステージ右側の欄から、McKinsey TAにEメールを送信します。"
 
-#: templates/courses/course_group_work.haml:36
+#: templates/courses/course_group_work.haml:45
 msgid "This video walks you through the group work experience:"
 msgstr "この動画では、グループワーク体験をご紹介します:"
 
-#: templates/courses/course_group_work.haml:46
+#: templates/courses/course_group_work.haml:55
 #: templates/courses/course_group_work_ld.haml:20
 #: templates_v2/courses/course_group_work_ld.haml:20
 msgid ""
@@ -7059,8 +7058,8 @@ msgstr ""
 "このコースでは、グループワークがまだ開始されていません。開始すると、関連情報"
 "に関するメッセージが届きます"
 
-#: templates/courses/course_group_work.haml:55
-#: templates/courses/course_group_work.haml:61
+#: templates/courses/course_group_work.haml:64
+#: templates/courses/course_group_work.haml:70
 #: templates/courses/course_group_work_ld.haml:29
 #: templates/courses/course_group_work_ld.haml:35
 #: templates_v2/courses/course_group_work.haml:25
@@ -7070,21 +7069,21 @@ msgstr ""
 msgid "Group Project:"
 msgstr "グループプロジェクト:"
 
-#: templates/courses/course_group_work.haml:66
+#: templates/courses/course_group_work.haml:75
 #: templates/courses/course_group_work_ld.haml:40
 #: templates_v2/courses/course_group_work.haml:36
 #: templates_v2/courses/course_group_work_ld.haml:40
 msgid "Group Members"
 msgstr "グループメンバー"
 
-#: templates/courses/course_group_work.haml:71
+#: templates/courses/course_group_work.haml:80
 #: templates/courses/course_group_work_ld.haml:45
 #: templates_v2/courses/course_group_work.haml:41
 #: templates_v2/courses/course_group_work_ld.haml:45
 msgid "Email your group"
 msgstr "グループにEメールを送信する"
 
-#: templates/courses/course_group_work.haml:75
+#: templates/courses/course_group_work.haml:84
 #: templates/courses/course_group_work_ld.haml:49
 #: templates_v2/courses/course_group_work.haml:45
 #: templates_v2/courses/course_group_work_ld.haml:49
@@ -7251,26 +7250,13 @@ msgstr " | McKinsey Academy | "
 msgid " | Lessons | McKinsey Academy"
 msgstr "| レッスン | McKinsey Academy"
 
-#: templates/courses/course_navigation.haml:17
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Below are helpful tips to navigate course content. You may also find "
-#| "answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-#| "answer there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you."
+#: templates/courses/course_navigation.haml:18
 msgid ""
 "Below are helpful tips to navigate course content. You may also find answers "
-"to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-"there? Please contact us directly at <a href=\"#{support}\">support</a> and "
-"we’ll sort it out for you."
-msgstr ""
-"以下は、コース内容の確認に関するヒントです。また、<a href=\"/faq\">FAQ</a>で"
-"は質問への答えが見つかるかもしれません。そこで答えが見つからない場合は、"
-"<ahref=\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a>"
-"まで直接ご連絡ください。解決のお手伝いをいたします。"
+"to your questions in the "
+msgstr "以下は、コース内容の確認に関するヒントです。また、"
 
-#: templates/courses/course_navigation.haml:22
+#: templates/courses/course_navigation.haml:27
 #, python-format
 msgid ""
 "See which %(modules_custom_label)s you have completed and navigate directly "
@@ -7281,7 +7267,7 @@ msgstr ""
 "に直接移動したりするには、ページ上部の%(module_custom_label)sナビゲーションを"
 "使います"
 
-#: templates/courses/course_navigation.haml:24
+#: templates/courses/course_navigation.haml:29
 msgid ""
 "See which modules you have completed and navigate directly to specific "
 "modules using the module navigation at the top of the page"
@@ -7289,7 +7275,7 @@ msgstr ""
 "修了したモジュールを確認したり、特定のモジュールに直接移動したりするには、"
 "ページ上部のモジュール・ナビゲーションを使います"
 
-#: templates/courses/course_navigation.haml:29
+#: templates/courses/course_navigation.haml:34
 #, python-format
 msgid ""
 "Move from %(module_custom_label)s to %(module_custom_label)s using the left "
@@ -7300,7 +7286,7 @@ msgstr ""
 "を使います。今後 (または過去) の%(modules_custom_label)sの詳細を確認するに"
 "は、矢印の上にカーソルを載せます"
 
-#: templates/courses/course_navigation.haml:31
+#: templates/courses/course_navigation.haml:36
 #, python-format
 msgid ""
 "Move from %(module_custom_label)s to %(module_custom_label)s using the left "
@@ -7311,7 +7297,7 @@ msgstr ""
 "を使います。今後 (または過去) のモジュール詳細を確認するには、矢印の上にカー"
 "ソルを載せます"
 
-#: templates/courses/course_navigation.haml:33
+#: templates/courses/course_navigation.haml:38
 #, python-format
 msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
@@ -7320,7 +7306,7 @@ msgstr ""
 "モジュール間を移動するには、左右矢印を使います。今後 (または過去) "
 "の%(modules_custom_label)sの詳細を確認するには、矢印の上にカーソルを載せます"
 
-#: templates/courses/course_navigation.haml:35
+#: templates/courses/course_navigation.haml:40
 msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
 "arrows to see details of upcoming (or previous) modules"
@@ -7328,7 +7314,7 @@ msgstr ""
 "モジュール間を移動するには、左右矢印を使います。今後 (または過去) のモジュー"
 "ル詳細を確認するには、矢印の上にカーソルを載せます"
 
-#: templates/courses/course_navigation.haml:39
+#: templates/courses/course_navigation.haml:44
 #, python-format
 msgid ""
 "%(modules_custom_label)s with inline discussions post to the larger "
@@ -7340,7 +7326,7 @@ msgstr ""
 "\"fa fa-comments-o\"></i> アイコンを使って、ディスカッション・ページを閲覧し"
 "ます"
 
-#: templates/courses/course_navigation.haml:41
+#: templates/courses/course_navigation.haml:46
 msgid ""
 "Modules with inline discussions post to the larger discussion page. View the "
 "discussion page using the <i class=\"fa fa-comments-o\"></i> icon in the "
@@ -7350,7 +7336,7 @@ msgstr ""
 "ジへ投稿されます。メイン・ナビゲーション・バーの <i class=\"fa fa-comments-o"
 "\"></i> アイコンを使って、ディスカッション・ページを閲覧します"
 
-#: templates/courses/course_navigation.haml:44
+#: templates/courses/course_navigation.haml:49
 #, python-format
 msgid ""
 "Access individual %(lessons_custom_label)s from the <i class=\"mk-icon-"
@@ -7359,7 +7345,7 @@ msgstr ""
 "メイン・ナビゲーション・バーの <i class=\"mk-icon-lessonsnav\"></i> アイコン"
 "から、各%(lessons_custom_label)sにアクセスします"
 
-#: templates/courses/course_navigation.haml:46
+#: templates/courses/course_navigation.haml:51
 msgid ""
 "Access individual lessons from the <i class=\"mk-icon-lessonsnav\"></i> icon "
 "in the main navigation bar"
@@ -7381,32 +7367,19 @@ msgstr "| 告知 | コース | McKinsey Academy"
 msgid "Announcements, Course Overview, and Resources"
 msgstr "告知、コース概要、リソース"
 
-#: templates/courses/course_news.haml:14
-#: templates/courses/course_overview.haml:14
-#: templates/courses/course_resources.haml:14
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to view course materials (which include "
-#| "announcements, course overview, and resources). You may also find answers "
-#| "to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-#| "there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
+#: templates/courses/course_news.haml:15
+#: templates/courses/course_overview.haml:15
+#: templates/courses/course_resources.haml:15
 msgid ""
-" Below are helpful tips to view course materials (which include "
+"Below are helpful tips to view course materials (which include "
 "announcements, course overview, and resources). You may also find answers to "
-"your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer there? "
-"Please contact us directly at <a href=\"#{support}\">support</a> and we’ll "
-"sort it out for you. "
+"your questions in the "
 msgstr ""
 "以下は、コース教材 (告知、コース概要、リソースを含む) を閲覧に関するヒントで"
-"す。また、<a href=\"/faq\">FAQ</a>では質問への答えが見つかるかもしれません。"
-"そこで答えが見つからない場合は、<ahref=\"mailto:support@mckinseyacademy.com"
-"\">support@mckinseyacademy.com</a>まで直接ご連絡ください。解決のお手伝いをい"
-"たします。"
+"す。また、"
 
-#: templates/courses/course_news.haml:15
-#: templates/courses/course_resources.haml:15
+#: templates/courses/course_news.haml:21
+#: templates/courses/course_resources.haml:20
 msgid ""
 " Access Announcements, Course Overview, and Resources from the <i class=\"fa "
 "fa-file-text-o\"></i> icon in the main navigation bar. "
@@ -7414,16 +7387,16 @@ msgstr ""
 "メイン・ナビゲーション・バーの <i class=\"fa fa-file-text-o\"></i> アイコンよ"
 "り、告知、コース概要、リソースにアクセスします。"
 
-#: templates/courses/course_news.haml:16
-#: templates/courses/course_overview.haml:16
-#: templates/courses/course_resources.haml:16
+#: templates/courses/course_news.haml:22
+#: templates/courses/course_overview.haml:22
+#: templates/courses/course_resources.haml:21
 msgid "ANNOUNCEMENTS provides course news and events in a blog format"
 msgstr ""
 "告知: ブログ形式で、コースに関するニュースやイベントに関する情報を提供します"
 
-#: templates/courses/course_news.haml:17
-#: templates/courses/course_overview.haml:17
-#: templates/courses/course_resources.haml:17
+#: templates/courses/course_news.haml:23
+#: templates/courses/course_overview.haml:23
+#: templates/courses/course_resources.haml:22
 msgid ""
 "COURSE OVERVIEW details what you will learn and provides faculty "
 "information; it also includes a course calendar to guide your pace through "
@@ -7433,9 +7406,9 @@ msgstr ""
 "レンダーも含まれているので、ペース配分を考えたり、主な期日を確認したりできま"
 "す"
 
-#: templates/courses/course_news.haml:18
-#: templates/courses/course_overview.haml:21
-#: templates/courses/course_resources.haml:21
+#: templates/courses/course_news.haml:24
+#: templates/courses/course_overview.haml:27
+#: templates/courses/course_resources.haml:26
 msgid ""
 "RESOURCES provides key takeaways and frameworks from each lesson, as well as "
 "supplemental readings and videos"
@@ -7443,7 +7416,7 @@ msgstr ""
 "リソース: 各レッスンの要点や骨組み、補助教材 (本、動画) に関する情報が含まれ"
 "ています"
 
-#: templates/courses/course_news.haml:37
+#: templates/courses/course_news.haml:43
 #: templates_v2/courses/course_news.haml:26
 msgid "No announcements have been posted yet."
 msgstr "告知はまだ投稿されていません。"
@@ -7461,7 +7434,7 @@ msgstr "このコンテンツはまだ利用できません。"
 msgid " | Overview | Courses | McKinsey Academy"
 msgstr "| 概要 | コース | McKinsey Academy"
 
-#: templates/courses/course_overview.haml:15
+#: templates/courses/course_overview.haml:21
 msgid ""
 " \"Access Announcements, Course Overview, and Resources from the <i class="
 "\"fa fa-file-text-o\"></i> icon in the main navigation bar. "
@@ -7469,8 +7442,8 @@ msgstr ""
 "メイン・ナビゲーション・バーの <i class=\"fa fa-file-text-o\"></i> アイコンよ"
 "り、告知、コース概要、リソースにアクセスします。"
 
-#: templates/courses/course_overview.haml:19
-#: templates/courses/course_resources.haml:19
+#: templates/courses/course_overview.haml:25
+#: templates/courses/course_resources.haml:24
 #, python-format
 msgid ""
 " RESOURCES provides key takeaways and frameworks from each "
@@ -7479,47 +7452,47 @@ msgstr ""
 "リソースには、各%(lesson_custom_label)sの要点や骨組み、補助教材 (本、動画) に"
 "関する情報が含まれています"
 
-#: templates/courses/course_overview.haml:30
+#: templates/courses/course_overview.haml:36
 #: templates_v2/courses/course_overview.haml:15
 msgid "Details:"
 msgstr "詳細:"
 
-#: templates/courses/course_overview.haml:31
+#: templates/courses/course_overview.haml:37
 #: templates_v2/courses/course_overview.haml:16
 msgid "10 lessons"
 msgstr "10回のレッスン"
 
-#: templates/courses/course_overview.haml:32
+#: templates/courses/course_overview.haml:38
 #: templates_v2/courses/course_overview.haml:17
 msgid "32 videos"
 msgstr "32本の動画"
 
-#: templates/courses/course_overview.haml:33
+#: templates/courses/course_overview.haml:39
 #: templates_v2/courses/course_overview.haml:18
 msgid "9 assessments"
 msgstr "9件の課題"
 
-#: templates/courses/course_overview.haml:34
+#: templates/courses/course_overview.haml:40
 #: templates_v2/courses/course_overview.haml:19
 msgid "72 exercises"
 msgstr "72件のエクササイズ"
 
-#: templates/courses/course_overview.haml:35
+#: templates/courses/course_overview.haml:41
 #: templates_v2/courses/course_overview.haml:20
 msgid "1 group project"
 msgstr "1件のグループ・プロジェクト"
 
-#: templates/courses/course_overview.haml:36
+#: templates/courses/course_overview.haml:42
 #: templates_v2/courses/course_overview.haml:21
 msgid "15 readings"
 msgstr "15件の読書"
 
-#: templates/courses/course_overview.haml:56
+#: templates/courses/course_overview.haml:62
 #: templates_v2/courses/course_overview.haml:29
 msgid "WHAT YOU WILL LEARN"
 msgstr "学習内容"
 
-#: templates/courses/course_overview.haml:62
+#: templates/courses/course_overview.haml:68
 #: templates_v2/courses/course_overview.haml:48
 msgid "Faculty"
 msgstr "教員"
@@ -7530,26 +7503,13 @@ msgstr "教員"
 msgid " | Progress | Courses | McKinsey Academy"
 msgstr "| 進度 | コース | McKinsey Academy"
 
-#: templates/courses/course_progress.haml:20
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to review your progress. You may also find "
-#| "answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-#| "answer there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
+#: templates/courses/course_progress.haml:21
 msgid ""
-" Below are helpful tips to review your progress. You may also find answers "
-"to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-"there? Please contact us directly at <a href=\"#{support}\">support</a> and "
-"we’ll sort it out for you. "
-msgstr ""
-"以下は、進度の確認に関するヒントです。また、<a href=\"/faq\">FAQ</a>では質問"
-"への答えが見つかるかもしれません。そこで答えが見つからない場合は、<ahref="
-"\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a>まで直"
-"接ご連絡ください。解決のお手伝いをいたします。"
+"Below are helpful tips to review your progress. You may also find answers to "
+"your questions in the "
+msgstr "以下は、進度の確認に関するヒントです。また、"
 
-#: templates/courses/course_progress.haml:22
+#: templates/courses/course_progress.haml:27
 #, python-format
 msgid ""
 " PROGRESS marks your progress (based on completion of "
@@ -7559,7 +7519,7 @@ msgstr ""
 "進度には、コース内容 (%(modules_custom_label)sや読書の完了) に基づく進度をお"
 "知らせします。コホートの平均進度も表示されます"
 
-#: templates/courses/course_progress.haml:24
+#: templates/courses/course_progress.haml:29
 msgid ""
 "PROGRESS marks your progress (based on completion of modules and readings) "
 "through course content; the average progress of your cohort is also displayed"
@@ -7567,7 +7527,7 @@ msgstr ""
 "進度: コース内容 (モジュールや読書の完了) に基づく進度をお知らせします。コ"
 "ホートの平均進度も表示されます"
 
-#: templates/courses/course_progress.haml:25
+#: templates/courses/course_progress.haml:30
 msgid ""
 "GRADE displays your proficiency against a total possible score of 100; your "
 "proficiency is based on graded assessments and group work performance."
@@ -7575,11 +7535,11 @@ msgstr ""
 "成績評価: 100点を満点とした場合の習熟度を表示します。習熟度は、成績評価済みの"
 "課題やグループワークの成績に基づきます。"
 
-#: templates/courses/course_progress.haml:31
+#: templates/courses/course_progress.haml:36
 msgid "Course Progress for"
 msgstr "コース進度:"
 
-#: templates/courses/course_progress.haml:40
+#: templates/courses/course_progress.haml:45
 #, python-format
 msgid ""
 "\n"
@@ -7591,7 +7551,7 @@ msgstr ""
 "        %(lessons_custom_label)s中の完了%(modules_custom_label)sに基づき、あ"
 "なたのコース進度は%(user_course_progress)s%%です:"
 
-#: templates/courses/course_progress.haml:43
+#: templates/courses/course_progress.haml:48
 #, python-format
 msgid ""
 "\n"
@@ -7602,7 +7562,7 @@ msgstr ""
 "        %(lessons_custom_label)s中の完了モジュールに基づき、あなたのコース進"
 "度は%(user_course_progress)s%%です:"
 
-#: templates/courses/course_progress.haml:46
+#: templates/courses/course_progress.haml:51
 #, python-format
 msgid ""
 "\n"
@@ -7613,7 +7573,7 @@ msgstr ""
 "        レッスン中の完了%(modules_custom_label)sに基づき、あなたのコース進度"
 "は%(user_course_progress)s%%です:"
 
-#: templates/courses/course_progress.haml:49
+#: templates/courses/course_progress.haml:54
 #, python-format
 msgid ""
 "\n"
@@ -7624,11 +7584,11 @@ msgstr ""
 "        レッスン内のモジュールの完了状況に基づいたコースの進度"
 "は%(user_course_progress)s%%です。"
 
-#: templates/courses/course_progress.haml:53
+#: templates/courses/course_progress.haml:58
 msgid "GRADES"
 msgstr "成績評価"
 
-#: templates/courses/course_progress.haml:55
+#: templates/courses/course_progress.haml:60
 #, python-format, python-brace-format
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
@@ -7639,7 +7599,7 @@ msgstr ""
 "クティビティを完了し、コース成績評価で少なくとも ={pass_grade}%%の総合点が必"
 "要です。コースの成績評価算出法は、以下の通りです。"
 
-#: templates/courses/course_progress.haml:57
+#: templates/courses/course_progress.haml:62
 #, python-format, python-brace-format
 msgid ""
 " You need a combined course grade of at least #{pass_grade}%% to earn a "
@@ -7648,19 +7608,19 @@ msgstr ""
 "修了証書を獲得するには、コース成績評価で少なくとも ={pass_grade}%%の総合点が"
 "必要です。最終評価算出法は、以下の通りです。"
 
-#: templates/courses/course_progress.haml:61
+#: templates/courses/course_progress.haml:66
 msgid "percent of your grade"
 msgstr "成績評価%"
 
-#: templates/courses/course_progress.haml:68
+#: templates/courses/course_progress.haml:73
 msgid "Dropped"
 msgstr "登録キャンセル済み"
 
-#: templates/courses/course_progress.haml:71
+#: templates/courses/course_progress.haml:76
 msgid "Current grade"
 msgstr "現在の成績評価"
 
-#: templates/courses/course_progress.haml:72
+#: templates/courses/course_progress.haml:77
 msgid ""
 " Pro forma grade is an estimate of your final grade assuming you continue to "
 "demonstrate the same level of proficiency on your uncompleted assessments as "
@@ -7673,31 +7633,31 @@ msgstr ""
 "する詳細については、<a data-reveal-id='progress_modal'>こちら</a>をクリックし"
 "てください。"
 
-#: templates/courses/course_progress.haml:80
+#: templates/courses/course_progress.haml:85
 msgid "Lesson:"
 msgstr "レッスン:"
 
-#: templates/courses/course_progress.haml:82
+#: templates/courses/course_progress.haml:87
 msgid "Suggested Deadline:"
 msgstr "提案期限:"
 
-#: templates/courses/course_progress.haml:83
+#: templates/courses/course_progress.haml:88
 msgid "Assessment Score:"
 msgstr "評価スコア:"
 
-#: templates/courses/course_progress.haml:104
+#: templates/courses/course_progress.haml:109
 msgid "Upload Deadline:"
 msgstr "期限をアップロードする:"
 
-#: templates/courses/course_progress.haml:105
+#: templates/courses/course_progress.haml:110
 msgid "Score:"
 msgstr "スコア:"
 
-#: templates/courses/course_progress.haml:106
+#: templates/courses/course_progress.haml:111
 msgid "Grades:"
 msgstr "成績評価:"
 
-#: templates/courses/course_progress.haml:129
+#: templates/courses/course_progress.haml:134
 #: templates_v2/courses/course_progress_v2.haml:311
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
@@ -7715,7 +7675,7 @@ msgstr ""
 "れは、McKinsey Academyとその価値について、あなたとあなたの会社に評価していた"
 "だくためです。当社のプライバシーおよび情報共有に関する方針については、"
 
-#: templates/courses/course_progress.haml:131
+#: templates/courses/course_progress.haml:136
 #: templates/courses/course_progress_v2.haml:237
 #: templates_v2/courses/course_progress_v2.haml:313
 msgid "privacy policy."
@@ -8161,100 +8121,73 @@ msgstr ""
 "名前を変更するには、ログイン後、画面右上のプロフィールを確認します。下矢印を"
 "クリックして、名前横の[編集]をクリックします。"
 
-#: templates/faq.haml:24
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "To change your email address, please email <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
-msgid ""
-"To change your email address, please email <a href=\"#{support}\">support</"
-"a>."
-msgstr ""
-"Eメールアドレスを変更するには、<a href=\"mailto:support@mckinseyacademy.com"
-"\">support@mckinseyacademy.com</a>までご連絡ください。"
+#: templates/faq.haml:25 templates_v2/faq.haml:48
+msgid "To change your email address, please email"
+msgstr "Eメールアドレスを変更するには、Eメールを送ってください"
 
-#: templates/faq.haml:25 templates_v2/faq.haml:52
+#: templates/faq.haml:27 templates_v2/faq.haml:52
 msgid "My account login isn't working."
 msgstr "アカウントのログインがうまくいきません。"
 
-#: templates/faq.haml:26
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "If you've forgotten your password, please try resetting it by clicking "
-#| "'Forgot my password' on the log in screen. If that does not work, please "
-#| "email"
+#: templates/faq.haml:29 templates_v2/faq.haml:55
 msgid ""
 "If you've forgotten your password, please try resetting it by clicking "
-"\"Forgot my password\" on the log in screen. If that does not work, please "
-"email <a href=\"#{support}\">support</a>."
+"'Forgot my password' on the log in screen. If that does not work, please "
+"email"
 msgstr ""
 "パスワードを忘れた場合は、ログイン画面の [パスワードを忘れた] をクリックして"
 "再設定を試みてください。それでも上手くいかない場合は、までご連絡くださ い。"
 
-#: templates/faq.haml:27 templates_v2/faq.haml:59
+#: templates/faq.haml:31 templates_v2/faq.haml:59
 msgid "I can't access a course I'm enrolled in."
 msgstr "登録しているコースにアクセスできません。"
 
-#: templates/faq.haml:28
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "The drop down for moving between multiple courses is on the far left of "
-#| "the second (lighter blue) navigation bar. If the course you are supposed "
-#| "to be enrolled in does not appear in that drop down menu, please email"
+#: templates/faq.haml:33 templates_v2/faq.haml:62
 msgid ""
 "The drop down for moving between multiple courses is on the far left of the "
 "second (lighter blue) navigation bar. If the course you are supposed to be "
-"enrolled in does not appear in that drop down menu, please email <a href="
-"\"#{support}\">support</a>."
+"enrolled in does not appear in that drop down menu, please email"
 msgstr ""
 "複数のコース間を移動するためのドロップダウン・メニューは、2番目の (薄い青の) "
 "ナビゲーション・バーの左端にあります。登録しているはずのコースがそこに表示さ"
-"れない場合は、<a href=\"mailto:support@mckinseyacademy.com"
-"\">support@mckinseyacademy.com</a>までご連絡ください。"
+"れない場合は、までご連絡ください。"
 
-#: templates/faq.haml:29 templates_v2/faq.haml:66
+#: templates/faq.haml:35 templates_v2/faq.haml:66
 msgid "How can I stop or start receiving emails from my courses?"
 msgstr ""
 "コースから届くEメールの配信停止または開始を希望する場合は、どうすればよいです"
 "か?"
 
-#: templates/faq.haml:30
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "We try to keep our email communication at an optimal level to ensure all "
-#| "participants know what is happening in the course without cluttering your "
-#| "inbox. Our emails contain important information about what's expected "
-#| "each week and additional curated content suggestions. If you no longer "
-#| "wish to receive emails, please email <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> (or click "
-#| "unsubscribe at the bottom of any email you receive from us). Be sure to "
-#| "check the \"Announcements\" page frequently to stay up to date!"
+#: templates/faq.haml:37 templates_v2/faq.haml:69
 msgid ""
 "We try to keep our email communication at an optimal level to ensure all "
 "participants know what is happening in the course without cluttering your "
 "inbox. Our emails contain important information about what's expected each "
 "week and additional curated content suggestions. If you no longer wish to "
-"receive emails, please email <a href=\"#{support}\">support</a> (or click "
-"unsubscribe at the bottom of any email you receive from us). Be sure to "
-"check the \"Announcements\" page frequently to stay up to date!"
+"receive emails, please email"
 msgstr ""
 "当社では、すべての参加者が、コースで現在何が起こっているかを把握できるよう、"
 "適度な量のEメールを配信するよう努めています。当社からのEメールには、毎週、期"
 "待される内容や、追加の集約コンテンツの提案に関する重要な情報が含まれていま"
-"す。Eメールの配信停止を希望される場合は、<a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a>までご連絡くださ"
-"い (または、当社から届くEメールの下部にある [配信停止] をクリックしてくださ"
-"い)。最新情報についていくためにも、「告知」ページを頻繁にご確認ください。"
+"す。Eメールの配信停止を希望される場合は、"
 
-#: templates/faq.haml:31
+#: templates/faq.haml:39 templates_v2/faq.haml:71
+msgid ""
+"(or click unsubscribe at the bottom of any email you receive from us). Be "
+"sure to check the \"Announcements\" page frequently to stay up to date!"
+msgstr ""
+"(または弊社から受信したEメールの下にある登録解除をクリックしてください）。最"
+"新情報を得るために、[発表]ページを頻繁に確認するようにしてください！"
+
+#: templates/faq.haml:40
 msgid "COURSES:"
 msgstr "コース:"
 
-#: templates/faq.haml:32 templates_v2/faq.haml:75
+#: templates/faq.haml:41 templates_v2/faq.haml:75
 msgid "When does my course start and/or finish?"
 msgstr "わたしのコースはいつ開始/終了しますか?"
 
-#: templates/faq.haml:33 templates_v2/faq.haml:77
+#: templates/faq.haml:42 templates_v2/faq.haml:77
 msgid ""
 "You can find the start date and course duration for each course on its "
 "course overview page.  You will receive a welcome email when the course is "
@@ -8263,11 +8196,11 @@ msgstr ""
 "各コースの開始日と期間については、コース概要ページで確認できます。コースが開"
 "始すると、歓迎Eメールが届きます。"
 
-#: templates/faq.haml:34 templates_v2/faq.haml:80
+#: templates/faq.haml:43 templates_v2/faq.haml:80
 msgid "What are passing requirements for courses?"
 msgstr "コースの合格条件を教えてください。"
 
-#: templates/faq.haml:35
+#: templates/faq.haml:44
 #, python-format
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
@@ -8278,11 +8211,11 @@ msgstr ""
 "クティビティを完了し、コース成績評価で少なくとも70%%の総合点が必要です。コー"
 "スの成績評価算出法は、以下の通りです。"
 
-#: templates/faq.haml:37 templates_v2/faq.haml:85
+#: templates/faq.haml:46 templates_v2/faq.haml:85
 msgid "End of lesson (EOL) assessments"
 msgstr "レッスン (EOL) 審査の終了"
 
-#: templates/faq.haml:38 templates_v2/faq.haml:86
+#: templates/faq.haml:47 templates_v2/faq.haml:86
 msgid ""
 "Note that EOL assessments vary based on number of lessons and may not be "
 "included in some lessons"
@@ -8290,7 +8223,7 @@ msgstr ""
 "EOL審査は、レッスン数により異なり、レッスンにより含まれていない場合がある点に"
 "ご注意ください"
 
-#: templates/faq.haml:40 templates_v2/faq.haml:89
+#: templates/faq.haml:49 templates_v2/faq.haml:89
 msgid ""
 "Note that Group Work may be made up of one or more activities which are "
 "graded throughout the duration of a course"
@@ -8298,11 +8231,11 @@ msgstr ""
 "グループワークは、1つ以上のアクティビティで構成される場合があり、コース進度に"
 "合わせて成績評価が行われる点にご注意ください"
 
-#: templates/faq.haml:41 templates_v2/faq.haml:90
+#: templates/faq.haml:50 templates_v2/faq.haml:90
 msgid "Final Assessment"
 msgstr "最終審査"
 
-#: templates/faq.haml:42 templates_v2/faq.haml:91
+#: templates/faq.haml:51 templates_v2/faq.haml:91
 msgid ""
 "There is no minimum amount of course content that must be completed, but "
 "participants must complete the Final Assessment."
@@ -8310,11 +8243,11 @@ msgstr ""
 "完了しなければならないコース内容の最低数は定められていませんが、最終審査は受"
 "ける必要があります。"
 
-#: templates/faq.haml:43 templates_v2/faq.haml:94
+#: templates/faq.haml:52 templates_v2/faq.haml:94
 msgid "How do I log in to take a McKinsey Academy course?"
 msgstr "McKinsey Academyコースを受ける際のログイン方法を教えてください。"
 
-#: templates/faq.haml:44 templates_v2/faq.haml:96
+#: templates/faq.haml:53 templates_v2/faq.haml:96
 msgid ""
 "Once you activate your account, click on the \"Log in\" button on the "
 "McKinsey Academy home page and type in your username and password. This will "
@@ -8324,11 +8257,11 @@ msgstr ""
 "クし、ユーザー名とパスワードを入力します。その後、現在のコースページに移動し"
 "ます。"
 
-#: templates/faq.haml:45 templates_v2/faq.haml:99
+#: templates/faq.haml:54 templates_v2/faq.haml:99
 msgid "How much time should I expect to devote to each course?"
 msgstr "各コースの学習所要時間はどのくらいですか?"
 
-#: templates/faq.haml:46 templates_v2/faq.haml:101
+#: templates/faq.haml:55 templates_v2/faq.haml:101
 msgid ""
 "The projected time commitment required for each course is included on the "
 "course overview page. We typically find that dedicating 60-120 minutes per "
@@ -8338,22 +8271,22 @@ msgstr ""
 "には、グループワークを含めたコース全体の所要時間は、1週間につき60～120分で十"
 "分なようです。"
 
-#: templates/faq.haml:47 templates_v2/faq.haml:104
+#: templates/faq.haml:56 templates_v2/faq.haml:104
 msgid "Can I take more than one course at a time?"
 msgstr "一度に1つ以上のコースに登録することは可能ですか?"
 
-#: templates/faq.haml:48 templates_v2/faq.haml:106
+#: templates/faq.haml:57 templates_v2/faq.haml:106
 msgid ""
 "McKinsey Academy programs are a collection of courses taken one at a time."
 msgstr ""
 "McKinsey Academyプログラムは、一度に1つのコースに取り組むスタイルとなっていま"
 "す。"
 
-#: templates/faq.haml:49 templates_v2/faq.haml:109
+#: templates/faq.haml:58 templates_v2/faq.haml:109
 msgid "What time is the class?"
 msgstr "クラスの時間を教えてください。"
 
-#: templates/faq.haml:50 templates_v2/faq.haml:111
+#: templates/faq.haml:59 templates_v2/faq.haml:111
 msgid ""
 "McKinsey Academy courses take place at your convenience. Videos and "
 "assignments are available 24 hours a day, which means you can watch videos "
@@ -8368,11 +8301,11 @@ msgstr ""
 "ループワーク・アクティビティには期限がありますが、余裕をもってコースが進めら"
 "れるよう、十分なリードタイムが設定されています。"
 
-#: templates/faq.haml:51 templates_v2/faq.haml:114
+#: templates/faq.haml:60 templates_v2/faq.haml:114
 msgid "If I miss a week, how does this affect my performance?"
 msgstr "1週間休んだら、どのような影響が出ますか?"
 
-#: templates/faq.haml:52 templates_v2/faq.haml:116
+#: templates/faq.haml:61 templates_v2/faq.haml:116
 msgid ""
 "It is certainly possible to finish a McKinsey Academy course if you miss a "
 "week; however you should certainly review content you may have missed. If "
@@ -8387,11 +8320,11 @@ msgstr ""
 "う。休んでいる間に提出物の期限を逃さないよう、重要な期日などについてはグルー"
 "プワークやコース概要で確認しておきましょう。"
 
-#: templates/faq.haml:53 templates_v2/faq.haml:119
+#: templates/faq.haml:62 templates_v2/faq.haml:119
 msgid "I missed a deadline; can I get an extension?"
 msgstr "期日を逃してしまいました。延期は可能ですか?"
 
-#: templates/faq.haml:54 templates_v2/faq.haml:121
+#: templates/faq.haml:63 templates_v2/faq.haml:121
 msgid ""
 "We are not able to offer individual extensions as course schedules are fixed "
 "and there is no way to change the dates of assignments or exams for one "
@@ -8400,11 +8333,11 @@ msgstr ""
 "コース日程は固定なので、参加者個人のための延期はできません。また、参加者一人"
 "のために課題や試験の日程を変更することは一切できません。"
 
-#: templates/faq.haml:55 templates_v2/faq.haml:124
+#: templates/faq.haml:64 templates_v2/faq.haml:124
 msgid "My course deadlines are in UTC, what’s that?"
 msgstr "コースの期日がUTCとなっています。どういう意味ですか?"
 
-#: templates/faq.haml:56 templates_v2/faq.haml:126
+#: templates/faq.haml:65 templates_v2/faq.haml:126
 msgid ""
 "UTC refers to Universal Coordinated Time. To find the current time in UTC "
 "and convert it to your local time, check World Time Server or other Internet "
@@ -8414,25 +8347,23 @@ msgstr ""
 "変換するには、「World Time Server」や他のネット上のタイム・サービスで確認して"
 "ください。"
 
-#: templates/faq.haml:57 templates_v2/faq.haml:129
+#: templates/faq.haml:66 templates_v2/faq.haml:129
 msgid "What if I have a question or concern regarding course grading?"
 msgstr "コースの成績評価について質問や懸念がある場合は、どうすればいいですか?"
 
-#: templates/faq.haml:58
-#, fuzzy, python-brace-format
-#| msgid "If you have any questions about a grade you received, please email"
-msgid ""
-"If you have any questions about a grade you received, please email <a href="
-"\"#{support}\">TAs</a>."
-msgstr ""
-"受けた成績評価についてご質問がある場合は、<a href=\"mailto:"
-"tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>までご連絡ください。"
+#: templates/faq.haml:68 templates_v2/faq.haml:132
+msgid "If you have any questions about a grade you received, please email"
+msgstr "受けた成績評価についてご質問がある場合は、までご連絡ください。"
 
-#: templates/faq.haml:59 templates_v2/faq.haml:136
+#: templates/faq.haml:69 templates_v2/faq.haml:133
+msgid "TAs"
+msgstr "TA"
+
+#: templates/faq.haml:70 templates_v2/faq.haml:136
 msgid "How can I meet/find other participants?"
 msgstr "他の参加者に会うか、参加者を見つけるには、どうすればいいですか?"
 
-#: templates/faq.haml:60 templates_v2/faq.haml:138
+#: templates/faq.haml:71 templates_v2/faq.haml:138
 msgid ""
 "All McKinsey Academy courses have discussion forums where you can chat with "
 "and help other participants."
@@ -8440,14 +8371,14 @@ msgstr ""
 "すべてのMcKinsey Academyコースにはディスカッション・フォーラムがあり、そこで"
 "他の参加者とチャットしたり助け合ったりできます。"
 
-#: templates/faq.haml:61 templates_v2/faq.haml:141
+#: templates/faq.haml:72 templates_v2/faq.haml:141
 msgid ""
 "How can I talk to McKinsey practitioners teaching my courses and teaching "
 "assistants?"
 msgstr ""
 "McKinseyのコース教員や教員アシスタントに連絡するには、どうすればいいですか?"
 
-#: templates/faq.haml:62 templates_v2/faq.haml:143
+#: templates/faq.haml:73 templates_v2/faq.haml:143
 msgid ""
 "The discussion forum is the best place to reach out to the McKinsey Academy "
 "course team for your cohort; just post your questions or email the TA. We do "
@@ -8457,40 +8388,36 @@ msgstr ""
 "が最適です。質問を投稿するか、TAにEメールを送信してください。できるだけ迅速に"
 "返信いたします。"
 
-#: templates/faq.haml:63 templates_v2/faq.haml:146
+#: templates/faq.haml:74 templates_v2/faq.haml:146
 msgid "How do I get help and support regarding my course?"
 msgstr "コースに関する助言や支援が必要な場合は、どうすればいいですか?"
 
-#: templates/faq.haml:64
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "You are part of a cohort of participants you can engage with questions as "
-#| "well as support from the TAs who monitor the course. Take a look at the "
-#| "course's discussion forum where you can review questions, answers and "
-#| "comments from fellow participants, as well as post a question. You can "
-#| "also reach out to the McKinsey teaching assistants by <a href=\"mailto:"
-#| "tas@mckinseyacademy.com\">emailing them</a> and they will get back to you "
-#| "as soon as possible."
+#: templates/faq.haml:76 templates_v2/faq.haml:149
 msgid ""
 "You are part of a cohort of participants you can engage with questions as "
 "well as support from the TAs who monitor the course. Take a look at the "
 "course's discussion forum where you can review questions, answers and "
 "comments from fellow participants, as well as post a question. You can also "
-"reach out to the McKinsey teaching assistants by <a href="
-"\"#{support}\">emailing them</a> and they will get back to you as soon as "
-"possible."
+"reach out to the McKinsey teaching assistants by"
 msgstr ""
 "あなたは参加者のコホートの一人として、コースを監督しているTAに質問して、助言"
 "を得ることができます。コースのディスカッション・フォーラムで、他の参加者から"
 "の質問とその回答、コメントを確認したり、質問を投稿したりできます。また、"
-"McKinsey TAに<ahref=\"mailto:tas@mckinseyacademy.com\">メールで連絡</a>するこ"
-"ともできます。TAが、できるだけ迅速に返信いたします。"
+"McKinsey TAに"
 
-#: templates/faq.haml:65 templates_v2/faq.haml:154
+#: templates/faq.haml:77 templates_v2/faq.haml:150
+msgid "emailing them"
+msgstr "彼らにEメールで連絡し"
+
+#: templates/faq.haml:78 templates_v2/faq.haml:151
+msgid "and they will get back to you as soon as possible."
+msgstr "ありがとうございました。できるだけ早くお返事いたします。"
+
+#: templates/faq.haml:79 templates_v2/faq.haml:154
 msgid "Can I re-take a course?"
 msgstr "コースを再度受講することは可能ですか?"
 
-#: templates/faq.haml:66 templates_v2/faq.haml:156
+#: templates/faq.haml:80 templates_v2/faq.haml:156
 msgid ""
 "McKinsey Academy courses cannot be re-taken, but exercises and materials "
 "remain available for 12 months after the course ends."
@@ -8498,11 +8425,11 @@ msgstr ""
 "McKinsey Academyコースは二度目の受講はできませんが、エクササイズや教材は、"
 "コース終了後も12か月間利用できます。"
 
-#: templates/faq.haml:67 templates_v2/faq.haml:159
+#: templates/faq.haml:81 templates_v2/faq.haml:159
 msgid "Can I access the course content after my course ends?"
 msgstr "コース終了後もコース内容にアクセスできますか?"
 
-#: templates/faq.haml:68 templates_v2/faq.haml:161
+#: templates/faq.haml:82 templates_v2/faq.haml:161
 msgid ""
 "McKinsey Academy past courses are available as archives for 12 months after "
 "the course ends. These courses can only be audited and some features, such "
@@ -8512,12 +8439,12 @@ msgstr ""
 "セスできます。これらのコースについては確認のみが可能で、ディスカッション・"
 "フォーラムなどの一部の機能は利用できない場合があります。"
 
-#: templates/faq.haml:69 templates_v2/faq.haml:164
+#: templates/faq.haml:83 templates_v2/faq.haml:164
 msgid ""
 "What information is displayed in visualizations on the course home page?"
 msgstr "コースのホームページには、どのような情報が表示されますか?"
 
-#: templates/faq.haml:71
+#: templates/faq.haml:85
 msgid ""
 "<span>Proficiency:</span> Your proficiency is based on performance on all "
 "graded items in the course (including end of lesson assessments, group work, "
@@ -8526,7 +8453,7 @@ msgstr ""
 "<span>習熟度: </span>習熟度は、コース内のすべての成績評価済みの項目に基づきま"
 "す (レッスン終了時の審査、グループワーク、最終審査を含む)"
 
-#: templates/faq.haml:72
+#: templates/faq.haml:86
 msgid ""
 "<span>Progress:</span> Your progress through course content is displayed as "
 "you move through all items in the course (including videos, exercises, "
@@ -8535,7 +8462,7 @@ msgstr ""
 "<span>進度: </span>コース中の進度は、コース中の項目を進めるごとに表示されま"
 "す (動画、エクササイズ、審査、読書を含む)"
 
-#: templates/faq.haml:73
+#: templates/faq.haml:87
 msgid ""
 "<span>Engagement:</span> Your engagement increases through your social "
 "interactions with other participants in your cohort (through engagement on "
@@ -8545,23 +8472,23 @@ msgstr ""
 "ソーシャルインタラクションによって (ディスカッション・フォーラムのエンゲージ"
 "メントを通して) 上がります"
 
-#: templates/faq.haml:74
+#: templates/faq.haml:88
 msgid "CERTIFICATES:"
 msgstr "証書:"
 
-#: templates/faq.haml:75 templates_v2/faq.haml:179
+#: templates/faq.haml:89 templates_v2/faq.haml:179
 msgid "Will my certificate include an overall program grade?"
 msgstr "証書には、プログラム全体の成績が記載されますか?"
 
-#: templates/faq.haml:76 templates_v2/faq.haml:181
+#: templates/faq.haml:90 templates_v2/faq.haml:181
 msgid "Your certificate will not include final grades."
 msgstr "証書には最終成績評価は含まれません。"
 
-#: templates/faq.haml:77 templates_v2/faq.haml:184
+#: templates/faq.haml:91 templates_v2/faq.haml:184
 msgid "Can I get a paper copy of my certificate?"
 msgstr "証書を書面でもらうことはできますか?"
 
-#: templates/faq.haml:78 templates_v2/faq.haml:186
+#: templates/faq.haml:92 templates_v2/faq.haml:186
 msgid ""
 "McKinsey Academy certificates are digital files which you can print on "
 "standard size paper."
@@ -8569,11 +8496,11 @@ msgstr ""
 "McKinsey Academyの証書はデジタルファイル形式なので、ご自分で標準仕様の用紙に"
 "プリントアウトできます。"
 
-#: templates/faq.haml:79 templates_v2/faq.haml:189
+#: templates/faq.haml:93 templates_v2/faq.haml:189
 msgid "How are certificates determined?"
 msgstr "証書の判断基準は何ですか?"
 
-#: templates/faq.haml:80 templates_v2/faq.haml:191
+#: templates/faq.haml:94 templates_v2/faq.haml:191
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
@@ -8582,26 +8509,26 @@ msgstr ""
 "MMP修了証書を受けるためには、プログラムの4つのコア・コースで70%%以上を達成す"
 "る必要があります。"
 
-#: templates/faq.haml:81 templates_v2/faq.haml:194
+#: templates/faq.haml:95 templates_v2/faq.haml:194
 msgid "How are McKinsey Academy certificates delivered?"
 msgstr "McKinsey Academyの証書はどのように届きますか?"
 
-#: templates/faq.haml:82 templates_v2/faq.haml:196
+#: templates/faq.haml:96 templates_v2/faq.haml:196
 msgid ""
 "McKinsey Academy certificates are delivered via email following successful "
 "completion of a program."
 msgstr ""
 "McKinsey Academyの証書は、プログラムを無事修了すると、Eメールで届きます。"
 
-#: templates/faq.haml:83 templates_v2/faq.haml:197
+#: templates/faq.haml:97 templates_v2/faq.haml:197
 msgid "TECHNICAL ISSUES:"
 msgstr "技術的問題:"
 
-#: templates/faq.haml:84 templates_v2/faq.haml:200
+#: templates/faq.haml:98 templates_v2/faq.haml:200
 msgid "How can I get technical support?"
 msgstr "テクニカルサポートが必要な場合は、どうすればいいですか?"
 
-#: templates/faq.haml:85 templates_v2/faq.haml:202
+#: templates/faq.haml:99 templates_v2/faq.haml:202
 msgid ""
 "If you are having technical issues, please contact us here so we can resolve "
 "your problem. and we will get back to you by the next business day (likely "
@@ -8610,24 +8537,24 @@ msgstr ""
 "技術的問題がある場合は、当社までご連絡ください。問題の解決にあたり、翌営業日 "
 "(おそらくそれより早く) までにご連絡いたします。"
 
-#: templates/faq.haml:86 templates_v2/faq.haml:205
+#: templates/faq.haml:100 templates_v2/faq.haml:205
 msgid "What if I did not receive my password reset email?"
 msgstr "パスワードの再設定メールが届かない場合は、どうすればいいですか?"
 
-#: templates/faq.haml:87 templates_v2/faq.haml:207
+#: templates/faq.haml:101 templates_v2/faq.haml:207
 msgid "If you did not receive an automated email it may be because:"
 msgstr "自動Eメールが届かない場合、考えられる原因は次の通りです。"
 
-#: templates/faq.haml:89 templates_v2/faq.haml:209
+#: templates/faq.haml:103 templates_v2/faq.haml:209
 msgid "There was a typo in your email address"
 msgstr "Eメールアドレスに誤字があった"
 
-#: templates/faq.haml:90 templates_v2/faq.haml:210
+#: templates/faq.haml:104 templates_v2/faq.haml:210
 msgid ""
 "Your spam filter may have caught the email; please check your spam folder"
 msgstr "スパム・フィルターに引っかかった。スパム・フォルダを確認してください"
 
-#: templates/faq.haml:91 templates_v2/faq.haml:211
+#: templates/faq.haml:105 templates_v2/faq.haml:211
 msgid ""
 "You may be using an older browser; we recommend downloading the current "
 "version of Chrome or Firefox"
@@ -8635,7 +8562,7 @@ msgstr ""
 "古いブラウザを使用している。ChromeまたはFirefoxの現在のバージョンをダウンロー"
 "ドすることをお勧めします"
 
-#: templates/faq.haml:92 templates_v2/faq.haml:212
+#: templates/faq.haml:106 templates_v2/faq.haml:212
 msgid ""
 "JavaScript is disabled in your browser; please check your browser settings "
 "and confirm that JavaScript is enabled"
@@ -8643,7 +8570,7 @@ msgstr ""
 "JavaScriptがブラウザでオフになっている。ブラウザの設定でJavaScriptがオンに"
 "なっていることを確認してください"
 
-#: templates/faq.haml:93 templates_v2/faq.haml:213
+#: templates/faq.haml:107 templates_v2/faq.haml:213
 msgid ""
 "You have not successfully registered an account with McKinsey Academy' "
 "please try registering again with the same email address (if an account "
@@ -8653,13 +8580,13 @@ msgstr ""
 "使って、再度、登録を試みてください (アカウントが既に存在する場合は、Eメールア"
 "ドレスが重複している旨のエラーが表示されます)"
 
-#: templates/faq.haml:94 templates_v2/faq.haml:216
+#: templates/faq.haml:108 templates_v2/faq.haml:216
 msgid ""
 "What if I have problems with the display (e.g., there are tools missing from "
 "the course display, or I am unable to view video)?"
 msgstr "表示に問題がある場合は、どうすればいいですか?"
 
-#: templates/faq.haml:95 templates_v2/faq.haml:218
+#: templates/faq.haml:109 templates_v2/faq.haml:218
 msgid ""
 "Please check your browser and settings - JavaScript must be enabled. We "
 "recommend downloading and using the current version of either Chrome or "
@@ -8669,20 +8596,20 @@ msgstr ""
 "す。ChromeまたはFirefoxの現在のバージョンをダウンロードすることをお勧めいたし"
 "ます。"
 
-#: templates/faq.haml:96 templates_v2/faq.haml:221
+#: templates/faq.haml:110 templates_v2/faq.haml:221
 msgid "How can I sign up for a McKinsey Academy course or program?"
 msgstr "McKinsey Academyのコースまたはプログラムへの参加方法を教えてください。"
 
-#: templates/faq.haml:97
+#: templates/faq.haml:111
 msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 msgstr ""
 "<a href=\"mailto:info@mckinseyacademy.com\">こちらからご連絡ください</a>"
 
-#: templates/faq.haml:98 templates_v2/faq.haml:228
+#: templates/faq.haml:112 templates_v2/faq.haml:228
 msgid "What if my question isn’t answered here?"
 msgstr "自分の質問の回答がここにない場合は、どうすればいいですか?"
 
-#: templates/faq.haml:99
+#: templates/faq.haml:113
 msgid ""
 "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a> We’ll do "
 "our best to help."
@@ -8700,10 +8627,6 @@ msgstr "サービス利用規約"
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "プライバシーに関する方針"
-
-#: templates/footer.haml:17 tests/templates_v2/footer.haml:17
-msgid "FAQ"
-msgstr "FAQ"
 
 #: templates/header.haml:24
 msgid "Language :"
@@ -10886,19 +10809,24 @@ msgstr ""
 "することができる場合もあります。"
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
+#, fuzzy
+#| msgid ""
+#| "If you would like to make a request to access, review, or correct the "
+#| "personal data we have collected about you, or to discuss how we process "
+#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"弊社が収集したお客様に関する個人データへのアクセス、または当該個人データの見"
-"直しもしくは訂正をご希望の方、あるいは弊社によるお客様の個人データの処理方法"
-"について知りたい方は、弊社のまでご連絡ください。"
+"お客様に関し当社で収集した個人データのアクセス、閲覧、または修正の依頼を希望"
+"される場合、あるいは、当社の個人データ処理に関するお問い合わせについては、以"
+"下までご連絡ください"
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr "サポート チーム"
+msgstr "サポート"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -10978,6 +10906,14 @@ msgstr ""
 "せん。"
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
+#, fuzzy
+#| msgid ""
+#| "If you are a California resident under the age of 18, and a registered "
+#| "user of McKinsey Academy subject to this Privacy Policy, California "
+#| "Business and Professions Code Section 22581 permits you to request and "
+#| "obtain removal of content or information you have publicly posted. To "
+#| "make such a request, please send an email with a detailed description of "
+#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -10989,8 +10925,8 @@ msgstr ""
 "お客様が、18歳未満のカリフォルニア州在住者で、当該プライバシーに関する方針の"
 "対象となるMcKinsey Academyの登録ユーザーである場合、カリフォルニア州企業・職"
 "業法第22581項により、お客様が公に掲示したコンテンツまたは情報の削除を依頼する"
-"ことができます。ご依頼の際には、具体的な内容または情報に関する詳しい説明を弊"
-"社のにご提示ください。"
+"ことができます。削除の依頼を行う場合は、特定のコンテンツまたは情報に関し詳細"
+"な説明するEメールを以下まで送信してください"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -11049,8 +10985,6 @@ msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
 msgstr ""
-"弊社の利用規約またはプライバシー ポリシーに関する質問またはお問い合わせは、下"
-"記までお寄せください。"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
@@ -11269,18 +11203,15 @@ msgid "To access the course, click the following link:"
 msgstr "コースにアクセスするには、以下のリンクをクリックします。"
 
 #: templates/registration/public_registration_mcka_user.haml:10
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Note that you must be on the McKinsey Network or VPN to access the "
-#| "course. Please contact our team at support@mckinseyacademy.com if you "
-#| "experience any technical issues."
+#, python-format
 msgid ""
 "Note that you must be on the McKinsey Network or VPN to access the course. "
-"Please contact our team at #{support} if you experience any technical issues."
+"Please contact our team at %(support)s if you experience any technical "
+"issues."
 msgstr ""
 "このコースにアクセスするには、McKinsey NetworkまたはVPNに参加している必要があ"
 "ります。技術的な問題が発生した場合は、担当チームにご連絡ください "
-"(support@mckinseyacademy.com)。"
+"%(support)s。"
 
 #: templates/registration/public_registration_warning.haml:3
 #, python-brace-format
@@ -12117,33 +12048,19 @@ msgstr ""
 "要求されたリソースへのアクセス権がありません。\n"
 "                  "
 
-#: templates_v2/403.haml:23
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  If you believe you are seeing this message in error, "
-#| "please visit our\n"
-#| "                  %%a{:href => \"/faq\"} FAQ page\n"
-#| "                  or\n"
-#| "                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support.\n"
-#| "                  "
-msgid ""
-"\n"
-"                  If you believe you are seeing this message in error, "
-"please visit our\n"
-"                  %%a{:href => \"/faq\"} FAQ page\n"
-"                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support.\n"
-"                  "
-msgstr ""
-"\n"
-"                このメッセージが間違って表示されていると思う場合は、\n"
-"                  %%a{:href => \"/faq\"} よくある質問ページ              また"
-"は                %%a{:href => \"mailto:support@mckinseyacademy.com?"
-"subject=Mail from Our Site\"} サポートまでEメールで連絡してくださ"
-"い。                  "
+#: templates_v2/403.haml:23 templates_v2/not_authorized.haml:18
+msgid "If you believe you are seeing this message in error, please visit our "
+msgstr "このメッセージが間違って表示されていると思う場合は、"
+
+#: templates_v2/403.haml:24 templates_v2/404.haml:22 templates_v2/500.haml:24
+#: templates_v2/503.haml:20 templates_v2/not_authorized.haml:19
+msgid "FAQ page"
+msgstr "よくある質問ページ"
+
+#: templates_v2/403.haml:25 templates_v2/404.haml:23 templates_v2/500.haml:25
+#: templates_v2/503.haml:21 templates_v2/not_authorized.haml:20
+msgid "or"
+msgstr "または"
 
 #: templates_v2/404.haml:16
 msgid "Page not found."
@@ -12153,31 +12070,9 @@ msgstr "404: ページが見つかりません"
 msgid "The page you’re looking for may have been moved or renamed."
 msgstr "お探しのページは移動されたか、名前が変更された可能性があります。"
 
-#: templates_v2/404.haml:21
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  If you continue to have issues, please visit our\n"
-#| "                  %%a{:href => \"/faq\"} FAQ page\n"
-#| "                  or\n"
-#| "                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support\n"
-#| "                  "
-msgid ""
-"\n"
-"                  If you continue to have issues, please visit our\n"
-"                  %%a{:href => \"/faq\"} FAQ page\n"
-"                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support\n"
-"                  "
-msgstr ""
-"\n"
-"                問題が継続する場合は、\n"
-"                  %%a{:href => \"/faq\"} よくある質問ページ              また"
-"は                %%a{:href => \"mailto:support@mckinseyacademy.com?"
-"subject=Mail from Our Site\"} サポートまでEメールで連絡してくださ"
-"い。                 "
+#: templates_v2/404.haml:21 templates_v2/500.haml:23 templates_v2/503.haml:19
+msgid "If you continue to have issues, please visit our"
+msgstr "問題が継続する場合は、"
 
 #: templates_v2/500.haml:16
 msgid "Something has gone wrong."
@@ -12193,32 +12088,6 @@ msgstr ""
 "\n"
 "問題が発生しました。現在、チームが内容を確認中です。\n"
 "                  "
-
-#: templates_v2/500.haml:23 templates_v2/503.haml:19
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  If you continue to have issues, please visit our\n"
-#| "                  %%a{:href => \"/faq\"} FAQ page\n"
-#| "                  or\n"
-#| "                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support.\n"
-#| "                  "
-msgid ""
-"\n"
-"                  If you continue to have issues, please visit our\n"
-"                  %%a{:href => \"/faq\"} FAQ page\n"
-"                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support.\n"
-"                  "
-msgstr ""
-"\n"
-"                問題が継続する場合は、\n"
-"                  %%a{:href => \"/faq\"} よくある質問ページ              また"
-"は                %%a{:href => \"mailto:support@mckinseyacademy.com?"
-"subject=Mail from Our Site\"} サポートまでEメールで連絡してください。 \n"
-"                       "
 
 #: templates_v2/503.haml:16
 msgid "Service is temporarily unavailable."
@@ -12276,8 +12145,10 @@ msgstr "FAQを読む"
 #: templates_v2/accounts/public_registration.haml:99
 #: templates_v2/accounts/sso_terms_of_service.haml:29
 #: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
+#, fuzzy
+#| msgid "Contact: "
 msgid "Contact Support"
-msgstr "サポートに連絡"
+msgstr "連絡先: "
 
 #: templates_v2/accounts/activate.haml:85
 #: templates_v2/accounts/activate.haml:104
@@ -12857,61 +12728,6 @@ msgstr "参加者FAQ"
 msgid "Access Related:"
 msgstr "アクセスキー"
 
-#: templates_v2/faq.haml:48
-msgid "To change your email address, please email"
-msgstr "Eメールアドレスを変更するには、Eメールを送ってください"
-
-#: templates_v2/faq.haml:49 templates_v2/faq.haml:56 templates_v2/faq.haml:63
-#: templates_v2/faq.haml:70
-#, fuzzy
-#| msgid "Report"
-msgid "support"
-msgstr "レポート"
-
-#: templates_v2/faq.haml:55
-msgid ""
-"If you've forgotten your password, please try resetting it by clicking "
-"'Forgot my password' on the log in screen. If that does not work, please "
-"email"
-msgstr ""
-"パスワードを忘れた場合は、ログイン画面の [パスワードを忘れた] をクリックして"
-"再設定を試みてください。それでも上手くいかない場合は、までご連絡くださ い。"
-
-#: templates_v2/faq.haml:62
-msgid ""
-"The drop down for moving between multiple courses is on the far left of the "
-"second (lighter blue) navigation bar. If the course you are supposed to be "
-"enrolled in does not appear in that drop down menu, please email"
-msgstr ""
-"複数のコース間を移動するためのドロップダウン・メニューは、2番目の (薄い青の) "
-"ナビゲーション・バーの左端にあります。登録しているはずのコースがそこに表示さ"
-"れない場合は、<a href=\"mailto:support@mckinseyacademy.com"
-"\">support@mckinseyacademy.com</a>までご連絡ください。"
-
-#: templates_v2/faq.haml:69
-msgid ""
-"We try to keep our email communication at an optimal level to ensure all "
-"participants know what is happening in the course without cluttering your "
-"inbox. Our emails contain important information about what's expected each "
-"week and additional curated content suggestions. If you no longer wish to "
-"receive emails, please email"
-msgstr ""
-"当社では、すべての参加者が、コースで現在何が起こっているかを把握できるよう、"
-"適度な量のEメールを配信するよう努めています。当社からのEメールには、毎週、期"
-"待される内容や、追加の集約コンテンツの提案に関する重要な情報が含まれていま"
-"す。Eメールの配信停止を希望される場合は、<a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a>までご連絡くださ"
-"い (または、当社から届くEメールの下部にある [配信停止] をクリックしてくださ"
-"い)。最新情報についていくためにも、「告知」ページを頻繁にご確認ください。"
-
-#: templates_v2/faq.haml:71
-msgid ""
-"(or click unsubscribe at the bottom of any email you receive from us). Be "
-"sure to check the \"Announcements\" page frequently to stay up to date!"
-msgstr ""
-"(または弊社から受信したEメールの下にある登録解除をクリックしてください）。最"
-"新情報を得るために、[発表]ページを頻繁に確認するようにしてください！"
-
 #: templates_v2/faq.haml:72
 msgid "Courses Related:"
 msgstr "コース終了日:"
@@ -12926,40 +12742,6 @@ msgstr ""
 "プログラム修了証書を獲得するには、すべてのグループワークとフィードバック・ア"
 "クティビティを完了し、コース成績評価で少なくとも70%%の総合点が必要です。コー"
 "スの成績評価算出法は、以下の通りです。"
-
-#: templates_v2/faq.haml:132
-msgid "If you have any questions about a grade you received, please email"
-msgstr ""
-"受けた成績評価についてご質問がある場合は、<a href=\"mailto:"
-"tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>までご連絡ください。"
-
-#: templates_v2/faq.haml:133
-#, fuzzy
-#| msgid "TA"
-msgid "TAs"
-msgstr "TA"
-
-#: templates_v2/faq.haml:149
-msgid ""
-"You are part of a cohort of participants you can engage with questions as "
-"well as support from the TAs who monitor the course. Take a look at the "
-"course's discussion forum where you can review questions, answers and "
-"comments from fellow participants, as well as post a question. You can also "
-"reach out to the McKinsey teaching assistants by"
-msgstr ""
-"あなたは参加者のコホートの一人として、コースを監督しているTAに質問して、助言"
-"を得ることができます。コースのディスカッション・フォーラムで、他の参加者から"
-"の質問とその回答、コメントを確認したり、質問を投稿したりできます。また、"
-"McKinsey TAに<ahref=\"mailto:tas@mckinseyacademy.com\">メールで連絡</a>するこ"
-"ともできます。TAが、できるだけ迅速に返信いたします。"
-
-#: templates_v2/faq.haml:150
-msgid "emailing them"
-msgstr "彼らにEメールで連絡し"
-
-#: templates_v2/faq.haml:151
-msgid "and they will get back to you as soon as possible."
-msgstr "ありがとうございました。できるだけ早くお返事いたします。"
 
 #: templates_v2/faq.haml:169
 msgid ""
@@ -13392,32 +13174,9 @@ msgstr "コースの進捗とコンテンツはこの変更によって影響を
 msgid "You are not authorized to view this page."
 msgstr "この情報を閲覧する権限はありません。"
 
-#: templates_v2/not_authorized.haml:18
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                If you believe you are seeing this message in error, "
-#| "please visit our\n"
-#| "                %%a{:href => \"/faq\"} FAQ page\n"
-#| "                or\n"
-#| "                %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support.\n"
-#| "                "
-msgid ""
-"\n"
-"                If you believe you are seeing this message in error, please "
-"visit our\n"
-"                %%a{:href => \"/faq\"} FAQ page\n"
-"                or\n"
-"                %%a{:href => \"#{support}\"} email support.\n"
-"                "
-msgstr ""
-"\n"
-"                このメッセージが間違って表示されていると思う場合は、\n"
-"                  %%a{:href => \"/faq\"} よくある質問ページ              また"
-"は                %%a{:href => \"mailto:support@mckinseyacademy.com?"
-"subject=Mail from Our Site\"} サポートまでEメールで連絡してくださ"
-"い。                  "
+#: templates_v2/not_authorized.haml:21
+msgid "Email Support"
+msgstr "Eメールサポート"
 
 #: templates_v2/registration/password_reset_confirm.haml:15
 msgid "Your new password must be different from your previous password."
@@ -13484,96 +13243,3 @@ msgstr "名: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "氏: {}"
-
-#~ msgid "Email Support"
-#~ msgstr "Eメールサポート"
-
-#, fuzzy
-#~| msgid ""
-#~| "\n"
-#~| "                  Our team has been notified of the problem. Refresh "
-#~| "this page.\n"
-#~| "                  "
-#~ msgid ""
-#~ "\n"
-#~ "                        out of %(total)s members in your cohort.\n"
-#~ "                        "
-#~ msgstr ""
-#~ "\n"
-#~ "問題が発生しました。現在、チームが内容を確認中です。\n"
-#~ "                  "
-
-#~ msgid "Report is TBD"
-#~ msgstr "レポート未定"
-
-#~ msgid ""
-#~ "If you have any questions about our Privacy Policy or if you require any "
-#~ "assistance in navigating or reading the Terms or this Privacy Policy, "
-#~ "please contact us at:"
-#~ msgstr ""
-#~ "当社のプライバシーに関する方針についてご質問がある場合や、規約またはプライ"
-#~ "バシーに関する方針の実施または理解に関してご質問がある場合は、以下までご連"
-#~ "絡ください:"
-
-#~ msgid ""
-#~ "If you have any questions about these Terms, our Privacy Policy, or if "
-#~ "you require any assistance in navigating McKinsey Academy, these Terms, "
-#~ "or our Privacy Policy, please contact us at:"
-#~ msgstr ""
-#~ "これらの規約やプライバシーに関する方針についてご質問がある場合や、"
-#~ "McKinsey Academy、これらの規約、又は当社のプライバシーに関する方針の実施ま"
-#~ "たは理解に関してご質問がある場合は、以下までご連絡ください:"
-
-#, fuzzy
-#~| msgid ""
-#~| "with the username or email address associated with your account. Save or "
-#~| "bookmark this URL to easily access your course or program in the future. "
-#~| "Reset your password anytime by using the"
-#~ msgid ""
-#~ "\n"
-#~ "            %%p \n"
-#~ "                Once registered, you can\n"
-#~ "                %%a{:href => \"/login\"} login\n"
-#~ "                with the username or email address associated with your "
-#~ "account. Save or bookmark this URL to easily access your course or "
-#~ "program in the future. Reset your password anytime by using the\n"
-#~ "                %%a{:href => \"/?reset-password\"} Forgot password?\n"
-#~ "                link.\n"
-#~ "        "
-#~ msgstr ""
-#~ "アカウントに関連付けられたユーザー名とEメールアドレスを使用してする。今後"
-#~ "コースやプログラムにアクセスしやすいように、このURLは保存するか、お気に入"
-#~ "りに保存してくださいパスワードは、 からいつでもリセットできます"
-
-#~ msgid "Accept"
-#~ msgstr "アクセス"
-
-#~ msgid ""
-#~ "If you've forgotten your password, please try resetting it by clicking "
-#~ "\"Forgot my password\" on the log in screen. If that does not work, "
-#~ "please email <a href=\"mailto:support@mckinseyacademy.com"
-#~ "\">support@mckinseyacademy.com</a>."
-#~ msgstr ""
-#~ "パスワードを忘れた場合は、ログイン画面の [パスワードを忘れた] をクリックし"
-#~ "て再設定を試みてください。それでも上手くいかない場合は、<ahref=\"mailto:"
-#~ "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>までご連絡く"
-#~ "ださい。"
-
-#~ msgid ""
-#~ "The drop down for moving between multiple courses is on the far left of "
-#~ "the second (lighter blue) navigation bar. If the course you are supposed "
-#~ "to be enrolled in does not appear in that drop down menu, please email <a "
-#~ "href=\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</"
-#~ "a>."
-#~ msgstr ""
-#~ "複数のコース間を移動するためのドロップダウン・メニューは、2番目の (薄い青"
-#~ "の) ナビゲーション・バーの左端にあります。登録しているはずのコースがそこに"
-#~ "表示されない場合は、<a href=\"mailto:support@mckinseyacademy.com"
-#~ "\">support@mckinseyacademy.com</a>までご連絡ください。"
-
-#~ msgid ""
-#~ "If you have any questions about a grade you received, please email <a "
-#~ "href=\"mailto:tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>."
-#~ msgstr ""
-#~ "受けた成績評価についてご質問がある場合は、<a href=\"mailto:"
-#~ "tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>までご連絡ください。"

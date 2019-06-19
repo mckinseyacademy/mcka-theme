@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-19 07:51+0000\n"
+"POT-Creation-Date: 2019-06-19 15:22+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2347,7 +2347,7 @@ msgstr "Keine Gruppenprojekte für diesen Kurs verfügbar"
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
-#: templates/courses/course_progress.haml:70 templates/faq.haml:39
+#: templates/courses/course_progress.haml:75 templates/faq.haml:48
 #: templates_v2/courses/course_progress_v2.haml:233
 #: templates_v2/courses/course_progress_v2.haml:247 templates_v2/faq.haml:88
 msgid "Group Work"
@@ -2458,7 +2458,7 @@ msgstr "Status"
 
 #: admin/views.py:4639 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:46
-#: templates/courses/course_progress.haml:66
+#: templates/courses/course_progress.haml:71
 #: templates_v2/admin/courses/course_details.haml:92
 msgid "Completed"
 msgstr "Beendet"
@@ -3063,19 +3063,31 @@ msgstr "Entschuldigung!"
 msgid "You don't have permission to access the resource you requested."
 msgstr "Sie sind nicht berechtigt, auf die angeforderte Ressource zuzugreifen."
 
-#: templates/403.haml:12 templates/404.haml:12 templates/500.haml:12
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Please go back to <a href='https://www.mckinseyacademy.com'>www."
-#| "mckinseyacademy.com</a>, or contact us at <a href:'mailto:"
-#| "support@mckinseyacademy.com'>support@mckinseyacademy.com</a>."
-msgid ""
-"Please go back to <a href='https://www.mckinseyacademy.com'>www."
-"mckinseyacademy.com</a>, or contact us at <a href:'#{support}'>support</a>."
-msgstr ""
-"Bitte gehen Sie zurück zu <a href='https://www.mckinseyacademy.com'>www."
-"mckinseyacademy.com</a>, oder kontaktieren Sie uns unter <a href:'mailto:"
-"support@mckinseyacademy.com'>support@mckinseyacademy.com</a>."
+#: templates/403.haml:13 templates/404.haml:13 templates/500.haml:13
+msgid "Please go back to "
+msgstr "Bitte gehen Sie zurück zu "
+
+#: templates/403.haml:15 templates/404.haml:15 templates/500.haml:15
+msgid ", or contact us at"
+msgstr ", oder kontaktieren Sie uns unter "
+
+#: templates/403.haml:16 templates/404.haml:16 templates/500.haml:16
+#: templates/accounts/sso_error.haml:19 templates/courses/course_cohort.haml:19
+#: templates/courses/course_discussion.haml:19
+#: templates/courses/course_group_work.haml:19
+#: templates/courses/course_group_work.haml:31
+#: templates/courses/course_navigation.haml:21
+#: templates/courses/course_news.haml:18
+#: templates/courses/course_overview.haml:18
+#: templates/courses/course_progress.haml:24
+#: templates/courses/course_resources.haml:18 templates/faq.haml:26
+#: templates/faq.haml:30 templates/faq.haml:34 templates/faq.haml:38
+#: templates_v2/403.haml:26 templates_v2/404.haml:24 templates_v2/500.haml:26
+#: templates_v2/503.haml:22 templates_v2/accounts/sso_error.haml:21
+#: templates_v2/faq.haml:49 templates_v2/faq.haml:56 templates_v2/faq.haml:63
+#: templates_v2/faq.haml:70
+msgid "support"
+msgstr "support"
 
 #: templates/404.haml:8
 msgid "404: Page not found"
@@ -3448,14 +3460,8 @@ msgstr ""
 "Anbieter Ihres Unternehmens nicht bearbeiten."
 
 #: templates/accounts/sso_error.haml:18 templates_v2/accounts/sso_error.haml:20
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Please contact us at <a href:'mailto:support@mckinseyacademy."
-#| "com'>support@mckinseyacademy.com</a>. "
-msgid " Please contact us at <a href:'#{support}'>support</a>. "
-msgstr ""
-"Bitte kontaktieren Sie uns unter <a href:'mailto:support@mckinseyacademy."
-"com'>support@mckinseyacademy.com</a>."
+msgid "Please contact us at "
+msgstr "Bitte kontaktieren Sie uns unter "
 
 #: templates/accounts/upload_profile_image.haml:8
 #: templates/admin/client/edit_mobile_app_image.haml:13
@@ -3683,8 +3689,8 @@ msgstr "Durchschnittsnote auf Basis der derzeitigen Noten der Teilnehmer."
 
 #: templates/admin/client-admin/course_analytics.haml:62
 #: templates/admin/client-admin/course_analytics.haml:79
-#: templates/courses/course_cohort.haml:33
-#: templates/courses/course_cohort.haml:103
+#: templates/courses/course_cohort.haml:38
+#: templates/courses/course_cohort.haml:108
 #: templates/courses/visualizations/course_engagement.haml:15
 #: templates/courses/visualizations/course_proficiency.haml:16
 #: templates/courses/visualizations/course_progress.haml:16
@@ -4558,7 +4564,7 @@ msgid "This is the course feature list."
 msgstr "Dies ist die Merkmalseite des Kurses."
 
 #: templates/admin/course_meta_content/item_list.haml:48
-#: templates/courses/course_cohort.haml:228
+#: templates/courses/course_cohort.haml:233
 msgid "Discussions"
 msgstr "Diskussionen"
 
@@ -4627,7 +4633,7 @@ msgstr "Learner Dashboard"
 #: templates/courses/content_page/course_tabs.haml:42
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_learner_dashboard_header.haml:33
-#: templates/courses/course_resources.haml:27
+#: templates/courses/course_resources.haml:32
 #: templates_v2/courses/course_learner_dashboard_header.haml:22
 #: templates_v2/courses/course_navigation.haml:36
 #: templates_v2/courses/course_resources.haml:14
@@ -6023,7 +6029,7 @@ msgstr "Ein Programm mit diesem Formular hinzufügen"
 #: templates/admin/program/detail_header.haml:7
 #: templates/admin/program/detail_header.haml:10
 #: templates/admin/workgroup/list_layout.haml:9
-#: templates/courses/course_overview.haml:39
+#: templates/courses/course_overview.haml:45
 #: templates_v2/courses/course_navigation.haml:23
 #: templates_v2/courses/course_overview.haml:25
 msgid "Overview"
@@ -6279,7 +6285,7 @@ msgstr ""
 #: templates/admin/workgroup/project_assignment.haml:19
 #: templates/admin/workgroup/workgroup_detail_report.haml:12
 #: templates/admin/workgroup/workgroup_report.haml:12
-#: templates/courses/course_progress.haml:103
+#: templates/courses/course_progress.haml:108
 #: templates/courses/course_progress_v2.haml:172
 #: templates/courses/course_progress_v2.haml:185
 msgid "Group Work:"
@@ -6457,15 +6463,13 @@ msgstr ""
 #: templates/certificates/course_certificate_notification_email.haml:8
 #: templates/registration/public_registration_activation_link.haml:14
 #: templates/registration/public_registration_existing.haml:12
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Please contact our team at support@mckinseyacademy.com if you experience "
-#| "any technical issues."
+#, python-format
 msgid ""
-"Please contact our team at #{support} if you experience any technical issues."
+"Please contact our team at %(support)s if you experience any technical "
+"issues."
 msgstr ""
 "Falls Sie technische Probleme habe, kontaktieren Sie unser Team unter "
-"support@mckinseyacademy.com."
+"%(support)s."
 
 #: templates/certificates/course_certificate_notification_email.haml:11
 #: templates/registration/public_registration_activation_link.haml:17
@@ -6633,14 +6637,14 @@ msgid "Course Materials"
 msgstr "Kursmaterialien"
 
 #: templates/courses/content_page/course_tabs.haml:37
-#: templates/courses/course_news.haml:24
+#: templates/courses/course_news.haml:30
 #: templates_v2/courses/course_navigation.haml:31
 #: templates_v2/courses/course_news.haml:15
 msgid "Announcements"
 msgstr "Ankündigungen"
 
 #: templates/courses/content_page/course_tabs.haml:39
-#: templates/courses/course_overview.haml:53
+#: templates/courses/course_overview.haml:59
 #: templates_v2/courses/course_navigation.haml:33
 #: templates_v2/courses/course_overview.haml:41
 msgid "Course Overview"
@@ -6692,28 +6696,53 @@ msgstr " %(module_custom_label)s %(lesson_index)s von %(lesson_count)s"
 msgid "| Cohort | Courses | McKinsey Academy"
 msgstr "| Jahrgang | Kurse | McKinsey Academy"
 
-#: templates/courses/course_cohort.haml:15
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to interact with the cohort map and leaderboards. "
-#| "You may also find answers to your questions in the <a href=\"/faq\">FAQ</"
-#| "a>. Can’t find the answer there? Please contact us directly at <a href="
-#| "\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a> "
-#| "and we’ll sort it out for you. "
+#: templates/courses/course_cohort.haml:16
 msgid ""
-" Below are helpful tips to interact with the cohort map and leaderboards. "
-"You may also find answers to your questions in the <a href=\"/faq\">FAQ</a>. "
-"Can’t find the answer there? Please contact us directly at <a href="
-"\"#{support}\">support</a> and we’ll sort it out for you. "
+"Below are helpful tips to interact with the cohort map and leaderboards. You "
+"may also find answers to your questions in the "
 msgstr ""
 " Unten finden Sie hilfreiche Tipps, um mit der Jahrgangskarte und den "
-"Bestenlisten zu interagieren. Außerdem finden Sie in den <a href=\"/faq"
-"\">FAQ</a> Antworten auf Ihre Fragen. Sind Sie dort nicht fündig geworden? "
-"Dann kontaktieren Sie uns direkt unter <a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> und wir werden "
-"Ihnen weiterhelfen."
+"Bestenlisten zu interagieren. Außerdem finden Sie in den "
 
-#: templates/courses/course_cohort.haml:16
+#: templates/courses/course_cohort.haml:17
+#: templates/courses/course_discussion.haml:17
+#: templates/courses/course_group_work.haml:17
+#: templates/courses/course_group_work.haml:29
+#: templates/courses/course_navigation.haml:19
+#: templates/courses/course_news.haml:16
+#: templates/courses/course_overview.haml:16
+#: templates/courses/course_progress.haml:22
+#: templates/courses/course_resources.haml:16 templates/footer.haml:17
+#: tests/templates_v2/footer.haml:17
+msgid "FAQ"
+msgstr "FAQ"
+
+#: templates/courses/course_cohort.haml:18
+#: templates/courses/course_discussion.haml:18
+#: templates/courses/course_group_work.haml:18
+#: templates/courses/course_group_work.haml:30
+#: templates/courses/course_navigation.haml:20
+#: templates/courses/course_news.haml:17
+#: templates/courses/course_overview.haml:17
+#: templates/courses/course_progress.haml:23
+#: templates/courses/course_resources.haml:17
+msgid "Can’t find the answer there? Please contact us directly at "
+msgstr ""
+"Antworten auf Ihre Fragen. Sie werden dort nicht fündig? Dann kontaktieren "
+"Sie uns bitte direkt unter"
+
+#: templates/courses/course_cohort.haml:20
+#: templates/courses/course_discussion.haml:20
+#: templates/courses/course_group_work.haml:20
+#: templates/courses/course_navigation.haml:22
+#: templates/courses/course_news.haml:19
+#: templates/courses/course_overview.haml:19
+#: templates/courses/course_progress.haml:25
+#: templates/courses/course_resources.haml:19
+msgid " and we’ll sort it out for you."
+msgstr "  und wir werden Ihnen weiterhelfen."
+
+#: templates/courses/course_cohort.haml:21
 msgid ""
 " Access the cohort using the <i class=\"fa fa-globe\"></i> icon in the main "
 "navigation bar. "
@@ -6721,7 +6750,7 @@ msgstr ""
 " Greifen Sie auf den Jahrgang zu, indem Sie in der Navigationsleiste auf das "
 "<i class=\"fa fa-globe\"></i>-Icon klicken."
 
-#: templates/courses/course_cohort.haml:17
+#: templates/courses/course_cohort.haml:22
 msgid ""
 "COHORT MAP displays your group members, your McKinsey TA, and the number of "
 "cohort participants from various cities. The details on the number of "
@@ -6733,13 +6762,13 @@ msgstr ""
 "werden die Details über die Anzahl der Teilnehmer in Ihrer Firma und die "
 "Gesamtanzahl der Jahrgangsteilnehmer angezeigt."
 
-#: templates/courses/course_cohort.haml:18
+#: templates/courses/course_cohort.haml:23
 msgid "You can email your McKinsey TA who is displayed on the map"
 msgstr ""
 "Sie können Ihrem McKinsey TA, der auf der Karte angezeigt wird, eine E-Mail "
 "schicken."
 
-#: templates/courses/course_cohort.haml:19
+#: templates/courses/course_cohort.haml:24
 msgid ""
 "LEADERBOARDS display the top participants across proficiency, progress, and "
 "engagement, as well as your own ranking compared to the cohort average"
@@ -6748,26 +6777,26 @@ msgstr ""
 "Fortschritt und Engagement sowie Ihre eigene Position im Vergleich zum "
 "Jahrgangsdurchschnitt."
 
-#: templates/courses/course_cohort.haml:20
-#: templates/courses/course_discussion.haml:21
-#: templates/courses/course_navigation.haml:47
-#: templates/courses/course_news.haml:19
-#: templates/courses/course_overview.haml:22
-#: templates/courses/course_resources.haml:22
+#: templates/courses/course_cohort.haml:25
+#: templates/courses/course_discussion.haml:26
+#: templates/courses/course_navigation.haml:52
+#: templates/courses/course_news.haml:25
+#: templates/courses/course_overview.haml:28
+#: templates/courses/course_resources.haml:27
 msgid "This video walks you through the learner experience:"
 msgstr "Dieses Video führt Sie durch die Lernumgebung:"
 
-#: templates/courses/course_cohort.haml:26
+#: templates/courses/course_cohort.haml:31
 msgid "Leaderboards"
 msgstr "Bestenlisten"
 
-#: templates/courses/course_cohort.haml:32
+#: templates/courses/course_cohort.haml:37
 #: templates/courses/visualizations/course_proficiency.haml:8
 #: templates_v2/faq.haml:168
 msgid "Proficiency:"
 msgstr "Kompetenzen:"
 
-#: templates/courses/course_cohort.haml:35
+#: templates/courses/course_cohort.haml:40
 #: templates_v2/courses/course_cohort.haml:184
 #, python-format
 msgid ""
@@ -6776,7 +6805,7 @@ msgstr ""
 " Als %(role_user)s-Nutzer werden Sie nicht in den Kompetenzen-Bestenlisten "
 "aufgeführt"
 
-#: templates/courses/course_cohort.haml:37
+#: templates/courses/course_cohort.haml:42
 #, python-format
 msgid ""
 " your proficiency position: <br><span>%(position)s</span> with <span>"
@@ -6785,48 +6814,48 @@ msgstr ""
 " Ihr Kompetenzrang: <br><span>%(position)s</span> von <span>"
 "%(position_value)s</span> "
 
-#: templates/courses/course_cohort.haml:39
+#: templates/courses/course_cohort.haml:44
 msgid "your proficiency position <br> will be displayed here"
 msgstr "Ihr Kompetenzrang <br> wird hier angezeigt"
-
-#: templates/courses/course_cohort.haml:53
-#: templates/courses/course_cohort.haml:73
-#: templates/courses/course_cohort.haml:93
-#: templates/courses/course_cohort.haml:123
-#: templates/courses/course_cohort.haml:140
-#: templates/courses/course_cohort.haml:157
-#: templates/courses/course_cohort.haml:186
-#: templates/courses/course_cohort.haml:203
-#: templates/courses/course_cohort.haml:220 templates_v2/header.haml:66
-msgid "username"
-msgstr "Nutzername"
-
-#: templates/courses/course_cohort.haml:55
-#: templates/courses/course_cohort.haml:75
-#: templates/courses/course_cohort.haml:95
-#: templates/courses/course_cohort.haml:124
-#: templates/courses/course_cohort.haml:141
-#: templates/courses/course_cohort.haml:158
-#: templates/courses/course_cohort.haml:187
-#: templates/courses/course_cohort.haml:204
-#: templates/courses/course_cohort.haml:221
-msgid "title"
-msgstr "Titel"
 
 #: templates/courses/course_cohort.haml:58
 #: templates/courses/course_cohort.haml:78
 #: templates/courses/course_cohort.haml:98
+#: templates/courses/course_cohort.haml:128
+#: templates/courses/course_cohort.haml:145
+#: templates/courses/course_cohort.haml:162
+#: templates/courses/course_cohort.haml:191
+#: templates/courses/course_cohort.haml:208
+#: templates/courses/course_cohort.haml:225 templates_v2/header.haml:66
+msgid "username"
+msgstr "Nutzername"
+
+#: templates/courses/course_cohort.haml:60
+#: templates/courses/course_cohort.haml:80
+#: templates/courses/course_cohort.haml:100
+#: templates/courses/course_cohort.haml:129
+#: templates/courses/course_cohort.haml:146
+#: templates/courses/course_cohort.haml:163
+#: templates/courses/course_cohort.haml:192
+#: templates/courses/course_cohort.haml:209
+#: templates/courses/course_cohort.haml:226
+msgid "title"
+msgstr "Titel"
+
+#: templates/courses/course_cohort.haml:63
+#: templates/courses/course_cohort.haml:83
+#: templates/courses/course_cohort.haml:103
 msgid "100"
 msgstr "100"
 
-#: templates/courses/course_cohort.haml:102
-#: templates/courses/course_progress.haml:84
+#: templates/courses/course_cohort.haml:107
+#: templates/courses/course_progress.haml:89
 #: templates/courses/visualizations/course_progress.haml:8
 #: templates_v2/faq.haml:171
 msgid "Progress:"
 msgstr "Fortschritt:"
 
-#: templates/courses/course_cohort.haml:105
+#: templates/courses/course_cohort.haml:110
 #: templates_v2/courses/course_cohort.haml:24
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
@@ -6834,7 +6863,7 @@ msgstr ""
 " Als %(role_user)s-Nutzer werden Sie nicht in den Fortschritts-Bestenlisten "
 "aufgeführt"
 
-#: templates/courses/course_cohort.haml:107
+#: templates/courses/course_cohort.haml:112
 #, python-format
 msgid ""
 " your progress position: <br><span>%(position)s</span> with <span>"
@@ -6843,27 +6872,27 @@ msgstr ""
 " Ihr Fortschrittsrang: <br><span>%(position)s</span> von <span>"
 "%(progress_value)s%%</span> "
 
-#: templates/courses/course_cohort.haml:109
+#: templates/courses/course_cohort.haml:114
 msgid "your progress position <br> will be displayed here"
 msgstr "Ihr Fortschrittsrang <br> wird hier angezeigt"
 
-#: templates/courses/course_cohort.haml:160
+#: templates/courses/course_cohort.haml:165
 #, python-format
 msgid "100%%"
 msgstr "100%%"
 
-#: templates/courses/course_cohort.haml:165
+#: templates/courses/course_cohort.haml:170
 #: templates/courses/visualizations/course_engagement.haml:8
 #: templates_v2/faq.haml:174
 msgid "Engagement:"
 msgstr "Engagement:"
 
-#: templates/courses/course_cohort.haml:166
+#: templates/courses/course_cohort.haml:171
 #, python-format
 msgid " cohort average = %(course_avg)s points "
 msgstr " Jahrgangsdurchschnitt = %(course_avg)s Punkte "
 
-#: templates/courses/course_cohort.haml:168
+#: templates/courses/course_cohort.haml:173
 #: templates_v2/courses/course_cohort.haml:103
 #, python-format
 msgid ""
@@ -6872,7 +6901,7 @@ msgstr ""
 " Als %(role_user)s-Nutzer werden Sie nicht in den Engagement-Bestenlisten "
 "aufgeführt "
 
-#: templates/courses/course_cohort.haml:170
+#: templates/courses/course_cohort.haml:175
 #, python-format
 msgid ""
 "  your engagement position: <br><span>%(position)s</span> with <span>"
@@ -6881,17 +6910,17 @@ msgstr ""
 " Ihr Engagementrang: <br><span>%(position)s</span> von <span>%(points)s "
 "Punkten</span> "
 
-#: templates/courses/course_cohort.haml:172
+#: templates/courses/course_cohort.haml:177
 msgid "your engagement position <br> will be displayed here"
 msgstr "Ihr Engagementrang <br> wird hier angezeigt"
 
-#: templates/courses/course_cohort.haml:189
-#: templates/courses/course_cohort.haml:206
-#: templates/courses/course_cohort.haml:223
+#: templates/courses/course_cohort.haml:194
+#: templates/courses/course_cohort.haml:211
+#: templates/courses/course_cohort.haml:228
 msgid "100 pts."
 msgstr "100 Pkt."
 
-#: templates/courses/course_cohort.haml:229
+#: templates/courses/course_cohort.haml:234
 msgid ""
 "Even if we cannot directly shape an outcome, a model’s prediction may be "
 "communicated in a way that alters behavior and indirectly shapes it."
@@ -6900,23 +6929,23 @@ msgstr ""
 "Modellvorhersage so kommuniziert werden, dass sich das Verhalten verändert "
 "und somit indirekt geprägt wird."
 
-#: templates/courses/course_cohort.haml:233
+#: templates/courses/course_cohort.haml:238
 msgid "gwensisco"
 msgstr "gwensisco"
 
-#: templates/courses/course_cohort.haml:234
+#: templates/courses/course_cohort.haml:239
 msgid "Media Buyer"
 msgstr "Medienredaktion"
 
-#: templates/courses/course_cohort.haml:237
+#: templates/courses/course_cohort.haml:242
 msgid "Recommendations"
 msgstr "Empfehlungen"
 
-#: templates/courses/course_cohort.haml:240
+#: templates/courses/course_cohort.haml:245
 msgid "Scientists Without Borders"
 msgstr "Wissenschaftler ohne Grenzen"
 
-#: templates/courses/course_cohort.haml:241
+#: templates/courses/course_cohort.haml:246
 msgid ""
 "A worldwide community of changemakers collaborating to accelerate solutions "
 "to urgent development challenges."
@@ -6924,7 +6953,7 @@ msgstr ""
 "Eine weltweite Community von Changemakern, die zusammenarbeiten, um Lösungen "
 "für dringliche Entwicklungsherausforderungen voranzutreiben."
 
-#: templates/courses/course_cohort.haml:243
+#: templates/courses/course_cohort.haml:248
 msgid "Suggest a Link"
 msgstr "Einen Link vorschlagen"
 
@@ -6935,30 +6964,17 @@ msgstr "Einen Link vorschlagen"
 msgid " | Discussion | Courses | McKinsey Academy"
 msgstr " | Diskussion | Kurse | McKinsey Academy"
 
-#: templates/courses/course_discussion.haml:15
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to engage in discussions with your cohort or "
-#| "group members (via private discussions). You may also find answers to "
-#| "your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-#| "there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
+#: templates/courses/course_discussion.haml:16
 msgid ""
-" Below are helpful tips to engage in discussions with your cohort or group "
+"Below are helpful tips to engage in discussions with your cohort or group "
 "members (via private discussions). You may also find answers to your "
-"questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer there? "
-"Please contact us directly at <a href=\"#{support}\">support</a> and we’ll "
-"sort it out for you. "
+"questions in the "
 msgstr ""
 " Unten finden Sie hilfreiche Tipps, um mit Ihrem Jahrgang oder "
 "Gruppenmitgliedern (in privaten Unterhaltungen) zu diskutieren. Außerdem "
-"finden Sie in den <a href=\"/faq\">FAQ</a> Antworten auf Ihre Fragen. Sie "
-"sind nicht fündig geworden? Dann kontaktieren Sie uns direkt unter <a href="
-"\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a> und "
-"wir werden Ihnen weiterhelfen."
+"finden Sie in den "
 
-#: templates/courses/course_discussion.haml:16
+#: templates/courses/course_discussion.haml:21
 msgid ""
 " Access discussions using the <i class=\"fa fa-comments-o\"></i> icon in the "
 "main navigation bar "
@@ -6966,7 +6982,7 @@ msgstr ""
 "Greifen Sie auf die Diskussionen zu, indem Sie in der Navigationsleiste auf "
 "das <i class=\"fa fa-comments-o\"></i>-Icon klicken."
 
-#: templates/courses/course_discussion.haml:17
+#: templates/courses/course_discussion.haml:22
 msgid ""
 " FIND DISCUSSIONS tools help you focus on specific topics <i class=\"fa fa-"
 "bars\"></i> search for specific posts, and sort by date, vote, or comments "
@@ -6976,7 +6992,7 @@ msgstr ""
 "\"fa fa-bars\"></i> oder Posts zu suchen und sie nach Datum, Stimmen oder "
 "Kommentaren <i class=\"fa fa-search\"></i> zu sortieren"
 
-#: templates/courses/course_discussion.haml:18
+#: templates/courses/course_discussion.haml:23
 msgid ""
 " ENGAGE WITH POSTS features allow you to upvote posts and good responses <i "
 "class=\"fa fa-plus\"></i>, report forum misuse <i class=\"fa fa-flag\"></i> "
@@ -6987,7 +7003,7 @@ msgstr ""
 "zu melden <i class=\"fa fa-flag\"></i> und über Posts auf dem Laufenden "
 "gehalten zu werden."
 
-#: templates/courses/course_discussion.haml:19
+#: templates/courses/course_discussion.haml:24
 msgid ""
 " RECEIVE UPDATES by checking the box near the <i class=\"fa fa-envelope\"></"
 "i> icon to receive a daily email digest notifying you about new, unread "
@@ -6997,7 +7013,7 @@ msgstr ""
 "\"></i>-Icon anklicken und so eine tägliche Zusammenfassung neuer und "
 "ungelesener Aktivitäten aus Posts, denen Sie folgen, erhalten"
 
-#: templates/courses/course_discussion.haml:20
+#: templates/courses/course_discussion.haml:25
 msgid ""
 "You can email your McKinsey TA who is displayed in the upper left corner of "
 "the page"
@@ -7016,28 +7032,16 @@ msgstr "Nutzerprofile sind noch nicht verfügbar"
 msgid " | Group Work | Courses | McKinsey Academy"
 msgstr " | Gruppenarbeit | Kurse | McKinsey Academy"
 
-#: templates/courses/course_group_work.haml:15
-#: templates/courses/course_group_work.haml:22
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to contribute to group work. You may also find "
-#| "answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-#| "answer there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
+#: templates/courses/course_group_work.haml:16
+#: templates/courses/course_group_work.haml:28
 msgid ""
-" Below are helpful tips to contribute to group work. You may also find "
-"answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-"answer there? Please contact us directly at <a href=\"#{support}\">support</"
-"a> and we’ll sort it out for you. "
+"Below are helpful tips to contribute to group work. You may also find "
+"answers to your questions in the "
 msgstr ""
 " Unten finden Sie hilfreiche Tipps darüber, wie Sie an Gruppenarbeiten "
-"teilnehmen können. Außerdem finden Sie in den <a href=\"/faq\">FAQ</a> "
-"Antworten auf Ihre Fragen. Sie werden dort nicht fündig? Dann kontaktieren "
-"Sie uns direkt unter <a href=\"mailto:support@mckinseyacademy.com"
-"\">support@mckinseyacademy.com</a> und wir werden Ihnen weiterhelfen."
+"teilnehmen können. Außerdem finden Sie in den "
 
-#: templates/courses/course_group_work.haml:16
+#: templates/courses/course_group_work.haml:21
 msgid ""
 " Access group work using the <i class=\"mk-icon-groupworknav blue\"></i> "
 "icon in the main navigation bar "
@@ -7045,7 +7049,7 @@ msgstr ""
 " Greifen Sie auf die Gruppenarbeit zu, indem Sie das <i class=\"mk-icon-"
 "groupworknav blue\"></i>-Icon in der Hauptnavigationsleiste anklicken"
 
-#: templates/courses/course_group_work.haml:17
+#: templates/courses/course_group_work.haml:22
 msgid ""
 " Upload deliverables by clicking the <i class=\"fa fa-upload blue\"></i> "
 "icon at the bottom of the Project Navigator. "
@@ -7053,7 +7057,7 @@ msgstr ""
 " Laden Sie Arbeitsergebnisse hoch, indem Sie das <i class=\"fa fa-upload blue"
 "\"></i>-Icon unten in der Projektnavigationsleiste anklicken."
 
-#: templates/courses/course_group_work.haml:18
+#: templates/courses/course_group_work.haml:23
 msgid ""
 " Access project resources by clicking the <i class=\"fa fa-files-o blue\"></"
 "i> icon at the bottom of the Project Navigator. "
@@ -7061,7 +7065,7 @@ msgstr ""
 " Greifen Sie auf die Projektressourcen zu, indem Sie das <i class=\"fa fa-"
 "files-o blue\"></i>-Icon in der Projektnavigationsleiste anklicken."
 
-#: templates/courses/course_group_work.haml:19
+#: templates/courses/course_group_work.haml:24
 msgid ""
 " Group work has a private discussion you can use to collaborate with your "
 "group members. You can chat with your team by clicking the <i class=\"fa fa-"
@@ -7076,7 +7080,7 @@ msgstr ""
 "Unterhaltungen, auch wenn Sie sie auf der Hauptdiskussionsseite aufrufen, "
 "sind nur für Gruppenmitglieder sichtbar, nie für den gesamten Jahrgang."
 
-#: templates/courses/course_group_work.haml:20
+#: templates/courses/course_group_work.haml:25
 msgid ""
 " Send a message to a McKinsey TA by clicking the <span class=\"nav-1\" style="
 "\"font-size:16px;\">TA</span> icon at the bottom of the Project Navigator. "
@@ -7084,7 +7088,7 @@ msgstr ""
 " Schreiben Sie Ihrem McKinsey TA, indem Sie das <span class=\"nav-1\" style="
 "\"font-size:16px;\">TA</span>-Icon in der Projektnavigationsleiste anklicken."
 
-#: templates/courses/course_group_work.haml:23
+#: templates/courses/course_group_work.haml:32
 msgid ""
 " Access group work using the <i class=\"mk-icon-groupworknav\"></i> icon in "
 "the main navigation bar "
@@ -7092,7 +7096,7 @@ msgstr ""
 " Greifen Sie auf die Gruppenarbeit zu, indem Sie das <i class=\"mk-icon-"
 "groupworknav\"></i>-Icon in der Hauptnavigationsleiste anklicken"
 
-#: templates/courses/course_group_work.haml:24
+#: templates/courses/course_group_work.haml:33
 msgid ""
 "Group work is made up of one or more activities, and each activity is made "
 "up of up to 4 stages:"
@@ -7100,17 +7104,17 @@ msgstr ""
 "Gruppenarbeit besteht aus einer oder mehreren Aktivitäten und jede Aktivität "
 "besteht aus bis zu 4 Phasen:"
 
-#: templates/courses/course_group_work.haml:25
+#: templates/courses/course_group_work.haml:34
 msgid "OVERVIEW - provides a high-level overview of the task(s)"
 msgstr "ÜBERSICHT - liefert einen groben Überblick über die Aufgabe(n)"
 
-#: templates/courses/course_group_work.haml:26
+#: templates/courses/course_group_work.haml:35
 msgid "UPLOAD - allows your team to upload deliverables for TA or peer grading"
 msgstr ""
 "HOCHLADEN - hier kann Ihr Team Arbeitsergebnisse hochladen, damit der TA "
 "oder andere Teilnehmer sie benoten können"
 
-#: templates/courses/course_group_work.haml:27
+#: templates/courses/course_group_work.haml:36
 msgid ""
 "REVIEWS - allows you to anonymously grade peer projects and/or provide team "
 "feedback"
@@ -7118,13 +7122,13 @@ msgstr ""
 "ÜBERPRÜFUNGEN - erlaubt es Ihnen, die Projekte anderer Teilnehmer zu benoten "
 "und/oder Feedback zu geben"
 
-#: templates/courses/course_group_work.haml:28
+#: templates/courses/course_group_work.haml:37
 msgid "GRADE - displays your team feedback and peer (or TA) grade"
 msgstr ""
 "NOTE - zeigt Ihrem Team Feedback und die von anderen Teilnehmern (oder vom "
 "TA) vergebene Note an"
 
-#: templates/courses/course_group_work.haml:32
+#: templates/courses/course_group_work.haml:41
 msgid ""
 "Move from stage to stage within an activity using the left and right arrows; "
 "deadlines for each stage are posted, and if a particular stage has not yet "
@@ -7134,7 +7138,7 @@ msgstr ""
 "einer Aktivität. Die Fristen für jede Phase werden veröffentlicht und wenn "
 "eine Phase noch nicht begonnen hat, dann wird dies angezeigt"
 
-#: templates/courses/course_group_work.haml:33
+#: templates/courses/course_group_work.haml:42
 msgid ""
 " Group work has a private inline discussion you can use to collaborate with "
 "only your group members. View these conversations in group work pages, or by "
@@ -7151,7 +7155,7 @@ msgstr ""
 "wenn Sie sie auf der Hauptdiskussionsseite aufrufen, sind nur für "
 "Gruppenmitglieder sichtbar, nie für den gesamten Jahrgang."
 
-#: templates/courses/course_group_work.haml:34
+#: templates/courses/course_group_work.haml:43
 msgid ""
 "Email your group members (individually or combined) from the right column of "
 "each stage"
@@ -7159,17 +7163,17 @@ msgstr ""
 "Schicken Sie von der rechten Spalte jeder Phase Ihren Gruppenmitgliedern "
 "eine E-Mail (an einzelne oder eine Sammelnachricht)"
 
-#: templates/courses/course_group_work.haml:35
+#: templates/courses/course_group_work.haml:44
 msgid "Email your McKinsey TA from the right column of each stage."
 msgstr ""
 "Schicken Sie von der rechten Spalte jeder Phase Ihrem McKinsey TA eine E-"
 "Mail."
 
-#: templates/courses/course_group_work.haml:36
+#: templates/courses/course_group_work.haml:45
 msgid "This video walks you through the group work experience:"
 msgstr "Dieses Video führt Sie durch die Gruppenarbeitserfahrung:"
 
-#: templates/courses/course_group_work.haml:46
+#: templates/courses/course_group_work.haml:55
 #: templates/courses/course_group_work_ld.haml:20
 #: templates_v2/courses/course_group_work_ld.haml:20
 msgid ""
@@ -7179,8 +7183,8 @@ msgstr ""
 "Die Gruppenarbeit für diesen Kurs wurde noch nicht begonnen. Sie werden "
 "benachrichtigt, wenn sie beginnt"
 
-#: templates/courses/course_group_work.haml:55
-#: templates/courses/course_group_work.haml:61
+#: templates/courses/course_group_work.haml:64
+#: templates/courses/course_group_work.haml:70
 #: templates/courses/course_group_work_ld.haml:29
 #: templates/courses/course_group_work_ld.haml:35
 #: templates_v2/courses/course_group_work.haml:25
@@ -7190,21 +7194,21 @@ msgstr ""
 msgid "Group Project:"
 msgstr "Gruppenprojekt:"
 
-#: templates/courses/course_group_work.haml:66
+#: templates/courses/course_group_work.haml:75
 #: templates/courses/course_group_work_ld.haml:40
 #: templates_v2/courses/course_group_work.haml:36
 #: templates_v2/courses/course_group_work_ld.haml:40
 msgid "Group Members"
 msgstr "Gruppenmitglieder"
 
-#: templates/courses/course_group_work.haml:71
+#: templates/courses/course_group_work.haml:80
 #: templates/courses/course_group_work_ld.haml:45
 #: templates_v2/courses/course_group_work.haml:41
 #: templates_v2/courses/course_group_work_ld.haml:45
 msgid "Email your group"
 msgstr "Ihrer Gruppe eine E-Mail schicken"
 
-#: templates/courses/course_group_work.haml:75
+#: templates/courses/course_group_work.haml:84
 #: templates/courses/course_group_work_ld.haml:49
 #: templates_v2/courses/course_group_work.haml:45
 #: templates_v2/courses/course_group_work_ld.haml:49
@@ -7375,27 +7379,15 @@ msgstr " | McKinsey Academy | "
 msgid " | Lessons | McKinsey Academy"
 msgstr " | Lektionen | McKinsey Academy"
 
-#: templates/courses/course_navigation.haml:17
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Below are helpful tips to navigate course content. You may also find "
-#| "answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-#| "answer there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you."
+#: templates/courses/course_navigation.haml:18
 msgid ""
 "Below are helpful tips to navigate course content. You may also find answers "
-"to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-"there? Please contact us directly at <a href=\"#{support}\">support</a> and "
-"we’ll sort it out for you."
+"to your questions in the "
 msgstr ""
 "Unten finden Sie hilfreiche Tipps darüber, wie Sie sich in den Kursinhalten "
-"zurechtfinden können. Außerdem finden Sie in den <a href=\"/faq\">FAQ</a> "
-"Antworten auf Ihre Fragen. Sie sind nicht fündig geworden? Dann kontaktieren "
-"Sie uns bitte direkt unter <a href=\"mailto:support@mckinseyacademy.com"
-"\">support@mckinseyacademy.com</a> und wir werden Ihnen weiterhelfen."
+"zurechtfinden können. Außerdem finden Sie in den "
 
-#: templates/courses/course_navigation.haml:22
+#: templates/courses/course_navigation.haml:27
 #, python-format
 msgid ""
 "See which %(modules_custom_label)s you have completed and navigate directly "
@@ -7406,7 +7398,7 @@ msgstr ""
 "haben, und navigieren Sie mit der %(module_custom_label)snavigation oben auf "
 "der Seite direkt zu bestimmten %(modules_custom_label)sn."
 
-#: templates/courses/course_navigation.haml:24
+#: templates/courses/course_navigation.haml:29
 msgid ""
 "See which modules you have completed and navigate directly to specific "
 "modules using the module navigation at the top of the page"
@@ -7414,7 +7406,7 @@ msgstr ""
 "Schauen Sie sich an, welche Module Sie abgeschlossen haben, und navigieren "
 "Sie mit der Modulnavigation oben auf der Seite direkt zu bestimmten Modulen."
 
-#: templates/courses/course_navigation.haml:29
+#: templates/courses/course_navigation.haml:34
 #, python-format
 msgid ""
 "Move from %(module_custom_label)s to %(module_custom_label)s using the left "
@@ -7426,7 +7418,7 @@ msgstr ""
 "Pfeile, um Details über die kommenden (oder vorherigen) "
 "%(modules_custom_label)s zu erfahren."
 
-#: templates/courses/course_navigation.haml:31
+#: templates/courses/course_navigation.haml:36
 #, python-format
 msgid ""
 "Move from %(module_custom_label)s to %(module_custom_label)s using the left "
@@ -7437,7 +7429,7 @@ msgstr ""
 "%(module_custom_label)s wechseln. Fahren Sie mit dem Mauszeiger über die "
 "Pfeile, um Details über die kommenden (oder vorherigen) module zu erfahren."
 
-#: templates/courses/course_navigation.haml:33
+#: templates/courses/course_navigation.haml:38
 #, python-format
 msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
@@ -7447,7 +7439,7 @@ msgstr ""
 "Fahren Sie mit dem Mauszeiger über die Pfeile, um Details über die kommenden "
 "(oder vorherigen) %(modules_custom_label)s zu erfahren."
 
-#: templates/courses/course_navigation.haml:35
+#: templates/courses/course_navigation.haml:40
 msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
 "arrows to see details of upcoming (or previous) modules"
@@ -7456,7 +7448,7 @@ msgstr ""
 "Fahren Sie mit dem Mauszeiger über die Pfeile, um Details über die kommenden "
 "(oder vorherigen) Module zu erfahren"
 
-#: templates/courses/course_navigation.haml:39
+#: templates/courses/course_navigation.haml:44
 #, python-format
 msgid ""
 "%(modules_custom_label)s with inline discussions post to the larger "
@@ -7468,7 +7460,7 @@ msgstr ""
 "das <i class=\"fa fa-comments-o\"></i>-Icon in der Hauptnavigationsleiste "
 "klicken. "
 
-#: templates/courses/course_navigation.haml:41
+#: templates/courses/course_navigation.haml:46
 msgid ""
 "Modules with inline discussions post to the larger discussion page. View the "
 "discussion page using the <i class=\"fa fa-comments-o\"></i> icon in the "
@@ -7478,7 +7470,7 @@ msgstr ""
 "Schauen Sie sich die Diskussionsseite an, indem Sie auf das <i class=\"fa fa-"
 "comments-o\"></i>-Icon in der Hauptnavigationsleiste klicken "
 
-#: templates/courses/course_navigation.haml:44
+#: templates/courses/course_navigation.haml:49
 #, python-format
 msgid ""
 "Access individual %(lessons_custom_label)s from the <i class=\"mk-icon-"
@@ -7488,7 +7480,7 @@ msgstr ""
 "auf das <i class=\"mk-icon-lessonsnav\"></i>-Icon in der "
 "Hauptnavigationsleiste klicken "
 
-#: templates/courses/course_navigation.haml:46
+#: templates/courses/course_navigation.haml:51
 msgid ""
 "Access individual lessons from the <i class=\"mk-icon-lessonsnav\"></i> icon "
 "in the main navigation bar"
@@ -7510,33 +7502,20 @@ msgstr " | Ankündigungen | Kurse | McKinsey Academy"
 msgid "Announcements, Course Overview, and Resources"
 msgstr "Ankündigungen, Kursüberblick und Ressourcen"
 
-#: templates/courses/course_news.haml:14
-#: templates/courses/course_overview.haml:14
-#: templates/courses/course_resources.haml:14
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to view course materials (which include "
-#| "announcements, course overview, and resources). You may also find answers "
-#| "to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-#| "there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
+#: templates/courses/course_news.haml:15
+#: templates/courses/course_overview.haml:15
+#: templates/courses/course_resources.haml:15
 msgid ""
-" Below are helpful tips to view course materials (which include "
+"Below are helpful tips to view course materials (which include "
 "announcements, course overview, and resources). You may also find answers to "
-"your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer there? "
-"Please contact us directly at <a href=\"#{support}\">support</a> and we’ll "
-"sort it out for you. "
+"your questions in the "
 msgstr ""
 " Unten finden Sie hilfreiche Tipps darüber, wie Sie Kursmaterialien anzeigen "
 "können (inklusive Ankündigungen, Kursüberblick und Ressourcen). Außerdem "
-"finden Sie in den <a href=\"/faq\">FAQ</a> Antworten auf Ihre Fragen. Sie "
-"werden dort nicht fündig? Dann kontaktieren Sie uns bitte direkt unter <a "
-"href=\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a> "
-"und wir werden Ihnen weiterhelfen."
+"finden Sie in den "
 
-#: templates/courses/course_news.haml:15
-#: templates/courses/course_resources.haml:15
+#: templates/courses/course_news.haml:21
+#: templates/courses/course_resources.haml:20
 msgid ""
 " Access Announcements, Course Overview, and Resources from the <i class=\"fa "
 "fa-file-text-o\"></i> icon in the main navigation bar. "
@@ -7545,16 +7524,16 @@ msgstr ""
 "Sie auf das <i class=\"fa fa-file-text-o\"></i>-Icon in der "
 "Hauptnavigationsleiste klicken "
 
-#: templates/courses/course_news.haml:16
-#: templates/courses/course_overview.haml:16
-#: templates/courses/course_resources.haml:16
+#: templates/courses/course_news.haml:22
+#: templates/courses/course_overview.haml:22
+#: templates/courses/course_resources.haml:21
 msgid "ANNOUNCEMENTS provides course news and events in a blog format"
 msgstr ""
 "ANKÜNDIGUNGEN zeigen Ihnen Kursneuigkeiten und Events im Blog-Format an"
 
-#: templates/courses/course_news.haml:17
-#: templates/courses/course_overview.haml:17
-#: templates/courses/course_resources.haml:17
+#: templates/courses/course_news.haml:23
+#: templates/courses/course_overview.haml:23
+#: templates/courses/course_resources.haml:22
 msgid ""
 "COURSE OVERVIEW details what you will learn and provides faculty "
 "information; it also includes a course calendar to guide your pace through "
@@ -7564,9 +7543,9 @@ msgstr ""
 "Informationen über die Fakultät. Außerdem finden Sie hier den Kurskalender, "
 "der Sie durch den Kurs leitet und Ihnen alle wichtigen Fristen aufzeigt"
 
-#: templates/courses/course_news.haml:18
-#: templates/courses/course_overview.haml:21
-#: templates/courses/course_resources.haml:21
+#: templates/courses/course_news.haml:24
+#: templates/courses/course_overview.haml:27
+#: templates/courses/course_resources.haml:26
 msgid ""
 "RESOURCES provides key takeaways and frameworks from each lesson, as well as "
 "supplemental readings and videos"
@@ -7574,7 +7553,7 @@ msgstr ""
 "RESSOURCEN zeigen Ihnen die Kernpunkte und Rahmenbedingungen jeder Lektion "
 "auf und liefern Ihnen zusätzliche Lektüre und weitere Videos"
 
-#: templates/courses/course_news.haml:37
+#: templates/courses/course_news.haml:43
 #: templates_v2/courses/course_news.haml:26
 msgid "No announcements have been posted yet."
 msgstr "Keine Ankündigungen wurden bisher gepostet."
@@ -7592,7 +7571,7 @@ msgstr "Dieser Inhalt ist noch nicht verfügbar."
 msgid " | Overview | Courses | McKinsey Academy"
 msgstr "| Überblick | Kurse | McKinsey Academy"
 
-#: templates/courses/course_overview.haml:15
+#: templates/courses/course_overview.haml:21
 msgid ""
 " \"Access Announcements, Course Overview, and Resources from the <i class="
 "\"fa fa-file-text-o\"></i> icon in the main navigation bar. "
@@ -7601,8 +7580,8 @@ msgstr ""
 "Sie auf das <i class=\"fa fa-file-text-o\"></i>-Icon in der "
 "Hauptnavigationsleiste klicken. "
 
-#: templates/courses/course_overview.haml:19
-#: templates/courses/course_resources.haml:19
+#: templates/courses/course_overview.haml:25
+#: templates/courses/course_resources.haml:24
 #, python-format
 msgid ""
 " RESOURCES provides key takeaways and frameworks from each "
@@ -7612,47 +7591,47 @@ msgstr ""
 "%(lesson_custom_label)s auf und liefern Ihnen zusätzliche Lektüre und "
 "weitere Videos"
 
-#: templates/courses/course_overview.haml:30
+#: templates/courses/course_overview.haml:36
 #: templates_v2/courses/course_overview.haml:15
 msgid "Details:"
 msgstr "Details:"
 
-#: templates/courses/course_overview.haml:31
+#: templates/courses/course_overview.haml:37
 #: templates_v2/courses/course_overview.haml:16
 msgid "10 lessons"
 msgstr "10 Lektionen"
 
-#: templates/courses/course_overview.haml:32
+#: templates/courses/course_overview.haml:38
 #: templates_v2/courses/course_overview.haml:17
 msgid "32 videos"
 msgstr "32 Videos"
 
-#: templates/courses/course_overview.haml:33
+#: templates/courses/course_overview.haml:39
 #: templates_v2/courses/course_overview.haml:18
 msgid "9 assessments"
 msgstr "9 Bewertungen"
 
-#: templates/courses/course_overview.haml:34
+#: templates/courses/course_overview.haml:40
 #: templates_v2/courses/course_overview.haml:19
 msgid "72 exercises"
 msgstr "72 Aufgaben"
 
-#: templates/courses/course_overview.haml:35
+#: templates/courses/course_overview.haml:41
 #: templates_v2/courses/course_overview.haml:20
 msgid "1 group project"
 msgstr "1 Gruppenprojekt"
 
-#: templates/courses/course_overview.haml:36
+#: templates/courses/course_overview.haml:42
 #: templates_v2/courses/course_overview.haml:21
 msgid "15 readings"
 msgstr "15 Lektüren"
 
-#: templates/courses/course_overview.haml:56
+#: templates/courses/course_overview.haml:62
 #: templates_v2/courses/course_overview.haml:29
 msgid "WHAT YOU WILL LEARN"
 msgstr "WAS SIE LERNEN WERDEN"
 
-#: templates/courses/course_overview.haml:62
+#: templates/courses/course_overview.haml:68
 #: templates_v2/courses/course_overview.haml:48
 msgid "Faculty"
 msgstr "Fakultät"
@@ -7663,28 +7642,15 @@ msgstr "Fakultät"
 msgid " | Progress | Courses | McKinsey Academy"
 msgstr " | Fortschritt | Kurse | McKinsey Academy"
 
-#: templates/courses/course_progress.haml:20
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to review your progress. You may also find "
-#| "answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-#| "answer there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
+#: templates/courses/course_progress.haml:21
 msgid ""
-" Below are helpful tips to review your progress. You may also find answers "
-"to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-"there? Please contact us directly at <a href=\"#{support}\">support</a> and "
-"we’ll sort it out for you. "
+"Below are helpful tips to review your progress. You may also find answers to "
+"your questions in the "
 msgstr ""
 " Unten finden Sie hilfreiche Tipps darüber, wie Sie Ihren Fortschritt "
-"einsehen können. Außerdem finden Sie in den <a href=\"/faq\">FAQ</a> "
-"Antworten auf Ihre Fragen. Sie sind dort nicht fündig geworden? Dann "
-"kontaktieren Sie uns bitte direkt unter <a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> und wir werden "
-"Ihnen weiterhelfen."
+"einsehen können. Außerdem finden Sie in den "
 
-#: templates/courses/course_progress.haml:22
+#: templates/courses/course_progress.haml:27
 #, python-format
 msgid ""
 " PROGRESS marks your progress (based on completion of "
@@ -7695,7 +7661,7 @@ msgstr ""
 "%(modules_custom_label)s und Lektüre) der Kursinhalte. Der "
 "Durchschnittsfortschritt Ihres Jahrgangs wird auch angezeigt."
 
-#: templates/courses/course_progress.haml:24
+#: templates/courses/course_progress.haml:29
 msgid ""
 "PROGRESS marks your progress (based on completion of modules and readings) "
 "through course content; the average progress of your cohort is also displayed"
@@ -7704,7 +7670,7 @@ msgstr ""
 "und Lektüre) der Kursinhalte. Der Durchschnittsfortschritt Ihres Jahrgangs "
 "wird auch angezeigt."
 
-#: templates/courses/course_progress.haml:25
+#: templates/courses/course_progress.haml:30
 msgid ""
 "GRADE displays your proficiency against a total possible score of 100; your "
 "proficiency is based on graded assessments and group work performance."
@@ -7713,11 +7679,11 @@ msgstr ""
 "Kompetenzen basieren auf benoteten Bewertungen und Ihrer Performance bei "
 "Gruppenarbeiten."
 
-#: templates/courses/course_progress.haml:31
+#: templates/courses/course_progress.haml:36
 msgid "Course Progress for"
 msgstr "Kursfortschritt für"
 
-#: templates/courses/course_progress.haml:40
+#: templates/courses/course_progress.haml:45
 #, python-format
 msgid ""
 "\n"
@@ -7730,7 +7696,7 @@ msgstr ""
 "abgeschlossenen %(modules_custom_label)sn  %(user_course_progress)s%% des "
 "Kurses absolviert:"
 
-#: templates/courses/course_progress.haml:43
+#: templates/courses/course_progress.haml:48
 #, python-format
 msgid ""
 "\n"
@@ -7741,7 +7707,7 @@ msgstr ""
 "          Sie haben basierend auf den %(lessons_custom_label)s in "
 "abgeschlossenen Modulen  %(user_course_progress)s%% des Kurses absolviert:"
 
-#: templates/courses/course_progress.haml:46
+#: templates/courses/course_progress.haml:51
 #, python-format
 msgid ""
 "\n"
@@ -7752,7 +7718,7 @@ msgstr ""
 "          Sie haben basierend auf den Lektionen in abgeschlossenen "
 "%(modules_custom_label)sn  %(user_course_progress)s%% des Kurses absolviert:"
 
-#: templates/courses/course_progress.haml:49
+#: templates/courses/course_progress.haml:54
 #, python-format
 msgid ""
 "\n"
@@ -7763,11 +7729,11 @@ msgstr ""
 "          Sie haben basierend auf den Lektionen in abgeschlossenen Modulen  "
 "%(user_course_progress)s%% des Kurses absolviert:"
 
-#: templates/courses/course_progress.haml:53
+#: templates/courses/course_progress.haml:58
 msgid "GRADES"
 msgstr "NOTEN"
 
-#: templates/courses/course_progress.haml:55
+#: templates/courses/course_progress.haml:60
 #, python-format, python-brace-format
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
@@ -7779,7 +7745,7 @@ msgstr ""
 "eine Abschlusszertifikat für ein Programm zu erhalten. Ihre Kursnote wird "
 "wie folgt berechnet:"
 
-#: templates/courses/course_progress.haml:57
+#: templates/courses/course_progress.haml:62
 #, python-format, python-brace-format
 msgid ""
 " You need a combined course grade of at least #{pass_grade}%% to earn a "
@@ -7789,19 +7755,19 @@ msgstr ""
 "erreichen, um eine Abschlusszertifikat zu erhalten. Ihre Abschlussnote wird "
 "wie folgt berechnet:"
 
-#: templates/courses/course_progress.haml:61
+#: templates/courses/course_progress.haml:66
 msgid "percent of your grade"
 msgstr "Prozent Ihrer Note"
 
-#: templates/courses/course_progress.haml:68
+#: templates/courses/course_progress.haml:73
 msgid "Dropped"
 msgstr "Entfällt"
 
-#: templates/courses/course_progress.haml:71
+#: templates/courses/course_progress.haml:76
 msgid "Current grade"
 msgstr "Derzeitige Note"
 
-#: templates/courses/course_progress.haml:72
+#: templates/courses/course_progress.haml:77
 msgid ""
 " Pro forma grade is an estimate of your final grade assuming you continue to "
 "demonstrate the same level of proficiency on your uncompleted assessments as "
@@ -7815,31 +7781,31 @@ msgstr ""
 "reveal-id='progress_modal'>Hier klicken</a> für weitere Informationen zum "
 "Umgang mit Ihren Kursdaten."
 
-#: templates/courses/course_progress.haml:80
+#: templates/courses/course_progress.haml:85
 msgid "Lesson:"
 msgstr "Lektion:"
 
-#: templates/courses/course_progress.haml:82
+#: templates/courses/course_progress.haml:87
 msgid "Suggested Deadline:"
 msgstr "Empfohlener Abgabetermin:"
 
-#: templates/courses/course_progress.haml:83
+#: templates/courses/course_progress.haml:88
 msgid "Assessment Score:"
 msgstr "Punktzahl für die Bewertung:"
 
-#: templates/courses/course_progress.haml:104
+#: templates/courses/course_progress.haml:109
 msgid "Upload Deadline:"
 msgstr "Hochladefrist:"
 
-#: templates/courses/course_progress.haml:105
+#: templates/courses/course_progress.haml:110
 msgid "Score:"
 msgstr "Punktzahl:"
 
-#: templates/courses/course_progress.haml:106
+#: templates/courses/course_progress.haml:111
 msgid "Grades:"
 msgstr "Noten:"
 
-#: templates/courses/course_progress.haml:129
+#: templates/courses/course_progress.haml:134
 #: templates_v2/courses/course_progress_v2.haml:311
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
@@ -7861,7 +7827,7 @@ msgstr ""
 "unseren Umgang mit Datenschutz und Informationsaustausch zu erfahren, "
 "konsultieren Sie bitte unsere"
 
-#: templates/courses/course_progress.haml:131
+#: templates/courses/course_progress.haml:136
 #: templates/courses/course_progress_v2.haml:237
 #: templates_v2/courses/course_progress_v2.haml:313
 msgid "privacy policy."
@@ -8333,103 +8299,77 @@ msgstr ""
 "rechts auf dem Bildschirm. Klicken Sie auf den Abwärtspfeil und wählen Sie "
 "neben Ihrem Namen \"Bearbeiten\"."
 
-#: templates/faq.haml:24
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "To change your email address, please email <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
-msgid ""
-"To change your email address, please email <a href=\"#{support}\">support</"
-"a>."
-msgstr ""
-"Bitte schicken Sie eine E-Mail an <a href=\"mailto:support@mckinseyacademy."
-"com\">support@mckinseyacademy.com</a>, um ihre E-Mail-Adresse zu ändern."
+#: templates/faq.haml:25 templates_v2/faq.haml:48
+msgid "To change your email address, please email"
+msgstr "Um Ihre E-Mail-Adresse zu ändern, senden Sie bitte eine E-Mail"
 
-#: templates/faq.haml:25 templates_v2/faq.haml:52
+#: templates/faq.haml:27 templates_v2/faq.haml:52
 msgid "My account login isn't working."
 msgstr "Mein Konto-Login funktioniert nicht."
 
-#: templates/faq.haml:26
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "If you've forgotten your password, please try resetting it by clicking "
-#| "'Forgot my password' on the log in screen. If that does not work, please "
-#| "email"
+#: templates/faq.haml:29 templates_v2/faq.haml:55
 msgid ""
 "If you've forgotten your password, please try resetting it by clicking "
-"\"Forgot my password\" on the log in screen. If that does not work, please "
-"email <a href=\"#{support}\">support</a>."
+"'Forgot my password' on the log in screen. If that does not work, please "
+"email"
 msgstr ""
 "Falls Sie Ihr Passwort vergessen haben, setzen Sie es zurück, indem Sie auf "
 "der Anmeldeseite auf \"Passwort vergessen\" klicken. Sollte dies nicht "
 "funktionieren, senden Sie bitte eine E-Mail an "
 
-#: templates/faq.haml:27 templates_v2/faq.haml:59
+#: templates/faq.haml:31 templates_v2/faq.haml:59
 msgid "I can't access a course I'm enrolled in."
 msgstr ""
 "Ich kann nicht auf den Kurs zugreifen, für den ich mich angemeldet habe."
 
-#: templates/faq.haml:28
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "The drop down for moving between multiple courses is on the far left of "
-#| "the second (lighter blue) navigation bar. If the course you are supposed "
-#| "to be enrolled in does not appear in that drop down menu, please email"
+#: templates/faq.haml:33 templates_v2/faq.haml:62
 msgid ""
 "The drop down for moving between multiple courses is on the far left of the "
 "second (lighter blue) navigation bar. If the course you are supposed to be "
-"enrolled in does not appear in that drop down menu, please email <a href="
-"\"#{support}\">support</a>."
+"enrolled in does not appear in that drop down menu, please email"
 msgstr ""
 "Die Auswahlliste, mit der Sie zwischen verschiedenen Kursen navigieren "
 "können, befindet sich links außen auf der zweiten (hellblauen) "
 "Navigationsleiste. Falls der Kurs, für den Sie angemeldet sind, dort nicht "
 "angezeigt wird, schicken Sie eine Email an"
 
-#: templates/faq.haml:29 templates_v2/faq.haml:66
+#: templates/faq.haml:35 templates_v2/faq.haml:66
 msgid "How can I stop or start receiving emails from my courses?"
 msgstr ""
 "Wie kann ich E-Mail-Benachrichtigungen für meine Kurse ein- und ausschalten?"
 
-#: templates/faq.haml:30
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "We try to keep our email communication at an optimal level to ensure all "
-#| "participants know what is happening in the course without cluttering your "
-#| "inbox. Our emails contain important information about what's expected "
-#| "each week and additional curated content suggestions. If you no longer "
-#| "wish to receive emails, please email <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> (or click "
-#| "unsubscribe at the bottom of any email you receive from us). Be sure to "
-#| "check the \"Announcements\" page frequently to stay up to date!"
+#: templates/faq.haml:37 templates_v2/faq.haml:69
 msgid ""
 "We try to keep our email communication at an optimal level to ensure all "
 "participants know what is happening in the course without cluttering your "
 "inbox. Our emails contain important information about what's expected each "
 "week and additional curated content suggestions. If you no longer wish to "
-"receive emails, please email <a href=\"#{support}\">support</a> (or click "
-"unsubscribe at the bottom of any email you receive from us). Be sure to "
-"check the \"Announcements\" page frequently to stay up to date!"
+"receive emails, please email"
 msgstr ""
 "Wir versuchen, den E-Mail-Verkehr auf einem optimalen Level zu halten, um "
 "sicherzustellen, dass alle Teilnehmer wissen, was in dem Kurs passiert, ohne "
 "ihre Postfächer zu überladen. Unsere E-Mails beinhalten wichtige "
 "Informationen für die nächste Woche und zusätzliche inhaltliche Vorschläge. "
 "Sollten Sie keine weiteren E-Mails erhalten wollen, senden Sie eine Mail an "
-"<a href=“mailto:support@mckinseyacademy.com“>support@mckinseyacademy.com</a> "
+
+#: templates/faq.haml:39 templates_v2/faq.haml:71
+msgid ""
+"(or click unsubscribe at the bottom of any email you receive from us). Be "
+"sure to check the \"Announcements\" page frequently to stay up to date!"
+msgstr ""
 "(oder klicken Sie am Ende einer beliebigen E-Mail von uns auf den Link zum "
 "Abmelden). Bitte besuchen unsere Ankündigungsseite regelmäßig, um auf dem "
 "Laufenden zu bleiben!"
 
-#: templates/faq.haml:31
+#: templates/faq.haml:40
 msgid "COURSES:"
 msgstr "KURSE:"
 
-#: templates/faq.haml:32 templates_v2/faq.haml:75
+#: templates/faq.haml:41 templates_v2/faq.haml:75
 msgid "When does my course start and/or finish?"
 msgstr "Wann beginnt bzw. endet mein Kurs?"
 
-#: templates/faq.haml:33 templates_v2/faq.haml:77
+#: templates/faq.haml:42 templates_v2/faq.haml:77
 msgid ""
 "You can find the start date and course duration for each course on its "
 "course overview page.  You will receive a welcome email when the course is "
@@ -8439,11 +8379,11 @@ msgstr ""
 "Kursüberblick-Seite. Sie erhalten eine Begrüßungs-E-Mail, wenn der Kurs "
 "geöffnet ist."
 
-#: templates/faq.haml:34 templates_v2/faq.haml:80
+#: templates/faq.haml:43 templates_v2/faq.haml:80
 msgid "What are passing requirements for courses?"
 msgstr "Was sind die Mindestanforderungen, um den Kurs zu bestehen?"
 
-#: templates/faq.haml:35
+#: templates/faq.haml:44
 #, python-format
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
@@ -8454,11 +8394,11 @@ msgstr ""
 "eine Gesamtnote von mindestens 70%% erreichen, um auf ein "
 "Abschlusszertifikat hinzuarbeiten. Ihre Kursnote wird wie folgt berechnet: "
 
-#: templates/faq.haml:37 templates_v2/faq.haml:85
+#: templates/faq.haml:46 templates_v2/faq.haml:85
 msgid "End of lesson (EOL) assessments"
 msgstr "Lektionsabschlussbewertung (LAB)"
 
-#: templates/faq.haml:38 templates_v2/faq.haml:86
+#: templates/faq.haml:47 templates_v2/faq.haml:86
 msgid ""
 "Note that EOL assessments vary based on number of lessons and may not be "
 "included in some lessons"
@@ -8466,7 +8406,7 @@ msgstr ""
 "Beachten Sie, dass LABs von der Anzahl der Lektionen abhängig sind und dass "
 "einige Lektionen keine LABs haben."
 
-#: templates/faq.haml:40 templates_v2/faq.haml:89
+#: templates/faq.haml:49 templates_v2/faq.haml:89
 msgid ""
 "Note that Group Work may be made up of one or more activities which are "
 "graded throughout the duration of a course"
@@ -8474,11 +8414,11 @@ msgstr ""
 "Beachten Sie, dass Gruppenarbeiten ggf. aus einer oder mehreren Aufgaben "
 "bestehen, die über die gesamte Kurslänge benotet werden."
 
-#: templates/faq.haml:41 templates_v2/faq.haml:90
+#: templates/faq.haml:50 templates_v2/faq.haml:90
 msgid "Final Assessment"
 msgstr "Abschlussprüfung"
 
-#: templates/faq.haml:42 templates_v2/faq.haml:91
+#: templates/faq.haml:51 templates_v2/faq.haml:91
 msgid ""
 "There is no minimum amount of course content that must be completed, but "
 "participants must complete the Final Assessment."
@@ -8486,12 +8426,12 @@ msgstr ""
 "Es gibt kein Mindestmaß an abzuschließenden Kursinhalten, aber Teilnehmer "
 "müssen die Abschlussprüfung absolvieren."
 
-#: templates/faq.haml:43 templates_v2/faq.haml:94
+#: templates/faq.haml:52 templates_v2/faq.haml:94
 msgid "How do I log in to take a McKinsey Academy course?"
 msgstr ""
 "Wie kann ich mich einloggen, um einen McKinsey Academy Kurs zu absolvieren?"
 
-#: templates/faq.haml:44 templates_v2/faq.haml:96
+#: templates/faq.haml:53 templates_v2/faq.haml:96
 msgid ""
 "Once you activate your account, click on the \"Log in\" button on the "
 "McKinsey Academy home page and type in your username and password. This will "
@@ -8501,11 +8441,11 @@ msgstr ""
 "der McKinsey Academy-Startseite und geben Sie Ihren Benutzernamen und Ihr "
 "Passwort ein. So gelangen Sie auf die Seite Ihres aktuellen Kurses."
 
-#: templates/faq.haml:45 templates_v2/faq.haml:99
+#: templates/faq.haml:54 templates_v2/faq.haml:99
 msgid "How much time should I expect to devote to each course?"
 msgstr "Wie viel Zeit sollte ich für jeden Kurs veranschlagen?"
 
-#: templates/faq.haml:46 templates_v2/faq.haml:101
+#: templates/faq.haml:55 templates_v2/faq.haml:101
 msgid ""
 "The projected time commitment required for each course is included on the "
 "course overview page. We typically find that dedicating 60-120 minutes per "
@@ -8515,22 +8455,22 @@ msgstr ""
 "Kursübersicht-Seite. Normalerweise reichen 60 bis 120 Minuten pro Woche, um "
 "alle Anforderungen für den Kurs zu erfüllen, inklusive Gruppenarbeit."
 
-#: templates/faq.haml:47 templates_v2/faq.haml:104
+#: templates/faq.haml:56 templates_v2/faq.haml:104
 msgid "Can I take more than one course at a time?"
 msgstr "Kann ich mehr als einen Kurs zur gleichen Zeit belegen?"
 
-#: templates/faq.haml:48 templates_v2/faq.haml:106
+#: templates/faq.haml:57 templates_v2/faq.haml:106
 msgid ""
 "McKinsey Academy programs are a collection of courses taken one at a time."
 msgstr ""
 "McKinsey Academy-Programme bestehen aus mehreren Kursen, die nacheinander "
 "absolviert werden."
 
-#: templates/faq.haml:49 templates_v2/faq.haml:109
+#: templates/faq.haml:58 templates_v2/faq.haml:109
 msgid "What time is the class?"
 msgstr "Wann findet der Unterricht statt?"
 
-#: templates/faq.haml:50 templates_v2/faq.haml:111
+#: templates/faq.haml:59 templates_v2/faq.haml:111
 msgid ""
 "McKinsey Academy courses take place at your convenience. Videos and "
 "assignments are available 24 hours a day, which means you can watch videos "
@@ -8546,12 +8486,12 @@ msgstr ""
 "Abgabefristen für Gruppenarbeiten, doch sind diese so angelegt, dass Sie "
 "genug Vorlaufzeit haben, um Ihre Arbeit leicht einzuplanen."
 
-#: templates/faq.haml:51 templates_v2/faq.haml:114
+#: templates/faq.haml:60 templates_v2/faq.haml:114
 msgid "If I miss a week, how does this affect my performance?"
 msgstr ""
 "Wie wirkt es sich auf meine Leistung aus, wenn ich eine Woche verpasse?"
 
-#: templates/faq.haml:52 templates_v2/faq.haml:116
+#: templates/faq.haml:61 templates_v2/faq.haml:116
 msgid ""
 "It is certainly possible to finish a McKinsey Academy course if you miss a "
 "week; however you should certainly review content you may have missed. If "
@@ -8569,12 +8509,12 @@ msgstr ""
 "Termine und Fristen, damit Sie in Ihrer Abwesenheit keine Abgabetermine "
 "verpassen."
 
-#: templates/faq.haml:53 templates_v2/faq.haml:119
+#: templates/faq.haml:62 templates_v2/faq.haml:119
 msgid "I missed a deadline; can I get an extension?"
 msgstr ""
 "Ich habe eine Abgabefrist verpasst, kann ich eine Verlängerung bekommen?"
 
-#: templates/faq.haml:54 templates_v2/faq.haml:121
+#: templates/faq.haml:63 templates_v2/faq.haml:121
 msgid ""
 "We are not able to offer individual extensions as course schedules are fixed "
 "and there is no way to change the dates of assignments or exams for one "
@@ -8584,11 +8524,11 @@ msgstr ""
 "Kurspläne festgelegt sind und es nicht möglich ist, die Termine für Aufgaben "
 "oder Prüfungen für individuelle Teilnehmer zu verschieben."
 
-#: templates/faq.haml:55 templates_v2/faq.haml:124
+#: templates/faq.haml:64 templates_v2/faq.haml:124
 msgid "My course deadlines are in UTC, what’s that?"
 msgstr "Die Abgabefristen für meinen Kurs sind in UTC angegeben, was ist das?"
 
-#: templates/faq.haml:56 templates_v2/faq.haml:126
+#: templates/faq.haml:65 templates_v2/faq.haml:126
 msgid ""
 "UTC refers to Universal Coordinated Time. To find the current time in UTC "
 "and convert it to your local time, check World Time Server or other Internet "
@@ -8598,24 +8538,24 @@ msgstr ""
 "UTC auf dem World Time Server oder ähnlichen Online-Diensten und können sie "
 "dort in Ihre Ortszeit umrechnen."
 
-#: templates/faq.haml:57 templates_v2/faq.haml:129
+#: templates/faq.haml:66 templates_v2/faq.haml:129
 msgid "What if I have a question or concern regarding course grading?"
 msgstr "Was soll ich bei Fragen oder Bedenken zu Kursnoten tun?"
 
-#: templates/faq.haml:58
-#, fuzzy, python-brace-format
-#| msgid "If you have any questions about a grade you received, please email"
-msgid ""
-"If you have any questions about a grade you received, please email <a href="
-"\"#{support}\">TAs</a>."
+#: templates/faq.haml:68 templates_v2/faq.haml:132
+msgid "If you have any questions about a grade you received, please email"
 msgstr ""
 "Wenn Sie Fragen zu einer erhaltenen Note haben, schicken Sie eine E-Mail an "
 
-#: templates/faq.haml:59 templates_v2/faq.haml:136
+#: templates/faq.haml:69 templates_v2/faq.haml:133
+msgid "TAs"
+msgstr "TAs"
+
+#: templates/faq.haml:70 templates_v2/faq.haml:136
 msgid "How can I meet/find other participants?"
 msgstr "Wie kann ich andere Teilnehmer treffen bzw. finden?"
 
-#: templates/faq.haml:60 templates_v2/faq.haml:138
+#: templates/faq.haml:71 templates_v2/faq.haml:138
 msgid ""
 "All McKinsey Academy courses have discussion forums where you can chat with "
 "and help other participants."
@@ -8623,7 +8563,7 @@ msgstr ""
 "Alle McKinsey Academy-Kurse verfügen über Diskussionsforen, in denen Sie mit "
 "anderen Teilnehmern chatten und ihnen helfen können."
 
-#: templates/faq.haml:61 templates_v2/faq.haml:141
+#: templates/faq.haml:72 templates_v2/faq.haml:141
 msgid ""
 "How can I talk to McKinsey practitioners teaching my courses and teaching "
 "assistants?"
@@ -8631,7 +8571,7 @@ msgstr ""
 "Wie kann ich mit McKinsey-Fachleuten reden, die meine Kurse und die "
 "Mitarbeiter unterrichten?"
 
-#: templates/faq.haml:62 templates_v2/faq.haml:143
+#: templates/faq.haml:73 templates_v2/faq.haml:143
 msgid ""
 "The discussion forum is the best place to reach out to the McKinsey Academy "
 "course team for your cohort; just post your questions or email the TA. We do "
@@ -8642,42 +8582,37 @@ msgstr ""
 "eine E-Mail an den TA. Wir geben unser Bestes, um so schnell wie möglich zu "
 "reagieren."
 
-#: templates/faq.haml:63 templates_v2/faq.haml:146
+#: templates/faq.haml:74 templates_v2/faq.haml:146
 msgid "How do I get help and support regarding my course?"
 msgstr "Wie bekomme ich Hilfe und Support bezüglich meines Kurses?"
 
-#: templates/faq.haml:64
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "You are part of a cohort of participants you can engage with questions as "
-#| "well as support from the TAs who monitor the course. Take a look at the "
-#| "course's discussion forum where you can review questions, answers and "
-#| "comments from fellow participants, as well as post a question. You can "
-#| "also reach out to the McKinsey teaching assistants by <a href=\"mailto:"
-#| "tas@mckinseyacademy.com\">emailing them</a> and they will get back to you "
-#| "as soon as possible."
+#: templates/faq.haml:76 templates_v2/faq.haml:149
 msgid ""
 "You are part of a cohort of participants you can engage with questions as "
 "well as support from the TAs who monitor the course. Take a look at the "
 "course's discussion forum where you can review questions, answers and "
 "comments from fellow participants, as well as post a question. You can also "
-"reach out to the McKinsey teaching assistants by <a href="
-"\"#{support}\">emailing them</a> and they will get back to you as soon as "
-"possible."
+"reach out to the McKinsey teaching assistants by"
 msgstr ""
 "Sie gehören zu einem Jahrgang an Teilnehmern, mit denen Sie sich austauschen "
 "können. Zudem können Sie von den TAs des jeweiligen Kurses Support erhalten. "
 "Schauen Sie sich das Diskussionsforum des Kurses an, wo Sie Fragen, "
 "Antworten und Kommentare von den anderen Teilnehmern lesen sowie Fragen "
 "posten können. Sie können auch die Assistenten von McKinsey kontaktieren, "
-"indem Sie ihnen eine E-Mail an <a href=\"mailto:tas@mckinseyacademy.com"
-"\">schreiben</a>. Sie werden Ihnen so schnell wie möglich antworten."
 
-#: templates/faq.haml:65 templates_v2/faq.haml:154
+#: templates/faq.haml:77 templates_v2/faq.haml:150
+msgid "emailing them"
+msgstr "ihnen eine E-Mail schreiben"
+
+#: templates/faq.haml:78 templates_v2/faq.haml:151
+msgid "and they will get back to you as soon as possible."
+msgstr "Danke. Wir werden uns so bald wie möglich bei Ihnen melden."
+
+#: templates/faq.haml:79 templates_v2/faq.haml:154
 msgid "Can I re-take a course?"
 msgstr "Kann ich einen Kurs ein weiteres Mal belegen?"
 
-#: templates/faq.haml:66 templates_v2/faq.haml:156
+#: templates/faq.haml:80 templates_v2/faq.haml:156
 msgid ""
 "McKinsey Academy courses cannot be re-taken, but exercises and materials "
 "remain available for 12 months after the course ends."
@@ -8685,11 +8620,11 @@ msgstr ""
 "McKinsey Academy-Kurse können nicht wiederholt werden, aber Aufgaben und "
 "Materialien bleiben 12 Monate nach Ende des Kurses verfügbar."
 
-#: templates/faq.haml:67 templates_v2/faq.haml:159
+#: templates/faq.haml:81 templates_v2/faq.haml:159
 msgid "Can I access the course content after my course ends?"
 msgstr "Kann ich auf den Kursinhalt nach Ende meines Kurses zugreifen?"
 
-#: templates/faq.haml:68 templates_v2/faq.haml:161
+#: templates/faq.haml:82 templates_v2/faq.haml:161
 msgid ""
 "McKinsey Academy past courses are available as archives for 12 months after "
 "the course ends. These courses can only be audited and some features, such "
@@ -8699,14 +8634,14 @@ msgstr ""
 "als Archive verfügbar. Diese Kurse können nur eingesehen werden und einige "
 "Funktionen, wie die Diskussionsforen, sind möglicherweise nicht verfügbar."
 
-#: templates/faq.haml:69 templates_v2/faq.haml:164
+#: templates/faq.haml:83 templates_v2/faq.haml:164
 msgid ""
 "What information is displayed in visualizations on the course home page?"
 msgstr ""
 "Welche Informationen werden in den Darstellungen auf der Kurs-Startseite "
 "angezeigt?"
 
-#: templates/faq.haml:71
+#: templates/faq.haml:85
 msgid ""
 "<span>Proficiency:</span> Your proficiency is based on performance on all "
 "graded items in the course (including end of lesson assessments, group work, "
@@ -8716,7 +8651,7 @@ msgstr ""
 "benoteten Aufgaben in dem Kurs (einschließlich des Abschlusses der "
 "Lektionsprüfungen, der Gruppenarbeit und der Abschlussprüfung)."
 
-#: templates/faq.haml:72
+#: templates/faq.haml:86
 msgid ""
 "<span>Progress:</span> Your progress through course content is displayed as "
 "you move through all items in the course (including videos, exercises, "
@@ -8726,7 +8661,7 @@ msgstr ""
 "angezeigt, während Sie sich durch den Kurs bewegen (einschließlich Videos, "
 "Übungen, Prüfungen und Texten)."
 
-#: templates/faq.haml:73
+#: templates/faq.haml:87
 msgid ""
 "<span>Engagement:</span> Your engagement increases through your social "
 "interactions with other participants in your cohort (through engagement on "
@@ -8736,23 +8671,23 @@ msgstr ""
 "Interaktionen mit anderen Teilnehmern in Ihrem Jahrgang (durch Engagement in "
 "den Diskussionsforen)."
 
-#: templates/faq.haml:74
+#: templates/faq.haml:88
 msgid "CERTIFICATES:"
 msgstr "ZERTIFIKATE:"
 
-#: templates/faq.haml:75 templates_v2/faq.haml:179
+#: templates/faq.haml:89 templates_v2/faq.haml:179
 msgid "Will my certificate include an overall program grade?"
 msgstr "Wird mein Zertifikat eine Gesamtprogramm-Note beinhalten?"
 
-#: templates/faq.haml:76 templates_v2/faq.haml:181
+#: templates/faq.haml:90 templates_v2/faq.haml:181
 msgid "Your certificate will not include final grades."
 msgstr "Ihr Zertifikat wird nicht die Abschlussnoten beinhalten."
 
-#: templates/faq.haml:77 templates_v2/faq.haml:184
+#: templates/faq.haml:91 templates_v2/faq.haml:184
 msgid "Can I get a paper copy of my certificate?"
 msgstr "Kann ich mein Zertifikat in Papierform bekommen?"
 
-#: templates/faq.haml:78 templates_v2/faq.haml:186
+#: templates/faq.haml:92 templates_v2/faq.haml:186
 msgid ""
 "McKinsey Academy certificates are digital files which you can print on "
 "standard size paper."
@@ -8760,11 +8695,11 @@ msgstr ""
 "Zertifikate der McKinsey Academy sind digitale Dateien, die Sie auf Papier "
 "in Standardgröße drucken können."
 
-#: templates/faq.haml:79 templates_v2/faq.haml:189
+#: templates/faq.haml:93 templates_v2/faq.haml:189
 msgid "How are certificates determined?"
 msgstr "Wie werden Zertifikate bestimmt?"
 
-#: templates/faq.haml:80 templates_v2/faq.haml:191
+#: templates/faq.haml:94 templates_v2/faq.haml:191
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
@@ -8773,11 +8708,11 @@ msgstr ""
 "Für das MMP-Abschlusszertifikat müssen Teilnehmer in den 4 Kernkursen des "
 "Programms insgesamt eine Punktzahl von 70 %% oder mehr erreichen."
 
-#: templates/faq.haml:81 templates_v2/faq.haml:194
+#: templates/faq.haml:95 templates_v2/faq.haml:194
 msgid "How are McKinsey Academy certificates delivered?"
 msgstr "Wie werden Zertifikate der McKinsey Academy bereitgestellt?"
 
-#: templates/faq.haml:82 templates_v2/faq.haml:196
+#: templates/faq.haml:96 templates_v2/faq.haml:196
 msgid ""
 "McKinsey Academy certificates are delivered via email following successful "
 "completion of a program."
@@ -8785,15 +8720,15 @@ msgstr ""
 "Zertifikate der McKinsey Academy werden nach dem erfolgreichen Abschluss "
 "eines Programms per E-Mail bereitgestellt."
 
-#: templates/faq.haml:83 templates_v2/faq.haml:197
+#: templates/faq.haml:97 templates_v2/faq.haml:197
 msgid "TECHNICAL ISSUES:"
 msgstr "TECHNISCHE PROBLEME:"
 
-#: templates/faq.haml:84 templates_v2/faq.haml:200
+#: templates/faq.haml:98 templates_v2/faq.haml:200
 msgid "How can I get technical support?"
 msgstr "Wie kann ich technischen Support bekommen?"
 
-#: templates/faq.haml:85 templates_v2/faq.haml:202
+#: templates/faq.haml:99 templates_v2/faq.haml:202
 msgid ""
 "If you are having technical issues, please contact us here so we can resolve "
 "your problem. and we will get back to you by the next business day (likely "
@@ -8803,30 +8738,30 @@ msgstr ""
 "Problem lösen können. Wir werden Ihnen bis zum nächsten Werktag "
 "(wahrscheinlich früher) antworten."
 
-#: templates/faq.haml:86 templates_v2/faq.haml:205
+#: templates/faq.haml:100 templates_v2/faq.haml:205
 msgid "What if I did not receive my password reset email?"
 msgstr ""
 "Was soll ich tun, wenn ich meine E-Mail zum Zurücksetzen des Passworts nicht "
 "erhalten habe?"
 
-#: templates/faq.haml:87 templates_v2/faq.haml:207
+#: templates/faq.haml:101 templates_v2/faq.haml:207
 msgid "If you did not receive an automated email it may be because:"
 msgstr ""
 "Wenn Sie keine automatisierte E-Mail erhalten haben, könnte Folgendes der "
 "Grund sein:"
 
-#: templates/faq.haml:89 templates_v2/faq.haml:209
+#: templates/faq.haml:103 templates_v2/faq.haml:209
 msgid "There was a typo in your email address"
 msgstr "Es gab einen Tippfehler in Ihrer E-Mail-Adresse."
 
-#: templates/faq.haml:90 templates_v2/faq.haml:210
+#: templates/faq.haml:104 templates_v2/faq.haml:210
 msgid ""
 "Your spam filter may have caught the email; please check your spam folder"
 msgstr ""
 "Die E-Mail kann in Ihrem Spamfilter gelandet sein, überprüfen Sie Ihren "
 "Spamordner."
 
-#: templates/faq.haml:91 templates_v2/faq.haml:211
+#: templates/faq.haml:105 templates_v2/faq.haml:211
 msgid ""
 "You may be using an older browser; we recommend downloading the current "
 "version of Chrome or Firefox"
@@ -8834,7 +8769,7 @@ msgstr ""
 "Sie verwenden eventuell einen älteren Browser. Wir empfehlen den Download "
 "der aktuellen Version von Chrome oder Firefox."
 
-#: templates/faq.haml:92 templates_v2/faq.haml:212
+#: templates/faq.haml:106 templates_v2/faq.haml:212
 msgid ""
 "JavaScript is disabled in your browser; please check your browser settings "
 "and confirm that JavaScript is enabled"
@@ -8842,7 +8777,7 @@ msgstr ""
 "JavaScript ist in Ihrem Browser deaktiviert. Überprüfen Sie Ihre "
 "Browsereinstellungen und bestätigen Sie, dass JavaScript aktiviert ist."
 
-#: templates/faq.haml:93 templates_v2/faq.haml:213
+#: templates/faq.haml:107 templates_v2/faq.haml:213
 msgid ""
 "You have not successfully registered an account with McKinsey Academy' "
 "please try registering again with the same email address (if an account "
@@ -8853,7 +8788,7 @@ msgstr ""
 "registrieren (wenn ein Konto bereits existiert, wird eine Fehlermeldung "
 "bezüglich einer doppelt vorhandenen E-Mail-Adresse angezeigt)."
 
-#: templates/faq.haml:94 templates_v2/faq.haml:216
+#: templates/faq.haml:108 templates_v2/faq.haml:216
 msgid ""
 "What if I have problems with the display (e.g., there are tools missing from "
 "the course display, or I am unable to view video)?"
@@ -8861,7 +8796,7 @@ msgstr ""
 "Was soll ich tun, wenn ich Probleme mit der Anzeige habe (beispielsweise "
 "fehlen Werkzeuge in der Kursanzeige oder ich kann keine Videos ansehen)?"
 
-#: templates/faq.haml:95 templates_v2/faq.haml:218
+#: templates/faq.haml:109 templates_v2/faq.haml:218
 msgid ""
 "Please check your browser and settings - JavaScript must be enabled. We "
 "recommend downloading and using the current version of either Chrome or "
@@ -8871,22 +8806,22 @@ msgstr ""
 "aktiviert sein. Wir empfehlen den Download und die Verwendung der aktuellen "
 "Version von Chrome oder Firefox."
 
-#: templates/faq.haml:96 templates_v2/faq.haml:221
+#: templates/faq.haml:110 templates_v2/faq.haml:221
 msgid "How can I sign up for a McKinsey Academy course or program?"
 msgstr ""
 "Wie kann ich mich für einen Kurs oder ein Programm der McKinsey Academy "
 "anmelden?"
 
-#: templates/faq.haml:97
+#: templates/faq.haml:111
 msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 msgstr ""
 "Bitte <a href=\"mailto:info@mckinseyacademy.com\">kontaktieren Sie uns!</a>"
 
-#: templates/faq.haml:98 templates_v2/faq.haml:228
+#: templates/faq.haml:112 templates_v2/faq.haml:228
 msgid "What if my question isn’t answered here?"
 msgstr "Wie soll ich vorgehen, wenn meine Frage hier nicht beantwortet wurde?"
 
-#: templates/faq.haml:99
+#: templates/faq.haml:113
 msgid ""
 "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a> We’ll do "
 "our best to help."
@@ -8904,10 +8839,6 @@ msgstr "Nutzungsbedingungen"
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "Datenschutzrichtlinie"
-
-#: templates/footer.haml:17 tests/templates_v2/footer.haml:17
-msgid "FAQ"
-msgstr "FAQ"
 
 #: templates/header.haml:24
 msgid "Language :"
@@ -11316,20 +11247,25 @@ msgstr ""
 "Ihrer personenbezogenen Daten einstellen."
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
+#, fuzzy
+#| msgid ""
+#| "If you would like to make a request to access, review, or correct the "
+#| "personal data we have collected about you, or to discuss how we process "
+#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"Bitte kontaktieren Sie unser Support-Team, um den Zugriff auf die von uns "
-"über Sie gesammelten Daten anzufordern, um diese zu prüfen oder zu "
-"korrigieren oder um die Verarbeitung Ihrer persönlichen Daten durch uns zu "
-"erörtern"
+"Wenn Sie einen Antrag auf Zugang, Überprüfung oder Berichtigung der von uns "
+"über Sie erhobenen personenbezogenen Daten stellen möchten oder darüber "
+"diskutieren möchten, wie wir Ihre personenbezogenen Daten verarbeiten, "
+"kontaktieren Sie uns bitte unter folgender Adresse:"
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr "Support-Team"
+msgstr "support"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -11419,6 +11355,14 @@ msgstr ""
 "Direktmarketingzwecke weiter. "
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
+#, fuzzy
+#| msgid ""
+#| "If you are a California resident under the age of 18, and a registered "
+#| "user of McKinsey Academy subject to this Privacy Policy, California "
+#| "Business and Professions Code Section 22581 permits you to request and "
+#| "obtain removal of content or information you have publicly posted. To "
+#| "make such a request, please send an email with a detailed description of "
+#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -11431,8 +11375,9 @@ msgstr ""
 "Academy sind, der dieser Datenschutzrichtlinie unterliegt, erlaubt Ihnen "
 "California Business and Professions Code Section 22581, Inhalte oder "
 "Informationen, die Sie öffentlich gepostet haben, anzufordern oder zu "
-"entfernen. Senden Sie für eine derartige Anfrage eine detaillierte "
-"Beschreibung der spezifischen Inhalte oder Informationen an unser"
+"entfernen. Um eine solche Anfrage zu stellen, senden Sie bitte eine E-Mail "
+"mit einer detaillierten Beschreibung des spezifischen Inhalts oder der "
+"spezifischen Informationen an"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -11493,8 +11438,6 @@ msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
 msgstr ""
-"Bei Fragen oder Anregungen zu unseren Nutzungsbedingungen oder unserer "
-"Datenschutzrichtlinie kontaktieren Sie bitte:"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
@@ -11720,18 +11663,15 @@ msgid "To access the course, click the following link:"
 msgstr "Klicken Sie auf den folgenden Link, um den Kurs aufzurufen:"
 
 #: templates/registration/public_registration_mcka_user.haml:10
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Note that you must be on the McKinsey Network or VPN to access the "
-#| "course. Please contact our team at support@mckinseyacademy.com if you "
-#| "experience any technical issues."
+#, python-format
 msgid ""
 "Note that you must be on the McKinsey Network or VPN to access the course. "
-"Please contact our team at #{support} if you experience any technical issues."
+"Please contact our team at %(support)s if you experience any technical "
+"issues."
 msgstr ""
 "Bitte beachten Sie, dass Sie sich dabei im Netzwerk oder VPN von McKinsey "
 "befinden müssen.Falls Sie technische Probleme haben, kontaktieren Sie unser "
-"Team unter support@mckinseyacademy.com."
+"Team unter %(support)s."
 
 #: templates/registration/public_registration_warning.haml:3
 #, python-brace-format
@@ -12670,34 +12610,21 @@ msgstr ""
 "Sie sind nicht berechtigt, auf die angeforderte Ressource zuzugreifen.\n"
 "                  "
 
-#: templates_v2/403.haml:23
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  If you believe you are seeing this message in error, "
-#| "please visit our\n"
-#| "                  %%a{:href => \"/faq\"} FAQ page\n"
-#| "                  or\n"
-#| "                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support.\n"
-#| "                  "
-msgid ""
-"\n"
-"                  If you believe you are seeing this message in error, "
-"please visit our\n"
-"                  %%a{:href => \"/faq\"} FAQ page\n"
-"                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support.\n"
-"                  "
+#: templates_v2/403.haml:23 templates_v2/not_authorized.haml:18
+msgid "If you believe you are seeing this message in error, please visit our "
 msgstr ""
-"\n"
-"                  Wenn Sie der Meinung sind, diese Nachricht "
-"fälschlicherweise angezeigt zu bekommen, besuchen Sie bitte unsere\n"
-"                  %%a{:href => \"/faq\"} FAQ-Seite                  oder\n"
-"                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-"subject=Mail from Our Site\"} E-Mail-Support.\n"
-"                  "
+"Wenn Sie der Meinung sind, diese Nachricht fälschlicherweise angezeigt zu "
+"bekommen, besuchen Sie bitte unsere"
+
+#: templates_v2/403.haml:24 templates_v2/404.haml:22 templates_v2/500.haml:24
+#: templates_v2/503.haml:20 templates_v2/not_authorized.haml:19
+msgid "FAQ page"
+msgstr "FAQ-Seite "
+
+#: templates_v2/403.haml:25 templates_v2/404.haml:23 templates_v2/500.haml:25
+#: templates_v2/503.haml:21 templates_v2/not_authorized.haml:20
+msgid "or"
+msgstr "oder"
 
 #: templates_v2/404.haml:16
 msgid "Page not found."
@@ -12707,33 +12634,9 @@ msgstr "Seite nicht gefunden."
 msgid "The page you’re looking for may have been moved or renamed."
 msgstr "Die gesuchte Seite wurde verschoben oder umbenannt."
 
-#: templates_v2/404.haml:21
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  If you continue to have issues, please visit our\n"
-#| "                  %%a{:href => \"/faq\"} FAQ page\n"
-#| "                  or\n"
-#| "                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support\n"
-#| "                  "
-msgid ""
-"\n"
-"                  If you continue to have issues, please visit our\n"
-"                  %%a{:href => \"/faq\"} FAQ page\n"
-"                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support\n"
-"                  "
-msgstr ""
-"\n"
-"                  Sollten Sie weiterhin Probleme haben, besuchen Sie bitte "
-"unsere\n"
-"                  %%a{:href => \"/faq\"} FAQ-Seite\n"
-"                  oder\n"
-"                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-"subject=Mail from Our Site\"} E-Mail-Support\n"
-"                  "
+#: templates_v2/404.haml:21 templates_v2/500.haml:23 templates_v2/503.haml:19
+msgid "If you continue to have issues, please visit our"
+msgstr "Sollten Sie weiterhin Probleme haben, besuchen Sie bitte unsere"
 
 #: templates_v2/500.haml:16
 msgid "Something has gone wrong."
@@ -12749,33 +12652,6 @@ msgstr ""
 "\n"
 "Ein Fehler ist aufgetreten. Unser Team wurde über das Problem benachrichtigt "
 "und wird sich darum kümmern.                  "
-
-#: templates_v2/500.haml:23 templates_v2/503.haml:19
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  If you continue to have issues, please visit our\n"
-#| "                  %%a{:href => \"/faq\"} FAQ page\n"
-#| "                  or\n"
-#| "                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support.\n"
-#| "                  "
-msgid ""
-"\n"
-"                  If you continue to have issues, please visit our\n"
-"                  %%a{:href => \"/faq\"} FAQ page\n"
-"                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support.\n"
-"                  "
-msgstr ""
-"\n"
-"                  Wenn Sie weiterhin Probleme haben, besuchen Sie bitte "
-"unsere\n"
-"                  %%a{:href => \"/faq\"} FAQ-Seite                  oder\n"
-"                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-"subject=Mail from Our Site\"} E-Mail-Support.\n"
-"                  "
 
 #: templates_v2/503.haml:16
 msgid "Service is temporarily unavailable."
@@ -12835,8 +12711,10 @@ msgstr "FAQS LESEN"
 #: templates_v2/accounts/public_registration.haml:99
 #: templates_v2/accounts/sso_terms_of_service.haml:29
 #: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
+#, fuzzy
+#| msgid "Contact: "
 msgid "Contact Support"
-msgstr "Support kontaktieren"
+msgstr "Kontakt: "
 
 #: templates_v2/accounts/activate.haml:85
 #: templates_v2/accounts/activate.haml:104
@@ -13428,61 +13306,6 @@ msgstr "Teilnehmer-FAQs"
 msgid "Access Related:"
 msgstr "Über dne Zugang:"
 
-#: templates_v2/faq.haml:48
-msgid "To change your email address, please email"
-msgstr "Um Ihre E-Mail-Adresse zu ändern, senden Sie bitte eine E-Mail"
-
-#: templates_v2/faq.haml:49 templates_v2/faq.haml:56 templates_v2/faq.haml:63
-#: templates_v2/faq.haml:70
-#, fuzzy
-#| msgid "Email support"
-msgid "support"
-msgstr "E-Mail an das Support-Team"
-
-#: templates_v2/faq.haml:55
-msgid ""
-"If you've forgotten your password, please try resetting it by clicking "
-"'Forgot my password' on the log in screen. If that does not work, please "
-"email"
-msgstr ""
-"Falls Sie Ihr Passwort vergessen haben, setzen Sie es zurück, indem Sie auf "
-"der Anmeldeseite auf \"Passwort vergessen\" klicken. Sollte dies nicht "
-"funktionieren, senden Sie bitte eine E-Mail an "
-
-#: templates_v2/faq.haml:62
-msgid ""
-"The drop down for moving between multiple courses is on the far left of the "
-"second (lighter blue) navigation bar. If the course you are supposed to be "
-"enrolled in does not appear in that drop down menu, please email"
-msgstr ""
-"Die Auswahlliste, mit der Sie zwischen verschiedenen Kursen navigieren "
-"können, befindet sich links außen auf der zweiten (hellblauen) "
-"Navigationsleiste. Falls der Kurs, für den Sie angemeldet sind, dort nicht "
-"angezeigt wird, schicken Sie eine Email an"
-
-#: templates_v2/faq.haml:69
-msgid ""
-"We try to keep our email communication at an optimal level to ensure all "
-"participants know what is happening in the course without cluttering your "
-"inbox. Our emails contain important information about what's expected each "
-"week and additional curated content suggestions. If you no longer wish to "
-"receive emails, please email"
-msgstr ""
-"Wir versuchen, den E-Mail-Verkehr auf einem optimalen Level zu halten, um "
-"sicherzustellen, dass alle Teilnehmer wissen, was in dem Kurs passiert, ohne "
-"ihre Postfächer zu überladen. Unsere E-Mails beinhalten wichtige "
-"Informationen für die nächste Woche und zusätzliche inhaltliche Vorschläge. "
-"Sollten Sie keine weiteren E-Mails erhalten wollen, senden Sie eine Mail an "
-
-#: templates_v2/faq.haml:71
-msgid ""
-"(or click unsubscribe at the bottom of any email you receive from us). Be "
-"sure to check the \"Announcements\" page frequently to stay up to date!"
-msgstr ""
-"(oder klicken Sie am Ende einer beliebigen E-Mail von uns auf den Link zum "
-"Abmelden). Bitte besuchen unsere Ankündigungsseite regelmäßig, um auf dem "
-"Laufenden zu bleiben!"
-
 #: templates_v2/faq.haml:72
 msgid "Courses Related:"
 msgstr "Über den Kurs:"
@@ -13497,39 +13320,6 @@ msgstr ""
 " Sie müssen alle Gruppenarbeiten und Feedback-Aktivitäten abschließen und "
 "eine Gesamtnote von mindestens 70%% erreichen, um auf ein "
 "Abschlusszertifikat hinzuarbeiten. Ihre Kursnote wird wie folgt berechnet: "
-
-#: templates_v2/faq.haml:132
-msgid "If you have any questions about a grade you received, please email"
-msgstr ""
-"Wenn Sie Fragen zu einer erhaltenen Note haben, schicken Sie eine E-Mail an "
-
-#: templates_v2/faq.haml:133
-#, fuzzy
-#| msgid "TA"
-msgid "TAs"
-msgstr "TA"
-
-#: templates_v2/faq.haml:149
-msgid ""
-"You are part of a cohort of participants you can engage with questions as "
-"well as support from the TAs who monitor the course. Take a look at the "
-"course's discussion forum where you can review questions, answers and "
-"comments from fellow participants, as well as post a question. You can also "
-"reach out to the McKinsey teaching assistants by"
-msgstr ""
-"Sie gehören zu einem Jahrgang an Teilnehmern, mit denen Sie sich austauschen "
-"können. Zudem können Sie von den TAs des jeweiligen Kurses Support erhalten. "
-"Schauen Sie sich das Diskussionsforum des Kurses an, wo Sie Fragen, "
-"Antworten und Kommentare von den anderen Teilnehmern lesen sowie Fragen "
-"posten können. Sie können auch die Assistenten von McKinsey kontaktieren, "
-
-#: templates_v2/faq.haml:150
-msgid "emailing them"
-msgstr "ihnen eine E-Mail schreiben"
-
-#: templates_v2/faq.haml:151
-msgid "and they will get back to you as soon as possible."
-msgstr "Danke. Wir werden uns so bald wie möglich bei Ihnen melden."
 
 #: templates_v2/faq.haml:169
 msgid ""
@@ -13976,33 +13766,9 @@ msgstr ""
 msgid "You are not authorized to view this page."
 msgstr "Sie sind nicht autorisiert, diese Seite anzuzeigen."
 
-#: templates_v2/not_authorized.haml:18
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                If you believe you are seeing this message in error, "
-#| "please visit our\n"
-#| "                %%a{:href => \"/faq\"} FAQ page\n"
-#| "                or\n"
-#| "                %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support.\n"
-#| "                "
-msgid ""
-"\n"
-"                If you believe you are seeing this message in error, please "
-"visit our\n"
-"                %%a{:href => \"/faq\"} FAQ page\n"
-"                or\n"
-"                %%a{:href => \"#{support}\"} email support.\n"
-"                "
-msgstr ""
-"\n"
-"                  Wenn Sie der Meinung sind, diese Nachricht "
-"fälschlicherweise angezeigt zu bekommen, besuchen Sie bitte unsere\n"
-"                  %%a{:href => \"/faq\"} FAQ-Seite                  oder\n"
-"                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-"subject=Mail from Our Site\"} E-Mail-Support.\n"
-"                  "
+#: templates_v2/not_authorized.haml:21
+msgid "Email Support"
+msgstr "E-Mail an das Support-Team"
 
 #: templates_v2/registration/password_reset_confirm.haml:15
 msgid "Your new password must be different from your previous password."
@@ -14071,99 +13837,3 @@ msgstr "Vorname: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nachname: {}"
-
-#~ msgid "Email Support"
-#~ msgstr "E-Mail an das Support-Team"
-
-#, fuzzy
-#~| msgid ""
-#~| "\n"
-#~| "                  Our team has been notified of the problem. Refresh "
-#~| "this page.\n"
-#~| "                  "
-#~ msgid ""
-#~ "\n"
-#~ "                        out of %(total)s members in your cohort.\n"
-#~ "                        "
-#~ msgstr ""
-#~ "\n"
-#~ "Ein Fehler ist aufgetreten. Unser Team wurde über das Problem "
-#~ "benachrichtigt und wird sich darum kümmern.                  "
-
-#~ msgid "Report is TBD"
-#~ msgstr "Bericht noch offen"
-
-#~ msgid ""
-#~ "If you have any questions about our Privacy Policy or if you require any "
-#~ "assistance in navigating or reading the Terms or this Privacy Policy, "
-#~ "please contact us at:"
-#~ msgstr ""
-#~ "Sollten Sie Fragen zu unserer Datenschutzerklärung haben oder Hilfe beim "
-#~ "Navigieren oder Lesen der Bedingungen benötigen, kontaktieren Sie uns "
-#~ "bitte unter:"
-
-#~ msgid ""
-#~ "If you have any questions about these Terms, our Privacy Policy, or if "
-#~ "you require any assistance in navigating McKinsey Academy, these Terms, "
-#~ "or our Privacy Policy, please contact us at:"
-#~ msgstr ""
-#~ "Bei Fragen zu diesen Bedingungen, unserer Datenschutzrichtlinie, oder "
-#~ "wenn Sie Unterstützung bei der Navigation durch die McKinsey Academy, "
-#~ "diese Bedingungen oder unsere Datenschutzrichtlinie benötigen, wenden Sie "
-#~ "sich bitte an uns unter:"
-
-#, fuzzy
-#~| msgid ""
-#~| "with the username or email address associated with your account. Save or "
-#~| "bookmark this URL to easily access your course or program in the future. "
-#~| "Reset your password anytime by using the"
-#~ msgid ""
-#~ "\n"
-#~ "            %%p \n"
-#~ "                Once registered, you can\n"
-#~ "                %%a{:href => \"/login\"} login\n"
-#~ "                with the username or email address associated with your "
-#~ "account. Save or bookmark this URL to easily access your course or "
-#~ "program in the future. Reset your password anytime by using the\n"
-#~ "                %%a{:href => \"/?reset-password\"} Forgot password?\n"
-#~ "                link.\n"
-#~ "        "
-#~ msgstr ""
-#~ "sich mit dem Benutzernamen oder der E-Mail-Adresse Ihres Kontos.Speichern "
-#~ "Sie diese URL bzw. setzen Sie ein Lesezeichen, um später leichter auf "
-#~ "Ihren Kurs oder Ihr Programm zugreifen zu können.Sie können Ihr Passwort "
-#~ "jederzeit zurücksetzen, indem Sie auf "
-
-#~ msgid "Accept"
-#~ msgstr "Zugang"
-
-#~ msgid ""
-#~ "If you've forgotten your password, please try resetting it by clicking "
-#~ "\"Forgot my password\" on the log in screen. If that does not work, "
-#~ "please email <a href=\"mailto:support@mckinseyacademy.com"
-#~ "\">support@mckinseyacademy.com</a>."
-#~ msgstr ""
-#~ "Falls Sie Ihr Passwort vergessen haben, setzen Sie es zurück, indem Sie "
-#~ "auf der Anmeldeseite auf \"Passwort vergessen\" klicken. Sollte dies "
-#~ "nicht funktionieren, senden Sie bitte eine E-Mail an <a href=\"mailto:"
-#~ "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
-
-#~ msgid ""
-#~ "The drop down for moving between multiple courses is on the far left of "
-#~ "the second (lighter blue) navigation bar. If the course you are supposed "
-#~ "to be enrolled in does not appear in that drop down menu, please email <a "
-#~ "href=\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</"
-#~ "a>."
-#~ msgstr ""
-#~ "Die Auswahlliste, mit der Sie zwischen verschiedenen Kursen navigieren "
-#~ "können, befindet sich links außen auf der zweiten (hellblauen) "
-#~ "Navigationsleiste. Falls der Kurs, für den Sie angemeldet sind, dort "
-#~ "nicht angezeigt wird, schicken Sie eine Email an <a href=\"mailto:"
-#~ "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
-
-#~ msgid ""
-#~ "If you have any questions about a grade you received, please email <a "
-#~ "href=\"mailto:tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>."
-#~ msgstr ""
-#~ "Wenn Sie Fragen zu einer erhaltenen Note haben, schicken Sie eine E-Mail "
-#~ "an <a href=\"mailto:tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>."

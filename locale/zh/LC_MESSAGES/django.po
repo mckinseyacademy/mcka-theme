@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-19 07:53+0000\n"
+"POT-Creation-Date: 2019-06-19 15:24+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2301,7 +2301,7 @@ msgstr "此课程没有可用的小组项目"
 #: templates/admin/course_meta_content/item_list.haml:56
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
-#: templates/courses/course_progress.haml:70 templates/faq.haml:39
+#: templates/courses/course_progress.haml:75 templates/faq.haml:48
 #: templates_v2/courses/course_progress_v2.haml:233
 #: templates_v2/courses/course_progress_v2.haml:247 templates_v2/faq.haml:88
 msgid "Group Work"
@@ -2409,7 +2409,7 @@ msgstr "状态"
 
 #: admin/views.py:4639 templates/admin/client-admin/course_info.haml:79
 #: templates/courses/content_page/course_menu.haml:46
-#: templates/courses/course_progress.haml:66
+#: templates/courses/course_progress.haml:71
 #: templates_v2/admin/courses/course_details.haml:92
 msgid "Completed"
 msgstr "已完成"
@@ -2999,19 +2999,31 @@ msgstr "抱歉！"
 msgid "You don't have permission to access the resource you requested."
 msgstr "您无权访问请求的资源。"
 
-#: templates/403.haml:12 templates/404.haml:12 templates/500.haml:12
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Please go back to <a href='https://www.mckinseyacademy.com'>www."
-#| "mckinseyacademy.com</a>, or contact us at <a href:'mailto:"
-#| "support@mckinseyacademy.com'>support@mckinseyacademy.com</a>."
-msgid ""
-"Please go back to <a href='https://www.mckinseyacademy.com'>www."
-"mckinseyacademy.com</a>, or contact us at <a href:'#{support}'>support</a>."
-msgstr ""
-"请返回 <a href='https://www.mckinseyacademy.com'>www.mckinseyacademy.com</a> "
-"或发送电子邮件至 <a href:'mailto:support@mckinseyacademy.com'="
-"\"\">support@mckinseyacademy.com</a> 与我们联系。"
+#: templates/403.haml:13 templates/404.haml:13 templates/500.haml:13
+msgid "Please go back to "
+msgstr "请返回 "
+
+#: templates/403.haml:15 templates/404.haml:15 templates/500.haml:15
+msgid ", or contact us at"
+msgstr " 或发送电子邮件至 "
+
+#: templates/403.haml:16 templates/404.haml:16 templates/500.haml:16
+#: templates/accounts/sso_error.haml:19 templates/courses/course_cohort.haml:19
+#: templates/courses/course_discussion.haml:19
+#: templates/courses/course_group_work.haml:19
+#: templates/courses/course_group_work.haml:31
+#: templates/courses/course_navigation.haml:21
+#: templates/courses/course_news.haml:18
+#: templates/courses/course_overview.haml:18
+#: templates/courses/course_progress.haml:24
+#: templates/courses/course_resources.haml:18 templates/faq.haml:26
+#: templates/faq.haml:30 templates/faq.haml:34 templates/faq.haml:38
+#: templates_v2/403.haml:26 templates_v2/404.haml:24 templates_v2/500.haml:26
+#: templates_v2/503.haml:22 templates_v2/accounts/sso_error.haml:21
+#: templates_v2/faq.haml:49 templates_v2/faq.haml:56 templates_v2/faq.haml:63
+#: templates_v2/faq.haml:70
+msgid "support"
+msgstr "支持"
 
 #: templates/404.haml:8
 msgid "404: Page not found"
@@ -3356,14 +3368,8 @@ msgid ""
 msgstr "出现问题，我们无法处理贵公司登录提供程序的登录信息。"
 
 #: templates/accounts/sso_error.haml:18 templates_v2/accounts/sso_error.haml:20
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Please contact us at <a href:'mailto:support@mckinseyacademy."
-#| "com'>support@mckinseyacademy.com</a>. "
-msgid " Please contact us at <a href:'#{support}'>support</a>. "
-msgstr ""
-"请发送电子邮件至 <a href:'mailto:support@mckinseyacademy.com'="
-"\"\">support@mckinseyacademy.com</a> 与我们联系。"
+msgid "Please contact us at "
+msgstr "请发送电子邮件至 "
 
 #: templates/accounts/upload_profile_image.haml:8
 #: templates/admin/client/edit_mobile_app_image.haml:13
@@ -3581,8 +3587,8 @@ msgstr "基于参与者当前评分的平均评分。"
 
 #: templates/admin/client-admin/course_analytics.haml:62
 #: templates/admin/client-admin/course_analytics.haml:79
-#: templates/courses/course_cohort.haml:33
-#: templates/courses/course_cohort.haml:103
+#: templates/courses/course_cohort.haml:38
+#: templates/courses/course_cohort.haml:108
 #: templates/courses/visualizations/course_engagement.haml:15
 #: templates/courses/visualizations/course_proficiency.haml:16
 #: templates/courses/visualizations/course_progress.haml:16
@@ -4408,7 +4414,7 @@ msgid "This is the course feature list."
 msgstr "这是课程功能列表。"
 
 #: templates/admin/course_meta_content/item_list.haml:48
-#: templates/courses/course_cohort.haml:228
+#: templates/courses/course_cohort.haml:233
 msgid "Discussions"
 msgstr "讨论"
 
@@ -4468,7 +4474,7 @@ msgstr "学员仪表板"
 #: templates/courses/content_page/course_tabs.haml:42
 #: templates/courses/course_learner_dashboard_header.haml:30
 #: templates/courses/course_learner_dashboard_header.haml:33
-#: templates/courses/course_resources.haml:27
+#: templates/courses/course_resources.haml:32
 #: templates_v2/courses/course_learner_dashboard_header.haml:22
 #: templates_v2/courses/course_navigation.haml:36
 #: templates_v2/courses/course_resources.haml:14
@@ -5804,7 +5810,7 @@ msgstr "使用此表单添加计划"
 #: templates/admin/program/detail_header.haml:7
 #: templates/admin/program/detail_header.haml:10
 #: templates/admin/workgroup/list_layout.haml:9
-#: templates/courses/course_overview.haml:39
+#: templates/courses/course_overview.haml:45
 #: templates_v2/courses/course_navigation.haml:23
 #: templates_v2/courses/course_overview.haml:25
 msgid "Overview"
@@ -6046,7 +6052,7 @@ msgstr "在此添加一条消息来描述负责人名单"
 #: templates/admin/workgroup/project_assignment.haml:19
 #: templates/admin/workgroup/workgroup_detail_report.haml:12
 #: templates/admin/workgroup/workgroup_report.haml:12
-#: templates/courses/course_progress.haml:103
+#: templates/courses/course_progress.haml:108
 #: templates/courses/course_progress_v2.haml:172
 #: templates/courses/course_progress_v2.haml:185
 msgid "Group Work:"
@@ -6219,15 +6225,12 @@ msgstr "您的课程证书已生成，请单击以下链接查看您的证书"
 #: templates/certificates/course_certificate_notification_email.haml:8
 #: templates/registration/public_registration_activation_link.haml:14
 #: templates/registration/public_registration_existing.haml:12
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Please contact our team at support@mckinseyacademy.com if you experience "
-#| "any technical issues."
+#, python-format
 msgid ""
-"Please contact our team at #{support} if you experience any technical issues."
+"Please contact our team at %(support)s if you experience any technical "
+"issues."
 msgstr ""
-"如果您遇到任何技术问题，请发送电子邮件至 support@mckinseyacademy.com 来联系我"
-"们的团队。"
+"如果您遇到任何技术问题，请发送电子邮件至 %(support)s 来联系我们的团队。"
 
 #: templates/certificates/course_certificate_notification_email.haml:11
 #: templates/registration/public_registration_activation_link.haml:17
@@ -6388,14 +6391,14 @@ msgid "Course Materials"
 msgstr "课程材料"
 
 #: templates/courses/content_page/course_tabs.haml:37
-#: templates/courses/course_news.haml:24
+#: templates/courses/course_news.haml:30
 #: templates_v2/courses/course_navigation.haml:31
 #: templates_v2/courses/course_news.haml:15
 msgid "Announcements"
 msgstr "公告"
 
 #: templates/courses/content_page/course_tabs.haml:39
-#: templates/courses/course_overview.haml:53
+#: templates/courses/course_overview.haml:59
 #: templates_v2/courses/course_navigation.haml:33
 #: templates_v2/courses/course_overview.haml:41
 msgid "Course Overview"
@@ -6447,32 +6450,55 @@ msgstr "%(module_custom_label)s %(lesson_index)s %(lesson_count)s"
 msgid "| Cohort | Courses | McKinsey Academy"
 msgstr "| 群组 | 课程 | McKinsey Academy"
 
-#: templates/courses/course_cohort.haml:15
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to interact with the cohort map and leaderboards. "
-#| "You may also find answers to your questions in the <a href=\"/faq\">FAQ</"
-#| "a>. Can’t find the answer there? Please contact us directly at <a href="
-#| "\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a> "
-#| "and we’ll sort it out for you. "
-msgid ""
-" Below are helpful tips to interact with the cohort map and leaderboards. "
-"You may also find answers to your questions in the <a href=\"/faq\">FAQ</a>. "
-"Can’t find the answer there? Please contact us directly at <a href="
-"\"#{support}\">support</a> and we’ll sort it out for you. "
-msgstr ""
-"以下是与群组地图和排行榜交互的有用提示。您也可以在<a href=\"/faq\">常见问题</"
-"a>中找到问题的答案。找不到答案？ 请直接发送电子邮件至 <a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> 与我们联系，我"
-"们将为您解决。"
-
 #: templates/courses/course_cohort.haml:16
+msgid ""
+"Below are helpful tips to interact with the cohort map and leaderboards. You "
+"may also find answers to your questions in the "
+msgstr " 以下是查看课程材料（包括公告、课程概述和资源）的有用提示。您也可以在"
+
+#: templates/courses/course_cohort.haml:17
+#: templates/courses/course_discussion.haml:17
+#: templates/courses/course_group_work.haml:17
+#: templates/courses/course_group_work.haml:29
+#: templates/courses/course_navigation.haml:19
+#: templates/courses/course_news.haml:16
+#: templates/courses/course_overview.haml:16
+#: templates/courses/course_progress.haml:22
+#: templates/courses/course_resources.haml:16 templates/footer.haml:17
+#: tests/templates_v2/footer.haml:17
+msgid "FAQ"
+msgstr "常见问题"
+
+#: templates/courses/course_cohort.haml:18
+#: templates/courses/course_discussion.haml:18
+#: templates/courses/course_group_work.haml:18
+#: templates/courses/course_group_work.haml:30
+#: templates/courses/course_navigation.haml:20
+#: templates/courses/course_news.haml:17
+#: templates/courses/course_overview.haml:17
+#: templates/courses/course_progress.haml:23
+#: templates/courses/course_resources.haml:17
+msgid "Can’t find the answer there? Please contact us directly at "
+msgstr "中找到您问题的答案。找不到答案？ 请直接发送电子邮件至 "
+
+#: templates/courses/course_cohort.haml:20
+#: templates/courses/course_discussion.haml:20
+#: templates/courses/course_group_work.haml:20
+#: templates/courses/course_navigation.haml:22
+#: templates/courses/course_news.haml:19
+#: templates/courses/course_overview.haml:19
+#: templates/courses/course_progress.haml:25
+#: templates/courses/course_resources.haml:19
+msgid " and we’ll sort it out for you."
+msgstr " 与我们联系，我们将为您解决。"
+
+#: templates/courses/course_cohort.haml:21
 msgid ""
 " Access the cohort using the <i class=\"fa fa-globe\"></i> icon in the main "
 "navigation bar. "
 msgstr " 使用主导航栏中的 <i class=\"fa fa-globe\"></i> 图标访问群组。"
 
-#: templates/courses/course_cohort.haml:17
+#: templates/courses/course_cohort.haml:22
 msgid ""
 "COHORT MAP displays your group members, your McKinsey TA, and the number of "
 "cohort participants from various cities. The details on the number of "
@@ -6482,11 +6508,11 @@ msgstr ""
 "“群组地图”显示您的小组成员、麦肯锡助教以及来自不同城市的群组参与者人数。有关"
 "贵公司参与者人数和群组参与者总数的详细信息均显示在该地图下。"
 
-#: templates/courses/course_cohort.haml:18
+#: templates/courses/course_cohort.haml:23
 msgid "You can email your McKinsey TA who is displayed on the map"
 msgstr "您可以向地图上显示的麦肯锡助教发送电子邮件"
 
-#: templates/courses/course_cohort.haml:19
+#: templates/courses/course_cohort.haml:24
 msgid ""
 "LEADERBOARDS display the top participants across proficiency, progress, and "
 "engagement, as well as your own ranking compared to the cohort average"
@@ -6494,33 +6520,33 @@ msgstr ""
 "“排行榜”显示在熟练程度、进度和参与度方面名列前茅的参与者，以及您的个人排名与"
 "群组平均排名的比较"
 
-#: templates/courses/course_cohort.haml:20
-#: templates/courses/course_discussion.haml:21
-#: templates/courses/course_navigation.haml:47
-#: templates/courses/course_news.haml:19
-#: templates/courses/course_overview.haml:22
-#: templates/courses/course_resources.haml:22
+#: templates/courses/course_cohort.haml:25
+#: templates/courses/course_discussion.haml:26
+#: templates/courses/course_navigation.haml:52
+#: templates/courses/course_news.haml:25
+#: templates/courses/course_overview.haml:28
+#: templates/courses/course_resources.haml:27
 msgid "This video walks you through the learner experience:"
 msgstr "本视频将带您了解学员体验："
 
-#: templates/courses/course_cohort.haml:26
+#: templates/courses/course_cohort.haml:31
 msgid "Leaderboards"
 msgstr "排行榜"
 
-#: templates/courses/course_cohort.haml:32
+#: templates/courses/course_cohort.haml:37
 #: templates/courses/visualizations/course_proficiency.haml:8
 #: templates_v2/faq.haml:168
 msgid "Proficiency:"
 msgstr "熟练程度："
 
-#: templates/courses/course_cohort.haml:35
+#: templates/courses/course_cohort.haml:40
 #: templates_v2/courses/course_cohort.haml:184
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the proficiency leaderboard "
 msgstr " 作为 %(role_user)s 用户，您不会出现在熟练程度排行榜上"
 
-#: templates/courses/course_cohort.haml:37
+#: templates/courses/course_cohort.haml:42
 #, python-format
 msgid ""
 " your proficiency position: <br><span>%(position)s</span> with <span>"
@@ -6529,54 +6555,54 @@ msgstr ""
 " 您的熟练程度排名：<br><span>%(position)s</span> (<span>%(position_value)s</"
 "span>)"
 
-#: templates/courses/course_cohort.haml:39
+#: templates/courses/course_cohort.haml:44
 msgid "your proficiency position <br> will be displayed here"
 msgstr "您的熟练程度排名<br>将显示在此处"
-
-#: templates/courses/course_cohort.haml:53
-#: templates/courses/course_cohort.haml:73
-#: templates/courses/course_cohort.haml:93
-#: templates/courses/course_cohort.haml:123
-#: templates/courses/course_cohort.haml:140
-#: templates/courses/course_cohort.haml:157
-#: templates/courses/course_cohort.haml:186
-#: templates/courses/course_cohort.haml:203
-#: templates/courses/course_cohort.haml:220 templates_v2/header.haml:66
-msgid "username"
-msgstr "用户名"
-
-#: templates/courses/course_cohort.haml:55
-#: templates/courses/course_cohort.haml:75
-#: templates/courses/course_cohort.haml:95
-#: templates/courses/course_cohort.haml:124
-#: templates/courses/course_cohort.haml:141
-#: templates/courses/course_cohort.haml:158
-#: templates/courses/course_cohort.haml:187
-#: templates/courses/course_cohort.haml:204
-#: templates/courses/course_cohort.haml:221
-msgid "title"
-msgstr "标题"
 
 #: templates/courses/course_cohort.haml:58
 #: templates/courses/course_cohort.haml:78
 #: templates/courses/course_cohort.haml:98
+#: templates/courses/course_cohort.haml:128
+#: templates/courses/course_cohort.haml:145
+#: templates/courses/course_cohort.haml:162
+#: templates/courses/course_cohort.haml:191
+#: templates/courses/course_cohort.haml:208
+#: templates/courses/course_cohort.haml:225 templates_v2/header.haml:66
+msgid "username"
+msgstr "用户名"
+
+#: templates/courses/course_cohort.haml:60
+#: templates/courses/course_cohort.haml:80
+#: templates/courses/course_cohort.haml:100
+#: templates/courses/course_cohort.haml:129
+#: templates/courses/course_cohort.haml:146
+#: templates/courses/course_cohort.haml:163
+#: templates/courses/course_cohort.haml:192
+#: templates/courses/course_cohort.haml:209
+#: templates/courses/course_cohort.haml:226
+msgid "title"
+msgstr "标题"
+
+#: templates/courses/course_cohort.haml:63
+#: templates/courses/course_cohort.haml:83
+#: templates/courses/course_cohort.haml:103
 msgid "100"
 msgstr "100"
 
-#: templates/courses/course_cohort.haml:102
-#: templates/courses/course_progress.haml:84
+#: templates/courses/course_cohort.haml:107
+#: templates/courses/course_progress.haml:89
 #: templates/courses/visualizations/course_progress.haml:8
 #: templates_v2/faq.haml:171
 msgid "Progress:"
 msgstr "进度："
 
-#: templates/courses/course_cohort.haml:105
+#: templates/courses/course_cohort.haml:110
 #: templates_v2/courses/course_cohort.haml:24
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr " 作为 %(role_user)s 用户，您不会出现在进度排行榜上"
 
-#: templates/courses/course_cohort.haml:107
+#: templates/courses/course_cohort.haml:112
 #, python-format
 msgid ""
 " your progress position: <br><span>%(position)s</span> with <span>"
@@ -6585,34 +6611,34 @@ msgstr ""
 " 您的进度排名：<br><span>%(position)s</span> (<span>%(progress_value)s%%</"
 "span>)"
 
-#: templates/courses/course_cohort.haml:109
+#: templates/courses/course_cohort.haml:114
 msgid "your progress position <br> will be displayed here"
 msgstr "您的进度排名<br>将显示在此处"
 
-#: templates/courses/course_cohort.haml:160
+#: templates/courses/course_cohort.haml:165
 #, python-format
 msgid "100%%"
 msgstr "100%%"
 
-#: templates/courses/course_cohort.haml:165
+#: templates/courses/course_cohort.haml:170
 #: templates/courses/visualizations/course_engagement.haml:8
 #: templates_v2/faq.haml:174
 msgid "Engagement:"
 msgstr "参与度："
 
-#: templates/courses/course_cohort.haml:166
+#: templates/courses/course_cohort.haml:171
 #, python-format
 msgid " cohort average = %(course_avg)s points "
 msgstr " 群组平均分 = %(course_avg)s 分"
 
-#: templates/courses/course_cohort.haml:168
+#: templates/courses/course_cohort.haml:173
 #: templates_v2/courses/course_cohort.haml:103
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
 msgstr " 作为 %(role_user)s 用户，您不会出现在参与度排行榜上"
 
-#: templates/courses/course_cohort.haml:170
+#: templates/courses/course_cohort.haml:175
 #, python-format
 msgid ""
 "  your engagement position: <br><span>%(position)s</span> with <span>"
@@ -6621,17 +6647,17 @@ msgstr ""
 " 您的参与度排名：<br><span>%(position)s</span>（<span>%(points)s 分）。</"
 "span>"
 
-#: templates/courses/course_cohort.haml:172
+#: templates/courses/course_cohort.haml:177
 msgid "your engagement position <br> will be displayed here"
 msgstr "您的参与度排名<br>将显示在此处"
 
-#: templates/courses/course_cohort.haml:189
-#: templates/courses/course_cohort.haml:206
-#: templates/courses/course_cohort.haml:223
+#: templates/courses/course_cohort.haml:194
+#: templates/courses/course_cohort.haml:211
+#: templates/courses/course_cohort.haml:228
 msgid "100 pts."
 msgstr "100 分"
 
-#: templates/courses/course_cohort.haml:229
+#: templates/courses/course_cohort.haml:234
 msgid ""
 "Even if we cannot directly shape an outcome, a model’s prediction may be "
 "communicated in a way that alters behavior and indirectly shapes it."
@@ -6639,29 +6665,29 @@ msgstr ""
 "即使我们不能直接左右结果，模型预测也能以改变行为和间接影响行为的方式进行交"
 "互。"
 
-#: templates/courses/course_cohort.haml:233
+#: templates/courses/course_cohort.haml:238
 msgid "gwensisco"
 msgstr "Gwensisco"
 
-#: templates/courses/course_cohort.haml:234
+#: templates/courses/course_cohort.haml:239
 msgid "Media Buyer"
 msgstr "媒介采购员"
 
-#: templates/courses/course_cohort.haml:237
+#: templates/courses/course_cohort.haml:242
 msgid "Recommendations"
 msgstr "推荐"
 
-#: templates/courses/course_cohort.haml:240
+#: templates/courses/course_cohort.haml:245
 msgid "Scientists Without Borders"
 msgstr "无国界科学家组织 (Scientists Without Borders)"
 
-#: templates/courses/course_cohort.haml:241
+#: templates/courses/course_cohort.haml:246
 msgid ""
 "A worldwide community of changemakers collaborating to accelerate solutions "
 "to urgent development challenges."
 msgstr "一个由变革者组成的全球社区，携手加快推进应对紧急发展挑战的解决方案。"
 
-#: templates/courses/course_cohort.haml:243
+#: templates/courses/course_cohort.haml:248
 msgid "Suggest a Link"
 msgstr "建议链接"
 
@@ -6672,34 +6698,20 @@ msgstr "建议链接"
 msgid " | Discussion | Courses | McKinsey Academy"
 msgstr " | 讨论 | 课程 | 麦肯锡学院"
 
-#: templates/courses/course_discussion.haml:15
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to engage in discussions with your cohort or "
-#| "group members (via private discussions). You may also find answers to "
-#| "your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-#| "there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
-msgid ""
-" Below are helpful tips to engage in discussions with your cohort or group "
-"members (via private discussions). You may also find answers to your "
-"questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer there? "
-"Please contact us directly at <a href=\"#{support}\">support</a> and we’ll "
-"sort it out for you. "
-msgstr ""
-" 以下是与群组或小组成员进行讨论（通过私人讨论）的有用提示。您也可以在<a href="
-"\"/faq\">常见问题</a>中找到问题的答案。找不到答案？ 请直接发送电子邮件至 <a "
-"href=\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a> "
-"与我们联系，我们将为您解决。"
-
 #: templates/courses/course_discussion.haml:16
+msgid ""
+"Below are helpful tips to engage in discussions with your cohort or group "
+"members (via private discussions). You may also find answers to your "
+"questions in the "
+msgstr " 以下是与群组或小组成员进行讨论（通过私人讨论）的有用提示。您也可以在"
+
+#: templates/courses/course_discussion.haml:21
 msgid ""
 " Access discussions using the <i class=\"fa fa-comments-o\"></i> icon in the "
 "main navigation bar "
 msgstr " 使用主导航栏中的 <i class=\"fa fa-comments-o\"></i> 图标访问讨论"
 
-#: templates/courses/course_discussion.haml:17
+#: templates/courses/course_discussion.haml:22
 msgid ""
 " FIND DISCUSSIONS tools help you focus on specific topics <i class=\"fa fa-"
 "bars\"></i> search for specific posts, and sort by date, vote, or comments "
@@ -6708,7 +6720,7 @@ msgstr ""
 " “查找讨论”工具帮助您专注于特定主题、<i class=\"fa fa-bars\"></i>搜索特定帖子"
 "并按日期、票数或评论进行排序<i class=\"fa fa-search\"></i>"
 
-#: templates/courses/course_discussion.haml:18
+#: templates/courses/course_discussion.haml:23
 msgid ""
 " ENGAGE WITH POSTS features allow you to upvote posts and good responses <i "
 "class=\"fa fa-plus\"></i>, report forum misuse <i class=\"fa fa-flag\"></i> "
@@ -6718,7 +6730,7 @@ msgstr ""
 "告论坛滥用情况<i class=\"fa fa-flag\"></i>，以及关注帖子来了解最近更新<i "
 "class=\"fa fa-star\"></i>。"
 
-#: templates/courses/course_discussion.haml:19
+#: templates/courses/course_discussion.haml:24
 msgid ""
 " RECEIVE UPDATES by checking the box near the <i class=\"fa fa-envelope\"></"
 "i> icon to receive a daily email digest notifying you about new, unread "
@@ -6727,7 +6739,7 @@ msgstr ""
 " 接收最新消息 - 选中 <i class=\"fa fa-envelope\"></i> 图标旁边的复选框，即可"
 "接收每日电子邮件文摘以及所关注的帖子的最新未读消息"
 
-#: templates/courses/course_discussion.haml:20
+#: templates/courses/course_discussion.haml:25
 msgid ""
 "You can email your McKinsey TA who is displayed in the upper left corner of "
 "the page"
@@ -6744,27 +6756,14 @@ msgstr "用户档案尚不可用"
 msgid " | Group Work | Courses | McKinsey Academy"
 msgstr " | 小组作业 | 课程 | 麦肯锡学院"
 
-#: templates/courses/course_group_work.haml:15
-#: templates/courses/course_group_work.haml:22
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to contribute to group work. You may also find "
-#| "answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-#| "answer there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
-msgid ""
-" Below are helpful tips to contribute to group work. You may also find "
-"answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-"answer there? Please contact us directly at <a href=\"#{support}\">support</"
-"a> and we’ll sort it out for you. "
-msgstr ""
-" 以下是帮助完成小组作业的有用提示。您也可以在<a href=\"/faq\">常见问题</a>中"
-"找到问题的答案。找不到答案？ 请直接发送电子邮件至 <a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> 与我们联系，我"
-"们将为您解决。"
-
 #: templates/courses/course_group_work.haml:16
+#: templates/courses/course_group_work.haml:28
+msgid ""
+"Below are helpful tips to contribute to group work. You may also find "
+"answers to your questions in the "
+msgstr " 以下是帮助完成小组作业的有用提示。您也可以在"
+
+#: templates/courses/course_group_work.haml:21
 msgid ""
 " Access group work using the <i class=\"mk-icon-groupworknav blue\"></i> "
 "icon in the main navigation bar "
@@ -6772,7 +6771,7 @@ msgstr ""
 " 使用主导航栏中的 <i class=\"mk-icon-groupworknav blue\"></i> 图标访问小组作"
 "业"
 
-#: templates/courses/course_group_work.haml:17
+#: templates/courses/course_group_work.haml:22
 msgid ""
 " Upload deliverables by clicking the <i class=\"fa fa-upload blue\"></i> "
 "icon at the bottom of the Project Navigator. "
@@ -6780,7 +6779,7 @@ msgstr ""
 " 单击项目导航器底部的 <i class=\"fa fa-upload blue\"></i> 图标来上传交付文"
 "件。"
 
-#: templates/courses/course_group_work.haml:18
+#: templates/courses/course_group_work.haml:23
 msgid ""
 " Access project resources by clicking the <i class=\"fa fa-files-o blue\"></"
 "i> icon at the bottom of the Project Navigator. "
@@ -6788,7 +6787,7 @@ msgstr ""
 " 单击项目导航器底部的 <i class=\"fa fa-files-o blue\"></i> 图标来访问项目资"
 "源。"
 
-#: templates/courses/course_group_work.haml:19
+#: templates/courses/course_group_work.haml:24
 msgid ""
 " Group work has a private discussion you can use to collaborate with your "
 "group members. You can chat with your team by clicking the <i class=\"fa fa-"
@@ -6801,7 +6800,7 @@ msgstr ""
 "讨论页面上查看，您的私人讨论也只对您的小组成员可见，而不会向规模更大的群组显"
 "示。"
 
-#: templates/courses/course_group_work.haml:20
+#: templates/courses/course_group_work.haml:25
 msgid ""
 " Send a message to a McKinsey TA by clicking the <span class=\"nav-1\" style="
 "\"font-size:16px;\">TA</span> icon at the bottom of the Project Navigator. "
@@ -6809,38 +6808,38 @@ msgstr ""
 " 单击项目导航器底部的<span class=\"nav-1\" style=\"font-size:16px;\">助教</"
 "span>图标来向麦肯锡助教发送消息。"
 
-#: templates/courses/course_group_work.haml:23
+#: templates/courses/course_group_work.haml:32
 msgid ""
 " Access group work using the <i class=\"mk-icon-groupworknav\"></i> icon in "
 "the main navigation bar "
 msgstr ""
 " 使用主导航栏中的 <i class=\"mk-icon-groupworknav\"></i> 图标访问小组作业"
 
-#: templates/courses/course_group_work.haml:24
+#: templates/courses/course_group_work.haml:33
 msgid ""
 "Group work is made up of one or more activities, and each activity is made "
 "up of up to 4 stages:"
 msgstr "小组作业由一个或多个活动组成，每个活动最多包括 4 个阶段："
 
-#: templates/courses/course_group_work.haml:25
+#: templates/courses/course_group_work.haml:34
 msgid "OVERVIEW - provides a high-level overview of the task(s)"
 msgstr "概述 - 提供高层次的任务概述"
 
-#: templates/courses/course_group_work.haml:26
+#: templates/courses/course_group_work.haml:35
 msgid "UPLOAD - allows your team to upload deliverables for TA or peer grading"
 msgstr "上传 - 允许您的团队上传交付文件以供助教评分或学员互评"
 
-#: templates/courses/course_group_work.haml:27
+#: templates/courses/course_group_work.haml:36
 msgid ""
 "REVIEWS - allows you to anonymously grade peer projects and/or provide team "
 "feedback"
 msgstr "评阅 - 允许您匿名参与项目学员互评和/或提供团队反馈"
 
-#: templates/courses/course_group_work.haml:28
+#: templates/courses/course_group_work.haml:37
 msgid "GRADE - displays your team feedback and peer (or TA) grade"
 msgstr "评分 - 显示您的团队反馈和学员互评或助教评分"
 
-#: templates/courses/course_group_work.haml:32
+#: templates/courses/course_group_work.haml:41
 msgid ""
 "Move from stage to stage within an activity using the left and right arrows; "
 "deadlines for each stage are posted, and if a particular stage has not yet "
@@ -6849,7 +6848,7 @@ msgstr ""
 "使用左右箭头从活动中的一个阶段移动到另一个阶段；每个阶段均标有截止日期，如果"
 "某个阶段尚未开放，则会相应注明"
 
-#: templates/courses/course_group_work.haml:33
+#: templates/courses/course_group_work.haml:42
 msgid ""
 " Group work has a private inline discussion you can use to collaborate with "
 "only your group members. View these conversations in group work pages, or by "
@@ -6863,21 +6862,21 @@ msgstr ""
 "图标来访问更大的讨论页面。即使在主讨论页面上查看，您的私人讨论也只对您的小组"
 "成员可见，而不会向规模更大的群组显示。"
 
-#: templates/courses/course_group_work.haml:34
+#: templates/courses/course_group_work.haml:43
 msgid ""
 "Email your group members (individually or combined) from the right column of "
 "each stage"
 msgstr "通过每个阶段的右栏向您的小组成员（单独或合并）发送电子邮件"
 
-#: templates/courses/course_group_work.haml:35
+#: templates/courses/course_group_work.haml:44
 msgid "Email your McKinsey TA from the right column of each stage."
 msgstr "通过每个阶段的右栏向您的麦肯锡助教发送电子邮件。"
 
-#: templates/courses/course_group_work.haml:36
+#: templates/courses/course_group_work.haml:45
 msgid "This video walks you through the group work experience:"
 msgstr "本视频将带您了解小组作业体验："
 
-#: templates/courses/course_group_work.haml:46
+#: templates/courses/course_group_work.haml:55
 #: templates/courses/course_group_work_ld.haml:20
 #: templates_v2/courses/course_group_work_ld.haml:20
 msgid ""
@@ -6885,8 +6884,8 @@ msgid ""
 "with information once it begins"
 msgstr "本课程的小组作业尚未开始。开始后，您将收到一条通知消息"
 
-#: templates/courses/course_group_work.haml:55
-#: templates/courses/course_group_work.haml:61
+#: templates/courses/course_group_work.haml:64
+#: templates/courses/course_group_work.haml:70
 #: templates/courses/course_group_work_ld.haml:29
 #: templates/courses/course_group_work_ld.haml:35
 #: templates_v2/courses/course_group_work.haml:25
@@ -6896,21 +6895,21 @@ msgstr "本课程的小组作业尚未开始。开始后，您将收到一条通
 msgid "Group Project:"
 msgstr "小组项目："
 
-#: templates/courses/course_group_work.haml:66
+#: templates/courses/course_group_work.haml:75
 #: templates/courses/course_group_work_ld.haml:40
 #: templates_v2/courses/course_group_work.haml:36
 #: templates_v2/courses/course_group_work_ld.haml:40
 msgid "Group Members"
 msgstr "小组成员"
 
-#: templates/courses/course_group_work.haml:71
+#: templates/courses/course_group_work.haml:80
 #: templates/courses/course_group_work_ld.haml:45
 #: templates_v2/courses/course_group_work.haml:41
 #: templates_v2/courses/course_group_work_ld.haml:45
 msgid "Email your group"
 msgstr "向小组发送电子邮件"
 
-#: templates/courses/course_group_work.haml:75
+#: templates/courses/course_group_work.haml:84
 #: templates/courses/course_group_work_ld.haml:49
 #: templates_v2/courses/course_group_work.haml:45
 #: templates_v2/courses/course_group_work_ld.haml:49
@@ -7074,26 +7073,13 @@ msgstr " | 麦肯锡学院"
 msgid " | Lessons | McKinsey Academy"
 msgstr " | 课时 | 麦肯锡学院"
 
-#: templates/courses/course_navigation.haml:17
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Below are helpful tips to navigate course content. You may also find "
-#| "answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-#| "answer there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you."
+#: templates/courses/course_navigation.haml:18
 msgid ""
 "Below are helpful tips to navigate course content. You may also find answers "
-"to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-"there? Please contact us directly at <a href=\"#{support}\">support</a> and "
-"we’ll sort it out for you."
-msgstr ""
-"以下是导航课程内容的有用提示。您也可以在<a href=\"/faq\">常见问题</a>中找到问"
-"题的答案。找不到答案？ 请直接发送电子邮件至 <a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> 与我们联系，我"
-"们将为您解决。"
+"to your questions in the "
+msgstr "以下是导航课程内容的有用提示。您也可以在"
 
-#: templates/courses/course_navigation.haml:22
+#: templates/courses/course_navigation.haml:27
 #, python-format
 msgid ""
 "See which %(modules_custom_label)s you have completed and navigate directly "
@@ -7103,13 +7089,13 @@ msgstr ""
 "查看您已完成哪些 %(modules_custom_label)s，并使用页面顶部的 "
 "%(module_custom_label)s 导航直接导航至特定 %(modules_custom_label)s"
 
-#: templates/courses/course_navigation.haml:24
+#: templates/courses/course_navigation.haml:29
 msgid ""
 "See which modules you have completed and navigate directly to specific "
 "modules using the module navigation at the top of the page"
 msgstr "查看您已完成哪些模块，并使用页面顶部的模块导航直接导航至特定模块"
 
-#: templates/courses/course_navigation.haml:29
+#: templates/courses/course_navigation.haml:34
 #, python-format
 msgid ""
 "Move from %(module_custom_label)s to %(module_custom_label)s using the left "
@@ -7120,7 +7106,7 @@ msgstr ""
 "%(module_custom_label)s。将鼠标悬停在箭头上即可查看即将推出（或先"
 "前）%(modules_custom_label)s 的详细信息"
 
-#: templates/courses/course_navigation.haml:31
+#: templates/courses/course_navigation.haml:36
 #, python-format
 msgid ""
 "Move from %(module_custom_label)s to %(module_custom_label)s using the left "
@@ -7131,7 +7117,7 @@ msgstr ""
 "%(module_custom_label)s。将鼠标悬停在箭头上即可查看即将推出（或先前）模块的详"
 "细信息"
 
-#: templates/courses/course_navigation.haml:33
+#: templates/courses/course_navigation.haml:38
 #, python-format
 msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
@@ -7140,7 +7126,7 @@ msgstr ""
 "使用左右箭头从一个模块移动到另一个模块。将鼠标悬停在箭头上即可查看即将推出"
 "（或先前）%(modules_custom_label)s 的详细信息"
 
-#: templates/courses/course_navigation.haml:35
+#: templates/courses/course_navigation.haml:40
 msgid ""
 "Move from module to module using the left and right arrows. Hover over the "
 "arrows to see details of upcoming (or previous) modules"
@@ -7148,7 +7134,7 @@ msgstr ""
 "使用左右箭头从一个模块移动到另一个模块。将鼠标悬停在箭头上即可查看即将推出"
 "（或先前）模块的详细信息"
 
-#: templates/courses/course_navigation.haml:39
+#: templates/courses/course_navigation.haml:44
 #, python-format
 msgid ""
 "%(modules_custom_label)s with inline discussions post to the larger "
@@ -7158,7 +7144,7 @@ msgstr ""
 "带有内嵌讨论的 %(modules_custom_label)s 会发布到更大的讨论页面。使用主导航栏"
 "中的 <i class=\"fa fa-comments-o\"></i> 图标查看讨论页面"
 
-#: templates/courses/course_navigation.haml:41
+#: templates/courses/course_navigation.haml:46
 msgid ""
 "Modules with inline discussions post to the larger discussion page. View the "
 "discussion page using the <i class=\"fa fa-comments-o\"></i> icon in the "
@@ -7167,7 +7153,7 @@ msgstr ""
 "带有内嵌讨论的模块会发布到更大的讨论页面。使用主导航栏中的 <i class=\"fa fa-"
 "comments-o\"></i> 图标查看讨论页面"
 
-#: templates/courses/course_navigation.haml:44
+#: templates/courses/course_navigation.haml:49
 #, python-format
 msgid ""
 "Access individual %(lessons_custom_label)s from the <i class=\"mk-icon-"
@@ -7176,7 +7162,7 @@ msgstr ""
 "通过主导航栏中的 <i class=\"mk-icon-lessonsnav\"></i> 图标访问各个 "
 "%(lessons_custom_label)s"
 
-#: templates/courses/course_navigation.haml:46
+#: templates/courses/course_navigation.haml:51
 msgid ""
 "Access individual lessons from the <i class=\"mk-icon-lessonsnav\"></i> icon "
 "in the main navigation bar"
@@ -7196,31 +7182,17 @@ msgstr " | 公告 | 课程 | 麦肯锡学院"
 msgid "Announcements, Course Overview, and Resources"
 msgstr "公告、课程概述和资源"
 
-#: templates/courses/course_news.haml:14
-#: templates/courses/course_overview.haml:14
-#: templates/courses/course_resources.haml:14
-#, fuzzy, python-brace-format
-#| msgid ""
-#| " Below are helpful tips to view course materials (which include "
-#| "announcements, course overview, and resources). You may also find answers "
-#| "to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-#| "there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
-msgid ""
-" Below are helpful tips to view course materials (which include "
-"announcements, course overview, and resources). You may also find answers to "
-"your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer there? "
-"Please contact us directly at <a href=\"#{support}\">support</a> and we’ll "
-"sort it out for you. "
-msgstr ""
-" 以下是查看课程材料（包括公告、课程概述和资源）的有用提示。您也可以在<a href="
-"\"/faq\">常见问题</a>中找到您问题的答案。找不到答案？ 请直接发送电子邮件至 "
-"<a href=\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</"
-"a> 与我们联系，我们将为您解决。"
-
 #: templates/courses/course_news.haml:15
+#: templates/courses/course_overview.haml:15
 #: templates/courses/course_resources.haml:15
+msgid ""
+"Below are helpful tips to view course materials (which include "
+"announcements, course overview, and resources). You may also find answers to "
+"your questions in the "
+msgstr " 以下是查看课程材料（包括公告、课程概述和资源）的有用提示。您也可以在"
+
+#: templates/courses/course_news.haml:21
+#: templates/courses/course_resources.haml:20
 msgid ""
 " Access Announcements, Course Overview, and Resources from the <i class=\"fa "
 "fa-file-text-o\"></i> icon in the main navigation bar. "
@@ -7228,15 +7200,15 @@ msgstr ""
 " 通过主导航栏中的 <i class=\"fa fa-file-text-o\"></i> 图标访问公告、课程概述"
 "和资源。"
 
-#: templates/courses/course_news.haml:16
-#: templates/courses/course_overview.haml:16
-#: templates/courses/course_resources.haml:16
+#: templates/courses/course_news.haml:22
+#: templates/courses/course_overview.haml:22
+#: templates/courses/course_resources.haml:21
 msgid "ANNOUNCEMENTS provides course news and events in a blog format"
 msgstr "公告以博客的形式提供课程资讯"
 
-#: templates/courses/course_news.haml:17
-#: templates/courses/course_overview.haml:17
-#: templates/courses/course_resources.haml:17
+#: templates/courses/course_news.haml:23
+#: templates/courses/course_overview.haml:23
+#: templates/courses/course_resources.haml:22
 msgid ""
 "COURSE OVERVIEW details what you will learn and provides faculty "
 "information; it also includes a course calendar to guide your pace through "
@@ -7245,15 +7217,15 @@ msgstr ""
 "“课程概述”详细说明您将学习的内容并提供教师信息；还包括课程日历，用于指导您逐"
 "步完成课程，并提醒您注意重要的截止日期"
 
-#: templates/courses/course_news.haml:18
-#: templates/courses/course_overview.haml:21
-#: templates/courses/course_resources.haml:21
+#: templates/courses/course_news.haml:24
+#: templates/courses/course_overview.haml:27
+#: templates/courses/course_resources.haml:26
 msgid ""
 "RESOURCES provides key takeaways and frameworks from each lesson, as well as "
 "supplemental readings and videos"
 msgstr "“资源”提供每个课时的主要内容和大纲，还提供补充阅读材料和视频"
 
-#: templates/courses/course_news.haml:37
+#: templates/courses/course_news.haml:43
 #: templates_v2/courses/course_news.haml:26
 msgid "No announcements have been posted yet."
 msgstr "尚未发布任何公告。"
@@ -7271,7 +7243,7 @@ msgstr "此内容尚不可用。"
 msgid " | Overview | Courses | McKinsey Academy"
 msgstr " | 概述 | 课程 | 麦肯锡学院"
 
-#: templates/courses/course_overview.haml:15
+#: templates/courses/course_overview.haml:21
 msgid ""
 " \"Access Announcements, Course Overview, and Resources from the <i class="
 "\"fa fa-file-text-o\"></i> icon in the main navigation bar. "
@@ -7279,8 +7251,8 @@ msgstr ""
 " 通过主导航栏中的 <i class=\"fa fa-file-text-o\"></i> 图标访问公告、课程概述"
 "和资源。"
 
-#: templates/courses/course_overview.haml:19
-#: templates/courses/course_resources.haml:19
+#: templates/courses/course_overview.haml:25
+#: templates/courses/course_resources.haml:24
 #, python-format
 msgid ""
 " RESOURCES provides key takeaways and frameworks from each "
@@ -7289,47 +7261,47 @@ msgstr ""
 "资源”提供每个 %(lesson_custom_label)s 的主要内容和大纲，还提供补充阅读材料和"
 "视频"
 
-#: templates/courses/course_overview.haml:30
+#: templates/courses/course_overview.haml:36
 #: templates_v2/courses/course_overview.haml:15
 msgid "Details:"
 msgstr "详细信息："
 
-#: templates/courses/course_overview.haml:31
+#: templates/courses/course_overview.haml:37
 #: templates_v2/courses/course_overview.haml:16
 msgid "10 lessons"
 msgstr "10 个课时"
 
-#: templates/courses/course_overview.haml:32
+#: templates/courses/course_overview.haml:38
 #: templates_v2/courses/course_overview.haml:17
 msgid "32 videos"
 msgstr "32 个视频"
 
-#: templates/courses/course_overview.haml:33
+#: templates/courses/course_overview.haml:39
 #: templates_v2/courses/course_overview.haml:18
 msgid "9 assessments"
 msgstr "9 次评定"
 
-#: templates/courses/course_overview.haml:34
+#: templates/courses/course_overview.haml:40
 #: templates_v2/courses/course_overview.haml:19
 msgid "72 exercises"
 msgstr "72 次练习"
 
-#: templates/courses/course_overview.haml:35
+#: templates/courses/course_overview.haml:41
 #: templates_v2/courses/course_overview.haml:20
 msgid "1 group project"
 msgstr "1 个小组项目"
 
-#: templates/courses/course_overview.haml:36
+#: templates/courses/course_overview.haml:42
 #: templates_v2/courses/course_overview.haml:21
 msgid "15 readings"
 msgstr "15 篇阅读材料"
 
-#: templates/courses/course_overview.haml:56
+#: templates/courses/course_overview.haml:62
 #: templates_v2/courses/course_overview.haml:29
 msgid "WHAT YOU WILL LEARN"
 msgstr "您将学到什么"
 
-#: templates/courses/course_overview.haml:62
+#: templates/courses/course_overview.haml:68
 #: templates_v2/courses/course_overview.haml:48
 msgid "Faculty"
 msgstr "教师"
@@ -7340,26 +7312,17 @@ msgstr "教师"
 msgid " | Progress | Courses | McKinsey Academy"
 msgstr " | 进度 | 课程 | 麦肯锡学院"
 
-#: templates/courses/course_progress.haml:20
-#, fuzzy, python-brace-format
+#: templates/courses/course_progress.haml:21
+#, fuzzy
 #| msgid ""
 #| " Below are helpful tips to review your progress. You may also find "
-#| "answers to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the "
-#| "answer there? Please contact us directly at <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> and we’ll "
-#| "sort it out for you. "
+#| "answers to your questions in the "
 msgid ""
-" Below are helpful tips to review your progress. You may also find answers "
-"to your questions in the <a href=\"/faq\">FAQ</a>. Can’t find the answer "
-"there? Please contact us directly at <a href=\"#{support}\">support</a> and "
-"we’ll sort it out for you. "
-msgstr ""
-" 以下是检查您的进度的有用提示。您也可以在<a href=\"/faq\">常见问题</a>中找到"
-"您问题的答案。找不到答案？ 请直接发送电子邮件至 <a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a> 与我们联系，我"
-"们将为您解决。"
+"Below are helpful tips to review your progress. You may also find answers to "
+"your questions in the "
+msgstr " 以下是检查您的进度的有用提示。您也可以在"
 
-#: templates/courses/course_progress.haml:22
+#: templates/courses/course_progress.haml:27
 #, python-format
 msgid ""
 " PROGRESS marks your progress (based on completion of "
@@ -7369,7 +7332,7 @@ msgstr ""
 "“进度”标记您的课程内容进度（取决于 %(modules_custom_label)s 和阅读完成情"
 "况）；您所在群组的平均进度也会显示"
 
-#: templates/courses/course_progress.haml:24
+#: templates/courses/course_progress.haml:29
 msgid ""
 "PROGRESS marks your progress (based on completion of modules and readings) "
 "through course content; the average progress of your cohort is also displayed"
@@ -7377,7 +7340,7 @@ msgstr ""
 "“进度”标记您的课程内容进度（取决于模块和阅读完成情况）；您所在群组的平均进度"
 "也会显示"
 
-#: templates/courses/course_progress.haml:25
+#: templates/courses/course_progress.haml:30
 msgid ""
 "GRADE displays your proficiency against a total possible score of 100; your "
 "proficiency is based on graded assessments and group work performance."
@@ -7385,11 +7348,11 @@ msgstr ""
 "“评分”显示您的熟练程度分数（总分 100）；您的熟练程度取决于评分评定和小组作业"
 "表现。"
 
-#: templates/courses/course_progress.haml:31
+#: templates/courses/course_progress.haml:36
 msgid "Course Progress for"
 msgstr "以下课程进度："
 
-#: templates/courses/course_progress.haml:40
+#: templates/courses/course_progress.haml:45
 #, python-format
 msgid ""
 "\n"
@@ -7401,7 +7364,7 @@ msgstr ""
 "        根据 %(lessons_custom_label)s 中 %(modules_custom_label)s 的完成情"
 "况，您的课程进度为 %(user_course_progress)s%%：  "
 
-#: templates/courses/course_progress.haml:43
+#: templates/courses/course_progress.haml:48
 #, python-format
 msgid ""
 "\n"
@@ -7412,7 +7375,7 @@ msgstr ""
 "        根据 %(lessons_custom_label)s 中各个模块的完成情况，您的课程进度为 "
 "%(user_course_progress)s%%：      "
 
-#: templates/courses/course_progress.haml:46
+#: templates/courses/course_progress.haml:51
 #, python-format
 msgid ""
 "\n"
@@ -7423,7 +7386,7 @@ msgstr ""
 "        根据课时中 %(modules_custom_label)s 的完成情况，您的课程进度为 "
 "%(user_course_progress)s%%：      "
 
-#: templates/courses/course_progress.haml:49
+#: templates/courses/course_progress.haml:54
 #, python-format
 msgid ""
 "\n"
@@ -7434,11 +7397,11 @@ msgstr ""
 "        根据课时模块的完成情况，您的课程进度为 %(user_course_progress)s"
 "%%：      "
 
-#: templates/courses/course_progress.haml:53
+#: templates/courses/course_progress.haml:58
 msgid "GRADES"
 msgstr "评分"
 
-#: templates/courses/course_progress.haml:55
+#: templates/courses/course_progress.haml:60
 #, python-format, python-brace-format
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
@@ -7448,7 +7411,7 @@ msgstr ""
 " 您需要完成所有小组作业和反馈活动，并获得至少 ={pass_grade}%% 分的综合课程评"
 "分，才可获得计划结业证书。您的课程评分计算如下："
 
-#: templates/courses/course_progress.haml:57
+#: templates/courses/course_progress.haml:62
 #, python-format, python-brace-format
 msgid ""
 " You need a combined course grade of at least #{pass_grade}%% to earn a "
@@ -7457,19 +7420,19 @@ msgstr ""
 " 您需要获得至少 ={pass_grade}%% 分的综合课程评分才能获得结业证书。您的最终评"
 "分计算如下："
 
-#: templates/courses/course_progress.haml:61
+#: templates/courses/course_progress.haml:66
 msgid "percent of your grade"
 msgstr "评分百分比"
 
-#: templates/courses/course_progress.haml:68
+#: templates/courses/course_progress.haml:73
 msgid "Dropped"
 msgstr "已下降"
 
-#: templates/courses/course_progress.haml:71
+#: templates/courses/course_progress.haml:76
 msgid "Current grade"
 msgstr "当前评分"
 
-#: templates/courses/course_progress.haml:72
+#: templates/courses/course_progress.haml:77
 msgid ""
 " Pro forma grade is an estimate of your final grade assuming you continue to "
 "demonstrate the same level of proficiency on your uncompleted assessments as "
@@ -7480,31 +7443,31 @@ msgstr ""
 " 预计评分是对最终评分的估计，前提是您持续在未完成的评定中表现出与截至目前已完"
 "成评定相同的熟练程度。</a>单击此处深入了解我们如何分享您的课程信息。"
 
-#: templates/courses/course_progress.haml:80
+#: templates/courses/course_progress.haml:85
 msgid "Lesson:"
 msgstr "课时："
 
-#: templates/courses/course_progress.haml:82
+#: templates/courses/course_progress.haml:87
 msgid "Suggested Deadline:"
 msgstr "建议的截止日期："
 
-#: templates/courses/course_progress.haml:83
+#: templates/courses/course_progress.haml:88
 msgid "Assessment Score:"
 msgstr "评定分数："
 
-#: templates/courses/course_progress.haml:104
+#: templates/courses/course_progress.haml:109
 msgid "Upload Deadline:"
 msgstr "上传截止日期："
 
-#: templates/courses/course_progress.haml:105
+#: templates/courses/course_progress.haml:110
 msgid "Score:"
 msgstr "分数："
 
-#: templates/courses/course_progress.haml:106
+#: templates/courses/course_progress.haml:111
 msgid "Grades:"
 msgstr "评分："
 
-#: templates/courses/course_progress.haml:129
+#: templates/courses/course_progress.haml:134
 #: templates_v2/courses/course_progress_v2.haml:311
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
@@ -7522,7 +7485,7 @@ msgstr ""
 "其对您和您公司的价值。您可以在隐私政策中了解更多有关我们的隐私和信息共享实践"
 "的"
 
-#: templates/courses/course_progress.haml:131
+#: templates/courses/course_progress.haml:136
 #: templates/courses/course_progress_v2.haml:237
 #: templates_v2/courses/course_progress_v2.haml:313
 msgid "privacy policy."
@@ -7957,95 +7920,69 @@ msgstr ""
 "要更改您的用户名，请登录并在屏幕右上角找到您的档案。单击向下箭头，然后选择用"
 "户名旁边的“编辑”。"
 
-#: templates/faq.haml:24
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "To change your email address, please email <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>."
-msgid ""
-"To change your email address, please email <a href=\"#{support}\">support</"
-"a>."
-msgstr ""
-"要更改您的电子邮件地址，请发送电子邮件至 <a href=\"mailto:"
-"support@mckinseyacademy.com\">support@mckinseyacademy.com</a>。"
+#: templates/faq.haml:25 templates_v2/faq.haml:48
+msgid "To change your email address, please email"
+msgstr "如需更改邮箱地址，请发送电子邮件"
 
-#: templates/faq.haml:25 templates_v2/faq.haml:52
+#: templates/faq.haml:27 templates_v2/faq.haml:52
 msgid "My account login isn't working."
 msgstr "我的帐户登录信息无效。"
 
-#: templates/faq.haml:26
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "If you've forgotten your password, please try resetting it by clicking "
-#| "'Forgot my password' on the log in screen. If that does not work, please "
-#| "email"
+#: templates/faq.haml:29 templates_v2/faq.haml:55
 msgid ""
 "If you've forgotten your password, please try resetting it by clicking "
-"\"Forgot my password\" on the log in screen. If that does not work, please "
-"email <a href=\"#{support}\">support</a>."
+"'Forgot my password' on the log in screen. If that does not work, please "
+"email"
 msgstr ""
 "如果忘记密码，请尝试单击登录屏幕上的“忘记我的密码”来重置密码。如果该操作不管"
 "用，请发送电子邮件至 "
 
-#: templates/faq.haml:27 templates_v2/faq.haml:59
+#: templates/faq.haml:31 templates_v2/faq.haml:59
 msgid "I can't access a course I'm enrolled in."
 msgstr "我无法访问我注册的课程。"
 
-#: templates/faq.haml:28
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "The drop down for moving between multiple courses is on the far left of "
-#| "the second (lighter blue) navigation bar. If the course you are supposed "
-#| "to be enrolled in does not appear in that drop down menu, please email"
+#: templates/faq.haml:33 templates_v2/faq.haml:62
 msgid ""
 "The drop down for moving between multiple courses is on the far left of the "
 "second (lighter blue) navigation bar. If the course you are supposed to be "
-"enrolled in does not appear in that drop down menu, please email <a href="
-"\"#{support}\">support</a>."
+"enrolled in does not appear in that drop down menu, please email"
 msgstr ""
 "用于在多个课程之间移动的下拉菜单位于第二个（浅蓝色）导航栏的最左侧。如果您要"
 "注册的课程未出现在该下拉菜单中，请发送电子邮件至"
 
-#: templates/faq.haml:29 templates_v2/faq.haml:66
+#: templates/faq.haml:35 templates_v2/faq.haml:66
 msgid "How can I stop or start receiving emails from my courses?"
 msgstr "如何停止或开始接收来自我的课程的电子邮件？"
 
-#: templates/faq.haml:30
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "We try to keep our email communication at an optimal level to ensure all "
-#| "participants know what is happening in the course without cluttering your "
-#| "inbox. Our emails contain important information about what's expected "
-#| "each week and additional curated content suggestions. If you no longer "
-#| "wish to receive emails, please email <a href=\"mailto:"
-#| "support@mckinseyacademy.com\">support@mckinseyacademy.com</a> (or click "
-#| "unsubscribe at the bottom of any email you receive from us). Be sure to "
-#| "check the \"Announcements\" page frequently to stay up to date!"
+#: templates/faq.haml:37 templates_v2/faq.haml:69
 msgid ""
 "We try to keep our email communication at an optimal level to ensure all "
 "participants know what is happening in the course without cluttering your "
 "inbox. Our emails contain important information about what's expected each "
 "week and additional curated content suggestions. If you no longer wish to "
-"receive emails, please email <a href=\"#{support}\">support</a> (or click "
-"unsubscribe at the bottom of any email you receive from us). Be sure to "
-"check the \"Announcements\" page frequently to stay up to date!"
+"receive emails, please email"
 msgstr ""
-"我们会尽量让我们的电子邮件通信处于最佳水平，以确保所有参与者了解课程的最新情"
-"况，同时不会塞满您的收件箱。我们的电子邮件包含有关每周预期内容的重要信息以及"
-"其他精选内容建议。如果您不再希望收到电子邮件，请发送电子邮件至 <a href="
-"\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</a>（或者"
-"在您收到的任何电子邮件的底部单击“取消订阅”）。请务必经常查看“公告”页面，了解"
-"最新信息！"
+"我们会尽量优化电子邮件通信，以确保简短有效地让所有参与者了解课程的最新情况。"
+"我们的电子邮件包含有关每周预期内容的重要信息以及其他精选内容建议。如果您不再"
+"希望收到电子邮件，请发送电子邮件至 "
 
-#: templates/faq.haml:31
+#: templates/faq.haml:39 templates_v2/faq.haml:71
+msgid ""
+"(or click unsubscribe at the bottom of any email you receive from us). Be "
+"sure to check the \"Announcements\" page frequently to stay up to date!"
+msgstr ""
+"（或者在收到的我们的任何电子邮件底部取消订阅）。请务必经常查看“公告”页面，了"
+"解最新情况！"
+
+#: templates/faq.haml:40
 msgid "COURSES:"
 msgstr "课程："
 
-#: templates/faq.haml:32 templates_v2/faq.haml:75
+#: templates/faq.haml:41 templates_v2/faq.haml:75
 msgid "When does my course start and/or finish?"
 msgstr "我的课程何时开始和/或结束？"
 
-#: templates/faq.haml:33 templates_v2/faq.haml:77
+#: templates/faq.haml:42 templates_v2/faq.haml:77
 msgid ""
 "You can find the start date and course duration for each course on its "
 "course overview page.  You will receive a welcome email when the course is "
@@ -8054,11 +7991,11 @@ msgstr ""
 "您可以在课程概述页面上找到每门课程的开课日期和课程持续时间。课程开放时您将收"
 "到欢迎电子邮件。"
 
-#: templates/faq.haml:34 templates_v2/faq.haml:80
+#: templates/faq.haml:43 templates_v2/faq.haml:80
 msgid "What are passing requirements for courses?"
 msgstr "课程的通过要求是什么？"
 
-#: templates/faq.haml:35
+#: templates/faq.haml:44
 #, python-format
 msgid ""
 " You need to complete all group work and feedback activities and earn a "
@@ -8068,38 +8005,38 @@ msgstr ""
 "您需要完成所有小组作业和反馈活动，并获得至少 70%% 分的综合课程评分，才能获得"
 "计划结业证书。您的课程评分计算如下："
 
-#: templates/faq.haml:37 templates_v2/faq.haml:85
+#: templates/faq.haml:46 templates_v2/faq.haml:85
 msgid "End of lesson (EOL) assessments"
 msgstr "课时结束 (EOL) 评定"
 
-#: templates/faq.haml:38 templates_v2/faq.haml:86
+#: templates/faq.haml:47 templates_v2/faq.haml:86
 msgid ""
 "Note that EOL assessments vary based on number of lessons and may not be "
 "included in some lessons"
 msgstr "请注意，EOL 评定根据课时数量而有所不同，可能不会包含在某些课时中"
 
-#: templates/faq.haml:40 templates_v2/faq.haml:89
+#: templates/faq.haml:49 templates_v2/faq.haml:89
 msgid ""
 "Note that Group Work may be made up of one or more activities which are "
 "graded throughout the duration of a course"
 msgstr ""
 "请注意，小组作业可能由一个或多个活动组成，这些活动会在整个课程期间进行评分"
 
-#: templates/faq.haml:41 templates_v2/faq.haml:90
+#: templates/faq.haml:50 templates_v2/faq.haml:90
 msgid "Final Assessment"
 msgstr "最终评定"
 
-#: templates/faq.haml:42 templates_v2/faq.haml:91
+#: templates/faq.haml:51 templates_v2/faq.haml:91
 msgid ""
 "There is no minimum amount of course content that must be completed, but "
 "participants must complete the Final Assessment."
 msgstr "必须完成的课程内容没有最低限度，但参与者必须完成最终评定。"
 
-#: templates/faq.haml:43 templates_v2/faq.haml:94
+#: templates/faq.haml:52 templates_v2/faq.haml:94
 msgid "How do I log in to take a McKinsey Academy course?"
 msgstr "如何登录参加麦肯锡学院课程？"
 
-#: templates/faq.haml:44 templates_v2/faq.haml:96
+#: templates/faq.haml:53 templates_v2/faq.haml:96
 msgid ""
 "Once you activate your account, click on the \"Log in\" button on the "
 "McKinsey Academy home page and type in your username and password. This will "
@@ -8108,11 +8045,11 @@ msgstr ""
 "激活帐户后，单击麦肯锡学院主页上的“登录”按钮并输入用户名和密码。系统将为您导"
 "航到当前的课程页面。"
 
-#: templates/faq.haml:45 templates_v2/faq.haml:99
+#: templates/faq.haml:54 templates_v2/faq.haml:99
 msgid "How much time should I expect to devote to each course?"
 msgstr "我预计要投入多少时间来学习每门课程？"
 
-#: templates/faq.haml:46 templates_v2/faq.haml:101
+#: templates/faq.haml:55 templates_v2/faq.haml:101
 msgid ""
 "The projected time commitment required for each course is included on the "
 "course overview page. We typically find that dedicating 60-120 minutes per "
@@ -8121,20 +8058,20 @@ msgstr ""
 "课程概述页面包含每门课程所需的预计时间投入。我们通常发现，每周投入 60 至 120 "
 "分钟就足以完成所有课程要求，包括小组作业。"
 
-#: templates/faq.haml:47 templates_v2/faq.haml:104
+#: templates/faq.haml:56 templates_v2/faq.haml:104
 msgid "Can I take more than one course at a time?"
 msgstr "我可以同时参加多门课程吗？"
 
-#: templates/faq.haml:48 templates_v2/faq.haml:106
+#: templates/faq.haml:57 templates_v2/faq.haml:106
 msgid ""
 "McKinsey Academy programs are a collection of courses taken one at a time."
 msgstr "麦肯锡学院计划是一组一次参加一门的课程。"
 
-#: templates/faq.haml:49 templates_v2/faq.haml:109
+#: templates/faq.haml:58 templates_v2/faq.haml:109
 msgid "What time is the class?"
 msgstr "什么时候上课？"
 
-#: templates/faq.haml:50 templates_v2/faq.haml:111
+#: templates/faq.haml:59 templates_v2/faq.haml:111
 msgid ""
 "McKinsey Academy courses take place at your convenience. Videos and "
 "assignments are available 24 hours a day, which means you can watch videos "
@@ -8148,11 +8085,11 @@ msgstr ""
 "然小组作业活动具有截止日期，但这些活动均提供了足够的交付周期，以便您轻松安排"
 "工作。"
 
-#: templates/faq.haml:51 templates_v2/faq.haml:114
+#: templates/faq.haml:60 templates_v2/faq.haml:114
 msgid "If I miss a week, how does this affect my performance?"
 msgstr "如果我有一周未参与，这对我的表现会有什么影响？"
 
-#: templates/faq.haml:52 templates_v2/faq.haml:116
+#: templates/faq.haml:61 templates_v2/faq.haml:116
 msgid ""
 "It is certainly possible to finish a McKinsey Academy course if you miss a "
 "week; however you should certainly review content you may have missed. If "
@@ -8166,11 +8103,11 @@ msgstr ""
 "他成员联系。查看小组作业和课程概述来了解重要日期和时间，以便在您离开时不错过"
 "提交截止日期。"
 
-#: templates/faq.haml:53 templates_v2/faq.haml:119
+#: templates/faq.haml:62 templates_v2/faq.haml:119
 msgid "I missed a deadline; can I get an extension?"
 msgstr "我错过了截止日期；可以延期吗？"
 
-#: templates/faq.haml:54 templates_v2/faq.haml:121
+#: templates/faq.haml:63 templates_v2/faq.haml:121
 msgid ""
 "We are not able to offer individual extensions as course schedules are fixed "
 "and there is no way to change the dates of assignments or exams for one "
@@ -8179,11 +8116,11 @@ msgstr ""
 "我们无法为个人提供延期，因为课程时间表均已固定，无法为某一个参与者而更改任务"
 "或考试日期。"
 
-#: templates/faq.haml:55 templates_v2/faq.haml:124
+#: templates/faq.haml:64 templates_v2/faq.haml:124
 msgid "My course deadlines are in UTC, what’s that?"
 msgstr "我的课程截止日期使用的是 UTC，这是什么？"
 
-#: templates/faq.haml:56 templates_v2/faq.haml:126
+#: templates/faq.haml:65 templates_v2/faq.haml:126
 msgid ""
 "UTC refers to Universal Coordinated Time. To find the current time in UTC "
 "and convert it to your local time, check World Time Server or other Internet "
@@ -8192,35 +8129,35 @@ msgstr ""
 "UTC 是指世界协调时间。要查找当前 UTC 时间并将其转换为当地时间，请查看 World "
 "Time Server 或其他互联网时间服务。"
 
-#: templates/faq.haml:57 templates_v2/faq.haml:129
+#: templates/faq.haml:66 templates_v2/faq.haml:129
 msgid "What if I have a question or concern regarding course grading?"
 msgstr "如果我对课程评分有疑问或疑虑该怎么办？"
 
-#: templates/faq.haml:58
-#, fuzzy, python-brace-format
-#| msgid "If you have any questions about a grade you received, please email"
-msgid ""
-"If you have any questions about a grade you received, please email <a href="
-"\"#{support}\">TAs</a>."
+#: templates/faq.haml:68 templates_v2/faq.haml:132
+msgid "If you have any questions about a grade you received, please email"
 msgstr "如果您对收到的评分有任何疑问，请发送电子邮件至"
 
-#: templates/faq.haml:59 templates_v2/faq.haml:136
+#: templates/faq.haml:69 templates_v2/faq.haml:133
+msgid "TAs"
+msgstr "TA"
+
+#: templates/faq.haml:70 templates_v2/faq.haml:136
 msgid "How can I meet/find other participants?"
 msgstr "如何才能见到/找到其他参与者？"
 
-#: templates/faq.haml:60 templates_v2/faq.haml:138
+#: templates/faq.haml:71 templates_v2/faq.haml:138
 msgid ""
 "All McKinsey Academy courses have discussion forums where you can chat with "
 "and help other participants."
 msgstr "所有麦肯锡学院课程都有论坛，您可以在其中与其他参与者聊天并提供帮助。"
 
-#: templates/faq.haml:61 templates_v2/faq.haml:141
+#: templates/faq.haml:72 templates_v2/faq.haml:141
 msgid ""
 "How can I talk to McKinsey practitioners teaching my courses and teaching "
 "assistants?"
 msgstr "如何与教授课程的麦肯锡从业人员和助教交流？"
 
-#: templates/faq.haml:62 templates_v2/faq.haml:143
+#: templates/faq.haml:73 templates_v2/faq.haml:143
 msgid ""
 "The discussion forum is the best place to reach out to the McKinsey Academy "
 "course team for your cohort; just post your questions or email the TA. We do "
@@ -8229,50 +8166,46 @@ msgstr ""
 "论坛是与所在群组的麦肯锡学院课程团队接触的最佳场所；只需发布您的问题或发送电"
 "子邮件给助教即可。我们将尽最大努力尽快回复。"
 
-#: templates/faq.haml:63 templates_v2/faq.haml:146
+#: templates/faq.haml:74 templates_v2/faq.haml:146
 msgid "How do I get help and support regarding my course?"
 msgstr "如何获得课程帮助和支持？"
 
-#: templates/faq.haml:64
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "You are part of a cohort of participants you can engage with questions as "
-#| "well as support from the TAs who monitor the course. Take a look at the "
-#| "course's discussion forum where you can review questions, answers and "
-#| "comments from fellow participants, as well as post a question. You can "
-#| "also reach out to the McKinsey teaching assistants by <a href=\"mailto:"
-#| "tas@mckinseyacademy.com\">emailing them</a> and they will get back to you "
-#| "as soon as possible."
+#: templates/faq.haml:76 templates_v2/faq.haml:149
 msgid ""
 "You are part of a cohort of participants you can engage with questions as "
 "well as support from the TAs who monitor the course. Take a look at the "
 "course's discussion forum where you can review questions, answers and "
 "comments from fellow participants, as well as post a question. You can also "
-"reach out to the McKinsey teaching assistants by <a href="
-"\"#{support}\">emailing them</a> and they will get back to you as soon as "
-"possible."
+"reach out to the McKinsey teaching assistants by"
 msgstr ""
 "您是参与者群组中的一员，可以参与问题讨论，也可以从监督课程的助教那里获取支"
 "持。您可以在课程的论坛中查看其他参与者的问题、回答和评论，或发布问题，也可以"
-"通过<a href=\"mailto:tas@mckinseyacademy.com\">发送电子邮件</a>与麦肯锡助教联"
-"系，他们会尽快回复您。"
+"通过"
 
-#: templates/faq.haml:65 templates_v2/faq.haml:154
+#: templates/faq.haml:77 templates_v2/faq.haml:150
+msgid "emailing them"
+msgstr "向他们发送邮件"
+
+#: templates/faq.haml:78 templates_v2/faq.haml:151
+msgid "and they will get back to you as soon as possible."
+msgstr "与麦肯锡助教联系，他们会尽快回复您。"
+
+#: templates/faq.haml:79 templates_v2/faq.haml:154
 msgid "Can I re-take a course?"
 msgstr "我可以重新参加课程吗？"
 
-#: templates/faq.haml:66 templates_v2/faq.haml:156
+#: templates/faq.haml:80 templates_v2/faq.haml:156
 msgid ""
 "McKinsey Academy courses cannot be re-taken, but exercises and materials "
 "remain available for 12 months after the course ends."
 msgstr ""
 "麦肯锡学院的课程不能重新参加，但课程结束后的 12 个月内，练习和材料仍然可用。"
 
-#: templates/faq.haml:67 templates_v2/faq.haml:159
+#: templates/faq.haml:81 templates_v2/faq.haml:159
 msgid "Can I access the course content after my course ends?"
 msgstr "课程结束后我可以访问课程内容吗？"
 
-#: templates/faq.haml:68 templates_v2/faq.haml:161
+#: templates/faq.haml:82 templates_v2/faq.haml:161
 msgid ""
 "McKinsey Academy past courses are available as archives for 12 months after "
 "the course ends. These courses can only be audited and some features, such "
@@ -8281,12 +8214,12 @@ msgstr ""
 "麦肯锡学院以往的课程可在课程结束后 12 个月内以存档形式提供。这些课程只能旁"
 "听，并且某些功能（如论坛）可能无法使用。"
 
-#: templates/faq.haml:69 templates_v2/faq.haml:164
+#: templates/faq.haml:83 templates_v2/faq.haml:164
 msgid ""
 "What information is displayed in visualizations on the course home page?"
 msgstr "课程主页上以可视化形式显示哪些信息？"
 
-#: templates/faq.haml:71
+#: templates/faq.haml:85
 msgid ""
 "<span>Proficiency:</span> Your proficiency is based on performance on all "
 "graded items in the course (including end of lesson assessments, group work, "
@@ -8295,7 +8228,7 @@ msgstr ""
 "<span>熟练程度：</span>您的熟练程度取决于在课程中所有评分项目上的表现（包括课"
 "末评估、小组合作和最终评估）"
 
-#: templates/faq.haml:72
+#: templates/faq.haml:86
 msgid ""
 "<span>Progress:</span> Your progress through course content is displayed as "
 "you move through all items in the course (including videos, exercises, "
@@ -8304,7 +8237,7 @@ msgstr ""
 "<span>进度：</span>当您在课程的所有项目（包括视频、练习、评估和阅读）中导航"
 "时，课程主页会显示您的课程内容进度"
 
-#: templates/faq.haml:73
+#: templates/faq.haml:87
 msgid ""
 "<span>Engagement:</span> Your engagement increases through your social "
 "interactions with other participants in your cohort (through engagement on "
@@ -8313,33 +8246,33 @@ msgstr ""
 "<span>参与度：</span>您可以通过与同期其他参与者进行社交互动（通过参与论坛），"
 "来提高自身参与度"
 
-#: templates/faq.haml:74
+#: templates/faq.haml:88
 msgid "CERTIFICATES:"
 msgstr "证书："
 
-#: templates/faq.haml:75 templates_v2/faq.haml:179
+#: templates/faq.haml:89 templates_v2/faq.haml:179
 msgid "Will my certificate include an overall program grade?"
 msgstr "我的证书是否包括课程计划的总体成绩？"
 
-#: templates/faq.haml:76 templates_v2/faq.haml:181
+#: templates/faq.haml:90 templates_v2/faq.haml:181
 msgid "Your certificate will not include final grades."
 msgstr "您的证书不包括最终成绩。"
 
-#: templates/faq.haml:77 templates_v2/faq.haml:184
+#: templates/faq.haml:91 templates_v2/faq.haml:184
 msgid "Can I get a paper copy of my certificate?"
 msgstr "我可以获得纸质证书副本吗？"
 
-#: templates/faq.haml:78 templates_v2/faq.haml:186
+#: templates/faq.haml:92 templates_v2/faq.haml:186
 msgid ""
 "McKinsey Academy certificates are digital files which you can print on "
 "standard size paper."
 msgstr "麦肯锡学院的证书为数字文件，您可以将其打印在标准规格的纸张上。"
 
-#: templates/faq.haml:79 templates_v2/faq.haml:189
+#: templates/faq.haml:93 templates_v2/faq.haml:189
 msgid "How are certificates determined?"
 msgstr "如何确定是否颁发证书？"
 
-#: templates/faq.haml:80 templates_v2/faq.haml:191
+#: templates/faq.haml:94 templates_v2/faq.haml:191
 #, python-format
 msgid ""
 "To be eligible for the MMP certificate of completion, participants need to "
@@ -8348,25 +8281,25 @@ msgstr ""
 "要想有资格获得 MMP 结业证书，参与者需要在该课程计划的 4 门核心课程中取得 "
 "70%% 分或以上的成绩。"
 
-#: templates/faq.haml:81 templates_v2/faq.haml:194
+#: templates/faq.haml:95 templates_v2/faq.haml:194
 msgid "How are McKinsey Academy certificates delivered?"
 msgstr "麦肯锡学院的证书如何递送？"
 
-#: templates/faq.haml:82 templates_v2/faq.haml:196
+#: templates/faq.haml:96 templates_v2/faq.haml:196
 msgid ""
 "McKinsey Academy certificates are delivered via email following successful "
 "completion of a program."
 msgstr "麦肯锡学院的证书将在课程计划成功结业后通过电子邮件递送。"
 
-#: templates/faq.haml:83 templates_v2/faq.haml:197
+#: templates/faq.haml:97 templates_v2/faq.haml:197
 msgid "TECHNICAL ISSUES:"
 msgstr "技术问题："
 
-#: templates/faq.haml:84 templates_v2/faq.haml:200
+#: templates/faq.haml:98 templates_v2/faq.haml:200
 msgid "How can I get technical support?"
 msgstr "如何获得技术支持？"
 
-#: templates/faq.haml:85 templates_v2/faq.haml:202
+#: templates/faq.haml:99 templates_v2/faq.haml:202
 msgid ""
 "If you are having technical issues, please contact us here so we can resolve "
 "your problem. and we will get back to you by the next business day (likely "
@@ -8375,36 +8308,36 @@ msgstr ""
 "如果遇到技术问题，请在此处与我们联系，以便我们解决您的问题，我们会在下一个工"
 "作日（可能更早）答复您。"
 
-#: templates/faq.haml:86 templates_v2/faq.haml:205
+#: templates/faq.haml:100 templates_v2/faq.haml:205
 msgid "What if I did not receive my password reset email?"
 msgstr "如果没有收到密码重置电子邮件，我该怎么办？"
 
-#: templates/faq.haml:87 templates_v2/faq.haml:207
+#: templates/faq.haml:101 templates_v2/faq.haml:207
 msgid "If you did not receive an automated email it may be because:"
 msgstr "如果您没有收到自动发送的电子邮件，原因可能是："
 
-#: templates/faq.haml:89 templates_v2/faq.haml:209
+#: templates/faq.haml:103 templates_v2/faq.haml:209
 msgid "There was a typo in your email address"
 msgstr "您的电子邮件地址存在拼写错误"
 
-#: templates/faq.haml:90 templates_v2/faq.haml:210
+#: templates/faq.haml:104 templates_v2/faq.haml:210
 msgid ""
 "Your spam filter may have caught the email; please check your spam folder"
 msgstr "垃圾邮件过滤器可能拦截了该封电子邮件；请检查您的垃圾邮件文件夹"
 
-#: templates/faq.haml:91 templates_v2/faq.haml:211
+#: templates/faq.haml:105 templates_v2/faq.haml:211
 msgid ""
 "You may be using an older browser; we recommend downloading the current "
 "version of Chrome or Firefox"
 msgstr "您可能正在使用旧版本浏览器；建议您下载最新版本的 Chrome 或 Firefox"
 
-#: templates/faq.haml:92 templates_v2/faq.haml:212
+#: templates/faq.haml:106 templates_v2/faq.haml:212
 msgid ""
 "JavaScript is disabled in your browser; please check your browser settings "
 "and confirm that JavaScript is enabled"
 msgstr "您的浏览器已禁用 JavaScript；请检查浏览器设置并确认已启用 JavaScript"
 
-#: templates/faq.haml:93 templates_v2/faq.haml:213
+#: templates/faq.haml:107 templates_v2/faq.haml:213
 msgid ""
 "You have not successfully registered an account with McKinsey Academy' "
 "please try registering again with the same email address (if an account "
@@ -8413,14 +8346,14 @@ msgstr ""
 "您尚未成功注册麦肯锡学院帐户。请使用同一电子邮件地址再次尝试注册（如果帐户已"
 "经存在，则将显示电子邮件地址重复错误）"
 
-#: templates/faq.haml:94 templates_v2/faq.haml:216
+#: templates/faq.haml:108 templates_v2/faq.haml:216
 msgid ""
 "What if I have problems with the display (e.g., there are tools missing from "
 "the course display, or I am unable to view video)?"
 msgstr ""
 "如果出现显示问题（例如课程显示中有工具缺失或无法观看视频），我该怎么办？"
 
-#: templates/faq.haml:95 templates_v2/faq.haml:218
+#: templates/faq.haml:109 templates_v2/faq.haml:218
 msgid ""
 "Please check your browser and settings - JavaScript must be enabled. We "
 "recommend downloading and using the current version of either Chrome or "
@@ -8429,19 +8362,19 @@ msgstr ""
 "请检查您的浏览器和设置 — 必须启用 JavaScript。我们建议您下载并使用最新版本的 "
 "Chrome 或 Firefox。"
 
-#: templates/faq.haml:96 templates_v2/faq.haml:221
+#: templates/faq.haml:110 templates_v2/faq.haml:221
 msgid "How can I sign up for a McKinsey Academy course or program?"
 msgstr "如何注册参加麦肯锡学院的课程或计划？"
 
-#: templates/faq.haml:97
+#: templates/faq.haml:111
 msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 msgstr "请<a href=\"mailto:info@mckinseyacademy.com\">联系我们！</a>"
 
-#: templates/faq.haml:98 templates_v2/faq.haml:228
+#: templates/faq.haml:112 templates_v2/faq.haml:228
 msgid "What if my question isn’t answered here?"
 msgstr "如果问题在这里没有得到解答，该怎么办？"
 
-#: templates/faq.haml:99
+#: templates/faq.haml:113
 msgid ""
 "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a> We’ll do "
 "our best to help."
@@ -8459,10 +8392,6 @@ msgstr "服务条款"
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "隐私政策"
-
-#: templates/footer.haml:17 tests/templates_v2/footer.haml:17
-msgid "FAQ"
-msgstr "常见问题"
 
 #: templates/header.haml:24
 msgid "Language :"
@@ -10468,18 +10397,23 @@ msgstr ""
 "息。在某些情况下，您也可以要求我们停止处理您的个人信息。"
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
+#, fuzzy
+#| msgid ""
+#| "If you would like to make a request to access, review, or correct the "
+#| "personal data we have collected about you, or to discuss how we process "
+#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"如要申请访问、核查或更正我们所收集的您的个人数据，或如要讨论您的个人数据处理"
-"方法，请联系我们的"
+"如果您想要请求访问、查看或更正我们已经收集的、与您有关的个人信息或者讨论我们"
+"如何处理您的个人信息，请通过以下方式联系我们："
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr "支持团队"
+msgstr "支持"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -10552,6 +10486,14 @@ msgstr ""
 "您的个人信息以作第三方直接营销之用。"
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
+#, fuzzy
+#| msgid ""
+#| "If you are a California resident under the age of 18, and a registered "
+#| "user of McKinsey Academy subject to this Privacy Policy, California "
+#| "Business and Professions Code Section 22581 permits you to request and "
+#| "obtain removal of content or information you have publicly posted. To "
+#| "make such a request, please send an email with a detailed description of "
+#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -10562,8 +10504,8 @@ msgid ""
 msgstr ""
 "如果您是未满 18 岁的加利福尼亚州居民，并且是遵循本隐私政策的麦肯锡学院注册用"
 "户，根据《加利福尼亚州商业和职业条例》第 22581 条的相关规定，您有权要求移除您"
-"公开发布的内容或信息。如需提出此申请，请将具体内容或信息的详细描述发送给我们"
-"的"
+"公开发布的内容或信息。如需提出上述申请，请在电子邮件中详细描述具体内容或信"
+"息，并发送至"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -10614,7 +10556,7 @@ msgstr "联系隐私部门"
 msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
-msgstr "如对我们的服务条款或隐私政策有任何疑问或担忧，请联系："
+msgstr ""
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
@@ -10817,17 +10759,14 @@ msgid "To access the course, click the following link:"
 msgstr "要访问课程，请点击以下链接："
 
 #: templates/registration/public_registration_mcka_user.haml:10
-#, fuzzy, python-brace-format
-#| msgid ""
-#| "Note that you must be on the McKinsey Network or VPN to access the "
-#| "course. Please contact our team at support@mckinseyacademy.com if you "
-#| "experience any technical issues."
+#, python-format
 msgid ""
 "Note that you must be on the McKinsey Network or VPN to access the course. "
-"Please contact our team at #{support} if you experience any technical issues."
+"Please contact our team at %(support)s if you experience any technical "
+"issues."
 msgstr ""
 "请注意，您必须使用麦肯锡网络或 VPN 才能访问课程。如果您遇到任何技术问题，请发"
-"送电子邮件至 support@mckinseyacademy.com 来联系我们的团队。"
+"送电子邮件至 %(support)s 来联系我们的团队。"
 
 #: templates/registration/public_registration_warning.haml:3
 #, python-brace-format
@@ -11558,34 +11497,19 @@ msgstr ""
 "您无权访问此页面或目录。请返回主页。\n"
 "                  "
 
-#: templates_v2/403.haml:23
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  If you believe you are seeing this message in error, "
-#| "please visit our\n"
-#| "                  %%a{:href => \"/faq\"} FAQ page\n"
-#| "                  or\n"
-#| "                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support.\n"
-#| "                  "
-msgid ""
-"\n"
-"                  If you believe you are seeing this message in error, "
-"please visit our\n"
-"                  %%a{:href => \"/faq\"} FAQ page\n"
-"                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support.\n"
-"                  "
-msgstr ""
-"\n"
-"如果您认为您看到的信息有误，请访问我们的\n"
-"   %%a{:href => \"/faq\"} 常见问题页面\n"
-"或\n"
-"%%a{:href => \"mailto:support@mckinseyacademy.com?subject=Mail from Our Site"
-"\"}电子邮件支持。\n"
-"                  "
+#: templates_v2/403.haml:23 templates_v2/not_authorized.haml:18
+msgid "If you believe you are seeing this message in error, please visit our "
+msgstr "如果您认为您看到的信息有误，请访问我们的"
+
+#: templates_v2/403.haml:24 templates_v2/404.haml:22 templates_v2/500.haml:24
+#: templates_v2/503.haml:20 templates_v2/not_authorized.haml:19
+msgid "FAQ page"
+msgstr "常见问题页面"
+
+#: templates_v2/403.haml:25 templates_v2/404.haml:23 templates_v2/500.haml:25
+#: templates_v2/503.haml:21 templates_v2/not_authorized.haml:20
+msgid "or"
+msgstr "或"
 
 #: templates_v2/404.haml:16
 msgid "Page not found."
@@ -11595,32 +11519,9 @@ msgstr "找不到页面。"
 msgid "The page you’re looking for may have been moved or renamed."
 msgstr "您要找的页面可能已经移动或重命名。"
 
-#: templates_v2/404.haml:21
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  If you continue to have issues, please visit our\n"
-#| "                  %%a{:href => \"/faq\"} FAQ page\n"
-#| "                  or\n"
-#| "                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support\n"
-#| "                  "
-msgid ""
-"\n"
-"                  If you continue to have issues, please visit our\n"
-"                  %%a{:href => \"/faq\"} FAQ page\n"
-"                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support\n"
-"                  "
-msgstr ""
-"\n"
-"如果您还有问题，请访问我们的\n"
-"   %%a{:href => \"/faq\"} 常见问题页面\n"
-"或\n"
-"%%a{:href => \"mailto:support@mckinseyacademy.com?subject=Mail from Our Site"
-"\"}电子邮件支持。\n"
-"                  "
+#: templates_v2/404.haml:21 templates_v2/500.haml:23 templates_v2/503.haml:19
+msgid "If you continue to have issues, please visit our"
+msgstr "如果您还有问题，请访问我们的"
 
 #: templates_v2/500.haml:16
 msgid "Something has gone wrong."
@@ -11635,33 +11536,6 @@ msgid ""
 msgstr ""
 "\n"
 "我们的团队已注意到该问题。请刷新此页面。\n"
-"                  "
-
-#: templates_v2/500.haml:23 templates_v2/503.haml:19
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                  If you continue to have issues, please visit our\n"
-#| "                  %%a{:href => \"/faq\"} FAQ page\n"
-#| "                  or\n"
-#| "                  %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support.\n"
-#| "                  "
-msgid ""
-"\n"
-"                  If you continue to have issues, please visit our\n"
-"                  %%a{:href => \"/faq\"} FAQ page\n"
-"                  or\n"
-"                  %%a{:href => \"#{support}\", :target => \"_blank\"} "
-"support.\n"
-"                  "
-msgstr ""
-"\n"
-"如果您还有问题，请访问我们的\n"
-"   %%a{:href => \"/faq\"} 常见问题页面\n"
-"或\n"
-"%%a{:href => \"mailto:support@mckinseyacademy.com?subject=Mail from Our Site"
-"\"}电子邮件支持。\n"
 "                  "
 
 #: templates_v2/503.haml:16
@@ -11718,8 +11592,10 @@ msgstr "阅读常见问题"
 #: templates_v2/accounts/public_registration.haml:99
 #: templates_v2/accounts/sso_terms_of_service.haml:29
 #: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
+#, fuzzy
+#| msgid "Contact: "
 msgid "Contact Support"
-msgstr "联系支持团队"
+msgstr "联系方式："
 
 #: templates_v2/accounts/activate.haml:85
 #: templates_v2/accounts/activate.haml:104
@@ -12295,57 +12171,6 @@ msgstr "参与者常见问题"
 msgid "Access Related:"
 msgstr "相关访问："
 
-#: templates_v2/faq.haml:48
-msgid "To change your email address, please email"
-msgstr "如需更改邮箱地址，请发送电子邮件"
-
-#: templates_v2/faq.haml:49 templates_v2/faq.haml:56 templates_v2/faq.haml:63
-#: templates_v2/faq.haml:70
-#, fuzzy
-#| msgid "Email support"
-msgid "support"
-msgstr "电子邮件支持"
-
-#: templates_v2/faq.haml:55
-msgid ""
-"If you've forgotten your password, please try resetting it by clicking "
-"'Forgot my password' on the log in screen. If that does not work, please "
-"email"
-msgstr ""
-"如果忘记密码，请尝试单击登录屏幕上的“忘记我的密码”来重置密码。如果该操作不管"
-"用，请发送电子邮件至 "
-
-#: templates_v2/faq.haml:62
-msgid ""
-"The drop down for moving between multiple courses is on the far left of the "
-"second (lighter blue) navigation bar. If the course you are supposed to be "
-"enrolled in does not appear in that drop down menu, please email"
-msgstr ""
-"用于在多个课程之间移动的下拉菜单位于第二个（浅蓝色）导航栏的最左侧。如果您要"
-"注册的课程未出现在该下拉菜单中，请发送电子邮件至"
-
-#: templates_v2/faq.haml:69
-msgid ""
-"We try to keep our email communication at an optimal level to ensure all "
-"participants know what is happening in the course without cluttering your "
-"inbox. Our emails contain important information about what's expected each "
-"week and additional curated content suggestions. If you no longer wish to "
-"receive emails, please email"
-msgstr ""
-"我们会尽量优化电子邮件通信，以确保简短有效地让所有参与者了解课程的最新情况。"
-"我们的电子邮件包含有关每周预期内容的重要信息以及其他精选内容建议。如果您不再"
-"希望收到电子邮件，请发送电子邮件至 <a href=\"mailto:support@mckinseyacademy."
-"com\">support@mckinseyacademy.com</a>（或者在您收到的任何电子邮件的底部单"
-"击“取消订阅”）。请务必经常查看“公告”页面，了解最新信息！"
-
-#: templates_v2/faq.haml:71
-msgid ""
-"(or click unsubscribe at the bottom of any email you receive from us). Be "
-"sure to check the \"Announcements\" page frequently to stay up to date!"
-msgstr ""
-"（或者在收到的我们的任何电子邮件底部取消订阅）。请务必经常查看“公告”页面，了"
-"解最新情况！"
-
 #: templates_v2/faq.haml:72
 msgid "Courses Related:"
 msgstr "相关课程："
@@ -12359,36 +12184,6 @@ msgid ""
 msgstr ""
 "您需要完成所有小组作业和反馈活动，并获得至少 70%% 分的综合课程评分，才能获得"
 "计划结业证书。您的课程评分计算如下："
-
-#: templates_v2/faq.haml:132
-msgid "If you have any questions about a grade you received, please email"
-msgstr "如果您对收到的评分有任何疑问，请发送电子邮件至"
-
-#: templates_v2/faq.haml:133
-#, fuzzy
-#| msgid "TA"
-msgid "TAs"
-msgstr "助教"
-
-#: templates_v2/faq.haml:149
-msgid ""
-"You are part of a cohort of participants you can engage with questions as "
-"well as support from the TAs who monitor the course. Take a look at the "
-"course's discussion forum where you can review questions, answers and "
-"comments from fellow participants, as well as post a question. You can also "
-"reach out to the McKinsey teaching assistants by"
-msgstr ""
-"您是参与者群组中的一员，可以参与问题讨论，也可以从监督课程的助教那里获取支"
-"持。您可以在课程的论坛中查看其他参与者的问题、回答和评论，或发布问题，也可以"
-"通过"
-
-#: templates_v2/faq.haml:150
-msgid "emailing them"
-msgstr "向他们发送邮件"
-
-#: templates_v2/faq.haml:151
-msgid "and they will get back to you as soon as possible."
-msgstr "与麦肯锡助教联系，他们会尽快回复您。"
 
 #: templates_v2/faq.haml:169
 msgid ""
@@ -12796,33 +12591,9 @@ msgstr "从你中断的地方继续! 您的进度和课程内容不会受此更�
 msgid "You are not authorized to view this page."
 msgstr "您无权查看此页面。"
 
-#: templates_v2/not_authorized.haml:18
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "                If you believe you are seeing this message in error, "
-#| "please visit our\n"
-#| "                %%a{:href => \"/faq\"} FAQ page\n"
-#| "                or\n"
-#| "                %%a{:href => \"mailto:support@mckinseyacademy.com?"
-#| "subject=Mail from Our Site\"} email support.\n"
-#| "                "
-msgid ""
-"\n"
-"                If you believe you are seeing this message in error, please "
-"visit our\n"
-"                %%a{:href => \"/faq\"} FAQ page\n"
-"                or\n"
-"                %%a{:href => \"#{support}\"} email support.\n"
-"                "
-msgstr ""
-"\n"
-"如果您认为您看到的信息有误，请访问我们的\n"
-"   %%a{:href => \"/faq\"} 常见问题页面\n"
-"或\n"
-"%%a{:href => \"mailto:support@mckinseyacademy.com?subject=Mail from Our Site"
-"\"}电子邮件支持。\n"
-"                "
+#: templates_v2/not_authorized.haml:21
+msgid "Email Support"
+msgstr "电子邮件支持"
 
 #: templates_v2/registration/password_reset_confirm.haml:15
 msgid "Your new password must be different from your previous password."
@@ -12883,91 +12654,3 @@ msgstr "名字：{}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "姓氏：{}"
-
-#~ msgid "Email Support"
-#~ msgstr "电子邮件支持"
-
-#, fuzzy
-#~| msgid ""
-#~| "\n"
-#~| "                  Our team has been notified of the problem. Refresh "
-#~| "this page.\n"
-#~| "                  "
-#~ msgid ""
-#~ "\n"
-#~ "                        out of %(total)s members in your cohort.\n"
-#~ "                        "
-#~ msgstr ""
-#~ "\n"
-#~ "我们的团队已注意到该问题。请刷新此页面。\n"
-#~ "                  "
-
-#~ msgid "Report is TBD"
-#~ msgstr "报告待定"
-
-#~ msgid ""
-#~ "If you have any questions about our Privacy Policy or if you require any "
-#~ "assistance in navigating or reading the Terms or this Privacy Policy, "
-#~ "please contact us at:"
-#~ msgstr ""
-#~ "如对本隐私政策有任何疑问，或者您在导航或阅读本隐私政策条款时需要任何协助，"
-#~ "请通过以下方式联系我们："
-
-#~ msgid ""
-#~ "If you have any questions about these Terms, our Privacy Policy, or if "
-#~ "you require any assistance in navigating McKinsey Academy, these Terms, "
-#~ "or our Privacy Policy, please contact us at:"
-#~ msgstr ""
-#~ "如果您对这些条款、我们的隐私政策有任何疑问，或者您需要任何帮助来浏览麦肯锡"
-#~ "学院、这些条款或我们的隐私政策，请通过以下方式与我们联系："
-
-#, fuzzy
-#~| msgid ""
-#~| "with the username or email address associated with your account. Save or "
-#~| "bookmark this URL to easily access your course or program in the future. "
-#~| "Reset your password anytime by using the"
-#~ msgid ""
-#~ "\n"
-#~ "            %%p \n"
-#~ "                Once registered, you can\n"
-#~ "                %%a{:href => \"/login\"} login\n"
-#~ "                with the username or email address associated with your "
-#~ "account. Save or bookmark this URL to easily access your course or "
-#~ "program in the future. Reset your password anytime by using the\n"
-#~ "                %%a{:href => \"/?reset-password\"} Forgot password?\n"
-#~ "                link.\n"
-#~ "        "
-#~ msgstr ""
-#~ "注册后即可登录通过用户名或关联到帐户的电子邮件地址进行。为方便将来访问课程"
-#~ "或项目，请保存此 URL 或将其加入书签。您可以随时使用来重置密码"
-
-#~ msgid "Accept"
-#~ msgstr "接受"
-
-#~ msgid ""
-#~ "If you've forgotten your password, please try resetting it by clicking "
-#~ "\"Forgot my password\" on the log in screen. If that does not work, "
-#~ "please email <a href=\"mailto:support@mckinseyacademy.com"
-#~ "\">support@mckinseyacademy.com</a>."
-#~ msgstr ""
-#~ "如果忘记密码，请尝试单击登录屏幕上的“忘记我的密码”来重置密码。如果该操作不"
-#~ "管用，请发送电子邮件至 <a href=\"mailto:support@mckinseyacademy.com"
-#~ "\">support@mckinseyacademy.com</a>。"
-
-#~ msgid ""
-#~ "The drop down for moving between multiple courses is on the far left of "
-#~ "the second (lighter blue) navigation bar. If the course you are supposed "
-#~ "to be enrolled in does not appear in that drop down menu, please email <a "
-#~ "href=\"mailto:support@mckinseyacademy.com\">support@mckinseyacademy.com</"
-#~ "a>."
-#~ msgstr ""
-#~ "用于在多个课程之间移动的下拉菜单位于第二个（浅蓝色）导航栏的最左侧。如果您"
-#~ "要注册的课程未出现在该下拉菜单中，请发送电子邮件至 <a href=\"mailto:"
-#~ "support@mckinseyacademy.com\">support@mckinseyacademy.com</a>。"
-
-#~ msgid ""
-#~ "If you have any questions about a grade you received, please email <a "
-#~ "href=\"mailto:tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>."
-#~ msgstr ""
-#~ "如果您对收到的评分有任何疑问，请发送电子邮件至 <a href=\"mailto:"
-#~ "tas@mckinseyacademy.com\">TAs@mckinseyacademy.com</a>。"

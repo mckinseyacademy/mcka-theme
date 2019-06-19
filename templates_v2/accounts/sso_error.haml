@@ -1,6 +1,8 @@
 - extends "layout.haml"
 - load i18n
 - block page_title
+- load staticfiles
+
   %title {% trans "Login Process Failed | McKinsey Academy" %}
 
 - block content
@@ -15,5 +17,6 @@
             = error_details
         - else
           %p {% trans "Something has gone wrong, and we were not able to process the login with your company's login provider." %}
-        %p {% blocktrans %} Please contact us at <a href:'#{support}'>support</a>. {% endblocktrans %}
-        %img{src: "/static/image/errors/McKA_errors_1500illus.png", srcset: "/static/image/errors/McKA_errors_1500illus@2x.png 2x"}
+        %p {% trans "Please contact us at " %}
+          %a{:href => "#{support}"} {% trans "support" %}.
+        %img{src: "{% static 'image/errors/McKA_errors_1500illus.png' %}", srcset: "/static/image/errors/McKA_errors_1500illus@2x.png 2x"}
