@@ -1,4 +1,4 @@
-$('#login_id').on('blur input', function() {
+$(document).on('blur input','#login_id', function() {
     $(this).parents('.form-group').addClass('focused');
     $('#login').attr("disabled", false);
 });
