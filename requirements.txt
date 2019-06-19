@@ -26,7 +26,7 @@ Pillow==2.7.0
 newrelic==4.14.0.115
 python-memcached==1.53
 pytz==2015.2
--e git+https://github.com/edx/edx-notifications.git@0.7.8#egg=edx-notifications==0.7.8
+-e git+https://github.com/edx/edx-notifications.git@0.7.9#egg=edx-notifications==0.7.9
 djangorestframework==3.6.3
 django-upload-validator
 requests_oauthlib==0.8.0
