@@ -98,7 +98,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
           modal.find('.emailModalControl').find('.sendEmail').removeClass("disabled");
         });
         modal.find('.templateNameValue select option:eq(0)').prop('selected', true);
-        modal.find('.fromEmailValue input').val("support@mckinseyacademy.com");
+        modal.find('.fromEmailValue input').val("support@mckinsey.com");
         modal.find('.emailSubjectValue input').val("");
         var controlButtonContainer = modal.find('.emailModalControl');
         controlButtonContainer.find('.sendEmail').addClass('disabled');
