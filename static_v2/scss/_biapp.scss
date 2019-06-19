@@ -446,6 +446,15 @@ body {
         @include border-right(0);
       }
 
+      .lesson-with-list {
+        .pn-ProductNav_Link{
+          @include media-breakpoint-between(xs, md) {
+          @include margin-left(25px);
+          }
+        }
+      }
+
+
       &.week {
         span {
           color: $black;
@@ -1210,14 +1219,6 @@ body.rtl {
   }
 }
 
-#course-progress-new table td .pn-ProductNav_Link {
-  @include media-breakpoint-between(xs, md) {
-    @include margin-left(25px);
-  }
-  @media only screen and (orientation: landscape) and (max-width: 1024px) {
-    @include margin-left(25px);
-  }
-}
 
 #companyDetailsCoursesContainer, #companyLearnerDashboardsContainer {
   .bbGrid-search-bar {

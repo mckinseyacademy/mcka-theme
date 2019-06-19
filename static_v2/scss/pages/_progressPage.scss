@@ -182,7 +182,7 @@
     }
   }
 
-  table {
+  table { 
     width: 100%;
 
     thead {
@@ -230,6 +230,16 @@
             .pn-ProductNav_Link{
               display: inline-block;
               width: calc(100% - 190px);
+              &.dropdown-toggle {
+                @include font-size(16);
+                position: relative;
+                width: auto;
+                
+                &::after {
+                  display: inline-block;
+                  vertical-align: middle;
+                }
+              }
             }
             
 
@@ -269,21 +279,6 @@
               }
             }
 
-            .dropdown-toggle {
-              @include font-size(16);
-              position: relative;
-              display: inline-block;
-              width: auto;
-              
-              &::after {
-                display: inline-block;
-                vertical-align: middle;
-              }
-              @media only screen and (max-width: 992px) and (orientation: portrait) {
-                display: block;
-              }
-            }
-
             &.gr-data {
               margin-bottom: 5px;
 
@@ -320,7 +315,31 @@
     .reveal-modal {
       display: none;
     }
+
+    // case of three columns
+
+    &.three-cols{
+      tbody {
+        tr {
+          td {
+            .lesson-with-list {
+              .lesson-item-name{
+                display: block;
+              }
+              .pn-ProductNav_Link{
+                width: calc(100% - 25px);
+                display: block;
+                &.dropdown-toggle{
+                  width:auto !important;
+                  display: inline-block !important;
+                }
+              }
+            }
+          }
+        }
+      }
   }
+}
 
   .note-progress {
     color: $gray;
@@ -446,32 +465,16 @@
           td {
             .lesson-with-list {
               .pn-ProductNav_Link{
-                width: calc(100% - 101px);
+                width: calc(100% - 150px);
                 display: inline-block;
               }
             }
           }
         }
       }
-
-      // case of three columns
-
-      &.three-cols {
-        tbody {
-          tr {
-            td {
-              .lesson-with-list {
-                .pn-ProductNav_Link{
-                  width: calc(100% - 25px);
-                  display: block;
-                }
-              }
-            }
-          }
-        }
-      }
     }
-  }
+  
+}
 }
 @include media-breakpoint-between(xs, md) {
   #course-progress-new {
@@ -481,7 +484,8 @@
           td {
             .lesson-with-list {
               .pn-ProductNav_Link{
-                width: 100%;
+                width:auto;
+                display: block;
               }
               .dropdown-toggle {
                 display: block;
