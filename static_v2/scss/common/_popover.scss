@@ -86,12 +86,12 @@
 
 .bs-popover-right>.arrow,
 .bs-popover-auto[x-placement^="right"]>.arrow {
-  // left: -5px;
+  left: -5px;
 }
 
 .bs-popover-left>.arrow,
 .bs-popover-auto[x-placement^="left"]>.arrow {
-  // right: -5px;
+  right: -5px;
 }
 
 .bs-popover-right > .arrow::after,
@@ -101,7 +101,7 @@
 
 .bs-popover-bottom>.arrow,
 .bs-popover-auto[x-placement^="bottom"]>.arrow {
-  // top: -5px;
+   top: -8px;
 }
 
 .bs-popover-top > .arrow::after, .bs-popover-auto[x-placement^="top"] > .arrow::after {
