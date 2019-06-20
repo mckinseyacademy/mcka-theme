@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-19 15:22+0000\n"
+"POT-Creation-Date: 2019-06-20 10:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -7370,8 +7370,6 @@ msgid ""
 msgstr ""
 "فيما يلي نصائح مفيدة لعرض المواد الدراسية للدورة التدريبية (التي تشمل "
 "الإعلانات والنظرة العامة عن الدورة التدريبية والموراد). وقد تجد أيضًا إجابات "
-"على أسئلتك في جزئية <a href=\"/faq\">FAQ</a>.  <a href=\"#{support}.com"
-"\">support</a> "
 
 #: templates/courses/course_news.haml:21
 #: templates/courses/course_resources.haml:20
@@ -10840,24 +10838,19 @@ msgstr ""
 "التوقف عن معالجة بياناتك الشخصية."
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
-#, fuzzy
-#| msgid ""
-#| "If you would like to make a request to access, review, or correct the "
-#| "personal data we have collected about you, or to discuss how we process "
-#| "your personal data, please contact us at"
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
 "contact our"
 msgstr ""
-"إذا كنت ترغب في تقديم طلب الوصول إلى البيانات الشخصية التي جمعناها عنك، أو "
-"مراجعتها، أو تصحيحها، أو إذا أردت مناقشة كيفية معالجتنا لبياناتك الشخصية، "
-"يرجى الاتصال بنا على"
+"لتقديم طلب الوصول إلى البيانات الشخصية التي جمعناها عنك أو مراجعتها أو "
+"تصحيحها أو إذا أردت مناقشة كيفية معالجتنا لبياناتك الشخصية،  يرجى الاتصال "
+"لدينا"
 
 #: templates/privacy.haml:106 templates/privacy.haml:118
 #: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
 msgid "support team"
-msgstr "الدعم"
+msgstr "فريق الدعم"
 
 #: templates/privacy.haml:108 templates_v2/privacy.haml:112
 msgid ""
@@ -10935,14 +10928,6 @@ msgstr ""
 "ذلك الطرف الثالث."
 
 #: templates/privacy.haml:117 templates_v2/privacy.haml:121
-#, fuzzy
-#| msgid ""
-#| "If you are a California resident under the age of 18, and a registered "
-#| "user of McKinsey Academy subject to this Privacy Policy, California "
-#| "Business and Professions Code Section 22581 permits you to request and "
-#| "obtain removal of content or information you have publicly posted. To "
-#| "make such a request, please send an email with a detailed description of "
-#| "the specific content or information to"
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
@@ -10954,8 +10939,8 @@ msgstr ""
 "إذا كنت مقيمًا في كالفورنيا وسنك أقل من 18 عامًا، ومستخدمًا مسجلاً في أكاديمية "
 "ماكنزي خاضعًا لسياسة الخصوصية هذه، تجيز لك المادة رقم 22581 من قانون "
 "كالفورنيا للأعمال والمهن التجارية طلب حذف المحتوى أو المعلومات التي نشرتها "
-"علنًا والموافقة على طلبك. لتقديم مثل هذا الطلب، يرجى إرسال بريد إلكتروني مع "
-"وصف تفصيلي للمحتوى أو المعلومات المحددة إلى"
+"علنًا والموافقة على طلبك. لتقديم هذا الطلب، يرجى إرسال وصف مفصل للمحتوى أو "
+"المعلومات المحددة إلى لدينا"
 
 #: templates/privacy.haml:119 templates_v2/privacy.haml:123
 msgid ""
@@ -11010,6 +10995,8 @@ msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
 msgstr ""
+" أو الاستفسارات حول شروط الخدمة أو سياسة الخصوصية لدينا، يرجى الاتصال بـ:"
+"للأسئلة"
 
 #: templates/privacy.haml:131 templates/terms_of_service.haml:114
 #: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
@@ -12158,10 +12145,8 @@ msgstr "اقرأ الأسئلة الشائعة"
 #: templates_v2/accounts/public_registration.haml:99
 #: templates_v2/accounts/sso_terms_of_service.haml:29
 #: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
-#, fuzzy
-#| msgid "Contact: "
 msgid "Contact Support"
-msgstr "اتصل بنا: "
+msgstr "الاتصال بالدعم"
 
 #: templates_v2/accounts/activate.haml:85
 #: templates_v2/accounts/activate.haml:104
