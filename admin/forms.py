@@ -1,22 +1,28 @@
 ''' forms for administration objects '''
-from datetime import date
-from django import forms
-from django.utils.translation import ugettext_lazy as _
-from django.forms.widgets import SelectDateWidget
-from django.core.validators import validate_email, RegexValidator
-from django.core.exceptions import ValidationError
+from datetime import date, datetime
 
+import os
+from django import forms
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.files import File
+from django.core.validators import validate_email, RegexValidator
+from django.forms.widgets import SelectDateWidget
+from django.utils.translation import ugettext_lazy as _
+
+from api_client import course_api
+from api_client.group_api import PERMISSION_GROUPS
+from api_client.user_api import USER_ROLES
+from main.models import CuratedContentItem
+from util.i18n_helpers import format_lazy, mark_safe_lazy
+from util.data_sanitizing import clean_xss_characters
+from util.image_util import resize_image
+from util.validators import UsernameValidator, AlphanumericWithAccentedChars
 from .models import (
     AccessKey, DashboardAdminQuickFilter,
     BrandingSettings, LearnerDashboardDiscovery, LearnerDashboardTile,
     LearnerDashboardBranding, CourseRun
 )
-from main.models import CuratedContentItem
-from api_client import course_api
-from api_client.user_api import USER_ROLES
-from api_client.group_api import PERMISSION_GROUPS
-from util.validators import UsernameValidator, AlphanumericWithAccentedChars
-from util.i18n_helpers import format_lazy, mark_safe_lazy
 
 # djano forms are "old-style" forms => causing lint errors
 # pylint: disable=no-init,too-few-public-methods,super-on-old-class
@@ -417,8 +423,16 @@ class LearnerDashboardTileForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(LearnerDashboardTileForm, self).clean()
+        for name, value in cleaned_data.items():
+            cleaned_data[name] = clean_xss_characters(value) if isinstance(value, str) else value
         link = cleaned_data.get("link")
         tile_type = cleaned_data.get("tile_type")
+        background_image = cleaned_data.get("background_image")
+        if background_image:
+            name = os.path.splitext(background_image.name)
+            image_name = 'images/{}-{}{}'.format(name[0], datetime.now().strftime("%s"), name[1])
+            dimensions = settings.IMAGE_SIZES['ld_tile_background_image']
+            cleaned_data["background_image"] = File(resize_image(background_image, dimensions), image_name)
 
         if tile_type == "4" and "/courses/" not in link:
             raise forms.ValidationError({'link': "Link to course is not valid"})
