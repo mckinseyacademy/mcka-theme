@@ -3836,11 +3836,11 @@ def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
     status_code = 400
 
     if request.method == "POST":
-        project_section = request.POST["project_section"]
+        project_section = clean_xss_characters(request.POST["project_section"])
         organization = None
         private_project = request.POST.get("new-project-private", None)
         if private_project == "on":
-            organization = request.POST["new-project-company"]
+            organization = clean_xss_characters(request.POST["new-project-company"])
 
         existing_projects = Project.fetch_projects_for_course(course_id)
         matching_projects = [p for p in existing_projects if
