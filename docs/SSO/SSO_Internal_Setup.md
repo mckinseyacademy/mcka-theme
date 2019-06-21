@@ -143,6 +143,25 @@ Relevant URLs are:
 * https://courses.mckinseyacademy.com/admin/third_party_auth/samlproviderdata/
 * https://www.mckinseyacademy.com/admin/clients/
 
+
+Update ceritficate for SAML Provider
+------------------------------------
+
+Sometimes a client will change the certificate they use for SAML and we will
+need to update the certificate in our configuration as well. This is a pretty
+simple process.
+
+If a publicly-available SAML metadata url was set up during the initial process,
+this will happen automatically at some point as the metadata is regularly
+refreshed.
+
+However, in many cases the certificate has been manually configured in a new
+`SAML Provider Data` instance. In that case you can simply repeat the process
+in the [Verify service provider](#Verify-service-provider) section above for
+setting up metadata when a URL isn't provided. Note that you can't modify the
+existing entry, and you don't need to delete it either. The latest entry will
+automatically be used, and it's good to have a record of certificate changes.
+
 Troubleshooting
 ---------------
 
