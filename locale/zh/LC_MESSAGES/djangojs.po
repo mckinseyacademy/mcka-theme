@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-20 07:48+0000\n"
+"POT-Creation-Date: 2019-06-21 13:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -367,6 +367,16 @@ msgstr "完整填写内容才能继续"
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
 msgstr "检查是否填写完整"
+
+#: static/js/static_translation_strings.js:9
+msgid ""
+"Must be at least 8 characters and include upper and lowercase letters - plus "
+"numbers OR special characters."
+msgstr "密码必须至少包含 8 个字符，并且包含大写和小写字母以及数字或特殊字符。"
+
+#: static/js/static_translation_strings.js:10
+msgid "This field is required."
+msgstr "此字段为必填。"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -1129,10 +1139,10 @@ msgstr "添加日期"
 msgid "Enrolled In"
 msgstr "已注册"
 
-#: static_v2/js/application.js:521 static_v2/js/custom.js:125
+#: static_v2/js/application.js:522 static_v2/js/custom.js:109
 msgid "Hide password"
 msgstr "隐藏密码"
 
-#: static_v2/js/application.js:526 static_v2/js/custom.js:130
+#: static_v2/js/application.js:527 static_v2/js/custom.js:114
 msgid "Show password"
 msgstr "显示密码"

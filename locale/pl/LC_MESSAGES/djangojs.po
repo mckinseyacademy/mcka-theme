@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-28 09:41+0000\n"
+"POT-Creation-Date: 2019-06-21 13:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -101,7 +101,9 @@ msgstr "Witamy w McKinsey Academy"
 msgid ""
 "%(courseStr)s Before the course begins, you can explore this site to learn "
 "more about what to expect."
-msgstr "%(courseStr)s Wykorzystaj czas pozostały do rozpoczęcia kursu, aby lepiej zapoznać się z naszą stroną i przygotować się na czekające Cię doświadczenia."
+msgstr ""
+"%(courseStr)s Wykorzystaj czas pozostały do rozpoczęcia kursu, aby lepiej "
+"zapoznać się z naszą stroną i przygotować się na czekające Cię doświadczenia."
 
 #: static/js/common/admin_bulk_actions.js:17
 msgid "Progress: %(value)s%"
@@ -130,12 +132,14 @@ msgstr "%(value)s%"
 #: static/js/common/common_js.js:956
 msgid ""
 "<span class=\"red\"> %(diff)s% </span> below your organization's average"
-msgstr "<span class=\"red\"> %(diff)s% </span> poniżej średniej Twojej organizacji"
+msgstr ""
+"<span class=\"red\"> %(diff)s% </span> poniżej średniej Twojej organizacji"
 
 #: static/js/common/common_js.js:963
 msgid ""
 "<span class=\"green\">%(diff)s% </span> above your organization's average"
-msgstr "<span class=\"green\">%(diff)s% </span> powyżej średniej Twojej organizacji"
+msgstr ""
+"<span class=\"green\">%(diff)s% </span> powyżej średniej Twojej organizacji"
 
 #: static/js/common/common_js.js:968 static/js/common/common_js.js:988
 msgid "same as your organization's average"
@@ -144,17 +148,28 @@ msgstr "tak samo, jak średnia Twojej organizacji"
 #: static/js/common/common_js.js:976
 msgid ""
 "<span class=\"red\"> %(diff)s point</span> below your organization's average"
-msgid_plural "<span class=\"red\"> %(diff)s points</span> below your organization's average"
-msgstr[0] "<span class=\"red\"> %(diff)s point</span> poniżej średniej Twojej organizacji"
-msgstr[1] "<span class=\"red\"> %(diff)s points</span> poniżej średniej Twojej organizacji"
+msgid_plural ""
+"<span class=\"red\"> %(diff)s points</span> below your organization's average"
+msgstr[0] ""
+"<span class=\"red\"> %(diff)s point</span> poniżej średniej Twojej "
+"organizacji"
+msgstr[1] ""
+"<span class=\"red\"> %(diff)s points</span> poniżej średniej Twojej "
+"organizacji"
 
 #: static/js/common/common_js.js:983
 msgid ""
 "<span class=\"green\"> %(diff)s point</span> above your organization's "
 "average"
-msgid_plural "<span class=\"green\"> %(diff)s points</span> above your organization's average"
-msgstr[0] "<span class=\"green\"> %(diff)s point</span> powyżej średniej Twojej organizacji"
-msgstr[1] "<span class=\"green\"> %(diff)s points</span> powyżej średniej Twojej organizacji"
+msgid_plural ""
+"<span class=\"green\"> %(diff)s points</span> above your organization's "
+"average"
+msgstr[0] ""
+"<span class=\"green\"> %(diff)s point</span> powyżej średniej Twojej "
+"organizacji"
+msgstr[1] ""
+"<span class=\"green\"> %(diff)s points</span> powyżej średniej Twojej "
+"organizacji"
 
 #: static/js/common/mass_participants_delete.js:133
 msgid "An error occurred submitting the request."
@@ -208,7 +223,9 @@ msgstr "Adres e-mail menedżera"
 msgid ""
 "The .csv file has more then %(limit)s  rows: %(lines)s , please split it to "
 "more files!"
-msgstr "Pliki .csv nie może zawierać więcej niż %(limit)s wierszy: %(lines)s , prosimy podzielić go na więcej plików!"
+msgstr ""
+"Pliki .csv nie może zawierać więcej niż %(limit)s wierszy: %(lines)s , "
+"prosimy podzielić go na więcej plików!"
 
 #: static/js/common/mass_participants_enroll.js:430
 #: static/js/common/mass_participants_enroll.js:567
@@ -249,13 +266,17 @@ msgstr "Grupa nie została utworzona"
 
 #: static/js/course_drag_drop.js:234
 msgid "All students added to private group have to be members of same company."
-msgstr "Wszyscy uczniowie dodani do grupy prywatnej muszą być członkami tej samej firmy."
+msgstr ""
+"Wszyscy uczniowie dodani do grupy prywatnej muszą być członkami tej samej "
+"firmy."
 
 #: static/js/course_drag_drop.js:242
 msgid ""
 "Are you sure you want to remove this group? Doing so will remove submissions "
 "and feedback associated with the group."
-msgstr "Czy jesteś pewny, że chcesz usunąć tę grupę? Spowoduje to usunięcie wszelkich przesłanych plików i informacji zwrotnych powiązanych z grupą."
+msgstr ""
+"Czy jesteś pewny, że chcesz usunąć tę grupę? Spowoduje to usunięcie "
+"wszelkich przesłanych plików i informacji zwrotnych powiązanych z grupą."
 
 #: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
@@ -294,7 +315,8 @@ msgstr "Zawartość cyfrowa"
 
 #: static/js/course_lesson.js:5
 msgid "It looks like you're not active. Click OK to keep working."
-msgstr "Wygląda na to, że jesteś nieaktywny. Wciśnij OK, aby kontynuować pracę."
+msgstr ""
+"Wygląda na to, że jesteś nieaktywny. Wciśnij OK, aby kontynuować pracę."
 
 #: static/js/course_lesson.js:112
 msgid "Complete all content to continue"
@@ -308,7 +330,9 @@ msgstr "Nie wybrano pliku."
 msgid ""
 "Error uploading file. Please try again and be sure to use an accepted file "
 "format."
-msgstr "Nie udało się przesłać pliku. Sprawdź, czy format pliku jest poprawny i spróbuj ponownie."
+msgstr ""
+"Nie udało się przesłać pliku. Sprawdź, czy format pliku jest poprawny i "
+"spróbuj ponownie."
 
 #: static/js/image_editor.js:52 static_v2/js/image_editor.js:52
 msgid "Please select file for upload."
@@ -320,7 +344,9 @@ msgstr "Należy wybrać przynajmniej jeden kurs."
 
 #: static/js/session_timeout_timer.js:39
 msgid "You were logged out due to inactivity. Please log back in to continue."
-msgstr "Zostałeś wylogowany z powodu zbyt długiej nieaktywności. Aby kontynuować, zaloguj się ponownie."
+msgstr ""
+"Zostałeś wylogowany z powodu zbyt długiej nieaktywności. Aby kontynuować, "
+"zaloguj się ponownie."
 
 #: static/js/static_translation_strings.js:2
 msgid "It looks like your browser settings has pop-ups disabled."
@@ -346,6 +372,18 @@ msgstr "Prosimy wypełnić całą zawartość, aby kontynuować"
 msgid "Check for Completion"
 msgstr "Sprawdź pod kątem wypełnienia"
 
+#: static/js/static_translation_strings.js:9
+msgid ""
+"Must be at least 8 characters and include upper and lowercase letters - plus "
+"numbers OR special characters."
+msgstr ""
+"Musi składać się z przynajmniej 8 znaków i zawierać co najmniej jedną małą "
+"literę, jedną wielką literę oraz jedną cyfrę lub znak specjalny."
+
+#: static/js/static_translation_strings.js:10
+msgid "This field is required."
+msgstr "To pole jest wymagane."
+
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
 msgstr "Podczas przesyłania Twojego pliku wystąpił błąd."
@@ -370,9 +408,16 @@ msgstr[1] "%s uczniów zostało dodanych do tej grupy kursantów."
 msgid ""
 "%s learner was preassigned to this cohort. This learner will automatically "
 "be added to the cohort when they enroll in the course."
-msgid_plural "%s learners were preassigned to this cohort. These learners will automatically be added to the cohort when they enroll in the course."
-msgstr[0] "%s uczeń został wstępnie dodany do tej grupy kursantów. Po zarejestrowaniu się, uczeń ten zostanie automatycznie dodany do grupy kursantów."
-msgstr[1] "%s uczniów zostało wstępnie dodanych do tej grupy kursantów. Po zarejestrowaniu się, uczeń ten zostanie automatycznie dodany do grupy kursantów."
+msgid_plural ""
+"%s learners were preassigned to this cohort. These learners will "
+"automatically be added to the cohort when they enroll in the course."
+msgstr[0] ""
+"%s uczeń został wstępnie dodany do tej grupy kursantów. Po zarejestrowaniu "
+"się, uczeń ten zostanie automatycznie dodany do grupy kursantów."
+msgstr[1] ""
+"%s uczniów zostało wstępnie dodanych do tej grupy kursantów. Po "
+"zarejestrowaniu się, uczeń ten zostanie automatycznie dodany do grupy "
+"kursantów."
 
 #: static/js/views/admin/cohorts.js:144
 #, javascript-format
@@ -607,7 +652,9 @@ msgstr "Nie można utworzyć nowego tagu!"
 msgid ""
 "You don't have permission to create a new tag, please select one from the "
 "list!"
-msgstr "Nie posiadasz uprawnień pozwalających na stworzenie nowego tagu, prosimy wybrać tag z listy"
+msgstr ""
+"Nie posiadasz uprawnień pozwalających na stworzenie nowego tagu, prosimy "
+"wybrać tag z listy"
 
 #: static/js/views/admin/course_details.js:362
 msgid "Couldn't delete tag!"
@@ -625,7 +672,9 @@ msgstr "Stopień ukończenia: %(progress)s %"
 
 #: static/js/views/admin/course_details.js:494
 msgid "Selected: %(selected)s, Successful: %(successful)s, Failed: %(failed)s"
-msgstr "Wybranych: %(selected)s, Ukończyło pomyślnie: %(successful)s, Nie ukończyło: %(failed)s"
+msgstr ""
+"Wybranych: %(selected)s, Ukończyło pomyślnie: %(successful)s, Nie ukończyło: "
+"%(failed)s"
 
 #: static/js/views/admin/course_details.js:545
 msgid "This tag name cannot have more than 30 characters!"
@@ -678,7 +727,8 @@ msgstr "Na pewno wyrejestrować wszystkich wybranych uczestników z tego kursu?"
 #: static/js/views/admin/course_details_bulk_actions.js:771
 msgid ""
 "You need to select at least one participant to be able to apply bulk actions."
-msgstr "Musisz wybrać przynajmniej jednego uczestnika, aby zastosować akcje masowe."
+msgstr ""
+"Musisz wybrać przynajmniej jednego uczestnika, aby zastosować akcje masowe."
 
 #: static/js/views/admin/course_details_bulk_actions.js:137
 #: static/js/views/admin/participant_details_active_courses_view.js:131
@@ -734,9 +784,12 @@ msgstr "Wybierz kurs"
 
 #: static/js/views/admin/course_details_bulk_actions.js:270
 msgid "%(selectedRows)s Participants will be enroll in course selected below."
-msgid_plural "%(selectedRows)s Participant will be enroll in course selected below."
-msgstr[0] "%(selectedRows)s Uczestnicy zostaną zarejestrowani na kurs wybrany poniżej."
-msgstr[1] "%(selectedRows)s Uczestnik zostanie zarejestrowany na kurs wybrany poniżej."
+msgid_plural ""
+"%(selectedRows)s Participant will be enroll in course selected below."
+msgstr[0] ""
+"%(selectedRows)s Uczestnicy zostaną zarejestrowani na kurs wybrany poniżej."
+msgstr[1] ""
+"%(selectedRows)s Uczestnik zostanie zarejestrowany na kurs wybrany poniżej."
 
 #: static/js/views/admin/course_details_bulk_actions.js:305
 msgid "Enroll Participants"
@@ -765,7 +818,9 @@ msgstr "Pobierz plik CSV"
 msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
-msgstr "Uwzględnij zestawienie stopnia ukończenia dla każdej lekcji z osobna (Uwaga: eksport zajmie więcej czasu)"
+msgstr ""
+"Uwzględnij zestawienie stopnia ukończenia dla każdej lekcji z osobna (Uwaga: "
+"eksport zajmie więcej czasu)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
 #: static/js/views/admin/group_work_dashboard_assignment_info.js:5
@@ -872,7 +927,8 @@ msgstr "Wprowadź zaktualizowaną nazwę szablonu lub pozostaw poprzednią"
 
 #: static/js/views/admin/course_details_bulk_actions.js:915
 msgid "You are about to delete email template. Are you sure?"
-msgstr "To działanie spowoduje usunięcie szablonu e-mail. Czy chcesz kontynuować?"
+msgstr ""
+"To działanie spowoduje usunięcie szablonu e-mail. Czy chcesz kontynuować?"
 
 #: static/js/views/admin/course_details_engagement.js:11
 msgid "# of people"
@@ -1076,10 +1132,10 @@ msgstr "Data dodania"
 msgid "Enrolled In"
 msgstr "Zarejestrowany"
 
-#: static_v2/js/application.js:521 static_v2/js/custom.js:108
+#: static_v2/js/application.js:522 static_v2/js/custom.js:109
 msgid "Hide password"
 msgstr "Ukryj hasło"
 
-#: static_v2/js/application.js:526 static_v2/js/custom.js:113
+#: static_v2/js/application.js:527 static_v2/js/custom.js:114
 msgid "Show password"
 msgstr "Pokaż hasło"
