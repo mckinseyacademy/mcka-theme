@@ -393,7 +393,8 @@
         color: $dark-gray;
         font-size: 0.75rem;
         line-height: 17px;
-        width: 180px;
+        min-width: 190px;
+        max-width: 210px;
 
         i {
           font-size: 1.125rem;
@@ -785,7 +786,7 @@ blockquote {
         }
 
         &.time {
-          width: auto;
+          //width: 180px;
           margin: 0 0 0 -3px;
         }
 
