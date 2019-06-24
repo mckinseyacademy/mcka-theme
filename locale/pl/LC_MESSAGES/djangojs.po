@@ -1139,3 +1139,39 @@ msgstr "Ukryj hasło"
 #: static_v2/js/application.js:527 static_v2/js/custom.js:114
 msgid "Show password"
 msgstr "Pokaż hasło"
+
+#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:195
+msgid "Announcements"
+msgstr "Ogłoszenia"
+
+#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:200
+msgid "Group Work"
+msgstr "Group Work"
+
+#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:205
+msgid "Leaderboards"
+msgstr "Rankingi liderów"
+
+#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:210
+msgid "Discussion"
+msgstr "Dyskusja"
+
+#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:215
+msgid "Other"
+msgstr "Inne"
+
+#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:397
+msgid "Today at "
+msgstr "Dzisiaj "
+
+#: static/edx_notifications/templates/renderers/leaderboard/rank_changed.underscore:3
+msgid "You are now"
+msgstr "Obecnie jesteś"
+
+#: static/edx_notifications/templates/renderers/leaderboard/rank_changed.underscore:3
+msgid "for"
+msgstr "na"
+
+#: static/edx_notifications/templates/renderers/leaderboard/rank_changed.underscore:3
+msgid "in the cohort!"
+msgstr "w grupie kursantów!"

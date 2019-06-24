@@ -13885,21 +13885,26 @@ msgstr "Imię: {}"
 msgid "Last name: {}"
 msgstr "Nazwisko: {}"
 
-#~ msgid ""
-#~ "If you have any questions about our Privacy Policy or if you require any "
-#~ "assistance in navigating or reading the Terms or this Privacy Policy, "
-#~ "please contact us at:"
-#~ msgstr ""
-#~ "Jeśli masz jakieś pytania odnośnie naszej Polityki prywatności lub jeśli "
-#~ "wymagasz pomocy w nawigacji po lub w zapoznaniu się z Warunkami lub "
-#~ "niniejszą Polityką prywatności, skontaktuj się z nami pod adresem"
+#: edx_notifications/server/web/templates/django/notifications_widget_header.html:27
+msgid "View unread"
+msgstr "Zobacz nieprzeczytane"
 
-#~ msgid ""
-#~ "If you have any questions about these Terms, our Privacy Policy, or if "
-#~ "you require any assistance in navigating McKinsey Academy, these Terms, "
-#~ "or our Privacy Policy, please contact us at:"
-#~ msgstr ""
-#~ "Jeśli masz jakieś pytania odnośnie naszych Warunków, naszej Polityki "
-#~ "prywatności lub jeśli wymagasz pomocy w nawigacji po McKinsey Academy, "
-#~ "niniejszymi Warunkami lub naszą Polityką prywatności, skontaktuj się z "
-#~ "nami pod adresem"
+#: edx_notifications/server/web/templates/django/notifications_widget_header.html:28
+msgid "View all"
+msgstr "Zobacz wszystkie"
+
+#: edx_notifications/server/web/templates/django/notifications_widget_header.html:29
+msgid "Mark as read"
+msgstr "Oznacz jako przeczytane"
+
+#: edx_notifications/server/web/templates/django/notifications_widget_header.html:32
+msgid "Hide"
+msgstr "Ukryj"
+
+#: edx_notifications/server/web/templates/django/notifications_widget_header.html:45
+msgid "You have no unread notifications."
+msgstr "Nie masz żadnych nieprzeczytanych powiadomień"
+
+#: edx_notifications/server/web/templates/django/notifications_widget_preferences_header.html:11
+msgid "Notification preferences"
+msgstr "Ustawienia powiadomień"
