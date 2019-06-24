@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-17 11:31+0000\n"
+"POT-Creation-Date: 2019-06-21 13:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1215,7 +1215,7 @@ msgstr "Nouveau mot de passe"
 msgid "New password confirmation"
 msgstr "Confirmation du nouveau mot de passe"
 
-#: accounts/forms.py:625 admin/forms.py:198
+#: accounts/forms.py:625 admin/forms.py:199
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "Formats acceptés : JPG, PNG et GIF"
 
@@ -1799,52 +1799,52 @@ msgstr "Le fichier CSV doit contenir un en-tête '{}'."
 msgid "The CSV file has to contain '{}' headers."
 msgstr "Le fichier CSV doit contenir un en-tête '{}'."
 
-#: admin/forms.py:32
+#: admin/forms.py:33
 msgid "Hex code should starts with # and followed by 6 or 8 hex digits."
 msgstr "Le code hex doit commencer par #, suivi de 6 ou 8 nombres hex."
 
-#: admin/forms.py:47
+#: admin/forms.py:48
 msgid "Enter new email address"
 msgstr "Saisir une nouvelle adresse e-mail"
 
-#: admin/forms.py:148 admin/views.py:4769
+#: admin/forms.py:149 admin/views.py:4769
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "AF"
 
-#: admin/forms.py:149 admin/views.py:4770
+#: admin/forms.py:150 admin/views.py:4770
 msgid "OBSERVER"
 msgstr "OBSERVATEUR"
 
-#: admin/forms.py:150
+#: admin/forms.py:151
 msgid "MODERATOR"
 msgstr "MODÉRATEUR"
 
-#: admin/forms.py:175 admin/views.py:4771
+#: admin/forms.py:176 admin/views.py:4771
 msgid "ADMIN"
 msgstr "ADMIN"
 
-#: admin/forms.py:176 admin/forms.py:189 admin/views.py:4774
+#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4774
 msgid "COURSE OPS"
 msgstr "OPÉRATIONS DU COURS"
 
-#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4773
+#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4773
 msgid "INTERNAL ADMIN"
 msgstr "ADMIN INTERNE"
 
-#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4772
+#: admin/forms.py:179 admin/forms.py:192 admin/views.py:4772
 msgid "COMPANY ADMIN"
 msgstr "ADMIN SOCIÉTÉ"
 
-#: admin/forms.py:234
+#: admin/forms.py:235
 msgid "Email(s) separated by commas"
 msgstr "E-mail(s) séparé(s) par des virgules"
 
-#: admin/forms.py:236
+#: admin/forms.py:237
 msgid "Message (optional)"
 msgstr "Message (optionnel)"
 
-#: admin/forms.py:244 admin/forms.py:260 admin/forms.py:269
+#: admin/forms.py:245 admin/forms.py:261 admin/forms.py:270
 #: certificates/models.py:79 marketing/forms.py:45
 #: templates/admin/client-admin/course_participants.haml:40
 #: templates/admin/course_run/list.haml:24
@@ -1853,15 +1853,15 @@ msgstr "Message (optionnel)"
 msgid "Name"
 msgstr "Nom"
 
-#: admin/forms.py:245 admin/forms.py:262
+#: admin/forms.py:246 admin/forms.py:263
 msgid "Course Instance"
 msgstr "Instance du cours"
 
-#: admin/forms.py:251
+#: admin/forms.py:252
 msgid "Name {}"
 msgstr "Nom {}"
 
-#: admin/forms.py:261 admin/views.py:2148 admin/views.py:4537
+#: admin/forms.py:262 admin/views.py:2148 admin/views.py:4537
 #: admin/views.py:4639 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
@@ -1869,15 +1869,15 @@ msgstr "Nom {}"
 msgid "Program"
 msgstr "Programme"
 
-#: admin/forms.py:474
+#: admin/forms.py:477
 msgid "Course with this ID does not exist"
 msgstr "Il n’existe pas de cours avec cet identifiant"
 
-#: admin/forms.py:483
+#: admin/forms.py:486
 msgid "That number is not allowed"
 msgstr "Ce nombre n’est pas autorisé"
 
-#: admin/forms.py:485
+#: admin/forms.py:488
 msgid "Number of participants is limited to 5000"
 msgstr "Le nombre de participants est limité à 5 000"
 

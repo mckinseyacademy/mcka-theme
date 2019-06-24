@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-17 11:32+0000\n"
+"POT-Creation-Date: 2019-06-21 13:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1213,7 +1213,7 @@ msgstr "Nowe hasło"
 msgid "New password confirmation"
 msgstr "Potwierdź nowe hasło"
 
-#: accounts/forms.py:625 admin/forms.py:198
+#: accounts/forms.py:625 admin/forms.py:199
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "Akceptowane formaty plików: JPG, PNG oraz GIF"
 
@@ -1797,54 +1797,54 @@ msgstr "Plik CSV musi posiadać nagłówek '{}'."
 msgid "The CSV file has to contain '{}' headers."
 msgstr "Plik CSV musi posiadać nagłówki '{}'."
 
-#: admin/forms.py:32
+#: admin/forms.py:33
 msgid "Hex code should starts with # and followed by 6 or 8 hex digits."
 msgstr ""
 "Kod szesnastkowy musi zaczynać się od # i posiadać od 6 do 8 cyfr "
 "szesnastkowych."
 
-#: admin/forms.py:47
+#: admin/forms.py:48
 msgid "Enter new email address"
 msgstr "Wprowadź nowy adres e-mail"
 
-#: admin/forms.py:148 admin/views.py:4769
+#: admin/forms.py:149 admin/views.py:4769
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "Asystent kursu"
 
-#: admin/forms.py:149 admin/views.py:4770
+#: admin/forms.py:150 admin/views.py:4770
 msgid "OBSERVER"
 msgstr "OBSERWATOR"
 
-#: admin/forms.py:150
+#: admin/forms.py:151
 msgid "MODERATOR"
 msgstr "MODERATOR"
 
-#: admin/forms.py:175 admin/views.py:4771
+#: admin/forms.py:176 admin/views.py:4771
 msgid "ADMIN"
 msgstr "ADMINISTRATOR"
 
-#: admin/forms.py:176 admin/forms.py:189 admin/views.py:4774
+#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4774
 msgid "COURSE OPS"
 msgstr "OBSŁUGA KURSU"
 
-#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4773
+#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4773
 msgid "INTERNAL ADMIN"
 msgstr "ADMINISTRATOR WEWNĘTRZNY"
 
-#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4772
+#: admin/forms.py:179 admin/forms.py:192 admin/views.py:4772
 msgid "COMPANY ADMIN"
 msgstr "ADMINISTRATOR FIRMOWY"
 
-#: admin/forms.py:234
+#: admin/forms.py:235
 msgid "Email(s) separated by commas"
 msgstr "Adres(y) e-mail, oddzielone przecinkami"
 
-#: admin/forms.py:236
+#: admin/forms.py:237
 msgid "Message (optional)"
 msgstr "Wiadomość (opcjonalnie)"
 
-#: admin/forms.py:244 admin/forms.py:260 admin/forms.py:269
+#: admin/forms.py:245 admin/forms.py:261 admin/forms.py:270
 #: certificates/models.py:79 marketing/forms.py:45
 #: templates/admin/client-admin/course_participants.haml:40
 #: templates/admin/course_run/list.haml:24
@@ -1853,15 +1853,15 @@ msgstr "Wiadomość (opcjonalnie)"
 msgid "Name"
 msgstr "Nazwa"
 
-#: admin/forms.py:245 admin/forms.py:262
+#: admin/forms.py:246 admin/forms.py:263
 msgid "Course Instance"
 msgstr "Wystąpienie kursu"
 
-#: admin/forms.py:251
+#: admin/forms.py:252
 msgid "Name {}"
 msgstr "Nazwa {}"
 
-#: admin/forms.py:261 admin/views.py:2148 admin/views.py:4537
+#: admin/forms.py:262 admin/views.py:2148 admin/views.py:4537
 #: admin/views.py:4639 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
@@ -1869,15 +1869,15 @@ msgstr "Nazwa {}"
 msgid "Program"
 msgstr "Program"
 
-#: admin/forms.py:474
+#: admin/forms.py:477
 msgid "Course with this ID does not exist"
 msgstr "Kurs o podanym numerze ID nie istnieje"
 
-#: admin/forms.py:483
+#: admin/forms.py:486
 msgid "That number is not allowed"
 msgstr "Niedozwolony numer"
 
-#: admin/forms.py:485
+#: admin/forms.py:488
 msgid "Number of participants is limited to 5000"
 msgstr "Maksymalna liczba uczestników to 5000"
 
@@ -13884,26 +13884,6 @@ msgstr "Imię: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nazwisko: {}"
-
-#~ msgid ""
-#~ "If you have any questions about our Privacy Policy or if you require any "
-#~ "assistance in navigating or reading the Terms or this Privacy Policy, "
-#~ "please contact us at:"
-#~ msgstr ""
-#~ "Jeśli masz jakieś pytania odnośnie naszej Polityki prywatności lub jeśli "
-#~ "wymagasz pomocy w nawigacji po lub w zapoznaniu się z Warunkami lub "
-#~ "niniejszą Polityką prywatności, skontaktuj się z nami pod adresem"
-
-#~ msgid ""
-#~ "If you have any questions about these Terms, our Privacy Policy, or if "
-#~ "you require any assistance in navigating McKinsey Academy, these Terms, "
-#~ "or our Privacy Policy, please contact us at:"
-#~ msgstr ""
-#~ "Jeśli masz jakieś pytania odnośnie naszych Warunków, naszej Polityki "
-#~ "prywatności lub jeśli wymagasz pomocy w nawigacji po McKinsey Academy, "
-#~ "niniejszymi Warunkami lub naszą Polityką prywatności, skontaktuj się z "
-#~ "nami pod adresem"
-
 
 #: edx_notifications/server/web/templates/django/notifications_widget_header.html:27
 msgid "View unread"
