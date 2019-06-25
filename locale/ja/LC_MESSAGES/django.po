@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-20 10:14+0000\n"
+"POT-Creation-Date: 2019-06-25 09:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1209,7 +1209,7 @@ msgstr "新しいパスワード"
 msgid "New password confirmation"
 msgstr "新しいパスワードの確認"
 
-#: accounts/forms.py:625 admin/forms.py:198
+#: accounts/forms.py:625 admin/forms.py:199
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "対応形式: JPG、PNG、GIF"
 
@@ -1383,20 +1383,20 @@ msgstr "プロバイダのデータが無効です。"
 msgid "Access Key missing."
 msgstr "アクセスキーがありません。"
 
-#: accounts/views.py:805 accounts/views.py:812
+#: accounts/views.py:808 accounts/views.py:815
 msgid "REGISTER"
 msgstr ""
 
-#: accounts/views.py:861
+#: accounts/views.py:864
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "ユーザー登録が失敗しました: {exception_message}"
 
-#: accounts/views.py:863
+#: accounts/views.py:866
 msgid "Some required information was missing."
 msgstr "一部の必須情報がありません。"
 
-#: accounts/views.py:865
+#: accounts/views.py:868
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1404,22 +1404,22 @@ msgstr ""
 "認証クッキーがありません。セッションがタイムアウトになりました。最初からやり"
 "直してください。"
 
-#: accounts/views.py:914
+#: accounts/views.py:917
 msgid "Enter new password"
 msgstr "新しいパスワードを入力"
 
-#: accounts/views.py:931
+#: accounts/views.py:934
 msgid "Password reset unsuccessful"
 msgstr "パスワードの再設定に失敗しました"
 
-#: accounts/views.py:1029 lib/mail.py:133 templates/accounts/activate.haml:16
+#: accounts/views.py:1032 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:272
 #: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "Welcome to McKinsey Academy"
 msgstr "McKinsey Academyへようこそ"
 
-#: accounts/views.py:1030
+#: accounts/views.py:1033
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1428,7 +1428,7 @@ msgstr ""
 "あなたのプログラムは{days}日後に開始します。それまでは、サイト内の各ページの"
 "情報から体験内容をご確認ください。"
 
-#: accounts/views.py:1034
+#: accounts/views.py:1037
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1437,11 +1437,11 @@ msgstr ""
 "あなたのコースは{days}日後に開始します。コースが始まるまでは、サイト内の各"
 "ページの情報から提供内容をご確認ください。"
 
-#: accounts/views.py:1214 templates_v2/layout.haml:213
+#: accounts/views.py:1217 templates_v2/layout.haml:213
 msgid "Enter your full name"
 msgstr "氏名を入力してください"
 
-#: accounts/views.py:1216 accounts/views.py:1241 admin/views.py:2000
+#: accounts/views.py:1219 accounts/views.py:1244 admin/views.py:2000
 #: admin/views.py:2034 admin/views.py:4733
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
@@ -1461,7 +1461,7 @@ msgstr "氏名を入力してください"
 msgid "Save"
 msgstr "保存する"
 
-#: accounts/views.py:1239 templates_v2/header.haml:60
+#: accounts/views.py:1242 templates_v2/header.haml:60
 #: templates_v2/layout.haml:239
 msgid "Enter your title"
 msgstr "役職を入力してください"
@@ -1791,53 +1791,53 @@ msgstr "CSVファイルは「Eメール」ヘダーを含んでいなければ�
 msgid "The CSV file has to contain '{}' headers."
 msgstr "CSVファイルは「Eメール」ヘダーを含んでいなければなりません。"
 
-#: admin/forms.py:32
+#: admin/forms.py:33
 msgid "Hex code should starts with # and followed by 6 or 8 hex digits."
 msgstr ""
 "16進コードは、数字で始まりそれに続く6つまたは8つの16進数で構成すること。"
 
-#: admin/forms.py:47
+#: admin/forms.py:48
 msgid "Enter new email address"
 msgstr "新しいEメールアドレスを入力してください"
 
-#: admin/forms.py:148 admin/views.py:4769
+#: admin/forms.py:149 admin/views.py:4769
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "TA"
 
-#: admin/forms.py:149 admin/views.py:4770
+#: admin/forms.py:150 admin/views.py:4770
 msgid "OBSERVER"
 msgstr "オブザーバー"
 
-#: admin/forms.py:150
+#: admin/forms.py:151
 msgid "MODERATOR"
 msgstr "主宰者"
 
-#: admin/forms.py:175 admin/views.py:4771
+#: admin/forms.py:176 admin/views.py:4771
 msgid "ADMIN"
 msgstr "管理者"
 
-#: admin/forms.py:176 admin/forms.py:189 admin/views.py:4774
+#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4774
 msgid "COURSE OPS"
 msgstr "コース運用"
 
-#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4773
+#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4773
 msgid "INTERNAL ADMIN"
 msgstr "社内管理者"
 
-#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4772
+#: admin/forms.py:179 admin/forms.py:192 admin/views.py:4772
 msgid "COMPANY ADMIN"
 msgstr "会社管理者"
 
-#: admin/forms.py:234
+#: admin/forms.py:235
 msgid "Email(s) separated by commas"
 msgstr "Eメールはカンマで区切られます"
 
-#: admin/forms.py:236
+#: admin/forms.py:237
 msgid "Message (optional)"
 msgstr "メッセージ (任意)"
 
-#: admin/forms.py:244 admin/forms.py:260 admin/forms.py:269
+#: admin/forms.py:245 admin/forms.py:261 admin/forms.py:270
 #: certificates/models.py:79 marketing/forms.py:45
 #: templates/admin/client-admin/course_participants.haml:40
 #: templates/admin/course_run/list.haml:24
@@ -1846,15 +1846,15 @@ msgstr "メッセージ (任意)"
 msgid "Name"
 msgstr "名前"
 
-#: admin/forms.py:245 admin/forms.py:262
+#: admin/forms.py:246 admin/forms.py:263
 msgid "Course Instance"
 msgstr "コース事例"
 
-#: admin/forms.py:251
+#: admin/forms.py:252
 msgid "Name {}"
 msgstr "名前{}"
 
-#: admin/forms.py:261 admin/views.py:2148 admin/views.py:4537
+#: admin/forms.py:262 admin/views.py:2148 admin/views.py:4537
 #: admin/views.py:4639 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
@@ -1862,15 +1862,15 @@ msgstr "名前{}"
 msgid "Program"
 msgstr "プログラム"
 
-#: admin/forms.py:474
+#: admin/forms.py:477
 msgid "Course with this ID does not exist"
 msgstr "このIDのコースは存在しません"
 
-#: admin/forms.py:483
+#: admin/forms.py:486
 msgid "That number is not allowed"
 msgstr "その数字は使用できません"
 
-#: admin/forms.py:485
+#: admin/forms.py:488
 msgid "Number of participants is limited to 5000"
 msgstr "参加者数は定員5000人です"
 
@@ -3346,10 +3346,10 @@ msgstr "デモ登録 | McKinsey Academy"
 
 #: templates/accounts/public_registration.haml:8
 #: templates/certificates/course_certificate_notification_email.haml:13
-#: templates/layout.haml:27 templates/privacy.haml:130
+#: templates/layout.haml:27 templates/privacy.haml:128
 #: templates/terms_of_service.haml:113
 #: templates_v2/accounts/public_registration.haml:8 templates_v2/layout.haml:54
-#: templates_v2/privacy.haml:134 templates_v2/terms_of_service.haml:113
+#: templates_v2/privacy.haml:132 templates_v2/terms_of_service.haml:113
 msgid "McKinsey Academy"
 msgstr "McKinsey Academy"
 
@@ -10809,21 +10809,18 @@ msgstr ""
 "することができる場合もあります。"
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
+#, python-format
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
-"contact our"
+"contact our <a href=\"%(support_url)s\">support team.</a>"
 msgstr ""
 "弊社が収集したお客様に関する個人データへのアクセス、または当該個人データの見"
 "直しもしくは訂正をご希望の方、あるいは弊社によるお客様の個人データの処理方法"
-"について知りたい方は、弊社のまでご連絡ください。"
+"について知りたい方は、弊社の"
+"<a href=\"%(support_url)s\">サポート チーム</a>までご連絡ください。"
 
-#: templates/privacy.haml:106 templates/privacy.haml:118
-#: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
-msgid "support team"
-msgstr "サポート チーム"
-
-#: templates/privacy.haml:108 templates_v2/privacy.haml:112
+#: templates/privacy.haml:107 templates_v2/privacy.haml:111
 msgid ""
 "To help protect your privacy and security, we will take reasonable steps to "
 "verify your identity, such as requiring you to provide or confirm your "
@@ -10858,7 +10855,7 @@ msgstr ""
 "らかに根拠がない、または過度の、あるいは該当する法律に違反する、あるいは不当"
 "な場合は、お客様の依頼を却下する権利を有します。"
 
-#: templates/privacy.haml:110 templates_v2/privacy.haml:114
+#: templates/privacy.haml:109 templates_v2/privacy.haml:113
 msgid ""
 "In addition, and where granted by local law, you have the legal right to "
 "lodge a complaint with a competent data protection authority."
@@ -10866,7 +10863,7 @@ msgstr ""
 "さらに、現地の法律で認められている場合、お客様は、該当するデータ保護当局に対"
 "し苦情を申し立てる権利を有します。"
 
-#: templates/privacy.haml:112 templates_v2/privacy.haml:116
+#: templates/privacy.haml:111 templates_v2/privacy.haml:115
 msgid ""
 "You may revoke your consent to the collection, processing and/or disclosure "
 "of your personal data at any time. To do so, please either follow the "
@@ -10886,11 +10883,11 @@ msgstr ""
 "示が不可欠なMcKinsey Academyの特定機能が利用できなくなる可能性がある点にご注"
 "意ください。"
 
-#: templates/privacy.haml:113 templates_v2/privacy.haml:117
+#: templates/privacy.haml:112 templates_v2/privacy.haml:116
 msgid "Your California privacy rights"
 msgstr "お客様のカリフォルニア州におけるプライバシーに関する権利"
 
-#: templates/privacy.haml:115 templates_v2/privacy.haml:119
+#: templates/privacy.haml:114 templates_v2/privacy.haml:118
 msgid ""
 "Pursuant to California Civil Code Section 1798.83(c)(2), McKinsey does not "
 "share your personal data with third parties for those third parties’ direct "
@@ -10900,22 +10897,23 @@ msgstr ""
 "ティングを目的とした直接の利用について、お客様の個人データを第三者に共有しま"
 "せん。"
 
-#: templates/privacy.haml:117 templates_v2/privacy.haml:121
+#: templates/privacy.haml:116 templates_v2/privacy.haml:120
+#, python-format
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
 "Professions Code Section 22581 permits you to request and obtain removal of "
 "content or information you have publicly posted. To make such a request, "
 "please send a detailed description of the specific content or information to "
-"our"
+"our <a href=\"%(support_url)s\">support team.</a>"
 msgstr ""
 "お客様が、18歳未満のカリフォルニア州在住者で、当該プライバシーに関する方針の"
 "対象となるMcKinsey Academyの登録ユーザーである場合、カリフォルニア州企業・職"
 "業法第22581項により、お客様が公に掲示したコンテンツまたは情報の削除を依頼する"
 "ことができます。ご依頼の際には、具体的な内容または情報に関する詳しい説明を弊"
-"社のにご提示ください。"
+"社の<a href=\"%(support_url)s\">サポート チーム</a>にご提示ください。"
 
-#: templates/privacy.haml:119 templates_v2/privacy.haml:123
+#: templates/privacy.haml:117 templates_v2/privacy.haml:121
 msgid ""
 "Please be aware that such a request does not ensure complete or "
 "comprehensive removal of the content or information you have posted and that "
@@ -10927,11 +10925,11 @@ msgstr ""
 "が法律により求められない、あるいは許可されない場合もあることを、ご承知おきく"
 "ださい。"
 
-#: templates/privacy.haml:120 templates_v2/privacy.haml:124
+#: templates/privacy.haml:118 templates_v2/privacy.haml:122
 msgid "Consent; changes to privacy policy"
 msgstr "プライバシーに関する方針の変更同意"
 
-#: templates/privacy.haml:122 templates_v2/privacy.haml:126
+#: templates/privacy.haml:120 templates_v2/privacy.haml:124
 msgid ""
 "By using McKinsey Academy, including the Site or any Mobile Offering, you "
 "consent to the collection, use, and storage of your information, including "
@@ -10948,7 +10946,7 @@ msgstr ""
 "た場合は、最新版のプライバシーに関する方針を次に掲載することで、お客様に告知"
 "いたします"
 
-#: templates/privacy.haml:125 templates_v2/privacy.haml:129
+#: templates/privacy.haml:123 templates_v2/privacy.haml:127
 msgid ""
 "If we make material changes to this Privacy Policy that increase our rights "
 "to use personal data that we have previously collected about you, we will "
@@ -10962,12 +10960,12 @@ msgstr ""
 "きる方法で、変更に関する情報を顕著に掲載することで、お客様による同意を得ま"
 "す。"
 
-#: templates/privacy.haml:126 templates_v2/privacy.haml:130
+#: templates/privacy.haml:124 templates_v2/privacy.haml:128
 msgid "Contact our privacy department"
 msgstr "当社プライバシー部へお問い合わせ"
 
-#: templates/privacy.haml:128 templates/terms_of_service.haml:110
-#: templates_v2/privacy.haml:132 templates_v2/terms_of_service.haml:110
+#: templates/privacy.haml:126 templates/terms_of_service.haml:110
+#: templates_v2/privacy.haml:130 templates_v2/terms_of_service.haml:110
 msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
@@ -10975,18 +10973,18 @@ msgstr ""
 "弊社の利用規約またはプライバシー ポリシーに関する質問またはお問い合わせは、下"
 "記までお寄せください。"
 
-#: templates/privacy.haml:131 templates/terms_of_service.haml:114
-#: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
+#: templates/privacy.haml:129 templates/terms_of_service.haml:114
+#: templates_v2/privacy.haml:133 templates_v2/terms_of_service.haml:114
 msgid "c/o Marc Metakis"
 msgstr "c/o Marc Metakis"
 
-#: templates/privacy.haml:132 templates/terms_of_service.haml:115
-#: templates_v2/privacy.haml:136 templates_v2/terms_of_service.haml:115
+#: templates/privacy.haml:130 templates/terms_of_service.haml:115
+#: templates_v2/privacy.haml:134 templates_v2/terms_of_service.haml:115
 msgid "55 East 52nd Street"
 msgstr "55 East 52nd Street"
 
-#: templates/privacy.haml:133 templates/terms_of_service.haml:116
-#: templates_v2/privacy.haml:137 templates_v2/terms_of_service.haml:116
+#: templates/privacy.haml:131 templates/terms_of_service.haml:116
+#: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:116
 msgid "New York, NY 10022"
 msgstr "New York, NY 10022"
 

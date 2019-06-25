@@ -106,8 +106,7 @@
         %p
           {% trans "Where granted by local law, you may have the right to request access to the personal data that we have collected about you for the purposes of reviewing, modifying, or requesting deletion of the data. You may also have the right to request a copy of the personal data that we have collected about you. In certain circumstances, you may also request that we cease processing your personal data." %}
         %p
-          {% trans "To make a request to access, review, or correct the personal data we have collected about you, or to discuss how we process your personal data, please contact our" %}
-          %a{:href => '#{support}'} {% trans "support team" %}.
+          {% blocktrans with support_url=support%}To make a request to access, review, or correct the personal data we have collected about you, or to discuss how we process your personal data, please contact our <a href="{{support_url}}">support team.</a>{% endblocktrans %}
         %p
           {% trans "To help protect your privacy and security, we will take reasonable steps to verify your identity, such as requiring you to provide or confirm your identity, including your User Account Information, before granting access to your personal data. We will make reasonable attempts to promptly investigate, comply with, or otherwise respond to your requests as may be required by applicable law. Different laws or circumstances may prevent us from providing access to your personal data or otherwise fully complying with your request depending upon the circumstances and the request; such as for example, where producing your information may reveal the identity of someone. Where you are participating in McKinsey Academy with the facilitation of your Sponsoring Organization, we may, including where required by applicable law or contract, notify your Sponsoring Organization of your request and coordinate with your Sponsoring Organization in responding to your request. We reserve the right to charge an appropriate fee for complying with your request where allowed by applicable law, and/or deny your requests where they may be manifestly unfounded, and/or excessive, or otherwise objectionable or unwarranted under applicable law." %}
         %p
@@ -118,8 +117,7 @@
         %p
           {% blocktrans %}Pursuant to California Civil Code Section 1798.83(c)(2), McKinsey does not share your personal data with third parties for those third parties’ direct marketing use. {% endblocktrans %}
         %p
-          {% trans "If you are a California resident under the age of 18, and a registered user of McKinsey Academy subject to this Privacy Policy, California Business and Professions Code Section 22581 permits you to request and obtain removal of content or information you have publicly posted. To make such a request, please send a detailed description of the specific content or information to our" %}
-          %a{:href => '#{support}'} {% trans "support team" %}.
+          {% blocktrans with support_url=support%}If you are a California resident under the age of 18, and a registered user of McKinsey Academy subject to this Privacy Policy, California Business and Professions Code Section 22581 permits you to request and obtain removal of content or information you have publicly posted. To make such a request, please send a detailed description of the specific content or information to our <a href="{{support_url}}">support team.</a>{% endblocktrans %}
           {% trans "Please be aware that such a request does not ensure complete or comprehensive removal of the content or information you have posted and that there may be circumstances in which the law does not require or allow removal even if requested." %}
         %p.style-2 {% trans "Consent; changes to privacy policy" %}
         %p

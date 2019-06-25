@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-20 10:15+0000\n"
+"POT-Creation-Date: 2019-06-25 10:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1214,7 +1214,7 @@ msgstr "Nieuw wachtwoord"
 msgid "New password confirmation"
 msgstr "Bevestiging nieuw wachtwoord"
 
-#: accounts/forms.py:625 admin/forms.py:198
+#: accounts/forms.py:625 admin/forms.py:199
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "Geaccepteerde bestandstypen: JPG, PNG en GIF"
 
@@ -1389,20 +1389,20 @@ msgstr "Providergegevens lijken ongeldig."
 msgid "Access Key missing."
 msgstr "Toegangssleutel ontbreekt."
 
-#: accounts/views.py:805 accounts/views.py:812
+#: accounts/views.py:808 accounts/views.py:815
 msgid "REGISTER"
 msgstr ""
 
-#: accounts/views.py:861
+#: accounts/views.py:864
 #, python-brace-format
 msgid "Failed to register user: {exception_message}"
 msgstr "Registreren van gebruiker mislukt: {exception_message}"
 
-#: accounts/views.py:863
+#: accounts/views.py:866
 msgid "Some required information was missing."
 msgstr "Vereiste informatie ontbreekt."
 
-#: accounts/views.py:865
+#: accounts/views.py:868
 msgid ""
 "Authentication cookie is missing. Your session may have timed out. Please "
 "start over."
@@ -1410,22 +1410,22 @@ msgstr ""
 "Verificatie-cookie ontbreekt. Er kan een time-out van uw sessie zijn "
 "opgetreden. Begin opnieuw."
 
-#: accounts/views.py:914
+#: accounts/views.py:917
 msgid "Enter new password"
 msgstr "Voer nieuw wachtwoord in"
 
-#: accounts/views.py:931
+#: accounts/views.py:934
 msgid "Password reset unsuccessful"
 msgstr "Wachtwoord opnieuw instellen mislukt"
 
-#: accounts/views.py:1029 lib/mail.py:133 templates/accounts/activate.haml:16
+#: accounts/views.py:1032 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:272
 #: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "Welcome to McKinsey Academy"
 msgstr "Welkom bij McKinsey Academy"
 
-#: accounts/views.py:1030
+#: accounts/views.py:1033
 #, python-brace-format
 msgid ""
 "Your program will start in {days} days. Please explore the site to learn "
@@ -1434,7 +1434,7 @@ msgstr ""
 "Uw programma start over {days} dagen. Verken in de tussentijd de site voor "
 "meer informatie."
 
-#: accounts/views.py:1034
+#: accounts/views.py:1037
 #, python-brace-format
 msgid ""
 "Your course begins in {days} days. Before the course begins, you can explore "
@@ -1443,11 +1443,11 @@ msgstr ""
 "Uw cursus begint over {days} dagen. Voordat de cursus begint, kunt u deze "
 "site verkennen voor meer informatie over wat u kunt verwachten."
 
-#: accounts/views.py:1214 templates_v2/layout.haml:213
+#: accounts/views.py:1217 templates_v2/layout.haml:213
 msgid "Enter your full name"
 msgstr "Voer uw volledige naam in"
 
-#: accounts/views.py:1216 accounts/views.py:1241 admin/views.py:2000
+#: accounts/views.py:1219 accounts/views.py:1244 admin/views.py:2000
 #: admin/views.py:2034 admin/views.py:4733
 #: templates/admin/client-admin/course_branding_settings_create_edit.haml:97
 #: templates/admin/client/navigation.haml:217
@@ -1467,7 +1467,7 @@ msgstr "Voer uw volledige naam in"
 msgid "Save"
 msgstr "Opslaan"
 
-#: accounts/views.py:1239 templates_v2/header.haml:60
+#: accounts/views.py:1242 templates_v2/header.haml:60
 #: templates_v2/layout.haml:239
 msgid "Enter your title"
 msgstr "Voer uw titel in"
@@ -1793,53 +1793,53 @@ msgstr "Het CSV-document moet een '{}'-titel hebben."
 msgid "The CSV file has to contain '{}' headers."
 msgstr "Het CSV-document moet een '{}'-titel hebben."
 
-#: admin/forms.py:32
+#: admin/forms.py:33
 msgid "Hex code should starts with # and followed by 6 or 8 hex digits."
 msgstr ""
 "Hex-code moet beginnen met # en worden gevolgd door 6 of 8 hex-cijfers."
 
-#: admin/forms.py:47
+#: admin/forms.py:48
 msgid "Enter new email address"
 msgstr "Voer nieuw e-mailadres in"
 
-#: admin/forms.py:148 admin/views.py:4769
+#: admin/forms.py:149 admin/views.py:4769
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "OA"
 
-#: admin/forms.py:149 admin/views.py:4770
+#: admin/forms.py:150 admin/views.py:4770
 msgid "OBSERVER"
 msgstr "WAARNEMER"
 
-#: admin/forms.py:150
+#: admin/forms.py:151
 msgid "MODERATOR"
 msgstr "MODERATOR"
 
-#: admin/forms.py:175 admin/views.py:4771
+#: admin/forms.py:176 admin/views.py:4771
 msgid "ADMIN"
 msgstr "BEHEER"
 
-#: admin/forms.py:176 admin/forms.py:189 admin/views.py:4774
+#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4774
 msgid "COURSE OPS"
 msgstr "CURSUSOPTIES"
 
-#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4773
+#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4773
 msgid "INTERNAL ADMIN"
 msgstr "INTERN BEHEER"
 
-#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4772
+#: admin/forms.py:179 admin/forms.py:192 admin/views.py:4772
 msgid "COMPANY ADMIN"
 msgstr "BEDRIJFSBEHEER"
 
-#: admin/forms.py:234
+#: admin/forms.py:235
 msgid "Email(s) separated by commas"
 msgstr "E-mail(s) gescheiden door komma’s"
 
-#: admin/forms.py:236
+#: admin/forms.py:237
 msgid "Message (optional)"
 msgstr "Bericht (optioneel)"
 
-#: admin/forms.py:244 admin/forms.py:260 admin/forms.py:269
+#: admin/forms.py:245 admin/forms.py:261 admin/forms.py:270
 #: certificates/models.py:79 marketing/forms.py:45
 #: templates/admin/client-admin/course_participants.haml:40
 #: templates/admin/course_run/list.haml:24
@@ -1848,15 +1848,15 @@ msgstr "Bericht (optioneel)"
 msgid "Name"
 msgstr "Naam"
 
-#: admin/forms.py:245 admin/forms.py:262
+#: admin/forms.py:246 admin/forms.py:263
 msgid "Course Instance"
 msgstr "Cursusversie"
 
-#: admin/forms.py:251
+#: admin/forms.py:252
 msgid "Name {}"
 msgstr "Naam {}"
 
-#: admin/forms.py:261 admin/views.py:2148 admin/views.py:4537
+#: admin/forms.py:262 admin/views.py:2148 admin/views.py:4537
 #: admin/views.py:4639 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
@@ -1864,15 +1864,15 @@ msgstr "Naam {}"
 msgid "Program"
 msgstr "Programma"
 
-#: admin/forms.py:474
+#: admin/forms.py:477
 msgid "Course with this ID does not exist"
 msgstr "Cursus met deze ID bestaat niet"
 
-#: admin/forms.py:483
+#: admin/forms.py:486
 msgid "That number is not allowed"
 msgstr "Dat aantal is niet toegestaan"
 
-#: admin/forms.py:485
+#: admin/forms.py:488
 msgid "Number of participants is limited to 5000"
 msgstr "Aantal deelnemers is beperkt tot 5000"
 
@@ -3359,10 +3359,10 @@ msgstr "Demo registratie | McKinsey Academy"
 
 #: templates/accounts/public_registration.haml:8
 #: templates/certificates/course_certificate_notification_email.haml:13
-#: templates/layout.haml:27 templates/privacy.haml:130
+#: templates/layout.haml:27 templates/privacy.haml:128
 #: templates/terms_of_service.haml:113
 #: templates_v2/accounts/public_registration.haml:8 templates_v2/layout.haml:54
-#: templates_v2/privacy.haml:134 templates_v2/terms_of_service.haml:113
+#: templates_v2/privacy.haml:132 templates_v2/terms_of_service.haml:113
 msgid "McKinsey Academy"
 msgstr "McKinsey Academy"
 
@@ -11152,21 +11152,18 @@ msgstr ""
 "om de verwerking van uw persoonsgegevens door ons te staken."
 
 #: templates/privacy.haml:105 templates_v2/privacy.haml:109
+#, python-format
 msgid ""
 "To make a request to access, review, or correct the personal data we have "
 "collected about you, or to discuss how we process your personal data, please "
-"contact our"
+"contact our <a href=\"%(support_url)s\">support team.</a>"
 msgstr ""
 "Wilt u een aanvraag indienen voor het bekijken of aanpassen van de "
 "persoonlijke gegevens die wij over u hebben verzameld of heeft vragen over "
-"de verwerking van uw persoonlijke gegevens, neem dan contact op met"
+"de verwerking van uw persoonlijke gegevens, neem dan contact op met "
+"<a href=\"%(support_url)s\">support team.</a>"
 
-#: templates/privacy.haml:106 templates/privacy.haml:118
-#: templates_v2/privacy.haml:110 templates_v2/privacy.haml:122
-msgid "support team"
-msgstr "support team"
-
-#: templates/privacy.haml:108 templates_v2/privacy.haml:112
+#: templates/privacy.haml:107 templates_v2/privacy.haml:111
 msgid ""
 "To help protect your privacy and security, we will take reasonable steps to "
 "verify your identity, such as requiring you to provide or confirm your "
@@ -11208,7 +11205,7 @@ msgstr ""
 "buitensporig zijn of anderszins bezwaarlijk of onterecht zijn onder de "
 "toepasselijke wetgeving."
 
-#: templates/privacy.haml:110 templates_v2/privacy.haml:114
+#: templates/privacy.haml:109 templates_v2/privacy.haml:113
 msgid ""
 "In addition, and where granted by local law, you have the legal right to "
 "lodge a complaint with a competent data protection authority."
@@ -11217,7 +11214,7 @@ msgstr ""
 "daarnaast het recht om een klacht in te dienen bij een ter zake bevoegde "
 "gegevensbeschermingsautoriteit."
 
-#: templates/privacy.haml:112 templates_v2/privacy.haml:116
+#: templates/privacy.haml:111 templates_v2/privacy.haml:115
 msgid ""
 "You may revoke your consent to the collection, processing and/or disclosure "
 "of your personal data at any time. To do so, please either follow the "
@@ -11240,11 +11237,11 @@ msgstr ""
 "voor u, aangezien deze afhankelijk zijn van het verzamelen, verwerken en/of "
 "verstrekken van uw persoonsgegevens."
 
-#: templates/privacy.haml:113 templates_v2/privacy.haml:117
+#: templates/privacy.haml:112 templates_v2/privacy.haml:116
 msgid "Your California privacy rights"
 msgstr "Uw privacyrechten onder de wetgeving in Californië"
 
-#: templates/privacy.haml:115 templates_v2/privacy.haml:119
+#: templates/privacy.haml:114 templates_v2/privacy.haml:118
 msgid ""
 "Pursuant to California Civil Code Section 1798.83(c)(2), McKinsey does not "
 "share your personal data with third parties for those third parties’ direct "
@@ -11255,14 +11252,15 @@ msgstr ""
 "McKinsey uw persoonsgegevens niet met derde partijen voor direct-"
 "marketinggebruik door deze derde partijen. "
 
-#: templates/privacy.haml:117 templates_v2/privacy.haml:121
+#: templates/privacy.haml:116 templates_v2/privacy.haml:120
+#, python-format
 msgid ""
 "If you are a California resident under the age of 18, and a registered user "
 "of McKinsey Academy subject to this Privacy Policy, California Business and "
 "Professions Code Section 22581 permits you to request and obtain removal of "
 "content or information you have publicly posted. To make such a request, "
 "please send a detailed description of the specific content or information to "
-"our"
+"our <a href=\"%(support_url)s\">support team.</a>"
 msgstr ""
 "Als u ingezetene bent van de staat Californië in de Verenigde Staten, als u "
 "jonger bent dan 18 jaar en een geregistreerd gebruiker van McKinsey Academy "
@@ -11271,9 +11269,10 @@ msgstr ""
 "u in staat een aanvraag te doen tot het verwijderen van inhoud of informatie "
 "die u publiekelijk heeft geplaatst en om een dergelijke verwijdering te "
 "verkrijgen. Als u een dergelijke aanvraag indient, stuur dan een "
-"gedetailleerde beschrijving over de precieze inhoud of informatie naar ons"
+"gedetailleerde beschrijving over de precieze inhoud of informatie naar ons "
+"<a href=\"%(support_url)s\">support team.</a>"
 
-#: templates/privacy.haml:119 templates_v2/privacy.haml:123
+#: templates/privacy.haml:117 templates_v2/privacy.haml:121
 msgid ""
 "Please be aware that such a request does not ensure complete or "
 "comprehensive removal of the content or information you have posted and that "
@@ -11286,11 +11285,11 @@ msgstr ""
 "wetgeving verwijdering niet vereist of toestaat, zelfs als deze is "
 "aangevraagd."
 
-#: templates/privacy.haml:120 templates_v2/privacy.haml:124
+#: templates/privacy.haml:118 templates_v2/privacy.haml:122
 msgid "Consent; changes to privacy policy"
 msgstr "Toestemming; wijzigingen in het privacybeleid"
 
-#: templates/privacy.haml:122 templates_v2/privacy.haml:126
+#: templates/privacy.haml:120 templates_v2/privacy.haml:124
 msgid ""
 "By using McKinsey Academy, including the Site or any Mobile Offering, you "
 "consent to the collection, use, and storage of your information, including "
@@ -11308,7 +11307,7 @@ msgstr ""
 "attenderen op dergelijke wijzigingen door dit Privacybeleid bij te werken, "
 "zoals dat beschikbaar is op"
 
-#: templates/privacy.haml:125 templates_v2/privacy.haml:129
+#: templates/privacy.haml:123 templates_v2/privacy.haml:127
 msgid ""
 "If we make material changes to this Privacy Policy that increase our rights "
 "to use personal data that we have previously collected about you, we will "
@@ -11323,12 +11322,12 @@ msgstr ""
 "publiceren over de wijzigingen op een wijze die toegankelijk is voor "
 "McKinsey Academy-gebruikers."
 
-#: templates/privacy.haml:126 templates_v2/privacy.haml:130
+#: templates/privacy.haml:124 templates_v2/privacy.haml:128
 msgid "Contact our privacy department"
 msgstr "Contact opnemen met onze afdeling Privacy"
 
-#: templates/privacy.haml:128 templates/terms_of_service.haml:110
-#: templates_v2/privacy.haml:132 templates_v2/terms_of_service.haml:110
+#: templates/privacy.haml:126 templates/terms_of_service.haml:110
+#: templates_v2/privacy.haml:130 templates_v2/terms_of_service.haml:110
 msgid ""
 "For questions or concerns about our Terms of Service or our Privacy Policy, "
 "please contact:"
@@ -11336,18 +11335,18 @@ msgstr ""
 "Voor vragen of opmerkingen over onze voorwaarden of ons privacybeleid, neem "
 "contact op met:"
 
-#: templates/privacy.haml:131 templates/terms_of_service.haml:114
-#: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:114
+#: templates/privacy.haml:129 templates/terms_of_service.haml:114
+#: templates_v2/privacy.haml:133 templates_v2/terms_of_service.haml:114
 msgid "c/o Marc Metakis"
 msgstr "t.a.v. Marc Metakis"
 
-#: templates/privacy.haml:132 templates/terms_of_service.haml:115
-#: templates_v2/privacy.haml:136 templates_v2/terms_of_service.haml:115
+#: templates/privacy.haml:130 templates/terms_of_service.haml:115
+#: templates_v2/privacy.haml:134 templates_v2/terms_of_service.haml:115
 msgid "55 East 52nd Street"
 msgstr "55 East 52nd Street"
 
-#: templates/privacy.haml:133 templates/terms_of_service.haml:116
-#: templates_v2/privacy.haml:137 templates_v2/terms_of_service.haml:116
+#: templates/privacy.haml:131 templates/terms_of_service.haml:116
+#: templates_v2/privacy.haml:135 templates_v2/terms_of_service.haml:116
 msgid "New York, NY 10022"
 msgstr "New York, NY 10022"
 
