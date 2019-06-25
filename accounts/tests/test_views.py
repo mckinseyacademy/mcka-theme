@@ -196,7 +196,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
     def test_sso_flow(self, with_existing_user, mock_login, mock_register_user):
         if with_existing_user:
             # Mock to simulate a user named 'myself' already existing on the system:
-            self.get_users_patch.side_effect = lambda username: [Mock()] if username == "myself" else []
+            self.get_users_patch.side_effect = lambda username: [Mock()] if username == "Me_Myself_And_I" else []
         # Start with an access code:
         response = self.client.get('/access/{}'.format(self.access_key.code))
         self.assertEqual(response.status_code, 200)
@@ -223,7 +223,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
             self.assertTrue(response['Location'].endswith('/auth/complete/tpa-saml/'))
 
         # Then the user should be registered:
-        expected_username = u'myself' if not with_existing_user else u'myself1'
+        expected_username = u'Me_Myself_And_I' if not with_existing_user else u'Me_Myself_And_I1'
         mock_register_user.assert_called_once_with({
             'username': expected_username,
             'city': u'New York',
