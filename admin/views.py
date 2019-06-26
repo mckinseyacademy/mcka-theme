@@ -5621,20 +5621,19 @@ def course_learner_dashboard(request, course_id):
         instance = LearnerDashboard.objects.get(course_id=course_id)
     except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         instance = None
-
     if request.method == "POST":
         if instance is None:
             instance = LearnerDashboard(
-                title=request.POST['title'],
-                description=request.POST['description'],
+                title=clean_xss_characters(request.POST['title']),
+                description=clean_xss_characters(request.POST['description']),
                 title_color=request.POST['title_color'],
                 description_color=request.POST['description_color'],
                 course_id=course_id
             )
             instance.save()
         else:
-            instance.title = request.POST['title']
-            instance.description = request.POST['description']
+            instance.title = clean_xss_characters(request.POST['title'])
+            instance.description = clean_xss_characters(request.POST['description'])
             instance.title_color = request.POST['title_color']
             instance.description_color = request.POST['description_color']
             instance.save()
@@ -5741,6 +5740,8 @@ def course_learner_dashboard_tile(request, course_id, learner_dashboard_id, tile
 
     else:
         form = LearnerDashboardTileForm(instance=instance)
+        for field in form:
+            field.value = clean_xss_characters(field.value) if isinstance(field.value, str) else field.value
 
     default_colors = {
         'label': settings.TILE_LABEL_COLOR,

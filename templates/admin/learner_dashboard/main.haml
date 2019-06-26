@@ -14,10 +14,10 @@
       $('.admin-ld-component').hide().eq(0).show();
 
       $('#previewLearnerDashboard').on('click', function(){
-        $("#preview-text").html(function(){
+        $("#preview-text").textContent(function(){
           return $("input[name=title_ld]").val();
         });
-        $("#preview-desc").html(function(){
+        $("#preview-desc").textContent(function(){
           return $("textarea[name=description]").val();
         });
 
