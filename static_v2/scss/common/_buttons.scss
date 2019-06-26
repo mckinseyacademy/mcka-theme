@@ -99,11 +99,13 @@ a.btn {
 
 //default anchor style
 a {
-  color: var(--primary) !important;
+  color: var(--primary);
   &:hover {
-    color: var(--primary-darken-30) !important;
+    color: var(--primary-darken-30);
   }
 }
+
+
 
 // button for extend
 

@@ -418,6 +418,7 @@ header {
       text-align: center;
       > a {
         padding: 0 0 18px;
+        color: var(--primary);
 
         &:before {
           position: absolute;
@@ -435,6 +436,7 @@ header {
         a {
           outline: none;
           text-decoration: none;
+          color: var(--primary-darken-30);
         }
       }
 
