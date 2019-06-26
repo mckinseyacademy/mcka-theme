@@ -693,7 +693,18 @@ footer {
           @include left(0);
         }
       }
+      &:last-child{
+        a{
+          &.nav-link{
+           @include padding-right(0);
+          }
+        }
+      }
     }
+  }
+  .footerLinks{
+    @include float(right);
+    @include margin-left(15px);
   }
 }
 
