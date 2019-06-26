@@ -1,8 +1,5 @@
 $(document).ready(function () {
 
-    // Skeleton preloading
-    $(".skeleton-loading .card-img-top").remove();
-
     if($(".reset-password #id_email").val() !== "")
     {
         $('#reset-password-submit').attr("disabled", false);

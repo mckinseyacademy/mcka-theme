@@ -2,7 +2,7 @@
 .bg-animation {
     background: linear-gradient(90deg, $light-gray 0%, $light-gray 35%, rgba(255, 255, 255, .3) 50%, $light-gray 65%, $light-gray 100%);
     background-size: 250% 250%;
-    animation: shimmer 3s ease infinite;
+    animation: shimmer 2.5s ease infinite;
 
     @keyframes shimmer {
         0% {
@@ -21,7 +21,7 @@
         .bg-animation {
             background: linear-gradient(90deg, $light-gray 0%, $light-gray 35%, rgba(255, 255, 255, .3) 50%, $light-gray 65%, $light-gray 100%);
             background-size: 250% 250%;
-            animation: shimmerRTL 3s ease infinite;
+            animation: shimmerRTL 2.5s ease infinite;
             
             @keyframes shimmerRTL {
                 0% {

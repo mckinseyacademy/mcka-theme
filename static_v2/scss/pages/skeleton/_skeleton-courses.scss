@@ -10,8 +10,9 @@
             pointer-events: none;
 
             .overlay-img {
-                min-height: 190px;
-
+                img {
+                    display: none;
+                }
                 &::after {
                     display: none;
                 }
