@@ -8,6 +8,18 @@ $(document).ready(function () {
             $(this.element).find('.pie-value').text(Math.round(percent));
         }
     });
+
+    
+    $('#pro-loader').pieChart({
+        barColor: secondary,
+        trackColor: '#ededed',
+        lineWidth: 16,
+        onStep: function (from, to, percent) {
+            $(this.element).find('.pie-value').text(Math.round(percent));
+        }
+    });
+
+
 });
 
 

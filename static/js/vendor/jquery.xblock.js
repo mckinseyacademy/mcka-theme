@@ -467,6 +467,7 @@
             if ($('.new-theme').length) {
                 var spinner_class = "xblock-preloader";
                 var spinner_class_nonLesson = "xblock-donut";
+                $('.lesson-loader-bar').css('width', $('#jprePercentage').text());
                 if (show) {
                     $(".lesson-content").addClass(spinner_class);
                     $(".discussion-content").addClass(spinner_class_nonLesson);
@@ -474,10 +475,14 @@
                     $("#course-group-work .lesson-content").removeClass(spinner_class);
                 } else {
                     setTimeout(function () {
+                        $(".lesson-loader-bar").css({
+                            "opacity": "0",
+                            "visibility" : "hidden"
+                        });
                         $(".lesson-content").removeClass(spinner_class);
                         $(".discussion-content").removeClass(spinner_class_nonLesson);
                         $("#course-group-work").removeClass(spinner_class_nonLesson);
-                    }, 2000);
+                    }, 1000);
                 }
             } else {
                 var spinner_class = "xblock-spinner";

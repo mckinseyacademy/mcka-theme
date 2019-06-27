@@ -408,6 +408,7 @@
                         %i.material-icons keyboard_arrow_right
 
       %script{src: "{% static 'js/new_ui_tour.js' %}"}
+    %script{src: "{% static 'js/jpreLoader.min.js' %}"}
 
     %script{src: "{% static 'js/shader.js' %}"}
     %script
@@ -444,3 +445,10 @@
       if (window.location.search === '?reset-password') {
           $("#password-reset-modal").modal("show");
       }
+
+      $(document).ready(function () {
+
+          $('body').jpreLoader();
+
+      });
+
