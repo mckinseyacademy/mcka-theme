@@ -99,8 +99,6 @@
     - if not request.is_IE8
       %link{href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,700', rel: 'stylesheet', type: 'text/css'}
 
-    %link{:href => "https://fonts.googleapis.com/icon?family=Material+Icons", :rel => "stylesheet"}
-
     - block css
     - if xblock_theme_css_path
       %link.pony{rel: "stylesheet", href: "{% static xblock_theme_css_path %}"}
