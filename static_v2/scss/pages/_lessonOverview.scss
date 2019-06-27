@@ -190,10 +190,13 @@ body{
     }
   }
   .lesson-loader-bar {
+    width: 0;
     height: 4px;
     background-color: var(--secondary);
-    opacity: 0.4;
-    transition: all .2s ease-in-out;
+    opacity: 0.6;
+    transition-property: width, opacity;
+    transition-duration: 1s , 0.3s;
+    transition-timing-function: ease-in-out , ease-out;
   }
 }
 
