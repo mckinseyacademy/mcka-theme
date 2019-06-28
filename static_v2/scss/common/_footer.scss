@@ -7,9 +7,10 @@ footer {
   margin-top: 6rem;
   .container{
     >.row{
-      display: block;
+      display: block !important;
       margin: 0;
       padding:0 15px;
+      width: 100% !important;
     }
   }
   .copyright {
@@ -69,7 +70,7 @@ footer {
     }
     .container {
       > .row {
-        display: table;
+        display: table !important;
         width:100%;
       }
     }
