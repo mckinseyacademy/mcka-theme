@@ -27,6 +27,27 @@
     }
 }
 
+
+// Style for RTS App Only
+
+.xblock--drag-and-drop{
+    width: 100% !important;
+    max-width: none  !important;
+    .target{
+        width:100%;
+        .target-img-wrapper{
+            width:100%;
+            height: auto;
+            .target-img{
+                width:100%;
+                height: auto;
+            }
+        }
+    }
+}
+
+
+
 .themed-xblock.xblock--drag-and-drop {
 
     // Hide the text at the top that says e.g. "1 point possible (ungraded)" (MCKIN-6169)
@@ -52,6 +73,8 @@
     .keyboard-help-button {
         display: none;
     }
+
+    
 }
 
 
