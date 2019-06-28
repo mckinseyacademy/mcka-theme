@@ -12594,7 +12594,7 @@ msgstr "LEES ONZE FAQ'S"
 #: templates_v2/accounts/sso_terms_of_service.haml:29
 #: templates_v2/home/landing.haml:50 tests/templates_v2/home/landing.haml:51
 msgid "Contact Support"
-msgstr "Contact"
+msgstr "Support team contacteren"
 
 #: templates_v2/accounts/activate.haml:85
 #: templates_v2/accounts/activate.haml:104
