@@ -25,6 +25,7 @@ $(function () {
 
         $("#login-form > div.user_name_element").addClass("success");
         $('.form-group.user_name_element').children('i.ico-state').html("check_circle");
+        $('#password').attr("tabindex", "2");
         $(".login-page").addClass("login-with-password");
         $('.form-group.user_password_element').toggleClass("d-none");
         $("input[name=password]").focus();
@@ -189,18 +190,6 @@ $(function () {
         });
     });
 
-    // Preserve hash value in ?next= argument
-    if (window.location.hash !== '') {
-        var hash = window.location.hash.substr(1);
-        if (hash.indexOf('forgot-password-modal') > -1) {
-            $('a[data-reveal-id="reset-password"]').click();
-            window.location.hash = hash.replace('forgot-password-modal', '');
-        } else {
-            var next_with_hash = $.query.get('next') + window.location.hash,
-                query_with_hash = $.query.set('next', next_with_hash).toString();
-            window.history.replaceState({}, '', query_with_hash);
-        }
-    }
     ajaxify_overlay_form('#reset-password', 'form');
     $('#reset-password').on('focusin', 'form #id_email', function() {
         $(this).parent('.form-group').addClass('focused');

@@ -15,7 +15,6 @@ $(document).ready(function () {
         var password = $(".user_password_element");
         if(!$(password).hasClass("d-none")) {
             $(password).addClass("d-none");
-            $(password).attr("tab-index", "2");
             $('.forgot-pswd-link').toggleClass('d-none');
             $(".login-page").removeClass("login-with-password");
             $("input[name=password]").val("");
