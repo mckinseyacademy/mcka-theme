@@ -237,6 +237,10 @@ $(document).ready(function () {
         });
 
 
+    const progress_col = $('table.progress-data td.progress_data_col').length;
+    $('table.progress-data').addClass('table-col-' + progress_col);
+
+
     if($('table.progress-data tbody tr:first td').length > 2)
     {
         $('table.progress-data').addClass('three-cols');
