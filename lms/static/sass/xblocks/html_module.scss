@@ -37,7 +37,7 @@
                     // Mobile for HTML Module Xblock
                     @media (max-width: 767.98px) {
                         display: table-cell;
-                        padding:0 !important;
+                        padding: 0 !important;
                     }
                 }
             }
@@ -64,6 +64,33 @@
             @media screen and (max-width: 767px) {
                 padding-left: 2px;
                 padding-right: 2px;
+            }
+        }
+    }
+
+    &.rtl {
+        [data-type="HTMLModule"] {
+            // Ul
+
+            ul {
+                margin: 20px 40px 20px 0;
+
+                li {
+                    ul {
+                        margin-right: 15px;
+                        margin-left: 0;
+                    }
+                }
+            }
+
+            table {
+                tr td {
+
+                    // Ul inside the table
+                    ul {
+                        margin: 0 5px 0 0 !important;
+                    }
+                }
             }
         }
     }
