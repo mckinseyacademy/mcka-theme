@@ -423,13 +423,18 @@ header {
           left: 50%;
           transform: translateX(-50%);
         }
-      }
-      &:hover {
-        a {
+        &:hover{
           outline: none;
           text-decoration: none;
           color: var(--primary-darken-30);
         }
+      }
+      &:hover {
+        // a {
+        //   outline: none;
+        //   text-decoration: none;
+        //   color: var(--primary-darken-30);
+        // }
       }
 
       &.active {
