@@ -409,9 +409,13 @@ class LoginIdForm(NoSuffixLabelForm):
             else:
                 validate_slug(cleaned_login_id)
         except ValidationError:
-            raise forms.ValidationError(_("Please enter a valid username or email "
-                                          "containing only english characters and numerals,"
-                                          " and the following special characters @ . _ -"))
+            if '@' in cleaned_login_id:
+                raise forms.ValidationError(_("Please enter a valid username or email "
+                                              "containing only english characters and numerals,"
+                                              " and the following special characters @ . _ -"))
+            else:
+                raise forms.ValidationError(_("Please enter a valid username containing only english characters "
+                                              "and numerals, and the following special characters _ -"))
         return cleaned_login_id
 
 

@@ -1118,6 +1118,13 @@ msgstr ""
 "Adresse ein. Diese dürfen nur Buchstaben ohne Umlaute, Nummern und die "
 "folgenden Sonderzeichen enthalten: @ . _ -"
 
+#: accounts/forms.py:417
+msgid ""
+"Please enter a valid username containing only english characters and numerals, and the following special characters _ -"
+msgstr ""
+"Bitte geben Sie einen gültigen Benutzernamen. Diese dürfen nur Buchstaben ohne Umlaute, "
+"Nummern und die folgenden Sonderzeichen enthalten: _ -"
+
 #: accounts/forms.py:422 accounts/forms.py:443
 #, python-brace-format
 msgid ""

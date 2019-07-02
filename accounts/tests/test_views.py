@@ -700,8 +700,8 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
         self.assertIn(response_msg, response.content)
 
-    @ddt.data('ütest', 'ütest@email.com')
-    def test_login_validate_with_unicode_login_id(self, login_id):
+    @ddt.data('ütest@?', 'ütest@email.com')
+    def test_login_validate_with_unicode_email_login_id(self, login_id):
         """
         If we try to post with an invalid data pattern like unicode,
         then it will return the errors and status forbidden.
@@ -712,6 +712,18 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         self.assertIn("Please enter a valid username or email "
                       "containing only english characters and numerals,"
                       " and the following special characters @ . _ -", response.content)
+
+    @ddt.data('ütest?', 'ütestemail.com"')
+    def test_login_validate_with_unicode_username_login_id(self, login_id):
+        """
+        If we try to post with an invalid data pattern like unicode,
+        then it will return the errors and status forbidden.
+        """
+        response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("login_id", response.content)
+        self.assertIn("Please enter a valid username containing only english characters and numerals, "
+                      "and the following special characters _ -", response.content)
 
 
 @ddt.ddt

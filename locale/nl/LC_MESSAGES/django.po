@@ -1119,6 +1119,13 @@ msgstr ""
 "Voer een geldige gebruikersnaam of e-mail in en gebruik alleen Engelse "
 "lettertekens en cijfers en de volgende bijzondere tekens @ . _ -"
 
+#: accounts/forms.py:417
+msgid ""
+"Please enter a valid username containing only english characters and numerals, and the following special characters _ -"
+msgstr ""
+"Voer een geldige gebruikersnaam in en gebruik alleen Engelse "
+"lettertekens en cijfers en de volgende bijzondere tekens _ -"
+
 #: accounts/forms.py:422 accounts/forms.py:443
 #, python-brace-format
 msgid ""
