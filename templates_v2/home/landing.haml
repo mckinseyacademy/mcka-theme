@@ -16,7 +16,7 @@
               {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
           - else
             %form.white.clearfix{id: "login-form", action: "/", method: "POST"}
-              
+
                 - if activation_message
                   .error.error-msg.already-activated
                     = activation_message
@@ -35,7 +35,7 @@
                 %i.material-icons.ico-state
                 %small.password-error.form-text
               .form-group.text-center
-                %button#login.btn.btn-primary.btn-lg.mt-20{:type => "submit", :disabled} {% trans "Log in" %}
+                %button#login.btn.btn-primary.btn-lg.mt-20{:type => "submit", :disabled, :tabindex => "3"} {% trans "Log in" %}
                 %a.forgot-pswd-link.d-none{:data-target => "#password-reset-modal", :data-toggle => "modal", :href => "/accounts/password/reset/"}
                   %strong {% trans "Forgot password?" %}
             .quick-links
@@ -46,7 +46,7 @@
                 %li
                   %a{:href => "/faq", :target => "_blank"} {% trans "FAQs" %}
                 %li
-                  %a{:href => "mailto:support@mckinseyacademy.com?Subject=Trouble logging in"} {% trans "Email Support" %}
+                  %a{:href => "#{support}"} {% trans "Contact Support" %}
                 %li
                   %a{:target => "_blank", :href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients"} {% trans "About McKinsey Academy" %}
 

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import urllib2
 import uuid
 from urllib import urlencode
@@ -195,7 +196,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
     def test_sso_flow(self, with_existing_user, mock_login, mock_register_user):
         if with_existing_user:
             # Mock to simulate a user named 'myself' already existing on the system:
-            self.get_users_patch.side_effect = lambda username: [Mock()] if username == "myself" else []
+            self.get_users_patch.side_effect = lambda username: [Mock()] if username == "Me_Myself_And_I" else []
         # Start with an access code:
         response = self.client.get('/access/{}'.format(self.access_key.code))
         self.assertEqual(response.status_code, 200)
@@ -222,7 +223,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
             self.assertTrue(response['Location'].endswith('/auth/complete/tpa-saml/'))
 
         # Then the user should be registered:
-        expected_username = u'myself' if not with_existing_user else u'myself1'
+        expected_username = u'Me_Myself_And_I' if not with_existing_user else u'Me_Myself_And_I1'
         mock_register_user.assert_called_once_with({
             'username': expected_username,
             'city': u'New York',
@@ -698,6 +699,31 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_authenticate.return_value = make_user()
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
         self.assertIn(response_msg, response.content)
+
+    @ddt.data('ütest@?', 'ütest@email.com')
+    def test_login_validate_with_unicode_email_login_id(self, login_id):
+        """
+        If we try to post with an invalid data pattern like unicode,
+        then it will return the errors and status forbidden.
+        """
+        response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("login_id", response.content)
+        self.assertIn("Please enter a valid username or email "
+                      "containing only english characters and numerals,"
+                      " and the following special characters @ . _ -", response.content)
+
+    @ddt.data('ütest?', 'ütestemail.com"')
+    def test_login_validate_with_unicode_username_login_id(self, login_id):
+        """
+        If we try to post with an invalid data pattern like unicode,
+        then it will return the errors and status forbidden.
+        """
+        response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertIn("login_id", response.content)
+        self.assertIn("Please enter a valid username containing only english characters and numerals, "
+                      "and the following special characters _ -", response.content)
 
 
 @ddt.ddt

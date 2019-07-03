@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-21 13:49+0000\n"
+"POT-Creation-Date: 2019-06-20 10:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -377,18 +377,6 @@ msgstr "أكمل كل المحتوى للمتابعة"
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
 msgstr "تحقق من الاكتمال"
-
-#: static/js/static_translation_strings.js:9
-msgid ""
-"Must be at least 8 characters and include upper and lowercase letters - plus "
-"numbers OR special characters."
-msgstr ""
-"يجب أن تكون 8 أحرف على الأقل وتشمل أحرفًا صغيرة وكبيرة - بالإضافة إلى أرقام "
-"أو أحرف خاصة."
-
-#: static/js/static_translation_strings.js:10
-msgid "This field is required."
-msgstr "هذا الحقل مطلوب."
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -1166,10 +1154,10 @@ msgstr "التاريخ المضاف"
 msgid "Enrolled In"
 msgstr "مسجّل في"
 
-#: static_v2/js/application.js:522 static_v2/js/custom.js:109
+#: static_v2/js/application.js:522 static_v2/js/custom.js:108
 msgid "Hide password"
 msgstr "إخفاء كلمة المرور"
 
-#: static_v2/js/application.js:527 static_v2/js/custom.js:114
+#: static_v2/js/application.js:527 static_v2/js/custom.js:113
 msgid "Show password"
 msgstr "إظهار كلمة المرور"

@@ -5,8 +5,17 @@ footer {
   line-height: 60px;
   min-height: 60px;
   margin-top: 6rem;
+  .container{
+    >.row{
+      display: block !important;
+      margin: 0;
+      padding:0 15px;
+      width: 100% !important;
+    }
+  }
   .copyright {
     color: $gray;
+    overflow:hidden;
   }
   ul {
     li {
@@ -47,19 +56,35 @@ footer {
     [class*="col-"] {
       padding: 0
     }
+    .container{
+    >.row{
+      padding:0;
+    }
+  }
   }
   @media screen and (max-width: 767px) {
-    [class*="col-"] {
-      padding: 0 15px;
-      text-align: center;
-    }
     .nav {
       &[class*="justify-content"] {
         justify-content: center !important;
       }
     }
-    footer {
-      margin-top: 50px;
+    .container {
+      > .row {
+        display: table !important;
+        width:100%;
+      }
+    }
+    margin-top: 50px;
+    .copyright {
+      display: table-caption;
+      text-align: center;
+    }
+    .footerLinks {
+      padding: 0;
+      margin: 0 !important;
+      float: none;
+      display: table-footer-group;
+      width: 100%;
     }
   }
 }

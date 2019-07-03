@@ -15,8 +15,8 @@
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
             - else
-              %a.navbar-brand{:href => "/"}
-                %img{:src => "{% static 'image/McKA-logo-black.png' %}", :width => "160"}
+              %a.navbar-brand{:href => "/", :tabindex => "-1"}
+                %img{:src => "{% static 'image/McKA-logo-black.svg' %}", :width => "160"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.client_logo}}", :width => "160"}

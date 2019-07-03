@@ -20,9 +20,7 @@
                   You do not have permission to access this page or directory. Please return to the home page.
                   {% endblocktrans %}
                 %p
-                  {% blocktrans %}
-                  If you believe you are seeing this message in error, please visit our
-                  %a{:href => "/faq"} FAQ page
-                  or
-                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support.
-                  {% endblocktrans %}
+                  {% blocktrans %}If you believe you are seeing this message in error, please visit our {% endblocktrans %}
+                  %a{:href => "/faq"} {% trans "FAQ page" %}
+                  {% trans "or" %}
+                  %a{:href => "#{support}", :target => "_blank"} {% trans "support" %}.

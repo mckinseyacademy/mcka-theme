@@ -18,9 +18,7 @@
                 %p
                   {% trans "The page you’re looking for may have been moved or renamed." %}
                 %p
-                  {% blocktrans %}
-                  If you continue to have issues, please visit our
-                  %a{:href => "/faq"} FAQ page
-                  or
-                  %a{:href => "mailto:support@mckinseyacademy.com?subject=Mail from Our Site"} email support
-                  {% endblocktrans %}
+                  {% blocktrans %}If you continue to have issues, please visit our{% endblocktrans %}
+                  %a{:href => "/faq"} {% trans "FAQ page" %}
+                  {% trans "or" %}
+                  %a{:href => "#{support}", :target => "_blank"} {% trans "support" %}.

@@ -435,10 +435,12 @@ def login_post_view(request):
         except ApiError as err:
             return JsonResponse({"error": err.message}, status=500)
 
-    # If form validation fails it's due to a longer than 255-char username
-    return JsonResponse({
-        "login_id": _("Username/email is not recognized. Try again.")
-    }, status=403)
+    # If form validation fails
+    if form.errors['login_id']:
+        response = {"login_id": form.errors['login_id']}
+    else:
+        response = {"password": form.errors['password']}
+    return JsonResponse(response, status=status.HTTP_403_FORBIDDEN)
 
 
 @require_http_methods(['GET'])
@@ -792,7 +794,10 @@ def sso_registration_form(request):
     error = None
     provider_data = request.session['provider_data']
     provider_user_data = provider_data['user_details']
-    username = _cleanup_username(provider_user_data.get('username', ''))
+    first_name = provider_user_data.get('first_name')
+    last_name = provider_user_data.get('last_name')
+    username = _cleanup_username('{}_{}'.format(first_name, last_name) if first_name and last_name
+                                 else provider_user_data.get('username', ''))
     remote_session_key = request.COOKIES.get('sessionid')
 
     if remote_session_key:

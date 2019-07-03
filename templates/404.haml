@@ -9,5 +9,9 @@
         %hr
         .sub-1 {% trans "Sorry!" %}
         %p {% trans "The page you are looking for might have been removed, been renamed, or may be temporarily unavailable." %}
-        %p {% blocktrans %}Please go back to <a href='https://www.mckinseyacademy.com'>www.mckinseyacademy.com</a>, or contact us at <a href:'mailto:support@mckinseyacademy.com'>support@mckinseyacademy.com</a>.{% endblocktrans %}
+        %p
+          {% blocktrans %}Please go back to {% endblocktrans%}
+          <a href='https://www.mckinseyacademy.com'>www.mckinseyacademy.com</a>
+          {% trans ", or contact us at" %}
+          %a{:href => "#{support}"} {% trans "support" %}.
         %img{src: "/static/image/errors/McKA_errors_1404illus.png", srcset: "/static/image/errors/McKA_errors_1404illus@2x.png 2x"}

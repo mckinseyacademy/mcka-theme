@@ -30,10 +30,10 @@
   }
   &.bs-popover-left,
   &.bs-popover-right {
-    margin-top: 5px;
+    // margin-top: 5px;
   }
   &.bs-popover-bottom {
-    margin-top: 10px;
+    // margin-top: 10px;
   }
 
   &.bs-popover-left,
@@ -101,7 +101,12 @@
 
 .bs-popover-bottom>.arrow,
 .bs-popover-auto[x-placement^="bottom"]>.arrow {
-  top: -5px;
+   top: -8px;
+}
+
+.bs-popover-top .arrow, 
+.bs-popover-auto[x-placement^="top"] .arrow{
+  bottom: -8px;
 }
 
 .bs-popover-top > .arrow::after, .bs-popover-auto[x-placement^="top"] > .arrow::after {
@@ -114,7 +119,7 @@
 @include media-breakpoint-between(xs, sm) {
   .popover{
     &.bs-popover-bottom {
-      margin-top: -15px;
+      // margin-top: -15px;
     }
   }
   .lessonPageBody{

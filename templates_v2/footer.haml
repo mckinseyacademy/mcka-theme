@@ -2,9 +2,7 @@
 %footer.fadeIn.animated.delay-1s
   .container
     .row
-      .col-md-6.copyright
-        {% trans "&#9400; 2019 McKinsey & Company. All Rights Reserved." %}
-      .col-md-6
+      .col-.footerLinks
         %ul.nav.justify-content-end
           %li.nav-item
             %a.nav-link{:href => "https://www.mckinsey.com/" , :target => "_blank"} McKinsey.com
@@ -20,4 +18,9 @@
           %li.nav-item
             %a.nav-link{:href => "/privacy" , :target => "_blank"}
               {% trans "Privacy Policy" %}
+      .col-.copyright 
+        {% trans "&#9400; 2019 McKinsey & Company. All Rights Reserved." %} 
 
+-# .progressive-loader
+-#   #pro-loader{:data-percent => "10"}
+-#     %span.pie-value

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django.test import TestCase
 from django.core import mail
 import ddt
@@ -56,7 +57,9 @@ class LoginIdFormTests(TestCase):
         ({"login_id": "test@testing.com", "password": "test"}, True),
         ({"login_id": "test@testing.com", "password": None}, True),
         ({"login_id": None, "password": "test"}, False),
-
+        ({'login_id': 'ütest', "password": "test"}, False),
+        ({'login_id': 'ütest@email.com', "password": "test"}, False),
+        ({"login_id": "test", "password": None}, True),
     )
     @ddt.unpack
     def test_validation(self, test_case, expected_result):

@@ -12,7 +12,7 @@ do
 	then
 		echo "translating locale $bn"
 		django-admin makemessages -l $bn --extension=html,haml,py
-	 	django-admin makemessages --locale=$bn --domain=djangojs --ignore=gen/* --ignore=static_cache/* --ignore=vendor/*
+	 	django-admin makemessages --locale=$bn --domain=djangojs --ignore=gen/* --ignore=static_cache/* --ignore=vendor/* --ignore=static/js/i18n/*
 		python manage.py compilemessages -l $bn
 	fi
 done

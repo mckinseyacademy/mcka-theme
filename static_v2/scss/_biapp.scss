@@ -693,7 +693,18 @@ footer {
           @include left(0);
         }
       }
+      &:last-child{
+        a{
+          &.nav-link{
+           @include padding-right(0);
+          }
+        }
+      }
     }
+  }
+  .footerLinks{
+    @include float(right);
+    @include margin-left(15px);
   }
 }
 
@@ -855,6 +866,21 @@ form {
       @include padding-left(55px);
       &::before {
         @include left(18px);
+      }
+    }
+  }
+}
+
+// Preloaders
+.my-courses {
+  &.skeleton-loading {
+    .card {
+      .card-body {
+        .course-detail {
+          .course-progress {
+            @include left(100px);
+          }
+        }
       }
     }
   }

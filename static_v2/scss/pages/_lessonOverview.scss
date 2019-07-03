@@ -189,6 +189,15 @@ body{
       max-width: 100%;
     }
   }
+  .lesson-loader-bar {
+    width: 0;
+    height: 4px;
+    background-color: var(--secondary);
+    opacity: 0.6;
+    transition-property: width, opacity;
+    transition-duration: 1s , 0.3s;
+    transition-timing-function: ease-in-out , ease-out;
+  }
 }
 
 .contentCard{

@@ -8,7 +8,7 @@ import re
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from django.utils.safestring import mark_safe
-from django.core.validators import validate_email
+from django.core.validators import validate_email, validate_slug
 from django.core.exceptions import ValidationError
 
 from api_client import user_api
@@ -397,6 +397,26 @@ class LoginIdForm(NoSuffixLabelForm):
             html_span='<span class="required-field"></span>')
         )
     )
+
+    def clean_login_id(self):
+        """
+        Verifies a username/email is valid, raises a ValidationError otherwise.
+        """
+        cleaned_login_id = self.cleaned_data['login_id']
+        try:
+            if '@' in cleaned_login_id:
+                validate_email(cleaned_login_id)
+            else:
+                validate_slug(cleaned_login_id)
+        except ValidationError:
+            if '@' in cleaned_login_id:
+                raise forms.ValidationError(_("Please enter a valid username or email "
+                                              "containing only english characters and numerals,"
+                                              " and the following special characters @ . _ -"))
+            else:
+                raise forms.ValidationError(_("Please enter a valid username containing only english characters "
+                                              "and numerals, and the following special characters _ -"))
+        return cleaned_login_id
 
 
 class AcceptTermsForm(NoSuffixLabelForm):

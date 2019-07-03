@@ -270,7 +270,7 @@ $(document).ready(function () {
       });
 
     //  New featre Modal (disable scrolling on body)
-    $('.carousel-control-next').click(function(){ 
+    $('.carousel-control-next').click(function(){
         $('.carousel-item').removeClass("next");
         $('.carousel-item').removeClass("prev");
         $('.carousel-item.active').addClass("next");
@@ -281,7 +281,7 @@ $(document).ready(function () {
         $('.carousel-inner').addClass("nextSlide");
     });
 
-    $('.carousel-control-prev').click(function(){ 
+    $('.carousel-control-prev').click(function(){
         $('.carousel-item').removeClass("prev");
         $('.carousel-item').removeClass("next");
         $('.carousel-item.active').addClass("prev");
@@ -297,13 +297,13 @@ $(document).ready(function () {
             jQuery('.carousel-control-next').trigger('click');
         }
         else if (e.keyCode == 37) {
-            jQuery('.carousel-control-prev').trigger('click'); 
+            jQuery('.carousel-control-prev').trigger('click');
         }
     });
 
     if ($(window).width() <= 1024 && $('.progress-data tr td').length >= 2) {
         $(".progress-data").addClass("three-cols");
-    }   
+    }
 });
 
 
@@ -634,6 +634,8 @@ $(window).on("load", function () {
     $('.loader').removeClass("donut-loader").removeClass("loader");
     $('.preloader').removeClass("preloader");
     $('.courseLanding .contentCard').css("visibility", "visible");
+    $('.my-courses').removeClass("skeleton-loading");
+    $('.courseLanding').removeClass('skeleton');
 
     // Remove spinner from crop & save button
     $("#crop-save #spinner").removeClass("spinner-border-sm").removeClass("spinner-border");

@@ -12,7 +12,12 @@
     .close-reveal-modal
       %i.fa.fa-times-circle
     .sub-1 {% trans "Discussion" %}
-    %p {% blocktrans %} Below are helpful tips to engage in discussions with your cohort or group members (via private discussions). You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+    %p
+      {% blocktrans %}Below are helpful tips to engage in discussions with your cohort or group members (via private discussions). You may also find answers to your questions in the {% endblocktrans %}
+      %a{:href => "/faq"} {% trans "FAQ" %}.
+      {% trans "Can’t find the answer there? Please contact us directly at " %}
+      %a{:href => "#{support}"} {% trans "support" %}
+      {% trans " and we’ll sort it out for you." %}
     .help-line {% blocktrans %} Access discussions using the <i class="fa fa-comments-o"></i> icon in the main navigation bar {% endblocktrans %}
     .help-line {% blocktrans %} FIND DISCUSSIONS tools help you focus on specific topics <i class="fa fa-bars"></i> search for specific posts, and sort by date, vote, or comments <i class="fa fa-search"></i> {% endblocktrans %}
     .help-line {% blocktrans %} ENGAGE WITH POSTS features allow you to upvote posts and good responses <i class="fa fa-plus"></i>, report forum misuse <i class="fa fa-flag"></i> and follow posts for updates <i class="fa fa-star"></i>. {% endblocktrans %}
@@ -77,6 +82,3 @@
               - if mcka_ta.title
                 .person-title{:title => "#{mcka_ta.title}"}
                   = mcka_ta.title
-              .email
-                %a.email-member{'data-member-email': '', 'data-reveal-id': 'contact-ta'}
-                  Email

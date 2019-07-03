@@ -23,6 +23,6 @@
 - block footer
   %p{:style => "line-height: 22px;margin-bottom: 0;color: #333333;"}
     {% trans "Contact" %}
-      %a{:href => "mailto:{{support_email}}", :style => "text-decoration: none;color: #004fa4;"}
-        #{support_email}
+      %a{:href => "#{support}", :style => "text-decoration: none;color: #004fa4;"}
+        #{support}
     {% trans "if you have any questions" %}

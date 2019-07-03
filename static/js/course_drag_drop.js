@@ -253,7 +253,7 @@
 
     $('#delete-project-modal').on('open.fndtn.reveal', function () {
       $('#delete-project-form').attr('action', '/admin/workgroup/project/' + $('.group-project-select').val() + '/delete');
-      $('#delete-project-view-name').html($('.group-project-select option:selected').text());
+      $('#delete-project-view-name').text($('.group-project-select option:selected').text());
     });
 
     $('#delete-project-button').on('click', function(e){

@@ -7,6 +7,9 @@
 @import "common/variables";
 @import "bootstrap/mixins";
 
+// ===== Place Holders ===== //
+@import 'placeholder/placeholder';
+
 // ===== Commonly used styles ===== //
 @import "common/variables";
 @import "common/animation";
@@ -64,3 +67,9 @@
 // === Tour styles === //
 @import "newFeaturesTour/featuresTour";
 @import "marketing/productwalkthrough";
+
+
+// === Skeleton === //
+
+@import "pages/skeleton/skeleton-course-landing";
+@import "pages/skeleton/skeleton-courses";

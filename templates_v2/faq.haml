@@ -46,28 +46,28 @@
               {% trans 'To change your name, log in, and find your profile in the upper right-hand corner of your screen. Click the down arrow and select "Edit" next to your name.' %}
             %p
               {% trans "To change your email address, please email" %}
-                %a{:href => "mailto:support@mckinseyacademy.com"} support@mckinseyacademy.com
+                %a{:href => "#{support}"} {% trans "support" %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#six", :data-toggle => "collapse"}
               {% trans "My account login isn't working." %}
           #six.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
               {% trans "If you've forgotten your password, please try resetting it by clicking 'Forgot my password' on the log in screen. If that does not work, please email" %}
-                %a{:href => "mailto:support@mckinseyacademy.com"} support@mckinseyacademy.com
+                %a{:href => "#{support}"} {% trans "support" %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#seven", :data-toggle => "collapse"}
               {% trans "I can't access a course I'm enrolled in." %}
           #seven.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
               {% trans "The drop down for moving between multiple courses is on the far left of the second (lighter blue) navigation bar. If the course you are supposed to be enrolled in does not appear in that drop down menu, please email" %}
-                %a{:href => "mailto:support@mckinseyacademy.com"} support@mckinseyacademy.com
+                %a{:href => "#{support}"} {% trans "support" %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#eight", :data-toggle => "collapse"}
               {% trans "How can I stop or start receiving emails from my courses?" %}
           #eight.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
               {% trans "We try to keep our email communication at an optimal level to ensure all participants know what is happening in the course without cluttering your inbox. Our emails contain important information about what's expected each week and additional curated content suggestions. If you no longer wish to receive emails, please email" %}
-              %a{:href => "mailto:support@mckinseyacademy.com"} support@mckinseyacademy.com
+              %a{:href => "#{support}"} {% trans "support" %}
               {% trans '(or click unsubscribe at the bottom of any email you receive from us). Be sure to check the "Announcements" page frequently to stay up to date!' %}
           %p.style-2 {% trans "Courses Related:" %}
           %h5.mb-0
@@ -130,7 +130,7 @@
           #eighteen.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
               {% trans "If you have any questions about a grade you received, please email" %}
-                %a{:href => "mailto:tas@mckinseyacademy.com"} TAs@mckinseyacademy.com
+                %a{:href => "#{support}"} {% trans "TAs" %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#nineteen", :data-toggle => "collapse"}
               {% trans "How can I meet/find other participants?" %}
@@ -147,7 +147,7 @@
           #twentyOne.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
               {% trans "You are part of a cohort of participants you can engage with questions as well as support from the TAs who monitor the course. Take a look at the course's discussion forum where you can review questions, answers and comments from fellow participants, as well as post a question. You can also reach out to the McKinsey teaching assistants by" %}
-              %a{:href => "mailto:tas@mckinseyacademy.com"} {% trans "emailing them" %}
+              %a{:href => "#{support}"} {% trans "emailing them" %}
               {% trans "and they will get back to you as soon as possible." %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentyTwo", :data-toggle => "collapse"}
@@ -235,7 +235,7 @@
   %script
     let login_flow = 'new_flow';
   :javascript
-    $("a[href='mailto:support@mckinseyacademy.com']").click(function(){
+    $("a[href='#{support}']").click(function(){
       let data = { dimension4: login_flow };
       if(window.hashedUserId) {
         data['dimension1'] = window.hashedUserId;

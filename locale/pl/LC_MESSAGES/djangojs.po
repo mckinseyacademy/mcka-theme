@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-21 13:51+0000\n"
+"POT-Creation-Date: 2019-06-20 10:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -371,18 +371,6 @@ msgstr "Prosimy wypełnić całą zawartość, aby kontynuować"
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
 msgstr "Sprawdź pod kątem wypełnienia"
-
-#: static/js/static_translation_strings.js:9
-msgid ""
-"Must be at least 8 characters and include upper and lowercase letters - plus "
-"numbers OR special characters."
-msgstr ""
-"Musi składać się z przynajmniej 8 znaków i zawierać co najmniej jedną małą "
-"literę, jedną wielką literę oraz jedną cyfrę lub znak specjalny."
-
-#: static/js/static_translation_strings.js:10
-msgid "This field is required."
-msgstr "To pole jest wymagane."
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -1132,46 +1120,10 @@ msgstr "Data dodania"
 msgid "Enrolled In"
 msgstr "Zarejestrowany"
 
-#: static_v2/js/application.js:522 static_v2/js/custom.js:109
+#: static_v2/js/application.js:522 static_v2/js/custom.js:108
 msgid "Hide password"
 msgstr "Ukryj hasło"
 
-#: static_v2/js/application.js:527 static_v2/js/custom.js:114
+#: static_v2/js/application.js:527 static_v2/js/custom.js:113
 msgid "Show password"
 msgstr "Pokaż hasło"
-
-#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:195
-msgid "Announcements"
-msgstr "Ogłoszenia"
-
-#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:200
-msgid "Group Work"
-msgstr "Group Work"
-
-#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:205
-msgid "Leaderboards"
-msgstr "Rankingi liderów"
-
-#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:210
-msgid "Discussion"
-msgstr "Dyskusja"
-
-#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:215
-msgid "Other"
-msgstr "Inne"
-
-#: edx_notifications/server/web/static/edx_notifications/js/views/notification_pane_view.js:397
-msgid "Today at "
-msgstr "Dzisiaj "
-
-#: static/edx_notifications/templates/renderers/leaderboard/rank_changed.underscore:3
-msgid "You are now"
-msgstr "Obecnie jesteś"
-
-#: static/edx_notifications/templates/renderers/leaderboard/rank_changed.underscore:3
-msgid "for"
-msgstr "na"
-
-#: static/edx_notifications/templates/renderers/leaderboard/rank_changed.underscore:3
-msgid "in the cohort!"
-msgstr "w grupie kursantów!"

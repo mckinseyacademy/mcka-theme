@@ -12,7 +12,12 @@
     .close-reveal-modal
       %i.fa.fa-times-circle
     .sub-1 {% trans "Cohort" %}
-    %p {% blocktrans %} Below are helpful tips to interact with the cohort map and leaderboards. You may also find answers to your questions in the <a href="/faq">FAQ</a>. Can’t find the answer there? Please contact us directly at <a href="mailto:support@mckinseyacademy.com">support@mckinseyacademy.com</a> and we’ll sort it out for you. {% endblocktrans %}
+    %p
+      {% blocktrans %}Below are helpful tips to interact with the cohort map and leaderboards. You may also find answers to your questions in the {% endblocktrans %}
+      %a{:href => "/faq"} {% trans "FAQ" %}.
+      {% trans "Can’t find the answer there? Please contact us directly at " %}
+      %a{:href => "#{support}"} {% trans "support" %}
+      {% trans " and we’ll sort it out for you." %}
     .help-line {% blocktrans %} Access the cohort using the <i class="fa fa-globe"></i> icon in the main navigation bar. {% endblocktrans %}
     .help-line {% trans "COHORT MAP displays your group members, your McKinsey TA, and the number of cohort participants from various cities. The details on the number of participants in your company and the total number of cohort participants are displayed under the map." %}
     .help-line {% trans "You can email your McKinsey TA who is displayed on the map" %}
