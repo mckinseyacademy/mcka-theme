@@ -28,6 +28,7 @@ js_files.extend([
     get_assets_path('js/custom.js', v2=True),
     get_assets_path('js/common.js', v2=True),
     get_assets_path('js/application.js', v2=True),
+    get_assets_path('js/jpreloader.js', v2=True),
     get_assets_path('js/jquery.mCustomScrollbar.concat.min.js', v2=True),
     get_assets_path('js/course_learner_dashboard/utils.js', v2=True),
 
