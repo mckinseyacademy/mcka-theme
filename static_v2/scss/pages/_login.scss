@@ -71,12 +71,19 @@
         &:focus {
           box-shadow: inset 0 0 100px rgba(0,0,0,0.3) !important;
         }
+        &:focus {
+          box-shadow: inset 0 0 100px rgba(0,0,0,0.3) !important;
+        }
       }
       .forgot-pswd-link {
         margin: 10px 0 0;
         color: var(--primary);
         &:hover {
           text-shadow: 0 0 0.5px rgba(0,0,0,0.3);
+        }
+        &:focus {
+          background-color: lighten(desaturate(adjust-hue($primary, -25deg), 16), 47);
+          border-radius: 4px;
         }
         strong {
           font-weight: 600 !important;
@@ -110,21 +117,28 @@
         margin: 0;
         padding: 0;
         transition: all ease 0.3s;
-      }
-      li {
-        display: inline-block;
-        vertical-align: middle;
-        color: $white;
-        &:first-child {
-          margin: 0;
-        }
-      }
-      a {
-        color: $black;
-        text-decoration: underline;
-        @include font-size(14);
-        @include media-breakpoint-between(xs, sm) {
+        li {
+          display: inline-block;
+          vertical-align: middle;
           color: $white;
+
+          &:first-child {
+            margin: 0;
+          }
+          a {
+            color: $black;
+            text-decoration: underline;
+            @include font-size(14);
+
+            @include media-breakpoint-between(xs, sm) {
+              color: $white;
+            }
+
+            &:focus {
+              background-color: lighten(desaturate(adjust-hue($primary, -25deg), 16), 47);
+              border-radius: 4px;
+            }
+          }
         }
       }
 

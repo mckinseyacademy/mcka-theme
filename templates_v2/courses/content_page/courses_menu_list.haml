@@ -6,7 +6,7 @@
     %a.d-block#course-navigation{:href => "#{course.nav_url}", 'data-numdays': '#{course.days_till_start}'}
       .card.ome{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img
-          %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_url}}"}
+          %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_urls.small}}"}
         .card-body.dome-bc
           .future-course-text
             {% trans "Coming Soon" %}
