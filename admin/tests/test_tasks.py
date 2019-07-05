@@ -343,6 +343,7 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         self.dummy_organization = Dummy()
         self.dummy_organization.display_name = 'dummy'
         self.owner = {'username': u'admin', 'first_name': u'Admin'}
+        self.base_url = 'https://mckinseyacademy.com/admin/api/companies'
 
     @patch('admin.tasks.send_email')
     def test_delete_company_task_nonexistent_company(self, mock_send_email):
@@ -350,9 +351,9 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         Test deleting company that doesn't exist in LMS.
         """
         mock_send_email.delay = Mock()
-        delete_company_task(self.mock_id, self.owner, None)
+        delete_company_task(self.mock_id, self.owner, self.base_url)
         args, _ = mock_send_email.delay.call_args
-        self.assertEqual('Company deletion completed', args[0])
+        self.assertEqual('Company deletion completed in https://mckinseyacademy.com.', args[0])
 
     @patch('api_client.organization_api.delete_organization')
     @patch('admin.controller.remove_mobile_app_theme', side_effect=make_side_effect_raise_api_error(404))

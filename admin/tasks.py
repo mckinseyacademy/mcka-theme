@@ -57,6 +57,7 @@ from .controller import (
     get_data_from_csv,
     delete_company_data,
     unenroll_participant,
+    get_domain
 )
 from .models import UserRegistrationError, UserRegistrationBatch
 
@@ -645,13 +646,13 @@ def delete_company_task(company_id, owner, base_url):
             owner=owner,
             base_url=base_url,
             email_template='admin/delete_company_email_template.haml',
-            email_subject=_('Company deletion completed'),
+            email_subject=_('Company deletion completed in {}.'),
             template_extra_data={'company_name': company_name}
         )
         # Delete organization profile
         delete_company_data(company_id)
     except Exception as e:
-        subject = _('Company deletion completed')
+        subject = _('Company deletion completed in {}.').format(get_domain(base_url))
         email_template = 'admin/delete_company_profile_email_template.haml'
         template_data = {
             'company_name': company_name,
@@ -660,6 +661,7 @@ def delete_company_task(company_id, owner, base_url):
                 base=base_url,
                 url='/static/image/mcka_email_logo.png'
             ),
+            'domain': get_domain(base_url),
             'minutes_taken': math.ceil((time.time() - started) / 60),
             'reason': str(e),
         }
@@ -678,7 +680,7 @@ def delete_participants_task(
         owner,
         base_url,
         email_template='admin/delete_users_email_template.haml',
-        email_subject='Bulk deletion completed',
+        email_subject='Bulk deletion completed in {}.',
         template_extra_data=None
 ):
     """
@@ -756,7 +758,7 @@ def delete_participants_task(
         )
 
     if send_confirmation_email:
-        subject = _(email_subject)
+        subject = _(email_subject).format(get_domain(base_url))
         mcka_logo = urljoin(
             base=base_url,
             url='/static/image/mcka_email_logo.png'
@@ -766,6 +768,7 @@ def delete_participants_task(
             'file_name': file_path.split('/')[-1],
             'mcka_logo_url': mcka_logo,
             'minutes_taken': math.ceil((time.time() - started) / 60),
+            'domain': get_domain(base_url),
             'failed_url': failed_url,
             'successful': total - len(failed),
             'total': total,
@@ -846,7 +849,7 @@ def unenroll_participants_task(users_to_unenroll, send_confirmation_email, owner
 
     # Send email
     if send_confirmation_email:
-        subject = _('Bulk unenrollment completed')
+        subject = _('Bulk unenrollment completed in {}.').format(get_domain(base_url))
         email_template = 'admin/unenroll_users_email_template.haml'
         mcka_logo = urljoin(
             base=base_url,
@@ -857,6 +860,7 @@ def unenroll_participants_task(users_to_unenroll, send_confirmation_email, owner
             'file_name': file_path.split('/')[-1],
             'mcka_logo_url': mcka_logo,
             'minutes_taken': math.ceil((time.time() - started) / 60),
+            'domain': get_domain(base_url),
             'failed_url': failed_url,
             'successful': total - len(failed),
             'total': total,
