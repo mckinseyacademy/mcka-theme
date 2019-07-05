@@ -634,8 +634,8 @@ $(window).on("load", function () {
     $('.loader').removeClass("donut-loader").removeClass("loader");
     $('.preloader').removeClass("preloader");
     $('.courseLanding .contentCard').css("visibility", "visible");
-    $('.my-courses').removeClass("skeleton-loading");
     $('.courseLanding').removeClass('skeleton');
+
 
     // Remove spinner from crop & save button
     $("#crop-save #spinner").removeClass("spinner-border-sm").removeClass("spinner-border");
