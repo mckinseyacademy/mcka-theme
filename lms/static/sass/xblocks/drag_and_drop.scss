@@ -29,30 +29,27 @@
 
 
 // Style for RTS App Only
-
-.xblock--drag-and-drop {
-    width: 100% !important;
-    max-width: none !important;
-
-    .target {
-        width: 100%;
-
-        .target-img-wrapper {
+@media (max-width: 767px) {
+    .xblock--drag-and-drop {
+        width: 100% !important;
+        max-width: none !important;
+        .target {
             width: 100%;
-            height: auto;
 
-            .target-img {
+            .target-img-wrapper {
                 width: 100%;
                 height: auto;
-            }
-        }
 
-        @media (max-width: 767px) {
+                .target-img {
+                    width: 100%;
+                    height: auto;
+                }
+            }
 
             .option {
                 padding: 5px 5px !important;
                 font-size: 11px !important;
- 
+
                 .item-content {
                     p {
                         font-size: 11px !important;
