@@ -225,6 +225,10 @@ def _process_authenticated_user(request, user, activate_account=False):
         else:
             _process_access_key_and_remove_from_session(request, user, access_key, client)
 
+    # This parameter is passed when a user is redirected from
+    if request.GET.get('scorm_login', False):
+        return render(request, 'accounts/scorm_login_complete.haml')
+
     if not redirect_to:
         redirect_to = _get_redirect_to_current_course(request, sso_user)
     if activate_account:
