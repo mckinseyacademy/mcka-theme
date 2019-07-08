@@ -390,12 +390,17 @@ body.new-theme {
                             }
                         }
                     }
-
+                    // Style for while dragging items
                     .dragged-items {
                         .option {
                             background-color: $gray;
                             box-shadow: none;
-
+                            width:100px;
+                            height: 100px;
+                            overflow: hidden;
+                            border:0;
+                            transform: translateX(50%);
+                            
                         }
                     }
 
