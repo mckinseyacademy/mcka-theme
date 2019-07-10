@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-20 10:14+0000\n"
+"POT-Creation-Date: 2019-07-09 14:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -408,6 +408,18 @@ msgstr "Complete todo el contenido para continuar."
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
 msgstr "Verifique que esté completo."
+
+#: static/js/static_translation_strings.js:9
+msgid ""
+"Must be at least 8 characters and include upper and lowercase letters - plus "
+"numbers OR special characters."
+msgstr ""
+"Debe tener al menos 8 caracteres e incluir letras mayúsculas y minúsculas, "
+"además de números O caracteres especiales."
+
+#: static/js/static_translation_strings.js:10
+msgid "This field is required."
+msgstr "Este campo es obligatorio."
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."

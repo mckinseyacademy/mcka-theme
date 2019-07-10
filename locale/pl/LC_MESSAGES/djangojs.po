@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-20 10:15+0000\n"
+"POT-Creation-Date: 2019-07-09 14:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -371,6 +371,18 @@ msgstr "Prosimy wypełnić całą zawartość, aby kontynuować"
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
 msgstr "Sprawdź pod kątem wypełnienia"
+
+#: static/js/static_translation_strings.js:9
+msgid ""
+"Must be at least 8 characters and include upper and lowercase letters - plus "
+"numbers OR special characters."
+msgstr ""
+"Musi składać się z przynajmniej 8 znaków i zawierać co najmniej jedną małą "
+"literę, jedną wielką literę oraz jedną cyfrę lub znak specjalny."
+
+#: static/js/static_translation_strings.js:10
+msgid "This field is required."
+msgstr "To pole jest wymagane."
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -1127,3 +1139,30 @@ msgstr "Ukryj hasło"
 #: static_v2/js/application.js:527 static_v2/js/custom.js:113
 msgid "Show password"
 msgstr "Pokaż hasło"
+
+#~ msgid "Announcements"
+#~ msgstr "Ogłoszenia"
+
+#~ msgid "Group Work"
+#~ msgstr "Group Work"
+
+#~ msgid "Leaderboards"
+#~ msgstr "Rankingi liderów"
+
+#~ msgid "Discussion"
+#~ msgstr "Dyskusja"
+
+#~ msgid "Other"
+#~ msgstr "Inne"
+
+#~ msgid "Today at "
+#~ msgstr "Dzisiaj "
+
+#~ msgid "You are now"
+#~ msgstr "Obecnie jesteś"
+
+#~ msgid "for"
+#~ msgstr "na"
+
+#~ msgid "in the cohort!"
+#~ msgstr "w grupie kursantów!"
