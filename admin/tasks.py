@@ -1209,7 +1209,7 @@ def monitor_problem_response_report(self, parent_task, course_id):
 
 
 @task(bind=True, name='admin.post_process_problem_response_report', max_retries=3)
-def post_process_problem_response_report(self, parent_task, course_id, problem_locations):
+def post_process_problem_response_report(self, parent_task, course_id, problem_locations, base_url):
     """
     Post process report to add extra data.
     """
@@ -1257,10 +1257,11 @@ def post_process_problem_response_report(self, parent_task, course_id, problem_l
     task_log_msg = 'post processing problem response report'
     file_path = create_and_store_csv_file(fields, rows, dir_name, csv_name, logger, task_log_msg)
 
-    if file_path.startswith('http'):
-        file_url = file_path
-    else:
-        file_url = reverse('private_storage', kwargs={'path': file_path})
+    # Only joins with base url if file_path is a relative path
+    file_url = urljoin(
+        base=base_url,
+        url=file_path
+    )
     self.update_state(task_id=parent_task['id'], state='PROGRESS', meta={'percentage': 100})
 
     # Update Database
@@ -1271,15 +1272,23 @@ def post_process_problem_response_report(self, parent_task, course_id, problem_l
 
 
 @task(name='admin.send_problem_response_report_success_email', max_retries=3)
-def send_problem_response_report_success_email(parent_task):
+def send_problem_response_report_success_email(parent_task, base_url):
     user_detail = user_api.get_users(username=parent_task['username'])
+    mcka_logo = urljoin(
+        base=base_url,
+        url='/static/image/mcka_email_logo.png'
+    )
+
     send_html_email(
         subject=_('Problem Response Report'),
         to_emails=[user_detail[0].email],
         template_name='admin/problem_response_report_email.haml',
-        template_data={'success': True,
-                       'first_name': user_detail[0].first_name,
-                       'file_url': parent_task['file_url']}
+        template_data={
+            'success': True,
+            'first_name': user_detail[0].first_name,
+            'file_url': parent_task['file_url'],
+            'mcka_logo_url': mcka_logo,
+        }
     )
 
 
