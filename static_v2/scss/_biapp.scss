@@ -958,6 +958,21 @@ form {
   }
 }
 
+// Preloaders
+.my-courses {
+  .skeleton-loading {
+    .card {
+      .card-body {
+        .course-detail {
+          .course-progress {
+            @include left(100px);
+          }
+        }
+      }
+    }
+  }
+}
+
 // CSS specific styles
 body.rtl {
   text-align: right;

@@ -2,7 +2,7 @@
 - load staticfiles
 
 - for course in courses
-  .col-sm-12.col-md-6.col-lg-4.course-card{"class": "{% if not courseended and not course.started %}future-course{% endif %}", 'data-course_id': '#{course.id}'}
+  .col-sm-12.col-md-6.col-lg-4.course-card.skeleton-loading{"class": "{% if not courseended and not course.started %}future-course{% endif %}", 'data-course_id': '#{course.id}'}
     %a.d-block#course-navigation{:href => "#{course.nav_url}", 'data-numdays': '#{course.days_till_start}'}
       .card.ome{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img

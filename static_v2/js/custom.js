@@ -628,6 +628,7 @@ $(window).on("load", function () {
     $('.loader').removeClass("donut-loader").removeClass("loader");
     $('.preloader').removeClass("preloader");
     $('.courseLanding .contentCard').css("visibility", "visible");
+    $('.course-card').removeClass("skeleton-loading");
     $('.courseLanding').removeClass('skeleton');
 
 
