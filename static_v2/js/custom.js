@@ -628,7 +628,6 @@ $(window).on("load", function () {
     $('.loader').removeClass("donut-loader").removeClass("loader");
     $('.preloader').removeClass("preloader");
     $('.courseLanding .contentCard').css("visibility", "visible");
-    $('.course-card').removeClass("skeleton-loading");
     $('.courseLanding').removeClass('skeleton');
 
 
@@ -668,6 +667,9 @@ function scaleImage(label) {
     }
 }
 
+function removeCardLoader(image) {
+    $(image).parents('.course-card').removeClass('skeleton-loading')
+}
 
 $(window).resize(function () {
     $('div.faculty label').each(function (index) {
