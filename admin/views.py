@@ -6446,22 +6446,22 @@ class ProblemResponseReportView(APIView):
         if (created or report.status in celery_states.READY_STATES or
                 (report.status not in ['PROGRESS', 'RETRYING'])):
             chain = (
-                    create_problem_response_report.s(
-                        course_id=course_id,
-                        problem_locations=problem_locations,
-                        problem_types_filter=problem_types_filter,
-                    ) |
-                    monitor_problem_response_report.s(
-                        course_id=course_id
-                    ) |
-                    post_process_problem_response_report.s(
-                        course_id=course_id,
-                        problem_locations=problem_locations,
-                        base_url=base_url
-                    ) |
-                    send_problem_response_report_success_email.s(
-                        base_url=base_url
-                    )
+                create_problem_response_report.s(
+                    course_id=course_id,
+                    problem_locations=problem_locations,
+                    problem_types_filter=problem_types_filter,
+                ) |
+                monitor_problem_response_report.s(
+                    course_id=course_id
+                ) |
+                post_process_problem_response_report.s(
+                    course_id=course_id,
+                    problem_locations=problem_locations,
+                    base_url=base_url
+                ) |
+                send_problem_response_report_success_email.s(
+                    base_url=base_url
+                )
             )
             chain.freeze()
             chain.tasks[0].freeze()

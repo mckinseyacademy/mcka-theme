@@ -288,16 +288,18 @@ class ProblemResponseTasksTest(TestCase):
         """Test process problem response report."""
         mock_processor().post_process.return_value = [{'key1': 'val1', 'key2': 'val2'}], ['key1', 'key2']
         mock_processor().module_lesson_number.return_value = ('module number', 'lesson number')
-        post_process_problem_response_report(
+        response = post_process_problem_response_report(
             {'id': 'task_id', 'report_name': 'report_name'},
             'course_id',
-            'problem_location'
+            'problem_location',
+            'https://example.com'
         )
         mock_get_report_downloads.assert_called_with('course_id', 'report_name')
         mock_processor.assert_called_with(course_id='course_id', report_name='name', report_uri='url')
         self.assertEqual(len(mock_processor().post_process.mock_calls), 1)
         self.assertEqual(len(mock_store_file.mock_calls), 1)
         self.assertEqual(len(mock_admin_task_get().save.mock_calls), 1)
+        self.assertEqual(response['file_url'], 'https://example.com/file_url')
 
 
 class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
