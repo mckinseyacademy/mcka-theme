@@ -17,6 +17,23 @@
             }
         }
 
+
+        // OL
+
+        ol {
+            margin: 20px 0 20px 40px;
+
+            >ol {
+                margin: 0;
+            }
+
+            li {
+                ol {
+                    margin-left: 15px;
+                }
+            }
+        }
+
         // table
 
         table {
@@ -35,6 +52,20 @@
                             }
                             li {
                                 ul {
+                                    margin-left: 10px;
+                                }
+                            }
+                        }
+
+                        //OL
+
+                        ol{
+                            margin: 10px 0 10px 30px;
+                            >ol {
+                                margin: 0;
+                            }
+                            li {
+                                ol {
                                     margin-left: 10px;
                                 }
                             }
@@ -63,6 +94,17 @@
 
                 li {
                     ul {
+                        margin-right: 15px;
+                        margin-left: 0;
+                    }
+                }
+            }
+
+            ol {
+                margin: 20px 40px 20px 0;
+
+                li {
+                    ol {
                         margin-right: 15px;
                         margin-left: 0;
                     }
