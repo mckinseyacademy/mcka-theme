@@ -392,11 +392,10 @@ body.new-theme {
                         .option {
                             background-color: $gray;
                             box-shadow: none;
-                            width:100px;
-                            height: 100px;
+                            width:100px !important;
+                            height: 100px !important;
                             overflow: hidden;
                             border:0;
-                            transform: translateX(-50%);
                             cursor: move;
 
                         }
