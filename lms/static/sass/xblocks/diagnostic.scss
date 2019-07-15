@@ -144,29 +144,24 @@
 						}
 
 						&:before {
-							content: '';
-							background: $white;
-							border-radius: 100%;
-							border: 2px solid $black;
+							font-family: 'Material Icons';
+							content: '\e836';
 							display: inline-block;
 							width: 18px;
 							height: 18px;
+							@include font-size(18);
+							line-height: normal;
+							cursor: pointer;
 							position: relative;
 							top: 4px;
-							margin-right: 5px;
-							vertical-align: top;
-							cursor: pointer;
-							text-align: center;
-							transition: all 250ms ease;
+    						margin-right: 5px;
 						}
 					}
 
 					&:checked {
 						+label {
 							&:before {
-								background-color: $black;
-								border-color: $black;
-								box-shadow: inset 0 0 0 2px $white;
+								content: '\e837';
 							}
 						}
 					}
@@ -175,7 +170,7 @@
 						+label {
 							&:before {
 								outline: none;
-								border-color: $black;
+								color: $black;
 							}
 						}
 					}
@@ -183,9 +178,8 @@
 					&:disabled {
 						+label {
 							&:before {
-								box-shadow: inset 0 0 0 2px $white;
-								border-color: $black;
-								background: $black;
+								content: '\e837';
+								color: $black;
 								opacity: .5;
 							}
 						}
