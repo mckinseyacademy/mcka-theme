@@ -1,11 +1,12 @@
 ''' forms for administration objects '''
-from datetime import date, datetime
-
 import os
+from datetime import date, datetime
 from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files import File
+from django.core.files.storage import default_storage
+from django.core.validators import validate_email, RegexValidator
 from django.core.validators import (
     validate_email,
     RegexValidator,
@@ -19,8 +20,8 @@ from api_client import course_api
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 from main.models import CuratedContentItem
-from util.i18n_helpers import format_lazy, mark_safe_lazy
 from util.data_sanitizing import clean_xss_characters
+from util.i18n_helpers import format_lazy, mark_safe_lazy
 from util.image_util import resize_image
 from util.validators import UsernameValidator, AlphanumericWithAccentedChars
 from .models import (
@@ -435,7 +436,7 @@ class LearnerDashboardTileForm(forms.ModelForm):
         link = cleaned_data.get("link")
         tile_type = cleaned_data.get("tile_type")
         background_image = cleaned_data.get("background_image")
-        if background_image:
+        if background_image and not default_storage.exists(background_image):
             name = os.path.splitext(background_image.name)
             image_name = 'images/{}-{}{}'.format(name[0], datetime.now().strftime("%s"), name[1])
             dimensions = settings.IMAGE_SIZES['ld_tile_background_image']
