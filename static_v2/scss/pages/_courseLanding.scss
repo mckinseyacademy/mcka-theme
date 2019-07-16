@@ -353,7 +353,6 @@
       }
 
       &.serial,
-      &.title,
       &.status {
         text-transform: capitalize;
       }
@@ -378,6 +377,7 @@
         font-size: 1rem;
         line-height: 22px;
         width: 44%;
+        text-transform: none;
 
         > span {
           display: inline-block;
@@ -451,6 +451,18 @@
 
       &.progressBar {
         width: 23%;
+      }
+    }
+  }
+}
+
+.allModules{
+  .allCoursesList{
+    .holder{
+      .data{
+        &.title{
+          text-transform: none;
+        }
       }
     }
   }
@@ -702,6 +714,7 @@ blockquote {
       border-radius: 2px;
       font-size: 12px;
       line-height: 20px;
+      text-transform: none;
     }
     .dropdown-menu {
       top: 100%!important;

@@ -1,16 +1,28 @@
 - extends "layout.haml"
 - load i18n
+- load staticfiles
 - block page_title
   %title {% trans "Access | McKinsey Academy" %}
 
 - block content
   - if redirect_to
-    .container.text-center
+    .container.text-center.access-key-page
       .row
         .col-12.contentCard
           %p
-            %i.fa.fa-spinner.fa-spin
-            {% trans "You will be redirected to your login provider." %}
+            %div.scorm-access
+              %i.fa.fa-spinner.fa-spin
+              %span.popups-allowed
+                {% trans "A popup window should open shortly to login with your provider. If it doesn't open in a few seconds, click the button below." %}
+              %span.popups-blocked
+                {% trans "Your browser seems to be blocking popups from this site. Please allow popups for a smoother login flow. Click the button below to continue the login process." %}
+              %br
+              %button#scorm-login-launch.btn.btn-primary.btn-lg.m-2
+                {% trans "Open Login Window" %}
+            %div.normal-access
+              %i.fa.fa-spinner.fa-spin
+              {% trans "You will be redirected to your login provider." %}
+
   - else
     .container.text-center
       .row
@@ -21,7 +33,4 @@
             %p {% trans "There was a problem with your access code." %}
 - block js_snippets
   - if redirect_to
-    :javascript
-      setTimeout(function redirect() {
-        window.location = '{{ redirect_to|safe }}'
-      }, 2000)
+    %script{id: 'access-key-script', src: "{% static 'js/accounts/access_keys.js' %}", 'data-redirect-to': "{{ redirect_to|safe }}"}

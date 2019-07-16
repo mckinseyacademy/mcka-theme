@@ -182,7 +182,7 @@
     }
   }
 
-  table {
+  table { 
     width: 100%;
 
     thead {
@@ -227,9 +227,25 @@
           .lesson-with-list {
             position: relative;
             padding-bottom: 10px;
+            .pn-ProductNav_Link{
+              display: inline-block;
+              width: calc(100% - 190px);
+              &.dropdown-toggle {
+                @include font-size(16);
+                position: relative;
+                width: auto;
+                
+                &::after {
+                  display: inline-block;
+                  vertical-align: middle;
+                }
+              }
+            }
+            
 
             .lesson-item-name {
               display: inline-block;
+              vertical-align: top;
               @media screen and (max-width: 767px) {
                 display: block;
               }
@@ -260,19 +276,6 @@
               min-width: 360px;
               .material-icons {
                 vertical-align: sub;
-              }
-            }
-
-            .dropdown-toggle {
-              @include font-size(16);
-              position: relative;
-              display: inline-block;
-              &::after {
-                display: inline-block;
-                vertical-align: middle;
-              }
-              @media only screen and (max-width: 992px) and (orientation: portrait) {
-                display: block;
               }
             }
 
@@ -312,7 +315,31 @@
     .reveal-modal {
       display: none;
     }
+
+    // case of three columns
+
+    &.three-cols{
+      tbody {
+        tr {
+          td {
+            .lesson-with-list {
+              .lesson-item-name{
+                display: block;
+              }
+              .pn-ProductNav_Link{
+                width: calc(100% - 25px);
+                display: block;
+                &.dropdown-toggle{
+                  width:auto !important;
+                  display: inline-block !important;
+                }
+              }
+            }
+          }
+        }
+      }
   }
+}
 
   .note-progress {
     color: $gray;
@@ -430,21 +457,24 @@
       }
     }
     table {
-      &.three-cols {
-        tbody {
-          tr {
-            td {
-              .lesson-with-list {
-                .dropdown-toggle {
-                  display: block;
-                }
+
+      // single case column
+
+      tbody {
+        tr {
+          td {
+            .lesson-with-list {
+              .pn-ProductNav_Link{
+                width: calc(100% - 150px);
+                display: inline-block;
               }
             }
           }
         }
       }
     }
-  }
+  
+}
 }
 @include media-breakpoint-between(xs, md) {
   #course-progress-new {
@@ -453,8 +483,13 @@
         tr {
           td {
             .lesson-with-list {
+              .pn-ProductNav_Link{
+                width:auto;
+                display: block;
+              }
               .dropdown-toggle {
-                display: inline-block;
+                display: block;
+                width:auto;
               }
             }
           }
@@ -619,6 +654,7 @@
       td {
         .dropdown-toggle {
           display: inline-block;
+          
         }
       }
     }

@@ -183,6 +183,9 @@ body{
     .unit-title {
       display: none;
     }
+    .link-with-sup {
+      display: inline-block;
+    }
   }
   .xblock {
     img {
@@ -195,7 +198,7 @@ body{
     background-color: var(--secondary);
     opacity: 0.6;
     transition-property: width, opacity;
-    transition-duration: 1s , 0.3s;
+    transition-duration: 0.3s , 0.3s;
     transition-timing-function: ease-in-out , ease-out;
   }
 }

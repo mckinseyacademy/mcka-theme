@@ -237,19 +237,13 @@ $(document).ready(function () {
         });
 
 
-    switch ($('table.progress-data td.progress_data_col').length) {
+    const progress_col = $('table.progress-data td.progress_data_col').length;
+    $('table.progress-data').addClass('table-col-' + progress_col);
 
-        case 1:
-            $('table.progress-data').addClass('table-col-1');
-            break;
 
-        case 2:
-            $('table.progress-data').addClass('table-col-2');
-            break;
-
-        case 3:
-            $('table.progress-data').addClass('table-col-3');
-            break;
+    if($('table.progress-data tbody tr:first td').length > 2)
+    {
+        $('table.progress-data').addClass('three-cols');
     }
 
 
