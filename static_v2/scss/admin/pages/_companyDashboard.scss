@@ -576,7 +576,7 @@
       top: 0;
       width: 40px;
       z-index: 9;
-      background: transparent;
+      background: transparent !important;
       &:hover{
         background:transparent !important;
       }
