@@ -6,7 +6,7 @@
     %a.d-block#course-navigation{:href => "#{course.nav_url}", 'data-numdays': '#{course.days_till_start}'}
       .card.ome{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img
-          %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_urls.large}}", onload: "removeCardLoader(this)"}
+          %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_urls.large}}", onload: "removeCardLoader(this)", onerror: 'this.onerror=null;this.src="/static/image/default-course-image.png";'}
         .card-body
           .future-course-text
             {% trans "Coming Soon" %}
@@ -38,10 +38,6 @@
       {% trans "You aren't enrolled in any courses." %}
 
 %script
-  $('.card-img-top').on('error', function(e){
-    $(e.target).attr('src', '/static/image/default-course-image.png');
-  });
-
   $(function() {
     var course_ids = [];
     $('.course-card').each(function() {
