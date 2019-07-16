@@ -93,6 +93,24 @@
         display: none;
     }
 
+    .drag-container{
+        .item-bank{
+            .option{
+                cursor: move;
+            }
+        }
+
+        .dragged-items{
+            .option{
+                box-shadow: none;
+                width:100px !important;
+                height: 100px !important;
+                overflow: hidden;
+                border:0;
+                cursor: move;
+            }
+        }
+    }
 
 }
 
@@ -394,13 +412,7 @@ body.new-theme {
                     .dragged-items {
                         .option {
                             background-color: $gray;
-                            box-shadow: none;
-                            width:100px !important;
-                            height: 100px !important;
-                            overflow: hidden;
                             border:0;
-                            cursor: move;
-
                         }
                     }
 
