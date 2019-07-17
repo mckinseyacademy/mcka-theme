@@ -42,14 +42,18 @@ $(document).ready(function () {
         $('.leaderboards-list .col').removeClass('col').addClass('col-12');
     }
 
-    $('#pnProductNavContents>ul> li').not(":has(.dropdown-menu, .dropdown-toggle)").click(function() {
-        $('#pnProductNavContents>ul> li.active').removeClass('active');
-        $(this).addClass('active');
+    $('#pnProductNavContents>ul> li').not(":has(.dropdown-menu, .dropdown-toggle)").click(function(e) {
+        if (!e.ctrlKey) {
+            $('#pnProductNavContents>ul> li.active').removeClass('active');
+            $(this).addClass('active');
+        }
     });
 
-    $('.headerNav>ul>li').click(function() {
-        $('.headerNav>ul>li.active').removeClass('active');
-        $(this).addClass('active');
+    $('.headerNav>ul>li').click(function(e) {
+        if (!e.ctrlKey) {
+            $('.headerNav>ul>li.active').removeClass('active');
+            $(this).addClass('active');
+        }
     });
 
 
@@ -642,9 +646,11 @@ $(window).on("load", function () {
 
 // Preloader for courses page
 
-$('.my-courses .card').click(function () {
-    $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
-    $(this).addClass("loader").addClass("donut-loader");
+$(document).on('click', '.my-courses .card', function (e) {
+    if (!e.ctrlKey) {
+        $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
+        $(this).addClass("loader").addClass("donut-loader");
+    }
 });
 
 "use strict";
