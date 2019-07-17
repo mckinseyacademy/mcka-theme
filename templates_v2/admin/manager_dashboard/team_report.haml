@@ -69,12 +69,5 @@
                   {% trans "No course for your direct reports" %}
                 .large-12.columns.spinnerContainer{id: "managerDashboardReportGrid"}
 
-  %script
-    -# Getting no: of manager course and if there are any course then calling function
-    -# which will update lined views with manager courses.
-
-    var courses = {{manager_courses|length}};
-    if (courses)
-    {
-      update_manager_dashboard_tabs(courses);
-    }
+  -# This code is used by JS
+  #manager_courses{'course-length': '{{manager_courses|length}}'}
