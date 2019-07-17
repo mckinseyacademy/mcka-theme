@@ -38,16 +38,6 @@ def remove_characters(value, char_blacklist):
     return value.translate(remove_chars_map)
 
 
-def remove_words(value, words_blacklist):
-    """
-    Remove blacklist characters from the value
-    """
-
-    for word in words_blacklist:
-        value = value.replace(word, '')
-    return value
-
-
 def prepend_formula_value(value):
     """
     Prepends apostrophe to value if it contains formula injection characters
@@ -72,7 +62,7 @@ def clean_xss_characters(value):
     """
     Remove XSS related characters from passed string
     """
-    return escape(remove_words(value, settings.XSS_CHARACTERS_BLACKLIST))
+    return escape(value)
 
 
 def apply_clean_methods(value, methods=()):
