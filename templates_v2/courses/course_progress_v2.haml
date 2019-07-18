@@ -215,9 +215,9 @@
                       %td
                         .lesson-row-item
                           .lesson-item-name
-                            %i{:class => "status material-icons{% if lesson.progress == 100 %} complete{% endif %}"}
-                              {% if lesson.progress == 100 %}check_circle {% elif lesson.progress == 0 %}panorama_fish_eye{% else %}tonality{% endif %}
-                            %a.ome.dome-c{"href": "#{module.navigation_url}"}
+                            %i{:class => "status material-icons{% if module.progress == 100 %} complete{% endif %}"}
+                              {% if module.progress == 100 %}check_circle {% else %} panorama_fish_eye{% endif %}
+                            %a{"href": "#{module.navigation_url}"}
                               #{module.lesson_name}: {{ module.name|translate_assessment_if_needed }}
                       %td.number{"class": "{% if module.assesment_score == 0 %}zero{% endif %}"}= module.assesment_score
                   - if feature_flags.group_work

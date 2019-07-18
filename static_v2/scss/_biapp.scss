@@ -570,6 +570,13 @@ body.rtl {
       @include border-right(1px solid $gray);
     }
   }
+  .proficiency-data {
+    .lesson-row-item {
+      .material-icons {
+        @include left(0);
+      }
+    }
+  }
   .dropdown-toggle {
     &:after {
       @include margin-left(-2px);
