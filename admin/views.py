@@ -4003,7 +4003,11 @@ class ParticipantsListApi(APIView):
         PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
     )
     def get(self, request, format=None):
-        query_params = request.GET.dict()
+        # This encodes all values in unicode to UTF8 to avoid issues when
+        # making requests with special characters
+        query_params = {
+            k: unicode(v).encode("utf-8") for k, v in request.GET.dict().iteritems()
+        }
 
         # restrict participants search to internal courses
         if request.user.is_internal_admin:

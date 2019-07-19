@@ -753,9 +753,11 @@ def _cleanup_username(username):
         validate_slug(username)
     except ValidationError:
         initial, username = username, USERNAME_INVALID_CHARS_REGEX.sub("", username)
-        log.info("Username '{initial_username}' does not pass validation checks; changed to '{actual_username}'".format(
-            initial_username=initial, actual_username=username
-        ))
+        log.info(
+            u"Username '{initial_username}' does not pass validation checks; changed to '{actual_username}'".format(
+                initial_username=initial, actual_username=username
+            )
+        )
 
     # Does the username already exist?
     try:
@@ -794,10 +796,12 @@ def sso_registration_form(request):
     error = None
     provider_data = request.session['provider_data']
     provider_user_data = provider_data['user_details']
-    first_name = provider_user_data.get('first_name')
-    last_name = provider_user_data.get('last_name')
-    username = _cleanup_username('{}_{}'.format(first_name, last_name) if first_name and last_name
-                                 else provider_user_data.get('username', ''))
+    first_name = unicode(provider_user_data.get('first_name', ''))
+    last_name = unicode(provider_user_data.get('last_name', ''))
+    username = _cleanup_username(
+        u'{}_{}'.format(first_name, last_name) if first_name and last_name
+        else provider_user_data.get('username', '')
+    )
     remote_session_key = request.COOKIES.get('sessionid')
 
     if remote_session_key:
