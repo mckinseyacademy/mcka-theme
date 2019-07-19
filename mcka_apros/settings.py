@@ -577,13 +577,6 @@ TILE_TITLE_COLOR = "#3384CA"
 TILE_NOTE_COLOR = "#868685"
 TILE_BACKGROUND_COLOR = "#FFFFFF"
 
-# XSS Words needs to filtered
-XSS_CHARACTERS_BLACKLIST = [
-    'javascript:',
-    'data:',
-    'expression('  # For IE
-]
-
 # Characters added here will be cleaned in CSV exports data
 CSV_CHARACTERS_BLACKLIST = [
     '+',

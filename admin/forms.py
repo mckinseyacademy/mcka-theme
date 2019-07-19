@@ -6,9 +6,15 @@ from django import forms
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.core.files import File
-from django.core.validators import validate_email, RegexValidator
+from django.core.files.storage import default_storage
+from django.core.validators import (
+    validate_email,
+    RegexValidator,
+    URLValidator
+)
 from django.forms.widgets import SelectDateWidget
 from django.utils.translation import ugettext_lazy as _
+from django.urls import resolve, Resolver404
 
 from api_client import course_api
 from api_client.group_api import PERMISSION_GROUPS
@@ -423,9 +429,10 @@ class LearnerDashboardTileForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(LearnerDashboardTileForm, self).clean()
+
         for name, value in cleaned_data.items():
-            cleaned_data[name] = clean_xss_characters(value) \
-                if isinstance(value, (str, unicode)) else value
+            cleaned_data[name] = clean_xss_characters(value) if isinstance(value, (str, unicode)) else value
+
         link = cleaned_data.get("link")
         tile_type = cleaned_data.get("tile_type")
         background_image = cleaned_data.get("background_image")
@@ -435,12 +442,22 @@ class LearnerDashboardTileForm(forms.ModelForm):
             dimensions = settings.IMAGE_SIZES['ld_tile_background_image']
             cleaned_data["background_image"] = File(resize_image(background_image, dimensions), image_name)
 
-        if tile_type == "4" and "/courses/" not in link:
-            raise forms.ValidationError({'link': "Link to course is not valid"})
-        if tile_type == "2" and "/chapter/" not in link:
-            raise forms.ValidationError({'link': "Link to lesson is not valid"})
-        if tile_type == "3" and "/module/" not in link:
-            raise forms.ValidationError({'link': "Link to module is not valid"})
+        # in-app links should resolve, otherwise link is not valid
+        if tile_type in ["2", "3", "4", "7"]:
+            try:
+                resolve(link)
+            except Resolver404:
+                raise forms.ValidationError({'link': "Link is not valid"})
+        else:
+            # these link can both be internal or external so should pass either of it
+            try:
+                resolve(link)
+            except Resolver404:
+                try:
+                    URLValidator()(link)
+                except ValidationError:
+                    raise forms.ValidationError({'link': "Link is not valid"})
+
         return self.cleaned_data
 
 
