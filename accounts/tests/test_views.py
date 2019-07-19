@@ -709,9 +709,8 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertIn("login_id", response.content)
-        self.assertIn("Please enter a valid username or email "
-                      "containing only english characters and numerals,"
-                      " and the following special characters @ . _ -", response.content)
+        self.assertIn("Please enter a valid email containing only English characters and numerals, and the following"
+                      " special characters @ . _ -", response.content)
 
     @ddt.data('ütest?', 'ütestemail.com"')
     def test_login_validate_with_unicode_username_login_id(self, login_id):
@@ -722,8 +721,8 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertIn("login_id", response.content)
-        self.assertIn("Please enter a valid username containing only english characters and numerals, "
-                      "and the following special characters _ -", response.content)
+        self.assertIn("Please enter a valid username containing only English characters and numerals, and the "
+                      "following special characters _ -", response.content)
 
 
 @ddt.ddt

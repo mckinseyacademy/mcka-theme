@@ -1107,16 +1107,16 @@ msgstr "用户名或电子邮件 {html_span}"
 
 #: accounts/forms.py:413
 msgid ""
-"Please enter a valid username or email containing only english characters "
-"and numerals, and the following special characters @ . _ -"
+"Please enter a valid email containing only English characters and "
+"numerals, and the following special characters @ . _ -"
 msgstr ""
-"请输入有效的用户名或电子邮件，仅包含英语字母、数字以及以下特殊符号：@ . _ -"
+"请输入有效的电子邮件地址，电子邮件地址中应仅包含英语字母、数字以及以下特殊符号：@ . _ -"
 
 #: accounts/forms.py:417
 msgid ""
-"Please enter a valid username containing only english characters and "
-"numerals, and the following special characters _ -"
-msgstr "请输入有效的用户名，仅包含英语字母、数字以及以下特殊符号： _ -"
+"Please enter a valid username containing only English characters and numerals, "
+"and the following special characters _ -"
+msgstr "请输入有效的用户名，用户名中应仅包含英语字母、数字以及以下特殊符号：_ -"
 
 #: accounts/forms.py:426 accounts/forms.py:447
 #, python-brace-format

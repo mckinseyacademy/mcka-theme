@@ -1113,19 +1113,19 @@ msgstr "Nome de usuário ou e-mail {html_span}"
 
 #: accounts/forms.py:413
 msgid ""
-"Please enter a valid username or email containing only english characters "
-"and numerals, and the following special characters @ . _ -"
+"Please enter a valid email containing only English characters and "
+"numerals, and the following special characters @ . _ -"
 msgstr ""
-"insira um nome de usuário ou e-mail válido, contendo apenas caracteres e "
+"Insira um nome de usuário ou e-mail válido, contendo apenas caracteres e"
 "numerais em português, e os seguintes caracteres especiais @. _ -"
 
 #: accounts/forms.py:417
 msgid ""
-"Please enter a valid username containing only english characters and "
-"numerals, and the following special characters _ -"
+"Please enter a valid username containing only English characters and numerals, "
+"and the following special characters _ -"
 msgstr ""
-"insira um nome de usuário válido, contendo apenas caracteres e numerais em "
-"português, e os seguintes caracteres especiais _ -"
+"Insira um nome de usuário ou e-mail válido, contendo apenas caracteres "
+"e numerais em português, e os seguintes caracteres especiais _ -"
 
 #: accounts/forms.py:426 accounts/forms.py:447
 #, python-brace-format
