@@ -1118,8 +1118,8 @@ msgstr ""
 
 #: accounts/forms.py:417
 msgid ""
-"Please enter a valid username containing only English characters and numerals, "
-"and the following special characters _ -"
+"Please enter a valid username containing only English characters and "
+"numerals, and the following special characters _ - "
 msgstr ""
 "Ingrese un nombre de usuario válido que contenga solo caracteres y números "
 "en inglés o los siguientes caracteres especiales _ -"

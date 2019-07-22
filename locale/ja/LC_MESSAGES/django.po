@@ -1116,8 +1116,8 @@ msgstr ""
 
 #: accounts/forms.py:417
 msgid ""
-"Please enter a valid username containing only English characters and numerals, "
-"and the following special characters _ -"
+"Please enter a valid username containing only English characters and "
+"numerals, and the following special characters _ - "
 msgstr ""
 "英語の文字および数字と特殊文字「_ -」のみを含む有効なユーザー名を入力してください。"
 
