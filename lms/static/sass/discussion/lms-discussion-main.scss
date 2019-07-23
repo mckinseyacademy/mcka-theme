@@ -1619,7 +1619,7 @@ body.new-theme {
 							}
 
 							.icon {
-								color: $black;
+								color: var(--primary);
 							}
 
 							&.is-active {
@@ -1627,7 +1627,7 @@ body.new-theme {
 
 								.forum-nav-thread-title,
 								.icon {
-									color: $dark-blue;
+									color: var(--primary);
 								}
 
 								&:hover .forum-nav-thread-title {
