@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-09 14:52+0000\n"
+"POT-Creation-Date: 2019-07-18 11:55+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1221,7 +1221,7 @@ msgstr "Nova senha"
 msgid "New password confirmation"
 msgstr "Confirmação da nova senha"
 
-#: accounts/forms.py:629 admin/forms.py:199
+#: accounts/forms.py:629 admin/forms.py:204
 msgid "Formats accepted: JPG, PNG and GIF"
 msgstr "Formatos aceitos: JPG, PNG e GIF"
 
@@ -1429,7 +1429,7 @@ msgstr "Falha na redefinição da senha"
 #: accounts/views.py:1036 lib/mail.py:133 templates/accounts/activate.haml:16
 #: templates/accounts/public_registration.haml:45
 #: templates/accounts/sso_terms_of_service.haml:16 templates/layout.haml:272
-#: templates_v2/courses/content_page/courses_menu_list.haml:73
+#: templates_v2/courses/content_page/courses_menu_list.haml:69
 msgid "Welcome to McKinsey Academy"
 msgstr "Bem-vindo ao McKinsey Academy"
 
@@ -1578,7 +1578,7 @@ msgstr "% de progresso"
 #: admin/controller.py:809
 #: templates/admin/client-admin/course_analytics.haml:71
 #: templates/admin/course_meta_content/item_list.haml:141
-#: templates_v2/courses/course_cohort.haml:98
+#: templates_v2/courses/course_cohort.haml:100
 #: templates_v2/courses/visualizations/course_engagement.haml:11
 msgid "Engagement"
 msgstr "Engajamento"
@@ -1586,7 +1586,7 @@ msgstr "Engajamento"
 #: admin/controller.py:810 admin/views.py:4537
 #: templates/admin/client-admin/course_analytics.haml:53
 #: templates/admin/course_meta_content/item_list.haml:64
-#: templates_v2/courses/course_cohort.haml:179
+#: templates_v2/courses/course_cohort.haml:181
 #: templates_v2/courses/visualizations/course_proficiency.haml:9
 msgid "Proficiency"
 msgstr "Proficiência"
@@ -1710,7 +1710,7 @@ msgid "Please enter role text"
 msgstr "Insira o texto da função"
 
 #: admin/controller.py:2397 templates/admin/courses/course_details.haml:115
-#: templates_v2/admin/courses/course_details.haml:178
+#: templates_v2/admin/courses/course_details.haml:179
 msgid "Engagement Summary"
 msgstr "Resumo do engajamento"
 
@@ -1756,7 +1756,7 @@ msgid "Final assessment"
 msgstr "Avaliação final"
 
 #: admin/controller.py:2415 templates/admin/courses/course_details.haml:128
-#: templates_v2/admin/courses/course_details.haml:184
+#: templates_v2/admin/courses/course_details.haml:185
 msgid "Social Engagement"
 msgstr "Engajamento social"
 
@@ -1803,54 +1803,54 @@ msgstr "O arquivo CSV precisa ter o cabeçalho '{}'."
 msgid "The CSV file has to contain '{}' headers."
 msgstr "O arquivo CSV precisa ter o cabeçalho '{}'."
 
-#: admin/forms.py:33
+#: admin/forms.py:38
 msgid "Hex code should starts with # and followed by 6 or 8 hex digits."
 msgstr ""
 "O código hexadecimal deve começar com # e ser seguido por 6 ou 8 dígitos "
 "hexadecimais."
 
-#: admin/forms.py:48
+#: admin/forms.py:53
 msgid "Enter new email address"
 msgstr "Digite o novo endereço de e-mail"
 
-#: admin/forms.py:149 admin/views.py:4769
+#: admin/forms.py:154 admin/views.py:4769
 #: templates/admin/participants/participant_edit_status.haml:25
 msgid "TA"
 msgstr "TA"
 
-#: admin/forms.py:150 admin/views.py:4770
+#: admin/forms.py:155 admin/views.py:4770
 msgid "OBSERVER"
 msgstr "OBSERVADOR"
 
-#: admin/forms.py:151
+#: admin/forms.py:156
 msgid "MODERATOR"
 msgstr "MODERADOR"
 
-#: admin/forms.py:176 admin/views.py:4771
+#: admin/forms.py:181 admin/views.py:4771
 msgid "ADMIN"
 msgstr "ADMINISTRADOR"
 
-#: admin/forms.py:177 admin/forms.py:190 admin/views.py:4774
+#: admin/forms.py:182 admin/forms.py:195 admin/views.py:4774
 msgid "COURSE OPS"
 msgstr "OPERADORES DO CURSO"
 
-#: admin/forms.py:178 admin/forms.py:191 admin/views.py:4773
+#: admin/forms.py:183 admin/forms.py:196 admin/views.py:4773
 msgid "INTERNAL ADMIN"
 msgstr "ADMINISTRADOR INTERNO"
 
-#: admin/forms.py:179 admin/forms.py:192 admin/views.py:4772
+#: admin/forms.py:184 admin/forms.py:197 admin/views.py:4772
 msgid "COMPANY ADMIN"
 msgstr "ADMINISTRADOR DA EMPRESA"
 
-#: admin/forms.py:235
+#: admin/forms.py:240
 msgid "Email(s) separated by commas"
 msgstr "E-mails separados por vírgulas"
 
-#: admin/forms.py:237
+#: admin/forms.py:242
 msgid "Message (optional)"
 msgstr "Mensagem (opcional)"
 
-#: admin/forms.py:245 admin/forms.py:261 admin/forms.py:270
+#: admin/forms.py:250 admin/forms.py:266 admin/forms.py:275
 #: certificates/models.py:79 marketing/forms.py:45
 #: templates/admin/client-admin/course_participants.haml:40
 #: templates/admin/course_run/list.haml:24
@@ -1859,15 +1859,15 @@ msgstr "Mensagem (opcional)"
 msgid "Name"
 msgstr "Nome"
 
-#: admin/forms.py:246 admin/forms.py:263
+#: admin/forms.py:251 admin/forms.py:268
 msgid "Course Instance"
 msgstr "Instância do curso"
 
-#: admin/forms.py:252
+#: admin/forms.py:257
 msgid "Name {}"
 msgstr "Nome {}"
 
-#: admin/forms.py:262 admin/views.py:2148 admin/views.py:4537
+#: admin/forms.py:267 admin/views.py:2148 admin/views.py:4537
 #: admin/views.py:4639 templates/admin/program/list.haml:25
 #: templates/admin/workgroup/dashboard.haml:31
 #: templates/courses/course_learner_dashboard_header.haml:64
@@ -1875,15 +1875,15 @@ msgstr "Nome {}"
 msgid "Program"
 msgstr "Programa"
 
-#: admin/forms.py:478
+#: admin/forms.py:494
 msgid "Course with this ID does not exist"
 msgstr "O curso com esta ID não existe"
 
-#: admin/forms.py:487
+#: admin/forms.py:503
 msgid "That number is not allowed"
 msgstr "Esse número não é permitido"
 
-#: admin/forms.py:489
+#: admin/forms.py:505
 msgid "Number of participants is limited to 5000"
 msgstr "O número de participantes é limitado a 5.000"
 
@@ -1951,7 +1951,7 @@ msgstr "Artigo"
 #: templates_v2/courses/content_page/lesson_pager.haml:29
 #: templates_v2/courses/course_lessons.haml:23
 #: templates_v2/courses/course_lessons_ld_external.haml:23
-#: templates_v2/courses/course_progress_v2.haml:86
+#: templates_v2/courses/course_progress_v2.haml:88
 msgid "Lesson"
 msgstr "Lição"
 
@@ -1971,7 +1971,7 @@ msgstr "Lição"
 #: templates_v2/courses/course_lessons.haml:61
 #: templates_v2/courses/course_lessons_ld.haml:61
 #: templates_v2/courses/course_lessons_ld_external.haml:58
-#: templates_v2/courses/course_progress_v2.haml:132
+#: templates_v2/courses/course_progress_v2.haml:134
 msgid "Module"
 msgstr "Módulo"
 
@@ -1999,9 +1999,9 @@ msgstr "Trabalho em grupo"
 #: templates_v2/courses/course_lessons.haml:69
 #: templates_v2/courses/course_lessons_ld.haml:70
 #: templates_v2/courses/course_lessons_ld_external.haml:67
-#: templates_v2/courses/course_progress_v2.haml:141
-#: templates_v2/courses/course_progress_v2.haml:179
-#: templates_v2/courses/course_progress_v2.haml:256
+#: templates_v2/courses/course_progress_v2.haml:143
+#: templates_v2/courses/course_progress_v2.haml:181
+#: templates_v2/courses/course_progress_v2.haml:258
 msgid "Not Started"
 msgstr "Não iniciado"
 
@@ -2011,8 +2011,8 @@ msgstr "Não iniciado"
 #: templates_v2/courses/course_lessons.haml:72
 #: templates_v2/courses/course_lessons_ld.haml:73
 #: templates_v2/courses/course_lessons_ld_external.haml:70
-#: templates_v2/courses/course_progress_v2.haml:144
-#: templates_v2/courses/course_progress_v2.haml:182
+#: templates_v2/courses/course_progress_v2.haml:146
+#: templates_v2/courses/course_progress_v2.haml:184
 msgid "In Progress"
 msgstr "Em andamento"
 
@@ -2020,9 +2020,9 @@ msgstr "Em andamento"
 #: templates_v2/courses/course_lessons.haml:66
 #: templates_v2/courses/course_lessons_ld.haml:67
 #: templates_v2/courses/course_lessons_ld_external.haml:64
-#: templates_v2/courses/course_progress_v2.haml:138
-#: templates_v2/courses/course_progress_v2.haml:185
-#: templates_v2/courses/course_progress_v2.haml:259
+#: templates_v2/courses/course_progress_v2.haml:140
+#: templates_v2/courses/course_progress_v2.haml:187
+#: templates_v2/courses/course_progress_v2.haml:261
 msgid "Complete"
 msgstr "Concluído"
 
@@ -2346,8 +2346,8 @@ msgstr "Nenhum projeto de grupo disponível para este curso"
 #: templates/courses/content_page/course_tabs.haml:22
 #: templates/courses/course_group_work.haml:13
 #: templates/courses/course_progress.haml:75 templates/faq.haml:48
-#: templates_v2/courses/course_progress_v2.haml:233
-#: templates_v2/courses/course_progress_v2.haml:247
+#: templates_v2/courses/course_progress_v2.haml:235
+#: templates_v2/courses/course_progress_v2.haml:249
 msgid "Group Work"
 msgstr "Trabalho em grupo"
 
@@ -2441,8 +2441,8 @@ msgstr "Há um problema com a função do usuário selecionada no novo curso!"
 #: admin/views.py:4537 templates/admin/client-admin/course_analytics.haml:28
 #: templates/admin/client-admin/course_participants.haml:45
 #: templates/courses/content_page/course_tabs.haml:30
-#: templates_v2/courses/course_cohort.haml:19
-#: templates_v2/courses/course_progress_v2.haml:39
+#: templates_v2/courses/course_cohort.haml:21
+#: templates_v2/courses/course_progress_v2.haml:41
 #: templates_v2/courses/visualizations/course_progress.haml:6
 msgid "Progress"
 msgstr "Progresso"
@@ -2458,7 +2458,7 @@ msgstr "Status"
 msgid "Completed"
 msgstr "Concluído"
 
-#: admin/views.py:4639 templates_v2/courses/course_progress_v2.haml:208
+#: admin/views.py:4639 templates_v2/courses/course_progress_v2.haml:210
 msgid "Grade"
 msgstr "Nota"
 
@@ -3547,7 +3547,7 @@ msgstr "Cursos"
 #: templates/admin/participants/participants_list.haml:8
 #: templates_v2/admin/courses/course_details.haml:80
 #: templates_v2/admin/courses/course_details.haml:110
-#: templates_v2/admin/courses/course_details.haml:165
+#: templates_v2/admin/courses/course_details.haml:166
 msgid "Participants"
 msgstr "Participantes"
 
@@ -4603,8 +4603,8 @@ msgstr "Painel do aluno"
 #: templates/courses/course_resources.haml:32
 #: templates_v2/courses/course_learner_dashboard_header.haml:22
 #: templates_v2/courses/course_navigation.haml:36
-#: templates_v2/courses/course_resources.haml:14
-#: templates_v2/courses/course_resources_learner_dashboard.haml:12
+#: templates_v2/courses/course_resources.haml:16
+#: templates_v2/courses/course_resources_learner_dashboard.haml:14
 msgid "Resources"
 msgstr "Recursos"
 
@@ -4701,7 +4701,7 @@ msgid "Lessons"
 msgstr "Lições"
 
 #: templates/admin/course_meta_content/item_list.haml:284
-#: templates_v2/courses/course_progress_v2.haml:45
+#: templates_v2/courses/course_progress_v2.haml:47
 msgid "Modules"
 msgstr "Módulos"
 
@@ -4912,41 +4912,41 @@ msgstr "Certificados gerados"
 #: templates/admin/courses/course_details.haml:122
 #: templates/admin/participants/participant_details.haml:344
 #: templates/admin/participants/participant_details.haml:350
-#: templates_v2/admin/courses/course_details.haml:121
-#: templates_v2/admin/courses/course_details.haml:124
-#: templates_v2/admin/courses/course_details.haml:131
+#: templates_v2/admin/courses/course_details.haml:122
+#: templates_v2/admin/courses/course_details.haml:125
+#: templates_v2/admin/courses/course_details.haml:132
 msgid "Export Stats"
 msgstr "Exportar estatísticas"
 
 #: templates/admin/courses/course_details.haml:91
 #: templates/admin/courses/course_details.haml:94
-#: templates_v2/admin/courses/course_details.haml:138
-#: templates_v2/admin/courses/course_details.haml:141
+#: templates_v2/admin/courses/course_details.haml:139
+#: templates_v2/admin/courses/course_details.haml:142
 msgid "Email Selected Participants"
 msgstr "Enviar e-mail para os participantes selecionados"
 
 #: templates/admin/courses/course_details.haml:99
-#: templates_v2/admin/courses/course_details.haml:146
+#: templates_v2/admin/courses/course_details.haml:147
 msgid "Change status"
 msgstr "Alterar status"
 
 #: templates/admin/courses/course_details.haml:101
-#: templates_v2/admin/courses/course_details.haml:148
+#: templates_v2/admin/courses/course_details.haml:149
 msgid "Unenroll from course"
 msgstr "Cancelar a inscrição do curso"
 
 #: templates/admin/courses/course_details.haml:103
-#: templates_v2/admin/courses/course_details.haml:150
+#: templates_v2/admin/courses/course_details.haml:151
 msgid "Enroll in new course"
 msgstr "Inscrever-se em novo curso"
 
 #: templates/admin/courses/course_details.haml:105
-#: templates_v2/admin/courses/course_details.haml:152
+#: templates_v2/admin/courses/course_details.haml:153
 msgid "Export stats"
 msgstr "Exportar estatísticas"
 
 #: templates/admin/courses/course_details.haml:107
-#: templates_v2/admin/courses/course_details.haml:154
+#: templates_v2/admin/courses/course_details.haml:155
 msgid "Download CSV For Notifications"
 msgstr "Download do CSV para notificações"
 
@@ -4964,7 +4964,7 @@ msgid "View Polls/Surveys"
 msgstr "Ver pesquisas/enquetes"
 
 #: templates/admin/courses/course_details.haml:138
-#: templates_v2/admin/courses/course_details.haml:192
+#: templates_v2/admin/courses/course_details.haml:193
 msgid "View Download History"
 msgstr "Ver histórico de download"
 
@@ -5063,7 +5063,7 @@ msgid "Exporting data for selected questions"
 msgstr "Exportando dados para as perguntas selecionadas"
 
 #: templates/admin/courses/course_details.haml:252
-#: templates_v2/admin/courses/course_details.haml:208
+#: templates_v2/admin/courses/course_details.haml:209
 msgid "We'll e-mail you when your report is ready to download."
 msgstr "Enviaremos um e-mail quando o relatório estiver pronto para download."
 
@@ -5986,7 +5986,7 @@ msgstr "Adicionar um programa usando este formulário"
 #: templates/admin/workgroup/list_layout.haml:9
 #: templates/courses/course_overview.haml:45
 #: templates_v2/courses/course_navigation.haml:23
-#: templates_v2/courses/course_overview.haml:25
+#: templates_v2/courses/course_overview.haml:27
 msgid "Overview"
 msgstr "Visão geral"
 
@@ -6550,16 +6550,12 @@ msgstr "LIÇÃO"
 
 #: templates/courses/content_page/course_menu.haml:55
 #: templates_v2/courses/content_page/course_menu.haml:49
-#: templates_v2/courses/content_page/lesson_menu.haml:30
-#: templates_v2/courses/course_progress_v2.haml:111
 #, python-format
 msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
 msgstr " Esta %(lesson_custom_label)s estará disponível em %(start_date)s "
 
 #: templates/courses/content_page/course_menu.haml:57
 #: templates_v2/courses/content_page/course_menu.haml:51
-#: templates_v2/courses/content_page/lesson_menu.haml:30
-#: templates_v2/courses/course_progress_v2.haml:111
 #, python-format
 msgid " This lesson will be available on %(start_date)s "
 msgstr " Esta lição estará disponível em %(start_date)s "
@@ -6586,14 +6582,14 @@ msgstr "Materiais do curso"
 #: templates/courses/content_page/course_tabs.haml:37
 #: templates/courses/course_news.haml:30
 #: templates_v2/courses/course_navigation.haml:31
-#: templates_v2/courses/course_news.haml:15
+#: templates_v2/courses/course_news.haml:17
 msgid "Announcements"
 msgstr "Anúncios"
 
 #: templates/courses/content_page/course_tabs.haml:39
 #: templates/courses/course_overview.haml:59
 #: templates_v2/courses/course_navigation.haml:33
-#: templates_v2/courses/course_overview.haml:41
+#: templates_v2/courses/course_overview.haml:43
 msgid "Course Overview"
 msgstr "Visão geral do curso"
 
@@ -6744,7 +6740,7 @@ msgid "Proficiency:"
 msgstr "Proficiência:"
 
 #: templates/courses/course_cohort.haml:40
-#: templates_v2/courses/course_cohort.haml:184
+#: templates_v2/courses/course_cohort.haml:186
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the proficiency leaderboard "
@@ -6803,7 +6799,7 @@ msgid "Progress:"
 msgstr "Progresso:"
 
 #: templates/courses/course_cohort.haml:110
-#: templates_v2/courses/course_cohort.haml:24
+#: templates_v2/courses/course_cohort.haml:26
 #, python-format
 msgid " As %(role_user)s user you will not appear on the progress leaderboard "
 msgstr ""
@@ -6840,7 +6836,7 @@ msgid " cohort average = %(course_avg)s points "
 msgstr " média do grupo = %(course_avg)s pontos "
 
 #: templates/courses/course_cohort.haml:173
-#: templates_v2/courses/course_cohort.haml:103
+#: templates_v2/courses/course_cohort.haml:105
 #, python-format
 msgid ""
 " As %(role_user)s user you will not appear on the engagement leaderboard "
@@ -7226,7 +7222,7 @@ msgstr "Calendário"
 #: templates_v2/courses/course_lessons.haml:33
 #: templates_v2/courses/course_lessons_ld.haml:33
 #: templates_v2/courses/course_lessons_ld_external.haml:30
-#: templates_v2/courses/course_progress_v2.haml:93
+#: templates_v2/courses/course_progress_v2.haml:95
 msgid " Modules"
 msgstr " Módulos"
 
@@ -7237,7 +7233,7 @@ msgstr " Módulos"
 #: templates_v2/courses/course_lessons.haml:36
 #: templates_v2/courses/course_lessons_ld.haml:36
 #: templates_v2/courses/course_lessons_ld_external.haml:33
-#: templates_v2/courses/course_progress_v2.haml:96
+#: templates_v2/courses/course_progress_v2.haml:98
 msgid "Lesson "
 msgstr "Lição "
 
@@ -7248,7 +7244,7 @@ msgstr "Lição "
 #: templates_v2/courses/course_lessons.haml:39
 #: templates_v2/courses/course_lessons_ld.haml:39
 #: templates_v2/courses/course_lessons_ld_external.haml:36
-#: templates_v2/courses/course_progress_v2.haml:99
+#: templates_v2/courses/course_progress_v2.haml:101
 msgid "Lesson Modules"
 msgstr "Módulos de lições"
 
@@ -7494,7 +7490,7 @@ msgstr ""
 "leituras e vídeos suplementares"
 
 #: templates/courses/course_news.haml:43
-#: templates_v2/courses/course_news.haml:26
+#: templates_v2/courses/course_news.haml:28
 msgid "No announcements have been posted yet."
 msgstr "Nenhum anúncio foi publicado ainda."
 
@@ -7530,47 +7526,47 @@ msgstr ""
 "%(lesson_custom_label)s, bem como leituras e vídeos suplementares"
 
 #: templates/courses/course_overview.haml:36
-#: templates_v2/courses/course_overview.haml:15
+#: templates_v2/courses/course_overview.haml:17
 msgid "Details:"
 msgstr "Detalhes:"
 
 #: templates/courses/course_overview.haml:37
-#: templates_v2/courses/course_overview.haml:16
+#: templates_v2/courses/course_overview.haml:18
 msgid "10 lessons"
 msgstr "10 lições"
 
 #: templates/courses/course_overview.haml:38
-#: templates_v2/courses/course_overview.haml:17
+#: templates_v2/courses/course_overview.haml:19
 msgid "32 videos"
 msgstr "32 vídeos"
 
 #: templates/courses/course_overview.haml:39
-#: templates_v2/courses/course_overview.haml:18
+#: templates_v2/courses/course_overview.haml:20
 msgid "9 assessments"
 msgstr "9 avaliações"
 
 #: templates/courses/course_overview.haml:40
-#: templates_v2/courses/course_overview.haml:19
+#: templates_v2/courses/course_overview.haml:21
 msgid "72 exercises"
 msgstr "72 exercícios"
 
 #: templates/courses/course_overview.haml:41
-#: templates_v2/courses/course_overview.haml:20
+#: templates_v2/courses/course_overview.haml:22
 msgid "1 group project"
 msgstr "1 projeto em grupo"
 
 #: templates/courses/course_overview.haml:42
-#: templates_v2/courses/course_overview.haml:21
+#: templates_v2/courses/course_overview.haml:23
 msgid "15 readings"
 msgstr "15 leituras"
 
 #: templates/courses/course_overview.haml:62
-#: templates_v2/courses/course_overview.haml:29
+#: templates_v2/courses/course_overview.haml:31
 msgid "WHAT YOU WILL LEARN"
 msgstr "O QUE VOCÊ APRENDERÁ"
 
 #: templates/courses/course_overview.haml:68
-#: templates_v2/courses/course_overview.haml:48
+#: templates_v2/courses/course_overview.haml:50
 msgid "Faculty"
 msgstr "Corpo docente"
 
@@ -7743,7 +7739,7 @@ msgid "Grades:"
 msgstr "Notas:"
 
 #: templates/courses/course_progress.haml:134
-#: templates_v2/courses/course_progress_v2.haml:311
+#: templates_v2/courses/course_progress_v2.haml:313
 msgid ""
 "If you are participating in McKinsey Academy as part of an employer-"
 "sponsored program, we may provide access to certain of your personally-"
@@ -7764,17 +7760,17 @@ msgstr ""
 
 #: templates/courses/course_progress.haml:136
 #: templates/courses/course_progress_v2.haml:237
-#: templates_v2/courses/course_progress_v2.haml:313
+#: templates_v2/courses/course_progress_v2.haml:315
 msgid "privacy policy."
 msgstr "política de privacidade."
 
 #: templates/courses/course_progress_v2.haml:19
-#: templates_v2/courses/course_progress_v2.haml:16
+#: templates_v2/courses/course_progress_v2.haml:18
 msgid "Dashboard for"
 msgstr "Painel para"
 
 #: templates/courses/course_progress_v2.haml:20
-#: templates_v2/courses/course_progress_v2.haml:17
+#: templates_v2/courses/course_progress_v2.haml:19
 msgid "PROGRESS"
 msgstr "PROGRESSO"
 
@@ -7862,12 +7858,12 @@ msgid "Group Work (Due Date):"
 msgstr "Trabalho em grupo (data de entrega):"
 
 #: templates/courses/course_progress_v2.haml:66
-#: templates_v2/courses/course_progress_v2.haml:70
+#: templates_v2/courses/course_progress_v2.haml:72
 msgid "Week"
 msgstr "Semana"
 
 #: templates/courses/course_progress_v2.haml:70
-#: templates_v2/courses/course_progress_v2.haml:74
+#: templates_v2/courses/course_progress_v2.haml:76
 msgid "N/A (focus on Group Work)"
 msgstr "N/A (foco no trabalho em grupo)"
 
@@ -7890,14 +7886,14 @@ msgid "partially complete"
 msgstr "parcialmente concluído"
 
 #: templates/courses/course_progress_v2.haml:131
-#: templates_v2/courses/course_progress_v2.haml:188
+#: templates_v2/courses/course_progress_v2.haml:190
 msgid "Note: Group Work Deliverables need to be submitted by 11pm GMT."
 msgstr ""
 "Observação: o Produto final do trabalho em grupo deve ser enviado até 23h "
 "GMT."
 
 #: templates/courses/course_progress_v2.haml:134
-#: templates_v2/courses/course_progress_v2.haml:191
+#: templates_v2/courses/course_progress_v2.haml:193
 msgid ""
 "Note: \"weeks\" begin Tuesday and end the following Monday; Group Work "
 "Deliverables need to be submitted by 11pm GMT."
@@ -7907,14 +7903,14 @@ msgstr ""
 "GMT."
 
 #: templates/courses/course_progress_v2.haml:136
-#: templates_v2/courses/course_progress_v2.haml:193
+#: templates_v2/courses/course_progress_v2.haml:195
 msgid "Note: \"weeks\" begin Tuesday and end the following Monday"
 msgstr ""
 "Observação: a \"semana\" começa na terça-feira e termina na segunda-feira "
 "seguinte"
 
 #: templates/courses/course_progress_v2.haml:139
-#: templates_v2/courses/course_progress_v2.haml:197
+#: templates_v2/courses/course_progress_v2.haml:199
 msgid "PROFICIENCY"
 msgstr "PROFICIÊNCIA"
 
@@ -7943,7 +7939,7 @@ msgid "Grade:"
 msgstr "Nota:"
 
 #: templates/courses/course_progress_v2.haml:188
-#: templates_v2/courses/course_progress_v2.haml:250
+#: templates_v2/courses/course_progress_v2.haml:252
 msgid "Grading in progress"
 msgstr "Pontuação em andamento"
 
@@ -7969,12 +7965,12 @@ msgstr ""
 "          "
 
 #: templates/courses/course_progress_v2.haml:200
-#: templates_v2/courses/course_progress_v2.haml:267
+#: templates_v2/courses/course_progress_v2.haml:269
 msgid "ENGAGEMENT"
 msgstr "ENGAJAMENTO"
 
 #: templates/courses/course_progress_v2.haml:202
-#: templates_v2/courses/course_progress_v2.haml:269
+#: templates_v2/courses/course_progress_v2.haml:271
 msgid "discussion"
 msgstr "discussão"
 
@@ -8004,28 +8000,28 @@ msgid "Stats:"
 msgstr "Estatísticas:"
 
 #: templates/courses/course_progress_v2.haml:216
-#: templates_v2/courses/course_progress_v2.haml:285
+#: templates_v2/courses/course_progress_v2.haml:287
 msgid "Number of <span>New Posts</span> you created "
 msgstr "Número de <span>Novas publicações</span> criadas por você "
 
 #: templates/courses/course_progress_v2.haml:219
-#: templates_v2/courses/course_progress_v2.haml:288
+#: templates_v2/courses/course_progress_v2.haml:290
 msgid "Number of <span>Replies</span> you made to other posts "
 msgstr "Número de <span>Respostas</span> que você deu em outras publicações "
 
 #: templates/courses/course_progress_v2.haml:222
-#: templates_v2/courses/course_progress_v2.haml:291
+#: templates_v2/courses/course_progress_v2.haml:293
 msgid " Number of <span>Comments Generated </span> by your posts "
 msgstr " Número de <span>Comentários Gerados</span> por suas publicações "
 
 #: templates/courses/course_progress_v2.haml:225
-#: templates_v2/courses/course_progress_v2.haml:294
+#: templates_v2/courses/course_progress_v2.haml:296
 msgid " Number of <span>Upvotes</span> your posts have received "
 msgstr ""
 " Número de <span>Votos positivos</span> que as suas publicações receberam "
 
 #: templates/courses/course_progress_v2.haml:228
-#: templates_v2/courses/course_progress_v2.haml:297
+#: templates_v2/courses/course_progress_v2.haml:299
 msgid " Number of your posts being <span>Followed</span> "
 msgstr " Número de publicações suas que estão sendo <span>Seguidas</span> "
 
@@ -8169,7 +8165,7 @@ msgid ""
 "Many problems with registration, login, or access to courses are caused by "
 "browser issues. Here are some things to try:"
 msgstr ""
-"Muitas questões de inscrição, login ou acesso a cursos são causados por "
+"Muitos problemas com inscrição, login ou acesso a cursos são causados por "
 "problemas no navegador. Algumas soluções possíveis:"
 
 #: templates/faq.haml:15 templates_v2/faq.haml:28
@@ -8424,12 +8420,12 @@ msgid ""
 "group work and course overview for important dates and times, so you don't "
 "miss a submission deadline while you are away."
 msgstr ""
-"Claro que você poderá terminar um curso do McKinsey Academy se perder uma "
-"semana; no entanto, deverá revisar o conteúdo que perdeu. Se você ficará "
-"indisponível por algum tempo durante o curso, entre em contato com outros "
-"membros do grupo. Confira seu trabalho em grupo e a visão geral do curso "
-"para saber datas e horários importantes a fim de não perder um prazo de "
-"envio enquanto estiver ausente."
+"É certamente possível completar um curso do McKinsey Academy se você faltar"
+" uma semana; no entanto, você deve revisar o conteúdo que perdeu. Se "
+"souber que não estará disponível em algum momento durante o curso, "
+"certifique-se de se conectar com outros membros do seu grupo. Verifique"
+" seu trabalho em grupo e a visão geral do seu curso para saber datas e "
+"horários importantes, assim você não perde prazos quando faltar."
 
 #: templates/faq.haml:62 templates_v2/faq.haml:82
 msgid "I missed a deadline; can I get an extension?"
@@ -8441,8 +8437,8 @@ msgid ""
 "and there is no way to change the dates of assignments or exams for one "
 "participant."
 msgstr ""
-"Não podemos oferecer extensões individuais, pois os horários dos cursos são "
-"fixos e não há como alterar as datas de tarefas ou avaliações de um "
+"Não podemos oferecer extensões individuais, pois os horários dos cursos"
+" são fixos e não há como alterar as datas de tarefas ou avaliações de um "
 "participante."
 
 #: templates/faq.haml:64 templates_v2/faq.haml:87
@@ -12524,7 +12520,7 @@ msgstr "Você deve aceitar os Termos de Serviço para continuar"
 #: templates_v2/accounts/public_registration.haml:23
 #: templates_v2/accounts/public_registration.haml:33
 #: templates_v2/accounts/public_registration.haml:43
-#: templates_v2/courses/content_page/courses_menu_list.haml:77
+#: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "OK"
 msgstr "OK"
 
@@ -12606,7 +12602,7 @@ msgid "Active Courses"
 msgstr "Cursos ativos"
 
 #: templates_v2/admin/companies/company_details.haml:106
-#: templates_v2/admin/courses/course_details.haml:160
+#: templates_v2/admin/courses/course_details.haml:161
 msgid "Company Dashboard"
 msgstr "Painel da empresa"
 
@@ -12627,20 +12623,20 @@ msgid "Average Proficiency:"
 msgstr "Proficiência média:"
 
 #: templates_v2/admin/courses/course_details.haml:111
-#: templates_v2/admin/courses/course_details.haml:166
-#: templates_v2/courses/course_progress_v2.haml:279
+#: templates_v2/admin/courses/course_details.haml:167
+#: templates_v2/courses/course_progress_v2.haml:281
 msgid "Stats"
 msgstr "Estatísticas"
 
-#: templates_v2/admin/courses/course_details.haml:190
+#: templates_v2/admin/courses/course_details.haml:191
 msgid "Download Responses"
 msgstr "Download das respostas"
 
-#: templates_v2/admin/courses/course_details.haml:205
+#: templates_v2/admin/courses/course_details.haml:206
 msgid "Exporting Stats for All Users"
 msgstr "Exportando estatísticas para todos os usuários"
 
-#: templates_v2/admin/courses/course_details.haml:211
+#: templates_v2/admin/courses/course_details.haml:212
 msgid ""
 "Include breakdown of progress for each lesson (Note: the export will take "
 "more time)"
@@ -12657,6 +12653,7 @@ msgid "Your team's average proficiency"
 msgstr "A proficiência média da sua equipe"
 
 #: templates_v2/courses/content_page/course_menu.haml:34
+#: templates_v2/courses/course_progress_v2.haml:113
 #, fuzzy, python-format
 #| msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
 msgid ""
@@ -12665,6 +12662,8 @@ msgid ""
 msgstr " Esta %(lesson_custom_label)s estará disponível em %(start_date)s "
 
 #: templates_v2/courses/content_page/course_menu.haml:34
+#: templates_v2/courses/content_page/lesson_menu.haml:30
+#: templates_v2/courses/course_progress_v2.haml:113
 #, fuzzy, python-format
 #| msgid " This lesson will be available on %(start_date)s "
 msgid " This lesson will be available on <div> %(start_date)s </div> "
@@ -12682,7 +12681,7 @@ msgstr "tempo estimado"
 msgid "You aren't enrolled in any courses."
 msgstr "Você não está inscrito em nenhum curso."
 
-#: templates_v2/courses/content_page/courses_menu_list.haml:75
+#: templates_v2/courses/content_page/courses_menu_list.haml:71
 msgid ""
 "Your course begins in <b><span class=\"numdays\"></span></b> days. Before "
 "the course begins, you can explore this site to learn more about what to "
@@ -12691,6 +12690,13 @@ msgstr ""
 "Seu curso começa em <b><span class=\"numdays\"></span></b> dias. Antes do "
 "início do curso, você pode explorar o site para saber mais sobre o que "
 "esperar."
+
+#: templates_v2/courses/content_page/lesson_menu.haml:30
+#, fuzzy, python-format
+#| msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
+msgid ""
+" This %(lesson_custom_label)s will be available on <div>%(start_date)s</div> "
+msgstr " Esta %(lesson_custom_label)s estará disponível em %(start_date)s "
 
 #: templates_v2/courses/content_page/lesson_pager.haml:11
 #: templates_v2/courses/content_page/lesson_pager.haml:15
@@ -12728,87 +12734,87 @@ msgstr " Módulo %(lesson_index)s de %(lesson_count)s "
 msgid "| Leaderboard | Courses | McKinsey Academy"
 msgstr "| Tabela de classificação | Cursos | McKinsey Academy"
 
-#: templates_v2/courses/course_cohort.haml:21
+#: templates_v2/courses/course_cohort.haml:23
 msgid "Your course completion status:"
 msgstr "Status de conclusão do seu curso:"
 
-#: templates_v2/courses/course_cohort.haml:22
-#: templates_v2/courses/course_cohort.haml:182
+#: templates_v2/courses/course_cohort.haml:24
+#: templates_v2/courses/course_cohort.haml:184
 #: templates_v2/courses/visualizations/course_proficiency.haml:13
 #: templates_v2/courses/visualizations/course_progress.haml:11
 msgid "Cohort Average:"
 msgstr "Média do grupo:"
 
-#: templates_v2/courses/course_cohort.haml:27
-#: templates_v2/courses/course_cohort.haml:106
-#: templates_v2/courses/course_cohort.haml:187
-msgid "Position"
-msgstr "Posição"
-
 #: templates_v2/courses/course_cohort.haml:29
 #: templates_v2/courses/course_cohort.haml:108
 #: templates_v2/courses/course_cohort.haml:189
+msgid "Position"
+msgstr "Posição"
+
+#: templates_v2/courses/course_cohort.haml:31
+#: templates_v2/courses/course_cohort.haml:110
+#: templates_v2/courses/course_cohort.haml:191
 msgid "You are ranked "
 msgstr "Você se classificou em"
 
-#: templates_v2/courses/course_cohort.haml:30
-#: templates_v2/courses/course_cohort.haml:109
-#: templates_v2/courses/course_cohort.haml:190
+#: templates_v2/courses/course_cohort.haml:32
+#: templates_v2/courses/course_cohort.haml:111
+#: templates_v2/courses/course_cohort.haml:192
 msgid "out of"
 msgstr "dentre os"
 
-#: templates_v2/courses/course_cohort.haml:30
-#: templates_v2/courses/course_cohort.haml:109
-#: templates_v2/courses/course_cohort.haml:190
+#: templates_v2/courses/course_cohort.haml:32
+#: templates_v2/courses/course_cohort.haml:111
+#: templates_v2/courses/course_cohort.haml:192
 msgid "members in your cohort."
 msgstr "membros da sua coorte."
 
-#: templates_v2/courses/course_cohort.haml:32
+#: templates_v2/courses/course_cohort.haml:34
 msgid "Your progress position will be displayed here"
 msgstr "Sua posição de progresso será exibida aqui"
 
-#: templates_v2/courses/course_cohort.haml:37
+#: templates_v2/courses/course_cohort.haml:39
 msgid "Top 3 on progress"
 msgstr "Top 3 em progresso"
 
-#: templates_v2/courses/course_cohort.haml:55
-#: templates_v2/courses/course_cohort.haml:74
-#: templates_v2/courses/course_cohort.haml:93
-#: templates_v2/courses/course_cohort.haml:134
-#: templates_v2/courses/course_cohort.haml:154
-#: templates_v2/courses/course_cohort.haml:174
-#: templates_v2/courses/course_cohort.haml:216
-#: templates_v2/courses/course_cohort.haml:236
-#: templates_v2/courses/course_cohort.haml:256
+#: templates_v2/courses/course_cohort.haml:57
+#: templates_v2/courses/course_cohort.haml:76
+#: templates_v2/courses/course_cohort.haml:95
+#: templates_v2/courses/course_cohort.haml:136
+#: templates_v2/courses/course_cohort.haml:156
+#: templates_v2/courses/course_cohort.haml:176
+#: templates_v2/courses/course_cohort.haml:218
+#: templates_v2/courses/course_cohort.haml:238
+#: templates_v2/courses/course_cohort.haml:258
 msgid "User Name"
 msgstr "Nome de usuário"
 
-#: templates_v2/courses/course_cohort.haml:100
+#: templates_v2/courses/course_cohort.haml:102
 msgid "Your discussion activity points:"
 msgstr "Seus pontos de atividade de discussão:"
 
-#: templates_v2/courses/course_cohort.haml:101
+#: templates_v2/courses/course_cohort.haml:103
 #, python-format
 msgid " Cohort Average: %(score)s points"
 msgstr " Média do grupo: %(score)s pontos"
 
-#: templates_v2/courses/course_cohort.haml:111
+#: templates_v2/courses/course_cohort.haml:113
 msgid "Your engagement position will be displayed here"
 msgstr "Sua posição de engajamento será exibida aqui"
 
-#: templates_v2/courses/course_cohort.haml:115
+#: templates_v2/courses/course_cohort.haml:117
 msgid "Top 3 on engagement"
 msgstr "Top 3 em engajamento"
 
-#: templates_v2/courses/course_cohort.haml:181
+#: templates_v2/courses/course_cohort.haml:183
 msgid "Your course knowledge:"
 msgstr "Seu conhecimento do curso:"
 
-#: templates_v2/courses/course_cohort.haml:192
+#: templates_v2/courses/course_cohort.haml:194
 msgid "Your proficiency position will be displayed here"
 msgstr "Sua posição em proficiência será exibida aqui"
 
-#: templates_v2/courses/course_cohort.haml:196
+#: templates_v2/courses/course_cohort.haml:198
 msgid "Top 3 on Proficiency"
 msgstr "Top 3 em proficiência"
 
@@ -12820,7 +12826,7 @@ msgstr "O trabalho em grupo ainda não começou para esse curso."
 msgid "You will receive a message with information once it begins."
 msgstr "Você receberá uma mensagem com informações assim que começar."
 
-#: templates_v2/courses/course_learner_dashboard.haml:76
+#: templates_v2/courses/course_learner_dashboard.haml:78
 msgid "for discovery"
 msgstr "para descoberta"
 
@@ -12831,7 +12837,7 @@ msgstr "Início"
 #: templates_v2/courses/course_lessons.haml:46
 #: templates_v2/courses/course_lessons_ld.haml:46
 #: templates_v2/courses/course_lessons_ld_external.haml:43
-#: templates_v2/courses/course_progress_v2.haml:118
+#: templates_v2/courses/course_progress_v2.haml:120
 #, python-format
 msgid ""
 "You have completed %(course_current_progress)s%% of %(lesson_custom_label)s "
@@ -12843,7 +12849,7 @@ msgstr ""
 #: templates_v2/courses/course_lessons.haml:48
 #: templates_v2/courses/course_lessons_ld.haml:48
 #: templates_v2/courses/course_lessons_ld_external.haml:45
-#: templates_v2/courses/course_progress_v2.haml:120
+#: templates_v2/courses/course_progress_v2.haml:122
 #, python-format
 msgid ""
 "You have completed %(course_current_progress)s%% of Lesson %(lesson_index)s "
@@ -12866,18 +12872,22 @@ msgstr ""
 #: templates_v2/courses/course_lessons.haml:76
 #: templates_v2/courses/course_lessons_ld.haml:77
 #: templates_v2/courses/course_lessons_ld_external.haml:74
-#: templates_v2/courses/course_progress_v2.haml:148
-#, python-format
-msgid " This %(module_custom_label)s will be available on %(start_date)s "
-msgstr " Este %(module_custom_label)s estará disponível em %(start_date)s "
+#: templates_v2/courses/course_progress_v2.haml:150
+#, fuzzy, python-format
+#| msgid " This %(lesson_custom_label)s will be available on %(start_date)s "
+msgid ""
+" This %(module_custom_label)s will be available on <div> %(start_date)s </"
+"div> "
+msgstr " Esta %(lesson_custom_label)s estará disponível em %(start_date)s "
 
 #: templates_v2/courses/course_lessons.haml:76
 #: templates_v2/courses/course_lessons_ld.haml:77
 #: templates_v2/courses/course_lessons_ld_external.haml:74
-#: templates_v2/courses/course_progress_v2.haml:148
-#, python-format
-msgid " This module will be available on %(start_date)s "
-msgstr " Este módulo estará disponível em %(start_date)s "
+#: templates_v2/courses/course_progress_v2.haml:150
+#, fuzzy, python-format
+#| msgid " This lesson will be available on %(start_date)s "
+msgid " This module will be available on <div> %(start_date)s </div> "
+msgstr " Esta lição estará disponível em %(start_date)s "
 
 #: templates_v2/courses/course_lessons.haml:83
 #: templates_v2/courses/course_lessons_ld.haml:87
@@ -12909,7 +12919,7 @@ msgstr ""
 msgid "My Progress"
 msgstr "Meu progresso"
 
-#: templates_v2/courses/course_progress_v2.haml:20
+#: templates_v2/courses/course_progress_v2.haml:22
 #, python-format
 msgid ""
 "\n"
@@ -12926,7 +12936,7 @@ msgstr ""
 "b>.\n"
 "                "
 
-#: templates_v2/courses/course_progress_v2.haml:24
+#: templates_v2/courses/course_progress_v2.haml:26
 #, python-format
 msgid ""
 "\n"
@@ -12942,7 +12952,7 @@ msgstr ""
 "do grupo é <b>%(user_average_progress)s%%</b>.\n"
 "                "
 
-#: templates_v2/courses/course_progress_v2.haml:28
+#: templates_v2/courses/course_progress_v2.haml:30
 #, python-format
 msgid ""
 "\n"
@@ -12957,7 +12967,7 @@ msgstr ""
 "média do grupo é <b>%(user_average_progress)s%%</b>.\n"
 "                "
 
-#: templates_v2/courses/course_progress_v2.haml:32
+#: templates_v2/courses/course_progress_v2.haml:34
 #, python-format
 msgid ""
 "\n"
@@ -12972,28 +12982,28 @@ msgstr ""
 "%(user_average_progress)s%%</b>.\n"
 "                "
 
-#: templates_v2/courses/course_progress_v2.haml:49
+#: templates_v2/courses/course_progress_v2.haml:51
 msgid " in this course"
 msgstr " neste curso"
 
-#: templates_v2/courses/course_progress_v2.haml:51
+#: templates_v2/courses/course_progress_v2.haml:53
 msgid "Lessons in this course"
 msgstr "Lições neste curso"
 
-#: templates_v2/courses/course_progress_v2.haml:59
+#: templates_v2/courses/course_progress_v2.haml:61
 msgid "Course Run"
 msgstr "Série do curso"
 
-#: templates_v2/courses/course_progress_v2.haml:60
+#: templates_v2/courses/course_progress_v2.haml:62
 msgid "Individual Learning"
 msgstr "Aprendizado individual"
 
-#: templates_v2/courses/course_progress_v2.haml:62
-#: templates_v2/courses/course_progress_v2.haml:158
+#: templates_v2/courses/course_progress_v2.haml:64
+#: templates_v2/courses/course_progress_v2.haml:160
 msgid "Group Work (Due Date)"
 msgstr "Trabalho em grupo (data de entrega)"
 
-#: templates_v2/courses/course_progress_v2.haml:82
+#: templates_v2/courses/course_progress_v2.haml:84
 #, python-format
 msgid ""
 " %(lesson_custom_label)s\n"
@@ -13004,7 +13014,7 @@ msgstr ""
 "                                  %%span %(lesson_index)s:\n"
 "                                "
 
-#: templates_v2/courses/course_progress_v2.haml:127
+#: templates_v2/courses/course_progress_v2.haml:129
 #, python-format
 msgid ""
 "\n"
@@ -13017,7 +13027,7 @@ msgstr ""
 "                                            %%span %(module_index)s\n"
 "                                          "
 
-#: templates_v2/courses/course_progress_v2.haml:199
+#: templates_v2/courses/course_progress_v2.haml:201
 #, python-format
 msgid ""
 "\n"
@@ -13034,16 +13044,16 @@ msgstr ""
 "%(cohort_proficiency_average)s</b>.\n"
 "          "
 
-#: templates_v2/courses/course_progress_v2.haml:206
-#: templates_v2/courses/course_progress_v2.haml:277
+#: templates_v2/courses/course_progress_v2.haml:208
+#: templates_v2/courses/course_progress_v2.haml:279
 msgid "Overall"
 msgstr "Geral"
 
-#: templates_v2/courses/course_progress_v2.haml:207
+#: templates_v2/courses/course_progress_v2.haml:209
 msgid "Graded Items"
 msgstr "Itens pontuados"
 
-#: templates_v2/courses/course_progress_v2.haml:262
+#: templates_v2/courses/course_progress_v2.haml:264
 #, python-format
 msgid ""
 "You need a combined course grade of at least 70%% to earn a certificate of "
@@ -13052,16 +13062,16 @@ msgstr ""
 " Você precisa de uma nota combinada no curso de, no mínimo, 70%% para obter "
 "um certificado de conclusão. Sua nota final é calculada da seguinte forma: "
 
-#: templates_v2/courses/course_progress_v2.haml:263
+#: templates_v2/courses/course_progress_v2.haml:265
 msgid "Click here"
 msgstr "Clique aqui."
 
-#: templates_v2/courses/course_progress_v2.haml:264
+#: templates_v2/courses/course_progress_v2.haml:266
 msgid "to read more about how we may share your course information."
 msgstr ""
 "para ler mais sobre como podemos compartilhar as informações do seu curso."
 
-#: templates_v2/courses/course_progress_v2.haml:270
+#: templates_v2/courses/course_progress_v2.haml:272
 #, python-format
 msgid ""
 "\n"
@@ -13078,7 +13088,7 @@ msgstr ""
 "a>. A média do grupo é <b>%(social_course_avg)s</b>.\n"
 "          "
 
-#: templates_v2/courses/course_progress_v2.haml:278
+#: templates_v2/courses/course_progress_v2.haml:280
 msgid "Measured Engagement"
 msgstr "Engajamento medido"
 
@@ -13106,69 +13116,55 @@ msgstr "Status de conclusão do seu curso"
 
 #: templates_v2/faq.haml:13
 msgid "Participant FAQs"
-msgstr "FAQs dos participantes"
+msgstr "FAQS dos participantes"
 
 #: templates_v2/faq.haml:14
 msgid "Access Related:"
 msgstr "Questões relacionadas ao acesso:"
 
 #: templates_v2/faq.haml:21
-#, fuzzy
-#| msgid ""
-#| "We're sorry, McKinsey Academy is not compatible with your browser. Please "
-#| "update your browser to access course content. We recommend the latest "
-#| "versions of Google Chrome, Mozilla Firefox, and Apple Safari for an "
-#| "optimal experience."
 msgid ""
 "We optimize for the latest versions of Google Chrome, Mozilla Firefox, and "
 "Apple Safari for an optimal experience."
 msgstr ""
-"Desculpe, o McKinsey Academy não é compatível com o seu navegador. Atualize "
-"o navegador para acessar o conteúdo do curso. Recomendamos as versões mais "
-"recentes do Google Chrome, Mozilla Firefox e Apple Safari para uma "
-"experiência ideal."
+"Nós recomendamos as versões mais recentes do Google Chrome, Mozilla Firefox"
+" e Apple Safari para uma experiência ideal."
 
 #: templates_v2/faq.haml:35
 msgid ""
 "McKinsey Academy content is accessible from all  desktop, tablet, and mobile "
 "devices."
 msgstr ""
+"O conteúdo do McKinsey Academy pode ser acessado de todos os desktops,"
+" tablet e dispositivos móveis."
 
 #: templates_v2/faq.haml:40
-#, fuzzy
-#| msgid "Please <a href=\"mailto:academy_info@mckinsey.com\">contact us!</a>"
 msgid ""
 "If you are interested in inquiring further, please <a href='mailto:"
 "academy_info@mckinsey.com' style=\"display: inline;\">contact us.</a> "
 msgstr ""
-"<a href=\"mailto:info@mckinseyacademy.com\">Entre em contato conosco!</a>"
+"Se você tem interesse em saber mais, <a href='mailto:"
+"academy_info@mckinsey.com' style=\"display: inline;\">entre em contato conosco.</a>"
 
 #: templates_v2/faq.haml:43
-#, fuzzy
-#| msgid "Forgot password?"
 msgid "What if I forgot my password?"
-msgstr "Esqueceu a senha?"
+msgstr "E se eu esquecer minha senha?"
 
 #: templates_v2/faq.haml:46
-#, fuzzy
-#| msgid ""
-#| "If you've forgotten your password, please try resetting it by clicking "
-#| "'Forgot my password' on the log in screen. If that does not work, please "
-#| "email"
 msgid ""
 " If you've forgotten your password, please try resetting it by clicking "
 "'Forgot password?' on the <a href='https://www.mckinseyacademy.com' "
 "style='display: inline;' target='_blank'>log in screen.</a> You'll receive "
 "an automated email with instructions on how to reset your password. "
 msgstr ""
-"Se você esqueceu sua senha, tente redefini-la clicando em \"Esqueci minha "
-"senha\" na tela de login. Se isso não funcionar, envie um e-mail para"
+"Se você esqueceu sua senha, tente restaurá-la clicando em 'Esqueceu a senha?'"
+" na <a href='https://www.mckinseyacademy.com' "
+"style='display: inline;' target='_blank'>tela de login.</a> Você receberá "
+"um e-mail automático com instruções de como redefinir sua senha."
 
 #: templates_v2/faq.haml:49
-#, fuzzy
-#| msgid "one-time activation link"
 msgid "What if I lost my activation link?"
-msgstr "link de ativação único"
+msgstr "E se eu perder meu link de ativação?"
 
 #: templates_v2/faq.haml:52
 msgid ""
@@ -13176,17 +13172,15 @@ msgid ""
 "activation link, enter your company email address on the McKinsey Academy "
 "login page and your activation link will be emailed to you."
 msgstr ""
+"Se você ainda não ativou sua conta e não consegue achar seu link de ativação,"
+" insira seu endereço de e-mail da empresa na página de login do McKinsey "
+"Academy e seu link de ativação será enviado por e-mail."
 
 #: templates_v2/faq.haml:55
 msgid "What if I forgot my username?"
-msgstr ""
+msgstr "E se eu esquecer meu nome de usuário?"
 
 #: templates_v2/faq.haml:58
-#, fuzzy
-#| msgid ""
-#| "If you've forgotten your password, please try resetting it by clicking "
-#| "'Forgot my password' on the log in screen. If that does not work, please "
-#| "email"
 msgid ""
 " You are able to enter the email address that was used when you registered "
 "your account. You may also retrieve your username by clicking 'Forgot "
@@ -13194,32 +13188,41 @@ msgid ""
 "inline;\" target='_blank'>log in screen</a>.  You'll receive an automated "
 "email with instructions on how to reset your password. "
 msgstr ""
-"Se você esqueceu sua senha, tente redefini-la clicando em \"Esqueci minha "
-"senha\" na tela de login. Se isso não funcionar, envie um e-mail para"
+"Você pode inserir o endereço de e-mail que foi utilizado quando sua conta "
+"foi registrada. Você também pode recuperar seu nome de usuário clicando em "
+"'Esqueceu a senha?' na <a href='https://www.mckinseyacademy.com' style=\"display: "
+"inline;\" target='_blank'>tela de login.</a>  Você receberá um e-mail automático"
+" com instruções de como redefinir sua senha."
 
 #: templates_v2/faq.haml:59
 msgid "Courses Related:"
 msgstr "Cursos relacionados:"
 
 #: templates_v2/faq.haml:62
-#, fuzzy
-#| msgid "Can I re-take a course?"
 msgid "When can I take my course(s)?"
-msgstr "Posso fazer um mesmo curso novamente?"
+msgstr "Onde posso fazer meu(s) curso(s)?"
 
 #: templates_v2/faq.haml:64
 msgid ""
-"You can find the start date and duration of each course on its overview "
+" You can find the start date and duration of each course on its overview "
 "page. Much of the course content may be taken at your own pace, but some "
 "courses contain group work activities with specific and required deadlines. "
-"Please see the \\"
+"Please see the \"My Progress\" page in your course for specific guidance on "
+"deadlines. "
 msgstr ""
+"Você pode encontrar a data de início e duração de cada curso na página de "
+"visão geral. Grande parte do conteúdo do curso pode ser feita no seu ritmo,"
+" mas alguns cursos possuem atividades de trabalho em grupo com prazos específicos."
+" Veja a página \"Meu Progresso\" no seu curso para diretrizes específicas sobre"
+" prazos."
 
 #: templates_v2/faq.haml:69
 msgid ""
 "For more detailed information on how your grade is calculated, see the My "
 "Progress page in your course."
 msgstr ""
+"Para informações mais detalhadas sobre como sua nota é calculada, veja a "
+"página Meu Progresso no seu curso."
 
 #: templates_v2/faq.haml:74
 msgid ""
@@ -13228,6 +13231,10 @@ msgid ""
 "course. If applicable, additional time is needed to complete group work "
 "activities."
 msgstr ""
+"O tempo para concluir cada curso pode variar bastante de pessoa para pessoa."
+" O tempo estimado para concluir cada lição é mostrado na página de visão "
+"geral de cada curso. Se aplicável, tempo adicional é necessário para completar"
+" atividades de trabalho em grupo."
 
 #: templates_v2/faq.haml:95
 #, python-format
@@ -13238,16 +13245,16 @@ msgid ""
 "              If you have any questions about your Group Work grade, please "
 "contact your TA directly via email. "
 msgstr ""
+"Caso tenha quaisquer perguntas sobre a nota que recebeu para seu curso, "
+"entre em contato com a  <a href=%(support_url)s style=\"display: inline;\" "
+"target='_blank'>equipe de suporte.</a> Caso tenha quaisquer perguntas "
+"sobre sua nota de trabalho em grupo, entre em contato com seu assistente "
+"de ensino via e-mail."
 
 #: templates_v2/faq.haml:99
-#, fuzzy
-#| msgid ""
-#| "How can I talk to McKinsey practitioners teaching my courses and teaching "
-#| "assistants?"
 msgid "How can I get in touch with my teaching assistant?"
 msgstr ""
-"Como posso falar com os profissionais da McKinsey que ministram meus cursos "
-"e com os assistentes de ensino (TAs)?"
+"Como posso entrar com contato com meu assistente de ensino?"
 
 #: templates_v2/faq.haml:101
 #, python-format
@@ -13257,145 +13264,118 @@ msgid ""
 "email. If you need help connecting with your TA, please contact our <a href="
 "%(support_url)s style=\"display: inline;\" target='_blank'>support team</a>."
 msgstr ""
+"Se um assistente de ensino for atribuído ao seu curso, ele ou ela enviará um "
+"e-mail no início do curso e você pode continuar a se comunicar utilizando o"
+" e-mail. Se precisa de ajuda para se comunicar com seu assistente de ensino, "
+"entre em contato com nossa <a href="
+"%(support_url)s style=\"display: inline;\" target='_blank'>equipe de suporte.</a>"
 
 #: templates_v2/faq.haml:111
-#, fuzzy
-#| msgid ""
-#| "Your proficiency, progress, and engagement will not change in closed "
-#| "courses."
 msgid ""
 "You still have access to all course content and materials 12 months after "
 "the course ends. Your proficiency, progress, and engagement will not change "
 "in closed courses."
 msgstr ""
-"Sua proficiência, seu progresso e engajamento não serão alterados nos cursos "
-"encerrados."
+"Você ainda tem acesso a todo o conteúdo dos cursos e materiais 12 meses após "
+"o término do curso. Sua proficiência, seu progresso e engajamento não serão "
+"alterados nos cursos encerrados."
 
 #: templates_v2/faq.haml:114
-#, fuzzy
-#| msgid "How do I get help and support regarding my course?"
 msgid "How am I being measured in my course?"
-msgstr "Como obter ajuda e apoio em meu curso?"
+msgstr "Como estou sendo avaliado em meu curso?"
 
 #: templates_v2/faq.haml:119
-#, fuzzy
-#| msgid ""
-#| "Your proficiency is based on performance on all graded items in the "
-#| "course (including end of lesson assessments, group work, and final "
-#| "assessment)"
 msgid ""
 "Your proficiency is based on performance on all graded assessments in the "
 "course and group work (if applicable)."
 msgstr ""
-"Sua proficiência é baseada no desempenho de todos os itens pontuados no "
-"curso (incluindo avaliações de final de aula, trabalho em grupo e avaliação "
-"final)"
+"Sua proficiência é baseada em desempenho em todas as avaliações com nota "
+"no curso e nos trabalhos em grupo (se aplicável)."
 
 #: templates_v2/faq.haml:122
-#, fuzzy
-#| msgid ""
-#| "Your progress through course content is displayed as you move through all "
-#| "items in the course (including videos, exercises, assessments, and "
-#| "readings)"
 msgid ""
 "Your progress through course content is displayed as you move through all "
 "items in the course (including videos, exercises, assessments, and readings)."
 msgstr ""
-"Seu progresso ao longo do conteúdo do curso é exibido conforme você avançar "
-"pelos itens do curso (incluindo vídeos, exercícios, avaliações e leituras)"
+"Seu progresso ao longo do conteúdo do curso é exibido conforme você avançar"
+" pelos itens do curso (incluindo vídeos, exercícios, avaliações e leituras)."
 
 #: templates_v2/faq.haml:125
-#, fuzzy
-#| msgid ""
-#| "Your engagement increases through your social interactions with other "
-#| "participants in your cohort (through engagement on the discussion forums)"
 msgid ""
 " Your engagement increases through your social interactions with other "
 "participants in your cohort (through engagement on the discussion forums)."
 msgstr ""
-"Seu engajamento aumenta com suas interações sociais com outros participantes "
-"do seu grupo (com seu envolvimento nos fóruns de discussão)"
+"Seu engajamento aumenta com suas interações sociais com outros participantes"
+" do seu grupo (com seu envolvimento nos fóruns de discussão)."
 
 #: templates_v2/faq.haml:129
 msgid ""
 "What should I do if I am  experiencing issues with resetting my password?"
-msgstr ""
+msgstr "O que devo fazer se tiver problemas para restaurar minha senha?"
 
 #: templates_v2/faq.haml:131
-#, fuzzy
-#| msgid ""
-#| "If you've forgotten your password, please try resetting it by clicking "
-#| "'Forgot my password' on the log in screen. If that does not work, please "
-#| "email"
 msgid ""
 "If you've forgotten your password, please try resetting it by clicking "
 "'Forgot password?' on the <a href='https://www.mckinseyacademy.com' "
 "style='display: inline;' target='_blank'>log in screen.</a> You'll receive "
 "an automated email with instructions on how to reset your password."
 msgstr ""
-"Se você esqueceu sua senha, tente redefini-la clicando em \"Esqueci minha "
-"senha\" na tela de login. Se isso não funcionar, envie um e-mail para"
+"Se você esqueceu sua senha, tente restaurá-la clicando em 'Esqueceu a senha?'"
+" na <a href='https://www.mckinseyacademy.com' "
+"style='display: inline;' target='_blank'>tela de login.</a> Você receberá "
+"um e-mail automático com instruções de como redefinir sua senha."
 
 #: templates_v2/faq.haml:132
-#, fuzzy
-#| msgid "If you did not receive an automated email it may be because:"
 msgid "If you did not receive an automated email please check:"
-msgstr "Se você não recebeu um e-mail automático, talvez seja porque:"
+msgstr "Se você não recebeu um e-mail automático, verifique:"
 
 #: templates_v2/faq.haml:134
-#, fuzzy
-#| msgid "Check your junk folder."
 msgid "your Spam folder."
-msgstr "Verifique sua pasta de lixo eletrônico."
+msgstr "sua pasta de spam"
 
 #: templates_v2/faq.haml:135
-#, fuzzy
-#| msgid "This email address has already been registered."
 msgid "your email address is entered in correctly."
-msgstr "Esse e-mail já foi cadastrado."
+msgstr "se seu endereço de e-mail foi inserido corretamente."
 
 #: templates_v2/faq.haml:137
-msgid "If you received a \\"
-msgstr ""
+msgid " If you received a \"Password Reset Unsuccessful\" popup message: "
+msgstr "Se recebeu uma mensagem de \"Falha na redefinição de senha\":"
 
 #: templates_v2/faq.haml:139
 msgid ""
 "You should check that you entered in the email address that your McKinsey "
 "Academy account is registered to, which should be your work email address."
 msgstr ""
+"Verifique se inseriu o endereço de e-mail registrado na conta do McKinsey "
+"Academy, que deve ser seu endereço de e-mail de trabalho."
 
 #: templates_v2/faq.haml:142
 msgid "I'm unable to view videos or images in my course. What should I do?"
-msgstr ""
+msgstr "Não consigo visualizar vídeos ou imagens no meu curso. O que devo fazer?"
 
 #: templates_v2/faq.haml:144
-#, fuzzy
-#| msgid "Please use the following"
 msgid " Try the following:"
-msgstr "Use o seguinte"
+msgstr "Tente o seguinte:"
 
 #: templates_v2/faq.haml:146
-#, fuzzy
-#| msgid "Switch to a current version of Chrome or Firefox"
 msgid "Switch to using Chrome as your browser."
-msgstr "Migrar para uma versão atual do Chrome ou Firefox"
+msgstr "Migrar para o Chrome como seu navegador."
 
 #: templates_v2/faq.haml:147
 msgid "Ensure you are not connected to your company's VPN."
-msgstr ""
+msgstr "Certifique-se de que não está conectado à VPN de sua empresa."
 
 #: templates_v2/faq.haml:148
-#, fuzzy
-#| msgid "Clear your browser's cache"
 msgid "Clear the cache in your browser."
-msgstr "Limpar o cache do navegador"
+msgstr "Limpe o cache do seu navegador."
 
 #: templates_v2/faq.haml:150
 #, python-format
 msgid ""
 " If you are still experiencing issues, please contact the <a href="
 "%(support_url)s style=\"display: inline;\" target='_blank'>support team</a>. "
-msgstr ""
+msgstr "Se ainda tiver problemas, entre em contato com a <a href="
+"%(support_url)s style=\"display: inline;\" target='_blank'>equipe de suporte</a>."
 
 #: templates_v2/faq.haml:156 templates_v2/faq.haml:163
 msgid "Please"
@@ -13416,6 +13396,9 @@ msgid ""
 "our <a href=%(support_url)s style=\"display: inline;\" "
 "target='_blank'>support team.</a> "
 msgstr ""
+"Se sua pergunta não foi respondida em nenhuma destas FAQS, entre em contato"
+" com a nossa <a href=%(support_url)s style=\"display: inline;\" "
+"target='_blank'>equipe de suporte.</a>"
 
 #: templates_v2/footer.haml:11
 msgid "About"
@@ -13881,6 +13864,12 @@ msgstr "Nome: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Sobrenome: {}"
+
+#~ msgid " This %(module_custom_label)s will be available on %(start_date)s "
+#~ msgstr " Este %(module_custom_label)s estará disponível em %(start_date)s "
+
+#~ msgid " This module will be available on %(start_date)s "
+#~ msgstr " Este módulo estará disponível em %(start_date)s "
 
 #~ msgid ""
 #~ "You need to complete all group work and feedback activities and earn a "

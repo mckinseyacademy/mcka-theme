@@ -61,7 +61,7 @@
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#nine", :data-toggle => "collapse"}
               {% trans "When can I take my course(s)?" %}
           #nine.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "You can find the start date and duration of each course on its overview page. Much of the course content may be taken at your own pace, but some courses contain group work activities with specific and required deadlines. Please see the \"My Progress\" page in your course for specific guidance on deadlines." %}
+            %p {% blocktrans %} You can find the start date and duration of each course on its overview page. Much of the course content may be taken at your own pace, but some courses contain group work activities with specific and required deadlines. Please see the "My Progress" page in your course for specific guidance on deadlines. {% endblocktrans %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#ten", :data-toggle => "collapse"}
               {% trans "What are passing requirements for courses?" %}
@@ -134,7 +134,7 @@
               %li {% trans "your Spam folder." %}
               %li {% trans "your email address is entered in correctly." %}
 
-            %p {% trans "If you received a \"Password Reset Unsuccessful\" popup message:" %}
+            %p {% blocktrans %} If you received a "Password Reset Unsuccessful" popup message: {% endblocktrans %}
             %ul
               %li {% trans "You should check that you entered in the email address that your McKinsey Academy account is registered to, which should be your work email address." %}
           %h5.mb-0
