@@ -1116,7 +1116,7 @@ msgid ""
 "Please enter a valid email containing only English characters and "
 "numerals, and the following special characters @ . _ -"
 msgstr ""
-"Insira um nome de usuário ou e-mail válido, contendo apenas caracteres e"
+"Insira um nome de usuário ou e-mail válido, contendo apenas caracteres e "
 "numerais em português, e os seguintes caracteres especiais @. _ -"
 
 #: accounts/forms.py:417
