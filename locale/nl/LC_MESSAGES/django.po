@@ -8432,6 +8432,7 @@ msgstr ""
 "Als u weet dat u tijdens de duur van de cursus enige tijd verhinderd bent,"
 " neem dan contact op met de andere leden van de groep. Controleer uw "
 "groepswerk en het cursusoverzicht voor de belangrijkste data en tijden."
+" Zo voorkomt u dat u een belangrijke deadline mist als u weg bent."
 
 #: templates/faq.haml:62 templates_v2/faq.haml:82
 msgid "I missed a deadline; can I get an extension?"
@@ -8648,7 +8649,7 @@ msgstr ""
 
 #: templates/faq.haml:97 templates_v2/faq.haml:126
 msgid "TECHNICAL ISSUES:"
-msgstr "TECHNISCHE PROBLEMEN:"
+msgstr "TECHNISCHE KWESTIES:"
 
 #: templates/faq.haml:98
 msgid "How can I get technical support?"

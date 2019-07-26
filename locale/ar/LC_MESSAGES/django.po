@@ -6728,7 +6728,7 @@ msgstr "100"
 #: templates/courses/visualizations/course_progress.haml:8
 #: templates_v2/faq.haml:121
 msgid "Progress:"
-msgstr "التقدم المحرز:"
+msgstr "التقدم:"
 
 #: templates/courses/course_cohort.haml:110
 #: templates_v2/courses/course_cohort.haml:26
@@ -12775,7 +12775,7 @@ msgstr "الأسئلة الأكثر شيوعًا للمشاركين"
 
 #: templates_v2/faq.haml:14
 msgid "Access Related:"
-msgstr "مفتاح الوصول"
+msgstr "الوصول ذي الصلة:"
 
 #: templates_v2/faq.haml:21
 msgid ""
@@ -12790,7 +12790,7 @@ msgid ""
 "McKinsey Academy content is accessible from all  desktop, tablet, and mobile "
 "devices."
 msgstr ""
-"يمكن الوصول إلى محتوى أكاديمية ماكنزي من جميع أجهزة. سطح المكتب والكمبيوتر "
+"يمكن الوصول إلى محتوى أكاديمية ماكنزي من جميع أجهزة سطح المكتب والكمبيوتر "
 "اللوحي والأجهزة المحمولة."
 
 #: templates_v2/faq.haml:40
@@ -12827,8 +12827,8 @@ msgid ""
 "activation link, enter your company email address on the McKinsey Academy "
 "login page and your activation link will be emailed to you."
 msgstr ""
-"إذا لم تقم بالفعل بتنشيط حسابك ولم تتمكن من تحديد موقع رابط التنشيط الخاص ."
-"بك، قم بإدخال عنوان البريد الإلكتروني الخاص بشركتك في صفحة تسجيل الدخول إلى "
+"إذا لم تقم بالفعل بتنشيط حسابك ولم تتمكن من تحديد موقع رابط التنشيط الخاص بك، قم"
+" بإدخال عنوان البريد الإلكتروني الخاص بشركتك في صفحة تسجيل الدخول إلى "
 "أكاديمية ماكنزي وسيتم إرسال رابط التنشيط إليك عبر البريد الإلكتروني."
 
 #: templates_v2/faq.haml:55
@@ -12844,7 +12844,7 @@ msgid ""
 "email with instructions on how to reset your password. "
 msgstr ""
 "يمكنك إدخال عنوان البريد الإلكتروني الذي تم استخدامه عند تسجيل حسابك. يمكنك "
-"أيضًا استرداد اسم المستخدم بالنقر على نسيت كلمة المرور؟ على<a href='https://"
+"أيضًا استرداد اسم المستخدم بالنقر على \"نسيت كلمة المرور؟\" على<a href='https://"
 "www.mckinseyacademy.com' style=\"display: inline;\" target='_blank'> شاشة "
 "تسجيل الدخول.</a>  ستتلقى رسالة بريد إلكتروني تلقائية تحتوي على إرشادات حول "
 "كيفية إعادة تعيين كلمة المرور."

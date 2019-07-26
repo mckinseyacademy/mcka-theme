@@ -13342,7 +13342,7 @@ msgstr "Teilnehmer-FAQs"
 
 #: templates_v2/faq.haml:14
 msgid "Access Related:"
-msgstr "Über dne Zugang:"
+msgstr "Über den Zugang:"
 
 #: templates_v2/faq.haml:21
 msgid ""
@@ -13564,7 +13564,7 @@ msgstr "Ihren Spam-Ordner."
 
 #: templates_v2/faq.haml:135
 msgid "your email address is entered in correctly."
-msgstr "ist Ihre E-Mail-Adresse korrekt."
+msgstr "ist Ihre E-Mail-Adresse korrekt?"
 
 #: templates_v2/faq.haml:137
 msgid " If you received a \"Password Reset Unsuccessful\" popup message: "

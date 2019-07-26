@@ -13234,8 +13234,6 @@ msgstr ""
 "academy_info@mckinsey.com' style=\"display: inline;\">comuníquese con nosotros.</a> "
 
 #: templates_v2/faq.haml:43
-#, fuzzy
-#| msgid "Forgot password?"
 msgid "What if I forgot my password?"
 msgstr "¿Qué sucede si olvido mi contraseña?"
 
@@ -13278,9 +13276,6 @@ msgid ""
 "inline;\" target='_blank'>log in screen</a>.  You'll receive an automated "
 "email with instructions on how to reset your password. "
 msgstr ""
-"Si olvidó su contraseña, intente restablecerla mediante un clic en “olvidé "
-"mi contraseña” en la página de inicio de sesión. Si eso no funciona, "
-"escríbanos a "
 "Puede ingresar la dirección de correo electrónico que utilizó cuando registró "
 "la cuenta. También es posible recuperar el nombre de usuario mediante un clic "
 "en “¿Olvidó su contraseña?” en la "
@@ -13383,18 +13378,13 @@ msgstr ""
 "del curso y el trabajo grupal (si corresponde)."
 
 #: templates_v2/faq.haml:122
-#, fuzzy
-#| msgid ""
-#| "Your progress through course content is displayed as you move through all "
-#| "items in the course (including videos, exercises, assessments, and "
-#| "readings)"
 msgid ""
 "Your progress through course content is displayed as you move through all "
 "items in the course (including videos, exercises, assessments, and readings)."
 msgstr ""
 "Su evolución a través de los contenidos del curso se muestra a medida que "
 "avanza por todos los elementos del curso (incluidos videos, ejercicios, "
-"evaluaciones y lecturas)"
+"evaluaciones y lecturas)."
 
 #: templates_v2/faq.haml:125
 msgid ""
@@ -13460,7 +13450,7 @@ msgstr "Intente lo siguiente:"
 
 #: templates_v2/faq.haml:146
 msgid "Switch to using Chrome as your browser."
-msgstr "Use Chrome como navegador.x"
+msgstr "Use Chrome como navegador."
 
 #: templates_v2/faq.haml:147
 msgid "Ensure you are not connected to your company's VPN."
@@ -13500,7 +13490,7 @@ msgid ""
 "target='_blank'>support team.</a> "
 msgstr ""
 "Si la respuesta a su pregunta aún no está en esta sección, comuníquese"
- "con nuestro <a href=%(support_url)s style=\"display: inline;\" "
+" con nuestro <a href=%(support_url)s style=\"display: inline;\" "
 "target='_blank'>equipo de soporte.</a> "
 
 #: templates_v2/footer.haml:11
