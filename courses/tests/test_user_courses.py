@@ -170,7 +170,8 @@ class TestStandardData(TestCase, ApplyPatchMixin):
             'courses': [self.course],
             'current_course': self.course,
             'current_program': self.program,
-            'organization': None
+            'organization': None,
+            'current_ld_course': None,
         })
         self.user_learner_dashboards = self.apply_patch('courses.user_courses.user_learner_dashboards')
         self.user_learner_dashboards.return_value = None

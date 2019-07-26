@@ -11,6 +11,7 @@ class MockedUserDataManager(object):
         return DottableDict(
             courses=self.courses if hasattr(self, 'courses') else [],
             current_course=self.current_course if hasattr(self, 'current_course') else None,
+            current_ld_course=self.current_ld_course if hasattr(self, 'current_ld_course') else None,
             current_program=self.current_program if hasattr(self, 'current_program') else None,
             organization=self.organizations[0] if hasattr(self, 'organizations') and self.organizations else None,
         )
