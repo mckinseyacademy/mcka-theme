@@ -1615,7 +1615,8 @@ body.new-theme {
 
 							&:hover .forum-nav-thread-title {
 								text-decoration: underline;
-								color: $black;
+								color: var(--primary);
+								text-shadow: 0 0 0.5px rgba(0, 0, 0, 0.3);
 							}
 
 							.icon {
@@ -1638,7 +1639,7 @@ body.new-theme {
 
 							.forum-nav-thread-title {
 								font-size: 1rem;
-								color: $black;
+								color: var(--primary);
 								line-height: 22px;
 								font-weight: 400;
 							}
