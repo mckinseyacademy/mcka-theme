@@ -436,7 +436,7 @@ class LearnerDashboardTileForm(forms.ModelForm):
         link = cleaned_data.get("link")
         tile_type = cleaned_data.get("tile_type")
         background_image = cleaned_data.get("background_image")
-        if background_image and not default_storage.exists(background_image):
+        if background_image and not default_storage.exists(background_image.name):
             name = os.path.splitext(background_image.name)
             image_name = 'images/{}-{}{}'.format(name[0], datetime.now().strftime("%s"), name[1])
             dimensions = settings.IMAGE_SIZES['ld_tile_background_image']
