@@ -37,7 +37,7 @@
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#four", :data-toggle => "collapse"}
               {% trans "How can I sign-up for a McKinsey Academy course or program?" %}
           #four.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% blocktrans %}If you are interested in inquiring further, please <a href='mailto:academy_info@mckinsey.com' style="display: inline;">contact us.</a> {% endblocktrans %}
+            %p {% blocktrans %}If you are interested in inquiring further, please <a href='mailto:McKinsey_Acclerate_First_Alerts@mckinsey.com' style="display: inline;">contact us.</a> {% endblocktrans %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#six", :data-toggle => "collapse"}
               {% trans "What if I forgot my password?" %}
@@ -148,21 +148,7 @@
               %li {% trans "Clear the cache in your browser." %}
 
             %p {% blocktrans with support_url=support %} If you are still experiencing issues, please contact the <a href={{support_url}} style="display: inline;" target='_blank'>support team</a>. {% endblocktrans %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#thirtyTwo", :data-toggle => "collapse"}
-              {% trans "How can I sign up for a McKinsey Academy course or program?" %}
-          #thirtyTwo.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p
-              {% trans "Please" %}
-              %a{:href => "mailto:academy_info@mckinsey.com", :style=>"display: inline;"} {% trans "contact us!" %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#thirtyThree", :data-toggle => "collapse"}
-              {% trans "What if my question isn’t answered here?" %}
-          #thirtyThree.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p
-              {% trans "Please" %}
-              %a{:href => "mailto:academy_info@mckinsey.com", :style=>"display: inline;"} {% trans "contact us!" %}
-              {% trans "We’ll do our best to help." %}
+
           %p.style-2 {% blocktrans with support_url=support %} If your question wasn't answered in any of these FAQs, please reach out to our <a href={{support_url}} style="display: inline;" target='_blank'>support team.</a> {% endblocktrans %}
 
   %script
