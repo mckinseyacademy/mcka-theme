@@ -13516,7 +13516,7 @@ msgid ""
 msgstr ""
 "Jeśli nie znalazłeś tutaj odpowiedzi na swoje pytanie, prosimy skontaktować "
 "się z naszym <a href=%(support_url)s style=\"display: inline;\" "
-"target='_blank'>działem pomocy</a> ."
+"target='_blank'>działem pomocy</a>."
 
 #: templates_v2/footer.haml:11
 msgid "About"
