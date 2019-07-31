@@ -15,7 +15,7 @@ class AllowEmbedUrlMiddleware(object):
 
     def process_response(self, request, response):
         allowed_embed_url = None
-        referrer_url = request.COOKIES.get('referrer_url') or request.META.get('HTTP_REFERER')
+        referrer_url = request.META.get('HTTP_REFERER') or request.COOKIES.get('referrer_url')
 
         if referrer_url:
             allowed_embed_url = self.get_matched_allowed_embed_url(referrer_url)
