@@ -1200,16 +1200,20 @@ class CourseDetailsApi(APIView):
         PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN
     )
     def get(self, request, course_id=None, format=None):
-        if request.user.is_company_admin:
-            organization_id = request.GET.get('organizations')
+        organization_id = request.GET.get('organizations')
+        is_admin = request.user.is_mcka_admin or request.user.is_mcka_subadmin
+
+        if not is_admin and request.user.is_company_admin and not organization_id:
+            raise PermissionDenied
+
+        if request.user.is_company_admin and organization_id:
             # a company admin can't be without organizations param
             # and can only access their companies
-
             user_organizations = Permissions(request.user.id).get_all_user_organizations_with_permissions()
             user_administered_orgs = user_organizations.get(PERMISSION_GROUPS.COMPANY_ADMIN, [])
             user_administered_orgs_ids = [user_org.id for user_org in user_administered_orgs]
 
-            if not organization_id or int(organization_id) not in user_administered_orgs_ids:
+            if int(organization_id) not in user_administered_orgs_ids:
                 raise PermissionDenied
 
         if course_id:
