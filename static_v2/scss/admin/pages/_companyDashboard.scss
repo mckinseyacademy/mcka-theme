@@ -570,6 +570,17 @@
     input[type="text"]{
       max-width: none;
     }
+    .saveChanges{
+      position: absolute;
+      right: 0;
+      top: 0;
+      width: 40px;
+      z-index: 9;
+      background: transparent !important;
+      &:hover{
+        background:transparent !important;
+      }
+    }
   }
 }
 

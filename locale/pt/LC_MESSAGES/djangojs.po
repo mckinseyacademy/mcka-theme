@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-20 10:15+0000\n"
+"POT-Creation-Date: 2019-07-29 02:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -403,6 +403,18 @@ msgstr "Complete todo o conteúdo para continuar"
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
 msgstr "Verificação de Conclusão"
+
+#: static/js/static_translation_strings.js:9
+msgid ""
+"Must be at least 8 characters and include upper and lowercase letters - plus "
+"numbers OR special characters."
+msgstr ""
+"Deve ter no mínimo 8 caracteres e incluir letras maiúsculas e minúsculas - "
+"além de números OU caracteres especiais."
+
+#: static/js/static_translation_strings.js:10
+msgid "This field is required."
+msgstr "Este campo é obrigatório."
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -1191,10 +1203,10 @@ msgstr "Data adicionada"
 msgid "Enrolled In"
 msgstr "Inscrito em"
 
-#: static_v2/js/application.js:522 static_v2/js/custom.js:108
+#: static_v2/js/application.js:522 static_v2/js/custom.js:112
 msgid "Hide password"
 msgstr "Wachtwoord verbergen"
 
-#: static_v2/js/application.js:527 static_v2/js/custom.js:113
+#: static_v2/js/application.js:527 static_v2/js/custom.js:117
 msgid "Show password"
 msgstr "Ocultar senha"

@@ -1,0 +1,93 @@
+
+.course-card.skeleton-loading {
+    &.future-course {
+        display: none;
+        visibility: hidden;
+    }
+
+    a.d-block {
+        pointer-events: none;
+
+        .overlay-img {
+            img {
+                display: none;
+            }
+            &::after {
+                display: none;
+            }
+        }
+
+        .card {
+            overflow: hidden;
+            border-radius: 0;
+
+            .future-course-text,
+            .current-bookmark-text {
+                visibility: hidden;
+                display: none;
+            }
+
+            .card-body {
+                background-color: $white;
+
+                h3,
+                .course-detail {
+                    height: 20px;
+                    color: transparent;
+                    margin-bottom: 12px;
+                    background-color: $light-gray;
+                }
+
+                .course-detail {
+                    width: 40%;
+                    position: relative;
+
+                    .course-effort,
+                    .course-progress,
+                    .lesson-count {
+                        position: absolute;
+                        height: 20px;
+                        color: transparent;
+                        bottom: -32px;
+                        width: 75px;
+                        background-color: $light-gray;
+                    }
+
+                    .course-effort {
+                        i.material-icons {
+                            color: transparent;
+                        }
+                    }
+
+                    .course-progress {
+                        width: 100%;
+
+                        .bar {
+                            visibility: hidden;
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+// Media queries
+
+@include media-breakpoint-between (xs, sm) {
+    .skeleton-loading {
+        .card {
+            .card-body {
+                .course-detail {
+                    background: transparent !important;
+                    .course-effort,
+                    .course-progress,
+                    .lesson-count {
+                        bottom: 0 !important;
+                    }
+                }
+            }
+        }
+    }
+}

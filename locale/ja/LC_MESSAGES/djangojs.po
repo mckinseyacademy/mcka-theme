@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-20 10:15+0000\n"
+"POT-Creation-Date: 2019-07-29 02:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -366,6 +366,17 @@ msgstr "続行するにはすべての内容を完了してください"
 #: static/js/static_translation_strings.js:8
 msgid "Check for Completion"
 msgstr "完了したことを確認します"
+
+#: static/js/static_translation_strings.js:9
+msgid ""
+"Must be at least 8 characters and include upper and lowercase letters - plus "
+"numbers OR special characters."
+msgstr ""
+"最低8文字で大文字と小文字を含み、数字あるいは特殊文字も含める必要があります。"
+
+#: static/js/static_translation_strings.js:10
+msgid "This field is required."
+msgstr "このフィールドへの入力は必須です。"
 
 #: static/js/views/admin/cohorts.js:30
 msgid "There was an error submitting your file."
@@ -1120,10 +1131,10 @@ msgstr "データが追加されました"
 msgid "Enrolled In"
 msgstr "登録済み"
 
-#: static_v2/js/application.js:522 static_v2/js/custom.js:108
+#: static_v2/js/application.js:522 static_v2/js/custom.js:112
 msgid "Hide password"
 msgstr "パスワードを非表示にする"
 
-#: static_v2/js/application.js:527 static_v2/js/custom.js:113
+#: static_v2/js/application.js:527 static_v2/js/custom.js:117
 msgid "Show password"
 msgstr "パスワードを表示する"

@@ -18,7 +18,7 @@
               {% trans "Which browsers are recommended for use with McKinsey Academy?" %}
           #one.collapse.show{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
-              {% trans "We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience. McKinsey Academy is not accessible with some older versions of browsers (such as Internet Explorer 8)." %}
+              {% trans "We optimize for the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#two", :data-toggle => "collapse"}
               {% trans "What if I have technical trouble with registration, login, or course access?" %}
@@ -32,83 +32,46 @@
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#three", :data-toggle => "collapse"}
               {% trans "Which devices are recommended for use with McKinsey Academy?" %}
           #three.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "The platform is accessible on all computer and tablet devices. The site is currently not optimized for mobile device use, and you will not currently be able to access course content on mobile phones." %}
+            %p {% trans "McKinsey Academy content is accessible from all  desktop, tablet, and mobile devices." %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#four", :data-toggle => "collapse"}
               {% trans "How can I sign-up for a McKinsey Academy course or program?" %}
           #four.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "At this time, McKinsey Academy courses are only available to companies. If you are interested in inquiring further, please contact us." %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#five", :data-toggle => "collapse"}
-              {% trans "How can I change the name or email address on my account?" %}
-          #five.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p
-              {% trans 'To change your name, log in, and find your profile in the upper right-hand corner of your screen. Click the down arrow and select "Edit" next to your name.' %}
-            %p
-              {% trans "To change your email address, please email" %}
-                %a{:href => "#{support}"} {% trans "support" %}
+            %p {% blocktrans %}If you are interested in inquiring further, please <a href='mailto:McKinsey_Acclerate_First_Alerts@mckinsey.com' style="display: inline;">contact us.</a> {% endblocktrans %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#six", :data-toggle => "collapse"}
-              {% trans "My account login isn't working." %}
+              {% trans "What if I forgot my password?" %}
           #six.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
-              {% trans "If you've forgotten your password, please try resetting it by clicking 'Forgot my password' on the log in screen. If that does not work, please email" %}
-                %a{:href => "#{support}"} {% trans "support" %}
+              {% blocktrans %} If you've forgotten your password, please try resetting it by clicking 'Forgot password?' on the <a href='https://www.mckinseyacademy.com' style='display: inline;' target='_blank'>log in screen.</a> You'll receive an automated email with instructions on how to reset your password. {% endblocktrans %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#seven", :data-toggle => "collapse"}
-              {% trans "I can't access a course I'm enrolled in." %}
+              {% trans "What if I lost my activation link?" %}
           #seven.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
-              {% trans "The drop down for moving between multiple courses is on the far left of the second (lighter blue) navigation bar. If the course you are supposed to be enrolled in does not appear in that drop down menu, please email" %}
-                %a{:href => "#{support}"} {% trans "support" %}
+              {% trans "If you have not already activated your account and are unable to locate your activation link, enter your company email address on the McKinsey Academy login page and your activation link will be emailed to you." %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#eight", :data-toggle => "collapse"}
-              {% trans "How can I stop or start receiving emails from my courses?" %}
+              {% trans "What if I forgot my username?" %}
           #eight.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
-              {% trans "We try to keep our email communication at an optimal level to ensure all participants know what is happening in the course without cluttering your inbox. Our emails contain important information about what's expected each week and additional curated content suggestions. If you no longer wish to receive emails, please email" %}
-              %a{:href => "#{support}"} {% trans "support" %}
-              {% trans '(or click unsubscribe at the bottom of any email you receive from us). Be sure to check the "Announcements" page frequently to stay up to date!' %}
+              {% blocktrans %} You are able to enter the email address that was used when you registered your account. You may also retrieve your username by clicking 'Forgot Password?' on the <a href='https://www.mckinseyacademy.com' style="display: inline;" target='_blank'>log in screen</a>.  You'll receive an automated email with instructions on how to reset your password. {% endblocktrans %}
           %p.style-2 {% trans "Courses Related:" %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#nine", :data-toggle => "collapse"}
-              {% trans "When does my course start and/or finish?" %}
+              {% trans "When can I take my course(s)?" %}
           #nine.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "You can find the start date and course duration for each course on its course overview page.  You will receive a welcome email when the course is open." %}
+            %p {% blocktrans %} You can find the start date and duration of each course on its overview page. Much of the course content may be taken at your own pace, but some courses contain group work activities with specific and required deadlines. Please see the "My Progress" page in your course for specific guidance on deadlines. {% endblocktrans %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#ten", :data-toggle => "collapse"}
               {% trans "What are passing requirements for courses?" %}
           #ten.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "You need to complete all group work and feedback activities and earn a combined course grade of at least 70% to work towards a program certificate of completion. Your course grade is calculated as follows:" %}
-            %ol
-              %li
-                {% trans "End of lesson (EOL) assessments" %}
-                %em {% trans "Note that EOL assessments vary based on number of lessons and may not be included in some lessons" %}
-              %li
-                {% trans "Group Work" %}
-                %em {% trans "Note that Group Work may be made up of one or more activities which are graded throughout the duration of a course" %}
-              %li {% trans "Final Assessment" %}
-            %p {% trans "There is no minimum amount of course content that must be completed, but participants must complete the Final Assessment." %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#eleven", :data-toggle => "collapse"}
-              {% trans "How do I log in to take a McKinsey Academy course?" %}
-          #eleven.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans 'Once you activate your account, click on the "Log in" button on the McKinsey Academy home page and type in your username and password. This will take you to your current course page.' %}
+            %p {% trans "For more detailed information on how your grade is calculated, see the My Progress page in your course." %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twelve", :data-toggle => "collapse"}
               {% trans "How much time should I expect to devote to each course?" %}
           #twelve.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "The projected time commitment required for each course is included on the course overview page. We typically find that dedicating 60-120 minutes per week is sufficient to complete all course requirements, including group work." %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#thirteen", :data-toggle => "collapse"}
-              {% trans "Can I take more than one course at a time?" %}
-          #thirteen.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "McKinsey Academy programs are a collection of courses taken one at a time." %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#fourteen", :data-toggle => "collapse"}
-              {% trans "What time is the class?" %}
-          #fourteen.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "McKinsey Academy courses take place at your convenience. Videos and assignments are available 24 hours a day, which means you can watch videos and complete work whenever you have time. Simply log in to your course and work through the course material. While group work activities have deadlines, these are designed to offer enough lead time that you can easily schedule your work." %}
+            %p {% trans "Time to complete each course may vary widely from person to person. Estimated time to complete each lesson is show in the overview page for each course. If applicable, additional time is needed to complete group work activities." %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#fifteen", :data-toggle => "collapse"}
               {% trans "If I miss a week, how does this affect my performance?" %}
@@ -129,26 +92,13 @@
               {% trans "What if I have a question or concern regarding course grading?" %}
           #eighteen.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
             %p
-              {% trans "If you have any questions about a grade you received, please email" %}
-                %a{:href => "#{support}"} {% trans "TAs" %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#nineteen", :data-toggle => "collapse"}
-              {% trans "How can I meet/find other participants?" %}
-          #nineteen.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "All McKinsey Academy courses have discussion forums where you can chat with and help other participants." %}
+              {% blocktrans with support_url=support %} If you have any questions about the grade you received for your course, please contact the <a href={{support_url}} style="display: inline;" target='_blank'>support team</a>.
+              If you have any questions about your Group Work grade, please contact your TA directly via email. {% endblocktrans %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twenty", :data-toggle => "collapse"}
-              {% trans "How can I talk to McKinsey practitioners teaching my courses and teaching assistants?" %}
+              {% trans "How can I get in touch with my teaching assistant?" %}
           #twenty.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "The discussion forum is the best place to reach out to the McKinsey Academy course team for your cohort; just post your questions or email the TA. We do our best to respond as promptly as possible." %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentyOne", :data-toggle => "collapse"}
-              {% trans "How do I get help and support regarding my course?" %}
-          #twentyOne.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p
-              {% trans "You are part of a cohort of participants you can engage with questions as well as support from the TAs who monitor the course. Take a look at the course's discussion forum where you can review questions, answers and comments from fellow participants, as well as post a question. You can also reach out to the McKinsey teaching assistants by" %}
-              %a{:href => "#{support}"} {% trans "emailing them" %}
-              {% trans "and they will get back to you as soon as possible." %}
+            %p {% blocktrans with support_url=support %} If a teaching assistant is assigned to your course, he or she will send an email at the start of your course and you may continue to engage using email. If you need help connecting with your TA, please contact our <a href={{support_url}} style="display: inline;" target='_blank'>support team</a>.{% endblocktrans %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentyTwo", :data-toggle => "collapse"}
               {% trans "Can I re-take a course?" %}
@@ -158,79 +108,48 @@
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentyThree", :data-toggle => "collapse"}
               {% trans "Can I access the course content after my course ends?" %}
           #twentyThree.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "McKinsey Academy past courses are available as archives for 12 months after the course ends. These courses can only be audited and some features, such as the discussion forums, may not be available." %}
+            %p {% trans "You still have access to all course content and materials 12 months after the course ends. Your proficiency, progress, and engagement will not change in closed courses." %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentyFour", :data-toggle => "collapse"}
-              {% trans "What information is displayed in visualizations on the course home page?" %}
-          #twentyFour.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
+              {% trans "How am I being measured in my course?" %}
+          #twentyFour.collapse{:aria-labelledby => "headingOne  ", :data-parent => "#accordionFAQ"}
             %ul
               %li
                 %span {% trans "Proficiency:" %}
-                {% trans "Your proficiency is based on performance on all graded items in the course (including end of lesson assessments, group work, and final assessment)" %}
+                {% trans "Your proficiency is based on performance on all graded assessments in the course and group work (if applicable)." %}
               %li
                 %span {% trans "Progress:" %}
-                {% trans "Your progress through course content is displayed as you move through all items in the course (including videos, exercises, assessments, and readings)" %}
+                {% trans "Your progress through course content is displayed as you move through all items in the course (including videos, exercises, assessments, and readings)." %}
               %li
                 %span {% trans "Engagement:" %}
-                {% trans "Your engagement increases through your social interactions with other participants in your cohort (through engagement on the discussion forums)" %}
-          %p.style-2 {% trans "Certificates Related:" %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentyFive", :data-toggle => "collapse"}
-              {% trans "Will my certificate include an overall program grade?" %}
-          #twentyFive.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "Your certificate will not include final grades." %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentySix", :data-toggle => "collapse"}
-              {% trans "Can I get a paper copy of my certificate?" %}
-          #twentySix.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "McKinsey Academy certificates are digital files which you can print on standard size paper." %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentySeven", :data-toggle => "collapse"}
-              {% trans "How are certificates determined?" %}
-          #twentySeven.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "To be eligible for the MMP certificate of completion, participants need to achieve a score of 70% or above across the program’s 4 core courses." %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentyEight", :data-toggle => "collapse"}
-              {% trans "How are McKinsey Academy certificates delivered?" %}
-          #twentyEight.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "McKinsey Academy certificates are delivered via email following successful completion of a program." %}
+                {% trans " Your engagement increases through your social interactions with other participants in your cohort (through engagement on the discussion forums)." %}
           %p.style-2 {% trans "TECHNICAL ISSUES:" %}
           %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#twentyNine", :data-toggle => "collapse"}
-              {% trans "How can I get technical support?" %}
-          #twentyNine.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "If you are having technical issues, please contact us here so we can resolve your problem. and we will get back to you by the next business day (likely earlier)." %}
-          %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#thirty", :data-toggle => "collapse"}
-              {% trans "What if I did not receive my password reset email?" %}
+              {% trans "What should I do if I am  experiencing issues with resetting my password?" %}
           #thirty.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "If you did not receive an automated email it may be because:" %}
+            %p {% trans "If you've forgotten your password, please try resetting it by clicking 'Forgot password?' on the <a href='https://www.mckinseyacademy.com' style='display: inline;' target='_blank'>log in screen.</a> You'll receive an automated email with instructions on how to reset your password." %}
+            %p {% trans "If you did not receive an automated email please check:" %}
             %ul
-              %li {% trans "There was a typo in your email address" %}
-              %li {% trans "Your spam filter may have caught the email; please check your spam folder" %}
-              %li {% trans "You may be using an older browser; we recommend downloading the current version of Chrome or Firefox" %}
-              %li {% trans "JavaScript is disabled in your browser; please check your browser settings and confirm that JavaScript is enabled" %}
-              %li {% trans "You have not successfully registered an account with McKinsey Academy' please try registering again with the same email address (if an account already exists, you'll see an error regarding a duplicate email address)" %}
+              %li {% trans "your Spam folder." %}
+              %li {% trans "your email address is entered in correctly." %}
+
+            %p {% blocktrans %} If you received a "Password Reset Unsuccessful" popup message: {% endblocktrans %}
+            %ul
+              %li {% trans "You should check that you entered in the email address that your McKinsey Academy account is registered to, which should be your work email address." %}
           %h5.mb-0
             %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#thirtyOne", :data-toggle => "collapse"}
-              {% trans "What if I have problems with the display (e.g., there are tools missing from the course display, or I am unable to view video)?" %}
+              {% trans "I'm unable to view videos or images in my course. What should I do?" %}
           #thirtyOne.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p {% trans "Please check your browser and settings - JavaScript must be enabled. We recommend downloading and using the current version of either Chrome or Firefox." %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#thirtyTwo", :data-toggle => "collapse"}
-              {% trans "How can I sign up for a McKinsey Academy course or program?" %}
-          #thirtyTwo.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p
-              {% trans "Please" %}
-              %a{:href => "mailto:academy_info@mckinsey.com"} {% trans "contact us!" %}
-          %h5.mb-0
-            %a{:aria-controls => "collapseOne", :aria-expanded => "true", :data-target => "#thirtyThree", :data-toggle => "collapse"}
-              {% trans "What if my question isn’t answered here?" %}
-          #thirtyThree.collapse{:aria-labelledby => "headingOne", :data-parent => "#accordionFAQ"}
-            %p
-              {% trans "Please" %}
-              %a{:href => "mailto:academy_info@mckinsey.com"} {% trans "contact us!" %}
-              {% trans "We’ll do our best to help." %}
+            %p {% trans " Try the following:" %}
+            %ul
+              %li {% trans "Switch to using Chrome as your browser." %}
+              %li {% trans "Ensure you are not connected to your company's VPN." %}
+              %li {% trans "Clear the cache in your browser." %}
+
+            %p {% blocktrans with support_url=support %} If you are still experiencing issues, please contact the <a href={{support_url}} style="display: inline;" target='_blank'>support team</a>. {% endblocktrans %}
+
+          %p.style-2 {% blocktrans with support_url=support %} If your question wasn't answered in any of these FAQs, please reach out to our <a href={{support_url}} style="display: inline;" target='_blank'>support team.</a> {% endblocktrans %}
 
   %script
     let login_flow = 'new_flow';

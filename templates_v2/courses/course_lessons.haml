@@ -72,7 +72,7 @@
                             .data.title
                               %span= module.name
                                 -if not module.is_started
-                                  %i.material-icons.locked.longTapPopover{ :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on {{ start_date }} {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on {{ start_date }} {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :title => "", :oncontextmenu => "return false;"} lock
+                                  %i.material-icons.locked.longTapPopover{"data-html":"true", :data-content => "{% if module_custom_label %}{% blocktrans with start_date=module.start_upon %} This {{module_custom_label}} will be available on <div> {{ start_date }} </div> {% endblocktrans %}{% else %}{% blocktrans with start_date=module.start_upon %} This module will be available on <div> {{ start_date }} </div> {% endblocktrans %}{% endif %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :title => "", :oncontextmenu => "return false;"} lock
                           - if course.current_module == module
                             %span.bookmark.secondary
                               %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}

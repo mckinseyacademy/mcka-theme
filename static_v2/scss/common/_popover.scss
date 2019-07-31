@@ -27,6 +27,9 @@
         font-size: 1rem;
       }
     }
+    > div {
+      display: inline-block;
+    }
   }
   &.bs-popover-left,
   &.bs-popover-right {

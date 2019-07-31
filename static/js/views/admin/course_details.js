@@ -599,6 +599,12 @@
     }
   });
 
+  $(function() {
+      $("#companyCourseParticipantSearch").on("click", function(){
+          $('#courseDetailsParticipantsSearchWrapper.bbGrid-search-bar').find('input').trigger('enter', [{ clearButton : false}]);
+      });
+  });
+
 $(function() {
     $('#courseDetailsParticipantsGridWrapper .bbGrid-search-bar, #courseDetailsParticipantsSearchWrapper.bbGrid-search-bar').find('input').keyup(function(e){
       if(e.keyCode == 13){
