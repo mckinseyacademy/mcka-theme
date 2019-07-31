@@ -281,21 +281,22 @@
       z-index: 998;
       background-color: $white;
   }
-  &:after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      z-index: 999;
-      margin: -40px 0 0 -40px;
-      box-sizing: border-box;
-      width: 80px;
-      height: 80px;
-      border: 15px solid #DDD;
-      border-radius: 50%;
-      border-right-color: #EEE;
-      animation: spin 2s linear infinite;
-  }
+   &:after {
+     content: '';
+     position: absolute;
+     left: 50%;
+     top: 50%;
+     z-index: 999;
+     margin: -40px 0 0 -40px;
+     box-sizing: border-box;
+     width: 80px;
+     height: 80px;
+     border: 15px solid #DDD;
+     border-radius: 50%;
+     border-right-color: #EEE;
+     animation: spin 2s linear infinite;
+     //display: none;
+   }
   @keyframes spin {
       from {
           transform: rotate(0deg)
@@ -325,6 +326,18 @@
         }
       }
   }
+  .progressive-loader{
+      display: inline-block;
+  }
+}
+
+.progressive-loader{
+    position: absolute;
+    z-index: 9999;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    //display: none;
 }
 
 @media (print),
