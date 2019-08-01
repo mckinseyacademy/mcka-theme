@@ -539,10 +539,6 @@ header {
       border-top: 1px solid $gray-border;
       padding: 12px 0;
       text-transform: capitalize;
-      color: var(--primary);
-      &:hover{
-        color: var(--primary-darken-30);
-      }
 
       &:first-child {
         border: none;
