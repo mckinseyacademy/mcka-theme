@@ -148,7 +148,8 @@
     text-decoration: none;
   }
 
-  &.active {
+  &.active,
+  &:active {
     color: $dropdown-link-active-color;
     text-decoration: none;
     @include gradient-bg($dropdown-link-active-bg);

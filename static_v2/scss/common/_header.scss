@@ -410,7 +410,6 @@ header {
       > a {
         color: var(--primary);
         padding: 0 0 18px;
-        color: var(--primary);
 
         &:before {
           position: absolute;
@@ -423,18 +422,12 @@ header {
           left: 50%;
           transform: translateX(-50%);
         }
-        &:hover{
-          outline: none;
-          text-decoration: none;
-          color: var(--primary-darken-30);
-        }
       }
       &:hover {
-        // a {
-        //   outline: none;
-        //   text-decoration: none;
-        //   color: var(--primary-darken-30);
-        // }
+        a {
+          outline: none;
+          text-decoration: none;
+        }
       }
 
       &.active {
@@ -539,10 +532,6 @@ header {
       border-top: 1px solid $gray-border;
       padding: 12px 0;
       text-transform: capitalize;
-      color: var(--primary);
-      &:hover{
-        color: var(--primary-darken-30);
-      }
 
       &:first-child {
         border: none;

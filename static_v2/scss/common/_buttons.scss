@@ -1,6 +1,5 @@
 button.btn,
-a.btn,
-input[type='file'] {
+a.btn {
   font-weight: 600;
   font-size: 12px;
   letter-spacing: 0.02em;
@@ -114,15 +113,25 @@ a.btn {
   }
 }
 
-//default anchor style
-a {
-  color: var(--primary);
-  &:hover {
-    color: var(--primary-darken-30);
+  /*============= Disable Button =====================*/
+
+  &:disabled,
+  &.disabled {
+    background: $gray;
+    opacity: 1;
+    border-color: $gray;
+    cursor: not-allowed;
+    color: $white;
+
+    &:hover {
+      background: $gray;
+      opacity: 1;
+      border-color: $gray;
+      cursor: not-allowed;
+      color: $white;
+    }
   }
 }
-
-
 
 
 // button for extend
