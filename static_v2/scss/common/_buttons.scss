@@ -113,11 +113,23 @@ a.btn {
   }
 }
 
-//default anchor style
-a {
-  color: var(--primary) !important;
-  &:hover {
-    color: var(--primary-darken-30) !important;
+  /*============= Disable Button =====================*/
+
+  &:disabled,
+  &.disabled {
+    background: $gray;
+    opacity: 1;
+    border-color: $gray;
+    cursor: not-allowed;
+    color: $white;
+
+    &:hover {
+      background: $gray;
+      opacity: 1;
+      border-color: $gray;
+      cursor: not-allowed;
+      color: $white;
+    }
   }
 }
 
