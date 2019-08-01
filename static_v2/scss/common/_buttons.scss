@@ -115,13 +115,11 @@ a.btn {
 
 //default anchor style
 a {
-  color: var(--primary);
+  color: var(--primary) !important;
   &:hover {
-    color: var(--primary-darken-30);
+    color: var(--primary-darken-30) !important;
   }
 }
-
-
 
 
 // button for extend
