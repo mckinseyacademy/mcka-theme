@@ -3083,9 +3083,22 @@ tbody.collapse.show {
   border: 0
 }
 
+.dropdown-item:focus, .dropdown-item:hover {
+  //color: #16181b;
+  text-decoration: none;
+  background-color: #f8f9fa
+}
 
+.dropdown-item.active, .dropdown-item:active {
+  color: #fff;
+  text-decoration: none;
+  background-color: #007bff
+}
 
-
+.dropdown-item.disabled, .dropdown-item:disabled {
+  color: #6c757d;
+  background-color: transparent
+}
 
 .dropdown-menu.show {
   display: block
