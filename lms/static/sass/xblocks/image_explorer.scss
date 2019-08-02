@@ -244,6 +244,9 @@ body.new-theme {
                 min-width: unset !important;
                 width: 100% !important;
               }
+              .fa-ul {
+                list-style-type: none;
+              }
             }
           }
         }
