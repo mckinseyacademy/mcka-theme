@@ -467,7 +467,6 @@ function smoothNavLinks() {
 
     // var count = 0;
     function moveIndicator(item, color) {
-        // console.log('item ', item.nodeName);
         if (item.nodeName !== 'A') {
             return false;
         }
@@ -476,10 +475,10 @@ function smoothNavLinks() {
         var container = pnProductNavContents.getBoundingClientRect().left;
         var distance = textPosition.left - container;
         var scroll = pnProductNavContents.scrollLeft;
-        pnIndicator.style.transform = "translateX(" + (distance + scroll) + "px) scaleX(" + textPosition.width * 0.01 + ")";
-        // count = count += 100;
-        // pnIndicator.style.transform = "translateX(" + count + "px)";
 
+        if(pnIndicator) {
+            pnIndicator.style.transform = "translateX(" + (distance + scroll) + "px) scaleX(" + textPosition.width * 0.01 + ")";
+        }
         if (color) {
             pnIndicator.style.backgroundColor = color;
         }
@@ -646,11 +645,9 @@ $(window).on("load", function () {
 
 // Preloader for courses page
 
-$(document).on('click', '.my-courses .card', function (e) {
-    if (!e.ctrlKey) {
-        $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
-        $(this).addClass("loader").addClass("donut-loader");
-    }
+$(document).on('click','.my-courses .card', function () {
+    $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
+    $(this).addClass("loader").addClass("donut-loader");
 });
 
 "use strict";

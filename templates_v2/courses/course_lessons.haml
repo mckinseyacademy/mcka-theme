@@ -1,5 +1,6 @@
 - extends "courses/course_base.haml"
 - load i18n
+- load assets
 - load staticfiles
 
 - block content
@@ -93,14 +94,11 @@
                 .lesson-discussion
                 - include "courses/content_page/lesson_pager.haml"
 
-- block custom_js
+- block js_snippets
   -# Ooyala source file to play any embedded video content
   %script{src: "{% static 'js/vendor/ooyala/4.33.25-combined.js' %}"}
-
-- block js_snippets
-  %script{src: "{% static 'js/course_learner_dashboard/tile_progress_update.js' %}"}
-  %script{src: "{% static 'js/course_lesson.js' %}"}
   - include 'courses/course_lessons_scorm.haml'
+
   :javascript
     $(function(){
       var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');

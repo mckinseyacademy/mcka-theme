@@ -74,7 +74,7 @@ function rgb2hex(rgb) {
 
 // ome = on mouse event
 // dome = darken on mouse event
-$(".ome").mouseenter(function (e) {
+$(document).on('mouseenter', '.ome', function (e) {
     e = e || window.event;
 
     var target;
@@ -123,8 +123,9 @@ $(".ome").mouseenter(function (e) {
         target.attr('dc', dc);
         target.css(colorProp, dc);
     }
-}).mouseleave(function (e) {
+});
 
+$(document).on('mouseleave', '.ome', function (e) {
     e = e || window.event;
     var target;
     var colorProp;
@@ -166,7 +167,7 @@ $(".ome").mouseenter(function (e) {
     }
 });
 
-if (secondary !== undefined) {
+if (window.secondary) {
     $('.visualization .filled.band-2').css('background-color', lighten(secondary, 60));
     $('.visualization .filled.total').css('background-color', darken(secondary, 30));
 

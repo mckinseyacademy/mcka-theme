@@ -1,5 +1,6 @@
 - extends "courses/course_base_ld.haml"
 - load i18n
+- load assets
 - load staticfiles
 
 - block content
@@ -8,9 +9,8 @@
       $('body').addClass("lessonPageBody");
     });
     var cookie_key = "{{cookie_key}}";
-  %link{'rel': 'stylesheet', "href": "{% static 'css/jquery-ui.min.css' %}"}
-  %script{"src": "{% static 'js/highcharts/highcharts.js' %}"}
-  %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
+  %link{'rel': 'stylesheet', "href": "//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css"}
+
   #learner-dashboard
     #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
   .lessonOverview
@@ -100,16 +100,11 @@
               -if tile_type != 'module'
                 - include "courses/content_page/lesson_pager_ld.haml"
 
-- block custom_js
+- block js_snippets
   -# Ooyala source file to play any embedded video content
   %script{src: "{% static 'js/vendor/ooyala/4.33.25-combined.js' %}"}
-
-- block js_snippets
-  %script{src: "{% static 'js/course_learner_dashboard/tile_progress_update.js' %}"}
-  %script{src: "{% static 'js/course_learner_dashboard/lesson_url_to_view.js' %}"}
-  %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
-  %script{src: "{% static 'js/course_lesson.js' %}"}
   - include 'courses/course_lessons_scorm.haml'
+
   :javascript
     $(function(){
       var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');

@@ -1,13 +1,13 @@
 import os
 from django_assets import Bundle, register
 
-from .utils import _build_file_list
+from .utils import build_file_list
 
 os.environ['SASS_USE_SCSS'] = 'false'
 
 js_ie8_files = []
-js_ie8_files.extend(_build_file_list("js/polyfills", ".js"))
-js_ie8_files.extend(_build_file_list("js/plugins", ".js"))
+js_ie8_files.extend(build_file_list("js/polyfills", ".js"))
+js_ie8_files.extend(build_file_list("js/plugins", ".js"))
 js_ie8_files.extend([
     'js/vendor/jquery.form.js',
     'js/vendor/json2.js',
@@ -27,10 +27,10 @@ js_ie8_files.extend([
     'js/application.js',
     'js/router.js',
 ])
-js_ie8_files.extend(_build_file_list("js/common", ".js"))
-js_ie8_files.extend(_build_file_list("js/models", ".js"))
-js_ie8_files.extend(_build_file_list("js/collections", ".js"))
-js_ie8_files.extend(_build_file_list("js/views", ".js"))
+js_ie8_files.extend(build_file_list("js/common", ".js"))
+js_ie8_files.extend(build_file_list("js/models", ".js"))
+js_ie8_files.extend(build_file_list("js/collections", ".js"))
+js_ie8_files.extend(build_file_list("js/views", ".js"))
 # Javascript squashing
 JS_IE8 = Bundle(
     *js_ie8_files,
@@ -40,8 +40,8 @@ JS_IE8 = Bundle(
 register('js_ie8', JS_IE8)
 
 js_files = []
-js_files.extend(_build_file_list("js/polyfills", ".js"))
-js_files.extend(_build_file_list("js/plugins", ".js"))
+js_files.extend(build_file_list("js/polyfills", ".js"))
+js_files.extend(build_file_list("js/plugins", ".js"))
 js_files.extend([
     'js/vendor/jquery.form.js',
     'js/vendor/json2.js',
@@ -67,10 +67,10 @@ js_files.extend([
     'js/config.js',
     'js/utils.js',
 ])
-js_files.extend(_build_file_list("js/common", ".js"))
-js_files.extend(_build_file_list("js/models", ".js"))
-js_files.extend(_build_file_list("js/collections", ".js"))
-js_files.extend(_build_file_list("js/views", ".js"))
+js_files.extend(build_file_list("js/common", ".js"))
+js_files.extend(build_file_list("js/models", ".js"))
+js_files.extend(build_file_list("js/collections", ".js"))
+js_files.extend(build_file_list("js/views", ".js"))
 
 # Javascript squashing
 JS = Bundle(

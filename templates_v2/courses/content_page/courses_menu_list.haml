@@ -7,7 +7,7 @@
       .card.ome{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img
           %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_urls.large}}", onload: "removeCardLoader(this)", onerror: "this.onerror=null;this.src=&#39;/static/image/default-course-image.png&#39;;"}
-        .card-body
+        .card-body.dome-bc
           .future-course-text
             {% trans "Coming Soon" %}
           - if course and current_course
