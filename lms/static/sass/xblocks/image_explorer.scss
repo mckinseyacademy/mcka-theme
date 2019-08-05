@@ -166,6 +166,9 @@ body.new-theme {
                 .image-explorer-hotspot-reveal-body {
                   ul{
                     margin-bottom: 15px !important;
+                    &.fa-ul {
+                      list-style-type: none;
+                    }
                   }
                 }
 
@@ -243,9 +246,6 @@ body.new-theme {
               .oo-player-container {
                 min-width: unset !important;
                 width: 100% !important;
-              }
-              .fa-ul {
-                list-style-type: none;
               }
             }
           }
