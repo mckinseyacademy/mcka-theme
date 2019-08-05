@@ -17,21 +17,3 @@ $('.last_visited').click(function() {
     url: '/learnerdashboard/bookmark_tile/' + learnerdashboardId + '/'
   });
 });
-
-$('.card').click(function() {
-
-    var headers = {
-      'X-CSRFToken': $.cookie('apros_csrftoken')
-    };
-
-  $('.last_visited').removeClass('last_visited');
-  $(this).addClass('last_visited');
-
-  $.ajax({
-    headers: headers,
-    dataType: 'json',
-    data: {tile_id: $(this).data('tile-id')},
-    type: 'POST',
-    url: '/learnerdashboard/bookmark_tile/' + learnerdashboardId + '/'
-  });
-});
