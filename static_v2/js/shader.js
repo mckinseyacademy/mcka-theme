@@ -74,7 +74,7 @@ function rgb2hex(rgb) {
 
 // ome = on mouse event
 // dome = darken on mouse event
-$(document).on('mouseenter', '.ome', function (e) {
+$(".ome").mouseenter(function (e) {
     e = e || window.event;
 
     var target;
@@ -123,9 +123,8 @@ $(document).on('mouseenter', '.ome', function (e) {
         target.attr('dc', dc);
         target.css(colorProp, dc);
     }
-});
+}).mouseleave(function (e) {
 
-$(document).on('mouseleave', '.ome', function (e) {
     e = e || window.event;
     var target;
     var colorProp;
@@ -174,4 +173,8 @@ if (secondary !== undefined) {
   //  Course landing pagelesson bar hover bg color
     $('.courseRow a.description').css('background-color', lighten(secondary, 60));
     $('.courseRow .bookmark.primary svg path').css('fill', lighten(secondary, 0));
+}
+
+function removeCardLoader(image) {
+    $(image).parents('.course-card').removeClass('skeleton-loading')
 }
