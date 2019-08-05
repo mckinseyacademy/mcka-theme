@@ -174,7 +174,3 @@ if (secondary !== undefined) {
     $('.courseRow a.description').css('background-color', lighten(secondary, 60));
     $('.courseRow .bookmark.primary svg path').css('fill', lighten(secondary, 0));
 }
-
-function removeCardLoader(image) {
-    $(image).parents('.course-card').removeClass('skeleton-loading')
-}
