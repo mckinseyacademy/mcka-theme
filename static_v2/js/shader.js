@@ -167,7 +167,7 @@ $(document).on('mouseleave', '.ome', function (e) {
     }
 });
 
-if (window.secondary) {
+if (secondary !== undefined) {
     $('.visualization .filled.band-2').css('background-color', lighten(secondary, 60));
     $('.visualization .filled.total').css('background-color', darken(secondary, 30));
 

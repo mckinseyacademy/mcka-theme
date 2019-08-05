@@ -1,10 +1,11 @@
 - extends "courses/course_base_ld.haml"
 - load staticfiles
-- load assets
 - load i18n
 
 - block content
-  %link{'rel': 'stylesheet', 'href': "//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.css"}
+  %link{'rel': 'stylesheet', 'href': "{% static 'css/jquery-ui.min.css' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts.js' %}"}
+  %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
 
   #learner-dashboard
     #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
@@ -92,6 +93,12 @@
                       = item.author
 
 - block js_snippets
+  %script{src: "{% static 'js/course_contact_modal.js' %}"}
+  %script{src: "{% static 'js/course_learner_dashboard/tile_id_to_view.js' %}"}
+  %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
+  %script{src: "{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"}
+  %script{src: "{% static 'js/app_link_popup.js' %}"}
+
   %script
     $(".gallery").mCustomScrollbar({
       theme:"inset-2-dark"
