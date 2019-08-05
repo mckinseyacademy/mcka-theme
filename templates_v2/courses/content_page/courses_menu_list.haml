@@ -4,7 +4,7 @@
 - for course in courses
   .col-sm-12.col-md-6.col-lg-4.course-card.skeleton-loading{"class": "{% if not courseended and not course.started %}future-course{% endif %}", 'data-course_id': '#{course.id}'}
     %a.d-block#course-navigation{:href => "#{course.nav_url}", 'data-numdays': '#{course.days_till_start}'}
-      .card.ome{"class": "{% if course.ended %}archived{% endif %}"}
+      .card{"class": "{% if course.ended %}archived{% endif %} {% if courseended or course.started %}ome{% endif %}"}
         .overlay-img
           %img.card-img-top{:alt => "Card image cap", :src => "{{course.course_image_urls.large}}", onload: "removeCardLoader(this)", onerror: "this.onerror=null;this.src=&#39;/static/image/default-course-image.png&#39;;"}
         .card-body.dome-bc
