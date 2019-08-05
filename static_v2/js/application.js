@@ -392,7 +392,7 @@ $(function () {
   Apros.executeModalChain();
 });
 
-$('.editProfileField').on('submit', 'form', function(e) {
+$(document).on('submit', '.editProfileField form', function(e) {
 
     e.preventDefault();
     var form = $(this);
@@ -447,7 +447,7 @@ $('.editProfileField').on('submit', 'form', function(e) {
 });
 
 
-$('.editProfileField').on('show.bs.modal', function (e) {
+$(document).on('show.bs.modal', '.editProfileField', function (e) {
 
   var form = $(this).find('form');
   if (form.find('input[name=title]').length) {
