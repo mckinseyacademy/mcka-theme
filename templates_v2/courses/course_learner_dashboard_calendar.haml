@@ -402,7 +402,7 @@
 
   $('#close-calendar').click(function() {
     $('#replace-calendar').empty();
-    $('a#open-calendar').removeClass('opened');
+    opened = false;
     $('.ld-nav ul>li.calendar a').removeClass('dome-active');
 
 
@@ -475,7 +475,7 @@
 
   $(window).click(function() {
     $('#replace-calendar').empty();
-    $('a#open-calendar').removeClass('opened');
+    opened = false;
     $('.ld-nav ul>li.calendar a').removeClass('dome-active');
 
   });

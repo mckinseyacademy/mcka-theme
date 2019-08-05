@@ -3,7 +3,7 @@ import os
 from django.conf import settings
 
 
-def build_file_list(folder, ext, v2=False):
+def _build_file_list(folder, ext, v2=False):
     current_dir = os.getcwd()
     root_dir = settings.ASSETS_SOURCE_ROOT_V2 if v2 else settings.ASSETS_SOURCE_ROOT
     os.chdir(os.path.join(root_dir, folder))
