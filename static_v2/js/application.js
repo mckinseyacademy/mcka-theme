@@ -1,4 +1,4 @@
-$(document).on('blur input','#login_id', function() {
+$('#login_id').on('blur input', function() {
     $(this).parents('.form-group').addClass('focused');
     $('#login').attr("disabled", false);
 });
@@ -471,8 +471,7 @@ $('.editProfileField').on('show.bs.modal', function (e) {
 
 });
 
-
-$(document).ready(function () {
+(function() {
   var isMobile = (/android|webos|iphone|ipad|ipod|blackberry|com.mcka.RNApp|iemobile|opera mini/i.test(navigator.userAgent.toLowerCase()));
   var longPress = 400;
   var delay = null;
@@ -559,7 +558,8 @@ $(document).ready(function () {
       self.popover('hide');
     });
   });
-  $('.lesson-dropdown-holder').on("click", ".dropdown-menu", function (e) {
-      $(e.target).parents('*').andSelf().filter('.courseRow.locked').length !== 0 && e.stopPropagation();
-  });
+})();
+
+$('.lesson-dropdown-holder').on("click", ".dropdown-menu", function (e) {
+    $(e.target).parents('*').andSelf().filter('.courseRow.locked').length !== 0 && e.stopPropagation();
 });

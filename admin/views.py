@@ -5607,16 +5607,16 @@ def course_learner_dashboard(request, course_id):
     if request.method == "POST":
         if instance is None:
             instance = LearnerDashboard(
-                title=clean_xss_characters(request.POST['title']),
-                description=clean_xss_characters(request.POST['description']),
+                title=request.POST['title'],
+                description=request.POST['description'],
                 title_color=request.POST['title_color'],
                 description_color=request.POST['description_color'],
                 course_id=course_id
             )
             instance.save()
         else:
-            instance.title = clean_xss_characters(request.POST['title'])
-            instance.description = clean_xss_characters(request.POST['description'])
+            instance.title = request.POST['title']
+            instance.description = request.POST['description']
             instance.title_color = request.POST['title_color']
             instance.description_color = request.POST['description_color']
             instance.save()

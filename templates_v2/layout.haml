@@ -106,29 +106,16 @@
 
 
     - if LANGUAGE_BIDI
-      {% assets "css_rtl_v2" %}
+      {% assets "scss_rtl_v2" %}
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
     - else
-      {% assets "css_ltr_v2" %}
+      {% assets "scss_ltr_v2" %}
         %link{rel: "stylesheet", href: "{{ ASSET_URL }}"}
       {% endassets %}
 
     -# Custom head JS
     - block head_js
-      -# Override if you need another version of jQuery
-      - block jquery
-        %script{src: "//cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js"}
-
-      - block underscore
-        %script{src: "//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore-min.js"}
-
-      - block i18n
-        %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
-
-      {% assets "js_all_v2" %}
-        %script{src: "{{ ASSET_URL }}"}
-      {% endassets %}
 
     - if ga_tracking_id
       %script
@@ -179,6 +166,15 @@
           }
         }
 
+    -# Override if you need another version of jQuery
+    - block jquery
+      %script{src: "{% static 'js/jquery-1.11.2.min.js' %}"}
+
+    -# edx-notifications script dependencies
+    - block edx_notifications
+      %script{src: "{% static 'js/vendor/underscore.js' %}"}
+      %script{src: "{% static 'js/vendor/backbone.js' %}"}
+      %script{src: "{% static 'js/vendor/date.js' %}"}
     -# custom js libs
     - block custom_js
 
@@ -221,6 +217,22 @@
     -# Footer
     - block footer
       - include 'footer.haml'
+
+    -# i18n JS Catalog
+    - block i18n
+      %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
+
+    -# jQuery-cookie
+    - block jquery_cookie
+      %script{src: "{% static 'js/vendor/jquery.cookie.js' %}"}
+
+    -# jQuery-xblock
+    - block jquery_xblock
+      %script{src: "{% static 'js/vendor/jquery.xblock.js' %}"}
+
+    -# Bootstrap JS
+    - block bootstrap_js
+      %script{src: "{% static 'js/bootstrap.bundle.min.js' %}"}
 
     -# JS - custom snippets
     - block js_snippets
@@ -393,36 +405,7 @@
       %script{src: "{% static 'js/new_ui_tour.js' %}"}
     %script{src: "{% static 'js/jpreLoader.min.js' %}"}
 
-    -# Custom JS
-    - block body_js
-
-    - if xblock_theme_js_path
-      %script{src: "{% static xblock_theme_js_path %}"}
-    -# Session Timeout
-    %script
-      var apros_session_timeout_seconds = {{apros_session_timeout_seconds}};
-
-    %script
-      if (window.location.search === '?reset-password') {
-          $("#password-reset-modal").modal("show");
-      }
-
-    %script
-      var variables = {}
-      if (primary !== null){
-        variables = {
-          '--primary': primary,
-          '--secondary': secondary,
-          '--header-top': header_top
-          };
-      }
-      cssVars({
-        onlyVars: true,
-        include: 'link.pony',
-        variables: variables,
-        watch: true
-      });
-
+    %script{src: "{% static 'js/shader.js' %}"}
     %script
       if(!navigator.userAgent.match(/Trident.*rv\:11\./))
       {
@@ -436,4 +419,24 @@
         } else {
           root.style.setProperty('--branding-lightened-color', lighten("#0093d3", 90));
         }
+      }
+
+    -# Custom JS
+    - block body_js
+      {% assets "js_all_v2" %}
+        %script{src: "{{ ASSET_URL }}"}
+      {% endassets %}
+
+    - if xblock_theme_js_path
+      %script{src: "{% static xblock_theme_js_path %}"}
+    -# Session Timeout
+    %script
+      var apros_session_timeout_seconds = {{apros_session_timeout_seconds}};
+    %script{src: "{% static 'js/session_timeout_timer.js' %}"}
+    %script{src: "{% static 'js/image_editor.js' %}"}
+    %script{src: "{% static 'js/vendor/cropper.min.js' %}"}
+
+    %script
+      if (window.location.search === '?reset-password') {
+          $("#password-reset-modal").modal("show");
       }
