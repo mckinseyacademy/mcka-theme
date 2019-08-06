@@ -225,9 +225,9 @@ def _process_authenticated_user(request, user, activate_account=False):
         else:
             _process_access_key_and_remove_from_session(request, user, access_key, client)
 
-    # This parameter is passed when a user is redirected from
-    if request.GET.get('scorm_login', False):
-        return render(request, 'accounts/scorm_login_complete.haml')
+    scorm_response = scorm_mode_response(request)
+    if scorm_response:
+        return scorm_response
 
     if not redirect_to:
         redirect_to = _get_redirect_to_current_course(request, sso_user)
@@ -1010,9 +1010,21 @@ def reset_complete(request,
                                    template_name=template_name, extra_context=extra_context)
 
 
+def scorm_mode_response(request):
+    # This parameter is passed when a user is redirected from
+    if request.COOKIES.get('scorm_mode', False):
+        response = render(request, 'accounts/scorm_login_complete.haml')
+        response.delete_cookie('scorm_mode')
+        return response
+
+
 def home(request):
     if not request.user.is_authenticated:
         return public_home(request)
+
+    scorm_response = scorm_mode_response(request)
+    if scorm_response:
+        return scorm_response
 
     user_data = thread_local.get_basic_user_data(request.user.id)
     program = user_data.current_program
