@@ -1193,9 +1193,10 @@ def load_profile_image(request, image_url):
         mime = MimeTypes()
         url = urllib.pathname2url(image_url)
         mime_type = mime.guess_type(url)
-        return HttpResponse(
-                image, content_type=mime_type[0]
-            )
+        response = HttpResponse(image, content_type=mime_type[0])
+        if image_url.startswith('images/global_client_logo') or image_url.startswith('images/client_logo'):
+            response['Cache-Control'] = 'max-age={}'.format(settings.CACHE_TIMEOUTS['branding_logos'])
+        return response
 
 
 @login_required
