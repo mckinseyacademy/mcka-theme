@@ -47,3 +47,11 @@
       $("button#pnAdvancerRight").addClass("active");
       $("button#pnAdvancerLeft").removeClass("active");
     }
+
+    // Learner Dashboard Navigation arrows on mobile
+    var ldConWidth = $(window).width() - 10;
+    if ($('.pn-ProductNav_Contents').width() < ldConWidth) {
+      $(".pn-ProductNav_Wrapper").addClass("notActive");
+    } else {
+      $(".pn-ProductNav_Wrapper").removeClass("noActive");
+    }
