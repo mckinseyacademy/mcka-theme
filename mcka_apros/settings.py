@@ -652,6 +652,7 @@ CACHE_TIMEOUTS = {
     'common_data': (60 * 60) * 24,  # 24 hours
     'course_language': (60 * 60) * 24,
     'prefetched_course_data': (60 * 60) * 24,
+    'branding_logos': (60 * 60) * 24 * 365,  # 1 year
 }
 DEFAULT_CACHE_TIMEOUT = (60 * 1) * 15  # 15 minutes
 
@@ -718,7 +719,5 @@ REACT_NATIVE_UA_PREFIX = 'com.mcka.RNApp'
 
 # Image sizes in width, height
 IMAGE_SIZES = {
-    'client_logo': (180, 80),
-    'global_client_logo': (180, 80),
     'ld_tile_background_image': (400, 400)
 }
