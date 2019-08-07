@@ -652,7 +652,7 @@ CACHE_TIMEOUTS = {
     'common_data': (60 * 60) * 24,  # 24 hours
     'course_language': (60 * 60) * 24,
     'prefetched_course_data': (60 * 60) * 24,
-    'branding_logos': (60 * 60) * 24,
+    'branding_logos': (60 * 60) * 24 * 365,  # 1 year
 }
 DEFAULT_CACHE_TIMEOUT = (60 * 1) * 15  # 15 minutes
 
