@@ -13414,7 +13414,8 @@ msgid ""
 msgstr ""
 "Sie können die E-Mail-Adresse eingeben, die Sie bei der Registrierung "
 "verwendet haben. Sie können Ihren Nutzernamen auch abfragen, indem Sie auf "
-"„Passwort vergessen?“ auf dem Anmeldebildschirm klicken.  Sie erhalten eine "
+"„Passwort vergessen?“ auf dem <a href='https://www.mckinseyacademy.com' style=\"display: "
+"inline;\" target='_blank'>Anmeldebildschirm</a> klicken.  Sie erhalten eine "
 "automatisierte E-Mail mit Anweisungen zum Zurücksetzen des Passworts."
 
 #: templates_v2/faq.haml:59
