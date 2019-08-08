@@ -237,3 +237,14 @@
     }
   }
 }
+
+.pn-ProductNav_Wrapper{
+  &.notActive{
+    .pn-ProductNav{
+      overflow: hidden;
+    }
+    .pn-Advancer{
+      display: none !important;
+    }
+  }
+}

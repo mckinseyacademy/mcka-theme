@@ -32,8 +32,8 @@ body {
         width: auto;
         max-width: 180px;
         &[src$=".svg"] {
-          height: 40px;
-          width: auto;
+          height: 40px !important;
+          width: auto !important;
         }
         @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
           height: auto;
