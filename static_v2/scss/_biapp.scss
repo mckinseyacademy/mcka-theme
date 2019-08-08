@@ -1170,6 +1170,17 @@ body.rtl {
       }
     }
   }
+  .courseOverview {
+    .faculty {
+      input[type=radio] {
+        +label {
+          &:after {
+            @include flip-x-axis;
+          }
+        }
+      }
+    }
+  }
 }
 
 //Course Overview
@@ -1179,6 +1190,23 @@ body.rtl {
       @include float(left);
       @media screen and (max-width: 767px) {
         float: none;
+      }
+    }
+  }
+  .faculty {
+    input[type=radio] {
+     &+label {
+        &:after {
+          @include left(-40px);
+          @include right(auto);
+        }
+      }
+      &:checked{
+        &+label {
+          &:after {
+            @include left(0);
+          }
+        }
       }
     }
   }

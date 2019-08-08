@@ -77,8 +77,6 @@
           display: block;
           content: '';
           top: 20px;
-          left: -40px;
-          right: auto;
           width: 40px;
           height: 40px;
           background: url("/static/image/bookmark.svg") no-repeat;
@@ -100,8 +98,6 @@
       &:checked + label {
         &:after {
           content: "";
-          left: 0;
-          right: auto;
           transition: all 0.3s ease
         }
       }
