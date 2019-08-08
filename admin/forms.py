@@ -19,7 +19,6 @@ from api_client import course_api
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
 from main.models import CuratedContentItem
-from util.data_sanitizing import clean_xss_characters
 from util.i18n_helpers import format_lazy, mark_safe_lazy
 from util.image_util import resize_image
 from util.validators import UsernameValidator, AlphanumericWithAccentedChars
@@ -428,9 +427,6 @@ class LearnerDashboardTileForm(forms.ModelForm):
 
     def clean(self):
         cleaned_data = super(LearnerDashboardTileForm, self).clean()
-
-        for name, value in cleaned_data.items():
-            cleaned_data[name] = clean_xss_characters(value) if isinstance(value, (str, unicode)) else value
 
         link = cleaned_data.get("link")
         tile_type = cleaned_data.get("tile_type")

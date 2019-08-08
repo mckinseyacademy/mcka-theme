@@ -32,10 +32,11 @@ body {
         width: auto;
         max-width: 180px;
         &[src$=".svg"] {
-          width: 160px;
+          height: 40px !important;
+          width: auto !important;
         }
         @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
-          height: 40px;
+          height: auto;
         }
       }
     }
