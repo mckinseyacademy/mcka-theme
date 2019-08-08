@@ -163,15 +163,12 @@ body.new-theme {
                   line-height: 19px;
                 }
 
-                .image-explorer-hotspot-reveal-body {
-                  ul{
-                    margin-bottom: 15px !important;
-                    &.fa-ul {
-                      list-style-type: none;
-                    }
+                ul{
+                  margin-bottom: 15px !important;
+                  &.fa-ul {
+                    list-style-type: none;
                   }
                 }
-
 
                 > h1, > h2, > h3, > h4, > h5, > h6 {
                   color: $black !important;
