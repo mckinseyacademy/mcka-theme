@@ -203,7 +203,13 @@ def standard_data(request):
     if request.user and request.user.id:
         course_id = request.resolver_match.kwargs.get('course_id')
         if course_id:
-            course = load_course(course_id, request=request, depth=0)
+            try:
+                course = load_course(course_id, request=request, depth=0)
+            except ApiError as e:
+                if e.code == 404:
+                    course = None
+                else:
+                    raise e
             feature_flags = CourseDataManager(course_id).get_feature_flags()
 
         user_data = thread_local.get_basic_user_data(request.user.id)
