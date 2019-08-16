@@ -1196,14 +1196,15 @@ body.rtl {
   .faculty {
     input[type=radio] {
      &+label {
-        &:after {
+       
+        .bookmark{
           @include left(-40px);
           @include right(auto);
         }
       }
       &:checked{
         &+label {
-          &:after {
+          .bookmark {
             @include left(0);
           }
         }
