@@ -43,14 +43,15 @@
               .statusBar
                 .progress-counter{:style => "width:{{lesson.progress}}%"}
           %a.description{:class => "{% if not lesson.description%}no-data{% endif %}", "href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}", :oncontextmenu => "return false;"}
-            - autoescape off
-              - if not lesson.is_started
-                - if lesson_custom_label
-                  {% blocktrans with start_date=lesson.start_upon %} This {{lesson_custom_label}} will be available on {{ start_date }} {% endblocktrans %}
+            %div.contentWrap
+              - autoescape off
+                - if not lesson.is_started
+                  - if lesson_custom_label
+                    {% blocktrans with start_date=lesson.start_upon %} This {{lesson_custom_label}} will be available on {{ start_date }} {% endblocktrans %}
+                  - else
+                    {% blocktrans with start_date=lesson.start_upon %} This lesson will be available on {{ start_date }} {% endblocktrans %}
                 - else
-                  {% blocktrans with start_date=lesson.start_upon %} This lesson will be available on {{ start_date }} {% endblocktrans %}
-              - else
-                = lesson.description
+                  = lesson.description
           - if lesson.bookmark
             %span.bookmark.secondary
               %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}

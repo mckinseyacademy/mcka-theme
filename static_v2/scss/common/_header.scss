@@ -223,7 +223,7 @@ header {
       }
 
       .nameArea {
-        color: $black;        
+        color: $black;
         font-weight: 600;
         line-height: 22px;
       }
@@ -385,6 +385,14 @@ header {
       > li {
         > a {
           padding: 0 0 9px;
+        }
+      }
+    }
+    .course-materials {
+      >a {
+        position: relative;
+        .bookmark {
+          position: absolute;
         }
       }
     }
@@ -793,10 +801,8 @@ header {
   }
 }
 
-@include media-breakpoint-up(md) {
-  header {
-    .container {
-      padding: 0;
-    }
+@media only screen and (max-width: 1024px) and (orientation: landscape) {
+  .adminBtn {
+    display: none !important;
   }
 }

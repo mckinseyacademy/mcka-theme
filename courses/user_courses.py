@@ -195,6 +195,7 @@ def standard_data(request):
     """
     current_course = None
     program = None
+    current_ld_course = None
     client_nav_links = None
     client_customization = None
     branding = None
@@ -217,6 +218,7 @@ def standard_data(request):
 
         user_data = thread_local.get_basic_user_data(request.user.id)
         program = user_data.current_program
+        current_ld_course = user_data.current_ld_course
         current_course = course if course else user_data.current_course
         organization = user_data.organization
 
@@ -265,6 +267,7 @@ def standard_data(request):
 
     data = {
         "current_course": current_course,
+        "current_ld_course": current_ld_course,
         "program": program,
         'feature_flags': feature_flags,
         'namespace': current_course.id if current_course else None,
