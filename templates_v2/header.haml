@@ -105,7 +105,7 @@
                         %ul.sub-nav
                           - for dashboard in learner_dashboards
                             %li
-                              %a.dropdown-item.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
+                              %a.dropdown-item.ome.dome-c.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
                                 - if current_ld_course and dashboard.course_id == current_ld_course
                                   %span.bookmark.secondary
                                     %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
