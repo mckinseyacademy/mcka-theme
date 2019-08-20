@@ -238,6 +238,10 @@
 
 }
 
+body.new-theme #course-discussion .discussion-content .forum-new-post-form .post-field .post-type-label .input-radio+.field-input-label:before, body.new-theme #course-discussion .discussion-content .edit-post-form .post-field .post-type-label .input-radio+.field-input-label:before{
+	left:auto;
+	right:0;
+}
 
 // Mobile View
 .rtl.new-theme
@@ -346,6 +350,9 @@
 			margin-right:30px;
 		}
 		
-
+		#course-discussion .discussion-content .forum-new-post-form .post-field .post-type-label .input-radio+.field-input-label:before, body.new-theme #course-discussion .discussion-content .edit-post-form .post-field .post-type-label .input-radio+.field-input-label:before{
+			left:auto;
+			right:-30px;
+		}
 	}
 }
