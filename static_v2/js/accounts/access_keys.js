@@ -26,17 +26,18 @@ function autoRedirectOnLogin() {
  * @returns {Window}
  */
 function openLoginPopup(url) {
-  $.cookie('scorm_mode', true, {expires: (new Date()).addMinutes(20), path: '/'});
   let popupWindow = window.open(url, '_blank', 'width=600,height=800');
   if (popupWindow) popupWindow.focus();
   return popupWindow;
 }
 
 $(document).ready(function () {
-  let redirect = $('#access-key-script').data('redirect-to');
+  let normalRedirect = $('#access-key-script').data('redirect-to');
+  // Note if the path redirection mechanism ever changes this will need to be updated.
+  let scormRedirect = normalRedirect + '%3Fscorm_login%3Dtrue';
 
   $('#scorm-login-launch').click(function () {
-    openLoginPopup(redirect);
+    openLoginPopup(scormRedirect);
     autoRedirectOnLogin();
   });
 
@@ -45,7 +46,7 @@ $(document).ready(function () {
   if (window !== window.parent) {
     $('.normal-access').hide();
     $('.scorm-access').show();
-    let popupWindow = openLoginPopup(redirect);
+    let popupWindow = openLoginPopup(scormRedirect);
     // If the browser blocks the popup, a null will be returned here.
     // Change the message to indicate that the popup failed to open.
     if (!popupWindow) {
@@ -54,8 +55,8 @@ $(document).ready(function () {
     }
     autoRedirectOnLogin();
   } else {
-    setTimeout(function() {
-      window.location = redirect;
+    setTimeout(function redirect() {
+      window.location = normalRedirect;
     }, 2000);
   }
 });
