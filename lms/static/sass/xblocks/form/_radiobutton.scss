@@ -17,6 +17,9 @@
 			overflow: hidden;
 			width: 18px;
 			height: 18px;
+			display: inline-block;
+			vertical-align: top;
+			margin-top: 2px;
 
 			[type="radio"] {
 				opacity: 0;
@@ -59,6 +62,12 @@
 					//background: $gray-border;
 				}
 			}
+		}
+	}
+	.adventure {
+		.choice-label {
+			margin-left: 0;
+			margin-right: 0;
 		}
 	}
 }
