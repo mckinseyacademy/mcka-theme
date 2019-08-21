@@ -228,7 +228,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
             for (selectedRowsIndex in selectedRowsIds)
             {
               var id = selectedRowsIds[selectedRowsIndex];
-              var selectedModel = _this.courseDetails.fullCollection.get(id);
+              var selectedModel = _this.courses_details_view.coursesListDetailsViewGrid.collection.get(id);
               var item ={ id: id, existing_roles: selectedModel.attributes.user_status};
               dictionaryToSend.list_of_items.push(item);
             }
@@ -642,13 +642,13 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
         }
         var selectedRowsIds = _this.courses_details_view.coursesListDetailsViewGrid.selectedRows;
 
-        var modelsList = _this.courseDetails.fullCollection.models;
+        var modelsList = _this.courses_details_view.coursesListDetailsViewGrid.collection.models;
 
         items = []
         for (selectedRowsIndex in selectedRowsIds)
         {
           var id = selectedRowsIds[selectedRowsIndex];
-          var selectedModel = _this.courseDetails.fullCollection.get(id);
+          var selectedModel = _this.courses_details_view.coursesListDetailsViewGrid.collection.get(id);
           var last_login = selectedModel.attributes.custom_last_login.split(',')[1];
           var progress = '' + parseInt(selectedModel.attributes.progress) + '%';
           var proficiency = '' + parseInt(selectedModel.attributes.proficiency) + '%';
@@ -683,7 +683,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
               groupworkData = modelsList[i].attributes.groupworks[groupworkIndex];
               for(var j=0; j < items.length; j++)
               {
-                var selected = _this.courseDetails.fullCollection.get(items[j]['id']);
+                var selected = _this.courses_details_view.coursesListDetailsViewGrid.collection.get(items[j]['id']);
                 var labelTemplate = gettext('Group Work: %(label)s');
                 var labelValue = {'label': groupworkData.label};
                 var label = interpolate(labelTemplate, labelValue, true);
@@ -710,7 +710,7 @@ Apros.views.CourseDetailsBulkActions = Backbone.View.extend({
               assessmentData = modelsList[i].attributes.assessments[assessmentIndex];
               for(var j=0; j < items.length; j++)
               {
-                var selected = _this.courseDetails.fullCollection.get(items[j]['id']);
+                var selected = _this.courses_details_view.coursesListDetailsViewGrid.collection.get(items[j]['id']);
 
                 var labelTemplate = gettext('Assessment: %(label)s');
                 var labelValue = {'label': assessmentData.label};
