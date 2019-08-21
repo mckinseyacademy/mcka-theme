@@ -1017,6 +1017,7 @@ def scorm_mode_response(request):
         response.delete_cookie('scorm_mode')
         return response
 
+
 def home(request):
     if not request.user.is_authenticated:
         return public_home(request)
