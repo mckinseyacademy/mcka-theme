@@ -1,6 +1,6 @@
 $(function () {
   var isSurveyTableFilled = false;
-  $(document).on('change', '.new-theme input[type=radio]', function(e) {
+  $(document).on('change', '.new-theme input[type=radio]', function (e) {
     var parent = $(e.target).parents('[data-block-type="pb-mcq"], [data-block-type="adventure"]');
     $(parent).find(".choice-selector").removeClass("selected");
     if (e.target.checked) {
@@ -39,28 +39,74 @@ $(function () {
   });
 
   // Add selected class to selected poll results when appended to DOM
-  $(document).on('DOMNodeInserted', '.poll-results-wrapper, .lessonOverview, .forum-new-post-form, .edit-post-form', function(){
+  $(document).on('DOMNodeInserted', '.poll-results-wrapper, .lessonOverview, .forum-new-post-form, .edit-post-form', function () {
     $(".new-theme .poll-results input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
     $(".new-theme .poll-results input[type=radio]:disabled, .new-theme input[type=radio]:disabled").parent().addClass('disabled');
 
     //fall back for private results where results are fetched after 1-2 seconds
-    setTimeout(function(){
+    setTimeout(function () {
       $(".new-theme input[type=radio]:disabled").parent().addClass('disabled');
-    },3000);
+    }, 3000);
 
     //discussion inline- big heading
-    if($(this).find('.discussion-module-header').length > 0) {
+    if ($(this).find('.discussion-module-header').length > 0) {
       inlineDiscussionLongHeading();
     }
+
+    $(window).load(function () {
+
+      var windowWidth = window.innerWidth;
+      console.log('desktop sticky apply', windowWidth)
+      if (windowWidth > 1024) {
+
+
+        var $sticky = $('.forum-nav');
+        var $stickyrStopper = $('.sticky-stopper');
+        if (!!$sticky.offset()) { // make sure ".sticky" element exists
+
+          var generalSidebarHeight = $sticky.innerHeight();
+          var stickyTop = $sticky.offset().top;
+          var stickOffset = 40;
+          var stickyStopperPosition = $stickyrStopper.offset().top;
+          var stopPoint = stickyStopperPosition - generalSidebarHeight - stickOffset;
+          var diff = stopPoint + stickOffset;
+
+          $(window).scroll(function () { // scroll event
+            var windowTop = $(window).scrollTop(); // returns number
+
+            if (stopPoint < windowTop) {
+              $sticky.css({
+                position: 'absolute',
+                top: diff
+              });
+            } else if (stickyTop < windowTop + stickOffset) {
+              $sticky.css({
+                position: 'fixed',
+                top: stickOffset
+              });
+            } else {
+              $sticky.css({
+                position: 'absolute',
+                top: 'initial'
+              });
+            }
+          });
+
+        }
+      }
+    });
+
+
   });
 
+
   // assessment block choice
-  $(document).on('DOMNodeInserted', '.choices-list, .choice, .choice-selector', function(){
+  $(document).on('DOMNodeInserted', '.choices-list, .choice, .choice-selector', function () {
     $(".new-theme .choices-list input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
   });
-  $(document).on('DOMNodeInserted', '.image-explorer-wrapper', function(){
-    $('.image-explorer-hotspot-reveal-body > div').each(function(index, obj){
-      if(!$(this).attr('id') || $(this).attr('id').indexOf('ooyala') === -1) {
+  $(document).on('DOMNodeInserted', '.image-explorer-wrapper', function () {
+    $('.image-explorer-hotspot-reveal-body > div').each(function (index, obj) {
+      if (!$(this).attr('id') || $(this).attr('id').indexOf('ooyala') === -1) {
         $(this).addClass('ie-custom-div')
       }
     })
@@ -68,33 +114,33 @@ $(function () {
 
   // Assessment block checkbox
 
-  $(document).on('DOMNodeInserted', '.choices-list, .choice-selector', function(){
+  $(document).on('DOMNodeInserted', '.choices-list, .choice-selector', function () {
     $(".new-theme .choice-selector input[type=checkbox]:checked").parent().addClass('selected');
   });
 
-  $(document).on('DOMNodeInserted', '.forum-new-post-form', function(){
+  $(document).on('DOMNodeInserted', '.forum-new-post-form', function () {
     $(".new-theme input[type=checkbox]:checked").parent().addClass('selected');
   });
 
-  $(document).on('DOMNodeInserted', '.new-theme .lesson-content', function(){
-    if(!isSurveyTableFilled) {
+  $(document).on('DOMNodeInserted', '.new-theme .lesson-content', function () {
+    if (!isSurveyTableFilled) {
       isSurveyTableFilled = true;
-      setTimeout(function(){
+      setTimeout(function () {
         surveyTableLabelPositionsForMobile();
       }, 3000);
     }
   });
 });
 
-function surveyTableLabelPositionsForMobile(){
-  $('.new-theme .survey-table .survey-option').each(function(index, element){
+function surveyTableLabelPositionsForMobile() {
+  $('.new-theme .survey-table .survey-option').each(function (index, element) {
     var span = $(element).find('.visible-mobile-only').prop('outerHTML');
     $(element).find('.visible-mobile-only').remove();
     $(element).append(span);
     if (index == $('.survey-table .survey-option').length - 1) {
       setTimeout(function () {
         toggleSurveyRadios()
-      }, 5000);  
+      }, 5000);
     }
   });
 }
@@ -122,15 +168,19 @@ function toggleSurveyRadios() {
 
 function inlineDiscussionLongHeading() {
   var moduleWidth = $('.discussion-module-header').width();
-  $('.discussion-module-header').each(function(){
-    $(this).children('.discussion-module-title').css({'display': 'inline'}); // to get actual width
+  $('.discussion-module-header').each(function () {
+    $(this).children('.discussion-module-title').css({
+      'display': 'inline'
+    }); // to get actual width
     //if width is more than 65 % move it downwards
-    if($(this).children('.discussion-module-title').eq(0).width() / moduleWidth  * 100 > 65){
+    if ($(this).children('.discussion-module-title').eq(0).width() / moduleWidth * 100 > 65) {
       $(this).parent('.discussion-module').addClass('long-discussion-heading');
     }
     // else // We will enable for testing, its not required for production.
     //   $(this).parent('.discussion-module').removeClass('long-discussion-heading');
-    $(this).children('.discussion-module-title').css({'display': ''}); // rest width
+    $(this).children('.discussion-module-title').css({
+      'display': ''
+    }); // rest width
   });
 }
 // We will enable for testing, its not required for production.

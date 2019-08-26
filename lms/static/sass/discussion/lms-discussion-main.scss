@@ -199,6 +199,7 @@ body.new-theme {
 			border: 1px solid #EEEEEE;
 			min-height: 550px;
 			margin-left: 30px !important;
+			float:right;
 
 			@media (max-width: 1024px) {
 				width: calc(100% - 265px) !important;
@@ -757,6 +758,7 @@ body.new-theme {
 
 			.discussion-body {
 				max-width: 100%;
+				display: block;
 			}
 
 			.page-content {
@@ -1190,10 +1192,16 @@ body.new-theme {
 					}
 				}
 
+				// set the height incase if ask-ta card is available
+				.ask-ta ~  .forum-nav-browse-menu-wrapper {
+					height: calc(100% - 96px);
+				}
+
+				// set the height incase if ask-ta card is not available
 				.forum-nav-browse-menu-wrapper {
 					background: none;
 					border: 0;
-					height: 400px;
+					height: 100%;
 
 					.forum-nav-browse-filter {
 						padding: 0;
@@ -1544,8 +1552,15 @@ body.new-theme {
 				}
 			}
 
+
+			// set the height incase if ask-ta card is available
+			.ask-ta ~  .discussion-thread-list-container{
+				height: calc(100% - 96px);
+			}
+
+			// set the height incase if ask-ta card is not available
 			.discussion-thread-list-container {
-				height: calc(100% - 140px);
+				height: 100%;
 
 				.forum-nav-thread-list-wrapper {
 					height: 100%;
@@ -1554,7 +1569,7 @@ body.new-theme {
 				.forum-nav-refine-bar {
 					background: none;
 					margin: 0 auto 15px;
-					padding: 15px 0 0;
+					padding: 0;
 					border: 0;
 					width: 100%;
 
@@ -1590,7 +1605,7 @@ body.new-theme {
 				.forum-nav-thread-list {
 					background: $white;
 					border: 1px solid $border_color_1;
-					height: calc(100% - 64px) !important;
+					height: calc(100% - 54px) !important;
 
 					.forum-nav-load-more {
 						background-color: #FFFFFF;
@@ -1711,6 +1726,8 @@ body.new-theme {
 					}
 				}
 			}
+
+			
 
 			.forum-content {
 				padding-top: 20px;
@@ -2213,26 +2230,26 @@ body.new-theme {
 
 
 		.forum-nav {
-
 			width: 360px !important;
 			box-sizing: border-box !important;
-			padding: 0 30px !important;
+			padding: 30px !important;
 			background: #F9F9F9 !important;
 			margin-right: 0 !important;
 			margin-bottom: 0 !important;
-			min-height: 550px;
-			height: calc(100vh - 300px) !important;
+			float: left;
+			max-height: calc(100vh - 300px);
 			overflow: hidden;
+			height: calc(100vh - 356px);
+			border-radius: 0 !important;
 
 			@media (max-width: 1024px) {
 				width: 250px !important;
-				padding: 0 15px !important;
+				padding: 15px !important;
 			}
 
 			@media (max-width: 768px) {
 				width: 100% !important;
-				padding: 0 15px !important;
-				min-height: 500px !important;
+				padding: 15px !important;
 				height: auto !important;
 				position: static !important;
 
