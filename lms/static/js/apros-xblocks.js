@@ -1,187 +1,181 @@
 $(function () {
-  var isSurveyTableFilled = false;
-  $(document).on('change', '.new-theme input[type=radio]', function (e) {
-    var parent = $(e.target).parents('[data-block-type="pb-mcq"], [data-block-type="adventure"]');
-    $(parent).find(".choice-selector").removeClass("selected");
-    if (e.target.checked) {
-      $(e.target).parent().addClass("selected");
-    } else {
-      $(e.target).parent().removeClass("selected");
-    }
-  });
+    var isSurveyTableFilled = false;
+    $(document).on('change', '.new-theme input[type=radio]', function (e) {
+        var parent = $(e.target).parents('[data-block-type="pb-mcq"], [data-block-type="adventure"]');
+        $(parent).find(".choice-selector").removeClass("selected");
+        if (e.target.checked) {
+            $(e.target).parent().addClass("selected");
+        } else {
+            $(e.target).parent().removeClass("selected");
+        }
+    });
 
-  $(document).on('change', '.new-theme [data-block-type="pb-mrq"] input[type="checkbox"], .new-theme .post-options input[type="checkbox"]', function (e) {
-    if (e.target.checked) {
-      $(e.target).parent().addClass("selected");
-    } else {
-      $(e.target).parent().removeClass("selected");
-    }
-  });
+    $(document).on('change', '.new-theme [data-block-type="pb-mrq"] input[type="checkbox"], .new-theme .post-options input[type="checkbox"]', function (e) {
+        if (e.target.checked) {
+            $(e.target).parent().addClass("selected");
+        } else {
+            $(e.target).parent().removeClass("selected");
+        }
+    });
 
-  $(document).on('change', '.new-theme input[type=radio]', function (e) {
-    var parent = $(e.target).parents('[data-block-type="poll"]');
-    $(parent).find(".poll-input-container").removeClass("selected");
-    if (e.target.checked) {
-      $(e.target).parent().addClass("selected");
-    } else {
-      $(e.target).parent().removeClass("selected");
-    }
-  });
+    $(document).on('change', '.new-theme input[type=radio]', function (e) {
+        var parent = $(e.target).parents('[data-block-type="poll"]');
+        $(parent).find(".poll-input-container").removeClass("selected");
+        if (e.target.checked) {
+            $(e.target).parent().addClass("selected");
+        } else {
+            $(e.target).parent().removeClass("selected");
+        }
+    });
 
-  $(document).on('change', '.new-theme input[type=radio]', function (e) {
-    var parent = $(e.target).parents('.field-label, .survey-row');
-    $(parent).find(".selected").removeClass("selected");
-    if (e.target.checked) {
-      $(e.target).parent().addClass("selected");
-    } else {
-      $(e.target).parent().removeClass("selected");
-    }
-  });
+    $(document).on('change', '.new-theme input[type=radio]', function (e) {
+        var parent = $(e.target).parents('.field-label, .survey-row');
+        $(parent).find(".selected").removeClass("selected");
+        if (e.target.checked) {
+            $(e.target).parent().addClass("selected");
+        } else {
+            $(e.target).parent().removeClass("selected");
+        }
+    });
 
-  // Add selected class to selected poll results when appended to DOM
-  $(document).on('DOMNodeInserted', '.poll-results-wrapper, .lessonOverview, .forum-new-post-form, .edit-post-form', function () {
-    $(".new-theme .poll-results input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
-    $(".new-theme .poll-results input[type=radio]:disabled, .new-theme input[type=radio]:disabled").parent().addClass('disabled');
+    // Add selected class to selected poll results when appended to DOM
+    $(document).on('DOMNodeInserted', '.poll-results-wrapper, .lessonOverview, .forum-new-post-form, .edit-post-form', function () {
+        $(".new-theme .poll-results input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
+        $(".new-theme .poll-results input[type=radio]:disabled, .new-theme input[type=radio]:disabled").parent().addClass('disabled');
 
-    //fall back for private results where results are fetched after 1-2 seconds
-    setTimeout(function () {
-      $(".new-theme input[type=radio]:disabled").parent().addClass('disabled');
-    }, 3000);
+        //fall back for private results where results are fetched after 1-2 seconds
+        setTimeout(function () {
+            $(".new-theme input[type=radio]:disabled").parent().addClass('disabled');
+        }, 3000);
 
-    //discussion inline- big heading
-    if ($(this).find('.discussion-module-header').length > 0) {
-      inlineDiscussionLongHeading();
-    }
+        //discussion inline- big heading
+        if ($(this).find('.discussion-module-header').length > 0) {
+            inlineDiscussionLongHeading();
+        }
+    });
 
-    $(window).load(function () {
-
-      var windowWidth = window.innerWidth;
-      console.log('desktop sticky apply', windowWidth)
-      if (windowWidth > 1024) {
-
-
+    // Discussion sticky stopper handling
+    $(document).on("DOMNodeInserted", '.new-theme .forum-nav', function(event) {
         var $sticky = $('.forum-nav');
         var $stickyrStopper = $('.sticky-stopper');
-        if (!!$sticky.offset()) { // make sure ".sticky" element exists
+        var windowWidth = window.innerWidth;
+        if (windowWidth > 1024) {
+            if ($sticky.offset()) { // make sure ".sticky" element exists
+                var generalSidebarHeight = $sticky.innerHeight();
+                var stickyTop = $sticky.offset().top;
+                var stickOffset = 40;
+                var stickyStopperPosition = $stickyrStopper.offset().top;
+                var stopPoint = stickyStopperPosition - generalSidebarHeight - stickOffset;
+                var diff = stopPoint + stickOffset;
 
-          var generalSidebarHeight = $sticky.innerHeight();
-          var stickyTop = $sticky.offset().top;
-          var stickOffset = 40;
-          var stickyStopperPosition = $stickyrStopper.offset().top;
-          var stopPoint = stickyStopperPosition - generalSidebarHeight - stickOffset;
-          var diff = stopPoint + stickOffset;
+                $(window).scroll(function () { // scroll event
+                    var windowTop = $(window).scrollTop(); // returns number
 
-          $(window).scroll(function () { // scroll event
-            var windowTop = $(window).scrollTop(); // returns number
+                    if (stopPoint < windowTop) {
+                        $sticky.css({
+                            position: 'absolute',
+                            top: diff
+                        });
+                    } else if (stickyTop < windowTop + stickOffset) {
+                        $sticky.css({
+                            position: 'fixed',
+                            top: stickOffset
+                        });
+                    } else {
+                        $sticky.css({
+                            position: 'absolute',
+                            top: 'initial'
+                        });
+                    }
+                });
 
-            if (stopPoint < windowTop) {
-              $sticky.css({
-                position: 'absolute',
-                top: diff
-              });
-            } else if (stickyTop < windowTop + stickOffset) {
-              $sticky.css({
-                position: 'fixed',
-                top: stickOffset
-              });
-            } else {
-              $sticky.css({
-                position: 'absolute',
-                top: 'initial'
-              });
             }
-          });
-
         }
-      }
     });
 
 
-  });
+    // assessment block choice
+    $(document).on('DOMNodeInserted', '.choices-list, .choice, .choice-selector', function () {
+        $(".new-theme .choices-list input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
+    });
+    $(document).on('DOMNodeInserted', '.image-explorer-wrapper', function () {
+        $('.image-explorer-hotspot-reveal-body > div').each(function (index, obj) {
+            if (!$(this).attr('id') || $(this).attr('id').indexOf('ooyala') === -1) {
+                $(this).addClass('ie-custom-div')
+            }
+        })
+    });
 
+    // Assessment block checkbox
 
-  // assessment block choice
-  $(document).on('DOMNodeInserted', '.choices-list, .choice, .choice-selector', function () {
-    $(".new-theme .choices-list input[type=radio]:checked, .new-theme input[type=radio]:checked").parent().addClass('selected');
-  });
-  $(document).on('DOMNodeInserted', '.image-explorer-wrapper', function () {
-    $('.image-explorer-hotspot-reveal-body > div').each(function (index, obj) {
-      if (!$(this).attr('id') || $(this).attr('id').indexOf('ooyala') === -1) {
-        $(this).addClass('ie-custom-div')
-      }
-    })
-  });
+    $(document).on('DOMNodeInserted', '.choices-list, .choice-selector', function () {
+        $(".new-theme .choice-selector input[type=checkbox]:checked").parent().addClass('selected');
+    });
 
-  // Assessment block checkbox
+    $(document).on('DOMNodeInserted', '.forum-new-post-form', function () {
+        $(".new-theme input[type=checkbox]:checked").parent().addClass('selected');
+    });
 
-  $(document).on('DOMNodeInserted', '.choices-list, .choice-selector', function () {
-    $(".new-theme .choice-selector input[type=checkbox]:checked").parent().addClass('selected');
-  });
-
-  $(document).on('DOMNodeInserted', '.forum-new-post-form', function () {
-    $(".new-theme input[type=checkbox]:checked").parent().addClass('selected');
-  });
-
-  $(document).on('DOMNodeInserted', '.new-theme .lesson-content', function () {
-    if (!isSurveyTableFilled) {
-      isSurveyTableFilled = true;
-      setTimeout(function () {
-        surveyTableLabelPositionsForMobile();
-      }, 3000);
-    }
-  });
+    $(document).on('DOMNodeInserted', '.new-theme .lesson-content', function () {
+        if (!isSurveyTableFilled) {
+            isSurveyTableFilled = true;
+            setTimeout(function () {
+                surveyTableLabelPositionsForMobile();
+            }, 3000);
+        }
+    });
 });
 
 function surveyTableLabelPositionsForMobile() {
-  $('.new-theme .survey-table .survey-option').each(function (index, element) {
-    var span = $(element).find('.visible-mobile-only').prop('outerHTML');
-    $(element).find('.visible-mobile-only').remove();
-    $(element).append(span);
-    if (index == $('.survey-table .survey-option').length - 1) {
-      setTimeout(function () {
-        toggleSurveyRadios()
-      }, 5000);
-    }
-  });
+    $('.new-theme .survey-table .survey-option').each(function (index, element) {
+        var span = $(element).find('.visible-mobile-only').prop('outerHTML');
+        $(element).find('.visible-mobile-only').remove();
+        $(element).append(span);
+        if (index == $('.survey-table .survey-option').length - 1) {
+            setTimeout(function () {
+                toggleSurveyRadios()
+            }, 5000);
+        }
+    });
 }
 
 function toggleSurveyRadios() {
-  $('.new-theme input[type=radio]').each(function (index, el) {
-    if (el.checked)
-      $(el).parent().addClass('selected');
-    if (el.disabled)
-      $(el).parent().addClass('disabled');
-  });
-  $('.new-theme [data-block-type="survey"] input[type=button]').on('click', function (e) {
-    // Survey block choice 
-    setTimeout(function () { // we have to wait till api responses and updates selected/disabled attributes to input
-      $(e.target).prev().find('input[type=radio]').each(function (index, el) {
+    $('.new-theme input[type=radio]').each(function (index, el) {
         if (el.checked)
-          $(el).parent().addClass('selected');
+            $(el).parent().addClass('selected');
         if (el.disabled)
-          $(el).parent().addClass('disabled');
-      });
-    }, 5000);
+            $(el).parent().addClass('disabled');
+    });
+    $('.new-theme [data-block-type="survey"] input[type=button]').on('click', function (e) {
+        // Survey block choice
+        setTimeout(function () { // we have to wait till api responses and updates selected/disabled attributes to input
+            $(e.target).prev().find('input[type=radio]').each(function (index, el) {
+                if (el.checked)
+                    $(el).parent().addClass('selected');
+                if (el.disabled)
+                    $(el).parent().addClass('disabled');
+            });
+        }, 5000);
 
-  });
+    });
 }
 
 function inlineDiscussionLongHeading() {
-  var moduleWidth = $('.discussion-module-header').width();
-  $('.discussion-module-header').each(function () {
-    $(this).children('.discussion-module-title').css({
-      'display': 'inline'
-    }); // to get actual width
-    //if width is more than 65 % move it downwards
-    if ($(this).children('.discussion-module-title').eq(0).width() / moduleWidth * 100 > 65) {
-      $(this).parent('.discussion-module').addClass('long-discussion-heading');
-    }
-    // else // We will enable for testing, its not required for production.
-    //   $(this).parent('.discussion-module').removeClass('long-discussion-heading');
-    $(this).children('.discussion-module-title').css({
-      'display': ''
-    }); // rest width
-  });
+    var moduleWidth = $('.discussion-module-header').width();
+    $('.discussion-module-header').each(function () {
+        $(this).children('.discussion-module-title').css({
+            'display': 'inline'
+        }); // to get actual width
+        //if width is more than 65 % move it downwards
+        if ($(this).children('.discussion-module-title').eq(0).width() / moduleWidth * 100 > 65) {
+            $(this).parent('.discussion-module').addClass('long-discussion-heading');
+        }
+        // else // We will enable for testing, its not required for production.
+        //   $(this).parent('.discussion-module').removeClass('long-discussion-heading');
+        $(this).children('.discussion-module-title').css({
+            'display': ''
+        }); // rest width
+    });
 }
 // We will enable for testing, its not required for production.
 // $( window ).resize(function() {
