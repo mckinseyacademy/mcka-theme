@@ -52,6 +52,30 @@ $(function () {
     if($(this).find('.discussion-module-header').length > 0) {
       inlineDiscussionLongHeading();
     }
+    var $sticky = $('.forum-nav');
+    var $stickyrStopper = $('#footer');
+    if (!!$sticky.offset()) { // make sure ".sticky" element exists
+
+      var generalSidebarHeight = $sticky.innerHeight();
+      var stickyTop = $sticky.offset().top;
+      var stickOffset = 40;
+      var stickyStopperPosition = $stickyrStopper.offset().top;
+      var stopPoint = stickyStopperPosition - generalSidebarHeight - stickOffset;
+      var diff = stopPoint + stickOffset;
+
+      $(window).scroll(function(){ // scroll event
+      var windowTop = $(window).scrollTop(); // returns number
+
+      if (stopPoint < windowTop) {
+        $sticky.css({ position: 'absolute', top: diff });
+      } else if (stickyTop < windowTop+stickOffset) {
+        $sticky.css({ position: 'fixed', top: stickOffset });
+      } else {
+        $sticky.css({position: 'absolute', top: 'initial'});
+      }
+      });
+
+    }
   });
 
   // assessment block choice
