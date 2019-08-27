@@ -75,10 +75,15 @@
 
         .bookmark{
           height: 39px;
-          width: 22px;
+          width: 22px !important;
           top:20px;
           display: inline-block;
           transition: all 0.3s ease;
+          svg{
+            width: 100% !important;
+            content: '';
+            display: block;
+          }
         }
 
         img {
@@ -387,7 +392,8 @@
         &:checked + label{
           .bookmark{
             height: 18px;
-            width: 12px;
+            width: 12px !important;
+            top: 10px;
           }
         }
       }

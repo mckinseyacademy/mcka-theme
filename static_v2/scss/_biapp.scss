@@ -1206,6 +1206,7 @@ body.rtl {
         &+label {
           .bookmark {
             @include left(0);
+            @include right(auto);
           }
         }
       }
