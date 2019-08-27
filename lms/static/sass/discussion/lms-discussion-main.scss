@@ -2237,14 +2237,17 @@ body.new-theme {
 			margin-right: 0 !important;
 			margin-bottom: 0 !important;
 			float: left;
-			max-height: calc(100vh - 300px);
+			max-height: calc(100vh - 245px);
 			overflow: hidden;
-			height: calc(100vh - 356px);
+			height: calc(100vh - 396px);
 			border-radius: 0 !important;
+			min-height: 300px;
+			transition: height .35s;
 
 			@media (max-width: 1024px) {
 				width: 250px !important;
 				padding: 15px !important;
+				max-height: none !important;
 			}
 
 			@media (max-width: 768px) {

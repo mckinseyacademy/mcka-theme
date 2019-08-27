@@ -60,12 +60,12 @@ $(function () {
     let $stickyrStopper = $('.sticky-stopper');
     let windowWidth = window.innerWidth;
     if (windowWidth > 1024) {
-      if ($sticky.offset()) { // make sure ".sticky" element exists
+      if (!!$sticky.offset()) { // make sure ".sticky" element exists
         let generalSidebarHeight = $sticky.innerHeight();
         let stickyTop = $sticky.offset().top;
-        let stickOffset = 40;
+        let stickOffset = 30;
         let stickyStopperPosition = $stickyrStopper.offset().top;
-        let stopPoint = stickyStopperPosition - generalSidebarHeight - stickOffset;
+        let stopPoint = stickyStopperPosition - generalSidebarHeight + 10000;
         let diff = stopPoint + stickOffset;
 
         $(window).scroll(function () { // scroll event
@@ -74,17 +74,20 @@ $(function () {
           if (stopPoint < windowTop) {
             $sticky.css({
               position: 'absolute',
-              top: diff
+              top: diff,
+              height: "calc(100vh  -  396px)",
             });
           } else if (stickyTop < windowTop + stickOffset) {
             $sticky.css({
               position: 'fixed',
-              top: stickOffset
+              top: stickOffset,
+              height: "calc(100vh  -  100px)",
             });
           } else {
             $sticky.css({
               position: 'absolute',
-              top: 'initial'
+              top: 'initial',
+              height: "calc(100vh  -  396px)",
             });
           }
         });
