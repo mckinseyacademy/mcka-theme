@@ -61,10 +61,15 @@ footer {
       padding: 0
     }
     .container{
-    >.row{
-      padding:0;
+      >.row{
+        padding:0;
+      }
     }
-  }
+    footer {
+      .container {
+        padding: 15px 30px;
+      }
+    }
   }
   @media screen and (max-width: 767px) {
     .nav {
@@ -90,6 +95,12 @@ footer {
       display: table-footer-group;
       width: 100%;
     }
+    footer {
+      font-size: 10px;
+      .container {
+        padding: 15px;
+      }
+    }
   }
 }
 
@@ -109,19 +120,17 @@ footer {
   }
 }
 
-@media screen and (max-width: 992px) {
+@include media-breakpoint-down(xs) {
   footer {
-    .container {
-      padding: 15px 30px;
-    }
-  }
-}
-
-@media screen and (max-width: 767px) {
-  footer {
-    font-size: 10px;
-    .container {
-      padding: 15px;
+    ul {
+      li {
+        a {
+          padding: 0 0.35rem;
+          &::before {
+            display: none;
+          }
+        }
+      }
     }
   }
 }
