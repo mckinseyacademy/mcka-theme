@@ -4511,8 +4511,11 @@ class participant_details_active_courses_api(APIView):
             user_courses_completion = course_api.get_course_completions(username=username, extra_fields=None)
 
             for user_course_progress in user_courses_progress:
-                course_id = user_course_progress['course']['id']
-                completion = user_courses_completion[course_id]['completion']['percent'] or 0.
+                try:
+                    course_id = user_course_progress['course']['id']
+                    completion = user_courses_completion[course_id]['completion']['percent'] or 0.
+                except KeyError:
+                    continue
                 user_course = {
                     'id': course_id,
                     'progress': '{:03d}'.format(round_to_int(completion * 100)),
@@ -4521,6 +4524,17 @@ class participant_details_active_courses_api(APIView):
                     ),
                 }
                 fetch_courses.append(user_course)
+
+            user_roles = user_api.get_user_roles(user_id)
+            for role in user_roles:
+                course_id = vars(role)['course_id']
+                if not any(item['id'] == course_id for item in fetch_courses) and course_id in request.GET['ids']:
+                    user_course = {
+                        'id': course_id,
+                        'progress': '{:03d}'.format(0),
+                        'proficiency': '{:03d}'.format(0),
+                    }
+                    fetch_courses.append(user_course)
 
             return Response(fetch_courses)
 
@@ -4544,7 +4558,13 @@ def download_active_courses_stats(request, user_id):
     for course in active_courses:
         course_data = None
         course_data = load_course(course['id'], request=request)
-        load_course_progress(course_data, user_id=user_id)
+        try:
+            load_course_progress(course_data, user_id=user_id)
+        except ApiError:
+            # Occurs when user is not enrolled in this course, can happen for internal admins
+            # with internal tag courses. Such courses must not be exported.
+            continue
+
         course['progress'] = '{:d}%'.format(round_to_int(course_data.user_progress))
         proficiency = course_api.get_course_metrics_grades(course['id'],
                                                            user_id=user_id, grade_object_type=Proficiency)
