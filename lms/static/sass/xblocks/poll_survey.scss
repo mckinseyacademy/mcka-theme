@@ -171,16 +171,19 @@ body.new-theme {
                 padding: 0;
 
                 .poll-answer {
-                    display: table-row !important;
-
+                    display: block !important;
+                    margin-top: 0;
                     .poll-input-container {
                         padding-right: 24px;
                         line-height: normal;
                         padding-left: 5px;
+                        display: inline-block;
+                        vertical-align: middle;
+                        margin-top: 0 !important;
 
                         &:before {
                             left: 2px;
-                            top: 5px !important;
+                            top: 0 !important;
                         }
 
                         &:after {
@@ -199,6 +202,8 @@ body.new-theme {
                     .poll-answer-text {
                         font-weight: normal;
                         padding-bottom: 5px;
+                        display: inline-block;
+                        vertical-align: middle;
 
                         p {
                             margin: 0;
