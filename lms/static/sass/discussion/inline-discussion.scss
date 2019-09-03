@@ -2172,3 +2172,23 @@ body.new-theme {
     }
 
 }
+
+
+html {
+	
+// style for Japenese language.
+	&:lang(ja) {
+
+		#course-discussion {
+			.discussion-content {
+				.page-header-secondary {
+					h1 {
+						@media (max-width: 767px) {
+							letter-spacing: -5px !important;
+						}
+					}
+				}
+			}
+		}
+	}
+}

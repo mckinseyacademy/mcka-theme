@@ -199,7 +199,7 @@ body.new-theme {
 			border: 1px solid #EEEEEE;
 			min-height: 550px;
 			margin-left: 30px !important;
-			float:right;
+			float: right;
 
 			@media (max-width: 1024px) {
 				width: calc(100% - 265px) !important;
@@ -1193,7 +1193,7 @@ body.new-theme {
 				}
 
 				// set the height incase if ask-ta card is available
-				.ask-ta ~  .forum-nav-browse-menu-wrapper {
+				.ask-ta~.forum-nav-browse-menu-wrapper {
 					height: calc(100% - 96px);
 				}
 
@@ -1336,9 +1336,11 @@ body.new-theme {
 						.input-radio {
 							display: none;
 						}
+
 						.input-radio:checked+.field-input-label:before {
 							content: '\e837';
 						}
+
 						.input-radio+.field-input-label:before {
 							font-family: 'Material Icons';
 							content: '\e836';
@@ -1354,6 +1356,7 @@ body.new-theme {
 							left: -30px;
 							top: 3px;
 						}
+
 						.field-input-label {
 							@include primary-theme-content-color( !important);
 							position: absolute;
@@ -1370,6 +1373,7 @@ body.new-theme {
 								}
 							}
 						}
+
 						&:before {
 							display: none;
 						}
@@ -1554,7 +1558,7 @@ body.new-theme {
 
 
 			// set the height incase if ask-ta card is available
-			.ask-ta ~  .discussion-thread-list-container{
+			.ask-ta~.discussion-thread-list-container {
 				height: calc(100% - 96px);
 			}
 
@@ -1727,7 +1731,7 @@ body.new-theme {
 				}
 			}
 
-			
+
 
 			.forum-content {
 				padding-top: 20px;
@@ -2262,6 +2266,50 @@ body.new-theme {
 }
 
 
+
+
+
+html {
+	.new-theme {
+		#course-discussion {
+			.discussion-content {
+				.page-header-secondary {
+					h1 {
+						@media (max-width: 767px) {
+
+							font-size: 22px !important;
+
+
+						}
+					}
+				}
+			}
+		}
+	}
+// style for Japenese language.
+	&:lang(ja) {
+
+		#course-discussion {
+			.discussion-content {
+				.page-header-secondary {
+					h1 {
+						@media (max-width: 767px) {
+							letter-spacing: -3px;
+							font-size: 18px !important;
+							position: relative;
+							top: 7px !important;
+
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+
+
 // Mobile View
 .new-theme {
 
@@ -2269,20 +2317,12 @@ body.new-theme {
 		#course-discussion {
 			.discussion-content {
 				padding: 20px 0 !important;
-
 				.page-header {
 					width: calc(100% - 30px) !important;
 					margin-left: 15px;
 					margin-right: 15px;
-
-
 					.page-header-secondary {
 						top: -9px !important;
-
-						h1 {
-							font-size: 22px !important;
-						}
-
 						.form-actions {
 							width: auto !important;
 
