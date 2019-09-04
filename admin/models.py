@@ -405,6 +405,7 @@ class ClientCustomization(db_models.Model):
     hex_background_main_navigation = db_models.CharField(max_length=7, blank=True)
     new_ui_enabled = db_models.BooleanField(default=True)
     new_ui_enabled_at = db_models.DateTimeField(auto_now_add=True)
+    is_footer_enabled = db_models.BooleanField(default=True)
 
     def delete(self):
         images = (

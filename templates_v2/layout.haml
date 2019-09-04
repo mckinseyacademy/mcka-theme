@@ -217,7 +217,8 @@
 
     -# Footer
     - block footer
-      - include 'footer.haml'
+      - if client_customization.is_footer_enabled
+        - include 'footer.haml'
 
     -# i18n JS Catalog
     - block i18n

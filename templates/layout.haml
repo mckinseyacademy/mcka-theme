@@ -214,7 +214,8 @@
 
     -# Footer
     - block footer
-      - include 'footer.haml'
+      - if client_customization.is_footer_enabled
+        - include 'footer.haml'
 
     -# Video overlay
     - block video_overlay

@@ -1793,6 +1793,8 @@ def client_detail_customization(request, client_id):
         customization.hex_page_background = request.POST.get('hex_page_background', customization.hex_page_background)
         customization.hex_background_main_navigation = request.POST.get('hex_background_main_navigation',
                                                                         customization.hex_background_main_navigation)
+        customization.is_footer_enabled = 'is_footer_enabled' in request.POST
+
         if request.user.is_mcka_admin:
             if 'new_ui_enabled' in request.POST and not customization.new_ui_enabled:
                 customization.new_ui_enabled_at = datetime.now()
