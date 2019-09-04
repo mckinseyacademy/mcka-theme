@@ -217,7 +217,10 @@
 
     -# Footer
     - block footer
-      - if client_customization.is_footer_enabled
+      - if client_customization
+        - if client_customization.is_footer_enabled
+          - include 'footer.haml'
+      - else
         - include 'footer.haml'
 
     -# i18n JS Catalog
