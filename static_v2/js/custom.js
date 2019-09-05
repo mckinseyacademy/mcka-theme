@@ -302,6 +302,13 @@ $(document).ready(function () {
     if ($(window).width() <= 1024 && $('.progress-data tr td').length >= 2) {
         $(".progress-data").addClass("three-cols");
     }
+
+    $("input:radio[name='faculty_tabs']").change(function (index, value){
+      $(".teacherinfaculty").css("display","none")
+       if($(this).prop('checked',true)){
+           $("#"+("teacher_"+$(this).attr('id').split("_")[1])).css("display","block")
+       }
+    });
 });
 
 
