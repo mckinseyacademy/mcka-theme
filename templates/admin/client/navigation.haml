@@ -72,6 +72,13 @@
                     {% trans "ON" %}
                   - else
                     {% trans "OFF" %}
+          .footer-switch
+            %label{:for => "footerswitcher"}
+              %span {% trans "Show Footer" %}
+              - if customization.is_footer_enabled
+                %input.footer-checker#footerswitcher{type: 'checkbox', name: 'is_footer_enabled', checked: 'checked'}
+              - else
+                %input.footer-checker#footerswitcher{type: 'checkbox', name: 'is_footer_enabled'}
       %fieldset
         .sub-1.oldui {% trans "Global Branding" %}
         .sub-1.newui {% trans "Platform Branding" %}
