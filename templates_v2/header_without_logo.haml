@@ -1,0 +1,135 @@
+- load i18n
+- load cache
+- load staticfiles
+- load template_helpers
+- get_current_language as LANGUAGE_CODE
+- get_available_languages as LANGUAGES
+
+%header.appHeader{class: "{% if learner_dashboards|length %}has-dashboard{% endif %}"}
+  .container
+    .row
+      .col
+        .logo.clearfix
+          - if request.user.is_authenticated
+            .topRightArea
+              .profileArea
+                %a.dropdown-toggle{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
+                  - if user.has_image
+                    %img{:alt => "", :src => "{{user.image_url_medium}}", :width => "160"}/
+                  - elif user.name_initials
+                    %span.userNameInitials {{user.name_initials|upper}}
+                  - else
+                    %img{:alt => "", :src => "{{user.image_url_full}}"}/
+
+
+                %div{'class':'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
+                  .header
+                    .avatar-area
+                      .userAvatar.lg
+                        .holder
+                          - if user.has_image
+                            %img{:alt => "", :src => "{{user.image_url_full}}"}/
+                          - elif user.name_initials
+                            %span {{user.name_initials|upper}}
+                          - else
+                            %img{:alt => "", :src => "{{user.image_url_full}}"}/
+
+
+                        %a.edit-link{:data-target => ".editPhotoModal", :href => "javascript:void(0)", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
+                          {% trans "edit photo" %}
+                    .titles-area
+                      .nameArea
+                        %span{:firstname => "{{user.first_name}}", :lastname => "{{user.last_name}}"} {{user.fullname}}
+                        %a.edit-link{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
+                          {% trans "edit" %}
+                      .roleArea
+                        - if user.title
+                          %span.title= user.title
+                        - else
+                          %span {% trans "Enter your role" %}
+                        %a.edit-link{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
+                          {% trans "edit" %}
+                  .content
+                    .wrap
+                      %strong.text-uppercase.title
+                        {% trans "username" %}
+                      %strong.titleName {{user.username}}
+                    .wrap
+                      %strong.text-uppercase.title
+                        {% trans "email" %}
+                      %span.userMail {{user.email}}
+                  .footer
+                    %a.btn.btn-secondary{href: "/accounts/logout"}
+                      {% trans "log out" %}
+
+              %nav.nav.mainNav.headerNav
+                %ul
+                  - if request.user.is_manager
+                    {% url 'manager_dashboard' as manager_dashboard_url %}
+                    %li.adminBtn{class: "{% if request.path == manager_dashboard_url %}active{% endif %}"}
+                      %a.nav-link{href: "{{manager_dashboard_url}}"}
+                        {% trans "team reports" %}
+                  - if request.user.is_mcka_admin or request.user.is_internal_admin or request.user.is_mcka_subadmin
+                    {% url 'admin_home' as admin_home_url %}
+                    %li.adminBtn{class: "{% if request.path == admin_home_url %}active{% endif %}"}
+                      %a.nav-link{href: "{{admin_home_url}}"}
+                        {% trans "admin" %}
+                  - if request.user.is_company_admin
+                    {% url 'company_dashboard' as company_dashboard_url %}
+                    %li.adminBtn{class: "{% if request.resolver_match.url_name == 'company_dashboard' or request.resolver_match.url_name == 'company_details' or request.resolver_match.url_name == 'company_course_details' %}active{% endif %}"}
+                      %a.nav-link{href: "{{company_dashboard_url}}"}
+                        {% trans "company admin" %}
+                  - if request.user.is_mcka_ta
+                    {% url 'workgroup_list' as workgroup_list_url %}
+                    %li.adminBtn{class: "{% if request.path == workgroup_list_url %}active{% endif %}"}
+                      %a.nav-link{href: "{{workgroup_list_url}}"}
+                        {% trans "ta" %}
+
+                  - if learner_dashboards|length > 1
+                    %li{class: "{% if 'learnerdashboard' in request.path %}active{% endif %}"}
+                      %a.nav-link.dropdown-toggle{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :href => "#", :role => "button"}
+                        {% trans "dashboard" %}
+
+                      %div{'class' : 'dropdown-menu-left dropdown-menu middle-menu clearfix dashboard-menu'}
+                        %ul.sub-nav
+                          - for dashboard in learner_dashboards
+                            %li
+                              %a.dropdown-item.LDCourse{:href => "/courses/{{dashboard.course_id}}"} {{dashboard.title}}
+                                - if current_ld_course and dashboard.course_id == current_ld_course
+                                  %span.bookmark.secondary
+                                    %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
+                                      %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
+
+                  - elif learner_dashboards|length == 1
+                    %li{class: "{% if 'learnerdashboard' in request.path %}active{% endif %}"}
+                      %a.nav-link{"aria-expanded": "false", "aria-haspopup": "true", :href => "/courses/{{learner_dashboards.0.course_id}}", :role => "button"}
+                        {% trans "dashboard" %}
+
+                  {% url 'courses' as courses_url %}
+                  %li#mycoursestab{class: "{% if request.path == courses_url %}active{% endif %}" }
+                    %a.nav-link{href: "{{courses_url}}"}
+                      {% trans "my courses" %}
+                  - if show_my_courses and learner_dashboards|length == 0
+                    %script
+                      if(window.innerWidth < 768){
+                        $('#mycoursestab a.nav-link').remove();
+                      }
+          - else
+            - if use_i18n
+              .language-selector
+                %i.material-icons language
+                .dropdown
+                  %button#dropdownMenuButton.dropdown-toggle.border-0{:tabindex => "-1", "aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
+                    {{ LANGUAGE_CODE }}
+                  .dropdown-menu.language-dropdown{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
+                    - for language_code, language_name in LANGUAGES
+                      - if LANGUAGE_CODE == language_code
+                        %a.dropdown-item.selected
+                          {{language_name}}
+                      - else
+                        %a.dropdown-item{href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                          -if language_code == 'en' or language_code == 'nl'
+                            - get_language_info for language_code as lang
+                            {{lang.name}}
+                          -else
+                            {{language_name}}

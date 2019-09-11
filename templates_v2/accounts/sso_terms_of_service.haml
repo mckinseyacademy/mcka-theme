@@ -2,6 +2,9 @@
 - load i18n
 - comment "This template is used for /accounts/finalize/ (SSO registration)"
 
+- block header
+   - include 'header_without_logo.haml'
+
 - block page_title
   %title {% trans "Register | McKinsey Academy" %}
 
@@ -27,3 +30,5 @@
             %a.nav-link{:href => "/faq/", :target => "_blank"} {% trans "Read FAQs" %}
           %li.nav-item
             %a.nav-link{:href => "#{support}", :target => "_blank"} {% trans "Contact Support" %}
+
+- block footer

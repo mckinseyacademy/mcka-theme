@@ -4,6 +4,9 @@
 - block page_title
   %title {% trans "Access | McKinsey Academy" %}
 
+- block header
+  - include 'header_without_logo.haml'
+
 - block content
   - if redirect_to
     .container.text-center.access-key-page
@@ -31,6 +34,9 @@
             %h3.sub-1 {% trans "Sorry!" %}
             %hr.blank
             %p {% trans "There was a problem with your access code." %}
+
+- block footer
+
 - block js_snippets
   - if redirect_to
     %script{id: 'access-key-script', src: "{% static 'js/accounts/access_keys.js' %}", 'data-redirect-to': "{{ redirect_to|safe }}"}
