@@ -437,10 +437,6 @@ def enroll_user_in_course(user_id, course_id):
         sender=__name__, user_ids=[user_id],
         data_type=USER_PROPERTIES.COURSES
     )
-    course_data_updated.send(
-        sender=__name__, course_ids=[course_id],
-        data_type=COURSE_PROPERTIES.ROLES
-    )
     return response.code == 201
 
 

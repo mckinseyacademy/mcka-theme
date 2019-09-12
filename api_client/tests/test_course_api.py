@@ -9,7 +9,6 @@ from django.test import TestCase, override_settings
 from mock import patch
 
 from accounts.helpers import TestUser
-from accounts.tests.utils import ApplyPatchMixin
 from api_client.course_api import (
     COURSEWARE_API,
     COURSE_BLOCK_API,
@@ -28,7 +27,7 @@ from mcka_apros.settings import COURSE_ENROLLMENT_API
 
 
 @ddt.ddt
-class TestCourseApi(TestCase, ApplyPatchMixin):
+class TestCourseApi(TestCase):
     """
     Test the Course API calls
     """
@@ -208,9 +207,6 @@ class TestCourseApi(TestCase, ApplyPatchMixin):
         """
         Test get_course with positional and keyword argments.
         """
-        course_api = self.apply_patch('api_client.course_api')
-        course_api.get_users_filtered_by_role.return_value = []
-
         self._setup_courseware_response()
         course = get_course(*args, **kwargs)
         self.assertEquals(len(course.chapters), expected_result)
@@ -221,9 +217,6 @@ class TestCourseApi(TestCase, ApplyPatchMixin):
         """
         Ensure that get_course can return different content for different users.
         """
-        course_api = self.apply_patch('api_client.course_api')
-        course_api.get_users_filtered_by_role.return_value = []
-
         self._setup_courseware_response()
         course2 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.TEST_USER)
         course1 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.STAFF_USER)
