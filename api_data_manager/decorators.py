@@ -155,10 +155,19 @@ def course_api_cache_wrapper(parse_method, parse_object, property_name, post_pro
                     user = kwargs.get('user')
 
                 if user:  # User may be an object or a dict.
+                    from api_client import course_api
+                    user_id, is_superuser = None, False
                     try:
-                        user_type = 'staff' if user.is_staff else 'generic'
+                        user_id, is_superuser = user.id, user.is_staff
                     except AttributeError:
-                        user_type = 'staff' if user.get('is_staff') else 'generic'
+                        user_id, is_superuser = user.get('id'), user.get('is_staff')
+
+                    if is_superuser:
+                        user_type = 'staff'
+                    else:
+                        roles = course_api.get_users_filtered_by_role(course_id)
+                        user_roles = {r.role for r in roles if r.id == user_id}
+                        user_type = 'staff' if {'instructor', 'staff'} & user_roles else 'generic'
 
                 data_property = '{}_{}_{}'.format(data_property, tree_depth, user_type)
 
