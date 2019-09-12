@@ -1,13 +1,4 @@
-$(function () {
-  if(localStorage.getItem('redirect_after_scorm_login')) {
-    // This flag specifies that the user is coming to this page after logging in
-    // in a SCORM popup window, so unset the flag, and close the window.
-    localStorage.removeItem('redirect_after_scorm_login');
-    window.close();
-  }
-});
-
-$(document).on('blur input','#login_id', function() {
+$('#login_id').on('blur input', function() {
     $(this).parents('.form-group').addClass('focused');
     $('#login').attr("disabled", false);
 });
