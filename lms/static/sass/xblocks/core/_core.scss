@@ -14,7 +14,7 @@
         ul
         {
             padding: 0;
-            margin: 20px 0 20px 20px;
+            margin: 20px;
             line-height: 26px;
             @include font-size(16);
 
@@ -33,7 +33,7 @@
         ol
         {
             padding: 0;
-            margin: 20px 0 20px 20px;
+            margin: 20px;
             line-height: 26px;
             @include font-size(16);
 
