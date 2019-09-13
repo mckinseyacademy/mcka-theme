@@ -3,6 +3,43 @@ body{
   &.learner-dashboard-view{
     background-repeat: no-repeat !important;
     background-size: cover !important;
+    background-position: center;
+    .learner-dashboard-logo {
+      background-image: url('/static/image/mckinsey-academy-logo@2x.png');
+      position: absolute;
+      background-size: 100%;
+      width: 200px;
+      height: 21px;
+      bottom: 80px;
+      right: 25px;
+      z-index: -1;
+      display: none;
+    }
+    &.ld-show-logo {
+      .learner-dashboard-logo {
+        display: block;
+      }
+    }
+    #learner-dashboard {
+      .col-lg-4 {
+        display: none;
+      }
+      .col-lg-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+      }
+    }
+    &.ld-show-discovery {
+      #learner-dashboard {
+        .col-lg-4 {
+          display: block;
+        }
+        .col-lg-8 {
+          flex: 0 0 66.66667%;
+          max-width: 66.66667%;
+        }
+      }
+    }
   }
 }
 

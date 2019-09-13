@@ -1,3 +1,9 @@
+- if feature_flags.show_ld_discovery
+  %script
+    $('body').addClass('ld-show-discovery')
+- if feature_flags.show_ld_logo
+  %script
+    $('body').addClass('ld-show-logo')
 %script
   $('body').addClass("learner-dashboard-view");
   - if branding

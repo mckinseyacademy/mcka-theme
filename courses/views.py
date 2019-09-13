@@ -1301,6 +1301,8 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.lesson_label = request.POST.get('lesson_label', None) == 'on'
     feature_flags.leaderboard = request.POST.get('leaderboard', None) == 'on'
     feature_flags.enhanced_caching = request.POST.get('enhanced_caching', None) == 'on'
+    feature_flags.show_ld_discovery = request.POST.get('show_ld_discovery', None) == 'on'
+    feature_flags.show_ld_logo = request.POST.get('show_ld_logo', None) == 'on'
     feature_flags.save()
 
     if request.POST.get('mobile_available', None) is not None:
