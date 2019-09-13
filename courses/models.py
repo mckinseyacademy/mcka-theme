@@ -81,6 +81,8 @@ class FeatureFlags(db_models.Model):
     # flagged courses are picked up by celery background task
     # and advanced caching is built for them
     enhanced_caching = db_models.BooleanField(default=False)
+    show_ld_discovery = db_models.BooleanField(default=True)
+    show_ld_logo = db_models.BooleanField(default=False)
 
     def as_json(self):
         return dict(

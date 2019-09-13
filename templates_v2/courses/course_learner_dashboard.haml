@@ -8,6 +8,7 @@
   %script{"src": "{% static 'js/highcharts/highcharts-more.js' %}"}
 
   #learner-dashboard
+    %div.learner-dashboard-logo{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
     #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
     .container
       .row{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}

@@ -182,6 +182,22 @@
             %label{for: 'leaderboard'}
               {% trans "Enhanced Caching" %}
             %p.style-6 {% trans "Note: Enabling enhanced caching will improve the performance but changes to course content would not reflect until the cache refreshes (cache refresh frequency 24 hours)" %}
+          %li
+            - if feature_flags.show_ld_discovery
+              %input#show_ld_discovery{type: 'checkbox', name: 'show_ld_discovery', checked: 'checked'}
+            - else
+              %input#show_ld_discovery{type: 'checkbox', name: 'show_ld_discovery'}
+            %label{for: 'leaderboard'}
+              {% trans "Show Learner Dashboard Discovery" %}
+            %p.style-6 {% trans "Note: Disabling this would hide discovery content on the right side of the screen in learner dashbaord." %}
+          %li
+            - if feature_flags.show_ld_logo
+              %input#show_ld_logo{type: 'checkbox', name: 'show_ld_logo', checked: 'checked'}
+            - else
+              %input#show_ld_logo{type: 'checkbox', name: 'show_ld_logo'}
+            %label{for: 'leaderboard'}
+              {% trans "Show Learner Dashboard Logo" %}
+            %p.style-6 {% trans "Note: Disabling this would hide the company logo on the bottom right side of learner dashbaord." %}
 
 
 
