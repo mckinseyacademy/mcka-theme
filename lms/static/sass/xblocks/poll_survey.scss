@@ -199,6 +199,13 @@ body.new-theme {
 
                     }
 
+                    .poll-image{
+                        display: inline-block;
+                        vertical-align: middle;
+                        width: auto;
+                        max-width:25%;
+                    }
+
                     .poll-answer-text {
                         font-weight: normal;
                         padding-bottom: 5px;
@@ -241,6 +248,11 @@ body.new-theme {
                             left: 2px;
                             top: 3px !important;
                         }
+                    }
+                    .poll-result-input-container,
+                    .result-image{
+                        display: inline-block;
+                        vertical-align: middle;
                     }
 
                     .percentage-gauge-container {
