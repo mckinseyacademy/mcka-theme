@@ -108,6 +108,8 @@ class CourseLandingPageTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
         self.assertEqual(response['Location'], '{}?next={}'.format(reverse('login'), self.url))
 
     def test_without_access_rights(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         # user is logged-in but is not enrolled to this course
         self.client.login()
         self.mock_user_api_data_manager(
@@ -131,6 +133,9 @@ class CourseLandingPageTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
     @httpretty.activate
     @mock.patch('courses.views.set_current_course_for_user')
     def test_with_all_rights(self, mock_set_course):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
+
         self.client.login()
         user = auth.get_user(self.client)
 
@@ -187,6 +192,8 @@ class CourseOverviewPageTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin)
         self.assertEqual(response['Location'], '{}?next={}'.format(reverse('login'), self.url))
 
     def test_without_access_rights(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         self.client.login()
 
         # user is logged-in but is not enrolled to this course
@@ -210,6 +217,9 @@ class CourseOverviewPageTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin)
 
     @httpretty.activate
     def test_get_overview(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
+
         self.client.login()
         user = auth.get_user(self.client)
 
@@ -269,6 +279,8 @@ class CourseUserProgressTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin)
     )
     @ddt.unpack
     def test_page_access_checks(self, method, logged_in, user_role, expected_response):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         if logged_in:
             self.client.login(user_role=user_role)
 
