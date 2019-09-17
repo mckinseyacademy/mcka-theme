@@ -4,6 +4,7 @@ import httpretty
 from django.test import TestCase, Client
 from django.utils import translation
 
+from accounts.tests.utils import ApplyPatchMixin
 from courses.course_tree_builder import CourseTreeBuilder
 from util.unit_test_helpers.test_api_responses import (
     course as test_course_data,
@@ -16,7 +17,7 @@ from util.unit_test_helpers.common_mocked_objects import TestUser, mock_request_
 
 
 @ddt.ddt
-class TestCourseTreeBuilder(TestCase):
+class TestCourseTreeBuilder(TestCase, ApplyPatchMixin):
     def setUp(self):
         self.course_id = 'CS101/ORG101/2018'
         self.user = TestUser(user_id=1, email='user@example.com', username='mcka_admin_user')
@@ -58,6 +59,8 @@ class TestCourseTreeBuilder(TestCase):
 
     @httpretty.activate
     def test_build_page_info(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         test_course_data.setup_course_response(self.course_id, self.user.username)
 
         request = self.client.get(path='/')
@@ -75,6 +78,8 @@ class TestCourseTreeBuilder(TestCase):
 
     @httpretty.activate
     def test_include_estimated_completion_times(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         test_course_data.setup_course_response(self.course_id, self.user.username)
         test_course_tabs.setup_course_tabs_response(self.course_id)
 
@@ -90,6 +95,8 @@ class TestCourseTreeBuilder(TestCase):
 
     @httpretty.activate
     def test_include_progress_data(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         test_user_data.setup_user_profile_response(self.user.id)
         test_course_metrics_data.setup_course_completions_response(self.course_id)
 
@@ -106,6 +113,9 @@ class TestCourseTreeBuilder(TestCase):
 
     @httpretty.activate
     def test_include_lesson_descriptions(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
+
         test_course_data.setup_course_response(self.course_id, self.user.username)
         test_course_tabs.setup_course_tabs_response(self.course_id)
 
@@ -159,6 +169,8 @@ class TestCourseTreeBuilder(TestCase):
             self, current_lesson_id, current_module_id,
             right_module_id, left_module_id, lang_code
     ):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         test_course_data.setup_course_response(self.course_id, self.user.username)
         request = mock_request_object(path='/', user=self.user)
         translation.activate(lang_code)
@@ -186,6 +198,8 @@ class TestCourseTreeBuilder(TestCase):
 
     @httpretty.activate
     def test_get_graded_items_count(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         test_user_grades.setup_user_gradebook_response(self.course_id, self.user.id)
         request = mock_request_object(path='/', user=self.user)
 
@@ -196,6 +210,8 @@ class TestCourseTreeBuilder(TestCase):
 
     @httpretty.activate
     def test_get_processed_course_static_data(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         test_course_data.setup_course_response(self.course_id, self.user.username)
         test_course_tabs.setup_course_tabs_response(self.course_id)
 
@@ -213,6 +229,8 @@ class TestCourseTreeBuilder(TestCase):
 
     @httpretty.activate
     def test_get_processed_course_dynamic_data(self):
+        course_api = self.apply_patch('api_client.course_api')
+        course_api.get_users_filtered_by_role.return_value = []
         test_course_data.setup_course_response(self.course_id, self.user.username)
         test_course_metrics_data.setup_course_completions_response(self.course_id)
         test_user_data.setup_user_profile_response(self.user.id)
