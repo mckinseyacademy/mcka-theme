@@ -3063,10 +3063,6 @@ msgid ""
 "any inconvenience."
 msgstr "麦肯锡学院网站目前正在进行定期维护。如有不便，敬请谅解。"
 
-#: templates/accounts/access.haml:4 templates_v2/accounts/access.haml:5
-msgid "Access | McKinsey Academy"
-msgstr "访问 | 麦肯锡学院"
-
 #: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:24
 msgid "You will be redirected to your login provider."
 msgstr "您将被重定向到您的登录提供程序。"
@@ -3074,13 +3070,6 @@ msgstr "您将被重定向到您的登录提供程序。"
 #: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:33
 msgid "There was a problem with your access code."
 msgstr "您的访问代码有问题。"
-
-#: templates/accounts/activate.haml:6
-#: templates/accounts/sso_terms_of_service.haml:6
-#: templates_v2/accounts/activate.haml:6
-#: templates_v2/accounts/sso_terms_of_service.haml:6
-msgid "Register | McKinsey Academy"
-msgstr "注册 | 麦肯锡学院"
 
 #: templates/accounts/activate.haml:18
 #: templates/accounts/sso_terms_of_service.haml:18
@@ -3173,10 +3162,6 @@ msgstr "拖动并调整裁剪工具以编辑您的头像。"
 #: templates_v2/accounts/user_profile.haml:49
 msgid "Crop & Save"
 msgstr "裁剪并保存"
-
-#: templates/accounts/login.haml:5
-msgid "Login | McKinsey Academy"
-msgstr "登录 | 麦肯锡学院"
 
 #: templates/accounts/login.haml:16
 msgid "< Back"
@@ -3301,11 +3286,6 @@ msgstr "或者尝试 15 分钟后再次登录。"
 msgid "Reset Password"
 msgstr "重置密码"
 
-#: templates/accounts/public_registration.haml:6
-#: templates_v2/accounts/public_registration.haml:6
-msgid "Demo registration | McKinsey Academy"
-msgstr "注册演示视频 | 麦肯锡学院"
-
 #: templates/accounts/public_registration.haml:8
 #: templates/certificates/course_certificate_notification_email.haml:13
 #: templates/layout.haml:27 templates/privacy.haml:128
@@ -3359,10 +3339,6 @@ msgid ""
 "Following successful registration, you will receive an email granting access "
 "to the course."
 msgstr "成功注册后，您将收到一封电子邮件，为您授予该课程的访问权限。"
-
-#: templates/accounts/sso_error.haml:4 templates_v2/accounts/sso_error.haml:6
-msgid "Login Process Failed | McKinsey Academy"
-msgstr "登录过程失败 | 麦肯锡学院"
 
 #: templates/accounts/sso_error.haml:10 templates_v2/accounts/sso_error.haml:12
 msgid "Sign in error"
@@ -6447,10 +6423,6 @@ msgstr "课时上课时间是 %(start_date)s"
 msgid " %(module_custom_label)s %(lesson_index)s of %(lesson_count)s"
 msgstr "%(module_custom_label)s %(lesson_index)s %(lesson_count)s"
 
-#: templates/courses/course_cohort.haml:8
-msgid "| Cohort | Courses | McKinsey Academy"
-msgstr "| 群组 | 课程 | McKinsey Academy"
-
 #: templates/courses/course_cohort.haml:16
 msgid ""
 "Below are helpful tips to interact with the cohort map and leaderboards. You "
@@ -6692,13 +6664,6 @@ msgstr "一个由变革者组成的全球社区，携手加快推进应对紧急
 msgid "Suggest a Link"
 msgstr "建议链接"
 
-#: templates/courses/course_discussion.haml:8
-#: templates/courses/course_discussion_ld.haml:8
-#: templates_v2/courses/course_discussion.haml:8
-#: templates_v2/courses/course_discussion_ld.haml:8
-msgid " | Discussion | Courses | McKinsey Academy"
-msgstr " | 讨论 | 课程 | 麦肯锡学院"
-
 #: templates/courses/course_discussion.haml:16
 msgid ""
 "Below are helpful tips to engage in discussions with your cohort or group "
@@ -6749,13 +6714,6 @@ msgstr "您可以向页面左上角显示的麦肯锡助教发送电子邮件"
 #: templates/courses/course_discussion_userprofile.haml:9
 msgid "User profiles are not yet available"
 msgstr "用户档案尚不可用"
-
-#: templates/courses/course_group_work.haml:7
-#: templates/courses/course_group_work_ld.haml:8
-#: templates_v2/courses/course_group_work.haml:8
-#: templates_v2/courses/course_group_work_ld.haml:8
-msgid " | Group Work | Courses | McKinsey Academy"
-msgstr " | 小组作业 | 课程 | 麦肯锡学院"
 
 #: templates/courses/course_group_work.haml:16
 #: templates/courses/course_group_work.haml:28
@@ -6917,12 +6875,6 @@ msgstr "向小组发送电子邮件"
 msgid "Ask a TA"
 msgstr "询问助教"
 
-#: templates/courses/course_learner_dashboard.haml:10
-#: templates_v2/courses/course_base_ld.haml:9
-#: templates_v2/courses/course_base_ld_external.haml:9
-msgid " | McKinsey Academy | Learner Dashboard"
-msgstr " | 麦肯锡学院 | 学员仪表板"
-
 #: templates/courses/course_learner_dashboard_calendar.haml:36
 #: templates_v2/courses/course_learner_dashboard_calendar.haml:42
 msgid "not available"
@@ -7040,10 +6992,6 @@ msgstr " 您已完成 %% 的%(lesson_name)s%(course_current_progress)s"
 msgid " #{lesson_custom_label} %(current_lesson_index)s:"
 msgstr " #{lesson_custom_label} %(current_lesson_index)s:"
 
-#: templates/courses/course_main.haml:8 templates_v2/courses/course_main.haml:8
-msgid " | Courses | McKinsey Academy"
-msgstr " | 课程 | 麦肯锡学院"
-
 #: templates/courses/course_main.haml:41 templates/layout.haml:253
 msgid ""
 "This is the McKinsey Academy Beta and we are happy to have you participate "
@@ -7063,16 +7011,6 @@ msgstr ""
 #: templates_v2/courses/course_base.haml:9
 msgid " | "
 msgstr "  | "
-
-#: templates/courses/course_navigation.haml:8
-#: templates_v2/courses/course_base.haml:9
-msgid " | McKinsey Academy"
-msgstr " | 麦肯锡学院"
-
-#: templates/courses/course_navigation.haml:10
-#: templates_v2/courses/course_base.haml:11
-msgid " | Lessons | McKinsey Academy"
-msgstr " | 课时 | 麦肯锡学院"
 
 #: templates/courses/course_navigation.haml:18
 msgid ""
@@ -7169,14 +7107,6 @@ msgid ""
 "in the main navigation bar"
 msgstr "通过主导航栏中的 <i class=\"mk-icon-lessonsnav\"></i> 图标访问各个课时"
 
-#: templates/courses/course_navigation_ld.haml:9
-msgid " | McKinsey Academy | "
-msgstr " | 麦肯锡学院 | "
-
-#: templates/courses/course_news.haml:7 templates_v2/courses/course_news.haml:7
-msgid " | Announcements | Courses | McKinsey Academy"
-msgstr " | 公告 | 课程 | 麦肯锡学院"
-
 #: templates/courses/course_news.haml:13
 #: templates/courses/course_overview.haml:13
 #: templates/courses/course_resources.haml:13
@@ -7231,18 +7161,9 @@ msgstr "“资源”提供每个课时的主要内容和大纲，还提供补充
 msgid "No announcements have been posted yet."
 msgstr "尚未发布任何公告。"
 
-#: templates/courses/course_notready.haml:7
-msgid "has not yet started"
-msgstr "尚未开始"
-
 #: templates/courses/course_notready.haml:13
 msgid "This content is not yet available."
 msgstr "此内容尚不可用。"
-
-#: templates/courses/course_overview.haml:7
-#: templates_v2/courses/course_overview.haml:7
-msgid " | Overview | Courses | McKinsey Academy"
-msgstr " | 概述 | 课程 | 麦肯锡学院"
 
 #: templates/courses/course_overview.haml:21
 msgid ""
@@ -7306,12 +7227,6 @@ msgstr "您将学到什么"
 #: templates_v2/courses/course_overview.haml:50
 msgid "Faculty"
 msgstr "教师"
-
-#: templates/courses/course_progress.haml:7
-#: templates/courses/course_progress_v2.haml:8
-#: templates_v2/courses/course_progress_v2.haml:8
-msgid " | Progress | Courses | McKinsey Academy"
-msgstr " | 进度 | 课程 | 麦肯锡学院"
 
 #: templates/courses/course_progress.haml:21
 msgid ""
@@ -7752,15 +7667,6 @@ msgstr ""
 "问您的某些可识别身份的信息，包括正在参与的课程、课程的进度和参与度以及成就水"
 "平（包括您的评分），以帮助雇主和您个人来评估麦肯锡学院及其对您和您公司的价"
 "值。您可以在隐私政策中了解更多有关我们的隐私和信息共享实践的信息。"
-
-#: templates/courses/course_resources.haml:7
-#: templates_v2/courses/course_resources.haml:7
-msgid " | Resources | Courses | McKinsey Academy"
-msgstr " | 资源 | 课程 | 麦肯锡学院"
-
-#: templates/courses/course_resources_learner_dashboard.haml:8
-msgid " | Resources | McKinsey Academy"
-msgstr " | 资源 | 麦肯锡学院"
 
 #: templates/courses/course_syllabus.haml:6
 msgid "Syllabus"
@@ -8494,10 +8400,6 @@ msgstr ""
 "fa-question-circle\"></i>。\n"
 "              "
 
-#: templates/marketing/about.haml:6
-msgid "About | McKinsey Academy"
-msgstr "关于 | 麦肯锡学院"
-
 #: templates/marketing/about.haml:7
 msgid "McKinsey Academy About"
 msgstr "麦肯锡学院概况"
@@ -8578,10 +8480,6 @@ msgstr ""
 msgid "Continue to web"
 msgstr "继续转至网页"
 
-#: templates/marketing/contact.haml:5
-msgid "Contact | McKinsey Academy"
-msgstr "联系方式 | 麦肯锡学院"
-
 #: templates/marketing/contact.haml:6
 msgid "McKinsey Academy Contact"
 msgstr "麦肯锡学院联系方式"
@@ -8641,10 +8539,6 @@ msgstr "无法正常使用上面的电子邮件按钮？"
 #: templates/marketing/contact.haml:57
 msgid "Click here."
 msgstr "点击此处。"
-
-#: templates/marketing/edxoffer.haml:5
-msgid "Offer | McKinsey Academy"
-msgstr "课程 | 麦肯锡学院"
 
 #: templates/marketing/edxoffer.haml:6
 msgid "McKinsey Academy Offer"
@@ -8775,10 +8669,6 @@ msgstr "申请"
 #: templates/marketing/edxoffer.haml:78
 msgid "Please submit the information below and we will respond."
 msgstr "请提交以下信息，我们会予以回复。"
-
-#: templates/marketing/experience.haml:5
-msgid "Experience | McKinsey Academy"
-msgstr "体验 | 麦肯锡学院"
 
 #: templates/marketing/experience.haml:6
 msgid "McKinsey Academy Experience"
@@ -8954,10 +8844,6 @@ msgid ""
 "Advanced analytics measure participant progress, proficiency, and social "
 "engagement"
 msgstr "高级分析可以衡量参与者的进度、熟练程度和社交参与度"
-
-#: templates/marketing/fblf.haml:5
-msgid "FBLF | McKinsey Academy"
-msgstr "FBLF | 麦肯锡学院"
 
 #: templates/marketing/fblf.haml:6
 msgid "McKinsey Academy FBLF"
@@ -9168,19 +9054,10 @@ msgstr "加入全球未来领袖网络"
 msgid "Elevate their visibility within your organization"
 msgstr "提升其在贵组织内的知名度"
 
-#: templates/marketing/productwalkthrough.haml:5
-#: templates_v2/marketing/productwalkthrough.haml:6
-msgid "Product Walkthrough | McKinsey Academy"
-msgstr "产品详细指导 | 麦肯锡学院"
-
 #: templates/marketing/productwalkthrough.haml:6
 #: templates_v2/marketing/productwalkthrough.haml:7
 msgid "McKinsey Academy Product Walkthrough"
 msgstr "麦肯锡学院产品详细指导"
-
-#: templates/marketing/programs.haml:5
-msgid "Programs | McKinsey Academy"
-msgstr "课程计划 | 麦肯锡学院"
 
 #: templates/marketing/programs.haml:6
 msgid "McKinsey Academy Programs"
@@ -11632,12 +11509,6 @@ msgstr "请选择以下选项之一"
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "公司名称只能包含字母数字字符"
 
-#: templates_v2/accounts/scorm_login_complete.haml:5
-#, fuzzy
-#| msgid "Login | McKinsey Academy"
-msgid "Login Complete | McKinsey Academy"
-msgstr "登录 | 麦肯锡学院"
-
 #: templates_v2/accounts/scorm_login_complete.haml:12
 msgid "You can successfully logged in. You can now close this window."
 msgstr ""
@@ -11816,10 +11687,6 @@ msgstr "%(lesson_count)s 的 %(module_custom_label)s %(lesson_index)s"
 #, python-format
 msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "%(lesson_count)s 的模块 %(lesson_index)s"
-
-#: templates_v2/courses/course_cohort.haml:8
-msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| 排行榜 | 课程 | McKinsey Academy"
 
 #: templates_v2/courses/course_cohort.haml:23
 msgid "Your course completion status:"

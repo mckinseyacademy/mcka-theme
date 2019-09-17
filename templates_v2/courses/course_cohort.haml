@@ -2,11 +2,6 @@
 - load staticfiles
 - load i18n
 
-- block page_title
-  %title
-    = program.display_name
-    {% trans "| Leaderboard | Courses | McKinsey Academy" %}
-
 - block content
   .container.course-cohort.loader.donut-loader
     .row

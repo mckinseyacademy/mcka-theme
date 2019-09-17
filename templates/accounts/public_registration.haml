@@ -1,12 +1,6 @@
 - extends "layout.haml"
 - load i18n
 
-- block page_title
-  %title
-    {% trans "Demo registration | McKinsey Academy" %}
-
-  %meta{property: "og:title", content: "{% trans 'McKinsey Academy' %}" }
-
 - block header
   - include 'accounts/login_header.haml'
 

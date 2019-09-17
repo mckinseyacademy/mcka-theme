@@ -3104,10 +3104,6 @@ msgstr ""
 "McKinsey Academyは、現在、定期メンテナンス中です。ご不便をおかけし、申し訳ご"
 "ざいません。"
 
-#: templates/accounts/access.haml:4 templates_v2/accounts/access.haml:5
-msgid "Access | McKinsey Academy"
-msgstr "アクセス | McKinsey Academy"
-
 #: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:24
 msgid "You will be redirected to your login provider."
 msgstr "あなたのログイン・プロバイダへリダイレクトします。"
@@ -3115,13 +3111,6 @@ msgstr "あなたのログイン・プロバイダへリダイレクトします
 #: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:33
 msgid "There was a problem with your access code."
 msgstr "アクセス・コードに問題がありました。"
-
-#: templates/accounts/activate.haml:6
-#: templates/accounts/sso_terms_of_service.haml:6
-#: templates_v2/accounts/activate.haml:6
-#: templates_v2/accounts/sso_terms_of_service.haml:6
-msgid "Register | McKinsey Academy"
-msgstr "登録 | McKinsey Academy"
 
 #: templates/accounts/activate.haml:18
 #: templates/accounts/sso_terms_of_service.haml:18
@@ -3218,10 +3207,6 @@ msgstr ""
 #: templates_v2/accounts/user_profile.haml:49
 msgid "Crop & Save"
 msgstr "クロップして保存する"
-
-#: templates/accounts/login.haml:5
-msgid "Login | McKinsey Academy"
-msgstr "ログイン | McKinsey Academy"
 
 #: templates/accounts/login.haml:16
 msgid "< Back"
@@ -3349,11 +3334,6 @@ msgstr "または15分後に再度ログインし直してください。"
 msgid "Reset Password"
 msgstr "パスワードを再設定する"
 
-#: templates/accounts/public_registration.haml:6
-#: templates_v2/accounts/public_registration.haml:6
-msgid "Demo registration | McKinsey Academy"
-msgstr "デモ登録 | McKinsey Academy"
-
 #: templates/accounts/public_registration.haml:8
 #: templates/certificates/course_certificate_notification_email.haml:13
 #: templates/layout.haml:27 templates/new_ui_layout.haml:77
@@ -3409,10 +3389,6 @@ msgid ""
 "Following successful registration, you will receive an email granting access "
 "to the course."
 msgstr "登録が無事完了すると、コースへアクセスするためのEメールが届きます。"
-
-#: templates/accounts/sso_error.haml:4 templates_v2/accounts/sso_error.haml:6
-msgid "Login Process Failed | McKinsey Academy"
-msgstr "ログイン処理失敗 | McKinsey Academy"
 
 #: templates/accounts/sso_error.haml:10 templates_v2/accounts/sso_error.haml:12
 msgid "Sign in error"
@@ -6592,10 +6568,6 @@ msgstr "レッスンは%(start_date)sに利用可能"
 msgid " %(module_custom_label)s %(lesson_index)s of %(lesson_count)s"
 msgstr " %(module_custom_label)s %(lesson_index)s / %(lesson_count)s"
 
-#: templates/courses/course_cohort.haml:8
-msgid "| Cohort | Courses | McKinsey Academy"
-msgstr "| コホート | コース | McKinsey Academy"
-
 #: templates/courses/course_cohort.haml:16
 msgid ""
 "Below are helpful tips to interact with the cohort map and leaderboards. You "
@@ -6845,13 +6817,6 @@ msgstr ""
 msgid "Suggest a Link"
 msgstr "リンクを提案する"
 
-#: templates/courses/course_discussion.haml:8
-#: templates/courses/course_discussion_ld.haml:8
-#: templates_v2/courses/course_discussion.haml:8
-#: templates_v2/courses/course_discussion_ld.haml:8
-msgid " | Discussion | Courses | McKinsey Academy"
-msgstr "| ディスカッション | コース | McKinsey Academy"
-
 #: templates/courses/course_discussion.haml:16
 msgid ""
 "Below are helpful tips to engage in discussions with your cohort or group "
@@ -6908,13 +6873,6 @@ msgstr "ページの左上に表示されているMcKinsey TAにEメールを送
 #: templates/courses/course_discussion_userprofile.haml:9
 msgid "User profiles are not yet available"
 msgstr "ユーザー・プロフィールは利用できません"
-
-#: templates/courses/course_group_work.haml:7
-#: templates/courses/course_group_work_ld.haml:8
-#: templates_v2/courses/course_group_work.haml:8
-#: templates_v2/courses/course_group_work_ld.haml:8
-msgid " | Group Work | Courses | McKinsey Academy"
-msgstr "| グループワーク | コース | McKinsey Academy"
 
 #: templates/courses/course_group_work.haml:16
 #: templates/courses/course_group_work.haml:28
@@ -7093,12 +7051,6 @@ msgstr "グループにEメールを送信する"
 msgid "Ask a TA"
 msgstr "TAに聞く"
 
-#: templates/courses/course_learner_dashboard.haml:10
-#: templates_v2/courses/course_base_ld.haml:9
-#: templates_v2/courses/course_base_ld_external.haml:9
-msgid " | McKinsey Academy | Learner Dashboard"
-msgstr " | McKinsey Academy | 学習者ダッシュボード"
-
 #: templates/courses/course_learner_dashboard_calendar.haml:36
 #: templates_v2/courses/course_learner_dashboard_calendar.haml:42
 msgid "not available"
@@ -7217,10 +7169,6 @@ msgstr "%(lesson_name)sの%(course_current_progress)s%%が終了しました"
 msgid " #{lesson_custom_label} %(current_lesson_index)s:"
 msgstr " #{lesson_custom_label} %(current_lesson_index)s:"
 
-#: templates/courses/course_main.haml:8 templates_v2/courses/course_main.haml:8
-msgid " | Courses | McKinsey Academy"
-msgstr "| コース | McKinsey Academy"
-
 #: templates/courses/course_main.haml:41 templates/layout.haml:253
 msgid ""
 "This is the McKinsey Academy Beta and we are happy to have you participate "
@@ -7242,16 +7190,6 @@ msgstr ""
 #: templates_v2/courses/course_base.haml:9
 msgid " | "
 msgstr "-"
-
-#: templates/courses/course_navigation.haml:8
-#: templates_v2/courses/course_base.haml:9
-msgid " | McKinsey Academy"
-msgstr " | McKinsey Academy | "
-
-#: templates/courses/course_navigation.haml:10
-#: templates_v2/courses/course_base.haml:11
-msgid " | Lessons | McKinsey Academy"
-msgstr "| レッスン | McKinsey Academy"
 
 #: templates/courses/course_navigation.haml:18
 msgid ""
@@ -7360,10 +7298,6 @@ msgstr ""
 msgid " | McKinsey Academy | "
 msgstr " | McKinsey Academy | "
 
-#: templates/courses/course_news.haml:7 templates_v2/courses/course_news.haml:7
-msgid " | Announcements | Courses | McKinsey Academy"
-msgstr "| 告知 | コース | McKinsey Academy"
-
 #: templates/courses/course_news.haml:13
 #: templates/courses/course_overview.haml:13
 #: templates/courses/course_resources.haml:13
@@ -7424,18 +7358,9 @@ msgstr ""
 msgid "No announcements have been posted yet."
 msgstr "告知はまだ投稿されていません。"
 
-#: templates/courses/course_notready.haml:7
-msgid "has not yet started"
-msgstr "開始前です"
-
 #: templates/courses/course_notready.haml:13
 msgid "This content is not yet available."
 msgstr "このコンテンツはまだ利用できません。"
-
-#: templates/courses/course_overview.haml:7
-#: templates_v2/courses/course_overview.haml:7
-msgid " | Overview | Courses | McKinsey Academy"
-msgstr "| 概要 | コース | McKinsey Academy"
 
 #: templates/courses/course_overview.haml:21
 msgid ""
@@ -7499,12 +7424,6 @@ msgstr "学習内容"
 #: templates_v2/courses/course_overview.haml:50
 msgid "Faculty"
 msgstr "出演者"
-
-#: templates/courses/course_progress.haml:7
-#: templates/courses/course_progress_v2.haml:8
-#: templates_v2/courses/course_progress_v2.haml:8
-msgid " | Progress | Courses | McKinsey Academy"
-msgstr "| 進度 | コース | McKinsey Academy"
 
 #: templates/courses/course_progress.haml:21
 msgid ""
@@ -7950,15 +7869,6 @@ msgstr ""
 "が特定できる一定情報へのアクセスをあなたの雇用者に許可する場合があります。こ"
 "れは、McKinsey Academyとその価値について、あなたとあなたの会社に評価していた"
 "だくためです。当社のプライバシーおよび情報共有に関する方針については、"
-
-#: templates/courses/course_resources.haml:7
-#: templates_v2/courses/course_resources.haml:7
-msgid " | Resources | Courses | McKinsey Academy"
-msgstr "| リソース | コース | McKinsey Academy"
-
-#: templates/courses/course_resources_learner_dashboard.haml:8
-msgid " | Resources | McKinsey Academy"
-msgstr "| リソース | McKinsey Academy"
 
 #: templates/courses/course_syllabus.haml:6
 msgid "Syllabus"
@@ -8743,10 +8653,6 @@ msgstr ""
 "\"></i> でいつでも確認することができます。\n"
 "              "
 
-#: templates/marketing/about.haml:6
-msgid "About | McKinsey Academy"
-msgstr "概要 | McKinsey Academy"
-
 #: templates/marketing/about.haml:7
 msgid "McKinsey Academy About"
 msgstr "McKinsey Academy概要"
@@ -8832,10 +8738,6 @@ msgstr ""
 msgid "Continue to web"
 msgstr "ウェブに進む"
 
-#: templates/marketing/contact.haml:5
-msgid "Contact | McKinsey Academy"
-msgstr "お問い合せ | McKinsey Academy"
-
 #: templates/marketing/contact.haml:6
 msgid "McKinsey Academy Contact"
 msgstr "McKinsey Academyお問い合せ"
@@ -8899,10 +8801,6 @@ msgstr "上記のEメールボタンで問題がある場合は、"
 #: templates/marketing/contact.haml:57
 msgid "Click here."
 msgstr "ここをクリックしてください。"
-
-#: templates/marketing/edxoffer.haml:5
-msgid "Offer | McKinsey Academy"
-msgstr "オファー | McKinsey Academy"
 
 #: templates/marketing/edxoffer.haml:6
 msgid "McKinsey Academy Offer"
@@ -9040,10 +8938,6 @@ msgstr "申込書"
 #: templates/marketing/edxoffer.haml:78
 msgid "Please submit the information below and we will respond."
 msgstr "以下の情報を提出してください。それに基づきご連絡いたします。"
-
-#: templates/marketing/experience.haml:5
-msgid "Experience | McKinsey Academy"
-msgstr "体験 | McKinsey Academy"
 
 #: templates/marketing/experience.haml:6
 msgid "McKinsey Academy Experience"
@@ -9232,10 +9126,6 @@ msgid ""
 "engagement"
 msgstr ""
 "高度分析により、参加者の進度、習熟度、ソーシャルエンゲージメントを測定します"
-
-#: templates/marketing/fblf.haml:5
-msgid "FBLF | McKinsey Academy"
-msgstr "FBLF | McKinsey Academy"
 
 #: templates/marketing/fblf.haml:6
 msgid "McKinsey Academy FBLF"
@@ -9459,19 +9349,10 @@ msgstr "未来のリーダーの世界的なネットワークに加わります
 msgid "Elevate their visibility within your organization"
 msgstr "組織における認知度を上げます"
 
-#: templates/marketing/productwalkthrough.haml:5
-#: templates_v2/marketing/productwalkthrough.haml:6
-msgid "Product Walkthrough | McKinsey Academy"
-msgstr "商品紹介 | McKinsey Academy"
-
 #: templates/marketing/productwalkthrough.haml:6
 #: templates_v2/marketing/productwalkthrough.haml:7
 msgid "McKinsey Academy Product Walkthrough"
 msgstr "McKinsey Academy商品紹介"
-
-#: templates/marketing/programs.haml:5
-msgid "Programs | McKinsey Academy"
-msgstr "プログラム | McKinsey Academy"
 
 #: templates/marketing/programs.haml:6
 msgid "McKinsey Academy Programs"
@@ -12256,12 +12137,6 @@ msgstr "以下から1つ選んでください"
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "会社名には英数字しか使用できません"
 
-#: templates_v2/accounts/scorm_login_complete.haml:5
-#, fuzzy
-#| msgid "Login | McKinsey Academy"
-msgid "Login Complete | McKinsey Academy"
-msgstr "ログイン | McKinsey Academy"
-
 #: templates_v2/accounts/scorm_login_complete.haml:12
 msgid "You have successfully logged in. You can now close this window."
 msgstr ""
@@ -12444,10 +12319,6 @@ msgstr "%(lesson_count)sの%(module_custom_label)s %(lesson_index)s"
 #, python-format
 msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "%(lesson_count)sのモジュール%(lesson_index)s"
-
-#: templates_v2/courses/course_cohort.haml:8
-msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| リーダーボード | コース | McKinsey Academy"
 
 #: templates_v2/courses/course_cohort.haml:23
 msgid "Your course completion status:"

@@ -3114,10 +3114,6 @@ msgstr ""
 "O McKinsey Academy está passando por manutenção programada. Pedimos "
 "desculpas por qualquer inconveniente."
 
-#: templates/accounts/access.haml:4 templates_v2/accounts/access.haml:5
-msgid "Access | McKinsey Academy"
-msgstr "Acesso | McKinsey Academy"
-
 #: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:24
 msgid "You will be redirected to your login provider."
 msgstr "Você será redirecionado para o seu provedor de login."
@@ -3125,13 +3121,6 @@ msgstr "Você será redirecionado para o seu provedor de login."
 #: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:33
 msgid "There was a problem with your access code."
 msgstr "Houve um problema com seu código de acesso."
-
-#: templates/accounts/activate.haml:6
-#: templates/accounts/sso_terms_of_service.haml:6
-#: templates_v2/accounts/activate.haml:6
-#: templates_v2/accounts/sso_terms_of_service.haml:6
-msgid "Register | McKinsey Academy"
-msgstr "Inscrição | McKinsey Academy"
 
 #: templates/accounts/activate.haml:18
 #: templates/accounts/sso_terms_of_service.haml:18
@@ -3228,10 +3217,6 @@ msgstr ""
 #: templates_v2/accounts/user_profile.haml:49
 msgid "Crop & Save"
 msgstr "Cortar e salvar"
-
-#: templates/accounts/login.haml:5
-msgid "Login | McKinsey Academy"
-msgstr "Login | McKinsey Academy"
 
 #: templates/accounts/login.haml:16
 msgid "< Back"
@@ -3359,11 +3344,6 @@ msgstr "ou tente entrar novamente em 15 minutos."
 msgid "Reset Password"
 msgstr "Redefinir senha"
 
-#: templates/accounts/public_registration.haml:6
-#: templates_v2/accounts/public_registration.haml:6
-msgid "Demo registration | McKinsey Academy"
-msgstr "Demonstração da inscrição | McKinsey Academy"
-
 #: templates/accounts/public_registration.haml:8
 #: templates/certificates/course_certificate_notification_email.haml:13
 #: templates/layout.haml:27 templates/privacy.haml:128
@@ -3423,10 +3403,6 @@ msgid ""
 msgstr ""
 "Após inscrição bem-sucedida, você receberá um e-mail concedendo acesso ao "
 "curso."
-
-#: templates/accounts/sso_error.haml:4 templates_v2/accounts/sso_error.haml:6
-msgid "Login Process Failed | McKinsey Academy"
-msgstr "Falha no processo de login | McKinsey Academy"
 
 #: templates/accounts/sso_error.haml:10 templates_v2/accounts/sso_error.haml:12
 msgid "Sign in error"
@@ -6636,10 +6612,6 @@ msgstr "Lição disponível em %(start_date)s"
 msgid " %(module_custom_label)s %(lesson_index)s of %(lesson_count)s"
 msgstr " %(module_custom_label)s %(lesson_index)s de %(lesson_count)s"
 
-#: templates/courses/course_cohort.haml:8
-msgid "| Cohort | Courses | McKinsey Academy"
-msgstr "| Grupo | Cursos | McKinsey Academy"
-
 #: templates/courses/course_cohort.haml:16
 msgid ""
 "Below are helpful tips to interact with the cohort map and leaderboards. You "
@@ -6901,13 +6873,6 @@ msgstr ""
 msgid "Suggest a Link"
 msgstr "Sugerir um link"
 
-#: templates/courses/course_discussion.haml:8
-#: templates/courses/course_discussion_ld.haml:8
-#: templates_v2/courses/course_discussion.haml:8
-#: templates_v2/courses/course_discussion_ld.haml:8
-msgid " | Discussion | Courses | McKinsey Academy"
-msgstr " | Discussão | Cursos | McKinsey Academy"
-
 #: templates/courses/course_discussion.haml:16
 msgid ""
 "Below are helpful tips to engage in discussions with your cohort or group "
@@ -6969,13 +6934,6 @@ msgstr ""
 #: templates/courses/course_discussion_userprofile.haml:9
 msgid "User profiles are not yet available"
 msgstr "Perfis de usuários ainda não estão disponíveis"
-
-#: templates/courses/course_group_work.haml:7
-#: templates/courses/course_group_work_ld.haml:8
-#: templates_v2/courses/course_group_work.haml:8
-#: templates_v2/courses/course_group_work_ld.haml:8
-msgid " | Group Work | Courses | McKinsey Academy"
-msgstr " | Trabalho em grupo | Cursos | McKinsey Academy"
 
 #: templates/courses/course_group_work.haml:16
 #: templates/courses/course_group_work.haml:28
@@ -7161,12 +7119,6 @@ msgstr "Enviar e-mail para o grupo"
 msgid "Ask a TA"
 msgstr "Perguntar a um assistente de ensino"
 
-#: templates/courses/course_learner_dashboard.haml:10
-#: templates_v2/courses/course_base_ld.haml:9
-#: templates_v2/courses/course_base_ld_external.haml:9
-msgid " | McKinsey Academy | Learner Dashboard"
-msgstr " | McKinsey Academy | Painel do aluno"
-
 #: templates/courses/course_learner_dashboard_calendar.haml:36
 #: templates_v2/courses/course_learner_dashboard_calendar.haml:42
 msgid "not available"
@@ -7285,10 +7237,6 @@ msgstr " Você concluiu %(course_current_progress)s%% de %(lesson_name)s "
 msgid " #{lesson_custom_label} %(current_lesson_index)s:"
 msgstr " #{lesson_custom_label} %(current_lesson_index)s:"
 
-#: templates/courses/course_main.haml:8 templates_v2/courses/course_main.haml:8
-msgid " | Courses | McKinsey Academy"
-msgstr " | Cursos | McKinsey Academy"
-
 #: templates/courses/course_main.haml:41 templates/layout.haml:253
 msgid ""
 "This is the McKinsey Academy Beta and we are happy to have you participate "
@@ -7311,16 +7259,6 @@ msgstr ""
 #: templates_v2/courses/course_base.haml:9
 msgid " | "
 msgstr " | "
-
-#: templates/courses/course_navigation.haml:8
-#: templates_v2/courses/course_base.haml:9
-msgid " | McKinsey Academy"
-msgstr " | McKinsey Academy"
-
-#: templates/courses/course_navigation.haml:10
-#: templates_v2/courses/course_base.haml:11
-msgid " | Lessons | McKinsey Academy"
-msgstr " | Lições | McKinsey Academy"
 
 #: templates/courses/course_navigation.haml:18
 msgid ""
@@ -7427,14 +7365,6 @@ msgstr ""
 "Acesse lições individuais do ícone <i class=\"mk-icon-lessonsnav\"></i> na "
 "barra de navegação principal"
 
-#: templates/courses/course_navigation_ld.haml:9
-msgid " | McKinsey Academy | "
-msgstr " | McKinsey Academy | "
-
-#: templates/courses/course_news.haml:7 templates_v2/courses/course_news.haml:7
-msgid " | Announcements | Courses | McKinsey Academy"
-msgstr " | Anúncios | Cursos | McKinsey Academy"
-
 #: templates/courses/course_news.haml:13
 #: templates/courses/course_overview.haml:13
 #: templates/courses/course_resources.haml:13
@@ -7495,18 +7425,9 @@ msgstr ""
 msgid "No announcements have been posted yet."
 msgstr "Nenhum anúncio foi publicado ainda."
 
-#: templates/courses/course_notready.haml:7
-msgid "has not yet started"
-msgstr "ainda não começou"
-
 #: templates/courses/course_notready.haml:13
 msgid "This content is not yet available."
 msgstr "Este conteúdo ainda não está disponível."
-
-#: templates/courses/course_overview.haml:7
-#: templates_v2/courses/course_overview.haml:7
-msgid " | Overview | Courses | McKinsey Academy"
-msgstr " | Visão geral | Cursos | McKinsey Academy"
 
 #: templates/courses/course_overview.haml:21
 msgid ""
@@ -7570,12 +7491,6 @@ msgstr "O QUE VOCÊ APRENDERÁ"
 #: templates_v2/courses/course_overview.haml:50
 msgid "Faculty"
 msgstr "Corpo docente"
-
-#: templates/courses/course_progress.haml:7
-#: templates/courses/course_progress_v2.haml:8
-#: templates_v2/courses/course_progress_v2.haml:8
-msgid " | Progress | Courses | McKinsey Academy"
-msgstr " | Progresso | Cursos | McKinsey Academy"
 
 #: templates/courses/course_progress.haml:21
 msgid ""
@@ -8044,15 +7959,6 @@ msgstr ""
 "nos cursos) ao seu empregador a fim de ajudá-lo a avaliar o McKinsey Academy "
 "e seu valor para você e para a empresa. Leia mais sobre as práticas de "
 "privacidade e compartilhamento de informações em nossa"
-
-#: templates/courses/course_resources.haml:7
-#: templates_v2/courses/course_resources.haml:7
-msgid " | Resources | Courses | McKinsey Academy"
-msgstr " | Recursos | Cursos | McKinsey Academy"
-
-#: templates/courses/course_resources_learner_dashboard.haml:8
-msgid " | Resources | McKinsey Academy"
-msgstr " | Recursos | McKinsey Academy"
 
 #: templates/courses/course_syllabus.haml:6
 msgid "Syllabus"
@@ -8862,10 +8768,6 @@ msgstr ""
 "específica da página <i class=\"fa fa-question-circle\"></i>.\n"
 "              "
 
-#: templates/marketing/about.haml:6
-msgid "About | McKinsey Academy"
-msgstr "Sobre | McKinsey Academy"
-
 #: templates/marketing/about.haml:7
 msgid "McKinsey Academy About"
 msgstr "Sobre o McKinsey Academy"
@@ -8959,10 +8861,6 @@ msgstr ""
 msgid "Continue to web"
 msgstr "Continue para a web"
 
-#: templates/marketing/contact.haml:5
-msgid "Contact | McKinsey Academy"
-msgstr "Contato | McKinsey Academy"
-
 #: templates/marketing/contact.haml:6
 msgid "McKinsey Academy Contact"
 msgstr "Contato McKinsey Academy"
@@ -9025,10 +8923,6 @@ msgstr "Problemas com o botão de e-mail acima?"
 #: templates/marketing/contact.haml:57
 msgid "Click here."
 msgstr "Clique aqui."
-
-#: templates/marketing/edxoffer.haml:5
-msgid "Offer | McKinsey Academy"
-msgstr "Oferta | McKinsey Academy"
 
 #: templates/marketing/edxoffer.haml:6
 msgid "McKinsey Academy Offer"
@@ -9181,10 +9075,6 @@ msgstr "Inscrição"
 #: templates/marketing/edxoffer.haml:78
 msgid "Please submit the information below and we will respond."
 msgstr "Envie as informações abaixo e entraremos em contato."
-
-#: templates/marketing/experience.haml:5
-msgid "Experience | McKinsey Academy"
-msgstr "Experiência | McKinsey Academy"
 
 #: templates/marketing/experience.haml:6
 msgid "McKinsey Academy Experience"
@@ -9381,10 +9271,6 @@ msgid ""
 msgstr ""
 "A análise avançada mede o progresso, a proficiência e o engajamento social "
 "dos participantes"
-
-#: templates/marketing/fblf.haml:5
-msgid "FBLF | McKinsey Academy"
-msgstr "FBLF | McKinsey Academy"
 
 #: templates/marketing/fblf.haml:6
 msgid "McKinsey Academy FBLF"
@@ -9615,19 +9501,10 @@ msgstr "Integrar uma rede global de futuros líderes"
 msgid "Elevate their visibility within your organization"
 msgstr "Elevar a visibilidade deles dentro da sua organização"
 
-#: templates/marketing/productwalkthrough.haml:5
-#: templates_v2/marketing/productwalkthrough.haml:6
-msgid "Product Walkthrough | McKinsey Academy"
-msgstr "Apresentação do produto | McKinsey Academy"
-
 #: templates/marketing/productwalkthrough.haml:6
 #: templates_v2/marketing/productwalkthrough.haml:7
 msgid "McKinsey Academy Product Walkthrough"
 msgstr "Apresentação do produto do McKinsey Academy"
-
-#: templates/marketing/programs.haml:5
-msgid "Programs | McKinsey Academy"
-msgstr "Programas | McKinsey Academy"
 
 #: templates/marketing/programs.haml:6
 msgid "McKinsey Academy Programs"
@@ -12539,12 +12416,6 @@ msgstr "escolha uma das seguintes opções"
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "O nome da empresa pode conter apenas caracteres alfanuméricos"
 
-#: templates_v2/accounts/scorm_login_complete.haml:5
-#, fuzzy
-#| msgid "Login | McKinsey Academy"
-msgid "Login Complete | McKinsey Academy"
-msgstr "Login | McKinsey Academy"
-
 #: templates_v2/accounts/scorm_login_complete.haml:12
 msgid "You can successfully logged in. You can now close this window."
 msgstr ""
@@ -12728,10 +12599,6 @@ msgstr " %(module_custom_label)s %(lesson_index)s de %(lesson_count)s "
 #, python-format
 msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr " Módulo %(lesson_index)s de %(lesson_count)s "
-
-#: templates_v2/courses/course_cohort.haml:8
-msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| Tabela de classificação | Cursos | McKinsey Academy"
 
 #: templates_v2/courses/course_cohort.haml:23
 msgid "Your course completion status:"

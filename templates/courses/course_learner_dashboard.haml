@@ -2,12 +2,6 @@
 - load staticfiles
 - load i18n
 
-- block page_title
-  %title
-    = request.session.client_display_name
-    = " | "
-    = program.display_name
-    {% trans " | McKinsey Academy | Learner Dashboard" %}
 - block header
   - include 'courses/course_learner_dashboard_header.haml'
 - block content

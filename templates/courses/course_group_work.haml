@@ -1,11 +1,6 @@
 - extends "courses/course_navigation.haml"
 - load i18n
 
-- block page_title
-  %title
-    = program.display_name
-    {% trans " | Group Work | Courses | McKinsey Academy" %}
-
 - block help_context
   #mckinsey_help.reveal-modal.medium{'data-reveal': ''}
     .close-reveal-modal
