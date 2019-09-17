@@ -391,7 +391,7 @@ body.new-theme {
                             width:auto!important;
                             transition: .35s;
                             @media (max-width: 767px){
-                                max-width: calc(25% - 10px);
+                                max-width: calc(60% - 10px);
                             }
 
                             &.option-with-image {
