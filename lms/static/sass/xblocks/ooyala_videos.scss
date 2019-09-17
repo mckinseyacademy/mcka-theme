@@ -91,83 +91,84 @@ body.new-theme {
                 }
             }
         }
+    }
 
-        .p3sdk-container {
-            .p3sdk-interactive-transcript-collapse-visible {
-                a {
-                    .transcript-toggle {
-                        @include primary-theme-content-color;
-                        padding-right: 5px;
+    .p3sdk-container {
+        .p3sdk-interactive-transcript-collapse-visible {
+            a {
+                .transcript-toggle {
+                    @include primary-theme-content-color;
+                    padding-right: 5px;
+                }
+
+                .fa {
+                    font-family: "Material Icons";
+                    font-size: 1.125rem;
+                    @include primary-theme-content-color;
+                    font-size: 2.5rem;
+                    vertical-align: middle;
+
+                    &.fa-sort-desc {
+                        &:before {
+                            content: '\e5c5';
+                        }
                     }
 
-                    .fa {
-                        font-family: "Material Icons";
-                        font-size: 1.125rem;
-                        @include primary-theme-content-color;
-                        font-size: 2.5rem;
+                    &.fa-sort-asc {
+                        &:before {
+                            content: '\e5c7';
+                        }
+                    }
+
+                    &.transcript-show,
+                    &.transcript-hide {
                         vertical-align: middle;
-
-                        &.fa-sort-desc {
-                            &:before {
-                                content: '\e5c5';
-                            }
-                        }
-
-                        &.fa-sort-asc {
-                            &:before {
-                                content: '\e5c7';
-                            }
-                        }
-
-                        &.transcript-show,
-                        &.transcript-hide {
-                            vertical-align: middle;
-                        }
-
                     }
 
-                    &:hover {
-                        text-decoration: none;
-                    }
+                }
+
+                &:hover {
+                    text-decoration: none;
                 }
             }
+        }
 
-            .transcript-header {
-                display: none;
-                .language-tracks {
-                    ul {
-                        li {
-                            @include primary-theme-content-color(!important);
-                            font-size: 1rem;
-                            font-weight: 400;
-                            list-style: none;
-                            list-style-type: none;
+        .transcript-header {
+            display: none;
 
-                            &.selected {
-                                color: #2E2D39 !important;
-                            }
+            .language-tracks {
+                ul {
+                    li {
+                        @include primary-theme-content-color( !important);
+                        font-size: 1rem;
+                        font-weight: 400;
+                        list-style: none;
+                        list-style-type: none;
 
-                            .print-transcript-btn {
-                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
-                                background-position: -356px -11px;
-                                width: 28px;
-                                height: 24px;
-                            }
+                        &.selected {
+                            color: #2E2D39 !important;
+                        }
 
-                            .transcript-download-btn {
-                                background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
-                                background-position: -306px -11px;
-                                width: 28px;
-                                height: 24px;
-                            }
+                        .print-transcript-btn {
+                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                            background-position: -356px -11px;
+                            width: 28px;
+                            height: 24px;
+                        }
+
+                        .transcript-download-btn {
+                            background-image: url(../../mcka-theme/images/videos-xblock-sprite.png);
+                            background-position: -306px -11px;
+                            width: 28px;
+                            height: 24px;
                         }
                     }
                 }
             }
+        }
 
-            .transcript-content {
-                padding-top: 20px;
-            }
+        .transcript-content {
+            padding-top: 20px;
         }
     }
 }
