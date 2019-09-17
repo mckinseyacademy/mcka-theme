@@ -93,7 +93,37 @@
         display: none;
     }
 
+    .drag-container{
+        .item-bank{
+            .option{
+                cursor: move;
+            }
+        }
 
+        .dragged-items{
+            .option{
+                box-shadow: none;
+                width:100px !important;
+                height: 100px !important;
+                overflow: hidden;
+                border:0;
+                cursor: move;
+                &.option-with-image
+                {
+                    box-sizing: border-box;
+                    .item-content{
+                        height: 100%;
+                        img{
+                            height: 100%;
+                            width: 100%;
+                            object-fit: cover;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 
@@ -391,11 +421,15 @@ body.new-theme {
                             width:auto!important;
                             transition: .35s;
                             @media (max-width: 767px){
-                                max-width: calc(60% - 10px);
+                                max-width: calc(65% - 10px);
                             }
 
                             &.option-with-image {
                                 padding: 0;
+
+                                @media (max-width: 767px){
+                                    max-width: calc(85% - 10px);
+                                }
                             }
 
                             &:hover,
@@ -410,13 +444,7 @@ body.new-theme {
                     .dragged-items {
                         .option {
                             background-color: $gray;
-                            box-shadow: none;
-                            width:100px !important;
-                            height: 100px !important;
-                            overflow: hidden;
                             border:0;
-                            cursor: move;
-
                         }
                     }
 
