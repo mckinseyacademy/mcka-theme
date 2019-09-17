@@ -108,10 +108,22 @@
                 overflow: hidden;
                 border:0;
                 cursor: move;
+                &.option-with-image
+                {
+                    box-sizing: border-box;
+                    .item-content{
+                        height: 100%;
+                        img{
+                            height: 100%;
+                            width: 100%;
+                            object-fit: cover;
+                            box-sizing: border-box;
+                        }
+                    }
+                }
             }
         }
     }
-
 }
 
 
@@ -409,11 +421,15 @@ body.new-theme {
                             width: auto !important;
                             transition: .35s;
                             @media (max-width: 767px){
-                                max-width: calc(60% - 10px);
+                                max-width: calc(65% - 10px);
                             }
 
                             &.option-with-image {
                                 padding: 0;
+
+                                @media (max-width: 767px){
+                                    max-width: calc(85% - 10px);
+                                }
                             }
 
                             &:hover,
