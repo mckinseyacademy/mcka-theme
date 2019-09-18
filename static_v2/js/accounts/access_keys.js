@@ -46,10 +46,7 @@ $(document).ready(function () {
   if (window !== window.parent) {
     $('.normal-access').hide();
     $('.scorm-access').show();
-    // If the browser blocks the popup, a null will be returned here.
-    // Change the message to indicate that the popup failed to open.
-    $('.popups-allowed').hide();
-    $('.popups-blocked').show();
+    $('.button_info').show();
     autoRedirectOnLogin();
   } else {
     setTimeout(function() {

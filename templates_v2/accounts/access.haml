@@ -14,16 +14,12 @@
         .col-12.contentCard
           %p
             %div.scorm-access
-              %i.fa.fa-spinner.fa-spin
-              %span.popups-allowed
-                {% trans "A popup window should open shortly to login with your provider. If it doesn't open in a few seconds, click the button below." %}
-              %span.popups-blocked
-                {% trans "Please click the button below to continue the login process." %}
+              %span.button_info
+                {% trans "Please select the button below to launch your course." %}
               %br
               %button#scorm-login-launch.btn.btn-primary.btn-lg.m-2
-                {% trans "Open Login Window" %}
+                {% trans "Launch Course" %}
             %div.normal-access
-              %i.fa.fa-spinner.fa-spin
               {% trans "You will be redirected to your login provider." %}
 
   - else
