@@ -188,7 +188,7 @@ body.new-theme {
         }
 
         .wmd-preview-container {
-            margin-top: -6px;
+            margin-top: -8px;
 
             .wmd-preview-label {
                 font-size: 1rem;
@@ -1641,6 +1641,18 @@ body.new-theme {
                         font-size: 12px;
                     }
                 }
+                .wmd-button-row{
+					margin:0;
+					.wmd-button{
+						position: static;
+						margin: 0 2px;
+					}
+					.wmd-spacer{
+						position: static;
+						margin-left:7px;
+						margin-right: 7px;
+					}
+				}
             }
 
             .post-cancel {

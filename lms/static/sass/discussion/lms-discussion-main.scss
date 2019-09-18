@@ -171,7 +171,7 @@ body.new-theme {
 		}
 
 		.wmd-preview-container {
-			margin-top: -6px;
+			margin-top: -8px;
 
 			.wmd-preview-label {
 				font-size: 1rem;
@@ -262,6 +262,19 @@ body.new-theme {
 					.wmd-preview {
 						padding: 0px 20px;
 						font-size: 12px;
+					}
+				}
+
+				.wmd-button-row{
+					margin:0;
+					.wmd-button{
+						position: static;
+						margin: 0 2px;
+					}
+					.wmd-spacer{
+						position: static;
+						margin-left:7px;
+						margin-right: 7px;
 					}
 				}
 			}
@@ -1384,38 +1397,20 @@ body.new-theme {
 					}
 
 					.field-help {
-						color: transparent;
-						visibility: hidden;
+						// color: transparent;
+						// visibility: hidden;
 						@include disableTextSelection();
 
 						&#field_help_topic_area {
 
 							position: absolute;
 							top: 64px;
-
-							&:before {
-								visibility: visible;
-								content: 'Add your post to a relevant topic to help others find it.';
-								font-size: 12px;
-								position: absolute;
-								display: block;
-								color: $gray;
-							}
 						}
 
 						&#field_help_title {
 
 							position: absolute;
 							top: 64px;
-
-							&:before {
-								visibility: visible;
-								content: 'Add a clear and descriptive title to encourage participation.';
-								font-size: 12px;
-								position: absolute;
-								display: block;
-								color: $gray;
-							}
 						}
 					}
 
