@@ -4,10 +4,11 @@
         // Ul
 
         ul {
-            margin: 20px 0 20px 40px;
+            margin: 20px ;
 
             >ul {
                 margin: 0;
+                padding-left: 20px;
             }
 
             li {
@@ -21,10 +22,11 @@
         // OL
 
         ol {
-            margin: 20px 0 20px 40px;
+            margin: 20px;
 
             >ol {
                 margin: 0;
+                padding-left: 20px;
             }
 
             li {
@@ -90,8 +92,11 @@
             // Ul
 
             ul {
-                margin: 20px 40px 20px 0;
-
+                margin: 20px;
+                >ul {
+                    margin: 0;
+                    padding-right: 20px;
+                }
                 li {
                     ul {
                         margin-right: 15px;
@@ -101,8 +106,11 @@
             }
 
             ol {
-                margin: 20px 40px 20px 0;
-
+                margin: 20px ;
+                >ol {
+                    margin: 0;
+                    padding-right: 20px;
+                }
                 li {
                     ol {
                         margin-right: 15px;
