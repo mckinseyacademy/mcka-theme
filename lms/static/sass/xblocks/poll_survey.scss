@@ -356,6 +356,7 @@ body.new-theme {
                     .visible-mobile-only {
                         text-align: right;
                         right: 44px;
+                        
                     }
                 }
 
@@ -363,7 +364,13 @@ body.new-theme {
                 // for mobile only.
 
                 @media (max-width: 767px) {
+                   
 
+                    .visible-mobile-only {
+                        width: calc(100% - 50px);
+                        border:1px solid red;
+                        
+                    }
                     tr,
                     .survey-row {
 
