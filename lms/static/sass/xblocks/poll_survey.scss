@@ -364,12 +364,8 @@ body.new-theme {
                 // for mobile only.
 
                 @media (max-width: 767px) {
-                   
-
                     .visible-mobile-only {
                         width: calc(100% - 50px);
-                        border:1px solid red;
-                        
                     }
                     tr,
                     .survey-row {
@@ -389,8 +385,6 @@ body.new-theme {
                     }
                 }               
             }
-
-            
         }
 
         .poll-results
