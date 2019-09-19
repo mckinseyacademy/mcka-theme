@@ -17,6 +17,11 @@
             margin: 20px;
             line-height: 26px;
             @include font-size(16);
+            
+            ul {
+                padding: 0;
+                margin: 0;
+            }
 
             >ul
             {
