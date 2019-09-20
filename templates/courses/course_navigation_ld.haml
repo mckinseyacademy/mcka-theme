@@ -1,14 +1,6 @@
 - extends "courses/course_main.haml"
 - load i18n
 
-- block page_title
-  %title
-    = request.session.client_display_name
-    = " | "
-    = program.display_name
-    {% trans " | McKinsey Academy | " %}
-    = course.current_lesson.name
-
 - block content
   #replace-calendar{:data-learner-dashboard-id =>'#{learner_dashboard.id}'}
   %article.row

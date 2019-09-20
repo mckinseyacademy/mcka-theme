@@ -3091,10 +3091,6 @@ msgid ""
 msgstr ""
 "يخضع موقع أكاديمية ماكنزي حاليًا للصيانة المجدولة. لذا نأسف على الإزعاج."
 
-#: templates/accounts/access.haml:4 templates_v2/accounts/access.haml:5
-msgid "Access | McKinsey Academy"
-msgstr "الوصول | أكاديمية ماكنزي"
-
 #: templates/accounts/access.haml:14 templates_v2/accounts/access.haml:24
 msgid "You will be redirected to your login provider."
 msgstr "ستتم إعادة توجيهك إلى موفر تسجيل الدخول الخاص بك."
@@ -3102,13 +3098,6 @@ msgstr "ستتم إعادة توجيهك إلى موفر تسجيل الدخول
 #: templates/accounts/access.haml:21 templates_v2/accounts/access.haml:33
 msgid "There was a problem with your access code."
 msgstr "كانت توجد مشكلة في رمز الوصول الخاص بك."
-
-#: templates/accounts/activate.haml:6
-#: templates/accounts/sso_terms_of_service.haml:6
-#: templates_v2/accounts/activate.haml:6
-#: templates_v2/accounts/sso_terms_of_service.haml:6
-msgid "Register | McKinsey Academy"
-msgstr "التسجيل | أكاديمية ماكنزي"
 
 #: templates/accounts/activate.haml:18
 #: templates/accounts/sso_terms_of_service.haml:18
@@ -3205,9 +3194,6 @@ msgstr "اسحب أداة القص واضبطها لتحرير صورة ملف �
 msgid "Crop & Save"
 msgstr "القص والحفظ"
 
-#: templates/accounts/login.haml:5
-msgid "Login | McKinsey Academy"
-msgstr "تسجيل الدخول | أكاديمية ماكنزي"
 
 #: templates/accounts/login.haml:16
 msgid "< Back"
@@ -3334,11 +3320,6 @@ msgstr "أو حاول تسجيل الدخول مرة أخرى في غضون 15 �
 msgid "Reset Password"
 msgstr "إعادة تعيين كلمة المرور"
 
-#: templates/accounts/public_registration.haml:6
-#: templates_v2/accounts/public_registration.haml:6
-msgid "Demo registration | McKinsey Academy"
-msgstr "تسجيل تجريبي | أكاديمية ماكنزي"
-
 #: templates/accounts/public_registration.haml:8
 #: templates/certificates/course_certificate_notification_email.haml:13
 #: templates/layout.haml:27 templates/privacy.haml:128
@@ -3397,10 +3378,6 @@ msgid ""
 msgstr ""
 "بعد التسجيل بنجاح، ستتلقى رسالة بريد إلكتروني لمنحك القدرة على الوصول إلى "
 "الدورة التدريبية."
-
-#: templates/accounts/sso_error.haml:4 templates_v2/accounts/sso_error.haml:6
-msgid "Login Process Failed | McKinsey Academy"
-msgstr "فشلت عملية تسجيل الدخول | أكاديمية ماكنزي"
 
 #: templates/accounts/sso_error.haml:10 templates_v2/accounts/sso_error.haml:12
 msgid "Sign in error"
@@ -6572,10 +6549,6 @@ msgstr "سيتوافر الدرس في %(start_date)s"
 msgid " %(module_custom_label)s %(lesson_index)s of %(lesson_count)s"
 msgstr " %(module_custom_label)s %(lesson_index)s من %(lesson_count)s"
 
-#: templates/courses/course_cohort.haml:8
-msgid "| Cohort | Courses | McKinsey Academy"
-msgstr "| الفوج | الدورات التدريبية | أكاديمية ماكينزي"
-
 #: templates/courses/course_cohort.haml:16
 msgid ""
 "Below are helpful tips to interact with the cohort map and leaderboards. You "
@@ -6831,13 +6804,6 @@ msgstr ""
 msgid "Suggest a Link"
 msgstr "أقترح رابط"
 
-#: templates/courses/course_discussion.haml:8
-#: templates/courses/course_discussion_ld.haml:8
-#: templates_v2/courses/course_discussion.haml:8
-#: templates_v2/courses/course_discussion_ld.haml:8
-msgid " | Discussion | Courses | McKinsey Academy"
-msgstr "| مناقشة | الدورات التدريبية | أكاديمية ماكنزي"
-
 #: templates/courses/course_discussion.haml:16
 msgid ""
 "Below are helpful tips to engage in discussions with your cohort or group "
@@ -6897,13 +6863,6 @@ msgstr ""
 #: templates/courses/course_discussion_userprofile.haml:9
 msgid "User profiles are not yet available"
 msgstr "ملفات تعريف المستخدمين غير متاحة حتى الآن"
-
-#: templates/courses/course_group_work.haml:7
-#: templates/courses/course_group_work_ld.haml:8
-#: templates_v2/courses/course_group_work.haml:8
-#: templates_v2/courses/course_group_work_ld.haml:8
-msgid " | Group Work | Courses | McKinsey Academy"
-msgstr "| عمل المجموعة | الدورات التدريبية | أكاديمية ماكنزي"
 
 #: templates/courses/course_group_work.haml:16
 #: templates/courses/course_group_work.haml:28
@@ -7083,12 +7042,6 @@ msgstr "أرسل بريدًا إلكترونيًا لمجموعتك"
 msgid "Ask a TA"
 msgstr "اسأل مساعد مدرّس"
 
-#: templates/courses/course_learner_dashboard.haml:10
-#: templates_v2/courses/course_base_ld.haml:9
-#: templates_v2/courses/course_base_ld_external.haml:9
-msgid " | McKinsey Academy | Learner Dashboard"
-msgstr " | أكاديمية ماكنزي | لوحة متابعة المتعلم"
-
 #: templates/courses/course_learner_dashboard_calendar.haml:36
 #: templates_v2/courses/course_learner_dashboard_calendar.haml:42
 msgid "not available"
@@ -7206,10 +7159,6 @@ msgstr " لقد أتممت %(course_current_progress)s%% من %(lesson_name)s "
 msgid " #{lesson_custom_label} %(current_lesson_index)s:"
 msgstr " #{lesson_custom_label} %(current_lesson_index)s:"
 
-#: templates/courses/course_main.haml:8 templates_v2/courses/course_main.haml:8
-msgid " | Courses | McKinsey Academy"
-msgstr " | الدورات التدريبية | أكاديمية ماكنزي"
-
 #: templates/courses/course_main.haml:41 templates/layout.haml:253
 msgid ""
 "This is the McKinsey Academy Beta and we are happy to have you participate "
@@ -7232,16 +7181,6 @@ msgstr ""
 #: templates_v2/courses/course_base.haml:9
 msgid " | "
 msgstr " | "
-
-#: templates/courses/course_navigation.haml:8
-#: templates_v2/courses/course_base.haml:9
-msgid " | McKinsey Academy"
-msgstr " | أكاديمية ماكنزي"
-
-#: templates/courses/course_navigation.haml:10
-#: templates_v2/courses/course_base.haml:11
-msgid " | Lessons | McKinsey Academy"
-msgstr " | الدروس | أكاديمية ماكنزي"
 
 #: templates/courses/course_navigation.haml:18
 msgid ""
@@ -7347,14 +7286,6 @@ msgstr ""
 "يمكنك الوصول إلى الدروس الفردية من الرمز <i class=\"mk-icon-lessonsnav\"></"
 "i> الموجود في شريط التنقل الرئيسي"
 
-#: templates/courses/course_navigation_ld.haml:9
-msgid " | McKinsey Academy | "
-msgstr " | أكاديمية ماكنزي | "
-
-#: templates/courses/course_news.haml:7 templates_v2/courses/course_news.haml:7
-msgid " | Announcements | Courses | McKinsey Academy"
-msgstr " | الإعلانات | الدورات التدريبية | أكاديمية ماكنزي"
-
 #: templates/courses/course_news.haml:13
 #: templates/courses/course_overview.haml:13
 #: templates/courses/course_resources.haml:13
@@ -7414,18 +7345,9 @@ msgstr ""
 msgid "No announcements have been posted yet."
 msgstr "لم يتم نشر أية إعلانات حتى الآن."
 
-#: templates/courses/course_notready.haml:7
-msgid "has not yet started"
-msgstr "لم تبدأ بعد"
-
 #: templates/courses/course_notready.haml:13
 msgid "This content is not yet available."
 msgstr "هذا المحتوى غير متوفر حتى الآن."
-
-#: templates/courses/course_overview.haml:7
-#: templates_v2/courses/course_overview.haml:7
-msgid " | Overview | Courses | McKinsey Academy"
-msgstr " | نظرة عامة | الدورات التدريبية | أكاديمية ماكنزي"
 
 #: templates/courses/course_overview.haml:21
 msgid ""
@@ -7489,12 +7411,6 @@ msgstr "ماذا ستتعلم"
 #: templates_v2/courses/course_overview.haml:50
 msgid "Faculty"
 msgstr "أعضاء هيئة التدريس"
-
-#: templates/courses/course_progress.haml:7
-#: templates/courses/course_progress_v2.haml:8
-#: templates_v2/courses/course_progress_v2.haml:8
-msgid " | Progress | Courses | McKinsey Academy"
-msgstr " | التقدم | الدورات التدريبية | أكاديمية ماكنزي"
 
 #: templates/courses/course_progress.haml:21
 msgid ""
@@ -7947,15 +7863,6 @@ msgstr ""
 "في تلك الدورات، بهدف مساعدتهم ومساعدتك في تقييم أكاديمية ماكنزي وتحديد "
 "قيمتها بالنسبة لك ولشركتك. ويمكنك قراءة المزيد حول سياسة الخصوصية وممارسات "
 "مشاركة المعلومات لدينا في"
-
-#: templates/courses/course_resources.haml:7
-#: templates_v2/courses/course_resources.haml:7
-msgid " | Resources | Courses | McKinsey Academy"
-msgstr " | الموارد | الدورات التدريبية | أكاديمية ماكنزي"
-
-#: templates/courses/course_resources_learner_dashboard.haml:8
-msgid " | Resources | McKinsey Academy"
-msgstr " | الموارد | أكاديمية ماكنزي"
 
 #: templates/courses/course_syllabus.haml:6
 msgid "Syllabus"
@@ -8753,10 +8660,6 @@ msgstr ""
 "التعليمات للصفحة المحددة <i class=\"fa fa-question-circle\"> </i>.\n"
 "              "
 
-#: templates/marketing/about.haml:6
-msgid "About | McKinsey Academy"
-msgstr "نبذة عن | أكاديمية ماكنزي"
-
 #: templates/marketing/about.haml:7
 msgid "McKinsey Academy About"
 msgstr "نبذة عن أكاديمية ماكنزي"
@@ -8845,10 +8748,6 @@ msgstr ""
 msgid "Continue to web"
 msgstr "المتابعة إلى الويب"
 
-#: templates/marketing/contact.haml:5
-msgid "Contact | McKinsey Academy"
-msgstr "جهة الاتصال | أكاديمية ماكنزي"
-
 #: templates/marketing/contact.haml:6
 msgid "McKinsey Academy Contact"
 msgstr "جهة اتصال أكاديمية ماكنزي"
@@ -8912,10 +8811,6 @@ msgstr "هل تواجه مشكلة مع زر البريد الإلكتروني �
 #: templates/marketing/contact.haml:57
 msgid "Click here."
 msgstr "انقر هنا."
-
-#: templates/marketing/edxoffer.haml:5
-msgid "Offer | McKinsey Academy"
-msgstr "العرض | أكاديمية ماكنزي"
 
 #: templates/marketing/edxoffer.haml:6
 msgid "McKinsey Academy Offer"
@@ -9060,10 +8955,6 @@ msgstr "الطلب"
 #: templates/marketing/edxoffer.haml:78
 msgid "Please submit the information below and we will respond."
 msgstr "يرجى تقديم المعلومات الواردة أدناه، وسنقوم بالرد."
-
-#: templates/marketing/experience.haml:5
-msgid "Experience | McKinsey Academy"
-msgstr "الخبرات | أكاديمية ماكنزي"
 
 #: templates/marketing/experience.haml:6
 msgid "McKinsey Academy Experience"
@@ -9254,10 +9145,6 @@ msgid ""
 "Advanced analytics measure participant progress, proficiency, and social "
 "engagement"
 msgstr "تقيس التحليلات المتقدمة مدى تقدم المشارك وكفاءته ومشاركته الاجتماعية"
-
-#: templates/marketing/fblf.haml:5
-msgid "FBLF | McKinsey Academy"
-msgstr "منتدى قادة الأعمال المستقبليين | أكاديمية ماكنزي"
 
 #: templates/marketing/fblf.haml:6
 msgid "McKinsey Academy FBLF"
@@ -9481,19 +9368,10 @@ msgstr "انضم إلى شبكة عالمية من القادة المستقبل
 msgid "Elevate their visibility within your organization"
 msgstr "حسِّن تواجدهم داخل مؤسستك"
 
-#: templates/marketing/productwalkthrough.haml:5
-#: templates_v2/marketing/productwalkthrough.haml:6
-msgid "Product Walkthrough | McKinsey Academy"
-msgstr "معاينة المنتجات | أكاديمية ماكنزي"
-
 #: templates/marketing/productwalkthrough.haml:6
 #: templates_v2/marketing/productwalkthrough.haml:7
 msgid "McKinsey Academy Product Walkthrough"
 msgstr "معاينة المنتجات في أكاديمية ماكنزي"
-
-#: templates/marketing/programs.haml:5
-msgid "Programs | McKinsey Academy"
-msgstr "البرامج | أكاديمية ماكنزي"
 
 #: templates/marketing/programs.haml:6
 msgid "McKinsey Academy Programs"
@@ -12202,12 +12080,6 @@ msgstr "يرجى اختيار أحد الخيارات التالية"
 msgid "This company name cannot contain non-alphanumeric characters!"
 msgstr "لا يمكن أن يحتوي اسم الشركة سوى على أحرف أبجدية رقمية"
 
-#: templates_v2/accounts/scorm_login_complete.haml:5
-#, fuzzy
-#| msgid "Login | McKinsey Academy"
-msgid "Login Complete | McKinsey Academy"
-msgstr "تسجيل الدخول | أكاديمية ماكنزي"
-
 #: templates_v2/accounts/scorm_login_complete.haml:12
 msgid "You can successfully logged in. You can now close this window."
 msgstr ""
@@ -12389,10 +12261,6 @@ msgstr " %(module_custom_label)s %(lesson_index)s من %(lesson_count)s "
 #, python-format
 msgid " Module %(lesson_index)s of %(lesson_count)s "
 msgstr "الوحدة %(lesson_index)s من %(lesson_count)s "
-
-#: templates_v2/courses/course_cohort.haml:8
-msgid "| Leaderboard | Courses | McKinsey Academy"
-msgstr "| الفوج | الدورات التدريبية | لوحة تسجيل أعلى النقاط"
 
 #: templates_v2/courses/course_cohort.haml:23
 msgid "Your course completion status:"

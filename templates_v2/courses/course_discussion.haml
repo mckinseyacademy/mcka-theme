@@ -2,11 +2,6 @@
 - load staticfiles
 - load i18n
 
-- block page_title
-  %title
-    = program.display_name
-    {% trans " | Discussion | Courses | McKinsey Academy" %}
-
 - block custom_css
   -# lms-discussion-main.css is spiltted to two files for IE9 or below
   /[if lte IE 9]

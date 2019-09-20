@@ -1,11 +1,6 @@
 - extends "courses/course_navigation.haml"
 - load i18n
 
-- block page_title
-  %title
-    = program.display_name
-    {% trans " | Progress | Courses | McKinsey Academy" %}
-
 - block header
   - if progress_user.id == user.id
     - include "header.haml"

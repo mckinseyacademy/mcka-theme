@@ -1,14 +1,6 @@
 - extends "courses/course_main.haml"
 - load i18n
 
-- block page_title
-  %title
-    = course.current_lesson.name
-    -if lessons_custom_label
-      {% trans " | " %} #{lessons_custom_label}{% trans " | McKinsey Academy" %}
-    -else
-      {% trans " | Lessons | McKinsey Academy" %}
-
 - block help_context
   #mckinsey_help.reveal-modal.small{'data-reveal': ''}
     .close-reveal-modal

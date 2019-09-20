@@ -2,11 +2,6 @@
 - load staticfiles
 - load i18n
 
-- block page_title
-  %title
-    = program.display_name
-    {% trans " | Group Work | Courses | McKinsey Academy" %}
-
 - block content
   %script{src: "{% static 'js/highcharts/highcharts.js' %}"}
   %script{src: "{% static 'js/highcharts/highcharts-more.js' %}"}
