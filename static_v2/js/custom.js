@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+    $('#ooyalaplayer2 .oo-fullscreen').click(function () {
+        $('#moduleNavigator').toggleClass("full-screen-mode");
+    });
+
     if($(".reset-password #id_email").val() !== "")
     {
         $('#reset-password-submit').attr("disabled", false);
