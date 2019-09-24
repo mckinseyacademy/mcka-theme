@@ -700,7 +700,7 @@ body.new-theme {
                                         @include secondary-button-hover;
 
                                         .btn-icon:before {
-                                            @include primary-theme-content-color-hover;
+                                            @include secondary-theme-content-color-hover;
                                         }
 
                                         padding-left: 30px;

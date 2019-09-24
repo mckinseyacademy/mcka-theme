@@ -379,15 +379,15 @@ body.new-theme {
                 position: absolute;
                 top: 0px;
                 right: 0;
-
+                &:focus {
+                    @include secondary-button-hover-large( !important);
+                }
                 &:hover,
                 &:active {
                     @include secondary-button-hover-large( !important);
                 }
 
-                &:focus {
-                    @include secondary-button-large( !important);
-                }
+               
             }
 
             button {
