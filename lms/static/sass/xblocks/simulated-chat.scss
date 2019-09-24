@@ -75,7 +75,8 @@
                                 background:transparent;
 
                                 &:hover {
-                                    border: 1px solid var(--primary);
+                                    border: 1px solid var(--primary-darken-30);
+                                    color: var(--primary-darken-30);
                                 }
 
                                 &:disabled {
@@ -135,9 +136,9 @@
 
                         &:hover {
                             background: $ash-hard;
-                            color: var(--primary);
+                            color: var(--primary-darken-30);
                             &::before {
-                                color: var(--primary);
+                                color: var(--primary-darken-30);
                             }
                         }
 

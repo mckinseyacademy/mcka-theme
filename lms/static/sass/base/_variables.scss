@@ -146,3 +146,11 @@ $primary-hover: #0b0886; //will be changed to var object once implemented in ui-
 @mixin primary-theme-content-color-hover ($isImportant:null) {
   color: var(--primary) $isImportant;
 }
+
+@mixin secondary-theme-border-color-hover ($isImportant:null) {
+  border-color: var(--primary-darken-30) $isImportant;
+}
+
+@mixin secondary-theme-content-color-hover ($isImportant:null) {
+  color: var(--primary-darken-30) $isImportant;
+}

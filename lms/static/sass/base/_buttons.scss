@@ -56,8 +56,8 @@
 
 @mixin secondary-button-hover ($isImportant:null) {
     border: 1px solid;
-    @include primary-theme-border-color-hover(!important);
-    @include primary-theme-content-color-hover(!important);
+    @include secondary-theme-border-color-hover(!important);
+    @include secondary-theme-content-color-hover(!important);
     font-size: 12px $isImportant;
     text-transform: uppercase $isImportant;
     border-radius: 2px $isImportant;
