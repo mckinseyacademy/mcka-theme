@@ -131,6 +131,19 @@ body {
   }
 }
 
+.pn-ProductNav_Wrapper {
+  &.notActive {
+    .pn-ProductNav_Contents {
+      ul {
+        > li {
+          &:first-child {
+            @include margin-left(0 !important);
+          }
+        }
+      }
+    }
+  }
+}
 .courseNavWrap,
 .learner-nav {
   .pn-ProductNav_Contents {

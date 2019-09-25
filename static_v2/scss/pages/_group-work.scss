@@ -1,5 +1,10 @@
 .new-theme {
     #course-group-work {
+        .error{
+            h3{
+                font-weight:500;
+            }
+        }
 
         .mckinsey_help {
             display: none;
@@ -525,7 +530,7 @@
             &.reveal-modal {
                 background: white;
                 z-index: 999;
-                padding: 50px 50px 30px !important;
+                padding: 40px 50px 30px !important;
 
                 @include media-breakpoint-down(sm) {
                     padding: 30px !important;
@@ -546,6 +551,25 @@
                             font-family: 'Material Icons';
                             content: '\e5cd'
                         }
+                    }
+                }
+
+                .title{
+                    font-weight: 500;
+                    margin-bottom: 0;
+                    @include font-size(24);
+                }
+
+                .other_submission_links{
+                    h4{
+                        font-weight: 500 !important;
+                        margin:20px auto 0;
+                        font-size:  1.125rem !important;
+                    }
+
+                    .group-project-submissions{
+                        margin: 0 !important;
+                        padding-top: 5px !important;
                     }
                 }
 
@@ -709,6 +733,9 @@
             .review_selector_header {
                 margin-top: 0;
                 margin-bottom: 10px;
+            }
+            .review_subjects{
+                margin-left: 0!important;
             }
         }
 
@@ -898,13 +925,20 @@
                 height:auto!important;
                 line-height: normal;
                 margin-left: 25px;
-                
+                .review_evaluating_now
+                {
+                    font-size:14px !important;
+                    white-space: nowrap;
+                    display: none;
+                }
+                &.selected{
+                    .review_evaluating_now
+                    { 
+                        display: inline-block;
+                    }
+                }
             }
-            .review_evaluating_now
-            {
-                font-size:14px !important;
-                white-space: nowrap;
-            }
+           
             .avatar
             {
                 display:none;

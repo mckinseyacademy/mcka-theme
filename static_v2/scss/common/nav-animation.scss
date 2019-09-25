@@ -242,6 +242,7 @@
   &.notActive{
     .pn-ProductNav{
       overflow: hidden;
+      padding: 0 15px 0 !important;
     }
     .pn-Advancer{
       display: none !important;

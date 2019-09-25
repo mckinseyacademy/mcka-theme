@@ -1007,6 +1007,15 @@ blockquote {
   }
 }
 
+@include media-breakpoint-down(xs) {
+  footer {
+    margin-top: 0;
+  }
+  .videosWidget {
+    padding-bottom: 20px;
+  }
+}
+
 #profile-container {
   position: absolute;
   background: #ccc;

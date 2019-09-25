@@ -418,7 +418,7 @@ body{
 
 #background-full-calendar {
   width: 100%;
-  height: 120%;
+  height: calc(100% - 122px) !important;
   position: absolute;
   z-index: 999;
   background-color: rgba(0, 0, 0, 0.4);
@@ -484,7 +484,7 @@ body{
     height: 340px;
     background: white;
     position: relative;
-
+    top: -3px;
     &::after {
       content: "";
       position: absolute;

@@ -14,8 +14,9 @@
         .contentCard
           #course-group-work
             - if not group_project or not project_group
-              %div
-                .error {% trans "Group work has not yet begun for this course. You will receive a message with information once it begins" %}
+              .error.text-center
+                %h3 {% trans "Group work has not yet begun for this course." %}
+                %p {% trans "You will receive a message with information once it begins." %}
             - else
               - if not group_project.is_v2
                 %div
