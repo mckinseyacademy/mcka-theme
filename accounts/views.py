@@ -53,7 +53,6 @@ from courses.user_courses import (
 )
 from api_data_manager.user_data import UserDataManager
 from lib.context_processors import add_edx_notification_context
-from lib.color import get_branding_colors
 from util.i18n_helpers import set_language
 from util.user_agent_helpers import is_mobile_user_agent
 from util.data_sanitizing import clean_xss_characters
@@ -797,10 +796,6 @@ def sso_registration_form(request):
         access_key, client = _get_access_key(request.session[SSO_ACCESS_KEY_SESSION_ENTRY])
     except (AccessKey.DoesNotExist, AttributeError, IndexError):
         return HttpResponseNotFound()
-    try:
-        customization = ClientCustomization.objects.get(client_id=access_key.client_id)
-    except ClientCustomization.DoesNotExist:
-        customization = ClientCustomization.objects.none()
 
     error = None
     provider_data = request.session['provider_data']
@@ -820,8 +815,6 @@ def sso_registration_form(request):
             return render(request, 'accounts/sso_terms_of_service.haml', {
                 'accept_label': _('REGISTER'),
                 'form': form,
-                'client_customization': customization,
-                'branding_colors': get_branding_colors(customization),
             })
         elif request.method == 'POST':
             form = AcceptTermsFormSSO(request.POST)
@@ -829,8 +822,6 @@ def sso_registration_form(request):
                 return render(request, 'accounts/sso_terms_of_service.haml', {
                     'accept_label': _('REGISTER'),
                     'form': form,
-                    'client_customization': customization,
-                    'branding_colors': get_branding_colors(customization),
                 })
         user_data = {
             'accept_terms': True,
@@ -1300,13 +1291,9 @@ def access_key(request, code):
         customization = ClientCustomization.objects.get(client_id=key.client_id)
     except ClientCustomization.DoesNotExist:
         return render(request, template, status=404)
-    context = {
-        'client_customization': customization,
-        'branding_colors': get_branding_colors(customization),
-    }
 
     if not customization.identity_provider:
-        return render(request, template, context, status=404)
+        return render(request, template, status=404)
 
     request.session[SSO_ACCESS_KEY_SESSION_ENTRY] = key.code
     if mobile_url_scheme is None:
@@ -1315,9 +1302,7 @@ def access_key(request, code):
         redirect_to = _build_sso_redirect_url(customization.identity_provider, reverse('login'))
 
         data = {
-            'redirect_to': redirect_to,
-            'client_customization': customization,
-            'branding_colors': get_branding_colors(customization),
+            'redirect_to': redirect_to
         }
 
         return render(request, template, data)

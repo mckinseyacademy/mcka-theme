@@ -3,10 +3,7 @@
 - comment "This template is used for /accounts/finalize/ (SSO registration)"
 
 - block header
-  - if client_customization
-    - include 'header.haml'
-  - else
-    - include 'header_without_logo.haml'
+   - include 'header_without_logo.haml'
 
 - block content
   .container

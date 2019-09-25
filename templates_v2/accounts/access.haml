@@ -3,10 +3,7 @@
 - load staticfiles
 
 - block header
-  - if client_customization
-    - include 'header.haml'
-  - else
-    - include 'header_without_logo.haml'
+  - include 'header_without_logo.haml'
 
 - block content
   - if redirect_to
