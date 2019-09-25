@@ -262,6 +262,10 @@
         background-position: 0% 0%
     }
   }
+
+  @media screen and (max-width: 767px) {
+      z-index: 8;
+  }
 }
 
 // Progressive Donut loader
