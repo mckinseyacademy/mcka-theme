@@ -1504,6 +1504,8 @@ body.new-theme {
                                 }
 
                                 .comments {
+
+                                   
                                     background-color: $ash-white;
                                     box-shadow: none;
 
@@ -1979,6 +1981,11 @@ body.new-theme {
                     }
                 }
             }
+        }
+
+        .comments,
+        .responses{
+            margin:0;
         }
     }
 
