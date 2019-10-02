@@ -5967,7 +5967,7 @@ msgstr "参加者CSV"
 #: templates_v2/courses/contact_ta.haml:36
 #: templates_v2/courses/contact_ta.haml:55
 msgid "Submit"
-msgstr "提出する"
+msgstr "送信"
 
 #: templates/admin/unenroll_users_email_template.haml:9
 #, fuzzy, python-format
