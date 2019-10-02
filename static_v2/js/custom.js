@@ -313,6 +313,10 @@ $(document).ready(function () {
            $("#"+("teacher_"+$(this).attr('id').split("_")[1])).css("display","block")
        }
     });
+
+    $('.lesson-content').on('click', '.oo-fullscreen', function () {
+        $('#moduleNavigator').toggleClass('full-screen-mode');
+    });
 });
 
 
