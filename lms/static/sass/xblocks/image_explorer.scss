@@ -30,10 +30,11 @@
 
 body.new-theme {
   &.rtl {
-    .image-explorer-close-reveal{
-      right:auto !important;
-      left:-5px;
+    .image-explorer-close-reveal {
+      right: auto !important;
+      left: -5px;
     }
+
     .image-explorer-xblock-wrapper {
       .image-explorer-hotspot-reveal {
         .image-explorer-hotspot-content-wrapper {
@@ -49,9 +50,11 @@ body.new-theme {
       }
     }
   }
+
   .lesson-content {
     .image-explorer-xblock-wrapper {
       margin-bottom: 20px;
+      text-align: center;
 
       h2 {
         color: $black;
@@ -68,34 +71,31 @@ body.new-theme {
 
       .image-explorer-wrapper {
         text-align: center;
-        width: 100%;
 
         .image-explorer-hotspot {
           text-align: left;
           background: transparent;
           border-radius: 22px;
-         
+
           &:hover {
-            // background-position: 0 -41px;
             &:before {
               @include primary-theme-content-color-hover;
             }
           }
 
           &.visited {
-            // background-position: 0 -82px;
             &:before {
               content: "\e86c";
               @include primary-theme-content-color;
             }
 
             &:hover {
-              // background-position: 0 -82px;
               &:before {
                 @include primary-theme-content-color;
               }
             }
           }
+
           &:before {
             @include primary-theme-content-color;
             content: "\e147";
@@ -117,16 +117,16 @@ body.new-theme {
             border-radius: 2px;
             background: $ash-white;
             border: 1px solid $popup-border;
-            height:auto !important;
+            height: auto !important;
 
             .image-explorer-close-reveal {
               position: absolute;
               right: 6px;
               top: 0px;
-              
               &::before {
                 display: none;
               }
+
               &:after {
                 font-family: "Material Icons";
                 content: "\e14c";
@@ -151,51 +151,76 @@ body.new-theme {
                   line-height: initial;
                   font-size: 0.875rem;
                 }
-                ul{
+
+                ul {
                   margin: 0 0 15px 0 !important;
                 }
               }
 
               .image-explorer-hotspot-reveal-body {
-                > ul, > li, > p, > span {
+
+                >ul,
+                >li,
+                >p,
+                >span {
                   font-size: 14px;
                   color: $black;
                   line-height: 19px;
                 }
 
-                ul{
+                ul {
                   margin-bottom: 15px !important;
+
                   &.fa-ul {
                     list-style-type: none;
                   }
                 }
 
-                > h1, > h2, > h3, > h4, > h5, > h6 {
+                >h1,
+                >h2,
+                >h3,
+                >h4,
+                >h5,
+                >h6 {
                   color: $black !important;
                 }
-                .ie-custom-div{
+
+                .ie-custom-div {
                   font-size: 14px;
                   line-height: 19px;
                   margin-bottom: 0;
-                  ul, li, p, span, div {
+
+                  ul,
+                  li,
+                  p,
+                  span,
+                  div {
                     font-size: 14px;
                     color: $black;
                     line-height: 19px;
                     margin-bottom: 0;
                   }
-                  h1, h2, h3, h4, h5, h6 {
+
+                  h1,
+                  h2,
+                  h3,
+                  h4,
+                  h5,
+                  h6 {
                     color: $black !important;
                   }
                 }
-                > div:not(.ie-custom-div) {
+
+                >div:not(.ie-custom-div) {
                   margin-top: 3px;
                 }
+
                 a {
                   text-decoration: none;
                   @include primary-theme-content-color;
                 }
 
-                > ul {
+                >ul {
                   padding-left: 5px;
                   margin: 5px 0;
 
@@ -218,14 +243,14 @@ body.new-theme {
       .image-explorer-xblock-wrapper {
         .image-explorer-wrapper {
           .image-explorer-hotspot {
-           
+
             &:before {
               font-size: 22px;
               width: 14px;
               height: 14px;
               line-height: 14px;
 
-            }      
+            }
 
             .image-explorer-hotspot-reveal {
               width: 90% !important;
@@ -234,8 +259,7 @@ body.new-theme {
               margin: 0 auto !important;
               max-height: none !important;
 
-              .image-explorer-hotspot-content-wrapper
-              {
+              .image-explorer-hotspot-content-wrapper {
                 height: calc(100% - 60px);
                 max-height: none;
               }
@@ -245,6 +269,46 @@ body.new-theme {
                 width: 100% !important;
               }
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+.new-theme {
+  [data-block-type="image-explorer"] {
+    .image-explorer-wrapper {
+
+      @media only screen and (max-width: 992px) {
+        img {
+          max-width: none;
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      .image-explorer-hotspot-reveal {
+        background: white;
+        opacity: 1;
+        color: black;
+        border-radius: 10px;
+        box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.3);
+
+        .image-explorer-hotspot-content-wrapper {
+          margin: 15px;
+        }
+
+        .image-explorer-close-reveal {
+          color: $primary;
+          position: relative;
+          font-size: 0;
+
+          &::before {
+            font-family: 'Material Icons';
+            content: '\e5cd';
+
+            font-size: 24px;
           }
         }
       }
