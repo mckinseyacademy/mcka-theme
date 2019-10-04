@@ -30,6 +30,9 @@
 
 body.new-theme {
   &.rtl {
+    .image-explorer-description{
+      text-align: right;
+    }
     .image-explorer-close-reveal {
       right: auto !important;
       left: -5px;
@@ -63,6 +66,8 @@ body.new-theme {
 
       .image-explorer-description {
         font-size: 0.875rem;
+        text-align: left;
+        
 
         .hint {
           font-style: italic;
