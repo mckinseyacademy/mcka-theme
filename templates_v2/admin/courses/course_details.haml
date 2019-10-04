@@ -41,21 +41,21 @@
                         .courseDetailsMenuButtons
                           - if cohorts_available
                             .courseCohortsButton.large-2.columns
-                              %a.ome.dome-c{href: "{% url 'cohorts_course_details' id %}"}
+                              %a{href: "{% url 'cohorts_course_details' id %}"}
                                 {% trans "COHORTS" %}
                           %span.courseParticipantsButton.large-2.columns
-                            %a.course-tab-link.participants.ome.dome-c.active{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                            %a.course-tab-link.participants.active{:href => '#', :target => '_self', :data-target => 'courseParticipants', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                               {% trans "PARTICIPANTS" %}
                           %span.courseStatsButton.large-2.columns
-                            %a.course-tab-link.stats.ome.dome-c{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                            %a.course-tab-link.stats{:href => '#', :target => '_self', :data-target => 'courseStats', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                               {% trans "STATS" %}
                           - if user.is_mcka_subadmin or user.is_mcka_admin
                             .courseResponsesButton.large-2.columns
-                              %a.ome.dome-c{:href => '#', :target => '_self', :data-target => 'courseBlocks', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
+                              %a{:href => '#', :target => '_self', :data-target => 'courseBlocks', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                                 {% trans "RESPONSES" %}
                           - if request.resolver_match.url_name == 'course_details'
                             .courseStatsButton.large-4.columns
-                              %a.ome.dome-c{:href => 'learner_dashboard'}>
+                              %a{:href => 'learner_dashboard'}>
                                 {% trans "LEARNER DASHBOARD" %}
 
                             .courseStatsButton.large-4.columns
@@ -118,17 +118,17 @@
 
                                 #coursesDownloadStatsButton.d-none
                                   - if companyCourseDetailsPage
-                                    %a.btn.btn-primary.ome.dome-bc.button.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}>
+                                    %a.btn.btn-primary.button.small{:href => '/admin/courses/#{id}/download_course_stats/?company_id=#{companyId}', :target => '_self'}>
                                       {% trans "Export Stats" %}
                                   - else
-                                    %a.btn.btn-primary.ome.dome-bc.button.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}>
+                                    %a.btn.btn-primary.button.small{:href => '/admin/courses/#{id}/download_course_stats/', :target => '_self'}>
                                       {% trans "Export Stats" %}
 
                                 -#  Company Admin stats Button
                                 - if user.is_company_admin
                                   #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
                                     .bulkButtonWrapper
-                                      %a.btn.btn-primary.ome.dome-bc.button.radius.small.bulkExportStats.bulkButton.disabled{:href => "#"}
+                                      %a.btn.btn-primary.button.radius.small.bulkExportStats.bulkButton.disabled{:href => "#"}
                                         {% trans "Export Stats" %}
                                 - else
                                   #courseBulkActionsMainContainer.bulkActionsButtonContainer.disabled
@@ -157,10 +157,10 @@
                             -#Breadcrums
                             %ul.breadcurm
                               %li
-                                %a.ome.dome-c{:href => '/admin/company_dashboard', :target => '_self'}
+                                %a{:href => '/admin/company_dashboard', :target => '_self'}
                                   {% trans "Company Dashboard" %}
                               %li
-                                %a.ome.dome-c{:href => '/admin/companies/#{companyId}', :target => '_self'}
+                                %a{:href => '/admin/companies/#{companyId}', :target => '_self'}
                                   =companyName
                               %li= name
                               %li.course-participants-tab {% trans "Participants" %}
@@ -215,7 +215,7 @@
           %button.btn.btn-primary.saveChanges{"data-dismiss": "modal", :type => "button"}
             %span.spinner-border.spinner-border-sm
             Export Stats
-          %button.btn.btn-secondary.ome.dome-c{"data-dismiss": "modal", :type => "button"} Close
+          %button.btn.btn-secondary{"data-dismiss": "modal", :type => "button"} Close
 
   - include "admin/fragments/hidden_image_upload_form.haml"
 - block js_snippets

@@ -55,6 +55,7 @@
       padding: 15px 25px;
       background-color: var(--primary);
       color: $white;
+
       .current-bookmark-text {
         position: absolute;
         left: 0;
@@ -136,7 +137,7 @@
         }
       }
       .card-body {
-        background-color: $dark-gray;
+        background-color: var(--dark-gray);
       }
     }
   }
@@ -145,13 +146,16 @@
       text-decoration: none;
       .card {
         box-shadow: 0 0 30px lighten($gray, 30%);
+        .card-body {
+          background-color: var(--primary-darken-30);
+        }
         h3 {
           text-decoration: underline;
         }
       }
       .archived {
         .card-body {
-          background-color: $dark-gray;
+          background-color: var(--dark-gray-darken-30);
         }
       }
     }

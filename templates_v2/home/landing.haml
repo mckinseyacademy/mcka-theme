@@ -1,4 +1,5 @@
 - extends "layout.haml"
+- load assets
 - load i18n
 - load staticfiles
 
@@ -118,15 +119,20 @@
     %script
       $("#password-reset-failed").modal('show');
 
--#- block js_snippets
--#  %script{src: "{% static 'js/app_link_popup.js' %}"}
--#
 - block js_snippets
-  %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
-  %script{src: "{% static 'js/vendor/jquery.query-object.js' %}"}
-  %script{src: "{% static 'js/accounts/user_login.js' %}"}
-
   :javascript
+    // Preserve hash value in ?next= argument
+    if (window.location.hash !== '') {
+        var hash = window.location.hash.substr(1);
+        if (hash.indexOf('forgot-password-modal') > -1) {
+            $('a[data-reveal-id="reset-password"]').click();
+            window.location.hash = hash.replace('forgot-password-modal', '');
+        } else {
+            var next_with_hash = $.query.get('next') + window.location.hash,
+                query_with_hash = $.query.set('next', next_with_hash).toString();
+            window.history.replaceState({}, '', query_with_hash);
+        }
+    }
     window.onload = function(){
       setTimeout(loadAfterTime, 1000)
     };

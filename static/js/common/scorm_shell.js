@@ -45,8 +45,8 @@ function disableLogoutButton()
 {
     if(isNewUI())
     {
-        $('.footer.ome a').attr("href", "javascript:void(0)");
-        $('.footer.ome a').addClass("disabled btn-outline-secondary");
+        $('.footer a').attr("href", "javascript:void(0)");
+        $('.footer a').addClass("disabled btn-outline-secondary");
     }
     else
     {

@@ -1,5 +1,7 @@
 from django.conf import settings
 from django import template
+from django.template.defaultfilters import stringfilter
+
 
 register = template.Library()
 
@@ -11,3 +13,9 @@ def template_fragment_cache_timeouts(fragment_name):
     """
     cache_timeouts = settings.CACHE_TIMEOUTS.get('template_fragments', {})
     return cache_timeouts.get(fragment_name, 0)
+
+
+@register.filter
+@stringfilter
+def clean_key(value):
+    return value.replace('-', '_')

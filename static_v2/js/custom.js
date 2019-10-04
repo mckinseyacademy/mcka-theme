@@ -306,6 +306,10 @@ $(document).ready(function () {
     if ($(window).width() <= 1024 && $('.progress-data tr td').length >= 2) {
         $(".progress-data").addClass("three-cols");
     }
+
+    $('.lesson-content').on('click', '.oo-fullscreen', function () {
+        $('#moduleNavigator').toggleClass('full-screen-mode');
+    });
 });
 
 
@@ -471,7 +475,6 @@ function smoothNavLinks() {
 
     // var count = 0;
     function moveIndicator(item, color) {
-        // console.log('item ', item.nodeName);
         if (item.nodeName !== 'A') {
             return false;
         }
@@ -480,10 +483,10 @@ function smoothNavLinks() {
         var container = pnProductNavContents.getBoundingClientRect().left;
         var distance = textPosition.left - container;
         var scroll = pnProductNavContents.scrollLeft;
-        pnIndicator.style.transform = "translateX(" + (distance + scroll) + "px) scaleX(" + textPosition.width * 0.01 + ")";
-        // count = count += 100;
-        // pnIndicator.style.transform = "translateX(" + count + "px)";
 
+        if(pnIndicator) {
+            pnIndicator.style.transform = "translateX(" + (distance + scroll) + "px) scaleX(" + textPosition.width * 0.01 + ")";
+        }
         if (color) {
             pnIndicator.style.backgroundColor = color;
         }
@@ -636,7 +639,6 @@ $(window).on("load", function () {
     $('.loader').removeClass("donut-loader").removeClass("loader");
     $('.preloader').removeClass("preloader");
     $('.courseLanding .contentCard').css("visibility", "visible");
-    $('.course-card').removeClass("skeleton-loading");
     $('.courseLanding').removeClass('skeleton');
 
 
@@ -651,7 +653,7 @@ $(window).on("load", function () {
 
 // Preloader for courses page
 
-$('.my-courses .card').click(function () {
+$(document).on('click','.my-courses .card', function () {
     $('.my-courses .card').removeClass("loader").removeClass("donut-loader");
     $(this).addClass("loader").addClass("donut-loader");
 });
@@ -674,6 +676,10 @@ function scaleImage(label) {
         $(label).find("img").css("height", imgHeight)
         $(label).find("img").css("width", "auto")
     }
+}
+
+function removeCardLoader(image) {
+    $(image).parents('.course-card').removeClass('skeleton-loading')
 }
 
 $(window).resize(function () {

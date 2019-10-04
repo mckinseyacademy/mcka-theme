@@ -29,7 +29,6 @@
   z-index: 99999 !important;
 
   > a {
-    color: var(--primary);
     font-size: 0.75rem;
     letter-spacing: 0.02em;
     line-height: 17px;
@@ -40,7 +39,6 @@
     li {
       > a {
         text-transform: capitalize;
-        color: var(--primary);
       }
     }
 
@@ -158,7 +156,6 @@
        li {
         > a {
           display: block;
-          color: var(--primary);
           font-size: 0.75rem;
           letter-spacing: 0.02em;
           font-weight: normal;
@@ -214,7 +211,7 @@
 .dropdown-toggle {
   color: var(--primary);
 
-  &:hover{ text-decoration: none;}
+  &:hover{text-decoration: none;}
   &:after {
     font-family: 'Material Icons';
     content: "\e313";
