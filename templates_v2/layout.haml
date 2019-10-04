@@ -221,10 +221,6 @@
       - else
         - include 'footer.haml'
 
-    -# i18n JS Catalog
-    - block i18n
-      %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
-
     -# jQuery-cookie
     - block jquery_cookie
       %script{src: "{% static 'js/vendor/jquery.cookie.js' %}"}
