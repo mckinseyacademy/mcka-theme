@@ -306,10 +306,6 @@ $(document).ready(function () {
     if ($(window).width() <= 1024 && $('.progress-data tr td').length >= 2) {
         $(".progress-data").addClass("three-cols");
     }
-
-    $('.lesson-content').on('click', '.oo-fullscreen', function () {
-        $('#moduleNavigator').toggleClass('full-screen-mode');
-    });
 });
 
 
@@ -676,10 +672,6 @@ function scaleImage(label) {
         $(label).find("img").css("height", imgHeight)
         $(label).find("img").css("width", "auto")
     }
-}
-
-function removeCardLoader(image) {
-    $(image).parents('.course-card').removeClass('skeleton-loading')
 }
 
 $(window).resize(function () {
