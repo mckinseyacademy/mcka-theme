@@ -33,7 +33,6 @@
                             %span.bookmark.secondary
                               %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
                                 %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
-                        %a.ome.dome-c.dropdown-item{:href => "/courses/#{active_course.id}/overview"}
                         %a.dropdown-item{:href => "/courses/#{active_course.id}/overview"}
                           {% trans "Course Overview" %}
                           - if request.resolver_match.url_name == 'course_overview'
