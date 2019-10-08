@@ -186,6 +186,11 @@ body{
     .link-with-sup {
       display: inline-block;
     }
+    .transcript-header {
+      > ul {
+        margin: 0;
+      }
+    }
   }
   .xblock {
     img {
