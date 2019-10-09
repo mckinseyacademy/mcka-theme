@@ -201,8 +201,11 @@ body.new-theme {
                     .poll-image{
                         display: inline-block;
                         vertical-align: middle;
-                        width: auto;
+                        width: 25%;
                         max-width:25%;
+                        .poll-image-label{
+                            width: 100%;
+                        }
                     }
 
                     .poll-answer-text {
@@ -217,6 +220,9 @@ body.new-theme {
                             margin: 0;
                             font-size: 0.875rem !important;
                         }
+                    }
+                    .poll-image ~ .poll-answer-text{
+                        width: calc(100% - 25% - 50px);
                     }
                 }
             }
