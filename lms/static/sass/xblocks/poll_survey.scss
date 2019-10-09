@@ -169,6 +169,7 @@ body.new-theme {
             .poll-answers {
                 margin-bottom: 32px;
                 padding: 0;
+                max-width: none;
 
                 .poll-answer {
                     display: block !important;
@@ -195,8 +196,6 @@ body.new-theme {
                             left: 2px;
                             top: 5px;
                         }
-
-
                     }
 
                     .poll-image{
@@ -211,6 +210,8 @@ body.new-theme {
                         padding-bottom: 5px;
                         display: inline-block;
                         vertical-align: middle;
+                        width: calc(100% - 35px);
+                        padding-left: 0;
 
                         p {
                             margin: 0;
