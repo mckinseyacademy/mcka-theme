@@ -1,7 +1,9 @@
 """
 Views for Certificates djangoapp.
 """
-import urllib
+import urllib.request
+import urllib.parse
+import urllib.error
 
 from mimetypes import MimeTypes
 from lib.authorization import permission_group_required
@@ -226,7 +228,7 @@ def load_template_asset(request, asset_id, asset_name):  # pylint: disable=unuse
     if default_storage.exists(asset_path):
         asset = default_storage.open(asset_path).read()
         mime = MimeTypes()
-        url = urllib.pathname2url(asset_path)
+        url = urllib.request.pathname2url(asset_path)
         mime_type = mime.guess_type(url)
         response = HttpResponse(
             asset, content_type=mime_type[0]

@@ -54,7 +54,7 @@ class Command(BaseCommand):
                 sql_tables = 'RENAME TABLE %s_%s TO %s_%s;' % (self.new_app, table_name, self.old_app, table_name)
                 cursor.execute(sql_tables)
             except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
-                print "Warning: Problem renaming table: " + table_name
+                print("Warning: Problem renaming table: " + table_name)
                 warnings += 1
 
             """Rename the app_labels in django_content_type"""
@@ -63,10 +63,10 @@ class Command(BaseCommand):
                              'WHERE (model = "%s" AND app_label = "%s")' % (self.old_app, table_name, self.new_app)
                 cursor.execute(sql_models)
             except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
-                print "Warning: Problem renaming django_content_type table where model = " + table_name
+                print("Warning: Problem renaming django_content_type table where model = " + table_name)
                 warnings += 1
 
         if warnings == 0:
-            print "Tables rename sucess!"
+            print("Tables rename sucess!")
         else:
-            print "There was " + str(warnings) + " warnings"
+            print("There was " + str(warnings) + " warnings")

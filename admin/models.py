@@ -41,7 +41,7 @@ class BaseGroupModel(group_models.GroupInfo):
         if not hasattr(self, "display_name") and hasattr(self, "name"):
             self.display_name = self.name
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -104,11 +104,8 @@ class Program(BaseGroupModel):
             class_name=self.__class__.__name__, id=self.id
         )
 
-    def __unicode__(self):
-        return unicode(str(self))
-
     def __repr__(self):
-        return unicode(self)
+        return str(self)
 
 
 class Tag(BaseGroupModel):
@@ -157,7 +154,7 @@ class Tag(BaseGroupModel):
 
     @classmethod
     def course_tags(cls, course_id):
-        group_type = ",".join(TAG_GROUPS.values())
+        group_type = ",".join(list(TAG_GROUPS.values()))
         tags = course_api.get_course_groups(course_id=course_id, group_type=group_type)
         return tags
 
@@ -320,8 +317,8 @@ class UserRegistrationBatch(db_models.Model):
 
     @staticmethod
     def generate_task_key(time):
-        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-        return hashlib.sha1(salt+time).hexdigest()
+        salt = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()[:5]
+        return hashlib.sha1('{}{}'.format(salt, time).encode('utf-8')).hexdigest()
 
     @classmethod
     def create(cls):
@@ -354,8 +351,8 @@ class BatchOperationStatus(db_models.Model):
 
     @staticmethod
     def generate_task_key(time):
-        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-        return hashlib.sha1(salt+time).hexdigest()
+        salt = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()[:5]
+        return hashlib.sha1('{}{}'.format(salt, time).encode('utf-8')).hexdigest()
 
     @classmethod
     def create(cls):
@@ -440,10 +437,10 @@ class CompanyContact(db_models.Model):
         unique_together = ['company_id', 'contact_type']
 
     COMPANY_CONTACT_TYPE_CHOICES = (
-        (u'0', _('Executive Sponsor')),
-        (u'1', _('IT Security Contact')),
-        (u'2', _('Senior HR/PD Professional')),
-        (u'3', _('Day-to-Day Coordinator')),
+        ('0', _('Executive Sponsor')),
+        ('1', _('IT Security Contact')),
+        ('2', _('Senior HR/PD Professional')),
+        ('3', _('Day-to-Day Coordinator')),
     )
 
     company_id = db_models.IntegerField(db_index=True)
@@ -454,11 +451,11 @@ class CompanyContact(db_models.Model):
     phone = db_models.CharField(max_length=200, blank=True)
 
     TYPE_DESCRIPTION = {
-        u'0': _('Senior executive sponsoring McKinsey Academy program within company'),
-        u'1': _('IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)'),
-        u'2': _('Overseeing/coordinating Academy program with broader people strategy'),
-        u'3': _('Individual managing day-to-day operation of the program (e.g., missing participant information, '
-                'engagement)')
+        '0': _('Senior executive sponsoring McKinsey Academy program within company'),
+        '1': _('IT department contact to troubleshoot technical issues (e.g., corporate firewalls, whitelisting)'),
+        '2': _('Overseeing/coordinating Academy program with broader people strategy'),
+        '3': _('Individual managing day-to-day operation of the program (e.g.,'
+               'missing participant information, engagement)')
     }
 
     @classmethod
@@ -551,9 +548,9 @@ class BrandingSettings(db_models.Model):
     top_bar_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TOP_BAR_COLOR)
 
     TYPES = (
-        (u'1', u'Normal'),
-        (u'2', u'Tiled'),
-        (u'3', u'Stretched')
+        ('1', 'Normal'),
+        ('2', 'Tiled'),
+        ('3', 'Stretched')
     )
     background_style = db_models.CharField(max_length=1, choices=TYPES, blank=True)
 
@@ -602,22 +599,22 @@ class LearnerDashboardTile(db_models.Model):
     tile_background_color = db_models.CharField(max_length=20, default=settings.TILE_BACKGROUND_COLOR, blank=True)
 
     TYPES = (
-        (u'1', _('Article')),
-        (u'2', _('Lesson')),
-        (u'3', _('Module')),
-        (u'4', _('Course')),
-        (u'5', _('In Person Session')),
-        (u'6', _('Webinar')),
-        (u'7', _('Group work')),
+        ('1', _('Article')),
+        ('2', _('Lesson')),
+        ('3', _('Module')),
+        ('4', _('Course')),
+        ('5', _('In Person Session')),
+        ('6', _('Webinar')),
+        ('7', _('Group work')),
     )
     tile_type = db_models.CharField(max_length=1, choices=TYPES)
 
     ROW = (
-        (u'1', u'1'),
-        (u'2', u'2'),
-        (u'3', u'3'),
-        (u'4', u'4'),
-        (u'5', u'5')
+        ('1', '1'),
+        ('2', '2'),
+        ('3', '3'),
+        ('4', '4'),
+        ('5', '5')
     )
     row = db_models.CharField(max_length=1, choices=ROW, blank=True)
 
@@ -654,9 +651,9 @@ class LearnerDashboardBranding(db_models.Model):
     top_bar_color = db_models.CharField(max_length=20, blank=True, default=settings.LEARNER_DASHBOARD_TOP_BAR_COLOR)
 
     TYPES = (
-        (u'1', u'Normal'),
-        (u'2', u'Tiled'),
-        (u'3', u'Stretched')
+        ('1', 'Normal'),
+        ('2', 'Tiled'),
+        ('3', 'Stretched')
     )
     background_style = db_models.CharField(max_length=1, choices=TYPES, blank=True)
 
@@ -696,10 +693,10 @@ class LearnerDashboardTileProgress(db_models.Model):
     user = db_models.IntegerField(blank=False, null=False)
 
     PROGRESS_TYPES = (
-        (u'1', _('Not Started')),
-        (u'2', _('In Progress')),
-        (u'3', _('Complete')),
-        (u'3', _('Incomplete'))
+        ('1', _('Not Started')),
+        ('2', _('In Progress')),
+        ('3', _('Complete')),
+        ('3', _('Incomplete'))
     )
     progress = db_models.CharField(max_length=1, choices=PROGRESS_TYPES, blank=True, null=True)
     percentage = db_models.IntegerField(blank=True, null=True)
@@ -736,7 +733,7 @@ class SelfRegistrationRoles(db_models.Model):
     )
     option_text = db_models.CharField(blank=False, null=False, max_length=500)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.option_text
 
 

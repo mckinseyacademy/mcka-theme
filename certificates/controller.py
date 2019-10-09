@@ -3,7 +3,7 @@ Core logic to sanitise information for certificate views
 """
 
 import os
-import urlparse
+import urllib.parse
 
 from datetime import datetime
 from django.conf import settings
@@ -53,7 +53,7 @@ def get_course_passed_users_list(course_id):
     passed_users_page_one = course_api.get_course_passed_users(course_id)
 
     passed_users_result_set.extend(passed_users_page_one.results)
-    for page_num in xrange(2, passed_users_page_one.num_pages + 1):
+    for page_num in range(2, passed_users_page_one.num_pages + 1):
         passed_users_result_set.extend(
             course_api.get_course_passed_users(course_id, page_num).results
         )
@@ -82,7 +82,7 @@ def get_certificate_url(base_domain, certificate_uuid):
         kwargs={'certificate_uuid': certificate_uuid}
     )
 
-    return urlparse.urljoin(base_domain, certificate_path)
+    return urllib.parse.urljoin(base_domain, certificate_path)
 
 
 def send_certificate_generation_email(

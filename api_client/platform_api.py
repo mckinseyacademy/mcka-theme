@@ -2,7 +2,7 @@
 Module for edx-platform builtin API calls
 """
 import json
-import urlparse
+import urllib.parse
 
 from django.conf import settings
 
@@ -12,14 +12,14 @@ from api_data_manager.user_data import USER_PROPERTIES
 from api_data_manager.signals import user_data_updated
 
 
-ADVANCED_SETTINGS_API = urlparse.urljoin(
+ADVANCED_SETTINGS_API = urllib.parse.urljoin(
     settings.STUDIO_SERVER_ADDRESS, '/settings/advanced/'
 )
-PLATFORM_USER_API = urlparse.urljoin(settings.API_SERVER_ADDRESS, 'api/user/v1/')
+PLATFORM_USER_API = urllib.parse.urljoin(settings.API_SERVER_ADDRESS, 'api/user/v1/')
 
 
 def update_user_profile_image(user, file):
-    url = urlparse.urljoin(
+    url = urllib.parse.urljoin(
         PLATFORM_USER_API,
         'accounts/{}/image'.format(user.username)
     )
@@ -37,12 +37,12 @@ def get_course_advanced_settings(course_id):
     Returns advanced settings for the given course
     """
     response = GET(
-        urlparse.urljoin(ADVANCED_SETTINGS_API, course_id),
+        urllib.parse.urljoin(ADVANCED_SETTINGS_API, course_id),
         auth=SESSION_AUTH,
         content_type='application/json'
     )
 
-    return json.loads(response.content)
+    return json.loads(response.text)
 
 
 def update_course_mobile_available_status(course_id, status):
@@ -56,10 +56,10 @@ def update_course_mobile_available_status(course_id, status):
     }
 
     response = PUT(
-        urlparse.urljoin(ADVANCED_SETTINGS_API, course_id),
+        urllib.parse.urljoin(ADVANCED_SETTINGS_API, course_id),
         json.dumps(data),
         auth=SESSION_AUTH,
         content_type='application/json'
     )
 
-    return json.loads(response.content)
+    return json.loads(response.text)

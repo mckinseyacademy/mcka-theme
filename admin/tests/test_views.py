@@ -238,7 +238,7 @@ class AdminClientSSOTest(TestCase, ApplyPatchMixin):
         request.user = self.user
         request.session = self.mock_session
         response = client_sso(request, 1)
-        self.assertIn('No access keys', response.content)
+        self.assertIn('No access keys', response.content.decode('utf-8'))
 
     def test_save_identity_provider_success(self):
         test_provider = 'test-provider'
@@ -251,7 +251,7 @@ class AdminClientSSOTest(TestCase, ApplyPatchMixin):
         idp_input_html = """
             <input id='identity_provider' type='text' name='identity_provider' value='{}' />
         """.format(test_provider)
-        self.assertInHTML(idp_input_html, response.content)
+        self.assertInHTML(idp_input_html, response.content.decode('utf-8'))
 
 
 class CourseParticipantsStatsMixin(ApplyPatchMixin):
@@ -367,13 +367,13 @@ class CourseParticipantsStatsMixin(ApplyPatchMixin):
         """Creates file with test users' emails and one invalid email."""
         headers = headers or ['email']
         temp_csv_file = NamedTemporaryFile(dir='')
-        temp_csv_file.write("{}\n".format(','.join(headers)))
+        temp_csv_file.write(("{}\n".format(','.join(headers))).encode('utf-8'))
         for student in self.students:
             student_data = [getattr(student, header) for header in headers]
             student_data_str = ','.join(str(student_data))
-            temp_csv_file.write("{}\n".format(student_data_str))
+            temp_csv_file.write(("{}\n".format(student_data_str)).encode('utf-8'))
 
-        temp_csv_file.write("\ninvalid")
+        temp_csv_file.write("\ninvalid".encode('utf-8'))
         temp_csv_file.seek(0)
         return File(temp_csv_file)
 
@@ -395,7 +395,7 @@ class CourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
         """
         Test GET /admin/api/courses/<course_id>
         """
-        course_detail_url = reverse('course_details_api', kwargs={'course_id': unicode(self.course.course_id)})
+        course_detail_url = reverse('course_details_api', kwargs={'course_id': str(self.course.course_id)})
         request = self.get_request(course_detail_url, self.admin_user)
         response = CourseDetailsApi().get(request, self.course.course_id)
 
@@ -445,7 +445,7 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
         course_api = self.apply_patch('admin.views.load_course')
         course_api.return_value = (is_cohorted, is_available)
 
-        url = reverse('course_details', kwargs={'course_id': unicode(self.course.course_id)})
+        url = reverse('course_details', kwargs={'course_id': str(self.course.course_id)})
         request = self.get_request(url, self.admin_user)
         request.url_name = 'course_details'
         with patch('admin.views.organization_api.fetch_organization', Mock()):
@@ -457,11 +457,13 @@ class CourseDetailsTest(CourseParticipantsStatsMixin, TestCase):
                 # Make sure the view works
                 self.assertEqual(response.status_code, status.HTTP_200_OK)
                 # Make sure cohorts button is correctly shown/hidden
-                self.assertEqual(show_tab, '/admin/cohorts/' in response.content)
+                self.assertEqual(show_tab, '/admin/cohorts/' in response.content.decode('utf-8'))
                 # Make sure javascript variables are correctly set
-                self.assertTrue('var course_details_cohorts_enabled = \'%s\'' % is_cohorted in response.content)
+                self.assertTrue(
+                    'var course_details_cohorts_enabled = \'%s\'' % is_cohorted in response.content.decode('utf-8')
+                )
                 self.assertTrue('var course_details_cohorts_available = \'%s\'' % (
-                        is_available and not is_client_admin) in response.content)
+                        is_available and not is_client_admin) in response.content.decode('utf-8'))
 
 
 @ddt.ddt
@@ -488,7 +490,7 @@ class AdminCsvUploadViewsTest(CourseParticipantsStatsMixin, TestCase):
 
             if is_valid:
                 self.assertEqual(response.status_code, status.HTTP_200_OK)
-                self.assertIn('task_key', response.content)
+                self.assertIn('task_key', response.content.decode('utf-8'))
             else:
                 self.assertEqual(response, None)
 
@@ -532,7 +534,7 @@ class EnrollParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
         """Test uploading CSV without enabling `data_deletion.enable_data_deletion` waffle switch. """
         response = self.api.delete(self.request)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, "`data_deletion` flag is not enabled.")
+        self.assertEqual(response.content.decode('utf-8'), "`data_deletion` flag is not enabled.")
 
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('lib.authorization.permission_group_required_not_in_group', lambda _: HttpResponseForbidden())
@@ -552,7 +554,7 @@ class EnrollParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
         self.request.data = {}
         response = self.api.delete(self.request)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, '{"student_unenroll_list": ["This field is required."]}')
+        self.assertEqual(response.content.decode('utf-8'), '{"student_unenroll_list": ["This field is required."]}')
 
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('admin.views.unenroll_participants_task.delay')
@@ -588,13 +590,13 @@ class DeleteParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
         """Test uploading CSV without enabling `data_deletion.enable_data_deletion` waffle switch. """
         response = self.api.post(self.request)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, "`data_deletion` flag is not enabled.")
+        self.assertEqual(response.content.decode('utf-8'), "`data_deletion` flag is not enabled.")
 
     def test_delete_users_with_deletion_disabled(self):
         """Test deleting user without enabling `data_deletion.enable_data_deletion` waffle switch."""
         response = self.api.delete(self.request)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, "`data_deletion` flag is not enabled.")
+        self.assertEqual(response.content.decode('utf-8'), "`data_deletion` flag is not enabled.")
 
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('lib.authorization.permission_group_required_not_in_group', lambda _: HttpResponseForbidden())
@@ -614,7 +616,7 @@ class DeleteParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
         self.request.data = {}
         response = self.api.post(self.request)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, '{"student_delete_list": ["This field is required."]}')
+        self.assertEqual(response.content.decode('utf-8'), '{"student_delete_list": ["This field is required."]}')
 
     @override_switch(get_deletion_waffle_switch(), active=True)
     def test_delete_without_file(self):
@@ -622,7 +624,7 @@ class DeleteParticipantsFromCsvTest(CourseParticipantsStatsMixin, TestCase):
         self.request.data = {}
         response = self.api.delete(self.request)
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.content, '{"file_url": ["This field is required."]}')
+        self.assertEqual(response.content.decode('utf-8'), '{"file_url": ["This field is required."]}')
 
     @override_switch(get_deletion_waffle_switch(), active=True)
     @patch('admin.views.store_file')
@@ -748,7 +750,7 @@ class ParticipantsListViewTest(CourseParticipantsStatsMixin, TestCase):
         request = self.get_request(reverse('participants_list'), self.admin_user)
         response = views.participants_list(request)
 
-        self.assertIn("var enable_data_deletion = 'True';", response.content)
+        self.assertIn("var enable_data_deletion = 'True';", response.content.decode('utf-8'))
 
 
 class CompaniesListViewTest(CourseParticipantsStatsMixin, TestCase):
@@ -770,7 +772,7 @@ class CompaniesListViewTest(CourseParticipantsStatsMixin, TestCase):
         request = self.get_request(reverse('companies_list'), self.admin_user)
         response = views.participants_list(request)
 
-        self.assertIn("var enable_data_deletion = 'True';", response.content)
+        self.assertIn("var enable_data_deletion = 'True';", response.content.decode('utf-8'))
 
 
 @ddt.ddt
@@ -1026,7 +1028,7 @@ class TestDownloadProgarmReport(TestCase, ApplyPatchMixin):
     def test_download_program_report_empty_report(self):
         response = views.download_program_report(self.request, '')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEquals(
+        self.assertEqual(
             response.get('Content-Disposition'),
             "attachment; filename=Clients Report.csv"
         )
@@ -1086,7 +1088,7 @@ class ProgramViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
         program_url = reverse('program_new')
         response = self.client.get(program_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(u'Save Program', response.context['submit_label'])
+        self.assertEqual('Save Program', response.context['submit_label'])
 
     def test_get_program_with_id(self):
         """
@@ -1097,7 +1099,7 @@ class ProgramViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
         program_url = reverse('program_edit', kwargs={'program_id': self.program.id})
         response = self.client.get(program_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(u'Update Program', response.context['submit_label'])
+        self.assertEqual('Update Program', response.context['submit_label'])
 
     def test_create_program(self):
         """
@@ -1110,7 +1112,7 @@ class ProgramViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
         mock_group_api.create_group.return_value = Mock(id=1)
 
         response = self.client.post(program_url, self.data)
-        data = json.loads(response.content)
+        data = json.loads(response.content.decode('utf-8'))
 
         self.assertEqual(data['status'], status.HTTP_201_CREATED)
         self.assertEqual(data['redirect_url'], '/admin/programs/1')
@@ -1122,12 +1124,12 @@ class ProgramViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
         """
         program_url = reverse('program_new')
         response = self.client.post(program_url)
-        data = json.loads(response.content)
+        data = json.loads(response.content.decode('utf-8'))
 
-        expected_errors = {u'display_name': [u'This field is required.'],
-                           u'name': [u'This field is required.'],
-                           u'end_date': [u'This field is required.'],
-                           u'start_date': [u'This field is required.']
+        expected_errors = {'display_name': ['This field is required.'],
+                           'name': ['This field is required.'],
+                           'end_date': ['This field is required.'],
+                           'start_date': ['This field is required.']
                            }
         self.assertEqual(data['errors'], expected_errors)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
@@ -1140,6 +1142,6 @@ class ProgramViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
         program_url = reverse('program_edit', kwargs={'program_id': self.program.id})
 
         response = self.client.post(program_url, self.data)
-        data = json.loads(response.content)
+        data = json.loads(response.content.decode('utf-8'))
         self.assertEqual(data['status'], status.HTTP_200_OK)
         self.assertEqual(data['redirect_url'], '/admin/programs/')

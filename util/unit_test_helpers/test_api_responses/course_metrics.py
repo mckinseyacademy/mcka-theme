@@ -1,6 +1,6 @@
 import json
 import httpretty
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from django.conf import settings
 
@@ -77,7 +77,7 @@ def setup_course_metrics_completions(course_id, **kwargs):
 def setup_get_course_metrics_leaders_response(course_id, **kwargs):
     qs_params = {}
 
-    for key, value in kwargs.items():
+    for key, value in list(kwargs.items()):
         if isinstance(value, list):
             qs_params[key] = ",".join(value)
         else:

@@ -19,7 +19,7 @@ class UserActivationTests(TestCase):
     def test_activation(self):
         activation_record = UserActivation.user_activation(self.user)
         activation_record_test = UserActivation.objects.get(activation_key=activation_record.activation_key)
-        self.assertEquals(activation_record, activation_record_test)
+        self.assertEqual(activation_record, activation_record_test)
 
     def test_get_activation(self):
         UserActivation.user_activation(self.user)
@@ -58,7 +58,7 @@ class UserPasswordResetTests(TestCase):
     def test_get_user_validation_record(self):
         record = UserPasswordReset.create_record(self.user)
         validation_record = UserPasswordReset.get_user_validation_record(self.user)
-        self.assertEquals(validation_record, record)
+        self.assertEqual(validation_record, record)
         self.user.id = 200
         validation_record = UserPasswordReset.get_user_validation_record(self.user)
         self.assertIsNone(validation_record)
@@ -94,8 +94,8 @@ class RemoteUserTest(TestCase):
 
     @ddt.data(
         ('John', 'Doe', 'john.doe@corp.com', 11),
-        (u'فلانة', u'الفلاني', 'abc@xyz.ar', 22),
-        (u'कोई', u'व्यक्ति', 'xyz@abc.in', 33),
+        ('فلانة', 'الفلاني', 'abc@xyz.ar', 22),
+        ('कोई', 'व्यक्ति', 'xyz@abc.in', 33),
     )
     @ddt.unpack
     def test_update_response_fields(self, first_name, last_name, email, user_id):

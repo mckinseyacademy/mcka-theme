@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
-import urllib2
+import urllib.request
+import urllib.error
+import urllib.parse
 import uuid
-from urllib import urlencode
-from urlparse import urlparse, parse_qs
+from urllib.parse import urlencode
+from urllib.parse import urlparse, parse_qs
 
 import ddt
 import mock
@@ -211,7 +213,7 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         self.assertTrue(url.endswith('/accounts/sso_reg/'))
 
         with patch('courses.user_courses.set_current_course_for_user'), \
-                patch('os.urandom', return_value='0000'), \
+                patch('accounts.views.get_random_string', return_value='0000'), \
                 patch('django.contrib.auth.authenticate'), \
                 patch('accounts.views._process_access_key_and_remove_from_session'):
             response = self.client.get(url)
@@ -223,18 +225,18 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
             self.assertTrue(response['Location'].endswith('/auth/complete/tpa-saml/'))
 
         # Then the user should be registered:
-        expected_username = u'Me_Myself_And_I' if not with_existing_user else u'Me_Myself_And_I1'
+        expected_username = 'Me_Myself_And_I' if not with_existing_user else 'Me_Myself_And_I1'
         mock_register_user.assert_called_once_with({
             'username': expected_username,
-            'city': u'New York',
-            'title': u'',
-            'country': u'',
-            'company': u'TestCo',
+            'city': 'New York',
+            'title': '',
+            'country': '',
+            'company': 'TestCo',
             'is_active': True,
-            'full_name': u'Me Myself And I',
+            'full_name': 'Me Myself And I',
             'accept_terms': True,
             'password': 'MDAwMA==',
-            'email': u'myself@testshib.org',
+            'email': 'myself@testshib.org',
         })
 
     def test_sso_missing_access_key(self):
@@ -253,12 +255,13 @@ class SsoUserFinalizationTests(TestCase, ApplyPatchMixin):
         self.assertEqual(response.status_code, 200)
 
         # Setting up provider_data in session
+        # import pdb;pdb.set_trace()
         response = self.client.post('/accounts/finalize/', data=self.SAMPLE_SSO_POST_DATA)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'], '/accounts/sso_reg/')
 
         error_reason = "Duplicate user"
-        http_error = urllib2.HTTPError("http://irrelevant", 404, error_reason, None, None)
+        http_error = urllib.error.HTTPError("http://irrelevant", 404, error_reason, None, None)
         api_error = ApiError(http_error, "create_user", None)
 
         with mock.patch('accounts.views.user_api') as user_api_mock:
@@ -295,7 +298,7 @@ class GoogleAnalyticsTest(TestCase):
             google_analytics_should_be_present
     ):
         response = self.client.get('/', REMOTE_ADDR=ip_address, HTTP_X_FORWARDED_FOR=ip_address)
-        rendered = response.content
+        rendered = response.content.decode('utf-8')
 
         if google_analytics_should_be_present:
             self.assertIn('google-analytics.com', rendered)
@@ -327,8 +330,8 @@ class TestSwitchLanguageBasedOnPreference(TestCase, ApplyPatchMixin):
         request = self._populate_dummy_request(url)
         self.get_current_request.return_value = request
         response = switch_language_based_on_preference(request)
-        self.assertEquals(expected_language, response.cookies['preferred_language'].value)
-        self.assertEquals(expected_language, request.session[translation.LANGUAGE_SESSION_KEY])
+        self.assertEqual(expected_language, response.cookies['preferred_language'].value)
+        self.assertEqual(expected_language, request.session[translation.LANGUAGE_SESSION_KEY])
 
     @ddt.data(
         ('https://apros.mcka.local/terms?LANG=hb', 'en'),
@@ -340,8 +343,8 @@ class TestSwitchLanguageBasedOnPreference(TestCase, ApplyPatchMixin):
         request = self._populate_dummy_request(url)
         self.get_current_request.return_value = request
         response = switch_language_based_on_preference(request)
-        self.assertEquals(None, response.cookies.get('preferred_language'))
-        self.assertEquals(expected_language, request.session[translation.LANGUAGE_SESSION_KEY])
+        self.assertEqual(None, response.cookies.get('preferred_language'))
+        self.assertEqual(expected_language, request.session[translation.LANGUAGE_SESSION_KEY])
 
     def tearDown(self):
         set_language('en-us')
@@ -361,9 +364,10 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         request = self.factory.get('/')
         self._setup_request(request)
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
-        redirect_path = 'test-scheme://{}?test=data&more=data'.format(settings.MOBILE_SSO_PATH)
-        response = _build_mobile_redirect_response(request, {'test': 'data', 'more': 'data'})
-        self.assertIn(redirect_path, response.content)
+        data = {'test': 'data', 'more': 'data'}
+        redirect_path = 'test-scheme://{}?{}'.format(settings.MOBILE_SSO_PATH, urlencode(data))
+        response = _build_mobile_redirect_response(request, data)
+        self.assertIn(redirect_path, response.content.decode('utf-8'))
 
     @ddt.data(
         ('invalid-scheme', False),
@@ -374,16 +378,17 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         request = self.factory.get('/')
         self._setup_request(request)
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = mobile_url_scheme
-        redirect_path = '{}://{}?test=data&more=data'.format(mobile_url_scheme, settings.MOBILE_SSO_PATH)
-        response = _build_mobile_redirect_response(request, {'test': 'data', 'more': 'data'})
-        self.assertEqual(redirect_path in response.content, expected_result)
+        data = {'test': 'data', 'more': 'data'}
+        redirect_path = '{}://{}?{}'.format(mobile_url_scheme, settings.MOBILE_SSO_PATH, urlencode(data))
+        response = _build_mobile_redirect_response(request, data)
+        self.assertEqual(redirect_path in response.content.decode('utf-8'), expected_result)
 
     @ddt.data(None, 'providerid')
     def test_sso_launch_invalid_provider_id(self, provider_id):
         request = self.factory.get('/accounts/sso_launch/', {'provider_id': provider_id})
         self._setup_request(request)
         response = sso_launch(request)
-        self.assertEqual('{"error": "invalid_provider_id"}', response.content)
+        self.assertEqual('{"error": "invalid_provider_id"}', response.content.decode('utf-8'))
 
     @ddt.data(None, 'providerid')
     def test_sso_launch_invalid_provider_id_mobile(self, provider_id):
@@ -393,7 +398,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         })
         self._setup_request(request)
         response = sso_launch(request)
-        self.assertIn('?error=invalid_provider_id', response.content)
+        self.assertIn('?error=invalid_provider_id', response.content.decode('utf-8'))
 
     @patch('accounts.views._build_sso_redirect_url')
     def test_sso_launch_valid_provider_id(self, mock__build_sso_redirect_url):
@@ -423,7 +428,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         self._setup_request(request)
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
         response = finalize_sso_mobile(request)
-        self.assertIn('?error=test-error', response.content)
+        self.assertIn('?error=test-error', response.content.decode('utf-8'))
 
     def test_finalize_sso_mobile_authorize_step(self):
         request = self.factory.get('/accounts/finalize/')
@@ -446,7 +451,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         self._setup_request(request)
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
         response = finalize_sso_mobile(request)
-        self.assertIn('?error={}'.format(error_message), response.content)
+        self.assertIn('?error={}'.format(error_message), response.content.decode('utf-8'))
 
     def test_finalize_sso_mobile_access_token_step_error_500(self):
         mock_post = self.apply_patch('accounts.views.requests.post')
@@ -458,7 +463,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         self._setup_request(request)
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
         response = finalize_sso_mobile(request)
-        self.assertIn('?error=server_error', response.content)
+        self.assertIn('?error=server_error', response.content.decode('utf-8'))
 
     def test_finalize_sso_mobile_access_token_step_success(self):
         mock_post = self.apply_patch('accounts.views.requests.post')
@@ -473,7 +478,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         self._setup_request(request)
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
         response = finalize_sso_mobile(request)
-        self.assertIn('?access_token=some-token', response.content)
+        self.assertIn('?access_token=some-token', response.content.decode('utf-8'))
 
     def test_sso_finalize_uses_mobile_route(self):
         mock_finalize_sso_mobile = self.apply_patch('accounts.views.finalize_sso_mobile')
@@ -508,7 +513,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         request.COOKIES[MOBILE_URL_SCHEME_COOKIE] = 'test-scheme'
         request.session.get = lambda val: 'test-error' if val == 'error' else None
         response = sso_error(request)
-        self.assertIn('?error=test-error', response.content)
+        self.assertIn('?error=test-error', response.content.decode('utf-8'))
 
 
 @ddt.ddt
@@ -542,7 +547,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         response = self.client.get(reverse('home'), {'account_activate_check': True})
         self.assertIn(
             "Your account has already been activated. Please enter credentials to login",
-            response.content)
+            response.content.decode('utf-8'))
 
     @ddt.unpack
     @ddt.data(
@@ -552,16 +557,16 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     )
     def test_login_account_reset(self, reset_code, reset_message):
         response = self.client.get(reverse('home'), {'reset': reset_code})
-        self.assertIn(reset_message, response.content)
+        self.assertIn(reset_message, response.content.decode('utf-8'))
 
     @patch('django.contrib.auth.authenticate')
     def test_login_with_session_id_error(self, mock_authenticate):
         error_reason = "Error eb764978-01aa-40dd-beae-e942ba761641"
-        http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
+        http_error = urllib.error.HTTPError("http://irrelevant", 409, error_reason, None, None)
         mock_authenticate.side_effect = ApiError(http_error, "get_session", None)
         self.client.cookies = SimpleCookie({'sessionid': 'test-session-id'})
         response = self.client.get(reverse('protected_home'))
-        self.assertIn(error_reason, response.content)
+        self.assertIn(error_reason, response.content.decode('utf-8'))
 
     @patch('django.contrib.auth.authenticate')
     def test_login_with_session_id_no_user(self, mock_authenticate):
@@ -590,7 +595,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_authenticate.return_value = None
         mock_get_username.return_value = DottableDict({"username": None, "is_active": True})
         response = self.client.post(reverse('home'), {'login_id': login_id, 'validate_login_id': True})
-        self.assertIn("Username/email is not recognized. Try again.", response.content)
+        self.assertIn("Username/email is not recognized. Try again.", response.content.decode('utf-8'))
 
     @patch('accounts.views.get_sso_provider')
     @patch('accounts.views.get_user_from_login_id')
@@ -605,7 +610,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         self.assertInHTML(
             "<input type='text' name='login_id' value='{login_id}' class='form-control "
             "form-input' id='login_id'>".format(login_id=login_id),
-            response.content,
+            response.content.decode('utf-8'),
         )
 
     @patch('accounts.views.get_sso_provider')
@@ -615,15 +620,15 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_get_sso_provider.return_value = None
         mock_get_username.return_value = DottableDict({"username": "test", "is_active": True})
         response = self.client.post(reverse('home'), {'login_id': login_id, 'validate_login_id': True})
-        self.assertIn('{"login_id": "valid"}', response.content)
+        self.assertIn('{"login_id": "valid"}', response.content.decode('utf-8'))
 
     @patch('accounts.views.get_sso_provider')
     def test_login_validate_error(self, mock_get_sso_provider):
         error_reason = "Error adccbfc7-33eb-484b-a917-b7d65a5d72f8"
-        http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
+        http_error = urllib.error.HTTPError("http://irrelevant", 409, error_reason, None, None)
         mock_get_sso_provider.side_effect = ApiError(http_error, "get_provider", None)
         response = self.client.post(reverse('home'), {'login_id': 'test@email.com', 'validate_login_id': True})
-        self.assertIn('{"error": "%s"}' % error_reason, response.content)
+        self.assertIn('{"error": "%s"}' % error_reason, response.content.decode('utf-8'))
 
     @patch('accounts.views._build_sso_redirect_url')
     @patch('accounts.views.get_sso_provider')
@@ -660,10 +665,10 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     @patch('accounts.views.get_user_from_login_id')
     def test_login_normal_error(self, mock_get_username):
         error_reason = "Error adccbfc7-33eb-484b-a917-b7d65a5d72f8"
-        http_error = urllib2.HTTPError("http://irrelevant", 409, error_reason, None, None)
+        http_error = urllib.error.HTTPError("http://irrelevant", 409, error_reason, None, None)
         mock_get_username.side_effect = ApiError(http_error, "get_session", None)
         response = self.client.post(reverse('home'), {'login_id': 'test', 'password': 'password'})
-        self.assertIn(error_reason, response.content)
+        self.assertIn(error_reason, response.content.decode('utf-8'))
 
     @patch('accounts.views.get_user_from_login_id')
     @patch('accounts.views.auth.authenticate')
@@ -672,7 +677,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_get_username.return_value = DottableDict({"username": "test", "is_active": True})
         mock_authenticate.return_value = None
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
-        self.assertIn('{"password": "Please enter a valid password."}', response.content)
+        self.assertIn('{"password": "Please enter a valid password."}', response.content.decode('utf-8'))
 
     @patch('accounts.views.get_user_from_login_id')
     @patch('accounts.views.auth.authenticate')
@@ -680,10 +685,10 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
     def test_login_normal_user_lock_out(self, login_id, mock_authenticate,
                                         mock_get_username):
         mock_get_username.return_value = DottableDict({"username": "test", "is_active": True})
-        http_error = urllib2.HTTPError("http://irrelevant", 403, None, None, None)
+        http_error = urllib.error.HTTPError("http://irrelevant", 403, None, None, None)
         mock_authenticate.side_effect = ApiError(http_error, "authenticate", None)
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
-        self.assertIn('{"lock_out": true}', response.content)
+        self.assertIn('{"lock_out": true}', response.content.decode('utf-8'))
 
     @patch('accounts.views._process_authenticated_user')
     @patch('accounts.views.get_user_from_login_id')
@@ -698,7 +703,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         mock_get_username.return_value = DottableDict({"username": "test", "is_active": True})
         mock_authenticate.return_value = make_user()
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
-        self.assertIn(response_msg, response.content)
+        self.assertIn(response_msg, response.content.decode('utf-8'))
 
     @ddt.data('ütest@?', 'ütest@email.com')
     def test_login_validate_with_unicode_email_login_id(self, login_id):
@@ -708,9 +713,9 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         """
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertIn("login_id", response.content)
+        self.assertIn("login_id", response.content.decode('utf-8'))
         self.assertIn("Please enter a valid email containing only English characters and numerals, and the following"
-                      " special characters @ . _ -", response.content)
+                      " special characters @ . _ -", response.content.decode('utf-8'))
 
     @ddt.data('ütest?', 'ütestemail.com"')
     def test_login_validate_with_unicode_username_login_id(self, login_id):
@@ -720,9 +725,9 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         """
         response = self.client.post(reverse('home'), {'login_id': login_id, 'password': 'password'})
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertIn("login_id", response.content)
+        self.assertIn("login_id", response.content.decode('utf-8'))
         self.assertIn("Please enter a valid username containing only English characters and numerals, and the "
-                      "following special characters _ -", response.content)
+                      "following special characters _ -", response.content.decode('utf-8'))
 
 
 @ddt.ddt

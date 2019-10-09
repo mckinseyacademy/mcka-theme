@@ -22,10 +22,10 @@ class MockResponseView(View):
         arg_list = ""
         for myarg in kwargs:
             arg_list += ", {} = {}".format(myarg, kwargs[myarg])
-        print "Mocking API response with arguments {}".format(arg_list)
+        print("Mocking API response with arguments {}".format(arg_list))
         mock_response_object = self._select_response(request, kwargs)
 
-        print "Matched path with {}".format(mock_response_object._address)
+        print("Matched path with {}".format(mock_response_object._address))
 
         fixed_content = mock_response_object._response_body.replace(
             'http://openedxapi.apiary-mock.com/',

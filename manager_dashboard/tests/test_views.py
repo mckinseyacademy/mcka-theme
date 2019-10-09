@@ -48,7 +48,7 @@ class ManagerReportsCourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase)
         self.patch_course_users(self.students[0:3], direct_reports)
         self.patch_manager_reports([self.students[idx] for idx in direct_reports])
         course_detail_url = reverse('manager_reports_course_details_api',
-                                    kwargs={'course_id': unicode(self.course.course_id)})
+                                    kwargs={'course_id': str(self.course.course_id)})
         request = self.get_request(course_detail_url, self.admin_user)
         response = ManagerReportsCourseDetailsApi().get(request, self.course.course_id)
         self.assertEqual(response.status_code, status.HTTP_200_OK)

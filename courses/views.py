@@ -225,7 +225,7 @@ def course_cohort(request, course_id):
     if workgroups:
         workgroup = workgroup_api.get_workgroup(workgroups[0].id)
         metrics.group_enrolled = len(workgroup.users)
-        if workgroup.users > 0:
+        if len(workgroup.users) > 0:
             user_ids = [str(student.id) for student in workgroup.users]
             additional_fields = ["city", "title", "full_name", "first_name", "last_name", "profile_image"]
             user_dict = {u.id: u for u in user_api.get_users(ids=user_ids, fields=additional_fields)}
@@ -678,7 +678,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
     else:
         group_activities = None
 
-    graded_items_count = sum(len(graded) for graded in course.graded_items().values())
+    graded_items_count = sum(len(graded) for graded in list(course.graded_items().values()))
     data = {
         "social": social,
         "progress_user": progress_user,
@@ -825,7 +825,7 @@ def navigate_to_lesson_module(
     if not current_sequential:
         raise Http404()
 
-    cookie_key = hashlib.md5(course_id).hexdigest()
+    cookie_key = hashlib.md5(course_id.encode('utf-8')).hexdigest()
     is_full_screen = request.COOKIES.get(cookie_key)
 
     data = {

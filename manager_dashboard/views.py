@@ -16,7 +16,7 @@ from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
 from courses.controller import Proficiency, Progress
 from lib.authorization import permission_group_required
 from api_client.oauth2_requests import get_oauth2_session
-from controller import get_user_progress
+from .controller import get_user_progress
 
 
 @permission_group_required(PERMISSION_GROUPS.MANAGER)

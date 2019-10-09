@@ -13,7 +13,7 @@ $('.ui-checker').on('change', function() {
 $('.remove_image').click(function (e)
 {
   var client_id = $(this).attr('client_id');
-  var csrftoken = getCookie('csrftoken');
+  var csrftoken = getCookie('apros_csrftoken');
    var img_type = $(this).attr('type');
   if(confirm(gettext('Are you sure you want to remove this ?')))
   {

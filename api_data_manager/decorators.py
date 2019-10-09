@@ -61,6 +61,8 @@ def user_api_cache_wrapper(parse_method, property_name, parse_object=None, post_
                     user_data_manager.set_cached_data(data_property, data)
 
             object_parser = kwargs.get('parse_object') or parse_object
+            if type(data) is bytes:
+                data = data.decode('utf-8')
 
             if object_parser:
                 parsed_data = parse_method(data, object_parser)

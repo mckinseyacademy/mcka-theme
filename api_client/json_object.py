@@ -2,7 +2,7 @@
 import json
 import collections
 import datetime
-import StringIO
+import io
 
 from django.utils.translation import ugettext as _
 from django.core.files.storage import default_storage
@@ -58,7 +58,7 @@ class Objectifier(object):
         child object for an attribute instead of default Objectifier object
         '''
         object_type = Objectifier
-        if item_name in self.object_map:
+        if type(self.object_map) is dict and item_name in self.object_map:
             object_type = self.object_map[item_name]
 
         return object_type
@@ -175,7 +175,7 @@ class JsonObjectWithImage(JsonObject):
 
     @classmethod
     def _save_image(cls, image_data, image_url):
-        thumb_io = StringIO.StringIO()
+        thumb_io = io.BytesIO()
         image_data.convert('RGB').save(thumb_io, format='JPEG')
         if default_storage.exists(image_url):
             default_storage.delete(image_url)
@@ -192,6 +192,8 @@ class JsonParser(object):
     @staticmethod
     def from_json(json_data, object_type=JsonObject, data_filter=None):
         ''' takes json => dictionary / array and processes it accordingly '''
+        if type(json_data) is bytes:
+            json_data = json_data.decode('utf-8')
         parsed_json = json.loads(json_data)
         return JsonParser.from_dictionary(parsed_json, object_type, data_filter)
 
@@ -199,7 +201,7 @@ class JsonParser(object):
     def from_dictionary(dictionary_info, object_type=JsonObject, data_filter=None):
         if isinstance(dictionary_info, list):
             if data_filter:
-                for key, value in data_filter.iteritems():
+                for key, value in data_filter.items():
                     dictionary_info = [jo for jo in dictionary_info if jo[key] == value]
 
             out_objects = []
@@ -237,7 +239,7 @@ class CategorisedJsonObject(JsonObject):
         return object_type
 
     def _make_data_object(self, value, object_type):
-        if isinstance(value, basestring):
+        if isinstance(value, str):
             return value
         elif isinstance(value, collections.Iterable):
 
@@ -260,6 +262,8 @@ class CategorisedJsonParser(object):
 
     def from_json(self, json_data):
         ''' takes json => dictionary / array and processes it accordingly '''
+        if type(json_data) is bytes:
+            json_data = json_data.decode('utf-8')
         return self.from_dictionary(json.loads(json_data))
 
     def from_dictionary(self, parsed_json):

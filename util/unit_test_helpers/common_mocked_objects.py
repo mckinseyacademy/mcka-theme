@@ -62,7 +62,7 @@ def mock_request_object(path, user=None, **attrs):
     """
     request = RequestFactory().get(path)
 
-    for attr, val in attrs.iteritems():
+    for attr, val in attrs.items():
         setattr(request, attr, val)
 
     request.user = user or TestUser(user_id=1, email='user@example.com', username='mcka_admin_user')
@@ -126,7 +126,7 @@ class AprosTestingClient(Client):
             PERMISSION_GROUPS.MANAGER: 'is_manager',
         }
 
-        for role, prop in role_to_methods.items():
+        for role, prop in list(role_to_methods.items()):
             setattr(user, prop, user_role == role)
 
         def is_user_in_group(user, *group_names):

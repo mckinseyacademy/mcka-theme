@@ -23,7 +23,7 @@ class DebugHandler(urllib2.HTTPHandler):
 
     def http_response(self, request, response):
         # read the response data
-        data = response.read()
+        data = response.read().decode('utf-8')
         size = len(data)
 
         # pretty print JSON
@@ -39,7 +39,7 @@ class DebugHandler(urllib2.HTTPHandler):
                 'method': request.get_method(),
                 'url': request.get_full_url(),
                 'headers': request.headers,
-                'data': request.get_data(),
+                'data': request.data,
                 'duration': _now_in_ms() - request.start_time,
             },
             'response': {
@@ -70,8 +70,8 @@ class DebugRemoteCalls(DebugPanel):
 
     def process_request(self, request):
         threadlocal.api_calls = []
-        opener = urllib2.build_opener(DebugHandler)
-        urllib2.install_opener(opener)
+        opener = urllib.request.build_opener(DebugHandler)
+        urllib.request.install_opener(opener)
 
     def process_response(self, request, response):
         self.record_stats({

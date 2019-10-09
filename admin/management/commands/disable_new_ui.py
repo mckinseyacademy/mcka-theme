@@ -15,4 +15,4 @@ class Command(BaseCommand):
                 client_customization.save()
                 self.stdout.write("New UI disabled for Company: {}".format(client_customization.client_id))
         except Exception as e:
-            self.stderr.write("This command failed because of '{}'.".format(e.message))
+            self.stderr.write("This command failed because of '{}'.".format(e))

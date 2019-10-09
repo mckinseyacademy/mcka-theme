@@ -1,7 +1,9 @@
 """
 helper methods/utils related to accounts
 """
-from urlparse import urljoin
+import random
+import string
+from urllib.parse import urljoin
 import logging
 
 from django.core.urlresolvers import reverse
@@ -135,3 +137,7 @@ def get_organization_by_user_email(user_email):
     organization_user = get_user_by_email(user_email)
     organization_id = organization_user['organizations'][0]['id']
     return organization_id
+
+
+def get_random_string(size=32, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):
+    return ''.join(random.choice(chars) for _ in range(size))

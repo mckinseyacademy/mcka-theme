@@ -1,4 +1,4 @@
-from urllib2 import HTTPError
+from urllib.error import HTTPError
 
 from django.conf import settings
 

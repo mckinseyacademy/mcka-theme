@@ -1,4 +1,4 @@
-from models import MockHttpResponse
+from .models import MockHttpResponse
 
 
 class ApiParser(object):

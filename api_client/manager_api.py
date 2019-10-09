@@ -36,7 +36,7 @@ def post_user_manager(user_id, manager_email):
         )
 
     response = edx_oauth2_session.post(url, data={'email': manager_email})
-    return JP.from_json(response.content)
+    return JP.from_json(response.text)
 
 
 @api_error_protect

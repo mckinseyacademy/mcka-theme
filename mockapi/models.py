@@ -1,4 +1,4 @@
-import StringIO
+import io
 import json
 
 
@@ -48,7 +48,7 @@ class MockHttpResponse(object):
     def __init__(self, init_data):
 
         try:
-            buf = StringIO.StringIO(init_data)
+            buf = io.StringIO(init_data)
             top_line = buf.readline().strip()
             self._process_top_line(top_line)
 
@@ -61,8 +61,8 @@ class MockHttpResponse(object):
             if not is_valid:
                 raise Exception("Invalid item = {}\n\n{}".format(error, init_data))
 
-        except Exception, ex:
-            print ex.message
+        except Exception as ex:
+            print(ex.message)
             raise ex
 
     def _process_top_line(self, line_content):
@@ -77,7 +77,7 @@ class MockHttpResponse(object):
             'Request': self._process_request,
         }
 
-        buf = StringIO.StringIO(option_info)
+        buf = io.StringIO(option_info)
         line_info = buf.readline().strip().split(' ')
         remainder = buf.read()
         processor = instruction_map.get(line_info[0])

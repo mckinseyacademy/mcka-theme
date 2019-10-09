@@ -6,8 +6,8 @@ from django import forms
 from django.utils.translation import ugettext as _
 from django.conf import settings
 
-import urllib2 as url_access
-from urllib2 import HTTPError
+import urllib
+from urllib.error import HTTPError
 import base64
 import json
 
@@ -35,7 +35,7 @@ USER_TOKEN = '{}/token:{}'.format(
     settings.ZENDESK_API['token'],
 )
 
-USER_AUTH = base64.encodestring(USER_TOKEN).replace('\n', '')
+USER_AUTH = base64.encodestring(USER_TOKEN.encode('utf-8')).decode('utf-8').replace('\n', '')
 
 
 class TechSupportForm(forms.Form):
@@ -80,10 +80,10 @@ class TechSupportForm(forms.Form):
             settings.ZENDESK_API['subdomain']
         )
 
-        url_request = url_access.Request(url=tickets_url)
+        url_request = urllib.Request(url=tickets_url)
         url_request.add_header("Authorization", "Basic %s" % USER_AUTH)
         url_request.add_header("Content-Type", "application/json")
-        url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
+        urllib.urlopen(url_request, json.dumps(data), TIMEOUT)
 
 
 class SubscribeForm(forms.Form):
@@ -107,10 +107,10 @@ class SubscribeForm(forms.Form):
             settings.MAILCHIMP_API['dc']
         )
 
-        url_request = url_access.Request(url=subscribe_url)
+        url_request = urllib.Request(url=subscribe_url)
         url_request.add_header("Content-Type", "application/json")
         try:
-            url_access.urlopen(url_request, json.dumps(data), TIMEOUT)
+            urllib.urlopen(url_request, json.dumps(data), TIMEOUT)
         except HTTPError:
             return False
 

@@ -158,10 +158,10 @@ class CourseDataManager(DataManager):
                 course_manager.get_cache_key(COURSE_PROPERTIES.TOTAL_STAFF_TOOLS): course_manager.course_id
             })
 
-        cached_lesson_counts = cache.get_many(course_cache_keys_map.keys())
+        cached_lesson_counts = cache.get_many(list(course_cache_keys_map.keys()))
 
         # transform to {course_id: {total_lessons: count, total_staff_tools: count}}
-        for cache_key, value in cached_lesson_counts.items():
+        for cache_key, value in list(cached_lesson_counts.items()):
             course_id = course_cache_keys_map.get(cache_key)
 
             if COURSE_PROPERTIES.TOTAL_STAFF_TOOLS in cache_key:

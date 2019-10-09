@@ -54,18 +54,18 @@ class TestThirdPartyAuthApi(TestCase):
     def test_get_providers_sso_user(self, login_id):
         self._setup_responses()
         providers = get_providers_by_login_id(login_id)
-        self.assertEquals(len(providers), 1)
-        self.assertEquals(providers[0].provider_id, 'saml-testshib')
+        self.assertEqual(len(providers), 1)
+        self.assertEqual(providers[0].provider_id, 'saml-testshib')
 
     @ddt.data('non-sso-user', 'non-sso-user@test.com')
     @httpretty.httprettified
     def test_get_providers_nonsso_user(self, login_id):
         self._setup_responses()
         providers = get_providers_by_login_id(login_id)
-        self.assertEquals(len(providers), 0)
+        self.assertEqual(len(providers), 0)
 
     @httpretty.httprettified
     def test_get_providers_nonexistent_user(self):
         self._setup_responses()
         providers = get_providers_by_login_id('invalid-user')
-        self.assertEquals(len(providers), 0)
+        self.assertEqual(len(providers), 0)

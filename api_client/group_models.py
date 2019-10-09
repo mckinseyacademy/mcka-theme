@@ -5,7 +5,7 @@ from datetime import datetime, date
 from django.utils.translation import ugettext as _
 
 from .json_object import JsonObject
-import group_api
+from . import group_api
 
 
 class GroupInfo(JsonObject):
@@ -47,7 +47,7 @@ class GroupInfo(JsonObject):
     @classmethod
     def _clean_group_data(cls, group_data):
         clean_data = {
-            key: value for key, value in group_data.iteritems() if key in cls.data_fields
+            key: value for key, value in group_data.items() if key in cls.data_fields
         }
 
         date_format = "%Y-%m-%dT%H:%M:%S.%fZ"

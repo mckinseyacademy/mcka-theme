@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 import json
-from urlparse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qs
 
 import ddt
 import httpretty
@@ -213,7 +213,7 @@ class TestCourseApi(TestCase, ApplyPatchMixin):
 
         self._setup_courseware_response()
         course = get_course(*args, **kwargs)
-        self.assertEquals(len(course.chapters), expected_result)
+        self.assertEqual(len(course.chapters), expected_result)
 
     @httpretty.activate
     @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache'}})
@@ -229,8 +229,8 @@ class TestCourseApi(TestCase, ApplyPatchMixin):
         course1 = get_course(course_id=self.COURSE_ID, depth=self.DEPTH, user=self.STAFF_USER)
 
         self.assertNotEqual(course1, course2)
-        self.assertEquals(len(course1.chapters), 1)
-        self.assertEquals(len(course2.chapters), 0)
+        self.assertEqual(len(course1.chapters), 1)
+        self.assertEqual(len(course2.chapters), 0)
 
     def _setup_enrollment_response(self):
         def _filter_by_usernames(data, usernames):
@@ -302,7 +302,7 @@ class TestCourseApi(TestCase, ApplyPatchMixin):
             {'username': 'honor'},
         ])
         data = get_course_list_for_manager_reports('staff@example.com')
-        self.assertEqual(data, [u'course-v1:OpenCraft+EOCJ001+2018_1', u'course-v1:edX+DemoX+Demo_Course'])
+        self.assertCountEqual(data, ['course-v1:OpenCraft+EOCJ001+2018_1', 'course-v1:edX+DemoX+Demo_Course'])
 
     @httpretty.httprettified
     @patch('api_client.course_api.get_reports_for_manager')
@@ -314,7 +314,7 @@ class TestCourseApi(TestCase, ApplyPatchMixin):
             {'username': 'noone'},
         ])
         data = get_manager_reports_in_course('staff@example.com', 'course-v1:edX+DemoX+Demo_Course')
-        self.assertEqual(data, [u'edx', u'honor'])
+        self.assertCountEqual(data, ['edx', 'honor'])
 
     @ddt.data(
         ('{"is_cohorted": true, "id": 1}', True),
@@ -382,7 +382,7 @@ class TestCourseApi(TestCase, ApplyPatchMixin):
         mock_group_completions_by_user.return_value = 'user'
 
         def course_completions_response(request, _uri, headers, correct_response=response):
-            self.assertEqual(correct_response, json.loads(request.body))
+            self.assertEqual(correct_response, json.loads(request.body.decode()))
             return (200, headers, json.dumps({
                 'results': []
             }))
@@ -587,40 +587,40 @@ class TestCourseApi(TestCase, ApplyPatchMixin):
 
         expected = [
             {
-                'id': u'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_1',
-                'question': u'Question 1.1.1.1',
-                'lesson': u'L1 - Block chapter_block_1 of type chapter',
+                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_1',
+                'question': 'Question 1.1.1.1',
+                'lesson': 'L1 - Block chapter_block_1 of type chapter',
                 'lesson_number': 1,
-                'module': u'M1 - Block vertical_block_1_1_1 of type vertical',
+                'module': 'M1 - Block vertical_block_1_1_1 of type vertical',
                 'module_number': 1,
-                'type': u'poll',
+                'type': 'poll',
             },
             {
-                'id': u'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_2',
-                'question': u'Question 1.1.1.2',
-                'lesson': u'L1 - Block chapter_block_1 of type chapter',
+                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_1_2',
+                'question': 'Question 1.1.1.2',
+                'lesson': 'L1 - Block chapter_block_1 of type chapter',
                 'lesson_number': 1,
-                'module': u'M1 - Block vertical_block_1_1_1 of type vertical',
+                'module': 'M1 - Block vertical_block_1_1_1 of type vertical',
                 'module_number': 1,
-                'type': u'poll',
+                'type': 'poll',
             },
             {
-                'id': u'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_2_1',
-                'question': u'Question 1.1.2.1',
-                'lesson': u'L1 - Block chapter_block_1 of type chapter',
+                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_1_1_2_1',
+                'question': 'Question 1.1.2.1',
+                'lesson': 'L1 - Block chapter_block_1 of type chapter',
                 'lesson_number': 1,
-                'module': u'M2 - Block vertical_block_1_1_2 of type vertical',
+                'module': 'M2 - Block vertical_block_1_1_2 of type vertical',
                 'module_number': 2,
-                'type': u'poll',
+                'type': 'poll',
             },
             {
-                'id': u'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_2_1_1_1',
-                'question': u'Question 二.1.1.1',
-                'lesson': u'L2 - Block الفصل_block_2 of type chapter',
+                'id': 'block-v1:edX+DemoX+Demo_Course+type@poll+block@poll_block_2_1_1_1',
+                'question': 'Question 二.1.1.1',
+                'lesson': 'L2 - Block الفصل_block_2 of type chapter',
                 'lesson_number': 2,
-                'module': u'M1 - Block عمودي_block_2_1_1 of type vertical',
+                'module': 'M1 - Block عمودي_block_2_1_1 of type vertical',
                 'module_number': 1,
-                'type': u'poll',
+                'type': 'poll',
             },
         ]
         result = get_course_block_of_types(course_id, block_types=['poll', 'survey'])

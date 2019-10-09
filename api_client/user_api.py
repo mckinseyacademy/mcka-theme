@@ -1,12 +1,12 @@
 ''' API calls with respect to users and authentication '''
-from urllib2 import HTTPError
-from urllib import urlencode
+from urllib.error import HTTPError
+from urllib.parse import urlencode
 import json
 
 from rest_framework import status
 
 from api_client import discussions_api
-from lib.utils import DottableDict
+from lib.utils import DottableDict, bytes_to_str
 
 from django.conf import settings
 from django.utils.translation import ugettext as _
@@ -88,13 +88,13 @@ def get_user_dict(user_id):
             settings.API_SERVER_ADDRESS, USER_API, user_id
         )
     )
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 def chunks(l, n):
     """ Yield successive n-sized chunks from l.
     """
-    for i in xrange(0, len(l), n):
+    for i in range(0, len(l), n):
         yield l[i:i+n]
 
 
@@ -122,7 +122,10 @@ def _chunked_get_users_by_id(request_fields, ids):
 
         # the json.loads() will return an array datatype rather than
         # a dictionary, so be sure to collate results in an array
-        result_set.extend(json.loads(response.read()))
+        response_string = response.read()
+        if type(response_string) is bytes:
+            response_string = response_string.decode('utf-8')
+        result_set.extend(json.loads(response_string))
 
     return JP.from_dictionary(result_set, user_models.UserResponse)
 
@@ -173,7 +176,7 @@ def get_filtered_users(getParameters):
             urlencode(getParameters)
         )
     )
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -409,13 +412,11 @@ def get_user_groups(user_id, group_type=None, parse_object=None, *args, **kwargs
         user_id,
     )
 
-    if len(qs_params.keys()) > 0:
+    if len(list(qs_params.keys())) > 0:
         url += "?{}".format(urlencode(qs_params))
 
     response = GET(url)
-
-    groups_json = json.loads(response.read())
-
+    groups_json = json.loads(bytes_to_str(response.read()))
     return groups_json["groups"]
 
 
@@ -571,7 +572,7 @@ def is_user_in_group(user_id, group_id):
                 user_id,
             )
         )
-    except HTTPError, e:
+    except HTTPError as e:
         if e.code == 404:
             return False
         else:
@@ -790,7 +791,7 @@ def get_user_by_email(user_email):
         USER_API,
         user_email
     ))
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -801,7 +802,7 @@ def get_user_by_username(user_username):
         USER_API,
         user_username)
     )
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -813,7 +814,7 @@ def get_filtered_participants_list(qs_params=''):
         urlencode(qs_params))
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -828,7 +829,7 @@ def get_user_courses_progress(user_id, qs_params=''):
         urlencode(qs_params))
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -863,7 +864,7 @@ def add_report_for_manager(manager_email, user_email, edx_oauth2_session=None):
             'email': user_email
         }
     )
-    return JP.from_json(response.content)
+    return JP.from_json(response.text)
 
 
 @api_error_protect
@@ -908,7 +909,7 @@ def get_user_by_bearer_token():
                 settings.API_SERVER_ADDRESS, USER_API
             )
         )
-        return json.loads(response.read()), response.code
+        return json.loads(bytes_to_str(response.read())), response.code
     except Exception as error:
         return None, error.code
 

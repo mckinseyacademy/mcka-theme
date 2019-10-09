@@ -38,4 +38,4 @@ class Command(BaseCommand):
             else:
                 self.stdout.write(message)
         except Exception as e:
-            self.stderr.write("This command failed because of '{}'.".format(e.message))
+            self.stderr.write("This command failed because of '{}'.".format(e))

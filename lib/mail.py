@@ -3,7 +3,7 @@ from django.core import mail
 from django.core.mail import EmailMultiAlternatives, BadHeaderError
 from django.utils.translation import ugettext as _
 from util.email_helpers import send_html_email
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 
 def sendMultipleEmails(messages):
@@ -12,7 +12,7 @@ def sendMultipleEmails(messages):
     for message in messages:
         try:
             message.send()
-        except BadHeaderError, e:
+        except BadHeaderError as e:
             connection.close()
             return e
     connection.close()

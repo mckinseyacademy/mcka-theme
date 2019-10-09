@@ -91,7 +91,7 @@ class InferPageNavigationTests(TestCase, APIDataManagerMockMixin):
 
 
 class CourseLandingPageTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
-    course_id = u'CS101/ORG101/2018'
+    course_id = 'CS101/ORG101/2018'
     client_class = AprosTestingClient
 
     def setUp(self):
@@ -175,7 +175,7 @@ class CourseLandingPageTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
 
 
 class CourseOverviewPageTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
-    course_id = u'CS101/ORG101/2018'
+    course_id = 'CS101/ORG101/2018'
     client_class = AprosTestingClient
 
     def setUp(self):
@@ -253,7 +253,7 @@ class CourseOverviewPageTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin)
 
 @ddt.ddt
 class CourseUserProgressTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
-    course_id = u'CS101/ORG101/2018'
+    course_id = 'CS101/ORG101/2018'
     client_class = AprosTestingClient
 
     def setUp(self):

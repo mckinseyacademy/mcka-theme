@@ -46,7 +46,7 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
         """
         request = self.mock_request_object('/', codes)
         language = self.apros_platform_language._get_browser_preferred_language(request)
-        self.assertEquals(expected_language, language)
+        self.assertEqual(expected_language, language)
 
     @ddt.data(
         ('/courses/arbisoft/1/1', 'ar'),

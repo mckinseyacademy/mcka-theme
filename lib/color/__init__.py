@@ -58,7 +58,7 @@ class Colour(object):
                 raise ValueError("RGB values must be between 0 and 255")
             self.red, self.green, self.blue = args
             colourConvert()
-        elif len(args) == 1 and type(args[0]) in [int, float, long]:
+        elif len(args) == 1 and type(args[0]) in [int, float, int]:
             """Validate greyscale input"""
             if args[0] < 0 or args[0] > 255:
                 raise ValueError("Greyscale value must be either out of 1 or 255")
@@ -144,7 +144,7 @@ def get_color_versions(name, value, default):
 
     versions.update({
         '{}-{}'.format(name, n): '#{}'.format(color.trans(p).hex)
-        for n, p in settings.COLOR_VERSIONS.items()}
+        for n, p in list(settings.COLOR_VERSIONS.items())}
     )
     return versions
 
@@ -152,7 +152,7 @@ def get_color_versions(name, value, default):
 def get_branding_colors(client_customizations):
     colors = {}
 
-    for name, default_value in settings.DEFAULT_COLORS.items():
+    for name, default_value in list(settings.DEFAULT_COLORS.items()):
         value = default_value
         if client_customizations:
             if name == 'primary':

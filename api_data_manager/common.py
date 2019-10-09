@@ -36,7 +36,7 @@ class DataManager(object):
                     data = method(data, params) if params else method(data)
                 except Exception as e:
                     _logger.error('Failed parsing data for property `{}` with exception `{}`'
-                                  ' Skipping parsing'.format(property_name, e.message))
+                                  ' Skipping parsing'.format(property_name, e))
                     break
         return data
 

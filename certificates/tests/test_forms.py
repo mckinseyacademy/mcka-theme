@@ -24,7 +24,7 @@ class CertificateTemplateAssetFormTest(TestCase):
         self.post_data = {'description': 'dumy description'}
         self.stylesheet = SimpleUploadedFile(
             'style.css',
-            'dummy content',
+            b'dummy content',
             content_type='text/css'
         )
         self.file_data = {'asset': self.stylesheet}

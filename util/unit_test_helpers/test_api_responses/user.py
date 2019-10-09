@@ -1,6 +1,6 @@
 import json
 import httpretty
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from django.conf import settings
 

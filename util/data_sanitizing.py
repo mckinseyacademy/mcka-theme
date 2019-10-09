@@ -8,6 +8,7 @@ import re
 
 from django.conf import settings
 from django.utils.html import escape
+import collections
 
 
 _logger = logging.getLogger(__name__)
@@ -20,7 +21,7 @@ def remove_diacritics(text):
     For example "Héllô" will become "Hello"
     Useful for comparing strings in an accent-insensitive fashion
     """
-    text = text if isinstance(text, unicode) else unicode(text, encoding='utf-8')
+    text = text if isinstance(text, str) else str(text, encoding='utf-8')
 
     normalized = unicodedata.normalize("NFKD", text)
     return "".join(c for c in normalized if unicodedata.category(c) != "Mn")
@@ -33,7 +34,7 @@ def remove_characters(value, char_blacklist):
     remove_chars_map = dict((ord(char), None) for char in char_blacklist)
 
     # encode strings to unicode for consistency
-    value = value if isinstance(value, unicode) else unicode(value, encoding='utf-8', errors='ignore')
+    value = value if isinstance(value, str) else str(value, encoding='utf-8', errors='ignore')
 
     return value.translate(remove_chars_map)
 
@@ -76,7 +77,7 @@ def apply_clean_methods(value, methods=()):
         try:
             value = method(value)
         except Exception as e:
-            _logger.warning('Clean method `{}` failed with message "{}"'.format(method.__name__, e.message))
+            _logger.warning('Clean method `{}` failed with message "{}"'.format(method.__name__, e))
 
     return value
 
@@ -105,12 +106,12 @@ def sanitize_data(data, props_to_clean=None, clean_methods=()):
     if not isinstance(clean_methods, tuple):
         raise TypeError('clean_methods must be a tuple of methods')
 
-    if not all((callable(method) for method in clean_methods)):
+    if not all((isinstance(method, collections.Callable) for method in clean_methods)):
         raise TypeError('one of the additional methods is not a callable')
 
     clean_methods = clean_methods or DEFAULT_CLEAN_METHODS
 
-    for key, val in data.items():
+    for key, val in list(data.items()):
         if (not props_to_clean) or (key in props_to_clean):
             data[key] = apply_clean_methods(val, clean_methods)
 
@@ -125,4 +126,4 @@ def special_characters_match(value):
     This method will return special character if there are any in string.
     """
 
-    return re.sub(settings.FOREIGN_AND_NORMAL_CHARACTERS_PATTERN, u'', value.encode('utf-8').decode('latin_1'))
+    return re.sub(settings.FOREIGN_AND_NORMAL_CHARACTERS_PATTERN, '', value)

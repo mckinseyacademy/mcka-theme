@@ -18,6 +18,7 @@ from django.urls import resolve, Resolver404
 from api_client import course_api
 from api_client.group_api import PERMISSION_GROUPS
 from api_client.user_api import USER_ROLES
+from api_client.api_error import ApiError
 from main.models import CuratedContentItem
 from util.i18n_helpers import format_lazy, mark_safe_lazy
 from util.image_util import resize_image
@@ -163,7 +164,7 @@ class BasePermissionForm(forms.Form):
         for course in courses:
             self.fields[course.id] = forms.MultipleChoiceField(
                 required=False,
-                label=u"{} ({})".format(course.name, course.display_id),
+                label="{} ({})".format(course.name, course.display_id),
                 widget=forms.CheckboxSelectMultiple,
                 choices=self.available_roles()
             )
@@ -212,7 +213,7 @@ class MultiEmailField(forms.Field):
         if not value:
             return []
         # Remove empty strings and strip all spaces
-        return filter(None, [email.strip() for email in value.split(",")])
+        return [_f for _f in [email.strip() for email in value.split(",")] if _f]
 
     def validate(self, value):
         "Check if value consists only of valid emails."
@@ -486,7 +487,7 @@ class CourseRunForm(forms.ModelForm):
         course_id = self.cleaned_data.get("course_id")
         try:
             course_api.get_course_v1(course_id)
-        except ValueError:
+        except (ValueError, ApiError):
             raise forms.ValidationError(_("Course with this ID does not exist"))
         else:
             return course_id
@@ -494,11 +495,11 @@ class CourseRunForm(forms.ModelForm):
     def clean_max_participants(self):
 
         max_participants = self.cleaned_data.get("max_participants")
-
-        if max_participants < 1:
-            raise forms.ValidationError(_("That number is not allowed"))
-        if max_participants > 5000:
-            raise forms.ValidationError(_("Number of participants is limited to 5000"))
+        if max_participants:
+            if max_participants < 1:
+                raise forms.ValidationError(_("That number is not allowed"))
+            if max_participants > 5000:
+                raise forms.ValidationError(_("Number of participants is limited to 5000"))
 
         return max_participants
 

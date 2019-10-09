@@ -9,7 +9,7 @@ from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
 
 from main import views as main_views
-from sitemap import *  # noqa: F403 TODO replace star imports with named imports
+from .sitemap import *  # noqa: F403 TODO replace star imports with named imports
 from admin import views as adminviews
 from courses import views as courseviews
 from accounts import views as accountsviews

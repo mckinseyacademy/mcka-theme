@@ -2,9 +2,10 @@
 import json
 from django.utils.translation import ugettext as _
 from django.conf import settings
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from api_client.oauth2_requests import get_oauth2_session
+from lib.utils import bytes_to_str
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 
 from .json_object import JsonParser as JP
@@ -61,7 +62,7 @@ def fetch_organization_user_ids(organization_id):
             organization_id,
         )
     )
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -74,7 +75,7 @@ def fetch_organization_group_ids(organization_id):
             organization_id,
         )
     )
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -123,7 +124,7 @@ def get_organizations_dict():
             urlencode({"page_size": 0})
         )
     )
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -252,7 +253,7 @@ def get_users_from_organization_group(organization_id, group_id):
         )
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -266,7 +267,7 @@ def get_all_organization_groups(organization_id):
         )
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -282,7 +283,7 @@ def add_group_to_organization(organization_id, group_id):
         data
     )
 
-    return json.loads(response.read())
+    return json.loads(response.read().decode('utf-8'))
 
 
 @api_error_protect
@@ -334,7 +335,7 @@ def get_organizations_courses(organization_id):
         )
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -348,7 +349,7 @@ def get_organization_by_display_name(organization_display_name):
         )
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -363,7 +364,7 @@ def get_organization_user_ids_on_course(organization_id, course_id):
         )
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 ORGANIZATION_ERROR_CODE_MESSAGES = {

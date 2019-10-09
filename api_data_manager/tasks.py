@@ -45,7 +45,7 @@ def cache_program_courses_mapping():
     try:
         all_programs = group_api.get_groups_of_type('series')
     except Exception as e:
-        logger.error('{} - Exception retrieving programs list - {}'.format(task_log_msg, e.message))
+        logger.error('{} - Exception retrieving programs list - {}'.format(task_log_msg, e))
         raise cache_program_courses_mapping.retry(exc=e)
 
     program_courses_mapping = defaultdict(dict)
@@ -56,7 +56,7 @@ def cache_program_courses_mapping():
         except Exception as e:
             logger.error(
                 '{} - Exception retrieving program `{}` courses - SKIPPING - {}'
-                .format(task_log_msg, program.id, e.message)
+                .format(task_log_msg, program.id, e)
             )
         else:
             program_courses_mapping[program.id] = {'name': program.name, 'courses': program_courses}
@@ -79,7 +79,7 @@ def cache_permission_groups():
     try:
         permission_groups = group_api.get_groups_of_type('permission')
     except Exception as e:
-        logger.error('{} - Exception retrieving permissions groups - {}'.format(task_log_msg, e.message))
+        logger.error('{} - Exception retrieving permissions groups - {}'.format(task_log_msg, e))
     else:
         permission_groups_map = {permission_group.name: permission_group.id for permission_group in permission_groups}
         common_data_manager.set_cached_data(
@@ -101,7 +101,7 @@ def cache_companion_app_courses():
     try:
         companion_app = mobileapp_api.get_mobile_apps({"app_name": "LBG"})
     except Exception as e:
-        logger.error('{} - Exception retrieving companion mobile apps - {}'.format(task_log_msg, e.message))
+        logger.error('{} - Exception retrieving companion mobile apps - {}'.format(task_log_msg, e))
     else:
         companion_app_orgs = companion_app['results'][0]['organizations'] if companion_app.get('results') else []
         companion_app_courses = []
@@ -110,7 +110,7 @@ def cache_companion_app_courses():
             try:
                 org_companion_app_courses = organization_api.get_organizations_courses(org_id)
             except Exception as e:
-                logger.error('{} - Exception retrieving organization courses - {}'.format(task_log_msg, e.message))
+                logger.error('{} - Exception retrieving organization courses - {}'.format(task_log_msg, e))
             else:
                 companion_app_courses.extend(org_companion_app_courses)
 
@@ -160,7 +160,7 @@ def enhanced_course_caching_task():
                     .get_processed_course_static_data()
         except Exception as e:
             logger.error('{} - Exception retrieving `{}` course tree data - {}'.format(
-                task_log_msg, course_id, e.message
+                task_log_msg, course_id, e
             ))
         else:
             course_data_manager = CourseDataManager(course_id=course_id)

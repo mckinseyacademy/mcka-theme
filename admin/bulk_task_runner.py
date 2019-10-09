@@ -117,8 +117,7 @@ def _execute_users_program_association_task(participants_file, program_id):
     validator = FileTypeValidator(allowed_types=['text/plain', 'text/csv'])
     try:
         validator(participants_file)
-    except Exception as e:
-        e.message = e.message % e.params
+    except Exception:
         raise
 
     user_ids = build_student_list_from_file(

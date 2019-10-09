@@ -1,6 +1,6 @@
 ''' Objects for users / authentication built from json responses from API '''
 from .json_object import JsonObject
-import workgroup_api
+from . import workgroup_api
 
 
 class Workgroup(JsonObject):

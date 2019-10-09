@@ -87,7 +87,7 @@ class CertificateViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
         self.template_asset_post_data = {'description': 'dumy description'}
         self.stylesheet = SimpleUploadedFile(
             'styles.css',
-            'dummy content',
+            b'dummy content',
             content_type='text/css'
         )
         self.template_asset_file_data = {'asset': self.stylesheet}
@@ -105,7 +105,7 @@ class CertificateViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
             'template': '<p>dummy template</p>',
             'course_id': self.courses[2][0]
         }
-        for x in xrange(2):
+        for x in range(2):
             self.templates.append(
                 CertificateTemplate.objects.create(
                     name='test',
@@ -369,7 +369,7 @@ class CertificateViewTest(TestCase, ApplyPatchMixin, APIDataManagerMockMixin):
             )
         )
         self.assertEqual(response.status_code, 200)
-        self.assertEquals(
+        self.assertEqual(
             response.get('Content-Disposition'),
             'attachment; filename={}'.format(self.stylesheet.name)
         )

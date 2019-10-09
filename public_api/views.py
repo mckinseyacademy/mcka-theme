@@ -13,7 +13,7 @@ from accounts.views import get_user_from_login_id
 from accounts.controller import send_password_reset_email
 from accounts.models import UserActivation
 from api_client import course_api, user_api
-from api_protect import api_json_response, api_authenticate_protect, api_user_protect
+from .api_protect import api_json_response, api_authenticate_protect, api_user_protect
 from mcka_apros import settings
 from .models import ApiToken
 from lib.authorization import permission_group_required

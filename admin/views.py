@@ -2,12 +2,11 @@ import copy
 import functools
 import json
 import operator
-import string
-import urlparse
+import urllib.parse
 from collections import OrderedDict
 from datetime import datetime, timedelta
 from smtplib import SMTPException
-from urllib import quote as urlquote, urlencode
+from urllib.parse import quote as urlquote, urlencode
 
 import os.path
 import re
@@ -31,7 +30,7 @@ from django.http import (
 )
 from django.shortcuts import render, redirect, get_object_or_404
 from django.template import loader
-from django.utils import timezone
+from django.utils import timezone, six
 from django.utils.dateformat import format
 from django.utils.decorators import method_decorator
 from django.utils.text import slugify
@@ -197,7 +196,7 @@ def client_admin_home(request, client_id):
     courses = get_organization_active_courses(request, client_id)
 
     if request.method == 'POST':
-        myDict = dict(request.POST.iterlists())
+        myDict = dict(six.iterlists(request.POST))
         courses_list = myDict['courses_list[]']
         courses_tiles = []
 
@@ -278,7 +277,7 @@ def client_admin_course(request, client_id, course_id):
     )
     metrics.users_completed, metrics.percent_completed = get_organizations_users_completion(client_id, course.id,
                                                                                             metrics.users_enrolled)
-    cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.iteritems())])
+    cutoffs = ", ".join(["{}: {}".format(k, v) for k, v in sorted(metrics.grade_cutoffs.items())])
 
     data = {
         'client_id': client_id,
@@ -351,7 +350,7 @@ def client_admin_course_participants(request, client_id, course_id):
                            PERMISSION_GROUPS.INTERNAL_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN)
 def client_admin_download_course_report(request, client_id, course_id):
     filename = slugify(
-        unicode(
+        str(
             "{} Course Report for {} on {}".format(
                 client_id,
                 course_id,
@@ -373,7 +372,7 @@ def client_admin_download_course_report(request, client_id, course_id):
 
     course_social_metrics = course_api.get_course_social_metrics(course_id, organization_id=client_id)
     user_social_lookup = {str(u_id): social_total(user_metrics) for u_id, user_metrics in
-                          course_social_metrics.users.__dict__.iteritems()}
+                          course_social_metrics.users.__dict__.items()}
 
     course_proficiency = organization_api.get_users_by_enrolled(client_id,
                                                                 course_id=course_id,
@@ -415,7 +414,7 @@ def client_admin_download_program_report(request, client_id, program_id):
     organization = Client.fetch(client_id)
     program, courses, total_avg_grade, total_pct_completed = get_program_data_for_report(client_id, program_id)
     filename = slugify(
-        unicode(
+        str(
             "{} Program Report for {} on {}".format(
                 client_id,
                 program_id,
@@ -459,13 +458,13 @@ def client_admin_course_analytics(request, client_id, course_id):
     # engagement
     employee_engagement = course_api.get_course_social_metrics(course_id, organization_id=client_id)
     employee_point_sum = sum([social_total(user_metrics[1]) for user_metrics in
-                              employee_engagement.users.__dict__.iteritems()])
+                              employee_engagement.users.__dict__.items()])
     employee_avg = float(employee_point_sum) / employee_engagement.total_enrollments if \
         employee_engagement.total_enrollments > 0 else 0
 
     course_engagement = course_api.get_course_social_metrics(course_id)
     course_point_sum = sum([social_total(user_metrics[1]) for user_metrics in
-                            course_engagement.users.__dict__.iteritems()])
+                            course_engagement.users.__dict__.items()])
     course_avg = float(course_point_sum) / course_engagement.total_enrollments if \
         course_engagement.total_enrollments > 0 else 0
 
@@ -1079,7 +1078,7 @@ def get_participants_stats_csv_data(task_id):
     ])
 
     # update fields with groupworks/assignments data
-    for label, title in (groupworks.items() + assesments.items()):
+    for label, title in (list(groupworks.items()) + list(assesments.items())):
         fields.update({title: (label, '0%')})
 
     return {
@@ -1187,7 +1186,7 @@ class BulkTaskAPI(APIView):
         try:
             task_id = BulkTaskRunner(request=request, params=data, task_name=data.get('type')).execute_task()
         except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
-            return Response({'errors': e.message}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({'errors': str(e)}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'task_id': task_id}, status=status.HTTP_201_CREATED)
 
@@ -1446,15 +1445,11 @@ def client_new(request):
         form = ClientForm(request.POST)  # A form bound to the POST data
         if form.is_valid():  # All validation rules pass
             try:
-                client_data = {k: v for k, v in request.POST.iteritems()}
+                client_data = {k: v for k, v in request.POST.items()}
                 name = client_data["display_name"].lower().replace(' ', '_')
                 client = Client.create(name, client_data)
-                # save identity provider
-                (customization, created) = ClientCustomization.objects.get_or_create(
-                    client_id=client.id
-                )
-                customization.identity_provider = form.cleaned_data['identity_provider']
-                customization.save()
+                # create customization object
+                ClientCustomization.objects.get_or_create(client_id=client.id)
                 # save logo
                 if hasattr(client, 'logo_url') and client.logo_url:
                     old_image_url = client.logo_url
@@ -1602,13 +1597,13 @@ def client_detail(request, client_id, detail_view="detail", upload_results=None)
                     start = course.get("start", None)
                     end = course.get("end", None)
                     if start:
-                        if type(start) == unicode:
+                        if type(start) == str:
                             start = parsedate(start)
                         start = start.strftime(settings.SHORT_DATE_FORMAT)
                     else:
                         start = ""
                     if end:
-                        if type(end) == unicode:
+                        if type(end) == str:
                             end = parsedate(end)
                         end = end.strftime(settings.SHORT_DATE_FORMAT)
                     else:
@@ -2081,7 +2076,7 @@ def share_access_key(request, client_id, access_key_id):
             try:
                 send_mass_mail(mails, fail_silently=False)
             except SMTPException as e:
-                error = e.message
+                error = str(e)
             else:
                 return HttpResponseRedirect(reverse('client_sso', kwargs={'client_id': client_id}))
     else:
@@ -2360,7 +2355,7 @@ def upload_student_list_check(request, client_id, task_key):
 def download_student_list(request, client_id):
     client = Client.fetch(client_id)
     filename = slugify(
-        unicode(
+        str(
             "Student List for {} on {}".format(
                 client.display_name, datetime.now().isoformat()
             )
@@ -2875,7 +2870,7 @@ def program_association(request, client_id):
     if request.method == 'POST':
         form = ProgramAssociationForm(program_list, request.POST)
         if form.is_valid():
-            data = {k: v for k, v in request.POST.iteritems()}
+            data = {k: v for k, v in request.POST.items()}
             number_places = int(data.get('places'))
             client.add_program(data.get('select_program'), number_places)
             return HttpResponseRedirect('/admin/clients/{}'.format(client.id))
@@ -2943,7 +2938,7 @@ def add_students_to_program(request, client_id, restrict_to_programs_ids=None, r
         if restrict_to_users_ids is not None:
             students = [student_id for student_id in students if int(student_id) in restrict_to_users_ids]
     except ValueError:
-        return make_json_error(_("Invalid student_id specified: {}").format(student_id), 400)
+        return make_json_error(_("Invalid student_id specified"), 400)
     assigned, license = license_controller.licenses_report(program.id, client_id)
     allocated = len(license)
     remaining = allocated - assigned
@@ -3052,9 +3047,9 @@ def change_company_image(request, client_id='new', template='change_company_imag
         company_image = client.image_url(size=None, path='absolute')
 
     if '?' in company_image:
-        company_image = company_image + '&' + format(datetime.now(), u'U')
+        company_image = company_image + '&' + format(datetime.now(), 'U')
     else:
-        company_image = company_image + '?' + format(datetime.now(), u'U')
+        company_image = company_image + '?' + format(datetime.now(), 'U')
 
     form = UploadCompanyImageForm(request)  # An unbound form
 
@@ -3081,7 +3076,7 @@ def company_image_edit(request, client_id="new"):
         top = int(float(request.POST.get('y1-position')))
         right = int(float(request.POST.get('width-position'))) + left
         bottom = int(float(request.POST.get('height-position'))) + top
-        CompanyImageUrl = urlparse.urlparse(request.POST.get('upload-image-url'))[2].split('?')[0]
+        CompanyImageUrl = urllib.parse.urlparse(request.POST.get('upload-image-url'))[2].split('?')[0]
 
         if client_id != 'new':
             client = Organization.fetch(client_id)
@@ -3104,7 +3099,7 @@ def company_image_edit(request, client_id="new"):
             original = Image.open(default_storage.open(image_url))
 
             cropped_example = original.crop((left, top, right, bottom))
-            new_image_url = string.replace(image_url, settings.TEMP_IMAGE_FOLDER, '')
+            new_image_url = image_url.replace(settings.TEMP_IMAGE_FOLDER, '')
             Organization.save_profile_image(cropped_example, image_url, new_image_url=new_image_url)
 
         if client_id == 'new':
@@ -3136,7 +3131,7 @@ def upload_company_image(request, client_id='new'):
                 if client_id == 'new':
                     company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + \
                                     'company_image-{}-{}-{}.jpg'.format(client_id, request.user.id,
-                                                                        format(datetime.now(), u'U'))
+                                                                        format(datetime.now(), 'U'))
                     Organization.save_profile_image(Image.open(temp_image), company_image)
                 else:
                     company_image = 'images/' + settings.TEMP_IMAGE_FOLDER + 'company_image-{}.jpg'.format(client_id)
@@ -3467,7 +3462,7 @@ def download_group_list(request, course_id, restrict_to_courses_ids=None, restri
     group_projects = load_group_projects_info_for_course(course, companies)
     group_project_groups, students = filter_groups_and_students(group_projects, students, restrict_to_users_ids)
 
-    filename = slugify(unicode("Groups List for {} on {}".format(
+    filename = slugify(str("Groups List for {} on {}".format(
         course.name,
         datetime.now().isoformat()
     )))
@@ -3491,7 +3486,7 @@ def download_group_list(request, course_id, restrict_to_courses_ids=None, restri
 @ta_course_access
 def download_group_projects_report(request, course_id, restrict_to_courses_ids=None, restrict_to_users_ids=None):
     filename = slugify(
-        unicode(
+        str(
             "Group Report for {} on {}".format(
                 course_id,
                 datetime.now().isoformat()
@@ -3562,7 +3557,7 @@ def workgroup_detail(request, course_id, workgroup_id, restrict_to_courses_ids=N
         activities = projects[0].activities
 
     submission_map = workgroup_api.get_latest_workgroup_submissions_by_id(workgroup.id, Submission)
-    submissions = [v for k, v in submission_map.iteritems()]
+    submissions = [v for k, v in submission_map.items()]
 
     data = {
         "workgroup": workgroup,
@@ -3674,7 +3669,7 @@ def workgroup_course_detail(request, course_id, restrict_to_courses_ids=None, re
         "principal_name_plural": _("Group Work"),
         "course": course,
         "students": students,
-        "companies": companies.values(),
+        "companies": list(companies.values()),
         "group_projects": group_projects,
         "selected_client_tab": "edit_groups",
     }
@@ -3858,7 +3853,7 @@ def workgroup_project_create(request, course_id, restrict_to_courses_ids=None):
                 status_code = 200
 
             except ApiError as e:
-                message = e.message
+                message = str(e)
                 status_code = e.code
     response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
     response.status_code = status_code
@@ -3882,7 +3877,7 @@ def workgroup_remove_project(request, project_id, restrict_to_courses_ids=None):
     try:
         Project.delete(project_id)
     except ApiError as e:
-        message = e.message
+        message = str(e)
         status_code = e.code
         response = HttpResponse(json.dumps({"message": message}), content_type="application/json")
         response.status_code = status_code
@@ -3965,7 +3960,7 @@ def participant_password_reset(request, user_id):
         send_password_reset_email(request.META.get('HTTP_HOST'), user, request.is_secure())
         messages.success(request, _('Password Reset Email successfully sent.'))
     except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
-        messages.error(request, e.message)
+        messages.error(request, str(e))
     return HttpResponseRedirect(reverse('participants_details', args=(user_id,)))
 
 
@@ -3984,7 +3979,7 @@ def participant_mail_activation_link(request, user_id):
                 _send_activation_email_to_single_new_user(activation_record, user, email_head)
                 messages.info(request, _("Activation email sent."))
         except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
-            messages.error(request, e.message)
+            messages.error(request, str(e))
     return HttpResponseRedirect(reverse('participants_details', args=(user_id,)))
 
 
@@ -4008,7 +4003,7 @@ class ParticipantsListApi(APIView):
         # This encodes all values in unicode to UTF8 to avoid issues when
         # making requests with special characters
         query_params = {
-            k: unicode(v).encode("utf-8") for k, v in request.GET.dict().iteritems()
+            k: v for k, v in request.GET.dict().items()
         }
 
         # restrict participants search to internal courses
@@ -4132,7 +4127,7 @@ class ParticipantsListApi(APIView):
                                 organization_data={"display_name": data['new_company_name']}
                             )
                             data['company'] = vars(new_organization).get("id", None)
-                        except ApiError, e:
+                        except ApiError:
                             return Response({'status': 'error', 'type': 'api_error',
                                              'message': _("Couldn't create company!")})
                     if user:
@@ -4145,7 +4140,7 @@ class ParticipantsListApi(APIView):
                                     email_head = request.build_absolute_uri('/accounts/activate')
                                     _send_activation_email_to_single_new_user(activation_record, user, email_head)
                             client.add_user(user.id)
-                        except ApiError, e:
+                        except ApiError:
                             return Response({'status': 'error', 'type': 'api_error',
                                              'message': _("Couldn't add user to company!")})
                     courses_permissions_list = []
@@ -4155,7 +4150,7 @@ class ParticipantsListApi(APIView):
                         except ApiError as e:
                             # Ignore 409 errors, because they indicate a user already added
                             if e.code != 409:
-                                return Response({'status': 'error', 'type': 'api_error', 'message': e.message})
+                                return Response({'status': 'error', 'type': 'api_error', 'message': str(e)})
                         if course_permission['role'] != 'active':
                             course_permission['role'] = roles[course_permission['role']]
                             courses_permissions_list.append(course_permission)
@@ -4170,8 +4165,8 @@ class ParticipantsListApi(APIView):
 
                     if len(data.get('company_permissions_list', [])):
                         permissions.add_company_admin_permissions(data.get('company_permissions_list', []))
-                except ApiError, e:
-                    return Response({'status': 'error', 'type': 'api_error', 'message': e.message})
+                except ApiError as e:
+                    return Response({'status': 'error', 'type': 'api_error', 'message': str(e)})
                 return Response({'status': 'ok', 'message': _('Successfully added new user!'),
                                  'user_id': user_data['id']})
         else:
@@ -4246,7 +4241,7 @@ class participant_details_api(APIView):
             if not len(selectedUser['mcka_permissions']):
                 selectedUser['mcka_permissions'] = ['-']
             else:
-                for key, value in permissions_groups.iteritems():
+                for key, value in permissions_groups.items():
                     if value == selectedUser['mcka_permissions'][0]:
                         selectedUser['company_permission'] = key
 
@@ -4275,8 +4270,8 @@ class participant_details_api(APIView):
 
         try:
             update_user_company_fields_value(user_id, request.POST)
-        except ApiError, e:
-            return Response({'status': 'error', 'type': 'api_error', 'message': e.message})
+        except ApiError as e:
+            return Response({'status': 'error', 'type': 'api_error', 'message': str(e)})
 
         form = EditExistingUserForm(request.POST.copy())
         if form.is_valid():
@@ -4320,7 +4315,7 @@ class participant_details_api(APIView):
                             organization_data={"display_name": new_company_name}
                         )
                         data['company'] = vars(new_organization).get("id", None)
-                    except ApiError, e:
+                    except ApiError:
                         return Response({'status': 'error', 'type': 'api_error',
                                          'message': _("Couldn't create company!")})
                 try:
@@ -4363,8 +4358,8 @@ class participant_details_api(APIView):
                             if error:
                                 return Response(error)
 
-                except ApiError, e:
-                    return Response({'status': 'error', 'type': 'api_error', 'message': e.message})
+                except ApiError as e:
+                    return Response({'status': 'error', 'type': 'api_error', 'message': str(e)})
                 return Response({'status': 'ok', 'message': vars(response), 'company': company,
                                  'company_permissions': request.data['company_permissions']})
         else:
@@ -4379,7 +4374,7 @@ class participant_details_api(APIView):
         failed = delete_participants([user_id])
         if failed:
             return HttpResponseBadRequest(json.dumps({
-                'detail': failed.values()
+                'detail': list(failed.values())
             }), content_type="application/json")
         return HttpResponse(status=204)
 
@@ -4561,7 +4556,7 @@ class participant_details_course_edit_status_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
                                    PERMISSION_GROUPS.MCKA_SUBADMIN)
     def get(self, request, user_id, course_id, format=None):
-        params = urlparse.parse_qs(request.GET.urlencode())
+        params = urllib.parse.parse_qs(request.GET.urlencode())
         current_roles = ''
         if params['currentRoles']:
             current_roles = str(params['currentRoles'][0])
@@ -4783,7 +4778,7 @@ def permissions(request):
     for user in users:
         roles = [
             role_name
-            for role_key, role_name in _role_map.iteritems()
+            for role_key, role_name in _role_map.items()
             if user.id in group_members.get(role_key, [])
         ]
         user.roles = ", ".join(roles)
@@ -4860,9 +4855,11 @@ def load_background_image(request, image_url):
     if default_storage.exists(image_url):
         image = default_storage.open(image_url).read()
         from mimetypes import MimeTypes
-        import urllib
+        import urllib.request
+        import urllib.parse
+        import urllib.error
         mime = MimeTypes()
-        url = urllib.pathname2url(image_url)
+        url = urllib.request.pathname2url(image_url)
         mime_type = mime.guess_type(url)
         return HttpResponse(
             image, content_type=mime_type[0]
@@ -5030,8 +5027,7 @@ def course_learner_dashboard_discover_delete(request, course_id, discovery_id):
 def course_learner_dashboard_discover_reorder(request, course_id):
     if request.method == 'POST':
 
-        data = request.POST
-        dataDict = dict(data.iterlists())
+        dataDict = dict(six.iterlists(request.POST))
 
         for index, item_id in enumerate(dataDict['position[]']):
             discoveryItem = LearnerDashboardDiscovery.objects.get(pk=item_id)
@@ -5268,7 +5264,7 @@ class create_new_company_api(APIView):
             try:
                 alphanum_accented_validator(company_name)
             except ValidationError as e:
-                return Response({'status': 'error', 'message': e.message})
+                return Response({'status': 'error', 'message': str(e)})
             try:
                 organization_api.create_organization(organization_name=company_name,
                                                      organization_data={"display_name": company_display_name})
@@ -5313,7 +5309,7 @@ class CompanyDetailsView(APIView):
             invoicing['country'] = invoicingDetails[0].country
             invoicing['po'] = invoicingDetails[0].po
             invoicing['identity_provider'] = invoicingDetails[0].identity_provider
-            for key, value in invoicing.items():
+            for key, value in list(invoicing.items()):
                 if invoicing[key].strip() == '':
                     invoicing[key] = '-'
         else:
@@ -5341,7 +5337,7 @@ class CompanyDetailsView(APIView):
                 contact['title'] = companyContact.title
                 contact['email'] = companyContact.email
                 contact['phone'] = companyContact.phone
-                for key, value in contact.items():
+                for key, value in list(contact.items()):
                     if contact[key].strip() == '':
                         contact[key] = '-'
                 contacts.append(contact)
@@ -5623,7 +5619,7 @@ def course_learner_dashboard(request, course_id):
             instance.description_color = request.POST['description_color']
             instance.save()
 
-            myDict = dict(request.POST.iterlists())
+            myDict = dict(six.iterlists(request.POST))
             if myDict.get('positions[]'):
                 for index, item_id in enumerate(myDict['positions[]']):
                     tileItem = LearnerDashboardTile.objects.get(id=item_id)
@@ -5753,8 +5749,7 @@ def course_learner_dashboard_tile(request, course_id, learner_dashboard_id, tile
 def course_learner_dashboard_tile_reorder(request, course_id):
     if request.method == 'POST':
 
-        data = request.POST
-        dataDict = dict(data.iterlists())
+        dataDict = dict(six.iterlists(request.POST))
 
         for index, item_id in enumerate(dataDict['position[]']):
             discoveryItem = LearnerDashboardTile.objects.get(pk=item_id)
@@ -5954,7 +5949,7 @@ class tags_list_api(APIView):
             try:
                 alphanum_accented_validator(tag_name)
             except ValidationError as e:
-                return Response({'status': 'error', 'message': e.message})
+                return Response({'status': 'error', 'message': str(e)})
 
             tags = Tag.fetch_all()
             for tag in tags:
@@ -5965,12 +5960,12 @@ class tags_list_api(APIView):
                 try:
                     response = Tag.create_internal(tag_name, tag_data)
                 except ApiError as e:
-                    return Response({'status': 'error', 'message': e.message})
+                    return Response({'status': 'error', 'message': str(e)})
             else:
                 try:
                     response = Tag.create(tag_name, tag_data)
                 except ApiError as e:
-                    return Response({'status': 'error', 'message': e.message})
+                    return Response({'status': 'error', 'message': str(e)})
             return Response({'status': 'ok', 'message': _('Tag created!'), 'id': vars(response)['id']})
         else:
             return Response({'status': 'error', 'message': _("You need to select tag's name!")})
@@ -6019,12 +6014,12 @@ class course_details_tags_api(APIView):
                 try:
                     tag.add_internal_course(course_id)
                 except ApiError as e:
-                    return Response({'status': 'error', 'message': e.message})
+                    return Response({'status': 'error', 'message': str(e)})
             elif tag.type == TAG_GROUPS.COMMON:
                 try:
                     tag.add_course(course_id)
                 except ApiError as e:
-                    return Response({'status': 'error', 'message': e.message})
+                    return Response({'status': 'error', 'message': str(e)})
             return Response({'status': 'ok', 'message': _('Tag added to Course!'), 'id': tag.id, 'name': tag.name})
         else:
             return Response({'status': 'error', 'message': _('You need to select tag!')})
@@ -6042,12 +6037,12 @@ class course_details_tags_api(APIView):
                 try:
                     tag.remove_internal_course(course_id)
                 except ApiError as e:
-                    return Response({'status': 'error', 'message': e.message})
+                    return Response({'status': 'error', 'message': str(e)})
             elif tag.type == TAG_GROUPS.COMMON:
                 try:
                     tag.remove_internal_course(course_id)
                 except ApiError as e:
-                    return Response({'status': 'error', 'message': e.message})
+                    return Response({'status': 'error', 'message': str(e)})
             return Response({'status': 'ok', 'message': _('Tag removed from Course!')})
         else:
             return Response({'status': 'error', 'message': _('You need to select tag!')})
@@ -6274,8 +6269,8 @@ class EditAndDeleteSelfRegRole(APIView):
         """
         Post request handler for Editing Self Register Roles
         """
-        role_id = request.DATA.get('role_id', None)
-        role_text = request.DATA.get('role_text', None)
+        role_id = request.data.get('role_id', None)
+        role_text = request.data.get('role_text', None)
 
         return edit_self_register_role(role_id, role_text)
 
@@ -6285,7 +6280,7 @@ class EditAndDeleteSelfRegRole(APIView):
         """
         Removes Self Register Roles
         """
-        role_id = request.DATA.get('role_id', None)
+        role_id = request.data.get('role_id', None)
 
         return delete_self_reg_role(role_id)
 

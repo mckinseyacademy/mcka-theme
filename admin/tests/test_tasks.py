@@ -168,7 +168,7 @@ class BulkTasksTest(TestCase, ApplyPatchMixin):
             subject = 'Participant stats for {} did not generate'.format(course_id)
 
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].subject, subject)
+        self.assertEqual(mail.outbox[0].subject, subject)
 
     @override_settings(CELERY_ALWAYS_EAGER=True)
     def test_participants_notifications_data_task(self):
@@ -307,7 +307,7 @@ class DeleteParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
 
     def setUp(self):
         super(DeleteParticipantsTaskTest, self).setUp()
-        self.owner = {'username': u'admin', 'first_name': u'Admin'}
+        self.owner = {'username': 'admin', 'first_name': 'Admin'}
 
     @patch('admin.tasks.get_path', lambda x: x)
     @patch('admin.tasks.get_users')
@@ -344,7 +344,7 @@ class DeleteCompanyTaskTest(CourseParticipantsStatsMixin, TestCase):
         self.mock_id = 0
         self.dummy_organization = Dummy()
         self.dummy_organization.display_name = 'dummy'
-        self.owner = {'username': u'admin', 'first_name': u'Admin'}
+        self.owner = {'username': 'admin', 'first_name': 'Admin'}
         self.base_url = 'https://mckinseyacademy.com/admin/api/companies'
 
     @patch('admin.tasks.send_email')
@@ -419,7 +419,7 @@ class UnenrollParticipantsTaskTest(CourseParticipantsStatsMixin, TestCase):
 
     def setUp(self):
         super(UnenrollParticipantsTaskTest, self).setUp()
-        self.owner = {'username': u'admin', 'first_name': u'Admin'}
+        self.owner = {'username': 'admin', 'first_name': 'Admin'}
 
     @patch('admin.tasks.get_path', lambda x: x)
     @patch('admin.tasks.get_data_from_csv')

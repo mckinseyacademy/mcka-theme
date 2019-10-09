@@ -94,10 +94,10 @@ class AdminControllerTests(TestCase):
 def mock_completion_score(*args, **kwargs):
     return {
         "user1": {
-            u'completion': {
-                u'percent': 0.25,
-                u'possible': 60.0,
-                u'earned': 15.0,
+            'completion': {
+                'percent': 0.25,
+                'possible': 60.0,
+                'earned': 15.0,
             },
         }
     }
@@ -106,42 +106,42 @@ def mock_completion_score(*args, **kwargs):
 class TestsCourseParticipantStats(TestCase, ApplyPatchMixin):
 
     def test__get_lesson_completions(self):
-        test_username = u'test_user'
+        test_username = 'test_user'
         test_userid = 93
 
         self.apply_patch(
             'api_client.course_api.get_course_completions',
             lambda *a, **kw: {
                 test_username: {
-                    u'completion': {
-                        u'percent': 0.25,
-                        u'possible': 60.0,
-                        u'earned': 15.0,
+                    'completion': {
+                        'percent': 0.25,
+                        'possible': 60.0,
+                        'earned': 15.0,
                     },
                 },
             },
         )
         course_participants_response = {
-            u'count': 1,
-            u'next': None,
-            u'num_pages': 1,
-            u'results': [
+            'count': 1,
+            'next': None,
+            'num_pages': 1,
+            'results': [
                 {
-                    u'username': test_username,
-                    u'id': test_userid,  # This get
+                    'username': test_username,
+                    'id': test_userid,  # This get
                 }
             ],
-            u'previous': None
+            'previous': None
         }
         stats = CourseParticipantStats('course-v1:a+b+c', 'base/url')
         stats.request_params = {'additional_fields': 'lesson_completions'}
         completions = stats._get_lesson_completions(course_participants_response)  # pylint: disable=protected-access
         self.assertEqual(completions, {
             test_userid: {
-                u'completion': {
-                    u'percent': 0.25,
-                    u'possible': 60.0,
-                    u'earned': 15.0,
+                'completion': {
+                    'percent': 0.25,
+                    'possible': 60.0,
+                    'earned': 15.0,
                 },
             },
         })
@@ -248,8 +248,13 @@ class TestCreateRolesList(TestCase):
         }
         request = self.factory.post('/', data)
         roles = create_roles_list(request)
-        self.assertEquals(roles, ['Seasoned Leader/Senior Manager (e.g., VP, Director)',
-                                  'Early Career Professional (e.g., Associate, Analyst)'])
+        self.assertCountEqual(
+            roles,
+            [
+                'Seasoned Leader/Senior Manager (e.g., VP, Director)',
+                'Early Career Professional (e.g., Associate, Analyst)'
+            ]
+        )
 
     def test_with_invalid_input(self):
         """test with invalid input which raises validation error"""
@@ -300,21 +305,21 @@ class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
         writer = csv.writer(response)
 
         write_social_engagement_report_on_csv(writer, "123", "123")
-        self.assertEqual(self.expected_result_for_social, response.content)
+        self.assertEqual(self.expected_result_for_social, response.content.decode('utf-8'))
 
     def test_write_engagement_summary_on_csv(self):
         response = HttpResponse(content_type='text/csv')
         writer = csv.writer(response)
 
         write_engagement_summary_on_csv(writer, "123", "123")
-        self.assertEqual(self.expected_result_for_summary, response.content)
+        self.assertEqual(self.expected_result_for_summary, response.content.decode('utf-8'))
 
     def test_write_participant_performance_on_csv(self):
         response = HttpResponse(content_type='text/csv')
         writer = csv.writer(response)
 
         write_participant_performance_on_csv(writer)
-        self.assertEqual(self.expected_result_for_perfromance, response.content)
+        self.assertEqual(self.expected_result_for_perfromance, response.content.decode('utf-8'))
 
     def test_get_course_stats_report(self):
         course_api = self.apply_patch('api_client.course_api.get_course_v1')
@@ -324,7 +329,7 @@ class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
         expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance + \
             self.expected_result_for_social
 
-        self.assertEqual(response.content, expected_result)
+        self.assertEqual(response.content.decode('utf-8'), expected_result)
         course_features = FeatureFlags.objects.get(course_id="test_course")
         course_features.discussions = False
         course_features.save()
@@ -332,7 +337,7 @@ class TestGetCourseStatsReport(TestCase, ApplyPatchMixin):
         response = get_course_stats_report("test_company", "test_Course")
         expected_result = self.expected_result_for_summary + self.expected_result_for_perfromance
 
-        self.assertEqual(response.content, expected_result)
+        self.assertEqual(response.content.decode('utf-8'), expected_result)
 
 
 class TestContactsForClient(TestCase, ApplyPatchMixin):
@@ -380,16 +385,16 @@ class TestSpecificUserRolesOfOtherCompanies(TestCase):
 
     def test_remove_specific_user_roles_of_other_companies(self):
         organization_id = '7'
-        course_participants = {u'count': 4, u'previous': None,
-                               u'num_pages': 1,
-                               u'results': [
+        course_participants = {'count': 4, 'previous': None,
+                               'num_pages': 1,
+                               'results': [
                                             {'username': 'UAdmin_user', 'roles': ['observer'],
                                              'organizations': [{'display_name': 'CompanyA', 'id': 6},
                                                                {'display_name': 'CompanyB', 'id': 7}]},
                                             {'username': 'Cadmin', 'roles': [],
                                              'organizations': [{'display_name': 'CompanyB', 'id': 7}]},
                                             {'username': 'companyB_TA', 'roles': ['observer'],
-                                             'organizations': [{'display_name': 'CompanyB', u'id': 7}]},
+                                             'organizations': [{'display_name': 'CompanyB', 'id': 7}]},
                                             {'username': 'uberadmin2', 'roles': ['assistant'],
                                              'organizations': [{'id': 6}, ]}, {'username': 'uberadmin3',
                                                                                'roles': ['participant'],
@@ -437,7 +442,7 @@ class EditCourseCustomTermsTest(TestCase):
         self.assertEqual(course_meta_data.module_label, self.data['module_label'])
 
     def test_edit_course_lesson_custom_terms_with_foreign_characters(self):
-        self.data["lesson_label"] = u'ŠŽšžŸÀÁÂÃÄÅÇ'
+        self.data["lesson_label"] = 'ŠŽšžŸÀÁÂÃÄÅÇ'
         self.data["lesson_label_flag"] = 'true'
         request = self.post_request(self.data)
         controller.edit_course_meta_data(self.course_id, request)
@@ -445,7 +450,7 @@ class EditCourseCustomTermsTest(TestCase):
         self.assertEqual(course_meta_data.lesson_label, self.data['lesson_label'])
 
     def test_edit_course_module_custom_terms_with_foreign_characters(self):
-        self.data["module_label"] = u'ËÌÍÎÏÐÑÒÓÔ'
+        self.data["module_label"] = 'ËÌÍÎÏÐÑÒÓÔ'
         self.data["module_label_flag"] = 'true'
         request = self.post_request(self.data)
         controller.edit_course_meta_data(self.course_id, request)
@@ -483,7 +488,7 @@ class EditCourseCustomTermsTest(TestCase):
         self.assertEqual(course_meta_data.modules_label["zero"], self.data['modules_label'])
 
     def test_edit_course_lessons_custom_terms_with_foreign_characters(self):
-        self.data["lessons_label"] = u'ŠŽšžŸÀÁÂÃÄÅÇ'
+        self.data["lessons_label"] = 'ŠŽšžŸÀÁÂÃÄÅÇ'
         self.data["lessons_label_flag"] = 'true'
         request = self.post_request(self.data)
         controller.edit_course_meta_data(self.course_id, request)
@@ -491,7 +496,7 @@ class EditCourseCustomTermsTest(TestCase):
         self.assertEqual(course_meta_data.lessons_label["zero"], self.data['lessons_label'])
 
     def test_edit_course_modules_custom_terms_with_foreign_characters(self):
-        self.data["modules_label"] = u'ËÌÍÎÏÐÑÒÓÔ'
+        self.data["modules_label"] = 'ËÌÍÎÏÐÑÒÓÔ'
         self.data["modules_label_flag"] = 'true'
         request = self.post_request(self.data)
         controller.edit_course_meta_data(self.course_id, request)
@@ -594,7 +599,7 @@ class ProcessManagerEmailTest(TestCase, ApplyPatchMixin):
         )
         self.get_user_manager.return_value = {'results': []}
         user_managers = controller._get_user_managers(self.username)
-        self.assertEquals(user_managers, [])
+        self.assertEqual(user_managers, [])
 
     def test_user_not_exist(self):
         self.manager_email = "abc@example.com"
@@ -682,12 +687,12 @@ class ProblemReportPostProcessorTest(TestCase):
         processor.file_path = 'file_path'
         rows, keys = processor.post_process()
         self.assertTrue(len(rows), 3)
-        self.assertEqual(
+        self.assertCountEqual(
             rows,
-            [{u'L1M1 - question one?': u'some answer', 'email': 'username3@example.com'},
-             {u'L2M2 - question two?': u'another answer', 'email': 'username4@example.com'}]
+            [{'L1M1 - question one?': 'some answer', 'email': 'username3@example.com'},
+             {'L2M2 - question two?': 'another answer', 'email': 'username4@example.com'}]
         )
-        self.assertEqual(keys, [u'email', u'L1M1 - question one?', u'L2M2 - question two?'])
+        self.assertEqual(keys, ['email', 'L1M1 - question one?', 'L2M2 - question two?'])
 
 
 class GetUsersForDeletionTest(CourseParticipantsStatsMixin, TestCase):
