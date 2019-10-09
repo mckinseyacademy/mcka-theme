@@ -18,7 +18,7 @@
         .row.collapse
           .small-10.columns= form.access_key_link
           .small-2.columns
-            %button#copy-access-key.button.prefix.postfix.radius{type: "button", title: "Copy to clipboard.", "data-clipboard-text": "#{form.access_key_link.value}"}
+            %button#copy-access-key.button.prefix.postfix.radius{type: "button", title: "Copy to clipboard.", "data-clipboard-target": "#id_access_key_link"}
               = _("Copy")
             %span.tooltip{"style": "top:50px"}= _("Copied to clipboard.")
               %span.nub

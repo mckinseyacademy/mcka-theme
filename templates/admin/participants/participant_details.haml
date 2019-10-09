@@ -3,15 +3,14 @@
 - load staticfiles
 - block js_snippets
   %script{src: "{% static 'js/ajaxify_overlay_form.js' %}"}
-  %script{src: "{% static 'js/vendor/ZeroClipboard.min.js' %}"}
+  %script{src: "{% static 'js/vendor/clipboard.min.js' %}"}
   :javascript
-    ZeroClipboard.config({swfPath: 'static/js/vendor/ZeroClipboard.swf'});
     $(document).on('opened.fndtn', '#activation-link-modal', enableCopyButton);
     function enableCopyButton() {
       var copyBtn = $('.copy-access-key');
-      var client = new ZeroClipboard(copyBtn.get(0));
+      var clipboard = new ClipboardJS('.copy-access-key');
       var tooltip = copyBtn.siblings('.tooltip');
-      client.on('aftercopy', function (event) {
+      clipboard.on('success', function(e) {
         tooltip.show();
       });
       copyBtn.on('mouseout', function (event) {

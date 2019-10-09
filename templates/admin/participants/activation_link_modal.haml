@@ -33,10 +33,10 @@
 						#{record.2}
 				%td.company_id	  	 
 						#{record.3}
-				%td.activation_link
+				%td.activation_link#activation_link
 						#{record.4}
 				%td.clipboard_button{'style': 'position:relative'}
-					%button.copy-access-key.button.prefix.postfix.radius{type: "button", title: "{% trans 'Copy to clipboard.' %}", "data-clipboard-text": "#{record.4}", "style": 'min-width:100px'}
+					%button.copy-access-key.button.prefix.postfix.radius{type: "button", title: "{% trans 'Copy to clipboard.' %}", "data-clipboard-target": "#activation_link", "style": 'min-width:100px'}
             {% trans "Copy" %}
 					%span.tooltip{"style": "position:absolute;top:50px;"}
 						{% trans "Copied to clipboard." %}
