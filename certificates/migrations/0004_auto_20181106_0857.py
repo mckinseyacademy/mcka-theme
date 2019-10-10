@@ -37,7 +37,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='certificatetemplateasset',
             name='asset',
-            field=models.FileField(max_length=255, upload_to=certificates.models.template_assets_path, validators=[upload_validator.FileTypeValidator(allowed_types=[b'image/jpeg', b'image/png', b'image/gif', b'text/css', b'text/plain', b'application/javascript'])], verbose_name='Asset'),
+            field=models.FileField(max_length=255, upload_to=certificates.models.template_assets_path, validators=[upload_validator.FileTypeValidator(allowed_types=['image/jpeg', 'image/png', 'image/gif', 'text/css', 'text/plain', 'application/javascript'])], verbose_name='Asset'),
         ),
         migrations.AlterField(
             model_name='certificatetemplateasset',

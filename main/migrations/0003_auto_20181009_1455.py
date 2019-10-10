@@ -15,11 +15,11 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='curatedcontentitem',
             name='title',
-            field=models.CharField(blank=True, default=b'', max_length=255),
+            field=models.CharField(blank=True, default='', max_length=255),
         ),
         migrations.AlterField(
             model_name='curatedcontentitem',
             name='url',
-            field=models.URLField(blank=True, default=b''),
+            field=models.URLField(blank=True, default=''),
         ),
     ]

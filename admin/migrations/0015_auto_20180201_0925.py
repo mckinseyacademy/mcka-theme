@@ -21,12 +21,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='courserun',
             name='self_registration_description_text',
-            field=models.CharField(default=b'Self Registration Description Text', max_length=2000),
+            field=models.CharField(default='Self Registration Description Text', max_length=2000),
         ),
         migrations.AddField(
             model_name='courserun',
             name='self_registration_page_heading',
-            field=models.CharField(default=b'Self Registration Page Heading', max_length=2000),
+            field=models.CharField(default='Self Registration Page Heading', max_length=2000),
         ),
         migrations.AddField(
             model_name='selfregistrationroles',
