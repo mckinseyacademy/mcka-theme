@@ -91,12 +91,24 @@
                   {% trans "Company Admin" %}
       - block user_region
         - if request.user.is_authenticated
-          %a.user-info{data-dropdown: "profile-container"}
-            .user-name= user.username
-            %i.fa.fa-sort-desc
-            .user-image
-              %img{src: "#{user.image_url_small}", alt: "#{user.username}"}
-            #profile-container{data-dropdown-content: "true"}
+          - if not client_customization.hide_user_profile
+            %a.user-info{data-dropdown: "profile-container"}
+              .user-name= user.username
+              %i.fa.fa-sort-desc
+              .user-image
+                %img{src: "#{user.image_url_small}", alt: "#{user.username}"}
+              #profile-container{data-dropdown-content: "true"}
+          - elif client_customization.hide_user_profile
+            {% with request.path|slice:":6" as path %}
+              {% if path == '/admin' %}
+                %a.user-info{data-dropdown: "profile-container"}
+                  .user-name= user.username
+                  %i.fa.fa-sort-desc
+                  .user-image
+                    %img{src: "#{user.image_url_small}", alt: "#{user.username}"}
+                  #profile-container{data-dropdown-content: "true"}
+              {% endif %}
+            {% endwith %}
   - block program_bar
     - if program and current_course and current_course.started
       .program-bar.background-alt-blue{style: "{% if client_customization and client_customization.hex_background_bar %}background-color:#{client_customization.hex_background_bar};{% endif %}"}

@@ -1,0 +1,12 @@
+- load i18n
+- if request.user.is_authenticated
+  %a.user-info{"data-dropdown": "profile-container", "style":"position:inherit;"}
+    .user-name= user.username
+    %i.fa.fa-sort-desc
+    .user-image
+      %img{"src": "#{user.image_url_medium}", "alt": "#{user.username}"}
+    #profile-container{"data-dropdown-content": "true"}
+- else
+  .login-action
+    %a.small.radius.button{"href": "/accounts/login"}
+      {% trans "Log in" %}
