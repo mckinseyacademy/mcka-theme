@@ -643,6 +643,12 @@ $(window).on("load", function () {
     });
 });
 
+// Hide Module Navigation arrows on fullScreen video mode
+$(document).on('click', '.oo-fullscreen', function (e) {
+    $("#moduleNavigator").toggleClass("full-screen-mode");
+    e.preventDefault();
+});
+
 // Preloader for courses page
 
 $(document).on('click','.my-courses .card', function () {
