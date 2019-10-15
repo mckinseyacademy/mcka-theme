@@ -2,12 +2,6 @@
 - load i18n
 - comment "This template is used for /accounts/finalize/ (SSO registration)"
 
-- block header
-  - if client_customization
-    - include 'header.haml'
-  - else
-    - include 'header_without_logo.haml'
-
 - block content
   .container
     .row.justify-content-center
@@ -30,5 +24,3 @@
             %a.nav-link{:href => "/faq/", :target => "_blank"} {% trans "Read FAQs" %}
           %li.nav-item
             %a.nav-link{:href => "#{support}", :target => "_blank"} {% trans "Contact Support" %}
-
-- block footer

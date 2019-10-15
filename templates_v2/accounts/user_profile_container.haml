@@ -1,0 +1,54 @@
+- load i18n
+- load cache
+- load staticfiles
+- load template_helpers
+
+.profileArea
+  %a.dropdown-toggle{:aria-expanded => "false", :aria-haspopup => "true", :data-toggle => "dropdown", :href => "#"}
+    - if user.has_image
+      %img{:alt => "", :src => "{{user.image_url_medium}}", :width => "160"}/
+    - elif user.name_initials
+      %span.userNameInitials {{user.name_initials|upper}}
+    - else
+      %img{:alt => "", :src => "{{user.image_url_full}}"}/
+
+
+  %div{'class':'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
+    .header
+      .avatar-area
+        .userAvatar.lg
+          .holder
+            - if user.has_image
+              %img{:alt => "", :src => "{{user.image_url_full}}"}/
+            - elif user.name_initials
+              %span {{user.name_initials|upper}}
+            - else
+              %img{:alt => "", :src => "{{user.image_url_full}}"}/
+
+
+          %a.edit-link{:data-target => ".editPhotoModal", :href => "javascript:void(0)", :data-toggle => "modal", :data-remote => "/accounts/user/#{user.id}/change_profile_image"}
+            {% trans "edit photo" %}
+      .titles-area
+        .nameArea
+          %span{:firstname => "{{user.first_name}}", :lastname => "{{user.last_name}}"} {{user.fullname}}
+          %a.edit-link{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
+            {% trans "edit" %}
+        .roleArea
+          - if user.title
+            %span.title= user.title
+          - else
+            %span {% trans "Enter your role" %}
+          %a.edit-link{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
+            {% trans "edit" %}
+    .content
+      .wrap
+        %strong.text-uppercase.title
+          {% trans "username" %}
+        %strong.titleName {{user.username}}
+      .wrap
+        %strong.text-uppercase.title
+          {% trans "email" %}
+        %span.userMail {{user.email}}
+    .footer
+      %a.btn.btn-secondary{href: "/accounts/logout"}
+        {% trans "log out" %}

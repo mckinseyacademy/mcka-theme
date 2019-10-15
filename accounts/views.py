@@ -995,6 +995,8 @@ def reset(request, is_admin_site=False,
                 post_reset_redirect = '/?reset=failed'
             form.save(**opts)
             return HttpResponseRedirect(post_reset_redirect)
+        else:
+            return HttpResponseRedirect('/?reset=failed')
     else:
         form = password_reset_form()
     context = {

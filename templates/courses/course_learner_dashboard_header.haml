@@ -11,17 +11,14 @@
           .row
             .large-12.columns.header-padding
               - block user_region
-                - if request.user.is_authenticated
-                  %a.user-info{"data-dropdown": "profile-container", "style":"position:inherit;"}
-                    .user-name= user.username
-                    %i.fa.fa-sort-desc
-                    .user-image
-                      %img{"src": "#{user.image_url_medium}", "alt": "#{user.username}"}
-                    #profile-container{"data-dropdown-content": "true"}
-                - else
-                  .login-action
-                    %a.small.radius.button{"href": "/accounts/login"}
-                      {% trans "Log in" %}
+                - if not client_customization.hide_user_profile
+                  - include 'courses/course_learner_dashboard_user_profile_container.haml'
+                - elif client_customization.hide_user_profile
+                  {% with request.path|slice:":6" as path %}
+                    {% if path == '/admin' %}
+                      - include 'courses/course_learner_dashboard_user_profile_container.haml'
+                    {% endif %}
+                  {% endwith %}
       .row
         .large-12.columns.header-padding
           %div.right.header-path

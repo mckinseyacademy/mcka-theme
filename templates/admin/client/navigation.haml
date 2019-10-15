@@ -72,13 +72,21 @@
                     {% trans "ON" %}
                   - else
                     {% trans "OFF" %}
-          .footer-switch
-            %label{:for => "footerswitcher"}
-              %span {% trans "Show Footer" %}
-              - if customization.is_footer_enabled
-                %input.footer-checker#footerswitcher{type: 'checkbox', name: 'is_footer_enabled', checked: 'checked'}
-              - else
-                %input.footer-checker#footerswitcher{type: 'checkbox', name: 'is_footer_enabled'}
+          .hideShow-switchWrap
+            .hideShow-switch
+              %label{:for => "footerswitcher"}
+                - if customization.is_footer_enabled
+                  %input#footerswitcher{type: 'checkbox', name: 'is_footer_enabled', checked: 'checked'}
+                - else
+                  %input#footerswitcher{type: 'checkbox', name: 'is_footer_enabled'}
+                %span {% trans "Show Footer" %}
+            .hideShow-switch
+              %label{:for => "hideuserprofile"}
+                - if customization.hide_user_profile
+                  %input#hideuserprofile{type: 'checkbox', name: 'hide_user_profile', checked: 'checked'}
+                - else
+                  %input#hideuserprofile{type: 'checkbox', name: 'hide_user_profile'}
+                %span {% trans "Hide user profile" %}
       %fieldset
         .sub-1.oldui {% trans "Global Branding" %}
         .sub-1.newui {% trans "Platform Branding" %}
