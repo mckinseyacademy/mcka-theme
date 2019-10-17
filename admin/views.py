@@ -1166,7 +1166,8 @@ class BulkTaskAPI(APIView):
         return Response({'values': response}, status=status.HTTP_200_OK)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                                   PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_TA)
     def post(self, request):
         """
         Creates new task based on task name
