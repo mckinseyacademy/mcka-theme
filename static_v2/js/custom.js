@@ -309,6 +309,22 @@ $(document).ready(function () {
            $("#"+("teacher_"+$(this).attr('id').split("_")[1])).css("display","block")
        }
     });
+
+    // Hide Module Navigation arrows on fullScreen video mode
+    $('.lesson-content').on('click', 'button.oo-fullscreen', function (e) {
+        setTimeout(
+            function () {
+                if ($('button.oo-fullscreen span.oo-icon').hasClass("oo-icon-system-fullscreen")) {
+                    $("#moduleNavigator").removeClass('full-screen-mode');
+                }
+                else {
+                    $("#moduleNavigator").addClass('full-screen-mode');
+                }
+                e.preventDefault();
+            },
+            1000
+        );
+    });
 });
 
 
@@ -648,12 +664,6 @@ $(window).on("load", function () {
     $('div.faculty label').each(function (index) {
         scaleImage(this);
     });
-});
-
-// Hide Module Navigation arrows on fullScreen video mode
-$(document).on('click', '.oo-fullscreen', function (e) {
-    $("#moduleNavigator").toggleClass("full-screen-mode");
-    e.preventDefault();
 });
 
 // Preloader for courses page
