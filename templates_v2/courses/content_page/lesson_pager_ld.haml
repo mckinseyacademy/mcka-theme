@@ -36,13 +36,13 @@
       setTimeout(
         function () {
           if ($('button.oo-fullscreen span.oo-icon').hasClass("oo-icon-system-fullscreen")) {
-            $("#moduleNavigator").removeClass('full-screen-mode');
+            $("#moduleNavigator").addClass('full-screen-mode');
           }
           else {
-            $("#moduleNavigator").addClass('full-screen-mode');
+            $("#moduleNavigator").removeClass('full-screen-mode');
           }
           e.preventDefault();
         },
-        1000
+        500
       );
     });
