@@ -403,7 +403,7 @@ class ClientCustomization(db_models.Model):
     new_ui_enabled = db_models.BooleanField(default=True)
     new_ui_enabled_at = db_models.DateTimeField(auto_now_add=True)
     is_footer_enabled = db_models.BooleanField(default=True)
-    hide_user_profile = db_models.BooleanField(default=False)
+    show_user_profile = db_models.BooleanField(default=True)
 
     def delete(self):
         images = (
