@@ -251,6 +251,19 @@
 #course-resources,
 #course-group-work {
   margin-top: rem-calc(15);
+
+  .video-js{
+
+    @include mobile {
+      width: 100% !important;
+    }
+
+    @include mobilei5 {
+      width: calc(100% - 40px) !important;
+    }
+    
+  }
+
   .oo-player-container{
     .oo-player{
       @include mobile {
