@@ -1,0 +1,21 @@
+.new-theme{
+    // these changes made by murad in apros so I have removed from there and added here --- shahid
+    .bc-player-default_default .vjs-menu-button-popup .vjs-menu .vjs-menu-content {
+        font-size: inherit;
+        margin: 0;    
+    }
+    .video-js{
+
+        // for Tablet
+
+        @media only screen and (max-device-width : 1024px)  { 
+            width:100%;
+            height: 250px;
+        }
+
+        @media only screen and (max-device-width : 768px) { 
+            height: 180px;
+        }
+    }
+}
+
