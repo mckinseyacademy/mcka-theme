@@ -1,6 +1,7 @@
-  %option{'value': 'select'}
-  	= ' - Select - '
-- if courses.count >= 1
-	- for course in courses
-	  %option{'value': '#{course.course_id}'}
-	    = course.display_name
+%option{'value': 'select'}
+  = ' - Select - '
+{% if courses|length >= 1 %}
+  - for course in courses
+    %option{'value': '#{course.course_id}'}
+      = course.display_name
+{% endif %}

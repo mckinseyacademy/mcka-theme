@@ -545,7 +545,7 @@ def group_project_reviews(user_id, course_id, project_workgroup, group_project):
         activity.is_pending = len(activity.pending_grades) > 0
 
         # average score for this activity
-        activity.score = mean(filter(None, activity.grades))
+        activity.score = mean([_f for _f in activity.grades if _f])
 
     group_work_avg = mean([a.score for a in group_project.activities if a.score is not None])
     return group_project.activities, group_work_avg
@@ -594,7 +594,7 @@ def tailor_leader_list(leaders):
 def social_total(social_metrics):
     social_total = 0
 
-    for key, val in settings.SOCIAL_METRIC_POINTS.iteritems():
+    for key, val in settings.SOCIAL_METRIC_POINTS.items():
         social_total += getattr(social_metrics, key, 0) * val
 
     return social_total
@@ -635,7 +635,7 @@ def get_user_social_metrics(user_id, course_id, include_stats=False):
         }
     except ApiError as error:
         log.exception(
-            u"Error getting user social metrics. course_id=%s, user_id=%s, include_stats=%s, error=%s",
+            "Error getting user social metrics. course_id=%s, user_id=%s, include_stats=%s, error=%s",
             course_id,
             user_id,
             include_stats,
@@ -664,7 +664,7 @@ def get_social_leaders(course_id, user_id, count=3):
         }
     except ApiError as error:
         log.exception(
-            u"Error getting social engagement leaderboard. course_id=%s, user_id=%s, count=%s, error=%s",
+            "Error getting social engagement leaderboard. course_id=%s, user_id=%s, count=%s, error=%s",
             course_id,
             user_id,
             count,
@@ -688,7 +688,7 @@ def get_leaders(**kwargs):
         tailor_leader_list(data.social.leaders)
     except ApiError as error:
         log.exception(
-            u"Error getting leaders. course_id=%s, user_id=%s, count=%s, error=%s",
+            "Error getting leaders. course_id=%s, user_id=%s, count=%s, error=%s",
             kwargs.get('course_id'),
             kwargs.get('user_id'),
             kwargs.get('count'),

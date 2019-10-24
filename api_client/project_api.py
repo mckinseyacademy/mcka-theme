@@ -1,6 +1,6 @@
 ''' API calls with respect to groups '''
 from django.conf import settings
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from .api_error import api_error_protect
 

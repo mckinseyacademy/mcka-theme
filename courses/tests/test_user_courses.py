@@ -99,15 +99,14 @@ class TestCourseAccessDeniedError(TestCase):
     """
     @ddt.data(
         ('course_id', 1),
-        (u'course_id', 1),
+        ('course_id', 1),
     )
     @ddt.unpack
     def test_course_access_denied_error(self, course_id, user_id):
         error = CourseAccessDeniedError(course_id, user_id)
-        self.assertEquals(error.course_id, 'course_id')
-        self.assertEquals(error.user_id, 1)
-        self.assertEquals(error.__str__(), "Access denied to course 'course_id' for user 1")
-        self.assertEquals(error.__unicode__(), u"Access denied to course 'course_id' for user 1")
+        self.assertEqual(error.course_id, 'course_id')
+        self.assertEqual(error.user_id, 1)
+        self.assertEqual(str(error), "Access denied to course 'course_id' for user 1")
 
 
 class TestCompanyAdminAccessDeniedError(TestCase):
@@ -121,10 +120,9 @@ class TestCompanyAdminAccessDeniedError(TestCase):
     def test_company_admin_access_denied_error_str(self):
         user_id = 3
         error = CompanyAdminAccessDeniedError(user_id, self.request.user.id)
-        self.assertEquals(error.admin_user_id, 1)
-        self.assertEquals(error.user_id, 3)
-        self.assertEquals(error.__str__(), "Access denied to user 1 for data belonging to 3")
-        self.assertEquals(error.__unicode__(), u"Access denied to user 1 for data belonging to 3")
+        self.assertEqual(error.admin_user_id, 1)
+        self.assertEqual(error.user_id, 3)
+        self.assertEqual(str(error), "Access denied to user 1 for data belonging to 3")
 
 
 class TestStandardData(TestCase, ApplyPatchMixin):

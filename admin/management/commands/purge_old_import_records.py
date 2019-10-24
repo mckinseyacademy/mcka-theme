@@ -10,7 +10,7 @@ class Command(BaseCommand):
         try:
             task_id = purge_old_import_records_and_csv_files.delay()
         except Exception as e:
-            self.stderr.write(self.style.ERROR('Task failed to trigger with exception: "%s"' % e.message))
+            self.stderr.write(self.style.ERROR('Task failed to trigger with exception: "%s"' % str(e)))
         else:
             self.stdout.write(self.style.SUCCESS('Successfully triggered purge old import records task: "%s"'
                                                  % task_id))

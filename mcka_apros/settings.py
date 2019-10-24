@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import datetime
 import os
-from logsettings import get_logger_config
+from .logsettings import get_logger_config
 
 from kombu import Queue, Exchange
 
@@ -146,16 +146,16 @@ DATABASES = {
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
-    ('en', u'English'),
-    ('ar', u'العربية'),  # Arabic
-    ('es', u'Español'),
-    ('nl', u'Dutch'),
-    ('pt', u'Português'),
-    ('zh', u'中文(简体)'),
-    ('fr', u'Français'),
-    ('ja', u'日本人'),
-    ('de', u'Deutsch'),
-    ('pl', u'Polskie'),
+    ('en', 'English'),
+    ('ar', 'العربية'),  # Arabic
+    ('es', 'Español'),
+    ('nl', 'Dutch'),
+    ('pt', 'Português'),
+    ('zh', '中文(简体)'),
+    ('fr', 'Français'),
+    ('ja', '日本人'),
+    ('de', 'Deutsch'),
+    ('pl', 'Polskie'),
 )
 
 
@@ -517,7 +517,7 @@ DELETION_FLAG_SWITCH_NAME = 'enable_data_deletion'
 DELETION_SYNCHRONOUS_MAX_USERS = 50
 
 try:
-    from local_settings import *  # noqa: F403, F401
+    from .local_settings import *  # noqa: F403, F401
 except ImportError:
     pass
 

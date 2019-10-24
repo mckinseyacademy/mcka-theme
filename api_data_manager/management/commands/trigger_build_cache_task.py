@@ -10,7 +10,7 @@ class Command(BaseCommand):
         try:
             task_id = build_common_data_cache.delay()
         except Exception as e:
-            self.stderr.write(self.style.ERROR('Tasks failed to trigger with exception: "%s"' % e.message))
+            self.stderr.write(self.style.ERROR('Tasks failed to trigger with exception: "%s"' % str(e)))
         else:
             self.stdout.write(self.style.SUCCESS('Successfully triggered cache building background task: "%s"'
                                                  % task_id))

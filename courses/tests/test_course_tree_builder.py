@@ -54,8 +54,7 @@ class TestCourseTreeBuilder(TestCase, ApplyPatchMixin):
 
         course_tree_builder = CourseTreeBuilder(course_id=self.course_id, request=None)
         course = course_tree_builder._load_course()
-
-        self.assertGreater(course.chapters, 0)
+        self.assertGreater(len(course.chapters), 0)
 
     @httpretty.activate
     def test_build_page_info(self):

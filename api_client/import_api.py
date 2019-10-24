@@ -26,5 +26,5 @@ def import_participant(data, new):
         IMPORT_PARTICIPANTS_API,
         'new' if new else 'existing'
     )
-    response = json.loads(POST(url, data=data).read())
+    response = json.loads(POST(url, data=data).read().decode('utf-8'))
     return response.get('user_id', 0), response.get('errors', [])

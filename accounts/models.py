@@ -29,7 +29,7 @@ class RemoteUser(AbstractUser):
         ''' take API response and blend the results into this user object '''
         if session_key is not None:
             self.session_key = session_key
-        self.fullname = u"{} {}".format(user_response.first_name, user_response.last_name)
+        self.fullname = "{} {}".format(user_response.first_name, user_response.last_name)
         self.first_name = user_response.first_name
         self.last_name = user_response.last_name
         self.email = user_response.email
@@ -121,7 +121,7 @@ class RemoteUser(AbstractUser):
 
     def get_name_initials(self, first_name, last_name):
         if first_name and last_name:
-            return u"{}{}".format(first_name[0], last_name[0])
+            return "{}{}".format(first_name[0], last_name[0])
 
 
 class UserActivation(db_models.Model):
@@ -135,8 +135,8 @@ class UserActivation(db_models.Model):
 
     @staticmethod
     def generate_activation_key(email):
-        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-        return hashlib.sha1(salt+email).hexdigest()
+        salt = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()[:5]
+        return hashlib.sha1('{}{}'.format(salt, email).encode('utf-8')).hexdigest()
 
     @classmethod
     def user_activation(cls, user):
@@ -182,8 +182,8 @@ class UserPasswordReset(db_models.Model):
 
     @staticmethod
     def generate_validation_key(email):
-        salt = hashlib.sha1(str(random.random())).hexdigest()[:5]
-        return hashlib.sha1(salt+email).hexdigest()
+        salt = hashlib.sha1(str(random.random()).encode('utf-8')).hexdigest()[:5]
+        return hashlib.sha1('{}{}'.format(salt, email).encode('utf-8')).hexdigest()
 
     @classmethod
     def create_record(cls, user):

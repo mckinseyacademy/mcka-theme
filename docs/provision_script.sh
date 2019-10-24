@@ -25,7 +25,8 @@ sudo chown -R apros:apros /edx/app/apros
 sudo -Hu apros bash << VENV_SCRIPT
   cd ~
   mkdir venvs
-  virtualenv venvs/mcka_apros
+  rm -rf venvs/mcka_apros
+  virtualenv -p python3 venvs/mcka_apros
 
   sed -i -e '4icd ~/mcka_apros\' ~/.bashrc
   echo "source ~/venvs/mcka_apros/bin/activate  # Use the Apros Python environment." >> ~/.bashrc

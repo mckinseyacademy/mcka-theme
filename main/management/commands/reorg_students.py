@@ -24,15 +24,15 @@ class Command(BaseCommand):
             for org in org_list:
                 for uid in org["add"]:
                     try:
-                        print "Adding uid: %d to org: %d" % (uid, org["org_id"])
+                        print("Adding uid: %d to org: %d" % (uid, org["org_id"]))
                         organization_api.add_user_to_organization(org["org_id"], uid)
                     except ApiError:
-                        print "User: %d not added" % (uid)
+                        print("User: %d not added" % (uid))
 
                 for uid in org["remove"]:
                     try:
-                        print "Removing uid: %d from org: %d" % (uid, org["org_id"])
+                        print("Removing uid: %d from org: %d" % (uid, org["org_id"]))
                     except ApiError:
-                        print "User: %d not removed" % (uid)
+                        print("User: %d not removed" % (uid))
 
         self.stdout.write("Done")

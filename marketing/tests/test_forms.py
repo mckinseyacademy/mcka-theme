@@ -37,7 +37,7 @@ class TechSupportFormsTests(TestCase):
             "name": "name",
             "comment": "Some detail",
         }
-        expected_errors = {'email': [u'This field is required.']}
+        expected_errors = {'email': ['This field is required.']}
         tech_support_form = TechSupportForm(tech_support_data)
 
         self.assertFalse(tech_support_form.is_valid())
@@ -78,7 +78,7 @@ class SubscribeFormTests(TestCase):
         :return: errors
         """
         subscribe_data = {}
-        expected_errors = {'email': [u'This field is required.']}
+        expected_errors = {'email': ['This field is required.']}
         subscribe_form = SubscribeForm(subscribe_data)
 
         self.assertFalse(subscribe_form.is_valid())
@@ -119,7 +119,7 @@ class EdxOfferFormTests(TestCase):
             'education': 'PHD',
             'comment': 'Test comment'
         }
-        expected_errors = {'email': [u'Enter a valid email address.']}
+        expected_errors = {'email': ['Enter a valid email address.']}
         edx_offer_form = EdxOfferForm(data)
 
         self.assertFalse(edx_offer_form.is_valid())

@@ -9,7 +9,9 @@ from django.utils.translation import LANGUAGE_SESSION_KEY
 from django.core.files.storage import default_storage
 from django.conf import settings
 
-import urllib
+import urllib.request
+import urllib.parse
+import urllib.error
 from mimetypes import MimeTypes
 
 from api_client.user_api import mark_user_notification_read
@@ -133,7 +135,7 @@ def private_storage_access(request, path):
     if storage.exists(path):
         resource = storage.open(path).read()
         mime = MimeTypes()
-        url = urllib.pathname2url(path)
+        url = urllib.request.pathname2url(path)
         mime_type = mime.guess_type(url)
 
         return HttpResponse(

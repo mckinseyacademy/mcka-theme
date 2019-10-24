@@ -154,21 +154,21 @@ class TestPermissions(TestCase, ApplyPatchMixin):
 
     def test_get_course_list_or_cached(self):
         courses = self.permission.get_course_list_or_cached()
-        self.assertEquals(courses, courses_list)
+        self.assertEqual(courses, courses_list)
         self.permission.CACHE_EXPIRE_TIME = -1
         courses = self.permission.get_course_list_or_cached()
-        self.assertEquals(courses, courses_list)
+        self.assertEqual(courses, courses_list)
         cache.delete('course_list_cached_last_update_time')
         courses = self.permission.get_course_list_or_cached()
-        self.assertEquals(courses, courses_list)
+        self.assertEqual(courses, courses_list)
         course_list_cached_last_update_time = int(cache.get('course_list_cached_last_update_time'))
         time_now = int(time.time())
-        self.assertEquals(course_list_cached_last_update_time, time_now)
+        self.assertEqual(course_list_cached_last_update_time, time_now)
 
     def test_get_groups_of_type_permission_cached(self):
         result = self.permission.get_groups_of_type_permission_cached()
-        self.assertEquals(result, permission_groups)
-        self.assertEquals(result, cache.get('permission_groups_cached'))
+        self.assertEqual(result, permission_groups)
+        self.assertEqual(result, cache.get('permission_groups_cached'))
 
     def test_add_course_role(self):
         self.permission.add_course_role('testing_id', 'assistant')
@@ -196,7 +196,7 @@ class TestPermissions(TestCase, ApplyPatchMixin):
 
     def test_update_course_role(self):
         self.permission.update_course_role('arbisoft/1/1', 'assistant')
-        self.assertEquals(self.permission.user_roles[1]['role'], 'assistant')
+        self.assertEqual(self.permission.user_roles[1]['role'], 'assistant')
         result = self.permission.update_course_role('arbisoft/1/1', 'assistant')
         self.assertIsNone(result)
 
@@ -212,7 +212,7 @@ class TestPermissions(TestCase, ApplyPatchMixin):
             }
         ]
         self.permission.update_courses_roles_list(new_user_roles)
-        self.assertEquals(self.permission.user_roles, new_user_roles)
+        self.assertEqual(self.permission.user_roles, new_user_roles)
 
     def test_add_permission(self):
         internal_admin = DottableDict({
@@ -233,10 +233,10 @@ class TestPermissions(TestCase, ApplyPatchMixin):
     def test_get_all_user_organizations_with_permissions(self):
         result_user = self.permission.get_all_user_organizations_with_permissions()
 
-        self.assertEquals(result_user.get('company_num'), 2)
-        self.assertEquals(result_user.get('company_ids'), [1, 2])
-        self.assertEquals(result_user.get('main_company'), [{'id': 1}])
-        self.assertEquals(
+        self.assertEqual(result_user.get('company_num'), 2)
+        self.assertEqual(result_user.get('company_ids'), [1, 2])
+        self.assertEqual(result_user.get('main_company'), [{'id': 1}])
+        self.assertEqual(
             result_user.get('mcka_role_company_admin'),
             [{'id': 1}, {'id': 2}]
         )
@@ -246,35 +246,35 @@ class TestPermissions(TestCase, ApplyPatchMixin):
 
         result_user = self.permission.get_all_user_organizations_with_permissions()
 
-        self.assertEquals(result_user.get('company_num'), 2)
-        self.assertEquals(result_user.get('company_ids'), [1, 2])
-        self.assertEquals(result_user.get('main_company'), [{'id': 1}, {'id': 2}])
-        self.assertEquals(result_user.get('mcka_role_company_admin'), [])
+        self.assertEqual(result_user.get('company_num'), 2)
+        self.assertEqual(result_user.get('company_ids'), [1, 2])
+        self.assertEqual(result_user.get('main_company'), [{'id': 1}, {'id': 2}])
+        self.assertEqual(result_user.get('mcka_role_company_admin'), [])
 
         self.permission.permission_groups = permission_groups[1:]
         result_user = self.permission.get_all_user_organizations_with_permissions()
 
-        self.assertEquals(result_user.get('company_num'), 1)
-        self.assertEquals(result_user.get('company_ids'), [1])
-        self.assertEquals(result_user.get('main_company'), [{'id': 1}])
-        self.assertEquals(result_user.get('mcka_role_company_admin'), [])
+        self.assertEqual(result_user.get('company_num'), 1)
+        self.assertEqual(result_user.get('company_ids'), [1])
+        self.assertEqual(result_user.get('main_company'), [{'id': 1}])
+        self.assertEqual(result_user.get('mcka_role_company_admin'), [])
 
     def test_add_company_admin_permissions(self):
         self.permission.current_permissions = user_groups[1:]
         self.permission.add_company_admin_permissions([2, 3])
         user_orgs = self.permission.get_all_user_organizations_with_permissions()
         self.assertTrue({'id': 3} in user_orgs['mcka_role_company_admin'])
-        self.assertEquals(user_orgs['company_num'], 3)
-        self.assertEquals(user_orgs['company_ids'], [1, 2, 3])
-        self.assertEquals(len(self.permission.current_permissions), len(user_groups))
+        self.assertEqual(user_orgs['company_num'], 3)
+        self.assertEqual(user_orgs['company_ids'], [1, 2, 3])
+        self.assertEqual(len(self.permission.current_permissions), len(user_groups))
         organization_list.remove(DottableDict({'id': 3}))
 
     def test_remove_company_admin_permission(self):
         self.permission.remove_company_admin_permission([2])
         user_orgs = self.permission.get_all_user_organizations_with_permissions()
         self.assertTrue({'id': 2} not in user_orgs['mcka_role_company_admin'])
-        self.assertEquals(user_orgs['company_num'], 1)
-        self.assertEquals(user_orgs['company_ids'], [1])
+        self.assertEqual(user_orgs['company_num'], 1)
+        self.assertEqual(user_orgs['company_ids'], [1])
         organization_list.append(DottableDict({'id': 2}))
 
     def test_update_company_admin_permissions(self):
@@ -282,8 +282,8 @@ class TestPermissions(TestCase, ApplyPatchMixin):
         user_orgs = self.permission.get_all_user_organizations_with_permissions()
         self.assertTrue({'id': 2} not in user_orgs['mcka_role_company_admin'])
         self.assertTrue({'id': 3} in user_orgs['mcka_role_company_admin'])
-        self.assertEquals(user_orgs['company_num'], 2)
-        self.assertEquals(user_orgs['company_ids'], [1, 3])
+        self.assertEqual(user_orgs['company_num'], 2)
+        self.assertEqual(user_orgs['company_ids'], [1, 3])
         organization_list.remove(DottableDict({'id': 3}))
         organization_list.append(DottableDict({'id': 2}))
 

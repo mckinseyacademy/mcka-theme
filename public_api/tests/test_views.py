@@ -27,17 +27,17 @@ class UserPasswordResetViewTest(TestCase, ApplyPatchMixin):
         self.client = Client()
         self.user_json = {
             'id': 1212,
-            'username': u'test_user',
-            'city': u'Boston',
-            'first_name': u'test',
-            'last_name': u'user',
-            'title': u'',
-            'country': u'US',
-            'email': u'test@fake.com',
-            'year_of_birth': u'',
-            'gender': u'M',
-            'full_name': u'Test User',
-            'company': u'',
+            'username': 'test_user',
+            'city': 'Boston',
+            'first_name': 'test',
+            'last_name': 'user',
+            'title': '',
+            'country': 'US',
+            'email': 'test@fake.com',
+            'year_of_birth': '',
+            'gender': 'M',
+            'full_name': 'Test User',
+            'company': '',
             'is_active': True,
         }
 

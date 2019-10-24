@@ -106,7 +106,7 @@ class Permissions(object):
                 per_course_roles.append({"course_id": p.course_id, "role": p.role})
         if current_course_roles.get("role", None) == role:
             return
-        elif role in self.permission_for_role.keys():
+        elif role in list(self.permission_for_role.keys()):
             per_course_roles.append({
                 "course_id": course_id,
                 "role": role,
@@ -303,7 +303,7 @@ class Permissions(object):
         # user types which can assign this role
         can_assign_roles = [
             role
-            for role, groups in ROLE_GRANT_RIGHTS.items()
+            for role, groups in list(ROLE_GRANT_RIGHTS.items())
             if role_to_grant in groups
         ]
 

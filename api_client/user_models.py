@@ -1,6 +1,6 @@
 ''' Objects for users / authentication built from json responses from API '''
 import json
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 from django.conf import settings
 
@@ -58,7 +58,7 @@ class UserResponse(JsonObjectWithImage):
         if hasattr(self, "full_name"):
             return self.full_name
 
-        return u"{} {}".format(self.first_name, self.last_name)
+        return "{} {}".format(self.first_name, self.last_name)
 
     def to_json(self):
         ''' return UserResponse object as json '''
@@ -68,7 +68,7 @@ class UserResponse(JsonObjectWithImage):
         ''' return UserResponse object as dict '''
         unserializable_fields = ['uri', 'resources', 'created']
         user = {}
-        for field, value in self.__dict__.iteritems():
+        for field, value in self.__dict__.items():
             if field not in unserializable_fields:
                 if field == 'profile_image':
                     user['image_url_full'] = self.image_url_full

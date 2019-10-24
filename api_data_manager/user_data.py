@@ -88,7 +88,7 @@ class UserDataManager(DataManager):
                     )
                     cache.delete(cache_key)
 
-            for group_key, group_name in GROUPS_SUB_TYPES.iteritems():
+            for group_key, group_name in GROUPS_SUB_TYPES.items():
                 cache_key = self.get_cache_key(property_name='{}_{}'.format(property_name, group_name))
                 cache.delete(cache_key)
 

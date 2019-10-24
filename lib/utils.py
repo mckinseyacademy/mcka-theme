@@ -39,5 +39,11 @@ class PriorIdConvert(object):
 
             return translator(split_head[1])
         except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
-            print "Error translating key - assuming already in new format for {}".format(prior_format_key)
+            print("Error translating key - assuming already in new format for {}".format(prior_format_key))
             return prior_format_key
+
+
+def bytes_to_str(data):
+    if type(data) is bytes:
+        data = data.decode('utf-8')
+    return data

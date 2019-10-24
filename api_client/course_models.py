@@ -295,13 +295,13 @@ class Course(CategorisedJsonObject):
             appended = None
             due_dates = [sequential.due for sequential in lesson.sequentials if sequential.due is not None]
 
-            for key, week in weeks.iteritems():
+            for key, week in weeks.items():
                 if lesson.index in week['grouped']:
                     week["lessons"].append(lesson)
                     appended = True
 
             if not appended:
-                for key, week in weeks.iteritems():
+                for key, week in weeks.items():
                     if len(due_dates) > 0 and not appended:
                         due_date = max(sequential.due for sequential in lesson.sequentials if
                                        sequential.due is not None)
@@ -341,7 +341,7 @@ class Course(CategorisedJsonObject):
                 for activity in project.activities:
                     if activity.due:
                         activity.due_on = activity.due.strftime("%B %e")
-                    if activity.due is None or len(weeks.values()) == 0:
+                    if activity.due is None or len(list(weeks.values())) == 0:
                         no_due_date["has_group"] = True
                         no_due_date["group_activities"].append(activity)
                     else:
@@ -355,7 +355,7 @@ class Course(CategorisedJsonObject):
                         activity.due_on = activity.due.strftime("%B %e")
                         appended = None
 
-                        for key, week in weeks.iteritems():
+                        for key, week in weeks.items():
                             if week["start_date"] <= due_date <= week["end_date"]:
                                 week["has_group"] = True
                                 week["group_activities"].append(activity)
@@ -378,7 +378,7 @@ class Course(CategorisedJsonObject):
                                     "grouped": [],
                                 }
 
-        weeks = sorted(weeks.values(), key=lambda w: w["end_date"])
+        weeks = sorted(list(weeks.values()), key=lambda w: w["end_date"])
         if len(no_due_date["lessons"]) > 0 or len(no_due_date["group_activities"]) > 0:
             weeks.append(no_due_date)
 
@@ -458,7 +458,7 @@ class CourseTabs(JsonObject):
 class CourseContentGroup(JsonObject):
     required_fields = ["group_id", "course_id", "content_id"]
 
-    def __unicode__(self):
+    def __str__(self):
         return _("group {group_id} in course {course_id}").format(
             group_id=self.group_id,
             course_id=self.course_id

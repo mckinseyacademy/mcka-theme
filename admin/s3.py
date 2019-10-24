@@ -82,7 +82,7 @@ def get_files_urls():
             if keyString[-1:] != '/':
                 return_file_list.append(conn_settings.get("S3_BUCKET_PATH", "")+keyString)
 
-        print return_file_list
+        print(return_file_list)
         return return_file_list
     else:
         return []
@@ -94,7 +94,7 @@ class s3file_api(APIView):
 
     def post(self, request):
         list_of_uploaded = []
-        for key, file in request.files.iteritems():
+        for key, file in request.files.items():
             path = push_file_to_s3(file)
             if path:
                 list_of_uploaded.append(path)

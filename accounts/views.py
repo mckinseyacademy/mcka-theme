@@ -3,17 +3,16 @@ import base64
 import hashlib
 import hmac
 import json
-import os
 import random
-import urlparse
-from urllib import urlencode, quote
+import urllib.parse
+from urllib.parse import urlencode, quote
 import datetime
 import math
 import logging
 import string
 import re
 import requests
-import StringIO
+import io
 
 from django.conf import settings
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
@@ -57,6 +56,7 @@ from lib.color import get_branding_colors
 from util.i18n_helpers import set_language
 from util.user_agent_helpers import is_mobile_user_agent
 from util.data_sanitizing import clean_xss_characters
+from .helpers import get_random_string
 from .models import RemoteUser, UserActivation, UserPasswordReset, PublicRegistrationRequest
 from .middleware import thread_local
 from .controller import (
@@ -68,7 +68,7 @@ from .forms import (
     LoginForm, ActivationForm, FinalizeRegistrationForm, FpasswordForm, SetNewPasswordForm, UploadProfileImageForm,
     EditFullNameForm, EditTitleForm, ActivationFormV2, PublicRegistrationForm, LoginIdForm, AcceptTermsFormSSO,
 )
-import logout as logout_handler
+from . import logout as logout_handler
 
 from django.contrib.auth.views import password_reset_done, password_reset_complete
 from django.core.urlresolvers import reverse, resolve, Resolver404
@@ -96,8 +96,8 @@ OAUTH2_ACCESS_TOKEN_PATH = '/oauth2/access_token/'
 
 def _get_qs_value_from_url(value_name, url):
     ''' gets querystring value from url that contains a querystring '''
-    parsed_url = urlparse.urlparse(url)
-    query_strings = urlparse.parse_qs(parsed_url.query)
+    parsed_url = urllib.parse.urlparse(url)
+    query_strings = urllib.parse.parse_qs(parsed_url.query)
     if value_name in query_strings and len(query_strings[value_name]) > 0:
         return query_strings[value_name][0]
     return None
@@ -316,15 +316,15 @@ def fill_email_and_redirect(request, redirect_url):
     '''
     Append the email of currently-logged-in user to the redirect_url and initiate redirect.
     '''
-    url_parts = list(urlparse.urlparse(redirect_url))
+    url_parts = list(urllib.parse.urlparse(redirect_url))
     # The query string is the 4th element in the tuple.
-    query_params = urlparse.parse_qs(url_parts[4])
+    query_params = urllib.parse.parse_qs(url_parts[4])
     # Add in existing query_parameters
     query_params.update(request.GET)
     if not request.user.is_anonymous():
         query_params.update({'email': request.user.email})
     url_parts[4] = urlencode(query_params, doseq=True)
-    redirect_url_with_email = urlparse.urlunparse(url_parts)
+    redirect_url_with_email = urllib.parse.urlunparse(url_parts)
 
     return HttpResponseRedirect(redirect_url_with_email)
 
@@ -722,12 +722,12 @@ def finalize_sso_registration(request):
     ''' Validate SSO data sent by the LMS, then display the registration form '''
     # Check the data sent by the provider:
     hmac_key = settings.EDX_SSO_DATA_HMAC_KEY
-    if isinstance(hmac_key, unicode):
+    if isinstance(hmac_key, str):
         hmac_key = hmac_key.encode('utf-8')
     try:
         # provider_data will be a dict with keys of 'email', 'full_name', etc. from the provider.
         provider_data_str = base64.b64decode(request.POST['sso_data'])
-        provider_data = json.loads(provider_data_str)
+        provider_data = json.loads(provider_data_str.decode('utf-8'))
         hmac_digest = base64.b64decode(request.POST['sso_data_hmac'])
         expected_digest = hmac.new(hmac_key, msg=provider_data_str, digestmod=hashlib.sha256).digest()
     except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
@@ -759,7 +759,7 @@ def _cleanup_username(username):
     except ValidationError:
         initial, username = username, USERNAME_INVALID_CHARS_REGEX.sub("", username)
         log.info(
-            u"Username '{initial_username}' does not pass validation checks; changed to '{actual_username}'".format(
+            "Username '{initial_username}' does not pass validation checks; changed to '{actual_username}'".format(
                 initial_username=initial, actual_username=username
             )
         )
@@ -805,10 +805,10 @@ def sso_registration_form(request):
     error = None
     provider_data = request.session['provider_data']
     provider_user_data = provider_data['user_details']
-    first_name = unicode(provider_user_data.get('first_name', ''))
-    last_name = unicode(provider_user_data.get('last_name', ''))
+    first_name = str(provider_user_data.get('first_name', ''))
+    last_name = str(provider_user_data.get('last_name', ''))
     username = _cleanup_username(
-        u'{}_{}'.format(first_name, last_name) if first_name and last_name
+        '{}_{}'.format(first_name, last_name) if first_name and last_name
         else provider_user_data.get('username', '')
     )
     remote_session_key = request.COOKIES.get('sessionid')
@@ -853,7 +853,7 @@ def sso_registration_form(request):
         form = FinalizeRegistrationForm(user_data, fixed_values, initial=initial_values)
         if form.is_valid():
             # Create a random secure password for this user:
-            random_password = base64.b64encode(os.urandom(32))
+            random_password = base64.b64encode(get_random_string().encode()).decode()
             registration_data = form.cleaned_data.copy()
             registration_data['password'] = random_password
             registration_data['is_active'] = True
@@ -920,7 +920,7 @@ def reset_confirm(request, uidb64=None, token=None,
     else:
         post_reset_redirect = resolve_url(post_reset_redirect)
     try:
-        uid = urlsafe_base64_decode(uidb64)
+        uid = urlsafe_base64_decode(uidb64).decode()
         user = user_api.get_user(uid)
     except (TypeError, ValueError, OverflowError):
         user = None
@@ -1165,7 +1165,7 @@ def user_profile_image_edit(request):
         original = Image.open(temp_image)
         original_transpose = image_transpose_exif(original)
         cropped_example = original_transpose.crop((left, top, right, bottom))
-        avatar_image_io = StringIO.StringIO()
+        avatar_image_io = io.BytesIO()
         cropped_example.convert('RGB').save(avatar_image_io, format='JPEG')
         avatar_image_io.seek(0)
         avatar_file_data = {'file': ('avatar.jpg', avatar_image_io, 'image/jpeg')}
@@ -1191,9 +1191,9 @@ def change_profile_image(request, user_id, template='change_profile_image', user
         profile_image = user.image_url_full
 
     if '?' in profile_image:
-        profile_image = profile_image + '&' + format(datetime.datetime.now(), u'U')
+        profile_image = profile_image + '&' + format(datetime.datetime.now(), 'U')
     else:
-        profile_image = profile_image + '?' + format(datetime.datetime.now(), u'U')
+        profile_image = profile_image + '?' + format(datetime.datetime.now(), 'U')
     form = UploadProfileImageForm(request)  # An unbound form
 
     data = {
@@ -1216,9 +1216,11 @@ def load_profile_image(request, image_url):
     if default_storage.exists(image_url):
         image = default_storage.open(image_url).read()
         from mimetypes import MimeTypes
-        import urllib
+        import urllib.request
+        import urllib.parse
+        import urllib.error
         mime = MimeTypes()
-        url = urllib.pathname2url(image_url)
+        url = urllib.request.pathname2url(image_url)
         mime_type = mime.guess_type(url)
         response = HttpResponse(image, content_type=mime_type[0])
         if image_url.startswith('images/global_client_logo') or image_url.startswith('images/client_logo'):

@@ -6,7 +6,7 @@ import functools
 import inspect
 import json
 import logging
-from urllib2 import HTTPError as Urllib2HTTPError
+from urllib.error import HTTPError as UrllibHTTPError
 
 from django.utils.translation import ugettext as _
 from requests.exceptions import HTTPError as RequestsHTTPError
@@ -34,12 +34,12 @@ class ApiError(Exception):
             self.message = thrown_error.response.reason
             body = thrown_error.response.text
         else:
-            # An Urllib2HTTPError or a mock of that
+            # An UrllibHTTPError or a mock of that
             self.code = thrown_error.code
             self.message = thrown_error.reason
             try:
                 body = thrown_error.read()
-            except AttributeError:
+            except (AttributeError, KeyError):
                 body = ''
 
         self.http_error = thrown_error
@@ -66,18 +66,15 @@ class ApiError(Exception):
         super(ApiError, self).__init__()
 
     def __str__(self):
-        return unicode(self).encode('utf-8')
-
-    def __unicode__(self):
         self.filter_sensitive_data(self.context)
 
-        argument_list = u', '.join(
+        argument_list = ', '.join(
             [
-                u'{}={}'.format(context_name, self.context[context_name])
+                '{}={}'.format(context_name, self.context[context_name])
                 for context_name in self.context
             ]
         )
-        return u"ApiError '{}' ({}) - {}({})".format(
+        return "ApiError '{}' ({}) - {}({})".format(
             self.message,
             self.code,
             self.function_name,
@@ -85,7 +82,7 @@ class ApiError(Exception):
         )
 
     def filter_sensitive_data(self, context):
-        for key, value in context.items():
+        for key, value in list(context.items()):
             if isinstance(value, dict):
                 self.filter_sensitive_data(value)
             elif key in self.SENSITIVE_DATA_FIELDS:
@@ -100,7 +97,7 @@ def api_error_protect(func):
     def call_api_method(*args, **kwargs):
         try:
             return func(*args, **kwargs)
-        except (Urllib2HTTPError, RequestsHTTPError) as he:
+        except (UrllibHTTPError, RequestsHTTPError) as he:
             call_context = {}
             call_context.update(kwargs)
             argument_names = inspect.getargspec(func).args
@@ -114,6 +111,6 @@ def api_error_protect(func):
                 ERROR_CODE_MESSAGES.get(func.__name__, None),
                 **call_context
             )
-            log.error(u"Error calling {}: {}".format(func, api_error))
+            log.error("Error calling {}: {}".format(func, api_error))
             raise api_error
     return call_api_method

@@ -41,22 +41,22 @@ class TestNormalizeCsvForeignCharacters(TestCase):
     """Test the method normalize_foreign_characters from utils/validators.py"""
 
     def test_normalize_foreign_characters(self):
-        normalize_grave_characters = normalize_foreign_characters("testàèìòùÀÈÌÒÙ")
+        normalize_grave_characters = normalize_foreign_characters("testàèìòùÀÈÌÒÙ".encode("utf-8"))
         self.assertEqual(normalize_grave_characters, 'testaeiouAEIOU')
 
-        normalize_acute_characters = normalize_foreign_characters("testáéíóúýÁÉÍÓÚÝ")
+        normalize_acute_characters = normalize_foreign_characters("testáéíóúýÁÉÍÓÚÝ".encode("utf-8"))
         self.assertEqual(normalize_acute_characters, 'testaeiouyAEIOUY')
 
-        normalize_caret_characters = normalize_foreign_characters("testâêîôûðÂÊÎÔÛÐ")
+        normalize_caret_characters = normalize_foreign_characters("testâêîôûðÂÊÎÔÛÐ".encode("utf-8"))
         self.assertEqual(normalize_caret_characters, 'testaeiouAEIOU')
 
-        normalize_tilde_characters = normalize_foreign_characters("testãñõÃÑÕ")
+        normalize_tilde_characters = normalize_foreign_characters("testãñõÃÑÕ".encode("utf-8"))
         self.assertEqual(normalize_tilde_characters, 'testanoANO')
 
-        normalize_umlaut_characters = normalize_foreign_characters("testäëïöüÿÄËÏÖÜŸ")
+        normalize_umlaut_characters = normalize_foreign_characters("testäëïöüÿÄËÏÖÜŸ".encode("utf-8"))
         self.assertEqual(normalize_umlaut_characters, 'testaeiouyAEIOUY')
 
-        normalize_other_foreign_characters = normalize_foreign_characters("teståÅðÇ")
+        normalize_other_foreign_characters = normalize_foreign_characters("teståÅðÇ".encode("utf-8"))
         self.assertEqual(normalize_other_foreign_characters, 'testaAC')
 
 

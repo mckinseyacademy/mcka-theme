@@ -1,7 +1,7 @@
 ''' API calls with respect to courses '''
 
 import json
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.http import Http404
@@ -9,6 +9,7 @@ from django.http import Http404
 from api_client.user_api import get_reports_for_manager
 from api_data_manager.course_data import COURSE_PROPERTIES
 from api_data_manager.decorators import course_api_cache_wrapper
+from lib.utils import bytes_to_str
 from . import course_models
 from . import user_models
 from .api_error import api_error_protect
@@ -83,7 +84,7 @@ def get_course_list_in_pages(ids=None, page_size=100):
             urlencode(qs_params)
         )
     )
-    data = json.loads(response.read())
+    data = json.loads(bytes_to_str(response.read()))
     if data.get("results", None):
         data_range = data.get("num_pages", 1)
         data = []
@@ -95,7 +96,7 @@ def get_course_list_in_pages(ids=None, page_size=100):
                     urlencode(qs_params)
                 )
             )
-            data_fetched = json.loads(response.read()).get("results", [])
+            data_fetched = json.loads(bytes_to_str(response.read())).get("results", [])
             data.extend(data_fetched)
     data = json.dumps(data)
     return CJP.from_json(data)
@@ -255,7 +256,7 @@ def get_course(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None):
     response = edx_oauth2_session.get(url=url)
 
     # Load the depth from the API
-    return response.content
+    return response.text
 
 
 @api_error_protect
@@ -338,7 +339,7 @@ def get_courses(**kwargs):
     '''
     qs_params = {"page_size": 0}
 
-    for key, value in kwargs.items():
+    for key, value in list(kwargs.items()):
         if isinstance(value, list):
             qs_params[key] = ",".join(value)
         else:
@@ -382,7 +383,7 @@ def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args,
         course_id,
     )
 
-    if len(qs_params.keys()) > 0:
+    if len(list(qs_params.keys())) > 0:
         url += "?{}".format(urlencode(qs_params))
 
     response = GET(url)
@@ -411,18 +412,18 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
     if page_size != 0:
         results = []
         response = edx_oauth2_session.get(url=url)
-        data = json.loads(response.content)
+        data = json.loads(response.text)
         pages = data['num_pages']
         for x in range(0, pages):
             result = data['results']
             results.extend(result)
             if data['next']:
                 response = edx_oauth2_session.get(data['next'])
-                data = json.loads(response.content)
+                data = json.loads(response.text)
         return json.dumps(results)
     else:
         response = edx_oauth2_session.get(url=url)
-        return json.loads(response.content)
+        return json.loads(response.text)
 
 
 @api_error_protect
@@ -681,7 +682,7 @@ def get_course_metrics(course_id, *args, **kwargs):
 
     qs_params = {}
 
-    for key, value in kwargs.items():
+    for key, value in list(kwargs.items()):
         if isinstance(value, list):
             qs_params[key] = ",".join(value)
         else:
@@ -710,7 +711,7 @@ def get_course_metrics_leaders(course_id, **kwargs):
     from courses.controller import CourseMetricsLeaders
     qs_params = {}
 
-    for key, value in kwargs.items():
+    for key, value in list(kwargs.items()):
         if isinstance(value, list):
             qs_params[key] = ",".join(value)
         else:
@@ -789,7 +790,7 @@ def build_block_tree(blocks):
     def block_tree(root_id, parent_id):
         tree = {'_parent': parent_id}
         tree.update(blocks['blocks'][root_id])
-        children = map(lambda block_id: block_tree(block_id, root_id), tree.get('children', []))
+        children = [block_tree(block_id, root_id) for block_id in tree.get('children', [])]
         if children:
             tree['children'] = children
 
@@ -799,7 +800,7 @@ def build_block_tree(blocks):
 
 BLOCK_QUESTION_EXTRACTOR = {
     'poll': lambda data: data['question'],
-    'survey': lambda data: u', '.join(item[1]['label'] for item in data['questions'])
+    'survey': lambda data: ', '.join(item[1]['label'] for item in data['questions'])
 }
 
 
@@ -861,9 +862,9 @@ def get_course_block_of_types(course_id, block_types):
                     'type': block['type'],
                     'question': get_question_from_block(block),
                     'module_number': module[0],
-                    'module': u'M{} - {}'.format(*module),
+                    'module': 'M{} - {}'.format(*module),
                     'lesson_number': lesson[0],
-                    'lesson': u'L{} - {}'.format(*lesson),
+                    'lesson': 'L{} - {}'.format(*lesson),
                 }
             )
         for child in block.get('children', []):
@@ -1025,7 +1026,7 @@ def get_courses_list(getParameters):
             urlencode(getParameters)
         )
     )
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -1078,7 +1079,7 @@ def get_course_details_groups(course_id):
         course_id)
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -1093,7 +1094,7 @@ def get_course_details_metrics_grades(course_id, count):
         )
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -1110,7 +1111,7 @@ def get_course_details_completions_leaders(course_id, organization_id='', **kwar
         )
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -1126,7 +1127,7 @@ def get_course_details_metrics_all_users(course_id, organization_id=''):
         )
     )
 
-    return json.loads(response.read())
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
@@ -1156,17 +1157,17 @@ def parse_course_list_json_object(course_list_json_object):
 
 def _group_completions_by_block_key(completions):
     grouped_completions = {
-        block_completion[u'block_key']: block_completion
+        block_completion['block_key']: block_completion
         for aggregation in ('chapter', 'sequential', 'vertical')
         for block_completion in completions.get(aggregation, [])
     }
-    grouped_completions[u'completion'] = completions[u'completion']
+    grouped_completions['completion'] = completions['completion']
     return grouped_completions
 
 
 def group_completions_by_course(completions):
     return {
-        course_completions[u'course_key']: course_completions
+        course_completions['course_key']: course_completions
         for course_completions in completions
     }
 
@@ -1174,7 +1175,7 @@ def group_completions_by_course(completions):
 def group_completions_by_user(completions, username=None):
     if username is None:
         return {
-            user_completions[u'username']: _group_completions_by_block_key(user_completions)
+            user_completions['username']: _group_completions_by_block_key(user_completions)
             for user_completions in completions
         }
     else:

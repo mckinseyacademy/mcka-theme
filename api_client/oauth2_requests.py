@@ -1,9 +1,9 @@
 # pylint: disable=missing-docstring
-from __future__ import absolute_import, division, print_function, unicode_literals
+
 
 import logging
-import urlparse
-from urllib import urlencode
+import urllib.parse
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.core.cache import cache
@@ -119,11 +119,11 @@ def update_query_params(url, updater):
     Returns:
         New url that has updated query params.
     """
-    url_parts = list(urlparse.urlparse(url))
-    query_params = urlparse.parse_qs(url_parts[4])
+    url_parts = list(urllib.parse.urlparse(url))
+    query_params = urllib.parse.parse_qs(url_parts[4])
     updater(query_params)
     url_parts[4] = urlencode(query_params, doseq=True)
-    new_url = urlparse.urlunparse(url_parts)
+    new_url = urllib.parse.urlunparse(url_parts)
     return new_url
 
 
@@ -152,7 +152,7 @@ def get_and_unpaginate(url, edx_oauth2_session=None, max_page=None, use_post=Fal
         result = data['results']
         results.extend(result)
         next_page_val = data.get('next') or data.get('pagination', {}).get('next')
-        if isinstance(next_page_val, basestring) and next_page_val.startswith('http'):
+        if isinstance(next_page_val, str) and next_page_val.startswith('http'):
             next_page = next_page_val
         else:
             next_page = next_page_val and update_query_params(

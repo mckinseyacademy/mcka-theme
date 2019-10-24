@@ -26,7 +26,7 @@ class MobileAppViewTest(TestCase):
         Assert that content for app association file matches files in response
         """
         response = self.client.get(url)
-        self.assertEquals(
+        self.assertEqual(
             response.get('Content-Disposition'),
             'attachment; filename={}'.format(file_name)
         )
@@ -37,7 +37,7 @@ class MobileAppViewTest(TestCase):
         )
         with open(file_path) as app_associations_file:
             file_content = app_associations_file.read()
-            self.assertEquals(file_content, response.content)
+            self.assertEqual(file_content, response.content)
 
     def test_android_asset_links_file(self):
         """

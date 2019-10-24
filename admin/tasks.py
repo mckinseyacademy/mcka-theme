@@ -12,7 +12,7 @@ from collections import OrderedDict
 from multiprocessing.pool import ThreadPool
 from tempfile import TemporaryFile
 from datetime import timedelta
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
@@ -128,7 +128,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
             course_participants_data_retrieval_task.update_state(
                 task_id=task_id, state=celery_states.RETRY,
             )
-            logger.error('Failed retrieving data from Participants API - {}'.format(e.message))
+            logger.error('Failed retrieving data from Participants API - {}'.format(e))
 
             try:
                 raise course_participants_data_retrieval_task.retry(
@@ -198,7 +198,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
                 assessments[key] = _('Assessment: {label}').format(label=label)
             participant[key] = '{}%'.format(assessment.get('percent'))
 
-        for lesson_number, completion in sorted(participant.get('lesson_completions', {}).iteritems()):
+        for lesson_number, completion in sorted(participant.get('lesson_completions', {}).items()):
             key = 'PRG_{}'.format(lesson_number)
             if key not in lesson_completions:
                 lesson_completions[key] = _('Lesson {lesson_number} Progress').format(lesson_number=lesson_number)
@@ -215,7 +215,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         ("Username", ("username", '')),
         ("Email", ("email", '')),
         ("Company", ("organizations_display_name", '')),
-    ] + [(item_label, (item_key, '')) for item_key, item_label in attributes.items()] + [
+    ] + [(item_label, (item_key, '')) for item_key, item_label in list(attributes.items())] + [
         ("Status", ("custom_user_status", '')),
         ("Activated", ("custom_activated", '')),
         ("Last login", ("custom_last_login", '')),
@@ -230,7 +230,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         fields['Course group'] = ("course_group", '')
 
     # update fields with groupworks/assignments data
-    for label, title in groupworks.items() + assessments.items() + lesson_completions.items():
+    for label, title in list(groupworks.items()) + list(assessments.items()) + list(lesson_completions.items()):
         fields[title] = (label, '0%')
 
     file_name = '{}_user_stats.csv'.format(course_id.replace('/', '_'))
@@ -241,7 +241,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         course_participants_data_retrieval_task.update_state(
             task_id=task_id, state=celery_states.FAILURE
         )
-        logger.error('Failed creating temp CSV file - {}'.format(e.message))
+        logger.error('Failed creating temp CSV file - {}'.format(e))
         raise Ignore()
     else:
         writer = CSVWriter(temp_csv_file, fields, participants_data)
@@ -263,7 +263,7 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
         course_participants_data_retrieval_task.update_state(
             task_id=task_id, state=celery_states.RETRY
         )
-        logger.error('Failed saving CSV to S3 - {}'.format(e.message))
+        logger.error('Failed saving CSV to S3 - {}'.format(e))
         raise course_participants_data_retrieval_task.retry(exc=e)
     else:
         logger.info('Saved CSV to S3 - {}'.format(task_log_msg))
@@ -350,7 +350,7 @@ def send_email(subject, email_template, template_data, user_emails, task_log_msg
             template_data=template_data, cc_emails=cc_emails
         )
     except Exception as e:
-        logger.error('Failed sending notification email to Admin {} - {}'.format(e.message, task_log_msg))
+        logger.error('Failed sending notification email to Admin {} - {}'.format(e, task_log_msg))
         raise
 
     logger.info('Email successfully sent - {}'.format(task_log_msg))
@@ -381,7 +381,7 @@ def export_stats_status_email_task(
     except Exception as e:
         logger.error(
             'Failed retrieving Admin User info from API - {} - {}'
-            .format(e.message, task_log_msg)
+            .format(e, task_log_msg)
         )
         raise export_stats_status_email_task.retry(exc=e)
 
@@ -397,7 +397,7 @@ def export_stats_status_email_task(
         )
         logger.info('Email successfully sent - {}'.format(task_log_msg))
     except Exception as e:
-        logger.error('Failed sending notification email to Admin {} - {}'.format(e.message, task_log_msg))
+        logger.error('Failed sending notification email to Admin {} - {}'.format(e, task_log_msg))
         raise export_stats_status_email_task.retry(exc=e)
 
     logger.info('Finished - {}'.format(task_log_msg))
@@ -438,7 +438,7 @@ def participants_notifications_data_task(course_id, company_id, task_id, retry_p
         try:
             course_participants = course_api.get_course_details_users(course_id, api_params)
         except Exception as e:
-            logger.error('Failed retrieving data from Course Participants API - {}'.format(e.message))
+            logger.error('Failed retrieving data from Course Participants API - {}'.format(e))
             raise participants_notifications_data_task.retry(
                 exc=e, kwargs={
                     'course_id': course_id, 'company_id': company_id,
@@ -487,14 +487,14 @@ def users_program_association_task(program_id, user_ids, task_id):
 
     logger.info('Attempting to associate {} users - {}'.format(total, task_log_msg))
 
-    for i in xrange(0, total, batch_size):
+    for i in range(0, total, batch_size):
         user_ids_batch = user_ids[i:i+batch_size]
 
         try:
             group_api.add_users_to_group(user_ids_batch, program_id)
             added += len(user_ids_batch)
         except ApiError as e:
-            logger.error('Failed adding users batch to group {} - {}'.format(e.message, task_log_msg))
+            logger.error('Failed adding users batch to group {} - {}'.format(e, task_log_msg))
             failed += len(user_ids_batch)
         finally:
             percentage = (100.0 / (total or 1)) * (added + failed)
@@ -526,7 +526,7 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
 
     try:
         file_stream = storage.open(file_path)
-    except Exception as e:
+    except Exception:
         logger.error('{} - Failed to open file with path: {}'.format(task_log_msg, file_path))
         raise
     else:
@@ -584,7 +584,7 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     batch_size = total_clean_users // pool_size or 1
     pool = ThreadPool(pool_size)
     threads = []
-    for index in xrange(0, total_clean_users, batch_size):
+    for index in range(0, total_clean_users, batch_size):
         batch = clean_user_list[index:min(index + batch_size, total_clean_users)]
         threads.append(
             pool.apply_async(
@@ -617,7 +617,7 @@ def import_participants_task(user_id, base_url, file_url, is_internal_admin, reg
     try:
         storage.delete(file_path)
     except Exception as e:
-        logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
+        logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e))
     else:
         logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
 
@@ -725,7 +725,7 @@ def delete_participants_task(
             storage = get_storage(secure=True)
             storage.delete(file_path)
         except Exception as e:
-            logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
+            logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e))
         else:
             logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
 
@@ -743,14 +743,14 @@ def delete_participants_task(
             ('reason', ('reason', '')),
         ])
         file_name = 'deletion_errors.csv'
-        errors = [{'email': k, 'reason': v} for k, v in failed.items()]
+        errors = [{'email': k, 'reason': v} for k, v in list(failed.items())]
         try:
             failed_url = create_and_store_csv_file(
                 fields, errors, DELETE_PARTICIPANTS_DIR,
                 file_name, logger, task_log_msg, secure=True
             )
         except Exception as e:
-            logger.error('Failed to generate CSV - {} - {}'.format(e.message, task_log_msg))
+            logger.error('Failed to generate CSV - {} - {}'.format(e, task_log_msg))
 
         failed_url = urljoin(
             base=base_url,
@@ -820,7 +820,7 @@ def unenroll_participants_task(users_to_unenroll, send_confirmation_email, owner
         storage = get_storage(secure=True)
         storage.delete(file_path)
     except Exception as e:
-        logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e.message))
+        logger.error('{} - Exception while deleting file: {}'.format(task_log_msg, e))
     else:
         logger.info('{} - Successfully deleted CSV file: {}'.format(task_log_msg, file_path))
 
@@ -833,14 +833,14 @@ def unenroll_participants_task(users_to_unenroll, send_confirmation_email, owner
             ('reason', ('reason', '')),
         ])
         file_name = 'unenrollment_errors.csv'
-        errors = [{'participant_id': k[0], 'course_id': k[1], 'reason': v} for k, v in failed.items()]
+        errors = [{'participant_id': k[0], 'course_id': k[1], 'reason': v} for k, v in list(failed.items())]
         try:
             failed_url = create_and_store_csv_file(
                 fields, errors, DELETE_PARTICIPANTS_DIR,
                 file_name, logger, task_log_msg, secure=True
             )
         except Exception as e:
-            logger.error('Failed to generate CSV - {} - {}'.format(e.message, task_log_msg))
+            logger.error('Failed to generate CSV - {} - {}'.format(e, task_log_msg))
 
         failed_url = urljoin(
             base=base_url,
@@ -1058,7 +1058,7 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         template_data.update({'first_name': user_data.get('first_name')})
     except Exception as e:
         logger.error(
-            'Failed retrieving Admin User info from API - {} - {}'.format(e.message, task_log_msg)
+            'Failed retrieving Admin User info from API - {} - {}'.format(e, task_log_msg)
         )
         raise generate_import_files_and_send_notification.retry(exc=e)
     else:
@@ -1123,7 +1123,7 @@ def purge_old_import_records_and_csv_files():
             try:
                 default_storage.bucket.delete_keys(file_paths)
             except Exception as e:
-                logger.error('S3 exception while deleting files {} - {}'.format(e.message, task_log_msg))
+                logger.error('S3 exception while deleting files {} - {}'.format(e, task_log_msg))
             else:
                 logger.info('Successfully deleted CSV files - {}'.format(task_log_msg))
         else:
@@ -1247,12 +1247,12 @@ def post_process_problem_response_report(self, parent_task, course_id, problem_l
     # Write csv to a temporary file.
     fields = OrderedDict([(key, (key, '')) for key in keys])
     # Create remote path to report.
-    csv_name = u"{course_prefix}_{timestamp}.csv".format(
+    csv_name = "{course_prefix}_{timestamp}.csv".format(
         course_prefix=course_id.replace('/', '_'),
         timestamp=report_task.requested_datetime.strftime("%Y-%m-%d-%H%M")
     )
     # Store file
-    hashed_course_id = hashlib.sha1(course_id).hexdigest()
+    hashed_course_id = hashlib.sha1(course_id.encode('utf-8')).hexdigest()
     dir_name = os.path.join('reports', hashed_course_id)
     task_log_msg = 'post processing problem response report'
     file_path = create_and_store_csv_file(fields, rows, dir_name, csv_name, logger, task_log_msg)

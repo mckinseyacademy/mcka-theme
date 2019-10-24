@@ -19,7 +19,7 @@ def heartbeat(request):
             )
             output['API'] = True
         except ApiError as fail:
-            output['API'] = unicode(fail.message)
+            output['API'] = str(fail.message)
     except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         output['API'] = False
 
@@ -30,6 +30,6 @@ def heartbeat(request):
         cursor.fetchone()
         output['SQL'] = True
     except DatabaseError as fail:
-        output['SQL'] = unicode(fail)
+        output['SQL'] = str(fail)
 
     return HttpResponse(json.dumps(output), content_type="application/json")

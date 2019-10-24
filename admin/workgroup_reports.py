@@ -53,7 +53,7 @@ BLANK_ACTIVITY_STATUS = DottableDict({
     "review_groups": [],
     "stages": OrderedDict(
         (stage_id, _shallow_merge_dicts(stage_data, {'deadline': NOT_APPLICABLE, 'status': IRRELEVANT}))
-        for stage_id, stage_data in GP_V1_STAGES.iteritems()
+        for stage_id, stage_data in GP_V1_STAGES.items()
     ),
     "stage_count": 4
 })
@@ -64,7 +64,7 @@ BLANK_V2_STAGE_STATUS = DottableDict({
     'is_grading_stage': False,
 })
 
-V2_NO_STAGES_AVAILABLE = _(u'No Stages')
+V2_NO_STAGES_AVAILABLE = _('No Stages')
 
 
 class StageCompletionStatus(object):
@@ -179,7 +179,7 @@ class WorkgroupCompletionData(object):
                     self.project_workgroups[project.id][self.workgroup_id],
                 )
             else:
-                for k, pw in self.project_workgroups[project.id].iteritems():
+                for k, pw in self.project_workgroups[project.id].items():
                     self._load_project_workgroup_status(project, pw)
 
     def build_report_data(self):
@@ -259,7 +259,7 @@ class WorkgroupCompletionData(object):
         # only take the first 3 activities
         p.activities = self.project_activities[p.id][0:3]
         p.workgroups = [self.project_workgroups[p.id][self.workgroup_id]] if self.workgroup_id else [
-            group for k, group in self.project_workgroups[p.id].iteritems()
+            group for k, group in self.project_workgroups[p.id].items()
             ]
         p.group_count = len(p.workgroups)
 
@@ -267,7 +267,7 @@ class WorkgroupCompletionData(object):
             group_xblock = self._get_activity_xblock(activity.id)
             activity.stages = copy.deepcopy(GP_V1_STAGES)
 
-            for stage_key in activity.stages.keys():
+            for stage_key in list(activity.stages.keys()):
                 activity.stages[stage_key]['deadline'] = formatted_milestone_date(group_xblock, stage_key)
 
             activity.stage_count = len(activity.stages)
@@ -478,7 +478,7 @@ class WorkgroupCompletionData(object):
         if self.workgroup_id:
             target_workgroups = [self.project_workgroups[p.id][self.workgroup_id]]
         else:
-            target_workgroups = self.project_workgroups[p.id].values()
+            target_workgroups = list(self.project_workgroups[p.id].values())
 
         activities = self.project_activities[p.id]
         activity_xblocks = [self._get_activity_xblock(activity.id) for activity in activities]
@@ -555,7 +555,7 @@ def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=N
 
         group_header_row = ["Group", ""]  # Group and User columns
         for activity in project.activities:  # for each activity
-            for stage_key, stage in activity.stages.iteritems():  # column per stage
+            for stage_key, stage in activity.stages.items():  # column per stage
                 group_header_row.append(stage['name'])
 
         output_line(group_header_row)
@@ -563,7 +563,7 @@ def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=N
         for workgroup in project.workgroups:
             workgroup_row = [workgroup.name, ""]  # Group and User columns
             for activity_status in workgroup.activity_statuses:  # for each activity
-                for stage_key, stage_data in activity_status.stages.iteritems():  # one column per stage
+                for stage_key, stage_data in activity_status.stages.items():  # one column per stage
                     if stage_data.get('is_grading_stage', False) and activity_status.ta_graded:
                         stage_status = "TA Graded{} ({})".format(
                             "*" if stage_data.status == "incomplete" else "",
@@ -580,7 +580,7 @@ def generate_workgroup_csv_report(course_id, url_prefix, restrict_to_users_ids=N
                 # apply csv cleaning here
                 user_row = ["", user.username]  # Group and User columns
                 for user_activity_status in user.activity_statuses:  # for each activity
-                    for stage_key, stage in user_activity_status.stages.iteritems():  # one column per stage
+                    for stage_key, stage in user_activity_status.stages.items():  # one column per stage
                         if not stage.get('is_grading_stage', False) or 'review_groups' not in stage:
                             user_row.append(stage['status'])
                         else:

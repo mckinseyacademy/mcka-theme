@@ -1,13 +1,16 @@
-import Queue
-import StringIO
+import queue
+import io
 import atexit
 import collections
+import codecs
 import csv
 import logging
 import string
 import tempfile
 import threading
-import urllib
+import urllib.request
+import urllib.parse
+import urllib.error
 
 import chardet
 import requests
@@ -69,7 +72,7 @@ from courses.models import FeatureFlags, CourseMetaData, LessonNotesItem
 from lib.mail import (
     sendMultipleEmails, email_add_single_new_user, create_multiple_emails
 )
-from lib.utils import DottableDict
+from lib.utils import DottableDict, bytes_to_str
 from license import controller as license_controller
 from public_api.models import ApiToken
 from util.data_sanitizing import sanitize_data, clean_xss_characters, remove_characters, special_characters_match
@@ -91,7 +94,7 @@ class GroupProject(object):
     def _get_activity_link(self, course_id, activity_id):
         base_gw_url = reverse('user_course_group_work', kwargs={'course_id': course_id})
         query_string_key = 'activate_block_id' if self.is_v2 else 'seqid'
-        return base_gw_url + "?" + urllib.urlencode({query_string_key: activity_id})
+        return base_gw_url + "?" + urllib.parse.urlencode({query_string_key: activity_id})
 
     def __init__(self, course_id, project_id, name, activities, vertical_id=None, is_v2=False):
         self.id = project_id
@@ -137,7 +140,7 @@ def _cleanup():
     _queue.join()  # so we don't exit too soon
 
 
-_queue = Queue.Queue()
+_queue = queue.Queue()
 atexit.register(_cleanup)
 
 
@@ -373,7 +376,7 @@ def parse_participant_profile_csv(file_stream):
 
         temp_file.seek(0)
 
-        user_records = [user_line.strip().split(',') for user_line in temp_file.read().splitlines()]
+        user_records = [bytes_to_str(user_line).strip().split(',') for user_line in temp_file.readlines()]
         return user_records
 
 
@@ -389,7 +392,7 @@ def build_student_list_from_file(file_stream, parse_method=_process_line):
         for user_line in temp_file.read().splitlines()[1:]:  # ignore first line
             try:
                 # don't add a faulty line
-                processed_line = parse_method(user_line)
+                processed_line = parse_method(user_line.decode('utf-8'))
             except Exception:   # pylint: disable=bare-except
                 continue
             else:
@@ -410,7 +413,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
             except ApiError as e:
                 user = None
                 failure = {
-                    "reason": e.message,
+                    "reason": str(e),
                     "activity": _("Unable to register user")
                 }
             if user:
@@ -418,9 +421,9 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
                     if not user.is_active:
                         UserActivation.user_activation(user)
                     client.add_user(user.id)
-                except ApiError, e:
+                except ApiError as e:
                     failure = {
-                        "reason": e.message,
+                        "reason": str(e),
                         "activity": _("User not associated with client")
                     }
 
@@ -433,7 +436,7 @@ def _register_users_in_list(user_list, client_id, activation_link_head, reg_stat
 
         except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
             user = None
-            reason = e.message if e.message else _("Data processing error")
+            reason = str(e) if str(e) else _("Data processing error")
             user_error = _("Error processing data: {reason}").format(reason=reason)
 
         if user_error:
@@ -483,7 +486,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
             except ApiError as e:
                 user = None
                 failure = {
-                    "reason": e.message,
+                    "reason": str(e),
                     "activity": _("Unable to register user")
                 }
 
@@ -494,7 +497,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     client.add_user(user.id)
                 except ApiError as e:
                     failure = {
-                        "reason": e.message,
+                        "reason": str(e),
                         "activity": _("User not associated with client")
                     }
 
@@ -515,7 +518,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
                         user_error.append(_("{error}: {message} - {email}").format(
                             error=_("User program enrollment"),
-                            message=e.message,
+                            message=str(e),
                             email=user_dict["email"],
                         ))
                     try:
@@ -523,11 +526,11 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
                     except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
                         user_error.append(_("{error}: {message} - {email}").format(
                             error=_("User course enrollment"),
-                            message=e.message,
+                            message=str(e),
                             email=user_dict["email"],
                         ))
             except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
-                reason = e.message if e.message else _("Enrolling student error")
+                reason = str(e) if str(e) else _("Enrolling student error")
                 user_error.append(_("Error enrolling student: {reason} - {email}").format(
                     reason=reason,
                     email=user_dict["email"]
@@ -535,7 +538,7 @@ def _enroll_users_in_list(students, client_id, program_id, course_id, request, r
 
         except Exception as e:  # pylint: disable=bare-except TODO: add specific Exception class
             user = None
-            reason = e.message if e.message else _("Data processing error")
+            reason = str(e) if str(e) else _("Data processing error")
             user_error.append(_("Error processing data: {reason} - {email}").format(
                 reason=reason,
                 email=user_dict["email"]
@@ -587,7 +590,7 @@ def process_mass_student_enroll_list(file_stream, client_id, program_id, course_
 
 
 def _formatted_user_string(user):
-    return u"{},{},{},{},{},{},{},{}".format(
+    return "{},{},{},{},{},{},{},{}".format(
         user.email,
         user.first_name,
         user.last_name,
@@ -616,7 +619,7 @@ def _formatted_user_string_group_list(user):
     # apply csv cleaning
     user_data = sanitize_data(data=user.to_dict(), props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
 
-    return u"{},{},{},{}".format(
+    return "{},{},{},{}".format(
         user_data.get('email', ''),
         user_data.get('username', ''),
         user_data.get('first_name', ''),
@@ -668,7 +671,7 @@ def get_group_list_as_file(group_projects, group_project_groups):
 
     group_list_lines = []
     for group_project in group_projects:
-        group_list_lines.append(u"{}: {}\n".format(
+        group_list_lines.append("{}: {}\n".format(
             _("PROJECT"),
             group_project.name.upper(),
         )
@@ -706,7 +709,7 @@ def filter_groups_and_students(group_projects, students, restrict_to_users_ids=N
 
         for group in groups:
             group_users = {u.id: u for u in group.users}
-            students_in_group = [s for s in students if s.id in group_users.keys()]
+            students_in_group = [s for s in students if s.id in list(group_users.keys())]
             groupedStudents.extend(students_in_group)
 
             if restrict_to_users_ids is not None:
@@ -793,7 +796,7 @@ def generate_course_report(client_id, course_id, url_prefix, students):
         If double-quotes are used to enclose fields, then a double-quote appearing inside a field must be escaped
         by preceding it with another double quote.
         """
-        return '"{}"'.format(value.replace('"', '""')) if value is not None else ''
+        return '"{}"'.format(value.decode('ascii').replace('"', '""')) if value is not None else ''
 
     def output_line(line_data_array):
         output_lines.append(','.join(line_data_array))
@@ -1264,7 +1267,7 @@ def get_course_social_engagement(course_id, company_id):
 
 def get_course_engagement_summary(course_id, company_id):
     course_stats = course_api.get_course_engagement_summary(course_id, company_id)
-    for key, value in course_stats.iteritems():
+    for key, value in course_stats.items():
         course_stats[key] = round_to_int_bump_zero(value)
 
     data = [
@@ -1362,27 +1365,23 @@ def _enroll_participant_with_status(course_id, user_id, status):
         'Observer': USER_ROLES.OBSERVER,
         'Instructor': USER_ROLES.MODERATOR
     }
-    failure = None
     try:
         user_api.enroll_user_in_course(user_id, course_id)
     except ApiError as e:
-        failure = {
+        return {
             "status": 'error',
             "message": e.message
         }
-    if failure:
-        return {'status': 'error', 'message': e.message}
+
     try:
         permissions = Permissions(user_id)
         if status != 'Active':
             permissions.update_course_role(course_id, permissonsMap[status])
     except ApiError as e:
-        failure = {
+        return {
             "status": 'error',
             "message": e.message
         }
-    if failure:
-        return {'status': 'error', 'message': e.message}
 
     return {'status': 'success'}
 
@@ -1403,7 +1402,7 @@ def unenroll_participant(course_id, user_id):
         if current_course_id == course_id:
             user_api.delete_user_preference(user_id, CURRENT_COURSE_ID)
     except ApiError as e:
-        return {'status': 'error', 'message': e.message}
+        return {'status': 'error', 'message': str(e)}
     return {'status': 'success'}
 
 
@@ -1417,7 +1416,7 @@ def change_user_status(course_id, new_status, status_item):
         permissions = Permissions(status_item['id'])
         permissions.update_course_role(course_id, permissonsMap.get(new_status, ""))
     except ApiError as e:
-        return {'status': 'error', 'message': e.message}
+        return {'status': 'error', 'message': str(e)}
     return {'status': 'success'}
 
 
@@ -1495,8 +1494,9 @@ def get_user_courses_helper(user_id, request):
             _set_user_course_role(user_course, role)
             user_courses.append(user_course)
         else:
-            user_course = (user_course for user_course in user_courses if
-                           user_course["id"] == vars(role)['course_id']).next()
+            user_course = next(
+                (user_course for user_course in user_courses if user_course["id"] == vars(role)['course_id'])
+            )
             _set_user_course_role(user_course, role)
 
     if request.user.is_internal_admin:
@@ -1566,7 +1566,7 @@ def process_line_register_participants_csv(user_line):
         validate_last_name(last_name)
         validate_email(email)
     except ValidationError as e:
-        user_info['error'] = str(e.message)
+        user_info['error'] = str(e)
 
     return user_info
 
@@ -1643,7 +1643,7 @@ def enroll_participants(participants, is_internal_admin, reg_status, register):
             ):
                 _add_errors(errors, _('Activation record error'), email, user_dict)
         except Exception as e:
-            reason = e.message if e.message else _("Processing Data Error")
+            reason = str(e) if str(e) else _("Processing Data Error")
             _add_errors(errors, _("Error processing data: {} ").format(reason), email, user_dict)
 
         if errors:
@@ -1754,7 +1754,7 @@ def get_company_active_courses(company_courses):
 
 
 def validate_company_display_name(company_display_name):
-    company = organization_api.get_organization_by_display_name(urllib.quote_plus(company_display_name))
+    company = organization_api.get_organization_by_display_name(urllib.parse.quote_plus(company_display_name))
     if company['count'] != 0:
         return {'status': 'error', 'message': _('This company already exists!')}
 
@@ -1835,8 +1835,8 @@ def student_list_chunks_tracker(data, client_id, activation_link):
         chunk_size = int(data.get("chunk_size", default_chunk_size))
         if len(user_list):
             client = Client.fetch(client_id)
-            file_name = unicode("Student List for {} on {}.csv".format(client.display_name, datetime.now().isoformat()))
-            user_list_chunked = [user_list[i:i + chunk_size] for i in xrange(0, len(user_list), chunk_size)]
+            file_name = str("Student List for {} on {}.csv".format(client.display_name, datetime.now().isoformat()))
+            user_list_chunked = [user_list[i:i + chunk_size] for i in range(0, len(user_list), chunk_size)]
             cached_data["chunk_count"] = len(user_list_chunked)
             cached_data["list_chunked"] = user_list_chunked
             cached_data["element_count"] = len(user_list)
@@ -2165,7 +2165,7 @@ class CourseParticipantStats(object):
                 lesson_completion = lesson_completions.get(course_participant['id'], None)
                 if lesson_completion:
                     del lesson_completion['completion']  # get rid of the course-level completion
-                    for lesson in lesson_completion.values():
+                    for lesson in list(lesson_completion.values()):
                         completion_percentage = round_to_int(
                             float(lesson['completion']['percent'] or 0.) * 100
                         )
@@ -2251,7 +2251,7 @@ def crop_image(request, img_name):
     bottom = int(float(request.POST.get('height-position'))) + top
     image = Image.open(img_name)
     cropped_image = image.crop((left, top, right, bottom))
-    image_io = StringIO.StringIO()
+    image_io = io.StringIO()
     cropped_image.convert('RGBA').save(image_io, format='PNG')
     image_io.seek(0)
 
@@ -2335,7 +2335,7 @@ def create_roles_list(request):
     validate the regex given in the RoleTitleValidator """
     role_validator = RoleTitleValidator()
     roles = []
-    for key, value in request.POST.items()[::-1]:
+    for key, value in list(request.POST.items())[::-1]:
         if key.startswith('role'):
             role_validator(value)
             roles.append(value)
@@ -2731,13 +2731,13 @@ class ProblemReportPostProcessor(object):
         Returns:
             str: column name for the row
         """
-        problem_location = row['block_key']
-        question = row['Question'].decode('utf-8')
+        problem_location = row.get('block_key')
+        question = row.get('Question', '')
         column_key = (problem_location, question)
         if column_key not in self._cols:
             data = self._course_blocks.get(problem_location, {})
-            location = u'L{lesson_number}M{module_number}'.format(**data)
-            self._cols[column_key] = u'{} - {}'.format(location, question)
+            location = 'L{lesson_number}M{module_number}'.format(**data)
+            self._cols[column_key] = '{} - {}'.format(location, question)
         return self._cols[column_key]
 
     def post_process(self):
@@ -2750,7 +2750,7 @@ class ProblemReportPostProcessor(object):
         """
         with requests.get(self.report_uri, stream=True) as csv_report:
             csv_report.raise_for_status()
-            report_reader = csv.DictReader(csv_report.iter_lines())
+            report_reader = csv.DictReader(codecs.iterdecode(csv_report.iter_lines(), 'utf-8'))
 
             output = {}
 
@@ -2764,7 +2764,7 @@ class ProblemReportPostProcessor(object):
                     column_name: row['Answer']
                 })
 
-        return output.values(), ['email'] + sorted(self._cols.values())
+        return list(output.values()), ['email'] + sorted(self._cols.values())
 
 
 def get_data_from_csv(file_path, headers):
@@ -2781,9 +2781,8 @@ def get_data_from_csv(file_path, headers):
     from util.s3_helpers import get_storage
     storage = get_storage(secure=True)
     file_stream = storage.open(file_path)
-
-    data = ''.join(file_stream.chunks())
-    encoding = chardet.detect(data)['encoding']
+    data = ''.join(chunk.decode("utf-8") for chunk in file_stream.chunks())
+    encoding = chardet.detect(data.encode('utf-8'))['encoding']
 
     if encoding not in ['ascii', 'utf-8']:
         # csv module does not support UTF-16 which can be used by Excel
@@ -2827,7 +2826,7 @@ def delete_participants(user_ids, users=None):
 
     failed = {}
 
-    for chunk in xrange(0, len(users), settings.DELETION_SYNCHRONOUS_MAX_USERS):
+    for chunk in range(0, len(users), settings.DELETION_SYNCHRONOUS_MAX_USERS):
         # Get batch of users and ids
         batch_users = list(users)[chunk:chunk + settings.DELETION_SYNCHRONOUS_MAX_USERS]
         ids = [user.id for user in batch_users]

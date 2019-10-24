@@ -20,7 +20,7 @@ class MockedUserDataManager(object):
 def mock_api_data_manager(module_path, data={}):
     patch(module_path, new=MockedUserDataManager).start()
 
-    for key, value in data.iteritems():
+    for key, value in data.items():
         setattr(MockedUserDataManager, key, value)
 
 
@@ -37,5 +37,5 @@ class APIDataManagerMockMixin(object):
             patcher.start()
             self.addCleanup(patcher.stop)
 
-            for key, value in data.iteritems():
+            for key, value in data.items():
                 setattr(MockedUserDataManager, key, value)

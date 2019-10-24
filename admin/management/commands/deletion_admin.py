@@ -29,7 +29,7 @@ class Command(BaseCommand):
             if not all([self.rx.match(email) for email in emails]):
                 raise Exception("At least one email failed validation")
         except Exception as e:
-            self.stderr.write(self.style.ERROR('Task failed to trigger with exception: "%s"' % e.message))
+            self.stderr.write(self.style.ERROR('Task failed to trigger with exception: "%s"' % str(e)))
         else:
             if op.lower() == 'add':
                 return str(self.add(emails))

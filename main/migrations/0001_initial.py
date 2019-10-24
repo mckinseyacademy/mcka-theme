@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 from django.db import models, migrations
 
@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('sequence', models.IntegerField()),
                 ('created_at', models.DateTimeField(null=True, blank=True)),
                 ('display_date', models.DateTimeField(null=True, blank=True)),
-                ('content_type', models.CharField(default=b'txt', max_length=3, choices=[(b'txt', b'text'), (b'vid', b'video'), (b'quo', b'quote'), (b'twt', b'tweet'), (b'art', b'article'), (b'img', b'img')])),
+                ('content_type', models.CharField(default='txt', max_length=3, choices=[('txt', 'text'), ('vid', 'video'), ('quo', 'quote'), ('twt', 'tweet'), ('art', 'article'), ('img', 'img')])),
             ],
             options={
                 'db_table': 'curated_content_item',

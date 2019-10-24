@@ -184,7 +184,7 @@ class CourseTreeBuilder(object):
 
         if graded_items_count is None:
             inject_gradebook_info(self.request.user.id, course)
-            graded_items_count = sum(len(graded) for graded in course.graded_items().values())
+            graded_items_count = sum(len(graded) for graded in list(course.graded_items().values()))
 
             course_data_manager.set_cached_data(
                 property_name=COURSE_PROPERTIES.GRADED_ITEMS_COUNT,

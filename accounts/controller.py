@@ -50,13 +50,13 @@ def user_activation_with_data(user_id, user_data, activation_record):
         user_data["is_active"] = False
         user_api.update_user_information(user_id, user_data)
     except ApiError as e:
-        raise ActivationError(e.message, e.content_dictionary.get("code"))
+        raise ActivationError(e, e.content_dictionary.get("code"))
 
     # if we are still okay, then activate in a separate operation
     try:
         user_api.activate_user(user_id)
     except ApiError as e:
-        raise ActivationError(e.message, e.content_dictionary.get("code"))
+        raise ActivationError(e, e.content_dictionary.get("code"))
 
     try:
         activation_record.delete()
@@ -94,11 +94,11 @@ def save_new_client_image(old_image_url, new_image_url, client):
 def io_new_client_image(old_gen_image_url, new_gen_image_url):
 
     '''It raises IOError if old image is not available '''
-    import StringIO
+    import io
     from PIL import Image
     from django.core.files.storage import default_storage
 
-    thumb_io = StringIO.StringIO()
+    thumb_io = io.BytesIO()
     try:
         original = Image.open(default_storage.open(old_gen_image_url))
         original.convert('RGB').save(thumb_io, format='JPEG')
@@ -534,10 +534,10 @@ def image_transpose_exif(image):
     # This solution is taken from following link.
     #  https://stackoverflow.com/a/6218425/5244255
     try:
-        for orientation in ExifTags.TAGS.keys():
+        for orientation in list(ExifTags.TAGS.keys()):
             if ExifTags.TAGS[orientation] == 'Orientation':
                 break
-        exif = dict(image._getexif().items())
+        exif = dict(list(image._getexif().items()))
 
         if exif[orientation] == 3:
             image = image.transpose(Image.ROTATE_180)

@@ -17,8 +17,8 @@ class Command(BaseCommand):
                 except ApiError as e:
                     # Ignore 409 errors, because they indicate a user already added
                     if e.code != 409:
-                        print "Failed adding user {} to group {} - code {}".format(
+                        print("Failed adding user {} to group {} - code {}".format(
                             license.grantee_id,
                             license.granted_id,
                             e.code,
-                        )
+                        ))

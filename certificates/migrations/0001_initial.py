@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 from django.db import migrations, models
 import uuid
@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('course_id', models.CharField(unique=True, max_length=200)),
-                ('status', models.CharField(default=b'available', max_length=32)),
+                ('status', models.CharField(default='available', max_length=32)),
             ],
         ),
         migrations.CreateModel(

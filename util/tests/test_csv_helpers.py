@@ -3,7 +3,7 @@
 """ Tests for utility methods in data_sanitizing.py """
 from collections import OrderedDict
 import unittest
-import csv
+import unicodecsv
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.http import HttpResponse
@@ -45,15 +45,15 @@ class TestCSVWriter(unittest.TestCase):
         csv_file = csv_writer.write_csv()
 
         csv_file.open()
-        reader = csv.DictReader(csv_file)
+        reader = unicodecsv.DictReader(csv_file)
 
         # test header row written correctly
-        self.assertListEqual(reader.fieldnames, fields.keys())
+        self.assertCountEqual(list([d for d in reader][0].keys()), list(fields.keys()))
 
         # test rows values are written
-        data_values = [t.values() for t in test_data]
+        data_values = [list(t.values()) for t in test_data]
         for row in reader:
-            self.assertTrue(row.values() in data_values)
+            self.assertTrue(list(row.values()) in data_values)
 
 
 class TestCSVHttpResponse(unittest.TestCase):
@@ -73,13 +73,12 @@ class TestCSVHttpResponse(unittest.TestCase):
             data=test_data, header=False
         )
 
-        reader = csv.DictReader(response)
+        reader = unicodecsv.DictReader(response)
 
         # test it's an Http response
         self.assertIsInstance(response, HttpResponse)
 
         # test rows values are written and identical
-        test_values = [d for t in test_data for d in t.values()]
-        response_values = [d for row in reader for v in row.itervalues() for d in v]
-
-        self.assertItemsEqual(test_values, response_values)
+        test_values = [d for t in test_data for d in list(t.values())]
+        response_values = [d for row in reader for v in list(row.values()) for d in v]
+        self.assertCountEqual(response_values, test_values)

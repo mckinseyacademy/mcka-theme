@@ -24,12 +24,12 @@ class Command(BaseCommand):
                 user_id = int(row['Participant_ID'])
                 course_id = row['Course_ID']
                 try:
-                    print "Unenrolling uid: %d from course: %s" % (user_id, course_id)
+                    print("Unenrolling uid: %d from course: %s" % (user_id, course_id))
                     user_api.unenroll_user_from_course(user_id, course_id)
                     successful_unenrolled_count += 1
                 except ApiError:
                     unsuccessful_unenrolled_count += 1
-                    print "User: %d not unenrolled" % (user_id)
+                    print("User: %d not unenrolled" % (user_id))
 
         self.stdout.write(
             "Unenrolling Users COMPLETED with {0} out of {1} users successfully un-enrolled.".format(

@@ -1,5 +1,7 @@
 import ddt
-import urllib2
+import urllib.request
+import urllib.error
+import urllib.parse
 
 from freezegun import freeze_time
 from mock import patch, Mock
@@ -57,7 +59,7 @@ class SessionTimeoutTestCase(TestCase, ApplyPatchMixin):
         request = self.factory.get(reverse('admin_home'))
         request.user = Mock(is_anonymous=lambda: False)
 
-        http_error = urllib2.HTTPError("http://irrelevant", 403, None, None, None)
+        http_error = urllib.error.HTTPError("http://irrelevant", 403, None, None, None)
         mock_get_user_dict.side_effect = ApiError(http_error, "deleted", None)
 
         SessionTimeout().process_request(request)

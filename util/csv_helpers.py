@@ -7,7 +7,7 @@ from tempfile import TemporaryFile
 import unicodecsv
 import csv
 import codecs
-import cStringIO
+import io
 
 from django.http import HttpResponse
 
@@ -40,12 +40,12 @@ class CSVWriter(object):
 
         # write the header row
         if self.header:
-            writer.writerow(self.fields.keys())
+            writer.writerow(list(self.fields.keys()))
 
         for record in self.data:
             row = [
                 record.get(field, default_value)
-                for field, default_value in self.fields.values()
+                for field, default_value in list(self.fields.values())
             ]
 
             writer.writerow(row)
@@ -86,7 +86,7 @@ def csv_file_response(file_name, fields={}, data=[], header=True):
         file_name = '{}.csv'.format(file_name)
 
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = "attachment; filename={}".format(file_name.encode('utf-8'))
+    response['Content-Disposition'] = "attachment; filename={}".format(file_name)
 
     csv_writer = CSVWriter(response, fields, data, header)
     response = csv_writer.write_csv()
@@ -102,17 +102,16 @@ class UnicodeWriter:
 
     def __init__(self, f, dialect=csv.excel, encoding="utf-8", **kwds):
         # Redirect output to a queue
-        self.queue = cStringIO.StringIO()
+        self.queue = io.StringIO()
         self.writer = csv.writer(self.queue, dialect=dialect, **kwds)
         self.stream = f
         self.encoder = codecs.getincrementalencoder(encoding)()
 
     def writerow(self, row):
-        self.writer.writerow([s.encode("utf-8") if isinstance(s, basestring) else str(s) for s in row])
-        # Fetch UTF-8 output from the queue ...
+        self.writer.writerow([s if isinstance(s, str) else str(s) for s in row])
+        # Fetch output from the queue ...
         data = self.queue.getvalue()
-        data = data.decode("utf-8")
-        # ... and reencode it into the target encoding
+        # ... and encode it into the target encoding
         data = self.encoder.encode(data)
         # write to the target stream
         self.stream.write(data)
@@ -134,7 +133,7 @@ def create_and_store_csv_file(fields, data, dir_name, file_name, logger, task_lo
     try:
         temp_csv_file = TemporaryFile()
     except Exception as e:
-        logger.error('Failed creating temp CSV file - {}'.format(e.message))
+        logger.error('Failed creating temp CSV file - {}'.format(e))
         raise
     else:
         writer = CSVWriter(temp_csv_file, fields, data)

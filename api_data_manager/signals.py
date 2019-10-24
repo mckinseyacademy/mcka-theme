@@ -66,7 +66,7 @@ def common_data_updated_handler(sender, *args, **kwargs):
                 program_courses = program.fetch_courses()
             except Exception as e:
                 logger.error('Exception retrieving program for updating Program Course Mapping cache - {} - Skipping'
-                             .format(e.message))
+                             .format(e))
             else:
                 program_courses_mapping[group_id] = {'name': program.name, 'courses': program_courses}
 

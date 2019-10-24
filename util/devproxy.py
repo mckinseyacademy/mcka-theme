@@ -5,10 +5,10 @@ Run with $ python -m util.devproxy
 If you want to run this on port 80 instead of 8888,
 set DEV_PROXY_PORT=80 in local_settings.py and run this with sudo.
 """
-import urlparse
+import urllib.parse
 from twisted.internet import reactor
 from twisted.web import proxy, server, vhost
-from urllib import quote as urlquote
+from urllib.parse import quote as urlquote
 
 from mcka_apros import settings
 
@@ -48,7 +48,7 @@ class ReverseProxyResource(proxy.ReverseProxyResource):
 
     def render(self, request):
         request.content.seek(0, 0)
-        qs = urlparse.urlparse(request.uri)[4]
+        qs = urllib.parse.urlparse(request.uri)[4]
         if qs:
             rest = self.path + '?' + qs
         else:
@@ -70,5 +70,5 @@ resource.addHost("studio.mcka.local", ReverseProxyResource('localhost', USE_CMS_
 
 site = server.Site(resource)
 reactor.listenTCP(PORT, site)
-print("Listening on port {}...".format(PORT))
+print(("Listening on port {}...".format(PORT)))
 reactor.run()

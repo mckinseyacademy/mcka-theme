@@ -312,34 +312,34 @@ class TestNewSelfRegistration(TestCase, ApplyPatchMixin):
 
     def test_register_user_on_platform_with_valid_input(self):
         self.user_api.register_user.return_value = HttpResponseBase(status=200)
-        self.assertEquals(NewSelfRegistration._register_user_on_platform(self.user).status_code, 200)
+        self.assertEqual(NewSelfRegistration._register_user_on_platform(self.user).status_code, 200)
 
     def test_register_user_on_platform_with_invalid_input(self):
         self.user_api.register_user.return_value = ValueError('Api error')
-        self.assertEquals(NewSelfRegistration._register_user_on_platform(self.user).message, 'Api error')
+        self.assertEqual(str(NewSelfRegistration._register_user_on_platform(self.user)), 'Api error')
 
     def test_generate_activation_link(self):
         link = NewSelfRegistration.generate_activation_link(self.request, self.user)
         expected_link = UserActivation.get_user_activation(self.user).activation_key
         expected_output = 'http://testserver/accounts/activate/{}/activation/'.format(expected_link)
-        self.assertEquals(link, expected_output)
+        self.assertEqual(link, expected_output)
 
     def test_get_set_company_with_existing_company(self):
         self.organization_api.get_organization_by_display_name.return_value = {'count': 1, 'results': [{'id': 1}]}
         user_ids = self.organization.users
-        self.assertEquals(len(user_ids), 1)
+        self.assertEqual(len(user_ids), 1)
         NewSelfRegistration._get_set_company(2)
         user_ids = self.organization.users
-        self.assertEquals(len(user_ids), 2)
+        self.assertEqual(len(user_ids), 2)
 
     def test_get_set_company_with_new_company(self):
         self.organization_api.get_organization_by_display_name.return_value = {'count': 0}
         self.organization_api.create_organization.return_value = DottableDict({'id': 1})
         user_ids = self.organization.users
-        self.assertEquals(len(user_ids), 1)
+        self.assertEqual(len(user_ids), 1)
         NewSelfRegistration._get_set_company(3)
         user_ids = self.organization.users
-        self.assertEquals(len(user_ids), 2)
+        self.assertEqual(len(user_ids), 2)
 
 
 @ddt.ddt
@@ -452,9 +452,9 @@ class SelfRegistrationTest(TestCase, ApplyPatchMixin):
 
     def test_process_course_run_closed(self):
         _process_course_run_closed(self.new_user, self.course_run)
-        self.assertEquals(mail.outbox[0].to[0], self.new_user.email)
-        self.assertEquals(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
-        self.assertEquals(mail.outbox[0].subject, 'Your request to access McKinsey Academy')
+        self.assertEqual(mail.outbox[0].to[0], self.new_user.email)
+        self.assertEqual(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
+        self.assertEqual(mail.outbox[0].subject, 'Your request to access McKinsey Academy')
 
 
 class TestActivationError(TestCase):
@@ -464,9 +464,9 @@ class TestActivationError(TestCase):
         exception_message = 'test'
         error_code = 'invalid'
         error = ActivationError(exception_message, error_code)
-        self.assertEquals(error.value, 'test')
-        self.assertEquals(error.error_code, 'invalid')
-        self.assertEquals(error.__str__(), "ActivationError 'test'")
+        self.assertEqual(error.value, 'test')
+        self.assertEqual(error.error_code, 'invalid')
+        self.assertEqual(error.__str__(), "ActivationError 'test'")
 
 
 class TestAssignStudentToProgram(TestCase, ApplyPatchMixin):
@@ -493,7 +493,7 @@ class TestAssignStudentToProgram(TestCase, ApplyPatchMixin):
         self.license_grant.grantee_id = None
         self.license_grant.save()
         result = assign_student_to_program(self.user, self.client, self.program_id)
-        self.assertEquals(result, AssignStudentToProgramResult(self.program, None))
+        self.assertEqual(result, AssignStudentToProgramResult(self.program, None))
 
     def test_with_already_full_program(self):
         self.license_grant.grantee_id = 2
@@ -503,7 +503,7 @@ class TestAssignStudentToProgram(TestCase, ApplyPatchMixin):
         expected_message = (messages.ERROR,
                             'Unable to enroll you in the requested program, '
                             'Test program. No remaining places.')
-        self.assertEquals(result.message, expected_message)
+        self.assertEqual(result.message, expected_message)
 
 
 class TestIsFutureStart(TestCase):
@@ -529,10 +529,10 @@ class TestSendWarningEmailToAdmin(TestCase):
 
     def test_send_warning_email_to_admin(self):
         send_warning_email_to_admin(self.course_run)
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
-        self.assertEquals(mail.outbox[0].to[0], 'no-reply@mckinseyacademy.com')
-        self.assertEquals(mail.outbox[0].subject, 'Demo Registration - Warning')
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
+        self.assertEqual(mail.outbox[0].to[0], 'no-reply@mckinseyacademy.com')
+        self.assertEqual(mail.outbox[0].subject, 'Demo Registration - Warning')
 
 
 @ddt.ddt
@@ -552,11 +552,11 @@ class TestSendEmail(TestCase):
                         'ehitusersofthemaxlimitofusersonthecourse.'
 
         send_email(template, subject, '', template_text, 'test', email)
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].to[0], email)
-        self.assertEquals(mail.outbox[0].subject, subject)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to[0], email)
+        self.assertEqual(mail.outbox[0].subject, subject)
         body = mail.outbox[0].body.replace(' ', '').replace('\n', '')
-        self.assertEquals(body, expected_body)
+        self.assertEqual(body, expected_body)
 
 
 class TestSendPasswordResetEmail(TestCase):
@@ -568,10 +568,10 @@ class TestSendPasswordResetEmail(TestCase):
 
     def test_send_password_reset_email(self):
         send_password_reset_email(self.domain, self.user, True)
-        self.assertEquals(len(mail.outbox), 1)
-        self.assertEquals(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
-        self.assertEquals(mail.outbox[0].to[0], self.user.email)
-        self.assertEquals(mail.outbox[0].subject, 'Password Reset Requested')
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
+        self.assertEqual(mail.outbox[0].to[0], self.user.email)
+        self.assertEqual(mail.outbox[0].subject, 'Password Reset Requested')
 
 
 class TestUserActivationWithData(TestCase, ApplyPatchMixin):
@@ -586,7 +586,7 @@ class TestUserActivationWithData(TestCase, ApplyPatchMixin):
         self.user_api.update_user_information.return_value = HttpResponseBase(status=200)
         self.user_api.activate_user.return_value = HttpResponseBase(status=200)
         user_activation_with_data(self.user.id, self.user, self.user_activation)
-        self.assertEquals(UserActivation.objects.count(), 0)
+        self.assertEqual(UserActivation.objects.count(), 0)
 
     def test_non_existing_user(self):
         self.user_api.update_user_information.side_effect = make_side_effect_raise_api_error(404)
@@ -606,7 +606,7 @@ class TestUserActivationWithData(TestCase, ApplyPatchMixin):
         self.user_activation.delete()
 
         user_activation_with_data(self.user.id, self.user, self.user_activation)
-        self.assertEquals(UserActivation.objects.count(), 0)
+        self.assertEqual(UserActivation.objects.count(), 0)
 
 
 class TestIoNewClientImage(TestCase):
@@ -678,9 +678,9 @@ class TestGetMobileAppsId(TestCase, ApplyPatchMixin):
                           'android_app_id': 2}]
              })
         result = get_mobile_apps_id(self.organization.id)
-        self.assertEquals(result['ios_app_id'], 1)
-        self.assertEquals(result['android_app_id'], 2)
-        self.assertEquals(result['user_org'], 'demo')
+        self.assertEqual(result['ios_app_id'], 1)
+        self.assertEqual(result['android_app_id'], 2)
+        self.assertEqual(result['user_org'], 'demo')
 
     @override_settings(CACHES={'default': {'BACKEND': 'django.core.cache.backends.dummy.DummyCache', }})
     def test_without_mobile_apps(self):
@@ -715,7 +715,7 @@ class TestGetSsoProvider(TestCase, ApplyPatchMixin):
         self.third_party_auth_api.get_providers_by_login_id.return_value = [
             DottableDict({'provider_id': 'oauth-123456789'})
         ]
-        self.assertEquals(get_sso_provider(self.email), '123456789')
+        self.assertEqual(get_sso_provider(self.email), '123456789')
 
     def test_without_associations(self):
         self.third_party_auth_api.get_providers_by_login_id.return_value = []
@@ -751,13 +751,13 @@ class TestSetNumberOfEnrolledUsers(TestCase, ApplyPatchMixin):
         self.course_api.get_users_filtered_by_role.return_value = [DottableDict(
             {"role": "instructor", "id": 7}), DottableDict({"role": "instructor", "id": 9})]
         users = _set_number_of_enrolled_users(self.course_run)
-        self.assertEquals(len(users), 1)
-        self.assertEquals(users[0]['id'], 8)
-        self.assertEquals(self.course_run.total_participants, 1)
+        self.assertEqual(len(users), 1)
+        self.assertEqual(users[0]['id'], 8)
+        self.assertEqual(self.course_run.total_participants, 1)
 
     def test_non_existing_user(self):
         self.course_api.get_user_list_json.return_value = json.dumps([])
         self.course_api.get_users_filtered_by_role.return_value = []
         users = _set_number_of_enrolled_users(self.course_run)
-        self.assertEquals(len(users), 0)
-        self.assertEquals(self.course_run.total_participants, 0)
+        self.assertEqual(len(users), 0)
+        self.assertEqual(self.course_run.total_participants, 0)

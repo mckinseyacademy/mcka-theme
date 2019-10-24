@@ -1,4 +1,4 @@
-from __future__ import division
+
 
 import functools
 import pytz
@@ -88,12 +88,6 @@ class CourseAccessDeniedError(PermissionDenied):
             user_id=self.user_id
         )
 
-    def __unicode__(self):
-        return _(u"Access denied to course '{course_id}' for user {user_id}").format(
-            course_id=self.course_id,
-            user_id=self.user_id
-        )
-
 
 def check_user_course_access(func):
     @functools.wraps(func)
@@ -137,12 +131,6 @@ class CompanyAdminAccessDeniedError(PermissionDenied):
 
     def __str__(self):
         return _("Access denied to user {admin_user_id} for data belonging to {user_id}").format(
-            admin_user_id=self.admin_user_id,
-            user_id=self.user_id
-        )
-
-    def __unicode__(self):
-        return _(u"Access denied to user {admin_user_id} for data belonging to {user_id}").format(
             admin_user_id=self.admin_user_id,
             user_id=self.user_id
         )

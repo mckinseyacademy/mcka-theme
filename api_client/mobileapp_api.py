@@ -4,7 +4,7 @@ Api calls related to mobileapps
 import json
 
 from django.conf import settings
-from urllib import urlencode
+from urllib.parse import urlencode
 
 from lib.utils import DottableDict
 from .api_error import api_error_protect, ApiError

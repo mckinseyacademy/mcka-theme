@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 from django.db import migrations, models
 import django.core.validators
@@ -37,6 +37,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='useractivation',
             name='email',
-            field=models.EmailField(default=b'N/A', max_length=254),
+            field=models.EmailField(default='N/A', max_length=254),
         ),
     ]

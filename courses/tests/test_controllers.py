@@ -768,7 +768,7 @@ class CoursesAPITest(TestCase):
 
         course_social_metrics = get_course_social_metrics(course_id)
         self.assertEqual(course_social_metrics.total_enrollments, 4)
-        for u_id, user_metrics in course_social_metrics.users.__dict__.iteritems():
+        for u_id, user_metrics in course_social_metrics.users.__dict__.items():
             self.assertEqual(vars(user_metrics), test_course_metrics_data.course_social_metrics['users'][str(u_id)])
 
     @ddt.data(
@@ -1123,7 +1123,7 @@ class ProgressUpdateHandlerTest(TestCase, ApplyPatchMixin):
             'row': '1',
         }
 
-        for key, val in element_types.items():
+        for key, val in list(element_types.items()):
             self.learner_dashboard_tile_form['tile_type'] = str(key)
             self.learner_dashboard_tile_form['link'] = str(val)
             form = LearnerDashboardTileForm(data=self.learner_dashboard_tile_form)
@@ -1155,17 +1155,17 @@ class ProgressUpdateHandlerTest(TestCase, ApplyPatchMixin):
             if tile_progress.milestone.tile_type == '1':
                 self.assertEqual(tile_progress.percentage, None)
             if tile_progress.milestone.tile_type == '2':
-                self.assertEqual(tile_progress.percentage, 0L)
+                self.assertEqual(tile_progress.percentage, 0)
             if tile_progress.milestone.tile_type == '3':
-                self.assertEqual(tile_progress.percentage, 0L)
+                self.assertEqual(tile_progress.percentage, 0)
             if tile_progress.milestone.tile_type == '4':
-                self.assertEqual(tile_progress.percentage, 75L)
+                self.assertEqual(tile_progress.percentage, 75)
             if tile_progress.milestone.tile_type == '5':
-                self.assertEqual(tile_progress.percentage, 0L)
+                self.assertEqual(tile_progress.percentage, 0)
             if tile_progress.milestone.tile_type == '6':
                 self.assertEqual(tile_progress.percentage, None)
             if tile_progress.milestone.tile_type == '7':
-                self.assertEqual(tile_progress.percentage, 0L)
+                self.assertEqual(tile_progress.percentage, 0)
 
 
 @ddt.ddt
@@ -1249,15 +1249,15 @@ class CreateProgressObjects(TestCase):
         learnerdashboard_tileprogress = LearnerDashboardTileProgress.objects.all()
         self.assertEqual(str(learnerdashboard_tileprogress[0].milestone_id), tile_ids[0])
         self.assertEqual(int(learnerdashboard_tileprogress[0].user), request.user.id)
-        self.assertEqual(learnerdashboard_tileprogress[0].percentage, 0L)
+        self.assertEqual(learnerdashboard_tileprogress[0].percentage, 0)
 
 
 class SocialTotal(TestCase):
     def test_social_total(self):
         user_socials = {str(u_id): social_total(DottableDict(user_metrics)) for u_id, user_metrics in
-                        test_course_metrics_data.course_social_metrics["users"].iteritems()
+                        test_course_metrics_data.course_social_metrics["users"].items()
                         }
-        for user in test_course_metrics_data.course_social_metrics["users"].keys():
+        for user in list(test_course_metrics_data.course_social_metrics["users"].keys()):
             self.assertEqual(user_socials[user], 10)
 
 

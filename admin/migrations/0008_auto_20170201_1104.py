@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
+
 
 from django.db import migrations, models
 
@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='brandingsettings',
             name='top_bar_color',
-            field=models.CharField(default=b'#ffffff', max_length=20, blank=True),
+            field=models.CharField(default='#ffffff', max_length=20, blank=True),
         ),
         migrations.AddField(
             model_name='learnerdashboardbranding',
             name='top_bar_color',
-            field=models.CharField(default=b'#ffffff', max_length=20, blank=True),
+            field=models.CharField(default='#ffffff', max_length=20, blank=True),
         ),
     ]
