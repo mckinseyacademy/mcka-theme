@@ -1,4 +1,27 @@
 $(function () {
+  $(document).on('DOMNodeInserted', '.drag-container', function() {
+    var $div = $(".target-img-wrapper");
+    function preventBehavior(e) {
+        e.preventDefault();
+    };
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === "class") {
+          var attributeValue = $(mutation.target).prop(mutation.attributeName);
+          if($(mutation.target).hasClass('dragging')) {
+            document.addEventListener("touchmove", preventBehavior, {passive: false});
+          } else {
+            document.removeEventListener("touchmove", preventBehavior);
+          }
+        }
+      });
+    });
+    observer.observe($div[0], {
+      attributes: true
+    });
+  });
+
+
   var isSurveyTableFilled = false;
   $(document).on('change', '.new-theme input[type=radio]', function (e) {
     var parent = $(e.target).parents('[data-block-type="pb-mcq"], [data-block-type="adventure"]');
