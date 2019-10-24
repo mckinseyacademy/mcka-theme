@@ -1,7 +1,9 @@
 from debug_toolbar.panels import DebugPanel
-import urllib2
-from urllib import addinfourl
-from StringIO import StringIO
+import urllib.request
+import urllib.error
+import urllib.parse
+from io import StringIO
+from urllib.response import addinfourl
 import json
 import threading
 import time
@@ -15,7 +17,7 @@ def _now_in_ms():
     return int(round(time.time() * 1000))
 
 
-class DebugHandler(urllib2.HTTPHandler):
+class DebugHandler(urllib.request.HTTPHandler):
 
     def http_request(self, request):
         request.start_time = _now_in_ms()
