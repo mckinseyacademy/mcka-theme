@@ -30,7 +30,7 @@
                         - if overview.video
                           #mk-player{'data-video-id': "#{overview.course_video}"}
                         - elif overview.course_image_urls
-                          %img{'src': '#{overview.course_image_urls.large}'}
+                          %img{'src': '#{overview.course_image_urls.large}', alt: "#{active_course.name} Course Card"}
                       .video-overview.hidden
                         %i.fa.fa-play-circle
                         %span {% trans "Course Overview" %}
@@ -49,7 +49,7 @@
                     - else
                       %input{"id": "faculty_#{teacher.idx}", 'type': 'radio', 'name': 'faculty_tabs'}
                     %label{"for": "faculty_#{teacher.idx}"}
-                      %img{"src": "#{teacher.image_src}", :alt => "#{teacher.name}"}
+                      %img{"src": "#{teacher.image_src}", alt: "#{teacher.name} picture"}
                       %span.bookmark.secondary
                         %svg{"height": "100%", "preserveaspectratio" : "none", "viewbox" : "0 0 20 100", "width" : "100%"}
                           %path{"d": "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", "vector-effect" : "non-scaling-stroke"}
