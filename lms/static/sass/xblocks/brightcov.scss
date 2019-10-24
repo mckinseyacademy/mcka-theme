@@ -4,18 +4,48 @@
         font-size: inherit;
         margin: 0;    
     }
-    .video-js{
+    
+    // if video is found inside the xBlock
 
-        // for Tablet
+    [data-block-type="ooyala-player"]{
+        .video-js{
+            width: 100% ;
+            // for Tablet
+        
+            @media only screen and (max-device-width : 1024px)  { 
+                height: 437px !important;
+            }
 
-        @media only screen and (max-device-width : 1024px)  { 
-            width:100% !important;
-            height: 250px !important;
+            @media only screen and (max-device-width : 768px) { 
+                height: 373px !important;
+            }
         }
+    }
 
-        @media only screen and (max-device-width : 768px) { 
+    // if the video is complimentery
+
+    table{
+        tr{
+            td{
+                .video-js{
+                    @media only screen and (max-device-width : 1024px)  { 
+                        width: 100% !important;
+                        height: 250px !important;
+                    }
+            
+                    @media only screen and (max-device-width : 768px) { 
+                        height: 180px !important;
+                    }
+                }
+            }
+        }
+    }
+
+    .video-js{
+        
+        @media only screen and (max-device-width : 767px) { 
+            width: 100% !important;
             height: 180px !important;
         }
     }
 }
-
