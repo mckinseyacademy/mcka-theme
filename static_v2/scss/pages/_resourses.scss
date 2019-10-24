@@ -38,6 +38,18 @@
         
         .video-js{
           width: 100% !important;
+          height: 180px !important;
+
+          @media only screen and (max-device-width : 1024px)  { 
+            width: 100% !important;
+            height: 250px !important;
+          }
+
+          @media only screen and (max-device-width : 768px) { 
+              height: 180px !important;
+          }
+
+
         }
         .oo-player-container {
           width: 100% !important;
