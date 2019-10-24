@@ -455,29 +455,6 @@ body.new-theme {
         }
     }
 
-    // Image Explorer
-
-    
-
-    // HTML Module
-
-    [data-type="HTMLModule"] {
-        table {
-            tr {
-                td {
-                    padding: 10px;
-
-                    &:first-child {
-                        padding-left: 0;
-                    }
-
-                    &:last-child {
-                        padding-right: 0;
-                    }
-                }
-            }
-        }
-    }
 
     // Problem Builder Answer
 
