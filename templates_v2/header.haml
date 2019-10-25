@@ -13,13 +13,13 @@
           %div.all-logos
             - if client_customization.global_client_logo
               %a.navbar-brand{:href => "/"}
-                %img{:src => "{{client_customization.global_client_logo}}", :width => "160"}
+                %img{:src => "{{client_customization.global_client_logo}}", :width => "160", "alt": "#{organization_name} Logo"}
             - else
               %a.navbar-brand{:href => "/", :tabindex => "-1"}
-                %img{:src => "{% static 'image/McKA-logo-black.svg' %}", :width => "160"}
+                %img{:src => "{% static 'image/McKA-logo-black.svg' %}", :width => "160", "alt": "#{organization_name} Logo"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
-                %img{:src => "{{client_customization.client_logo}}", :width => "160"}
+                %img{:src => "{{client_customization.client_logo}}", :width => "160", "alt": "#{organization_name} Logo"}
 
           - if request.user.is_authenticated
             .topRightArea
