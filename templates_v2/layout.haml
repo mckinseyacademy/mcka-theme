@@ -238,13 +238,13 @@
               %form.white.clearfix{action: "/accounts/edit_fullname/", method:"POST"}
                 - csrf_token
                 .form-group
-                  %label.form-label{:for => "exampleInputEmail1"}
+                  %label.form-label{:for => "fName"}
                     {% trans "First name" %}
-                  %input.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "first_name"}/
+                  %input.form-control.form-input#fName{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "first_name"}/
                 .form-group
-                  %label.form-label{:for => "exampleInputEmail1"}
+                  %label.form-label{:for => "lName"}
                     {% trans "Last name" %}
-                  %input.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "last_name"}/
+                  %input.form-control.form-input#lName{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "last_name"}/
                 .invalid-feedback.error.mb-4
                 %div3
                   %button.btn.btn-primary.mt-20{:type => "submit"}
@@ -264,9 +264,9 @@
               %form.white.clearfix{:method => "POST", :action => "/accounts/edit_title/"}
                 - csrf_token
                 .form-group
-                  %label.form-label{:for => "exampleInputEmail1"}
+                  %label.form-label{:for => "title"}
                     {% trans "Title" %}
-                  %input.form-control.form-input{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "title"}/
+                  %input.form-control.form-input#title{:aria-describedby => "emailHelp", :placeholder => "", :type => "text", :name => "title"}/
 
                 .invalid-feedback.error.mb-4
                 %button.btn.btn-primary.mt-10{:type => "submit"}
