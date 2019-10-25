@@ -10,14 +10,24 @@
     [data-block-type="ooyala-player"]{
         .video-js{
             width: 100% ;
-            // for Tablet
+            height: 650px !important;
+            
+            // for iPad Landscape
         
             @media only screen and (max-device-width : 1024px)  { 
-                height: 437px !important;
+                height: 485px !important;
             }
 
+            // for iPad Portrait
+
             @media only screen and (max-device-width : 768px) { 
-                height: 373px !important;
+                height: 415px !important;
+            }
+
+            // for Mobile Devices
+
+            @media only screen and (max-device-width : 767px) { 
+                height: 194px !important;
             }
         }
     }
@@ -30,11 +40,15 @@
                 .video-js{
                     @media only screen and (max-device-width : 1024px)  { 
                         width: 100% !important;
-                        height: 250px !important;
+                        height: 236px !important;
                     }
             
                     @media only screen and (max-device-width : 768px) { 
-                        height: 180px !important;
+                        height: 202px !important;
+                    }
+                    
+                    @media only screen and (max-device-width : 767px) { 
+                        height: 194px !important;
                     }
                 }
             }
@@ -45,7 +59,7 @@
         
         @media only screen and (max-device-width : 767px) { 
             width: 100% !important;
-            height: 180px !important;
+            height: 192px !important;
         }
     }
 }
