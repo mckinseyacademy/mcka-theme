@@ -1,32 +1,33 @@
-.new-theme{
+.new-theme {
+
     // these changes by murad in apros so I have removed from there and added here --- shahid
     .bc-player-default_default .vjs-menu-button-popup .vjs-menu .vjs-menu-content {
         font-size: inherit;
-        margin: 0;    
+        margin: 0;
     }
-    
+
     // if video is found inside the xBlock
 
-    [data-block-type="ooyala-player"]{
-        .video-js{
-            width: 100% ;
+    [data-block-type="ooyala-player"] {
+        .video-js {
+            width: 100%;
             height: 650px !important;
-            
+
             // for iPad Landscape
-        
-            @media only screen and (max-device-width : 1024px)  { 
+
+            @media only screen and (max-device-width : 1024px) {
                 height: 485px !important;
             }
 
             // for iPad Portrait
 
-            @media only screen and (max-device-width : 768px) { 
+            @media only screen and (max-device-width : 768px) {
                 height: 415px !important;
             }
 
             // for Mobile Devices
 
-            @media only screen and (max-device-width : 767px) { 
+            @media only screen and (max-device-width : 767px) {
                 height: 194px !important;
             }
         }
@@ -34,20 +35,20 @@
 
     // if the video is complimentery
 
-    table{
-        tr{
-            td{
-                .video-js{
-                    @media only screen and (max-device-width : 1024px)  { 
+    table {
+        tr {
+            td {
+                .video-js {
+                    @media only screen and (max-device-width : 1024px) {
                         width: 100% !important;
                         height: 236px !important;
                     }
-            
-                    @media only screen and (max-device-width : 768px) { 
+
+                    @media only screen and (max-device-width : 768px) {
                         height: 202px !important;
                     }
-                    
-                    @media only screen and (max-device-width : 767px) { 
+
+                    @media only screen and (max-device-width : 767px) {
                         height: 194px !important;
                     }
                 }
@@ -55,11 +56,98 @@
         }
     }
 
-    .video-js{
-        
-        @media only screen and (max-device-width : 767px) { 
+    .video-js {
+
+        @media only screen and (max-device-width : 767px) {
             width: 100% !important;
             height: 192px !important;
+        }
+    }
+
+
+    // UI 
+
+    .video-js {
+        .vjs-big-play-button {
+            top: 50%;
+            left: 50%;
+            margin-left: -1em;
+            margin-top: -1em;
+            width: 2em !important;
+            height: 2em !important;
+            line-height: 2em !important;
+            border: none;
+            border-radius: 50%;
+            font-size: 3.5em !important;
+            background: none !important;
+            color: #fff;
+        }
+
+        .vjs-control-bar {
+            .vjs-control {
+
+                width: 40px !important;
+                height: 30px !important;
+                line-height: 10px !important;
+                font-size: 10px !important;
+                border: none !important;
+                padding: 0 !important;
+                color: #fff !important;
+                background: none !important;
+
+                &.vjs-progress-control {
+                    height: .3em !important;
+                    top: -.3em !important;
+                    width: 100% !important;
+
+                    &:hover {
+                        height: .5em !important;
+                        top: -.5em !important;
+                        width: 100% !important;
+                    }
+                }
+
+                &.vjs-time-control {
+                    width: auto !important;
+                    height: 100% !important;
+                    line-height: 30px !important;
+                    font-size: 12px !important;
+                }
+            }
+
+            .vjs-playback-rate, .vjs-subs-caps-button {
+
+                width: 40px !important;
+                height: 30px !important;
+                line-height: 30px !important;
+                font-size: 12px !important;
+                border: none !important;
+                padding: 0 !important;
+                color: #fff !important;
+                background: none !important;
+            }
+
+            .vjs-subs-caps-button{
+                .vjs-icon-placeholder{
+                    &:before{
+                        line-height: 30px!important;
+                    }
+                }
+            }
+
+            .vjs-playback-rate-value {
+                font-size: 12px !important;
+                line-height: 30px !important;
+            }
+
+            .vjs-volume-panel-horizontal
+            {
+                width: auto !important;
+                .vjs-volume-horizontal{
+                    width: auto !important;
+                    margin-right: 0;
+                }
+            }
         }
     }
 }
