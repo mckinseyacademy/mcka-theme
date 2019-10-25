@@ -202,11 +202,11 @@
                     %th {% trans "Graded Items" %}
                     %th {% trans "Grade" %}
                 %tbody
-                  %tr
-                    %td.visual.progressWidgets{"rowspan": "#{graded_items_rows}"}
-                      - include "courses/visualizations/course_proficiency.haml"
                   - for module in course.graded_items.modules
                     %tr
+                      - if forloop.first
+                        %td.visual.progressWidgets{"rowspan": "#{graded_items_rows}"}
+                          - include "courses/visualizations/course_proficiency.haml"
                       %td
                         .lesson-row-item
                           .lesson-item-name
@@ -274,9 +274,8 @@
                     %th {% trans "Stats" %}
                 %tbody
                   %tr
-                    %td.visual.progressWidgets{"rowspan": "6"}
+                    %td.visual.progressWidgets{"rowspan": "5"}
                       - include "courses/visualizations/course_engagement.haml"
-                  %tr
                     %td {% blocktrans %}Number of <span>New Posts</span> you created {% endblocktrans %}
                     %td.number{"class": "{% if social.metrics.num_threads == 0 %}zero{% endif %}"}= social.metrics.num_threads
                   %tr

@@ -689,7 +689,7 @@ def _course_progress_for_user_v2(request, course_id, user_id):
         "average_progress": average_progress(course, request.user.id),
         "completed_items_count": completed_items_count,
         "graded_items_count": graded_items_count,
-        "graded_items_rows": graded_items_count + 1,
+        "graded_items_rows": graded_items_count,
         "group_activities": group_activities,
         "graders": ', '.join("%s%% %s" %
                              (grader.weight,
