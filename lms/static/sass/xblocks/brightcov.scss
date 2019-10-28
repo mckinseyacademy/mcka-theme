@@ -11,7 +11,7 @@
     [data-block-type="ooyala-player"] {
         .video-js {
             width: 100%;
-            height: 650px !important;
+            height: 596px !important;
 
             // for iPad Landscape
 
@@ -84,6 +84,9 @@
         }
 
         .vjs-control-bar {
+
+            height:30px !important;
+            
             .vjs-control {
 
                 width: 40px !important;
@@ -113,6 +116,17 @@
                     line-height: 30px !important;
                     font-size: 12px !important;
                 }
+                &.vjs-fullscreen-control,
+                &.vjs-picture-in-picture-control{
+                    font-size: 11px !important;
+                    margin-top: -2px !important;
+                }
+            }
+
+            .vjs-time-control {
+                height: 30px !important;
+                line-height: 30px !important;
+                font-size: 12px !important;
             }
 
             .vjs-playback-rate, .vjs-subs-caps-button {
@@ -136,7 +150,7 @@
             }
 
             .vjs-playback-rate-value {
-                font-size: 12px !important;
+                font-size: 14px !important;
                 line-height: 30px !important;
             }
 
