@@ -6,7 +6,7 @@
     %a.d-block#course-navigation{:href => "#{course.nav_url}", 'data-numdays': '#{course.days_till_start}'}
       .card{"class": "{% if course.ended %}archived{% endif %}"}
         .overlay-img
-          %img.card-img-top{:alt => "#{course.name} course card", :src => "{{course.course_image_urls.large}}", onload: "removeCardLoader(this)", onerror: "this.onerror=null;this.src=&#39;/static/image/default-course-image.png&#39;;"}
+          %img.card-img-top{:alt => " ", :src => "{{course.course_image_urls.large}}", onload: "removeCardLoader(this)", onerror: "this.onerror=null;this.src=&#39;/static/image/default-course-image.png&#39;;"}
         .card-body
           .future-course-text
             {% trans "Coming Soon" %}
