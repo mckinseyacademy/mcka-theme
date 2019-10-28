@@ -113,6 +113,7 @@ $(function () {
     function handleLoginFormSubmit(ev) {
         ev && ev.preventDefault();
         resetErrors();
+        $('#login').attr("disabled", "disabled");
 
         let passwordLogin = $(".login-page").hasClass("login-with-password");
         let headers = {
@@ -135,12 +136,14 @@ $(function () {
                 type: 'POST',
                 url: '/',
                 success: function (_1, _2, xhr) {
+                    $('#login').removeAttr("disabled");
                     ga('send', 'event', 'Login', 'normal_login', 'success', {
                         dimension4: hashed_id,
                     });
                     redirectAfterLogin(xhr);
                 },
                 error: function (error) {
+                    $('#login').removeAttr("disabled");
                     ga('send', 'event', 'Login', 'normal_login', 'failure', {
                         dimension4: hashed_id,
                     });
@@ -157,6 +160,7 @@ $(function () {
                 type: 'POST',
                 success: function (_1, _2, xhr) {
                     $("#login-form > div.already-activated").addClass("d-none");
+                    $('#login').removeAttr("disabled");
                     ga('send', 'event', 'Login', 'validate', 'success', {
                         dimension4: hashed_id,
                     });
@@ -170,6 +174,7 @@ $(function () {
                     }
                 },
                 error: function (error) {
+                    $('#login').removeAttr("disabled");
                     ga('send', 'event', 'Login', 'validate', 'failure', {
                         dimension4: hashed_id,
                     });
