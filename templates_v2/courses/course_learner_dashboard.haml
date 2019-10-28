@@ -26,7 +26,7 @@
                       %a.card.last_visited{href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}", target: "{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')", "data-tile-id": "#{tile.id}"}
                         - if tile.background_image
                           .image-holder
-                            %img{:alt => "images", :src => "/company_images/#{tile.background_image}"}
+                            %img{:alt => " ", :src => "/company_images/#{tile.background_image}"}
                         - else
                           .image-holder{"style": "background-color: {{tile.tile_background_color}}"}
                         .content
@@ -43,7 +43,7 @@
                         %a.card{href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}", target: "{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')", "data-tile-id": "#{tile.id}"}
                           - if tile.background_image
                             .image-holder
-                              %img{:alt => "images", :src => "/company_images/#{tile.background_image}"}
+                              %img{:alt => " ", :src => "/company_images/#{tile.background_image}"}
                           - else
                             .image-holder{"style": "background-color: {{tile.tile_background_color}}"}
                           .content
@@ -58,7 +58,7 @@
                           %a.card.disabled{href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}", target: "{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')", "data-tile-id": "#{tile.id}"}
                             - if tile.background_image
                               .image-holder
-                                %img{:alt => "images", :src => "/company_images/#{tile.background_image}"}
+                                %img{:alt => " ", :src => "/company_images/#{tile.background_image}"}
                             - else
                               .image-holder{"style": "background-color: {{tile.tile_background_color}}"}
                             .content
