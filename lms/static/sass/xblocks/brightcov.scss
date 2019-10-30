@@ -30,6 +30,10 @@
             @media only screen and (max-device-width : 767px) {
                 height: 194px !important;
             }
+            &.vjs-fullscreen{
+                height: 100vh !important;
+                width: 100vw !important;
+            }
         }
     }
 
@@ -162,6 +166,10 @@
                     margin-right: 0;
                 }
             }
+        }
+        &.vjs-fullscreen{
+            height: 100vh !important;
+            width: 100vw !important;
         }
     }
 }
