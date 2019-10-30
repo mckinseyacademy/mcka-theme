@@ -171,4 +171,13 @@ body.new-theme {
             padding-top: 20px;
         }
     }
+
+    // multiple fullScreen Videos
+    .oo-player-container {
+        .oo-player {
+            &.oo-fullscreen {
+                z-index: 99999 !important;
+            }
+        }
+    }
 }
