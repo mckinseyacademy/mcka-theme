@@ -11,6 +11,7 @@ from urllib.error import HTTPError as UrllibHTTPError
 from django.utils.translation import ugettext as _
 from requests.exceptions import HTTPError as RequestsHTTPError
 
+from lib.utils import bytes_to_str
 
 ERROR_CODE_MESSAGES = {}
 
@@ -53,7 +54,7 @@ class ApiError(Exception):
 
         # Look in response content for specific message from api response
         try:
-            self.content_dictionary = json.loads(body)
+            self.content_dictionary = json.loads(bytes_to_str(body))
         except (ValueError, TypeError):
             self.content_dictionary = {}
 

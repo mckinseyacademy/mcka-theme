@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 from django.core.cache import cache
 
-from lib.utils import DottableDict
+from lib.utils import DottableDict, bytes_to_str
 
 from .common import DataManager
 from .common_data import CommonDataManager, COMMON_DATA_PROPERTIES
@@ -66,7 +66,7 @@ class UserDataManager(DataManager):
             user_courses = self.get_cached_data(property_name=USER_PROPERTIES.COURSES)
 
             if user_courses is not None:
-                user_courses = json.loads(user_courses)
+                user_courses = json.loads(bytes_to_str(user_courses))
                 for course in user_courses:
                     cache_key = self.get_cache_key(
                         property_name=property_name,
@@ -78,7 +78,7 @@ class UserDataManager(DataManager):
             # need to delete user course programs records as well
             user_courses = self.get_cached_data(property_name=USER_PROPERTIES.COURSES)
             if user_courses is not None:
-                user_courses = json.loads(user_courses)
+                user_courses = json.loads(bytes_to_str(user_courses))
                 group_name = GROUPS_SUB_TYPES.SERIES
 
                 for course in user_courses:

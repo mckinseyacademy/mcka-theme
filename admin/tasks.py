@@ -34,6 +34,7 @@ from api_client import user_api
 from api_client.api_error import ApiError
 from api_client.cohort_api import add_cohort_for_course
 from api_client.user_api import get_users
+from lib.utils import bytes_to_str
 from util.csv_helpers import CSVWriter, create_and_store_csv_file
 from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage, get_path
 from util.email_helpers import send_html_email
@@ -950,7 +951,7 @@ def generate_import_files_and_send_notification(batch_id, user_id, base_url, use
         error_data = dict(email=error.user_email, errors=error.error)
 
         try:
-            user_data = json.loads(error.user_data)
+            user_data = json.loads(bytes_to_str(error.user_data))
         except (TypeError, ValueError):
             user_data = {}
 
