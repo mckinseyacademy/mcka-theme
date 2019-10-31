@@ -50,13 +50,13 @@ def user_activation_with_data(user_id, user_data, activation_record):
         user_data["is_active"] = False
         user_api.update_user_information(user_id, user_data)
     except ApiError as e:
-        raise ActivationError(e, e.content_dictionary.get("code"))
+        raise ActivationError(e.message, e.content_dictionary.get("code"))
 
     # if we are still okay, then activate in a separate operation
     try:
         user_api.activate_user(user_id)
     except ApiError as e:
-        raise ActivationError(e, e.content_dictionary.get("code"))
+        raise ActivationError(e.message, e.content_dictionary.get("code"))
 
     try:
         activation_record.delete()
