@@ -203,7 +203,7 @@ def delete_users(ids=None, username=None):
     if not response:
         return {}
 
-    return json.loads(response)
+    return json.loads(bytes_to_str(response))
 
 
 @api_error_protect

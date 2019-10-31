@@ -11,6 +11,7 @@ from urllib.error import HTTPError as UrllibHTTPError
 from django.utils.translation import ugettext as _
 from requests.exceptions import HTTPError as RequestsHTTPError
 
+from lib.utils import bytes_to_str
 
 ERROR_CODE_MESSAGES = {}
 
@@ -33,18 +34,14 @@ class ApiError(Exception):
             self.code = thrown_error.response.status_code
             self.message = thrown_error.response.reason
             body = thrown_error.response.text
-            log.info("API Error, RequestsHTTPError: {} error: {}".format(type(body), body))
         else:
             # An UrllibHTTPError or a mock of that
             self.code = thrown_error.code
             self.message = thrown_error.reason
             try:
-                log.info("API Error : reading body")
                 body = thrown_error.read()
-                log.info("API Error : body : {}".format(body))
-            except (AttributeError, KeyError) as e:
+            except (AttributeError, KeyError):
                 body = ''
-                log.info("API Error : exception : {}".format(str(e)))
 
         self.http_error = thrown_error
 
@@ -57,11 +54,9 @@ class ApiError(Exception):
 
         # Look in response content for specific message from api response
         try:
-            log.info("API Error : loading json")
-            self.content_dictionary = json.loads(body)
-        except (ValueError, TypeError) as e:
+            self.content_dictionary = json.loads(bytes_to_str(body))
+        except (ValueError, TypeError):
             self.content_dictionary = {}
-            log.info("API Error : loading json exception : {}".format(str(e)))
 
         if "message" in self.content_dictionary:
             self.message = self.content_dictionary["message"]

@@ -4,6 +4,7 @@ from datetime import datetime, date
 
 from django.utils.translation import ugettext as _
 
+from lib.utils import bytes_to_str
 from .json_object import JsonObject
 from . import group_api
 
@@ -17,7 +18,7 @@ class GroupInfo(JsonObject):
 
     def __init__(self, json_data=None, dictionary=None):
         if json_data and dictionary is None:
-            dictionary = json.loads(json_data)
+            dictionary = json.loads(bytes_to_str(json_data))
 
         # has additional attributes in embedded data
         if "data" in dictionary:

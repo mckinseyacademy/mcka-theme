@@ -7,6 +7,8 @@ import io
 from django.utils.translation import ugettext as _
 from django.core.files.storage import default_storage
 
+from lib.utils import bytes_to_str
+
 
 class DataOnly(object):
     pass
@@ -120,7 +122,7 @@ class JsonObject(Objectifier):
 
     def __init__(self, json_data=None, dictionary=None):
         if dictionary is None and json_data is not None:
-            dictionary = json.loads(json_data)
+            dictionary = json.loads(bytes_to_str(json_data))
 
         for date_field in self.date_fields:
             if date_field in dictionary:
