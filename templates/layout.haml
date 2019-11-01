@@ -167,6 +167,10 @@
       %script
         window.jQuery || document.write('<script src="{% static 'js/vendor/jquery.js' %}"><\/script>')
 
+    -# i18n JS Catalog
+    - block i18n
+      %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
+
     -# edx-notifications script dependencies
     - block edx_notifications
       %script{src: "/static/js/vendor/underscore.js"}
@@ -285,10 +289,6 @@
     -# jQuery-md5
     - block jquery_md5
       %script{src: "{% static 'js/vendor/jquery.md5.js' %}"}
-
-    -# i18n JS Catalog
-    - block i18n
-      %script{type: "text/javascript", src: "{% statici18n LANGUAGE_CODE %}"}
 
     -# jQuery-xblock
     - block jquery_xblock
