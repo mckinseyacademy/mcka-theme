@@ -16,26 +16,52 @@
               %i#next-calendar.arrow-calendar.material-icons
                 chevron_right
             #under-calendar
-              %ul.tab-month
-                %li.head-month
-                  %span.month
-                %li.first.last
-                %li.second.last
-              %ul.tab-month
-                %li.head-month
-                  %span.month
-                %li.first.last
-                %li.second.last
-              %ul.tab-month
-                %li.head-month
-                  %span.month
-                %li.first.last
-                %li.second.last
-              %ul.tab-month
-                %li.head-month
-                  %span.month
-                %li.first.last
-                %li.second.last
+              %table
+                %caption.sr
+                  {% trans "Course Calendar" %}
+                %tbody
+                  %tr
+                    %td.tab-month
+                      %table
+                        %thead
+                          %tr
+                            %th.head-month{:scope => "col&rdquo;"}
+                              %span.month
+                        %tbody
+                          %tr
+                            %td.first.last
+                            %td.second.last
+                    %td.tab-month
+                      %table
+                        %thead
+                          %tr
+                            %th.head-month{:scope => "col&rdquo;"}
+                              %span.month
+                        %tbody
+                          %tr
+                            %td.first.last
+                            %td.second.last
+                    %td.tab-month
+                      %table
+                        %thead
+                          %tr
+                            %th.head-month{:scope => "col&rdquo;"}
+                              %span.month
+                        %tbody
+                          %tr
+                            %td.first.last
+                            %td.second.last
+                    %td.tab-month
+                      %table
+                        %thead
+                          %tr
+                            %th.head-month{:scope => "col&rdquo;"}
+                              %span.month
+                        %tbody
+                          %tr
+                            %td.first.last
+                            %td.second.last
+                    
               %ul.legend-list
                 %li.light-gray-legend
                   %i.fa.fa-circle
@@ -218,11 +244,11 @@
 
     for (i=0; i < (expandedRows.length); i++) {
       for (j=0; j < expandedRows[i]; j++) {
-        $( "<li class='first inter-row'></li><li class='second inter-row'></li>" ).insertBefore( ".first.last" );
+        $( "<td class='first inter-row'></td><td class='second inter-row'></td>" ).insertBefore( ".first.last" );
       }
 
       if (i < (expandedRows.length-1))
-        $( "<li class='first'></li><li class='second'></li>" ).insertBefore( ".first.last" );
+        $( "<td class='first'></td><td class='second'></td>" ).insertBefore( ".first.last" );
     }
     $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (220 + (totalRows-2) * 50) );
     $( "#highcharts-container").css( "height", (283 + (totalRows-2) * 52) );
