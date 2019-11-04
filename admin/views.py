@@ -4794,7 +4794,7 @@ def permissions(request):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                           PERMISSION_GROUPS.MCKA_SUBADMIN)
+                           PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.MCKA_TA)
 def generate_assignments(request, project_id, activity_id):
     error = _("Problem generating activity review assignments")
     status_code = 400
