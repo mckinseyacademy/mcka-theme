@@ -181,4 +181,33 @@
             width: 100vw !important;
         }
     }
+
+
+    // Menu CC
+
+    .vjs-subs-caps-button{
+        &:hover{
+            .vjs-menu{
+                display: none!important;
+
+                &.vjs-lock-showing{
+                    display: block!important;
+                }
+            }
+        }
+    }
+
+    // Menu Playback Rate
+
+    .vjs-playback-rate{
+        &:hover{
+            .vjs-menu{
+                display: none!important;
+                &.vjs-lock-showing{
+                    display: block!important;
+                }
+            }
+        }
+    }
+
 }
