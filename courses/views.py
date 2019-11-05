@@ -30,7 +30,7 @@ from api_client.workgroup_models import Submission
 from api_data_manager.course_data import CourseDataManager, COURSE_PROPERTIES
 from api_data_manager.user_data import UserDataManager
 from lib.authorization import permission_group_required
-from lib.utils import DottableDict
+from lib.utils import DottableDict, bytes_to_str
 from mobile_apps.controller import get_mobile_app_download_popup_data
 from util.data_sanitizing import sanitize_data, clean_xss_characters
 from util.user_agent_helpers import is_mobile_user_agent, is_tablet_user_agent
@@ -1522,6 +1522,7 @@ def get_user_completion_json(request, course_id):
 @login_required
 def get_user_complete_gradebook_json(request, course_id):
     user_grades = user_api.get_user_full_gradebook(user_id=request.user.id, course_id=course_id)
+    user_grades = bytes_to_str(user_grades)
     if user_grades:
         data = {"user_gradebook": user_grades}
     else:
