@@ -324,7 +324,7 @@ def workgroup_completion_data_retrieval_task(course_id, url_prefix, task_id, bas
             workgroup_completion_data_retrieval_task.update_state(
                 task_id=task_id, state=celery_states.RETRY,
             )
-            logger.error('Failed retrieving data from Completions List API - {}'.format(e.message))
+            logger.error('Failed retrieving data from Completions List API - {}'.format(e))
 
             try:
                 raise workgroup_completion_data_retrieval_task.retry(
@@ -379,7 +379,7 @@ def workgroup_completion_data_retrieval_task(course_id, url_prefix, task_id, bas
         workgroup_completion_data_retrieval_task.update_state(
             task_id=task_id, state=celery_states.RETRY
         )
-        logger.error('Failed generating CSV - {}'.format(e.message))
+        logger.error('Failed generating CSV - {}'.format(e))
         raise workgroup_completion_data_retrieval_task.retry(exc=e)
 
     file_name = '{}_workgroup_completion_report.csv'.format(course_id.replace('/', '_'))
@@ -399,7 +399,7 @@ def workgroup_completion_data_retrieval_task(course_id, url_prefix, task_id, bas
         workgroup_completion_data_retrieval_task.update_state(
             task_id=task_id, state=celery_states.RETRY
         )
-        logger.error('Failed saving CSV to S3 - {}'.format(e.message))
+        logger.error('Failed saving CSV to S3 - {}'.format(e))
         raise workgroup_completion_data_retrieval_task.retry(exc=e)
     else:
         logger.info('Saved CSV to S3 - {}'.format(task_log_msg))

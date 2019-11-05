@@ -682,18 +682,18 @@ def get_course_blocks_completions_list(course_id, qs_params):
     if page_size == 'all':
         results = []
         response = GET(url)
-        data = json.loads(response.read())
+        data = json.loads(bytes_to_str(response.read()))
         pages = data['num_pages']
         for _ in range(0, pages):
             result = data['results']
             results.extend(result)
             if data['next']:
                 response = GET(data['next'])
-                data = json.loads(response.read())
+                data = json.loads(bytes_to_str(response.read()))
         return JP.from_json(json.dumps(results))
     else:
         response = GET(url)
-        return json.loads(response.read())
+        return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect
