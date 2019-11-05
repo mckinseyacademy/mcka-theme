@@ -49,8 +49,11 @@
               height: 180px !important;
           }
 
-
+          &.vjs-fullscreen{
+            height: 100vh !important;
+            width: 100vw !important;
         }
+      }
         .oo-player-container {
           width: 100% !important;
         }
