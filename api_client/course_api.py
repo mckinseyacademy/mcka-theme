@@ -666,6 +666,37 @@ def get_course_completions(
 
 
 @api_error_protect
+def get_course_blocks_completions_list(course_id, qs_params):
+    ''' fetch course blocks completions list '''
+    page_size = qs_params.get('page_size')
+
+    if page_size == 'all':
+        qs_params["page_size"] = 200
+
+    url = '{}/{}/{}/completions/?{}'.format(
+        settings.API_SERVER_ADDRESS,
+        COURSEWARE_API,
+        course_id,
+        urlencode(qs_params),
+    )
+    if page_size == 'all':
+        results = []
+        response = GET(url)
+        data = json.loads(response.read())
+        pages = data['num_pages']
+        for _ in range(0, pages):
+            result = data['results']
+            results.extend(result)
+            if data['next']:
+                response = GET(data['next'])
+                data = json.loads(response.read())
+        return JP.from_json(json.dumps(results))
+    else:
+        response = GET(url)
+        return json.loads(response.read())
+
+
+@api_error_protect
 def get_course_metrics(course_id, *args, **kwargs):
     """
     retrieves course metrics

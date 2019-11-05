@@ -23,9 +23,9 @@
 
           - if request.user.is_authenticated
             .topRightArea
-              - if not client_customization.hide_user_profile
+              - if client_customization.show_user_profile
                 - include "accounts/user_profile_container.haml"
-              - elif client_customization.hide_user_profile
+              - elif not client_customization.show_user_profile
                 {% with request.path|slice:":6" as path %}
                   {% if path == '/admin' %}
                     - include "accounts/user_profile_container.haml"

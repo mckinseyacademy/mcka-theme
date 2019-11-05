@@ -41,6 +41,7 @@ from util.email_helpers import send_html_email
 
 from admin.models import LearnerDashboardTile, AdminTask, DeletionAdmin
 from accounts.models import UserActivation
+from .workgroup_reports import generate_workgroup_csv_report
 from accounts.helpers import create_activation_url
 from courses.controller import strip_tile_link, get_course_object, update_progress
 
@@ -55,6 +56,7 @@ from .controller import (
     update_company_field_for_users,
     CourseParticipantStats,
     ProblemReportPostProcessor,
+    _make_key,
     get_data_from_csv,
     delete_company_data,
     unenroll_participant,
@@ -286,6 +288,138 @@ def course_participants_data_retrieval_task(course_id, company_id, task_id, base
     return download_url
 
 
+@task(name='admin.workgroup_completion_data_retrieval_task', max_retries=3, queue='high_priority')
+def workgroup_completion_data_retrieval_task(course_id, url_prefix, task_id, base_url, user_id, retry_params=None):
+    """
+    Retrieves work group completions' data using API
+
+    results are set in celery result backend, batch status is updated on each successful retrieval
+    """
+    api_params = {
+        'page': 1,
+        'page_size': settings.MAX_USERS_COMPLETIONS_PER_PAGE,
+    }
+    task_log_msg = "Work Group completion data retrieval task for course: " \
+                   "`{}`, triggered by user `{}`".format(course_id, user_id)
+
+    storage_path = settings.EXPORT_STATS_DIR
+
+    completions_data = []
+    fetched = 0
+
+    # resume and persist existing data in case of retry
+    if retry_params:
+        api_params = retry_params.get('api_params', api_params)
+        completions_data = retry_params.get('data', [])
+        fetched = len(completions_data)
+
+    logger.info('Starting - {}'.format(task_log_msg))
+
+    while True:
+        try:
+            block_completions = course_api.get_course_blocks_completions_list(
+                course_id, api_params
+            )
+        except Exception as e:
+            workgroup_completion_data_retrieval_task.update_state(
+                task_id=task_id, state=celery_states.RETRY,
+            )
+            logger.error('Failed retrieving data from Completions List API - {}'.format(e.message))
+
+            try:
+                raise workgroup_completion_data_retrieval_task.retry(
+                    kwargs={
+                        'course_id': course_id, 'url_prefix': url_prefix, 'base_url': base_url,
+                        'user_id': user_id, 'retry_params': {'api_params': api_params, 'data': completions_data},
+                    }
+                )
+            except (MaxRetriesExceededError, Reject) as e:
+                # exit with a failure email on reject/max-retries
+                if isinstance(e, MaxRetriesExceededError):
+                    logger.error('Max retires reached - EXITING - {}'.format(task_log_msg))
+                else:
+                    logger.error('Retry rejected with error `{}` - EXITING - {}'.format(e.reason, task_log_msg))
+
+                send_export_stats_status_email(
+                    user_id=user_id, course_id=course_id,
+                    report_name='', base_url=base_url,
+                    download_url='', report_succeeded=False, workgroup_flag=True
+                )
+
+                raise
+
+        completions_data.extend(block_completions.get('results'))
+
+        total = block_completions.get('count')
+        fetched += len(block_completions.get('results'))
+        percentage_fetched = (fetched / (total or 1)) * 100.0
+
+        workgroup_completion_data_retrieval_task.update_state(
+            task_id=task_id, state='PROGRESS', meta={'percentage': int(percentage_fetched)})
+
+        api_params['page'] += 1
+
+        logger.info(
+            'Progress {}% - {}'
+            .format(percentage_fetched, task_log_msg)
+        )
+
+        if not block_completions.get('next'):
+            break
+
+    completions = {
+        _make_key(c.get("content_id"), c.get('user_id'), c.get('stage')): c for c in completions_data
+    }
+
+    try:
+        csv_data = generate_workgroup_csv_report(
+            course_id, url_prefix, completions=completions
+        )
+    except Exception as e:
+        workgroup_completion_data_retrieval_task.update_state(
+            task_id=task_id, state=celery_states.RETRY
+        )
+        logger.error('Failed generating CSV - {}'.format(e.message))
+        raise workgroup_completion_data_retrieval_task.retry(exc=e)
+
+    file_name = '{}_workgroup_completion_report.csv'.format(course_id.replace('/', '_'))
+
+    logger.info('Created CSV data - {}'.format(task_log_msg))
+
+    # path is created as: /course_id/file_name
+    storage_path = '{}/{}/{}'.format(storage_path, course_id.replace('/', '__'), file_name)
+    storage = default_storage
+
+    try:
+        # use private s3 storage for export files
+        if settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage':
+            storage = PrivateMediaStorageThroughApros()
+        storage_path = storage.save(storage_path, ContentFile(csv_data))
+    except Exception as e:
+        workgroup_completion_data_retrieval_task.update_state(
+            task_id=task_id, state=celery_states.RETRY
+        )
+        logger.error('Failed saving CSV to S3 - {}'.format(e.message))
+        raise workgroup_completion_data_retrieval_task.retry(exc=e)
+    else:
+        logger.info('Saved CSV to S3 - {}'.format(task_log_msg))
+
+    logger.info('Finished - {}'.format(task_log_msg))
+
+    download_url = urljoin(
+        base=base_url,
+        url=reverse('private_storage', kwargs={'path': storage_path})
+    )
+
+    send_export_stats_status_email(
+        user_id=user_id, course_id=course_id,
+        report_name=file_name, base_url=base_url,
+        download_url=download_url, report_succeeded=True, workgroup_flag=True
+    )
+
+    return download_url
+
+
 def send_bulk_fields_update_email(
         user_id, total_records, record_count, errors, base_url
 ):
@@ -312,16 +446,23 @@ def send_bulk_fields_update_email(
 
 def send_export_stats_status_email(
         user_id, course_id, report_name, base_url,
-        download_url, report_succeeded=True,
+        download_url, report_succeeded=True, workgroup_flag=False,
 ):
     """
     Invokes notification email task
     """
     if report_succeeded:
-        subject = _('Participant stats for {} is ready to download').format(course_id)
+        if not workgroup_flag:
+            subject = _('Participant stats for {} is ready to download').format(course_id)
+        else:
+            subject = _('Workgroup Completion report for {} is ready to download').format(course_id)
         email_template = 'admin/export_stats_email_template.haml'
     else:
-        subject = _('Participant stats for {} did not generate').format(course_id)
+        if not workgroup_flag:
+            subject = _('Participant stats for {} did not generate').format(course_id)
+        else:
+            subject = _('Workgroup Completion report for {} did not generate').format(course_id)
+
         email_template = 'admin/export_stats_failure_email_template.haml'
         # create admin/course details url
         download_url = urljoin(

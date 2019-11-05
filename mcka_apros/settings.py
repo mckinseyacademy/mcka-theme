@@ -503,6 +503,7 @@ TEMPLATES = [
 
 # Data retrieval settings
 MAX_USERS_PER_PAGE = 250
+MAX_USERS_COMPLETIONS_PER_PAGE = 250
 
 # Heap Analytics Env ID
 HEAP_ENV_ID = ''

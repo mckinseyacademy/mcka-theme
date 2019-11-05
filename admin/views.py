@@ -1166,7 +1166,8 @@ class BulkTaskAPI(APIView):
         return Response({'values': response}, status=status.HTTP_200_OK)
 
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                                   PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN)
+                                   PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.COMPANY_ADMIN,
+                                   PERMISSION_GROUPS.MCKA_TA)
     def post(self, request):
         """
         Creates new task based on task name
@@ -1789,7 +1790,7 @@ def client_detail_customization(request, client_id):
         customization.hex_background_main_navigation = request.POST.get('hex_background_main_navigation',
                                                                         customization.hex_background_main_navigation)
         customization.is_footer_enabled = 'is_footer_enabled' in request.POST
-        customization.hide_user_profile = 'hide_user_profile' in request.POST
+        customization.show_user_profile = 'show_user_profile' in request.POST
         if request.user.is_mcka_admin:
             if 'new_ui_enabled' in request.POST and not customization.new_ui_enabled:
                 customization.new_ui_enabled_at = datetime.now()
@@ -4793,7 +4794,7 @@ def permissions(request):
 
 
 @permission_group_required(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.INTERNAL_ADMIN,
-                           PERMISSION_GROUPS.MCKA_SUBADMIN)
+                           PERMISSION_GROUPS.MCKA_SUBADMIN, PERMISSION_GROUPS.MCKA_TA)
 def generate_assignments(request, project_id, activity_id):
     error = _("Problem generating activity review assignments")
     status_code = 400

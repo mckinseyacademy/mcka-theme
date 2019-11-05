@@ -2815,6 +2815,11 @@ def get_users_for_deletion(file_path, batch_size=settings.DELETION_SYNCHRONOUS_M
     return users
 
 
+def _make_key(content_id, user_id, stage):
+    format_string = '{}_{}' if stage is None else '{}_{}_{}'
+    return format_string.format(content_id, user_id, stage)
+
+
 def delete_participants(user_ids, users=None):
     """
     Deletes all data related to users from LMS and Apros.
