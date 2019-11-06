@@ -32,8 +32,6 @@ body {
     }
 
     .headerNav {
-      @include float(right);
-
       > ul {
         > li {
           @include margin-left(26px);

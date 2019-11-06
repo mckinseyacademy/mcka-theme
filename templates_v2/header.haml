@@ -23,15 +23,6 @@
 
           - if request.user.is_authenticated
             .topRightArea
-              - if client_customization.show_user_profile
-                - include "accounts/user_profile_container.haml"
-              - elif not client_customization.show_user_profile
-                {% with request.path|slice:":6" as path %}
-                  {% if path == '/admin' %}
-                    - include "accounts/user_profile_container.haml"
-                  {% endif %}
-                {% endwith %}
-
               %nav.nav.mainNav.headerNav
                 %ul
                   - if request.user.is_manager
@@ -84,6 +75,14 @@
                       if(window.innerWidth < 768){
                         $('#mycoursestab a.nav-link').remove();
                       }
+              - if client_customization.show_user_profile
+                - include "accounts/user_profile_container.haml"
+              - elif not client_customization.show_user_profile
+                {% with request.path|slice:":6" as path %}
+                  {% if path == '/admin' %}
+                    - include "accounts/user_profile_container.haml"
+                  {% endif %}
+                {% endwith %}
           - else
             - if use_i18n
               .language-selector
