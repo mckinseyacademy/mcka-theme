@@ -2,6 +2,20 @@
 @import '../base/variables';
 
 body.new-theme {
+    
+    .oo-interactive-container {
+        direction: ltr;
+        text-align: center;
+    }
+
+    .oo-text-track-container {
+        transform: none !important;
+        left: auto !important;
+    }
+
+    .oo-control-bar {
+        text-align: unset;
+    }
 
 
     /* mobile only  */
