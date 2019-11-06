@@ -184,13 +184,4 @@ body.new-theme {
             }
         }
     }
-
-    // multiple fullScreen Videos
-    .oo-player-container {
-        .oo-player {
-            &.oo-fullscreen {
-                z-index: 99999 !important;
-            }
-        }
-    }
 }
