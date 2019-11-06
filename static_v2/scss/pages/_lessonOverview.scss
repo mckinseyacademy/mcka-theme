@@ -394,13 +394,13 @@ footer, main, header, body {
           }
         }
       }
-      &.full-screen-mode {
-         display: none !important;
-       }
     }
     .contentCard {
       box-shadow: none;
       padding: 20px 0;
+    }
+    .full-screen-mode {
+      display: none;
     }
   }
   .contentCard{
