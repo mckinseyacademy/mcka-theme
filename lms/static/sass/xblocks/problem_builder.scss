@@ -53,6 +53,12 @@
 
             .close {
                 display: block;
+                font-size: 20px;
+                right: 10px;
+                top: 8px;
+                &:before {
+                    content: "";
+                }
             }
         }
 
