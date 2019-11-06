@@ -4,7 +4,7 @@
     $('body').addClass("moduleArrow");
 
 - if tile_type == 'lesson'
-  %div.controls.nextPreviousWrap#moduleNavigator
+  %div.controls.nextPreviousWrap
     .holder
       -if course.current_lesson.index == course.current_lesson.previous_module.lesson_index
         %a.arrowPin.left{'href': '/learnerdashboard#{course.current_lesson.previous_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}'}
@@ -30,19 +30,4 @@
       if(isTouchDevice()) {
         $('a.arrowPin span[data-toggle="popover"]').popover("disable");
       }
-    });
-    // Hide Module Navigation arrows on fullScreen video mode
-    $('.lesson-content').on('click', 'button.oo-fullscreen', function (e) {
-      setTimeout(
-        function () {
-          if ($('button.oo-fullscreen span.oo-icon').hasClass("oo-icon-system-fullscreen")) {
-            $("#moduleNavigator").addClass('full-screen-mode');
-          }
-          else {
-            $("#moduleNavigator").removeClass('full-screen-mode');
-          }
-          e.preventDefault();
-        },
-        500
-      );
     });

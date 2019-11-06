@@ -3,7 +3,7 @@
   %script
     $('body').addClass("moduleArrow");
 
-%div.controls.nextPreviousWrap#moduleNavigator
+%div.controls.nextPreviousWrap
   .holder
     - if left_lesson_module_navigator
       - if left_lesson_module_navigator.is_started
@@ -38,19 +38,4 @@
       if(isTouchDevice()) {
         $('a.arrowPin span[data-toggle="popover"]').popover("disable");
       }
-    });
-    // Hide Module Navigation arrows on fullScreen video mode
-    $('.lesson-content').on('click', 'button.oo-fullscreen', function (e) {
-      setTimeout(
-        function () {
-          if ($('button.oo-fullscreen span.oo-icon').hasClass("oo-icon-system-fullscreen")) {
-            $("#moduleNavigator").addClass('full-screen-mode');
-          }
-          else {
-            $("#moduleNavigator").removeClass('full-screen-mode');
-          }
-          e.preventDefault();
-        },
-        500
-      );
     });
