@@ -1171,13 +1171,15 @@ body.new-theme {
 							border-radius: 30px;
 							width: 60px !important;
 							height: 60px !important;
-							float: left;
 							margin: 0;
+							display: inline-block;
 						}
 
 						.person-info {
-							width: calc(100% - 70px);
-							margin-left: 70px;
+							margin-left: 10px;
+							display: inline-block;
+							position: relative;
+							top: 10px;
 
 							.person-username {
 								font-weight: bold;
@@ -1584,14 +1586,8 @@ body.new-theme {
 					label {
 						width: 100%;
 						background: $white;
-						border: 1px solid $hard-gray;
-						padding: 0;
-
-						&.forum-nav-filter-main {
-							border: 1px solid $hard-gray;
-							margin-left: 1%;
-							float: right;
-						}
+						border: 1px solid #dcdbdb;
+						margin-bottom: 2px;
 
 						.forum-nav-filter-cohort-control{
 							max-width: 100% !important;
