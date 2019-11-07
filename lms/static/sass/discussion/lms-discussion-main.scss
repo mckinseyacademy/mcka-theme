@@ -1582,16 +1582,19 @@ body.new-theme {
 					}
 
 					label {
-						width: 50%;
+						width: 100%;
 						background: $white;
 						border: 1px solid $hard-gray;
 						padding: 0;
 
 						&.forum-nav-filter-main {
 							border: 1px solid $hard-gray;
-							width: 49%;
 							margin-left: 1%;
 							float: right;
+						}
+
+						.forum-nav-filter-cohort-control{
+							max-width: 100% !important;
 						}
 					}
 				}
