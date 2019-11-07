@@ -194,4 +194,24 @@ body.new-theme {
             }
         }
     }
+
+    // CC switch 
+    .oo-player-skin{
+        // small screen
+        .oo-xsmall{
+            .oo-switch-container{
+                text-align: center;
+                top:5px;
+                .oo-switch-element{
+                    top:-6px;
+                }
+            }
+        }
+    }
+
+    .oo-switch-container{
+        text-align: center;
+    }
+    
+
 }
