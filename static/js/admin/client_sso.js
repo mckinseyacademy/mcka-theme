@@ -114,7 +114,6 @@ $(function () {
     });
 
     ajaxify_overlay_form('#new-principal', 'form', enableCopyButton);
-    ZeroClipboard.config({swfPath: 'static/js/vendor/ZeroClipboard.swf'});
     var dialog = $('#new-principal');
     dialog.on('change', '#id_program_id', function () {
         var form = dialog.find('form');
@@ -134,9 +133,9 @@ $(function () {
 
     function enableCopyButton() {
         var copyBtn = $('#copy-access-key');
-        var client = new ZeroClipboard(copyBtn.get(0));
         var tooltip = copyBtn.siblings('.tooltip');
-        client.on('aftercopy', function (event) {
+        var clipboard = new ClipboardJS('#copy-access-key');
+        clipboard.on('success', function(e) {
             tooltip.show();
         });
         copyBtn.on('mouseout', function (event) {

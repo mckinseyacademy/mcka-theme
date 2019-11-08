@@ -79,7 +79,7 @@ log = logging.getLogger(__name__)
 
 VALID_USER_FIELDS = ["email", "first_name", "last_name", "full_name", "city", "country", "username", "password",
                      "is_active", "title", "profile_image"]
-USERNAME_INVALID_CHARS_REGEX = re.compile("[^-\w]")  # noqa: W605 TODO: handle invalid escape sequence
+USERNAME_INVALID_CHARS_REGEX = re.compile("[^-\w]", re.ASCII)  # noqa: W605 TODO: handle invalid escape sequence
 
 LOGIN_MODE_COOKIE = 'login_mode'
 MOBILE_URL_SCHEME_COOKIE = 'mobile_url_scheme'
