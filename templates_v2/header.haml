@@ -88,7 +88,7 @@
               .language-selector
                 %i.material-icons language
                 .dropdown
-                  %button#dropdownMenuButton.dropdown-toggle.border-0{:tabindex => "-1", "aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
+                  %button#dropdownMenuButton.dropdown-toggle.border-0{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
                     {{ LANGUAGE_CODE }}
                   .dropdown-menu.language-dropdown{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
                     - for language_code, language_name in LANGUAGES
