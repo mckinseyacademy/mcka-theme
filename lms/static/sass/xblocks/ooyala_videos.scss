@@ -197,21 +197,34 @@ body.new-theme {
 
     // CC switch 
     .oo-player-skin{
+
+        .oo-switch-container{
+            text-align: center;
+            top:5px;
+            .oo-switch-element{
+                top:0;
+                margin: 0;
+            }
+        }
+
         // small screen
+
         .oo-xsmall{
             .oo-switch-container{
-                text-align: center;
-                top:5px;
+                
                 .oo-switch-element{
-                    top:-6px;
+                    top:0;
+                    .oo-switch-body{
+                        top:-2px;
+                        height: 10px;
+                    }
+                    .oo-switch-thumb{
+                        width: 13px;
+                        height: 13px;
+                        top: -4px;
+                    }
                 }
             }
         }
     }
-
-    .oo-switch-container{
-        text-align: center;
-    }
-    
-
 }
