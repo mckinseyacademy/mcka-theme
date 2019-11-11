@@ -478,30 +478,32 @@ $(document).ready(function () {
   var delay = null;
   var shown = false;
   var dragging = false;
-
-  $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).hover(
-    function(e) {
-      if (isMobile){
-        return
-      }
-
-      if ($(this).hasClass('courseRow')){
-        $(this).children('.description').css({'opacity': 1, 'visibility': 'visible', 'display': 'block'});
-        return;
-      }
-      $(this).popover('show');
-    }, function(e) {
-      if (isMobile){
-        return
-      }
-
-      if ($(this).hasClass('courseRow')){
-        $(this).children('.description').css({'opacity': 0, 'visibility': 'hidden', 'display': 'none'});
-        return;
-      }
-      $(this).popover('hide');
+  var showPopOver = function(e) {
+    if (isMobile){
+      return
     }
-  );
+
+    if ($(this).hasClass('courseRow')){
+      $(this).children('.description').css({'opacity': 1, 'visibility': 'visible', 'display': 'block'});
+      return;
+    }
+    $(this).popover('show');
+  };
+  var hidePopOver = function(e) {
+    if (isMobile){
+      return
+    }
+
+    if ($(this).hasClass('courseRow')){
+      $(this).children('.description').css({'opacity': 0, 'visibility': 'hidden', 'display': 'none'});
+      return;
+    }
+    $(this).popover('hide');
+  };
+
+  $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).hover(showPopOver, hidePopOver);
+  $( '.longTapPopover[data-toggle="popover"]' ).focus(showPopOver);
+  $( '.longTapPopover[data-toggle="popover"]' ).focusout(hidePopOver);
 
   $( '.longTapPopover[data-toggle="popover"], .courseRow:not(.locked)' ).bind('touchmove', function(event){
     dragging = true;
