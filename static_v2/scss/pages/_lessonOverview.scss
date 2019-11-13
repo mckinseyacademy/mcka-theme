@@ -139,6 +139,10 @@ body{
         opacity: 1;
         left: -82px
       }
+      &:focus {
+        opacity: 1;
+        left: -82px
+      }
     }
     &.right {
       right: -111px;
@@ -149,6 +153,10 @@ body{
         }
       }
       &:hover {
+        opacity: 1;
+        right: -82px
+      }
+      &:focus {
         opacity: 1;
         right: -82px
       }
@@ -169,6 +177,12 @@ body{
       }
     }
     &:hover {
+      > span {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+    &:focus {
       > span {
         opacity: 1;
         visibility: visible;
