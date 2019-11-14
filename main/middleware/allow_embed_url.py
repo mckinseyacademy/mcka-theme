@@ -1,4 +1,5 @@
 from urllib.parse import urlparse
+from collections import OrderedDict
 
 from django.conf import settings
 
@@ -36,6 +37,8 @@ class AllowEmbedUrlMiddleware(object):
         # build map of allowed hosts and allowed_urls from allowed URLs,
         # remove *'s for easy matching
         allowed_urls = settings.ALLOW_EMBED_URL.split()
-        allowed_hosts = {urlparse(url).hostname.replace('*', ''): url for url in allowed_urls}
+        allowed_hosts = OrderedDict()
+        for url in allowed_urls:
+            allowed_hosts[urlparse(url).hostname.replace('*', '')] = url
         matched_urls = [allowed_hosts[host] for host in allowed_hosts if host in referrer_url]
         return matched_urls[0] if matched_urls else False

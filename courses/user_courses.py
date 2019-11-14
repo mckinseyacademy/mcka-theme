@@ -198,6 +198,7 @@ def standard_data(request):
     learner_dashboards = None
     show_my_courses = None
     show_new_ui_tour = False
+    organization_name = None
 
     if request.user and request.user.id:
         course_id = request.resolver_match.kwargs.get('course_id')
@@ -238,6 +239,7 @@ def standard_data(request):
         if organization:
             client_data_manager = OrgDataManager(org_id=organization.id)
             organization_id = organization.id
+            organization_name = organization.display_name
             client_data = client_data_manager.get_org_common_data()
             client_customization = client_data.customization
             client_nav_links = client_data.nav_links
@@ -276,6 +278,7 @@ def standard_data(request):
         "zoomed_in_lesson_navigators": "/lessons/" not in request.META.get('HTTP_REFERER', ''),
         "support": settings.MCKA_SUPPORT_FORM_LINK,
         'branding_colors': get_branding_colors(client_customization),
+        'organization_name': organization_name,
 
     }
 

@@ -395,6 +395,7 @@ class CourseDetailsApiTest(CourseParticipantsStatsMixin, TestCase):
         """
         Test GET /admin/api/courses/<course_id>
         """
+        self.admin_user.is_mcka_admin = True
         course_detail_url = reverse('course_details_api', kwargs={'course_id': str(self.course.course_id)})
         request = self.get_request(course_detail_url, self.admin_user)
         response = CourseDetailsApi().get(request, self.course.course_id)

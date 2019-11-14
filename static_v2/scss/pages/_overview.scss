@@ -72,18 +72,18 @@
         margin-right: 16px;
         cursor: pointer;
         margin-bottom: 20px;
-        &:after {
-          position: absolute;
-          display: block;
-          content: '';
-          top: 20px;
-          left: -40px;
-          right: auto;
-          width: 40px;
-          height: 40px;
-          background: url("/static/image/bookmark.svg") no-repeat;
-          background-size: 22px 39px;
+
+        .bookmark{
+          height: 39px;
+          width: 22px !important;
+          top:20px;
+          display: inline-block;
           transition: all 0.3s ease;
+          svg{
+            width: 100% !important;
+            content: '';
+            display: block;
+          }
         }
 
         img {
@@ -94,15 +94,6 @@
           transform: translate(-50%, -50%);
           min-width:100%;
           min-height: 100%;
-        }
-      }
-
-      &:checked + label {
-        &:after {
-          content: "";
-          left: 0;
-          right: auto;
-          transition: all 0.3s ease
         }
       }
 
@@ -398,8 +389,12 @@
             height: auto;
           }
         }
-        &:checked + label:after {
-          background-size: 12px 18px;
+        &:checked + label{
+          .bookmark{
+            height: 18px;
+            width: 12px !important;
+            top: 10px;
+          }
         }
       }
     }

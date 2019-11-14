@@ -48,7 +48,7 @@ class AllowEmbedUrlTest(TestCase):
 
         self.assertEqual(middleware.is_scorm_shell, True)
         self.assertEqual(response['Content-Security-Policy'], 'frame-ancestors ' + ALLOW_EMBED_URL)
-        self.assertEqual(response['X-Frame-Options'], 'ALLOW-FROM ' + 'https://example2.com')
+        self.assertEqual(response['X-Frame-Options'], 'ALLOW-FROM ' + 'https://example.com')
 
     @ddt.data(
         ('https://example.com/a/url/', True, 'ALLOW-FROM https://example.com'),
