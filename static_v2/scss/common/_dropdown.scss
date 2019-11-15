@@ -183,23 +183,27 @@
     .allCoursesList {
       .holder {
         .data {
+          &.serial,
+          &.status,
+          &.title {
+            display: inline-block;
+          }
           &.status {
-            float: right;
+            float: none;
             width: auto;
             @include media-breakpoint-up(sm) {
               min-width: 100px;
             }
           }
           &.serial {
-            float: left;
+            float: none;
             width: auto;
           }
           &.title {
-            float: none;
-            width: auto !important;
-            display: block;
+            min-width: calc(100% - 190px);
             overflow: hidden;
             line-height: 18px;
+            max-width: calc(100% - 190px);
           }
         }
       }
@@ -283,7 +287,8 @@
         height: 25px;
       }
       &.allLessons .allCoursesList .holder .data.title {
-        width: calc(100% - 110px);
+        min-width: calc(100% - 115px);
+        max-width: calc(100% - 115px);
       }
     }
     &.dashboard-menu {
