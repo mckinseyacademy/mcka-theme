@@ -27,7 +27,7 @@ class Command(BaseCommand):
         assets_watcher_proc = subprocess.Popen([path, 'assets', 'watch'])
         assets_watcher_pid = assets_watcher_proc.pid
         print("Assets watcher PID IS: %d" % assets_watcher_pid)
-        call_command('runserver', port)
+        call_command('runserver', '0.0.0.0:{}'.format(port))
 
     def kill_child():
         if assets_watcher_pid:
