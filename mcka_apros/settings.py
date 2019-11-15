@@ -158,7 +158,6 @@ LANGUAGES = (
     ('pl', 'Polskie'),
 )
 
-
 USE_I18N = True
 USE_L10N = True
 LOCALE_PATHS = (
@@ -185,6 +184,7 @@ ASSETS_MODULES = [
     'assets.assets',
     'assets.assets_v2',
 ]
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, "static"),
     os.path.join(BASE_DIR, "static/gen"),

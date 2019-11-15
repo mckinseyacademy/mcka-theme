@@ -1,0 +1,18 @@
+FROM ubuntu:xenial
+
+WORKDIR ./edx/app/apros/mcka_apros
+
+RUN apt-get update -qq; true
+RUN apt-get -y upgrade
+RUN apt-get install -qqy nginx
+RUN rm /etc/nginx/sites-available/default
+RUN rm /etc/nginx/sites-enabled/default
+
+RUN ln -sf /dev/stdout /var/log/nginx/access.log \
+  && ln -sf /dev/stderr /var/log/nginx/error.log
+
+COPY ./docs/mcka_apros_production /etc/nginx/sites-available/mcka_apros
+
+RUN ln -sf /etc/nginx/sites-available/mcka_apros /etc/nginx/sites-enabled/mcka_apros
+
+CMD ["nginx", "-g", "daemon off;"]
