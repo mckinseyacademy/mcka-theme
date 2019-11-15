@@ -472,20 +472,26 @@ function downloadCSV(args) {
   if (csv == null) return;
   filename = args.filename || 'export.csv';
 
-  // encodeURIComponent can encode more characters than encodeURI
-  // works for FF as well
-  var csvData = encodeURIComponent(csv);
+  // Downloading blob files for IE & Edge
+  if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      var blob = new Blob([csv], { type: 'text/csv;charset=utf-8'});
+      window.navigator.msSaveOrOpenBlob(blob, filename);
+  }else {
+      // encodeURIComponent can encode more characters than encodeURI
+      // works for FF as well
+      var csvData = encodeURIComponent(csv);
 
-  if (!csv.match(/^data:text\/csv/i)) {
-      csvData = 'data:text/csv;charset=utf-8,' + csvData;
+      if (!csv.match(/^data:text\/csv/i)) {
+          csvData = 'data:text/csv;charset=utf-8,' + csvData;
+      }
+
+      link = document.createElement('a');
+      link.setAttribute('href', csvData);
+      link.setAttribute('download', filename);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
   }
-
-  link = document.createElement('a');
-  link.setAttribute('href', csvData);
-  link.setAttribute('download', filename);
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
 }
 
 
