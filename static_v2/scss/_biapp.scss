@@ -195,6 +195,15 @@ body {
       @include left(23px !important);
     }
     .allCoursesList {
+      .holder {
+        .data {
+          &.status {
+            i {
+              @include margin-right(5px);
+            }
+          }
+        }
+      }
       .bookmark {
         @include left(-30px);
         @include right(auto);
