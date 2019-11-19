@@ -55,6 +55,8 @@
 
                     @media only screen and (max-device-width : 767px) {
                         height: 194px !important;
+
+
                     }
                 }
             }
@@ -155,6 +157,7 @@
             }
 
             .vjs-subs-caps-button{
+                display:block !important;
                 .vjs-icon-placeholder{
                     &:before{
                         line-height: 30px!important;
@@ -186,6 +189,7 @@
     // Menu CC
 
     .vjs-subs-caps-button{
+
         &:hover{
             .vjs-menu{
                 display: none!important;
@@ -209,5 +213,10 @@
             }
         }
     }
+
+    .vjs-layout-x-small .vjs-menu-button-popup .vjs-menu .vjs-menu-content{
+        max-height: 150px;
+    }
+   
 
 }
