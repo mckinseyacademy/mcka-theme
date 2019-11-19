@@ -1,9 +1,12 @@
 function group_work_dashboard_assignment_info() {
-    function exportStatsDownloader(){
-        $('#courseDetailsMainModal').find('.courseModalTitle').text(gettext('Downloadable Workgroup Completion Report'));
-        $('#courseDetailsMainModal').find('.courseModalDescription').text(
-            gettext("We'll e-mail you when your report is ready to download.")
-        );
+    $(document).ready(function () {
+        $('#workGroupReportContainer').on('click', '.bulkExportStats', function () {
+            $('#courseDetailsMainModal').find('.courseModalTitle').text(gettext('Downloadable Workgroup Completion Report'));
+            $('#courseDetailsMainModal').find('.courseModalDescription').text(
+                gettext("We'll e-mail you when your report is ready to download.")
+            );
+            $('#courseDetailsMainModal').foundation('reveal', 'open');
+        });
 
         var saveButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.saveChanges');
         var cancelButton = $('#courseDetailsMainModal').find('.courseModalControl').find('.cancelChanges');
@@ -42,14 +45,6 @@ function group_work_dashboard_assignment_info() {
 
         cancelButton.on('click', function () {
             $('#courseDetailsMainModal').foundation('reveal', 'close');
-            });
-
-        $('#courseDetailsMainModal').foundation('reveal', 'open');
-    }
-
-    $(document).ready(function () {
-        $('#workGroupReportContainer').on('click', '.bulkExportStats', function () {
-            exportStatsDownloader();
         });
     });
 }
