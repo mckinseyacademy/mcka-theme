@@ -115,6 +115,23 @@ def get_organizations(organization_object=JsonObjectWithImage):
 
 
 @api_error_protect
+def get_organizations_with_ids(ids, organization_object=JsonObjectWithImage):
+    '''fetch organizations with given ids'''
+    qs_params = {
+        'page_size': 0,
+        'ids': ','.join(map(str, ids)),
+    }
+    response = GET(
+        '{}/{}?{}'.format(
+            settings.API_SERVER_ADDRESS,
+            ORGANIZATION_API,
+            urlencode(qs_params)
+        )
+    )
+    return JP.from_json(response.read(), organization_object)
+
+
+@api_error_protect
 def get_organizations_dict():
     ''' fetch all organizations '''
     response = GET(

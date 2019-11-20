@@ -6078,11 +6078,13 @@ class course_details_tags_api(APIView):
 def company_dashboard(request):
     companies = []
     user_organizations = None
-    clients = Client.list()
+    clients = []
     if request.user.is_company_admin:
         user_permissions = Permissions(request.user.id)
         user_organizations = user_permissions.get_all_user_organizations_with_permissions()[
             PERMISSION_GROUPS.COMPANY_ADMIN]
+        ids = [vars(org)['id'] for org in user_organizations]
+        clients = Client.filtered_list(ids)
     for client in clients:
         if user_organizations:
             for user_org in user_organizations:

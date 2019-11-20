@@ -31,6 +31,10 @@ class Organization(JsonObjectWithImage):
         return organization_api.get_organizations(organization_object=cls)
 
     @classmethod
+    def filtered_list(cls, ids):
+        return organization_api.get_organizations_with_ids(ids, organization_object=cls)
+
+    @classmethod
     def delete(cls, organization_id):
         return organization_api.delete_organization(organization_id)
 
