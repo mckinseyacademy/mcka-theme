@@ -6,15 +6,15 @@
         %span {% trans "Progress" %}
       .title
         %span {% trans "Your course completion status" %}
+        .progressArea.bar
+          #{course.user_progress}%
+          %span
+            .filler{"class": "{% if course.user_progress < average_progress %}trailing{% endif %}", "style": "width:#{course.user_progress}%;"}
       .averageTitle
         %span
           {% trans "Cohort Average:" %}
           %span
             #{average_progress}%
-    .progressArea.bar
-      #{course.user_progress}%
-      %span
-        .filler{"class": "{% if course.user_progress < average_progress %}trailing{% endif %}", "style": "width:#{course.user_progress}%;"}
   %span.viewDetailCourse   
     %a{:href => "/courses/#{active_course.id}/progress#course-progress-new"} 
       {% trans "View details" %}

@@ -1477,13 +1477,6 @@ body.rtl {
     @include right(auto);
     @include right(auto);
   }
-  #course-statistics {
-    .widget {
-      .progressArea {
-        @include float(left);
-      }
-    }
-  }
   .progressWidgets {
     .widget {
       &:first-child {
