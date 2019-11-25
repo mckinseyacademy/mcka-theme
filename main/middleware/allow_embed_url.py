@@ -27,6 +27,8 @@ class AllowEmbedUrlMiddleware(object):
             if allowed_embed_url:
                 response['X-Frame-Options'] = 'ALLOW-FROM ' + allowed_embed_url
                 response.set_cookie('referrer_url', allowed_embed_url, domain=settings.LMS_SESSION_COOKIE_DOMAIN)
+        else:
+            response['Content-Security-Policy'] = 'frame-ancestors ' + 'self'
 
         return response
 
