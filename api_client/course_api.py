@@ -254,7 +254,8 @@ def get_course(course_id, depth=settings.COURSE_DEFAULT_DEPTH, user=None):
         '&username={}'.format(username) if username else ''
     )
     response = edx_oauth2_session.get(url=url)
-
+    if 'charset=' not in response.headers['Content-Type'] or not response.encoding:
+        response.encoding = 'utf-8'
     # Load the depth from the API
     return response.text
 
