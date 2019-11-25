@@ -181,10 +181,11 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',
                 formatter: function() {
-                    return this.point.fa_icon
+                    return "<span class='sr-only'>"+ this.point.sr_label + "</span>" + this.point.fa_icon
                 },
                 style: {
                     fontSize: '20px'
@@ -199,6 +200,7 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'left',
                 fontFamily: '"Open Sans" , sans-serif',
@@ -206,8 +208,8 @@ $(function() {
                     if (this.point.isInside) {
                         var labelWidth = this.point.plotLow - this.point.plotHigh
                         if ( this.point.name.length * 7.8 > labelWidth )
-                            return this.point.name.substr( 0, (labelWidth / 7.8) - 10 ) + "...";
-                        return this.point.name
+                            return "<span class='sr-only'>"+ this.point.sr_label + "</span>" + this.point.name.substr( 0, (labelWidth / 7.8) - 10 ) + "...";
+                        return "<span class='sr-only'>"+ this.point.sr_label + "</span>" + this.point.name;
                     }
                     return ''
                 },
@@ -225,10 +227,11 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',
                 formatter: function() {
-                    return this.point.fa_icon
+                    return "<span class='sr-only'>"+ this.point.sr_label + "</span>" + this.point.fa_icon
                 },
                 style: {
                     fontSize: '20px'
@@ -244,10 +247,11 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',
                 formatter: function() {
-                    return this.point.fa_icon
+                    return "<span class='sr-only'>"+ this.point.sr_label + "</span>" + this.point.fa_icon
                 },
                 style: {
                     fontSize: '20px'
@@ -263,11 +267,12 @@ $(function() {
             dataLabels: {
                 enabled: true,
                 inside: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',  
                 yLow: -3,
                 formatter: function() {
-                    return this.point.fa_icon
+                    return "<span class='sr-only'>"+ this.point.sr_label + "</span>" + this.point.fa_icon
                 },
                 style: {
                     fontSize: '25px'

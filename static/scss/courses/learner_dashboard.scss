@@ -410,6 +410,13 @@ body.learner-dashboard-view{
             z-index: 1;
         }
     }
+
+    .highcharts-data-labels {
+        span {
+            font-family: FontAwesome, sans-serif !important;
+            font-weight: normal !important;
+        }
+    }
 }
 
 svg text {

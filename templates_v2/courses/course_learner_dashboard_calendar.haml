@@ -255,14 +255,14 @@
     $( ".arrow-calendar").css( "margin-top", (50 + (totalRows-2) * 20) );
   }
 
-  function calculateColor(element, now){
+  function getStatusColorAndLabel(element, now){
 
-    var notAvailable = "#e0e0e0";
-    var notStarted = "#ccc";
-    var inProgress = "#b6d332";
-    var complete = "#629b2b";
-    var incomplete = "#cd202c";
-    var notTracked = "#66a5b5";
+    var notAvailable = {color: "#e0e0e0", label: gettext("Not Available")};
+    var notStarted = {color :"#ccc", label: gettext("Not Started")};
+    var inProgress = {color: "#b6d332", label: gettext("In Progress")};
+    var complete = {color: "#629b2b", label: gettext("Complete")};
+    var incomplete = {color: "#cd202c", label: gettext("Incomplete")};
+    var notTracked = {color: "#66a5b5", label: gettext("Not Tracked")};
 
     if (!element.track_progress){
       return notTracked;
@@ -303,6 +303,8 @@
               return incomplete;
               break;
           }
+      default:
+        return notTracked;
     }
   }
 
@@ -315,11 +317,12 @@
   }
 
   function loadHighchartData(element){
-
+    var element_status = getStatusColorAndLabel(element, now.getTime());
     if (element.tile_type == "2" || element.tile_type == "3") {
 
       dataDig.push({
-        color: calculateColor(element, now.getTime()),
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -338,7 +341,8 @@
     if (element.tile_type == "5") {
 
       dataIPS.push({
-        color: calculateColor(element, now.getTime()),
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -357,7 +361,8 @@
     if (element.tile_type == "4"){
 
       dataCourse.push({
-        color: calculateColor(element, now.getTime()),
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -374,7 +379,8 @@
 
     if (element.tile_type == "1") {
       dataDig.push({
-        color: '#66a5b5',
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -391,7 +397,8 @@
 
     if (element.tile_type == "7") {
       dataDig.push({
-        color: calculateColor(element, now.getTime()),
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -408,7 +415,8 @@
 
     if (element.tile_type == "6") {
       dataWeb.push({
-        color: '#66a5b5',
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
