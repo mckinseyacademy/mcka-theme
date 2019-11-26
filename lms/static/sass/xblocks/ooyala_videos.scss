@@ -2,7 +2,7 @@
 @import '../base/variables';
 
 body.new-theme {
-
+    
     .oo-interactive-container {
         direction: ltr;
         text-align: center;
@@ -181,15 +181,6 @@ body.new-theme {
 
             .transcript-content {
                 padding-top: 20px;
-            }
-        }
-    }
-
-    // multiple fullScreen Videos
-    .oo-player-container {
-        .oo-player {
-            &.oo-fullscreen {
-                z-index: 99999 !important;
             }
         }
     }
