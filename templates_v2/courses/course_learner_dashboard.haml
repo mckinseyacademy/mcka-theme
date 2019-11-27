@@ -37,6 +37,7 @@
                               = tile.get_tile_type_display
                           .title{'style': "color: #{tile.title_color};"}= tile.title
                           .date{'style': "color: #{tile.note_color};"}= tile.note
+                        %span.sr-only {% trans "last visited tile" %}
                     - else
 
                       -if tile.publish_date|date:"Y-m-d-H-i" <= today|date:"Y-m-d-H-i"

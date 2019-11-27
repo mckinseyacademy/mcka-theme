@@ -20,12 +20,16 @@ $('.last_visited').click(function() {
 
 $('.card').click(function() {
 
-    var headers = {
-      'X-CSRFToken': $.cookie('apros_csrftoken')
-    };
+  var headers = {
+    'X-CSRFToken': $.cookie('apros_csrftoken')
+  };
 
-  $('.last_visited').removeClass('last_visited');
-  $(this).addClass('last_visited');
+  if(!$(this).hasClass('last_visited')){
+    $(this).append('<span class="sr-only">last visited tile</span>');
+    $('.last_visited span').remove();
+    $('.last_visited').removeClass('last_visited');
+    $(this).addClass('last_visited');
+  }
 
   $.ajax({
     headers: headers,
