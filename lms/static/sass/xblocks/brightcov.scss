@@ -232,4 +232,30 @@
        }
     }
 
+    // CC Setting Modal Window
+
+    .vjs-modal-dialog.vjs-text-track-settings{
+        height: 100%;
+        text-align:left;
+        background: rgba(0,0,0,.75) !important;
+        direction: ltr;
+        @media only screen and (max-device-width : 767px){
+            font-size: 12px;
+        }
+
+        .vjs-modal-dialog-content{
+            @media only screen and (max-device-width : 767px){
+                padding:10px;
+                select{
+                    margin-right: 10px;
+                }
+            }
+
+            .vjs-track-settings-controls{
+                button{
+                    margin-left: 10px;
+                }
+            }
+        }
+    }
 }
