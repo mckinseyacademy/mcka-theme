@@ -38,7 +38,7 @@
         }
     }
 
-    // if the video is complimentery
+    // if the video is supplimentry
 
     table {
         tr {
@@ -221,5 +221,15 @@
         max-height: 150px;
     }
 
+    // CC Fontsize on the Mobile
+    @media only screen and (max-device-width : 767px) {
+       .vjs-text-track-display{
+           .vjs-text-track-cue{
+               font-size: 16px!important;
+               top:auto !important;
+               height:auto !important;
+           }
+       }
+    }
 
 }
