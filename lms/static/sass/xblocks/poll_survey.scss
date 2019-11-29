@@ -16,6 +16,7 @@ body.new-theme {
             .poll-header {
                 font-size: 12px;
                 color: $black;
+                font-weight: bold;
             }
 
             .poll-container {
@@ -124,6 +125,7 @@ body.new-theme {
             .poll-voting-thanks span {
                 background-color: #ffffff;
                 color: $black;
+                padding-left: 0em;
             }
 
         }
@@ -161,9 +163,6 @@ body.new-theme {
     @include font-size(14);
 
     [data-block-type="poll"] {
-        .poll-header {
-            font-weight: bold;
-        }
 
         .poll-container {
             .poll-answers {
