@@ -40,6 +40,7 @@ body.new-theme {
 
     .image-explorer-xblock-wrapper {
       .image-explorer-hotspot-reveal {
+        text-align: left;
         .image-explorer-hotspot-content-wrapper {
           padding-right: 10px;
           text-align: right;
@@ -79,50 +80,53 @@ body.new-theme {
 
         .image-explorer-hotspot {
           text-align: left;
-          background: transparent;
-          border-radius: 22px;
+          background: white;
+          color: var(--primary);
+          border-radius: 25px;
+          padding: 0;
+          border: 0;
+          margin: -6px 0 0 -15px;
+          width: 27px;
+          height: 27px;
+          &:focus{
+            outline: 2px auto !important;
+          }
+          > span {
+            pointer-events: none;
+            margin: -6px 0px 0 -3px;
+            > i {
+              font-size: 32px;
+            }
+          }
+          > #icon-plus {
+            display: block;
+
+          }
+          > #icon-check {
+            display: none;
+          }
 
           &:hover {
-            &:before {
+            > i {
               @include primary-theme-content-color-hover;
             }
           }
 
           &.visited {
-            &:before {
-              content: "\e86c";
-              @include primary-theme-content-color;
+            > #icon-check {
+              display: block;
             }
-
-            &:hover {
-              &:before {
-                @include primary-theme-content-color;
-              }
+            > #icon-plus {
+              display: none;
             }
           }
-
-          &:before {
-            @include primary-theme-content-color;
-            content: "\e147";
-            font-family: "Material Icons";
-            position: absolute;
-            font-size: 32px;
-            width: 23px;
-            height: 23px;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            line-height: 24px;
-            text-indent: -5px;
-            background: white;
-            border-radius: 25px;
-          }
-
-          .image-explorer-hotspot-reveal {
+        }
+        .image-explorer-hotspot-reveal {
             border-radius: 2px;
             background: $ash-white;
             border: 1px solid $popup-border;
             height: auto !important;
+            text-align: left;
 
             .image-explorer-close-reveal {
               position: absolute;
@@ -141,7 +145,7 @@ body.new-theme {
             }
 
             .image-explorer-hotspot-content-wrapper {
-              color: $black;
+              color: $black !important;
               margin: 30px;
               overflow: auto;
               height: auto;
@@ -236,7 +240,6 @@ body.new-theme {
               }
             }
           }
-        }
       }
     }
   }
@@ -248,8 +251,24 @@ body.new-theme {
       .image-explorer-xblock-wrapper {
         .image-explorer-wrapper {
           .image-explorer-hotspot {
+<<<<<<< HEAD
+            width: 16px;
+            height: 16px;
+            >span{
+              width: 14px;
+              height: 14px;
+              i{
+                font-size: 22px;
+                line-height: 14px;
+              }
+            }
+          }
+        }
+        .image-explorer-hotspot-reveal {
+=======
 
             .image-explorer-hotspot-reveal {
+>>>>>>> 798af0de2b8a7d23aafd621400ca9bc9cbcb2e76
               width: 90% !important;
               height: 74% !important;
               top: 13%;
@@ -266,8 +285,6 @@ body.new-theme {
                 width: 100% !important;
               }
             }
-          }
-        }
       }
     }
   }
@@ -293,6 +310,7 @@ body.new-theme {
         box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.3);
 
         .image-explorer-hotspot-content-wrapper {
+          color: black;
           margin: 15px;
         }
 
