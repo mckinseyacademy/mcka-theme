@@ -68,7 +68,7 @@ body.new-theme {
       .image-explorer-description {
         font-size: 0.875rem;
         text-align: left;
-        
+
 
         .hint {
           font-style: italic;
@@ -251,7 +251,6 @@ body.new-theme {
       .image-explorer-xblock-wrapper {
         .image-explorer-wrapper {
           .image-explorer-hotspot {
-<<<<<<< HEAD
             width: 16px;
             height: 16px;
             >span{
@@ -265,18 +264,6 @@ body.new-theme {
           }
         }
         .image-explorer-hotspot-reveal {
-=======
-
-            &:before {
-              font-size: 22px;
-              width: 14px;
-              height: 14px;
-              line-height: 14px;
-
-            }
-
-            .image-explorer-hotspot-reveal {
->>>>>>> 798af0de2b8a7d23aafd621400ca9bc9cbcb2e76
               width: 90% !important;
               height: 74% !important;
               top: 13%;
