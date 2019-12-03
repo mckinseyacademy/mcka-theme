@@ -81,6 +81,7 @@ body.new-theme {
         .image-explorer-hotspot {
           text-align: left;
           background: white;
+          border-radius: 22px;
           color: var(--primary);
           border-radius: 25px;
           padding: 0;
@@ -113,10 +114,10 @@ body.new-theme {
           }
 
           &.visited {
-            > #icon-check {
+            #icon-check {
               display: block;
             }
-            > #icon-plus {
+            #icon-plus {
               display: none;
             }
           }
@@ -245,6 +246,7 @@ body.new-theme {
   }
 }
 
+
 @media only screen and (max-width: 767px) {
   body.new-theme {
     .lesson-content {
@@ -253,10 +255,10 @@ body.new-theme {
           .image-explorer-hotspot {
             width: 16px;
             height: 16px;
-            >span{
+            > span {
               width: 14px;
               height: 14px;
-              i{
+              i {
                 font-size: 22px;
                 line-height: 14px;
               }
