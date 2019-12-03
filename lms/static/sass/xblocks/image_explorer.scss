@@ -246,6 +246,7 @@ body.new-theme {
   }
 }
 
+
 @media only screen and (max-width: 767px) {
   body.new-theme {
     .lesson-content {
@@ -254,15 +255,15 @@ body.new-theme {
           .image-explorer-hotspot {
             width: 16px;
             height: 16px;
-            >span{
+            > span {
               width: 14px;
               height: 14px;
-              i{
+              i {
                 font-size: 22px;
                 line-height: 14px;
               }
             }
-        .image-explorer-hotspot-reveal {
+            .image-explorer-hotspot-reveal {
               width: 90% !important;
               height: 74% !important;
               top: 13%;
@@ -279,6 +280,8 @@ body.new-theme {
                 width: 100% !important;
               }
             }
+          }
+        }
       }
     }
   }
