@@ -99,11 +99,11 @@ body.new-theme {
               font-size: 32px;
             }
           }
-          > #icon-plus {
+          #icon-plus {
             display: block;
 
           }
-          > #icon-check {
+          #icon-check {
             display: none;
           }
 
@@ -114,10 +114,10 @@ body.new-theme {
           }
 
           &.visited {
-            > #icon-check {
+            #icon-check {
               display: block;
             }
-            > #icon-plus {
+            #icon-plus {
               display: none;
             }
           }
