@@ -186,6 +186,10 @@
             height: 100vh !important;
             width: 100vw !important;
         }
+
+        .vjs-close-button{
+            background:transparent !important;
+        }
     }
 
 
@@ -254,8 +258,12 @@
             .vjs-track-settings-controls{
                 button{
                     margin-left: 10px;
+                    background:white;
+                    color:#000;
                 }
             }
         }
     }
+
+    
 }
