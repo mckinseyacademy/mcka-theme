@@ -208,9 +208,6 @@ function inlineDiscussionLongHeading() {
 // });
 
 // BrightcovePlayerXblock playback rate
-$(document).on('click',  '.new-theme', function (e) {
-  // console.log($(e.target));
-  // e.preventDefault();
   var parent = $(e.target).parents('.vjs-playback-rate.vjs-control');
   if(parent.length > 0){
     parent.find('.vjs-menu').addClass('vjs-lock-showing');
