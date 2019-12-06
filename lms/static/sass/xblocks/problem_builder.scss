@@ -632,4 +632,13 @@ body.new-theme {
             }
         }
     }
+    .xblock-student_view-pb-instructor-tool {
+        .data-export-field {
+            select {
+                option {
+                    direction: ltr;
+                }
+            }
+        }
+    }
 }
