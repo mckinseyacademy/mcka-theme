@@ -35,7 +35,6 @@ class CourseTreeBuilder(object):
     def get_processed_course(self):
         self.course = self._load_course()
         self.build_page_info()
-        self.include_estimated_completion_times()
         self.include_progress_data()
         self.include_lesson_descriptions()
 
@@ -48,7 +47,6 @@ class CourseTreeBuilder(object):
         """
         self.course = self._load_course()
         load_static_tabs(course_id=self.course_id)
-        self.include_estimated_completion_times()
         self.include_lesson_descriptions()
 
         return self.course
@@ -132,19 +130,6 @@ class CourseTreeBuilder(object):
 
         return course
 
-    def include_estimated_completion_times(self, course=None):
-        course = course or self.course
-
-        estimated_time = load_static_tabs(course.id, name="estimated time")
-
-        if estimated_time:
-            estimates = [s.strip() for s in estimated_time.content.splitlines()]
-            for idx, lesson in enumerate(course.chapters):
-                if idx < len(estimates):
-                    lesson.estimated_time = estimates[idx]
-
-        return course
-
     def include_progress_data(self, course=None, chapter_id=None):
         course = course or self.course
 
@@ -156,11 +141,18 @@ class CourseTreeBuilder(object):
 
     def include_lesson_descriptions(self, course=None):
         course = course or self.course
-
+        static_tabs = load_static_tabs(course.id)
         for idx, lesson in enumerate(course.chapters, start=1):
-            lesson_description = load_static_tabs(course.id, "lesson{}".format(idx))
+            lesson_description = static_tabs.get("lesson{}".format(idx))
             if lesson_description:
                 lesson.description = lesson_description.content
+
+        estimated_time = static_tabs.get("estimated time")
+        if estimated_time:
+            estimates = [s.strip() for s in estimated_time.content.splitlines()]
+            for idx, lesson in enumerate(course.chapters):
+                if idx < len(estimates):
+                    lesson.estimated_time = estimates[idx]
 
     def get_module_navigators(self, course=None):
         course = course or self.course

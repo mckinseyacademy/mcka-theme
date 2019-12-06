@@ -22,8 +22,9 @@ class DataManager(object):
         cache_key = self.get_cache_key(property_name=property_name)
         cache.delete(cache_key)
 
-    def get_cached_data(self, property_name, parsers=[]):
-        data = cache.get(self.get_cache_key(property_name))
+    def get_cached_data(self, property_name, parsers=[], alt_property_name=None):
+        data = cache.get(self.get_cache_key(alt_property_name)) if alt_property_name else None
+        data = data or cache.get(self.get_cache_key(property_name))
 
         # if parsers are passed, then pass data through them,
         # otherwise return raw data

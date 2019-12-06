@@ -113,6 +113,7 @@ def group_api_cache_wrapper(parse_method, parse_object, property_name, post_proc
 def course_api_cache_wrapper(parse_method, parse_object, property_name, post_process_method=None):
     def decorator(view_fn):
         def _wrapped_view(*args, **kwargs):
+            alt_property_name = None
             data_property = property_name
 
             try:
@@ -170,12 +171,14 @@ def course_api_cache_wrapper(parse_method, parse_object, property_name, post_pro
                         roles = course_api.get_users_filtered_by_role(course_id)
                         user_roles = {r.role for r in roles if r.id == user_id}
                         user_type = 'staff' if {'instructor', 'staff'} & user_roles else 'generic'
-
-                data_property = '{}_{}_{}'.format(data_property, tree_depth, user_type)
+                raw_key = '{}_{}_{}'.format(data_property, tree_depth, user_type)
+                if tree_depth == 0:
+                    alt_property_name = '{}_{}_{}'.format(data_property, 5, user_type)
+                data_property = raw_key
 
             course_data_manager = CourseDataManager(course_id)
 
-            data = course_data_manager.get_cached_data(data_property)
+            data = course_data_manager.get_cached_data(data_property, alt_property_name=alt_property_name)
 
             if data is None:
                 data = view_fn(*args, **kwargs)

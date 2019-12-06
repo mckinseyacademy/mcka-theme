@@ -88,7 +88,7 @@ class TestCourseTreeBuilder(TestCase, ApplyPatchMixin):
         course_tree_builder = CourseTreeBuilder(course_id=self.course_id, request=request)
         course = course_tree_builder._load_course()
 
-        course_tree_builder.include_estimated_completion_times(course)
+        course_tree_builder.include_lesson_descriptions(course)
 
         self.assertEqual(course.chapters[0].estimated_time, '<p>est. time 60 min')
 
