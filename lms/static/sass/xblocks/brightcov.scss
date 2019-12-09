@@ -9,7 +9,7 @@
         height: 2em !important;
         line-height: 2em !important;
         border: none;
-        border-radius: 50%;
+        border-radius: 50% !important;
         font-size: 3.5em !important;
         background: rgba(0,0,0,0.3) !important;
         color: #fff;
@@ -31,6 +31,7 @@
             padding: 0 !important;
             color: #fff !important;
             background: none !important;
+            box-shadow: none !important;
             
             &.vjs-progress-control {
                 height: .3em !important;
