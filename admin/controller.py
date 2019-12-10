@@ -2424,7 +2424,7 @@ def get_organization_active_courses(request, company_id):
 
     is_main_company = int(company_id) in user_main_companies
 
-    company_courses = organization_api.get_organizations_courses(company_id)
+    company_courses = organization_api.get_organizations_courses(company_id, exclude_admins=True)
     courses = []
 
     company_admin_group_id = permission_handler.get_group_id(PERMISSION_GROUPS.COMPANY_ADMIN)
@@ -2437,9 +2437,8 @@ def get_organization_active_courses(request, company_id):
         course['name'] = clean_xss_characters(company_course['name'])
         course['id'] = company_course['id']
         course['participants'] = len(company_course['enrolled_users'])
-        course_roles = course_api.get_users_filtered_by_role(company_course['id'])
         for user_id in company_course['enrolled_users']:
-            not_active_user = any(role.id == user_id for role in course_roles)
+            not_active_user = False
             admin_from_different_company = not is_main_company and user_id == request.user.id
 
             # If another company admin is made company admin of this company, then

@@ -342,13 +342,13 @@ def remove_users_from_organization_group(organization_id, group_id, user_ids):
 
 
 @api_error_protect
-def get_organizations_courses(organization_id):
-
+def get_organizations_courses(organization_id, exclude_admins=False):
     response = GET(
-        '{}/{}/{}/courses'.format(
+        '{}/{}/{}/courses/?exclude_admins={}'.format(
             settings.API_SERVER_ADDRESS,
             ORGANIZATION_API,
-            organization_id
+            organization_id,
+            exclude_admins,
         )
     )
 
