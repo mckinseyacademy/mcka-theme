@@ -6,13 +6,14 @@
     #row-full-calendar
       .container
         .row
-          %i#close-calendar.material-icons
-            close
+          %a#over-calendar-close{href: "#", aria-label: "close"}
+            %i#close-calendar.material-icons
+              close
           .col-12
-            .over-calendar#over-calendar-left
+            %a.over-calendar#over-calendar-left{href: "#", aria-label: "previous"}
               %i#previous-calendar.arrow-calendar.material-icons
                 chevron_left
-            .over-calendar#over-calendar-right
+            %a.over-calendar#over-calendar-right{href: "#", aria-label: "next"}
               %i#next-calendar.arrow-calendar.material-icons
                 chevron_right
             #under-calendar
@@ -433,6 +434,12 @@
   }
 
   changeDisableArrowColors();
+
+  $('#over-calendar-right, #over-calendar-left, #over-calendar-close').keyup(function(e) {         
+    if (e.which == 13) {
+      $(this).children().click()
+    }
+  });
 
   $('#close-calendar').click(function() {
     $('#replace-calendar').empty();
