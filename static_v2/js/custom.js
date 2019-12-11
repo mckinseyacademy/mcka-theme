@@ -309,6 +309,10 @@ $(document).ready(function () {
            $("#"+("teacher_"+$(this).attr('id').split("_")[1])).css("display","block")
        }
     });
+
+    $('.lesson-content').on('click', '.oo-fullscreen', function () {
+        $('#moduleNavigator').toggleClass('full-screen-mode');
+    });
 });
 
 
@@ -648,12 +652,6 @@ $(window).on("load", function () {
     $('div.faculty label').each(function (index) {
         scaleImage(this);
     });
-});
-
-// Hide Module Navigation arrows on fullScreen video mode
-$(document).on('click', '.oo-fullscreen', function (e) {
-    $("#moduleNavigator").toggleClass("full-screen-mode");
-    e.preventDefault();
 });
 
 // Preloader for courses page
