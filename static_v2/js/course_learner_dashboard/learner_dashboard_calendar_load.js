@@ -1,4 +1,4 @@
-$(window).on('load', function() {
+$(document).ready(function(){
     var calendarElem = $('a#open-calendar');
     var ldID = $('#replace-calendar').data("learner-dashboard-id");
 
