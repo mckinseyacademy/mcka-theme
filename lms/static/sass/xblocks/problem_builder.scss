@@ -57,7 +57,6 @@
                 right: 10px;
                 top: 8px;
                 background: transparent;
-                padding:0;
                 &:hover {
                     box-shadow: none;
                 }
@@ -73,6 +72,11 @@
 
         .choice-result {
             vertical-align: baseline;
+            width: auto;
+            height: auto;
+            &:hover {
+                box-shadow: none;
+            }
         }
 
         .choice-label {
