@@ -56,6 +56,10 @@
                 font-size: 20px;
                 right: 10px;
                 top: 8px;
+                background: transparent;
+                &:hover {
+                    box-shadow: none;
+                }
                 &:before {
                     content: "";
                 }
@@ -68,6 +72,11 @@
 
         .choice-result {
             vertical-align: baseline;
+            width: auto;
+            height: auto;
+            &:hover {
+                box-shadow: none;
+            }
         }
 
         .choice-label {
