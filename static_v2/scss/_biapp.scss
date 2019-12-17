@@ -567,7 +567,7 @@ body.rtl {
         }
       }
     }
-  
+
   .legend-status {
     span {
       @include margin-right(15px);
@@ -601,7 +601,16 @@ body.rtl {
   .proficiency-data,
   .engagement-data {
     table {
-      tr {
+      tr:first-child {
+        td {
+          &:nth-child(3) {
+            @include media-breakpoint-between(xs, sm) {
+              @include text-align(right);
+            }
+          }
+        }
+      }
+      tr:not(:first-child) {
         td {
           &:nth-child(2) {
             @include media-breakpoint-between(xs, sm) {
@@ -774,7 +783,7 @@ body.rtl {
     }
   }
 }
-} 
+}
 }
 
 @include media-breakpoint-down(md) {
@@ -1117,7 +1126,7 @@ body.rtl {
     }
   }
 
-  // Login 
+  // Login
   .site-wrapper {
     &.login {
       .form-label {
@@ -1130,7 +1139,7 @@ body.rtl {
 
   .newFeatureTour{
     .carousel-indicators li {
-      float: right; 
+      float: right;
       &:before{
         top: 0;
         right: 0;
@@ -1196,7 +1205,7 @@ body.rtl {
   .faculty {
     input[type=radio] {
      &+label {
-       
+
         .bookmark{
           @include left(-40px);
           @include right(auto);

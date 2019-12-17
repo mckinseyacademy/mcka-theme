@@ -276,7 +276,6 @@
                   %tr
                     %td.visual.progressWidgets{"rowspan": "5"}
                       - include "courses/visualizations/course_engagement.haml"
-                  %tr
                     %td {% blocktrans %}Number of <span>New Posts</span> you created {% endblocktrans %}
                     %td.number{"class": "{% if social.metrics.num_threads == 0 %}zero{% endif %}"}= social.metrics.num_threads
                   %tr
