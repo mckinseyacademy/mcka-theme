@@ -186,6 +186,9 @@
         .vjs-menu-content{
             .vjs-menu-item{
                 text-shadow: none !important;
+                .vjs-icon-placeholder{
+                    display: none;
+                }
                 &.vjs-selected{
                     background-color: var(--primary);
                     color:white;
