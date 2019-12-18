@@ -203,19 +203,12 @@
 
 }
 
-
-
 // Hide Picture in Picture button for small size video.
 
 .vjs-layout-small,
 .vjs-layout-x-small{
 
     .vjs-subs-caps-button{
-        .vjs-menu{
-
-            left:auto;
-            right:-29px;
-        }
     }
 
     .vjs-text-track-display{
@@ -318,14 +311,13 @@
         }
     }
 
-
-    // UI
-
-
     // Menu CC
 
     .vjs-subs-caps-button{
-
+        .vjs-menu{
+            left:auto;
+            right:-30px;
+        }
         &:hover{
             .vjs-menu{
                 display: none!important;
