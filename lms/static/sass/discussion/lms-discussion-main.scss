@@ -105,7 +105,7 @@ footer[role=contentinfo] {
 
 body.new-theme {
 	background-color: $ash-white;
-	//sync row with UI Refresh.    
+	//sync row with UI Refresh.
 	-webkit-font-smoothing: unset;
 	-moz-osx-font-smoothing: unset;
 
@@ -118,7 +118,7 @@ body.new-theme {
 		width: unset;
 	}
 
-	//https://edx-wiki.atlassian.net/browse/MCKIN-10319 as per discussion with team overriding css here 
+	//https://edx-wiki.atlassian.net/browse/MCKIN-10319 as per discussion with team overriding css here
 	#pnProductNavContents {
 		ul {
 			li {
@@ -407,7 +407,8 @@ body.new-theme {
 						}
 
 						.field-help,
-						.forum-new-post-form-wrapper>.post-field .field-label-text {
+						.forum-new-post-form-wrapper>.post-field .field-label-text,
+						.group-selector-wrapper .field-label-text {
 							display: none;
 						}
 
@@ -436,8 +437,6 @@ body.new-theme {
 							.js-post-title {
 								padding: 4px 5px 0 40px !important;
 								width: 100% !important;
-								border-left: 0;
-								border-right: 0;
 								color: $gray;
 								font-size: 12px;
 							}
@@ -535,8 +534,6 @@ body.new-theme {
 								.edit-post-title {
 									padding: 0px 5px 0 40px !important;
 									width: 100% !important;
-									border-left: 0;
-									border-right: 0;
 									color: $gray;
 								}
 							}
@@ -1318,7 +1315,7 @@ body.new-theme {
 
 				.post-field {
 
-					// Radio button 
+					// Radio button
 
 					.post-type-label {
 						margin-right: 10px;
@@ -1589,7 +1586,7 @@ body.new-theme {
 				.forum-nav-thread-list {
 					background: $white;
 					border: 1px solid $border_color_1;
-					height: calc(100% - 64px) !important;
+					height: calc(100% - 103px) !important;
 
 					.forum-nav-load-more {
 						background-color: #FFFFFF;
@@ -2125,11 +2122,11 @@ body.new-theme {
 
 
 
-// Layout 
+// Layout
 .new-theme {
 	#course-discussion {
 
-		// start new-theme discussion home page 
+		// start new-theme discussion home page
 		.forum-content {
 			.view-discussion-home {
 				padding: 0 45px !important;
@@ -2208,7 +2205,7 @@ body.new-theme {
 			}
 		}
 
-		// end new-theme discussion home page 
+		// end new-theme discussion home page
 
 
 		.forum-nav {
