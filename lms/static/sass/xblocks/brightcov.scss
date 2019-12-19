@@ -186,7 +186,7 @@
             .vjs-menu-item{
                 text-shadow: none !important;
                 .vjs-icon-placeholder{
-                    display: none;
+                    display: none !important;
                 }
                 &.vjs-selected{
                     background-color: var(--primary);
@@ -210,9 +210,6 @@
 
 .vjs-layout-small,
 .vjs-layout-x-small{
-
-    .vjs-subs-caps-button{
-    }
 
     .vjs-text-track-display{
         .vjs-text-track-cue{
