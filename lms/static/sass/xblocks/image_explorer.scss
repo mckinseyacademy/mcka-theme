@@ -78,6 +78,10 @@ body.new-theme {
       .image-explorer-wrapper {
         text-align: center;
 
+        div.hotspot-container[data-item-id=hotspotA] {
+          top: 56% !important;
+        }
+
         .image-explorer-hotspot {
           text-align: left;
           background: white;
@@ -94,7 +98,7 @@ body.new-theme {
           }
           > span {
             pointer-events: none;
-            margin: -6px 0px 0 -3px;
+            margin: -2px 0px 0px -3px;
             > i {
               font-size: 32px;
             }
@@ -253,16 +257,7 @@ body.new-theme {
       .image-explorer-xblock-wrapper {
         .image-explorer-wrapper {
           .image-explorer-hotspot {
-            width: 16px;
-            height: 16px;
-            > span {
-              width: 14px;
-              height: 14px;
-              i {
-                font-size: 22px;
-                line-height: 14px;
-              }
-            }
+
             .image-explorer-hotspot-reveal {
               width: 90% !important;
               height: 74% !important;
