@@ -216,4 +216,3 @@ function inlineDiscussionLongHeading() {
 // $( window ).resize(function() {
 //   inlineDiscussionLongHeading();
 // });
-
