@@ -12,8 +12,6 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 
 from accounts.middleware.thread_local import (
-    set_static_tab_context,
-    get_static_tab_context,
     get_basic_user_data,
 )
 from admin.controller import load_course, is_group_activity, get_group_activity_xblock, MINIMAL_COURSE_DEPTH
@@ -434,19 +432,16 @@ def group_project_location(group_project, sequential_id=None):
 
 def load_static_tabs(course_id, name=None):
     if name:
-        # first try getting from thread local
-        course_tabs = get_static_tab_context()
-
-        # look into cache then
-        if course_tabs is None:
-            data_property = '{}_{}'.format(COURSE_PROPERTIES.TABS, 'details')
-            course_tabs = CourseDataManager(course_id=course_id).get_cached_data(
-                property_name=data_property,
-                parsers=[
-                    {'method': JsonParser.from_json, 'params': CourseTabs},
-                    {'method': tabs_post_process},
-                ]
-            )
+        course_tabs = None
+        # look into cache
+        data_property = '{}_{}'.format(COURSE_PROPERTIES.TABS, 'details')
+        course_tabs = CourseDataManager(course_id=course_id).get_cached_data(
+            property_name=data_property,
+            parsers=[
+                {'method': JsonParser.from_json, 'params': CourseTabs},
+                {'method': tabs_post_process},
+            ]
+        )
 
         if course_tabs is not None:
             course_tab = course_tabs.get(name)
@@ -459,7 +454,6 @@ def load_static_tabs(course_id, name=None):
         return course_tab
     else:
         course_tabs = course_api.get_course_tabs(course_id, details=True)
-        set_static_tab_context(course_tabs)
         return course_tabs
 
 
