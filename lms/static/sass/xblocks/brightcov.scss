@@ -1,0 +1,388 @@
+// UI setting for all
+.video-js {
+    .vjs-big-play-button {
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 2em !important;
+        height: 2em !important;
+        line-height: 2em !important;
+        border: none;
+        border-radius: 50% !important;
+        font-size: 3.5em !important;
+        background: rgba(0,0,0,0.3) !important;
+        color: #fff;
+        box-shadow: none !important;
+        margin:0;
+    }
+
+    .vjs-control-bar {
+
+        height:30px !important;
+
+        .vjs-control {
+
+            width: 30px !important;
+            height: 30px !important;
+            line-height: 10px !important;
+            font-size: 10px !important;
+            border: none !important;
+            padding: 0 !important;
+            color: #fff !important;
+            background: none !important;
+            box-shadow: none !important;
+
+            &.vjs-progress-control {
+                height: .3em !important;
+                top: -.3em !important;
+                transition: .35s;
+                width: 100% !important;
+
+                &:hover {
+                    height: .9em !important;
+                    top: -.9em !important;
+                    width: 100% !important;
+                }
+            }
+
+            &.vjs-time-control {
+                width: auto !important;
+                height: 100% !important;
+                line-height: 30px !important;
+                font-size: 12px !important;
+            }
+            &.vjs-fullscreen-control,
+            &.vjs-picture-in-picture-control{
+                font-size: 11px !important;
+                margin-top: -1px !important;
+            }
+        }
+
+        .vjs-time-control {
+            height: 30px !important;
+            line-height: 30px !important;
+            font-size: 12px !important;
+        }
+
+        .vjs-playback-rate, .vjs-subs-caps-button {
+
+            width: 30px !important;
+            height: 30px !important;
+            line-height: 30px !important;
+            font-size: 12px !important;
+            border: none !important;
+            padding: 0 !important;
+            color: #fff !important;
+            background: none !important;
+            box-shadow: none !important;
+            display:block !important;
+        }
+
+        div.vjs-playback-rate{
+            width: auto!important;
+            margin-right: 5px;
+            button.vjs-playback-rate{
+                position: relative;
+                width: 100%!important;
+            }
+            .vjs-playback-rate-value{
+                position: relative !important;
+                margin-top: -29px;
+            }
+        }
+
+        .vjs-subs-caps-button{
+            display:block !important;
+            .vjs-icon-placeholder{
+                &:before{
+                    line-height: 30px!important;
+                }
+            }
+        }
+
+        .vjs-playback-rate-value {
+            font-size: 13px !important;
+            line-height: 30px !important;
+        }
+
+        .vjs-volume-panel-horizontal
+        {
+            width: auto !important;
+            .vjs-volume-horizontal{
+                width: auto !important;
+                margin-right: 0;
+                display:block;
+                opacity: 1;
+            }
+        }
+    }
+    &.vjs-fullscreen{
+        height: 100vh !important;
+        width: 100vw !important;
+    }
+
+    .vjs-close-button{
+        background:transparent !important;
+    }
+
+
+    // Added Glow Effect;
+
+    .vjs-playing,
+    .vjs-paused,
+    .vjs-mute-control,
+    .vjs-playback-rate,
+    .vjs-subs-caps-button,
+    .vjs-picture-in-picture-control,
+    .vjs-fullscreen-control{
+        transition: .35s;
+        &:hover{
+            text-shadow: 0 0 10px #fff;
+        }
+    }
+
+    // progress bar UI
+
+    .vjs-progress-control{
+        .vjs-progress-holder{
+            background: rgba(255,255,255,0.2);
+            .vjs-play-progress{
+                background-color: var(--primary) !important;
+                &:after{
+                    // content: '';
+                    width:9px;
+                    height: 9px;
+                    border:2px solid white;
+                    box-sizing: border-box;
+                    border-radius: 10px;
+                    display: inline-block;
+                    position: absolute;
+                    right:0;
+                    top:50%;
+                    transform: translateY(-50%);
+                }
+            }
+            .vjs-load-progress{
+                div{
+                    background:rgba(255,255,255,.5);
+                }
+            }
+        }
+    }
+
+
+    // volume bar ui color
+
+
+    .vjs-volume-level{
+        background-color: var(--primary) !important;
+    }
+
+
+    // menu ui branding color
+
+    .vjs-menu{
+        .vjs-menu-content{
+            .vjs-menu-item{
+                text-shadow: none !important;
+                .vjs-icon-placeholder{
+                    display: none !important;
+                }
+                &.vjs-selected{
+                    background-color: var(--primary);
+                    color:white;
+                    &:hover{
+                        background-color: var(--primary-darken-30) !important;
+                    }
+                }
+                &:hover{
+                    text-shadow: 0 0 10px #fff !important;
+                    background: #151B17;
+                    color:white;
+                }
+            }
+        }
+    }
+
+}
+
+// Hide Picture in Picture button for small size video.
+
+.vjs-layout-small,
+.vjs-layout-x-small{
+
+    .vjs-text-track-display{
+        .vjs-text-track-cue{
+            font-size: 16px!important;
+            top:auto !important;
+            height:auto !important;
+        }
+    }
+
+    .vjs-picture-in-picture-control{
+        display: none !important;
+    }
+}
+
+// show time for small screens
+.vjs-current-time,
+.vjs-time-divider,
+.vjs-duration{
+    display:block !important;
+}
+
+
+
+.new-theme {
+
+    // these changes by murad in apros so I have removed from there and added here --- shahid
+    .bc-player-default_default .vjs-menu-button-popup .vjs-menu .vjs-menu-content {
+        font-size: .9em;
+        margin: 0;
+    }
+
+    // if video is found inside the xBlock
+
+    [data-block-type="ooyala-player"] {
+        .video-js {
+            width: 100%;
+            height: 650px !important;
+
+
+            // for iPad Landscape
+
+            @media only screen and (max-device-width : 1024px) {
+                height: 485px !important;
+            }
+
+            // for iPad Portrait
+
+            @media only screen and (max-device-width : 768px) {
+                height: 415px !important;
+            }
+
+            // for Mobile Devices
+
+            @media only screen and (max-device-width : 767px) {
+                height: 194px !important;
+            }
+            &.vjs-fullscreen{
+                height: 100vh !important;
+                width: 100vw !important;
+            }
+        }
+    }
+
+    // if the video is supplimentry
+
+    table {
+        tr {
+            td {
+                .video-js {
+                    @media only screen and (max-device-width : 1024px) {
+                        width: 100% !important;
+                        height: 236px !important;
+                    }
+
+                    @media only screen and (max-device-width : 768px) {
+                        height: 202px !important;
+                    }
+
+                    @media only screen and (max-device-width : 767px) {
+                        height: 194px !important;
+
+
+                    }
+                }
+            }
+        }
+    }
+
+    .video-js {
+
+        .vjs-tech{
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        @media only screen and (max-device-width : 767px) {
+            width: 100% !important;
+            height: 192px !important;
+        }
+    }
+
+    // Menu CC
+
+    .vjs-subs-caps-button{
+        .vjs-menu{
+            left:auto;
+            right:-30px;
+        }
+        &:hover{
+            .vjs-menu{
+                display: none!important;
+
+                &.vjs-lock-showing{
+                    display: block!important;
+                }
+            }
+        }
+    }
+
+    // Menu Playback Rate
+
+    .vjs-playback-rate{
+        &:hover{
+            .vjs-menu{
+                display: none!important;
+                &.vjs-lock-showing{
+                    display: block!important;
+                }
+            }
+        }
+    }
+
+    .vjs-layout-x-small .vjs-menu-button-popup .vjs-menu .vjs-menu-content{
+        max-height: 150px;
+    }
+
+    // CC Fontsize on the Mobile
+    @media only screen and (max-device-width : 767px) {
+       .vjs-text-track-display{
+           .vjs-text-track-cue{
+               font-size: 16px!important;
+               top:auto !important;
+               height:auto !important;
+           }
+       }
+    }
+
+    // CC Setting Modal Window
+
+    .vjs-modal-dialog.vjs-text-track-settings{
+        height: 100%;
+        text-align:left;
+        background: rgba(0,0,0,.75) !important;
+        direction: ltr;
+        @media only screen and (max-device-width : 767px){
+            font-size: 12px;
+        }
+
+        .vjs-modal-dialog-content{
+            @media only screen and (max-device-width : 767px){
+                padding:10px;
+                select{
+                    margin-right: 10px;
+                }
+            }
+
+            .vjs-track-settings-controls{
+                button{
+                    margin-left: 10px;
+                    background:white;
+                    color:#000;
+                }
+            }
+        }
+    }
+}

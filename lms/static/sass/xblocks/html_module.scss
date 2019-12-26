@@ -40,9 +40,26 @@
 
         table {
             margin-bottom: 15px;
+
+             // Tablet
+             @media only screen and (max-device-width : 1024px)  { 
+                table-layout: fixed;
+            }
+
             tr {
                 td {
-                    @media (max-width: 767.98px) {
+                    padding: 10px;
+
+                    &:first-child {
+                        padding-left: 0;
+                    }
+
+                    &:last-child {
+                        padding-right: 0;
+                    }
+                    
+                    // Mobile
+                    @media (max-width: 767px) {
                         padding: 10px 0;
                         img {
                             width: 100%;
@@ -118,7 +135,6 @@
                     }
                 }
             }
-
         }
     }
 }
