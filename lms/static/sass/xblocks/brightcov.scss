@@ -340,7 +340,13 @@
                 display: none!important;
                 &.vjs-lock-showing{
                     display: block!important;
+                    
                 }
+            }
+        }
+        .vjs-menu{
+            @media only screen and (max-device-width : 767px) {
+                display: none!important;
             }
         }
     }
