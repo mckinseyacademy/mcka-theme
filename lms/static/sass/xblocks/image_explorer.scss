@@ -258,7 +258,7 @@ body.new-theme {
             }
 
             .image-explorer-hotspot-reveal {
-              width: 90% !important;
+              width: 100% !important;
               height: 74% !important;
               top: 13%;
               margin: 0 auto !important;
@@ -267,7 +267,7 @@ body.new-theme {
               .image-explorer-hotspot-content-wrapper {
                 height: calc(100% - 60px);
                 max-height: none;
-                margin:15px;
+                margin:15px 10px;
               }
 
               .oo-player-container {
