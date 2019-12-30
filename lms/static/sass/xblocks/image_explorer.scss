@@ -41,7 +41,7 @@ body.new-theme {
     .image-explorer-xblock-wrapper {
       .image-explorer-hotspot-reveal {
         .image-explorer-hotspot-content-wrapper {
-          padding-right: 10px;
+          // padding-right: 10px;
           text-align: right;
 
           .image-explorer-hotspot-reveal-body {
@@ -52,6 +52,23 @@ body.new-theme {
         }
       }
     }
+
+    // RTL Mobile
+    @media only screen and (max-width: 767px){
+      
+      .image-explorer-hotspot-reveal{
+        ul{
+          padding-right: 10px;
+        }
+        .image-explorer-close-reveal {
+          right: auto !important;
+          left: -5px;
+          top:-5px !important;
+        }
+      }
+
+    }
+
   }
 
   .lesson-content {
@@ -259,7 +276,7 @@ body.new-theme {
               .image-explorer-hotspot-content-wrapper {
                 height: calc(100% - 60px);
                 max-height: none;
-                margin:15px 10px;
+                margin:30px 10px;
               }
 
               .oo-player-container {
