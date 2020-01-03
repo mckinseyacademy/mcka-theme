@@ -113,6 +113,11 @@
                 margin-right: 0;
                 display:block;
                 opacity: 1;
+                @media only screen and (max-device-width : 767px) {
+                    .vjs-slider-horizontal{
+                        width: 3em;
+                    }
+                }
             }
         }
     }
