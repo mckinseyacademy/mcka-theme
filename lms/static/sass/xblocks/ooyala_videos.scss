@@ -2,7 +2,7 @@
 @import '../base/variables';
 
 body.new-theme {
-    
+
     .oo-interactive-container {
         direction: ltr;
         text-align: center;
@@ -37,7 +37,6 @@ body.new-theme {
 
     .ooyala-player-xblock-wrapper {
         .ooyala-player-container {
-            z-index: 999998 !important;
             .ooyalaplayer {
                 &.oo-player-container {
                     margin: 0 0 30px 0;
@@ -187,16 +186,7 @@ body.new-theme {
         }
     }
 
-    // multiple fullScreen Videos
-    .oo-player-container {
-        .oo-player {
-            &.oo-fullscreen {
-                z-index: 99999 !important;
-            }
-        }
-    }
-
-    // CC switch 
+    // CC switch
     .oo-player-skin{
 
         .oo-switch-container{
@@ -212,7 +202,7 @@ body.new-theme {
 
         .oo-xsmall{
             .oo-switch-container{
-                
+
                 .oo-switch-element{
                     top:0;
                     .oo-switch-body{
