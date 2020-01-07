@@ -53,17 +53,16 @@
 
             .close {
                 display: block !important;
-                font-size: 20px;
+                font-size: 22px;
                 right: 10px;
                 top: 8px;
-                background: transparent;
-                padding:0;
+                background: none;
+                &:before {
+                    display: none;
+                }
                 &:hover {
                     box-shadow: none;
                     background-color: transparent !important;
-                }
-                &:before {
-                    // content: "";
                 }
             }
         }
