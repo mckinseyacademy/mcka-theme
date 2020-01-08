@@ -8,7 +8,7 @@ body.new-theme {
         font-family: $body-font-family !important;
 
         * {
-            outline: none !important;
+            outline: none;
 
             &:focus,
             &:active {
