@@ -300,6 +300,9 @@
                 border: 0;
             }
         }
+        &:focus {
+            outline: 2px dotted $hard-gray !important;
+        }
     }
 
     &.dragging {
