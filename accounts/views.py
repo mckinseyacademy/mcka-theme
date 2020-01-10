@@ -606,7 +606,8 @@ def activate(request, activation_code, registration=None):
             try:
                 login_mode = 'normal'
 
-                user_activation_with_data(user.id, form.cleaned_data, activation_record)
+                user_data = {k: v for k, v in form.cleaned_data.items() if k in user_data}
+                user_activation_with_data(user.id, user_data, activation_record)
 
                 user = auth.authenticate(
                     username=form.cleaned_data['username'],
