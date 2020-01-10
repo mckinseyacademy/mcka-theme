@@ -2760,7 +2760,7 @@ class ProblemReportPostProcessor(object):
                 output.setdefault(
                     user_email, {'email': user_email}
                 ).update({
-                    column_name: row['Answer']
+                    column_name: row.get('Answer', 'Removed Option')
                 })
 
         return list(output.values()), ['email'] + sorted(self._cols.values())
