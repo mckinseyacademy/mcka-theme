@@ -60,6 +60,7 @@
                 padding:0;
                 &:hover {
                     box-shadow: none;
+                    background-color: transparent !important;
                 }
                 &:before {
                     // content: "";
@@ -77,6 +78,7 @@
             height: auto;
             &:hover {
                 box-shadow: none;
+                background-color: transparent !important;
             }
         }
 
