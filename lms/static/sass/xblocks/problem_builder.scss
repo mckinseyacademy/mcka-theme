@@ -64,6 +64,7 @@
                 }
                 &:hover {
                     box-shadow: none;
+                    background-color: transparent !important;
                 }
             }
         }
@@ -78,6 +79,7 @@
             height: auto;
             &:hover {
                 box-shadow: none;
+                background-color: transparent !important;
             }
         }
 
