@@ -362,14 +362,6 @@
       vertical-align: middle;
       padding: 17px 10px;
 
-      &:first-child {
-        padding-left: 0;
-      }
-
-      &:last-child {
-        padding-right: 0;
-      }
-
       &.serial,
       &.status {
         text-transform: capitalize;
