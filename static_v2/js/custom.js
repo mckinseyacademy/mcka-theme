@@ -318,6 +318,11 @@ $(document).ready(function () {
            $("#"+("teacher_"+$(this).attr('id').split("_")[1])).css("display","block")
        }
     });
+
+    var stats_selector = '.courseLanding #course-statistics'
+    if ($(stats_selector + ' div.widget').length === 1 && $(stats_selector + ' div.course-proficiency').length === 1) {
+      $(stats_selector + ' div.widget').css('max-width', '30%')
+    }
 });
 
 
