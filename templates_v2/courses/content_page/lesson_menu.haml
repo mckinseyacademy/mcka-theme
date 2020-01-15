@@ -3,10 +3,11 @@
 %ul.allCoursesList
   - for lesson in course.chapters
     %li{"class": "courseRow {% if lesson.is_started %}active{% else %}locked{% endif %} {% if lesson.progress == 100 %}complete{% else %}{% endif %}"}
-      - if lesson.bookmark
-        %span.sr-only {% trans "Continue progress from this lesson" %}
+
       %a.holder{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}"}
         .data.serial
+          - if lesson.bookmark
+            %span.sr-only {% trans "Continue progress from this lesson" %}
           - if lesson_custom_label
             = lesson_custom_label
             - if lesson_index

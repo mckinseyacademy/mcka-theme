@@ -18,9 +18,9 @@
       - for lesson in course.chapters
         %li{"class": "courseRow clearfix {% if lesson.is_started %}active{% else %}locked{% endif %}  {% if lesson.progress == 100 %}complete{% else %}{% endif %}", :oncontextmenu => "return false;"}
           %a.holder{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}", :oncontextmenu => "return false;"}
-            - if lesson.bookmark
-              %span.sr-only {% trans "Continue progress from this lesson" %}
             .data.serial
+              - if lesson.bookmark
+                %span.sr-only {% trans "Continue progress from this lesson" %}
               - if lesson_custom_label
                 {{lesson_custom_label}}
                 - if lesson_index
