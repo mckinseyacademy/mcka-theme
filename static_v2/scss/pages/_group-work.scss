@@ -17,6 +17,26 @@
             width: 363px;
             margin: -16px 0 0;
             position: relative;
+            .vjs-playback-rate {
+                div {
+                    color: white;
+                }
+            }
+            .vjs-menu-content {
+                li {
+                    span {
+                    color: white;
+                    }
+                }
+            }
+            .vjs-time-control {
+                &.vjs-time-divider {
+                    span {
+                        line-height: 30px !important;
+                        color: $white;
+                    }
+                }
+            }
 
             .group-project-resources-view{
                 .player-modal{
@@ -31,7 +51,6 @@
                     }
                 }
             }
-
         }
 
         .group-project-content {
