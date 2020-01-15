@@ -95,6 +95,12 @@ body.new-theme {
       .image-explorer-wrapper {
         text-align: center;
 
+        button {
+          &:hover {
+            background-color: transparent !important;
+          }
+        }
+
         .image-explorer-hotspot {
           text-align: left;
           background: white;
@@ -103,7 +109,6 @@ body.new-theme {
           border-radius: 25px;
           padding: 0;
           border: 0;
-          margin: -6px 0 0 -15px;
           width: 27px;
           height: 27px;
           &:focus{
@@ -111,7 +116,7 @@ body.new-theme {
           }
           > span {
             pointer-events: none;
-            margin: -6px 0px 0 -3px;
+            margin-left: -3px;
             > i {
               font-size: 32px;
             }
@@ -137,6 +142,10 @@ body.new-theme {
             #icon-plus {
               display: none;
             }
+          }
+          &.centered {
+            margin-left: -13.5px;
+            margin-top: -13.5px;
           }
         }
         .image-explorer-hotspot-reveal {
