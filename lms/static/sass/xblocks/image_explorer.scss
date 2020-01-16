@@ -103,15 +103,17 @@ body.new-theme {
           border-radius: 25px;
           padding: 0;
           border: 0;
-          margin: -6px 0 0 -15px;
-          width: 27px;
-          height: 27px;
+          width: 25px;
+          height: 25px;
           &:focus{
             outline: 2px auto !important;
           }
           > span {
             pointer-events: none;
-            margin: -6px 0px 0 -3px;
+            margin: -1px 0 0 -3px;
+            @media only screen and (max-width: 767px){
+              margin: -4px 0 0 -3px;
+            }
             > i {
               font-size: 32px;
             }
@@ -138,6 +140,11 @@ body.new-theme {
               display: none;
             }
           }
+          &.centered {
+            margin-left: -12.5px;
+            margin-top: -12.5px;
+
+          }
         }
         .image-explorer-hotspot-reveal {
             border-radius: 2px;
@@ -150,8 +157,12 @@ body.new-theme {
               position: absolute;
               right: 6px;
               top: 0px;
+              padding: 0;
               &::before {
                 display: none;
+              }
+              &:hover {
+                background-color: transparent !important;
               }
 
               &:after {
