@@ -60,6 +60,7 @@
                 padding:0;
                 &:hover {
                     box-shadow: none;
+                    background-color: transparent !important;
                 }
                 &:before {
                     // content: "";
@@ -73,6 +74,12 @@
 
         .choice-result {
             vertical-align: baseline;
+            width: auto;
+            height: auto;
+            &:hover {
+                box-shadow: none;
+                background-color: transparent !important;
+            }
         }
 
         .choice-label {
