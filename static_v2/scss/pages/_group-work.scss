@@ -9,6 +9,27 @@
         .mckinsey_help {
             display: none;
         }
+        
+        .vjs-playback-rate {
+            div {
+                color: white;
+            }
+        }
+        .vjs-menu-content {
+            li {
+                span {
+                color: white;
+                }
+            }
+        }
+        .vjs-time-control {
+            &.vjs-time-divider {
+                span {
+                    line-height: 30px !important;
+                    color: $white;
+                }
+            }
+        }
 
 
         // layout
