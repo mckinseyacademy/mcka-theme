@@ -9,6 +9,27 @@
         .mckinsey_help {
             display: none;
         }
+        
+        .vjs-playback-rate {
+            div {
+                color: white;
+            }
+        }
+        .vjs-menu-content {
+            li {
+                span {
+                color: white;
+                }
+            }
+        }
+        .vjs-time-control {
+            &.vjs-time-divider {
+                span {
+                    line-height: 30px !important;
+                    color: $white;
+                }
+            }
+        }
 
 
         // layout
@@ -16,6 +37,41 @@
         .group-project-navigator {
             width: 363px;
             margin: -16px 0 0;
+            position: relative;
+            .vjs-playback-rate {
+                div {
+                    color: white;
+                }
+            }
+            .vjs-menu-content {
+                li {
+                    span {
+                    color: white;
+                    }
+                }
+            }
+            .vjs-time-control {
+                &.vjs-time-divider {
+                    span {
+                        line-height: 30px !important;
+                        color: $white;
+                    }
+                }
+            }
+
+            .group-project-resources-view{
+                .player-modal{
+                    position: absolute;
+                    margin-top: -169.5px;
+                    width: 96%;
+                    left: 2%;
+                    .close-reveal-modal{
+                        color:white;
+                        text-align: right;
+                        font-size: 20px;
+                    }
+                }
+            }
         }
 
         .group-project-content {
