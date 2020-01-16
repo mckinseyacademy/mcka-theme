@@ -88,8 +88,16 @@
               .language-selector
                 %i.material-icons language
                 .dropdown
-                  %button#dropdownMenuButton.dropdown-toggle.border-0{"aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
-                    {{ LANGUAGE_CODE }}
+                  - if LANGUAGE_CODE == 'zh'
+                    {% with LANGUAGE_CODE|add:"-cn" as lang_zh_cn %}
+                      - get_language_info for lang_zh_cn as lang
+                        %button#dropdownMenuButton.dropdown-toggle.border-0.bg-none{"aria-label": "{{lang.name}}, Select your language", "aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
+                          {{ LANGUAGE_CODE }}
+                    {% endwith %}
+                  - else
+                    - get_language_info for LANGUAGE_CODE as lang
+                      %button#dropdownMenuButton.dropdown-toggle.border-0.bg-none{"aria-label": "{{lang.name}}, Select your language", "aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
+                        {{ LANGUAGE_CODE }}
                   .dropdown-menu.language-dropdown{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
                     - for language_code, language_name in LANGUAGES
                       - if LANGUAGE_CODE == language_code
