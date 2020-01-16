@@ -32,6 +32,15 @@
 
       - block js_snippets
         %script{src: "{% static 'js/app_link_popup.js' %}"}
+        %script
+          $(document).ready(function(){
+            var stats_selector = '.courseLanding #course-statistics'
+            if ($(stats_selector + ' div.widget').length === 1) {
+              if (!$(stats_selector + ' div.course-progress').length){
+                $(stats_selector + ' div.widget').css('max-width', '30%')
+              }
+            }
+          })
 
       - block heap_events
         %script
