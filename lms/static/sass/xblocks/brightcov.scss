@@ -80,15 +80,18 @@
         }
 
         div.vjs-playback-rate{
-            width: auto!important;
+            width: 40px!important;
             margin-right: 5px;
+            position: relative;
             button.vjs-playback-rate{
                 position: relative;
                 width: 100%!important;
             }
             .vjs-playback-rate-value{
-                position: relative !important;
-                margin-top: -29px;
+                position: absolute !important;
+                text-align: right;
+                top:0;
+                right:0;
             }
         }
 
