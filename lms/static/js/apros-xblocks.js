@@ -149,16 +149,6 @@ $(function () {
       }, 3000);
     }
   });
-
-  // BrightcovePlayerXblock playback rate
-  $(document).on('click',  '.new-theme', function (e) {
-    var parent = $(e.target).parents('.vjs-playback-rate.vjs-control');
-    if(parent.length > 0){
-      parent.find('.vjs-menu').addClass('vjs-lock-showing');
-    } else {
-      $('.vjs-playback-rate.vjs-control .vjs-menu').removeClass('vjs-lock-showing')
-    }
-  });
 });
 
 function surveyTableLabelPositionsForMobile() {
