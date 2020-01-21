@@ -149,6 +149,12 @@ $(function () {
       }, 3000);
     }
   });
+
+  $(document).mousedown(function(e){
+    if($(e.target).hasClass('vjs-menu-content')){
+      e.preventDefault();
+    }
+  });
 });
 
 function surveyTableLabelPositionsForMobile() {
