@@ -663,14 +663,6 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         self.assertIn(post_login_redirect_url, redirect_query_params.get('next'))
 
     @patch('accounts.views.get_user_from_login_id')
-    def test_login_normal_error(self, mock_get_username):
-        error_reason = "Error adccbfc7-33eb-484b-a917-b7d65a5d72f8"
-        http_error = urllib.error.HTTPError("http://irrelevant", 409, error_reason, None, None)
-        mock_get_username.side_effect = ApiError(http_error, "get_session", None)
-        response = self.client.post(reverse('home'), {'login_id': 'test', 'password': 'password'})
-        self.assertIn(error_reason, response.content.decode('utf-8'))
-
-    @patch('accounts.views.get_user_from_login_id')
     @patch('accounts.views.auth.authenticate')
     @ddt.data('johndoe', 'john@doe.org')
     def test_login_normal_invalid_password(self, login_id, mock_authenticate, mock_get_username):

@@ -420,9 +420,8 @@ def login_post_view(request):
         try:
             login_id = form.cleaned_data['login_id']
             password = form.cleaned_data['password']
-            user = get_user_from_login_id(login_id)
             try:
-                auth_user = auth.authenticate(username=user.username, password=password)
+                auth_user = auth.authenticate(username=login_id, password=password)
             except ApiError:
                 return JsonResponse({
                     "lock_out": True
