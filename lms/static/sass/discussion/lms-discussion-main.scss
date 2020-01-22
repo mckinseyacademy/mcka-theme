@@ -46,6 +46,8 @@ footer[role=contentinfo] {
 			&.btn-link:hover,
 			&.btn-link:focus {
 				border-color: $hard-gray;
+				background-color: transparent !important;
+				background: none;
 
 				.icon {
 					@include primary-theme-content-color( !important);
@@ -74,6 +76,12 @@ footer[role=contentinfo] {
 			font-weight: normal;
 			font-size: 12px;
 			padding: 1px;
+			&:hover,
+			&:focus {
+				border-color: transparent;
+				background-color: transparent !important;
+				background: none;
+			}
 
 			.icon {
 				color: $gray;
@@ -1017,8 +1025,9 @@ body.new-theme {
 					font-weight: normal;
 
 					&:hover {
-						color: $gray;
-						text-decoration: none;
+						background: none !important;
+						border-color: transparent !important;
+						background-color: transparent !important;
 					}
 				}
 
@@ -1206,7 +1215,6 @@ body.new-theme {
 							width: 100%;
 
 							#forum-nav-browse-filter-input {
-								color: $black;
 								font-size: 1rem !important;
 								padding: 10px 10px;
 								text-transform: capitalize;
@@ -1448,7 +1456,6 @@ body.new-theme {
 					margin-top: 15px;
 					display: inline-block;
 					color: transparent !important;
-					visibility: hidden;
 					@include disableTextSelection();
 
 					&:before {
@@ -1709,11 +1716,9 @@ body.new-theme {
 
 					.label {
 						color: transparent;
-						visibility: hidden;
 						@include disableTextSelection();
 
 						&:before {
-							visibility: visible;
 							color: $black;
 							font-weight: normal;
 							font-size: 1.5rem;
@@ -1733,11 +1738,9 @@ body.new-theme {
 				.label {
 					&.label-settings {
 						color: transparent;
-						visibility: hidden;
 						@include disableTextSelection();
 
 						&:before {
-							visibility: visible;
 							content: 'How to use discussions:';
 							font-size: 0.875rem;
 							color: black;

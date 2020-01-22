@@ -701,6 +701,11 @@ body.new-theme {
                     @include primary-theme-content-color;
                     cursor: pointer;
                     background: none;
+                    &:hover, &:focus {
+                        border-color: transparent !important;
+                        background-color: transparent !important;
+                        background: none !important;
+                    }
                 }
 
                 .edit-post-body {
@@ -810,7 +815,6 @@ body.new-theme {
 
                     .field-help {
                         color: transparent;
-                        visibility: hidden;
                         @include disableTextSelection();
 
                         &#field_help_topic_area {
@@ -873,7 +877,6 @@ body.new-theme {
                     margin-top: 35px;
                     display: inline-block;
                     color: transparent !important;
-                    visibility: hidden;
                     @include disableTextSelection();
 
                     &:before {
@@ -1299,10 +1302,11 @@ body.new-theme {
                                     }
 
                                     .action-button {
-
                                         &.btn-link:hover,
                                         &.btn-link:focus {
-                                            border-color: $hard-gray;
+                                            border-color: transparent;
+                                            background-color: transparent;
+                                            background: none;
 
                                             .icon {
                                                 @include primary-theme-content-color( !important);
@@ -1319,7 +1323,9 @@ body.new-theme {
 
                                             &.btn-link:hover,
                                             &.btn-link:focus {
-                                                border-color: $hard-gray;
+                                                border-color: transparent;
+                                                background-color: transparent !important;
+                                                background: none;
                                             }
                                         }
 
@@ -1342,8 +1348,8 @@ body.new-theme {
 
                                         li {
                                             width: 90%;
-                                        }
 
+                                        }
                                         .btn-link {
                                             border: 0;
                                             cursor: pointer;
