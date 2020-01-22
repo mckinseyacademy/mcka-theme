@@ -871,18 +871,8 @@ body.new-theme {
                     }
 
                     #field_help_post_type {
-                        color: transparent;
-                        visibility: hidden;
+                        visibility: visible;
                         @include disableTextSelection();
-
-                        &:before {
-                            visibility: visible;
-                            content: 'Questions raise issues that need answers. Discussions share ideas and start conversations.';
-                            font-size: 12px;
-                            color: $gray;
-                            position: absolute;
-                            display: block;
-                        }
                     }
 
                 }
@@ -2176,4 +2166,24 @@ body.new-theme {
 
     }
 
+}
+
+
+html {
+
+// style for Japenese language.
+	&:lang(ja) {
+
+		#course-discussion {
+			.discussion-content {
+				.page-header-secondary {
+					h1 {
+						@media (max-width: 767px) {
+							letter-spacing: -5px !important;
+						}
+					}
+				}
+			}
+		}
+	}
 }
