@@ -542,14 +542,16 @@ body.new-theme {
                                     background: none;
                                     color: $black;
                                     width: 20px;
-                                    height: 20px;
+                                    height: 16px;
                                     position: absolute;
                                     right: 6px;
                                     top: 4px;
                                     margin: 0;
+                                    padding: 0;
 
                                     &:hover {
                                         box-shadow: none;
+                                        background-color: transparent !important;
                                     }
                                 }
 
