@@ -876,7 +876,7 @@ body.new-theme {
 
                     #field_help_post_type {
                         visibility: visible;
-			color: inherit;
+		    	color: inherit;
                         @include disableTextSelection();
                     }
 
