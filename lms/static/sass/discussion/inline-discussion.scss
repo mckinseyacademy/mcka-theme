@@ -25,12 +25,17 @@
     padding: 0;
     text-indent: 0;
     line-height: initial;
-
+    .display-vote .vote-count {
+        display: inline-block;
+        font-size: 12px;
+        padding: 9px 0 0;
+    }
     .action-button {
 
         &.btn-link:hover,
         &.btn-link:focus {
             border-color: $hard-gray;
+            background-color: transparent !important;
 
             .icon {
                 @include primary-theme-content-color( !important);
@@ -43,6 +48,9 @@
 
         li {
             width: 90%;
+            button {
+                background-color: transparent !important;
+            }
         }
 
         .btn-link {
@@ -665,6 +673,7 @@ body.new-theme {
 
                     &:hover {
                         text-decoration: none;
+                        background-color: transparent !important;
                     }
 
                     .fa-chevron-prev {
@@ -1319,6 +1328,12 @@ body.new-theme {
                                         cursor: pointer;
                                         float: left;
 
+                                       .display-vote .vote-count {
+                                            display: inline-block;
+                                            font-size: 12px;
+                                            padding: 9px 0 0;
+                                        }
+
                                         .action-button {
 
                                             &.btn-link:hover,
@@ -1348,7 +1363,9 @@ body.new-theme {
 
                                         li {
                                             width: 90%;
-
+                                            button {
+                                                background-color: transparent !important;
+                                            }
                                         }
                                         .btn-link {
                                             border: 0;
