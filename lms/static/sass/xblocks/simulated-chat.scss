@@ -102,7 +102,7 @@
                                         opacity: 1;
                                         border-color: $gray;
                                         cursor: not-allowed;
-                                        background: $gray;
+                                        background: $gray !important;
                                         color:$white;
 
                                         &:hover {
