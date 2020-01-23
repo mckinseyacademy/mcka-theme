@@ -40,7 +40,11 @@ footer[role=contentinfo] {
 	.actions-item {
 		margin: 0 5px 0;
 		float: left;
-
+		.display-vote .vote-count {
+			display: inline-block;
+			font-size: 12px;
+			padding: 9px 0 0;
+		}
 		.action-button {
 
 			&.btn-link:hover,
