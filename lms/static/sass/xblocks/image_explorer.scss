@@ -94,10 +94,16 @@ body.new-theme {
 
       .image-explorer-wrapper {
         text-align: center;
-
+        .hotspot-container {
+          width: 25px;
+          height: 25px;
+          margin-top: -12.5px;
+          margin-left: -12.5px;
+        }
         .image-explorer-hotspot {
           text-align: left;
           background: white;
+          background-color: white !important;
           border-radius: 22px;
           color: var(--primary);
           border-radius: 25px;
@@ -106,7 +112,14 @@ body.new-theme {
           width: 25px;
           height: 25px;
           &:focus{
-            outline: 2px auto !important;
+            outline: 2px 2px !important;
+          }
+          &:hover {
+            >span {
+              >i {
+                color: var(--primary-darken-30)!important;
+              }
+            }
           }
           > span {
             pointer-events: none;
@@ -141,8 +154,8 @@ body.new-theme {
             }
           }
           &.centered {
-            margin-left: -12.5px;
-            margin-top: -12.5px;
+            margin-left: 0;
+            margin-top: 0;
 
           }
         }
@@ -280,6 +293,12 @@ body.new-theme {
     .lesson-content {
       .image-explorer-xblock-wrapper {
         .image-explorer-wrapper {
+          .hotspot-container {
+            width: 16px;
+            height: 16px;
+            margin-left: -8px;
+            margin-top: -8px;
+          }
           .image-explorer-hotspot {
             width: 16px;
             height: 16px;
@@ -290,6 +309,10 @@ body.new-theme {
                 font-size: 22px;
                 line-height: 14px;
               }
+            }
+            &.centered {
+              margin-left: 0;
+              margin-top: 0;
             }
             .image-explorer-hotspot-reveal {
               width: 100% !important;
