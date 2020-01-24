@@ -123,12 +123,14 @@ body.new-theme {
           }
           > span {
             pointer-events: none;
-            margin: -1px 0 0 -3px;
+            margin: -3px -3px 0 -3px;
             @media only screen and (max-width: 767px){
-              margin: -4px 0 0 -3px;
+              margin: -2px 5px 0 -3px;
             }
             > i {
               font-size: 32px;
+              margin: 0;
+              display: block;
             }
           }
           #icon-plus {
@@ -298,6 +300,9 @@ body.new-theme {
             height: 16px;
             margin-left: -8px;
             margin-top: -8px;
+            .image-explorer-hotspot-reveal {
+              margin: 0 !important;
+            }
           }
           .image-explorer-hotspot {
             width: 16px;
