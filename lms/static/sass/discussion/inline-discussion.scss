@@ -842,18 +842,9 @@ body.new-theme {
                         }
 
                         &#field_help_title {
-
+			    color: inherit;
                             position: absolute;
                             top: 71px;
-
-                            &:before {
-                                visibility: visible;
-                                content: 'Add a clear and descriptive title to encourage participation.';
-                                font-size: 12px;
-                                position: absolute;
-                                display: block;
-                                color: $gray;
-                            }
                         }
                     }
 
