@@ -420,8 +420,9 @@ def login_post_view(request):
         try:
             login_id = form.cleaned_data['login_id']
             password = form.cleaned_data['password']
+            user = get_user_from_login_id(login_id)
             try:
-                auth_user = auth.authenticate(username=login_id, password=password)
+                auth_user = auth.authenticate(username=user.username, password=password)
             except ApiError:
                 return JsonResponse({
                     "lock_out": True
@@ -438,6 +439,11 @@ def login_post_view(request):
 
         except ApiError as err:
             return JsonResponse({"error": err.message}, status=500)
+        except AttributeError:
+            # User does not exist
+            return JsonResponse({
+                "login_id": _("Error: Username/email is not recognized. Try again.")
+            }, status=403)
 
     # If form validation fails
     if form.errors['login_id']:
