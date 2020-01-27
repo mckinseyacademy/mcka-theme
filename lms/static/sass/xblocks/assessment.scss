@@ -102,7 +102,8 @@
         .step-overall-checkmark {
             &::before {
                 position: relative;
-                top: 5px;
+                top: 3px;
+                left: -15px;
             }
 
             &.checkmark-partially-correct {
