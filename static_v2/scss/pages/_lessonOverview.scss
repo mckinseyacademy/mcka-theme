@@ -113,7 +113,9 @@ body{
       z-index: -1;
     }
     &.disable {
-      background: $gray !important;
+      &:before {
+        background: $gray !important;
+      }
       &:hover {
         opacity: 1;
       }
@@ -124,8 +126,10 @@ body{
       }
     }
     &.disabled {
-      background: $gray !important;
       pointer-events: none;
+      &::before {
+        background: $gray !important;
+      }
       &:hover {
         opacity: 1;
       }
