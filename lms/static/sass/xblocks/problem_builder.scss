@@ -14,6 +14,7 @@
         padding: 0px 15px 0 3px;
         font-size: 16px;
         vertical-align: top;
+        overflow: initial;
 
         input[type="radio"] {
             position: relative;
@@ -75,8 +76,8 @@
 
         .choice-result {
             vertical-align: baseline;
-            width: auto;
             height: auto;
+            background: transparent;
             &:hover {
                 box-shadow: none;
                 background-color: transparent !important;
@@ -100,6 +101,9 @@
 
     .choice {
         .choice-tips-container {
+            position: absolute;
+            top: 0;
+            right:0;
             &.with-tips {
                 border: none;
             }
@@ -122,6 +126,12 @@
     .checkmark-incorrect::before {
         content: "\f12a";
         color: #ff0000;
+    }
+
+    .submit{
+        .step-overall-checkmark{
+            background: transparent !important;
+        }
     }
 
 }
@@ -201,6 +211,9 @@ body.new-theme {
             }
         }
     }
+    .questionnaire{
+        .choice{ position: relative;}
+    }
 }
 
 .new-theme {
@@ -245,6 +258,7 @@ body.new-theme {
     [data-block-type="pb-mcq"] {
         .questionnaire {
             .choice-selector {
+                overflow: initial;
                 padding: 0;
                 @include font-size(14);
 
@@ -292,6 +306,9 @@ body.new-theme {
                             }
 
                         }
+                        &:before {
+                            transform: translate(-16px, 6px);
+                        }
                     }
                 }
             }
@@ -306,6 +323,7 @@ body.new-theme {
 
 
         .choice-selector {
+            overflow: initial;
             &::before {
                 top: 5px !important;
             }
@@ -330,7 +348,7 @@ body.new-theme {
                     // Incorrect
                     &::before {
                         position: relative;
-                        top: 2px;
+                        top: 7px;
                     }
 
                     &.checkmark-incorrect {
@@ -351,7 +369,6 @@ body.new-theme {
                             font-family: 'Material Icons';
                             content: '\e86c';
                             @include font-size(24);
-                            margin-top: 2px;
                         }
                     }
                 }
@@ -381,6 +398,9 @@ body.new-theme {
                     right: 0;
                     box-sizing: border-box;
                 }
+            }
+            .choise-result{
+                margin-top: -2px;
             }
         }
     }
