@@ -302,6 +302,11 @@ body.new-theme {
             margin-top: -8px;
             .image-explorer-hotspot-reveal {
               margin: 0 !important;
+              .image-explorer-hotspot-content-wrapper {
+                height: calc(100% - 60px);
+                max-height: none;
+                margin:30px 10px;
+              }
             }
           }
           .image-explorer-hotspot {
@@ -325,12 +330,6 @@ body.new-theme {
               top: 13%;
               margin: 0 auto !important;
               max-height: none !important;
-
-              .image-explorer-hotspot-content-wrapper {
-                height: calc(100% - 60px);
-                max-height: none;
-                margin:30px 10px;
-              }
 
               .oo-player-container {
                 min-width: unset !important;
