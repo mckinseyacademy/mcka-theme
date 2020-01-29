@@ -179,11 +179,12 @@ body.new-theme {
               &:hover {
                 background-color: transparent !important;
               }
-              i{
+
+              &:after {
                 font-family: "Material Icons";
+                content: "\e14c";
                 color: $gray;
                 font-size: 1.125rem;
-                display: inline-block;
               }
             }
 
