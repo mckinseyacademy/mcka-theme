@@ -82,69 +82,66 @@ body.new-theme {
           height: 25px;
           margin-top: -12.5px;
           margin-left: -12.5px;
-        }
-        .image-explorer-hotspot {
-          text-align: left;
-          background: white;
-          background-color: white !important;
-          border-radius: 22px;
-          color: var(--primary);
-          border-radius: 25px;
-          padding: 0;
-          border: 0;
-          width: 25px;
-          height: 25px;
-          &:focus{
-            outline: 2px 2px !important;
-          }
-          &:hover {
-            >span {
-              >i {
-                color: var(--primary-darken-30)!important;
+          .image-explorer-hotspot {
+            text-align: left;
+            background: white;
+            background-color: white !important;
+            border-radius: 22px;
+            color: var(--primary);
+            border-radius: 25px;
+            padding: 0;
+            border: 0;
+            width: 25px;
+            height: 25px;
+            &:focus{
+              outline: 2px 2px !important;
+            }
+            &:hover {
+              >span {
+                >i {
+                  color: var(--primary-darken-30)!important;
+                }
               }
             }
-          }
-          > span {
-            pointer-events: none;
-            margin: -3px -3px 0 -3px;
-            @media only screen and (max-width: 767px){
-              margin: -2px 5px 0 -3px;
-            }
-            > i {
-              font-size: 32px;
-              margin: 0;
-              display: block;
-            }
-          }
-          > #icon-plus {
-            display: block;
-
-          }
-          > #icon-check {
-            display: none;
-          }
-
-          &:hover {
-            > i {
-              @include primary-theme-content-color-hover;
-            }
-          }
-
-          &.visited {
-            #icon-check {
-              display: block;
+            > span {
+              pointer-events: none;
+              margin: -3px -3px 0 -3px;
+              @media only screen and (max-width: 767px){
+                margin: -2px 5px 0 -3px;
+              }
+              > i {
+                font-size: 32px;
+                margin: 0;
+                display: block;
+              }
             }
             #icon-plus {
+              display: block;
+            }
+            #icon-check {
               display: none;
             }
-          }
-          &.centered {
-            margin-left: 0;
-            margin-top: 0;
 
+            &:hover {
+              > i {
+                @include primary-theme-content-color-hover;
+              }
+            }
+
+            &.visited {
+              #icon-check {
+                display: block;
+              }
+              #icon-plus {
+                display: none;
+              }
+            }
+            &.centered {
+              margin-left: 0;
+              margin-top: 0;
+            }
           }
-        }
-        .image-explorer-hotspot-reveal {
+          .image-explorer-hotspot-reveal {
             border-radius: 2px;
             background: $ash-white;
             border: 1px solid $popup-border;
@@ -265,6 +262,7 @@ body.new-theme {
               }
             }
           }
+        }
       }
     }
   }
@@ -281,33 +279,38 @@ body.new-theme {
             height: 16px;
             margin-left: -8px;
             margin-top: -8px;
+
             .image-explorer-hotspot-reveal {
               margin: 0 !important;
+
               .image-explorer-hotspot-content-wrapper {
                 height: calc(100% - 60px);
                 max-height: none;
-                margin:30px 10px;
+                margin: 30px 10px;
               }
             }
-          }
-          .image-explorer-hotspot {
-            width: 16px;
-            height: 16px;
-            > span {
-              width: 14px;
-              height: 14px;
-              i {
-                font-size: 22px;
-                line-height: 14px;
+
+            .image-explorer-hotspot {
+              width: 16px;
+              height: 16px;
+
+              > span {
+                width: 14px;
+                height: 14px;
+
+                i {
+                  font-size: 22px;
+                  line-height: 14px;
+                }
+              }
+
+              &.centered {
+                margin-left: 0;
+                margin-top: 0;
               }
             }
-            &.centered {
-              margin-left: 0;
-              margin-top: 0;
-            }
-          }
-        }
-        .image-explorer-hotspot-reveal {
+
+            .image-explorer-hotspot-reveal {
               width: 90% !important;
               height: 74% !important;
               top: 13%;
@@ -319,6 +322,8 @@ body.new-theme {
                 width: 100% !important;
               }
             }
+          }
+        }
       }
     }
   }
