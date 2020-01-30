@@ -212,3 +212,7 @@ function inlineDiscussionLongHeading() {
 // $( window ).resize(function() {
 //   inlineDiscussionLongHeading();
 // });
+//Accessibility fix for inline-discussion
+$('.btn-link.new-post-btn').on("click", function() {
+     $('.forum-new-post-form .thread-title').focus()
+});
