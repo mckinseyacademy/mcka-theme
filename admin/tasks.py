@@ -1311,7 +1311,7 @@ def create_problem_response_report(
     resp = instructor_api.generate_problem_responses_report(course_id, problem_locations, problem_types_filter)
 
     self.update_state(task_id=self.request.id, state='PROGRESS', meta={'percentage': 10})
-    return {'id': self.request.id, 'remote_task_id': resp['task_id']}
+    return {'id': self.request.id, 'remote_task_id': resp.get('task_id')}
 
 
 @task(bind=True, name='admin.monitor_problem_response_report', max_retries=30)
