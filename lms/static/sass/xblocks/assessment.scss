@@ -155,6 +155,17 @@
         text-align: right;
         margin-top: 15px;
     }
+
+    .assessment-question-block {
+        .submit {
+            .step-overall-checkmark {
+                &:before {
+                    top: 3px;
+                    left: -13px;
+                }
+            }
+        }
+    }
 }
 
 // RTL
