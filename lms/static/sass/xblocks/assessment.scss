@@ -158,8 +158,17 @@
 
     .assessment-question-block {
         .submit {
+            padding-left: 30px;
+            position: relative;
             .step-overall-checkmark {
+                background: transparent !important;
+                display: none;
+                position: absolute;
+                left: -3px;
+                top: -2px;
                 &:before {
+                    display: inline-block;
+                    vertical-align: middle;
                     top: 3px;
                     left: -13px;
                 }
