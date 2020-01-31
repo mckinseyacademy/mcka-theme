@@ -439,6 +439,11 @@ def login_post_view(request):
 
         except ApiError as err:
             return JsonResponse({"error": err.message}, status=500)
+        except AttributeError:
+            # User does not exist
+            return JsonResponse({
+                "login_id": _("Error: Username/email is not recognized. Try again.")
+            }, status=403)
 
     # If form validation fails
     if form.errors['login_id']:

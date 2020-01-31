@@ -16,7 +16,8 @@ NEW_UI_ADMIN_VIEWS = [
 
 OLD_UI_TEMPLATES = [
     'user_profile',
-    'courses_menu'
+    'courses_menu',
+    'course_lessons_menu'
 ]
 
 

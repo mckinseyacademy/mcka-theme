@@ -26,11 +26,34 @@
       }
       td {
         &:first-child {
-          width: 200px;
+          width: 30%;
           padding-bottom: 30px;
           overflow: hidden;
+          @include media-breakpoint-down(lg) {    
+           width:50%;
+           }
+           
         }
         padding: 0;
+        
+        .video-js{
+          width: 100% !important;
+          height: 180px !important;
+
+          @media only screen and (max-device-width : 1024px)  { 
+            width: 100% !important;
+            height: 250px !important;
+          }
+
+          @media only screen and (max-device-width : 768px) { 
+              height: 180px !important;
+          }
+
+          &.vjs-fullscreen{
+            height: 100vh !important;
+            width: 100vw !important;
+        }
+      }
         .oo-player-container {
           width: 100% !important;
         }
