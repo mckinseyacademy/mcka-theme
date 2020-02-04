@@ -101,8 +101,40 @@
                   .dropdown-menu.language-dropdown{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
                     - for language_code, language_name in LANGUAGES
                       - if LANGUAGE_CODE == language_code
-                        %a.dropdown-item.selected
-                          {{language_name}}
+                        - if language_code == 'ar'
+                          %a.dropdown-item.selected{"aria-label": "Arabic"}
+                            {{language_name}}
+                        - if language_code == 'zh'
+                          %a.dropdown-item.selected{"aria-label": "Mandarin"}
+                            {{language_name}}
+                        - if language_code == 'ja'
+                          %a.dropdown-item.selected{"aria-label": "Japanese"}
+                            {{language_name}}
+                        -else
+                          %a.dropdown-item.selected
+                            {{language_name}}
+
+                      - elif language_code == 'ar'
+                        %a.dropdown-item{"aria-label": "Arabic", href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                          -if language_code == 'en' or language_code == 'nl'
+                            - get_language_info for language_code as lang
+                            {{lang.name}}
+                          -else
+                            {{language_name}}
+                      - elif language_code == 'zh'
+                        %a.dropdown-item{"aria-label": "Mandarin", href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                          -if language_code == 'en' or language_code == 'nl'
+                            - get_language_info for language_code as lang
+                            {{lang.name}}
+                          -else
+                            {{language_name}}
+                      - elif language_code == 'ja'
+                        %a.dropdown-item{"aria-label": "Japanese", href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                          -if language_code == 'en' or language_code == 'nl'
+                            - get_language_info for language_code as lang
+                            {{lang.name}}
+                          -else
+                            {{language_name}}
                       - else
                         %a.dropdown-item{href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
                           -if language_code == 'en' or language_code == 'nl'
