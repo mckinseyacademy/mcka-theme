@@ -104,10 +104,10 @@
                         - if language_code == 'ar'
                           %a.dropdown-item.selected{"aria-label": "Arabic"}
                             {{language_name}}
-                        - if language_code == 'zh'
+                        - elif language_code == 'zh'
                           %a.dropdown-item.selected{"aria-label": "Mandarin"}
                             {{language_name}}
-                        - if language_code == 'ja'
+                        - elif language_code == 'ja'
                           %a.dropdown-item.selected{"aria-label": "Japanese"}
                             {{language_name}}
                         -else
