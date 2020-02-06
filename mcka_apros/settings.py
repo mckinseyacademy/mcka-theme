@@ -297,7 +297,7 @@ USE_SESSION_COURSEWARE_CACHING = False
 GA_TRACKING_ID = None  # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
-TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
+TA_EMAIL_GROUP = ''
 INITIAL_PASSWORD = 'PassworD12!@'
 
 # Email address students get their enrollment email sent from
