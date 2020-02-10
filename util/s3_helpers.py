@@ -56,7 +56,7 @@ def store_file(file_stream, storage_dir_name, file_name, secure=False):
     """
     storage_path = '{}/{}'.format(storage_dir_name, file_name)
 
-    storage = get_storage(secure)
+    storage = get_storage(secure=secure)
 
     try:
         file_path = storage.save(storage_path, ContentFile(file_stream.read()))
