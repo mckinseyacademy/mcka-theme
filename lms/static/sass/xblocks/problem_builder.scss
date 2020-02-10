@@ -112,7 +112,7 @@
             top: 0;
             right:0;
             &.with-tips {
-                border: none;
+                border: none !important;
             }
 
             .choice-tips {
@@ -512,6 +512,9 @@ body.new-theme {
         input[type="text"] {
             border: 1px solid $input-border;
         }
+        .answer-checkmark{
+            margin: 0;
+        }
     }
 
     //Proper builder recap long answer
@@ -631,6 +634,54 @@ body.new-theme {
             }
         }
 
+        [data-block-type="step-builder"] {
+            .step-overall-checkmark {
+                float: none;
+            }
+        }
+
+        .assessment-question-block {
+            .submit {
+                padding: 0 30px 0 0;
+                .step-overall-checkmark {
+                    left: auto;
+                    right: 0;
+                    float: none !important;
+                    &:before{
+                        left: auto;
+                        right: -13px;
+                    }
+                }
+            }
+        }
+    }
+
+    // New Changes for RTL hussnainRaza
+    .themed-xblock {
+        &.mentoring {
+            .choice {
+                padding: 0 30px 0 0;
+                .choice-tips-container {
+                    right: auto;
+                    left: 0;
+                }
+            }
+            .questionnaire {
+                .choice-result {
+                    position: absolute;
+                    transform: none;
+                    margin: 0 -15px 0 0;
+                    right: 0;
+                    top: 0;
+                    &:before {
+                        transform: none !important;
+                        margin: 0 !important;
+                        width: auto !important;
+                    }
+                }
+            }
+
+        }
     }
 }
 
