@@ -162,12 +162,3 @@ function inlineDiscussionLongHeading() {
     $(this).children('.discussion-module-title').css({'display': ''}); // rest width
   });
 }
-// We will enable for testing, its not required for production.
-// $( window ).resize(function() {
-//   inlineDiscussionLongHeading();
-// });
-
-//Accessibility fix for inline-discussion
-$(document).on('click', '.new-post-btn', function() {
-  $('.forum-new-post-form .thread-title').focus()
-});
