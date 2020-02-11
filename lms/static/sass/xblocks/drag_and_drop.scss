@@ -89,10 +89,6 @@
         display: none;
     }
 
-    .keyboard-help-button {
-        display: none;
-    }
-
     .drag-container{
         .item-bank{
             .option{
@@ -303,6 +299,9 @@
                 background: var(--primary);
                 border: 0;
             }
+        }
+        &:focus {
+            outline: 2px dotted $hard-gray !important;
         }
     }
 
@@ -543,14 +542,16 @@ body.new-theme {
                                     background: none;
                                     color: $black;
                                     width: 20px;
-                                    height: 20px;
+                                    height: 16px;
                                     position: absolute;
                                     right: 6px;
                                     top: 4px;
                                     margin: 0;
+                                    padding: 0;
 
                                     &:hover {
                                         box-shadow: none;
+                                        background-color: transparent !important;
                                     }
                                 }
 

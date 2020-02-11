@@ -123,7 +123,7 @@ function surveyTableLabelPositionsForMobile(){
     if (index == $('.survey-table .survey-option').length - 1) {
       setTimeout(function () {
         toggleSurveyRadios()
-      }, 5000);  
+      }, 5000);
     }
   });
 }
@@ -136,7 +136,7 @@ function toggleSurveyRadios() {
       $(el).parent().addClass('disabled');
   });
   $('.new-theme [data-block-type="survey"] input[type=button]').on('click', function (e) {
-    // Survey block choice 
+    // Survey block choice
     setTimeout(function () { // we have to wait till api responses and updates selected/disabled attributes to input
       $(e.target).prev().find('input[type=radio]').each(function (index, el) {
         if (el.checked)
@@ -162,7 +162,3 @@ function inlineDiscussionLongHeading() {
     $(this).children('.discussion-module-title').css({'display': ''}); // rest width
   });
 }
-// We will enable for testing, its not required for production.
-// $( window ).resize(function() {
-//   inlineDiscussionLongHeading();
-// });

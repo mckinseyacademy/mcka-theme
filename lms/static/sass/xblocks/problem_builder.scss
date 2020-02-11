@@ -11,9 +11,10 @@
 
 .themed-xblock.mentoring {
     .choices-list .choice-selector {
-        padding: 0px 3px 0 3px;
+        padding: 0px 15px 0 3px;
         font-size: 16px;
         vertical-align: top;
+        overflow: initial;
 
         input[type="radio"] {
             position: relative;
@@ -53,17 +54,18 @@
 
             .close {
                 display: block !important;
-                font-size: 20px;
+                font-size: 22px;
                 right: 10px;
                 top: 8px;
-                background: transparent;
-                padding:0;
+                background: none;
+                color: $smoke-gray;
+                padding: 0;
+                &:before {
+                    display: none;
+                }
                 &:hover {
                     box-shadow: none;
                     background-color: transparent !important;
-                }
-                &:before {
-                    // content: "";
                 }
             }
         }
@@ -74,8 +76,8 @@
 
         .choice-result {
             vertical-align: baseline;
-            width: auto;
             height: auto;
+            background: transparent;
             &:hover {
                 box-shadow: none;
                 background-color: transparent !important;
@@ -99,8 +101,11 @@
 
     .choice {
         .choice-tips-container {
+            position: absolute;
+            top: 0;
+            right:0;
             &.with-tips {
-                border: none;
+                border: none !important;
             }
 
             .choice-tips {
@@ -121,6 +126,12 @@
     .checkmark-incorrect::before {
         content: "\f12a";
         color: #ff0000;
+    }
+
+    .submit{
+        .step-overall-checkmark{
+            background: transparent !important;
+        }
     }
 
 }
@@ -200,6 +211,9 @@ body.new-theme {
             }
         }
     }
+    .questionnaire{
+        .choice{ position: relative;}
+    }
 }
 
 .new-theme {
@@ -244,6 +258,7 @@ body.new-theme {
     [data-block-type="pb-mcq"] {
         .questionnaire {
             .choice-selector {
+                overflow: initial;
                 padding: 0;
                 @include font-size(14);
 
@@ -291,6 +306,9 @@ body.new-theme {
                             }
 
                         }
+                        &:before {
+                            transform: translate(-16px, 6px);
+                        }
                     }
                 }
             }
@@ -305,6 +323,7 @@ body.new-theme {
 
 
         .choice-selector {
+            overflow: initial;
             &::before {
                 top: 5px !important;
             }
@@ -329,7 +348,7 @@ body.new-theme {
                     // Incorrect
                     &::before {
                         position: relative;
-                        top: 2px;
+                        top: 7px;
                     }
 
                     &.checkmark-incorrect {
@@ -350,7 +369,6 @@ body.new-theme {
                             font-family: 'Material Icons';
                             content: '\e86c';
                             @include font-size(24);
-                            margin-top: 2px;
                         }
                     }
                 }
@@ -380,6 +398,9 @@ body.new-theme {
                     right: 0;
                     box-sizing: border-box;
                 }
+            }
+            .choise-result{
+                margin-top: -2px;
             }
         }
     }
@@ -482,6 +503,9 @@ body.new-theme {
 
         input[type="text"] {
             border: 1px solid $input-border;
+        }
+        .answer-checkmark{
+            margin: 0;
         }
     }
 
@@ -602,6 +626,54 @@ body.new-theme {
             }
         }
 
+        [data-block-type="step-builder"] {
+            .step-overall-checkmark {
+                float: none;
+            }
+        }
+
+        .assessment-question-block {
+            .submit {
+                padding: 0 30px 0 0;
+                .step-overall-checkmark {
+                    left: auto;
+                    right: 0;
+                    float: none !important;
+                    &:before{
+                        left: auto;
+                        right: -13px;
+                    }
+                }
+            }
+        }
+    }
+
+    // New Changes for RTL hussnainRaza
+    .themed-xblock {
+        &.mentoring {
+            .choice {
+                padding: 0 30px 0 0;
+                .choice-tips-container {
+                    right: auto;
+                    left: 0;
+                }
+            }
+            .questionnaire {
+                .choice-result {
+                    position: absolute;
+                    transform: none;
+                    margin: 0 -15px 0 0;
+                    right: 0;
+                    top: 0;
+                    &:before {
+                        transform: none !important;
+                        margin: 0 !important;
+                        width: auto !important;
+                    }
+                }
+            }
+
+        }
     }
 }
 
