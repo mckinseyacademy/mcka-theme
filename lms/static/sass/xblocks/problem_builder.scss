@@ -14,7 +14,7 @@
         padding: 0px 15px 0 3px;
         font-size: 16px;
         vertical-align: top;
-        overflow: initial;
+        overflow: visible;
 
         input[type="radio"] {
             position: relative;
@@ -265,7 +265,7 @@ body.new-theme {
     [data-block-type="pb-mcq"] {
         .questionnaire {
             .choice-selector {
-                overflow: initial;
+                overflow: visible;
                 padding: 0;
                 @include font-size(14);
 
@@ -330,7 +330,7 @@ body.new-theme {
 
 
         .choice-selector {
-            overflow: initial;
+            overflow: visible;
             &::before {
                 top: 5px !important;
             }
