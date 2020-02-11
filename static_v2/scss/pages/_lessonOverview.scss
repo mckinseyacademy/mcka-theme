@@ -92,7 +92,6 @@ body{
   }
   .arrowPin {
     position: fixed;
-    content: '';
     display: block;
     width: 164px;
     height: 164px;
@@ -101,11 +100,22 @@ body{
     top: 50%;
     transform: translateY(-50%);
     color: $white;
-    background-color: var(--primary);
     transition: all ease 0.3s;
     opacity: 0.5;
+    &:before {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: var(--primary);
+      z-index: -1;
+    }
     &.disable {
-      background: $gray !important;
+      &:before {
+        background: $gray !important;
+      }
       &:hover {
         opacity: 1;
       }
@@ -116,8 +126,10 @@ body{
       }
     }
     &.disabled {
-      background: $gray !important;
       pointer-events: none;
+      &::before {
+        background: $gray !important;
+      }
       &:hover {
         opacity: 1;
       }
@@ -139,6 +151,10 @@ body{
         opacity: 1;
         left: -82px
       }
+      &:focus {
+        opacity: 1;
+        left: -82px
+      }
     }
     &.right {
       right: -111px;
@@ -149,6 +165,10 @@ body{
         }
       }
       &:hover {
+        opacity: 1;
+        right: -82px
+      }
+      &:focus {
         opacity: 1;
         right: -82px
       }
@@ -169,6 +189,12 @@ body{
       }
     }
     &:hover {
+      > span {
+        opacity: 1;
+        visibility: visible;
+      }
+    }
+    &:focus {
       > span {
         opacity: 1;
         visibility: visible;

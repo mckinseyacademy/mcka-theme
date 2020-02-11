@@ -54,11 +54,11 @@
                               %a{:href => '#', :target => '_self', :data-target => 'courseBlocks', :data-container => '#courseDetailsMainContainer', :onclick => 'Apros.Router.HashPageChanger(this)'}>
                                 {% trans "RESPONSES" %}
                           - if request.resolver_match.url_name == 'course_details'
-                            .courseStatsButton.large-4.columns
+                            .courseStatsButton.large-3.columns
                               %a{:href => 'learner_dashboard'}>
                                 {% trans "LEARNER DASHBOARD" %}
 
-                            .courseStatsButton.large-4.columns
+                            .courseStatsButton.large-3.columns
                               - if certificates_status == certificates_statuses.available
                                 %form#generate-certificate-form{action: "{% url 'generate_course_certificates' id %}", method: 'POST'}
                                   - csrf_token

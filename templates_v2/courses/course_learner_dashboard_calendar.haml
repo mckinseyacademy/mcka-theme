@@ -6,36 +6,63 @@
     #row-full-calendar
       .container
         .row
-          %i#close-calendar.material-icons
-            close
+          %a#over-calendar-close{href: "#", aria-label: "close"}
+            %i#close-calendar.material-icons
+              close
           .col-12
-            .over-calendar#over-calendar-left
+            %a.over-calendar#over-calendar-left{href: "#", aria-label: "previous"}
               %i#previous-calendar.arrow-calendar.material-icons
                 chevron_left
-            .over-calendar#over-calendar-right
+            %a.over-calendar#over-calendar-right{href: "#", aria-label: "next"}
               %i#next-calendar.arrow-calendar.material-icons
                 chevron_right
             #under-calendar
-              %ul.tab-month
-                %li.head-month
-                  %span.month
-                %li.first.last
-                %li.second.last
-              %ul.tab-month
-                %li.head-month
-                  %span.month
-                %li.first.last
-                %li.second.last
-              %ul.tab-month
-                %li.head-month
-                  %span.month
-                %li.first.last
-                %li.second.last
-              %ul.tab-month
-                %li.head-month
-                  %span.month
-                %li.first.last
-                %li.second.last
+              %table
+                %caption.sr
+                  {% trans "Course Calendar" %}
+                %tbody
+                  %tr
+                    %td.tab-month
+                      %table
+                        %thead
+                          %tr
+                            %th.head-month{:scope => "col&rdquo;"}
+                              %span.month
+                        %tbody
+                          %tr
+                            %td.first.last
+                            %td.second.last
+                    %td.tab-month
+                      %table
+                        %thead
+                          %tr
+                            %th.head-month{:scope => "col&rdquo;"}
+                              %span.month
+                        %tbody
+                          %tr
+                            %td.first.last
+                            %td.second.last
+                    %td.tab-month
+                      %table
+                        %thead
+                          %tr
+                            %th.head-month{:scope => "col&rdquo;"}
+                              %span.month
+                        %tbody
+                          %tr
+                            %td.first.last
+                            %td.second.last
+                    %td.tab-month
+                      %table
+                        %thead
+                          %tr
+                            %th.head-month{:scope => "col&rdquo;"}
+                              %span.month
+                        %tbody
+                          %tr
+                            %td.first.last
+                            %td.second.last
+                    
               %ul.legend-list
                 %li.light-gray-legend
                   %i.fa.fa-circle
@@ -218,25 +245,25 @@
 
     for (i=0; i < (expandedRows.length); i++) {
       for (j=0; j < expandedRows[i]; j++) {
-        $( "<li class='first inter-row'></li><li class='second inter-row'></li>" ).insertBefore( ".first.last" );
+        $( "<td class='first inter-row'></td><td class='second inter-row'></td>" ).insertBefore( ".first.last" );
       }
 
       if (i < (expandedRows.length-1))
-        $( "<li class='first'></li><li class='second'></li>" ).insertBefore( ".first.last" );
+        $( "<td class='first'></td><td class='second'></td>" ).insertBefore( ".first.last" );
     }
     $( "#row-full-calendar, #under-calendar, .over-calendar").css( "height", (220 + (totalRows-2) * 50) );
     $( "#highcharts-container").css( "height", (283 + (totalRows-2) * 52) );
     $( ".arrow-calendar").css( "margin-top", (50 + (totalRows-2) * 20) );
   }
 
-  function calculateColor(element, now){
+  function getStatusColorAndLabel(element, now){
 
-    var notAvailable = "#e0e0e0";
-    var notStarted = "#ccc";
-    var inProgress = "#b6d332";
-    var complete = "#629b2b";
-    var incomplete = "#cd202c";
-    var notTracked = "#66a5b5";
+    var notAvailable = {color: "#e0e0e0", label: gettext("Not Available")};
+    var notStarted = {color :"#ccc", label: gettext("Not Started")};
+    var inProgress = {color: "#b6d332", label: gettext("In Progress")};
+    var complete = {color: "#629b2b", label: gettext("Complete")};
+    var incomplete = {color: "#cd202c", label: gettext("Incomplete")};
+    var notTracked = {color: "#66a5b5", label: gettext("Not Tracked")};
 
     if (!element.track_progress){
       return notTracked;
@@ -277,6 +304,8 @@
               return incomplete;
               break;
           }
+      default:
+        return notTracked;
     }
   }
 
@@ -289,11 +318,12 @@
   }
 
   function loadHighchartData(element){
-
+    var element_status = getStatusColorAndLabel(element, now.getTime());
     if (element.tile_type == "2" || element.tile_type == "3") {
 
       dataDig.push({
-        color: calculateColor(element, now.getTime()),
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -312,7 +342,8 @@
     if (element.tile_type == "5") {
 
       dataIPS.push({
-        color: calculateColor(element, now.getTime()),
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -331,7 +362,8 @@
     if (element.tile_type == "4"){
 
       dataCourse.push({
-        color: calculateColor(element, now.getTime()),
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -348,7 +380,8 @@
 
     if (element.tile_type == "1") {
       dataDig.push({
-        color: '#66a5b5',
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -365,7 +398,8 @@
 
     if (element.tile_type == "7") {
       dataDig.push({
-        color: calculateColor(element, now.getTime()),
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -382,7 +416,8 @@
 
     if (element.tile_type == "6") {
       dataWeb.push({
-        color: '#66a5b5',
+        color: element_status.color,
+        sr_label: element_status.label,
         x: element.row-1,
         tile_type: element.tile_type,
         label: element.label.substring(0, 16),
@@ -399,6 +434,12 @@
   }
 
   changeDisableArrowColors();
+
+  $('#over-calendar-right, #over-calendar-left, #over-calendar-close').keyup(function(e) {         
+    if (e.which == 13) {
+      $(this).children().click()
+    }
+  });
 
   $('#close-calendar').click(function() {
     $('#replace-calendar').empty();

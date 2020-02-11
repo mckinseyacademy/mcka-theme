@@ -529,11 +529,11 @@ body{
         width: 232px;
         float: left;
         padding-left: 0;
-        margin: 0 4px 0 0;
+        margin: 0 2px 0 0;
         list-style: none;
 
-        li {
-          width: 116px;
+        td {
+          width: 115px;
           height: 52px;
         }
 
@@ -1047,7 +1047,7 @@ body{
   width: 100%;
   height: 120%;
   position: absolute;
-  z-index: 999;
+  z-index: 9991;
   background-color: rgba(0, 0, 0, 0.4);
 }
 
@@ -1288,6 +1288,12 @@ body{
       overflow: auto;
       white-space: normal !important;
       z-index: 1;
+    }
+  }
+  .highcharts-data-labels {
+    span {
+      font-family: FontAwesome, sans-serif !important;
+      font-weight: normal !important;
     }
   }
 }

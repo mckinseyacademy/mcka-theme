@@ -7,7 +7,7 @@
   %div.controls.nextPreviousWrap
     .holder
       -if course.current_lesson.index == course.current_lesson.previous_module.lesson_index
-        %a.arrowPin.left{'href': '/learnerdashboard#{course.current_lesson.previous_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}'}
+        %a.arrowPin.left{'href': '/learnerdashboard#{course.current_lesson.previous_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}' , :aria-label=>"previous"}
           %span{"data-html":"true", :data-content => "{{course.current_lesson.name}} {% if module_custom_label %} {% blocktrans with lesson_index=course.current_lesson.previous_module.index lesson_count=course.current_lesson.previous_module.lesson_count %} {{module_custom_label}} {{lesson_index}} of {{lesson_count}} {% endblocktrans %} {% else %} {% blocktrans with lesson_index=course.current_lesson.previous_module.index lesson_count=course.current_lesson.previous_module.lesson_count %} Module {{lesson_index}} of {{lesson_count}} {% endblocktrans %} {% endif %} <br/> <span> {{ course.current_lesson.previous_module.name }} </span>", :data-original-title => "", :data-placement => "right", :data-toggle => "popover", :data-trigger => "hover", :title => ""}
             %i.material-icons keyboard_arrow_left
 
@@ -17,7 +17,7 @@
             %i.material-icons keyboard_arrow_left
 
       -if course.current_lesson.index == course.current_lesson.next_module.lesson_index
-        %a.arrowPin.right{'href': '/learnerdashboard#{course.current_lesson.next_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}'}
+        %a.arrowPin.right{'href': '/learnerdashboard#{course.current_lesson.next_module.navigation_url}/lesson/#{tile_id}/#{learner_dashboard.id}', :aria-label=>"next"}
           %span{"data-html":"true", :data-content => "{{course.current_lesson.name}} {% if module_custom_label %} {% blocktrans with lesson_index=course.current_lesson.next_module.index lesson_count=course.current_lesson.next_module.lesson_count %} {{module_custom_label}} {{lesson_index}} of {{lesson_count}} {% endblocktrans %} {% else %} {% blocktrans with lesson_index=course.current_lesson.next_module.index lesson_count=course.current_lesson.next_module.lesson_count %} Module {{lesson_index}} of {{lesson_count}} {% endblocktrans %} {% endif %} <br/> <span> {{ course.current_lesson.next_module.name }} </span>", :data-original-title => "", :data-placement => "left", :data-toggle => "popover", :data-trigger => "hover", :title => ""}
             %i.material-icons keyboard_arrow_right
       - else

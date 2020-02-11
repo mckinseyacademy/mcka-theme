@@ -5,6 +5,19 @@ body, html{
   width: auto !important;
   margin: auto !important;
 }
+
+.sr {
+  position: absolute !important;
+  height: 1px;
+  width: 1px;
+  overflow: hidden;
+  padding: 0 !important;
+  border: 0 ! important;
+  white-space: nowrap !important;
+  clip: rect(1px 1px 1px 1px) !important;
+  clip: rect(1px, 1px, 1px, 1px) !important;
+  clip-path: inset(50%) !important;
+}
 a{
   outline : none;
   &:active,

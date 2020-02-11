@@ -49,6 +49,8 @@
                           %a{:href => "/learnerdashboard#{module.navigation_url}/#{tile_type}/#{tile_id}/#{learner_dashboard.id}"}
                             .holder
                               .data.serial
+                                - if course.current_module == module
+                                  %span.sr-only {% trans "Continue progress from this module" %}
                                 - if module_custom_label
                                   {% blocktrans with module_index=module.index %}
                                     {{module_custom_label}}
@@ -77,7 +79,7 @@
                               remember. Involve me and I learn. - Benjamin Franklin
                           - if course.current_module == module
                             %span.bookmark.secondary
-                              %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
+                              %svg{:role => "presentation", :aria-hidden => "true", :height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
                                 %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}
                 .zoomWrap
                   %a.zoomout.longTapPopover{ :data-content => "{% trans 'Show fullscreen' %}", :data-original-title => "", :data-placement => "bottom", :data-toggle => "popover", :href => "#", :title => "", :oncontextmenu => "return false;"}

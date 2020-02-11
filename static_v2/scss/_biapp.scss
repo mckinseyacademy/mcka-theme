@@ -32,8 +32,6 @@ body {
     }
 
     .headerNav {
-      @include float(right);
-
       > ul {
         > li {
           @include margin-left(26px);
@@ -197,6 +195,15 @@ body {
       @include left(23px !important);
     }
     .allCoursesList {
+      .holder {
+        .data {
+          &.status {
+            i {
+              @include margin-right(5px);
+            }
+          }
+        }
+      }
       .bookmark {
         @include left(-30px);
         @include right(auto);
@@ -670,6 +677,7 @@ body.rtl {
         }
       }
       &.serial {
+        @include padding-left(0);
         @include media-breakpoint-between(xs, sm) {
           @include padding-right(5px);
         }
@@ -686,6 +694,12 @@ body.rtl {
             @include margin-left(0);
           }
         }
+      }
+      &:first-child{
+        @include padding-left(0);
+      }
+      &:last-child{
+        @include padding-right(0);
       }
     }
   }
@@ -1469,13 +1483,6 @@ body.rtl {
   .xns-counter {
     @include right(auto);
     @include right(auto);
-  }
-  #course-statistics {
-    .widget {
-      .progressArea {
-        @include float(left);
-      }
-    }
   }
   .progressWidgets {
     .widget {

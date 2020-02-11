@@ -59,10 +59,17 @@
       margin-bottom: 10px;
     }
     input[type=radio] {
-      display: none;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      &:focus {
+        + label {
+          @include focus-outline;
+        }
+      }
 
       + label {
-
+        outline: 2px solid transparent;
         width: 180px;
         height: 200px;
         display: inline-block;

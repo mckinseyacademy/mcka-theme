@@ -88,23 +88,32 @@
       }
 
       .holder {
+        display: flex;
         .data {
           padding: 7px 3px;
-
+          &.serial,
+          &.status,
           &.title {
-            width: 170px;
-            font-size: 0.75rem;
-            letter-spacing: 0.02em;
-            position: relative;
+            display: inline-flex;
           }
-
           &.status {
+            float: none;
             width: auto;
+            margin: 0;
+            @include media-breakpoint-up(sm) {
+              min-width: 100px;
+            }
           }
-
           &.serial {
             font-weight: 400;
             letter-spacing: 0;
+            float: none;
+            width: auto;
+          }
+          &.title {
+            font-size: 0.75rem;
+            letter-spacing: 0.02em;
+            position: relative;
           }
         }
       }
@@ -179,30 +188,6 @@
   &.allLessons {
     @include media-breakpoint-up(sm) {
       max-width: 435px;
-    }
-    .allCoursesList {
-      .holder {
-        .data {
-          &.status {
-            float: right;
-            width: auto;
-            @include media-breakpoint-up(sm) {
-              min-width: 100px;
-            }
-          }
-          &.serial {
-            float: left;
-            width: auto;
-          }
-          &.title {
-            float: none;
-            width: auto !important;
-            display: block;
-            overflow: hidden;
-            line-height: 18px;
-          }
-        }
-      }
     }
   }
 }
@@ -281,9 +266,6 @@
         float: right;
         width: 25px;
         height: 25px;
-      }
-      &.allLessons .allCoursesList .holder .data.title {
-        width: calc(100% - 110px);
       }
     }
     &.dashboard-menu {

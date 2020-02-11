@@ -28,7 +28,11 @@
   .contentCard {
     margin-bottom: 3.5%;
     z-index: auto;
-
+    td {
+      .holder {
+        text-align: center;
+      }
+    }
   }
 
   hr {
@@ -407,10 +411,6 @@
       .progressArea {
         margin: auto;
         float: none;
-      }
-
-      .contenrArea {
-        display: none;
       }
 
       .widgetTitle,

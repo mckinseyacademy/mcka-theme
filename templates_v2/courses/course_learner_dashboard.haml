@@ -22,8 +22,7 @@
                   .col-md-4
 
                     - if bookmark.tile.id == tile.id
-
-                      %a.card.last_visited{href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}", target: "{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')", "data-tile-id": "#{tile.id}"}
+                      %a.card.last_visited{class: "{% if tile.publish_date|date:'Y-m-d-H-i' > today|date:'Y-m-d-H-i' %}disabled{% endif %}", href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard.id} {%else%} #{tile.link} {%endif%}", target: "{% if tile.get_tile_type_display == 'Article' or  tile.get_tile_type_display == 'Webinar' %}_blank{% else %}_self{% endif %}", onclick: "ga('send', 'event', 'Outbound Link', 'click', 'TileID: #{tile.id}, TileName: #{tile.title}, UserID: #{request.user.id}')", "data-tile-id": "#{tile.id}"}
                         - if tile.background_image
                           .image-holder
                             %img{:alt => " ", :src => "/company_images/#{tile.background_image}"}
@@ -37,6 +36,7 @@
                               = tile.get_tile_type_display
                           .title{'style': "color: #{tile.title_color};"}= tile.title
                           .date{'style': "color: #{tile.note_color};"}= tile.note
+                        %span.sr-only {% trans "last visited tile" %}
                     - else
 
                       -if tile.publish_date|date:"Y-m-d-H-i" <= today|date:"Y-m-d-H-i"
