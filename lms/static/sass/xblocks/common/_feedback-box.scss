@@ -2,7 +2,11 @@
 
     [data-block-type="pb-mcq"],
     [data-block-type="pb-mrq"] {
-
+        .choice-tips-container {
+            @media screen and (max-width: 480px) {
+                width: 100% !important;
+            }
+        }
         .choice-tips {
             background: white !important;
             opacity: 1 !important;
@@ -26,7 +30,7 @@
             }
 
             @media screen and (max-width: 480px) {
-                width: calc(100vw - 75px) !important;
+                width: calc(100% - 45px) !important;
             }
         }
 
