@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-29 02:59+0000\n"
+"POT-Creation-Date: 2019-12-02 09:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: static/js/admin/client_sso.js:182
+#: static/js/admin/client_sso.js:181
 msgid "You need to enter name!"
 msgstr "Você deve inserir o nome!"
 
-#: static/js/admin/client_sso.js:187
+#: static/js/admin/client_sso.js:186
 msgid "You need to enter course ID!"
 msgstr "Você deve inserir a ID do curso!"
 
@@ -122,35 +122,35 @@ msgstr "Pesquisar por palavra-chave"
 msgid "NoName"
 msgstr "SemNome"
 
-#: static/js/common/common_js.js:516
+#: static/js/common/common_js.js:522
 msgid "Send"
 msgstr "Enviar"
 
-#: static/js/common/common_js.js:746
+#: static/js/common/common_js.js:752
 msgid "Fetching data for file: %(filename)s"
 msgstr "Buscando dados para o arquivo: %(filename)s"
 
-#: static/js/common/common_js.js:858
+#: static/js/common/common_js.js:864
 msgid "%(value)s%"
 msgstr "%(value)s%"
 
-#: static/js/common/common_js.js:956
+#: static/js/common/common_js.js:962
 msgid ""
 "<span class=\"red\"> %(diff)s% </span> below your organization's average"
 msgstr ""
 "<span class=\"red\"> %(diff)s% </span> abaixo da média da sua organização"
 
-#: static/js/common/common_js.js:963
+#: static/js/common/common_js.js:969
 msgid ""
 "<span class=\"green\">%(diff)s% </span> above your organization's average"
 msgstr ""
 "<span class=\"green\">%(diff)s% </span> acima da média da sua organização"
 
-#: static/js/common/common_js.js:968 static/js/common/common_js.js:988
+#: static/js/common/common_js.js:974 static/js/common/common_js.js:994
 msgid "same as your organization's average"
 msgstr "igual à média da sua organização"
 
-#: static/js/common/common_js.js:976
+#: static/js/common/common_js.js:982
 msgid ""
 "<span class=\"red\"> %(diff)s point</span> below your organization's average"
 msgid_plural ""
@@ -173,7 +173,7 @@ msgstr[5] ""
 "<span class=\"red\"> %(diff)s pontos</span> abaixo da média da sua "
 "organização"
 
-#: static/js/common/common_js.js:983
+#: static/js/common/common_js.js:989
 msgid ""
 "<span class=\"green\"> %(diff)s point</span> above your organization's "
 "average"
@@ -325,25 +325,29 @@ msgstr "Completo"
 msgid "Incomplete"
 msgstr "Incompleto"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:196
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
 msgid "Digital Course"
 msgstr "Curso digital"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:222
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
 msgid "Group work"
 msgstr "Trabalho em grupo"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:242
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
 msgid "Webinar"
 msgstr "Webinário"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:262
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
 msgid "Digital Content"
 msgstr "Conteúdo digital"
+
+#: static/js/course_learner_dashboard/tile_id_to_view.js:28
+msgid "last visited tile"
+msgstr ""
 
 #: static/js/course_lesson.js:5
 msgid "It looks like you're not active. Click OK to keep working."
@@ -890,7 +894,7 @@ msgstr ""
 "levará mais tempo)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
-#: static/js/views/admin/group_work_dashboard_assignment_info.js:5
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:6
 msgid "We'll e-mail you when your report is ready to download."
 msgstr ""
 "Enviaremos um e-mail quando seu relatório estiver pronto para download."
@@ -905,7 +909,7 @@ msgstr "Exportar relatório"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #: static/js/views/admin/course_details_bulk_actions.js:568
-#: static/js/views/admin/group_work_dashboard_assignment_info.js:36
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:39
 msgid "Error initiating the report generation. Please retry later."
 msgstr "Erro ao iniciar a geração do relatório. Tente novamente mais tarde."
 
@@ -1039,7 +1043,7 @@ msgstr "Nenhum"
 msgid "Do you really want to delete: \n"
 msgstr "Você realmente deseja excluir:\n"
 
-#: static/js/views/admin/group_work_dashboard_assignment_info.js:3
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:4
 msgid "Downloadable Workgroup Completion Report"
 msgstr ""
 
@@ -1203,10 +1207,10 @@ msgstr "Data adicionada"
 msgid "Enrolled In"
 msgstr "Inscrito em"
 
-#: static_v2/js/application.js:522 static_v2/js/custom.js:112
+#: static_v2/js/application.js:524 static_v2/js/custom.js:112
 msgid "Hide password"
 msgstr "Wachtwoord verbergen"
 
-#: static_v2/js/application.js:527 static_v2/js/custom.js:117
+#: static_v2/js/application.js:529 static_v2/js/custom.js:117
 msgid "Show password"
 msgstr "Ocultar senha"
