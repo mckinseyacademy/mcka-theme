@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-14 08:13+0000\n"
+"POT-Creation-Date: 2020-02-17 12:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -11905,7 +11905,7 @@ msgstr ""
 "الاستخدام هذه الأسبقية وتحل محل أي شروط نزاع أو تعارض أو اتفاقيات أخرى بشأن "
 "الأحكام المتصلة بأكاديمية ماكينزي ومحتوى أكاديمية ماكينزي."
 
-#: templates/terms_of_service.haml:108 templates_v2/terms_of_service.haml:92
+#: templates/terms_of_service.haml:108
 msgid "15. Contact Us"
 msgstr "15. اتصل بنا"
 
@@ -14804,6 +14804,12 @@ msgstr ""
 "أي نزاع أو تعارض بين شروط الاستخدام هذه وأي اتفاق أو شروط أخرى، فستكون لشروط "
 "الاستخدام هذه الأسبقية وتحل محل أي شروط نزاع أو تعارض أو اتفاقيات أخرى بشأن "
 "الأحكام المتصلة بأكاديمية ماكينزي ومحتوى أكاديمية ماكينزي."
+
+#: templates_v2/terms_of_service.haml:92
+#, fuzzy
+#| msgid "15. Contact Us"
+msgid "13. Contact Us"
+msgstr "15. اتصل بنا"
 
 #: templates_v2/terms_of_service.haml:98
 msgid "195 Broadway"

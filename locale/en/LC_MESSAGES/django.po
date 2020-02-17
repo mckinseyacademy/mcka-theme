@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-14 08:13+0000\n"
+"POT-Creation-Date: 2020-02-17 12:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10495,7 +10495,7 @@ msgid ""
 "Academy Content."
 msgstr ""
 
-#: templates/terms_of_service.haml:108 templates_v2/terms_of_service.haml:92
+#: templates/terms_of_service.haml:108
 msgid "15. Contact Us"
 msgstr ""
 
@@ -12510,6 +12510,10 @@ msgid ""
 "other agreement or terms, these Terms of Use will take precedence and "
 "supersede any such other conflicting or inconsistent terms or agreements to "
 "the extent relating to McKinsey Academy."
+msgstr ""
+
+#: templates_v2/terms_of_service.haml:92
+msgid "13. Contact Us"
 msgstr ""
 
 #: templates_v2/terms_of_service.haml:98

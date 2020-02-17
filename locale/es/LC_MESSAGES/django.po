@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-02-14 08:13+0000\n"
+"POT-Creation-Date: 2020-02-17 12:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12327,7 +12327,7 @@ msgstr ""
 "inconsistente en la medida que estén relacionados con McKinsey Academy y el "
 "Contenido de McKinsey Academy."
 
-#: templates/terms_of_service.haml:108 templates_v2/terms_of_service.haml:92
+#: templates/terms_of_service.haml:108
 msgid "15. Contact Us"
 msgstr "15. Contáctenos"
 
@@ -15391,6 +15391,12 @@ msgstr ""
 "sustituirán a cualquier otro acuerdo o disposición en conflicto o "
 "inconsistente en la medida que estén relacionados con McKinsey Academy y el "
 "Contenido de McKinsey Academy."
+
+#: templates_v2/terms_of_service.haml:92
+#, fuzzy
+#| msgid "15. Contact Us"
+msgid "13. Contact Us"
+msgstr "15. Contáctenos"
 
 #: templates_v2/terms_of_service.haml:98
 msgid "195 Broadway"
