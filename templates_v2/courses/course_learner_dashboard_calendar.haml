@@ -2,7 +2,7 @@
 - load staticfiles
 
 #background-full-calendar
-  #over-full-calendar
+  #over-full-calendar{tabindex: "-1"}
     #row-full-calendar
       .container
         .row
@@ -62,7 +62,7 @@
                           %tr
                             %td.first.last
                             %td.second.last
-                    
+
               %ul.legend-list
                 %li.light-gray-legend
                   %i.fa.fa-circle
@@ -114,7 +114,7 @@
 
   addMonthNames(dates);
   addExtraSpaceToFrontEnd();
-  
+
   var minDate = dateList[1];
   var maxDate = dateList[5];
   var totalRows;
@@ -435,7 +435,7 @@
 
   changeDisableArrowColors();
 
-  $('#over-calendar-right, #over-calendar-left, #over-calendar-close').keyup(function(e) {         
+  $('#over-calendar-right, #over-calendar-left, #over-calendar-close').keyup(function(e) {
     if (e.which == 13) {
       $(this).children().click()
     }
@@ -445,8 +445,7 @@
     $('#replace-calendar').empty();
     $('a#open-calendar').removeClass('opened');
     $('.ld-nav ul>li.calendar a').removeClass('dome-active');
-
-
+    $('a#open-calendar')
   });
 
   $('#next-calendar').click(function() {
@@ -518,7 +517,7 @@
     $('#replace-calendar').empty();
     $('a#open-calendar').removeClass('opened');
     $('.ld-nav ul>li.calendar a').removeClass('dome-active');
-
+    $('a#open-calendar').focus()
   });
 
   $('#over-full-calendar').click(function(event){
