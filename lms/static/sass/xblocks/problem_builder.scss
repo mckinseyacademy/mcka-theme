@@ -14,7 +14,7 @@
         padding: 0px 15px 0 3px;
         font-size: 16px;
         vertical-align: top;
-        overflow: initial;
+        overflow: visible;
 
         input[type="radio"] {
             position: relative;
@@ -86,7 +86,14 @@
 
         .choice-label {
             // Fill the full page width for MRC/MCQ choices
-            width: 100%
+            width: 100%;
+            margin-bottom: 1rem;
+            line-height: 26px;
+            min-height: 30px;
+            p {
+                margin: 0;
+                line-height: 26px;
+            }
         }
 
         .choices-list {
@@ -101,6 +108,7 @@
 
     .choice {
         .choice-tips-container {
+            min-height: unset;
             position: absolute;
             top: 0;
             right:0;
@@ -258,7 +266,7 @@ body.new-theme {
     [data-block-type="pb-mcq"] {
         .questionnaire {
             .choice-selector {
-                overflow: initial;
+                overflow: visible;
                 padding: 0;
                 @include font-size(14);
 
@@ -323,7 +331,7 @@ body.new-theme {
 
 
         .choice-selector {
-            overflow: initial;
+            overflow: visible;
             &::before {
                 top: 5px !important;
             }
