@@ -125,6 +125,11 @@
                 }
             }
         }
+        button {
+            box-shadow: none !important;
+            border: 0 !important;
+            background: transparent !important;
+        }
     }
     &.vjs-fullscreen{
         height: 100vh !important;
