@@ -7,6 +7,23 @@
   }
 }
 
+//To fix padding of xblock in native apps
+.course-wrapper {
+  main {
+    padding: 0 10px !important;
+    .chat-wrapper {
+      .chat-block {
+        .main-area {
+          max-height: calc(100vh - 60px) !important;
+        }
+        .actions {
+          margin: 20px !important;
+        }
+      }
+    }
+  }
+}
+
 // The image rotation in chat doesn't work correctly so have to overwrite the CSS
 .chat-block .image-overlay img{
   position: absolute !important;
