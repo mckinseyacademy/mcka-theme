@@ -392,6 +392,13 @@ body.new-theme {
                 box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.3);
                 padding: 15px 30px 15px 15px !important;
                 top: 45px;
+                position: absolute;
+
+                .fa-times-circle {
+                    &:after {
+                        content: "×";
+                    }
+                }
 
                 .message-content {
                     p {
