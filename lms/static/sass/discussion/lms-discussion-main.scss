@@ -1420,7 +1420,7 @@ body.new-theme {
 
 						.post-topic {
 							width: 55% !important;
-							background-image: url(../../images/expand-button.svg);
+							background-image: url('/static/mcka-theme/images/expand-button.svg');
 							-webkit-appearance: none !important;
 							-moz-appearance: none;
 							-ms-appearance: none;
@@ -1550,7 +1550,7 @@ body.new-theme {
 						color: $gray;
 						border: 0;
 						width: 100%;
-						background-image: url(../../images/expand-button.svg);
+						background-image: url('/static/mcka-theme/images/expand-button.svg');
 						background-repeat: no-repeat;
 						background-position: 90%;
 						background-size: 8px;
