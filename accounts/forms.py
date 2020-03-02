@@ -808,7 +808,7 @@ class PublicRegistrationForm(forms.ModelForm):
                                         )
 
         course_run = CourseRun.objects.filter(name=self.course_run_name)
-        users = PublicRegistrationRequest.objects.filter(course_run=course_run)
+        users = PublicRegistrationRequest.objects.filter(course_run__in=course_run)
         for user in users:
             if user.company_email == company_email:
                 raise forms.ValidationError(_("This email address has already been registered."))
@@ -824,7 +824,7 @@ class PublicRegistrationForm(forms.ModelForm):
         course_run = CourseRun.objects.filter(name=self.course_run_name)
 
         user_emails = PublicRegistrationRequest.objects.filter(
-            course_run=course_run).values_list('company_email', flat=True)
+            course_run__in=course_run).values_list('company_email', flat=True)
 
         if company_email.lower in user_emails:
                 raise forms.ValidationError("This email address has already been registered.")

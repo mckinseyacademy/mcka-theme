@@ -34,7 +34,7 @@ class SessionTimeoutTestCase(TestCase, ApplyPatchMixin):
         request.user = Mock(is_anonymous=lambda: False)
         request.session = {'last_touch': datetime.utcnow()}
 
-        SessionTimeout().process_request(request)
+        SessionTimeout(Mock())(request)
 
         assert 'last_touch' in request.session
         mock_logout.assert_not_called()
@@ -47,7 +47,7 @@ class SessionTimeoutTestCase(TestCase, ApplyPatchMixin):
         request.user = Mock(is_anonymous=lambda: False)
         request.session = {'last_touch': datetime.fromtimestamp(0)}
 
-        SessionTimeout().process_request(request)
+        SessionTimeout(Mock())(request)
 
         assert 'last_touch' not in request.session
         mock_logout.assert_called_with(request)
@@ -62,7 +62,7 @@ class SessionTimeoutTestCase(TestCase, ApplyPatchMixin):
         http_error = urllib.error.HTTPError("http://irrelevant", 403, None, None, None)
         mock_get_user_dict.side_effect = ApiError(http_error, "deleted", None)
 
-        SessionTimeout().process_request(request)
+        SessionTimeout(Mock())(request)
 
         mock_expire_session.assert_called_with(request)
 
@@ -87,7 +87,7 @@ class SessionTimeoutTestCase(TestCase, ApplyPatchMixin):
 
         freezer = freeze_time(mocked_time)
         freezer.start()
-        SessionTimeout().process_request(request)
+        SessionTimeout(Mock())(request)
         freezer.stop()
 
         assert 'last_touch' in request.session
@@ -112,7 +112,7 @@ class SessionTimeoutTestCase(TestCase, ApplyPatchMixin):
 
         freezer = freeze_time(mocked_time)
         freezer.start()
-        SessionTimeout().process_request(request)
+        SessionTimeout(Mock())(request)
         freezer.stop()
 
         assert 'last_touch' not in request.session

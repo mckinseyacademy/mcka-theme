@@ -3,7 +3,7 @@ import ddt
 from django.test import TestCase
 from marketing.forms import TechSupportForm, SubscribeForm
 from util.unit_test_helpers import AprosTestingClient
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from mock import mock
 
 

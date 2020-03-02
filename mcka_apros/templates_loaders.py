@@ -48,9 +48,10 @@ class CustomLoader:
 
 
 class CachedLoader(CustomLoader, Loader):
-    def cache_key(self, template_name, template_dirs, skip=None):
-        template_dirs = self.get_template_dir(template_name)
-        return super(CachedLoader, self).cache_key(template_name, template_dirs)
+    def cache_key(self, template_name, skip=None):
+        template_dir = self.get_template_dir(template_name)
+        cache_key = super(CachedLoader, self).cache_key(template_name)
+        return '{}_{}'.format(template_dir, cache_key)
 
 
 class CustomHamlPyFilesystemLoader(CustomLoader, HamlPyFilesystemLoader):

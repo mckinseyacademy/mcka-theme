@@ -1,18 +1,18 @@
 """
 URLs for the mobile app associations djangoapp.
 """
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 urlpatterns = [
-    url(
-        r'^assetlinks.json$',
+    path(
+        'assetlinks.json',
         views.android_asset_links_file,
         name='android_asset_links_file'
     ),
-    url(
-        r'^apple-app-site-association$',
+    path(
+        'apple-app-site-association',
         views.ios_site_association_file,
         name='ios_site_association_file'
     ),

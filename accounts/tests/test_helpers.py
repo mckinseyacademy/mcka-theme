@@ -3,7 +3,7 @@ Tests for helpers.py module
 """
 from ddt import ddt, data, unpack
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import TestCase, RequestFactory
 
 from accounts.helpers import (

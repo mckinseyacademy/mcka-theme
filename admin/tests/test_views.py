@@ -8,7 +8,7 @@ from mcka_apros.celery import app as test_app
 
 from django.contrib.sessions.middleware import SessionMiddleware
 from django.core.files.uploadedfile import File
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import Http404, HttpResponseForbidden
 from django.test import TestCase, override_settings
 from django.contrib import auth

@@ -1,7 +1,7 @@
-from django.conf.urls import url
+from django.urls import path
 from heartbeat import views as heartbeatviews
 
 
 urlpatterns = [
-    url(r'^$', heartbeatviews.heartbeat, name='heartbeat'),
+    path('', heartbeatviews.heartbeat, name='heartbeat'),
 ]

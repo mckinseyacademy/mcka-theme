@@ -19,7 +19,7 @@ class Command(BaseCommand):
             threshold = datetime.now() - timedelta(hours=12)
             for temp_file in files:
                 try:
-                    mod_time = default_storage.modified_time('images/' + settings.TEMP_IMAGE_FOLDER + temp_file)
+                    mod_time = default_storage.get_modified_time('images/' + settings.TEMP_IMAGE_FOLDER + temp_file)
                     if mod_time < threshold:
                         default_storage.delete('images/' + settings.TEMP_IMAGE_FOLDER + temp_file)
                 except Exception:  # pylint: disable=bare-except TODO: add specific Exception class

@@ -431,11 +431,11 @@
         {% trans "CSV Template" %}
     .admin-form{style: "padding-bottom:0px;"}
 
-      %form{action: "/admin/api/participants/update_manager_from_csv$", method: "POST", enctype: "multipart/form-data", :class => "fileInputManager"}
+      %form{action: "/admin/api/participants/update_manager_from_csv", method: "POST", enctype: "multipart/form-data", :class => "fileInputManager"}
         - csrf_token
         = form_manager_update
 
-      %form{action: "/admin/api/participants/update_manager_from_csv$", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsManagerUpdate'}
+      %form{action: "/admin/api/participants/update_manager_from_csv", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsManagerUpdate'}
         - csrf_token
 
       .upload_stats
@@ -456,11 +456,11 @@
         {% trans "CSV Template" %}
     .admin-form{style: "padding-bottom:0px;"}
 
-      %form{action: "/admin/api/participants/update_company_fields_from_csv$", method: "POST", enctype: "multipart/form-data", :class => "fileInputCompanyField"}
+      %form{action: "/admin/api/participants/update_company_fields_from_csv", method: "POST", enctype: "multipart/form-data", :class => "fileInputCompanyField"}
         - csrf_token
         = form_company_fields
 
-      %form{action: "/admin/api/participants/update_company_fields_from_csv$", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsProfileUpdate'}
+      %form{action: "/admin/api/participants/update_company_fields_from_csv", method: "POST", enctype: "multipart/form-data", :class => "dropzone", :id => 'participantsProfileUpdate'}
         - csrf_token
 
       .upload_stats

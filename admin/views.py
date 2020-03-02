@@ -19,7 +19,7 @@ from django.core import serializers
 from django.core.exceptions import PermissionDenied, ObjectDoesNotExist, ValidationError
 from django.core.files.storage import default_storage
 from django.core.mail import EmailMessage, send_mass_mail
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models import Q
 from django.http import (
     HttpResponseBadRequest,
@@ -5550,7 +5550,7 @@ def company_linked_app_details(request, company_id, app_id):
     with the company whose id is given in URL
     """
     app_details = mobileapp_api.get_mobile_app_details(app_id)
-    if not company_id.isdigit() or int(company_id) not in app_details['organizations']:
+    if company_id not in app_details['organizations']:
         return redirect('company_details', company_id=company_id)
 
     company = organization_api.fetch_organization(company_id)
