@@ -5,7 +5,7 @@ $(document).ready(function(){
     function loadCalendar(){
         if(calendarElem.hasClass('opened'))
             return;
-        
+
         var headers = {
             'X-CSRFToken': $.cookie('apros_csrftoken')
         };
@@ -17,6 +17,7 @@ $(document).ready(function(){
             success: function (data) {
                 $('#replace-calendar').html(data.html);
                 calendarElem.addClass('opened');
+                $('#over-full-calendar').focus();
             },
             error: function (xhr, status, error) {
                 var err = eval("(" + xhr.responseText + ")");

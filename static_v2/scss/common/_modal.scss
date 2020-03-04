@@ -82,6 +82,18 @@
     }
   }
 
+  .modal-header {
+    .close {
+      padding: 0;
+      height: 14px;
+      line-height: 14px;
+
+      &:hover {
+        background-color:  transparent !important;
+      }
+    }
+  }
+
   .modal-dialog{
     margin: 0 auto;
     top: 50%;

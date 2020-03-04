@@ -123,7 +123,7 @@ class UnicodeWriter:
             self.writerow(row)
 
 
-def create_and_store_csv_file(fields, data, dir_name, file_name, logger, task_log_msg, secure=False):
+def create_and_store_csv_file(fields, data, dir_name, file_name, logger, task_log_msg, secure=True):
     """
     Creates and store csv file in storage
 
@@ -141,7 +141,7 @@ def create_and_store_csv_file(fields, data, dir_name, file_name, logger, task_lo
         temp_csv_file.seek(0)
 
     logger.info('Created temp CSV file - {}'.format(task_log_msg))
-    file_url = store_file(temp_csv_file, dir_name, file_name, secure)
-    logger.info('File stored at path {} - {}'.format(file_url, task_log_msg))
+    file_url = store_file(temp_csv_file, dir_name, file_name, secure=secure)
+    logger.info('File stored at path {} - {} with secure flag: {}'.format(file_url, task_log_msg, secure))
 
     return file_url

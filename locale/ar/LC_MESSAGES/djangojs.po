@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-29 02:58+0000\n"
+"POT-Creation-Date: 2019-12-02 09:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,11 +19,11 @@ msgstr ""
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 "
 "&& n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
 
-#: static/js/admin/client_sso.js:182
+#: static/js/admin/client_sso.js:181
 msgid "You need to enter name!"
 msgstr "يجب تحديد حالة!"
 
-#: static/js/admin/client_sso.js:187
+#: static/js/admin/client_sso.js:186
 msgid "You need to enter course ID!"
 msgstr "يجب تحديد دورة!"
 
@@ -122,33 +122,33 @@ msgstr "البحث باستخدام الكلمة الرئيسية"
 msgid "NoName"
 msgstr "بدون اسم"
 
-#: static/js/common/common_js.js:516
+#: static/js/common/common_js.js:522
 msgid "Send"
 msgstr "إرسال"
 
-#: static/js/common/common_js.js:746
+#: static/js/common/common_js.js:752
 msgid "Fetching data for file: %(filename)s"
 msgstr "نسبة جلب البيانات للملف: %(filename)s"
 
-#: static/js/common/common_js.js:858
+#: static/js/common/common_js.js:864
 msgid "%(value)s%"
 msgstr "%(value)s%"
 
-#: static/js/common/common_js.js:956
+#: static/js/common/common_js.js:962
 msgid ""
 "<span class=\"red\"> %(diff)s% </span> below your organization's average"
 msgstr "<span class=\"red\"> %(diff)s% </span> أقل من متوسط مؤسستك"
 
-#: static/js/common/common_js.js:963
+#: static/js/common/common_js.js:969
 msgid ""
 "<span class=\"green\">%(diff)s% </span> above your organization's average"
 msgstr "<span class=\"green\">%(diff)s% </span> أكثر من متوسط مؤسستك"
 
-#: static/js/common/common_js.js:968 static/js/common/common_js.js:988
+#: static/js/common/common_js.js:974 static/js/common/common_js.js:994
 msgid "same as your organization's average"
 msgstr "نفس متوسط مؤسستك"
 
-#: static/js/common/common_js.js:976
+#: static/js/common/common_js.js:982
 msgid ""
 "<span class=\"red\"> %(diff)s point</span> below your organization's average"
 msgid_plural ""
@@ -160,7 +160,7 @@ msgstr[3] "<span class=\"red\"> %(diff)s النقاط</span> أقل من متو�
 msgstr[4] "<span class=\"red\"> %(diff)s النقاط</span> أقل من متوسط مؤسستك"
 msgstr[5] "<span class=\"red\"> %(diff)s النقاط</span> أقل من متوسط مؤسستك"
 
-#: static/js/common/common_js.js:983
+#: static/js/common/common_js.js:989
 msgid ""
 "<span class=\"green\"> %(diff)s point</span> above your organization's "
 "average"
@@ -300,25 +300,29 @@ msgstr "مكتمل"
 msgid "Incomplete"
 msgstr "غير مكتمل"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:196
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
 msgid "Digital Course"
 msgstr "الدورة الرقمية"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:222
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
 msgid "Group work"
 msgstr "العمل الجماعي"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:242
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
 msgid "Webinar"
 msgstr "الدورات عبر الإنترنت (ويبينار)"
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:262
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
 msgid "Digital Content"
 msgstr "المحتوى الرقمي"
+
+#: static/js/course_learner_dashboard/tile_id_to_view.js:28
+msgid "last visited tile"
+msgstr ""
 
 #: static/js/course_lesson.js:5
 msgid "It looks like you're not active. Click OK to keep working."
@@ -857,7 +861,7 @@ msgstr ""
 "مزيدًا من الوقت)"
 
 #: static/js/views/admin/course_details_bulk_actions.js:473
-#: static/js/views/admin/group_work_dashboard_assignment_info.js:5
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:6
 msgid "We'll e-mail you when your report is ready to download."
 msgstr ""
 "سنتواصل معك عبر البريد الإلكتروني عندما يكون التقرير الخاص بك جاهزًا للتحميل."
@@ -872,7 +876,7 @@ msgstr "تصدير التقرير"
 
 #: static/js/views/admin/course_details_bulk_actions.js:517
 #: static/js/views/admin/course_details_bulk_actions.js:568
-#: static/js/views/admin/group_work_dashboard_assignment_info.js:36
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:39
 msgid "Error initiating the report generation. Please retry later."
 msgstr "حدث خطأ أثناء إعداد التقرير، يرجى إعادة المحاولةلاحقًا."
 
@@ -1004,7 +1008,7 @@ msgstr "لا شيء"
 msgid "Do you really want to delete: \n"
 msgstr "هل تريد حقاً الحذف: \n"
 
-#: static/js/views/admin/group_work_dashboard_assignment_info.js:3
+#: static/js/views/admin/group_work_dashboard_assignment_info.js:4
 msgid "Downloadable Workgroup Completion Report"
 msgstr ""
 
@@ -1166,10 +1170,10 @@ msgstr "التاريخ المضاف"
 msgid "Enrolled In"
 msgstr "مسجّل في"
 
-#: static_v2/js/application.js:522 static_v2/js/custom.js:112
+#: static_v2/js/application.js:524 static_v2/js/custom.js:112
 msgid "Hide password"
 msgstr "إخفاء كلمة المرور"
 
-#: static_v2/js/application.js:527 static_v2/js/custom.js:117
+#: static_v2/js/application.js:529 static_v2/js/custom.js:117
 msgid "Show password"
 msgstr "إظهار كلمة المرور"

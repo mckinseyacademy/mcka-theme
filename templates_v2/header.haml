@@ -15,23 +15,14 @@
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.global_client_logo}}", :width => "160", "alt": "#{organization_name} Logo"}
             - else
-              %a.navbar-brand{:href => "/", :tabindex => "-1"}
-                %img{:src => "{% static 'image/McKA-logo-black.svg' %}", :width => "160", "alt": "#{organization_name} Logo"}
+              %a.navbar-brand{:href => "/"}
+                %img{:src => "{% static 'image/McKA-logo-black.svg' %}", :width => "160", "alt": "McKinsey and Company Logo"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.client_logo}}", :width => "160", "alt": "#{organization_name} Logo"}
 
           - if request.user.is_authenticated
             .topRightArea
-              - if client_customization.show_user_profile
-                - include "accounts/user_profile_container.haml"
-              - elif not client_customization.show_user_profile
-                {% with request.path|slice:":6" as path %}
-                  {% if path == '/admin' %}
-                    - include "accounts/user_profile_container.haml"
-                  {% endif %}
-                {% endwith %}
-
               %nav.nav.mainNav.headerNav
                 %ul
                   - if request.user.is_manager
@@ -84,18 +75,66 @@
                       if(window.innerWidth < 768){
                         $('#mycoursestab a.nav-link').remove();
                       }
+              - if client_customization.show_user_profile
+                - include "accounts/user_profile_container.haml"
+              - elif not client_customization.show_user_profile
+                {% with request.path|slice:":6" as path %}
+                  {% if path == '/admin' %}
+                    - include "accounts/user_profile_container.haml"
+                  {% endif %}
+                {% endwith %}
           - else
             - if use_i18n
               .language-selector
                 %i.material-icons language
                 .dropdown
-                  %button#dropdownMenuButton.dropdown-toggle.border-0{:tabindex => "-1", "aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
-                    {{ LANGUAGE_CODE }}
+                  - if LANGUAGE_CODE == 'zh'
+                    {% with LANGUAGE_CODE|add:"-cn" as lang_zh_cn %}
+                      - get_language_info for lang_zh_cn as lang
+                        %button#dropdownMenuButton.dropdown-toggle.border-0.bg-none{"aria-label": "{{lang.name}}, Select your language", "aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
+                          {{ LANGUAGE_CODE }}
+                    {% endwith %}
+                  - else
+                    - get_language_info for LANGUAGE_CODE as lang
+                      %button#dropdownMenuButton.dropdown-toggle.border-0.bg-none{"aria-label": "{{lang.name}}, Select your language", "aria-expanded": "false", "aria-haspopup": "true", "data-toggle": "dropdown", :type => "button"}
+                        {{ LANGUAGE_CODE }}
                   .dropdown-menu.language-dropdown{"aria-labelledby": "dropdownMenuButton", :class => ".dropdown-menu-right"}
                     - for language_code, language_name in LANGUAGES
                       - if LANGUAGE_CODE == language_code
-                        %a.dropdown-item.selected
-                          {{language_name}}
+                        - if language_code == 'ar'
+                          %a.dropdown-item.selected{"aria-label": "Arabic"}
+                            {{language_name}}
+                        - elif language_code == 'zh'
+                          %a.dropdown-item.selected{"aria-label": "Mandarin"}
+                            {{language_name}}
+                        - elif language_code == 'ja'
+                          %a.dropdown-item.selected{"aria-label": "Japanese"}
+                            {{language_name}}
+                        -else
+                          %a.dropdown-item.selected
+                            {{language_name}}
+
+                      - elif language_code == 'ar'
+                        %a.dropdown-item{"aria-label": "Arabic", href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                          -if language_code == 'en' or language_code == 'nl'
+                            - get_language_info for language_code as lang
+                            {{lang.name}}
+                          -else
+                            {{language_name}}
+                      - elif language_code == 'zh'
+                        %a.dropdown-item{"aria-label": "Mandarin", href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                          -if language_code == 'en' or language_code == 'nl'
+                            - get_language_info for language_code as lang
+                            {{lang.name}}
+                          -else
+                            {{language_name}}
+                      - elif language_code == 'ja'
+                        %a.dropdown-item{"aria-label": "Japanese", href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
+                          -if language_code == 'en' or language_code == 'nl'
+                            - get_language_info for language_code as lang
+                            {{lang.name}}
+                          -else
+                            {{language_name}}
                       - else
                         %a.dropdown-item{href: "{% url 'language_switcher' %}?LANG={{language_code}}"}
                           -if language_code == 'en' or language_code == 'nl'

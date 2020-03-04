@@ -12,8 +12,11 @@ input[type='file'] {
   padding: 0 20px;
   border: 0;
   background-color: var(--primary);
+  color: white;
+
   &:hover {
     background-color: var(--primary-darken-30) !important;
+    cursor: pointer;
   }
 
   //Secondary button .btn-secondary
@@ -96,7 +99,23 @@ input[type='file'] {
   }
 
 
+  &.browseProfilePhoto {
+    &:focus {
+      + .file-select-button {
+        @include focus-outline;
+      }
+    }
+  }
+
+  // background and hover color not needed there
+  &.bg-none{
+    background: transparent;
+    &:hover{
+      background: transparent !important;
+    }
+  }
 }
+
 
 //default anchor style
 a {
@@ -106,7 +125,11 @@ a {
   }
 }
 
-
+button {
+  &:focus{
+    @include focus-outline;
+  }
+}
 
 // button for extend
 

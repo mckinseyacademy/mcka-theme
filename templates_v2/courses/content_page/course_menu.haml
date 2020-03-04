@@ -19,6 +19,8 @@
         %li{"class": "courseRow clearfix {% if lesson.is_started %}active{% else %}locked{% endif %}  {% if lesson.progress == 100 %}complete{% else %}{% endif %}", :oncontextmenu => "return false;"}
           %a.holder{"href": "{% if lesson.is_started %}#{lesson.navigation_url}{% else %}\#{% endif %}", "onClick": "{% if not lesson.is_started %}return false;{% endif %}", :oncontextmenu => "return false;"}
             .data.serial
+              - if lesson.bookmark
+                %span.sr-only {% trans "Continue progress from this lesson" %}
               - if lesson_custom_label
                 {{lesson_custom_label}}
                 - if lesson_index
@@ -54,5 +56,5 @@
                   = lesson.description
           - if lesson.bookmark
             %span.bookmark.secondary
-              %svg{:height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
+              %svg{:role => "presentation", :aria-hidden => "true", :height => "100%", :preserveaspectratio => "none", :viewbox => "0 0 20 100", :width => "100%"}
                 %path{:d => "M5.90639e-13 0L10 0L20 50L10 100L5.90639e-13 100L5.90639e-13 0Z", :vector-effect => "non-scaling-stroke"}

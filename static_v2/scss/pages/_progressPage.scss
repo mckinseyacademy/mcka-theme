@@ -28,7 +28,11 @@
   .contentCard {
     margin-bottom: 3.5%;
     z-index: auto;
-
+    td {
+      .holder {
+        text-align: center;
+      }
+    }
   }
 
   hr {
@@ -409,10 +413,6 @@
         float: none;
       }
 
-      .contenrArea {
-        display: none;
-      }
-
       .widgetTitle,
       .averageTitle,
       .title {
@@ -528,10 +528,10 @@
               margin: 0 !important;
               bottom: auto;
             }
+            span {
+              width: 100%;
+            }
           }
-        }
-        .title {
-          display: none;
         }
       }
     }

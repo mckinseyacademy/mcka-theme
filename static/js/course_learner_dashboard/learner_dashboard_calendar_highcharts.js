@@ -1,6 +1,9 @@
 $(function() {
     var chart;
-
+    var monthNames = [
+        "January", "February", "March", "April", "May", "June",
+        "July", "August", "September", "October", "November", "December"
+    ];
     var chartingOptions = {
         chart: {
             type: 'columnrange',
@@ -181,10 +184,13 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',
                 formatter: function() {
-                    return this.point.fa_icon
+                    var start = monthNames[new Date(this.point.low).getMonth()];
+                    var end = monthNames[new Date(this.point.high).getMonth()];
+                    return "<span class='sr-only'>Starts in: " + start + " and ends in: " + end + ", " + this.point.sr_label + "</span>" + this.point.fa_icon
                 },
                 style: {
                     fontSize: '20px'
@@ -199,15 +205,19 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'left',
                 fontFamily: '"Open Sans" , sans-serif',
                 formatter: function() {
+                    var start = monthNames[new Date(this.point.low).getMonth()];
+                    var end = monthNames[new Date(this.point.high).getMonth()];
+
                     if (this.point.isInside) {
                         var labelWidth = this.point.plotLow - this.point.plotHigh
                         if ( this.point.name.length * 7.8 > labelWidth )
-                            return this.point.name.substr( 0, (labelWidth / 7.8) - 10 ) + "...";
-                        return this.point.name
+                            return "<span class='sr-only'>Starts in: " + start + " and ends in: " + end + ", " +  this.point.sr_label + "</span>" + this.point.name.substr( 0, (labelWidth / 7.8) - 10 ) + "...";
+                        return "<span class='sr-only'>Starts in: " + start + " and ends in: " + end + ", " + this.point.sr_label + "</span>" + this.point.name;
                     }
                     return ''
                 },
@@ -225,10 +235,13 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',
                 formatter: function() {
-                    return this.point.fa_icon
+                    var start = monthNames[new Date(this.point.low).getMonth()];
+                    var end = monthNames[new Date(this.point.high).getMonth()];
+                    return "<span class='sr-only'>Starts in: " + start + " and ends in: " + end + ", " + this.point.sr_label + "</span>" + this.point.fa_icon
                 },
                 style: {
                     fontSize: '20px'
@@ -244,10 +257,13 @@ $(function() {
             dataLabels: {
                 inside: true,
                 enabled: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',
                 formatter: function() {
-                    return this.point.fa_icon
+                    var start = monthNames[new Date(this.point.low).getMonth()];
+                    var end = monthNames[new Date(this.point.high).getMonth()];
+                    return "<span class='sr-only'>Starts in: " + start + " and ends in: " + end + ", " + this.point.sr_label + "</span>" + this.point.fa_icon
                 },
                 style: {
                     fontSize: '20px'
@@ -263,11 +279,14 @@ $(function() {
             dataLabels: {
                 enabled: true,
                 inside: true,
+                useHTML: true,
                 verticalAlign: 'middle',
                 align: 'center',  
                 yLow: -3,
                 formatter: function() {
-                    return this.point.fa_icon
+                    var start = monthNames[new Date(this.point.low).getMonth()];
+                    var end = monthNames[new Date(this.point.high).getMonth()];
+                    return "<span class='sr-only'>Starts in: " + start + " and ends in: " + end + ", " + this.point.sr_label + "</span>" + this.point.fa_icon
                 },
                 style: {
                     fontSize: '25px'

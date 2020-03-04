@@ -13,7 +13,7 @@
       %img{:alt => "", :src => "{{user.image_url_full}}"}/
 
 
-  %div{'class':'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown'}
+  %div{'class':'dropdown-menu profile-area large-menu dropdown-menu-left profileDropdown', :role => "region", :aria-label => "Profile info", :aria-modal => "false"}
     .header
       .avatar-area
         .userAvatar.lg
@@ -31,14 +31,14 @@
       .titles-area
         .nameArea
           %span{:firstname => "{{user.first_name}}", :lastname => "{{user.last_name}}"} {{user.fullname}}
-          %a.edit-link{:data-target => "#editFullName", :data-toggle => "modal", :href => "#"}
+          %a.edit-link{:data-target => "#editFullName", :data-toggle => "modal", :href => "#" , :aria-label => "edit name"}
             {% trans "edit" %}
         .roleArea
           - if user.title
             %span.title= user.title
           - else
             %span {% trans "Enter your role" %}
-          %a.edit-link{:data-target => "#editRole", :data-toggle => "modal", :href => "#"}
+          %a.edit-link{:data-target => "#editRole", :data-toggle => "modal", :href => "#" , :aria-label => "edit role"}
             {% trans "edit" %}
     .content
       .wrap
@@ -50,5 +50,5 @@
           {% trans "email" %}
         %span.userMail {{user.email}}
     .footer
-      %a.btn.btn-secondary{href: "/accounts/logout"}
+      %a.btn.btn-secondary{href: "/accounts/logout" , :role => "button"}
         {% trans "log out" %}
