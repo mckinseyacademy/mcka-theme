@@ -1,4 +1,4 @@
-django==2.2.9
+django==2.2.11
 Markdown==2.4
 mysqlclient==1.4.2.post1
 Pygments==1.6
