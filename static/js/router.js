@@ -8,6 +8,9 @@ var Router = Backbone.Router.extend({
     'courses/*course_id/progress':            'course_progress',
     'courses/*course_id/progress/*user_id':   'course_progress',
     'courses/*course_id/overview':            'course_overview',
+    'courses/*course_id/cohort':              'course_cohort',
+    'courses/*course_id/discussion':          'course_discussion',
+    'courses/*course_id/announcements':       'course_announcements',
     'courses/*course_id/group_work':          'course_group_work',
     'courses/*course_id/resources':           'course_resources',
     'courses/*course_id/lessons/*lesson_id/module/*module_id':  'course_lesson',
@@ -105,6 +108,9 @@ var Router = Backbone.Router.extend({
     }
   },
 
+  course_cohort: function(course_id) {
+  },
+
   course_group_work: function(course_id) {
   },
 
@@ -112,6 +118,9 @@ var Router = Backbone.Router.extend({
   },
 
   course_discussion: function(course_id) {
+  },
+
+  course_announcements: function(course_id) {
   },
 
   client_admin_course_analytics: function(organization_id, course_id) {
