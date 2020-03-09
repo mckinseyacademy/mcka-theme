@@ -322,7 +322,40 @@ body.new-theme {
             }
         }
     }
+    [data-block-type="pb-mcq"] {
+        .questionnaire {
+            .feedback {
+                background: white !important;
+                opacity: 1 !important;
+                color: black !important;
+                border-radius: 5px;
+                box-shadow: 0px 0px 35px rgba(0, 0, 0, 0.3);
+                padding: 15px 30px 15px 15px !important;
+                top: 45px;
+                position: absolute;
 
+                .fa-times-circle {
+                    &:after {
+                        content: "×";
+                    }
+                }
+
+                .message-content {
+                    p {
+                        color: black !important;
+                        margin: 0;
+                    }
+                }
+
+                @media screen and (max-width: 767px) {
+                    width: 100% !important;
+                    left: 0;
+                    right: 0;
+                    box-sizing: border-box;
+                }
+            }
+        }
+    }
     // MCQ End
 
     // MRQ

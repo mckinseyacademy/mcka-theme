@@ -183,7 +183,7 @@ body.new-theme {
 		}
 
 		.wmd-preview-container {
-			margin-top: -6px;
+			margin-top: -8px;
 
 			.wmd-preview-label {
 				font-size: 1rem;
@@ -237,7 +237,7 @@ body.new-theme {
 
 					&.js-post-title,
 					&.edit-post-title {
-						min-width: 370px;
+						min-width: 410px;
 					}
 				}
 
@@ -265,11 +265,6 @@ body.new-theme {
 			}
 
 			.wmd-panel {
-				.wmd-button-row {
-					display: none !important;
-					visibility: hidden !important;
-				}
-
 				.wmd-preview-container {
 					.wmd-preview-label {
 						font-size: 12px !important;
@@ -278,6 +273,19 @@ body.new-theme {
 					.wmd-preview {
 						padding: 0px 20px;
 						font-size: 12px;
+					}
+				}
+
+				.wmd-button-row{
+					margin:0;
+					.wmd-button{
+						position: static;
+						margin: 0 2px;
+					}
+					.wmd-spacer{
+						position: static;
+						margin-left:7px;
+						margin-right: 7px;
 					}
 				}
 			}
@@ -1388,38 +1396,20 @@ body.new-theme {
 					}
 
 					.field-help {
-						color: transparent;
-						visibility: hidden;
+						// color: transparent;
+						// visibility: hidden;
 						@include disableTextSelection();
 
 						&#field_help_topic_area {
 
 							position: absolute;
 							top: 64px;
-
-							&:before {
-								visibility: visible;
-								content: 'Add your post to a relevant topic to help others find it.';
-								font-size: 12px;
-								position: absolute;
-								display: block;
-								color: $gray;
-							}
 						}
 
 						&#field_help_title {
 
 							position: absolute;
 							top: 64px;
-
-							&:before {
-								visibility: visible;
-								content: 'Add a clear and descriptive title to encourage participation.';
-								font-size: 12px;
-								position: absolute;
-								display: block;
-								color: $gray;
-							}
 						}
 					}
 
@@ -2043,6 +2033,8 @@ body.new-theme {
 									.comment-actions-list {
 										@include moreButtonOfPostOrComment();
 									}
+
+									
 								}
 							}
 						}
@@ -2053,7 +2045,6 @@ body.new-theme {
 								padding: 0 0px;
 								margin-top: 0px;
 							}
-
 							.reply-body {
 								.wmd-preview-container {
 									.wmd-preview-label {
@@ -2304,6 +2295,26 @@ body.new-theme {
 		header.page-header {
 			height: auto !important;
 			margin-bottom: 20px;
+		}
+
+
+		.add-response{
+			padding:0;
+		}
+	
+		.responses{
+			margin-left:-15px;
+			margin-right:-15px;
+			
+			.discussion-response{
+				padding:15px;
+			}
+	
+			.comments{
+				>li{
+					padding: 10px 15px;
+				}
+			}
 		}
 	}
 }
