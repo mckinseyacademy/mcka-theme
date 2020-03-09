@@ -1,13 +1,13 @@
 - extends 'admin/admin_layout.haml'
 - load i18n
-- load staticfiles
+- load static
 - block content
   .admin-list
     .row
       .large-10.large-centered.columns
         %header
           %h1 {% trans "Manage Roles and Permissions" %}
-          .sub-1 
+          .sub-1
           .add-message
         %hr
         - if organization_options

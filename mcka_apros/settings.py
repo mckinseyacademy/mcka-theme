@@ -90,7 +90,7 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # explicitly add 'debug_toolbar.middleware.DebugToolbarMiddleware',
 # otherwise this doesn't seem to appear on AWS environments
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -202,6 +202,7 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 # the LMS cookies at the domain level from apros
 SESSION_COOKIE_NAME = 'apros_sessionid'
 CSRF_COOKIE_NAME = 'apros_csrftoken'
+SESSION_COOKIE_SAMESITE = None
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_TIMEOUT_SECONDS = 300
 SESSION_COOKIE_AGE = 2592000
@@ -296,7 +297,7 @@ USE_SESSION_COURSEWARE_CACHING = False
 GA_TRACKING_ID = None  # should be UA-48573128-1 for McKA production
 
 # While we have TA email group, define it here
-TA_EMAIL_GROUP = 'tas@mckinseyacademy.com'
+TA_EMAIL_GROUP = ''
 INITIAL_PASSWORD = 'PassworD12!@'
 
 # Email address students get their enrollment email sent from

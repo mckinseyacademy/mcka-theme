@@ -1,5 +1,5 @@
 - load i18n
--load staticfiles
+-load static
 - block upload_profile_image
 .upload-profile-image
   %form#upload-profile-image-form{action: "/accounts/user/#{user.id}/upload_profile_image", method: "POST", enctype: "multipart/form-data"}

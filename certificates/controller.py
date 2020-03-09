@@ -10,7 +10,7 @@ from django.conf import settings
 from django.template import loader
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from courses.models import FeatureFlags
 from api_client import course_api

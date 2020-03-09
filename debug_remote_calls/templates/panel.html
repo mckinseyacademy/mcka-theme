@@ -1,4 +1,4 @@
-
+{% load static %}
 <h4>{{ call_count }} remote calls</h4>
 
 <ul class="">
@@ -30,17 +30,4 @@
 
 {% endfor %}
 </ul>
-
-<script>
-
-    (function ($) {
-
-        $('.debug-roundtrip-more').on('click', function(e) {
-            e.preventDefault();
-            $(this).next().toggle();
-            return false;
-        });
-
-    })(djdt.jQuery);
-
-</script>
+<script src="{% static 'js/ddt-remote-calls.js' %}" defer></script>

@@ -1,5 +1,5 @@
 - load i18n
-- load staticfiles
+- load static
 
 - for course in courses
   .col-sm-12.col-md-6.col-lg-4.course-card.skeleton-loading{"class": "{% if not courseended and not course.started %}future-course{% endif %}", 'data-course_id': '#{course.id}'}

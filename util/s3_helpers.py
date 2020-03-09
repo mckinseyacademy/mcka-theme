@@ -3,7 +3,7 @@ from urllib.parse import urljoin
 from django.conf import settings
 from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.urls import resolve, Resolver404
 
 from storages.backends.s3boto import S3BotoStorage

@@ -4,17 +4,21 @@ from collections import OrderedDict
 from django.conf import settings
 
 
-class AllowEmbedUrlMiddleware(object):
+class AllowEmbedUrlMiddleware:
     is_scorm_shell = False
 
-    def process_request(self, request):
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
         self.is_scorm_shell = False
 
         if 'HTTP_REFERER' in request.META:
             referrer_url = request.META['HTTP_REFERER']
             self.is_scorm_shell = bool(self.get_matched_allowed_embed_url(referrer_url))
 
-    def process_response(self, request, response):
+        response = self.get_response(request)
+
         allowed_embed_url = None
         referrer_url = request.COOKIES.get('referrer_url') or request.META.get('HTTP_REFERER')
 

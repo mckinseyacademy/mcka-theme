@@ -22,7 +22,7 @@ class JsonBackend(object):
         user.save()
         return user
 
-    def authenticate(self, username=None, password=None, remote_session_key=None):
+    def authenticate(self, request, username=None, password=None, remote_session_key=None):
         '''
         Implements django authenticate that delegates to API
         '''

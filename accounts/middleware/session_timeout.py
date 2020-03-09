@@ -11,18 +11,23 @@ def expire_session(request):
     logout(request)
 
 
-class SessionTimeout(object):
+class SessionTimeout:
 
-    def process_request(self, request):
+    def __init__(self, get_response):
+        self.get_response = get_response
+
+    def __call__(self, request):
+
         if not request.user.is_authenticated:
             # Can't log out if not logged in
-            return
+            return self.get_response(request)
 
         try:
             # Log user out if deleted
             get_user_dict(request.user.id)
         except ApiError:
-            return expire_session(request)
+            expire_session(request)
+            return self.get_response(request)
 
         if settings.MOBILE_APP_USER_AGENT in request.META.get('HTTP_USER_AGENT', []):
             timeout = getattr(settings, "MOBILE_APP_SESSION_TIMEOUT_SECONDS", None)
@@ -30,8 +35,9 @@ class SessionTimeout(object):
             if timeout and last_touch:
                 time = datetime.utcnow() - last_touch
                 if time > timedelta(seconds=settings.MOBILE_APP_SESSION_TIMEOUT_SECONDS):
-                    return expire_session(request)
-            return
+                    expire_session(request)
+                    return self.get_response(request)
+            return self.get_response(request)
 
         timeout = getattr(settings, "SESSION_TIMEOUT_SECONDS", None)
         last_touch = request.session.get('last_touch')
@@ -39,11 +45,13 @@ class SessionTimeout(object):
         if timeout and last_touch:
             time = datetime.utcnow() - last_touch
             if time > timedelta(seconds=settings.SESSION_TIMEOUT_SECONDS):
-                return expire_session(request)
+                expire_session(request)
+                return self.get_response(request)
 
         request.session['last_touch'] = datetime.utcnow()
 
-    def process_response(self, request, response):
+        response = self.get_response(request)
+
         if settings.MOBILE_APP_USER_AGENT in request.META.get('HTTP_USER_AGENT', []):
             if not request.session.get('last_touch'):
                 request.session['last_touch'] = datetime.utcnow()

@@ -15,7 +15,6 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
     ''' Test middleware apros_platform_language of courses '''
 
     def setUp(self):
-        self.apros_platform_language = AprosPlatformLanguage()
         self.factory = RequestFactory()
 
     def mock_request_object(self, path, language_code, is_authenticated=True):
@@ -45,7 +44,7 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
         :param expected_language: expected language of browser after cleaning the string
         """
         request = self.mock_request_object('/', codes)
-        language = self.apros_platform_language._get_browser_preferred_language(request)
+        language = AprosPlatformLanguage(request)._get_browser_preferred_language(request)
         self.assertEqual(expected_language, language)
 
     @ddt.data(
@@ -75,8 +74,9 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
 
         get_current_request = self.apply_patch('util.i18n_helpers.get_current_request')
         get_current_request.return_value = request
-
-        self.apros_platform_language.process_request(request)
+        language_middleware = AprosPlatformLanguage(request)
+        with patch.object(language_middleware, 'get_response'):
+            language_middleware(request)
         self.assertEqual(expected_language, translation.get_language())
 
     def test_process_request_with_invalid_course_url(self):
@@ -84,4 +84,5 @@ class TestAprosPlatformLanguage(TestCase, ApplyPatchMixin):
         :param path: Url for invalid course_id
         """
         request = self.mock_request_object('/courses/', 'jp,de-DE,en-GB;q=0.6,en')
-        self.assertIsNone(self.apros_platform_language.process_request(request))
+        language = AprosPlatformLanguage(request)._enable_internationalization(request)
+        self.assertIsNone(language)

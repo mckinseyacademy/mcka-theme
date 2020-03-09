@@ -70,8 +70,8 @@ from .forms import (
 )
 from . import logout as logout_handler
 
-from django.contrib.auth.views import password_reset_done, password_reset_complete
-from django.core.urlresolvers import reverse, resolve, Resolver404
+from django.contrib.auth.views import PasswordResetView, PasswordResetCompleteView
+from django.urls import reverse, resolve, Resolver404
 from admin.views import ajaxify_http_redirects
 from rest_framework import status
 
@@ -118,7 +118,7 @@ def _validate_path(redirect_to):
         logger.error('Invalid Redirect: {}'.format(redirect_to))
         raise
     else:
-        if not is_safe_url(redirect_to):
+        if not is_safe_url(redirect_to, settings.ALLOWED_HOSTS):
             raise Http404('Invalid Redirect: {}'.format(redirect_to))
 
 
@@ -321,7 +321,7 @@ def fill_email_and_redirect(request, redirect_url):
     query_params = urllib.parse.parse_qs(url_parts[4])
     # Add in existing query_parameters
     query_params.update(request.GET)
-    if not request.user.is_anonymous():
+    if not request.user.is_anonymous:
         query_params.update({'email': request.user.email})
     url_parts[4] = urlencode(query_params, doseq=True)
     redirect_url_with_email = urllib.parse.urlunparse(url_parts)
@@ -341,7 +341,7 @@ def login_get_view(request):
         # The user may already be logged in to the LMS.
         # (e.g. they used the LMS's third_party_auth to authenticate, then got redirected back here)
         try:
-            user = auth.authenticate(remote_session_key=request.COOKIES['sessionid'])
+            user = auth.authenticate(request, remote_session_key=request.COOKIES['sessionid'])
             if user:
                 response = _process_authenticated_user(request, user)
                 _append_login_mode_cookie(response, login_mode)
@@ -422,7 +422,7 @@ def login_post_view(request):
             password = form.cleaned_data['password']
             user = get_user_from_login_id(login_id)
             try:
-                auth_user = auth.authenticate(username=user.username, password=password)
+                auth_user = auth.authenticate(request, username=user.username, password=password)
             except ApiError:
                 return JsonResponse({
                     "lock_out": True
@@ -501,7 +501,7 @@ def finalize_sso_mobile(request):
         # have an associated user, so redirect to the registration form
         # in that case.
         try:
-            user = auth.authenticate(remote_session_key=request.COOKIES['sessionid'])
+            user = auth.authenticate(request, remote_session_key=request.COOKIES['sessionid'])
             if not user:
                 return finalize_sso_registration(request)
         except ApiError as err:
@@ -610,6 +610,7 @@ def activate(request, activation_code, registration=None):
                 user_activation_with_data(user.id, user_data, activation_record)
 
                 user = auth.authenticate(
+                    request,
                     username=form.cleaned_data['username'],
                     password=form.cleaned_data['password']
                 )
@@ -867,6 +868,7 @@ def sso_registration_form(request):
             try:
                 user_api.register_user(registration_data)
                 new_user = auth.authenticate(
+                    request,
                     username=registration_data['username'],
                     password=random_password,
                     remote_session_key=remote_session_key
@@ -1016,15 +1018,17 @@ def reset(request, is_admin_site=False,
 @ajaxify_http_redirects
 def reset_done(request,
                template_name='registration/password_reset_done.haml', extra_context=None):
-    return password_reset_done(request=request,
-                               template_name=template_name, extra_context=extra_context)
+    return PasswordResetView(
+        request=request, template_name=template_name, extra_context=extra_context
+    )
 
 
 @ajaxify_http_redirects
 def reset_complete(request,
                    template_name='registration/password_reset_complete.haml', extra_context=None):
-    return password_reset_complete(request=request,
-                                   template_name=template_name, extra_context=extra_context)
+    return PasswordResetCompleteView(
+        request=request, template_name=template_name, extra_context=extra_context
+    )
 
 
 def scorm_mode_response(request):

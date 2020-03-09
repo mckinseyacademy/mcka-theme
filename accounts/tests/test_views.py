@@ -11,7 +11,7 @@ import mock
 import requests
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpResponse, SimpleCookie
 from django.test import RequestFactory, TestCase
 from django.utils import translation
@@ -383,14 +383,14 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
         response = _build_mobile_redirect_response(request, data)
         self.assertEqual(redirect_path in response.content.decode('utf-8'), expected_result)
 
-    @ddt.data(None, 'providerid')
+    @ddt.data('', 'providerid')
     def test_sso_launch_invalid_provider_id(self, provider_id):
         request = self.factory.get('/accounts/sso_launch/', {'provider_id': provider_id})
         self._setup_request(request)
         response = sso_launch(request)
         self.assertEqual('{"error": "invalid_provider_id"}', response.content.decode('utf-8'))
 
-    @ddt.data(None, 'providerid')
+    @ddt.data('', 'providerid')
     def test_sso_launch_invalid_provider_id_mobile(self, provider_id):
         request = self.factory.get('/accounts/sso_launch/', {
             'provider_id': provider_id,
@@ -402,6 +402,7 @@ class TestMobileSSOApi(TestCase, ApplyPatchMixin):
 
     @patch('accounts.views._build_sso_redirect_url')
     def test_sso_launch_valid_provider_id(self, mock__build_sso_redirect_url):
+        mock__build_sso_redirect_url.return_value = _build_sso_redirect_url('test', reverse('sso_finalize'))
         request = self.factory.get('/accounts/sso_launch/', {
             'provider_id': 'saml-test',
             'mobile_url_scheme': 'test-scheme',
@@ -541,7 +542,7 @@ class LoginViewTest(TestCase, ApplyPatchMixin):
         response = self.client.get(reverse('login'),
                                    HTTP_HOST=host,
                                    HTTP_USER_AGENT='Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; Trident/4.0)')
-        self.assertRedirects(response, 'http://{}/'.format(host))
+        self.assertRedirects(response, '/')
 
     def test_login_account_activate_check(self):
         response = self.client.get(reverse('home'), {'account_activate_check': True})
@@ -754,7 +755,7 @@ class FillEmailRedirectViewTest(TestCase, ApplyPatchMixin):
             'redirect_url': redirect_url,
         }))
         request.user = Mock()
-        request.user.is_anonymous = lambda: False
+        request.user.is_anonymous = False
         request.user.email = 'some@email.org'
         response = fill_email_and_redirect(request, redirect_url)
         self.assertTrue(response.url.startswith('http://some.url/'))

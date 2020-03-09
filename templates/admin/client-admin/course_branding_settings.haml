@@ -1,5 +1,5 @@
 - extends 'admin/admin_layout.haml'
-- load staticfiles
+- load static
 - block content
   %script
     $(function() {
@@ -71,4 +71,3 @@
           %hr
           %a.button.radius.small{href: "/admin/client-admin/#{client_id}/courses/#{course_id}/branding/create_edit"}
                 Create Branding settings
-    

@@ -6,7 +6,7 @@ from django.test import TestCase, RequestFactory
 from django.test.client import Client
 from django.core import mail
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from lib.utils import DottableDict
 from api_client.user_models import UserResponse

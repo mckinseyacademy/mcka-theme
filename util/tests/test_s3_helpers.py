@@ -5,7 +5,7 @@ import unittest
 import ddt
 
 from django.core.files.base import ContentFile
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 
 from lib.utils import DottableDict

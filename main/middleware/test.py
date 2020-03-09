@@ -1,15 +1,19 @@
 import sys
 
 import ddt
-
-from django.test import TestCase, override_settings, RequestFactory, Client
-from django.core.urlresolvers import reverse
-
-from main.middleware.allow_embed_url import AllowEmbedUrlMiddleware
+from django.test import TestCase, override_settings, RequestFactory
 from django_assets import env as assets_env
+from mock import Mock
+
+from lib.utils import DottableDict
+from main.middleware.allow_embed_url import AllowEmbedUrlMiddleware
 from mcka_apros import settings
 
 ALLOW_EMBED_URL = 'https://example.com https://example2.com'
+
+
+def get_response(request):
+    return DottableDict({'set_cookie': Mock()})
 
 
 @ddt.ddt
@@ -32,19 +36,15 @@ class AllowEmbedUrlTest(TestCase):
                 del sys.modules[assets_module]
 
     def test_details(self):
-        middleware = AllowEmbedUrlMiddleware()
+
+        middleware = AllowEmbedUrlMiddleware(get_response)
 
         factory = RequestFactory()
         request = factory.get('/')
 
         request.META['HTTP_REFERER'] = ALLOW_EMBED_URL
 
-        middleware.process_request(request)
-
-        client = Client()
-        response = client.get(reverse('home'))
-
-        middleware.process_response(request, response)
+        response = middleware(request)
 
         self.assertEqual(middleware.is_scorm_shell, True)
         self.assertEqual(response['Content-Security-Policy'], 'frame-ancestors ' + ALLOW_EMBED_URL)
@@ -60,17 +60,12 @@ class AllowEmbedUrlTest(TestCase):
         """
         tests middleware by referrer cookie
         """
-        middleware = AllowEmbedUrlMiddleware()
+        middleware = AllowEmbedUrlMiddleware(get_response)
 
         request = RequestFactory().get('/')
         request.COOKIES['referrer_url'] = referrer_url
 
-        middleware.process_request(request)
-
-        client = Client()
-        response = client.get(reverse('home'))
-
-        middleware.process_response(request, response)
+        response = middleware(request)
 
         self.assertEqual(middleware.is_scorm_shell, is_scorm_shell)
 
@@ -88,6 +83,6 @@ class AllowEmbedUrlTest(TestCase):
         """
         test helper method for checking allowed urls
         """
-        middleware = AllowEmbedUrlMiddleware()
+        middleware = AllowEmbedUrlMiddleware(get_response)
 
         self.assertEqual(middleware.get_matched_allowed_embed_url(referrer_url), expected)

@@ -9,6 +9,14 @@ $(document).ready(function () {
         };
     }
 
+    //IE11 fix for debug_toolbar
+    if(/MSIE \d|Trident.*rv:/.test(navigator.userAgent)){
+
+        if (window.NodeList && !NodeList.prototype.forEach) {
+            NodeList.prototype.forEach = Array.prototype.forEach;
+        }
+    }
+
     if($(".reset-password #id_email").val() !== "")
     {
         $('#reset-password-submit').attr("disabled", false);
