@@ -126,8 +126,8 @@ body.new-theme {
 		flex-wrap: wrap;
 		margin-right: -15px;
 		margin-left: -15px;
-		max-width: unset;
-		width: unset;
+		max-width: none;
+		width: auto;
 	}
 
 	//https://edx-wiki.atlassian.net/browse/MCKIN-10319 as per discussion with team overriding css here 
