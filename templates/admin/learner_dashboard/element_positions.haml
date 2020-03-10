@@ -12,7 +12,7 @@
               %a.fa.fa-times.right{href: '#', OnClick: 'deleteTile(#{tile.id}, #{learner_dashboard_id})'}
               %a{:href => "/admin/courses/#{course_id}/learner_dashboard/#{learner_dashboard_id}/tile/#{tile.id}", :data-reveal-id => 'tileModal', :data-reveal-ajax =>'true'}
                 %i.fa.fa-pencil-square-o{'style': "color:green"}
-            %a{href: "#{tile.link}"}
+            %a{href: "{% if tile.get_tile_type_display == 'Lesson' or tile.get_tile_type_display == 'Module' or tile.get_tile_type_display == 'In Person Session' %} #{tile.link}#{tile.id}/#{learner_dashboard_id} {%else%} #{tile.link} {%endif%}"}
               %blockquote.user-quote{style: "color: #{tile.title_color};"}= tile.title
             .label-3{style: "color: #{tile.note_color};"}= tile.note
       %li.item.fixed.ui-state-default.add-tile 
