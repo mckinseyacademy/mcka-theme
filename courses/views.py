@@ -1222,6 +1222,11 @@ def course_learner_dashboard(request, learner_dashboard_id):
 
     check_course_shell_access(request, learner_dashboard.course_id)
 
+    feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
+    if not feature_flags.learner_dashboard:
+        redirect_url = '/courses/' + str(learner_dashboard.course_id)
+        return HttpResponseRedirect(redirect_url)
+
     # Filter tiles on the basis of user role. Hide Staff only tiles for learners
     roles = request.user.get_roles_on_course(learner_dashboard.course_id)
     is_staff = 'staff' in [role.role for role in roles]
@@ -1243,7 +1248,6 @@ def course_learner_dashboard(request, learner_dashboard_id):
     except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         bookmark = None
 
-    feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
     learner_dashboard.features = feature_flags
     mobile_device = False
     if is_mobile_user_agent(request) or is_tablet_user_agent(request):
