@@ -885,17 +885,6 @@ body.new-theme {
                 #new-post-editor-description {
                     margin-top: 35px;
                     display: inline-block;
-                    color: transparent !important;
-                    @include disableTextSelection();
-
-                    &:before {
-                        visibility: visible;
-                        content: 'Your question or idea';
-                        font-size: 1rem;
-                        position: absolute;
-                        display: block;
-                        color: $black;
-                    }
                 }
 
 
