@@ -67,7 +67,7 @@ def check_and_update_asset(url, course_id, environment):
     correct_url = None
 
     parsed_url = urlparse(url)
-    asset_url = ASSET_URL_RE.match(parsed_url.path)
+    asset_url = ASSET_URL_RE.match(str(parsed_url.path))
 
     if asset_url is not None:
         try:
