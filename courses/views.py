@@ -1521,8 +1521,16 @@ def get_user_completion_json(request, course_id):
 
 @login_required
 def get_user_complete_gradebook_json(request, course_id):
-    user_grades = user_api.get_user_full_gradebook(user_id=request.user.id, course_id=course_id)
-    user_grades = bytes_to_str(user_grades)
+    try:
+        user_grades = user_api.get_user_full_gradebook(user_id=request.user.id, course_id=course_id)
+    except ApiError as e:
+        if e.code == 404:  # do not raise 404
+            user_grades = None
+        else:
+            raise
+    else:
+        user_grades = bytes_to_str(user_grades)
+
     if user_grades:
         data = {"user_gradebook": user_grades}
     else:
