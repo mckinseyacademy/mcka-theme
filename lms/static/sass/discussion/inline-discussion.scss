@@ -769,7 +769,7 @@ body.new-theme {
                         position: relative;
 
                         .input-radio {
-                            display: none;
+                            display: block;
                         }
 
                         .input-radio:checked+.field-input-label:before {
