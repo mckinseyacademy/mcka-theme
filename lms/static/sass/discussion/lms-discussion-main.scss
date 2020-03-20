@@ -1353,7 +1353,7 @@ body.new-theme {
 						overflow: visible;
 
 						.input-radio {
-							display: none;
+							display: block;
 						}
 
 						.input-radio:checked+.field-input-label:before {
