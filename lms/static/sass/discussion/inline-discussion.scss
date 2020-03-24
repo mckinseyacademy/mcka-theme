@@ -764,12 +764,12 @@ body.new-theme {
 
                     .post-type-label {
                         margin-right: 10px;
-                        width: 100%;
+                        width: calc(100% - 20px);
                         display: inline-block;
                         position: relative;
 
                         .input-radio {
-                            display: none;
+                            display: block;
                         }
 
                         .input-radio:checked+.field-input-label:before {
@@ -787,7 +787,6 @@ body.new-theme {
                             font-size: 18px;
                             line-height: normal;
                             color: #000;
-                            position: absolute;
                             left: -30px;
                             top: 1px;
                         }
@@ -885,17 +884,6 @@ body.new-theme {
                 #new-post-editor-description {
                     margin-top: 35px;
                     display: inline-block;
-                    color: transparent !important;
-                    @include disableTextSelection();
-
-                    &:before {
-                        visibility: visible;
-                        content: 'Your question or idea';
-                        font-size: 1rem;
-                        position: absolute;
-                        display: block;
-                        color: $black;
-                    }
                 }
 
 
@@ -949,7 +937,7 @@ body.new-theme {
                         }
 
 
-                        width: 100%;
+                        width: calc(100% - 30px);
                         color: $black;
                         text-transform: capitalize;
                         padding-left: 30px;
@@ -1808,9 +1796,9 @@ body.new-theme {
                                 color: $gray;
                                 font-size: 12px;
                                 position: absolute;
-                                top: 15px;
+                                top: 10px;
                                 margin: 0;
-                                left: 2px;
+                                left: 10px;
                             }
 
                             .post-topic {
@@ -1820,7 +1808,7 @@ body.new-theme {
                             }
 
                             .js-post-title {
-                                padding: 4px 5px 0 40px !important;
+                                padding: 4px 5px 0 40px;
                                 width: 100% !important;
                                 color: $gray;
                                 font-size: 12px;
@@ -2086,10 +2074,9 @@ body.new-theme {
                 .field-input-label {
                     padding-right: 30px;
                     left: auto !important;
-                }
-
-                &:before {
-                    right: 0;
+                    &:before {
+                        right: 0;
+                    }
                 }
 
                 &::after {
@@ -2097,6 +2084,11 @@ body.new-theme {
                 }
             }
         }
+    }
+
+    .field-label-text {
+        top: 10px !important;
+        right: 10px;
     }
 
     // CheckBox post Options
@@ -2192,9 +2184,15 @@ body.new-theme {
                 left: 10px !important;
             }
         }
+        [data-block-type="discussion-forum"] .discussion-module .forum-new-post-form .post-field .post-type-label .input-radio+.field-input-label:before {
+            left: auto;
+            right: -30px;
+        }
 
+        [data-block-type="discussion-forum"] .discussion-module .inline-discussion .forum-new-post-form .post-field .js-post-title {
+            padding: 4px 40px 0 5px !important
+        }
     }
-
 }
 
 
