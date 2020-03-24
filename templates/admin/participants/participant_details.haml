@@ -339,7 +339,7 @@
     .participantDetailsActiveCourses.contentNavigationContainer{:style => "display: none"}
       #participantDetailsActiveCoursesViewGrid.large-12.columns
       #activeCoursesExportStatsButton
-        %a.button.radius.small{:href => '/admin/api/participants/#{id}/active_courses/export_stats', :download => 'active_courses_stats'}>
+        %a.button.radius.small#download_active_courses_stats{:href => '#.', "data-user_id": "#{id}"}
           {% trans "Export Stats" %}
 
     .participantDetailsCourseHistory.contentNavigationContainer{:style => "display: none"}
@@ -385,5 +385,18 @@
         {% trans "Save Changes" %}
       %a.cancelChanges{:href => "#"}
         {% trans "Cancel" %}
+    %a.close-reveal-modal{"aria-label": "Close"}
+      &#215;
+
+  #download-user-active-courses-stats-modal.reveal-modal.small{"aria-hidden": "true", "aria-labelledby": "modalTitle", "data-reveal": "", :role => "dialog"}
+    %h2.modalTitle
+    {% trans "We'll e-mail you when your report is ready to download." %}
+    %p.lead
+    %p.mainText
+      %br
+      %button.okbutton.button.radius.small{:value => 'ok'}>
+        {% trans "Ok" %}
+    %p
+      .error
     %a.close-reveal-modal{"aria-label": "Close"}
       &#215;
