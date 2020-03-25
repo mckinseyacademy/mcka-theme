@@ -1745,7 +1745,7 @@ def get_company_active_courses(company_courses):
     active_courses = []
     for company_course in company_courses:
         if timezone.now() >= (company_course['start']):
-            if company_course['end'] is None or '-':
+            if company_course['end'] is None or company_course['end'] is '-':
                 active_courses.append(company_course)
             elif timezone.now() <= (company_course['end']):
                 active_courses.append(company_course)
