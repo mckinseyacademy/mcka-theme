@@ -453,7 +453,7 @@ class SelfRegistrationTest(TestCase, ApplyPatchMixin):
     def test_process_course_run_closed(self):
         _process_course_run_closed(self.new_user, self.course_run)
         self.assertEqual(mail.outbox[0].to[0], self.new_user.email)
-        self.assertEqual(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
+        self.assertEqual(mail.outbox[0].from_email, 'support@mckinsey.com')
         self.assertEqual(mail.outbox[0].subject, 'Your request to access McKinsey Academy')
 
 
