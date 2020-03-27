@@ -7,7 +7,7 @@
 		errors = new Array(),
 		onComplete = function() {},
 		current = 0;
-	
+
 	var jpreOptions = {
 		splashVPos: '35%',
 		loaderVPos: '75%',
@@ -20,7 +20,7 @@
 		debugMode: false,
 		splashFunction: function() {}
 	}
-	
+
 	//cookie
 	var getCookie = function() {
 		if( jpreOptions.onetimeLoad ) {
@@ -34,7 +34,7 @@
 		} else {
 			return false;
 		}
-		
+
 	}
 	var setCookie = function(expires) {
 		if( jpreOptions.onetimeLoad ) {
@@ -44,10 +44,10 @@
 			document.cookie="jpreLoader=loaded; " + c_value;
 		}
 	}
-	
+
 	//create jpreLoader UI
 	var createContainer = function() {
-		
+
 		jOverlay = $('<div></div>')
 		.attr('id', 'jpreOverlay')
 		.css({
@@ -59,12 +59,12 @@
 			zIndex: 9999999
 		})
 		.appendTo('body');
-		
+
 		if(jpreOptions.showSplash) {
 			jContent = $('<div></div>')
 			.attr('id', 'jpreSlide')
 			.appendTo(jOverlay);
-			
+
 			var conWidth = $(window).width() - $(jContent).width();
 			$(jContent).css({
 				position: "absolute",
@@ -73,20 +73,20 @@
 			});
 			$(jContent).html($(jpreOptions.splashID).wrap('<div/>').parent().html());
 			$(jpreOptions.splashID).remove();
-			jpreOptions.splashFunction()			
+			jpreOptions.splashFunction()
 		}
-		
+
 		jLoader = $('<div></div>')
 		.attr('id', 'jpreLoader')
 		.appendTo(jOverlay);
-		
+
 		var posWidth = $(window).width() - $(jLoader).width();
 		$(jLoader).css({
 			position: 'absolute',
 			top: jpreOptions.loaderVPos,
 			left: Math.round((50 / $(window).width()) * posWidth) + '%'
 		});
-		
+
 		jBar = $('<div></div>')
 		.attr('id', 'jpreBar')
 		.css({
@@ -94,13 +94,15 @@
 			height: '100%'
 		})
 		.appendTo(jLoader);
-		
+
 		if(jpreOptions.showPercentage) {
 			jPer = $('<div></div>')
 			.attr('id', 'jprePercentage')
 			.css({
 				position: 'relative',
-				height: '100%'
+				height: '100%',
+				display: 'none'
+
 			})
 			.appendTo(jLoader)
 			.html('Loading...');
@@ -120,7 +122,7 @@
 			.hide();
 		}
 	}
-	
+
 	//get all images from css and <img> tag
 	var getImages = function(element) {
 		$(element).find('*:not(script)').each(function() {
@@ -135,13 +137,13 @@
 			} else if ($(this).get(0).nodeName.toLowerCase() == 'img' && typeof($(this).attr('src')) != 'undefined') {
 				url = $(this).attr('src');
 			}
-			
+
 			if (url.length > 0) {
 				items.push(url);
 			}
 		});
 	}
-	
+
 	//create preloaded image
 	var preloading = function() {
 		for (var i = 0; i < items.length; i++) {
@@ -160,7 +162,7 @@
 		})
 		.attr('src', url);
 	}
-	
+
 	//update progress bar once image loaded
 	var completeLoading = function() {
 		current++;
@@ -169,26 +171,26 @@
 		$(jBar).stop().animate({
 			width: per + '%'
 		}, 500, 'linear');
-		
+
 		if(jpreOptions.showPercentage) {
 			$(jPer).text(per+"%");
 		}
-		
+
 		//if all images loaded
 		if(current >= items.length) {
 			current = items.length;
 			setCookie();	//create cookie
-			
+
 			if(jpreOptions.showPercentage) {
 				$(jPer).text("100%");
 			}
-			
+
 			//fire debug mode
 			if (jpreOptions.debugMode) {
 				var error = debug();
 			}
-			
-			
+
+
 			//max progress bar
 			$(jBar).stop().animate({
 				width: '100%'
@@ -198,10 +200,10 @@
 					loadComplete();
 				else
 					$(jButton).fadeIn(1000);
-			});	
-		}	
+			});
+		}
 	}
-	
+
 	//triggered when all images are loaded
 	var loadComplete = function() {
 		$(jOverlay).fadeOut(800, function() {
@@ -209,12 +211,12 @@
 			onComplete();	//callback function
 		});
 	}
-	
+
 	//debug mode
 	var debug = function() {
 		if(errors.length > 0) {
 			var str = 'ERROR - IMAGE FILES MISSING!!!\n\r'
-			str	+= errors.length + ' image files cound not be found. \n\r';	
+			str	+= errors.length + ' image files cound not be found. \n\r';
 			str += 'Please check your image paths and filenames:\n\r';
 			for (var i = 0; i < errors.length; i++) {
 				str += '- ' + errors[i] + '\n\r';
@@ -224,7 +226,7 @@
 			return false;
 		}
 	}
-	
+
 	$.fn.jpreLoader = function(options, callback) {
         if(options) {
             $.extend(jpreOptions, options );
@@ -232,12 +234,12 @@
 		if(typeof callback == 'function') {
 			onComplete = callback;
 		}
-		
+
 		//show preloader once JS loaded
 		$('body').css({
 			'display': 'block'
 		});
-		
+
 		return this.each(function() {
 			if( !(getCookie()) ) {
 				createContainer();
