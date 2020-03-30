@@ -16,6 +16,7 @@ import chardet
 import requests
 import uuid
 from datetime import datetime
+from decimal import Decimal
 from copy import deepcopy
 import json
 
@@ -1208,7 +1209,7 @@ def serialize_quick_link(quick_link):
 
 
 def round_to_int(value):
-    return int(round(value))
+    return int(Decimal(value).quantize(Decimal('0'), rounding='ROUND_HALF_UP'))
 
 
 def round_to_int_bump_zero(value):
