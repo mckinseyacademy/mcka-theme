@@ -976,6 +976,7 @@ form {
       }
     }
     .login-form-wrap {
+      @include float(right);
       .forgot-pswd-link {
         @include float(left);
       }

@@ -4,12 +4,23 @@
 - load static
 
 - block content
+  .row.background-absolute
+    .col-7
+    .col-5
   .container
-    .row.login-page
-      .col
-        %img.login-McKa-logo{:alt => "", :src => "{% static 'image/McKinsey-Academy.png' %}", :srcset => "/static/image/McKinsey-Academy@2x.png 2x"}/
-        %h1.heading.text-center
-          {% trans "Leading transformation, transforming leaders" %}
+    .login-page
+      .left-col.col-7
+        %img{:src => "{% static 'image/McK_Academy_RGB_White@2x.png' %}", :width => "150", "alt": "McKinsey and Company Logo"}
+        .hero-content
+          %h1.heading
+            {% trans "People make change <br>happen—and people <br>make it last." %}
+          %p
+            {% trans "We help organizations unlock the potential of their people and leadership teams. We assess capability gaps and work together to design and implement the right interventions to build needed skills in their people." %}
+          %a{:href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients" , :target => "_blank"}
+            {% trans "Learn about McKinsey Academy" %}
+            %i.arrow-right
+              %img{:src => "{% static 'image/arrow-right.svg'%}"}
+      .right-col-fixed.col-5
         .login-form-wrap
           - if request.is_IE8
             %br
@@ -17,6 +28,8 @@
               {% trans "We're sorry, McKinsey Academy is not compatible with your browser. You will not be able to access course content without updating your browser. We recommend the latest versions of Google Chrome, Mozilla Firefox, and Apple Safari for an optimal experience." %}
           - else
             %form.white.clearfix{id: "login-form", action: "/", method: "POST"}
+              %h3
+                Log in to McKinsey Academy to start your learning journey.
 
                 - if activation_message
                   .error.error-msg.already-activated
@@ -47,9 +60,7 @@
                 %li
                   %a{:href => "/faq", :target => "_blank"} {% trans "FAQs" %}
                 %li
-                  %a{:href => "#{support}"} {% trans "Contact Support" %}
-                %li
-                  %a{:target => "_blank", :href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients"} {% trans "About McKinsey Academy" %}
+                  %a{:href => "#{support}"} {% trans "Email Support" %}
 
   -#- include "marketing/app_link_popup.haml"
 

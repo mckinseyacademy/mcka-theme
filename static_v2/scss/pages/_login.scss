@@ -1,47 +1,90 @@
+@font-face {
+  font-family: bower-bold;
+  src: url("../fonts/Bower/Bower-Bold.otf");
+}
+
+@font-face {
+  font-family: theinhard-regular;
+  src: url("../fonts/TheinhardtPan/TheinhardtPan-Regular.otf");
+}
+
+@font-face {
+  font-family: theinhard-medium;
+  src: url("../fonts/TheinhardtPan/TheinhardtPan-Medium.otf");
+}
+
 .site-wrapper {
   &.login {
-    min-height: 100vh;
-    background: #f0f0f0 url("../image/login/McKA-login-bg-lg.png") no-repeat 50% 50% ;
-    @media screen and (max-width: 1500px) {
-      background: #f0f0f0 url("../image/login/McKA-login-bg.png") no-repeat 50% 50% ;
+    background-color: white;
+    header {
+      margin-bottom: 0;
+      height: 50px;
+      position: relative;
+      z-index: 1;
+      .all-logos {
+        display: none;
+      }
     }
-    background-size: cover;
 
     main {
-      padding: 15px 0 20px;
-      min-height: calc(100vh - 160px);
-      @media screen and (max-width: 992px) {
-        min-height: calc(100vh - 165.5px);
-        padding-top: 90px;
-      }
+      padding: 0 0 20px;
+      min-height: calc(100vh - 130px);
       @media screen and (max-width: 767px) {
         min-height: calc(100vh - 159px);
-        padding-top: 50px;
       }
-      .heading {
-        display: block;
-        color: #000;
-        margin-bottom: 35px;
-        font-size: 2.625rem;
-        font-weight: 300;
-        img {
-          margin: 0 10px;
+      .background-absolute {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 60px;
+        top: 0;
+        .col-7 {
+          background: rgb(6,28,44);
+          background: -moz-linear-gradient(-45deg,  rgba(6,28,44,1) 0%, rgba(19,47,128,1) 100%);
+          background: -webkit-linear-gradient(-45deg,  rgba(6,28,44,1) 0%,rgba(19,47,128,1) 100%);
+          background: linear-gradient(135deg,  rgba(6,28,44,1) 0%,rgba(19,47,128,1) 100%);
+          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#061c2c', endColorstr='#132f80',GradientType=1 );
         }
-        @media screen and (max-width: 992px) {
-          .nl {
-            display: block;
-          }
-          font-size: 2.575rem;
-          img {
-            margin-left: 0;
-          }
+        
+        .col-white {
+          width: 490px;
+          background-color: white;
         }
-        @media screen and (max-width: 767px) {
-          font-size: 1.7rem;
-          margin-bottom: 30px;
-          img {
-            width: 11px;
-            margin-right: 6px;
+      }
+      .login-page {
+        display: flex;
+        .left-col {
+
+          .hero-content {
+            max-width: 435px;
+            height: calc(100vh - 190px);
+            display: table-cell;
+            vertical-align: middle;
+
+            .heading {
+              font-family: bower-bold;
+              display: block;
+              color: white;
+              line-height: 58px;
+              font-size: 3rem;
+              font-weight: 600;
+            }
+            p {
+              font-family: theinhard-regular;
+              @include font-size(16);
+              color: white;
+              max-width: 90%;
+              line-height: 26px;
+            }
+            a {
+              font-family: theinhard-medium;
+              @include font-size(18);
+              color: white;
+              i {
+                display: inline-block;
+                margin: 0 10px;
+              }
+            }
           }
         }
       }
@@ -57,14 +100,9 @@
     }
 
     .login-form-wrap {
-      max-width: 395px;
-      margin: 0 auto;
-      padding: 2.8125rem 2.8125rem 1.4125rem 2.8125rem;
-      background: rgba(#fff, .6);
-      border-radius: 3px;
-      @media screen and (max-width: 767px) {
-        padding: 30px;
-      }
+      margin-top: 22vh;
+      max-width: 295px;
+
       input:not([type='checkbox']),
       button.btn {
         width: 100%;
@@ -89,6 +127,13 @@
           font-weight: 600 !important;
         }
       }
+      h3 {
+        @include font-size(20);
+        font-family: theinhard-medium;
+        line-height: 28px;
+        color: $header-top;
+        margin-bottom: 30px;
+      }
     }
     .helpLink {
       display: none;
@@ -108,7 +153,7 @@
     .quick-links {
       text-align: center;
       padding: 0;
-      margin: 48px -30px 0;
+      margin: 60px -30px 0;
       overflow: hidden;
       @media screen and (max-width: 767px) {
         margin: 30px 0 0;
