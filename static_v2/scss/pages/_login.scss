@@ -45,14 +45,14 @@
           background: linear-gradient(135deg,  rgba(6,28,44,1) 0%,rgba(19,47,128,1) 100%);
           filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#061c2c', endColorstr='#132f80',GradientType=1 );
           position:relative;
+          padding: 0;
           &:before{
-            position: absolute;
-            width:100%;
+            position: relative;
             height:100%;
             display: block;
             content: '';
             background: url("../image/login/Accelerate-graphic.png") no-repeat;
-            background-position: calc(100% - 15px) calc(100% - -20px);
+            background-position: 100%  calc(100% - -20px);
           }
         }
         
@@ -98,7 +98,7 @@
           }
         }
         .right-col-fixed {
-          
+
         }
       }
     }

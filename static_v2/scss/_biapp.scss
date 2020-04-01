@@ -1001,6 +1001,7 @@ form {
         @include left(18px);
       }
     }
+
   }
 }
 
@@ -1149,6 +1150,15 @@ body.rtl {
       }
       .form-label {
         transform: translate(-15px, 15px) !important;
+      }
+      main {
+        .background-absolute {
+          .col-7 {
+            &:before {
+              @include flip-x-axis;
+            }
+          }
+        }
       }
     }
   }
