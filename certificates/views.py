@@ -12,7 +12,7 @@ from dateutil.parser import parse as parsedate
 from django.views.decorators.http import require_POST
 from django.shortcuts import redirect, render
 from django.http import Http404, HttpResponse
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.files.storage import default_storage
 from django.template import RequestContext, Template
 

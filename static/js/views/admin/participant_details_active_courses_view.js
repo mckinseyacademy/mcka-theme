@@ -5,7 +5,7 @@
 
     events: {
       'click .edit-status' : 'editStatus', 
-      'click .unenroll-user' : 'unenrollUser', 
+      'click .unenroll-user' : 'unenrollUser',
       'editStatusDone': 'editStatusHandler'
       }, 
 
@@ -22,6 +22,26 @@
           _this.$el.trigger('editStatusDone');
         }
       );
+
+      $('#download_active_courses_stats').on('click', function(e) {
+        var user_id = $(e.target).data('user_id');
+        var url = '/admin/api/participants/' + user_id + '/active_courses/export_stats';
+        $.ajax({
+          method: 'GET',
+          url: url,
+          data: {}
+        })
+        .done(function(data, status, xhr) { 
+          if(data.status != 'success') {
+            $('#download-user-active-courses-stats-modal').find('.error').text(data.message);
+          }
+          $('#download-user-active-courses-stats-modal').foundation('reveal', 'open');
+        });
+      });
+      
+      $('#download-user-active-courses-stats-modal .okbutton').on('click', function (e) {
+        $('#download-user-active-courses-stats-modal').foundation('reveal', 'close');
+      });
 
       $('#unenroll-user-modal .okbutton').on('click', function (e) {
         var url = '/admin/participants/' + _this.user_id + '/courses/' + _this.selected_course_id + '/unenroll';

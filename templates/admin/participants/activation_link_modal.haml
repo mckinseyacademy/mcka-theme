@@ -1,5 +1,5 @@
 - load i18n
-- load staticfiles
+- load static
 
 	%h2.title {% trans "Activation Link" %}
 
@@ -24,14 +24,14 @@
 
 		%tbody
 		- for record in records
-			%tr.activation-record 		
+			%tr.activation-record
 				%td.email
 						#{record.0}
 				%td.first_name
 						#{record.1}
-				%td.last_name 
+				%td.last_name
 						#{record.2}
-				%td.company_id	  	 
+				%td.company_id
 						#{record.3}
 				%td.activation_link#activation_link
 						#{record.4}

@@ -3,6 +3,7 @@ from django.test.client import RequestFactory
 
 from lib.utils import PriorIdConvert
 from lib.middleware.handle_prior_ids import PriorIdRequest
+from mock import Mock
 
 
 class PriorIdsTest(TestCase):
@@ -26,9 +27,9 @@ class PriorIdsTest(TestCase):
 
     def _check_middleware_operation(self, prior_url, expect_url):
         fake_request = RequestFactory().get(prior_url)
-        response = PriorIdRequest().process_request(fake_request)
+        response = PriorIdRequest(Mock())(fake_request)
         if expect_url == prior_url:
-            self.assertEqual(response, None)
+            self.assertNotEqual(response.url, expect_url)
         else:
             self.assertEqual(response._headers['location'][1], expect_url)
 

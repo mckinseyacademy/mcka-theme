@@ -1,20 +1,50 @@
-from debug_toolbar.panels import DebugPanel
+import functools
+import json
+import threading
+import time
 import urllib.request
 import urllib.error
 import urllib.parse
 from io import StringIO
 from urllib.response import addinfourl
-import json
-import threading
-import time
+
+from debug_toolbar.panels import Panel
+from django.conf import settings
+from requests import Session
 
 
 threadlocal = threading.local()
 threadlocal.api_calls = []
 
+_original_request = Session.request
+
 
 def _now_in_ms():
     return int(round(time.time() * 1000))
+
+
+@functools.wraps(_original_request)
+def _request(self, method, url, **kwargs):
+    start_time = _now_in_ms()
+    response = _original_request(self, method, url, **kwargs)
+    threadlocal.api_calls = getattr(threadlocal, 'api_calls', [])
+
+    threadlocal.api_calls.append({
+        'request': {
+            'method': method,
+            'url': url,
+            'headers': getattr(self, 'headers', {}),
+            'data': kwargs.get('data', {}),
+            'duration': _now_in_ms() - start_time,
+        },
+        'response': {
+            'code': response.status_code,
+            'size': len(response.content),
+            'headers': response.headers,
+            'data': response.content,
+        }
+    })
+    return response
 
 
 class DebugHandler(urllib.request.HTTPHandler):
@@ -59,8 +89,7 @@ class DebugHandler(urllib.request.HTTPHandler):
         return resp
 
 
-class DebugRemoteCalls(DebugPanel):
-
+class DebugRemoteCalls(Panel):
     template = 'panel.html'
     has_content = True
 
@@ -75,11 +104,19 @@ class DebugRemoteCalls(DebugPanel):
         opener = urllib.request.build_opener(DebugHandler)
         urllib.request.install_opener(opener)
 
-    def process_response(self, request, response):
+        if settings.DEBUG and Session.request != _request:
+            Session.request = _request
+
+        response = super(DebugRemoteCalls, self).process_request(request)
+        if settings.DEBUG and Session.request == _request:
+            Session.request = _original_request
+
         self.record_stats({
             'call_count': self.call_count(),
             'api_calls': threadlocal.api_calls
         })
+
+        return response
 
     def total_time(self):
         time = 0

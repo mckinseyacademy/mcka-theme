@@ -1,4 +1,4 @@
-from django.core.urlresolvers import resolve
+from django.urls import resolve
 from django.test import TestCase
 
 
@@ -18,27 +18,27 @@ class UrlsTest(TestCase):
 
         resolver = resolve('/admin/clients/12345')
         self.assertEqual(resolver.view_name, 'client_detail')
-        self.assertEqual(resolver.kwargs['client_id'], '12345')
+        self.assertEqual(resolver.kwargs['client_id'], 12345)
 
         resolver = resolve('/admin/clients/12345/upload_student_list')
         self.assertEqual(resolver.view_name, 'upload_student_list')
-        self.assertEqual(resolver.kwargs['client_id'], '12345')
+        self.assertEqual(resolver.kwargs['client_id'], 12345)
 
         resolver = resolve('/admin/clients/12345/download_student_list')
         self.assertEqual(resolver.view_name, 'download_student_list')
-        self.assertEqual(resolver.kwargs['client_id'], '12345')
+        self.assertEqual(resolver.kwargs['client_id'], 12345)
 
         resolver = resolve('/admin/clients/12345/program_association')
         self.assertEqual(resolver.view_name, 'program_association')
-        self.assertEqual(resolver.kwargs['client_id'], '12345')
+        self.assertEqual(resolver.kwargs['client_id'], 12345)
 
         resolver = resolve('/admin/clients/12345/add_students_to_program')
         self.assertEqual(resolver.view_name, 'add_students_to_program')
-        self.assertEqual(resolver.kwargs['client_id'], '12345')
+        self.assertEqual(resolver.kwargs['client_id'], 12345)
 
         resolver = resolve('/admin/clients/12345/add_students_to_course')
         self.assertEqual(resolver.view_name, 'add_students_to_course')
-        self.assertEqual(resolver.kwargs['client_id'], '12345')
+        self.assertEqual(resolver.kwargs['client_id'], 12345)
 
         resolver = resolve('/admin/clients/12345/other_named_detail')
         self.assertEqual(resolver.view_name, 'client_detail')
@@ -53,7 +53,7 @@ class UrlsTest(TestCase):
 
         resolver = resolve('/admin/programs/987')
         self.assertEqual(resolver.view_name, 'program_detail')
-        self.assertEqual(resolver.kwargs['program_id'], '987')
+        self.assertEqual(resolver.kwargs['program_id'], 987)
 
         resolver = resolve('/admin/programs/987/add_courses')
         self.assertEqual(resolver.view_name, 'add_courses')
@@ -61,7 +61,7 @@ class UrlsTest(TestCase):
 
         resolver = resolve('/admin/programs/987/download_program_report')
         self.assertEqual(resolver.view_name, 'download_program_report')
-        self.assertEqual(resolver.kwargs['program_id'], '987')
+        self.assertEqual(resolver.kwargs['program_id'], 987)
 
         resolver = resolve('/admin/programs/987/other_named_detail')
         self.assertEqual(resolver.view_name, 'program_detail')

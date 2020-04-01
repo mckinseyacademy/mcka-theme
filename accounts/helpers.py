@@ -6,7 +6,7 @@ import string
 from urllib.parse import urljoin
 import logging
 
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from .models import UserActivation
 from api_client.api_error import ApiError
 from api_client.group_api import add_users_to_group, PERMISSION_GROUPS, remove_user_from_group

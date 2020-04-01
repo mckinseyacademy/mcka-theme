@@ -218,16 +218,14 @@ def remove_users_from_organization(organization_id, user_ids):
 
     # trigger event that data is updated for this user
     update_user_ids = user_ids if isinstance(user_ids, list) else [user_ids]
+    update_user_ids = [str(u) for u in update_user_ids]
     user_data_updated.send(
         sender=__name__, user_ids=update_user_ids,
         data_type=USER_PROPERTIES.ORGANIZATIONS
     )
 
     qs_params = {}
-    if isinstance(user_ids, list):
-        qs_params['users'] = ",".join(user_ids)
-    else:
-        qs_params['users'] = user_ids
+    qs_params['users'] = ",".join(update_user_ids)
     response = DELETE(
         '{}/{}/{}/users/'.format(
             settings.API_SERVER_ADDRESS,
@@ -300,7 +298,7 @@ def add_group_to_organization(organization_id, group_id):
         data
     )
 
-    return json.loads(response.read().decode('utf-8'))
+    return json.loads(bytes_to_str(response.read()))
 
 
 @api_error_protect

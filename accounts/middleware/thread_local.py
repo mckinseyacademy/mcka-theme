@@ -7,16 +7,18 @@ from api_data_manager.user_data import UserDataManager
 _threadlocal = threading.local()
 
 
-class ThreadLocal(object):
+class ThreadLocal:
+    def __init__(self, get_response):
+        self.get_response = get_response
 
-    def process_request(self, request):
+    def __call__(self, request):
         _threadlocal.request = request
         _threadlocal.current_course = None
         _threadlocal.static_tabs = None
         _threadlocal.user_permissions = None
         _threadlocal.users_data = {}
 
-    def process_response(self, request, response):
+        response = self.get_response(request)
         _threadlocal.request = None
         _threadlocal.current_course = None
         _threadlocal.static_tabs = None

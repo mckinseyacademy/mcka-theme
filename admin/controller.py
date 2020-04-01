@@ -28,7 +28,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files.storage import default_storage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.validators import validate_email, ValidationError
 from django.http import HttpResponse
 from django.utils import timezone

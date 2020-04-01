@@ -8,7 +8,7 @@ import httpretty
 
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib import auth
 
 from courses.models import FeatureFlags

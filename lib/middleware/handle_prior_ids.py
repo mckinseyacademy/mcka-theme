@@ -8,9 +8,11 @@ CONVERT_SEGMENTS = [
 ]
 
 
-class PriorIdRequest(object):
+class PriorIdRequest:
+    def __init__(self, get_response):
+        self.get_response = get_response
 
-    def process_request(self, request):
+    def __call__(self, request):
         redirect = False
         url_path = request.path
         url_segments = url_path.split('/')
@@ -23,3 +25,4 @@ class PriorIdRequest(object):
 
         if redirect:
             return HttpResponseRedirect('/'.join(url_segments))
+        return self.get_response(request)

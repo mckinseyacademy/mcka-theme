@@ -15,6 +15,7 @@ from util.unit_test_helpers.common_mocked_objects import make_side_effect_raise_
 @ddt.ddt
 class JsonBackendTests(TestCase, ApplyPatchMixin):
     def setUp(self):
+        self.request = mock.Mock()
         self.backend = JsonBackend()
         self.user_api = self.apply_patch('accounts.json_backend.user_api')
 
@@ -43,7 +44,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
         self.user_api.authenticate.return_value = self._make_auth_response(existing_user)
         self.user_api.get_user.return_value = self._make_user_response(existing_user)
 
-        auth_response = self.backend.authenticate(existing_user.username, existing_user.password)
+        auth_response = self.backend.authenticate(self.request, existing_user.username, existing_user.password)
         self.user_api.authenticate.assert_called_once_with(
             existing_user.username, existing_user.password, remote_session_key=None
         )
@@ -60,7 +61,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
         self.user_api.authenticate.return_value = self._make_auth_response(existing_user)
         self.user_api.get_user.return_value = self._make_user_response(existing_user)
 
-        auth_response = self.backend.authenticate(username, password)
+        auth_response = self.backend.authenticate(self.request, username, password)
         self.user_api.authenticate.assert_called_once_with(username, password, remote_session_key=None)
         self.assertIsNotNone(auth_response)
         self.assertEqual(auth_response.username, existing_user.username)
@@ -83,7 +84,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
         self.user_api.get_session.side_effect = _get_session
         self.user_api.get_user.return_value = self._make_user_response(existing_user)
 
-        auth_response = self.backend.authenticate(remote_session_key=session_key)
+        auth_response = self.backend.authenticate(self.request, remote_session_key=session_key)
         self.user_api.authenticate.assert_not_called()
         if raises:
             self.assertIsNone(auth_response)
@@ -105,7 +106,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
         self.user_api.get_user.return_value = self._make_user_response(existing_user)
 
         auth_response = self.backend.authenticate(
-            existing_user.username, existing_user.password, remote_session_key="session_key"
+            self.request, existing_user.username, existing_user.password, remote_session_key="session_key"
         )
         self.user_api.get_session.assert_not_called()
         self.user_api.authenticate.assert_called_once_with(
@@ -121,7 +122,7 @@ class JsonBackendTests(TestCase, ApplyPatchMixin):
         self.user_api.get_session.return_value = mock.Mock(user_id=existing_user.id)
         self.user_api.get_user.return_value = self._make_user_response(existing_user)
 
-        self.backend.authenticate(remote_session_key=None)
+        self.backend.authenticate(self.request, remote_session_key=None)
         self.user_api.authenticate.assert_called_once_with(None, None, remote_session_key=None)
         self.user_api.get_session.assert_not_called()
 
