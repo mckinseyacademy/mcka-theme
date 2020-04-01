@@ -530,8 +530,8 @@ class TestSendWarningEmailToAdmin(TestCase):
     def test_send_warning_email_to_admin(self):
         send_warning_email_to_admin(self.course_run)
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
-        self.assertEqual(mail.outbox[0].to[0], 'no-reply@mckinseyacademy.com')
+        self.assertEqual(mail.outbox[0].from_email, 'support@mckinsey.com')
+        self.assertEqual(mail.outbox[0].to[0], 'support@mckinsey.com')
         self.assertEqual(mail.outbox[0].subject, 'Demo Registration - Warning')
 
 
@@ -569,7 +569,7 @@ class TestSendPasswordResetEmail(TestCase):
     def test_send_password_reset_email(self):
         send_password_reset_email(self.domain, self.user, True)
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].from_email, 'no-reply@mckinseyacademy.com')
+        self.assertEqual(mail.outbox[0].from_email, 'support@mckinsey.com')
         self.assertEqual(mail.outbox[0].to[0], self.user.email)
         self.assertEqual(mail.outbox[0].subject, 'Password Reset Requested')
 
