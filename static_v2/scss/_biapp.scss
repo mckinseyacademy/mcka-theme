@@ -1148,9 +1148,6 @@ body.rtl {
       main .login-page .left-col .hero-content a i {
         @include flip-x-axis;
       }
-      .form-label {
-        transform: translate(-15px, 15px) !important;
-      }
       main {
         .background-absolute {
           .col-7 {
