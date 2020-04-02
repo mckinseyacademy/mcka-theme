@@ -90,8 +90,11 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # explicitly add 'debug_toolbar.middleware.DebugToolbarMiddleware',
 # otherwise this doesn't seem to appear on AWS environments
+
+# use SESSION_COOKIE_SAMESITE = 'None' in django 3.1 and change to default middleware,
+# this setting not available in django 2.2
 MIDDLEWARE = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'accounts.middleware.session_samesite.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
