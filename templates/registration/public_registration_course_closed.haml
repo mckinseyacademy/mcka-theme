@@ -2,7 +2,7 @@
 
 %p {% trans "Dear" %} #{username},
 %p #{template_text}
-%p {% trans "Please reach out to your McKinsey contact or academy_info@mckinsey.com if you have any further questions." %}
+%p {% blocktrans %}Please contact our <a href="{{support}}" target="_blank">support team</a> if you experience any technical issues.{% endblocktrans %}
 %p
   {% trans "Best," %}
   %br
