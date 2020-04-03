@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-03 07:50+0000\n"
+"POT-Creation-Date: 2020-04-03 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8769,13 +8769,13 @@ msgstr ""
 "Wyślij nam <a href=\"mailto:academy_info@mckinsey.com\">wiadomość e-mail</"
 "a>. Zrobimy wszystko, aby Ci pomóc."
 
-#: templates/footer.haml:11 templates_v2/footer.haml:11
+#: templates/footer.haml:11 templates_v2/footer.haml:17
 #: tests/templates_v2/footer.haml:11
 msgid "Terms of Service"
 msgstr "Warunki korzystania z usługi"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
-#: templates_v2/footer.haml:14 templates_v2/privacy.haml:12
+#: templates_v2/footer.haml:20 templates_v2/privacy.haml:12
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "Zasady prywatności"
@@ -13516,7 +13516,17 @@ msgstr ""
 "się z naszym <a href=%(support_url)s style=\"display: inline;\" "
 "target='_blank'>działem pomocy</a>."
 
-#: templates_v2/footer.haml:16
+#: templates_v2/footer.haml:11
+msgid "About"
+msgstr "O nas"
+
+#: templates_v2/footer.haml:14 templates_v2/getting-started.haml:48
+#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:61
+#: tests/templates_v2/home/landing.haml:49
+msgid "FAQs"
+msgstr "FAQ."
+
+#: templates_v2/footer.haml:22
 msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
 msgstr "&#9400; 2020 McKinsey & Company. Wszelkie prawa zastrzeżone."
 
@@ -13609,11 +13619,6 @@ msgid "For further technical support and troubleshooting, see our"
 msgstr ""
 "Więcej informacji o pomocy technicznej i rozwiązywaniu problemów znajdziesz "
 "w sekcji"
-
-#: templates_v2/getting-started.haml:48 templates_v2/getting-started.haml:139
-#: templates_v2/home/landing.haml:61 tests/templates_v2/home/landing.haml:49
-msgid "FAQs"
-msgstr "FAQ."
 
 #: templates_v2/getting-started.haml:49
 msgid "page. If you still seek assistance, contact "
@@ -15228,9 +15233,6 @@ msgstr "Nazwisko: {}"
 #~ msgstr ""
 #~ "Jeśli masz pytania lub wątpliwości, skontaktuj się z nami, wysyłając "
 #~ "wiadomość na adres academy_info@mckinsey.com"
-
-#~ msgid "About"
-#~ msgstr "O nas"
 
 #~ msgid " | "
 #~ msgstr " | "

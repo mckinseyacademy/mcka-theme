@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-03 07:49+0000\n"
+"POT-Creation-Date: 2020-04-03 12:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8636,13 +8636,13 @@ msgstr ""
 "يرجى <a href=\"mailto:info@mckinseyacademy.com\">الاتصال بنا!</a> وسنبذل "
 "قصارى جهدنا للمساعدة."
 
-#: templates/footer.haml:11 templates_v2/footer.haml:11
+#: templates/footer.haml:11 templates_v2/footer.haml:17
 #: tests/templates_v2/footer.haml:11
 msgid "Terms of Service"
 msgstr "شروط الخدمة"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
-#: templates_v2/footer.haml:14 templates_v2/privacy.haml:12
+#: templates_v2/footer.haml:20 templates_v2/privacy.haml:12
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "سياسة الخصوصية"
@@ -13049,7 +13049,17 @@ msgstr ""
 "<a href=%(support_url)s style=\"display: inline;\" target='_blank'>فريق "
 "الدعم</a> لدينا."
 
-#: templates_v2/footer.haml:16
+#: templates_v2/footer.haml:11
+msgid "About"
+msgstr "نبذة عن"
+
+#: templates_v2/footer.haml:14 templates_v2/getting-started.haml:48
+#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:61
+#: tests/templates_v2/home/landing.haml:49
+msgid "FAQs"
+msgstr "الأسئلة المتداولة"
+
+#: templates_v2/footer.haml:22
 msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
 msgstr "&#9400; 2020 McKinsey & Company. جميع الحقوق محفوظة."
 
@@ -13142,11 +13152,6 @@ msgstr "أكد على تسجيلك مع مسؤول محلي."
 #: templates_v2/getting-started.haml:47
 msgid "For further technical support and troubleshooting, see our"
 msgstr "للحصول على مزيد من الدعم التقني واستكشاف الأخطاء وإصلاحها، راجع "
-
-#: templates_v2/getting-started.haml:48 templates_v2/getting-started.haml:139
-#: templates_v2/home/landing.haml:61 tests/templates_v2/home/landing.haml:49
-msgid "FAQs"
-msgstr "الأسئلة المتداولة"
 
 #: templates_v2/getting-started.haml:49
 msgid "page. If you still seek assistance, contact "
@@ -14620,9 +14625,6 @@ msgstr "الاسم الأول: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "اسم العائلة: {}"
-
-#~ msgid "About"
-#~ msgstr "نبذة عن"
 
 #~ msgid " | "
 #~ msgstr " | "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-03 07:49+0000\n"
+"POT-Creation-Date: 2020-04-03 12:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8832,13 +8832,13 @@ msgstr ""
 "Bitte <a href=\"mailto:info@mckinseyacademy.com\">kontaktieren Sie uns!</a> "
 "Wir geben unser Bestes, um Ihnen zu helfen."
 
-#: templates/footer.haml:11 templates_v2/footer.haml:11
+#: templates/footer.haml:11 templates_v2/footer.haml:17
 #: tests/templates_v2/footer.haml:11
 msgid "Terms of Service"
 msgstr "Nutzungsbedingungen"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
-#: templates_v2/footer.haml:14 templates_v2/privacy.haml:12
+#: templates_v2/footer.haml:20 templates_v2/privacy.haml:12
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "Datenschutzrichtlinie"
@@ -13625,7 +13625,17 @@ msgstr ""
 "bitte unser <a href=%(support_url)s style=\"display: inline;\" "
 "target='_blank'>Support-Team.</a>"
 
-#: templates_v2/footer.haml:16
+#: templates_v2/footer.haml:11
+msgid "About"
+msgstr "Über uns"
+
+#: templates_v2/footer.haml:14 templates_v2/getting-started.haml:48
+#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:61
+#: tests/templates_v2/home/landing.haml:49
+msgid "FAQs"
+msgstr "FAQs"
+
+#: templates_v2/footer.haml:22
 msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
 msgstr "&#9400; 2020 McKinsey & Company. Alle Rechte vorbehalten."
 
@@ -13721,11 +13731,6 @@ msgid "For further technical support and troubleshooting, see our"
 msgstr ""
 "Weitere technische Hilfestellung und Anleitungen zur Fehlerbehebung erhalten "
 "Sie auf unserer."
-
-#: templates_v2/getting-started.haml:48 templates_v2/getting-started.haml:139
-#: templates_v2/home/landing.haml:61 tests/templates_v2/home/landing.haml:49
-msgid "FAQs"
-msgstr "FAQs"
 
 #: templates_v2/getting-started.haml:49
 msgid "page. If you still seek assistance, contact "
@@ -15366,9 +15371,6 @@ msgstr "Vorname: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nachname: {}"
-
-#~ msgid "About"
-#~ msgstr "Über uns"
 
 #~ msgid " | "
 #~ msgstr " - "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-03 07:50+0000\n"
+"POT-Creation-Date: 2020-04-03 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8381,13 +8381,13 @@ msgstr ""
 "请<a href=\"mailto:info@mckinseyacademy.com\">联系我们！</a>我们会尽力帮忙解"
 "决。"
 
-#: templates/footer.haml:11 templates_v2/footer.haml:11
+#: templates/footer.haml:11 templates_v2/footer.haml:17
 #: tests/templates_v2/footer.haml:11
 msgid "Terms of Service"
 msgstr "服务条款"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
-#: templates_v2/footer.haml:14 templates_v2/privacy.haml:12
+#: templates_v2/footer.haml:20 templates_v2/privacy.haml:12
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "隐私政策"
@@ -12444,7 +12444,17 @@ msgstr ""
 "如果上述常见问题中的信息无法解答您的问题，请联系我们的<a href="
 "%(support_url)s style=\"display: inline;\" target='_blank'>支持团队。</a> "
 
-#: templates_v2/footer.haml:16
+#: templates_v2/footer.haml:11
+msgid "About"
+msgstr "关于"
+
+#: templates_v2/footer.haml:14 templates_v2/getting-started.haml:48
+#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:61
+#: tests/templates_v2/home/landing.haml:49
+msgid "FAQs"
+msgstr "常见问题"
+
+#: templates_v2/footer.haml:22
 msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
 msgstr "&#9400 2020归麦肯锡公司所有。保留所有权利。"
 
@@ -12531,11 +12541,6 @@ msgstr "请确认您已经以本地管理员身份注册。"
 #: templates_v2/getting-started.haml:47
 msgid "For further technical support and troubleshooting, see our"
 msgstr "如需进一步技术支持和疑难解答，请参阅我们的"
-
-#: templates_v2/getting-started.haml:48 templates_v2/getting-started.haml:139
-#: templates_v2/home/landing.haml:61 tests/templates_v2/home/landing.haml:49
-msgid "FAQs"
-msgstr "常见问题"
 
 #: templates_v2/getting-started.haml:49
 msgid "page. If you still seek assistance, contact "
@@ -13856,9 +13861,6 @@ msgstr "名字：{}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "姓氏：{}"
-
-#~ msgid "About"
-#~ msgstr "关于"
 
 #~ msgid " | "
 #~ msgstr "  | "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-03 07:50+0000\n"
+"POT-Creation-Date: 2020-04-03 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8621,13 +8621,13 @@ msgstr ""
 "<a href=\"mailto:info@mckinseyacademy.com\">こちらからご連絡ください。</a>サ"
 "ポートいたします。"
 
-#: templates/footer.haml:11 templates_v2/footer.haml:11
+#: templates/footer.haml:11 templates_v2/footer.haml:17
 #: tests/templates_v2/footer.haml:11
 msgid "Terms of Service"
 msgstr "サービス利用規約"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
-#: templates_v2/footer.haml:14 templates_v2/privacy.haml:12
+#: templates_v2/footer.haml:20 templates_v2/privacy.haml:12
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "プライバシーに関する方針"
@@ -13039,7 +13039,17 @@ msgstr ""
 "\"display: inline;\" target='_blank'>サポートチーム</a>までお問い合わせくださ"
 "い。"
 
-#: templates_v2/footer.haml:16
+#: templates_v2/footer.haml:11
+msgid "About"
+msgstr "基本情報"
+
+#: templates_v2/footer.haml:14 templates_v2/getting-started.haml:48
+#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:61
+#: tests/templates_v2/home/landing.haml:49
+msgid "FAQs"
+msgstr "FAQ"
+
+#: templates_v2/footer.haml:22
 msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
 msgstr "&#9400; 2020 McKinsey & Company. All Rights Reserved."
 
@@ -13130,11 +13140,6 @@ msgstr "ローカル管理者に登録を確認してください。"
 #: templates_v2/getting-started.haml:47
 msgid "For further technical support and troubleshooting, see our"
 msgstr "技術サポートとトラブルシューティングの詳細については、 をご覧ください"
-
-#: templates_v2/getting-started.haml:48 templates_v2/getting-started.haml:139
-#: templates_v2/home/landing.haml:61 tests/templates_v2/home/landing.haml:49
-msgid "FAQs"
-msgstr "FAQ"
 
 #: templates_v2/getting-started.haml:49
 msgid "page. If you still seek assistance, contact "
@@ -14657,9 +14662,6 @@ msgstr "名: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "氏: {}"
-
-#~ msgid "About"
-#~ msgstr "基本情報"
 
 #~ msgid " | "
 #~ msgstr "-"

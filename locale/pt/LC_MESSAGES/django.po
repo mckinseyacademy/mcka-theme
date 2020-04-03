@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-03 07:50+0000\n"
+"POT-Creation-Date: 2020-04-03 12:44+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -8742,13 +8742,13 @@ msgstr ""
 "<a href=\"mailto:info@mckinseyacademy.com\">Entre em contato conosco!</a> "
 "Faremos o nosso melhor para ajudar."
 
-#: templates/footer.haml:11 templates_v2/footer.haml:11
+#: templates/footer.haml:11 templates_v2/footer.haml:17
 #: tests/templates_v2/footer.haml:11
 msgid "Terms of Service"
 msgstr "Termos de Serviço"
 
 #: templates/footer.haml:14 templates/privacy.haml:8
-#: templates_v2/footer.haml:14 templates_v2/privacy.haml:12
+#: templates_v2/footer.haml:20 templates_v2/privacy.haml:12
 #: tests/templates_v2/footer.haml:14
 msgid "Privacy Policy"
 msgstr "Política de Privacidade"
@@ -13391,7 +13391,17 @@ msgstr ""
 "com a nossa <a href=%(support_url)s style=\"display: inline;\" "
 "target='_blank'>equipe de suporte.</a>"
 
-#: templates_v2/footer.haml:16
+#: templates_v2/footer.haml:11
+msgid "About"
+msgstr "Sobre"
+
+#: templates_v2/footer.haml:14 templates_v2/getting-started.haml:48
+#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:61
+#: tests/templates_v2/home/landing.haml:49
+msgid "FAQs"
+msgstr "Perguntas mais frequentes"
+
+#: templates_v2/footer.haml:22
 msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
 msgstr "&#9400; 2020 McKinsey & Company. Todos os direitos reservados."
 
@@ -13482,11 +13492,6 @@ msgstr "Confirme sua inscrição com um administrador local."
 #: templates_v2/getting-started.haml:47
 msgid "For further technical support and troubleshooting, see our"
 msgstr "Para obter maior suporte técnico e resolução de problemas, veja "
-
-#: templates_v2/getting-started.haml:48 templates_v2/getting-started.haml:139
-#: templates_v2/home/landing.haml:61 tests/templates_v2/home/landing.haml:49
-msgid "FAQs"
-msgstr "Perguntas mais frequentes"
 
 #: templates_v2/getting-started.haml:49
 msgid "page. If you still seek assistance, contact "
@@ -15059,9 +15064,6 @@ msgstr "Nome: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Sobrenome: {}"
-
-#~ msgid "About"
-#~ msgstr "Sobre"
 
 #~ msgid " | "
 #~ msgstr " | "
