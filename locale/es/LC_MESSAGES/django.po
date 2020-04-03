@@ -13818,7 +13818,7 @@ msgstr ""
 
 #: templates_v2/home/landing.haml:20
 msgid "Learn about McKinsey Academy"
-msgstr "Acerca de McKinsey Academy"
+msgstr "Conozca acerca de McKinsey Academy"
 
 #: templates_v2/home/landing.haml:32
 msgid "Log in to McKinsey Academy to start your learning journey."

@@ -13813,22 +13813,22 @@ msgstr "mijn cursussen"
 
 #: templates_v2/home/landing.haml:16
 msgid "People make change happen—and people make it last."
-msgstr ""
+msgstr "Mensen brengen verandering teweeg - en maken van verandering een succes."
 
 #: templates_v2/home/landing.haml:18
 msgid ""
 "We help organizations unlock the potential of their people and leadership "
 "teams. We assess capability gaps and work together to design and implement "
 "the right interventions to build needed skills in their people."
-msgstr ""
+msgstr "Wij helpen organisaties het beste uit hun mensen en leiderschapsteams te halen. Wij stellen vast welke vaardigheden verbeterd kunnen worden en werken samen aan het vormgeven en het verwezenlijken van de juiste inmenging zodat mensen de benodigde vaardigheden verwerven."
 
 #: templates_v2/home/landing.haml:20
 msgid "Learn about McKinsey Academy"
-msgstr ""
+msgstr "Meer weten over McKinsey Academy"
 
 #: templates_v2/home/landing.haml:32
 msgid "Log in to McKinsey Academy to start your learning journey."
-msgstr ""
+msgstr "Log in bij McKinsey Academy en begin aan uw leeravontuur."
 
 #: templates_v2/home/landing.haml:41
 msgid "Username or email"
