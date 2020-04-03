@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-02 09:10+0000\n"
+"POT-Creation-Date: 2020-04-03 07:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2943,11 +2943,11 @@ msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr "感谢您对麦肯锡学院的关注。我们将及时告知您最新消息。"
 
-#: mcka_apros/settings.py:227 templates/marketing/programs.haml:244
+#: mcka_apros/settings.py:230 templates/marketing/programs.haml:244
 msgid "McKinsey Management Program"
 msgstr "麦肯锡管理计划"
 
-#: mcka_apros/settings.py:319
+#: mcka_apros/settings.py:322
 msgid "Congratulations! Your certificate has been generated"
 msgstr "恭喜！您的证书已生成"
 
@@ -6298,6 +6298,7 @@ msgstr "您的课程证书已生成，请单击以下链接查看您的证书"
 
 #: templates/certificates/course_certificate_notification_email.haml:8
 #: templates/registration/public_registration_activation_link.haml:14
+#: templates/registration/public_registration_course_closed.haml:5
 #: templates/registration/public_registration_existing.haml:12
 #, fuzzy, python-format
 #| msgid ""
@@ -10649,12 +10650,6 @@ msgid ""
 "mckinseyacademy.com to access your course."
 msgstr "激活帐户后，您可以直接登录 www.mckinseyacademy.com 访问课程。"
 
-#: templates/registration/public_registration_course_closed.haml:5
-msgid ""
-"Please reach out to your McKinsey contact or academy_info@mckinsey.com if "
-"you have any further questions."
-msgstr ""
-
 #: templates/registration/public_registration_existing.haml:6
 msgid ""
 "You already have an account with McKinsey Academy associated with this email "
@@ -12450,10 +12445,8 @@ msgstr ""
 "%(support_url)s style=\"display: inline;\" target='_blank'>支持团队。</a> "
 
 #: templates_v2/footer.haml:16
-#, fuzzy
-#| msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
-msgid "Copyright &#9400; 2020 McKinsey & Company. All Rights Reserved."
-msgstr "&#9400 2019归麦肯锡公司所有。保留所有权利。"
+msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
+msgstr "&#9400 2020归麦肯锡公司所有。保留所有权利。"
 
 #: templates_v2/getting-started.haml:12
 msgid "McKinsey Academy Quick Start Guide"
@@ -12744,7 +12737,9 @@ msgid ""
 "We help organizations unlock the potential of their people and leadership "
 "teams. We assess capability gaps and work together to design and implement "
 "the right interventions to build needed skills in their people."
-msgstr "我们帮助各种组织机构的人员和领导团队发挥其巨大潜力。我们评估各种能力缺口，并且展开协作以设计并实施适当的干预措施，帮助其人员发展所需的技能。"
+msgstr ""
+"我们帮助各种组织机构的人员和领导团队发挥其巨大潜力。我们评估各种能力缺口，并"
+"且展开协作以设计并实施适当的干预措施，帮助其人员发展所需的技能。"
 
 #: templates_v2/home/landing.haml:20
 msgid "Learn about McKinsey Academy"

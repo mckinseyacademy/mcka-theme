@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-02 09:10+0000\n"
+"POT-Creation-Date: 2020-04-03 07:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2983,11 +2983,11 @@ msgstr ""
 "Hartelijk dank voor uw belangstelling voor McKinsey Academy. We houden u op "
 "de hoogte."
 
-#: mcka_apros/settings.py:227 templates/marketing/programs.haml:244
+#: mcka_apros/settings.py:230 templates/marketing/programs.haml:244
 msgid "McKinsey Management Program"
 msgstr "McKinsey managementprogramma"
 
-#: mcka_apros/settings.py:319
+#: mcka_apros/settings.py:322
 msgid "Congratulations! Your certificate has been generated"
 msgstr "Gefeliciteerd! Uw certificaat is gegenereerd"
 
@@ -6494,6 +6494,7 @@ msgstr ""
 
 #: templates/certificates/course_certificate_notification_email.haml:8
 #: templates/registration/public_registration_activation_link.haml:14
+#: templates/registration/public_registration_course_closed.haml:5
 #: templates/registration/public_registration_existing.haml:12
 #, fuzzy, python-format
 #| msgid ""
@@ -11463,12 +11464,6 @@ msgstr ""
 "Als u uw account heeft aangemaakt, kunt u rechtstreeks via www."
 "mckinseyacademy.com inloggen voor toegang tot uw cursus."
 
-#: templates/registration/public_registration_course_closed.haml:5
-msgid ""
-"Please reach out to your McKinsey contact or academy_info@mckinsey.com if "
-"you have any further questions."
-msgstr ""
-
 #: templates/registration/public_registration_existing.haml:6
 msgid ""
 "You already have an account with McKinsey Academy associated with this email "
@@ -13517,10 +13512,8 @@ msgstr ""
 "target='_blank'>supportteam.</a>"
 
 #: templates_v2/footer.haml:16
-#, fuzzy
-#| msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
-msgid "Copyright &#9400; 2020 McKinsey & Company. All Rights Reserved."
-msgstr "&#9400; 2019 McKinsey & Company. Alle rechten voorbehouden."
+msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
+msgstr "&#9400; 2020 McKinsey & Company. Alle rechten voorbehouden."
 
 #: templates_v2/getting-started.haml:12
 msgid "McKinsey Academy Quick Start Guide"
@@ -13834,8 +13827,6 @@ msgid "Learn about McKinsey Academy"
 msgstr ""
 
 #: templates_v2/home/landing.haml:32
-#, fuzzy
-#| msgid "Login to McKinsey Academy"
 msgid "Log in to McKinsey Academy to start your learning journey."
 msgstr ""
 

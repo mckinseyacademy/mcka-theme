@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-02 09:10+0000\n"
+"POT-Creation-Date: 2020-04-03 07:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2975,11 +2975,11 @@ msgstr ""
 "McKinsey Academyに興味をお持ちいただき、ありがとうございます。進度は、逐一お"
 "知らせいたします。"
 
-#: mcka_apros/settings.py:227 templates/marketing/programs.haml:244
+#: mcka_apros/settings.py:230 templates/marketing/programs.haml:244
 msgid "McKinsey Management Program"
 msgstr "McKinseyマネジメント・プログラム"
 
-#: mcka_apros/settings.py:319
+#: mcka_apros/settings.py:322
 msgid "Congratulations! Your certificate has been generated"
 msgstr "おめでとうございます! あなたの証書が生成されました"
 
@@ -6441,6 +6441,7 @@ msgstr ""
 
 #: templates/certificates/course_certificate_notification_email.haml:8
 #: templates/registration/public_registration_activation_link.haml:14
+#: templates/registration/public_registration_course_closed.haml:5
 #: templates/registration/public_registration_existing.haml:12
 #, fuzzy, python-format
 #| msgid ""
@@ -11100,12 +11101,6 @@ msgstr ""
 "アカウントをアクティベーションしたら、www.mckinseyacademy.comから直接ログイン"
 "して、コースにアクセスしてください。"
 
-#: templates/registration/public_registration_course_closed.haml:5
-msgid ""
-"Please reach out to your McKinsey contact or academy_info@mckinsey.com if "
-"you have any further questions."
-msgstr ""
-
 #: templates/registration/public_registration_existing.haml:6
 msgid ""
 "You already have an account with McKinsey Academy associated with this email "
@@ -13045,10 +13040,8 @@ msgstr ""
 "い。"
 
 #: templates_v2/footer.haml:16
-#, fuzzy
-#| msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
-msgid "Copyright &#9400; 2020 McKinsey & Company. All Rights Reserved."
-msgstr "&#9400; 2019 McKinsey & Company. All Rights Reserved."
+msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
+msgstr "&#9400; 2020 McKinsey & Company. All Rights Reserved."
 
 #: templates_v2/getting-started.haml:12
 msgid "McKinsey Academy Quick Start Guide"
@@ -13355,7 +13348,10 @@ msgid ""
 "We help organizations unlock the potential of their people and leadership "
 "teams. We assess capability gaps and work together to design and implement "
 "the right interventions to build needed skills in their people."
-msgstr "弊社は、組織が人材とリーダーシップチームの可能性を引き出すのを支援します。能力のギャップを評価し、協力して適切な介入策を設計および実装して、必要なスキルを従業員に構築します。"
+msgstr ""
+"弊社は、組織が人材とリーダーシップチームの可能性を引き出すのを支援します。能"
+"力のギャップを評価し、協力して適切な介入策を設計および実装して、必要なスキル"
+"を従業員に構築します。"
 
 #: templates_v2/home/landing.haml:20
 msgid "Learn about McKinsey Academy"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-02 09:09+0000\n"
+"POT-Creation-Date: 2020-04-03 07:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2991,11 +2991,11 @@ msgid ""
 "Thank you for your interest in McKinsey Academy. We will keep you updated."
 msgstr "Gracias por su interés en McKinsey Academy. Lo mantendremos informado."
 
-#: mcka_apros/settings.py:227 templates/marketing/programs.haml:244
+#: mcka_apros/settings.py:230 templates/marketing/programs.haml:244
 msgid "McKinsey Management Program"
 msgstr "Programa de administración de McKinsey"
 
-#: mcka_apros/settings.py:319
+#: mcka_apros/settings.py:322
 msgid "Congratulations! Your certificate has been generated"
 msgstr "¡Felicitaciones! Se ha generado su certificado"
 
@@ -6511,6 +6511,7 @@ msgstr ""
 
 #: templates/certificates/course_certificate_notification_email.haml:8
 #: templates/registration/public_registration_activation_link.haml:14
+#: templates/registration/public_registration_course_closed.haml:5
 #: templates/registration/public_registration_existing.haml:12
 #, fuzzy, python-format
 #| msgid ""
@@ -11458,12 +11459,6 @@ msgstr ""
 "Después de activar su cuenta, inicie sesión directamente en www."
 "mckinseyacademy.com para acceder al curso."
 
-#: templates/registration/public_registration_course_closed.haml:5
-msgid ""
-"Please reach out to your McKinsey contact or academy_info@mckinsey.com if "
-"you have any further questions."
-msgstr ""
-
 #: templates/registration/public_registration_existing.haml:6
 msgid ""
 "You already have an account with McKinsey Academy associated with this email "
@@ -13499,10 +13494,8 @@ msgstr ""
 "target='_blank'>equipo de soporte.</a> "
 
 #: templates_v2/footer.haml:16
-#, fuzzy
-#| msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
-msgid "Copyright &#9400; 2020 McKinsey & Company. All Rights Reserved."
-msgstr "&#9400; 2019 McKinsey & Company. Todos los derechos reservados."
+msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
+msgstr "&#9400; 2020 McKinsey & Company. Todos los derechos reservados."
 
 #: templates_v2/getting-started.haml:12
 msgid "McKinsey Academy Quick Start Guide"
@@ -13809,14 +13802,19 @@ msgstr "Mis cursos"
 
 #: templates_v2/home/landing.haml:16
 msgid "People make change happen—and people make it last."
-msgstr "Las personas son las que generan el cambio y quienes hacen que permanezca."
+msgstr ""
+"Las personas son las que generan el cambio y quienes hacen que permanezca."
 
 #: templates_v2/home/landing.haml:18
 msgid ""
 "We help organizations unlock the potential of their people and leadership "
 "teams. We assess capability gaps and work together to design and implement "
 "the right interventions to build needed skills in their people."
-msgstr "Ayudamos a las organizaciones a revelar el potencial de su gente y de sus equipos de liderazgo. Evaluamos las brechas en las capacidades y trabajamos en conjunto para diseñar e implementar intervenciones adecuadas a fin de fortalecer las habilidades de su personal."
+msgstr ""
+"Ayudamos a las organizaciones a revelar el potencial de su gente y de sus "
+"equipos de liderazgo. Evaluamos las brechas en las capacidades y trabajamos "
+"en conjunto para diseñar e implementar intervenciones adecuadas a fin de "
+"fortalecer las habilidades de su personal."
 
 #: templates_v2/home/landing.haml:20
 msgid "Learn about McKinsey Academy"
@@ -13824,7 +13822,8 @@ msgstr "Acerca de McKinsey Academy"
 
 #: templates_v2/home/landing.haml:32
 msgid "Log in to McKinsey Academy to start your learning journey."
-msgstr "Inicie sesión en McKinsey Academy para comenzar su camino de aprendizaje."
+msgstr ""
+"Inicie sesión en McKinsey Academy para comenzar su camino de aprendizaje."
 
 #: templates_v2/home/landing.haml:41
 msgid "Username or email"

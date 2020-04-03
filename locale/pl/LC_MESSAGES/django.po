@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-02 09:10+0000\n"
+"POT-Creation-Date: 2020-04-03 07:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -2986,11 +2986,11 @@ msgstr ""
 "Dziękujemy za wyrażenie zainteresowania usługami McKinsey Academy. "
 "Skontaktujemy się z Tobą w sprawie Twojego zgłoszenia."
 
-#: mcka_apros/settings.py:227 templates/marketing/programs.haml:244
+#: mcka_apros/settings.py:230 templates/marketing/programs.haml:244
 msgid "McKinsey Management Program"
 msgstr "Program zarządzania McKinsey"
 
-#: mcka_apros/settings.py:319
+#: mcka_apros/settings.py:322
 msgid "Congratulations! Your certificate has been generated"
 msgstr "Gratulujemy! Twój certyfikat został wygenerowany"
 
@@ -6494,6 +6494,7 @@ msgstr ""
 
 #: templates/certificates/course_certificate_notification_email.haml:8
 #: templates/registration/public_registration_activation_link.haml:14
+#: templates/registration/public_registration_course_closed.haml:5
 #: templates/registration/public_registration_existing.haml:12
 #, fuzzy, python-format
 #| msgid ""
@@ -11470,14 +11471,6 @@ msgstr ""
 "Po aktywowaniu konta możesz zalogować się bezpośrednio na stronie www."
 "mckinseyacademy.com, aby uzyskać dostęp do kursu."
 
-#: templates/registration/public_registration_course_closed.haml:5
-msgid ""
-"Please reach out to your McKinsey contact or academy_info@mckinsey.com if "
-"you have any further questions."
-msgstr ""
-"Jeśli masz pytania lub wątpliwości, skontaktuj się z nami, wysyłając "
-"wiadomość na adres academy_info@mckinsey.com"
-
 #: templates/registration/public_registration_existing.haml:6
 msgid ""
 "You already have an account with McKinsey Academy associated with this email "
@@ -13524,10 +13517,8 @@ msgstr ""
 "target='_blank'>działem pomocy</a>."
 
 #: templates_v2/footer.haml:16
-#, fuzzy
-#| msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
-msgid "Copyright &#9400; 2020 McKinsey & Company. All Rights Reserved."
-msgstr "&#9400; 2019 McKinsey & Company. Wszelkie prawa zastrzeżone."
+msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
+msgstr "&#9400; 2020 McKinsey & Company. Wszelkie prawa zastrzeżone."
 
 #: templates_v2/getting-started.haml:12
 msgid "McKinsey Academy Quick Start Guide"
@@ -13830,14 +13821,19 @@ msgstr "moje kursy"
 
 #: templates_v2/home/landing.haml:16
 msgid "People make change happen—and people make it last."
-msgstr "To ludzie wprowadzają zmiany – i to dzięki nim zmiana może być długotrwała."
+msgstr ""
+"To ludzie wprowadzają zmiany – i to dzięki nim zmiana może być długotrwała."
 
 #: templates_v2/home/landing.haml:18
 msgid ""
 "We help organizations unlock the potential of their people and leadership "
 "teams. We assess capability gaps and work together to design and implement "
 "the right interventions to build needed skills in their people."
-msgstr "Pomagamy organizacjom uwolnić potencjał ich pracowników i kadr zarządzających. Oceniamy, jakich kompetencji potrzebuje dana organizacja i ściśle z nią współpracujemy, aby zaprojektować i wdrożyć właściwe działania, które pomogą pracownikom nabyć odpowiednie umiejętności."
+msgstr ""
+"Pomagamy organizacjom uwolnić potencjał ich pracowników i kadr "
+"zarządzających. Oceniamy, jakich kompetencji potrzebuje dana organizacja i "
+"ściśle z nią współpracujemy, aby zaprojektować i wdrożyć właściwe działania, "
+"które pomogą pracownikom nabyć odpowiednie umiejętności."
 
 #: templates_v2/home/landing.haml:20
 msgid "Learn about McKinsey Academy"
@@ -13845,7 +13841,8 @@ msgstr "Dowiedz się więcej o McKinsey Academy"
 
 #: templates_v2/home/landing.haml:32
 msgid "Log in to McKinsey Academy to start your learning journey."
-msgstr "Zaloguj się do McKinsey Academy, aby rozpocząć swoją przygodę edukacyjną"
+msgstr ""
+"Zaloguj się do McKinsey Academy, aby rozpocząć swoją przygodę edukacyjną"
 
 #: templates_v2/home/landing.haml:41
 msgid "Username or email"
@@ -15224,6 +15221,13 @@ msgstr "Imię: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nazwisko: {}"
+
+#~ msgid ""
+#~ "Please reach out to your McKinsey contact or academy_info@mckinsey.com if "
+#~ "you have any further questions."
+#~ msgstr ""
+#~ "Jeśli masz pytania lub wątpliwości, skontaktuj się z nami, wysyłając "
+#~ "wiadomość na adres academy_info@mckinsey.com"
 
 #~ msgid "About"
 #~ msgstr "O nas"

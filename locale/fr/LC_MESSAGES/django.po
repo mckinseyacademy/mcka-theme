@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-02 09:10+0000\n"
+"POT-Creation-Date: 2020-04-03 07:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3002,11 +3002,11 @@ msgid ""
 msgstr ""
 "Merci de votre intérêt pour la McKinsey Academy. Nous vous tiendrons informé."
 
-#: mcka_apros/settings.py:227 templates/marketing/programs.haml:244
+#: mcka_apros/settings.py:230 templates/marketing/programs.haml:244
 msgid "McKinsey Management Program"
 msgstr "Programme de gestion McKinsey"
 
-#: mcka_apros/settings.py:319
+#: mcka_apros/settings.py:322
 msgid "Congratulations! Your certificate has been generated"
 msgstr "Félicitations ! Votre certificat a été généré."
 
@@ -6544,6 +6544,7 @@ msgstr ""
 
 #: templates/certificates/course_certificate_notification_email.haml:8
 #: templates/registration/public_registration_activation_link.haml:14
+#: templates/registration/public_registration_course_closed.haml:5
 #: templates/registration/public_registration_existing.haml:12
 #, fuzzy, python-format
 #| msgid ""
@@ -11569,12 +11570,6 @@ msgstr ""
 "Après avoir activé votre compte, connectez-vous directement à l'adresse www."
 "mckinseyacademy.com pour accéder à votre cours."
 
-#: templates/registration/public_registration_course_closed.haml:5
-msgid ""
-"Please reach out to your McKinsey contact or academy_info@mckinsey.com if "
-"you have any further questions."
-msgstr ""
-
 #: templates/registration/public_registration_existing.haml:6
 msgid ""
 "You already have an account with McKinsey Academy associated with this email "
@@ -13640,10 +13635,8 @@ msgstr ""
 "target='_blank'>équipe d'assistance.</a>"
 
 #: templates_v2/footer.haml:16
-#, fuzzy
-#| msgid "&#9400; 2019 McKinsey & Company. All Rights Reserved."
-msgid "Copyright &#9400; 2020 McKinsey & Company. All Rights Reserved."
-msgstr "&#9400; 2019 McKinsey & Company. Tous droits réservés."
+msgid "&#9400; 2020 McKinsey & Company. All Rights Reserved."
+msgstr "&#9400; 2020 McKinsey & Company. Tous droits réservés."
 
 #: templates_v2/getting-started.haml:12
 msgid "McKinsey Academy Quick Start Guide"
@@ -13951,14 +13944,20 @@ msgstr "mes cours"
 
 #: templates_v2/home/landing.haml:16
 msgid "People make change happen—and people make it last."
-msgstr "Les gens font bouger les choses—et les gens font en sorte que cela dure."
+msgstr ""
+"Les gens font bouger les choses—et les gens font en sorte que cela dure."
 
 #: templates_v2/home/landing.haml:18
 msgid ""
 "We help organizations unlock the potential of their people and leadership "
 "teams. We assess capability gaps and work together to design and implement "
 "the right interventions to build needed skills in their people."
-msgstr "Nous aidons les organisations à libérer le potentiel de leur personnel et de leurs équipes de direction. Nous évaluons les lacunes en matière de capacités et travaillons ensemble pour concevoir et mettre en œuvre les interventions appropriées afin de développer les compétences nécessaires chez les personnes concernées."
+msgstr ""
+"Nous aidons les organisations à libérer le potentiel de leur personnel et de "
+"leurs équipes de direction. Nous évaluons les lacunes en matière de "
+"capacités et travaillons ensemble pour concevoir et mettre en œuvre les "
+"interventions appropriées afin de développer les compétences nécessaires "
+"chez les personnes concernées."
 
 #: templates_v2/home/landing.haml:20
 msgid "Learn about McKinsey Academy"
@@ -13966,7 +13965,9 @@ msgstr "En savoir plus sur McKinsey Academy"
 
 #: templates_v2/home/landing.haml:32
 msgid "Log in to McKinsey Academy to start your learning journey."
-msgstr "Ouvrez une session sur le site Web de McKinsey Academy pour commencer votre parcours d'apprentissage."
+msgstr ""
+"Ouvrez une session sur le site Web de McKinsey Academy pour commencer votre "
+"parcours d'apprentissage."
 
 #: templates_v2/home/landing.haml:41
 msgid "Username or email"
