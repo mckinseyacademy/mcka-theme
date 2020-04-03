@@ -18,6 +18,7 @@ from django.core.files.base import ContentFile
 from django.core.files.storage import default_storage
 from django.utils.translation import ugettext as _
 from django.conf import settings
+from django.http import HttpRequest
 from django.urls import reverse
 from django.utils import timezone
 
@@ -27,6 +28,8 @@ from celery import states as celery_states
 from celery.exceptions import Ignore, MaxRetriesExceededError, Reject, InvalidTaskError
 
 from accounts.helpers import get_organization_by_user_email
+from accounts.models import RemoteUser
+
 from api_client import course_api, organization_api
 from api_client import group_api
 from api_client import instructor_api
@@ -35,7 +38,7 @@ from api_client.api_error import ApiError
 from api_client.cohort_api import add_cohort_for_course
 from api_client.user_api import get_users
 from lib.utils import bytes_to_str
-from util.csv_helpers import CSVWriter, create_and_store_csv_file
+from util.csv_helpers import CSVWriter, create_and_store_csv_file, UnicodeWriter
 from util.s3_helpers import PrivateMediaStorageThroughApros, get_storage, get_path
 from util.email_helpers import send_html_email
 
@@ -43,7 +46,8 @@ from admin.models import LearnerDashboardTile, AdminTask, DeletionAdmin
 from accounts.models import UserActivation
 from .workgroup_reports import generate_workgroup_csv_report
 from accounts.helpers import create_activation_url
-from courses.controller import strip_tile_link, get_course_object, update_progress
+from courses.controller import strip_tile_link, get_course_object, update_progress, round_to_int, Proficiency
+from courses.user_courses import load_course_progress
 
 from .controller import (
     enroll_participants,
@@ -60,7 +64,9 @@ from .controller import (
     get_data_from_csv,
     delete_company_data,
     unenroll_participant,
-    get_domain
+    get_domain,
+    get_user_courses_helper,
+    load_course,
 )
 from .models import UserRegistrationError, UserRegistrationBatch
 
@@ -1458,3 +1464,87 @@ def handle_admin_task_error(self, error_task_id, res_id):
         },
     )
     logger.error('Admin Task failed with the following output: {}'.format(admin_task.output))
+
+
+@task(name='admin.download_active_courses_stats_task', queue='high_priority')
+def download_active_courses_stats_task(request_user_id, user_id, base_url):
+    task_log_msg = "user active courses stats"
+    try:
+        request_user_data = user_api.get_user(request_user_id)
+    except Exception as e:
+        logger.error(
+            'Failed retrieving Request User info from API - {} - {}'
+            .format(e, task_log_msg)
+        )
+        raise
+    user = RemoteUser()
+    user.update_response_fields(request_user_data)
+    request = HttpRequest()
+    request.user = user
+    try:
+        user_data = user_api.get_user(user_id).to_dict()
+    except Exception as e:
+        logger.error(
+            'Failed retrieving User info from API - {} - {}'
+            .format(e, task_log_msg)
+        )
+        raise
+
+    active_courses, course_history = get_user_courses_helper(user_id, request)
+    try:
+        temp_csv_file = TemporaryFile()
+    except Exception as e:
+        logger.error('Failed creating temp CSV file - {}'.format(e))
+        raise Ignore()
+    else:
+        writer = UnicodeWriter(temp_csv_file)
+        writer.writerow([_('Course'), _('Course ID'), _('Program'), _('Progress'), _('Proficiency'), _('Status')])
+        for course in active_courses:
+            course_data = None
+            course_data = load_course(course['id'], request=request)
+            try:
+                load_course_progress(course_data, user_id=user_id)
+            except ApiError:
+                # Occurs when user is not enrolled in this course, can happen for internal admins
+                # with internal tag courses. Such courses must not be exported.
+                continue
+
+            course['progress'] = '{:d}%'.format(round_to_int(course_data.user_progress))
+            proficiency = course_api.get_course_metrics_grades(course['id'],
+                                                               user_id=user_id, grade_object_type=Proficiency)
+            course['proficiency'] = '{:d}%'.format(round_to_int(proficiency.user_grade_value * 100))
+            writer.writerow([course['name'], course['id'], course['program'], course['progress'], course['proficiency'],
+                             course['status']])
+
+        temp_csv_file.seek(0)
+
+    logger.info('Created temp CSV file - {}'.format(task_log_msg))
+
+    storage_path = settings.EXPORT_STATS_DIR
+    file_name = '{}_active_courses_stats.csv'.format(user_data.get('username'))
+    storage_path = '{}/{}/{}'.format(storage_path, user_id, file_name)
+    storage = default_storage
+
+    try:
+        # use private s3 storage for export files
+        if settings.DEFAULT_FILE_STORAGE == 'storages.backends.s3boto.S3BotoStorage':
+            storage = PrivateMediaStorageThroughApros()
+        storage_path = storage.save(storage_path, ContentFile(temp_csv_file.read()))
+    except Exception as e:
+        logger.error('Failed saving CSV to S3 - {}'.format(e))
+        raise
+    else:
+        logger.info('Saved CSV to S3 - {}'.format(task_log_msg))
+        temp_csv_file.close()
+    logger.info('Finished - {}'.format(task_log_msg))
+
+    download_url = urljoin(
+        base=base_url,
+        url=reverse('private_storage', kwargs={'path': storage_path})
+    )
+    export_stats_status_email_task.delay(
+        user_id=request.user.id, course_id="all user courses",
+        report_name='{} active courses stats'.format(user_data.get('username')), base_url=base_url,
+        download_url=download_url, subject=" user active courses stats report",
+        template='admin/export_stats_email_template.haml',
+    )

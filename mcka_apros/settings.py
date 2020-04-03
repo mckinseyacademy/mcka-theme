@@ -305,7 +305,7 @@ ENROLL_STUDENT_EMAIL = 'support@mckinsey.com'
 
 # Mcka support email
 MCKA_SUPPORT_EMAIL = 'support@mckinsey.com'
-MCKA_SUPPORT_FORM_LINK = 'https://mckinseynvt.secure.force.com/mckinseysupport/'
+MCKA_SUPPORT_FORM_LINK = 'https://mckinseynvt.secure.force.com/supportwebforms/mckinsey_webtocaseform'
 
 # Disabling automatic program enrollment for no (MCKIN-1750)
 ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False

@@ -56,7 +56,7 @@ from admin.tasks import (
     user_company_fields_update_task, bulk_user_manager_update_task, create_tile_progress_data,
     create_problem_response_report, monitor_problem_response_report, post_process_problem_response_report,
     handle_admin_task_error, send_problem_response_report_success_email, delete_participants_task, delete_company_task,
-    unenroll_participants_task, DELETE_PARTICIPANTS_DIR)
+    unenroll_participants_task, download_active_courses_stats_task, DELETE_PARTICIPANTS_DIR)
 from api_client import course_api, user_api, group_api, workgroup_api, organization_api, mobileapp_api, \
     cohort_api
 from api_client.api_error import ApiError
@@ -77,7 +77,6 @@ from courses.controller import (
     social_total, round_to_int_bump_zero, round_to_int
 )
 from courses.models import FeatureFlags, CourseMetaData
-from courses.user_courses import load_course_progress
 from lib.authorization import permission_group_required, permission_group_required_api, is_user_in_permission_group
 from lib.mail import sendMultipleEmails, email_add_active_student, email_add_inactive_student
 from license import controller as license_controller
@@ -4548,31 +4547,9 @@ class participant_details_active_courses_api(APIView):
 @internal_admin_user_access
 @company_admin_user_access
 def download_active_courses_stats(request, user_id):
-    active_courses, course_history = get_user_courses_helper(user_id, request)
-
-    response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="active_courses_stats.csv"'
-
-    writer = UnicodeWriter(response)
-    writer.writerow([_('Course'), _('Course ID'), _('Program'), _('Progress'), _('Proficiency'), _('Status')])
-    for course in active_courses:
-        course_data = None
-        course_data = load_course(course['id'], request=request)
-        try:
-            load_course_progress(course_data, user_id=user_id)
-        except ApiError:
-            # Occurs when user is not enrolled in this course, can happen for internal admins
-            # with internal tag courses. Such courses must not be exported.
-            continue
-
-        course['progress'] = '{:d}%'.format(round_to_int(course_data.user_progress))
-        proficiency = course_api.get_course_metrics_grades(course['id'],
-                                                           user_id=user_id, grade_object_type=Proficiency)
-        course['proficiency'] = '{:d}%'.format(round_to_int(proficiency.user_grade_value * 100))
-        writer.writerow([course['name'], course['id'], course['program'], course['progress'], course['proficiency'],
-                         course['status']])
-
-    return response
+    base_url = request.build_absolute_uri()
+    download_active_courses_stats_task.delay(request.user.id, user_id, base_url)
+    return HttpResponse(status=200)
 
 
 class participant_details_course_edit_status_api(APIView):

@@ -30,6 +30,7 @@ def is_secure_transport(uri):
     safe_prefixes = settings.OAUTH2_SAFE_URL_PREFIXES
     if settings.DEBUG:
         safe_prefixes.append('http://edx.devstack.lms:18000')  # Used on devstacks
+        safe_prefixes.append('http://lms.mcka.local/')  # to fix login issue on RN app
     return any(uri_lower.startswith(prefix) for prefix in safe_prefixes)
 
 
