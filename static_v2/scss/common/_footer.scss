@@ -107,7 +107,7 @@ footer {
 @include media-breakpoint-up(xs) {
   footer {
     line-height: 25px;
-    padding: 15px 0;
+    padding: 18px 0 15px;
     ul {
       li {
         a.nav-link {

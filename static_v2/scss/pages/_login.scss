@@ -16,6 +16,11 @@
 .site-wrapper {
   &.login {
     background-color: white;
+    .container {
+      @media screen and (min-width: 992px) {
+        padding: 0 !important;
+      }
+    }
     header {
       margin-bottom: 0;
       height: 50px;
@@ -53,14 +58,9 @@
             display: block;
             content: '';
             background: url("../image/login/Accelerate-graphic.png") no-repeat;
-            background-position: 100%  calc(100% - -20px);
+            background-position: calc(100% - -20px)  calc(100% - -28px);
             background-size: 50%;
           }
-        }
-        
-        .col-white {
-          width: 490px;
-          background-color: white;
         }
       }
       .login-page {
@@ -68,24 +68,26 @@
         .left-col {
 
           .hero-content {
-            max-width: 435px;
-            height: calc(100vh - 190px);
+            max-width: 532px;
+            height: calc(100vh - 186px);
             display: table-cell;
             vertical-align: middle;
+            padding: 30px 0;
 
             .heading {
               font-family: bower-bold;
               display: block;
               color: white;
               line-height: 58px;
-              font-size: 3rem;
+              font-size: 3.25rem;
+              margin-bottom: 15px;
             }
             p {
               font-family: theinhard-regular;
               @include font-size(16);
               color: white;
-              max-width: 88%;
               line-height: 26px;
+              margin-bottom: 20px;
             }
             a {
               font-family: theinhard-medium;
@@ -102,6 +104,16 @@
 
         }
       }
+      [class*="col-7"] {
+        flex: 0 0 65.9%;
+        padding: 0;
+        max-width: 65.9%;
+      }
+      [class*="col-5"] {
+        flex: 0 0 34.1%;
+        max-width: 34.1%;
+        padding: 0;
+      }
     }
 
     .login-McKa-logo {
@@ -114,7 +126,7 @@
     }
 
     .login-form-wrap {
-      margin-top: 22vh;
+      margin-top: 26vh;
       max-width: 295px;
 
       input:not([type='checkbox']),
@@ -145,7 +157,7 @@
         @include font-size(20);
         font-family: theinhard-medium;
         line-height: 28px;
-        color: $header-top;
+        color: darken($header-top , 10%);
         margin-bottom: 30px;
       }
     }
