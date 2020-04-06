@@ -46,6 +46,7 @@ js_files.extend([
 
     get_assets_path('js/ajaxify_overlay_form.js', v2=True),
     get_assets_path('js/vendor/jquery.query-object.js', v2=True),
+    get_assets_path('js/vendor/js.cookie.js', v2=True),
     get_assets_path('js/accounts/user_login.js', v2=True),
 
     get_assets_path('js/course_contact_modal.js', v2=False),
