@@ -84,16 +84,16 @@
               font-family: bower-bold;
               display: block;
               color: white;
-              line-height: 58px;
+              line-height: 57px;
               font-size: 3.25rem;
               margin-bottom: 15px;
 
             }
             p {
-              font-family: theinhard-regular;
-              @include font-size(16);
+              font-family: theinhard-light;
+              @include font-size(18);
               color: white;
-              line-height: 26px;
+              line-height: 28px;
               margin-bottom: 20px;
             }
             a {
@@ -101,9 +101,17 @@
               @include font-size(18);
               color: white;
               line-height: 25px;
+              &:hover {
+                color: #00A9F4;
+                i {
+                  margin: 0 18px; 
+                }
+              }
               i {
                 display: inline-block;
                 margin: 0 10px;
+                -webkit-transition: all .3s 120ms;
+                transition: all .3s 120ms;
               }
             }
           }
