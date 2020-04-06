@@ -27,7 +27,9 @@ body {
       display: inline-block;
       vertical-align: middle;
       &.MckAcademy{
-        display: none;
+        &.white{
+          display: none;
+        }
       }
       img {
         height: auto;

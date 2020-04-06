@@ -462,7 +462,7 @@
               max-height: inherit !important;
             }
             &.black {
-              display: block;
+              display: inline-block;
             }
           }
         }
@@ -574,7 +574,6 @@
               display: none;
             }
             .hero-content {
-              //padding: 0;
 
               .heading {
                 margin-bottom: 20px;
