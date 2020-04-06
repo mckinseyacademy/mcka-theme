@@ -6496,16 +6496,12 @@ msgstr ""
 #: templates/registration/public_registration_activation_link.haml:14
 #: templates/registration/public_registration_course_closed.haml:5
 #: templates/registration/public_registration_existing.haml:12
-#, fuzzy, python-format
-#| msgid ""
-#| "Please contact our team at %(support)s if you experience any technical "
-#| "issues."
+#, python-format
 msgid ""
 "Please contact our <a href=\"%(support)s\" target=\"_blank\">support team</"
 "a> if you experience any technical issues."
 msgstr ""
-"Prosimy skontaktować się z naszym zespołem, wysyłając wiadomość na "
-"%(support)s, jeśli napotkasz jakieś problemy techniczne."
+"Jeśli napotkasz jakieś problemy techniczne, prosimy skontaktować się z naszym <a href=\"%(support)s\" target=\"_blank\">działem pomocy</a>. "
 
 #: templates/certificates/course_certificate_notification_email.haml:11
 #: templates/registration/public_registration_activation_link.haml:17
@@ -11499,20 +11495,14 @@ msgid "To access the course, click the following link:"
 msgstr "Aby uzyskać dostęp do kurs, kliknij na poniższy link."
 
 #: templates/registration/public_registration_mcka_user.haml:10
-#, fuzzy, python-format
-#| msgid ""
-#| "Note that you must be on the McKinsey Network or VPN to access the "
-#| "course. Please contact our team at %(support)s if you experience any "
-#| "technical issues."
+#, python-format
 msgid ""
 "Note that you must be on the McKinsey Network or VPN to access the course. "
 "Please contact our <a href=\"%(support)s\" target=\"_blank\">support team</"
 "a> if you experience any technical issues."
 msgstr ""
 "Prosimy pamiętać, że musisz być podłączony do sieci McKinsey lub łączyć się "
-"za pomocą VPN, aby uzyskać dostęp do kursu. Skontaktuj się z naszym "
-"zespołem, wysyłając wiadomość na %(support)s, jeśli napotkałeś problemy "
-"techniczne."
+"za pomocą VPN, aby uzyskać dostęp do kursu. Jeśli napotkasz jakieś problemy techniczne, prosimy skontaktować się z naszym <a href=\"%(support)s\" target=\"_blank\">działem pomocy</a>."
 
 #: templates/registration/public_registration_warning.haml:3
 #, python-brace-format

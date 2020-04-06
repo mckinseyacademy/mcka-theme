@@ -6443,14 +6443,11 @@ msgstr ""
 #: templates/registration/public_registration_activation_link.haml:14
 #: templates/registration/public_registration_course_closed.haml:5
 #: templates/registration/public_registration_existing.haml:12
-#, fuzzy, python-format
-#| msgid ""
-#| "Please contact our team at %(support)s if you experience any technical "
-#| "issues."
+#, python-format
 msgid ""
 "Please contact our <a href=\"%(support)s\" target=\"_blank\">support team</"
 "a> if you experience any technical issues."
-msgstr "技術的な問題が発生した場合は、担当チームにご連絡ください %(support)s。"
+msgstr "技術的な問題が発生した場合は、弊社の<a href=\"%(support)s\" target=\"_blank\">サポートチーム</a>にご連絡ください。"
 
 #: templates/certificates/course_certificate_notification_email.haml:11
 #: templates/registration/public_registration_activation_link.haml:17
@@ -11127,19 +11124,14 @@ msgid "To access the course, click the following link:"
 msgstr "コースにアクセスするには、以下のリンクをクリックします。"
 
 #: templates/registration/public_registration_mcka_user.haml:10
-#, fuzzy, python-format
-#| msgid ""
-#| "Note that you must be on the McKinsey Network or VPN to access the "
-#| "course. Please contact our team at %(support)s if you experience any "
-#| "technical issues."
+#, python-format
 msgid ""
 "Note that you must be on the McKinsey Network or VPN to access the course. "
 "Please contact our <a href=\"%(support)s\" target=\"_blank\">support team</"
 "a> if you experience any technical issues."
 msgstr ""
 "このコースにアクセスするには、McKinsey NetworkまたはVPNに参加している必要があ"
-"ります。技術的な問題が発生した場合は、担当チームにご連絡ください "
-"%(support)s。"
+"ります。技術的な問題が発生した場合は、弊社の<a href=\"%(support)s\" target=\"_blank\">サポートチーム</a>にご連絡ください。"
 
 #: templates/registration/public_registration_warning.haml:3
 #, python-brace-format

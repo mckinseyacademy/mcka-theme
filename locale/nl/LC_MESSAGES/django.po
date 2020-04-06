@@ -6496,14 +6496,11 @@ msgstr ""
 #: templates/registration/public_registration_activation_link.haml:14
 #: templates/registration/public_registration_course_closed.haml:5
 #: templates/registration/public_registration_existing.haml:12
-#, fuzzy, python-format
-#| msgid ""
-#| "Please contact our team at %(support)s if you experience any technical "
-#| "issues."
+#, python-format
 msgid ""
 "Please contact our <a href=\"%(support)s\" target=\"_blank\">support team</"
 "a> if you experience any technical issues."
-msgstr "Bij technische problemen kunt u contact opnemen met %(support)s."
+msgstr "Bij technische problemen kunt u contact opnemen met ons <a href=\"%(support)s\" target=\"_blank\">supportteam</a>."
 
 #: templates/certificates/course_certificate_notification_email.haml:11
 #: templates/registration/public_registration_activation_link.haml:17
@@ -11491,19 +11488,14 @@ msgid "To access the course, click the following link:"
 msgstr ""
 
 #: templates/registration/public_registration_mcka_user.haml:10
-#, fuzzy, python-format
-#| msgid ""
-#| "Note that you must be on the McKinsey Network or VPN to access the "
-#| "course. Please contact our team at %(support)s if you experience any "
-#| "technical issues."
+#, python-format
 msgid ""
 "Note that you must be on the McKinsey Network or VPN to access the course. "
 "Please contact our <a href=\"%(support)s\" target=\"_blank\">support team</"
 "a> if you experience any technical issues."
 msgstr ""
 "Let op: u moet verbonden zijn met het McKinsey-netwerk of VPN om toegang te "
-"krijgen tot de cursus. Bij technische problemen kunt u contact opnemen met "
-"%(support)s."
+"krijgen tot de cursus. Bij technische problemen kunt u contact opnemen met ons <a href=\"%(support)s\" target=\"_blank\">supportteam</a>.."
 
 #: templates/registration/public_registration_warning.haml:3
 #, python-brace-format
