@@ -161,7 +161,7 @@
         @include font-size(20);
         font-family: theinhard-medium;
         line-height: 28px;
-        color: darken($header-top , 10%);
+        color: #051C2C;
         margin-bottom: 30px;
       }
     }
@@ -335,9 +335,9 @@
       margin: 0;
 
       ul li a.nav-link {
-        color: $black;
+        color: $gray;
         &:before {
-          background-color: $black;
+          background-color: $gray;
         }
       }
     }
