@@ -17,6 +17,10 @@
             - else
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{% static 'image/McKA-logo-black.svg' %}", :width => "160", "alt": "McKinsey and Company Logo"}
+              %a.navbar-brand.MckAcademy.white{:href => "/"}
+                %img{:src => "{% static 'image/McK_Academy_RGB_White@2x.png' %}", :width => "", "alt": "McKinsey Academy Logo"}
+              %a.navbar-brand.MckAcademy.black{:href => "/"}
+                %img{:src => "{% static 'image/McK_Academy_RGB_Black@2x.png' %}", :width => "", "alt": "McKinsey Academy Logo"}
             - if client_customization.client_logo
               %a.navbar-brand{:href => "/"}
                 %img{:src => "{{client_customization.client_logo}}", :width => "160", "alt": "#{organization_name} Logo"}

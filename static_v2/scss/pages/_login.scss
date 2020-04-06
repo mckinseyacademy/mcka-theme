@@ -13,6 +13,11 @@
   src: url("../fonts/TheinhardtPan/TheinhardtPan-Medium.otf");
 }
 
+@font-face {
+  font-family: theinhard-light;
+  src: url("../fonts/TheinhardtPan/TheinhardtPan-Light.otf");
+}
+
 .site-wrapper {
   &.login {
     background-color: white;
@@ -27,14 +32,16 @@
       position: relative;
       z-index: 10;
       .all-logos {
-        display: none;
+        >a{
+          display: none;
+        }
       }
     }
 
     main {
       padding: 0 0 20px;
       min-height: calc(100vh - 130px);
-      @media screen and (max-width: 767px) {
+      @include media-breakpoint-down(sm)  {
         min-height: calc(100vh - 159px);
       }
       .background-absolute {
@@ -45,11 +52,7 @@
         top: 0;
         margin: 0;
         .col-7 {
-          background: rgb(6,28,44);
-          background: -moz-linear-gradient(-45deg,  rgba(6,28,44,1) 0%, rgba(19,47,128,1) 100%);
-          background: -webkit-linear-gradient(-45deg,  rgba(6,28,44,1) 0%,rgba(19,47,128,1) 100%);
-          background: linear-gradient(135deg,  rgba(6,28,44,1) 0%,rgba(19,47,128,1) 100%);
-          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#061c2c', endColorstr='#132f80',GradientType=1 );
+          @include login-gradient();
           position:relative;
           padding: 0;
           &:before{
@@ -409,3 +412,196 @@
     }
   }
 }
+
+// ======== Responsive Styles ==================//
+
+// Tablet
+@include media-breakpoint-down(md) {
+  .site-wrapper {
+    &.login {
+      .appHeader {
+        .col {
+          > .logo {
+            padding: 0 15px;
+          }
+        }
+        .all-logos {
+          > a.MckAcademy {
+            padding: 0;
+            border: 0;
+            img {
+              width: 128px;
+              max-width: none !important;
+              max-height: inherit !important;
+            }
+            &.black {
+              display: block;
+            }
+          }
+        }
+      }
+
+      main {
+        padding: 0;
+        min-height: calc(100vh - 110px);
+        .container {
+          padding: 0;
+        }
+        .login-page {
+          flex-direction: column-reverse;
+          .left-col {
+            min-height: 505px;
+            padding: 50px 60px;
+            width: 100%;
+            min-width: 100%;
+            overflow: hidden;
+            @include login-gradient();
+            &:before {
+              height: 100%;
+              display: block;
+              content: '';
+              background: url("../image/login/Accelerate-graphic.png") no-repeat;
+              background-position: 103% calc(100% - -51px);
+              background-size: 45%;
+              position: absolute;
+              top: 0;
+              width: 100%;
+            }
+            > img {
+              display: none;
+            }
+            .hero-content {
+              display: block;
+              max-width: 458px;
+              width: 100%;
+              height: auto;
+              position: relative;
+              z-index: 1;
+              padding: 0;
+              .heading {
+                margin-bottom: 25px;
+                line-height: 53px;
+                font-size: 48px;
+                letter-spacing: -0.18px;
+              }
+              p {
+                margin-bottom: 25px;
+              }
+            }
+          }
+          .right-col-fixed {
+            min-width: 100%;
+            padding: 71px 0 48px 0;
+          }
+        }
+      }
+      .login-form-wrap {
+        float: none !important;
+        margin: 0 auto;
+        display: block;
+      }
+      .background-absolute {
+        display: none;
+      }
+      .quick-links {
+        margin-top: 50px;
+      }
+
+      footer{
+        ul {
+          li {
+            > a.nav-link {
+              padding: 0 0.6rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Login Mobile Styles
+@include media-breakpoint-down(sm) {
+  .site-wrapper {
+    &.login {
+      .appHeader {
+        .col {
+          > .logo {
+            padding: 0 5px;
+          }
+        }
+        .all-logos {
+          > a.MckAcademy {
+            img {
+              width: 118px;
+            }
+          }
+        }
+      }
+      main {
+        .login-page {
+          .left-col {
+            padding: 45px 44px 65px;
+            min-height: auto;
+            &:before {
+              display: none;
+            }
+            .hero-content {
+              //padding: 0;
+
+              .heading {
+                margin-bottom: 20px;
+                font-size: 2.25rem;
+                line-height: 40px;
+                letter-spacing: -0.14px;
+              }
+              p {
+                font-family: theinhard-light;
+                line-height: 24px;
+                margin-bottom: 24px;
+              }
+              > a {
+                font-size: 1rem;
+                line-height: 24px
+              }
+            }
+          }
+          .right-col-fixed {
+            padding: 52px 0 34px 0;
+          }
+        }
+      }
+      .login-form-wrap {
+        h3 {
+          font-size: 1.125rem;
+          line-height: 25px;
+          margin-bottom: 20px;
+          width:95%;
+        }
+      }
+      .quick-links {
+        margin-top: 20px;
+      }
+      footer{
+        font-size: 0.625rem !important;
+        line-height:14px;
+        min-height:auto;
+        padding:12px 0 9px;
+        ul {
+          li {
+            > a.nav-link {
+              font-size: 0.625rem !important;
+              line-height:21px;
+              padding: 0 0.4rem;
+              &::before {
+                display: block;
+                top: 5px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+

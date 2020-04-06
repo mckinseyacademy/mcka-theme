@@ -13,6 +13,23 @@ body {
   &.modal-open {
     @include padding-right(0 !important);
   }
+
+  // Login Tablet
+  @include media-breakpoint-down(md) {
+    &.site-wrapper {
+      &.login {
+        main {
+          .left-col {
+            &:before {
+              @include right(0);
+              @include left(auto);
+            }
+          }
+        }
+      }
+    }
+  }
+
 }
 
 // Header
@@ -825,6 +842,13 @@ footer {
           @include left(0);
         }
       }
+      &:first-child{
+        a{
+          &.nav-link{
+           @include padding-left(0);
+          }
+        }
+      }
       &:last-child{
         a{
           &.nav-link{
@@ -1156,12 +1180,20 @@ body.rtl {
             }
           }
         }
+
+
+        @media screen and (max-width: 991px) {
+          .left-col {
+            &:before {
+              @include flip-x-axis;
+            }
+          }
+        }
       }
     }
   }
 
   // Feature Tour
-
   .newFeatureTour{
     .carousel-indicators li {
       float: right;

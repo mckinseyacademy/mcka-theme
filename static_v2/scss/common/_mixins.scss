@@ -66,3 +66,12 @@
 @mixin focus-outline() {
   outline: 2px solid var(--secondary);
 }
+
+// Gradient for the Login Page's Background
+@mixin login-gradient() {
+  background: rgb(6, 28, 44);
+  background: -moz-linear-gradient(-45deg, rgba(6, 28, 44, 1) 0%, rgba(19, 47, 128, 1) 100%);
+  background: -webkit-linear-gradient(-45deg, rgba(6, 28, 44, 1) 0%, rgba(19, 47, 128, 1) 100%);
+  background: linear-gradient(135deg, rgba(6, 28, 44, 1) 0%, rgba(19, 47, 128, 1) 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#061c2c', endColorstr='#132f80', GradientType=1);
+}

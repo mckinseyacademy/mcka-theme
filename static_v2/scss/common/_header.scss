@@ -26,6 +26,9 @@ body {
     .navbar-brand {
       display: inline-block;
       vertical-align: middle;
+      &.MckAcademy{
+        display: none;
+      }
       img {
         height: auto;
         max-height: 40px;
