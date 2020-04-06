@@ -22,8 +22,11 @@
   &.login {
     background-color: white;
     .container {
-      @media screen and (min-width: 992px) {
+      @media screen and (min-width: 1275px) {
         padding: 0 !important;
+      }
+      @media screen and (max-width: 1274px) {
+        padding: 0 27px !important;
       }
     }
     header {
@@ -84,6 +87,7 @@
               line-height: 58px;
               font-size: 3.25rem;
               margin-bottom: 15px;
+
             }
             p {
               font-family: theinhard-regular;
@@ -414,6 +418,29 @@
 }
 
 // ======== Responsive Styles ==================//
+
+// Small Desktops
+
+@include  media-breakpoint-down(lg) {
+  .site-wrapper.login {
+    main {
+      .login-page {
+        .left-col {
+          .hero-content {
+            max-width: 500px;
+            .heading {
+              font-size: 3rem;
+            }
+            p {
+              font-size: 1.125rem;
+              max-width: 395px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
 
 // Tablet
 @include media-breakpoint-down(md) {

@@ -69,9 +69,9 @@
 
 // Gradient for the Login Page's Background
 @mixin login-gradient() {
-  background: rgb(6, 28, 44);
-  background: -moz-linear-gradient(-45deg, rgba(6, 28, 44, 1) 0%, rgba(19, 47, 128, 1) 100%);
-  background: -webkit-linear-gradient(-45deg, rgba(6, 28, 44, 1) 0%, rgba(19, 47, 128, 1) 100%);
-  background: linear-gradient(135deg, rgba(6, 28, 44, 1) 0%, rgba(19, 47, 128, 1) 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#061c2c', endColorstr='#132f80', GradientType=1);
+  background-color: #051C2C;
+  background: linear-gradient(135deg, #051C2C 60%, #03339C 100%);
+  background: -webkit-linear-gradient(-45deg, #051C2C 60%, #03339C 100%);
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
 }
