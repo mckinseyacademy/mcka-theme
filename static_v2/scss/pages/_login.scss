@@ -486,7 +486,7 @@
         padding: 0;
         min-height: calc(100vh - 110px);
         .container {
-          padding: 0;
+          padding: 0 !important;
         }
         .login-page {
           flex-direction: column-reverse;
@@ -519,6 +519,7 @@
               position: relative;
               z-index: 1;
               padding: 0;
+              transform: none;
               .heading {
                 margin-bottom: 25px;
                 line-height: 53px;
