@@ -250,7 +250,7 @@
             left: 0;
             bottom: 0;
             width: 100%;
-            z-index: 9;
+            z-index: 99;
             background: rgba($white, 0.6%);
           }
           .helpLink {
@@ -460,7 +460,6 @@
   .site-wrapper {
     &.login {
       .appHeader {
-        z-index: 1;
         .col {
           > .logo {
             padding: 0 15px;
@@ -550,6 +549,9 @@
       }
 
       footer{
+        >.container{
+          padding:0 15px !important;
+        }
         ul {
           li {
             > a.nav-link {
