@@ -461,6 +461,7 @@
   .site-wrapper {
     &.login {
       .appHeader {
+        .container{ padding: 0 15px !important;}
         .col {
           > .logo {
             padding: 0 15px;
@@ -575,6 +576,9 @@
             padding: 0 5px;
           }
         }
+        .language-selector {
+          width: 74px;
+        }
         .all-logos {
           > a.MckAcademy {
             img {
@@ -644,6 +648,31 @@
                 top: 5px;
               }
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 359px) {
+  .site-wrapper{
+    &.login {
+      .appHeader {
+        .container{ }
+        .col{
+          >.logo{ padding: 0;}
+        }
+      }
+      .login-form-wrap{
+        max-width: initial;
+        padding: 0 20px;
+      }
+      main {
+        .login-page {
+          .left-col{
+            padding-left:20px;
+            padding-right:20px;
           }
         }
       }
