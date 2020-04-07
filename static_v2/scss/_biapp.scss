@@ -1000,7 +1000,7 @@ form {
       }
     }
     .login-form-wrap {
-      @include float(right);
+      @include right(0);
       .forgot-pswd-link {
         @include float(left);
       }

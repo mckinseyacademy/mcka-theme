@@ -78,7 +78,8 @@
             height: calc(100vh - 186px);
             display: table-cell;
             vertical-align: middle;
-            padding: 30px 0;
+            padding: 44px 0 0;
+            transform: translateY(-44px);
 
             .heading {
               font-family: bower-bold;
@@ -142,8 +143,12 @@
     }
 
     .login-form-wrap {
-      margin-top: 26vh;
       max-width: 295px;
+      @include media-breakpoint-up(lg) {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-52%);
+      }
 
       input:not([type='checkbox']),
       button.btn {
