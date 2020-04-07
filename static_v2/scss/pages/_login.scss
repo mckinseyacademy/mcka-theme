@@ -22,11 +22,11 @@
   &.login {
     background-color: white;
     .container {
-      @media screen and (min-width: 1275px) {
+      @media screen and (min-width: 1305px) {
         padding: 0 !important;
       }
-      @media screen and (max-width: 1274px) {
-        padding: 0 27px !important;
+      @media screen and (max-width: 1304px) {
+        padding: 0 30px !important;
       }
     }
     header {
