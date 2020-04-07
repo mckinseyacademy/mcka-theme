@@ -460,6 +460,7 @@
   .site-wrapper {
     &.login {
       .appHeader {
+        z-index: 1;
         .col {
           > .logo {
             padding: 0 15px;
