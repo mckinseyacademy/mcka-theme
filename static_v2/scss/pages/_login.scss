@@ -200,8 +200,7 @@
     .quick-links {
       text-align: center;
       padding: 0;
-      margin: 60px -30px 0;
-      overflow: hidden;
+      margin: 60px 0 0;
       @media screen and (max-width: 767px) {
         margin: 30px 0 0;
       }
@@ -251,7 +250,7 @@
             bottom: 0;
             width: 100%;
             z-index: 99;
-            background: rgba($white, 0.6%);
+            background: rgba($white, 0.8%);
           }
           .helpLink {
             z-index: 999;
@@ -262,12 +261,12 @@
           ul {
             display: block;
             visibility: visible;
-            bottom: 0;
-            top: auto;
-            position: relative;
             z-index: 999;
-            height: 100%;
+            height: auto;
             transition: all ease 0.3s;
+            position: absolute;
+            top: 20px;
+            width: 100%;
             li {
               display: block;
               margin: 15px 0 0;
@@ -279,6 +278,8 @@
                 text-transform: capitalize;
                 display: block;
                 padding: 15px 30px;
+                text-decoration: none;
+                font-weight: 600;
               }
             }
 
@@ -624,6 +625,8 @@
       }
       .quick-links {
         margin-top: 20px;
+        position: relative;
+        height: 100%;
       }
       footer{
         font-size: 0.625rem !important;
