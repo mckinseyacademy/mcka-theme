@@ -75,3 +75,11 @@
   color: #fff;
   text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
 }
+
+@mixin login-gradient-rtl() {
+  background-color: #051C2C;
+  background: linear-gradient(250deg,#051C2C 60%,#03339C 100%);
+  background: -webkit-linear-gradient(250deg,#051C2C 60%,#03339C 100%);
+  color: #fff;
+  text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+}

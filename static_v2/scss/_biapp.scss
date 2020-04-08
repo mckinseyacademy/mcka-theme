@@ -1031,7 +1031,18 @@ form {
         @include left(18px);
       }
     }
-
+    main {
+      .login-page {
+        .left-col {
+          @include login-gradient-rtl;
+        }
+      }
+      .background-absolute {
+        .col-7 {
+          @include login-gradient-rtl;
+        }
+      }
+    }
   }
 }
 
