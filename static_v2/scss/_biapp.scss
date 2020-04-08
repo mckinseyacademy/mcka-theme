@@ -847,6 +847,9 @@ footer {
           &.nav-link{
            @include padding-left(0);
           }
+          &:before{
+            display:none !important;
+          }
         }
       }
       &:last-child{
@@ -1460,6 +1463,29 @@ body.rtl {
   #mCSB_1_container {
     > .row {
       @include margin-right(-15px);
+    }
+  }
+  footer {
+    ul {
+      li {
+        &:first-child {
+          a {
+            &.nav-link {
+              @include padding-left(0 !important);
+            }
+            &:before {
+              display: none !important;
+            }
+          }
+        }
+        &:last-child {
+          a {
+            &.nav-link {
+              @include padding-right(0 !important);
+            }
+          }
+        }
+      }
     }
   }
 }
