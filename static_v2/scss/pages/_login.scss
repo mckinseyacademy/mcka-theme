@@ -102,15 +102,16 @@
               @include font-size(18);
               color: white;
               line-height: 25px;
+              display: inline-block;
+              position: relative;
               &:hover {
                 color: #00A9F4;
-                i {
-                  margin: 0 18px; 
-                }
               }
               i {
-                display: inline-block;
-                margin: 0 10px;
+                position: absolute;
+                display: block;
+                content:'';
+                top: 0;
                 -webkit-transition: all .3s 120ms;
                 transition: all .3s 120ms;
               }
