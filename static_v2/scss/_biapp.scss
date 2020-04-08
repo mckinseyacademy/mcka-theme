@@ -1192,6 +1192,7 @@ body.rtl {
       main {
         .background-absolute {
           .col-7 {
+            @include login-gradient-rtl;
             &:before {
               @include flip-x-axis;
             }
@@ -1201,6 +1202,7 @@ body.rtl {
 
         @media screen and (max-width: 991px) {
           .left-col {
+            @include login-gradient-rtl;
             &:before {
               @include flip-x-axis;
             }
