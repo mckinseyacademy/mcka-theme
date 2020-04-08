@@ -1001,6 +1001,9 @@ form {
     }
     .login-form-wrap {
       @include right(0);
+      @media (min-width: 1024px) and (max-width: 1439px) {
+        @include right(48%);
+      }
       .forgot-pswd-link {
         @include float(left);
       }

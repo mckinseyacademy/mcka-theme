@@ -144,6 +144,11 @@
 
     .login-form-wrap {
       max-width: 295px;
+      @media (min-width: 1024px) and (max-width: 1439px) {
+        transform: translate(14vw, -52%) !important;
+        width: 80%;
+        max-width: 295px;
+      }
       @include media-breakpoint-up(lg) {
         position: absolute;
         top: 50%;
