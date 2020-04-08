@@ -1196,6 +1196,11 @@ body.rtl {
           }
         }
       }
+      @media (min-width: 1024px) and (max-width: 1439px) {
+        .login-form-wrap {
+          transform: translate(-14vw, -52%) !important;
+        }
+      }
     }
   }
 
