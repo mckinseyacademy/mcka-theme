@@ -1035,7 +1035,6 @@ form {
     main{
       .login-page{
         .left-col {
-          @include login-gradient-rtl;
             .hero-content {
               a {
                 @include padding-right(26px);
@@ -1050,11 +1049,6 @@ form {
               }
             }
           }
-      }
-      .background-absolute {
-        .col-7 {
-          @include login-gradient-rtl;
-        }
       }
     }
   }
@@ -1202,6 +1196,9 @@ body.rtl {
     &.login {
       main {
         .login-page {
+          .backgound-absolute {
+            @include login-gradient-rtl;
+          }
           .left-col {
             .hero-content {
               a {
