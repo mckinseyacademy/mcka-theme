@@ -80,6 +80,10 @@
             vertical-align: middle;
             padding: 44px 0 0;
             transform: translateY(-44px);
+            @media (max-height: 700px) {
+              transform: none;
+              padding-bottom: 30px; 
+            }
 
             .heading {
               font-family: bower-bold;
