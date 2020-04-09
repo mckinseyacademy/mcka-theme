@@ -37,13 +37,25 @@
       .all-logos {
         >a{
           display: none;
+          &.MckAcademy.white {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+            border: none;
+            position: relative;
+            transform: translateY(35px);
+            img {
+              width: 150px;
+              max-height: inherit;
+            }
+          }
         }
       }
     }
 
     main {
       padding: 0 0 20px;
-      min-height: calc(100vh - 130px);
+      min-height: calc(100vh - 110px);
       @include media-breakpoint-down(sm)  {
         min-height: calc(100vh - 159px);
       }
@@ -82,14 +94,17 @@
           overflow: hidden;
         }
         .left-col {
+          >img{
+            color:transparent;
+            background-color: rgba(255, 255, 255, 0);
+          }
 
           .hero-content {
             max-width: 532px;
-            height: calc(100vh - 186px);
+            height: calc(100vh - 162px);
             display: table-cell;
             vertical-align: middle;
-            padding: 44px 0 0;
-            transform: translateY(-44px);
+            padding: 87px 0 44px;
             @media (max-height: 700px) {
               transform: none;
               padding-bottom: 30px; 
@@ -157,14 +172,14 @@
     .login-form-wrap {
       max-width: 295px;
       @media (min-width: 1024px) and (max-width: 1439px) {
-        transform: translate(14vw, -52%) !important;
+        transform: translate(14vw, -46.6%) !important;
         width: 80%;
         max-width: 295px;
       }
       @include media-breakpoint-up(lg) {
         position: absolute;
         top: 50%;
-        transform: translateY(-52%);
+        transform: translateY(-46.6%);
       }
 
       input:not([type='checkbox']),
@@ -496,6 +511,9 @@
             &.black {
               display: inline-block;
             }
+            &.white {
+              display: none;
+            }
           }
         }
       }
@@ -525,9 +543,6 @@
               position: absolute;
               top: 0;
               width: 100%;
-            }
-            > img {
-              display: none;
             }
             .hero-content {
               display: block;
