@@ -71,7 +71,14 @@
       }
       .login-page {
         display: flex;
-        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+        
+        @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /* IE10+ */
+          overflow: hidden;
+        }
+        @supports (-ms-accelerator:true) { /* Edge 12 - 15 */
+          overflow: hidden;
+        }
+        @supports (-ms-ime-align:auto) { /* Edge 16+ */
           overflow: hidden;
         }
         .left-col {
