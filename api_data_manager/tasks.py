@@ -13,6 +13,7 @@ from api_client import group_api
 from api_client import mobileapp_api
 from api_client import organization_api
 from api_data_manager.common_data import CommonDataManager, COMMON_DATA_PROPERTIES
+from api_data_manager.signals import course_data_updated
 
 from .course_data import CourseDataManager, COURSE_PROPERTIES
 
@@ -144,6 +145,8 @@ def enhanced_course_caching_task():
 
     logger.info('{} - Total courses with enhanced caching: {}'.format(task_log_msg, len(course_ids)))
 
+    clear_cache_for_courses(course_ids)
+
     for course_id in course_ids:
         try:
             non_staff_course = None
@@ -185,3 +188,18 @@ def enhanced_course_caching_task():
                 .format(task_log_msg, len(success_ids), len(course_ids)))
 
     return True
+
+
+def clear_cache_for_courses(course_ids):
+    course_data_updated.send(
+        sender=__name__, course_ids=course_ids,
+        data_type=COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT
+    )
+    course_data_updated.send(
+        sender=__name__, course_ids=course_ids,
+        data_type=COURSE_PROPERTIES.PREFETCHED_COURSE_OBJECT_STAFF
+    )
+    course_data_updated.send(
+        sender=__name__, course_ids=course_ids,
+        data_type='{}_{}'.format(COURSE_PROPERTIES.TABS, 'details')
+    )
