@@ -135,6 +135,7 @@
               position: relative;
               &:hover {
                 color: #00A9F4;
+                text-decoration: none;
               }
               i {
                 position: absolute;
@@ -609,7 +610,7 @@
           }
         }
         .language-selector {
-          width: 74px;
+          width: 76px;
         }
         .all-logos {
           > a.MckAcademy {
@@ -623,7 +624,7 @@
         .login-page {
           .left-col {
             padding: 45px 44px 65px;
-            min-height: auto;
+            min-height: calc(100vh - 450px);
             &:before {
               display: none;
             }
@@ -655,7 +656,6 @@
         h3 {
           font-size: 1.125rem;
           line-height: 25px;
-          margin-bottom: 20px;
           width:95%;
         }
       }
