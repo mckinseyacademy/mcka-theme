@@ -77,7 +77,10 @@
             content: '';
             background: url("../image/login/Accelerate-graphic.png") no-repeat;
             background-position: calc(100% - -20px)  calc(100% - -28px);
-            background-size: 50%;
+            background-size: 44%;
+            @media (max-width: 1600px) {
+              background-size: 50%;
+            }
           }
         }
       }
@@ -100,7 +103,7 @@
           }
 
           .hero-content {
-            max-width: 532px;
+            max-width: 470px;
             height: calc(100vh - 162px);
             display: table-cell;
             vertical-align: middle;
@@ -108,6 +111,9 @@
             @media (max-height: 700px) {
               transform: none;
               padding-bottom: 30px; 
+            }
+            @media (max-width: 1600px) {
+              max-width: 532px;
             }
 
             .heading {
@@ -149,15 +155,17 @@
           }
         }
       }
-      [class*="col-7"] {
-        flex: 0 0 65.9%;
-        padding: 0;
-        max-width: 65.9%;
-      }
-      [class*="col-5"] {
-        flex: 0 0 34.1%;
-        max-width: 34.1%;
-        padding: 0;
+      @media (max-width: 1600px) {
+        [class*="col-7"] {
+          flex: 0 0 65.9%;
+          padding: 0;
+          max-width: 65.9%;
+        }
+        [class*="col-5"] {
+          flex: 0 0 34.1%;
+          max-width: 34.1%;
+          padding: 0;
+        } 
       }
     }
 
