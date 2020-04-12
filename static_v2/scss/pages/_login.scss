@@ -86,6 +86,7 @@
       }
       .login-page {
         display: flex;
+        flex-direction: row-reverse;
         
         .left-col {
           >img{
@@ -534,13 +535,15 @@
           padding: 0 !important;
         }
         .login-page {
-          flex-direction: column-reverse;
+          flex: none;
+          display: block;
           .left-col {
             min-height: 505px;
             padding: 50px 60px;
             width: 100%;
             min-width: 100%;
             overflow: hidden;
+            display: block;
             @include login-gradient();
             &:before {
               height: 100%;
@@ -574,6 +577,7 @@
             }
           }
           .right-col-fixed {
+            display: block;
             min-width: 100%;
             padding: 71px 0 48px 0;
           }

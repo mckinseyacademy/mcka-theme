@@ -9,31 +9,6 @@
     .col-5
   .container
     .login-page
-      .left-col.col-7
-        .hero-content
-          %h1.heading
-            {% trans "People make change happen—and people make it last." %}
-          %p
-            {% trans "We help organizations unlock the potential of their people and leadership teams. We assess capability gaps and work together to design and implement the right interventions to build needed skills in their people." %}
-          %a{:href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients" , :target => "_blank"}
-            {% trans "Learn about McKinsey Academy" %}
-            %i.arrow-right{:aria-hidden => "true"}
-              <svg width="16px" height="15px" viewBox="0 0 16 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-              <!-- Generator: sketchtool 62 (101010) - https://sketch.com -->
-              <title>4DE733D0-1955-41BF-AD31-9227DBA73423</title>
-              <desc>Created with sketchtool.</desc>
-              <g id="McKA---1440-Login-BB" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-                    <g id="Login-A1-desktop-1440px" transform="translate(-362.000000, -554.000000)" fill="#00A9F4">
-                        <g id="Content">
-                            <g id="Copy" transform="translate(98.000000, 230.000000)">
-                                <g id="Links-/-02.-Medium-(18px)-/-Inverse-/-Default" transform="translate(0.000000, 316.000000)">
-                                    <polygon id="Path" transform="translate(272.000000, 15.583333) rotate(-180.000000) translate(-272.000000, -15.583333) " points="280 14.7083333 267.439919 14.7083333 272.460585 9.81708333 271.18521 8.58333333 264 15.5833333 271.18521 22.5833333 272.451603 21.3495833 267.439919 16.4583333 280 16.4583333"></polygon>
-                                </g>
-                            </g>
-                        </g>
-                    </g>
-                </g>
-            </svg>
       .right-col-fixed.col-5
         .login-form-wrap
           - if request.is_IE8
@@ -75,6 +50,32 @@
                   %a{:href => "/faq", :target => "_blank"} {% trans "FAQs" %}
                 %li
                   %a{:href => "#{support}"} {% trans "Email Support" %}
+      .left-col.col-7
+        .hero-content
+          %h1.heading
+            {% trans "People make change happen—and people make it last." %}
+          %p
+            {% trans "We help organizations unlock the potential of their people and leadership teams. We assess capability gaps and work together to design and implement the right interventions to build needed skills in their people." %}
+          %a{:href => "https://www.mckinsey.com/business-functions/learning-programs-for-clients/overview/mckinsey-academy/how-we-help-clients" , :target => "_blank"}
+            {% trans "Learn about McKinsey Academy" %}
+            %i.arrow-right{:aria-hidden => "true"}
+              <svg width="16px" height="15px" viewBox="0 0 16 15" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+              <!-- Generator: sketchtool 62 (101010) - https://sketch.com -->
+              <title>4DE733D0-1955-41BF-AD31-9227DBA73423</title>
+              <desc>Created with sketchtool.</desc>
+              <g id="McKA---1440-Login-BB" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                    <g id="Login-A1-desktop-1440px" transform="translate(-362.000000, -554.000000)" fill="#00A9F4">
+                        <g id="Content">
+                            <g id="Copy" transform="translate(98.000000, 230.000000)">
+                                <g id="Links-/-02.-Medium-(18px)-/-Inverse-/-Default" transform="translate(0.000000, 316.000000)">
+                                    <polygon id="Path" transform="translate(272.000000, 15.583333) rotate(-180.000000) translate(-272.000000, -15.583333) " points="280 14.7083333 267.439919 14.7083333 272.460585 9.81708333 271.18521 8.58333333 264 15.5833333 271.18521 22.5833333 272.451603 21.3495833 267.439919 16.4583333 280 16.4583333"></polygon>
+                                </g>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </svg>
+
 
   -#- include "marketing/app_link_popup.haml"
 
