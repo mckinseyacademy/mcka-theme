@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-03 12:44+0000\n"
+"POT-Creation-Date: 2020-04-13 06:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3092,7 +3092,7 @@ msgstr "Su dirección de correo electrónico:"
 
 #: src/edx-notifications/testserver/forms.py:14
 #: templates/accounts/login.haml:40 templates_v2/accounts/activate.haml:39
-#: templates_v2/home/landing.haml:46 tests/templates_v2/home/landing.haml:34
+#: templates_v2/home/landing.haml:35 tests/templates_v2/home/landing.haml:34
 msgid "Password"
 msgstr "Contraseña"
 
@@ -3252,7 +3252,7 @@ msgstr ""
 #: templates/accounts/activate.haml:41 templates/accounts/login.haml:49
 #: templates/accounts/public_registration.haml:72
 #: templates/accounts/sso_terms_of_service.haml:32
-#: templates_v2/home/landing.haml:57 tests/templates_v2/home/landing.haml:45
+#: templates_v2/home/landing.haml:46 tests/templates_v2/home/landing.haml:45
 msgid "Need Help?"
 msgstr "¿Necesita ayuda?"
 
@@ -3301,7 +3301,7 @@ msgstr "< Volver"
 
 #: templates/accounts/login.haml:18
 #: templates/accounts/public_registration.haml:35
-#: templates_v2/home/landing.haml:28 tests/templates_v2/home/landing.haml:19
+#: templates_v2/home/landing.haml:17 tests/templates_v2/home/landing.haml:19
 msgid ""
 "We're sorry, McKinsey Academy is not compatible with your browser. You will "
 "not be able to access course content without updating your browser. We "
@@ -3322,7 +3322,7 @@ msgid "Username or Email:"
 msgstr "Usuario o correo electrónico:"
 
 #: templates/accounts/login.haml:45 templates_v2/getting-started.haml:57
-#: templates_v2/home/landing.haml:54 tests/templates_v2/home/landing.haml:42
+#: templates_v2/home/landing.haml:43 tests/templates_v2/home/landing.haml:42
 msgid "Forgot password?"
 msgstr "¿Olvidó su contraseña?"
 
@@ -3335,81 +3335,81 @@ msgstr "Consulte nuestra sección de preguntas frecuentes."
 msgid "Trouble logging in? Contact us."
 msgstr "¿No puede iniciar sesión? Contáctenos."
 
-#: templates/accounts/login.haml:65 templates_v2/home/landing.haml:72
+#: templates/accounts/login.haml:65 templates_v2/home/landing.haml:87
 #: tests/templates_v2/home/landing.haml:62
 msgid "Check your email inbox"
 msgstr "Revise su bandeja de entrada."
 
-#: templates/accounts/login.haml:72 templates_v2/home/landing.haml:81
+#: templates/accounts/login.haml:72 templates_v2/home/landing.haml:96
 #: tests/templates_v2/home/landing.haml:71
 msgid "If you don't see the email in your inbox, check your spam folder or"
 msgstr ""
 "Si no encuentra este correo electrónico en su bandeja de entrada, revise la "
 "casilla de correo no deseado, o bien,"
 
-#: templates/accounts/login.haml:74 templates_v2/home/landing.haml:83
+#: templates/accounts/login.haml:74 templates_v2/home/landing.haml:98
 #: tests/templates_v2/home/landing.haml:73
 msgid "resend email"
 msgstr "le volveremos a enviar el correo electrónico"
 
-#: templates/accounts/login.haml:76 templates_v2/home/landing.haml:85
+#: templates/accounts/login.haml:76 templates_v2/home/landing.haml:100
 #: tests/templates_v2/home/landing.haml:75
 msgid " with the link."
 msgstr "con el enlace."
 
-#: templates/accounts/login.haml:79 templates_v2/home/landing.haml:87
+#: templates/accounts/login.haml:79 templates_v2/home/landing.haml:102
 #: tests/templates_v2/home/landing.haml:77
 msgid "Return to Login"
 msgstr "Volver a la página Inicio de sesión"
 
-#: templates/accounts/login.haml:85 templates_v2/home/landing.haml:94
+#: templates/accounts/login.haml:85 templates_v2/home/landing.haml:109
 #: tests/templates_v2/home/landing.haml:84
 msgid "You've been locked out!"
 msgstr "Su cuenta se ha bloqueado."
 
-#: templates/accounts/login.haml:88 templates_v2/home/landing.haml:100
+#: templates/accounts/login.haml:88 templates_v2/home/landing.haml:115
 #: tests/templates_v2/home/landing.haml:90
 msgid "Your account is locked for"
 msgstr "Su cuenta se ha bloqueado por"
 
-#: templates/accounts/login.haml:90 templates_v2/home/landing.haml:102
+#: templates/accounts/login.haml:90 templates_v2/home/landing.haml:117
 #: tests/templates_v2/home/landing.haml:92
 msgid "15 minutes "
 msgstr "15 minutos "
 
-#: templates/accounts/login.haml:91 templates_v2/home/landing.haml:103
+#: templates/accounts/login.haml:91 templates_v2/home/landing.haml:118
 #: tests/templates_v2/home/landing.haml:93
 msgid "since your 5"
 msgstr "tras su"
 
-#: templates/accounts/login.haml:93 templates_v2/home/landing.haml:105
+#: templates/accounts/login.haml:93 templates_v2/home/landing.haml:120
 #: tests/templates_v2/home/landing.haml:95
 msgid "th"
 msgstr "quinto"
 
-#: templates/accounts/login.haml:94 templates_v2/home/landing.haml:106
+#: templates/accounts/login.haml:94 templates_v2/home/landing.haml:121
 #: tests/templates_v2/home/landing.haml:96
 msgid " attempt."
 msgstr " intento."
 
-#: templates/accounts/login.haml:97 templates_v2/home/landing.haml:109
+#: templates/accounts/login.haml:97 templates_v2/home/landing.haml:124
 #: tests/templates_v2/home/landing.haml:99
 msgid ""
 "Your account has been disabled for security reasons. To access your account,"
 msgstr ""
 "Su cuenta se ha deshabilitado por motivos de seguridad. Para acceder a ella,"
 
-#: templates/accounts/login.haml:99 templates_v2/home/landing.haml:111
+#: templates/accounts/login.haml:99 templates_v2/home/landing.haml:126
 #: tests/templates_v2/home/landing.haml:101
 msgid "reset your password"
 msgstr "restablezca su contraseña"
 
-#: templates/accounts/login.haml:101 templates_v2/home/landing.haml:113
+#: templates/accounts/login.haml:101 templates_v2/home/landing.haml:128
 #: tests/templates_v2/home/landing.haml:103
 msgid "or try to login again in 15 minutes."
 msgstr "o intente iniciar sesión de nuevo dentro de 15 minutos."
 
-#: templates/accounts/login.haml:103 templates_v2/home/landing.haml:115
+#: templates/accounts/login.haml:103 templates_v2/home/landing.haml:130
 #: templates_v2/registration/password_reset_confirm.haml:14
 #: templates_v2/registration/password_reset_confirm.haml:40
 #: templates_v2/registration/password_reset_form.haml:8
@@ -6518,7 +6518,8 @@ msgid ""
 "Please contact our <a href=\"%(support)s\" target=\"_blank\">support team</"
 "a> if you experience any technical issues."
 msgstr ""
-"Comuníquese con nuestro <a href=\"%(support)s\" target=\"_blank\">equipo de soporte</a> si tiene problemas técnicos."
+"Comuníquese con nuestro <a href=\"%(support)s\" target=\"_blank\">equipo de "
+"soporte</a> si tiene problemas técnicos."
 
 #: templates/certificates/course_certificate_notification_email.haml:11
 #: templates/registration/public_registration_activation_link.haml:17
@@ -7292,7 +7293,7 @@ msgid "Calendar"
 msgstr "Calendario"
 
 #: templates/courses/course_learner_dashboard_user_profile_container.haml:12
-#: templates/home/landing.haml:32 templates_v2/home/landing.haml:52
+#: templates/home/landing.haml:32 templates_v2/home/landing.haml:41
 #: tests/templates_v2/home/landing.haml:40
 msgid "Log in"
 msgstr "Iniciar sesión"
@@ -11491,7 +11492,8 @@ msgid ""
 "a> if you experience any technical issues."
 msgstr ""
 "Tenga en cuenta que debe estar en la red de McKinsey o conectado a VPN para "
-"acceder al curso.Comuníquese con nuestro <a href=\"%(support)s\" target=\"_blank\">equipo de soporte</a> si tiene problemas técnicos."
+"acceder al curso.Comuníquese con nuestro <a href=\"%(support)s\" target="
+"\"_blank\">equipo de soporte</a> si tiene problemas técnicos."
 
 #: templates/registration/public_registration_warning.haml:3
 #, python-brace-format
@@ -13490,7 +13492,7 @@ msgid "About"
 msgstr "Más información"
 
 #: templates_v2/footer.haml:14 templates_v2/getting-started.haml:48
-#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:61
+#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:50
 #: tests/templates_v2/home/landing.haml:49
 msgid "FAQs"
 msgstr "Preguntas frecuentes"
@@ -13773,36 +13775,52 @@ msgstr "Visite nuestra "
 msgid "for more guidance."
 msgstr "y obtenga más información."
 
-#: templates_v2/header.haml:32
+#: templates_v2/header.haml:35
 msgid "team reports"
 msgstr "informes del equipo"
 
-#: templates_v2/header.haml:37
+#: templates_v2/header.haml:40
 msgid "admin"
 msgstr "Administrador"
 
-#: templates_v2/header.haml:42
+#: templates_v2/header.haml:45
 msgid "company admin"
 msgstr "Administrador de la compañía"
 
-#: templates_v2/header.haml:47
+#: templates_v2/header.haml:50
 msgid "ta"
 msgstr "ta"
 
-#: templates_v2/header.haml:52 templates_v2/header.haml:67
+#: templates_v2/header.haml:55 templates_v2/header.haml:70
 msgid "dashboard"
 msgstr "Panel"
 
-#: templates_v2/header.haml:72
+#: templates_v2/header.haml:75
 msgid "my courses"
 msgstr "Mis cursos"
 
-#: templates_v2/home/landing.haml:16
-msgid "People make change happen—and people make it last."
+#: templates_v2/home/landing.haml:21
+msgid "Log in to McKinsey Academy to start your learning journey."
 msgstr ""
-"Las personas son las que generan el cambio y quienes hacen que permanezca."
+"Inicie sesión en McKinsey Academy para comenzar su camino de aprendizaje."
 
-#: templates_v2/home/landing.haml:18
+#: templates_v2/home/landing.haml:30
+msgid "Username or email"
+msgstr "Usuario o correo electrónico:"
+
+#: templates_v2/home/landing.haml:37
+msgid "Show password"
+msgstr "Mostrar contraseña"
+
+#: templates_v2/home/landing.haml:52 templates_v2/not_authorized.haml:21
+msgid "Email Support"
+msgstr "ayuda por correo electrónico"
+
+#: templates_v2/home/landing.haml:56
+msgid "People make change happen, and people make it last."
+msgstr "Las personas son las que generan el cambio y quienes hacen que permanezca."
+
+#: templates_v2/home/landing.haml:58
 msgid ""
 "We help organizations unlock the potential of their people and leadership "
 "teams. We assess capability gaps and work together to design and implement "
@@ -13813,26 +13831,9 @@ msgstr ""
 "en conjunto para diseñar e implementar intervenciones adecuadas a fin de "
 "fortalecer las habilidades de su personal."
 
-#: templates_v2/home/landing.haml:20
+#: templates_v2/home/landing.haml:60
 msgid "Learn about McKinsey Academy"
 msgstr "Conozca acerca de McKinsey Academy"
-
-#: templates_v2/home/landing.haml:32
-msgid "Log in to McKinsey Academy to start your learning journey."
-msgstr ""
-"Inicie sesión en McKinsey Academy para comenzar su camino de aprendizaje."
-
-#: templates_v2/home/landing.haml:41
-msgid "Username or email"
-msgstr "Usuario o correo electrónico:"
-
-#: templates_v2/home/landing.haml:48
-msgid "Show password"
-msgstr "Mostrar contraseña"
-
-#: templates_v2/home/landing.haml:63 templates_v2/not_authorized.haml:21
-msgid "Email Support"
-msgstr "ayuda por correo electrónico"
 
 #: templates_v2/layout.haml:302
 msgid "Skip"

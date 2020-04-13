@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-03 12:43+0000\n"
+"POT-Creation-Date: 2020-04-13 06:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3066,7 +3066,7 @@ msgstr "عنوان البريد الإلكتروني الخاص بك:"
 
 #: src/edx-notifications/testserver/forms.py:14
 #: templates/accounts/login.haml:40 templates_v2/accounts/activate.haml:39
-#: templates_v2/home/landing.haml:46 tests/templates_v2/home/landing.haml:34
+#: templates_v2/home/landing.haml:35 tests/templates_v2/home/landing.haml:34
 msgid "Password"
 msgstr "كلمة المرور"
 
@@ -3222,7 +3222,7 @@ msgstr ""
 #: templates/accounts/activate.haml:41 templates/accounts/login.haml:49
 #: templates/accounts/public_registration.haml:72
 #: templates/accounts/sso_terms_of_service.haml:32
-#: templates_v2/home/landing.haml:57 tests/templates_v2/home/landing.haml:45
+#: templates_v2/home/landing.haml:46 tests/templates_v2/home/landing.haml:45
 msgid "Need Help?"
 msgstr "هل تحتاج للمساعدة؟"
 
@@ -3269,7 +3269,7 @@ msgstr "< العودة"
 
 #: templates/accounts/login.haml:18
 #: templates/accounts/public_registration.haml:35
-#: templates_v2/home/landing.haml:28 tests/templates_v2/home/landing.haml:19
+#: templates_v2/home/landing.haml:17 tests/templates_v2/home/landing.haml:19
 msgid ""
 "We're sorry, McKinsey Academy is not compatible with your browser. You will "
 "not be able to access course content without updating your browser. We "
@@ -3289,7 +3289,7 @@ msgid "Username or Email:"
 msgstr "اسم المستخدم أو البريد الإلكتروني:"
 
 #: templates/accounts/login.haml:45 templates_v2/getting-started.haml:57
-#: templates_v2/home/landing.haml:54 tests/templates_v2/home/landing.haml:42
+#: templates_v2/home/landing.haml:43 tests/templates_v2/home/landing.haml:42
 msgid "Forgot password?"
 msgstr "هل نسيت كلمة المرور؟"
 
@@ -3302,80 +3302,80 @@ msgstr "استعرض الأسئلة الشائعة للحصول على إجاب�
 msgid "Trouble logging in? Contact us."
 msgstr "هل تواجهك مشكلة في تسجيل الدخول؟ اتصل بنا."
 
-#: templates/accounts/login.haml:65 templates_v2/home/landing.haml:72
+#: templates/accounts/login.haml:65 templates_v2/home/landing.haml:87
 #: tests/templates_v2/home/landing.haml:62
 msgid "Check your email inbox"
 msgstr "تحقق من علبة الوارد لديك."
 
-#: templates/accounts/login.haml:72 templates_v2/home/landing.haml:81
+#: templates/accounts/login.haml:72 templates_v2/home/landing.haml:96
 #: tests/templates_v2/home/landing.haml:71
 msgid "If you don't see the email in your inbox, check your spam folder or"
 msgstr ""
 "إذا كنت لا ترى رسالة البريد الإلكتروني في صندوق الوارد لديك، تحقق من مجلد "
 "رسائل البريد العشوائي أو"
 
-#: templates/accounts/login.haml:74 templates_v2/home/landing.haml:83
+#: templates/accounts/login.haml:74 templates_v2/home/landing.haml:98
 #: tests/templates_v2/home/landing.haml:73
 msgid "resend email"
 msgstr "أعد إرسال رسالة البريد الإلكتروني"
 
-#: templates/accounts/login.haml:76 templates_v2/home/landing.haml:85
+#: templates/accounts/login.haml:76 templates_v2/home/landing.haml:100
 #: tests/templates_v2/home/landing.haml:75
 msgid " with the link."
 msgstr "التي تحتوي على الرابط."
 
-#: templates/accounts/login.haml:79 templates_v2/home/landing.haml:87
+#: templates/accounts/login.haml:79 templates_v2/home/landing.haml:102
 #: tests/templates_v2/home/landing.haml:77
 msgid "Return to Login"
 msgstr "العودة لتسجيل الدخول"
 
-#: templates/accounts/login.haml:85 templates_v2/home/landing.haml:94
+#: templates/accounts/login.haml:85 templates_v2/home/landing.haml:109
 #: tests/templates_v2/home/landing.haml:84
 msgid "You've been locked out!"
 msgstr "تم رفض دخولك!"
 
-#: templates/accounts/login.haml:88 templates_v2/home/landing.haml:100
+#: templates/accounts/login.haml:88 templates_v2/home/landing.haml:115
 #: tests/templates_v2/home/landing.haml:90
 msgid "Your account is locked for"
 msgstr "تم حظر حسابك لمدة"
 
-#: templates/accounts/login.haml:90 templates_v2/home/landing.haml:102
+#: templates/accounts/login.haml:90 templates_v2/home/landing.haml:117
 #: tests/templates_v2/home/landing.haml:92
 msgid "15 minutes "
 msgstr "15 دقيقة"
 
-#: templates/accounts/login.haml:91 templates_v2/home/landing.haml:103
+#: templates/accounts/login.haml:91 templates_v2/home/landing.haml:118
 #: tests/templates_v2/home/landing.haml:93
 msgid "since your 5"
 msgstr "منذ"
 
-#: templates/accounts/login.haml:93 templates_v2/home/landing.haml:105
+#: templates/accounts/login.haml:93 templates_v2/home/landing.haml:120
 #: tests/templates_v2/home/landing.haml:95
 msgid "th"
 msgstr "محاولتك"
 
-#: templates/accounts/login.haml:94 templates_v2/home/landing.haml:106
+#: templates/accounts/login.haml:94 templates_v2/home/landing.haml:121
 #: tests/templates_v2/home/landing.haml:96
 msgid " attempt."
 msgstr "الخامسة."
 
-#: templates/accounts/login.haml:97 templates_v2/home/landing.haml:109
+#: templates/accounts/login.haml:97 templates_v2/home/landing.haml:124
 #: tests/templates_v2/home/landing.haml:99
 msgid ""
 "Your account has been disabled for security reasons. To access your account,"
 msgstr "تم تعطيل حسابك لأسباب أمنية. وليتسنى الوصول له،"
 
-#: templates/accounts/login.haml:99 templates_v2/home/landing.haml:111
+#: templates/accounts/login.haml:99 templates_v2/home/landing.haml:126
 #: tests/templates_v2/home/landing.haml:101
 msgid "reset your password"
 msgstr "أعد تعيين كلمة مرورك"
 
-#: templates/accounts/login.haml:101 templates_v2/home/landing.haml:113
+#: templates/accounts/login.haml:101 templates_v2/home/landing.haml:128
 #: tests/templates_v2/home/landing.haml:103
 msgid "or try to login again in 15 minutes."
 msgstr "أو حاول تسجيل الدخول مرة أخرى في غضون 15 دقيقة."
 
-#: templates/accounts/login.haml:103 templates_v2/home/landing.haml:115
+#: templates/accounts/login.haml:103 templates_v2/home/landing.haml:130
 #: templates_v2/registration/password_reset_confirm.haml:14
 #: templates_v2/registration/password_reset_confirm.haml:40
 #: templates_v2/registration/password_reset_form.haml:8
@@ -6429,7 +6429,8 @@ msgid ""
 "Please contact our <a href=\"%(support)s\" target=\"_blank\">support team</"
 "a> if you experience any technical issues."
 msgstr ""
-"يُرجى التواصل مع <a href=\"%(support)s\" target=\"_blank\">فريق الدعم</a> إذا واجهت أي مشكلات تقنية."
+"يُرجى التواصل مع <a href=\"%(support)s\" target=\"_blank\">فريق الدعم</a> إذا "
+"واجهت أي مشكلات تقنية."
 
 #: templates/certificates/course_certificate_notification_email.haml:11
 #: templates/registration/public_registration_activation_link.haml:17
@@ -7184,7 +7185,7 @@ msgid "Calendar"
 msgstr "التقويم"
 
 #: templates/courses/course_learner_dashboard_user_profile_container.haml:12
-#: templates/home/landing.haml:32 templates_v2/home/landing.haml:52
+#: templates/home/landing.haml:32 templates_v2/home/landing.haml:41
 #: tests/templates_v2/home/landing.haml:40
 msgid "Log in"
 msgstr "تسجيل الدخول"
@@ -11154,7 +11155,8 @@ msgid ""
 "a> if you experience any technical issues."
 msgstr ""
 "يرجى ملاحظة أنه ينبغي أن يكون لديك حساب على شبكة ماكنزي أو شبكة خاصة "
-"افتراضية (VPN) ليتسنى الوصول إلى الدورة التدريبية.يُرجى التواصل مع <a href=\"%(support)s\" target=\"_blank\">فريق الدعم</a> إذا واجهت أي مشكلات تقنية."
+"افتراضية (VPN) ليتسنى الوصول إلى الدورة التدريبية.يُرجى التواصل مع <a href="
+"\"%(support)s\" target=\"_blank\">فريق الدعم</a> إذا واجهت أي مشكلات تقنية."
 
 #: templates/registration/public_registration_warning.haml:3
 #, python-brace-format
@@ -13045,7 +13047,7 @@ msgid "About"
 msgstr "نبذة عن"
 
 #: templates_v2/footer.haml:14 templates_v2/getting-started.haml:48
-#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:61
+#: templates_v2/getting-started.haml:139 templates_v2/home/landing.haml:50
 #: tests/templates_v2/home/landing.haml:49
 msgid "FAQs"
 msgstr "الأسئلة المتداولة"
@@ -13319,35 +13321,51 @@ msgstr "تفضل بزيارة جزئية"
 msgid "for more guidance."
 msgstr " للحصول على مزيد من التوجيه والإرشاد."
 
-#: templates_v2/header.haml:32
+#: templates_v2/header.haml:35
 msgid "team reports"
 msgstr "تقارير الفريق"
 
-#: templates_v2/header.haml:37
+#: templates_v2/header.haml:40
 msgid "admin"
 msgstr "مشرف أوبر"
 
-#: templates_v2/header.haml:42
+#: templates_v2/header.haml:45
 msgid "company admin"
 msgstr "مسؤول الشركة"
 
-#: templates_v2/header.haml:47
+#: templates_v2/header.haml:50
 msgid "ta"
 msgstr "مساعد مدرّس"
 
-#: templates_v2/header.haml:52 templates_v2/header.haml:67
+#: templates_v2/header.haml:55 templates_v2/header.haml:70
 msgid "dashboard"
 msgstr "لوحة المعلومات"
 
-#: templates_v2/header.haml:72
+#: templates_v2/header.haml:75
 msgid "my courses"
 msgstr "دوراتي التدريبية"
 
-#: templates_v2/home/landing.haml:16
-msgid "People make change happen—and people make it last."
+#: templates_v2/home/landing.haml:21
+msgid "Log in to McKinsey Academy to start your learning journey."
+msgstr "سجِّل الدخول إلى أكاديمية ماكنزي لتبدأ رحلة التعلم."
+
+#: templates_v2/home/landing.haml:30
+msgid "Username or email"
+msgstr "اسم المستخدم أو البريد الإلكتروني:"
+
+#: templates_v2/home/landing.haml:37
+msgid "Show password"
+msgstr "إظهار كلمة المرور"
+
+#: templates_v2/home/landing.haml:52 templates_v2/not_authorized.haml:21
+msgid "Email Support"
+msgstr "إرسال بريد إلكتروني إلى فريق الدعم"
+
+#: templates_v2/home/landing.haml:56
+msgid "People make change happen, and people make it last."
 msgstr "يُحدث الأشخاص التغيير، ويدوم بقاؤه بهم."
 
-#: templates_v2/home/landing.haml:18
+#: templates_v2/home/landing.haml:58
 msgid ""
 "We help organizations unlock the potential of their people and leadership "
 "teams. We assess capability gaps and work together to design and implement "
@@ -13357,25 +13375,9 @@ msgstr ""
 "نُقيِّم ثغرات القدرات، ونعمل معًا لتصميم التدخلات الصحيحة وتنفيذها لبناء "
 "المهارات المطلوبة في العاملين بالمؤسسات."
 
-#: templates_v2/home/landing.haml:20
+#: templates_v2/home/landing.haml:60
 msgid "Learn about McKinsey Academy"
 msgstr "تعرّف على المعلومات حول أكاديمية ماكنزي"
-
-#: templates_v2/home/landing.haml:32
-msgid "Log in to McKinsey Academy to start your learning journey."
-msgstr "سجِّل الدخول إلى أكاديمية ماكنزي لتبدأ رحلة التعلم."
-
-#: templates_v2/home/landing.haml:41
-msgid "Username or email"
-msgstr "اسم المستخدم أو البريد الإلكتروني:"
-
-#: templates_v2/home/landing.haml:48
-msgid "Show password"
-msgstr "إظهار كلمة المرور"
-
-#: templates_v2/home/landing.haml:63 templates_v2/not_authorized.haml:21
-msgid "Email Support"
-msgstr "إرسال بريد إلكتروني إلى فريق الدعم"
 
 #: templates_v2/layout.haml:302
 msgid "Skip"
