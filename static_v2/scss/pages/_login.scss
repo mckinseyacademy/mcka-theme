@@ -530,7 +530,7 @@
 
       main {
         padding: 0;
-        min-height: calc(100vh - 110px);
+        min-height: calc(100vh - 133px);
         .container {
           padding: 0 !important;
         }
@@ -722,5 +722,56 @@
       }
     }
   }
+}
+
+// Microspft Surface Pro
+
+@media (width: 912px) and (height: 1368px) {
+  .site-wrapper.login {
+    main {
+      .login-page {
+        .right-col-fixed {
+          min-height: 40.3vh;
+          .login-form-wrap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            right: auto;
+            transform: translate(-50%, -50%);
+          }
+        }
+        .left-col {
+          min-height: 50vh;
+          .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            transform: translateY(-50%); 
+          }
+        }
+      }
+    }
+  }
+
+  .rtl.site-wrapper.login {
+    main {
+      .login-page {
+        .right-col-fixed {
+          .login-form-wrap {
+            left: auto;
+            right: 50%;
+            transform: translate(50%, -50%);
+          }
+        }
+        .left-col {
+          .hero-content {
+            right: 60px;
+            left: auto;
+          }
+        }
+      }
+    }
+  }
+
 }
 
