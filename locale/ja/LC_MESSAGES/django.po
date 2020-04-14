@@ -1570,7 +1570,7 @@ msgstr "ユーザー名"
 
 #: admin/controller.py:813
 msgid "Progress %"
-msgstr "進度%"
+msgstr "進捗 %"
 
 #: admin/controller.py:813
 #: templates/admin/client-admin/course_analytics.haml:71
@@ -4162,7 +4162,7 @@ msgstr "コースへ戻る"
 
 #: templates/admin/cohorts/course_details.html:51
 msgid "Add Cohort"
-msgstr "コホート"
+msgstr "コース参加者"
 
 #: templates/admin/cohorts/course_details.html:65
 msgid "Enable Cohorts"
@@ -4914,7 +4914,7 @@ msgstr "合格:"
 #: templates/admin/courses/course_details.haml:48
 #: templates_v2/admin/courses/course_details.haml:45
 msgid "COHORTS"
-msgstr "コホート"
+msgstr "コース参加者"
 
 #: templates/admin/courses/course_details.haml:54
 #: templates_v2/admin/courses/course_details.haml:51
@@ -6605,7 +6605,7 @@ msgstr "ディスカッション"
 #: templates/courses/content_page/course_tabs.haml:26
 #: templates/courses/course_cohort.haml:9
 msgid "Cohort"
-msgstr "コホート"
+msgstr "コース参加者"
 
 #: templates/courses/content_page/course_tabs.haml:33
 #: templates_v2/courses/course_navigation.haml:28
@@ -12388,13 +12388,13 @@ msgstr "あなたの順位は、"
 #: templates_v2/courses/course_cohort.haml:106
 #: templates_v2/courses/course_cohort.haml:187
 msgid "out of"
-msgstr "あなたのコーホートに含まれる "
+msgstr "あなたのコホートに含まれる"
 
 #: templates_v2/courses/course_cohort.haml:27
 #: templates_v2/courses/course_cohort.haml:106
 #: templates_v2/courses/course_cohort.haml:187
 msgid "members in your cohort."
-msgstr " 位です 人のメンバー中 "
+msgstr "位です 人のメンバー中"
 
 #: templates_v2/courses/course_cohort.haml:29
 msgid "Your progress position will be displayed here"
