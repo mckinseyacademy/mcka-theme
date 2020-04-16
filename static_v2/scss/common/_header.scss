@@ -52,10 +52,11 @@ header {
   background-color: $white;
 
   .language-selector {
-    height: 70px;
-    width: 80px;
-    line-height: 70px;
+    height: auto;
+    width: auto !important;
+    line-height: inherit;
     color: $black;
+    margin-top: 20px;
 
     .dropdown {
       display: inline-block;
@@ -66,9 +67,16 @@ header {
         text-transform: uppercase;
         font-size: 0.814rem;
         padding: 0;
+        >span{
+          display: inline-block;
+          vertical-align: middle;
+        }
 
         &:focus {
           outline: none;
+        }
+        &:after{
+          margin-top: 2px;
         }
       }
       .dropdown-item {
@@ -83,6 +91,10 @@ header {
     i {
       vertical-align: middle;
       font-size: 30px;
+      display: none;
+      &.show{
+        display: inline-block;
+      }
     }
   }
 
@@ -91,7 +103,7 @@ header {
     border-bottom-color: $mid-gray;
 
     .dropdown-menu {
-      top: 55px !important;
+      top: 35px !important;
     }
     > a {
       display: block;
