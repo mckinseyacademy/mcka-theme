@@ -1,6 +1,6 @@
 - load i18n
 
-%p {% trans "Dear" %} #{username},
+%p {% blocktrans %}Dear {{username}}, {% endblocktrans %}
 %p #{template_text}
 %p {% trans "Please reach out to your McKinsey contact or academy_info@mckinsey.com if you have any further questions." %}
 %p

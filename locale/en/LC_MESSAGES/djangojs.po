@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-12-02 09:56+0000\n"
+"POT-Creation-Date: 2020-04-16 10:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -51,7 +51,7 @@ msgid "Course"
 msgstr ""
 
 #: static/js/admin_learner_dashboard/element_modal.js:72
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:179
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:176
 msgid "In Person Session"
 msgstr ""
@@ -260,37 +260,37 @@ msgid ""
 "and feedback associated with the group."
 msgstr ""
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:116
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:113
 msgid "Your Progress: %(value)s%"
 msgstr ""
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:126
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
 msgid "Complete"
 msgstr ""
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:126
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:123
 msgid "Incomplete"
 msgstr ""
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:196
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:201
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:195
 msgid "Digital Course"
 msgstr ""
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:222
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:230
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:220
 msgid "Group work"
 msgstr ""
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:242
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:252
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:239
 msgid "Webinar"
 msgstr ""
 
-#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:262
+#: static/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:274
 #: static_v2/js/course_learner_dashboard/learner_dashboard_calendar_highcharts.js:258
 msgid "Digital Content"
 msgstr ""
@@ -321,7 +321,7 @@ msgstr ""
 msgid "Please select file for upload."
 msgstr ""
 
-#: static/js/router.js:424
+#: static/js/router.js:433
 msgid "Please select at least one course"
 msgstr ""
 
@@ -469,7 +469,7 @@ msgstr ""
 #: static/js/views/admin/company_details.js:4
 #: static/js/views/admin/course_details.js:389
 #: static/js/views/admin/courses_list.js:16
-#: static/js/views/admin/participant_details_active_courses_view.js:54
+#: static/js/views/admin/participant_details_active_courses_view.js:74
 #: static/js/views/admin/participant_details_course_history_view.js:10
 msgid "Course Name"
 msgstr ""
@@ -477,7 +477,7 @@ msgstr ""
 #: static/js/views/admin/company_details.js:20
 #: static/js/views/admin/course_details.js:399
 #: static/js/views/admin/courses_list.js:26
-#: static/js/views/admin/participant_details_active_courses_view.js:72
+#: static/js/views/admin/participant_details_active_courses_view.js:92
 #: static/js/views/admin/participant_details_course_history_view.js:28
 msgid "Course ID"
 msgstr ""
@@ -570,7 +570,7 @@ msgstr ""
 #: static/js/views/admin/course_details.js:30
 #: static/js/views/admin/course_details_bulk_actions.js:281
 #: static/js/views/admin/import_progress.js:15
-#: static/js/views/admin/participant_details_active_courses_view.js:111
+#: static/js/views/admin/participant_details_active_courses_view.js:131
 #: static/js/views/admin/participant_details_course_history_view.js:32
 #: static/js/views/admin/participant_details_edit_info.js:375
 #: static/js/views/admin/participantsinfo.js:124
@@ -592,12 +592,12 @@ msgstr ""
 
 #: static/js/views/admin/course_details.js:51
 #: static/js/views/admin/manager_dashboard.js:30
-#: static/js/views/admin/participant_details_active_courses_view.js:74
+#: static/js/views/admin/participant_details_active_courses_view.js:94
 msgid "Progress"
 msgstr ""
 
 #: static/js/views/admin/course_details.js:58
-#: static/js/views/admin/participant_details_active_courses_view.js:93
+#: static/js/views/admin/participant_details_active_courses_view.js:113
 msgid "Proficiency"
 msgstr ""
 
@@ -700,8 +700,8 @@ msgid ""
 msgstr ""
 
 #: static/js/views/admin/course_details_bulk_actions.js:137
-#: static/js/views/admin/participant_details_active_courses_view.js:131
-#: static/js/views/admin/participant_details_active_courses_view.js:133
+#: static/js/views/admin/participant_details_active_courses_view.js:151
+#: static/js/views/admin/participant_details_active_courses_view.js:153
 msgid "Unenroll"
 msgstr ""
 
@@ -1002,7 +1002,7 @@ msgstr ""
 msgid "Are you sure you want to remove this ?"
 msgstr ""
 
-#: static/js/views/admin/participant_details_active_courses_view.js:73
+#: static/js/views/admin/participant_details_active_courses_view.js:93
 #: static/js/views/admin/participant_details_course_history_view.js:29
 msgid "Program"
 msgstr ""
@@ -1096,10 +1096,10 @@ msgstr ""
 msgid "Enrolled In"
 msgstr ""
 
-#: static_v2/js/application.js:524 static_v2/js/custom.js:112
+#: static_v2/js/application.js:524 static_v2/js/custom.js:129
 msgid "Hide password"
 msgstr ""
 
-#: static_v2/js/application.js:529 static_v2/js/custom.js:117
+#: static_v2/js/application.js:529 static_v2/js/custom.js:134
 msgid "Show password"
 msgstr ""
