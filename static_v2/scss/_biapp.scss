@@ -970,11 +970,6 @@ form {
 
 .site-wrapper {
   &.login {
-    .quick-links {
-      li {
-        @include margin-left(20px);
-      }
-    }
     .login-form-wrap {
       .forgot-pswd-link {
         @include float(left);
