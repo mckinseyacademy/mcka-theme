@@ -1570,7 +1570,7 @@ msgstr "ユーザー名"
 
 #: admin/controller.py:813
 msgid "Progress %"
-msgstr "進捗 %"
+msgstr "進度%"
 
 #: admin/controller.py:813
 #: templates/admin/client-admin/course_analytics.haml:71
@@ -12570,7 +12570,7 @@ msgstr ""
 
 #: templates_v2/courses/course_navigation.haml:60
 msgid "My Progress"
-msgstr "進度%"
+msgstr "進捗"
 
 #: templates_v2/courses/course_progress_v2.haml:17
 #, python-format
