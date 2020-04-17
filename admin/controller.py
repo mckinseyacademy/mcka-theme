@@ -2749,7 +2749,7 @@ class ProblemReportPostProcessor(object):
         """
         with requests.get(self.report_uri, stream=True) as csv_report:
             csv_report.raise_for_status()
-            report_reader = csv.DictReader(codecs.iterdecode(csv_report.iter_lines(), 'utf-8'))
+            report_reader = csv.DictReader(codecs.iterdecode(csv_report.iter_lines(), 'utf-8-sig'))
 
             output = {}
 
