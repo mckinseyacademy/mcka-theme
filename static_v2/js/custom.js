@@ -705,3 +705,8 @@ $(window).resize(function () {
         scaleImage(this);
     });
 });
+$(window).on('load resize', function () {
+    var fooHeight = $(".site-wrapper.login footer").innerHeight();
+    $(".site-wrapper.login .background-absolute").css("bottom", fooHeight);
+});
+
