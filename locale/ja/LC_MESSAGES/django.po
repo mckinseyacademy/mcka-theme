@@ -3688,7 +3688,7 @@ msgstr "参加者の現在の成績に基づく平均成績。"
 #: templates/courses/visualizations/course_proficiency.haml:16
 #: templates/courses/visualizations/course_progress.haml:16
 msgid "cohort average"
-msgstr "コホート平均"
+msgstr "コース参加者平均"
 
 #: templates/admin/client-admin/course_analytics.haml:65
 msgid ""
@@ -4625,7 +4625,7 @@ msgstr "リソース"
 #: templates/admin/course_meta_content/item_list.haml:118
 #: templates_v2/courses/visualizations/course_engagement.haml:17
 msgid "Cohort Average"
-msgstr "コホート平均"
+msgstr "コース参加者平均"
 
 #: templates/admin/course_meta_content/item_list.haml:134
 msgid "Mobile Available"
@@ -6853,7 +6853,7 @@ msgstr "エンゲージメント:"
 #: templates/courses/course_cohort.haml:166
 #, python-format
 msgid " cohort average = %(course_avg)s points "
-msgstr "コホート平均 = %(course_avg)s点"
+msgstr "コース参加者平均 = %(course_avg)s点"
 
 #: templates/courses/course_cohort.haml:168
 #: templates_v2/courses/course_cohort.haml:100
@@ -12370,7 +12370,7 @@ msgstr "コース完了状況:"
 #: templates_v2/courses/visualizations/course_proficiency.haml:13
 #: templates_v2/courses/visualizations/course_progress.haml:15
 msgid "Cohort Average:"
-msgstr "コホート平均:"
+msgstr "コース参加者平均:"
 
 #: templates_v2/courses/course_cohort.haml:24
 #: templates_v2/courses/course_cohort.haml:103
@@ -12382,19 +12382,19 @@ msgstr "順位"
 #: templates_v2/courses/course_cohort.haml:105
 #: templates_v2/courses/course_cohort.haml:186
 msgid "You are ranked "
-msgstr "あなたの順位は、"
+msgstr "あなたはコホートのメンバー"
 
 #: templates_v2/courses/course_cohort.haml:27
 #: templates_v2/courses/course_cohort.haml:106
 #: templates_v2/courses/course_cohort.haml:187
 msgid "out of"
-msgstr "あなたのコホートに含まれる"
+msgstr "名のうち"
 
 #: templates_v2/courses/course_cohort.haml:27
 #: templates_v2/courses/course_cohort.haml:106
 #: templates_v2/courses/course_cohort.haml:187
 msgid "members in your cohort."
-msgstr "位です 人のメンバー中"
+msgstr "位につけました。"
 
 #: templates_v2/courses/course_cohort.haml:29
 msgid "Your progress position will be displayed here"
@@ -12423,7 +12423,7 @@ msgstr "ディスカッションアクティビティポイント:"
 #: templates_v2/courses/course_cohort.haml:98
 #, python-format
 msgid " Cohort Average: %(score)s points"
-msgstr "コホート平均: %(score)s 点"
+msgstr "コース参加者平均: %(score)s 点"
 
 #: templates_v2/courses/course_cohort.haml:108
 msgid "Your engagement position will be displayed here"
