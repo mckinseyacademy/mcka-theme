@@ -666,7 +666,7 @@ $(window).on("load", function () {
     $('div.faculty label').each(function (index) {
         scaleImage(this);
     });
-    $('header .language-selector i').addClass('show');
+    $('header .language-selector button').addClass('show');
 });
 
 // Preloader for courses page

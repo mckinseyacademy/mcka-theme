@@ -67,7 +67,7 @@ header {
         text-transform: uppercase;
         font-size: 0.814rem;
         padding: 0;
-        >span{
+        > span {
           display: inline-block;
           vertical-align: middle;
         }
@@ -82,9 +82,25 @@ header {
         &:focus {
           outline: none;
         }
-        &:after{
+        &:after {
           margin-top: 2px;
+          visibility: hidden;
         }
+        i {
+          vertical-align: middle;
+          font-size: 30px;
+          display: none;
+        }
+
+        &.show {
+          i {
+            display: inline-block;
+          }
+          &:after {
+            visibility: visible;
+          }
+        }
+
       }
       .dropdown-item {
         &:active,
@@ -95,14 +111,6 @@ header {
       }
     }
 
-    i {
-      vertical-align: middle;
-      font-size: 30px;
-      display: none;
-      &.show{
-        display: inline-block;
-      }
-    }
   }
 
   &.appHeader {
