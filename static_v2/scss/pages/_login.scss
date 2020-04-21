@@ -221,6 +221,11 @@
         color: #051C2C;
         margin-bottom: 30px;
       }
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /* IE10+ */
+        @media (max-height: 500px) {
+          padding-top: 90px;
+        }
+      }
     }
     .helpLink {
       display: none;
