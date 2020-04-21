@@ -674,6 +674,7 @@ class ProblemReportPostProcessorTest(TestCase):
             {
                 'username': 'username3',
                 'email': 'username3@example.com',
+                'organizations': [{'display_name': 'Test Org'}]
             },
             {
                 'username': 'username4',
@@ -689,10 +690,10 @@ class ProblemReportPostProcessorTest(TestCase):
         self.assertTrue(len(rows), 3)
         self.assertCountEqual(
             rows,
-            [{'L1M1 - question one?': 'some answer', 'email': 'username3@example.com'},
-             {'L2M2 - question two?': 'another answer', 'email': 'username4@example.com'}]
+            [{'L1M1 - question one?': 'some answer', 'email': 'username3@example.com', 'organization': 'Test Org'},
+             {'L2M2 - question two?': 'another answer', 'email': 'username4@example.com', 'organization': ''}]
         )
-        self.assertEqual(keys, ['email', 'L1M1 - question one?', 'L2M2 - question two?'])
+        self.assertEqual(keys, ['email', 'organization', 'L1M1 - question one?', 'L2M2 - question two?'])
 
 
 class GetUsersForDeletionTest(CourseParticipantsStatsMixin, TestCase):

@@ -2718,8 +2718,15 @@ class ProblemReportPostProcessor(object):
         """
         Fetch user data for users in the selected course, and return a username-email mapping
         """
-        users_data = course_api.get_user_list_json(course_id=self.course_id)
-        return {user['username']: user.get('email') for user in users_data}
+        users_data = course_api.get_user_list_json(course_id=self.course_id, additional_fields=['organizations'])
+        users = {}
+        for user_data in users_data:
+            organizations = user_data.get('organizations', [])
+            organization = organizations[0].get('display_name', '') if organizations else ''
+            email = user_data.get('email')
+            users[user_data['username']] = {'email': email, 'organization': organization}
+
+        return users
 
     def _get_column_name(self, row):
         """
@@ -2756,14 +2763,15 @@ class ProblemReportPostProcessor(object):
             # Process every row and yield
             for row in report_reader:
                 column_name = self._get_column_name(row)
-                user_email = self._users_dict.get(row['username'])
+                user = self._users_dict.get(row['username'], {})
+                user_email = user.get('email')
                 output.setdefault(
-                    user_email, {'email': user_email}
+                    user_email, {'email': user_email, 'organization': user.get('organization', '')}
                 ).update({
                     column_name: row.get('Answer', 'Removed Option')
                 })
 
-        return list(output.values()), ['email'] + sorted(self._cols.values())
+        return list(output.values()), ['email', 'organization'] + sorted(self._cols.values())
 
 
 def get_data_from_csv(file_path, headers):
