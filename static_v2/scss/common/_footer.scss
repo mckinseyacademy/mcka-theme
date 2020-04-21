@@ -129,8 +129,8 @@ footer {
       li {
         > a.nav-link {
           font-size: 0.625rem !important;
-          line-height: 21px;
-          padding: 0 0.4rem;
+          line-height: 21px !important;
+          padding: 0 0.4rem !important;
         }
       }
     }
