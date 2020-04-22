@@ -56,7 +56,7 @@ header {
     width: auto !important;
     line-height: inherit;
     color: $black;
-    margin-top: 20px;
+    margin-top: 19px;
 
     .dropdown {
       display: inline-block;
@@ -70,6 +70,13 @@ header {
         >span{
           display: inline-block;
           vertical-align: middle;
+        }
+        > span, i, &:after{
+          position: relative;
+          transform: translateY(1px);
+        }
+        &:hover{
+          cursor: pointer;
         }
 
         &:focus {
