@@ -11484,7 +11484,7 @@ msgstr ""
 
 #: templates/registration/public_registration_mcka_user.haml:6
 msgid "To access the course, click the following link:"
-msgstr ""
+msgstr "Klik op de onderstaande link om toegang te krijgen tot de cursus:"
 
 #: templates/registration/public_registration_mcka_user.haml:10
 #, python-format

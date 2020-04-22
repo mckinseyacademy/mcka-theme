@@ -11479,7 +11479,7 @@ msgstr ""
 
 #: templates/registration/public_registration_mcka_user.haml:6
 msgid "To access the course, click the following link:"
-msgstr ""
+msgstr "Para acceder al curso, haga clic en el siguiente enlace:"
 
 #: templates/registration/public_registration_mcka_user.haml:10
 #, python-format
