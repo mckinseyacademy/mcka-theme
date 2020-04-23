@@ -121,6 +121,9 @@ body.new-theme {
 	-webkit-font-smoothing: unset;
 	-moz-osx-font-smoothing: unset;
 
+	button {
+		border-width: 0;
+	}
 	.row {
 		display: flex;
 		flex-wrap: wrap;
@@ -237,7 +240,7 @@ body.new-theme {
 
 					&.js-post-title,
 					&.edit-post-title {
-						min-width: 410px;
+						min-width: 370px;
 					}
 				}
 
@@ -257,6 +260,9 @@ body.new-theme {
 
 	/* mobile */
 	@media (max-width: 767px) {
+		.row>.col {
+			padding: 0 10px;
+		}
 		#course-discussion {
 			padding: 0;
 
@@ -308,6 +314,7 @@ body.new-theme {
 					}
 
 					.page-content {
+						padding: 0;
 						padding-top: 68px;
 					}
 
@@ -322,13 +329,15 @@ body.new-theme {
 							width: 100%;
 							position: relative;
 							top: 65px;
+							margin-left: 0;
+							margin-right: 0;
 
 							h1 {
 								top: -75px;
 							}
 
-							.form-actions {
-								width: 20%;
+							.forum-actions {
+								width: auto;
 
 								button {
 									@include primary-button ( !important);
@@ -347,8 +356,8 @@ body.new-theme {
 										font-family: "Material Icons";
 										content: "\e145";
 										position: absolute;
-										left: 29%;
-										top: -10px
+										right: 18px;
+    									top: -7px;
 									}
 								}
 							}
@@ -361,8 +370,8 @@ body.new-theme {
 
 								.search-button {
 									&:after {
-										top: 4px;
-										right: 0px;
+										top: 2px;
+										right: 5px;
 									}
 								}
 
@@ -770,6 +779,7 @@ body.new-theme {
 				padding-left: 0 !important;
 				padding-right: 0 !important;
 				position: relative;
+				border: none;
 			}
 
 			.discussion-body {
@@ -777,6 +787,7 @@ body.new-theme {
 			}
 
 			.page-content {
+				padding: 0;
 				padding-top: 50px;
 			}
 
@@ -1076,6 +1087,11 @@ body.new-theme {
 				width: 100%;
 				text-align: right;
 				border: 0;
+				padding: 0;
+				div {
+					display: inline-block;
+					vertical-align: top;
+				}
 
 				.page-header-main {
 					position: absolute;
@@ -1091,6 +1107,7 @@ body.new-theme {
 
 				.page-header-secondary {
 					width: 100%;
+					margin: 0;
 
 					h1 {
 
@@ -1128,7 +1145,10 @@ body.new-theme {
 						display: block;
 						border: 0;
 					}
-
+					.field-label {
+						position: fixed;
+						left: -9999px;
+					}
 					.search-button {
 						position: absolute;
 						top: 0;
@@ -1218,9 +1238,13 @@ body.new-theme {
 					.forum-nav-browse-filter {
 						padding: 0;
 						margin-bottom: 10px;
-
+						.field-label-text {
+							position: fixed;
+							left: -9999px;
+						}
 						.icon {
 							margin-top: -9px;
+							top: 50%;
 						}
 
 						label {
@@ -1338,7 +1362,8 @@ body.new-theme {
 					// Radio button
 
 					.post-type-label {
-						margin-right: 10px;
+						margin-right: 0;
+						margin-left: 0;
 						width: 100%;
 						display: inline-block;
 						position: relative;
@@ -1346,6 +1371,8 @@ body.new-theme {
 
 						.input-radio {
 							display: block;
+							position: absolute;
+							opacity: 0;
 						}
 						.input-radio:checked+.field-input-label:before {
 							content: '\e837';
@@ -1388,7 +1415,7 @@ body.new-theme {
 
 					.field-label {
 						position: relative;
-						margin-bottom: 34px;
+						margin-bottom: 0;
 
 						.field-label-text {
 							margin-bottom: 8px;
@@ -1403,13 +1430,13 @@ body.new-theme {
 						&#field_help_topic_area {
 
 							position: absolute;
-							top: 64px;
+							top: 68px;
 						}
 
 						&#field_help_title {
 
 							position: absolute;
-							top: 64px;
+							top: 68px;
 						}
 					}
 
@@ -1494,6 +1521,16 @@ body.new-theme {
 
 				.post-options {
 					.field-label {
+						width: 100%;
+						color: $black;
+						text-transform: capitalize;
+						padding: 0;
+						margin-left: 0;
+						margin-right: 0;
+						height: 18px;
+						&:before {
+							position: static;
+						}
 						&:nth-child(2) {
 							.field-input-label {
 								top: 2px;
@@ -1513,11 +1550,7 @@ body.new-theme {
 						}
 
 
-						width: 100%;
-						color: $black;
-						text-transform: capitalize;
-						padding-left: 30px;
-						height: 18px;
+						
 
 						.field-input:checked+.field-input-label {
 							color: $black;
@@ -2110,6 +2143,23 @@ body.new-theme {
 
 // Layout
 .new-theme {
+	&.rtl {
+		#course-discussion .discussion-content .forum-nav .forum-nav-browse-menu-wrapper .forum-nav-browse-filter .icon {
+			left: auto;
+			right: 11px;
+			width: auto;
+		}
+		#course-discussion .discussion-content .forum-content .thread-wrapper .post-extended-content .js-response-list .forum-response .discussion-response .response-header .response-header-actions, 
+		#course-discussion .discussion-content .forum-content .thread-wrapper .post-extended-content .js-marked-answer-list .forum-response .discussion-response .response-header .response-header-actions {
+			left: auto;
+		}
+		.discussion-comment .comment-actions-list {
+			left: auto;
+		}
+	}
+	.view-discussion-home {
+		display: block;
+	}
 	#course-discussion {
 
 		// start new-theme discussion home page
@@ -2201,6 +2251,7 @@ body.new-theme {
 			padding: 0 30px !important;
 			background: #F9F9F9 !important;
 			margin-right: 0 !important;
+			margin-left: 0 !important;
 			margin-bottom: 0 !important;
 			min-height: 550px;
 			height: calc(100vh - 300px) !important;
@@ -2228,6 +2279,9 @@ body.new-theme {
 .new-theme {
 
 	@media (max-width: 767px) {
+		.view-discussion-home {
+			display: none;
+		}
 		#course-discussion {
 			.discussion-content {
 				padding: 20px 0 !important;
@@ -2318,3 +2372,5 @@ body.new-theme {
 		}
 	}
 }
+
+
