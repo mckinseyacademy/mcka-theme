@@ -690,10 +690,10 @@ class ProblemReportPostProcessorTest(TestCase):
         self.assertTrue(len(rows), 3)
         self.assertCountEqual(
             rows,
-            [{'L1M1 - question one?': 'some answer', 'email': 'username3@example.com', 'organization': 'Test Org'},
-             {'L2M2 - question two?': 'another answer', 'email': 'username4@example.com', 'organization': ''}]
+            [{'L1M1 - question one?': 'some answer', 'email': 'username3@example.com', 'company': 'Test Org'},
+             {'L2M2 - question two?': 'another answer', 'email': 'username4@example.com', 'company': ''}]
         )
-        self.assertEqual(keys, ['email', 'organization', 'L1M1 - question one?', 'L2M2 - question two?'])
+        self.assertEqual(keys, ['email', 'company', 'L1M1 - question one?', 'L2M2 - question two?'])
 
 
 class GetUsersForDeletionTest(CourseParticipantsStatsMixin, TestCase):

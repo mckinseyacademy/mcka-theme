@@ -2724,7 +2724,7 @@ class ProblemReportPostProcessor(object):
             organizations = user_data.get('organizations', [])
             organization = organizations[0].get('display_name', '') if organizations else ''
             email = user_data.get('email')
-            users[user_data['username']] = {'email': email, 'organization': organization}
+            users[user_data['username']] = {'email': email, 'company': organization}
 
         return users
 
@@ -2766,12 +2766,12 @@ class ProblemReportPostProcessor(object):
                 user = self._users_dict.get(row['username'], {})
                 user_email = user.get('email')
                 output.setdefault(
-                    user_email, {'email': user_email, 'organization': user.get('organization', '')}
+                    user_email, {'email': user_email, 'company': user.get('company', '')}
                 ).update({
                     column_name: row.get('Answer', 'Removed Option')
                 })
 
-        return list(output.values()), ['email', 'organization'] + sorted(self._cols.values())
+        return list(output.values()), ['email', 'company'] + sorted(self._cols.values())
 
 
 def get_data_from_csv(file_path, headers):
