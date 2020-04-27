@@ -6634,7 +6634,7 @@ msgstr " %(module_custom_label)s %(index)s de %(lesson_count)s"
 #: templates_v2/courses/content_page/lesson_pager.haml:24
 #: templates_v2/courses/content_page/lesson_pager.haml:28
 msgid "of"
-msgstr "do"
+msgstr "de"
 
 #: templates/courses/content_page/lesson_pager.haml:25
 #: templates/courses/content_page/lesson_pager.haml:53
