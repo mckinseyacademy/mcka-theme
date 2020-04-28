@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-13 06:35+0000\n"
+"POT-Creation-Date: 2020-04-16 10:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6427,9 +6427,13 @@ msgid "Course Id"
 msgstr "コースID"
 
 #: templates/certificates/course_certificate_notification_email.haml:3
-#, python-brace-format
-msgid "Dear #{username}, "
-msgstr "#{username}様、"
+#: templates/registration/public_registration_activation_link.haml:3
+#: templates/registration/public_registration_course_closed.haml:3
+#: templates/registration/public_registration_existing.haml:3
+#: templates/registration/public_registration_mcka_user.haml:3
+#, python-format
+msgid "Dear %(username)s, "
+msgstr "%(username)s様、"
 
 #: templates/certificates/course_certificate_notification_email.haml:5
 msgid ""
@@ -11068,13 +11072,6 @@ msgstr "パスワードを再設定する"
 msgid "Password Reset Requested"
 msgstr "パスワードの再設定が申請されました"
 
-#: templates/registration/public_registration_activation_link.haml:3
-#: templates/registration/public_registration_course_closed.haml:3
-#: templates/registration/public_registration_existing.haml:3
-#: templates/registration/public_registration_mcka_user.haml:3
-msgid "Dear"
-msgstr "様、"
-
 #: templates/registration/public_registration_activation_link.haml:6
 msgid "Account activation:"
 msgstr "アカウントのアクティベーション:"
@@ -12107,7 +12104,7 @@ msgstr "続行するには、サービス利用規約に同意してください
 #: templates_v2/accounts/public_registration.haml:37
 #: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: templates_v2/accounts/public_registration.haml:42
 msgid "Register for the access to the course"
@@ -12382,7 +12379,7 @@ msgstr "順位"
 #: templates_v2/courses/course_cohort.haml:105
 #: templates_v2/courses/course_cohort.haml:186
 msgid "You are ranked "
-msgstr "あなたはコホートのメンバー"
+msgstr "位につけました。"
 
 #: templates_v2/courses/course_cohort.haml:27
 #: templates_v2/courses/course_cohort.haml:106
@@ -12394,7 +12391,7 @@ msgstr "名のうち"
 #: templates_v2/courses/course_cohort.haml:106
 #: templates_v2/courses/course_cohort.haml:187
 msgid "members in your cohort."
-msgstr "位につけました。"
+msgstr "あなたはコホートのメンバー"
 
 #: templates_v2/courses/course_cohort.haml:29
 msgid "Your progress position will be displayed here"
@@ -14657,6 +14654,12 @@ msgstr "名: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "氏: {}"
+
+#~ msgid "Dear #{username}, "
+#~ msgstr "#{username}様、"
+
+#~ msgid "Dear"
+#~ msgstr "様、"
 
 #~ msgid " | "
 #~ msgstr "-"
