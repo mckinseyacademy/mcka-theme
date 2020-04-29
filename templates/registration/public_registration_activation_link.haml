@@ -1,6 +1,6 @@
 - load i18n
 
-%p {% trans "Dear" %} #{username},
+%p {% blocktrans %}Dear {{username}}, {% endblocktrans %}
 %p #{template_text}
 %p
   %strong {% trans "Account activation:" %}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-13 06:34+0000\n"
+"POT-Creation-Date: 2020-04-16 10:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6497,9 +6497,13 @@ msgid "Course Id"
 msgstr "ID del curso"
 
 #: templates/certificates/course_certificate_notification_email.haml:3
-#, python-brace-format
-msgid "Dear #{username}, "
-msgstr "Estimado #{username}:"
+#: templates/registration/public_registration_activation_link.haml:3
+#: templates/registration/public_registration_course_closed.haml:3
+#: templates/registration/public_registration_existing.haml:3
+#: templates/registration/public_registration_mcka_user.haml:3
+#, python-format
+msgid "Dear %(username)s, "
+msgstr "Estimado %(username)s:"
 
 #: templates/certificates/course_certificate_notification_email.haml:5
 msgid ""
@@ -11424,13 +11428,6 @@ msgstr "Restablecer mi contraseña"
 msgid "Password Reset Requested"
 msgstr "Restablecimiento de contraseña solicitado"
 
-#: templates/registration/public_registration_activation_link.haml:3
-#: templates/registration/public_registration_course_closed.haml:3
-#: templates/registration/public_registration_existing.haml:3
-#: templates/registration/public_registration_mcka_user.haml:3
-msgid "Dear"
-msgstr ""
-
 #: templates/registration/public_registration_activation_link.haml:6
 msgid "Account activation:"
 msgstr "Activación de la cuenta:"
@@ -11482,7 +11479,7 @@ msgstr ""
 
 #: templates/registration/public_registration_mcka_user.haml:6
 msgid "To access the course, click the following link:"
-msgstr ""
+msgstr "Para acceder al curso, haga clic en el siguiente enlace:"
 
 #: templates/registration/public_registration_mcka_user.haml:10
 #, python-format
@@ -13818,7 +13815,8 @@ msgstr "ayuda por correo electrónico"
 
 #: templates_v2/home/landing.haml:56
 msgid "People make change happen, and people make it last."
-msgstr "Las personas son las que generan el cambio y quienes hacen que permanezca."
+msgstr ""
+"Las personas son las que generan el cambio y quienes hacen que permanezca."
 
 #: templates_v2/home/landing.haml:58
 msgid ""
@@ -15191,6 +15189,9 @@ msgstr "Nombre: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Apellido: {}"
+
+#~ msgid "Dear #{username}, "
+#~ msgstr "Estimado #{username}:"
 
 #~ msgid " | "
 #~ msgstr " -"

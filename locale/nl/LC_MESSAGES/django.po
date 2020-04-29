@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-13 06:35+0000\n"
+"POT-Creation-Date: 2020-04-16 10:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6480,9 +6480,13 @@ msgid "Course Id"
 msgstr "Cursus-ID"
 
 #: templates/certificates/course_certificate_notification_email.haml:3
-#, python-brace-format
-msgid "Dear #{username}, "
-msgstr "Beste #{username}, "
+#: templates/registration/public_registration_activation_link.haml:3
+#: templates/registration/public_registration_course_closed.haml:3
+#: templates/registration/public_registration_existing.haml:3
+#: templates/registration/public_registration_mcka_user.haml:3
+#, python-format
+msgid "Dear %(username)s, "
+msgstr "Beste %(username)s, "
 
 #: templates/certificates/course_certificate_notification_email.haml:5
 msgid ""
@@ -11430,13 +11434,6 @@ msgstr "Mijn wachtwoord opnieuw instellen"
 msgid "Password Reset Requested"
 msgstr "Opnieuw instellen van wachtwoord aangevraagd"
 
-#: templates/registration/public_registration_activation_link.haml:3
-#: templates/registration/public_registration_course_closed.haml:3
-#: templates/registration/public_registration_existing.haml:3
-#: templates/registration/public_registration_mcka_user.haml:3
-msgid "Dear"
-msgstr ""
-
 #: templates/registration/public_registration_activation_link.haml:6
 msgid "Account activation:"
 msgstr "Accountactivering:"
@@ -11487,7 +11484,7 @@ msgstr ""
 
 #: templates/registration/public_registration_mcka_user.haml:6
 msgid "To access the course, click the following link:"
-msgstr ""
+msgstr "Klik op de onderstaande link om toegang te krijgen tot de cursus:"
 
 #: templates/registration/public_registration_mcka_user.haml:10
 #, python-format
@@ -13829,7 +13826,8 @@ msgstr "E-mail Support"
 
 #: templates_v2/home/landing.haml:56
 msgid "People make change happen, and people make it last."
-msgstr "Mensen brengen verandering teweeg - en maken van verandering een succes."
+msgstr ""
+"Mensen brengen verandering teweeg - en maken van verandering een succes."
 
 #: templates_v2/home/landing.haml:58
 msgid ""
@@ -15196,6 +15194,9 @@ msgstr "Voornaam: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Achternaam: {}"
+
+#~ msgid "Dear #{username}, "
+#~ msgstr "Beste #{username}, "
 
 #~ msgid " | "
 #~ msgstr "|"

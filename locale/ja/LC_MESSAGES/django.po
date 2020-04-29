@@ -11108,7 +11108,7 @@ msgstr ""
 msgid ""
 "To access the course, click the following link and login with your "
 "credentials."
-msgstr ""
+msgstr "コースにアクセスするには、次のリンクをクリックして認証情報を入力の上、ログインしてください。"
 
 #: templates/registration/public_registration_existing.haml:11
 msgid ""

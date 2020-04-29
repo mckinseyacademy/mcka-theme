@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-13 06:35+0000\n"
+"POT-Creation-Date: 2020-04-16 10:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6468,9 +6468,13 @@ msgid "Course Id"
 msgstr "ID do curso"
 
 #: templates/certificates/course_certificate_notification_email.haml:3
-#, python-brace-format
-msgid "Dear #{username}, "
-msgstr "Prezado {username}, "
+#: templates/registration/public_registration_activation_link.haml:3
+#: templates/registration/public_registration_course_closed.haml:3
+#: templates/registration/public_registration_existing.haml:3
+#: templates/registration/public_registration_mcka_user.haml:3
+#, python-format
+msgid "Dear %(username)s, "
+msgstr "Prezado %(username)s, "
 
 #: templates/certificates/course_certificate_notification_email.haml:5
 msgid ""
@@ -11344,13 +11348,6 @@ msgstr "Redefinir minha senha"
 msgid "Password Reset Requested"
 msgstr "Redefinição de senha solicitada"
 
-#: templates/registration/public_registration_activation_link.haml:3
-#: templates/registration/public_registration_course_closed.haml:3
-#: templates/registration/public_registration_existing.haml:3
-#: templates/registration/public_registration_mcka_user.haml:3
-msgid "Dear"
-msgstr ""
-
 #: templates/registration/public_registration_activation_link.haml:6
 msgid "Account activation:"
 msgstr "Ativação da conta:"
@@ -11401,7 +11398,7 @@ msgstr ""
 
 #: templates/registration/public_registration_mcka_user.haml:6
 msgid "To access the course, click the following link:"
-msgstr ""
+msgstr "Para acessar o curso, clique no link a seguir:"
 
 #: templates/registration/public_registration_mcka_user.haml:10
 #, python-format
@@ -15058,6 +15055,9 @@ msgstr "Nome: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Sobrenome: {}"
+
+#~ msgid "Dear #{username}, "
+#~ msgstr "Prezado {username}, "
 
 #~ msgid " | "
 #~ msgstr " | "

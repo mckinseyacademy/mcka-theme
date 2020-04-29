@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-13 06:34+0000\n"
+"POT-Creation-Date: 2020-04-16 10:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6523,9 +6523,13 @@ msgid "Course Id"
 msgstr "Kurs-ID"
 
 #: templates/certificates/course_certificate_notification_email.haml:3
-#, python-brace-format
-msgid "Dear #{username}, "
-msgstr "Liebe/r #{username}, "
+#: templates/registration/public_registration_activation_link.haml:3
+#: templates/registration/public_registration_course_closed.haml:3
+#: templates/registration/public_registration_existing.haml:3
+#: templates/registration/public_registration_mcka_user.haml:3
+#, python-format
+msgid "Dear %(username)s, "
+msgstr "Liebe/r %(username)s, "
 
 #: templates/certificates/course_certificate_notification_email.haml:5
 msgid ""
@@ -11521,13 +11525,6 @@ msgstr "Mein Passwort zurücksetzen"
 msgid "Password Reset Requested"
 msgstr "Passwortzurücksetzen angefordert"
 
-#: templates/registration/public_registration_activation_link.haml:3
-#: templates/registration/public_registration_course_closed.haml:3
-#: templates/registration/public_registration_existing.haml:3
-#: templates/registration/public_registration_mcka_user.haml:3
-msgid "Dear"
-msgstr ""
-
 #: templates/registration/public_registration_activation_link.haml:6
 msgid "Account activation:"
 msgstr "Kontoaktivierung:"
@@ -15364,6 +15361,9 @@ msgstr "Vorname: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nachname: {}"
+
+#~ msgid "Dear #{username}, "
+#~ msgstr "Liebe/r #{username}, "
 
 #~ msgid " | "
 #~ msgstr " - "

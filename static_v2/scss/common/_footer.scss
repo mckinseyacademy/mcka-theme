@@ -2,9 +2,10 @@ footer {
   background-color: $bg-login-footer;
   font-size: 0.75rem;
   letter-spacing: 0.02em;
-  line-height: 60px;
   min-height: 60px;
   margin-top: 6rem;
+  line-height: 25px;
+  padding: 18px 0 15px;
   .container{
     >.row{
       display: block !important;
@@ -25,9 +26,6 @@ footer {
         position: relative;
         font-weight: 400;
         text-transform: none;
-        @media screen and (max-width: 992px) {
-          padding: 0 0.3rem;
-        }
         &:before {
           content: "";
           position: absolute;
@@ -35,13 +33,11 @@ footer {
           height: 10px;
           width: 1px;
           background-color: $white;
+          top: 50%;
+          transform: translateY(-50%);
         }
         &:hover {
           text-decoration: underline;
-        }
-        &:focus {
-          background-color: lighten(desaturate(adjust-hue($primary, -25deg), 16), 47);
-          border-radius: 4px;
         }
       }
       &:first-child {
@@ -54,8 +50,25 @@ footer {
     }
   }
 
+  @media screen and (min-width: 1025) {
+    .login {
+      footer {
+        ul {
+          li {
+            a.nav-link {
+              &:focus {
+                background-color: lighten(desaturate(adjust-hue($primary, -25deg), 16), 47);
+                border-radius: 4px;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
   /* On screens that are 992px or less, set the background color to blue */
-  @media screen and (max-width: 992px) {
+  @include media-breakpoint-down(md) {
     [class*="col-"] {
       padding: 0
     }
@@ -70,7 +83,6 @@ footer {
       .container {
         padding: 15px 30px;
       }
-
     }
     .copyright {
       display: table-caption;
@@ -82,6 +94,13 @@ footer {
       float: none;
       display: table-footer-group;
       width: 100%;
+      ul {
+          li {
+            > a.nav-link {
+              padding: 0 0.6rem;
+            }
+          }
+        }
     }
     .nav {
       &[class*="justify-content"] {
@@ -90,29 +109,7 @@ footer {
     }
   }
   @media screen and (max-width: 767px) {
-    //.nav {
-    //  &[class*="justify-content"] {
-    //    justify-content: center !important;
-    //  }
-    //}
-    //.container {
-      //> .row {
-        //display: table !important;
-        //width:100%;
-      //}
-    //}
     margin-top: 50px;
-    //.copyright {
-    //  display: table-caption;
-    //  text-align: center;
-    //}
-    //.footerLinks {
-    //  padding: 0;
-    //  margin: 0 !important;
-    //  float: none;
-    //  display: table-footer-group;
-    //  width: 100%;
-    //}
     footer {
       font-size: 10px;
       .container {
@@ -122,31 +119,18 @@ footer {
   }
 }
 
-@include media-breakpoint-up(xs) {
+@include media-breakpoint-down(sm) {
   footer {
-    line-height: 25px;
-    padding: 18px 0 15px;
+    font-size: 0.625rem !important;
+    line-height: 14px;
+    min-height: auto;
+    padding: 12px 0 9px;
     ul {
       li {
-        a.nav-link {
-          &:before {
-            top: 8px;
-          }
-        }
-      }
-    }
-  }
-}
-
-@include media-breakpoint-down(xs) {
-  footer {
-    ul {
-      li {
-        a {
-          padding: 0 0.35rem;
-          &::before {
-            display: none;
-          }
+        > a.nav-link {
+          font-size: 0.625rem !important;
+          line-height: 21px !important;
+          padding: 0 0.4rem !important;
         }
       }
     }

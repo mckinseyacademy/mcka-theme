@@ -666,6 +666,7 @@ $(window).on("load", function () {
     $('div.faculty label').each(function (index) {
         scaleImage(this);
     });
+    $('header .language-selector button').addClass('show');
 });
 
 // Preloader for courses page
@@ -704,3 +705,8 @@ $(window).resize(function () {
         scaleImage(this);
     });
 });
+$(window).on('load resize', function () {
+    var fooHeight = $(".site-wrapper.login footer").innerHeight();
+    $(".site-wrapper.login .background-absolute").css("bottom", fooHeight);
+});
+

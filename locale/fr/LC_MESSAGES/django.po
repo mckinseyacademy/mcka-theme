@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-13 06:35+0000\n"
+"POT-Creation-Date: 2020-04-16 10:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6530,9 +6530,13 @@ msgid "Course Id"
 msgstr "Identifiant de cours"
 
 #: templates/certificates/course_certificate_notification_email.haml:3
-#, python-brace-format
-msgid "Dear #{username}, "
-msgstr "Cher #{username}, "
+#: templates/registration/public_registration_activation_link.haml:3
+#: templates/registration/public_registration_course_closed.haml:3
+#: templates/registration/public_registration_existing.haml:3
+#: templates/registration/public_registration_mcka_user.haml:3
+#, python-format
+msgid "Dear %(username)s, "
+msgstr "Cher %(username)s, "
 
 #: templates/certificates/course_certificate_notification_email.haml:5
 msgid ""
@@ -11534,13 +11538,6 @@ msgstr "Réinitialiser mon mot de passe"
 msgid "Password Reset Requested"
 msgstr "Réinitialisation du mot de passe demandée"
 
-#: templates/registration/public_registration_activation_link.haml:3
-#: templates/registration/public_registration_course_closed.haml:3
-#: templates/registration/public_registration_existing.haml:3
-#: templates/registration/public_registration_mcka_user.haml:3
-msgid "Dear"
-msgstr ""
-
 #: templates/registration/public_registration_activation_link.haml:6
 msgid "Account activation:"
 msgstr "Activation du compte :"
@@ -12678,7 +12675,7 @@ msgstr ""
 #: templates_v2/accounts/public_registration.haml:37
 #: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "OK"
-msgstr ""
+msgstr "OK"
 
 #: templates_v2/accounts/public_registration.haml:42
 msgid "Register for the access to the course"
@@ -13961,7 +13958,8 @@ msgstr "envoyer un e-mail à l’assistance"
 
 #: templates_v2/home/landing.haml:56
 msgid "People make change happen, and people make it last."
-msgstr "Les gens font bouger les choses, et les gens font en sorte que cela dure."
+msgstr ""
+"Les gens font bouger les choses, et les gens font en sorte que cela dure."
 
 #: templates_v2/home/landing.haml:58
 msgid ""
@@ -15362,6 +15360,9 @@ msgstr "Prénom : {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nom de famille : {}"
+
+#~ msgid "Dear #{username}, "
+#~ msgstr "Cher #{username}, "
 
 #~ msgid " | "
 #~ msgstr " | "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-13 06:35+0000\n"
+"POT-Creation-Date: 2020-04-16 10:10+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6480,9 +6480,13 @@ msgid "Course Id"
 msgstr "Numer identyfikacyjny kursu"
 
 #: templates/certificates/course_certificate_notification_email.haml:3
-#, python-brace-format
-msgid "Dear #{username}, "
-msgstr "Drogi #{username},"
+#: templates/registration/public_registration_activation_link.haml:3
+#: templates/registration/public_registration_course_closed.haml:3
+#: templates/registration/public_registration_existing.haml:3
+#: templates/registration/public_registration_mcka_user.haml:3
+#, python-format
+msgid "Dear %(username)s, "
+msgstr "Drogi %(username)s,"
 
 #: templates/certificates/course_certificate_notification_email.haml:5
 msgid ""
@@ -11435,13 +11439,6 @@ msgstr "Zresetuj moje hasło"
 msgid "Password Reset Requested"
 msgstr "Wysłano prośbę zresetowania hasła"
 
-#: templates/registration/public_registration_activation_link.haml:3
-#: templates/registration/public_registration_course_closed.haml:3
-#: templates/registration/public_registration_existing.haml:3
-#: templates/registration/public_registration_mcka_user.haml:3
-msgid "Dear"
-msgstr "Drogi"
-
 #: templates/registration/public_registration_activation_link.haml:6
 msgid "Account activation:"
 msgstr "Aktywacja konta:"
@@ -13836,7 +13833,8 @@ msgstr "Wyślij e-mail do działu pomocy"
 
 #: templates_v2/home/landing.haml:56
 msgid "People make change happen, and people make it last."
-msgstr "To ludzie wprowadzają zmiany – i to dzięki nim zmiana może być długotrwała."
+msgstr ""
+"To ludzie wprowadzają zmiany – i to dzięki nim zmiana może być długotrwała."
 
 #: templates_v2/home/landing.haml:58
 msgid ""
@@ -15218,6 +15216,12 @@ msgstr "Imię: {}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "Nazwisko: {}"
+
+#~ msgid "Dear #{username}, "
+#~ msgstr "Drogi #{username},"
+
+#~ msgid "Dear"
+#~ msgstr "Drogi"
 
 #~ msgid ""
 #~ "Please reach out to your McKinsey contact or academy_info@mckinsey.com if "

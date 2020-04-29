@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-13 06:35+0000\n"
+"POT-Creation-Date: 2020-04-16 10:11+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -6286,9 +6286,13 @@ msgid "Course Id"
 msgstr "课程 ID"
 
 #: templates/certificates/course_certificate_notification_email.haml:3
-#, python-brace-format
-msgid "Dear #{username}, "
-msgstr "亲爱的 ＃{username}，"
+#: templates/registration/public_registration_activation_link.haml:3
+#: templates/registration/public_registration_course_closed.haml:3
+#: templates/registration/public_registration_existing.haml:3
+#: templates/registration/public_registration_mcka_user.haml:3
+#, python-format
+msgid "Dear %(username)s, "
+msgstr "亲爱的 %(username)s，"
 
 #: templates/certificates/course_certificate_notification_email.haml:5
 msgid ""
@@ -10619,13 +10623,6 @@ msgstr "重置我的密码"
 msgid "Password Reset Requested"
 msgstr "已请求重置密码"
 
-#: templates/registration/public_registration_activation_link.haml:3
-#: templates/registration/public_registration_course_closed.haml:3
-#: templates/registration/public_registration_existing.haml:3
-#: templates/registration/public_registration_mcka_user.haml:3
-msgid "Dear"
-msgstr ""
-
 #: templates/registration/public_registration_activation_link.haml:6
 msgid "Account activation:"
 msgstr "帐户激活："
@@ -11538,7 +11535,7 @@ msgstr "您必须接受服务条款才能继续"
 #: templates_v2/accounts/public_registration.haml:37
 #: templates_v2/courses/content_page/courses_menu_list.haml:73
 msgid "OK"
-msgstr ""
+msgstr "确定"
 
 #: templates_v2/accounts/public_registration.haml:42
 msgid "Register for the access to the course"
@@ -13855,6 +13852,9 @@ msgstr "名字：{}"
 #: util/validators.py:91
 msgid "Last name: {}"
 msgstr "姓氏：{}"
+
+#~ msgid "Dear #{username}, "
+#~ msgstr "亲爱的 ＃{username}，"
 
 #~ msgid " | "
 #~ msgstr "  | "

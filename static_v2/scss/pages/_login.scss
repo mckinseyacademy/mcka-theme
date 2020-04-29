@@ -66,6 +66,7 @@
         bottom: 60px;
         top: 0;
         margin: 0;
+        overflow: hidden;
         .col-7 {
           @include login-gradient();
           position:relative;
@@ -198,9 +199,6 @@
         &:focus {
           box-shadow: inset 0 0 100px rgba(0,0,0,0.3) !important;
         }
-        &:focus {
-          box-shadow: inset 0 0 100px rgba(0,0,0,0.3) !important;
-        }
       }
       .forgot-pswd-link {
         margin: 10px 0 0;
@@ -222,6 +220,11 @@
         line-height: 28px;
         color: #051C2C;
         margin-bottom: 30px;
+      }
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /* IE10+ */
+        @media (max-height: 600px) {
+          padding-top: 90px;
+        }
       }
     }
     .helpLink {
@@ -254,10 +257,8 @@
           display: inline-block;
           vertical-align: middle;
           color: $white;
+          margin: 0 10px;
 
-          &:first-child {
-            margin: 0;
-          }
           a {
             color: $black;
             text-decoration: underline;
@@ -393,6 +394,8 @@
     footer {
       background: $gray-border;
       margin: 0;
+      position: relative;
+      z-index: 9;
 
       ul li a.nav-link {
         color: $gray;
@@ -498,6 +501,14 @@
   }
 }
 
+@include media-breakpoint-up(lg) {
+  .login {
+    .login-page {
+      min-height: 510px;
+    }
+  }
+}
+
 // Tablet
 @include media-breakpoint-down(md) {
   .site-wrapper {
@@ -599,13 +610,6 @@
         >.container{
           padding:0 15px !important;
         }
-        ul {
-          li {
-            > a.nav-link {
-              padding: 0 0.6rem;
-            }
-          }
-        }
       }
     }
   }
@@ -620,9 +624,6 @@
           > .logo {
             padding: 0 5px;
           }
-        }
-        .language-selector {
-          width: 76px;
         }
         .all-logos {
           > a.MckAcademy {
@@ -675,25 +676,6 @@
         margin-top: 20px;
         position: relative;
         height: 100%;
-      }
-      footer{
-        font-size: 0.625rem !important;
-        line-height:14px;
-        min-height:auto;
-        padding:12px 0 9px;
-        ul {
-          li {
-            > a.nav-link {
-              font-size: 0.625rem !important;
-              line-height:21px;
-              padding: 0 0.4rem;
-              &::before {
-                display: block;
-                top: 5px;
-              }
-            }
-          }
-        }
       }
     }
   }

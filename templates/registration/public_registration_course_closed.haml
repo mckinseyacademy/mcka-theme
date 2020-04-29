@@ -1,6 +1,6 @@
 - load i18n
 
-%p {% trans "Dear" %} #{username},
+%p {% blocktrans %}Dear {{username}}, {% endblocktrans %}
 %p #{template_text}
 %p {% blocktrans %}Please contact our <a href="{{support}}" target="_blank">support team</a> if you experience any technical issues.{% endblocktrans %}
 %p

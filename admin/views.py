@@ -5230,7 +5230,7 @@ class companies_list_api(APIView):
     @permission_group_required_api(PERMISSION_GROUPS.MCKA_ADMIN, PERMISSION_GROUPS.MCKA_SUBADMIN, )
     def get(self, request):
         companies = []
-        clients = Client.list()
+        clients = Client.list(exclude_admins=True)
         for client in clients:
             company = {}
             company['name'] = vars(client)['display_name']

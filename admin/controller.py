@@ -16,6 +16,7 @@ import chardet
 import requests
 import uuid
 from datetime import datetime
+from decimal import Decimal
 from copy import deepcopy
 import json
 
@@ -1208,7 +1209,7 @@ def serialize_quick_link(quick_link):
 
 
 def round_to_int(value):
-    return int(round(value))
+    return int(Decimal(value).quantize(Decimal('0'), rounding='ROUND_HALF_UP'))
 
 
 def round_to_int_bump_zero(value):
@@ -1745,7 +1746,7 @@ def get_company_active_courses(company_courses):
     active_courses = []
     for company_course in company_courses:
         if timezone.now() >= (company_course['start']):
-            if company_course['end'] is None or '-':
+            if company_course['end'] is None or company_course['end'] is '-':
                 active_courses.append(company_course)
             elif timezone.now() <= (company_course['end']):
                 active_courses.append(company_course)
@@ -2718,8 +2719,15 @@ class ProblemReportPostProcessor(object):
         """
         Fetch user data for users in the selected course, and return a username-email mapping
         """
-        users_data = course_api.get_user_list_json(course_id=self.course_id)
-        return {user['username']: user.get('email') for user in users_data}
+        users_data = course_api.get_user_list_json(course_id=self.course_id, additional_fields=['organizations'])
+        users = {}
+        for user_data in users_data:
+            organizations = user_data.get('organizations', [])
+            organization = organizations[0].get('display_name', '') if organizations else ''
+            email = user_data.get('email')
+            users[user_data['username']] = {'email': email, 'company': organization}
+
+        return users
 
     def _get_column_name(self, row):
         """
@@ -2756,14 +2764,15 @@ class ProblemReportPostProcessor(object):
             # Process every row and yield
             for row in report_reader:
                 column_name = self._get_column_name(row)
-                user_email = self._users_dict.get(row['username'])
+                user = self._users_dict.get(row['username'], {})
+                user_email = user.get('email')
                 output.setdefault(
-                    user_email, {'email': user_email}
+                    user_email, {'email': user_email, 'company': user.get('company', '')}
                 ).update({
                     column_name: row.get('Answer', 'Removed Option')
                 })
 
-        return list(output.values()), ['email'] + sorted(self._cols.values())
+        return list(output.values()), ['email', 'company'] + sorted(self._cols.values())
 
 
 def get_data_from_csv(file_path, headers):
