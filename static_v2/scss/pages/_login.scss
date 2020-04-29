@@ -501,13 +501,6 @@
   }
 }
 
-@include media-breakpoint-up(lg) {
-  .login {
-    .login-page {
-      min-height: 510px;
-    }
-  }
-}
 
 // Tablet
 @include media-breakpoint-down(md) {
