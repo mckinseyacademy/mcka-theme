@@ -695,6 +695,9 @@ body.new-theme {
             .edit-post-form {
                 padding: 31px;
                 min-width: 425px;
+                h5 {
+                    font-size: 16px;
+                }
 
                 .sr {
                     position: absolute !important;
@@ -773,10 +776,12 @@ body.new-theme {
 
                     .post-type-label {
                         margin-right: 0;
-                        margin-left: 0;
+                        margin-top: 2px;
+                        min-height: 18px;
                         width: calc(100% - 20px);
                         display: inline-block;
                         position: relative;
+                        margin-left: 0;
 
                         .input-radio {
                             display: block;
@@ -939,9 +944,7 @@ body.new-theme {
                         margin-bottom: 0;
                         position: relative;
                         margin-right: 5px;
-                        &:before {
-                            position: static;
-                        }
+                        padding: 0 30px;
                         &:nth-child(2) {
                             .field-input-label {
                                 top: 0;
@@ -2105,6 +2108,24 @@ body.rtl.new-theme [data-block-type="discussion-forum"] .discussion-module butto
             left: auto;
             right: 6px;
 
+        }
+        [data-block-type="pb-mrq"] .choice-selector:before,
+        [data-block-type="pb-mrq"] .field-label:before,
+        .discussion-body .post-options .choice-selector:before,
+        .discussion-module .post-options .choice-selector:before,
+        .discussion-body .post-options .field-label:before,
+        .discussion-module .post-options .field-label:before,
+        [data-block-type="discussion"] .post-options .choice-selector:before,
+        [data-block-type="discussion"] .post-options .field-label:before,
+        [data-block-type="discussion-forum"] .post-options .choice-selector:before,
+        [data-block-type="discussion-forum"] .post-options .field-label:before {
+            right: auto;
+            left: 0;
+        }
+        .discussion-content .icon,
+        .lesson-content .icon {
+            margin-left: 0;
+            margin-right: 5px;
         }
     }
 }

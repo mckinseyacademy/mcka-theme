@@ -40,11 +40,20 @@ footer[role=contentinfo] {
 	.actions-item {
 		margin: 0 5px 0;
 		float: left;
+		>button {
+			padding: 1px;
+		}
+		>.more-wrapper {
+			>button {
+				padding: 1px;
+			}
+		}
 		.display-vote .vote-count {
 			display: inline-block;
 			font-size: 12px;
 			padding: 9px 0 0;
 		}
+
 		.action-button {
 
 			&.btn-link:hover,
@@ -232,6 +241,9 @@ body.new-theme {
 
 		.forum-new-post-form,
 		.edit-post-form {
+			h3 {
+				font-size: 16px;
+			}
 			.post-field {
 				.field-input {
 					.post-topic {
@@ -240,7 +252,7 @@ body.new-theme {
 
 					&.js-post-title,
 					&.edit-post-title {
-						min-width: 370px;
+						min-width: 400px;
 					}
 				}
 
@@ -343,7 +355,7 @@ body.new-theme {
 									@include primary-button ( !important);
 									color: transparent !important;
 									min-width: 100%;
-									width: 100%;
+									width: 40px;
 									height: 40px !important;
 									padding: 0 !important;
 									position: relative;
@@ -356,7 +368,7 @@ body.new-theme {
 										font-family: "Material Icons";
 										content: "\e145";
 										position: absolute;
-										right: 18px;
+										right: 5px;
     									top: -7px;
 									}
 								}
@@ -446,15 +458,16 @@ body.new-theme {
 
 							.field-label {
 								margin-bottom: 15px;
+								display: block;
 							}
 
 							.field-label-text {
 								color: $gray;
 								font-size: 12px;
 								position: absolute;
-								top: 15px;
+								top: 12px;
 								margin: 0;
-								left: 2px;
+								left: 10px;
 							}
 
 							.post-topic {
@@ -1368,6 +1381,8 @@ body.new-theme {
 						display: inline-block;
 						position: relative;
 						overflow: visible;
+						min-height: 18px;
+						margin-top: 2px;
 
 						.input-radio {
 							display: block;
@@ -1524,13 +1539,9 @@ body.new-theme {
 						width: 100%;
 						color: $black;
 						text-transform: capitalize;
-						padding: 0;
-						margin-left: 0;
-						margin-right: 0;
+						padding: 0 30px;
+						margin: 0;
 						height: 18px;
-						&:before {
-							position: static;
-						}
 						&:nth-child(2) {
 							.field-input-label {
 								top: 2px;
@@ -2077,6 +2088,7 @@ body.new-theme {
 								display: block !important;
 								padding: 0 0px;
 								margin-top: 0px;
+								font-size: 16px;
 							}
 							.reply-body {
 								.wmd-preview-container {
@@ -2156,6 +2168,22 @@ body.new-theme {
 		.discussion-comment .comment-actions-list {
 			left: auto;
 		}
+		[data-block-type="pb-mrq"] .choice-selector:before,
+		[data-block-type="pb-mrq"] .field-label:before,
+		.discussion-body .post-options .choice-selector:before,
+		.discussion-module .post-options .choice-selector:before,
+		.discussion-body .post-options .field-label:before,
+		.discussion-module .post-options .field-label:before,
+		[data-block-type="discussion"] .post-options .choice-selector:before,
+		[data-block-type="discussion"] .post-options .field-label:before,
+		[data-block-type="discussion-forum"] .post-options .choice-selector:before,
+		[data-block-type="discussion-forum"] .post-options .field-label:before {
+			right: auto;
+			left: 0;
+		}
+		.forum-new-post-form .post-options .icon, .edit-post-form .post-options .icon {
+			margin-left: 0;
+		}
 	}
 	.view-discussion-home {
 		display: block;
@@ -2175,6 +2203,7 @@ body.new-theme {
 				.sub-heading {
 					@include font-size(14);
 					font-weight: 600;
+					margin: 0 0 20px;
 				}
 
 				.discussion-wrapper {
@@ -2223,6 +2252,7 @@ body.new-theme {
 
 						li {
 							@include font-size(14);
+							margin-bottom: 5px;
 
 							span.icon {
 								margin-right: 5px;
@@ -2256,6 +2286,7 @@ body.new-theme {
 			min-height: 550px;
 			height: calc(100vh - 300px) !important;
 			overflow: hidden;
+			max-width: none;
 
 			@media (max-width: 1024px) {
 				width: 250px !important;
