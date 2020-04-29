@@ -815,6 +815,12 @@ def navigate_to_lesson_module(
     except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         custom_lesson_label = None
 
+    try:
+        feature_flags = FeatureFlags.objects.get(course_id=course_id)
+        data["extend_session_on_video"] = feature_flags.extend_session_on_video
+    except Exception:
+        data["extend_session_on_video"] = False
+
     if not current_sequential.is_started:
         if not custom_lesson_label:
             data["not_started_message"] = _("This lesson does not start until {start_upon}").format(
@@ -1274,6 +1280,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.enhanced_caching = request.POST.get('enhanced_caching', None) == 'on'
     feature_flags.show_ld_discovery = request.POST.get('show_ld_discovery', None) == 'on'
     feature_flags.show_ld_logo = request.POST.get('show_ld_logo', None) == 'on'
+    feature_flags.extend_session_on_video = request.POST.get('extend_session_on_video', None) == 'on'
     feature_flags.save()
 
     if request.POST.get('mobile_available', None) is not None:
