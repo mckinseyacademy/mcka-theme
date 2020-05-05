@@ -90,8 +90,11 @@ INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 # explicitly add 'debug_toolbar.middleware.DebugToolbarMiddleware',
 # otherwise this doesn't seem to appear on AWS environments
+
+# use SESSION_COOKIE_SAMESITE = 'None' in django 3.1 and change to default middleware,
+# this setting not available in django 2.2
 MIDDLEWARE = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'accounts.middleware.session_samesite.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -312,7 +315,7 @@ ENABLE_AUTOMATIC_EMAILS_UPON_PROGRAM_ENROLLMENT = False
 
 # EMAIL BACKEND
 
-APROS_EMAIL_SENDER = "no-reply@mckinseyacademy.com"
+APROS_EMAIL_SENDER = "support@mckinsey.com"
 
 MCKINSEY_EMAIL_DOMAIN = "@mckinsey.com"
 
@@ -466,7 +469,7 @@ LOGIN_BUTTON_FOR_MOBILE_ENABLED = True
 
 # NOTIFICATION IN CASE THE NUMBER OF PARTICIPANTS IS CLOSE TO MAX
 COURSE_RUN_PARTICIPANTS_TRESHOLD = 4000
-DEDICATED_COURSE_RUN_PERSON = "no-reply@mckinseyacademy.com"
+DEDICATED_COURSE_RUN_PERSON = "support@mckinsey.com"
 
 TEMPLATE_NEW_DIRS = [os.path.join(BASE_DIR, 'templates_v2')]
 

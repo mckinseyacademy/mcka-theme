@@ -26,7 +26,8 @@ function autoRedirectOnLogin() {
  * @returns {Window}
  */
 function openLoginPopup(url) {
-  $.cookie('scorm_mode', true, {expires: (new Date()).addMinutes(20), path: '/'});
+  // This cookie is responsible or closing popup window with IDP
+  Cookies.set('scorm_mode', true, {expires: (new Date()).addMinutes(20), path: '/', secure:true, sameSite:'None'});
   let popupWindow = window.open(url, '_blank', 'width=600,height=800');
   if (popupWindow) popupWindow.focus();
   console.log($.cookie());

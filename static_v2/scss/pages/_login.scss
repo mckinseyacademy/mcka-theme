@@ -1,49 +1,173 @@
+@font-face {
+  font-family: bower-bold;
+  src: url("../fonts/Bower/Bower-Bold.otf");
+}
+
+@font-face {
+  font-family: theinhard-regular;
+  src: url("../fonts/TheinhardtPan/TheinhardtPan-Regular.otf");
+}
+
+@font-face {
+  font-family: theinhard-medium;
+  src: url("../fonts/TheinhardtPan/TheinhardtPan-Medium.otf");
+}
+
+@font-face {
+  font-family: theinhard-light;
+  src: url("../fonts/TheinhardtPan/TheinhardtPan-Light.otf");
+}
+
 .site-wrapper {
   &.login {
-    min-height: 100vh;
-    background: #f0f0f0 url("../image/login/McKA-login-bg-lg.png") no-repeat 50% 50% ;
-    @media screen and (max-width: 1500px) {
-      background: #f0f0f0 url("../image/login/McKA-login-bg.png") no-repeat 50% 50% ;
+    background-color: white;
+    .container {
+      @media screen and (min-width: 1305px) {
+        padding: 0 !important;
+      }
+      @media screen and (max-width: 1304px) {
+        padding: 0 30px !important;
+      }
     }
-    background-size: cover;
+    header {
+      margin-bottom: 0;
+      height: 50px;
+      position: relative;
+      z-index: 10;
+      .all-logos {
+        >a{
+          display: none;
+          &.MckAcademy.white {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+            border: none;
+            position: relative;
+            transform: translateY(35px);
+            img {
+              width: 150px;
+              max-height: inherit;
+            }
+          }
+        }
+      }
+    }
 
     main {
-      padding: 15px 0 20px;
-      min-height: calc(100vh - 160px);
-      @media screen and (max-width: 992px) {
-        min-height: calc(100vh - 165.5px);
-        padding-top: 90px;
-      }
-      @media screen and (max-width: 767px) {
+      padding: 0 0 20px;
+      min-height: calc(100vh - 110px);
+      @include media-breakpoint-down(sm)  {
         min-height: calc(100vh - 159px);
-        padding-top: 50px;
       }
-      .heading {
-        display: block;
-        color: #000;
-        margin-bottom: 35px;
-        font-size: 2.625rem;
-        font-weight: 300;
-        img {
-          margin: 0 10px;
-        }
-        @media screen and (max-width: 992px) {
-          .nl {
+      .background-absolute {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 60px;
+        top: 0;
+        margin: 0;
+        overflow: hidden;
+        .col-7 {
+          @include login-gradient();
+          position:relative;
+          padding: 0;
+          &:before{
+            position: relative;
+            height:100%;
             display: block;
-          }
-          font-size: 2.575rem;
-          img {
-            margin-left: 0;
-          }
-        }
-        @media screen and (max-width: 767px) {
-          font-size: 1.7rem;
-          margin-bottom: 30px;
-          img {
-            width: 11px;
-            margin-right: 6px;
+            content: '';
+            background: url("../image/login/Accelerate-graphic.png") no-repeat;
+            background-position: calc(100% - -20px)  calc(100% - -28px);
+            background-size: 44%;
+            @media (max-width: 1600px) {
+              background-size: 50%;
+            }
           }
         }
+      }
+      .login-page {
+        display: flex;
+        flex-direction: row-reverse;
+        
+        .left-col {
+          >img{
+            color:transparent;
+            background-color: rgba(255, 255, 255, 0);
+          }
+
+          .hero-content {
+            max-width: 470px;
+            height: calc(100vh - 162px);
+            display: table-cell;
+            vertical-align: middle;
+            padding: 87px 0 44px;
+            @media (max-height: 700px) {
+              transform: none;
+              padding-bottom: 30px; 
+            }
+            @media (max-width: 1600px) {
+              max-width: 532px;
+            }
+
+            .heading {
+              font-family: bower-bold;
+              display: block;
+              color: white;
+              line-height: 57px;
+              font-size: 3.25rem;
+              margin-bottom: 15px;
+
+            }
+            p {
+              font-family: theinhard-light;
+              @include font-size(18);
+              color: white;
+              line-height: 28px;
+              margin-bottom: 20px;
+            }
+            a {
+              font-family: theinhard-medium;
+              @include font-size(18);
+              color: white;
+              line-height: 25px;
+              display: inline-block;
+              position: relative;
+              &:hover {
+                color: #00A9F4;
+                text-decoration: none;
+              }
+              i {
+                position: absolute;
+                display: block;
+                content:'';
+                top: 0;
+                -webkit-transition: all .3s 120ms;
+                transition: all .3s 120ms;
+              }
+            }
+          }
+        }
+      }
+      @media (max-width: 1600px) {
+        [class*="col-7"] {
+          flex: 0 0 65.9%;
+          padding: 0;
+          max-width: 65.9%;
+        }
+        [class*="col-5"] {
+          flex: 0 0 34.1%;
+          max-width: 34.1%;
+          padding: 0;
+        } 
+      }
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /* IE10+ */
+        overflow: hidden;
+      }
+      @supports (-ms-accelerator:true) { /* Edge 12 - 15 */
+        overflow: hidden;
+      }
+      @supports (-ms-ime-align:auto) { /* Edge 16+ */
+        overflow: hidden;
       }
     }
 
@@ -57,20 +181,21 @@
     }
 
     .login-form-wrap {
-      max-width: 395px;
-      margin: 0 auto;
-      padding: 2.8125rem 2.8125rem 1.4125rem 2.8125rem;
-      background: rgba(#fff, .6);
-      border-radius: 3px;
-      @media screen and (max-width: 767px) {
-        padding: 30px;
+      max-width: 295px;
+      @media (min-width: 1024px) and (max-width: 1439px) {
+        transform: translate(14vw, -46.6%) !important;
+        width: 80%;
+        max-width: 295px;
       }
+      @include media-breakpoint-up(lg) {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-46.6%);
+      }
+
       input:not([type='checkbox']),
       button.btn {
         width: 100%;
-        &:focus {
-          box-shadow: inset 0 0 100px rgba(0,0,0,0.3) !important;
-        }
         &:focus {
           box-shadow: inset 0 0 100px rgba(0,0,0,0.3) !important;
         }
@@ -87,6 +212,18 @@
         }
         strong {
           font-weight: 600 !important;
+        }
+      }
+      h3 {
+        @include font-size(20);
+        font-family: theinhard-medium;
+        line-height: 28px;
+        color: #051C2C;
+        margin-bottom: 30px;
+      }
+      @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) { /* IE10+ */
+        @media (max-height: 600px) {
+          padding-top: 90px;
         }
       }
     }
@@ -108,8 +245,7 @@
     .quick-links {
       text-align: center;
       padding: 0;
-      margin: 48px -30px 0;
-      overflow: hidden;
+      margin: 60px 0 0;
       @media screen and (max-width: 767px) {
         margin: 30px 0 0;
       }
@@ -121,10 +257,8 @@
           display: inline-block;
           vertical-align: middle;
           color: $white;
+          margin: 0 10px;
 
-          &:first-child {
-            margin: 0;
-          }
           a {
             color: $black;
             text-decoration: underline;
@@ -158,8 +292,8 @@
             left: 0;
             bottom: 0;
             width: 100%;
-            z-index: 9;
-            background: rgba($white, 0.6%);
+            z-index: 99;
+            background: rgba($white, 0.8%);
           }
           .helpLink {
             z-index: 999;
@@ -170,12 +304,12 @@
           ul {
             display: block;
             visibility: visible;
-            bottom: 0;
-            top: auto;
-            position: relative;
             z-index: 999;
-            height: 100%;
+            height: auto;
             transition: all ease 0.3s;
+            position: absolute;
+            top: 20px;
+            width: 100%;
             li {
               display: block;
               margin: 15px 0 0;
@@ -187,6 +321,8 @@
                 text-transform: capitalize;
                 display: block;
                 padding: 15px 30px;
+                text-decoration: none;
+                font-weight: 600;
               }
             }
 
@@ -258,11 +394,13 @@
     footer {
       background: $gray-border;
       margin: 0;
+      position: relative;
+      z-index: 9;
 
       ul li a.nav-link {
-        color: $black;
+        color: $gray;
         &:before {
-          background-color: $black;
+          background-color: $gray;
         }
       }
     }
@@ -336,4 +474,285 @@
       }
     }
   }
+}
+
+// ======== Responsive Styles ==================//
+
+// Small Desktops
+
+@include  media-breakpoint-down(lg) {
+  .site-wrapper.login {
+    main {
+      .login-page {
+        .left-col {
+          .hero-content {
+            max-width: 500px;
+            .heading {
+              font-size: 3rem;
+            }
+            p {
+              font-size: 1.125rem;
+              max-width: 395px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .login {
+    .login-page {
+      min-height: 510px;
+    }
+  }
+}
+
+// Tablet
+@include media-breakpoint-down(md) {
+  .site-wrapper {
+    &.login {
+      .appHeader {
+        .container{ padding: 0 15px !important;}
+        .col {
+          > .logo {
+            padding: 0 15px;
+          }
+        }
+        .all-logos {
+          > a.MckAcademy {
+            padding: 0;
+            border: 0;
+            img {
+              width: 128px;
+              max-width: none !important;
+              max-height: inherit !important;
+            }
+            &.black {
+              display: inline-block;
+            }
+            &.white {
+              display: none;
+            }
+          }
+        }
+      }
+
+      main {
+        padding: 0;
+        min-height: calc(100vh - 133px);
+        .container {
+          padding: 0 !important;
+        }
+        .login-page {
+          flex: none;
+          display: block;
+          .left-col {
+            min-height: 505px;
+            padding: 50px 60px;
+            width: 100%;
+            min-width: 100%;
+            overflow: hidden;
+            display: block;
+            @include login-gradient();
+            &:before {
+              height: 100%;
+              display: block;
+              content: '';
+              background: url("../image/login/Accelerate-graphic.png") no-repeat;
+              background-position: 103% calc(100% - -51px);
+              background-size: 45%;
+              position: absolute;
+              top: 0;
+              width: 100%;
+            }
+            .hero-content {
+              display: block;
+              max-width: 458px;
+              width: 100%;
+              height: auto;
+              position: relative;
+              z-index: 1;
+              padding: 0;
+              transform: none;
+              .heading {
+                margin-bottom: 25px;
+                line-height: 53px;
+                font-size: 48px;
+                letter-spacing: -0.18px;
+              }
+              p {
+                margin-bottom: 25px;
+              }
+            }
+          }
+          .right-col-fixed {
+            display: block;
+            min-width: 100%;
+            padding: 71px 0 48px 0;
+          }
+        }
+      }
+      .login-form-wrap {
+        float: none !important;
+        margin: 0 auto;
+        display: block;
+      }
+      .background-absolute {
+        display: none;
+      }
+      .quick-links {
+        margin-top: 50px;
+      }
+
+      footer{
+        >.container{
+          padding:0 15px !important;
+        }
+      }
+    }
+  }
+}
+
+// Login Mobile Styles
+@include media-breakpoint-down(sm) {
+  .site-wrapper {
+    &.login {
+      .appHeader {
+        .col {
+          > .logo {
+            padding: 0 5px;
+          }
+        }
+        .all-logos {
+          > a.MckAcademy {
+            img {
+              width: 118px;
+            }
+          }
+        }
+      }
+      main {
+        .login-page {
+          .left-col {
+            padding: 45px 44px 65px;
+            min-height: calc(100vh - 450px);
+            &:before {
+              display: none;
+            }
+            .hero-content {
+
+              .heading {
+                margin-bottom: 20px;
+                font-size: 2.25rem;
+                line-height: 40px;
+                letter-spacing: -0.14px;
+              }
+              p {
+                font-family: theinhard-light;
+                line-height: 24px;
+                margin-bottom: 24px;
+              }
+              > a {
+                font-size: 1rem;
+                line-height: 24px
+              }
+            }
+          }
+          .right-col-fixed {
+            padding: 52px 0 34px 0;
+          }
+        }
+      }
+      .login-form-wrap {
+        h3 {
+          font-size: 1.125rem;
+          line-height: 25px;
+          width:95%;
+        }
+      }
+      .quick-links {
+        margin-top: 20px;
+        position: relative;
+        height: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 359px) {
+  .site-wrapper{
+    &.login {
+      .appHeader {
+        .container{ }
+        .col{
+          >.logo{ padding: 0;}
+        }
+      }
+      .login-form-wrap{
+        max-width: initial;
+        padding: 0 20px;
+      }
+      main {
+        .login-page {
+          .left-col{
+            padding-left:20px;
+            padding-right:20px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Microspft Surface Pro
+
+@media (width: 912px) {
+  .site-wrapper.login {
+    main {
+      .login-page {
+        .right-col-fixed {
+          min-height: 40.3vh;
+          .login-form-wrap {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            right: auto;
+            transform: translate(-50%, -50%);
+          }
+        }
+        .left-col {
+          min-height: 50vh;
+          .hero-content {
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            transform: translateY(-50%); 
+          }
+        }
+      }
+    }
+  }
+
+  .rtl.site-wrapper.login {
+    main {
+      .login-page {
+        .right-col-fixed {
+          .login-form-wrap {
+            left: auto;
+            right: 50%;
+            transform: translate(50%, -50%);
+          }
+        }
+        .left-col {
+          .hero-content {
+            right: 60px;
+            left: auto;
+          }
+        }
+      }
+    }
+  }
+
 }

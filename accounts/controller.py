@@ -426,15 +426,16 @@ def send_email(email_template_html, subject, link, template_text, user_name, use
         'email': user_email,
         'link': link,
         'template_text': template_text,
+        'support': settings.MCKA_SUPPORT_FORM_LINK
     }
     email_html = loader.render_to_string(email_template_html, context)
     email_plain = strip_tags(email_html)
     email = EmailMultiAlternatives(
         subject,
         email_plain,
-        settings.APROS_EMAIL_SENDER,
+        settings.MCKA_SUPPORT_EMAIL,
         [user_email],
-        headers={'Reply-To': settings.APROS_EMAIL_SENDER})
+        headers={'Reply-To': settings.MCKA_SUPPORT_EMAIL})
     email.attach_alternative(email_html, "text/html")
     email.mixed_subtype = 'related'
     email.send(fail_silently=False)

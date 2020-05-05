@@ -5,6 +5,7 @@ import copy
 import logging
 import random
 from datetime import datetime
+from decimal import Decimal
 
 import re
 from bs4 import BeautifulSoup
@@ -458,7 +459,7 @@ def load_static_tabs(course_id, name=None):
 
 
 def round_to_int(value):
-    return int(round(value))
+    return int(Decimal(value).quantize(Decimal('0'), rounding='ROUND_HALF_UP'))
 
 
 def round_to_int_bump_zero(value):

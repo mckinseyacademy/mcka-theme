@@ -1,0 +1,47 @@
+:javascript
+  $(window).on('beforeunload', saveScormDataClosePopup);
+
+  $(function(){
+      launchAlertTimer();
+      launchPopupCloseTimer();
+  });
+
+- if extend_session_on_video
+  :javascript
+
+    // Extend user session on video play if feature flag is on
+    $(function(){
+        var videoToIntervalIdMapping = {};
+
+        // Xblocks will start loading after complete page has been loaded
+        $.xblock.getRuntime().listenTo('xblock-rendered', function (event, rendered_xblock) {
+            // Also hooks supplementary videos if any
+            hookVideosIfFound();
+        });
+
+        function hookVideosIfFound(){
+            var allVideos = $('video-js');
+            for (var i=0; i<allVideos.length; i++) {
+                var videoId = $(allVideos[i]).attr('id');
+                videojs.getPlayer(videoId).on('play', playEvent);
+            }
+        }
+
+        function playEvent(e) {
+            var sessionRefreshInterval = 5 * 60 * 1000; // 5 minutes
+            var videoId = $(e.target).attr('id');
+            // Do not set multiple intervals on multiple play event calls
+            if (!videoToIntervalIdMapping[videoId]){
+                var intervalId = setInterval(refreshSessionIfVideoIsPlaying, sessionRefreshInterval, videoId);
+                videoToIntervalIdMapping[videoId] = intervalId;
+            }
+        }
+
+        function refreshSessionIfVideoIsPlaying(videoId) {
+            // Refresh user session if video is playing
+            var isVideoPlaying = !videojs.getPlayer(videoId).paused();
+            if (isVideoPlaying) {
+                refreshUserSession();
+            }
+        }
+    })

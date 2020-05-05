@@ -63,7 +63,7 @@
   %script{src: '/static/js/course_learner_dashboard/lesson_url_to_view.js'}
   %script{src: "{% static 'js/course_learner_dashboard/learner_dashboard_calendar_load.js' %}"}
   %script{src: '/static/js/course_lesson.js'}
-  - include 'courses/course_lessons_scorm.haml'
+  - include 'courses/course_lessons_utils.haml'
   :javascript
     $(function(){
       var lesson_content = $('#{{ lesson_content_parent_id }} .lesson-content');

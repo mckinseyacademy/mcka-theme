@@ -13,6 +13,23 @@ body {
   &.modal-open {
     @include padding-right(0 !important);
   }
+
+  // Login Tablet
+  @include media-breakpoint-down(md) {
+    &.site-wrapper {
+      &.login {
+        main {
+          .left-col {
+            &:before {
+              @include right(0);
+              @include left(auto);
+            }
+          }
+        }
+      }
+    }
+  }
+
 }
 
 // Header
@@ -825,6 +842,16 @@ footer {
           @include left(0);
         }
       }
+      &:first-child{
+        a{
+          &.nav-link{
+           @include padding-left(0);
+          }
+          &:before{
+            display:none !important;
+          }
+        }
+      }
       &:last-child{
         a{
           &.nav-link{
@@ -970,12 +997,11 @@ form {
 
 .site-wrapper {
   &.login {
-    .quick-links {
-      li {
-        @include margin-left(20px);
-      }
-    }
     .login-form-wrap {
+      @include right(0);
+      @media (min-width: 1024px) and (max-width: 1439px) {
+        @include right(48%);
+      }
       .forgot-pswd-link {
         @include float(left);
       }
@@ -998,6 +1024,26 @@ form {
       @include padding-left(55px);
       &::before {
         @include left(18px);
+      }
+    }
+
+    main{
+      .login-page{
+        .left-col {
+            .hero-content {
+              a {
+                @include padding-right(26px);
+                i{
+                  @include right(0);
+                }
+                &:hover{
+                  i{
+                    @include right(-10px);
+                  }
+                }
+              }
+            }
+          }
       }
     }
   }
@@ -1141,16 +1187,53 @@ body.rtl {
   }
 
   // Login
-  .site-wrapper {
+  &.site-wrapper {
     &.login {
-      .form-label {
-        transform: translate(-15px, 15px) !important;
+      main {
+        .login-page {
+          .backgound-absolute {
+            @include login-gradient-rtl;
+          }
+          .left-col {
+            .hero-content {
+              a {
+                i{
+                  @include flip-x-axis;
+                }
+              }
+            }
+          }
+        }
+      }
+      main {
+        .background-absolute {
+          .col-7 {
+            @include login-gradient-rtl;
+            &:before {
+              @include flip-x-axis;
+            }
+          }
+        }
+
+
+        @media screen and (max-width: 991px) {
+          .left-col {
+            @include login-gradient-rtl;
+            &:before {
+              @include flip-x-axis;
+            }
+          }
+        }
+      }
+      @media (min-width: 1024px) and (max-width: 1439px) {
+        .login-form-wrap {
+          transform: translate(-14vw, -47%) !important;
+        }
       }
     }
   }
 
   // Feature Tour
-
   .newFeatureTour{
     .carousel-indicators li {
       float: right;
@@ -1414,6 +1497,29 @@ body.rtl {
   #mCSB_1_container {
     > .row {
       @include margin-right(-15px);
+    }
+  }
+  footer {
+    ul {
+      li {
+        &:first-child {
+          a {
+            &.nav-link {
+              @include padding-left(0 !important);
+            }
+            &:before {
+              display: none !important;
+            }
+          }
+        }
+        &:last-child {
+          a {
+            &.nav-link {
+              @include padding-right(0 !important);
+            }
+          }
+        }
+      }
     }
   }
 }

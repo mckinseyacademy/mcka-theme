@@ -27,8 +27,8 @@ class Organization(JsonObjectWithImage):
         return organization_api.fetch_organization(organization_id, organization_object=cls)
 
     @classmethod
-    def list(cls):
-        return organization_api.get_organizations(organization_object=cls)
+    def list(cls, exclude_admins=False):
+        return organization_api.get_organizations(exclude_admins, organization_object=cls)
 
     @classmethod
     def filtered_list(cls, ids):
