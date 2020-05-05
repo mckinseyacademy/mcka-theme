@@ -5,6 +5,7 @@ from django.conf import settings
 from urllib.parse import urlencode
 
 from api_client.oauth2_requests import get_oauth2_session
+from api_client.group_api import PERMISSION_GROUPS
 from lib.utils import bytes_to_str
 from .api_error import api_error_protect, ERROR_CODE_MESSAGES
 
@@ -102,13 +103,17 @@ def fetch_organization_from_url(url, organization_object=JsonObjectWithImage):
 
 
 @api_error_protect
-def get_organizations(organization_object=JsonObjectWithImage):
+def get_organizations(exclude_admins=False, organization_object=JsonObjectWithImage):
     ''' fetch all organizations '''
+
+    qs_params = {"page_size": 0}
+    if exclude_admins:
+        qs_params["type"] = PERMISSION_GROUPS.COMPANY_ADMIN
     response = GET(
         '{}/{}?{}'.format(
             settings.API_SERVER_ADDRESS,
             ORGANIZATION_API,
-            urlencode({"page_size": 0})
+            urlencode(qs_params)
         )
     )
     return JP.from_json(response.read(), organization_object)

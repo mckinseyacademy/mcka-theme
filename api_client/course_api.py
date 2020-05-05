@@ -392,7 +392,7 @@ def get_course_groups(course_id, group_type=None, group_object=GroupInfo, *args,
 
 
 @api_error_protect
-def get_user_list_json(course_id, program_id=None, page_size=0):
+def get_user_list_json(course_id, program_id=None, page_size=0, additional_fields=None):
     """Retrieves a list of users from the API for specified course."""
     edx_oauth2_session = get_oauth2_session()
     qs_params = {
@@ -402,6 +402,8 @@ def get_user_list_json(course_id, program_id=None, page_size=0):
     }
     if program_id:
         qs_params['project'] = program_id
+    if additional_fields:
+        qs_params['additional_fields'] = ','.join(additional_fields)
 
     url = '{}/{}/{}/users?{}'.format(
         settings.API_SERVER_ADDRESS,

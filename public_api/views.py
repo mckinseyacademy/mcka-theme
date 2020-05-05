@@ -26,6 +26,7 @@ from public_api.controller import get_course_ff_and_custom_taxonomy, \
     create_and_add_course_ff_and_custom_taxonomy_in_list, get_course_ff, \
     create_and_add_course_ff_in_list
 from lib.mail import email_user_activation_link
+from assets.tasks import update_lms_asset_links
 
 
 @require_POST
@@ -234,3 +235,31 @@ def send_participant_activation_link(request, login_id):
                                             "link to create your account.")}, status=status.HTTP_400_BAD_REQUEST)
 
     return JsonResponse({'error': _('User does not exist')}, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['POST'])
+def update_asset_links(request):
+    response, status_code = user_api.get_user_by_bearer_token()
+
+    if not status_code == status.HTTP_200_OK:
+        return JsonResponse({'message': 'Auth Failed'}, status=status_code)
+
+    if not response.get('is_staff'):
+        return JsonResponse({'message': 'Staff user required'}, status=status.HTTP_400_BAD_REQUEST)
+
+    environment = request.data.get('environment')
+    course_ids = request.data.get('course_ids')
+    email_ids = request.data.get('email_ids')
+    update = request.data.get('update', False)
+
+    if None in (environment, email_ids):
+        return JsonResponse({'message': 'Required params missing'}, status=status.HTTP_400_BAD_REQUEST)
+
+    task = update_lms_asset_links.delay(
+        environment=environment,
+        course_ids=course_ids,
+        email_ids=email_ids,
+        update=update
+    )
+
+    return JsonResponse({'task_id': task.task_id}, status=status.HTTP_200_OK)

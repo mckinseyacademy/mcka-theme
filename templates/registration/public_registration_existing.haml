@@ -1,6 +1,6 @@
 - load i18n
 
-%p {% trans "Dear" %} #{username},
+%p {% blocktrans %}Dear {{username}}, {% endblocktrans %}
 %p #{template_text}
 %p
   {% trans "You already have an account with McKinsey Academy associated with this email address." %}
@@ -9,7 +9,7 @@
   #{link}
   %p
     {% trans "If you've forgotten your credentials, please click the 'Forgot Password?' link and follow the on-screen instructions." %}
-%p {% blocktrans %}Please contact our team at {{support}} if you experience any technical issues.{% endblocktrans %}
+%p {% blocktrans %}Please contact our <a href="{{support}}" target="_blank">support team</a> if you experience any technical issues.{% endblocktrans %}
 %p
   {% trans "Best," %}
   %br

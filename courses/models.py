@@ -83,6 +83,7 @@ class FeatureFlags(db_models.Model):
     enhanced_caching = db_models.BooleanField(default=False)
     show_ld_discovery = db_models.BooleanField(default=True)
     show_ld_logo = db_models.BooleanField(default=False)
+    extend_session_on_video = db_models.BooleanField(default=False)
 
     def as_json(self):
         return dict(

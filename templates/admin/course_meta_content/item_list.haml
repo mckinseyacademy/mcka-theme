@@ -198,6 +198,14 @@
             %label{for: 'leaderboard'}
               {% trans "Show Learner Dashboard Logo" %}
             %p.style-6 {% trans "Note: Disabling this would hide the company logo on the bottom right side of learner dashbaord." %}
+          %li
+            - if feature_flags.extend_session_on_video
+              %input#show_ld_logo{type: 'checkbox', name: 'extend_session_on_video', checked: 'checked'}
+            - else
+              %input#show_ld_logo{type: 'checkbox', name: 'extend_session_on_video'}
+            %label{for: 'extend_video'}
+              {% trans "Extend session on playing video" %}
+            %p.style-6 {% trans "Note: Enable this to avoid user session timeout when playing long videos." %}
 
 
 

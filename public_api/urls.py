@@ -32,4 +32,9 @@ urlpatterns = [
         views.send_participant_activation_link,
         name='send_participant_activation_link'
     ),
+    re_path(
+        r'update_asset_links$',
+        views.update_asset_links,
+        name='update_asset_links'
+    ),
 ]

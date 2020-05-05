@@ -32,7 +32,7 @@ from api_data_manager.user_data import UserDataManager
 from lib.authorization import permission_group_required
 from lib.utils import DottableDict, bytes_to_str
 from mobile_apps.controller import get_mobile_app_download_popup_data
-from util.data_sanitizing import sanitize_data, clean_xss_characters
+from util.data_sanitizing import sanitize_data
 from util.user_agent_helpers import is_mobile_user_agent, is_tablet_user_agent
 from .controller import (
     inject_gradebook_info,
@@ -207,10 +207,6 @@ def course_cohort(request, course_id):
     except ApiError:
         completions = proficiency = social_metrics = None
 
-    metrics = course_api.get_course_metrics(course_id, user_id=request.user.id)
-    workgroups = user_api.get_user_workgroups(request.user.id, course_id)
-    metrics.group_enrolled = 0
-
     ta_user_json = json.dumps({})
     course_role_users = course_api.get_users_filtered_by_role(course_id)
     ta_user = choose_random_ta(course_id, course_role_users)
@@ -219,34 +215,6 @@ def course_cohort(request, course_id):
             ta_user.title = ''
         ta_user_data = sanitize_data(data=ta_user.to_dict(), props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
         ta_user_json = json.dumps(ta_user_data)
-    ta_user_id = ta_user.id if ta_user else None
-
-    metrics.groups_users = []
-    if workgroups:
-        workgroup = workgroup_api.get_workgroup(workgroups[0].id)
-        metrics.group_enrolled = len(workgroup.users)
-        if len(workgroup.users) > 0:
-            user_ids = [str(student.id) for student in workgroup.users]
-            additional_fields = ["city", "title", "full_name", "first_name", "last_name", "profile_image"]
-            user_dict = {u.id: u for u in user_api.get_users(ids=user_ids, fields=additional_fields)}
-            for student in workgroup.users:
-                user = user_dict[student.id]
-                if user.city and ta_user_id != user.id:
-                    if not user.title:
-                        user.title = ''
-                    # Cleaning user data for any malicious properties
-                    # as user data is rendered on template with `safe` tag
-                    user_data = sanitize_data(data=user.to_dict(), props_to_clean=settings.USER_PROPERTIES_TO_CLEAN)
-                    metrics.groups_users.append(user_data)
-    metrics.groups_users = json.dumps(metrics.groups_users)
-
-    metrics.cities = []
-    cities = course_api.get_course_metrics_by_city(course_id, user_id=request.user.id)
-    for city in cities:
-        if city.city != '':
-            city_name = clean_xss_characters(city.city)
-            metrics.cities.append({'city': city_name, 'count': city.count})
-    metrics.cities = json.dumps(metrics.cities)
 
     user_roles = [role_user.role for role_user in course_role_users if role_user.id == request.user.id]
     user_role = user_roles[0] if user_roles else None
@@ -255,7 +223,6 @@ def course_cohort(request, course_id):
         'proficiency': proficiency,
         'completions': completions,
         'social': social_metrics,
-        'metrics': metrics,
         'ta_user': ta_user_json,
         'ta_email': settings.TA_EMAIL_GROUP,
         'leaderboard_ranks': [1, 2, 3],
@@ -848,6 +815,12 @@ def navigate_to_lesson_module(
     except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         custom_lesson_label = None
 
+    try:
+        feature_flags = FeatureFlags.objects.get(course_id=course_id)
+        data["extend_session_on_video"] = feature_flags.extend_session_on_video
+    except Exception:
+        data["extend_session_on_video"] = False
+
     if not current_sequential.is_started:
         if not custom_lesson_label:
             data["not_started_message"] = _("This lesson does not start until {start_upon}").format(
@@ -1222,6 +1195,11 @@ def course_learner_dashboard(request, learner_dashboard_id):
 
     check_course_shell_access(request, learner_dashboard.course_id)
 
+    feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
+    if not feature_flags.learner_dashboard:
+        redirect_url = '/courses/' + str(learner_dashboard.course_id)
+        return HttpResponseRedirect(redirect_url)
+
     # Filter tiles on the basis of user role. Hide Staff only tiles for learners
     roles = request.user.get_roles_on_course(learner_dashboard.course_id)
     is_staff = 'staff' in [role.role for role in roles]
@@ -1243,7 +1221,6 @@ def course_learner_dashboard(request, learner_dashboard_id):
     except Exception:  # pylint: disable=bare-except TODO: add specific Exception class
         bookmark = None
 
-    feature_flags = CourseDataManager(learner_dashboard.course_id).get_feature_flags()
     learner_dashboard.features = feature_flags
     mobile_device = False
     if is_mobile_user_agent(request) or is_tablet_user_agent(request):
@@ -1303,6 +1280,7 @@ def course_feature_flag(request, course_id, restrict_to_courses_ids=None):
     feature_flags.enhanced_caching = request.POST.get('enhanced_caching', None) == 'on'
     feature_flags.show_ld_discovery = request.POST.get('show_ld_discovery', None) == 'on'
     feature_flags.show_ld_logo = request.POST.get('show_ld_logo', None) == 'on'
+    feature_flags.extend_session_on_video = request.POST.get('extend_session_on_video', None) == 'on'
     feature_flags.save()
 
     if request.POST.get('mobile_available', None) is not None:
