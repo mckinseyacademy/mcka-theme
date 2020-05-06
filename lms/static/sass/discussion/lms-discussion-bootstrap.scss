@@ -209,7 +209,12 @@ body.new-theme {
 			}
 		}
 	}
-
+	.forum-new-post-form,
+	.edit-post-form {
+		h3 {
+			font-size: 16px;
+		}
+	}
 	/* desktop only  */
 	@media (min-width: 767px) {
 
@@ -407,10 +412,14 @@ body.new-theme {
 						height: auto !important;
 						max-height: none !important;
 						position: static !important;
+						min-height: 300px !important;
+						padding: 15px !important;
+						margin-top: 10px;
 
 						.forum-nav-browse-menu-wrapper {
 							border: 0;
 							padding: 0;
+							height: auto;
 						}
 
 						.forum-nav-thread-list {
@@ -671,6 +680,12 @@ body.new-theme {
 		.row {
 			margin-right: 0;
 			margin-left: 0;
+			@media (max-width: 767px) {
+				.col {
+					padding-left: 0;
+					padding-right: 0;
+				}
+			}
 		}
 
 		.post-errors {
@@ -1059,6 +1074,7 @@ body.new-theme {
 					font-size: 12px;
 					color: $gray;
 					font-weight: normal;
+					padding: 0;
 
 					&:hover {
 						background: none !important;
@@ -1379,9 +1395,10 @@ body.new-theme {
 						margin-left: 0;
 						width: 100%;
 						display: inline-block;
+						vertical-align: top;
 						position: relative;
 						overflow: visible;
-						min-height: 18px;
+						min-height: 16px;
 						margin-top: 2px;
 
 						.input-radio {
@@ -1434,6 +1451,8 @@ body.new-theme {
 
 						.field-label-text {
 							margin-bottom: 8px;
+							font-size: 16px;
+							line-height: 16px;
 						}
 					}
 
@@ -1483,7 +1502,7 @@ body.new-theme {
 
 					#field_help_post_type {
 						line-height: normal;
-						margin-top: 6px;
+						margin-top: 0;
 					}
 
 				}
@@ -2312,6 +2331,16 @@ body.new-theme {
 	@media (max-width: 767px) {
 		.view-discussion-home {
 			display: none;
+		}
+		.discussion-body {
+			display: flex;
+			flex-direction: column;
+			.discussion-column {
+				order: 2;
+			}
+			.forum-nav {
+				order: 1;
+			}
 		}
 		#course-discussion {
 			.discussion-content {
