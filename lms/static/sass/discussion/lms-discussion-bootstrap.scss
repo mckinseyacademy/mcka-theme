@@ -209,7 +209,12 @@ body.new-theme {
 			}
 		}
 	}
-
+	.forum-new-post-form,
+	.edit-post-form {
+		h3 {
+			font-size: 16px;
+		}
+	}
 	/* desktop only  */
 	@media (min-width: 767px) {
 
@@ -241,9 +246,6 @@ body.new-theme {
 
 		.forum-new-post-form,
 		.edit-post-form {
-			h3 {
-				font-size: 16px;
-			}
 			.post-field {
 				.field-input {
 					.post-topic {
@@ -1069,6 +1071,7 @@ body.new-theme {
 					font-size: 12px;
 					color: $gray;
 					font-weight: normal;
+					padding: 0;
 
 					&:hover {
 						background: none !important;
