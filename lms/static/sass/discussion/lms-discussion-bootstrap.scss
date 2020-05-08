@@ -2207,6 +2207,16 @@ body.new-theme {
 		.forum-new-post-form .post-options .icon, .edit-post-form .post-options .icon {
 			margin-left: 0;
 		}
+		.discussion .actions-dropdown {
+			left: auto;
+			right: 0;
+			.actions-dropdown-list {
+				&:before, &:after {
+					left: auto;
+					right: 6px;
+				}
+			}
+		}
 	}
 	.view-discussion-home {
 		display: block;
