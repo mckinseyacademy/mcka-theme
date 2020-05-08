@@ -133,6 +133,9 @@ body.new-theme {
 	button {
 		border-width: 0;
 	}
+	.dropdown-menu {
+        font-size: 0.75rem;
+    }
 	.row {
 		display: flex;
 		flex-wrap: wrap;
