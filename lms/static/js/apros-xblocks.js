@@ -86,8 +86,21 @@ $(function () {
       if(!$(this).attr('id') || $(this).attr('id').indexOf('ooyala') === -1) {
         $(this).addClass('ie-custom-div')
       }
-    })
+    });
   });
+
+    // Top/Bottom Positioning for the Image explorer popovers
+
+    $(document).on('DOMNodeInserted', function () {
+        $(".image-explorer-hotspot").on("click", function (e) {
+            var topOffset = $(this).offset().top;
+            var docHeight = $(document).height();
+            var bottomOffset = (docHeight - topOffset);
+            if (bottomOffset < 420) {
+                $(this).siblings('.image-explorer-hotspot-reveal').css({"bottom": '0', "top": "auto"});
+            }
+        });
+    });
 
   // Assessment block checkbox
 
