@@ -130,6 +130,15 @@ body.new-theme {
 	-webkit-font-smoothing: unset;
 	-moz-osx-font-smoothing: unset;
 
+	.wmd-button-row {
+		.wmd-button {
+			position: static;
+		}
+		.wmd-spacer {
+			position: static;
+			margin: 0 14px;
+		}
+	}
 	button {
 		border-width: 0;
 	}
@@ -1403,6 +1412,7 @@ body.new-theme {
 						overflow: visible;
 						min-height: 16px;
 						margin-top: 2px;
+						font-size: 16px;
 
 						.input-radio {
 							display: block;
@@ -2111,6 +2121,7 @@ body.new-theme {
 								padding: 0 0px;
 								margin-top: 0px;
 								font-size: 16px;
+								margin: 0 0 30px;
 							}
 							.reply-body {
 								.wmd-preview-container {
@@ -2185,10 +2196,12 @@ body.new-theme {
 		}
 		#course-discussion .discussion-content .forum-content .thread-wrapper .post-extended-content .js-response-list .forum-response .discussion-response .response-header .response-header-actions, 
 		#course-discussion .discussion-content .forum-content .thread-wrapper .post-extended-content .js-marked-answer-list .forum-response .discussion-response .response-header .response-header-actions {
-			left: auto;
+			left: auto !important;
+			right: 0 !important;
 		}
 		.discussion-comment .comment-actions-list {
-			left: auto;
+			left: auto !important;
+			right: 0 !important;
 		}
 		[data-block-type="pb-mrq"] .choice-selector:before,
 		[data-block-type="pb-mrq"] .field-label:before,
@@ -2205,6 +2218,16 @@ body.new-theme {
 		}
 		.forum-new-post-form .post-options .icon, .edit-post-form .post-options .icon {
 			margin-left: 0;
+		}
+		.discussion .actions-dropdown {
+			left: auto;
+			right: 0;
+			.actions-dropdown-list {
+				&:before, &:after {
+					left: auto;
+					right: 6px;
+				}
+			}
 		}
 	}
 	.view-discussion-home {
