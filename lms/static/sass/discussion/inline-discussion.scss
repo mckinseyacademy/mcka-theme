@@ -127,6 +127,15 @@ body.new-theme {
     .is-hidden {
         display: none;
     }
+    .wmd-button-row {
+		.wmd-button {
+			position: static;
+		}
+		.wmd-spacer {
+            position: static;
+            margin: 0 14px;
+        }
+    }
 
     @-webkit-keyframes fa-spin {
         0% {

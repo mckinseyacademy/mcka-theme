@@ -130,6 +130,15 @@ body.new-theme {
 	-webkit-font-smoothing: unset;
 	-moz-osx-font-smoothing: unset;
 
+	.wmd-button-row {
+		.wmd-button {
+			position: static;
+		}
+		.wmd-spacer {
+			position: static;
+			margin: 0 14px;
+		}
+	}
 	button {
 		border-width: 0;
 	}
