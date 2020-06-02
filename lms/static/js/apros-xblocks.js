@@ -162,3 +162,43 @@ function inlineDiscussionLongHeading() {
     $(this).children('.discussion-module-title').css({'display': ''}); // rest width
   });
 }
+
+// Discussion sticky stopper handling
+  $(document).on("DOMNodeInserted", '.new-theme .forum-nav', function(event) {
+    let $sticky = $('.forum-nav');
+    let $stickyrStopper = $('.sticky-stopper');
+    let windowWidth = window.innerWidth;
+    if (windowWidth > 1024) {
+      if (!!$sticky.offset()) { // make sure ".sticky" element exists
+        let generalSidebarHeight = $sticky.innerHeight();
+        let stickyTop = $sticky.offset().top;
+        let stickOffset = 30;
+        let stickyStopperPosition = $stickyrStopper.offset().top;
+        let stopPoint = stickyStopperPosition - generalSidebarHeight + 10000;
+        let diff = stopPoint + stickOffset;
+
+        $(window).scroll(function () { // scroll event
+          let windowTop = $(window).scrollTop(); // returns number
+
+          if (stopPoint < windowTop) {
+            $sticky.css({
+              position: 'absolute',
+              top: diff,
+            });
+          } else if (stickyTop < windowTop + stickOffset) {
+            $sticky.css({
+              position: 'fixed',
+              top: stickOffset,
+            });
+          } else {
+            $sticky.css({
+              position: 'absolute',
+              top: 'initial',
+            });
+          }
+        });
+
+      }
+    }
+  });
+  
