@@ -457,6 +457,12 @@ body.new-theme {
                             @media (max-width: 767px){
                                 max-width: calc(65% - 10px);
                             }
+                            @media (max-width: 800px) and (orientation: portrait) {
+                                -webkit-user-select: none;
+                            }
+                            @media (max-width: 1024px) and (orientation: landscape) {
+                                -webkit-user-select: none;
+                            }
 
                             &.option-with-image {
                                 padding: 0;

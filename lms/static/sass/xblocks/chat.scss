@@ -7,6 +7,23 @@
   }
 }
 
+//To fix padding of xblock in native apps
+.course-wrapper {
+  main {
+    padding: 0 10px !important;
+    .chat-wrapper {
+      .chat-block {
+        .main-area {
+          max-height: calc(100vh - 60px) !important;
+        }
+        .actions {
+          margin: 20px !important;
+        }
+      }
+    }
+  }
+}
+
 // The image rotation in chat doesn't work correctly so have to overwrite the CSS
 .chat-block .image-overlay img{
   position: absolute !important;
@@ -19,6 +36,21 @@
   left: 50% !important;
 }
 @include chat-mobile-only{
+  .chat-block {
+        width: 100% !important;
+        height: 100% !important;
+        .main-area {
+            max-height: calc(100vh - 130px) !important;
+        }
+        .messages {
+            padding: 10px 0 0 0 !important;
+        }
+        .restart-button {
+            padding-bottom: 0;
+            padding-right: 0;
+        }
+    }
+  
   //Removing offset of image from top as for mobile views, there is no topbar
   .chat-block .image-overlay img{
     max-height: 100% !important;
