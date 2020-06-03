@@ -1236,7 +1236,7 @@ body.new-theme {
 				background: $white;
 				padding: 0;
 				margin-bottom: 20px;
-				position: relative;
+				position: absolute;
 
 
 				.ask-ta {
@@ -2202,7 +2202,7 @@ body.new-theme {
 	&.rtl {
 		.discussion-body {
 			.discussion-column {
-				float: left;
+				float: left !important;
 				margin-left: 0 !important;
 			}
 		}
