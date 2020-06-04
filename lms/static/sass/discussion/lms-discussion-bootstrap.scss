@@ -2200,14 +2200,6 @@ body.new-theme {
 // Layout
 .new-theme {
 	&.rtl {
-		@media (min-width: 767px) {
-				.discussion-body {
-				.discussion-column {
-					float: left !important;
-					margin-left: 0 !important;
-				}
-			}
-		}
 		#course-discussion .discussion-content .forum-nav .forum-nav-browse-menu-wrapper .forum-nav-browse-filter .icon {
 			left: auto;
 			right: 11px;
