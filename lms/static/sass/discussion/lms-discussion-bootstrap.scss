@@ -2200,10 +2200,12 @@ body.new-theme {
 // Layout
 .new-theme {
 	&.rtl {
-		.discussion-body {
-			.discussion-column {
-				float: left !important;
-				margin-left: 0 !important;
+		@media (min-width: 767px) {
+				.discussion-body {
+				.discussion-column {
+					float: left !important;
+					margin-left: 0 !important;
+				}
 			}
 		}
 		#course-discussion .discussion-content .forum-nav .forum-nav-browse-menu-wrapper .forum-nav-browse-filter .icon {
@@ -2472,5 +2474,3 @@ body.new-theme {
 		}
 	}
 }
-
-
