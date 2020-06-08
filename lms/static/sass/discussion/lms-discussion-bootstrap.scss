@@ -1177,7 +1177,6 @@ body.new-theme {
 						font-weight: 300;
 						color: $black;
 						float: left;
-						line-height: 1.5;
 						margin-bottom: 1.25rem;
 					}
 
@@ -2267,7 +2266,6 @@ body.new-theme {
 				h1 {
 					@include font-size(21);
 					margin-bottom: 15px;
-					line-height: 1.5;
 				}
 
 				.sub-heading {
@@ -2283,7 +2281,6 @@ body.new-theme {
 						font-weight: bold;
 						text-transform: uppercase;
 						margin-bottom: 10px;
-						line-height: 1.5;
 
 						&:nth-child(2) {
 							margin-top: 20px;
