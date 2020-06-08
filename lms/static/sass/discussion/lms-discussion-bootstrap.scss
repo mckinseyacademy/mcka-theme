@@ -20,6 +20,14 @@ footer[role=contentinfo] {
 	}
 }
 
+h1, h2, h3, h4, h5, h6 {
+	line-height: 1.5;
+}
+
+.dropdown-menu .sub-nav li a {
+	color: var(--primary);
+}
+
 //disable selection of hidden transparent texts
 @mixin disableTextSelection {
 	-webkit-touch-callout: none;
@@ -273,6 +281,7 @@ body.new-theme {
 				font-size: 16px;
 			}
 			.post-field {
+				margin-bottom: 34px;
 				.field-input {
 					.post-topic {
 						min-width: 370px;
@@ -280,7 +289,7 @@ body.new-theme {
 
 					&.js-post-title,
 					&.edit-post-title {
-						min-width: 400px;
+						min-width: 410px;
 					}
 				}
 
@@ -1098,6 +1107,7 @@ body.new-theme {
 					color: $gray;
 					font-weight: normal;
 					padding: 0;
+					font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 
 					&:hover {
 						background: none !important;
@@ -1167,6 +1177,8 @@ body.new-theme {
 						font-weight: 300;
 						color: $black;
 						float: left;
+						line-height: 1.5;
+						margin-bottom: 1.25rem;
 					}
 
 					.new-post-btn {
@@ -1196,6 +1208,7 @@ body.new-theme {
 						box-sizing: border-box;
 						display: block;
 						border: 0;
+						line-height: normal;
 					}
 					.field-label {
 						position: fixed;
@@ -1487,13 +1500,13 @@ body.new-theme {
 						&#field_help_topic_area {
 
 							position: absolute;
-							top: 68px;
+							top: 64px;
 						}
 
 						&#field_help_title {
 
 							position: absolute;
-							top: 68px;
+							top: 64px;
 						}
 					}
 
@@ -1516,6 +1529,7 @@ body.new-theme {
 							background-position: 95%;
 							background-size: 12px;
 							color: $gray;
+							font-size: 1rem;
 
 							&::-ms-expand {
 								display: none;
@@ -1524,7 +1538,6 @@ body.new-theme {
 					}
 
 					#field_help_post_type {
-						line-height: normal;
 						margin-top: 0;
 					}
 
@@ -2254,12 +2267,14 @@ body.new-theme {
 				h1 {
 					@include font-size(21);
 					margin-bottom: 15px;
+					line-height: 1.5;
 				}
 
 				.sub-heading {
 					@include font-size(14);
 					font-weight: 600;
 					margin: 0 0 20px;
+					line-height: 1.5;
 				}
 
 				.discussion-wrapper {
@@ -2268,6 +2283,7 @@ body.new-theme {
 						font-weight: bold;
 						text-transform: uppercase;
 						margin-bottom: 10px;
+						line-height: 1.5;
 
 						&:nth-child(2) {
 							margin-top: 20px;
@@ -2358,6 +2374,9 @@ body.new-theme {
 
 			}
 		}
+	}
+	.forum-nav-browse-menu {
+		max-height: calc(100% + 65px);
 	}
 }
 
