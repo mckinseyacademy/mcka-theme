@@ -142,14 +142,6 @@ $(function () {
                 $(this).siblings('.image-explorer-hotspot-reveal').css({"bottom": '0', "top": "auto"});
             }
         });
-
-          //popover positioning for MRQ.MCQ when popover height bigger.
-          $(function (e) {
-              var popHeight = $(".choice-tips-container.with-tips.active .choice-tips").outerHeight();
-              if (popHeight > 320) {
-                  $(".choice-tips").parent().addClass('toTop');
-              }
-          });
     });
 
   // Assessment block checkbox
