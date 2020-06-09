@@ -119,6 +119,12 @@
             .choice-tips {
                 position: absolute;
             }
+            &.toTop{
+                .choice-tips{
+                    top: auto !important;
+                    bottom: -15px;
+                }
+            }
         }
     }
 
@@ -697,7 +703,7 @@ body.new-theme {
         }
     }
 
-    // New Changes for RTL hussnainRaza
+    // New Changes for RTL
     .themed-xblock {
         &.mentoring {
             .choice {
