@@ -148,10 +148,6 @@ $(function () {
               var popHeight = $(".choice-tips-container.with-tips.active .choice-tips").outerHeight();
               if (popHeight > 320) {
                   $(".choice-tips").parent().addClass('toTop');
-                  $('.choice-tips-container.with-tips.active, .choice-tips-container .choice-tips').css({
-                      "bottom": '15px',
-                      "top": 'auto !important'
-                  });
               }
           });
     });
