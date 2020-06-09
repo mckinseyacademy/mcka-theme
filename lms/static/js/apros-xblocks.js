@@ -185,7 +185,7 @@ function inlineDiscussionLongHeading() {
       if (!!$sticky.offset()) { // make sure ".sticky" element exists
         let generalSidebarHeight = $sticky.innerHeight();
         let stickyTop = $sticky.offset().top;
-        let stickOffset = 30;
+        let stickOffset = 10;
         let stickyStopperPosition = $stickyrStopper.offset().top;
         let stopPoint = stickyStopperPosition - generalSidebarHeight + 10000;
         let diff = stopPoint + stickOffset;
