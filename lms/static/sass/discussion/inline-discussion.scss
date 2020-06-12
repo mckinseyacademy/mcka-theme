@@ -994,6 +994,16 @@ body.new-theme {
                 padding: 15px 0;
                 border-radius: 2px;
 
+                .control-dismiss {
+                    display: none;
+                }
+
+                .message {
+                    color: $hard-gray;
+                    text-align: center;
+                    margin-bottom: 0;
+                }
+
                 .forum-nav-refine-bar {
                     background: none;
                     margin: 0 auto 15px;
@@ -1001,6 +1011,7 @@ body.new-theme {
                     border: 0;
                     width: 95%;
                     display: none;
+
 
                     select {
                         color: $gray;
