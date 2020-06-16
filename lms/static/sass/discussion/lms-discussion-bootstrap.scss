@@ -2384,6 +2384,8 @@ body.new-theme {
 
 	@media (max-width: 767px) {
 		.discussion-body {
+			display: flex;
+			flex-flow: column-reverse;
 			.forum-nav {
 				.forum-nav-browse-menu {
 					max-height: none !important;
