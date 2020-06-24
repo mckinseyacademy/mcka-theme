@@ -24,8 +24,11 @@ h1, h2, h3, h4, h5, h6 {
 	line-height: 1.5;
 }
 
-.dropdown-menu .sub-nav li a {
-	color: var(--primary);
+.dropdown-menu {
+	min-width: 176px;
+	.sub-nav li a {
+		color: var(--primary);
+	}
 }
 
 //disable selection of hidden transparent texts
@@ -138,13 +141,27 @@ body.new-theme {
 	-webkit-font-smoothing: unset;
 	-moz-osx-font-smoothing: unset;
 
+	.dropdown-toggle {
+		&:after {
+		width: auto;
+		height: auto;
+		margin-left: 0;
+		vertical-align: middle;
+		content: "\e313";
+		border-top: 0;
+		border-right: 0;
+		border-bottom: 0;
+		border-left: 0;
+		}
+	}
+
 	.wmd-button-row {
 		.wmd-button {
-			position: static;
+			position: absolute;
+			margin: 0;
 		}
 		.wmd-spacer {
-			position: static;
-			margin: 0 14px;
+			position: absolute;
 		}
 	}
 	button {
@@ -1107,7 +1124,8 @@ body.new-theme {
 					font-size: 12px;
 					color: $gray;
 					font-weight: normal;
-					padding: 0;
+					padding: 1px;
+					border: 1px solid transparent;
 					font-family: "Open Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
 
 					&:hover {
@@ -2375,7 +2393,7 @@ body.new-theme {
 		}
 	}
 	.forum-nav-browse-menu {
-		max-height: calc(100% + 65px);
+		max-height: calc(100% - 55px) !important;
 	}
 }
 
