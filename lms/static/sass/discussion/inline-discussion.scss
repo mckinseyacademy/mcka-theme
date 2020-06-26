@@ -1086,6 +1086,7 @@ body.new-theme {
                             border-left: 0;
                             border-bottom: 1.21px solid $ash-white;
                             padding: 14px 25px !important;
+                            max-width: calc(100% - 30px);
 
                             .icon {
                                 @include primary-theme-content-color;
@@ -1752,6 +1753,10 @@ body.new-theme {
                     @include secondary-button;
                     position: initial;
                     margin-top: 20px;
+
+                    @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+                        position: static !important;
+                    }
 
                     &:hover,
                     &:active {
