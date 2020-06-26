@@ -2203,6 +2203,13 @@ body.new-theme {
 
 	.wmd-prompt-dialog {
 		z-index: 9999 !important;
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+		margin-top: auto !important;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		bottom: auto;
+
 
 		.form-actions {
 			#new-link-image-ok {
