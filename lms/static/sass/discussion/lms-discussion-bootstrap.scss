@@ -2239,6 +2239,18 @@ body.new-theme {
 // Layout
 .new-theme {
 	&.rtl {
+		.wmd-spacer1 {
+			right: 50px;
+			left: auto;
+		}
+		.wmd-spacer2 {
+			right: 125px;
+			left: auto;
+		}
+		.wmd-spacer3 {
+			right: 250px;
+			left: auto;
+		}
 		#course-discussion .discussion-content .forum-nav .forum-nav-browse-menu-wrapper .forum-nav-browse-filter .icon {
 			left: auto;
 			right: 11px;
