@@ -226,10 +226,6 @@ body.new-theme {
 
         .discussion-module.long-discussion-heading {
             .discussion-show {
-                position: initial !important;
-            }
-
-            @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
                 position: static !important;
             }
 
@@ -1083,14 +1079,14 @@ body.new-theme {
                         }
 
                         .forum-nav-thread-wrapper-1 {
-                            width: calc(100% - 125px);
+                            width: auto;
+                            max-width: none;
                         }
 
                         .forum-nav-thread-link {
                             border-left: 0;
                             border-bottom: 1.21px solid $ash-white;
                             padding: 14px 25px !important;
-                            max-width: calc(100% - 30px);
 
                             .icon {
                                 @include primary-theme-content-color;
