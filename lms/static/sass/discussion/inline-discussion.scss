@@ -122,6 +122,7 @@
 }
 
 body.new-theme {
+    text-align: unset !important;
     background-color: $ash-white;
 
     .is-hidden {
