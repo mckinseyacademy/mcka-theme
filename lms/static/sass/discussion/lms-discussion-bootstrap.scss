@@ -2199,6 +2199,10 @@ body.new-theme {
 		transform: translate(-50%, -50%);
 		bottom: auto;
 
+		#new-url-input {
+			direction: ltr !important;
+		}
+
 
 		.form-actions {
 			#new-link-image-ok {
@@ -2228,6 +2232,11 @@ body.new-theme {
 // Layout
 .new-theme {
 	&.rtl {
+		.wmd-prompt-dialog {
+			#new-url-input {
+				direction: rtl !important;
+			}
+		}
 		.wmd-spacer1 {
 			right: 50px;
 			left: auto;
