@@ -1084,7 +1084,7 @@ body.new-theme {
                         }
 
                         .forum-nav-thread-wrapper-1 {
-                            width: auto;
+                            width: calc(100% - 75px);
                             max-width: none;
                         }
 
