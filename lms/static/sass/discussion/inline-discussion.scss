@@ -1,4 +1,5 @@
 //for inline discussion
+@import 'lms/static/sass/discussion/inline-discussion';
 @import '../base/variables';
 @import '../base/buttons';
 @import '../discussion/partials/discussion-mobile-forum-content';
@@ -121,10 +122,20 @@
 }
 
 body.new-theme {
+    text-align: unset !important;
     background-color: $ash-white;
 
     .is-hidden {
         display: none;
+    }
+    .wmd-button-row {
+		.wmd-button {
+			position: static;
+		}
+		.wmd-spacer {
+            position: static;
+            margin: 0 14px;
+        }
     }
 
     @-webkit-keyframes fa-spin {
@@ -216,7 +227,11 @@ body.new-theme {
 
         .discussion-module.long-discussion-heading {
             .discussion-show {
-                position: initial !important;
+                position: static !important;
+            }
+
+            @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
+                position: static !important;
             }
 
             .add_post_btn_container {
@@ -271,6 +286,9 @@ body.new-theme {
         padding-top: 0 !important;
         word-break: break-word;
 
+        + .wrap-instructor-info{
+            display: none;
+        }
         ::placeholder {
             /* Chrome, Firefox, Opera, Safari 10.1+ */
             color: $hard-gray;
@@ -691,6 +709,9 @@ body.new-theme {
             .edit-post-form {
                 padding: 31px;
                 min-width: 425px;
+                h5 {
+                    font-size: 16px;
+                }
 
                 .sr {
                     position: absolute !important;
@@ -710,7 +731,12 @@ body.new-theme {
                     @include primary-theme-content-color;
                     cursor: pointer;
                     background: none;
+                    font-size: 16px;
+                    line-height: 16px;
+                    padding: 0;
+                    height: 16px;
                     &:hover, &:focus {
+                        @include primary-theme-content-color(!important);
                         border-color: transparent !important;
                         background-color: transparent !important;
                         background: none !important;
@@ -763,13 +789,19 @@ body.new-theme {
                     // Radio button
 
                     .post-type-label {
-                        margin-right: 10px;
+                        margin-right: 0;
+                        margin-top: 2px;
+                        min-height: 18px;
                         width: calc(100% - 20px);
                         display: inline-block;
+                        vertical-align: top;
                         position: relative;
+                        margin-left: 0;
 
                         .input-radio {
                             display: block;
+                            position: fixed;
+                            left: -9999px;
                         }
 
                         .input-radio:checked+.field-input-label:before {
@@ -854,7 +886,7 @@ body.new-theme {
 
                         .post-topic {
                             width: 55% !important;
-                            background-image: url(../../images/expand-button.svg);
+                            background-image: url('/static/mcka-theme/images/expand-button.svg');
                             -webkit-appearance: none !important;
                             -moz-appearance: none;
                             -ms-appearance: none;
@@ -918,6 +950,16 @@ body.new-theme {
 
                 .post-options {
                     .field-label {
+                        width: calc(100% - 30px);
+                        color: $black;
+                        text-transform: capitalize;
+                        height: 22px;
+                        margin-left: 0;
+                        margin-right: 0;
+                        margin-bottom: 0;
+                        position: relative;
+                        margin-right: 5px;
+                        padding: 0 30px;
                         &:nth-child(2) {
                             .field-input-label {
                                 top: 0;
@@ -937,13 +979,7 @@ body.new-theme {
                         }
 
 
-                        width: calc(100% - 30px);
-                        color: $black;
-                        text-transform: capitalize;
-                        padding-left: 30px;
-                        height: 22px;
-                        margin-bottom: 0;
-                        position: relative;
+                        
 
                         .field-input:checked+.field-input-label {
                             color: $black;
@@ -963,6 +999,16 @@ body.new-theme {
                 padding: 15px 0;
                 border-radius: 2px;
 
+                .control-dismiss {
+                    display: none;
+                }
+
+                .message {
+                    color: $hard-gray;
+                    text-align: center;
+                    margin-bottom: 0;
+                }
+
                 .forum-nav-refine-bar {
                     background: none;
                     margin: 0 auto 15px;
@@ -971,11 +1017,12 @@ body.new-theme {
                     width: 95%;
                     display: none;
 
+
                     select {
                         color: $gray;
                         border: 0;
                         width: 100%;
-                        background-image: url(../../images/expand-button.svg);
+                        background-image: url('/static/mcka-theme/images/expand-button.svg');
                         padding: 0 10px;
                         background-repeat: no-repeat;
                         background-position: 90%;
@@ -1037,7 +1084,8 @@ body.new-theme {
                         }
 
                         .forum-nav-thread-wrapper-1 {
-                            width: calc(100% - 125px);
+                            width: calc(100% - 75px);
+                            max-width: none;
                         }
 
                         .forum-nav-thread-link {
@@ -1301,7 +1349,7 @@ body.new-theme {
                                     .action-button {
                                         &.btn-link:hover,
                                         &.btn-link:focus {
-                                            border-color: transparent;
+                                            border-color: #979797 !important;
                                             background-color: transparent;
                                             background: none;
 
@@ -1630,7 +1678,6 @@ body.new-theme {
         [data-block-type="discussion"],
         [data-block-type="discussion-forum"] {
             padding: 0px;
-
             .wmd-panel {
                 font-size: 14px;
 
@@ -1696,9 +1743,9 @@ body.new-theme {
                             font-family: "Material Icons";
                             content: "\e145";
                             position: absolute;
-                            left: 50%;
-                            top: 50%;
-                            transform: translate(-50%, -50%);
+                            left: 6px;
+                            top: 0px;
+                            transform: none;
                         }
 
                         &:hover {
@@ -2063,135 +2110,60 @@ body.new-theme {
 
 
 
-.rtl.new-theme {
-
-    // Radio Button
-    .field-label {
-        .field-input {
-            .post-type-label {
-                margin-right: 0;
-
-                .field-input-label {
-                    padding-right: 30px;
-                    left: auto !important;
-                    &:before {
-                        right: 0;
-                    }
-                }
-
-                &::after {
-                    right: 2px;
-                }
-            }
-        }
-    }
-
-    .field-label-text {
-        top: 10px !important;
-        right: 10px;
-    }
-
-    // CheckBox post Options
-
-    .post-options {
-        .field-label {
-            padding-right: 30px;
-            text-align: right;
-            padding-left: 0;
-
-            &:before {
-                right: 0;
-            }
-
-            &:after {
-                right: 6px;
-            }
-        }
-    }
-
-    // Button
-
-    .discussion-show {
-        left: 0;
-        right: auto !important;
-    }
-
-    [data-block-type="discussion-forum"] .discussion-module .forum-new-post-form button.submit {
-        float: right !important;
-        margin: 0 0 0 10px !important;
-    }
-
-    .forum-nav-thread .forum-nav-thread-link {
-        align-items: unset !important;
-    }
-
-    .thread-wrapper .response-btn-count-wrapper {
-        text-align: left;
-    }
-
-    .forum-nav-thread-list .thread-preview-body {
-        direction: rtl;
-    }
-
-    [data-block-type="discussion-forum"] .discussion-module .inline-threads .forum-nav-thread-list .forum-nav-thread .forum-nav-thread-link {
-        .forum-nav-thread-wrapper-1 {
-            width: calc(100% - 60px);
-            max-width: none;
-        }
-
-        .forum-nav-thread-wrapper-2 {
-            min-width: auto;
-            vertical-align: top;
-            align-self: flex-start;
-        }
-    }
-
-    header.post-header {
-        height: auto !important;
-    }
-
-    .discussion-post .post-body {
-        max-width: none;
-    }
-
-    .discussion-module .add_post_btn_container {
-        right: auto !important;
-        left: 205px !important;
-        top: -96px !important;
-    }
-
-    [data-block-type="discussion-forum"] .discussion-module .forum-new-post-form .post-field .post-type-label .field-input-label {
-        // margin-right: 30px;
-    }
-
-
-    // Mobile View
-    @media (max-width: 767px) {
-        [data-block-type="discussion-forum"] .discussion-module .add_post_btn_container {
-            right: auto !important;
-            top: -60px !important;
-            left: 140px !important;
-        }
-
-        [data-block-type="discussion-forum"] .discussion-module .inline-discussion .forum-new-post-form .post-field .field-input-label {
-            margin-right: 30px;
-        }
-
-        .new-post-article {
-
-            .add-post-cancel {
-                right: auto !important;
-                left: 10px !important;
-            }
-        }
-        [data-block-type="discussion-forum"] .discussion-module .forum-new-post-form .post-field .post-type-label .input-radio+.field-input-label:before {
+body.rtl.new-theme [data-block-type="discussion"] .discussion-module button.discussion-show, 
+body.rtl.new-theme [data-block-type="discussion-forum"] .discussion-module button.discussion-show {
+    left: auto;
+    right: 0;
+}
+.new-theme {
+	&.rtl {
+        .discussion-response .response-header-actions {
+            right: 0 !important;
+            left: auto !important;
+		}
+		.discussion-comment .comment-actions-list {
             left: auto;
-            right: -30px;
+            right: 0;
         }
+        [data-block-type="discussion"] .discussion-module .inline-discussion .new-post-article .add-post-cancel, 
+        [data-block-type="discussion-forum"] .discussion-module .inline-discussion .new-post-article .add-post-cancel {
+            left: auto;
+            right: 10px;
+        }
+        [data-block-type="discussion"] .discussion-module .add_post_btn_container .new-post-btn:before, 
+        [data-block-type="discussion-forum"] .discussion-module .add_post_btn_container .new-post-btn:before {
+            left: auto;
+            right: 6px;
 
-        [data-block-type="discussion-forum"] .discussion-module .inline-discussion .forum-new-post-form .post-field .js-post-title {
-            padding: 4px 40px 0 5px !important
         }
+        [data-block-type="pb-mrq"] .choice-selector:before,
+        [data-block-type="pb-mrq"] .field-label:before,
+        .discussion-body .post-options .choice-selector:before,
+        .discussion-module .post-options .choice-selector:before,
+        .discussion-body .post-options .field-label:before,
+        .discussion-module .post-options .field-label:before,
+        [data-block-type="discussion"] .post-options .choice-selector:before,
+        [data-block-type="discussion"] .post-options .field-label:before,
+        [data-block-type="discussion-forum"] .post-options .choice-selector:before,
+        [data-block-type="discussion-forum"] .post-options .field-label:before {
+            right: auto;
+            left: 0;
+        }
+        .discussion-content .icon,
+        .lesson-content .icon {
+            margin-left: 0;
+            margin-right: 5px;
+        }
+        .discussion .actions-dropdown {
+			left: auto;
+			right: 0;
+			.actions-dropdown-list {
+				&:before, &:after {
+					left: auto;
+					right: 6px;
+				}
+			}
+		}
     }
 }
 
