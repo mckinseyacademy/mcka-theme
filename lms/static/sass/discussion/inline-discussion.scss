@@ -235,7 +235,7 @@ body.new-theme {
             }
 
             .add_post_btn_container {
-                top: -60px !important;
+                //top: -60px !important;
             }
         }
 
@@ -402,9 +402,6 @@ body.new-theme {
 
             button.discussion-show {
                 @include secondary-button-large;
-                position: absolute;
-                top: 0px;
-                right: 0;
 
                 &:hover,
                 &:active {
@@ -413,6 +410,11 @@ body.new-theme {
 
                 &:focus {
                     @include secondary-button-large( !important);
+                }
+                &.shown {
+                    ~.add_post_btn_container {
+                        display: inline-block;
+                    }
                 }
             }
 
@@ -645,11 +647,13 @@ body.new-theme {
             .discussion-module-header {
                 margin: 0;
                 width: 100%;
+                padding-top: 30px;
 
                 .discussion-module-title {
                     font-size: 1.75rem;
                     font-weight: 300;
                     color: $black;
+                    display: inline-block;
                 }
             }
 
@@ -657,10 +661,9 @@ body.new-theme {
                 width: auto;
                 text-align: right;
                 border: 0;
-                bottom: 102px;
-                position: absolute;
-                right: 217px;
-                top: -95px;
+                float: right;
+                margin: 3px 14px 0;
+                display: none;
 
                 .new-post-btn {
                     margin-top: 0px;
@@ -1725,8 +1728,6 @@ body.new-theme {
                 }
 
                 .add_post_btn_container {
-                    right: 140px;
-                    top: -60px;
 
                     .new-post-btn {
                         color: transparent !important;
