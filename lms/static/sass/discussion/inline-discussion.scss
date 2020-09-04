@@ -1724,8 +1724,9 @@ body.new-theme {
                 }
 
                 .add_post_btn_container {
-
+                    margin-top: 20px;
                     .new-post-btn {
+                        position: relative;
                         color: transparent !important;
                         padding: 0;
                         width: 40px;
@@ -1739,10 +1740,9 @@ body.new-theme {
                             color: $white;
                             font-family: "Material Icons";
                             content: "\e145";
-                            position: absolute;
-                            left: 6px;
-                            top: 0px;
+                            position: static;
                             transform: none;
+                            line-height: 40px;
                         }
 
                         &:hover {
