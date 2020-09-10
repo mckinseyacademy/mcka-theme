@@ -658,7 +658,7 @@ body.new-theme {
                 text-align: right;
                 border: 0;
                 float: right;
-                margin: 3px 14px 0;
+                margin: 3px 14px 0 !important;
                 display: none;
 
                 .new-post-btn {
@@ -1710,6 +1710,11 @@ body.new-theme {
             }
 
             .discussion-module {
+                .discussion-module-header {
+                    .discussion-module-title {
+                        display: block;
+                    }
+                }
                 .inline-discussion-topic {
                     margin-top: 0;
                     margin-bottom: 0;
@@ -1724,7 +1729,7 @@ body.new-theme {
                 }
 
                 .add_post_btn_container {
-                    margin-top: 20px;
+                    margin-top: 0 !important;
                     .new-post-btn {
                         position: relative;
                         color: transparent !important;
@@ -1755,7 +1760,6 @@ body.new-theme {
                 button.discussion-show {
                     @include secondary-button;
                     position: initial;
-                    margin-top: 20px;
 
                     &:hover,
                     &:active {
