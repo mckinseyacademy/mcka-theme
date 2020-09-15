@@ -815,5 +815,9 @@ body.new-theme {
             width: 100% !important;
         }
     }
-
+    &.rtl {
+         #course-lessons .lesson-content .themed-xblock .actions-toolbar .action-toolbar-item.sidebar-buttons .sidebar-button-wrapper:nth-child(2){
+            float: left;
+        }
+    }
 }
