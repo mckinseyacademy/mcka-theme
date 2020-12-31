@@ -1,5 +1,5 @@
 .new-theme {
-    [data-type="HTMLModule"] {
+    [data-block-type="html"] {
 
         // Ul
 
@@ -42,7 +42,7 @@
             margin-bottom: 15px;
 
              // Tablet
-             @media only screen and (max-device-width : 1024px)  { 
+             @media only screen and (max-device-width : 1024px)  {
                 table-layout: fixed;
             }
 
@@ -57,7 +57,7 @@
                     &:last-child {
                         padding-right: 0;
                     }
-                    
+
                     // Mobile
                     @media (max-width: 767px) {
                         padding: 10px 0;
@@ -105,7 +105,7 @@
     }
 
     &.rtl {
-        [data-type="HTMLModule"] {
+        [data-block-type="html"] {
             // Ul
 
             ul {
