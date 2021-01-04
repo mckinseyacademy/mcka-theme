@@ -346,6 +346,7 @@ body.new-theme {
 
     [data-block-type="survey"] {
         .poll-block-form-wrapper {
+            overflow: hidden;
             .survey-table {
 
                 .survey-option {
