@@ -1968,6 +1968,10 @@ body.new-theme {
                     }
 
                     .discussion-post {
+                        .post-header {
+                            height: auto !important;
+                        }
+
                         .post-header-actions {
                             top: 65px;
 
@@ -2020,6 +2024,10 @@ body.new-theme {
                                 }
                             }
 
+                        }
+
+                        .post-body {
+                            max-width: 100%;
                         }
                     }
 
