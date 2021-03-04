@@ -222,6 +222,12 @@ body.new-theme {
         }
     }
 
+    .discussion-comment {
+      .comment-actions-list{
+        top: 10px;
+      }
+    }
+
     /* desktop only  */
     @media (min-width: 767px) {
 
