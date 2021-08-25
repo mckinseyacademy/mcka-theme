@@ -507,6 +507,8 @@ body.new-theme {
 						}
 
 						.field-help,
+						label[for=discussion-forum-title] .field-label-text,
+						label[for=edit-discussion-forum-title] .field-label-text,
 						.forum-new-post-form-wrapper>.post-field .field-label-text,
 						.group-selector-wrapper .field-label-text {
 							display: none;
@@ -536,7 +538,7 @@ body.new-theme {
 							}
 
 							.js-post-title {
-								padding: 4px 5px 0 40px !important;
+								padding: 0px 10px 0px 10px !important;
 								width: 100% !important;
 								color: $gray;
 								font-size: 12px;
@@ -633,7 +635,7 @@ body.new-theme {
 								}
 
 								.edit-post-title {
-									padding: 0px 5px 0 40px !important;
+									padding: 0px 10px 0px 10px !important;
 									width: 100% !important;
 									color: $gray;
 								}
